@@ -1,10 +1,10 @@
 (function ($cms) {
     'use strict';
-    
+
     var IN_MINIKERNEL_VERSION = document.documentElement.classList.contains('in-minikernel-version');
-    
+
     var symbols =  (!IN_MINIKERNEL_VERSION ? JSON.parse(document.getElementById('composr-symbol-data').content) : {});
-    
+
     // Cached references
     var smile = ':)',
         emptyObj = {},
@@ -12,7 +12,7 @@
         docEl = document.documentElement,
         emptyEl = document.createElement('div'),
         emptyElStyle = emptyEl.style,
-        
+
         // hasOwnProperty shorcut
         hasOwn = Function.bind.call(Function.call, emptyObj.hasOwnProperty),
 
@@ -157,7 +157,7 @@
             value += '?page=' + urlencode(getPageName());
             value += '&type=' + urlencode($cms.usp.get('type'));
             return value;
-            
+
             function getPageName() {
                 var pageName = $cms.usp.has('page') ? $cms.usp.get('page') : '';
                 if (pageName === '') {
@@ -238,7 +238,7 @@
                 // Installer, likely executing global.js
                 return constant('');
             }
-            
+
             var $PUBLIC_CONFIG_OPTIONS_JSON = JSON.parse('{$PUBLIC_CONFIG_OPTIONS_JSON;}');
             return function $CONFIG_OPTION(optionName) {
                 if (hasOwn($PUBLIC_CONFIG_OPTIONS_JSON, optionName)) {
@@ -623,7 +623,7 @@
      * @type { URLSearchParams }
      */
     $cms.usp = uspFromUrl(window.location.href);
-    
+
     window.addEventListener('popstate', function () {
         $cms.usp = uspFromUrl(window.location.href);
     });
@@ -1055,7 +1055,7 @@
      */
     function extend(target, /*...*/sources) {
         sources = toArray(arguments, 1);
-        
+
         for (var i = 0, len = sources.length; i < len; i++) {
             _extend(target, sources[i]);
         }
@@ -1070,7 +1070,7 @@
      */
     function extendOwn(target, /*...*/sources) {
         sources = toArray(arguments, 1);
-        
+
         for (var i = 0, len = sources.length; i < len; i++) {
             _extend(target, sources[i], EXTEND_SRC_OWN_ONLY);
         }
@@ -1085,7 +1085,7 @@
      */
     function extendDeep(target, /*...*/sources) {
         sources = toArray(arguments, 1);
-        
+
         for (var i = 0, len = sources.length; i < len; i++) {
             _extend(target, sources[i], EXTEND_DEEP);
         }
@@ -1112,7 +1112,7 @@
      */
     function defaults(defaults, /*...*/options) {
         options = toArray(arguments, 1);
-        
+
         for (var i = 0, len = options.length; i < len; i++) {
             _extend(defaults, options[i], EXTEND_TGT_OWN_ONLY);
         }
@@ -1146,7 +1146,7 @@
             obj = mask;
             mask = 'cw';
         }
-        
+
         mask = strVal(mask);
 
         var configurable = mask.includes('c'),
@@ -1211,11 +1211,11 @@
         if (defaultValue === undefined) {
             defaultValue = false;
         }
-        
+
         if (val == null) {
             return defaultValue;
         }
-        
+
         return !!val && (val !== '0'); //&& ((typeof val !== 'object') || !((p = isPlainObj(val)) || isArrayLike(val)) || (p ? hasEnumerable(val) : (val.length > 0)));
     }
 
@@ -1248,7 +1248,7 @@
         // }
 
         val = Math.floor(val);
-        
+
         return (val && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
     }
 
@@ -1271,7 +1271,7 @@
         // }
 
         val = Number(val);
-        
+
         return (val && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
     }
 
@@ -1289,7 +1289,7 @@
         if (defaultValue === undefined) {
             defaultValue = [];
         }
-        
+
         if (val == null) {
             return defaultValue;
         }
@@ -1311,7 +1311,7 @@
         if ((val == null) && (defaultValue !== undefined)) {
             return defaultValue;
         }
-        
+
         if (!isObj(val) || Array.isArray(val)) {
             val = (defaultPropertyName !== undefined) ? keyValue(defaultPropertyName, val) : {};
         }
@@ -1333,7 +1333,7 @@
         if (val == null) {
             return defaultValue;
         }
-        
+
         if (!val) {
             return (val === 0) ? '0' : '';
         } else if (val === true) {
@@ -1406,7 +1406,7 @@
         // Lower cases the string
         return ((str != null) && (str = strVal(str))) ?
             str.toLowerCase()
-                // Replaces any - or _ characters with a space
+            // Replaces any - or _ characters with a space
                 .replace(/[\-_]+/g, ' ')
                 // Removes any non alphanumeric characters
                 .replace(/[^\w\s]/g, '')
@@ -1542,7 +1542,7 @@
         url = strVal(url);
         return rgxHttpRel.test(url);
     }
-    
+
     function isUrl(url) {
         url = strVal(url);
         return url.includes('/');
@@ -1555,7 +1555,7 @@
     function toSchemeRelative(absoluteUrl) {
         return strVal(absoluteUrl).replace(rgxProtocol, '');
     }
-    
+
     /**
      * Dynamically fixes the protocol for image URLs
      * @param url
@@ -1592,11 +1592,11 @@
 
         url = strVal(url);
         target = strVal(target, '_self');
-        
+
         if (!url) {
             return;
         }
-        
+
         if (target === '_self') {
             window.location = url;
         } else {
@@ -1621,11 +1621,11 @@
     function warn() {
         return console.warn.apply(undefined, arguments);
     }
-    
+
     function fatal() {
         return console.error.apply(undefined, arguments);
     }
-    
+
     var validIdRE = /^[a-zA-Z][\w:.-]*$/;
     var requireCssPromises = Object.create(null);
     /**
@@ -1693,7 +1693,7 @@
 
         if (!scriptEl) {
             scriptEl = document.createElement('script');
-            
+
             scriptEl.defer = true;
             if (isAbsoluteOrSchemeRelative(script)) {
                 scriptEl.src = script;
@@ -1701,7 +1701,7 @@
                 scriptEl.id = 'javascript-' + script;
                 scriptEl.src = '{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + script + $cms.keepStub();
             }
-            
+
             document.body.appendChild(scriptEl);
             requireJavascriptPromises[script] = $cms.waitForResources(scriptEl);
         }
@@ -1719,8 +1719,8 @@
         scripts = arrVal(scripts);
 
         scripts.forEach(function (script) {
-            calls.push(function () { 
-                return _requireJavascript(script) 
+            calls.push(function () {
+                return _requireJavascript(script)
             });
         });
 
@@ -1740,14 +1740,14 @@
         promiseFactories.forEach(function (promiseFactory) {
             result = result.then(promiseFactory);
         });
-        
+
         return result;
     }
-    
+
     var _haltedPromise;
     /**
      * Use this to halt promise chain execution since using unresolved promises used to stop the execution chain can cause memory leaks.
-     * This will simply keep a single unresolved promise around, which will be the only promise that isn't garbage collected. 
+     * This will simply keep a single unresolved promise around, which will be the only promise that isn't garbage collected.
      * Since then() and catch() are overridden in this new promise, the chain should not build up, and old parts of the chain should be garbage collected.
      * @see https://github.com/elastic/kibana/issues/3015
      * @return { Promise }
@@ -1764,7 +1764,7 @@
                 }
             });
         }
-        
+
         return _haltedPromise;
     }
 
@@ -1774,7 +1774,7 @@
     function setPostDataFlag(flag) {
         flag = strVal(flag);
 
-        var forms = $cms.dom.$$('form'), 
+        var forms = $cms.dom.$$('form'),
             form, postData;
 
         for (var i = 0; i < forms.length; i++) {
@@ -1898,7 +1898,7 @@
 
         return decodeURIComponent(cookies.substring(startIdx + cookieName.length + 1, endIdx));
     }
-    
+
     // Web animations API support (https://developer.mozilla.org/de/docs/Web/API/Element/animate)
     $cms.support.animation = ('animate' in emptyEl);
     /**
@@ -2032,7 +2032,7 @@
 
     var DOM_ANIMATE_DEFAULT_DURATION = 400, // Milliseconds
         DOM_ANIMATE_DEFAULT_EASING = 'ease-in-out'; // Possible values: https://developer.mozilla.org/en-US/docs/Web/API/AnimationEffectTimingProperties/easing
-    
+
     /** @namespace $cms */
     $cms.dom = extendDeep($cms.dom, /**@lends $cms.dom*/{
         /**
@@ -2208,11 +2208,11 @@
          */
         changeVal: function changeVal(el, value) {
             el = elArg(el);
-            
+
             el.value = strVal((typeof value === 'function') ? value.call(el, $cms.dom.val(el), el) : value);
             $cms.dom.trigger(el, 'change');
         },
-        
+
         /**
          * @memberof $cms.dom
          * @param node
@@ -2463,7 +2463,7 @@
      * @memberof $cms.dom
      * @param win
      * @returns {number}
-    */
+     */
     $cms.dom.getWindowScrollHeight = function getWindowScrollHeight(win) {
         win || (win = window);
 
@@ -2550,7 +2550,7 @@
         if (value === undefined) {
             return isWindow(obj) ? obj.innerWidth :
                 isDoc(obj) ? obj.documentElement.scrollWidth :
-                (offset = $cms.dom.offset(obj)) && offset.width;
+                    (offset = $cms.dom.offset(obj)) && offset.width;
         }
 
         $cms.dom.css(obj, 'width', (typeof value === 'function') ? value.call(obj, $cms.dom.width(obj)) : value);
@@ -2570,7 +2570,7 @@
         if (value === undefined) {
             return isWindow(obj) ? obj.innerHeight :
                 isDoc(obj) ? obj.documentElement.scrollHeight :
-                (offset = $cms.dom.offset(obj)) && offset.height;
+                    (offset = $cms.dom.offset(obj)) && offset.height;
         }
 
         $cms.dom.css(obj, 'height', (typeof value === 'function') ? value.call(obj, $cms.dom.height(obj)) : value);
@@ -2698,8 +2698,8 @@
 
     var _matchesFnName = ('matches' in emptyEl) ? 'matches'
         : ('webkitMatchesSelector' in emptyEl) ? 'webkitMatchesSelector'
-        : ('msMatchesSelector' in emptyEl) ? 'msMatchesSelector'
-        : 'matches';
+            : ('msMatchesSelector' in emptyEl) ? 'msMatchesSelector'
+                : 'matches';
 
     /**
      * Check if the given element matches selector
@@ -2974,11 +2974,11 @@
 
     /**
      * @memberof $cms.dom
-     * @param { Window|Document|Element } el 
-     * @param {string|object} event 
-     * @param {string|function} selector 
-     * @param {object|function} [data] 
-     * @param {function} [callback] 
+     * @param { Window|Document|Element } el
+     * @param {string|object} event
+     * @param {string|function} selector
+     * @param {object|function} [data]
+     * @param {function} [callback]
      */
     $cms.dom.one = function one(el, event, selector, data, callback) {
         el = domArg(el);
@@ -2988,10 +2988,10 @@
 
     /**
      * @memberof $cms.dom
-     * @param { Window|Document|Element } el 
-     * @param {string|object} event 
-     * @param {string|function} [selector] 
-     * @param {function} [callback] 
+     * @param { Window|Document|Element } el
+     * @param {string|object} event
+     * @param {string|function} [selector]
+     * @param {function} [callback]
      */
     $cms.dom.off = function off(el, event, selector, callback) {
         el = domArg(el);
@@ -3319,9 +3319,9 @@
         duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
 
         var target = /*Number($cms.dom.css(el, 'opacity')) || */1;
-        
+
         $cms.dom.show(el);
-        
+
         if ($cms.support.animation && (duration > 0)) { // Progressive enhancement using the web animations API
             var keyFrames = [{ opacity: 0 }, { opacity: target }],
                 options = { duration : duration },
@@ -3329,22 +3329,22 @@
 
             animation.onfinish = function (e) {
                 el.style.removeProperty('opacity');
-                
+
                 if (Number($cms.dom.css(el, 'opacity')) !== target) {
                     el.style.opacity = target;
                 }
-                
+
                 if (callback) {
                     callback.call(el, e, el);
                 }
             };
         } else {
             el.style.removeProperty('opacity');
-            
+
             if (Number($cms.dom.css(el, 'opacity')) !== target) {
                 el.style.opacity = target;
             }
-            
+
             if (callback) {
                 callback.call(el, null, el);
             }
@@ -3403,9 +3403,9 @@
 
         duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
         opacity = numVal(opacity);
-        
+
         $cms.dom.show(el);
-        
+
         if ($cms.support.animation && (duration > 0)) { // Progressive enhancement using the web animations API
             var keyFrames = [{ opacity: $cms.dom.css(el, 'opacity')}, { opacity: opacity }],
                 options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING },
@@ -3433,9 +3433,9 @@
      */
     $cms.dom.fadeToggle = function fadeToggle(el, duration, callback) {
         el = elArg(el);
-        
+
         var fadeIn = $cms.dom.notDisplayed(el);
-        
+
         if (fadeIn) {
             $cms.dom.fadeIn(el, duration, callback);
         } else {
@@ -3458,14 +3458,14 @@
         }
 
         duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
-        
+
         // Show element if it is hidden
         $cms.dom.show(el);
 
         // Get the element position to restore it then
         var prevPosition = el.style.position,
             prevVisibility = el.style.visibility;
-        
+
         // place it so it displays as usually but hidden
         el.style.position = 'absolute';
         el.style.visibility = 'hidden';
@@ -3527,15 +3527,15 @@
         }
 
         duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
-        
+
         if ($cms.dom.notDisplayed(el)) {
             // Already hidden
             return;
         }
-        
+
         var prevOverflow = el.style.overflow;
         el.style.overflow = 'hidden';
-        
+
         var startKeyframe = {
                 height: $cms.dom.css(el, 'height'),
                 marginTop: $cms.dom.css(el, 'marginTop'),
@@ -3550,7 +3550,7 @@
                 paddingTop: 0,
                 paddingBottom: 0
             };
-        
+
         if ($cms.support.animation) { // Progressive enhancement using the web animations API
             var keyFrames = [startKeyframe, endKeyframe],
                 options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING },
@@ -3615,7 +3615,7 @@
 
         var ifuob = window.top.$cms.dom.$('#iframe_under'),
             extra = ifuob ? ((window !== window.top) ? $cms.dom.findPosY(ifuob) : 0) : 0;
-        
+
         if (ifuob) {
             ifuob.scrolling = 'no';
         }
@@ -3630,7 +3630,7 @@
      * @param iframeId
      */
     $cms.dom.illustrateFrameLoad = function illustrateFrameLoad(iframeId) {
-        var head, cssText = '', 
+        var head, cssText = '',
             i, iframe = $cms.dom.$id(iframeId),
             doc, de;
 
@@ -3752,7 +3752,7 @@
             try {
                 scrollTo(0, destY);
             } catch (e) {}
-            
+
             if (eventAfter) {
                 eventAfter();
             }
@@ -4102,7 +4102,7 @@
         if (scriptEl.src !== '') {
             clone.src = scriptEl.src;
         }
-        
+
         return clone;
     }
 
@@ -4227,7 +4227,7 @@
         if (html === undefined) {
             return el.outerHTML;
         }
-        
+
         if (parent == null) {
             $cms.fatal('$cms.dom.outerHtml(): Element passed as argument "el" must have a parentNode.');
             return;
@@ -4357,7 +4357,7 @@
      */
     $cms.dom.registerMouseListener = function registerMouseListener() {
         $cms.dom.registerMouseListener = noop; // ensure this function is only executed once
-        
+
         document.documentElement.addEventListener('mousemove', function (e) {
             window.currentMouseX = getMouseX(e);
             window.currentMouseY = getMouseY(e);
@@ -4479,7 +4479,7 @@
             }
         }
     };
-    
+
     /**
      * @param behaviors
      */
@@ -4533,35 +4533,35 @@
         settings || (settings = $cms.settings);
 
         //$cms.waitForResources($cms.dom.$$$(context, 'script[src]')).then(function () { // Wait for <script> dependencies to load
-            // Execute all of them.
-            var names = behaviorNamesByPriority();
+        // Execute all of them.
+        var names = behaviorNamesByPriority();
 
-            _attach(0);
+        _attach(0);
 
-            function _attach(i) {
-                var name = names[i], ret;
+        function _attach(i) {
+            var name = names[i], ret;
 
-                if (isObj($cms.behaviors[name]) && (typeof $cms.behaviors[name].attach === 'function')) {
-                    try {
-                        ret = $cms.behaviors[name].attach(context, settings);
-                        //$cms.inform('$cms.attachBehaviors(): attached behavior "' + name + '" to context', context);
-                    } catch (e) {
-                        $cms.fatal('$cms.attachBehaviors(): Error while attaching behavior "' + name + '"  to', context, '\n', e);
-                    }
-                }
-
-                ++i;
-
-                if (names.length <= i) {
-                    return;
-                }
-
-                if (isPromise(ret)) { // If the behavior returns a promise, we wait for it before moving on
-                    ret.then(_attach.bind(undefined, i), _attach.bind(undefined, i));
-                } else { // no promise!
-                    _attach(i);
+            if (isObj($cms.behaviors[name]) && (typeof $cms.behaviors[name].attach === 'function')) {
+                try {
+                    ret = $cms.behaviors[name].attach(context, settings);
+                    //$cms.inform('$cms.attachBehaviors(): attached behavior "' + name + '" to context', context);
+                } catch (e) {
+                    $cms.fatal('$cms.attachBehaviors(): Error while attaching behavior "' + name + '"  to', context, '\n', e);
                 }
             }
+
+            ++i;
+
+            if (names.length <= i) {
+                return;
+            }
+
+            if (isPromise(ret)) { // If the behavior returns a promise, we wait for it before moving on
+                ret.then(_attach.bind(undefined, i), _attach.bind(undefined, i));
+            } else { // no promise!
+                _attach(i);
+            }
+        }
         //});
 
         return Promise.all([]);
@@ -4618,7 +4618,7 @@
         postParams = (postParams !== undefined) ? postParams : null;
         inner = !!inner;
         showLoadingAnimation = (showLoadingAnimation !== undefined) ? !!showLoadingAnimation : true;
-        
+
         if ((_blockDataCache[url] === undefined) && (newBlockParams !== '')) {
             // Cache start position. For this to be useful we must be smart enough to pass blank new_block_params if returning to fresh state
             _blockDataCache[url] = $cms.dom.html(targetDiv);
@@ -4742,12 +4742,12 @@
      */
     function loadSnippet(snippetHook, post) {
         snippetHook = strVal(snippetHook);
-        
+
         var title = $cms.dom.html(document.querySelector('title')).replace(/ \u2013 .*/, ''),
             canonical = document.querySelector('link[rel="canonical"]'),
             url = canonical ? canonical.getAttribute('href') : window.location.href,
             url2 = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=' + snippetHook + '&url=' + encodeURIComponent($cms.protectURLParameter(url)) + '&title=' + encodeURIComponent(title) + $cms.keepStub();
-        
+
         return new Promise(function (resolve) {
             $cms.doAjaxRequest($cms.maintainThemeInLink(url2), function (_, xhr) {
                 resolve(xhr.responseText);
@@ -4762,7 +4762,7 @@
      */
     function maintainThemeInLink(url) {
         url = strVal(url);
-        
+
         var usp = $cms.uspFromUrl(url),
             theme = encodeURIComponent($cms.$THEME());
 
@@ -4838,14 +4838,14 @@
                 }
 
                 return false; // Cancel event because we'll be submitting by ourselves, either via click_link or callback
-    	    }
+            }
         }
 
         if (callback) {
             setTimeout(function () {
                 callback();
             }, 100);
-    	}
+        }
 
         return null;
     }
@@ -5450,7 +5450,7 @@
      */
     $cms.ui.confirmSession = function confirmSession() {
         var scriptUrl = '{$FIND_SCRIPT_NOHTTP;,confirm_session}' + $cms.keepStub(true);
-        
+
         return new Promise(function (resolvePromise) {
             $cms.doAjaxRequest(scriptUrl, function (_, xhr) {
                 var username = xhr.responseText;
@@ -5553,7 +5553,7 @@
 
         return false;
     };
-    
+
     /**
      * Tooltips that can work on any element with rich HTML support
      * @memberof $cms.ui
@@ -5598,7 +5598,7 @@
         if (!el) {
             return;
         }
-        
+
         if (!haveLinks && $cms.browserMatches('touch_enabled')) {
             return; // Too erratic
         }
@@ -5670,7 +5670,7 @@
                     var newAutoWidth = $cms.dom.getWindowWidth(win) - 30 - window.currentMouseX;
                     if (newAutoWidth < 150) { // For tiny widths, better let it slide to left instead, which it will as this will force it to not fit
                         newAutoWidth = 150;
-                    } 
+                    }
                     tooltipEl.style.maxWidth = newAutoWidth + 'px';
                 } else {
                     tooltipEl.style.maxWidth = width;
@@ -5966,7 +5966,7 @@
         notice = strVal(notice);
         title = strVal(title, '{!MESSAGE;^}');
         unescaped = boolVal(unescaped);
-        
+
         return new Promise(function (resolveAlert) {
             if (!$cms.$CONFIG_OPTION('js_overlays')) {
                 window.alert(notice);
@@ -6009,7 +6009,7 @@
         question = strVal(question);
         defaultValue = strVal(defaultValue);
         inputType = strVal(inputType);
-        
+
         return new Promise(function (resolvePrompt) {
             if (!$cms.$CONFIG_OPTION('js_overlays')) {
                 var value = window.prompt(question, defaultValue);
@@ -6064,7 +6064,7 @@
         options = strVal(options);
         target = strVal(target);
         cancelText = strVal(cancelText, '{!INPUTSYSTEM_CANCEL;^}');
-        
+
         return new Promise(function (resolveModal) {
             if (!$cms.$CONFIG_OPTION('js_overlays')) {
                 if (!window.showModalDialog) {
@@ -6096,7 +6096,7 @@
                 return;
             }
 
-            var width = null, height = null, 
+            var width = null, height = null,
                 scrollbars = null, unadorned = null;
 
             if (options) {
@@ -6107,7 +6107,7 @@
                         if ((bits[0] === 'dialogWidth') || (bits[0] === 'width')) {
                             width = bits[1].replace(/px$/, '');
                         }
-                        
+
                         if ((bits[0] === 'dialogHeight') || (bits[0] === 'height')) {
                             if (bits[1] === '100%') {
                                 height = '' + ($cms.dom.getWindowHeight() - 200);
@@ -6115,11 +6115,11 @@
                                 height = bits[1].replace(/px$/, '');
                             }
                         }
-                        
+
                         if (((bits[0] === 'resizable') || (bits[0] === 'scrollbars')) && (scrollbars !== true)) {
                             scrollbars = ((bits[1] === 'yes') || (bits[1] === '1'))/*if either resizable or scrollbars set we go for scrollbars*/;
                         }
-                        
+
                         if (bits[0] === 'unadorned') {
                             unadorned = ((bits[1] === 'yes') || (bits[1] === '1'));
                         }
@@ -6191,7 +6191,7 @@
      */
     $cms.ui.disableButton = function disableButton(btn, permanent) {
         permanent = Boolean(permanent);
-        
+
         if (btn.form && (btn.form.target === '_blank')) {
             return;
         }
@@ -6221,7 +6221,7 @@
                     }
                 }, 500);
             }
-            
+
             $cms.dom.on(window, 'pagehide', enableDisabledButton);
         }
 
@@ -6230,7 +6230,7 @@
                 clearTimeout(timeout);
                 timeout = null;
             }
-            
+
             if (tempDisabledButtons[uid]) {
                 btn.disabled = false;
                 btn.style.removeProperty('cursor');
@@ -6490,7 +6490,6 @@
         }
 
         this.topWindow = window.top;
-        this.topWindow = this.topWindow.top;
 
         this.close(this.topWindow);
         this.initBox();
@@ -6527,7 +6526,10 @@
         },
 
         resetDimensions: function (width, height, init, forceHeight) {
-            forceHeight = !!forceHeight;
+            width = strVal(width);
+            height = strVal(height);
+            init = Boolean(init);
+            forceHeight = Boolean(forceHeight);
 
             if (!this.boxWrapperEl) {
                 return;
@@ -6611,30 +6613,29 @@
             if (!detectedBoxHeight) {
                 detectedBoxHeight = this.boxWrapperEl.firstElementChild.offsetHeight;
             }
-            var _boxPosTop, _boxPosLeft, boxPosTop, boxPosLeft;
+            var boxPosTop, boxPosLeft;
+
             if (boxHeight === 'auto') {
                 if (init) {
-                    _boxPosTop = (dim.windowHeight / (2 + (this.VCENTRE_FRACTION_SHIFT * 2))) - (this.LOADING_SCREEN_HEIGHT / 2) + this.WINDOW_TOP_GAP; // This is just temporary
+                    boxPosTop = (dim.windowHeight / (2 + (this.VCENTRE_FRACTION_SHIFT * 2))) - (this.LOADING_SCREEN_HEIGHT / 2) + this.WINDOW_TOP_GAP; // This is just temporary
                 } else {
-                    _boxPosTop = (dim.windowHeight / (2 + (this.VCENTRE_FRACTION_SHIFT * 2))) - (detectedBoxHeight / 2) + this.WINDOW_TOP_GAP;
+                    boxPosTop = (dim.windowHeight / (2 + (this.VCENTRE_FRACTION_SHIFT * 2))) - (detectedBoxHeight / 2) + this.WINDOW_TOP_GAP;
                 }
 
                 if (iframe) { // Actually, for frames we'll put at top so things don't bounce about during loading and if the frame size changes
-                    _boxPosTop = this.WINDOW_TOP_GAP;
+                    boxPosTop = this.WINDOW_TOP_GAP;
                 }
             } else {
-                _boxPosTop = (dim.windowHeight / (2 + (this.VCENTRE_FRACTION_SHIFT * 2))) - (parseInt(boxHeight) / 2) + this.WINDOW_TOP_GAP;
+                boxPosTop = (dim.windowHeight / (2 + (this.VCENTRE_FRACTION_SHIFT * 2))) - (parseInt(boxHeight) / 2) + this.WINDOW_TOP_GAP;
             }
-            if (_boxPosTop < this.WINDOW_TOP_GAP) {
-                _boxPosTop = this.WINDOW_TOP_GAP;
+            if (boxPosTop < this.WINDOW_TOP_GAP) {
+                boxPosTop = this.WINDOW_TOP_GAP;
             }
-            _boxPosLeft = ((dim.windowWidth / 2) - (parseInt(boxWidth) / 2));
-            boxPosTop = _boxPosTop + 'px';
-            boxPosLeft = _boxPosLeft + 'px';
+            boxPosLeft = ((dim.windowWidth / 2) - (parseInt(boxWidth) / 2));
 
             // Save into HTML
-            this.boxWrapperEl.firstElementChild.style.top = boxPosTop;
-            this.boxWrapperEl.firstElementChild.style.left = boxPosLeft;
+            this.boxWrapperEl.firstElementChild.style.top = boxPosTop + 'px';
+            this.boxWrapperEl.firstElementChild.style.left = boxPosLeft + 'px';
 
             var doScroll = false;
 
@@ -6643,17 +6644,19 @@
                 var wasFixed = (this.boxWrapperEl.style.position === 'fixed');
 
                 this.boxWrapperEl.style.position = 'absolute';
-                this.boxWrapperEl.style.height = ((dim.pageHeight > (detectedBoxHeight + bottomGap + _boxPosLeft)) ? dim.pageHeight : (detectedBoxHeight + bottomGap + _boxPosLeft)) + 'px';
+                this.boxWrapperEl.style.height = ((dim.pageHeight > (detectedBoxHeight + bottomGap + boxPosLeft)) ? dim.pageHeight : (detectedBoxHeight + bottomGap + boxPosLeft)) + 'px';
                 this.topWindow.document.body.style.overflow = '';
 
                 if (!$cms.$MOBILE()) {
                     this.boxWrapperEl.firstElementChild.style.position = 'absolute';
-                    boxPosTop = this.WINDOW_TOP_GAP + 'px';
-                    this.boxWrapperEl.firstElementChild.style.top = boxPosTop;
+                    this.boxWrapperEl.firstElementChild.style.top = this.WINDOW_TOP_GAP + 'px';
                 }
 
-                if ((init) || (wasFixed)) doScroll = true;
-                if (/*maybe a navigation has happened and we need to scroll back up*/iframe && ($cms.dom.hasIframeAccess(iframe)) && (iframe.contentWindow.scrolledUpFor === undefined)) {
+                if (init || wasFixed) {
+                    doScroll = true;
+                }
+
+                if (iframe && ($cms.dom.hasIframeAccess(iframe)) && (iframe.contentWindow.scrolledUpFor === undefined)) { /*maybe a navigation has happened and we need to scroll back up*/
                     doScroll = true;
                 }
             } else { // Fixed positioning, with scrolling turned off until the overlay is closed
@@ -6700,10 +6703,6 @@
                 }
             }));
 
-            var that = this;
-            var width = this.width;
-            var height = this.height;
-
             this.inject(this.boxWrapperEl);
 
             var container = this.element('div', {
@@ -6744,6 +6743,7 @@
                 'class': 'proceed_button'
             });
 
+            var that = this;
             this.clickoutCancel = function () {
                 that.option('cancel');
             };
@@ -6757,18 +6757,18 @@
             };
 
             this.keyup = function (e) {
-                var keyCode = (e) ? (e.which || e.keyCode) : null;
+                var keyCode = (e) ? Number(e.which || e.keyCode) : null;
 
-                if (keyCode == 37) {// Left arrow
+                if (keyCode === 37) {// Left arrow
                     that.option('left');
-                } else if (keyCode == 39) {// Right arrow
+                } else if (keyCode === 39) {// Right arrow
                     that.option('right');
-                } else if ((keyCode == 13/*enter*/) && (that.yes)) {
+                } else if ((keyCode === 13/*enter*/) && (that.yes)) {
                     that.option('yes');
                 }
-                if ((keyCode == 13/*enter*/) && (that.finished)) {
+                if ((keyCode === 13/*enter*/) && (that.finished)) {
                     that.option('finished');
-                } else if ((keyCode == 27/*esc*/) && (that.cancelButton) && ((that.type == 'prompt') || (that.type == 'confirm') || (that.type == 'lightbox') || (that.type == 'alert'))) {
+                } else if ((keyCode === 27/*esc*/) && (that.cancelButton) && ((that.type === 'prompt') || (that.type === 'confirm') || (that.type === 'lightbox') || (that.type === 'alert'))) {
                     that.option('cancel');
                 }
             };
@@ -6786,7 +6786,7 @@
 
             $cms.dom.on(this.boxWrapperEl.firstElementChild, 'click', function (e) {
                 try {
-                    e && e.target && e.stopPropagation && e.stopPropagation();
+                    e && e.stopPropagation();
                 } catch (e) {}
 
                 if ($cms.$MOBILE() && (that.type === 'lightbox')) { // IDEA: Swipe detect would be better, but JS does not have this natively yet
@@ -6796,8 +6796,8 @@
 
             switch (this.type) {
                 case 'iframe':
-                    var iframeWidth = (this.width.match(/^[\d\.]+$/) !== null) ? ((this.width - 14) + 'px') : this.width;
-                    var iframeHeight = (this.height.match(/^[\d\.]+$/) !== null) ? (this.height + 'px') : ((this.height == 'auto') ? (this.LOADING_SCREEN_HEIGHT + 'px') : this.height);
+                    var iframeWidth = (this.width.match(/^[\d\.]+$/) !== null) ? ((this.width - 14) + 'px') : this.width,
+                        iframeHeight = (this.height.match(/^[\d\.]+$/) !== null) ? (this.height + 'px') : ((this.height === 'auto') ? (this.LOADING_SCREEN_HEIGHT + 'px') : this.height);
 
                     var iframe = this.element('iframe', {
                         'frameBorder': '0',
@@ -6806,7 +6806,7 @@
                         'name': 'overlay_iframe',
                         'id': 'overlay_iframe',
                         'allowTransparency': 'true',
-                        //'seamless': 'seamless',   Not supported, and therefore testable yet. Would be great for mobile browsing.
+                        //'seamless': 'seamless',// Not supported, and therefore testable yet. Would be great for mobile browsing.
                         'css': {
                             'width': iframeWidth,
                             'height': iframeHeight,
@@ -6834,96 +6834,16 @@
                     });
 
                     // Fiddle it, to behave like a popup would
-                    var name = this.name;
-                    var makeFrameLikePopup = function makeFrameLikePopup() {
-                        if (iframe.parentNode.parentNode.parentNode.parentNode == null && that.iframeRestyleTimer != null) {
-                            clearInterval(that.iframeRestyleTimer);
-                            that.iframeRestyleTimer = null;
-                            return;
-                        }
-
-                        if (($cms.dom.hasIframeAccess(iframe)) && (iframe.contentWindow.document.body) && (iframe.contentWindow.document.body.donePopupTrans === undefined)) {
-                            iframe.contentWindow.document.body.style.background = 'transparent';
-
-                            if (!iframe.contentWindow.document.body.classList.contains('overlay')) {
-                                iframe.contentWindow.document.body.className += ' overlay lightbox';
-                            }
-
-                            // Allow scrolling, if we want it
-                            //iframe.scrolling=(_this.scrollbars===false)?'no':'auto';  Actually, not wanting this now
-                            
-                            // Remove fixed width
-                            var mainWebsiteInner = iframe.contentWindow.document.getElementById('main_website_inner');
-                            if (mainWebsiteInner) {
-                                mainWebsiteInner.id = '';
-                            }
-
-                            // Remove main_website marker
-                            var mainWebsite = iframe.contentWindow.document.getElementById('main_website');
-                            if (mainWebsite) {
-                                mainWebsite.id = '';
-                            }
-
-                            // Remove popup spacing
-                            var popupSpacer = iframe.contentWindow.document.getElementById('popup_spacer');
-                            if (popupSpacer) {
-                                popupSpacer.id = '';
-                            }
-
-                            // Set linking scheme
-                            var bases = iframe.contentWindow.document.getElementsByTagName('base');
-                            var baseElement;
-                            if (!bases[0]) {
-                                baseElement = iframe.contentWindow.document.createElement('base');
-                                if (iframe.contentWindow.document) {
-                                    var heads = iframe.contentWindow.document.getElementsByTagName('head');
-                                    if (heads[0]) {
-                                        heads[0].appendChild(baseElement);
-                                    }
-                                }
-                            } else {
-                                baseElement = bases[0];
-                            }
-                            baseElement.target = that.target;
-
-                            // Set frame name
-                            if (name && iframe.contentWindow.name != name) {
-                                iframe.contentWindow.name = name;
-                            }
-
-                            // Create close function
-                            if (iframe.contentWindow.fauxClose === undefined) {
-                                iframe.contentWindow.fauxClose = function fauxClose() {
-                                    if (iframe && iframe.contentWindow && (iframe.contentWindow.returnValue !== undefined)) {
-                                        that.returnValue = iframe.contentWindow.returnValue;
-                                    }
-                                    that.option('finished');
-                                };
-                            }
-
-                            if ($cms.dom.html(iframe.contentWindow.document.body).length > 300) { // Loaded now
-                                iframe.contentWindow.document.body.donePopupTrans = true;
-                            }
-                        } else {
-                            if (hasIframeLoaded(iframe) && !hasIframeOwnership(iframe)) {
-                                iframe.scrolling = 'yes';
-                                iframe.style.height = '500px';
-                            }
-                        }
-
-                        // Handle iframe sizing
-                        if (that.height === 'auto') {
-                            that.resetDimensions(that.width, that.height, false);
-                        }
-                    };
                     setTimeout(function () {
                         $cms.dom.illustrateFrameLoad('overlay_iframe');
                         iframe.src = that.href;
-                        makeFrameLikePopup();
+                        that.makeFrameLikePopup(iframe);
 
                         if (that.iframeRestyleTimer == null) { // In case internal nav changes
-                            that.iframeRestyleTimer = setInterval(makeFrameLikePopup, 300);
-                        } 
+                            that.iframeRestyleTimer = setInterval(function () {
+                                that.makeFrameLikePopup(iframe);
+                            }, 300);
+                        }
                     }, 0);
                     break;
 
@@ -7042,7 +6962,7 @@
             // Handle dimensions
             this.resetDimensions(this.width, this.height, true);
             $cms.dom.on(window, 'resize', function () {
-                that.resetDimensions(width, height, false);
+                that.resetDimensions(that.width, that.height, false);
             });
 
             // Focus first button by default
@@ -7058,23 +6978,6 @@
                 $cms.dom.on(document, 'keyup', that.keyup);
                 $cms.dom.on(document, 'mousemove', that.mousemove);
             }, 100);
-
-
-            function hasIframeLoaded(iframe) {
-                var hasLoaded = false;
-                try {
-                    hasLoaded = (iframe != null) && (iframe.contentWindow.location.host != '');
-                } catch (ignore) {}
-                return hasLoaded;
-            }
-
-            function hasIframeOwnership(iframe) {
-                var hasOwnership = false;
-                try {
-                    hasOwnership = (iframe != null) && (iframe.contentWindow.location.host == window.location.host) && (iframe.contentWindow.document != null);
-                } catch (ignore) {}
-                return hasOwnership;
-            }
         },
 
         inject: function (el) {
@@ -7119,6 +7022,106 @@
                 'windowWidth': this.topWindow.$cms.dom.getWindowWidth(this.topWindow),
                 'windowHeight': this.topWindow.$cms.dom.getWindowHeight()
             };
+        },
+
+        // Fiddle it, to behave like a popup would
+        makeFrameLikePopup: function makeFrameLikePopup(iframe) {
+            var mainWebsiteInner, mainWebsite, popupSpacer, baseElement;
+
+            if ((iframe.parentNode.parentNode.parentNode.parentNode == null) && (this.iframeRestyleTimer != null)) {
+                clearInterval(this.iframeRestyleTimer);
+                this.iframeRestyleTimer = null;
+                return;
+            }
+
+            if ($cms.dom.hasIframeAccess(iframe) && iframe.contentWindow.document.body && (iframe.contentWindow.document.body.donePopupTrans === undefined)) {
+                iframe.contentWindow.document.body.style.background = 'transparent';
+
+                if (!iframe.contentWindow.document.body.classList.contains('overlay')) {
+                    iframe.contentWindow.document.body.classList.add('overlay');
+                    iframe.contentWindow.document.body.classList.add('lightbox');
+                }
+
+                // Allow scrolling, if we want it
+                //iframe.scrolling = (_this.scrollbars === false) ? 'no' : 'auto';  Actually, not wanting this now
+
+                // Remove fixed width
+                mainWebsiteInner = iframe.contentWindow.document.getElementById('main_website_inner');
+
+                if (mainWebsiteInner) {
+                    mainWebsiteInner.id = '';
+                }
+
+                // Remove main_website marker
+                mainWebsite = iframe.contentWindow.document.getElementById('main_website');
+                if (mainWebsite) {
+                    mainWebsite.id = '';
+                }
+
+                // Remove popup spacing
+                popupSpacer = iframe.contentWindow.document.getElementById('popup_spacer');
+                if (popupSpacer) {
+                    popupSpacer.id = '';
+                }
+
+                // Set linking scheme
+                baseElement = iframe.contentWindow.document.querySelector('base');
+
+                if (!baseElement) {
+                    baseElement = iframe.contentWindow.document.createElement('base');
+                    if (iframe.contentWindow.document && iframe.contentWindow.document.head) {
+                        iframe.contentWindow.document.head.appendChild(baseElement);
+                    }
+                }
+
+                baseElement.target = this.target;
+
+                // Set frame name
+                if (this.name && (iframe.contentWindow.name != this.name)) {
+                    iframe.contentWindow.name = this.name;
+                }
+
+                var that = this;
+                // Create close function
+                if (iframe.contentWindow.fauxClose === undefined) {
+                    iframe.contentWindow.fauxClose = function fauxClose() {
+                        if (iframe && iframe.contentWindow && (iframe.contentWindow.returnValue !== undefined)) {
+                            that.returnValue = iframe.contentWindow.returnValue;
+                        }
+                        that.option('finished');
+                    };
+                }
+
+                if ($cms.dom.html(iframe.contentWindow.document.body).length > 300) { // Loaded now
+                    iframe.contentWindow.document.body.donePopupTrans = true;
+                }
+            } else {
+                if (hasIframeLoaded(iframe) && !hasIframeOwnership(iframe)) {
+                    iframe.scrolling = 'yes';
+                    iframe.style.height = '500px';
+                }
+            }
+
+            // Handle iframe sizing
+            if (this.height === 'auto') {
+                this.resetDimensions(this.width, this.height, false);
+            }
+
+            function hasIframeLoaded(iframe) {
+                try {
+                    return (iframe != null) && (iframe.contentWindow.location.host != '');
+                } catch (ignore) {}
+
+                return false;
+            }
+
+            function hasIframeOwnership(iframe) {
+                try {
+                    return (iframe != null) && (iframe.contentWindow.location.host == window.location.host) && (iframe.contentWindow.document != null);
+                } catch (ignore) {}
+
+                return false;
+            }
         }
     });
 
@@ -7136,7 +7139,7 @@
      */
     $cms.ui.generateQuestionUi = function generateQuestionUi(message, buttonSet, windowTitle, fallbackMessage, callback, dialogWidth, dialogHeight) {
         message = strVal(message);
-        
+
         return new Promise(function (resolvePromise) {
             var imageSet = [],
                 newButtonSet = [];
@@ -7351,7 +7354,7 @@
          */
         function retrieveXmlDocument(xhr) {
             var xml;
-            
+
             if (xhr.responseXML && xhr.responseXML.firstChild) {
                 return xhr.responseXML;
             }
@@ -7372,11 +7375,11 @@
                 $cms.fatal('$cms.doAjaxRequest() -> retrieveXmlDocument(): Failed', xhr);
                 $cms.ui.alert(xhr.responseText, null, '{!ERROR_OCCURRED;^}', true);
             }
-            
+
             return null;
         }
     }
-    
+
     /**
      * Convert the format of a URL so it can be embedded as a parameter that ModSecurity will not trigger security errors on
      * @memberof $cms
@@ -7385,7 +7388,7 @@
      */
     function protectURLParameter(parameter) {
         parameter = strVal(parameter);
-        
+
         var baseUrl = $cms.$BASE_URL();
 
         if (parameter.startsWith('https://')) {
@@ -7402,22 +7405,22 @@
 
         return parameter;
     }
-    
+
     var pageMetaCache;
     function pageMeta(name) {
         if (pageMetaCache === undefined) {
             pageMetaCache = {};
         }
-        
+
         name = strVal(name);
 
-        var metaEl = document.querySelector('meta[name="' + name + '"]'), 
+        var metaEl = document.querySelector('meta[name="' + name + '"]'),
             data = pageMetaCache[name], trimmed;
-        
+
         if (metaEl == null) {
             return '';
         }
-        
+
         // If nothing was found internally, try to fetch any
         if ((data === undefined) && (typeof (data = metaEl.content) === 'string')) {
             trimmed = data.trim();
@@ -7425,10 +7428,10 @@
             if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) {
                 data = parseJson(data);
             }
-            
+
             pageMetaCache[name] = data;
         }
-        
+
         return data;
     }
 
@@ -7643,7 +7646,7 @@
                         var trs = table.getElementsByTagName('tr'),
                             thsFirstRow = trs[0].cells,
                             i, tds, j, data;
-                        
+
                         for (i = 0; i < trs.length; i++) {
                             tds = trs[i].cells;
                             for (j = 0; j < tds.length; j++) {
@@ -7659,7 +7662,7 @@
                 });
             }
         },
-        
+
         columnHeightBalancing: {
             attach: function attach(context) {
                 var cols = $cms.dom.$$$(context, '.col_balance_height'),
@@ -7679,7 +7682,7 @@
                 }
             }
         },
-        
+
         // Convert img title attributes into composr tooltips
         imageTooltips: {
             attach: function (context) {
@@ -7692,12 +7695,12 @@
                 });
             }
         },
-        
+
         // Implementation for [data-remove-if-js-enabled]
         removeIfJsEnabled: {
             attach: function (context) {
                 var els = $cms.dom.$$$(context, '[data-remove-if-js-enabled]');
-                
+
                 els.forEach(function (el) {
                     $cms.dom.remove(el);
                 });
@@ -7753,6 +7756,46 @@
                 els.forEach(function (img) {
                     gdImageTransform(img);
                 });
+
+                function gdImageTransform(el) {
+                    /* GD text maybe can do with transforms */
+                    var span = document.createElement('span');
+                    if (typeof span.style.transform === 'string') {
+                        el.style.display = 'none';
+                        $cms.dom.css(span, {
+                            transform: 'rotate(90deg)',
+                            transformOrigin: 'bottom left',
+                            top: '-1em',
+                            left: '0.5em',
+                            position: 'relative',
+                            display: 'inline-block',
+                            whiteSpace: 'nowrap',
+                            paddingRight: '0.5em'
+                        });
+
+                        el.parentNode.style.textAlign = 'left';
+                        el.parentNode.style.width = '1em';
+                        el.parentNode.style.overflow = 'hidden'; // LEGACY Needed due to https://bugzilla.mozilla.org/show_bug.cgi?id=456497
+                        el.parentNode.style.verticalAlign = 'top';
+                        span.textContent = el.alt;
+
+                        el.parentNode.insertBefore(span, el);
+                        var spanProxy = span.cloneNode(true); // So we can measure width even with hidden tabs
+                        spanProxy.style.position = 'absolute';
+                        spanProxy.style.visibility = 'hidden';
+                        document.body.appendChild(spanProxy);
+
+                        setTimeout(function () {
+                            var width = spanProxy.offsetWidth + 15;
+                            spanProxy.parentNode.removeChild(spanProxy);
+                            if (el.parentNode.nodeName === 'TH' || el.parentNode.nodeName === 'TD') {
+                                el.parentNode.style.height = width + 'px';
+                            } else {
+                                el.parentNode.style.minHeight = width + 'px';
+                            }
+                        }, 0);
+                    }
+                }
             }
         },
 
@@ -7804,8 +7847,8 @@
             (function (i, s, o, g, r, a, m) {
                 i['GoogleAnalyticsObject'] = r;
                 i[r] = i[r] || function () {
-                    (i[r].q = i[r].q || []).push(arguments)
-                };
+                        (i[r].q = i[r].q || []).push(arguments)
+                    };
                 i[r].l = 1 * new Date();
                 a = s.createElement(o);
                 m = s.getElementsByTagName(o)[0];
@@ -7815,20 +7858,20 @@
             })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
             var aConfig = {};
-            
+
             if ($cms.$COOKIE_DOMAIN() !== '') {
                 aConfig.cookieDomain = $cms.$COOKIE_DOMAIN();
             }
             if (!$cms.$CONFIG_OPTION('long_google_cookies')) {
                 aConfig.cookieExpires = 0;
             }
-            
+
             window.ga('create', $cms.$CONFIG_OPTION('google_analytics').trim(), aConfig);
-            
+
             if (!$cms.$IS_GUEST()) {
                 window.ga('set', 'userId', strVal($cms.$MEMBER()));
             }
-            
+
             if ($cms.usp.has('_t')) {
                 window.ga('send', 'event', 'tracking__' + strVal($cms.usp.get('_t')), window.location.href);
             }
@@ -7839,11 +7882,11 @@
         // Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent
         if ($cms.$CONFIG_OPTION('cookie_notice') && ($cms.$RUNNING_SCRIPT() === 'index')) {
             window.cookieconsent_options = {
-                'message': $cms.format('{!COOKIE_NOTICE;}', $cms.$SITE_NAME()),
-                'dismiss': '{!INPUTSYSTEM_OK;}',
-                'learnMore': '{!READ_MORE;}',
-                'link': '{$PAGE_LINK;,:privacy}',
-                'theme': 'dark-top'
+                message: $cms.format('{!COOKIE_NOTICE;}', $cms.$SITE_NAME()),
+                dismiss: '{!INPUTSYSTEM_OK;}',
+                learnMore: '{!READ_MORE;}',
+                link: '{$PAGE_LINK;,:privacy}',
+                theme: 'dark-top'
             };
             document.body.appendChild($cms.dom.create('script', {
                 nonce: $cms.$CSP_NONCE(),
@@ -7950,7 +7993,7 @@
 
                 'click [data-click-alert]': 'showModalAlert',
                 'keypress [data-keypress-alert]': 'showModalAlert',
-                
+
                 'keypress [data-submit-on-enter]': 'submitOnEnter',
 
                 // Prevent url change for clicks on anchor tags with a placeholder href
@@ -8018,9 +8061,9 @@
 
                 // Toggle tray
                 'click [data-click-tray-toggle]': 'clickTrayToggle',
-                
+
                 'click [data-click-ui-open]': 'clickUiOpen',
-                
+
                 'click [data-click-do-input]': 'clickDoInput',
 
                 /* Footer links */
@@ -8365,7 +8408,7 @@
         // Implementation for [data-cms-rich-tooltip]
         activateRichTooltip: function (e, el) {
             var options = objVal($cms.dom.data(el, 'cmsRichTooltip'));
-            
+
             if (el.ttitle === undefined) {
                 el.ttitle = (el.attributes['data-title'] ? el.getAttribute('data-title') : el.title);
                 el.title = '';
@@ -8425,7 +8468,7 @@
             args[0] = $cms.maintainThemeInLink(args[0]);
             $cms.ui.open.apply(undefined, args);
         },
-        
+
         // Implementation for [data-click-do-input]
         clickDoInput: function (e, clicked) {
             var args = arrVal($cms.dom.data(clicked, 'clickDoInput')),
@@ -8433,14 +8476,14 @@
                 fieldName = strVal(args[1]),
                 tag = strVal(args[2]),
                 fnName = 'doInput' + $cms.ucFirst($cms.camelCase(type));
-                
+
             if (typeof window[fnName] === 'function') {
                 window[fnName](fieldName, tag);
             } else {
                 $cms.fatal('$cms.views.Global#clickDoInput(): Function not found "window.' + fnName + '()"');
             }
         },
-        
+
         // Detecting of JavaScript support
         detectJavascript: function () {
             var url = window.location.href,
@@ -8779,7 +8822,7 @@
                         if (target.moLink) {
                             clearTimeout(target.moLink);
                         }
-                        
+
                         target.moLink = setTimeout(function () {
                             if ((target.editWindow === undefined) || (!target.editWindow) || (target.editWindow.closed)) {
                                 if (target.previousElementSibling && (target.previousElementSibling.classList.contains('magic_image_edit_link'))) {
@@ -8855,7 +8898,7 @@
                 ) {
                     // Comes up on due to various Firefox/extension/etc bugs
                     return null;
-                } 
+                }
 
                 if (!window.doneOneError) {
                     window.doneOneError = true;
@@ -9443,7 +9486,7 @@
 
         return false;
     }
-    
+
     function cleanMenus() {
         cleanMenusTimeout = null;
 
@@ -9491,7 +9534,7 @@
             } catch (ignore) {}
         }
     };
-    
+
     $cms.templates.installerStepLog = function installerStepLog() {
         /* Code to auto-submit the form after 5 seconds, but only if there were no errors */
         var doh = !!document.querySelector('.installer_warning');
@@ -9501,9 +9544,9 @@
 
         var button = document.getElementById('proceed_button'),
             timer;
-        
+
         button.countdown = 6;
-        
+
         continueFunc();
         timer = window.setInterval(continueFunc, 1000);
         button.addEventListener('mouseover', function () {
@@ -9535,10 +9578,10 @@
             }
         }
     };
-    
+
     $cms.templates.installerHtmlWrap = function installerHtmlWrap(params, container) {
         var defaultForm = strVal(params.defaultForm);
-        
+
         var none = document.getElementById(defaultForm);
         if (none) {
             none.checked = true;
@@ -9559,7 +9602,7 @@
         var cns = document.getElementById('cns');
         if (cns) {
             useMultiDbLocker();
-            
+
             for (var i=0; i < form.elements['forum'].length; i++) {
                 form.elements['forum'][i].onclick = useMultiDbLocker;
             }
@@ -9573,7 +9616,7 @@
             }
         }
     };
-    
+
     function toggleInstallerSection(id) {
         // Try and grab our item
         var itm = document.getElementById(id),
@@ -9595,17 +9638,17 @@
             }
         }
     }
-    
+
     $cms.templates.installerStep3 = function installerStep3(params, container) {
         $cms.dom.on(container, 'click', '.js-click-toggle-advanced-db-setup-section', function (e, clicked) {
             var id = strVal(clicked.dataset.tpSection);
             toggleInstallerSection(id);
         });
     };
-    
+
     $cms.templates.installerForumChoice = function installerForumChoice(params, container) {
         var versions = strVal(params.versions);
-        
+
         $cms.dom.on(container, 'click', '.js-click-do-forum-choose', function (e, clicked) {
             doForumChoose(clicked, $cms.filter.nl(versions));
         });
@@ -9628,17 +9671,17 @@
             }
         }
     };
-    
+
     $cms.templates.installerInputLine = function installerInputLine(params, input) {
         $cms.dom.on(input, 'change', function () {
             input.changed = true;
         });
     };
-    
+
     $cms.templates.installerStep4 = function installerStep4(params, container) {
         var passwordPrompt = strVal(params.passwordPrompt),
             domain = document.getElementById('domain');
-        
+
         if (domain) {
             domain.addEventListener('change', function () {
                 var cs = document.getElementById('Cookie_space_settings');
@@ -9653,7 +9696,7 @@
         }
 
         var gaeApp = document.getElementById('gae_application');
-        
+
         if (gaeApp) {
             gaeOnChange();
             gaeApp.addEventListener('change', gaeOnChange);
@@ -9798,7 +9841,7 @@
             }
         }
     };
-    
+
     $cms.templates.installerStep4SectionHide = function installerStep4SectionHide(params, container) {
         var title = strVal(params.title);
 
@@ -9806,7 +9849,7 @@
             toggleInstallerSection($cms.filter.id($cms.filter.nl(title)));
         });
     };
-    
+
     $cms.templates.blockMainScreenActions = function blockMainScreenActions(params, container) {
         var easySelfUrl = strVal(params.easySelfUrl);
 
@@ -9899,7 +9942,7 @@
             }
         }
     });
-    
+
     /**
      * Toggle a ToggleableTray
      * @memberof $cms.ui
@@ -9938,25 +9981,25 @@
 
         if ($cms.dom.notDisplayed(el)) {
             el.setAttribute('aria-expanded', 'true');
-            
+
             if (animate) {
                 $cms.dom.slideDown(el);
             } else {
                 $cms.dom.fadeIn(el);
             }
-            
+
             if (pic) {
                 setTrayThemeImage('expand', 'contract', $IMG_expand, $IMG_contract, $IMG_contract2);
             }
         } else {
             el.setAttribute('aria-expanded', 'false');
-            
+
             if (animate) {
                 $cms.dom.slideUp(el);
             } else {
-                $cms.dom.hide(el);    
+                $cms.dom.hide(el);
             }
-            
+
             if (pic) {
                 setTrayThemeImage('contract', 'expand', $IMG_contract, $IMG_expand, $IMG_expand2);
                 pic.setAttribute('alt', pic.getAttribute('alt').replace('{!CONTRACT;^}', '{!EXPAND;^}'));
@@ -10037,7 +10080,7 @@
             window.history.go(-2); // We've used back button, don't redirect forward again
         }
     };
-    
+
     $cms.templates.forumsEmbed = function () {
         var frame = this;
         setInterval(function () {
@@ -10212,7 +10255,7 @@
             }
         });
     };
-    
+
     $cms.templates.memberTooltip = function (params, container) {
         var submitter = strVal(params.submitter);
 
@@ -10449,7 +10492,7 @@
     $cms.templates.indexScreenFancierScreen = function indexScreenFancierScreen(params) {
         document.getElementById('search_content').value = strVal(params.rawSearchString);
     };
-    
+
     $cms.templates.doNextScreen = function doNextScreen(params) {};
 
     function detectChange(changeDetectionUrl, refreshIfChanged, callback) {
@@ -10503,46 +10546,6 @@
         }
     };
 
-    function gdImageTransform(el) {
-        /* GD text maybe can do with transforms */
-        var span = document.createElement('span');
-        if (typeof span.style.transform === 'string') {
-            el.style.display = 'none';
-            $cms.dom.css(span, {
-                transform: 'rotate(90deg)',
-                transformOrigin: 'bottom left',
-                top: '-1em',
-                left: '0.5em',
-                position: 'relative',
-                display: 'inline-block',
-                whiteSpace: 'nowrap',
-                paddingRight: '0.5em'
-            });
-
-            el.parentNode.style.textAlign = 'left';
-            el.parentNode.style.width = '1em';
-            el.parentNode.style.overflow = 'hidden'; // LEGACY Needed due to https://bugzilla.mozilla.org/show_bug.cgi?id=456497
-            el.parentNode.style.verticalAlign = 'top';
-            span.textContent = el.alt;
-
-            el.parentNode.insertBefore(span, el);
-            var spanProxy = span.cloneNode(true); // So we can measure width even with hidden tabs
-            spanProxy.style.position = 'absolute';
-            spanProxy.style.visibility = 'hidden';
-            document.body.appendChild(spanProxy);
-
-            setTimeout(function () {
-                var width = spanProxy.offsetWidth + 15;
-                spanProxy.parentNode.removeChild(spanProxy);
-                if (el.parentNode.nodeName === 'TH' || el.parentNode.nodeName === 'TD') {
-                    el.parentNode.style.height = width + 'px';
-                } else {
-                    el.parentNode.style.minHeight = width + 'px';
-                }
-            }, 0);
-        }
-    }
-
     function openLinkAsOverlay(options) {
         options = $cms.defaults({
             width: '800',
@@ -10590,7 +10593,7 @@
                 return;
             }
         }
-        
+
         // And now define nice listeners for it all...
         var global = $cms.getMainCmsWindow(true);
 
@@ -10915,7 +10918,7 @@
         function submitFunc(e) {
             var urlStub = '', j, key,
                 href = (this.localName === 'a') ? this.href : this.action;
-            
+
             e.preventDefault();
 
             // Any parameters matching a pattern must be sent in the URL to the AJAX block call
@@ -10933,7 +10936,7 @@
 
             // Any POST parameters?
             var postParams = null, param;
-            
+
             if (this.localName === 'form') {
                 postParams = '';
                 for (j = 0; j < this.elements.length; j++) {
