@@ -7290,14 +7290,29 @@
             if (xhr.status && okStatusCodes.includes(xhr.status)) {
                 // Process the result
                 // XML result. Handle with a potentially complex call
-                var xml = retrieveXmlDocument(xhr);
+                var responseXml = xhr.responseXML;
 
-                if (xml) {
-                    processRequestChange(ajaxCallback, xml, xhr);
-                } else {
-                    // Error parsing
-                    if (ajaxCallback != null) {
-                        ajaxCallback(null, xhr);
+                if (xhr.responseText && xhr.responseText.includes('<html')) {
+                    $cms.fatal('$cms.doAjaxRequest() -> retrieveXmlDocument(): Failed', xhr);
+                    $cms.ui.alert(xhr.responseText, null, '{!ERROR_OCCURRED;^}', true);
+                }
+
+                if (ajaxCallback != null) {
+                    ajaxCallback(responseXml, xhr);
+                }
+
+                if (responseXml != null) {
+                    var messageEl = responseXml.querySelector('message');
+                    if (messageEl) {
+                        // Either an error or a message was returned. :(
+                        var message = messageEl.firstChild.textContent;
+                        if (responseXml.querySelector('error')) {
+                            // It's an error :|
+                            $cms.ui.alert('An error (' + responseXml.querySelector('error').firstChild.textContent + ') message was returned by the server: ' + message);
+                            return;
+                        }
+
+                        $cms.ui.alert('An informational message was returned by the server: ' + message);
                     }
                 }
             } else {
@@ -7319,70 +7334,6 @@
                     $cms.fatal('$cms.doAjaxRequest(): {!PROBLEM_RETRIEVING_XML;^}', e); // This is probably clicking back
                 }
             }
-        }
-
-        function processRequestChange(ajaxCallback, responseXml, xhr) {
-            var messageEl = responseXml.querySelector('message'), message;
-            if (messageEl) {
-                // Either an error or a message was returned. :(
-                message = messageEl.firstChild.textContent;
-
-                if (ajaxCallback != null) {
-                    ajaxCallback(responseXml, xhr);
-                }
-
-                if (responseXml.querySelector('error')) {
-                    // It's an error :|
-                    $cms.ui.alert('An error (' + responseXml.querySelector('error').firstChild.textContent + ') message was returned by the server: ' + message);
-                    return;
-                }
-
-                $cms.ui.alert('An informational message was returned by the server: ' + message);
-                return;
-            }
-
-            var ajaxResultEl = responseXml.querySelector('result');
-            if (ajaxResultEl) {
-                if (ajaxCallback != null) {
-                    ajaxCallback(responseXml, xhr);
-                }
-                return;
-            }
-
-            if (ajaxCallback != null) {
-                ajaxCallback(responseXml, xhr);
-            }
-        }
-
-        /**
-         * @param xhr
-         * @returns { Document }
-         */
-        function retrieveXmlDocument(xhr) {
-            var xml;
-
-            if (xhr.responseXML && xhr.responseXML.firstChild) {
-                return xhr.responseXML;
-            }
-
-            // Try and parse again. Firefox can be weird.
-            try {
-                xml = (new DOMParser()).parseFromString(xhr.responseText, 'application/xml');
-                if (xml && (xml.documentElement.nodeName === 'parsererror')) {
-                    xml = null;
-                }
-            } catch (ignore) {}
-
-            if (xml) {
-                return xml;
-            }
-
-            if (xhr.responseText && xhr.responseText.includes('<html')) {
-                $cms.fatal('$cms.doAjaxRequest() -> retrieveXmlDocument(): Failed', xhr);
-                $cms.ui.alert(xhr.responseText, null, '{!ERROR_OCCURRED;^}', true);
-            }
-
-            return null;
         }
     }
 
