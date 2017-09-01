@@ -404,9 +404,9 @@
     };
 
     $cms.templates.attachments = function attachments(params, container) {
-        window.attachmentTemplate = params.attachmentTemplate;
-        window.maxAttachments = +params.maxAttachments || 0;
-        window.numAttachments = +params.numAttachments || 0;
+        window.attachmentTemplate = strVal(params.attachmentTemplate);
+        window.maxAttachments = Number(params.maxAttachments) || 0;
+        window.numAttachments = Number(params.numAttachments) || 0;
         
         var postingFieldName = strVal(params.postingFieldName);
         
@@ -429,7 +429,7 @@
         window.rebuildAttachmentButtonForNext = rebuildAttachmentButtonForNext;
         function rebuildAttachmentButtonForNext(_postingFieldName, attachmentUploadButton) {
             if (_postingFieldName !== postingFieldName) {
-                return false;
+                return;
             }
 
             if (attachmentUploadButton === undefined) {
