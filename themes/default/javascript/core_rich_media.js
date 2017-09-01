@@ -407,7 +407,9 @@
         window.attachmentTemplate = params.attachmentTemplate;
         window.maxAttachments = +params.maxAttachments || 0;
         window.numAttachments = +params.numAttachments || 0;
-
+        
+        var postingFieldName = strVal(params.postingFieldName);
+        
         $cms.dom.on(container, 'click', '.js-click-open-attachment-popup', function (e, link) {
             e.preventDefault();
             $cms.ui.open($cms.maintainThemeInLink(link.href), 'site_attachment_chooser', 'width=550,height=600,status=no,resizable=yes,scrollbars=yes');
@@ -417,16 +419,16 @@
             window.numAttachments = 1;
 
             window.$cmsLoad.push(function () {
-                var aub = document.getElementById('attachment_upload_button');
-                if (aub && (aub.classList.contains('for_field_' + params.postingFieldName))) {
-                    window.rebuildAttachmentButtonForNext(params.postingFieldName, 'attachment_upload_button');
+                var aub = document.getElementById('js-attachment-upload-button');
+                if (aub && (aub.classList.contains('for_field_' + postingFieldName))) {
+                    window.rebuildAttachmentButtonForNext(postingFieldName, 'js-attachment-upload-button');
                 }
             });
         }
 
         window.rebuildAttachmentButtonForNext = rebuildAttachmentButtonForNext;
-        function rebuildAttachmentButtonForNext(postingFieldName, attachmentUploadButton) {
-            if (postingFieldName !== params.postingFieldName) {
+        function rebuildAttachmentButtonForNext(_postingFieldName, attachmentUploadButton) {
+            if (_postingFieldName !== postingFieldName) {
                 return false;
             }
 
@@ -436,7 +438,7 @@
             window.attachmentUploadButton = attachmentUploadButton;
 
             $cms.requireJavascript('plupload').then(function () {
-                prepareSimplifiedFileInput('attachment_multi', 'file' + window.numAttachments, null, params.postingFieldName, strVal(params.filter), window.attachmentUploadButton);
+                window.prepareSimplifiedFileInput('attachment_multi', 'file' + window.numAttachments, null, postingFieldName, strVal(params.filter), window.attachmentUploadButton);
             });
         }
     };
@@ -468,15 +470,18 @@
     };
 
     $cms.templates.comcodeEditorButton = function comcodeEditorButton(params, btn) {
-        var isPostingField = boolVal(params.isPostingField),
+        var isPostingField = Boolean(params.isPostingField),
             b = strVal(params.b),
             fieldName = strVal(params.fieldName);
 
         $cms.dom.on(btn, 'click', function () {
             var mainWindow = btn.ownerDocument.defaultView;
-            if (!($cms.browserMatches('simplified_attachments_ui') && isPostingField && ((b === 'thumb') || (b === 'img')))) {
-                mainWindow['doInput' + $cms.ucFirst($cms.camelCase(b))](fieldName);
+            
+            if ($cms.browserMatches('simplified_attachments_ui') && isPostingField && ((b === 'thumb') || (b === 'img'))) {
+                return;
             }
+            
+            mainWindow['doInput' + $cms.ucFirst($cms.camelCase(b))](fieldName);
         });
     };
 
@@ -807,12 +812,11 @@
 
                     try {
                         player.Play();
-                    } catch (e) {
-                    }
+                    } catch (e) {}
+                    
                     try {
                         player.controls.play();
-                    } catch (e) {
-                }
+                    } catch (e) {}
                 }, 1000);
             }
         });

@@ -181,7 +181,7 @@ function toggleWysiwyg(name) {
             textarea.readOnly = false;
 
             if (window.rebuildAttachmentButtonForNext !== undefined) {
-                window.rebuildAttachmentButtonForNext(id, 'attachment_upload_button');
+                window.rebuildAttachmentButtonForNext(id, 'js-attachment-upload-button');
             }
 
             // Unload editor

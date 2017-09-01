@@ -5446,7 +5446,7 @@
     /**
      * Enforcing a session using AJAX
      * @memberof $cms.ui
-     * @param callback - Called with boolean indicating whether session confirmed or not
+     * @returns { Promise } - Resolves with a boolean indicating whether session confirmed or not
      */
     $cms.ui.confirmSession = function confirmSession() {
         var scriptUrl = '{$FIND_SCRIPT_NOHTTP;,confirm_session}' + $cms.keepStub(true);
@@ -6525,6 +6525,12 @@
             }
         },
 
+        /**
+         * @param {string} width
+         * @param {string} height
+         * @param {boolean} [init]
+         * @param {boolean} [forceHeight]
+         */
         resetDimensions: function (width, height, init, forceHeight) {
             width = strVal(width);
             height = strVal(height);
@@ -6534,9 +6540,11 @@
             if (!this.boxWrapperEl) {
                 return;
             }
-
-            var dim = this.getPageSize();
-
+            
+            var topPageHeight = this.topWindow.$cms.dom.getWindowScrollHeight(this.topWindow),
+                topWindowWidth = this.topWindow.$cms.dom.getWindowWidth(this.topWindow),
+                topWindowHeight = this.topWindow.$cms.dom.getWindowHeight();
+                
             var bottomGap = this.WINDOW_TOP_GAP;
             if (this.buttonContainer.firstChild) {
                 bottomGap += this.buttonContainer.offsetHeight;
@@ -6556,14 +6564,14 @@
 
             // Constrain to window width
             if (width.match(/^\d+$/) !== null) {
-                if ((parseInt(width) > dim.windowWidth - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY) || (width === 'auto')) {
-                    width = '' + (dim.windowWidth - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY);
+                if ((parseInt(width) > topWindowWidth - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY) || (width === 'auto')) {
+                    width = '' + (topWindowWidth - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY);
                 }
             }
 
             // Auto width means full width
             if (width === 'auto') {
-                width = '' + (dim.windowWidth - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY);
+                width = '' + (topWindowWidth - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY);
             }
             // NB: auto height feeds through without a constraint (due to infinite growth space), with dynamic adjustment for iframes
 
@@ -6571,11 +6579,11 @@
             var match;
             match = width.match(/^([\d\.]+)%$/);
             if (match !== null) {
-                width = '' + (parseFloat(match[1]) * (dim.windowWidth - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY));
+                width = '' + (parseFloat(match[1]) * (topWindowWidth - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY));
             }
             match = height.match(/^([\d\.]+)%$/);
             if (match !== null) {
-                height = '' + (parseFloat(match[1]) * (dim.pageHeight - this.WINDOW_TOP_GAP - bottomGap - this.BOX_NORTH_PERIPHERARY - this.BOX_SOUTH_PERIPHERARY));
+                height = '' + (parseFloat(match[1]) * (topPageHeight - this.WINDOW_TOP_GAP - bottomGap - this.BOX_NORTH_PERIPHERARY - this.BOX_SOUTH_PERIPHERARY));
             }
 
             // Work out box dimensions
@@ -6617,21 +6625,21 @@
 
             if (boxHeight === 'auto') {
                 if (init) {
-                    boxPosTop = (dim.windowHeight / (2 + (this.VCENTRE_FRACTION_SHIFT * 2))) - (this.LOADING_SCREEN_HEIGHT / 2) + this.WINDOW_TOP_GAP; // This is just temporary
+                    boxPosTop = (topWindowHeight / (2 + (this.VCENTRE_FRACTION_SHIFT * 2))) - (this.LOADING_SCREEN_HEIGHT / 2) + this.WINDOW_TOP_GAP; // This is just temporary
                 } else {
-                    boxPosTop = (dim.windowHeight / (2 + (this.VCENTRE_FRACTION_SHIFT * 2))) - (detectedBoxHeight / 2) + this.WINDOW_TOP_GAP;
+                    boxPosTop = (topWindowHeight / (2 + (this.VCENTRE_FRACTION_SHIFT * 2))) - (detectedBoxHeight / 2) + this.WINDOW_TOP_GAP;
                 }
 
                 if (iframe) { // Actually, for frames we'll put at top so things don't bounce about during loading and if the frame size changes
                     boxPosTop = this.WINDOW_TOP_GAP;
                 }
             } else {
-                boxPosTop = (dim.windowHeight / (2 + (this.VCENTRE_FRACTION_SHIFT * 2))) - (parseInt(boxHeight) / 2) + this.WINDOW_TOP_GAP;
+                boxPosTop = (topWindowHeight / (2 + (this.VCENTRE_FRACTION_SHIFT * 2))) - (parseInt(boxHeight) / 2) + this.WINDOW_TOP_GAP;
             }
             if (boxPosTop < this.WINDOW_TOP_GAP) {
                 boxPosTop = this.WINDOW_TOP_GAP;
             }
-            boxPosLeft = ((dim.windowWidth / 2) - (parseInt(boxWidth) / 2));
+            boxPosLeft = ((topWindowWidth / 2) - (parseInt(boxWidth) / 2));
 
             // Save into HTML
             this.boxWrapperEl.firstElementChild.style.top = boxPosTop + 'px';
@@ -6640,11 +6648,11 @@
             var doScroll = false;
 
             // Absolute positioning instead of fixed positioning
-            if ($cms.$MOBILE() || (detectedBoxHeight > dim.windowHeight) || (this.boxWrapperEl.style.position === 'absolute'/*don't switch back to fixed*/)) {
+            if ($cms.$MOBILE() || (detectedBoxHeight > topWindowHeight) || (this.boxWrapperEl.style.position === 'absolute'/*don't switch back to fixed*/)) {
                 var wasFixed = (this.boxWrapperEl.style.position === 'fixed');
 
                 this.boxWrapperEl.style.position = 'absolute';
-                this.boxWrapperEl.style.height = ((dim.pageHeight > (detectedBoxHeight + bottomGap + boxPosLeft)) ? dim.pageHeight : (detectedBoxHeight + bottomGap + boxPosLeft)) + 'px';
+                this.boxWrapperEl.style.height = ((topPageHeight > (detectedBoxHeight + bottomGap + boxPosLeft)) ? topPageHeight : (detectedBoxHeight + bottomGap + boxPosLeft)) + 'px';
                 this.topWindow.document.body.style.overflow = '';
 
                 if (!$cms.$MOBILE()) {
@@ -7014,17 +7022,11 @@
             }
             return el;
         },
-
-        getPageSize: function () {
-            return {
-                'pageWidth': this.topWindow.document.body.scrollWidth,
-                'pageHeight': this.topWindow.$cms.dom.getWindowScrollHeight(this.topWindow),
-                'windowWidth': this.topWindow.$cms.dom.getWindowWidth(this.topWindow),
-                'windowHeight': this.topWindow.$cms.dom.getWindowHeight()
-            };
-        },
-
-        // Fiddle it, to behave like a popup would
+        
+        /**
+         * Fiddle it, to behave like a popup would
+         * @param { HTMLIFrameElement } iframe
+         */
         makeFrameLikePopup: function makeFrameLikePopup(iframe) {
             var mainWebsiteInner, mainWebsite, popupSpacer, baseElement;
 
@@ -7036,12 +7038,10 @@
 
             if ($cms.dom.hasIframeAccess(iframe) && iframe.contentWindow.document.body && (iframe.contentWindow.document.body.donePopupTrans === undefined)) {
                 iframe.contentWindow.document.body.style.background = 'transparent';
-
-                if (!iframe.contentWindow.document.body.classList.contains('overlay')) {
-                    iframe.contentWindow.document.body.classList.add('overlay');
-                    iframe.contentWindow.document.body.classList.add('lightbox');
-                }
-
+                
+                iframe.contentWindow.document.body.classList.add('overlay');
+                iframe.contentWindow.document.body.classList.add('lightbox');
+                
                 // Allow scrolling, if we want it
                 //iframe.scrolling = (_this.scrollbars === false) ? 'no' : 'auto';  Actually, not wanting this now
 

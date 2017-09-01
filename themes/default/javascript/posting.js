@@ -333,21 +333,23 @@ function doInputMenu(fieldName) {
 
 function doInputBlock(fieldName) {
     var url = '{$FIND_SCRIPT;,block_helper}?field_name=' + fieldName + $cms.keepStub();
-    url = url + '&block_type=' + (((fieldName.indexOf('edit_panel_') === -1) && (window.location.href.indexOf(':panel_') === -1)) ? 'main' : 'side');
+    url += '&block_type=' + ((!fieldName.includes('edit_panel_') && !window.location.href.includes(':panel_')) ? 'main' : 'side');
     
     return $cms.ui.open($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
 }
 
 function doInputComcode(fieldName, tag) {
-    var attributes = {};
-    var defaultEmbed = null;
-    var saveToId = null;
+    var attributes = {},
+        defaultEmbed = null,
+        saveToId = null;
 
     if (tag == null) {
         var element = document.getElementById(fieldName);
+        
         if ($cms.form.isWysiwygField(element)) {
-            var selection = window.wysiwygEditors[fieldName].getSelection();
-            var ranges = selection.getRanges();
+            var selection = window.wysiwygEditors[fieldName].getSelection(),
+                ranges = selection.getRanges();
+            
             if (ranges[0] !== undefined) {
                 var comcodeElement = ranges[0].startContainer.$;
                 do {
@@ -363,7 +365,7 @@ function doInputComcode(fieldName, tag) {
 
                         defaultEmbed = $cms.dom.html(comcodeElement);
 
-                        if (comcodeElement.id == '') {
+                        if (comcodeElement.id === '') {
                             comcodeElement.id = 'comcode_' + Date.now();
                         }
                         saveToId = comcodeElement.id;
@@ -471,54 +473,50 @@ function doInputHide(fieldName) {
     })
 }
 
-function doInputThumb(fieldName, va) {
+function doInputThumb(fieldName, url) {
+    fieldName = strVal(fieldName);
+    url = strVal(url);
+
     if ((window.startSimplifiedUpload !== undefined) && (document.getElementById(fieldName).name !== 'message')) {
         var test = window.startSimplifiedUpload(fieldName);
         if (test) {
             return;
         }
     }
-
-    $cms.ui.prompt(
-        '{!javascript:ENTER_URL;^}',
-        va,
-        function (va) {
-            if ((va != null) && (va.indexOf('://') === -1)) {
-                $cms.ui.alert('{!javascript:NOT_A_URL;^}', function () {
-                    doInputUrl(fieldName, va);
-                });
-                return;
-            }
-
-            if (va) {
-                $cms.ui.generateQuestionUi(
-                    '{!javascript:THUMB_OR_IMG_2;^}',
-                    { buttons__thumbnail: '{!THUMBNAIL;^}', buttons__fullsize: '{!IMAGE;^}' },
-                    '{!comcode:INPUT_COMCODE_img;^}',
-                    null,
-                    function (vb) {
-                        $cms.ui.prompt(
-                            '{!javascript:ENTER_IMAGE_CAPTION;^}',
-                            '',
-                            function (vc) {
-                                if (!vc) {
-                                    vc = '';
-                                }
-                                var element = document.getElementById(fieldName);
-                                if (vb.toLowerCase() === '{!IMAGE;^}'.toLowerCase()) {
-                                    window.insertTextbox(element, '[img=\"' + $cms.filter.comcode(vc) + '\"]' + $cms.filter.comcode(va) + '[/img]');
-                                } else {
-                                    window.insertTextbox(element, '[thumb caption=\"' + $cms.filter.comcode(vc) + '\"]' + $cms.filter.comcode(va) + '[/thumb]');
-                                }
-                            },
-                            '{!comcode:INPUT_COMCODE_img;^}'
-                        );
-                    }
-                );
-            }
-        },
-        '{!comcode:INPUT_COMCODE_img;^}'
-    );
+    
+    var answer;
+    $cms.ui.prompt('{!javascript:ENTER_URL;^}', url, null, '{!comcode:INPUT_COMCODE_img;^}').then(function (_url) {
+        url = strVal(_url);
+        
+        if (!url) {
+            return $cms.promiseHalt();
+        }
+        
+        if (!url.includes('://')) {
+            $cms.ui.alert('{!javascript:NOT_A_URL;^}').then(function () {
+                doInputUrl(fieldName, url);
+            });
+            return $cms.promiseHalt();
+        }
+    
+        return $cms.ui.generateQuestionUi(
+            '{!javascript:THUMB_OR_IMG_2;^}',
+            { buttons__thumbnail: '{!THUMBNAIL;^}', buttons__fullsize: '{!IMAGE;^}' },
+            '{!comcode:INPUT_COMCODE_img;^}'
+        );
+    }).then(function (_answer) {
+        answer = strVal(_answer);
+        return $cms.ui.prompt('{!javascript:ENTER_IMAGE_CAPTION;^}', '', null, '{!comcode:INPUT_COMCODE_img;^}');
+    }).then(function (caption) {
+        caption = strVal(caption);
+        
+        var element = document.getElementById(fieldName);
+        if (answer.toLowerCase() === '{!IMAGE;^}'.toLowerCase()) {
+            window.insertTextbox(element, '[img="' + $cms.filter.comcode(caption) + '"]' + $cms.filter.comcode(url) + '[/img]');
+        } else {
+            window.insertTextbox(element, '[thumb caption="' + $cms.filter.comcode(caption) + '"]' + $cms.filter.comcode(url) + '[/thumb]');
+        }
+    });
 }
 
 function doInputAttachment(fieldName) {
