@@ -354,72 +354,8 @@
         warn: warn,
         /**@method*/
         fatal: fatal,
-        /**
-         * @method
-         * @param resourceEls
-         */
-        waitForResources: function waitForResources(resourceEls) {
-            if (resourceEls == null) {
-                return Promise.resolve();
-            }
-
-            if (isEl(resourceEls)) {
-                resourceEls = [resourceEls];
-            }
-
-            if (!Array.isArray(resourceEls)) {
-                $cms.fatal('$cms.waitForResources(): Argument 1 must be of type {array|HTMLElement}, "' + typeName(resourceEls) + '" provided.');
-                return Promise.reject();
-            }
-
-            if (resourceEls.length < 1) {
-                return Promise.resolve();
-            }
-
-            //$cms.inform('$cms.waitForResources(): Waiting for resources', resourceEls);
-
-            var scriptsToLoad = [];
-            resourceEls.forEach(function (el) {
-                if (!isEl(el)) {
-                    $cms.fatal('$cms.waitForResources(): Invalid item of type "' + typeName(resourceEls) + '" in the `resourceEls` parameter.');
-                    return;
-                }
-
-                if (el.localName === 'script') {
-                    if (el.src && !$cms.dom.hasScriptLoaded(el) && jsTypeRE.test(el.type) && !scriptsToLoad.includes(el)) {
-                        scriptsToLoad.push(el);
-                    }
-                }
-            });
-
-            if (scriptsToLoad.length < 1) {
-                return Promise.resolve();
-            }
-
-            return new Promise(function (resolve) {
-                $cms.scriptsLoadedListeners.push(function scriptResourceListener(event) {
-                    var loadedEl = event.target;
-
-                    if (!scriptsToLoad.includes(loadedEl)) {
-                        return;
-                    }
-
-                    if (event.type === 'load') {
-                        //$cms.inform('$cms.waitForResources(): Resource loaded successfully', loadedEl);
-                    } else {
-                        $cms.fatal('$cms.waitForResources(): Resource failed to load', loadedEl);
-                    }
-
-                    scriptsToLoad = scriptsToLoad.filter(function (el) {
-                        return el !== loadedEl;
-                    });
-
-                    if (scriptsToLoad.length < 1) {
-                        resolve(event);
-                    }
-                });
-            });
-        },
+        /**@method*/
+        waitForResources: waitForResources,
         /**@method*/
         requireCss: requireCss,
         /**@method*/
@@ -1626,6 +1562,69 @@
 
     function fatal() {
         return console.error.apply(undefined, arguments);
+    }
+
+    function waitForResources(resourceEls) {
+        if (resourceEls == null) {
+            return Promise.resolve();
+        }
+
+        if (isEl(resourceEls)) {
+            resourceEls = [resourceEls];
+        }
+
+        if (!Array.isArray(resourceEls)) {
+            $cms.fatal('$cms.waitForResources(): Argument 1 must be of type {array|HTMLElement}, "' + typeName(resourceEls) + '" provided.');
+            return Promise.reject();
+        }
+
+        if (resourceEls.length < 1) {
+            return Promise.resolve();
+        }
+
+        //$cms.inform('$cms.waitForResources(): Waiting for resources', resourceEls);
+
+        var scriptsToLoad = [];
+        resourceEls.forEach(function (el) {
+            if (!isEl(el)) {
+                $cms.fatal('$cms.waitForResources(): Invalid item of type "' + typeName(resourceEls) + '" in the `resourceEls` parameter.');
+                return;
+            }
+
+            if (el.localName === 'script') {
+                if (el.src && !$cms.dom.hasScriptLoaded(el) && jsTypeRE.test(el.type) && !scriptsToLoad.includes(el)) {
+                    scriptsToLoad.push(el);
+                }
+            }
+        });
+
+        if (scriptsToLoad.length < 1) {
+            return Promise.resolve();
+        }
+
+        return new Promise(function (resolve) {
+            $cms.scriptsLoadedListeners.push(function scriptResourceListener(event) {
+                var loadedEl = event.target;
+
+                if (!scriptsToLoad.includes(loadedEl)) {
+                    return;
+                }
+
+                if (event.type === 'load') {
+                    //$cms.inform('$cms.waitForResources(): Resource loaded successfully', loadedEl);
+                } else {
+                    $cms.fatal('$cms.waitForResources(): Resource failed to load', loadedEl);
+                }
+
+                scriptsToLoad = scriptsToLoad.filter(function (el) {
+                    return el !== loadedEl;
+                });
+
+                if (scriptsToLoad.length < 1) {
+                    resolve(event);
+                }
+            });
+        });
     }
 
     var validIdRE = /^[a-zA-Z][\w:.-]*$/;
@@ -7245,44 +7244,45 @@
     var networkDownAlerted = false;
 
     /**
-     * @param url
-     * @param {boolean|function} ajaxCallback - Dictates sync or async
-     * @param post - Note that 'post' is not an array, it's a string (a=b)
-     * @returns {*}
+     * @param {string} url
+     * @param {function|null} [callback]
+     * @param {string|null} [post] - Note that 'post' is not an array, it's a string (a=b)
+     * @returns { Promise }
      */
-    function doAjaxRequest(url, ajaxCallback, post) {
-        var async = !!ajaxCallback;
-
+    function doAjaxRequest(url, callback, post) {
         url = strVal(url);
 
         if (!url.includes('://') && url.startsWith('/')) {
             url = window.location.protocol + '//' + window.location.host + url;
         }
 
-        var xhr = new XMLHttpRequest();
+        return new Promise(function (resolvePromise) {
+            var xhr = new XMLHttpRequest();
 
-        if (async) {
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
-                    readyStateChangeListener(xhr, ajaxCallback);
+                    readyStateChangeListener(xhr, function (responseXml) {
+                        if (callback != null) {
+                            callback(responseXml, xhr);
+                        }
+                        resolvePromise(xhr);
+                    });
                 }
             };
-        }
 
-        if (typeof post === 'string') {
-            if (!post.includes('&csrf_token=')) { // For CSRF prevention
-                post += '&csrf_token=' + encodeURIComponent($cms.getCsrfToken());
+            if (typeof post === 'string') {
+                if (!post.includes('&csrf_token=')) { // For CSRF prevention
+                    post += '&csrf_token=' + encodeURIComponent($cms.getCsrfToken());
+                }
+
+                xhr.open('POST', url, true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.send(post);
+            } else {
+                xhr.open('GET', url, true);
+                xhr.send(null);
             }
-
-            xhr.open('POST', url, async);
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.send(post);
-        } else {
-            xhr.open('GET', url, async);
-            xhr.send(null);
-        }
-
-        return xhr;
+        });
 
         function readyStateChangeListener(xhr, ajaxCallback) {
             var okStatusCodes = [200, 500, 400, 401];
@@ -7296,11 +7296,15 @@
                     processRequestChange(ajaxCallback, xml, xhr);
                 } else {
                     // Error parsing
-                    callAjaxMethod(ajaxCallback, null, xhr);
+                    if (ajaxCallback != null) {
+                        ajaxCallback(null, xhr);
+                    }
                 }
             } else {
                 // HTTP error...
-                callAjaxMethod(ajaxCallback, null, xhr);
+                if (ajaxCallback != null) {
+                    ajaxCallback(null, xhr);
+                }
 
                 try {
                     if ((xhr.status === 0) || (xhr.status > 10000)) { // implies site down, or network down
@@ -7317,19 +7321,15 @@
             }
         }
 
-        function callAjaxMethod(ajaxCallback, responseXml, xhr) {
-            if (typeof ajaxCallback === 'function') {
-                ajaxCallback(responseXml, xhr);
-            }
-        }
-
         function processRequestChange(ajaxCallback, responseXml, xhr) {
             var messageEl = responseXml.querySelector('message'), message;
             if (messageEl) {
                 // Either an error or a message was returned. :(
                 message = messageEl.firstChild.textContent;
 
-                callAjaxMethod(ajaxCallback, responseXml, xhr);
+                if (ajaxCallback != null) {
+                    ajaxCallback(responseXml, xhr);
+                }
 
                 if (responseXml.querySelector('error')) {
                     // It's an error :|
@@ -7343,11 +7343,15 @@
 
             var ajaxResultEl = responseXml.querySelector('result');
             if (ajaxResultEl) {
-                callAjaxMethod(ajaxCallback, responseXml, xhr);
+                if (ajaxCallback != null) {
+                    ajaxCallback(responseXml, xhr);
+                }
                 return;
             }
 
-            callAjaxMethod(ajaxCallback, responseXml, xhr);
+            if (ajaxCallback != null) {
+                ajaxCallback(responseXml, xhr);
+            }
         }
 
         /**
@@ -10483,10 +10487,10 @@
 
     $cms.templates.handleConflictResolution = function (params) {
         if (params.pingUrl) {
-            $cms.doAjaxRequest(params.pingUrl, true);
+            $cms.doAjaxRequest(params.pingUrl);
 
             setInterval(function () {
-                $cms.doAjaxRequest(params.pingUrl, true);
+                $cms.doAjaxRequest(params.pingUrl);
             }, 12000);
         }
     };

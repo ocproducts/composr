@@ -1063,7 +1063,7 @@
                 //$cms.inform('Doing AJAX auto-save');
 
                 post = $cms.form.modSecurityWorkaroundAjax(post);
-                $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + $cms.keepStub(), true, post);
+                $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + $cms.keepStub(), null, post);
             }
         }
     }

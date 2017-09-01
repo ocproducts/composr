@@ -1375,7 +1375,7 @@ function inviteIm(people) {
     if (!roomId) {
         $cms.ui.alert('{!chat:NO_IM_ACTIVE;^}');
     } else {
-        $cms.doAjaxRequest('{$FIND_SCRIPT;,messages}?action=invite_im' + $cms.keepStub(false), true, 'room_id=' + encodeURIComponent(roomId) + '&people=' + people);
+        $cms.doAjaxRequest('{$FIND_SCRIPT;,messages}?action=invite_im' + $cms.keepStub(false), null, 'room_id=' + encodeURIComponent(roomId) + '&people=' + people);
     }
 }
 
@@ -1465,7 +1465,7 @@ function deinvolveIm(roomId, logs, isPopup) { // is_popup means that we show a p
     }
 
     setTimeout(function ()  { // Give time for any logs to download (download does not need to have finished - but must have loaded into a request response on the server side)
-        window.topWindow.$cms.doAjaxRequest('{$FIND_SCRIPT;,messages}?action=deinvolve_im' + window.topWindow.$cms.keepStub(false), true, 'room_id=' + encodeURIComponent(roomId)); // Has to be on topWindow or it will be lost if the window was explicitly closed (it is unloading mode and doesn't want to make a new request)
+        window.topWindow.$cms.doAjaxRequest('{$FIND_SCRIPT;,messages}?action=deinvolve_im' + window.topWindow.$cms.keepStub(false), null, 'room_id=' + encodeURIComponent(roomId)); // Has to be on topWindow or it will be lost if the window was explicitly closed (it is unloading mode and doesn't want to make a new request)
 
         if (participants) {
             window.topWindow.allConversations[participants] = null;
