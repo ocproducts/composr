@@ -31,12 +31,12 @@
 
 			var usesPlupload = false,
                 aub = document.getElementById('js-attachment-upload-button'),
-                doingAttachmentUploads = (aub) && (aub.classList.contains('for_field_' + editor.element.$.id));
+                doingAttachmentUploads = Boolean(aub) && (aub.classList.contains('for_field_' + editor.element.$.id));
 
 			if ((window.rebuildAttachmentButtonForNext !== undefined) && doingAttachmentUploads) {
 				if (!aub || (aub.parentNode.parentNode.style.display === 'none')) { // If attachment button was not placed elsewhere
 					setTimeout(function () {
-                        window.rebuildAttachmentButtonForNext(editor.element.$.id, document.getElementById('cke_' + editor.element.$.id).getElementsByClassName('cke_button__composr_image')[0].id);
+                        window.rebuildAttachmentButtonForNext(editor.element.$.id, document.getElementById('cke_' + editor.element.$.id).querySelector('.cke_button__composr_image').id);
 					}, 0);
 
 					usesPlupload = true;

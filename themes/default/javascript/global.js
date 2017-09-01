@@ -433,6 +433,8 @@
         /**@method*/
         parseJson: parseJson,
         /**@method*/
+        parseJson5: parseJson,
+        /**@method*/
         getCsrfToken: getCsrfToken,
         /**@method*/
         getSessionId: getSessionId,

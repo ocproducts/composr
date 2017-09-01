@@ -843,7 +843,7 @@
 
         if (initDragDrop) {
             $cms.requireJavascript('plupload').then(function () {
-                initialiseHtml5DragdropUpload('container_for_' + name, name);
+                window.initialiseHtml5DragdropUpload('container_for_' + name, name);
             });
         }
 
