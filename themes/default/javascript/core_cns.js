@@ -279,7 +279,7 @@
         $cms.dom.on(container, 'click', '.js-click-do-emoticon', function (e, target) {
             var fieldName = target.dataset.tpFieldName;
             if (fieldName) {
-                doEmoticon(fieldName, target, true)
+                window.doEmoticon(fieldName, target, true)
             }
         });
     };

@@ -220,7 +220,7 @@
                 }
                 var post = 'data=' + encodeURIComponent(wysiwygData.replace(new RegExp(String.fromCharCode(8203), 'g'), ''));
                 post = $cms.form.modSecurityWorkaroundAjax(post);
-                $cms.doAjaxRequest(url, function (_, xhr) {
+                $cms.doAjaxRequest(url, null, post).then(function (xhr) {
                     if (!xhr.responseXML || !xhr.responseXML.querySelector('result')) {
                         textarea.value = '[semihtml]' + wysiwygData + '[/semihtml]';
                     } else {
@@ -233,7 +233,7 @@
 
                     postWysiwygDisable(textarea);
                     resolvePromise();
-                }, post);
+                });
             });
 
             function postWysiwygDisable(textarea) {
@@ -358,7 +358,7 @@
                     url += '&forum_db=1';
                 }
 
-                $cms.doAjaxRequest(url, function (_, xhr) {
+                $cms.doAjaxRequest(url, null, 'data=' + encodeURIComponent(textarea.value.replace(new RegExp(String.fromCharCode(8203), 'g'), '').replace('{' + '$,page hint: no_wysiwyg}', ''))).then(function (xhr) {
                     if (!xhr.responseXML) {
                         textarea.value = '';
                     } else {
@@ -371,7 +371,7 @@
                     }, 1000);
 
                     resolvePromise();
-                }, 'data=' + encodeURIComponent(textarea.value.replace(new RegExp(String.fromCharCode(8203), 'g'), '').replace('{' + '$,page hint: no_wysiwyg}', '')));
+                })
             });
         }
 
@@ -678,7 +678,7 @@
     function doEmoticon(fieldName, callerEl, isOpener) {
         var element, title, text;
 
-        isOpener = !!isOpener;
+        isOpener = Boolean(isOpener);
 
         if (isOpener) {
             element = $cms.getMainCmsWindow().document.getElementById(fieldName);
@@ -687,6 +687,11 @@
             }
         } else {
             element = document.getElementById(fieldName);
+        }
+        
+        if (!element) {
+            $cms.fatal('doEmoticon(): Element not found "#' + fieldName + '"');
+            return;
         }
 
         title = callerEl.title;

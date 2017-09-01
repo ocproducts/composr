@@ -4679,15 +4679,11 @@
 
         return new Promise(function (resolvePromise) {
             // Make AJAX call
-            $cms.doAjaxRequest(
-                ajaxUrl + $cms.keepStub(),
-                function (_, xhr) { // Show results when available
-                    callBlockRender(xhr, ajaxUrl, targetDiv, append, function () {
-                        resolvePromise();
-                    }, scrollToTopOfWrapper, inner);
-                },
-                postParams
-            );
+            $cms.doAjaxRequest(ajaxUrl + $cms.keepStub(), null, postParams).then(function (xhr) { // Show results when available
+                callBlockRender(xhr, ajaxUrl, targetDiv, append, function () {
+                    resolvePromise();
+                }, scrollToTopOfWrapper, inner);
+            });
         });
 
         function callBlockRender(rawAjaxResult, ajaxUrl, targetDiv, append, callback, scrollToTopOfWrapper, inner) {
@@ -4750,9 +4746,9 @@
             url2 = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=' + snippetHook + '&url=' + encodeURIComponent($cms.protectURLParameter(url)) + '&title=' + encodeURIComponent(title) + $cms.keepStub();
 
         return new Promise(function (resolve) {
-            $cms.doAjaxRequest($cms.maintainThemeInLink(url2), function (_, xhr) {
+            $cms.doAjaxRequest($cms.maintainThemeInLink(url2), null, post).then(function (xhr) {
                 resolve(xhr.responseText);
-            }, post);
+            });
         });
     }
 
@@ -5453,7 +5449,7 @@
         var scriptUrl = '{$FIND_SCRIPT_NOHTTP;,confirm_session}' + $cms.keepStub(true);
 
         return new Promise(function (resolvePromise) {
-            $cms.doAjaxRequest(scriptUrl, function (_, xhr) {
+            $cms.doAjaxRequest(scriptUrl).then(function (xhr) {
                 var username = xhr.responseText;
 
                 if (username === '') { // Blank means success, no error - so we can call callback
@@ -5483,13 +5479,13 @@
                 $cms.$CONFIG_OPTION('js_overlays') ? '{!ENTER_PASSWORD_JS_2;^}' : '{!ENTER_PASSWORD_JS;^}', '', null, '{!_LOGIN;^}', 'password'
             ).then(function (prompt) {
                 if (prompt != null) {
-                    $cms.doAjaxRequest(scriptUrl, function (_, xhr) {
+                    $cms.doAjaxRequest(scriptUrl, null, 'login_username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(prompt)).then(function (xhr) {
                         if (xhr.responseText === '') { // Blank means success, no error - so we can call callback
                             callback(true);
                         } else {
                             _confirmSession(callback, username); // Recurse
                         }
-                    }, 'login_username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(prompt));
+                    });
                 } else {
                     callback(false);
                 }
@@ -7403,7 +7399,7 @@
         url = strVal(url);
 
         return new Promise(function (resolve) {
-            $cms.doAjaxRequest(url, function (_, xhr) {
+            $cms.doAjaxRequest(url, null, post).then(function (xhr) {
                 if ((xhr.responseText !== '') && (xhr.responseText.replace(/[ \t\n\r]/g, '') !== '0'/*some cache layers may change blank to zero*/)) {
                     if (xhr.responseText !== 'false') {
                         if (xhr.responseText.length > 1000) {
@@ -7417,7 +7413,7 @@
                     return;
                 }
                 resolve(true);
-            }, post);
+            });
         });
     };
 
@@ -8691,7 +8687,7 @@
                     if (link.renderedTooltip === undefined) {
                         link.isOver = true;
 
-                        $cms.doAjaxRequest($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&raw_output=1&box_title={!PREVIEW;&}' + $cms.keepStub()), function (_, xhr) {
+                        $cms.doAjaxRequest($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&raw_output=1&box_title={!PREVIEW;&}' + $cms.keepStub()), null, 'data=' + encodeURIComponent(comcode)).then(function (xhr) {
                             if (xhr && xhr.responseText) {
                                 link.renderedTooltip = xhr.responseText;
                             }
@@ -8700,7 +8696,7 @@
                                     $cms.ui.activateTooltip(link, event, link.renderedTooltip, '400px', null, null, false, false, false, true);
                                 }
                             }
-                        }, 'data=' + encodeURIComponent(comcode));
+                        });
                     } else {
                         $cms.ui.activateTooltip(link, event, link.renderedTooltip, '400px', null, null, false, false, false, true);
                     }
@@ -10453,14 +10449,14 @@
     $cms.templates.doNextScreen = function doNextScreen(params) {};
 
     function detectChange(changeDetectionUrl, refreshIfChanged, callback) {
-        $cms.doAjaxRequest(changeDetectionUrl, function (_, xhr) {
+        $cms.doAjaxRequest(changeDetectionUrl, null, 'refresh_if_changed=' + encodeURIComponent(refreshIfChanged)).then(function (xhr) {
             var response = strVal(xhr.responseText);
             if (response === '1') {
                 clearInterval(window.detectInterval);
                 $cms.inform('detectChange(): Change detected');
                 callback();
             }
-        }, 'refresh_if_changed=' + encodeURIComponent(refreshIfChanged));
+        });
     }
 
     function detectedChange() {

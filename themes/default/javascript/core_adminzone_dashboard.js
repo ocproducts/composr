@@ -316,20 +316,20 @@
         }
 
         return new Promise(function (resolve) {
-            $cms.doAjaxRequest($cms.maintainThemeInLink($SCRIPT_comcode_convert + $cms.keepStub(true)), function (_, xhr) {
+            $cms.doAjaxRequest($cms.maintainThemeInLink($SCRIPT_comcode_convert + $cms.keepStub(true)), null, post).then(function (xhr) {
                 if (xhr.responseText && (xhr.responseText !== 'false')) {
                     var result = xhr.responseXML && xhr.responseXML.querySelector('result');
 
                     if (result) {
                         var xhtml = result.textContent,
                             elementReplace = form;
-                        
+
                         while (elementReplace.className !== 'form_ajax_target') {
                             elementReplace = elementReplace.parentNode;
                             if (!elementReplace) {
                                 // Oh dear, target not found
                                 resolve(/*submitForm: */true);
-                                return; 
+                                return;
                             }
                         }
 
@@ -341,7 +341,7 @@
                 }
 
                 resolve(/*submitForm: */true);
-            }, post);
+            })
         });
     }
 }(window.$cms));

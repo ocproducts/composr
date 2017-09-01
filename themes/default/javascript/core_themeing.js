@@ -242,9 +242,9 @@
                     if (newCss == lastCss) return; // Not changed
 
                     var url = $cms.baseUrl('data/snippet.php?snippet=css_compile__text' + $cms.keepStub());
-                    $cms.doAjaxRequest(url, function (_, xhr) {
+                    $cms.doAjaxRequest(url, null, $cms.form.modSecurityWorkaroundAjax('css=' + encodeURIComponent(newCss))).then(function (xhr) {
                         receiveCompiledCss(xhr, file);
-                    }, $cms.form.modSecurityWorkaroundAjax('css=' + encodeURIComponent(newCss)));
+                    });
 
                     lastCss = newCss;
                 }
@@ -526,14 +526,14 @@
                 request += encodeURIComponent(btn.form.elements[i].name) + '=' + encodeURIComponent(btn.form.elements[i].value) + '&';
             }
 
-            $cms.doAjaxRequest('{$FIND_SCRIPT;,tempcode_tester}' + $cms.keepStub(true), function (_, xhr) {
+            $cms.doAjaxRequest('{$FIND_SCRIPT;,tempcode_tester}' + $cms.keepStub(true), null, request).then(function (xhr) {
                 $cms.dom.html(document.getElementById('preview_raw'), $cms.filter.html(xhr.responseText));
                 $cms.dom.html(document.getElementById('preview_html'), xhr.responseText);
-            }, request);
+            });
 
-            $cms.doAjaxRequest('{$FIND_SCRIPT;,tempcode_tester}?comcode=1' + $cms.keepStub(), function (_, xhr) {
+            $cms.doAjaxRequest('{$FIND_SCRIPT;,tempcode_tester}?comcode=1' + $cms.keepStub(), null, request).then(function (xhr) {
                 $cms.dom.html(document.getElementById('preview_comcode'), xhr.responseText);
-            }, request);
+            });
         });
     };
 

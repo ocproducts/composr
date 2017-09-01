@@ -407,6 +407,7 @@
         window.attachmentTemplate = strVal(params.attachmentTemplate);
         window.maxAttachments = Number(params.maxAttachments) || 0;
         window.numAttachments = Number(params.numAttachments) || 0;
+        window.rebuildAttachmentButtonForNext = rebuildAttachmentButtonForNext;
         
         var postingFieldName = strVal(params.postingFieldName);
         
@@ -425,8 +426,7 @@
                 }
             });
         }
-
-        window.rebuildAttachmentButtonForNext = rebuildAttachmentButtonForNext;
+        
         function rebuildAttachmentButtonForNext(_postingFieldName, attachmentUploadButton) {
             if (_postingFieldName !== postingFieldName) {
                 return;
@@ -562,7 +562,7 @@
 
         $cms.dom.on(container, 'click', function (e) {
             e.preventDefault();
-            doEmoticon(fieldName, container, false)
+            window.doEmoticon(fieldName, container, false)
         });
     };
 

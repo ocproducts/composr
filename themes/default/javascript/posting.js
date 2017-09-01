@@ -287,9 +287,9 @@
         }
         formPost = $cms.form.modSecurityWorkaroundAjax(formPost.substr(1));
 
-        $cms.doAjaxRequest(window.formPreviewUrl + '&js_only=1&known_utf8=1', function (_, xhr) {
+        $cms.doAjaxRequest(window.formPreviewUrl + '&js_only=1&known_utf8=1', null, formPost).then(function (xhr) {
             $cms.dom.append(document.body, xhr.responseText);
-        }, formPost);
+        });
     }
 
 // ====================
@@ -844,14 +844,14 @@
                     // Save remotely
                     if (navigator.onLine) {
                         post = $cms.form.modSecurityWorkaroundAjax(post);
-                        $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + $cms.keepStub(), function () {
+                        $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + $cms.keepStub(), null, post).then(function () {
                             if (document.body.style.cursor === 'wait') {
                                 document.body.style.cursor = '';
                             }
 
                             var message = foundValidatedField ? '{!javascript:DRAFT_SAVED_WITH_VALIDATION;^}' : '{!javascript:DRAFT_SAVED_WITHOUT_VALIDATION;^}';
                             $cms.ui.alert(message, null, '{!javascript:DRAFT_SAVE;^}');
-                        }, post);
+                        });
                     }
                 }
             }

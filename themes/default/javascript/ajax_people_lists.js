@@ -63,7 +63,11 @@
             script = script + '&special=' + special;
         }
 
-        $cms.doAjaxRequest(script + $cms.keepStub(), updateAjaxNemberListResponse);
+        $cms.doAjaxRequest(script + $cms.keepStub()).then(function (xhr) {
+            if (xhr.responseXML) {
+                updateAjaxNemberListResponse(xhr.responseXML);
+            }
+        });
 
         function closeDownAjaxList() {
             var current = $cms.dom.$('#ajax_list');

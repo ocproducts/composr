@@ -28,8 +28,8 @@
             }
             post += form.elements[i].name + '=' + encodeURIComponent(value) + '&';
         }
-        $cms.doAjaxRequest('{$FIND_SCRIPT;,booking_price_ajax}' + $cms.keepStub(true), function (_, xhr) {
+        $cms.doAjaxRequest('{$FIND_SCRIPT;,booking_price_ajax}' + $cms.keepStub(true), null, post).then(function (xhr) {
             $cms.dom.html(document.getElementById('price'), $cms.filter.html(xhr.responseText));
-        }, post);
+        });
     }
 }(window.$cms));

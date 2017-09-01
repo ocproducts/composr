@@ -1450,7 +1450,7 @@
                 geocodeUrl += '?latitude=' + encodeURIComponent(position.coords.latitude) + '&longitude=' + encodeURIComponent(position.coords.longitude);
                 geocodeUrl += $cms.keepStub();
 
-                $cms.doAjaxRequest(geocodeUrl, function (_, xhr) {
+                $cms.doAjaxRequest(geocodeUrl).then(function (xhr) {
                     var parsed = JSON.parse(xhr.responseText);
                     if (parsed === null) {
                         return;

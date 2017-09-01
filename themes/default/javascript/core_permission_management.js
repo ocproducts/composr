@@ -378,9 +378,9 @@
 
         // Send AJAX request
         if (setRequest != '') {
-            $cms.doAjaxRequest($cms.$BASE_URL_NOHTTP() + '/data/sitemap.php?set_perms=1' + $cms.keepStub(), function () {
+            $cms.doAjaxRequest($cms.$BASE_URL_NOHTTP() + '/data/sitemap.php?set_perms=1' + $cms.keepStub(), null, setRequest).then(function () {
                 $cms.ui.alert('{!permissions:PERMISSIONS_TREE_EDITOR_SAVED;^}');
-            }, setRequest);
+            });
             return;
         }
 
@@ -415,7 +415,7 @@ function showPermissionSetting(ob, event) {
         }
 
         var url = '{$FIND_SCRIPT_NOHTTP;,find_permissions}?serverid=' + encodeURIComponent(serverid) + '&x=' + encodeURIComponent(ob.name);
-        $cms.doAjaxRequest(url + $cms.keepStub(), function (_, xhr) {
+        $cms.doAjaxRequest(url + $cms.keepStub()).then(function (xhr) {
             if (!xhr) {
                 return;
             }

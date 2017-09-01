@@ -165,12 +165,12 @@
 
         function saveFunction() {
             // Call AJAX request
-            $cms.doAjaxRequest(input.form.action, function (_, xhr) {
+            $cms.doAjaxRequest(input.form.action, null, input.name + '=' + encodeURIComponent(input.value)).then(function (xhr) {
                 // Some kind of error?
                 if (((xhr.responseText === '') && (input.value !== '')) || (xhr.status !== 200)) {
                     var sessionTestUrl = '{$FIND_SCRIPT_NOHTTP;,confirm_session}';
 
-                    $cms.doAjaxRequest(sessionTestUrl + $cms.keepStub(true), function (_, sessionXhr) {
+                    $cms.doAjaxRequest(sessionTestUrl + $cms.keepStub(true)).then(function (sessionXhr) {
                         if (sessionXhr.responseText) { // If it failed, see if it is due to a non-confirmed session
                             $cms.ui.confirmSession().then(function (sessionConfirmed) {
                                 if (sessionConfirmed) {
@@ -190,7 +190,7 @@
 
                     cleanupFunction();
                 }
-            }, input.name + '=' + encodeURIComponent(input.value));
+            });
 
             return false;
         }

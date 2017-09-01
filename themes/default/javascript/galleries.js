@@ -339,12 +339,12 @@
             }
 
             if (callback !== undefined) {
-                $cms.doAjaxRequest(url, function (_, xhr) {
+                $cms.doAjaxRequest(url).then(function (xhr) {
                     _slideshowReadInSlide(xhr, slide);
                     callback();
                 });
             } else {
-                $cms.doAjaxRequest(url, function (_, xhr) {
+                $cms.doAjaxRequest(url).then(function (xhr) {
                     _slideshowReadInSlide(xhr, slide);
                 });
             }

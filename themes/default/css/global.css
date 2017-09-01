@@ -3766,6 +3766,7 @@ input.magic_image_edit_link {
 	margin: 0.25em;
 	box-shadow: 0 0 5px {$GET,standard_border};
 	text-shadow: 2px 1px 2px {$GET,dark_shadow};
+	background-color: {$GET,lgrad};
 	background-repeat: no-repeat;
 	background-position: 96% 3px; /*fallback*/
 	background-position: right 7px top 3px;
