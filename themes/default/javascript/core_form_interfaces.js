@@ -917,44 +917,45 @@
     };
 
     $cms.templates.blockHelperDone = function (params) {
-        var targetWindow = window.opener ? window.opener : window.parent,
-            element = targetWindow.document.getElementById(params.fieldName);
+        var targetWin = window.opener ? window.opener : window.parent,
+            element = targetWin.document.getElementById(params.fieldName);
         
         if (!element) {
-            targetWindow = targetWindow.frames['iframe_page'];
-            element = targetWindow.document.getElementById(params.fieldName);
+            targetWin = targetWin.frames['iframe_page'];
+            element = targetWin.document.getElementById(params.fieldName);
         }
         
-        var isWysiwyg = targetWindow.$cms.form.isWysiwygField(element),
+        var block = strVal(params.block),
+            tagContents = strVal(params.tagContents),
             comcode = strVal(params.comcode),
             comcodeSemihtml = strVal(params.comcodeSemihtml),
+            isWysiwyg = targetWin.$cms.form.isWysiwygField(element),
             loadingSpace = document.getElementById('loading_space'),
             attachedEventAction = false;
         
         window.returnValue = comcode;
 
-        if (params.syncWysiwygAttachments) {
+        if ((block === 'attachment_safe') && /^new_\d+$/.test(tagContents)) {
             // WYSIWYG-editable attachments must be synched
-            var field = 'file' + params.tagContents.substr(4);
-            var uploadElement = targetWindow.document.getElementById(field);
+            var field = 'file' + tagContents.substr(4),
+                uploadEl = targetWin.document.getElementById(field);
             
-            if (!uploadElement) {
-                uploadElement = targetWindow.document.getElementById('hidFileID_' + field);
+            if (!uploadEl) {
+                uploadEl = targetWin.document.getElementById('hidFileID_' + field);
             }
             
-            if ((uploadElement.pluploadObject !== undefined) && (isWysiwyg)) {
-                var ob = uploadElement.pluploadObject;
-                if (ob.state == targetWindow.plupload.STARTED) {
+            if ((uploadEl.pluploadObject != null) && isWysiwyg) {
+                var ob = uploadEl.pluploadObject;
+                if (Number(ob.state) === Number(targetWin.plupload.STARTED)) {
                     ob.bind('UploadComplete', function () {
-                        setTimeout(dispatchBlockHelper, 100);
-                        /*Give enough time for everything else to update*/
+                        setTimeout(dispatchBlockHelper, 100); // Give enough time for everything else to update
                     });
                     ob.bind('Error', shutdownOverlay);
 
                     // Keep copying the upload indicator
-                    var progress = $cms.dom.html(targetWindow.document.getElementById('fsUploadProgress_' + field));
+                    var progress = $cms.dom.html(targetWin.document.getElementById('fsUploadProgress_' + field));
                     setInterval(function () {
-                        if (progress != '') {
+                        if (progress !== '') {
                             $cms.dom.html(loadingSpace, progress);
                             loadingSpace.className = 'spaced flash';
                         }
@@ -980,12 +981,13 @@
         }
 
         function dispatchBlockHelper() {
-            var saveToId = strVal(params.saveToId);
+            var saveToId = strVal(params.saveToId),
+                toDelete = Boolean(params.delete);
             
             if (saveToId !== '') {
-                var ob = targetWindow.wysiwygEditors[element.id].document.$.getElementById(saveToId);
+                var ob = targetWin.wysiwygEditors[element.id].document.$.getElementById(saveToId);
 
-                if (params.delete) {
+                if (toDelete) {
                     ob.parentNode.removeChild(ob);
                 } else {
                     var inputContainer = document.createElement('div');
@@ -993,56 +995,64 @@
                     ob.parentNode.replaceChild(inputContainer.firstElementChild, ob);
                 }
 
-                targetWindow.wysiwygEditors[element.id].updateElement();
+                targetWin.wysiwygEditors[element.id].updateElement();
 
                 shutdownOverlay();
                 return;
             }
             
             var message = '';
-            if (comcode.includes('[attachment') && comcode.includes('[attachment_safe')) {
-                if (isWysiwyg) {
-                    message = '';
-                } else {
-                    message = '{!comcode:ADDED_COMCODE_ONLY_SAFE_ATTACHMENT;^}';
-                }
+            if (comcode.includes('[attachment') && comcode.includes('[attachment_safe') && !isWysiwyg) {
+                message = '{!comcode:ADDED_COMCODE_ONLY_SAFE_ATTACHMENT;^}';
             }
 
             // We define as a temporary global method so we can clone out the tag if needed (e.g. for multiple attachment selections)
-            targetWindow.insertComcodeTag = function insertComcodeTag(repFrom, repTo, ret) { 
-                var _comcodeSemihtml = comcodeSemihtml,
-                    _comcode = comcode;
+            targetWin.insertComcodeTag = function insertComcodeTag(repFrom, repTo, ret, callback) {
+                ret = Boolean(ret);
                 
-                if (repFrom !== undefined) {
+                var newComcodeSemihtml = comcodeSemihtml,
+                    newComcode = comcode;
+                
+                if (repFrom != null) {
                     for (var i = 0; i < repFrom.length; i++) {
-                        _comcodeSemihtml = _comcodeSemihtml.replace(repFrom[i], repTo[i]);
-                        _comcode = _comcode.replace(repFrom[i], repTo[i]);
+                        newComcodeSemihtml = newComcodeSemihtml.replace(repFrom[i], repTo[i]);
+                        newComcode = newComcode.replace(repFrom[i], repTo[i]);
                     }
                 }
 
                 if (ret) {
-                    return [_comcodeSemihtml, _comcode];
+                    if (callback != null) {
+                        callback();
+                    }
+                    return [newComcodeSemihtml, newComcode];
                 }
 
-                if (element.value.includes(comcodeSemihtml) || comcode.includes('[attachment')) { // Don't allow attachments to add twice
-                    return targetWindow.insertTextbox(element, _comcode, true, _comcodeSemihtml, true);
+                var promise = Promise.resolve();
+                if (!element.value.includes(comcodeSemihtml) || !comcode.includes('[attachment')) { // Don't allow attachments to add twice
+                    promise = targetWin.insertTextbox(element, newComcode, true, newComcodeSemihtml);
                 }
+                
+                promise.then(function () {
+                    if (callback != null) {
+                        callback();
+                    }
+                });
             };
 
             var promise = Promise.resolve();
             if (params.prefix !== undefined) {
-                promise = targetWindow.insertTextbox(element, params.prefix, true, '', true);
+                promise = targetWin.insertTextbox(element, params.prefix, true, '');
             }
             promise.then(function () {
-                return targetWindow.insertComcodeTag();
-            }).then(function () {
-                if (message !== '') {
-                    $cms.ui.alert(message).then(function () {
+                targetWin.insertComcodeTag(null, null, false, function () {
+                    if (message !== '') {
+                        $cms.ui.alert(message).then(function () {
+                            shutdownOverlay();
+                        });
+                    } else {
                         shutdownOverlay();
-                    });
-                } else {
-                    shutdownOverlay();
-                }
+                    }
+                });
             });
         }
     };
