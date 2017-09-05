@@ -1004,7 +1004,13 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         $url_parts['scheme'] = 'http';
     }
 
-    $_url = preg_replace('#^(https?://)' . preg_quote($url_parts['host'], '#') . '([/:]|$)#', '${1}' . $connect_to . '${2}', $url);
+    if (strpos($connect_to, ':') !== false) {
+        $connect_to_url_compat = '[' . $connect_to . ']';
+    } else {
+        $connect_to_url_compat = $connect_to;
+    }
+
+    $_url = preg_replace('#^(https?://)' . preg_quote($url_parts['host'], '#') . '([/:]|$)#', '${1}' . $connect_to_url_compat . '${2}', $url);
 
     // File-system/shell_exec method, for local calls
     $faux = function_exists('get_value') ? get_value('http_faux_loopback') : null;

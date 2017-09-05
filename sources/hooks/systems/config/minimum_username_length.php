@@ -54,6 +54,6 @@ class Hook_config_minimum_username_length
         if (get_forum_type() != 'cns') {
             return null;
         }
-        return '1';
+        return '3';
     }
 }

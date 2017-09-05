@@ -117,9 +117,9 @@ class Module_cms_comcode_pages
             $file = $page_link_parts[1];
 
             if ($page_link != '') {
-                breadcrumb_set_self(do_lang_tempcode('COMCODE_PAGE_EDIT'));
+                breadcrumb_set_self(do_lang_tempcode('EDIT'));
             }
-            breadcrumb_set_parents(array(array('_SELF:_SELF:browse:lang=' . get_param_string('lang', ''), do_lang_tempcode('CHOOSE'))));
+            breadcrumb_set_parents(array(array('_SELF:_SELF:browse:lang=' . get_param_string('lang', ''), do_lang_tempcode('COMCODE_PAGES'))));
 
             $this->title = get_screen_title(($file == '') ? 'COMCODE_PAGE_ADD' : '_COMCODE_PAGE_EDIT', true, array(escape_html($zone), escape_html($file)));
 
@@ -1080,7 +1080,7 @@ class Module_cms_comcode_pages
         if ($url != '') {
             return redirect_screen($this->title, $url, $completion_text);
         }
-        return $this->do_next_manager($this->title, $file, $zone, $completion_text);
+        return $this->do_next_manager($this->title, $new_file, $zone, $completion_text);
     }
 
     /**

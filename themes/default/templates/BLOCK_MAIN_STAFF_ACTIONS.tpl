@@ -21,3 +21,9 @@
 		</div>
 	</div>
 </section>
+
+{+START,IF,{$JS_ON}}
+	<script>// <![CDATA[
+		handle_tray_cookie_setting('{!MODULE_TRANS_NAME_admin_actionlog|}');
+	//]]></script>
+{+END}
