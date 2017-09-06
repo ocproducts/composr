@@ -36,7 +36,7 @@
         }
 
         updateForm2();
-        allDayEvent.onclick = updateForm2;
+        $cms.dom.on(allDayEvent, 'click', updateForm2);
 
         form.addEventListener('submit', function () {
             if ((form.elements['end_day'] != null) && (form.elements['end_day'].selectedIndex !== 0) || (form.elements['end'] != null) && (form.elements['end'].value !== '')) {

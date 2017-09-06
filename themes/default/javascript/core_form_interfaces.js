@@ -39,6 +39,95 @@
         }
     });
 
+    $cms.views.FormStandardEnd = FormStandardEnd;
+    /**
+     * @memberof $cms.views
+     * @class FormStandardEnd
+     * @extends $cms.View
+     */
+    function FormStandardEnd(params) {
+        FormStandardEnd.base(this, 'constructor', arguments);
+
+        this.backUrl = strVal(params.backUrl);
+        this.analyticEventCategory = params.analyticEventCategory;
+        this.form = $cms.dom.closest(this.el, 'form');
+        this.btnSubmit = this.$('#submit_button');
+
+        window.formPreviewUrl = params.previewUrl;
+
+        if (params.forcePreviews) {
+            $cms.dom.hide(this.btnSubmit);
+        }
+
+        if (params.jsFunctionCalls != null) {
+            $cms.executeJsFunctionCalls(params.jsFunctionCalls);
+        }
+
+        if (!params.secondaryForm) {
+            this.fixFormEnterKey();
+        }
+
+        if (params.supportAutosave && params.formName) {
+            setTimeout(function () {
+                if (window.initFormSaving !== undefined) {
+                    initFormSaving(params.formName);
+                }
+            }, 3000/*Let CKEditor load*/);
+        }
+    }
+
+    $cms.inherits(FormStandardEnd, $cms.View, /**@lends FormStandardEnd#*/{
+        events: function () {
+            return {
+                'click .js-click-do-form-preview': 'doFormPreview',
+                'click .js-click-do-form-submit': 'doFormSubmit',
+                'click .js-click-btn-go-back': 'goBack'
+            };
+        },
+
+        doFormPreview: function (e) {
+            var form = this.form,
+                separatePreview = !!this.params.separatePreview;
+
+            if ($cms.form.doFormPreview(e, form, window.formPreviewUrl, separatePreview) && !window.justCheckingRequirements) {
+                $cms.dom.submit(form);
+            }
+        },
+
+        doFormSubmit: function (e) {
+            if ($cms.form.doFormSubmit(this.form, e, this.analyticEventCategory) === false) {
+                e.preventDefault();
+            }
+        },
+
+        goBack: function (e, btn) {
+            if (btn.form.method.toLowerCase() === 'get') {
+                window.location = this.backUrl;
+            } else {
+                btn.form.action = this.backUrl;
+                $cms.dom.submit(btn.form);
+            }
+        },
+
+        fixFormEnterKey: function () {
+            var form = this.form,
+                submitBtn = document.getElementById('submit_button'),
+                inputs = form.getElementsByTagName('input'),
+                type, types = ['text', 'password', 'color', 'email', 'number', 'range', 'search',  'tel', 'url'];
+
+            for (var i = 0; i < inputs.length; i++) {
+                type = inputs[i].type;
+                if (types.includes(type)) {
+                    $cms.dom.on(inputs[i], 'keypress', function (event) {
+                        if ($cms.dom.keyPressed(event, 'Enter')) {
+                            $cms.dom.trigger(submitBtn, 'click');
+                        }
+                    });
+                }
+            }
+        }
+    });
+
     $cms.views.FromScreenInputUpload = FromScreenInputUpload;
     /**
      * @memberof $cms.views
@@ -205,96 +294,7 @@
             }
         }
     });
-
-    $cms.views.FormStandardEnd = FormStandardEnd;
-    /**
-     * @memberof $cms.views
-     * @class FormStandardEnd
-     * @extends $cms.View
-     */
-    function FormStandardEnd(params) {
-        FormStandardEnd.base(this, 'constructor', arguments);
-
-        this.backUrl = strVal(params.backUrl);
-        this.analyticEventCategory = params.analyticEventCategory;
-        this.form = $cms.dom.closest(this.el, 'form');
-        this.btnSubmit = this.$('#submit_button');
-
-        window.formPreviewUrl = params.previewUrl;
-
-        if (params.forcePreviews) {
-            $cms.dom.hide(this.btnSubmit);
-        }
-
-        if (params.jsFunctionCalls != null) {
-            $cms.executeJsFunctionCalls(params.jsFunctionCalls);
-        }
-
-        if (!params.secondaryForm) {
-            this.fixFormEnterKey();
-        }
-
-        if (params.supportAutosave && params.formName) {
-            setTimeout(function () {
-                if (window.initFormSaving !== undefined) {
-                    initFormSaving(params.formName);
-                }
-            }, 3000/*Let CKEditor load*/);
-        }
-    }
-
-    $cms.inherits(FormStandardEnd, $cms.View, /**@lends FormStandardEnd#*/{
-        events: function () {
-            return {
-                'click .js-click-do-form-preview': 'doFormPreview',
-                'click .js-click-do-form-submit': 'doFormSubmit',
-                'click .js-click-btn-go-back': 'goBack'
-            };
-        },
-
-        doFormPreview: function (e) {
-            var form = this.form,
-                separatePreview = !!this.params.separatePreview;
-
-            if ($cms.form.doFormPreview(e, form, window.formPreviewUrl, separatePreview) && !window.justCheckingRequirements) {
-                $cms.dom.submit(form);
-            }
-        },
-
-        doFormSubmit: function (e) {
-            if ($cms.form.doFormSubmit(this.form, e, this.analyticEventCategory) === false) {
-                e.preventDefault();
-            }
-        },
-
-        goBack: function (e, btn) {
-            if (btn.form.method.toLowerCase() === 'get') {
-                window.location = this.backUrl;
-            } else {
-                btn.form.action = this.backUrl;
-                $cms.dom.submit(btn.form);
-            }
-        },
-
-        fixFormEnterKey: function () {
-            var form = this.form,
-                submitBtn = document.getElementById('submit_button'),
-                inputs = form.getElementsByTagName('input'),
-                type, types = ['text', 'password', 'color', 'email', 'number', 'range', 'search',  'tel', 'url'];
-            
-            for (var i = 0; i < inputs.length; i++) {
-                type = inputs[i].type;
-                if (types.includes(type) && submitBtn && submitBtn.onclick && !inputs[i].onkeypress) {
-                    inputs[i].onkeypress = function (event) {
-                        if ($cms.dom.keyPressed(event, 'Enter')) {
-                            submitBtn.onclick(event);
-                        }
-                    };
-                }
-            }
-        }
-    });
-
+    
     $cms.templates.formScreenInputPassword = function (params, container) {
         var value = strVal(params.value),
             name = strVal(params.name);
@@ -717,8 +717,6 @@
             if (window.mainFormVerySimple !== undefined) {
                 $cms.dom.submit(form);
             }
-
-            event.stopPropagation();
         }
 
         img.onkeypress = clickFunc;
@@ -737,7 +735,6 @@
             if (window.mainFormVerySimple !== undefined) {
                 $cms.dom.submit(this.form);
             }
-            event.stopPropagation();
         };
 
         function deselectAltUrl(form) {
@@ -779,7 +776,6 @@
         if (inner) {
             $cms.dom.on(inner, $cms.browserMatches('gecko')/*LEGACY*/ ? 'DOMMouseScroll' : 'mousewheel', function (event) {
                 inner.scrollTop -= event.wheelDelta ? event.wheelDelta : event.detail;
-                event.stopPropagation();
                 event.preventDefault();
             });
         }
@@ -1286,7 +1282,7 @@
         input.value = data;
         tempForm.appendChild(input);
 
-        if (form.elements.csrf_token) {
+        if (form.elements['csrf_token']) {
             var csrfInput = document.createElement('input');
             csrfInput.type = 'hidden';
             csrfInput.name = 'csrf_token';
@@ -1298,7 +1294,7 @@
         document.body.appendChild(tempForm);
 
         setTimeout(function () {
-            $cms.dom.submit(tempForm.form);
+            $cms.dom.submit(tempForm);
             tempForm.parentNode.removeChild(tempForm);
         });
 

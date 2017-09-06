@@ -246,7 +246,7 @@
                     
                     label = nodeSelf.querySelector('label');
                     expandButton.onkeypress = label.onkeypress = label.firstElementChild.onkeypress = function (event) {
-                        if (((event.keyCode ? event.keyCode : event.charCode) == 13) || ['+', '-', '='].includes(String.fromCharCode(event.keyCode ? event.keyCode : event.charCode))) {
+                        if (((event.keyCode ? event.keyCode : event.charCode) === 13) || ['+', '-', '='].includes(String.fromCharCode(event.keyCode ? event.keyCode : event.charCode))) {
                             expandButton.onclick(event);
                         }
                     };
@@ -530,7 +530,6 @@
             
             var i, selectedBefore = (element.value === '') ? [] : (this.multiSelection ? element.value.split(',') : [element.value]);
 
-            event.stopPropagation();
             event.preventDefault();
 
             if (!assumeCtrl && event.shiftKey && this.multiSelection) {

@@ -349,7 +349,6 @@ function _toggleMessagingBox(event, name, hide) {
     }
 
     event.withinMessageBox = true;
-    event.stopPropagation();
 
     var body = document.body;
     if (el.parentNode !== body) { // Move over, so it is not cut off by overflow:hidden of the header

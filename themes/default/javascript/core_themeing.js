@@ -347,7 +347,6 @@
                 // Jump-to
                 a.addEventListener('click', function (selector) {
                     return function (event) {
-                        event.stopPropagation();
                         editareaDoSearch(
                             'e_' + fileId,
                             '^[ \t]*' + selector.replace(/\./g, '\\.').replace(/\[/g, '\\[').replace(/\]/g, '\\]').replace(/\{/g, '\\{').replace(/\}/g, '\\}').replace(/\+/g, '\\+').replace(/\*/g, '\\*').replace(/\s/g, '[ \t]+') + '\\s*\\{'
@@ -972,10 +971,7 @@
         closeButton.style.height = '16px';
         closeButton.style.verticalAlign = 'middle';
         closeButton.addEventListener('click', function (event) {
-            event.stopPropagation();
-            if (event.cancelable) {
-                event.preventDefault();
-            }
+            event.preventDefault();
 
             if (window.templateEditorOpenFiles[file].unsavedChanges) {
                 $cms.ui.confirm('{!themes:UNSAVED_CHANGES;^}'.replace('\{1\}', file), function (result) {

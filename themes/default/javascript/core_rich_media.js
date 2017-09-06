@@ -232,7 +232,6 @@
                 previousButton.src = $cms.img('{$IMG;,mediaset_previous}');
                 previousButton.addEventListener('click', clickPreviousButton);
                 function clickPreviousButton(e) {
-                    e.stopPropagation();
                     e.preventDefault();
 
                     var newPosition = modal.positionInSet - 1;
@@ -251,7 +250,6 @@
                 nextButton.src = $cms.img('{$IMG;,mediaset_next}');
                 nextButton.addEventListener('click', clickNextButton);
                 function clickNextButton(e) {
-                    e.stopPropagation();
                     e.preventDefault();
 
                     var newPosition = modal.positionInSet + 1;

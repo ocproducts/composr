@@ -605,11 +605,7 @@
                 if (event === undefined) {
                     event = editor.window.$.event;
                 }
-
-                if (event) {
-                    event.stopPropagation();
-                }
-
+                
                 if (window.$cms.ui.activateTooltip) {
                     var tagText = '';
                     if (this.nodeName.toLowerCase() === 'input') {
@@ -1021,7 +1017,7 @@
             }
 
             setTimeout((function (id, authorised, hook) {
-                document.getElementById(id).onclick = function () {
+                $cms.dom.on('#' + id, 'click', function () {
                     var el = document.getElementById(id);
                     if (el.checked && !authorised) {
                         //e.checked=false;  Better to assume success, not all oAuth support callback
@@ -1037,7 +1033,7 @@
                             fileOb.disabled = false;
                         }
                     }
-                };
+                });
             }).bind(undefined, id, authorised, hook), 0);
 
             html += '<span><label for="' + id + '"><input type="checkbox" ' + (checked ? 'checked="checked" ' : '') + 'id="' + id + '" name="' + id + '" value="1" />{!upload_syndication:UPLOAD_TO;^} ' + $cms.filter.html(label) + ((noQuota && (num === 1)) ? ' ({!_REQUIRED;^})' : '') + '</label></span>';

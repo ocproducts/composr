@@ -2886,7 +2886,6 @@
                 var result = callback.apply(el, args);
                 if (result === false) {
                     e.preventDefault();
-                    e.stopPropagation();
                 }
                 return result;
             };
@@ -3089,7 +3088,7 @@
     $cms.dom.submit = function submit(formEl, callback) {
         formEl = elArg(formEl);
         
-        if (callback == null) {
+        if (callback === undefined) {
             var defaultNotPrevented = $cms.dom.trigger(formEl, 'submit');
 
             if (defaultNotPrevented) {
@@ -6794,10 +6793,6 @@
             };
 
             $cms.dom.on(this.boxWrapperEl.firstElementChild, 'click', function (e) {
-                try {
-                    e && e.stopPropagation();
-                } catch (e) {}
-
                 if ($cms.$MOBILE() && (that.type === 'lightbox')) { // IDEA: Swipe detect would be better, but JS does not have this natively yet
                     that.option('right');
                 }
@@ -8808,7 +8803,6 @@
                 var src = ob.origsrc ? ob.origsrc : ((ob.src == null) ? $cms.dom.css(ob, 'background-image').replace(/.*url\(['"]?(.*)['"]?\).*/, '$1') : ob.src);
                 if (src && (force || ($cms.magicKeypress(event)))) {
                     // Bubbling needs to be stopped because shift+click will open a new window on some lower event handler (in Firefox anyway)
-                    event.stopPropagation();
                     event.preventDefault();
 
                     if (src.includes($cms.$BASE_URL_NOHTTP() + '/themes/')) {
@@ -10330,7 +10324,6 @@
             links.forEach(function (link) {
                 link.onclick = function (event) {
                     event.preventDefault();
-                    event.stopPropagation();
                     $cms.ui.confirm(
                         '{!KEEP_ADDING_QUESTION;^}',
                         function (test) {

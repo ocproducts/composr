@@ -13230,7 +13230,6 @@ FileProgress.prototype.disappear = function () {
     'use strict';
 
     window.preinitFileInput = preinitFileInput;
-    window.replaceFileInput = replaceFileInput;
     window.prepareSimplifiedFileInput = prepareSimplifiedFileInput;
     
     window.initialiseHtml5DragdropUpload = initialiseHtml5DragdropUpload;
@@ -13317,8 +13316,9 @@ FileProgress.prototype.disappear = function () {
             e.preventDefault();
         }
 
-        var allDone = true;
-        var fileIdField = document.getElementById(plObj.settings.hidFileID);
+        var allDone = true,
+            fileIdField = document.getElementById(plObj.settings.hidFileID);
+        
         if (fileIdField.value === '-1') {
             allDone = false;
         }
@@ -13752,8 +13752,8 @@ FileProgress.prototype.disappear = function () {
         newClearBtn.alt = '{!CLEAR;^}';
         newClearBtn.value = '{!CLEAR;^}';
         subDiv.appendChild(newClearBtn);
-
-        newClearBtn.onclick = function () {
+        
+        $cms.dom.on(newClearBtn, 'click', function () {
             var filenameField = document.getElementById('txtFileName_' + name);
             filenameField.value = '';
             if ((rep.form.elements[postingFieldName] != null) && (name.indexOf('file') !== -1)) {
@@ -13762,7 +13762,7 @@ FileProgress.prototype.disappear = function () {
             fireFakeUploadFieldChange(name, '');
             document.getElementById(ob.settings.hidFileID).value = '-1';
             return false;
-        };
+        });
     }
 
     function prepareSimplifiedFileInput(pageType, name, _btnSubmitId, postingFieldName, filter, attachmentUploadButton) {
@@ -13919,7 +13919,6 @@ FileProgress.prototype.disappear = function () {
 
     function html5UploadEventDragOver(event) {
         if ((event.dataTransfer != null) && (event.dataTransfer.types != null) && !event.dataTransfer.types[0].includes('text')) {
-            event.stopPropagation();
             event.preventDefault();
         }
         // NB: don't use dropEffect, prevents drop on Firefox.
@@ -13943,7 +13942,6 @@ FileProgress.prototype.disappear = function () {
         var count = files.length;
 
         if (count > 0) {
-            event.stopPropagation();
             event.preventDefault();
         }
 

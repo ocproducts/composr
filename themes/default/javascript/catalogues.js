@@ -99,15 +99,15 @@
 
     $cms.functions.moduleCmsCataloguesCat = function moduleCmsCataloguesCat() {
         if (document.getElementById('move_days_lower')) {
-            var mt = document.getElementById('move_target');
-            var form = mt.form;
-            var crf = function () {
-                var s = (mt.selectedIndex === 0);
-                form.elements['move_days_lower'].disabled = s;
-                form.elements['move_days_higher'].disabled = s;
-            };
+            var mt = document.getElementById('move_target'),
+                form = mt.form,
+                crf = function () {
+                    var s = (mt.selectedIndex === 0);
+                    form.elements['move_days_lower'].disabled = s;
+                    form.elements['move_days_higher'].disabled = s;
+                };
             crf();
-            mt.onclick = crf;
+            $cms.dom.on(mt, 'click', crf);
         }
     };
 

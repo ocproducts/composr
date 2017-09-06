@@ -50,7 +50,6 @@
             return null;
         }
 
-        event.stopPropagation();
         event.preventDefault();
 
         // Position form
@@ -197,7 +196,6 @@
 
         // If we activate it again, we actually treat this as a cancellation
         object.onclick = object.ondblclick = function (event) {
-            event.stopPropagation();
             event.preventDefault();
 
             if ($cms.magicKeypress(event)) {

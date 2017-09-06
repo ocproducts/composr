@@ -188,7 +188,7 @@
         var form = $cms.dom.$('#filename').form;
         crf();
         for (var i = 0; i < form.elements['preset'].length; i++) {
-            form.elements['preset'][i].onclick = crf;
+            $cms.dom.on(form.elements['preset'][i], 'click', crf);
         }
 
         function crf() {

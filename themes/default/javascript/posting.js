@@ -809,8 +809,8 @@
             url += '&stem=' + encodeURIComponent(getAutosaveUrlStem());
             url += $cms.keepStub();
             var callback = function (form) {
-                return function (responseXml) {
-                    var result = responseXml && responseXml.querySelector('result');
+                return function (responseXML) {
+                    var result = responseXML && responseXML.querySelector('result');
                     //$cms.inform('Auto-save AJAX says', result);
                     _retrieveFormAutosave(result, form);
                 }

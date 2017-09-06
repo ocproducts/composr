@@ -566,7 +566,6 @@ function doInputNewRoom(fieldName) {
 function chatPost(event, currentRoomId, fieldName, fontName, fontColour) {
     // Catch the data being submitted by the form, and send it through XMLHttpRequest if possible. Stop the form submission if this is achieved.
     var element = document.getElementById(fieldName);
-    event && event.stopPropagation();
     var messageText = strVal(element.value);
 
     if (messageText !== '') {
@@ -1127,9 +1126,9 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
             $cms.dom.html(newDiv, $cms.filter.html(roomName));
             newDiv.setAttribute('id', 'tab_' + roomId);
             newDiv.participants = participants;
-            newDiv.onclick = function () {
+            $cms.dom.on(newDiv, 'click', function () {
                 chatSelectTab(newDiv);
-            };
+            });
             tabs.appendChild(newDiv);
             chatSelectTab(newDiv);
 
@@ -1259,11 +1258,11 @@ function createOverlayEvent(skipIncomingSound, memberId, message, clickEvent, av
     var links = document.createElement('ul');
     links.className = 'actions_list';
 
-    var imgclose = document.createElement('img');
-    imgclose.src = $cms.img('{$IMG;,icons/14x14/delete}');
-    imgclose.className = 'im_popup_close_button blend';
-    imgclose.onclick = closePopup;
-    div.appendChild(imgclose);
+    var imgClose = document.createElement('img');
+    imgClose.src = $cms.img('{$IMG;,icons/14x14/delete}');
+    imgClose.className = 'im_popup_close_button blend';
+    $cms.dom.on(imgClose, 'click', closePopup);
+    div.appendChild(imgClose);
 
     // Avatar
     if (avatarUrl) {
@@ -1281,13 +1280,13 @@ function createOverlayEvent(skipIncomingSound, memberId, message, clickEvent, av
     // Open link
     if (!$cms.browserMatches('non_concurrent')) { // Can't do on iOS due to not being able to run windows/tabs concurrently - so for iOS we only show a lobby link
         var aPopupOpen = document.createElement('a');
-        aPopupOpen.onclick = function () {
+        aPopupOpen.href = '#!';
+        $cms.dom.on(aPopupOpen, 'click', function () {
             clickEvent();
             document.body.removeChild(div);
             div = null;
             return false;
-        };
-        aPopupOpen.href = '#';
+        });
         $cms.dom.html(aPopupOpen, '{!chat:OPEN_IM_POPUP;^}');
         var liPopupOpen = document.createElement('li');
         liPopupOpen.appendChild(aPopupOpen);
@@ -1297,8 +1296,8 @@ function createOverlayEvent(skipIncomingSound, memberId, message, clickEvent, av
     // Lobby link
     var aGotoLobby = document.createElement('a');
     aGotoLobby.href = window.lobbyLink.replace('%21%21', memberId);
-    aGotoLobby.onclick = closePopup;
     aGotoLobby.target = '_blank';
+    $cms.dom.on(aGotoLobby, 'click', closePopup);
     $cms.dom.html(aGotoLobby, '{!chat:GOTO_CHAT_LOBBY;^}');
     var liGotoLobby = document.createElement('li');
     liGotoLobby.appendChild(aGotoLobby);

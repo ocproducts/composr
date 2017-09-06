@@ -75,10 +75,7 @@ window.previousCommands || (window.previousCommands = []);
     // Deal with Commandr history
     function commandrHandleHistory(element, keyCode, e) {
         if ((keyCode == 38) && (window.previousCommands.length > 0)) { // Up button
-            e && event.stopPropagation();
-            if (e.cancelable) {
-                e.preventDefault();
-            }
+            e.preventDefault();
 
             if (window.currentCommand == null) {
                 window.currentCommand = window.previousCommands.length - 1;
@@ -91,7 +88,6 @@ window.previousCommands || (window.previousCommands = []);
             return false;
         } else if ((keyCode == 40) && (window.previousCommands.length > 0)) { // Down button
             if (e) {
-                e.stopPropagation();
                 e.preventDefault();
             }
 
