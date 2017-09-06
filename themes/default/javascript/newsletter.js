@@ -62,7 +62,7 @@
             // Tracking
             e.preventDefault();
             $cms.gaTrack(null, '{!newsletter:NEWSLETTER_JOIN;}', null, function () {
-                form.submit();
+                $cms.dom.submit(form);
             });
         });
     };

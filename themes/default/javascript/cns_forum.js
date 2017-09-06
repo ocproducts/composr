@@ -27,7 +27,7 @@
         },
 
         changeSubmit: function (e, select) {
-            select.form.submit();
+            $cms.dom.submit(select.form);
         },
 
         addFormMarkedPosts: function (e, btn) {
@@ -130,7 +130,7 @@
         var container = this;
 
         $cms.dom.on(container, 'change', '.js-select-change-form-submit', function (e, select) {
-            select.form.submit();
+            $cms.dom.submit(select.form);
         });
     };
 

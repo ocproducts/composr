@@ -72,7 +72,7 @@
                 message,
                 function () {
                     form.action = actionUrl;
-                    form.submit();
+                    $cms.dom.submit(form);
                 }
             );
             return false;
@@ -90,7 +90,7 @@
     $cms.templates.ecomAdminOrderActions = function ecomAdminOrderActions(params, container) {
         $cms.dom.on(container, 'change', '.js-select-change-action-submit-form', function (e, select) {
             if (select.selectedIndex > 0) {
-                select.form.submit();
+                $cms.dom.submit(select.form);
             }
         });
 
@@ -103,7 +103,7 @@
                     function (result) {
                         if (result) {
                             $cms.ui.disableFormButtons(form);
-                            form.submit();
+                            $cms.dom.submit(form);
                         }
                     }
                 );
@@ -115,7 +115,7 @@
                     function (result) {
                         if (result) {
                             $cms.ui.disableFormButtons(form);
-                            form.submit();
+                            $cms.dom.submit(form);
                         }
                     }
                 );
@@ -139,7 +139,7 @@
     function checkout(formName, checkoutUrl) {
         var form = document.getElementById(formName);
         form.action = checkoutUrl;
-        form.submit();
+        $cms.dom.submit(form);
         return true;
     }
 }(window.$cms));

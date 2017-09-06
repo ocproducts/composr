@@ -16,7 +16,7 @@
             $cms.form.doAjaxFieldTest(url).then(function (valid) {
                 if (valid) {
                     form.removeEventListener('submit', submitCheck);
-                    form.submit();
+                    $cms.dom.submit(form);
                 } else {
                     document.getElementById('captcha').src += '&'; // Force it to reload latest captcha
                     submitBtn.disabled = false;

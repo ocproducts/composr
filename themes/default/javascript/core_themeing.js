@@ -195,7 +195,7 @@
                 function (url) {
                     if (url !== null) {
                         button.form.action = url;
-                        button.form.submit();
+                        $cms.dom.submit(button.form);
                     }
                 },
                 '{!PREVIEW;^}'
@@ -510,7 +510,7 @@
             $cms.form.doAjaxFieldTest(url).then(function (valid) {
                 if (valid) {
                     form.removeEventListener('submit', submitCheck);
-                    form.submit();
+                    $cms.dom.submit(form);
                 } else {
                     submitBtn.disabled = false;
                 }

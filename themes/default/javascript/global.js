@@ -369,7 +369,7 @@
         /**@method*/
         parseJson: parseJson,
         /**@method*/
-        parseJson5: parseJson,
+        parseJson5: parseJson5,
         /**@method*/
         getCsrfToken: getCsrfToken,
         /**@method*/
@@ -1547,6 +1547,14 @@
      * @returns {*}
      */
     function parseJson(source) {
+        return window.JSON.parse(strVal(source));
+    }
+
+    /**
+     * @param source
+     * @returns {*}
+     */
+    function parseJson5(source) {
         return window.JSON5.parse(strVal(source));
     }
 
@@ -1990,7 +1998,7 @@
     }
 
     /**
-     * @param elementOrSelector
+     * @param { string|Element } elementOrSelector
      * @returns { Element }
      */
     function elArg(elementOrSelector) {
@@ -2358,7 +2366,7 @@
             trimmed = data.trim();
 
             if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) {
-                data = parseJson(data);
+                data = parseJson5(data);
             }
 
             // Make sure we set the data so it isn't changed later
@@ -2859,7 +2867,7 @@
         return (focusinSupported && focusEvents[type]) || type;
     }
 
-    function addEvent(el, events, fn, data, selector, delegator, capture) {
+    function addEvent(el, events, fn, selector, delegator, capture) {
         var id = uid(el),
             set = eventHandlers[id] || (eventHandlers[id] = []);
 
@@ -2970,7 +2978,7 @@
             };
         }
 
-        addEvent(el, event, callback, data, selector, delegator || autoRemove);
+        addEvent(el, event, callback, selector, delegator || autoRemove);
     };
 
     /**
@@ -3053,7 +3061,7 @@
      * @param el
      * @param event
      * @param [args]
-     * @returns {*}
+     * @returns {boolean}
      */
     $cms.dom.trigger = function trigger(el, event, args) {
         el = domArg(el);
@@ -3071,6 +3079,26 @@
         } else {
             return el.dispatchEvent(event)
         }
+    };
+
+    /**
+     * @memberof $cms.dom
+     * @param { string|HTMLFormElement } formEl
+     * @param {function} [callback]
+     */
+    $cms.dom.submit = function submit(formEl, callback) {
+        formEl = elArg(formEl);
+        
+        if (callback == null) {
+            var defaultNotPrevented = $cms.dom.trigger(formEl, 'submit');
+
+            if (defaultNotPrevented) {
+                formEl.submit();
+            }
+            return;
+        }
+        
+        $cms.dom.on(formEl, 'submit', callback);
     };
 
     /**
@@ -3981,11 +4009,11 @@
     function createInsertionFunction(funcName) {
         var inside = (funcName === 'prepend') || (funcName === 'append');
 
-        return function insertionFunction(target/*, ...args*/) {  // `args` can be nodes, arrays of nodes and HTML strings
+        return function insertionFunction(target, /*...*/args) {  // `args` can be nodes, arrays of nodes and HTML strings
             target = elArg(target);
+            args = toArray(arguments, 1);
 
-            var args = toArray(arguments, 1),
-                nodes = [],
+            var nodes = [],
                 newParent = inside ? target : target.parentNode;
 
             args.forEach(function(arg) {
@@ -4174,6 +4202,19 @@
         return $cms.dom.append(el, html);
     };
 
+    /**
+     * @memberof $cms.dom
+     * @param el
+     * @param {string|Node|Array} html
+     * @returns { Promise }
+     */
+    $cms.dom.replaceWith = function replaceWith(el, html) {
+        el = elArg(el);
+        
+        var promise = $cms.dom.before(el, html);
+        $cms.dom.remove(el);
+        return promise;
+    };
 
     /**
      * @memberof $cms.dom
@@ -4196,52 +4237,13 @@
      * @param node
      */
     $cms.dom.remove = function remove(node) {
-        if (isArrayLike(node)) {
-            forEach(node, function (item) {
-                $cms.dom.remove(item);
-            });
-        } else {
-            node = nodeArg(node);
+        node = nodeArg(node);
 
-            if (isEl(node)) {
-                $cms.detachBehaviors(node);
-            }
+        // if (isEl(node)) {
+        //     $cms.detachBehaviors(node);
+        // }
 
-            node.parentNode.removeChild(node);
-        }
-    };
-
-    /**
-     * Put some new HTML around the given element
-     * @memberof $cms.dom
-     * @param el
-     * @param html
-     * @returns {*}
-     */
-    $cms.dom.outerHtml = function outerHtml(el, html) {
-        el = elArg(el);
-
-        var parent = el.parentNode,
-            next = el.nextSibling,
-            node;
-
-        if (html === undefined) {
-            return el.outerHTML;
-        }
-
-        if (parent == null) {
-            $cms.fatal('$cms.dom.outerHtml(): Element passed as argument "el" must have a parentNode.');
-            return;
-        }
-
-        parent.removeChild(el);
-
-        $cms.dom.html(el, html);
-
-        while (node = el.firstChild) {
-            el.removeChild(node);
-            parent.insertBefore(node, next);
-        }
+        node.parentNode.removeChild(node);
     };
 
     /**
@@ -4637,44 +4639,45 @@
             return Promise.resolve();
         }
 
-        // Show loading animation
+        
         var loadingWrapper = targetDiv;
-        if ((loadingWrapper.id.indexOf('carousel_') === -1) && ($cms.dom.html(loadingWrapper).indexOf('ajax_loading_block') === -1) && showLoadingAnimation) {
-            var rawAjaxGrowSpot = targetDiv.querySelectorAll('.raw_ajax_grow_spot');
-
-            if ((rawAjaxGrowSpot[0] !== undefined) && append) {
-                // If we actually are embedding new results a bit deeper
-                loadingWrapper = rawAjaxGrowSpot[0];
-            }
-
-            var loadingWrapperInner = document.createElement('div');
-            if (!$cms.dom.isCss(loadingWrapper, 'position', ['relative', 'absolute'])) {
-                if (append) {
-                    loadingWrapperInner.style.position = 'relative';
-                } else {
-                    loadingWrapper.style.position = 'relative';
-                    loadingWrapper.style.overflow = 'hidden'; // Stops margin collapsing weirdness
-                }
-            }
-
-            var loadingImage = $cms.dom.create('img', {
-                className: 'ajax_loading_block',
-                src: $cms.img('{$IMG;,loading}'),
-                css: {
-                    position: 'absolute',
-                    zIndex: 1000,
-                    left: (targetDiv.offsetWidth / 2 - 10) + 'px'
-                }
-            });
-            if (!append) {
-                loadingImage.style.top = (targetDiv.offsetHeight / 2 - 20) + 'px';
-            } else {
-                loadingImage.style.top = 0;
-                loadingWrapperInner.style.height = '30px';
-            }
-            loadingWrapperInner.appendChild(loadingImage);
-            loadingWrapper.appendChild(loadingWrapperInner);
-            window.document.body.style.cursor = 'wait';
+        if (!loadingWrapper.id.includes('carousel_') && !$cms.dom.html(loadingWrapper).includes('ajax_loading_block') && showLoadingAnimation) {
+            document.body.style.cursor = 'wait';
+            // Show loading animation - COMMENTED OUT: Too buggy
+            // var rawAjaxGrowSpot = targetDiv.querySelectorAll('.raw_ajax_grow_spot');
+            //
+            // if ((rawAjaxGrowSpot[0] !== undefined) && append) {
+            //     // If we actually are embedding new results a bit deeper
+            //     loadingWrapper = rawAjaxGrowSpot[0];
+            // }
+            //
+            // var loadingWrapperInner = document.createElement('div');
+            // if (!$cms.dom.isCss(loadingWrapper, 'position', ['relative', 'absolute'])) {
+            //     if (append) {
+            //         loadingWrapperInner.style.position = 'relative';
+            //     } else {
+            //         loadingWrapper.style.position = 'relative';
+            //         loadingWrapper.style.overflow = 'hidden'; // Stops margin collapsing weirdness
+            //     }
+            // }
+            //
+            // var loadingImage = $cms.dom.create('img', {
+            //     className: 'ajax_loading_block',
+            //     src: $cms.img('{$IMG;,loading}'),
+            //     css: {
+            //         position: 'absolute',
+            //         zIndex: 1000,
+            //         left: (targetDiv.offsetWidth / 2 - 10) + 'px'
+            //     }
+            // });
+            // if (!append) {
+            //     loadingImage.style.top = (targetDiv.offsetHeight / 2 - 20) + 'px';
+            // } else {
+            //     loadingImage.style.top = 0;
+            //     loadingWrapperInner.style.height = '30px';
+            // }
+            // loadingWrapperInner.appendChild(loadingImage);
+            // loadingWrapper.appendChild(loadingWrapperInner);
         }
 
         return new Promise(function (resolvePromise) {
@@ -4693,9 +4696,10 @@
             // Remove loading animation if there is one
             var ajaxLoading = targetDiv.querySelector('.ajax_loading_block');
             if (ajaxLoading) {
-                ajaxLoading.parentNode.parentNode.removeChild(ajaxLoading.parentNode);
+                $cms.dom.remove(ajaxLoading.parentNode);
             }
-            window.document.body.style.cursor = '';
+            
+            document.body.style.cursor = '';
 
             // Put in HTML
             showBlockHtml(newHtml, targetDiv, append, inner);
@@ -4724,7 +4728,7 @@
                 if (inner) {
                     $cms.dom.html(targetDiv, newHtml);
                 } else {
-                    $cms.dom.outerHtml(targetDiv, newHtml);
+                    $cms.dom.replaceWith(targetDiv, newHtml);
                 }
             }
         }
@@ -4838,7 +4842,7 @@
             }
         }
 
-        if (callback) {
+        if (callback != null) {
             setTimeout(function () {
                 callback();
             }, 100);
@@ -7032,71 +7036,77 @@
                 this.iframeRestyleTimer = null;
                 return;
             }
-
-            if ($cms.dom.hasIframeAccess(iframe) && iframe.contentWindow.document.body && (iframe.contentWindow.document.body.donePopupTrans === undefined)) {
-                iframe.contentWindow.document.body.style.background = 'transparent';
-                
-                iframe.contentWindow.document.body.classList.add('overlay');
-                iframe.contentWindow.document.body.classList.add('lightbox');
-                
-                // Allow scrolling, if we want it
-                //iframe.scrolling = (_this.scrollbars === false) ? 'no' : 'auto';  Actually, not wanting this now
-
-                // Remove fixed width
-                mainWebsiteInner = iframe.contentWindow.document.getElementById('main_website_inner');
-
-                if (mainWebsiteInner) {
-                    mainWebsiteInner.id = '';
-                }
-
-                // Remove main_website marker
-                mainWebsite = iframe.contentWindow.document.getElementById('main_website');
-                if (mainWebsite) {
-                    mainWebsite.id = '';
-                }
-
-                // Remove popup spacing
-                popupSpacer = iframe.contentWindow.document.getElementById('popup_spacer');
-                if (popupSpacer) {
-                    popupSpacer.id = '';
-                }
-
-                // Set linking scheme
-                baseElement = iframe.contentWindow.document.querySelector('base');
-
-                if (!baseElement) {
-                    baseElement = iframe.contentWindow.document.createElement('base');
-                    if (iframe.contentWindow.document && iframe.contentWindow.document.head) {
-                        iframe.contentWindow.document.head.appendChild(baseElement);
-                    }
-                }
-
-                baseElement.target = this.target;
-
-                // Set frame name
-                if (this.name && (iframe.contentWindow.name != this.name)) {
-                    iframe.contentWindow.name = this.name;
-                }
-
-                var that = this;
-                // Create close function
-                if (iframe.contentWindow.fauxClose === undefined) {
-                    iframe.contentWindow.fauxClose = function fauxClose() {
-                        if (iframe && iframe.contentWindow && (iframe.contentWindow.returnValue !== undefined)) {
-                            that.returnValue = iframe.contentWindow.returnValue;
-                        }
-                        that.option('finished');
-                    };
-                }
-
-                if ($cms.dom.html(iframe.contentWindow.document.body).length > 300) { // Loaded now
-                    iframe.contentWindow.document.body.donePopupTrans = true;
-                }
-            } else {
+            
+            if (!$cms.dom.hasIframeAccess(iframe) || !iframe.contentWindow.document.body || (iframe.contentWindow.document.body.donePopupTrans !== undefined)) {
                 if (hasIframeLoaded(iframe) && !hasIframeOwnership(iframe)) {
                     iframe.scrolling = 'yes';
                     iframe.style.height = '500px';
                 }
+
+                // Handle iframe sizing
+                if (this.height === 'auto') {
+                    this.resetDimensions(this.width, this.height, false);
+                }
+                return;
+            }
+            
+            iframe.contentWindow.document.body.style.background = 'transparent';
+            
+            iframe.contentWindow.document.body.classList.add('overlay');
+            iframe.contentWindow.document.body.classList.add('lightbox');
+            
+            // Allow scrolling, if we want it
+            //iframe.scrolling = (_this.scrollbars === false) ? 'no' : 'auto';  Actually, not wanting this now
+
+            // Remove fixed width
+            mainWebsiteInner = iframe.contentWindow.document.getElementById('main_website_inner');
+
+            if (mainWebsiteInner) {
+                mainWebsiteInner.id = '';
+            }
+
+            // Remove main_website marker
+            mainWebsite = iframe.contentWindow.document.getElementById('main_website');
+            if (mainWebsite) {
+                mainWebsite.id = '';
+            }
+
+            // Remove popup spacing
+            popupSpacer = iframe.contentWindow.document.getElementById('popup_spacer');
+            if (popupSpacer) {
+                popupSpacer.id = '';
+            }
+
+            // Set linking scheme
+            baseElement = iframe.contentWindow.document.querySelector('base');
+
+            if (!baseElement) {
+                baseElement = iframe.contentWindow.document.createElement('base');
+                if (iframe.contentWindow.document && iframe.contentWindow.document.head) {
+                    iframe.contentWindow.document.head.appendChild(baseElement);
+                }
+            }
+
+            baseElement.target = this.target;
+
+            // Set frame name
+            if (this.name && (iframe.contentWindow.name != this.name)) {
+                iframe.contentWindow.name = this.name;
+            }
+
+            var that = this;
+            // Create close function
+            if (iframe.contentWindow.fauxClose === undefined) {
+                iframe.contentWindow.fauxClose = function fauxClose() {
+                    if (iframe && iframe.contentWindow && (iframe.contentWindow.returnValue !== undefined)) {
+                        that.returnValue = iframe.contentWindow.returnValue;
+                    }
+                    that.option('finished');
+                };
+            }
+
+            if ($cms.dom.html(iframe.contentWindow.document.body).length > 300) { // Loaded now
+                iframe.contentWindow.document.body.donePopupTrans = true;
             }
 
             // Handle iframe sizing
@@ -7286,25 +7296,24 @@
             if (xhr.status && okStatusCodes.includes(xhr.status)) {
                 // Process the result
                 // XML result. Handle with a potentially complex call
-                var responseXml = xhr.responseXML;
+                var responseXML = (xhr.responseXML && xhr.responseXML.firstChild) ? xhr.responseXML : null;
 
-                if (xhr.responseText && xhr.responseText.includes('<html')) {
-                    $cms.fatal('$cms.doAjaxRequest() -> retrieveXmlDocument(): Failed', xhr);
+                if ((responseXML == null) && xhr.responseText && xhr.responseText.includes('<html')) {
                     $cms.ui.alert(xhr.responseText, null, '{!ERROR_OCCURRED;^}', true);
                 }
 
                 if (ajaxCallback != null) {
-                    ajaxCallback(responseXml, xhr);
+                    ajaxCallback(responseXML, xhr);
                 }
 
-                if (responseXml != null) {
-                    var messageEl = responseXml.querySelector('message');
+                if (responseXML != null) {
+                    var messageEl = responseXML.querySelector('message');
                     if (messageEl) {
                         // Either an error or a message was returned. :(
                         var message = messageEl.firstChild.textContent;
-                        if (responseXml.querySelector('error')) {
+                        if (responseXML.querySelector('error')) {
                             // It's an error :|
-                            $cms.ui.alert('An error (' + responseXml.querySelector('error').firstChild.textContent + ') message was returned by the server: ' + message);
+                            $cms.ui.alert('An error (' + responseXML.querySelector('error').firstChild.textContent + ') message was returned by the server: ' + message);
                             return;
                         }
 
@@ -8131,7 +8140,7 @@
         // Implementation for [data-submit-on-enter]
         submitOnEnter: function submitOnEnter(e, input) {
             if ($cms.dom.keyPressed(e, 'Enter')) {
-                input.form.submit();
+                $cms.dom.submit(input.form);
                 e.preventDefault();
             }
         },
@@ -8231,7 +8240,7 @@
         // Implementation for [data-change-submit-form]
         changeSubmitForm: function (e, input) {
             if (input.form != null) {
-                input.form.submit();
+                $cms.dom.submit(input.form);
             }
         },
 
@@ -8528,28 +8537,30 @@
 
         /* Staff Actions links */
         staffActionsSelect: function (e, form) {
-            var ob = form.elements['special_page_type'];
-
-            var val = ob.options[ob.selectedIndex].value;
+            var ob = form.elements['special_page_type'],
+                val = ob.options[ob.selectedIndex].value;
+            
             if (val !== 'view') {
                 if (form.elements.cache !== undefined) {
-                    form.elements.cache.value = (val.substring(val.length - 4, val.length) == '.css') ? '1' : '0';
+                    form.elements.cache.value = (val.substring(val.length - 4, val.length) === '.css') ? '1' : '0';
                 }
 
-                var windowName = 'cms_dev_tools' + Math.floor(Math.random() * 10000);
-                var windowOptions;
-                if (val == 'templates') {
+                var windowName = 'cms_dev_tools' + Math.floor(Math.random() * 10000),
+                    windowOptions;
+                
+                if (val === 'templates') {
                     windowOptions = 'width=' + window.screen.availWidth + ',height=' + window.screen.availHeight + ',scrollbars=yes';
 
                     setTimeout(function () { // Do a refresh with magic markers, in a comfortable few seconds
                         var oldUrl = window.location.href;
-                        if (oldUrl.indexOf('keep_template_magic_markers=1') === -1) {
-                            window.location.href = oldUrl + ((oldUrl.indexOf('?') == -1) ? '?' : '&') + 'keep_template_magic_markers=1&cache_blocks=0&cache_comcode_pages=0';
+                        if (!oldUrl.includes('keep_template_magic_markers=1')) {
+                            window.location.href = oldUrl + (oldUrl.includes('?') ? '&' : '?') + 'keep_template_magic_markers=1&cache_blocks=0&cache_comcode_pages=0';
                         }
                     }, 10000);
                 } else {
                     windowOptions = 'width=1020,height=700,scrollbars=yes';
                 }
+                
                 var test = window.open('', windowName, windowOptions);
 
                 if (test) {
@@ -8560,7 +8571,7 @@
 
         inputSuKeypress: function (e, input) {
             if ($cms.dom.keyPressed(e, 'Enter')) {
-                input.form.submit();
+                $cms.dom.submit(input.form);
             }
         },
 
@@ -8657,8 +8668,8 @@
                 $cms.dom.html(div, '<div aria-busy="true" class="loading_box box"><h2>{!LOADING;^}</h2><img id="loading_image" alt="" src="{$IMG_INLINE*;,loading}" /></div>');
                 setTimeout(function () {
                     // Stupid workaround for Google Chrome not loading an image on unload even if in cache
-                    if ($cms.dom.$id('loading_image')) {
-                        $cms.dom.$id('loading_image').src += '';
+                    if ($cms.dom.$('#loading_image')) {
+                        $cms.dom.$('#loading_image').src += '';
                     }
                 }, 100);
                 document.body.appendChild(div);
@@ -8670,7 +8681,6 @@
             /*
              TOOLTIPS FOR THUMBNAILS TO CONTENT, AS DISPLAYED IN CMS ZONE
              */
-
             function applyComcodeTooltip(hook, id, link) {
                 link.addEventListener('mouseout', function () {
                     $cms.ui.deactivateTooltip(link);
@@ -9525,7 +9535,7 @@
                     window.clearInterval(timer);
                     timer = null;
                 }
-                button.form.submit();
+                $cms.dom.submit(button.form);
             } else {
                 button.countdown--;
             }
@@ -9720,7 +9730,7 @@
                 if (!validities.includes(false)) {
                     // All valid!
                     step4Form.removeEventListener('submit', validateSettings);
-                    step4Form.submit();
+                    $cms.dom.submit(step4Form);
                 }
             });
         }
@@ -10028,7 +10038,7 @@
     $cms.templates.jsRefresh = function (params){
         if (!window.location.hash.includes('redirected_once')) {
             window.location.hash = 'redirected_once';
-            document.getElementById(params.formName).submit();
+            $cms.dom.submit(document.getElementById(params.formName));
         } else {
             window.history.go(-2); // We've used back button, don't redirect forward again
         }
@@ -10056,7 +10066,7 @@
                 form.method = 'post';
                 form.action = params.actionUrl;
                 form.target = '_top';
-                form.submit();
+                $cms.dom.submit(form);
             });
         });
 
@@ -10106,6 +10116,8 @@
             }
         }, 4000);
     };
+    
+    $cms.templates.blockMainComcodePageChildren = function blockMainComcodePageChildren() {};
 
     $cms.templates.loginScreen = function loginScreen(params, container) {
         if ((document.activeElement != null) || (document.activeElement !== $cms.dom.$('#password'))) {
@@ -10336,18 +10348,23 @@
     };
 
     $cms.templates.internalizedAjaxScreen = function internalizedAjaxScreen(params, element) {
-        internaliseAjaxBlockWrapperLinks(params.url, element, ['.*'], {}, false, true);
+        var url = strVal(params.url),
+            changeDetectionUrl = strVal(params.changeDetectionUrl),
+            refreshTime = Number(params.refreshTime) || 0,
+            refreshIfChanged = Boolean(params.refreshIfChanged);
+        
+        internaliseAjaxBlockWrapperLinks(url, element, ['.*'], {}, false, true);
 
-        if (params.changeDetectionUrl && (Number(params.refreshTime) > 0)) {
+        if (changeDetectionUrl && (refreshTime > 0)) {
             window.detectInterval = setInterval(function () {
-                detectChange(params.changeDetectionUrl, params.refreshIfChanged, function () {
+                detectChange(changeDetectionUrl, refreshIfChanged, function () {
                     if (!document.getElementById('post') || (document.getElementById('post').value === '')) {
-                        $cms.callBlock(params.url, '', element, false, true, null, true).then(function () {
+                        $cms.callBlock(url, '', element, false, true, null, true).then(function () {
                             detectedChange();
                         });
                     }
                 });
-            }, params.refreshTime * 1000);
+            }, refreshTime * 1000);
         }
     };
 
@@ -10486,8 +10503,8 @@
             els[i].addEventListener('click', function (el) {
                 return function () {
                     var selected = false;
-                    if (el.type !== 'undefined' && el.type === 'checkbox') {
-                        selected = (el.checked && el.value == value) || (!el.checked && '' == value);
+                    if (el.type === 'checkbox') {
+                        selected = (el.checked && (el.value == value)) || (!el.checked && ('' == value));
                     } else {
                         selected = (el.value == value);
                     }
@@ -10575,7 +10592,7 @@
                     if (callback != null) {
                         callback();
                     } else {
-                        form.submit();
+                        $cms.dom.submit(form);
                     }
                 }
             }
@@ -10658,35 +10675,36 @@
             return false;
         }
 
-        var _pagination = wrapper.querySelectorAll('.pagination');
+        var paginations = wrapper.querySelectorAll('.pagination'),
+            paginationLoadMore;
 
-        if (_pagination.length === 0) {
+        if (paginations.length === 0) {
             return false;
         }
 
-        var moreLinks = [], foundNewLinks = null, _i, pagination, m;
+        var moreLinks = [], foundNewLinks = null, z, pagination, m;
 
-        for (_i = 0; _i < _pagination.length; _i++) {
-            pagination = _pagination[_i];
+        for (z = 0; z < paginations.length; z++) {
+            pagination = paginations[z];
             if (pagination.style.display !== 'none') {
                 // Remove visibility of pagination, now we've replaced with AJAX load more link
                 var paginationParent = pagination.parentNode;
                 pagination.style.display = 'none';
                 var numNodeChildren = 0;
                 for (var i = 0; i < paginationParent.childNodes.length; i++) {
-                    if (paginationParent.childNodes[i].nodeName != '#text') {
+                    if (paginationParent.childNodes[i].nodeName !== '#text') {
                         numNodeChildren++;
                     }
                 }
-                if (numNodeChildren == 0) { // Remove empty pagination wrapper
+                if (numNodeChildren === 0) { // Remove empty pagination wrapper
                     paginationParent.style.display = 'none';
                 }
 
                 // Add AJAX load more link before where the last pagination control was
                 // Remove old pagination_load_more's
-                var paginationLoadMore = wrapper.querySelectorAll('.pagination_load_more');
-                if (paginationLoadMore.length > 0) {
-                    paginationLoadMore[0].parentNode.removeChild(paginationLoadMore[0]);
+                paginationLoadMore = wrapper.querySelector('.pagination_load_more');
+                if (paginationLoadMore) {
+                    paginationLoadMore.parentNode.removeChild(paginationLoadMore);
                 }
 
                 // Add in new one
@@ -10702,16 +10720,16 @@
                     };
                 }(moreLinks)); // Click link -- load
                 loadMoreLink.appendChild(loadMoreLinkA);
-                _pagination[_pagination.length - 1].parentNode.insertBefore(loadMoreLink, _pagination[_pagination.length - 1].nextSibling);
+                paginations[paginations.length - 1].parentNode.insertBefore(loadMoreLink, paginations[paginations.length - 1].nextSibling);
 
                 moreLinks = pagination.getElementsByTagName('a');
-                foundNewLinks = _i;
+                foundNewLinks = z;
             }
         }
-        for (_i = 0; _i < _pagination.length; _i++) {
-            pagination = _pagination[_i];
+        for (z = 0; z < paginations.length; z++) {
+            pagination = paginations[z];
             if (foundNewLinks != null) {// Cleanup old pagination
-                if (_i != foundNewLinks) {
+                if (z != foundNewLinks) {
                     var _moreLinks = pagination.getElementsByTagName('a');
                     var numLinks = _moreLinks.length;
                     for (var i = numLinks - 1; i >= 0; i--) {
@@ -10731,15 +10749,15 @@
         var rel, foundRel = false;
         for (var k = 0; k < moreLinks.length; k++) {
             rel = moreLinks[k].getAttribute('rel');
-            if (rel && rel.indexOf('next') !== -1) {
+            if (rel && rel.includes('next')) {
                 foundRel = true;
             }
         }
         if (!foundRel) { // Ah, no more scrolling possible
             // Remove old pagination_load_more's
-            var paginationLoadMore = wrapper.querySelectorAll('.pagination_load_more');
-            if (paginationLoadMore.length > 0) {
-                paginationLoadMore[0].parentNode.removeChild(paginationLoadMore[0]);
+            paginationLoadMore = wrapper.querySelector('.pagination_load_more');
+            if (paginationLoadMore) {
+                paginationLoadMore.parentNode.removeChild(paginationLoadMore);
             }
 
             return;
@@ -10814,8 +10832,8 @@
      */
     function internaliseAjaxBlockWrapperLinks(urlStem, blockElement, lookFor, extraParams, append, formsToo, scrollToTop) {
         urlStem = strVal(urlStem);
-        lookFor || (lookFor = []);
-        extraParams || (extraParams = []);
+        lookFor = arrVal(lookFor);
+        extraParams || (extraParams = {});
         append = !!append;
         formsToo = !!formsToo;
         scrollToTop = boolVal(scrollToTop, true);
@@ -10837,27 +10855,23 @@
         var targets = [];
         for (var i = 0; i < linkWrappers.length; i++) {
             var linkWrapper = linkWrappers[i],
-                _links = linkWrapper.getElementsByTagName('a');
+                links = $cms.dom.$$(linkWrapper, 'a');
 
-            for (var j = 0; j < _links.length; j++) {
-                targets.push(_links[j]);
-            }
+            targets = targets.concat(links);
 
             if (formsToo) {
-                var forms = linkWrapper.getElementsByTagName('form');
+                var forms = $cms.dom.$$(linkWrapper, 'form');
 
-                for (var k = 0; k < forms.length; k++) {
-                    targets.push(forms[k]);
-                }
+                targets = targets.concat(forms);
 
                 if (linkWrapper.localName === 'form') {
                     targets.push(linkWrapper);
                 }
             }
         }
-
+        
         targets.forEach(function (target) {
-            if (!target.target || (target.target !== '_self')|| (target.href && target.getAttribute('href').startsWith('#')) || (target.action && target.getAttribute('action').startsWith('#'))) {
+            if ((target.target !== '_self') || (target.href && target.getAttribute('href').startsWith('#')) || (target.action && target.getAttribute('action').startsWith('#'))) {
                 return; // (continue)
             }
 
@@ -10878,13 +10892,13 @@
             for (j = 0; j < lookFor.length; j++) {
                 var matches = href.match(new RegExp('[&\?](' + lookFor[j] + ')=([^&]*)'));
                 if (matches) {
-                    urlStub += (urlStem.indexOf('?') === -1) ? '?' : '&';
+                    urlStub += urlStem.includes('?') ? '&' : '?';
                     urlStub += matches[1] + '=' + matches[2];
                 }
             }
             for (key in extraParams) {
-                urlStub += (urlStem.indexOf('?') === -1) ? '?' : '&';
-                urlStub += key + '=' + encodeURIComponent(extraParams[key]);
+                urlStub += urlStem.includes('?') ? '&' : '?';
+                urlStub += key + '=' + encodeURIComponent(strVal(extraParams[key]));
             }
 
             // Any POST parameters?
@@ -10902,7 +10916,7 @@
                             }
                             postParams += param;
                         } else {
-                            urlStub += (urlStem.indexOf('?') === -1) ? '?' : '&';
+                            urlStub += urlStem.includes('?') ? '&' : '?';
                             urlStub += param;
                         }
                     }
@@ -10912,7 +10926,7 @@
             if (window.history && window.history.pushState) {
                 try {
                     window.hasJsState = true;
-                    window.history.pushState({js: true}, document.title, href.replace('&ajax=1', '').replace(/&zone=[{$URL_CONTENT_REGEXP_JS}]+/, ''));
+                    window.history.pushState({ js: true }, document.title, href.replace(/[&\?]ajax=1/, '').replace(/[&\?]zone=[{$URL_CONTENT_REGEXP_JS}]+/, ''));
                 } catch (ignore) {
                     // Exception could have occurred due to cross-origin error (e.g. "Failed to execute 'pushState' on 'History':
                     // A history state object with URL 'https://xxx' cannot be created in a document with origin 'http://xxx'")

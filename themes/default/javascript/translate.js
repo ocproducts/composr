@@ -23,7 +23,7 @@ function translate(name, old, langFrom, langTo) {
             form.setAttribute('target', 'iframe_' + name);
             var inputText = document.getElementById('hack_input');
             inputText.value = old;
-            form.submit();
+            $cms.dom.submit(form);
         }
     } else {
         window.translating = name;

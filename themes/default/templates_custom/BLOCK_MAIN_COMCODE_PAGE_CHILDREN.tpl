@@ -6,6 +6,7 @@
 	{$SET-,has_comcode_page_children_block,1}
 
 	{+START,IF_ARRAY_NON_EMPTY,CHILDREN}
+	<div data-tpl="blockMainComcodePageChildren">
 		<h2>{!PAGES}</h2>
 		{+START,LOOP,CHILDREN}
 			<div class="box"><div class="box_inner">
@@ -27,6 +28,7 @@
 				</p>
 			</div></div>
 		{+END}
+	</div>
 	{+END}
 
 	{$SET,done_includes,1}

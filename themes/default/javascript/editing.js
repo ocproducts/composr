@@ -387,8 +387,8 @@
             var testDiv = document.createElement('div');
             document.body.appendChild(testDiv);
             testDiv.className = 'wysiwyg_toolbar_color_finder';
-            var matches;
-            var wysiwygColor = window.getComputedStyle(testDiv).getPropertyValue('color');  // NB: Used by WYSIWYG_SETTINGS.js
+            var matches,
+                wysiwygColor = window.getComputedStyle(testDiv).getPropertyValue('color');  // NB: Used by WYSIWYG_SETTINGS.js
             testDiv.parentNode.removeChild(testDiv);
             matches = wysiwygColor.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/, matches);
             if (matches) {
@@ -723,9 +723,13 @@
         return insertTextboxOpener(element, comcode);
     }
 
+    /**
+     * @param { Element } element
+     * @return {string}
+     */
     function getTextbox(element) {
         if ($cms.form.isWysiwygField(element)) {
-            var ret = window.wysiwygEditors[element.id].getData();
+            var ret = strVal(window.wysiwygEditors[element.id].getData());
             if ((ret === '\n') || (ret === '<br />')) {
                 ret = '';
             }
@@ -734,6 +738,11 @@
         return element.value;
     }
 
+    /**
+     * @param { Element } element
+     * @param {string} text
+     * @param {string} [html]
+     */
     function setTextbox(element, text, html) {
         if ($cms.form.isWysiwygField(element)) {
             if (html === undefined) {

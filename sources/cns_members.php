@@ -165,18 +165,22 @@ function cns_get_all_custom_fields_match($groups = null, $public_view = null, $o
         }
         if ($show_on_join_form !== null) {
             $where .= ' AND (cf_show_on_join_form=' . strval($show_on_join_form);
-            foreach ($adjusted_config_options as $config_option => $config_value) {
-                if ($config_value == '1') {
-                    if (preg_match('#^field_\d+$#', $config_option) != 0) {
-                        $where .= ' OR id=' . substr($config_option, strlen('field_'));
+            if (isset($adjusted_config_options)) {
+                foreach ($adjusted_config_options as $config_option => $config_value) {
+                    if ($config_value == '1') {
+                        if (preg_match('#^field_\d+$#', $config_option) != 0) {
+                            $where .= ' OR id=' . substr($config_option, strlen('field_'));
+                        }
                     }
                 }
             }
             $where .= ')';
-            foreach ($adjusted_config_options as $config_option => $config_value) {
-                if ($config_value == '0') {
-                    if (preg_match('#^field_\d+$#', $config_option) != 0) {
-                        $where .= ' AND id<>' . substr($config_option, strlen('field_'));
+            if (isset($adjusted_config_options)) {
+                foreach ($adjusted_config_options as $config_option => $config_value) {
+                    if ($config_value == '0') {
+                        if (preg_match('#^field_\d+$#', $config_option) != 0) {
+                            $where .= ' AND id<>' . substr($config_option, strlen('field_'));
+                        }
                     }
                 }
             }

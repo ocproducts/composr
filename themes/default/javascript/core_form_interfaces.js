@@ -29,9 +29,9 @@
             };
         },
 
-        workaround: function (e, target) {
+        workaround: function (e, form) {
             e.preventDefault();
-            $cms.form.modSecurityWorkaround(target);
+            $cms.form.modSecurityWorkaround(form);
         },
 
         toggleSubordFields: function (e, target) {
@@ -257,7 +257,7 @@
                 separatePreview = !!this.params.separatePreview;
 
             if ($cms.form.doFormPreview(e, form, window.formPreviewUrl, separatePreview) && !window.justCheckingRequirements) {
-                form.submit();
+                $cms.dom.submit(form);
             }
         },
 
@@ -272,25 +272,25 @@
                 window.location = this.backUrl;
             } else {
                 btn.form.action = this.backUrl;
-                btn.form.submit();
+                $cms.dom.submit(btn.form);
             }
         },
 
         fixFormEnterKey: function () {
-            var form = this.form;
-            var submit = document.getElementById('submit_button');
-            var inputs = form.getElementsByTagName('input');
-            var type;
-            var types = ['text', 'password', 'color', 'email', 'number', 'range', 'search',  'tel', 'url'];
+            var form = this.form,
+                submitBtn = document.getElementById('submit_button'),
+                inputs = form.getElementsByTagName('input'),
+                type, types = ['text', 'password', 'color', 'email', 'number', 'range', 'search',  'tel', 'url'];
             
             for (var i = 0; i < inputs.length; i++) {
                 type = inputs[i].type;
-                if (types.includes(type) && submit.onclick && !inputs[i].onkeypress)
+                if (types.includes(type) && submitBtn && submitBtn.onclick && !inputs[i].onkeypress) {
                     inputs[i].onkeypress = function (event) {
                         if ($cms.dom.keyPressed(event, 'Enter')) {
-                            submit.onclick(event);
+                            submitBtn.onclick(event);
                         }
                     };
+                }
             }
         }
     });
@@ -650,40 +650,36 @@
         });
     };
 
-    $cms.templates.formScreenInputList = function formScreenInputList(params) {
-        var selectEl, select2Options, imageSources;
+    $cms.templates.formScreenInputList = function formScreenInputList(params, selectEl) {
+        var select2Options;
 
         if (params.inlineList) {
             return;
         }
 
-        function formatSelectSimple(o) {
-            if (!o.id) { // optgroup
-                return o.text;
-            }
-            return '<span title="' + $cms.filter.html(o.element[0].title) + '">' + $cms.filter.html(o.text) + '</span>';
-        }
-
-        selectEl = $cms.dom.$id(params.name);
         select2Options = {
             dropdownAutoWidth: true,
-            formatResult: formatSelectSimple,
+            formatResult: (params.images === undefined) ? formatSelectSimple : formatSelectImage,
             containerCssClass: 'wide_field'
         };
-
-        if (params.images !== undefined) {
-            select2Options.formatResult = formatSelectImage;
-            imageSources = JSON.parse(params.imageSources || '{}');
-        }
 
         if (window.jQuery && (window.jQuery.fn.select2 != null) && (selectEl.options.length > 20)/*only for long lists*/ && (!$cms.dom.html(selectEl.options[1]).match(/^\d+$/)/*not for lists of numbers*/)) {
             window.jQuery(selectEl).select2(select2Options);
         }
 
+        function formatSelectSimple(opt) {
+            if (!opt.id) { // optgroup
+                return opt.text;
+            }
+            return '<span title="' + $cms.filter.html(opt.element[0].title) + '">' + $cms.filter.html(opt.text) + '</span>';
+        }
+        
         function formatSelectImage(opt) {
             if (!opt.id) {
                 return opt.text; // optgroup
             }
+            
+            var imageSources = JSON.parse(strVal(params.imageSources, '{}'));
 
             for (var imageName in imageSources) {
                 if (opt.id === imageName) {
@@ -713,15 +709,13 @@
             if ($cms.dom.keyPressed(event, 'Enter')) {
                 return clickFunc(event);
             }
-
-            return null;
         };
 
         function clickFunc(event) {
             choosePicture('j_' + stem, img, name, event);
 
             if (window.mainFormVerySimple !== undefined) {
-                form.submit();
+                $cms.dom.submit(form);
             }
 
             event.stopPropagation();
@@ -741,7 +735,7 @@
             deselectAltUrl(this.form);
 
             if (window.mainFormVerySimple !== undefined) {
-                this.form.submit();
+                $cms.dom.submit(this.form);
             }
             event.stopPropagation();
         };
@@ -802,7 +796,7 @@
                 return;
             }
 
-            el.form.submit();
+            $cms.dom.submit(el.form);
         });
     };
 
@@ -1304,7 +1298,7 @@
         document.body.appendChild(tempForm);
 
         setTimeout(function () {
-            tempForm.submit();
+            $cms.dom.submit(tempForm.form);
             tempForm.parentNode.removeChild(tempForm);
         });
 
@@ -1436,7 +1430,7 @@
             if (iframe) {
                 $cms.dom.animateFrameLoad(iframe, 'iframe_under');
             }
-            formCatSelector.submit();
+            $cms.dom.submit(formCatSelector);
         }
     }
 
@@ -1688,7 +1682,9 @@
                         if (!field) return;
 
                         var radioButton = document.getElementById('choose_' + field.name.replace(/\[\]$/, ''));
-                        if (!radioButton) radioButton = document.getElementById('choose_' + field.name.replace(/\_\d+$/, '_'));
+                        if (!radioButton) {
+                            radioButton = document.getElementById('choose_' + field.name.replace(/\_\d+$/, '_'));
+                        }
 
                         $cms.form.setLocked(field, isLocked, chosenField);
                         if (somethingRequired) {

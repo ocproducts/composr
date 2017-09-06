@@ -35,7 +35,7 @@
 
         if (timeout > 0) {
             setTimeout(function () {
-                form.submit();
+                $cms.dom.submit(form);
             }, timeout * 1000);
 
             setInterval(function () {

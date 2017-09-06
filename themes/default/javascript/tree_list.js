@@ -40,10 +40,10 @@
         this.name = strVal(params.name);
         this.ajaxUrl = strVal(params.ajaxUrl);
         this.options = strVal(params.options);
-        this.multiSelection = !!params.multiSelection;
+        this.multiSelection = Boolean(params.multiSelection);
         this.tabindex = strVal(params.tabindex, null);
-        this.allNodesSelectable = !!params.allNodesSelectable;
-        this.useServerId = !!params.useServerId;
+        this.allNodesSelectable = Boolean(params.allNodesSelectable);
+        this.useServerId = Boolean(params.useServerId);
 
         $cms.dom.html(this.el, '<div class="ajax_loading vertical_alignment"><img src="' + $cms.img('{$IMG*;^,loading}') + '" alt="" /> <span>{!LOADING;^}</span></div>');
 
@@ -56,8 +56,8 @@
         url += '&options=' + this.options;
         url += '&default=' + encodeURIComponent($cms.dom.$id(this.name).value);
         
-        $cms.doAjaxRequest(url, function (responseXml, xhr) {
-            that.response(responseXml, xhr);
+        $cms.doAjaxRequest(url).then(function (xhr) {
+            that.response(xhr);
         });
 
         $cms.dom.on(document.documentElement, 'mousemove', function (event) {
@@ -74,6 +74,7 @@
 
         /* Go through our tree list looking for a particular XML node */
         getElementByIdHack: function getElementByIdHack(id, type, ob, serverid) {
+            id = strVal(id);
             type = strVal(type, 'c');
             ob = ob || this.treeListData;
             serverid = !!serverid;
@@ -88,8 +89,10 @@
             return null;
         },
 
-        response: function response(responseXml, xhr, expandingId) {
-            var ajaxResult = responseXml && responseXml.querySelector('result');
+        response: function response(xhr, expandingId) {
+            var ajaxResult = xhr.responseXML && xhr.responseXML.querySelector('result');
+
+            expandingId = strVal(expandingId);
             
             if (!ajaxResult) {
                 return;
@@ -100,7 +103,7 @@
             } catch (e) {}
 
             var i, xml, tempNode, html;
-            if (!expandingId) { // Root
+            if (expandingId === '') { // Root
                 html = $cms.dom.$id('tree_list__root_' + this.name);
                 $cms.dom.html(html, '');
 
@@ -136,7 +139,7 @@
             $cms.dom.fadeIn(html);
             $cms.dom.toggle(html, !!xml.firstElementChild);
 
-            $cms.forEach(xml.children, function (node) {
+            arrVal(xml.children).forEach(function (node) {
                 var nodeSelfWrap, nodeSelf, el, label, htmlNode, expanding;
 
                 // Special handling of 'options' nodes, inject new options
@@ -204,8 +207,8 @@
                     if (escapedTitle == '') {
                         escapedTitle = '{!NA_EM;^}';
                     }
-                    var description = '';
-                    var descriptionInUse = '';
+                    var description = '',
+                        descriptionInUse = '';
                     if (node.getAttribute('description_html')) {
                         description = node.getAttribute('description_html');
                         descriptionInUse = $cms.filter.html(description);
@@ -215,8 +218,8 @@
                         }
                         descriptionInUse = escapedTitle + ': {!TREE_LIST_SELECT*;^}' + description + ((node.getAttribute('serverid') == '') ? (' (' + $cms.filter.html(node.getAttribute('serverid')) + ')') : '');
                     }
-                    var imgUrl = $cms.img('{$IMG;,1x/treefield/category}');
-                    var imgUrl2 = $cms.img('{$IMG;,2x/treefield/category}');
+                    var imgUrl = $cms.img('{$IMG;,1x/treefield/category}'),
+                        imgUrl2 = $cms.img('{$IMG;,2x/treefield/category}');
                     if (node.getAttribute('img_url')) {
                         imgUrl = node.getAttribute('img_url');
                         imgUrl2 = node.getAttribute('img_url_2');
@@ -307,8 +310,8 @@
                         escapedTitle = '{!NA_EM;^}';
                     }
 
-                    var description = '';
-                    var descriptionInUse = '';
+                    var description = '',
+                        descriptionInUse = '';
                     if (node.getAttribute('description_html')) {
                         description = node.getAttribute('description_html');
                         descriptionInUse = $cms.filter.html(description);
@@ -321,8 +324,8 @@
 
                     // Render self
                     initiallyExpanded = false;
-                    var imgUrl = $cms.img('{$IMG;,1x/treefield/entry}');
-                    var imgUrl2 = $cms.img('{$IMG;,2x/treefield/entry}');
+                    var imgUrl = $cms.img('{$IMG;,1x/treefield/entry}'),
+                        imgUrl2 = $cms.img('{$IMG;,2x/treefield/entry}');
                     if (node.getAttribute('img_url')) {
                         imgUrl = node.getAttribute('img_url');
                         imgUrl2 = node.getAttribute('img_url_2');
@@ -476,13 +479,13 @@
 
                 if ((xmlNode.getAttribute('has_children') === 'true') && !xmlNode.firstElementChild) {
                     var url = $cms.baseUrl(this.ajaxUrl + '&id=' + encodeURIComponent(realClickedId) + '&options=' + this.options + '&default=' + encodeURIComponent(element.value));
-                    var ob = this;
-                    $cms.doAjaxRequest(url, function (responseXml, xhr) {
+                    var that = this;
+                    $cms.doAjaxRequest(url).then(function (xhr) {
                         $cms.dom.empty(htmlNode);
-                        ob.response(responseXml, xhr, clickedId);
+                        that.response(xhr, clickedId);
                     });
                     $cms.dom.html(htmlNode, '<div aria-busy="true" class="vertical_alignment"><img src="' + $cms.img('{$IMG*;,loading}') + '" alt="" /> <span>{!LOADING;^}</span></div>');
-                    var container = $cms.dom.$id('tree_list__root_' + ob.name);
+                    var container = $cms.dom.$id('tree_list__root_' + that.name);
                     if (automated && container && (container.style.overflowY === 'auto')) {
                         setTimeout(function () {
                             container.scrollTop = $cms.dom.findPosY(htmlNode) - 20;
@@ -532,9 +535,10 @@
 
             if (!assumeCtrl && event.shiftKey && this.multiSelection) {
                 // We're holding down shift so we need to force selection of everything bounded between our last click spot and here
-                var allLabels = $cms.dom.$id('tree_list__root_' + this.name).getElementsByTagName('label');
-                var posLast = -1;
-                var posUs = -1;
+                var allLabels = $cms.dom.$id('tree_list__root_' + this.name).getElementsByTagName('label'),
+                    posLast = -1,
+                    posUs = -1;
+                
                 if (this.lastClicked == null) {
                     this.lastClicked = allLabels[0];
                 }
@@ -561,7 +565,7 @@
                         thatType = 'e';
                     }
 
-                    if (allLabels[i].getAttribute('id').substr(5 + this.name.length, thatType.length) == thatType) {
+                    if (allLabels[i].getAttribute('id').substr(5 + this.name.length, thatType.length) === thatType) {
                         thatSelectedId = (this.useServerId) ? allLabels[i].getAttribute('serverid') : allLabels[i].getAttribute('id').substr(7 + this.name.length);
                         thatXmlNode = this.getElementByIdHack(thatSelectedId, thatType);
                         if ((thatXmlNode.getAttribute('selectable') === 'true') || (this.allNodesSelectable)) {

@@ -174,13 +174,13 @@
                         currentListForCopy.disabled = false;
                     }, 200);
 
-                    return !!(event && event.target && event.stopPropagation && (event.stopPropagation() === undefined));
+                    return true;
                 }
                 if (!event.shiftKey && $cms.dom.keyPressed(event, ['ArrowUp', 'ArrowDown'])) {
                     if (event.cancelable) {
                         event.preventDefault();
                     }
-                    return !!(event && event.target && event.stopPropagation && (event.stopPropagation() === undefined));
+                    return true;
                 }
                 return null;
             };
@@ -190,7 +190,7 @@
                     if (event.cancelable) {
                         event.preventDefault();
                     }
-                    return !!(event && event.target && event.stopPropagation && (event.stopPropagation() === undefined));
+                    return true;
                 }
                 return null;
             };
@@ -199,7 +199,7 @@
                     if (event.cancelable) {
                         event.preventDefault();
                     }
-                    return !!(event && event.target && event.stopPropagation && (event.stopPropagation() === undefined));
+                    return true;
                 }
                 return null;
             };
@@ -231,7 +231,7 @@
                         }
                     }
                     list.options[list.selectedIndex].selected = true;
-                    return !!(event && event.target && event.stopPropagation && (event.stopPropagation() === undefined));
+                    return true;
                 }
 
                 if (!event.shiftKey && $cms.dom.keyPressed(event, 'ArrowUp')) { // UP
@@ -253,7 +253,7 @@
                         }
                     }
                     list.options[list.selectedIndex].selected = true;
-                    return !!(event && event.target && event.stopPropagation && (event.stopPropagation() === undefined));
+                    return true;
                 }
                 return null;
             }

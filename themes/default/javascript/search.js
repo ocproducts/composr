@@ -63,7 +63,7 @@
         },
         submitPrimaryForm: function (e) {
             if ($cms.dom.keyPressed(e, 'Enter')) {
-                this.primaryFormEl.submit();
+                $cms.dom.submit(this.primaryFormEl);
             }
         },
         updateAjaxSearchList: function (e, input) {

@@ -107,7 +107,7 @@ Martin Conte Mac Donell <Reflejo@gmail.com>
 
 		var readCookie = function(){
 			var c = document.cookie.split(';');
-			for(i in c){
+			for(var i in c){
 				if (typeof c[i].indexOf=='undefined') continue;
 				if ((pos = c[i].indexOf("openid_prov=")) != -1) 
 					return $.trim(c[i].slice(pos + 12));
@@ -132,7 +132,7 @@ Martin Conte Mac Donell <Reflejo@gmail.com>
 				inputarea.text(settings.txt.title);
 				if (!tidx) {
 					inputarea.fadeOut();
-					form.submit();
+                    $cms.dom.submit(form);
 				}
 			}
 			return false;

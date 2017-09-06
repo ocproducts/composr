@@ -110,7 +110,7 @@
 
             ajaxFormSubmitAdminHeadless(form, blockName, map).then((function (submitForm) {
                 if (submitForm) {
-                    form.submit();
+                    $cms.dom.submit(form);
                 }
             }).bind(this));
         }
@@ -153,7 +153,7 @@
 
             ajaxFormSubmitAdminHeadless(this.formEl, blockName, map).then((function (submitForm) {
                 if (submitForm) {
-                    this.formEl.submit();
+                    $cms.dom.submit(this.formEl);
                 }
             }).bind(this));
         }
@@ -188,7 +188,7 @@
 
             ajaxFormSubmitAdminHeadless(this.formEl, blockName, map).then((function (submitForm) {
                 if (submitForm) {
-                    this.formEl.submit();
+                    $cms.dom.submit(this.formEl);
                 }
             }).bind(this));
         },

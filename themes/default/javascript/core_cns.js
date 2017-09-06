@@ -79,7 +79,7 @@
     $cms.templates.blockMainJoinDone = function blockMainJoinDone(params, container) {
         $cms.dom.on(container, 'submit', '.js-submit-ga-track-dl-whitepaper', function (e, form) {
             $cms.gaTrack(null, '{!cns:DOWNLOAD_WHITEPAPER;}', null, function () {
-                form.submit();
+                $cms.dom.submit(form);
             });
             e.preventDefault();
         });
@@ -158,7 +158,7 @@
             $cms.form.doAjaxFieldTest(url).then(function (valid) {
                 if (valid) {
                     form.removeEventListener('submit', submitCheck);
-                    form.submit();
+                    $cms.dom.submit(form);
                 } else {
                     submitBtn.disabled = false;
                 }
@@ -176,7 +176,7 @@
             $cms.form.doAjaxFieldTest(url).then(function (valid) {
                 if (valid) {
                     form.removeEventListener('submit', submitCheck);
-                    form.submit();
+                    $cms.dom.submit(form);
                 } else {
                     submitBtn.disabled = false;
                 }
@@ -240,7 +240,7 @@
                     $cms.form.doAjaxFieldTest(url, 'password=' + encodeURIComponent(form.elements['edit_password'].value)).then(function (valid) {
                         if (valid) {
                             form.removeEventListener('submit', submitCheck);
-                            form.submit();
+                            $cms.dom.submit(form);
                         } else {
                             submitBtn.disabled = false;
                         }
@@ -440,7 +440,7 @@
                 if (!validities.includes(false)) {
                     // All valid!
                     form.removeEventListener('submit', submitCheck);
-                    form.submit();
+                    $cms.dom.submit(form);
                 } else {
                     submitBtn.disabled = false;
                 }

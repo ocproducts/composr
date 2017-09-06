@@ -198,7 +198,7 @@
                 $cms.ui.confirm('{!Q_SURE=;}', function (result) {
                     if (result) {
                         $cms.ui.disableButton(btn);
-                        btn.form.submit();
+                        $cms.dom.submit(btn.form);
                     }
                 });
             }

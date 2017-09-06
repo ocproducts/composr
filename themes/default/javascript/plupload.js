@@ -10612,7 +10612,7 @@
                     form.setAttribute("action", meta.url);
 
                     createIframe();
-                    form.submit();
+                    $cms.dom.submit(form);
                     target.trigger('loadstart');
                 },
 
@@ -13237,22 +13237,23 @@ FileProgress.prototype.disappear = function () {
     window.html5UploadEventDragOver = html5UploadEventDragOver;
     window.html5UploadEventDrop = html5UploadEventDrop;
     
-    function onPluploadLoaded(ob) {
-        if (ob.originalClickHandler != null) { // Called when Flash redisplayed after being obscured, so we need to return to avoid a recursion error
+    function onPluploadLoaded(plObj) {
+        if (plObj.originalClickHandler != null) { // Called when Flash redisplayed after being obscured, so we need to return to avoid a recursion error
             return;
         }
 
         window.mOxie.Mime.addMimeType('image/vnd.microsoft.icon,ico');
 
-        var btnSubmit = document.getElementById(ob.settings.btn_submit_id);
+        var btnSubmit = document.getElementById(plObj.settings.btn_submit_id);
         var oldOnclick = btnSubmit.onclick;
+        
         if (!oldOnclick) {
             oldOnclick = function () {};
         }
-        ob.originalClickHandler = oldOnclick;
+        plObj.originalClickHandler = oldOnclick;
         btnSubmit.onclick = function (event, _ob, form, recurse) {
-            ob.originalClickHandler = oldOnclick;
-            return beginFormUploading(event, ob, recurse);
+            plObj.originalClickHandler = oldOnclick;
+            return beginFormUploading(event, plObj, recurse);
         };
 
         // Preview button too
@@ -13260,34 +13261,34 @@ FileProgress.prototype.disappear = function () {
         if (btnSubmit2) {
             var oldOnclick2 = btnSubmit2.onclick;
             btnSubmit2.onclick = function (event, _ob, form, recurse) {
-                ob.originalClickHandler = oldOnclick2;
-                return beginFormUploading(event, ob, recurse);
+                plObj.originalClickHandler = oldOnclick2;
+                return beginFormUploading(event, plObj, recurse);
             };
         }
     }
 
 
     // Called by the submit button to start the upload
-    function beginFormUploading(e, ob, recurse) {
+    function beginFormUploading(e, plObj, recurse) {
         recurse = boolVal(recurse);
 
         window.justCheckingRequirements = true;
-        ob.submitting = true;
+        plObj.submitting = true;
 
-        var btnSubmit = document.getElementById(ob.settings.btn_submit_id),
-            filenameField = document.getElementById(ob.settings.txtFileName);
+        var btnSubmit = document.getElementById(plObj.settings.btn_submit_id),
+            filenameField = document.getElementById(plObj.settings.txtFileName);
 
         if (filenameField.value === '') {
             var ret = true;
-            if (ob.settings.required) {
-                var element = document.getElementById(ob.settings.txtName);
+            if (plObj.settings.required) {
+                var element = document.getElementById(plObj.settings.txtName);
                 if (element) {
                     $cms.form.setFieldError(element, '{!REQUIRED_NOT_FILLED_IN^;}');
                 }
                 ret = false;
             }
 
-            if (!ob.originalClickHandler) {
+            if (!plObj.originalClickHandler) {
                 if (btnSubmit.form.onsubmit && (false === btnSubmit.form.onsubmit())) {
                     return false;
                 }
@@ -13300,7 +13301,7 @@ FileProgress.prototype.disappear = function () {
                 return true;
             }
 
-            var ret2 = (ob.originalClickHandler(e, ob, btnSubmit.form, true) !== false);
+            var ret2 = (plObj.originalClickHandler(e, plObj, btnSubmit.form, true) !== false);
             if (ret2 && !ret) {
                 $cms.ui.alert('{!IMPROPERLY_FILLED_IN^;}');
             }
@@ -13313,12 +13314,11 @@ FileProgress.prototype.disappear = function () {
         }
 
         if (e) {
-            e.stopPropagation();
             e.preventDefault();
         }
 
         var allDone = true;
-        var fileIdField = document.getElementById(ob.settings.hidFileID);
+        var fileIdField = document.getElementById(plObj.settings.hidFileID);
         if (fileIdField.value === '-1') {
             allDone = false;
         }
@@ -13331,13 +13331,14 @@ FileProgress.prototype.disappear = function () {
         if (!allDone) {
             $cms.ui.disableSubmitAndPreviewButtons(true);
 
-            ob.start();
+            plObj.start();
             $cms.dom.smoothScroll($cms.dom.findPosY(filenameField, true));
 
-            if (btnSubmit.form.offsetHeight > $cms.dom.getWindowHeight()) // If possibly cannot see upload progress bars
+            if (btnSubmit.form.offsetHeight > $cms.dom.getWindowHeight()) {// If possibly cannot see upload progress bars
                 $cms.ui.alert('{!javascript:PLEASE_WAIT_WHILE_UPLOADING;^}');
+            }
         } else {
-            if (!ob.originalClickHandler) {
+            if (!plObj.originalClickHandler) {
                 if (btnSubmit.form.onsubmit && (false === btnSubmit.form.onsubmit())) {
                     return false;
                 }
@@ -13347,7 +13348,7 @@ FileProgress.prototype.disappear = function () {
                 return true;
             }
 
-            if (ob.originalClickHandler(e, ob, btnSubmit.form, true) !== false) {
+            if (plObj.originalClickHandler(e, plObj, btnSubmit.form, true) !== false) {
                 if (!recurse) {
                     submitFormWithTheUpload(btnSubmit);
                 }
@@ -13362,7 +13363,7 @@ FileProgress.prototype.disappear = function () {
         if (btnSubmit.form.target === 'preview_iframe') {
             $cms.dom.illustrateFrameLoad('preview_iframe');
         }
-        btnSubmit.form.submit();
+        $cms.dom.submit(btnSubmit.form);
     }
 
     function dispatchForPageType(pageType, name, fileName, postingFieldName, numFiles) {
@@ -13400,18 +13401,18 @@ FileProgress.prototype.disappear = function () {
         }
     }
 
-    function onUploadDialogCompleted(ob, files) {
-        document.getElementById(ob.settings.btn_submit_id).disabled = false;
+    function onUploadDialogCompleted(plObj, files) {
+        document.getElementById(plObj.settings.btn_submit_id).disabled = false;
 
-        var filenameField = document.getElementById(ob.settings.txtFileName);
+        var filenameField = document.getElementById(plObj.settings.txtFileName);
 
         if (filenameField.value !== '-1') {
-            $cms.dom.html(document.getElementById(ob.settings.progress_target), ''); // Remove old progress indicators
-            ob.stop();
+            $cms.dom.html(document.getElementById(plObj.settings.progress_target), ''); // Remove old progress indicators
+            plObj.stop();
         }
 
         var name, file;
-        var fileIdField = document.getElementById(ob.settings.hidFileID);
+        var fileIdField = document.getElementById(plObj.settings.hidFileID);
         fileIdField.value = '-1';
         filenameField.value = '';
 
@@ -13421,14 +13422,14 @@ FileProgress.prototype.disappear = function () {
                 filenameField.value += ':';
             }
             filenameField.value += file.name.replace(/:/g, ',');
-            name = ob.settings.txtName;
+            name = plObj.settings.txtName;
             setTimeout((function (name, file) { // In a timeout as file.has_error may not have been set yet
                 if (!file.hasError) {
-                    dispatchForPageType(ob.settings.page_type, name, file.name, ob.settings.posting_field_name, files.length);
+                    dispatchForPageType(plObj.settings.page_type, name, file.name, plObj.settings.posting_field_name, files.length);
                 }
             }).bind(undefined, name, file), 0);
 
-            if (ob.settings.page_type.indexOf('_multi') === -1) {
+            if (plObj.settings.page_type.indexOf('_multi') === -1) {
                 break;
             }
         }
@@ -13484,28 +13485,28 @@ FileProgress.prototype.disappear = function () {
         }
     }
 
-    function onUploadUpdateProgress(ob, file) {
-        var percent = ob.total.percent;
+    function onUploadUpdateProgress(plObj, file) {
+        var percent = plObj.total.percent;
         if (percent == 100) {
             return;
         }
 
-        var progress = new FileProgress(file, ob.settings.progress_target);
+        var progress = new FileProgress(file, plObj.settings.progress_target);
         if (!progress.completed) { // In case it reflects progress after completion, which can happen
             progress.setProgress(percent);
             progress.setStatus('{!javascript:PLUPLOAD_UPLOADING^;}');
         }
     }
 
-    function onUploadFinished(ob, file, data) {
-        var progress = new FileProgress(file, ob.settings.progress_target);
+    function onUploadFinished(plObj, file, data) {
+        var progress = new FileProgress(file, plObj.settings.progress_target);
         progress.setComplete();
         progress.setStatus('{!javascript:PLUPLOAD_COMPLETE^;}');
 
-        var btnSubmit = document.getElementById(ob.settings.btn_submit_id);
+        var btnSubmit = document.getElementById(plObj.settings.btn_submit_id);
 
         var allDone = true;
-        var form = document.getElementById(ob.settings.hidFileID).form;
+        var form = document.getElementById(plObj.settings.hidFileID).form;
         for (var i = 0; i < form.elements.length; i++) {
             if ((form.elements[i].pluploadObject != null) && (form.elements[i].pluploadObject.total.percent < 100) && (form.elements[i].pluploadObject.total.size != 0)) {
                 allDone = false;
@@ -13520,11 +13521,11 @@ FileProgress.prototype.disappear = function () {
             }
         }
 
-        var clearButton = document.getElementById('fsClear_' + ob.settings.txtName);
+        var clearButton = document.getElementById('fsClear_' + plObj.settings.txtName);
         if (clearButton) {
             clearButton.style.display = 'inline';
         }
-        var uploadButton = document.getElementById('uploadButton_' + ob.settings.txtName);
+        var uploadButton = document.getElementById('uploadButton_' + plObj.settings.txtName);
         if (uploadButton) {
             uploadButton.disabled = false;
         }
@@ -13535,7 +13536,7 @@ FileProgress.prototype.disappear = function () {
 
         var decodedData = $cms.parseJson(data.response);
 
-        var id = document.getElementById(ob.settings.hidFileID);
+        var id = document.getElementById(plObj.settings.hidFileID);
         if (id.value == '-1') {
             id.value = '';
         }
@@ -13549,16 +13550,16 @@ FileProgress.prototype.disappear = function () {
         }
 
         if (allDone) {
-            for (var i = 0; i < ob.settings.callbacks.length; i++) {
-                ob.settings.callbacks[i](ob.settings);
+            for (var i = 0; i < plObj.settings.callbacks.length; i++) {
+                plObj.settings.callbacks[i](plObj.settings);
             }
         }
 
-        if (ob.submitting && allDone) {
+        if (plObj.submitting && allDone) {
             window.justCheckingRequirements = false;
 
-            if (ob.originalClickHandler != null) {
-                if (ob.originalClickHandler(null, ob, btnSubmit.form, true) !== false) {
+            if (plObj.originalClickHandler != null) {
+                if (plObj.originalClickHandler(null, plObj, btnSubmit.form, true) !== false) {
                     submitFormWithTheUpload(btnSubmit);
                     return true;
                 }
@@ -13571,8 +13572,8 @@ FileProgress.prototype.disappear = function () {
         }
     }
 
-    function onUploadError(ob, error) {
-        var file = error.file ? error.file : ob.files[ob.files.length - 1];
+    function onUploadError(plObj, error) {
+        var file = error.file ? error.file : plObj.files[plObj.files.length - 1];
 
         if ( file === undefined) {
             file = null;
@@ -13586,37 +13587,37 @@ FileProgress.prototype.disappear = function () {
             return;
         }
 
-        var progress = new FileProgress(file, ob.settings.progress_target);
+        var progress = new FileProgress(file, plObj.settings.progress_target);
         progress.setError();
         progress.setStatus(error.message);
 
-        var filenameField = document.getElementById(ob.settings.txtFileName);
+        var filenameField = document.getElementById(plObj.settings.txtFileName);
         if (filenameField.value != '') {
             $cms.ui.alert(error.message);
         }
         filenameField.value = '';
 
         if (file) {
-            fireFakeUploadFieldChange(ob.settings.txtName, '');
+            fireFakeUploadFieldChange(plObj.settings.txtName, '');
         }
 
-        document.getElementById(ob.settings.btn_submit_id).disabled = false;
+        document.getElementById(plObj.settings.btn_submit_id).disabled = false;
 
-        var clearButton = document.getElementById('fsClear_' + ob.settings.txtName);
+        var clearButton = document.getElementById('fsClear_' + plObj.settings.txtName);
         if (clearButton) {
             clearButton.style.display = 'inline';
         }
-        var uploadButton = document.getElementById('uploadButton_' + ob.settings.txtName);
+        var uploadButton = document.getElementById('uploadButton_' + plObj.settings.txtName);
         if (uploadButton) {
             uploadButton.disabled = false;
         }
     }
 
-    function onUploadQueueChanged(ob) {
-        if ((ob.settings.page_type.indexOf('_multi') === -1) && (ob.files.length > 1)) {// In case widget has multi selection even though we disabled it
-            if (ob.files.length > 1) {
-                for (var i = ob.files.length - 2; i >= 0; i--) {
-                    ob.removeFile(ob.files[i]);
+    function onUploadQueueChanged(plObj) {
+        if ((plObj.settings.page_type.indexOf('_multi') === -1) && (plObj.files.length > 1)) {// In case widget has multi selection even though we disabled it
+            if (plObj.files.length > 1) {
+                for (var i = plObj.files.length - 2; i >= 0; i--) {
+                    plObj.removeFile(plObj.files[i]);
                 }
             }
         }
@@ -13832,10 +13833,10 @@ FileProgress.prototype.disappear = function () {
                 _btnSubmitId = null;
                 var inputs = form.elements;
                 for (var i = 0; i < inputs.length; i++) {
-                    if ((inputs[i].nodeName.toLowerCase() == 'button') || (inputs[i].type == 'image') || (inputs[i].type == 'submit') || (inputs[i].type == 'button')) {
+                    if ((inputs[i].nodeName.toLowerCase() === 'button') || (inputs[i].type === 'image') || (inputs[i].type === 'submit') || (inputs[i].type === 'button')) {
                         if (!inputs[i].id) inputs[i].id = 'rand_id_' + Math.floor(Math.random() * 10000);
                         _btnSubmitId = inputs[i].id;
-                        if (inputs[i].getAttribute('accesskey') == 'u') /* Identifies submit button */
+                        if (inputs[i].getAttribute('accesskey') === 'u') /* Identifies submit button */
                             break; // Ideal, let us definitely use this (otherwise we end up using the last)
                     }
                 }

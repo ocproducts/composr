@@ -131,10 +131,10 @@
         if (!window.justCheckingRequirements) {
             if (analyticEventCategory) {
                 $cms.gaTrack(null, analyticEventCategory, null, function () {
-                    form.submit();
+                    $cms.dom.submit(form);
                 });
             } else {
-                form.submit();
+                $cms.dom.submit(form);
             }
         }
 
@@ -241,7 +241,7 @@
         var value;
         switch (element.localName) {
             case 'textarea':
-                value = (window.getTextbox === undefined) ? element.value : getTextbox(element);
+                value = (window.getTextbox === undefined) ? element.value : window.getTextbox(element);
                 break;
             case 'select':
                 value = '';
@@ -249,7 +249,7 @@
                     if (element.multiple) {
                         for (var i = 0; i < element.options.length; i++) {
                             if (element.options[i].selected) {
-                                if (value != '') {
+                                if (value !== '') {
                                     value += ',';
                                 }
                                 value += element.options[i].value;
@@ -257,7 +257,7 @@
                         }
                     } else if (element.selectedIndex >= 0) {
                         value = element.options[element.selectedIndex].value;
-                        if ((value == '') && (element.getAttribute('size') > 1)) {
+                        if ((value === '') && (element.getAttribute('size') > 1)) {
                             value = '-1';  // Fudge, as we have selected something explicitly that is blank
                         }
                     }
@@ -334,7 +334,7 @@
                     var autoResetError = function autoResetError(theElement) {
                         return function (event, noRecurse) {
                             var checkResult = checkField(theElement, theForm, forPreview);
-                            if ((checkResult != null) && (!checkResult[0])) {
+                            if ((checkResult != null) && !checkResult[0]) {
                                 $cms.form.setFieldError(theElement, '');
                             }
 
@@ -385,13 +385,14 @@
             if (posy == 0) {
                 posy = $cms.dom.findPosY(errorElement.parentNode, true);
             }
-            if (posy != 0)
+            if (posy != 0) {
                 $cms.dom.smoothScroll(posy - 50, null, null, function () {
                     try {
                         errorElement.focus();
                     } catch (e) {}
                     /* Can have exception giving focus on IE for invisible fields */
                 });
+            }
         }
 
         // Try and workaround max_input_vars problem if lots of usergroups

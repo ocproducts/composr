@@ -1,5 +1,12 @@
 (function ($cms) {
     'use strict';
+    
+    window.showPermissionSetting = showPermissionSetting;
+    window.cleanupPermissionList = cleanupPermissionList;
+    window.copyPermissionPresets = copyPermissionPresets;
+    window.setupPrivilegeOverrideSelector = setupPrivilegeOverrideSelector;
+    window.permissionsImgFunc1 = permissionsImgFunc1;
+    window.permissionsImgFunc2 = permissionsImgFunc2;
 
     $cms.views.PermissionsTreeEditorScreen = PermissionsTreeEditorScreen;
     /**
@@ -199,7 +206,7 @@
                             row = document.getElementById('access_' + group + '_privilege_container');
                             newCell = row.insertBefore(document.createElement('td'), row.cells[row.cells.length - 1]);
                             newCell.className = 'form_table_field_input privilege_cell';
-                            new_cell.id = 'privilege_cell_' + group + '_' + privilege;
+                            newCell.id = 'privilege_cell_' + group + '_' + privilege;
                             if (document.getElementById('access_' + group).name !== '_ignore') {
                                 $cms.dom.html(newCell, '<div class="accessibility_hidden"><label for="access_' + group + '_privilege_' + privilege + '">{!permissions:OVERRIDE;^}</label></div><select title="' + $cms.filter.html(privilegeTitle) + '" id="access_' + group + '_privilege_' + privilege + '" name="access_' + group + '_privilege_' + privilege + '"><option selected="selected" value="-1">/</option><option value="0">{!permissions:NO_COMPACT;^}</option><option value="1">{!permissions:YES_COMPACT;^}</option></select>');
                                 $cms.dom.on(newCell, 'mouseover', '.js-mouseover-show-permission-setting', function (e, select) {
@@ -311,7 +318,8 @@
         // Go through and set maximum permissions/override from those selected
         var values = setting.value.split(',');
         var id, i, node, j, group, element, privilege, 
-            knownGroups = [], k, serverid, setRequest = '', 
+            knownGroups = [], k, serverid, 
+            setRequest = '', 
             setRequestB, newValue;
         
         for (i = 0; i < values.length; i++) {
@@ -355,7 +363,9 @@
                         group = knownGroups[j];
                         privilege = name.substr('privilege_'.length);
                         value = window.attributesFull[id]['group_privileges_' + privilege + '_' + group];
-                        if (!value) value = -1;
+                        if (!value) {
+                            value = -1;
+                        }
                         element = document.getElementById('access_' + group + '_privilege_' + privilege);
                         if (element) {
                             newValue = element.selectedIndex - 1;
@@ -368,16 +378,16 @@
                 }
 
                 // Update UI indicators
-                $cms.dom.html(document.getElementById('tree_listextra_' + id), permissionsImgFunc1(node, id) + permissionsImgFunc2(node, id));
+                $cms.dom.html('#tree_listextra_' + id, permissionsImgFunc1(node, id) + permissionsImgFunc2(node, id));
             }
 
-            if (setRequestB != '') {
+            if (setRequestB !== '') {
                 setRequest = setRequest + '&map_' + i + '=' + encodeURIComponent(serverid) + setRequestB;
             }
         }
 
         // Send AJAX request
-        if (setRequest != '') {
+        if (setRequest !== '') {
             $cms.doAjaxRequest($cms.$BASE_URL_NOHTTP() + '/data/sitemap.php?set_perms=1' + $cms.keepStub(), null, setRequest).then(function () {
                 $cms.ui.alert('{!permissions:PERMISSIONS_TREE_EDITOR_SAVED;^}');
             });
@@ -386,205 +396,205 @@
 
         $cms.ui.alert('{!permissions:PERMISSIONS_TREE_EDITOR_SAVED;^}');
     }
-}(window.$cms));
+    
+    function showPermissionSetting(ob, event) {
+        if (ob.disabled) { // already showing default in disabled dropdown
+            return;
+        }
+        if (ob.done) {
+            return;
+        }
+        ob.done = true;
 
+        if (!ob.fullSetting) {
+            var serverid;
 
-function showPermissionSetting(ob, event) {
-    if (ob.disabled) { // already showing default in disabled dropdown
-        return;
-    }
-    if (ob.done) {
-        return;
-    }
-    ob.done = true;
+            if (window.sitemap != null) {
+                var value = document.getElementById('tree_list').value;
 
-    if (!ob.fullSetting) {
-        var serverid;
+                if (value.indexOf(',') !== -1) { // Can't find any single value, as multiple resources are selected
+                    return;
+                }
 
-        if (window.sitemap != null) {
-            var value = document.getElementById('tree_list').value;
-
-            if (value.indexOf(',') !== -1) { // Can't find any single value, as multiple resources are selected
-                return;
+                var node = window.sitemap.getElementByIdHack(value);
+                serverid = node.getAttribute('serverid');
+            } else {
+                serverid = window.permServerid + ':_new_';
             }
 
-            var node = window.sitemap.getElementByIdHack(value);
-            serverid = node.getAttribute('serverid');
-        } else {
-            serverid = window.permServerid + ':_new_';
+            var url = '{$FIND_SCRIPT_NOHTTP;,find_permissions}?serverid=' + encodeURIComponent(serverid) + '&x=' + encodeURIComponent(ob.name);
+            $cms.doAjaxRequest(url + $cms.keepStub()).then(function (xhr) {
+                if (!xhr) {
+                    return;
+                }
+                ob.fullSetting = xhr.responseText;
+                ob.title += ' [{!permissions:DEFAULT_PERMISSION;^} ' + ob.fullSetting + ']';
+            });
+            return;
         }
 
-        var url = '{$FIND_SCRIPT_NOHTTP;,find_permissions}?serverid=' + encodeURIComponent(serverid) + '&x=' + encodeURIComponent(ob.name);
-        $cms.doAjaxRequest(url + $cms.keepStub()).then(function (xhr) {
-            if (!xhr) {
-                return;
-            }
-            ob.fullSetting = xhr.responseText;
-            ob.title += ' [{!permissions:DEFAULT_PERMISSION;^} ' + ob.fullSetting + ']';
-        });
-        return;
+        ob.title += ' [{!permissions:DEFAULT_PERMISSION;^} ' + ob.fullSetting + ']';
     }
 
-    ob.title += ' [{!permissions:DEFAULT_PERMISSION;^} ' + ob.fullSetting + ']';
-}
-
-function cleanupPermissionList(name) {
-    // We always try and cleanup the 'custom' option if we're choosing something else (because it's confusing for it to stay there)
-    var customOption = document.getElementById(name + '_custom_option');
-    if (customOption) {
-        customOption.parentNode.removeChild(customOption);
-    }
-}
-
-function copyPermissionPresets(name, value, justTrack) {
-    name = strVal(name);
-    value = strVal(value);
-
-    if (value === '') {
-        return false;
+    function cleanupPermissionList(name) {
+        // We always try and cleanup the 'custom' option if we're choosing something else (because it's confusing for it to stay there)
+        var customOption = document.getElementById(name + '_custom_option');
+        if (customOption) {
+            customOption.parentNode.removeChild(customOption);
+        }
     }
 
-    var madeChange = false;
-    var usualSuspects = ['bypass_validation_xrange_content', 'edit_xrange_content', 'edit_own_xrange_content', 'delete_xrange_content', 'delete_own_xrange_content', 'submit_xrange_content', 'edit_cat_xrange_content'];
-    var access = [2, 3, 2, 3, 2, 1, 3]; // The minimum access level that turns on each of the above permissions   NB: Also defined in resource_fs.php, so keep that in-sync
+    function copyPermissionPresets(name, value, justTrack) {
+        name = strVal(name);
+        value = strVal(value);
+        justTrack = Boolean(justTrack);
 
-    var holder = document.getElementById(name + '_privilege_container');
-    var elements = holder.getElementsByTagName('select');
-    var i, j, test, stub = name + '_privilege_', name2, x;
+        if (value === '') {
+            return false;
+        }
 
-    var node = null;
-    if (window.sitemap != null) {
-        node = window.sitemap.getElementByIdHack(document.getElementById('tree_list').value.split(',')[0]);
-    }
+        var madeChange = false;
+        var usualSuspects = ['bypass_validation_xrange_content', 'edit_xrange_content', 'edit_own_xrange_content', 'delete_xrange_content', 'delete_own_xrange_content', 'submit_xrange_content', 'edit_cat_xrange_content'];
+        var access = [2, 3, 2, 3, 2, 1, 3]; // The minimum access level that turns on each of the above permissions   NB: Also defined in resource_fs.php, so keep that in-sync
 
-    if (value !== '-1') {
-        for (i = 0; i < elements.length; i++) {
-            if (elements[i].name.indexOf('presets') !== -1) {
-                continue;
-            }
+        var holder = document.getElementById(name + '_privilege_container');
+        var elements = holder.getElementsByTagName('select');
+        var i, j, test, stub = name + '_privilege_', name2, x;
 
-            if (window.sitemap == null) {
-                elements[i].disabled = false;
-            }
-            test = -1;
-            name2 = elements[i].name.substr(stub.length);
-            x = name2.replace(/(high|mid|low)/, 'x');
+        var node = null;
+        if (window.sitemap != null) {
+            node = window.sitemap.getElementByIdHack(document.getElementById('tree_list').value.split(',')[0]);
+        }
 
-            for (j = 0; j < usualSuspects.length; j++) {
-                if (usualSuspects[j] == x) {
-                    test = (access[j] <= parseInt(value)) ? 1 : 0;
-                    break;
+        if (value !== '-1') {
+            for (i = 0; i < elements.length; i++) {
+                if (elements[i].name.indexOf('presets') !== -1) {
+                    continue;
                 }
-            }
-            if ((test !== -1) || ((node) && (node.getAttribute('serverid') !== '_root'))) {
-                if (elements[i].selectedIndex != test + 1) {
-                    madeChange = true;
+
+                if (window.sitemap == null) {
+                    elements[i].disabled = false;
+                }
+                test = -1;
+                name2 = elements[i].name.substr(stub.length);
+                x = name2.replace(/(high|mid|low)/, 'x');
+
+                for (j = 0; j < usualSuspects.length; j++) {
+                    if (usualSuspects[j] == x) {
+                        test = (access[j] <= parseInt(value)) ? 1 : 0;
+                        break;
+                    }
+                }
+                if ((test !== -1) || ((node) && (node.getAttribute('serverid') !== '_root'))) {
                     if (elements[i].selectedIndex != test + 1) {
                         madeChange = true;
-                        if (!justTrack) { 
-                            elements[i].selectedIndex = test + 1; // -1 is at index 0
+                        if (elements[i].selectedIndex != test + 1) {
+                            madeChange = true;
+                            if (!justTrack) {
+                                elements[i].selectedIndex = test + 1; // -1 is at index 0
+                            }
                         }
                     }
                 }
             }
-        }
-    } else {
-        for (i = 0; i < elements.length; i++) {
-            if (elements[i].name.indexOf('presets') !== -1) {
-                continue;
-            }
+        } else {
+            for (i = 0; i < elements.length; i++) {
+                if (elements[i].name.indexOf('presets') !== -1) {
+                    continue;
+                }
 
-            if (window.sitemap == null) {
-                elements[i].disabled = true;
+                if (window.sitemap == null) {
+                    elements[i].disabled = true;
+                }
+                // Any disabled ones will be set to show the default permission rather than the "use-default" one, WHILST all-global is on
+                elements[i].selectedIndex = window[elements[i].name] + 1; // -1 is at index 0
             }
+        }
+
+        if (!justTrack && (elements.length === 2) && (madeChange)) {
+            $cms.ui.alert('{!permissions:JUST_PRESETS;^}');
+        }
+
+        return madeChange;
+    }
+
+    function setupPrivilegeOverrideSelector(name, defaultAccess, privilege, title, allGlobal) {
+        window[name + '_privilege_' + privilege] = defaultAccess;
+
+        var selectElement = document.getElementById(name + '_privilege_' + privilege);
+        if (allGlobal) {
             // Any disabled ones will be set to show the default permission rather than the "use-default" one, WHILST all-global is on
-            elements[i].selectedIndex = window[elements[i].name] + 1; // -1 is at index 0
+            selectElement.selectedIndex = window[name + '_privilege_' + privilege] + 1; // -1 is at index 0
+            if (window.sitemap == null) {
+                selectElement.disabled = true;
+            }
         }
     }
 
-    if (!justTrack && (elements.length === 2) && (madeChange)) {
-        $cms.ui.alert('{!permissions:JUST_PRESETS;^}');
-    }
+    // =========================================
+    // These are for the Permissions Tree Editor
+    // =========================================
+    function permissionsImgFunc1(node, id) {
+        var temp = permissionsImgFunc1b(node, id);
+        var url = temp[0];
+        var title = temp[1];
+        return '<img class="vertical_alignment perm_icon" src="' + url + '" alt="' + title + '" title="' + title + '" />&nbsp;';
 
-    return madeChange;
-}
 
-function setupPrivilegeOverrideSelector(name, defaultAccess, privilege, title, allGlobal) {
-    window[name + '_privilege_' + privilege] = defaultAccess;
-    
-    var selectElement = document.getElementById(name + '_privilege_' + privilege);
-    if (allGlobal) {
-        // Any disabled ones will be set to show the default permission rather than the "use-default" one, WHILST all-global is on
-        selectElement.selectedIndex = window[name + '_privilege_' + privilege] + 1; // -1 is at index 0
-        if (window.sitemap == null) {
-            selectElement.disabled = true;
+        function permissionsImgFunc1b(node, id) {
+            var group = document.getElementById('group').value;
+
+            if (id === undefined) {
+                id = node.getAttribute('id');
+            }
+
+            if (window.attributesFull === undefined) {
+                window.attributesFull = [];
+            }
+
+            if (window.attributesFull[id] === undefined) {
+                window.attributesFull[id] = node.attributes;
+            }
+
+            if (((window.attributesFull[id]['group_privileges_delete_highrange_content_' + group]) && (window.attributesFull[id]['group_privileges_delete_highrange_content_' + group] == '1')) ||
+                ((window.attributesFull[id]['group_privileges_delete_midrange_content_' + group]) && (window.attributesFull[id]['group_privileges_delete_midrange_content_' + group] == '1')) ||
+                ((window.attributesFull[id]['group_privileges_delete_lowrange_content_' + group]) && (window.attributesFull[id]['group_privileges_delete_lowrange_content_' + group] == '1')))
+                return [$cms.img('{$IMG;,permlevels/3}'), '{!permissions:PINTERFACE_LEVEL_3;^}'];
+            else if (((window.attributesFull[id]['group_privileges_bypass_validation_highrange_content_' + group]) && (window.attributesFull[id]['group_privileges_bypass_validation_highrange_content_' + group] == '1')) ||
+                ((window.attributesFull[id]['group_privileges_bypass_validation_midrange_content_' + group]) && (window.attributesFull[id]['group_privileges_bypass_validation_midrange_content_' + group] == '1')) ||
+                ((window.attributesFull[id]['group_privileges_bypass_validation_lowrange_content_' + group]) && (window.attributesFull[id]['group_privileges_bypass_validation_lowrange_content_' + group] == '1')))
+                return [$cms.img('{$IMG;,permlevels/2}'), '{!permissions:PINTERFACE_LEVEL_2;^}'];
+            else if (((window.attributesFull[id]['group_privileges_submit_highrange_content_' + group]) && (window.attributesFull[id]['group_privileges_submit_highrange_content_' + group] == '1')) ||
+                ((window.attributesFull[id]['group_privileges_submit_midrange_content_' + group]) && (window.attributesFull[id]['group_privileges_submit_midrange_content_' + group] == '1')) ||
+                ((window.attributesFull[id]['group_privileges_submit_lowrange_content_' + group]) && (window.attributesFull[id]['group_privileges_submit_lowrange_content_' + group] == '1')))
+                return [$cms.img('{$IMG;,permlevels/1}'), '{!permissions:PINTERFACE_LEVEL_1;^}'];
+            else if (window.attributesFull[id]['inherits_something'])
+                return [$cms.img('{$IMG;,permlevels/inherit}'), '{!permissions:PINTERFACE_LEVEL_GLOBAL;^}'];
+            else if (window.attributesFull[id]['no_privileges']) return [$cms.img('{$IMG;,blank}'), ''];
+
+            return [$cms.img('{$IMG;,permlevels/0}'), '{!permissions:PINTERFACE_LEVEL_0;^}'];
         }
     }
-}
 
-// =========================================
-// These are for the Permissions Tree Editor
-// =========================================
+    function permissionsImgFunc2(node, id) {
+        var temp = permissionsImgFunc2b(node, id);
+        var url = temp[0];
+        var title = temp[1];
+        return '<img class="vertical_alignment" src="' + url + '" alt="' + title + '" title="' + title + '" />';
 
-function permissionsImgFunc1(node, id) {
-    var temp = permissionsImgFunc1b(node, id);
-    var url = temp[0];
-    var title = temp[1];
-    return '<img class="vertical_alignment perm_icon" src="' + url + '" alt="' + title + '" title="' + title + '" />&nbsp;';
+        function permissionsImgFunc2b(node, id) {
+            if (id === undefined) {
+                id = node.getAttribute('id');
+            }
 
+            var group = document.getElementById('group').value;
 
-    function permissionsImgFunc1b(node, id) {
-        var group = document.getElementById('group').value;
+            if (node.getAttribute('g_view_' + group) === 'true') {
+                return [$cms.img('{$IMG;,led_on}'), '{!permissions:PINTERFACE_VIEW;^}'];
+            }
 
-        if (id === undefined) {
-            id = node.getAttribute('id');
+            return [$cms.img('{$IMG;,led_off}'), '{!permissions:PINTERFACE_VIEW_NO;^}'];
         }
-
-        if (window.attributesFull === undefined) {
-            window.attributesFull = [];
-        }
-
-        if (window.attributesFull[id] === undefined) {
-            window.attributesFull[id] = node.attributes;
-        }
-
-        if (((window.attributesFull[id]['group_privileges_delete_highrange_content_' + group]) && (window.attributesFull[id]['group_privileges_delete_highrange_content_' + group] == '1')) ||
-            ((window.attributesFull[id]['group_privileges_delete_midrange_content_' + group]) && (window.attributesFull[id]['group_privileges_delete_midrange_content_' + group] == '1')) ||
-            ((window.attributesFull[id]['group_privileges_delete_lowrange_content_' + group]) && (window.attributesFull[id]['group_privileges_delete_lowrange_content_' + group] == '1')))
-            return [$cms.img('{$IMG;,permlevels/3}'), '{!permissions:PINTERFACE_LEVEL_3;^}'];
-        else if (((window.attributesFull[id]['group_privileges_bypass_validation_highrange_content_' + group]) && (window.attributesFull[id]['group_privileges_bypass_validation_highrange_content_' + group] == '1')) ||
-            ((window.attributesFull[id]['group_privileges_bypass_validation_midrange_content_' + group]) && (window.attributesFull[id]['group_privileges_bypass_validation_midrange_content_' + group] == '1')) ||
-            ((window.attributesFull[id]['group_privileges_bypass_validation_lowrange_content_' + group]) && (window.attributesFull[id]['group_privileges_bypass_validation_lowrange_content_' + group] == '1')))
-            return [$cms.img('{$IMG;,permlevels/2}'), '{!permissions:PINTERFACE_LEVEL_2;^}'];
-        else if (((window.attributesFull[id]['group_privileges_submit_highrange_content_' + group]) && (window.attributesFull[id]['group_privileges_submit_highrange_content_' + group] == '1')) ||
-            ((window.attributesFull[id]['group_privileges_submit_midrange_content_' + group]) && (window.attributesFull[id]['group_privileges_submit_midrange_content_' + group] == '1')) ||
-            ((window.attributesFull[id]['group_privileges_submit_lowrange_content_' + group]) && (window.attributesFull[id]['group_privileges_submit_lowrange_content_' + group] == '1')))
-            return [$cms.img('{$IMG;,permlevels/1}'), '{!permissions:PINTERFACE_LEVEL_1;^}'];
-        else if (window.attributesFull[id]['inherits_something'])
-            return [$cms.img('{$IMG;,permlevels/inherit}'), '{!permissions:PINTERFACE_LEVEL_GLOBAL;^}'];
-        else if (window.attributesFull[id]['no_privileges']) return [$cms.img('{$IMG;,blank}'), ''];
-
-        return [$cms.img('{$IMG;,permlevels/0}'), '{!permissions:PINTERFACE_LEVEL_0;^}'];
     }
-}
+}(window.$cms));
 
-function permissionsImgFunc2(node, id) {
-    var temp = permissionsImgFunc2b(node, id);
-    var url = temp[0];
-    var title = temp[1];
-    return '<img class="vertical_alignment" src="' + url + '" alt="' + title + '" title="' + title + '" />';
-
-    function permissionsImgFunc2b(node, id) {
-        if (id === undefined) {
-            id = node.getAttribute('id');
-        }
-
-        var group = document.getElementById('group').value;
-
-        if (node.getAttribute('g_view_' + group) === 'true') {
-            return [$cms.img('{$IMG;,led_on}'), '{!permissions:PINTERFACE_VIEW;^}'];
-        }
-
-        return [$cms.img('{$IMG;,led_off}'), '{!permissions:PINTERFACE_VIEW_NO;^}'];
-    }
-}

@@ -124,7 +124,7 @@
 
             if (form.onsubmit && form.onsubmit.call(form, e)) {
                 $cms.ui.disableButton(button);
-                form.submit();
+                $cms.dom.submit(form);
             }
         },
 
@@ -133,15 +133,15 @@
                 url = $cms.maintainThemeInLink($cms.$PREVIEW_URL() + $cms.$KEEP());
 
             if ($cms.form.doFormPreview(e, form, url)) {
-                form.submit();
+                $cms.dom.submit(form);
             }
         },
 
         submitFormComments: function (e) {
             var form = this.form,
-                opts = this.params;
+                params = this.params;
 
-            if ((opts.moreUrl !== undefined) && (form.action === opts.moreUrl)) {
+            if ((params.moreUrl !== undefined) && (form.action === params.moreUrl)) {
                 return;
             }
 
@@ -150,31 +150,30 @@
                 return;
             }
 
-            if (opts.getName && !$cms.form.checkFieldForBlankness(form.elements['poster_name_if_guest'], e)) {
+            if (params.getName && !$cms.form.checkFieldForBlankness(form.elements['poster_name_if_guest'], e)) {
                 e.preventDefault();
                 return;
             }
 
-            if (opts.getTitle && !opts.titleOptional && !$cms.form.checkFieldForBlankness(form.elements.title, e)) {
+            if (params.getTitle && !params.titleOptional && !$cms.form.checkFieldForBlankness(form.elements.title, e)) {
                 e.preventDefault();
                 return;
             }
 
-            if (opts.getEmail && !opts.emailOptional && !$cms.form.checkFieldForBlankness(form.elements.email, e)) {
+            if (params.getEmail && !params.emailOptional && !$cms.form.checkFieldForBlankness(form.elements.email, e)) {
                 e.preventDefault();
                 return;
             }
 
-            if (analyticEventCategory) {
-                $cms.gaTrack(null, analyticEventCategory, null, function () {
-                    form.submit();
+            if (params.analyticEventCategory) {
+                $cms.gaTrack(null, params.analyticEventCategory, null, function () {
+                    $cms.dom.submit(form);
                 });
                 e.preventDefault();
-                return;
             }
         },
 
-        moveToFullEditor: function (e) {
+        moveToFullEditor: function () {
             var moreUrl = this.params.moreUrl,
                 form = this.form;
 
@@ -183,10 +182,10 @@
                 if (form.elements['stub'] !== undefined) {
                     form.elements['stub'].value = form.elements['post'].defaultSubstringToStrip;
                 } else {
-                    if (moreUrl.indexOf('?') == -1) {
-                        moreUrl += '?';
-                    } else {
+                    if (moreUrl.includes('?')) {
                         moreUrl += '&';
+                    } else {
+                        moreUrl += '?';
                     }
                     moreUrl += 'stub=' + encodeURIComponent(form.elements['post'].defaultSubstringToStrip);
                 }
@@ -212,7 +211,7 @@
                 form.elements['post'].value = '';
             }
 
-            form.submit();
+            $cms.dom.submit(form);
         },
 
         /* Set up a form to have its CAPTCHA checked upon submission using AJAX */
@@ -226,7 +225,7 @@
                 $cms.form.doAjaxFieldTest(url).then(function (valid) {
                     if (valid) {
                         form.removeEventListener('submit', submitCheck);
-                        form.submit();
+                        $cms.dom.submit(form);
                     } else {
                         var image = document.getElementById('captcha_image');
                         if (!image) {
@@ -266,7 +265,7 @@
             }
 
             $cms.dom.on(container, 'change', '.js-change-select-submit-form', function (e, select) {
-                select.form.submit();
+                $cms.dom.submit(select.form);
             });
         },
 
@@ -339,99 +338,103 @@
     /* Update a normal comments topic with AJAX replying */
     function replaceCommentsFormWithAjax(options, hash, commentsFormId, commentsWrapperId) {
         var commentsForm = $cms.dom.$id(commentsFormId);
-        if (commentsForm) {
-            commentsForm.oldOnsubmit = commentsForm.onsubmit;
-
-            commentsForm.onsubmit = function (event, isPreview) {
-                isPreview = !!isPreview;
-
-                if (isPreview) {
-                    return true;
-                }
-
-                // Cancel the event from running
-                if (event.cancelable) {
-                    event.preventDefault();
-                }
-
-                if (!commentsForm.oldOnsubmit(event)) {
-                    return false;
-                }
-
-                var commentsWrapper = $cms.dom.$id(commentsWrapperId);
-                if (!commentsWrapper) { // No AJAX, as stuff missing from template
-                    commentsForm.submit();
-                    return true;
-                }
-
-                var submitButton = $cms.dom.$id('submit_button');
-                if (submitButton) {
-                    $cms.ui.disableButton(submitButton);
-                }
-
-                // Note what posts are shown now
-                var knownPosts = commentsWrapper.querySelectorAll('.post');
-                var knownTimes = [];
-                for (var i = 0; i < knownPosts.length; i++) {
-                    knownTimes.push(knownPosts[i].className.replace(/^post /, ''));
-                }
-
-                // Fire off AJAX request
-                var post = 'options=' + encodeURIComponent(options) + '&hash=' + encodeURIComponent(hash);
-                var postElement = commentsForm.elements['post'];
-                var postValue = postElement.value;
-                if (postElement.defaultSubstringToStrip !== undefined) // Strip off prefix if unchanged
-                {
-                    if (postValue.substring(0, postElement.defaultSubstringToStrip.length) == postElement.defaultSubstringToStrip)
-                        postValue = postValue.substring(postElement.defaultSubstringToStrip.length, postValue.length);
-                }
-                for (var i = 0; i < commentsForm.elements.length; i++) {
-                    if ((commentsForm.elements[i].name) && (commentsForm.elements[i].name != 'post')) {
-                        post += '&' + commentsForm.elements[i].name + '=' + encodeURIComponent($cms.form.cleverFindValue(commentsForm, commentsForm.elements[i]));
-                    }
-                }
-                post += '&post=' + encodeURIComponent(postValue);
-                $cms.doAjaxRequest('{$FIND_SCRIPT;,post_comment}' + $cms.keepStub(true), null, post).then(function (xhr) {
-                    if ((xhr.responseText != '') && (xhr.status != 500)) {
-                        // Display
-                        var oldAction = commentsForm.action;
-                        $cms.dom.outerHtml(commentsWrapper, xhr.responseText);
-                        commentsForm = $cms.dom.$id(commentsFormId);
-                        oldAction = commentsForm.action = oldAction; // AJAX will have mangled URL (as was not running in a page context), this will fix it back
-
-                        // Scroll back to comment
-                        setTimeout(function () {
-                            var commentsWrapper = $cms.dom.$id(commentsWrapperId); // outerhtml set will have broken the reference
-                            $cms.dom.smoothScroll($cms.dom.findPosY(commentsWrapper, true));
-                        }, 0);
-
-                        // Force reload on back button, as otherwise comment would be missing
-                        forceReloadOnBack();
-
-                        // Collapse, so user can see what happening
-                        var outer = $cms.dom.$id('comments_posting_form_outer');
-                        if (outer && outer.classList.contains('toggleable_tray')) {
-                            $cms.ui.toggleableTray(outer);
-                        }
-
-                        // Set fade for posts not shown before
-                        var knownPosts = commentsWrapper.querySelectorAll('.post');
-                        for (var i = 0; i < knownPosts.length; i++) {
-                            if (!knownTimes.includes(knownPosts[i].className.replace(/^post /, ''))) {
-                                $cms.dom.fadeIn(knownPosts[i]);
-                            }
-                        }
-
-                        // And re-attach this code (got killed by $cms.dom.outerHtml)
-                        replaceCommentsFormWithAjax(options, hash);
-                    } else { // Error: do a normal post so error can be seen
-                        commentsForm.submit();
-                    }
-                });
-
-                return false;
-            };
+        if (!commentsForm) {
+            return;
         }
+
+        commentsForm.oldOnsubmit = commentsForm.onsubmit;
+
+        commentsForm.onsubmit = function (event, isPreview) {
+            isPreview = Boolean(isPreview);
+
+            if (isPreview) {
+                return true;
+            }
+
+            // Cancel the event from running
+            if (event.cancelable) {
+                event.preventDefault();
+            }
+
+            if (!commentsForm.oldOnsubmit(event)) {
+                return false;
+            }
+
+            var commentsWrapper = $cms.dom.$id(commentsWrapperId);
+            if (!commentsWrapper) { // No AJAX, as stuff missing from template
+                $cms.dom.submit(commentsForm);
+                return true;
+            }
+
+            var submitButton = $cms.dom.$id('submit_button');
+            if (submitButton) {
+                $cms.ui.disableButton(submitButton);
+            }
+
+            // Note what posts are shown now
+            var knownPosts = commentsWrapper.querySelectorAll('.post'),
+                knownTimes = [];
+            
+            for (var i = 0; i < knownPosts.length; i++) {
+                knownTimes.push(knownPosts[i].className.replace(/^post /, ''));
+            }
+
+            // Fire off AJAX request
+            var post = 'options=' + encodeURIComponent(options) + '&hash=' + encodeURIComponent(hash),
+                postElement = commentsForm.elements['post'],
+                postValue = postElement.value;
+            
+            if (postElement.defaultSubstringToStrip !== undefined) {// Strip off prefix if unchanged
+                if (postValue.substring(0, postElement.defaultSubstringToStrip.length) == postElement.defaultSubstringToStrip) {
+                    postValue = postValue.substring(postElement.defaultSubstringToStrip.length, postValue.length);
+                }
+            }
+            for (var j = 0; j < commentsForm.elements.length; j++) {
+                if ((commentsForm.elements[j].name) && (commentsForm.elements[j].name !== 'post')) {
+                    post += '&' + commentsForm.elements[j].name + '=' + encodeURIComponent($cms.form.cleverFindValue(commentsForm, commentsForm.elements[j]));
+                }
+            }
+            post += '&post=' + encodeURIComponent(postValue);
+            $cms.doAjaxRequest('{$FIND_SCRIPT;,post_comment}' + $cms.keepStub(true), null, post).then(function (xhr) {
+                if ((xhr.responseText != '') && (xhr.status !== 500)) {
+                    // Display
+                    var oldAction = commentsForm.action;
+                    $cms.dom.replaceWith(commentsWrapper, xhr.responseText);
+                    commentsForm = $cms.dom.$id(commentsFormId);
+                    oldAction = commentsForm.action = oldAction; // AJAX will have mangled URL (as was not running in a page context), this will fix it back
+
+                    // Scroll back to comment
+                    setTimeout(function () {
+                        var commentsWrapper = $cms.dom.$id(commentsWrapperId); // outerhtml set will have broken the reference
+                        $cms.dom.smoothScroll($cms.dom.findPosY(commentsWrapper, true));
+                    }, 0);
+
+                    // Force reload on back button, as otherwise comment would be missing
+                    forceReloadOnBack();
+
+                    // Collapse, so user can see what happening
+                    var outer = $cms.dom.$id('comments_posting_form_outer');
+                    if (outer && outer.classList.contains('toggleable_tray')) {
+                        $cms.ui.toggleableTray(outer);
+                    }
+
+                    // Set fade for posts not shown before
+                    var knownPosts = commentsWrapper.querySelectorAll('.post');
+                    for (var i = 0; i < knownPosts.length; i++) {
+                        if (!knownTimes.includes(knownPosts[i].className.replace(/^post /, ''))) {
+                            $cms.dom.fadeIn(knownPosts[i]);
+                        }
+                    }
+
+                    // And re-attach this code (got killed by $cms.dom.replaceWith())
+                    replaceCommentsFormWithAjax(options, hash);
+                } else { // Error: do a normal post so error can be seen
+                    $cms.dom.submit(commentsForm);
+                }
+            });
+
+            return false;
+        };
     }
 
     function applyRatingHighlightAndAjaxCode(likes, initialRating, contentType, id, type, rating, contentUrl, contentTitle, initialisationPhase, visualOnly) {
@@ -498,7 +501,7 @@
                 var snippetRequest = 'rating&type=' + encodeURIComponent(type) + '&id=' + encodeURIComponent(id) + '&content_type=' + encodeURIComponent(contentType) + '&template=' + encodeURIComponent(template) + '&content_url=' + encodeURIComponent($cms.protectURLParameter(contentUrl)) + '&content_title=' + encodeURIComponent(contentTitle);
 
                 $cms.loadSnippet(snippetRequest, 'rating=' + encodeURIComponent(number), true).then(function (message) {
-                    $cms.dom.outerHtml(_replaceSpot, (template === '') ? ('<strong>' + message + '</strong>') : message);
+                    $cms.dom.replaceWith(_replaceSpot, (template === '') ? ('<strong>' + message + '</strong>') : message);
                 });
 
                 return false;
