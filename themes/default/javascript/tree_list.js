@@ -155,7 +155,11 @@
                         htmlNode = $cms.dom.$id(that.name + 'tree_list_c_' + $cms.dom.html(node));
                         expanding = (htmlNode.style.display !== 'block');
                         if (expanding) {
-                            el.onclick(null, true);
+                            if ($cms.dom.$id('choose_' + that.name)) {
+                                $cms.dom.$id('choose_' + that.name).click();
+                            }
+
+                            that.handleTreeClick(null, true, el);
                         }
                     } else {
                         // Now try against serverid
@@ -166,7 +170,11 @@
                                 htmlNode = $cms.dom.$id(that.name + 'tree_list_c_' + xmlNode.getAttribute('id'));
                                 expanding = (htmlNode.style.display !== 'block');
                                 if (expanding) {
-                                    el.onclick(null, true);
+                                    if ($cms.dom.$id('choose_' + that.name)) {
+                                        $cms.dom.$id('choose_' + that.name).click();
+                                    }
+
+                                    that.handleTreeClick(null, true, el);
                                 }
                             }
                         }
@@ -233,21 +241,27 @@
                         </div>');
                     var expandButton = nodeSelf.querySelector('input');
                     expandButton.oncontextmenu = $cms.returnFalse;
-                    expandButton.onclick = function (event, automated) {
+                    
+                    $cms.dom.on(expandButton, 'click', function (e) {
+                        e.preventDefault();
+
                         if ($cms.dom.$id('choose_' + that.name)) {
                             $cms.dom.$id('choose_' + that.name).click();
                         }
 
-                        if (event) {
-                            event.preventDefault();
-                        }
-                        that.handleTreeClick(event, automated, expandButton);
-                    };
+                        that.handleTreeClick(e, false, expandButton);
+                    });
                     
                     label = nodeSelf.querySelector('label');
                     expandButton.onkeypress = label.onkeypress = label.firstElementChild.onkeypress = function (event) {
                         if (((event.keyCode ? event.keyCode : event.charCode) === 13) || ['+', '-', '='].includes(String.fromCharCode(event.keyCode ? event.keyCode : event.charCode))) {
-                            expandButton.onclick(event);
+                            event.preventDefault();
+                            
+                            if ($cms.dom.$id('choose_' + that.name)) {
+                                $cms.dom.$id('choose_' + that.name).click();
+                            }
+
+                            that.handleTreeClick(event, false, expandButton);
                         }
                     };
                     label.oncontextmenu = $cms.returnFalse;
@@ -300,7 +314,11 @@
 
                     // Auto-expand
                     if (that.specialKeyPressed && !initiallyExpanded) {
-                        expandButton.onclick();
+                        if ($cms.dom.$id('choose_' + that.name)) {
+                            $cms.dom.$id('choose_' + that.name).click();
+                        }
+
+                        that.handleTreeClick(null, false, expandButton);
                     }
                 } else { // Assume <entry>
                     newHtml = null;
@@ -454,7 +472,7 @@
             }
         },
 
-        handleTreeClick: function handleTreeClick(event, automated, target) {
+        handleTreeClick: function handleTreeClick(_, automated, target) {
             var element = $cms.dom.$id(this.name),
                 xmlNode;
             if (element.disabled || this.busy) {
@@ -646,6 +664,7 @@
             target.style.cursor = 'pointer';
         }
     });
+    
 
     function attributesFullFixup(xml) {
         var node, i, id = xml.getAttribute('id');

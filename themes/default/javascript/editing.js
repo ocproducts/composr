@@ -456,7 +456,7 @@
                     info.get('txtCellPad')['default'] = '0';
                 }
             });
-            if (document.getElementById('attachment_store')) {
+            if (document.getElementById('js-attachment-store')) {
                 window.lang_PREFER_CMS_ATTACHMENTS = '{!javascript:PREFER_CMS_ATTACHMENTS;^}';
             }
             window.lang_SPELLCHECKER_ENABLED = '{!javascript:SPELLCHECKER_ENABLED;^}';

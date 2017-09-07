@@ -4,13 +4,12 @@
 
 <div data-tpl="attachments" data-tpl-params="{+START,PARAMS_JSON,SIMPLE_UI,ATTACHMENT_TEMPLATE,POSTING_FIELD_NAME,MAX_ATTACHMENTS,FILTER,POSTING_FIELD_NAME}{_*}{+END}">
 	{+START,IF,{$AND,{TRUE_ATTACHMENT_UI},{$BROWSER_MATCHES,simplified_attachments_ui}}}
-		<div id="attachment_store" class="accessibility_hidden">
+		<div id="js-attachment-store" class="accessibility_hidden">
 			{$,plupload will attach upload code to here}
 		</div>
 
 		<div id="attachment_progress_bars">
-			<div id="fsUploadProgress" class="progressBars">
-			</div>
+			<div id="fsUploadProgress" class="progressBars"></div>
 		</div>
 	{+END}
 
@@ -21,7 +20,7 @@
 			</p>
 		{+END}{+END}{+END}{+END}
 
-		<div id="attachment_store">
+		<div id="js-attachment-store">
 			{ATTACHMENTS}
 		</div>
 

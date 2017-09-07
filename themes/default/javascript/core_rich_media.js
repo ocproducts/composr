@@ -10,11 +10,13 @@
     function Attachment(params) {
         Attachment.base(this, 'constructor', arguments);
 
-        preinitFileInput("attachment_multi", "file" + params.i, null, params.postingFieldName, params.filter);
+        if ($cms.$CONFIG_OPTION('complex_uploader')) {
+            window.preinitFileInput("attachment_multi", "file" + params.i, null, params.postingFieldName, params.filter);
+        }
 
         if (params.syndicationJson !== undefined) {
             $cms.requireJavascript('editing').then(function () {
-                showUploadSyndicationOptions("file" + params.i, params.syndicationJson, !!params.noQuota);
+                window.showUploadSyndicationOptions("file" + params.i, params.syndicationJson, !!params.noQuota);
             });
         }
     }

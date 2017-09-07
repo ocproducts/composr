@@ -1264,28 +1264,28 @@
      * @returns { string }
      */
     function strVal(val, defaultValue) {
+        var ret;
+        
         if (defaultValue === undefined) {
             defaultValue = '';
         }
 
-        if (val == null) {
-            return defaultValue;
-        }
-
-        if (!val) {
-            return (val === 0) ? '0' : '';
+         if (!val) {
+            ret = (val === 0) ? '0' : '';
         } else if (val === true) {
-            return '1';
+            ret = '1';
         } else if (typeof val === 'string') {
-            return val;
+            ret = val;
         } else if (typeof val === 'number') {
-            return ((val !== Infinity) && (val !== -Infinity)) ? ('' + val) : '';
+            ret = ((val !== Infinity) && (val !== -Infinity)) ? ('' + val) : '';
         } else if ((typeof val === 'object') && (val.toString !== emptyObj.toString) && (typeof val.toString === 'function')) {
             // `val` has a .toString() implementation other than the useless generic one
-            return '' + val;
+            ret = '' + val;
+        } else {
+            throw new TypeError('strVal(): Cannot coerce `val` of type "' + typeName(val) + '" to a string.');
         }
-
-        throw new TypeError('strVal(): Cannot coerce `val` of type "' + typeName(val) + '" to a string.');
+        
+        return (ret !== '') ? ret : defaultValue;
     }
 
     /**
@@ -2534,7 +2534,7 @@
 
         if (!notRelative) {
             var position;
-            while (el) {
+            while (el != null) {
                 if ($cms.dom.isCss(el, 'position', ['absolute', 'relative', 'fixed'])) {
                     top -= $cms.dom.findPosY(el, true);
                     break;

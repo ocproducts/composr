@@ -375,7 +375,9 @@
                 btnSubmitId += '_' + memberId;
             }
 
-            preinitFileInput('chat_effect_settings', btnSubmitId, null, null, 'mp3', 'button_micro');
+            if ($cms.$CONFIG_OPTION('complex_uploader')) {
+                preinitFileInput('chat_effect_settings', btnSubmitId, null, null, 'mp3', 'button_micro');
+            }
         }
 
         $cms.dom.on(container, 'click', '.js-click-require-sound-selection', function () {

@@ -22,28 +22,31 @@
      * @param errorMsg
      */
     $cms.form.setFieldError = function setFieldError(theElement, errorMsg) {
+        errorMsg = strVal(errorMsg);
+        
         if (theElement.name !== undefined) {
             var id = theElement.name,
-                errormsgElement = getErrormsgElement(id);
+                errorMsgElement = getErrormsgElement(id);
             
-            if ((errorMsg == '') && (id.indexOf('_hour') != -1) || (id.indexOf('_minute') != -1)) { // Do not blank out as day/month/year (which comes first) would have already done it
+            if ((errorMsg === '') && (id.includes('_hour')) || (id.includes('_minute'))) { // Do not blank out as day/month/year (which comes first) would have already done it
                 return;
             }
-            if (errormsgElement) {
+            
+            if (errorMsgElement) {
                 // Make error message visible, if there's an error
-                errormsgElement.style.display = (errorMsg == '') ? 'none' : 'block';
+                errorMsgElement.style.display = (errorMsg === '') ? 'none' : 'block';
 
                 // Changed error message
-                if ($cms.dom.html(errormsgElement) != $cms.filter.html(errorMsg)) {
-                    $cms.dom.html(errormsgElement, '');
-                    if (errorMsg != '') {// If there actually an error
+                if ($cms.dom.html(errorMsgElement) !== $cms.filter.html(errorMsg)) {
+                    $cms.dom.html(errorMsgElement, '');
+                    if (errorMsg !== '') {// If there actually an error
                         theElement.setAttribute('aria-invalid', 'true');
 
                         // Need to switch tab?
-                        var p = errormsgElement;
-                        while (p !== null) {
+                        var p = errorMsgElement;
+                        while (p != null) {
                             p = p.parentNode;
-                            if ((errorMsg.substr(0, 5) != '{!DISABLED_FORM_FIELD;^}'.substr(0, 5)) && (p) && (p.getAttribute !== undefined) && (p.getAttribute('id')) && (p.getAttribute('id').substr(0, 2) == 'g_') && (p.style.display == 'none')) {
+                            if ((errorMsg.substr(0, 5) !== '{!DISABLED_FORM_FIELD;^}'.substr(0, 5)) && (p) && (p.getAttribute !== undefined) && (p.getAttribute('id')) && (p.getAttribute('id').substr(0, 2) === 'g_') && (p.style.display === 'none')) {
                                 $cms.ui.selectTab('g', p.getAttribute('id').substr(2, p.id.length - 2), false, true);
                                 break;
                             }
@@ -51,15 +54,15 @@
 
                         // Set error message
                         var msgNode = document.createTextNode(errorMsg);
-                        errormsgElement.appendChild(msgNode);
-                        errormsgElement.setAttribute('role', 'alert');
+                        errorMsgElement.appendChild(msgNode);
+                        errorMsgElement.setAttribute('role', 'alert');
 
                         // Fade in
-                        $cms.dom.fadeIn(errormsgElement);
+                        $cms.dom.fadeIn(errorMsgElement);
 
                     } else {
                         theElement.setAttribute('aria-invalid', 'false');
-                        errormsgElement.setAttribute('role', '');
+                        errorMsgElement.setAttribute('role', '');
                     }
                 }
             }
@@ -71,7 +74,7 @@
 
         theElement.classList.remove('input_erroneous');
 
-        if (errorMsg != '') {
+        if (errorMsg !== '') {
             theElement.classList.add('input_erroneous');
         }
 
@@ -157,7 +160,8 @@
      * @returns {boolean}
      */
     $cms.form.doFormPreview = function doFormPreview(event, form, previewUrl, hasSeparatePreview) {
-        hasSeparatePreview = !!hasSeparatePreview;
+        previewUrl = strVal(previewUrl);
+        hasSeparatePreview = Boolean(hasSeparatePreview);
 
         if (!$cms.dom.$id('preview_iframe')) {
             $cms.ui.alert('{!ADBLOCKER;^}');
@@ -182,7 +186,7 @@
         }
         form.setAttribute('target', 'preview_iframe');
 
-        if ((window.$cms.form.checkForm) && (!$cms.form.checkForm(form, true))) {
+        if (!$cms.form.checkForm(form, true)) {
             return false;
         }
 
@@ -194,7 +198,7 @@
         }
 
         if (hasSeparatePreview) {
-            form.setAttribute('action', form.oldAction + ((form.oldAction.indexOf('?') == -1) ? '?' : '&') + 'preview=1');
+            form.setAttribute('action', form.oldAction + ((!form.oldAction.includes('?')) ? '?' : '&') + 'preview=1');
             return true;
         }
 
@@ -382,10 +386,10 @@
         if (erroneous) {
             if (!alerted) $cms.ui.alert('{!IMPROPERLY_FILLED_IN;^}');
             var posy = $cms.dom.findPosY(errorElement, true);
-            if (posy == 0) {
+            if (posy === 0) {
                 posy = $cms.dom.findPosY(errorElement.parentNode, true);
             }
-            if (posy != 0) {
+            if (posy !== 0) {
                 $cms.dom.smoothScroll(posy - 50, null, null, function () {
                     try {
                         errorElement.focus();
@@ -398,11 +402,11 @@
         // Try and workaround max_input_vars problem if lots of usergroups
         if (!erroneous) {
             var deleteE = $cms.dom.$id('delete');
-            var isDelete = deleteE && deleteE.type == 'checkbox' && deleteE.checked;
+            var isDelete = deleteE && deleteE.type === 'checkbox' && deleteE.checked;
             var es = document.getElementsByTagName('select'), e;
             for (var i = 0; i < es.length; i++) {
                 e = es[i];
-                if ((e.name.match(/^access_\d+_privilege_/)) && ((isDelete) || (e.options[e.selectedIndex].value == '-1'))) {
+                if ((e.name.match(/^access_\d+_privilege_/)) && ((isDelete) || (e.options[e.selectedIndex].value === '-1'))) {
                     e.disabled = true;
                 }
             }
@@ -482,7 +486,7 @@
         var errorMsgElement = (theElement.name === undefined) ? null : getErrorMsgElement(theElement.name);
 
         // Blank?
-        if ((required) && (myValue.replace(/&nbsp;/g, ' ').replace(/<br\s*\/?>/g, ' ').replace(/\s/g, '') == '')) {
+        if ((required) && (myValue.replace(/&nbsp;/g, ' ').replace(/<br\s*\/?>/g, ' ').replace(/\s/g, '') === '')) {
             errorMsg = '{!REQUIRED_NOT_FILLED_IN;^}';
             if ((errorMsgElement) && (errorMsgElement.getAttribute('data-errorUnfilled') != null) && (errorMsgElement.getAttribute('data-errorUnfilled') != ''))
                 errorMsg = errorMsgElement.getAttribute('data-errorUnfilled');

@@ -44,7 +44,7 @@
             return;
         }
 
-        var addTo = document.getElementById('attachment_store');
+        var addTo = document.getElementById('js-attachment-store');
 
         window.numAttachments++;
 
