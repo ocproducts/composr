@@ -80,12 +80,12 @@
     
     $cms.functions.ecommerceEmailGetNeededFieldsPop3 = function () {
         var form = document.getElementById('pass1').form;
-        form.onsubmit = function() {
+        $cms.dom.on(form, 'submit', function (e) {
             if (form.elements['pass1'].value !== form.elements['pass2'].value) {
                 $cms.ui.alert('{!PASSWORD_MISMATCH;}');
-                return false;
+                e.preventDefault();
             }
-        };
+        });
     };
     
     $cms.templates.ecomPurchaseStageDetails = function ecomPurchaseStageDetails(params) {

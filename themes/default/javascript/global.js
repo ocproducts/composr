@@ -2880,7 +2880,7 @@
             handler.proxy = function proxy(e) {
                 var args = [e, el];
                 //e.data = data;
-                if (Array.isArray(e._args)) {
+                if ((e._args != null) && Array.isArray(e._args)) {
                     args = args.concat(e._args);
                 }
                 var result = callback.apply(el, args);
@@ -3056,6 +3056,7 @@
     };
 
     /**
+     * NB: Unlike jQuery (but like Zepto.js), triggering the submit event using this doesn't actually submit the form, use $cms.dom.submit() for that.
      * @memberof $cms.dom
      * @param el
      * @param event
@@ -3081,23 +3082,28 @@
     };
 
     /**
+     * Called with 1 argument, it's similar to $cms.dom.trigger(el, 'submit') except this also 
+     * actually submits the form using el.submit(), unless default is prevented by an event handler
+     * 
+     * Called with 2 arguments, it's the same as $cms.dom.on(el, 'submit', callback).
+     * 
      * @memberof $cms.dom
-     * @param { string|HTMLFormElement } formEl
+     * @param { string|HTMLFormElement } el
      * @param {function} [callback]
      */
-    $cms.dom.submit = function submit(formEl, callback) {
-        formEl = elArg(formEl);
+    $cms.dom.submit = function submit(el, callback) {
+        el = elArg(el);
         
         if (callback === undefined) {
-            var defaultNotPrevented = $cms.dom.trigger(formEl, 'submit');
+            var defaultNotPrevented = $cms.dom.trigger(el, 'submit');
 
             if (defaultNotPrevented) {
-                formEl.submit();
+                el.submit();
             }
             return;
         }
         
-        $cms.dom.on(formEl, 'submit', callback);
+        $cms.dom.on(el, 'submit', callback);
     };
 
     /**
@@ -5954,6 +5960,9 @@
         });
     };
 
+    var currentAlertNotice,
+        currentAlertTitle,
+        currentAlertPromise;
     /**
      * @memberof $cms.ui
      * @param notice
@@ -5963,16 +5972,37 @@
      * @returns { Promise }
      */
     $cms.ui.alert = function alert(notice, callback, title, unescaped) {
-        notice = strVal(notice);
-        title = strVal(title, '{!MESSAGE;^}');
-        unescaped = boolVal(unescaped);
+        var options, 
+            single = false;
+        
+        if (isObj(notice)) {
+            options = notice;
+            notice = strVal(options.notice);
+            callback = options.callback;
+            title = strVal(options.title) || '{!MESSAGE;^}';
+            unescaped = Boolean(options.unescaped);
+            single = Boolean(options.single);
+        } else {
+            notice = strVal(notice);
+            title = strVal(title) || '{!MESSAGE;^}';
+            unescaped = Boolean(unescaped);
+        }
+        
+        if (single && (currentAlertNotice === notice) && (currentAlertTitle === title)) {
+            return currentAlertPromise;
+        }
 
-        return new Promise(function (resolveAlert) {
+        currentAlertNotice = notice;
+        currentAlertTitle = title;
+        currentAlertPromise = new Promise(function (resolveAlert) {
             if (!$cms.$CONFIG_OPTION('js_overlays')) {
                 window.alert(notice);
                 if (callback != null) {
                     callback();
                 }
+                currentAlertNotice = null;
+                currentAlertTitle = null;
+                currentAlertPromise = null;
                 resolveAlert();
                 return;
             }
@@ -5986,6 +6016,9 @@
                     if (callback != null) {
                         callback();
                     }
+                    currentAlertNotice = null;
+                    currentAlertTitle = null;
+                    currentAlertPromise = null;
                     resolveAlert();
                 },
                 title: title,
@@ -5994,6 +6027,8 @@
 
             $cms.openModalWindow(myAlert);
         });
+        
+        return currentAlertPromise;
     };
 
     /**
@@ -6465,24 +6500,24 @@
 
         // Set params
         params = defaults({ // apply defaults
-            'type': 'alert',
-            'opacity': '0.5',
-            'width': 'auto',
-            'height': 'auto',
-            'title': '',
-            'text': '',
-            'yesButton': '{!YES;^}',
-            'noButton': '{!NO;^}',
-            'cancelButton': '{!INPUTSYSTEM_CANCEL;^}',
-            'yes': null,
-            'no': null,
-            'finished': null,
-            'cancel': null,
-            'href': null,
-            'scrollbars': null,
-            'defaultValue': null,
-            'target': '_self',
-            'inputType': 'text'
+            type: 'alert',
+            opacity: '0.5',
+            width: 'auto',
+            height: 'auto',
+            title: '',
+            text: '',
+            yesButton: '{!YES;^}',
+            noButton: '{!NO;^}',
+            cancelButton: '{!INPUTSYSTEM_CANCEL;^}',
+            yes: null,
+            no: null,
+            finished: null,
+            cancel: null,
+            href: null,
+            scrollbars: null,
+            defaultValue: null,
+            target: '_self',
+            inputType: 'text'
         }, (params || {}));
 
         for (var key in params) {
@@ -6493,6 +6528,7 @@
 
         this.close(this.topWindow);
         this.initBox();
+        this.opened = true;
     }
 
     $cms.inherits(ModalWindow, $cms.View, /**@lends $cms.views.ModalWindow#*/ {
@@ -6710,9 +6746,9 @@
                     'margin': '0 auto' // Centering for iOS/Android which is statically positioned (so the container height as auto can work)
                 }
             }));
-
-            this.inject(this.boxWrapperEl);
-
+            
+            this.topWindow.document.body.appendChild(this.boxWrapperEl);
+            
             var container = this.element('div', {
                 'class': 'box_inner',
                 'css': {
@@ -6983,11 +7019,7 @@
                 $cms.dom.on(document, 'mousemove', that.mousemove);
             }, 100);
         },
-
-        inject: function (el) {
-            this.topWindow.document.body.appendChild(el);
-        },
-
+        
         remove: function (el, win) {
             if (!win) {
                 win = this.topWindow;
@@ -9691,7 +9723,7 @@
 
             for (var i = 0; i < step4Form.elements.length; i++) {
                 if ((step4Form.elements[i].classList.contains('required1')) && (step4Form.elements[i].value === '')) {
-                    window.alert('{!IMPROPERLY_FILLED_IN;/}');
+                    window.alert('{!IMPROPERLY_FILLED_IN;^}');
                     return false;
                 }
             }

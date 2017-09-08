@@ -121,10 +121,10 @@
             if (form.oldAction !== undefined) {
                 form.setAttribute('action', form.oldAction);
             }
-
-            if (form.onsubmit && form.onsubmit.call(form, e)) {
+            
+            if ($cms.dom.trigger(form, 'submit') !== false) {
                 $cms.ui.disableButton(button);
-                $cms.dom.submit(form);
+                form.submit();
             }
         },
 
@@ -341,28 +341,28 @@
         if (!commentsForm) {
             return;
         }
-
-        commentsForm.oldOnsubmit = commentsForm.onsubmit;
-
-        commentsForm.onsubmit = function (event, isPreview) {
-            isPreview = Boolean(isPreview);
-
-            if (isPreview) {
+        
+        $cms.dom.on(commentsForm, 'submit', function commentsAjaxListener(event) {
+            var ret;
+            
+            if (event.triggeredByDoFormPreview) {
                 return true;
             }
 
             // Cancel the event from running
-            if (event.cancelable) {
-                event.preventDefault();
-            }
-
-            if (!commentsForm.oldOnsubmit(event)) {
+            event.preventDefault();
+            
+            $cms.dom.off(commentsForm, 'submit', commentsAjaxListener);
+            ret = $cms.dom.trigger(commentsForm, 'submit');
+            $cms.dom.on(commentsForm, 'submit', commentsAjaxListener);
+            
+            if (ret === false) {
                 return false;
             }
 
             var commentsWrapper = $cms.dom.$id(commentsWrapperId);
             if (!commentsWrapper) { // No AJAX, as stuff missing from template
-                $cms.dom.submit(commentsForm);
+                commentsForm.submit();
                 return true;
             }
 
@@ -429,12 +429,12 @@
                     // And re-attach this code (got killed by $cms.dom.replaceWith())
                     replaceCommentsFormWithAjax(options, hash);
                 } else { // Error: do a normal post so error can be seen
-                    $cms.dom.submit(commentsForm);
+                    commentsForm.submit();
                 }
             });
 
             return false;
-        };
+        });
     }
 
     function applyRatingHighlightAndAjaxCode(likes, initialRating, contentType, id, type, rating, contentUrl, contentTitle, initialisationPhase, visualOnly) {

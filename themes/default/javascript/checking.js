@@ -116,6 +116,7 @@
             for (i = 0; i < form.elements.length; i++) {
                 elements.push(form.elements[i]);
             }
+            
             for (i = 0; i < elements.length; i++) {
                 name = elements[i].name;
                 if (name && ((name.substr(0, 11) === 'label_for__') || (name.substr(0, 14) === 'tick_on_form__') || (name.substr(0, 9) === 'comcode__') || (name.substr(0, 9) === 'require__'))) {
@@ -124,20 +125,17 @@
             }
         }
 
-        if (form.onsubmit) {
-            var ret = form.onsubmit.call(form, event);
-            if (!ret) {
-                return false;
-            }
+        if ($cms.dom.trigger(form, 'submit') === false) {
+            return false;
         }
 
         if (!window.justCheckingRequirements) {
             if (analyticEventCategory) {
                 $cms.gaTrack(null, analyticEventCategory, null, function () {
-                    $cms.dom.submit(form);
+                    form.submit();
                 });
             } else {
-                $cms.dom.submit(form);
+                form.submit();
             }
         }
 
@@ -190,15 +188,12 @@
             return false;
         }
 
-        if (form.onsubmit) {
-            var test = form.onsubmit.call(form, event, true);
-            if (test === false) {
-                return false;
-            }
+        if ($cms.dom.trigger(form, { type: 'submit', triggeredByDoFormPreview: true }) === false) {
+            return false;
         }
 
         if (hasSeparatePreview) {
-            form.setAttribute('action', form.oldAction + ((!form.oldAction.includes('?')) ? '?' : '&') + 'preview=1');
+            form.setAttribute('action', form.oldAction + (form.oldAction.includes('?') ? '&' : '?') + 'preview=1');
             return true;
         }
 
@@ -315,11 +310,13 @@
      */
     $cms.form.checkForm = function checkForm(theForm, forPreview) {
         var deleteElement = $cms.dom.$('#delete');
-        if ((!forPreview) && (deleteElement != null) && (((deleteElement.classList[0] == 'input_radio') && (deleteElement.value != '0')) || (deleteElement.classList[0] == 'input_tick')) && (deleteElement.checked)) {
+        if ((!forPreview) && (deleteElement != null) && (((deleteElement.classList[0] === 'input_radio') && (deleteElement.value !== '0')) || (deleteElement.classList[0] === 'input_tick')) && (deleteElement.checked)) {
             return true;
         }
 
-        var j, theElement, erroneous = false, totalFileSize = 0, alerted = false, errorElement = null, checkResult;
+        var j, theElement, erroneous = false, totalFileSize = 0, 
+            alerted = false, errorElement = null, checkResult;
+        
         for (j = 0; j < theForm.elements.length; j++) {
             if (!theForm.elements[j]) {
                 continue;
@@ -328,9 +325,12 @@
             theElement = theForm.elements[j];
 
             checkResult = checkField(theElement, theForm, forPreview);
+            
             if (checkResult != null) {
                 erroneous = checkResult[0] || erroneous;
-                if (!errorElement && erroneous) errorElement = theElement;
+                if (!errorElement && erroneous) {
+                    errorElement = theElement;
+                }
                 totalFileSize += checkResult[1];
                 alerted = checkResult[2] || alerted;
 
@@ -384,7 +384,9 @@
         }
 
         if (erroneous) {
-            if (!alerted) $cms.ui.alert('{!IMPROPERLY_FILLED_IN;^}');
+            if (!alerted) {
+                $cms.ui.alert({ notice: '{!IMPROPERLY_FILLED_IN;^}', single: true });
+            }
             var posy = $cms.dom.findPosY(errorElement, true);
             if (posy === 0) {
                 posy = $cms.dom.findPosY(errorElement.parentNode, true);
@@ -763,7 +765,7 @@
             }
 
             if (!alreadyShownMessage) {
-                $cms.ui.alert('{!IMPROPERLY_FILLED_IN;^}');
+                $cms.ui.alert({ notice: '{!IMPROPERLY_FILLED_IN;^}', single: true });
             }
 
             return false;

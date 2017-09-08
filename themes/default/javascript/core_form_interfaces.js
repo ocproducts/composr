@@ -89,8 +89,12 @@
             var form = this.form,
                 separatePreview = !!this.params.separatePreview;
 
-            if ($cms.form.doFormPreview(e, form, window.formPreviewUrl, separatePreview) && !window.justCheckingRequirements) {
-                $cms.dom.submit(form);
+            if ($cms.form.doFormPreview(e, form, window.formPreviewUrl, separatePreview)) {
+                if (!window.justCheckingRequirements) {
+                    form.submit();
+                } else {
+                    e.preventDefault();
+                }
             }
         },
 
@@ -578,12 +582,8 @@
     };
 
     $cms.templates.formScreenFieldSpacer = function (params, container) {
-        params || (params = {});
-        var title = $cms.filter.id(params.title);
-
-        if (title && params.sectionHidden) {
-            $cms.dom.$id('fes' + title).click();
-        }
+        var title = $cms.filter.id(params.title),
+            sectionHidden = Boolean(params.sectionHidden);
 
         $cms.dom.on(container, 'click', '.js-click-toggle-subord-fields', function (e, clicked) {
             toggleSubordinateFields(clicked.parentNode.querySelector('img'), 'fes' + title + '_help');
@@ -596,6 +596,10 @@
         $cms.dom.on(container, 'click', '.js-click-geolocate-address-fields', function () {
             geolocateAddressFields();
         });
+
+        if (title && sectionHidden) {
+            $cms.dom.trigger('#fes' + title, 'click');
+        }
     };
 
     $cms.templates.formScreenInputTick = function (params, el) {

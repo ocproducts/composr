@@ -123,9 +123,9 @@
             }
         }
         input.name = editParamName;
-        form.onsubmit = function () {
-            return false;
-        };
+        $cms.dom.on(form, 'submit', function (e) {
+            e.preventDefault();
+        });
         if (controlButton) {
             $cms.dom.html(controlButton, '{!SAVE;^}');
         }

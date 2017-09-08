@@ -223,8 +223,11 @@
                 $cms.ui.showModalDialog($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes,unadorned=yes').then(function (comcodeAdded) {
                     if (!comcodeAdded) {  // Cancelled
                         var clearButton = document.getElementById('fsClear_file' + number);
-                        if (clearButton && clearButton.onclick) {
-                            clearButton.onclick();
+                        if (clearButton) {
+                            $cms.dom.one(clearButton, 'click', function (e) {
+                                e.preventDefault();
+                            });
+                            $cms.dom.trigger(clearButton, 'click');    
                         }
                         return;
                     }
