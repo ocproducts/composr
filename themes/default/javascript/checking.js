@@ -517,9 +517,6 @@
             if (((theClass === 'input_email') || (theClass === 'input_email_required')) && (myValue != '') && (!myValue.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/))) {
                 errorMsg = '{!javascript:NOT_A_EMAIL;^}'.replace('\{1}', myValue);
             }
-            if (((theClass === 'input_username') || (theClass === 'input_username_required')) && (myValue != '')) {
-                errorMsg = '{!javascript:NOT_USERNAME;^}'.replace('\{1}', myValue);
-            }
             if (((theClass === 'input_codename') || (theClass === 'input_codename_required')) && (myValue != '') && (!myValue.match(/^[a-zA-Z0-9\-\._]*$/))) {
                 errorMsg = '{!javascript:NOT_CODENAME;^}'.replace('\{1}', myValue);
             }
