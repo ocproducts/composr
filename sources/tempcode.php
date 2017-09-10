@@ -1474,7 +1474,7 @@ function handle_symbol_preprocessing($seq_part, &$children)
                 return;
             }
 
-            if (array_key_exists(0, $param)) {
+            if ((array_key_exists(0, $param)) && ($param[0] !== '')) {
                 if (strpos($param[0], ':') !== false) {
                     $param = array_reverse(explode(':', $param[0], 2));
                 }

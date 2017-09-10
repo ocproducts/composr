@@ -1708,6 +1708,10 @@ function _load_comcodes_page_from_cache($pages)
  */
 function load_comcode_page($string, $zone, $codename, $file_base = null, $being_included = false, &$out = null)
 {
+    if (strlen($codename) < 1) {
+        warn_exit(do_lang_tempcode('EMPTY_CODENAME'));
+    }
+
     if ($file_base === null) {
         $file_base = get_file_base();
     }

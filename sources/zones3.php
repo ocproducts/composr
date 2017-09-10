@@ -68,6 +68,10 @@ function define_comcode_page_structure($structure, $zone = '', $parent = '', $ov
     $i = 0;
 
     foreach ($structure as $page => $_structure) {
+        if (strlen($page) < 1) {
+            warn_exit(do_lang_tempcode('EMPTY_CODENAME'));
+        }
+
         if (is_numeric($page)) {
             $page = $_structure;
             $_structure = array();
@@ -614,8 +618,8 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated = null, $p
 
     // Check page name
     require_code('type_sanitisation');
-    if ((!is_alphanumeric($new_file)) || (strpos($new_file, '-') !== false && strpos($new_file, '_') !== false)/*can't have both*/) {
-        warn_exit(do_lang_tempcode('BAD_CODENAME'));
+    if ((strlen($new_file) < 1) || (!is_alphanumeric($new_file)) || (strpos($new_file, '-') !== false && strpos($new_file, '_') !== false)/*can't have both*/) {
+        warn_exit(do_lang_tempcode('EMPTY_CODENAME'));
     }
     require_code('zones2');
     check_page_name($zone, $new_file);
@@ -650,7 +654,7 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated = null, $p
         // Got to rename various resources
 
         $GLOBALS['SITE_DB']->query_update('attachment_refs', array('r_referer_id' => $new_file), array('r_referer_id' => $file, 'r_referer_type' => 'comcode_page'));
- 
+
         if (addon_installed('catalogues')) {
             update_catalogue_content_ref('comcode_page', $file, $new_file);
         }
