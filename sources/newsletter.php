@@ -179,9 +179,8 @@ function newsletter_who_send_to($send_details, $language, $start, $max, $get_raw
                     $query .= ' AND the_level>=' . strval($this_level);
                 }
             }
-            $query .= ' ORDER BY n.id';
 
-            $sql = 'SELECT n.id,n.email,the_password,n_forename,n_surname' . $query;
+            $sql = 'SELECT n.id,n.email,the_password,n_forename,n_surname' . $query . ' ORDER BY n.id';
             $temp = $GLOBALS['SITE_DB']->query($sql, $max, $start);
 
             if ($start == 0) {
@@ -231,8 +230,7 @@ function newsletter_who_send_to($send_details, $language, $start, $max, $get_raw
                     $query .= ' AND m_allow_emails=1';
                 }
                 $query .= ' AND m_is_perm_banned=0';
-                $query .= ' ORDER BY id';
-                $_rows = $GLOBALS['FORUM_DB']->query(str_replace('xxxxx', 'm.id,m.m_email_address,m.m_username', $query), $max, $start, false, true);
+                $_rows = $GLOBALS['FORUM_DB']->query(str_replace('xxxxx', 'm.id,m.m_email_address,m.m_username', $query) . ' ORDER BY id', $max, $start, false, true);
                 if ($start == 0) {
                     $total['g' . strval($id)] = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT (' . str_replace(' UNION ', ') + (', str_replace('xxxxx', 'COUNT(*)', $query)) . ')', false, true);
                 }
