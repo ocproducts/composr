@@ -2885,6 +2885,7 @@
                 }
                 var result = callback.apply(el, args);
                 if (result === false) {
+                    e.stopPropagation();
                     e.preventDefault();
                 }
                 return result;

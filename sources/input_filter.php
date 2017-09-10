@@ -91,7 +91,7 @@ function check_input_field_string($name, &$val, $posted, $filters)
         if (substr($val, 0, 10) == 'https-cms:') {
             $val = get_base_url(true) . '/' . substr($val, 10);
         } elseif (substr($val, 0, 9) == 'http-cms:') {
-            $val = get_base_url(true) . '/' . substr($val, 9);
+            $val = get_base_url(false) . '/' . substr($val, 9);
         }
     }
 
