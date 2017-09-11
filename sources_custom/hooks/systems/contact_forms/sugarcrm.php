@@ -92,12 +92,20 @@ class Hook_contact_forms_sugarcrm
         foreach ($messaging_mappings as $_mapping) {
             if (strpos($_mapping, '=') !== false) {
                 list($mapping_from, $mapping_to) = array_map('trim', explode('=', $_mapping, 2));
+
+                $matches = array();
+                if (preg_match('#^\((.*)\)$#', $mapping_from, $matches) != 0) {
+                    $value = $matches[1];
+                } else {
+                    $value = isset($body_parts[$mapping_from]) ? $body_parts[$mapping_from] : '';
+                }
+
                 if ((isset($data[$mapping_to])) && ($data[$mapping_to]['value'] != '')) {
                     if (isset($body_parts[$mapping_from])) {
-                        $data[$mapping_to]['value'] .= "\n\n" . $body_parts[$mapping_from];
+                        $data[$mapping_to]['value'] .= "\n\n" . $value;
                     }
                 } else {
-                    $data[$mapping_to] = array('name' => $mapping_to, 'value' => isset($body_parts[$mapping_from]) ? $body_parts[$mapping_from] : '');
+                    $data[$mapping_to] = array('name' => $mapping_to, 'value' => $value);
                 }
             }
         }

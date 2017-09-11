@@ -539,7 +539,28 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
     foreach (array_keys($emoticons) as $emoticon) {
         $emoticon_start_chars[$emoticon[0]] = true;
     }
-    $shortcuts = array('(EUR-)' => '&euro;', '{f.}' => '&fnof;', '-|-' => '&dagger;', '=|=' => '&Dagger;', '{%o}' => '&permil;', '{~S}' => '&Scaron;', '{~Z}' => '&#x17D;', '(TM)' => '&trade;', '{~s}' => '&scaron;', '{~z}' => '&#x17E;', '{.Y.}' => '&Yuml;', '(c)' => '&copy;', '(r)' => '&reg;', '---' => '&mdash;', '-->' => '&rarr;', '<--' => '&larr;', '--' => '&ndash;', '...' => '&hellip;');
+    $shortcuts = array(
+        '(EUR-)' => '&euro;',
+        '{f.}' => '&fnof;',
+        '-|-' => '&dagger;',
+        '=|=' => '&Dagger;',
+        '{%o}' => '&permil;',
+        '{~S}' => '&Scaron;',
+        '{~Z}' => '&#x17D;',
+        '(TM)' => '&trade;',
+        '{~s}' => '&scaron;',
+        '{~z}' => '&#x17E;',
+        '{.Y.}' => '&Yuml;',
+        '(c)' => '&copy;',
+        '(r)' => '&reg;',
+        '---' => '&mdash;',
+        '--&gt;' => '&rarr;',
+        '&lt;--' => '&larr;',
+        '-->' => '&rarr;',
+        '<--' => '&larr;',
+        '--' => '&ndash;',
+        '...' => '&hellip;',
+    );
 
     // Text syntax possibilities, that get maintained as our cursor moves through the text block
     $list_indent = 0;

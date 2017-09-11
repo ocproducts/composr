@@ -1629,12 +1629,9 @@ class Forum_driver_cns extends Forum_driver_base
                     return; // Not when probably running some AJAX script
                 }
                 if (addon_installed('captcha')) {
-                    $captcha = post_param_string('captcha', '');
-                    if ($captcha != '') { // Don't consider a CAPTCHA submitting, it'll drive people nuts to get flood control right after a CAPTCHA
-                        require_code('captcha');
-                        if (check_captcha($captcha, false)) {
-                            return;
-                        }
+                    require_code('captcha');
+                    if (check_captcha(null, false)) {
+                        return;
                     }
                 }
 

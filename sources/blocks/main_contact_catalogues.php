@@ -143,14 +143,14 @@ class Block_main_contact_catalogues
 
         $fields = new Tempcode();
 
+        $hidden = new Tempcode();
+
         if ($use_captcha) {
-            $fields->attach(form_input_captcha());
+            $fields->attach(form_input_captcha($hidden));
             $text->attach(do_lang_tempcode('FORM_TIME_SECURITY'));
         }
 
         $field_groups = array();
-
-        $hidden = new Tempcode();
 
         url_default_parameters__enable();
 

@@ -43,6 +43,8 @@ class Hook_config_hc_google_safe_browsing_api_key
             'public' => false,
 
             'addon' => 'health_check',
+
+            'maintenance_code' => 'google_safe_browsing_api',
         );
     }
 

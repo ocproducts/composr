@@ -332,9 +332,10 @@ function get_attachments($posting_field_name, $true_attachment_ui = true)
  * @param  boolean $support_autosave Whether to support auto-save
  * @param  boolean $specialisation2_hidden Whether to hide trailing extra fields
  * @param  mixed $description A description for this input field
+ * @param  ?Tempcode $cancel_url Cancel URL for cancelling auto-save (null: no cancel button)
  * @return Tempcode The posting form
  */
-function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_fields, $specialisation, $post_comment = null, $extra = '', $specialisation2 = null, $default_parsed = null, $js_function_calls = array(), $tabindex = null, $required = true, $has_preview = true, $avoid_wysiwyg = false, $support_autosave = true, $specialisation2_hidden = false, $description = '')
+function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_fields, $specialisation, $post_comment = null, $extra = '', $specialisation2 = null, $default_parsed = null, $js_function_calls = array(), $tabindex = null, $required = true, $has_preview = true, $avoid_wysiwyg = false, $support_autosave = true, $specialisation2_hidden = false, $description = '', $cancel_url = null)
 {
     require_javascript('posting');
     require_javascript('plupload');
@@ -411,6 +412,7 @@ function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_
         'SPECIALISATION2' => $specialisation2,
         'SPECIALISATION2_HIDDEN' => $specialisation2_hidden,
         'SUPPORT_AUTOSAVE' => $support_autosave,
+        'CANCEL_URL' => $cancel_url,
         'DESCRIPTION' => $description,
         'MODSECURITY_WORKAROUND' => $MODSECURITY_WORKAROUND_ENABLED,
     ));

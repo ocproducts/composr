@@ -124,6 +124,7 @@ function render_news_box($row, $zone = '_SEARCH', $give_context = true, $brief =
         'BLOG' => false,
         'AUTHOR_URL' => $author_url,
         'CATEGORY' => $category,
+        '_CATEGORY' => strval($row['news_category']),
         'IMG' => $img,
         '_IMG' => $img_raw,
         'NEWS' => $news,
@@ -272,24 +273,18 @@ function create_selection_list_news_categories($it = null, $show_all_personal_ca
         }
         sort_maps_by($_cats, 'nice_title');
 
-        // Sort so blogs go after news
+        // Sort
         $title_ordered_cats = $_cats;
         $_cats = array();
         foreach ($title_ordered_cats as $cat) {
-            if ($cat['nc_owner'] === null) {
-                $_cats[] = $cat;
-            }
-        }
-        foreach ($title_ordered_cats as $cat) {
-            if ($cat['nc_owner'] !== null) {
-                $_cats[] = $cat;
-            }
+            $_cats[] = $cat;
         }
 
         $query_cache[$where] = array($count, $_cats);
     }
 
-    $categories = new Tempcode();
+    $categories_non_blogs = new Tempcode();
+    $categories_blogs = new Tempcode();
     $add_cat = true;
 
     $may_blog = has_privilege(get_member(), 'have_personal_category', 'cms_news');
@@ -316,16 +311,25 @@ function create_selection_list_news_categories($it = null, $show_all_personal_ca
 
         if ($cat['nc_owner'] === null) {
             $li = form_input_list_entry(strval($cat['n_id']), ($it != array(null)) && in_array($cat['n_id'], $it), $cat['nice_title'] . ' (#' . strval($cat['n_id']) . ')');
-            $categories->attach($li);
+            $categories_non_blogs->attach($li);
         } else {
             if (((($cat['nc_owner'] !== null) && ($may_blog)) || (($cat['nc_owner'] == get_member()) && (!is_guest()))) || ($show_all_personal_categories)) {
-                $categories->attach(form_input_list_entry(strval($cat['n_id']), (($cat['nc_owner'] == get_member()) && ((!$prefer_not_blog_selected) && (in_array(null, $it)))) || (in_array($cat['n_id'], $it)), $cat['nice_title']/*Performance do_lang('MEMBER_CATEGORY', $GLOBALS['FORUM_DRIVER']->get_username($cat['nc_owner'], true))*/ . ' (#' . strval($cat['n_id']) . ')'));
+                $li = form_input_list_entry(strval($cat['n_id']), (($cat['nc_owner'] == get_member()) && ((!$prefer_not_blog_selected) && (in_array(null, $it)))) || (in_array($cat['n_id'], $it)), $cat['nice_title']/*Performance do_lang('MEMBER_CATEGORY', $GLOBALS['FORUM_DRIVER']->get_username($cat['nc_owner'], true))*/ . ' (#' . strval($cat['n_id']) . ')');
+                $categories_blogs->attach($li);
             }
         }
     }
 
     if ((!$only_existing) && (has_privilege(get_member(), 'have_personal_category', 'cms_news')) && ($add_cat) && (!is_guest())) {
-        $categories->attach(form_input_list_entry('personal', (!$prefer_not_blog_selected) && in_array(null, $it), do_lang_tempcode('MEMBER_CATEGORY', do_lang_tempcode('_NEW', escape_html($GLOBALS['FORUM_DRIVER']->get_username(get_member(), true))))));
+        $categories_blogs->attach(form_input_list_entry('personal', (!$prefer_not_blog_selected) && in_array(null, $it), do_lang_tempcode('MEMBER_CATEGORY', do_lang_tempcode('_NEW', escape_html($GLOBALS['FORUM_DRIVER']->get_username(get_member(), true))))));
+    }
+
+    $categories = new Tempcode();
+    if ($categories_blogs->is_empty()) {
+        $categories = $categories_non_blogs;
+    } else {
+        $categories->attach(form_input_list_group(do_lang('JUST_NEWS_CATEGORIES'), $categories_non_blogs));
+        $categories->attach(form_input_list_group(do_lang('BLOGS'), $categories_blogs));
     }
 
     return $categories;

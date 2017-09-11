@@ -104,6 +104,7 @@ class lang_no_unused_test_set extends cms_test_case
             '_PASSWORD_RESET_TEXT_',
             'SECURITY_LEVEL_',
             'HEALTH_CHECK_SUBJECT_',
+            'RECAPTCHA_ERROR_',
         );
 
         $skip = array(

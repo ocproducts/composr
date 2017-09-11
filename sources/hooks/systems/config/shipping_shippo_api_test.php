@@ -44,6 +44,8 @@ class Hook_config_shipping_shippo_api_test
             'public' => false,
 
             'addon' => 'ecommerce',
+
+            'maintenance_code' => 'shippo',
         );
     }
 

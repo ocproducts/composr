@@ -620,6 +620,15 @@ Values are like hidden configuration options. They are either hidden because the
   - [tt]no_cannot_access_url_messages[/tt] -- set this to '1' to turn off attached messages about broken URLs that Composr tries to process
   - [tt]force_spell_checker[/tt] -- set to 'pspell' or 'enchant' to force that particular spell-checker, rather than auto-detecting
   - [tt]avoid_register_shutdown_function[/tt] -- set this to '1' if [tt]register_shutdown_function[/tt] is not reliable on this system (may appear to be unreliable on some Windows servers, for example)
+  - [tt]disable_comcode_page_order[/tt] -- set this to '1' to disable the Comcode page ordering feature
+  - [tt]disable_comcode_page_show_as_edited[/tt] -- set this to '1' to disable the Comcode Page "show as edited" feature
+  - [tt]hide_import[/tt] -- set this to '1' to hide the import icon from the Admin Zone (as some other addons may depend on it, but you may not need an icon)
+  - [tt]hide_zone_editor[/tt] -- set this to '1' to hide the zone editor from the Admin Zone (if you're not using side panels)
+  - [tt]hide_blogs[/tt] -- set this to '1' if you don't want to separate news and blogs
+  - [tt]hide_polls[/tt] -- set this to '1' if you don't want to show polls in the CMS menu (if you have the forum you need the polls addon, but may not use polls outside the forum)
+  - [tt]hide_rss[/tt] -- set this to '1' to hide the RSS links from the Admin Zone
+  - [tt]disable_bulkhelper[/tt] -- set this to '1' to disable the feature that asks you if you are bulk-adding records
+  - [tt]disable_news_repimages[/tt] -- set this to '1' to disable rep-images for news categories
  - Performance tuning (positive) [not official options as will break normal expectations of how the system will behave / complicate things]
   - [tt]lots_of_data_in_*[/tt] -- set this to '1', with '*' replaced with a database table name, if you want the Selectcode mechanism to work with recursive DB lookups rather than one huge flat lookup
   - [tt]disable_cat_cat_perms[/tt] -- set this to '1' if you want to disable catalogue category permissions

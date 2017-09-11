@@ -35,7 +35,7 @@ class Module_news
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 7;
+        $info['version'] = 8;
         $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         return $info;
@@ -100,7 +100,7 @@ class Module_news
                 'id' => '*AUTO',
                 'nc_title' => 'SHORT_TRANS',
                 'nc_owner' => '?MEMBER',
-                'nc_img' => 'URLPATH',
+                'nc_img' => 'SHORT_TEXT',
                 'notes' => 'LONG_TEXT',
             ));
             $GLOBALS['SITE_DB']->create_index('news_categories', 'ncs', array('nc_owner'));
@@ -153,8 +153,8 @@ class Module_news
             add_privilege('SEARCH', 'autocomplete_title_news', false);
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 7)) { // LEGACY
-            $GLOBALS['SITE_DB']->alter_table_field('news_categories', 'nc_img', 'URLPATH');
+        if (($upgrade_from !== null) && ($upgrade_from < 8)) { // LEGACY
+            $GLOBALS['SITE_DB']->alter_table_field('news_categories', 'nc_img', 'SHORT_TEXT');
         }
     }
 
@@ -507,8 +507,6 @@ class Module_news
      */
     public function news_archive()
     {
-        $select = either_param_string('active_select', '');
-
         $blog = $this->blog;
         $select = $this->select;
         $select_and = $this->select_and;

@@ -32,14 +32,6 @@ function build_preview($multi_return = false)
     require_css('forms');
     require_javascript('checking');
 
-    // Check CAPTCHA if it is passed
-    if (addon_installed('captcha')) {
-        if (((array_key_exists('post', $_POST)) && ($_POST['post'] != '')) && (array_key_exists('captcha', $_POST))) {
-            require_code('captcha');
-            enforce_captcha(false);
-        }
-    }
-
     // See if we have a preview hook...
 
     require_code('attachments2');

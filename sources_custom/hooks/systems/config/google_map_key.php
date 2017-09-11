@@ -37,6 +37,8 @@ class Hook_config_google_map_key
             'public' => false,
 
             'addon' => 'data_mappr',
+
+            'maintenance_code' => 'google_maps',
         );
     }
 

@@ -1,3 +1,23 @@
+/* Called from RECAPTCHA, when it loads */
+function recaptchaLoaded()
+{
+    var captchaElement = document.getElementById('captcha');
+    captchaElement.executedFully = false;
+    var grecaptchaParameters = {
+        sitekey: '{$CONFIG_OPTION;^/,recaptcha_site_key}',
+        callback: function() {
+            captchaElement.executedFully = true;
+            $cms.dom.submit(form);
+        },
+        theme: '{$?,{$THEME_DARK},dark,light}',
+        size: 'invisible',
+    };
+    if (typeof captchaElement.dataset.tabindex != 'undefined') {
+        grecaptchaParameters.tabindex = captchaElement.dataset.tabindex;
+    }
+    window.grecaptcha.render('captcha', grecaptchaParameters, false);
+}
+
 (function ($cms) {
     'use strict';
 

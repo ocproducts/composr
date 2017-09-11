@@ -169,6 +169,7 @@ class css_and_js_test_set extends cms_test_case
             'skitter.css',
             'mediaelementplayer.css',
             'jquery_ui.css',
+            'confluence.css',
         );
 
         $only = get_param_string('only', null);

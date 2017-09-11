@@ -424,6 +424,11 @@ abstract class Standard_crud_module
     {
         @ignore_user_abort(true); // Must keep going till completion
 
+        if (get_param_integer('clear_autosave', 0) == 1) {
+            require_code('autosave');
+            clear_cms_autosave();
+        }
+
         require_code('input_filter_2');
         rescue_shortened_post_request();
 
@@ -926,6 +931,7 @@ abstract class Standard_crud_module
 
         $submit_icon = ($this->type_code == 'category') ? 'menu___generic_admin__add_one_category' : 'menu___generic_admin__add_one';
 
+        $cancel_url = build_url(array('page' => '_SELF', 'clear_autosave' => 1), '_SELF');
         if (get_param_string('type', 'add') == 'add_catalogue') {
             require_javascript('catalogues');
 
@@ -959,7 +965,7 @@ abstract class Standard_crud_module
                 'JS_FUNCTION_CALLS' => $this->js_function_calls,
             ) + $extra_tpl_params);
         } elseif ($this->posting_form_title !== null) {
-            $posting_form = get_posting_form($submit_name, $submit_icon, $this->posting_form_text, $post_url, $hidden, $fields, $this->posting_form_title, '', $fields2, $this->posting_form_text_parsed, $this->js_function_calls, $posting_form_tabindex, $this->posting_field_required, /*$has_preview = */true, /*$avoid_wysiwyg = */false, /*$support_autosave = */true, /*$specialisation2_hidden = */false, $this->posting_form_description);
+            $posting_form = get_posting_form($submit_name, $submit_icon, $this->posting_form_text, $post_url, $hidden, $fields, $this->posting_form_title, '', $fields2, $this->posting_form_text_parsed, $this->js_function_calls, $posting_form_tabindex, $this->posting_field_required, /*$has_preview = */true, /*$avoid_wysiwyg = */false, /*$support_autosave = */true, /*$specialisation2_hidden = */false, $this->posting_form_description, $cancel_url);
             return do_template('POSTING_SCREEN', array(
                 '_GUID' => '15930ba8cc02634ed3a225c9714c3eac' . get_class($this),
                 'TITLE' => $this->title,
@@ -969,6 +975,7 @@ abstract class Standard_crud_module
                 'POSTING_FORM' => $posting_form->evaluate()/*FUDGE*/,
                 'JS_FUNCTION_CALLS' => $this->js_function_calls,
                 'SUPPORT_AUTOSAVE' => true,
+                'CANCEL_URL' => $cancel_url,
             ) + $extra_tpl_params);
         } else {
             $fields->attach($fields2);
@@ -986,6 +993,7 @@ abstract class Standard_crud_module
                     'SUBMIT_NAME' => $submit_name,
                     'JS_FUNCTION_CALLS' => $this->js_function_calls,
                     'SUPPORT_AUTOSAVE' => true,
+                    'CANCEL_URL' => $cancel_url,
                 ) + $extra_tpl_params);
         }
     }
@@ -1531,8 +1539,9 @@ abstract class Standard_crud_module
 
         $submit_icon = ($this->type_code == 'category') ? 'menu___generic_admin__edit_one_category' : 'menu___generic_admin__edit_one';
 
+        $cancel_url = build_url(array('page' => '_SELF', 'clear_autosave' => 1), '_SELF');
         if ($this->posting_form_title !== null) {
-            $posting_form = get_posting_form($submit_name, $submit_icon, $this->posting_form_text, $post_url, $hidden, $fields, $this->posting_form_title, '', $fields2, $this->posting_form_text_parsed, $this->js_function_calls, $this->posting_form_tabindex, $this->posting_field_required, /*$has_preview = */true, /*$avoid_wysiwyg = */false, /*$support_autosave = */true, /*$specialisation2_hidden = */false, $this->posting_form_description);
+            $posting_form = get_posting_form($submit_name, $submit_icon, $this->posting_form_text, $post_url, $hidden, $fields, $this->posting_form_title, '', $fields2, $this->posting_form_text_parsed, $this->js_function_calls, $this->posting_form_tabindex, $this->posting_field_required, /*$has_preview = */true, /*$avoid_wysiwyg = */false, /*$support_autosave = */true, /*$specialisation2_hidden = */false, $this->posting_form_description, $cancel_url);
             return do_template('POSTING_SCREEN', array(
                 '_GUID' => '841b9af3aa80bcab86b907e4b942786a' . get_class($this),
                 'PREVIEW' => $this->do_preview,
@@ -1544,6 +1553,7 @@ abstract class Standard_crud_module
                 'POSTING_FORM' => $posting_form->evaluate()/*FUDGE*/,
                 'JS_FUNCTION_CALLS' => $this->js_function_calls,
                 'SUPPORT_AUTOSAVE' => true,
+                'CANCEL_URL' => $cancel_url,
             ) + $extra_tpl_params);
         } else {
             $fields->attach($fields2);
@@ -1563,6 +1573,7 @@ abstract class Standard_crud_module
                 'SUBMIT_NAME' => $submit_name,
                 'JS_FUNCTION_CALLS' => $this->js_function_calls,
                 'SUPPORT_AUTOSAVE' => true,
+                'CANCEL_URL' => $cancel_url,
             ) + $extra_tpl_params);
         }
     }

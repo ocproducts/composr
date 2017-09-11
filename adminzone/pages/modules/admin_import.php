@@ -126,6 +126,10 @@ class Module_admin_import
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (get_value('hide_import') === '1') {
+            return null;
+        }
+
         return array(
             'browse' => array('IMPORT', 'menu/_generic_admin/import'),
         );

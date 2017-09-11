@@ -517,7 +517,11 @@ function test_url($url_full, $tag_type, $given_url, $source_member)
         return new Tempcode();
     }
 
-    global $COMCODE_PARSE_URLS_CHECKED, $COMCODE_BROKEN_URLS, $DONT_CARE_MISSING_PAGES;
+    global $COMCODE_PARSE_URLS_CHECKED, $COMCODE_URLS, $DONT_CARE_MISSING_PAGES;
+
+    if (isset($COMCODE_URLS)) {
+        $COMCODE_URLS[$url_full] = true;
+    }
 
     $temp_tpl = new Tempcode();
     require_code('global4');
@@ -540,9 +544,7 @@ function test_url($url_full, $tag_type, $given_url, $source_member)
                     'WARNING' => do_lang_tempcode('MISSING_URL_COMCODE', escape_html($tag_type), escape_html($url_full)),
                 ));
             }
-            if (isset($COMCODE_BROKEN_URLS)) {
-                $COMCODE_BROKEN_URLS[] = array($url_full, null);
-            } elseif ((!in_array(get_page_name(), $DONT_CARE_MISSING_PAGES)) && (running_script('index'))) {
+            if ((!in_array(get_page_name(), $DONT_CARE_MISSING_PAGES)) && (running_script('index'))) {
                 $found_in_post = false; // We don't want to send email if someone's just posting it right now, because they'll see the error on their screen, and we don't want staff spammed by member mistakes
                 foreach ($_POST as $val) {
                     if (is_array($_POST)) {

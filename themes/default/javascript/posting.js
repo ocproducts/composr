@@ -491,12 +491,18 @@
     function doInputHide(fieldName) {
         $cms.ui.prompt('{!javascript:ENTER_WARNING;^}', '', null, '{!comcode:INPUT_COMCODE_hide;^}').then(function (va) {
             if (va) {
+                var element = document.getElementById(fieldName);
+
+                if (window.getSelectedText(element) != '') {
+                    window.insertTextbox(element, '[hide=\"' + $cms.filter.comcode(va) + '\"]', '[/hide]');
+                    return;
+                }
+
                 $cms.ui.prompt(
                     '{!javascript:ENTER_HIDDEN_TEXT;^}',
                     '',
                     function (vb) {
                         if (vb) {
-                            var element = document.getElementById(fieldName);
                             window.insertTextbox(element, '[hide=\"' + $cms.filter.comcode(va) + '\"]' + $cms.filter.comcode(vb) + '[/hide]');
                         }
                     },
@@ -630,6 +636,11 @@
                         '{!javascript:ENTER_CAPTION;^}',
                         '',
                         function (vc) {
+                            if (window.getSelectedText(element) != '') {
+                                _doInputPage(fieldName, result, '');
+                                return;
+                            }
+
                             _doInputPage(fieldName, result, vc);
                         },
                         '{!comcode:INPUT_COMCODE_page;^}'
@@ -648,6 +659,11 @@
                             function (vb) {
                                 if (vb !== null) {
                                     result = va + ':' + vb;
+
+                                    if (window.getSelectedText(element) != '') {
+                                        _doInputPage(fieldName, result, '');
+                                        return;
+                                    }
 
                                     $cms.ui.prompt(
                                         '{!javascript:ENTER_CAPTION;^}',
@@ -668,7 +684,11 @@
 
         function _doInputPage(fieldName, result, vc) {
             var element = document.getElementById(fieldName);
-            window.insertTextbox(element, '[page=\"' + $cms.filter.comcode(result) + '\"]' + $cms.filter.comcode(vc) + '[/page]');
+            if (vc == '') {
+                window.insertTextboxWrapping(element, '[page=\"' + $cms.filter.comcode(result) + '\"]', '[/page]');
+            } else {
+                window.insertTextbox(element, '[page=\"' + $cms.filter.comcode(result) + '\"]' + $cms.filter.comcode(vc) + '[/page]');
+            }
         }
     }
 
@@ -685,11 +705,17 @@
                 }
 
                 if (va !== null) {
+                    var element = document.getElementById(fieldName);
+
+                    if (window.getSelectedText(element) != '') {
+                        window.insertTextbox(element, '[email=\"' + $cms.filter.comcode(va) + '\"]', '[/email]');
+                        return;
+                    }
+
                     $cms.ui.prompt(
                         '{!javascript:ENTER_CAPTION;^}',
                         '',
                         function (vb) {
-                            var element = document.getElementById(fieldName);
                             if (vb !== null) {
                                 window.insertTextbox(element, '[email=\"' + $cms.filter.comcode(vb) + '\"]' + $cms.filter.comcode(va) + '[/email]');
                             }

@@ -93,7 +93,7 @@ function cns_join_form($url, $captcha_if_enabled = true, $intro_message_if_enabl
         }
     }
 
-    if ($captcha_if_enabled) {
+    if (($captcha_if_enabled) && (get_option('recaptcha_site_key') == '')) {
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'a8197832e4467b08e953535202235501', 'TITLE' => do_lang_tempcode('SPECIAL_REGISTRATION_FIELDS'))));
     }
 
@@ -105,7 +105,7 @@ function cns_join_form($url, $captcha_if_enabled = true, $intro_message_if_enabl
         if (addon_installed('captcha')) {
             require_code('captcha');
             if (use_captcha()) {
-                $fields->attach(form_input_captcha());
+                $fields->attach(form_input_captcha($hidden));
                 $text->attach(' ');
                 $text->attach(do_lang_tempcode('FORM_TIME_SECURITY'));
             }

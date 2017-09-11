@@ -6,6 +6,10 @@ echo 'Make sure data/ckeditor/plugins/{composr|imagepaste|spellchecktoggle|showc
 
 echo 'Manually download and place moono and moonocolor skins which we like to also bundle, place in skins/';
 
+echo 'Manually download and extract codemirror, dialogadvtab and emojione plugins; codemirror has additional changes we have not documented that need merging in manually';
+
+echo 'Manually apply the new lines that were put in the old plugins/table/dialogs/table.js (11-30)';
+
 echo "Removing unneeded files"
 rm -rf CHANGES.md samples _source ckeditor.pack config.js adapters
 

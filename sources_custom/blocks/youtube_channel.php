@@ -25,7 +25,7 @@ class Block_youtube_channel
         $info['hack_version'] = null;
         $info['version'] = 11;
         $info['locked'] = false;
-        $info['parameters'] = array('name', 'api_key', 'playlist_id', 'title', 'template_main', 'template_style', 'start_video', 'max_videos', 'description_type', 'embed_allowed', 'show_player', 'player_align', 'player_width', 'player_height', 'style', 'nothumbplayer', 'thumbnail', 'formorelead', 'formoretext', 'formoreurl');
+        $info['parameters'] = array('name', 'playlist_id', 'title', 'template_main', 'template_style', 'start_video', 'max_videos', 'description_type', 'embed_allowed', 'show_player', 'player_align', 'player_width', 'player_height', 'style', 'nothumbplayer', 'thumbnail', 'formorelead', 'formoretext', 'formoreurl');
         return $info;
     }
 
@@ -94,7 +94,7 @@ class Block_youtube_channel
         $channel_error = '';
 
         // Get API Key config setting. If block config API Key setting is set, use that. If api_key block parameter is set, use that instead.
-        $youtube_api_key = array_key_exists('api_key', $map) ? $map['api_key'] : get_option('youtube_channel_block_api_key');
+        $youtube_api_key = get_option('google_apis_api_key');
 
         // Generate error if no YouTube API key is configured or specified
         if (empty($youtube_api_key)) {
@@ -540,7 +540,6 @@ function block_youtube_channel__cache_on($map)
                  array_key_exists('formoreurl', $map) ? $map['formoreurl'] : '',
                  array_key_exists('name', $map) ? $map['name'] : '',
                  array_key_exists('template_main', $map) ? $map['template_main'] : '',
-                 array_key_exists('api_key', $map) ? $map['api_key'] : '',
                  array_key_exists('description_type', $map) ? $map['description_type'] : 'long',
                  array_key_exists('playlist_id', $map) ? $map['playlist_id'] : ''
     );

@@ -329,6 +329,7 @@ class Block_main_news
                     'BLOG' => $blogs === 1,
                     'SUBMITTER' => strval($myrow['submitter']),
                     'CATEGORY' => $category,
+                    '_CATEGORY' => strval($myrow['news_category']),
                     'IMG' => $img,
                     '_IMG' => $img_raw,
                     'DATE' => $date,
@@ -389,7 +390,7 @@ class Block_main_news
         $submit_url = new Tempcode();
         $management_page = ($blogs === 1) ? 'cms_blogs' : 'cms_news';
         if ((($blogs !== 1) || (has_privilege(get_member(), 'have_personal_category', 'cms_news'))) && (has_actual_page_access(null, $management_page, null, null)) && (has_submit_permission(($blogs === 1) ? 'mid' : 'high', get_member(), get_ip_address(), $management_page))) {
-            $map2 = array('page' => $management_page, 'type' => 'add', 'redirect' => protect_url_parameter(SELF_REDIRECT_RIP));
+            $map2 = array('page' => $management_page, 'type' => 'add');
             if (is_numeric($select)) {
                 $map2['cat'] = $select; // select news cat by default, if we are only showing one news cat in this block
             } elseif ($select != '*') {
@@ -406,6 +407,7 @@ class Block_main_news
                     $map2['cat'] = $first_cat;
                 }
             }
+            $map2['redirect'] = protect_url_parameter(SELF_REDIRECT_RIP);
             $submit_url = build_url($map2, get_module_zone($management_page));
         }
 

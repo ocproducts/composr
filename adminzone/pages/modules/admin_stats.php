@@ -35,7 +35,7 @@ class Module_admin_stats
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 9;
+        $info['version'] = 10;
         $info['locked'] = true;
         $info['update_require_upgrade'] = true;
         return $info;
@@ -74,6 +74,7 @@ class Module_admin_stats
                 'milliseconds' => 'INTEGER',
                 'operating_system' => 'SHORT_TEXT',
                 'access_denied_counter' => 'INTEGER',
+                'title' => 'SHORT_TEXT',
             ));
 
             // Note: We have chosen not to create many indices because we want insertion to be very fast
@@ -131,6 +132,10 @@ class Module_admin_stats
             $GLOBALS['SITE_DB']->create_index('stats', 'member_track_4', array('session_id'));
             $GLOBALS['SITE_DB']->create_index('stats', 'member_track_1', array('member_id'));
             $GLOBALS['SITE_DB']->create_index('stats', 'member_track_3', array('member_id', 'date_and_time'));
+        }
+
+        if (($upgrade_from !== null) && ($upgrade_from < 10)) { // LEGACY
+            $GLOBALS['SITE_DB']->add_table_field('stats', 'title', 'SHORT_TEXT');
         }
     }
 

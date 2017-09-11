@@ -58,7 +58,9 @@ class Module_admin_zones
         );
 
         if (!$be_deferential) {
-            $ret['editor'] = array('ZONE_EDITOR', 'menu/adminzone/structure/zones/zone_editor');
+            if (get_value('hide_zone_editor') !== '1') {
+                $ret['editor'] = array('ZONE_EDITOR', 'menu/adminzone/structure/zones/zone_editor');
+            }
         }
 
         return $ret;

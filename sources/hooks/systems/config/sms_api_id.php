@@ -44,6 +44,8 @@ class Hook_config_sms_api_id
             'public' => false,
 
             'addon' => 'sms',
+
+            'maintenance_code' => 'sms',
         );
     }
 

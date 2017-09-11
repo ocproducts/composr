@@ -168,7 +168,7 @@
 
 								<td>
 									<div>
-										<textarea name="post" id="post" data-textarea-auto-height="" accesskey="x" class="{$?,{TRUE_ATTACHMENT_UI},true_attachment_ui,faux_attachment_ui} wide_field js-focus-textarea-post" cols="42" rows="{$?,{$IS_NON_EMPTY,{$GET,COMMENT_POSTING_ROWS}},{$GET,COMMENT_POSTING_ROWS},11}">{POST_WARNING*}{+START,IF_PASSED,DEFAULT_POST}{DEFAULT_POST*}{+END}</textarea>
+										<textarea name="post" id="post" data-textarea-auto-height="" tabindex="6" accesskey="x" class="{$?,{TRUE_ATTACHMENT_UI},true_attachment_ui,faux_attachment_ui} wide_field js-focus-textarea-post" cols="42" rows="{$?,{$IS_NON_EMPTY,{$GET,COMMENT_POSTING_ROWS}},{$GET,COMMENT_POSTING_ROWS},11}">{POST_WARNING*}{+START,IF_PASSED,DEFAULT_POST}{DEFAULT_POST*}{+END}</textarea>
 										<input type="hidden" name="comcode__post" value="1" />
 									</div>
 
@@ -191,35 +191,10 @@
 					</table></div>
 
 					<div class="comments_posting_form_end">
-						{+START,SET,CAPTCHA}
-							{+START,IF_PASSED_AND_TRUE,USE_CAPTCHA}
-								<div class="comments_captcha">
-									<div class="box box___comments_posting_form__captcha"><div class="box_inner">
-										{+START,IF,{$CONFIG_OPTION,audio_captcha}}
-											<p>{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}<label for="captcha">{+END}{!DESCRIPTION_CAPTCHA_2,<a class="js-click-play-self-audio-link" title="{!captcha:AUDIO_VERSION}" href="{$FIND_SCRIPT*,captcha,1}?mode=audio&amp;cache_break={$RAND}{$KEEP*,0,1}">{!captcha:AUDIO_VERSION}</a>}{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}</label>{+END}</p>
-										{+END}
-										{+START,IF,{$NOT,{$CONFIG_OPTION,audio_captcha}}}
-											<p>{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}<label for="captcha">{+END}{!DESCRIPTION_CAPTCHA_3}{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}</label>{+END}</p>
-										{+END}
-										{+START,IF,{$CONFIG_OPTION,css_captcha}}
-											<iframe {$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} id="captcha_frame" class="captcha_frame" title="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" src="{$FIND_SCRIPT*,captcha}&amp;cache_break={$RAND}{$KEEP*,0,1}">{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}</iframe>
-										{+END}
-										{+START,IF,{$NOT,{$CONFIG_OPTION,css_captcha}}}
-											<img id="captcha_image" title="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" alt="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" src="{$FIND_SCRIPT*,captcha}&amp;cache_break={$RAND}{$KEEP*,0,1}" />
-										{+END}
-										<input maxlength="6" size="8" class="input_text_required" type="text" id="captcha" name="captcha" />
-									</div></div>
-								</div>
+						{+START,IF_PASSED_AND_TRUE,USE_CAPTCHA}
+							{+START,INCLUDE,COMMENTS_POSTING_FORM_CAPTCHA}
+								TABINDEX=7
 							{+END}
-						{+END}
-
-						{+START,IF,{$CONFIG_OPTION,js_captcha}}
-							{+START,IF_NON_EMPTY,{$TRIM,{$GET,CAPTCHA}}}
-								<div id="captcha_spot"></div>
-							{+END}
-						{+END}
-						{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}
-							{$GET,CAPTCHA}
 						{+END}
 
 						{$SET,has_preview_button,{$AND,{$DESKTOP},{$JS_ON},{$CONFIG_OPTION,enable_previews},{$NOT,{$VALUE_OPTION,xhtml_strict}}}}

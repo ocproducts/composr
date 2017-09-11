@@ -32,6 +32,8 @@ class template_no_unused_test_set extends cms_test_case
         }
 
         $exceptions = array(
+            'CAPTCHA_LOOSE',
+            'COMMENTS_POSTING_FORM_CAPTCHA',
             'PASSWORD_CHECK_JS',
             'AJAX_PAGINATION',
             'BLOCK_SIDE_GALLERIES_LINE',
@@ -89,6 +91,7 @@ class template_no_unused_test_set extends cms_test_case
             'GLOBAL_HELPER_PANEL',
             'HANDLE_CONFLICT_RESOLUTION',
             'HTML_HEAD',
+            'HTML_HEAD_POLYFILLS',
             'HYPERLINK',
             'HYPERLINK_BUTTON',
             'HYPERLINK_TOOLTIP',

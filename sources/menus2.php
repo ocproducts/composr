@@ -27,6 +27,8 @@ function init__menus2()
 {
     global $ADD_MENU_COUNTER;
     $ADD_MENU_COUNTER = 10;
+
+    require_lang('menus');
 }
 
 /**

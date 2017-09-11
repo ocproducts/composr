@@ -44,6 +44,8 @@ class Hook_config_sms_high_limit
             'public' => false,
 
             'addon' => 'sms',
+
+            'maintenance_code' => 'sms',
         );
     }
 

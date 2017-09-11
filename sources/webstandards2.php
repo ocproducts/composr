@@ -64,7 +64,7 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
     global $XML_CONSTRAIN, $TAG_STACK, $ATT_STACK, $TABS_SEEN, $KEYS_SEEN, $IDS_SO_FAR, $ANCESTER_BLOCK, $ANCESTER_INLINE, $EXPECTING_TAG, $OUT, $POS, $LAST_A_TAG, $TAG_RANGES, $WEBSTANDARDS_CSP;
 
     // CSP violation
-    if ($WEBSTANDARDS_CSP && false/*TODO: Re-enable once installer follows CSP too*/) {
+    if ($WEBSTANDARDS_CSP) {
         if (!$close) {
             if (($tag === 'script') && (empty($attributes['nonce']))) {
                 $errors[] = array('CSP_SCRIPT_TAG');
@@ -867,6 +867,9 @@ function _webstandards_css_sheet($data)
 
     $errors = array();
 
+    // We don't want to write code to parse out property referencing stuff which is very irregular compared to other CSS, so let's just simplify that to something else
+    $data = preg_replace('#\[([\w\-]+|)?[\w\-]+([$*~|^]?="[^;"]*")?\]#', '.foobar', $data);
+
     $len = strlen($data);
     $status = CSS_NO_MANS_LAND;
     $line = 0;
@@ -1048,12 +1051,7 @@ function _webstandards_css_sheet($data)
                         $class_start_i = $i;
                         $class = '';
                     } else {
-                        $matches = array();
-                        if (($next == '[') && (preg_match('#\[([\w\-]+|)?[\w\-]+([$*~|^]?="[^;"]*")?\]#', $data, $matches, 0, $i) == 1)) {
-                            $i += strlen($matches[0]) - 1;
-                        } else {
-                            $errors[] = array(0 => 'CSS_UNEXPECTED_CHARACTER', 1 => $next, 2 => integer_format($line), 'pos' => $i);
-                        }
+                        $errors[] = array(0 => 'CSS_UNEXPECTED_CHARACTER', 1 => $next, 2 => integer_format($line), 'pos' => $i);
                     }
                 }
                 break;
@@ -1074,10 +1072,6 @@ function _webstandards_css_sheet($data)
                     $status = CSS_IN_COMMENT;
                     $class_before_comment = CSS_EXPECTING_SEP_OR_IDENTIFIER_OR_CLASS;
                 } elseif (($next == '.') || ($next == ':') || ($next == '#') || ($alpha_numeric)) {
-                    $status = CSS_IN_IDENTIFIER;
-                    $class_name = '';
-                } elseif ($next == '[') {
-                    $i--;
                     $status = CSS_IN_IDENTIFIER;
                     $class_name = '';
                 } else {

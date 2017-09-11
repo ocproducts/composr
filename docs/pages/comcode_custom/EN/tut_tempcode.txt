@@ -872,6 +872,14 @@ These are advanced symbols, and mirror Composr's internal API. The parameters ar
 			<td>{$HEADER_TEXT}</td>
 			<td>The header text of the current screen, taken from current zone's setting unless content is being viewed specifies it</td>
 		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$THEME_SEED}</td>
+			<td>Get the seed of the current theme</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$THEME_DARK}</td>
+			<td>Find if the current theme is dark</td>
+		</tr>
 	</tbody>
 </table>
 [/html]

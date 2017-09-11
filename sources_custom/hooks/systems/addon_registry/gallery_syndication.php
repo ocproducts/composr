@@ -46,7 +46,7 @@ class Hook_addon_registry_gallery_syndication
      */
     public function get_category()
     {
-        return 'Third Party Integration'; // $MAINTAINED_STATUS: Change to 'Development' if the integration breaks and is not fixed
+        return 'Development'; // $MAINTAINED_STATUS: Change to 'Development' if the integration breaks and is not fixed
     }
 
     /**
@@ -66,9 +66,7 @@ class Hook_addon_registry_gallery_syndication
      */
     public function get_copyright_attribution()
     {
-        return array(
-            'Vimeo class by Vimeo',
-        );
+        return array();
     }
 
     /**
@@ -88,7 +86,9 @@ class Hook_addon_registry_gallery_syndication
      */
     public function get_description()
     {
-        return 'Automatically syndicate out videos to YouTube or Vimeo, keeping them in sync, with the option to actually host the videos on these services via an embedded player (giving you free video transcoding and hosting).
+        return 'Automatically syndicate out videos to YouTube, keeping them in sync, with the option to actually host the videos on these services via an embedded player (giving you free video transcoding and hosting).
+
+For YouTube syndication you must first set up oAuth for Google within Composr. Then you will need to [url="Increase your Youtube video length limit"]http://support.google.com/youtube/bin/answer.py?hl=en&answer=71673[/url].
 
 Unfortunately YouTube support is currently not functional (https://compo.sr/tracker/view.php?id=3166).';
     }
@@ -141,24 +141,15 @@ Unfortunately YouTube support is currently not functional (https://compo.sr/trac
     {
         return array(
             'sources_custom/hooks/systems/addon_registry/gallery_syndication.php',
-            'adminzone/pages/minimodules_custom/vimeo_oauth.php',
-            'adminzone/pages/minimodules_custom/youtube_oauth.php',
+            'sources_custom/hooks/systems/oauth/index.html',
+            'sources_custom/hooks/systems/oauth/.htaccess',
+            'sources_custom/hooks/systems/oauth/youtube.php',
             'lang_custom/EN/gallery_syndication.ini',
             'lang_custom/EN/oauth.ini',
             'lang_custom/EN/gallery_syndication_youtube.ini',
-            'lang_custom/EN/gallery_syndication_vimeo.ini',
             'sources_custom/gallery_syndication.php',
-            'sources_custom/hooks/modules/video_syndication/vimeo.php',
             'sources_custom/hooks/modules/video_syndication/youtube.php',
             'sources_custom/hooks/systems/cron/gallery_syndication.php',
-            'sources_custom/hooks/systems/page_groupings/gallery_syndication.php',
-            'sources_custom/oauth.php',
-            'sources_custom/vimeo.php',
-            'sources_custom/hooks/systems/config/vimeo_client_id.php',
-            'sources_custom/hooks/systems/config/vimeo_client_secret.php',
-            'sources_custom/hooks/systems/config/youtube_client_id.php',
-            'sources_custom/hooks/systems/config/youtube_client_secret.php',
-            'sources_custom/hooks/systems/config/youtube_developer_key.php',
             'sources_custom/hooks/systems/config/video_sync_transcoding.php',
             'sources_custom/hooks/systems/config/gallery_sync_selectcode.php',
             'sources_custom/hooks/systems/config/gallery_sync_orphaned_handling.php',

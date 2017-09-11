@@ -278,6 +278,11 @@ class Module_topicview
      */
     public function run()
     {
+        if (get_param_integer('clear_autosave', 0) == 1) {
+            require_code('autosave');
+            clear_cms_autosave();
+        }
+
         $title = $this->title;
         $breadcrumbs = $this->breadcrumbs;
         $type = $this->type;

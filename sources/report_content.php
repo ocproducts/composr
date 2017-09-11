@@ -92,8 +92,8 @@ function report_content_form($title, $content_type, $content_id)
     ));
     report_content_append_text($text, $ticket_id);
 
-    $specialisation = report_content_form_fields();
     $hidden_fields = build_keep_form_fields('', true);
+    $specialisation = report_content_form_fields($hidden_fields);
 
     $post_url = build_url(array('page' => 'report_content', 'type' => 'actual'), get_page_zone('report_content'));
 
@@ -156,9 +156,10 @@ function report_post_form($title, $post_id, $js_function_calls, &$topic_info = n
     ));
     report_content_append_text($text, $ticket_id);
 
-    $specialisation = report_content_form_fields();
-
     $hidden = new Tempcode();
+
+    $specialisation = report_content_form_fields($hidden);
+
     $hidden->attach(form_input_hidden('post_id', strval($post_id)));
 
     $post_url = build_url(array('page' => 'topics', 'type' => '_report_post'), get_page_zone('topics'));
@@ -208,9 +209,10 @@ function report_content_member_link($content_member_id, $content_poster_name_if_
 /**
  * Get form fields (apart from main posting field) for report form.
  *
+ * @param  Tempcode $hidden Hidden fields (returned by reference)
  * @return Tempcode Form fields
  */
-function report_content_form_fields()
+function report_content_form_fields(&$hidden)
 {
     require_code('form_templates');
 
@@ -219,7 +221,7 @@ function report_content_form_fields()
     if (addon_installed('captcha')) {
         require_code('captcha');
         if (use_captcha()) {
-            $specialisation->attach(form_input_captcha());
+            $specialisation->attach(form_input_captcha($hidden));
         }
     }
 

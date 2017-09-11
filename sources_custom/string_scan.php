@@ -1709,8 +1709,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         BRANCH_TYPE
         BREADCRUMB_CROP_LENGTH
         BROKEN_URLS
-        BROKEN_URLS_404
-        BROKEN_URLS_FILES
         BROKEN_WIKI_CHILD_LINK
         BROKEN_XHTML_FIXED
         BROWSER_SHARE
@@ -3612,6 +3610,67 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DEPENDENCIES
         DEPLOYMENT_AGREEMENT
         DEPLOYMENT_DETERMINATION
+        RECAPTCHA
+        RECAPTCHA_ERROR_bad_request
+        RECAPTCHA_ERROR_invalid_input_response
+        RECAPTCHA_ERROR_invalid_input_secret
+        RECAPTCHA_ERROR_missing_input_response
+        RECAPTCHA_ERROR_missing_input_secret
+        RECAPTCHA_SERVER_KEY
+        RECAPTCHA_SITE_KEY
+        CONFIG_GROUP_DEFAULT_DESCRIP_RECAPTCHA
+        CONFIG_GROUP_DESCRIP_GOOGLE_OAUTH_API
+        CONFIG_GROUP_DESCRIP_MOZ_API
+        CONFIG_OPTION_google_apis_api_key
+        CONFIG_OPTION_google_apis_client_id
+        CONFIG_OPTION_google_apis_client_secret
+        CONFIG_OPTION_moz_access_id
+        CONFIG_OPTION_moz_paid
+        CONFIG_OPTION_moz_secret_key
+        CONFIG_OPTION_recaptcha_servey_key
+        CONFIG_OPTION_recaptcha_site_key
+        DESCRIPTION_LINK_TYPES
+        DESCRIPTION_LIVE_BASE_URLS
+        DESCRIPTION_MAXIMUM_API_RESULTS
+        DESCRIPTION_MENU_ITEM_UNDER
+        DESCRIPTION_SHOW_URL_PASSES
+        DOC_BROKEN_URLS
+        DOC_OAUTH
+        GOOGLE_APIS_API_KEY
+        GOOGLE_APIS_CLIENT_ID
+        GOOGLE_APIS_CLIENT_SECRET
+        GOOGLE_BROKEN_BACKLINKS__auth_permissions
+        GOOGLE_BROKEN_BACKLINKS__not_found
+        GOOGLE_BROKEN_BACKLINKS__server_error
+        GOOGLE_BROKEN_BACKLINKS__soft404
+        GOOGLE_OAUTH_API
+        LIVE_BASE_URLS
+        MAXIMUM_API_RESULTS
+        MENU_ITEM_UNDER
+        MOZ_ACCESS_ID
+        MOZ_API
+        MOZ_BACKLINKS
+        MOZ_PAID
+        MOZ_SECRET_KEY
+        OAUTH_SUCCESS
+        OAUTH_TITLE
+        PENDING_LINK_CHECK
+        SHOW_URL_PASSES
+        TABLE_NAME
+        BLOCK_side_news_categories_PARAM_select
+        BLOCK_side_news_categories_PARAM_select_TITLE
+        CATALOGUE_FIELDS
+        CHECK_URLS
+        COUNT_TOTAL_PRIMARY
+        ERROR_OBTAINING_ACCESS_TOKEN
+        AVAILABLE
+        CONFIGURED
+        CONNECTED
+        FIELD_NAME
+        FIND_URLS
+        _OAUTH_TITLE
+        URL_FIELDS
+        TOP_LEVEL
         DESCRIPTION_ACCEPT_IMAGES
         DESCRIPTION_ACCEPT_VIDEOS
         DESCRIPTION_ACCESS_FOR
@@ -3660,7 +3719,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DESCRIPTION_BLOCK_CACHE
         DESCRIPTION_BLOCK_TAG
         DESCRIPTION_BRAND_BASE_URL
-        DESCRIPTION_BROKEN_URLS
         DESCRIPTION_BROWSER_SHARE
         DESCRIPTION_CACHE_FORUMS
         DESCRIPTION_CACHE_MEMBERS
@@ -7756,6 +7814,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ALREADY_APPROVED_IP
         ALT_COPY_EXISTING_POLL
         ALT_FIELD
+        RECAPTCHA_ERROR_timeout_or_duplicate
         AMOUNT
         ANIMATION
         ANON

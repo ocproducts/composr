@@ -41,7 +41,7 @@ class Hook_page_groupings_news
 
         return array(
             array('cms', 'menu/rich_content/news', array('cms_news', array('type' => 'browse'), get_module_zone('cms_news')), do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('NEWS'), make_string_tempcode(escape_html(integer_format($cnt)))), 'news:DOC_NEWS'),
-            array('cms', 'tabs/member_account/blog', array('cms_blogs', array('type' => 'browse'), get_module_zone('cms_blogs')), do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('news:BLOGS'), make_string_tempcode(escape_html(integer_format($cnt_blogs)))), 'news:DOC_BLOGS'),
+            (get_value('hide_blogs') === '1') ? null : array('cms', 'tabs/member_account/blog', array('cms_blogs', array('type' => 'browse'), get_module_zone('cms_blogs')), do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('news:BLOGS'), make_string_tempcode(escape_html(integer_format($cnt_blogs)))), 'news:DOC_BLOGS'),
             array('rich_content', 'menu/rich_content/news', array('news', array(), get_module_zone('news')), do_lang_tempcode('NEWS')),
         );
     }

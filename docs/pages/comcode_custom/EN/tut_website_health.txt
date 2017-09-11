@@ -183,13 +183,24 @@ If you can identify a situation where you need to rebuild or empty a cache that 
 There are a number of optimisers:
  - [b]Correct MySQL schema issues[/b] -- this is intended for programmers-only, you are very unlikely to need it.
  - [b]Optimise/fix database tables[/b] -- this will try and fix some database tables and works with MySQL-only. If the database has become very corrupt, you may need to use a tool such as phpMyAdmin to repair a database from outside Composr.
- - [b]Broken URLs[/b] -- this will look for broken URLs.
  - [b]Regenerate image thumbnails[/b] -- this will regenerate all thumbnails (slow and probably not useful).
  - [b]Find orphaned uploads[/b] -- find on-disk uploads that seem to no longer be referenced.
  - [b]Delete page access statistics[/b] -- remove old page statistics to reduce database usage.
 
 Frankly most of these optimisers are not useful. We provide them for very rare situations, or for helping programmers manage complicated operations.
 [/surround]
+
+[title="2"]Broken URL scanning[/url]
+
+There is a powerful broken link scanner at Admin Zone > Tools > Broken URL scanning.
+This can check:
+ - internal links
+ - inbound (external) links to your site, if you configure Moz and/or Google Search Console from Admin Zone > Configuration > Composr API Options
+
+We have the following kinds of broken URL checking across composr:
+ - The broken URL scanning tool discussed here (works at the content level)
+ - The Health Check, scanning specific URLs to see if the page there has broken URLs (works at the HTML level)
+ - Comcode, URLs are checked when Comcode is parsed
 
 [concepts
  1_key="Cache"                 1_value="A data store that contains pre-calculated results such that those results do not need to be calculated more than once; caches are designed to increase efficiency"

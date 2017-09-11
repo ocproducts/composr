@@ -404,7 +404,9 @@ class Module_cms_news extends Standard_crud_module
 
         $hidden = new Tempcode();
 
-        $fields2->attach(form_input_upload_multi_source(do_lang_tempcode('IMAGE'), do_lang_tempcode('DESCRIPTION_NEWS_IMAGE_OVERRIDE'), $hidden, 'image', 'newscats', false, $image));
+        if (get_value('disable_news_repimages') !== '1') {
+            $fields2->attach(form_input_upload_multi_source(do_lang_tempcode('IMAGE'), do_lang_tempcode('DESCRIPTION_NEWS_IMAGE_OVERRIDE'), $hidden, 'image', 'newscats', false, $image));
+        }
 
         if ((addon_installed('calendar')) && (has_privilege(get_member(), 'scheduled_publication_times'))) {
             $fields2->attach(form_input_date__scheduler(do_lang_tempcode('PUBLICATION_TIME'), do_lang_tempcode('DESCRIPTION_PUBLICATION_TIME'), 'schedule', false, true, true, $scheduled, intval(date('Y')) - 1970 + 2, 1970));
@@ -884,12 +886,15 @@ class Module_cms_news_cat extends Standard_crud_module
             log_hack_attack_and_exit('ORDERBY_HACK');
         }
 
-        $header_row = results_field_title(array(
-            do_lang_tempcode('TITLE'),
-            do_lang_tempcode('IMAGE'),
-            do_lang_tempcode('COUNT_TOTAL'),
-            do_lang_tempcode('ACTIONS'),
-        ), $sortables, 'sort', $sortable . ' ' . $sort_order);
+        $columns = array();
+        $columns[] = do_lang_tempcode('TITLE');
+        if (get_value('disable_news_repimages') !== '1') {
+            $columns[] = do_lang_tempcode('IMAGE');
+        }
+        $columns[] = do_lang_tempcode('COUNT_TOTAL_PRIMARY');
+        $columns[] = do_lang_tempcode('COUNT_TOTAL');
+        $columns[] = do_lang_tempcode('ACTIONS');
+        $header_row = results_field_title($columns, $sortables, 'sort', $sortable . ' ' . $sort_order);
 
         $fields = new Tempcode();
 
@@ -897,15 +902,19 @@ class Module_cms_news_cat extends Standard_crud_module
         foreach ($rows as $row) {
             $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');
 
-            $total = $GLOBALS['SITE_DB']->query_select_value('news', 'COUNT(*)', array('news_category' => $row['id']));
-            $total += $GLOBALS['SITE_DB']->query_select_value('news_category_entries', 'COUNT(*)', array('news_entry_category' => $row['id']));
+            $total_primary = $GLOBALS['SITE_DB']->query_select_value('news', 'COUNT(*)', array('news_category' => $row['id']));
+            $total = $total_primary + $GLOBALS['SITE_DB']->query_select_value('news_category_entries', 'COUNT(*)', array('news_entry_category' => $row['id']));
 
-            $fields->attach(results_entry(array(
-                protect_from_escaping(hyperlink(build_url(array('page' => 'news', 'type' => 'browse', 'filter' => $row['id']), get_module_zone('news')), get_translated_text($row['nc_title']), false, true)),
-                protect_from_escaping(($row['nc_img'] == '') ? '' : ('<img width="15" alt="' . do_lang('IMAGE') . '" src="' . escape_html(get_news_category_image_url($row['nc_img'])) . '" />')), // XHTMLXHTML
-                integer_format($total),
-                protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id']))),
-            ), true));
+            $values = array();
+            $values[] = protect_from_escaping(hyperlink(build_url(array('page' => 'news', 'type' => 'browse', 'select' => $row['id']), get_module_zone('news')), get_translated_text($row['nc_title']), false, true));
+            if (get_value('disable_news_repimages') !== '1') {
+                $values[] = protect_from_escaping(($row['nc_img'] == '') ? '' : ('<img width="15" alt="' . do_lang('IMAGE') . '" src="' . escape_html(get_news_category_image_url($row['nc_img'])) . '" />')); // XHTMLXHTML
+            }
+            $values[] = integer_format($total_primary);
+            $values[] = integer_format($total);
+            $values[] = protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id'])));
+
+            $fields->attach(results_entry($values, true));
         }
 
         return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $fields, $sortables, $sortable, $sort_order), false);
@@ -939,7 +948,9 @@ class Module_cms_news_cat extends Standard_crud_module
 
         $fields->attach(form_input_line_comcode(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'title', $title, true));
 
-        $fields->attach(form_input_upload_multi_source(do_lang_tempcode('IMAGE'), '', $hidden, 'image', 'newscats', false, $img));
+        if (get_value('disable_news_repimages') !== '1') {
+            $fields->attach(form_input_upload_multi_source(do_lang_tempcode('IMAGE'), '', $hidden, 'image', 'newscats', false, $img));
+        }
 
         if (get_option('enable_staff_notes') == '1') {
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'b88f1b286b05e18991ad51538812f7b2', 'SECTION_HIDDEN' => $notes == '', 'TITLE' => do_lang_tempcode('ADVANCED'))));

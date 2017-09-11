@@ -353,6 +353,9 @@ function _do_next_section($list, $title, $entry_content_type = null, $category_c
         }
         $target = array_key_exists(4, $_option) ? $_option[4] : null;
         $auto_add = array_key_exists(5, $_option) ? $_option[5] : null;
+        if (get_value('disable_bulkhelper') === '1') {
+            $auto_add = null;
+        }
 
         $next_items->attach(do_template('DO_NEXT_ITEM', array(
             '_GUID' => 'f39b6055d1127edb452595e7eeaf2f01',

@@ -84,21 +84,6 @@ class Hook_media_rendering_vimeo extends Media_renderer_with_fallback
                 return $test;
             }
 
-            // Vimeo API method
-            if ((is_file(get_file_base() . '/sources_custom/gallery_syndication.php')) && (!in_safe_mode())) {
-                require_code('hooks/modules/video_syndication/vimeo');
-                $ob = object_factory('video_syndication_vimeo');
-                if ($ob->is_active()) {
-                    $result = $ob->get_remote_videos(null, $matches[1]);
-                    if (count($result) != 0) {
-                        foreach ($result as $r) {
-                            return $r['thumb_url'];
-                        }
-                    }
-                    return null;
-                }
-            }
-
             // Lame method (not so reliable)
             $html = http_get_contents($src_url, array('trigger_error' => false));
             if ($html === null) {

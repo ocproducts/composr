@@ -606,6 +606,7 @@ class Hook_addon_registry_core_rich_media
                 'SPECIALISATION2' => placeholder_fields(),
                 'REQUIRED' => true,
                 'SUPPORT_AUTOSAVE' => true,
+                'CANCEL_URL' => placeholder_url(),
                 'DESCRIPTION' => lorem_paragraph(),
             )), null, '', true)
         );

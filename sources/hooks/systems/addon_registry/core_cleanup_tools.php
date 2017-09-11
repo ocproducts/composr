@@ -112,6 +112,8 @@ class Hook_addon_registry_core_cleanup_tools
             'themes/default/templates/CLEANUP_COMPLETED_SCREEN.tpl',
             'themes/default/templates/CLEANUP_PAGE_STATS.tpl',
             'adminzone/pages/modules/admin_cleanup.php',
+            'adminzone/pages/modules/admin_broken_urls.php',
+            'sources/broken_urls.php',
             'sources/hooks/systems/cleanup/comcode.php',
             'lang/EN/cleanup.ini',
             'sources/hooks/systems/cleanup/.htaccess',
@@ -119,7 +121,6 @@ class Hook_addon_registry_core_cleanup_tools
             'sources/hooks/systems/cleanup/lost_disk_content.php',
             'sources/hooks/systems/cleanup/admin_theme_images.php',
             'sources/hooks/systems/cleanup/blocks.php',
-            'sources/hooks/systems/cleanup/broken_urls.php',
             'sources/hooks/systems/cleanup/image_thumbs.php',
             'sources/hooks/systems/cleanup/index.html',
             'sources_custom/hooks/systems/cleanup/index.html',
@@ -136,6 +137,8 @@ class Hook_addon_registry_core_cleanup_tools
             'sources/hooks/systems/tasks/find_broken_urls.php',
             'sources/hooks/systems/tasks/find_orphaned_lang_strings.php',
             'sources/hooks/systems/tasks/find_orphaned_uploads.php',
+            'themes/default/templates/BROKEN_LANG_STRINGS.tpl',
+            'themes/default/templates/BROKEN_URLS.tpl',
         );
     }
 
@@ -150,6 +153,8 @@ class Hook_addon_registry_core_cleanup_tools
             'templates/CLEANUP_COMPLETED_SCREEN.tpl' => 'administrative__cleanup_completed_screen',
             'templates/CLEANUP_ORPHANED_UPLOADS.tpl' => 'administrative__cleanup_completed_screen',
             'templates/CLEANUP_PAGE_STATS.tpl' => 'administrative__cleanup_completed_screen',
+            'templates/BROKEN_URLS.tpl' => 'administrative__broken_urls_screen',
+            'templates/BROKEN_LANG_STRINGS.tpl' => 'administrative__broken_lang_strings',
         );
     }
 
@@ -185,6 +190,57 @@ class Hook_addon_registry_core_cleanup_tools
             lorem_globalise(do_lorem_template('CLEANUP_COMPLETED_SCREEN', array(
                 'TITLE' => lorem_title(),
                 'MESSAGES' => $message,
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__administrative__broken_urls_screen()
+    {
+        require_lang('cleanup');
+
+        $urls = array();
+        foreach (placeholder_array() as $value) {
+            $urls[] = array(
+                'FULL_URL' => placeholder_url(),
+                'TABLE_NAMES' => array(placeholder_id()),
+                'FIELD_NAMES' => array(placeholder_id()),
+                'IDENTIFIERS' => array(array('IDENTIFIER' => placeholder_id(), 'EDIT_URL' => '')),
+                'CONTENT_TYPES' => array(lorem_phrase()),
+                'STATUS' => true,
+            );
+        }
+
+        return array(
+            lorem_globalise(do_lorem_template('BROKEN_URLS', array(
+                'URLS' => $urls,
+                'DONE' => true,
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__administrative__broken_lang_strings()
+    {
+        require_lang('cleanup');
+
+        return array(
+            lorem_globalise(do_lorem_template('BROKEN_LANG_STRINGS', array(
+                'MISSING_LANG_STRINGS' => placeholder_array(),
+                'FUSED_LANG_STRINGS' => placeholder_array(),
+                'ORPHANED_LANG_STRINGS' => placeholder_array(),
             )), null, '', true)
         );
     }

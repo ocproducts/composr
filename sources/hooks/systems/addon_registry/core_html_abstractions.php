@@ -114,6 +114,7 @@ class Hook_addon_registry_core_html_abstractions
             'themes/default/templates/BASIC_HTML_WRAP.tpl',
             'themes/default/templates/STANDALONE_HTML_WRAP.tpl',
             'themes/default/templates/HTML_HEAD.tpl',
+            'themes/default/templates/HTML_HEAD_POLYFILLS.tpl',
             'themes/default/templates/POOR_XHTML_WRAPPER.tpl',
             'themes/default/templates/WITH_WHITESPACE.tpl',
         );
@@ -135,6 +136,7 @@ class Hook_addon_registry_core_html_abstractions
             'templates/HYPERLINK_POPUP_WINDOW.tpl' => 'hyperlink_popup_window',
             'templates/BASIC_HTML_WRAP.tpl' => 'basic_html_wrap',
             'templates/HTML_HEAD.tpl' => 'basic_html_wrap',
+            'templates/HTML_HEAD_POLYFILLS.tpl' => 'basic_html_wrap',
             'templates/FLOATER.tpl' => 'floater',
             'templates/HYPERLINK.tpl' => 'hyperlink',
             'templates/HYPERLINK_BUTTON.tpl' => 'hyperlink_button',

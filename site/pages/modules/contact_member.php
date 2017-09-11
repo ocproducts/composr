@@ -170,47 +170,60 @@ class Module_contact_member
         $text = do_lang_tempcode('EMAIL_MEMBER_TEXT');
 
         $fields = new Tempcode();
+        $hidden = new Tempcode();
+
         require_code('form_templates');
+
         $default_email = (is_guest()) ? '' : $GLOBALS['FORUM_DRIVER']->get_member_row_field(get_member(), 'm_email_address');
         $default_name = (is_guest()) ? '' : $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true);
         $name_field = form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('_DESCRIPTION_NAME'), 'name', $default_name, true);
         if ($default_name == '') {
             $fields->attach($name_field);
         }
+
         $email_field = form_input_email(do_lang_tempcode('EMAIL_ADDRESS'), do_lang_tempcode('YOUR_ADDRESS'), 'email_address', $default_email, true);
         if ($default_email == '') {
             $fields->attach($email_field);
         }
+
         $fields->attach(form_input_line(do_lang_tempcode('SUBJECT'), '', 'subject', get_param_string('subject', '', INPUT_FILTER_GET_COMPLEX), true));
+
         $fields->attach(form_input_text(do_lang_tempcode('MESSAGE'), '', 'message', get_param_string('message', '', INPUT_FILTER_GET_COMPLEX), true));
+
         if (addon_installed('captcha')) {
             require_code('captcha');
             if (use_captcha()) {
-                $fields->attach(form_input_captcha());
+                $fields->attach(form_input_captcha($hidden));
                 $text->attach(' ');
                 $text->attach(do_lang_tempcode('FORM_TIME_SECURITY'));
             }
         }
+
         $size = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_max_email_attach_size_mb');
-        $hidden = new Tempcode();
         if ($size != 0) {
             handle_max_file_size($hidden);
             $fields->attach(form_input_upload_multi(do_lang_tempcode('_ATTACHMENT'), do_lang_tempcode('EMAIL_ATTACHMENTS', escape_html(integer_format($size))), 'attachment', false));
         }
+
         if (!is_guest()) {
             if (ini_get('suhosin.mail.protect') !== '2') {
                 $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '7f7e5aa2fa469ebbca9ca61e9f869882', 'TITLE' => do_lang_tempcode('ADVANCED'), 'SECTION_HIDDEN' => true)));
+
                 if ($default_name != '') {
                     $fields->attach($name_field);
                 }
                 if ($default_email != '') {
                     $fields->attach($email_field);
                 }
+
                 $fields->attach(form_input_username_multi(do_lang_tempcode('EMAIL_CC_ADDRESS'), do_lang_tempcode('DESCRIPTION_EMAIL_CC_ADDRESS'), 'cc_', array(), 0, false));
+
                 $fields->attach(form_input_username_multi(do_lang_tempcode('EMAIL_BCC_ADDRESS'), do_lang_tempcode('DESCRIPTION_EMAIL_BCC_ADDRESS'), 'bcc_', array(), 0, false));
             }
         }
+
         $submit_name = do_lang_tempcode('SEND');
+
         $redirect = mixed();
         $redirect = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
         if ($redirect == '') {
@@ -219,6 +232,7 @@ class Module_contact_member
                 $redirect = $redirect->evaluate();
             }
         }
+
         $post_url = build_url(array('page' => '_SELF', 'type' => 'actual', 'id' => $member_id, 'redirect' => protect_url_parameter($redirect)), '_SELF');
 
         return do_template('FORM_SCREEN', array(

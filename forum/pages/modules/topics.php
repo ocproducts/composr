@@ -1692,7 +1692,7 @@ class Module_topics
         if (addon_installed('captcha')) {
             require_code('captcha');
             if (use_captcha()) {
-                $specialisation->attach(form_input_captcha());
+                $specialisation->attach(form_input_captcha($hidden_fields));
                 $text->attach(paragraph(do_lang_tempcode('FORM_TIME_SECURITY')));
             }
         }
@@ -1975,7 +1975,7 @@ class Module_topics
         if (addon_installed('captcha')) {
             require_code('captcha');
             if (use_captcha()) {
-                $specialisation->attach(form_input_captcha());
+                $specialisation->attach(form_input_captcha($hidden_fields));
                 $text->attach(paragraph(do_lang_tempcode('FORM_TIME_SECURITY')));
             }
         }
@@ -3897,6 +3897,7 @@ END;
             'SUBMIT_ICON' => 'menu__adminzone__structure__forum__multi_moderations',
             'SUBMIT_NAME' => $submit_name,
             'SUPPORT_AUTOSAVE' => true,
+            'CANCEL_URL' => build_url(array('page' => 'topicview', 'type' => 'browse', 'id' => $topic_id, 'clear_autosave' => 1), '_SELF'),
         ));
     }
 

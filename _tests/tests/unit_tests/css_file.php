@@ -88,7 +88,11 @@ class css_file_test_set extends cms_test_case
                 while (($e = readdir($d)) !== false) {
                     if (substr($e, -4) == '.css') {
                         // Exceptions
-                        if ($e == 'svg.css') {
+                        $exceptions = array(
+                            'svg.css',
+                            'confluence.css',
+                        );
+                        if (in_array($e, $exceptions)) {
                             continue;
                         }
 
@@ -192,6 +196,7 @@ class css_file_test_set extends cms_test_case
                             'widget_color.css',
                             'widget_date.css',
                             'widget_select2.css',
+                            'confluence.css',
                         );
                         if (in_array($f, $exceptions)) {
                             continue;
