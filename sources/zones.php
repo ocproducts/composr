@@ -1685,7 +1685,10 @@ function extract_module_functions($path, $functions, $params = null, $prefer_dir
             $CLASS_CACHE[$path] = $new_classes;
         }
         if ((isset($new_classes[0])) && ($new_classes[0] === 'Standard_crud_module')) {
-            array_shift($new_classes);
+            array_shift($new_classes); // This is not the class we want
+        }
+        if ((isset($new_classes[0])) && ($new_classes[0] === 'non_overridden__Standard_crud_module')) {
+            array_shift($new_classes); // This is not the class we want
         }
         if (isset($new_classes[0])) {
             $c = $new_classes[0];
