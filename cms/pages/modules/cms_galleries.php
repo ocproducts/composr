@@ -2050,7 +2050,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
             }
         }
 
-        if ((get_option('gallery_watermarks') == '1') && ($watermark_top_left === null) && ($watermark_top_right === null) && ($watermark_bottom_left === null) && ($watermark_bottom_right === null)) {
+        if (get_option('gallery_watermarks') == '1') {
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '555320228b5a1ff1effb8a1bf9c15d8e', 'SECTION_HIDDEN' => ($watermark_top_left === null) && ($watermark_top_right === null) && ($watermark_bottom_left === null) && ($watermark_bottom_right === null), 'TITLE' => do_lang_tempcode('WATERMARKING'))));
             $fields->attach(form_input_upload(do_lang_tempcode('_WATERMARK', do_lang_tempcode('TOP_LEFT')), do_lang_tempcode('_DESCRIPTION_WATERMARK', do_lang_tempcode('TOP_LEFT')), 'watermark_top_left', false, $watermark_top_left, null, true, get_allowed_image_file_types()));
             $fields->attach(form_input_upload(do_lang_tempcode('_WATERMARK', do_lang_tempcode('TOP_RIGHT')), do_lang_tempcode('_DESCRIPTION_WATERMARK', do_lang_tempcode('TOP_RIGHT')), 'watermark_top_right', false, $watermark_top_right, null, true, get_allowed_image_file_types()));

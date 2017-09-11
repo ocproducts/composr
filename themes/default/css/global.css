@@ -4380,7 +4380,7 @@ a.tab, a.tab:visited, a.tab:hover {
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
 	.tab {
-		min-width: 107px; /* Allows 3 per row, neat alignment */
+		min-width: 105px; /* Allows 3 per row, neat alignment */
 		border-left: 1px solid {$GET,tab_border};
 		border-top: 1px solid {$GET,tab_border};
 	}
@@ -4399,7 +4399,7 @@ a.tab>span {
 
 /*{+START,CSS_MODE,mobile}*/
 	.tab_surround .tab {
-		min-width: 100px; /* Allows 3 per row, neat alignment (for nested tabs) */
+		min-width: 99px; /* Allows 3 per row, neat alignment (for nested tabs) */
 	}
 /*{+END}*/
 

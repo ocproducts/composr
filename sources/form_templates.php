@@ -629,7 +629,7 @@ function form_input_codename($pretty_name, $description, $name, $default, $requi
  * @param  integer $size How much space the list takes up (inline lists only)
  * @return Tempcode The input field
  */
-function form_input_line($pretty_name, $description, $name, $default, $required, $tabindex = null, $_maxlength = null, $type = 'text', $placeholder = null, $pattern = null, $pattern_error = null, $size = 30)
+function form_input_line($pretty_name, $description, $name, $default, $required, $tabindex = null, $_maxlength = null, $type = 'text', $placeholder = null, $pattern = null, $pattern_error = null, $size = 27)
 {
     if ($default === null) {
         $default = '';

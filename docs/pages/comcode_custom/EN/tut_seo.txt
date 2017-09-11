@@ -206,5 +206,9 @@ If you are going to go down the SEO route, make sure that you have someone who w
  - [url="Submit to Bing"]http://www.bing.com/toolbox/submit-site-url[/url]
  - [url="Sitemaps specification"]http://www.sitemaps.org/[/url]
  - [url="Google webmaster tools"]http://www.google.com/webmasters/tools/[/url]
+ - https://www.werockyourweb.com/spyfu-vs-semrush-vs-moz-vs-raven-vs-majestic/
+ - [url="moz.com"]https://moz.com/[/url]
+ - [url="SEMrush"]https://www.semrush.com/[/url]
+ - [url="Ahref"]https://ahrefs.com/[/url]
 
 {$SET,tutorial_tags,SEO,core,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,For most websites, it is important to draw in visitors. We discuss the process of Search Engine Optimisation (SEO).}[block]main_tutorial_rating[/block]

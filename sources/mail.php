@@ -281,6 +281,7 @@ class Mail_dispatcher_smtp extends Mail_dispatcher_base
      * @param  ?mixed $to_names The recipient name(s). Array or string. (null: site name)
      * @param  EMAIL $from_email The from address (blank: site staff address)
      * @param  string $from_name The from name (blank: site name)
+     * @return array A pair: Whether it worked, and an error message
      */
     public function dispatch($subject_line, $message_raw, $to_emails = null, $to_names = null, $from_email = '', $from_name = '')
     {
@@ -288,7 +289,7 @@ class Mail_dispatcher_smtp extends Mail_dispatcher_base
             $from_email = $this->smtp_from_address;
         }
 
-        parent::dispatch($subject_line, $message_raw, $to_emails, $to_names, $from_email, $from_name);
+        return parent::dispatch($subject_line, $message_raw, $to_emails, $to_names, $from_email, $from_name);
     }
 
     /**
@@ -466,6 +467,10 @@ abstract class Mail_dispatcher_base
     // For analysis of process from outside
     public $mime_data = null;
 
+    // Return status
+    public $worked = null;
+    public $error = false;
+
     /**
      * Construct e-mail dispatcher.
      *
@@ -537,6 +542,7 @@ abstract class Mail_dispatcher_base
      * @param  ?mixed $to_names The recipient name(s). Array or string. (null: site name)
      * @param  EMAIL $from_email The from address (blank: site staff address)
      * @param  string $from_name The from name (blank: site name)
+     * @return array A pair: Whether it worked, and an error message
      */
     public function dispatch($subject_line, $message_raw, $to_emails = null, $to_names = null, $from_email = '', $from_name = '')
     {
@@ -620,6 +626,8 @@ abstract class Mail_dispatcher_base
 
         // Stop loops (unlock)
         $SENDING_MAIL = false;
+
+        return array($worked, $error);
     }
 
     /**

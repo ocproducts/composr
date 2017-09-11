@@ -34,7 +34,7 @@ The Setup Wizard can perform the following behind-the-scenes functions:
  - Generating a "Logo Generator" [b]logo[/b]. You can access the Logo Generator separately, from Admin Zone > Style > Logo Wizard.
  - Setting site [b]options[/b]. You can access these from Admin Zone > Setup > Configuration.
  - [b]Removing predefined content[/b]. Predefined content can be removed (e.g. default banners). Once this is removed you'd need to put it back manually, by adding it as you would any other content.
- - Placing [b]blocks[/b]. Blocks are dynamic features embedded directly into your pages/design. You can place/change blocks via the Zone Editor at Admin Zone > Structure > Block/panel layout (Zone Editor).
+ - Placing [b]blocks[/b]. Blocks are dynamic features embedded directly into your pages/design (other software may use the term 'widgets'). You can place/change blocks via the Zone Editor at Admin Zone > Structure > Block/panel layout (Zone Editor).
  - [b]Copying rules[/b]. You can edit the rules page manually from Admin Zone > Content > Pages (Comcode pages).
 [/surround]
 

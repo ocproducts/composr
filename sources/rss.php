@@ -251,7 +251,7 @@ class CMS_RSS
                 elseif ($version[0] == '2') $this->version = 2;
                 else fatal_exit(do_lang('RSS_UNKNOWN_VERSION', $version));
             */
-            $this->version = $attributes['VERSION'];
+            $this->version = isset($attributes['VERSION']) ? $attributes['VERSION'] : '0.94';
         }
 
         if ((($this->type == 'RSS') && ($name == 'ITEM')) || (($this->type == 'ATOM') && (($name == 'HTTP://PURL.ORG/ATOM/NS#:ENTRY') || ($name == 'HTTP://WWW.W3.ORG/2005/ATOM:ENTRY')))) {
