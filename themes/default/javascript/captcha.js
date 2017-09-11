@@ -1,4 +1,4 @@
-/* Called from RECAPTCHA, when it loads */
+/* Called from reCAPTCHA, when it loads */
 function recaptchaLoaded()
 {
     var captchaElement = document.getElementById('captcha');

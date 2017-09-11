@@ -283,6 +283,12 @@ class lang_spelling_test_set extends cms_test_case
         if (strpos($string, 'OpenGraph') !== false) {
             $this->assertTrue(false, 'The phrase \'OpenGraph\' was used in ' . $file . '. This should be changed to \'Open Graph\'.');
         }
+        if (strpos($string, 'ReCAPTCHA') !== false) {
+            $this->assertTrue(false, 'The phrase \'ReCAPTCHA\' was used in ' . $file . '. This should be changed to \'reCAPTCHA\'.');
+        }
+        if (strpos($string, 'RECAPTCHA') !== false) {
+            $this->assertTrue(false, 'The phrase \'RECAPTCHA\' was used in ' . $file . '. This should be changed to \'reCAPTCHA\'.');
+        }
 
         // Our canonical way of writing "Open Source"
         if (strpos($string, 'open source') !== false) {

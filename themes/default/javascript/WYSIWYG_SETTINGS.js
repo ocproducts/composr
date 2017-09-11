@@ -70,5 +70,5 @@ var editorSettings = {
     comcodeXMLInlineTags: '{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_INLINE}}',
     magicline_everywhere: true,
     autoGrow_onStartup: true,
-	sourceAreaTabSize: 4
+    sourceAreaTabSize: 4
 };
