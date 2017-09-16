@@ -869,8 +869,11 @@ body#standalone_html_wrap {
 .title_tagline {
 	font-size: 0.95em;
 	padding-bottom: 2em;
-	margin-top: -1.2em;
 	color: {$GET,area_key_text};
+}
+
+h1 + .title_tagline {
+	margin-top: -1.2em;
 }
 
 /*{+START,IF,{$MOBILE}}*/
