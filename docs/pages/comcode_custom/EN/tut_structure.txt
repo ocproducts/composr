@@ -182,6 +182,8 @@ The Zone Editor can be reached from:
 Admin Zone > Structure > Block/panel layout (Zone Editor).
 [/surround]
 
+The Zone Editor is used for coordinating layout of blocks across the panels in a zone, but not for general-purpose content editing. If you want a better editor to put detailed content into a panel you should edit it individually as a Comcode page.
+
 [title="3"]Templates[/title]
 
 [media width="150" description="This is a detailed annotated diagram that explains basic Composr template structure" float="right"]data_custom/images/docs/tut_structure/structure_templates.png[/media]
