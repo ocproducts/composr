@@ -2462,9 +2462,6 @@ function debug_eval($code, &$tpl_funcs = null, $parameters = null, $cl = null)
 {
     global $NO_EVAL_CACHE, $XSS_DETECT, $KEEP_TPL_FUNCS, $FULL_RESET_VAR_CODE, $RESET_VAR_CODE;
 
-    if ($code === null) {
-        return ''; // HHVM issue
-    }
     if ($code === '') {
         return ''; // Blank eval returns false
     }

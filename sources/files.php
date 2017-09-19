@@ -494,9 +494,6 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
         'old' => '.*',
         'cms' => '.*', // Installers and upgraders
 
-        // HHVM Hack converted files (built on-the-fly)
-        'hh' => '.*',
-
         // IDE projects
         'clpprj' => '', // Code Lobster
     );

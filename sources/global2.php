@@ -912,9 +912,6 @@ function catch_fatal_errors()
     $error = error_get_last();
 
     if ($error !== null) {
-        if (!array_key_exists('message', $error)) {
-            return; // Needed for HHVM
-        }
         if (substr($error['message'], 0, 26) == 'Maximum execution time of ') {
             if (function_exists('i_force_refresh')) {
                 i_force_refresh();

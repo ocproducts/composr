@@ -16,7 +16,6 @@ database_postgresql,PostgreSQL database driver,ocProducts,,Not automatically reg
 database_sqlserver,Microsoft SQL server database driver,,,Not regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No,
 database_xml,XML database driver,,,For developers only.,No,
 platform_gae,Google App Engine platform support,,,Not regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No,
-platform_hhvm,HHVM platform support,,,Not regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No,
 platform_phalanger,Phalanger platform support,,,Not regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No,
 platform_chmod,Non-suEXEC platform support,ocProducts,,"Not regularly tested. Likely to be very un-friendly to the admin, so should be discouraged.",No,
 platform_iis,IIS,ocProducts,,Not regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No,

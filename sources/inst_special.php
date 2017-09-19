@@ -49,13 +49,7 @@ function get_chmod_array($lang, $runtime = false)
             }
             $matches = array();
             if (preg_match('#function get_chmod_array\(\)\s*\{([^\}]*)\}#', file_get_contents($path), $matches) != 0) {
-                if (!HHVM) {
-                    $extra_files = array_merge($extra_files, eval($matches[1]));
-                } else {
-                    require_code('hooks/systems/addon_registry/' . $hook);
-                    $hook = object_factory('Hook_addon_registry_' . $hook);
-                    $extra_files = array_merge($extra_files, $hook->get_chmod_array($runtime));
-                }
+                $extra_files = array_merge($extra_files, eval($matches[1]));
             }
         }
     }

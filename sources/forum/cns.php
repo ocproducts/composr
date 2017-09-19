@@ -1679,10 +1679,6 @@ class Forum_driver_cns extends Forum_driver_base
                     global $SESSION_CACHE;
                     $num_guests = 0;
                     foreach ($SESSION_CACHE as $c) {
-                        if (!array_key_exists('member_id', $c)) {
-                            continue; // Workaround to HHVM weird bug
-                        }
-
                         if (($c['last_activity'] > time() - 60 * 4) && (is_guest($c['member_id']))) {
                             $num_guests++;
                         }

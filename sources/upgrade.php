@@ -1174,13 +1174,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
     foreach ($hook_files as $addon_name => $hook_file) {
         $matches = array();
         if (preg_match('#function get_file_list\(\)\s*\{([^\}]*)\}#', $hook_file, $matches) != 0) {
-            if (!HHVM) {
-                $files_to_check = array_merge($files_to_check, eval($matches[1]));
-            } else {
-                require_code('hooks/systems/addon_registry/' . $addon_name);
-                $hook = object_factory('Hook_addon_registry_' . $addon_name);
-                $files_to_check = array_merge($files_to_check, $hook->get_file_list());
-            }
+            $files_to_check = array_merge($files_to_check, eval($matches[1]));
         }
     }
     unset($hook_files);

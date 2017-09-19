@@ -106,11 +106,7 @@ function require_code($codename, $light_exit = false)
             if (strpos($a, '/*FORCE_ORIGINAL_LOAD_FIRST*/') === false/*e.g. Cannot do code rewrite for a module override that includes an Mx, because the extends needs the parent class already defined*/) {
                 $functions_before = get_defined_functions();
                 $classes_before = get_declared_classes();
-                if (HHVM) {
-                    hhvm_include($path_custom); // Include our custom
-                } else {
-                    include($path_custom); // Include our custom
-                }
+                include($path_custom); // Include our custom
                 $functions_after = get_defined_functions();
                 $classes_after = get_declared_classes();
                 $functions_diff = array_diff($functions_after['user'], $functions_before['user']); // Our custom defined these functions
@@ -156,11 +152,7 @@ function require_code($codename, $light_exit = false)
                 }
 
                 if (!$doing_code_modifier_init && !$overlaps) { // To make stack traces more helpful and help with opcode caching
-                    if (HHVM) {
-                        hhvm_include($path_orig);
-                    } else {
-                        include($path_orig);
-                    }
+                    include($path_orig);
                 } else {
                     //static $log_file = null; if ($log_file === null) $log_file = fopen(get_file_base() . '/log.' . strval(time()) . '.txt', 'wb'); flock($log_file, LOCK_EX); fwrite($log_file, $path_orig . "\n"); flock($log_file, LOCK_UN);      Good for debugging errors in eval'd code
                     eval($orig); // Load up modified original
@@ -181,11 +173,7 @@ function require_code($codename, $light_exit = false)
                         fatal_exit(@strval($php_errormsg) . ' [sources/' . $codename . '.php]');
                     }
                 } else {
-                    if (HHVM) {
-                        hhvm_include($path_orig);
-                    } else {
-                        include($path_orig);
-                    }
+                    include($path_orig);
                 }
 
                 if (isset($_GET['keep_show_parse_errors'])) {
@@ -197,11 +185,7 @@ function require_code($codename, $light_exit = false)
                         fatal_exit(@strval($php_errormsg) . ' [sources_custom/' . $codename . '.php]');
                     }
                 } else {
-                    if (HHVM) {
-                        hhvm_include($path_custom);
-                    } else {
-                        include($path_custom);
-                    }
+                    include($path_custom);
                 }
             }
         } else {
@@ -214,11 +198,7 @@ function require_code($codename, $light_exit = false)
                     fatal_exit(@strval($php_errormsg) . ' [sources_custom/' . $codename . '.php]');
                 }
             } else {
-                if (HHVM) {
-                    hhvm_include($path_custom);
-                } else {
-                    include($path_custom);
-                }
+                include($path_custom);
             }
         }
 
@@ -255,11 +235,7 @@ function require_code($codename, $light_exit = false)
             }
         } else {
             $php_errormsg = '';
-            if (HHVM) {
-                @hhvm_include($path_orig);
-            } else {
-                @include($path_orig);
-            }
+            @include($path_orig);
             if ($php_errormsg == '' || stripos($php_errormsg, 'deprecated') !== false/*deprecated errors can leak through because even though we return true in our error handler, error handlers won't run recursively, so if this code is loaded during an error it'll stream through deprecated stuff here*/) {
                 $worked = true;
             }
@@ -499,36 +475,6 @@ function filter_naughty_harsh($in, $preg = false)
 }
 
 /**
- * Include some PHP code, compiling to HHVM's hack, for type strictness (uses Composr phpdoc comments).
- *
- * @param  PATH $path Include path
- * @return ?mixed Code return code (null: actual null)
- */
-function hhvm_include($path)
-{
-    return include($path); // Disable this line to enable the fancy Hack support. We don't maintain this 100%, but it is a great performance option.
-
-    /*//if (!is_file($path . '.hh'))  // Leave this commented when debugging
-    {
-        if ($path == get_file_base() . '/sources/php.php') {
-            return include($path);
-        }
-        if ($path == get_file_base() . '/sources/type_sanitisation.php') {
-            return include($path);
-        }
-        if (strpos($path, '_custom') !== false) {
-            return include($path);
-        }
-
-        require_code('php');
-        $path = substr($path, strlen(get_file_base()) + 1);
-        $new_code = convert_from_php_to_hhvm_hack($path);
-        file_put_contents($path . '.hh', $new_code, LOCK_EX);
-    }
-    return include($path . '.hh');*/
-}
-
-/**
  * Find if an IP address is within a CIDR range. Based on comment in PHP manual: http://php.net/manual/en/ref.network.php.
  *
  * @param  IP $ip IP address
@@ -581,7 +527,6 @@ global $PAGE_START_TIME;
 $PAGE_START_TIME = microtime(true);
 
 // Are we in a special version of PHP?
-define('HHVM', strpos(PHP_VERSION, 'hiphop') !== false);
 define('GOOGLE_APPENGINE', isset($_SERVER['APPLICATION_ID']));
 
 define('URL_CONTENT_REGEXP', '\w\-\x80-\xFF'); // PHP is done using ASCII (don't use the 'u' modifier). Note this doesn't include dots, this is intentional as they can cause problems in filenames
