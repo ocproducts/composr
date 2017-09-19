@@ -4,20 +4,22 @@
 
 		icons: 'composr_block,composr_comcode,composr_page,composr_quote,composr_box,composr_code,composr_image',
 
+        /**
+         * @param { CKEDITOR.editor } editor
+         */
 		init: function (editor) {
-			var possibles = ['block', 'comcode', 'page', 'quote', 'box', 'code'], 
-                func;
+			var possibles = ['block', 'comcode', 'page', 'quote', 'box', 'code'];
 
             possibles.forEach(function (buttonName) {
                 var element = editor.element.$.parentNode.parentNode.querySelector('.js-comcode-button-' + buttonName);
 
                 if (element != null) {
-                    func = {
-                        exec: function (element) {
+                    editor.addCommand('composr_' + buttonName, {
+                        exec: function () {
                             $cms.dom.trigger(element, 'click');
                         }
-                    };
-                    editor.addCommand('composr_' + buttonName, func);
+                    });
+                    
                     if (editor.ui.addButton) {
                         editor.ui.addButton('composr_' + buttonName, {
                             label: element.alt,
@@ -25,7 +27,7 @@
                         });
                     }
 
-                    element.parentNode.parentNode.style.display = 'none';
+                    //element.parentNode.parentNode.style.display = 'none';
                 }
             });
 
@@ -42,26 +44,26 @@
 					usesPlupload = true;
 				}
 			}
+            
+			editor.addCommand('composr_image', {
+                exec: function (e) {
+                    if (doingAttachmentUploads) {
+                        var hasSelection = (e.getSelection().getSelectedElement() != null);
+                        if (usesPlupload && !hasSelection) { // Not selected an image for editing, so don't show an edit dialogue
+                            return;
+                        }
+                    }
 
-			func = {
-				exec: function (e) {
-					if (doingAttachmentUploads) {
-						var hasSelection = (e.getSelection().getSelectedElement() != null);
-						if (usesPlupload && !hasSelection) { // Not selected an image for editing, so don't show an edit dialogue
-						    return;
-                        } 
-					}
-
-					if ((window.lang_PREFER_CMS_ATTACHMENTS === undefined) || hasSelection || !doingAttachmentUploads) {
-						editor.execCommand('image');
-					} else {
-						$cms.ui.alert(window.lang_PREFER_CMS_ATTACHMENTS).then(function () {
-							editor.execCommand('image');
-						});
-					}
-				}
-			};
-			editor.addCommand('composr_image', func);
+                    if ((window.lang_PREFER_CMS_ATTACHMENTS === undefined) || hasSelection || !doingAttachmentUploads) {
+                        editor.execCommand('image');
+                    } else {
+                        $cms.ui.alert(window.lang_PREFER_CMS_ATTACHMENTS).then(function () {
+                            editor.execCommand('image');
+                        });
+                    }
+                }
+            });
+			
 			if (editor.ui.addButton) {
                 editor.ui.addButton('composr_image', {
                     label: editor.lang.common.image,

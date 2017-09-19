@@ -4285,7 +4285,6 @@
     };
 
     var serializeExcludedTypes = { submit: 1, reset: 1, button: 1, file: 1 };
-
     /**
      * @memberof $cms.dom
      * @param form
@@ -5057,7 +5056,7 @@
             case 'touch_enabled':
                 return ('ontouchstart' in docEl);
             case 'simplified_attachments_ui':
-                return boolVal($cms.$CONFIG_OPTION('simplified_attachments_ui') && $cms.$CONFIG_OPTION('complex_uploader'));
+                return Boolean($cms.$CONFIG_OPTION('simplified_attachments_ui') && $cms.$CONFIG_OPTION('complex_uploader'));
             case 'non_concurrent':
                 return browser.includes('iphone') || browser.includes('ipad') || browser.includes('android') || browser.includes('phone') || browser.includes('tablet');
             case 'ios':
@@ -6219,7 +6218,6 @@
     };
 
     var tempDisabledButtons = {};
-
     /**
      * @memberof $cms.ui
      * @param btn
@@ -7341,11 +7339,11 @@
                         var message = messageEl.firstChild.textContent;
                         if (responseXML.querySelector('error')) {
                             // It's an error :|
-                            $cms.ui.alert('An error (' + responseXML.querySelector('error').firstChild.textContent + ') message was returned by the server: ' + message);
+                            $cms.ui.alert({ notice: 'An error (' + responseXML.querySelector('error').firstChild.textContent + ') message was returned by the server: ' + message });
                             return;
                         }
 
-                        $cms.ui.alert('An informational message was returned by the server: ' + message);
+                        $cms.ui.alert({ notice: 'An informational message was returned by the server: ' + message });
                     }
                 }
             } else {
@@ -8358,6 +8356,7 @@
             }
         },
 
+        // Implementation for [data-cms-btn-go-back]
         goBackInHistory: function () {
             window.history.back();
         },
@@ -10154,10 +10153,16 @@
         }
 
         $cms.dom.on(container, 'click', '.js-click-checkbox-remember-me-confirm', function (e, checkbox) {
+            var checkboxWasFocused = (document.activeElement === checkbox);
+
             if (checkbox.checked) {
-                $cms.ui.confirm('{!REMEMBER_ME_COOKIE;}', function (answer) {
+                $cms.ui.confirm('{!REMEMBER_ME_COOKIE;}').then(function (answer) {
                     if (!answer) {
                         checkbox.checked = false;
+                    }
+
+                    if (checkboxWasFocused) {
+                        checkbox.focus();
                     }
                 });
             }
@@ -10182,10 +10187,16 @@
         });
 
         $cms.dom.on(container, 'click', '.js-click-confirm-remember-me', function (e, checkbox) {
+            var checkboxWasFocused = (document.activeElement === checkbox);
+            
             if (checkbox.checked) {
-                $cms.ui.confirm('{!REMEMBER_ME_COOKIE;}', function (answer) {
+                $cms.ui.confirm('{!REMEMBER_ME_COOKIE;}').then(function (answer) {
                     if (!answer) {
                         checkbox.checked = false;
+                    }
+                    
+                    if (checkboxWasFocused) {
+                        checkbox.focus();
                     }
                 });
             }
@@ -10238,10 +10249,16 @@
         });
 
         $cms.dom.on(container, 'click', '.js-click-checkbox-remember-me-confirm', function (e, checkbox) {
+            var checkboxWasFocused = (document.activeElement === checkbox);
+
             if (checkbox.checked) {
-                $cms.ui.confirm('{!REMEMBER_ME_COOKIE;}', function (answer) {
+                $cms.ui.confirm('{!REMEMBER_ME_COOKIE;}').then(function (answer) {
                     if (!answer) {
                         checkbox.checked = false;
+                    }
+
+                    if (checkboxWasFocused) {
+                        checkbox.focus();
                     }
                 });
             }

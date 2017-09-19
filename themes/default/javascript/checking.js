@@ -614,9 +614,10 @@
      * @param isRequired
      */
     $cms.form.setRequired = function setRequired(fieldName, isRequired) {
+        fieldName = strVal(fieldName);
+        isRequired = Boolean(isRequired);
+        
         var radioButton = $cms.dom.$('#choose_' + fieldName);
-
-        isRequired = !!isRequired;
 
         if (!radioButton) {
             var requiredA = $cms.dom.$('#form_table_field_name__' + fieldName),

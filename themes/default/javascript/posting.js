@@ -444,7 +444,7 @@
     }
 
     function doInputList(fieldName, add) {
-        add = window.arrVal(add);
+        add = arrVal(add);
 
         var post = document.getElementById(fieldName);
 
