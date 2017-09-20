@@ -52,11 +52,11 @@ Many webhosting control panels allow you to unzip uploaded files, using their fi
 
 [title="2"]Permissions[/title]
 
-If you have to use the manual installer and are not on a suEXEC-style system then you will need to set permissions on files and directories manually.
-
 [box="Note for Linux-server users" width="25em" float="right"]
 If you are on a suEXEC-system (where the PHP script is run as your own user), the default 744 and 644 permissions should be suitable (with _config.php being 600 for additional security). The installer will tell you if you are on a suEXEC-system, otherwise assume you are not and you still will need to set the permissions.
 [/box]
+If you have to use the manual installer and are not on a suEXEC-style system then you will need to set permissions on files and directories manually.
+
 If you chose the manual installer, you now need to set the appropriate permissions for your files and folders (read on). You usually do not need to set any permissions if you chose the quick installer.
 
 If you have "shell access" (ask your webhost if you don't know), then you can automatically set these permissions by logging into your server with a program like [url="PuTTY"]http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html[/url], and executing the file [tt]fixperms.sh[/tt].
@@ -209,6 +209,7 @@ Due to these problems, we would have to recommend that if you have a choice, tha
 
 [title="2"]Installing on Cloud hosting[/title]
 
+[media framed="0" width="300" float="right"]data_custom/images/docs/tut_adv_install/cloud_hosting.png[/media]
 There is nothing stopping Composr working on compatible cloud hosting.
 
 One note is that PaaS providers may host files separately to where execution happens, and this can slow down disk access. You may need to change the "Number of files per cycle" in the quick installer to something lower such as 50 to avoid time-outs (e.g. white screens).
