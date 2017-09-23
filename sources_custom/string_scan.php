@@ -381,6 +381,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ENTER_PAGE
         ENTER_ZONE
         ENTER_ZONE_SPZ
+        THEME_IN_LIST_RESTRICTED
+        THEME_IN_LIST_NON_RESTRICTED
         WHETHER_CONVERT_COMCODE
         MERGE_POSTS
         VIEW_ALERT

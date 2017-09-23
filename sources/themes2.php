@@ -135,7 +135,7 @@ function find_all_themes()
  *
  * @param  ?ID_TEXT $theme The theme to select by default (null: no specific default)
  * @param  boolean $no_rely Whether to skip the 'rely on forums' entry
- * @param  boolean $show_everything Whether to forget about permissions for this list
+ * @param  boolean $show_everything Whether to forget about permissions for this list, and also show additional detail
  * @param  ID_TEXT $default_message_string The language string to use for the default answer
  * @return Tempcode The list
  */
@@ -150,7 +150,16 @@ function create_selection_list_themes($theme = null, $no_rely = false, $show_eve
     foreach ($themes as $_theme => $title) {
         if (($show_everything) || (has_category_access(get_member(), 'theme', $_theme))) {
             $selected = ($theme == $_theme);
-            $entries->attach(form_input_list_entry($_theme, $selected, $title));
+            $_title = $title;
+            if ($show_everything) {
+                $has_guest_access = ($_theme == 'default') || (has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'theme', $_theme));
+                if ($has_guest_access) {
+                    $_title = do_lang('themes:THEME_IN_LIST_NON_RESTRICTED', $_title, $_theme);
+                } else {
+                    $_title = do_lang('themes:THEME_IN_LIST_RESTRICTED', $_title, $_theme);
+                }
+            }
+            $entries->attach(form_input_list_entry($_theme, $selected, $_title));
         }
     }
     if ($entries->is_empty()) {
