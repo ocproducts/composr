@@ -888,6 +888,11 @@ abstract class Standard_crud_module
 
         // Add in custom fields
         if ($tie_in_custom_form_fields) {
+            if ($this->posting_form_title !== null) {
+                global $BLOCK_EXTRA_POSTING_FIELDS;
+                $BLOCK_EXTRA_POSTING_FIELDS = true;
+            }
+
             require_code('fields');
             append_form_custom_fields($this->content_type, null, $fields, $hidden, null, true, strpos($fields->evaluate(), 'form_table_field_spacer') !== false);
         }
@@ -1400,6 +1405,11 @@ abstract class Standard_crud_module
 
         // Add in custom fields
         if ($tie_in_custom_form_fields) {
+            if ($this->posting_form_title !== null) {
+                global $BLOCK_EXTRA_POSTING_FIELDS;
+                $BLOCK_EXTRA_POSTING_FIELDS = true;
+            }
+
             require_code('fields');
             append_form_custom_fields($this->content_type, $id, $fields, $hidden, null, true, strpos($fields->evaluate(), 'form_table_field_spacer') !== false);
         }

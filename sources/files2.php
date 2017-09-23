@@ -1441,7 +1441,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
 
                                                 // Receive body
                                                 if ($HTTP_MESSAGE != '200') {
-                                                    $CURL_BODY = '';
+                                                    $CURL_BODY = null;
 
                                                     switch ($HTTP_MESSAGE ) {
                                                         case '401':
@@ -1476,6 +1476,8 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                             }
                                                             break;
                                                     }
+
+                                                    return null;
                                                 }
                                                 return _detect_character_encoding($CURL_BODY);
                                             }
