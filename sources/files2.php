@@ -1408,7 +1408,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                         }
 
                                                         if (strpos($matches[1], '://') === false) {
-                                                            $matches[1] = qualify_url($matches[1], $url);
+                                                            $matches[1] = qualify_url($matches[1], $url, true);
                                                         }
                                                         $HTTP_DOWNLOAD_URL = $matches[1];
                                                         if (($matches[1] != $url) && (preg_match('#^3\d\d$#', $HTTP_MESSAGE) != 0)) {
@@ -1696,7 +1696,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
 
                         @fclose($mysock);
                         if (strpos($matches[1], '://') === false) {
-                            $matches[1] = qualify_url($matches[1], $url);
+                            $matches[1] = qualify_url($matches[1], $url, true);
                         }
                         $bak = $HTTP_FILENAME;
                         $combined_cookies = collapse_2d_complexity('key', 'value', $HTTP_NEW_COOKIES) + (($cookies === null) ? array() : $cookies);
@@ -1723,7 +1723,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
 
                         @fclose($mysock);
                         if (strpos($matches[1], '://') === false) {
-                            $matches[1] = qualify_url($matches[1], $url);
+                            $matches[1] = qualify_url($matches[1], $url, true);
                         }
                         if ($matches[1] != $url) {
                             $bak = $HTTP_FILENAME;

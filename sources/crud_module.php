@@ -395,10 +395,11 @@ abstract class Standard_crud_module
                     breadcrumb_set_parents(array_merge($BREADCRUMB_SET_PARENTS, array(array('_SELF:_SELF:browse', do_lang_tempcode(is_null($this->menu_label) ? 'MENU' : $this->menu_label)), array('_SELF:_SELF:' . substr($type, 1), do_lang_tempcode('CHOOSE')))));
                 } else {
                     if (($this->catalogue) && (either_param_string('catalogue_name', '') != '')) {
-                        $catalogue_title = get_translated_text($GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_title', array('c_name' => either_param_string('catalogue_name'))));
-                        if ($catalogue_title === null) {
+                        $_catalogue_title = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_title', array('c_name' => either_param_string('catalogue_name')));
+                        if ($_catalogue_title === null) {
                             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue'));
                         }
+                        $catalogue_title = get_translated_text($_catalogue_title);
                         breadcrumb_set_parents(array_merge($BREADCRUMB_SET_PARENTS, array(array('_SELF:_SELF:browse:catalogue_name=' . either_param_string('catalogue_name', ''), $catalogue_title))));
                     } else {
                         breadcrumb_set_parents(array_merge($BREADCRUMB_SET_PARENTS, array(array('_SELF:_SELF:browse', do_lang_tempcode(is_null($this->menu_label) ? 'MENU' : $this->menu_label)))));

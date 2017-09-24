@@ -1009,12 +1009,13 @@ function url_to_filename($url_full)
  *
  * @param  URLPATH $url The URL to fully qualified
  * @param  URLPATH $url_base The base-URL
+ * @param  boolean $base_is_full_url Whether the base-URL is actually a full URL which needs stripping back
  * @return URLPATH Fully qualified URL
  */
-function qualify_url($url, $url_base)
+function qualify_url($url, $url_base, $base_is_full_url = false)
 {
     require_code('urls2');
-    return _qualify_url($url, $url_base);
+    return _qualify_url($url, $url_base, $base_is_full_url);
 }
 
 /**

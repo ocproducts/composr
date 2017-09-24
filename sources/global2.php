@@ -54,7 +54,7 @@ function init__global2()
 
     // Closed site message
     if ((is_file('closed.html')) && (get_param_integer('keep_force_open', 0) == 0)) {
-        if ((strpos($_SERVER['SCRIPT_NAME'], 'upgrader.php') === false) && (strpos($_SERVER['SCRIPT_NAME'], 'execute_temp.php') === false) && ((!isset($SITE_INFO['no_extra_closed_file'])) || ($SITE_INFO['no_extra_closed_file'] == '0'))) {
+        if ((strpos($_SERVER['SCRIPT_NAME'], 'upgrader.php') === false) && (strpos($_SERVER['SCRIPT_NAME'], 'execute_temp.php') === false) && (strpos($_SERVER['SCRIPT_NAME'], '_tests') === false) && ((!isset($SITE_INFO['no_extra_closed_file'])) || ($SITE_INFO['no_extra_closed_file'] == '0'))) {
             if ((@strpos($_SERVER['SERVER_SOFTWARE'], 'IIS') === false)) {
                 header('HTTP/1.0 503 Service Temporarily Unavailable');
             }
