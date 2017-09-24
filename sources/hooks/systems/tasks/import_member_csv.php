@@ -258,9 +258,13 @@ class Hook_task_import_member_csv
                     $parts[2] = '1';
                 }
                 if (strlen($parts[2]) != 4) { // Would be nice to be smarter but unfortunately Open Office saves as yy not yyyy
-                    $join_time = mktime(0, 0, 0, intval($parts[1]), intval($parts[2]), intval($parts[0])); // yy(yy)-mm-dd
+                    $join_time = mktime(0, 0, 0, intval($parts[1]), intval($parts[2]), intval($parts[0])); // yy(yy)-mm-dd or yy(yy)/mm/dd
                 } else {
-                    $join_time = mktime(0, 0, 0, intval($parts[1]), intval($parts[0]), intval($parts[2])); // dd-mm-yyyy
+                    if (get_option('yeehaw') == '1') {
+                        $join_time = mktime(0, 0, 0, intval($parts[0]), intval($parts[1]), intval($parts[2])); // mm-dd-yyyy or mm/dd/yyyy
+                    } else {
+                        $join_time = mktime(0, 0, 0, intval($parts[1]), intval($parts[0]), intval($parts[2])); // dd-mm-yyyy or dd/mm/yyyy
+                    }
                 }
                 if ($join_time > time()) {
                     $join_time = time(); // Fixes database out of range error that could happen

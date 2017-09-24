@@ -51,7 +51,7 @@ class Hook_cron_mail_queue
                     $from_name = $row['m_from_name'];
                     $join_time = $row['m_join_time'];
 
-                    if (!is_array($to_email)) {
+                    if ((!is_array($to_email)) && ($to_email !== null)) {
                         continue;
                     }
 

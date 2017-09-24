@@ -83,7 +83,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         }
 
         $through_queue = (!$bypass_queue) && (((cron_installed()) && (get_option('mail_queue') === '1'))) || (get_option('mail_queue_debug') === '1');
-        if (!is_null($attachments)) {
+        if ((!empty($attachments)) && (get_option('mail_queue_debug') === '0')) {
             foreach (array_keys($attachments) as $path) {
                 if ((substr($path, 0, strlen(get_custom_file_base() . '/')) != get_custom_file_base() . '/') && (substr($path, 0, strlen(get_file_base() . '/')) != get_file_base() . '/')) {
                     $through_queue = false;
@@ -244,14 +244,14 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
                     'LANG' => $lang,
                     'TITLE' => $subject,
                     'CONTENT' => $_html_content,
-                ), $lang, false, null, '.tpl', 'templates', $theme);
+                ), $lang, false, 'MAIL', '.tpl', 'templates', $theme);
             }
             require_css('email');
             $css = css_tempcode(true, false, $message_html->evaluate($lang), $theme);
             $_css = $css->evaluate($lang);
             if (!GOOGLE_APPENGINE) {
                 if (get_option('allow_ext_images') != '1') {
-                    $_css = preg_replace_callback('#url\(["\']?(http://[^"]*)["\']?\)#U', '_mail_css_rep_callback', $_css);
+                    $_css = preg_replace_callback('#url\(["\']?(https?://[^"]*)["\']?\)#U', '_mail_css_rep_callback', $_css);
                 }
             }
             $html_evaluated = $message_html->evaluate($lang);
@@ -276,13 +276,13 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     // CID attachments
     if (get_option('allow_ext_images') != '1') {
         $cid_before = array_keys($CID_IMG_ATTACHMENT);
-        $html_evaluated = preg_replace_callback('#<img\s([^>]*)src="(http://[^"]*)"#U', '_mail_img_rep_callback', $html_evaluated);
+        $html_evaluated = preg_replace_callback('#<img\s([^>]*)src="(https?://[^"]*)"#U', '_mail_img_rep_callback', $html_evaluated);
         $cid_just_html = array_diff(array_keys($CID_IMG_ATTACHMENT), $cid_before);
         $matches = array();
         foreach (array('#<([^"<>]*\s)style="([^"]*)"#', '#<style( [^<>]*)?' . '>(.*)</style>#Us') as $over) {
             $num_matches = preg_match_all($over, $html_evaluated, $matches);
             for ($i = 0; $i < $num_matches; $i++) {
-                $altered_inner = preg_replace_callback('#url\(["\']?(http://[^"]*)["\']?\)#U', '_mail_css_rep_callback', $matches[2][$i]);
+                $altered_inner = preg_replace_callback('#url\(["\']?(https?://[^"]*)["\']?\)#U', '_mail_css_rep_callback', $matches[2][$i]);
                 if ($matches[2][$i] != $altered_inner) {
                     $altered_outer = str_replace($matches[2][$i], $altered_inner, $matches[0][$i]);
                     $html_evaluated = str_replace($matches[0][$i], $altered_outer, $html_evaluated);
