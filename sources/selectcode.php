@@ -41,7 +41,7 @@ Note that:
 
 EXAMPLE CALLS...
 $results = selectcode_to_sqlfragment('1,3-10,!6,12*', 'id', 'download_categories', 'parent_id', 'cat', 'id');
-$results = selectcode_to_idlist_using_db('1,3-10,!6,12*', 'downloads', 'id', 'download_categories', 'parent_id', 'cat', 'id');
+$results = selectcode_to_idlist_using_db('1,3-10,!6,12*', 'id', 'downloads', 'download_categories', 'parent_id', 'cat', 'id');
 $results = selectcode_to_idlist_using_memory('1,3-10,!6,12*', array(1 => 2, 2 => 2, 3 => 2, 4 => 3), 'download_categories', 'parent_id', 'cat', 'id');
 $results = selectcode_to_idlist_using_callback('1,3-10,!6,12*', '_callback_get_download_structure', 'download_categories', 'parent_id', 'cat', 'id');
 */
@@ -304,13 +304,8 @@ function _selectcode_to_generic($filter, $field_name, $table_name, $ids_and_pare
         $token = trim($token);
 
         if ($token == '*') { // '*'
-            if ($ids_and_parents === null) {
-                if ($field_name !== null) {
-                    $ids_and_parents = call_user_func_array($ids_and_parents_callback[0], array_merge($ids_and_parents_callback[1], array($db)));
-                } else {
-                    $ids_and_parents = _selectcode_find_ids_and_parents($field_name, $table_name, $category_field_name, $db);
-                }
-            }
+            _ensure_loaded__ids_and_parents($field_name, $table_name, $ids_and_parents, $ids_and_parents_callback, $category_field_name, $db);
+
             foreach (array_keys($ids_and_parents) as $id) {
                 $out_accept[] = $numeric_record_set_ids ? $id : strval($id);
             }
@@ -320,20 +315,17 @@ function _selectcode_to_generic($filter, $field_name, $table_name, $ids_and_pare
             }
         } elseif (($numeric_record_set_ids) && (preg_match('#^(\d+)\-(\d+)$#', $token, $matches) != 0)) { // e.g. '1-3')
             for ($i = intval($matches[1]); $i <= intval($matches[2]); $i++) {
-                if ($numeric_record_set_ids) {
-                    $out_accept[] = $i;
-                } else {
-                    $out_accept[] = strval($i);
+                if (($ids_and_parents === null) || (isset($ids_and_parents[$i]))) {
+                    if ($numeric_record_set_ids) {
+                        $out_accept[] = $i;
+                    } else {
+                        $out_accept[] = strval($i);
+                    }
                 }
             }
         } elseif (($numeric_record_set_ids) && (preg_match('#^(\d+)\+$#', $token, $matches) != 0)) { // e.g. '3+'
-            if ($ids_and_parents === null) {
-                if ($field_name !== null) {
-                    $ids_and_parents = call_user_func_array($ids_and_parents_callback[0], array_merge($ids_and_parents_callback[1], array($db)));
-                } else {
-                    $ids_and_parents = _selectcode_find_ids_and_parents($field_name, $table_name, $category_field_name, $db);
-                }
-            }
+            _ensure_loaded__ids_and_parents($field_name, $table_name, $ids_and_parents, $ids_and_parents_callback, $category_field_name, $db);
+
             foreach (array_keys($ids_and_parents) as $id) {
                 if (is_string($id)) {
                     $id = intval($id);
@@ -346,14 +338,8 @@ function _selectcode_to_generic($filter, $field_name, $table_name, $ids_and_pare
                     }
                 }
             }
-        } elseif (preg_match('#^(.+)(\*|>)$#', $token, $matches) != 0) { // e.g. '3#' or '3*' or '3>'
-            if ($ids_and_parents === null) {
-                if ($field_name !== null) {
-                    $ids_and_parents = call_user_func_array($ids_and_parents_callback[0], array_merge($ids_and_parents_callback[1], array($db)));
-                } else {
-                    $ids_and_parents = _selectcode_find_ids_and_parents($field_name, $table_name, $category_field_name, $db);
-                }
-            }
+        } elseif (preg_match('#^(.+)(\#|\*|>)$#', $token, $matches) != 0) { // e.g. '3#' or '3*' or '3>'
+            _ensure_loaded__ids_and_parents($field_name, $table_name, $ids_and_parents, $ids_and_parents_callback, $category_field_name, $db);
 
             if ($matches[2] == '#') {
                 $subtree = array($matches[1]);
@@ -379,14 +365,10 @@ function _selectcode_to_generic($filter, $field_name, $table_name, $ids_and_pare
                 }
             }
         } elseif (preg_match('#^(.+)\~$#', $token, $matches) != 0) { // e.g. '3~'
-            if ($ids_and_parents === null) {
-                if ($field_name !== null) {
-                    $ids_and_parents = call_user_func_array($ids_and_parents_callback[0], array_merge($ids_and_parents_callback[1], array($db)));
-                } else {
-                    $ids_and_parents = _selectcode_find_ids_and_parents($field_name, $table_name, $category_field_name, $db);
-                }
-            }
+            _ensure_loaded__ids_and_parents($field_name, $table_name, $ids_and_parents, $ids_and_parents_callback, $category_field_name, $db);
+
             $subtree = _selectcode_subtree_fetch($matches[1], $parent_spec__table_name, $parent_spec__parent_name, $parent_spec__field_name, $numeric_category_set_ids, $db, $cached_mappings);
+
             foreach ($subtree as $subtree_i) {
                 foreach ($ids_and_parents as $id => $parent_id) {
                     if ($parent_id == $subtree_i) {
@@ -407,7 +389,29 @@ function _selectcode_to_generic($filter, $field_name, $table_name, $ids_and_pare
         }
     }
 
-    return array_diff($out_accept, $out_avoid);
+    return array_values(array_diff($out_accept, $out_avoid));
+}
+
+/**
+ * Lazy-loading of IDs is no longer sufficient, pull them in.
+ *
+ * @param  ?string $field_name The database's ID field for the record-set we're matching (null: use a different lookup method)
+ * @param  ?string $table_name The database's table for the record-set we're matching (null: use a different lookup method)
+ * @param  ?array $ids_and_parents A map between record-set IDs and record-set parent-category-IDs (null: use a different lookup method)
+ * @param  ?string $category_field_name The database's field name for the record-set's container-category specifier (null: don't support subtree [*-style] searches)
+ * @param  ?object $db Database connection to use (null: website)
+ *
+ * @ignore
+ */
+function _ensure_loaded__ids_and_parents($field_name, $table_name, &$ids_and_parents, $ids_and_parents_callback, $category_field_name, $db)
+{
+    if ($ids_and_parents === null) {
+        if ($field_name === null) {
+            $ids_and_parents = call_user_func_array($ids_and_parents_callback[0], array_merge($ids_and_parents_callback[1], array($db)));
+        } else {
+            $ids_and_parents = _selectcode_find_ids_and_parents($field_name, $table_name, $category_field_name, $db);
+        }
+    }
 }
 
 /**
