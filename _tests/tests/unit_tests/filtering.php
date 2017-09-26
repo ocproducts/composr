@@ -21,12 +21,362 @@ class filtering_test_set extends cms_test_case
     public function setUp()
     {
         parent::setUp();
+    }
 
-        // In case test crashed and needs resetting
-        $GLOBALS['SITE_DB']->drop_table_if_exists('temp_test_categories');
-        $GLOBALS['SITE_DB']->drop_table_if_exists('temp_test_entries');
+    public function testFiltercode()
+    {
+        $this->cleanup_db();
 
-        require_code('rss');
+        $hook_contents = "
+            <" . "?php
+
+            class Hook_content_meta_aware_temp_test
+            {
+                public function info()
+                {
+                    return array(
+                        'support_custom_fields' => true,
+
+                        'content_type_label' => 'TITLE',
+                        'content_type_universal_label' => 'Title',
+
+                        'connection' => \$GLOBALS['SITE_DB'],
+                        'table' => 'temp_test',
+                        'id_field' => 'id',
+                        'id_field_numeric' => true,
+                        'parent_category_field' => null,
+                        'parent_category_meta_aware_type' => null,
+                        'is_category' => false,
+                        'is_entry' => true,
+                        'category_field' => null,
+                        'category_type' => null,
+                        'parent_spec__table_name' => null,
+                        'parent_spec__parent_name' => null,
+                        'parent_spec__field_name' => null,
+                        'category_is_string' => true,
+
+                        'title_field' => 't_short_text',
+                        'title_field_dereference' => false,
+                        'title_field_supports_comcode' => false,
+                        'description_field' => null,
+                        'thumb_field' => null,
+                        'thumb_field_is_theme_image' => false,
+                        'alternate_icon_theme_image' => null,
+
+                        'view_page_link_pattern' => null,
+                        'edit_page_link_pattern' => null,
+                        'view_category_page_link_pattern' => null,
+                        'add_url' => null,
+                        'archive_url' => null,
+
+                        'support_url_monikers' => false,
+
+                        'views_field' => null,
+                        'order_field' => null,
+                        'submitter_field' => null,
+                        'author_field' => null,
+                        'add_time_field' => null,
+                        'edit_time_field' => null,
+                        'date_field' => null,
+                        'validated_field' => null,
+
+                        'seo_type_code' => 'temp_test',
+
+                        'feedback_type_code' => 'temp_test',
+
+                        'permissions_type_code' => null,
+
+                        'search_hook' => null,
+                        'rss_hook' => null,
+                        'attachment_hook' => null,
+                        'unvalidated_hook' => null,
+                        'notification_hook' => null,
+                        'sitemap_hook' => null,
+
+                        'addon_name' => null,
+
+                        'cms_page' => null,
+                        'module' => null,
+
+                        'commandr_filesystem_hook' => null,
+                        'commandr_filesystem__is_folder' => false,
+
+                        'support_revisions' => false,
+
+                        'support_privacy' => false,
+
+                        'support_content_reviews' => false,
+
+                        'actionlog_regexp' => null,
+
+                        'filtercode_protected_fields' => array('t_secret'),
+                    );
+                }
+            }
+        ";
+        file_put_contents(get_file_base() . '/sources_custom/hooks/systems/content_meta_aware/temp_test.php', $hook_contents);
+
+        $GLOBALS['SITE_DB']->create_table('temp_test', array(
+            'id' => '*INTEGER',
+            't_short_text' => 'SHORT_TEXT',
+            't_short_trans' => 'SHORT_TRANS',
+            't_member' => 'MEMBER',
+            't_real' => 'REAL',
+            't_time' => 'TIME',
+            't_language_name' => 'LANGUAGE_NAME',
+            't_id_text' => 'ID_TEXT',
+            't_binary' => 'BINARY',
+            't_secret' => 'SHORT_TEXT',
+        ));
+        $GLOBALS['SITE_DB']->create_index('temp_test', '#t_short_text', array('t_short_text'));
+        $GLOBALS['SITE_DB']->create_index('temp_test', '#t_short_trans', array('t_short_trans'));
+        $GLOBALS['SITE_DB']->create_index('temp_test', '#t_language_name', array('t_language_name'));
+        $GLOBALS['SITE_DB']->create_index('temp_test', '#t_id_text', array('t_id_text'));
+
+        $GLOBALS['SITE_DB']->query_insert('temp_test', array(
+            'id' => 1,
+            't_short_text' => 'axxxxx',
+            't_member' => 1,
+            't_real' => 1.0,
+            't_time' => 1000000,
+            't_language_name' => 'EN',
+            't_id_text' => 'axxxxx',
+            't_binary' => 0,
+            't_secret' => 'x',
+        ) + insert_lang('t_short_trans', 'axxxxx', 1));
+
+        $GLOBALS['SITE_DB']->query_insert('temp_test', array(
+            'id' => 2,
+            't_short_text' => 'bxxxxx',
+            't_member' => 2,
+            't_real' => 2.0,
+            't_time' => 2000000,
+            't_language_name' => 'ES',
+            't_id_text' => 'bxxxxx',
+            't_binary' => 1,
+            't_secret' => 'x',
+        ) + insert_lang('t_short_trans', 'bxxxxx', 1));
+
+        $GLOBALS['SITE_DB']->query_insert('temp_test', array(
+            'id' => 3,
+            't_short_text' => 'cxxxxx',
+            't_member' => 3,
+            't_real' => 3.0,
+            't_time' => 3000000,
+            't_language_name' => 'TA',
+            't_id_text' => 'cxxxxx',
+            't_binary' => 1,
+            't_secret' => 'x',
+        ) + insert_lang('t_short_trans', 'cxxxxx', 1));
+
+        $GLOBALS['SITE_DB']->query_delete('rating', array('rating_for_type' => 'temp_test__'));
+        $GLOBALS['SITE_DB']->query_insert('rating', array('rating_for_type' => 'temp_test__', 'rating_for_id' => 1, 'rating_member' => get_member(), 'rating_ip' => get_ip_address(), 'rating_time' => time(), 'rating' => 4));
+        $GLOBALS['SITE_DB']->query_insert('rating', array('rating_for_type' => 'temp_test__', 'rating_for_id' => 1, 'rating_member' => get_member(), 'rating_ip' => get_ip_address(), 'rating_time' => time(), 'rating' => 3));
+
+        require_code('seo2');
+        seo_meta_set_for_explicit('temp_test', '1', 'abc,def', 'abc');
+
+        require_code('filtercode');
+
+        $filter_tests = array(
+            // Filtering on 'id'
+            'id<2' => array(1),
+            'id<=2' => array(1, 2),
+            'id>2' => array(3),
+            'id>=1' => array(1, 2, 3),
+            'id=' => array(1, 2, 3), // because no filter
+            'id=1' => array(1),
+            'id==' => array(), // because nothing matches 0 after string coercion
+            'id==1' => array(1),
+            // No ~= for integers
+            // No ~ for integers
+            'id<>' => array(1, 2, 3), // because no filter
+            'id<>1' => array(2, 3),
+            'id!=' => array(1, 2, 3), // because nothing matches 0 after string coercion and negative
+            'id!=1' => array(2, 3),
+            'id@1-2' => array(1, 2),
+
+            // Filtering on 't_short_text'
+            // No < for strings
+            // No <= for strings
+            // No > for strings
+            // No >= for strings
+            't_short_text=' => array(1, 2, 3), // because no filter
+            't_short_text=axxxxx' => array(1),
+            't_short_text==' => array(), // because nothing matches
+            't_short_text==axxxxx' => array(1),
+            't_short_text~=ax' => array(1),
+            't_short_text~axxxxx' => array(1),
+            't_short_text<>' => array(1, 2, 3), // because no filter
+            't_short_text<>axxxxx' => array(2, 3),
+            't_short_text!=' => array(1, 2, 3), // because nothing matches and negative
+            't_short_text!=axxxxx' => array(2, 3),
+            // No @ for strings
+
+            // Filtering on 't_member' using IDs
+            't_member<2' => array(1),
+            't_member<=2' => array(1, 2),
+            't_member>2' => array(3),
+            't_member>=1' => array(1, 2, 3),
+            't_member=' => array(1, 2, 3), // because no filter
+            't_member=1' => array(1),
+            't_member==' => array(), // because nothing matches 0 after string coercion
+            't_member==1' => array(1),
+            // No ~= for integers
+            // No ~ for integers
+            't_member<>' => array(1, 2, 3), // because no filter
+            't_member<>1' => array(2, 3),
+            't_member!=' => array(1, 2, 3), // because nothing matches 0 after string coercion and negative
+            't_member!=1' => array(2, 3),
+            't_member@1-2' => array(1, 2),
+
+            // Filtering on 't_member' using usernames
+            't_member=Guest' => array(1),
+            't_member==Guest' => array(1),
+            't_member~=Guest' => array(1),
+            't_member~Guest' => array(1),
+            't_member<>Guest' => array(2, 3),
+            't_member!=Guest' => array(2, 3),
+
+            // Filtering on 't_real'
+            't_real<2.0' => array(1),
+            't_real<=2.0' => array(1, 2),
+            't_real>2.0' => array(3),
+            't_real>=1.1' => array(2, 3),
+            't_real=' => array(1, 2, 3), // because no filter
+            't_real=1.0' => array(1),
+            't_real==' => array(), // because nothing matches 0.0 after string coercion
+            't_real==1.0' => array(1),
+            // No ~= for floats
+            // No ~ for floats
+            't_real<>' => array(1, 2, 3), // because no filter
+            't_real<>1.0' => array(2, 3),
+            't_real!=' => array(1, 2, 3), // because nothing matches 0.0 after string coercion and negative
+            't_real!=1' => array(2, 3),
+            't_real@1.1-2.0' => array(2),
+
+            // Filtering on 't_time'
+            't_time<2000000' => array(1),
+            't_time<=2000000' => array(1, 2),
+            't_time>2000000' => array(3),
+            't_time>=1100000' => array(2, 3),
+            't_time=' => array(1, 2, 3), // because no filter
+            't_time=1000000' => array(1),
+            't_time==' => array(), // because nothing matches 0 after string coercion
+            't_time==1000000' => array(1),
+            // No ~= for integers
+            // No ~ for integers
+            't_time<>' => array(1, 2, 3), // because no filter
+            't_time<>1000000' => array(2, 3),
+            't_time!=' => array(1, 2, 3), // because nothing matches 0 after string coercion and negative
+            't_time!=1000000' => array(2, 3),
+            't_time@1000000-2000000' => array(1, 2),
+
+            // Filtering on 't_language_name'
+            // No < for strings
+            // No <= for strings
+            // No > for strings
+            // No >= for strings
+            't_language_name=' => array(1, 2, 3), // because no filter
+            't_language_name=EN' => array(1),
+            't_language_name==' => array(), // because nothing matches
+            't_language_name==EN' => array(1),
+            't_language_name~=EN' => array(1),
+            't_language_name~EN' => array(1),
+            't_language_name<>' => array(1, 2, 3), // because no filter
+            't_language_name<>EN' => array(2, 3),
+            't_language_name!=' => array(1, 2, 3), // because nothing matches and negative
+            't_language_name!=EN' => array(2, 3),
+            // No @ for strings
+
+            // Filtering on 't_id_text'
+            // No < for strings
+            // No <= for strings
+            // No > for strings
+            // No >= for strings
+            't_id_text=' => array(1, 2, 3), // because no filter
+            't_id_text=axxxxx' => array(1),
+            't_id_text==' => array(), // because nothing matches
+            't_id_text==axxxxx' => array(1),
+            't_id_text~=axxxxx' => array(1),
+            't_id_text~axxxxx' => array(1),
+            't_id_text<>' => array(1, 2, 3), // because no filter
+            't_id_text<>axxxxx' => array(2, 3),
+            't_id_text!=' => array(1, 2, 3), // because nothing matches and negative
+            't_id_text!=axxxxx' => array(2, 3),
+            // No @ for strings
+
+            // Filtering on 't_binary'
+            't_binary<1' => array(1),
+            't_binary<=1' => array(1, 2, 3),
+            't_binary>0' => array(2, 3),
+            't_binary>=0' => array(1, 2, 3),
+            't_binary=' => array(1, 2, 3), // because no filter
+            't_binary=0' => array(1),
+            't_binary==' => array(1), // because 0 matches after string coercion
+            't_binary==0' => array(1),
+            // No ~= for integers
+            // No ~ for integers
+            't_binary<>' => array(1, 2, 3), // because no filter
+            't_binary<>0' => array(2, 3),
+            't_binary!=' => array(2, 3), // because 0 matches after string coercion and negative
+            't_binary!=0' => array(2, 3),
+            't_binary@0-1' => array(1, 2, 3),
+
+            // Filtering on nothing
+            '' => array(1, 2, 3),
+            'junk' => array(1, 2, 3),
+
+            // Filtering on multiple clauses
+            'id=1,id=2' => array(),
+            'id=1,t_binary=0' => array(1),
+
+            // Filtering on multiple keys
+            'id|t_id_text=1' => array(1),
+            'id|t_id_text=axxxxx' => array(1),
+            'id|t_id_text=zxxxxx' => array(),
+            'id|t_member=4' => array(),
+
+            // Filtering on multiple values
+            'id=1|2' => array(1, 2),
+            'id=4|5' => array(),
+            't_id_text=axxxxx|bxxxxx' => array(1, 2),
+            't_id_text#axxxxx|bxxxxx' => array(1, 2),
+            't_id_text~=axxxxx|bxxxxx' => array(1, 2),
+            't_id_text~axxxxx|bxxxxx' => array(1, 2),
+
+            // Filtering on protected field
+            't_secret=x' => array(1, 2, 3),
+            't_secret=y' => array(1, 2, 3),
+
+            // Filtering on rating
+            'compound_rating=5' => array(1),
+            'average_rating=1.75' => array(1),
+            'fixed_random=123456789' => array(),
+
+            // Filtering on SEO
+            'meta_keywords~abc' => array(1),
+            'meta_keywords~def' => array(1),
+            'meta_keywords~ghi' => array(),
+            'meta_keywords=' => array(1, 2, 3), // because no filter
+            'meta_keywords==' => array(), // because nothing matches
+            'meta_description=abc' => array(1),
+            'meta_description=ghi' => array(),
+            'meta_description=' => array(1, 2, 3), // because no filter
+            'meta_description==' => array(), // because nothing matches
+        );
+
+        foreach ($filter_tests as $filter => $filter_expected) {
+            list($extra_select, $extra_join, $extra_where) = filtercode_to_sql($GLOBALS['SITE_DB'], parse_filtercode($filter), 'temp_test');
+            $sql = 'SELECT r.id' . implode('', $extra_select) . ' FROM ' . get_table_prefix() . 'temp_test r' . implode('', $extra_join) . ' WHERE 1=1' . $extra_where;
+            $results = collapse_1d_complexity('id', $GLOBALS['SITE_DB']->query($sql));
+            $this->assertTrue($results == $filter_expected, 'Failed Filtercode check for: ' . $filter . ', got: ' . implode(',', array_map('strval', $results)));
+        }
+
+        // Test automatic filter form seems okay
+        list($form_fields, $filter, $_links) = form_for_filtercode('', null, 'temp_test');
+        $this->assertTrue(strpos($form_fields->evaluate(), '<input') !== false);
+        $this->assertTrue($filter == 'id<id_op><id>,t_binary<t_binary_op><t_binary>,t_id_text<t_id_text_op><t_id_text>,t_member<t_member_op><t_member>,t_real<t_real_op><t_real>,t_short_text<t_short_text_op><t_short_text>,t_short_trans<t_short_trans_op><t_short_trans>,t_time<t_time_op><t_time>,compound_rating<compound_rating_op><compound_rating>,average_rating<average_rating_op><average_rating>,meta_keywords<meta_keywords_op><meta_keywords>,meta_description<meta_description_op><meta_description>');
     }
 
     protected $ids_and_parents;
@@ -196,10 +546,26 @@ class filtering_test_set extends cms_test_case
         $this->assertTrue($results == $this->expected);
     }
 
-    public function tearDown()
+    public function cleanup_db()
     {
         $GLOBALS['SITE_DB']->drop_table_if_exists('temp_test_categories');
         $GLOBALS['SITE_DB']->drop_table_if_exists('temp_test_entries');
+
+        $GLOBALS['SITE_DB']->drop_table_if_exists('temp_test');
+
+        $GLOBALS['SITE_DB']->query_delete('rating', array('rating_for_type' => 'temp_test__'));
+
+        $GLOBALS['SITE_DB']->query_delete('seo_meta', array('meta_for_type' => 'temp_test'));
+        $GLOBALS['SITE_DB']->query_delete('seo_meta_keywords', array('meta_for_type' => 'temp_test'));
+    }
+
+    public function tearDown()
+    {
+        $this->cleanup_db();
+
+        @unlink(get_file_base() . '/sources_custom/hooks/systems/content_meta_aware/temp_test.php');
+        fix_permissions(get_file_base() . '/sources_custom/hooks/systems/content_meta_aware/temp_test.php');
+        sync_file(get_file_base() . '/sources_custom/hooks/systems/content_meta_aware/temp_test.php');
 
         parent::tearDown();
     }
