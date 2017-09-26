@@ -373,6 +373,39 @@ class filtering_test_set extends cms_test_case
             $this->assertTrue($results == $filter_expected, 'Failed Filtercode check for: ' . $filter . ', got: ' . implode(',', array_map('strval', $results)));
         }
 
+        // Test using POST environment
+        $filter_tests = array(
+            array('id<id_op><id>', 'id', '<', '2', array(1)),
+            array('id<id_op><id>', 'id', '@', '1-2', array(1, 2)),
+            array('t_short_text<t_short_text_op><t_short_text>', 't_short_text', '=', 'axxxxx', array(1)),
+            array('t_member<t_member_op><t_member>', 't_member', '=', 'Guest', array(1)),
+            array('t_real<t_real_op><t_real>', 't_real', '>=', '1.1', array(2, 3)),
+            array('t_real<t_real_op><t_real>', 't_real', '@', '1.1-2.0', array(2)),
+            array('t_time<t_time_op><t_time>', 't_time', '=', '2000000', array(2)),
+            array('t_binary<t_binary_op><t_binary>', 't_binary', '>', '0', array(2, 3)),
+        );
+        foreach ($filter_tests as $filter_parts) {
+            list($filter, $key, $op, $val, $filter_expected) = $filter_parts;
+
+            if ($val == 2000000) {
+                $_POST['filter_' . $key . '_day'] = 24;
+                $_POST['filter_' . $key . '_month'] = 1;
+                $_POST['filter_' . $key . '_year'] = 1970;
+                $_POST['filter_' . $key . '_hour'] = 3;
+                $_POST['filter_' . $key . '_minute'] = 33;
+                $_POST['filter_' . $key . '_seconds'] = 20;
+            } else {
+                $_POST['filter_' . $key] = $val;
+            }
+
+            $_POST[$key . '_op'] = $op;
+
+            list($extra_select, $extra_join, $extra_where) = filtercode_to_sql($GLOBALS['SITE_DB'], parse_filtercode($filter), 'temp_test');
+            $sql = 'SELECT r.id' . implode('', $extra_select) . ' FROM ' . get_table_prefix() . 'temp_test r' . implode('', $extra_join) . ' WHERE 1=1' . $extra_where;
+            $results = collapse_1d_complexity('id', $GLOBALS['SITE_DB']->query($sql));
+            $this->assertTrue($results == $filter_expected, 'Failed Filtercode check for: ' . $filter . ', got: ' . implode(',', array_map('strval', $results)));
+        }
+
         // Test automatic filter form seems okay
         list($form_fields, $filter, $_links) = form_for_filtercode('', null, 'temp_test');
         $this->assertTrue(strpos($form_fields->evaluate(), '<input') !== false);
