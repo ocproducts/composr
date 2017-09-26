@@ -9443,6 +9443,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         USERGROUP
         USERGROUPS
         USERGROUP_SUBSCRIPTION
+        USERGROUP_SUBSCRIPTIONS
         USERNAME
         USERNAME_ALREADY_EXISTS
         USERNAME_BAD_SUBSTRING

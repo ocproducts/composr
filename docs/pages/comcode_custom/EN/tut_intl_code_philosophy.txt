@@ -43,6 +43,13 @@ File a bug report in the normal way. Make sure you are specific though -- don't 
 
 If you can think of a better approach to what we take, bearing in mind the various trade-offs we have to try and make, please make a feature suggestion to the tracker.
 
+[title="2"]Comments[/title]
+
+You can leave comments inside the [tt].ini[/tt] files like:
+[code="INI"]
+# This is a comment
+[/code]
+
 [title="2"]Non-ISO languages (advanced)[/title]
 
 By default Composr supplies language codenames and their human-understood names, based on the ISO 639 standards. ISO have defined codenames for all common world languages.

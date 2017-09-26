@@ -213,7 +213,7 @@ class Hook_task_import_member_csv
 
             // Set up member row
             if ((array_key_exists('Password', $line)) && ($line['Password'] != '')) {
-                $parts = explode('/', $line['Password']);
+                $parts = explode(' / ', $line['Password'], 3);
                 $password = $parts[0];
                 $salt = array_key_exists(1, $parts) ? $parts[1] : null;
                 $password_compatibility_scheme = array_key_exists(2, $parts) ? $parts[2] : null;
