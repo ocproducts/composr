@@ -127,6 +127,7 @@ class filtering_test_set extends cms_test_case
             't_id_text' => 'ID_TEXT',
             't_binary' => 'BINARY',
             't_secret' => 'SHORT_TEXT',
+            't_linker' => 'INTEGER',
         ));
         $GLOBALS['SITE_DB']->create_index('temp_test', '#t_short_text', array('t_short_text'));
         $GLOBALS['SITE_DB']->create_index('temp_test', '#t_short_trans', array('t_short_trans'));
@@ -143,6 +144,7 @@ class filtering_test_set extends cms_test_case
             't_id_text' => 'axxxxx',
             't_binary' => 0,
             't_secret' => 'x',
+            't_linker' => 1,
         ) + insert_lang('t_short_trans', 'axxxxx', 1));
 
         $GLOBALS['SITE_DB']->query_insert('temp_test', array(
@@ -155,6 +157,7 @@ class filtering_test_set extends cms_test_case
             't_id_text' => 'bxxxxx',
             't_binary' => 1,
             't_secret' => 'x',
+            't_linker' => 2,
         ) + insert_lang('t_short_trans', 'bxxxxx', 1));
 
         $GLOBALS['SITE_DB']->query_insert('temp_test', array(
@@ -167,6 +170,7 @@ class filtering_test_set extends cms_test_case
             't_id_text' => 'cxxxxx',
             't_binary' => 1,
             't_secret' => 'x',
+            't_linker' => 3,
         ) + insert_lang('t_short_trans', 'cxxxxx', 1));
 
         $GLOBALS['SITE_DB']->query_delete('rating', array('rating_for_type' => 'temp_test__'));
@@ -175,6 +179,26 @@ class filtering_test_set extends cms_test_case
 
         require_code('seo2');
         seo_meta_set_for_explicit('temp_test', '1', 'abc,def', 'abc');
+
+        $GLOBALS['SITE_DB']->create_table('temp_test_linked', array(
+            'id' => '*INTEGER',
+            'l_something' => 'INTEGER',
+        ));
+
+        $GLOBALS['SITE_DB']->query_insert('temp_test_linked', array(
+            'id' => 1,
+            'l_something' => 123,
+        ));
+
+        $GLOBALS['SITE_DB']->query_insert('temp_test_linked', array(
+            'id' => 2,
+            'l_something' => 124,
+        ));
+
+        $GLOBALS['SITE_DB']->query_insert('temp_test_linked', array(
+            'id' => 3,
+            'l_something' => 125,
+        ));
 
         require_code('filtercode');
 
@@ -364,6 +388,9 @@ class filtering_test_set extends cms_test_case
             'meta_description=ghi' => array(),
             'meta_description=' => array(1, 2, 3), // because no filter
             'meta_description==' => array(), // because nothing matches
+
+            // Linking tables
+            '{t_linker=temp_test_linked.id},temp_test_linked.l_something=123' => array(1),
         );
 
         foreach ($filter_tests as $filter => $filter_expected) {
@@ -409,7 +436,8 @@ class filtering_test_set extends cms_test_case
         // Test automatic filter form seems okay
         list($form_fields, $filter, $_links) = form_for_filtercode('', null, 'temp_test');
         $this->assertTrue(strpos($form_fields->evaluate(), '<input') !== false);
-        $this->assertTrue($filter == 'id<id_op><id>,t_binary<t_binary_op><t_binary>,t_id_text<t_id_text_op><t_id_text>,t_member<t_member_op><t_member>,t_real<t_real_op><t_real>,t_short_text<t_short_text_op><t_short_text>,t_short_trans<t_short_trans_op><t_short_trans>,t_time<t_time_op><t_time>,compound_rating<compound_rating_op><compound_rating>,average_rating<average_rating_op><average_rating>,meta_keywords<meta_keywords_op><meta_keywords>,meta_description<meta_description_op><meta_description>');
+        $filter_expected = 'id<id_op><id>,t_binary<t_binary_op><t_binary>,t_id_text<t_id_text_op><t_id_text>,t_linker<t_linker_op><t_linker>,t_member<t_member_op><t_member>,t_real<t_real_op><t_real>,t_short_text<t_short_text_op><t_short_text>,t_short_trans<t_short_trans_op><t_short_trans>,t_time<t_time_op><t_time>,compound_rating<compound_rating_op><compound_rating>,average_rating<average_rating_op><average_rating>,meta_keywords<meta_keywords_op><meta_keywords>,meta_description<meta_description_op><meta_description>';
+        $this->assertTrue($filter == $filter_expected);
     }
 
     protected $ids_and_parents;
@@ -585,6 +613,7 @@ class filtering_test_set extends cms_test_case
         $GLOBALS['SITE_DB']->drop_table_if_exists('temp_test_entries');
 
         $GLOBALS['SITE_DB']->drop_table_if_exists('temp_test');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('temp_test_linked');
 
         $GLOBALS['SITE_DB']->query_delete('rating', array('rating_for_type' => 'temp_test__'));
 
