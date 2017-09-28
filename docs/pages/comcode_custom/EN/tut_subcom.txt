@@ -193,11 +193,12 @@ When you visit the home page you are redirected to the Forums page just like ear
 
 [title="3"]Example: Moving a module (renaming a module)[/title]
 
-If you wanted to move the [tt]supermembers[/tt] module from the Collaboration Zone to the Site zone, you could set up these redirects:
-1) [tt]site:supermembers[/tt]-->[tt]collaboration:supermembers[/tt] [i]transparent[/i]
-2) [tt]collaboration:supermembers[/tt]-->[tt]site:supermembers[/tt] [i]non-transparent[/i]
-Composr will see the transparent redirect as an indication the [tt]supermembers[/tt] module really has a proper home in the [tt]site[/tt] zone, and it will see the non-transparent redirect as an indication the [tt]supermembers[/tt] module really does not have a proper home in the collaboration zone; Composr will respect these indications and consistently link to the module in its new home.
-[/box]
+If you wanted to move the [tt]supermembers[/tt] module from the Collaboration Zone to the Site zone (with a new module name), you could set up these redirects:
+1) [tt]site:super[/tt]-->[tt]collaboration:supermembers[/tt] [i]transparent[/i]
+2) [tt]collaboration:supermembers[/tt]-->[tt]site:super[/tt] [i]non-transparent[/i]
+Composr will see the transparent redirect as an indication the [tt]supermembers[/tt] module really has a proper home in the [tt]site[/tt] zone under the name [tt]super[/tt], and it will see the non-transparent redirect as an indication the [tt]supermembers[/tt] module really does not have a proper home in the collaboration zone; Composr will respect these indications and consistently link to the module in its new home.
+
+Note that while almost all front-end modules support moving, not all modules support renaming because it may break references between different parts of Composr (including within the module itself in some cases).
 [/surround]
 
 [title="3"]Example: Moving multiple modules[/title]
