@@ -699,6 +699,7 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
         // Monikers relative to the zone
         $page_place = _request_page($page, $zone);
         if ($page_place[0] == 'REDIRECT') {
+            $page = $page_place[1]['r_to_page'];
             $zone = $page_place[1]['r_to_zone'];
             $page_place = _request_page($page_place[1]['r_to_page'], $page_place[1]['r_to_zone']);
         }
