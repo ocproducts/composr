@@ -640,7 +640,10 @@ class Module_topics
         $forum_id = null;
         foreach ($topics as $i => $topic_id) {
             if ($i == 0) {
-                $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topic_id));
+                $forum_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_forum_id', array('id' => $topic_id));
+                if ($forum_id === null) {
+                    warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
+                }
             }
             cns_ping_topic_read($topic_id);
         }
