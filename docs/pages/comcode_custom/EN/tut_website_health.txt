@@ -118,6 +118,11 @@ This includes:
  - calibrating the checks (setting thresholds)
  - configuring background ("CRON") checks, including the frequency, and which check sections to run
 
+[title="3"]Tips[/title]
+
+Make sure that your CRON is running the same PHP options as normal web requests, otherwise you may get spurious errors caused by differences in configuration.
+CRON configuration is documented in the [page="_SEARCH:tut_configuration"]Basic configuration and getting started[/url] tutorial, and this includes sample commands that will share your [tt].user.ini[/tt] PHP configuration.
+
 [title="3"]What if things break too badly for the Health Check to run?[/title]
 
 There are a couple of approaches you can take to make sure you know if the health checker is itself down:

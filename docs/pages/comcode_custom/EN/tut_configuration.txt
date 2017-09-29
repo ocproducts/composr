@@ -128,7 +128,7 @@ Examples of scheduling tasks:
  - Sending out automatic newsletters
  - Sending newsletters (dripping out e-mails over a period of time, to stop resource spiking)
 
-The [tt]data/cron_bridge.php[/tt] file can either be run by passing the PHP file through the PHP interpreter (common), or by calling the URL (see "Help -- my webhost does not support CRON!"). More details are in the following sections. Don't call up the URL by hand because if you do then Composr will start assuming the CRON bridge scheduler is working from then on which can make testing it a bit harder (once it is called once it is marked 'working' by the system -- applicable features will become available, and the todo item will be removed from the checklist on the front page of the Admin Zone).
+The [tt]data/cron_bridge.php[/tt] file can either be run by passing the PHP file through the PHP interpreter (common), or by calling the URL (see "Help -- my webhost does not support CRON!"). More details are in the following sections. Don't call up the URL by hand then never finish configuring it, because if you do then Composr will start assuming the CRON bridge scheduler is working from then on which can make testing it a bit harder (once it is called once it is marked 'working' by the system -- applicable features will become available, and the todo item will be removed from the checklist on the front page of the Admin Zone).
 
 [title="3"]Specific advice for Linux[/title]
 
@@ -137,13 +137,16 @@ On Linux, the system level scheduler is 'Cron', and the process of adding a task
 
 The following command might work for a Composr installation in the [tt]/home/examplesite/htdocs[/tt] directory:
 [code="Bash"]
-php /home/examplesite/htdocs/data/cron_bridge.php
+php -C -q -c /home/examplesite/htdocs/.user.ini /home/examplesite/htdocs/data/cron_bridge.php
 [/code]
 The above command is just an example. Your real path will obviously be different, but also the PHP program may have a different name. Composr may be able to detect the correct command to use for you. Try opening up [tt]http://yourbaseurl/data/cron_bridge.php?querymode=1[/tt]. The script should output the Cron command for you to use.
 
 A good test is to try running the command you end up choosing manually in a command prompt, to check it is correct.
 
-You should schedule Composr's [tt]cron_bridge.php[/tt] script to be loaded at least every 10 minutes.
+You should schedule Composr's [tt]cron_bridge.php[/tt] script to be loaded at least every 10 minutes. The manual CRON configuration (if you do it this way) will look like this:
+[code="Bash"]
+*/10 * * * * <command>
+[/code]
 
 [title="4"]Sandboxes CRON[/title]
 
