@@ -290,7 +290,7 @@ function _get_timezone_list()
  */
 function post_param_date_components($stub, $year = null, $month = null, $day = null, $get_also = false)
 {
-    $default_ret = array($year, $month, $day, 0, 0);
+    $default_ret = array($year, $month, $day, 0, 0, 0);
 
     $timezone = post_param_string('timezone', get_users_timezone());
     if ($get_also) {

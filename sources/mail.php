@@ -1532,7 +1532,7 @@ function form_to_email($subject = null, $intro = '', $fields = null, $to_email =
     mail_wrap($subject, $message_raw, is_null($to_email) ? null : array($to_email), $to_name, $from_email, $from_name, 3, $attachments, false, null, false, false, false, 'MAIL', count($attachments) != 0);
 
     if ($from_email != '' && get_option('message_received_emails') == '1') {
-        mail_wrap(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $subject), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $from_email), array($from_email), null, '', '', 3, null, false, get_member());
+        mail_wrap(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $subject), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $message_raw), array($from_email), empty($from_name) ? null : $from_name, '', '', 3, null, false, get_member());
     }
 }
 

@@ -328,6 +328,9 @@ function actual_edit_catalogue($old_name, $name, $title, $description, $display_
                 $GLOBALS['SITE_DB']->query_update('award_archive', array('content_id' => $name), array('content_id' => $old_name, 'a_type_id' => $type['id']));
             }
         }
+
+        require_code('sitemap_xml');
+        notify_sitemap_node_delete('SEARCH:catalogues:index:' . $old_name);
     }
 
     // Update field references

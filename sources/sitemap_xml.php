@@ -32,6 +32,9 @@ function init__sitemap_xml()
     if (!defined('URLS_PER_SITEMAP_SET')) {
         define('URLS_PER_SITEMAP_SET', 250); // Limit is 50,000, but we are allowed up to 50,000 sets, so let's be performant here and have small sets
     }
+
+    global $RUNNING_BUILD_SITEMAP_CACHE_TABLE;
+    $RUNNING_BUILD_SITEMAP_CACHE_TABLE = false;
 }
 
 /**
@@ -241,15 +244,17 @@ function ping_sitemap_xml($url)
  */
 function build_sitemap_cache_table()
 {
-    if (!is_guest()) {
-        warn_exit('Will not generate sitemap as non-Guest');
-    }
-
     $GLOBALS['NO_QUERY_LIMIT'] = true;
 
     if (php_function_allowed('set_time_limit')) {
         @set_time_limit(0);
     }
+
+    $GLOBALS['RUNNING_BUILD_SITEMAP_CACHE_TABLE'] = true;
+
+    disable_php_memory_limit();
+
+    $GLOBALS['SITE_DB']->query_delete('sitemap_cache');
 
     $GLOBALS['MEMORY_OVER_SPEED'] = true;
 
@@ -323,7 +328,10 @@ function notify_sitemap_node_add($page_link, $add_date, $edit_date, $priority, $
         return;
     }
 
-    $fresh = ($GLOBALS['SITE_DB']->query_select_value('sitemap_cache', 'COUNT(*)') == 0);
+    static $fresh = null;
+    if ($fresh === null) {
+        $fresh = ($GLOBALS['SITE_DB']->query_select_value('sitemap_cache', 'COUNT(*)') == 0) && (!$GLOBALS['RUNNING_BUILD_SITEMAP_CACHE_TABLE']);
+    }
 
     // Find set number we will write into
     $set_number = $GLOBALS['SITE_DB']->query_select_value_if_there('sitemap_cache', 'set_number', null, 'GROUP BY set_number HAVING COUNT(*)<' . strval(URLS_PER_SITEMAP_SET));
@@ -355,14 +363,14 @@ function notify_sitemap_node_add($page_link, $add_date, $edit_date, $priority, $
 
     // First population into the table? Do a full build too
     if ($fresh) {
-        if (is_guest()) {
-            build_sitemap_cache_table();
-        }
+        build_sitemap_cache_table();
     }
+    $fresh = false;
 }
 
 /**
  * Edit a row in our sitemap cache.
+ * For renames instead call notify_sitemap_node_delete then notify_sitemap_node_add.
  *
  * @param SHORT_TEXT $page_link The page-link
  * @param boolean $guest_access Whether guests may access this resource in terms of category permissions not zone/page permissions (if not set to 1 then it will not end up in an XML sitemap, but we'll keep tabs of it for other possible uses)
@@ -390,6 +398,7 @@ function notify_sitemap_node_edit($page_link, $guest_access)
  * Mark a row from our sitemap cache as for deletion.
  * It won't be immediately deleted, as we use this as a signal that the XML sitemap will need updating too.
  * Updates are done in batch, via CRON.
+ * This may be called on page-links that may not actually be in the sitemap cache.
  *
  * @param SHORT_TEXT $page_link The page-link
  */
