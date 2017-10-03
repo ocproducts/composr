@@ -397,7 +397,7 @@ function load_redirect_cache()
                 continue;
             }
 
-            $REDIRECT_CACHE[$r['r_from_zone']][$r['r_from_page']] = $r;
+            $REDIRECT_CACHE[$r['r_from_zone']][strtolower($r['r_from_page'])] = $r;
         }
     }
 }
@@ -463,7 +463,7 @@ function get_module_zone($module_name, $type = 'modules', $dir2 = null, $ftype =
         $first_zones[] = 'site';
     }
     foreach ($first_zones as $zone) {
-        if (($check_redirects) && ((isset($REDIRECT_CACHE[$zone][$module_name])) && ($REDIRECT_CACHE[$zone][$module_name]['r_is_transparent'] === 1) || (isset($REDIRECT_CACHE['*'][$module_name])) && ($REDIRECT_CACHE['*'][$module_name]['r_is_transparent'] === 1))) { // Only needs to actually look for redirections in first zones until end due to the way precedences work (we know the current zone will be in the first zones)
+        if (($check_redirects) && ((isset($REDIRECT_CACHE[$zone][strtolower($module_name)])) && ($REDIRECT_CACHE[$zone][strtolower($module_name)]['r_is_transparent'] === 1) || (isset($REDIRECT_CACHE['*'][$module_name])) && ($REDIRECT_CACHE['*'][$module_name]['r_is_transparent'] === 1))) { // Only needs to actually look for redirections in first zones until end due to the way precedences work (we know the current zone will be in the first zones)
             $MODULES_ZONES_CACHE[$check_redirects][$_zone][$type][$module_name] = $zone;
             if (function_exists('persistent_cache_set')) {
                 persistent_cache_set('MODULES_ZONES', $MODULES_ZONES_CACHE);
@@ -474,8 +474,8 @@ function get_module_zone($module_name, $type = 'modules', $dir2 = null, $ftype =
         if ((is_file(zone_black_magic_filterer(get_file_base() . '/' . $zone . '/pages/' . $type . '/' . (($dir2 === null) ? '' : ($dir2 . '/')) . $module_name . '.' . $ftype)))
             || (is_file(zone_black_magic_filterer(get_file_base() . '/' . $zone . '/pages/' . $type . '_custom/' . (($dir2 === null) ? '' : ($dir2 . '/')) . $module_name . '.' . $ftype)))
         ) {
-            if (($check_redirects) && (isset($REDIRECT_CACHE[$zone][$module_name])) && ($REDIRECT_CACHE[$zone][$module_name]['r_is_transparent'] === 0) && ($REDIRECT_CACHE[$zone][$module_name]['r_to_page'] === $module_name)) {
-                $zone = $REDIRECT_CACHE[$zone][$module_name]['r_to_zone'];
+            if (($check_redirects) && (isset($REDIRECT_CACHE[$zone][strtolower($module_name)])) && ($REDIRECT_CACHE[$zone][strtolower($module_name)]['r_is_transparent'] === 0) && ($REDIRECT_CACHE[$zone][strtolower($module_name)]['r_to_page'] === $module_name)) {
+                $zone = $REDIRECT_CACHE[$zone][strtolower($module_name)]['r_to_zone'];
             }
             $MODULES_ZONES_CACHE[$check_redirects][$_zone][$type][$module_name] = $zone;
             if (function_exists('persistent_cache_set')) {
@@ -494,8 +494,8 @@ function get_module_zone($module_name, $type = 'modules', $dir2 = null, $ftype =
                 if ((is_file(zone_black_magic_filterer(get_file_base() . '/' . $zone . '/pages/' . $type . '/' . (($dir2 === null) ? '' : ($dir2 . '/')) . $module_name . '.' . $ftype)))
                     || (is_file(zone_black_magic_filterer(get_file_base() . '/' . $zone . '/pages/' . $type . '_custom/' . (($dir2 === null) ? '' : ($dir2 . '/')) . $module_name . '.' . $ftype)))
                 ) {
-                    if (($check_redirects) && (isset($REDIRECT_CACHE[$zone][$module_name])) && ($REDIRECT_CACHE[$zone][$module_name]['r_is_transparent'] === 0) && ($REDIRECT_CACHE[$zone][$module_name]['r_to_page'] === $module_name)) {
-                        $zone = $REDIRECT_CACHE[$zone][$module_name]['r_to_zone'];
+                    if (($check_redirects) && (isset($REDIRECT_CACHE[$zone][strtolower($module_name)])) && ($REDIRECT_CACHE[$zone][strtolower($module_name)]['r_is_transparent'] === 0) && ($REDIRECT_CACHE[$zone][strtolower($module_name)]['r_to_page'] === $module_name)) {
+                        $zone = $REDIRECT_CACHE[$zone][strtolower($module_name)]['r_to_zone'];
                     }
                     $MODULES_ZONES_CACHE[$check_redirects][$_zone][$type][$module_name] = $zone;
                     if (function_exists('persistent_cache_set')) {
@@ -510,7 +510,7 @@ function get_module_zone($module_name, $type = 'modules', $dir2 = null, $ftype =
     while (count($zones) == $max);
 
     foreach ($zones as $zone) { // Okay, finally check for redirects
-        if (($check_redirects) && (isset($REDIRECT_CACHE[$zone][$module_name])) && ($REDIRECT_CACHE[$zone][$module_name]['r_is_transparent'] === 1)) {
+        if (($check_redirects) && (isset($REDIRECT_CACHE[$zone][strtolower($module_name)])) && ($REDIRECT_CACHE[$zone][strtolower($module_name)]['r_is_transparent'] === 1)) {
             $MODULES_ZONES_CACHE[$check_redirects][$_zone][$type][$module_name] = $zone;
             if (function_exists('persistent_cache_set')) {
                 persistent_cache_set('MODULES_ZONES', $MODULES_ZONES_CACHE);

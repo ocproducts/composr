@@ -165,6 +165,8 @@ Redirections are useful for a number of reasons, including:
 
 To reach the Redirects module go to Admin Zone > Structure > Redirects.
 
+The source page codenames of redirects are case-insensitive. This aligns with the basic sanity check that you shouldn't have pages with names that are the same except for case.
+
 [title="3"]Using redirects to virtually move a module (rename a module)[/title]
 
 If you want a module to behave as if it was completely moved, you can set up a transparent redirect from your desired location to the actual location, and then a non-transparent redirect from the actual location to the desired location.

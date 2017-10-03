@@ -1313,9 +1313,9 @@ function find_id_moniker($url_parts, $zone)
         }
 
         global $REDIRECT_CACHE;
-        if ((isset($REDIRECT_CACHE[$zone][$page])) && ($REDIRECT_CACHE[$zone][$page]['r_is_transparent'] === 1)) {
-            $new_page = $REDIRECT_CACHE[$zone][$page]['r_to_page'];
-            $new_zone = $REDIRECT_CACHE[$zone][$page]['r_to_zone'];
+        if ((isset($REDIRECT_CACHE[$zone][strtolower($page)])) && ($REDIRECT_CACHE[$zone][strtolower($page)]['r_is_transparent'] === 1)) {
+            $new_page = $REDIRECT_CACHE[$zone][strtolower($page)]['r_to_page'];
+            $new_zone = $REDIRECT_CACHE[$zone][strtolower($page)]['r_to_zone'];
             $page = $new_page;
             $zone = $new_zone;
         }

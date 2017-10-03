@@ -1539,6 +1539,8 @@ function __request_page($codename, $zone, $page_type = null, $lang = null, $no_r
  */
 function _request_page__redirects($codename, $zone, $wildcard_mode = false)
 {
+    $codename = strtolower($codename);
+
     static $internal_cache = array();
     if (isset($internal_cache[$codename][$zone][$wildcard_mode])) {
         return $internal_cache[$codename][$zone][$wildcard_mode];
