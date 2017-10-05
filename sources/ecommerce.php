@@ -1629,11 +1629,13 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id = null, $type
     ));
 
     // Mark tax collected with external services as required
-    foreach ($expected_tax_tracking as $tracking_service => $tracking_id) {
-        switch ($tracking_service) {
-            case 'taxcloud':
-                taxcloud_declare_completed($tracking_id, $txn_id, $member_id_paying, $session_id);
-                break;
+    if ($status == 'Completed') {
+        foreach ($expected_tax_tracking as $tracking_service => $tracking_id) {
+            switch ($tracking_service) {
+                case 'taxcloud':
+                    taxcloud_declare_completed($tracking_id, $txn_id, $member_id_paying, $session_id);
+                    break;
+            }
         }
     }
 
