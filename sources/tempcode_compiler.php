@@ -268,7 +268,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
     require_code('lang');
     require_code('urls');
     $cl = fallback_lang();
-    $bits = array_values(preg_split('#(?<!\\\\)(\{(?![A-Z][a-z])(?=[\dA-Z\$\+\!_]+[\.`%\*=\;\#\-~\^\|\'&/@+]*))|((?<!\\\\),)|((?<!\\\\)\})#', $data, -1, PREG_SPLIT_DELIM_CAPTURE));  // One error mail showed on a server it had weird indexes, somehow. Hence the array_values call to reindex it
+    $bits = array_values(preg_split('#(?<!\\\\)(\{(?![A-Z][a-z])(?=[\dA-Z\$\+\!_]+[\.`%\*=\;\#\-~\^\|\'!&/@+]*))|((?<!\\\\),)|((?<!\\\\)\})#', $data, -1, PREG_SPLIT_DELIM_CAPTURE));  // One error mail showed on a server it had weird indexes, somehow. Hence the array_values call to reindex it
     $count = count($bits);
     $stack = array();
     $current_level_mode = PARSE_NO_MANS_LAND;
@@ -393,6 +393,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                         case '\'':
                             $escaped[] = CSS_ESCAPED;
                             break;
+                        case '!': // If & is not wanted as WYSIWYG editor may break it
                         case '&':
                             $escaped[] = UL_ESCAPED;
                             break;
@@ -412,7 +413,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                         // This is used as a hint to not preprocess
                         case '-':
                             // NB: we're out of ASCII symbols now. We want to avoid []()<>" brackets, whitespace characters, and control codes, and others are used for Tempcode grammar or are valid identifier characters.
-                            //  Actually +/$/! can be used at the end (+ is already taken)
+                            //  Actually +/$/! can be used at the end (+ and ! is already taken, and $ messes with Tempcode compilation)
                     }
                 }
                 $_opener_params = '';
@@ -431,8 +432,8 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                     $_opener_params .= implode('.', $oparam);
                 }
 
-                $escaping_symbols_from = array('`', '%', '*', '=', ';', '#', '-', '~', '^', '|', '\'', '&', '.', '/', '@', '+');
-                $escaping_symbols_to = array('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+                $escaping_symbols_from = array('`', '%', '*', '=', ';', '#', '-', '~', '^', '|', '\'', '!', '&', '.', '/', '@', '+');
+                $escaping_symbols_to = array('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
                 $first_param = str_replace($escaping_symbols_from, $escaping_symbols_to, $_first_param);
                 switch ($past_level_mode) {
                     case PARSE_SYMBOL:
@@ -965,10 +966,14 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
         $current_level_data = array('""');
     }
 
-    // Try and merge some strings that don't need to be in separate seq_parts
+    // Some optimisations
     $merged = array();
     $just_done_string = false;
     foreach ($current_level_data as $c) {
+        // Try and replace some unnecesary string appending which may have happened when experiencing possible (but not) control characters
+        $c = preg_replace('#([^\\\\])' . preg_quote('"."', '#') . '#', '$1', $c);
+
+        // Try and merge some strings that don't need to be in separate seq_parts
         $c_stripped_down = str_replace(array('\\\\', '\\"'), array('', ''), $c); // Remove literal slashes and literal quotes so we can do an accurate scan to ensure it is all one string
         if ($c_stripped_down[0] === '"' && strpos($c_stripped_down, '"', 1) === strlen($c_stripped_down) - 1) {
             if ($just_done_string) {

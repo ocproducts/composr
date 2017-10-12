@@ -334,7 +334,7 @@ class Module_recommend
         if (addon_installed('captcha')) {
             require_code('captcha');
             if (use_captcha()) {
-                $fields->attach(form_input_captcha());
+                $fields->attach(form_input_captcha($hidden));
                 $text->attach(' ');
                 $text->attach(do_lang_tempcode('FORM_TIME_SECURITY'));
             }

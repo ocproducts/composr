@@ -42,6 +42,8 @@ class Hook_config_long_google_cookies
             'public' => true,
 
             'addon' => 'core_configuration',
+
+            'maintenance_code' => 'google_analytics',
         );
     }
 

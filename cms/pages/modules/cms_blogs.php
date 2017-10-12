@@ -59,6 +59,10 @@ class Module_cms_blogs extends Standard_crud_module
             return null;
         }
 
+        if (get_value('hide_blogs') === '1') {
+            return null;
+        }
+
         $ret = array(
             'browse' => array('MANAGE_BLOGS', 'tabs/member_account/blog'),
         );

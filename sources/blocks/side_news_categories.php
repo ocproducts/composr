@@ -37,7 +37,7 @@ class Block_side_news_categories
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array();
+        $info['parameters'] = array('select');
         return $info;
     }
 
@@ -49,7 +49,7 @@ class Block_side_news_categories
     public function caching_environment()
     {
         $info = array();
-        $info['cache_on'] = 'array()';
+        $info['cache_on'] = 'array(array_key_exists(\'select\', $map) ? $map[\'select\'] : \'\')';
         $info['special_cache_flags'] = CACHE_AGAINST_DEFAULT | CACHE_AGAINST_PERMISSIVE_GROUPS;
         $info['ttl'] = (get_value('no_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 60 * 24;
         return $info;
@@ -67,11 +67,19 @@ class Block_side_news_categories
 
         $block_id = get_block_id($map);
 
+        $select = array_key_exists('select', $map) ? $map['select'] : '';
+        if ($select == '') {
+            $q_filter = '1=1';
+        } else {
+            require_code('selectcode');
+            $q_filter = selectcode_to_sqlfragment($select, 'r.id', 'news_categories', null, 'r.id', 'id');
+        }
+
         $cnt = $GLOBALS['SITE_DB']->query_select_value('news_categories', 'COUNT(*)', array('nc_owner' => null));
         if ($cnt > 100) {
-            $categories = $GLOBALS['SITE_DB']->query('SELECT c.* FROM ' . get_table_prefix() . 'news_categories c WHERE nc_owner IS NULL AND EXISTS (SELECT * FROM ' . get_table_prefix() . 'news n WHERE n.news_category=c.id AND n.validated=1)');
+            $categories = $GLOBALS['SITE_DB']->query('SELECT r.* FROM ' . get_table_prefix() . 'news_categories r WHERE nc_owner IS NULL AND EXISTS (SELECT * FROM ' . get_table_prefix() . 'news n WHERE n.news_category=r.id AND n.validated=1) AND ' . $q_filter);
         } else {
-            $categories = $GLOBALS['SITE_DB']->query_select('news_categories', array('*'), array('nc_owner' => null));
+            $categories = $GLOBALS['SITE_DB']->query_select('news_categories r', array('*'), array('nc_owner' => null), ' AND ' . $q_filter);
         }
 
         $categories2 = array();

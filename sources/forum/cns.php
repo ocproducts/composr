@@ -1629,12 +1629,9 @@ class Forum_driver_cns extends Forum_driver_base
                     return; // Not when probably running some AJAX script
                 }
                 if (addon_installed('captcha')) {
-                    $captcha = post_param_string('captcha', '');
-                    if ($captcha != '') { // Don't consider a CAPTCHA submitting, it'll drive people nuts to get flood control right after a CAPTCHA
-                        require_code('captcha');
-                        if (check_captcha($captcha, false)) {
-                            return;
-                        }
+                    require_code('captcha');
+                    if (check_captcha(null, false)) {
+                        return;
                     }
                 }
 
@@ -1682,10 +1679,6 @@ class Forum_driver_cns extends Forum_driver_base
                     global $SESSION_CACHE;
                     $num_guests = 0;
                     foreach ($SESSION_CACHE as $c) {
-                        if (!array_key_exists('member_id', $c)) {
-                            continue; // Workaround to HHVM weird bug
-                        }
-
                         if (($c['last_activity'] > time() - 60 * 4) && (is_guest($c['member_id']))) {
                             $num_guests++;
                         }

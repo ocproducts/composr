@@ -1250,6 +1250,9 @@ class Hook_Notification
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('notification_lockdown', 'l_setting', array(
             'l_notification_code' => substr($only_if_enabled_on__notification_code, 0, 80),
         ));
+        if ($test === 0) {
+            return array(array(), false);
+        }
         if (($test !== null) && (get_forum_type() == 'cns')) {
             $query_stub = 'SELECT m.id AS l_member_id,' . strval($test) . ' AS l_setting FROM ' . $db->get_table_prefix() . 'f_members m WHERE ' . str_replace('l_member_id', 'id', $clause_3) . ' AND ' . $clause_4;
             $query_stem = '';

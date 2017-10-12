@@ -73,7 +73,7 @@ member	user	contact	person
 profile	account	memberaccount
 accessibility	a11y
 intl	internationalisation	regionalisation	i18n	l10n	localisation	translation
-permission	privilege	authorisation	authorization	right	access	grant	restrict	prohibite	credentials
+permission	privilege	authorisation	authorization	right	access	grant	restrict	prohibited	credentials
 access	view
 overlay	popup	dialog	window
 option	setting	value	parameter	property	attribute	preference

@@ -48,6 +48,6 @@ class Hook_config_sugarcrm_contacts_mappings
      */
     public function get_default()
     {
-        return "Job Title=title\nHow you found us=lead_source";
+        return "Job Title=title\n(Web Site)=lead_source";
     }
 }

@@ -143,7 +143,6 @@ class Hook_addon_registry_youtube_channel_integration_block
             'themes/default/images_custom/youtube_channel_integration/index.html',
             'themes/default/templates_custom/BLOCK_YOUTUBE_CHANNEL.tpl',
             'themes/default/templates_custom/BLOCK_YOUTUBE_CHANNEL_STYLE.tpl',
-            'sources_custom/hooks/systems/config/youtube_channel_block_api_key.php',
             'sources_custom/hooks/systems/config/youtube_channel_block_update_time.php',
         );
     }

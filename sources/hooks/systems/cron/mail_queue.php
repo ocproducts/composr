@@ -55,7 +55,7 @@ class Hook_cron_mail_queue
                         continue;
                     }
 
-                    dispatch_mail(
+                    $result_ob = dispatch_mail(
                         $subject,
                         $message,
                         $to_email,
@@ -76,8 +76,11 @@ class Hook_cron_mail_queue
                             'require_recipient_valid_since' => $join_time,
                         )
                     );
+                    $success = $result_ob->worked;
 
-                    $GLOBALS['SITE_DB']->query_update('logged_mail_messages', array('m_queued' => 0), array('id' => $row['id']), '', 1);
+                    if ($success) {
+                        $GLOBALS['SITE_DB']->query_update('logged_mail_messages', array('m_queued' => 0), array('id' => $row['id']), '', 1);
+                    }
                 }
 
                 delete_cache_entry('main_staff_checklist');

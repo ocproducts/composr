@@ -25,6 +25,6 @@ class dev_environment_test_set extends cms_test_case
 
     public function testcmsPHP()
     {
-        $this->assertTrue(function_exists('ocp_mark_as_escaped'), 'Not running ocProducts PHP so XSS and type strictness errors won\'t be detected. If ocProducts PHP has been deprecated at this time (due to leverage of improvements in PHP7, and HHVM, and alternative XSS-avoidance strategies we\'ve since made), remove this test.');
+        $this->assertTrue(function_exists('ocp_mark_as_escaped'), 'Not running ocProducts PHP so XSS and type strictness errors won\'t be detected');
     }
 }

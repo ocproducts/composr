@@ -40,6 +40,7 @@ class Hook_health_check_security extends Hook_Health_Check
         $this->process_checks_section('testMalware', 'Malware', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testDirectorySecuring', 'Directory securing', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testSiteOrphaned', 'Site orphaning', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testAdminScriptAccess', 'Admin Script Access', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
 
         return array($this->category_label, $this->results);
     }
@@ -216,5 +217,27 @@ class Hook_health_check_security extends Hook_Health_Check
                 $this->stateCheckSkipped('PHP shell_exec function not available');
             }
         }
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     */
+    public function testAdminScriptAccess($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+
+        global $SITE_INFO;
+        $ok = !isset($SITE_INFO['master_password']);
+        if (!$ok) {
+            $ok = (http_get_contents(get_base_url() . '/config_editor.php', array('trigger_error' => false)) === null);
+        }
+        $this->assertTrue($ok, 'Should not have a master password defined, or should control access to config scripts');
     }
 }

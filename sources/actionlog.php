@@ -62,6 +62,26 @@ function actionlog_linkage($type, $a, $b, $_a, $_b)
         $_b = hyperlink($tmp_url, $_b, false, false, $type_str);
         return array($_a, $_b);
     }
+    if ($type == 'ADD_NEWS' || $type == 'EDIT_NEWS') {
+        $tmp_url = build_url(array('page' => 'news', 'type' => 'view', 'id' => $a), get_module_zone('news'));
+        $_b = hyperlink($tmp_url, ($b == '') ? $_a : $_b, false, false, $type_str);
+        return array($_a, $_b);
+    }
+    if ($type == 'ADD_NEWS_CATEGORY' || $type == 'EDIT_NEWS_CATEGORY') {
+        $tmp_url = build_url(array('page' => 'cms_news', 'type' => '_edit_category', 'id' => $a), get_module_zone('cms_news'));
+        $_b = hyperlink($tmp_url, ($b == '') ? $_a : $_b, false, false, $type_str);
+        return array($_a, $_b);
+    }
+    if ($type == 'ADD_DOWNLOAD' || $type == 'EDIT_DOWNLOAD') {
+        $tmp_url = build_url(array('page' => 'downloads', 'type' => 'view', 'id' => $a), get_module_zone('downloads'));
+        $_b = hyperlink($tmp_url, ($b == '') ? $_a : $_b, false, false, $type_str);
+        return array($_a, $_b);
+    }
+    if ($type == 'ADD_DOWNLOAD_CATEGORY' || $type == 'EDIT_DOWNLOAD_CATEGORY') {
+        $tmp_url = build_url(array('page' => 'cms_downloads', 'type' => '_edit_category', 'id' => $a), get_module_zone('cms_downloads'));
+        $_b = hyperlink($tmp_url, ($b == '') ? $_a : $_b, false, false, $type_str);
+        return array($_a, $_b);
+    }
 
     return null; // Could not get a match
 }

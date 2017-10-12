@@ -238,7 +238,7 @@ class Curl
      */
     protected function parseResponse()
     {
-        if (isset($this->response)) {
+        if (!empty($this->response)) {
             list($responseParts['headersString'], $responseParts['body']) = explode("\r\n\r\n", $this->response, 2);
             $responseParts['body'] = htmlspecialchars($responseParts['body']);
             $headers = explode("\r\n", $responseParts['headersString']);

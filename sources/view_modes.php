@@ -327,7 +327,6 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
             'TEXT' => do_lang_tempcode('CONTEXTUAL_EDITING_SCREEN'),
             'SUBMIT_ICON' => 'buttons__save',
             'SUBMIT_NAME' => do_lang_tempcode('SAVE'),
-            'SUPPORT_AUTOSAVE' => true,
             'MODSECURITY_WORKAROUND' => true,
         ));
 
@@ -411,7 +410,6 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
             'TEXT' => do_lang_tempcode('CONTEXTUAL_EDITING_SCREEN'),
             'SUBMIT_ICON' => 'buttons__save',
             'SUBMIT_NAME' => do_lang_tempcode('SAVE'),
-            'SUPPORT_AUTOSAVE' => true,
             'MODSECURITY_WORKAROUND' => true,
         ));
     }

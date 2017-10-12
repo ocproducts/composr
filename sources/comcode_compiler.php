@@ -539,7 +539,28 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
     foreach (array_keys($emoticons) as $emoticon) {
         $emoticon_start_chars[$emoticon[0]] = true;
     }
-    $shortcuts = array('(EUR-)' => '&euro;', '{f.}' => '&fnof;', '-|-' => '&dagger;', '=|=' => '&Dagger;', '{%o}' => '&permil;', '{~S}' => '&Scaron;', '{~Z}' => '&#x17D;', '(TM)' => '&trade;', '{~s}' => '&scaron;', '{~z}' => '&#x17E;', '{.Y.}' => '&Yuml;', '(c)' => '&copy;', '(r)' => '&reg;', '---' => '&mdash;', '-->' => '&rarr;', '<--' => '&larr;', '--' => '&ndash;', '...' => '&hellip;');
+    $shortcuts = array(
+        '(EUR-)' => '&euro;',
+        '{f.}' => '&fnof;',
+        '-|-' => '&dagger;',
+        '=|=' => '&Dagger;',
+        '{%o}' => '&permil;',
+        '{~S}' => '&Scaron;',
+        '{~Z}' => '&#x17D;',
+        '(TM)' => '&trade;',
+        '{~s}' => '&scaron;',
+        '{~z}' => '&#x17E;',
+        '{.Y.}' => '&Yuml;',
+        '(c)' => '&copy;',
+        '(r)' => '&reg;',
+        '---' => '&mdash;',
+        '--&gt;' => '&rarr;',
+        '&lt;--' => '&larr;',
+        '-->' => '&rarr;',
+        '<--' => '&larr;',
+        '--' => '&ndash;',
+        '...' => '&hellip;',
+    );
 
     // Text syntax possibilities, that get maintained as our cursor moves through the text block
     $list_indent = 0;
@@ -1554,14 +1575,32 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                             }
 
                             // Link lookahead
+                            $apparent_embedded_hyperlink =
+                                ($next === 'h') &&
+                                (
+                                    (substr($comcode, $pos - 1, strlen('http://')) === 'http://') ||
+                                    (substr($comcode, $pos - 1, strlen('https://')) === 'https://') ||
+                                    (substr($comcode, $pos - 1, strlen('ftp://')) === 'ftp://')
+                                ) &&
+                                (!$in_code_tag) &&
+                                ($not_white_space) &&
+                                (!$differented);
+                            $in_html_tag = false;
                             if ($in_semihtml) {
                                 // Make sure not within an HTML tag
-                                $until_now = substr($comcode, 0, $pos - 1);
-                                $a = strrpos($until_now, '<');
-                                $b = strrpos($until_now, '>');
-                                $in_html_tag = ($a !== false) && (($b === false) || ($a > $b));
+                                if ($apparent_embedded_hyperlink) {
+                                    $until_now = substr($comcode, 0, $pos - 1);
+                                    $a = strrpos($until_now, '<');
+                                    $b = strrpos($until_now, '>');
+                                    $in_html_tag = ($a !== false) && (($b === false) || ($a > $b));
+                                }
                             }
                             if (
+                                $apparent_embedded_hyperlink &&
+                                (
+                                    (!$in_semihtml) ||
+                                    (!$in_html_tag)
+                                ) &&
                                 (
                                     ($textual_area) ||
                                     (
@@ -1569,19 +1608,6 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                         ($tag_stack[count($tag_stack) - 1][0] === 'semihtml'/*Only just entered semihtml, we're not inside an unsafe nested Comcode context*/) &&
                                         (strpos($comcode, '<a') === false/*If links are explicit we don't want to detect links*/)
                                     )
-                                ) &&
-                                (
-                                    (!$in_semihtml) ||
-                                    (!$in_html_tag)
-                                ) &&
-                                (!$in_code_tag) &&
-                                ($not_white_space) &&
-                                (!$differented) &&
-                                ($next === 'h') &&
-                                (
-                                    (substr($comcode, $pos - 1, strlen('http://')) === 'http://') ||
-                                    (substr($comcode, $pos - 1, strlen('https://')) === 'https://') ||
-                                    (substr($comcode, $pos - 1, strlen('ftp://')) === 'ftp://')
                                 )
                             ) {
                                 // Find the full link portion in the upcoming Comcode

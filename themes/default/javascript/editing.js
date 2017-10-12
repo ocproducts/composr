@@ -13,7 +13,7 @@
     window.setTextbox = setTextbox;
     window.insertTextbox = insertTextbox;
     window.insertTextboxOpener = insertTextboxOpener;
-    window.getSelectedHtml = getSelectedHtml;
+    window.getWYSISWYGSelectedHtml = getWYSISWYGSelectedHtml;
     window.insertTextboxWrapping = insertTextboxWrapping;
     window.setSelectionRange = setSelectionRange;
     window.showUploadSyndicationOptions = showUploadSyndicationOptions;
@@ -807,7 +807,7 @@
                     insert = '';
 
                 if (isPlainInsert) {
-                    insert = getSelectedHtml(editor) + (html ? html : $cms.filter.html(text).replace(new RegExp('\\\\n', 'gi'), '<br />'));
+                    insert = getWYSISWYGSelectedHtml(editor) + (html ? html : $cms.filter.html(text).replace(new RegExp('\\\\n', 'gi'), '<br />'));
 
                     _insertTextboxWysiwyg(element, editor, insert);
                     resolvePromise();
@@ -836,7 +836,7 @@
 
             try {
                 editor.focus(); // Needed on some browsers
-                getSelectedHtml(editor);
+                getWYSISWYGSelectedHtml(editor);
 
                 if (editor.getSelection() && (editor.getSelection().getStartElement().getName() === 'kbd')) {// Danger Danger - don't want to insert into another Comcode tag. Put it after. They can cut+paste back if they need.
                     editor.document.getBody().appendHtml(insert);
@@ -873,8 +873,16 @@
         return $cms.getMainCmsWindow().insertTextbox(element, text, isPlainInsert, html);
     }
 
-// Get selected HTML from CKEditor
-    function getSelectedHtml(editor) {
+    function getSelectedText(element) {
+        if ($cms.form.isWysiwygField(element)) {
+            var editor = window.wysiwygEditors[element.id];
+            return window.getWYSISWYGSelectedHtml(editor);
+        }
+        return window.getTextareaSelectedText(element);
+    }
+
+    // Get selected HTML from CKEditor
+    function getWYSISWYGSelectedHtml(editor) {
         var mySelection = editor.getSelection();
         if (!mySelection || mySelection.getType() == window.CKEDITOR.SELECTION_NONE) {
             return '';
@@ -887,6 +895,21 @@
             } catch (e) {}
         }
         return selectedText;
+    }
+
+    function getTextareaSelectedText(element)
+    {
+        var sel = document.selection ? document.selection : null;
+
+        if (typeof element.selectionEnd != 'undefined')
+        {
+            var from = element.selectionStart,
+                to = element.selectionEnd;
+
+            return element.value.substring(from, to);
+        }
+
+        return '';
     }
 
     /**
@@ -941,7 +964,7 @@
                 var editor = window.wysiwygEditors[element.id];
 
                 editor.focus();
-                var selectedHtml = getSelectedHtml(editor);
+                var selectedHtml = getWYSISWYGSelectedHtml(editor);
 
                 if (selectedHtml === '') {
                     selectedHtml = '{!comcode:TEXT_OR_COMCODE_GOES_HERE;^}'.toUpperCase();
@@ -982,7 +1005,7 @@
         }
     }
 
-// From http://www.faqts.com/knowledge_base/view.phtml/aid/13562
+    // From http://www.faqts.com/knowledge_base/view.phtml/aid/13562
     function setSelectionRange(input, selectionStart, selectionEnd) {
         input.focus();
         if (input.setSelectionRange !== undefined) {

@@ -40,7 +40,6 @@ class Hook_health_check_performance extends Hook_Health_Check
     public function run($sections_to_run, $check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
         $this->process_checks_section('testManualPerformance', 'Manual performance checks', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('test404Pages', '404 pages', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testCookies', 'Cookies', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testHTTPOptimisation', 'HTTP optimisation', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testPageSpeed', 'Page speed (slow)', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
@@ -69,27 +68,6 @@ class Hook_health_check_performance extends Hook_Health_Check
         // external_health_check (on maintenance sheet)
 
         $this->stateCheckManual('Check for [url="speed issues"]https://developers.google.com/speed/pagespeed/insights[/url] (take warnings with a pinch of salt, not every suggestion is appropriate)');
-    }
-
-    /**
-     * Run a section of health checks.
-     *
-     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
-     * @param  boolean $manual_checks Mention manual checks
-     * @param  boolean $automatic_repair Do automatic repairs where possible
-     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
-     */
-    public function test404Pages($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
-    {
-        if ($check_context == CHECK_CONTEXT__INSTALL) {
-            return;
-        }
-
-        if ($manual_checks) {
-            $url = get_base_url() . '/testing-for-404.png';
-            $data = http_get_contents($url, array('trigger_error' => false, 'ignore_http_status' => true));
-            $this->assertTrue(($data === null) || (strpos($data, '<nav class="menu_type__sitemap">') === false), '[tt]404[/tt] status code page is too complex looking for broken images');
-        }
     }
 
     /**

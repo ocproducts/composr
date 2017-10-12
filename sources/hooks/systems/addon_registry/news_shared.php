@@ -134,6 +134,7 @@ class Hook_addon_registry_news_shared
                 'AUTHOR_URL' => placeholder_url(),
                 'TAGS' => '',
                 'CATEGORY' => lorem_phrase(),
+                '_CATEGORY' => placeholder_id(),
                 'IMG' => placeholder_image_url(),
                 '_IMG' => placeholder_image_url(),
                 'AUTHOR' => lorem_phrase(),

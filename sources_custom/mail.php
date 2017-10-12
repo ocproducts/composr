@@ -29,7 +29,7 @@ class Mail_dispatcher_override extends Mail_dispatcher_base
      */
     public function __construct($advanced_parameters = array())
     {
-        require_code('Swift-4.1.1/lib/swift_required');
+        require_code('swift_mailer/lib/swift_required');
 
         parent::__construct($advanced_parameters);
     }
@@ -58,6 +58,7 @@ class Mail_dispatcher_override extends Mail_dispatcher_base
      * @param  ?mixed $to_names The recipient name(s). Array or string. (null: site name)
      * @param  EMAIL $from_email The from address (blank: site staff address)
      * @param  string $from_name The from name (blank: site name)
+     * @return array A pair: Whether it worked, and an error message
      */
     public function dispatch($subject_line, $message_raw, $to_emails = null, $to_names = null, $from_email = '', $from_name = '')
     {
@@ -65,7 +66,7 @@ class Mail_dispatcher_override extends Mail_dispatcher_base
             $from_email = $this->smtp_from_address;
         }
 
-        parent::dispatch($subject_line, $message_raw, $to_emails, $to_names, $from_email, $from_name);
+        return parent::dispatch($subject_line, $message_raw, $to_emails, $to_names, $from_email, $from_name);
     }
 
     /**
@@ -89,7 +90,7 @@ class Mail_dispatcher_override extends Mail_dispatcher_base
         $error = null;
 
         // Create the Transport
-        $transport = Swift_SmtpTransport::newInstance($this->smtp_sockets_host, $this->smtp_sockets_port)
+        $transport = (new Swift_SmtpTransport($this->smtp_sockets_host, $this->smtp_sockets_port))
             ->setUsername($this->smtp_sockets_username)
             ->setPassword($this->smtp_sockets_password);
         if (($this->smtp_sockets_port == 419) || ($this->smtp_sockets_port == 465) || ($this->smtp_sockets_port == 587)) {
@@ -99,7 +100,7 @@ class Mail_dispatcher_override extends Mail_dispatcher_base
         // Create the Mailer using your created Transport
         static $mailer = null;
         if ($mailer === null) {
-            $mailer = Swift_Mailer::newInstance($transport);
+            $mailer = new Swift_Mailer($transport);
         }
 
         // Create a message and basic address it
@@ -107,7 +108,7 @@ class Mail_dispatcher_override extends Mail_dispatcher_base
         foreach ($to_emails as $i => $_to_email) {
             $to_array[$_to_email] = $to_names[$i];
         }
-        $message = Swift_Message::newInstance($subject_wrapped);
+        $message = new Swift_Message($subject_wrapped);
         if ($this->website_email != '') {
             if (get_option('use_true_from') == '0') {
                 $message->setFrom(array($this->website_email => $from_name));
@@ -143,7 +144,7 @@ class Mail_dispatcher_override extends Mail_dispatcher_base
             if (isset($r['path'])) {
                 $attachment = Swift_Attachment::fromPath($r['path'], $r['mime']);
             } else {
-                $attachment = Swift_Attachment::newInstance()->setContentType($r['mime'])->setBody($r['contents']);
+                $attachment = (new Swift_Attachment())->setContentType($r['mime'])->setBody($r['contents']);
             }
             $attachment->setFilename($r['filename'])->setDisposition('attachment');
             $message->attach($attachment);

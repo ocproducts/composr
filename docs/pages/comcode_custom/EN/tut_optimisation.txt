@@ -299,7 +299,7 @@ If getting Composr search to work well does not seem feasible, there is a simple
 If you have outgrown normal shared hosting / a single VPS or server, you can do a cloud deployment of Composr, and there are a few options:
 1) Composr runs perfectly on Rackspace Cloud Sites hosting, where you can set up quite large instances (we have been told that behind-the-scenes there is database replication, to share database load).
 2) You can run on Amazon EC2 Instances (or pretty much any cloud service that supports custom images, or PHP). There is a Composr Bitnami image for easy installation on Amazon's infrastructure. Bitnami also provide their own Amazon-based hosting service. If you want to use multiple instances you will need to set up your own MySQL replication and file-synching, but Composr does have support for it (see "Server farms"). There are some solutions to auto-scale out cloud instances, although many companies handle it manually.
-3) You can set up your own cloud system on your own servers, or cheap dedicated servers. You could look at using something like OpenStack to achieve this, and you could use HHVM for great performance. This is similar to Facebook's infrastructure and a very challenging option, but perhaps the best from a huge-scale cost perspective.
+3) You can set up your own cloud system on your own servers, or cheap dedicated servers. You could look at using something like OpenStack to achieve this. This is similar to Facebook's infrastructure and a very challenging option, but perhaps the best from a huge-scale cost perspective.
 4) You can use Google App Engine, to get automated scaling, with a tradeoff that it is a bit harder to initially set up. This is the most elegant and maintainable option and we generally prefer it over '1' and '2' if you are seriously investing in a maintainable infrastructure. We discuss this in the separate [page="_SEARCH:tut_google_appengine"]Google App Engine[/page] tutorial. [i]At the time of writing Google App Engine PHP support is unstable and won't run Composr properly -- this is outside our control, and we have been discussing it with Google directly.[/i]
 
 [title="3"]Amazon EC2[/title]
@@ -507,35 +507,16 @@ You'll need to disable the Composr "Reveal usage figures" option, as the usage f
 
 Alternatively, you could do a similar thing using rewrite rules in [tt].htaccess[/tt] (Apache only), but this would add additional latency.
 
-[title="2"]{$IS_MAINTAINED,platform_hhvm,Facebook's HHVM}[/title]
-
-As PHP 7 improved performance a lot over the previous official PHP releases, HHVM is not as interesting as it once was, as HHVM is a very heavyweight solution. However HHVM does have a large development team continually improving it so it may perform some decent speed boosts still.
-
-Facebook released an alternative implementation of PHP that works as a JIT virtual machine instead of an interpreter. It more than doubles performance, and is set to improve further as it is developed.
-This is not suitable for most people for the following reasons:
- - It requires server admin access
- - The HHVM server is hard to run in parallel to normal web servers
- - It only runs on 64 bit systems running common varieties of Linux (Fedora/CentOS and Debian/Ubuntu are all the ones known to work at the time of writing)
- - You need to be comfortable compiling HHVM yourself (well actually there are packages, but this is relatively new)
- - It generally requires some advanced skills
-However, it is very suitable for those who need to serve a high capacity and have the skills and staffing to manage all the above.
-
-The [tt]hphp_buildkit[/tt] addon (bundled by default) provides a config and initialisation scripts for HHVM.
-To invoke (we are assuming that HHVM has been properly installed and is in the path):
- - Open a shell to the Composr directory
- - Type [tt]sh hphp.sh[/tt] (this is in the [tt]hphp_buildkit[/tt] addon)
-
-In order to support HHVM (which imposes some language restrictions) we made some changes to Composr, and updated our coding standards. There's no guarantee that any individual non-bundled addon will meet the coding standards, however.
-
-We expect Facebook will improve HHVM performance will increase over time. They are working on improvements to the PHP language, which Composr could benefit from with further development. Type hinting is particularly interesting, as it has great performance potential and mirrors our code quality efforts that have already made Composr type-strict. We have preliminary support for this already, but it is not consistently maintained to be production-ready.
+[title="2"]Alternative PHP engines[/title]
 
 We have tried in the past to support:
+ - HHVM (by Facebook)
  - Roadsend (commercial software)
  - Phalanger/PeachPie (Microsoft-sponsored)
  - Quercus (Caucho-sponsored)
  - Project Zero (IBM-sponsored)
-But after quite a lot of work we have concluded these projects are too buggy to be realistic, not well maintained, or don't actually offer any performance improvement. Never-the-less, making Composr work on these platforms in the past has led to improvements in the Composr code quality, as these PHP replacements have a tendency to float different kinds of subtle coding errors to the surface.
-There are also newer PHP alternatives such as HippyVM, or approaches that limit the PHP language significantly, but nowadays HHVM is a leading the others by a long way.
+But after quite a lot of work we have concluded these projects are too buggy to be realistic, not well maintained, no longer maintained, or don't actually offer any performance improvement. Never-the-less, making Composr work on these platforms in the past has led to improvements in the Composr code quality, as these PHP replacements have a tendency to float different kinds of subtle coding errors to the surface.
+There are also newer PHP alternatives such as HippyVM, or approaches that limit the PHP language significantly such as PH7.
 
 [title="2"]mod_pagespeed[/title]
 

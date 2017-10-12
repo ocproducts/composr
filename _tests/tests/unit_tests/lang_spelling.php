@@ -102,7 +102,37 @@ class lang_spelling_test_set extends cms_test_case
 
         // Support debranding
         if ($key !== null) {
-            if (strpos($string, 'Composr') !== false && $key != 'NO_PHP_IN_TEMPLATES' && $key != 'WHAT_TO_EXPECT' && $key != 'DESCRIPTION_INCLUDE_CMS_ADVERT' && $key != 'INCLUDE_CMS_ADVERT' && $key != 'UNINSTALL_WARNING' && $key != 'SOFTWARE_CHAT_EXTRA' && $key != 'CONFIG_CATEGORY_COMPOSR_APIS' && $key != 'CONFIG_CATEGORY_DESCRIPTION__COMPOSR_APIS' && (strpos($key, 'SETUPWIZARD') === false) && $key != 'CANNOT_CONNECT_HOME' && $key != 'NO_GD_ON_SERVER' && $key != 'MYSQL_TOO_OLD' && $key != 'LOW_MEMORY_LIMIT' && $key != 'NO_ZIP_ON_SERVER' && $key != 'TRANSCODING_SERVER' && $key != 'CONFIG_OPTION_transcoding_server' && $key != 'CONFIG_OPTION_network_links' && $key != 'WARNING_MBSTRING_FUNC_OVERLOAD' && $key != 'DISABLED_FUNCTION' && $file != 'lang.ini' && $file != 'version.ini' && $file != 'debrand.ini' && $file != 'import.ini' && $file != 'installer.ini' && $file != 'upgrade.ini' && $file != 'commandr.ini' && $file != 'addons.ini') {
+            if (
+                (strpos($string, 'Composr') !== false) &&
+                $key != 'NO_PHP_IN_TEMPLATES' &&
+                $key != 'FORUM_BASE_URL_INVALID' &&
+                $key != 'WHAT_TO_EXPECT' &&
+                $key != 'DESCRIPTION_INCLUDE_CMS_ADVERT' &&
+                $key != 'INCLUDE_CMS_ADVERT' &&
+                $key != 'UNINSTALL_WARNING' &&
+                $key != 'SOFTWARE_CHAT_EXTRA' &&
+                $key != 'CONFIG_CATEGORY_COMPOSR_APIS' &&
+                $key != 'CONFIG_CATEGORY_DESCRIPTION__COMPOSR_APIS' &&
+                (strpos($key, 'SETUPWIZARD') === false) &&
+                $key != 'CANNOT_CONNECT_HOME' &&
+                $key != 'NO_GD_ON_SERVER' &&
+                $key != 'MYSQL_TOO_OLD' &&
+                $key != 'LOW_MEMORY_LIMIT' &&
+                $key != 'NO_ZIP_ON_SERVER' &&
+                $key != 'TRANSCODING_SERVER' &&
+                $key != 'CONFIG_OPTION_transcoding_server' &&
+                $key != 'CONFIG_OPTION_network_links' &&
+                $key != 'WARNING_MBSTRING_FUNC_OVERLOAD' &&
+                $key != 'DISABLED_FUNCTION' &&
+                $file != 'lang.ini' &&
+                $file != 'version.ini' &&
+                $file != 'debrand.ini' &&
+                $file != 'import.ini' &&
+                $file != 'installer.ini' &&
+                $file != 'upgrade.ini' &&
+                $file != 'commandr.ini' &&
+                $file != 'addons.ini'
+            ) {
                 $this->assertTrue(false, 'The word \'Composr\' was used in ' . $file . ' (' . $key . '). This should probably be changed to \'the software\'.');
             }
         }
@@ -252,6 +282,12 @@ class lang_spelling_test_set extends cms_test_case
         }
         if (strpos($string, 'OpenGraph') !== false) {
             $this->assertTrue(false, 'The phrase \'OpenGraph\' was used in ' . $file . '. This should be changed to \'Open Graph\'.');
+        }
+        if (strpos($string, 'ReCAPTCHA') !== false) {
+            $this->assertTrue(false, 'The phrase \'ReCAPTCHA\' was used in ' . $file . '. This should be changed to \'reCAPTCHA\'.');
+        }
+        if (strpos($string, 'RECAPTCHA') !== false) {
+            $this->assertTrue(false, 'The phrase \'RECAPTCHA\' was used in ' . $file . '. This should be changed to \'reCAPTCHA\'.');
         }
 
         // Our canonical way of writing "Open Source"

@@ -86,6 +86,13 @@ I'm sure you can see why such a function library (and the pre-written subsystems
 
 [title="2"]Overrides[/title]
 
+Composr lets you override individual PHP files with changes by adding to the [tt]sources_custom[/tt] directory, which parallels the [tt]sources[/tt] directory. Overrides take precedence.
+Overrides work at the file level. When Composr is running code it is rarely doing anything at an addon level, addon management is more to do with initial packaging/install, and then it's just files.
+
+If you are overriding a file you are taking responsibility for merging in any changes made to the original file back into your version.
+If some other non-bundled addon is overriding the same file, it is up to you to resolve the conflict by somehow merging the two sets of changes together manually.
+It isn't feasible for us to create any mechanism for multiple people overriding the same files, as this would just create a complicated tangle in the long-run.
+
 There are 4 different kinds of PHP override in Composr:
 1) Extending a module -- a special case where we allow automatic instantiation of a derived version of the original module
 2) Replacing/supplementing a file, with your override loading first, then any non-overridden functions/classes from the original loading second
@@ -95,6 +102,8 @@ There are 4 different kinds of PHP override in Composr:
 It's important to note that as well as overrides you can place entirely new files in the [tt]*_custom[/tt] directories, and Composr will be able to reference them as if they were original files.
 
 All these techniques are handled inside the Composr [tt]sources/global.php[/tt] file. If you are a good programmer but still can't work out how to do all this stuff (it's easy once you know how, but a bit unorthodox compared to normal techniques), look at the code of this file. As [tt]sources/global.php[/tt] is the file that does the magic it's the only file that you can't override; it is therefore kept minimal, hence why we have a [tt]sources/global2.php[/tt] which picks up where [tt]sources/global.php[/tt] leaves off.
+
+Where possible it is good to use hooks to add in functionality. For example, you can write hooks that listen for particular database queries then do additional things when those queries happen. As hooks are individual unique files, rather than overrides, there's no problem there. But it requires us predicting in advance where hooks would be useful, and implementing them, and there'd be an overhead to us allowing more of that.
 
 [title="3"]Extending a module[/title]
 

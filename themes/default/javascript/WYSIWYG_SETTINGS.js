@@ -11,7 +11,7 @@ if (boolVal('{$VALUE_OPTION;,commercial_spellchecker}')) {
 }
 toolbar.push(toolbarEditActions);
 toolbar.push(['Undo', 'Redo', precisionEditing ? '-' : null, precisionEditing ? 'Find' : null, precisionEditing ? 'Replace' : null, ((document.body.spellcheck !== undefined) ? 'spellchecktoggle' : null), '-', precisionEditing ? 'SelectAll' : null, 'RemoveFormat']);
-toolbar.push(['Link', 'Unlink']);
+toolbar.push(['Link', 'Unlink', (precisionEditing ? 'composr_page' : null)]);
 toolbar.push(precisionEditing ? '/' : '-');
 var formatting = ['Bold', 'Italic', 'Strike', '-', precisionEditing ? 'Subscript' : null, (precisionEditing ? 'Superscript' : null)];
 toolbar.push(formatting);
@@ -26,14 +26,14 @@ if (precisionEditing) {
 toolbar.push(['Format', 'Font', 'FontSize']);
 toolbar.push(['TextColor']);
 if (precisionEditing) {
-    toolbar.push(['Maximize', 'ShowBlocks']);
+    toolbar.push(['Maximize', 'ShowBlocks', 'autoFormat']);
 }
 if (precisionEditing) {
     toolbar.push(['HorizontalRule', 'SpecialChar']);
 }
 var useComposrToolbar = true;
 if (useComposrToolbar) {
-    toolbar.push(['composr_block', 'composr_comcode', (precisionEditing ? 'composr_page' : null), 'composr_quote', (precisionEditing ? 'composr_box' : null), 'composr_code']);
+    toolbar.push(['composr_block', 'composr_comcode', 'composr_quote', (precisionEditing ? 'composr_box' : null), 'composr_code']);
 }
 var editorSettings = {
     skin: 'kama',
@@ -44,7 +44,7 @@ var editorSettings = {
         fontSize_sizes : '0.6em;0.85em;1em;1.1em;1.2em;1.3em;1.4em;1.5em;1.6em;1.7em;1.8em;2em',
     /*{+END}*/
     removePlugins: '',
-    extraPlugins: 'showcomcodeblocks,imagepaste,spellchecktoggle' + (useComposrToolbar ? ',composr' : ''),
+    extraPlugins: 'emojione,dialogadvtab,codemirror,showcomcodeblocks,imagepaste,spellchecktoggle' + (useComposrToolbar ? ',composr' : ''),
     /*{+START,IF,{$NEQ,{$CKEDITOR_PATH},data_custom/ckeditor}}*/
     customConfig: '',
     /*{+END}*/
@@ -69,5 +69,6 @@ var editorSettings = {
     comcodeXMLBlockTags: '{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}',
     comcodeXMLInlineTags: '{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_INLINE}}',
     magicline_everywhere: true,
-    autoGrow_onStartup: true
+    autoGrow_onStartup: true,
+    sourceAreaTabSize: 4
 };

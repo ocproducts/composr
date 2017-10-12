@@ -535,6 +535,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/tut_adv_galleries/adv_gallery_members.png',
             'data_custom/images/docs/tut_adv_galleries/adv_gallery_naming.png',
             'data_custom/images/docs/tut_adv_install/install_chmod.png',
+            'data_custom/images/docs/tut_adv_install/cloud_hosting.png',
             'data_custom/images/docs/tut_adv_members/adv_members_cpf.png',
             'data_custom/images/docs/tut_adv_members/adv_members_cpf_edit.png',
             'data_custom/images/docs/tut_adv_members/adv_members_cpf_space_1.png',

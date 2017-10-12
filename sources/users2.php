@@ -99,10 +99,6 @@ function get_users_online($longer_time, $filter, &$count)
     $guest_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
     $members_online = 0;
     foreach ($sessions as $row) {
-        if (!isset($row['member_id'])) {
-            continue; // Workaround to HHVM weird bug
-        }
-
         if (($row['last_activity'] > $cutoff) && ($row['session_invisible'] == 0)) {
             if ($row['member_id'] == $guest_id) {
                 $count++;

@@ -135,6 +135,20 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/config/honeypot_phrase.php',
             'sources/hooks/systems/config/honeypot_url.php',
             'sources/hooks/systems/config/implied_spammer_confidence.php',
+            'sources/hooks/systems/config/moz_access_id.php',
+            'sources/hooks/systems/config/moz_secret_key.php',
+            'sources/hooks/systems/config/moz_paid.php',
+            'sources/hooks/systems/config/google_apis_client_id.php',
+            'sources/hooks/systems/config/google_apis_client_secret.php',
+            'sources/hooks/systems/config/google_apis_api_key.php',
+            'adminzone/pages/modules/admin_oauth.php',
+            'sources/oauth.php',
+            'sources/hooks/systems/oauth/.htaccess',
+            'sources/hooks/systems/oauth/google_analytics.php',
+            'sources/hooks/systems/oauth/google_search_console.php',
+            'sources/hooks/systems/oauth/index.html',
+            'lang/EN/oauth.ini',
+            'themes/default/templates/OAUTH_SCREEN.tpl',
             'sources/hooks/systems/config/edit_under.php',
             'sources/hooks/systems/config/enable_animations.php',
             'sources/hooks/systems/config/breadcrumb_crop_length.php',
@@ -369,6 +383,7 @@ class Hook_addon_registry_core_configuration
         return array(
             'templates/CONFIG_CATEGORY_SCREEN.tpl' => 'administrative__config_category_screen',
             'templates/XML_CONFIG_SCREEN.tpl' => 'administrative__xml_config_screen',
+            'templates/OAUTH_SCREEN.tpl' => 'administrative__oauth_screen',
         );
     }
 
@@ -421,6 +436,39 @@ class Hook_addon_registry_core_configuration
                 'XML' => '<test />',
                 'POST_URL' => placeholder_url(),
                 'TITLE' => lorem_title(),
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__administrative__oauth_screen()
+    {
+        $services = array();
+
+        $services[] = array(
+            'LABEL' => lorem_phrase(),
+            'PROTOCOL' => lorem_word(),
+            'AVAILABLE' => true,
+            'CONFIGURED' => true,
+            'CONFIG_URL' => placeholder_url(),
+            'CONNECTED' => true,
+            'CONNECT_URL' => placeholder_url(),
+            'CLIENT_ID' => lorem_word(),
+            'CLIENT_SECRET' => lorem_word(),
+            'API_KEY' => null,
+            'REFRESH_TOKEN' => lorem_word(),
+        );
+
+        return array(
+            lorem_globalise(do_lorem_template('OAUTH_SCREEN', array(
+                'TITLE' => lorem_title(),
+                'SERVICES' => $services,
             )), null, '', true)
         );
     }

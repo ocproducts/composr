@@ -857,8 +857,6 @@ class Hook_addon_registry_core
             'themes/default/templates/REDIRECT_POST_METHOD_SCREEN.tpl',
             'themes/default/templates/LOGIN_SCREEN.tpl',
             'themes/default/css/login.css',
-            'themes/default/templates/BROKEN_LANG_STRINGS.tpl',
-            'themes/default/templates/BROKEN_URLS.tpl',
             'themes/default/templates/FORUMS_EMBED.tpl',
             'themes/default/templates/ACTIONLOGS_SCREEN.tpl',
             'themes/default/templates/ACTIONLOGS_TOGGLE_LINK.tpl',
@@ -1507,8 +1505,6 @@ class Hook_addon_registry_core
             'templates/BLOCK_MAIN_COMCODE_PAGE_CHILDREN.tpl' => 'block_main_comcode_page_children',
             'templates/QUERY_LOG.tpl' => 'administrative__query_screen',
             'templates/QUERY_SCREEN.tpl' => 'administrative__query_screen',
-            'templates/BROKEN_URLS.tpl' => 'administrative__broken_urls',
-            'templates/BROKEN_LANG_STRINGS.tpl' => 'administrative__broken_lang_strings',
             'templates/FORUM_ATTACHMENT_IMAGE.tpl' => 'forum_attachment_image',
             'templates/FORUM_ATTACHMENT_IMAGE_THUMB.tpl' => 'forum_attachment_link',
             'templates/FORUM_ATTACHMENT_LINK.tpl' => 'forum_attachment_link',
@@ -2073,63 +2069,6 @@ class Hook_addon_registry_core
                 'TOTAL' => lorem_phrase(),
                 'TOTAL_TIME' => placeholder_number(),
                 'QUERIES' => $queries,
-            )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__administrative__broken_urls()
-    {
-        require_lang('cleanup');
-
-        $found_404 = array();
-        foreach (placeholder_array() as $value) {
-            $found_404[] = array(
-                'URL' => placeholder_url(),
-                'SPOT' => $value,
-            );
-        }
-
-        $found = array();
-        foreach (placeholder_array() as $k => $value) {
-            $found[] = array(
-                'URL' => placeholder_url(),
-                'TABLE' => $value,
-                'FIELD' => lorem_word_2(),
-                'ID' => strval($k),
-            );
-        }
-
-        return array(
-            lorem_globalise(do_lorem_template('BROKEN_URLS', array(
-                'FOUND' => $found,
-                'FOUND_404' => $found_404,
-            )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__administrative__broken_lang_strings()
-    {
-        require_lang('cleanup');
-
-        return array(
-            lorem_globalise(do_lorem_template('BROKEN_LANG_STRINGS', array(
-                'MISSING_LANG_STRINGS' => placeholder_array(),
-                'FUSED_LANG_STRINGS' => placeholder_array(),
-                'ORPHANED_LANG_STRINGS' => placeholder_array(),
             )), null, '', true)
         );
     }

@@ -633,7 +633,11 @@ switch (gethostname()) {
 |
 |-
 ! {$INC,step_num}{$GET,step_num}
-| Run Health Check
+| Run Health Check (Admin Zone > Tools > Health Checks)
+|
+|-
+! {$INC,step_num}{$GET,step_num}
+| Check for broken URLs (Admin Zone > Tools > Broken URL scanning)
 |
 |-
 ! {$INC,step_num}{$GET,step_num}

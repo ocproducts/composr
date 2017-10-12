@@ -60,15 +60,9 @@ function block_helper_script()
         foreach ($hook_files as $addon_name => $hook_file) {
             $matches = array();
             if (preg_match('#function get_file_list\(\)\s*\{([^\}]*)\}#', $hook_file, $matches) != 0) {
-                if (!HHVM) {
-                    $addon_files = eval($matches[1]);
-                    if ($addon_files === false) {
-                        $addon_files = array(); // Some kind of PHP error
-                    }
-                } else {
-                    require_code('hooks/systems/addon_registry/' . $addon_name);
-                    $hook_ob = object_factory('Hook_addon_registry_' . $addon_name);
-                    $addon_files = $hook_ob->get_file_list();
+                $addon_files = eval($matches[1]);
+                if ($addon_files === false) {
+                    $addon_files = array(); // Some kind of PHP error
                 }
                 foreach ($addon_files as $file) {
                     if ((substr($file, 0, 21) == 'sources_custom/blocks/') || (substr($file, 0, 15) == 'sources/blocks/')) {

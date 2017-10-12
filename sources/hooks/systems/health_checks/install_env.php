@@ -207,13 +207,6 @@ class Hook_health_check_install_env extends Hook_Health_Check
      */
     public function testPHPPlatform($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
-        if (!is_maintained('platform_hhvm')) {
-            $this->assertTrue(
-                !HHVM,
-                '[html]' . do_lang('WARNING_NON_MAINTAINED', escape_html('HHVM'), escape_html(get_brand_base_url()), escape_html('platform_hhvm')) . '[/html]'
-            );
-        }
-
         if (!is_maintained('platform_gae')) {
             $this->assertTrue(
                 !GOOGLE_APPENGINE,

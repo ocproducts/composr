@@ -406,7 +406,12 @@ abstract class HttpDownloader
             $this->url_parts['scheme'] = 'http';
         }
 
-        $this->connecting_url = preg_replace('#^(https?://)' . preg_quote($this->url_parts['host'], '#') . '([/:]|$)#', '${1}' . $this->connect_to . '${2}', $url);
+        if (strpos($this->connect_to, ':') !== false) {
+            $connect_to_url_compat = '[' . $this->connect_to . ']';
+        } else {
+            $connect_to_url_compat = $this->connect_to;
+        }
+        $this->connecting_url = preg_replace('#^(https?://)' . preg_quote($this->url_parts['host'], '#') . '([/:]|$)#', '${1}' . $connect_to_url_compat . '${2}', $url);
 
         // More preprocessing...
 

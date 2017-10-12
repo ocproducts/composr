@@ -41,17 +41,17 @@ class Hook_video_syndication_youtube
 
     public function is_active()
     {
-        $youtube_client_id = get_option('youtube_client_id');
+        $youtube_client_id = get_option('google_apis_client_id');
         if ($youtube_client_id == '') {
             return false;
         }
 
-        $youtube_client_secret = get_option('youtube_client_secret');
+        $youtube_client_secret = get_option('google_apis_client_secret');
         if ($youtube_client_secret == '') {
             return false;
         }
 
-        $youtube_developer_key = get_option('youtube_developer_key');
+        $youtube_developer_key = get_option('google_apis_api_key');
         if ($youtube_developer_key == '') {
             return false;
         }

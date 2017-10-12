@@ -523,8 +523,49 @@ function ecv($lang, $escaped, $type, $name, $param)
 
                 if (is_mobile()) {
                     // Easy table conversion for mobile
-                    $value = preg_replace('#<(table|tbody|thead|tr|th|td)(\s[^<>]*)?' . '>#', '<div$2>', $value);
-                    $value = preg_replace('#</(table|tbody|thead|tr|th|td)>#', '</div>', $value);
+                    $table_cleanup_func = function ($matches) {
+                        static $is_in_remaining_table = false;
+
+                        if ($matches[1] == '') { // Opening element
+                            $element = strtolower($matches[2]);
+                            $attributes = isset($matches[3]) ? $matches[3] : '';
+
+                            if ($element == 'table') {
+                                if (strpos($attributes, 'responsive_table') !== false) {
+                                    $is_in_remaining_table = true;
+                                    return $matches[0];
+                                }
+
+                                if ((preg_match('#\s+border=["\']?[1-9]#i', $attributes) != 0) || (preg_match('#\s+style="[^"]*border:\s*[1-9]#i', $attributes) != 0) || (strpos($attributes, 'results_table') !== false)) {
+                                    $is_in_remaining_table = true;
+                                    if (preg_match('#\s+class=["\']#i', $attributes) == 0) {
+                                        $attributes .= ' class="responsive_table"';
+                                    } else {
+                                        $attributes = preg_replace('#\s+class=["\']#i', '$0responsive_table ', $attributes);
+                                    }
+                                    return '<table' . $attributes . '>';
+                                }
+
+                                $is_in_remaining_table = false;
+                            }
+
+                            if ($is_in_remaining_table) {
+                                return $matches[0];
+                            }
+
+                            $attributes = preg_replace('#\s+(cellspacing|cellpadding|border|width|height|align)="[^"]*"#', '', $attributes);
+                            return '<div' . $attributes . '>';
+
+                        } else { // Closing element
+                            if ($is_in_remaining_table) {
+                                return $matches[0];
+                            }
+
+                            return '</div>';
+                        }
+                    };
+                    $value = preg_replace_callback('#<()(table|tbody|thead|tr|th|td)(\s[^<>]*)?' . '>#i', $table_cleanup_func, $value);
+                    $value = preg_replace_callback('#<(/)(table|tbody|thead|tr|th|td)>#', $table_cleanup_func, $value);
                 }
 
                 // Easy responsive images
@@ -611,6 +652,11 @@ function ecv($lang, $escaped, $type, $name, $param)
                 if (is_mobile()) {
                     // Allow targeted CSS
                     $value = '<div class="make_mobile">' . $value . '</div>';
+                }
+
+                if (is_mobile()) {
+                    // Remove centering
+                    $value = preg_replace('#<(div|p)\s+style="text-align:\s*center;?">#i', '<$1>', $value);
                 }
 
                 if (is_mobile()) {
@@ -5662,7 +5708,7 @@ function ecv_PUBLIC_CONFIG_OPTIONS_JSON($lang, $escaped, $param)
         if (isset($details['public']) && $details['public']) {
             if ($GLOBALS['IN_MINIKERNEL_VERSION']) { // Installer, likely executing global.js. We need a saner default for JavaScript
                 $_value[$hook] = '0';
-            } else if (isset($details['theme_override']) && $details['theme_override']) {
+            } elseif (isset($details['theme_override']) && $details['theme_override']) {
                 $_value[$hook] = get_theme_option($hook);
             } else {
                 $_value[$hook] = get_option($hook);

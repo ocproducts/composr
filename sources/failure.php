@@ -1054,6 +1054,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, 'Unable to save result set') === false) &&
         (strpos($text, 'Deadlock found when trying to get lock; try restarting transaction') === false) &&
         (strpos($text, 'MySQL client ran out of memory') === false) &&
+        (strpos($text, 'Server shutdown in progress') === false) &&
         (strpos($text, '.MAI') === false) && // MariaDB
         (strpos($text, '.MAD') === false) && // MariaDB
         (strpos($text, '.MYI') === false) && // MySQL

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts/Tapatalk, 2004-2016
+ Copyright (c) ocProducts/Tapatalk, 2004-2017
 
  See text/EN/licence.txt for full licencing information.
 
@@ -211,6 +211,8 @@ function get_forum_func($raw_params) // Get forum tree structure
             if ($forum_id == 0) {
                 $forum_id = db_get_first_id();
             }
+        } else {
+            $forum_id = db_get_first_id();
         }
         $full_tree = false;
     } else {

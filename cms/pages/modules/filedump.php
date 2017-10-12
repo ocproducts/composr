@@ -35,7 +35,7 @@ class Module_filedump
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 4;
+        $info['version'] = 5;
         $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         return $info;
@@ -70,7 +70,7 @@ class Module_filedump
             $GLOBALS['SITE_DB']->create_table('filedump', array(
                 'id' => '*AUTO',
                 'name' => 'ID_TEXT',
-                'path' => 'URLPATH',
+                'path' => 'SHORT_TEXT',
                 'description' => 'SHORT_TRANS',
                 'the_member' => 'MEMBER',
             ));
@@ -91,6 +91,10 @@ class Module_filedump
             }
 
             $GLOBALS['SITE_DB']->query_update('privilege_list', array('p_section' => 'FILEDUMP'), array('p_section' => 'FILE_DUMP'));
+        }
+
+        if (($upgrade_from !== null) && ($upgrade_from < 5)) { // LEGACY
+            $GLOBALS['SITE_DB']->alter_table_field('filedump', 'path', 'SHORT_TEXT');
         }
     }
 

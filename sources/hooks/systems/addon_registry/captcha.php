@@ -102,6 +102,7 @@ class Hook_addon_registry_captcha
             'sources/hooks/systems/snippets/captcha_wrong.php',
             'sources/hooks/systems/addon_registry/captcha.php',
             'themes/default/templates/FORM_SCREEN_INPUT_CAPTCHA.tpl',
+            'themes/default/templates/CAPTCHA_LOOSE.tpl',
             'data/captcha.php',
             'sources/captcha.php',
             'lang/EN/captcha.ini',
@@ -149,6 +150,8 @@ class Hook_addon_registry_captcha
             'sources/hooks/systems/config/audio_captcha.php',
             'sources/hooks/systems/config/js_captcha.php',
             'themes/default/javascript/captcha.js',
+            'sources/hooks/systems/config/recaptcha_server_key.php',
+            'sources/hooks/systems/config/recaptcha_site_key.php',
         );
     }
 
@@ -161,6 +164,7 @@ class Hook_addon_registry_captcha
     {
         return array(
             'templates/FORM_SCREEN_INPUT_CAPTCHA.tpl' => 'form_screen_input_captcha',
+            'templates/CAPTCHA_LOOSE.tpl' => 'captcha_loose',
         );
     }
 
@@ -202,6 +206,54 @@ class Hook_addon_registry_captcha
                 'SUBMIT_ICON' => 'buttons__proceed',
                 'SUBMIT_NAME' => lorem_word(),
                 'TEXT' => lorem_sentence_html(),
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__captcha_loose()
+    {
+        $name = placeholder_random_id();
+        $input = do_lorem_template('FORM_SCREEN_INPUT_TEXT', array(
+            'RAW' => true,
+            'SCROLLS' => '',
+            'TABINDEX' => placeholder_number(),
+            'REQUIRED' => '',
+            'NAME' => $name,
+            'DEFAULT' => '',
+        ));
+        $fields = new Tempcode();
+        $fields->attach(do_lorem_template('FORM_SCREEN_FIELD', array(
+            'REQUIRED' => true,
+            'SKIP_LABEL' => false,
+            'NAME' => $name,
+            'PRETTY_NAME' => lorem_word(),
+            'DESCRIPTION' => lorem_sentence_html(),
+            'DESCRIPTION_SIDE' => '',
+            'INPUT' => $input,
+            'COMCODE' => '',
+        )));
+
+        $tpl = do_lorem_template('FORM', array(
+            'GET' => null,
+            'SKIP_WEBSTANDARDS' => true,
+            'HIDDEN' => '',
+            'TITLE' => lorem_title(),
+            'URL' => placeholder_url(),
+            'FIELDS' => $fields,
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => lorem_word(),
+            'TEXT' => lorem_sentence_html(),
+        ));
+
+        return array(
+            lorem_globalise(do_lorem_template('CAPTCHA_LOOSE', array(
             )), null, '', true)
         );
     }

@@ -734,7 +734,11 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
             }
 
             // ... and query it
-            $sql = 'SELECT m_resource_page,m_resource_type,m_resource_id FROM ' . get_table_prefix() . 'url_id_monikers WHERE ' . db_string_equal_to('m_moniker', '/' . $url_moniker) . ' OR ' . db_string_equal_to('m_moniker', $url_moniker) . ' AND ' . db_string_equal_to('m_resource_type', '') . ' AND ' . db_string_equal_to('m_resource_id', $zone);
+            $sql = 'SELECT m_resource_page,m_resource_type,m_resource_id FROM ' . get_table_prefix() . 'url_id_monikers WHERE ';
+            $sql .= db_string_equal_to('m_moniker', '/' . $url_moniker) . ' OR ';
+            $sql .= db_string_equal_to('m_moniker', $url_moniker) . ' AND ' . db_string_equal_to('m_resource_type', '') . ' AND ' . db_string_equal_to('m_resource_id', $zone) . ' OR ';
+            $sql .= db_string_equal_to('m_moniker', '/' . str_replace('-', '_', $url_moniker)) . ' OR ';
+            $sql .= db_string_equal_to('m_moniker', str_replace('-', '_', $url_moniker)) . ' AND ' . db_string_equal_to('m_resource_type', '') . ' AND ' . db_string_equal_to('m_resource_id', $zone);
             $test = $GLOBALS['SITE_DB']->query($sql, 1);
             if (array_key_exists(0, $test)) {
                 if (_request_page($test[0]['m_resource_page'], $zone) !== false) { // ... if operable within the zone we're in
@@ -1883,7 +1887,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
 
     if (has_edit_comcode_page_permission($zone, $codename, $comcode_page_row['p_submitter'])) {
         $redirect = get_self_url(true, false, array('redirect' => null, 'redirected' => null));
-        if ((($codename == 'panel_left') || ($codename == 'panel_right')) && (has_actual_page_access(get_member(), 'admin_zones')) && (get_theme_option('zone_editor_enabled') == '1')) {
+        if ((($codename == 'panel_left') || ($codename == 'panel_right')) && (has_actual_page_access(get_member(), 'admin_zones')) && (get_theme_option('zone_editor_enabled') == '1') && (get_value('hide_zone_editor') !== '1')) {
             $edit_url = build_url(array('page' => 'admin_zones', 'type' => '_editor', 'id' => get_zone_name(), 'redirect' => protect_url_parameter($redirect)), get_module_zone('admin_zones'));
         } else {
             $edit_url = build_url(array('page' => 'cms_comcode_pages', 'type' => '_edit', 'page_link' => $zone . ':' . $codename, /*'lang' => user_lang(), */'redirect' => protect_url_parameter($redirect)), get_module_zone('cms_comcode_pages'));
@@ -2083,6 +2087,13 @@ function log_stats($string, $pg_time)
         return;
     }
 
+    global $DISPLAYED_TITLE;
+    if ($DISPLAYED_TITLE === null) {
+        $title = '';
+    } else {
+        $title = $DISPLAYED_TITLE->evaluate();
+    }
+
     $GLOBALS['SITE_DB']->query_insert('stats', array(
         'access_denied_counter' => 0,
         'browser' => $browser,
@@ -2096,6 +2107,7 @@ function log_stats($string, $pg_time)
         's_get' => $get,
         'post' => $post,
         'milliseconds' => intval($pg_time),
+        'title' => $title,
     ), false, true);
     if (mt_rand(0, 100) == 1) {
         if (!$GLOBALS['SITE_DB']->table_is_locked('stats')) {

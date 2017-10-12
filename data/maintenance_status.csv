@@ -16,7 +16,6 @@ database_postgresql,PostgreSQL database driver,ocProducts,,Not automatically reg
 database_sqlserver,Microsoft SQL server database driver,,,Not regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No,
 database_xml,XML database driver,,,For developers only.,No,
 platform_gae,Google App Engine platform support,,,Not regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No,
-platform_hhvm,HHVM platform support,,,Not regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No,
 platform_phalanger,Phalanger platform support,,,Not regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No,
 platform_chmod,Non-suEXEC platform support,ocProducts,,"Not regularly tested. Likely to be very un-friendly to the admin, so should be discouraged.",No,
 platform_iis,IIS,ocProducts,,Not regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No,
@@ -119,6 +118,7 @@ geocode_internal,IP address geocoding (internal list),ocProducts,ocProducts,Coul
 geocode_external,IP address geocoding (web service, more detailed),ocProducts,ocProducts,Could potentially break due to third-party changes.,No
 ssl_trust_internal,SSL certificate trust chains (internal list),ocProducts,,Could potentially break due to third-party changes.,No,Part of release process.
 taxcloud,TaxCloud integration for US sales tax,ocProducts,,Could potentially break due to third-party changes.,No,Unit test.
+shippo,Shippo integration for shipping calculations,ocProducts,,Could potentially break due to third-party changes.,No,Unit test.
 eu_digital_tax,Download of EU digital tax rates,ocProducts,,Could potentially break due to third-party changes.,No,Unit test.
 cloudflare_changes,Cloudflare optimisations (potentially-disruptive optimisations Cloudflare may try and make when proxying the site),,,Not regularly Tested.,No,
 cloudflare_ip_lists,Cloudflare true IP detection (a list of Cloudflare IPs to trust),ocProducts,,Not regularly Tested.,No,
@@ -126,3 +126,7 @@ non_block_ip_list,Lists of IPs to not block,ocProducts,,Not regularly Tested.,No
 php_unsupported,Detect if a PHP version is used that is no longer maintained by PHP developers.,ocProducts,,Not regularly Tested.,No,Automated test.
 external_health_check,Various tools that the Health Check will link out to when manual checks are enabled.,ocProducts,,Not regularly Tested.,No,Automated test to make sure links are not broken.
 google_safe_browsing_api,The Google Safe Browsing API.,ocProducts,,Not regularly Tested.,No,Automated test to run Health Checks.
+google_recaptcha,The Google Safe Browsing API.,ocProducts,,Not regularly Tested.,No,Automated test to run Health Checks.
+google_search_console,The Google Search Console API.,ocProducts,,Not regularly Tested.,No
+moz,Moz API.,ocProducts,,Not regularly Tested.,No
+google_analytics,Google Analytics integration.,ocProducts,,Not regularly Tested.,No

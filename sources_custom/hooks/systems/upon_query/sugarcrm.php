@@ -85,7 +85,15 @@ class Hook_upon_query_sugarcrm
             foreach ($contacts_mappings as $_mapping) {
                 if (strpos($_mapping, '=') !== false) {
                     list($mapping_from, $mapping_to) = array_map('trim', explode('=', $_mapping, 2));
-                    $data[$mapping_to] = array('name' => $mapping_to, 'value' => isset($cpfs[$mapping_from]) ? $cpfs[$mapping_from]['RAW'] : '');
+
+                    $matches = array();
+                    if (preg_match('#^\((.*)\)$#', $mapping_from, $matches) != 0) {
+                        $value = $matches[1];
+                    } else {
+                        $value = isset($cpfs[$mapping_from]) ? $cpfs[$mapping_from]['RAW'] : '';
+
+                    }
+                    $data[$mapping_to] = array('name' => $mapping_to, 'value' => $value);
                 }
             }
 

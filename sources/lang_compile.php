@@ -248,9 +248,6 @@ function _get_lang_file_map($b, &$entries, $section = 'strings', $given_whole_fi
         $lines = file($b);
         flock($tmp, LOCK_UN);
         fclose($tmp);
-        if ($lines === null) {
-            $lines = array(); // Workaround HHVM bug #1162
-        }
     } else {
         $lines = explode("\n", unixify_line_format($b));
     }

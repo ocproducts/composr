@@ -49,6 +49,7 @@
         FormStandardEnd.base(this, 'constructor', arguments);
 
         this.backUrl = strVal(params.backUrl);
+        this.cancelUrl = strVal(params.cancelUrl);
         this.analyticEventCategory = params.analyticEventCategory;
         this.form = $cms.dom.closest(this.el, 'form');
         this.btnSubmit = this.$('#submit_button');
@@ -79,10 +80,23 @@
     $cms.inherits(FormStandardEnd, $cms.View, /**@lends FormStandardEnd#*/{
         events: function () {
             return {
+                'click .js-click-do-form-cancel': 'doFormCancel',
                 'click .js-click-do-form-preview': 'doFormPreview',
                 'click .js-click-do-form-submit': 'doFormSubmit',
                 'click .js-click-btn-go-back': 'goBack'
             };
+        },
+
+        doFormCancel: function (e) {
+            $cms.ui.confirm(
+                '{!Q_SURE;*}',
+                function (result)
+                {
+                    if (result) {
+                        document.location = this.cancelUrl;
+                    }
+                }
+            );
         },
 
         doFormPreview: function (e) {

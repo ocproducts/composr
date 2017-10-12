@@ -160,6 +160,7 @@ class template_previews_test_set extends cms_test_case
                         'templates/NEWSLETTER_PREVIEW.tpl',
                         'templates/GLOBAL_HELPER_PANEL.tpl',
                         'templates/HTML_HEAD.tpl',
+                        'templates/HTML_HEAD_POLYFILLS.tpl',
                         'templates/MEMBER_TOOLTIP.tpl',
                         'templates/FORM_STANDARD_END.tpl',
                         'templates/MEMBER_BAR_SEARCH.tpl',

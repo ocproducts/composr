@@ -68,8 +68,8 @@ class Hook_health_check_marketing_seo extends Hook_Health_Check
         // external_health_check (on maintenance sheet)
 
         $this->stateCheckManual('Check for [url="SEO issues"]https://seositecheckup.com/[/url] (take warnings with a pinch of salt, not every suggestion is appropriate)');
-        $this->stateCheckManual('Check for [url="search issues in Google Webmaster Tools"]https://www.google.com/webmasters/tools/home[/url]');
-        $this->stateCheckManual('Analyse what [url="popular keywords you rank for"]https://www.thehoth.com/[/url] and what you could try and rank for (https://serps.com/tools/)');
+        $this->stateCheckManual('Check for [url="search issues in Google Webmaster Tools"]https://www.google.com/webmasters/tools/home[/url] (including crawl errors, mobile issues, manual webspam actions, and changes in keyword ranking)');
+        $this->stateCheckManual('Analyse what [url="popular keywords you rank for"]https://www.thehoth.com/[/url] and what you could [url="try and rank for"]https://serps.com/tools/[/url] and [url="compare to competitors"]https://moz.com[/url]');
     }
 
     /**

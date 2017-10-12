@@ -44,6 +44,8 @@ class Hook_config_sms_password
             'public' => false,
 
             'addon' => 'sms',
+
+            'maintenance_code' => 'sms',
         );
     }
 

@@ -3458,6 +3458,8 @@ function is_control_field($field_name, $include_email_metafields = false, $inclu
         'csrf_token',
         'js_token',
         'y' . md5(get_site_name() . ': antispam'),
+        'captcha',
+        'g-recaptcha-response',
 
         // Data relaying for Suhosin workaround
         'post_data',

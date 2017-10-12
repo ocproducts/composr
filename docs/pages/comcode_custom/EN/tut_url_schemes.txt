@@ -65,7 +65,6 @@ Composr can do URL Schemes on the following web-servers:
  - Apache (using [tt]mod_rewrite[/tt], and our rules in [tt]recommended.htaccess[/tt] -- details below)
  - Litespeed Server (as above, Litespeed simulates Apache)
  - IIS7 (due to the rules in our [tt]web.config[/tt])
- - Facebook's HHVM (built into our bundled configuration files)
  - [i]Advanced users:[/i] potentially any server that supports URL rewrites that you are able to hand-configure
 
 [title="3"]Apache[/title]

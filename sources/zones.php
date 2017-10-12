@@ -1669,22 +1669,22 @@ function extract_module_functions($path, $functions, $params = array(), $prefer_
 {
     global $SITE_INFO;
     $prefer_direct_code_call = $prefer_direct_code_call || ((isset($SITE_INFO['prefer_direct_code_call'])) && ($SITE_INFO['prefer_direct_code_call'] === '1'));
-    if ((HHVM) || ($prefer_direct_code_call)) {
+    if ($prefer_direct_code_call) {
         global $CLASS_CACHE;
         if (isset($CLASS_CACHE[$path])) {
             $new_classes = $CLASS_CACHE[$path];
         } else {
-            if (!HHVM && $class_name === null) {
+            if ($class_name === null) {
                 $classes_before = get_declared_classes();
             }
             $require_path = preg_replace('#^' . preg_quote(get_file_base()) . '/#', '', preg_replace('#^' . preg_quote(get_file_base()) . '/((sources)|(sources_custom))/(.*)\.php#', '${4}', $path));
             require_code($require_path);
-            if (!HHVM && $class_name === null) {
+            if ($class_name === null) {
                 $classes_after = get_declared_classes();
             }
             if ($class_name === null) {
-                $new_classes = HHVM ? array() : array_values(array_diff($classes_after, $classes_before));
-                if (count($new_classes) === 0) { // Ah, HHVM's AllVolatile is probably not enabled *OR* maybe this module already had require_code run for it
+                $new_classes = array_values(array_diff($classes_after, $classes_before));
+                if (count($new_classes) === 0) { // Ah, maybe this module already had require_code run for it
                     $matches = array();
                     if ((running_script('install')) && (file_exists(preg_replace('#(sources|modules|minimodules)_custom#', '${1}', $path)))) {
                         $path = preg_replace('#(sources|modules|minimodules)_custom#', '${1}', $path);
@@ -1699,7 +1699,10 @@ function extract_module_functions($path, $functions, $params = array(), $prefer_
             $CLASS_CACHE[$path] = $new_classes;
         }
         if ((isset($new_classes[0])) && ($new_classes[0] === 'Standard_crud_module')) {
-            array_shift($new_classes);
+            array_shift($new_classes); // This is not the class we want
+        }
+        if ((isset($new_classes[0])) && ($new_classes[0] === 'non_overridden__Standard_crud_module')) {
+            array_shift($new_classes); // This is not the class we want
         }
         if (isset($new_classes[0])) {
             $c = $new_classes[0];

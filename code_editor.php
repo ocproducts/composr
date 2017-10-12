@@ -520,9 +520,10 @@ END;
                 $h = fopen($path2, 'rb');
                 $ftp_success = @ftp_fput($conn, $save_path, $h, FTP_BINARY);
                 if ($ftp_success === false) {
+                    $message = addslashes(@strval($php_errormsg));
                     echo <<<END
 <script>
-var msg='Could not save via FTP ['.@strval($php_errormsg).'].';
+var msg='Could not save via FTP [' . $message . '].';
 if (window.alert !== null) {
     window.alert(msg);
 } else {
@@ -574,9 +575,9 @@ END;
         ce_sync_file($save_path . '.editfrom');
 
         if (!isset($_POST['delete'])) {
-            $message = "Saved " . code_editor_escape_html(str_replace('/', DIRECTORY_SEPARATOR, $save_path)) . " (and if applicable, placed a backup in its directory)!";
+            $message = "Saved " . addslashes(code_editor_escape_html(str_replace('/', DIRECTORY_SEPARATOR, $save_path)) . " (and if applicable, placed a backup in its directory)!");
         } else {
-            $message = "Deleted " . code_editor_escape_html(str_replace('/', DIRECTORY_SEPARATOR, $save_path)) . ". You may edit to recreate the file if you wish however.";
+            $message = "Deleted " . addslashes(code_editor_escape_html(str_replace('/', DIRECTORY_SEPARATOR, $save_path)) . ". You may edit to recreate the file if you wish however.");
         }
         echo <<<END
 <script>
