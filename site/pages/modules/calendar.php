@@ -1422,7 +1422,7 @@ class Module_calendar
 
             $map = array_merge($filter, array('page' => '_SELF', 'type' => 'browse', 'view' => 'month', 'id' => $explode[0] . '-' . strval($i)));
             $month_url = build_url($map, '_SELF');
-            $month_name = strftime('%B', $_period_start);
+            $month_name = cms_strftime('%B', $_period_start);
 
             $month = do_template('CALENDAR_YEAR_MONTH', array('_GUID' => '58c9f4cc04186dce6e7ea3dd8ec9269b', 'ENTRIES' => $_entries, 'MONTH_NAME' => $month_name, 'MONTH_URL' => $month_url));
             $months .= $month->evaluate(); // XHTMLXHTML

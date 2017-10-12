@@ -262,7 +262,7 @@ function cron_bridge_script($caller)
         safe_ini_set('ocproducts.xss_detect', '0');
         require_code('files2');
         $php_path = find_php_path();
-        echo $php_path . ' -C -q --no-header ' . $caller;
+        echo $php_path . ' -C -q -c ' . get_file_base() . '/.user.ini ' . $caller;
         exit();
     }
 
