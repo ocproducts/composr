@@ -3084,10 +3084,9 @@
 
     /**
      * Called with 1 argument, it's similar to $cms.dom.trigger(el, 'submit') except this also 
-     * actually submits the form using el.submit(), unless default is prevented by an event handler
+     * actually submits the form using el.submit(), unless default is prevented by an event handler.
      * 
      * Called with 2 arguments, it's the same as $cms.dom.on(el, 'submit', callback).
-     * 
      * @memberof $cms.dom
      * @param { string|HTMLFormElement } el
      * @param {function} [callback]

@@ -1,4 +1,4 @@
-/* Called from reCAPTCHA, when it loads */
+/* Called from reCAPTCHA recaptcha/api.js, when it loads */
 function recaptchaLoaded()
 {
     var captchaElement = document.getElementById('captcha');
@@ -10,9 +10,9 @@ function recaptchaLoaded()
             $cms.dom.submit(form);
         },
         theme: '{$?,{$THEME_DARK},dark,light}',
-        size: 'invisible',
+        size: 'invisible'
     };
-    if (typeof captchaElement.dataset.tabindex != 'undefined') {
+    if (captchaElement.dataset.tabindex != null) {
         grecaptchaParameters.tabindex = captchaElement.dataset.tabindex;
     }
     window.grecaptcha.render('captcha', grecaptchaParameters, false);

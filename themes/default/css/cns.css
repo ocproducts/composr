@@ -218,40 +218,41 @@ div.cns_table_footer>div>div {
 	display: table;
 }
 .cns_topic>* {
-	display: none; /*needed in case of unclosed <b> tags inside causing <b></b> throughout rest of document, due to HTML5 parse rules*/
+	/*display: none; needed in case of unclosed <b> tags inside causing <b></b> throughout rest of document, due to HTML5 parse rules*/
 }
-.cns_topic>div {
+.cns_topic .cns_topic_post {
 	display: table-row-group;
 }
 .cns_topic>div>* {
-	display: none; /*^ ditto*/
+	/*display: none; ^ ditto*/
 }
-.cns_topic>div>div {
+/*.cns_topic>div>div {*/
+.cns_topic .cns_topic_section {
 	display: table-row;
 }
 .cns_topic>div>div>* {
-	display: none; /*^ ditto*/
+	/*display: none; ^ ditto*/
 }
-.cns_topic>div>div>div {
+.cns_topic .cns_topic_section > div {
 	display: table-cell;
 }
-.cns_topic>div>div>div:first-child {
+.cns_topic .cns_topic_section > div:first-child {
 	background-color: {$GET,area_background};
 	padding: 0.3em;
 	vertical-align: middle;
 }
 /*{+START,CSS_MODE,desktop}*/
-	.cns_topic>div>div>div:first-child {
+	.cns_topic .cns_topic_section > div:first-child {
 		width: 130px;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.cns_topic>div>div>div:first-child {
+	.cns_topic .cns_topic_section > div:first-child {
 		width: 80px;
 	}
 /*{+END}*/
 
-.cns_post_box .cns_topic>div>div>div {
+.cns_post_box .cns_topic .cns_topic_section > div {
 	border: 0;
 }
 

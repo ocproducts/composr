@@ -4,6 +4,9 @@
 
 		icons: 'composr_block,composr_comcode,composr_page,composr_quote,composr_box,composr_code,composr_image',
 
+        /**
+         * @param { CKEDITOR.editor } editor
+         */
 		init: function (editor) {
 			var possibles = ['block', 'comcode', 'page', 'quote', 'box', 'code'], 
 				func;
@@ -45,9 +48,9 @@
 
 			func = {
 				exec: function (e) {
-					var has_selection = false;
+					var hasSelection = false;
 					if (doingAttachmentUploads) {
-						var hasSelection = (e.getSelection().getSelectedElement() != null);
+                        hasSelection = (e.getSelection().getSelectedElement() != null);
 						if (usesPlupload && !hasSelection) { // Not selected an image for editing, so don't show an edit dialogue
 							return;
 						} 
