@@ -290,7 +290,7 @@ function _get_timezone_list()
  */
 function post_param_date_components($stub, $year = null, $month = null, $day = null, $get_also = false)
 {
-    $default_ret = array($year, $month, $day, 0, 0);
+    $default_ret = array($year, $month, $day, 0, 0, 0);
 
     $timezone = post_param_string('timezone', get_users_timezone());
     if ($get_also) {
@@ -317,9 +317,11 @@ function post_param_date_components($stub, $year = null, $month = null, $day = n
                         $hour += 12;
                     }
                 }
+                $seconds = 0;
             } else {
                 $hour = null;
                 $minute = null;
+                $seconds = null;
             }
         } else { // Legacy input style
             $year = either_param_integer($stub . '_year', null);
@@ -337,6 +339,7 @@ function post_param_date_components($stub, $year = null, $month = null, $day = n
 
             $hour = either_param_integer($stub . '_hour', null);
             $minute = either_param_integer($stub . '_minute', null);
+            $seconds = either_param_integer($stub . '_seconds', null);
         }
     } else {
         $date = post_param_string($stub, null);
@@ -362,9 +365,11 @@ function post_param_date_components($stub, $year = null, $month = null, $day = n
                         $hour += 12;
                     }
                 }
+                $seconds = 0;
             } else {
                 $hour = null;
                 $minute = null;
+                $seconds = null;
             }
         } else { // Legacy input style
             $year = post_param_integer($stub . '_year', null);
@@ -382,6 +387,7 @@ function post_param_date_components($stub, $year = null, $month = null, $day = n
 
             $hour = post_param_integer($stub . '_hour', null);
             $minute = post_param_integer($stub . '_minute', null);
+            $seconds = post_param_integer($stub . '_seconds', null);
         }
     }
 
@@ -389,9 +395,11 @@ function post_param_date_components($stub, $year = null, $month = null, $day = n
         if (strpos($stub, 'end') !== false) {
             $hour = 23;
             $minute = 59;
+            $seconds = 0;
         } else {
             $hour = 0;
             $minute = 0;
+            $seconds = 0;
         }
     }
 
@@ -399,7 +407,7 @@ function post_param_date_components($stub, $year = null, $month = null, $day = n
         warn_exit(do_lang_tempcode('INVALID_DATE_GIVEN'));
     }
 
-    return array($year, $month, $day, $hour, $minute);
+    return array($year, $month, $day, $hour, $minute, $seconds);
 }
 
 /**
@@ -415,12 +423,12 @@ function _post_param_date($stub, $get_also = false, $do_timezone_conversion = tr
 {
     $timezone = post_param_string('timezone', get_users_timezone());
 
-    list($year, $month, $day, $hour, $minute) = post_param_date_components($stub, null, null, null, $get_also);
+    list($year, $month, $day, $hour, $minute, $seconds) = post_param_date_components($stub, null, null, null, $get_also);
     if (is_null($year)) {
         return null;
     }
 
-    $time = mktime($hour, $minute, 0, $month, $day, $year);
+    $time = mktime($hour, $minute, $seconds, $month, $day, $year);
     if ($do_timezone_conversion) {
         if (($year >= 1970) || (@strftime('%Y', @mktime(0, 0, 0, 1, 1, 1963)) == '1963')) { // Only try and do timezone conversion if we can do proper maths this far back
             $time = $time * 2 - tz_time($time, $timezone);

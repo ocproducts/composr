@@ -54,6 +54,10 @@ function cns_field_editable($field_name, $special_type)
             break;
 
         case 'secondary_groups':
+            if (!has_actual_page_access(get_member(), 'groups', get_module_zone('groups'))) {
+                return false;
+            }
+
             switch ($special_type) {
                 case 'ldap':
                     return false;

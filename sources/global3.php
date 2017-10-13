@@ -93,10 +93,11 @@ function init__global3()
         'LATE_ATTACHED_MESSAGES',
         'SEO_KEYWORDS',
         'SEO_DESCRIPTION',
-        'SHORT_TITLE',
         'BREADCRUMBS',
         'BREADCRUMB_SET_PARENTS',
         'DISPLAYED_TITLE',
+        'SHORT_TITLE',
+        'FORCE_SET_TITLE',
         'BREADCRUMB_SET_SELF',
         'FEED_URL',
         'FEED_URL_2',
@@ -329,12 +330,25 @@ function _load_blank_output_state($just_tempcode = false, $true_blank = false)
         global $SEO_KEYWORDS, $SEO_DESCRIPTION, $SHORT_TITLE;
         $SEO_KEYWORDS = null;
         $SEO_DESCRIPTION = null;
+        /** Shortened title to use only within header text and thus <title> tag (if not set, $DISPLAYED_TITLE will be used).
+         *
+         * @sets_output_state
+         *
+         * @global ?string $SHORT_TITLE
+         */
         $SHORT_TITLE = null;
 
-        global $BREADCRUMBS, $BREADCRUMB_SET_PARENTS, $DISPLAYED_TITLE, $BREADCRUMB_SET_SELF;
+        global $BREADCRUMBS, $BREADCRUMB_SET_PARENTS, $DISPLAYED_TITLE, $FORCE_SET_TITLE, $BREADCRUMB_SET_SELF;
         $BREADCRUMBS = null;
         $BREADCRUMB_SET_PARENTS = array();
+        /** The screen title that was set (i.e. <h1>).
+         *
+         * @sets_output_state
+         *
+         * @global ?string $DISPLAYED_TITLE
+         */
         $DISPLAYED_TITLE = null;
+        $FORCE_SET_TITLE = false;
         $BREADCRUMB_SET_SELF = null;
 
         global $FEED_URL, $FEED_URL_2;

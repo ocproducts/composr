@@ -47,6 +47,10 @@ function build_menu($type, $menu, $silent_failure = false, $apply_highlighting =
 
     if ($is_sitemap_menu) {
         $root = _build_sitemap_menu($menu);
+
+        if ($root === null) {
+            return array(new Tempcode(), array());
+        }
     } else {
         $root = _build_stored_menu($menu);
 

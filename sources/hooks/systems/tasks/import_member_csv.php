@@ -213,7 +213,7 @@ class Hook_task_import_member_csv
 
             // Set up member row
             if ((array_key_exists('Password', $line)) && ($line['Password'] != '')) {
-                $parts = explode('/', $line['Password']);
+                $parts = explode(' / ', $line['Password'], 3);
                 $password = $parts[0];
                 $salt = array_key_exists(1, $parts) ? $parts[1] : null;
                 $password_compatibility_scheme = array_key_exists(2, $parts) ? $parts[2] : null;
@@ -258,9 +258,13 @@ class Hook_task_import_member_csv
                     $parts[2] = '1';
                 }
                 if (strlen($parts[2]) != 4) { // Would be nice to be smarter but unfortunately Open Office saves as yy not yyyy
-                    $join_time = mktime(0, 0, 0, intval($parts[1]), intval($parts[2]), intval($parts[0])); // yy(yy)-mm-dd
+                    $join_time = mktime(0, 0, 0, intval($parts[1]), intval($parts[2]), intval($parts[0])); // yy(yy)-mm-dd or yy(yy)/mm/dd
                 } else {
-                    $join_time = mktime(0, 0, 0, intval($parts[1]), intval($parts[0]), intval($parts[2])); // dd-mm-yyyy
+                    if (get_option('yeehaw') == '1') {
+                        $join_time = mktime(0, 0, 0, intval($parts[0]), intval($parts[1]), intval($parts[2])); // mm-dd-yyyy or mm/dd/yyyy
+                    } else {
+                        $join_time = mktime(0, 0, 0, intval($parts[1]), intval($parts[0]), intval($parts[2])); // dd-mm-yyyy or dd/mm/yyyy
+                    }
                 }
                 if ($join_time > time()) {
                     $join_time = time(); // Fixes database out of range error that could happen

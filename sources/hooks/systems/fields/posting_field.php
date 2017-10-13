@@ -102,6 +102,11 @@ class Hook_fields_posting_field
     {
         static $done_one = false;
 
+        global $BLOCK_EXTRA_POSTING_FIELDS;
+        if (!empty($BLOCK_EXTRA_POSTING_FIELDS)) {
+            $done_one = true;
+        }
+
         if ($done_one) {
             if (is_null($actual_value)) {
                 $actual_value = ''; // Plug anomaly due to unusual corruption

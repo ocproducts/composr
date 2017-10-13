@@ -100,10 +100,14 @@ function cms_file_put_contents_safe($path, $contents, $flags = 2, $retry_depth =
         }
         if ($disk_space !== false) {
             if ($disk_space < $num_bytes_to_write) {
-                if (function_exists('do_lang_tempcode')) {
-                    $error_message = do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($path));
+                if (($flags & FILE_WRITE_FAILURE_SILENT) == 0) {
+                    if (function_exists('do_lang_tempcode')) {
+                        $error_message = do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($path));
+                    } else {
+                        $error_message = 'Could not save file ' . htmlentities($path);
+                    }
                 } else {
-                    $error_message = 'Could not save file ' . htmlentities($path);
+                    $error_message = '';
                 }
                 return _cms_file_put_contents_safe_failed($error_message, $path, $flags);
             }
@@ -120,7 +124,11 @@ function cms_file_put_contents_safe($path, $contents, $flags = 2, $retry_depth =
 
     // Error condition: If it failed to save
     if ($num_bytes_written === false) {
-        $error_message = intelligent_write_error_inline($path);
+        if (($flags & FILE_WRITE_FAILURE_SILENT) == 0) {
+            $error_message = intelligent_write_error_inline($path);
+        } else {
+            $error_message = '';
+        }
         return _cms_file_put_contents_safe_failed($error_message, $path, $flags);
     }
 
@@ -130,10 +138,14 @@ function cms_file_put_contents_safe($path, $contents, $flags = 2, $retry_depth =
             @unlink($path);
         }
 
-        if (function_exists('do_lang_tempcode')) {
-            $error_message = do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($path));
+        if (($flags & FILE_WRITE_FAILURE_SILENT) == 0) {
+            if (function_exists('do_lang_tempcode')) {
+                $error_message = do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($path));
+            } else {
+                $error_message = 'Could not save file ' . htmlentities($path);
+            }
         } else {
-            $error_message = 'Could not save file ' . htmlentities($path);
+            $error_message = '';
         }
         return _cms_file_put_contents_safe_failed($error_message, $path, $flags);
     }
@@ -153,10 +165,14 @@ function cms_file_put_contents_safe($path, $contents, $flags = 2, $retry_depth =
             return cms_file_put_contents_safe($path, $contents, $flags, $retry_depth + 1);
         }
 
-        if (function_exists('do_lang_tempcode')) {
-            $error_message = do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($path));
+        if (($flags & FILE_WRITE_FAILURE_SILENT) == 0) {
+            if (function_exists('do_lang_tempcode')) {
+                $error_message = do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($path));
+            } else {
+                $error_message = 'Could not save file ' . htmlentities($path);
+            }
         } else {
-            $error_message = 'Could not save file ' . htmlentities($path);
+            $error_message = '';
         }
         return _cms_file_put_contents_safe_failed($error_message, $path, $flags);
     }
@@ -184,7 +200,7 @@ function _cms_file_put_contents_safe_failed($error_message, $path, $flags = 2)
 {
     static $looping = false;
     if ($looping) {
-        critical_error('PASSON', do_lang('WRITE_ERROR', escape_html($path))); // Bail out hard if would cause a loop
+        critical_error('PASSON', 'Could not write to ' . htmlentities($path)); // Bail out hard if would cause a loop
     }
     $looping = true;
 
@@ -608,6 +624,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
     if (($bitmask & IGNORE_REVISION_FILES) != 0) { // E.g. global.css.<timestamp>
         $ignore_filename_and_dir_name_patterns = array_merge($ignore_filename_and_dir_name_patterns, array(
             array('.*\.\d+.*', '.*'),
+            array('.*\.latest_in_cms_edit', '.*'),
         ));
     }
 

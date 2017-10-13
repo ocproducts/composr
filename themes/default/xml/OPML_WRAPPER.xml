@@ -14,7 +14,7 @@
 	<body>
 		<outline type="link" text="{ABOUT*}" title="{$SITE_NAME*}" url="{$BASE_URL*}" />
 		<outline text="Background">
-			<outline text="{$STRIP_TAGS`,{!OPML_INDEX_DESCRIPTION}}" />
+			<outline text="{$STRIP_TAGS`,{$COMCODE,{!OPML_INDEX_DESCRIPTION}}}" />
 		</outline>
 		<outline text="Atom">
 			{+START,LOOP,FEEDS}

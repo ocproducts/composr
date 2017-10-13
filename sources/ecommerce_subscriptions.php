@@ -58,8 +58,8 @@ function find_member_subscriptions($member_id, $usergroup_subscriptions_only = f
                     'id' => null,
                     's_type_code' => $sub_trans['t_type_code'],
                     's_member_id' => $member_id,
-                    's_state' => ($sub['timeout'] > time()) ? 'cancelled' : 'active',
-                    's_amount' => $sub_trans['t_amount'],
+                    's_state' => ($sub['timeout'] < time()) ? 'cancelled' : 'active',
+                    's_amount' => empty($sub_trans['t_amount']) ? float_to_raw_string(0.0) : $sub_trans['t_amount'],
                     's_special' => '',
                     's_time' => $sub_trans['t_time'],
                     's_auto_fund_source' => '',
@@ -218,6 +218,6 @@ function prepare_templated_subscription($subscription)
         'TERM_START_TIME' => get_timezoned_date($subscription['term_start_time'], false, false, false, true),
         'TERM_END_TIME' => get_timezoned_date($subscription['term_end_time'], false, false, false, true),
         'EXPIRY_TIME' => is_null($subscription['expiry_time']) ? '' : get_timezoned_date($subscription['expiry_time'], false, false, false, true),
-        'CANCEL_BUTTON' => ($subscription['state'] == 'active') ? make_cancel_button($subscription['auto_fund_key'], $subscription['via']) : new Tempcode(),
+        'CANCEL_BUTTON' => (($subscription['state'] == 'active') && ($subscription['auto_fund_key'] != '')) ? make_cancel_button($subscription['auto_fund_key'], $subscription['via']) : new Tempcode(),
     );
 }

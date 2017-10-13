@@ -44,7 +44,7 @@
 
 		{$SET,input,{INPUT}}
 
-		{+START,IF,{$GET,early_description}}
+		{+START,IF,{$AND,{$NOT,{$MATCH_KEY_MATCH,_WILD:quiz}},{$GET,early_description}}}
 			{+START,IF,{$NOT,{$MOBILE}}}
 				{+START,INCLUDE,FORM_SCREEN_FIELD_DESCRIPTION}RIGHT=1{+END}
 			{+END}
@@ -52,7 +52,7 @@
 
 		{$GET,input}
 
-		{+START,IF,{$NOT,{$GET,early_description}}}
+		{+START,IF,{$NAND,{$NOT,{$MATCH_KEY_MATCH,_WILD:quiz}},{$GET,early_description}}}
 			{+START,IF,{$NOT,{$MOBILE}}}
 				{+START,INCLUDE,FORM_SCREEN_FIELD_DESCRIPTION}{+END}
 			{+END}

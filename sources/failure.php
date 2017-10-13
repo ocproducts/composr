@@ -609,6 +609,7 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
     $ip_ban_todo = null;
     if ((($count >= $hack_threshold) || ($instant_ban)) && (get_option('autoban') != '0') && (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('unbannable_ip', 'ip', array('ip' => $alt_ip ? $ip2 : $ip))))) {
         // Test we're not banning a good bot
+        $se_ip_lists = array();
         $se_ip_lists[get_base_url() . '/data/no_banning.txt'] = false;
         $se_ip_lists[get_base_url() . '/data_custom/no_banning.txt'] = false;
         $ip_stack = array();
@@ -1070,6 +1071,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, 'Unable to save result set') === false) &&
         (strpos($text, 'Deadlock found when trying to get lock; try restarting transaction') === false) &&
         (strpos($text, 'MySQL client ran out of memory') === false) &&
+        (strpos($text, 'Server shutdown in progress') === false) &&
         (strpos($text, '.MAI') === false) && // MariaDB
         (strpos($text, '.MAD') === false) && // MariaDB
         (strpos($text, '.MYI') === false) && // MySQL

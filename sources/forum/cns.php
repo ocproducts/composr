@@ -90,7 +90,7 @@ class Forum_driver_cns extends Forum_driver_base
     public function get_drivered_table_prefix()
     {
         global $SITE_INFO;
-        return array_key_exists('cns_table_prefix', $SITE_INFO) ? $SITE_INFO['cns_table_prefix'] : get_table_prefix();
+        return empty($SITE_INFO['cns_table_prefix']) ? get_table_prefix() : $SITE_INFO['cns_table_prefix'];
     }
 
     /**
