@@ -280,7 +280,7 @@ Note that Composr will make reasonable/consistent choices if columns are missing
 
 Usergroups are referred to by name. You can put multiple usergroups in the usergroup column, separated by "/" (no spaces around this). The first usergroup provided is considered the primary usergroup. For example "A/B" puts someone in the usergroups named "A" and "B".
 
-Passwords may be given in raw text, for the specific new password. If there is a "/" in there, it is used to encode the hashed version of the password. This may confuse you a bit when looking at exported data, but don't worry, normal passwords written in there will transfer over correctly (you're not allowed to use a "/" in a password though, due to the previous encoding scheme). If no password is given, the default will be used (which you pick just before you start the import) -- if no default was given, blank will be used, so be careful.
+Passwords may be given in raw text, for the specific new password. If there is " / " in there, it is used to encode the hashed version of the password. This may confuse you a bit when looking at exported data, but don't worry, normal passwords written in there will transfer over correctly (you're not allowed to use a " / " in a password though, due to the previous encoding scheme). If no password is given, the default will be used (which you pick just before you start the import) -- if no default was given, blank will be used, so be careful.
 
 Boolean fields (true/false) are assumed false unless one of the following case-insensitive values is given: YES, 1, Y, ON.
 

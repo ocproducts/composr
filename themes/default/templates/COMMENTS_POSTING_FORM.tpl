@@ -3,16 +3,16 @@
 		{+START,IF,{USE_CAPTCHA}}
 			<div class="comments_captcha">
 				<div class="box box___comments_posting_form__captcha"><div class="box_inner">
-					{+START,IF,{$CONFIG_OPTION,audio_captcha}}
-						<p>{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}<label for="captcha">{+END}{!DESCRIPTION_CAPTCHA_2,<a onclick="return play_self_audio_link(this);" title="{!AUDIO_VERSION}" href="{$FIND_SCRIPT*,captcha,1}?mode=audio&amp;cache_break={$RAND&*}{$KEEP*,0,1}">{!AUDIO_VERSION}</a>}{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}</label>{+END}</p>
+					{+START,IF,{$CONFIG_OPTION,audio_captcha,1}}
+						<p>{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha,1}}}<label for="captcha">{+END}{!DESCRIPTION_CAPTCHA_2,<a onclick="return play_self_audio_link(this);" title="{!AUDIO_VERSION}" href="{$FIND_SCRIPT*,captcha,1}?mode=audio&amp;cache_break={$RAND&*}{$KEEP*,0,1}">{!AUDIO_VERSION}</a>}{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha,1}}}</label>{+END}</p>
 					{+END}
-					{+START,IF,{$NOT,{$CONFIG_OPTION,audio_captcha}}}
-						<p>{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}<label for="captcha">{+END}{!DESCRIPTION_CAPTCHA_3}{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}</label>{+END}</p>
+					{+START,IF,{$NOT,{$CONFIG_OPTION,audio_captcha,1}}}
+						<p>{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha,1}}}<label for="captcha">{+END}{!DESCRIPTION_CAPTCHA_3}{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha,1}}}</label>{+END}</p>
 					{+END}
-					{+START,IF,{$CONFIG_OPTION,css_captcha}}
+					{+START,IF,{$CONFIG_OPTION,css_captcha,1}}
 						<iframe{$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} id="captcha_frame" class="captcha_frame" title="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" src="{$FIND_SCRIPT*,captcha}?cache_break={$RAND&*}{$KEEP*,0,1}">{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}</iframe>
 					{+END}
-					{+START,IF,{$NOT,{$CONFIG_OPTION,css_captcha}}}
+					{+START,IF,{$NOT,{$CONFIG_OPTION,css_captcha,1}}}
 						<img id="captcha_image" title="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" alt="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" src="{$FIND_SCRIPT*,captcha}?cache_break={$RAND&*}{$KEEP*,0,1}" />
 					{+END}
 					<input maxlength="6" size="8" class="input_text_required" value="" type="text" id="captcha" name="captcha" />
@@ -174,7 +174,7 @@
 								{$SET,needs_msg_label,{$OR,{$GET,GET_TITLE},{GET_EMAIL},{$AND,{$IS_GUEST},{$CNS}}}}
 								{+START,IF,{$GET,needs_msg_label}}
 									<div class="vertical_alignment">
-										<a onclick="return open_link_as_overlay(this);" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="" src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" /></a>
+										<a onclick="return open_link_as_overlay(this);" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="{!COMCODE_MESSAGE,Comcode}" src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" /></a>
 										<label for="post">{!POST_COMMENT}:</label>
 									</div>
 								{+END}
@@ -193,7 +193,7 @@
 
 								{+START,IF,{$NOT,{$GET,needs_msg_label}}}
 									<div>
-										<a onclick="return open_link_as_overlay(this);" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="" src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical_alignment" /></a>
+										<a onclick="return open_link_as_overlay(this);" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="{!COMCODE_MESSAGE,Comcode}" src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical_alignment" /></a>
 										<label for="post" class="vertical_alignment">{!POST_COMMENT}:</label>
 									</div>
 								{+END}
@@ -233,7 +233,7 @@
 								{+END}
 
 								{+START,IF,{$MOBILE}}
-									{+START,IF,{$CONFIG_OPTION,js_captcha}}
+									{+START,IF,{$CONFIG_OPTION,js_captcha,1}}
 										<noscript>{!JAVASCRIPT_REQUIRED}</noscript>
 
 										{+START,IF_NON_EMPTY,{$TRIM,{$GET,CAPTCHA}}}
@@ -243,7 +243,7 @@
 											//]]></script>
 										{+END}
 									{+END}
-									{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}
+									{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha,1}}}
 										{$GET,CAPTCHA}
 									{+END}
 								{+END}
@@ -256,7 +256,7 @@
 
 				<div class="comments_posting_form_end">
 					{+START,IF,{$NOT,{$MOBILE}}}
-						{+START,IF,{$CONFIG_OPTION,js_captcha}}
+						{+START,IF,{$CONFIG_OPTION,js_captcha,1}}
 							<noscript>{!JAVASCRIPT_REQUIRED}</noscript>
 
 							{+START,IF_NON_EMPTY,{$TRIM,{$GET,CAPTCHA}}}
@@ -266,7 +266,7 @@
 								//]]></script>
 							{+END}
 						{+END}
-						{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}
+						{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha,1}}}
 							{$GET,CAPTCHA}
 						{+END}
 					{+END}

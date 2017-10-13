@@ -395,7 +395,11 @@ abstract class Standard_crud_module
                     breadcrumb_set_parents(array_merge($BREADCRUMB_SET_PARENTS, array(array('_SELF:_SELF:browse', do_lang_tempcode(is_null($this->menu_label) ? 'MENU' : $this->menu_label)), array('_SELF:_SELF:' . substr($type, 1), do_lang_tempcode('CHOOSE')))));
                 } else {
                     if (($this->catalogue) && (either_param_string('catalogue_name', '') != '')) {
-                        $catalogue_title = get_translated_text($GLOBALS['SITE_DB']->query_select_value('catalogues', 'c_title', array('c_name' => either_param_string('catalogue_name'))));
+                        $_catalogue_title = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_title', array('c_name' => either_param_string('catalogue_name')));
+                        if ($_catalogue_title === null) {
+                            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue'));
+                        }
+                        $catalogue_title = get_translated_text($_catalogue_title);
                         breadcrumb_set_parents(array_merge($BREADCRUMB_SET_PARENTS, array(array('_SELF:_SELF:browse:catalogue_name=' . either_param_string('catalogue_name', ''), $catalogue_title))));
                     } else {
                         breadcrumb_set_parents(array_merge($BREADCRUMB_SET_PARENTS, array(array('_SELF:_SELF:browse', do_lang_tempcode(is_null($this->menu_label) ? 'MENU' : $this->menu_label)))));
@@ -885,6 +889,11 @@ abstract class Standard_crud_module
 
         // Add in custom fields
         if ($tie_in_custom_form_fields) {
+            if ($this->posting_form_title !== null) {
+                global $BLOCK_EXTRA_POSTING_FIELDS;
+                $BLOCK_EXTRA_POSTING_FIELDS = true;
+            }
+
             require_code('fields');
             append_form_custom_fields($this->content_type, null, $fields, $hidden, null, true, strpos($fields->evaluate(), 'form_table_field_spacer') !== false);
         }
@@ -1086,9 +1095,10 @@ abstract class Standard_crud_module
      * @param  ?array $where Extra where clauses (null: none)
      * @param  boolean $force_site_db Whether to always access using the site database
      * @param  string $join Extra join clause for our query (blank: none)
+     * @param  ?integer $max Maximum to show (null: standard)
      * @return array A pair: Rows for selection from, Total results
      */
-    public function get_entry_rows($recache = false, $orderer = null, $where = null, $force_site_db = false, $join = '')
+    public function get_entry_rows($recache = false, $orderer = null, $where = null, $force_site_db = false, $join = '', $max = null)
     {
         if ((!$recache) && (!is_null($orderer)) && (!is_null($where))) {
             if (isset($this->cached_entry_rows)) {
@@ -1127,7 +1137,9 @@ abstract class Standard_crud_module
             return array(array(), 0);
         }
         $start = get_param_integer('start', 0);
-        $max = get_param_integer('max', 20);
+        if ($max === null) {
+            $max = get_param_integer('max', 20);
+        }
         $rows = $db->query_select($table . $join, array('r.*'), $where, 'ORDER BY ' . $orderer, $max, $start, false, isset($GLOBALS['TABLE_LANG_FIELDS_CACHE'][$table_raw]) ? $GLOBALS['TABLE_LANG_FIELDS_CACHE'][$table_raw] : null);
         if ($force_site_db) {
             $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;
@@ -1161,7 +1173,7 @@ abstract class Standard_crud_module
      */
     public function create_selection_list_entries()
     {
-        list($_entries,) = $this->get_entry_rows();
+        list($_entries,) = $this->get_entry_rows(false, null, null, false, '', intval(get_option('general_safety_listing_limit')));
 
         $entries = new Tempcode();
         foreach ($_entries as $key => $row) {
@@ -1397,6 +1409,11 @@ abstract class Standard_crud_module
 
         // Add in custom fields
         if ($tie_in_custom_form_fields) {
+            if ($this->posting_form_title !== null) {
+                global $BLOCK_EXTRA_POSTING_FIELDS;
+                $BLOCK_EXTRA_POSTING_FIELDS = true;
+            }
+
             require_code('fields');
             append_form_custom_fields($this->content_type, $id, $fields, $hidden, null, true, strpos($fields->evaluate(), 'form_table_field_spacer') !== false);
         }

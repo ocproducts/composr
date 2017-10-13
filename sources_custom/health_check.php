@@ -361,13 +361,19 @@ abstract class Hook_Health_Check
      * Get the URL for a page-link.
      *
      * @param  string $page_link The page-link
-     * @param  string The URL
+     * @return string The URL
      */
     protected function get_page_url($page_link = ':')
     {
         global $HEALTH_CHECK_PAGE_URLS_CACHE;
         if (!array_key_exists($page_link, $HEALTH_CHECK_PAGE_URLS_CACHE)) {
-            $HEALTH_CHECK_PAGE_URLS_CACHE[$page_link] = page_link_to_url($page_link);
+            $url = page_link_to_url($page_link);
+            if (strpos($url, '?') === false) {
+                $url .= '?keep_su=Guest';
+            } else {
+                $url .= '&keep_su=Guest';
+            }
+            $HEALTH_CHECK_PAGE_URLS_CACHE[$page_link] = $url;
         }
         return $HEALTH_CHECK_PAGE_URLS_CACHE[$page_link];
     }
@@ -401,20 +407,39 @@ abstract class Hook_Health_Check
     }
 
     /**
-     * Get the website domain name.
+     * Get the website domain names.
      *
-     * @param  string Domain name
+     * @param boolean Whether to strip www from domain names 
+     * @return array Domain names
      */
-    protected function get_domain()
+    protected function get_domains($remap_www = true)
     {
-        return parse_url(get_base_url(), PHP_URL_HOST);
+        $domains = array();
+
+        $domains[''] = parse_url(get_base_url(), PHP_URL_HOST);
+
+        global $SITE_INFO;
+        $zl = strlen('ZONE_MAPPING_');
+        foreach ($SITE_INFO as $key => $_val) {
+            if ($key !== '' && $key[0] === 'Z' && substr($key, 0, $zl) === 'ZONE_MAPPING_') {
+                $domains[substr($key, strlen('ZONE_MAPPING_'))] = $_val[0];
+            }
+        }
+
+        if ($remap_www) {
+            foreach ($domains as &$domain) {
+                $domain = preg_replace('#^www\.#', '', $domain);
+            }
+        }
+
+        return array_unique($domains);
     }
 
     /**
      * Find whether a domain is local.
      *
      * @param  ?string $domain The domain (null: website domain)
-     * @param  boolean Whether it is local
+     * @return boolean Whether it is local
      */
     protected function is_localhost_domain($domain = null)
     {
@@ -428,7 +453,7 @@ abstract class Hook_Health_Check
     /**
      * Get a list of e-mail domains the site uses.
      *
-     * @param  array List of e-mail domains
+     * @return array List of e-mail domains
      */
     protected function get_mail_domains()
     {
@@ -456,7 +481,7 @@ abstract class Hook_Health_Check
      * Download a page by page-link.
      *
      * @param  string $page_link Page-link
-     * @param  string Page content
+     * @return string Page content
      */
     protected function get_page_content($page_link = ':')
     {
@@ -466,7 +491,7 @@ abstract class Hook_Health_Check
 
             // Server blocked to access itself
             if ($page_link == ':') {
-                $this->assert_true($HEALTH_CHECK_PAGE_CONTENT_CACHE[$page_link] !== null, 'The server cannot download itself');
+                $this->assert_true($HEALTH_CHECK_PAGE_CONTENT_CACHE[$page_link] !== null, 'The server could not download from itself, try setting the "Work-around IP forwarding" server option to [tt]1[/tt]');
             }
         }
         return $HEALTH_CHECK_PAGE_CONTENT_CACHE[$page_link];
@@ -549,7 +574,7 @@ abstract class Hook_Health_Check
      *
      * @param  string $type API type
      * @param  array $params Map of parameters
-     * @param  mixed API result
+     * @return mixed API result
      */
     protected function call_composr_homesite_api($type, $params)
     {

@@ -51,7 +51,8 @@ class Hook_health_check_security extends Hook_Health_Check
     {
         // API https://developers.google.com/safe-browsing/v4/
 
-        if ($check_context == CHECK_CONTEXT__INSTALL) {
+        if ($check_context != CHECK_CONTEXT__LIVE_SITE) {
+            // Google can't index a non-live site, and thus won't report Safe Browsing results
             return;
         }
 
@@ -107,20 +108,28 @@ class Hook_health_check_security extends Hook_Health_Check
                 'threatEntries' => $urls,
             ),
         );
-        $_result = http_download_file($url, null, false, false, 'Composr', array(json_encode($data)), null, null, null, null, null, null, null, 200.0, true, null, null, null, 'application/json');
+
+        for ($i = 0; $i < 3; $i++) { // Try a few times in case of some temporary network issue or Google issue
+            $_result = http_download_file($url, null, false, false, 'Composr', array(json_encode($data)), null, null, null, null, null, null, null, 200.0, true, null, null, null, 'application/json');
+
+            if ($_result !== null) {
+                break;
+            }
+            sleep(5);
+        }
 
         $this->assert_true(!in_array($GLOBALS['HTTP_MESSAGE'], array('401', '403')), 'Error with our Google Safe Browsing API key (' . $GLOBALS['HTTP_MESSAGE'] . ')');
-        $this->assert_true(!in_array($GLOBALS['HTTP_MESSAGE'], array('400', '501', '503', '504')), 'Internal error with our Google Safe Browsing check (' . $GLOBALS['HTTP_MESSAGE'] . ')');
+        $this->assert_true(!in_array($GLOBALS['HTTP_MESSAGE'], array('400', '501', '503', '504')), 'Internal error with our Google Safe Browsing check (' . $GLOBALS['HTTP_MESSAGE'] . '); only works on pages that have been indexed by Google');
 
         $ok = in_array($GLOBALS['HTTP_MESSAGE'], array('200'));
         if ($ok) {
             $result = json_decode($_result, true);
 
             if (empty($result['matches'])) {
-                $this->assert_true(true, 'Malware advisory provided by Google (https://developers.google.com/safe-browsing/v3/advisory)');
+                $this->assert_true(true, 'Malware advisory provided by [url="Google"]https://developers.google.com/safe-browsing/v3/advisory[/url]');
             } else {
                 foreach ($result['matches'] as $match) {
-                    $this->assert_true(false, 'Malware advisory provided by Google ' . json_encode($match) . ' (https://developers.google.com/safe-browsing/v3/advisory)');
+                    $this->assert_true(false, 'Malware advisory provided by [url="Google"]https://developers.google.com/safe-browsing/v3/advisory[/url], ' . json_encode($match));
                 }
             }
         } else {
@@ -185,19 +194,22 @@ class Hook_health_check_security extends Hook_Health_Check
 
         if (!$this->is_localhost_domain()) {
             if (php_function_allowed('shell_exec')) {
-                $domain = $this->get_domain();
-                $regexp = '#\nNon-authoritative answer:\nName:\s+' . $domain . '\nAddress:\s+(.*)\n#';
+                $domains = $this->get_domains();
 
-                $matches_local = array();
-                $dns_lookup_local = shell_exec('nslookup ' . $domain);
-                $matched_local = preg_match($regexp, $dns_lookup_local, $matches_local);
-                $matches_remote = array();
-                $dns_lookup_remote = shell_exec('nslookup ' . $domain . ' 8.8.8.8');
-                $matched_remote = preg_match($regexp, $dns_lookup_remote, $matches_remote);
-                if (($matched_local != 0) && ($matched_remote != 0)) {
-                    $this->assert_true($matches_local[1] == $matches_remote[1], 'DNS lookup for our domain seems to be looking up differently ([tt]' . $matches_local[1] . '[/tt] vs [tt]' . $matches_remote[1] . '[/tt])');
-                } else {
-                    $this->state_check_skipped('Failed to get a recognisable DNS resolution via the command line');
+                foreach ($domains as $domain) {
+                    $regexp = '#\nName:\s+' . $domain . '\nAddress:\s+(.*)\n#';
+
+                    $matches_local = array();
+                    $dns_lookup_local = shell_exec('nslookup ' . $domain);
+                    $matched_local = preg_match($regexp, $dns_lookup_local, $matches_local);
+                    $matches_remote = array();
+                    $dns_lookup_remote = shell_exec('nslookup ' . $domain . ' 8.8.8.8');
+                    $matched_remote = preg_match($regexp, $dns_lookup_remote, $matches_remote);
+                    if (($matched_local != 0) && ($matched_remote != 0)) {
+                        $this->assert_true($matches_local[1] == $matches_remote[1], 'DNS lookup for our domain seems to be looking up differently ([tt]' . $matches_local[1] . '[/tt] vs [tt]' . $matches_remote[1] . '[/tt])');
+                    } else {
+                        $this->state_check_skipped('Failed to get a recognisable DNS resolution via the command line for [tt]' . $domain . '[/tt]');
+                    }
                 }
             } else {
                 $this->state_check_skipped('PHP shell_exec function not available');

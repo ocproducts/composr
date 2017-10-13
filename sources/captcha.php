@@ -105,12 +105,12 @@ function captcha_script()
     $characters = strlen($code_needed);
     $fonts = array();
     $width = 20;
-    for ($i = 0; $i < $characters; $i++) {
+    for ($i = 0; $i < max(1, $characters); $i++) {
         $font = mt_rand(4, 5); // 1 is too small
         $fonts[] = $font;
         $width += imagefontwidth($font) + 2;
+        $height = imagefontheight($font) + 20;
     }
-    $height = imagefontheight($font) + 20;
     $img = imagecreate($width, $height);
     $black = imagecolorallocate($img, 0, 0, 0);
     $off_black = imagecolorallocate($img, mt_rand(1, 45), mt_rand(1, 45), mt_rand(1, 45));

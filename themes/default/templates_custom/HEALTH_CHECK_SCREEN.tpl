@@ -35,7 +35,7 @@
 	<p class="proceed_button">
 		<input class="button_screen buttons__proceed" type="submit" value="{!HEALTH_CHECK}" />
 	</p>
-</p>
+</form>
 
 {+START,IF_PASSED,RESULTS}
 	{RESULTS}

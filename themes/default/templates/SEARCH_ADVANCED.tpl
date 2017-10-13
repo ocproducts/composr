@@ -1,5 +1,5 @@
 {+START,IF,{$OR,{$AND,{UNDERNEATH},{$IS_NON_EMPTY,{TREE}}},{$IS_NON_EMPTY,{OPTIONS}}}}
-	<tr>
+	<tr class="search_form_screen_advanced">
 		<td colspan="3">
 			<h3 class="search_advanced_title">{!ADVANCED}&hellip;</h3>
 

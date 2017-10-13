@@ -170,6 +170,7 @@ class Block_main_forum_news
                 'NEWS_TITLE' => $news_title,
                 'NEWS_TITLE_PLAIN' => $news_title,
                 'CATEGORY' => '',
+                '_CATEGORY' => placeholder_id(),
                 'IMG' => '',
                 '_IMG' => '',
                 'AUTHOR' => $author,

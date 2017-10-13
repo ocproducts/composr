@@ -585,16 +585,16 @@ http://people.dsv.su.se/~jpalme/ietf/ietf-mail-attributes.html
  * @param  ?array $extra_cc_addresses Extra CC addresses to use (null: none)
  * @param  ?array $extra_bcc_addresses Extra BCC addresses to use (null: none)
  * @param  ?TIME $require_recipient_valid_since Implement the Require-Recipient-Valid-Since header (null: no restriction)
- * @return ?Tempcode A full page (not complete XHTML) piece of Tempcode to output (null: it worked so no Tempcode message)
+ * @return boolean Success status
  */
 function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = null, $from_email = '', $from_name = '', $priority = 3, $attachments = null, $no_cc = false, $as = null, $as_admin = false, $in_html = false, $coming_out_of_queue = false, $mail_template = 'MAIL', $bypass_queue = null, $extra_cc_addresses = null, $extra_bcc_addresses = null, $require_recipient_valid_since = null)
 {
     if (running_script('stress_test_loader')) {
-        return null;
+        return false;
     }
 
     if (@$GLOBALS['SITE_INFO']['no_email_output'] === '1') {
-        return null;
+        return false;
     }
 
     if ($priority != 1 && $to_email !== null) {
@@ -604,7 +604,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             }
 
             if (count($to_email) == 0) {
-                return null;
+                return true;
             }
         }
     }
@@ -676,13 +676,13 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         ), false, !$through_queue); // No errors if we don't NEED this to work
 
         if ($through_queue) {
-            return null;
+            return true;
         }
     }
 
     global $SENDING_MAIL;
     if ($SENDING_MAIL) {
-        return null;
+        return false;
     }
     $SENDING_MAIL = true;
 
@@ -703,7 +703,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     $to_email = $to_email_new;
     if ($to_email == array()) {
         $SENDING_MAIL = false;
-        return null;
+        return true;
     }
     if ($to_email[0] == $staff_address) {
         $lang = get_site_default_lang();
@@ -991,10 +991,12 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 
             require_code('site');
             attach_message(!is_null($error) ? make_string_tempcode($error) : do_lang_tempcode('MAIL_FAIL', escape_html(get_option('staff_address'))), 'warn');
+
+            return false;
         }
 
         $SENDING_MAIL = false;
-        return null;
+        return true;
     }
 
     $base64_encode = (get_value('base64_emails') === '1'); // More robust, but more likely to be spam-blocked, and some servers can scramble it.
@@ -1263,10 +1265,11 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         $SENDING_MAIL = false;
         require_code('site');
         attach_message(!is_null($error) ? make_string_tempcode($error) : do_lang_tempcode('MAIL_FAIL', escape_html(get_option('staff_address'))), 'warn');
+        return false;
     }
 
     $SENDING_MAIL = false;
-    return null;
+    return true;
 }
 
 /**
@@ -1495,7 +1498,7 @@ function form_to_email_entry_script()
     $redirect = get_param_string('redirect', null);
     if (!is_null($redirect)) {
         require_code('site2');
-        assign_refresh($url, 0.0);
+        assign_refresh($redirect, 0.0);
         $tpl = redirect_screen($title, $redirect, $text);
     } else {
         $tpl = do_template('INFORM_SCREEN', array('_GUID' => 'e577a4df79eefd9064c14240cc99e947', 'TITLE' => $title, 'TEXT' => $text));
@@ -1529,7 +1532,7 @@ function form_to_email($subject = null, $intro = '', $fields = null, $to_email =
     mail_wrap($subject, $message_raw, is_null($to_email) ? null : array($to_email), $to_name, $from_email, $from_name, 3, $attachments, false, null, false, false, false, 'MAIL', count($attachments) != 0);
 
     if ($from_email != '' && get_option('message_received_emails') == '1') {
-        mail_wrap(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $subject), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $from_email), array($from_email), null, '', '', 3, null, false, get_member());
+        mail_wrap(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $subject), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $message_raw), array($from_email), empty($from_name) ? null : $from_name, '', '', 3, null, false, get_member());
     }
 }
 

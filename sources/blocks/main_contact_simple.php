@@ -75,6 +75,7 @@ class Block_main_contact_simple
             require_code('mail');
 
             $email_from = trim(post_param_string('email', $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member())));
+            $from_name = trim(post_param_string('poster_name_if_guest', post_param_string('name', $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true))));
 
             if ($email_from != '') {
                 require_code('type_sanitisation');
@@ -85,10 +86,10 @@ class Block_main_contact_simple
 
             $title = post_param_string('title');
 
-            mail_wrap($subject_prefix . $title . $subject_suffix, $body_prefix . $post . $body_suffix, array($to), null, $email_from, $GLOBALS['FORUM_DRIVER']->get_username(get_member()), 3, null, false, get_member());
+            mail_wrap($subject_prefix . $title . $subject_suffix, $body_prefix . $post . $body_suffix, array($to), null, $email_from, $from_name, 3, null, false, get_member());
 
             if ($email_from != '' && get_option('message_received_emails') == '1') {
-                mail_wrap(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $title), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $post), array($email_from), null, '', '', 3, null, false, get_member());
+                mail_wrap(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $title), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $post), array($email_from), empty($from_name) ? null : $from_name, '', '', 3, null, false, get_member());
             }
 
             attach_message(do_lang_tempcode('MESSAGE_SENT'), 'inform');

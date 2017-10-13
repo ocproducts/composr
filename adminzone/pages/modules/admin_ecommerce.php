@@ -28,7 +28,7 @@ class Module_admin_ecommerce extends Standard_crud_module
     public $lang_type = 'USERGROUP_SUBSCRIPTION';
     public $select_name = 'TITLE';
     public $select_name_description = 'DESCRIPTION_TITLE';
-    public $menu_label = 'ECOMMERCE';
+    public $menu_label = 'USERGROUP_SUBSCRIPTIONS';
     public $table = 'f_usergroup_subs';
     public $orderer = 's_title';
     public $title_is_multi_lang = true;
@@ -126,9 +126,9 @@ class Module_admin_ecommerce extends Standard_crud_module
             $this->title = get_screen_title('CUSTOM_PRODUCT_USERGROUP');
         }
 
-        if (($type == 'add') || ($type == '_add') || ($type == 'edit') || ($type == '_edit') || ($type == '__edit')) {
+        if (($type == 'browse') || ($type == 'add') || ($type == '_add') || ($type == 'edit') || ($type == '_edit') || ($type == '__edit')) {
             if (get_forum_type() == 'cns') {
-                breadcrumb_set_parents(array(array('_SEARCH:admin_cns_members:browse', do_lang_tempcode('MEMBERS'))));
+                breadcrumb_set_parents(array(array('_SEARCH:admin:setup', do_lang_tempcode('SETUP')), array('_SEARCH:admin_cns_members:browse', do_lang_tempcode('MEMBERS'))));
             }
         }
 

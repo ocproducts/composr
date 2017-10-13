@@ -74,39 +74,47 @@ class Hook_health_check_mistakes_user_ux extends Hook_Health_Check
             return;
         }
 
-        $domain = $this->get_domain();
-        $parts = explode('.', $domain);
+        $domains = $this->get_domains(false);
 
-        if ($parts[0] == 'www') {
-            array_shift($parts);
-            $wrong_domain = implode('.', $parts);
-        } else {
-            $wrong_domain = 'www.' . $domain;
-        }
+        foreach ($domains as $zone => $domain) {
+            $parts = explode('.', $domain);
 
-        $lookup = @gethostbyname($wrong_domain);
-        $ok = ($lookup != $wrong_domain);
-        $this->assert_true($ok, 'Could not lookup [tt]' . $wrong_domain . '[/tt], should exist for it to redirect from [tt]' . $domain . '[/tt]');
-        if (!$ok) {
-            return;
-        }
+            if ($parts[0] == 'www') {
+                array_shift($parts);
+                $wrong_domain = implode('.', $parts);
+            } else {
+                $wrong_domain = 'www.' . $domain;
+            }
 
-        $url = $this->get_page_url(':privacy');
-        $wrong_url = str_replace('://' . $domain, '://' . $wrong_domain, $url);
+            $lookup = @gethostbyname($wrong_domain);
+            $ok = ($lookup != $wrong_domain);
+            $this->assert_true($ok, 'Could not lookup [tt]' . $wrong_domain . '[/tt], should exist for it to redirect from [tt]' . $domain . '[/tt]');
+            if (!$ok) {
+                return;
+            }
 
-        global $HTTP_DOWNLOAD_URL, $HTTP_MESSAGE;
+            //$url = preg_replace('#(://.*)/.*$#U', '$1/uploads/index.html', $this->get_page_url(':'));
+            if ($zone == '') {
+                $url = $this->get_page_url($zone . ':privacy');
+            } else {
+                $url = $this->get_page_url($zone . ':');
+            }
+            $wrong_url = str_replace('://' . $domain, '://' . $wrong_domain, $url);
 
-        http_download_file($wrong_url, null, false);
-        $redirected = ($HTTP_DOWNLOAD_URL != $wrong_url);
-        $this->assert_true($redirected, 'Domain [tt]' . $wrong_domain . '[/tt] is not redirecting to [tt]' . $domain . '[/tt]');
+            global $HTTP_DOWNLOAD_URL, $HTTP_MESSAGE;
 
-        if ($redirected) {
-            $ok = ($HTTP_DOWNLOAD_URL == $url);
-            $this->assert_true($ok, 'Domain [tt]' . $wrong_domain . '[/tt] is not redirecting to deep URLs of [tt]' . $domain . '[/tt]');
+            http_download_file($wrong_url, null, false);
+            $redirected = ($HTTP_DOWNLOAD_URL != $wrong_url);
+            $this->assert_true($redirected, 'Domain [tt]' . $wrong_domain . '[/tt] is not redirecting to [tt]' . $domain . '[/tt]');
 
-            http_download_file($wrong_url, null, false, true);
-            $ok = ($HTTP_MESSAGE == '301');
-            $this->assert_true($ok, 'Domain [tt]' . $wrong_domain . '[/tt] is not redirecting to [tt]' . $domain . '[/tt] with a [tt]301[/tt] code ([tt]' . $HTTP_MESSAGE . '[/tt] code used)');
+            if ($redirected) {
+                $ok = ($HTTP_DOWNLOAD_URL == $url);
+                $this->assert_true($ok, 'Domain [tt]' . $wrong_domain . '[/tt] is not redirecting to deep URLs of [tt]' . $domain . '[/tt]');
+
+                http_download_file($wrong_url, null, false, true);
+                $ok = ($HTTP_MESSAGE == '301');
+                $this->assert_true($ok, 'Domain [tt]' . $wrong_domain . '[/tt] is not redirecting to [tt]' . $domain . '[/tt] with a [tt]301[/tt] code ([tt]' . $HTTP_MESSAGE . '[/tt] code used)');
+            }
         }
     }
 
@@ -128,6 +136,10 @@ class Hook_health_check_mistakes_user_ux extends Hook_Health_Check
 
         if (empty($SITE_INFO['base_url'])) {
             return;
+        }
+
+        if (strpos(get_option('ip_forwarding'), '://') !== false) {
+            return; // Will mess up protocol
         }
 
         $protocol = parse_url($SITE_INFO['base_url'], PHP_URL_SCHEME);

@@ -68,9 +68,112 @@ For dates and times we use the PHP [url]http://php.net/manual/en/function.strfti
  - [tt]%l[/tt] is the 12-hour clock hour but will not have a leading space digit (because that's ugly)
  - [tt]%o[/tt] is an English date ordinal (e.g. [tt]st[/tt] or [tt]th[/tt])
 
+[title="4"]Dates[/title]
+
+Commonly American users will want to use American-style short-form and long-form dates. That is, [i]2-14-2017[/i] instead of [i]14-2-2017[/i], and [i]February 14th 2017[/i] instead of [i]14th February 2017[/i].
+
+This is handled automatically via the "American English" configuration option, which remaps the default language string values for you.
+
+However, it is useful for us to document the strings involved, and an illustrative example of date-string editing for non-English users, so...
+{|
+! String
+! Purpose
+! Most English-speaking countries
+! American
+|-
+| [tt]date_concise_near_date[/tt]
+([tt]global[/tt] language file)
+| A date in concise long-form ~ within year
+| [tt]%e %b[/tt] (e.g. 14 Feb)
+| [tt]%b %e[/tt] (e.g. Feb 14)
+|-
+| [tt]date_no_year[/tt]
+([tt]global[/tt] language file)
+| A date in verbose long-form ~ within year
+| [tt]%e%o %B %Y[/tt] (e.g. 14th February)
+| [tt]%B %e%o %Y[/tt] (e.g. February 14th)
+|-
+| [tt]date_regular_date[/tt]
+([tt]global[/tt] language file)
+| A date in regular long-form
+| [tt]%e%o %B %Y[/tt] (e.g. 14th February 2017)
+| [tt]%B %e%o %Y[/tt] (e.g. February 14th 2017)
+|-
+| [tt]date_verbose_date[/tt]
+([tt]global[/tt] language file)
+| A date in verbose long-form
+| [tt]%a %e%o %B %Y[/tt] (e.g. Mon 14th February 2017)
+| [tt]%a %B %e%o %Y[/tt] (e.g. Mon February 14th 2017)
+|-
+| [tt]calendar_date[/tt]
+([tt]calendar[/tt] language file)
+| A date in short-form (calendar-only)
+| [tt]%d-%m-%Y[/tt] (e.g. 14-02-2017)
+| [tt]%m-%d-%Y[/tt] (e.g. 02-14-2017)
+|-
+| [tt]calendar_date_verbose[/tt]
+([tt]calendar[/tt] language file)
+| A date in verbose long-form (calendar-only)
+| [tt]%a %e%o %B %Y[/tt] (e.g. Mon 14th February 2017)
+| [tt]%a %B %e%o %Y[/tt] (e.g. Mon February 14th 2017)
+|-
+| [tt]calendar_day_of_month_verbose[/tt]
+([tt]calendar[/tt] language file)
+| A date within a month (calendar-only)
+| [tt]%a %e%o[/tt] (e.g. Mon 14th)
+| [tt]%a %e%o[/tt] (e.g. Mon 14th)
+|}
+[staff_note]TODO: Update for v11; verbose gone, regular name shortened[/staff_note]
+
+Non-English speaking users may want to make other changes, e.g. remove [tt]%o[/tt] so that suffixes like [tt]th[/tt] and [tt]st[/tt] aren't used.
+
+We define dates with some different variations. This is because practically it isn't appropriate to try and use only one format across the entire system. The calendar may use date formats from [tt]global[/tt], but the rest of Composr will not use date formats from the calendar.
+
+[title="4"]Times[/title]
+
+Commonly non-English users will want to switch to a 24-hour clock for time. Here's some guidance...
+{|
+! String
+! Purpose
+! Most English-speaking countries
+! Most other countries
+|-
+| [tt]date_regular_time[/tt]
+([tt]global[/tt] language file)
+| A time in regular form 
+| [tt]%l:%M %p[/tt] (e.g. 8:14 am [i]or[/i] 8:14 pm)
+| [tt]%H:%M[/tt] (e.g. 08:14 or 20:14)
+|-
+| [tt]date_verbose_time[/tt]
+([tt]global[/tt] language file)
+| A time in verbose form (calendar-only)
+| [tt]%l:%M %p[/tt] (e.g. 8:14 am [i]or[/i] 8:14 pm)
+| [tt]%H:%M[/tt] (e.g. 08:14 or 20:14)
+|-
+| [tt]calendar_minute[/tt]
+([tt]calendar[/tt] language file)
+| A time (calendar-only)
+| [tt]%l:%M %p[/tt] (e.g. 8:14 am [i]or[/i] 8:14 pm)
+| [tt]%H:%M[/tt] (e.g. 08:14 or 20:14)
+|-
+| [tt]calendar_date_range_single[/tt]
+([tt]calendar[/tt] language file)
+| A time range happening on a particular date ~ within month (calendar-only)
+| [tt]%l:%M %p (%e%o)[/tt] (e.g. 8:14 am (14th) [i]or[/i] 8:14 pm (14th))
+| [tt]%l:%M %p (%e%o)[/tt] (e.g. 8:14 am (14th) [i]or[/i] 8:14 pm (14th))
+|-
+| [tt]calendar_date_range_single_long[/tt]
+([tt]calendar[/tt] language file)
+| A time range happening on a particular date (calendar-only)
+| [tt]%l:%M %p (%e%o %b)[/tt] (e.g. 8:14 am (14th Feb) [i]or[/i] 8:14 pm (14th Feb))
+| [tt]%l:%M %p (%b %e%o)[/tt] (e.g. 8:14 am (Feb 14th) [i]or[/i] 8:14 pm (Feb 14th))
+|}
+
+We define times with some different variations. This is because practically it isn't appropriate to try and use only one format across the entire system. The calendar may use time formats from [tt]global[/tt], but the rest of Composr will not use time formats from the calendar.
+
 [title="4"]Locales[/title]
 
-Setting the correct locale may be tricky. Different operating systems may use a number of different values, for example in English:
+Setting the correct locale may be tricky. Different operating systems may use a number of different values, for example in English we list all these locales:
  - [tt]en-GB.UTF-8[/tt] -- British English, for systems that use hyphens and support a flag for utf-8 output
  - [tt]en_GB.UTF-8[/tt] -- British English, for systems that use underscores and support a flag for utf-8 output
  - [tt]en-US.UTF-8[/tt] -- American English (maybe British is not installed), for systems that use hyphens and support a flag for utf-8 output
@@ -81,6 +184,9 @@ Setting the correct locale may be tricky. Different operating systems may use a 
  - [tt]en-US[/tt] -- American English (maybe British is not installed), for systems that use hyphens and do not support a flag for utf-8 output
  - [tt]en_US[/tt] -- American English (maybe British is not installed), for systems that use hyphens and do not support a flag for utf-8 output
  - [tt]en[/tt] -- English (maybe specific British or American is not installed), for systems that do not support a flag for utf-8 output
+
+For German, the following should work [tt]de-DE.UTF-8,de_DE.UTF-8,de.UTF-8,de-DE,de_DE,de[/tt] (a little simpler as we don't normally worry about different variants of German).
+
 Microsoft Windows is good at accepting anything that vaguely matches, but it unfortunately cannot produce utf-8. So if you want a non-Latin-based language to work on Windows you'll need to fill in the [tt]locale_subst[/tt] language string with all the long and short month and day names. See what the Tamil language pack does as an example:
 [tt]locale_subst=Monday=திங்கட்கிழமை,Tuesday=செவ்வாய்க்கிழமை,Wednesday=புதன்கிழமை,Thursday=வியாழக்கிழமை,Friday=வெள்ளிக்கிழமை,Saturday=சனிக்கிழமை,Sunday=ஞாயிற்றுக்கிழமை,Mon=தி,Tue=செ,Wed=பு,Thu=வி,Fri=வெ,Sat=ச,Sun=ஞா,January=ஜனவரி,February=பிப்ரவரி,March=மார்ச்,April=ஏப்ரல்,May=மே,June=ஜூன்,July=ஜுலை,August=ஆகஸ்ட்,September=ஸெப்டம்பர்,October=அக்டோபர்,November=நவம்பர்,December=டிஸம்பர்,Jan=ஜன,Feb=பிப்,Mar=மார்,Apr=ஏப்ரல்,May=மே,Jun=ஜூன்,Jul=ஜூலை,Aug=ஆக,Sep=செப்,Oct=அக்,Nov=நவ,Dec=டிச,th=,st=,nd=[/tt]
 
@@ -140,7 +246,7 @@ There are three systems that are in common usage to allow diverse characters to 
 2) Character sets
 3) HTML entities
 
-Composr supports both character sets and Unicode. Generally everyone will want to use Unicode (utf-8) nowadays, and that's our default in Composr. PHP does not have good Unicode support, but it does have a number of common extensions and techniques for handling it (mainly [tt]mbstring[/tt] and [tt]iconv[/tt]), and we support all of those. If there are no extensions installed we have some basic code to 'get by okay'. If you are using a non-English language, you want to ensure your host has the PHP [tt]mbstring[/tt] extension, and the vast majority of hosts do.
+Composr supports both character sets and Unicode. Generally everyone will want to use Unicode (utf-8) nowadays, and that's our default in Composr (via the [tt]charset[/tt] language string). PHP does not have good Unicode support, but it does have a number of common extensions and techniques for handling it (mainly [tt]mbstring[/tt] and [tt]iconv[/tt]), and we support all of those. If there are no extensions installed we have some basic code to 'get by okay'. If you are using a non-English language, you want to ensure your host has the PHP [tt]mbstring[/tt] extension, and the vast majority of hosts do.
 
 The English pack can be used in both Unicode and Character set mode, so we use HTML entities in many places to make up the difference. Most language strings support HTML, so HTML entities can be used there, but it is not universal.
 
@@ -252,7 +358,7 @@ It is generally better to look at outstanding translation tasks via Transifex. W
 
 [title="3"]Right-to-left languages[/title]
 
-Composr has some built-in support for right-to-left languages. You need to change the 'dir', 'en_left' and 'en_right' language strings to activate it.
+Composr has some built-in support for right-to-left languages. You need to change the [tt]dir[/tt], [tt]en_left[/tt] and [tt]en_right[/tt] language strings to activate it.
 
 However there are two issues where some extra consideration is needed...
 

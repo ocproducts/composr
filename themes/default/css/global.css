@@ -690,11 +690,10 @@ header h1 {
 .title_tagline {
 	font-size: 0.95em;
 	padding-bottom: 2em;
-	margin-top: -1.2em;
 	color: {$GET,area_key_text};
 }
-.box_inner>.title_tagline {
-	margin-top: 0;
+h1 + .title_tagline {
+	margin-top: -1.2em;
 }
 
 body#main_website #main_website_inner, html>body div.global_middle_faux {
@@ -3940,7 +3939,7 @@ a.tab, a.tab:visited, a.tab:hover {
 		background-image: url('{$IMG;,tab}') !important;
 	/*{+END}*/
 	/*{+START,IF,{$MOBILE}}*/
-		min-width: 107px; /* Allows 3 per row, neat alignment */
+		min-width: 105px; /* Allows 3 per row, neat alignment */
 		border-left: 1px solid {$GET,tab_border};
 		border-top: 1px solid {$GET,tab_border};
 	/*{+END}*/
@@ -3955,7 +3954,7 @@ a.tab>span {
 
 /*{+START,IF,{$MOBILE}}*/
 	.tab_surround .tab {
-		min-width: 100px; /* Allows 3 per row, neat alignment (for nested tabs) */
+		min-width: 99px; /* Allows 3 per row, neat alignment (for nested tabs) */
 	}
 /*{+END}*/
 

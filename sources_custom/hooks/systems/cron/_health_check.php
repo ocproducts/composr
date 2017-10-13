@@ -42,7 +42,7 @@ class Hook_cron__health_check
         $manual_checks = false;
 
         $has_fails = false;
-        $categories = run_health_check($has_fails, $sections_to_run, $passes, $skips, $manual_checks, false, null, $has_fails);
+        $categories = run_health_check($has_fails, $sections_to_run, $passes, $skips, $manual_checks, false, null);
 
         if ((count($categories) > 0) || ($cron_notify_regardless == '1')) {
             $results = do_template('HEALTH_CHECK_RESULTS', array('CATEGORIES' => $categories));

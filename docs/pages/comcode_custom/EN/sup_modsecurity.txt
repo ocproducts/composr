@@ -58,8 +58,8 @@ Importing XML data via [b]Admin Zone > Tools > XML data management > XML Import[
 
 We try and automatically 'scramble' the more problematic pages via a special encoding scheme to workaround this.
 
-[title="2"]380800 -- PHP Info[/title]
-Using the [b]Tools > PHP Info[/b] feature.
+[title="2"]380800 -- PHP-info[/title]
+Using the [b]Tools > PHP-info[/b] feature.
 
 [title="2"]340009 -- Site options[/title]
 Saving changes on [b]Admin Zone > Configuration > Site options[/b] page.
