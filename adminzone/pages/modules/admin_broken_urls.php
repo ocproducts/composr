@@ -219,10 +219,25 @@ class Module_admin_broken_urls
             foreach ($_urls as $url_bits) {
                 $url = $url_bits['url'];
 
+                if ($url == '') {
+                    continue;
+                }
+                if (substr($url, 0, 1) == '#') {
+                    continue;
+                }
+                if (substr($url, 0, 7) == 'mailto:') {
+                    continue;
+                }
+                if (strpos($url, 'admin-broken-urls') !== false) {
+                    continue;
+                }
+
                 foreach ($live_base_urls as $live_base_url) {
-                    if (substr($url, 0, strlen($live_base_url)) == $live_base_url) {
-                        $url = get_base_url() . substr($url, strlen($live_base_url));
-                        break;
+                    if ($live_base_url != '') {
+                        if (substr($url, 0, strlen($live_base_url)) == $live_base_url) {
+                            $url = get_base_url() . substr($url, strlen($live_base_url));
+                            break;
+                        }
                     }
                 }
 

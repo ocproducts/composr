@@ -42,6 +42,12 @@ class Curl
     protected $response;
 
     /**
+     * Error string from curl_error
+     * @var string
+     */
+    public $error;
+
+    /**
      * URL to query
      * @var string
      */
@@ -173,6 +179,7 @@ class Curl
         $this->method = $method;
         $this->prepareRequest();
         $this->response = curl_exec($this->resource);
+        $this->error = curl_error($this->resource);
         curl_close($this->resource);
         return $this->parseResponse();
     }

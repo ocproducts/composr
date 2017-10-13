@@ -48,6 +48,10 @@ class Hook_config_sugarcrm_messaging_mappings
      */
     public function get_default()
     {
-        return "post=description";
+        return "post=description
+phone=phone_work
+website=website
+country=primary_address_country
+";
     }
 }

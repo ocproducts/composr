@@ -42,6 +42,7 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
         $this->process_checks_section('testBrokenLinks', 'Broken links', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testIncompleteContent', 'Incomplete content', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testLocalLinking', 'Local linking', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testBrokenWebPostForms', 'Broken web POST forms', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
 
         return array($this->category_label, $this->results);
     }
@@ -248,6 +249,70 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
 
             $c = '#https?://(localhost|127\.|192\.168\.|10\.)#';
             $this->assertTrue(preg_match($c, $data) == 0, 'Found links to a local URL on "' . $page_link . '" page');
+        }
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     */
+    public function testBrokenWebPostForms($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+
+        $zones = find_all_zones(false, false, true);
+        foreach ($zones as $zone) {
+            $pages = array();
+            $lang = user_lang();
+            if ($lang != get_site_default_lang()) {
+                $pages += find_all_pages($zone, 'comcode_custom/' . get_site_default_lang(), 'txt', false, null, FIND_ALL_PAGES__ALL);
+                $pages += find_all_pages($zone, 'comcode/' . get_site_default_lang(), 'txt', false, null, FIND_ALL_PAGES__ALL);
+            }
+            $pages += find_all_pages($zone, 'comcode_custom/' . $lang, 'txt', false, null, FIND_ALL_PAGES__ALL);
+            $pages += find_all_pages($zone, 'comcode/' . $lang, 'txt', false, null, FIND_ALL_PAGES__ALL);
+
+            foreach ($pages as $page => $page_dir) {
+                $_path = (($zone == '') ? '' : ($zone . '/')) . 'pages/' . $page_dir . '/' . $page . '.txt';
+                $file_path = get_custom_file_base() . '/'. $_path;
+                if (!is_file($file_path)) {
+                    $file_path = get_file_base() . '/'. $_path;
+                }
+
+                if (is_file($file_path)) {
+                    $_c = cms_file_get_contents_safe($file_path);
+
+                    if (stripos($_c, '<form') !== false) {
+                        $c = static_evaluate_tempcode(comcode_to_tempcode($_c, null, true));
+
+                        $matches = array();
+                        $num_matches = preg_match_all('#<form[^<>]*method="POST">#i', $c, $matches);
+                        for ($i = 0; $i < $num_matches; $i++) {
+                            $match = $matches[0][$i];
+
+                            $matches_action = array();
+                            $has_action = (preg_match('#action=["\']([^"\']*)["\']#i', $match, $matches_action) != 0);
+                            $this->assert_true($has_action, 'Has a form action defined for web POST form');
+
+                            if ($has_action) {
+                                $url = html_entity_decode($matches_action[1], ENT_QUOTES);
+                                $is_absolute_url = (strpos($url, '://') !== false);
+                                $this->assert_true($is_absolute_url, 'Form action is absolute (i.e. robust)');
+
+                                if ($is_absolute_url) {
+                                    $result = cms_http_request($url, null, false);
+                                    $this->assert_true($result->message == '400', 'Gets 400 response, indicating only issue is missing POST parameter(s), ' . $url);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

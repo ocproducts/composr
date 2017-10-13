@@ -99,6 +99,19 @@ class BrokenURLScanner
     {
         $urls = array();
 
+        /*
+        For testing...
+        $url = get_base_url() . '/foo.html';
+        $urls[] = array(
+            'url' => $url,
+            'table_name' => null,
+            'field_name' => null,
+            'identifier' => null,
+            'edit_url' => null,
+        );
+        return $urls;
+        */
+
         push_db_scope_check(false);
 
         global $COMCODE_URLS;
@@ -261,18 +274,27 @@ class BrokenURLScanner
 
         $zones = find_all_zones();
         foreach ($zones as $zone) {
-            $pages = find_all_pages($zone, 'comcode_custom/' . get_site_default_lang(), 'txt', true) + find_all_pages($zone, 'comcode/' . get_site_default_lang(), 'txt', true);
+            $pages = array();
+            $pages += find_all_pages($zone, 'comcode_custom/' . get_site_default_lang(), 'txt', false, null, FIND_ALL_PAGES__ALL);
+            $pages += find_all_pages($zone, 'comcode/' . get_site_default_lang(), 'txt', false, null, FIND_ALL_PAGES__ALL);
             foreach ($pages as $page => $type) {
                 $COMCODE_URLS = array();
 
-                $file_path = zone_black_magic_filterer(((strpos($type, '_custom') !== false) ? get_custom_file_base() : get_file_base()) . '/' . $zone . '/pages/' . $type . '/' . $page);
+                $file_path = zone_black_magic_filterer(((strpos($type, '_custom') !== false) ? get_custom_file_base() : get_file_base()) . '/' . $zone . '/pages/' . $type . '/' . $page . '.txt');
                 $comcode = file_get_contents($file_path);
 
                 if (strpos($comcode, '/') === false) {
                     continue; // Doesn't appear to contain any URLs
                 }
 
-                @comcode_to_tempcode($comcode, null, true);
+                $eval = @static_evaluate_tempcode(comcode_to_tempcode($comcode, null, true));
+
+                $matches = array();
+                $num_matches = preg_match_all('#\shref="([^"]+)"#', $eval, $matches);
+                for ($i = 0; $i < $num_matches; $i++) {
+                    $url = html_entity_decode($matches[1][$i], ENT_QUOTES);
+                    $COMCODE_URLS[$url] = true;
+                }
 
                 if ($COMCODE_URLS !== null) {
                     foreach (array_keys($COMCODE_URLS) as $i => $url) {
@@ -514,7 +536,7 @@ class BrokenURLScanner
             $test = cms_http_request($url, array('byte_limit' => 1, 'trigger_error' => false)); // Try without HEAD, sometimes it's not liked
         }
 
-        if (($test === null) && (in_array($test->message, array('404', 'could not connect to host')))) {
+        if (($test === null) || (in_array($test->message, array('404', 'could not connect to host')))) {
             return false;
         }
 

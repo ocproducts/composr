@@ -86,7 +86,12 @@ class Hook_addon_registry_sugarcrm
      */
     public function get_description()
     {
-        return 'Sync new accounts into SugarCRM (Accounts and Contacts), and contact form messages into SugarCRM (Cases or Leads). Form messages are taken from [tt]main_contact_simple[/tt] block, [tt]main_contact_catalogues[/tt] block, and [tt]form_to_email.php[/tt].';
+        return 'Sync new accounts into SugarCRM (Accounts and Contacts), and contact form messages into SugarCRM (Cases or Leads). Form messages are taken from [tt]main_contact_simple[/tt] block, [tt]main_contact_catalogues[/tt] block, and [tt]form_to_email.php[/tt].
+
+Tested with SugarCRM 6.2, 6.5 and 7.9.
+This addon also works with SuiteCRM, which is a SugarCRM fork. Tested with SuiteCRM 7.9.
+It does not work with vTiger, another SugarCRM fork.
+';
     }
 
     /**
@@ -147,6 +152,19 @@ class Hook_addon_registry_sugarcrm
             'lang_custom/EN/sugarcrm.ini',
             'sources_custom/curl.php',
             'sources_custom/sugar_crm_lib.php',
+            'sources_custom/hooks/systems/health_checks/.htaccess',
+            'sources_custom/hooks/systems/health_checks/index.html',
+            'sources_custom/hooks/systems/health_checks/sugarcrm.php',
         );
     }
 }
+
+/*
+Resources for vTiger integration, if this was ever added...
+
+http://community.vtiger.com/help/vtigercrm/developers/third-party-app-integration.html
+https://github.com/Kayoti/Vtiger-API-PHP
+https://github.com/sumocoders/vtiger-api
+https://github.com/vdespa/Vtiger-Web-Services-PHP-Client-Library
+https://github.com/salaros/vtwsclib-php
+*/

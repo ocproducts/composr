@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2017
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,23 +26,36 @@ class Hook_contact_forms_sugarcrm
         }
 
         // Metadata
+        $body_parts_extended = $body_parts;
         foreach ($attachments as $file_path => $filename) {
             if ($filename == 'user_metadata.txt') {
                 $metadata = json_decode(file_get_contents($file_path), true);
                 foreach ($metadata as $key => $val) {
                     if (is_array($val)) {
                         if (!isset($val[0])) { // Not a list
-                            $body_parts += $val;
+                            $body_parts_extended += $val;
                         }
                     } else {
-                        $body_parts[$key] = $val;
+                        $body_parts_extended[$key] = $val;
                     }
                 }
             }
         }
 
-        // Find/create Contact
+        // Find Contact (no auto-creation, will link to contact manually set up in SugarCRM or from a joined member - by binding to e-mail address as a key - or just won't find one which is fine)
         $contact_details = get_sugarcrm_contact($from_email);
+
+        // Find company name
+        if (empty($body_parts_extended['company'])) {
+            if ($contact_details === null) {
+                $company = get_option('sugarcrm_default_company');
+            } else {
+                $company = $contact_details['account_name'];
+            }
+        } else {
+            $company = $body_parts_extended['company'];
+        }
+        unset($body_parts['company']);
 
         // Name fields
         list($first_name, $last_name) = deconstruct_long_name($from_name);
@@ -56,7 +69,7 @@ class Hook_contact_forms_sugarcrm
             case 'Cases':
                 // Find/create Account
                 if ($contact_details === null) {
-                    $account_id = get_or_create_sugarcrm_account(get_option('sugarcrm_default_company'));
+                    $account_id = get_or_create_sugarcrm_account($company);
                 } else {
                     $account_id = $contact_details['account_id'];
                 }
@@ -71,20 +84,16 @@ class Hook_contact_forms_sugarcrm
                 break;
 
             case 'Leads':
-                if ($contact_details === null) {
-                    $account_name = get_option('sugarcrm_default_company');
-                } else {
-                    $account_name = $contact_details['name'];
-                }
-
                 $data += array(
                     // These are for Lead-only
-                    'account_name' => array('name' => 'account_name', 'value' => $account_name),
-                    'description' => array('name' => 'description', 'value' => $subject),
+                    'account_name' => array('name' => 'account_name', 'value' => $company), // We don't use actual accounts for Leads, just a company name in a field named account_name
+                    'description' => array('name' => 'description', 'value' => ($subject == get_site_name()) ? '' : $subject),
                     'email1' => array('name' => 'email1', 'value' => $from_email),
+                    'lead_source' => array('name' => 'lead_source', 'value' => 'Web Site'),
+
+                    'name' => array('name' => 'last_name', 'value' => $from_name), // SuiteCRM
                     'first_name' => array('name' => 'first_name', 'value' => $first_name),
                     'last_name' => array('name' => 'last_name', 'value' => $last_name),
-                    'lead_source' => array('name' => 'lead_source', 'value' => 'Web Site'),
                 );
                 break;
         }
@@ -97,15 +106,32 @@ class Hook_contact_forms_sugarcrm
                 if (preg_match('#^\((.*)\)$#', $mapping_from, $matches) != 0) {
                     $value = $matches[1];
                 } else {
-                    $value = isset($body_parts[$mapping_from]) ? $body_parts[$mapping_from] : '';
+                    $value = isset($body_parts_extended[$mapping_from]) ? $body_parts_extended[$mapping_from] : '';
+                    unset($body_parts[$mapping_from]);
                 }
 
                 if ((isset($data[$mapping_to])) && ($data[$mapping_to]['value'] != '')) {
-                    if (isset($body_parts[$mapping_from])) {
+                    if ($value != '') {
+                        $label = post_param_string('label_for__' . $mapping_from, '');
+                        if ($label != '') {
+                            $value = $label . ': ' . $value;
+                        }
                         $data[$mapping_to]['value'] .= "\n\n" . $value;
                     }
                 } else {
                     $data[$mapping_to] = array('name' => $mapping_to, 'value' => $value);
+                }
+            }
+        }
+        if ($sync_type == 'Leads') { // Any remaining fields should not be lost (for Cases though we put it all into 'description', as a case looks more like an e-mail, with a subject line and body)
+            foreach ($body_parts as $mapping_from => $value) {
+                $label = post_param_string('label_for__' . $mapping_from, $mapping_from);
+                if ((isset($data['description'])) && ($data['description']['value'] != '')) {
+                    if ($value != '') {
+                        $data['description']['value'] .= "\n\n" . $label . ': ' . $value;
+                    }
+                } else {
+                    $data['description'] = array('name' => $mapping_to, 'value' => $label . ': ' . $value);
                 }
             }
         }
@@ -119,6 +145,7 @@ class Hook_contact_forms_sugarcrm
         if ($sync_type == 'Cases') {
             $data = array(
                 'account_id' => array('name' => 'account_id', 'value' => $account_id),
+                'account_name' => array('name' => 'account_name', 'value' => $company),
                 'email1' => array('name' => 'email1', 'value' => $from_email),
                 'first_name' => array('name' => 'first_name', 'value' => $first_name),
                 'last_name' => array('name' => 'last_name', 'value' => $last_name),

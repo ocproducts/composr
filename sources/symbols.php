@@ -618,28 +618,37 @@ function ecv($lang, $escaped, $type, $name, $param)
                         $new_value .= $matches[$i][3][0]; // Close src attribute
                         $new_value .= $matches[$i][4][0]; // End of img tag
                     } else {
-                        // Complex <picture> element...
+                        if (get_zone_name() != 'cms') {
+                            // Complex <picture> element...
 
-                        $new_value .= '<picture>';
+                            $new_value .= '<picture>';
 
-                        if ((isset($param[1])) && (is_numeric($param[0]))) {
-                            $viewport_switch = intval($param[0]);
+                            if ((isset($param[1])) && (is_numeric($param[0]))) {
+                                $viewport_switch = intval($param[0]);
+                            } else {
+                                $viewport_switch = 983;
+                            }
+
+                            // Responsive design code for desktop
+                            $new_value .= '<source media="(min-width: ' . strval($viewport_switch) . 'px)" srcset="' . escape_html($url) . '" />';
+
+                            // Responsive design code for mobile
+                            $new_value .= '<source media="(max-width: ' . strval($viewport_switch - 1) . 'px)" srcset="' . escape_html($mobile_url) . '" />';
+
+                            $new_value .= $matches[$i][1][0]; // Front of img tag and start src attribute
+                            $new_value .= escape_html($url); // Non-responsive default image URL
+                            $new_value .= $matches[$i][3][0]; // Close src attribute
+                            $new_value .= $matches[$i][4][0]; // End of img tag
+
+                            $new_value .= '</picture>';
                         } else {
-                            $viewport_switch = 983;
+                            // Simple <img> element with mobile version URL...
+
+                            $new_value .= $matches[$i][1][0]; // Front of img tag and start src attribute
+                            $new_value .= escape_html($mobile_url); // Image URL
+                            $new_value .= $matches[$i][3][0]; // Close src attribute
+                            $new_value .= $matches[$i][4][0]; // End of img tag
                         }
-
-                        // Responsive design code for desktop
-                        $new_value .= '<source media="(min-width: ' . strval($viewport_switch) . 'px)" srcset="' . escape_html($url) . '" />';
-
-                        // Responsive design code for mobile
-                        $new_value .= '<source media="(max-width: ' . strval($viewport_switch - 1) . 'px)" srcset="' . escape_html($mobile_url) . '" />';
-
-                        $new_value .= $matches[$i][1][0]; // Front of img tag and start src attribute
-                        $new_value .= escape_html($url); // Non-responsive default image URL
-                        $new_value .= $matches[$i][3][0]; // Close src attribute
-                        $new_value .= $matches[$i][4][0]; // End of img tag
-
-                        $new_value .= '</picture>';
                     }
 
                     $last_offset = $this_offset + strlen($matches[$i][0][0]);
@@ -665,9 +674,11 @@ function ecv($lang, $escaped, $type, $name, $param)
                 }
 
                 if (!is_mobile()) {
-                    // Make some sections disappear
-                    $value = preg_replace('#<details( class="[^"]*only-on-mobile[^"]*".*)</details>#Us', '<div$1</div>', $value);
-                    $value = preg_replace('#<summary( class="[^"]*only-on-mobile[^"]*".*)</summary>#Us', '<div$1</div>', $value);
+                    if (get_zone_name() != 'cms') {
+                        // Make some sections disappear
+                        $value = preg_replace('#<details( class="[^"]*only-on-mobile[^"]*".*)</details>#Us', '<div$1</div>', $value);
+                        $value = preg_replace('#<summary( class="[^"]*only-on-mobile[^"]*".*)</summary>#Us', '<div$1</div>', $value);
+                    }
                 }
 
                 break;

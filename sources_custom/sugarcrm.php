@@ -38,7 +38,26 @@ function init__sugarcrm()
     $SUGARCRM->setUsername($username);
     $SUGARCRM->setPassword($password);
 
-    $SUGARCRM->connect();
+    try {
+        if (!$SUGARCRM->connect()) {
+            sugarcrm_failed('Could not connect to SugarCRM');
+        }
+    }
+    catch (Exception $e) {
+        sugarcrm_failed($e->getMessage());
+    }
+}
+
+function sugarcrm_failed($message)
+{
+    global $SUGARCRM;
+    $SUGARCRM = null;
+
+    if (php_function_allowed('error_log')) {
+        error_log('SugarCRM issue: ' . $message, 0);
+    }
+    require_code('failure');
+    relay_error_notification(false, $message);
 }
 
 function get_or_create_sugarcrm_account($company)
@@ -75,7 +94,7 @@ function get_sugarcrm_contact($email_address, $account_id = null)
 
     $response = $SUGARCRM->get(
         'Contacts',
-        array('id', 'account_id', 'name'),
+        array('id', 'account_id', 'name', 'account_name'),
         array(
             'where' => $where,
         )
@@ -85,6 +104,10 @@ function get_sugarcrm_contact($email_address, $account_id = null)
         // We have to do with filtering
         foreach ($response as $contact_details) {
             if ($contact_details['account_id'] === $account_id) {
+                if (!isset($contact_details['account_name'])) {
+                    $contact_details['account_name'] = $contact_details['name']; // For older versions of SugarCRM
+                }
+
                 return $contact_details;
             }
         }
@@ -93,7 +116,7 @@ function get_sugarcrm_contact($email_address, $account_id = null)
 
     if (isset($response[0])) {
         // Return first result
-        $contact_details = $response    [0];
+        $contact_details = $response[0];
         return $contact_details;
     }
 

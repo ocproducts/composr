@@ -33,6 +33,10 @@ function init__mail_forms()
  */
 function form_to_email_entry_script()
 {
+    if (cms_srv('REQUEST_METHOD') != 'POST') {
+        post_param_string('post'); // We need to produce a hard-error if nothing sent
+    }
+
     form_to_email();
 
     global $PAGE_NAME_CACHE;
@@ -101,7 +105,7 @@ function form_to_email($subject = null, $subject_prefix = '', $subject_suffix = 
 
     // Send standard confirmation email to current user
     if ($from_email != '' && get_option('message_received_emails') == '1') {
-        dispatch_mail(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $subject), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $from_email), array($from_email), $from_name, '', '', array('as' => get_member()));
+        dispatch_mail(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $subject), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $body), array($from_email), $from_name, '', '', array('as' => get_member()));
     }
 }
 
