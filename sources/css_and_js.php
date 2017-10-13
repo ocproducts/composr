@@ -188,7 +188,7 @@ function js_compile($j, $js_cache_path, $minify = true)
 function compress_cms_stub_file($stub_file)
 {
     if (function_exists('gzencode')) {
-        $data = cms_file_get_contents_safe($stub_file);
+        $data = @cms_file_get_contents_safe($stub_file);
 
         if ($data === false) {
             return;

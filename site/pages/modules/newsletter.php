@@ -35,7 +35,7 @@ class Module_newsletter
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 11;
+        $info['version'] = 12;
         $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         return $info;
@@ -165,6 +165,10 @@ class Module_newsletter
 
         if ((is_null($upgrade_from)) || ($upgrade_from < 11)) {
             $GLOBALS['SITE_DB']->create_index('newsletter_drip_send', 'd_to_email', array('d_to_email'));
+        }
+
+        if ((is_null($upgrade_from)) || ($upgrade_from < 12)) {
+            $GLOBALS['SITE_DB']->create_index('newsletter_subscribers', 'email', array('email'));
         }
     }
 

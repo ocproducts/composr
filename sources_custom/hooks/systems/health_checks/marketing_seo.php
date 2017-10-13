@@ -62,8 +62,9 @@ class Hook_health_check_marketing_seo extends Hook_Health_Check
 
         // TODO: Document in maintenance spreadsheet for v11 that we have these links here
 
-        $this->state_check_manual('Check for SEO issues https://seositecheckup.com/ (take warnings with a pinch of salt, not every suggestion is appropriate)');
-        $this->state_check_manual('Check for search issues in Google Webmaster Tools https://www.google.com/webmasters/tools/home');
+        $this->state_check_manual('Check for [url="SEO issues"]https://seositecheckup.com/[/url] (take warnings with a pinch of salt, not every suggestion is appropriate)');
+        $this->state_check_manual('Check for [url="search issues in Google Webmaster Tools"]https://www.google.com/webmasters/tools/home[/url]');
+        $this->state_check_manual('Analyse what [url="popular keywords you rank for"]https://www.thehoth.com/[/url] and what you could try and rank for (https://serps.com/tools/)');
     }
 
     /**
@@ -89,9 +90,9 @@ class Hook_health_check_marketing_seo extends Hook_Health_Check
         $meta_description = null;
         $matches = array();
         if (preg_match('#<meta\s+[^<>]*name="description"[^<>]*content="([^"]*)"#is', $data, $matches) != 0) {
-            $meta_description = $matches[1];
+            $meta_description = html_entity_decode($matches[1], ENT_QUOTES);
         } elseif (preg_match('#<meta\s+[^<>]*content="([^"]*)"[^<>]*name="description"#is', $data, $matches) != 0) {
-            $meta_description = $matches[1];
+            $meta_description = html_entity_decode($matches[1], ENT_QUOTES);
         }
 
         $ok = ($meta_description !== null);
@@ -167,7 +168,7 @@ class Hook_health_check_marketing_seo extends Hook_Health_Check
         $title = null;
         $matches = array();
         if (preg_match('#<title[^<>]*>([^<>]*)</title>#is', $data, $matches) != 0) {
-            $title = $matches[1];
+            $title = html_entity_decode($matches[1], ENT_QUOTES);
         }
 
         $ok = ($title !== null);
@@ -245,11 +246,11 @@ class Hook_health_check_marketing_seo extends Hook_Health_Check
                 }
             }
             closedir($dh);
-            $last_updated = $GLOBALS['SITE_DB']->query_select_value_if_there('sitemap_cache', 'MAX(last_updated)');
+            $last_updated = $GLOBALS['SITE_DB']->query_select_value_if_there('sitemap_cache', 'MAX(last_updated)', array(), ' AND last_updated<' . strval(time() - 60 * 60 * 25));
             if ($last_updated !== null) {
                 $this->assert_true($last_updated_file > $last_updated - 60 * 60 * 24, 'XML Sitemap does not seem to be updating');
             } else {
-                $this->state_check_skipped('Nothing queued to go into the XML Sitemap');
+                $this->state_check_skipped('Nothing queued to go into the XML Sitemap old enough to know it should be there');
             }
         }
     }

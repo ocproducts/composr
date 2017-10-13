@@ -156,18 +156,21 @@ class Hook_health_check_email extends Hook_Health_Check
 
         if (get_option('smtp_sockets_use') == '0') {
             if ((php_function_allowed('dns_get_record')) && (php_function_allowed('gethostbyname'))) {
-                $self_domain = $this->get_domain();
-                $self_ip = @gethostbyname($self_domain);
+                $domains = $this->get_domains();
 
-                $domains = $this->get_mail_domains();
+                foreach ($domains as $self_domain) {
+                    $self_ip = @gethostbyname($self_domain);
 
-                foreach ($domains as $domain => $email) {
-                    $passed = $this->do_spf_check($domain, $self_domain, $self_ip);
+                    $mail_domains = $this->get_mail_domains();
 
-                    $this->assert_true($passed !== null, 'SPF record is not set for [tt]' . $domain . '[/tt], setting it will significantly reduce the chance of fraud and spam blockage');
+                    foreach ($mail_domains as $domain => $email) {
+                        $passed = $this->do_spf_check($domain, $self_domain, $self_ip);
 
-                    if ($passed !== null) {
-                        $this->assert_true($passed, 'SPF record for [tt]' . $domain . '[/tt] does not allow the server to send (either blocked or neutral). Maybe your local SMTP is relaying via another server, but check that.');
+                        $this->assert_true($passed !== null, 'SPF record is not set for [tt]' . $domain . '[/tt], setting it will significantly reduce the chance of fraud and spam blockage');
+
+                        if ($passed !== null) {
+                            $this->assert_true($passed, 'SPF record for [tt]' . $domain . '[/tt] does not allow the server to send (either blocked or neutral). Maybe your local SMTP is relaying via another server, but check that.');
+                        }
                     }
                 }
             } else {
@@ -182,6 +185,7 @@ class Hook_health_check_email extends Hook_Health_Check
      * @param  string $domain The domain name
      * @param  string $self_domain Domain of sending server to match against
      * @param  string $self_ip IP address of sending server to match against
+     * @return ?boolean Whether the check matches (null: N/A)
      */
     protected function do_spf_check($domain, $self_domain, $self_ip)
     {
@@ -251,6 +255,7 @@ class Hook_health_check_email extends Hook_Health_Check
      * @param  string $part The SPF term
      * @param  string $self_domain Domain of sending server to match against
      * @param  string $self_ip IP address of sending server to match against
+     * @return boolean Whether the check matches
      */
     protected function spf_term_matches($part, $self_domain, $self_ip)
     {
@@ -425,7 +430,7 @@ class Hook_health_check_email extends Hook_Health_Check
                 $result = @getmxrr($domain, $mail_hosts);
                 $ok = ($result !== false);
                 if (!$ok) {
-                    $this->state_check_skipped('Could not look up MX of ' . $domain);
+                    $this->state_check_skipped('Could not look up MX of [tt]' . $domain . '[/tt]');
                     continue;
                 }
 

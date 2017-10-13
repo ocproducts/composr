@@ -134,9 +134,6 @@ class lang_spelling_test_set extends cms_test_case
         if (stripos($string, 'add-on') !== false) {
             $this->assertTrue(false, 'The word \'add-on\' was used in ' . $file . '. This should be changed to \'addon\'.');
         }
-        if (stripos($string, 'PHP-info') !== false) {
-            $this->assertTrue(false, 'The word \'PHP-info\' was used in ' . $file . '. This should be changed to \'PHP info\'.');
-        }
 
         // No space or hyphen wanted (we want our canonical way)
         if (stripos($string, 'user[ -]group') !== false) {
@@ -156,6 +153,9 @@ class lang_spelling_test_set extends cms_test_case
         }
         if (preg_match('#meta[ -]data([^A-Za-z"]+)#i', $string) != 0) {
             $this->assertTrue(false, 'The phrase \'meta data\' or \'meta-data\' was used in ' . $file . '. This should be changed to \'metadata\'.');
+        }
+        if (stripos($string, 'PHP info') !== false) {
+            $this->assertTrue(false, 'The word \'PHP info\' was used in ' . $file . '. This should be changed to \'PHP-info\'.');
         }
 
         // Wrong way of writing proper noun (we want our canonical way)

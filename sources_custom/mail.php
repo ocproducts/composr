@@ -36,7 +36,7 @@
  * @param  ?array $extra_cc_addresses Extra CC addresses to use (null: none)
  * @param  ?array $extra_bcc_addresses Extra BCC addresses to use (null: none)
  * @param  ?TIME $require_recipient_valid_since Implement the Require-Recipient-Valid-Since header (null: no restriction)
- * @return ?Tempcode A full page (not complete XHTML) piece of Tempcode to output (null: it worked so no Tempcode message)
+ * @return boolean Success status
  */
 function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = null, $from_email = '', $from_name = '', $priority = 3, $attachments = null, $no_cc = false, $as = null, $as_admin = false, $in_html = false, $coming_out_of_queue = false, $mail_template = 'MAIL', $bypass_queue = null, $extra_cc_addresses = null, $extra_bcc_addresses = null, $require_recipient_valid_since = null)
 {
@@ -45,11 +45,11 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     }
 
     if (running_script('stress_test_loader')) {
-        return null;
+        return false;
     }
 
     if (@$GLOBALS['SITE_INFO']['no_email_output'] === '1') {
-        return null;
+        return false;
     }
 
     if (is_null($bypass_queue)) {
@@ -83,7 +83,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         }
 
         $through_queue = (!$bypass_queue) && (((cron_installed()) && (get_option('mail_queue') === '1'))) || (get_option('mail_queue_debug') === '1');
-        if (!is_null($attachments)) {
+        if ((!empty($attachments)) && (get_option('mail_queue_debug') === '0')) {
             foreach (array_keys($attachments) as $path) {
                 if ((substr($path, 0, strlen(get_custom_file_base() . '/')) != get_custom_file_base() . '/') && (substr($path, 0, strlen(get_file_base() . '/')) != get_file_base() . '/')) {
                     $through_queue = false;
@@ -119,13 +119,13 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         ), false, !$through_queue); // No errors if we don't NEED this to work
 
         if ($through_queue) {
-            return null;
+            return true;
         }
     }
 
     global $SENDING_MAIL;
     if ($SENDING_MAIL) {
-        return null;
+        return false;
     }
     $SENDING_MAIL = true;
 
@@ -146,7 +146,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     $to_email = $to_email_new;
     if ($to_email == array()) {
         $SENDING_MAIL = false;
-        return null;
+        return true;
     }
     if ($to_email[0] == $staff_address) {
         $lang = get_site_default_lang();
@@ -244,14 +244,14 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
                     'LANG' => $lang,
                     'TITLE' => $subject,
                     'CONTENT' => $_html_content,
-                ), $lang, false, null, '.tpl', 'templates', $theme);
+                ), $lang, false, 'MAIL', '.tpl', 'templates', $theme);
             }
             require_css('email');
             $css = css_tempcode(true, false, $message_html->evaluate($lang), $theme);
             $_css = $css->evaluate($lang);
             if (!GOOGLE_APPENGINE) {
                 if (get_option('allow_ext_images') != '1') {
-                    $_css = preg_replace_callback('#url\(["\']?(http://[^"]*)["\']?\)#U', '_mail_css_rep_callback', $_css);
+                    $_css = preg_replace_callback('#url\(["\']?(https?://[^"]*)["\']?\)#U', '_mail_css_rep_callback', $_css);
                 }
             }
             $html_evaluated = $message_html->evaluate($lang);
@@ -276,13 +276,13 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     // CID attachments
     if (get_option('allow_ext_images') != '1') {
         $cid_before = array_keys($CID_IMG_ATTACHMENT);
-        $html_evaluated = preg_replace_callback('#<img\s([^>]*)src="(http://[^"]*)"#U', '_mail_img_rep_callback', $html_evaluated);
+        $html_evaluated = preg_replace_callback('#<img\s([^>]*)src="(https?://[^"]*)"#U', '_mail_img_rep_callback', $html_evaluated);
         $cid_just_html = array_diff(array_keys($CID_IMG_ATTACHMENT), $cid_before);
         $matches = array();
         foreach (array('#<([^"<>]*\s)style="([^"]*)"#', '#<style( [^<>]*)?' . '>(.*)</style>#Us') as $over) {
             $num_matches = preg_match_all($over, $html_evaluated, $matches);
             for ($i = 0; $i < $num_matches; $i++) {
-                $altered_inner = preg_replace_callback('#url\(["\']?(http://[^"]*)["\']?\)#U', '_mail_css_rep_callback', $matches[2][$i]);
+                $altered_inner = preg_replace_callback('#url\(["\']?(https?://[^"]*)["\']?\)#U', '_mail_css_rep_callback', $matches[2][$i]);
                 if ($matches[2][$i] != $altered_inner) {
                     $altered_outer = str_replace($matches[2][$i], $altered_inner, $matches[0][$i]);
                     $html_evaluated = str_replace($matches[0][$i], $altered_outer, $html_evaluated);
@@ -518,8 +518,9 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         $SENDING_MAIL = false;
         require_code('site');
         attach_message(!is_null($error) ? make_string_tempcode($error) : do_lang_tempcode('MAIL_FAIL', escape_html(get_option('staff_address'))), 'warn');
+        return false;
     }
 
     $SENDING_MAIL = false;
-    return null;
+    return true;
 }

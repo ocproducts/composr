@@ -1064,6 +1064,13 @@ class Module_admin
             $content[$current_results_type] = new Tempcode();
             $images = $GLOBALS['SITE_DB']->query_select('theme_images', array('id', 'theme', 'lang'));
             foreach ($images as $image) {
+                if ($image['theme'] == 'admin') {
+                    continue; // Too bloaty to include
+                }
+                if (!file_exists(get_custom_file_base() . '/themes/' . $image['theme'])) {
+                    continue; // Gone missing or no-overrides
+                }
+
                 $n = $image['id'];
                 if ($this->_keyword_match($n)) {
                     $_url = build_url(array('page' => 'admin_themes', 'type' => 'edit_image', 'theme' => $image['theme'], 'lang' => $image['lang'], 'id' => $n), get_module_zone('admin_themes'));
@@ -1074,7 +1081,7 @@ class Module_admin
                     $breadcrumbs->attach(do_template('BREADCRUMB_SEPARATOR'));
                     $breadcrumbs->attach(hyperlink(build_url(array('page' => 'admin_themes', 'type' => 'manage_images', 'theme' => $image['theme']), get_module_zone('admin_themes')), do_lang_tempcode('EDIT_THEME_IMAGE'), false, false));
                     $breadcrumbs->attach(do_template('BREADCRUMB_SEPARATOR'));
-                    $breadcrumbs->attach(escape_html($image['theme']));
+                    $breadcrumbs->attach(do_template('BREADCRUMB_LONE_WRAP', array('LABEL' => $image['theme'])));
                     $sup = do_lang_tempcode('LOCATED_IN', $breadcrumbs);
                     $lang = $image['lang'];
                     $lang_map = better_parse_ini_file(file_exists(get_file_base() . '/lang_custom/langs.ini') ? (get_file_base() . '/lang_custom/langs.ini') : (get_file_base() . '/lang/langs.ini'));

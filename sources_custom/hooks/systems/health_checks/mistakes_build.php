@@ -61,15 +61,15 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
 
         // TODO: Document in maintenance spreadsheet for v11 that we have these links here
 
-        $this->state_check_manual('Check HTML5 validation https://validator.w3.org/ (take warnings with a pinch of salt, not every suggestion is appropriate)');
-        $this->state_check_manual('Check CSS validation https://jigsaw.w3.org/css-validator/ (take warnings with a pinch of salt, not every suggestion is appropriate)');
-        $this->state_check_manual('Check WCAG validation https://achecker.ca/ (take warnings with a pinch of salt, not every suggestion is appropriate)');
+        $this->state_check_manual('Check [url="HTML5 validation"]https://validator.w3.org/[/url] (take warnings with a pinch of salt, not every suggestion is appropriate)');
+        $this->state_check_manual('Check [url="CSS validation"]https://jigsaw.w3.org/css-validator/[/url] (take warnings with a pinch of salt, not every suggestion is appropriate)');
+        $this->state_check_manual('Check [url="WCAG validation"]https://achecker.ca/[/url] (take warnings with a pinch of salt, not every suggestion is appropriate)');
 
-        $this->state_check_manual('Check schema.org/microformats validation on any key pages you want to be semantic https://search.google.com/structured-data/testing-tool/u/0/');
-        $this->state_check_manual('Check OpenGraph metadata on any key pages you expect to be shared https://developers.facebook.com/tools/debug/sharing/');
+        $this->state_check_manual('Check [url="schema.org/microformats validation"]https://search.google.com/structured-data/testing-tool/u/0/[/url] on any key pages you want to be semantic');
+        $this->state_check_manual('Check [url="OpenGraph metadata"]https://developers.facebook.com/tools/debug/sharing/[/url] on any key pages you expect to be shared');
 
-        $this->state_check_manual('Do a general check https://www.woorank.com/ (take warnings with a pinch of salt, not every suggestion is appropriate)');
-        $this->state_check_manual('Do a general check https://website.grader.com/ (take warnings with a pinch of salt, not every suggestion is appropriate)');
+        $this->state_check_manual('Do a [url="general check"]https://www.woorank.com/[/url] (take warnings with a pinch of salt, not every suggestion is appropriate)');
+        $this->state_check_manual('Do a [url="general check"]https://website.grader.com/[/url] (take warnings with a pinch of salt, not every suggestion is appropriate)');
 
         $this->state_check_manual('Test in Firefox');
         $this->state_check_manual('Test in Google Chrome');
@@ -162,7 +162,12 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
             $data = http_download_file($url, 0, false);
             $ok = ($data !== null);
             */
-            $ok = check_url_exists($url, 60 * 60 * 24 * 1);
+            for ($i = 0; $i < 3; $i++) { // Try a few times in case of some temporary network issue
+                $ok = check_url_exists($url, 60 * 60 * 24 * 1);
+                if ($ok) {
+                    break;
+                }
+            }
             $this->assert_true($ok, 'Broken link: [tt]' . $url . '[/tt] (caching is 1 day on these checks)');
         }
     }

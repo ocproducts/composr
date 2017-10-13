@@ -61,7 +61,14 @@ class Hook_health_check_network extends Hook_Health_Check
         require_code('json'); // TODO: Fix in v11
 
         $url = 'https://compo.sr/uploads/website_specific/compo.sr/scripts/testing.php?type=http_status_check&url=' . urlencode($this->get_page_url());
-        $data = http_download_file($url, null, false);
+        for ($i = 0; $i < 3; $i++) { // Try a few times in case of some temporary network issue or Google issue
+            $data = http_download_file($url, null, false);
+
+            if ($data !== null) {
+                break;
+            }
+            sleep(5);
+        }
         $result = @json_decode($data, true);
         $this->assert_true($result === '200', 'Could not access website externally');
     }
@@ -109,15 +116,32 @@ class Hook_health_check_network extends Hook_Health_Check
             return;
         }
 
-        $time_before = microtime(true);
-        $data = http_download_file('http://www.google.com/', null, false);
-        $time_after = microtime(true);
-
-        $time = ($time_after - $time_before);
-
         $threshold = floatval(get_option('hc_transfer_latency_threshold'));
 
-        $this->assert_true($time < $threshold, 'Slow transfer latency @ ' . float_format($time) . ' seconds (downloading Google home page took over)');
+        for ($i = 0; $i < 3; $i++) { // Try a few times in case of some temporary network issue or Google issue
+            $time_before = microtime(true);
+
+            $data = http_download_file('http://www.google.com/', null, false);
+
+            if ($data === null) {
+                $ok = false;
+                sleep(5);
+
+                continue;
+            }
+
+            $time_after = microtime(true);
+
+            $time = ($time_after - $time_before);
+
+            $ok = ($time < $threshold);
+            if ($ok) {
+                break;
+            }
+            sleep(5);
+        }
+
+        $this->assert_true($ok, 'Slow transfer latency @ ' . float_format($time) . ' seconds (downloading Google home page)');
     }
 
     /**
@@ -134,22 +158,39 @@ class Hook_health_check_network extends Hook_Health_Check
             return;
         }
 
+        $threshold_in_megabits_per_second = floatval(get_option('hc_transfer_speed_threshold'));
+
         $test_file_path = get_file_base() . '/data/curl-ca-bundle.crt';
 
         $data_to_send = str_repeat(file_get_contents($test_file_path), 5);
-
-        $time_before = microtime(true);
         $post_params = array('test_data' => $data_to_send);
-        $data = http_download_file('https://compo.sr/uploads/website_specific/compo.sr/scripts/testing.php?type=test_upload', null, false, true, 'Composr', $post_params);
-        $time_after = microtime(true);
 
-        $time = ($time_after - $time_before);
+        for ($i = 0; $i < 3; $i++) { // Try a few times in case of some temporary network issue or compo.sr issue
+            $time_before = microtime(true);
 
-        $megabytes_per_second = floatval(strlen($data_to_send)) / (1024.0 * 1024.0 * $time);
-        $megabits_per_second = $megabytes_per_second * 8.0;
+            $data = http_download_file('https://compo.sr/uploads/website_specific/compo.sr/scripts/testing.php?type=test_upload', null, false, true, 'Composr', $post_params);
 
-        $threshold_in_megabits_per_second = floatval(get_option('hc_transfer_speed_threshold'));
+            if ($data === null) {
+                $ok = false;
+                sleep(5);
 
-        $this->assert_true($megabits_per_second > $threshold_in_megabits_per_second, 'Slow speed transfering data to a remote machine @ ' . float_format($megabits_per_second) . ' Megabits per second');
+                continue;
+            }
+
+            $time_after = microtime(true);
+
+            $time = ($time_after - $time_before);
+
+            $megabytes_per_second = floatval(strlen($data_to_send)) / (1024.0 * 1024.0 * $time);
+            $megabits_per_second = $megabytes_per_second * 8.0;
+
+            $ok = ($megabits_per_second > $threshold_in_megabits_per_second);
+            if ($ok) {
+                break;
+            }
+            sleep(5);
+        }
+
+        $this->assert_true($ok, 'Slow speed transfering data to a remote machine @ ' . float_format($megabits_per_second) . ' Megabits per second');
     }
 }

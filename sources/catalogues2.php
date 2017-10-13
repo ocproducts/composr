@@ -381,6 +381,9 @@ function actual_edit_catalogue($old_name, $name, $title, $description, $display_
                 $GLOBALS['SITE_DB']->query_update('award_archive', array('content_id' => $name), array('content_id' => $old_name, 'a_type_id' => $type['id']));
             }
         }
+
+        require_code('sitemap_xml');
+        notify_sitemap_node_delete('SEARCH:catalogues:index:' . $old_name);
     }
 
     // Update field references
@@ -578,7 +581,7 @@ function actual_add_catalogue_category($catalogue_name, $title, $description, $n
 
     if (is_null($order)) {
         $order = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'MAX(cc_order)', array('c_name' => $catalogue_name));
-        if ((is_null($order)) || ($order >= 2147483648)) {
+        if ((is_null($order)) || ($order >= 2147483647)) {
             $order = 0;
         } else
         {
@@ -1243,7 +1246,14 @@ function actual_edit_catalogue_entry($id, $category_id, $validated, $notes, $all
         if (substr($sup_table_name, -6) == '_trans') {
             $_val = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_efv_' . $sup_table_name, 'cv_value', array('cf_id' => $field_id, 'ce_id' => $id));
             if (is_null($_val)) {
-                $smap += insert_lang_comcode('cv_value', $val, 3);
+                if (($type == 'posting_field') && (!$done_one_posting_field)) {
+                    $done_one_posting_field = true;
+                    require_code('attachments2');
+                    require_code('attachments3');
+                    $smap += insert_lang_comcode_attachments('cv_value', 3, $val, 'catalogue_entry', strval($id), null, false, $original_submitter);
+                } else {
+                    $smap += insert_lang_comcode('cv_value', $val, 3);
+                }
             } else {
                 if (($type == 'posting_field') && (!$done_one_posting_field)) {
                     $done_one_posting_field = true;
@@ -1264,7 +1274,12 @@ function actual_edit_catalogue_entry($id, $category_id, $validated, $notes, $all
             }
         }
 
-        $GLOBALS['SITE_DB']->query_update('catalogue_efv_' . $sup_table_name, $smap, array('cf_id' => $field_id, 'ce_id' => $id), '', 1);
+        $cnt_field_rows_already = $GLOBALS['SITE_DB']->query_select_value('catalogue_efv_' . $sup_table_name, 'COUNT(*)', array('cf_id' => $field_id, 'ce_id' => $id));
+        if ($cnt_field_rows_already == 0) {
+            $GLOBALS['SITE_DB']->query_insert('catalogue_efv_' . $sup_table_name, $smap + array('cf_id' => $field_id, 'ce_id' => $id)); // Corruption, doing a repair
+        } else {
+            $GLOBALS['SITE_DB']->query_update('catalogue_efv_' . $sup_table_name, $smap, array('cf_id' => $field_id, 'ce_id' => $id), '', 1);
+        }
     }
 
     require_code('urls2');

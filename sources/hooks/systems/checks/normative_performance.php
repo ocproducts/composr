@@ -33,7 +33,7 @@ class Hook_check_normative_performance
         $warning = array();
         require_code('global4');
         $percentage = find_normative_performance();
-        if ($percentage <= 4.0) {
+        if ($percentage <= 2.0) {
             $warning[] = do_lang_tempcode('SLOW_SERVER', escape_html(float_format($percentage, 1)));
         }
 

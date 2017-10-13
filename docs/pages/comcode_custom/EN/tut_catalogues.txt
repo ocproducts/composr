@@ -47,6 +47,12 @@ You may find the auto-generated add/edit form isn't good enough for you. If this
 
 If you later want to add some custom code features for interacting with catalogue data, it is a lot harder programming with the level of abstraction that catalogues have.
 
+[title="3"]Limitations[/title]
+
+To preserve performance limitations may be imposed, including:
+ - Sorting may not be done on translatable/Comcode fields if you have over 300 records in a result set (typically a result set is a category)
+ - ... or sorting by distance from co-ordinates in the same condition (advanced feature)
+
 [title="2"]Fields[/title]
 
 A catalogue consists of a number of fields.

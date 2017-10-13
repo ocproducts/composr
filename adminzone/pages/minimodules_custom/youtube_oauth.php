@@ -26,7 +26,7 @@ ensure_got_oauth_client_id('youtube', true);
 
 $endpoint = 'https://accounts.google.com/o/oauth2';
 $auth_url = $endpoint . '/auth?client_id=_CLIENT_ID_';
-$auth_url .= '&redirect_uri=' . urlencode(static_evaluate_tempcode(build_url(array('page' => '_SELF'), '_SELF', null, false, false, true)));
+$auth_url .= '&redirect_uri=' . urlencode(static_evaluate_tempcode(build_url(array('page' => '_SELF'), '_SELF', null, false, true, true)));
 $auth_url .= '&response_type=code';
 $auth_url .= '&approval_prompt=force';
 $auth_url .= '&scope=' . urlencode('https://gdata.youtube.com');

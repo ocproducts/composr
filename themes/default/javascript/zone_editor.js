@@ -100,8 +100,10 @@ function select_ze_tab(id,tab)
 					// Fix for Firefox
 					if (typeof window.wysiwyg_editors['edit_'+id+'_textarea'].document!='undefined')
 					{
-						window.wysiwyg_editors['edit_'+id+'_textarea'].document.getBody().$.contentEditable='false';
-						window.wysiwyg_editors['edit_'+id+'_textarea'].document.getBody().$.contentEditable='true';
+						if (window.wysiwyg_editors['edit_'+id+'_textarea'].document.getBody().$) {
+							window.wysiwyg_editors['edit_'+id+'_textarea'].document.getBody().$.contentEditable='false';
+							window.wysiwyg_editors['edit_'+id+'_textarea'].document.getBody().$.contentEditable='true';
+						}
 					}
 				}
 			}

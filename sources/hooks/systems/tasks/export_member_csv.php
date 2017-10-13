@@ -321,7 +321,11 @@ class Hook_task_export_member_csv
                             break;
                     }
                     if ($wider != '') {
-                        $wider .= '/';
+                        if ($f == 'm_pass_hash_salted/m_pass_salt/m_password_compat_scheme') {
+                            $wider .= ' / ';
+                        } else {
+                            $wider .= '/';
+                        }
                     }
                     $wider .= is_integer($at) ? strval($at) : (($at === null) ? '' : $at);
                 }

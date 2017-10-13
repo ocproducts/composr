@@ -31,6 +31,9 @@ function init__form_templates()
     global $WYSIWYG_ATTACHED;
     $WYSIWYG_ATTACHED = false;
 
+    global $BLOCK_EXTRA_POSTING_FIELDS;
+    $BLOCK_EXTRA_POSTING_FIELDS = false; // Used to signal that there's a main posting form, so we can't allow extra custom posting form fields
+
     global $TABINDEX;
     $TABINDEX = 50; // Base
 

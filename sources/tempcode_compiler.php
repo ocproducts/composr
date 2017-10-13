@@ -777,10 +777,14 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
         $current_level_data = array('""');
     }
 
-    // Try and merge some strings that don't need to be in separate seq_parts
+    // Some optimisations
     $merged = array();
     $just_done_string = false;
     foreach ($current_level_data as $c) {
+        // Try and replace some unnecesary string appending which may have happened when experiencing possible (but not) control characters
+        $c = preg_replace('#([^\\\\])' . preg_quote('"."', '#') . '#', '$1', $c);
+
+        // Try and merge some strings that don't need to be in separate seq_parts
         $c_stripped_down = str_replace(array('\\\\', '\\"'), array('', ''), $c); // Remove literal slashes and literal quotes so we can do an accurate scan to ensure it is all one string
         if ($c_stripped_down[0] === '"' && strpos($c_stripped_down, '"', 1) === strlen($c_stripped_down) - 1) {
             if ($just_done_string) {

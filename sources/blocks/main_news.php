@@ -49,7 +49,7 @@ class Block_main_news
     public function caching_environment()
     {
         $info = array();
-        $info['cache_on'] = 'array(array_key_exists(\'optimise\',$map)?$map[\'optimise\']:\'0\',preg_match(\'#<\w+>#\',(array_key_exists(\'filter\',$map)?$map[\'filter\']:\'\'))!=0)?null:array(((array_key_exists(\'pagination\',$map)?$map[\'pagination\']:\'0\')==\'1\'),array_key_exists(\'title\',$map)?escape_html($map[\'title\']):\'(default title)\',array_key_exists(\'as_guest\',$map)?($map[\'as_guest\']==\'1\'):false,get_param_integer($block_id.\'_start\',array_key_exists(\'start\',$map)?intval($map[\'start\']):0),array_key_exists(\'filter\',$map)?$map[\'filter\']:\'\',array_key_exists(\'show_in_full\',$map)?$map[\'show_in_full\']:\'0\',array_key_exists(\'render_if_empty\',$map)?$map[\'render_if_empty\']:\'0\',((array_key_exists(\'attach_to_url_filter\',$map)?$map[\'attach_to_url_filter\']:\'0\')==\'1\'),array_key_exists(\'no_links\',$map)?$map[\'no_links\']:0,array_key_exists(\'title\',$map)?$map[\'title\']:\'\',array_key_exists(\'member_based\',$map)?$map[\'member_based\']:\'0\',array_key_exists(\'blogs\',$map)?$map[\'blogs\']:\'-1\',array_key_exists(\'historic\',$map)?$map[\'historic\']:\'\',array_key_exists(\'param\',$map)?intval($map[\'param\']):14,array_key_exists(\'multiplier\',$map)?floatval($map[\'multiplier\']):0.5,array_key_exists(\'fallback_full\',$map)?intval($map[\'fallback_full\']):3,array_key_exists(\'fallback_archive\',$map)?intval($map[\'fallback_archive\']):6,array_key_exists(\'select\',$map)?$map[\'select\']:get_param_string(\'news_select\',\'\'),array_key_exists(\'zone\',$map)?$map[\'zone\']:get_module_zone(\'news\'),array_key_exists(\'select_and\',$map)?$map[\'select_and\']:\'\')';
+        $info['cache_on'] = 'array(array_key_exists(\'optimise\',$map)?$map[\'optimise\']:\'0\',preg_match(\'#<\w+>#\',(array_key_exists(\'filter\',$map)?$map[\'filter\']:\'\'))!=0)?null:array(((array_key_exists(\'pagination\',$map)?$map[\'pagination\']:\'0\')==\'1\'),array_key_exists(\'title\',$map)?escape_html($map[\'title\']):\'(default title)\',array_key_exists(\'as_guest\',$map)?($map[\'as_guest\']==\'1\'):false,get_param_integer($block_id.\'_start\',array_key_exists(\'start\',$map)?intval($map[\'start\']):0),array_key_exists(\'filter\',$map)?$map[\'filter\']:\'\',array_key_exists(\'show_in_full\',$map)?$map[\'show_in_full\']:\'0\',array_key_exists(\'render_if_empty\',$map)?$map[\'render_if_empty\']:\'0\',((array_key_exists(\'attach_to_url_filter\',$map)?$map[\'attach_to_url_filter\']:\'0\')==\'1\'),array_key_exists(\'no_links\',$map)?$map[\'no_links\']:0,array_key_exists(\'title\',$map)?$map[\'title\']:\'\',array_key_exists(\'member_based\',$map)?$map[\'member_based\']:\'0\',array_key_exists(\'blogs\',$map)?$map[\'blogs\']:\'-1\',array_key_exists(\'historic\',$map)?$map[\'historic\']:\'\',array_key_exists(\'param\',$map)?intval($map[\'param\']):14,array_key_exists(\'multiplier\',$map)?floatval($map[\'multiplier\']):0.5,array_key_exists(\'fallback_full\',$map)?intval($map[\'fallback_full\']):3,array_key_exists(\'fallback_archive\',$map)?intval($map[\'fallback_archive\']):6,array_key_exists(\'select\',$map)?$map[\'select\']:\'\',array_key_exists(\'zone\',$map)?$map[\'zone\']:get_module_zone(\'news\'),array_key_exists(\'select_and\',$map)?$map[\'select_and\']:\'\')';
         $info['special_cache_flags'] = CACHE_AGAINST_DEFAULT | CACHE_AGAINST_PERMISSIVE_GROUPS;
         if (addon_installed('content_privacy')) {
             $info['special_cache_flags'] |= CACHE_AGAINST_MEMBER;
@@ -105,15 +105,14 @@ class Block_main_news
         $days_outline = floatval($days) - $days_full;
 
         // News query
-        $select = isset($map['select']) ? $map['select'] : get_param_string('news_select', '*');
+        $select = array_key_exists('select', $map) ? $map['select'] : '*';
         $select_and = isset($map['select_and']) ? $map['select_and'] : '';
-        if ($select == '*') {
-            $q_filter = '1=1';
-        } else {
-            require_code('selectcode');
-            $selects_1 = selectcode_to_sqlfragment($select, 'r.news_category', 'news_categories', null, 'r.news_category', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
-            $selects_2 = selectcode_to_sqlfragment($select, 'd.news_entry_category', 'news_categories', null, 'd.news_category', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
-            $q_filter = '(' . $selects_1 . ' OR ' . $selects_2 . ')';
+        $q_filter = '1=1';
+        if ($select != '*') {
+            $q_filter .= ' AND ' . $this->generate_selectcode_sql($select);
+        }
+        if (($select_and != '') && ($select_and != '*')) {
+            $q_filter .= ' AND ' . $this->generate_selectcode_sql($select_and);
         }
         if ($blogs === 0) {
             if ($q_filter != '') {
@@ -130,12 +129,6 @@ class Block_main_news
             $join = ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'news_categories c ON c.id=r.news_category';
         } else {
             $join = '';
-        }
-        if ($select_and != '') {
-            require_code('selectcode');
-            $selects_and_1 = selectcode_to_sqlfragment($select_and, 'r.news_category', 'news_categories', null, 'r.news_category', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
-            $selects_and_2 = selectcode_to_sqlfragment($select_and, 'd.news_entry_category', 'news_categories', null, 'd.news_category', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
-            $q_filter .= ' AND (' . $selects_and_1 . ' OR ' . $selects_and_2 . ')';
         }
 
         // Filtercode
@@ -297,7 +290,7 @@ class Block_main_news
                 }
 
                 // URL
-                $tmp = array('page' => 'news', 'type' => 'view', 'id' => $id) + $prop_url;
+                $tmp = array('page' => ($zone == '_SELF') ? get_page_name() : 'news', 'type' => 'view', 'id' => $id) + $prop_url;
                 $full_url = build_url($tmp, $zone);
 
                 // Category
@@ -336,6 +329,7 @@ class Block_main_news
                     'BLOG' => $blogs === 1,
                     'SUBMITTER' => strval($myrow['submitter']),
                     'CATEGORY' => $category,
+                    '_CATEGORY' => strval($myrow['news_category']),
                     'IMG' => $img,
                     '_IMG' => $img_raw,
                     'DATE' => $date,
@@ -362,7 +356,7 @@ class Block_main_news
                 $date = get_timezoned_date_tempcode($myrow['date_and_time']);
 
                 // URL
-                $tmp = array('page' => 'news', 'type' => 'view', 'id' => $myrow['p_id']) + $prop_url;
+                $tmp = array('page' => ($zone == '_SELF') ? get_page_name() : 'news', 'type' => 'view', 'id' => $myrow['p_id']) + $prop_url;
                 $url = build_url($tmp, $zone);
 
                 // Title
@@ -380,7 +374,7 @@ class Block_main_news
         }
 
         // Work out management URLs
-        $tmp = array('page' => 'news', 'type' => 'browse');
+        $tmp = array('page' => ($zone == '_SELF') ? get_page_name() : 'news', 'type' => 'browse');
         if ($select != '*') {
             $tmp[is_numeric($select) ? 'id' : 'select'] = $select;
         }
@@ -475,5 +469,24 @@ class Block_main_news
             'START_PARAM' => $block_id . '_start',
             'MAX_PARAM' => $block_id . '_max',
         ));
+    }
+
+    /**
+     * Generate Selectcode SQL.
+     *
+     * @param  string $select The Selectcode.
+     * @return string The SQL.
+     */
+    protected function generate_selectcode_sql($select)
+    {
+        require_code('selectcode');
+        $selects_1 = selectcode_to_sqlfragment($select, 'r.news_category', 'news_categories', null, 'r.news_category', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
+        $selects_2 = selectcode_to_sqlfragment($select, 'd.news_entry_category', 'news_categories', null, 'd.news_category', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
+        if ((strpos($select, '~') === false) && (strpos($select, '!') === false)) {
+            $q_filter = '(' . $selects_1 . ' OR ' . $selects_2 . ')';
+        } else {
+            $q_filter = '(' . $selects_1 . ' AND (' . $selects_2 . ' OR d.news_entry_category IS NULL))';
+        }
+        return $q_filter;
     }
 }

@@ -235,6 +235,7 @@ class Hook_addon_registry_forum_blocks
                 'NEWS_TITLE' => lorem_word(),
                 'NEWS_TITLE_PLAIN' => lorem_word(),
                 'CATEGORY' => '',
+                '_CATEGORY' => placeholder_id(),
                 'IMG' => '',
                 '_IMG' => '',
                 'AUTHOR' => lorem_word(),

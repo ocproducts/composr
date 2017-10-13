@@ -544,7 +544,7 @@ function send_ticket_email($ticket_id, $title, $post, $ticket_url, $uid_email, $
                 ticket_outgoing_message($ticket_id, $ticket_url, $ticket_type_name, $title, $post, $uid_displayname, $uid_email, '', true);
             } elseif (get_option('message_received_emails') == '1') {
                 require_code('mail');
-                mail_wrap(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $title), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $post), array($uid_email), null, '', '', 3, null, false, $new_poster);
+                mail_wrap(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $title), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $post), array($uid_email), empty($uid_displayname) ? null : $uid_displayname, '', '', 3, null, false, $new_poster);
             }
         }
     }

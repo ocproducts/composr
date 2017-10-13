@@ -139,6 +139,8 @@ function render_quiz($questions)
 
     require_code('form_templates');
 
+    $GLOBALS['NO_DEV_MODE_FULLSTOP_CHECK'] = true;
+
     // Sort out qa input
     $fields = new Tempcode();
     foreach ($questions as $i => $q) {

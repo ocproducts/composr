@@ -223,7 +223,7 @@ function write_to($file_path, $type, $match_start, $match_end, $indent_level, $r
             if ($type == 'ApacheRecommended') {
                 $rules_txt .= '
                 # crossdomain.xml is actually Composr-driven
-                RewriteRule ^crossdomain.xml data/crossdomain.php
+                RewriteRule ^crossdomain\.xml data/crossdomain.php
                 ';
             }
 
@@ -275,7 +275,7 @@ function write_to($file_path, $type, $match_start, $match_end, $indent_level, $r
                     }
 
                     if (!$enabled) {
-                        $rules_txt .= '<--';
+                        $rules_txt .= '<!--';
                     }
                     $rules_txt .= '<rule name="Imported Rule ' . strval($i + 1) . '" stopProcessing="' . (in_array('L', $flags) ? 'true' : 'false') . '">
                                <match url="' . htmlentities($rule) . '" ignoreCase="false" />

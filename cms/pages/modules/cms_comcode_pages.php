@@ -117,9 +117,9 @@ class Module_cms_comcode_pages
             $file = $page_link_parts[1];
 
             if ($page_link != '') {
-                breadcrumb_set_self(do_lang_tempcode('COMCODE_PAGE_EDIT'));
+                breadcrumb_set_self(do_lang_tempcode('EDIT'));
             }
-            breadcrumb_set_parents(array(array('_SELF:_SELF:browse:lang=' . get_param_string('lang', ''), do_lang_tempcode('CHOOSE'))));
+            breadcrumb_set_parents(array(array('_SELF:_SELF:browse:lang=' . get_param_string('lang', ''), do_lang_tempcode('COMCODE_PAGES'))));
 
             $this->title = get_screen_title(($file == '') ? 'COMCODE_PAGE_ADD' : '_COMCODE_PAGE_EDIT', true, array(escape_html($zone), escape_html($file)));
 
@@ -852,9 +852,6 @@ class Module_cms_comcode_pages
             $order++;
         }
 
-        require_code('fields');
-        append_form_custom_fields('comcode_page', $zone . ':' . $file, $fields2, $hidden_fields);
-
         if (!$validated) {
             $validated = (get_param_integer('validated', 0) == 1);
         }
@@ -889,6 +886,9 @@ class Module_cms_comcode_pages
         $fields2->attach(form_input_tick(do_lang_tempcode('SHOW_AS_EDITED'), do_lang_tempcode('DESCRIPTION_SHOW_AS_EDITED'), 'show_as_edit', $show_as_edit));
 
         $fields2->attach(get_order_field('comcode_page', 'zone', $order));
+
+        require_code('fields');
+        append_form_custom_fields('comcode_page', $zone . ':' . $file, $fields2, $hidden_fields);
 
         $meta_keywords = post_param_string('meta_keywords', '');
         $meta_description = post_param_string('meta_description', '');
@@ -1080,7 +1080,7 @@ class Module_cms_comcode_pages
         if ($url != '') {
             return redirect_screen($this->title, $url, $completion_text);
         }
-        return $this->do_next_manager($this->title, $file, $zone, $completion_text);
+        return $this->do_next_manager($this->title, $new_file, $zone, $completion_text);
     }
 
     /**

@@ -14,7 +14,8 @@ Composr has a concept called a 'block'. Blocks are building blocks that can be i
 Put another way, blocks are dynamic elements, elements that automatically generate content that could not be pre-prepared. For example:
  - a list of recent topics on a forum ([tt]main_forum_topics[/tt])
  - information about the currently logged in user ([tt]side_personal_stats[/tt])
-
+Other software may use the term 'widgets'.
+ 
 The default start page in the Welcome Zone, and the panels make use of blocks.
 [/surround]
 

@@ -191,8 +191,11 @@ class Hook_startup_staging_notice
      */
     public function run()
     {
-        if (strpos(get_base_url(), 'staging.example.com') !== false) {
-            attach_message('This is the staging site, for testing out code changes. Content should be added to the live site and reviewed with Validation off, then on after approval.', 'notice');
+        if (running_script('index')) {
+            if (strpos(get_base_url(), 'staging.example.com') !== false) {
+                require_code('site');
+                attach_message('This is the staging site, for testing out code changes. Content should be added to the live site and reviewed with Validation off, then on after approval.', 'notice');
+            }
         }
     }
 }
