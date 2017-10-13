@@ -615,7 +615,7 @@ function _default_conv_func($db, $info, $catalogue_name, &$extra_join, &$extra_s
     if (isset($info['id_field'])) {
         $first_id_field = (is_array($info['id_field']) ? implode(',', $info['id_field']) : $info['id_field']);
     } else {
-        $first_id_field = db_get_first_id();
+        $first_id_field = 'id';
     }
 
     // Special case for ratings

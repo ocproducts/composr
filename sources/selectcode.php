@@ -398,6 +398,7 @@ function _selectcode_to_generic($filter, $field_name, $table_name, $ids_and_pare
  * @param  ?string $field_name The database's ID field for the record-set we're matching (null: use a different lookup method)
  * @param  ?string $table_name The database's table for the record-set we're matching (null: use a different lookup method)
  * @param  ?array $ids_and_parents A map between record-set IDs and record-set parent-category-IDs (null: use a different lookup method)
+ * @param  string $ids_and_parents_callback A call_user_func_array specifier to a function that will give a map between record-set IDs and record-set parent-category-IDs. We pass a call_user_func_array specifier because we don't want to have to generate it unless we need to (if we need to do 'avoiding' matches or 'subtree' matches)
  * @param  ?string $category_field_name The database's field name for the record-set's container-category specifier (null: don't support subtree [*-style] searches)
  * @param  ?object $db Database connection to use (null: website)
  *

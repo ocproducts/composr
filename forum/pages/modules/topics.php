@@ -639,11 +639,13 @@ class Module_topics
 
         $forum_id = null;
         foreach ($topics as $i => $topic_id) {
-            if ($i == 0) {
-                $forum_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_forum_id', array('id' => $topic_id));
-                if ($forum_id === null) {
-                    warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
-                }
+            $id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 'id', array('id' => $topic_id));
+            if ($id === null) {
+                continue;
+            }
+
+            if ($forum_id === null) {
+                $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topic_id));
             }
             cns_ping_topic_read($topic_id);
         }
@@ -700,7 +702,12 @@ class Module_topics
         $forum_id = null;
         $success = 0;
         foreach ($topics as $i => $topic_id) {
-            if ($i == 0) {
+            $id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 'id', array('id' => $topic_id));
+            if ($id === null) {
+                continue;
+            }
+
+            if ($forum_id === null) {
                 $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topic_id));
             }
             if ($this->cns_ping_topic_unread($topic_id)) {
@@ -738,7 +745,12 @@ class Module_topics
 
         $forum_id = null;
         foreach ($topics as $i => $topic_id) {
-            if ($i == 0) {
+            $id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 'id', array('id' => $topic_id));
+            if ($id === null) {
+                continue;
+            }
+
+            if ($forum_id === null) {
                 $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topic_id));
             }
             cns_edit_topic($topic_id, null, null, 1, null, null, null, null, '');
@@ -764,7 +776,12 @@ class Module_topics
 
         $forum_id = null;
         foreach ($topics as $i => $topic_id) {
-            if ($i == 0) {
+            $id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 'id', array('id' => $topic_id));
+            if ($id === null) {
+                continue;
+            }
+
+            if ($forum_id === null) {
                 $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topic_id));
             }
             cns_edit_topic($topic_id, null, null, null, null, 1, null, null, '');
@@ -790,7 +807,12 @@ class Module_topics
 
         $forum_id = null;
         foreach ($topics as $i => $topic_id) {
-            if ($i == 0) {
+            $id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 'id', array('id' => $topic_id));
+            if ($id === null) {
+                continue;
+            }
+
+            if ($forum_id === null) {
                 $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topic_id));
             }
             cns_edit_topic($topic_id, null, null, null, null, 0, null, null, '');
@@ -816,7 +838,12 @@ class Module_topics
 
         $forum_id = null;
         foreach ($topics as $i => $topic_id) {
-            if ($i == 0) {
+            $id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 'id', array('id' => $topic_id));
+            if ($id === null) {
+                continue;
+            }
+
+            if ($forum_id === null) {
                 $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topic_id));
             }
             cns_edit_topic($topic_id, null, null, null, null, 1, null, null, '');
@@ -842,7 +869,12 @@ class Module_topics
 
         $forum_id = null;
         foreach ($topics as $i => $topic_id) {
-            if ($i == 0) {
+            $id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 'id', array('id' => $topic_id));
+            if ($id === null) {
+                continue;
+            }
+
+            if ($forum_id === null) {
                 $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topic_id));
             }
             cns_edit_topic($topic_id, null, null, null, null, 0, null, null, '');
@@ -868,7 +900,12 @@ class Module_topics
 
         $forum_id = null;
         foreach ($topics as $i => $topic_id) {
-            if ($i == 0) {
+            $id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 'id', array('id' => $topic_id));
+            if ($id === null) {
+                continue;
+            }
+
+            if ($forum_id === null) {
                 $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topic_id));
             }
             cns_edit_topic($topic_id, null, null, null, null, null, null, 1, '');
@@ -894,7 +931,12 @@ class Module_topics
 
         $forum_id = null;
         foreach ($topics as $i => $topic_id) {
-            if ($i == 0) {
+            $id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 'id', array('id' => $topic_id));
+            if ($id === null) {
+                continue;
+            }
+
+            if ($forum_id === null) {
                 $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topic_id));
             }
             cns_edit_topic($topic_id, null, null, null, null, null, null, 0, '');
@@ -920,7 +962,12 @@ class Module_topics
 
         $forum_id = null;
         foreach ($topics as $i => $topic_id) {
-            if ($i == 0) {
+            $id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 'id', array('id' => $topic_id));
+            if ($id === null) {
+                continue;
+            }
+
+            if ($forum_id === null) {
                 $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topic_id));
             }
             cns_edit_topic($topic_id, null, null, null, 1, null, null, null, '');
@@ -946,7 +993,12 @@ class Module_topics
 
         $forum_id = null;
         foreach ($topics as $i => $topic_id) {
-            if ($i == 0) {
+            $id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 'id', array('id' => $topic_id));
+            if ($id === null) {
+                continue;
+            }
+
+            if ($forum_id === null) {
                 $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topic_id));
             }
             cns_edit_topic($topic_id, null, null, null, 0, null, null, null, '');
@@ -973,7 +1025,12 @@ class Module_topics
 
         $forum_id = null;
         foreach ($topics as $i => $topic_id) {
-            if ($i == 0) {
+            $id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 'id', array('id' => $topic_id));
+            if ($id === null) {
+                continue;
+            }
+
+            if ($forum_id === null) {
                 $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topic_id));
             }
             $this->check_has_mod_access($topic_id);
@@ -1073,7 +1130,12 @@ class Module_topics
 
         $forum_id = null;
         foreach ($topics as $i => $topic_id) {
-            if ($i == 0) {
+            $id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 'id', array('id' => $topic_id));
+            if ($id === null) {
+                continue;
+            }
+
+            if ($forum_id === null) {
                 $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topic_id));
             }
             cns_perform_multi_moderation($mm_id, $topic_id, post_param_string('reason'), post_param_string('post_text'), post_param_integer('is_emphasised', 0), post_param_integer('skip_sig', 0));
@@ -1092,6 +1154,11 @@ class Module_topics
         $topics = $this->get_markers();
         if (count($topics) == 0) {
             warn_exit(do_lang_tempcode('NO_MARKERS_SELECTED'));
+        }
+
+        $id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 'id', array('id' => $topics[0]));
+        if ($id === null) {
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'forum'));
         }
 
         $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topics[0]));
@@ -2609,6 +2676,12 @@ END;
     public function mark_read_topic() // Type
     {
         $topic_id = get_param_integer('id');
+
+        $id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 'id', array('id' => $topic_id));
+        if ($id === null) {
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
+        }
+
         $forum_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_forum_id', array('id' => $topic_id));
 
         cns_ping_topic_read($topic_id, get_member(), get_param_integer('timestamp', null));
@@ -2633,7 +2706,14 @@ END;
     public function mark_unread_topic() // Type
     {
         $topic_id = get_param_integer('id');
+
+        $id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 'id', array('id' => $topic_id));
+        if ($id === null) {
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
+        }
+
         $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topic_id));
+
         if (is_null($forum_id)) {
             decache('side_cns_private_topics', null, get_member());
             decache('_new_pp', null, get_member());
@@ -4096,7 +4176,7 @@ END;
 
         if ($forum_id != db_get_first_id()) {
             // Take user to parent forum
-            $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_parent_forum', array('id' => $forum_id));
+            $forum_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_parent_forum', array('id' => $forum_id));
         }
 
         return $this->redirect_to_forum('MARK_READ', $forum_id);

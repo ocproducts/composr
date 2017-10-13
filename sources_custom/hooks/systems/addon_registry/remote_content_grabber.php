@@ -131,8 +131,8 @@ class Hook_addon_registry_remote_content_grabber
     public function get_file_list()
     {
         return array(
-            'sources_custom/hooks/systems/addon_registry/remote_content_grabbber.php',
-            'sources_custom/remote_content_grabbber.php',
+            'sources_custom/hooks/systems/addon_registry/remote_content_grabber.php',
+            'sources_custom/remote_content_grabber.php',
         );
     }
 }

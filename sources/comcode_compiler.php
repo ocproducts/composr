@@ -525,7 +525,11 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
     }
 
     $has_banners = addon_installed('banners');
-    $b_all = (get_option('admin_banners') == '1');
+    if (function_exists('get_option')) {
+        $b_all = (get_option('admin_banners', true) == '1');
+    } else {
+        $b_all = false;
+    }
 
     // Special textcode
     $emoticons = $GLOBALS['FORUM_DRIVER']->find_emoticons(); // We'll be needing the emoticon array

@@ -18,7 +18,7 @@
  */
 class file_naming_test_set extends cms_test_case
 {
-    public function testDuplicateThemeImages()
+    public function testFileNamingConvention()
     {
         require_code('files');
         require_code('files2');
@@ -50,16 +50,11 @@ class file_naming_test_set extends cms_test_case
             'sources_custom/spout/',
             'sources_custom/Swift-4.1.1/', // TODO: Change in v11
             'sources_custom/user_sync__customise.php.example',
-            'themes/default/images/checklist/checklist-.png',
-            'themes/default/images/EN/logo/',
             'themes/default/images/jquery_ui/',
             'themes/default/images/realtime_rain/',
             'themes/default/images/select2/',
-            'themes/default/images_custom/EN/logo/',
-            'themes/default/images_custom/ES/logo/',
             'themes/default/images_custom/openid/',
             'themes/default/images_custom/skitter/',
-            'themes/default/images_custom/TA/logo/',
             'themes/default/javascript_custom/mediaelement-and-player.js',
             'tracker/',
             '_config.php.template',
@@ -69,10 +64,21 @@ class file_naming_test_set extends cms_test_case
             'themes/default/images/cns_default_avatars/default_set/cartoons/half-life.jpg', // TODO: Rename in v11 and remove this rule
         );
 
+        $ignore_substrings = array(
+            '/-logo.png',
+            '/checklist/checklist-.png',
+        );
+
         $files = get_directory_contents(get_file_base());
         foreach ($files as $file) {
-            if (should_ignore_file($file, IGNORE_USER_CUSTOMISE | IGNORE_UPLOADS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS)) {
+            if (should_ignore_file($file, IGNORE_USER_CUSTOMISE | IGNORE_UPLOADS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_REVISION_FILES | IGNORE_EDITFROM_FILES)) {
                 continue;
+            }
+
+            foreach ($ignore_substrings as $substring) {
+                if (strpos($file, $substring) !== false) {
+                    continue 2;
+                }
             }
 
             foreach ($ignore_stubs as $stub) {
