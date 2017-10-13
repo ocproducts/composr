@@ -1095,9 +1095,10 @@ abstract class Standard_crud_module
      * @param  ?array $where Extra where clauses (null: none)
      * @param  boolean $force_site_db Whether to always access using the site database
      * @param  string $join Extra join clause for our query (blank: none)
+     * @param  ?integer $max Maximum to show (null: standard)
      * @return array A pair: Rows for selection from, Total results
      */
-    public function get_entry_rows($recache = false, $orderer = null, $where = null, $force_site_db = false, $join = '')
+    public function get_entry_rows($recache = false, $orderer = null, $where = null, $force_site_db = false, $join = '', $max = null)
     {
         if ((!$recache) && (!is_null($orderer)) && (!is_null($where))) {
             if (isset($this->cached_entry_rows)) {
@@ -1136,7 +1137,9 @@ abstract class Standard_crud_module
             return array(array(), 0);
         }
         $start = get_param_integer('start', 0);
-        $max = get_param_integer('max', 20);
+        if ($max === null) {
+            $max = get_param_integer('max', 20);
+        }
         $rows = $db->query_select($table . $join, array('r.*'), $where, 'ORDER BY ' . $orderer, $max, $start, false, isset($GLOBALS['TABLE_LANG_FIELDS_CACHE'][$table_raw]) ? $GLOBALS['TABLE_LANG_FIELDS_CACHE'][$table_raw] : null);
         if ($force_site_db) {
             $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;
@@ -1170,7 +1173,7 @@ abstract class Standard_crud_module
      */
     public function create_selection_list_entries()
     {
-        list($_entries,) = $this->get_entry_rows();
+        list($_entries,) = $this->get_entry_rows(false, null, null, false, '', intval(get_option('general_safety_listing_limit')));
 
         $entries = new Tempcode();
         foreach ($_entries as $key => $row) {
