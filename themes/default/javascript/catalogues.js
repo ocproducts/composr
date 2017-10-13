@@ -80,15 +80,22 @@
 
     $cms.functions.moduleCmsCataloguesRunStartAddCatalogue = function moduleCmsCataloguesRunStartAddCatalogue() {
         var form = document.getElementById('new_field_0_name').form,
-            submitBtn = document.getElementById('submit_button');
+            submitBtn = document.getElementById('submit_button'),
+            validValue;
         
         form.addEventListener('submit', function submitCheck(e) {
+            var value = form.elements['name'].value;
+
+            if (value === validValue) {
+                return;
+            }
+            
             submitBtn.disabled = true;
-            var url = '{$FIND_SCRIPT_NOHTTP;^,snippet}?snippet=exists_catalogue&name=' + encodeURIComponent(form.elements['name'].value);
+            var url = '{$FIND_SCRIPT_NOHTTP;^,snippet}?snippet=exists_catalogue&name=' + encodeURIComponent(value);
             e.preventDefault();
             $cms.form.doAjaxFieldTest(url).then(function (valid) {
                 if (valid) {
-                    form.removeEventListener('submit', submitCheck);
+                    validValue = value;
                     $cms.dom.submit(form);
                 } else {
                     submitBtn.disabled = false;

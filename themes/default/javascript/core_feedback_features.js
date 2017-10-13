@@ -217,14 +217,22 @@
         /* Set up a form to have its CAPTCHA checked upon submission using AJAX */
         addCaptchaChecking: function () {
             var form = this.form,
-                submitBtn = form.elements['submit_button'];
+                submitBtn = form.elements['submit_button'],
+                validValue;
+            
             form.addEventListener('submit', function submitCheck(e) {
+                var value = form.elements['captcha'].value;
+                
+                if (value === validValue) {
+                    return;
+                }
+                
                 submitBtn.disabled = true;
-                var url = '{$FIND_SCRIPT;,snippet}?snippet=captcha_wrong&name=' + encodeURIComponent(form.elements['captcha'].value);
+                var url = '{$FIND_SCRIPT;,snippet}?snippet=captcha_wrong&name=' + encodeURIComponent(value);
                 e.preventDefault();
                 $cms.form.doAjaxFieldTest(url).then(function (valid) {
                     if (valid) {
-                        form.removeEventListener('submit', submitCheck);
+                        validValue = value;
                         $cms.dom.submit(form);
                     } else {
                         var image = document.getElementById('captcha_image');

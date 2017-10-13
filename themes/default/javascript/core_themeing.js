@@ -500,15 +500,22 @@
             }
         });
         var form = document.getElementById('main_form'),
-            submitBtn = document.getElementById('submit_button');
+            submitBtn = document.getElementById('submit_button'),
+            validValue;
+        
         form.addEventListener('submit', function submitCheck(e) {
-            var url = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=exists_theme&name=' + encodeURIComponent(form.elements['theme'].value);
+            var value = form.elements['theme'].value,
+                url = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=exists_theme&name=' + encodeURIComponent(value);
 
+            if (value === validValue) {
+                return;
+            }
+            
             submitBtn.disabled = true;
             e.preventDefault();
             $cms.form.doAjaxFieldTest(url).then(function (valid) {
                 if (valid) {
-                    form.removeEventListener('submit', submitCheck);
+                    validValue = value;
                     $cms.dom.submit(form);
                 } else {
                     submitBtn.disabled = false;

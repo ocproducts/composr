@@ -40,14 +40,22 @@
 
     $cms.functions.moduleAdminCustomComcodeRunStart = function moduleAdminCustomComcodeRunStart() {
         var form = document.getElementById('main_form'),
-            submitBtn = document.getElementById('submit_button');
+            submitBtn = document.getElementById('submit_button'),
+            validValue;
+        
         form.addEventListener('submit', function submitCheck(e) {
+            var value = form.elements['tag'].value;
+            
+            if (value === validValue) {
+                return;
+            }
+            
             submitBtn.disabled = true;
             var url = '{$FIND_SCRIPT_NOHTTP;^,snippet}?snippet=exists_tag&name=' + encodeURIComponent(form.elements['tag'].value);
             e.preventDefault();
             $cms.form.doAjaxFieldTest(url).then(function (valid) {
                 if (valid) {
-                    form.removeEventListener('submit', submitCheck);
+                    validValue = value;
                     $cms.dom.submit(form);
                 } else {
                     submitBtn.disabled = false;
