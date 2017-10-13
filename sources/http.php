@@ -1120,7 +1120,7 @@ class HttpDownloaderCurl extends HttpDownloader
                 }
 
                 if (strpos($matches[1], '://') === false) {
-                    $matches[1] = qualify_url($matches[1], $url);
+                    $matches[1] = qualify_url($matches[1], $url, true);
                 }
 
                 if ($this->no_redirect) {
@@ -1142,7 +1142,7 @@ class HttpDownloaderCurl extends HttpDownloader
                 }
 
                 if (strpos($matches[1], '://') === false) {
-                    $matches[1] = qualify_url($matches[1], $url);
+                    $matches[1] = qualify_url($matches[1], $url, true);
                 }
 
                 if (($matches[1] != $url) && (preg_match('#^3\d\d$#', $this->message) != 0)) {
@@ -1425,7 +1425,7 @@ class HttpDownloaderSockets extends HttpDownloader
                             @fclose($mysock);
 
                             if (strpos($matches[1], '://') === false) {
-                                $matches[1] = qualify_url($matches[1], $url);
+                                $matches[1] = qualify_url($matches[1], $url, true);
                             }
 
                             if ($this->no_redirect) {
@@ -1449,7 +1449,7 @@ class HttpDownloaderSockets extends HttpDownloader
                             @fclose($mysock);
 
                             if (strpos($matches[1], '://') === false) {
-                                $matches[1] = qualify_url($matches[1], $url);
+                                $matches[1] = qualify_url($matches[1], $url, true);
                             }
 
                             if ($matches[1] != $url) {

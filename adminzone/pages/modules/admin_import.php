@@ -169,7 +169,8 @@ class Module_admin_import
         }
 
         if ($type == 'import') {
-            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('IMPORT')), array('_SELF:_SELF:session', do_lang_tempcode('IMPORT_SESSION')), array('_SELF:_SELF:hook:importer=session2:session=' . get_param_string('session'), do_lang_tempcode('IMPORT'))));
+            $importer = filter_naughty(get_param_string('importer'));
+            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('IMPORT')), array('_SELF:_SELF:session:importer=' . $importer, do_lang_tempcode('IMPORT_SESSION')), array('_SELF:_SELF:hook:importer=' . $importer . ':session=' . get_param_string('session'), do_lang_tempcode('ACTIONS'))));
             breadcrumb_set_self(do_lang_tempcode('ACTIONS'));
         }
 

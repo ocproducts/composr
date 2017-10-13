@@ -1486,6 +1486,9 @@ function edit_gallery($old_name, $name, $fullname, $description, $notes, $parent
         if (addon_installed('catalogues')) {
             update_catalogue_content_ref('gallery', $old_name, $name);
         }
+
+        require_code('sitemap_xml');
+        notify_sitemap_node_delete('SEARCH:galleries:browse:' . $old_name);
     }
 
     if ($meta_keywords !== null) {

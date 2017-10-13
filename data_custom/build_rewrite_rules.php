@@ -216,7 +216,7 @@ function write_to($file_path, $type, $match_start, $match_end, $indent_level, $r
             if ($type == 'ApacheRecommended') {
                 $rules_txt .= '
                 # crossdomain.xml is actually Composr-driven
-                RewriteRule ^crossdomain.xml data/crossdomain.php
+                RewriteRule ^crossdomain\.xml data/crossdomain.php
                 ';
             }
 

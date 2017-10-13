@@ -153,7 +153,7 @@ class Block_main_rss
                 $_full_url = '';
             }
 
-            $_title = $item['title'];
+            $_title = array_key_exists('title', $item) ? $item['title'] : do_lang('UNKNOWN');
             $_title = array_key_exists('title', $item) ? $item['title'] : '';
 
             $full_url = ($_full_url != '') ? hyperlink($_full_url, do_lang_tempcode('VIEW'), true, false, $_title) : new Tempcode();

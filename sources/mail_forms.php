@@ -101,7 +101,7 @@ function form_to_email($subject = null, $subject_prefix = '', $subject_suffix = 
 
     // Send standard confirmation email to current user
     if ($from_email != '' && get_option('message_received_emails') == '1') {
-        dispatch_mail(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $subject), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $from_email), array($from_email), null, '', '', array('as' => get_member()));
+        dispatch_mail(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $subject), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $from_email), array($from_email), $from_name, '', '', array('as' => get_member()));
     }
 }
 

@@ -835,11 +835,10 @@ header h1 {
 .title_tagline {
 	font-size: 0.95em;
 	padding-bottom: 2em;
-	margin-top: -1.2em;
 	color: {$GET,area_key_text};
 }
-.box_inner>.title_tagline {
-	margin-top: 0;
+h1 + .title_tagline {
+	margin-top: -1.2em;
 }
 
 body#main_website #main_website_inner, html>body div.global_middle_faux {

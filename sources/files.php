@@ -616,6 +616,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
     if (($bitmask & IGNORE_REVISION_FILES) != 0) { // E.g. global.css.<timestamp>
         $ignore_filename_and_dir_name_patterns = array_merge($ignore_filename_and_dir_name_patterns, array(
             array('.*\.\d+.*', '.*'),
+            array('.*\.latest_in_cms_edit', '.*'),
         ));
     }
 

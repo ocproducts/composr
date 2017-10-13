@@ -1258,6 +1258,8 @@ class Hook_addon_registry_core_form_interfaces
      */
     public function tpl_preview__form_screen_2()
     {
+        require_javascript('plupload');
+
         require_lang('comcode');
         require_lang('dates');
 

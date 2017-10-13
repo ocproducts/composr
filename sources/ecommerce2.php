@@ -181,8 +181,8 @@ function edit_usergroup_subscription($id, $title, $description, $price, $tax_cod
                     'm_ref_point' => $mail['ref_point'],
                     'm_ref_point_offset' => $mail['ref_point_offset'],
                 );
-                $map += insert_lang_comcode('m_subject', $mail['subject'], 2, $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']);
-                $map += insert_lang_comcode('m_body', $mail['body'], 2, $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']);
+                $map += insert_lang('m_subject', $mail['subject'], 2, $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']);
+                $map += insert_lang('m_body', $mail['body'], 2, $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']);
                 $GLOBALS['SITE_DB']->query_insert('f_usergroup_sub_mails', $map);
             }
         }

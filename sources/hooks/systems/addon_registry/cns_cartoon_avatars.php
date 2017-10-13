@@ -106,7 +106,7 @@ class Hook_addon_registry_cns_cartoon_avatars
             'themes/default/images/cns_default_avatars/default_set/cartoons/dance.gif',
             'themes/default/images/cns_default_avatars/default_set/cartoons/emo.jpg',
             'themes/default/images/cns_default_avatars/default_set/cartoons/footy.jpg',
-            'themes/default/images/cns_default_avatars/default_set/cartoons/half-life.jpg',
+            'themes/default/images/cns_default_avatars/default_set/cartoons/half_life.jpg',
             'themes/default/images/cns_default_avatars/default_set/cartoons/index.html',
             'themes/default/images/cns_default_avatars/default_set/cartoons/matrix.jpg',
             'themes/default/images/cns_default_avatars/default_set/cartoons/ninja.jpg',

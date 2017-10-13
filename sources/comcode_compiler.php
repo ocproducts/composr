@@ -532,6 +532,11 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
     }
 
     $has_banners = addon_installed('banners');
+    if (function_exists('get_option')) {
+        $b_all = (get_option('admin_banners', true) == '1');
+    } else {
+        $b_all = false;
+    }
 
     // Special textcode
     $emoticons = isset($GLOBALS['FORUM_DRIVER']) ? $GLOBALS['FORUM_DRIVER']->find_emoticons() : array(); // We'll be needing the emoticon array
@@ -1494,8 +1499,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                 }
 
                                 // Advertising
-                                $b_all = true; // leave true - for test purposes only
-                                if (empty($GLOBALS['IN_MINIKERNEL_VERSION']) && (!$semiparse_mode) && (!$in_code_tag) && ($has_banners) && (($b_all) || (!has_privilege($source_member, 'banner_free')))) {
+                                if ((empty($GLOBALS['IN_MINIKERNEL_VERSION'])) && (!$semiparse_mode) && (!$in_code_tag) && ($has_banners) && (($b_all) || (!has_privilege($source_member, 'banner_free')))) {
                                     // Pick up correctly, including permission filtering
                                     if ($ADVERTISING_BANNERS_CACHE === null) {
                                         $ADVERTISING_BANNERS_CACHE = array();
@@ -1546,7 +1550,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                                     $continuation = '';
                                                     $differented = true;
                                                     $ad_text = show_banner($ad_bits['name'], $ad_bits['b_title_text'], get_translated_tempcode('banners', $just_banner_row, 'caption'), $ad_bits['b_direct_code'], $ad_bits['img_url'], '', $ad_bits['site_url'], $ad_bits['b_type'], $ad_bits['submitter']);
-                                                    $embed_output = _do_tags_comcode('tooltip', array('param' => $ad_text, 'url' => (url_is_local($ad_bits['site_url']) && ($ad_bits['site_url'] != '')) ? (get_custom_base_url() . '/' . $ad_bits['site_url']) : $ad_bits['site_url']), substr($comcode, $pos - 1, strlen($ad_trigger)), $comcode_dangerous, $pass_id, $pos, $source_member, $as_admin, $db, $comcode, $structure_sweep, $semiparse_mode, $highlight_bits, null, false, false, $html_errors);
+                                                    $embed_output = do_template('COMCODE_TOOLTIP', array('_GUID' => 'a9f4793dc0c1a92cd7d08ae1b87c2308', 'URL' => (url_is_local($ad_bits['site_url']) && ($ad_bits['site_url'] != '')) ? (get_custom_base_url() . '/' . $ad_bits['site_url']) : $ad_bits['site_url'], 'TOOLTIP' => $ad_text, 'CONTENT' => substr($comcode, $pos - 1, strlen($ad_trigger))));
                                                     $pos += strlen($ad_trigger) - 1;
                                                     $tag_output->attach($embed_output);
                                                 }
