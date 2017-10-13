@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,checking}
 <div data-tpl="loginScreen">
 	{TITLE}
 

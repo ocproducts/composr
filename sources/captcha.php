@@ -245,7 +245,7 @@ function use_captcha()
 function generate_captcha()
 {
     if (get_option('recaptcha_site_key') != '') {
-        attach_to_screen_footer('<script ' . csp_nonce_html() . ' src="https://www.google.com/recaptcha/api.js?render=explicit&amp;onload=recaptchaLoaded&amp;hl=' . strtolower(user_lang()) . '" async="async" defer="defer"></script>');
+        require_javascript('captcha');
         return;
     }
 

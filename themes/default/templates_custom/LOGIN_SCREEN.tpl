@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,checking}
 {$REQUIRE_JAVASCRIPT,openid}
 
 <div data-require-javascript="openid" data-tpl="loginScreen">

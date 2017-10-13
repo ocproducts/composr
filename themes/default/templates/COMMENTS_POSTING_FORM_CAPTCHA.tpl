@@ -32,5 +32,5 @@
 {+END}
 
 {+START,IF_NON_EMPTY,{$CONFIG_OPTION,recaptcha_site_key}}
-	<div id="captcha"{+START,IF_PASSED,TABINDEX} data-tabindex="{TABINDEX*}"{+END}></div>
+	<div data-recaptcha-captcha id="captcha"{+START,IF_PASSED,TABINDEX} data-tabindex="{TABINDEX*}"{+END}></div>
 {+END}

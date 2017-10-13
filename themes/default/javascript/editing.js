@@ -897,12 +897,8 @@
         return selectedText;
     }
 
-    function getTextareaSelectedText(element)
-    {
-        var sel = document.selection ? document.selection : null;
-
-        if (typeof element.selectionEnd != 'undefined')
-        {
+    function getTextareaSelectedText(element) {
+        if (typeof element.selectionEnd !== 'undefined') {
             var from = element.selectionStart,
                 to = element.selectionEnd;
 

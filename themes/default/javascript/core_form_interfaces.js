@@ -90,10 +90,9 @@
         doFormCancel: function (e) {
             $cms.ui.confirm(
                 '{!Q_SURE;*}',
-                function (result)
-                {
+                function (result) {
                     if (result) {
-                        document.location = this.cancelUrl;
+                        window.location = this.cancelUrl;
                     }
                 }
             );
