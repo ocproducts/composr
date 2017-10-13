@@ -404,12 +404,12 @@
                 return false;
             }
 
-            if ((form.elements['email_address_confirm'] !== undefined) && (form.elements['email_address_confirm'].value != form.elements['email_address'].value)) {
+            if ((form.elements['email_address_confirm'] !== undefined) && (form.elements['email_address_confirm'].value !== form.elements['email_address'].value)) {
                 $cms.ui.alert('{!EMAIL_ADDRESS_MISMATCH;^}');
                 return false;
             }
 
-            if ((form.elements['password_confirm'] !== undefined) && (form.elements['password_confirm'].value != form.elements['password'].value)) {
+            if ((form.elements['password_confirm'] !== undefined) && (form.elements['password_confirm'].value !== form.elements['password'].value)) {
                 $cms.ui.alert('{!PASSWORD_MISMATCH;^}');
                 return false;
             }
@@ -431,7 +431,7 @@
                 checkPromises.push($cms.form.doAjaxFieldTest(url));
             }
 
-            if (params.useCaptcha) {
+            if (params.useCaptcha && ('{$CONFIG_OPTION;,recaptcha_site_key}' === '')) {
                 url = params.snippetScript + '?snippet=captcha_wrong&name=' + encodeURIComponent(form.elements['captcha'].value);
                 checkPromises.push($cms.form.doAjaxFieldTest(url));
             }

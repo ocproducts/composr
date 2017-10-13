@@ -879,15 +879,17 @@ class HttpDownloaderCurl extends HttpDownloader
             return HttpDownloader::RUN_PRIORITY_NO;
         }
 
-        if ($this->url_parts['scheme'] != 'http') {
-            $curl_version = curl_version();
-            if (((is_string($curl_version)) && (strpos($curl_version, 'OpenSSL') !== false)) || ((is_array($curl_version)) && (array_key_exists('ssl_version', $curl_version)))) {
+        if (isset($this->url_parts['scheme'])) {
+            if ($this->url_parts['scheme'] != 'http') {
+                $curl_version = curl_version();
+                if (((is_string($curl_version)) && (strpos($curl_version, 'OpenSSL') !== false)) || ((is_array($curl_version)) && (array_key_exists('ssl_version', $curl_version)))) {
+                    return HttpDownloader::RUN_PRIORITY_HIGH;
+                }
+            }
+
+            if (($this->url_parts['scheme'] == 'http') && ((function_exists('get_value')) && (get_value('prefer_curl') === '1'))) {
                 return HttpDownloader::RUN_PRIORITY_HIGH;
             }
-        }
-
-        if (($this->url_parts['scheme'] == 'http') && ((function_exists('get_value')) && (get_value('prefer_curl') === '1'))) {
-            return HttpDownloader::RUN_PRIORITY_HIGH;
         }
 
         return HttpDownloader::RUN_PRIORITY_LOW;
