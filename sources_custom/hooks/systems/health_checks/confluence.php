@@ -32,13 +32,15 @@ class Hook_health_check_confluence extends Hook_Health_Check
      */
     public function run($sections_to_run, $check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
-        $confluence_subdomain = get_option('confluence_subdomain');
-        $confluence_space = get_option('confluence_space');
-        if (($confluence_subdomain == '') || ($confluence_space == '')) {
-            return;
-        }
+        if ($check_context != CHECK_CONTEXT__INSTALL) {
+            $confluence_subdomain = get_option('confluence_subdomain');
+            $confluence_space = get_option('confluence_space');
+            if (($confluence_subdomain == '') || ($confluence_space == '')) {
+                return;
+            }
 
-        $this->process_checks_section('testConfluenceConnection', 'API connection', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+            $this->process_checks_section('testConfluenceConnection', 'API connection', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        }
 
         return array($this->category_label, $this->results);
     }
@@ -53,6 +55,10 @@ class Hook_health_check_confluence extends Hook_Health_Check
      */
     public function testConfluenceConnection($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+
         require_code('confluence');
 
         global $CONFLUENCE_SPACE;

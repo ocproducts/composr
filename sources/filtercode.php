@@ -50,7 +50,7 @@ function read_filtercode_parameter_from_env($field_name, $field_type = null)
             $default_value = '';
         }
     } else {
-        $default_value = either_param_string('filter_' . $field_name, '');
+        $default_value = either_param_string('filter_' . $field_name, '', INPUT_FILTER_NONE);
     }
     return $default_value;
 }
@@ -192,7 +192,7 @@ function form_for_filtercode($filter, $labels = array(), $content_type = null, $
                 'list',
                 $field_name,
                 $field_title,
-                either_param_string('filter_' . $field_name, '~='),
+                either_param_string('filter_' . $field_name, '~=', INPUT_FILTER_NONE),
                 array(
                     '<' => do_lang_tempcode('FILTERCODE_OP_LT'),
                     '>' => do_lang_tempcode('FILTERCODE_OP_GT'),
@@ -829,7 +829,7 @@ function filtercode_to_sql($db, $filters, $content_type = null, $context = null,
         // Allow specification of reading from the environment
         $matches = array();
         if (preg_match('#^<([^<>]+)>$#', $filter_op, $matches) != 0) {
-            $filter_op = either_param_string($matches[1], '~=');
+            $filter_op = either_param_string($matches[1], '~=', INPUT_FILTER_NONE);
         }
         if (preg_match('#^<([^<>]+)>$#', $filter_val, $matches) != 0) {
             $filter_val = read_filtercode_parameter_from_env($matches[1]);
@@ -1045,7 +1045,7 @@ function filtercode_to_sql($db, $filters, $content_type = null, $context = null,
  */
 function prepare_filtercode_merger_link($_link_filter)
 {
-    $active_filter = parse_filtercode(either_param_string('active_filter', ''));
+    $active_filter = parse_filtercode(either_param_string('active_filter', '', INPUT_FILTER_NONE));
     $link_filter = parse_filtercode($_link_filter);
     $extra_params = array();
     $old_filter = $active_filter;

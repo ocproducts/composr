@@ -40,7 +40,7 @@ class filtering_test_set extends cms_test_case
                         'content_type_label' => 'TITLE',
                         'content_type_universal_label' => 'Title',
 
-                        'connection' => \$GLOBALS['SITE_DB'],
+                        'db' => \$GLOBALS['SITE_DB'],
                         'table' => 'temp_test',
                         'id_field' => 'id',
                         'id_field_numeric' => true,
@@ -434,7 +434,7 @@ class filtering_test_set extends cms_test_case
         }
 
         // Test automatic filter form seems okay
-        list($form_fields, $filter, $_links) = form_for_filtercode('', null, 'temp_test');
+        list($form_fields, $filter, $_links) = form_for_filtercode('', array(), 'temp_test');
         $this->assertTrue(strpos($form_fields->evaluate(), '<input') !== false);
         $filter_expected = 'id<id_op><id>,t_binary<t_binary_op><t_binary>,t_id_text<t_id_text_op><t_id_text>,t_linker<t_linker_op><t_linker>,t_member<t_member_op><t_member>,t_real<t_real_op><t_real>,t_short_text<t_short_text_op><t_short_text>,t_short_trans<t_short_trans_op><t_short_trans>,t_time<t_time_op><t_time>,compound_rating<compound_rating_op><compound_rating>,average_rating<average_rating_op><average_rating>,meta_keywords<meta_keywords_op><meta_keywords>,meta_description<meta_description_op><meta_description>';
         $this->assertTrue($filter == $filter_expected);

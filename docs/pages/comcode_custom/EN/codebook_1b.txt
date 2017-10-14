@@ -395,7 +395,7 @@ You need to define all the details in the hook, which is frankly a complex task.
 The specific ones relating to URL monikers are...
 [code="PHP"]
 'support_url_monikers' => true, // Set to true
-'connection' => $GLOBALS['SITE_DB'], // Database the resource table is in
+'db' => $GLOBALS['SITE_DB'], // Database the resource table is in
 'table' => 'example', // The resource table
 'id_field' => 'id', // The field containing the ID number (what is used in URLs conventionally)
 'title_field' => 'title', // The field containing the resource title (what the moniker will generate from)

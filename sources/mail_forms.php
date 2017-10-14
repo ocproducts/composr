@@ -95,7 +95,7 @@ function form_to_email($subject = null, $subject_prefix = '', $subject_suffix = 
     $block_email = false;
     $hooks = find_all_hook_obs('systems', 'contact_forms', 'Hook_contact_forms_');
     foreach ($hooks as $ob) {
-        $block_email |= $ob->dispatch($subject, $body, $to_email, $to_name, $from_email, $from_name, $attachments, $body_parts, $body_prefix, $body_suffix);
+        $block_email = $block_email || $ob->dispatch($subject, $body, $to_email, $to_name, $from_email, $from_name, $attachments, $body_parts, $body_prefix, $body_suffix);
     }
 
     // Send e-mail

@@ -79,7 +79,7 @@ class config_test_set extends cms_test_case
         $contents = get_directory_contents(get_file_base());
 
         foreach ($contents as $f) {
-            if (should_ignore_file($f, IGNORE_CUSTOM_DIR_GROWN_CONTENTS)) {
+            if (should_ignore_file($f, IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_CUSTOM_THEMES)) {
                 continue;
             }
 
@@ -183,7 +183,7 @@ class config_test_set extends cms_test_case
         require_code('files2');
         $files = get_directory_contents(get_file_base());
         foreach ($files as $f) {
-            if (should_ignore_file($f, IGNORE_CUSTOM_DIR_GROWN_CONTENTS)) {
+            if (should_ignore_file($f, IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_CUSTOM_THEMES)) {
                 continue;
             }
 

@@ -32,14 +32,16 @@ class Hook_health_check_sugarcrm extends Hook_Health_Check
      */
     public function run($sections_to_run, $check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
-        $base_url = get_option('sugarcrm_base_url');
-        $username = get_option('sugarcrm_username');
+        if ($check_context != CHECK_CONTEXT__INSTALL) {
+            $base_url = get_option('sugarcrm_base_url');
+            $username = get_option('sugarcrm_username');
 
-        if ((empty($base_url)) || (empty($username))) {
-            return;
+            if ((empty($base_url)) || (empty($username))) {
+                return;
+            }
+
+            $this->process_checks_section('testSugarCRMConnection', 'API connection', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         }
-
-        $this->process_checks_section('testSugarCRMConnection', 'API connection', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
 
         return array($this->category_label, $this->results);
     }
@@ -54,6 +56,10 @@ class Hook_health_check_sugarcrm extends Hook_Health_Check
      */
     public function testSugarCRMConnection($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+
         require_code('sugarcrm');
 
         global $SUGARCRM;

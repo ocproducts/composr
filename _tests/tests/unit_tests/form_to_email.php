@@ -25,7 +25,7 @@ class form_to_email_test_set extends cms_test_case
         $bak = get_option('mail_queue_debug');
         set_option('mail_queue_debug', '1');
         $url = find_script('form_to_email');
-        http_get_contents($url, null, true, false, 'Composr', array('foo' => 'bar'));
+        $result = cms_http_request($url, array('trigger_error' => false, 'post_params' => array('foo' => 'bar')));
         set_option('mail_queue_debug', $bak);
 
         $rows = $GLOBALS['SITE_DB']->query_select('logged_mail_messages', array('*'));

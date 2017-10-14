@@ -3199,7 +3199,7 @@ div .post_buttons>*, div .buttons_group_faded>* {
 	}
 /*{+END}*/
 
-/*{+START,IF_EMPTY,{$CONFIG_OPTION,recaptcha_site_key}}*/
+/*{+START,IF_EMPTY,{$CONFIG_OPTION,recaptcha_site_key,1}}*/
 	.comments_captcha img, .comments_captcha iframe, .comments_captcha input {
 		margin: 0 5px 2px 5px;
 		vertical-align: middle;
@@ -3694,7 +3694,7 @@ ul.buttons_group, ul.associated_links_block_group {
 	box-sizing: border-box;
 }
 
-/*{+START,IF_EMPTY,{$CONFIG_OPTION,recaptcha_site_key}}*/
+/*{+START,IF_EMPTY,{$CONFIG_OPTION,recaptcha_site_key,1}}*/
 	.captcha_frame {
 		width: 100px;
 		height: 42px;
