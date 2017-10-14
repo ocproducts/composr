@@ -177,7 +177,7 @@ INSERT INTO cms_modules (module_the_name, module_author, module_organisation, mo
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('leader_board', 'Chris Graham', 'ocProducts', '', NULL, 2);
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('members', 'Chris Graham', 'ocProducts', '', NULL, 2);
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('news', 'Chris Graham', 'ocProducts', '', NULL, 7);
-INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('newsletter', 'Chris Graham', 'ocProducts', '', NULL, 11);
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('newsletter', 'Chris Graham', 'ocProducts', '', NULL, 12);
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('notifications', 'Chris Graham', 'ocProducts', '', NULL, 1);
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('points', 'Chris Graham', 'ocProducts', '', NULL, 8);
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('pointstore', 'Allen Ellis', 'ocProducts', '', NULL, 6);
@@ -401,6 +401,8 @@ CREATE TABLE cms_newsletter_subscribers (
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
 ALTER TABLE cms10_newsletter_subscribers ADD INDEX code_confirm (code_confirm);
+
+ALTER TABLE cms10_newsletter_subscribers ADD INDEX email (email(250));
 
 ALTER TABLE cms10_newsletter_subscribers ADD INDEX welcomemails (join_time);
 
@@ -1288,17 +1290,17 @@ CREATE TABLE cms_staff_checklist_cus_tasks (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (1, 'Set up website configuration and structure', 1501187970, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (2, 'Make/install custom theme', 1501187970, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (3, '[page=\"adminzone:admin_themes:edit_image:favicon\"]Make \'favicon\' theme image[/page]', 1501187970, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (4, '[page=\"adminzone:admin_themes:edit_image:webclipicon\"]Make \'webclipicon\' theme image[/page]', 1501187970, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (5, 'Add your content', 1501187970, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (6, '[page=\"adminzone:admin_themes:edit_image:logo/standalone_logo:theme=default\"]Customise your mail/RSS logo[/page]', 1501187970, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (7, '[page=\"adminzone:admin_themes:_edit_templates:theme=default:f0file=templates/MAIL.tpl\"]Customise your \'MAIL\' template[/page]', 1501187970, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (8, '[url=\"Sign up for Google Webmaster Tools\"]https://www.google.com/webmasters/tools/[/url]', 1501187970, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (9, '[url=\"Set up up-time monitor\"]https://uptimerobot.com/[/url]', 1501187970, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (10, '[html]<p style=\"margin: 0\">Facebook user? Like Composr on Facebook:</p><iframe src=\"https://compo.sr/uploads/website_specific/compo.sr/facebook.html\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:430px; height:20px;\" allowTransparency=\"true\"></iframe>[/html]', 1501187970, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (11, '[url=\"Consider helping out with the Composr project\"]http://compo.sr/site/contributions.htm[/url]', 1501187970, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (1, 'Set up website configuration and structure', 1507998399, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (2, 'Make/install custom theme', 1507998399, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (3, '[page=\"adminzone:admin_themes:edit_image:favicon\"]Make \'favicon\' theme image[/page]', 1507998399, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (4, '[page=\"adminzone:admin_themes:edit_image:webclipicon\"]Make \'webclipicon\' theme image[/page]', 1507998399, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (5, 'Add your content', 1507998399, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (6, '[page=\"adminzone:admin_themes:edit_image:logo/standalone_logo:theme=default\"]Customise your mail/RSS logo[/page]', 1507998399, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (7, '[page=\"adminzone:admin_themes:_edit_templates:theme=default:f0file=templates/MAIL.tpl\"]Customise your \'MAIL\' template[/page]', 1507998399, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (8, '[url=\"Sign up for Google Webmaster Tools\"]https://www.google.com/webmasters/tools/[/url]', 1507998399, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (9, '[url=\"Set up up-time monitor\"]https://uptimerobot.com/[/url]', 1507998399, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (10, '[html]<p style=\"margin: 0\">Facebook user? Like Composr on Facebook:</p><iframe src=\"https://compo.sr/uploads/website_specific/compo.sr/facebook.html\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:430px; height:20px;\" allowTransparency=\"true\"></iframe>[/html]', 1507998399, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (11, '[url=\"Consider helping out with the Composr project\"]http://compo.sr/site/contributions.htm[/url]', 1507998399, 0, '', NULL);
 
 DROP TABLE IF EXISTS cms_staff_links;
 
@@ -1319,18 +1321,20 @@ INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (6, 'https:
 INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (7, 'http://www.google.com/alerts', 'Google Alerts', 'Google Alerts');
 INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (8, 'http://www.google.com/apps/intl/en/group/index.html', 'Google Apps (gmail for domains, etc)', 'Google Apps (gmail for domains, etc)');
 INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (9, 'http://www.google.com/analytics/', 'Google Analytics', 'Google Analytics');
-INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (10, 'http://www.sharedcount.com/', 'SharedCount (social sharing stats)', 'SharedCount (social sharing stats)');
-INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (11, 'https://developers.facebook.com/docs/insights/', 'Facebook Insights (Facebook Analytics)', 'Facebook Insights (Facebook Analytics)');
-INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (12, 'http://www.getpaint.net/', 'Paint.net (free graphics tool, Windows)', 'Paint.net (free graphics tool, Windows)');
-INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (13, 'http://benhollis.net/software/pnggauntlet/', 'PNGGauntlet (compress PNG files, Windows)', 'PNGGauntlet (compress PNG files, Windows)');
-INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (14, 'http://imageoptim.pornel.net/', 'ImageOptim (compress PNG files, Mac)', 'ImageOptim (compress PNG files, Mac)');
-INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (15, 'http://findicons.com/', 'Find Icons (free icons)', 'Find Icons (free icons)');
-INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (16, 'http://www.freeimages.com/', 'FreeImages (free stock art)', 'FreeImages (free stock art)');
-INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (17, 'http://www.kompozer.net/', 'Kompozer (Web design tool)', 'Kompozer (Web design tool)');
-INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (18, 'http://www.sourcegear.com/diffmerge/', 'DiffMerge', 'DiffMerge');
-INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (19, 'http://www.jingproject.com/', 'Jing (record screencasts)', 'Jing (record screencasts)');
-INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (20, 'http://www.smashingmagazine.com/', 'Smashing Magazine (web design articles)', 'Smashing Magazine (web design articles)');
-INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (21, 'http://www.w3schools.com/', 'w3schools (learn web technologies)', 'w3schools (learn web technologies)');
+INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (10, 'https://www.google.com/webmasters/tools', 'Google Webmaster Tools (direct search data from Google)', 'Google Webmaster Tools (direct search data from Google)');
+INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (11, 'https://moz.com', 'Moz (enhanced search analytics)', 'Moz (enhanced search analytics)');
+INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (12, 'http://www.sharedcount.com/', 'SharedCount (social sharing stats)', 'SharedCount (social sharing stats)');
+INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (13, 'https://developers.facebook.com/docs/insights/', 'Facebook Insights (Facebook Analytics)', 'Facebook Insights (Facebook Analytics)');
+INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (14, 'http://www.getpaint.net/', 'Paint.net (free graphics tool, Windows)', 'Paint.net (free graphics tool, Windows)');
+INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (15, 'http://benhollis.net/software/pnggauntlet/', 'PNGGauntlet (compress PNG files, Windows)', 'PNGGauntlet (compress PNG files, Windows)');
+INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (16, 'http://imageoptim.pornel.net/', 'ImageOptim (compress PNG files, Mac)', 'ImageOptim (compress PNG files, Mac)');
+INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (17, 'http://findicons.com/', 'Find Icons (free icons)', 'Find Icons (free icons)');
+INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (18, 'http://www.freeimages.com/', 'FreeImages (free stock art)', 'FreeImages (free stock art)');
+INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (19, 'http://www.kompozer.net/', 'Kompozer (Web design tool)', 'Kompozer (Web design tool)');
+INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (20, 'http://www.sourcegear.com/diffmerge/', 'DiffMerge', 'DiffMerge');
+INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (21, 'http://www.jingproject.com/', 'Jing (record screencasts)', 'Jing (record screencasts)');
+INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (22, 'http://www.smashingmagazine.com/', 'Smashing Magazine (web design articles)', 'Smashing Magazine (web design articles)');
+INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (23, 'http://www.w3schools.com/', 'w3schools (learn web technologies)', 'w3schools (learn web technologies)');
 
 DROP TABLE IF EXISTS cms_staff_tips_dismissed;
 
@@ -1422,7 +1426,7 @@ CREATE TABLE cms_task_queue (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_task_queue (id, t_title, t_hook, t_args, t_member_id, t_secure_ref, t_send_notification, t_locked) VALUES (1, 'Install geolocation data', 'install_geolocation_data', 'a:0:{}', 1, 'e62318cc3aa8b', 0, 0);
+INSERT INTO cms_task_queue (id, t_title, t_hook, t_args, t_member_id, t_secure_ref, t_send_notification, t_locked) VALUES (1, 'Install geolocation data', 'install_geolocation_data', 'a:0:{}', 1, 'e6d3d664dcc18', 0, 0);
 
 DROP TABLE IF EXISTS cms_temp_block_permissions;
 
@@ -1657,14 +1661,14 @@ CREATE TABLE cms_values (
     PRIMARY KEY (the_name)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_topic_count', '1', 1501187954);
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_member_count', '1', 1501187954);
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_post_count', '1', 1501187955);
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('version', '10.00', 1501187955);
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_version', '10.00', 1501187955);
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('users_online', '0', 1501187961);
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('user_peak', '0', 1501187961);
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('user_peak_week', '0', 1501187961);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_topic_count', '1', 1507998382);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_member_count', '1', 1507998383);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_post_count', '1', 1507998383);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('version', '10.00', 1507998383);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_version', '10.00', 1507998383);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('users_online', '0', 1507998390);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('user_peak', '0', 1507998390);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('user_peak_week', '0', 1507998390);
 
 ALTER TABLE cms10_values ADD INDEX date_and_time (date_and_time);
 
@@ -1677,7 +1681,7 @@ CREATE TABLE cms_values_elective (
     PRIMARY KEY (the_name)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_values_elective (the_name, the_value, date_and_time) VALUES ('call_home', '0', 1501187955);
+INSERT INTO cms_values_elective (the_name, the_value, date_and_time) VALUES ('call_home', '0', 1507998383);
 
 DROP TABLE IF EXISTS cms_video_transcoding;
 
@@ -1778,7 +1782,7 @@ CREATE TABLE cms_wiki_pages (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_wiki_pages (id, title, notes, description, add_date, edit_date, wiki_views, hide_posts, submitter, description__text_parsed, description__source_user) VALUES (1, 'Wiki+ home', '', '', 1501187970, NULL, 0, 0, 2, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_597a4f7cc851f7.38414785_24\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_597a4f7cc851f7.38414785_24\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_597a4f7cc851f7.38414785_24\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_wiki_pages (id, title, notes, description, add_date, edit_date, wiki_views, hide_posts, submitter, description__text_parsed, description__source_user) VALUES (1, 'Wiki+ home', '', '', 1507998399, NULL, 0, 0, 2, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_59e23ab9373100.89675943_24\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_59e23ab9373100.89675943_24\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_59e23ab9373100.89675943_24\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
 
 ALTER TABLE cms10_wiki_pages ADD FULLTEXT description (description);
