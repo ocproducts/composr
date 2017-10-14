@@ -104,7 +104,7 @@ function currency_convert($amount, $from_currency, $to_currency = null, $string 
         if (is_null($new_amount)) {
             $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'values_elective WHERE the_name LIKE \'' . db_encode_like('currency\_%') . '\' AND date_and_time<' . strval(time() - 60 * 60 * 24 * 2)); // Cleanup
 
-            $google_url = 'http://www.google.com/finance/converter?a=' . (is_float($amount) ? float_to_raw_string($amount) : strval($amount)) . '&from=' . urlencode($from_currency) . '&to=' . urlencode(strtoupper($to_currency));
+            $google_url = 'http://finance.google.com/finance/converter?a=' . (is_float($amount) ? float_to_raw_string($amount) : strval($amount)) . '&from=' . urlencode($from_currency) . '&to=' . urlencode(strtoupper($to_currency));
             $result = http_download_file($google_url, null, false);
             if (is_string($result)) {
                 $matches = array();
