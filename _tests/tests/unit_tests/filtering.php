@@ -177,7 +177,7 @@ class filtering_test_set extends cms_test_case
         $GLOBALS['SITE_DB']->query_insert('rating', array('rating_for_type' => 'temp_test__', 'rating_for_id' => 1, 'rating_member' => get_member(), 'rating_ip' => get_ip_address(), 'rating_time' => time(), 'rating' => 4));
         $GLOBALS['SITE_DB']->query_insert('rating', array('rating_for_type' => 'temp_test__', 'rating_for_id' => 1, 'rating_member' => get_member(), 'rating_ip' => get_ip_address(), 'rating_time' => time(), 'rating' => 3));
 
-        require_code('seo2');
+        require_code('content2');
         seo_meta_set_for_explicit('temp_test', '1', 'abc,def', 'abc');
 
         $GLOBALS['SITE_DB']->create_table('temp_test_linked', array(

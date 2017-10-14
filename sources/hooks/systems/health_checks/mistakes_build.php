@@ -279,9 +279,9 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
 
             foreach ($pages as $page => $page_dir) {
                 $_path = (($zone == '') ? '' : ($zone . '/')) . 'pages/' . $page_dir . '/' . $page . '.txt';
-                $file_path = get_custom_file_base() . '/'. $_path;
+                $file_path = get_custom_file_base() . '/' . $_path;
                 if (!is_file($file_path)) {
-                    $file_path = get_file_base() . '/'. $_path;
+                    $file_path = get_file_base() . '/' . $_path;
                 }
 
                 if (is_file($file_path)) {
@@ -305,7 +305,7 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
                                 $this->assert_true($is_absolute_url, 'Form action is absolute (i.e. robust)');
 
                                 if ($is_absolute_url) {
-                                    $result = cms_http_request($url, null, false);
+                                    $result = cms_http_request($url, array('trigger_error' => false));
                                     $this->assert_true($result->message == '400', 'Gets 400 response, indicating only issue is missing POST parameter(s), ' . $url);
                                 }
                             }

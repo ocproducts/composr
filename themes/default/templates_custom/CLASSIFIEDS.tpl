@@ -25,7 +25,7 @@
 						<em>{!CLASSIFIED_FREE}</em>
 					{+END}
 					{+START,IF,{$NEQ,{PRICE},0}}
-						{$CURRENCY,{PRICE},{CURRENCY},{$?,{$CONFIG_OPTION,currency_auto},{$CURRENCY_USER},{$CURRENCY}}}
+						{$CURRENCY,{PRICE},{CURRENCY},{$?,{$CONFIG_OPTION,currency_auto,1},{$CURRENCY_USER},{$CURRENCY}}}
 					{+END}
 				</td>
 			</tr>

@@ -226,7 +226,6 @@ div.cns_table_footer>div>div {
 .cns_topic>div>* {
 	/*display: none; ^ ditto*/
 }
-/*.cns_topic>div>div {*/
 .cns_topic .cns_topic_section {
 	display: table-row;
 }

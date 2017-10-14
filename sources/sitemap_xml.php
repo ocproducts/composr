@@ -363,9 +363,9 @@ function notify_sitemap_node_add($page_link, $add_date, $edit_date, $priority, $
 
     // First population into the table? Do a full build too
     if ($fresh) {
+        $fresh = false;
         build_sitemap_cache_table();
     }
-    $fresh = false;
 }
 
 /**

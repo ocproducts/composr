@@ -33,7 +33,7 @@ function init__mail_forms()
  */
 function form_to_email_entry_script()
 {
-    if (cms_srv('REQUEST_METHOD') != 'POST') {
+    if ($_SERVER['REQUEST_METHOD'] != 'POST') {
         post_param_string('post'); // We need to produce a hard-error if nothing sent
     }
 

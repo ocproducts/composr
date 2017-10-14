@@ -24,7 +24,10 @@ class file_naming_test_set extends cms_test_case
         require_code('files2');
 
         $ignore_stubs = array(
+            '.user.ini',
             'aps/',
+            'data/polyfills/',
+            'data/ace/',
             'data/ckeditor/',
             'data/curl-ca-bundle.crt',
             'data/jwplayer.flash.swf',
@@ -40,6 +43,7 @@ class file_naming_test_set extends cms_test_case
             'data_custom/sitemaps/',
             'data_custom/upload-crop/',
             'mobiquo/',
+            'sources_custom/aws/',
             'sources_custom/geshi/',
             'sources_custom/getid3/',
             'sources_custom/photobucket/',
@@ -55,6 +59,7 @@ class file_naming_test_set extends cms_test_case
             'themes/default/images_custom/openid/',
             'themes/default/images_custom/skitter/',
             'themes/default/javascript_custom/mediaelement-and-player.js',
+            'themes/default/images/cns_emoticons/',
             'tracker/',
             '_config.php.template',
             '_tests/codechecker/codechecker.app/',

@@ -182,6 +182,7 @@ function currency_convert($amount, $from_currency = null, $to_currency = null, $
 
     // Case: Fallback
     if ($new_amount === null) {
+        require_lang('ecommerce');
         attach_message(do_lang_tempcode('CURRENCY_CONVERSION_FAILED', escape_html(float_format($amount)), escape_html($from_currency), escape_html($to_currency)), 'warn', false, true);
 
         $new_amount = $amount;
