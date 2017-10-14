@@ -36,6 +36,11 @@ class config_options_in_templates_test_set extends cms_test_case
                         'themes/default/templates_custom/LOGIN_SCREEN.tpl',
                         'themes/default/templates_custom/BLOCK_MAIN_GOOGLE_MAP_USERS.tpl',
                         'themes/default/templates_custom/FORM_SCREEN_INPUT_MAP_POSITION.tpl',
+                        'themes/default/templates/CATALOGUE_products_ENTRY_SCREEN.tpl',
+                        'themes/default/templates/CATALOGUE_products_GRID_ENTRY_WRAP.tpl',
+                        'themes/default/templates/ECOM_SHOPPING_CART_SCREEN.tpl',
+                        'themes/default/templates_custom/CLASSIFIEDS.tpl',
+                        'themes/default/templates_custom/BLOCK_CREDIT_EXPS_INNER.tpl',
                     ))) {
                         continue;
                     }
