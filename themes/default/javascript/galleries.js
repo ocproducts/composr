@@ -10,7 +10,7 @@
     $cms.views.BlockMainImageFader = BlockMainImageFader;
     /**
      * @memberof $cms.views
-     * @class
+     * @class BlockMainImageFader
      * @extends $cms.View
      */
     function BlockMainImageFader(params) {
@@ -194,7 +194,6 @@
             });
         });
     };
-
 
     $cms.templates.blockMainGalleryEmbed = function blockMainGalleryEmbed(params) {
         var container = this,

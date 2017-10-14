@@ -1,4 +1,4 @@
-{TITLE}
+{+START,IF_PASSED,TITLE}{TITLE}{+END}
 
 {$REQUIRE_CSS,messages}
 

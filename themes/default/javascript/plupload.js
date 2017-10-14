@@ -13234,16 +13234,10 @@ FileProgress.prototype.disappear = function () {
     window.initialiseHtml5DragdropUpload = initialiseHtml5DragdropUpload;
     window.html5UploadEventDragOver = html5UploadEventDragOver;
     window.html5UploadEventDrop = html5UploadEventDrop;
-
-    //window.preinitFileInput = function () {};
-    //window.prepareSimplifiedFileInput = function () {};
-    //window.initialiseHtml5DragdropUpload = function () {};
-    //window.html5UploadEventDragOver = function () {};
-    //window.html5UploadEventDrop = function () {};
     
     var plLoadedHandled = {};
     function onPluploadLoaded(plObj) {
-        console.log('onPluploadLoaded()', 'plObj:', plObj);
+        //console.log('onPluploadLoaded()', 'plObj:', plObj);
         
         if (plLoadedHandled[$cms.uid(plObj)]) { // Called when Flash redisplayed after being obscured, so we need to return to avoid a recursion error
             return;
@@ -13274,7 +13268,7 @@ FileProgress.prototype.disappear = function () {
     
     // Called by the submit button to start the upload
     function beginFormUploading(e, plObj) {
-        console.log('beginFormUploading()', 'e:', e, 'plObj:', plObj);
+        //console.log('beginFormUploading()', 'e:', e, 'plObj:', plObj);
         
         window.justCheckingRequirements = true;
         plObj.submitting = true;
@@ -13351,7 +13345,7 @@ FileProgress.prototype.disappear = function () {
     }
 
     function submitFormWithTheUpload(form) {
-        console.log('submitFormWithTheUpload()', 'form:', form);
+        //console.log('submitFormWithTheUpload()', 'form:', form);
         
         if (form.target === 'preview_iframe') {
             $cms.dom.illustrateFrameLoad('preview_iframe');
@@ -13361,7 +13355,7 @@ FileProgress.prototype.disappear = function () {
     }
 
     function dispatchForPageType(pageType, name, fileName, postingFieldName, numFiles) {
-        console.log('dispatchForPageType()', 'pageType:', pageType, 'name:', name, 'fileName:', fileName, 'postingFieldName:', postingFieldName, 'numFiles:', numFiles);
+        //console.log('dispatchForPageType()', 'pageType:', pageType, 'name:', name, 'fileName:', fileName, 'postingFieldName:', postingFieldName, 'numFiles:', numFiles);
         
         pageType = strVal(pageType);
         name = strVal(name);
@@ -13397,7 +13391,7 @@ FileProgress.prototype.disappear = function () {
     }
 
     function onUploadDialogCompleted(plObj, files) {
-        console.log('onUploadDialogCompleted()', 'plObj:', plObj, 'files:', files);
+        //console.log('onUploadDialogCompleted()', 'plObj:', plObj, 'files:', files);
         
         document.getElementById(plObj.settings.btn_submit_id).disabled = false;
 
@@ -13436,7 +13430,7 @@ FileProgress.prototype.disappear = function () {
     }
 
     function fireFakeUploadFieldChange(name, value) {
-        console.log('fireFakeUploadFieldChange()', 'name:', name, 'value:', value);
+        //console.log('fireFakeUploadFieldChange()', 'name:', name, 'value:', value);
         
         var element = document.getElementById(name);
 
@@ -13484,7 +13478,7 @@ FileProgress.prototype.disappear = function () {
     }
 
     function onUploadUpdateProgress(plObj, file) {
-        console.log('onUploadUpdateProgress()', 'plObj:', plObj, 'file:', file);
+        //console.log('onUploadUpdateProgress()', 'plObj:', plObj, 'file:', file);
         
         var percent = Number(plObj.total.percent);
         if (percent === 100) {
@@ -13499,7 +13493,7 @@ FileProgress.prototype.disappear = function () {
     }
 
     function onUploadFinished(plObj, file, data) {
-        console.log('onUploadFinished()', 'plObj:', plObj, 'file:', file, 'data:', data);
+        //console.log('onUploadFinished()', 'plObj:', plObj, 'file:', file, 'data:', data);
         
         var progress = new FileProgress(file, plObj.settings.progress_target);
         progress.setComplete();
@@ -13569,7 +13563,7 @@ FileProgress.prototype.disappear = function () {
     }
 
     function onUploadError(plObj, error) {
-        console.log('onUploadError()', 'plObj:', plObj, 'error:', error);
+        //console.log('onUploadError()', 'plObj:', plObj, 'error:', error);
         
         var file = error.file ? error.file : plObj.files[plObj.files.length - 1];
 
@@ -13612,7 +13606,7 @@ FileProgress.prototype.disappear = function () {
     }
 
     function onUploadQueueChanged(plObj) {
-        console.log('onUploadQueueChanged()', 'plObj:', plObj);
+        //console.log('onUploadQueueChanged()', 'plObj:', plObj);
         
         if ((!plObj.settings.page_type.includes('_multi')) && (plObj.files.length > 1)) {// In case widget has multi selection even though we disabled it
             if (plObj.files.length > 1) {
@@ -13624,7 +13618,7 @@ FileProgress.prototype.disappear = function () {
     }
 
     function preinitFileInput(pageType, name, btnSubmitId, postingFieldName, filter, buttonType) {
-        console.log('preinitFileInput()', 'pageType:', pageType, 'name:', name, 'btnSubmitId:', btnSubmitId, 'postingFieldName:', postingFieldName, 'filter:', filter, 'buttonType:', buttonType);
+        //console.log('preinitFileInput()', 'pageType:', pageType, 'name:', name, 'btnSubmitId:', btnSubmitId, 'postingFieldName:', postingFieldName, 'filter:', filter, 'buttonType:', buttonType);
         
         pageType = strVal(pageType);
         name = strVal(name);
@@ -13640,7 +13634,7 @@ FileProgress.prototype.disappear = function () {
     }
 
     function replaceFileInput(pageType, name, btnSubmitId, postingFieldName, filter, buttonType) {
-        console.log('replaceFileInput()', 'pageType:', pageType, 'name:', name, 'btnSubmitId:', btnSubmitId, 'postingFieldName:', postingFieldName, 'filter:', filter, 'buttonType:', buttonType);
+        //console.log('replaceFileInput()', 'pageType:', pageType, 'name:', name, 'btnSubmitId:', btnSubmitId, 'postingFieldName:', postingFieldName, 'filter:', filter, 'buttonType:', buttonType);
         
         filter = strVal(filter) || '{$CONFIG_OPTION;,valid_types}';
         filter += ',' + filter.toUpperCase();
@@ -13755,7 +13749,7 @@ FileProgress.prototype.disappear = function () {
 
     // NB: Only used by $cms.templates.attachments()
     function prepareSimplifiedFileInput(pageType, name, btnSubmitId, postingFieldName, filter, attachmentUploadButton) {
-        console.log('prepareSimplifiedFileInput()', 'pageType:', pageType, 'name:', name, 'btnSubmitId:', btnSubmitId, 'postingFieldName:', postingFieldName, 'filter:', filter, 'attachmentUploadButton:', attachmentUploadButton);
+        //console.log('prepareSimplifiedFileInput()', 'pageType:', pageType, 'name:', name, 'btnSubmitId:', btnSubmitId, 'postingFieldName:', postingFieldName, 'filter:', filter, 'attachmentUploadButton:', attachmentUploadButton);
 
         name = strVal(name);
         filter = strVal(filter) || '{$CONFIG_OPTION;^,valid_types}';
@@ -13812,7 +13806,7 @@ FileProgress.prototype.disappear = function () {
     }
 
     function findSubmitButton(btnSubmitId, form) {
-        console.log('findSubmitButton()', 'btnSubmitId:', btnSubmitId, 'form:', form);
+        //console.log('findSubmitButton()', 'btnSubmitId:', btnSubmitId, 'form:', form);
         
         if (btnSubmitId) {
             return btnSubmitId;
@@ -13840,7 +13834,7 @@ FileProgress.prototype.disappear = function () {
     }
 
     function getUploaderSettings(name, pageType, btnSubmitId, postingFieldName, filter) {
-        console.log('getUploaderSettings()', 'name:', name, 'pageType:', pageType, 'btnSubmitId:', btnSubmitId, 'postingFieldName:', postingFieldName, 'filter:', filter);
+        //console.log('getUploaderSettings()', 'name:', name, 'pageType:', pageType, 'btnSubmitId:', btnSubmitId, 'postingFieldName:', postingFieldName, 'filter:', filter);
         
         return {
             // Composr binding settings
@@ -13877,7 +13871,7 @@ FileProgress.prototype.disappear = function () {
     }
 
     function getUploaderObject(settings) {
-        console.log('getUploaderObject()', 'settings:', settings);
+        //console.log('getUploaderObject()', 'settings:', settings);
         
         var ob = new plupload.Uploader(settings);
         ob.bind('Init', onPluploadLoaded);
@@ -13898,7 +13892,7 @@ FileProgress.prototype.disappear = function () {
     /* HTML5 UPLOAD */
 
     function initialiseHtml5DragdropUpload(id, id2) {
-        console.log('initialiseHtml5DragdropUpload()', 'id:', id, 'id2:', id2);
+        //console.log('initialiseHtml5DragdropUpload()', 'id:', id, 'id2:', id2);
         
         var el = document.getElementById(id);
 
@@ -13912,7 +13906,7 @@ FileProgress.prototype.disappear = function () {
     }
 
     function html5UploadEventDragOver(event) {
-        console.log('html5UploadEventDragOver()', 'event:', event);
+        //console.log('html5UploadEventDragOver()', 'event:', event);
         if ((event.dataTransfer != null) && (event.dataTransfer.types != null) && !event.dataTransfer.types[0].includes('text')) {
             event.preventDefault();
         }
@@ -13920,12 +13914,12 @@ FileProgress.prototype.disappear = function () {
     }
 
     function html5UploadEventDrop(event, ob, key2) {
-        console.log('html5UploadEventDragOver()', 'event:', event, 'ob:', ob, 'key2:', key2);
+        //console.log('html5UploadEventDragOver()', 'event:', event, 'ob:', ob, 'key2:', key2);
         html5Upload(event, key2);
     }
 
     function html5Upload(event, fieldName, files) {
-        console.log('html5UploadEventDragOver()', 'event:', event, 'fieldName:', fieldName, 'files:', files);
+        //console.log('html5UploadEventDragOver()', 'event:', event, 'fieldName:', fieldName, 'files:', files);
         
         if (!event.dataTransfer) {
             return;
@@ -14015,7 +14009,7 @@ FileProgress.prototype.disappear = function () {
     }
 
     function html5UploadProgress(event, fieldName) {
-        console.log('html5UploadProgress()', 'event:', event, 'fieldName', fieldName);
+        //console.log('html5UploadProgress()', 'event:', event, 'fieldName', fieldName);
         
         if (event.lengthComputable) {
             var percentage = Math.round((event.loaded * 100) / event.total);
@@ -14028,7 +14022,7 @@ FileProgress.prototype.disappear = function () {
     }
 
     function buildHtml5UploadHandler(request, fileProgress, attachmentBase, fieldName) {
-        console.log('buildHtml5UploadHandler()', 'request:', request, 'fileProgress:', fileProgress, 'attachmentBase:', attachmentBase, 'fieldName:', fieldName);
+        //console.log('buildHtml5UploadHandler()', 'request:', request, 'fileProgress:', fileProgress, 'attachmentBase:', attachmentBase, 'fieldName:', fieldName);
         
         return function () {
             switch (request.readyState) {
@@ -14062,7 +14056,7 @@ FileProgress.prototype.disappear = function () {
     }
 
     function clearAttachment(index, postField) {
-        console.log('clearAttachment()', 'index:', index, 'postField:', postField);
+        //console.log('clearAttachment()', 'index:', index, 'postField:', postField);
         
         var newContents = window.getTextbox(postField);
         newContents = newContents.replace(new RegExp('\\[(attachment|attachment_safe)[^\\]]*\\]new_' + index + '\\[/(attachment|attachment_safe)\\]'), '');

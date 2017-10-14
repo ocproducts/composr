@@ -173,7 +173,7 @@
         if (!form.oldAction) {
             form.oldAction = oldAction;
         }
-        form.setAttribute('action', /*$cms.maintainThemeInLink - no, we want correct theme images to work*/(previewUrl) + ((form.oldAction.indexOf('&uploading=1') !== -1) ? '&uploading=1' : ''));
+        form.setAttribute('action', /*$cms.maintainThemeInLink - no, we want correct theme images to work*/(previewUrl) + (form.oldAction.includes('&uploading=1') ? '&uploading=1' : ''));
         var oldTarget = form.getAttribute('target');
         if (!oldTarget) {
             oldTarget = '_top';
