@@ -7437,7 +7437,7 @@
                 if ((xhr.responseText !== '') && (xhr.responseText.replace(/[ \t\n\r]/g, '') !== '0'/*some cache layers may change blank to zero*/)) {
                     if (xhr.responseText !== 'false') {
                         if (xhr.responseText.length > 1000) {
-                            $cms.inform('$cms.form.doAjaxFieldTest()', 'xhr.responseText:', xhr.responseText);
+                            //$cms.inform('$cms.form.doAjaxFieldTest()', 'xhr.responseText:', xhr.responseText);
                             $cms.ui.alert(xhr.responseText, null, '{!ERROR_OCCURRED;^}', true);
                         } else {
                             $cms.ui.alert(xhr.responseText);

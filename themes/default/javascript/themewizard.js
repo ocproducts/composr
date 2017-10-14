@@ -9,13 +9,21 @@
             form.elements['algorithm'][0].checked = defaultTheme;
             form.elements['algorithm'][1].checked = !defaultTheme;
         });
+        
+        var validValue;
         form.addEventListener('submit', function submitCheck(e) {
+            var value = form.elements['themename'].value;
+            
+            if (value === validValue) {
+                return;
+            }
+            
             submitBtn.disabled = true;
-            var url = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=exists_theme&name=' + encodeURIComponent(form.elements['themename'].value);
+            var url = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=exists_theme&name=' + encodeURIComponent(value);
             e.preventDefault();
             $cms.form.doAjaxFieldTest(url).then(function (valid) {
                 if (valid) {
-                    form.removeEventListener('submit', submitCheck);
+                    validValue = value;
                     $cms.dom.submit(form);
                 } else {
                     submitBtn.disabled = false;

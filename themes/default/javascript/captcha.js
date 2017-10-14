@@ -58,6 +58,7 @@
     
     $cms.functions.captchaCaptchaAjaxCheck = function captchaCaptchaAjaxCheck() {
         var form = document.getElementById('main_form'),
+            captchaEl = form.elements['captcha'],
             submitBtn = document.getElementById('submit_button');
 
         if (!form) {
@@ -68,13 +69,20 @@
             return;
         }
         
+        var validValue;
         form.addEventListener('submit', function submitCheck(e) {
-            var url = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=captcha_wrong&name=' + encodeURIComponent(form.elements['captcha'].value);
+            var value = captchaEl.value;
+            
+            if (value === validValue) {
+                return;
+            }
+            
+            var url = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=captcha_wrong&name=' + encodeURIComponent(value);
             e.preventDefault();
             submitBtn.disabled = true;
             $cms.form.doAjaxFieldTest(url).then(function (valid) {
                 if (valid) {
-                    form.removeEventListener('submit', submitCheck);
+                    validValue = value;
                     $cms.dom.submit(form);
                 } else {
                     document.getElementById('captcha').src += '&'; // Force it to reload latest captcha
