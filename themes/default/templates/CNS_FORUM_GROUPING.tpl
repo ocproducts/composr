@@ -29,7 +29,7 @@
 						{+START,IF,{$DESKTOP}}
 							<th class="ocf_forum_box_left cell_desktop"></th>
 						{+END}
-						<th{+START,IF,{$MOBILE}} class="cns_forum_box_left"{+END}>
+						<th {+START,IF,{$MOBILE}} class="cns_forum_box_left"{+END}>
 							{!FORUM_NAME}
 						</th>
 						{+START,IF,{$DESKTOP}}

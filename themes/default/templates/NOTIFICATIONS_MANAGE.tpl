@@ -73,7 +73,7 @@
 	<h2>{!cns:AUTO_NOTIFICATION_CONTRIB_CONTENT}</h2>
 
 	<p class="simple_neat_checkbox">
-		<input{+START,IF,{AUTO_NOTIFICATION_CONTRIB_CONTENT}} checked="checked"{+END} type="checkbox" id="auto_monitor_contrib_content" name="auto_monitor_contrib_content" value="1" />
+		<input {+START,IF,{AUTO_NOTIFICATION_CONTRIB_CONTENT}} checked="checked"{+END} type="checkbox" id="auto_monitor_contrib_content" name="auto_monitor_contrib_content" value="1" />
 		<label for="auto_monitor_contrib_content"><span>{!cns:DESCRIPTION_AUTO_NOTIFICATION_CONTRIB_CONTENT}</span></label>
 	</p>
 {+END}
@@ -82,7 +82,7 @@
 	<h2>{!cns:SMART_TOPIC_NOTIFICATION}</h2>
 
 	<p class="simple_neat_checkbox">
-		<input{+START,IF,{SMART_TOPIC_NOTIFICATION_CONTENT}} checked="checked"{+END} type="checkbox" id="smart_topic_notification_content" name="smart_topic_notification_content" value="1" />
+		<input {+START,IF,{SMART_TOPIC_NOTIFICATION_CONTENT}} checked="checked"{+END} type="checkbox" id="smart_topic_notification_content" name="smart_topic_notification_content" value="1" />
 		<label for="smart_topic_notification_content"><span>{!cns:DESCRIPTION_SMART_TOPIC_NOTIFICATION}</span></label>
 	</p>
 {+END}

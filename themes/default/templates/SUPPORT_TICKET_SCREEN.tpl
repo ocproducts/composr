@@ -49,7 +49,7 @@
 						{$INSERT_SPAMMER_BLACKHOLE}
 
 						<label for="assign_username" class="accessibility_hidden">{!USERNAME}</label>
-						<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" class="input_username js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" id="assign_username" name="username" value="{$USERNAME*}" />
+						<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" class="input_username js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" id="assign_username" name="username" value="{$USERNAME*}" />
 						<input class="button_micro buttons__proceed" type="submit" value="{!ASSIGN_TO}" />
 					</form>
 				</li>

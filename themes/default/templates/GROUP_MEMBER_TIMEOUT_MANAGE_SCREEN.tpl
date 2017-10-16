@@ -34,7 +34,7 @@
 					<tr>
 						<td>
 							<label class="accessibility_hidden" for="gmt_username_{_loop_key*}">{!USERNAME}</label>
-							<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="20" maxlength="255" class="input_username_required js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" id="gmt_username_{_loop_key*}" name="gmt_username_{_loop_key*}" value="{USERNAME*}" />
+							<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="20" maxlength="255" class="input_username_required js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" id="gmt_username_{_loop_key*}" name="gmt_username_{_loop_key*}" value="{USERNAME*}" />
 						</td>
 
 						<td>
@@ -56,7 +56,7 @@
 				<tr>
 					<td>
 						<label class="accessibility_hidden" for="gmt_username_new">{!USERNAME}</label>
-						<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="20" maxlength="255" class="input_username_required js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" id="gmt_username_new" name="gmt_username_new" />
+						<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="20" maxlength="255" class="input_username_required js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" id="gmt_username_new" name="gmt_username_new" />
 					</td>
 
 					<td>

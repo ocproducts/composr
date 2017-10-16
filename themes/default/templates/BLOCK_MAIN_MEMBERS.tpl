@@ -94,7 +94,7 @@
 			{+END}
 
 			{+START,IF,{$EQ,{DISPLAY_MODE},media}}
-				<div{+START,IF_NON_EMPTY,{ITEM_WIDTH}} style="width: {ITEM_WIDTH*}"{+END} class="image_fader_item">
+				<div {+START,IF_NON_EMPTY,{ITEM_WIDTH}} style="width: {ITEM_WIDTH*}"{+END} class="image_fader_item">
 					{+START,NO_PREPROCESSING}
 						<div class="box"><div class="box_inner">
 							<h3>{GALLERY_TITLE*}</h3>
@@ -116,7 +116,7 @@
 			{+END}
 
 			{+START,IF,{$EQ,{DISPLAY_MODE},boxes}}
-				<div{+START,IF_NON_EMPTY,{ITEM_WIDTH}} style="width: {ITEM_WIDTH*}"{+END}><div class="box"><div class="box_inner">
+				<div {+START,IF_NON_EMPTY,{ITEM_WIDTH}} style="width: {ITEM_WIDTH*}"{+END}><div class="box"><div class="box_inner">
 					{BOX}
 				</div></div></div>
 

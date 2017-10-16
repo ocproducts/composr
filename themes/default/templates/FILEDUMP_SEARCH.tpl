@@ -6,11 +6,11 @@
 
 			<p class="left">
 				<label class="accessibility_hidden" for="search_filedump_{I*}">{!SEARCH}</label>
-				<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" size="22" type="search" id="search_filedump_{I*}" name="search" placeholder="{!SEARCH*}" />
+				<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" size="22" type="search" id="search_filedump_{I*}" name="search" placeholder="{!SEARCH*}" />
 
 				<label class="recurse horiz_field_sep" for="recurse_filedump_{I*}">
 					{!INCLUDE_SUBFOLDERS}
-					<input{+START,IF,{$NEQ,{$_GET,recurse},0}} checked="checked"{+END} type="checkbox" name="recurse" id="recurse_filedump_{I*}" value="1" />
+					<input {+START,IF,{$NEQ,{$_GET,recurse},0}} checked="checked"{+END} type="checkbox" name="recurse" id="recurse_filedump_{I*}" value="1" />
 				</label>
 
 				<br class="block_mobile" />
@@ -18,11 +18,11 @@
 				<label class="type_filter_filedump horiz_field_sep" for="type_filter_filedump_{I*}">
 					{!SHOW}
 					<select id="type_filter_filedump_{I*}" name="type_filter">
-						<option{+START,IF,{$EQ,{TYPE_FILTER},}} selected="selected"{+END} value="">{!ALL}</option>
-						<option{+START,IF,{$EQ,{TYPE_FILTER},images}} selected="selected"{+END} value="images">{!IMAGES}</option>
-						<option{+START,IF,{$EQ,{TYPE_FILTER},videos}} selected="selected"{+END} value="videos">{!VIDEOS}</option>
-						<option{+START,IF,{$EQ,{TYPE_FILTER},audios}} selected="selected"{+END} value="audios">{!AUDIOS}</option>
-						<option{+START,IF,{$EQ,{TYPE_FILTER},others}} selected="selected"{+END} value="others">{!OTHER}</option>
+						<option {+START,IF,{$EQ,{TYPE_FILTER},}} selected="selected"{+END} value="">{!ALL}</option>
+						<option {+START,IF,{$EQ,{TYPE_FILTER},images}} selected="selected"{+END} value="images">{!IMAGES}</option>
+						<option {+START,IF,{$EQ,{TYPE_FILTER},videos}} selected="selected"{+END} value="videos">{!VIDEOS}</option>
+						<option {+START,IF,{$EQ,{TYPE_FILTER},audios}} selected="selected"{+END} value="audios">{!AUDIOS}</option>
+						<option {+START,IF,{$EQ,{TYPE_FILTER},others}} selected="selected"{+END} value="others">{!OTHER}</option>
 					</select>
 				</label>
 
@@ -33,7 +33,7 @@
 							<optgroup label="{!FILEDUMP_FOLDER_MATCHING}">
 						{+END}
 						{+START,LOOP,FILTERED_DIRECTORIES}
-							<option{+START,IF,{$EQ,{$_GET,place,/},/{_loop_var*}{$?,{$IS_NON_EMPTY,{_loop_var}},/}}} selected="selected"{+END} value="/{_loop_var*}{$?,{$IS_NON_EMPTY,{_loop_var}},/}">/{_loop_var*}</option>
+							<option {+START,IF,{$EQ,{$_GET,place,/},/{_loop_var*}{$?,{$IS_NON_EMPTY,{_loop_var}},/}}} selected="selected"{+END} value="/{_loop_var*}{$?,{$IS_NON_EMPTY,{_loop_var}},/}">/{_loop_var*}</option>
 						{+END}
 						{+START,IF_NON_EMPTY,{FILTERED_DIRECTORIES_MISSES}}
 							</optgroup>
@@ -41,7 +41,7 @@
 						{+START,IF_NON_EMPTY,{FILTERED_DIRECTORIES_MISSES}}
 							<optgroup label="{!FILEDUMP_FOLDER_NON_MATCHING}">
 								{+START,LOOP,FILTERED_DIRECTORIES_MISSES}
-									<option{+START,IF,{$EQ,{$_GET,place,/},/{_loop_var*}{$?,{$IS_NON_EMPTY,{_loop_var}},/}}} selected="selected"{+END} value="/{_loop_var*}{$?,{$IS_NON_EMPTY,{_loop_var}},/}">/{_loop_var*}</option>
+									<option {+START,IF,{$EQ,{$_GET,place,/},/{_loop_var*}{$?,{$IS_NON_EMPTY,{_loop_var}},/}}} selected="selected"{+END} value="/{_loop_var*}{$?,{$IS_NON_EMPTY,{_loop_var}},/}">/{_loop_var*}</option>
 								{+END}
 							</optgroup>
 						{+END}
@@ -53,12 +53,12 @@
 				<label class="sort_filedump horiz_field_sep" for="sort_filedump_{I*}">
 					{!SORT_BY}
 					<select id="sort_filedump_{I*}" name="sort">
-						<option{+START,IF,{$EQ,{SORT},time ASC}} selected="selected"{+END} value="time ASC">{!DATE_TIME},{!_ASCENDING}</option>
-						<option{+START,IF,{$EQ,{SORT},time DESC}} selected="selected"{+END} value="time DESC">{!DATE_TIME},{!_DESCENDING}</option>
-						<option{+START,IF,{$EQ,{SORT},name ASC}} selected="selected"{+END} value="name ASC">{!FILENAME},{!_ASCENDING}</option>
-						<option{+START,IF,{$EQ,{SORT},name DESC}} selected="selected"{+END} value="name DESC">{!FILENAME},{!_DESCENDING}</option>
-						<option{+START,IF,{$EQ,{SORT},size ASC}} selected="selected"{+END} value="size ASC">{!FILE_SIZE},{!_ASCENDING}</option>
-						<option{+START,IF,{$EQ,{SORT},size DESC}} selected="selected"{+END} value="size DESC">{!FILE_SIZE},{!_DESCENDING}</option>
+						<option {+START,IF,{$EQ,{SORT},time ASC}} selected="selected"{+END} value="time ASC">{!DATE_TIME},{!_ASCENDING}</option>
+						<option {+START,IF,{$EQ,{SORT},time DESC}} selected="selected"{+END} value="time DESC">{!DATE_TIME},{!_DESCENDING}</option>
+						<option {+START,IF,{$EQ,{SORT},name ASC}} selected="selected"{+END} value="name ASC">{!FILENAME},{!_ASCENDING}</option>
+						<option {+START,IF,{$EQ,{SORT},name DESC}} selected="selected"{+END} value="name DESC">{!FILENAME},{!_DESCENDING}</option>
+						<option {+START,IF,{$EQ,{SORT},size ASC}} selected="selected"{+END} value="size ASC">{!FILE_SIZE},{!_ASCENDING}</option>
+						<option {+START,IF,{$EQ,{SORT},size DESC}} selected="selected"{+END} value="size DESC">{!FILE_SIZE},{!_DESCENDING}</option>
 					</select>
 				</label>
 

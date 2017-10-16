@@ -5,7 +5,7 @@
 		</td>
 	</tr>
 {+END}
-<tr{+START,IF_PASSED_AND_TRUE,LAST} class="last"{+END}>
+<tr {+START,IF_PASSED_AND_TRUE,LAST} class="last"{+END}>
 	<td class="translate_line_first">
 		{NAME*}
 	</td>

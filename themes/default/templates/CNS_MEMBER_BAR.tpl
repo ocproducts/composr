@@ -22,7 +22,7 @@
 
 				<dl class="meta_details_list">
 					{+START,IF,{$ADDON_INSTALLED,points}}
-						<dt class="field_name"><abbr title="{!LIFETIME_POINTS,{$NUMBER_FORMAT*,{$AVAILABLE_POINTS}}}">{!POINTS}</abbr>:</dt> <dd><a{+START,IF_PASSED,NUM_POINTS_ADVANCE} title="{!GROUP_ADVANCE,{NUM_POINTS_ADVANCE*}}"{+END} href="{$PAGE_LINK*,site:points:member:{$MEMBER}}">{NUM_POINTS*}</a></dd>
+						<dt class="field_name"><abbr title="{!LIFETIME_POINTS,{$NUMBER_FORMAT*,{$AVAILABLE_POINTS}}}">{!POINTS}</abbr>:</dt> <dd><a {+START,IF_PASSED,NUM_POINTS_ADVANCE} title="{!GROUP_ADVANCE,{NUM_POINTS_ADVANCE*}}"{+END} href="{$PAGE_LINK*,site:points:member:{$MEMBER}}">{NUM_POINTS*}</a></dd>
 					{+END}
 					<dt class="field_name">{!COUNT_POSTS}:</dt> <dd>{NUM_POSTS*}</dd>
 					<dt class="field_name">{$?,{$MOBILE},{!USERGROUP},{!PRIMARY_GROUP}}:</dt> <dd>{PRIMARY_GROUP*}</dd>
@@ -46,12 +46,12 @@
 				{$,<p class="cns_member_column_title">{!VIEW}:</p>}
 				<ul class="actions_list">
 					<!--<li><a href="{PRIVATE_TOPIC_URL*}">{!PRIVATE_TOPICS}{+START,IF_NON_EMPTY,{PT_EXTRA}} <span class="cns_member_column_pts">{PT_EXTRA}</span>{+END}</a></li>-->
-					<li><a{+START,IF,{$DESKTOP}} data-open-as-overlay="1"{+END} href="{NEW_POSTS_URL*}">{!POSTS_SINCE}</a></li>
-					<li><a{+START,IF,{$DESKTOP}} data-open-as-overlay="1"{+END} href="{UNREAD_TOPICS_URL*}">{!TOPICS_UNREAD}</a></li>
-					<li><a{+START,IF,{$DESKTOP}} data-open-as-overlay="1"{+END} href="{RECENTLY_READ_URL*}">{!RECENTLY_READ}</a></li>
-					<li><a{+START,IF,{$DESKTOP}} data-open-as-overlay="1"{+END} href="{INLINE_PERSONAL_POSTS_URL*}">{!INLINE_PERSONAL_POSTS}</a></li>
-					<li><a{+START,IF,{$DESKTOP}} data-open-as-overlay="1"{+END} href="{UNANSWERED_TOPICS_URL*}">{!UNANSWERED_TOPICS}</a></li>
-					<li><a{+START,IF,{$DESKTOP}} data-open-as-overlay="1"{+END} href="{INVOLVED_TOPICS_URL*}">{!INVOLVED_TOPICS}</a></li>
+					<li><a {+START,IF,{$DESKTOP}} data-open-as-overlay="1"{+END} href="{NEW_POSTS_URL*}">{!POSTS_SINCE}</a></li>
+					<li><a {+START,IF,{$DESKTOP}} data-open-as-overlay="1"{+END} href="{UNREAD_TOPICS_URL*}">{!TOPICS_UNREAD}</a></li>
+					<li><a {+START,IF,{$DESKTOP}} data-open-as-overlay="1"{+END} href="{RECENTLY_READ_URL*}">{!RECENTLY_READ}</a></li>
+					<li><a {+START,IF,{$DESKTOP}} data-open-as-overlay="1"{+END} href="{INLINE_PERSONAL_POSTS_URL*}">{!INLINE_PERSONAL_POSTS}</a></li>
+					<li><a {+START,IF,{$DESKTOP}} data-open-as-overlay="1"{+END} href="{UNANSWERED_TOPICS_URL*}">{!UNANSWERED_TOPICS}</a></li>
+					<li><a {+START,IF,{$DESKTOP}} data-open-as-overlay="1"{+END} href="{INVOLVED_TOPICS_URL*}">{!INVOLVED_TOPICS}</a></li>
 				</ul>
 			</nav>
 		</div>

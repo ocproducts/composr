@@ -52,7 +52,7 @@
 			</div>
 		{+END}
 
-		<div{+START,IF_NON_EMPTY,{SUBSCRIBE_URL}} class="event_left"{+END}>
+		<div {+START,IF_NON_EMPTY,{SUBSCRIBE_URL}} class="event_left"{+END}>
 			<div class="box box___calendar_event_screen_description"><div class="box_inner">
 				<h2>{!DESCRIPTION}</h2>
 

@@ -10,7 +10,7 @@
 		<div>
 			{+START,IF_NON_EMPTY,{DESCRIPTION}}
 				{$,Extra div needed to stop WYSIWYG editor making a mess}
-				<div{+START,IF,{$NEQ,{WIDTH}x{HEIGHT},x,{$CONFIG_OPTION,thumb_width}x{$CONFIG_OPTION,thumb_width}}} style="width: {$MAX*,{WIDTH},80}px"{+END}>
+				<div {+START,IF,{$NEQ,{WIDTH}x{HEIGHT},x,{$CONFIG_OPTION,thumb_width}x{$CONFIG_OPTION,thumb_width}}} style="width: {$MAX*,{WIDTH},80}px"{+END}>
 					{$PARAGRAPH,{DESCRIPTION}}
 				</div>
 			{+END}

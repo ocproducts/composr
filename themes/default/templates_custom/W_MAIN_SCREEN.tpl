@@ -130,7 +130,7 @@
 			<div class="buildr_room_chat results_table">
 				<h4 class="buildr_posttop">{!MESSAGES}</h4>
 				<div>
-					<iframe{$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} title="{!MESSAGES}" src="{$FIND_SCRIPT*,wmessages}{$KEEP*,1}">{!MESSAGES}</iframe> {EMOTICON_CHOOSER}
+					<iframe {$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} title="{!MESSAGES}" src="{$FIND_SCRIPT*,wmessages}{$KEEP*,1}">{!MESSAGES}</iframe> {EMOTICON_CHOOSER}
 				</div>
 				<form method="post" id="posting_form" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}

@@ -1,3 +1,3 @@
-<div{+START,IF_PASSED,CLASS} class="{CLASS*}"{+END}>
+<div {+START,IF_PASSED,CLASS} class="{CLASS*}"{+END}>
 	{TEMPCODE}
 </div>
