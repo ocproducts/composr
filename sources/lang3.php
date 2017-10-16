@@ -555,12 +555,7 @@ function parse_translated_text($table, &$row, $field_name, $db, $lang, $force, $
         }
     } else {
         $map = _lang_remap($field_name, $entry, $row[$field_name], $db, true, null, $row[$field_name . '__source_user'], $as_admin, true);
-
-        $row_copy = $row;
-        if (isset($row_copy['_readable'])) {
-            unset($row_copy['_readable']);
-        }
-        $db->query_update($table, $map, $row_copy, '', 1);
+        $db->query_update($table, $map, $row, '', 1);
         $row = $map + $row;
 
         if ($SEARCH__CONTENT_BITS !== null) {
