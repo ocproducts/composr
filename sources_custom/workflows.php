@@ -92,7 +92,7 @@ function get_all_workflows()
     $workflows = $GLOBALS['SITE_DB']->query_select('workflows', array('id', 'workflow_name'));
     $output = array();
     foreach ($workflows as $w) {
-        $output[] = get_translated_text($w['workflow_name']);
+        $output[$w['id']] = get_translated_text($w['workflow_name']);
     }
     return $output;
 }
