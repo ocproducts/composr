@@ -47,7 +47,7 @@
             };
         },
         doFormSubmit: function (e) {
-            $cms.form.doFormSubmit(this.formEl, e);
+            $cms.form.doFormSubmit(this.formEl);
         }
     });
 

@@ -55,6 +55,8 @@
         this.btnSubmit = this.$('#submit_button');
 
         window.formPreviewUrl = strVal(params.previewUrl);
+        window.separatePreview = Boolean(params.separatePreview);
+        window.analyticEventCategory = params.analyticEventCategory;
 
         if (params.forcePreviews) {
             $cms.dom.hide(this.btnSubmit);
@@ -100,10 +102,9 @@
         },
 
         doFormPreview: function (e) {
-            var form = this.form,
-                separatePreview = !!this.params.separatePreview;
-            
-            $cms.form.doFormPreview(form, window.formPreviewUrl, separatePreview).then(function (bool) {
+            var form = this.form;
+
+            $cms.form.doFormPreview(form, window.formPreviewUrl, window.separatePreview).then(function (bool) {
                 if (bool && !window.justCheckingRequirements) {
                     form.submit();
                 }
@@ -111,7 +112,7 @@
         },
 
         doFormSubmit: function (e) {
-            $cms.form.doFormSubmit(this.form, e, this.analyticEventCategory);
+            $cms.form.doFormSubmit(this.form, this.analyticEventCategory);
         },
 
         goBack: function (e, btn) {

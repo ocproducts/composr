@@ -87,11 +87,10 @@
     /**
      * @memberof $cms.form
      * @param form
-     * @param event
      * @param analyticEventCategory
      * @returns {boolean}
      */
-    $cms.form.doFormSubmit = function doFormSubmit(form, event, analyticEventCategory) {
+    $cms.form.doFormSubmit = function doFormSubmit(form, analyticEventCategory) {
         return new Promise(function (resolveSubmitPromise) {
             var checkFormPromise = $cms.form.checkForm(form, false);
             

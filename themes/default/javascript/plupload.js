@@ -13247,36 +13247,36 @@ FileProgress.prototype.disappear = function () {
 
         window.mOxie.Mime.addMimeType('image/vnd.microsoft.icon,ico');
 
-        var btnSubmit = document.getElementById(plObj.settings.btn_submit_id);
+        var btnSubmitId = plObj.settings.btn_submit_id;
 
-        $cms.dom.on(btnSubmit, 'click', function (e) {
-            if (!e.triggeredByBeginFormUploading) {
-                return beginFormUploading(e, plObj);
-            }
+        plObj.cmsPreviewing = false;
+        // Intentionally listening on the `document` level so other listeners can execute first
+        $cms.dom.on('#' + btnSubmitId, 'click', function (e) {
+            beginFormUploading(plObj);
+            return false;
         });
 
         // Preview button too
-        var btnPreview = document.getElementById('preview_button');
-        if (btnPreview) {
-            $cms.dom.on(btnPreview, 'click', function (e) {
-                if (!e.triggeredByBeginFormUploading) {
-                    return beginFormUploading(e, plObj);
-                }
+        if (document.getElementById('preview_button')) {
+            // Intentionally listening on the `document` level so other listeners can execute first
+            $cms.dom.on('#preview_button', 'click', function (e) {
+                plObj.cmsPreviewing = true;
+                beginFormUploading(plObj);
+                return false;
             });
         }
     }
     
     // Called by the submit button to start the upload
-    function beginFormUploading(e, plObj) {
-        //console.log('beginFormUploading()', 'e:', e, 'plObj:', plObj);
+    function beginFormUploading(plObj) {
+        //console.log('beginFormUploading()', 'plObj:', plObj);
         
         window.justCheckingRequirements = true;
         plObj.submitting = true;
 
         var btnSubmit = document.getElementById(plObj.settings.btn_submit_id),
             filenameField = document.getElementById(plObj.settings.txtFileName),
-            isRequired = plObj.settings.required, 
-            btnClickRet, element;
+            isRequired = plObj.settings.required, element;
 
         if (filenameField.value === '') {
             if (isRequired) {
@@ -13286,24 +13286,21 @@ FileProgress.prototype.disappear = function () {
                 }
             }
             
-            btnClickRet = $cms.dom.trigger(btnSubmit, { 
-                type: 'click',
-                triggeredByBeginFormUploading: true
-            });
-            
-            if (btnClickRet) {
-                if (isRequired) {
-                    $cms.ui.alert({ notice: '{!IMPROPERLY_FILLED_IN;^}', single: true });
+            if (isRequired) {
+                $cms.ui.alert({ notice: '{!IMPROPERLY_FILLED_IN;^}', single: true });
+            } else {
+                if (plObj.cmsPreviewing) {
+                    $cms.form.doFormPreview(btnSubmit.form, window.formPreviewUrl, window.separatePreview).then(function (bool) {
+                        if (bool) {
+                            btnSubmit.form.submit();
+                        }
+                    });
                 } else {
-                    submitFormWithTheUpload(btnSubmit.form);
+                    $cms.form.doFormSubmit(btnSubmit.form, window.analyticEventCategory);
                 }
             }
             
-            return (!isRequired && !btnClickRet);
-        }
-
-        if (e) {
-            e.preventDefault();
+            return;
         }
 
         var allDone = true,
@@ -13330,18 +13327,16 @@ FileProgress.prototype.disappear = function () {
                 $cms.ui.alert('{!javascript:PLEASE_WAIT_WHILE_UPLOADING;^}');
             }
         } else {
-            btnClickRet = $cms.dom.trigger(btnSubmit, {
-                type: 'click',
-                triggeredByBeginFormUploading: true
-            });
-            
-            if (btnClickRet) {
-                submitFormWithTheUpload(btnSubmit.form);
-                return true;
+            if (plObj.cmsPreviewing) {
+                $cms.form.doFormPreview(btnSubmit.form, window.formPreviewUrl, window.separatePreview).then(function (bool) {
+                    if (bool) {
+                        btnSubmit.form.submit();
+                    }
+                });
+            } else {
+                $cms.form.doFormSubmit(btnSubmit.form, window.analyticEventCategory);
             }
         }
-
-        return false;
     }
 
     function submitFormWithTheUpload(form) {
@@ -13554,11 +13549,15 @@ FileProgress.prototype.disappear = function () {
         if (plObj.submitting && allDone) {
             window.justCheckingRequirements = false;
 
-            if ($cms.dom.trigger(btnSubmit.form, 'submit') === false) {
-                return false;
+            if (plObj.cmsPreviewing) {
+                $cms.form.doFormPreview(btnSubmit.form, window.formPreviewUrl, window.separatePreview).then(function (bool) {
+                    if (bool && !window.justCheckingRequirements) {
+                        btnSubmit.form.submit();
+                    }
+                });
+            } else {
+                $cms.form.doFormSubmit(btnSubmit.form, window.analyticEventCategory);
             }
-            
-            submitFormWithTheUpload(btnSubmit);
         }
     }
 
