@@ -20,7 +20,7 @@
 
 		<tbody>
 			{+START,LOOP,BANNERS}
-				<tr{+START,IF,{$LT,{_loop_key},5}} class="highlighted_table_cell"{+END}>
+				<tr {+START,IF,{$LT,{_loop_key},5}} class="highlighted_table_cell"{+END}>
 					<td>
 						{+START,IF,{$LT,{_loop_key},20}}{BANNER}{+END}
 

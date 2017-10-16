@@ -26,7 +26,7 @@
 				{CATEGORY*}
 			</p>
 		{+END}
-		<p{+START,IF,{$DESKTOP}} class="js-mouseover-activate-tooltip" data-vw-tooltip="{$GET*,description}"{+END}>
+		<p {+START,IF,{$DESKTOP}} class="js-mouseover-activate-tooltip" data-vw-tooltip="{$GET*,description}"{+END}>
 			{PRETTY_NAME}
 		</p>
 		{+START,SET,FILE_LIST_PRE}
@@ -41,7 +41,7 @@
 		{+END}
 		{+START,IF,{$DESKTOP}}
 			<div class="block_desktop">
-				<p{+START,IF,{$DESKTOP}} class="js-mouseover-activate-tooltip" data-vw-tooltip="{$GET*,FILE_LIST}"{+END}>
+				<p {+START,IF,{$DESKTOP}} class="js-mouseover-activate-tooltip" data-vw-tooltip="{$GET*,FILE_LIST}"{+END}>
 					{+START,IF_PASSED,FILENAME}
 						{FILENAME*}
 					{+END}

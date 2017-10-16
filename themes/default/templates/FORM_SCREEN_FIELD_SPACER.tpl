@@ -14,7 +14,7 @@
 		{+END}
 
 		{+START,IF_PASSED,HELP}{+START,IF_NON_EMPTY,{HELP}}
-			<div{+START,IF_PASSED,TITLE} id="fes{TITLE|}_help"{+END}>
+			<div {+START,IF_PASSED,TITLE} id="fes{TITLE|}_help"{+END}>
 				{$PARAGRAPH,{HELP*}}
 			</div>
 		{+END}{+END}

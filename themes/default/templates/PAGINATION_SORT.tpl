@@ -24,7 +24,7 @@
 		{+END}
 
 		<label for="r_{$GET*,RAND_PAGINATION}">{!SORT_BY} <span class="accessibility_hidden">{$GET*,TEXT_ID}</span></label>
-		<select{+START,IF,{$NOT,{$GET,show_sort_button}}} data-change-submit-form=""{+END} id="r_{$GET*,RAND_PAGINATION}" name="{SORT*}">
+		<select {+START,IF,{$NOT,{$GET,show_sort_button}}} data-change-submit-form=""{+END} id="r_{$GET*,RAND_PAGINATION}" name="{SORT*}">
 			{SELECTORS}
 		</select>{$GET,sort_button}
 	</div>

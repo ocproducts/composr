@@ -33,7 +33,7 @@
 						<th class="cell_desktop">{!COUNT_VIEWS}</th>
 					{+END}
 				{+END}
-				<th{+START,IF_EMPTY,{MODERATOR_ACTIONS}} class="cns_forum_box_right"{+END}>{!LAST_POST}</th>
+				<th {+START,IF_EMPTY,{MODERATOR_ACTIONS}} class="cns_forum_box_right"{+END}>{!LAST_POST}</th>
 				{+START,IF,{$DESKTOP}}
 					{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}{+START,IF,{$NOT,{$_GET,overlay}}}
 						<th class="cns_forum_box_right">

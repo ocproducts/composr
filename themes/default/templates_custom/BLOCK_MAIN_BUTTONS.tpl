@@ -8,7 +8,7 @@
 	{+END}
 
 	{+START,IF,{$NEQ,{EXTRA},side}}
-		<div{SET_HEIGHT}>
+		<div {SET_HEIGHT}>
 			{ASSEMBLE}
 		</div>
 	{+END}

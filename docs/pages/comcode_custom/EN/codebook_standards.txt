@@ -1742,9 +1742,9 @@ Use [tt]CHANGE[/tt] and [tt]PER_PAGE[/tt] where appropriate
 | Manually
 | We write code like:
 [code="HTML"]
-<div{+START,IF,{FOO}} foo="bar"{+END} a="b">Example</div>
+<div {+START,IF,{FOO}} foo="bar"{+END} a="b"{+START,IF_PASSED,A} x="y"{+END}>Example</div>
 [/code]
-Note how the space for the attribute comes at the start of the inside of the Tempcode directive.
+Note how the space for the attribute comes at the start of the inside of the Tempcode directive. Note also for the first attribute we also have an additional leading space, so that IDE syntax highlighting works well.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 Use the Tempcode escaping syntax correctly
