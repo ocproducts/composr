@@ -112,10 +112,7 @@
 
                 /* Remove any stuff that is only in the form for previews if doing a GET request */
                 if (form.method.toLowerCase() === 'get') {
-                    var i = 0, name, elements = [];
-                    for (i = 0; i < form.elements.length; i++) {
-                        elements.push(form.elements[i]);
-                    }
+                    var i, name, elements = arrVal(form.elements);
 
                     for (i = 0; i < elements.length; i++) {
                         name = elements[i].name;
@@ -153,13 +150,12 @@
 
     /**
      * @memberof $cms.form
-     * @param event
-     * @param form
-     * @param previewUrl
-     * @param hasSeparatePreview
-     * @returns {boolean}
+     * @param { HTMLFormElement } form
+     * @param {string} previewUrl
+     * @param {boolean} hasSeparatePreview
+     * @returns { Promise }
      */
-    $cms.form.doFormPreview = function doFormPreview(event, form, previewUrl, hasSeparatePreview) {
+    $cms.form.doFormPreview = function doFormPreview(form, previewUrl, hasSeparatePreview) {
         previewUrl = strVal(previewUrl);
         hasSeparatePreview = Boolean(hasSeparatePreview);
 

@@ -2891,6 +2891,9 @@
             el.addEventListener(realEvent(handler.e), handler.proxy, eventCapture(handler, capture))
         });
     }
+    
+    // Enable for debugging only
+    // $cms.dom.findHandlers = findHandlers;
 
     function findHandlers(element, event, fn, selector) {
         var matcher;

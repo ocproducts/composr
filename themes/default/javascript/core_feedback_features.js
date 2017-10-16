@@ -132,7 +132,7 @@
             var form = this.form,
                 url = $cms.maintainThemeInLink($cms.$PREVIEW_URL() + $cms.$KEEP());
             
-            $cms.form.doFormPreview(e, form, url).then(function (bool) {
+            $cms.form.doFormPreview(form, url).then(function (bool) {
                 if (bool) {
                     $cms.dom.submit(form);    
                 }

@@ -54,7 +54,7 @@
         this.form = $cms.dom.closest(this.el, 'form');
         this.btnSubmit = this.$('#submit_button');
 
-        window.formPreviewUrl = params.previewUrl;
+        window.formPreviewUrl = strVal(params.previewUrl);
 
         if (params.forcePreviews) {
             $cms.dom.hide(this.btnSubmit);
@@ -88,11 +88,12 @@
         },
 
         doFormCancel: function (e) {
+            var that = this;
             $cms.ui.confirm(
                 '{!Q_SURE;*}',
                 function (result) {
                     if (result) {
-                        window.location = this.cancelUrl;
+                        window.location = that.cancelUrl;
                     }
                 }
             );
@@ -102,7 +103,7 @@
             var form = this.form,
                 separatePreview = !!this.params.separatePreview;
             
-            $cms.form.doFormPreview(e, form, window.formPreviewUrl, separatePreview).then(function (bool) {
+            $cms.form.doFormPreview(form, window.formPreviewUrl, separatePreview).then(function (bool) {
                 if (bool && !window.justCheckingRequirements) {
                     form.submit();
                 }
@@ -795,8 +796,7 @@
             if (window.parent) {
                 try {
                     window.parent.scrollTo(0, $cms.dom.findPosY(window.parent.document.getElementById('preview_iframe')));
-                } catch (e) {
-                }
+                } catch (e) {}
                 window.parent.mobileVersionForPreview = !!el.checked;
                 $cms.dom.trigger(window.parent.document.getElementById('preview_button'), 'click');
                 return;
@@ -1370,7 +1370,7 @@
 
     function permissionsOverridden(select) {
         var element = document.getElementById(select + '_presets');
-        if (element.options[0].id != select + '_custom_option') {
+        if (element.options[0].id !== select + '_custom_option') {
             var newOption = document.createElement('option');
             $cms.dom.html(newOption, '{!permissions:PINTERFACE_LEVEL_CUSTOM;^}');
             newOption.id = select + '_custom_option';
@@ -1381,9 +1381,11 @@
     }
 
     function tryToSimplifyIframeForm() {
-        var formCatSelector = document.getElementById('main_form'),
+        var iframe = document.getElementById('iframe_under'),
+            formCatSelector = document.getElementById('main_form'),
             elements, i, element,
             count = 0, found, foundButton;
+        
         if (!formCatSelector) {
             return;
         }
@@ -1400,8 +1402,6 @@
             }
         }
 
-        var iframe = document.getElementById('iframe_under');
-        
         if ((count === 1) && (found.localName === 'select')) {
             $cms.dom.on(found, 'change', foundChangeHandler);
             
@@ -1417,13 +1417,12 @@
             if (iframe) {
                 if (iframe.contentDocument && (iframe.contentDocument.getElementsByTagName('form').length !== 0)) {
                     $cms.ui.confirm(
-                        '{!Q_SURE_LOSE;^}',
-                        function (result) {
-                            if (result) {
-                                _simplifiedFormContinueSubmit(iframe, formCatSelector);
-                            }
+                        '{!Q_SURE_LOSE;^}'
+                    ).then(function (result) {
+                        if (result) {
+                            _simplifiedFormContinueSubmit(iframe, formCatSelector);
                         }
-                    );
+                    });
 
                     return null;
                 }
@@ -1436,11 +1435,13 @@
     }
 
     function _simplifiedFormContinueSubmit(iframe, formCatSelector) {
-        $cms.form.checkForm(formCatSelector, false).then(function () {
-            if (iframe) {
-                $cms.dom.animateFrameLoad(iframe, 'iframe_under');
+        $cms.form.checkForm(formCatSelector, false).then(function (valid) {
+            if (valid) {
+                if (iframe) {
+                    $cms.dom.animateFrameLoad(iframe, 'iframe_under');
+                }
+                $cms.dom.submit(formCatSelector);
             }
-            $cms.dom.submit(formCatSelector);
         });
     }
 
@@ -1473,7 +1474,7 @@
                     for (var i = 0; i < labels.length; i++) {
                         label = $cms.dom.html(labels[i]);
                         for (var j = 0; j < fields.length; j++) {
-                            if (fields[j].replace(/^.*: /, '') == label) {
+                            if (fields[j].replace(/^.*: /, '') === label) {
                                 if (parsed[j + 1] === null) parsed[j + 1] = '';
 
                                 fieldName = labels[i].getAttribute('for');
