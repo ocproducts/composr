@@ -48,6 +48,6 @@ class Hook_config_sugarcrm_base_url
      */
     public function get_default()
     {
-        return get_base_url() . '/sugarcrm';
+        return '';
     }
 }

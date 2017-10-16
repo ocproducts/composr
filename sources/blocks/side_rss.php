@@ -161,7 +161,7 @@ class Block_side_rss
                 $full_url = '';
             }
 
-            $_title = $item['title'];
+            $_title = array_key_exists('title', $item) ? $item['title'] : do_lang('UNKNOWN');
             $_title = array_key_exists('title', $item) ? $item['title'] : '';
             $date = array_key_exists('clean_add_date', $item) ? get_timezoned_date_tempcode($item['clean_add_date']) : (array_key_exists('add_date', $item) ? make_string_tempcode($item['add_date']) : new Tempcode());
 

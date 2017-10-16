@@ -739,7 +739,7 @@ insert into `cms_addons_files` values('actionlog','themes/default/images/icons/2
  ('cns_cartoon_avatars','themes/default/images/cns_default_avatars/default_set/cartoons/dance.gif','548'),
  ('cns_cartoon_avatars','themes/default/images/cns_default_avatars/default_set/cartoons/emo.jpg','549'),
  ('cns_cartoon_avatars','themes/default/images/cns_default_avatars/default_set/cartoons/footy.jpg','550'),
- ('cns_cartoon_avatars','themes/default/images/cns_default_avatars/default_set/cartoons/half-life.jpg','551'),
+ ('cns_cartoon_avatars','themes/default/images/cns_default_avatars/default_set/cartoons/half_life.jpg','551'),
  ('cns_cartoon_avatars','themes/default/images/cns_default_avatars/default_set/cartoons/index.html','552'),
  ('cns_cartoon_avatars','themes/default/images/cns_default_avatars/default_set/cartoons/matrix.jpg','553'),
  ('cns_cartoon_avatars','themes/default/images/cns_default_avatars/default_set/cartoons/ninja.jpg','554'),

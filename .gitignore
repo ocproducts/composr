@@ -5,7 +5,7 @@
 ._*
 test_a
 /caches/http/*.dat
-/temp/subs.inc
+/temp/*
 /sources_custom/user_sync__customise.php
 /www.pid
 /_critical_error.html

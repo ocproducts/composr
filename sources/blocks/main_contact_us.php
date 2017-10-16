@@ -99,6 +99,7 @@ class Block_main_contact_us
                     return paragraph(do_lang_tempcode('INVALID_EMAIL_ADDRESS'), '', 'red_alert');
                 }
             }
+            $from_name = trim(post_param_string('poster_name_if_guest', post_param_string('name', $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true))));
 
             // Check spam
             require_code('antispam');
@@ -120,7 +121,7 @@ class Block_main_contact_us
             // Send standard confirmation email to current user
             if ($from_email != '' && get_option('message_received_emails') == '1') {
                 require_code('mail');
-                dispatch_mail(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $subject), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $body), array($from_email), null, '', '', array('require_recipient_valid_since' => get_member()));
+                dispatch_mail(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $subject), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $body), array($from_email), empty($from_name) ? null : $from_name, '', '', array('require_recipient_valid_since' => get_member()));
             }
 
             // Redirect/messaging

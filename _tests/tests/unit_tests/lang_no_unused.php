@@ -107,7 +107,9 @@ class lang_no_unused_test_set extends cms_test_case
             'RECAPTCHA_ERROR_',
         );
 
-        $skip = array(
+        $skip_prefixes_regexp = '#^(' . implode('|', $skip_prefixes) . ')#';
+
+        $skip = array_flip(array(
             'CONTINUE_RESTORATION',
             'ADD_PRIVATE_CALENDAR_EVENT',
             'EDIT_PRIVATE_CALENDAR_EVENT',
@@ -202,7 +204,7 @@ class lang_no_unused_test_set extends cms_test_case
             'TAX_VAT_NUMBER',
             'TAX_SALES',
             'TAX_VAT',
-        );
+        ));
 
         $dh = opendir(get_file_base() . '/lang/EN/');
         while (($file = readdir($dh)) !== false) {
@@ -217,11 +219,11 @@ class lang_no_unused_test_set extends cms_test_case
             _get_lang_file_map(get_file_base() . '/lang/EN/' . $file, $input, 'strings', false, true, 'EN');
 
             foreach ($input as $key => $val) {
-                if (preg_match('#^(' . implode('|', $skip_prefixes) . ')#', $key) != 0) {
+                if (preg_match($skip_prefixes_regexp, $key) != 0) {
                     continue;
                 }
 
-                if (in_array($key, $skip)) {
+                if (isset($skip[$key])) {
                     continue;
                 }
 

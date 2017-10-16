@@ -788,9 +788,10 @@ class Module_cms_booking_bookings extends Standard_crud_module
      * @param  ?array $where Extra where clauses
      * @param  boolean $force_site_db Whether to always access using the site database
      * @param  string $join Extra join clause for our query (blank: none)
+     * @param  ?integer $max Maximum to show (null: standard)
      * @return array A pair: Rows for selection from, Total results
      */
-    public function get_entry_rows($recache = false, $orderer = null, $where = array(), $force_site_db = false, $join = '')
+    public function get_entry_rows($recache = false, $orderer = null, $where = array(), $force_site_db = false, $join = '', $max = null)
     {
         if ((!$recache) && ($orderer !== null) && ($where !== array())) {
             if (isset($this->cached_entry_rows)) {
@@ -834,7 +835,9 @@ class Module_cms_booking_bookings extends Standard_crud_module
             }
         }
 
-        $max = either_param_integer('max', 20);
+        if ($max === null) {
+            $max = either_param_integer('max', 20);
+        }
         $start = get_param_integer('start', 0);
 
         if ($force_site_db) {

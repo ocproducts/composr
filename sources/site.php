@@ -719,6 +719,7 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
         // Monikers relative to the zone
         $page_place = _request_page($page, $zone);
         if ($page_place[0] == 'REDIRECT') {
+            $page = $page_place[1]['r_to_page'];
             $zone = $page_place[1]['r_to_zone'];
             $page_place = _request_page($page_place[1]['r_to_page'], $page_place[1]['r_to_zone']);
         }
@@ -1595,6 +1596,8 @@ function __request_page($codename, $zone, $page_type = null, $lang = null, $no_r
  */
 function _request_page__redirects($codename, $zone, $wildcard_mode = false)
 {
+    $codename = strtolower($codename);
+
     static $internal_cache = array();
     if (isset($internal_cache[$codename][$zone][$wildcard_mode])) {
         return $internal_cache[$codename][$zone][$wildcard_mode];

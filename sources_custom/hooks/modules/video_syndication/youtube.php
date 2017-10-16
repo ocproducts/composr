@@ -423,11 +423,11 @@ class Hook_video_syndication_youtube
         require_code('oauth');
 
         // Read in settings. If unset, we won't get a token - but we will return to allow anonymous calls
-        $client_id = get_option('youtube_client_id');
+        $client_id = get_option('google_apis_client_id');
         if ($client_id == '') {
             return true;
         }
-        $client_secret = get_option('youtube_client_secret');
+        $client_secret = get_option('google_apis_client_secret');
         if ($client_secret == '') {
             return true;
         }
@@ -445,7 +445,7 @@ class Hook_video_syndication_youtube
 
     protected function _http($url, $params, $http_verb = 'GET', $xml = null, $timeout = 6.0, $extra_headers = array(), $file_to_upload = null, $content_type = 'application/atom+xml')
     {
-        $youtube_developer_key = get_option('youtube_developer_key');
+        $youtube_developer_key = get_option('google_apis_api_key');
 
         if ($this->_access_token === null) {
             if (!$this->_connect()) {

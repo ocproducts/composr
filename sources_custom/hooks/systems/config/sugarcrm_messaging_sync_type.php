@@ -48,6 +48,6 @@ class Hook_config_sugarcrm_messaging_sync_type
      */
     public function get_default()
     {
-        return 'Cases';
+        return 'Leads';
     }
 }

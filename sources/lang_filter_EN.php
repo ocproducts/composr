@@ -296,7 +296,7 @@ class LangFilter_EN extends LangFilter
         if (!empty($key) && $is_american && strtolower($key[0]) == $key[0]) {
             // Day comes after month
             switch ($key . '=' . $value) {
-                case 'calendar_date=%Y-%m-%d': // ISO (International) style
+                case 'calendar_date=%d-%m-%Y':
                     $value = '%m-%d-%Y';
                     break;
 
@@ -316,8 +316,8 @@ class LangFilter_EN extends LangFilter
                     $value = '%B %e%o';
                     break;
 
-                case 'locale=en-GB':
-                    $value = 'en-US';
+                case 'locale=en-GB.UTF-8,en_GB.UTF-8,en-US.UTF-8,en_US.UTF-8,en.UTF-8,en-GB,en_GB,en-US,en_US,en':
+                    $value = 'en-US.UTF-8,en_US.UTF-8,en.UTF-8,en-US,en_US,en';
                     break;
 
                 case 'dictionary=en_GB':

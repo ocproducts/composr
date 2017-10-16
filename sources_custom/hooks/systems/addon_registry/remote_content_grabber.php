@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2016
+ Copyright (c) ocProducts, 2004-2017
 
  See text/EN/licence.txt for full licencing information.
 
@@ -131,8 +131,8 @@ class Hook_addon_registry_remote_content_grabber
     public function get_file_list()
     {
         return array(
-            'sources_custom/hooks/systems/addon_registry/remote_content_grabbber.php',
-            'sources_custom/remote_content_grabbber.php',
+            'sources_custom/hooks/systems/addon_registry/remote_content_grabber.php',
+            'sources_custom/remote_content_grabber.php',
         );
     }
 }

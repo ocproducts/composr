@@ -196,7 +196,6 @@ class Hook_addon_registry_core_form_interfaces
             'data/ckeditor/.htaccess',
             'data/ckeditor/build-config.js',
             'data/ckeditor/ckeditor.js',
-            'data/ckeditor/ckeditor.dev.js',
             'data/ckeditor/contents.css',
             'data/ckeditor/lang/af.js',
             'data/ckeditor/lang/ar.js',
@@ -1258,6 +1257,8 @@ class Hook_addon_registry_core_form_interfaces
      */
     public function tpl_preview__form_screen_2()
     {
+        require_javascript('plupload');
+
         require_lang('comcode');
         require_lang('dates');
 

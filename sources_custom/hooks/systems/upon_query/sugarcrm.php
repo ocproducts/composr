@@ -75,8 +75,10 @@ class Hook_upon_query_sugarcrm
             $data = array(
                 'account_id' => array('name' => 'account_id', 'value' => $account_id),
 
+                'emailAddress0' => array('name' => 'emailAddress0', 'value' => $email_address), // SuiteCRM
                 'email1' => array('name' => 'email1', 'value' => $email_address),
 
+                'name' => array('name' => 'name', 'value' => $username), // SuiteCRM
                 'first_name' => array('name' => 'first_name', 'value' => $first_name),
                 'last_name' => array('name' => 'last_name', 'value' => $last_name),
             );

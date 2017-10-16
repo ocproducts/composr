@@ -956,16 +956,6 @@ This section is not designed as primary documentation for the tools. Those tools
 | [tt]windows_helper_scripts[/tt]
 | Command-line prompt on Windows
 |-
-| [tt]hphp.sh[/tt]
-| Launch HPHP instance with appropriate parameters.
-| [tt]hphp_buildkit[/tt]
-| Command-line via Bash
-|-
-| [tt]hphp_debug.sh[/tt]
-| Launch HPHP instance in debug mode.
-| [tt]hphp_buildkit[/tt]
-| Command-line via Bash
-|-
 | [tt]transcoder/go.sh[/tt]
 | Launch video transcoder background service.
 | [tt]transcoder[/tt]

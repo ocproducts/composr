@@ -290,7 +290,7 @@ class Block_main_news
                 }
 
                 // URL
-                $tmp = array('page' => 'news', 'type' => 'view', 'id' => $id) + $prop_url;
+                $tmp = array('page' => ($zone == '_SELF') ? get_page_name() : 'news', 'type' => 'view', 'id' => $id) + $prop_url;
                 $full_url = build_url($tmp, $zone);
 
                 // Category
@@ -356,7 +356,7 @@ class Block_main_news
                 $date = get_timezoned_date_time_tempcode($myrow['date_and_time']);
 
                 // URL
-                $tmp = array('page' => 'news', 'type' => 'view', 'id' => $myrow['p_id']) + $prop_url;
+                $tmp = array('page' => ($zone == '_SELF') ? get_page_name() : 'news', 'type' => 'view', 'id' => $myrow['p_id']) + $prop_url;
                 $url = build_url($tmp, $zone);
 
                 // Title
@@ -374,7 +374,7 @@ class Block_main_news
         }
 
         // Work out management URLs
-        $tmp = array('page' => 'news', 'type' => 'browse');
+        $tmp = array('page' => ($zone == '_SELF') ? get_page_name() : 'news', 'type' => 'browse');
         if ($select != '*') {
             $tmp[is_numeric($select) ? 'id' : 'select'] = $select;
         }

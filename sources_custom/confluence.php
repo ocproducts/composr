@@ -255,19 +255,23 @@ function confluence_clean_page($html)
     return $html;
 }
 
-function confluence_query($query)
+function confluence_query($query, $trigger_error = true)
 {
     $url = get_confluence_base_url() . '/rest/api/' . $query;
-    list($json) = confluence_call_url($url);
+    list($json) = confluence_call_url($url, $trigger_error);
 
-    if ($json == '') {
+    if (empty($json)) {
+        if (!$trigger_error) {
+            return null;
+        }
+
         warn_exit('Internal error processing query ' . $url);
     }
 
     return json_decode($json, true);
 }
 
-function confluence_call_url($url)
+function confluence_call_url($url, $trigger_error = true)
 {
     global $CONFLUENCE_USERNAME, $CONFLUENCE_PASSWORD;
     if ($CONFLUENCE_USERNAME == '') {
@@ -277,5 +281,5 @@ function confluence_call_url($url)
     }
 
     global $CONFLUENCE_CACHE_TIME;
-    return cache_and_carry('http_get_contents', array($url, array('auth' => $auth)), $CONFLUENCE_CACHE_TIME);
+    return cache_and_carry('http_get_contents', array($url, array('auth' => $auth, 'trigger_error' => $trigger_error)), $CONFLUENCE_CACHE_TIME);
 }

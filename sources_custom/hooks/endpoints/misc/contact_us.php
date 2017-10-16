@@ -37,6 +37,7 @@ class Hook_endpoint_account_contact_us
         $post = post_param_string('post');
         $title = post_param_string('title', '');
         $email_from = trim(post_param_string('email', $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member())));
+        $from_name = trim(post_param_string('poster_name_if_guest', post_param_string('name', $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true))));
 
         // Send notification
         require_code('notifications');
@@ -49,7 +50,7 @@ class Hook_endpoint_account_contact_us
         $email_from = trim(post_param_string('email', $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member())));
         if ($email_from != '' && get_option('message_received_emails') == '1') {
             require_code('mail');
-            dispatch_mail(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $title), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $post), array($email_from), null, '', '', array('as' => get_member()));
+            dispatch_mail(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $title), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $post), array($email_from), empty($from_name) ? null : $from_name, '', '', array('as' => get_member()));
         }
 
         // Return

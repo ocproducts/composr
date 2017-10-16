@@ -23,7 +23,7 @@ class copyright_test_set extends cms_test_case
         require_code('files2');
         $files = get_directory_contents(get_file_base());
         foreach ($files as $file) {
-            if (((substr($file, -4) == '.php') || (substr($file, -4) == '.css')) && (substr($file, 0, 8) != 'exports/')) {
+            if (((substr($file, -4) == '.php') || (substr($file, -4) == '.css')) && (substr($file, 0, 8) != 'exports/') && (strpos($file, '/_unnamed_/') === false)) {
                 $code = file_get_contents(get_file_base() . '/' . $file);
                 $matches = array();
                 if (preg_match('#Copyright \(c\) ocProducts, 2004-(\d+)#', $code, $matches) != 0) {

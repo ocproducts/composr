@@ -112,8 +112,8 @@ function captcha_script()
         $font = mt_rand(4, 5); // 1 is too small
         $fonts[] = $font;
         $width += imagefontwidth($font) + 2;
+        $height = imagefontheight($font) + 20;
     }
-    $height = imagefontheight($font) + 20;
     $img = imagecreate($width, $height);
     $black = imagecolorallocate($img, 0, 0, 0);
     $off_black = imagecolorallocate($img, mt_rand(1, 45), mt_rand(1, 45), mt_rand(1, 45));

@@ -225,7 +225,8 @@ class SugarWrapper
                         'value' => 'true'
                     )
                 )
-            )
+            ),
+            true
         );
 
         if (isset($result['id'])) {
@@ -285,7 +286,7 @@ class SugarWrapper
      * @param array $call_arguments the arguments for the API call
      * @return array
      */
-    private function rest_request($call_name, $call_arguments)
+    private function rest_request($call_name, $call_arguments, $expects_result = true)
     {
         $request = $this->getCurl();
         $request->addData(
@@ -296,19 +297,19 @@ class SugarWrapper
                 'rest_data' => json_encode($call_arguments)
             )
         );
-        if($call_name == 'set_entry') {
+        if ($call_name == 'set_entry') {
             $request->addHeaders(array('Expect'=>' '));
         }
 
         $output = $request->post();
         $response_data = json_decode(html_entity_decode($output['body']), true);
 
-        if (!is_array($response_data)) {
-            //fatal_exit('Corrupt result:' . $output['body']);      Actually there is not always an array returned
+        if ((!is_array($response_data)) && ($expects_result)) {
+            throw new Exception('Corrupt result: ' . json_encode($output) . ', with error: ' . $request->error);
         }
 
         if ((is_array($response_data)) && (array_keys($response_data) == array('name', 'number', 'description'))) {
-            fatal_exit($response_data['description']);
+            throw new Exception($response_data['description']);
         }
 
         return $response_data;
@@ -348,7 +349,8 @@ class SugarWrapper
 
         $result = $this->rest_request(
             'get_entries_count',
-            $call_arguments
+            $call_arguments,
+            true
         );
 
         if (isset($result['result_count'])) {
@@ -438,7 +440,8 @@ class SugarWrapper
 
         $result = $this->rest_request(
             'get_entry_list',
-            $call_arguments
+            $call_arguments,
+            true
         );
 
         return $result;
@@ -511,7 +514,9 @@ class SugarWrapper
         );
 
         $result = $this->rest_request(
-            'set_entry', $call_arguments
+            'set_entry',
+            $call_arguments,
+            true
         );
 
         return $result;
@@ -584,7 +589,9 @@ class SugarWrapper
         );
 
         $result = $this->rest_request(
-            'set_relationship', $call_arguments
+            'set_relationship',
+            $call_arguments,
+            true
         );
 
         return $result;
@@ -607,7 +614,9 @@ class SugarWrapper
             );
 
             $result = $this->rest_request(
-                'get_note_attachment', $call_arguments
+                'get_note_attachment',
+                $call_arguments,
+                true
             );
 
             return $result;
@@ -638,7 +647,9 @@ class SugarWrapper
         );
 
         $result = $this->rest_request(
-            'set_note_attachment', $call_arguments
+            'set_note_attachment',
+            $call_arguments,
+            true
         );
 
         return $result;
@@ -646,7 +657,7 @@ class SugarWrapper
     
     /**
       * Upload file to Sugar Document
-      *
+      * 
       * @param string $docID the document ID the file should be attached to
       * @param string $filename the file name 
       * @param string $path the full path of the file
@@ -666,7 +677,8 @@ class SugarWrapper
 
         $result = $this->rest_request(
             'set_document_revision',
-            $call_arguments
+            $call_arguments,
+            true
         );
         
         return $result;
@@ -685,7 +697,9 @@ class SugarWrapper
         );
 
         $result = $this->rest_request(
-            'get_available_modules', $call_arguments
+            'get_available_modules',
+            $call_arguments,
+            true
         );
 
         return $result;
@@ -713,7 +727,9 @@ class SugarWrapper
         );
 
         $result = $this->rest_request(
-            'search_by_module', $call_arguments
+            'search_by_module',
+            $call_arguments,
+            true
         );
 
         return $result;
@@ -737,9 +753,11 @@ class SugarWrapper
     {
         if ($this->logged_in) {
             $l = $this->rest_request(
-                'logout', array(
+                'logout',
+                array(
                     'session' => $this->session
-                )
+                ),
+                false
             );
         }
     }
@@ -873,7 +891,8 @@ class SugarWrapper
 
         $result = $this->rest_request(
             'get_entry',
-            $call_arguments
+            $call_arguments,
+            true
         );
 
         return $result;

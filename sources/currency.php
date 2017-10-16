@@ -182,6 +182,7 @@ function currency_convert($amount, $from_currency = null, $to_currency = null, $
 
     // Case: Fallback
     if ($new_amount === null) {
+        require_lang('ecommerce');
         attach_message(do_lang_tempcode('CURRENCY_CONVERSION_FAILED', escape_html(float_format($amount)), escape_html($from_currency), escape_html($to_currency)), 'warn', false, true);
 
         $new_amount = $amount;
@@ -264,7 +265,7 @@ function _currency_convert__ecb($amount, $from_currency, $to_currency, $cache_mi
  */
 function _currency_convert__google($amount, $from_currency, $to_currency)
 {
-    $google_url = 'http://www.google.com/finance/converter?a=' . float_to_raw_string($amount) . '&from=' . urlencode($from_currency) . '&to=' . urlencode($to_currency);
+    $google_url = 'http://finance.google.com/finance/converter?a=' . float_to_raw_string($amount) . '&from=' . urlencode($from_currency) . '&to=' . urlencode($to_currency);
     $result = http_get_contents($google_url, array('trigger_error' => false));
     if (is_string($result)) {
         for ($i = 0; $i < strlen($result); $i++) { // bizarre unicode characters coming back from Google

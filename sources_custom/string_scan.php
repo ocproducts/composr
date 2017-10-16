@@ -119,6 +119,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         SUPPORTS_WIDE
         CONFIG_OPTION_supports_wide
         MOBILE_PAGES
+        EMPTY_CODENAME
         CONFIG_OPTION_mobile_pages
         ZONE_EDITOR_ENABLED
         CONFIG_OPTION_zone_editor_enabled
@@ -9935,6 +9936,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         USERGROUP
         USERGROUPS
         USERGROUP_SUBSCRIPTION
+        USERGROUP_SUBSCRIPTIONS
         USERNAME
         USERNAME_ALREADY_EXISTS
         USERNAME_BAD_SUBSTRING

@@ -532,7 +532,6 @@ class Module_admin_setupwizard
             'uninstaller',
             'unvalidated',
             'phpinfo',
-            'hphp_buildkit',
             'apache_config_files',
             'code_editor',
             'linux_helper_scripts',

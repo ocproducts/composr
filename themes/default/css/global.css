@@ -835,11 +835,10 @@ header h1 {
 .title_tagline {
 	font-size: 0.95em;
 	padding-bottom: 2em;
-	margin-top: -1.2em;
 	color: {$GET,area_key_text};
 }
-.box_inner>.title_tagline {
-	margin-top: 0;
+h1 + .title_tagline {
+	margin-top: -1.2em;
 }
 
 body#main_website #main_website_inner, html>body div.global_middle_faux {
@@ -3200,7 +3199,7 @@ div .post_buttons>*, div .buttons_group_faded>* {
 	}
 /*{+END}*/
 
-/*{+START,IF_EMPTY,{$CONFIG_OPTION,recaptcha_site_key}}*/
+/*{+START,IF_EMPTY,{$CONFIG_OPTION,recaptcha_site_key,1}}*/
 	.comments_captcha img, .comments_captcha iframe, .comments_captcha input {
 		margin: 0 5px 2px 5px;
 		vertical-align: middle;
@@ -3695,7 +3694,7 @@ ul.buttons_group, ul.associated_links_block_group {
 	box-sizing: border-box;
 }
 
-/*{+START,IF_EMPTY,{$CONFIG_OPTION,recaptcha_site_key}}*/
+/*{+START,IF_EMPTY,{$CONFIG_OPTION,recaptcha_site_key,1}}*/
 	.captcha_frame {
 		width: 100px;
 		height: 42px;

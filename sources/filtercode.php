@@ -50,7 +50,7 @@ function read_filtercode_parameter_from_env($field_name, $field_type = null)
             $default_value = '';
         }
     } else {
-        $default_value = either_param_string('filter_' . $field_name, '');
+        $default_value = either_param_string('filter_' . $field_name, '', INPUT_FILTER_NONE);
     }
     return $default_value;
 }
@@ -192,7 +192,7 @@ function form_for_filtercode($filter, $labels = array(), $content_type = null, $
                 'list',
                 $field_name,
                 $field_title,
-                either_param_string('filter_' . $field_name, '~='),
+                either_param_string('filter_' . $field_name, '~=', INPUT_FILTER_NONE),
                 array(
                     '<' => do_lang_tempcode('FILTERCODE_OP_LT'),
                     '>' => do_lang_tempcode('FILTERCODE_OP_GT'),
@@ -427,7 +427,7 @@ function parse_filtercode($filter)
     $filters = explode((strpos($filter, "\n") !== false) ? "\n" : ',', $filter);
     foreach ($filters as $bit) {
         if ($bit != '') {
-            $parts = preg_split('#(<[\w\-]+>|<=|>=|<>|!=|<|>|=|==|~=|~|@|\#)#', $bit, 2, PREG_SPLIT_DELIM_CAPTURE); // NB: preg_split is not greedy, so longest operators need to go first
+            $parts = preg_split('#(<[\w\-]+>|<=|>=|<>|!=|<|>|==|~=|=|~|@|\#)#', $bit, 2, PREG_SPLIT_DELIM_CAPTURE); // NB: preg_split is not greedy, so longest operators need to go first
             if (count($parts) == 3) {
                 $parts[0] = ltrim($parts[0]);
                 $is_join = false;
@@ -605,10 +605,14 @@ function generate_filtercode_join_key_from_string($str)
  */
 function _default_conv_func($db, $info, $catalogue_name, &$extra_join, &$extra_select, $filter_key, $filter_val, $db_fields, $table_join_code)
 {
-    $first_id_field = (is_array($info['id_field']) ? implode(',', $info['id_field']) : $info['id_field']);
+    if (isset($info['id_field'])) {
+        $first_id_field = (is_array($info['id_field']) ? implode(',', $info['id_field']) : $info['id_field']);
+    } else {
+        $first_id_field = 'id';
+    }
 
     // Special case for ratings
-    $matches = array('', $info['feedback_type_code']);
+    $matches = ($filter_key == 'compound_rating') ? array('', $info['feedback_type_code']) : array();
     if (($filter_key == 'compound_rating') || (preg_match('#^compound_rating__(.+)#', $filter_key, $matches) != 0)) {
         if ($filter_key == 'compound_rating') {
             $matches[1] .= '__' . $catalogue_name;
@@ -617,7 +621,7 @@ function _default_conv_func($db, $info, $catalogue_name, &$extra_join, &$extra_s
         $extra_select[$filter_key] = ', ' . $clause . ' AS compound_rating_' . fix_id($matches[1]);
         return array($clause, '', $filter_val);
     }
-    $matches = array('', $info['feedback_type_code']);
+    $matches = ($filter_key == 'average_rating') ? array('', $info['feedback_type_code']) : array();
     if (($filter_key == 'average_rating') || (preg_match('#^average_rating__(.+)#', $filter_key, $matches) != 0)) {
         if ($filter_key == 'average_rating') {
             $matches[1] .= '__' . $catalogue_name;
@@ -628,7 +632,7 @@ function _default_conv_func($db, $info, $catalogue_name, &$extra_join, &$extra_s
     }
 
     // Random
-    $matches = array('', $info['feedback_type_code']);
+    $matches = ($filter_key == 'fixed_random') ? array('', $info['feedback_type_code']) : array();
     if (($filter_key == 'fixed_random') || (preg_match('#^fixed_random__(.+)#', $filter_key, $matches) != 0)) {
         if ($filter_key == 'fixed_random') {
             $matches[1] .= '__' . $catalogue_name;
@@ -643,6 +647,10 @@ function _default_conv_func($db, $info, $catalogue_name, &$extra_join, &$extra_s
     if ($filter_key == 'meta_description') {
         $seo_type_code = isset($info['seo_type_code']) ? $info['seo_type_code'] : '!!!ERROR!!!';
         $join = ' LEFT JOIN ' . $db->get_table_prefix() . 'seo_meta sm ON sm.meta_for_id=' . db_cast($table_join_code . '.' . $first_id_field, 'CHAR') . ' AND ' . db_string_equal_to('sm.meta_for_type', $seo_type_code);
+        if (multi_lang_content()) {
+            $join .= ' LEFT JOIN ' . $db->get_table_prefix() . 'translate dt ON dt.id=sm.meta_description';
+            $filter_key = 'dt.text_original';
+        }
         if (!in_array($join, $extra_join)) {
             $extra_join[$filter_key] = $join;
         }
@@ -699,7 +707,7 @@ function _default_conv_func($db, $info, $catalogue_name, &$extra_join, &$extra_s
                 break;
             case 'MEMBER':
                 $field_type = 'integer';
-                if ($filter_val != '') {
+                if (($filter_val != '') && (preg_match('#^[\d|-]+$#', $filter_val) == 0)) {
                     $_filter_val = $GLOBALS['FORUM_DRIVER']->get_member_from_username($filter_val);
                     $filter_val = ($_filter_val === null) ? '' : strval($_filter_val);
                 }
@@ -758,7 +766,7 @@ function _default_conv_func($db, $info, $catalogue_name, &$extra_join, &$extra_s
  * @param  ?ID_TEXT $content_type The content type (null: no function needed, direct in-table mapping always works)
  * @param  ?string $context First parameter to send to the conversion function, may mean whatever that function wants it to. If we have no conversion function, this is the name of a table to read field metadata from (null: none)
  * @param  string $table_join_code What the database will join the table with
- * @return array Tuple: array of extra select, array of extra join, string of extra where
+ * @return array Tuple: array of extra select (implode with ''), array of extra join (implode with ''), string of extra where
  */
 function filtercode_to_sql($db, $filters, $content_type = null, $context = null, $table_join_code = 'r')
 {
@@ -821,7 +829,7 @@ function filtercode_to_sql($db, $filters, $content_type = null, $context = null,
         // Allow specification of reading from the environment
         $matches = array();
         if (preg_match('#^<([^<>]+)>$#', $filter_op, $matches) != 0) {
-            $filter_op = either_param_string($matches[1], '~=');
+            $filter_op = either_param_string($matches[1], '~=', INPUT_FILTER_NONE);
         }
         if (preg_match('#^<([^<>]+)>$#', $filter_val, $matches) != 0) {
             $filter_val = read_filtercode_parameter_from_env($matches[1]);
@@ -870,7 +878,7 @@ function filtercode_to_sql($db, $filters, $content_type = null, $context = null,
 
             switch ($filter_op) {
                 case '@':
-                    if ((preg_match('#^\d+-\d+$#', $filter_val) != 0) && (($field_type == 'integer') || ($field_type == 'float') || ($field_type == ''))) {
+                    if ((preg_match('#^[\d\.]+-[\d\.]+$#', $filter_val) != 0) && (($field_type == 'integer') || ($field_type == 'float') || ($field_type == ''))) {
                         if ($alt != '') {
                             $alt .= ' OR ';
                         }
@@ -918,6 +926,7 @@ function filtercode_to_sql($db, $filters, $content_type = null, $context = null,
                     break;
 
                 case '=':
+                case '==':
                     if ($alt != '') {
                         $alt .= ' OR ';
                     }
@@ -926,10 +935,10 @@ function filtercode_to_sql($db, $filters, $content_type = null, $context = null,
                         if ($it_id != 0) {
                             $alt .= ' OR ';
                         }
-                        if (($is_join) || ((is_numeric($filter_val)) && (($field_type == 'integer') || ($field_type == 'float') || ($field_type == '')))) {
-                            $alt .= $filter_key . '=' . $filter_val;
+                        if (($is_join) || ((is_numeric($it_value)) && (($field_type == 'integer') || ($field_type == 'float') || ($field_type == '')))) {
+                            $alt .= $filter_key . '=' . $it_value;
                         } else {
-                            $alt .= db_string_equal_to($filter_key, $filter_val);
+                            $alt .= db_string_equal_to($filter_key, $it_value);
                         }
                     }
                     $alt .= ')';
@@ -965,7 +974,7 @@ function filtercode_to_sql($db, $filters, $content_type = null, $context = null,
                                 $alt .= ' OR ';
                             }
                             $alt .= '(';
-                            foreach (array('|', "\n"/*list_multi*/) as $delimi_i => $delim) {
+                            foreach (array('|', "\n"/*list_multi*/, ','/*GROUP_CONCAT*/) as $delimi_i => $delim) {
                                 if ($delimi_i != 0) {
                                     $alt .= ' OR ';
                                 }
@@ -1036,7 +1045,7 @@ function filtercode_to_sql($db, $filters, $content_type = null, $context = null,
  */
 function prepare_filtercode_merger_link($_link_filter)
 {
-    $active_filter = parse_filtercode(either_param_string('active_filter', ''));
+    $active_filter = parse_filtercode(either_param_string('active_filter', '', INPUT_FILTER_NONE));
     $link_filter = parse_filtercode($_link_filter);
     $extra_params = array();
     $old_filter = $active_filter;

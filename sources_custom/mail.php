@@ -58,7 +58,7 @@ class Mail_dispatcher_override extends Mail_dispatcher_base
      * @param  ?mixed $to_names The recipient name(s). Array or string. (null: site name)
      * @param  EMAIL $from_email The from address (blank: site staff address)
      * @param  string $from_name The from name (blank: site name)
-     * @return array A pair: Whether it worked, and an error message
+     * @return ?array A pair: Whether it worked, and an error message (null: skipped)
      */
     public function dispatch($subject_line, $message_raw, $to_emails = null, $to_names = null, $from_email = '', $from_name = '')
     {

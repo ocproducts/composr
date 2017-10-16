@@ -112,18 +112,22 @@ GET/POST parameters are the technical name for how parameters are passed to web 
 </table>
 [/html]
 
+You can use pipe symbols ([tt]|[/tt]) to split alternative acceptable values on any equality/contain comparators ([tt]=[/tt], [tt]==[/tt], [tt]~[/tt], [tt]#[/tt], [tt]~=[/tt]).
+
+[title="3"]Parameter binding[/title]
+
 The comparison value can either by given directly, like in the introductory example, or it can be written like [tt]<name>[/tt], which will tell it to look within a GET/POST parameter called [tt]filter_<name>[/tt]. This is the mechanism by which you hook up forms to the filter strings.
 
-You can also specify that comparison types are read via GET/POST parameter in the same way, if you want users to define how each field should match.
+You can also read in operators from GET/POST parameters, by referencing the comparison types like [tt]<name_op>[/tt] and having the same GET/POST parameter be read. This is useful for particularly advanced forms, if you want users to define how each field should match.
 
-[title="3"]More advanced filtering[/title]
+[title="3"]More advanced filtering (for programmers)[/title]
 
-If you want to make a filter match on another field (a field-to-field comparison), you can surround it in curly brackets like [tt]{Maker#Owner}[/tt]. In this example, we're selecting entries where the maker is the owner (so maybe unsold goods).
+If you want to make a filter match on another field (a field-to-field comparison), you can surround it in curly brackets in its own clause, like [tt]{Maker=Owner}[/tt]. In this example, we're selecting entries where the maker is the owner (so maybe unsold goods).
 (Note that [tt]@[/tt] and [tt]~[/tt] operators are not supported for field-to-field comparisons.)
 
-If we want to match against a condition in a(nother) catalogue, then we can do this using the dot notation. For example, [tt]events.id=3[/tt] would connect to a catalogue called [tt]events[/tt], connecting to records where the ID value is 3. This is the same as an "inner join" in SQL: you may wish to read up about these.
+If we want to match against a condition in a(nother) catalogue (or table if the main entity is a table), then we can do this using the dot notation. For example, [tt]events.id=3[/tt] would connect to a catalogue called [tt]events[/tt], connecting to records where the ID value is 3. This is the same as an "inner join" in SQL: you may wish to read up about these.
 
-Both the above examples are quite contrived, but put together we can use them to define proper join conditions so that we can limit results based on a check into another catalogue.
+Both the above examples are quite contrived, but put together we can use them to define proper join conditions so that we can limit results based on a check into another catalogue (or table).
 
 For example, imagine this Filtercode was used on a catalogue named [tt]products[/tt]:
 [tt]{Manufacturer=manufacturers.id},manufacturers.Trading=1[/tt]
