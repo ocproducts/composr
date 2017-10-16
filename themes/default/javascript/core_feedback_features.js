@@ -131,10 +131,12 @@
         doFormPreview: function (e) {
             var form = this.form,
                 url = $cms.maintainThemeInLink($cms.$PREVIEW_URL() + $cms.$KEEP());
-
-            if ($cms.form.doFormPreview(e, form, url)) {
-                $cms.dom.submit(form);
-            }
+            
+            $cms.form.doFormPreview(form, url).then(function (bool) {
+                if (bool) {
+                    $cms.dom.submit(form);    
+                }
+            });
         },
 
         submitFormComments: function (e) {

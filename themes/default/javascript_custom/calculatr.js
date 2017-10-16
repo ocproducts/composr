@@ -5,10 +5,14 @@
         var message = strVal(container.dataset.tpMessage),
             equation = strVal(container.dataset.tpEquation);
         
+        
         $cms.dom.on(container, 'click', '.js-btn-click-calculate-sum', function () {
-            if ($cms.form.checkForm(this.form)) {
-                $cms.ui.alert(message.replace('xxx', calculateSum(this.form.elements)));
-            }
+            var form = this.form;
+            $cms.form.checkForm(this.form, false).then(function (valid) {
+                if (valid) {
+                    $cms.ui.alert(message.replace('xxx', calculateSum(form.elements)));
+                }
+            });
         });
 
         function calculateSum(elements) {

@@ -2,10 +2,21 @@
     'use strict';
 
     $cms.templates.pointsGive = function pointsGive(params, container) {
+        var givePointsFormLastValid;
+        
         $cms.dom.on(container, 'submit', '.js-submit-check-form', function (e, form) {
-            if ($cms.form.checkForm(form) === false) {
-                e.preventDefault();
+            if (givePointsFormLastValid && (givePointsFormLastValid.getTime() === $cms.form.lastChangeTime(form).getTime())) {
+                return;
             }
+            
+            e.preventDefault();
+
+            $cms.form.checkForm(form, false).then(function (valid) {
+                if (valid) {
+                    givePointsFormLastValid = $cms.form.lastChangeTime(form);
+                    $cms.dom.submit(form);
+                }
+            });
         });
 
         $cms.dom.on(container, 'click', '.js-click-check-reason', function (e, el) {

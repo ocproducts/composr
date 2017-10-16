@@ -10,7 +10,7 @@
     $cms.views.BlockMainImageFader = BlockMainImageFader;
     /**
      * @memberof $cms.views
-     * @class
+     * @class BlockMainImageFader
      * @extends $cms.View
      */
     function BlockMainImageFader(params) {
@@ -195,7 +195,6 @@
         });
     };
 
-
     $cms.templates.blockMainGalleryEmbed = function blockMainGalleryEmbed(params) {
         var container = this,
             carouselId = params.carouselId ? ('' + params.carouselId) : '',
@@ -259,7 +258,7 @@
     function showCurrentSlideshowTime() {
         var changer = document.getElementById('changer_wrap');
         if (changer) {
-            $cms.dom.html(changer, $cms.format('{!galleries:CHANGING_IN;^}', Math.max(0, window.slideshowTime)));
+            $cms.dom.html(changer, $cms.format('{!galleries:CHANGING_IN;^}', [Math.max(0, window.slideshowTime)]));
         }
     }
 

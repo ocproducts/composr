@@ -26,7 +26,7 @@
         
         if (theElement.name !== undefined) {
             var id = theElement.name,
-                errorMsgElement = getErrormsgElement(id);
+                errorMsgElement = getErrorMsgElement(id);
             
             if ((errorMsg === '') && (id.includes('_hour')) || (id.includes('_minute'))) { // Do not blank out as day/month/year (which comes first) would have already done it
                 return;
@@ -68,152 +68,155 @@
             }
         }
         
-        if (($cms.form.isWysiwygField !== undefined) && ($cms.form.isWysiwygField(theElement))) {
+        if ($cms.form.isWysiwygField(theElement)) {
             theElement = theElement.parentNode;
         }
 
-        theElement.classList.remove('input_erroneous');
+        theElement.classList.toggle('input_erroneous', (errorMsg !== ''));
 
-        if (errorMsg !== '') {
-            theElement.classList.add('input_erroneous');
-        }
+        function getErrorMsgElement(id) {
+            var errorMsgElement = document.getElementById('error_' + id);
 
-        function getErrormsgElement(id) {
-            var errormsgElement = document.getElementById('error_' + id);
-
-            if (!errormsgElement) {
-                errormsgElement = document.getElementById('error_' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));
+            if (!errorMsgElement) {
+                errorMsgElement = document.getElementById('error_' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));
             }
-            return errormsgElement;
+            return errorMsgElement;
         }
     };
 
     /**
      * @memberof $cms.form
      * @param form
-     * @param event
      * @param analyticEventCategory
      * @returns {boolean}
      */
-    $cms.form.doFormSubmit = function doFormSubmit(form, event, analyticEventCategory) {
-        if (!$cms.form.checkForm(form, false)) {
-            return false;
-        }
-
-        if (form.oldAction) {
-            form.setAttribute('action', form.oldAction);
-        }
-        if (form.oldTarget) {
-            form.setAttribute('target', form.oldTarget);
-        }
-        if (!form.getAttribute('target')) {
-            form.setAttribute('target', '_top');
-        }
-
-        /* Remove any stuff that is only in the form for previews if doing a GET request */
-        if (form.method.toLowerCase() === 'get') {
-            var i = 0, name, elements = [];
-            for (i = 0; i < form.elements.length; i++) {
-                elements.push(form.elements[i]);
-            }
+    $cms.form.doFormSubmit = function doFormSubmit(form, analyticEventCategory) {
+        return new Promise(function (resolveSubmitPromise) {
+            var checkFormPromise = $cms.form.checkForm(form, false);
             
-            for (i = 0; i < elements.length; i++) {
-                name = elements[i].name;
-                if (name && ((name.substr(0, 11) === 'label_for__') || (name.substr(0, 14) === 'tick_on_form__') || (name.substr(0, 9) === 'comcode__') || (name.substr(0, 9) === 'require__'))) {
-                    elements[i].parentNode.removeChild(elements[i]);
+            checkFormPromise.then(function (valid) {
+                if (!valid) {
+                    return resolveSubmitPromise(false);
                 }
-            }
-        }
 
-        if ($cms.dom.trigger(form, 'submit') === false) {
-            return false;
-        }
+                if (form.oldAction) {
+                    form.setAttribute('action', form.oldAction);
+                }
+                if (form.oldTarget) {
+                    form.setAttribute('target', form.oldTarget);
+                }
+                if (!form.getAttribute('target')) {
+                    form.setAttribute('target', '_top');
+                }
 
-        if (!window.justCheckingRequirements) {
-            if (analyticEventCategory) {
-                $cms.gaTrack(null, analyticEventCategory, null, function () {
-                    form.submit();
-                });
-            } else {
-                form.submit();
-            }
-        }
+                /* Remove any stuff that is only in the form for previews if doing a GET request */
+                if (form.method.toLowerCase() === 'get') {
+                    var i, name, elements = arrVal(form.elements);
 
-        $cms.ui.disableSubmitAndPreviewButtons();
+                    for (i = 0; i < elements.length; i++) {
+                        name = elements[i].name;
+                        if (name && ((name.substr(0, 11) === 'label_for__') || (name.substr(0, 14) === 'tick_on_form__') || (name.substr(0, 9) === 'comcode__') || (name.substr(0, 9) === 'require__'))) {
+                            elements[i].parentNode.removeChild(elements[i]);
+                        }
+                    }
+                }
 
-        if (window.detectInterval !== undefined) {
-            clearInterval(window.detectInterval);
-            delete window.detectInterval;
-        }
+                if ($cms.dom.trigger(form, 'submit') === false) {
+                    return resolveSubmitPromise(false);
+                }
 
-        return true;
+                if (!window.justCheckingRequirements) {
+                    if (analyticEventCategory) {
+                        $cms.gaTrack(null, analyticEventCategory, null, function () {
+                            form.submit();
+                        });
+                    } else {
+                        form.submit();
+                    }
+                }
+
+                $cms.ui.disableSubmitAndPreviewButtons();
+
+                if (window.detectInterval !== undefined) {
+                    clearInterval(window.detectInterval);
+                    delete window.detectInterval;
+                }
+
+                return resolveSubmitPromise(true);
+            });
+        });
     };
 
     /**
      * @memberof $cms.form
-     * @param event
-     * @param form
-     * @param previewUrl
-     * @param hasSeparatePreview
-     * @returns {boolean}
+     * @param { HTMLFormElement } form
+     * @param {string} previewUrl
+     * @param {boolean} hasSeparatePreview
+     * @returns { Promise }
      */
-    $cms.form.doFormPreview = function doFormPreview(event, form, previewUrl, hasSeparatePreview) {
+    $cms.form.doFormPreview = function doFormPreview(form, previewUrl, hasSeparatePreview) {
         previewUrl = strVal(previewUrl);
         hasSeparatePreview = Boolean(hasSeparatePreview);
 
-        if (!$cms.dom.$id('preview_iframe')) {
-            $cms.ui.alert('{!ADBLOCKER;^}');
-            return false;
-        }
+        return new Promise(function (resolvePreviewPromise) {
+            if (!$cms.dom.$id('preview_iframe')) {
+                $cms.ui.alert('{!ADBLOCKER;^}');
+                return resolvePreviewPromise(false);
+            }
 
-        previewUrl += ((window.mobileVersionForPreview === undefined) ? '' : ('&keep_mobile=' + (window.mobileVersionForPreview ? '1' : '0')));
+            previewUrl += ((window.mobileVersionForPreview === undefined) ? '' : ('&keep_mobile=' + (window.mobileVersionForPreview ? '1' : '0')));
 
-        var oldAction = form.getAttribute('action');
+            var oldAction = form.getAttribute('action');
 
-        if (!form.oldAction) {
-            form.oldAction = oldAction;
-        }
-        form.setAttribute('action', /*$cms.maintainThemeInLink - no, we want correct theme images to work*/(previewUrl) + ((form.oldAction.indexOf('&uploading=1') !== -1) ? '&uploading=1' : ''));
-        var oldTarget = form.getAttribute('target');
-        if (!oldTarget) {
-            oldTarget = '_top';
-        }
-        /* not _self due to edit screen being a frame itself */
-        if (!form.oldTarget) {
-            form.oldTarget = oldTarget;
-        }
-        form.setAttribute('target', 'preview_iframe');
+            if (!form.oldAction) {
+                form.oldAction = oldAction;
+            }
+            form.setAttribute('action', /*$cms.maintainThemeInLink - no, we want correct theme images to work*/(previewUrl) + (form.oldAction.includes('&uploading=1') ? '&uploading=1' : ''));
+            var oldTarget = form.getAttribute('target');
+            if (!oldTarget) {
+                oldTarget = '_top';
+            }
+            /* not _self due to edit screen being a frame itself */
+            if (!form.oldTarget) {
+                form.oldTarget = oldTarget;
+            }
+            form.setAttribute('target', 'preview_iframe');
 
-        if (!$cms.form.checkForm(form, true)) {
-            return false;
-        }
+            var checkFormPromise = $cms.form.checkForm(form, true);
 
-        if ($cms.dom.trigger(form, { type: 'submit', triggeredByDoFormPreview: true }) === false) {
-            return false;
-        }
+            checkFormPromise.then(function (valid) {
+                if (!valid) {
+                    return resolvePreviewPromise(false);
+                }
 
-        if (hasSeparatePreview) {
-            form.setAttribute('action', form.oldAction + (form.oldAction.includes('?') ? '&' : '?') + 'preview=1');
-            return true;
-        }
+                if ($cms.dom.trigger(form, { type: 'submit', triggeredByDoFormPreview: true }) === false) {
+                    return resolvePreviewPromise(false);
+                }
 
-        $cms.dom.$id('submit_button').style.display = 'inline';
+                if (hasSeparatePreview) {
+                    form.setAttribute('action', form.oldAction + (form.oldAction.includes('?') ? '&' : '?') + 'preview=1');
+                    return resolvePreviewPromise(true);
+                }
 
-        /* Do our loading-animation */
-        if (!window.justCheckingRequirements) {
-            setInterval($cms.dom.triggerResize, 500);
-            /* In case its running in an iframe itself */
-            $cms.dom.illustrateFrameLoad('preview_iframe');
-        }
+                $cms.dom.$id('submit_button').style.display = 'inline';
 
-        $cms.ui.disableSubmitAndPreviewButtons();
+                /* Do our loading-animation */
+                if (!window.justCheckingRequirements) {
+                    setInterval($cms.dom.triggerResize, 500);
+                    /* In case its running in an iframe itself */
+                    $cms.dom.illustrateFrameLoad('preview_iframe');
+                }
 
-        // Turn main post editing back off
-        if (window.wysiwygSetReadonly !== undefined) {
-            wysiwygSetReadonly('post', true);
-        }
+                $cms.ui.disableSubmitAndPreviewButtons();
 
-        return true;
+                // Turn main post editing back off
+                if (window.wysiwygSetReadonly !== undefined) {
+                    window.wysiwygSetReadonly('post', true);
+                }
+
+                return resolvePreviewPromise(true);
+            });
+        });
     };
 
     /**
@@ -301,256 +304,292 @@
 
         return value;
     };
+    
+    var _lastChangeTimes = {};
+    /**
+     * @param form
+     * @returns { Date }
+     */
+    $cms.form.lastChangeTime = function lastChangeTime(form) {
+        var uid = $cms.uid(form);
+        
+        if (_lastChangeTimes[uid] === undefined) {
+            _lastChangeTimes[uid] = new Date();
+            
+            $cms.dom.on(form, 'input change reset', function () {
+                _lastChangeTimes[uid] = new Date();
+            });
+        }
 
+        return _lastChangeTimes[uid];
+    };
+    
     /**
      * @memberof $cms.form
-     * @param theForm
-     * @param forPreview
-     * @returns {boolean}
+     * @param { HTMLFormElement } theForm
+     * @param {boolean} [forPreview]
+     * @returns {boolean|Promise<boolean>}
      */
     $cms.form.checkForm = function checkForm(theForm, forPreview) {
         var deleteElement = $cms.dom.$('#delete');
-        if ((!forPreview) && (deleteElement != null) && (((deleteElement.classList[0] === 'input_radio') && (deleteElement.value !== '0')) || (deleteElement.classList[0] === 'input_tick')) && (deleteElement.checked)) {
-            return true;
-        }
-
-        var j, theElement, erroneous = false, totalFileSize = 0, 
-            alerted = false, errorElement = null, checkResult;
         
-        for (j = 0; j < theForm.elements.length; j++) {
-            if (!theForm.elements[j]) {
-                continue;
-            }
-
-            theElement = theForm.elements[j];
-
-            checkResult = checkField(theElement, theForm, forPreview);
+        if (!forPreview && (deleteElement != null) && (((deleteElement.classList[0] === 'input_radio') && (deleteElement.value !== '0')) || (deleteElement.classList[0] === 'input_tick')) && (deleteElement.checked)) {
+            return Promise.resolve(true);
+        }
+        
+        return  new Promise(function (resolveCheckFormPromise) {
+            var erroneous = false, 
+                totalFileSize = 0, alerted = false, 
+                errorElement = null,
+                theElements = arrVal(theForm.elements),
+                fieldCheckPromiseCalls = [];
             
-            if (checkResult != null) {
-                erroneous = checkResult[0] || erroneous;
-                if (!errorElement && erroneous) {
-                    errorElement = theElement;
-                }
-                totalFileSize += checkResult[1];
-                alerted = checkResult[2] || alerted;
+            theElements.forEach(function (theElement) {
+                fieldCheckPromiseCalls.push(function () {
+                    var checkResult = checkField(theElement, theForm);
 
-                if (checkResult[0]) {
-                    var autoResetError = function autoResetError(theElement) {
-                        return function (event, noRecurse) {
-                            var checkResult = checkField(theElement, theForm, forPreview);
-                            if ((checkResult != null) && !checkResult[0]) {
-                                $cms.form.setFieldError(theElement, '');
+                    return checkResult.then(function (result) {
+                        if (result != null) {
+                            erroneous = result.erroneous || erroneous;
+                            if (!errorElement && erroneous) {
+                                errorElement = theElement;
                             }
+                            totalFileSize += result.totalFileSize;
+                            alerted = result.alerted || alerted;
 
-                            if (!noRecurse && (theElement.classList.contains('date')) && (theElement.name.match(/_(day|month|year)$/))) {
-                                var el = $cms.dom.$id(theElement.id.replace(/\_(day|month|year)$/, '_day'));
-                                if (el !== theElement) {
-                                    el.onblur(event, true);
-                                }
-                                el = $cms.dom.$id(theElement.id.replace(/\_(day|month|year)$/, '_month'));
-                                if (el !== theElement) {
-                                    el.onblur(event, true);
-                                }
-                                el = $cms.dom.$id(theElement.id.replace(/\_(day|month|year)$/, '_year'));
-                                if (el !== theElement) {
-                                    el.onblur(event, true);
+                            if (result.erroneous) {
+                                if (theElement.type === 'radio') {
+                                    for (var i = 0; i < theForm.elements.length; i++) {
+                                        theForm.elements[i].onchange = autoResetError;
+                                    }
+                                } else {
+                                    theElement.onblur = autoResetError;
                                 }
                             }
-                        };
-                    };
-
-                    if (theElement.getAttribute('type') === 'radio') {
-                        for (var i = 0; i < theForm.elements.length; i++) {
-                            theForm.elements[i].onchange = autoResetError(theForm.elements[i]);
                         }
-                    } else {
-                        theElement.onblur = autoResetError(theElement);
+                    });
+                });
+            });
+            
+            $cms.promiseSequence(fieldCheckPromiseCalls).then(function () {
+                if ((totalFileSize > 0) && (theForm.elements['MAX_FILE_SIZE']) && (totalFileSize > theForm.elements['MAX_FILE_SIZE'].value)) {
+                    if (!erroneous) {
+                        errorElement = theElements[theElements.length - 1];
+                        erroneous = true;
+                    }
+                    if (!alerted) {
+                        $cms.ui.alert('{!javascript:TOO_MUCH_FILE_DATA;^}'.replace(new RegExp('\\\\{' + '1' + '\\\\}', 'g'), Math.round(totalFileSize / 1024)).replace(new RegExp('\\\\{' + '2' + '\\\\}', 'g'), Math.round(theForm.elements['MAX_FILE_SIZE'].value / 1024)));
+                        alerted = true;
                     }
                 }
-            }
-        }
 
-        if ((totalFileSize > 0) && (theForm.elements['MAX_FILE_SIZE'])) {
-            if (totalFileSize > theForm.elements['MAX_FILE_SIZE'].value) {
+                if (erroneous) {
+                    if (!alerted) {
+                        $cms.ui.alert({ notice: '{!IMPROPERLY_FILLED_IN;^}', single: true });
+                    }
+                    var posy = $cms.dom.findPosY(errorElement, true);
+                    if (posy === 0) {
+                        posy = $cms.dom.findPosY(errorElement.parentNode, true);
+                    }
+                    if (posy !== 0) {
+                        $cms.dom.smoothScroll(posy - 50, null, null, function () {
+                            try {
+                                errorElement.focus();
+                            } catch (e) {}
+                            /* Can have exception giving focus on IE for invisible fields */
+                        });
+                    }
+                }
+
+                // Try and workaround max_input_vars problem if lots of usergroups
                 if (!erroneous) {
-                    errorElement = theElement;
-                    erroneous = true;
-                }
-                if (!alerted) {
-                    $cms.ui.alert('{!javascript:TOO_MUCH_FILE_DATA;^}'.replace(new RegExp('\\\\{' + '1' + '\\\\}', 'g'), Math.round(totalFileSize / 1024)).replace(new RegExp('\\\\{' + '2' + '\\\\}', 'g'), Math.round(theForm.elements['MAX_FILE_SIZE'].value / 1024)));
-                }
-                alerted = true;
-            }
-        }
+                    var deleteE = $cms.dom.$id('delete'),
+                        isDelete = deleteE && deleteE.type === 'checkbox' && deleteE.checked,
+                        es = document.getElementsByTagName('select'), selectEl;
 
-        if (erroneous) {
-            if (!alerted) {
-                $cms.ui.alert({ notice: '{!IMPROPERLY_FILLED_IN;^}', single: true });
-            }
-            var posy = $cms.dom.findPosY(errorElement, true);
-            if (posy === 0) {
-                posy = $cms.dom.findPosY(errorElement.parentNode, true);
-            }
-            if (posy !== 0) {
-                $cms.dom.smoothScroll(posy - 50, null, null, function () {
-                    try {
-                        errorElement.focus();
-                    } catch (e) {}
-                    /* Can have exception giving focus on IE for invisible fields */
-                });
-            }
-        }
-
-        // Try and workaround max_input_vars problem if lots of usergroups
-        if (!erroneous) {
-            var deleteE = $cms.dom.$id('delete');
-            var isDelete = deleteE && deleteE.type === 'checkbox' && deleteE.checked;
-            var es = document.getElementsByTagName('select'), e;
-            for (var i = 0; i < es.length; i++) {
-                e = es[i];
-                if ((e.name.match(/^access_\d+_privilege_/)) && ((isDelete) || (e.options[e.selectedIndex].value === '-1'))) {
-                    e.disabled = true;
+                    for (var k = 0; k < es.length; k++) {
+                        selectEl = es[k];
+                        if ((selectEl.name.match(/^access_\d+_privilege_/)) && ((isDelete) || (selectEl.options[selectEl.selectedIndex].value === '-1'))) {
+                            selectEl.disabled = true;
+                        }
+                    }
                 }
-            }
-        }
 
-        return !erroneous;
+                resolveCheckFormPromise(!erroneous);
+            });
+        });
+        
+        function autoResetError(e, noRecurse) {
+            var theElement = this,
+                checkResult = checkField(theElement, theForm);
+
+            checkResult.then(function (result) {
+                if ((result != null) && !result.erroneous) {
+                    $cms.form.setFieldError(theElement, '');
+                }
+
+                if (!noRecurse && (theElement.classList.contains('date')) && (theElement.name.match(/_(day|month|year)$/))) {
+                    var preid = theElement.id.replace(/\_(day|month|year)$/, ''),
+                        el = $cms.dom.$id(preid + '_day');
+                    if (el !== theElement) {
+                        autoResetError.call(el, null, true);
+                    }
+                    el = $cms.dom.$id(preid + '_month');
+                    if (el !== theElement) {
+                        autoResetError.call(el, null, true);
+                    }
+                    el = $cms.dom.$id(preid + '_year');
+                    if (el !== theElement) {
+                        autoResetError.call(el, null, true);
+                    }
+                }
+            });
+        }
     };
 
-
+    /**
+     * @param theElement
+     * @param theForm
+     * @return { Promise }
+     */
     function checkField(theElement, theForm) {
-        var i,
-            theClass,
-            required,
-            myValue,
-            erroneous = false,
-            errorMsg = '',
-            regexp,
-            totalFileSize = 0,
-            alerted = false;
-
-        // No checking for hidden elements
-        if (((theElement.type === 'hidden') || (((theElement.style.display === 'none') || (theElement.parentNode.style.display === 'none') || (theElement.parentNode.parentNode.style.display === 'none') || (theElement.parentNode.parentNode.parentNode.style.display === 'none')) && (($cms.form.isWysiwygField === undefined) || (!$cms.form.isWysiwygField(theElement))))) && ((!theElement.className) || (theElement.classList.contains('hidden_but_needed')) == null)) {
-            return null;
-        }
-        if (theElement.disabled) {
-            return null;
-        }
-
-        // Test file sizes
-        if ((theElement.type === 'file') && (theElement.files) && (theElement.files.item) && (theElement.files.item(0)) && (theElement.files.item(0).fileSize)) {
-            totalFileSize += theElement.files.item(0).fileSize;
-        }
-
-        // Test file types
-        if ((theElement.type === 'file') && (theElement.value) && (theElement.name !== 'file_anytype')) {
-            var allowedTypes = '{$VALID_FILE_TYPES;^}'.split(/,/),
-                typeOk = false,
-                theFileType = theElement.value.indexOf('.') ? theElement.value.substr(theElement.value.lastIndexOf('.') + 1) : '{!NONE;^}';
-
-            for (var k = 0; k < allowedTypes.length; k++) {
-                if (allowedTypes[k].toLowerCase() === theFileType.toLowerCase()) {
-                    typeOk = true;
-                }
+        return new Promise(function (resolveCheckFieldPromise) {
+            var i, theClass, required, myValue,
+                erroneous = false,
+                errorMsg = '',
+                regexp,
+                totalFileSize = 0,
+                alerted = false;
+            
+            // No checking for hidden elements
+            if (((theElement.type === 'hidden') || (((theElement.style.display === 'none') || (theElement.parentNode.style.display === 'none') || (theElement.parentNode.parentNode.style.display === 'none') || (theElement.parentNode.parentNode.parentNode.style.display === 'none')) && (!$cms.form.isWysiwygField(theElement)))) && (!theElement.classList.contains('hidden_but_needed'))) {
+                return resolveCheckFieldPromise(null);
             }
-            if (!typeOk) {
-                errorMsg = '{!INVALID_FILE_TYPE;^,xx1xx,{$VALID_FILE_TYPES}}'.replace(/xx1xx/g, theFileType).replace(/<[^>]*>/g, '').replace(/&[lr][sd]quo;/g, '\'').replace(/,/g, ', ');
-                if (!alerted) {
-                    $cms.ui.alert(errorMsg);
-                }
-                alerted = true;
+            if (theElement.disabled) {
+                return resolveCheckFieldPromise(null);
             }
-        }
 
-        // Fix up bad characters
-        if (($cms.browserMatches('ie')) && (theElement.value) && (theElement.localName !== 'select')) {
-            var badWordChars = [8216, 8217, 8220, 8221];
-            var fixedWordChars = ['\'', '\'', '"', '"'];
-            for (i = 0; i < badWordChars.length; i++) {
-                regexp = new RegExp(String.fromCharCode(badWordChars[i]), 'gm');
-                theElement.value = theElement.value.replace(regexp, fixedWordChars[i]);
+            // Test file sizes
+            if ((theElement.type === 'file') && (theElement.files) && (theElement.files.item) && (theElement.files.item(0)) && (theElement.files.item(0).fileSize)) {
+                totalFileSize += theElement.files.item(0).fileSize;
             }
-        }
 
-        // Class name
-        theClass = theElement.classList[0];
+            // Test file types
+            if ((theElement.type === 'file') && (theElement.value) && (theElement.name !== 'file_anytype')) {
+                var allowedTypes = '{$VALID_FILE_TYPES;^}'.split(/,/),
+                    typeOk = false,
+                    theFileType = theElement.value.includes('.') ? theElement.value.substr(theElement.value.lastIndexOf('.') + 1) : '{!NONE;^}';
 
-        // Find whether field is required and value of it
-        if (theElement.type === 'radio') {
-            required = (theForm.elements['require__' + theElement.name] !== undefined) && (theForm.elements['require__' + theElement.name].value === '1');
-        } else {
-            required = theElement.className.includes('_required');
-        }
-
-        myValue = $cms.form.cleverFindValue(theForm, theElement);
-
-        // Prepare for custom error messages, stored as HTML5 data on the error message display element
-        var errorMsgElement = (theElement.name === undefined) ? null : getErrorMsgElement(theElement.name);
-
-        // Blank?
-        if ((required) && (myValue.replace(/&nbsp;/g, ' ').replace(/<br\s*\/?>/g, ' ').replace(/\s/g, '') === '')) {
-            errorMsg = '{!REQUIRED_NOT_FILLED_IN;^}';
-            if ((errorMsgElement) && (errorMsgElement.getAttribute('data-errorUnfilled') != null) && (errorMsgElement.getAttribute('data-errorUnfilled') != ''))
-                errorMsg = errorMsgElement.getAttribute('data-errorUnfilled');
-        } else {
-            // Standard field-type checks
-            if ((theElement.classList.contains('date')) && (theElement.name.match(/_(day|month|year)$/)) && (myValue != '')) {
-                var _day = theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_day')];
-                var _month = theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_month')];
-                var _year = theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_year')];
-                if (_day && _month && _year) {
-                    var day = _day.options[theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_day')].selectedIndex].value;
-                    var month = _month.options[theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_month')].selectedIndex].value;
-                    var year = _year.options[theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_year')].selectedIndex].value;
-                    var sourceDate = new Date(year, month - 1, day);
-                    if (year != sourceDate.getFullYear()) {
-                        errorMsg = '{!javascript:NOT_A_DATE;^}';
+                for (var k = 0; k < allowedTypes.length; k++) {
+                    if (allowedTypes[k].toLowerCase() === theFileType.toLowerCase()) {
+                        typeOk = true;
                     }
-                    if (month != sourceDate.getMonth() + 1) {
-                        errorMsg = '{!javascript:NOT_A_DATE;^}';
-                    }
-                    if (day != sourceDate.getDate()) {
-                        errorMsg = '{!javascript:NOT_A_DATE;^}';
+                }
+                if (!typeOk) {
+                    errorMsg = $cms.format('{!INVALID_FILE_TYPE;^}', [theFileType, '{$VALID_FILE_TYPES}']).replace(/<[^>]*>/g, '').replace(/&[lr][sd]quo;/g, '\'').replace(/,/g, ', ');
+                    if (!alerted) {
+                        $cms.ui.alert(errorMsg);
+                        alerted = true;
                     }
                 }
             }
-            if (((theClass === 'input_email') || (theClass === 'input_email_required')) && (myValue != '') && (!myValue.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/))) {
-                errorMsg = '{!javascript:NOT_A_EMAIL;^}'.replace('\{1}', myValue);
-            }
-            if (((theClass === 'input_codename') || (theClass === 'input_codename_required')) && (myValue != '') && (!myValue.match(/^[a-zA-Z0-9\-\._]*$/))) {
-                errorMsg = '{!javascript:NOT_CODENAME;^}'.replace('\{1}', myValue);
-            }
-            if (((theClass === 'input_integer') || (theClass === 'input_integer_required')) && (myValue != '') && (parseInt(myValue, 10) != myValue - 0)) {
-                errorMsg = '{!javascript:NOT_INTEGER;^}'.replace('\{1}', myValue);
-            }
-            if (((theClass === 'input_float') || (theClass === 'input_float_required')) && (myValue != '') && (parseFloat(myValue) != myValue - 0)) {
-                errorMsg = '{!javascript:NOT_FLOAT;^}'.replace('\{1}', myValue);
-            }
 
-            // Shim for HTML5 regexp patterns
-            if (theElement.getAttribute('pattern')) {
-                if ((myValue !== '') && (!myValue.match(new RegExp(theElement.getAttribute('pattern'))))) {
-                    errorMsg = '{!javascript:PATTERN_NOT_MATCHED;^}'.replace('\{1}', myValue);
+            // Fix up bad characters
+            if (($cms.browserMatches('ie')) && (theElement.value) && (theElement.localName !== 'select')) {
+                var badWordChars = [8216, 8217, 8220, 8221],
+                    fixedWordChars = ['\'', '\'', '"', '"'];
+                
+                for (i = 0; i < badWordChars.length; i++) {
+                    regexp = new RegExp(String.fromCharCode(badWordChars[i]), 'gm');
+                    theElement.value = theElement.value.replace(regexp, fixedWordChars[i]);
                 }
             }
 
-            // Custom error messages
-            if ((errorMsg != '') && (errorMsgElement != null)) {
-                var customMsg = errorMsgElement.getAttribute('data-errorRegexp');
-                if ((customMsg != null) && (customMsg != '')) {
-                    errorMsg = customMsg;
+            // Class name
+            theClass = theElement.classList[0];
+
+            // Find whether field is required and value of it
+            if (theElement.type === 'radio') {
+                required = (theForm.elements['require__' + theElement.name] !== undefined) && (theForm.elements['require__' + theElement.name].value === '1');
+            } else {
+                required = theElement.className.includes('_required');
+            }
+
+            myValue = $cms.form.cleverFindValue(theForm, theElement);
+
+            // Prepare for custom error messages, stored as HTML5 data on the error message display element
+            var errorMsgElement = (theElement.name === undefined) ? null : getErrorMsgElement(theElement.name),
+                isBlank = (required && (myValue.replace(/&nbsp;/g, ' ').replace(/<br\s*\/?>/g, ' ').replace(/\s/g, '') === '')),
+                validatePromise = Promise.resolve();
+            
+            // Blank?
+            if (isBlank) {
+                errorMsg = '{!REQUIRED_NOT_FILLED_IN;^}';
+            } else {
+                // Standard field-type checks
+                if ((theElement.classList.contains('date')) && (theElement.name.match(/_(day|month|year)$/)) && (myValue !== '')) {
+                    var prename = theElement.name.replace(/\_(day|month|year)$/, ''),
+                        _day = theForm.elements[prename + '_day'],
+                        _month = theForm.elements[prename + '_month'],
+                        _year = theForm.elements[prename + '_year'];
+                    
+                    if (_day && _month && _year) {
+                        var day = _day.options[theForm.elements[prename + '_day'].selectedIndex].value,
+                            month = _month.options[theForm.elements[prename + '_month'].selectedIndex].value,
+                            year = _year.options[theForm.elements[prename + '_year'].selectedIndex].value,
+                            sourceDate = new Date(year, month - 1, day);
+                        
+                        if (Number(year) !== sourceDate.getFullYear()) {
+                            errorMsg = '{!javascript:NOT_A_DATE;^}';
+                        }
+                        if (Number(month) !== (sourceDate.getMonth() + 1)) {
+                            errorMsg = '{!javascript:NOT_A_DATE;^}';
+                        }
+                        if (Number(day) !== sourceDate.getDate()) {
+                            errorMsg = '{!javascript:NOT_A_DATE;^}';
+                        }
+                    }
+                }
+
+                // Shim for HTML5 regexp patterns
+                if (theElement.getAttribute('pattern') && (myValue !== '') && (!myValue.match(new RegExp(theElement.getAttribute('pattern'))))) {
+                    errorMsg = $cms.format('{!javascript:PATTERN_NOT_MATCHED;^}', [myValue]);
+                } else if (((theClass === 'input_username') || (theClass === 'input_username_required')) && (myValue !== '') && (myValue !== '****')) {
+                    validatePromise = $cms.form.doAjaxFieldTest('{$FIND_SCRIPT_NOHTTP;,username_exists}?username=' + encodeURIComponent(myValue)).then(function (exists) {
+                        if (!exists) {
+                            errorMsg = $cms.format('{!javascript:NOT_USERNAME;^}', [myValue]);
+                        }
+                    });
+                } else if (((theClass === 'input_email') || (theClass === 'input_email_required')) && (myValue !== '') && (!myValue.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/))) {
+                    errorMsg = $cms.format('{!javascript:NOT_A_EMAIL;^}', [myValue]);
+                } else if (((theClass === 'input_codename') || (theClass === 'input_codename_required')) && (myValue !== '') && (!myValue.match(/^[a-zA-Z0-9\-\._]*$/))) {
+                    errorMsg = $cms.format('{!javascript:NOT_CODENAME;^}', [myValue]);
+                } else if (((theClass === 'input_integer') || (theClass === 'input_integer_required')) && (myValue !== '') && (parseInt(myValue, 10) !== Number(myValue))) {
+                    errorMsg = $cms.format('{!javascript:NOT_INTEGER;^}', [myValue]);
+                } else if (((theClass === 'input_float') || (theClass === 'input_float_required')) && (myValue !== '') && (parseFloat(myValue) !== Number(myValue))) {
+                    errorMsg = $cms.format('{!javascript:NOT_FLOAT;^}', [myValue]);
                 }
             }
-        }
 
-        // Show error?
-        $cms.form.setFieldError(theElement, errorMsg);
+            validatePromise.then(function () {
+                if ((errorMsg !== '') && errorMsgElement && errorMsgElement.getAttribute('data-errorRegexp')) { // Custom error message?
+                    errorMsg = errorMsgElement.getAttribute('data-errorRegexp');
+                }
 
-        if ((errorMsg != '') && (!erroneous)) {
-            erroneous = true;
-        }
+                // Show error?
+                $cms.form.setFieldError(theElement, errorMsg);
 
-        return [erroneous, totalFileSize, alerted];
+                if ((errorMsg !== '') && !erroneous) {
+                    erroneous = true;
+                }
+
+                resolveCheckFieldPromise({
+                    erroneous: erroneous,
+                    totalFileSize: totalFileSize,
+                    alerted: alerted
+                });
+            });
+        });
 
         function getErrorMsgElement(id) {
             var errorMsgElement = $cms.dom.$id('error_' + id);
@@ -589,9 +628,9 @@
                 if (label) {
                     var labelNice = $cms.dom.html(label).replace('&raquo;', '').replace(/^\s*/, '').replace(/\s*$/, '');
                     if (field.type === 'file') {
-                        $cms.form.setFieldError(field, '{!DISABLED_FORM_FIELD_ENCHANCEDMSG_UPLOAD;^}'.replace(/\{1\}/, labelNice));
+                        $cms.form.setFieldError(field, $cms.format('{!DISABLED_FORM_FIELD_ENCHANCEDMSG_UPLOAD;^}', [labelNice]));
                     } else {
-                        $cms.form.setFieldError(field, '{!DISABLED_FORM_FIELD_ENCHANCEDMSG;^}'.replace(/\{1\}/, labelNice));
+                        $cms.form.setFieldError(field, $cms.format('{!DISABLED_FORM_FIELD_ENCHANCEDMSG;^}', [labelNice]));
                     }
                 } else {
                     $cms.form.setFieldError(field, '{!DISABLED_FORM_FIELD;^}');
@@ -735,7 +774,7 @@
                 continue;
             }
             value = $cms.form.cleverFindValue(el.form, el);
-            blank = blank && (value == '');
+            blank = blank && (value === '');
         }
         return !blank;
     };
