@@ -12,7 +12,10 @@
     function ChatRoomScreen(params) {
         ChatRoomScreen.base(this, 'constructor', arguments);
         this.chatroomId = strVal(params.chatroomId);
-
+        
+        // Used by this.checkChatOptions()
+        this.chatOptionsFormLastValid = null;
+        
         window.$cmsLoad.push(function () {
             chatLoad(params.chatroomId);
         });
@@ -48,10 +51,20 @@
                 e.preventDefault();
                 return;
             }
-
-            if ($cms.form.checkForm(form) === false) {
-                e.preventDefault();
+            
+            if (this.chatOptionsFormLastValid && (this.chatOptionsFormLastValid.getTime() === $cms.form.lastChangeTime(form).getTime())) {
+                return;
             }
+            
+            e.preventDefault();
+            
+            var that = this;
+            $cms.form.checkForm(form, false).then(function (valid) {
+                if (valid) {
+                    that.chatOptionsFormLastValid = $cms.form.lastChangeTime(form);
+                    $cms.dom.submit(form);
+                }
+            });
         },
 
         postChatMessage: function (e) {
@@ -456,7 +469,9 @@ function chatLoad(roomId) {
         document.getElementById('post').focus();
     } catch (ignore) {}
 
-    if (window.location.href.indexOf('keep_chattest') == -1) beginChatting(roomId);
+    if (!window.location.href.includes('keep_chattest')) {
+        beginChatting(roomId);
+    }
 
     window.textColour = document.getElementById('text_colour');
     if (window.textColour) {

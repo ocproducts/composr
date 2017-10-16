@@ -101,20 +101,16 @@
         doFormPreview: function (e) {
             var form = this.form,
                 separatePreview = !!this.params.separatePreview;
-
-            if ($cms.form.doFormPreview(e, form, window.formPreviewUrl, separatePreview)) {
-                if (!window.justCheckingRequirements) {
+            
+            $cms.form.doFormPreview(e, form, window.formPreviewUrl, separatePreview).then(function (bool) {
+                if (bool && !window.justCheckingRequirements) {
                     form.submit();
-                } else {
-                    e.preventDefault();
                 }
-            }
+            });
         },
 
         doFormSubmit: function (e) {
-            if ($cms.form.doFormSubmit(this.form, e, this.analyticEventCategory) === false) {
-                e.preventDefault();
-            }
+            $cms.form.doFormSubmit(this.form, e, this.analyticEventCategory);
         },
 
         goBack: function (e, btn) {
@@ -1440,12 +1436,12 @@
     }
 
     function _simplifiedFormContinueSubmit(iframe, formCatSelector) {
-        if ($cms.form.checkForm(formCatSelector)) {
+        $cms.form.checkForm(formCatSelector, false).then(function () {
             if (iframe) {
                 $cms.dom.animateFrameLoad(iframe, 'iframe_under');
             }
             $cms.dom.submit(formCatSelector);
-        }
+        });
     }
 
     /* Geolocation for address fields */

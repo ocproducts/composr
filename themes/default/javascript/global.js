@@ -1291,30 +1291,25 @@
     /**
      * String interpolation
      * @param str
-     * @param values
+     * @param { Array|object } values
      * @returns { string }
      */
     function format(str, values) {
+        var isArrLike = false;
+        
         str = strVal(str);
 
-        if ((str === '') || (arguments.length < 2)) {
+        if ((str === '') || (values == null) || (typeof values !== 'object')) {
             return str; // Nothing to do
         }
-
-        if ((values == null) || (typeof values !== 'object')) {
-            // values provided as multiple arguments?
-            values = toArray(arguments, 1);
-        } else if (isArrayLike(values)) {
-            // Array(-ish?) object provided with values
-            values = toArray(values);
-        }
-
-        str = str.replace(/\{(\d+)\}/g, function (match, key) {
-            key--; // So that interpolation starts from '{1}'
+        
+        isArrLike = isArrayLike(values);
+        return str.replace(/\{(\d+)\}/g, function (match, key) {
+            if (isArrLike) {
+                key--; // So that interpolation starts from '{1}'
+            }
             return (key in values) ? strVal(values[key]) : match;
-        });
-
-        return str.replace(/\{(\w+)\}/g, function (match, key) {
+        }).replace(/\{(\w+)\}/g, function (match, key) {
             return (key in values) ? strVal(values[key]) : match;
         });
     }
@@ -7869,7 +7864,7 @@
         // Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent
         if ($cms.$CONFIG_OPTION('cookie_notice') && ($cms.$RUNNING_SCRIPT() === 'index')) {
             window.cookieconsent_options = {
-                message: $cms.format('{!COOKIE_NOTICE;}', $cms.$SITE_NAME()),
+                message: $cms.format('{!COOKIE_NOTICE;}', [$cms.$SITE_NAME()]),
                 dismiss: '{!INPUTSYSTEM_OK;}',
                 learnMore: '{!READ_MORE;}',
                 link: '{$PAGE_LINK;,:privacy}',
@@ -10286,7 +10281,7 @@
         var max = params.max,
             urlStub = params.urlStub,
             numPages = params.numPages,
-            message = $cms.format('{!javascript:ENTER_PAGE_NUMBER;^}', numPages);
+            message = $cms.format('{!javascript:ENTER_PAGE_NUMBER;^}', [numPages]);
 
         $cms.dom.on(link, 'click', function () {
             $cms.ui.prompt(message, numPages, function (res) {

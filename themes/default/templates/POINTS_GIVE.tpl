@@ -1,4 +1,4 @@
-<div data-view="PointsGive">
+<div data-tpl="pointsGive">
 	{+START,IF,{$NOT,{$HAS_ACTUAL_PAGE_ACCESS,admin_points}}}
 		{$,Regular member}
 		<p class="points_give_box_header">

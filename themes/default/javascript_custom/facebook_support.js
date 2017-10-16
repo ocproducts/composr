@@ -64,7 +64,7 @@
                     '{!facebook:HOW_TO_SYNDICATE_DESCRIPTION;^}',
                     ['{!INPUTSYSTEM_CANCEL;^}', '{!facebook:FACEBOOK_PAGE;^}', '{!facebook:FACEBOOK_WALL;^}'],
                     '{!facebook:HOW_TO_SYNDICATE;^}',
-                    $cms.format('{!facebook:SYNDICATE_TO_OWN_WALL;^}', $cms.$SITE_NAME()),
+                    $cms.format('{!facebook:SYNDICATE_TO_OWN_WALL;^}', [$cms.$SITE_NAME()]),
                     function (val) {
                         if (val != '{!INPUTSYSTEM_CANCEL;^}') {
                             fbInput.value = (val == '{!facebook:FACEBOOK_PAGE;^}') ? '1' : '0';

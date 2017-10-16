@@ -25,12 +25,22 @@
 
     $cms.templates.quizScreen = function quizScreen(params, container) {
         var form = $cms.dom.$(container, '.js-quiz-form'),
-            timeout = +params.timeout || 0;
+            timeout = +params.timeout || 0,
+            quizFormLastValid;
 
         $cms.dom.on(container, 'submit', '.js-submit-check-form', function (e, form) {
-            if (!$cms.form.checkForm(form)) {
-                e.preventDefault();
+            if (quizFormLastValid && (quizFormLastValid.getTime() === $cms.form.lastChangeTime(form).getTime())) {
+                return;
             }
+
+            e.preventDefault();
+
+            $cms.form.checkForm(form, false).then(function (valid) {
+                if (valid) {
+                    quizFormLastValid = $cms.form.lastChangeTime(form);
+                    $cms.dom.submit(form);
+                }
+            });
         });
 
         if (timeout > 0) {

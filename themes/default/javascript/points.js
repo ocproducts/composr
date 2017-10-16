@@ -1,27 +1,21 @@
 (function ($cms) {
     'use strict';
 
-    $cms.views.PointsGive = PointsGive;
-    /**
-     * @memberof $cms.views
-     * @class
-     * @extends $cms.View
-     */
-    function PointsGive() {
-        PointsGive.base(this, 'constructor', arguments);
-    }
-
-    $cms.inherits(PointsGive, $cms.View, /**@lends PointsGive#*/{
-        events: function () {
-            return {
-                'submit .js-submit-check-form': 'checkForm'
-            };
-        },
-
-        checkForm: function (e, form) {
-            if (!$cms.form.checkForm(form)) {
-                e.preventDefault();
+    var givePointsFormLastValid;
+    $cms.templates.pointsGive = function pointsGive(params, container) {
+        $cms.dom.on(container, 'submit', '.js-submit-check-form', function (e, form) {
+            if (givePointsFormLastValid && (givePointsFormLastValid.getTime() === $cms.form.lastChangeTime(form).getTime())) {
+                return;
             }
-        }
-    });
+
+            e.preventDefault();
+
+            $cms.form.checkForm(form, false).then(function (valid) {
+                if (valid) {
+                    givePointsFormLastValid = $cms.form.lastChangeTime(form);
+                    $cms.dom.submit(form);
+                }
+            });
+        });
+    };
 }(window.$cms));

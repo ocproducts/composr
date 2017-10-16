@@ -258,7 +258,7 @@
     function showCurrentSlideshowTime() {
         var changer = document.getElementById('changer_wrap');
         if (changer) {
-            $cms.dom.html(changer, $cms.format('{!galleries:CHANGING_IN;^}', Math.max(0, window.slideshowTime)));
+            $cms.dom.html(changer, $cms.format('{!galleries:CHANGING_IN;^}', [Math.max(0, window.slideshowTime)]));
         }
     }
 

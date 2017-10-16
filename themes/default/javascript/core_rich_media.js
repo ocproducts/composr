@@ -208,10 +208,10 @@
                     imgWidthHeight = setImgWidthHeight ? ' width="' + Number(params.width) + '" height="' + Number(params.height) + '"' : '',
                     mediaSetHtml = /** @lang HTML */' \
                         <figure class="attachment" ' + width + '> \
-                            <figcaption>' + $cms.format('{!comcode:MEDIA_SET;^}', imgs.length) + '<\/figcaption> \
+                            <figcaption>' + $cms.format('{!comcode:MEDIA_SET;^}', [imgs.length]) + '<\/figcaption> \
                             <div> \
                                 <div class="attachment_details"> \
-                                    <a class="js-click-open-images-into-lightbox" target="_blank" title="' + $cms.filter.html($cms.format('{!comcode:MEDIA_SET^;}', imgs.length)) + ' {!LINK_NEW_WINDOW^/}" href="#!"> \
+                                    <a class="js-click-open-images-into-lightbox" target="_blank" title="' + $cms.filter.html($cms.format('{!comcode:MEDIA_SET^;}', [imgs.length])) + ' {!LINK_NEW_WINDOW^/}" href="#!"> \
                                         <img ' + imgWidthHeight + ' src="' + $cms.filter.html(imgsThumbs[0]) + '" /> \
                                     <\/a> \
                                 <\/div> \
