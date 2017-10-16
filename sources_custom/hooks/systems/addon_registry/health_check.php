@@ -88,7 +88,7 @@ class Hook_addon_registry_health_check
     {
         return 'The Health Check addon automatically finds problems on your website and server, with over 100 checks.
 
-On the modern advanced web there is too much to keep in mind to check. All kinds of things could go wrong without you noticing, which could be embarassing.
+On the modern advanced web there is too much to keep in mind to check. All kinds of things could go wrong without you noticing, which could be embarrassing.
 For example, what if:
 1) Your outgoing e-mail goes down, breaking sign-ups
 2) You forget to renew SSL
