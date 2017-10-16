@@ -236,7 +236,7 @@ function improperly_filled_in_post($name)
  */
 function _composr_error_handler($type, $errno, $errstr, $errfile, $errline, $syslog_type, $handling_method)
 {
-    $fatal = (!peek_suppress_error_death()) && ($handling_method == 'FATAL'); 
+    $fatal = (!peek_suppress_error_death()) && ($handling_method == 'FATAL');
 
     if ($fatal) {
         // Turn off MSN, as this increases stability
@@ -381,7 +381,7 @@ function _generic_exit($text, $template, $support_match_key_messages = false, $l
     if (($template != 'FATAL_SCREEN') && ((get_param_integer('keep_fatalistic', 0) == 1) || (running_script('commandr')))) {
         _generic_exit($text, 'FATAL_SCREEN', false, $log_error);
     }
- 
+
     if (throwing_errors()) {
         throw new CMSException($text);
     }
@@ -920,7 +920,7 @@ function get_webservice_result($error_message)
 
     require_code('files');
     global $DONE_ONE_WEB_SERVICE;
-    if (($GLOBALS['DOWNLOAD_LEVEL'] > 0) || ($DONE_ONE_WEB_SERVICE)) {
+    if ((isset($GLOBALS['DOWNLOAD_LEVEL']) && ($GLOBALS['DOWNLOAD_LEVEL'] > 0)) || ($DONE_ONE_WEB_SERVICE)) {
         return null;
     }
     $DONE_ONE_WEB_SERVICE = true;
@@ -1067,7 +1067,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, 'Incorrect string value') === false) &&
         (strpos($text, 'Can\'t create/write to file') === false) &&  // MySQL
         (strpos($text, 'Error writing file') === false) && // E.g. cannot PHP create a temporary file
-        (strpos($text, 'possibly out of free disk space') === false) && 
+        (strpos($text, 'possibly out of free disk space') === false) &&
         (strpos($text, 'Illegal mix of collations') === false) &&
         (strpos($text, 'Query execution was interrupted') === false) &&
         (strpos($text, 'The MySQL server is running with the --read-only option so it cannot execute this statement') === false) &&
