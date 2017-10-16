@@ -342,7 +342,7 @@ function css_enforce($c, $theme = null, $allow_defer = false)
 
         if ($allow_defer) {
             static $deferred_one = false;
-            if ((!$deferred_one) && (!is_writable_wrap(dirname($css_cache_path)))) {
+            if ((!$deferred_one) && (!cms_is_writable(dirname($css_cache_path)))) {
                 attach_message(do_lang_tempcode('WRITE_ERROR', escape_html(dirname($css_cache_path))), 'warn');
             }
             $deferred_one = true;
