@@ -81,7 +81,7 @@
 <meta property="fb:admins" content="685610576" />
 {+START,IF_NON_EMPTY,{$CONFIG_OPTION*,facebook_appid}}<meta property="fb:app_id" content="{$CONFIG_OPTION*,facebook_appid}" />
 {+END}
-{+START,IF_NON_EMPTY,{$METADATA,meta_description}}<meta property="og:description" content="{$METADATA*,meta_description}" />{+END}
+{+START,IF_NON_EMPTY,{$METADATA,description}}<meta property="og:description" content="{$METADATA*,description}" />{+END}
 <meta property="og:image" content="{$IMG*,opengraph}" />
 {+START,IF_NON_EMPTY,{$METADATA,video}}<meta property="og:video" content="{$METADATA*,video}" /><meta property="og:video:width" content="{$METADATA*,video:width}" /><meta property="og:video:height" content="{$METADATA*,video:height}" /><meta property="og:video:type" content="{$METADATA*,video:type}" />{+END}
 <meta property="og:locale" content="{$PREG_REPLACE,\..*$,,{$PREG_REPLACE,\,.*$,,{$REPLACE,-,_,{!locale}}}}" />
@@ -96,10 +96,10 @@
 	{+START,IF_NON_EMPTY,{$METADATA,creator}}<meta name="profile:username" content="{$METADATA*,creator}" />{+END}
 {+END}
 
-{+START,IF_NON_EMPTY,{$METADATA,meta_description}}<meta property="twitter:card" content="{$METADATA*,meta_description}" />{+END}
+<meta property="twitter:card" content="summary" />
 <meta name="twitter:site" content="@composr_cms" />
 {+START,IF_NON_EMPTY,{$METADATA,title}}<meta name="twitter:title" content="{$METADATA*,title}" />{+END}
-<meta name="twitter:description" content="View the album on Flickr." />
+{+START,IF_NON_EMPTY,{$METADATA,description}}<meta name="twitter:description" content="{$METADATA*,description}" />{+END}
 <meta name="twitter:image" content="{$IMG*,twittercard}" />
 
 {$,Define the Microformats we support}
