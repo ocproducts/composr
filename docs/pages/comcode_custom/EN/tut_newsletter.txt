@@ -41,7 +41,8 @@ You will typically invite people to join the newsletter via the [tt]main_newslet
 
 You can also have people signup directly via the [tt]site:newsletter[/tt] module ("maintenance module", About > Newsletter on the default menus). They will choose their maintenance password.
 
-The newsletter process has a mandatory e-mail confirmation step so as to stop people signing up others to the newsletter, which may be illegal in some jurisdictions and is at least a nuisance.
+The newsletter process has a mandatory e-mail confirmation step so as to stop people signing up others to the newsletter, which may be illegal in some jurisdictions and is at least a nuisance. This confirmation e-mail is driven by the [tt]NEWSLETTER_SIGNUP_TEXT[/tt] language string.
+The exception is the [tt]main_newsletter_signup[/tt], which has an option to instead send a customised e-mail that does not itself require any click-through.
 
 When a user hits the block and subscribes through it, one of the following situations will happen:
  - A new subscription -- Composr will sign them up and send a confirmation e-mail
@@ -115,6 +116,11 @@ You also are likely to want to edit the [tt]MAIL.tpl[/tt] template, which define
 You will almost certainly want to edit these templates within the default theme, because if you are sending newsletters from the Admin Zone almost certainly the default theme will be the active theme when the newsletters are generated.
 
 Information on very advanced templating is provided further down in this tutorial.
+
+[title="4"]Custom mail templates for newsletters (advanced)[/title]
+
+When you send a newsletter you can select a mail template to use. Only templates matching the filename pattern [tt]MAIL*.tpl[/tt] will be shown.
+If you want new template options here you must manually create new templates with names like this. They must follow the same basic structure as the default [tt]MAIL.tpl[/tt].
 
 [title="2"]Automatic issues[/title]
 

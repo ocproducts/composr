@@ -134,7 +134,7 @@ class Module_admin_cns_welcome_emails extends Standard_crud_module
         require_lang('cns_welcome_emails');
         require_css('cns_admin');
 
-        set_helper_panel_tutorial('tut_members');
+        set_helper_panel_tutorial('tut_adv_members');
         set_helper_panel_text(comcode_lang_string('DOC_WELCOME_EMAIL_PREVIEW'));
 
         breadcrumb_set_parents(array(array('_SEARCH:admin_cns_members:browse', do_lang_tempcode('MEMBERS'))));

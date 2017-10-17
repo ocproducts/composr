@@ -1118,7 +1118,7 @@ abstract class Standard_crud_module
         }
         $table_raw = (is_null($this->table) ? $this->module_type : $this->table);
         $table = $table_raw . ' r';
-        $db = ((substr($table, 0, 2) == 'f_') && (!$force_site_db) && (get_forum_type() != 'none')) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
+        $db = ((substr($table, 0, 2) == 'f_') && ($table != 'f_welcome_emails') && (!$force_site_db) && (get_forum_type() != 'none')) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
         if (($orderer_is_multi_lang) && (preg_replace('# (ASC|DESC)$#', '', $orderer) == $select_field)) {
             $_orderer = $GLOBALS['SITE_DB']->translate_field_ref(preg_replace('# (ASC|DESC)$#', '', $orderer));
             if (substr($orderer, -5) == ' DESC') {
