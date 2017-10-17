@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,chat}
 
-<div data-tpl="chatSetEffectsSettingBlock" data-tpl-params="{+START,PARAMS_JSON,KEY,MEMBER_ID}{_*}{+END}"{+START,IF_PASSED,MEMBER_ID} data-view="ToggleableTray"{+END}>
+<div data-tpl="chatSetEffectsSettingBlock" data-tpl-params="{+START,PARAMS_JSON,EFFECTS}{_*}{+END}"{+START,IF_PASSED,MEMBER_ID} data-view="ToggleableTray"{+END}>
 	{+START,IF_PASSED,USERNAME}{+START,IF_PASSED,MEMBER_ID}
 		<div class="toggleable_tray_title js-tray-header">
 			{!OVERRIDES_FOR_FRIEND,{USERNAME*}}
@@ -44,7 +44,7 @@
 								{+END}
 							</select>
 
-							<input class="button_screen_item menu__social__chat__sound js-click-require-sound-selection" type="button" title="{EFFECT_TITLE*}" value="{!TEST_SOUND}" />
+							<input class="button_screen_item menu__social__chat__sound js-click-require-sound-selection" data-tp-select-id="select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" type="button" title="{EFFECT_TITLE*}" value="{!TEST_SOUND}" />
 						</td>
 					</tr>
 

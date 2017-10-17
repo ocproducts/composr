@@ -378,23 +378,26 @@
     };
 
     $cms.templates.chatSetEffectsSettingBlock = function (params, container) {
-        var key = strVal(params.key),
-            memberId = strVal(params.memberId);
+        var effects = params.effects || {};
+        
+        for (var effectName in effects) {
+            var effect = effects[effectName];
 
-        if (!$cms.$IS_HTTPAUTH_LOGIN()) {
-            var btnSubmitId = 'upload_' + params.key;
+            if (!$cms.$IS_HTTPAUTH_LOGIN()) {
+                var name = 'upload_' + effect.key;
 
-            if (memberId) {
-                btnSubmitId += '_' + memberId;
-            }
+                if (effect.memberId) {
+                    name += '_' + effect.memberId;
+                }
 
-            if ($cms.$CONFIG_OPTION('complex_uploader')) {
-                preinitFileInput('chat_effect_settings', btnSubmitId, null, null, 'mp3', 'button_micro');
+                if ($cms.$CONFIG_OPTION('complex_uploader')) {
+                    window.preinitFileInput('chat_effect_settings', name, null, null, 'mp3', 'button_micro');
+                }
             }
         }
 
-        $cms.dom.on(container, 'click', '.js-click-require-sound-selection', function () {
-            var select = $cms.dom.$('#select_' + key +  (memberId ? ('_' + memberId) : ''));
+        $cms.dom.on(container, 'click', '.js-click-require-sound-selection', function (e, clicked) {
+            var select = $cms.dom.$('#' + clicked.dataset.tpSelectId);
             if (select.value === '') {
                 $cms.ui.alert('{!chat:PLEASE_SELECT_SOUND;}');
             } else {
@@ -432,7 +435,7 @@ function playSoundUrl(url) { // Used for testing different sounds
         return;
     }
 
-    var baseUrl = ((url.indexOf('data_custom') == -1) && (url.indexOf('uploads/') == -1)) ? '{$BASE_URL_NOHTTP;}' : '{$CUSTOM_BASE_URL_NOHTTP;}';
+    var baseUrl = (!url.includes('data_custom') && !url.includes('uploads/')) ? $cms.$BASE_URL_NOHTTP() : $cms.$CUSTOM_BASE_URL_NOHTTP();
     var soundObject = window.soundManager.createSound({url: baseUrl + '/' + url});
     if (soundObject) {
         soundObject.play();
@@ -444,7 +447,7 @@ function playChatSound(sId, forMember) {
         return;
     }
 
-    var playSound = window.document.getElementById('play_sound');
+    var playSound = document.getElementById('play_sound');
 
     if ((playSound) && (!playSound.checked)) {
         return;
