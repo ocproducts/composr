@@ -46,7 +46,7 @@
         },
 
         checkChatOptions: function (e, form) {
-            if (!form.elements['text_colour'].value.match(/^#[0-9A-F][0-9A-F][0-9A-F]([0-9A-F][0-9A-F][0-9A-F])?$/)) {
+            if (!form.elements['text_colour'].value.match(/^#[0-9A-F][0-9A-F][0-9A-F]([0-9A-F][0-9A-F][0-9A-F])?$/i)) {
                 $cms.ui.alert('{!chat:BAD_HTML_COLOUR;^}');
                 e.preventDefault();
                 return;

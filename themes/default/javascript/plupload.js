@@ -13284,9 +13284,6 @@ FileProgress.prototype.disappear = function () {
                 if (element) {
                     $cms.form.setFieldError(element, '{!REQUIRED_NOT_FILLED_IN;^}');
                 }
-            }
-            
-            if (isRequired) {
                 $cms.ui.alert({ notice: '{!IMPROPERLY_FILLED_IN;^}', single: true });
             } else {
                 if (plObj.cmsPreviewing) {

@@ -168,7 +168,7 @@
 }
 
 .messages_window {
-	display: table-cell;
+	/*display: table-cell;*/
 	/*{+START,IF,{$EQ,{$CONFIG_OPTION,chat_message_direction},upwards}}*/
 		vertical-align: top;
 	/*{+END}*/
