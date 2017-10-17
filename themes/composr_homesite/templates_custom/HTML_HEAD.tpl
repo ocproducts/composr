@@ -96,6 +96,12 @@
 	{+START,IF_NON_EMPTY,{$METADATA,creator}}<meta name="profile:username" content="{$METADATA*,creator}" />{+END}
 {+END}
 
+{+START,IF_NON_EMPTY,{$METADATA,meta_description}}<meta property="twitter:card" content="{$METADATA*,meta_description}" />{+END}
+<meta name="twitter:site" content="@composr_cms" />
+{+START,IF_NON_EMPTY,{$METADATA,title}}<meta name="twitter:title" content="{$METADATA*,title}" />{+END}
+<meta name="twitter:description" content="View the album on Flickr." />
+<meta name="twitter:image" content="{$IMG*,twittercard}" />
+
 {$,Define the Microformats we support}
 {+START,COMMENT,Commented out by default to save bandwidth}
 	<link rel="profile" href="http://www.w3.org/2003/g/data-view" />
