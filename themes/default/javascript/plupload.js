@@ -14208,158 +14208,6 @@
  Partly based upon swfupload example code (ported to plupload).
  */
 
-/*
- fileprogress.js
-
- A simple class for displaying file information and progress
- */
-
-// Constructor
-// file is a plupload file object
-// targetID is the HTML element id attribute that the FileProgress HTML structure will be added to.
-// Instantiating a new FileProgress object with an existing file will reuse/update the existing DOM elements
-/**
- * @param file
- * @param targetID
- * @class FileProgress
- */
-function FileProgress(file, targetID) {
-    var targetEl = document.getElementById(targetID);
-    
-    this.fileProgressID = 'progress_' + ((!file || (file.id == null)) ? ('not_inited_' + targetID) : file.id);
-
-    this.opacity = 100;
-    this.height = 0;
-
-    this.fileProgressWrapper = document.getElementById(this.fileProgressID);
-    if (!this.fileProgressWrapper) {
-        $cms.dom.append(
-            targetEl, 
-            '<div id="' + this.fileProgressID + '" class="progressWrapper">' +
-                '<div class="progressContainer" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">' +
-                    '<a class="progressCancel" href="#!" style="visibility: hidden"> </a>' +
-                    '<div class="progressName">' + (file && (file.name != null) ? file.name : '') + '</div>' +
-                    '<div class="progressBarStatus">&nbsp;</div>' +
-                    '<div class="progressBarInProgress"></div>' +
-                '</div>' +
-            '</div>'
-        );
-
-        this.fileProgressWrapper = document.getElementById(this.fileProgressID);
-        this.fileProgressElement = this.fileProgressWrapper.querySelector('.progressContainer');
-
-        targetEl.style.display = 'block';
-
-        this.fileProgressElement.completed = false;
-    } else {
-        this.fileProgressElement = this.fileProgressWrapper.querySelector('.progressContainer');
-
-        this.appear();
-
-        if (file && (file.name != null)) {
-            $cms.dom.html(this.fileProgressElement.querySelector('.progressName'), file.name);
-        }
-    }
-
-    this.completed = this.fileProgressElement.completed;
-
-    this.height = this.fileProgressWrapper.offsetHeight;
-}
-
-$cms.properties(FileProgress.prototype, /**@lends FileProgress#*/{
-    setProgress: function (percentage) {
-        this.fileProgressElement.classList.remove('blue', 'red');
-        this.fileProgressElement.classList.add('green');
-        this.fileProgressElement.children[3].className = 'progressBarInProgress';
-        this.fileProgressElement.children[3].style.width = percentage + '%';
-        this.fileProgressElement.setAttribute('aria-valuenow', percentage);
-    },
-    setComplete: function () {
-        this.appear();
-        this.fileProgressElement.classList.remove('green', 'red');
-        this.fileProgressElement.classList.add('blue');
-        this.fileProgressElement.children[3].className = 'progressBarComplete';
-        this.fileProgressElement.children[3].style.width = '';
-        this.fileProgressElement.setAttribute('aria-valuenow', '100');
-        this.completed = true;
-        this.fileProgressElement.completed = this.completed;
-    },
-    setError: function () {
-        this.appear();
-        this.fileProgressElement.classList.remove('green', 'blue');
-        this.fileProgressElement.classList.add('red');
-        this.fileProgressElement.children[3].className = 'progressBarError';
-        this.fileProgressElement.children[3].style.width = '';
-        this.fileProgressElement.setAttribute('aria-valuenow', '0');
-
-        var self = this;
-        this.fileProgressElement.fader = setTimeout(function () {
-            self.disappear();
-        }, 5000);
-    },
-    setCancelled: function () {
-        this.appear();
-        this.fileProgressElement.classList.remove('green', 'blue', 'red');
-        this.fileProgressElement.children[3].className = 'progressBarError';
-        this.fileProgressElement.children[3].style.width = '';
-        this.fileProgressElement.setAttribute('aria-valuenow', '0');
-
-        var self = this;
-        this.fileProgressElement.fader = setTimeout(function () {
-            self.disappear();
-        }, 2000);
-    },
-    setStatus: function (status) {
-        $cms.dom.html(this.fileProgressElement.children[2], status);
-    },
-    // Makes sure the FileProgress box is visible
-    appear: function () {
-        this.fileProgressWrapper.style.opacity = 1;
-
-        if (this.fileProgressElement.fader) {
-            clearTimeout(this.fileProgressElement.fader);
-            this.fileProgressElement.fader = null;
-        }
-        this.fileProgressWrapper.style.height = '';
-        this.height = this.fileProgressWrapper.offsetHeight;
-        this.opacity = 100;
-        this.fileProgressWrapper.style.display = '';
-    },
-    // Fades out and clips away the FileProgress box.
-    disappear: function () {
-        var reduceOpacityBy = 15;
-        var reduceHeightBy = 4;
-        var rate = 30;	// 15 fps
-
-        if (this.opacity > 0) {
-            this.opacity -= reduceOpacityBy;
-            if (this.opacity < 0) {
-                this.opacity = 0;
-            }
-
-            this.fileProgressWrapper.style.opacity = this.opacity / 100;
-        }
-
-        if (this.height > 0) {
-            this.height -= reduceHeightBy;
-            if (this.height < 0) {
-                this.height = 0;
-            }
-
-            this.fileProgressWrapper.style.height = this.height + 'px';
-        }
-
-        if (this.height > 0 || this.opacity > 0) {
-            var self = this;
-            this.fileProgressElement.fader = setTimeout(function () {
-                self.disappear();
-            }, rate);
-        } else {
-            this.fileProgressWrapper.style.display = 'none';
-        }
-    }
-});
-
 (function ($cms) {
     'use strict';
 
@@ -15193,5 +15041,156 @@ $cms.properties(FileProgress.prototype, /**@lends FileProgress#*/{
         document.getElementById('file' + index).value = '';
         return false;
     }
+    
+    /*
+     fileprogress.js
 
+     A simple class for displaying file information and progress
+     */
+
+    // Constructor
+    // file is a plupload file object
+    // targetID is the HTML element id attribute that the FileProgress HTML structure will be added to.
+    // Instantiating a new FileProgress object with an existing file will reuse/update the existing DOM elements
+    /**
+     * @param file
+     * @param targetID
+     * @class FileProgress
+     */
+    function FileProgress(file, targetID) {
+        var targetEl = document.getElementById(targetID);
+
+        this.fileProgressID = 'progress_' + ((!file || (file.id == null)) ? ('not_inited_' + targetID) : file.id);
+
+        this.opacity = 100;
+        this.height = 0;
+
+        this.fileProgressWrapper = document.getElementById(this.fileProgressID);
+        if (!this.fileProgressWrapper) {
+            $cms.dom.append(
+                targetEl,
+                '<div id="' + this.fileProgressID + '" class="progressWrapper">' +
+                '<div class="progressContainer" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">' +
+                '<a class="progressCancel" href="#!" style="visibility: hidden"> </a>' +
+                '<div class="progressName">' + (file && (file.name != null) ? file.name : '') + '</div>' +
+                '<div class="progressBarStatus">&nbsp;</div>' +
+                '<div class="progressBarInProgress"></div>' +
+                '</div>' +
+                '</div>'
+            );
+
+            this.fileProgressWrapper = document.getElementById(this.fileProgressID);
+            this.fileProgressElement = this.fileProgressWrapper.querySelector('.progressContainer');
+
+            targetEl.style.display = 'block';
+
+            this.fileProgressElement.completed = false;
+        } else {
+            this.fileProgressElement = this.fileProgressWrapper.querySelector('.progressContainer');
+
+            this.appear();
+
+            if (file && (file.name != null)) {
+                $cms.dom.html(this.fileProgressElement.querySelector('.progressName'), file.name);
+            }
+        }
+
+        this.completed = this.fileProgressElement.completed;
+
+        this.height = this.fileProgressWrapper.offsetHeight;
+    }
+
+    $cms.properties(FileProgress.prototype, /**@lends FileProgress#*/{
+        setProgress: function (percentage) {
+            this.fileProgressElement.classList.remove('blue', 'red');
+            this.fileProgressElement.classList.add('green');
+            this.fileProgressElement.children[3].className = 'progressBarInProgress';
+            this.fileProgressElement.children[3].style.width = percentage + '%';
+            this.fileProgressElement.setAttribute('aria-valuenow', percentage);
+        },
+        setComplete: function () {
+            this.appear();
+            this.fileProgressElement.classList.remove('green', 'red');
+            this.fileProgressElement.classList.add('blue');
+            this.fileProgressElement.children[3].className = 'progressBarComplete';
+            this.fileProgressElement.children[3].style.width = '';
+            this.fileProgressElement.setAttribute('aria-valuenow', '100');
+            this.completed = true;
+            this.fileProgressElement.completed = this.completed;
+        },
+        setError: function () {
+            this.appear();
+            this.fileProgressElement.classList.remove('green', 'blue');
+            this.fileProgressElement.classList.add('red');
+            this.fileProgressElement.children[3].className = 'progressBarError';
+            this.fileProgressElement.children[3].style.width = '';
+            this.fileProgressElement.setAttribute('aria-valuenow', '0');
+
+            var self = this;
+            this.fileProgressElement.fader = setTimeout(function () {
+                self.disappear();
+            }, 5000);
+        },
+        setCancelled: function () {
+            this.appear();
+            this.fileProgressElement.classList.remove('green', 'blue', 'red');
+            this.fileProgressElement.children[3].className = 'progressBarError';
+            this.fileProgressElement.children[3].style.width = '';
+            this.fileProgressElement.setAttribute('aria-valuenow', '0');
+
+            var self = this;
+            this.fileProgressElement.fader = setTimeout(function () {
+                self.disappear();
+            }, 2000);
+        },
+        setStatus: function (status) {
+            $cms.dom.html(this.fileProgressElement.children[2], status);
+        },
+        // Makes sure the FileProgress box is visible
+        appear: function () {
+            this.fileProgressWrapper.style.opacity = 1;
+
+            if (this.fileProgressElement.fader) {
+                clearTimeout(this.fileProgressElement.fader);
+                this.fileProgressElement.fader = null;
+            }
+            this.fileProgressWrapper.style.height = '';
+            this.height = this.fileProgressWrapper.offsetHeight;
+            this.opacity = 100;
+            this.fileProgressWrapper.style.display = '';
+        },
+        // Fades out and clips away the FileProgress box.
+        disappear: function () {
+            var reduceOpacityBy = 15;
+            var reduceHeightBy = 4;
+            var rate = 30;	// 15 fps
+
+            if (this.opacity > 0) {
+                this.opacity -= reduceOpacityBy;
+                if (this.opacity < 0) {
+                    this.opacity = 0;
+                }
+
+                this.fileProgressWrapper.style.opacity = this.opacity / 100;
+            }
+
+            if (this.height > 0) {
+                this.height -= reduceHeightBy;
+                if (this.height < 0) {
+                    this.height = 0;
+                }
+
+                this.fileProgressWrapper.style.height = this.height + 'px';
+            }
+
+            if (this.height > 0 || this.opacity > 0) {
+                var self = this;
+                this.fileProgressElement.fader = setTimeout(function () {
+                    self.disappear();
+                }, rate);
+            } else {
+                this.fileProgressWrapper.style.display = 'none';
+            }
+        }
+    });
 }(window.$cms));
