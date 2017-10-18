@@ -1135,7 +1135,7 @@
      */
     function typeName(obj) {
         var name = constructorName(obj);
-        return (name !== undefined) ? name : internalName(obj);
+        return ((name !== undefined) && (name !== '')) ? name : internalName(obj);
     }
 
     /**
@@ -1241,19 +1241,27 @@
 
     /**
      * @param val
-     * @param [defaultPropertyName]
      * @param [defaultValue]
+     * @param [defaultPropertyName]
      * @returns { Object }
      */
-    function objVal(val, defaultPropertyName, defaultValue) {
-        if ((val == null) && (defaultValue !== undefined)) {
+    function objVal(val, defaultValue, defaultPropertyName) {
+        if (defaultValue === undefined) {
+            defaultValue = {};
+        }
+
+        if (val == null) {
             return defaultValue;
         }
 
-        if (!isObj(val) || Array.isArray(val)) {
-            val = (defaultPropertyName !== undefined) ? keyValue(defaultPropertyName, val) : {};
+        if (!isObj(val)) {
+            if (defaultPropertyName != null) {
+                val = keyValue(defaultPropertyName, val);
+            } else {
+                throw new TypeError('objVal(): Cannot coerce `val` of type "' + typeName(val) + '" to an object.');
+            }
         }
-
+        
         return val;
     }
 
@@ -8151,7 +8159,7 @@
 
         // Implementation for [data-click-alert] and [data-keypress-alert]
         showModalAlert: function (e, target) {
-            var options = objVal($cms.dom.data(target, e.type + 'Alert'), 'notice');
+            var options = objVal($cms.dom.data(target, e.type + 'Alert'), {}, 'notice');
             $cms.ui.alert(options.notice);
         },
 
@@ -8193,7 +8201,7 @@
 
         // Implementation for [data-click-forward="{ child: '.some-selector' }"]
         clickForward: function (e, el) {
-            var options = objVal($cms.dom.data(el, 'clickForward'), 'child'),
+            var options = objVal($cms.dom.data(el, 'clickForward'), {}, 'child'),
                 child = strVal(options.child), // Selector for target child element
                 except = strVal(options.except), // Optional selector for excluded elements to let pass-through
                 childEl = $cms.dom.$(el, child);
