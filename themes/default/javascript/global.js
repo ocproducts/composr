@@ -3026,27 +3026,25 @@
 
     /**
      * @memberof $cms.dom
-     * @param type
-     * @param props
+     * @param {string} type
+     * @param eventInit
      * @returns { Event }
      */
-    $cms.dom.createEvent = function createEvent(type, props) {
-        if (isObj(type)) {
-            props = type;
-            type = props.type;
-        }
+    $cms.dom.createEvent = function createEvent(type, eventInit) {
         var event = document.createEvent((type in mouseEvents) ? 'MouseEvents' : 'Events'),
             bubbles = true,
             cancelable = true;
 
-        if (props) {
-            for (var key in props) {
+        type = strVal(type);
+        
+        if (eventInit) {
+            for (var key in eventInit) {
                 if (key === 'bubbles') {
-                    bubbles = !!props.bubbles;
+                    bubbles = !!eventInit.bubbles;
                 } else if (key === 'cancelable') {
-                    cancelable = !!props.cancelable;
+                    cancelable = !!eventInit.cancelable;
                 } else if (key !== 'type') {
-                    event[key] = props[key];
+                    event[key] = eventInit[key];
                 }
             }
         }
@@ -3059,15 +3057,12 @@
      * @memberof $cms.dom
      * @param el
      * @param event
-     * @param [args]
+     * @param [eventInit]
      * @returns {boolean}
      */
-    $cms.dom.trigger = function trigger(el, event, args) {
+    $cms.dom.trigger = function trigger(el, event, eventInit) {
         el = domArg(el);
-        event = ((typeof event === 'string') || isPlainObj(event)) ? $cms.dom.createEvent(event) : event;
-        if (args) {
-            event._args = args;
-        }
+        event = isObj(event) ? event : $cms.dom.createEvent(event, eventInit);
 
         // handle focus(), blur() by calling them directly
         if ((event.type in focusEvents) && (typeof el[event.type] === 'function')) {

@@ -166,7 +166,7 @@
 
             previewUrl += ((window.mobileVersionForPreview === undefined) ? '' : ('&keep_mobile=' + (window.mobileVersionForPreview ? '1' : '0')));
 
-            var oldAction = form.getAttribute('action');
+            var oldAction = strVal(form.getAttribute('action'));
 
             if (!form.oldAction) {
                 form.oldAction = oldAction;
@@ -189,7 +189,7 @@
                     return resolvePreviewPromise(false);
                 }
 
-                if ($cms.dom.trigger(form, { type: 'submit', triggeredByDoFormPreview: true }) === false) {
+                if ($cms.dom.trigger(form, 'submit', { detail: { triggeredByDoFormPreview: true } }) === false) {
                     return resolvePreviewPromise(false);
                 }
 

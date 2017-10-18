@@ -355,7 +355,7 @@
         $cms.dom.on(commentsForm, 'submit', function commentsAjaxListener(event) {
             var ret;
             
-            if (event.triggeredByDoFormPreview) {
+            if (event.detail && event.detail.triggeredByDoFormPreview) {
                 return true;
             }
 
