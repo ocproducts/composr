@@ -416,7 +416,7 @@
             $cms.ui.open($cms.maintainThemeInLink(link.href), 'site_attachment_chooser', 'width=550,height=600,status=no,resizable=yes,scrollbars=yes');
         });
 
-        if (params.simpleUi) {
+        if ($cms.browserMatches('simplified_attachments_ui')) {
             window.numAttachments = 1;
 
             window.$cmsLoad.push(function () {

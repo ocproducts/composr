@@ -1769,7 +1769,7 @@
 
              @method get
              @param {String} id Identifier of the DOM Element
-             @return {DOMElement}
+             @return { DOMElement }
              */
             var get = function(id) {
                 if (typeof id !== 'string') {
@@ -2533,7 +2533,7 @@
                      Returns container for the runtime as DOM element
 
                      @method getShimContainer
-                     @return {DOMElement}
+                     @return { DOMElement }
                      */
                     getShimContainer: function() {
                         var container, shimContainer = Dom.get(this.shimid);
@@ -2567,7 +2567,7 @@
                      Returns runtime as DOM element (if appropriate)
 
                      @method getShim
-                     @return {DOMElement}
+                     @return { DOMElement }
                      */
                     getShim: function() {
                         return _shim;
@@ -3219,7 +3219,7 @@
 
                      @method detach
                      @protected
-                     @param {DOMString} [data=''] Standalone value
+                     @param { DOMString } [data=''] Standalone value
                      */
                     detach: function(data) {
                         if (this.ruid) {
@@ -4332,7 +4332,7 @@
                      Stores the error of failed asynchronous read operation.
 
                      @property error
-                     @type {DOMError}
+                     @type { DOMError }
                      */
                     error: null,
 
@@ -6448,7 +6448,7 @@
                      can be used in legacy browsers that do not have canvas or proper dataURI support).
 
                      @method embed
-                     @param {DOMElement} el DOM element to insert the image object into
+                     @param { DOMElement } el DOM element to insert the image object into
                      @param {Object} [options]
                      @param {Number} [options.width] The width of an embed (defaults to the image width)
                      @param {Number} [options.height] The height of an embed (defaults to the image height)
@@ -14390,7 +14390,7 @@ FileProgress.prototype.disappear = function () {
 
         plLoadedHandled[$cms.uid(plObj)] = true;
 
-        window.mOxie.Mime.addMimeType('image/vnd.microsoft.icon,ico');
+        moxie.core.utils.Mime.addMimeType('image/vnd.microsoft.icon,ico');
 
         var btnSubmitId = plObj.settings.btn_submit_id,
             btnPreviewId = plObj.settings.btn_preview_id;
