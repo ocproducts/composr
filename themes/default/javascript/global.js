@@ -2891,9 +2891,6 @@
             el.addEventListener(realEvent(handler.e), handler.proxy, eventCapture(handler, capture))
         });
     }
-    
-    // Enable for debugging only
-    // $cms.dom.findHandlers = findHandlers;
 
     function findHandlers(element, event, fn, selector) {
         var matcher;
@@ -2920,6 +2917,9 @@
             })
         });
     }
+
+    // Enable for debugging only
+    $cms.dom.findHandlers = findHandlers;
 
     /**
      * @memberof $cms.dom
@@ -2981,7 +2981,7 @@
 
     /**
      * @memberof $cms.dom
-     * @param { Window|Document|Element } el
+     * @param { Window|Document|Element|string } el
      * @param {string|object} event
      * @param {string|function} selector
      * @param {object|function} [data]
@@ -2995,7 +2995,7 @@
 
     /**
      * @memberof $cms.dom
-     * @param { Window|Document|Element } el
+     * @param { Window|Document|Element|string } el
      * @param {string|object} event
      * @param {string|function} [selector]
      * @param {function} [callback]
@@ -6292,7 +6292,7 @@
         // [accesskey="u"] identifies submit button, [accesskey="p"] identifies preview button
         var buttons = $cms.dom.$$('input[accesskey="u"], button[accesskey="u"], input[accesskey="p"], button[accesskey="p"]');
 
-        permanent = !!permanent;
+        permanent = Boolean(permanent);
 
         buttons.forEach(function (btn) {
             if (!btn.disabled && !tempDisabledButtons[$cms.uid(btn)]) { // We do not want to interfere with other code potentially operating

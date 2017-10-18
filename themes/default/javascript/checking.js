@@ -124,7 +124,7 @@
                 if ($cms.dom.trigger(form, 'submit') === false) {
                     return resolveSubmitPromise(false);
                 }
-
+                
                 if (!window.justCheckingRequirements) {
                     if (analyticEventCategory) {
                         $cms.gaTrack(null, analyticEventCategory, null, function () {
@@ -328,7 +328,7 @@
      * @memberof $cms.form
      * @param { HTMLFormElement } theForm
      * @param {boolean} [forPreview]
-     * @returns {boolean|Promise<boolean>}
+     * @returns { Promise<boolean> }
      */
     $cms.form.checkForm = function checkForm(theForm, forPreview) {
         var deleteElement = $cms.dom.$('#delete');
@@ -395,8 +395,7 @@
                         $cms.dom.smoothScroll(posy - 50, null, null, function () {
                             try {
                                 errorElement.focus();
-                            } catch (e) {}
-                            /* Can have exception giving focus on IE for invisible fields */
+                            } catch (e) {} // Can have exception giving focus on IE for invisible fields
                         });
                     }
                 }

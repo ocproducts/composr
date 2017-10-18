@@ -13237,7 +13237,7 @@ FileProgress.prototype.disappear = function () {
     
     var plLoadedHandled = {};
     function onPluploadLoaded(plObj) {
-        //console.log('onPluploadLoaded()', 'plObj:', plObj);
+        console.log('onPluploadLoaded()', 'plObj:', plObj);
         
         if (plLoadedHandled[$cms.uid(plObj)]) { // Called when Flash redisplayed after being obscured, so we need to return to avoid a recursion error
             return;
@@ -13247,19 +13247,21 @@ FileProgress.prototype.disappear = function () {
 
         window.mOxie.Mime.addMimeType('image/vnd.microsoft.icon,ico');
 
-        var btnSubmitId = plObj.settings.btn_submit_id;
+        var btnSubmitId = plObj.settings.btn_submit_id,
+            btnPreviewId = plObj.settings.btn_preview_id;
 
         plObj.cmsPreviewing = false;
-        // Intentionally listening on the `document` level so other listeners can execute first
-        $cms.dom.on('#' + btnSubmitId, 'click', function (e) {
+        $cms.dom.off('#' + btnSubmitId, 'click.onPluploadLoaded'); // Avoid duplicates
+        $cms.dom.on('#' + btnSubmitId, 'click.onPluploadLoaded', function (e) {
+            plObj.cmsPreviewing = false;
             beginFormUploading(plObj);
             return false;
         });
 
         // Preview button too
-        if (document.getElementById('preview_button')) {
-            // Intentionally listening on the `document` level so other listeners can execute first
-            $cms.dom.on('#preview_button', 'click', function (e) {
+        if (document.getElementById(btnPreviewId)) {
+            $cms.dom.off('#' + btnSubmitId, 'click.onPluploadLoaded'); // Avoid duplicates
+            $cms.dom.on('#' + btnPreviewId, 'click.onPluploadLoaded', function (e) {
                 plObj.cmsPreviewing = true;
                 beginFormUploading(plObj);
                 return false;
@@ -13269,7 +13271,7 @@ FileProgress.prototype.disappear = function () {
     
     // Called by the submit button to start the upload
     function beginFormUploading(plObj) {
-        //console.log('beginFormUploading()', 'plObj:', plObj);
+        console.log('beginFormUploading()', 'plObj:', plObj);
         
         window.justCheckingRequirements = true;
         plObj.submitting = true;
@@ -13293,7 +13295,11 @@ FileProgress.prototype.disappear = function () {
                         }
                     });
                 } else {
-                    $cms.form.doFormSubmit(btnSubmit.form, window.analyticEventCategory);
+                    $cms.form.doFormSubmit(btnSubmit.form, window.analyticEventCategory).then(function (bool) {
+                        if (bool) {
+                            btnSubmit.form.submit();
+                        }
+                    });
                 }
             }
             
@@ -13331,7 +13337,11 @@ FileProgress.prototype.disappear = function () {
                     }
                 });
             } else {
-                $cms.form.doFormSubmit(btnSubmit.form, window.analyticEventCategory);
+                $cms.form.doFormSubmit(btnSubmit.form, window.analyticEventCategory).then(function (bool) {
+                    if (bool) {
+                        btnSubmit.form.submit();
+                    }
+                });
             }
         }
     }
@@ -13495,16 +13505,18 @@ FileProgress.prototype.disappear = function () {
 
         var allDone = true;
         var form = document.getElementById(plObj.settings.hidFileID).form;
+        
         for (var i = 0; i < form.elements.length; i++) {
             if ((form.elements[i].pluploadObject != null) && (form.elements[i].pluploadObject.total.percent < 100) && (Number(form.elements[i].pluploadObject.total.size) !== 0)) {
                 allDone = false;
+                break;
             }
         }
         if (allDone) {
             for (var i = 0; i < form.elements.length; i++) {
                 if ((form.elements[i].type === 'submit') || (form.elements[i].type === 'button') || (form.elements[i].type === 'image') || (form.elements[i].nodeName.toLowerCase() === 'button')) {
                     form.elements[i].disabled = false;
-                    form.elements[i].style.cursor = 'default';
+                    form.elements[i].style.removeProperty('cursor');
                 }
             }
         }
@@ -13548,12 +13560,16 @@ FileProgress.prototype.disappear = function () {
 
             if (plObj.cmsPreviewing) {
                 $cms.form.doFormPreview(btnSubmit.form, window.formPreviewUrl, window.separatePreview).then(function (bool) {
-                    if (bool && !window.justCheckingRequirements) {
+                    if (bool) {
                         btnSubmit.form.submit();
                     }
                 });
             } else {
-                $cms.form.doFormSubmit(btnSubmit.form, window.analyticEventCategory);
+                $cms.form.doFormSubmit(btnSubmit.form, window.analyticEventCategory).then(function (bool) {
+                    if (bool) {
+                        btnSubmit.form.submit();
+                    }
+                });
             }
         }
     }
@@ -13839,6 +13855,7 @@ FileProgress.prototype.disappear = function () {
             txtName: name,
             page_type: pageType,
             btn_submit_id: btnSubmitId,
+            btn_preview_id: 'preview_button',
             required: false,
             posting_field_name: postingFieldName,
             progress_target: 'fsUploadProgress',
