@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,tickets}
 <div data-tpl="supportTicketScreen" data-tpl-params="{+START,PARAMS_JSON,SERIALIZED_OPTIONS,HASH}{_*}{+END}">
 	{TITLE}
 

@@ -114,7 +114,7 @@
         },
 
         clickBtnSubmit: function (e, button) {
-            var form = this.form;
+            var form = button.form;
 
             form.setAttribute('target', '_self');
 

@@ -14609,7 +14609,7 @@
     }
     
     function preinitFileInput(pageType, name, btnSubmitId, postingFieldName, filter, buttonType) {
-        //console.log('preinitFileInput()', 'pageType:', pageType, 'name:', name, 'btnSubmitId:', btnSubmitId, 'postingFieldName:', postingFieldName, 'filter:', filter, 'buttonType:', buttonType);
+        console.log('preinitFileInput()', 'pageType:', pageType, 'name:', name, 'btnSubmitId:', btnSubmitId, 'postingFieldName:', postingFieldName, 'filter:', filter, 'buttonType:', buttonType);
 
         pageType = strVal(pageType);
         name = strVal(name);
@@ -14721,7 +14721,7 @@
 
     // NB: Only used by $cms.templates.attachments()
     function prepareSimplifiedFileInput(pageType, name, btnSubmitId, postingFieldName, filter, attachmentUploadButton) {
-        //console.log('prepareSimplifiedFileInput()', 'pageType:', pageType, 'name:', name, 'btnSubmitId:', btnSubmitId, 'postingFieldName:', postingFieldName, 'filter:', filter, 'attachmentUploadButton:', attachmentUploadButton);
+        console.log('prepareSimplifiedFileInput()', 'pageType:', pageType, 'name:', name, 'btnSubmitId:', btnSubmitId, 'postingFieldName:', postingFieldName, 'filter:', filter, 'attachmentUploadButton:', attachmentUploadButton);
 
         name = strVal(name);
         btnSubmitId = strVal(btnSubmitId);

@@ -4622,9 +4622,9 @@
     function callBlock(url, newBlockParams, targetDiv, append, scrollToTopOfWrapper, postParams, inner, showLoadingAnimation) {
         url = strVal(url);
         newBlockParams = strVal(newBlockParams);
-        scrollToTopOfWrapper = !!scrollToTopOfWrapper;
+        scrollToTopOfWrapper = Boolean(scrollToTopOfWrapper);
         postParams = (postParams !== undefined) ? postParams : null;
-        inner = !!inner;
+        inner = Boolean(inner);
         showLoadingAnimation = (showLoadingAnimation !== undefined) ? !!showLoadingAnimation : true;
 
         if ((_blockDataCache[url] === undefined) && (newBlockParams !== '')) {
@@ -4648,41 +4648,6 @@
         var loadingWrapper = targetDiv;
         if (!loadingWrapper.id.includes('carousel_') && !$cms.dom.html(loadingWrapper).includes('ajax_loading_block') && showLoadingAnimation) {
             document.body.style.cursor = 'wait';
-            // Show loading animation - COMMENTED OUT: Too buggy
-            // var rawAjaxGrowSpot = targetDiv.querySelectorAll('.raw_ajax_grow_spot');
-            //
-            // if ((rawAjaxGrowSpot[0] !== undefined) && append) {
-            //     // If we actually are embedding new results a bit deeper
-            //     loadingWrapper = rawAjaxGrowSpot[0];
-            // }
-            //
-            // var loadingWrapperInner = document.createElement('div');
-            // if (!$cms.dom.isCss(loadingWrapper, 'position', ['relative', 'absolute'])) {
-            //     if (append) {
-            //         loadingWrapperInner.style.position = 'relative';
-            //     } else {
-            //         loadingWrapper.style.position = 'relative';
-            //         loadingWrapper.style.overflow = 'hidden'; // Stops margin collapsing weirdness
-            //     }
-            // }
-            //
-            // var loadingImage = $cms.dom.create('img', {
-            //     className: 'ajax_loading_block',
-            //     src: $cms.img('{$IMG;,loading}'),
-            //     css: {
-            //         position: 'absolute',
-            //         zIndex: 1000,
-            //         left: (targetDiv.offsetWidth / 2 - 10) + 'px'
-            //     }
-            // });
-            // if (!append) {
-            //     loadingImage.style.top = (targetDiv.offsetHeight / 2 - 20) + 'px';
-            // } else {
-            //     loadingImage.style.top = 0;
-            //     loadingWrapperInner.style.height = '30px';
-            // }
-            // loadingWrapperInner.appendChild(loadingImage);
-            // loadingWrapper.appendChild(loadingWrapperInner);
         }
 
         return new Promise(function (resolvePromise) {
@@ -10394,9 +10359,7 @@
         var url = strVal(params.url),
             changeDetectionUrl = strVal(params.changeDetectionUrl),
             refreshTime = Number(params.refreshTime) || 0,
-            refreshIfChanged = Boolean(params.refreshIfChanged);
-        
-        internaliseAjaxBlockWrapperLinks(url, element, ['.*'], {}, false, true);
+            refreshIfChanged = strVal(params.refreshIfChanged);
 
         if (changeDetectionUrl && (refreshTime > 0)) {
             window.detectInterval = setInterval(function () {
@@ -10409,6 +10372,8 @@
                 });
             }, refreshTime * 1000);
         }
+
+        internaliseAjaxBlockWrapperLinks(url, element, ['.*'], {}, false, true);
     };
 
     $cms.templates.ajaxPagination = function ajaxPagination(params) {
