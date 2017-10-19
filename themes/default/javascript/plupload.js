@@ -14813,15 +14813,6 @@
 
         return {
             // Composr binding settings
-            txtFileName: 'txtFileName_' + name,
-            hidFileID: 'hidFileID_' + name,
-            txtName: name,
-            page_type: pageType,
-            btn_submit_id: btnSubmitId,
-            btn_preview_id: 'preview_button',
-            required: false,
-            posting_field_name: postingFieldName,
-            progress_target: 'fsUploadProgress',
             multi_selection: pageType.includes('_multi'),
 
             // General settings
@@ -14832,17 +14823,25 @@
             // Specify what files to browse for
             filters: name.includes('file_anytype') ? [{title: '*.*', extensions: '*'}] : [{title: '{!javascript:ALLOWED_FILES^#}', extensions: filter}],
 
-            // Callbacks
-            callbacks: [],
-
             // Flash settings
             flash_swf_url: $cms.baseUrl('data/plupload/plupload.flash.swf'),
 
             // Silverlight settings
             silverlight_xap_url: $cms.baseUrl('data/plupload/plupload.silverlight.xap'),
 
-            // Custom Composr settings
-            immediate_submit: true
+            /*== Custom Composr settings ==*/
+            required: false,
+            progress_target: 'fsUploadProgress',
+            txtFileName: 'txtFileName_' + name,
+            hidFileID: 'hidFileID_' + name,
+            txtName: name,
+            page_type: pageType,
+            posting_field_name: postingFieldName,
+            btn_submit_id: btnSubmitId,
+            btn_preview_id: 'preview_button',
+            immediate_submit: true,
+            // Callbacks
+            callbacks: []
         };
     }
 

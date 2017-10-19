@@ -44,14 +44,12 @@
         // Add new file input, if we are using naked file inputs
         if (window.attachmentTemplate.replace(/\s/, '') !== '') {
             var newDiv = document.createElement('div');
-            $cms.dom.html(newDiv, window.attachmentTemplate.replace(/\_\_numAttachments\_\_/g, window.numAttachments));
+            $cms.dom.html(newDiv, window.attachmentTemplate.replace(/\_\_num_attachments\_\_/g, window.numAttachments));
             addTo.appendChild(newDiv);
         }
 
         // Rebuild uploader button, if we have a singular button
-        if (window.rebuildAttachmentButtonForNext != null) {
-            window.rebuildAttachmentButtonForNext(postingFieldName);
-        }
+        window.rebuildAttachmentButtonForNext(postingFieldName);
 
         // Previous file input cannot be used anymore, if it exists
         var element = document.getElementById('file' + window.numAttachments);
@@ -75,7 +73,7 @@
      * @return { Promise }
      */
     function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
-        multi = boolVal(multi);
+        multi = Boolean(multi);
 
         return new Promise(function (resolvePromise) {
             var post = document.getElementById(fieldName),
@@ -110,12 +108,12 @@
                 return resolvePromise();
             }
 
-            var ext = filepath.replace(/^.*\./, '').toLowerCase();
-            var isImage = (',{$CONFIG_OPTION;,valid_images},'.indexOf(',' + ext + ',') !== -1);
-            var isVideo = (',{$CONFIG_OPTION;,valid_videos},'.indexOf(',' + ext + ',') !== -1);
-            var isAudio = (',{$CONFIG_OPTION;,valid_audios},'.indexOf(',' + ext + ',') !== -1);
-            var isArchive = (ext === 'tar') || (ext === 'zip');
-            var prefix = '', suffix = '';
+            var ext = filepath.replace(/^.*\./, '').toLowerCase(),
+                isImage = (',{$CONFIG_OPTION;,valid_images},'.indexOf(',' + ext + ',') !== -1),
+                isVideo = (',{$CONFIG_OPTION;,valid_videos},'.indexOf(',' + ext + ',') !== -1),
+                isAudio = (',{$CONFIG_OPTION;,valid_audios},'.indexOf(',' + ext + ',') !== -1),
+                isArchive = (ext === 'tar') || (ext === 'zip'),
+                prefix = '', suffix = '';
 
             if (multi && isImage) {
                 prefix = '[media_set]\n';
@@ -629,7 +627,9 @@
                         '{!javascript:ENTER_CAPTION;^}',
                         '',
                         function (vc) {
-                            if (window.getSelectedText(element) != '') {
+                            var element = document.getElementById(fieldName);
+                            
+                            if (window.getSelectedText(element) !== '') {
                                 _doInputPage(fieldName, result, '');
                                 return;
                             }
@@ -651,6 +651,7 @@
                             '',
                             function (vb) {
                                 if (vb !== null) {
+                                    var element = document.getElementById(fieldName);
                                     result = va + ':' + vb;
 
                                     if (window.getSelectedText(element) != '') {
@@ -700,7 +701,7 @@
                 if (va !== null) {
                     var element = document.getElementById(fieldName);
 
-                    if (window.getSelectedText(element) != '') {
+                    if (window.getSelectedText(element) !== '') {
                         window.insertTextbox(element, '[email=\"' + $cms.filter.comcode(va) + '\"]', '[/email]');
                         return;
                     }

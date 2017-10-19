@@ -13,6 +13,7 @@
     window.setTextbox = setTextbox;
     window.insertTextbox = insertTextbox;
     window.insertTextboxOpener = insertTextboxOpener;
+    window.getSelectedText = getSelectedText;
     window.getWYSISWYGSelectedHtml = getWYSISWYGSelectedHtml;
     window.insertTextboxWrapping = insertTextboxWrapping;
     window.setSelectionRange = setSelectionRange;

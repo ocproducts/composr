@@ -2,10 +2,10 @@
  This file is intended for customising the way the attachment UI operates/defaults.
 
  The following variables are defined:
- is_image (boolean)
- is_video (boolean)
- is_audio (boolean)
- is_archive (boolean)
+ isImage (boolean)
+ isVideo (boolean)
+ isAudio (boolean)
+ isArchive (boolean)
  ext (the file extension, with no dot)
  */
 

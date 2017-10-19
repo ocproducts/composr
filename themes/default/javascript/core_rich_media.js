@@ -428,6 +428,8 @@
         }
         
         function rebuildAttachmentButtonForNext(_postingFieldName, attachmentUploadButton) {
+            console.log('rebuildAttachmentButtonForNext()', '_postingFieldName:', _postingFieldName, 'attachmentUploadButton:', attachmentUploadButton);
+            
             if (_postingFieldName !== postingFieldName) {
                 return;
             }
@@ -438,7 +440,7 @@
             window.attachmentUploadButton = attachmentUploadButton;
 
             $cms.requireJavascript('plupload').then(function () {
-                window.prepareSimplifiedFileInput('attachment_multi', 'file' + window.numAttachments, null, postingFieldName, strVal(params.filter), window.attachmentUploadButton);
+                window.prepareSimplifiedFileInput('attachment_multi', 'file' + window.numAttachments, null, postingFieldName, strVal(params.filter), attachmentUploadButton);
             });
         }
     };
