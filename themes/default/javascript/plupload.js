@@ -14760,10 +14760,9 @@
         var button = document.getElementById(attachmentUploadButton);
         if (button) {
             var newButton = button.cloneNode(true),
-                buttonParent = button.parentNode,
-                sibling = button.nextSibling.nextSibling;
+                buttonParent = button.parentNode;
             buttonParent.removeChild(button);
-            buttonParent.insertBefore(newButton, sibling);
+            buttonParent.appendChild(newButton);
         }
 
         // Remove shiv code from old instances too
