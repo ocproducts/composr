@@ -14428,21 +14428,20 @@
                 $cms.dom.trigger(element.oldElement, 'change');
             }
         } else {
-            // Simplifed attachments probably
+            // Simplified attachments probably
             element = document.getElementById('hidFileID_' + name);
         }
 
-        if (element.pluploadObject === undefined) {
-            return;
-        }
         var plObj = element.pluploadObject;
-        if (plObj.settings === undefined) {
+        
+        if ((plObj == null) || (plObj.settings == null)) {
             return;
         }
 
         if (plObj.settings.immediate_submit) {
-            var fileIdField = document.getElementById(plObj.settings.hidFileID);
-            var filenameField = document.getElementById(plObj.settings.txtFileName);
+            var fileIdField = document.getElementById(plObj.settings.hidFileID),
+                filenameField = document.getElementById(plObj.settings.txtFileName);
+            
             if ((fileIdField.value === '-1') && (filenameField.value !== '') && (value !== '')) {
                 plObj.submitting = false;
                 plObj.start();
@@ -14485,21 +14484,20 @@
         progress.setStatus('{!javascript:PLUPLOAD_COMPLETE^;}');
 
         var btnSubmit = document.getElementById(plObj.settings.btn_submit_id);
-
-        var allDone = true;
+        var allUploadsDone = true;
         var form = document.getElementById(plObj.settings.hidFileID).form;
 
         for (var i = 0; i < form.elements.length; i++) {
             if ((form.elements[i].pluploadObject != null) && (form.elements[i].pluploadObject.total.percent < 100) && (Number(form.elements[i].pluploadObject.total.size) !== 0)) {
-                allDone = false;
+                allUploadsDone = false;
                 break;
             }
         }
-        if (allDone) {
+        if (allUploadsDone) {
             for (var i = 0; i < form.elements.length; i++) {
                 if ((form.elements[i].type === 'submit') || (form.elements[i].type === 'button') || (form.elements[i].type === 'image') || (form.elements[i].nodeName.toLowerCase() === 'button')) {
                     form.elements[i].disabled = false;
-                    form.elements[i].style.removeProperty('cursor');
+                    form.elements[i].style.cursor = '';
                 }
             }
         }
@@ -14528,13 +14526,13 @@
         }
         id.value += decodedData['upload_id'];
 
-        if (allDone) {
-            for (var c = 0; c < plObj.settings.callbacks.length; c++) {
-                plObj.settings.callbacks[c](plObj.settings);
+        if (allUploadsDone) {
+            for (var c = 0; c < plObj.settings.onAllUploadsDoneCallbacks.length; c++) {
+                plObj.settings.onAllUploadsDoneCallbacks[c](plObj.settings);
             }
         }
 
-        if (plObj.submitting && allDone) {
+        if (plObj.submitting && allUploadsDone) {
             window.justCheckingRequirements = false;
 
             if (plObj.cmsPreviewing) {
@@ -14608,6 +14606,7 @@
         }
     }
     
+    // preinitFileInput() is for normal Composr forms
     function preinitFileInput(pageType, name, btnSubmitId, postingFieldName, filter, buttonType) {
         console.log('preinitFileInput()', 'pageType:', pageType, 'name:', name, 'btnSubmitId:', btnSubmitId, 'postingFieldName:', postingFieldName, 'filter:', filter, 'buttonType:', buttonType);
 
@@ -14629,65 +14628,37 @@
 
         btnSubmitId = findSubmitButton(btnSubmitId, rep.form);
 
-        var mainDiv = document.createElement('div');
-        mainDiv.id = 'mainDiv_' + name;
-        mainDiv.style.display = 'inline-block';
-        rep.parentNode.appendChild(mainDiv);
-
-        var subDiv = document.createElement('div');
-        subDiv.className = 'vertical_alignment';
-        mainDiv.appendChild(subDiv);
-
-        var progressDiv = document.createElement('div');
-        progressDiv.id = 'fsUploadProgress_' + name;
-        progressDiv.className = 'progressBars';
-        mainDiv.appendChild(progressDiv);
-
-        var filenameField = document.createElement('input');
-        filenameField.setAttribute('size', 24);
-        filenameField.id = 'txtFileName_' + name;
-        filenameField.type = 'text';
-        filenameField.value = '';
-        filenameField.name = filenameField.id;
-        filenameField.className = 'upload_response_field';
-        filenameField.disabled = true;
-        subDiv.appendChild(filenameField);
-
-        var uploadButton = document.createElement('input');
-        uploadButton.type = 'button';
-        uploadButton.value = '{!BROWSE;^}';
-        uploadButton.className = 'buttons__upload ' + buttonType;
-        uploadButton.id = 'uploadButton_' + name;
-        subDiv.appendChild(uploadButton, rep);
-
-        var fileIdField = document.createElement('input');
-        fileIdField.id = 'hidFileID_' + name;
-        fileIdField.name = fileIdField.id;
-        fileIdField.type = 'hidden';
-        fileIdField.value = '-1';
-        mainDiv.appendChild(fileIdField);
-
         // Replace old upload field with text field that holds a '1' indicating upload has happened (and telling Composr to check the hidFileID value for more details)
         rep.style.display = 'none';
         rep.disabled = true;
         rep.name = name + '_old';
         rep.id = name + '_old';
-
-        var rep2 = document.createElement('input');
-        rep2.type = 'text';
+        
+        $cms.dom.append(
+            rep.parentNode, 
+            '<div id="mainDiv_' + name + '" style="display: inline-block;">' +
+            '<div id="subDiv_' + name + '" class="vertical_alignment">' +
+            // This input field shows the file name of the uploading/uploaded file to the user
+            '<input type="text" id="txtFileName_' + name + '" name="txtFileName_' + name + '" class="upload_response_field" size="24" disabled value="">' +
+            '<input type="button" id="uploadButton_' + name + '" class="buttons__upload ' + buttonType + '" value="{!BROWSE;^*}">' +
+            '</div>' +
+            '<div id="fsUploadProgress_' + name + '" class="progressBars"></div>' +
+             // This hidden input field holds the server-side upload_id after upload is finished
+            '<input type="hidden" id="hidFileID_' + name + '" name="hidFileID_' + name + '" value="-1">' +
+            '<input type="button" id="fsClear_' + name + '" class="buttons__clear ' + buttonType + ' clear_button" alt="{!CLEAR;^*}" value="{!CLEAR;^*}">' +
+            '</div>' + 
+            '<input type="text" id="' + name + '" name="' + name + '" style="display: none;" disabled>'
+        );
+        
+        var rep2 = document.getElementById(name);
         rep2.oldElement = rep;
-        rep2.style.display = 'none';
-        rep2.disabled = true;
-        rep2.name = name;
-        rep2.id = name;
-        rep.parentNode.appendChild(rep2);
 
         var settings = getUploaderSettings(name, pageType, btnSubmitId, postingFieldName, filter);
         settings.progress_target = 'fsUploadProgress_' + name;
         settings.required = rep.classList.contains('required');
         settings.browse_button = 'uploadButton_' + name;
         settings.drop_element = 'txtFileName_' + name;
-        settings.container = mainDiv.id;
+        settings.container = 'mainDiv_' + name;
 
         var plObj = getUploaderObject(settings);
 
@@ -14699,19 +14670,11 @@
             clearButton.style.display = 'none';
         }
 
-        var newClearBtn = document.createElement('input');
-        newClearBtn.id = 'fsClear_' + name;
-        newClearBtn.type = 'button';
-        newClearBtn.className = 'buttons__clear ' + buttonType + ' clear_button';
-        newClearBtn.alt = '{!CLEAR;^}';
-        newClearBtn.value = '{!CLEAR;^}';
-        subDiv.appendChild(newClearBtn);
-
-        $cms.dom.on(newClearBtn, 'click', function () {
+        $cms.dom.on('#fsClear_' + name, 'click', function () {
             var filenameField = document.getElementById('txtFileName_' + name);
             filenameField.value = '';
             if ((rep.form.elements[postingFieldName] != null) && name.includes('file')) {
-                clearAttachment(name.replace(/^file/, ''), rep.form.elements[postingFieldName]);
+                clearAttachmentComcode(name.replace(/^file/, ''), rep.form.elements[postingFieldName]);
             }
             fireFakeUploadFieldChange(name, '');
             document.getElementById(plObj.settings.hidFileID).value = '-1';
@@ -14719,7 +14682,17 @@
         });
     }
 
-    // NB: Only used by $cms.templates.attachments()
+
+    /**
+     * prepareSimplifiedFileInput() is for attachments
+     * NB: Only used by $cms.templates.attachments()
+     * @param pageType
+     * @param name 
+     * @param btnSubmitId - ID of the form submit button
+     * @param postingFieldName - ID of the associated textarea
+     * @param filter - Valid file types
+     * @param attachmentUploadButton - ID of browse button passed to Plupload
+     */
     function prepareSimplifiedFileInput(pageType, name, btnSubmitId, postingFieldName, filter, attachmentUploadButton) {
         console.log('prepareSimplifiedFileInput()', 'pageType:', pageType, 'name:', name, 'btnSubmitId:', btnSubmitId, 'postingFieldName:', postingFieldName, 'filter:', filter, 'attachmentUploadButton:', attachmentUploadButton);
 
@@ -14735,26 +14708,16 @@
         }
 
         var mainDiv = document.getElementById('js-attachment-store');
-
-        var filenameField = document.getElementById('txtFileName_' + name);
-        if (!filenameField) {
-            filenameField = document.createElement('input');
-            filenameField.id = 'txtFileName_' + name;
-            filenameField.name = 'txtFileName_' + name;
-            filenameField.type = 'hidden';
-            filenameField.value = '';
-            mainDiv.appendChild(filenameField);
+        
+        if (!document.getElementById('txtFileName_' + name)) {
+            $cms.dom.append(mainDiv, '<input type="hidden" id="txtFileName_' + name + '" name="txtFileName_' + name + '" value="">');
+        }
+        
+        if (!document.getElementById('hidFileID_' + name)) {
+            $cms.dom.append(mainDiv, '<input type="hidden" id="hidFileID_' + name + '" name="hidFileID_' + name + '" value="-1">');
         }
 
         var fileIdField = document.getElementById('hidFileID_' + name);
-        if (!fileIdField) {
-            fileIdField = document.createElement('input');
-            fileIdField.id = 'hidFileID_' + name;
-            fileIdField.name = fileIdField.id;
-            fileIdField.type = 'hidden';
-            fileIdField.value = '-1';
-            mainDiv.appendChild(fileIdField);
-        }
 
         // We need to clear out events on the upload button, attaching a new event for this upload
         var button = document.getElementById(attachmentUploadButton);
@@ -14793,10 +14756,7 @@
             var inputs = form.elements;
             for (var i = 0; i < inputs.length; i++) {
                 if ((inputs[i].nodeName.toLowerCase() === 'button') || (inputs[i].type === 'image') || (inputs[i].type === 'submit') || (inputs[i].type === 'button')) {
-                    if (!inputs[i].id) {
-                        inputs[i].id = 'rand_id_' + Math.floor(Math.random() * 10000);
-                    }
-                    btnSubmitId = inputs[i].id;
+                    btnSubmitId = $cms.dom.id(inputs[i]);
                     if (inputs[i].getAttribute('accesskey') === 'u') { /* Identifies submit button */
                         break; // Ideal, let us definitely use this (otherwise we end up using the last)
                     }
@@ -14811,8 +14771,7 @@
         //console.log('getUploaderSettings()', 'name:', name, 'pageType:', pageType, 'btnSubmitId:', btnSubmitId, 'postingFieldName:', postingFieldName, 'filter:', filter);
 
         return {
-            // Composr binding settings
-            multi_selection: pageType.includes('_multi'),
+            multi_selection: pageType.includes('_multi'), // Allows you to select multiple files from the browse dialog
 
             // General settings
             runtimes: 'html5,silverlight,flash',
@@ -14840,7 +14799,7 @@
             btn_preview_id: 'preview_button',
             immediate_submit: true,
             // Callbacks
-            callbacks: []
+            onAllUploadsDoneCallbacks: []
         };
     }
 
@@ -15029,15 +14988,16 @@
         };
     }
 
-    function clearAttachment(index, postField) {
-        //console.log('clearAttachment()', 'index:', index, 'postField:', postField);
+    // Removes the [attachment] and [attachment_safe] comcode for the specified file index
+    // Originial name: clear_attachment, File: editing.js
+    function clearAttachmentComcode(index, postField) {
+        //console.log('clearAttachmentComcode()', 'index:', index, 'postField:', postField);
 
         var newContents = window.getTextbox(postField);
-        newContents = newContents.replace(new RegExp('\\[(attachment|attachment_safe)[^\\]]*\\]new_' + index + '\\[/(attachment|attachment_safe)\\]'), '');
+        newContents = newContents.replace(new RegExp('\\[(attachment|attachment_safe)[^\\]]*\\]new_' + index + '\\[/(attachment|attachment_safe)\\]', 'g'), '');
         newContents = newContents.replace(new RegExp('<input[^<>]* class="cms_keep_ui_controlled"[^<>]* title="[^<>]*" value="[^"]+"[^<>]* />'), ''); // Shell of the above
         window.setTextbox(postField, newContents, newContents);
         document.getElementById('file' + index).value = '';
-        return false;
     }
     
     /*

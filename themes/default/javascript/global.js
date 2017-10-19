@@ -2047,6 +2047,22 @@
 
     /** @namespace $cms */
     $cms.dom = extendDeep($cms.dom, /**@lends $cms.dom*/{
+        
+        /**
+         * Ensures the passed `el` has an id and returns the id
+         * @param { Element } el
+         * @return {string}
+         */
+        id: function id(el) {
+            el = elArg(el);
+            
+            if (el.id === '') {
+                el.id = 'rand-' + $cms.random();
+            }
+            
+            return el.id;
+        },
+        
         /**
          * Returns a single matching child element, defaults to 'document' as parent
          * @method
@@ -2368,8 +2384,10 @@
         if ((data === undefined) && (typeof (data = elem.dataset[key]) === 'string')) {
             trimmed = data.trim();
 
-            if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) {
+            if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) { // Object or array?
                 data = parseJson5(data);
+            } else if (isFinite(data)) { // A number?
+                data = Number(data);
             }
 
             // Make sure we set the data so it isn't changed later
@@ -2439,7 +2457,7 @@
 
         // Set the data...
         // We always store the camelCased key
-        domData.set(el, key, strVal(value));
+        domData.set(el, key, value);
     };
 
     /**

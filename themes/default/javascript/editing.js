@@ -47,29 +47,27 @@
                         buttons__yes: '{!javascript:WYSIWYG_DISABLE_ALWAYS;^}'
                     },
                     '{!comcode:DISABLE_WYSIWYG;^}',
-                    '{!javascript:DISCARD_WYSIWYG_CHANGES;^}',
-                    function (savingCookies) {
-                        if (!savingCookies) {
-                            return;
-                        }
+                    '{!javascript:DISCARD_WYSIWYG_CHANGES;^}', 
+                    null, 600, 140
+                ).then(function (savingCookies) {
+                    if (!savingCookies) {
+                        return;
+                    }
 
-                        if (savingCookies.toLowerCase() === '{!javascript:WYSIWYG_DISABLE_ONCE;^}'.toLowerCase()) {
-                            _toggleWysiwyg(name);
-                        }
+                    if (savingCookies.toLowerCase() === '{!javascript:WYSIWYG_DISABLE_ONCE;^}'.toLowerCase()) {
+                        _toggleWysiwyg(name);
+                    }
 
-                        if (savingCookies.toLowerCase() === '{!javascript:WYSIWYG_DISABLE_ONCE_AND_DONT_ASK;^}'.toLowerCase()) {
-                            _toggleWysiwyg(name);
-                            $cms.setCookie('use_wysiwyg', '-1', 3000);
-                        }
+                    if (savingCookies.toLowerCase() === '{!javascript:WYSIWYG_DISABLE_ONCE_AND_DONT_ASK;^}'.toLowerCase()) {
+                        _toggleWysiwyg(name);
+                        $cms.setCookie('use_wysiwyg', '-1', 3000);
+                    }
 
-                        if (savingCookies.toLowerCase() === '{!javascript:WYSIWYG_DISABLE_ALWAYS;^}'.toLowerCase()) {
-                            _toggleWysiwyg(name);
-                            $cms.setCookie('use_wysiwyg', '0', 3000);
-                        }
-                    },
-                    600,
-                    140
-                );
+                    if (savingCookies.toLowerCase() === '{!javascript:WYSIWYG_DISABLE_ALWAYS;^}'.toLowerCase()) {
+                        _toggleWysiwyg(name);
+                        $cms.setCookie('use_wysiwyg', '0', 3000);
+                    }
+                });
             }
             return;
         }

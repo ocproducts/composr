@@ -24,7 +24,7 @@
     $cms.inherits(Attachment, $cms.View, /**@lends Attachment#*/{
         events: function () {
             return {
-                'change .js-inp-file-attachment': 'setAttachment'
+                'change .js-inp-file-change-set-attachment': 'setAttachment'
             };
         },
 
@@ -417,6 +417,7 @@
             window.$cmsLoad.push(function () {
                 var aub = document.getElementById('js-attachment-upload-button');
                 if (aub && (aub.classList.contains('for_field_' + postingFieldName))) {
+                    // Attach Plupload with #js-attachment-upload-button as browse button
                     window.rebuildAttachmentButtonForNext(postingFieldName, 'js-attachment-upload-button');
                 }
             });

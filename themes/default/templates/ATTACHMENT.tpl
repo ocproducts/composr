@@ -24,7 +24,7 @@
 							<div class="accessibility_hidden"><label for="file{I*}">{!UPLOAD}</label></div>
 
 							<span class="vertical_alignment">
-								<input size="15" type="file" id="file{I*}" name="file{I*}" class="js-inp-file-attachment" />
+								<input size="15" type="file" id="file{I*}" name="file{I*}" class="js-inp-file-change-set-attachment" />
 							</span>
 
 							{+START,IF_PASSED,SYNDICATION_JSON}

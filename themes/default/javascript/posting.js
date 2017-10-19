@@ -183,7 +183,7 @@
                     }
 
                     if (uploaderSettings !== undefined) {
-                        uploaderSettings.callbacks.push(function () {
+                        uploaderSettings.onAllUploadsDoneCallbacks.push(function () {
                             // Do insta-preview
                             if ($cms.form.isWysiwygField(post)) {
                                 generateBackgroundPreview(post);
@@ -651,7 +651,7 @@
                             '',
                             function (vb) {
                                 if (vb !== null) {
-                                    var element = document.getElementById(fieldName);
+                                    
                                     result = va + ':' + vb;
 
                                     if (window.getSelectedText(element) != '') {
@@ -701,7 +701,7 @@
                 if (va !== null) {
                     var element = document.getElementById(fieldName);
 
-                    if (window.getSelectedText(element) !== '') {
+                    if (window.getSelectedText(element) != '') {
                         window.insertTextbox(element, '[email=\"' + $cms.filter.comcode(va) + '\"]', '[/email]');
                         return;
                     }

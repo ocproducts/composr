@@ -34,7 +34,7 @@
             
             if (errorMsgElement) {
                 // Make error message visible, if there's an error
-                errorMsgElement.style.display = (errorMsg === '') ? 'none' : 'block';
+                $cms.dom.toggle(errorMsgElement, (errorMsg !== ''));
 
                 // Changed error message
                 if ($cms.dom.html(errorMsgElement) !== $cms.filter.html(errorMsg)) {
@@ -43,18 +43,17 @@
                         theElement.setAttribute('aria-invalid', 'true');
 
                         // Need to switch tab?
-                        var p = errorMsgElement;
+                        var p = errorMsgElement.parentElement;
                         while (p != null) {
-                            p = p.parentNode;
-                            if ((errorMsg.substr(0, 5) !== '{!DISABLED_FORM_FIELD;^}'.substr(0, 5)) && (p) && (p.getAttribute !== undefined) && (p.getAttribute('id')) && (p.getAttribute('id').substr(0, 2) === 'g_') && (p.style.display === 'none')) {
-                                $cms.ui.selectTab('g', p.getAttribute('id').substr(2, p.id.length - 2), false, true);
+                            if ((errorMsg.substr(0, 5) !== '{!DISABLED_FORM_FIELD;^}'.substr(0, 5)) && (p.id.substr(0, 2) === 'g_') && (p.style.display === 'none')) {
+                                $cms.ui.selectTab('g', p.id.substr(2, p.id.length - 2), false, true);
                                 break;
                             }
+                            p = p.parentElement;
                         }
 
                         // Set error message
-                        var msgNode = document.createTextNode(errorMsg);
-                        errorMsgElement.appendChild(msgNode);
+                        errorMsgElement.textContent += errorMsg;
                         errorMsgElement.setAttribute('role', 'alert');
 
                         // Fade in
@@ -69,7 +68,7 @@
         }
         
         if ($cms.form.isWysiwygField(theElement)) {
-            theElement = theElement.parentNode;
+            theElement = theElement.parentElement;
         }
 
         theElement.classList.toggle('input_erroneous', (errorMsg !== ''));
@@ -235,15 +234,15 @@
      * @returns {string}
      */
     $cms.form.cleverFindValue = function cleverFindValue(form, element) {
-        if ((element.length !== undefined) && (element.nodeName === undefined)) {
-            // Radio button
+        if ((element.nodeName === undefined) && $cms.isArrayLike(element)) { 
+            // A RadioNodeList? (returned by form.elements[<name of a radio input>])
             element = element[0];
         }
-
-        var value;
+        
+        var value = '';
         switch (element.localName) {
             case 'textarea':
-                value = (window.getTextbox === undefined) ? element.value : window.getTextbox(element);
+                value = window.getTextbox(element);
                 break;
             case 'select':
                 value = '';
@@ -274,7 +273,7 @@
                     case 'radio':
                         value = '';
                         for (var i = 0; i < form.elements.length; i++) {
-                            if ((form.elements[i].name == element.name) && (form.elements[i].checked)) {
+                            if ((form.elements[i].name === element.name) && (form.elements[i].checked)) {
                                 value = form.elements[i].value;
                             }
                         }
@@ -468,42 +467,33 @@
                 return resolveCheckFieldPromise(null);
             }
 
-            // Test file sizes
-            if ((theElement.type === 'file') && (theElement.files) && (theElement.files.item) && (theElement.files.item(0)) && (theElement.files.item(0).fileSize)) {
-                totalFileSize += theElement.files.item(0).fileSize;
-            }
+            if (theElement.type === 'file') {
+                // Test file sizes
+                if ((theElement.files) && (theElement.files.item) && (theElement.files.item(0)) && (theElement.files.item(0).fileSize)) {
+                    totalFileSize += theElement.files.item(0).fileSize;
+                }
 
-            // Test file types
-            if ((theElement.type === 'file') && (theElement.value) && (theElement.name !== 'file_anytype')) {
-                var allowedTypes = '{$VALID_FILE_TYPES;^}'.split(/,/),
-                    typeOk = false,
-                    theFileType = theElement.value.includes('.') ? theElement.value.substr(theElement.value.lastIndexOf('.') + 1) : '{!NONE;^}';
+                // Test file types
+                if ((theElement.value) && (theElement.name !== 'file_anytype')) {
+                    var allowedTypes = '{$VALID_FILE_TYPES;^}'.split(/,/),
+                        typeOk = false,
+                        theFileType = theElement.value.includes('.') ? theElement.value.substr(theElement.value.lastIndexOf('.') + 1) : '{!NONE;^}';
 
-                for (var k = 0; k < allowedTypes.length; k++) {
-                    if (allowedTypes[k].toLowerCase() === theFileType.toLowerCase()) {
-                        typeOk = true;
+                    for (var k = 0; k < allowedTypes.length; k++) {
+                        if (allowedTypes[k].toLowerCase() === theFileType.toLowerCase()) {
+                            typeOk = true;
+                        }
+                    }
+                    if (!typeOk) {
+                        errorMsg = $cms.format('{!INVALID_FILE_TYPE;^}', [theFileType, '{$VALID_FILE_TYPES}']).replace(/<[^>]*>/g, '').replace(/&[lr][sd]quo;/g, '\'').replace(/,/g, ', ');
+                        if (!alerted) {
+                            $cms.ui.alert(errorMsg);
+                            alerted = true;
+                        }
                     }
                 }
-                if (!typeOk) {
-                    errorMsg = $cms.format('{!INVALID_FILE_TYPE;^}', [theFileType, '{$VALID_FILE_TYPES}']).replace(/<[^>]*>/g, '').replace(/&[lr][sd]quo;/g, '\'').replace(/,/g, ', ');
-                    if (!alerted) {
-                        $cms.ui.alert(errorMsg);
-                        alerted = true;
-                    }
-                }
             }
-
-            // Fix up bad characters
-            if (($cms.browserMatches('ie')) && (theElement.value) && (theElement.localName !== 'select')) {
-                var badWordChars = [8216, 8217, 8220, 8221],
-                    fixedWordChars = ['\'', '\'', '"', '"'];
-                
-                for (i = 0; i < badWordChars.length; i++) {
-                    regexp = new RegExp(String.fromCharCode(badWordChars[i]), 'gm');
-                    theElement.value = theElement.value.replace(regexp, fixedWordChars[i]);
-                }
-            }
-
+            
             // Class name
             theClass = theElement.classList[0];
 

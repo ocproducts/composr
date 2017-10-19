@@ -864,13 +864,15 @@
     };
 
     $cms.templates.previewScriptCode = function (params) {
-        var mainWindow = $cms.getMainCmsWindow();
+        var newPostValue = strVal(params.newPostValue),
+            newPostValueHtml = strVal(params.newPostValueHtml),
+            mainWindow = $cms.getMainCmsWindow();
 
         var post = mainWindow.document.getElementById('post');
 
         // Replace Comcode
         var oldComcode = mainWindow.getTextbox(post);
-        mainWindow.setTextbox(post, params.newPostValue.replace(/&#111;/g, 'o').replace(/&#79;/g, 'O'), params.newPostValueHtml);
+        mainWindow.setTextbox(post, newPostValue.replace(/&#111;/g, 'o').replace(/&#79;/g, 'O'), newPostValueHtml);
 
         // Turn main post editing back on
         if (window.wysiwygSetReadonly !== undefined) {
@@ -878,37 +880,34 @@
         }
 
         // Remove attachment uploads
-        var inputs = post.form.elements, uploadButton;
-        var i, done_one = false;
+        var inputs = post.form.elements, uploadButton,
+            i, doneOne = false;
+        
         for (i = 0; i < inputs.length; i++) {
-            if (((inputs[i].type == 'file') || ((inputs[i].type == 'text') && (inputs[i].disabled))) && (inputs[i].value != '') && (inputs[i].name.match(/file\d+/))) {
+            if (((inputs[i].type === 'file') || ((inputs[i].type === 'text') && (inputs[i].disabled))) && (inputs[i].value !== '') && (inputs[i].name.match(/file\d+/))) {
                 if (inputs[i].pluploadObject !== undefined) {
-                    if ((inputs[i].value != '-1') && (inputs[i].value != '')) {
-                        if (!done_one) {
-                            if (oldComcode.indexOf('attachment_safe') === -1) {
+                    if ((inputs[i].value !== '-1') && (inputs[i].value !== '')) {
+                        if (!doneOne) {
+                            if (!oldComcode.includes('attachment_safe')) {
                                 $cms.ui.alert('{!javascript:ATTACHMENT_SAVED;^}');
                             } else {
-                                if (!mainWindow.$cms.form.isWysiwygField(post)) // Only for non-WYSIWYG, as WYSIWYG has preview automated at same point of adding
+                                if (!mainWindow.$cms.form.isWysiwygField(post)) {// Only for non-WYSIWYG, as WYSIWYG has preview automated at same point of adding
                                     $cms.ui.alert('{!javascript:ATTACHMENT_SAVED;^}');
+                                }
                             }
                         }
-                        done_one = true;
+                        doneOne = true;
                     }
-
-                    if (inputs[i].pluploadObject.setButtonDisabled !== undefined) {
-                        inputs[i].pluploadObject.setButtonDisabled(false);
-                    } else {
-                        uploadButton = mainWindow.document.getElementById('uploadButton_' + inputs[i].name);
-                        if (uploadButton) {
-                            uploadButton.disabled = true;
-                        }
+                    
+                    uploadButton = mainWindow.document.getElementById('uploadButton_' + inputs[i].name);
+                    if (uploadButton) {
+                        uploadButton.disabled = true;
                     }
                     inputs[i].value = '-1';
                 } else {
                     try {
                         inputs[i].value = '';
-                    } catch (e) {
-                    }
+                    } catch (e) {}
                 }
                 if (inputs[i].form.elements['hidFileID_' + inputs[i].name] !== undefined) {
                     inputs[i].form.elements['hidFileID_' + inputs[i].name].value = '';
