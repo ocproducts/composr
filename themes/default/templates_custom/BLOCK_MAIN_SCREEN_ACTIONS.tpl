@@ -6,7 +6,7 @@
 		<div class="facebook_like"><div class="fb-like" data-send="false" data-layout="button_count" data-width="55" data-show-faces="false"></div></div>
 	{+END}
 	<div class="print"><a class="link_exempt js-click-print-screen" rel="print nofollow" target="_blank" title="{!PRINT_THIS_SCREEN} {!LINK_NEW_WINDOW}" href="{PRINT_URL*}"><span>{!PRINT_THIS_SCREEN}</span></a></div>
-	<div class="recommend"><a data-open-as-overlay="1" class="link_exempt" rel="nofollow" target="_blank" title="{!RECOMMEND_LINK} {!LINK_NEW_WINDOW}" href="{RECOMMEND_URL*}"><span>{!RECOMMEND_LINK}</span></a></div>
+	<div class="recommend"><a data-open-as-overlay="{}" class="link_exempt" rel="nofollow" target="_blank" title="{!RECOMMEND_LINK} {!LINK_NEW_WINDOW}" href="{RECOMMEND_URL*}"><span>{!RECOMMEND_LINK}</span></a></div>
 	{+START,IF_EMPTY,{$CONFIG_OPTION,facebook_appid}}
 		<div class="facebook"><a class="link_exempt js-click-add-to-facebook" target="_blank" title="{!ADD_TO_FACEBOOK} {!LINK_NEW_WINDOW}" href="http://www.facebook.com/sharer.php?u={EASY_SELF_URL*}"><span>{!ADD_TO_FACEBOOK}</span></a></div>
 	{+END}

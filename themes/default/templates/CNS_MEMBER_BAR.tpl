@@ -46,12 +46,12 @@
 				{$,<p class="cns_member_column_title">{!VIEW}:</p>}
 				<ul class="actions_list">
 					<!--<li><a href="{PRIVATE_TOPIC_URL*}">{!PRIVATE_TOPICS}{+START,IF_NON_EMPTY,{PT_EXTRA}} <span class="cns_member_column_pts">{PT_EXTRA}</span>{+END}</a></li>-->
-					<li><a {+START,IF,{$DESKTOP}} data-open-as-overlay="1"{+END} href="{NEW_POSTS_URL*}">{!POSTS_SINCE}</a></li>
-					<li><a {+START,IF,{$DESKTOP}} data-open-as-overlay="1"{+END} href="{UNREAD_TOPICS_URL*}">{!TOPICS_UNREAD}</a></li>
-					<li><a {+START,IF,{$DESKTOP}} data-open-as-overlay="1"{+END} href="{RECENTLY_READ_URL*}">{!RECENTLY_READ}</a></li>
-					<li><a {+START,IF,{$DESKTOP}} data-open-as-overlay="1"{+END} href="{INLINE_PERSONAL_POSTS_URL*}">{!INLINE_PERSONAL_POSTS}</a></li>
-					<li><a {+START,IF,{$DESKTOP}} data-open-as-overlay="1"{+END} href="{UNANSWERED_TOPICS_URL*}">{!UNANSWERED_TOPICS}</a></li>
-					<li><a {+START,IF,{$DESKTOP}} data-open-as-overlay="1"{+END} href="{INVOLVED_TOPICS_URL*}">{!INVOLVED_TOPICS}</a></li>
+					<li><a {+START,IF,{$DESKTOP}} data-open-as-overlay="{}"{+END} href="{NEW_POSTS_URL*}">{!POSTS_SINCE}</a></li>
+					<li><a {+START,IF,{$DESKTOP}} data-open-as-overlay="{}"{+END} href="{UNREAD_TOPICS_URL*}">{!TOPICS_UNREAD}</a></li>
+					<li><a {+START,IF,{$DESKTOP}} data-open-as-overlay="{}"{+END} href="{RECENTLY_READ_URL*}">{!RECENTLY_READ}</a></li>
+					<li><a {+START,IF,{$DESKTOP}} data-open-as-overlay="{}"{+END} href="{INLINE_PERSONAL_POSTS_URL*}">{!INLINE_PERSONAL_POSTS}</a></li>
+					<li><a {+START,IF,{$DESKTOP}} data-open-as-overlay="{}"{+END} href="{UNANSWERED_TOPICS_URL*}">{!UNANSWERED_TOPICS}</a></li>
+					<li><a {+START,IF,{$DESKTOP}} data-open-as-overlay="{}"{+END} href="{INVOLVED_TOPICS_URL*}">{!INVOLVED_TOPICS}</a></li>
 				</ul>
 			</nav>
 		</div>

@@ -33,7 +33,7 @@
 				<ul class="horizontal_links horiz_field_sep associated_links_block_group">
 					{+START,IF,{$SHOW_DOCS}}{+START,IF_PASSED,COMCODE_URL}
 						{+START,IF,{$NOT,{$MATCH_KEY_MATCH,_WILD:cms_comcode_pages}}}
-							<li><a data-open-as-overlay="1" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{COMCODE_URL*}"><img src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical_alignment" alt="{!COMCODE_MESSAGE,Comcode}" /></a></li>
+							<li><a data-open-as-overlay="{}" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{COMCODE_URL*}"><img src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical_alignment" alt="{!COMCODE_MESSAGE,Comcode}" /></a></li>
 						{+END}
 						{+START,IF,{$MATCH_KEY_MATCH,_WILD:cms_comcode_pages}}
 							<li><a class="link_exempt" title="{!FULL_COMCODE_TUTORIAL} {!LINK_NEW_WINDOW}" target="_blank" href="{$TUTORIAL_URL*,tut_comcode}">{!FULL_COMCODE_TUTORIAL}</a></li>
