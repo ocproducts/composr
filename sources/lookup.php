@@ -341,7 +341,7 @@ function find_user_metadata($include_referer = true)
             }
             $h[do_lang('URL')] = static_evaluate_tempcode(build_url($attributes, $zone));
 
-            $h[do_lang('TITLE')] = $myrow['title'];
+            $h[do_lang('TITLE')] = isset($myrow['title']) ? $myrow['title'] : '';
 
             $h[do_lang('MEMBER_ID')] = '#' . strval($myrow['member_id']);
 

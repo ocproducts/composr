@@ -131,7 +131,7 @@
 				{!ATTACHMENTS}
 
 				{+START,IF,{$DESKTOP}}
-					<img class="help_icon inline_desktop" data-cms-rich-tooltip="{}" title="{$STRIP_TAGS,{!ATTACHMENT_HELP}}" alt="{!HELP}" src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" />
+					<img class="help_icon inline_desktop" data-cms-rich-tooltip title="{$STRIP_TAGS,{!ATTACHMENT_HELP}}" alt="{!HELP}" src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" />
 				{+END}
 			</span>
 

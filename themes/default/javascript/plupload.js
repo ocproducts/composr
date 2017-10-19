@@ -14927,7 +14927,7 @@
             var goodType = false;
             var fileExt = file.name.substr(file.name.indexOf('.') + 1);
             for (var j = 0; j < validTypes.length; j++) {
-                if (validTypes[j] == fileExt) {
+                if (validTypes[j] === fileExt) {
                     goodType = true;
                     break;
                 }
@@ -15021,7 +15021,7 @@
                             document.getElementById('hidFileID_file' + attachmentBase).value = decodedData['upload_id'];
 
                             if ($cms.form.isWysiwygField(element)) {
-                                generateBackgroundPreview(element);
+                                window.generateBackgroundPreview(element);
                             }
                         });
                     }

@@ -37,13 +37,6 @@
      * @param postingFieldName
      */
     function addAttachment(startNum, postingFieldName) {
-        if (window.numAttachments === undefined) {
-            return;
-        }
-        if (window.maxAttachments === undefined) {
-            return;
-        }
-
         var addTo = document.getElementById('js-attachment-store');
 
         window.numAttachments++;
@@ -70,7 +63,7 @@
     }
 
     function attachmentPresent(postValue, number) {
-        return !(postValue.indexOf('[attachment]new_' + number + '[/attachment]') === -1) && (postValue.indexOf('[attachment_safe]new_' + number + '[/attachment_safe]') === -1) && (postValue.indexOf('[attachment thumb="1"]new_' + number + '[/attachment]') === -1) && (postValue.indexOf('[attachment_safe thumb="1"]new_' + number + '[/attachment_safe]') === -1) && (postValue.indexOf('[attachment thumb="0"]new_' + number + '[/attachment]') === -1) && (postValue.indexOf('[attachment_safe thumb="0"]new_' + number + '[/attachment_safe]') === -1);
+        return (postValue.indexOf('[attachment]new_' + number + '[/attachment]') !== -1) && (postValue.indexOf('[attachment_safe]new_' + number + '[/attachment_safe]') === -1) && (postValue.indexOf('[attachment thumb="1"]new_' + number + '[/attachment]') === -1) && (postValue.indexOf('[attachment_safe thumb="1"]new_' + number + '[/attachment_safe]') === -1) && (postValue.indexOf('[attachment thumb="0"]new_' + number + '[/attachment]') === -1) && (postValue.indexOf('[attachment_safe thumb="0"]new_' + number + '[/attachment_safe]') === -1);
     }
 
     /**

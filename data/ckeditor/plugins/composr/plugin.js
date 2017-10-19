@@ -11,17 +11,20 @@
 			var possibles = ['block', 'comcode', 'page', 'quote', 'box', 'code'], 
 				func;
 
+            console.log('Initializing plugin composr');
+
 			possibles.forEach(function (buttonName) {
 				var element = editor.element.$.parentNode.parentNode.querySelector('.js-comcode-button-' + buttonName);
 
 				if (element != null) {
 					func = {
-						exec: function (element) {
+						exec: function () {
 							$cms.dom.trigger(element, 'click');
 						}
 					};
 					editor.addCommand('composr_' + buttonName, func);
 					if (editor.ui.addButton) {
+					    console.log('Adding button: composr_' + buttonName);
 						editor.ui.addButton('composr_' + buttonName, {
 							label: element.alt,
 							command: 'composr_' + buttonName

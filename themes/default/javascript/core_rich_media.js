@@ -404,26 +404,26 @@
     };
 
     $cms.templates.attachments = function attachments(params, container) {
-        window.attachmentTemplate = strVal(params.attachmentTemplate);
         window.maxAttachments = Number(params.maxAttachments) || 0;
         window.numAttachments = Number(params.numAttachments) || 0;
-        window.rebuildAttachmentButtonForNext = rebuildAttachmentButtonForNext;
         
         var postingFieldName = strVal(params.postingFieldName);
         
-        $cms.dom.on(container, 'click', '.js-click-open-attachment-popup', function (e, link) {
-            e.preventDefault();
-            $cms.ui.open($cms.maintainThemeInLink(link.href), 'site_attachment_chooser', 'width=550,height=600,status=no,resizable=yes,scrollbars=yes');
-        });
-
         if ($cms.browserMatches('simplified_attachments_ui')) {
+            window.attachmentTemplate = strVal(params.attachmentTemplate);
             window.numAttachments = 1;
-
+            window.rebuildAttachmentButtonForNext = rebuildAttachmentButtonForNext;
+            
             window.$cmsLoad.push(function () {
                 var aub = document.getElementById('js-attachment-upload-button');
                 if (aub && (aub.classList.contains('for_field_' + postingFieldName))) {
                     window.rebuildAttachmentButtonForNext(postingFieldName, 'js-attachment-upload-button');
                 }
+            });
+        } else {
+            $cms.dom.on(container, 'click', '.js-click-open-attachment-popup', function (e, link) {
+                e.preventDefault();
+                $cms.ui.open($cms.maintainThemeInLink(link.href), 'site_attachment_chooser', 'width=550,height=600,status=no,resizable=yes,scrollbars=yes');
             });
         }
         
