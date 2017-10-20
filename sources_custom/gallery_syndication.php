@@ -61,9 +61,9 @@ function sync_video_syndication($local_id = null, $new_upload = false, $reupload
     $hooks = find_all_hooks('modules', 'video_syndication');
     $services = array();
     foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/modules/video_syndication/' . filter_naughty($hook));
+        require_code('hooks/modules/video_syndication/' . filter_naughty_harsh($hook));
 
-        $ob = object_factory('Hook_video_syndication_' . filter_naughty($hook));
+        $ob = object_factory('Hook_video_syndication_' . filter_naughty_harsh($hook));
 
         $services[] = $ob;
     }

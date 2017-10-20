@@ -140,8 +140,8 @@ class Module_search
 
             $id = get_param_string('id', '');
             if ($id != '') { // Specific screen, prepare
-                require_code('hooks/modules/search/' . filter_naughty_harsh($id), true);
-                $ob = object_factory('Hook_search_' . filter_naughty_harsh($id));
+                require_code('hooks/modules/search/' . filter_naughty_harsh($id, true), true);
+                $ob = object_factory('Hook_search_' . filter_naughty_harsh($id, true));
                 $info = $ob->info();
 
                 if (!is_null($info)) {
@@ -252,8 +252,8 @@ class Module_search
                 }
             }
 
-            require_code('hooks/modules/search/' . filter_naughty_harsh($id), true);
-            $ob = object_factory('Hook_search_' . filter_naughty_harsh($id));
+            require_code('hooks/modules/search/' . filter_naughty_harsh($id, true), true);
+            $ob = object_factory('Hook_search_' . filter_naughty_harsh($id, true));
             $info = $ob->info();
             if (is_null($info)) {
                 warn_exit(do_lang_tempcode('SEARCH_HOOK_NOT_AVAILABLE'));

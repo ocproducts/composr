@@ -464,8 +464,8 @@ function _log_it($type, $a = null, $b = null)
     // Run hooks, if any exist
     $hooks = find_all_hooks('systems', 'upon_action_logging');
     foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/upon_action_logging/' . filter_naughty($hook));
-        $ob = object_factory('upon_action_logging' . filter_naughty($hook), true);
+        require_code('hooks/systems/upon_action_logging/' . filter_naughty_harsh($hook));
+        $ob = object_factory('upon_action_logging' . filter_naughty_harsh($hook), true);
         if (is_null($ob)) {
             continue;
         }

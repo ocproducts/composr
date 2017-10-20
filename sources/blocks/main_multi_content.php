@@ -178,7 +178,7 @@ class Block_main_multi_content
         $give_context = (isset($map['give_context']) ? $map['give_context'] : '0') == '1';
         $include_breadcrumbs = (isset($map['include_breadcrumbs']) ? $map['include_breadcrumbs'] : '0') == '1';
 
-        if ((!file_exists(get_file_base() . '/sources/hooks/systems/content_meta_aware/' . filter_naughty_harsh($content_type) . '.php')) && (!file_exists(get_file_base() . '/sources_custom/hooks/systems/content_meta_aware/' . filter_naughty_harsh($content_type) . '.php'))) {
+        if ((!file_exists(get_file_base() . '/sources/hooks/systems/content_meta_aware/' . filter_naughty_harsh($content_type, true) . '.php')) && (!file_exists(get_file_base() . '/sources_custom/hooks/systems/content_meta_aware/' . filter_naughty_harsh($content_type, true) . '.php'))) {
             return paragraph(do_lang_tempcode('NO_SUCH_CONTENT_TYPE', escape_html($content_type)), '', 'red_alert');
         }
 

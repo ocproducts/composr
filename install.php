@@ -403,8 +403,8 @@ function step_1()
     // Various checks
     $hooks = find_all_hooks('systems', 'checks');
     foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/checks/' . filter_naughty($hook));
-        $ob = object_factory('Hook_check_' . $hook);
+        require_code('hooks/systems/checks/' . filter_naughty_harsh($hook));
+        $ob = object_factory('Hook_check_' . filter_naughty_harsh($hook));
         $warning = $ob->run();
         foreach ($warning as $_warning) {
             $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => $_warning)));
@@ -1683,8 +1683,8 @@ function step_5_checks_b()
     $hooks = find_all_hooks('systems', 'checks');
     foreach (array_keys($hooks) as $hook) {
         if ($hook == 'mysql') {
-            require_code('hooks/systems/checks/' . filter_naughty($hook));
-            $ob = object_factory('Hook_check_' . $hook);
+            require_code('hooks/systems/checks/' . filter_naughty_harsh($hook));
+            $ob = object_factory('Hook_check_' . filter_naughty_harsh($hook));
             $warning = $ob->run();
             foreach ($warning as $_warning) {
                 $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('SOMETHING' => do_template('INSTALLER_WARNING', array('MESSAGE' => $_warning)))));

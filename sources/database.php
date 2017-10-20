@@ -1626,8 +1626,8 @@ class DatabaseConnector
                 $UPON_QUERY_HOOKS_CACHE = array();
                 $hooks = find_all_hooks('systems', 'upon_query');
                 foreach (array_keys($hooks) as $hook) {
-                    require_code('hooks/systems/upon_query/' . filter_naughty($hook));
-                    $UPON_QUERY_HOOKS_CACHE[$hook] = object_factory('Hook_upon_query_' . filter_naughty($hook), true);
+                    require_code('hooks/systems/upon_query/' . filter_naughty_harsh($hook));
+                    $UPON_QUERY_HOOKS_CACHE[$hook] = object_factory('Hook_upon_query_' . filter_naughty_harsh($hook), true);
                 }
             }
         }

@@ -182,7 +182,7 @@ function form_for_filtercode($filter, $labels = null, $content_type = null, $typ
         // Operator
         $matches = array();
         if (preg_match('#^<([^<>]+)>$#', $filter_op, $matches) != 0) {
-            $field_name = filter_naughty_harsh($matches[1]);
+            $field_name = filter_naughty_harsh($matches[1], true);
             if (array_key_exists($field_name, $labels)) {
                 $field_title = escape_html($labels[$field_name]);
             } else {
@@ -219,7 +219,7 @@ function form_for_filtercode($filter, $labels = null, $content_type = null, $typ
         // Filter inputter
         $matches = array();
         if (preg_match('#^<([^<>]+)>$#', $filter_val, $matches) != 0) {
-            $field_name = filter_naughty_harsh($matches[1]);
+            $field_name = filter_naughty_harsh($matches[1], true);
 
             $extra = mixed();
 
@@ -239,7 +239,7 @@ function form_for_filtercode($filter, $labels = null, $content_type = null, $typ
                                 }
                             }
                         } elseif (($field_name != 'meta_keywords') && ($field_name != 'meta_description') && ($field_name != 'compound_rating') && ($field_name != 'average_rating')) {
-                            $_extra = $db->query_select($table, array('DISTINCT ' . filter_naughty_harsh($field_name)), null, 'ORDER BY ' . filter_naughty_harsh($field_name));
+                            $_extra = $db->query_select($table, array('DISTINCT ' . filter_naughty_harsh($field_name, true)), null, 'ORDER BY ' . filter_naughty_harsh($field_name, true));
                             foreach ($_extra as $e) {
                                 if (!is_string($e[$field_name])) {
                                     $e[$field_name] = strval($e[$field_name]);

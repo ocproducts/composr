@@ -339,8 +339,8 @@ abstract class Hook_sitemap_base
      */
     protected function _get_sitemap_object($hook)
     {
-        require_code('hooks/systems/sitemap/' . filter_naughty($hook));
-        return object_factory('Hook_sitemap_' . $hook);
+        require_code('hooks/systems/sitemap/' . filter_naughty_harsh($hook, true));
+        return object_factory('Hook_sitemap_' . filter_naughty_harsh($hook, true));
     }
 
     /**

@@ -327,8 +327,8 @@ function get_member($quick_only = false)
         // Run hooks, if any exist
         $hooks = find_all_hooks('systems', 'upon_login');
         foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/upon_login/' . filter_naughty($hook));
-            $ob = object_factory('Hook_upon_login_' . filter_naughty($hook), true);
+            require_code('hooks/systems/upon_login/' . filter_naughty_harsh($hook));
+            $ob = object_factory('Hook_upon_login_' . filter_naughty_harsh($hook), true);
             if ($ob === null) {
                 continue;
             }

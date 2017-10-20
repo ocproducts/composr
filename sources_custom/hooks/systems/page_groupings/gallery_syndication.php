@@ -32,8 +32,8 @@ class Hook_page_groupings_gallery_syndication
         $hooks = find_all_hooks('modules', 'video_syndication');
 
         foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/modules/video_syndication/' . filter_naughty($hook));
-            $ob = object_factory('Hook_video_syndication_' . filter_naughty($hook));
+            require_code('hooks/modules/video_syndication/' . filter_naughty_harsh($hook));
+            $ob = object_factory('Hook_video_syndication_' . filter_naughty_harsh($hook));
 
             $service_title = $ob->get_service_title();
 

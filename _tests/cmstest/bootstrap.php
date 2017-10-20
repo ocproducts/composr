@@ -70,7 +70,7 @@ function find_testsets($dir = '')
 
 function run_testset($testset)
 {
-    require_code('_tests/tests/' . filter_naughty($testset) . '.php');
+    require_code('_tests/tests/' . filter_naughty_harsh($testset) . '.php');
 
     $loader = new SimpleFileLoader();
     $suite = $loader->createSuiteFromClasses(
