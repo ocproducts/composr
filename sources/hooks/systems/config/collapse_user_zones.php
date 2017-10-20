@@ -52,6 +52,6 @@ class Hook_config_collapse_user_zones
      */
     public function get_default()
     {
-        return '0';
+        return '1';
     }
 }
