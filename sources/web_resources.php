@@ -137,7 +137,7 @@ function javascript_enforce($j, $theme = null, $allow_defer = false)
             return 'defer';
         }
 
-        require_code('css_and_js');
+        require_code('web_resources2');
         js_compile($j, $js_cache_path, $minify, $theme);
     }
 
@@ -350,7 +350,7 @@ function css_enforce($c, $theme = null, $allow_defer = false)
             return 'defer';
         }
 
-        require_code('css_and_js');
+        require_code('web_resources2');
         css_compile($active_theme, $theme, $c, $full_path, $css_cache_path, $minify);
     }
 

@@ -2030,7 +2030,7 @@ Don't break the Theme Wizard
 Use relative font sizes
 | Accessibility
 | Product development only
-| Automated test ([tt]css_and_js.php[/tt])
+| Automated test ([tt]web_resources.php[/tt])
 | We want output to be easily scalable, so write sizes using [tt]em[/tt]. It's really easy: if you want something smaller, use something like [tt]0.85em[/tt] and something bigger like [tt]1.1em[/tt]. The advantage to scaling is a themer can easily knock the whole theme's font sizing up, and also it is possible to proportional down-scale content for embed contexts. There is a tool to convert the default theme to [tt]px[/tt] units for designers who prefer it (professional designers have good reason to want to do pixel-perfect designs).
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
@@ -2090,7 +2090,7 @@ Use reliable JavaScript
 Use official DOM (so no [tt]document.all[/tt], or [tt]window.images[/tt])
 | Standards compliance
 | Product development only
-| Automated test ([tt]css_and_js.php[/tt])
+| Automated test ([tt]web_resources.php[/tt])
 | [tt]document.all[/tt], [tt]form.foo[/tt], etc, are all non-standard (even though they're commonplace) -- use [tt]getElementById[/tt] etc.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
@@ -2111,7 +2111,7 @@ Use official DOM (so no [tt]document.all[/tt], or [tt]window.images[/tt])
 Don't use any deprecated methods (so no [tt]escape[/tt])
 | Standards compliance
 | Product development only
-| Automated test ([tt]css_and_js.php[/tt])
+| Automated test ([tt]web_resources.php[/tt])
 | Instead of escape, use [tt]encodeURIComponent[/tt].
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
@@ -2146,7 +2146,7 @@ Fix any strict warnings
 [color="red"]Don't use the browser [tt]window.alert[/tt] / [tt]window.prompt[/tt] / [tt]window.confirm[/tt] / [tt]window.showModalDialog[/tt] UIs -- use Composr's [tt]fauxmodal_*[/tt] APIs[/color]
 | Usability
 | Composr development +
-| Manually (although if you try and call from the global scope the [tt]css_and_js.php[/tt] test will complain)
+| Manually (although if you try and call from the global scope the [tt]web_resources.php[/tt] test will complain)
 | Better styling, no issues with popup blockers, no issues on full-screen UIs and tablets with poor window management.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
@@ -2195,14 +2195,14 @@ Reference language strings in a safe way
 Do not reference global variables directly
 | Stability
 | Composr development +
-| Automated test ([tt]css_and_js.php[/tt])
+| Automated test ([tt]web_resources.php[/tt])
 | Reference global variables and functions that are defined outside any particular [tt].js[/tt] file by explicitly prefixing them with [tt]window.[/tt]. This allows the JavaScript code scanner to detect undeclared variables because there's no longer an ambiguity.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 Do not omit semicolons
 | Stability
 | Product development only
-| Automated test ([tt]css_and_js.php[/tt])
+| Automated test ([tt]web_resources.php[/tt])
 | JavaScript allows semicolons to be omitted in certain cases, but we do not because of the potential for error.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]

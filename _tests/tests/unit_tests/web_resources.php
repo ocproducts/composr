@@ -13,12 +13,12 @@
  * @package    testing_platform
  */
 
-// E.g. http://localhost/composr/_tests/?id=unit_tests%2Fcss_and_js&close_if_passed=1&debug=1&keep_minify=0&only=checking.js
+// E.g. http://localhost/composr/_tests/?id=unit_tests%2Fweb_resources&close_if_passed=1&debug=1&keep_minify=0&only=checking.js
 
 /**
  * Composr test case class (unit testing).
  */
-class css_and_js_test_set extends cms_test_case
+class web_resources_test_set extends cms_test_case
 {
     public function setUp()
     {

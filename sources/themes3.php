@@ -23,7 +23,7 @@
  */
 function compile_all_templates()
 {
-    require_code('css_and_js');
+    require_code('web_resources2');
     require_code('web_resources');
 
     if (php_function_allowed('set_time_limit')) {

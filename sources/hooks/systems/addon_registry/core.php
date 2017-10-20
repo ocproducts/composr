@@ -1219,7 +1219,7 @@ class Hook_addon_registry_core
             'sources/csp.php',
             'data/csp_logging.php',
             'sources/character_sets.php',
-            'sources/css_and_js.php',
+            'sources/web_resources2.php',
             'sources/jsmin.php',
             'sources/database_relations.php',
             'sources/wordfilter.php',

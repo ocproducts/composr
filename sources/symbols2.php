@@ -2969,7 +2969,7 @@ function ecv2_CSS_INHERIT(&$value, $lang, $escaped, $param)
     // e.g. {+START,CSS_INHERIT,global,default,0,#886aa9}{+END}
 
     if (isset($param[0])) {
-        require_code('css_and_js');
+        require_code('web_resources2');
 
         $css_file = $param[0]->evaluate();
         $theme = isset($param[1]) ? $param[1]->evaluate() : 'default';
