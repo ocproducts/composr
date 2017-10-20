@@ -14288,25 +14288,25 @@
             return;
         }
 
-        var allDone = true,
+        var allUploadsDone = true,
             fileIdField = document.getElementById(plObj.settings.hidFileID);
 
         if (fileIdField.value === '-1') {
-            allDone = false;
+            allUploadsDone = false;
         } else {
             var form = fileIdField.form;
             for (var i = 0; i < form.elements.length; i++) {
                 if ((form.elements[i].pluploadObject != null) && (form.elements[i].pluploadObject.total.percent < 100) && (Number(form.elements[i].pluploadObject.total.size) !== 0)) {
-                    allDone = false;
+                    allUploadsDone = false;
                 }
             }
         }
 
-        if (!allDone) {
+        if (!allUploadsDone) {
             $cms.ui.disableSubmitAndPreviewButtons(true);
 
-            plObj.start();
-            $cms.dom.smoothScroll($cms.dom.findPosY(filenameField, true));
+            plObj.start(); // Starts uploading the queued files.
+            $cms.dom.smoothScroll(filenameField);
 
             if (btnSubmit.form.offsetHeight > $cms.dom.getWindowHeight()) {// If possibly cannot see upload progress bars
                 $cms.ui.alert('{!javascript:PLEASE_WAIT_WHILE_UPLOADING;^}');
@@ -14351,29 +14351,22 @@
         }
 
         var multi = (pageType.includes('_multi') && (numFiles > 1)),
-            element = document.getElementById(name), currentNum;
-
-        if (element) {
-            if (element.determinedAttachmentProperties === undefined) {
-                currentNum = name.replace('file', '');
-                window.setAttachment(postingFieldName, currentNum, fileName, multi, element.pluploadObject.settings);
-                element.onchange = null;
-                if (multi) {
-                    element.determinedAttachmentProperties = true;
-                }
+            element = document.getElementById(name), 
+            currentNum;
+        
+        if (element.determinedAttachmentProperties === undefined) {
+            currentNum = name.replace('file', '');
+            window.setAttachment(postingFieldName, currentNum, fileName, multi, element.pluploadObject.settings);
+            if (!element.pluploadObject.settings.simplified_attachments) {
+                element.onchange = null;     
             }
-        } else { // Simplified style, which has no real upload fields to replace
-            element = document.getElementById('hidFileID_' + name);
-            if (element.determinedAttachmentProperties === undefined) {
-                currentNum = name.replace('file', '');
-                window.setAttachment(postingFieldName, currentNum, fileName, multi, element.pluploadObject.settings);
-                if (multi) {
-                    element.determinedAttachmentProperties = true;
-                }
+            if (multi) {
+                element.determinedAttachmentProperties = true;
             }
         }
     }
 
+    // Listener to the 'FilesAdded' Plupload event
     function onUploadDialogCompleted(plObj, files) {
         //console.log('onUploadDialogCompleted()', 'plObj:', plObj, 'files:', files);
 
@@ -14413,54 +14406,48 @@
         }, 0);
     }
 
+    /**
+     * 
+     * @param name
+     * @param value - '1' will start upload if it hasn't already and files are selected, '' clears the placeholder field value
+     */
     function fireFakeUploadFieldChange(name, value) {
         //console.log('fireFakeUploadFieldChange()', 'name:', name, 'value:', value);
         value = strVal(value);
         
-        var element = document.getElementById(name);
-
-        if (element) {
-            element.value = value;
-            element.virtualValue = value;
-
-            $cms.dom.trigger(element, 'change');
-            if (element.oldElement) {
-                $cms.dom.trigger(element.oldElement, 'change');
-            }
-        } else {
-            // Simplified attachments probably
-            element = document.getElementById('hidFileID_' + name);
-        }
-
-        var plObj = element.pluploadObject;
+        var element = document.getElementById(name),
+            plObj = element.pluploadObject;
+        
+        element.value = value;
+        element.virtualValue = value;
+        $cms.dom.trigger(element, 'change');
         
         if ((plObj == null) || (plObj.settings == null)) {
             return;
         }
 
-        if (plObj.settings.immediate_submit) {
-            var fileIdField = document.getElementById(plObj.settings.hidFileID),
-                filenameField = document.getElementById(plObj.settings.txtFileName);
-            
-            if ((fileIdField.value === '-1') && (filenameField.value !== '') && (value !== '')) {
-                plObj.submitting = false;
-                plObj.start();
+        var fileIdField = document.getElementById(plObj.settings.hidFileID),
+            filenameField = document.getElementById(plObj.settings.txtFileName);
+        
+        if ((value === '1') && (fileIdField.value === '-1') && (filenameField.value !== '')) {
+            plObj.submitting = false;
+            plObj.start();
 
-                // plupload does not support cancelling mid-way (plObj.stop won't do that unfortunately)
-                // Actually the clear button DOES work during upload, but not visibly. So we can still call it's onclick with success. It's just the upload, and plupload object, and UI, will continue until it's finished uploading.
-                // When upload finishes/fails, we put these back on.
-                var clearButton = document.getElementById('fsClear_' + plObj.settings.txtName);
-                if (clearButton) {
-                    clearButton.style.display = 'none';
-                }
-                var uploadButton = document.getElementById('uploadButton_' + plObj.settings.txtName);
-                if (uploadButton) {
-                    uploadButton.disabled = true;
-                }
+            // plupload does not support cancelling mid-way (plObj.stop won't do that unfortunately)
+            // Actually the clear button DOES work during upload, but not visibly. So we can still call it's onclick with success. It's just the upload, and plupload object, and UI, will continue until it's finished uploading.
+            // When upload finishes/fails, we put these back on.
+            var clearButton = document.getElementById('fsClear_' + plObj.settings.txtName);
+            if (clearButton) {
+                clearButton.style.display = 'none';
+            }
+            var uploadButton = document.getElementById('uploadButton_' + plObj.settings.txtName);
+            if (uploadButton) {
+                uploadButton.disabled = true;
             }
         }
     }
 
+    // Listener to the 'UploadProgress' event
     function onUploadUpdateProgress(plObj, file) {
         //console.log('onUploadUpdateProgress()', 'plObj:', plObj, 'file:', file);
 
@@ -14476,6 +14463,7 @@
         }
     }
 
+    // Listener to the 'FileUploaded' event
     function onUploadFinished(plObj, file, data) {
         //console.log('onUploadFinished()', 'plObj:', plObj, 'file:', file, 'data:', data);
 
@@ -14483,9 +14471,9 @@
         progress.setComplete();
         progress.setStatus('{!javascript:PLUPLOAD_COMPLETE^;}');
 
-        var btnSubmit = document.getElementById(plObj.settings.btn_submit_id);
-        var allUploadsDone = true;
-        var form = document.getElementById(plObj.settings.hidFileID).form;
+        var btnSubmit = document.getElementById(plObj.settings.btn_submit_id),
+            allUploadsDone = true,
+            form = document.getElementById(plObj.settings.hidFileID).form;
 
         for (var i = 0; i < form.elements.length; i++) {
             if ((form.elements[i].pluploadObject != null) && (form.elements[i].pluploadObject.total.percent < 100) && (Number(form.elements[i].pluploadObject.total.size) !== 0)) {
@@ -14522,7 +14510,7 @@
             id.value = '';
         }
         if (id.value !== '') {
-            id.value += ':';
+            id.value += ':'; // delimiter
         }
         id.value += decodedData['upload_id'];
 
@@ -14628,30 +14616,31 @@
 
         btnSubmitId = findSubmitButton(btnSubmitId, rep.form);
 
-        // Replace old upload field with text field that holds a '1' indicating upload has happened (and telling Composr to check the hidFileID value for more details)
+        // Replace old vanilla upload field with text field that holds a '1' indicating upload has happened (and telling Composr to check the hidFileID value for more details)
         rep.style.display = 'none';
         rep.disabled = true;
         rep.name = name + '_old';
         rep.id = name + '_old';
-        
+
         $cms.dom.append(
-            rep.parentNode, 
+            rep.parentNode,
             '<div id="mainDiv_' + name + '" style="display: inline-block;">' +
             '<div id="subDiv_' + name + '" class="vertical_alignment">' +
-            // This input field shows the file name of the uploading/uploaded file to the user
+            // This input field shows the file name(s) of the uploading/uploaded file to the user
             '<input type="text" id="txtFileName_' + name + '" name="txtFileName_' + name + '" class="upload_response_field" size="24" disabled value="">' +
             '<input type="button" id="uploadButton_' + name + '" class="buttons__upload ' + buttonType + '" value="{!BROWSE;^*}">' +
             '</div>' +
             '<div id="fsUploadProgress_' + name + '" class="progressBars"></div>' +
-             // This hidden input field holds the server-side upload_id after upload is finished
+            // This hidden input field holds the server-side upload_id after upload is finished
             '<input type="hidden" id="hidFileID_' + name + '" name="hidFileID_' + name + '" value="-1">' +
             '<input type="button" id="fsClear_' + name + '" class="buttons__clear ' + buttonType + ' clear_button" alt="{!CLEAR;^*}" value="{!CLEAR;^*}">' +
-            '</div>' + 
+            '</div>' +
+            // Placeholder Plupload input field (placeholderField below)
             '<input type="text" id="' + name + '" name="' + name + '" style="display: none;" disabled>'
         );
         
-        var rep2 = document.getElementById(name);
-        rep2.oldElement = rep;
+        var placeholderField = document.getElementById(name);
+        placeholderField.oldElement = rep;
 
         var settings = getUploaderSettings(name, pageType, btnSubmitId, postingFieldName, filter);
         settings.progress_target = 'fsUploadProgress_' + name;
@@ -14662,7 +14651,7 @@
 
         var plObj = getUploaderObject(settings);
 
-        rep2.pluploadObject = plObj;
+        placeholderField.pluploadObject = plObj;
 
         // Rearrange clear buttons
         var clearButton = document.getElementById('clear_button_' + name);
@@ -14709,15 +14698,21 @@
 
         var mainDiv = document.getElementById('js-attachment-store');
         
+        if (!document.getElementById(name)) {
+            $cms.dom.append(mainDiv, '<iinput type="text" id="' + name + '" name="' + name + '" style="display: none;" disabled>');
+        }
+        
         if (!document.getElementById('txtFileName_' + name)) {
+            // This input field stores the file name(s) of the uploading/uploaded file to the user
             $cms.dom.append(mainDiv, '<input type="hidden" id="txtFileName_' + name + '" name="txtFileName_' + name + '" value="">');
         }
         
         if (!document.getElementById('hidFileID_' + name)) {
+            // This hidden input field holds the server-side 'upload_id' after upload is finished
             $cms.dom.append(mainDiv, '<input type="hidden" id="hidFileID_' + name + '" name="hidFileID_' + name + '" value="-1">');
         }
 
-        var fileIdField = document.getElementById('hidFileID_' + name);
+        var placeholderField = document.getElementById(name);
 
         // We need to clear out events on the upload button, attaching a new event for this upload
         var button = document.getElementById(attachmentUploadButton);
@@ -14738,8 +14733,9 @@
         settings.browse_button = attachmentUploadButton;
         settings.container = mainDiv.id;
         settings.runtimes = 'html5';
+        settings.simplified_attachments = true;
 
-        fileIdField.pluploadObject = getUploaderObject(settings); // This will attach the new event
+        placeholderField.pluploadObject = getUploaderObject(settings); // This will attach the new event
     }
 
     function findSubmitButton(btnSubmitId, form) {
@@ -14790,14 +14786,19 @@
             /*== Custom Composr settings ==*/
             required: false,
             progress_target: 'fsUploadProgress',
-            txtFileName: 'txtFileName_' + name,
-            hidFileID: 'hidFileID_' + name,
+            // Doesn't exist for attachments. 
+            // When exists, its used to fire change events on and hold reference to .pluploadObject
             txtName: name,
+            // This input field shows the file name of the uploading/uploaded file to the user
+            txtFileName: 'txtFileName_' + name,
+            // This hidden input field holds the server-side upload_id after upload is finished
+            // Used by attachments UI to fire change events and hold reference to .pluploadObject
+            hidFileID: 'hidFileID_' + name,
             page_type: pageType,
             posting_field_name: postingFieldName,
             btn_submit_id: btnSubmitId,
             btn_preview_id: 'preview_button',
-            immediate_submit: true,
+            simplified_attachments: false,
             // Callbacks
             onAllUploadsDoneCallbacks: []
         };

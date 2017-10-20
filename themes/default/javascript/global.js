@@ -3764,12 +3764,16 @@
     /**
      * Smoothly scroll to another position on the page
      * @memberof $cms.dom
-     * @param destY
-     * @param expectedScrollY
-     * @param dir
-     * @param eventAfter
+     * @param { HTMLElement|number} destY
+     * @param [expectedScrollY]
+     * @param [dir]
+     * @param [eventAfter]
      */
     $cms.dom.smoothScroll = function smoothScroll(destY, expectedScrollY, dir, eventAfter) {
+        if (isEl(destY)) {
+            destY = $cms.dom.findPosY(destY, true);
+        }
+        
         if (!$cms.$CONFIG_OPTION('enable_animations')) {
             try {
                 scrollTo(0, destY);
@@ -4119,15 +4123,19 @@
                         resolve();
                     });
                 });
-            } else {
-                nodes.forEach(function (node) {
-                    if (isEl(node)) {
-                        $cms.attachBehaviors(node);
-                    }
-                });
+            } 
+                
+            return new Promise(function (resolve) {
+                setTimeout(function () {
+                    nodes.forEach(function (node) {
+                        if (isEl(node)) {
+                            $cms.attachBehaviors(node);
+                        }
+                    });
 
-                return Promise.resolve();
-            }
+                    resolve();
+                }, 0);
+            });
         };
     }
 

@@ -460,9 +460,10 @@
                 alerted = false;
             
             // No checking for hidden elements
-            if (((theElement.type === 'hidden') || (((theElement.style.display === 'none') || (theElement.parentNode.style.display === 'none') || (theElement.parentNode.parentNode.style.display === 'none') || (theElement.parentNode.parentNode.parentNode.style.display === 'none')) && (!$cms.form.isWysiwygField(theElement)))) && (!theElement.classList.contains('hidden_but_needed'))) {
+            if (((theElement.type === 'hidden') || (((theElement.style.display === 'none') || (theElement.parentNode.style.display === 'none') || (theElement.parentNode.parentNode.style.display === 'none') || (theElement.parentNode.parentNode.parentNode.style.display === 'none')) && (!$cms.form.isWysiwygField(theElement)))) && !theElement.classList.contains('hidden_but_needed')) {
                 return resolveCheckFieldPromise(null);
             }
+            // No checking for disabled elements either
             if (theElement.disabled) {
                 return resolveCheckFieldPromise(null);
             }
@@ -493,9 +494,6 @@
                     }
                 }
             }
-            
-            // Class name
-            theClass = theElement.classList[0];
 
             // Find whether field is required and value of it
             if (theElement.type === 'radio') {
@@ -543,19 +541,19 @@
                 // Shim for HTML5 regexp patterns
                 if (theElement.getAttribute('pattern') && (myValue !== '') && (!myValue.match(new RegExp(theElement.getAttribute('pattern'))))) {
                     errorMsg = $cms.format('{!javascript:PATTERN_NOT_MATCHED;^}', [myValue]);
-                } else if (((theClass === 'input_username') || (theClass === 'input_username_required')) && (myValue !== '') && (myValue !== '****')) {
+                } else if ((theElement.classList.contains('input_username') || theElement.classList.contains('input_username_required')) && (myValue !== '') && (myValue !== '****')) {
                     validatePromise = $cms.form.doAjaxFieldTest('{$FIND_SCRIPT_NOHTTP;,username_exists}?username=' + encodeURIComponent(myValue)).then(function (exists) {
                         if (!exists) {
                             errorMsg = $cms.format('{!javascript:NOT_USERNAME;^}', [myValue]);
                         }
                     });
-                } else if (((theClass === 'input_email') || (theClass === 'input_email_required')) && (myValue !== '') && (!myValue.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/))) {
+                } else if ((theElement.classList.contains('input_email') || theElement.classList.contains('input_email_required')) && (myValue !== '') && (!myValue.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/))) {
                     errorMsg = $cms.format('{!javascript:NOT_A_EMAIL;^}', [myValue]);
-                } else if (((theClass === 'input_codename') || (theClass === 'input_codename_required')) && (myValue !== '') && (!myValue.match(/^[a-zA-Z0-9\-\._]*$/))) {
+                } else if ((theElement.classList.contains('input_codename') || theElement.classList.contains('input_codename_required')) && (myValue !== '') && (!myValue.match(/^[a-zA-Z0-9\-\._]*$/))) {
                     errorMsg = $cms.format('{!javascript:NOT_CODENAME;^}', [myValue]);
-                } else if (((theClass === 'input_integer') || (theClass === 'input_integer_required')) && (myValue !== '') && (parseInt(myValue, 10) !== Number(myValue))) {
+                } else if ((theElement.classList.contains('input_integer') || theElement.classList.contains('input_integer_required')) && (myValue !== '') && (parseInt(myValue, 10) !== Number(myValue))) {
                     errorMsg = $cms.format('{!javascript:NOT_INTEGER;^}', [myValue]);
-                } else if (((theClass === 'input_float') || (theClass === 'input_float_required')) && (myValue !== '') && (parseFloat(myValue) !== Number(myValue))) {
+                } else if ((theElement.classList.contains('input_float') || theElement.classList.contains('input_float_required')) && (myValue !== '') && (parseFloat(myValue) !== Number(myValue))) {
                     errorMsg = $cms.format('{!javascript:NOT_FLOAT;^}', [myValue]);
                 }
             }

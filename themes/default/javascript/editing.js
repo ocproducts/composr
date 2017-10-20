@@ -193,10 +193,8 @@
                 textarea.style.visibility = 'visible';
                 textarea.disabled = false;
                 textarea.readOnly = false;
-
-                if (window.rebuildAttachmentButtonForNext !== undefined) {
-                    window.rebuildAttachmentButtonForNext(id, 'js-attachment-upload-button');
-                }
+                
+                window.rebuildAttachmentButtonForNext(id, 'js-attachment-upload-button');
 
                 // Unload editor
                 var wysiwygData = window.wysiwygEditors[id].getData();
