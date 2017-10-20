@@ -209,8 +209,8 @@ function get_addons_list_under_category($category_name, $version_branch)
     $addons = find_all_hooks('systems', 'addon_registry');
     foreach ($addons as $addon => $place) {
         if ($place == 'sources_custom') {
-            require_code('hooks/systems/addon_registry/' . $addon);
-            $ob = object_factory('Hook_addon_registry_' . $addon);
+            require_code('hooks/systems/addon_registry/' . filter_naughty_harsh($addon));
+            $ob = object_factory('Hook_addon_registry_' . filter_naughty_harsh($addon));
             if (method_exists($ob, 'get_category')) {
                 $category_name_here = $ob->get_category();
             } else {
@@ -234,8 +234,8 @@ function find_addon_category_list()
     $addons = find_all_hooks('systems', 'addon_registry');
     foreach ($addons as $addon => $place) {
         if ($place == 'sources_custom') {
-            require_code('hooks/systems/addon_registry/' . $addon);
-            $ob = object_factory('Hook_addon_registry_' . $addon);
+            require_code('hooks/systems/addon_registry/' . filter_naughty_harsh($addon));
+            $ob = object_factory('Hook_addon_registry_' . filter_naughty_harsh($addon));
             if (method_exists($ob, 'get_category')) {
                 $category_name = $ob->get_category();
             } else {

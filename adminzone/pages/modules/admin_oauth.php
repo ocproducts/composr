@@ -135,8 +135,8 @@ class Module_admin_oauth
         foreach ($hooks as $service_name => $ob) {
             $service_info = $ob->info();
 
-            require_code('hooks/systems/config/' . $service_info['options']['client_id']);
-            $ob = object_factory('Hook_config_' . $service_info['options']['client_id']);
+            require_code('hooks/systems/config/' . filter_naughty_harsh($service_info['options']['client_id']));
+            $ob = object_factory('Hook_config_' . filter_naughty_harsh($service_info['options']['client_id']));
             $info = $ob->get_details();
 
             $configured = (get_option($service_info['options']['client_id']) != '') && (get_option($service_info['options']['client_secret']) != '');

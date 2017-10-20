@@ -824,7 +824,7 @@ function reinstall_addon_soft($addon, $ini_info = null)
     $hook_path = 'hooks/systems/addon_registry/' . filter_naughty($addon);
     if (is_file(get_file_base() . '/sources/' . $hook_path . '.php') || is_file(get_file_base() . '/sources_custom/' . $hook_path . '.php')) {
         require_code($hook_path);
-        $ob = object_factory('Hook_addon_registry_' . $addon);
+        $ob = object_factory('Hook_addon_registry_' . filter_naughty_harsh($addon));
 
         if (method_exists($ob, 'uninstall')) {
             $ob->uninstall();
@@ -987,7 +987,7 @@ function upgrade_addon_soft($addon)
         return 0;
     }
     require_code($code_file);
-    $ob = object_factory('Hook_addon_registry_' . $addon);
+    $ob = object_factory('Hook_addon_registry_' . filter_naughty_harsh($addon));
 
     $disk_version = float_to_raw_string($ob->get_version(), 2, true);
 
@@ -1221,7 +1221,7 @@ function uninstall_addon_soft($addon)
             return;
         }
         require_code($code_file);
-        $ob = object_factory('Hook_addon_registry_' . $addon);
+        $ob = object_factory('Hook_addon_registry_' . filter_naughty_harsh($addon));
 
         if (method_exists($ob, 'uninstall')) {
             $ob->uninstall();

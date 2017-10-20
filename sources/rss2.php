@@ -191,7 +191,7 @@ function rss_backend_script()
     }
 
     require_code('hooks/systems/rss/' . filter_naughty_harsh($mode), true);
-    $object = object_factory('Hook_rss_' . $mode);
+    $object = object_factory('Hook_rss_' . filter_naughty_harsh($mode));
     require_code('selectcode');
     $_content = $object->run($select, $cutoff, $prefix, $date_string, $max);
     $mode_nice = $mode;

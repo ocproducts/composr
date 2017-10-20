@@ -105,8 +105,8 @@ function upload_syndication_auth_script()
     $hook = get_param_string('hook');
     $name = get_param_string('name');
 
-    require_code('hooks/systems/upload_syndication/' . filter_naughty($hook));
-    $ob = object_factory('Hook_upload_syndication_' . $hook);
+    require_code('hooks/systems/upload_syndication/' . filter_naughty_harsh($hook));
+    $ob = object_factory('Hook_upload_syndication_' . filter_naughty_harsh($hook));
     $success = $ob->receive_authorisation();
 
     require_lang('upload_syndication');

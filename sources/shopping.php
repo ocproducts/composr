@@ -591,7 +591,7 @@ function make_cart_payment_button($order_id, $currency, $price_points = 0)
 
     $payment_gateway = get_option('payment_gateway');
     require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
-    $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
+    $payment_gateway_object = object_factory('Hook_payment_gateway_' . filter_naughty_harsh($payment_gateway));
 
     if (!method_exists($payment_gateway_object, 'make_cart_transaction_button')) {
         return $payment_gateway_object->make_transaction_button($type_code, $item_name, strval($order_id), $price, $tax, $shipping_cost, $currency, $price_points);

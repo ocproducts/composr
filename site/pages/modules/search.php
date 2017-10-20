@@ -138,8 +138,8 @@ class Module_search
 
             $id = get_param_string('id', '');
             if ($id != '') { // Specific screen, prepare
-                require_code('hooks/modules/search/' . filter_naughty_harsh($id), true);
-                $ob = object_factory('Hook_search_' . filter_naughty_harsh($id));
+                require_code('hooks/modules/search/' . filter_naughty_harsh($id, true), true);
+                $ob = object_factory('Hook_search_' . filter_naughty_harsh($id, true));
                 $info = $ob->info();
 
                 if ($info !== null) {
@@ -249,8 +249,8 @@ class Module_search
                 }
             }
 
-            require_code('hooks/modules/search/' . filter_naughty_harsh($id), true);
-            $ob = object_factory('Hook_search_' . filter_naughty_harsh($id));
+            require_code('hooks/modules/search/' . filter_naughty_harsh($id, true), true);
+            $ob = object_factory('Hook_search_' . filter_naughty_harsh($id, true));
             $info = $ob->info();
             if ($info === null) {
                 warn_exit(do_lang_tempcode('SEARCH_HOOK_NOT_AVAILABLE'));
@@ -283,8 +283,8 @@ class Module_search
                     }
                     list($ajax_hook, $ajax_options) = $ajax_tree;
 
-                    require_code('hooks/systems/ajax_tree/' . $ajax_hook);
-                    $tree_hook_ob = object_factory('Hook_ajax_tree_' . $ajax_hook);
+                    require_code('hooks/systems/ajax_tree/' . filter_naughty_harsh($ajax_hook));
+                    $tree_hook_ob = object_factory('Hook_ajax_tree_' . filter_naughty_harsh($ajax_hook));
                     $simple_content = $tree_hook_ob->simple(null, $ajax_options, preg_replace('#,.*$#', '', $under));
 
                     $ajax = true;

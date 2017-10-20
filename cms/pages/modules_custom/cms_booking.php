@@ -199,9 +199,11 @@ class Module_cms_booking extends Standard_crud_module
         foreach ($rows as $row) {
             $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');
 
+            $_row = db_map_restrict($row, array('id', 'title', 'categorisation'));
+
             $fr = array();
-            $fr[] = protect_from_escaping(get_translated_tempcode('bookable', $row, 'title'));
-            $fr[] = protect_from_escaping(get_translated_tempcode('bookable', $row, 'categorisation'));
+            $fr[] = protect_from_escaping(get_translated_tempcode('bookable', $_row, 'title'));
+            $fr[] = protect_from_escaping(get_translated_tempcode('bookable', $_row, 'categorisation'));
             $fr[] = float_format($row['price']);
             $fr[] = get_timezoned_date(mktime($row['active_from_month'], $row['active_from_day'], $row['active_from_year']), false, false, $GLOBALS['FORUM_DRIVER']->get_guest_id());
             $fr[] = get_timezoned_date(mktime($row['active_to_month'], $row['active_to_day'], $row['active_to_year']), false, false, $GLOBALS['FORUM_DRIVER']->get_guest_id());
@@ -261,8 +263,8 @@ class Module_cms_booking extends Standard_crud_module
         $hidden->attach(form_input_hidden('timezone', get_server_timezone()));
 
         $fields = new Tempcode();
-        $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'title', ($details['title'] === null) ? '' : get_translated_text($details['title']), true));
-        $fields->attach(form_input_text(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_DESCRIPTION'), 'description', ($details['description'] === null) ? '' : get_translated_text($details['description']), false));
+        $fields->attach(form_input_line_comcode(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'title', ($details['title'] === null) ? '' : get_translated_text($details['title']), true));
+        $fields->attach(form_input_text_comcode(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_DESCRIPTION'), 'description', ($details['description'] === null) ? '' : get_translated_text($details['description']), false));
         $fields->attach(form_input_line(do_lang_tempcode('PRICE'), do_lang_tempcode('DESCRIPTION_BOOKABLE_PRICE'), 'price', float_to_raw_string($details['price'], 2), true));
         $categorisation = ($details['categorisation'] === null) ? '' : get_translated_text($details['categorisation']);
         if ($categorisation == '') {
@@ -441,8 +443,10 @@ class Module_cms_booking_supplements extends Standard_crud_module
         foreach ($rows as $row) {
             $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');
 
+            $_row = db_map_restrict($row, array('id', 'title'));
+
             $fr = array();
-            $fr[] = protect_from_escaping(get_translated_tempcode('bookable_supplement', $row, 'title'));
+            $fr[] = protect_from_escaping(get_translated_tempcode('bookable_supplement', $_row, 'title'));
             $fr[] = float_format($row['price']);
             $fr[] = protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true));
 
@@ -633,10 +637,12 @@ class Module_cms_booking_blacks extends Standard_crud_module
         foreach ($rows as $row) {
             $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');
 
+            $_row = db_map_restrict($row, array('id', 'blacked_explanation'));
+
             $fr = array();
             $fr[] = get_timezoned_date(mktime(0, 0, 0, $row['blacked_from_month'], $row['blacked_from_day'], $row['blacked_from_year']), false, false, $GLOBALS['FORUM_DRIVER']->get_guest_id());
             $fr[] = get_timezoned_date(mktime(0, 0, 0, $row['blacked_to_month'], $row['blacked_to_day'], $row['blacked_to_year']), false, false, $GLOBALS['FORUM_DRIVER']->get_guest_id());
-            $fr[] = protect_from_escaping(get_translated_tempcode('bookable_blacked', $row, 'blacked_explanation'));
+            $fr[] = protect_from_escaping(get_translated_tempcode('bookable_blacked', $_row, 'blacked_explanation'));
             $fr[] = protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true));
 
             $fields->attach(results_entry($fr, true));
@@ -1021,12 +1027,14 @@ class Module_cms_booking_bookings extends Standard_crud_module
                 $notes = $details['supplements'][$supplement_row['id']]['notes'];
             }
 
-            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '384b1451a2e83190ec50555e30ceeedc', 'TITLE' => do_lang_tempcode('SUPPLEMENT', get_translated_tempcode('bookable_supplement', $supplement_row, 'title')))));
+            $_supplement_row = db_map_restrict($supplement_row, array('id', 'title'));
+
+            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '384b1451a2e83190ec50555e30ceeedc', 'TITLE' => do_lang_tempcode('SUPPLEMENT', get_translated_tempcode('bookable_supplement', $_supplement_row, 'title')))));
 
             if ($supplement_row['supports_quantities'] == 1) {
                 $fields->attach(form_input_integer(do_lang_tempcode('QUANTITY'), '', 'bookable_' . strval($details['bookable_id']) . '_supplement_' . strval($supplement_row['id']) . '_quantity', $quantity, true));
             } else {
-                $fields->attach(form_input_tick(get_translated_tempcode('bookable_supplement', $supplement_row, 'title'), '', 'bookable_' . strval($details['bookable_id']) . '_supplement_' . strval($supplement_row['id']) . '_quantity', $quantity == 1));
+                $fields->attach(form_input_tick(get_translated_tempcode('bookable_supplement', $_supplement_row, 'title'), '', 'bookable_' . strval($details['bookable_id']) . '_supplement_' . strval($supplement_row['id']) . '_quantity', $quantity == 1));
             }
             $fields->attach(form_input_text(do_lang_tempcode('NOTES'), '', 'bookable_' . strval($details['bookable_id']) . '_supplement_' . strval($supplement_row['id']) . '_notes', $notes, false));
         }

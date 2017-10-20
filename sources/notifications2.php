@@ -92,8 +92,8 @@ function notifications_ui($member_id_of)
         if ((substr($hook, 0, 4) == 'cns_') && (get_forum_type() != 'cns')) {
             continue;
         }
-        require_code('hooks/systems/notifications/' . $hook);
-        $ob = object_factory('Hook_notification_' . $hook);
+        require_code('hooks/systems/notifications/' . filter_naughty_harsh($hook));
+        $ob = object_factory('Hook_notification_' . filter_naughty_harsh($hook));
         $_notification_codes = $ob->list_handled_codes();
         foreach ($_notification_codes as $notification_code => $notification_details) {
             if (array_key_exists($notification_code, $lockdown)) {

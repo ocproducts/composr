@@ -705,7 +705,7 @@ function create_video_thumb($src_url, $expected_output_path = null)
     $hooks = find_media_renderers($src_url, array(), true, null);
     if ($hooks !== null) {
         foreach ($hooks as $hook) {
-            $ve_ob = object_factory('Hook_media_rendering_' . $hook);
+            $ve_ob = object_factory('Hook_media_rendering_' . filter_naughty_harsh($hook));
             if (method_exists($ve_ob, 'get_video_thumbnail')) {
                 $ret = $ve_ob->get_video_thumbnail($src_url);
                 if ($ret !== null) {

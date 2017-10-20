@@ -53,8 +53,8 @@ class _resource_fs_test_set extends cms_test_case
             $path = get_file_base() . '/' . $dir . '/hooks/systems/commandr_fs/' . $commandr_fs_hook . '.php';
             $contents = file_get_contents($path);
             if (strpos($contents, ' extends Resource_fs_base') !== false) {
-                require_code('hooks/systems/commandr_fs/' . $commandr_fs_hook);
-                $ob = object_factory('Hook_commandr_fs_' . $commandr_fs_hook);
+                require_code('hooks/systems/commandr_fs/' . filter_naughty_harsh($commandr_fs_hook));
+                $ob = object_factory('Hook_commandr_fs_' . filter_naughty_harsh($commandr_fs_hook));
                 $this->resource_fs_obs[$commandr_fs_hook] = $ob;
             }
         }

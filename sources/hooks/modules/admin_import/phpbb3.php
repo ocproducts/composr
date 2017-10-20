@@ -380,12 +380,12 @@ class Hook_import_phpbb3
                 }
 
                 $custom_fields = array(
-                    cns_make_boiler_custom_field('interests') => $row['user_interests'],
-                    cns_make_boiler_custom_field('location') => $row['user_from'],
-                    cns_make_boiler_custom_field('occupation') => $row['user_occ'],
+                    cns_make_boiler_custom_field('interests') => array_key_exists('user_interests', $row) ? $row['user_interests'] : '',
+                    cns_make_boiler_custom_field('location') => array_key_exists('user_from', $row) ? $row['user_from'] : '',
+                    cns_make_boiler_custom_field('occupation') => array_key_exists('user_occ', $row) ? $row['user_occ'] : '',
                 );
                 if ($row['user_website'] != '') {
-                    $custom_fields[cns_make_boiler_custom_field('website')] = (strlen($row['user_website']) > 0) ? ('[url]' . $row['user_website'] . '[/url]') : '';
+                    $custom_fields[cns_make_boiler_custom_field('website')] = (!empty($row['user_website'])) ? ('[url]' . $row['user_website'] . '[/url]') : '';
                 }
 
                 $signature = $this->fix_links($row['user_sig'], $row['user_sig_bbcode_uid'], $db, $table_prefix);

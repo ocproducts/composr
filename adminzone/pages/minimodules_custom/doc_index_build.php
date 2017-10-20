@@ -30,8 +30,8 @@ $_addons = find_all_hooks('systems', 'addon_registry');
 ksort($_addons);
 foreach ($_addons as $addon => $place) {
     if ($place == 'sources') {
-        require_code('hooks/systems/addon_registry/' . $addon);
-        $ob = object_factory('Hook_addon_registry_' . $addon);
+        require_code('hooks/systems/addon_registry/' . filter_naughty_harsh($addon));
+        $ob = object_factory('Hook_addon_registry_' . filter_naughty_harsh($addon));
 
         $tutorials = $ob->get_applicable_tutorials();
         $all_tutorials_referenced = array_merge($all_tutorials_referenced, $tutorials);

@@ -94,13 +94,13 @@ function _multi_lang()
  */
 function get_default_option($name)
 {
-    $path = 'hooks/systems/config/' . filter_naughty($name);
+    $path = 'hooks/systems/config/' . filter_naughty_harsh($name, true);
     if (!is_file(get_file_base() . '/sources/' . $path . '.php') && !is_file(get_file_base() . '/sources_custom/' . $path . '.php')) {
         return null;
     }
 
     require_code($path);
-    $ob = object_factory('Hook_config_' . $name);
+    $ob = object_factory('Hook_config_' . filter_naughty_harsh($name, true));
 
     $value = $ob->get_default();
     if ($value === null) {
@@ -122,8 +122,8 @@ function set_option($name, $value, $will_be_formally_set = 1)
 {
     global $CONFIG_OPTIONS_CACHE;
 
-    require_code('hooks/systems/config/' . filter_naughty($name));
-    $ob = object_factory('Hook_config_' . $name, true);
+    require_code('hooks/systems/config/' . filter_naughty_harsh($name));
+    $ob = object_factory('Hook_config_' . filter_naughty_harsh($name), true);
     if ($ob === null) {
         return;
     }
@@ -223,8 +223,8 @@ function config_option_url($name)
         return null;
     }
 
-    require_code('hooks/systems/config/' . filter_naughty($name));
-    $ob = object_factory('Hook_config_' . $name);
+    require_code('hooks/systems/config/' . filter_naughty_harsh($name));
+    $ob = object_factory('Hook_config_' . filter_naughty_harsh($name));
     $option = $ob->get_details();
 
     $_config_url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => $option['category']), get_module_zone('admin_config'));

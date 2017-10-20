@@ -1583,11 +1583,11 @@ function do_block_get_cache_identifier($cache_on, $map)
  */
 function _get_block_path($block)
 {
-    $block_path = get_file_base() . '/sources_custom/blocks/' . filter_naughty_harsh($block) . '.php';
+    $block_path = get_file_base() . '/sources_custom/blocks/' . filter_naughty($block) . '.php';
     if ((in_safe_mode()) || (!is_file($block_path))) {
-        $block_path = get_file_base() . '/sources/blocks/' . filter_naughty_harsh($block) . '.php';
+        $block_path = get_file_base() . '/sources/blocks/' . filter_naughty($block) . '.php';
         if (!is_file($block_path)) {
-            $block_path = get_file_base() . '/sources_custom/miniblocks/' . filter_naughty_harsh($block) . '.php';
+            $block_path = get_file_base() . '/sources_custom/miniblocks/' . filter_naughty($block) . '.php';
         }
     }
     return $block_path;

@@ -355,8 +355,15 @@ class Module_news
             $category = get_translated_text($news_cats[$myrow['news_category']]['nc_title']);
 
             $news_full = get_translated_tempcode('news', $myrow, 'news_article');
+            $news_full_comcode = get_translated_text($myrow['news_article']);
+            $news_summary = get_translated_tempcode('news', $myrow, 'news');
+            $news_summary_comcode = get_translated_text($myrow['news']);
             if ($news_full->is_empty()) {
-                $news_full = get_translated_tempcode('news', $myrow, 'news');
+                $news_full = $news_summary;
+            }
+            if ($news_summary->is_empty()) {
+                $news_summary = $news_full;
+                $news_summary_comcode = $news_full_comcode;
             }
 
             $og_img = $img;
@@ -373,6 +380,7 @@ class Module_news
                 'identifier' => '_SEARCH:news:view:' . strval($id),
                 'image' => $og_img,
                 'category' => $category,
+                'description' => $news_summary_comcode,
             ), $myrow, 'news', strval($id));
 
             $this->id = $id;

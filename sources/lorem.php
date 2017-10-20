@@ -840,8 +840,8 @@ function render_screen_preview($template, $hook, $function)
         }
     }
 
-    require_code('hooks/systems/addon_registry/' . $hook);
-    $ob = object_factory('Hook_addon_registry_' . $hook);
+    require_code('hooks/systems/addon_registry/' . filter_naughty_harsh($hook));
+    $ob = object_factory('Hook_addon_registry_' . filter_naughty_harsh($hook));
 
     // Load all ini/js/css
     $files = $ob->get_file_list();

@@ -99,8 +99,8 @@ function endpoint_script()
         $response_type = get_param_string('response_type', $response_type);
 
         // Call appropriate hook to handle
-        require_code('hooks/endpoints/' . filter_naughty($hook_type) . '/' . filter_naughty($hook));
-        $ob = object_factory('Hook_endpoint_' . filter_naughty($hook_type) . '_' . filter_naughty($hook));
+        require_code('hooks/endpoints/' . filter_naughty_harsh($hook_type, true) . '/' . filter_naughty_harsh($hook, true));
+        $ob = object_factory('Hook_endpoint_' . filter_naughty_harsh($hook_type, true) . '_' . filter_naughty_harsh($hook, true));
         $result = $ob->run($type, $id);
 
         // Process into output structure

@@ -219,8 +219,8 @@ function _forum_authorise_login($this_ref, $username, $user_id, $password_hashed
                     $out['error'] = do_lang_tempcode('UNKNOWN_AUTH_SCHEME_IN_DB', escape_html($reset_url->evaluate()));
                     return $out;
                 }
-                require_code('hooks/systems/cns_auth/' . $password_compatibility_scheme);
-                $ob = object_factory('Hook_cns_auth_' . $password_compatibility_scheme);
+                require_code('hooks/systems/cns_auth/' . filter_naughty_harsh($password_compatibility_scheme, true));
+                $ob = object_factory('Hook_cns_auth_' . filter_naughty_harsh($password_compatibility_scheme, true));
                 $error = $ob->auth($username, $user_id, $password_hashed, $password_raw, $cookie_login, $row);
                 if ($error !== null) {
                     $out['error'] = $error;

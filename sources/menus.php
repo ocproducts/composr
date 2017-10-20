@@ -469,7 +469,7 @@ function _render_menu($menu, $source_member, $type, $as_admin = false, $apply_hi
         if (is_object($child)) {
             $content->attach($child);
         } else {
-            $content->attach(do_template('MENU_BRANCH_' . filter_naughty_harsh($type), $child + array(
+            $content->attach(do_template('MENU_BRANCH_' . filter_naughty_harsh($type, true), $child + array(
                 '_GUID' => 'b5209ec65425bed1207e2f667d9116f6',
                 'POSITION' => strval($i),
                 'FIRST' => $i == 0,
@@ -480,7 +480,7 @@ function _render_menu($menu, $source_member, $type, $as_admin = false, $apply_hi
         }
     }
 
-    return do_template('MENU_' . filter_naughty_harsh($type), array(
+    return do_template('MENU_' . filter_naughty_harsh($type, true), array(
         'CONTENT' => $content,
         'MENU' => $codename,
         'JAVASCRIPT_HIGHLIGHTING' => !$apply_highlighting,
@@ -519,7 +519,7 @@ function _render_menu_branch($branch, $codename, $source_member, $level, $type, 
     if ($branch['content_type'] == 'spacer') {
         return array(
             do_template(
-                'MENU_SPACER_' . filter_naughty_harsh($type),
+                'MENU_SPACER_' . filter_naughty_harsh($type, true),
                 array(
                     '_GUID' => 'c5209ec65425bed1207e2f667d9116f6',
 
@@ -659,7 +659,7 @@ function _render_menu_branch($branch, $codename, $source_member, $level, $type, 
         if (is_object($child)) {
             $children->attach($child);
         } else {
-            $children->attach(do_template('MENU_BRANCH_' . filter_naughty_harsh($type), $child + array(
+            $children->attach(do_template('MENU_BRANCH_' . filter_naughty_harsh($type, true), $child + array(
                 '_GUID' => 'd5209ec65425bed1207e2f667d9116f6',
                 'POSITION' => strval($i),
                 'FIRST' => $i == 0,

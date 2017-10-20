@@ -55,8 +55,8 @@ function set_comment_forum_for($feedback_code, $category_id, $forum_id)
     if (get_forum_type() == 'cns') {
         require_code('content');
         $cma_hook = convert_composr_type_codes('feedback_type_code', $feedback_code, 'content_type');
-        require_code('hooks/systems/content_meta_aware/' . $cma_hook);
-        $cma_ob = object_factory('Hook_content_meta_aware_' . $cma_hook);
+        require_code('hooks/systems/content_meta_aware/' . filter_naughty_harsh($cma_hook, true));
+        $cma_ob = object_factory('Hook_content_meta_aware_' . filter_naughty_harsh($cma_hook, true));
         $info = $cma_ob->info();
         $category_is_string = (isset($info['category_is_string']) && $info['category_is_string']);
         $topics = array();

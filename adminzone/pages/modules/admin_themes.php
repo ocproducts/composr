@@ -520,8 +520,8 @@ class Module_admin_themes
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('SECTION_HIDDEN' => !$show_theme_option_overrides, 'TITLE' => do_lang_tempcode('THEME__OPTION_OVERRIDES'), 'HELP' => do_lang_tempcode('DESCRIPTION__THEME__OPTION_OVERRIDES'))));
         require_all_lang();
         foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/config/' . $hook);
-            $ob = object_factory('Hook_config_' . $hook);
+            require_code('hooks/systems/config/' . filter_naughty_harsh($hook));
+            $ob = object_factory('Hook_config_' . filter_naughty_harsh($hook));
             $details = $ob->get_details();
             if (!empty($details['theme_override'])) {
                 $current_value = get_theme_option($hook, '', $name);

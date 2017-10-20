@@ -44,8 +44,8 @@ class tutorials_all_linked_test_set extends cms_test_case
 
             foreach ($tutorial['tags'] as $tag) {
                 if (strtolower($tag) == $tag) { // Addon tag
-                    require_code('hooks/systems/addon_registry/' . $tag);
-                    $ob = object_factory('Hook_addon_registry_' . $tag);
+                    require_code('hooks/systems/addon_registry/' . filter_naughty_harsh($tag, true));
+                    $ob = object_factory('Hook_addon_registry_' . filter_naughty_harsh($tag, true));
                     $tutorials = $ob->get_applicable_tutorials();
                     $this->assertTrue(in_array($tutorial_name, $tutorials), $tag . ' addon_registry hook not referring back to ' . $tutorial_name);
                 }

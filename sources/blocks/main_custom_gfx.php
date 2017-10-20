@@ -59,8 +59,8 @@ class Block_main_custom_gfx
             return paragraph(do_lang_tempcode('NO_SUCH_RENDERER', escape_html($type_id)), '', 'red_alert');
         }
 
-        require_code('hooks/blocks/main_custom_gfx/' . filter_naughty_harsh($type_id), true);
-        $object = object_factory('Hook_main_custom_gfx_' . $type_id);
+        require_code('hooks/blocks/main_custom_gfx/' . filter_naughty_harsh($type_id, true), true);
+        $object = object_factory('Hook_main_custom_gfx_' . filter_naughty_harsh($type_id, true));
         return $object->run($map, $this);
     }
 
