@@ -495,7 +495,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
 
     // Our state
     $status = CCP_NO_MANS_LAND;
-    $lax = (peek_lax_comcode()) || (function_exists('get_member')) && ($source_member != get_member()) || (!has_interesting_post_fields()); // if we don't want to produce errors for technically invalid Comcode
+    $lax = (get_param_integer('lax_comcode', 0) === 1) || peek_lax_comcode() || (function_exists('get_member')) && ($source_member != get_member()) || (!has_interesting_post_fields()); // if we don't want to produce errors for technically invalid Comcode
     if ((!$lax) && (substr($comcode, 0, 10) === '[semihtml]')) {
         $lax = true;
     }

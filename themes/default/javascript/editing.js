@@ -809,7 +809,7 @@
                     _insertTextboxWysiwyg(element, editor, insert);
                     resolvePromise();
                 } else {
-                    var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1' + $cms.keepStub());
+                    var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&lax_comcode=1' + $cms.keepStub());
                     if (window.location.href.includes('topics')) {
                         url += '&forum_db=1';
                     }
@@ -964,7 +964,7 @@
                 }
 
                 var newHtml = '',
-                    url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1' + $cms.keepStub());
+                    url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&lax_comcode=1' + $cms.keepStub());
 
                 if (window.location.href.includes('topics')) {
                     url += '&forum_db=1';
