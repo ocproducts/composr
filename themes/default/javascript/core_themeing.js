@@ -15,7 +15,7 @@
     window.doneCleanupTemplateMarkers = window.doneCleanupTemplateMarkers !== undefined ? !!window.doneCleanupTemplateMarkers : false;
 
     if (window.location.href.includes('keep_template_magic_markers=1')) {
-        window.$cmsReady.push(function () {
+        $cms.ready.push(function () {
             cleanupTemplateMarkers(window);
         });
     }

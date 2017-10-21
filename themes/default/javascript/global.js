@@ -33,9 +33,9 @@
     window.arrVal  = arrVal;
     window.objVal  = objVal;
 
-    (window.$cmsInit  || (window.$cmsInit = []));
-    (window.$cmsReady || (window.$cmsReady = []));
-    (window.$cmsLoad  || (window.$cmsLoad = []));
+    $cms.init  || ($cms.init = []);
+    $cms.ready || ($cms.ready = []);
+    $cms.load  || ($cms.load = []);
 
     /** @namespace $cms */
     $cms = extendDeep($cms, /**@lends $cms*/ {
@@ -500,14 +500,14 @@
     function executeCmsInitQueue() {
         var fn;
 
-        while (window.$cmsInit.length > 0) {
-            fn = window.$cmsInit.shift();
+        while ($cms.init.length > 0) {
+            fn = $cms.init.shift();
             if (typeof fn === 'function') {
                 fn();
             }
         }
 
-        properties(window.$cmsInit, {
+        properties($cms.init, {
             unshift: function unshift(fn) {
                 fn();
             },
@@ -520,14 +520,14 @@
     function executeCmsReadyQueue() {
         var fn;
 
-        while (window.$cmsReady.length > 0) {
-            fn = window.$cmsReady.shift();
+        while ($cms.ready.length > 0) {
+            fn = $cms.ready.shift();
             if (typeof fn === 'function') {
                 fn();
             }
         }
 
-        properties(window.$cmsReady, {
+        properties($cms.ready, {
             unshift: function unshift(fn) {
                 fn();
             },
@@ -540,14 +540,14 @@
     function executeCmsLoadQueue() {
         var fn;
 
-        while (window.$cmsLoad.length > 0) {
-            fn = window.$cmsLoad.shift();
+        while ($cms.load.length > 0) {
+            fn = $cms.load.shift();
             if (typeof fn === 'function') {
                 fn();
             }
         }
 
-        properties(window.$cmsLoad, {
+        properties($cms.load, {
             unshift: function unshift(fn) {
                 fn();
             },
@@ -5879,7 +5879,7 @@
         });
     };
 
-    window.$cmsReady.push(function () {
+    $cms.ready.push(function () {
         // Tooltips close on browser resize
         $cms.dom.on(window, 'resize', function () {
             $cms.ui.clearOutTooltips();
@@ -7443,7 +7443,7 @@
         });
     };
 
-    window.$cmsReady.push(function () {
+    $cms.ready.push(function () {
         $cms.attachBehaviors(document);
     });
 
@@ -10032,7 +10032,7 @@
 
     $cms.templates.standaloneHtmlWrap = function (params) {
         if (window.parent) {
-            window.$cmsLoad.push(function () {
+            $cms.load.push(function () {
                 document.body.classList.add('frame');
 
                 try {

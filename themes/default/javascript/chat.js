@@ -16,7 +16,7 @@
         // Used by this.checkChatOptions()
         this.chatOptionsFormLastValid = null;
         
-        window.$cmsLoad.push(function () {
+        $cms.load.push(function () {
             chatLoad(params.chatroomId);
         });
     }
@@ -132,7 +132,7 @@
     $cms.templates.chatLobbyImArea = function chatLobbyImArea(params, container) {
         var chatroomId = strVal(params.chatroomId);
 
-        window.$cmsLoad.push(function () {
+        $cms.load.push(function () {
             try {
                 $cms.dom.$('#post_' + chatroomId).focus();
             } catch (e) {}
@@ -361,7 +361,7 @@
         window.lobbyLink = params.lobbyLink;
         window.participants = '';
 
-        window.$cmsReady.push(function () {
+        $cms.ready.push(function () {
             if (!window.loadFromRoomId) { // Only if not in chat lobby or chatroom, so as to avoid conflicts
                 beginImChatting();
             }

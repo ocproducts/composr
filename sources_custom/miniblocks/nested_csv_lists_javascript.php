@@ -39,13 +39,15 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
 
 // Output JavaScript
 ?>/*<script>*/
-(function (){
+(function ($cms){
     'use strict';
 
     /** @type {Object} */
     window.nestedCsvStructure = <?= json_encode((array)$csv_structure) ?>;
 
-    (window.$cmsReady || (window.$cmsReady = [])).push(function () {
+    $cms.ready || ($cms.ready = []);
+
+    $cms.ready.push(function () {
         var forms = document.getElementsByTagName('form');
 
         for (var i = 0; i < forms.length; i++) {
@@ -218,4 +220,4 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
         }
     }
 
-}());
+}(window.$cms || (window.$cms = {})));
