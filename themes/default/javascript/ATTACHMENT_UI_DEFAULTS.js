@@ -17,7 +17,7 @@ defaults.type = ''; // =autodetect rendering type
 showOverlay = !(multi || (isImage && $cms.$CONFIG_OPTION('simplified_attachments_ui')) || isArchive);
 
 if (isImage) {
-    tag = 'attachment_safe';
+    tag = 'attachment_safe'; // [attachment_safe]
 }
 
 if (multi || isImage) {

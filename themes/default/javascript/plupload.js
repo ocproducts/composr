@@ -14786,13 +14786,11 @@
             /*== Custom Composr settings ==*/
             required: false,
             progress_target: 'fsUploadProgress',
-            // Doesn't exist for attachments. 
-            // When exists, its used to fire change events on and hold reference to .pluploadObject
+            // Used to fire change events on and hold reference to .pluploadObject
             txtName: name,
             // This input field shows the file name of the uploading/uploaded file to the user
             txtFileName: 'txtFileName_' + name,
             // This hidden input field holds the server-side upload_id after upload is finished
-            // Used by attachments UI to fire change events and hold reference to .pluploadObject
             hidFileID: 'hidFileID_' + name,
             page_type: pageType,
             posting_field_name: postingFieldName,
@@ -14864,10 +14862,12 @@
         if (!files) {
             return;
         }
+        
+        files = arrVal(file);
 
         var count = files.length;
 
-        if (count > 0) {
+        if (files.length > 0) {
             event.preventDefault();
         }
 
@@ -14875,9 +14875,7 @@
 
         var validTypes = '{$CONFIG_OPTION;,valid_types}'.split(/\s*,\s*/g);
 
-        for (var i = 0; i < count; i++) {
-            var file = files.item(i);
-
+        files.forEach(function (file) {
             var xhr = new XMLHttpRequest(),
                 fileUpload = xhr.upload;
 
@@ -14892,7 +14890,7 @@
             }
             if (!goodType) {
                 $cms.ui.alert('{!INVALID_FILE_TYPE_GENERAL;^}'.replace(/\{\1\\}/g, fileExt).replace(/\\{2\\}/g, validTypes.join(', ')));
-                continue;
+                return;
             }
 
             // Progress display
@@ -14939,7 +14937,7 @@
 
             // Keep tabs of it
             window.extraAttachmentBase++;
-        }
+        });
     }
 
     function html5UploadProgress(event, fieldName) {

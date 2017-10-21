@@ -61,7 +61,7 @@
     }
 
     function attachmentPresent(postValue, number) {
-        return (postValue.indexOf('[attachment]new_' + number + '[/attachment]') !== -1) && (postValue.indexOf('[attachment_safe]new_' + number + '[/attachment_safe]') === -1) && (postValue.indexOf('[attachment thumb="1"]new_' + number + '[/attachment]') === -1) && (postValue.indexOf('[attachment_safe thumb="1"]new_' + number + '[/attachment_safe]') === -1) && (postValue.indexOf('[attachment thumb="0"]new_' + number + '[/attachment]') === -1) && (postValue.indexOf('[attachment_safe thumb="0"]new_' + number + '[/attachment_safe]') === -1);
+        return postValue.includes('[attachment]new_' + number + '[/attachment]') && !postValue.includes('[attachment_safe]new_' + number + '[/attachment_safe]') && !postValue.includes('[attachment thumb="1"]new_' + number + '[/attachment]') && !postValue.includes('[attachment_safe thumb="1"]new_' + number + '[/attachment_safe]') && !postValue.includes('[attachment thumb="0"]new_' + number + '[/attachment]') && !postValue.includes('[attachment_safe thumb="0"]new_' + number + '[/attachment_safe]');
     }
 
     /**
@@ -73,6 +73,8 @@
      * @return { Promise }
      */
     function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
+        console.log('setAttachment()', 'fieldName:', fieldName, 'number:', number, 'filename:', filename, 'multi:', multi, 'uploaderSettings:', uploaderSettings);
+        
         multi = Boolean(multi);
 
         return new Promise(function (resolvePromise) {
@@ -109,9 +111,9 @@
             }
 
             var ext = filepath.replace(/^.*\./, '').toLowerCase(),
-                isImage = (',{$CONFIG_OPTION;,valid_images},'.indexOf(',' + ext + ',') !== -1),
-                isVideo = (',{$CONFIG_OPTION;,valid_videos},'.indexOf(',' + ext + ',') !== -1),
-                isAudio = (',{$CONFIG_OPTION;,valid_audios},'.indexOf(',' + ext + ',') !== -1),
+                isImage = ',{$CONFIG_OPTION;,valid_images},'.includes(',' + ext + ','),
+                isVideo = ',{$CONFIG_OPTION;,valid_videos},'.includes(',' + ext + ','),
+                isAudio = ',{$CONFIG_OPTION;,valid_audios},'.includes(',' + ext + ','),
                 isArchive = (ext === 'tar') || (ext === 'zip'),
                 prefix = '', suffix = '';
 
@@ -120,10 +122,11 @@
                 suffix = '[/media_set]';
             }
 
-            var tag = 'attachment';
-            var showOverlay, defaults = {};
+            var tag = 'attachment', // [attachment]
+                showOverlay, 
+                defaults = {};
 
-            if (filepath.indexOf('fakepath') === -1) { // iPhone gives c:\fakepath\image.jpg, so don't use that
+            if (!filepath.includes('fakepath')) { // iPhone gives c:\fakepath\image.jpg, so don't use that
                 defaults.description = filepath; // Default caption to local file path
             }
 
@@ -153,16 +156,23 @@
                 }
 
                 if (multi) {
-                    var splitFilename = document.getElementById('txtFileName_file' + window.numAttachments).value.split(/:/);
-                    splitFilename.forEach(function (part, i) {
+                    var splitFileNames = document.getElementById('txtFileName_file' + window.numAttachments).value.split(/:/);
+                    splitFileNames.forEach(function (fileName, i) {
                         promiseCalls.push(function () {
                             if (i > 0) {
                                 window.numAttachments++;
                             }
-                            return window.insertTextbox(post, comcode.replace(']new_' + number + '[', ']new_' + window.numAttachments + '['));
+                            var newComcode = comcode.replace(']new_' + number + '[', ']new_' + window.numAttachments + '[');
+                            if (!fileName.includes('fakepath')) {
+                                newComcode = newComcode.replace(' description="' + defaults.description.replace(/"/g, '\\"') + '"', ' description="' + fileName.replace(/"/g, '\\"') + '"');
+                            }
+                            return window.insertTextbox(post, newComcode);
                         });
                     });
-                    number = '' + (parseInt(number) + splitFilename.length - 1);
+                    promiseCalls.push(function () {
+                        number = '' + (parseInt(number) + (splitFileNames.length - 1));
+                        return Promise.resolve();
+                    });
                 } else {
                     promiseCalls.push(function () {
                         return window.insertTextbox(post, comcode);
