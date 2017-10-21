@@ -743,8 +743,8 @@ class Meta_tree_builder
 
         $files = array();
 
-        require_code('hooks/systems/addon_registry/' . $addon);
-        $ob = object_factory('Hook_addon_registry_' . $addon);
+        require_code('hooks/systems/addon_registry/' . filter_naughty_harsh($addon, true));
+        $ob = object_factory('Hook_addon_registry_' . filter_naughty_harsh($addon, true));
         $_files = $ob->get_file_list();
         $test_for = 'themes/default/' . $subdir . '/';
         $test_for_2 = 'themes/default/' . $subdir . '_custom/';

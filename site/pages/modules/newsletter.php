@@ -542,7 +542,8 @@ class Module_newsletter
 
         $_url = build_url(array('page' => 'newsletter', 'type' => 'confirm', 'email' => $email, 'confirm' => $code_confirm), '_SELF', array(), false, true);
         $url = $_url->evaluate();
-        $message = do_lang('NEWSLETTER_SIGNUP_TEXT', comcode_escape($url), comcode_escape($password), array($forename, $surname, $email, get_site_name()));
+        $newsletter_url = build_url(array('page' => 'newsletter'), get_module_zone('newsletter'));
+        $message = do_lang('NEWSLETTER_SIGNUP_TEXT', comcode_escape($url), comcode_escape($password), array($forename, $surname, $email, get_site_name(), $newsletter_url->evaluate()));
 
         require_code('mail');
         dispatch_mail(do_lang('NEWSLETTER_SIGNUP'), $message, array($email), $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true));

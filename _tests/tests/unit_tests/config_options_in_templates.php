@@ -51,8 +51,8 @@ class config_options_in_templates_test_set extends cms_test_case
                     $num_matches = preg_match_all('#\{\$CONFIG_OPTION,([^\{\},]*)\}#', $c, $matches);
                     for ($i = 0; $i < $num_matches; $i++) {
                         $option = $matches[1][$i];
-                        require_code('hooks/systems/config/' . $option);
-                        $ob = object_factory('Hook_config_' . $option);
+                        require_code('hooks/systems/config/' . filter_naughty_harsh($option, true));
+                        $ob = object_factory('Hook_config_' . filter_naughty_harsh($option, true));
                         $details = $ob->get_details();
                         $ok = (($details['addon'] == $hook) || ($details['addon'] == 'core') || (substr($details['addon'], 0, 5) == 'core_'));
                         $this->assertTrue($ok, 'Template ' . $file . ' is using a config option ' . $option . ' from ' . $details['addon'] . ' without a guard');

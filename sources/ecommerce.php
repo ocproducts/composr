@@ -368,7 +368,7 @@ function get_transaction_fee($amount, $payment_gateway)
 
     if ((file_exists(get_file_base() . '/sources/hooks/systems/payment_gateway/' . $payment_gateway . '.php')) || (file_exists(get_file_base() . '/sources_custom/hooks/systems/payment_gateway/' . $payment_gateway . '.php'))) {
         require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
-        $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
+        $payment_gateway_object = object_factory('Hook_payment_gateway_' . filter_naughty_harsh($payment_gateway));
         if (method_exists($payment_gateway_object, 'get_transaction_fee')) {
             return $payment_gateway_object->get_transaction_fee($amount);
         }
@@ -513,7 +513,7 @@ function make_transaction_button($type_code, $item_name, $purchase_id, $price, $
         $payment_gateway = get_option('payment_gateway');
     }
     require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
-    $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
+    $payment_gateway_object = object_factory('Hook_payment_gateway_' . filter_naughty_harsh($payment_gateway));
 
     $invoicing_breakdown = generate_invoicing_breakdown($type_code, $item_name, $purchase_id, $price, $tax, $shipping_cost, $shipping_tax);
 
@@ -569,7 +569,7 @@ function make_subscription_button($type_code, $item_name, $purchase_id, $price, 
         $payment_gateway = get_option('payment_gateway');
     }
     require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
-    $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
+    $payment_gateway_object = object_factory('Hook_payment_gateway_' . filter_naughty_harsh($payment_gateway));
 
     $invoicing_breakdown = generate_invoicing_breakdown($type_code, $item_name, $purchase_id, $price, $tax);
 
@@ -614,7 +614,7 @@ function make_cancel_button($purchase_id, $payment_gateway)
         return null;
     }
     require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
-    $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
+    $payment_gateway_object = object_factory('Hook_payment_gateway_' . filter_naughty_harsh($payment_gateway));
     if (!method_exists($payment_gateway_object, 'make_cancel_button')) {
         return null;
     }
@@ -717,7 +717,7 @@ function perform_local_payment()
 
     $payment_gateway = get_option('payment_gateway');
     require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
-    $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
+    $payment_gateway_object = object_factory('Hook_payment_gateway_' . filter_naughty_harsh($payment_gateway));
     return ((get_option('use_local_payment') == '1') && (method_exists($payment_gateway_object, 'do_local_transaction')));
 }
 
@@ -752,7 +752,7 @@ function get_transaction_form_fields($type_code, $item_name, $purchase_id, $pric
     }
 
     require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
-    $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
+    $payment_gateway_object = object_factory('Hook_payment_gateway_' . filter_naughty_harsh($payment_gateway));
 
     if (!method_exists($payment_gateway_object, 'do_local_transaction')) {
         warn_exit(do_lang_tempcode('LOCAL_PAYMENT_NOT_SUPPORTED', escape_html($payment_gateway)));
@@ -1167,7 +1167,7 @@ function ecommerce_attach_memo_field_if_needed(&$fields)
         } else {
             $payment_gateway = get_option('payment_gateway');
             require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
-            $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
+            $payment_gateway_object = object_factory('Hook_payment_gateway_' . filter_naughty_harsh($payment_gateway));
             $config = $payment_gateway_object->get_config();
             $get_memo = !$config['supports_remote_memo'];
         }
@@ -1357,7 +1357,7 @@ function handle_ipn_transaction_script($silent_fail = false, $send_notifications
 
     $payment_gateway = get_param_string('from', get_option('payment_gateway'));
     require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
-    $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
+    $payment_gateway_object = object_factory('Hook_payment_gateway_' . filter_naughty_harsh($payment_gateway));
 
     ob_start();
 

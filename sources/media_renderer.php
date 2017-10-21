@@ -116,8 +116,8 @@ function find_media_renderers($url, $attributes, $as_admin, $source_member, $acc
             continue;
         }
 
-        require_code('hooks/systems/media_rendering/' . $hook);
-        $obs[$hook] = object_factory('Hook_media_rendering_' . $hook);
+        require_code('hooks/systems/media_rendering/' . filter_naughty_harsh($hook));
+        $obs[$hook] = object_factory('Hook_media_rendering_' . filter_naughty_harsh($hook));
     }
 
     if (($as_admin) && ($limit_to !== null)) { // Don't check mime-types etc if admin and forced type
@@ -226,7 +226,7 @@ function render_media_url($url, $url_safe, $attributes, $as_admin = false, $sour
         $attributes['filename'] = $original_filename;
     }
 
-    $ob = object_factory('Hook_media_rendering_' . $hook);
+    $ob = object_factory('Hook_media_rendering_' . filter_naughty_harsh($hook));
     $ret = $ob->render($url, $url_safe, $attributes, $as_admin, $source_member, $url_to_scan_against);
 
     if (array_key_exists('float', $attributes)) {

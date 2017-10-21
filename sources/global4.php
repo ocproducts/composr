@@ -111,7 +111,7 @@ function _save_web_resource_merging($resources, $type, $write_path)
         require_code('files');
         cms_file_put_contents_safe($write_path, $data, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
-        require_code('css_and_js');
+        require_code('web_resources2');
         compress_cms_stub_file($write_path);
     }
 

@@ -385,7 +385,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/cqc_site.php',
             '_tests/tests/unit_tests/cqc_sources.php',
             '_tests/tests/unit_tests/cqc_welcome.php',
-            '_tests/tests/unit_tests/css_and_js.php',
+            '_tests/tests/unit_tests/web_resources.php',
             '_tests/tests/unit_tests/dev_environment.php',
             '_tests/tests/unit_tests/sitemap.php',
             '_tests/tests/unit_tests/_commandr_fs.php',

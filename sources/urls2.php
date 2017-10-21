@@ -923,14 +923,14 @@ function _give_moniker_scope($page, $type, $id, $zone, $main)
  */
 function find_id_via_url_moniker($content_type, $url_moniker)
 {
-    $path = 'hooks/systems/content_meta_aware/' . filter_naughty($content_type, true);
+    $path = 'hooks/systems/content_meta_aware/' . filter_naughty_harsh($content_type, true);
     if ((!file_exists(get_file_base() . '/sources/' . $path . '.php')) && (!file_exists(get_file_base() . '/sources_custom/' . $path . '.php'))) {
         return null;
     }
 
     require_code($path);
 
-    $cma_ob = object_factory('Hook_content_meta_aware_' . $content_type);
+    $cma_ob = object_factory('Hook_content_meta_aware_' . filter_naughty_harsh($content_type, true));
     $cma_info = $cma_ob->info();
     if (!$cma_info['support_url_monikers']) {
         return null;

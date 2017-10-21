@@ -1031,7 +1031,7 @@ class Module_purchase
 
         $payment_gateway = get_option('payment_gateway');
         require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
-        $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
+        $payment_gateway_object = object_factory('Hook_payment_gateway_' . filter_naughty_harsh($payment_gateway));
 
         $test = $this->_check_availability($type_code);
         if ($test !== null) {
@@ -1298,7 +1298,7 @@ class Module_purchase
     {
         $payment_gateway = get_option('payment_gateway');
         require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
-        $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
+        $payment_gateway_object = object_factory('Hook_payment_gateway_' . filter_naughty_harsh($payment_gateway));
 
         $member_id = get_member();
 

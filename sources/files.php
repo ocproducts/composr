@@ -697,8 +697,8 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                         $addon_info = read_addon_info($hook);
                         $addon_files = array_merge($addon_files, array_map('strtolower', $addon_info['files']));
                     } else { // Running from outside Composr
-                        require_code('hooks/systems/addon_registry/' . $hook);
-                        $ob = object_factory('Hook_addon_registry_' . $hook);
+                        require_code('hooks/systems/addon_registry/' . filter_naughty_harsh($hook));
+                        $ob = object_factory('Hook_addon_registry_' . filter_naughty_harsh($hook));
                         $addon_files = array_merge($addon_files, array_map('strtolower', $ob->get_file_list()));
                     }
                 }

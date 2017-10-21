@@ -1787,8 +1787,8 @@ function form_input_tree_list($pretty_name, $description, $name, $root_id, $hook
 {
     require_javascript('tree_list');
 
-    require_code('hooks/systems/ajax_tree/' . $hook);
-    $object = object_factory('Hook_ajax_tree_' . $hook);
+    require_code('hooks/systems/ajax_tree/' . filter_naughty_harsh($hook));
+    $object = object_factory('Hook_ajax_tree_' . filter_naughty_harsh($hook));
 
     if (get_option('tree_lists') == '0') {
         $simple_content = new Tempcode();

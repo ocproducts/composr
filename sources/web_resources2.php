@@ -23,7 +23,7 @@
  *
  * @ignore
  */
-function init__css_and_js()
+function init__web_resources2()
 {
     global $CSS_COMPILE_ACTIVE_THEME;
     $CSS_COMPILE_ACTIVE_THEME = 'default';

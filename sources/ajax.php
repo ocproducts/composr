@@ -337,10 +337,10 @@ function change_detection_script()
 
     $page = get_page_name();
 
-    require_code('hooks/systems/change_detection/' . filter_naughty($page), true);
+    require_code('hooks/systems/change_detection/' . filter_naughty_harsh($page), true);
 
     $refresh_if_changed = either_param_string('refresh_if_changed');
-    $object = object_factory('Hook_change_detection_' . $page);
+    $object = object_factory('Hook_change_detection_' . filter_naughty_harsh($page));
     $result = $object->run($refresh_if_changed);
     echo $result ? '1' : '0';
 }

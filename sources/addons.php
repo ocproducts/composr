@@ -56,10 +56,10 @@ function read_addon_info($addon, $get_dependencies_on_this = false, $row = null,
 
     if ($path === null) {
         $is_orig = false;
-        $path = get_file_base() . '/sources_custom/hooks/systems/addon_registry/' . filter_naughty($addon) . '.php';
+        $path = get_file_base() . '/sources_custom/hooks/systems/addon_registry/' . filter_naughty_harsh($addon) . '.php';
         if (!file_exists($path)) {
             $is_orig = true;
-            $path = get_file_base() . '/sources/hooks/systems/addon_registry/' . filter_naughty($addon) . '.php';
+            $path = get_file_base() . '/sources/hooks/systems/addon_registry/' . filter_naughty_harsh($addon) . '.php';
         }
     } else {
         $is_orig = (strpos($path, '/sources_custom/hooks/systems/addon_registry/') !== false);
@@ -233,7 +233,7 @@ function find_addon_icon($addon_name, $pick_default = true, $tar_path = null)
             if ($_data !== null) {
                 $data = str_replace('<' . '?php', '', $_data['data']);
                 @eval($data);
-                $ob = object_factory('Hook_addon_registry_' . $addon_name, true);
+                $ob = object_factory('Hook_addon_registry_' . filter_naughty_harsh($addon_name, true), true);
                 if (($ob !== null) && (method_exists($ob, 'get_default_icon'))) {
                     $file = $ob->get_default_icon();
                     if (file_exists(get_file_base() . '/' . $file)) {

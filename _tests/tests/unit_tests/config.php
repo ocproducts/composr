@@ -22,8 +22,8 @@ class config_test_set extends cms_test_case
     {
         $hooks = find_all_hooks('systems', 'config');
         foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/config/' . $hook);
-            $ob = object_factory('Hook_config_' . $hook);
+            require_code('hooks/systems/config/' . filter_naughty_harsh($hook));
+            $ob = object_factory('Hook_config_' . filter_naughty_harsh($hook));
             $details = $ob->get_details();
 
             $default = $ob->get_default();
@@ -48,8 +48,8 @@ class config_test_set extends cms_test_case
     {
         $hooks = find_all_hooks('systems', 'config');
         foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/config/' . $hook);
-            $ob = object_factory('Hook_config_' . $hook);
+            require_code('hooks/systems/config/' . filter_naughty_harsh($hook));
+            $ob = object_factory('Hook_config_' . filter_naughty_harsh($hook));
             $details = $ob->get_details();
 
             $default = $ob->get_default();
@@ -201,8 +201,8 @@ class config_test_set extends cms_test_case
                         continue;
                     }
 
-                    require_code('hooks/systems/config/' . $hook);
-                    $ob = object_factory('Hook_config_' . $hook);
+                    require_code('hooks/systems/config/' . filter_naughty_harsh($hook));
+                    $ob = object_factory('Hook_config_' . filter_naughty_harsh($hook));
                     $details = $ob->get_details();
 
                     if ($file_type == 'php') {
