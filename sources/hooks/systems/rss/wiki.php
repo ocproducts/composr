@@ -55,7 +55,7 @@ class Hook_rss_wiki
         foreach ($rows as $row) {
             $id = strval($row['id']);
 
-            if (!has_category_access(get_member(), 'wiki_page', strval($row['id']))) {
+            if (!has_category_access(get_member(), 'wiki_page', $id)) {
                 continue;
             }
 
@@ -64,7 +64,7 @@ class Hook_rss_wiki
             $news_date = date($date_string, $row['add_date']);
             $edit_date = '';
 
-            $news_title = xmlentities(escape_html(get_translated_text($row['title'])));
+            $news_title = xmlentities(get_translated_text($row['title']));
             $_summary = get_translated_tempcode('wiki_pages', $row, 'description');
             $summary = xmlentities($_summary->evaluate());
             $news = '';
