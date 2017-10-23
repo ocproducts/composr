@@ -29,7 +29,7 @@
         },
 
         setAttachment: function () {
-            setAttachment('post', this.params.i, '');
+            window.setAttachment('post', this.params.i, '');
         }
     });
 
@@ -428,20 +428,23 @@
             });
         }
         
-        function rebuildAttachmentButtonForNext(_postingFieldName, attachmentUploadButton) {
-            console.log('rebuildAttachmentButtonForNext()', '_postingFieldName:', _postingFieldName, 'attachmentUploadButton:', attachmentUploadButton);
+        
+        var lastAttachmentBrowseButton;
+        function rebuildAttachmentButtonForNext(_postingFieldName, attachmentBrowseButton) {
+            console.log('rebuildAttachmentButtonForNext()', '_postingFieldName:', _postingFieldName, 'attachmentBrowseButton:', attachmentBrowseButton);
             
             if (_postingFieldName !== postingFieldName) {
                 return;
             }
 
-            if (attachmentUploadButton === undefined) {
-                attachmentUploadButton = window.attachmentUploadButton; // Use what was used last time
+            if (attachmentBrowseButton === undefined) {
+                attachmentBrowseButton = lastAttachmentBrowseButton; // Use what was used last time
             }
-            window.attachmentUploadButton = attachmentUploadButton;
+            
+            lastAttachmentBrowseButton = attachmentBrowseButton;
 
             $cms.requireJavascript('plupload').then(function () {
-                window.prepareSimplifiedFileInput('attachment_multi', 'file' + window.numAttachments, null, postingFieldName, strVal(params.filter), attachmentUploadButton);
+                window.prepareSimplifiedFileInput('attachment_multi', 'file' + window.numAttachments, null, postingFieldName, strVal(params.filter), attachmentBrowseButton);
             });
         }
     };

@@ -1768,7 +1768,7 @@
         if (_haltedPromise === undefined) {
             _haltedPromise = new Promise();
             properties(_haltedPromise, {
-                'then': function then() {
+                then: function then() {
                     return _haltedPromise;
                 },
                 'catch': function _catch() {

@@ -14274,12 +14274,18 @@
                     $cms.form.doFormPreview(btnSubmit.form, window.formPreviewUrl, window.separatePreview).then(function (bool) {
                         if (bool) {
                             btnSubmit.form.submit();
+                        } else {
+                            plObj.submitting = false;
+                            plObj.cmsPreviewing = false;
                         }
                     });
                 } else {
                     $cms.form.doFormSubmit(btnSubmit.form, window.analyticEventCategory).then(function (bool) {
                         if (bool) {
                             btnSubmit.form.submit();
+                        } else {
+                            plObj.submitting = false;
+                            plObj.cmsPreviewing = false;
                         }
                     });
                 }
@@ -14316,12 +14322,18 @@
                 $cms.form.doFormPreview(btnSubmit.form, window.formPreviewUrl, window.separatePreview).then(function (bool) {
                     if (bool) {
                         btnSubmit.form.submit();
+                    } else {
+                        plObj.submitting = false;
+                        plObj.cmsPreviewing = false;
                     }
                 });
             } else {
                 $cms.form.doFormSubmit(btnSubmit.form, window.analyticEventCategory).then(function (bool) {
                     if (bool) {
                         btnSubmit.form.submit();
+                    } else {
+                        plObj.submitting = false;
+                        plObj.cmsPreviewing = false;
                     }
                 });
             }
@@ -14339,7 +14351,7 @@
     }
 
     function dispatchForPageType(pageType, name, fileName, postingFieldName, numFiles) {
-        //console.log('dispatchForPageType()', 'pageType:', pageType, 'name:', name, 'fileName:', fileName, 'postingFieldName:', postingFieldName, 'numFiles:', numFiles);
+        console.log('dispatchForPageType()', 'pageType:', pageType, 'name:', name, 'fileName:', fileName, 'postingFieldName:', postingFieldName, 'numFiles:', numFiles);
 
         pageType = strVal(pageType);
         name = strVal(name);
@@ -14368,27 +14380,27 @@
 
     // Listener to the 'FilesAdded' Plupload event
     function onUploadDialogCompleted(plObj, files) {
-        //console.log('onUploadDialogCompleted()', 'plObj:', plObj, 'files:', files);
+        console.log('onUploadDialogCompleted()', 'plObj:', plObj, 'files:', files);
 
         document.getElementById(plObj.settings.btn_submit_id).disabled = false;
 
         var name = plObj.settings.txtName,
-            filenameField = document.getElementById(plObj.settings.txtFileName),
+            fileNameField = document.getElementById(plObj.settings.txtFileName),
             fileIdField = document.getElementById(plObj.settings.hidFileID);
 
-        if (filenameField.value !== '-1') {
+        if (fileNameField.value !== '-1') {
             $cms.dom.html(document.getElementById(plObj.settings.progress_target), ''); // Remove old progress indicators
             plObj.stop();
         }
 
         fileIdField.value = '-1';
-        filenameField.value = '';
+        fileNameField.value = '';
 
         files.some(function (file) {
-            if (filenameField.value !== '') {
-                filenameField.value += ':';
+            if (fileNameField.value !== '') {
+                fileNameField.value += ':';
             }
-            filenameField.value += file.name.replace(/:/g, ',');
+            fileNameField.value += file.name.replace(/:/g, ',');
 
             setTimeout(function () { // In a timeout as file.has_error may not have been set yet
                 if (!file.hasError) {
@@ -14412,24 +14424,24 @@
      * @param value - '1' will start upload if it hasn't already and files are selected, '' clears the placeholder field value
      */
     function fireFakeUploadFieldChange(name, value) {
-        //console.log('fireFakeUploadFieldChange()', 'name:', name, 'value:', value);
+        console.log('fireFakeUploadFieldChange()', 'name:', name, 'value:', value);
         value = strVal(value);
         
-        var element = document.getElementById(name),
-            plObj = element.pluploadObject;
+        var placeholderField = document.getElementById(name),
+            plObj = placeholderField.pluploadObject;
         
-        element.value = value;
-        element.virtualValue = value;
-        $cms.dom.trigger(element, 'change');
+        placeholderField.value = value;
+        placeholderField.virtualValue = value;
+        $cms.dom.trigger(placeholderField, 'change');
         
         if ((plObj == null) || (plObj.settings == null)) {
             return;
         }
 
         var fileIdField = document.getElementById(plObj.settings.hidFileID),
-            filenameField = document.getElementById(plObj.settings.txtFileName);
+            fileNameField = document.getElementById(plObj.settings.txtFileName);
         
-        if ((value === '1') && (fileIdField.value === '-1') && (filenameField.value !== '')) {
+        if ((value === '1') && (fileIdField.value === '-1') && (fileNameField.value !== '')) {
             plObj.submitting = false;
             plObj.start();
 
@@ -14449,7 +14461,7 @@
 
     // Listener to the 'UploadProgress' event
     function onUploadUpdateProgress(plObj, file) {
-        //console.log('onUploadUpdateProgress()', 'plObj:', plObj, 'file:', file);
+        console.log('onUploadUpdateProgress()', 'plObj:', plObj, 'file:', file);
 
         var percent = Number(plObj.total.percent);
         if (percent === 100) {
@@ -14465,7 +14477,7 @@
 
     // Listener to the 'FileUploaded' event
     function onUploadFinished(plObj, file, data) {
-        //console.log('onUploadFinished()', 'plObj:', plObj, 'file:', file, 'data:', data);
+        console.log('onUploadFinished()', 'plObj:', plObj, 'file:', file, 'data:', data);
 
         var progress = new FileProgress(file, plObj.settings.progress_target);
         progress.setComplete();
@@ -14474,7 +14486,7 @@
         var btnSubmit = document.getElementById(plObj.settings.btn_submit_id),
             allUploadsDone = true,
             form = document.getElementById(plObj.settings.hidFileID).form;
-
+        
         for (var i = 0; i < form.elements.length; i++) {
             if ((form.elements[i].pluploadObject != null) && (form.elements[i].pluploadObject.total.percent < 100) && (Number(form.elements[i].pluploadObject.total.size) !== 0)) {
                 allUploadsDone = false;
@@ -14500,7 +14512,7 @@
         }
 
         if (data.response == '') { // NOT success, happens in plupload when clicking away from document (i.e. implicit cancel)
-            return '';
+            return;
         }
 
         var decodedData = $cms.parseJson(data.response);
@@ -14527,12 +14539,18 @@
                 $cms.form.doFormPreview(btnSubmit.form, window.formPreviewUrl, window.separatePreview).then(function (bool) {
                     if (bool) {
                         btnSubmit.form.submit();
+                    } else {
+                        plObj.submitting = false;
+                        plObj.cmsPreviewing = false;
                     }
                 });
             } else {
                 $cms.form.doFormSubmit(btnSubmit.form, window.analyticEventCategory).then(function (bool) {
                     if (bool) {
                         btnSubmit.form.submit();
+                    } else {
+                        plObj.submitting = false;
+                        plObj.cmsPreviewing = false;
                     }
                 });
             }
@@ -14540,7 +14558,7 @@
     }
 
     function onUploadError(plObj, error) {
-        //console.log('onUploadError()', 'plObj:', plObj, 'error:', error);
+        console.log('onUploadError()', 'plObj:', plObj, 'error:', error);
 
         var file = error.file ? error.file : plObj.files[plObj.files.length - 1];
 
@@ -14574,7 +14592,7 @@
 
         var clearButton = document.getElementById('fsClear_' + plObj.settings.txtName);
         if (clearButton) {
-            clearButton.style.display = 'inline';
+            $cms.dom.show(clearButton);
         }
         var uploadButton = document.getElementById('uploadButton_' + plObj.settings.txtName);
         if (uploadButton) {
@@ -14680,10 +14698,10 @@
      * @param btnSubmitId - ID of the form submit button
      * @param postingFieldName - ID of the associated textarea
      * @param filter - Valid file types
-     * @param attachmentUploadButton - ID of browse button passed to Plupload
+     * @param attachmentBrowseButton - ID of browse button passed to Plupload
      */
-    function prepareSimplifiedFileInput(pageType, name, btnSubmitId, postingFieldName, filter, attachmentUploadButton) {
-        console.log('prepareSimplifiedFileInput()', 'pageType:', pageType, 'name:', name, 'btnSubmitId:', btnSubmitId, 'postingFieldName:', postingFieldName, 'filter:', filter, 'attachmentUploadButton:', attachmentUploadButton);
+    function prepareSimplifiedFileInput(pageType, name, btnSubmitId, postingFieldName, filter, attachmentBrowseButton) {
+        console.log('prepareSimplifiedFileInput()', 'pageType:', pageType, 'name:', name, 'btnSubmitId:', btnSubmitId, 'postingFieldName:', postingFieldName, 'filter:', filter, 'attachmentBrowseButton:', attachmentBrowseButton);
 
         name = strVal(name);
         btnSubmitId = strVal(btnSubmitId);
@@ -14697,11 +14715,11 @@
         }
 
         var mainDiv = document.getElementById('js-attachment-store');
-        
+
         if (!document.getElementById(name)) {
-            $cms.dom.append(mainDiv, '<iinput type="text" id="' + name + '" name="' + name + '" style="display: none;" disabled>');
+            $cms.dom.append(mainDiv, '<input type="text" id="' + name + '" name="' + name + '" style="display: none;" disabled>');
         }
-        
+
         if (!document.getElementById('txtFileName_' + name)) {
             // This input field stores the file name(s) of the uploading/uploaded file to the user
             $cms.dom.append(mainDiv, '<input type="hidden" id="txtFileName_' + name + '" name="txtFileName_' + name + '" value="">');
@@ -14715,7 +14733,7 @@
         var placeholderField = document.getElementById(name);
 
         // We need to clear out events on the upload button, attaching a new event for this upload
-        var button = document.getElementById(attachmentUploadButton);
+        var button = document.getElementById(attachmentBrowseButton);
         if (button) {
             var newButton = button.cloneNode(true),
                 buttonParent = button.parentNode;
@@ -14730,7 +14748,7 @@
         }
 
         var settings = getUploaderSettings(name, pageType, btnSubmitId, postingFieldName, filter);
-        settings.browse_button = attachmentUploadButton;
+        settings.browse_button = attachmentBrowseButton;
         settings.container = mainDiv.id;
         settings.runtimes = 'html5';
         settings.simplified_attachments = true;
@@ -14922,13 +14940,13 @@
 
             // HTML field to show selected file
             document.getElementById('container_for_' + fieldName).appendChild(fileIdField);
-            var filenameField = document.createElement('input');
-            filenameField.type = 'hidden';
-            filenameField.name = 'txtFileName_file' + window.extraAttachmentBase;
-            filenameField.id = filenameField.name;
-            filenameField.value = file.name.replace('C:\\fakepath\\', '');
-            filenameField.className = 'upload_response_field';
-            document.getElementById('container_for_' + fieldName).appendChild(filenameField);
+            var fileNameField = document.createElement('input');
+            fileNameField.type = 'hidden';
+            fileNameField.name = 'txtFileName_file' + window.extraAttachmentBase;
+            fileNameField.id = fileNameField.name;
+            fileNameField.value = file.name.replace('C:\\fakepath\\', '');
+            fileNameField.className = 'upload_response_field';
+            document.getElementById('container_for_' + fieldName).appendChild(fileNameField);
 
             // Progress bar
             var progress = new FileProgress(fileUpload.file_progress, 'container_for_' + fieldName);

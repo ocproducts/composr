@@ -309,7 +309,7 @@
         }
 
         var promiseCalls = [];
-        window.arrVal(postingForm.elements).forEach(function (el) {
+        arrVal(postingForm.elements).forEach(function (el) {
             if ((el.type === 'textarea') && el.classList.contains('wysiwyg')) {
                 promiseCalls.push(function () {
                     return loadHtmlForTextarea(postingForm, el, ajaxCopy);
@@ -471,9 +471,9 @@
             };
             editor.on('change', sync);
             editor.on('mode', function () {
-                var ta = editor.container.$.getElementsByTagName('textarea');
-                if (ta[0] != null) {
-                    ta[0].onchange = sync; // The source view doesn't fire the 'change' event and we don't want to use the 'key' event
+                var ta = editor.container.$.querySelector('textarea');
+                if (ta != null) {
+                    ta.onchange = sync; // The source view doesn't fire the 'change' event and we don't want to use the 'key' event
                 }
             });
 
@@ -799,6 +799,8 @@
         }
 
         function insertTextboxWysiwyg(element, text, isPlainInsert, html) {
+            console.log('insertTextboxWysiwyg():', 'element:', element, 'text:', text, 'isPlainInsert:', isPlainInsert, 'html:', html);
+            
             return new Promise(function (resolvePromise) {
                 var editor = window.wysiwygEditors[element.id],
                     insert = '';
@@ -807,23 +809,26 @@
                     insert = getWYSISWYGSelectedHtml(editor) + (html ? html : $cms.filter.html(text).replace(new RegExp('\\\\n', 'gi'), '<br />'));
 
                     _insertTextboxWysiwyg(element, editor, insert);
-                    resolvePromise();
-                } else {
-                    var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&lax_comcode=1' + $cms.keepStub());
-                    if (window.location.href.includes('topics')) {
-                        url += '&forum_db=1';
+                    return resolvePromise();
+                } 
+                
+                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&lax_comcode=1' + $cms.keepStub());
+                if (window.location.href.includes('topics')) {
+                    url += '&forum_db=1';
+                }
+                
+                var data = encodeURIComponent(text.replace(new RegExp(String.fromCharCode(8203), 'g'), ''));
+
+                $cms.doAjaxRequest(url, null, 'data=' + data).then(function (xhr) {
+                    var responseXML  = xhr.responseXML;
+                    if (responseXML && (responseXML.querySelector('result'))) {
+                        var result = responseXML.querySelector('result');
+                        insert = result.textContent.replace(/\s*$/, '');
                     }
 
-                    $cms.doAjaxRequest(url, function (responseXML) {
-                        if (responseXML && (responseXML.querySelector('result'))) {
-                            var result = responseXML.querySelector('result');
-                            insert = result.textContent.replace(/\s*$/, '');
-                        }
-
-                        _insertTextboxWysiwyg(element, editor, insert);
-                        resolvePromise();
-                    }, 'data=' + encodeURIComponent(text.replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
-                }
+                    _insertTextboxWysiwyg(element, editor, insert);
+                    resolvePromise();
+                });
             });
         }
 
