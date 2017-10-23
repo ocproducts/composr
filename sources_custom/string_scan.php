@@ -9274,6 +9274,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         SUCCESS
         SUCCESSFUL_CONFIRM
         SUCCESS_NEWSLETTER_AUTO
+        SUCCESS_NEWSLETTER_AUTO_INSTANT
         SUCCESS_SAVE
         SUCCESS_UPLOAD_SYNDICATION_AUTH
         SUGGESTIONS_ONLY
