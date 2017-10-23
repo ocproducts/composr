@@ -60,6 +60,12 @@
         $cms.dom.triggerResize();
     }
 
+    /**
+     * 
+     * @param postValue
+     * @param number
+     * @return {*|boolean}
+     */
     function attachmentPresent(postValue, number) {
         return postValue.includes('[attachment]new_' + number + '[/attachment]') && !postValue.includes('[attachment_safe]new_' + number + '[/attachment_safe]') && !postValue.includes('[attachment thumb="1"]new_' + number + '[/attachment]') && !postValue.includes('[attachment_safe thumb="1"]new_' + number + '[/attachment_safe]') && !postValue.includes('[attachment thumb="0"]new_' + number + '[/attachment]') && !postValue.includes('[attachment_safe thumb="0"]new_' + number + '[/attachment_safe]');
     }

@@ -84,7 +84,7 @@
             return {
                 'click .js-click-do-form-cancel': 'doFormCancel',
                 'click .js-click-do-form-preview': 'doFormPreview',
-                'click .js-click-do-form-submit': 'doFormSubmit',
+                'click .js-click-do-form-submit': 'doStandardFormSubmit',
                 'click .js-click-btn-go-back': 'goBack'
             };
         },
@@ -105,13 +105,13 @@
             var form = this.form;
 
             $cms.form.doFormPreview(form, window.formPreviewUrl, window.separatePreview).then(function (bool) {
-                if (bool && !window.justCheckingRequirements) {
+                if (bool) {
                     form.submit();
                 }
             });
         },
 
-        doFormSubmit: function (e) {
+        doStandardFormSubmit: function (e) {
             $cms.form.doFormSubmit(this.form, this.analyticEventCategory);
         },
 

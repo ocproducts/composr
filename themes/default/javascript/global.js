@@ -1766,7 +1766,7 @@
      */
     function promiseHalt() {
         if (_haltedPromise === undefined) {
-            _haltedPromise = new Promise();
+            _haltedPromise = new Promise(function () {});
             properties(_haltedPromise, {
                 then: function then() {
                     return _haltedPromise;
@@ -6289,8 +6289,20 @@
         permanent = Boolean(permanent);
 
         buttons.forEach(function (btn) {
-            if (!btn.disabled && !tempDisabledButtons[$cms.uid(btn)]) { // We do not want to interfere with other code potentially operating
+            if (!btn.disabled && !tempDisabledButtons[$cms.uid(btn)]/*We do not want to interfere with other code potentially operating*/) {
                 $cms.ui.disableButton(btn, permanent);
+            }
+        });
+    };
+    
+    $cms.ui.enableSubmitAndPreviewButtons = function enableSubmitAndPreviewButtons() {
+        // [accesskey="u"] identifies submit button, [accesskey="p"] identifies preview button
+        var buttons = $cms.dom.$$('input[accesskey="u"], button[accesskey="u"], input[accesskey="p"], button[accesskey="p"]');
+        
+        buttons.forEach(function (btn) {
+            if (btn.disabled && !tempDisabledButtons[$cms.uid(btn)]/*We do not want to interfere with other code potentially operating*/) { 
+                btn.style.cursor = '';
+                btn.disabled = false;
             }
         });
     };
@@ -10388,7 +10400,7 @@
             refreshIfChanged = strVal(params.refreshIfChanged);
 
         if (changeDetectionUrl && (refreshTime > 0)) {
-            window.detectInterval = setInterval(function () {
+            window.ajaxScreenDetectInterval = setInterval(function () {
                 detectChange(changeDetectionUrl, refreshIfChanged, function () {
                     if (!document.getElementById('post') || (document.getElementById('post').value === '')) {
                         $cms.callBlock(url, '', element, false, true, null, true).then(function () {
@@ -10503,7 +10515,7 @@
         $cms.doAjaxRequest(changeDetectionUrl, null, 'refresh_if_changed=' + encodeURIComponent(refreshIfChanged)).then(function (xhr) {
             var response = strVal(xhr.responseText);
             if (response === '1') {
-                clearInterval(window.detectInterval);
+                clearInterval(window.ajaxScreenDetectInterval);
                 $cms.inform('detectChange(): Change detected');
                 callback();
             }

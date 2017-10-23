@@ -84,6 +84,83 @@
     };
 
     /**
+     * Whether all Plupload file uploads are complete
+     * @param form
+     * @return {boolean}
+     */
+    $cms.form.areUploadsComplete = function areUploadsComplete(form) {
+        var plObj, uploadsComplete = true;
+        
+        for (var i = 0; i < form.elements.length; i++) {
+            plObj = form.elements[i].pluploadObject;
+            if ((plObj != null) && (Number(plObj.total.queued)/*Number of files yet to be uploaded*/ !== 0)) {
+                uploadsComplete = false;
+                break;
+            }
+        }
+        
+        return uploadsComplete;
+    }; 
+    
+    $cms.form.whenUploadsComplete = function whenUploadsComplete(form) {
+        if ($cms.form.areUploadsComplete(form)) {
+            return Promise.resolve();
+        }
+        
+        return new Promise(function (resolvePromise) {
+           var resolved = false;
+
+            arrVal(form.elements).forEach(function (el) {
+               var plObj = el.pluploadObject;
+               
+               if (plObj == null) {
+                   return;
+               }
+               
+               plObj.bind('FileUploaded', fileUploadedListener);
+           });
+           
+           function fileUploadedListener(plObj) {
+               if (resolved) {
+                   plObj.unbind('FileUploaded', fileUploadedListener);
+                   return;
+               }
+               
+               if ($cms.form.areUploadsComplete(form)) {
+                   resolvePromise();
+                   resolved = true;
+               }
+           }
+        });
+    };
+    
+    $cms.form.startUploads = function startUploads(form) {
+        var plObj,
+            scrolled = false, 
+            alerted = false;
+
+        for (var i = 0; i < form.elements.length; i++) {
+            plObj = form.elements[i].pluploadObject;
+            
+            if ((plObj != null) && (plObj.state === window.plupload.STOPPED) && (plObj.total.queued > 0)) { /* plObj.total.queued is number of files yet to be uploaded. */
+                plObj.start(); // Starts uploading the queued files.
+                
+                if (!scrolled) {
+                    $cms.dom.smoothScroll(document.getElementById(plObj.settings.txtFileName));
+                    scrolled = true;
+                }
+                
+                if (!alerted && (form.offsetHeight > $cms.dom.getWindowHeight())) { // If possibly cannot see upload progress bars
+                    $cms.ui.alert({ notice: '{!javascript:PLEASE_WAIT_WHILE_UPLOADING;^}', single: true });
+                    alerted = true;
+                }
+            }
+        }
+        
+        return $cms.form.whenUploadsComplete(form);
+    };
+    
+    /**
      * @memberof $cms.form
      * @param form
      * @param analyticEventCategory
@@ -95,7 +172,8 @@
             
             checkFormPromise.then(function (valid) {
                 if (!valid) {
-                    return resolveSubmitPromise(false);
+                    resolveSubmitPromise(false);
+                    return $cms.promiseHalt();
                 }
 
                 if (form.oldAction) {
@@ -107,7 +185,19 @@
                 if (!form.getAttribute('target')) {
                     form.setAttribute('target', '_top');
                 }
+                
+                if ($cms.form.areUploadsComplete(form)) {
+                    return Promise.resolve();
+                }
+                
+                // Uploads pending
 
+                if (form.offsetHeight > $cms.dom.getWindowHeight()) { // Alert if possibly cannot see file upload progress bars
+                    $cms.ui.alert({ notice: '{!javascript:PLEASE_WAIT_WHILE_UPLOADING;^}', single: true });
+                }
+
+                return $cms.form.startUploads(form);
+            }).then(function () {
                 /* Remove any stuff that is only in the form for previews if doing a GET request */
                 if (form.method.toLowerCase() === 'get') {
                     var i, name, elements = arrVal(form.elements);
@@ -121,27 +211,26 @@
                 }
 
                 if ($cms.dom.trigger(form, 'submit') === false) {
-                    return resolveSubmitPromise(false);
-                }
-                
-                if (!window.justCheckingRequirements) {
-                    if (analyticEventCategory) {
-                        $cms.gaTrack(null, analyticEventCategory, null, function () {
-                            form.submit();
-                        });
-                    } else {
-                        form.submit();
-                    }
+                    resolveSubmitPromise(false);
+                    return;
                 }
 
                 $cms.ui.disableSubmitAndPreviewButtons();
+                
+                resolveSubmitPromise(true);
 
-                if (window.detectInterval !== undefined) {
-                    clearInterval(window.detectInterval);
-                    delete window.detectInterval;
+                if (window.ajaxScreenDetectInterval !== undefined) {
+                    clearInterval(window.ajaxScreenDetectInterval);
+                    delete window.ajaxScreenDetectInterval;
                 }
-
-                return resolveSubmitPromise(true);
+                
+                if (analyticEventCategory) {
+                    $cms.gaTrack(null, analyticEventCategory, null, function () {
+                        form.submit();
+                    });
+                } else {
+                    form.submit();
+                }
             });
         });
     };
@@ -185,9 +274,22 @@
 
             checkFormPromise.then(function (valid) {
                 if (!valid) {
-                    return resolvePreviewPromise(false);
+                    resolvePreviewPromise(false);
+                    return $cms.promiseHalt();
                 }
 
+                if ($cms.form.areUploadsComplete(form)) {
+                    return Promise.resolve();
+                }
+
+                // Uploads pending
+
+                if (form.offsetHeight > $cms.dom.getWindowHeight()) { // Alert if possibly cannot see file upload progress bars
+                    $cms.ui.alert({ notice: '{!javascript:PLEASE_WAIT_WHILE_UPLOADING;^}', single: true });
+                }
+
+                return $cms.form.startUploads(form);
+            }).then(function () {
                 if ($cms.dom.trigger(form, 'submit', { detail: { triggeredByDoFormPreview: true } }) === false) {
                     return resolvePreviewPromise(false);
                 }
@@ -197,21 +299,17 @@
                     return resolvePreviewPromise(true);
                 }
 
-                $cms.dom.$id('submit_button').style.display = 'inline';
+                $cms.dom.$('#submit_button').style.display = 'inline';
 
                 /* Do our loading-animation */
-                if (!window.justCheckingRequirements) {
-                    setInterval($cms.dom.triggerResize, 500);
-                    /* In case its running in an iframe itself */
-                    $cms.dom.illustrateFrameLoad('preview_iframe');
-                }
+                setInterval($cms.dom.triggerResize, 500);
+                /* In case its running in an iframe itself */
+                $cms.dom.illustrateFrameLoad('preview_iframe');
 
                 $cms.ui.disableSubmitAndPreviewButtons();
 
                 // Turn main post editing back off
-                if (window.wysiwygSetReadonly !== undefined) {
-                    window.wysiwygSetReadonly('post', true);
-                }
+                window.wysiwygSetReadonly('post', true);
 
                 return resolvePreviewPromise(true);
             });
@@ -452,10 +550,10 @@
      */
     function checkField(theElement, theForm) {
         return new Promise(function (resolveCheckFieldPromise) {
-            var i, theClass, required, myValue,
+            var myValue,
+                required = false,
                 erroneous = false,
                 errorMsg = '',
-                regexp,
                 totalFileSize = 0,
                 alerted = false;
             
@@ -508,6 +606,17 @@
             var errorMsgElement = (theElement.name === undefined) ? null : getErrorMsgElement(theElement.name),
                 isBlank = (required && (myValue.replace(/&nbsp;/g, ' ').replace(/<br\s*\/?>/g, ' ').replace(/\s/g, '') === '')),
                 validatePromise = Promise.resolve();
+            
+            if (theElement.pluploadObject != null) { // Plupload placeholder field
+                var plObj = theElement.pluploadObject,
+                    fileNameField = document.getElementById(plObj.settings.txtFileName);
+                
+                if (plObj.settings.required && (fileNameField.value === '')) {
+                    $cms.ui.alert({ notice: '{!IMPROPERLY_FILLED_IN;^}', single: true });
+                    alerted = true;
+                    isBlank = true;
+                }
+            }
             
             // Blank?
             if (isBlank) {

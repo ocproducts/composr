@@ -43,10 +43,10 @@
         formEl: null,
         events: function () {
             return {
-                'click .js-click-do-form-submit': 'doFormSubmit'
+                'click .js-click-do-form-submit': 'doPurchaseFormSubmit'
             };
         },
-        doFormSubmit: function (e) {
+        doPurchaseFormSubmit: function (e) {
             $cms.form.doFormSubmit(this.formEl);
         }
     });

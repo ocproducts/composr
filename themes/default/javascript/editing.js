@@ -663,10 +663,10 @@
 
         }
     }
-
-// ============
-// BOTH EDITORS
-// ============
+    
+    // ============
+    // BOTH EDITORS
+    // ============
 
     function doEmoticon(fieldName, callerEl, isOpener) {
         var element, title, text;
@@ -703,6 +703,13 @@
         }
     }
 
+    /**
+     * Insert attachment comcode
+     * @param fieldName
+     * @param id
+     * @param description
+     * @return {Promise}
+     */
     function doAttachment(fieldName, id, description) {
         if (!$cms.getMainCmsWindow().wysiwygEditors) {
             return Promise.resolve();

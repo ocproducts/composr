@@ -14228,128 +14228,16 @@
         plLoadedHandled[$cms.uid(plObj)] = true;
 
         window.moxie.core.utils.Mime.addMimeType('image/vnd.microsoft.icon,ico');
-
-        var btnSubmitId = plObj.settings.btn_submit_id,
-            btnPreviewId = plObj.settings.btn_preview_id;
-
-        plObj.cmsPreviewing = false;
-        $cms.dom.off('#' + btnSubmitId, 'click.onPluploadLoaded'); // Avoid duplicates
-        $cms.dom.on('#' + btnSubmitId, 'click.onPluploadLoaded', function (e) {
-            plObj.cmsPreviewing = false;
-            beginFormUploading(plObj);
-            return false;
-        });
-
-        // Preview button too
-        if (document.getElementById(btnPreviewId)) {
-            $cms.dom.off('#' + btnSubmitId, 'click.onPluploadLoaded'); // Avoid duplicates
-            $cms.dom.on('#' + btnPreviewId, 'click.onPluploadLoaded', function (e) {
-                plObj.cmsPreviewing = true;
-                beginFormUploading(plObj);
-                return false;
-            });
-        }
     }
-
-    // Called by the submit button to start the upload
-    function beginFormUploading(plObj) {
-        console.log('beginFormUploading()', 'plObj:', plObj);
-
-        window.justCheckingRequirements = true;
-        plObj.submitting = true;
-
-        var btnSubmit = document.getElementById(plObj.settings.btn_submit_id),
-            filenameField = document.getElementById(plObj.settings.txtFileName),
-            isRequired = plObj.settings.required, element;
-
-        if (filenameField.value === '') {
-            if (isRequired) {
-                element = document.getElementById(plObj.settings.txtName);
-                if (element) {
-                    $cms.form.setFieldError(element, '{!REQUIRED_NOT_FILLED_IN;^}');
-                }
-                $cms.ui.alert({ notice: '{!IMPROPERLY_FILLED_IN;^}', single: true });
-            } else {
-                if (plObj.cmsPreviewing) {
-                    $cms.form.doFormPreview(btnSubmit.form, window.formPreviewUrl, window.separatePreview).then(function (bool) {
-                        if (bool) {
-                            btnSubmit.form.submit();
-                        } else {
-                            plObj.submitting = false;
-                            plObj.cmsPreviewing = false;
-                        }
-                    });
-                } else {
-                    $cms.form.doFormSubmit(btnSubmit.form, window.analyticEventCategory).then(function (bool) {
-                        if (bool) {
-                            btnSubmit.form.submit();
-                        } else {
-                            plObj.submitting = false;
-                            plObj.cmsPreviewing = false;
-                        }
-                    });
-                }
-            }
-
-            return;
-        }
-
-        var allUploadsDone = true,
-            fileIdField = document.getElementById(plObj.settings.hidFileID);
-
-        if (fileIdField.value === '-1') {
-            allUploadsDone = false;
-        } else {
-            var form = fileIdField.form;
-            for (var i = 0; i < form.elements.length; i++) {
-                if ((form.elements[i].pluploadObject != null) && (form.elements[i].pluploadObject.total.percent < 100) && (Number(form.elements[i].pluploadObject.total.size) !== 0)) {
-                    allUploadsDone = false;
-                }
-            }
-        }
-
-        if (!allUploadsDone) {
-            $cms.ui.disableSubmitAndPreviewButtons(true);
-
-            plObj.start(); // Starts uploading the queued files.
-            $cms.dom.smoothScroll(filenameField);
-
-            if (btnSubmit.form.offsetHeight > $cms.dom.getWindowHeight()) {// If possibly cannot see upload progress bars
-                $cms.ui.alert('{!javascript:PLEASE_WAIT_WHILE_UPLOADING;^}');
-            }
-        } else {
-            if (plObj.cmsPreviewing) {
-                $cms.form.doFormPreview(btnSubmit.form, window.formPreviewUrl, window.separatePreview).then(function (bool) {
-                    if (bool) {
-                        btnSubmit.form.submit();
-                    } else {
-                        plObj.submitting = false;
-                        plObj.cmsPreviewing = false;
-                    }
-                });
-            } else {
-                $cms.form.doFormSubmit(btnSubmit.form, window.analyticEventCategory).then(function (bool) {
-                    if (bool) {
-                        btnSubmit.form.submit();
-                    } else {
-                        plObj.submitting = false;
-                        plObj.cmsPreviewing = false;
-                    }
-                });
-            }
-        }
-    }
-
-    function submitFormWithTheUpload(form) {
-        //console.log('submitFormWithTheUpload()', 'form:', form);
-
-        if (form.target === 'preview_iframe') {
-            $cms.dom.illustrateFrameLoad('preview_iframe');
-        }
-
-        form.submit();
-    }
-
+    
+    /**
+     * 
+     * @param pageType
+     * @param name
+     * @param fileName
+     * @param postingFieldName
+     * @param numFiles
+     */
     function dispatchForPageType(pageType, name, fileName, postingFieldName, numFiles) {
         console.log('dispatchForPageType()', 'pageType:', pageType, 'name:', name, 'fileName:', fileName, 'postingFieldName:', postingFieldName, 'numFiles:', numFiles);
 
@@ -14369,7 +14257,7 @@
         if (element.determinedAttachmentProperties === undefined) {
             currentNum = name.replace('file', '');
             window.setAttachment(postingFieldName, currentNum, fileName, multi, element.pluploadObject.settings);
-            if (!element.pluploadObject.settings.simplified_attachments) {
+            if (!element.pluploadObject.settings.simplifiedAttachments) {
                 element.onchange = null;     
             }
             if (multi) {
@@ -14483,24 +14371,8 @@
         progress.setComplete();
         progress.setStatus('{!javascript:PLUPLOAD_COMPLETE^;}');
 
-        var btnSubmit = document.getElementById(plObj.settings.btn_submit_id),
-            allUploadsDone = true,
-            form = document.getElementById(plObj.settings.hidFileID).form;
-        
-        for (var i = 0; i < form.elements.length; i++) {
-            if ((form.elements[i].pluploadObject != null) && (form.elements[i].pluploadObject.total.percent < 100) && (Number(form.elements[i].pluploadObject.total.size) !== 0)) {
-                allUploadsDone = false;
-                break;
-            }
-        }
-        if (allUploadsDone) {
-            for (var i = 0; i < form.elements.length; i++) {
-                if ((form.elements[i].type === 'submit') || (form.elements[i].type === 'button') || (form.elements[i].type === 'image') || (form.elements[i].nodeName.toLowerCase() === 'button')) {
-                    form.elements[i].disabled = false;
-                    form.elements[i].style.cursor = '';
-                }
-            }
-        }
+        var form = document.getElementById(plObj.settings.hidFileID).form,
+            allUploadsComplete = $cms.form.areUploadsComplete(form);
 
         var clearButton = document.getElementById('fsClear_' + plObj.settings.txtName);
         if (clearButton) {
@@ -14511,11 +14383,13 @@
             uploadButton.disabled = false;
         }
 
-        if (data.response == '') { // NOT success, happens in plupload when clicking away from document (i.e. implicit cancel)
+        var dataResponse = strVal(data.response);
+        
+        if (dataResponse === '') { // NOT success, happens in plupload when clicking away from document (i.e. implicit cancel)
             return;
         }
 
-        var decodedData = $cms.parseJson(data.response);
+        var decodedData = $cms.parseJson(dataResponse);
 
         var id = document.getElementById(plObj.settings.hidFileID);
         if (id.value === '-1') {
@@ -14526,33 +14400,9 @@
         }
         id.value += decodedData['upload_id'];
 
-        if (allUploadsDone) {
+        if (allUploadsComplete) {
             for (var c = 0; c < plObj.settings.onAllUploadsDoneCallbacks.length; c++) {
                 plObj.settings.onAllUploadsDoneCallbacks[c](plObj.settings);
-            }
-        }
-
-        if (plObj.submitting && allUploadsDone) {
-            window.justCheckingRequirements = false;
-
-            if (plObj.cmsPreviewing) {
-                $cms.form.doFormPreview(btnSubmit.form, window.formPreviewUrl, window.separatePreview).then(function (bool) {
-                    if (bool) {
-                        btnSubmit.form.submit();
-                    } else {
-                        plObj.submitting = false;
-                        plObj.cmsPreviewing = false;
-                    }
-                });
-            } else {
-                $cms.form.doFormSubmit(btnSubmit.form, window.analyticEventCategory).then(function (bool) {
-                    if (bool) {
-                        btnSubmit.form.submit();
-                    } else {
-                        plObj.submitting = false;
-                        plObj.cmsPreviewing = false;
-                    }
-                });
             }
         }
     }
@@ -14737,8 +14587,7 @@
         if (button) {
             var newButton = button.cloneNode(true),
                 buttonParent = button.parentNode;
-            buttonParent.removeChild(button);
-            buttonParent.appendChild(newButton);
+            buttonParent.replaceChild(newButton, button);
         }
 
         // Remove shiv code from old instances too
@@ -14751,7 +14600,7 @@
         settings.browse_button = attachmentBrowseButton;
         settings.container = mainDiv.id;
         settings.runtimes = 'html5';
-        settings.simplified_attachments = true;
+        settings.simplifiedAttachments = true;
 
         placeholderField.pluploadObject = getUploaderObject(settings); // This will attach the new event
     }
@@ -14813,8 +14662,7 @@
             page_type: pageType,
             posting_field_name: postingFieldName,
             btn_submit_id: btnSubmitId,
-            btn_preview_id: 'preview_button',
-            simplified_attachments: false,
+            simplifiedAttachments: false,
             // Callbacks
             onAllUploadsDoneCallbacks: []
         };
@@ -14824,12 +14672,12 @@
         //console.log('getUploaderObject()', 'settings:', settings);
 
         var ob = new plupload.Uploader(settings);
-        ob.bind('Init', onPluploadLoaded);
-        ob.bind('FilesAdded', onUploadDialogCompleted);
-        ob.bind('QueueChanged', onUploadQueueChanged);
-        ob.bind('UploadProgress', onUploadUpdateProgress);
-        ob.bind('FileUploaded', onUploadFinished);
-        ob.bind('Error', onUploadError);
+        ob.bind('Init', onPluploadLoaded, null, 1000);
+        ob.bind('FilesAdded', onUploadDialogCompleted, null, 1000);
+        ob.bind('QueueChanged', onUploadQueueChanged, null, 1000);
+        ob.bind('UploadProgress', onUploadUpdateProgress, null, 1000);
+        ob.bind('FileUploaded', onUploadFinished, null, 1000);
+        ob.bind('Error', onUploadError, null, 1000);
         ob.init();
 
         setInterval(function () {

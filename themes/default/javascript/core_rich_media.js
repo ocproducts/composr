@@ -430,6 +430,12 @@
         
         
         var lastAttachmentBrowseButton;
+
+        /**
+         * Bind Plupload to the specified browse button (`attachmentBrowseButton`)
+         * @param _postingFieldName
+         * @param attachmentBrowseButton
+         */
         function rebuildAttachmentButtonForNext(_postingFieldName, attachmentBrowseButton) {
             console.log('rebuildAttachmentButtonForNext()', '_postingFieldName:', _postingFieldName, 'attachmentBrowseButton:', attachmentBrowseButton);
             
