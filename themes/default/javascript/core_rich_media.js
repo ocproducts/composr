@@ -11,7 +11,7 @@
         Attachment.base(this, 'constructor', arguments);
 
         if ($cms.$CONFIG_OPTION('complex_uploader')) {
-            window.preinitFileInput("attachment_multi", "file" + params.i, null, params.postingFieldName, params.filter);
+            window.preinitFileInput("attachment_multi", "file" + params.i, params.postingFieldName, params.filter);
         }
 
         if (params.syndicationJson !== undefined) {
@@ -450,7 +450,7 @@
             lastAttachmentBrowseButton = attachmentBrowseButton;
 
             $cms.requireJavascript('plupload').then(function () {
-                window.prepareSimplifiedFileInput('attachment_multi', 'file' + window.numAttachments, null, postingFieldName, strVal(params.filter), attachmentBrowseButton);
+                window.prepareSimplifiedFileInput('attachment_multi', 'file' + window.numAttachments, postingFieldName, strVal(params.filter), attachmentBrowseButton);
             });
         }
     };

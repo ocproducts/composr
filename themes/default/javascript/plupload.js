@@ -14269,9 +14269,7 @@
     // Listener to the 'FilesAdded' Plupload event
     function onUploadDialogCompleted(plObj, files) {
         console.log('onUploadDialogCompleted()', 'plObj:', plObj, 'files:', files);
-
-        document.getElementById(plObj.settings.btn_submit_id).disabled = false;
-
+        
         var name = plObj.settings.txtName,
             fileNameField = document.getElementById(plObj.settings.txtFileName),
             fileIdField = document.getElementById(plObj.settings.hidFileID);
@@ -14330,7 +14328,6 @@
             fileNameField = document.getElementById(plObj.settings.txtFileName);
         
         if ((value === '1') && (fileIdField.value === '-1') && (fileNameField.value !== '')) {
-            plObj.submitting = false;
             plObj.start();
 
             // plupload does not support cancelling mid-way (plObj.stop won't do that unfortunately)
@@ -14437,9 +14434,7 @@
         if (file) {
             fireFakeUploadFieldChange(plObj.settings.txtName, '');
         }
-
-        document.getElementById(plObj.settings.btn_submit_id).disabled = false;
-
+        
         var clearButton = document.getElementById('fsClear_' + plObj.settings.txtName);
         if (clearButton) {
             $cms.dom.show(clearButton);
@@ -14462,13 +14457,19 @@
         }
     }
     
-    // preinitFileInput() is for normal Composr forms
-    function preinitFileInput(pageType, name, btnSubmitId, postingFieldName, filter, buttonType) {
-        console.log('preinitFileInput()', 'pageType:', pageType, 'name:', name, 'btnSubmitId:', btnSubmitId, 'postingFieldName:', postingFieldName, 'filter:', filter, 'buttonType:', buttonType);
+    /**
+     * preinitFileInput() is for normal Composr forms
+     * @param pageType
+     * @param name
+     * @param postingFieldName
+     * @param filter
+     * @param buttonType
+     */
+    function preinitFileInput(pageType, name, postingFieldName, filter, buttonType) {
+        console.log('preinitFileInput()', 'pageType:', pageType, 'name:', name, 'postingFieldName:', postingFieldName, 'filter:', filter, 'buttonType:', buttonType);
 
         pageType = strVal(pageType);
         name = strVal(name);
-        btnSubmitId = strVal(btnSubmitId);
         postingFieldName = strVal(postingFieldName) || 'post';
         filter = strVal(filter) || '{$CONFIG_OPTION;,valid_types}';
         filter += ',' + filter.toUpperCase();
@@ -14481,8 +14482,6 @@
             return;
         }
         rep.replacedWithPlupload = true;
-
-        btnSubmitId = findSubmitButton(btnSubmitId, rep.form);
 
         // Replace old vanilla upload field with text field that holds a '1' indicating upload has happened (and telling Composr to check the hidFileID value for more details)
         rep.style.display = 'none';
@@ -14510,7 +14509,7 @@
         var placeholderField = document.getElementById(name);
         placeholderField.oldElement = rep;
 
-        var settings = getUploaderSettings(name, pageType, btnSubmitId, postingFieldName, filter);
+        var settings = getUploaderSettings(name, pageType, postingFieldName, filter);
         settings.progress_target = 'fsUploadProgress_' + name;
         settings.required = rep.classList.contains('required');
         settings.browse_button = 'uploadButton_' + name;
@@ -14544,26 +14543,18 @@
      * prepareSimplifiedFileInput() is for attachments
      * NB: Only used by $cms.templates.attachments()
      * @param pageType
-     * @param name 
-     * @param btnSubmitId - ID of the form submit button
+     * @param name
      * @param postingFieldName - ID of the associated textarea
      * @param filter - Valid file types
-     * @param attachmentBrowseButton - ID of browse button passed to Plupload
+     * @param attachmentBrowseButton - ID of file browse button, required by Plupload
      */
-    function prepareSimplifiedFileInput(pageType, name, btnSubmitId, postingFieldName, filter, attachmentBrowseButton) {
-        console.log('prepareSimplifiedFileInput()', 'pageType:', pageType, 'name:', name, 'btnSubmitId:', btnSubmitId, 'postingFieldName:', postingFieldName, 'filter:', filter, 'attachmentBrowseButton:', attachmentBrowseButton);
+    function prepareSimplifiedFileInput(pageType, name, postingFieldName, filter, attachmentBrowseButton) {
+        console.log('prepareSimplifiedFileInput()', 'pageType:', pageType, 'name:', name, 'postingFieldName:', postingFieldName, 'filter:', filter, 'attachmentBrowseButton:', attachmentBrowseButton);
 
         name = strVal(name);
-        btnSubmitId = strVal(btnSubmitId);
         filter = strVal(filter) || '{$CONFIG_OPTION;^,valid_types}';
         filter += ',' + filter.toUpperCase();
-
-        var form = document.getElementById(postingFieldName).form;
-
-        if (!btnSubmitId) {
-            btnSubmitId = findSubmitButton(btnSubmitId, form);
-        }
-
+        
         var mainDiv = document.getElementById('js-attachment-store');
 
         if (!document.getElementById(name)) {
@@ -14596,7 +14587,7 @@
             shivs[i].parentNode.removeChild(shivs[i]);
         }
 
-        var settings = getUploaderSettings(name, pageType, btnSubmitId, postingFieldName, filter);
+        var settings = getUploaderSettings(name, pageType, postingFieldName, filter);
         settings.browse_button = attachmentBrowseButton;
         settings.container = mainDiv.id;
         settings.runtimes = 'html5';
@@ -14605,33 +14596,8 @@
         placeholderField.pluploadObject = getUploaderObject(settings); // This will attach the new event
     }
 
-    function findSubmitButton(btnSubmitId, form) {
-        //console.log('findSubmitButton()', 'btnSubmitId:', btnSubmitId, 'form:', form);
-
-        if (btnSubmitId) {
-            return btnSubmitId;
-        }
-
-        btnSubmitId = 'submit_button';
-        var btn = document.getElementById(btnSubmitId);
-        if (!btn || (btn.form !== form)) {
-            btnSubmitId = null;
-            var inputs = form.elements;
-            for (var i = 0; i < inputs.length; i++) {
-                if ((inputs[i].nodeName.toLowerCase() === 'button') || (inputs[i].type === 'image') || (inputs[i].type === 'submit') || (inputs[i].type === 'button')) {
-                    btnSubmitId = $cms.dom.id(inputs[i]);
-                    if (inputs[i].getAttribute('accesskey') === 'u') { /* Identifies submit button */
-                        break; // Ideal, let us definitely use this (otherwise we end up using the last)
-                    }
-                }
-            }
-        }
-
-        return btnSubmitId;
-    }
-
-    function getUploaderSettings(name, pageType, btnSubmitId, postingFieldName, filter) {
-        //console.log('getUploaderSettings()', 'name:', name, 'pageType:', pageType, 'btnSubmitId:', btnSubmitId, 'postingFieldName:', postingFieldName, 'filter:', filter);
+    function getUploaderSettings(name, pageType, postingFieldName, filter) {
+        //console.log('getUploaderSettings()', 'name:', name, 'pageType:', pageType, 'postingFieldName:', postingFieldName, 'filter:', filter);
 
         return {
             multi_selection: pageType.includes('_multi'), // Allows you to select multiple files from the browse dialog
@@ -14661,7 +14627,6 @@
             hidFileID: 'hidFileID_' + name,
             page_type: pageType,
             posting_field_name: postingFieldName,
-            btn_submit_id: btnSubmitId,
             simplifiedAttachments: false,
             // Callbacks
             onAllUploadsDoneCallbacks: []

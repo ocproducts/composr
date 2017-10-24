@@ -154,7 +154,7 @@
 
         if (params.plupload && !$cms.$IS_HTTPAUTH_LOGIN() && $cms.$CONFIG_OPTION('complex_uploader')) {
             $cms.requireJavascript('plupload').then(function () {
-                window.preinitFileInput('upload', params.name, null, null, params.filter);
+                window.preinitFileInput('upload', params.name, null, params.filter);
             });
         }
 
@@ -1069,7 +1069,7 @@
         }
 
         if (params.plupload && !$cms.$IS_HTTPAUTH_LOGIN() && $cms.$CONFIG_OPTION('complex_uploader')) {
-            window.preinitFileInput('upload_multi', nameStub + '_' + index, null, null, params.filter);
+            window.preinitFileInput('upload_multi', nameStub + '_' + index, null, params.filter);
         }
 
         $cms.dom.on(container, 'change', '.js-input-change-ensure-next-field-upload', function (e, input) {

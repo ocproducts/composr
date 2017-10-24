@@ -580,11 +580,9 @@
             $cms.uspKeepSession.set(name, value);
         }
     });
-
-    var sessionId = $cms.getSessionId();
-
-    if (sessionId && !$cms.uspKeepSession.has('keep_session')) {
-        $cms.uspKeepSession.set('keep_session', sessionId);
+    
+    if (!$cms.uspKeepSession.has('keep_session') && ($cms.getSessionId() !== '')) {
+        $cms.uspKeepSession.set('keep_session', $cms.getSessionId());
     }
 
     // Generate a unique integer id (unique within the entire client session).
