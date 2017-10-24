@@ -558,31 +558,51 @@
     }
 
     /**
+     * A URLSearchParams object for the current page URL's query string
+     * @see https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
      * @type { URLSearchParams }
      */
     $cms.usp = uspFromUrl(window.location.href);
-
+    /**
+     * Same as $cms.usp but only has the `keep_*` parameters
+     * @type { URLSearchParams }
+     */
+    $cms.uspKeep = createUspKeep();
+    /**
+     * Same as $cms.uspKeep and always has `keep_session` where available
+     * @type { URLSearchParams }
+     */
+    $cms.uspKeepSession = createUspKeepSession();
+    
     window.addEventListener('popstate', function () {
         $cms.usp = uspFromUrl(window.location.href);
-    });
-
-    // usp with only the `keep_*` parameters
-    $cms.uspKeep = new URLSearchParams();
-    // this always has `keep_session` where possible
-    $cms.uspKeepSession = new URLSearchParams();
-
-    eachIter($cms.usp.entries(), function (entry) {
-        var name = entry[0],
-            value = entry[1];
-
-        if (name.startsWith('keep_')) {
-            $cms.uspKeep.set(name, value);
-            $cms.uspKeepSession.set(name, value);
-        }
+        $cms.uspKeep = createUspKeep();
+        $cms.uspKeepSession = createUspKeepSession();
     });
     
-    if (!$cms.uspKeepSession.has('keep_session') && ($cms.getSessionId() !== '')) {
-        $cms.uspKeepSession.set('keep_session', $cms.getSessionId());
+    function createUspKeep() {
+        var uspKeep = new URLSearchParams();
+        
+        eachIter($cms.usp.entries(), function (entry) {
+            var name = entry[0],
+                value = entry[1];
+
+            if (name.startsWith('keep_')) {
+                uspKeep.set(name, value);
+            }
+        });
+        
+        return uspKeep;
+    }
+    
+    function createUspKeepSession() {
+        var uspKeepSession = createUspKeep();
+
+        if (!uspKeepSession.has('keep_session') && ($cms.getSessionId() !== '')) {
+            uspKeepSession.set('keep_session', $cms.getSessionId());
+        }
+        
+        return uspKeepSession;
     }
 
     // Generate a unique integer id (unique within the entire client session).
