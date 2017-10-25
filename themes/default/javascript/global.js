@@ -140,7 +140,19 @@
          * @method
          * @returns {string}
          */
-        $KEEP: constant(strVal(symbols.KEEP)),
+        $KEEP: function $KEEP(starting, forceSession) {
+            var keep = strVal(symbols.KEEP);
+            if (forceSession && !keep.includes('?keep_session=') && !keep.includes('&keep_session=') && (getSessionId() !== '')) {
+                keep = (keep === '') ? '?keep_session=' + getSessionId() : keep + '&keep_session=' + getSessionId();
+            }
+            if (keep === '') {
+                return '';
+            }
+            if (starting) {
+                keep = '?' + keep.substr(1);
+            }
+            return keep;
+        },
         /**
          * @method
          * @returns {string}
@@ -387,7 +399,9 @@
         /**@method*/
         maintainThemeInLink: maintainThemeInLink,
         /**@method*/
-        keepStub: keepStub,
+        keepStub: keepStub,        
+        /**@method*/
+        addKeepStub: addKeepStub,
         /**@method*/
         gaTrack: gaTrack,
         /**@method*/
@@ -948,6 +962,7 @@
     }
 
     /**
+     * Iterates over iterable objects
      * @param iterable
      * @param callback
      * @returns {*}
@@ -4793,11 +4808,11 @@
 
     /**
      * Get URL stub to propagate keep_* parameters
-     * @param starting
+     * @param {boolean} starting - true means "Put a '?' for the first parameter"
      * @returns {string}
      */
-    function keepStub(starting) { // `starting` set to true means "Put a '?' for the first parameter"
-        starting = !!starting;
+    function keepStub(starting) {
+        starting = Boolean(starting);
 
         var keep = $cms.uspKeepSession.toString();
 
@@ -4806,6 +4821,36 @@
         }
 
         return (starting ? '?' : '&') + keep;
+    }
+
+    /**
+     * Improved alternative to keepStub(), ensures not to cause duplicate keep_* params
+     * @param url
+     * @return {string}
+     */
+    function addKeepStub(url) {
+        url = strVal(url);
+
+        var stub = $cms.uspKeepSession.toString(),
+            urlUsp;
+        
+        if ((stub === '') || (url === '') || !url.includes('?')) {
+            return (stub === '') ? url : (url + '?' + stub);
+        }
+        
+        urlUsp = uspFromUrl(url);
+        url = url.split('?')[0];
+        
+        eachIter($cms.uspKeepSession.entries(), function (entry) {
+            var name = entry[0],
+                value = entry[1];
+
+            if (!urlUsp.has(name)) {
+                urlUsp.set(name, value);
+            }
+        });
+        
+        return url + '?' + urlUsp;
     }
 
     /**
