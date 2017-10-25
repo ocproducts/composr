@@ -225,7 +225,7 @@
             for (var def in defaults) {
                 url += '&default_' + def + '=' + encodeURIComponent(defaults[def]);
             }
-            url += $cms.keepStub();
+            url += $cms.$KEEP();
 
             setTimeout(function () {
                 $cms.ui.showModalDialog($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes,unadorned=yes').then(function (comcodeAdded) {
@@ -377,7 +377,7 @@
     }
 
     function doInputBlock(fieldName) {
-        var url = '{$FIND_SCRIPT;,block_helper}?field_name=' + fieldName + $cms.keepStub();
+        var url = '{$FIND_SCRIPT;,block_helper}?field_name=' + fieldName + $cms.$KEEP();
         url += '&block_type=' + ((!fieldName.includes('edit_panel_') && !window.location.href.includes(':panel_')) ? 'main' : 'side');
 
         return $cms.ui.open($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
@@ -450,7 +450,7 @@
         if (saveToId !== null) {
             url += '&save_to_id=' + encodeURIComponent(saveToId);
         }
-        url += $cms.keepStub();
+        url += $cms.$KEEP();
 
         $cms.ui.open($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
     }
@@ -636,7 +636,7 @@
 
         if (($cms.ui.showModalDialog !== undefined) || $cms.$CONFIG_OPTION('js_overlays')) {
             $cms.ui.showModalDialog(
-                $cms.maintainThemeInLink('{$FIND_SCRIPT;,page_link_chooser}' + $cms.keepStub(true)),
+                $cms.maintainThemeInLink('{$FIND_SCRIPT;,page_link_chooser}' + $cms.$KEEP(true)),
                 null,
                 'dialogWidth=600;dialogHeight=400;status=no;unadorned=yes',
                 function (result) {
@@ -851,7 +851,7 @@
 
             var url = '{$FIND_SCRIPT_NOHTTP;,autosave}?type=retrieve';
             url += '&stem=' + encodeURIComponent(getAutosaveUrlStem());
-            url += $cms.keepStub();
+            url += $cms.$KEEP();
             var callback = function (form) {
                 return function (responseXML) {
                     var result = responseXML && responseXML.querySelector('result');
@@ -888,7 +888,7 @@
                     // Save remotely
                     if (navigator.onLine) {
                         post = $cms.form.modSecurityWorkaroundAjax(post);
-                        $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + $cms.keepStub(), null, post).then(function () {
+                        $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + $cms.$KEEP(), null, post).then(function () {
                             if (document.body.style.cursor === 'wait') {
                                 document.body.style.cursor = '';
                             }
@@ -1107,7 +1107,7 @@
                 //$cms.inform('Doing AJAX auto-save');
 
                 post = $cms.form.modSecurityWorkaroundAjax(post);
-                $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + $cms.keepStub(), null, post);
+                $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + $cms.$KEEP(), null, post);
             }
         }
     }

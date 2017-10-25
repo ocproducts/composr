@@ -397,8 +397,6 @@
         /**@method*/
         maintainThemeInLink: maintainThemeInLink,
         /**@method*/
-        keepStub: keepStub,        
-        /**@method*/
         addKeepStub: addKeepStub,
         /**@method*/
         gaTrack: gaTrack,
@@ -1692,7 +1690,7 @@
             linkEl.id = 'css-' + sheetName;
             linkEl.rel = 'stylesheet';
             linkEl.nonce = $cms.$CSP_NONCE();
-            linkEl.href = '{$FIND_SCRIPT_NOHTTP;,sheet}?sheet=' + sheetName + $cms.keepStub();
+            linkEl.href = '{$FIND_SCRIPT_NOHTTP;,sheet}?sheet=' + sheetName + $cms.$KEEP();
             document.head.appendChild(linkEl);
             requireCssPromises[sheetName] = $cms.waitForResources(linkEl);
         }
@@ -1742,7 +1740,7 @@
                 scriptEl.src = script;
             } else {
                 scriptEl.id = 'javascript-' + script;
-                scriptEl.src = '{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + script + $cms.keepStub();
+                scriptEl.src = '{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + script + $cms.$KEEP();
             }
 
             document.body.appendChild(scriptEl);
@@ -4709,7 +4707,7 @@
 
         return new Promise(function (resolvePromise) {
             // Make AJAX call
-            $cms.doAjaxRequest(ajaxUrl + $cms.keepStub(), null, postParams).then(function (xhr) { // Show results when available
+            $cms.doAjaxRequest(ajaxUrl + $cms.$KEEP(), null, postParams).then(function (xhr) { // Show results when available
                 callBlockRender(xhr, ajaxUrl, targetDiv, append, function () {
                     resolvePromise();
                 }, scrollToTopOfWrapper, inner);
@@ -4774,7 +4772,7 @@
         var title = $cms.dom.html(document.querySelector('title')).replace(/ \u2013 .*/, ''),
             canonical = document.querySelector('link[rel="canonical"]'),
             url = canonical ? canonical.getAttribute('href') : window.location.href,
-            url2 = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=' + snippetHook + '&url=' + encodeURIComponent($cms.protectURLParameter(url)) + '&title=' + encodeURIComponent(title) + $cms.keepStub();
+            url2 = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=' + snippetHook + '&url=' + encodeURIComponent($cms.protectURLParameter(url)) + '&title=' + encodeURIComponent(title) + $cms.$KEEP();
 
         return new Promise(function (resolve) {
             $cms.doAjaxRequest($cms.maintainThemeInLink(url2), null, post).then(function (xhr) {
@@ -4805,24 +4803,7 @@
     }
 
     /**
-     * Get URL stub to propagate keep_* parameters
-     * @param {boolean} starting - true means "Put a '?' for the first parameter"
-     * @returns {string}
-     */
-    function keepStub(starting) {
-        starting = Boolean(starting);
-
-        var keep = $cms.uspKeepSession.toString();
-
-        if (!keep) {
-            return '';
-        }
-
-        return (starting ? '?' : '&') + keep;
-    }
-
-    /**
-     * Improved alternative to keepStub(), ensures not to cause duplicate keep_* params
+     * Alternative to $cms.$KEEP(), accepts a URL and ensures not to cause duplicate keep_* params
      * @param url
      * @return {string}
      */
@@ -5507,7 +5488,7 @@
      * @returns { Promise } - Resolves with a boolean indicating whether session confirmed or not
      */
     $cms.ui.confirmSession = function confirmSession() {
-        var scriptUrl = '{$FIND_SCRIPT_NOHTTP;,confirm_session}' + $cms.keepStub(true);
+        var scriptUrl = '{$FIND_SCRIPT_NOHTTP;,confirm_session}' + $cms.$KEEP(true);
 
         return new Promise(function (resolvePromise) {
             $cms.doAjaxRequest(scriptUrl).then(function (xhr) {
@@ -7253,7 +7234,7 @@
                 }
 
                 // Intentionally FIND_SCRIPT and not FIND_SCRIPT_NOHTTP, because no needs-HTTPS security restriction applies to popups, yet popups do not know if they run on HTTPS if behind a transparent reverse proxy
-                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT;,question_ui}?message=' + encodeURIComponent(message) + '&image_set=' + encodeURIComponent(imageSet.join(',')) + '&button_set=' + encodeURIComponent(buttonSet.join(',')) + '&window_title=' + encodeURIComponent(windowTitle) + $cms.keepStub());
+                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT;,question_ui}?message=' + encodeURIComponent(message) + '&image_set=' + encodeURIComponent(imageSet.join(',')) + '&button_set=' + encodeURIComponent(buttonSet.join(',')) + '&window_title=' + encodeURIComponent(windowTitle) + $cms.$KEEP());
                 if (dialogWidth == null) {
                     dialogWidth = 440;
                 }
@@ -7615,7 +7596,7 @@
                     if (boolVal('{$VALUE_OPTION;,js_keep_params}')) {
                         // Keep parameters need propagating
                         if (anchor.href && anchor.href.startsWith($cms.$BASE_URL() + '/')) {
-                            anchor.href += keepStubWithContext(anchor.href);
+                            anchor.href += $cms.addKeepStub(anchor.href);
                         }
                     }
                 });
@@ -7657,7 +7638,7 @@
                     if (boolVal('{$VALUE_OPTION;,js_keep_params}')) {
                         /* Keep parameters need propagating */
                         if (form.action && form.action.startsWith($cms.$BASE_URL() + '/')) {
-                            form.action += keepStubWithContext(form.action);
+                            form.action += $cms.addKeepStub(form.action);
                         }
                     }
 
@@ -7863,27 +7844,6 @@
             }
         }
     });
-
-    function keepStubWithContext(context) {
-        context = strVal(context);
-
-        var starting = !context || !context.includes('?');
-
-        var toAdd = '', i,
-            bits = (window.location.search || '?').substr(1).split('&'),
-            gapSymbol;
-
-        for (i = 0; i < bits.length; i++) {
-            if (bits[i].startsWith('keep_')) {
-                if (!context || (!context.includes('?' + bits[i]) && !context.includes('&' + bits[i]))) {
-                    gapSymbol = ((toAdd === '') && starting) ? '?' : '&';
-                    toAdd += gapSymbol + bits[i];
-                }
-            }
-        }
-
-        return toAdd;
-    }
 
     /**
      * @memberof $cms.views
@@ -8788,7 +8748,7 @@
                     if (link.renderedTooltip === undefined) {
                         link.isOver = true;
 
-                        $cms.doAjaxRequest($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&raw_output=1&box_title={!PREVIEW;&}' + $cms.keepStub()), null, 'data=' + encodeURIComponent(comcode)).then(function (xhr) {
+                        $cms.doAjaxRequest($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&raw_output=1&box_title={!PREVIEW;&}' + $cms.$KEEP()), null, 'data=' + encodeURIComponent(comcode)).then(function (xhr) {
                             if (xhr && xhr.responseText) {
                                 link.renderedTooltip = xhr.responseText;
                             }
@@ -8902,7 +8862,7 @@
                     event.preventDefault();
 
                     if (src.includes($cms.$BASE_URL_NOHTTP() + '/themes/')) {
-                        ob.editWindow = window.open('{$BASE_URL;,0}/adminzone/index.php?page=admin_themes&type=edit_image&lang=' + encodeURIComponent($cms.$LANG()) + '&theme=' + encodeURIComponent($cms.$THEME()) + '&url=' + encodeURIComponent($cms.protectURLParameter(src.replace('{$BASE_URL;,0}/', ''))) + $cms.keepStub(), 'edit_theme_image_' + ob.id);
+                        ob.editWindow = window.open('{$BASE_URL;,0}/adminzone/index.php?page=admin_themes&type=edit_image&lang=' + encodeURIComponent($cms.$LANG()) + '&theme=' + encodeURIComponent($cms.$THEME()) + '&url=' + encodeURIComponent($cms.protectURLParameter(src.replace('{$BASE_URL;,0}/', ''))) + $cms.$KEEP(), 'edit_theme_image_' + ob.id);
                     } else {
                         $cms.ui.alert('{!NOT_THEME_IMAGE;^}');
                     }

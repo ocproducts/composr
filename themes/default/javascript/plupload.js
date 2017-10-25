@@ -14604,7 +14604,7 @@
 
             // General settings
             runtimes: 'html5,silverlight,flash',
-            url: '{$FIND_SCRIPT;,incoming_uploads}' + $cms.keepStub(true),
+            url: '{$FIND_SCRIPT;,incoming_uploads}' + $cms.$KEEP(true),
             max_file_size: (window.mfs == null) ? '2000mb' : (((window.mfs[0] != null) ? window.mfs[0].value : window.mfs.value) + 'b'),
 
             // Specify what files to browse for
@@ -14737,7 +14737,7 @@
             xhr.onreadystatechange = buildHtml5UploadHandler(xhr, fileUpload.file_progress, window.extraAttachmentBase, fieldName);
 
             // Send
-            xhr.open('POST', '{$FIND_SCRIPT;,incoming_uploads}' + $cms.keepStub(true));
+            xhr.open('POST', '{$FIND_SCRIPT;,incoming_uploads}' + $cms.$KEEP(true));
             var formData = new FormData();
             formData.append('file', file);
             xhr.send(formData);

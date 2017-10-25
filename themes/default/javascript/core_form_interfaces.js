@@ -1463,7 +1463,7 @@
 
                 var geocodeUrl = '{$FIND_SCRIPT;,geocode}';
                 geocodeUrl += '?latitude=' + encodeURIComponent(position.coords.latitude) + '&longitude=' + encodeURIComponent(position.coords.longitude);
-                geocodeUrl += $cms.keepStub();
+                geocodeUrl += $cms.$KEEP();
 
                 $cms.doAjaxRequest(geocodeUrl).then(function (xhr) {
                     var parsed = JSON.parse(xhr.responseText);

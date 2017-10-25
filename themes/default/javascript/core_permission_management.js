@@ -193,7 +193,7 @@
                                 newCell = row.insertBefore(document.createElement('th'), row.cells[row.cells.length]);
                                 newCell.className = 'privilege_header';
                                 newCell.id = 'privilege_header_' + privilege;
-                                $cms.dom.html(newCell, '<img class="gd_text" data-gd-text="1" src="' + $cms.baseUrl() + 'data/gd_text.php?color=' + window.columnColor + '&amp;text=' + encodeURIComponent(privilegeTitle) + $cms.filter.html($cms.keepStub()) + '" title="' + $cms.filter.html(privilegeTitle) + '" alt="' + $cms.filter.html(privilegeTitle) + '" />');
+                                $cms.dom.html(newCell, '<img class="gd_text" data-gd-text="1" src="' + $cms.baseUrl() + 'data/gd_text.php?color=' + window.columnColor + '&amp;text=' + encodeURIComponent(privilegeTitle) + $cms.filter.html($cms.$KEEP()) + '" title="' + $cms.filter.html(privilegeTitle) + '" alt="' + $cms.filter.html(privilegeTitle) + '" />');
 
                                 rows[rows.length - 1].appendChild(document.createElement('td')).className = 'form_table_field_input privilege_footer'; // Footer cell
 
@@ -388,7 +388,7 @@
 
         // Send AJAX request
         if (setRequest !== '') {
-            $cms.doAjaxRequest($cms.$BASE_URL_NOHTTP() + '/data/sitemap.php?set_perms=1' + $cms.keepStub(), null, setRequest).then(function () {
+            $cms.doAjaxRequest($cms.$BASE_URL_NOHTTP() + '/data/sitemap.php?set_perms=1' + $cms.$KEEP(), null, setRequest).then(function () {
                 $cms.ui.alert('{!permissions:PERMISSIONS_TREE_EDITOR_SAVED;^}');
             });
             return;
@@ -423,7 +423,7 @@
             }
 
             var url = '{$FIND_SCRIPT_NOHTTP;,find_permissions}?serverid=' + encodeURIComponent(serverid) + '&x=' + encodeURIComponent(ob.name);
-            $cms.doAjaxRequest(url + $cms.keepStub()).then(function (xhr) {
+            $cms.doAjaxRequest(url + $cms.$KEEP()).then(function (xhr) {
                 if (!xhr) {
                     return;
                 }

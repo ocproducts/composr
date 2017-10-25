@@ -211,7 +211,7 @@
                     return resolvePromise();
                 }
 
-                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?from_html=1' + $cms.keepStub());
+                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?from_html=1' + $cms.$KEEP());
                 if (window.location.href.includes('topics')) {
                     url += '&forum_db=1';
                 }
@@ -350,7 +350,7 @@
                     return resolvePromise();
                 }
 
-                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&from_html=0' + $cms.keepStub());
+                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&from_html=0' + $cms.$KEEP());
                 if (window.location.href.includes('topics')) {
                     url += '&forum_db=1';
                 }
@@ -588,11 +588,11 @@
                     var tagType = this.title.replace(/^\[/, '').replace(/[= \]](.|\n)*$/, '');
                     if (tagType === 'block') {
                         var blockName = this.title.replace(/\[\/block\]$/, '').replace(/^(.|\s)*\]/, '');
-                        var url = '{$FIND_SCRIPT;,block_helper}?type=step2&block=' + encodeURIComponent(blockName) + '&field_name=' + fieldName + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + $cms.keepStub();
+                        var url = '{$FIND_SCRIPT;,block_helper}?type=step2&block=' + encodeURIComponent(blockName) + '&field_name=' + fieldName + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + $cms.$KEEP();
                         url = url + '&block_type=' + (((fieldName.indexOf('edit_panel_') === -1) && (window.location.href.indexOf(':panel_') === -1)) ? 'main' : 'side');
                         $cms.ui.open($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
                     } else {
-                        var url = '{$FIND_SCRIPT;,comcode_helper}?type=step2&tag=' + encodeURIComponent(tagType) + '&field_name=' + fieldName + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + $cms.keepStub();
+                        var url = '{$FIND_SCRIPT;,comcode_helper}?type=step2&tag=' + encodeURIComponent(tagType) + '&field_name=' + fieldName + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + $cms.$KEEP();
                         $cms.ui.open($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
                     }
                 };
@@ -633,7 +633,7 @@
                             selfOb.tagText = tagText;
                             selfOb.isOver = true;
 
-                            var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&box_title={!PREVIEW&;^}' + $cms.keepStub());
+                            var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&box_title={!PREVIEW&;^}' + $cms.$KEEP());
                             if (window.location.href.includes('topics')) {
                                 url += '&forum_db=1';
                             }
@@ -819,7 +819,7 @@
                     return resolvePromise();
                 } 
                 
-                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&lax_comcode=1' + $cms.keepStub());
+                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&lax_comcode=1' + $cms.$KEEP());
                 if (window.location.href.includes('topics')) {
                     url += '&forum_db=1';
                 }
@@ -976,7 +976,7 @@
                 }
 
                 var newHtml = '',
-                    url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&lax_comcode=1' + $cms.keepStub());
+                    url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&lax_comcode=1' + $cms.$KEEP());
 
                 if (window.location.href.includes('topics')) {
                     url += '&forum_db=1';
@@ -1049,7 +1049,7 @@
                     var el = document.getElementById(id);
                     if (el.checked && !authorised) {
                         //e.checked=false;  Better to assume success, not all oAuth support callback
-                        var url = '{$FIND_SCRIPT_NOHTTP;,upload_syndication_auth}?hook=' + encodeURIComponent(hook) + '&name=' + encodeURIComponent(name) + $cms.keepStub();
+                        var url = '{$FIND_SCRIPT_NOHTTP;,upload_syndication_auth}?hook=' + encodeURIComponent(hook) + '&name=' + encodeURIComponent(name) + $cms.$KEEP();
 
                         if ($cms.$MOBILE()) {
                             window.open(url);
