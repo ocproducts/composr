@@ -19,4 +19,4 @@
 		{+END}
 	</li>
 {+END}
-{+START,IF,{$GET,js_menu}}{$?,{FIRST},[}{"caption": {$JSON_ENCODE,{CAPTION}}, "tooltip": {$JSON_ENCODE,{TOOLTIP}}, "url": {$JSON_ENCODE,{URL}}, "img": {$JSON_ENCODE,{$GET,IMG}}, "img_2x": {$JSON_ENCODE,{$GET,IMG_2X}}, "current": {$?,{CURRENT},true,false}, "children": {$?,{$IS_EMPTY,{CHILDREN}},[],{$TRIM,{CHILDREN}}}}{$?,{LAST},],\,}{+END}
+{+START,IF,{$GET,js_menu}}{$?,{FIRST},[}{"caption": {$JSON_ENCODE,{CAPTION}}, "tooltip": {$JSON_ENCODE,{TOOLTIP}}, "url": {$JSON_ENCODE,{URL}}, "img": {$JSON_ENCODE,{$GET,img}}, "img_2x": {$JSON_ENCODE,{$GET,img_2x}}, "current": {$?,{CURRENT},true,false}, "children": {$?,{$IS_EMPTY,{CHILDREN}},[],{$TRIM,{CHILDREN}}}}{$?,{LAST},],\,}{+END}

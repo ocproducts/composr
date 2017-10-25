@@ -2255,7 +2255,6 @@
 
             el.value = strVal((typeof value === 'function') ? value.call(el, $cms.dom.val(el), el) : value);
         },
-
         /**
          * Also triggers the 'change' event
          * @memberof $cms.dom
@@ -2270,6 +2269,19 @@
             $cms.dom.trigger(el, 'change');
         },
 
+        /**
+         * Triggers the 'change' event after changing checked state
+         * @memberof $cms.dom
+         * @param el
+         * @param bool
+         * @returns {*}
+         */
+        changeChecked: function changeChecked(el, bool) {
+            el = elArg(el);
+
+            el.checked = strVal((typeof bool === 'function') ? bool.call(el, el.checked, el) : bool);
+            $cms.dom.trigger(el, 'change');
+        },
         /**
          * @memberof $cms.dom
          * @param node

@@ -14316,9 +14316,7 @@
         var placeholderField = document.getElementById(name),
             plObj = placeholderField.pluploadObject;
         
-        placeholderField.value = value;
-        placeholderField.virtualValue = value;
-        $cms.dom.trigger(placeholderField, 'change');
+        $cms.dom.changeVal(placeholderField, value);
         
         if ((plObj == null) || (plObj.settings == null)) {
             return;
@@ -14404,6 +14402,7 @@
         }
     }
 
+    // Listens to the 'Error' event
     function onUploadError(plObj, error) {
         console.log('onUploadError()', 'plObj:', plObj, 'error:', error);
 
@@ -14445,6 +14444,7 @@
         }
     }
 
+    // Listens to the 'QueueChanged' event
     function onUploadQueueChanged(plObj) {
         //console.log('onUploadQueueChanged()', 'plObj:', plObj);
 
@@ -14496,11 +14496,11 @@
             // This input field shows the file name(s) of the uploading/uploaded file to the user
             '<input type="text" id="txtFileName_' + name + '" name="txtFileName_' + name + '" class="upload_response_field" size="24" disabled value="">' +
             '<input type="button" id="uploadButton_' + name + '" class="buttons__upload ' + buttonType + '" value="{!BROWSE;^*}">' +
+            '<input type="button" id="fsClear_' + name + '" class="buttons__clear ' + buttonType + ' clear_button" alt="{!CLEAR;^*}" value="{!CLEAR;^*}">' +
             '</div>' +
             '<div id="fsUploadProgress_' + name + '" class="progressBars"></div>' +
             // This hidden input field holds the server-side upload_id after upload is finished
             '<input type="hidden" id="hidFileID_' + name + '" name="hidFileID_' + name + '" value="-1">' +
-            '<input type="button" id="fsClear_' + name + '" class="buttons__clear ' + buttonType + ' clear_button" alt="{!CLEAR;^*}" value="{!CLEAR;^*}">' +
             '</div>' +
             // Placeholder Plupload input field (placeholderField below)
             '<input type="text" id="' + name + '" name="' + name + '" style="display: none;" disabled>'

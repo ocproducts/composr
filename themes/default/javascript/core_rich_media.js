@@ -51,12 +51,14 @@
         this.mainEl.appendChild(carouselNs);
         this.el.style.display = 'block';
 
-        var view = this;
+        var self = this;
         $cms.load.push(function () {
-            view.$('.js-btn-car-move').style.height = view.mainEl.offsetHeight + 'px';
+            self.$$('.js-btn-car-move').forEach(function (btn) {
+                btn.style.height = self.mainEl.offsetHeight + 'px';    
+            });
 
-            view.createFaders();
-            view.updateFaders();
+            self.createFaders();
+            self.updateFaders();
         });
     }
 
@@ -101,11 +103,11 @@
         },
 
         move: function (e, btn) {
-            var view = this,
+            var self = this,
                 amount = btn.dataset.moveAmount;
 
             setTimeout(function () {
-                view.carouselMove(amount);
+                self.carouselMove(amount);
             }, 10);
         },
 
