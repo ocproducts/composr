@@ -141,17 +141,15 @@
          * @returns {string}
          */
         $KEEP: function $KEEP(starting, forceSession) {
-            var keep = strVal(symbols.KEEP);
-            if (forceSession && !keep.includes('?keep_session=') && !keep.includes('&keep_session=') && (getSessionId() !== '')) {
-                keep = (keep === '') ? '?keep_session=' + getSessionId() : keep + '&keep_session=' + getSessionId();
+            var keep = $cms.uspKeep.toString();
+            if (forceSession && !keep.startsWith('keep_session=') && !keep.includes('&keep_session=') && (getSessionId() !== '')) {
+                keep = (keep === '') ? ('keep_session=' + getSessionId()) : (keep + '&keep_session=' + getSessionId());
             }
             if (keep === '') {
                 return '';
             }
-            if (starting) {
-                keep = '?' + keep.substr(1);
-            }
-            return keep;
+            
+            return (starting ? '?' : '&') + keep;
         },
         /**
          * @method
@@ -1861,11 +1859,11 @@
     }
 
     function getCsrfToken() {
-        return $cms.readCookie($cms.$SESSION_COOKIE_NAME()); // Session also works as a CSRF-token, as client-side knows it (AJAX)
+        return readCookie($cms.$SESSION_COOKIE_NAME()); // Session also works as a CSRF-token, as client-side knows it (AJAX)
     }
 
     function getSessionId() {
-        return $cms.readCookie($cms.$SESSION_COOKIE_NAME());
+        return readCookie($cms.$SESSION_COOKIE_NAME());
     }
 
     /**
