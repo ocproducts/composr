@@ -1398,7 +1398,13 @@ function check_call($c, $c_pos, $class = null, $function_guard = '')
         return $ret['type'];
     }
     if (!$found) {
-        if (isset($GLOBALS['API'])) {
+        if (count($FUNCTION_SIGNATURES[$class]['functions']) == 0) {
+            static $warned_missing_api_once = false;
+            if (!$warned_missing_api_once) {
+                log_warning('No API function metabase available', $c_pos);
+            }
+            $warned_missing_api_once = true;
+        } elseif (isset($GLOBALS['API'])) {
             if (((is_null($GLOBALS['OK_EXTRA_FUNCTIONS'])) || (preg_match('#^(' . $GLOBALS['OK_EXTRA_FUNCTIONS'] . ')#', $function) == 0) && (preg_match('#^(' . $GLOBALS['OK_EXTRA_FUNCTIONS'] . ')#', $class) == 0)) && (strpos($function_guard, ',' . $function . ',') === false) && (strpos($function_guard, ',' . $class . ',') === false) && (!in_array($function, array('critical_error', 'file_array_exists', 'file_array_get', 'file_array_count', 'file_array_get_at', 'master__sync_file', 'master__sync_file_move', '__construct'))) && (!in_array($class, array('mixed', '?mixed', 'object', '?object', ''/*Dynamic*/)))) {
                 if ((is_null($class)) || ($class == '__global')) {
                     if ($function != '' && $function != 'ocp_mark_as_escaped' && $function != 'ocp_is_escaped'/*These aren't checked with function_exists, checked with a global, for performance reasons*/) {

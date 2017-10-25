@@ -549,6 +549,12 @@ function save_form_custom_fields($content_type, $id, $old_id = null)
 
     require_code('catalogues');
 
+    // Check there is actually a catalogue here (technically we could avoid this because we return if there are zero catalogue_fields rows, but there could be corruption with those rows but no catalogue)
+    $test = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_name' => '_' . $content_type));
+    if ($test === null) {
+        return;
+    }
+
     // Get field values
     $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => '_' . $content_type), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
     $map = array();
