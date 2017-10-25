@@ -728,41 +728,48 @@
         }, params.time);
     };
 
+
+    var promiseYouTubeIframeAPIReady;
     $cms.templates.mediaYoutube = function (params, element) {
         // Tie into callback event to see when finished, for our slideshows
         // API: https://developers.google.com/youtube/iframe_api_reference
-        var youtubeCallback = function () {
-            var slideshowMode = document.getElementById('next_slide');
-            var player = new YT.Player(element.id, {
-                width: params.width,
-                height: params.height,
-                videoId: params.remoteId,
-                events: {
-                    'onReady': function () {
-                        if (slideshowMode) {
-                            player.playVideo();
-                        }
-                    },
-                    'onStateChange': function (newState) {
-                        if (slideshowMode) {
-                            if (newState == 0) playerStopped();
+        
+        if (promiseYouTubeIframeAPIReady == null) {
+            promiseYouTubeIframeAPIReady = new Promise(function (resolve) {
+                if ((window.YT != null) && (window.YT.Player != null)) {
+                    resolve();
+                } else {
+                    window.onYouTubeIframeAPIReady = function onYouTubeIframeAPIReady() {
+                        resolve();
+                        delete window.onYouTubeIframeAPIReady;
+                    };
+                    $cms.requireJavascript('https://www.youtube.com/iframe_api');  
+                }
+            });   
+        }
+        
+        promiseYouTubeIframeAPIReady.then(function () {
+            var slideshowMode = document.getElementById('next_slide'),
+                player = new window.YT.Player(element.id, {
+                    width: params.width,
+                    height: params.height,
+                    videoId: params.remoteId,
+                    events: {
+                        onReady: function () {
+                            if (slideshowMode) {
+                                player.playVideo();
+                            }
+                        },
+                        onStateChange: function (newState) {
+                            if (slideshowMode) {
+                                if (newState == 0) {
+                                    playerStopped();
+                                }
+                            }
                         }
                     }
-                }
-            });
-        };
-
-        if (window.doneYoutubePlayerInit === undefined) {
-            var tag = document.createElement('script');
-            tag.src = "https://www.youtube.com/iframe_api";
-            var firstScriptTag = document.querySelector('script');
-            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-            window.doneYoutubePlayerInit = true;
-
-            window.onYouTubeIframeAPIReady = youtubeCallback;
-        } else {
-            youtubeCallback();
-        }
+                });
+        });
     };
 
     // LEGACY
@@ -931,7 +938,7 @@
             };
         }
 
-        jwplayer(params.playerId).setup(playerOptions);
+        window.jwplayer(params.playerId).setup(playerOptions);
     };
     
     $cms.functions.comcodeAddTryForSpecialComcodeTagSpecificContentsUi = function () {
