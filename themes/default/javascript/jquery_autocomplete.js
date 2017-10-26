@@ -649,11 +649,11 @@ jQuery(function ($) {
  * @param {*} e object containing the val and meta properties (from the input list)
  */
 function autoCompleteElementFactory(element,e) {
-    var customItemTemplate='<div><span />&nbsp;<small /></div>';
-    var template=window.jQuery(customItemTemplate).find('span')
-        .text('@'+e.val).end()
+    var customItemTemplate = '<div><span />&nbsp;<small /></div>';
+    var template = window.jQuery(customItemTemplate).find('span')
+        .text('@' + e.val).end()
         .find('small')
-        .text((e.meta=='')?'':'('+e.meta+')').end();
+        .text((e.meta == '') ? '' : '(' + e.meta + ')').end();
     element.append(template);
 }
 
@@ -673,7 +673,7 @@ function setUpComcodeAutocomplete(name, wysiwyg) {
         token: '@',
         elementFactory: autoCompleteElementFactory,
         onFilterChanged: function (sew, token, expression) {
-            $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,namelike}?id=' + encodeURIComponent(token) + $cms.keepStub()).then(function (responseXml) {
+            $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,namelike}?id=' + encodeURIComponent(token) + $cms.$KEEP()).then(function (responseXml) {
                 var listContents = responseXml && responseXml.querySelector('result');
                 
                 var newValues = [];

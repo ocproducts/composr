@@ -169,7 +169,7 @@
                 if (((xhr.responseText === '') && (input.value !== '')) || (xhr.status !== 200)) {
                     var sessionTestUrl = '{$FIND_SCRIPT_NOHTTP;,confirm_session}';
 
-                    $cms.doAjaxRequest(sessionTestUrl + $cms.keepStub(true)).then(function (sessionXhr) {
+                    $cms.doAjaxRequest(sessionTestUrl + $cms.$KEEP(true)).then(function (sessionXhr) {
                         if (sessionXhr.responseText) { // If it failed, see if it is due to a non-confirmed session
                             $cms.ui.confirmSession().then(function (sessionConfirmed) {
                                 if (sessionConfirmed) {

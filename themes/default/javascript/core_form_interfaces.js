@@ -84,7 +84,7 @@
             return {
                 'click .js-click-do-form-cancel': 'doFormCancel',
                 'click .js-click-do-form-preview': 'doFormPreview',
-                'click .js-click-do-form-submit': 'doFormSubmit',
+                'click .js-click-do-form-submit': 'doStandardFormSubmit',
                 'click .js-click-btn-go-back': 'goBack'
             };
         },
@@ -105,13 +105,13 @@
             var form = this.form;
 
             $cms.form.doFormPreview(form, window.formPreviewUrl, window.separatePreview).then(function (bool) {
-                if (bool && !window.justCheckingRequirements) {
+                if (bool) {
                     form.submit();
                 }
             });
         },
 
-        doFormSubmit: function (e) {
+        doStandardFormSubmit: function (e) {
             $cms.form.doFormSubmit(this.form, this.analyticEventCategory);
         },
 
@@ -154,7 +154,7 @@
 
         if (params.plupload && !$cms.$IS_HTTPAUTH_LOGIN() && $cms.$CONFIG_OPTION('complex_uploader')) {
             $cms.requireJavascript('plupload').then(function () {
-                window.preinitFileInput('upload', params.name, null, null, params.filter);
+                window.preinitFileInput('upload', params.name, null, params.filter);
             });
         }
 
@@ -1069,7 +1069,7 @@
         }
 
         if (params.plupload && !$cms.$IS_HTTPAUTH_LOGIN() && $cms.$CONFIG_OPTION('complex_uploader')) {
-            window.preinitFileInput('upload_multi', nameStub + '_' + index, null, null, params.filter);
+            window.preinitFileInput('upload_multi', nameStub + '_' + index, null, params.filter);
         }
 
         $cms.dom.on(container, 'change', '.js-input-change-ensure-next-field-upload', function (e, input) {
@@ -1463,7 +1463,7 @@
 
                 var geocodeUrl = '{$FIND_SCRIPT;,geocode}';
                 geocodeUrl += '?latitude=' + encodeURIComponent(position.coords.latitude) + '&longitude=' + encodeURIComponent(position.coords.longitude);
-                geocodeUrl += $cms.keepStub();
+                geocodeUrl += $cms.$KEEP();
 
                 $cms.doAjaxRequest(geocodeUrl).then(function (xhr) {
                     var parsed = JSON.parse(xhr.responseText);

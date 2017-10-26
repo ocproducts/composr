@@ -56,7 +56,6 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
             'LANG'              => ecv_LANG($lang, [], []),
             'DEV_MODE'          => ecv_DEV_MODE($lang, [], []),
             'HTTP_STATUS_CODE'  => ecv_HTTP_STATUS_CODE($lang, [], []),
-            'KEEP'              => ecv_KEEP($lang, [], []),
             'FORCE_PREVIEWS'    => ecv_FORCE_PREVIEWS($lang, [], []),
             'SITE_NAME'         => ecv_SITE_NAME($lang, [], []),
             'BRAND_NAME'        => ecv_BRAND_NAME($lang, [], []),

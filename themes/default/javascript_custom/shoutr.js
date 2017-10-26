@@ -88,5 +88,5 @@ function sbChatCheck(roomId, lastMessageId, lastEventId) {
     }
 
     var url = '{$FIND_SCRIPT_NOHTTP;,messages}?action=new&no_reenter_message=1&room_id=' + roomId + "&message_id=" + lastMessageId + "&event_id=" + lastEventId;
-    $cms.doAjaxRequest(url + $cms.keepStub(false), sbChatCheckResponse);
+    $cms.doAjaxRequest(url + $cms.$KEEP(), sbChatCheckResponse);
 }

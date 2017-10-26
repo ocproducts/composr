@@ -33,9 +33,9 @@
     window.arrVal  = arrVal;
     window.objVal  = objVal;
 
-    (window.$cmsInit  || (window.$cmsInit = []));
-    (window.$cmsReady || (window.$cmsReady = []));
-    (window.$cmsLoad  || (window.$cmsLoad = []));
+    $cms.init  || ($cms.init = []);
+    $cms.ready || ($cms.ready = []);
+    $cms.load  || ($cms.load = []);
 
     /** @namespace $cms */
     $cms = extendDeep($cms, /**@lends $cms*/ {
@@ -140,7 +140,17 @@
          * @method
          * @returns {string}
          */
-        $KEEP: constant(strVal(symbols.KEEP)),
+        $KEEP: function $KEEP(starting, forceSession) {
+            var keep = $cms.uspKeep.toString();
+            if (forceSession && !keep.startsWith('keep_session=') && !keep.includes('&keep_session=') && (getSessionId() !== '')) {
+                keep = (keep === '') ? ('keep_session=' + getSessionId()) : (keep + '&keep_session=' + getSessionId());
+            }
+            if (keep === '') {
+                return '';
+            }
+            
+            return (starting ? '?' : '&') + keep;
+        },
         /**
          * @method
          * @returns {string}
@@ -387,7 +397,7 @@
         /**@method*/
         maintainThemeInLink: maintainThemeInLink,
         /**@method*/
-        keepStub: keepStub,
+        addKeepStub: addKeepStub,
         /**@method*/
         gaTrack: gaTrack,
         /**@method*/
@@ -500,14 +510,14 @@
     function executeCmsInitQueue() {
         var fn;
 
-        while (window.$cmsInit.length > 0) {
-            fn = window.$cmsInit.shift();
+        while ($cms.init.length > 0) {
+            fn = $cms.init.shift();
             if (typeof fn === 'function') {
                 fn();
             }
         }
 
-        properties(window.$cmsInit, {
+        properties($cms.init, {
             unshift: function unshift(fn) {
                 fn();
             },
@@ -520,14 +530,14 @@
     function executeCmsReadyQueue() {
         var fn;
 
-        while (window.$cmsReady.length > 0) {
-            fn = window.$cmsReady.shift();
+        while ($cms.ready.length > 0) {
+            fn = $cms.ready.shift();
             if (typeof fn === 'function') {
                 fn();
             }
         }
 
-        properties(window.$cmsReady, {
+        properties($cms.ready, {
             unshift: function unshift(fn) {
                 fn();
             },
@@ -540,14 +550,14 @@
     function executeCmsLoadQueue() {
         var fn;
 
-        while (window.$cmsLoad.length > 0) {
-            fn = window.$cmsLoad.shift();
+        while ($cms.load.length > 0) {
+            fn = $cms.load.shift();
             if (typeof fn === 'function') {
                 fn();
             }
         }
 
-        properties(window.$cmsLoad, {
+        properties($cms.load, {
             unshift: function unshift(fn) {
                 fn();
             },
@@ -558,33 +568,51 @@
     }
 
     /**
+     * A URLSearchParams object for the current page URL's query string
+     * @see https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
      * @type { URLSearchParams }
      */
     $cms.usp = uspFromUrl(window.location.href);
-
+    /**
+     * Same as $cms.usp but only has the `keep_*` parameters
+     * @type { URLSearchParams }
+     */
+    $cms.uspKeep = createUspKeep();
+    /**
+     * Same as $cms.uspKeep and always has `keep_session` where available
+     * @type { URLSearchParams }
+     */
+    $cms.uspKeepSession = createUspKeepSession();
+    
     window.addEventListener('popstate', function () {
         $cms.usp = uspFromUrl(window.location.href);
+        $cms.uspKeep = createUspKeep();
+        $cms.uspKeepSession = createUspKeepSession();
     });
+    
+    function createUspKeep() {
+        var uspKeep = new URLSearchParams();
+        
+        eachIter($cms.usp.entries(), function (entry) {
+            var name = entry[0],
+                value = entry[1];
 
-    // usp with only the `keep_*` parameters
-    $cms.uspKeep = new URLSearchParams();
-    // this always has `keep_session` where possible
-    $cms.uspKeepSession = new URLSearchParams();
+            if (name.startsWith('keep_')) {
+                uspKeep.set(name, value);
+            }
+        });
+        
+        return uspKeep;
+    }
+    
+    function createUspKeepSession() {
+        var uspKeepSession = createUspKeep();
 
-    eachIter($cms.usp.entries(), function (entry) {
-        var name = entry[0],
-            value = entry[1];
-
-        if (name.startsWith('keep_')) {
-            $cms.uspKeep.set(name, value);
-            $cms.uspKeepSession.set(name, value);
+        if (!uspKeepSession.has('keep_session') && ($cms.getSessionId() !== '')) {
+            uspKeepSession.set('keep_session', $cms.getSessionId());
         }
-    });
-
-    var sessionId = $cms.getSessionId();
-
-    if (sessionId && !$cms.uspKeepSession.has('keep_session')) {
-        $cms.uspKeepSession.set('keep_session', sessionId);
+        
+        return uspKeepSession;
     }
 
     // Generate a unique integer id (unique within the entire client session).
@@ -930,6 +958,7 @@
     }
 
     /**
+     * Iterates over iterable objects
      * @param iterable
      * @param callback
      * @returns {*}
@@ -1661,7 +1690,7 @@
             linkEl.id = 'css-' + sheetName;
             linkEl.rel = 'stylesheet';
             linkEl.nonce = $cms.$CSP_NONCE();
-            linkEl.href = '{$FIND_SCRIPT_NOHTTP;,sheet}?sheet=' + sheetName + $cms.keepStub();
+            linkEl.href = '{$FIND_SCRIPT_NOHTTP;,sheet}?sheet=' + sheetName + $cms.$KEEP();
             document.head.appendChild(linkEl);
             requireCssPromises[sheetName] = $cms.waitForResources(linkEl);
         }
@@ -1711,7 +1740,7 @@
                 scriptEl.src = script;
             } else {
                 scriptEl.id = 'javascript-' + script;
-                scriptEl.src = '{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + script + $cms.keepStub();
+                scriptEl.src = '{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + script + $cms.$KEEP();
             }
 
             document.body.appendChild(scriptEl);
@@ -1766,9 +1795,9 @@
      */
     function promiseHalt() {
         if (_haltedPromise === undefined) {
-            _haltedPromise = new Promise();
+            _haltedPromise = new Promise(function () {});
             properties(_haltedPromise, {
-                'then': function then() {
+                then: function then() {
                     return _haltedPromise;
                 },
                 'catch': function _catch() {
@@ -1828,11 +1857,11 @@
     }
 
     function getCsrfToken() {
-        return $cms.readCookie($cms.$SESSION_COOKIE_NAME()); // Session also works as a CSRF-token, as client-side knows it (AJAX)
+        return readCookie($cms.$SESSION_COOKIE_NAME()); // Session also works as a CSRF-token, as client-side knows it (AJAX)
     }
 
     function getSessionId() {
-        return $cms.readCookie($cms.$SESSION_COOKIE_NAME());
+        return readCookie($cms.$SESSION_COOKIE_NAME());
     }
 
     /**
@@ -4678,7 +4707,7 @@
 
         return new Promise(function (resolvePromise) {
             // Make AJAX call
-            $cms.doAjaxRequest(ajaxUrl + $cms.keepStub(), null, postParams).then(function (xhr) { // Show results when available
+            $cms.doAjaxRequest(ajaxUrl + $cms.$KEEP(), null, postParams).then(function (xhr) { // Show results when available
                 callBlockRender(xhr, ajaxUrl, targetDiv, append, function () {
                     resolvePromise();
                 }, scrollToTopOfWrapper, inner);
@@ -4743,7 +4772,7 @@
         var title = $cms.dom.html(document.querySelector('title')).replace(/ \u2013 .*/, ''),
             canonical = document.querySelector('link[rel="canonical"]'),
             url = canonical ? canonical.getAttribute('href') : window.location.href,
-            url2 = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=' + snippetHook + '&url=' + encodeURIComponent($cms.protectURLParameter(url)) + '&title=' + encodeURIComponent(title) + $cms.keepStub();
+            url2 = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=' + snippetHook + '&url=' + encodeURIComponent($cms.protectURLParameter(url)) + '&title=' + encodeURIComponent(title) + $cms.$KEEP();
 
         return new Promise(function (resolve) {
             $cms.doAjaxRequest($cms.maintainThemeInLink(url2), null, post).then(function (xhr) {
@@ -4774,20 +4803,33 @@
     }
 
     /**
-     * Get URL stub to propagate keep_* parameters
-     * @param starting
-     * @returns {string}
+     * Alternative to $cms.$KEEP(), accepts a URL and ensures not to cause duplicate keep_* params
+     * @param url
+     * @return {string}
      */
-    function keepStub(starting) { // `starting` set to true means "Put a '?' for the first parameter"
-        starting = !!starting;
+    function addKeepStub(url) {
+        url = strVal(url);
 
-        var keep = $cms.uspKeepSession.toString();
-
-        if (!keep) {
-            return '';
+        var stub = $cms.uspKeepSession.toString(),
+            urlUsp;
+        
+        if ((stub === '') || (url === '') || !url.includes('?')) {
+            return (stub === '') ? url : (url + '?' + stub);
         }
+        
+        urlUsp = uspFromUrl(url);
+        url = url.split('?')[0];
+        
+        eachIter($cms.uspKeepSession.entries(), function (entry) {
+            var name = entry[0],
+                value = entry[1];
 
-        return (starting ? '?' : '&') + keep;
+            if (!urlUsp.has(name)) {
+                urlUsp.set(name, value);
+            }
+        });
+        
+        return url + '?' + urlUsp;
     }
 
     /**
@@ -5446,7 +5488,7 @@
      * @returns { Promise } - Resolves with a boolean indicating whether session confirmed or not
      */
     $cms.ui.confirmSession = function confirmSession() {
-        var scriptUrl = '{$FIND_SCRIPT_NOHTTP;,confirm_session}' + $cms.keepStub(true);
+        var scriptUrl = '{$FIND_SCRIPT_NOHTTP;,confirm_session}' + $cms.$KEEP(true);
 
         return new Promise(function (resolvePromise) {
             $cms.doAjaxRequest(scriptUrl).then(function (xhr) {
@@ -5879,7 +5921,7 @@
         });
     };
 
-    window.$cmsReady.push(function () {
+    $cms.ready.push(function () {
         // Tooltips close on browser resize
         $cms.dom.on(window, 'resize', function () {
             $cms.ui.clearOutTooltips();
@@ -6289,8 +6331,20 @@
         permanent = Boolean(permanent);
 
         buttons.forEach(function (btn) {
-            if (!btn.disabled && !tempDisabledButtons[$cms.uid(btn)]) { // We do not want to interfere with other code potentially operating
+            if (!btn.disabled && !tempDisabledButtons[$cms.uid(btn)]/*We do not want to interfere with other code potentially operating*/) {
                 $cms.ui.disableButton(btn, permanent);
+            }
+        });
+    };
+    
+    $cms.ui.enableSubmitAndPreviewButtons = function enableSubmitAndPreviewButtons() {
+        // [accesskey="u"] identifies submit button, [accesskey="p"] identifies preview button
+        var buttons = $cms.dom.$$('input[accesskey="u"], button[accesskey="u"], input[accesskey="p"], button[accesskey="p"]');
+        
+        buttons.forEach(function (btn) {
+            if (btn.disabled && !tempDisabledButtons[$cms.uid(btn)]/*We do not want to interfere with other code potentially operating*/) { 
+                btn.style.cursor = '';
+                btn.disabled = false;
             }
         });
     };
@@ -7180,7 +7234,7 @@
                 }
 
                 // Intentionally FIND_SCRIPT and not FIND_SCRIPT_NOHTTP, because no needs-HTTPS security restriction applies to popups, yet popups do not know if they run on HTTPS if behind a transparent reverse proxy
-                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT;,question_ui}?message=' + encodeURIComponent(message) + '&image_set=' + encodeURIComponent(imageSet.join(',')) + '&button_set=' + encodeURIComponent(buttonSet.join(',')) + '&window_title=' + encodeURIComponent(windowTitle) + $cms.keepStub());
+                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT;,question_ui}?message=' + encodeURIComponent(message) + '&image_set=' + encodeURIComponent(imageSet.join(',')) + '&button_set=' + encodeURIComponent(buttonSet.join(',')) + '&window_title=' + encodeURIComponent(windowTitle) + $cms.$KEEP());
                 if (dialogWidth == null) {
                     dialogWidth = 440;
                 }
@@ -7443,7 +7497,7 @@
         });
     };
 
-    window.$cmsReady.push(function () {
+    $cms.ready.push(function () {
         $cms.attachBehaviors(document);
     });
 
@@ -7542,7 +7596,7 @@
                     if (boolVal('{$VALUE_OPTION;,js_keep_params}')) {
                         // Keep parameters need propagating
                         if (anchor.href && anchor.href.startsWith($cms.$BASE_URL() + '/')) {
-                            anchor.href += keepStubWithContext(anchor.href);
+                            anchor.href += $cms.addKeepStub(anchor.href);
                         }
                     }
                 });
@@ -7584,7 +7638,7 @@
                     if (boolVal('{$VALUE_OPTION;,js_keep_params}')) {
                         /* Keep parameters need propagating */
                         if (form.action && form.action.startsWith($cms.$BASE_URL() + '/')) {
-                            form.action += keepStubWithContext(form.action);
+                            form.action += $cms.addKeepStub(form.action);
                         }
                     }
 
@@ -7790,27 +7844,6 @@
             }
         }
     });
-
-    function keepStubWithContext(context) {
-        context = strVal(context);
-
-        var starting = !context || !context.includes('?');
-
-        var toAdd = '', i,
-            bits = (window.location.search || '?').substr(1).split('&'),
-            gapSymbol;
-
-        for (i = 0; i < bits.length; i++) {
-            if (bits[i].startsWith('keep_')) {
-                if (!context || (!context.includes('?' + bits[i]) && !context.includes('&' + bits[i]))) {
-                    gapSymbol = ((toAdd === '') && starting) ? '?' : '&';
-                    toAdd += gapSymbol + bits[i];
-                }
-            }
-        }
-
-        return toAdd;
-    }
 
     /**
      * @memberof $cms.views
@@ -8715,7 +8748,7 @@
                     if (link.renderedTooltip === undefined) {
                         link.isOver = true;
 
-                        $cms.doAjaxRequest($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&raw_output=1&box_title={!PREVIEW;&}' + $cms.keepStub()), null, 'data=' + encodeURIComponent(comcode)).then(function (xhr) {
+                        $cms.doAjaxRequest($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&raw_output=1&box_title={!PREVIEW;&}' + $cms.$KEEP()), null, 'data=' + encodeURIComponent(comcode)).then(function (xhr) {
                             if (xhr && xhr.responseText) {
                                 link.renderedTooltip = xhr.responseText;
                             }
@@ -8829,7 +8862,7 @@
                     event.preventDefault();
 
                     if (src.includes($cms.$BASE_URL_NOHTTP() + '/themes/')) {
-                        ob.editWindow = window.open('{$BASE_URL;,0}/adminzone/index.php?page=admin_themes&type=edit_image&lang=' + encodeURIComponent($cms.$LANG()) + '&theme=' + encodeURIComponent($cms.$THEME()) + '&url=' + encodeURIComponent($cms.protectURLParameter(src.replace('{$BASE_URL;,0}/', ''))) + $cms.keepStub(), 'edit_theme_image_' + ob.id);
+                        ob.editWindow = window.open('{$BASE_URL;,0}/adminzone/index.php?page=admin_themes&type=edit_image&lang=' + encodeURIComponent($cms.$LANG()) + '&theme=' + encodeURIComponent($cms.$THEME()) + '&url=' + encodeURIComponent($cms.protectURLParameter(src.replace('{$BASE_URL;,0}/', ''))) + $cms.$KEEP(), 'edit_theme_image_' + ob.id);
                     } else {
                         $cms.ui.alert('{!NOT_THEME_IMAGE;^}');
                     }
@@ -10032,7 +10065,7 @@
 
     $cms.templates.standaloneHtmlWrap = function (params) {
         if (window.parent) {
-            window.$cmsLoad.push(function () {
+            $cms.load.push(function () {
                 document.body.classList.add('frame');
 
                 try {
@@ -10388,7 +10421,7 @@
             refreshIfChanged = strVal(params.refreshIfChanged);
 
         if (changeDetectionUrl && (refreshTime > 0)) {
-            window.detectInterval = setInterval(function () {
+            window.ajaxScreenDetectInterval = setInterval(function () {
                 detectChange(changeDetectionUrl, refreshIfChanged, function () {
                     if (!document.getElementById('post') || (document.getElementById('post').value === '')) {
                         $cms.callBlock(url, '', element, false, true, null, true).then(function () {
@@ -10503,7 +10536,7 @@
         $cms.doAjaxRequest(changeDetectionUrl, null, 'refresh_if_changed=' + encodeURIComponent(refreshIfChanged)).then(function (xhr) {
             var response = strVal(xhr.responseText);
             if (response === '1') {
-                clearInterval(window.detectInterval);
+                clearInterval(window.ajaxScreenDetectInterval);
                 $cms.inform('detectChange(): Change detected');
                 callback();
             }

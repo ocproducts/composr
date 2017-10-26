@@ -198,7 +198,7 @@ Martin Conte Mac Donell <Reflejo@gmail.com>
     });
 
     $cms.templates.loginScreen = function loginScreen(params, container) {
-        window.$cmsLoad.push(function () {
+        $cms.load.push(function () {
             if ((document.activeElement == null) || (document.activeElement !== document.getElementById('password'))){
                 document.getElementById('login_username').focus();
             }

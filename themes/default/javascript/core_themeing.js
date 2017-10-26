@@ -15,7 +15,7 @@
     window.doneCleanupTemplateMarkers = window.doneCleanupTemplateMarkers !== undefined ? !!window.doneCleanupTemplateMarkers : false;
 
     if (window.location.href.includes('keep_template_magic_markers=1')) {
-        window.$cmsReady.push(function () {
+        $cms.ready.push(function () {
             cleanupTemplateMarkers(window);
         });
     }
@@ -241,7 +241,7 @@
                     var newCss = editareaGetValue(textareaId);
                     if (newCss == lastCss) return; // Not changed
 
-                    var url = $cms.baseUrl('data/snippet.php?snippet=css_compile__text' + $cms.keepStub());
+                    var url = $cms.baseUrl('data/snippet.php?snippet=css_compile__text' + $cms.$KEEP());
                     $cms.doAjaxRequest(url, null, $cms.form.modSecurityWorkaroundAjax('css=' + encodeURIComponent(newCss))).then(function (xhr) {
                         receiveCompiledCss(xhr, file);
                     });
@@ -532,12 +532,12 @@
                 request += encodeURIComponent(btn.form.elements[i].name) + '=' + encodeURIComponent(btn.form.elements[i].value) + '&';
             }
 
-            $cms.doAjaxRequest('{$FIND_SCRIPT;,tempcode_tester}' + $cms.keepStub(true), null, request).then(function (xhr) {
+            $cms.doAjaxRequest('{$FIND_SCRIPT;,tempcode_tester}' + $cms.$KEEP(true), null, request).then(function (xhr) {
                 $cms.dom.html(document.getElementById('preview_raw'), $cms.filter.html(xhr.responseText));
                 $cms.dom.html(document.getElementById('preview_html'), xhr.responseText);
             });
 
-            $cms.doAjaxRequest('{$FIND_SCRIPT;,tempcode_tester}?comcode=1' + $cms.keepStub(), null, request).then(function (xhr) {
+            $cms.doAjaxRequest('{$FIND_SCRIPT;,tempcode_tester}?comcode=1' + $cms.$KEEP(), null, request).then(function (xhr) {
                 $cms.dom.html(document.getElementById('preview_comcode'), xhr.responseText);
             });
         });
@@ -567,7 +567,7 @@
             var hasEditarea = editareaIsLoaded(textbox.name);
 
             if ((value === 'BLOCK') && (($cms.ui.showModalDialog !== undefined) || $cms.$CONFIG_OPTION('js_overlays'))) {
-                var url = '{$FIND_SCRIPT_NOHTTP;,block_helper}?field_name=' + textbox.name + '&block_type=template' + $cms.keepStub();
+                var url = '{$FIND_SCRIPT_NOHTTP;,block_helper}?field_name=' + textbox.name + '&block_type=template' + $cms.$KEEP();
                 $cms.ui.showModalDialog(
                     $cms.maintainThemeInLink(url),
                     null,

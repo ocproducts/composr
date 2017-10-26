@@ -211,7 +211,7 @@
                     return resolvePromise();
                 }
 
-                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?from_html=1' + $cms.keepStub());
+                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?from_html=1' + $cms.$KEEP());
                 if (window.location.href.includes('topics')) {
                     url += '&forum_db=1';
                 }
@@ -309,7 +309,7 @@
         }
 
         var promiseCalls = [];
-        window.arrVal(postingForm.elements).forEach(function (el) {
+        arrVal(postingForm.elements).forEach(function (el) {
             if ((el.type === 'textarea') && el.classList.contains('wysiwyg')) {
                 promiseCalls.push(function () {
                     return loadHtmlForTextarea(postingForm, el, ajaxCopy);
@@ -350,7 +350,7 @@
                     return resolvePromise();
                 }
 
-                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&from_html=0' + $cms.keepStub());
+                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&from_html=0' + $cms.$KEEP());
                 if (window.location.href.includes('topics')) {
                     url += '&forum_db=1';
                 }
@@ -471,9 +471,9 @@
             };
             editor.on('change', sync);
             editor.on('mode', function () {
-                var ta = editor.container.$.getElementsByTagName('textarea');
-                if (ta[0] != null) {
-                    ta[0].onchange = sync; // The source view doesn't fire the 'change' event and we don't want to use the 'key' event
+                var ta = editor.container.$.querySelector('textarea');
+                if (ta != null) {
+                    ta.onchange = sync; // The source view doesn't fire the 'change' event and we don't want to use the 'key' event
                 }
             });
 
@@ -588,11 +588,11 @@
                     var tagType = this.title.replace(/^\[/, '').replace(/[= \]](.|\n)*$/, '');
                     if (tagType === 'block') {
                         var blockName = this.title.replace(/\[\/block\]$/, '').replace(/^(.|\s)*\]/, '');
-                        var url = '{$FIND_SCRIPT;,block_helper}?type=step2&block=' + encodeURIComponent(blockName) + '&field_name=' + fieldName + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + $cms.keepStub();
+                        var url = '{$FIND_SCRIPT;,block_helper}?type=step2&block=' + encodeURIComponent(blockName) + '&field_name=' + fieldName + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + $cms.$KEEP();
                         url = url + '&block_type=' + (((fieldName.indexOf('edit_panel_') === -1) && (window.location.href.indexOf(':panel_') === -1)) ? 'main' : 'side');
                         $cms.ui.open($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
                     } else {
-                        var url = '{$FIND_SCRIPT;,comcode_helper}?type=step2&tag=' + encodeURIComponent(tagType) + '&field_name=' + fieldName + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + $cms.keepStub();
+                        var url = '{$FIND_SCRIPT;,comcode_helper}?type=step2&tag=' + encodeURIComponent(tagType) + '&field_name=' + fieldName + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + $cms.$KEEP();
                         $cms.ui.open($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
                     }
                 };
@@ -633,7 +633,7 @@
                             selfOb.tagText = tagText;
                             selfOb.isOver = true;
 
-                            var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&box_title={!PREVIEW&;^}' + $cms.keepStub());
+                            var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&box_title={!PREVIEW&;^}' + $cms.$KEEP());
                             if (window.location.href.includes('topics')) {
                                 url += '&forum_db=1';
                             }
@@ -663,10 +663,10 @@
 
         }
     }
-
-// ============
-// BOTH EDITORS
-// ============
+    
+    // ============
+    // BOTH EDITORS
+    // ============
 
     function doEmoticon(fieldName, callerEl, isOpener) {
         var element, title, text;
@@ -703,6 +703,13 @@
         }
     }
 
+    /**
+     * Insert attachment comcode
+     * @param fieldName
+     * @param id
+     * @param description
+     * @return {Promise}
+     */
     function doAttachment(fieldName, id, description) {
         if (!$cms.getMainCmsWindow().wysiwygEditors) {
             return Promise.resolve();
@@ -799,6 +806,8 @@
         }
 
         function insertTextboxWysiwyg(element, text, isPlainInsert, html) {
+            console.log('insertTextboxWysiwyg():', 'element:', element, 'text:', text, 'isPlainInsert:', isPlainInsert, 'html:', html);
+            
             return new Promise(function (resolvePromise) {
                 var editor = window.wysiwygEditors[element.id],
                     insert = '';
@@ -807,23 +816,26 @@
                     insert = getWYSISWYGSelectedHtml(editor) + (html ? html : $cms.filter.html(text).replace(new RegExp('\\\\n', 'gi'), '<br />'));
 
                     _insertTextboxWysiwyg(element, editor, insert);
-                    resolvePromise();
-                } else {
-                    var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1' + $cms.keepStub());
-                    if (window.location.href.includes('topics')) {
-                        url += '&forum_db=1';
+                    return resolvePromise();
+                } 
+                
+                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&lax_comcode=1' + $cms.$KEEP());
+                if (window.location.href.includes('topics')) {
+                    url += '&forum_db=1';
+                }
+                
+                var data = encodeURIComponent(text.replace(new RegExp(String.fromCharCode(8203), 'g'), ''));
+
+                $cms.doAjaxRequest(url, null, 'data=' + data).then(function (xhr) {
+                    var responseXML  = xhr.responseXML;
+                    if (responseXML && (responseXML.querySelector('result'))) {
+                        var result = responseXML.querySelector('result');
+                        insert = result.textContent.replace(/\s*$/, '');
                     }
 
-                    $cms.doAjaxRequest(url, function (responseXML) {
-                        if (responseXML && (responseXML.querySelector('result'))) {
-                            var result = responseXML.querySelector('result');
-                            insert = result.textContent.replace(/\s*$/, '');
-                        }
-
-                        _insertTextboxWysiwyg(element, editor, insert);
-                        resolvePromise();
-                    }, 'data=' + encodeURIComponent(text.replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
-                }
+                    _insertTextboxWysiwyg(element, editor, insert);
+                    resolvePromise();
+                });
             });
         }
 
@@ -964,7 +976,7 @@
                 }
 
                 var newHtml = '',
-                    url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1' + $cms.keepStub());
+                    url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&lax_comcode=1' + $cms.$KEEP());
 
                 if (window.location.href.includes('topics')) {
                     url += '&forum_db=1';
@@ -1037,7 +1049,7 @@
                     var el = document.getElementById(id);
                     if (el.checked && !authorised) {
                         //e.checked=false;  Better to assume success, not all oAuth support callback
-                        var url = '{$FIND_SCRIPT_NOHTTP;,upload_syndication_auth}?hook=' + encodeURIComponent(hook) + '&name=' + encodeURIComponent(name) + $cms.keepStub();
+                        var url = '{$FIND_SCRIPT_NOHTTP;,upload_syndication_auth}?hook=' + encodeURIComponent(hook) + '&name=' + encodeURIComponent(name) + $cms.$KEEP();
 
                         if ($cms.$MOBILE()) {
                             window.open(url);

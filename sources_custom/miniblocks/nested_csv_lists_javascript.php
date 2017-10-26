@@ -39,13 +39,15 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
 
 // Output JavaScript
 ?>/*<script>*/
-(function (){
+(function ($cms){
     'use strict';
 
     /** @type {Object} */
     window.nestedCsvStructure = <?= json_encode((array)$csv_structure) ?>;
 
-    (window.$cmsReady || (window.$cmsReady = [])).push(function () {
+    $cms.ready || ($cms.ready = []);
+
+    $cms.ready.push(function () {
         var forms = document.getElementsByTagName('form');
 
         for (var i = 0; i < forms.length; i++) {
@@ -85,23 +87,22 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
         return null;
     }
 
-    function injectFormSelectChainingElement(element, cpfField, initialRun) {
+    function injectFormSelectChainingElement(selectEl, cpfField, initialRun) {
         var cpfFields = window.nestedCsvStructure.cpf_fields;
 
         var changesMadeAlready = true;
 
         if (cpfField.csv_parent_heading !== null)  { // We need to look at parent to filter possibilities, if we have one
-            var currentValue = $cms.dom.val(element);
+            var currentValue = $cms.dom.val(selectEl);
 
-            element.innerHTML = ''; // Wipe list contents
+            $cms.dom.empty(selectEl);  // Wipe list contents
             var option;
 
-            var parentCpfFieldElement = findCpfFieldElement(element.form, cpfFields[cpfField.csv_parent_heading]);
+            var parentCpfFieldElement = findCpfFieldElement(selectEl.form, cpfFields[cpfField.csv_parent_heading]);
             var currentParentValue = $cms.dom.val(parentCpfFieldElement);
-            if (currentParentValue.length == 0) { // Parent unset, so this is
-
+            if (currentParentValue.length === 0) { // Parent unset, so this is
                 option = document.createElement('option');
-                element.add(option, null);
+                selectEl.add(option, null);
                 $cms.dom.html(option, <?= json_encode(strval(do_lang('SELECT_OTHER_FIRST', 'xxx'))) ?> +''.replace(/xxx/g, cpfFields[cpfField.csv_parent_heading].label));
                 option.value = '';
             } else { // Parent is set, so we need to filter possibilities
@@ -138,9 +139,9 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
                 possibilities.sort();
 
                 // Add possibilities, selecting one if it matches old selection (i.e. continuity maintained)
-                if (!element.multiple) {
+                if (!selectEl.multiple) {
                     option = document.createElement('option');
-                    element.add(option, null);
+                    selectEl.add(option, null);
                     $cms.dom.html(option, <?= json_encode(strval(do_lang('PLEASE_SELECT'))) ?>);
                     option.value = '';
                 }
@@ -153,11 +154,11 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
                     if (previousOne != possibilities[i]) { // don't allow dupes (which we know are sequential due to sorting)
                         // not a dupe
                         option = document.createElement('option');
-                        element.add(option, null);
+                        selectEl.add(option, null);
                         $cms.dom.html(option, escape_html(possibilities[i]));
                         option.value = possibilities[i];
                         if (currentValue.length == 0) {
-                            if (element.multiple) { // Pre-select all, if multiple input
+                            if (selectEl.multiple) { // Pre-select all, if multiple input
                                 option.selected = true;
                             }
                         } else {
@@ -168,9 +169,9 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
                         previousOne = possibilities[i];
                     }
                 }
-                if (!element.multiple) {
-                    if (element.options.length == 2) { // Only one thing to select, so may as well auto-select it
-                        element.selectedIndex = 1;
+                if (!selectEl.multiple) {
+                    if (selectEl.options.length == 2) { // Only one thing to select, so may as well auto-select it
+                        selectEl.selectedIndex = 1;
                     }
                 }
             }
@@ -186,13 +187,12 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
             $cms.inform('Looking for children of ' + cpfField.csv_heading + '...');
 
             for (var i in cpfFields) {
-
                 var childCpfField = cpfFields[i], refreshFunction, childCpfFieldElement;
 
                 if (childCpfField.csv_parent_heading == cpfField.csv_heading) {
                     $cms.inform(' ' + cpfField.csv_heading + ' has child ' + childCpfField.csv_heading);
 
-                    childCpfFieldElement = findCpfFieldElement(element.form, childCpfField);
+                    childCpfFieldElement = findCpfFieldElement(selectEl.form, childCpfField);
 
                     refreshFunction = function (childCpfFieldElement, childCpfField) {
                         return function () {
@@ -208,14 +208,14 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
                 }
             }
 
-            element.onchange = function () {
+            selectEl.onchange = function () {
                 for (var i = 0; i < allRefreshFunctions.length; i++) {
                     allRefreshFunctions[i]();
                 }
             };
         } else {
-            $cms.dom.trigger(element, 'change');  // Cascade
+            $cms.dom.trigger(selectEl, 'change');  // Cascade
         }
     }
 
-}());
+}(window.$cms || (window.$cms = {})));

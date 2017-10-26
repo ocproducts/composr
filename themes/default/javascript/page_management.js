@@ -111,10 +111,10 @@
 
             // All
             if (fullType !== 'root') {
-                actionBuildup += actionsTplItem.replace(/\[1\]/, '{!VIEW;^}').replace(/\[2\]/, $cms.filter.html(('{$BASE_URL;,0}/data/page_link_redirect.php?id=' + encodeURIComponent(pageLink) + $cms.keepStub())));
+                actionBuildup += actionsTplItem.replace(/\[1\]/, '{!VIEW;^}').replace(/\[2\]/, $cms.filter.html(('{$BASE_URL;,0}/data/page_link_redirect.php?id=' + encodeURIComponent(pageLink) + $cms.$KEEP())));
                 infoBuildup += infoTplItem.replace(/\[1\]/, '{!zones:PAGE_LINK;^}').replace(/\[2\]/, '<kbd>' + $cms.filter.html(pageLink) + '</kbd>');
                 if (element.selectedEditlink) {
-                    actionBuildup += actionsTplItem.replace(/\[1\]/, '{!EDIT;^}').replace(/\[2\]/, $cms.filter.html('{$FIND_SCRIPT_NOHTTP;,page_link_redirect}?id=' + element.selectedEditlink + $cms.keepStub()));
+                    actionBuildup += actionsTplItem.replace(/\[1\]/, '{!EDIT;^}').replace(/\[2\]/, $cms.filter.html('{$FIND_SCRIPT_NOHTTP;,page_link_redirect}?id=' + element.selectedEditlink + $cms.$KEEP()));
                 }
             }
 

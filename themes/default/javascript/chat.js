@@ -16,7 +16,7 @@
         // Used by this.checkChatOptions()
         this.chatOptionsFormLastValid = null;
         
-        window.$cmsLoad.push(function () {
+        $cms.load.push(function () {
             chatLoad(params.chatroomId);
         });
     }
@@ -132,7 +132,7 @@
     $cms.templates.chatLobbyImArea = function chatLobbyImArea(params, container) {
         var chatroomId = strVal(params.chatroomId);
 
-        window.$cmsLoad.push(function () {
+        $cms.load.push(function () {
             try {
                 $cms.dom.$('#post_' + chatroomId).focus();
             } catch (e) {}
@@ -361,7 +361,7 @@
         window.lobbyLink = params.lobbyLink;
         window.participants = '';
 
-        window.$cmsReady.push(function () {
+        $cms.ready.push(function () {
             if (!window.loadFromRoomId) { // Only if not in chat lobby or chatroom, so as to avoid conflicts
                 beginImChatting();
             }
@@ -391,7 +391,7 @@
                 }
 
                 if ($cms.$CONFIG_OPTION('complex_uploader')) {
-                    window.preinitFileInput('chat_effect_settings', name, null, null, 'mp3', 'button_micro');
+                    window.preinitFileInput('chat_effect_settings', name, null, 'mp3', 'button_micro');
                 }
             }
         }
@@ -604,7 +604,7 @@ function chatPost(event, currentRoomId, fieldName, fontName, fontColour) {
         var url = '{$FIND_SCRIPT;,messages}?action=post';
         element.disabled = true;
         window.topWindow.currentlySendingMessage = true;
-        var fullUrl = $cms.maintainThemeInLink(url + window.topWindow.$cms.keepStub(false));
+        var fullUrl = $cms.maintainThemeInLink(url + window.topWindow.$cms.$KEEP());
         var postData = 'room_id=' + encodeURIComponent(currentRoomId) + '&message=' + encodeURIComponent(messageText) + '&font=' + encodeURIComponent(fontName) + '&colour=' + encodeURIComponent(fontColour) + '&message_id=' + encodeURIComponent((window.topWindow.lastMessageId === null) ? -1 : window.topWindow.lastMessageId) + '&event_id=' + encodeURIComponent(window.topWindow.lastEventId);
         $cms.doAjaxRequest(fullUrl, function (responseXml, xhr) {
             if (responseXml != null) {
@@ -673,7 +673,7 @@ function chatCheck(backlog, messageId, eventId) {
         if (window.location.href.includes('no_reenter_message=1')) {
             url = url + '&no_reenter_message=1';
         }
-        var fullUrl = $cms.maintainThemeInLink(url + $cms.keepStub(false));
+        var fullUrl = $cms.maintainThemeInLink(url + $cms.$KEEP());
         $cms.doAjaxRequest(fullUrl, function (responseXml, xhr) {
             if (responseXml != null) {
                 chatCheckResponse(responseXml, xhr, /*skipIncomingSound*/backlog);
@@ -1129,7 +1129,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
 
         window.topWindow.allConversations[participants] = roomId;
 
-        var url = '{$FIND_SCRIPT_NOHTTP;,messages}?action=join_im&event_id=' + window.topWindow.lastEventId + window.topWindow.$cms.keepStub(false);
+        var url = '{$FIND_SCRIPT_NOHTTP;,messages}?action=join_im&event_id=' + window.topWindow.lastEventId + window.topWindow.$cms.$KEEP();
         var post = 'room_id=' + encodeURIComponent(roomId);
 
         // Add in
@@ -1376,7 +1376,7 @@ function startIm(people, justRefocus) {
         div.className = 'loading_overlay';
         $cms.dom.html(div, '{!LOADING;^}');
         document.body.appendChild(div);
-        $cms.doAjaxRequest($cms.maintainThemeInLink('{$FIND_SCRIPT;,messages}?action=start_im&message_id=' + encodeURIComponent((window.topWindow.lastMessageId === null) ? -1 : window.topWindow.lastMessageId) + '&mayRecycle=' + (mayRecycle ? '1' : '0') + '&event_id=' + encodeURIComponent(window.topWindow.lastEventId) + $cms.keepStub(false)), function (responseXml) {
+        $cms.doAjaxRequest($cms.maintainThemeInLink('{$FIND_SCRIPT;,messages}?action=start_im&message_id=' + encodeURIComponent((window.topWindow.lastMessageId === null) ? -1 : window.topWindow.lastMessageId) + '&mayRecycle=' + (mayRecycle ? '1' : '0') + '&event_id=' + encodeURIComponent(window.topWindow.lastEventId) + $cms.$KEEP()), function (responseXml) {
             var result = responseXml.querySelector('result');
             if (result) {
                 window.instantGo = true;
@@ -1394,7 +1394,7 @@ function inviteIm(people) {
     if (!roomId) {
         $cms.ui.alert('{!chat:NO_IM_ACTIVE;^}');
     } else {
-        $cms.doAjaxRequest('{$FIND_SCRIPT;,messages}?action=invite_im' + $cms.keepStub(false), null, 'room_id=' + encodeURIComponent(roomId) + '&people=' + people);
+        $cms.doAjaxRequest('{$FIND_SCRIPT;,messages}?action=invite_im' + $cms.$KEEP(), null, 'room_id=' + encodeURIComponent(roomId) + '&people=' + people);
     }
 }
 
@@ -1484,7 +1484,7 @@ function deinvolveIm(roomId, logs, isPopup) { // is_popup means that we show a p
     }
 
     setTimeout(function ()  { // Give time for any logs to download (download does not need to have finished - but must have loaded into a request response on the server side)
-        window.topWindow.$cms.doAjaxRequest('{$FIND_SCRIPT;,messages}?action=deinvolve_im' + window.topWindow.$cms.keepStub(false), null, 'room_id=' + encodeURIComponent(roomId)); // Has to be on topWindow or it will be lost if the window was explicitly closed (it is unloading mode and doesn't want to make a new request)
+        window.topWindow.$cms.doAjaxRequest('{$FIND_SCRIPT;,messages}?action=deinvolve_im' + window.topWindow.$cms.$KEEP(), null, 'room_id=' + encodeURIComponent(roomId)); // Has to be on topWindow or it will be lost if the window was explicitly closed (it is unloading mode and doesn't want to make a new request)
 
         if (participants) {
             window.topWindow.allConversations[participants] = null;

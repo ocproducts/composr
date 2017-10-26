@@ -93,7 +93,7 @@
             }
             url += '&time_barrier=' + encodeURIComponent(window.notificationsTimeBarrier);
             url += '&forced_update=1';
-            url += $cms.keepStub();
+            url += $cms.$KEEP();
             $cms.doAjaxRequest(url, window._pollForNotifications);
             _toggleMessagingBox(event, 'web_notifications', true);
             return false;
@@ -222,7 +222,7 @@ function pollForNotifications(forcedUpdate, delay) {
     if (forcedUpdate) {
         url += '&forced_update=1';
     }
-    url += $cms.keepStub();
+    url += $cms.$KEEP();
     $cms.doAjaxRequest(url, window._pollForNotifications);
 }
 

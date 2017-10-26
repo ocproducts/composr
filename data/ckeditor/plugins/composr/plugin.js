@@ -69,6 +69,7 @@
 			};
 			editor.addCommand('composr_image', func);
 			if (editor.ui.addButton) {
+			    // Add the Image button to the WYSIWYG editor
 				editor.ui.addButton('composr_image', {
 					label: editor.lang.common.image,
 					command: 'composr_image'

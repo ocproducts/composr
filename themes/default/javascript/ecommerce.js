@@ -2,7 +2,7 @@
     'use strict';
     
     // This is from the v10.1 branch, merged into the new JS framework...
-    window.$cmsReady.push(function () {
+    $cms.ready.push(function () {
         var addressFields = ['street_address', 'city', 'county', 'state', 'post_code', 'country'];
         for (var i = 0; i < addressFields.length; i++) {
             var billing = document.getElementById('billing_' + addressFields[i]);
@@ -43,10 +43,10 @@
         formEl: null,
         events: function () {
             return {
-                'click .js-click-do-form-submit': 'doFormSubmit'
+                'click .js-click-do-form-submit': 'doPurchaseFormSubmit'
             };
         },
-        doFormSubmit: function (e) {
+        doPurchaseFormSubmit: function (e) {
             $cms.form.doFormSubmit(this.formEl);
         }
     });

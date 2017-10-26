@@ -60,8 +60,14 @@
         $cms.dom.triggerResize();
     }
 
+    /**
+     * 
+     * @param postValue
+     * @param number
+     * @return {*|boolean}
+     */
     function attachmentPresent(postValue, number) {
-        return (postValue.indexOf('[attachment]new_' + number + '[/attachment]') !== -1) && (postValue.indexOf('[attachment_safe]new_' + number + '[/attachment_safe]') === -1) && (postValue.indexOf('[attachment thumb="1"]new_' + number + '[/attachment]') === -1) && (postValue.indexOf('[attachment_safe thumb="1"]new_' + number + '[/attachment_safe]') === -1) && (postValue.indexOf('[attachment thumb="0"]new_' + number + '[/attachment]') === -1) && (postValue.indexOf('[attachment_safe thumb="0"]new_' + number + '[/attachment_safe]') === -1);
+        return postValue.includes('[attachment]new_' + number + '[/attachment]') && !postValue.includes('[attachment_safe]new_' + number + '[/attachment_safe]') && !postValue.includes('[attachment thumb="1"]new_' + number + '[/attachment]') && !postValue.includes('[attachment_safe thumb="1"]new_' + number + '[/attachment_safe]') && !postValue.includes('[attachment thumb="0"]new_' + number + '[/attachment]') && !postValue.includes('[attachment_safe thumb="0"]new_' + number + '[/attachment_safe]');
     }
 
     /**
@@ -73,6 +79,8 @@
      * @return { Promise }
      */
     function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
+        console.log('setAttachment()', 'fieldName:', fieldName, 'number:', number, 'filename:', filename, 'multi:', multi, 'uploaderSettings:', uploaderSettings);
+        
         multi = Boolean(multi);
 
         return new Promise(function (resolvePromise) {
@@ -109,9 +117,9 @@
             }
 
             var ext = filepath.replace(/^.*\./, '').toLowerCase(),
-                isImage = (',{$CONFIG_OPTION;,valid_images},'.indexOf(',' + ext + ',') !== -1),
-                isVideo = (',{$CONFIG_OPTION;,valid_videos},'.indexOf(',' + ext + ',') !== -1),
-                isAudio = (',{$CONFIG_OPTION;,valid_audios},'.indexOf(',' + ext + ',') !== -1),
+                isImage = ',{$CONFIG_OPTION;,valid_images},'.includes(',' + ext + ','),
+                isVideo = ',{$CONFIG_OPTION;,valid_videos},'.includes(',' + ext + ','),
+                isAudio = ',{$CONFIG_OPTION;,valid_audios},'.includes(',' + ext + ','),
                 isArchive = (ext === 'tar') || (ext === 'zip'),
                 prefix = '', suffix = '';
 
@@ -120,10 +128,11 @@
                 suffix = '[/media_set]';
             }
 
-            var tag = 'attachment';
-            var showOverlay, defaults = {};
+            var tag = 'attachment', // [attachment]
+                showOverlay = false, 
+                defaults = {};
 
-            if (filepath.indexOf('fakepath') === -1) { // iPhone gives c:\fakepath\image.jpg, so don't use that
+            if (!filepath.includes('fakepath')) { // iPhone gives c:\fakepath\image.jpg, so don't use that
                 defaults.description = filepath; // Default caption to local file path
             }
 
@@ -153,16 +162,23 @@
                 }
 
                 if (multi) {
-                    var splitFilename = document.getElementById('txtFileName_file' + window.numAttachments).value.split(/:/);
-                    splitFilename.forEach(function (part, i) {
+                    var splitFileNames = document.getElementById('txtFileName_file' + window.numAttachments).value.split(/:/);
+                    splitFileNames.forEach(function (fileName, i) {
                         promiseCalls.push(function () {
                             if (i > 0) {
                                 window.numAttachments++;
                             }
-                            return window.insertTextbox(post, comcode.replace(']new_' + number + '[', ']new_' + window.numAttachments + '['));
+                            var newComcode = comcode.replace(']new_' + number + '[', ']new_' + window.numAttachments + '[');
+                            if (!fileName.includes('fakepath')) {
+                                newComcode = newComcode.replace(' description="' + defaults.description.replace(/"/g, '\\"') + '"', ' description="' + fileName.replace(/"/g, '\\"') + '"');
+                            }
+                            return window.insertTextbox(post, newComcode);
                         });
                     });
-                    number = '' + (parseInt(number) + splitFilename.length - 1);
+                    promiseCalls.push(function () {
+                        number = '' + (parseInt(number) + (splitFileNames.length - 1));
+                        return Promise.resolve();
+                    });
                 } else {
                     promiseCalls.push(function () {
                         return window.insertTextbox(post, comcode);
@@ -183,8 +199,9 @@
                     }
 
                     if (uploaderSettings !== undefined) {
+                        // Previously named: uploader_settings.callbacks
                         uploaderSettings.onAllUploadsDoneCallbacks.push(function () {
-                            // Do insta-preview
+                            // Do insta-preview for image attachments
                             if ($cms.form.isWysiwygField(post)) {
                                 generateBackgroundPreview(post);
                             }
@@ -208,16 +225,13 @@
             for (var def in defaults) {
                 url += '&default_' + def + '=' + encodeURIComponent(defaults[def]);
             }
-            url += $cms.keepStub();
+            url += $cms.$KEEP();
 
             setTimeout(function () {
                 $cms.ui.showModalDialog($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes,unadorned=yes').then(function (comcodeAdded) {
                     if (!comcodeAdded) {  // Cancelled
                         var clearButton = document.getElementById('fsClear_file' + number);
                         if (clearButton) {
-                            $cms.dom.one(clearButton, 'click', function (e) {
-                                e.preventDefault();
-                            });
                             $cms.dom.trigger(clearButton, 'click');    
                         }
                         return;
@@ -265,20 +279,27 @@
         });
     }
 
+    /**
+     * WYSIWYG preview for image attachments
+     * @param { HTMLTextAreaElement } post
+     */
     function generateBackgroundPreview(post) {
         var formPost = '';
         var form = post.form;
 
         for (var i = 0; i < form.elements.length; i++) {
-            if ((!form.elements[i].disabled) && ( form.elements[i].name !== undefined) && (form.elements[i].name != '')) {
-                var name = form.elements[i].name;
-                var value = $cms.form.cleverFindValue(form, form.elements[i]);
+            if (!form.elements[i].disabled && (form.elements[i].name !== undefined) && (form.elements[i].name !== '')) {
+                var name = form.elements[i].name,
+                    value = $cms.form.cleverFindValue(form, form.elements[i]);
+                
                 if ((name === 'title') && (value === '')) {  // Fudge, title must be filled in on many forms
                     value = 'x';
                 }
+                
                 formPost += '&' + name + '=' + encodeURIComponent(value);
             }
         }
+        
         formPost = $cms.form.modSecurityWorkaroundAjax(formPost.substr(1));
 
         $cms.doAjaxRequest(window.formPreviewUrl + '&js_only=1&known_utf8=1', null, formPost).then(function (xhr) {
@@ -356,7 +377,7 @@
     }
 
     function doInputBlock(fieldName) {
-        var url = '{$FIND_SCRIPT;,block_helper}?field_name=' + fieldName + $cms.keepStub();
+        var url = '{$FIND_SCRIPT;,block_helper}?field_name=' + fieldName + $cms.$KEEP();
         url += '&block_type=' + ((!fieldName.includes('edit_panel_') && !window.location.href.includes(':panel_')) ? 'main' : 'side');
 
         return $cms.ui.open($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
@@ -429,7 +450,7 @@
         if (saveToId !== null) {
             url += '&save_to_id=' + encodeURIComponent(saveToId);
         }
-        url += $cms.keepStub();
+        url += $cms.$KEEP();
 
         $cms.ui.open($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
     }
@@ -615,7 +636,7 @@
 
         if (($cms.ui.showModalDialog !== undefined) || $cms.$CONFIG_OPTION('js_overlays')) {
             $cms.ui.showModalDialog(
-                $cms.maintainThemeInLink('{$FIND_SCRIPT;,page_link_chooser}' + $cms.keepStub(true)),
+                $cms.maintainThemeInLink('{$FIND_SCRIPT;,page_link_chooser}' + $cms.$KEEP(true)),
                 null,
                 'dialogWidth=600;dialogHeight=400;status=no;unadorned=yes',
                 function (result) {
@@ -830,7 +851,7 @@
 
             var url = '{$FIND_SCRIPT_NOHTTP;,autosave}?type=retrieve';
             url += '&stem=' + encodeURIComponent(getAutosaveUrlStem());
-            url += $cms.keepStub();
+            url += $cms.$KEEP();
             var callback = function (form) {
                 return function (responseXML) {
                     var result = responseXML && responseXML.querySelector('result');
@@ -867,7 +888,7 @@
                     // Save remotely
                     if (navigator.onLine) {
                         post = $cms.form.modSecurityWorkaroundAjax(post);
-                        $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + $cms.keepStub(), null, post).then(function () {
+                        $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + $cms.$KEEP(), null, post).then(function () {
                             if (document.body.style.cursor === 'wait') {
                                 document.body.style.cursor = '';
                             }
@@ -1086,7 +1107,7 @@
                 //$cms.inform('Doing AJAX auto-save');
 
                 post = $cms.form.modSecurityWorkaroundAjax(post);
-                $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + $cms.keepStub(), null, post);
+                $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + $cms.$KEEP(), null, post);
             }
         }
     }

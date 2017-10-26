@@ -14228,118 +14228,18 @@
         plLoadedHandled[$cms.uid(plObj)] = true;
 
         window.moxie.core.utils.Mime.addMimeType('image/vnd.microsoft.icon,ico');
-
-        var btnSubmitId = plObj.settings.btn_submit_id,
-            btnPreviewId = plObj.settings.btn_preview_id;
-
-        plObj.cmsPreviewing = false;
-        $cms.dom.off('#' + btnSubmitId, 'click.onPluploadLoaded'); // Avoid duplicates
-        $cms.dom.on('#' + btnSubmitId, 'click.onPluploadLoaded', function (e) {
-            plObj.cmsPreviewing = false;
-            beginFormUploading(plObj);
-            return false;
-        });
-
-        // Preview button too
-        if (document.getElementById(btnPreviewId)) {
-            $cms.dom.off('#' + btnSubmitId, 'click.onPluploadLoaded'); // Avoid duplicates
-            $cms.dom.on('#' + btnPreviewId, 'click.onPluploadLoaded', function (e) {
-                plObj.cmsPreviewing = true;
-                beginFormUploading(plObj);
-                return false;
-            });
-        }
     }
-
-    // Called by the submit button to start the upload
-    function beginFormUploading(plObj) {
-        console.log('beginFormUploading()', 'plObj:', plObj);
-
-        window.justCheckingRequirements = true;
-        plObj.submitting = true;
-
-        var btnSubmit = document.getElementById(plObj.settings.btn_submit_id),
-            filenameField = document.getElementById(plObj.settings.txtFileName),
-            isRequired = plObj.settings.required, element;
-
-        if (filenameField.value === '') {
-            if (isRequired) {
-                element = document.getElementById(plObj.settings.txtName);
-                if (element) {
-                    $cms.form.setFieldError(element, '{!REQUIRED_NOT_FILLED_IN;^}');
-                }
-                $cms.ui.alert({ notice: '{!IMPROPERLY_FILLED_IN;^}', single: true });
-            } else {
-                if (plObj.cmsPreviewing) {
-                    $cms.form.doFormPreview(btnSubmit.form, window.formPreviewUrl, window.separatePreview).then(function (bool) {
-                        if (bool) {
-                            btnSubmit.form.submit();
-                        }
-                    });
-                } else {
-                    $cms.form.doFormSubmit(btnSubmit.form, window.analyticEventCategory).then(function (bool) {
-                        if (bool) {
-                            btnSubmit.form.submit();
-                        }
-                    });
-                }
-            }
-
-            return;
-        }
-
-        var allUploadsDone = true,
-            fileIdField = document.getElementById(plObj.settings.hidFileID);
-
-        if (fileIdField.value === '-1') {
-            allUploadsDone = false;
-        } else {
-            var form = fileIdField.form;
-            for (var i = 0; i < form.elements.length; i++) {
-                if ((form.elements[i].pluploadObject != null) && (form.elements[i].pluploadObject.total.percent < 100) && (Number(form.elements[i].pluploadObject.total.size) !== 0)) {
-                    allUploadsDone = false;
-                }
-            }
-        }
-
-        if (!allUploadsDone) {
-            $cms.ui.disableSubmitAndPreviewButtons(true);
-
-            plObj.start(); // Starts uploading the queued files.
-            $cms.dom.smoothScroll(filenameField);
-
-            if (btnSubmit.form.offsetHeight > $cms.dom.getWindowHeight()) {// If possibly cannot see upload progress bars
-                $cms.ui.alert('{!javascript:PLEASE_WAIT_WHILE_UPLOADING;^}');
-            }
-        } else {
-            if (plObj.cmsPreviewing) {
-                $cms.form.doFormPreview(btnSubmit.form, window.formPreviewUrl, window.separatePreview).then(function (bool) {
-                    if (bool) {
-                        btnSubmit.form.submit();
-                    }
-                });
-            } else {
-                $cms.form.doFormSubmit(btnSubmit.form, window.analyticEventCategory).then(function (bool) {
-                    if (bool) {
-                        btnSubmit.form.submit();
-                    }
-                });
-            }
-        }
-    }
-
-    function submitFormWithTheUpload(form) {
-        //console.log('submitFormWithTheUpload()', 'form:', form);
-
-        if (form.target === 'preview_iframe') {
-            $cms.dom.illustrateFrameLoad('preview_iframe');
-        }
-
-        form.submit();
-    }
-
+    
+    /**
+     * 
+     * @param pageType
+     * @param name
+     * @param fileName
+     * @param postingFieldName
+     * @param numFiles
+     */
     function dispatchForPageType(pageType, name, fileName, postingFieldName, numFiles) {
-        //console.log('dispatchForPageType()', 'pageType:', pageType, 'name:', name, 'fileName:', fileName, 'postingFieldName:', postingFieldName, 'numFiles:', numFiles);
+        console.log('dispatchForPageType()', 'pageType:', pageType, 'name:', name, 'fileName:', fileName, 'postingFieldName:', postingFieldName, 'numFiles:', numFiles);
 
         pageType = strVal(pageType);
         name = strVal(name);
@@ -14357,7 +14257,7 @@
         if (element.determinedAttachmentProperties === undefined) {
             currentNum = name.replace('file', '');
             window.setAttachment(postingFieldName, currentNum, fileName, multi, element.pluploadObject.settings);
-            if (!element.pluploadObject.settings.simplified_attachments) {
+            if (!element.pluploadObject.settings.simplifiedAttachments) {
                 element.onchange = null;     
             }
             if (multi) {
@@ -14368,27 +14268,25 @@
 
     // Listener to the 'FilesAdded' Plupload event
     function onUploadDialogCompleted(plObj, files) {
-        //console.log('onUploadDialogCompleted()', 'plObj:', plObj, 'files:', files);
-
-        document.getElementById(plObj.settings.btn_submit_id).disabled = false;
-
+        console.log('onUploadDialogCompleted()', 'plObj:', plObj, 'files:', files);
+        
         var name = plObj.settings.txtName,
-            filenameField = document.getElementById(plObj.settings.txtFileName),
+            fileNameField = document.getElementById(plObj.settings.txtFileName),
             fileIdField = document.getElementById(plObj.settings.hidFileID);
 
-        if (filenameField.value !== '-1') {
+        if (fileNameField.value !== '-1') {
             $cms.dom.html(document.getElementById(plObj.settings.progress_target), ''); // Remove old progress indicators
             plObj.stop();
         }
 
         fileIdField.value = '-1';
-        filenameField.value = '';
+        fileNameField.value = '';
 
         files.some(function (file) {
-            if (filenameField.value !== '') {
-                filenameField.value += ':';
+            if (fileNameField.value !== '') {
+                fileNameField.value += ':';
             }
-            filenameField.value += file.name.replace(/:/g, ',');
+            fileNameField.value += file.name.replace(/:/g, ',');
 
             setTimeout(function () { // In a timeout as file.has_error may not have been set yet
                 if (!file.hasError) {
@@ -14412,25 +14310,24 @@
      * @param value - '1' will start upload if it hasn't already and files are selected, '' clears the placeholder field value
      */
     function fireFakeUploadFieldChange(name, value) {
-        //console.log('fireFakeUploadFieldChange()', 'name:', name, 'value:', value);
+        console.log('fireFakeUploadFieldChange()', 'name:', name, 'value:', value);
         value = strVal(value);
         
-        var element = document.getElementById(name),
-            plObj = element.pluploadObject;
+        var placeholderField = document.getElementById(name),
+            plObj = placeholderField.pluploadObject;
         
-        element.value = value;
-        element.virtualValue = value;
-        $cms.dom.trigger(element, 'change');
+        placeholderField.value = value;
+        placeholderField.virtualValue = value;
+        $cms.dom.trigger(placeholderField, 'change');
         
         if ((plObj == null) || (plObj.settings == null)) {
             return;
         }
 
         var fileIdField = document.getElementById(plObj.settings.hidFileID),
-            filenameField = document.getElementById(plObj.settings.txtFileName);
+            fileNameField = document.getElementById(plObj.settings.txtFileName);
         
-        if ((value === '1') && (fileIdField.value === '-1') && (filenameField.value !== '')) {
-            plObj.submitting = false;
+        if ((value === '1') && (fileIdField.value === '-1') && (fileNameField.value !== '')) {
             plObj.start();
 
             // plupload does not support cancelling mid-way (plObj.stop won't do that unfortunately)
@@ -14449,7 +14346,7 @@
 
     // Listener to the 'UploadProgress' event
     function onUploadUpdateProgress(plObj, file) {
-        //console.log('onUploadUpdateProgress()', 'plObj:', plObj, 'file:', file);
+        console.log('onUploadUpdateProgress()', 'plObj:', plObj, 'file:', file);
 
         var percent = Number(plObj.total.percent);
         if (percent === 100) {
@@ -14465,30 +14362,14 @@
 
     // Listener to the 'FileUploaded' event
     function onUploadFinished(plObj, file, data) {
-        //console.log('onUploadFinished()', 'plObj:', plObj, 'file:', file, 'data:', data);
+        console.log('onUploadFinished()', 'plObj:', plObj, 'file:', file, 'data:', data);
 
         var progress = new FileProgress(file, plObj.settings.progress_target);
         progress.setComplete();
         progress.setStatus('{!javascript:PLUPLOAD_COMPLETE^;}');
 
-        var btnSubmit = document.getElementById(plObj.settings.btn_submit_id),
-            allUploadsDone = true,
-            form = document.getElementById(plObj.settings.hidFileID).form;
-
-        for (var i = 0; i < form.elements.length; i++) {
-            if ((form.elements[i].pluploadObject != null) && (form.elements[i].pluploadObject.total.percent < 100) && (Number(form.elements[i].pluploadObject.total.size) !== 0)) {
-                allUploadsDone = false;
-                break;
-            }
-        }
-        if (allUploadsDone) {
-            for (var i = 0; i < form.elements.length; i++) {
-                if ((form.elements[i].type === 'submit') || (form.elements[i].type === 'button') || (form.elements[i].type === 'image') || (form.elements[i].nodeName.toLowerCase() === 'button')) {
-                    form.elements[i].disabled = false;
-                    form.elements[i].style.cursor = '';
-                }
-            }
-        }
+        var form = document.getElementById(plObj.settings.hidFileID).form,
+            allUploadsComplete = $cms.form.areUploadsComplete(form);
 
         var clearButton = document.getElementById('fsClear_' + plObj.settings.txtName);
         if (clearButton) {
@@ -14499,11 +14380,13 @@
             uploadButton.disabled = false;
         }
 
-        if (data.response == '') { // NOT success, happens in plupload when clicking away from document (i.e. implicit cancel)
-            return '';
+        var dataResponse = strVal(data.response);
+        
+        if (dataResponse === '') { // NOT success, happens in plupload when clicking away from document (i.e. implicit cancel)
+            return;
         }
 
-        var decodedData = $cms.parseJson(data.response);
+        var decodedData = $cms.parseJson(dataResponse);
 
         var id = document.getElementById(plObj.settings.hidFileID);
         if (id.value === '-1') {
@@ -14514,33 +14397,15 @@
         }
         id.value += decodedData['upload_id'];
 
-        if (allUploadsDone) {
+        if (allUploadsComplete) {
             for (var c = 0; c < plObj.settings.onAllUploadsDoneCallbacks.length; c++) {
                 plObj.settings.onAllUploadsDoneCallbacks[c](plObj.settings);
-            }
-        }
-
-        if (plObj.submitting && allUploadsDone) {
-            window.justCheckingRequirements = false;
-
-            if (plObj.cmsPreviewing) {
-                $cms.form.doFormPreview(btnSubmit.form, window.formPreviewUrl, window.separatePreview).then(function (bool) {
-                    if (bool) {
-                        btnSubmit.form.submit();
-                    }
-                });
-            } else {
-                $cms.form.doFormSubmit(btnSubmit.form, window.analyticEventCategory).then(function (bool) {
-                    if (bool) {
-                        btnSubmit.form.submit();
-                    }
-                });
             }
         }
     }
 
     function onUploadError(plObj, error) {
-        //console.log('onUploadError()', 'plObj:', plObj, 'error:', error);
+        console.log('onUploadError()', 'plObj:', plObj, 'error:', error);
 
         var file = error.file ? error.file : plObj.files[plObj.files.length - 1];
 
@@ -14569,12 +14434,10 @@
         if (file) {
             fireFakeUploadFieldChange(plObj.settings.txtName, '');
         }
-
-        document.getElementById(plObj.settings.btn_submit_id).disabled = false;
-
+        
         var clearButton = document.getElementById('fsClear_' + plObj.settings.txtName);
         if (clearButton) {
-            clearButton.style.display = 'inline';
+            $cms.dom.show(clearButton);
         }
         var uploadButton = document.getElementById('uploadButton_' + plObj.settings.txtName);
         if (uploadButton) {
@@ -14594,13 +14457,19 @@
         }
     }
     
-    // preinitFileInput() is for normal Composr forms
-    function preinitFileInput(pageType, name, btnSubmitId, postingFieldName, filter, buttonType) {
-        console.log('preinitFileInput()', 'pageType:', pageType, 'name:', name, 'btnSubmitId:', btnSubmitId, 'postingFieldName:', postingFieldName, 'filter:', filter, 'buttonType:', buttonType);
+    /**
+     * preinitFileInput() is for normal Composr forms
+     * @param pageType
+     * @param name
+     * @param postingFieldName
+     * @param filter
+     * @param buttonType
+     */
+    function preinitFileInput(pageType, name, postingFieldName, filter, buttonType) {
+        console.log('preinitFileInput()', 'pageType:', pageType, 'name:', name, 'postingFieldName:', postingFieldName, 'filter:', filter, 'buttonType:', buttonType);
 
         pageType = strVal(pageType);
         name = strVal(name);
-        btnSubmitId = strVal(btnSubmitId);
         postingFieldName = strVal(postingFieldName) || 'post';
         filter = strVal(filter) || '{$CONFIG_OPTION;,valid_types}';
         filter += ',' + filter.toUpperCase();
@@ -14613,8 +14482,6 @@
             return;
         }
         rep.replacedWithPlupload = true;
-
-        btnSubmitId = findSubmitButton(btnSubmitId, rep.form);
 
         // Replace old vanilla upload field with text field that holds a '1' indicating upload has happened (and telling Composr to check the hidFileID value for more details)
         rep.style.display = 'none';
@@ -14642,7 +14509,7 @@
         var placeholderField = document.getElementById(name);
         placeholderField.oldElement = rep;
 
-        var settings = getUploaderSettings(name, pageType, btnSubmitId, postingFieldName, filter);
+        var settings = getUploaderSettings(name, pageType, postingFieldName, filter);
         settings.progress_target = 'fsUploadProgress_' + name;
         settings.required = rep.classList.contains('required');
         settings.browse_button = 'uploadButton_' + name;
@@ -14676,32 +14543,24 @@
      * prepareSimplifiedFileInput() is for attachments
      * NB: Only used by $cms.templates.attachments()
      * @param pageType
-     * @param name 
-     * @param btnSubmitId - ID of the form submit button
+     * @param name
      * @param postingFieldName - ID of the associated textarea
      * @param filter - Valid file types
-     * @param attachmentUploadButton - ID of browse button passed to Plupload
+     * @param attachmentBrowseButton - ID of file browse button, required by Plupload
      */
-    function prepareSimplifiedFileInput(pageType, name, btnSubmitId, postingFieldName, filter, attachmentUploadButton) {
-        console.log('prepareSimplifiedFileInput()', 'pageType:', pageType, 'name:', name, 'btnSubmitId:', btnSubmitId, 'postingFieldName:', postingFieldName, 'filter:', filter, 'attachmentUploadButton:', attachmentUploadButton);
+    function prepareSimplifiedFileInput(pageType, name, postingFieldName, filter, attachmentBrowseButton) {
+        console.log('prepareSimplifiedFileInput()', 'pageType:', pageType, 'name:', name, 'postingFieldName:', postingFieldName, 'filter:', filter, 'attachmentBrowseButton:', attachmentBrowseButton);
 
         name = strVal(name);
-        btnSubmitId = strVal(btnSubmitId);
         filter = strVal(filter) || '{$CONFIG_OPTION;^,valid_types}';
         filter += ',' + filter.toUpperCase();
-
-        var form = document.getElementById(postingFieldName).form;
-
-        if (!btnSubmitId) {
-            btnSubmitId = findSubmitButton(btnSubmitId, form);
-        }
-
+        
         var mainDiv = document.getElementById('js-attachment-store');
-        
+
         if (!document.getElementById(name)) {
-            $cms.dom.append(mainDiv, '<iinput type="text" id="' + name + '" name="' + name + '" style="display: none;" disabled>');
+            $cms.dom.append(mainDiv, '<input type="text" id="' + name + '" name="' + name + '" style="display: none;" disabled>');
         }
-        
+
         if (!document.getElementById('txtFileName_' + name)) {
             // This input field stores the file name(s) of the uploading/uploaded file to the user
             $cms.dom.append(mainDiv, '<input type="hidden" id="txtFileName_' + name + '" name="txtFileName_' + name + '" value="">');
@@ -14715,12 +14574,11 @@
         var placeholderField = document.getElementById(name);
 
         // We need to clear out events on the upload button, attaching a new event for this upload
-        var button = document.getElementById(attachmentUploadButton);
+        var button = document.getElementById(attachmentBrowseButton);
         if (button) {
             var newButton = button.cloneNode(true),
                 buttonParent = button.parentNode;
-            buttonParent.removeChild(button);
-            buttonParent.appendChild(newButton);
+            buttonParent.replaceChild(newButton, button);
         }
 
         // Remove shiv code from old instances too
@@ -14729,49 +14587,24 @@
             shivs[i].parentNode.removeChild(shivs[i]);
         }
 
-        var settings = getUploaderSettings(name, pageType, btnSubmitId, postingFieldName, filter);
-        settings.browse_button = attachmentUploadButton;
+        var settings = getUploaderSettings(name, pageType, postingFieldName, filter);
+        settings.browse_button = attachmentBrowseButton;
         settings.container = mainDiv.id;
         settings.runtimes = 'html5';
-        settings.simplified_attachments = true;
+        settings.simplifiedAttachments = true;
 
         placeholderField.pluploadObject = getUploaderObject(settings); // This will attach the new event
     }
 
-    function findSubmitButton(btnSubmitId, form) {
-        //console.log('findSubmitButton()', 'btnSubmitId:', btnSubmitId, 'form:', form);
-
-        if (btnSubmitId) {
-            return btnSubmitId;
-        }
-
-        btnSubmitId = 'submit_button';
-        var btn = document.getElementById(btnSubmitId);
-        if (!btn || (btn.form !== form)) {
-            btnSubmitId = null;
-            var inputs = form.elements;
-            for (var i = 0; i < inputs.length; i++) {
-                if ((inputs[i].nodeName.toLowerCase() === 'button') || (inputs[i].type === 'image') || (inputs[i].type === 'submit') || (inputs[i].type === 'button')) {
-                    btnSubmitId = $cms.dom.id(inputs[i]);
-                    if (inputs[i].getAttribute('accesskey') === 'u') { /* Identifies submit button */
-                        break; // Ideal, let us definitely use this (otherwise we end up using the last)
-                    }
-                }
-            }
-        }
-
-        return btnSubmitId;
-    }
-
-    function getUploaderSettings(name, pageType, btnSubmitId, postingFieldName, filter) {
-        //console.log('getUploaderSettings()', 'name:', name, 'pageType:', pageType, 'btnSubmitId:', btnSubmitId, 'postingFieldName:', postingFieldName, 'filter:', filter);
+    function getUploaderSettings(name, pageType, postingFieldName, filter) {
+        //console.log('getUploaderSettings()', 'name:', name, 'pageType:', pageType, 'postingFieldName:', postingFieldName, 'filter:', filter);
 
         return {
             multi_selection: pageType.includes('_multi'), // Allows you to select multiple files from the browse dialog
 
             // General settings
             runtimes: 'html5,silverlight,flash',
-            url: '{$FIND_SCRIPT;,incoming_uploads}' + $cms.keepStub(true),
+            url: '{$FIND_SCRIPT;,incoming_uploads}' + $cms.$KEEP(true),
             max_file_size: (window.mfs == null) ? '2000mb' : (((window.mfs[0] != null) ? window.mfs[0].value : window.mfs.value) + 'b'),
 
             // Specify what files to browse for
@@ -14786,19 +14619,15 @@
             /*== Custom Composr settings ==*/
             required: false,
             progress_target: 'fsUploadProgress',
-            // Doesn't exist for attachments. 
-            // When exists, its used to fire change events on and hold reference to .pluploadObject
+            // Used to fire change events on and hold reference to .pluploadObject
             txtName: name,
             // This input field shows the file name of the uploading/uploaded file to the user
             txtFileName: 'txtFileName_' + name,
             // This hidden input field holds the server-side upload_id after upload is finished
-            // Used by attachments UI to fire change events and hold reference to .pluploadObject
             hidFileID: 'hidFileID_' + name,
             page_type: pageType,
             posting_field_name: postingFieldName,
-            btn_submit_id: btnSubmitId,
-            btn_preview_id: 'preview_button',
-            simplified_attachments: false,
+            simplifiedAttachments: false,
             // Callbacks
             onAllUploadsDoneCallbacks: []
         };
@@ -14808,12 +14637,12 @@
         //console.log('getUploaderObject()', 'settings:', settings);
 
         var ob = new plupload.Uploader(settings);
-        ob.bind('Init', onPluploadLoaded);
-        ob.bind('FilesAdded', onUploadDialogCompleted);
-        ob.bind('QueueChanged', onUploadQueueChanged);
-        ob.bind('UploadProgress', onUploadUpdateProgress);
-        ob.bind('FileUploaded', onUploadFinished);
-        ob.bind('Error', onUploadError);
+        ob.bind('Init', onPluploadLoaded, null, 1000);
+        ob.bind('FilesAdded', onUploadDialogCompleted, null, 1000);
+        ob.bind('QueueChanged', onUploadQueueChanged, null, 1000);
+        ob.bind('UploadProgress', onUploadUpdateProgress, null, 1000);
+        ob.bind('FileUploaded', onUploadFinished, null, 1000);
+        ob.bind('Error', onUploadError, null, 1000);
         ob.init();
 
         setInterval(function () {
@@ -14864,10 +14693,12 @@
         if (!files) {
             return;
         }
+        
+        files = arrVal(file);
 
         var count = files.length;
 
-        if (count > 0) {
+        if (files.length > 0) {
             event.preventDefault();
         }
 
@@ -14875,9 +14706,7 @@
 
         var validTypes = '{$CONFIG_OPTION;,valid_types}'.split(/\s*,\s*/g);
 
-        for (var i = 0; i < count; i++) {
-            var file = files.item(i);
-
+        files.forEach(function (file) {
             var xhr = new XMLHttpRequest(),
                 fileUpload = xhr.upload;
 
@@ -14892,7 +14721,7 @@
             }
             if (!goodType) {
                 $cms.ui.alert('{!INVALID_FILE_TYPE_GENERAL;^}'.replace(/\{\1\\}/g, fileExt).replace(/\\{2\\}/g, validTypes.join(', ')));
-                continue;
+                return;
             }
 
             // Progress display
@@ -14908,7 +14737,7 @@
             xhr.onreadystatechange = buildHtml5UploadHandler(xhr, fileUpload.file_progress, window.extraAttachmentBase, fieldName);
 
             // Send
-            xhr.open('POST', '{$FIND_SCRIPT;,incoming_uploads}' + $cms.keepStub(true));
+            xhr.open('POST', '{$FIND_SCRIPT;,incoming_uploads}' + $cms.$KEEP(true));
             var formData = new FormData();
             formData.append('file', file);
             xhr.send(formData);
@@ -14924,13 +14753,13 @@
 
             // HTML field to show selected file
             document.getElementById('container_for_' + fieldName).appendChild(fileIdField);
-            var filenameField = document.createElement('input');
-            filenameField.type = 'hidden';
-            filenameField.name = 'txtFileName_file' + window.extraAttachmentBase;
-            filenameField.id = filenameField.name;
-            filenameField.value = file.name.replace('C:\\fakepath\\', '');
-            filenameField.className = 'upload_response_field';
-            document.getElementById('container_for_' + fieldName).appendChild(filenameField);
+            var fileNameField = document.createElement('input');
+            fileNameField.type = 'hidden';
+            fileNameField.name = 'txtFileName_file' + window.extraAttachmentBase;
+            fileNameField.id = fileNameField.name;
+            fileNameField.value = file.name.replace('C:\\fakepath\\', '');
+            fileNameField.className = 'upload_response_field';
+            document.getElementById('container_for_' + fieldName).appendChild(fileNameField);
 
             // Progress bar
             var progress = new FileProgress(fileUpload.file_progress, 'container_for_' + fieldName);
@@ -14939,7 +14768,7 @@
 
             // Keep tabs of it
             window.extraAttachmentBase++;
-        }
+        });
     }
 
     function html5UploadProgress(event, fieldName) {

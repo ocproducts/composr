@@ -11,7 +11,7 @@
         Attachment.base(this, 'constructor', arguments);
 
         if ($cms.$CONFIG_OPTION('complex_uploader')) {
-            window.preinitFileInput("attachment_multi", "file" + params.i, null, params.postingFieldName, params.filter);
+            window.preinitFileInput("attachment_multi", "file" + params.i, params.postingFieldName, params.filter);
         }
 
         if (params.syndicationJson !== undefined) {
@@ -29,7 +29,7 @@
         },
 
         setAttachment: function () {
-            setAttachment('post', this.params.i, '');
+            window.setAttachment('post', this.params.i, '');
         }
     });
 
@@ -52,7 +52,7 @@
         this.el.style.display = 'block';
 
         var view = this;
-        window.$cmsLoad.push(function () {
+        $cms.load.push(function () {
             view.$('.js-btn-car-move').style.height = view.mainEl.offsetHeight + 'px';
 
             view.createFaders();
@@ -413,8 +413,8 @@
             window.attachmentTemplate = strVal(params.attachmentTemplate);
             window.numAttachments = 1;
             window.rebuildAttachmentButtonForNext = rebuildAttachmentButtonForNext;
-            
-            window.$cmsLoad.push(function () {
+
+            $cms.load.push(function () {
                 var aub = document.getElementById('js-attachment-upload-button');
                 if (aub && (aub.classList.contains('for_field_' + postingFieldName))) {
                     // Attach Plupload with #js-attachment-upload-button as browse button
@@ -428,20 +428,29 @@
             });
         }
         
-        function rebuildAttachmentButtonForNext(_postingFieldName, attachmentUploadButton) {
-            console.log('rebuildAttachmentButtonForNext()', '_postingFieldName:', _postingFieldName, 'attachmentUploadButton:', attachmentUploadButton);
+        
+        var lastAttachmentBrowseButton;
+
+        /**
+         * Bind Plupload to the specified browse button (`attachmentBrowseButton`)
+         * @param _postingFieldName
+         * @param attachmentBrowseButton
+         */
+        function rebuildAttachmentButtonForNext(_postingFieldName, attachmentBrowseButton) {
+            console.log('rebuildAttachmentButtonForNext()', '_postingFieldName:', _postingFieldName, 'attachmentBrowseButton:', attachmentBrowseButton);
             
             if (_postingFieldName !== postingFieldName) {
                 return;
             }
 
-            if (attachmentUploadButton === undefined) {
-                attachmentUploadButton = window.attachmentUploadButton; // Use what was used last time
+            if (attachmentBrowseButton === undefined) {
+                attachmentBrowseButton = lastAttachmentBrowseButton; // Use what was used last time
             }
-            window.attachmentUploadButton = attachmentUploadButton;
+            
+            lastAttachmentBrowseButton = attachmentBrowseButton;
 
             $cms.requireJavascript('plupload').then(function () {
-                window.prepareSimplifiedFileInput('attachment_multi', 'file' + window.numAttachments, null, postingFieldName, strVal(params.filter), attachmentUploadButton);
+                window.prepareSimplifiedFileInput('attachment_multi', 'file' + window.numAttachments, postingFieldName, strVal(params.filter), attachmentBrowseButton);
             });
         }
     };
@@ -758,7 +767,7 @@
     $cms.templates.mediaRealmedia = function (params) {
         // Tie into callback event to see when finished, for our slideshows
         // API: http://service.real.com/help/library/guides/realone/ScriptingGuide/PDF/ScriptingGuide.pdf
-        window.$cmsLoad.push(function () {
+        $cms.load.push(function () {
             if (document.getElementById('next_slide')) {
                 stopSlideshowTimer();
                 setTimeout(function () {
@@ -777,7 +786,7 @@
     $cms.templates.mediaQuicktime = function (params) {
         // Tie into callback event to see when finished, for our slideshows
         // API: http://developer.apple.com/library/safari/#documentation/QuickTime/Conceptual/QTScripting_JavaScript/bQTScripting_JavaScri_Document/QuickTimeandJavaScri.html
-        window.$cmsLoad.push(function () {
+        $cms.load.push(function () {
             if (document.getElementById('next_slide')) {
                 stopSlideshowTimer();
                 setTimeout(function () {
@@ -795,7 +804,7 @@
         // Tie into callback event to see when finished, for our slideshows
         // API: http://developer.apple.com/library/safari/#documentation/QuickTime/Conceptual/QTScripting_JavaScript/bQTScripting_JavaScri_Document/QuickTimeandJavaScri.html
         // API: http://msdn.microsoft.com/en-us/library/windows/desktop/dd563945(v=vs.85).aspx
-        window.$cmsLoad.push(function () {
+        $cms.load.push(function () {
             if (document.getElementById('next_slide')) {
                 stopSlideshowTimer();
 

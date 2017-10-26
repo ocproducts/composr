@@ -295,7 +295,7 @@
                         }
                     }
 
-                    $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,menu_management}' + '?id=' + encodeURIComponent(id) + '&menu=' + encodeURIComponent(answer) + $cms.keepStub(), null, post);
+                    $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,menu_management}' + '?id=' + encodeURIComponent(id) + '&menu=' + encodeURIComponent(answer) + $cms.$KEEP(), null, post);
                     deleteBranch('branch_wrap_' + ob.name.substr(4, ob.name.length));
                 });
             } else {

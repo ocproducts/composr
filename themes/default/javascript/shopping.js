@@ -1,7 +1,7 @@
 (function ($cms) {
     'use strict';
 
-    window.$cmsReady.push(function () {
+    $cms.ready.push(function () {
         var addressFields = ['street_address', 'city', 'county', 'state', 'post_code', 'country'];
 
         addressFields.forEach(function (field) {

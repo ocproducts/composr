@@ -405,7 +405,7 @@
                 }
             }
             post += '&post=' + encodeURIComponent(postValue);
-            $cms.doAjaxRequest('{$FIND_SCRIPT;,post_comment}' + $cms.keepStub(true), null, post).then(function (xhr) {
+            $cms.doAjaxRequest('{$FIND_SCRIPT;,post_comment}' + $cms.$KEEP(true), null, post).then(function (xhr) {
                 if ((xhr.responseText != '') && (xhr.status !== 500)) {
                     // Display
                     var oldAction = commentsForm.action;
