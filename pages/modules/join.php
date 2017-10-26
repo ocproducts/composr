@@ -167,7 +167,13 @@ class Module_join
             }
         }
 
-        return do_template('CNS_JOIN_STEP1_SCREEN', array('_GUID' => '3776e89f3b18e4bd9dd532defe6b1e9e', 'TITLE' => $this->title, 'RULES' => $rules, 'URL' => $url, 'GROUP_SELECT' => $group_select));
+        $hidden = new Tempcode();
+        $_lead_source_description = either_param_string('_lead_source_description', '');
+        if ($_lead_source_description != '') {
+            $hidden->attach(form_input_hidden('_lead_source_description', $_lead_source_description));
+        }
+
+        return do_template('CNS_JOIN_STEP1_SCREEN', array('_GUID' => '3776e89f3b18e4bd9dd532defe6b1e9e', 'TITLE' => $this->title, 'RULES' => $rules, 'URL' => $url, 'GROUP_SELECT' => $group_select, 'HIDDEN' => $hidden));
     }
 
     /**

@@ -551,6 +551,7 @@ class Hook_addon_registry_core_cns
                 'TITLE' => lorem_title(),
                 'RULES' => lorem_chunk_html(),
                 'URL' => placeholder_url(),
+                'HIDDEN' => '',
                 'GROUP_SELECT' => $group_select,
             )), null, '', true)
         );

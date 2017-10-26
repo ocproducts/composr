@@ -86,11 +86,30 @@ class Hook_addon_registry_sugarcrm
      */
     public function get_description()
     {
-        return 'Sync new accounts into SugarCRM (Accounts and Contacts), and contact form messages into SugarCRM (Cases or Leads). Form messages are taken from [tt]main_contact_simple[/tt] block, [tt]main_contact_catalogues[/tt] block, and [tt]form_to_email.php[/tt].
+        return 'Sync new accounts into SugarCRM (Accounts and Contacts and/or Leads), and contact form messages into SugarCRM (Cases or Leads). Form messages are taken from [tt]main_contact_simple[/tt] block, [tt]main_contact_catalogues[/tt] block, and [tt]form_to_email.php[/tt].
 
-Tested with SugarCRM 6.2, 6.5 and 7.9.
-This addon also works with SuiteCRM, which is a SugarCRM fork. Tested with SuiteCRM 7.9.
-It does not work with vTiger, another SugarCRM fork.
+You can define mappings between:
+ - Custom Profile Fields and SugarCRM fields
+ - Contact form fields and SugarCRM fields
+
+Mappings are always defined like:
+[code]
+Some Composr Field=Some SugarCRM field
+Another Composr Field=Another SugarCRM field
+(Some static text)=A SugarCRM field
+[some_posted_field]=A SugarCRM field
+[/code]
+Parenthesis-bracketed fields on the left-hand-side always define static text to place into a SugarCRM field.
+Square-bracketed fields on the left-hand-side always define request field parameters (order: POST, GET, COOKIE) to place into a SugarCRM field.
+Fields on either the left-hand-side or right-hand-side do not need to exist, and will simply be skipped if so. The same will happen if the Composr field is blank. This system makes it feasible to have multiple very different contact forms all synching with SugarCRM.
+If multiple mappings are made to the same SugarCRM field then this will either:
+1) append multiple fields together using a multi-line labelling system (on contact form sync, with some exceptions defined below)
+2) use the last non-blank Composr field (on account sync, or for the following special fields [tt]priority[/tt], [tt]email1[/tt], [tt]lead_source[/tt], [tt]name[/tt], [tt]first_name[/tt], [tt]last_name[/tt])
+
+CRM software supported:
+ - Tested with SugarCRM 6.2, 6.5 and 7.9.
+ - Also works with SuiteCRM, which is a SugarCRM fork. Tested with SuiteCRM 7.9.
+ - Does not work with vTiger, another SugarCRM fork.
 ';
     }
 
@@ -137,24 +156,27 @@ It does not work with vTiger, another SugarCRM fork.
     {
         return array(
             'sources_custom/hooks/systems/addon_registry/sugarcrm.php',
+            'sources_custom/sugarcrm.php',
             'sources_custom/hooks/systems/contact_forms/sugarcrm.php',
             'sources_custom/hooks/systems/upon_query/sugarcrm.php',
+            'lang_custom/EN/sugarcrm.ini',
+
+            'sources_custom/curl.php',
+            'sources_custom/sugar_crm_lib.php',
+
             'sources_custom/hooks/systems/config/sugarcrm_username.php',
             'sources_custom/hooks/systems/config/sugarcrm_password.php',
             'sources_custom/hooks/systems/config/sugarcrm_base_url.php',
-            'sources_custom/hooks/systems/config/sugarcrm_exclusive_messaging.php',
-            'sources_custom/hooks/systems/config/sugarcrm_contacts_mappings.php',
+
+            'sources_custom/hooks/systems/config/sugarcrm_default_company.php',
+            'sources_custom/hooks/systems/config/sugarcrm_composr_company_field.php',
+
             'sources_custom/hooks/systems/config/sugarcrm_messaging_sync_type.php',
             'sources_custom/hooks/systems/config/sugarcrm_messaging_mappings.php',
-            'sources_custom/hooks/systems/config/sugarcrm_composr_company_field.php',
-            'sources_custom/hooks/systems/config/sugarcrm_default_company.php',
-            'sources_custom/sugarcrm.php',
-            'lang_custom/EN/sugarcrm.ini',
-            'sources_custom/curl.php',
-            'sources_custom/sugar_crm_lib.php',
-            'sources_custom/hooks/systems/health_checks/.htaccess',
-            'sources_custom/hooks/systems/health_checks/index.html',
-            'sources_custom/hooks/systems/health_checks/sugarcrm.php',
+            'sources_custom/hooks/systems/config/sugarcrm_exclusive_messaging.php',
+
+            'sources_custom/hooks/systems/config/sugarcrm_member_sync_types.php',
+            'sources_custom/hooks/systems/config/sugarcrm_member_mappings.php',
         );
     }
 }

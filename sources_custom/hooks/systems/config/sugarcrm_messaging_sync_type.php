@@ -32,7 +32,7 @@ class Hook_config_sugarcrm_messaging_sync_type
             'group' => 'SUGARCRM_MESSAGING_SYNC',
             'explanation' => 'CONFIG_OPTION_sugarcrm_messaging_sync_type',
             'shared_hosting_restricted' => '0',
-            'list_options' => 'Cases|Leads',
+            'list_options' => 'cases|leads',
             'order_in_category_group' => 1,
             'required' => true,
             'public' => false,
@@ -48,6 +48,6 @@ class Hook_config_sugarcrm_messaging_sync_type
      */
     public function get_default()
     {
-        return 'Leads';
+        return 'leads';
     }
 }

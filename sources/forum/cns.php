@@ -602,7 +602,12 @@ class Forum_driver_cns extends Forum_driver_base
 
         $redirect_url = get_param_string('redirect_passon', get_param_string('redirect', $redirect_url, INPUT_FILTER_URL_INTERNAL), INPUT_FILTER_URL_INTERNAL);
 
-        $url_map = array('page' => 'join');
+        $_lead_source_description = either_param_string('_lead_source_description', '');
+        if ($_lead_source_description == '') {
+            $_lead_source_description = get_self_url_easy();
+        }
+
+        $url_map = array('page' => 'join', '_lead_source_description' => $_lead_source_description);
         if ((get_page_name() != 'recommend') && (get_option('page_after_join') == '')) {
             $url_map['redirect'] = protect_url_parameter($redirect_url);
         }

@@ -3,6 +3,8 @@
 <div data-tpl="cnsJoinStep1Screen">
 	{TITLE}
 
+	{HIDDEN}
+
 	<p>
 		{!DESCRIPTION_I_AGREE_RULES}
 	</p>
