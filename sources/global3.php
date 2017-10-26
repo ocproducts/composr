@@ -3584,6 +3584,11 @@ function is_cli()
  */
 function get_login_url()
 {
+    $_lead_source_description = either_param_string('_lead_source_description', '');
+    if ($_lead_source_description == '') {
+        $_lead_source_description = get_self_url_easy();
+    }
+
     if (has_interesting_post_fields() || (get_page_name() == 'join') || (get_page_name() == 'login') || (get_page_name() == 'lost_password')) {
         $_this_url = build_url(array('page' => ''), '_SELF', array('keep_session' => 1, 'redirect' => 1));
     } else {
@@ -3605,7 +3610,7 @@ function get_login_url()
     $join_url = mixed();
     switch (get_forum_type()) {
         case 'cns':
-            $join_url = build_url(array('page' => 'join', 'redirect' => protect_url_parameter($_this_url)), get_module_zone('join'));
+            $join_url = build_url(array('page' => 'join', '_lead_source_description' => $_lead_source_description, 'redirect' => protect_url_parameter($_this_url)), get_module_zone('join'));
             break;
 
         case 'none':

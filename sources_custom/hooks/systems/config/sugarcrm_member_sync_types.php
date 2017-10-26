@@ -16,7 +16,7 @@
 /**
  * Hook class.
  */
-class Hook_config_sugarcrm_contacts_mappings
+class Hook_config_sugarcrm_member_sync_types
 {
     /**
      * Gets the details relating to the config option.
@@ -26,16 +26,14 @@ class Hook_config_sugarcrm_contacts_mappings
     public function get_details()
     {
         return array(
-            'human_name' => 'SUGARCRM_CONTACTS_MAPPINGS',
-            'type' => 'text',
+            'human_name' => 'SUGARCRM_MEMBER_SYNC_TYPES',
+            'type' => 'list',
             'category' => 'COMPOSR_APIS',
-            'group' => 'SUGARCRM_ACCOUNTS_SYNC',
-            'explanation' => 'CONFIG_OPTION_sugarcrm_contacts_mappings',
+            'group' => 'SUGARCRM_MEMBER_SYNC',
+            'explanation' => 'CONFIG_OPTION_sugarcrm_member_sync_types',
             'shared_hosting_restricted' => '0',
-            'list_options' => '',
-            'order_in_category_group' => 1,
-            'required' => false,
-            'public' => false,
+            'list_options' => 'contacts|leads|leads_guarded|both|both_guarded',
+            'order_in_category_group' => 2,
 
             'addon' => 'sugarcrm',
         );
@@ -48,6 +46,6 @@ class Hook_config_sugarcrm_contacts_mappings
      */
     public function get_default()
     {
-        return "Job Title=title\n(Web Site)=lead_source";
+        return 'both';
     }
 }

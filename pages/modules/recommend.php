@@ -691,8 +691,13 @@ class Module_recommend
 
         foreach ($email_adrs_to_send as $key => $email_address) {
             if (post_param_integer('wrap_message', 0) == 1) {
+                $_lead_source_description = either_param_string('_lead_source_description', '');
+                if ($_lead_source_description == '') {
+                    $_lead_source_description = get_self_url_easy();
+                }
+
                 $referring_username = is_guest() ? null : get_member();
-                $_url = (post_param_integer('invite', 0) == 1) ? build_url(array('page' => 'join', 'email_address' => $email_address, 'keep_referrer' => $referring_username), get_module_zone('join')) : build_url(array('page' => '', 'keep_referrer' => $referring_username), '');
+                $_url = (post_param_integer('invite', 0) == 1) ? build_url(array('page' => 'join', 'email_address' => $email_address, '_lead_source_description' => $_lead_source_description, 'keep_referrer' => $referring_username), get_module_zone('join')) : build_url(array('page' => '', 'keep_referrer' => $referring_username), '');
                 $url = $_url->evaluate();
                 $join_url = $GLOBALS['FORUM_DRIVER']->join_url();
                 $_message = do_lang((post_param_integer('invite', 0) == 1) ? 'INVITE_MEMBER_MESSAGE' : 'RECOMMEND_MEMBER_MESSAGE', $name, $url, array(get_site_name(), $join_url)) . $message;
