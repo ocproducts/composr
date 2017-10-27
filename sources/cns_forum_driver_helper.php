@@ -467,8 +467,8 @@ function _helper_get_forum_topic_posts($this_ref, $topic_id, &$count, $max, $sta
         $select = 'p.*';
     }
     if (($is_threaded) || ($sort == 'compound_rating') || ($sort == 'average_rating')) {
-        $select .= ',' . db_function('COALESCE', array('(SELECT AVG(rating) FROM ' . $this_ref->db->get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'post') . ' AND rating_for_id=' . db_cast('p.id', 'CHAR') . ')', '5')) . ') AS average_rating';
-        $select .= ',' . db_function('COALESCE', array('(SELECT SUM(rating-1) FROM ' . $this_ref->db->get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'post') . ' AND rating_for_id=' . db_cast('p.id', 'CHAR') . ')', '0')) . ') AS compound_rating';
+        $select .= ',' . db_function('COALESCE', array('(SELECT AVG(rating) FROM ' . $this_ref->db->get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'post') . ' AND rating_for_id=' . db_cast('p.id', 'CHAR') . ')', '5')) . ' AS average_rating';
+        $select .= ',' . db_function('COALESCE', array('(SELECT SUM(rating-1) FROM ' . $this_ref->db->get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'post') . ' AND rating_for_id=' . db_cast('p.id', 'CHAR') . ')', '0')) . ' AS compound_rating';
     }
     $rows = $this_ref->db->query('SELECT ' . $select . ' FROM ' . $this_ref->db->get_table_prefix() . 'f_posts p' . $GLOBALS['FORUM_DB']->prefer_index('f_posts', 'in_topic', false) . ' WHERE ' . $where . ' ORDER BY ' . $order, $max, $start, false, true, array('p_post' => 'LONG_TRANS__COMCODE'));
     $count = $this_ref->db->query_select_value_if_there('f_topics', 't_cache_num_posts', array('id' => $topic_id)); // This may be slow for large topics: $this_ref->db->query_value_if_there('SELECT COUNT(*) FROM ' . $this_ref->db->get_table_prefix() . 'f_posts p' . $GLOBALS['FORUM_DB']->prefer_index('f_posts', 'in_topic', false) . ' WHERE ' . $where, false, true, array('p_post' => 'LONG_TRANS__COMCODE'));
