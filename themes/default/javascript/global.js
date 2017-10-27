@@ -2076,17 +2076,22 @@
 
     /** @namespace $cms */
     $cms.dom = extendDeep($cms.dom, /**@lends $cms.dom*/{
+        domArg: domArg,
+        nodeArg: nodeArg,
+        elArg: elArg,
         
         /**
          * Ensures the passed `el` has an id and returns the id
          * @param { Element } el
+         * @param { string } prefix
          * @return {string}
          */
-        id: function id(el) {
+        id: function id(el, prefix) {
             el = elArg(el);
+            prefix = strVal(prefix) || 'rand-';
             
             if (el.id === '') {
-                el.id = 'rand-' + $cms.random();
+                el.id = prefix + $cms.random();
             }
             
             return el.id;
@@ -2228,6 +2233,29 @@
 
             return el;
         },
+
+        /**
+         * Elements are considered visible if they consume space in the document. Visible elements have a width or height that is greater than zero.
+         * Elements with visibility: hidden or opacity: 0 are considered to be visible, since they still consume space in the layout.
+         * @memberof $cms.dom
+         * @param el
+         * @return {boolean} - Whether the passed element is visible
+         */
+        isVisible: function (el) {
+            el = elArg(el);
+            
+            return Boolean($cms.dom.width(el) || $cms.dom.height(el)) && ($cms.dom.css(el, 'display') !== 'none');
+        },
+        /**
+         * @memberof $cms.dom
+         * @param el
+         * @return {boolean} - Whether the passed element is visible
+         */
+        isHidden: function (el) {
+            el = elArg(el);
+            
+            return !$cms.dom.isVisible(el);
+        },
         /**
          * @memberof $cms.dom
          * @param el
@@ -2312,12 +2340,12 @@
             if (!value) {
                 value = {};
 
-                // We can accept data for non-element nodes in modern browsers,
-                // but we should not, see #8335.
-                // Always return an empty object.
-                if (!isNode(owner) || isDocOrEl(owner)) {
-                    properties(owner, keyValue(this.expando, value));
+                // We can accept data for non-document/element nodes in modern browsers, but we should not, see jQuery bug#8335.
+                if (isNode(owner) && !isDocOrEl(owner)) {
+                    throw new TypeError('Setting data on non-document/element nodes is not allowed.');
                 }
+
+                properties(owner, keyValue(this.expando, value));
             }
 
             return value;
@@ -2427,7 +2455,7 @@
 
             if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) { // Object or array?
                 data = parseJson5(data);
-            } else if (isFinite(data)) { // A number?
+            } else if (isNumeric(data)) { // A number?
                 data = Number(data);
             }
 
@@ -2611,7 +2639,7 @@
      * @memberof $cms.dom
      * @param obj
      * @param value
-     * @returns {*}
+     * @returns {number}
      */
     $cms.dom.width = function width(obj, value) {
         var offset;
@@ -2621,7 +2649,7 @@
         if (value === undefined) {
             return isWindow(obj) ? obj.innerWidth :
                 isDoc(obj) ? obj.documentElement.scrollWidth :
-                    (offset = $cms.dom.offset(obj)) && offset.width;
+                    (offset = $cms.dom.offset(obj)) && (Number(offset.width) || 0);
         }
 
         $cms.dom.css(obj, 'width', (typeof value === 'function') ? value.call(obj, $cms.dom.width(obj)) : value);
@@ -2631,7 +2659,7 @@
      * @memberof $cms.dom
      * @param obj
      * @param value
-     * @returns {*}
+     * @returns {number}
      */
     $cms.dom.height = function height(obj, value) {
         var offset;
@@ -2641,7 +2669,7 @@
         if (value === undefined) {
             return isWindow(obj) ? obj.innerHeight :
                 isDoc(obj) ? obj.documentElement.scrollHeight :
-                    (offset = $cms.dom.offset(obj)) && offset.height;
+                    (offset = $cms.dom.offset(obj)) && (Number(offset.height) || 0);
         }
 
         $cms.dom.css(obj, 'height', (typeof value === 'function') ? value.call(obj, $cms.dom.height(obj)) : value);
@@ -2657,7 +2685,7 @@
         el = elArg(el);
 
         if (coordinates === undefined) {
-            if (!document.documentElement.contains(el)) {
+            if (!el.ownerDocument.documentElement.contains(el)) {
                 return { top: 0, left: 0 };
             }
 
@@ -10452,24 +10480,28 @@
             blockCallUrl = params.blockCallUrl,
             infiniteScrollCallUrl = params.infiniteScrollCallUrl,
             infiniteScrollFunc;
+        
+        if (wrapperEl) {
+            internaliseAjaxBlockWrapperLinks(blockCallUrl, wrapperEl, ['[^_]*_start', '[^_]*_max'], {});
 
-        internaliseAjaxBlockWrapperLinks(blockCallUrl, wrapperEl, ['[^_]*_start', '[^_]*_max'], {});
+            if (infiniteScrollCallUrl) {
+                infiniteScrollFunc = internaliseInfiniteScrolling.bind(undefined, infiniteScrollCallUrl, wrapperEl);
 
-        if (infiniteScrollCallUrl) {
-            infiniteScrollFunc = internaliseInfiniteScrolling.bind(undefined, infiniteScrollCallUrl, wrapperEl);
+                $cms.dom.on(window, {
+                    scroll: infiniteScrollFunc,
+                    touchmove: infiniteScrollFunc,
+                    keydown: infiniteScrollingBlock,
+                    mousedown: infiniteScrollingBlockHold,
+                    mousemove: function () {
+                        // mouseup/mousemove does not work on scrollbar, so best is to notice when mouse moves again (we know we're off-scrollbar then)
+                        infiniteScrollingBlockUnhold(infiniteScrollFunc);
+                    }
+                });
 
-            $cms.dom.on(window, {
-                scroll: infiniteScrollFunc,
-                touchmove: infiniteScrollFunc,
-                keydown: infiniteScrollingBlock,
-                mousedown: infiniteScrollingBlockHold,
-                mousemove: function () {
-                    // mouseup/mousemove does not work on scrollbar, so best is to notice when mouse moves again (we know we're off-scrollbar then)
-                    infiniteScrollingBlockUnhold(infiniteScrollFunc);
-                }
-            });
-
-            infiniteScrollFunc();
+                infiniteScrollFunc();
+            }            
+        } else {
+            $cms.inform('$cms.templates.ajaxPagination(): Wrapper element not found.');
         }
     };
 
