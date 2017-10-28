@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,plupload}
 <div data-view="ZoneEditorPanel" data-view-params="{+START,PARAMS_JSON,COMCODE,CLASS,ID,CURRENT_ZONE}{_*}{+END}">
 	<div class="block_mobile">
 		 <h2>{ID*}</h2>

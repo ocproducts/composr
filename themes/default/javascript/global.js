@@ -1332,21 +1332,20 @@
      * @returns { string }
      */
     function format(str, values) {
-        var isArrLike = false;
-        
         str = strVal(str);
 
         if ((str === '') || (values == null) || (typeof values !== 'object')) {
             return str; // Nothing to do
         }
         
-        isArrLike = isArrayLike(values);
-        return str.replace(/\{(\d+)\}/g, function (match, key) {
-            if (isArrLike) {
+        if (isArrayLike(values)) {
+            return str.replace(/\{(\d+)\}/g, function (match, key) {
                 key--; // So that interpolation starts from '{1}'
-            }
-            return (key in values) ? strVal(values[key]) : match;
-        }).replace(/\{(\w+)\}/g, function (match, key) {
+                return (key in values) ? strVal(values[key]) : match;
+            })
+        }
+
+        return str.replace(/\{(\w+)\}/g, function (match, key) {
             return (key in values) ? strVal(values[key]) : match;
         });
     }

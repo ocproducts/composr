@@ -14463,17 +14463,15 @@
      * @param name
      * @param postingFieldName
      * @param filter
-     * @param buttonType
      */
-    function preinitFileInput(pageType, name, postingFieldName, filter, buttonType) {
-        console.log('preinitFileInput()', 'pageType:', pageType, 'name:', name, 'postingFieldName:', postingFieldName, 'filter:', filter, 'buttonType:', buttonType);
+    function preinitFileInput(pageType, name, postingFieldName, filter) {
+        console.log('preinitFileInput()', 'pageType:', pageType, 'name:', name, 'postingFieldName:', postingFieldName, 'filter:', filter);
 
         pageType = strVal(pageType);
         name = strVal(name);
         postingFieldName = strVal(postingFieldName) || 'post';
         filter = strVal(filter) || '{$CONFIG_OPTION;,valid_types}';
         filter += ',' + filter.toUpperCase();
-        buttonType = strVal(buttonType) || 'button_micro';
 
         var rep = document.getElementById(name);
 
@@ -14495,15 +14493,15 @@
             '<div id="subDiv_' + name + '" class="vertical_alignment">' +
             // This input field shows the file name(s) of the uploading/uploaded file to the user
             '<input type="text" id="txtFileName_' + name + '" name="txtFileName_' + name + '" class="upload_response_field" size="24" disabled value="">' +
-            '<input type="button" id="uploadButton_' + name + '" class="buttons__upload ' + buttonType + '" value="{!BROWSE;^*}">' +
-            '<input type="button" id="fsClear_' + name + '" class="buttons__clear ' + buttonType + ' clear_button" alt="{!CLEAR;^*}" value="{!CLEAR;^*}">' +
+            '<input type="button" id="uploadButton_' + name + '" class="buttons__upload button_micro" value="{!BROWSE;^*}">' +
+            '<input type="button" id="fsClear_' + name + '" class="buttons__clear button_micro clear_button" alt="{!CLEAR;^*}" value="{!CLEAR;^*}">' +
             '</div>' +
             '<div id="fsUploadProgress_' + name + '" class="progressBars"></div>' +
             // This hidden input field holds the server-side upload_id after upload is finished
             '<input type="hidden" id="hidFileID_' + name + '" name="hidFileID_' + name + '" value="-1">' +
-            '</div>' +
             // Placeholder Plupload input field (placeholderField below)
-            '<input type="text" id="' + name + '" name="' + name + '" style="display: none;" disabled>'
+            '<input type="text" id="' + name + '" name="' + name + '" style="display: none;" disabled>' +
+            '</div>'
         );
         
         var placeholderField = document.getElementById(name);
@@ -14655,7 +14653,7 @@
     /* HTML5 UPLOAD */
 
     function initialiseHtml5DragdropUpload(id, id2) {
-        //console.log('initialiseHtml5DragdropUpload()', 'id:', id, 'id2:', id2);
+        console.log('initialiseHtml5DragdropUpload()', 'id:', id, 'id2:', id2);
 
         var el = document.getElementById(id);
 
@@ -14669,7 +14667,7 @@
     }
 
     function html5UploadEventDragOver(event) {
-        //console.log('html5UploadEventDragOver()', 'event:', event);
+        console.log('html5UploadEventDragOver()', 'event:', event);
         if ((event.dataTransfer != null) && (event.dataTransfer.types != null) && !event.dataTransfer.types[0].includes('text')) {
             event.preventDefault();
         }
@@ -14677,7 +14675,7 @@
     }
 
     function html5UploadEventDrop(event, ob, key2) {
-        //console.log('html5UploadEventDragOver()', 'event:', event, 'ob:', ob, 'key2:', key2);
+        console.log('html5UploadEventDragOver()', 'event:', event, 'ob:', ob, 'key2:', key2);
         html5Upload(event, key2);
     }
 
@@ -14706,7 +14704,7 @@
 
         var validTypes = '{$CONFIG_OPTION;,valid_types}'.split(/\s*,\s*/g);
 
-        files.forEach(function (file) {
+        files.forEach(function (/**@type { File }*/file) {
             var xhr = new XMLHttpRequest(),
                 fileUpload = xhr.upload;
 

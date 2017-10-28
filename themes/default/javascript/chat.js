@@ -391,7 +391,7 @@
                 }
 
                 if ($cms.$CONFIG_OPTION('complex_uploader')) {
-                    window.preinitFileInput('chat_effect_settings', name, null, 'mp3', 'button_micro');
+                    window.preinitFileInput('chat_effect_settings', name, null, 'mp3');
                 }
             }
         }
