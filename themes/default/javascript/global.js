@@ -10800,12 +10800,8 @@
                 // Remove visibility of pagination, now we've replaced with AJAX load more link
                 var paginationParent = pagination.parentNode;
                 pagination.style.display = 'none';
-                var numNodeChildren = 0;
-                for (var i = 0; i < paginationParent.childNodes.length; i++) {
-                    if (paginationParent.childNodes[i].nodeName !== '#text') {
-                        numNodeChildren++;
-                    }
-                }
+                var numNodeChildren = paginationParent.children.length;
+                
                 if (numNodeChildren === 0) { // Remove empty pagination wrapper
                     paginationParent.style.display = 'none';
                 }
