@@ -121,10 +121,10 @@
         $USERNAME: constant(strVal(symbols.USERNAME)),
         /**
          * @method
-         * @returns {string}
+         * @returns {number}
          */
-        $FROM_TIMESTAMP: function $FROM_TIMESTAMP() {
-            return strVal(symbols.FROM_TIMESTAMP);
+        $FROM_TIMESTAMP: function $FROM_TIMESTAMP(timeFormat, timestamp) {
+            return Date.now();
         },
         /**
          * @method
@@ -574,7 +574,7 @@
      */
     $cms.usp = uspFromUrl(window.location.href);
     /**
-     * Same as $cms.usp but only has the `keep_*` parameters
+     * Only has the `keep_*` parameters
      * @type { URLSearchParams }
      */
     $cms.uspKeep = createUspKeep();
@@ -1489,7 +1489,7 @@
             return window.location.protocol + relativeUrl;
         }
 
-        return ((relativeUrl.startsWith('/')) ? $cms.$BASE_URL() : ($cms.$BASE_URL() + '/')) + relativeUrl;
+        return (relativeUrl.startsWith('/') ? $cms.$BASE_URL() : ($cms.$BASE_URL() + '/')) + relativeUrl;
     }
 
     function isAbsolute(url) {
@@ -1504,25 +1504,27 @@
 
     function isSchemeRelative(url) {
         url = strVal(url);
-        return rgxRel.test(url);
+        return url.startsWith('//');
     }
-
+    
     function isAbsoluteOrSchemeRelative(url) {
         url = strVal(url);
         return rgxHttpRel.test(url);
     }
 
-    function isUrl(url) {
-        url = strVal(url);
-        return url.includes('/');
-    }
-
     /**
-     * @param absoluteUrl
+     * @param url
      * @returns {string}
      */
-    function toSchemeRelative(absoluteUrl) {
-        return strVal(absoluteUrl).replace(rgxProtocol, '');
+    function toSchemeRelative(url) {
+        url = strVal(url);
+        
+        if (isAbsoluteOrSchemeRelative(url)) {
+            return strVal(url).replace(rgxProtocol, '');
+        }
+        
+        // Relative url
+        return $cms.$BASE_URL().replace(rgxProtocol, '') + (url.startsWith('/') ? url : '/' + url);
     }
 
     /**
@@ -1631,7 +1633,7 @@
             }
 
             if (el.localName === 'script') {
-                if (el.src && !$cms.dom.hasScriptLoaded(el) && jsTypeRE.test(el.type) && !scriptsToLoad.includes(el)) {
+                if (el.src && !$cms.dom.hasScriptElementLoaded(el) && jsTypeRE.test(el.type) && !scriptsToLoad.includes(el)) {
                     scriptsToLoad.push(el);
                 }
             }
@@ -1667,34 +1669,68 @@
     }
 
     var validIdRE = /^[a-zA-Z][\w:.-]*$/;
-    var requireCssPromises = Object.create(null);
     /**
      * @private
-     * @param sheetName
+     * @param sheetNameOrHref
      */
-    function _requireCss(sheetName) {
-        var linkEl;
+    function _requireCss(sheetNameOrHref) {
+        var sheetName, sheetHref, sheetEl;
 
-        if (isAbsoluteOrSchemeRelative(sheetName) && $cms.dom.hasScriptLoaded(sheetName)) {
-            return (requireCssPromises[sheetName] = Promise.resolve());
-        } else if (validIdRE.test(sheetName)) {
-            linkEl = $cms.dom.$('link[id^="css-' + sheetName + '"]');
-            if (linkEl && !(new RegExp('^css-' + sheetName + '(?:_non_minified)?(?:_ssl)?(?:_mobile)?$', 'i')).test(linkEl.id)) {
-                linkEl = null;
+        if (validIdRE.test(sheetNameOrHref)) {
+            sheetName = sheetNameOrHref;
+            sheetHref = $cms.url.toSchemeRelative('{$FIND_SCRIPT_NOHTTP;,sheet}?sheet=' + sheetName + $cms.$KEEP());
+        } else {
+            sheetHref = $cms.url.toSchemeRelative(sheetNameOrHref);
+        }
+
+        if (sheetName != null) {
+            sheetEl = _findCssByName(sheetName);
+        }
+
+        if (sheetEl == null) {
+            sheetEl = _findCssByHref(sheetHref);
+        }
+
+        if (sheetEl == null) {
+            sheetEl = document.createElement('link');
+            sheetEl.id = 'css-' + ((sheetName != null) ? sheetName : $cms.random());
+            sheetEl.rel = 'stylesheet';
+            sheetEl.nonce = $cms.$CSP_NONCE();
+            sheetEl.href = sheetHref;
+            document.head.appendChild(sheetEl);
+        }
+
+        return $cms.waitForResources(sheetEl);
+    }
+
+    function _findCssByName(stylesheetName) {
+        stylesheetName = strVal(stylesheetName);
+
+        var els = $cms.dom.$$('link[id^="css-' + stylesheetName + '"]'), scriptEl;
+
+        for (var i = 0; i < els.length; i++) {
+            scriptEl = els[i];
+            if ((new RegExp('^css-' + stylesheetName + '(?:_non_minified)?(?:_ssl)?(?:_mobile)?$', 'i')).test(scriptEl.id)) {
+                return scriptEl;
             }
         }
 
-        if (!linkEl) {
-            linkEl = document.createElement('link');
-            linkEl.id = 'css-' + sheetName;
-            linkEl.rel = 'stylesheet';
-            linkEl.nonce = $cms.$CSP_NONCE();
-            linkEl.href = '{$FIND_SCRIPT_NOHTTP;,sheet}?sheet=' + sheetName + $cms.$KEEP();
-            document.head.appendChild(linkEl);
-            requireCssPromises[sheetName] = $cms.waitForResources(linkEl);
+        return null;
+    }
+    
+    function _findCssByHref (href) {
+        var els = $cms.dom.$$('link[rel="stylesheet"][href]'), el;
+
+        href = $cms.url.toSchemeRelative(href);
+
+        for (var i = 0; i < els.length; i++) {
+            el = els[i];
+            if ($cms.url.toSchemeRelative(el.href) === href) {
+                return el;
+            }
         }
 
-        return requireCssPromises[sheetName];
+        return null;
     }
 
     /**
@@ -1706,47 +1742,72 @@
 
         return Promise.all(sheetNames.map(_requireCss));
     }
-
-    var requireJavascriptPromises = Object.create(null);
+    
     /**
      * @private
-     * @param script
+     * @param scriptNameOrSrc
      * @returns { Promise }
      */
-    function _requireJavascript(script) {
-        var scriptEl;
+    function _requireJavascript(scriptNameOrSrc) {
+        scriptNameOrSrc = strVal(scriptNameOrSrc);
 
-        script = strVal(script);
-
-        if (requireJavascriptPromises[script] != null) {
-            return requireJavascriptPromises[script];
+        var scriptName, scriptSrc, scriptEl;
+        
+        if (validIdRE.test(scriptNameOrSrc)) {
+            scriptName = scriptNameOrSrc;
+            scriptSrc = $cms.url.toSchemeRelative('{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + scriptName + $cms.$KEEP());
+        } else {
+            scriptSrc = $cms.url.toSchemeRelative(scriptNameOrSrc);
+        }
+        
+        if (scriptName != null) {
+            scriptEl = _findScriptByName(scriptName);
+        }
+        
+        if (scriptEl == null) {
+            scriptEl = _findScriptBySrc(scriptSrc);
         }
 
-        if (isAbsoluteOrSchemeRelative(script) && $cms.dom.hasScriptLoaded(script)) {
-            return (requireJavascriptPromises[script] = Promise.resolve());
-        } else if (validIdRE.test(script)) {
-            scriptEl = $cms.dom.$('script[id^="javascript-' + script + '"]');
-            if (scriptEl && !(new RegExp('^javascript-' + script + '(?:_non_minified)?(?:_ssl)?(?:_mobile)?$', 'i')).test(scriptEl.id)) {
-                scriptEl = null;
-            }
-        }
-
-        if (!scriptEl) {
+        if (scriptEl == null) {
             scriptEl = document.createElement('script');
-
             scriptEl.defer = true;
-            if (isAbsoluteOrSchemeRelative(script)) {
-                scriptEl.src = script;
-            } else {
-                scriptEl.id = 'javascript-' + script;
-                scriptEl.src = '{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + script + $cms.$KEEP();
-            }
-
+            scriptEl.id = 'javascript-' + ((scriptName != null) ? scriptName : $cms.random());
+            scriptEl.nonce = $cms.$CSP_NONCE();
+            scriptEl.src = scriptSrc;
             document.body.appendChild(scriptEl);
-            requireJavascriptPromises[script] = $cms.waitForResources(scriptEl);
         }
 
-        return requireJavascriptPromises[script];
+        return $cms.waitForResources(scriptEl);
+    }
+    
+    function _findScriptByName(scriptName) {
+        scriptName = strVal(scriptName);
+
+        var els = $cms.dom.$$('script[id^="javascript-' + scriptName + '"]'), el;
+
+        for (var i = 0; i < els.length; i++) {
+            el = els[i];
+            if ((new RegExp('^javascript-' + scriptName + '(?:_non_minified)?(?:_ssl)?(?:_mobile)?$', 'i')).test(el.id)) {
+                return el;
+            }
+        }
+
+        return null;
+    }
+    
+    function _findScriptBySrc(src) {
+        var els = $cms.dom.$$('script[src]'), el;
+        
+        src = $cms.url.toSchemeRelative(src);
+        
+        for (var i = 0; i < els.length; i++) {
+            el = els[i];
+            if ($cms.url.toSchemeRelative(el.src) === src) {
+                return el;
+            }
+        }
+        
+        return null;
     }
 
     /**
@@ -1872,7 +1933,7 @@
      * @returns {*}
      */
     function base(SuperClass, that, method, args) {
-        return (args && args.length) ? SuperClass.prototype[method].apply(that, args) : SuperClass.prototype[method].call(that);
+        return (args && (args.length > 0)) ? SuperClass.prototype[method].apply(that, args) : SuperClass.prototype[method].call(that);
     }
 
     /* Cookies */
@@ -1887,17 +1948,19 @@
         var expires = new Date(),
             output;
 
+        cookieName = strVal(cookieName);
+        cookieValue = strVal(cookieValue);
         numDays = Number(numDays) || 1;
 
         expires.setDate(expires.getDate() + numDays); // Add days to date
 
         output = cookieName + '=' + encodeURIComponent(cookieValue) + ';expires=' + expires.toUTCString();
 
-        if ($cms.$COOKIE_PATH()) {
+        if ($cms.$COOKIE_PATH() !== '') {
             output += ';path=' + $cms.$COOKIE_PATH();
         }
 
-        if ($cms.$COOKIE_DOMAIN()) {
+        if ($cms.$COOKIE_DOMAIN() !== '') {
             output += ';domain=' + $cms.$COOKIE_DOMAIN();
         }
 
@@ -2082,7 +2145,7 @@
         /**
          * Ensures the passed `el` has an id and returns the id
          * @param { Element } el
-         * @param { string } prefix
+         * @param {string} prefix
          * @return {string}
          */
         id: function id(el, prefix) {
@@ -2470,8 +2533,8 @@
      * Data retrieval and storage
      * @memberof $cms.dom
      * @param el
-     * @param key
-     * @param value
+     * @param [key]
+     * @param [value]
      * @returns {*}
      */
     $cms.dom.data = function data(el, key, value) {
@@ -2726,61 +2789,31 @@
         return parent;
     };
 
-    $cms.dom.hasStyleSheetLoaded = function (elOrHref) {
-        if (isNode(elOrHref)) {
-            return $cms.styleSheetsLoaded.includes(elOrHref);
-        }
-
-        // It's a href value
-        var href = strVal(elOrHref),
-            linkEl;
-
-        if (href === '') {
-            return false;
-        }
-
-        if (isSchemeRelative(href)) {
-            href = window.location.protocol + href;
-        } else if (isRelative(href)) {
-            href = $cms.baseUrl(href);
-        }
-
-        for (var i = 0; i < $cms.styleSheetsLoaded.length; i++) {
-            linkEl = $cms.styleSheetsLoaded[i];
-            if (linkEl.href === href) {
-                return true;
-            }
-        }
+    $cms.dom.hasScriptElementLoaded = function hasScriptElementLoaded(el) {
+        el = elArg(el);
+        
+        return $cms.scriptsLoaded.includes(el);
     };
 
-    $cms.dom.hasScriptLoaded = function hasScriptLoaded(elOrSrc) {
-        if (isNode(elOrSrc)) {
-            return $cms.scriptsLoaded.includes(elOrSrc);
-        }
-
-        // It's an src value
-        // NB: Inaccurate when a script with the same src is supposed to be loaded/executed multiple times.
-        var src = strVal(elOrSrc),
-            scriptEl;
-
-        if (src === '') {
-            return false;
-        }
-
-        if (isSchemeRelative(src)) {
-            src = window.location.protocol + src;
-        } else if (isRelative(src)) {
-            src = $cms.baseUrl(src);
-        }
-
+    /**
+     * 
+     * @param { Element|string } src
+     * @return {*}
+     */
+    $cms.dom.hasScriptSrcLoaded = function hasScriptSrcLoaded(src) {
+        var scriptEl;
+        src = $cms.url.toSchemeRelative(src);
+        
         for (var i = 0; i < $cms.scriptsLoaded.length; i++) {
             scriptEl = $cms.scriptsLoaded[i];
-            if (scriptEl.src === src) {
+            if ($cms.url.toSchemeRelative(scriptEl.src) === src) {
                 return true;
             }
         }
+        
+        return false;
     };
-
+    
     /**
      * @memberof $cms.dom
      * @param iframe
@@ -5664,7 +5697,7 @@
             return;
         }
 
-        if (!window.pageLoaded || !tooltip) {
+        if (!tooltip) {
             return;
         }
 
@@ -5836,10 +5869,6 @@
             if ((el.parentElement.localName === 'a') && (el.parentElement.getAttribute('title')) && ((el.localName === 'abbr') || (el.parentElement.getAttribute('title').includes('{!LINK_NEW_WINDOW;^}')))) {
                 el.parentElement.setAttribute('title', '');  // Do not want second tooltips that are not useful
             }
-        }
-
-        if (!window.pageLoaded) {
-            return;
         }
 
         if (!el.tooltipId) {
@@ -7999,7 +8028,7 @@
         if ($cms.$CONFIG_OPTION('is_on_timezone_detection')) {
             if (!window.parent || (window.parent === window)) {
                 $cms.setCookie('client_time', (new Date()).toString(), 120);
-                $cms.setCookie('client_time_ref', $cms.$FROM_TIMESTAMP(), 120);
+                $cms.setCookie('client_time_ref', (Date.now() / 1000), 120);
             }
         }
 
@@ -8026,8 +8055,6 @@
                 $cms.setPostDataFlag('paste');
             }
         });
-
-        window.pageLoaded = true;
 
         if ($cms.$IS_STAFF()) {
             this.loadStuffStaff()
@@ -9509,7 +9536,7 @@
         var eWidth = el.offsetWidth;
         function positionL() {
             var posLeft = l;
-            if (place == 'below') { // Top-level of drop-down
+            if (place === 'below') { // Top-level of drop-down
                 if (posLeft + eWidth > fullWidth) {
                     posLeft += eParentWidth - eWidth;
                 }
@@ -9775,24 +9802,24 @@
 
             if ((step4Form.elements['forum_base_url']) && (step4Form.elements['forum_base_url'].type !== 'hidden') && (step4Form.elements['forum_base_url'].value === step4Form.elements['base_url'].value)) {
                 window.alert('{!FORUM_BASE_URL_INVALID;/}');
-                return false;
+                return;
             }
 
             if ((step4Form.elements['forum_base_url']) && (step4Form.elements['forum_base_url'].type !== 'hidden') && (step4Form.elements['forum_base_url'].value.substr(-7) === '/forums') && (!step4Form.elements['forum_base_url'].changed)) {
                 if (!window.confirm('{!FORUM_BASE_URL_UNCHANGED;/}')) {
-                    return false;
+                    return;
                 }
             }
 
             for (var i = 0; i < step4Form.elements.length; i++) {
                 if ((step4Form.elements[i].classList.contains('required1')) && (step4Form.elements[i].value === '')) {
                     window.alert('{!IMPROPERLY_FILLED_IN;^}');
-                    return false;
+                    return;
                 }
             }
 
             if (!checkPasswords(step4Form)) {
-                return false;
+                return;
             }
 
             var checkPromises = [], post;
@@ -9818,8 +9845,7 @@
             Promise.all(checkPromises).then(function (validities) {
                 if (!validities.includes(false)) {
                     // All valid!
-                    step4Form.removeEventListener('submit', validateSettings);
-                    $cms.dom.submit(step4Form);
+                    step4Form.submit();
                 }
             });
         }
