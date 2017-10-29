@@ -433,7 +433,7 @@ jQuery(function ($) {
             var dummyElement = CKEDITOR.instances[this.element.id].document.createElement('img',
                 {
                     attributes: {
-                        src: $cms.img('{$IMG;,blank}').replace(/^https?:/, window.location.protocol),
+                        src: $cms.img('{$IMG;,blank}'),
                         width: 0,
                         height: 0
                     }

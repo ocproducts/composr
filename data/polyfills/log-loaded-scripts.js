@@ -16,9 +16,9 @@
     /* Required for $cms.requireCss and $cms.requireJavascript() to work properly as DOM does not currently provide any way to check if a particular stylesheet/script has been already loaded */
     /**
      * @memberOf $cms
-     * @type {Array}
+     * @type { WeakMap }
      */
-    $cms.styleSheetsLoaded = [];
+    $cms.styleSheetsLoaded = new WeakMap();
 
     /**
      * @memberOf $cms
@@ -28,17 +28,20 @@
 
     /**
      * @memberOf $cms
-     * @type {Array}
+     * @type { WeakMap }
      */
-    $cms.scriptsLoaded = [];
+    $cms.scriptsLoaded = new WeakMap();
 
     /**
      * @memberOf $cms
      * @type {Array}
      */
     $cms.scriptsLoadedListeners = [];
-
-    document.addEventListener('load', function (event) {
+    
+    document.addEventListener('load', listener, /*useCapture*/true);
+    document.addEventListener('error', listener, /*useCapture*/true);
+    
+    function listener(event) {
         var loadedEl = event.target;
 
         if (!loadedEl) {
@@ -46,52 +49,21 @@
         }
 
         if ((loadedEl.localName === 'link') && (loadedEl.rel === 'stylesheet')) {
-            $cms.styleSheetsLoaded.push(loadedEl);
+            $cms.styleSheetsLoaded.set(loadedEl, true);
             $cms.styleSheetsLoadedListeners.forEach(function (listener) {
                 if (typeof listener === 'function') {
-                    //console.log('Called $cms.styleSheetsLoadedListeners.* function', listener);
                     listener.call(loadedEl, event);
                 }
             });
-            //console.log('Stylesheet loaded', loadedEl);
         } else if (loadedEl.localName === 'script') {
-            $cms.scriptsLoaded.push(loadedEl);
-            $cms.scriptsLoadedListeners.forEach(function (listener) {
-                if (typeof listener === 'function') {
-                    //console.log('Called $cms.scriptsLoadedListeners.* function', listener);
-                    listener.call(loadedEl, event);
-                }
-            });
-            //console.log('Script loaded', loadedEl);
-        }
-    }, /*useCapture*/true);
-
-    document.addEventListener('error', function (event) {
-        var loadedEl = event.target;
-
-        if (!loadedEl) {
-            return;
-        }
-
-        if ((loadedEl.localName === 'link') && (loadedEl.rel === 'stylesheet')) {
-            $cms.styleSheetsLoaded.push(loadedEl);
-            $cms.styleSheetsLoadedListeners.forEach(function (listener) {
-                if (typeof listener === 'function') {
-                    //console.log('Called $cms.styleSheetsLoadedListeners.* function', listener);
-                    listener.call(loadedEl, event);
-                }
-            });
-            //console.log('Stylesheet error\'d', loadedEl);
-        } else if (loadedEl.localName === 'script') {
-            $cms.scriptsLoaded.push(loadedEl);
+            $cms.scriptsLoaded.set(loadedEl, true);
             $cms.scriptsLoadedListeners.forEach(function (listener) {
                 if (typeof listener === 'function') {
                     listener.call(loadedEl, event);
                 }
             });
-            //console.log('Script error\'d', loadedEl);
         }
-    }, /*useCapture*/true);
+    }
     
     window.addEventListener('click', function (e) {
         if (e.target && (e.target.localName === 'a') && (e.target.getAttribute('href') === '#!')) {

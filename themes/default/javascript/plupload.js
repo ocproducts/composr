@@ -14458,7 +14458,7 @@
     }
     
     /**
-     * preinitFileInput() is for normal Composr forms
+     * preinitFileInput() is for normal Composr forms, shows dedicated input elements
      * @param pageType
      * @param name
      * @param postingFieldName
@@ -14536,9 +14536,8 @@
         });
     }
 
-
     /**
-     * prepareSimplifiedFileInput() is for attachments
+     * prepareSimplifiedFileInput() is for attachments, transparently binds to an existing image upload button
      * NB: Only used by $cms.templates.attachments()
      * @param pageType
      * @param name

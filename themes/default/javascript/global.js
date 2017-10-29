@@ -1462,7 +1462,7 @@
         isRelative: isRelative,
         isSchemeRelative: isSchemeRelative,
         isAbsoluteOrSchemeRelative: isAbsoluteOrSchemeRelative,
-        toSchemeRelative: toSchemeRelative
+        schemeRelative: schemeRelative
     });
 
     var rgxProtocol = /^[a-z0-9\-\.]+:(?=\/\/)/i,
@@ -1489,7 +1489,7 @@
             return window.location.protocol + relativeUrl;
         }
 
-        return (relativeUrl.startsWith('/') ? $cms.$BASE_URL() : ($cms.$BASE_URL() + '/')) + relativeUrl;
+        return  $cms.$BASE_URL() + (relativeUrl.startsWith('/') ? '' : '/') + relativeUrl;
     }
 
     function isAbsolute(url) {
@@ -1513,10 +1513,11 @@
     }
 
     /**
+     * Make a URL scheme-relative
      * @param url
      * @returns {string}
      */
-    function toSchemeRelative(url) {
+    function schemeRelative(url) {
         url = strVal(url);
         
         if (isAbsoluteOrSchemeRelative(url)) {
@@ -1678,9 +1679,9 @@
 
         if (validIdRE.test(sheetNameOrHref)) {
             sheetName = sheetNameOrHref;
-            sheetHref = $cms.url.toSchemeRelative('{$FIND_SCRIPT_NOHTTP;,sheet}?sheet=' + sheetName + $cms.$KEEP());
+            sheetHref = $cms.url.schemeRelative('{$FIND_SCRIPT_NOHTTP;,sheet}?sheet=' + sheetName + $cms.$KEEP());
         } else {
-            sheetHref = $cms.url.toSchemeRelative(sheetNameOrHref);
+            sheetHref = $cms.url.schemeRelative(sheetNameOrHref);
         }
 
         if (sheetName != null) {
@@ -1721,11 +1722,11 @@
     function _findCssByHref (href) {
         var els = $cms.dom.$$('link[rel="stylesheet"][href]'), el;
 
-        href = $cms.url.toSchemeRelative(href);
+        href = $cms.url.schemeRelative(href);
 
         for (var i = 0; i < els.length; i++) {
             el = els[i];
-            if ($cms.url.toSchemeRelative(el.href) === href) {
+            if ($cms.url.schemeRelative(el.href) === href) {
                 return el;
             }
         }
@@ -1755,9 +1756,9 @@
         
         if (validIdRE.test(scriptNameOrSrc)) {
             scriptName = scriptNameOrSrc;
-            scriptSrc = $cms.url.toSchemeRelative('{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + scriptName + $cms.$KEEP());
+            scriptSrc = $cms.url.schemeRelative('{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + scriptName + $cms.$KEEP());
         } else {
-            scriptSrc = $cms.url.toSchemeRelative(scriptNameOrSrc);
+            scriptSrc = $cms.url.schemeRelative(scriptNameOrSrc);
         }
         
         if (scriptName != null) {
@@ -1798,11 +1799,11 @@
     function _findScriptBySrc(src) {
         var els = $cms.dom.$$('script[src]'), el;
         
-        src = $cms.url.toSchemeRelative(src);
+        src = $cms.url.schemeRelative(src);
         
         for (var i = 0; i < els.length; i++) {
             el = els[i];
-            if ($cms.url.toSchemeRelative(el.src) === src) {
+            if ($cms.url.schemeRelative(el.src) === src) {
                 return el;
             }
         }
@@ -2792,7 +2793,7 @@
     $cms.dom.hasScriptElementLoaded = function hasScriptElementLoaded(el) {
         el = elArg(el);
         
-        return $cms.scriptsLoaded.includes(el);
+        return $cms.scriptsLoaded.has(el);
     };
 
     /**
@@ -2801,13 +2802,14 @@
      * @return {*}
      */
     $cms.dom.hasScriptSrcLoaded = function hasScriptSrcLoaded(src) {
-        var scriptEl;
-        src = $cms.url.toSchemeRelative(src);
+        src = $cms.url.schemeRelative(src);
         
-        for (var i = 0; i < $cms.scriptsLoaded.length; i++) {
-            scriptEl = $cms.scriptsLoaded[i];
-            if ($cms.url.toSchemeRelative(scriptEl.src) === src) {
-                return true;
+        var scripts = $cms.dom.$$('script[src]'), scriptEl;
+        
+        for (var i = 0; i < scripts.length; i++) {
+            scriptEl = scripts[i];
+            if ($cms.url.schemeRelative(scriptEl.src) === src) {
+                return $cms.scriptsLoaded.has(scriptEl);
             }
         }
         
