@@ -5,7 +5,7 @@
     window.addAttachment = addAttachment;
     window.attachmentPresent = attachmentPresent;
     window.setAttachment = setAttachment;
-    window.generateBackgroundPreview = generateBackgroundPreview;
+    window.generateBackgroundPreview = showPreviewImagesForAttachmentComcodes;
     window.doInputHtml = doInputHtml;
     window.doInputCode = doInputCode;
     window.doInputQuote = doInputQuote;
@@ -37,12 +37,14 @@
      * @param postingFieldName
      */
     function addAttachment(startNum, postingFieldName) {
+        console.log('addAttachment()', 'startNum:', startNum, 'postingFieldName:', postingFieldName);
+        
         var addTo = document.getElementById('js-attachment-store');
 
         window.numAttachments++;
 
         // Add new file input, if we are using naked file inputs
-        if (window.attachmentTemplate.replace(/\s/, '') !== '') {
+        if (window.attachmentTemplate.trim() !== '') { // ATTACHMENT.tpl
             var newDiv = document.createElement('div');
             $cms.dom.html(newDiv, window.attachmentTemplate.replace(/\_\_num_attachments\_\_/g, window.numAttachments));
             addTo.appendChild(newDiv);
@@ -50,12 +52,6 @@
 
         // Rebuild uploader button, if we have a singular button
         window.rebuildAttachmentButtonForNext(postingFieldName);
-
-        // Previous file input cannot be used anymore, if it exists
-        var element = document.getElementById('file' + window.numAttachments);
-        if (element) {
-            element.setAttribute('unselectable', 'on');
-        }
 
         $cms.dom.triggerResize();
     }
@@ -67,10 +63,11 @@
      * @return {*|boolean}
      */
     function attachmentPresent(postValue, number) {
-        return postValue.includes('[attachment]new_' + number + '[/attachment]') && !postValue.includes('[attachment_safe]new_' + number + '[/attachment_safe]') && !postValue.includes('[attachment thumb="1"]new_' + number + '[/attachment]') && !postValue.includes('[attachment_safe thumb="1"]new_' + number + '[/attachment_safe]') && !postValue.includes('[attachment thumb="0"]new_' + number + '[/attachment]') && !postValue.includes('[attachment_safe thumb="0"]new_' + number + '[/attachment_safe]');
+        return postValue.includes('[attachment]new_' + number + '[/attachment]') || postValue.includes('[attachment_safe]new_' + number + '[/attachment_safe]') || postValue.includes('[attachment thumb="1"]new_' + number + '[/attachment]') || postValue.includes('[attachment_safe thumb="1"]new_' + number + '[/attachment_safe]') || postValue.includes('[attachment thumb="0"]new_' + number + '[/attachment]') || postValue.includes('[attachment_safe thumb="0"]new_' + number + '[/attachment_safe]');
     }
 
     /**
+     * Adds attachment comcode to the provided input (e.g., [attachment]new_1[/attachment])
      * @param fieldName
      * @param number
      * @param filename
@@ -80,7 +77,10 @@
      */
     function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
         console.log('setAttachment()', 'fieldName:', fieldName, 'number:', number, 'filename:', filename, 'multi:', multi, 'uploaderSettings:', uploaderSettings);
-        
+
+        fieldName = strVal(fieldName);
+        number = Number(number);
+        filename = strVal(filename);
         multi = Boolean(multi);
 
         return new Promise(function (resolvePromise) {
@@ -137,15 +137,16 @@
             }
 
             /*{+START,INCLUDE,ATTACHMENT_UI_DEFAULTS,.js,javascript}{+END}*/
-
-            if (trueAttachmentUi) {
-                // Add field for next one
-                addAnotherField = (number == window.numAttachments) && (window.numAttachments < window.maxAttachments); // Needs running late, in case something happened inbetween
-                if (addAnotherField) {
-                    addAttachment(window.numAttachments + 1, fieldName);
-                }
-                return resolvePromise();
-            }
+            
+            // @TODO: Chris, what's this for? It prevents attachment comcdode from being inseerted into the textbox. It also doesn't exist in either of master and v10.1 branches.
+            // if (trueAttachmentUi) {
+            //     // Add field for next one
+            //     addAnotherField = (number == window.numAttachments) && (window.numAttachments < window.maxAttachments); // Needs running late, in case something happened inbetween
+            //     if (addAnotherField) {
+            //         addAttachment(window.numAttachments + 1, fieldName);
+            //     }
+            //     return resolvePromise();
+            // }
 
             if (!showOverlay) {
                 var comcode = '[' + tag;
@@ -198,13 +199,11 @@
                         addAttachment(window.numAttachments + 1, fieldName);
                     }
 
-                    if (uploaderSettings !== undefined) {
+                    if ($cms.form.isWysiwygField(post) && (uploaderSettings !== undefined)) {
                         // Previously named: uploader_settings.callbacks
                         uploaderSettings.onAllUploadsDoneCallbacks.push(function () {
                             // Do insta-preview for image attachments
-                            if ($cms.form.isWysiwygField(post)) {
-                                generateBackgroundPreview(post);
-                            }
+                            showPreviewImagesForAttachmentComcodes(post);
                         });
                     }
                 });
@@ -269,7 +268,7 @@
 
                         // Do insta-preview
                         if (comcodeAdded.includes('[attachment_safe') && $cms.form.isWysiwygField(post)) {
-                            generateBackgroundPreview(post);
+                            showPreviewImagesForAttachmentComcodes(post);
                         }
                     });
                 });
@@ -283,7 +282,7 @@
      * WYSIWYG preview for image attachments
      * @param { HTMLTextAreaElement } post
      */
-    function generateBackgroundPreview(post) {
+    function showPreviewImagesForAttachmentComcodes(post) {
         var formPost = '';
         var form = post.form;
 
