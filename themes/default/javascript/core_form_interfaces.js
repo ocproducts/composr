@@ -412,7 +412,7 @@
     };
 
     $cms.templates.formScreenField_input = function (params) {
-        var el = $cms.dom.$('#form_table_field_input__' + params.randomisedId);
+        var el = $cms.dom.$('#form_table_field_input__' + strVal(params.randomisedId));
         if (el) {
             $cms.form.setUpChangeMonitor(el.parentElement);
         }
@@ -704,7 +704,7 @@
     };
 
     $cms.templates.formScreenFieldsSet = function (params) {
-        standardAlternateFieldsWithin(params.setName, !!params.required, params.defaultSet);
+        standardAlternateFieldsWithin(params.setName, Boolean(params.required), params.defaultSet);
     };
 
     $cms.templates.formScreenInputThemeImageEntry = function (params) {
@@ -1584,7 +1584,9 @@
 
         var e = j.form.elements[name];
         for (var i = 0; i < e.length; i++) {
-            if (e[i].disabled) continue;
+            if (e[i].disabled) {
+                continue;
+            }
             var img = e[i].parentNode.parentNode.querySelector('img');
             if (img && (img !== imgOb)) {
                 if (img.parentNode.classList.contains('selected')) {
@@ -1609,7 +1611,7 @@
         var form = document.getElementById('set_wrapper_' + setName);
 
         while (form && (form.localName !== 'form')) {
-            form = form.parentNode;
+            form = form.parentElement;
         }
         var fields = form.elements[setName];
         var fieldNames = [];

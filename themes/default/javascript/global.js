@@ -10591,7 +10591,9 @@
     };
 
     $cms.templates.indexScreenFancierScreen = function indexScreenFancierScreen(params) {
-        document.getElementById('search_content').value = strVal(params.rawSearchString);
+        if (document.getElementById('search_content')) {
+            document.getElementById('search_content').value = strVal(params.rawSearchString);    
+        }
     };
 
     $cms.templates.doNextScreen = function doNextScreen(params) {};
