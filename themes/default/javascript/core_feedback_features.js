@@ -128,8 +128,8 @@
             }
         },
 
-        doFormPreview: function (e) {
-            var form = this.form,
+        doFormPreview: function (e, btn) {
+            var form = btn.form,
                 url = $cms.maintainThemeInLink($cms.$PREVIEW_URL() + $cms.$KEEP());
             
             $cms.form.doFormPreview(form, url).then(function (bool) {
@@ -168,10 +168,10 @@
             }
 
             if (params.analyticEventCategory) {
+                e.preventDefault();
                 $cms.gaTrack(null, params.analyticEventCategory, null, function () {
                     $cms.dom.submit(form);
                 });
-                e.preventDefault();
             }
         },
 

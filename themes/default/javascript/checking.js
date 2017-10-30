@@ -239,10 +239,11 @@
      * @memberof $cms.form
      * @param { HTMLFormElement } form
      * @param {string} previewUrl
-     * @param {boolean} hasSeparatePreview
+     * @param {boolean} [hasSeparatePreview]
      * @returns { Promise }
      */
     $cms.form.doFormPreview = function doFormPreview(form, previewUrl, hasSeparatePreview) {
+        form = $cms.dom.elArg(form);
         previewUrl = strVal(previewUrl);
         hasSeparatePreview = Boolean(hasSeparatePreview);
 

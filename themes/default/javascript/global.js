@@ -121,13 +121,6 @@
         $USERNAME: constant(strVal(symbols.USERNAME)),
         /**
          * @method
-         * @returns {number}
-         */
-        $FROM_TIMESTAMP: function $FROM_TIMESTAMP(timeFormat, timestamp) {
-            return Date.now();
-        },
-        /**
-         * @method
          * @returns {string}
          */
         $THEME: constant(strVal(symbols.THEME)),

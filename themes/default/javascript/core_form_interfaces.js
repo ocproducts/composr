@@ -83,7 +83,7 @@
         events: function () {
             return {
                 'click .js-click-do-form-cancel': 'doFormCancel',
-                'click .js-click-do-form-preview': 'doFormPreview',
+                'click .js-click-do-form-preview': 'doStandardFormPreview',
                 'click .js-click-do-form-submit': 'doStandardFormSubmit',
                 'click .js-click-btn-go-back': 'goBack'
             };
@@ -101,7 +101,7 @@
             );
         },
 
-        doFormPreview: function (e) {
+        doStandardFormPreview: function (e) {
             var form = this.form;
 
             $cms.form.doFormPreview(form, window.formPreviewUrl, window.separatePreview).then(function (bool) {
