@@ -1406,7 +1406,7 @@
         schemeRelative: function schemeRelative(url) {
             url = strVal(url);
             
-            return $cms.url(url).replace(rgxProtocol, '');
+            return $cms.url(url).toString().replace(rgxProtocol, '');
         },
         
         setSearch: function setSearch(url, params, value) {
