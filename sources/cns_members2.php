@@ -169,8 +169,8 @@ function render_member_box($member_id, $preview = false, $show_avatar = true, $e
         'GALLERIES' => isset($member_info['galleries']) ? $member_info['galleries'] : null,
         'DOB_LABEL' => isset($member_info['dob_label']) ? $member_info['dob_label'] : '',
         'DOB' => isset($member_info['dob']) ? $member_info['dob'] : '',
-        '_DOB' => isset($member_info['_dob']) ? $member_info['_dob'] : '',
-        '_DOB_CENSORED' => isset($member_info['_dob_censored']) ? $member_info['_dob_censored'] : '',
+        '_DOB' => isset($member_info['_dob']) ? strval($member_info['_dob']) : '',
+        '_DOB_CENSORED' => isset($member_info['_dob_censored']) ? strval($member_info['_dob_censored']) : '',
     ));
 }
 
