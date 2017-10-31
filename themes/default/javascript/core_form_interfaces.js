@@ -411,7 +411,7 @@
         });
     };
 
-    $cms.templates.formScreenField_input = function (params) {
+    $cms.templates.formScreenField_input = function formScreenField_input(params) {
         var el = $cms.dom.$('#form_table_field_input__' + strVal(params.randomisedId));
         if (el) {
             $cms.form.setUpChangeMonitor(el.parentElement);
@@ -1570,8 +1570,8 @@
     }
 
     function choosePicture(jId, imgOb, name, event) {
-        var j = document.getElementById(jId);
-        if (!j) {
+        var jEl = document.getElementById(jId);
+        if (!jEl) {
             return;
         }
 
@@ -1582,7 +1582,7 @@
             }
         }
 
-        var e = j.form.elements[name];
+        var e = jEl.form.elements[name];
         for (var i = 0; i < e.length; i++) {
             if (e[i].disabled) {
                 continue;
@@ -1597,30 +1597,33 @@
             }
         }
 
-        if (j.disabled) {
+        if (jEl.disabled) {
             return;
         }
-        j.checked = true;
-        $cms.dom.trigger(j, 'change');
+        $cms.dom.changeChecked(jEl, true);
         
         imgOb.parentNode.classList.add('selected');
         imgOb.style.outline = '1px dotted';
     }
 
+    /**
+     * 
+     * @param setName
+     * @param somethingRequired
+     * @param defaultSet
+     */
     function standardAlternateFieldsWithin(setName, somethingRequired, defaultSet) {
-        var form = document.getElementById('set_wrapper_' + setName);
-
-        while (form && (form.localName !== 'form')) {
-            form = form.parentElement;
-        }
-        var fields = form.elements[setName];
-        var fieldNames = [];
+        var form = $cms.dom.closest('#set_wrapper_' + setName, 'form');
+        
+        var fields = form.elements[setName],
+            fieldNames = [];
+        
         for (var i = 0; i < fields.length; i++) {
             if (fields[i][0] === undefined) {
                 if (fields[i].id.startsWith('choose_')) {
                     fieldNames.push(fields[i].id.replace(/^choose\_/, ''));
                 }
-            } else {
+            } else { // RadioNodeList
                 if (fields[i][0].id.startsWith('choose_')) {
                     fieldNames.push(fields[i][0].id.replace(/^choose\_/, ''));
                 }
@@ -1631,7 +1634,7 @@
 
         // Do dynamic $cms.form.setLocked/$cms.form.setRequired such that one of these must be set, but only one may be
         function standardAlternateFields(fieldNames, somethingRequired, secondRun, defaultSet) {
-            secondRun = !!secondRun;
+            secondRun = Boolean(secondRun);
 
             // Look up field objects
             var fields = [], i, field;
@@ -1645,7 +1648,7 @@
             for (i = 0; i < fieldNames.length; i++) {
                 field = fields[i];
                 if ((!field) || (field.alternating === undefined)) { // ... but only if not already set
-                    var selfFunction = function (e) {
+                    var selfFunction = function () {
                         standardAlternateFields(fieldNames, somethingRequired, true, '');
                     }; // We'll re-call ourself on change
                     _standardAlternateFieldCreateListeners(field, selfFunction);
@@ -1655,8 +1658,9 @@
             // Update things
             for (i = 0; i < fieldNames.length; i++) {
                 field = fields[i];
-                if ((defaultSet == '') && (_standardAlternateFieldIsFilledIn(field, secondRun, false)) || (defaultSet != '') && (fieldNames[i].indexOf('_' + defaultSet) != -1)) {
-                    return _standardAlternateFieldUpdateEditability(field, fields, somethingRequired);
+                if ((defaultSet == '') && (_standardAlternateFieldIsFilledIn(field, secondRun, false)) || (defaultSet != '') && (fieldNames[i].indexOf('_' + defaultSet) !== -1)) {
+                    _standardAlternateFieldUpdateEditability(field, fields, somethingRequired);
+                    return;
                 }
             }
 
@@ -1665,56 +1669,61 @@
                 if (fieldNames[i] == '') {
                     var radioButton = document.getElementById('choose_'); // Radio button handles field alternation
                     radioButton.checked = true;
-                    return _standardAlternateFieldUpdateEditability(null, fields, somethingRequired);
+                    _standardAlternateFieldUpdateEditability(null, fields, somethingRequired);
+                    return;
                 }
 
                 field = fields[i];
-                if ((field) && (_standardAlternateFieldIsFilledIn(field, secondRun, true)))
-                    return _standardAlternateFieldUpdateEditability(field, fields, somethingRequired);
+                if ((field) && (_standardAlternateFieldIsFilledIn(field, secondRun, true))) {
+                    _standardAlternateFieldUpdateEditability(field, fields, somethingRequired);
+                    return;
+                }
             }
 
             function _standardAlternateFieldUpdateEditability(chosen, choices, somethingRequired) {
                 for (var i = 0; i < choices.length; i++) {
-                    __standardAlternateFieldUpdateEditability(choices[i], chosen, choices[i] != chosen, choices[i] == chosen, somethingRequired);
+                    __standardAlternateFieldUpdateEditability(choices[i], chosen, (choices[i] != chosen), (choices[i] == chosen), somethingRequired);
                 }
+            }
 
-                // NB: is_chosen may only be null if is_locked is false
-                function __standardAlternateFieldUpdateEditability(field, chosenField, isLocked, isChosen, somethingRequired) {
-                    if ((!field) || (field.nodeName !== undefined)) {
-                        ___standardAlternateFieldUpdateEditability(field, chosenField, isLocked, isChosen, somethingRequired);
-                    } else { // List of fields (e.g. radio list, or just because standardAlternateFieldsWithin was used)
-                        for (var i = 0; i < field.length; i++) {
-                            if (field[i].name !== undefined) { // If it is an object, as opposed to some string in the collection
-                                ___standardAlternateFieldUpdateEditability(field[i], chosenField, isLocked, isChosen, somethingRequired);
-                                somethingRequired = false; // Only the first will be required
-                            }
-                        }
-                    }
-
-                    function ___standardAlternateFieldUpdateEditability(field, chosenField, isLocked, isChosen, somethingRequired) {
-                        if (!field) return;
-
-                        var radioButton = document.getElementById('choose_' + field.name.replace(/\[\]$/, ''));
-                        if (!radioButton) {
-                            radioButton = document.getElementById('choose_' + field.name.replace(/\_\d+$/, '_'));
-                        }
-
-                        $cms.form.setLocked(field, isLocked, chosenField);
-                        if (somethingRequired) {
-                            $cms.form.setRequired(field.name.replace(/\[\]$/, ''), isChosen);
-                        }
-
-                        var radioButton = $cms.dom.$('#choose_' + field.name);
-                        if (radioButton) {
-                            radioButton.checked = isChosen;
+            // NB: is_chosen may only be null if is_locked is false
+            function __standardAlternateFieldUpdateEditability(field, chosenField, isLocked, isChosen, somethingRequired) {
+                if ((!field) || (field.nodeName !== undefined)) {
+                    ___standardAlternateFieldUpdateEditability(field, chosenField, isLocked, isChosen, somethingRequired);
+                } else { // List of fields (e.g. radio list, or just because standardAlternateFieldsWithin was used)
+                    for (var i = 0; i < field.length; i++) {
+                        if (field[i].name !== undefined) { // If it is an object, as opposed to some string in the collection
+                            ___standardAlternateFieldUpdateEditability(field[i], chosenField, isLocked, isChosen, somethingRequired);
+                            somethingRequired = false; // Only the first will be required
                         }
                     }
                 }
             }
 
+            function ___standardAlternateFieldUpdateEditability(field, chosenField, isLocked, isChosen, somethingRequired) {
+                if (!field) return;
+
+                var radioButton = document.getElementById('choose_' + field.name.replace(/\[\]$/, ''));
+                if (!radioButton) {
+                    radioButton = document.getElementById('choose_' + field.name.replace(/\_\d+$/, '_'));
+                }
+
+                $cms.form.setLocked(field, isLocked, chosenField);
+                if (somethingRequired) {
+                    $cms.form.setRequired(field.name.replace(/\[\]$/, ''), isChosen);
+                }
+
+                radioButton = $cms.dom.$('#choose_' + field.name);
+                if (radioButton) {
+                    radioButton.checked = isChosen;
+                }
+            }
+
             function _standardAlternateFieldsGetObject(fieldName) {
+                fieldName = strVal(fieldName);
+                
                 // Maybe it's an N/A so no actual field
-                if (!fieldName) {
+                if (fieldName === '') {
                     return null;
                 }
 
@@ -1725,23 +1734,23 @@
                 }
 
                 // A radio field, so we need to create a virtual field object to return that will hold our value
-                var radioButtons = [], i, j, e;
+                var radioButtons = [], i, j, el;
                 /*JSLINT: Ignore errors*/
                 radioButtons['name'] = fieldName;
                 radioButtons['value'] = '';
                 for (i = 0; i < document.forms.length; i++) {
                     for (j = 0; j < document.forms[i].elements.length; j++) {
-                        e = document.forms[i].elements[j];
-                        if (!e.name) {
+                        el = document.forms[i].elements[j];
+                        if (!el.name) {
                             continue;
                         }
 
-                        if ((e.name.replace(/\[\]$/, '') == fieldName) || (e.name.replace(/\_\d+$/, '_') == fieldName)) {
-                            radioButtons.push(e);
-                            if (e.checked) {// This is the checked radio equivalent to our text field, copy the value through to the text field
-                                radioButtons['value'] = e.value;
+                        if ((el.name.replace(/\[\]$/, '') === fieldName) || (el.name.replace(/\_\d+$/, '_') === fieldName)) {
+                            radioButtons.push(el);
+                            if (el.checked) {// This is the checked radio equivalent to our text field, copy the value through to the text field
+                                radioButtons['value'] = el.value;
                             }
-                            if (e.alternating) {
+                            if (el.alternating) {
                                 radioButtons.alternating = true;
                             }
                         }
@@ -1760,7 +1769,7 @@
                     return false; 
                 } 
 
-                var isSet = force || ((field.value != '') && (field.value != '-1')) || ((field.virtualValue !== undefined) && (field.virtualValue != '') && (field.virtualValue != '-1'));
+                var isSet = force || ((field.value !== '') && (field.value !== '-1'));
 
                 var radioButton = document.getElementById('choose_' + (field ? field.name : '').replace(/\[\]$/, '')); // Radio button handles field alternation
                 if (!radioButton) radioButton = document.getElementById('choose_' + field.name.replace(/\_\d+$/, '_'));
@@ -1782,30 +1791,31 @@
                 } else {
                     var i;
                     for (i = 0; i < field.length; i++) {
-                        if (field[i].name !== undefined)
+                        if (field[i].name !== undefined) {
                             __standardAlternateFieldCreateListeners(field[i], refreshFunction);
+                        }
                     }
                     field.alternating = true;
                 }
 
                 return null;
-
-                function __standardAlternateFieldCreateListeners(field, refreshFunction) {
-                    var radioButton = document.getElementById('choose_' + (field ? field.name : '').replace(/\[\]$/, ''));
-                    if (!radioButton) {
-                        radioButton = document.getElementById('choose_' + field.name.replace(/\_\d+$/, '_'));
-                    }
-                    if (radioButton) { // Radio button handles field alternation
-                        radioButton.addEventListener('change', refreshFunction);
-                    } else { // Filling/blanking out handles field alternation
-                        if (field) {
-                            field.addEventListener('keyup', refreshFunction);
-                            field.addEventListener('change', refreshFunction);
-                        }
-                    }
+            }
+            
+            function __standardAlternateFieldCreateListeners(field, refreshFunction) {
+                var radioButton = document.getElementById('choose_' + (field ? field.name : '').replace(/\[\]$/, ''));
+                if (!radioButton) {
+                    radioButton = document.getElementById('choose_' + field.name.replace(/\_\d+$/, '_'));
+                }
+                if (radioButton) { // Radio button handles field alternation
+                    radioButton.addEventListener('change', refreshFunction);
+                } else { // Filling/blanking out handles field alternation
                     if (field) {
-                        field.alternating = true;
+                        field.addEventListener('keyup', refreshFunction);
+                        field.addEventListener('change', refreshFunction);
                     }
+                }
+                if (field) {
+                    field.alternating = true;
                 }
             }
         }
