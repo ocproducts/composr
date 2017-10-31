@@ -320,6 +320,12 @@
         /**@method*/
         camelCase: camelCase,
         /**@method*/
+        once: once,
+        /**@method*/
+        findOnce: findOnce,
+        /**@method*/
+        removeOnce: removeOnce,
+        /**@method*/
         each: each,
         /**@method*/
         extend: extend,
@@ -1334,6 +1340,65 @@
                 // Removes spaces
                 .replace(/ /g, '')
             : '';
+    }
+
+    // Inspired by https://github.com/RobLoach/jquery-once
+    // https://www.drupal.org/docs/7/api/javascript-api/managing-javascript-in-drupal-7#jquery-once
+    var _onced = {};
+    /**
+     * @param objects
+     * @param flag
+     * @return { Array.<T> }
+     */
+    function once(objects, flag) {
+        objects = arrVal(objects);
+        flag = strVal(flag);
+
+        _onced[flag] || (_onced[flag] = {});
+
+        return objects.filter(function (obj) {
+            var uid = $cms.uid(obj);
+            if (_onced[flag][uid] === true) {
+                return false;
+            }
+            _onced[flag][uid] = true;
+            return true;
+        });
+    }
+    /**
+     * @param objects
+     * @param flag
+     * @return { Array.<T> }
+     */
+    function findOnce(objects, flag) {
+        objects = arrVal(objects);
+        flag = strVal(flag);
+
+        if (!_onced[flag]) {
+            return [];
+        }
+
+        return objects.filter(function (obj) {
+            var uid = $cms.uid(obj);
+            return _onced[flag][uid] === true;
+        });
+    }
+    /**
+     * @param objects
+     * @param flag
+     */
+    function removeOnce(objects, flag) {
+        objects = arrVal(objects);
+        flag = strVal(flag);
+
+        if (!_onced[flag]) {
+            return;
+        }
+
+        objects.forEach(function (obj) {
+            var uid = $cms.uid(obj);
+            delete _onced[flag][uid];
+        });
     }
 
     /**
@@ -5976,7 +6041,7 @@
         if (tooltipElement) {
             $cms.dom.off(tooltipElement, 'mouseout.cmsTooltip');
             $cms.dom.off(tooltipElement, 'mousemove.cmsTooltip');
-            $cms.dom.off(window, 'click.cmsTooltip');
+           // $cms.dom.off(window, 'click.cmsTooltip');
             $cms.dom.hide(tooltipElement);
         }
     };
@@ -7909,7 +7974,7 @@
         // Implementation for [data-toggleable-tray]
         toggleableTray: {
             attach: function (context) {
-                var els = $cms.dom.$$$(context, '[data-toggleable-tray]');
+                var els = $cms.once($cms.dom.$$$(context, '[data-toggleable-tray]'), 'behavior.toggleableTray');
 
                 els.forEach(function (el) {
                     var options = objVal($cms.dom.data(el, 'toggleableTray')),
