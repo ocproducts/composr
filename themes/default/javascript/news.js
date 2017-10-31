@@ -5,7 +5,7 @@
     $cms.defineBehaviors({
         initializeNewsScroller: {
             attach: function (context) {
-                $cms.dom.$$$(context, '[data-cms-news-scroller]').forEach(function (scrollerEl) {
+                $cms.once($cms.dom.$$$(context, '[data-cms-news-scroller]'), 'behavior.initializeNewsScroller').forEach(function (scrollerEl) {
                     var scrollInterval = 60;
 
                     if (scrollerEl.scrollHeight < 300) {
