@@ -1488,16 +1488,62 @@
             return $cms.$BASE_URL().replace(rgxProtocol, '') + (url.startsWith('/') ? url : '/' + url);
         },
         
-        addSearch: function addSearchParams(url, paramsObj) {
+        setSearch: function setSearch(url, params, value) {
+            var isO = isObj(url), paramName, paramValue;
+            url = isO ? url : $cms.url.create(url);
             
+            if (isScalar(params)) {
+                paramName = params;
+                paramValue = value;
+
+                url.searchParams.set(paramName, paramValue);
+            } else {
+                for (paramName in params) {
+                    paramValue = strVal(params[paramName]);
+                    url.searchParams.set(paramName, paramValue);
+                }
+            }
+            
+            return isO ? url : url.toString();
         },
         
-        removeSearch: function removeSearchParams(url, paramNames) {
+        removeSearch: function removeSearch(url, paramNames) {
+            var isO = isObj(url);
+            
+            url = isO ? url : $cms.url.create(url);
             paramNames = arrVal(paramNames);
+            
+            paramNames.forEach(function (paramName) {
+                url.searchParams.delete(paramName);
+            });
+            
+            return isO ? url : url.toString();
         },
         
-        hasSearch: function hasSearchParams(url, paramsObj) {
+        hasSearch: function hasSearch(url, params, value) {
+            var isO = isObj(url), paramName, paramValue;
+            url = isO ? url : $cms.url.create(url);
             
+            if (isScalar(params)) {
+                paramName = params;
+                paramValue = value;
+                
+                if (paramValue == null) {
+                    return url.searchParams.has(paramName);
+                }
+                
+                return url.searchParams.get(paramName) === strVal(paramValue);
+            }
+            
+            for (paramName in params) {
+                paramValue = strVal(params[paramName]);
+                
+                if (url.searchParams.get(paramName) !== paramValue) {
+                    return false;
+                }
+            }
+            
+            return true;
         }
     });
 
