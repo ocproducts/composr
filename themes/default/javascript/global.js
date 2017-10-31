@@ -320,8 +320,6 @@
         /**@method*/
         camelCase: camelCase,
         /**@method*/
-        uspFromUrl: uspFromUrl,
-        /**@method*/
         each: each,
         /**@method*/
         extend: extend,
@@ -828,14 +826,14 @@
     }
 
     /**
-     * Inspired by jQuery.isNumeric
      * @param val
      * @returns {boolean}
      */
     function isNumeric(val) {
-        // parseFloat NaNs numeric-cast false positives ("")
-        // ...but misinterprets leading-number strings, particularly hex literals ("0x...")
-        val = (typeof val === 'string') ? parseFloat(val) : val;
+        if (typeof val === 'string') {
+            return (val !== '') && isFinite(val);
+        }
+        
         return Number.isFinite(val);
     }
 
@@ -1339,26 +1337,6 @@
     }
 
     /**
-     * Extracts query string from a url
-     * @param {string} url
-     * @returns {string}
-     */
-    function queryStringFromUrl(url) {
-        var query = strVal(url).split('?', 2)[1]; // Grab query string
-        return (query || '').split('#')[0]; // Remove hash fragment (if any)
-    }
-
-    /**
-     * Returns a `URLSearchParams` instance
-     * @param {string} url
-     * @returns { URLSearchParams }
-     */
-    function uspFromUrl(url) {
-        var query = queryStringFromUrl(url);
-        return new URLSearchParams(query);
-    }
-
-    /**
      * @param usp { URLSearchParams }
      * @returns {object}
      */
@@ -1427,13 +1405,8 @@
          */
         schemeRelative: function schemeRelative(url) {
             url = strVal(url);
-    
-            if (isAbsoluteOrSchemeRelative(url)) {
-                return url.replace(rgxProtocol, '');
-            }
-    
-            // Relative url
-            return $cms.$BASE_URL().replace(rgxProtocol, '') + (url.startsWith('/') ? url : '/' + url);
+            
+            return $cms.url(url).replace(rgxProtocol, '');
         },
         
         setSearch: function setSearch(url, params, value) {
@@ -2465,12 +2438,12 @@
             // Handle: [ owner, key, value ] args
             // Always use camelCase key (gh-2257)
             if (typeof data === 'string') {
-                cache[camelCase(data)] = value;
+                cache[camelCase(data)] = isNumeric(value) ? Number(value) : value;
                 // Handle: [ owner, { properties } ] args
             } else {
                 // Copy the properties one-by-one to the cache object
                 for (prop in data) {
-                    cache[camelCase(prop)] = data[prop];
+                    cache[camelCase(prop)] = isNumeric(data[prop]) ? Number(data[prop]) : data[prop];
                 }
             }
             return cache;
@@ -2564,8 +2537,6 @@
 
             if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) { // Object or array?
                 data = parseJson5(data);
-            } else if (isNumeric(data)) { // A number?
-                data = Number(data);
             }
 
             // Make sure we set the data so it isn't changed later
@@ -2618,7 +2589,6 @@
             }
             // Attempt to "discover" the data in
             // HTML5 custom data-* attrs
-
             try {
                 data = dataAttr(el, key);
             } catch (e) {
