@@ -134,10 +134,8 @@
          * @returns {string}
          */
         $KEEP: function $KEEP(starting, forceSession) {
-            var keep = $cms.uspKeep.toString();
-            if (forceSession && !keep.startsWith('keep_session=') && !keep.includes('&keep_session=') && (getSessionId() !== '')) {
-                keep = (keep === '') ? ('keep_session=' + getSessionId()) : (keep + '&keep_session=' + getSessionId());
-            }
+            var keep = pageKeepSearchParams(forceSession).toString();
+            
             if (keep === '') {
                 return '';
             }
@@ -149,7 +147,7 @@
          * @returns {string}
          */
         $_GET: function $_GET(name) {
-            return strVal($cms.usp.get(name));
+            return strVal($cms.pageSearchParams().get(name));
         },
         /**
          * @method
@@ -158,11 +156,11 @@
         $PREVIEW_URL: function $PREVIEW_URL() {
             var value = '{$FIND_SCRIPT_NOHTTP;,preview}';
             value += '?page=' + urlencode(getPageName());
-            value += '&type=' + urlencode($cms.usp.get('type'));
+            value += '&type=' + urlencode($cms.pageSearchParams().get('type'));
             return value;
 
             function getPageName() {
-                var pageName = $cms.usp.has('page') ? $cms.usp.get('page') : '';
+                var pageName = $cms.pageSearchParams().has('page') ? $cms.pageSearchParams().get('page') : '';
                 if (pageName === '') {
                     pageName = $cms.zoneDefaultPage();
                 }
@@ -347,6 +345,12 @@
         inherits: inherits,
         /**@method*/
         baseUrl: baseUrl,
+        /**@method*/
+        pageUrl: pageUrl,
+        /**@method*/
+        pageSearchParams: pageSearchParams,
+        /**@method*/
+        pageKeepSearchParams: pageKeepSearchParams,
         /**@method*/
         img: img,
         /**@method*/
@@ -558,54 +562,6 @@
                 fn();
             }
         });
-    }
-
-    /**
-     * A URLSearchParams object for the current page URL's query string
-     * @see https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
-     * @type { URLSearchParams }
-     */
-    $cms.usp = uspFromUrl(window.location.href);
-    /**
-     * Only has the `keep_*` parameters
-     * @type { URLSearchParams }
-     */
-    $cms.uspKeep = createUspKeep();
-    /**
-     * Same as $cms.uspKeep and always has `keep_session` where available
-     * @type { URLSearchParams }
-     */
-    $cms.uspKeepSession = createUspKeepSession();
-    
-    window.addEventListener('popstate', function () {
-        $cms.usp = uspFromUrl(window.location.href);
-        $cms.uspKeep = createUspKeep();
-        $cms.uspKeepSession = createUspKeepSession();
-    });
-    
-    function createUspKeep() {
-        var uspKeep = new URLSearchParams();
-        
-        eachIter($cms.usp.entries(), function (entry) {
-            var name = entry[0],
-                value = entry[1];
-
-            if (name.startsWith('keep_')) {
-                uspKeep.set(name, value);
-            }
-        });
-        
-        return uspKeep;
-    }
-    
-    function createUspKeepSession() {
-        var uspKeepSession = createUspKeep();
-
-        if (!uspKeepSession.has('keep_session') && ($cms.getSessionId() !== '')) {
-            uspKeepSession.set('keep_session', $cms.getSessionId());
-        }
-        
-        return uspKeepSession;
     }
 
     // Generate a unique integer id (unique within the entire client session).
@@ -1558,7 +1514,44 @@
             return window.location.protocol + relativeUrl;
         }
 
-        return  $cms.$BASE_URL() + (relativeUrl.startsWith('/') ? '' : '/') + relativeUrl;
+        return $cms.$BASE_URL() + (relativeUrl.startsWith('/') ? '' : '/') + relativeUrl;
+    }
+
+    /**
+     * Returns a { URL } instance for the current page
+     * @see https://developer.mozilla.org/en-US/docs/Web/API/URL
+     * @return { URL }
+     */
+    function pageUrl() {
+        return new URL(window.location);
+    }
+
+    /**
+     * Returns a { URLSearchParams } instance for the current page URL's query string
+     * @see https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
+     * @return { URLSearchParams }
+     */
+    function pageSearchParams() {
+        return pageUrl().searchParams;
+    }
+    
+    function pageKeepSearchParams(forceSession) {
+        var keepSp = new URLSearchParams();
+
+        eachIter($cms.pageSearchParams().entries(), function (entry) {
+            var name = entry[0],
+                value = entry[1];
+
+            if (name.startsWith('keep_')) {
+                keepSp.set(name, value);
+            }
+        });
+
+        if (forceSession && !keepSp.has('keep_session') && ($cms.getSessionId() !== '')) {
+            keepSp.set('keep_session', $cms.getSessionId());
+        }
+        
+        return keepSp;
     }
 
     function isAbsolute(url) {
@@ -4914,19 +4907,13 @@
      * @returns {string}
      */
     function maintainThemeInLink(url) {
-        url = strVal(url);
-
-        var usp = $cms.uspFromUrl(url),
-            theme = encodeURIComponent($cms.$THEME());
-
-        if (usp.keys().next().done) {
-            // `url` doesn't have a query string
-            return url + '?utheme=' + theme;
-        } else if (!usp.has('utheme') && !usp.has('keep_theme')) {
-            return url + '&utheme=' + theme;
+        url = $cms.url(url);
+        
+        if (!url.searchParams.has('utheme') && !url.searchParams.has('keep_theme')) {
+            url.searchParams.set('utheme', $cms.$THEME());
         }
 
-        return url;
+        return url.toString();
     }
 
     /**
@@ -4935,28 +4922,20 @@
      * @return {string}
      */
     function addKeepStub(url) {
-        url = strVal(url);
+        url = $cms.url(url);
 
-        var stub = $cms.uspKeepSession.toString(),
-            urlUsp;
+        var keepSp = pageKeepSearchParams(true);
         
-        if ((stub === '') || (url === '') || !url.includes('?')) {
-            return (stub === '') ? url : (url + '?' + stub);
-        }
-        
-        urlUsp = uspFromUrl(url);
-        url = url.split('?')[0];
-        
-        eachIter($cms.uspKeepSession.entries(), function (entry) {
+        eachIter(keepSp.entries(), function (entry) {
             var name = entry[0],
                 value = entry[1];
 
-            if (!urlUsp.has(name)) {
-                urlUsp.set(name, value);
+            if (!url.searchParams.has(name)) {
+                url.searchParams.set(name, value);
             }
         });
         
-        return url + '?' + urlUsp;
+        return url.toString();
     }
 
     /**
@@ -8007,8 +7986,8 @@
                 window.ga('set', 'userId', strVal($cms.$MEMBER()));
             }
 
-            if ($cms.usp.has('_t')) {
-                window.ga('send', 'event', 'tracking__' + strVal($cms.usp.get('_t')), window.location.href);
+            if ($cms.pageSearchParams().has('_t')) {
+                window.ga('send', 'event', 'tracking__' + strVal($cms.pageSearchParams().get('_t')), window.location.href);
             }
 
             window.ga('send', 'pageview');
@@ -8047,7 +8026,7 @@
             m2.parentNode.removeChild(m2);
         }
 
-        if (boolVal($cms.usp.get('wide_print'))) {
+        if (boolVal($cms.pageSearchParams().get('wide_print'))) {
             try {
                 window.print();
             } catch (ignore) {}
@@ -8623,7 +8602,7 @@
             var url = window.location.href,
                 append = '?';
 
-            if ($cms.$JS_ON() || boolVal($cms.usp.get('keep_has_js')) || url.includes('upgrader.php') || url.includes('webdav.php')) {
+            if ($cms.$JS_ON() || boolVal($cms.pageSearchParams().get('keep_has_js')) || url.includes('upgrader.php') || url.includes('webdav.php')) {
                 return;
             }
 
@@ -9662,7 +9641,7 @@
             m2.parentNode.removeChild(m2);
         }
 
-        if (boolVal($cms.usp.get('wide_print'))) {
+        if (boolVal($cms.pageSearchParams().get('wide_print'))) {
             try {
                 window.print();
             } catch (ignore) {}
