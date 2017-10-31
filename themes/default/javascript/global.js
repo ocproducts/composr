@@ -2438,12 +2438,12 @@
             // Handle: [ owner, key, value ] args
             // Always use camelCase key (gh-2257)
             if (typeof data === 'string') {
-                cache[camelCase(data)] = isNumeric(value) ? Number(value) : value;
+                cache[camelCase(data)] = value;
                 // Handle: [ owner, { properties } ] args
             } else {
                 // Copy the properties one-by-one to the cache object
                 for (prop in data) {
-                    cache[camelCase(prop)] = isNumeric(data[prop]) ? Number(data[prop]) : data[prop];
+                    cache[camelCase(prop)] = data[prop];
                 }
             }
             return cache;
@@ -2537,6 +2537,8 @@
 
             if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) { // Object or array?
                 data = parseJson5(data);
+            } else if (isNumeric(data)) { // A number?
+                data = Number(data);
             }
 
             // Make sure we set the data so it isn't changed later
