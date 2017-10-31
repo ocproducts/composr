@@ -1443,25 +1443,51 @@
 
         return array;
     }
-
-    /* Generate url */
-
+    
+    var rgxProtocol = /^[a-z0-9\-\.]+:(?=\/\/)/i,
+        rgxHttp = /^https?:(?=\/\/)/i,
+        rgxRel = /^\/\//i,
+        rgxHttpRel = /^(?:https?:)?(?=\/\/)/i;
+    /**
+     * @param relativeUrl
+     * @return { string }
+     */
     $cms.url = function url(relativeUrl) {
         return baseUrl(relativeUrl);
     };
 
     extendDeep($cms.url, /**@lends $cms.url*/{
+        /**
+         * @param {string} url - An absolute or relative URL. If url is a relative URL, `base` is required, and will be used as the base URL. If url is an absolute URL, a given base will be ignored.
+         * @param {string} [base] - The base URL to use in case url is a relative URL. If not specified, it defaults to ''.
+         * @return {URL}
+         */
+        create: function create(url, base) {
+            url = strVal(url);
+            base = strVal(base) || $cms.$BASE_URL();
+
+            return new URL(url, base);
+        },
         isAbsolute: isAbsolute,
         isRelative: isRelative,
         isSchemeRelative: isSchemeRelative,
         isAbsoluteOrSchemeRelative: isAbsoluteOrSchemeRelative,
-        schemeRelative: schemeRelative
+        /**
+         * Make a URL scheme-relative
+         * @param url
+         * @returns {string}
+         */
+        schemeRelative: function schemeRelative(url) {
+            url = strVal(url);
+    
+            if (isAbsoluteOrSchemeRelative(url)) {
+                return strVal(url).replace(rgxProtocol, '');
+            }
+    
+            // Relative url
+            return $cms.$BASE_URL().replace(rgxProtocol, '') + (url.startsWith('/') ? url : '/' + url);
+        }
     });
-
-    var rgxProtocol = /^[a-z0-9\-\.]+:(?=\/\/)/i,
-        rgxHttp = /^https?:(?=\/\/)/i,
-        rgxRel = /^\/\//i,
-        rgxHttpRel = /^(?:https?:)?(?=\/\/)/i;
 
     /**
      * @param relativeUrl
@@ -1503,22 +1529,6 @@
     function isAbsoluteOrSchemeRelative(url) {
         url = strVal(url);
         return rgxHttpRel.test(url);
-    }
-
-    /**
-     * Make a URL scheme-relative
-     * @param url
-     * @returns {string}
-     */
-    function schemeRelative(url) {
-        url = strVal(url);
-        
-        if (isAbsoluteOrSchemeRelative(url)) {
-            return strVal(url).replace(rgxProtocol, '');
-        }
-        
-        // Relative url
-        return $cms.$BASE_URL().replace(rgxProtocol, '') + (url.startsWith('/') ? url : '/' + url);
     }
 
     /**

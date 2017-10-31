@@ -1613,6 +1613,10 @@
      * @param defaultSet
      */
     function standardAlternateFieldsWithin(setName, somethingRequired, defaultSet) {
+        setName = strVal(setName);
+        somethingRequired = Boolean(somethingRequired);
+        
+        
         var form = $cms.dom.closest('#set_wrapper_' + setName, 'form');
         
         var fields = form.elements[setName],
@@ -1630,7 +1634,7 @@
             }
         }
 
-        standardAlternateFields(fieldNames, somethingRequired, defaultSet);
+        standardAlternateFields(fieldNames, somethingRequired, false, defaultSet);
 
         // Do dynamic $cms.form.setLocked/$cms.form.setRequired such that one of these must be set, but only one may be
         function standardAlternateFields(fieldNames, somethingRequired, secondRun, defaultSet) {
@@ -1648,10 +1652,10 @@
             for (i = 0; i < fieldNames.length; i++) {
                 field = fields[i];
                 if ((!field) || (field.alternating === undefined)) { // ... but only if not already set
-                    var selfFunction = function () {
+                    // We'll re-call ourself on change
+                    _standardAlternateFieldCreateListeners(field, function () {
                         standardAlternateFields(fieldNames, somethingRequired, true, '');
-                    }; // We'll re-call ourself on change
-                    _standardAlternateFieldCreateListeners(field, selfFunction);
+                    });
                 }
             }
 
