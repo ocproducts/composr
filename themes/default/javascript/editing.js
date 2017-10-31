@@ -528,13 +528,12 @@
             return;
         }
 
-        var comcodes = editor.document.$.querySelector('body').querySelectorAll('.cms_keep_ui_controlled');
+        var comcodes = editor.document.$.body.querySelectorAll('.cms_keep_ui_controlled');
 
         for (var i = 0; i < comcodes.length; i++) {
             if (comcodes[i].onmouseout) {
                 continue;
             }
-
             comcodes[i].origTitle = comcodes[i].title;
             comcodes[i].onmouseout = function () {
                 $cms.ui.deactivateTooltip(this);
@@ -585,9 +584,10 @@
                     if (this.id === '') {
                         this.id = 'comcode_tag_' + Math.round(Math.random() * 10000000);
                     }
-                    var tagType = this.title.replace(/^\[/, '').replace(/[= \]](.|\n)*$/, '');
+                    var tagType = (this.origTitle ? this.origTitle : this.title).replace(/^\[/, '').replace(/[= \]](.|\n)*$/, '');
+                    
                     if (tagType === 'block') {
-                        var blockName = this.title.replace(/\[\/block\]$/, '').replace(/^(.|\s)*\]/, '');
+                        var blockName = (this.origTitle ? this.origTitle : this.title).replace(/\[\/block\]$/, '').replace(/^(.|\s)*\]/, '');
                         var url = '{$FIND_SCRIPT;,block_helper}?type=step2&block=' + encodeURIComponent(blockName) + '&field_name=' + fieldName + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + $cms.$KEEP();
                         url = url + '&block_type=' + (((fieldName.indexOf('edit_panel_') === -1) && (window.location.href.indexOf(':panel_') === -1)) ? 'main' : 'side');
                         $cms.ui.open($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
@@ -603,60 +603,58 @@
                     event = editor.window.$.event;
                 }
                 
-                if (window.$cms.ui.activateTooltip) {
-                    var tagText = '';
-                    if (this.nodeName.toLowerCase() === 'input') {
-                        tagText = this.origTitle;
-                    } else {
-                        tagText = $cms.dom.html(this);
+                var tagText = '';
+                if (this.nodeName.toLowerCase() === 'input') {
+                    tagText = this.origTitle;
+                } else {
+                    tagText = $cms.dom.html(this);
+                }
+
+                this.style.cursor = 'pointer';
+
+                var eventCopy = {};
+                if (event) {
+                    if (event.pageX) {
+                        eventCopy.pageX = 3000;
+                    }
+                    if (event.clientX) {
+                        eventCopy.clientX = 3000;
+                    }
+                    if (event.pageY) {
+                        eventCopy.pageY = 3000;
+                    }
+                    if (event.clientY) {
+                        eventCopy.clientY = 3000;
                     }
 
-                    this.style.cursor = 'pointer';
+                    var selfOb = this;
+                    if ((this.renderedTooltip === undefined && !selfOb.isOver) || (selfOb.tagText != tagText)) {
+                        selfOb.tagText = tagText;
+                        selfOb.isOver = true;
 
-                    var eventCopy = {};
-                    if (event) {
-                        if (event.pageX) {
-                            eventCopy.pageX = 3000;
-                        }
-                        if (event.clientX) {
-                            eventCopy.clientX = 3000;
-                        }
-                        if (event.pageY) {
-                            eventCopy.pageY = 3000;
-                        }
-                        if (event.clientY) {
-                            eventCopy.clientY = 3000;
+                        var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&box_title={!PREVIEW&;^}' + $cms.$KEEP());
+                        if (window.location.href.includes('topics')) {
+                            url += '&forum_db=1';
                         }
 
-                        var selfOb = this;
-                        if ((this.renderedTooltip === undefined && !selfOb.isOver) || (selfOb.tagText != tagText)) {
-                            selfOb.tagText = tagText;
-                            selfOb.isOver = true;
+                        $cms.doAjaxRequest(url, function (responseXml) {
+                            var ajaxResult = responseXml && responseXml.querySelector('result');
 
-                            var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&box_title={!PREVIEW&;^}' + $cms.$KEEP());
-                            if (window.location.href.includes('topics')) {
-                                url += '&forum_db=1';
+                            if (ajaxResult) {
+                                var tmpRendered = ajaxResult.textContent;
+                                if (tmpRendered.indexOf('{!CCP_ERROR_STUB;^}') === -1) {
+                                    selfOb.renderedTooltip = tmpRendered;
+                                }
                             }
-
-                            $cms.doAjaxRequest(url, function (responseXml) {
-                                var ajaxResult = responseXml && responseXml.querySelector('result');
-
-                                if (ajaxResult) {
-                                    var tmpRendered = ajaxResult.textContent;
-                                    if (tmpRendered.indexOf('{!CCP_ERROR_STUB;^}') === -1) {
-                                        selfOb.renderedTooltip = tmpRendered;
-                                    }
+                            if (selfOb.renderedTooltip !== undefined) {
+                                if (selfOb.isOver) {
+                                    $cms.ui.activateTooltip(selfOb, eventCopy, selfOb.renderedTooltip, 'auto', null, null, false, true);
+                                    selfOb.title = selfOb.origTitle;
                                 }
-                                if (selfOb.renderedTooltip !== undefined) {
-                                    if (selfOb.isOver) {
-                                        $cms.ui.activateTooltip(selfOb, eventCopy, selfOb.renderedTooltip, 'auto', null, null, false, true);
-                                        selfOb.title = selfOb.origTitle;
-                                    }
-                                }
-                            }, 'data=' + encodeURIComponent('[semihtml]' + tagText.replace(/<\/?span[^>]*>/gi, '')).substr(0, 1000).replace(new RegExp(String.fromCharCode(8203), 'g'), '') + '[/semihtml]');
-                        } else if (this.renderedTooltip !== undefined) {
-                            $cms.ui.activateTooltip(selfOb, eventCopy, selfOb.renderedTooltip, '400px', null, null, false, true);
-                        }
+                            }
+                        }, 'data=' + encodeURIComponent('[semihtml]' + tagText.replace(/<\/?span[^>]*>/gi, '')).substr(0, 1000).replace(new RegExp(String.fromCharCode(8203), 'g'), '') + '[/semihtml]');
+                    } else if (this.renderedTooltip !== undefined) {
+                        $cms.ui.activateTooltip(selfOb, eventCopy, selfOb.renderedTooltip, '400px', null, null, false, true);
                     }
                 }
             };
