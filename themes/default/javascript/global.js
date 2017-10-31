@@ -1446,14 +1446,17 @@
     
     var rgxProtocol = /^[a-z0-9\-\.]+:(?=\/\/)/i,
         rgxHttp = /^https?:(?=\/\/)/i,
-        rgxRel = /^\/\//i,
         rgxHttpRel = /^(?:https?:)?(?=\/\/)/i;
     /**
-     * @param relativeUrl
-     * @return { string }
+     * @param {string} url - An absolute or relative URL. If url is a relative URL, `base` will be used as the base URL. If url is an absolute URL, a given `base` will be ignored.
+     * @param {string} [base] - The base URL to use in case url is a relative URL. If not specified, it defaults to $cms.$BASE_URL().
+     * @return { URL }
      */
-    $cms.url = function url(relativeUrl) {
-        return baseUrl(relativeUrl);
+    $cms.url = function url(url, base) {
+        url = strVal(url);
+        base = strVal(base) || $cms.$BASE_URL();
+
+        return new URL(url, base);
     };
 
     extend($cms.url, /**@lends $cms.url*/{
@@ -1461,17 +1464,6 @@
         isRelative: isRelative,
         isSchemeRelative: isSchemeRelative,
         isAbsoluteOrSchemeRelative: isAbsoluteOrSchemeRelative,
-        /**
-         * @param {string} url - An absolute or relative URL. If url is a relative URL, `base` will be used as the base URL. If url is an absolute URL, a given `base` will be ignored.
-         * @param {string} [base] - The base URL to use in case url is a relative URL. If not specified, it defaults to $cms.$BASE_URL().
-         * @return { URL }
-         */
-        create: function create(url, base) {
-            url = strVal(url);
-            base = strVal(base) || $cms.$BASE_URL();
-
-            return new URL(url, base);
-        },
         /**
          * Make a URL scheme-relative
          * @param url
@@ -1490,7 +1482,7 @@
         
         setSearch: function setSearch(url, params, value) {
             var isO = isObj(url), paramName, paramValue;
-            url = isO ? url : $cms.url.create(url);
+            url = isO ? url : $cms.url(url);
             
             if (isScalar(params)) {
                 paramName = params;
@@ -1510,7 +1502,7 @@
         removeSearch: function removeSearch(url, paramNames) {
             var isO = isObj(url);
             
-            url = isO ? url : $cms.url.create(url);
+            url = isO ? url : $cms.url(url);
             paramNames = arrVal(paramNames);
             
             paramNames.forEach(function (paramName) {
@@ -1522,7 +1514,7 @@
         
         hasSearch: function hasSearch(url, params, value) {
             var isO = isObj(url), paramName, paramValue;
-            url = isO ? url : $cms.url.create(url);
+            url = isO ? url : $cms.url(url);
             
             if (isScalar(params)) {
                 paramName = params;
@@ -1555,7 +1547,7 @@
         relativeUrl = strVal(relativeUrl);
 
         if (relativeUrl === '') {
-            return $cms.$BASE_URL() + '/';
+            return $cms.$BASE_URL();
         }
 
         if (isAbsolute(relativeUrl)) {
