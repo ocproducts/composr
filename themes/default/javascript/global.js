@@ -1456,11 +1456,15 @@
         return baseUrl(relativeUrl);
     };
 
-    extendDeep($cms.url, /**@lends $cms.url*/{
+    extend($cms.url, /**@lends $cms.url*/{
+        isAbsolute: isAbsolute,
+        isRelative: isRelative,
+        isSchemeRelative: isSchemeRelative,
+        isAbsoluteOrSchemeRelative: isAbsoluteOrSchemeRelative,
         /**
-         * @param {string} url - An absolute or relative URL. If url is a relative URL, `base` is required, and will be used as the base URL. If url is an absolute URL, a given base will be ignored.
-         * @param {string} [base] - The base URL to use in case url is a relative URL. If not specified, it defaults to ''.
-         * @return {URL}
+         * @param {string} url - An absolute or relative URL. If url is a relative URL, `base` will be used as the base URL. If url is an absolute URL, a given `base` will be ignored.
+         * @param {string} [base] - The base URL to use in case url is a relative URL. If not specified, it defaults to $cms.$BASE_URL().
+         * @return { URL }
          */
         create: function create(url, base) {
             url = strVal(url);
@@ -1468,10 +1472,6 @@
 
             return new URL(url, base);
         },
-        isAbsolute: isAbsolute,
-        isRelative: isRelative,
-        isSchemeRelative: isSchemeRelative,
-        isAbsoluteOrSchemeRelative: isAbsoluteOrSchemeRelative,
         /**
          * Make a URL scheme-relative
          * @param url
@@ -1481,11 +1481,23 @@
             url = strVal(url);
     
             if (isAbsoluteOrSchemeRelative(url)) {
-                return strVal(url).replace(rgxProtocol, '');
+                return url.replace(rgxProtocol, '');
             }
     
             // Relative url
             return $cms.$BASE_URL().replace(rgxProtocol, '') + (url.startsWith('/') ? url : '/' + url);
+        },
+        
+        addSearch: function addSearchParams(url, paramsObj) {
+            
+        },
+        
+        removeSearch: function removeSearchParams(url, paramNames) {
+            paramNames = arrVal(paramNames);
+        },
+        
+        hasSearch: function hasSearchParams(url, paramsObj) {
+            
         }
     });
 

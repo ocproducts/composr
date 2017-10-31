@@ -1381,6 +1381,7 @@ class Module_admin_setupwizard
 
         // Install test content
         if (post_param_integer('install_test_content', 0) == 1) {
+            require_code('setupwizard');
             install_test_content();
         }
 
@@ -1486,7 +1487,7 @@ class Module_admin_setupwizard
 
         // Show nice interface to start adding pages
         return do_next_manager(
-            $this->title, 
+            $this->title,
             do_lang_tempcode('SUCCESS'),
             array(
                 array('menu/cms/comcode_page_edit', array('cms_comcode_pages', array('type' => 'edit'), get_module_zone('cms_comcode_pages')), do_lang('COMCODE_PAGE_ADD')),

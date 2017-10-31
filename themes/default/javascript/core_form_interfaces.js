@@ -1639,6 +1639,7 @@
         // Do dynamic $cms.form.setLocked/$cms.form.setRequired such that one of these must be set, but only one may be
         function standardAlternateFields(fieldNames, somethingRequired, secondRun, defaultSet) {
             secondRun = Boolean(secondRun);
+            defaultSet = strVal(defaultSet);
 
             // Look up field objects
             var fields = [], i, field;
@@ -1662,7 +1663,7 @@
             // Update things
             for (i = 0; i < fieldNames.length; i++) {
                 field = fields[i];
-                if ((defaultSet == '') && (_standardAlternateFieldIsFilledIn(field, secondRun, false)) || (defaultSet != '') && (fieldNames[i].indexOf('_' + defaultSet) !== -1)) {
+                if ((defaultSet === '') && (_standardAlternateFieldIsFilledIn(field, secondRun, false)) || (defaultSet !== '') && (fieldNames[i].indexOf('_' + defaultSet) !== -1)) {
                     _standardAlternateFieldUpdateEditability(field, fields, somethingRequired);
                     return;
                 }
@@ -1670,7 +1671,7 @@
 
             // Hmm, force first one chosen then
             for (i = 0; i < fieldNames.length; i++) {
-                if (fieldNames[i] == '') {
+                if (fieldNames[i] === '') {
                     var radioButton = document.getElementById('choose_'); // Radio button handles field alternation
                     radioButton.checked = true;
                     _standardAlternateFieldUpdateEditability(null, fields, somethingRequired);
