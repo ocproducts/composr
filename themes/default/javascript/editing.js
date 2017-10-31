@@ -523,6 +523,7 @@
         }
     }
 
+    
     function findTagsInEditor(editor, element) {
         if (!editor.document || !editor.document.$ || !editor.document.$.querySelector('body')) {
             return;

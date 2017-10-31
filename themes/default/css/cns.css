@@ -353,6 +353,7 @@ div.cns_table_footer>div>div {
 .cns_post_details {
 	text-align: left;
 	padding: 0.6em 0.2em !important;
+	overflow: auto;
 }
 
 .cns_post_details_date {

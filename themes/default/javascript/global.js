@@ -7907,7 +7907,7 @@
                 }
 
                 $cms.requireJavascript(['jquery', 'select2']).then(function () {
-                    var els = $cms.dom.$$$(context, '[data-cms-select2]');
+                    var els = $cms.once($cms.dom.$$$(context, '[data-cms-select2]'), 'behavior.select2Plugin');
 
                     // Select2 plugin hook
                     els.forEach(function (el) {

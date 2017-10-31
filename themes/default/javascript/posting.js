@@ -209,7 +209,7 @@
                 });
             }
 
-            var url = '{$FIND_SCRIPT;,comcode_helper}';
+            var url = '{$FIND_SCRIPT_NOHTTP;,comcode_helper}';
             url += '?field_name=' + fieldName;
             url += '&type=step2';
             url += '&tag=' + tag;
