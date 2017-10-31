@@ -7666,7 +7666,7 @@
         // Implementation for [data-view]
         initializeViews: {
             attach: function (context) {
-                $cms.dom.$$$(context, '[data-view]').forEach(function (el) {
+                $cms.once($cms.dom.$$$(context, '[data-view]'), 'behavior.initializeViews').forEach(function (el) {
                     var params = objVal($cms.dom.data(el, 'viewParams')),
                         view, viewOptions = { el: el };
 
@@ -7689,7 +7689,7 @@
         // Implementation for [data-tpl]
         initializeTemplates: {
             attach: function (context) {
-                $cms.dom.$$$(context, '[data-tpl]').forEach(function (el) {
+                $cms.once($cms.dom.$$$(context, '[data-tpl]'), 'behavior.initializeTemplates').forEach(function (el) {
                     var template = el.dataset.tpl,
                         params = objVal($cms.dom.data(el, 'tplParams'));
 
@@ -7710,7 +7710,7 @@
 
         initializeAnchors: {
             attach: function (context) {
-                var anchors = $cms.dom.$$$(context, 'a'),
+                var anchors = $cms.once($cms.dom.$$$(context, 'a'), 'behavior.initializeAnchors'),
                     hasBaseEl = !!document.querySelector('base');
 
                 anchors.forEach(function (anchor) {
@@ -7744,7 +7744,7 @@
 
         initializeForms: {
             attach: function (context) {
-                var forms = $cms.dom.$$$(context, 'form');
+                var forms = $cms.once($cms.dom.$$$(context, 'form'), 'behavior.initializeForms');
 
                 forms.forEach(function (form) {
                     // HTML editor
@@ -7795,7 +7795,7 @@
 
         initializeInputs: {
             attach: function (context) {
-                var inputs = $cms.dom.$$$(context, 'input');
+                var inputs = $cms.once($cms.dom.$$$(context, 'input'), 'behavior.initializeInputs');
 
                 inputs.forEach(function (input) {
                     if (input.type === 'checkbox') {
@@ -7810,7 +7810,7 @@
 
         initializeTables: {
             attach: function attach(context) {
-                var tables = $cms.dom.$$$(context, 'table');
+                var tables = $cms.once($cms.dom.$$$(context, 'table'), 'behavior.initializeTables');
 
                 tables.forEach(function (table) {
                     // Responsive table prep work
@@ -7837,7 +7837,7 @@
 
         columnHeightBalancing: {
             attach: function attach(context) {
-                var cols = $cms.dom.$$$(context, '.col_balance_height'),
+                var cols = $cms.once($cms.dom.$$$(context, '.col_balance_height'), 'behavior.columnHeightBalancing'),
                     i, max, j, height;
 
                 for (i = 0; i < cols.length; i++) {
@@ -7862,7 +7862,7 @@
                     return;
                 }
 
-                $cms.dom.$$$(context, 'img:not([data-cms-rich-tooltip])').forEach(function (img) {
+                $cms.once($cms.dom.$$$(context, 'img:not([data-cms-rich-tooltip])'), 'behavior.imageTooltips').forEach(function (img) {
                     convertTooltip(img);
                 });
             }
@@ -7882,7 +7882,7 @@
         // Implementation for [data-js-function-calls]
         jsFunctionCalls: {
             attach: function (context) {
-                var els = $cms.dom.$$$(context, '[data-js-function-calls]');
+                var els = $cms.once($cms.dom.$$$(context, '[data-js-function-calls]'), 'behavior.jsFunctionCalls');
 
                 els.forEach(function (el) {
                     var jsFunctionCalls = $cms.dom.data(el, 'jsFunctionCalls');
@@ -7923,7 +7923,7 @@
         // Implementation for img[data-gd-text]
         gdTextImages: {
             attach: function (context) {
-                var els = $cms.dom.$$$(context, 'img[data-gd-text]');
+                var els = $cms.once($cms.dom.$$$(context, 'img[data-gd-text]'), 'behavior.gdTextImages');
 
                 els.forEach(function (img) {
                     gdImageTransform(img);
