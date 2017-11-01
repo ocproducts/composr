@@ -10,7 +10,7 @@
 
 {$,Polyfills for everyone LEGACY}
 <script {$CSP_NONCE_HTML} defer="defer" src="{$BASE_URL*}/data/polyfills/general.js"></script>
-<script {$CSP_NONCE_HTML} defer="defer" src="{$BASE_URL*}/data/polyfills/url-search-params.max.js"></script>
+<script {$CSP_NONCE_HTML} defer="defer" src="{$BASE_URL*}/data/polyfills/url.js"></script>
 <script {$CSP_NONCE_HTML} defer="defer" src="{$BASE_URL*}/data/polyfills/keyboardevent-key-polyfill.js"></script>
 <script {$CSP_NONCE_HTML} defer="defer" src="{$BASE_URL*}/data/polyfills/fetch.js"></script>
 <script {$CSP_NONCE_HTML} defer="defer" src="{$BASE_URL*}/data/polyfills/web-animations.min.js"></script>

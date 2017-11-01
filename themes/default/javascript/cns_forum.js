@@ -77,7 +77,7 @@
         var posterNameIfGuest = document.getElementById("poster_name_if_guest");
         if (posterNameIfGuest) {
             var crf = function () {
-                if (posterNameIfGuest.value == "{!GUEST;}") {
+                if (posterNameIfGuest.value === "{!GUEST;}") {
                     posterNameIfGuest.value = "";
                 }
             };

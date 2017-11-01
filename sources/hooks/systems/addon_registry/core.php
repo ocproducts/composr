@@ -833,7 +833,7 @@ class Hook_addon_registry_core
             'data/polyfills/promise.js',
             'data/polyfills/require.js',
             'data/polyfills/require.min.js',
-            'data/polyfills/url-search-params.max.js',
+            'data/polyfills/url.js',
             'data/polyfills/web-animations.min.js',
             'data/polyfills/index.html',
             'data/polyfills/log-loaded-scripts.js',

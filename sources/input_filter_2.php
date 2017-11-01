@@ -30,8 +30,6 @@ function modsecurity_workaround_enable()
     global $MODSECURITY_WORKAROUND_ENABLED;
     $MODSECURITY_WORKAROUND_ENABLED = true;
 
-    require_javascript('jquery');
-
     $data = post_param_string('_data', null);
     if ($data !== null) {
         $remapper = array(
