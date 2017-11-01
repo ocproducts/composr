@@ -315,7 +315,7 @@
         });
 
         $cms.dom.on(container, 'submit', '.js-submit-modesecurity-workaround', function (e, form) {
-            if ('{$VALUE_OPTION;,disable_js_modsecurity_workaround}' !== '1') {
+            if ('{$VALUE_OPTION;,disable_modsecurity_workaround}' !== '1') {
                 e.preventDefault();
                 $cms.form.modSecurityWorkaround(form);
             }
