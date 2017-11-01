@@ -1307,8 +1307,6 @@
             $cms.dom.submit(tempForm);
             tempForm.parentNode.removeChild(tempForm);
         });
-
-        return false;
     };
 
 

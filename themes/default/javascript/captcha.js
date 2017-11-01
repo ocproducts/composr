@@ -1,12 +1,15 @@
 (function ($cms) {
     'use strict';
     
-    var $CONFIG_OPTION_recaptcha_site_key = '{$CONFIG_OPTION;^/,recaptcha_site_key}';
+    var $CONFIG_OPTION_recaptcha_site_key = '{$CONFIG_OPTION;^,recaptcha_site_key}';
 
+    var onLoadCallbackName = 'recaptchaLoaded' + $cms.random();
+    
     var recaptchaLoadedPromise = new Promise(function (resolve) {
         /* Called from reCAPTCHA's recaptcha/api.js, when it loads. */
-        window.recaptchaLoaded = function recaptchaLoaded() {
+        window[onLoadCallbackName] = function () {
             resolve();
+            delete window[onLoadCallbackName];
         }
     });
     
@@ -14,13 +17,13 @@
         // Implementation for [data-recaptcha-captcha]
         initializeRecaptchaCaptcha: {
             attach: function attach(context) {
-                var captchaEls = $cms.dom.$$$(context, '[data-recaptcha-captcha]');
+                var captchaEls = $cms.once($cms.dom.$$$(context, '[data-recaptcha-captcha]'), 'behavior.initializeRecaptchaCaptcha');
 
                 if (captchaEls.length < 1) {
                     return;
                 }
                 
-                $cms.requireJavascript('https://www.google.com/recaptcha/api.js?render=explicit&onload=recaptchaLoaded&hl=' + $cms.$LANG().toLowerCase());
+                $cms.requireJavascript('https://www.google.com/recaptcha/api.js?render=explicit&onload=' + onLoadCallbackName + '&hl=' + $cms.$LANG().toLowerCase());
                 
                 recaptchaLoadedPromise.then(function () {
                     captchaEls.forEach(function (captchaEl) {
