@@ -1037,6 +1037,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/tut_repository/os_webdav.jpg',
             'data_custom/images/docs/tut_repository/image.png',
             'data_custom/images/docs/tut_webhosting/image.png',
+            'data_custom/images/docs/tut_webhosting/kind.png',
             'data_custom/images/docs/tut_search/search_advanced.png',
             'data_custom/images/docs/tut_search/search_block.png',
             'data_custom/images/docs/tut_search/search_details.png',

@@ -1398,7 +1398,7 @@ function check_call($c, $c_pos, $class = null, $function_guard = '')
         return $ret['type'];
     }
     if (!$found) {
-        if (count($FUNCTION_SIGNATURES[$class]['functions']) == 0) {
+        if (count($FUNCTION_SIGNATURES['__global']['functions']) == 0) {
             static $warned_missing_api_once = false;
             if (!$warned_missing_api_once) {
                 log_warning('No API function metabase available', $c_pos);
