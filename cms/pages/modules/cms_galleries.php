@@ -493,6 +493,9 @@ class Module_cms_galleries extends Standard_crud_module
                             if ($slash !== false) {
                                 $_file = substr($_file, $slash + 1);
                             }
+                            if (empty($_file)) {
+                                continue;
+                            }
 
                             $directory[] = array('path' => $_file, 'resource' => $entry);
                         }
