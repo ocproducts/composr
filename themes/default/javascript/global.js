@@ -7398,11 +7398,7 @@
      * @returns { Promise }
      */
     function doAjaxRequest(url, callback, post) {
-        url = strVal(url);
-
-        if (!url.includes('://') && url.startsWith('/')) {
-            url = window.location.protocol + '//' + window.location.host + url;
-        }
+        url = $cms.url(strVal(url)).toString();
 
         return new Promise(function (resolvePromise) {
             var xhr = new XMLHttpRequest();
@@ -7492,7 +7488,7 @@
      */
     function protectURLParameter(parameter) {
         parameter = strVal(parameter);
-
+        
         var baseUrl = $cms.$BASE_URL();
 
         if (parameter.startsWith('https://')) {

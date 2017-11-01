@@ -292,13 +292,15 @@ function _pollForNotifications(responseXml) {
             sound = 'off';
         }
         var notificationCode = notification.getAttribute('notification_code');
-        if (sound === 'on' && window.detectChange == undefined || notificationCode != 'ticket_reply' && notificationCode != 'ticket_reply_staff') {
+        if (sound === 'on' && window.detectChange == undefined || notificationCode !== 'ticket_reply' && notificationCode !== 'ticket_reply_staff') {
             if (window.soundManager !== undefined) {
                 var goFunc = function () {
                     var soundUrl = 'data/sounds/message_received.mp3';
-                    var baseUrl = ((soundUrl.indexOf('data_custom') == -1) && (soundUrl.indexOf('uploads/') == -1)) ? '{$BASE_URL_NOHTTP;^}' : '{$CUSTOM_BASE_URL_NOHTTP;^}';
+                    var baseUrl = $cms.$BASE_URL_NOHTTP();
                     var soundObject = window.soundManager.createSound({url: baseUrl + '/' + soundUrl});
-                    if (soundObject && document.hasFocus()/*don't want multiple tabs all pinging*/) soundObject.play();
+                    if (soundObject && document.hasFocus()/*don't want multiple tabs all pinging*/) {
+                        soundObject.play();
+                    }
                 };
 
                 if (!window.soundManager.setupOptions.url) {

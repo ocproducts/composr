@@ -418,7 +418,7 @@
 
         form.elements['username'].onchange = function () {
             if (form.elements['intro_title'])
-                form.elements['intro_title'].value = '{!cns:INTRO_POST_DEFAULT;^}'.replace(/\{1\}/g, form.elements['username'].value);
+                form.elements['intro_title'].value = $cms.format('{!cns:INTRO_POST_DEFAULT;^}', [form.elements['username'].value]);
         };
 
         var validValues;

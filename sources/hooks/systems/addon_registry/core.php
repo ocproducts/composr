@@ -824,7 +824,6 @@ class Hook_addon_registry_core
             'themes/default/css/jquery_ui.css',
             'themes/default/javascript/global.js',
             'data/polyfills/class-list.js',
-            'data/polyfills/custom-event-constructor.js',
             'data/polyfills/fetch.js',
             'data/polyfills/general.js',
             'data/polyfills/json5.js',

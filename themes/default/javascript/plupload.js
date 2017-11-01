@@ -14717,7 +14717,7 @@
                 }
             }
             if (!goodType) {
-                $cms.ui.alert('{!INVALID_FILE_TYPE_GENERAL;^}'.replace(/\{\1\\}/g, fileExt).replace(/\\{2\\}/g, validTypes.join(', ')));
+                $cms.ui.alert($cms.format('{!INVALID_FILE_TYPE_GENERAL;^}', [fileExt, validTypes.join(', ')]));
                 return;
             }
 

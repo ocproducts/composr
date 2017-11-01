@@ -99,8 +99,7 @@
             url: $cms.baseUrl('data'),
             debugMode: false,
             onready: function () {
-                var soundEffects = params.soundEffects,
-                    i;
+                var soundEffects = params.soundEffects, i;
 
                 for (i in soundEffects) {
                     window.soundManager.createSound(soundEffects[i].key, soundEffects[i].value);
