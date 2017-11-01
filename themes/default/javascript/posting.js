@@ -303,7 +303,7 @@
             }
         }
 
-        if ('{$VALUE_OPTION;,disable_modsecurity_workaround}' !== '1') {
+        if ($cms.form.isModSecurityWorkaroundEnabled()) {
             post = $cms.form.modSecurityWorkaroundAjax(post);
         }
 
@@ -892,7 +892,7 @@
 
                     // Save remotely
                     if (navigator.onLine) {
-                        if ('{$VALUE_OPTION;,disable_modsecurity_workaround}' !== '1') {
+                        if ($cms.form.isModSecurityWorkaroundEnabled()) {
                             post = $cms.form.modSecurityWorkaroundAjax(post);
                         }
                         $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + $cms.$KEEP(), null, post).then(function () {
@@ -1113,7 +1113,7 @@
             if (navigator.onLine) {
                 //$cms.inform('Doing AJAX auto-save');
 
-                if ('{$VALUE_OPTION;,disable_modsecurity_workaround}' !== '1') {
+                if ($cms.form.isModSecurityWorkaroundEnabled()) {
                     post = $cms.form.modSecurityWorkaroundAjax(post);
                 }
                 $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + $cms.$KEEP(), null, post);

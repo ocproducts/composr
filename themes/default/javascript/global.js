@@ -8428,7 +8428,7 @@
 
         // Implementation for form[data-submit-modsecurity-workaround]
         submitModSecurityWorkaround: function (e, form) {
-            if ('{$VALUE_OPTION;,disable_modsecurity_workaround}' !== '1') {
+            if ($cms.form.isModSecurityWorkaroundEnabled()) {
                 e.preventDefault();
                 $cms.form.modSecurityWorkaround(form);
             }

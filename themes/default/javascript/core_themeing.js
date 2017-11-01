@@ -245,7 +245,7 @@
 
                     var url = $cms.baseUrl('data/snippet.php?snippet=css_compile__text' + $cms.$KEEP()),
                         post = 'css=' + encodeURIComponent(newCss);
-                    if ('{$VALUE_OPTION;,disable_modsecurity_workaround}' !== '1') {
+                    if ($cms.form.isModSecurityWorkaroundEnabled()) {
                         post = $cms.form.modSecurityWorkaroundAjax(post);
                     }
                     $cms.doAjaxRequest(url, null, post).then(function (xhr) {

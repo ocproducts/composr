@@ -117,7 +117,7 @@ window.previousCommands || (window.previousCommands = []);
         document.getElementById('commandr_command').disabled = true;
 
         var post = 'command=' + encodeURIComponent(command);
-        if ('{$VALUE_OPTION;,disable_modsecurity_workaround}' !== '1'){
+        if ($cms.form.isModSecurityWorkaroundEnabled()) {
             post = $cms.form.modSecurityWorkaroundAjax(post);
         }
         $cms.doAjaxRequest('{$FIND_SCRIPT;,commandr}' + $cms.$KEEP(true), commandrCommandResponse, post);

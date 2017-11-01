@@ -30,7 +30,7 @@
         },
 
         submitWithWorkaround: function (e, form) {
-            if ('{$VALUE_OPTION;,disable_modsecurity_workaround}' !== '1') {
+            if ($cms.form.isModSecurityWorkaroundEnabled()) {
                 e.preventDefault();
                 $cms.form.modSecurityWorkaround(form);
             }
@@ -382,7 +382,7 @@
         });
 
         $cms.dom.on(container, 'submit', '.js-submit-modesecurity-workaround', function (e, form) {
-            if ('{$VALUE_OPTION;,disable_modsecurity_workaround}' !== '1') {
+            if ($cms.form.isModSecurityWorkaroundEnabled()) {
                 e.preventDefault();
                 $cms.form.modSecurityWorkaround(form);
             }
@@ -1271,6 +1271,10 @@
         }
 
         return append !== '';
+    };
+
+    $cms.form.isModSecurityWorkaroundEnabled = function isModSecurityWorkaroundEnabled() {
+        return '{$VALUE_OPTION;,disable_modsecurity_workaround}' !== '1';
     };
     
     /**

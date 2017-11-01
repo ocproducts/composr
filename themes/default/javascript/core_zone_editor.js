@@ -20,7 +20,7 @@
         },
 
         submit: function (e, form) {
-            if ('{$VALUE_OPTION;,disable_modsecurity_workaround}' !== '1') {
+            if ($cms.form.isModSecurityWorkaroundEnabled()) {
                 e.preventDefault();
                 $cms.form.modSecurityWorkaround(form);
             }
@@ -143,7 +143,7 @@
                 data += window.getTextbox(editElement);
                 var url = '{$FIND_SCRIPT_NOHTTP;,comcode_convert}?fix_bad_html=1&css=1&javascript=1&from_html=0&is_semihtml=' + ($cms.form.isWysiwygField(editElement) ? '1' : '0') + '&panel=' + (((id == 'panel_left') || (id == 'panel_right')) ? '1' : '0') + $cms.$KEEP();
                 var post = ($cms.form.isWysiwygField(editElement) ? 'data__is_wysiwyg=1&' : '') + 'data=' + encodeURIComponent(data);
-                if ('{$VALUE_OPTION;,disable_modsecurity_workaround}' !== '1') {
+                if ($cms.form.isModSecurityWorkaroundEnabled()) {
                     post = $cms.form.modSecurityWorkaroundAjax(post);
                 }
                 $cms.doAjaxRequest(url, reloadedPreview, post);
@@ -163,7 +163,7 @@
         },
 
         submitComcode: function (e, target) {
-            if ('{$VALUE_OPTION;,disable_modsecurity_workaround}' !== '1') {
+            if ($cms.form.isModSecurityWorkaroundEnabled()) {
                 e.preventDefault();
                 $cms.form.modSecurityWorkaround(form);
             }

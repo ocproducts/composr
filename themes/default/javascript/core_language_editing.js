@@ -3,7 +3,7 @@
 
     $cms.templates.translateScreen = function (params, container) {
         $cms.dom.on(container, 'submit', '.js-form-submit-modsecurity-workaround', function (e, form) {
-            if ('{$VALUE_OPTION;,disable_modsecurity_workaround}' !== '1') {
+            if ($cms.form.isModSecurityWorkaroundEnabled()) {
                 e.preventDefault();
                 $cms.form.modSecurityWorkaround(form);
             }

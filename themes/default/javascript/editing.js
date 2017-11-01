@@ -216,7 +216,7 @@
                     url += '&forum_db=1';
                 }
                 var post = 'data=' + encodeURIComponent(wysiwygData.replace(new RegExp(String.fromCharCode(8203), 'g'), ''));
-                if ('{$VALUE_OPTION;,disable_modsecurity_workaround}' !== '1') {
+                if ($cms.form.isModSecurityWorkaroundEnabled()) {
                     post = $cms.form.modSecurityWorkaroundAjax(post);
                 }
                 $cms.doAjaxRequest(url, null, post).then(function (xhr) {
