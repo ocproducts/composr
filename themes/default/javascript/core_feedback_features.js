@@ -118,14 +118,16 @@
 
             form.setAttribute('target', '_self');
 
-            if (form.oldAction !== undefined) {
-                form.setAttribute('action', form.oldAction);
-            }
+            // if (form.oldAction !== undefined) {
+            //     form.setAttribute('action', form.oldAction);
+            // }
+            //
+            // if ($cms.dom.trigger(form, 'submit') !== false) {
+            //     $cms.ui.disableButton(button);
+            //     form.submit();
+            // }
             
-            if ($cms.dom.trigger(form, 'submit') !== false) {
-                $cms.ui.disableButton(button);
-                form.submit();
-            }
+            $cms.form.doFormSubmit(form);
         },
 
         doFormPreview: function (e, btn) {

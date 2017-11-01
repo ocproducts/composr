@@ -67,13 +67,13 @@
     
     window.addEventListener('click', function (e) {
         if (e.target && (e.target.localName === 'a') && (e.target.getAttribute('href') === '#!')) {
-            e.preventDefault();
+            //e.preventDefault();
         }
     }, /*useCapture*/true);
 
     window.addEventListener('submit', function (e) {
         if (e.target && (e.target.localName === 'form') && (e.target.getAttribute('action') === '#!')) {
-            e.preventDefault();
+            //e.preventDefault();
         }
     }, /*useCapture*/true);
 

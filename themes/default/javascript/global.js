@@ -4998,16 +4998,7 @@
             try {
                 $cms.inform('Beacon', 'send', 'event', category, action);
 
-                window.ga(
-                    'send',
-                    'event',
-                    category,
-                    action,
-                    {
-                        transport: 'beacon',
-                        hitCallback: callback
-                    }
-                );
+                window.ga('send', 'event', category, action, { transport: 'beacon', hitCallback: callback});
             } catch(err) {
                 okay = false;
             }

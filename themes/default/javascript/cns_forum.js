@@ -16,7 +16,7 @@
             return {
                 'click .js-click-mark-all-topics': 'markAllTopics',
                 'change .js-select-change-submit-form': 'changeSubmit',
-                'click .js-click-btn-add-form-marked-posts': 'addFormMarkedPosts'
+                'click .js-click-btn-add-form-marked-posts': 'cnsAddFormMarkedPosts'
             };
         },
 
@@ -30,7 +30,7 @@
             $cms.dom.submit(select.form);
         },
 
-        addFormMarkedPosts: function (e, btn) {
+        cnsAddFormMarkedPosts: function (e, btn) {
             if ($cms.form.addFormMarkedPosts(btn.form, 'mark_')) {
                 $cms.ui.disableButton(btn);
             } else {

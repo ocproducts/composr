@@ -164,7 +164,7 @@
      * @memberof $cms.form
      * @param form
      * @param analyticEventCategory
-     * @returns {boolean}
+     * @returns { Promise<boolean> }
      */
     $cms.form.doFormSubmit = function doFormSubmit(form, analyticEventCategory) {
         return new Promise(function (resolveSubmitPromise) {
@@ -185,39 +185,37 @@
                 if (!form.getAttribute('target')) {
                     form.setAttribute('target', '_top');
                 }
+
+                $cms.ui.disableSubmitAndPreviewButtons();
                 
                 if ($cms.form.areUploadsComplete(form)) {
                     return Promise.resolve();
                 }
                 
                 // Uploads pending
-
-                if (form.offsetHeight > $cms.dom.getWindowHeight()) { // Alert if possibly cannot see file upload progress bars
+                
+                //if (form.offsetHeight > $cms.dom.getWindowHeight()) { // Alert if possibly cannot see file upload progress bars
                     $cms.ui.alert({ notice: '{!javascript:PLEASE_WAIT_WHILE_UPLOADING;^}', single: true });
-                }
+                //}
 
                 return $cms.form.startUploads(form);
             }).then(function () {
-                /* Remove any stuff that is only in the form for previews if doing a GET request */
                 if (form.method.toLowerCase() === 'get') {
-                    var i, name, elements = arrVal(form.elements);
+                    /* Remove any stuff that is only in the form for previews if doing a GET request */
+                    var previewInputs = $cms.dom.$$(form, 'input[name^="label_for__"], input[name^="tick_on_form__"], input[name^="comcode__"], input[name^="require__"]');
 
-                    for (i = 0; i < elements.length; i++) {
-                        name = elements[i].name;
-                        if (name && ((name.substr(0, 11) === 'label_for__') || (name.substr(0, 14) === 'tick_on_form__') || (name.substr(0, 9) === 'comcode__') || (name.substr(0, 9) === 'require__'))) {
-                            elements[i].parentNode.removeChild(elements[i]);
-                        }
-                    }
+                    previewInputs.forEach(function (input) {
+                        $cms.dom.remove(input);
+                    });
                 }
 
-                if ($cms.dom.trigger(form, 'submit') === false) {
+                var ret = $cms.dom.trigger(form, 'submit');
+                
+                if (ret === false) {
+                    $cms.ui.enableSubmitAndPreviewButtons();
                     resolveSubmitPromise(false);
                     return;
                 }
-
-                $cms.ui.disableSubmitAndPreviewButtons();
-                
-                resolveSubmitPromise(true);
 
                 if (window.ajaxScreenDetectInterval !== undefined) {
                     clearInterval(window.ajaxScreenDetectInterval);
@@ -226,9 +224,12 @@
                 
                 if (analyticEventCategory) {
                     $cms.gaTrack(null, analyticEventCategory, null, function () {
+                        resolveSubmitPromise(true);
                         form.submit();
                     });
                 } else {
+                    resolveSubmitPromise(true);
+                    console.log('submitting form!!!', form);
                     form.submit();
                 }
             });
@@ -431,6 +432,7 @@
     $cms.form.checkForm = function checkForm(theForm, forPreview) {
         var deleteElement = $cms.dom.$('#delete');
         
+        // Skip checks if 'delete' checkbox is checked
         if (!forPreview && (deleteElement != null) && (((deleteElement.classList[0] === 'input_radio') && (deleteElement.value !== '0')) || (deleteElement.classList[0] === 'input_tick')) && (deleteElement.checked)) {
             return Promise.resolve(true);
         }

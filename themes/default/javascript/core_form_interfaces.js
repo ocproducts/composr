@@ -1296,7 +1296,7 @@
             var csrfInput = document.createElement('input');
             csrfInput.type = 'hidden';
             csrfInput.name = 'csrf_token';
-            csrfInput.value = form.elements.csrf_token.value;
+            csrfInput.value = form.elements['csrf_token'].value;
             tempForm.appendChild(csrfInput);
         }
 

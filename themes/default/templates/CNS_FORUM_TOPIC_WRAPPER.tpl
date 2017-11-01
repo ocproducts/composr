@@ -1,3 +1,5 @@
+{$REQUIRE_JAVASCRIPT,core_form_interfaces}
+{$REQUIRE_JAVASCRIPT,cns_forum}
 <div data-view="CnsForumTopicWrapper">
 	<div class="wide_table_wrap"><table class="columned_table wide_table cns_topic_list">
 		{+START,IF,{$DESKTOP}}
