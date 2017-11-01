@@ -1447,7 +1447,7 @@
      */
     $cms.url = function url(url, base) {
         url = strVal(url);
-        base = strVal(base) || $cms.$BASE_URL();
+        base = strVal(base) || ($cms.$BASE_URL() + '/');
 
         return new URL(url, base);
     };
@@ -1457,65 +1457,7 @@
         isRelative: isRelative,
         isSchemeRelative: isSchemeRelative,
         isAbsoluteOrSchemeRelative: isAbsoluteOrSchemeRelative,
-        schemeRelative: schemeRelative,
-        
-        setSearch: function setSearch(url, params, value) {
-            var isO = isObj(url), paramName, paramValue;
-            url = isO ? url : $cms.url(url);
-            
-            if (isScalar(params)) {
-                paramName = params;
-                paramValue = value;
-
-                url.searchParams.set(paramName, paramValue);
-            } else {
-                for (paramName in params) {
-                    paramValue = strVal(params[paramName]);
-                    url.searchParams.set(paramName, paramValue);
-                }
-            }
-            
-            return isO ? url : url.toString();
-        },
-        
-        removeSearch: function removeSearch(url, paramNames) {
-            var isO = isObj(url);
-            
-            url = isO ? url : $cms.url(url);
-            paramNames = arrVal(paramNames);
-            
-            paramNames.forEach(function (paramName) {
-                url.searchParams.delete(paramName);
-            });
-            
-            return isO ? url : url.toString();
-        },
-        
-        hasSearch: function hasSearch(url, params, value) {
-            var isO = isObj(url), paramName, paramValue;
-            url = isO ? url : $cms.url(url);
-            
-            if (isScalar(params)) {
-                paramName = params;
-                paramValue = value;
-                
-                if (paramValue == null) {
-                    return url.searchParams.has(paramName);
-                }
-                
-                return url.searchParams.get(paramName) === strVal(paramValue);
-            }
-            
-            for (paramName in params) {
-                paramValue = strVal(params[paramName]);
-                
-                if (url.searchParams.get(paramName) !== paramValue) {
-                    return false;
-                }
-            }
-            
-            return true;
-        }
+        schemeRelative: schemeRelative
     });
 
     /**
