@@ -3260,7 +3260,7 @@ END;
         // Show it worked / Refresh
         $url = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
         if ($url != '') {
-            return redirect_screen(get_screen_title('EDIT_POST'), protect_url_parameter($url), do_lang_tempcode('SUCCESS'));
+            return redirect_screen(get_screen_title('EDIT_POST'), $url, do_lang_tempcode('SUCCESS'));
         }
 
         return $this->redirect_to('EDIT_POST', $topic_id, null, $post_id);
