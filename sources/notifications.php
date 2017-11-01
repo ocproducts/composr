@@ -69,8 +69,8 @@ function init__notifications()
     $HOOKS_NOTIFICATION_TYPES_EXTENDED = find_all_hooks('systems', 'notification_types_extended');
 
     foreach (array_keys($HOOKS_NOTIFICATION_TYPES_EXTENDED) as $hook) {
-        require_code('hooks/systems/notification_types_extended/' . filter_naughty($hook));
-        $ob = object_factory('Hook_notification_types_extended_' . filter_naughty($hook));
+        require_code('hooks/systems/notification_types_extended/' . filter_naughty_harsh($hook));
+        $ob = object_factory('Hook_notification_types_extended_' . filter_naughty_harsh($hook));
         $HOOKS_NOTIFICATION_TYPES_EXTENDED[$hook] = $ob;
         $ob->init();
     }
@@ -90,9 +90,9 @@ function _get_notification_ob_for_code($notification_code)
         require_all_lang();
         $hooks = find_all_hooks('systems', 'notifications');
         foreach (array_keys($hooks) as $hook) {
-            $path = 'hooks/systems/notifications/' . filter_naughty($hook);
+            $path = 'hooks/systems/notifications/' . filter_naughty_harsh($hook);
             require_code($path);
-            $ob = object_factory('Hook_notification_' . filter_naughty($hook));
+            $ob = object_factory('Hook_notification_' . filter_naughty_harsh($hook));
             if (method_exists($ob, 'list_handled_codes')) {
                 if (array_key_exists($notification_code, $ob->list_handled_codes())) {
                     return $ob;
@@ -101,7 +101,7 @@ function _get_notification_ob_for_code($notification_code)
         }
     } else { // Ah, we know already (file exists directly) - so quick route
         require_code($path);
-        return object_factory('Hook_notification_' . filter_naughty(preg_replace('#\_\_\w*$#', '', $notification_code)));
+        return object_factory('Hook_notification_' . filter_naughty_harsh(preg_replace('#\_\_\w*$#', '', $notification_code)));
     }
     return null;
     //return object_factory('Hook_Notification'); // default

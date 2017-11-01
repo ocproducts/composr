@@ -1158,8 +1158,8 @@ function request_page($codename, $required, $zone = null, $page_type = null, $be
     // Run hooks, if any exist
     $hooks = find_all_hooks('systems', 'upon_page_load');
     foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/upon_page_load/' . filter_naughty($hook));
-        $ob = object_factory('upon_page_load' . filter_naughty($hook), true);
+        require_code('hooks/systems/upon_page_load/' . filter_naughty_harsh($hook));
+        $ob = object_factory('upon_page_load' . filter_naughty_harsh($hook), true);
         if ($ob === null) {
             continue;
         }

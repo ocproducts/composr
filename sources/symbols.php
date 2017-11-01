@@ -86,8 +86,8 @@ function ecv($lang, $escaped, $type, $name, $param)
             }
             if (isset($EXTRA_SYMBOLS[$name])) {
                 if (!isset($EXTRA_SYMBOLS[$name]['ob'])) {
-                    require_code('hooks/systems/symbols/' . filter_naughty_harsh($name));
-                    $EXTRA_SYMBOLS[$name]['ob'] = object_factory('Hook_symbol_' . filter_naughty_harsh($name));
+                    require_code('hooks/systems/symbols/' . filter_naughty_harsh($name, true));
+                    $EXTRA_SYMBOLS[$name]['ob'] = object_factory('Hook_symbol_' . filter_naughty_harsh($name, true));
                 }
                 $value = $EXTRA_SYMBOLS[$name]['ob']->run($param);
 

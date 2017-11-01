@@ -149,8 +149,8 @@ function get_innodb_tables_by_addon()
             continue;
         }
 
-        require_code('hooks/systems/addon_registry/' . filter_naughty($hook));
-        $object = object_factory('Hook_addon_registry_' . $hook);
+        require_code('hooks/systems/addon_registry/' . filter_naughty_harsh($hook));
+        $object = object_factory('Hook_addon_registry_' . filter_naughty_harsh($hook));
         $files = $object->get_file_list();
         $addon_name = $hook;
         foreach ($files as $file) {

@@ -301,27 +301,27 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
         }
 
         $theme_dirs = array(
-            'css',
-            'css_custom',
-            'javascript',
-            'javascript_custom',
-            'templates',
-            'templates_custom',
-            'text',
-            'text_custom',
-            'xml',
-            'xml_custom',
+            'css' => '.css',
+            'css_custom' => '.css',
+            'javascript' => '.js',
+            'javascript_custom' => '.js',
+            'templates' => '.tpl',
+            'templates_custom' => '.tpl',
+            'text' => '.txt',
+            'text_custom' => '.txt',
+            'xml' => '.xml',
+            'xml_custom' => '.xml',
         );
 
         foreach ($base_dirs as $base_dir) {
             foreach ($themes as $theme) {
-                foreach ($theme_dirs as $theme_dir) {
+                foreach ($theme_dirs as $theme_dir => $ext) {
                     $dir_path = $base_dir . '/themes/' . $theme . '/' . $theme_dir;
                     $_dir = @opendir($dir_path);
                     if ($_dir !== false) {
                         while (false !== ($file = readdir($_dir))) {
                             // Basic filter
-                            if ($file[0] == '.' || $file == 'index.html') {
+                            if (substr($file, -strlen($ext)) != $ext) {
                                 continue;
                             }
 

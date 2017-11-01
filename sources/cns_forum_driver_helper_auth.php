@@ -117,8 +117,8 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
         // Run hooks for other interactive login possibilities, if any exist
         $hooks = find_all_hooks('systems', 'login_providers_direct_auth');
         foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/login_providers_direct_auth/' . filter_naughty($hook));
-            $ob = object_factory('Hook_login_providers_direct_auth_' . filter_naughty($hook), true);
+            require_code('hooks/systems/login_providers_direct_auth/' . filter_naughty_harsh($hook));
+            $ob = object_factory('Hook_login_providers_direct_auth_' . filter_naughty_harsh($hook), true);
             if (is_null($ob)) {
                 continue;
             }

@@ -52,8 +52,8 @@ class Hook_health_check_install_environment extends Hook_Health_Check
         // Various checks
         $hooks = find_all_hooks('systems', 'checks');
         foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/checks/' . filter_naughty($hook));
-            $ob = object_factory('Hook_check_' . $hook);
+            require_code('hooks/systems/checks/' . filter_naughty_harsh($hook));
+            $ob = object_factory('Hook_check_' . filter_naughty_harsh($hook));
             $warning = $ob->run();
             foreach ($warning as $_warning) {
                 $this->assert_true(false, '[html]' . $_warning->evaluate() . '[/html]');
