@@ -20,8 +20,10 @@
         },
 
         submit: function (e, form) {
-            $cms.form.modSecurityWorkaround(form);
-            e.preventDefault();
+            if ('{$VALUE_OPTION;,disable_js_modsecurity_workaround}' !== '1') {
+                e.preventDefault();
+                $cms.form.modSecurityWorkaround(form);
+            }
         },
 
         fetchAndSubmit: function (e, btn) {
@@ -159,8 +161,10 @@
         },
 
         submitComcode: function (e, target) {
-            $cms.form.modSecurityWorkaround(target);
-            e.preventDefault();
+            if ('{$VALUE_OPTION;,disable_js_modsecurity_workaround}' !== '1') {
+                e.preventDefault();
+                $cms.form.modSecurityWorkaround(form);
+            }
         },
 
         toggleWysiwyg: function () {

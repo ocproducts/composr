@@ -1457,16 +1457,7 @@
         isRelative: isRelative,
         isSchemeRelative: isSchemeRelative,
         isAbsoluteOrSchemeRelative: isAbsoluteOrSchemeRelative,
-        /**
-         * Make a URL scheme-relative
-         * @param url
-         * @returns {string}
-         */
-        schemeRelative: function schemeRelative(url) {
-            url = strVal(url);
-            
-            return $cms.url(url).toString().replace(rgxProtocol, '');
-        },
+        schemeRelative: schemeRelative,
         
         setSearch: function setSearch(url, params, value) {
             var isO = isObj(url), paramName, paramValue;
@@ -1608,6 +1599,16 @@
     function isAbsoluteOrSchemeRelative(url) {
         url = strVal(url);
         return rgxHttpRel.test(url);
+    }
+    /**
+     * Make a URL scheme-relative
+     * @param url
+     * @returns {string}
+     */
+    function schemeRelative(url) {
+        url = strVal(url);
+
+        return $cms.url(url).toString().replace(rgxProtocol, '');
     }
 
     /**
@@ -8059,7 +8060,7 @@
         }
 
         if (($cms.$ZONE() === 'adminzone') && $cms.$CONFIG_OPTION('background_template_compilation')) {
-            var page = $cms.filter.url($cms.$PAGE());
+            var page = $cms.filter.url($cms.getPageName());
             $cms.loadSnippet('background_template_compilation&page=' + page, '', true);
         }
 
@@ -8427,8 +8428,10 @@
 
         // Implementation for form[data-submit-modsecurity-workaround]
         submitModSecurityWorkaround: function (e, form) {
-            e.preventDefault();
-            $cms.form.modSecurityWorkaround(form);
+            if ('{$VALUE_OPTION;,disable_js_modsecurity_workaround}' !== '1') {
+                e.preventDefault();
+                $cms.form.modSecurityWorkaround(form);
+            }
         },
 
         // Implementation for input[data-cms-invalid-pattern]

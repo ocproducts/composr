@@ -40,7 +40,10 @@
         });
 
         $cms.dom.on(container, 'submit', '.js-submit-modsecurity-workaround', function (e, form) {
-            $cms.form.modSecurityWorkaround(form);
+            if ('{$VALUE_OPTION;,disable_js_modsecurity_workaround}' !== '1') {
+                e.preventDefault();
+                $cms.form.modSecurityWorkaround(form);
+            }
         });
 
         $cms.dom.on(container, 'change', '.js-input-change-update-selection', function (e, input) {

@@ -30,8 +30,10 @@
         },
 
         submitWithWorkaround: function (e, form) {
-            e.preventDefault();
-            $cms.form.modSecurityWorkaround(form);
+            if ('{$VALUE_OPTION;,disable_js_modsecurity_workaround}' !== '1') {
+                e.preventDefault();
+                $cms.form.modSecurityWorkaround(form);
+            }
         },
 
         toggleSubordFields: function (e, target) {
@@ -380,8 +382,10 @@
         });
 
         $cms.dom.on(container, 'submit', '.js-submit-modesecurity-workaround', function (e, form) {
-            e.preventDefault();
-            $cms.form.modSecurityWorkaround(form);
+            if ('{$VALUE_OPTION;,disable_js_modsecurity_workaround}' !== '1') {
+                e.preventDefault();
+                $cms.form.modSecurityWorkaround(form);
+            }
         });
     };
     

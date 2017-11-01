@@ -25,8 +25,10 @@
         },
 
         submit: function (e, form) {
-            e.preventDefault();
-            $cms.form.modSecurityWorkaround(form);
+            if ('{$VALUE_OPTION;,disable_js_modsecurity_workaround}' !== '1') {
+                e.preventDefault();
+                $cms.form.modSecurityWorkaround(form);
+            }
         }
     });
 
@@ -50,8 +52,10 @@
         },
 
         submit: function (e, form) {
-            e.preventDefault();
-            $cms.form.modSecurityWorkaround(form);
+            if ('{$VALUE_OPTION;,disable_js_modsecurity_workaround}' !== '1') {
+                e.preventDefault();
+                $cms.form.modSecurityWorkaround(form);
+            }
         }
     });
 
