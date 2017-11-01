@@ -27,7 +27,9 @@
 function build_preview($multi_return = false)
 {
     require_code('input_filter_2');
-    modsecurity_workaround_enable();
+    if (get_value('disable_modsecurity_workaround') !== '1') {
+        modsecurity_workaround_enable();
+    }
 
     require_css('forms');
     require_javascript('checking');

@@ -31,7 +31,9 @@ class Hook_snippet_css_compile__text
     public function run()
     {
         require_code('input_filter_2');
-        modsecurity_workaround_enable();
+        if (get_value('disable_modsecurity_workaround') !== '1') {
+            modsecurity_workaround_enable();
+        }
 
         if (has_actual_page_access(get_member(), 'admin_themes')) {
             safe_ini_set('ocproducts.xss_detect', '0');

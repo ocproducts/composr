@@ -26,7 +26,9 @@
 function store_autosave()
 {
     require_code('input_filter_2');
-    modsecurity_workaround_enable();
+    if (get_value('disable_modsecurity_workaround') !== '1') {
+        modsecurity_workaround_enable();
+    }
 
     prepare_for_known_ajax_response();
 

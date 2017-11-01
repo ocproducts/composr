@@ -667,7 +667,7 @@ Values are like hidden configuration options. They are either hidden because the
   - [tt]stupidity_mode[/tt] -- set to [tt]leet[/tt] or [tt]bork[/tt], for a fun April Fools-style Comcode joke (clear the Comcode cache after you're done though)
  - Experimental functionality
   - [tt]list_unsubscribe_target[/tt] -- set to a URL for a [tt]List-Unsubscribe[/tt] header to be attached to e-mails with that URL, e.g. [tt]mailto:you@example.com?subject=Unsubscribe&body=Please%20unsubscribe%20me[/tt]
-  - [tt]disable_modsecurity_workaround[/tt] -- set this to '1' if you want to disable the ModSecurity workaround used in JS when submitting forms
+  - [tt]disable_modsecurity_workaround[/tt] -- set this to '1' if you want to disable the ModSecurity workaround 
 
 [title="4"]Hidden 'keep' parameters[/title]
 

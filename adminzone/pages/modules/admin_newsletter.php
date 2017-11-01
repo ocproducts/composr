@@ -459,7 +459,9 @@ class Module_admin_newsletter extends Standard_crud_module
     public function bounce_filter_c()
     {
         require_code('input_filter_2');
-        modsecurity_workaround_enable();
+        if (get_value('disable_modsecurity_workaround') !== '1') {
+            modsecurity_workaround_enable();
+        }
 
         require_code('mail2');
 
@@ -523,7 +525,9 @@ class Module_admin_newsletter extends Standard_crud_module
     public function bounce_filter_d()
     {
         require_code('input_filter_2');
-        modsecurity_workaround_enable();
+        if (get_value('disable_modsecurity_workaround') !== '1') {
+            modsecurity_workaround_enable();
+        }
 
         $title = get_screen_title('BOUNCE_FILTER');
 

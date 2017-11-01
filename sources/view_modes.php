@@ -257,7 +257,9 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
     // Content translation mode
     if (substr($special_page_type, 0, 12) == 'lang_content') {
         require_code('input_filter_2');
-        modsecurity_workaround_enable();
+        if (get_value('disable_modsecurity_workaround') !== '1') {
+            modsecurity_workaround_enable();
+        }
 
         require_javascript('editing');
 
@@ -333,7 +335,9 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
     } // Language mode
     elseif (substr($special_page_type, 0, 4) == 'lang') {
         require_code('input_filter_2');
-        modsecurity_workaround_enable();
+        if (get_value('disable_modsecurity_workaround') !== '1') {
+            modsecurity_workaround_enable();
+        }
 
         require_javascript('editing');
 

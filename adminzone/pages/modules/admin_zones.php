@@ -262,7 +262,9 @@ class Module_admin_zones
     public function _editor()
     {
         require_code('input_filter_2');
-        modsecurity_workaround_enable();
+        if (get_value('disable_modsecurity_workaround') !== '1') {
+            modsecurity_workaround_enable();
+        }
 
         $id = $this->id;
         $nice_zone_name = $this->nice_zone_name;
@@ -485,7 +487,9 @@ class Module_admin_zones
     public function __editor()
     {
         require_code('input_filter_2');
-        modsecurity_workaround_enable();
+        if (get_value('disable_modsecurity_workaround') !== '1') {
+            modsecurity_workaround_enable();
+        }
 
         $lang = choose_language($this->title, true);
         if (is_object($lang)) {

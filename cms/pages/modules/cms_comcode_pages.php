@@ -718,7 +718,9 @@ class Module_cms_comcode_pages
     public function _edit()
     {
         require_code('input_filter_2');
-        modsecurity_workaround_enable();
+        if (get_value('disable_modsecurity_workaround') !== '1') {
+            modsecurity_workaround_enable();
+        }
 
         $page_link = $this->page_link;
         $zone = $this->zone;
@@ -1060,7 +1062,9 @@ class Module_cms_comcode_pages
     public function __edit()
     {
         require_code('input_filter_2');
-        modsecurity_workaround_enable();
+        if (get_value('disable_modsecurity_workaround') !== '1') {
+            modsecurity_workaround_enable();
+        }
 
         // Load up settings from the environments
         $file = filter_naughty(post_param_string('file'));

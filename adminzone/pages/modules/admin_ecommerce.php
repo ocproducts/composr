@@ -506,7 +506,9 @@ class Module_admin_ecommerce extends Standard_crud_module
     {
         require_code('input_filter_2');
         rescue_shortened_post_request();
-        modsecurity_workaround_enable();
+        if (get_value('disable_modsecurity_workaround') !== '1') {
+            modsecurity_workaround_enable();
+        }
 
         $field_groups = new Tempcode();
         $add_forms = new Tempcode();
@@ -585,7 +587,9 @@ class Module_admin_ecommerce extends Standard_crud_module
     public function _prices()
     {
         require_code('input_filter_2');
-        modsecurity_workaround_enable();
+        if (get_value('disable_modsecurity_workaround') !== '1') {
+            modsecurity_workaround_enable();
+        }
 
         // Save configuration for hooks
         $_hooks = find_all_hook_obs('systems', 'ecommerce', 'Hook_ecommerce_');

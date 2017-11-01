@@ -95,7 +95,9 @@ class Module_admin_config
         require_code('form_templates'); // Needs to run high so that the anti-click-hacking header is sent
 
         require_code('input_filter_2');
-        modsecurity_workaround_enable();
+        if (get_value('disable_modsecurity_workaround') !== '1') {
+            modsecurity_workaround_enable();
+        }
 
         require_all_lang();
 
