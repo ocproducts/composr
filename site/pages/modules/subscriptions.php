@@ -254,8 +254,8 @@ class Module_subscriptions
         }
 
         if (($via != 'manual') && ($via != '')) {
-            require_code('hooks/systems/ecommerce_via/' . filter_naughty($via));
-            $hook = object_factory($via);
+            require_code('hooks/systems/ecommerce_via/' . filter_naughty_harsh($via, true));
+            $hook = object_factory(filter_naughty_harsh($via, true));
             if ($hook->auto_cancel($id) !== true) {
                 // Because we cannot TRIGGER a REMOTE cancellation, we have it so the local user action triggers that notification, informing the staff to manually do a remote cancellation
                 require_code('notifications');

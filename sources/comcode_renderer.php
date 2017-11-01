@@ -2036,8 +2036,8 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                         $syn_services = array();
                         $hooks = find_all_hooks('systems', 'upload_syndication');
                         foreach (array_keys($hooks) as $hook) {
-                            require_code('hooks/systems/upload_syndication/' . filter_naughty($hook));
-                            $ob = object_factory('Hook_upload_syndication_' . $hook);
+                            require_code('hooks/systems/upload_syndication/' . filter_naughty_harsh($hook));
+                            $ob = object_factory('Hook_upload_syndication_' . filter_naughty_harsh($hook));
                             if ($ob->is_enabled()) {
                                 $syn_services[] = $ob->get_label();
                             }

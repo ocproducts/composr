@@ -1111,6 +1111,7 @@ function get_translated_tempcode($table, $row, $field_name, $connection = null, 
         $entry = $row[$field_name];
 
         if ($entry == 0) {
+            require_code('site');
             attach_message(do_lang_tempcode('FAILED_ENTRY'), 'warn');
             return new Tempcode();
         }

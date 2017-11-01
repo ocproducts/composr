@@ -44,8 +44,8 @@ function adminzone_special_cases($codename)
         $hooks = find_all_hooks('systems', 'checks');
         $found_issues = false;
         foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/checks/' . filter_naughty($hook));
-            $ob = object_factory('Hook_check_' . $hook);
+            require_code('hooks/systems/checks/' . filter_naughty_harsh($hook));
+            $ob = object_factory('Hook_check_' . filter_naughty_harsh($hook));
             $warning = $ob->run();
             foreach ($warning as $_warning) {
                 attach_message($_warning, 'warn');

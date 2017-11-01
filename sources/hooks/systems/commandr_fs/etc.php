@@ -66,8 +66,8 @@ class Hook_commandr_fs_etc
         require_code('resource_fs');
         $hooks = find_all_hooks('systems', 'commandr_fs_extended_config');
         foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/commandr_fs_extended_config/' . filter_naughty($hook));
-            $ob = object_factory('Hook_commandr_fs_extended_config__' . $hook);
+            require_code('hooks/systems/commandr_fs_extended_config/' . filter_naughty_harsh($hook));
+            $ob = object_factory('Hook_commandr_fs_extended_config__' . filter_naughty_harsh($hook));
             $modification_time = $ob->get_edit_date();
 
             $listing[] = array(
@@ -146,8 +146,8 @@ class Hook_commandr_fs_etc
         $hooks = find_all_hooks('systems', 'commandr_fs_extended_config');
         $extended_config_filename = preg_replace('#^\_(.*)s' . preg_quote('.' . RESOURCE_FS_DEFAULT_EXTENSION, '#') . '$#', '${1}', $file_name);
         if (array_key_exists($extended_config_filename, $hooks)) {
-            require_code('hooks/systems/commandr_fs_extended_config/' . filter_naughty($extended_config_filename));
-            $ob = object_factory('Hook_commandr_fs_extended_config__' . $extended_config_filename);
+            require_code('hooks/systems/commandr_fs_extended_config/' . filter_naughty_harsh($extended_config_filename));
+            $ob = object_factory('Hook_commandr_fs_extended_config__' . filter_naughty_harsh($extended_config_filename));
             return $ob->read_file($meta_dir, $meta_root_node, $file_name, $commandr_fs);
         }
 
@@ -180,8 +180,8 @@ class Hook_commandr_fs_etc
         $hooks = find_all_hooks('systems', 'commandr_fs_extended_config');
         $extended_config_filename = preg_replace('#^\_(.*)s' . preg_quote('.' . RESOURCE_FS_DEFAULT_EXTENSION, '#') . '$#', '${1}', $file_name);
         if (array_key_exists($extended_config_filename, $hooks)) {
-            require_code('hooks/systems/commandr_fs_extended_config/' . filter_naughty($extended_config_filename));
-            $ob = object_factory('Hook_commandr_fs_extended_config__' . $extended_config_filename);
+            require_code('hooks/systems/commandr_fs_extended_config/' . filter_naughty_harsh($extended_config_filename));
+            $ob = object_factory('Hook_commandr_fs_extended_config__' . filter_naughty_harsh($extended_config_filename));
             return $ob->write_file($meta_dir, $meta_root_node, $file_name, $contents, $commandr_fs);
         }
 

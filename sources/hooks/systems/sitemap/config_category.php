@@ -81,8 +81,8 @@ class Hook_sitemap_config_category extends Hook_sitemap_base
         $hooks = find_all_hooks('systems', 'config');
         $categories = array();
         foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/config/' . filter_naughty($hook));
-            $ob = object_factory('Hook_config_' . $hook);
+            require_code('hooks/systems/config/' . filter_naughty_harsh($hook));
+            $ob = object_factory('Hook_config_' . filter_naughty_harsh($hook));
             $option = $ob->get_details();
             if ((is_null($GLOBALS['CURRENT_SHARE_USER'])) || ($option['shared_hosting_restricted'] == 0)) {
                 if (!is_null($ob->get_default())) {
