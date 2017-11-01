@@ -155,17 +155,9 @@
          */
         $PREVIEW_URL: function $PREVIEW_URL() {
             var value = '{$FIND_SCRIPT_NOHTTP;,preview}';
-            value += '?page=' + urlencode(getPageName());
+            value += '?page=' + urlencode($cms.getPageName());
             value += '&type=' + urlencode($cms.pageSearchParams().get('type'));
             return value;
-
-            function getPageName() {
-                var pageName = $cms.pageSearchParams().has('page') ? $cms.pageSearchParams().get('page') : '';
-                if (pageName === '') {
-                    pageName = $cms.zoneDefaultPage();
-                }
-                return pageName;
-            }
         },
         /**
          * @method
@@ -349,6 +341,8 @@
         inherits: inherits,
         /**@method*/
         baseUrl: baseUrl,
+        /**@method*/
+        getPageName: getPageName,
         /**@method*/
         pageUrl: pageUrl,
         /**@method*/
@@ -1553,6 +1547,10 @@
         }
 
         return $cms.$BASE_URL() + (relativeUrl.startsWith('/') ? '' : '/') + relativeUrl;
+    }
+    
+    function getPageName() {
+        return $cms.$PAGE();
     }
 
     /**
