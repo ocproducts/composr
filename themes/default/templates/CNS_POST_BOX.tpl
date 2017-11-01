@@ -1,8 +1,6 @@
 <div class="cns_post_box">
 	<div class="wide_table_wrap"><div class="wide_table cns_topic">
-		<div>
 			{POST}
-		</div>
 	</div></div>
 
 	{+START,IF_PASSED,BREADCRUMBS}
