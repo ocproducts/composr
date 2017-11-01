@@ -14805,7 +14805,7 @@
                             document.getElementById('hidFileID_file' + attachmentBase).value = decodedData['upload_id'];
 
                             if ($cms.form.isWysiwygField(element)) {
-                                window.generateBackgroundPreview(element);
+                                window.showPreviewImagesForAttachmentComcodes(element);
                             }
                         });
                     }

@@ -5,7 +5,7 @@
     window.addAttachment = addAttachment;
     window.attachmentPresent = attachmentPresent;
     window.setAttachment = setAttachment;
-    window.generateBackgroundPreview = showPreviewImagesForAttachmentComcodes;
+    window.showPreviewImagesForAttachmentComcodes = showPreviewImagesForAttachmentComcodes;
     window.doInputHtml = doInputHtml;
     window.doInputCode = doInputCode;
     window.doInputQuote = doInputQuote;
@@ -280,11 +280,11 @@
 
     /**
      * WYSIWYG preview for image attachments
-     * @param { HTMLTextAreaElement } post
+     * @param { HTMLTextAreaElement } postTextArea
      */
-    function showPreviewImagesForAttachmentComcodes(post) {
-        var formPost = '';
-        var form = post.form;
+    function showPreviewImagesForAttachmentComcodes(postTextArea) {
+        var post = '';
+        var form = postTextArea.form;
 
         for (var i = 0; i < form.elements.length; i++) {
             if (!form.elements[i].disabled && (form.elements[i].name !== undefined) && (form.elements[i].name !== '')) {
@@ -295,13 +295,19 @@
                     value = 'x';
                 }
                 
-                formPost += '&' + name + '=' + encodeURIComponent(value);
+                if (post !== '') {
+                    post + '&';
+                }
+                
+                post += name + '=' + encodeURIComponent(value);
             }
         }
-        
-        formPost = $cms.form.modSecurityWorkaroundAjax(formPost.substr(1));
 
-        $cms.doAjaxRequest(window.formPreviewUrl + '&js_only=1&known_utf8=1', null, formPost).then(function (xhr) {
+        if ('{$VALUE_OPTION;,disable_modsecurity_workaround}' !== '1') {
+            post = $cms.form.modSecurityWorkaroundAjax(post);
+        }
+
+        $cms.doAjaxRequest(window.formPreviewUrl + '&js_only=1&known_utf8=1', null, post).then(function (xhr) {
             $cms.dom.append(document.body, xhr.responseText);
         });
     }
@@ -886,7 +892,9 @@
 
                     // Save remotely
                     if (navigator.onLine) {
-                        post = $cms.form.modSecurityWorkaroundAjax(post);
+                        if ('{$VALUE_OPTION;,disable_modsecurity_workaround}' !== '1') {
+                            post = $cms.form.modSecurityWorkaroundAjax(post);
+                        }
                         $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + $cms.$KEEP(), null, post).then(function () {
                             if (document.body.style.cursor === 'wait') {
                                 document.body.style.cursor = '';
@@ -1105,7 +1113,9 @@
             if (navigator.onLine) {
                 //$cms.inform('Doing AJAX auto-save');
 
-                post = $cms.form.modSecurityWorkaroundAjax(post);
+                if ('{$VALUE_OPTION;,disable_modsecurity_workaround}' !== '1') {
+                    post = $cms.form.modSecurityWorkaroundAjax(post);
+                }
                 $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + $cms.$KEEP(), null, post);
             }
         }

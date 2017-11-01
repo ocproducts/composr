@@ -239,10 +239,16 @@
                     }
 
                     var newCss = editareaGetValue(textareaId);
-                    if (newCss == lastCss) return; // Not changed
+                    if (newCss == lastCss) {// Not changed
+                        return;
+                    } 
 
-                    var url = $cms.baseUrl('data/snippet.php?snippet=css_compile__text' + $cms.$KEEP());
-                    $cms.doAjaxRequest(url, null, $cms.form.modSecurityWorkaroundAjax('css=' + encodeURIComponent(newCss))).then(function (xhr) {
+                    var url = $cms.baseUrl('data/snippet.php?snippet=css_compile__text' + $cms.$KEEP()),
+                        post = 'css=' + encodeURIComponent(newCss);
+                    if ('{$VALUE_OPTION;,disable_modsecurity_workaround}' !== '1') {
+                        post = $cms.form.modSecurityWorkaroundAjax(post);
+                    }
+                    $cms.doAjaxRequest(url, null, post).then(function (xhr) {
                         receiveCompiledCss(xhr, file);
                     });
 

@@ -216,7 +216,9 @@
                     url += '&forum_db=1';
                 }
                 var post = 'data=' + encodeURIComponent(wysiwygData.replace(new RegExp(String.fromCharCode(8203), 'g'), ''));
-                post = $cms.form.modSecurityWorkaroundAjax(post);
+                if ('{$VALUE_OPTION;,disable_modsecurity_workaround}' !== '1') {
+                    post = $cms.form.modSecurityWorkaroundAjax(post);
+                }
                 $cms.doAjaxRequest(url, null, post).then(function (xhr) {
                     if (!xhr.responseXML || !xhr.responseXML.querySelector('result')) {
                         textarea.value = '[semihtml]' + wysiwygData + '[/semihtml]';
