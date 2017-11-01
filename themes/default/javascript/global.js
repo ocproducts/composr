@@ -8667,7 +8667,7 @@
             }
             url += '#composrcms';
 
-            var SOFTWARE_CHAT_EXTRA = '{!SOFTWARE_CHAT_EXTRA;^}'.replace(/\{1\}/, $cms.filter.html(window.location.href.replace($cms.$BASE_URL(), 'http://baseurl')));
+            var SOFTWARE_CHAT_EXTRA = $cms.format('{!SOFTWARE_CHAT_EXTRA;^}', [$cms.filter.html(window.location.href.replace($cms.$BASE_URL(), 'http://baseurl'))]);
             var html = /** @lang HTML */' \
                 <div class="software_chat"> \
                     <h2>{!CMS_COMMUNITY_HELP}</h2> \
@@ -11044,7 +11044,7 @@
         if (blockPosY > window.pageYOffset) {
             scrollToTop = false;
         }
-
+        
         var linkWrappers = blockElement.querySelectorAll('.ajax_block_wrapper_links');
         if (linkWrappers.length === 0) {
             linkWrappers = [blockElement];
@@ -11093,11 +11093,14 @@
                     urlStub += matches[1] + '=' + matches[2];
                 }
             }
-            for (key in extraParams) {
-                urlStub += urlStem.includes('?') ? '&' : '?';
-                urlStub += key + '=' + encodeURIComponent(strVal(extraParams[key]));
+            
+            if (extraParams != null) {
+                for (key in extraParams) {
+                    urlStub += urlStem.includes('?') ? '&' : '?';
+                    urlStub += key + '=' + encodeURIComponent(strVal(extraParams[key]));
+                }    
             }
-
+            
             // Any POST parameters?
             var postParams = null, param;
 
@@ -11119,15 +11122,17 @@
                     }
                 }
             }
-
-            if (window.history && window.history.pushState) {
-                try {
-                    window.hasJsState = true;
-                    window.history.pushState({ js: true }, document.title, href.replace(/[&\?]ajax=1/, '').replace(/[&\?]zone=[{$URL_CONTENT_REGEXP_JS}]+/, ''));
-                } catch (ignore) {
-                    // Exception could have occurred due to cross-origin error (e.g. "Failed to execute 'pushState' on 'History':
-                    // A history state object with URL 'https://xxx' cannot be created in a document with origin 'http://xxx'")
-                }
+            
+            try {
+                href = $cms.url(href);
+                href.searchParams.delete('ajax');
+                href.searchParams.delete('zone');
+                
+                window.hasJsState = true;
+                window.history.pushState({ js: true }, document.title, href.toString());
+            } catch (ignore) {
+                // Exception could have occurred due to cross-origin error (e.g. "Failed to execute 'pushState' on 'History':
+                // A history state object with URL 'https://xxx' cannot be created in a document with origin 'http://xxx'")
             }
 
             $cms.ui.clearOutTooltips();
