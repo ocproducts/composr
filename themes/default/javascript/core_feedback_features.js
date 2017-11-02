@@ -40,7 +40,7 @@
             return {
                 'click .js-btn-full-editor': 'moveToFullEditor',
                 'click .js-btn-submit-comments': 'clickBtnSubmit',
-                'click .js-click-do-form-preview': 'doFormPreview',
+                'click .js-click-do-form-preview': 'doPostingFormPreview',
                 'submit .js-form-comments': 'submitFormComments',
 
                 'click .js-img-review-bar': 'reviewBarClick',
@@ -130,15 +130,11 @@
             $cms.form.doFormSubmit(form);
         },
 
-        doFormPreview: function (e, btn) {
+        doPostingFormPreview: function (e, btn) {
             var form = btn.form,
                 url = $cms.maintainThemeInLink($cms.$PREVIEW_URL() + $cms.$KEEP());
             
-            $cms.form.doFormPreview(form, url).then(function (bool) {
-                if (bool) {
-                    $cms.dom.submit(form);    
-                }
-            });
+            $cms.form.doFormPreview(form, url);
         },
 
         submitFormComments: function (e) {
@@ -207,7 +203,9 @@
 
             // Reset form target
             form.setAttribute('target', '_top');
-            if (form.oldAction !== undefined) form.oldAction = form.getAttribute('action');
+            if (form.oldAction !== undefined) {
+                form.oldAction = form.getAttribute('action');
+            }
             form.setAttribute('action', moreUrl);
 
             // Handle threaded strip-on-focus

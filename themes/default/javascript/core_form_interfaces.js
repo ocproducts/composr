@@ -106,11 +106,7 @@
         doStandardFormPreview: function (e) {
             var form = this.form;
 
-            $cms.form.doFormPreview(form, window.formPreviewUrl, window.separatePreview).then(function (bool) {
-                if (bool) {
-                    form.submit();
-                }
-            });
+            $cms.form.doFormPreview(form, window.formPreviewUrl, window.separatePreview);
         },
 
         doStandardFormSubmit: function (e) {
@@ -802,7 +798,7 @@
                 try {
                     window.parent.scrollTo(0, $cms.dom.findPosY(window.parent.document.getElementById('preview_iframe')));
                 } catch (e) {}
-                window.parent.mobileVersionForPreview = !!el.checked;
+                window.parent.mobileVersionForPreview = Boolean(el.checked);
                 $cms.dom.trigger(window.parent.document.getElementById('preview_button'), 'click');
                 return;
             }

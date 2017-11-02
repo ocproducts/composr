@@ -579,7 +579,7 @@
                 valueOf: {
                     /**
                      * @memberof URL#
-                     * @method toString
+                     * @method valueOf
                      * @return {*}
                      */
                     value: function () {

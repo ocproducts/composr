@@ -150,7 +150,7 @@
                     scrolled = true;
                 }
                 
-                if (!alerted && (form.offsetHeight > $cms.dom.getWindowHeight())) { // If possibly cannot see upload progress bars
+                if (!alerted) { 
                     $cms.ui.alert({ notice: '{!javascript:PLEASE_WAIT_WHILE_UPLOADING;^}', single: true });
                     alerted = true;
                 }
@@ -193,11 +193,6 @@
                 }
                 
                 // Uploads pending
-                
-                //if (form.offsetHeight > $cms.dom.getWindowHeight()) { // Alert if possibly cannot see file upload progress bars
-                    $cms.ui.alert({ notice: '{!javascript:PLEASE_WAIT_WHILE_UPLOADING;^}', single: true });
-                //}
-
                 return $cms.form.startUploads(form);
             }).then(function () {
                 if (form.method.toLowerCase() === 'get') {
@@ -229,7 +224,6 @@
                     });
                 } else {
                     resolveSubmitPromise(true);
-                    console.log('submitting form!!!', form);
                     form.submit();
                 }
             });
@@ -239,81 +233,85 @@
     /**
      * @memberof $cms.form
      * @param { HTMLFormElement } form
-     * @param {string} previewUrl
+     * @param {string|URL} previewUrl
      * @param {boolean} [hasSeparatePreview]
      * @returns { Promise }
      */
     $cms.form.doFormPreview = function doFormPreview(form, previewUrl, hasSeparatePreview) {
         form = $cms.dom.elArg(form);
-        previewUrl = strVal(previewUrl);
+        previewUrl = $cms.url(previewUrl);
         hasSeparatePreview = Boolean(hasSeparatePreview);
 
         return new Promise(function (resolvePreviewPromise) {
-            if (!$cms.dom.$id('preview_iframe')) {
+            if (!$cms.dom.$('#preview_iframe')) {
                 $cms.ui.alert('{!ADBLOCKER;^}');
                 return resolvePreviewPromise(false);
             }
 
-            previewUrl += ((window.mobileVersionForPreview === undefined) ? '' : ('&keep_mobile=' + (window.mobileVersionForPreview ? '1' : '0')));
-
-            var oldAction = strVal(form.getAttribute('action'));
-
-            if (!form.oldAction) {
-                form.oldAction = oldAction;
-            }
-            form.setAttribute('action', /*$cms.maintainThemeInLink - no, we want correct theme images to work*/(previewUrl) + (form.oldAction.includes('&uploading=1') ? '&uploading=1' : ''));
-            var oldTarget = form.getAttribute('target');
-            if (!oldTarget) {
-                oldTarget = '_top';
-            }
-            /* not _self due to edit screen being a frame itself */
-            if (!form.oldTarget) {
-                form.oldTarget = oldTarget;
-            }
-            form.setAttribute('target', 'preview_iframe');
-
             var checkFormPromise = $cms.form.checkForm(form, true);
-
+            
             checkFormPromise.then(function (valid) {
                 if (!valid) {
                     resolvePreviewPromise(false);
                     return $cms.promiseHalt();
                 }
+                
+                if (window.mobileVersionForPreview !== undefined) {
+                    previewUrl.searchParams.set('keep_mobile', (window.mobileVersionForPreview ? 1 : 0));
+                }
+                
+                var oldAction = form.getAttribute('action');
+                if (!form.oldAction) {
+                    form.oldAction = oldAction;
+                }
+                
+                if ($cms.url(form.oldAction).searchParams.get('uploading') === '1') {
+                    previewUrl.searchParams.set('uploading', '1');
+                }
+                
+                form.setAttribute('action', previewUrl);
+                
+                var oldTarget = form.getAttribute('target') || '_top'; // not _self due to edit screen being a frame itself
+                
+                if (!form.oldTarget) {
+                    form.oldTarget = oldTarget;
+                }
+                
+                form.setAttribute('target', 'preview_iframe');
 
+                $cms.ui.disableSubmitAndPreviewButtons();
+                
                 if ($cms.form.areUploadsComplete(form)) {
                     return Promise.resolve();
                 }
 
                 // Uploads pending
-
-                if (form.offsetHeight > $cms.dom.getWindowHeight()) { // Alert if possibly cannot see file upload progress bars
-                    $cms.ui.alert({ notice: '{!javascript:PLEASE_WAIT_WHILE_UPLOADING;^}', single: true });
-                }
-
                 return $cms.form.startUploads(form);
             }).then(function () {
                 if ($cms.dom.trigger(form, 'submit', { detail: { triggeredByDoFormPreview: true } }) === false) {
+                    $cms.ui.enableSubmitAndPreviewButtons();
                     return resolvePreviewPromise(false);
                 }
 
                 if (hasSeparatePreview) {
-                    form.setAttribute('action', form.oldAction + (form.oldAction.includes('?') ? '&' : '?') + 'preview=1');
-                    return resolvePreviewPromise(true);
+                    var action = $cms.url(form.oldAction);
+                    action.searchParams.set('preview', 1);
+                    form.setAttribute('action', action);
+                    resolvePreviewPromise(true);
+                    form.submit();
+                    return;
                 }
-
-                $cms.dom.$('#submit_button').style.display = 'inline';
 
                 /* Do our loading-animation */
                 setInterval($cms.dom.triggerResize, 500);
                 /* In case its running in an iframe itself */
                 $cms.dom.illustrateFrameLoad('preview_iframe');
 
-                $cms.ui.disableSubmitAndPreviewButtons();
-
                 // Turn main post editing back off
                 window.wysiwygSetReadonly('post', true);
 
-                return resolvePreviewPromise(true);
+                resolvePreviewPromise(true);
+                form.submit();
             });
         });
     };
