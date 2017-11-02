@@ -440,7 +440,7 @@ class Module_admin_config
                     $explanation = is_maintained_description($option['maintenance_code'], $explanation);
                 }
 
-                $required = $option['required'];
+                $required = isset($option['required']) ? $option['required'] : false;
 
                 // Render field inputter
                 switch ($option['type']) {
