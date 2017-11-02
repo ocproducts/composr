@@ -430,10 +430,6 @@ window.allConversations = {};
 // Code...
 
 function playSoundUrl(url) { // Used for testing different sounds
-    if (window.soundManager === undefined) {
-        return;
-    }
-
     var baseUrl = (!url.includes('data_custom') && !url.includes('uploads/')) ? $cms.$BASE_URL_NOHTTP() : $cms.$CUSTOM_BASE_URL_NOHTTP();
     var soundObject = window.soundManager.createSound({url: baseUrl + '/' + url});
     if (soundObject) {
@@ -442,10 +438,6 @@ function playSoundUrl(url) { // Used for testing different sounds
 }
 
 function playChatSound(sId, forMember) {
-    if (window.soundManager === undefined) {
-        return;
-    }
-
     var playSound = document.getElementById('play_sound');
 
     if ((playSound) && (!playSound.checked)) {

@@ -1441,6 +1441,7 @@
         rgxHttp = /^https?:(?=\/\/)/i,
         rgxHttpRel = /^(?:https?:)?(?=\/\/)/i;
     /**
+     * NB: Trailing slash
      * @param {string} url - An absolute or relative URL. If url is a relative URL, `base` will be used as the base URL. If url is an absolute URL, a given `base` will be ignored.
      * @param {string} [base] - The base URL to use in case url is a relative URL. If not specified, it defaults to $cms.$BASE_URL().
      * @return { URL }
@@ -1470,16 +1471,8 @@
         if (relativeUrl === '') {
             return $cms.$BASE_URL();
         }
-
-        if (isAbsolute(relativeUrl)) {
-            // Already an absolute url, just ensure matching protocol as the current page.
-            return relativeUrl.replace(rgxHttp, window.location.protocol);
-        } else if (isSchemeRelative(relativeUrl)) {
-            // Scheme-relative URL, add current protocol
-            return window.location.protocol + relativeUrl;
-        }
-
-        return $cms.$BASE_URL() + (relativeUrl.startsWith('/') ? '' : '/') + relativeUrl;
+        
+        return $cms.url(relativeUrl).toString();
     }
     
     function getPageName() {
@@ -10633,15 +10626,13 @@
         try {
             window.focus();
         } catch (e) {}
+        
+        var soundUrl = 'data/sounds/message_received.mp3',
+            baseUrl = (!soundUrl.includes('data_custom') && !soundUrl.includes('uploads/')) ? $cms.$BASE_URL_NOHTTP : $cms.$CUSTOM_BASE_URL_NOHTTP,
+            soundObject = window.soundManager.createSound({ url: baseUrl + '/' + soundUrl });
 
-        if (window.soundManager !== undefined) {
-            var soundUrl = 'data/sounds/message_received.mp3',
-                baseUrl = (!soundUrl.includes('data_custom') && !soundUrl.includes('uploads/')) ? $cms.$BASE_URL_NOHTTP : $cms.$CUSTOM_BASE_URL_NOHTTP,
-                soundObject = window.soundManager.createSound({ url: baseUrl + '/' + soundUrl });
-
-            if (soundObject && document.hasFocus()/*don't want multiple tabs all pinging*/) {
-                soundObject.play();
-            }
+        if (soundObject && document.hasFocus()/*don't want multiple tabs all pinging*/) {
+            soundObject.play();
         }
     }
 
