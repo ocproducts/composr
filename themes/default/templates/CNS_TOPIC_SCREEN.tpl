@@ -1,3 +1,5 @@
+{$REQUIRE_JAVASCRIPT,core_form_interfaces}
+{$REQUIRE_JAVASCRIPT,cns_forum}
 <div data-tpl="cnsTopicScreen" data-tpl-params="{+START,PARAMS_JSON,SERIALIZED_OPTIONS,HASH}{_*}{+END}">
 	{TITLE}
 
