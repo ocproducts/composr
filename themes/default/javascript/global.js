@@ -5033,8 +5033,9 @@
 
     /**
      * @param functionCallsArray
+     * @param [thisRef]
      */
-    function executeJsFunctionCalls(functionCallsArray) {
+    function executeJsFunctionCalls(functionCallsArray, thisRef) {
         if (!Array.isArray(functionCallsArray)) {
             $cms.fatal('$cms.executeJsFunctionCalls(): Argument 1 must be an array, "' + typeName(functionCallsArray) + '" passed');
             return;
@@ -5056,7 +5057,7 @@
             args = func.slice(1);
 
             if (typeof $cms.functions[funcName] === 'function') {
-                $cms.functions[funcName].apply(undefined, args);
+                $cms.functions[funcName].apply(thisRef, args);
             } else {
                 $cms.fatal('$cms.executeJsFunctionCalls(): Function not found: $cms.functions.' + funcName);
             }
@@ -7527,6 +7528,8 @@
 
             if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) {
                 data = parseJson(data);
+            } else if (isNumeric(trimmed)) {
+                data = Number(trimmed);
             }
 
             pageMetaCache[name] = data;
@@ -8133,7 +8136,7 @@
                 'keypress [data-cms-rich-tooltip]': 'activateRichTooltip',
 
                 'change input[data-cms-unchecked-is-indeterminate]': 'uncheckedIsIndeterminate',
-
+                
                 'click [data-click-ga-track]': 'gaTrackClick',
 
                 // Toggle tray
@@ -9315,7 +9318,7 @@
     // For admin/templates/MENU_mobile.tp
     $cms.templates.menuMobile = function menuMobile(params) {
         var menuId = strVal(params.menuId);
-        $cms.dom.on(document.body, 'click', 'click .js-click-toggle-' + menuId + '-content', function (e) {
+        $cms.dom.on(document.body, 'click', '.js-click-toggle-' + menuId + '-content', function (e) {
             var branch = document.getElementById(menuId);
 
             if (branch) {
@@ -10567,7 +10570,16 @@
         });
     };
 
-    $cms.templates.buttonScreenItem = function buttonScreenItem() {};
+    $cms.templates.buttonScreenItem = function buttonScreenItem(params, btn) {
+        var onclickCallFunctions = params.onclickCallFunctions;
+        
+        if (onclickCallFunctions != null) {
+            $cms.dom.on(btn, 'click', function (e) {
+                e.preventDefault();
+                $cms.executeJsFunctionCalls(onclickCallFunctions, btn)
+            });
+        }
+    };
 
     $cms.templates.cropTextMouseOver = function (params, el) {
         var textLarge = $cms.filter.nl(params.textLarge);

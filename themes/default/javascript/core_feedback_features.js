@@ -531,11 +531,12 @@
      * @param replyingToPostPlain
      * @param isExplicitQuote
      */
-    $cms.functions.topicReply = function topicReply(el, isThreaded, id, replyingToUsername, replyingToPost, replyingToPostPlain, isExplicitQuote) {
+    $cms.functions.topicReply = function topicReply(isThreaded, id, replyingToUsername, replyingToPost, replyingToPostPlain, isExplicitQuote) {
         isThreaded = !!isThreaded;
         isExplicitQuote = !!isExplicitQuote;
 
-        var form = $cms.dom.$('form#comments_form');
+        var el = this,
+            form = $cms.dom.$('form#comments_form');
 
         var parentIdField;
         if (form.elements['parent_id'] === undefined) {

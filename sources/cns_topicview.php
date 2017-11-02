@@ -670,29 +670,31 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
             $map['threaded'] = $test_threaded;
         }
         $action_url = build_url($map, get_module_zone('topics'));
-        $javascript = null;
-        $javascript_explicit_quote = null;
+
+        $onclick_call_functions = null;
+        $onclick_call_functions_explicit_quote = null;
 
         if ((array_key_exists('message_comcode', $_postdetails)) && ($_postdetails['message_comcode'] !== null) && (strlen($_postdetails['message_comcode']) < 1024 * 10/*10kb limit, for reasonable performance*/) && (array_key_exists('may_use_quick_reply', $topic_info)) && (!array_key_exists('intended_solely_for', $map))) {
             require_code('comcode_cleanup');
-            $replying_to_post = json_encode(comcode_censored_raw_code_access($_postdetails['message_comcode']));
-            $replying_to_post_plain = json_encode(($topic_info['is_threaded'] == 0) ? '' : strip_comcode($_postdetails['message_comcode']));
+            $replying_to_post = comcode_censored_raw_code_access($_postdetails['message_comcode']);
+            $replying_to_post_plain = ($topic_info['is_threaded'] == 0) ? '' : strip_comcode($_postdetails['message_comcode']);
             require_javascript('cns_forum');
-            $javascript = sprintf('$cms.functions.topicReply(this, %1$d, %2$s, %3$s, %4$s, %5$s, false); return false;', $topic_info['is_threaded'], json_encode($_postdetails['id']), json_encode($_postdetails['poster_username']), $replying_to_post, $replying_to_post_plain);
-            $javascript_explicit_quote = sprintf('$cms.functions.topicReply(this, %1$d, %2$s, %3$s, %4$s, %5$s, true); return false;', 0, json_encode($_postdetails['id']), json_encode($_postdetails['poster_username']), $replying_to_post, $replying_to_post_plain);
+            $onclick_call_functions = array(array('topicReply', $topic_info['is_threaded'], $_postdetails['id'], $_postdetails['poster_username'], $replying_to_post, $replying_to_post_plain, false));
+            $onclick_call_functions_explicit_quote = array(array('topicReply', 0, $_postdetails['id'], $_postdetails['poster_username'], $replying_to_post, $replying_to_post_plain, true));
         }
         $_title = do_lang_tempcode(($topic_info['is_threaded'] == 1) ? '_REPLY' : '_QUOTE_POST');
         $_title_full = new Tempcode();
         $_title_full->attach(do_lang_tempcode(($topic_info['is_threaded'] == 1) ? 'REPLY' : 'QUOTE_POST'));
         $_title_full->attach(do_lang_tempcode('ID_NUM', strval($_postdetails['id'])));
-        $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => 'fc13d12cfe58324d78befec29a663b4f', 'REL' => 'add reply nofollow', 'IMMEDIATE' => false, 'IMG' => ($topic_info['is_threaded'] == 1) ? 'buttons__new_reply' : 'buttons__new_quote', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url, 'JAVASCRIPT' => $javascript)));
+
+        $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => 'fc13d12cfe58324d78befec29a663b4f', 'REL' => 'add reply nofollow', 'IMMEDIATE' => false, 'IMG' => ($topic_info['is_threaded'] == 1) ? 'buttons__new_reply' : 'buttons__new_quote', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url, 'ONCLICK_CALL_FUNCTIONS' => $onclick_call_functions)));
 
         if ($topic_info['is_threaded'] == 1) { // Second button for replying with explicit quote
             $_title = do_lang_tempcode('QUOTE_POST');
             $_title_full = new Tempcode();
             $_title_full->attach($_title);
             $_title_full->attach(do_lang_tempcode('ID_NUM', strval($_postdetails['id'])));
-            $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => 'fc13d12cfe58324d78befec29a663b4f', 'REL' => 'add reply nofollow', 'IMMEDIATE' => false, 'IMG' => 'buttons__new_quote', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url, 'JAVASCRIPT' => $javascript_explicit_quote)));
+            $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => 'fc13d12cfe58324d78befec29a663b4f', 'REL' => 'add reply nofollow', 'IMMEDIATE' => false, 'IMG' => 'buttons__new_quote', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url, 'ONCLICK_CALL_FUNCTIONS' => $onclick_call_functions_explicit_quote)));
         }
     }
 
