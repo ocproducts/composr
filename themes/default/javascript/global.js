@@ -2399,10 +2399,11 @@
         // Check if the el object already has a cache
         var value = domDataMap.get(el), key;
         if (!value) { // If not, create one with the dataset
+            value = {};
+            domDataMap.set(el, value);
             for (key in el.dataset) {
                 dataAttr(el, key);
             }
-            value = domDataMap.get(el);
         }
 
         return value;
