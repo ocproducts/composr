@@ -1308,20 +1308,13 @@
      * @returns {string}
      */
     function camelCase(str) {
-        // Lower cases the string
         return ((str != null) && (str = strVal(str))) ?
-            str.toLowerCase()
-            // Replaces any - or _ characters with a space
-                .replace(/[\-_]+/g, ' ')
-                // Removes any non alphanumeric characters
-                .replace(/[^\w\s]/g, '')
-                // Uppercases the first character in each group immediately following a space
-                // (delimited by spaces)
-                .replace(/ (.)/g, function ($1) {
+            str.replace(/[\-_]+/g, ' ') // Replaces any - or _ characters with a space
+                .replace(/[^\w\s]/g, '') // Removes any non alphanumeric characters
+                .replace(/ (.)/g, function ($1) { // Uppercases the first character in each group immediately following a space (delimited by spaces)
                     return $1.toUpperCase();
                 })
-                // Removes spaces
-                .replace(/ /g, '')
+                .replace(/ /g, '') // Removes spaces
             : '';
     }
 
@@ -1729,7 +1722,7 @@
         return null;
     }
     
-    function _findCssByHref (href) {
+    function _findCssByHref(href) {
         var els = $cms.dom.$$('link[rel="stylesheet"][href]'), el;
 
         href = $cms.url.schemeRelative(href);
@@ -2399,119 +2392,27 @@
             node.textContent = strVal((typeof newText === 'function') ? newText.call(node, node.textContent, node) : newText);
         }
     });
-
-    /** @class */
-    function Data() {
-        /**
-         * @type { WeakMap }
-         */
-        this.dataMap = new WeakMap();
-    }
-    properties(Data.prototype, /**@lends Data#*/ {
-        cache: function cache(owner) {
-            // Check if the owner object already has a cache
-            var value = this.dataMap.get(owner);
-            // If not, create one
-            if (!value) {
-                value = {};
-                this.dataMap.set(owner, value);
-            }
-
-            return value;
-        },
-        set: function set(owner, data, value) {
-            var prop, cache = this.cache(owner);
-
-            // Handle: [ owner, key, value ] args
-            // Always use camelCase key (gh-2257)
-            if (typeof data === 'string') {
-                cache[camelCase(data)] = value;
-                // Handle: [ owner, { properties } ] args
-            } else {
-                // Copy the properties one-by-one to the cache object
-                for (prop in data) {
-                    cache[camelCase(prop)] = data[prop];
-                }
-            }
-            return cache;
-        },
-        get: function get(owner, key) {
-            return key === undefined ?
-                this.cache(owner) :
-                // Always use camelCase key (gh-2257)
-                (this.dataMap.get(owner) && this.dataMap.get(owner)[camelCase(key)]);
-        },
-        access: function access(owner, key, value) {
-            // In cases where either:
-            //
-            //   1. No key was specified
-            //   2. A string key was specified, but no value provided
-            //
-            // Take the "read" path and allow the get method to determine
-            // which value to return, respectively either:
-            //
-            //   1. The entire cache object
-            //   2. The data stored at the key
-            //
-            if ((key === undefined) || ((key && (typeof key === 'string')) && (value === undefined))) {
-                return this.get(owner, key);
-            }
-
-            // When the key is not a string, or both a key and value
-            // are specified, set or extend (existing objects) with either:
-            //
-            //   1. An object of properties
-            //   2. A key and value
-            //
-            this.set(owner, key, value);
-
-            // Since the "set" path can have two possible entry points
-            // return the expected data based on which path was taken[*]
-            return (value !== undefined) ? value : key;
-        },
-        remove: function remove(owner, key) {
-            var i, cache = this.dataMap.get(owner);
-
-            if (cache === undefined) {
-                return;
-            }
-
-            if (key !== undefined) {
-                // Support array or space separated string of keys
-                if (Array.isArray(key)) {
-                    // If key is an array of keys...
-                    // We always set camelCase keys, so remove that.
-                    key = key.map(camelCase);
-                } else {
-                    key = camelCase(key);
-                    // If a key with the spaces exists, use it.
-                    // Otherwise, create an array by matching non-whitespace
-                    key = (key in cache) ? [key] : (key.match(rgxNotWhite) || []);
-                }
-
-                i = key.length;
-
-                while (i--) {
-                    delete cache[key[i]];
-                }
-            }
-
-            // Remove if there's no more data
-            if ((key === undefined) || !hasEnumerable(cache)) {
-                this.dataMap.delete(owner);
-            }
-        },
-        hasData: function hasData(owner) {
-            var cache = this.dataMap.get(owner);
-            return (cache !== undefined) && hasEnumerable(cache);
+    
+    var domDataMap = new WeakMap(),
+        isDatasetParsed = new WeakMap();
+    
+    function dataCache(el) {
+        // Check if the el object already has a cache
+        var value = domDataMap.get(el);
+        // If not, create one
+        if (!value) {
+            value = {};
+            domDataMap.set(el, value);
         }
-    });
 
-    function dataAttr(elem, key, data) {
+        return value;
+    }
+    
+    function dataAttr(el, key, data) {
         var trimmed;
         // If nothing was found internally, try to fetch any
         // data from the HTML5 data-* attribute
-        if ((data === undefined) && (typeof (data = elem.dataset[key]) === 'string')) {
+        if ((data === undefined) && (typeof (data = el.dataset[key]) === 'string')) {
             trimmed = data.trim();
 
             if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) { // Object or array?
@@ -2521,12 +2422,10 @@
             }
 
             // Make sure we set the data so it isn't changed later
-            domData.set(elem, key, data);
+            dataCache(el)[key] = data;
         }
         return data;
     }
-
-    var domData = new Data();
 
     /**
      * Data retrieval and storage
@@ -2539,65 +2438,83 @@
     $cms.dom.data = function data(el, key, value) {
         // Note: We have internalised caching here. You must not change data-* attributes manually and expect this API to pick up on it.
 
-        var name, data;
+        var name, data, prop;
 
         el = elArg(el);
 
+        // First make sure we've parsed the dataset
+        if (!isDatasetParsed.has(el)) {
+            for (name in el.dataset) {
+                dataAttr(el, name);
+            }
+            isDatasetParsed.set(el, true);
+        }
+
         // Gets all values
         if (key === undefined) {
-            data = domData.get(el);
-
-            if (!domData.hasData(el)) {
-                for (name in el.dataset) {
-                    dataAttr(el, name, data[name]);
-                }
-            }
-
-            return data;
+            return dataCache(el);
         }
 
         // Sets multiple values
-        if (typeof key === 'object') {
-            return domData.set(el, key);
+        if (isObj(key)) {
+            data = dataCache(el);
+            // Copy the properties one-by-one to the cache object
+            for (prop in key) {
+                data[camelCase(key)] = key[prop];
+            }
+            
+            return data;
         }
 
         if (value === undefined) {
             // Attempt to get data from the cache
             // The key will always be camelCased in Data
-            data = domData.get(el, key);
-            if (data !== undefined) {
-                return data;
-            }
-            // Attempt to "discover" the data in
-            // HTML5 custom data-* attrs
-            try {
-                data = dataAttr(el, key);
-            } catch (e) {
-                $cms.fatal('$cms.dom.data(): Exception thrown while parsing JSON in data attribute "' + key + '" of', el, e);
-            }
-
-            if (data !== undefined) {
-                return data;
-            }
-
-            // We tried really hard, but the data doesn't exist.
-            return;
+            return dataCache(el)[camelCase(key)];
         }
 
         // Set the data...
         // We always store the camelCased key
-        domData.set(el, key, value);
+        dataCache(el)[camelCase(key)] = value;
     };
 
     /**
      * @memberof $cms.dom
-     * @param el
+     * @param owner
      * @param key
      */
-    $cms.dom.removeData = function removeData(el, key) {
-        el = elArg(el);
+    $cms.dom.removeData = function removeData(owner, key) {
+        owner = elArg(owner);
 
-        domData.remove(el, key);
+        var i, cache = domDataMap.get(owner);
+
+        if (cache === undefined) {
+            return;
+        }
+
+        if (key !== undefined) {
+            // Support array or space separated string of keys
+            if (Array.isArray(key)) {
+                // If key is an array of keys...
+                // We always set camelCase keys, so remove that.
+                key = key.map(camelCase);
+            } else {
+                key = camelCase(key);
+                // If a key with the spaces exists, use it.
+                // Otherwise, create an array by matching non-whitespace
+                key = (key in cache) ? [key] : (key.match(rgxNotWhite) || []);
+            }
+
+            i = key.length;
+
+            while (i--) {
+                delete cache[key[i]];
+            }
+        }
+
+        // Remove if there's no more data
+        if ((key === undefined) || !hasEnumerable(cache)) {
+            domDataMap.delete(owner);
+        }
     };
 
     /**
@@ -2799,18 +2716,9 @@
      * @return {*}
      */
     $cms.dom.hasScriptSrcLoaded = function hasScriptSrcLoaded(src) {
-        src = $cms.url.schemeRelative(src);
-        
-        var scripts = $cms.dom.$$('script[src]'), scriptEl;
-        
-        for (var i = 0; i < scripts.length; i++) {
-            scriptEl = scripts[i];
-            if ($cms.url.schemeRelative(scriptEl.src) === src) {
-                return $cms.scriptsLoaded.has(scriptEl);
-            }
-        }
-        
-        return false;
+        var scripts = $cms.dom.$$('script[src]'), 
+            scriptEl = _findScriptBySrc(src);
+        return (scriptEl != null) && $cms.scriptsLoaded.has(scriptEl);
     };
     
     /**
