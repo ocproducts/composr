@@ -2406,23 +2406,19 @@
 
     /** @class */
     function Data() {
-        this.expando = $cms.id + '-data-' + Data.uid++;
+        /**
+         * @type { WeakMap }
+         */
+        this.dataMap = new WeakMap();
     }
-    Data.uid = 1;
     properties(Data.prototype, /**@lends Data#*/ {
         cache: function cache(owner) {
             // Check if the owner object already has a cache
-            var value = owner[this.expando];
+            var value = this.dataMap.get(owner);
             // If not, create one
             if (!value) {
                 value = {};
-
-                // We can accept data for non-document/element nodes in modern browsers, but we should not, see jQuery bug#8335.
-                if (isNode(owner) && !isDocOrEl(owner)) {
-                    throw new TypeError('Setting data on non-document/element nodes is not allowed.');
-                }
-
-                properties(owner, keyValue(this.expando, value));
+                this.dataMap.set(owner, value);
             }
 
             return value;
@@ -2447,7 +2443,7 @@
             return key === undefined ?
                 this.cache(owner) :
                 // Always use camelCase key (gh-2257)
-                (owner[this.expando] && owner[this.expando][camelCase(key)]);
+                (this.dataMap.get(owner) && this.dataMap.get(owner)[camelCase(key)]);
         },
         access: function access(owner, key, value) {
             // In cases where either:
@@ -2478,7 +2474,7 @@
             return (value !== undefined) ? value : key;
         },
         remove: function remove(owner, key) {
-            var i, cache = owner[this.expando];
+            var i, cache = this.dataMap.get(owner);
 
             if (cache === undefined) {
                 return;
@@ -2504,21 +2500,13 @@
                 }
             }
 
-            // Remove the expando if there's no more data
+            // Remove if there's no more data
             if ((key === undefined) || !hasEnumerable(cache)) {
-                // Support: Chrome <=35 - 45
-                // Webkit & Blink performance suffers when deleting properties
-                // from DOM nodes, so set to undefined instead
-                // https://bugs.chromium.org/p/chromium/issues/detail?id=378607 (bug restricted)
-                if (isNode(owner)) {
-                    owner[this.expando] = undefined;
-                } else {
-                    delete owner[this.expando];
-                }
+                this.dataMap.delete(owner);
             }
         },
         hasData: function hasData(owner) {
-            var cache = owner[this.expando];
+            var cache = this.dataMap.get(owner);
             return (cache !== undefined) && hasEnumerable(cache);
         }
     });
@@ -2532,7 +2520,7 @@
 
             if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) { // Object or array?
                 data = parseJson5(data);
-            } else if (isNumeric(data)) { // A number?
+            } else if ((Number(data).toString() === data) && isFinite(data)) { // Only convert to a number if it doesn't change the string
                 data = Number(data);
             }
 
@@ -7959,11 +7947,7 @@
                 link: '{$PAGE_LINK;,:privacy}',
                 theme: 'dark-top'
             };
-            document.body.appendChild($cms.dom.create('script', {
-                nonce: $cms.$CSP_NONCE(),
-                defer: true,
-                src: 'https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js'
-            }));
+            $cms.requireJavascript('https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js');
         }
 
         if ($cms.$CONFIG_OPTION('detect_javascript')) {
