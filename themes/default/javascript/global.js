@@ -146,17 +146,10 @@
          * @method
          * @returns {string}
          */
-        $_GET: function $_GET(name) {
-            return strVal($cms.pageSearchParams().get(name));
-        },
-        /**
-         * @method
-         * @returns {string}
-         */
         $PREVIEW_URL: function $PREVIEW_URL() {
             var value = '{$FIND_SCRIPT_NOHTTP;,preview}';
             value += '?page=' + urlencode($cms.getPageName());
-            value += '&type=' + urlencode($cms.pageSearchParams().get('type'));
+            value += '&type=' + urlencode(symbols['page_type']);
             return value;
         },
         /**
