@@ -434,10 +434,6 @@
          */
         views: {},
         /**
-         * @namespace $cms.viewInstances
-         */
-        viewInstances: {},
-        /**
          * @namespace $cms.ui
          */
         ui: {},
@@ -7585,7 +7581,7 @@
 
                     try {
                         view = new $cms.views[el.dataset.view](params, viewOptions);
-                        $cms.viewInstances[$cms.uid(view)] = view;
+                        $cms.dom.data(el, 'viewObject', view);
                         //$cms.inform('$cms.behaviors.initializeViews.attach(): Initialized view "' + el.dataset.view + '" for', el, view);
                     } catch (ex) {
                         $cms.fatal('$cms.behaviors.initializeViews.attach(): Exception thrown while initializing view "' + el.dataset.view + '" for', el, ex);
