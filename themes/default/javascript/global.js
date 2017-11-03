@@ -2393,26 +2393,27 @@
         }
     });
     
-    var domDataMap = new WeakMap(),
-        isDatasetParsed = new WeakMap();
+    var domDataMap = new WeakMap();
     
     function dataCache(el) {
         // Check if the el object already has a cache
-        var value = domDataMap.get(el);
-        // If not, create one
-        if (!value) {
+        var value = domDataMap.get(el), key;
+        if (!value) { // If not, create one with the dataset
             value = {};
+            for (key in el.dataset) {
+                dataAttr(el, key);
+            }
             domDataMap.set(el, value);
         }
 
         return value;
     }
     
-    function dataAttr(el, key, data) {
-        var trimmed;
+    function dataAttr(el, key) {
+        var data, trimmed;
         // If nothing was found internally, try to fetch any
         // data from the HTML5 data-* attribute
-        if ((data === undefined) && (typeof (data = el.dataset[key]) === 'string')) {
+        if (typeof (data = el.dataset[key]) === 'string') {
             trimmed = data.trim();
 
             if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) { // Object or array?
@@ -2441,14 +2442,6 @@
         var name, data, prop;
 
         el = elArg(el);
-
-        // First make sure we've parsed the dataset
-        if (!isDatasetParsed.has(el)) {
-            for (name in el.dataset) {
-                dataAttr(el, name);
-            }
-            isDatasetParsed.set(el, true);
-        }
 
         // Gets all values
         if (key === undefined) {
