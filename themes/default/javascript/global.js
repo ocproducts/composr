@@ -2399,11 +2399,10 @@
         // Check if the el object already has a cache
         var value = domDataMap.get(el), key;
         if (!value) { // If not, create one with the dataset
-            value = {};
             for (key in el.dataset) {
                 dataAttr(el, key);
             }
-            domDataMap.set(el, value);
+            value = domDataMap.get(el);
         }
 
         return value;
@@ -2462,7 +2461,9 @@
         if (value === undefined) {
             // Attempt to get data from the cache
             // The key will always be camelCased in Data
-            return dataCache(el)[camelCase(key)];
+            data = dataCache(el)[camelCase(key)];
+            
+            return (data !== undefined) ? data : dataAttr(el, key); // Check in el.dataset.* too
         }
 
         // Set the data...
@@ -2709,8 +2710,7 @@
      * @return {*}
      */
     $cms.dom.hasScriptSrcLoaded = function hasScriptSrcLoaded(src) {
-        var scripts = $cms.dom.$$('script[src]'), 
-            scriptEl = _findScriptBySrc(src);
+        var scriptEl = _findScriptBySrc(src);
         return (scriptEl != null) && $cms.scriptsLoaded.has(scriptEl);
     };
     
