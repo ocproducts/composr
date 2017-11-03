@@ -261,7 +261,7 @@
          * @method
          * @returns {object}
          */
-        staffTooltipsUrlPatterns: constant(objVal(symbols['staff_tooltips_url_patterns']))
+        staffTooltipsUrlPatterns: constant(objVal(JSON.parse('{$STAFF_TOOLTIPS_URL_PATTERNS_JSON;}')))
     });
 
     extendDeep($cms, /**@lends $cms*/{
@@ -1441,7 +1441,7 @@
         rgxHttp = /^https?:(?=\/\/)/i,
         rgxHttpRel = /^(?:https?:)?(?=\/\/)/i;
     /**
-     * NB: Trailing slash
+     * NB: Has a trailing slash when having the base url only
      * @memberof $cms
      * @namespace
      * @method

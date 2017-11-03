@@ -69,66 +69,7 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
         $value['zone_default_page'] = ($ZONE !== null) ? $ZONE['zone_default_page'] : '';
         $value['sees_javascript_error_alerts'] = has_privilege(get_member(), 'sees_javascript_error_alerts');
         $value['can_try_url_schemes'] = can_try_url_schemes();
-        $value['staff_tooltips_url_patterns'] = $this->staff_tooltips_url_patterns($value['IS_STAFF'] === '1');
 
         return json_encode($value, JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
-    }
-
-    /**
-     * Find URL patterns staff tooltips can be added on.
-     *
-     * @param  boolean $is_staff If the current user is a staff member
-     * @return array
-     */
-    private function staff_tooltips_url_patterns($is_staff)
-    {
-        $url_patterns = array();
-        if (!$is_staff) {
-            return $url_patterns;
-        }
-
-        require_code('content');
-        $cma_hooks = find_all_hooks('systems', 'content_meta_aware');
-        foreach (array_keys($cma_hooks) as $content_type) {
-            $content_type_ob = get_content_object($content_type);
-
-            if (!isset($content_type_ob)) {
-                continue;
-            }
-
-            $info = $content_type_ob->info();
-            if (isset($info['view_page_link_pattern'])) {
-                list($zone, $attributes,) = page_link_decode($info['view_page_link_pattern']);
-                $url = build_url($attributes, $zone, array(), false, false, true);
-                $pattern = $this->_escape_url_pattern_for_js_regex($url->evaluate());
-                $hook = $content_type;
-                $url_patterns[$pattern] = $hook;
-            }
-            if (isset($info['edit_page_link_pattern'])) {
-                list($zone, $attributes,) = page_link_decode($info['edit_page_link_pattern']);
-                $url = build_url($attributes, $zone, array(), false, false, true);
-                $pattern = $this->_escape_url_pattern_for_js_regex($url->evaluate());
-                $hook = $content_type;
-                $url_patterns[$pattern] = $hook;
-            }
-        }
-
-        return $url_patterns;
-    }
-
-    /**
-     * Turn a page-link pattern into a regexp.
-     *
-     * @param  string $pattern Pattern
-     * @return string
-     */
-    public function _escape_url_pattern_for_js_regex($pattern)
-    {
-        $pattern = str_replace('/', '\\/', $pattern);
-        $pattern = str_replace('?', '\\?', $pattern);
-        $pattern = str_replace('_WILD\\/', '([^&]*)\\/?', $pattern);
-        $pattern = str_replace('_WILD', '([^&]*)', $pattern);
-
-        return '^' . $pattern;
     }
 }
