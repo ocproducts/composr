@@ -2439,7 +2439,7 @@
     $cms.dom.data = function data(el, key, value) {
         // Note: We have internalised caching here. You must not change data-* attributes manually and expect this API to pick up on it.
 
-        var name, data, prop;
+        var data, prop;
 
         el = elArg(el);
 
