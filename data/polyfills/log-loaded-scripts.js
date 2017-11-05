@@ -19,49 +19,27 @@
      * @type { WeakMap }
      */
     $cms.styleSheetsLoaded = new WeakMap();
-
-    /**
-     * @memberOf $cms
-     * @type {Array}
-     */
-    $cms.styleSheetsLoadedListeners = [];
-
     /**
      * @memberOf $cms
      * @type { WeakMap }
      */
     $cms.scriptsLoaded = new WeakMap();
-
-    /**
-     * @memberOf $cms
-     * @type {Array}
-     */
-    $cms.scriptsLoadedListeners = [];
     
     document.addEventListener('load', listener, /*useCapture*/true);
     document.addEventListener('error', listener, /*useCapture*/true);
     
     function listener(event) {
-        var loadedEl = event.target;
+        var loadedEl = event.target, 
+            hasLoaded= (event.type === 'load');
 
         if (!loadedEl) {
             return;
         }
 
         if ((loadedEl.localName === 'link') && (loadedEl.rel === 'stylesheet')) {
-            $cms.styleSheetsLoaded.set(loadedEl, true);
-            $cms.styleSheetsLoadedListeners.forEach(function (listener) {
-                if (typeof listener === 'function') {
-                    listener.call(loadedEl, event);
-                }
-            });
+            $cms.styleSheetsLoaded.set(loadedEl, hasLoaded);
         } else if (loadedEl.localName === 'script') {
-            $cms.scriptsLoaded.set(loadedEl, true);
-            $cms.scriptsLoadedListeners.forEach(function (listener) {
-                if (typeof listener === 'function') {
-                    listener.call(loadedEl, event);
-                }
-            });
+            $cms.scriptsLoaded.set(loadedEl, hasLoaded);
         }
     }
     

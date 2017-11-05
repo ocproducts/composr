@@ -88,6 +88,11 @@
          * @method
          * @returns {boolean}
          */
+        isMobile: constant(boolVal(symbols.MOBILE)),
+        /**
+         * @method
+         * @returns {boolean}
+         */
         $FORCE_PREVIEWS: constant(boolVal(symbols.FORCE_PREVIEWS)),
         /**
          * @method
@@ -1627,7 +1632,7 @@
 
         //$cms.inform('$cms.waitForResources(): Waiting for resources', resourceEls);
 
-        var scriptsToLoad = [];
+        var scriptsToLoad = new Set();
         resourceEls.forEach(function (el) {
             if (!isEl(el)) {
                 $cms.fatal('$cms.waitForResources(): Invalid item of type "' + typeName(resourceEls) + '" in the `resourceEls` parameter.');
@@ -1635,21 +1640,24 @@
             }
 
             if (el.localName === 'script') {
-                if (el.src && !$cms.dom.hasScriptElementLoaded(el) && jsTypeRE.test(el.type) && !scriptsToLoad.includes(el)) {
-                    scriptsToLoad.push(el);
+                if (el.src && !$cms.dom.hasScriptElementLoaded(el) && jsTypeRE.test(el.type) && !scriptsToLoad.has(el)) {
+                    scriptsToLoad.add(el);
                 }
             }
         });
 
-        if (scriptsToLoad.length < 1) {
+        if (scriptsToLoad.size < 1) {
             return Promise.resolve();
         }
 
         return new Promise(function (resolve) {
-            $cms.scriptsLoadedListeners.push(function scriptResourceListener(event) {
+            document.addEventListener('load', scriptResourceListener, true);
+            document.addEventListener('error', scriptResourceListener, true);
+
+            function scriptResourceListener(event) {
                 var loadedEl = event.target;
 
-                if (!scriptsToLoad.includes(loadedEl)) {
+                if (!scriptsToLoad.has(loadedEl)) {
                     return;
                 }
 
@@ -1659,14 +1667,12 @@
                     $cms.fatal('$cms.waitForResources(): Resource failed to load', loadedEl);
                 }
 
-                scriptsToLoad = scriptsToLoad.filter(function (el) {
-                    return el !== loadedEl;
-                });
+                scriptsToLoad.delete(loadedEl);
 
-                if (scriptsToLoad.length < 1) {
+                if (scriptsToLoad.size < 1) {
                     resolve(event);
                 }
-            });
+            }
         });
     }
 
@@ -6472,7 +6478,7 @@
         ModalWindow.base(this, 'constructor', arguments);
 
         // Constants
-        this.WINDOW_SIDE_GAP = $cms.$MOBILE() ? 5 : 25;
+        this.WINDOW_SIDE_GAP = $cms.isMobile() ? 5 : 25;
         this.WINDOW_TOP_GAP = 25; // Will also be used for bottom gap for percentage heights
         this.BOX_EAST_PERIPHERARY = 4;
         this.BOX_WEST_PERIPHERARY = 4;
@@ -6508,15 +6514,13 @@
             defaultValue: null,
             target: '_self',
             inputType: 'text'
-        }, (params || {}));
+        }, params || {});
 
         for (var key in params) {
             this[key] = params[key];
         }
 
         this.topWindow = window.top;
-
-        this.close(this.topWindow);
         this.initBox();
         this.opened = true;
     }

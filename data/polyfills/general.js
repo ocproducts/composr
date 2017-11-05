@@ -116,12 +116,12 @@
      * https://github.com/Polymer/WeakMap/blob/master/LICENSE
      */
 
-    if (typeof WeakMap === 'undefined') {
+    if (typeof window.WeakMap === 'undefined') {
         (function() {
             var defineProperty = Object.defineProperty;
             var counter = Date.now() % 1e9;
 
-            var WeakMap = function() {
+            var WeakMap = function WeakMap() {
                 this.name = '__st' + (Math.random() * 1e9 >>> 0) + (counter++ + '__');
             };
 
