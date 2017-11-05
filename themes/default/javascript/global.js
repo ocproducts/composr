@@ -6530,193 +6530,6 @@
     }
 
     $cms.inherits(ModalWindow, $cms.View, /**@lends $cms.views.ModalWindow#*/ {
-        // Methods...
-        close: function () {
-            if (this.el) {
-                this.topWindow.document.body.style.overflow = '';
-
-                this.el.remove();
-                this.el = null;
-
-                $cms.dom.off(document, 'keyup mousemove', this.keyup);
-            }
-            this.opened = false;
-        },
-
-        option: function (method) {
-            var win = this.topWindow; // The below call may end up killing our window reference (for nested alerts), so we need to grab it first
-            if (this[method]) {
-                if (this.type === 'prompt') {
-                    this[method](this.input.value);
-                } else if (this.type === 'iframe') {
-                    this[method](this.returnValue);
-                } else {
-                    this[method]();
-                }
-            }
-            if ((method !== 'left') && (method !== 'right')) {
-                this.close(win);
-            }
-        },
-
-        /**
-         * @param {string} width
-         * @param {string} height
-         * @param {boolean} [init]
-         * @param {boolean} [forceHeight]
-         */
-        resetDimensions: function (width, height, init, forceHeight) {
-            width = strVal(width);
-            height = strVal(height);
-            init = Boolean(init);
-            forceHeight = Boolean(forceHeight);
-
-            if (!this.el) {
-                return;
-            }
-            
-            var topPageHeight = this.topWindow.$cms.dom.getWindowScrollHeight(this.topWindow),
-                topWindowWidth = this.topWindow.$cms.dom.getWindowWidth(this.topWindow),
-                topWindowHeight = this.topWindow.$cms.dom.getWindowHeight();
-                
-            var bottomGap = this.WINDOW_TOP_GAP;
-            if (this.buttonContainer.firstChild) {
-                bottomGap += this.buttonContainer.offsetHeight;
-            }
-
-            if (!forceHeight) {
-                height = 'auto'; // Actually we always want auto heights, no reason to not for overlays
-            }
-
-            // Store for later (when browser resizes for example)
-            this.width = width;
-            this.height = height;
-
-            // Normalise parameters (we don't have px on the end of pixel units, and these units refer to internal space size [% ones are relative to window though])
-            width = width.replace(/px$/, '');
-            height = height.replace(/px$/, '');
-
-            // Constrain to window width
-            if (width.match(/^\d+$/) !== null) {
-                if ((parseInt(width) > topWindowWidth - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY) || (width === 'auto')) {
-                    width = '' + (topWindowWidth - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY);
-                }
-            }
-
-            // Auto width means full width
-            if (width === 'auto') {
-                width = '' + (topWindowWidth - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY);
-            }
-            // NB: auto height feeds through without a constraint (due to infinite growth space), with dynamic adjustment for iframes
-
-            // Calculate percentage sizes
-            var match;
-            match = width.match(/^([\d\.]+)%$/);
-            if (match !== null) {
-                width = '' + (parseFloat(match[1]) * (topWindowWidth - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY));
-            }
-            match = height.match(/^([\d\.]+)%$/);
-            if (match !== null) {
-                height = '' + (parseFloat(match[1]) * (topPageHeight - this.WINDOW_TOP_GAP - bottomGap - this.BOX_NORTH_PERIPHERARY - this.BOX_SOUTH_PERIPHERARY));
-            }
-
-            // Work out box dimensions
-            var boxWidth, boxHeight;
-            if (width.match(/^\d+$/) !== null) {
-                boxWidth = width + 'px';
-            } else {
-                boxWidth = width;
-            }
-            if (height.match(/^\d+$/) !== null) {
-                boxHeight = height + 'px';
-            } else {
-                boxHeight = height;
-            }
-
-            // Save into HTML
-            var detectedBoxHeight;
-            this.el.firstElementChild.style.width = boxWidth;
-            this.el.firstElementChild.style.height = boxHeight;
-            var iframe = this.el.querySelector('iframe');
-
-            if ($cms.dom.hasIframeAccess(iframe) && (iframe.contentWindow.document.body)) { // Balance iframe height
-                iframe.style.width = '100%';
-                if (height === 'auto') {
-                    if (!init) {
-                        detectedBoxHeight = $cms.dom.getWindowScrollHeight(iframe.contentWindow);
-                        iframe.style.height = detectedBoxHeight + 'px';
-                    }
-                } else {
-                    iframe.style.height = '100%';
-                }
-            }
-
-            // Work out box position
-            if (!detectedBoxHeight) {
-                detectedBoxHeight = this.el.firstElementChild.offsetHeight;
-            }
-            var boxPosTop, boxPosLeft;
-
-            if (boxHeight === 'auto') {
-                if (init) {
-                    boxPosTop = (topWindowHeight / (2 + (this.VCENTRE_FRACTION_SHIFT * 2))) - (this.LOADING_SCREEN_HEIGHT / 2) + this.WINDOW_TOP_GAP; // This is just temporary
-                } else {
-                    boxPosTop = (topWindowHeight / (2 + (this.VCENTRE_FRACTION_SHIFT * 2))) - (detectedBoxHeight / 2) + this.WINDOW_TOP_GAP;
-                }
-
-                if (iframe) { // Actually, for frames we'll put at top so things don't bounce about during loading and if the frame size changes
-                    boxPosTop = this.WINDOW_TOP_GAP;
-                }
-            } else {
-                boxPosTop = (topWindowHeight / (2 + (this.VCENTRE_FRACTION_SHIFT * 2))) - (parseInt(boxHeight) / 2) + this.WINDOW_TOP_GAP;
-            }
-            if (boxPosTop < this.WINDOW_TOP_GAP) {
-                boxPosTop = this.WINDOW_TOP_GAP;
-            }
-            boxPosLeft = ((topWindowWidth / 2) - (parseInt(boxWidth) / 2));
-
-            // Save into HTML
-            this.el.firstElementChild.style.top = boxPosTop + 'px';
-            this.el.firstElementChild.style.left = boxPosLeft + 'px';
-
-            var doScroll = false;
-
-            // Absolute positioning instead of fixed positioning
-            if ($cms.$MOBILE() || (detectedBoxHeight > topWindowHeight) || (this.el.style.position === 'absolute'/*don't switch back to fixed*/)) {
-                var wasFixed = (this.el.style.position === 'fixed');
-
-                this.el.style.position = 'absolute';
-                this.el.style.height = ((topPageHeight > (detectedBoxHeight + bottomGap + boxPosLeft)) ? topPageHeight : (detectedBoxHeight + bottomGap + boxPosLeft)) + 'px';
-                this.topWindow.document.body.style.overflow = '';
-
-                if (!$cms.$MOBILE()) {
-                    this.el.firstElementChild.style.position = 'absolute';
-                    this.el.firstElementChild.style.top = this.WINDOW_TOP_GAP + 'px';
-                }
-
-                if (init || wasFixed) {
-                    doScroll = true;
-                }
-
-                if (iframe && ($cms.dom.hasIframeAccess(iframe)) && (iframe.contentWindow.scrolledUpFor === undefined)) { /*maybe a navigation has happened and we need to scroll back up*/
-                    doScroll = true;
-                }
-            } else { // Fixed positioning, with scrolling turned off until the overlay is closed
-                this.el.style.position = 'fixed';
-                this.el.firstElementChild.style.position = 'fixed';
-                this.topWindow.document.body.style.overflow = 'hidden';
-            }
-
-            if (doScroll) {
-                try { // Scroll to top to see
-                    this.topWindow.scrollTo(0, 0);
-                    if (iframe && ($cms.dom.hasIframeAccess(iframe))) {
-                        iframe.contentWindow.scrolledUpFor = true;
-                    }
-                } catch (ignore) {}
-            }
-        },
-
         initBox: function () {
             var button;
 
@@ -6744,9 +6557,9 @@
                     'margin': '0 auto' // Centering for iOS/Android which is statically positioned (so the container height as auto can work)
                 }
             }));
-            
+
             this.topWindow.document.body.appendChild(this.el);
-            
+
             var container = $cms.dom.create('div', {
                 'className': 'box_inner',
                 'css': {
@@ -7017,14 +6830,192 @@
                 $cms.dom.on(document, 'mousemove', self.mousemove);
             }, 100);
         },
-        
-        remove: function (el, win) {
-            if (!win) {
-                win = this.topWindow;
+        // Methods...
+        close: function () {
+            if (this.el) {
+                this.topWindow.document.body.style.overflow = '';
+
+                this.el.remove();
+                this.el = null;
+
+                $cms.dom.off(document, 'keyup mousemove', this.keyup);
             }
-            win.document.body.removeChild(el);
+            this.opened = false;
         },
-        
+
+        option: function (method) {
+            var win = this.topWindow; // The below call may end up killing our window reference (for nested alerts), so we need to grab it first
+            if (this[method]) {
+                if (this.type === 'prompt') {
+                    this[method](this.input.value);
+                } else if (this.type === 'iframe') {
+                    this[method](this.returnValue);
+                } else {
+                    this[method]();
+                }
+            }
+            if ((method !== 'left') && (method !== 'right')) {
+                this.close(win);
+            }
+        },
+
+        /**
+         * @param {string} width
+         * @param {string} height
+         * @param {boolean} [init]
+         * @param {boolean} [forceHeight]
+         */
+        resetDimensions: function (width, height, init, forceHeight) {
+            width = strVal(width);
+            height = strVal(height);
+            init = Boolean(init);
+            forceHeight = Boolean(forceHeight);
+
+            if (!this.el) {
+                return;
+            }
+            
+            var topPageHeight = this.topWindow.$cms.dom.getWindowScrollHeight(this.topWindow),
+                topWindowWidth = this.topWindow.$cms.dom.getWindowWidth(this.topWindow),
+                topWindowHeight = this.topWindow.$cms.dom.getWindowHeight();
+                
+            var bottomGap = this.WINDOW_TOP_GAP;
+            if (this.buttonContainer.firstChild) {
+                bottomGap += this.buttonContainer.offsetHeight;
+            }
+
+            if (!forceHeight) {
+                height = 'auto'; // Actually we always want auto heights, no reason to not for overlays
+            }
+
+            // Store for later (when browser resizes for example)
+            this.width = width;
+            this.height = height;
+
+            // Normalise parameters (we don't have px on the end of pixel units, and these units refer to internal space size [% ones are relative to window though])
+            width = width.replace(/px$/, '');
+            height = height.replace(/px$/, '');
+
+            // Constrain to window width
+            if (width.match(/^\d+$/) !== null) {
+                if ((parseInt(width) > topWindowWidth - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY) || (width === 'auto')) {
+                    width = '' + (topWindowWidth - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY);
+                }
+            }
+
+            // Auto width means full width
+            if (width === 'auto') {
+                width = '' + (topWindowWidth - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY);
+            }
+            // NB: auto height feeds through without a constraint (due to infinite growth space), with dynamic adjustment for iframes
+
+            // Calculate percentage sizes
+            var match;
+            match = width.match(/^([\d\.]+)%$/);
+            if (match !== null) {
+                width = '' + (parseFloat(match[1]) * (topWindowWidth - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY));
+            }
+            match = height.match(/^([\d\.]+)%$/);
+            if (match !== null) {
+                height = '' + (parseFloat(match[1]) * (topPageHeight - this.WINDOW_TOP_GAP - bottomGap - this.BOX_NORTH_PERIPHERARY - this.BOX_SOUTH_PERIPHERARY));
+            }
+
+            // Work out box dimensions
+            var boxWidth, boxHeight;
+            if (width.match(/^\d+$/) !== null) {
+                boxWidth = width + 'px';
+            } else {
+                boxWidth = width;
+            }
+            if (height.match(/^\d+$/) !== null) {
+                boxHeight = height + 'px';
+            } else {
+                boxHeight = height;
+            }
+
+            // Save into HTML
+            var detectedBoxHeight;
+            this.el.firstElementChild.style.width = boxWidth;
+            this.el.firstElementChild.style.height = boxHeight;
+            var iframe = this.el.querySelector('iframe');
+
+            if ($cms.dom.hasIframeAccess(iframe) && (iframe.contentWindow.document.body)) { // Balance iframe height
+                iframe.style.width = '100%';
+                if (height === 'auto') {
+                    if (!init) {
+                        detectedBoxHeight = $cms.dom.getWindowScrollHeight(iframe.contentWindow);
+                        iframe.style.height = detectedBoxHeight + 'px';
+                    }
+                } else {
+                    iframe.style.height = '100%';
+                }
+            }
+
+            // Work out box position
+            if (!detectedBoxHeight) {
+                detectedBoxHeight = this.el.firstElementChild.offsetHeight;
+            }
+            var boxPosTop, boxPosLeft;
+
+            if (boxHeight === 'auto') {
+                if (init) {
+                    boxPosTop = (topWindowHeight / (2 + (this.VCENTRE_FRACTION_SHIFT * 2))) - (this.LOADING_SCREEN_HEIGHT / 2) + this.WINDOW_TOP_GAP; // This is just temporary
+                } else {
+                    boxPosTop = (topWindowHeight / (2 + (this.VCENTRE_FRACTION_SHIFT * 2))) - (detectedBoxHeight / 2) + this.WINDOW_TOP_GAP;
+                }
+
+                if (iframe) { // Actually, for frames we'll put at top so things don't bounce about during loading and if the frame size changes
+                    boxPosTop = this.WINDOW_TOP_GAP;
+                }
+            } else {
+                boxPosTop = (topWindowHeight / (2 + (this.VCENTRE_FRACTION_SHIFT * 2))) - (parseInt(boxHeight) / 2) + this.WINDOW_TOP_GAP;
+            }
+            if (boxPosTop < this.WINDOW_TOP_GAP) {
+                boxPosTop = this.WINDOW_TOP_GAP;
+            }
+            boxPosLeft = ((topWindowWidth / 2) - (parseInt(boxWidth) / 2));
+
+            // Save into HTML
+            this.el.firstElementChild.style.top = boxPosTop + 'px';
+            this.el.firstElementChild.style.left = boxPosLeft + 'px';
+
+            var doScroll = false;
+
+            // Absolute positioning instead of fixed positioning
+            if ($cms.$MOBILE() || (detectedBoxHeight > topWindowHeight) || (this.el.style.position === 'absolute'/*don't switch back to fixed*/)) {
+                var wasFixed = (this.el.style.position === 'fixed');
+
+                this.el.style.position = 'absolute';
+                this.el.style.height = ((topPageHeight > (detectedBoxHeight + bottomGap + boxPosLeft)) ? topPageHeight : (detectedBoxHeight + bottomGap + boxPosLeft)) + 'px';
+                this.topWindow.document.body.style.overflow = '';
+
+                if (!$cms.$MOBILE()) {
+                    this.el.firstElementChild.style.position = 'absolute';
+                    this.el.firstElementChild.style.top = this.WINDOW_TOP_GAP + 'px';
+                }
+
+                if (init || wasFixed) {
+                    doScroll = true;
+                }
+
+                if (iframe && ($cms.dom.hasIframeAccess(iframe)) && (iframe.contentWindow.scrolledUpFor === undefined)) { /*maybe a navigation has happened and we need to scroll back up*/
+                    doScroll = true;
+                }
+            } else { // Fixed positioning, with scrolling turned off until the overlay is closed
+                this.el.style.position = 'fixed';
+                this.el.firstElementChild.style.position = 'fixed';
+                this.topWindow.document.body.style.overflow = 'hidden';
+            }
+
+            if (doScroll) {
+                try { // Scroll to top to see
+                    this.topWindow.scrollTo(0, 0);
+                    if (iframe && ($cms.dom.hasIframeAccess(iframe))) {
+                        iframe.contentWindow.scrolledUpFor = true;
+                    }
+                } catch (ignore) {}
+            }
+        },
         /**
          * Fiddle it, to behave like a popup would
          * @param { HTMLIFrameElement } iframe
