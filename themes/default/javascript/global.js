@@ -1636,32 +1636,48 @@
 
         //$cms.inform('$cms.waitForResources(): Waiting for resources', resourceEls);
 
-        var scriptsToLoad = new Set();
+        var resourcesToLoad = new Set();
         resourceEls.forEach(function (el) {
             if (!isEl(el)) {
                 $cms.fatal('$cms.waitForResources(): Invalid item of type "' + typeName(resourceEls) + '" in the `resourceEls` parameter.');
                 return;
             }
+            
+            if ($cms.elementsLoaded.has(el)) {
+                return;
+            }
 
-            if (el.localName === 'script') {
-                if (el.src && !$cms.dom.hasScriptElementLoaded(el) && jsTypeRE.test(el.type) && !scriptsToLoad.has(el)) {
-                    scriptsToLoad.add(el);
-                }
+            switch (el.localName) {
+                case 'script':
+                    if (el.src && jsTypeRE.test(el.type)) {
+                        resourcesToLoad.add(el);
+                    }
+                    break;
+                    
+                case 'link':
+                    if (el.rel === 'stylesheet') {
+                        resourcesToLoad.add(el);
+                    }
+                    break;
+                    
+                case 'iframe':
+                    resourcesToLoad.add(el);
+                    break;
             }
         });
 
-        if (scriptsToLoad.size < 1) {
+        if (resourcesToLoad.size < 1) {
             return Promise.resolve();
         }
 
         return new Promise(function (resolve) {
-            document.addEventListener('load', scriptResourceListener, true);
-            document.addEventListener('error', scriptResourceListener, true);
+            document.addEventListener('load', resourceLoadListener, true);
+            document.addEventListener('error', resourceLoadListener, true);
 
-            function scriptResourceListener(event) {
+            function resourceLoadListener(event) {
                 var loadedEl = event.target;
 
-                if (!scriptsToLoad.has(loadedEl)) {
+                if (!resourcesToLoad.has(loadedEl)) {
                     return;
                 }
 
@@ -1671,9 +1687,9 @@
                     $cms.fatal('$cms.waitForResources(): Resource failed to load', loadedEl);
                 }
 
-                scriptsToLoad.delete(loadedEl);
+                resourcesToLoad.delete(loadedEl);
 
-                if (scriptsToLoad.size < 1) {
+                if (resourcesToLoad.size < 1) {
                     resolve(event);
                 }
             }
