@@ -18,12 +18,7 @@
      * @memberOf $cms
      * @type { WeakMap }
      */
-    $cms.styleSheetsLoaded = new WeakMap();
-    /**
-     * @memberOf $cms
-     * @type { WeakMap }
-     */
-    $cms.scriptsLoaded = new WeakMap();
+    $cms.elementsLoaded = new WeakMap();
     
     document.addEventListener('load', listener, /*useCapture*/true);
     document.addEventListener('error', listener, /*useCapture*/true);
@@ -35,12 +30,8 @@
         if (!loadedEl) {
             return;
         }
-
-        if ((loadedEl.localName === 'link') && (loadedEl.rel === 'stylesheet')) {
-            $cms.styleSheetsLoaded.set(loadedEl, hasLoaded);
-        } else if (loadedEl.localName === 'script') {
-            $cms.scriptsLoaded.set(loadedEl, hasLoaded);
-        }
+        
+        $cms.elementsLoaded.set(loadedEl, hasLoaded);
     }
     
     window.addEventListener('click', function (e) {

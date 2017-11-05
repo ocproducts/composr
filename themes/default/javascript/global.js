@@ -2710,7 +2710,7 @@
     $cms.dom.hasScriptElementLoaded = function hasScriptElementLoaded(el) {
         el = elArg(el);
         
-        return $cms.scriptsLoaded.has(el);
+        return $cms.elementsLoaded.has(el);
     };
 
     /**
@@ -2720,7 +2720,7 @@
      */
     $cms.dom.hasScriptSrcLoaded = function hasScriptSrcLoaded(src) {
         var scriptEl = _findScriptBySrc(src);
-        return (scriptEl != null) && $cms.scriptsLoaded.has(scriptEl);
+        return (scriptEl != null) && $cms.elementsLoaded.has(scriptEl);
     };
     
     /**
