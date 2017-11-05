@@ -2469,7 +2469,7 @@
 
         // Set the data...
         // We always store the camelCased key
-        dataCache(el)[camelCase(key)] = value;
+        return dataCache(el)[camelCase(key)] = value;
     };
 
     /**
@@ -6715,7 +6715,7 @@
 
             this.topWindow.overlayZIndex || (this.topWindow.overlayZIndex = 999999); // Has to be higher than plupload, which is 99999
 
-            this.boxWrapperEl = this.element('div', { // Black out the background
+            this.boxWrapperEl = $cms.dom.create('div', { // Black out the background
                 'css': {
                     'background': 'rgba(0,0,0,0.7)',
                     'zIndex': this.topWindow.overlayZIndex++,
@@ -6728,8 +6728,8 @@
                 }
             });
 
-            this.boxWrapperEl.appendChild(this.element('div', { // The main overlay
-                'class': 'box overlay ' + this.type,
+            this.boxWrapperEl.appendChild($cms.dom.create('div', { // The main overlay
+                'className': 'box overlay ' + this.type,
                 'role': 'dialog',
                 'css': {
                     // This will be updated immediately in resetDimensions
@@ -6740,8 +6740,8 @@
             
             this.topWindow.document.body.appendChild(this.boxWrapperEl);
             
-            var container = this.element('div', {
-                'class': 'box_inner',
+            var container = $cms.dom.create('div', {
+                'className': 'box_inner',
                 'css': {
                     'width': 'auto',
                     'height': 'auto'
@@ -6750,7 +6750,7 @@
 
             var overlayHeader = null;
             if (this.title != '' || this.type === 'iframe') {
-                overlayHeader = this.element('h3', {
+                overlayHeader = $cms.dom.create('h3', {
                     'html': this.title,
                     'css': {
                         'display': (this.title == '') ? 'none' : 'block'
@@ -6761,21 +6761,21 @@
 
             if (this.text != '') {
                 if (this.type === 'prompt') {
-                    var div = this.element('p');
-                    div.appendChild(this.element('label', {
-                        'for': 'overlay_prompt',
+                    var div = $cms.dom.create('p');
+                    div.appendChild($cms.dom.create('label', {
+                        'htmlFor': 'overlay_prompt',
                         'html': this.text
                     }));
                     container.appendChild(div);
                 } else {
-                    container.appendChild(this.element('div', {
+                    container.appendChild($cms.dom.create('div', {
                         'html': this.text
                     }));
                 }
             }
 
-            this.buttonContainer = this.element('p', {
-                'class': 'proceed_button'
+            this.buttonContainer = $cms.dom.create('p', {
+                'className': 'proceed_button'
             });
 
             var that = this;
@@ -6830,7 +6830,7 @@
                     var iframeWidth = (this.width.match(/^[\d\.]+$/) !== null) ? ((this.width - 14) + 'px') : this.width,
                         iframeHeight = (this.height.match(/^[\d\.]+$/) !== null) ? (this.height + 'px') : ((this.height === 'auto') ? (this.LOADING_SCREEN_HEIGHT + 'px') : this.height);
 
-                    var iframe = this.element('iframe', {
+                    var iframe = $cms.dom.create('iframe', {
                         'frameBorder': '0',
                         'scrolling': 'no',
                         'title': '',
@@ -6881,9 +6881,9 @@
                 case 'lightbox':
                 case 'alert':
                     if (this.yes) {
-                        button = this.element('button', {
+                        button = $cms.dom.create('button', {
                             'html': this.yesButton,
-                            'class': 'buttons__proceed button_screen_item'
+                            'className': 'buttons__proceed button_screen_item'
                         });
                         $cms.dom.on(button, 'click', function () {
                             that.option('yes');
@@ -6906,18 +6906,18 @@
                     break;
 
                 case 'confirm':
-                    button = this.element('button', {
+                    button = $cms.dom.create('button', {
                         'html': this.yesButton,
-                        'class': 'buttons__yes button_screen_item',
+                        'className': 'buttons__yes button_screen_item',
                         'style': 'font-weight: bold;'
                     });
                     $cms.dom.on(button, 'click', function () {
                         that.option('yes');
                     });
                     this.buttonContainer.appendChild(button);
-                    button = this.element('button', {
+                    button = $cms.dom.create('button', {
                         'html': this.noButton,
-                        'class': 'buttons__no button_screen_item'
+                        'className': 'buttons__no button_screen_item'
                     });
                     $cms.dom.on(button, 'click', function () {
                         that.option('no');
@@ -6926,22 +6926,22 @@
                     break;
 
                 case 'prompt':
-                    this.input = this.element('input', {
+                    this.input = $cms.dom.create('input', {
                         'name': 'prompt',
                         'id': 'overlay_prompt',
                         'type': this.inputType,
                         'size': '40',
-                        'class': 'wide_field',
+                        'className': 'wide_field',
                         'value': (this.defaultValue === null) ? '' : this.defaultValue
                     });
-                    var inputWrap = this.element('div', {});
+                    var inputWrap = $cms.dom.create('div', {});
                     inputWrap.appendChild(this.input);
                     container.appendChild(inputWrap);
 
                     if (this.yes) {
-                        button = this.element('button', {
+                        button = $cms.dom.create('button', {
                             'html': this.yesButton,
-                            'class': 'buttons__yes button_screen_item',
+                            'className': 'buttons__yes button_screen_item',
                             'css': {
                                 'font-weight': 'bold'
                             }
@@ -6963,16 +6963,16 @@
             // Cancel button handled either via button in corner (if there's no other buttons) or another button in the panel (if there's other buttons)
             if (this.cancelButton) {
                 if (this.buttonContainer.firstChild) {
-                    button = this.element('button', {
+                    button = $cms.dom.create('button', {
                         'html': this.cancelButton,
-                        'class': 'button_screen_item buttons__cancel'
+                        'className': 'button_screen_item buttons__cancel'
                     });
                     this.buttonContainer.appendChild(button);
                 } else {
-                    button = this.element('img', {
+                    button = $cms.dom.create('img', {
                         'src': $cms.img('{$IMG;,button_lightbox_close}'),
                         'alt': this.cancelButton,
-                        'class': 'overlay_close_button'
+                        'className': 'overlay_close_button'
                     });
                     container.appendChild(button);
                 }
@@ -6984,7 +6984,7 @@
             // Put together
             if (this.buttonContainer.firstChild) {
                 if (this.type === 'iframe') {
-                    container.appendChild(this.element('hr', {'class': 'spaced_rule'}));
+                    container.appendChild($cms.dom.create('hr', {'className': 'spaced_rule'}));
                 }
                 container.appendChild(this.buttonContainer);
             }
@@ -7017,30 +7017,6 @@
             }
             win.document.body.removeChild(el);
         },
-
-        element: function (tag, options) {
-            var el = this.topWindow.document.createElement(tag);
-
-            if (isObj(options)) {
-                for (var name in options) {
-                    var value = options[name];
-                    if ((name === 'styles') || (name === 'css')) {
-                        $cms.dom.css(el, value);
-                    } else if (name === 'html') {
-                        $cms.dom.html(el, value);
-                    } else if (name === 'class') {
-                        el.className = value;
-                    } else if (name === 'text') {
-                        el.textContent = value;
-                    } else if (name === 'for') {
-                        el.htmlFor = value;
-                    } else {
-                        $cms.dom.attr(el, name, value);
-                    }
-                }
-            }
-            return el;
-        },
         
         /**
          * Fiddle it, to behave like a popup would
@@ -7055,7 +7031,9 @@
                 return;
             }
             
-            if (!$cms.dom.hasIframeAccess(iframe) || !iframe.contentWindow.document.body || (iframe.contentWindow.document.body.donePopupTrans !== undefined)) {
+            var iDoc = iframe.contentDocument;
+            
+            if (!$cms.dom.hasIframeAccess(iframe) || !iDoc.body || (iDoc.body.donePopupTrans !== undefined)) {
                 if (hasIframeLoaded(iframe) && !hasIframeOwnership(iframe)) {
                     iframe.scrolling = 'yes';
                     iframe.style.height = '500px';
@@ -7068,40 +7046,39 @@
                 return;
             }
             
-            iframe.contentWindow.document.body.style.background = 'transparent';
-            
-            iframe.contentWindow.document.body.classList.add('overlay');
-            iframe.contentWindow.document.body.classList.add('lightbox');
+            iDoc.body.style.background = 'transparent';
+            iDoc.body.classList.add('overlay');
+            iDoc.body.classList.add('lightbox');
             
             // Allow scrolling, if we want it
             //iframe.scrolling = (_this.scrollbars === false) ? 'no' : 'auto';  Actually, not wanting this now
 
             // Remove fixed width
-            mainWebsiteInner = iframe.contentWindow.document.getElementById('main_website_inner');
+            mainWebsiteInner = iDoc.getElementById('main_website_inner');
 
             if (mainWebsiteInner) {
                 mainWebsiteInner.id = '';
             }
 
             // Remove main_website marker
-            mainWebsite = iframe.contentWindow.document.getElementById('main_website');
+            mainWebsite = iDoc.getElementById('main_website');
             if (mainWebsite) {
                 mainWebsite.id = '';
             }
 
             // Remove popup spacing
-            popupSpacer = iframe.contentWindow.document.getElementById('popup_spacer');
+            popupSpacer = iDoc.getElementById('popup_spacer');
             if (popupSpacer) {
                 popupSpacer.id = '';
             }
 
             // Set linking scheme
-            baseElement = iframe.contentWindow.document.querySelector('base');
+            baseElement = iDoc.querySelector('base');
 
             if (!baseElement) {
-                baseElement = iframe.contentWindow.document.createElement('base');
-                if (iframe.contentWindow.document && iframe.contentWindow.document.head) {
-                    iframe.contentWindow.document.head.appendChild(baseElement);
+                baseElement = iDoc.createElement('base');
+                if (iDoc.head) {
+                    iDoc.head.appendChild(baseElement);
                 }
             }
 
@@ -7112,19 +7089,19 @@
                 iframe.contentWindow.name = this.name;
             }
 
-            var that = this;
+            var self = this;
             // Create close function
             if (iframe.contentWindow.fauxClose === undefined) {
                 iframe.contentWindow.fauxClose = function fauxClose() {
                     if (iframe && iframe.contentWindow && (iframe.contentWindow.returnValue !== undefined)) {
-                        that.returnValue = iframe.contentWindow.returnValue;
+                        self.returnValue = iframe.contentWindow.returnValue;
                     }
-                    that.option('finished');
+                    self.option('finished');
                 };
             }
 
-            if ($cms.dom.html(iframe.contentWindow.document.body).length > 300) { // Loaded now
-                iframe.contentWindow.document.body.donePopupTrans = true;
+            if ($cms.dom.html(iDoc.body).length > 300) { // Loaded now
+                iDoc.body.donePopupTrans = true;
             }
 
             // Handle iframe sizing

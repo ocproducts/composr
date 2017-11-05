@@ -14691,7 +14691,7 @@
             return;
         }
         
-        files = arrVal(file);
+        files = arrVal(files);
 
         var count = files.length;
 
