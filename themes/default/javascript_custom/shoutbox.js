@@ -4,7 +4,7 @@ var sb_last_message_id=null;
 function sb_chat_check(last_message_id,last_event_id)
 {
 	sb_last_message_id=last_message_id;
-	var url="{$FIND_SCRIPT*,messages}?action=new&no_reenter_message=1&room_id="+window.sb_room_id+"&message_id="+last_message_id+"&event_id="+last_event_id;
+	var url="{$FIND_SCRIPT*,messages}?action=new&no_reenter_message=1&room_id="+window.sb_room_id+"&message_id="+((last_message_id===null)?-1:last_message_id)+"&event_id="+last_event_id;
 	do_ajax_request(url+keep_stub(false),sb_chat_check_response);
 }
 
@@ -24,6 +24,8 @@ function sb_handle_signals(ajax_result)
 {
 	var messages=ajax_result.childNodes;
 
+	var _sb_last_message_id=window.sb_last_message_id;
+
 	// Look through our messages
 	for (var i=0;i<messages.length;i++)
 	{
@@ -31,27 +33,32 @@ function sb_handle_signals(ajax_result)
 		{
 			var id=messages[i].getAttribute("id");
 			if (!id) id=messages[i].id; // Weird fix for Opera
-			if (id>window.sb_last_message_id && window.sb_last_message_id!=-1)
-			{
-				window.sb_last_message_id=id;
-				if (get_inner_html(messages[i]).indexOf('((SHAKE))')!=-1)
+			if (id>window.sb_last_message_id) {
+				window.sb_last_message_id=window.parseInt(id);
+				if (_sb_last_message_id!=-1)
 				{
-					do_shake();
-				} else
-				{
-					show_ghost(get_inner_html(messages[i]));
-				}
+					if (typeof window.console!='undefined')
+						console.log('Incoming shoutbox message');
 
-				var frames=window.parent.document.getElementsByTagName('iframe');
-				for (var i=0;i<frames.length;i++)
-				{
-					if (frames[i]) // If test needed for opera, as window.frames can get out-of-date
+					if (get_inner_html(messages[i]).indexOf('((SHAKE))')!=-1)
 					{
-						if ((frames[i].src==window.location.href) || (frames[i].contentWindow==window) || ((typeof window.parent.frames[frames[i].id]!="undefined") && (window.parent.frames[frames[i].id]==window)))
+						do_shake();
+					} else
+					{
+						show_ghost(get_inner_html(messages[i]));
+					}
+
+					var frames=window.parent.document.getElementsByTagName('iframe');
+					for (var i=0;i<frames.length;i++)
+					{
+						if (frames[i]) // If test needed for opera, as window.frames can get out-of-date
 						{
-							var sb=frames[i];
-							if (sb.contentWindow.location.href.indexOf('posted')==-1)
-								sb.contentWindow.location.reload();
+							if ((frames[i].src==window.location.href) || (frames[i].contentWindow==window) || ((typeof window.parent.frames[frames[i].id]!="undefined") && (window.parent.frames[frames[i].id]==window)))
+							{
+								var sb=frames[i];
+								if (sb.contentWindow.location.href.indexOf('posted')==-1)
+									sb.contentWindow.location.reload();
+							}
 						}
 					}
 				}
