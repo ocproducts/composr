@@ -30,7 +30,7 @@
     
     function listener(event) {
         var loadedEl = event.target, 
-            hasLoaded= (event.type === 'load');
+            hasLoaded = (event.type === 'load');
 
         if (!loadedEl) {
             return;

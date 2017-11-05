@@ -480,7 +480,11 @@
         } else {
             document.addEventListener('DOMContentLoaded', function listener() {
                 document.removeEventListener('DOMContentLoaded', listener);
-                executeCmsReadyQueue();
+                // Workaround for browser bug, document.readyState == 'interactive' before [defer]'d <script>s are loaded.
+                // See: https://github.com/jquery/jquery/issues/3271
+                $cms.waitForResources(toArray(document.querySelectorAll('script[src][defer]'))).then(function () {
+                    executeCmsReadyQueue();
+                });
             });
         }
 
@@ -5264,7 +5268,7 @@
                     attrs.id = result(this, 'id');
                 }
                 if (this.className) {
-                    attrs.class = result(this, 'className');
+                    attrs.className = result(this, 'className');
                 }
                 this.setElement($cms.dom.create(result(this, 'tagName') || 'div', attrs));
             } else {
@@ -6371,7 +6375,7 @@
      * @param isVideo
      */
     $cms.ui.resizeLightboxDimensionsImg = function resizeLightboxDimensionsImg(modal, img, hasFullButton, isVideo) {
-        if (!modal.boxWrapperEl) {
+        if (!modal.el) {
             /* Overlay closed already */
             return;
         }
@@ -6476,7 +6480,7 @@
      */
     function ModalWindow(params) {
         ModalWindow.base(this, 'constructor', arguments);
-
+        
         // Constants
         this.WINDOW_SIDE_GAP = $cms.isMobile() ? 5 : 25;
         this.WINDOW_TOP_GAP = 25; // Will also be used for bottom gap for percentage heights
@@ -6488,7 +6492,7 @@
         this.LOADING_SCREEN_HEIGHT = 100;
 
         // Properties
-        this.boxWrapperEl =  null;
+        this.el =  null;
         this.buttonContainer = null;
         this.returnValue = null;
         this.topWindow = null;
@@ -6528,11 +6532,11 @@
     $cms.inherits(ModalWindow, $cms.View, /**@lends $cms.views.ModalWindow#*/ {
         // Methods...
         close: function () {
-            if (this.boxWrapperEl) {
+            if (this.el) {
                 this.topWindow.document.body.style.overflow = '';
 
-                this.boxWrapperEl.remove();
-                this.boxWrapperEl = null;
+                this.el.remove();
+                this.el = null;
 
                 $cms.dom.off(document, 'keyup mousemove', this.keyup);
             }
@@ -6567,7 +6571,7 @@
             init = Boolean(init);
             forceHeight = Boolean(forceHeight);
 
-            if (!this.boxWrapperEl) {
+            if (!this.el) {
                 return;
             }
             
@@ -6631,9 +6635,9 @@
 
             // Save into HTML
             var detectedBoxHeight;
-            this.boxWrapperEl.firstElementChild.style.width = boxWidth;
-            this.boxWrapperEl.firstElementChild.style.height = boxHeight;
-            var iframe = this.boxWrapperEl.querySelector('iframe');
+            this.el.firstElementChild.style.width = boxWidth;
+            this.el.firstElementChild.style.height = boxHeight;
+            var iframe = this.el.querySelector('iframe');
 
             if ($cms.dom.hasIframeAccess(iframe) && (iframe.contentWindow.document.body)) { // Balance iframe height
                 iframe.style.width = '100%';
@@ -6649,7 +6653,7 @@
 
             // Work out box position
             if (!detectedBoxHeight) {
-                detectedBoxHeight = this.boxWrapperEl.firstElementChild.offsetHeight;
+                detectedBoxHeight = this.el.firstElementChild.offsetHeight;
             }
             var boxPosTop, boxPosLeft;
 
@@ -6672,22 +6676,22 @@
             boxPosLeft = ((topWindowWidth / 2) - (parseInt(boxWidth) / 2));
 
             // Save into HTML
-            this.boxWrapperEl.firstElementChild.style.top = boxPosTop + 'px';
-            this.boxWrapperEl.firstElementChild.style.left = boxPosLeft + 'px';
+            this.el.firstElementChild.style.top = boxPosTop + 'px';
+            this.el.firstElementChild.style.left = boxPosLeft + 'px';
 
             var doScroll = false;
 
             // Absolute positioning instead of fixed positioning
-            if ($cms.$MOBILE() || (detectedBoxHeight > topWindowHeight) || (this.boxWrapperEl.style.position === 'absolute'/*don't switch back to fixed*/)) {
-                var wasFixed = (this.boxWrapperEl.style.position === 'fixed');
+            if ($cms.$MOBILE() || (detectedBoxHeight > topWindowHeight) || (this.el.style.position === 'absolute'/*don't switch back to fixed*/)) {
+                var wasFixed = (this.el.style.position === 'fixed');
 
-                this.boxWrapperEl.style.position = 'absolute';
-                this.boxWrapperEl.style.height = ((topPageHeight > (detectedBoxHeight + bottomGap + boxPosLeft)) ? topPageHeight : (detectedBoxHeight + bottomGap + boxPosLeft)) + 'px';
+                this.el.style.position = 'absolute';
+                this.el.style.height = ((topPageHeight > (detectedBoxHeight + bottomGap + boxPosLeft)) ? topPageHeight : (detectedBoxHeight + bottomGap + boxPosLeft)) + 'px';
                 this.topWindow.document.body.style.overflow = '';
 
                 if (!$cms.$MOBILE()) {
-                    this.boxWrapperEl.firstElementChild.style.position = 'absolute';
-                    this.boxWrapperEl.firstElementChild.style.top = this.WINDOW_TOP_GAP + 'px';
+                    this.el.firstElementChild.style.position = 'absolute';
+                    this.el.firstElementChild.style.top = this.WINDOW_TOP_GAP + 'px';
                 }
 
                 if (init || wasFixed) {
@@ -6698,8 +6702,8 @@
                     doScroll = true;
                 }
             } else { // Fixed positioning, with scrolling turned off until the overlay is closed
-                this.boxWrapperEl.style.position = 'fixed';
-                this.boxWrapperEl.firstElementChild.style.position = 'fixed';
+                this.el.style.position = 'fixed';
+                this.el.firstElementChild.style.position = 'fixed';
                 this.topWindow.document.body.style.overflow = 'hidden';
             }
 
@@ -6718,7 +6722,7 @@
 
             this.topWindow.overlayZIndex || (this.topWindow.overlayZIndex = 999999); // Has to be higher than plupload, which is 99999
 
-            this.boxWrapperEl = $cms.dom.create('div', { // Black out the background
+            this.el = $cms.dom.create('div', { // Black out the background
                 'css': {
                     'background': 'rgba(0,0,0,0.7)',
                     'zIndex': this.topWindow.overlayZIndex++,
@@ -6731,7 +6735,7 @@
                 }
             });
 
-            this.boxWrapperEl.appendChild($cms.dom.create('div', { // The main overlay
+            this.el.appendChild($cms.dom.create('div', { // The main overlay
                 'className': 'box overlay ' + this.type,
                 'role': 'dialog',
                 'css': {
@@ -6741,7 +6745,7 @@
                 }
             }));
             
-            this.topWindow.document.body.appendChild(this.boxWrapperEl);
+            this.topWindow.document.body.appendChild(this.el);
             
             var container = $cms.dom.create('div', {
                 'className': 'box_inner',
@@ -6781,50 +6785,50 @@
                 'className': 'proceed_button'
             });
 
-            var that = this;
+            var self = this;
             this.clickoutCancel = function () {
-                that.option('cancel');
+                self.option('cancel');
             };
 
             this.clickoutFinished = function () {
-                that.option('finished');
+                self.option('finished');
             };
 
             this.clickoutYes = function () {
-                that.option('yes');
+                self.option('yes');
             };
 
             this.keyup = function (e) {
                 var keyCode = (e) ? Number(e.which || e.keyCode) : null;
 
                 if (keyCode === 37) {// Left arrow
-                    that.option('left');
+                    self.option('left');
                 } else if (keyCode === 39) {// Right arrow
-                    that.option('right');
-                } else if ((keyCode === 13/*enter*/) && (that.yes)) {
-                    that.option('yes');
+                    self.option('right');
+                } else if ((keyCode === 13/*enter*/) && (self.yes)) {
+                    self.option('yes');
                 }
-                if ((keyCode === 13/*enter*/) && (that.finished)) {
-                    that.option('finished');
-                } else if ((keyCode === 27/*esc*/) && (that.cancelButton) && ((that.type === 'prompt') || (that.type === 'confirm') || (that.type === 'lightbox') || (that.type === 'alert'))) {
-                    that.option('cancel');
+                if ((keyCode === 13/*enter*/) && (self.finished)) {
+                    self.option('finished');
+                } else if ((keyCode === 27/*esc*/) && (self.cancelButton) && ((self.type === 'prompt') || (self.type === 'confirm') || (self.type === 'lightbox') || (self.type === 'alert'))) {
+                    self.option('cancel');
                 }
             };
 
             this.mousemove = function (e) {
-                if (that.boxWrapperEl && !that.boxWrapperEl.firstElementChild.classList.contains('mousemove')) {
-                    that.boxWrapperEl.firstElementChild.classList.add('mousemove');
+                if (self.el && !self.el.firstElementChild.classList.contains('mousemove')) {
+                    self.el.firstElementChild.classList.add('mousemove');
                     setTimeout(function () {
-                        if (that.boxWrapperEl) {
-                            that.boxWrapperEl.firstElementChild.classList.remove('mousemove');
+                        if (self.el) {
+                            self.el.firstElementChild.classList.remove('mousemove');
                         }
                     }, 2000);
                 }
             };
 
-            $cms.dom.on(this.boxWrapperEl.firstElementChild, 'click', function (e) {
-                if ($cms.$MOBILE() && (that.type === 'lightbox')) { // IDEA: Swipe detect would be better, but JS does not have this natively yet
-                    that.option('right');
+            $cms.dom.on(this.el.firstElementChild, 'click', function (e) {
+                if ($cms.$MOBILE() && (self.type === 'lightbox')) { // IDEA: Swipe detect would be better, but JS does not have this natively yet
+                    self.option('right');
                 }
             });
 
@@ -6853,8 +6857,8 @@
                     $cms.dom.animateFrameLoad(iframe, 'overlay_iframe', 50, true);
 
                     setTimeout(function () {
-                        if (isEl(that.boxWrapperEl)) {
-                            $cms.dom.on(that.boxWrapperEl, 'click', that.clickoutFinished);
+                        if (isEl(self.el)) {
+                            $cms.dom.on(self.el, 'click', self.clickoutFinished);
                         }
                     }, 1000);
 
@@ -6870,12 +6874,12 @@
                     // Fiddle it, to behave like a popup would
                     setTimeout(function () {
                         $cms.dom.illustrateFrameLoad('overlay_iframe');
-                        iframe.src = that.href;
-                        that.makeFrameLikePopup(iframe);
+                        iframe.src = self.href;
+                        self.makeFrameLikePopup(iframe);
 
-                        if (that.iframeRestyleTimer == null) { // In case internal nav changes
-                            that.iframeRestyleTimer = setInterval(function () {
-                                that.makeFrameLikePopup(iframe);
+                        if (self.iframeRestyleTimer == null) { // In case internal nav changes
+                            self.iframeRestyleTimer = setInterval(function () {
+                                self.makeFrameLikePopup(iframe);
                             }, 300);
                         }
                     }, 0);
@@ -6889,20 +6893,20 @@
                             'className': 'buttons__proceed button_screen_item'
                         });
                         $cms.dom.on(button, 'click', function () {
-                            that.option('yes');
+                            self.option('yes');
                         });
 
                         setTimeout(function () {
-                            if (that.boxWrapperEl) {
-                                $cms.dom.on(that.boxWrapperEl, 'click', that.clickoutYes);
+                            if (self.el) {
+                                $cms.dom.on(self.el, 'click', self.clickoutYes);
                             }
                         }, 1000);
 
                         this.buttonContainer.appendChild(button);
                     } else {
                         setTimeout(function () {
-                            if (that.boxWrapperEl) {
-                                $cms.dom.on(that.boxWrapperEl, 'click', that.clickoutCancel);
+                            if (self.el) {
+                                $cms.dom.on(self.el, 'click', self.clickoutCancel);
                             }
                         }, 1000);
                     }
@@ -6915,7 +6919,7 @@
                         'style': 'font-weight: bold;'
                     });
                     $cms.dom.on(button, 'click', function () {
-                        that.option('yes');
+                        self.option('yes');
                     });
                     this.buttonContainer.appendChild(button);
                     button = $cms.dom.create('button', {
@@ -6923,7 +6927,7 @@
                         'className': 'buttons__no button_screen_item'
                     });
                     $cms.dom.on(button, 'click', function () {
-                        that.option('no');
+                        self.option('no');
                     });
                     this.buttonContainer.appendChild(button);
                     break;
@@ -6950,14 +6954,14 @@
                             }
                         });
                         $cms.dom.on(button, 'click', function () {
-                            that.option('yes');
+                            self.option('yes');
                         });
                         this.buttonContainer.appendChild(button);
                     }
 
                     setTimeout(function () {
-                        if (that.boxWrapperEl) {
-                            $cms.dom.on(that.boxWrapperEl, 'click', that.clickoutCancel);
+                        if (self.el) {
+                            $cms.dom.on(self.el, 'click', self.clickoutCancel);
                         }
                     }, 1000);
                     break;
@@ -6980,7 +6984,7 @@
                     container.appendChild(button);
                 }
                 $cms.dom.on(button, 'click', function () {
-                    that.option(this.cancel ? 'cancel' : 'finished');
+                    self.option(this.cancel ? 'cancel' : 'finished');
                 });
             }
 
@@ -6991,26 +6995,26 @@
                 }
                 container.appendChild(this.buttonContainer);
             }
-            this.boxWrapperEl.firstElementChild.appendChild(container);
+            this.el.firstElementChild.appendChild(container);
 
             // Handle dimensions
             this.resetDimensions(this.width, this.height, true);
             $cms.dom.on(window, 'resize', function () {
-                that.resetDimensions(that.width, that.height, false);
+                self.resetDimensions(self.width, self.height, false);
             });
 
             // Focus first button by default
             if (this.input) {
                 setTimeout(function () {
-                    that.input.focus();
+                    self.input.focus();
                 });
-            } else if (this.boxWrapperEl.querySelector('button')) {
-                this.boxWrapperEl.querySelector('button').focus();
+            } else if (this.el.querySelector('button')) {
+                this.el.querySelector('button').focus();
             }
 
             setTimeout(function () { // Timeout needed else keyboard activation of overlay opener may cause instant shutdown also
-                $cms.dom.on(document, 'keyup', that.keyup);
-                $cms.dom.on(document, 'mousemove', that.mousemove);
+                $cms.dom.on(document, 'keyup', self.keyup);
+                $cms.dom.on(document, 'mousemove', self.mousemove);
             }, 100);
         },
         

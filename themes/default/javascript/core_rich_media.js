@@ -247,7 +247,7 @@
                 }
 
                 modal.left = previous;
-                modal.boxWrapperEl.firstElementChild.appendChild(previousButton);
+                modal.el.firstElementChild.appendChild(previousButton);
 
                 var nextButton = document.createElement('img');
                 nextButton.className = 'next_button';
@@ -265,7 +265,7 @@
                 }
 
                 modal.right = next;
-                modal.boxWrapperEl.firstElementChild.appendChild(nextButton);
+                modal.el.firstElementChild.appendChild(nextButton);
 
                 function _openDifferentImageIntoLightbox(modal, position, imgs) {
                     var isVideo = imgs[position][2];
