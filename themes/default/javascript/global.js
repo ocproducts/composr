@@ -409,8 +409,6 @@
         /**@method*/
         manageScrollHeight: manageScrollHeight,
         /**@method*/
-        openModalWindow: openModalWindow,
-        /**@method*/
         executeJsFunctionCalls: executeJsFunctionCalls,
         /**@method*/
         doAjaxRequest: doAjaxRequest,
@@ -4898,6 +4896,7 @@
         }
     }
 
+    $cms.ui.openModalWindow = openModalWindow;
     /**
      * @param options
      * @returns { $cms.views.ModalWindow }
@@ -5936,7 +5935,7 @@
                 },
                 width: '450'
             };
-            $cms.openModalWindow(myConfirm);
+            $cms.ui.openModalWindow(myConfirm);
         });
     };
 
@@ -6005,7 +6004,7 @@
                 cancelButton: null
             };
 
-            $cms.openModalWindow(myAlert);
+            $cms.ui.openModalWindow(myAlert);
         });
         
         return currentAlertPromise;
@@ -6059,7 +6058,7 @@
             if (inputType) {
                 myPrompt.inputType = inputType;
             }
-            $cms.openModalWindow(myPrompt);
+            $cms.ui.openModalWindow(myPrompt);
         });
     };
 
@@ -6164,7 +6163,7 @@
             if (target) {
                 myFrame.target = target;
             }
-            $cms.openModalWindow(myFrame);
+            $cms.ui.openModalWindow(myFrame);
         });
     };
 
@@ -6330,7 +6329,7 @@
                 width: '450', // This will be updated with the real image width, when it has loaded
                 height: '300' // "
             },
-            modal = $cms.openModalWindow(myLightbox);
+            modal = $cms.ui.openModalWindow(myLightbox);
 
         // Load proper image
         setTimeout(function () { // Defer execution until the HTML was parsed
@@ -6524,11 +6523,11 @@
 
     $cms.inherits(ModalWindow, $cms.View, /**@lends $cms.views.ModalWindow#*/ {
         // Methods...
-        close: function (win) {
+        close: function () {
             if (this.boxWrapperEl) {
                 this.topWindow.document.body.style.overflow = '';
 
-                this.remove(this.boxWrapperEl, win);
+                this.boxWrapperEl.remove();
                 this.boxWrapperEl = null;
 
                 $cms.dom.off(document, 'keyup mousemove', this.keyup);
@@ -6934,7 +6933,7 @@
                         'className': 'wide_field',
                         'value': (this.defaultValue === null) ? '' : this.defaultValue
                     });
-                    var inputWrap = $cms.dom.create('div', {});
+                    var inputWrap = $cms.dom.create('div');
                     inputWrap.appendChild(this.input);
                     container.appendChild(inputWrap);
 
