@@ -925,37 +925,33 @@
                 biggestLengthData = biggestLengthData.substr(0, 100) + '...';
             }
 
-            $cms.ui.confirm(
-                '{!javascript:RESTORE_SAVED_FORM_DATA;^}\n\n' + biggestLengthData,
-                function (result) {
-                    if (result) {
-                        for (key in fieldsToDo) {
+            $cms.ui.confirm('{!javascript:RESTORE_SAVED_FORM_DATA;^}\n\n' + biggestLengthData, null, '{!javascript:AUTO_SAVING;^}').then(function (result) {
+                if (result) {
+                    for (key in fieldsToDo) {
+                        if (typeof fieldsToDo[key] != 'string') continue;
+
+                        if (form.elements[key] !== undefined) {
+                            //$cms.inform('Restoring ' + key);
+                            cleverSetValue(form, form.elements[key], fieldsToDo[key]);
+                        }
+                    }
+                } else {
+                    // Was asked to throw the autosave away...
+
+                    $cms.setCookie(encodeURIComponent(getAutosaveUrlStem()), '0', 0.167/*4 hours*/); // Mark as not wanting to restore from local storage
+
+                    if (window.localStorage !== undefined) {
+                        for (var key in fieldsToDo) {
                             if (typeof fieldsToDo[key] != 'string') continue;
 
-                            if (form.elements[key] !== undefined) {
-                                //$cms.inform('Restoring ' + key);
-                                cleverSetValue(form, form.elements[key], fieldsToDo[key]);
-                            }
-                        }
-                    } else {
-                        // Was asked to throw the autosave away...
-
-                        $cms.setCookie(encodeURIComponent(getAutosaveUrlStem()), '0', 0.167/*4 hours*/); // Mark as not wanting to restore from local storage
-
-                        if (window.localStorage !== undefined) {
-                            for (var key in fieldsToDo) {
-                                if (typeof fieldsToDo[key] != 'string') continue;
-
-                                autosaveName = getAutosaveName(key);
-                                if (localStorage[autosaveName] !== undefined) {
-                                    delete localStorage[autosaveName];
-                                }
+                            autosaveName = getAutosaveName(key);
+                            if (localStorage[autosaveName] !== undefined) {
+                                delete localStorage[autosaveName];
                             }
                         }
                     }
-                },
-                '{!javascript:AUTO_SAVING;^}'
-            );
+                }
+            });
         }
 
         function cleverSetValue(form, element, value) {
