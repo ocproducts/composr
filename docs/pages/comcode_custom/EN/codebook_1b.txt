@@ -529,7 +529,7 @@ To add a new symbol you'll need to write a [tt]systems/symbols[/tt] hook. This i
 
 [title="3"]Running scheduled scripts[/title]
 
-To run a scheduled script you'll need to do it via writing a [tt]systems/cron[/tt] hook. For it to work, CRON must be set up on the server and tied into Composr (described in the Composr documentation). Look at existing hooks as examples. Alternatively, if you do not want to bother setting up CRON, or want to see the script output (e.g. errors) when debugging, just call up [tt]http://yourbaseurl/data/cron_bridge.php[/tt] manually in the browser.
+To run a scheduled script you'll need to do it via writing a [tt]systems/cron[/tt] hook. For it to work, Cron must be set up on the server and tied into Composr (described in the Composr documentation). Look at existing hooks as examples. Alternatively, if you do not want to bother setting up Cron, or want to see the script output (e.g. errors) when debugging, just call up [tt]http://yourbaseurl/data/cron_bridge.php[/tt] manually in the browser.
 
 [title="3"]Running temporary code[/title]
 

@@ -17,7 +17,7 @@ This notification hook was created using the classifieds notification hook as a 
 class Hook_cron_downloads_followup_email
 {
     /**
-     * Run function for CRON hooks. Searches for tasks to perform.
+     * Run function for Cron hooks. Searches for tasks to perform.
      */
     public function run()
     {
@@ -61,7 +61,7 @@ class Hook_cron_downloads_followup_email
         }
 
         /*
-        If we just installed, reinstalled after uninstalling more than 2 days ago, or if cron stopped
+        If we just installed, reinstalled after uninstalling more than 2 days ago, or if Cron stopped
         working for more than 2 days we will not generate emails for downloads prior to the previous
         48 hours to prevent sending stale notifications for download actions that are not recent.
         */

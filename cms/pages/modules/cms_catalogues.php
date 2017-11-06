@@ -1421,8 +1421,8 @@ class Module_cms_catalogues_cat extends Standard_crud_module
         $notes = post_param_string('notes', STRING_MAGIC_NULL);
         $parent_id = post_param_integer('parent_id', fractional_edit() ? INTEGER_MAGIC_NULL : null/*may be non-tree catalogue or root node*/);
 
-        $move_days_lower = post_param_integer('move_days_lower', fractional_edit() ? INTEGER_MAGIC_NULL : 30/*may be CRON disabled*/);
-        $move_days_higher = post_param_integer('move_days_higher', fractional_edit() ? INTEGER_MAGIC_NULL : 60/*may be CRON disabled*/);
+        $move_days_lower = post_param_integer('move_days_lower', fractional_edit() ? INTEGER_MAGIC_NULL : 30/*may be Cron disabled*/);
+        $move_days_higher = post_param_integer('move_days_higher', fractional_edit() ? INTEGER_MAGIC_NULL : 60/*may be Cron disabled*/);
         $move_target = post_param_integer('move_target', fractional_edit() ? INTEGER_MAGIC_NULL : null);
         if (($move_target !== null) && ($move_target != INTEGER_MAGIC_NULL)) {
             if (!has_submit_permission('mid', get_member(), get_ip_address(), 'cms_catalogues', array('catalogues_catalogue', $catalogue_name) + ((get_value('disable_cat_cat_perms') !== '1') ? array('catalogues_category', $move_target) : array()))) {

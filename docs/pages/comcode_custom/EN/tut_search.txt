@@ -174,9 +174,9 @@ DO
 [/code]
 [/list]
 
-[title="3"]Workaround 2: Auto-kill slow searches via CRON[/title]
+[title="3"]Workaround 2: Auto-kill slow searches via Cron[/title]
 
-Create a CRON script like:
+Create a Cron script like:
 [code="Bash"]
 #!/bin/sh
 

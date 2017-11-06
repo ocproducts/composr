@@ -19,7 +19,7 @@
 class Hook_cron_user_import
 {
     /**
-     * Run function for CRON hooks. Searches for tasks to perform.
+     * Run function for Cron hooks. Searches for tasks to perform.
      */
     public function run()
     {

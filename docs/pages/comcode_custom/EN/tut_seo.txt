@@ -43,7 +43,7 @@ There are a number of techniques that will improve your site's search engine sta
  - Get keywords into your own URLs (the choice of domain name, the URL path, and the URL filename). Composr's "URL Monikers" feature will help here
  - Get your site linked to by as many quality sites as possible: the more popular the sites, the better (don't get linked to on "link farms" though). This is not just good for the obvious reason of getting hits from those sites, but will also make search engines think your site is popular (in particular, the google PageRank algorithm basically bases website popularity on the number of links it gets)
  - Add your site to directories, including large directories of any kind of website, and small specialist directories relevant to your website
- - Make sure your XML Sitemap is being generated (you will need the CRON bridge scheduler working for this), and submit the sitemap to Google. This is described in more detail in the next section
+ - Make sure your XML Sitemap is being generated (you will need the Cron bridge scheduler working for this), and submit the sitemap to Google. This is described in more detail in the next section
  - Submit your site to additional search engines (Google, Yahoo, Microsoft and Ask are automatic via the XML Sitemap); note that when you submit a site to a search engine, you are only giving it optional information, as they are designed to find websites regardless of whether they are submitted or not. You might want to pay for a service that submits to multiple search engines for you, but be wary of this: search engines may mark these submissions as spam if your submission does not match that search engines submission policy (many of which in fact exclude submission from such bulk services). Note that some search engines require payment for listing
  - Don't waste your time submitting to obscure search engines
  - Do not 'cheat' search engines by making pages with a lot of hidden words: search engines will penalise you for it
@@ -93,9 +93,9 @@ Composr supports the XML Sitemap format, which is recognised by:
 
 Composr will generate a very thorough Sitemap for your website, providing links to all content, even forum topics ([concept]Conversr[/concept] only).
 
-Composr will also {$IS_MAINTAINED,sitemap_submit,automatically submit the Sitemap} to the above search engines every 24 hours, so long as the CRON bridge scheduler is enabled and the 'Auto-submit sitemap' option is on. Configuration of the CRON bridge is described in the [page="_SEARCH:tut_configuration"]Basic configuration and getting started[/page] tutorial. You will know if it is not working because your Admin Zone dashboard will say so.
+Composr will also {$IS_MAINTAINED,sitemap_submit,automatically submit the Sitemap} to the above search engines every 24 hours, so long as the Cron bridge scheduler is enabled and the 'Auto-submit sitemap' option is on. Configuration of the Cron bridge is described in the [page="_SEARCH:tut_configuration"]Basic configuration and getting started[/page] tutorial. You will know if it is not working because your Admin Zone dashboard will say so.
 
-If you cannot configure the CRON bridge scheduler for some reason, you can force generation of the sitemap by opening up [tt]http://yourbaseurl/data/force_sitemap_generation.php?keep_su=Guest[/tt], and then manually submitting the URL of the Sitemap (which will show in the browser address bar after it's generated) to the search engines.
+If you cannot configure the Cron bridge scheduler for some reason, you can force generation of the sitemap by opening up [tt]http://yourbaseurl/data/force_sitemap_generation.php?keep_su=Guest[/tt], and then manually submitting the URL of the Sitemap (which will show in the browser address bar after it's generated) to the search engines.
 
 To test your Sitemap is generating correctly, open up [tt]http://yourbaseurl/data_custom/sitemaps/index.xml[/tt]. You should see an [abbr="eXtensible Markup Language"]XML[/abbr] document with reference to individual sitemap(s).
 

@@ -24,11 +24,11 @@
 class Hook_cron__health_check
 {
     /**
-     * Run function for CRON hooks. Searches for tasks to perform.
+     * Run function for Cron hooks. Searches for tasks to perform.
      */
     public function run()
     {
-        // Note that we have a leading "_" on the hook name so that it runs first (we run CRON hooks in sorted order)
+        // Note that we have a leading "_" on the hook name so that it runs first (we run Cron hooks in sorted order)
 
         $last = get_value('last_health_check', null, true);
         $time = time();

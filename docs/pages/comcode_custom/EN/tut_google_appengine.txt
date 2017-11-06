@@ -237,7 +237,7 @@ Developers may be interested in GAE's [url="Push-to-deploy"]https://developers.g
 
 [title="3"]Notes and considerations[/title]
 
-Note that the CRON bridge scheduler will have been automatically set up.
+Note that the Cron bridge scheduler will have been automatically set up.
 
 An appropriate PHP configuration has also been provided for you.
 
