@@ -612,7 +612,7 @@
             va,
             function (va) {
                 if ((va != null) && (va.indexOf('://') === -1)) {
-                    $cms.ui.alert('{!javascript:NOT_A_URL;^}', function () {
+                    $cms.ui.alert('{!javascript:NOT_A_URL;^}').then(function () {
                         doInputUrl(fieldName, va);
                     });
                     return;
@@ -701,7 +701,7 @@
             va,
             function (va) {
                 if ((va != null) && (va.indexOf('@') === -1)) {
-                    $cms.ui.alert('{!javascript:NOT_A_EMAIL;^}', function () {
+                    $cms.ui.alert('{!javascript:NOT_A_EMAIL;^}').then(function () {
                         doInputUrl(fieldName, va);
                     });
                     return;

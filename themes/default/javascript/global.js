@@ -2060,7 +2060,7 @@
                 }
             }
 
-            $cms.support.inputTypes[type] = !!bool;
+            $cms.support.inputTypes[type] = Boolean(bool);
         }
     }());
 
@@ -6591,7 +6591,7 @@
             this.topWindow.overlayZIndex || (this.topWindow.overlayZIndex = 999999); // Has to be higher than plupload, which is 99999
 
             this.el = $cms.dom.create('div', { // Black out the background
-                'className': 'js-modal-background',
+                'className': 'js-modal-background js-modal-type-' + this.type,
                 'css': {
                     'background': 'rgba(0,0,0,0.7)',
                     'zIndex': this.topWindow.overlayZIndex++,
@@ -6607,7 +6607,7 @@
             this.topWindow.document.body.appendChild(this.el);
 
             this.overlayEl = this.el.appendChild($cms.dom.create('div', { // The main overlay
-                'className': 'box overlay js-modal-overlay js-modal-' + this.type + ' ' + this.type,
+                'className': 'box overlay js-modal-overlay ' + this.type,
                 'role': 'dialog',
                 'css': {
                     // This will be updated immediately in resetDimensions
@@ -6918,8 +6918,8 @@
                 return;
             }
             
-            var topPageHeight = this.topWindow.$cms.dom.getWindowScrollHeight(this.topWindow),
-                topWindowWidth = this.topWindow.$cms.dom.getWindowWidth(this.topWindow),
+            var topPageHeight = this.topWindow.$cms.dom.getWindowScrollHeight(),
+                topWindowWidth = this.topWindow.$cms.dom.getWindowWidth(),
                 topWindowHeight = this.topWindow.$cms.dom.getWindowHeight();
                 
             var bottomGap = this.WINDOW_TOP_GAP;
@@ -6982,7 +6982,7 @@
             this.overlayEl.style.height = boxHeight;
             var iframe = this.el.querySelector('iframe');
 
-            if ($cms.dom.hasIframeAccess(iframe) && (iframe.contentWindow.document.body)) { // Balance iframe height
+            if ($cms.dom.hasIframeAccess(iframe) && (iframe.contentDocument.body)) { // Balance iframe height
                 iframe.style.width = '100%';
                 if (height === 'auto') {
                     if (!init) {
@@ -7025,14 +7025,14 @@
             var doScroll = false;
 
             // Absolute positioning instead of fixed positioning
-            if ($cms.$MOBILE() || (detectedBoxHeight > topWindowHeight) || (this.el.style.position === 'absolute'/*don't switch back to fixed*/)) {
+            if ($cms.isMobile() || (detectedBoxHeight > topWindowHeight) || (this.el.style.position === 'absolute'/*don't switch back to fixed*/)) {
                 var wasFixed = (this.el.style.position === 'fixed');
 
                 this.el.style.position = 'absolute';
                 this.el.style.height = ((topPageHeight > (detectedBoxHeight + bottomGap + boxPosLeft)) ? topPageHeight : (detectedBoxHeight + bottomGap + boxPosLeft)) + 'px';
                 this.topWindow.document.body.style.overflow = '';
 
-                if (!$cms.$MOBILE()) {
+                if (!$cms.isMobile()) {
                     this.overlayEl.style.position = 'absolute';
                     this.overlayEl.style.top = this.WINDOW_TOP_GAP + 'px';
                 }
