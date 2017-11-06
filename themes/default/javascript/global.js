@@ -7551,7 +7551,7 @@
                     if (boolVal('{$VALUE_OPTION;,js_keep_params}')) {
                         /* Keep parameters need propagating */
                         if (form.action && form.action.startsWith($cms.$BASE_URL() + '/')) {
-                            form.action += $cms.addKeepStub(form.action);
+                            form.action = $cms.addKeepStub(form.action);
                         }
                     }
 
@@ -10438,11 +10438,17 @@
     };
 
     $cms.templates.handleConflictResolution = function (params) {
-        if (params.pingUrl) {
-            $cms.doAjaxRequest(params.pingUrl);
+        var pingUrl = strVal(params.pingUrl);
+        
+        if ('{$VALUE_OPTION;,disable_handle_conflict_resolution}' === '1') {
+            return;
+        }
+        
+        if (pingUrl) {
+            $cms.doAjaxRequest(pingUrl);
 
             setInterval(function () {
-                $cms.doAjaxRequest(params.pingUrl);
+                $cms.doAjaxRequest(pingUrl);
             }, 12000);
         }
     };

@@ -120,7 +120,7 @@ window.previousCommands || (window.previousCommands = []);
         if ($cms.form.isModSecurityWorkaroundEnabled()) {
             post = $cms.form.modSecurityWorkaroundAjax(post);
         }
-        $cms.doAjaxRequest('{$FIND_SCRIPT;,commandr}' + $cms.$KEEP(true), commandrCommandResponse, post);
+        $cms.doAjaxRequest('{$FIND_SCRIPT;,commandr}' + $cms.$KEEP(true, true), commandrCommandResponse, post);
 
         window.disableTimeout = setTimeout(function () {
             document.getElementById('commandr_command').disabled = false;
