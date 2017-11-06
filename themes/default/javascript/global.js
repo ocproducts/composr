@@ -3703,9 +3703,7 @@
      * @param iframeId
      */
     $cms.dom.illustrateFrameLoad = function illustrateFrameLoad(iframeId) {
-        var head, cssText = '',
-            i, iframe = $cms.dom.$id(iframeId),
-            doc, de;
+        var iframe = $cms.dom.$id(iframeId), doc;
 
         if (!$cms.$CONFIG_OPTION('enable_animations') || !iframe || !iframe.contentDocument || !iframe.contentDocument.documentElement) {
             return;
@@ -3715,50 +3713,13 @@
 
         try {
             doc = iframe.contentDocument;
-            de = doc.documentElement;
         } catch (e) {
             // May be connection interference somehow
             iframe.scrolling = 'auto';
             return;
         }
 
-        head = '<style nonce="' + $cms.$CSP_NONCE() + '">';
-
-        for (i = 0; i < document.styleSheets.length; i++) {
-            try {
-                var stylesheet = document.styleSheets[i];
-                if (stylesheet.href && !stylesheet.href.includes('/global') && !stylesheet.href.includes('/merged')) {
-                    continue;
-                }
-
-                if (stylesheet.cssText !== undefined) {
-                    cssText += stylesheet.cssText;
-                } else {
-                    var rules = [];
-                    try {
-                        rules = stylesheet.cssRules ? stylesheet.cssRules : stylesheet.rules;
-                    } catch (ignore) {}
-
-                    if (rules) {
-                        for (var j = 0; j < rules.length; j++) {
-                            if (rules[j].cssText) {
-                                cssText += rules[j].cssText + '\n\n';
-                            } else {
-                                cssText += rules[j].selectorText + '{ ' + rules[j].style.cssText + '}\n\n';
-                            }
-                        }
-                    }
-                }
-            } catch (ignore) {}
-        }
-
-        head += cssText + '<\/style>';
-
         doc.body.classList.add('website_body', 'main_website_faux');
-
-        if (!de.querySelector('style')) { // The conditional is needed for Firefox - for some odd reason it is unable to parse any head tags twice
-            $cms.dom.html(doc.head, head);
-        }
 
         $cms.dom.html(doc.body, '<div aria-busy="true" class="spaced"><div class="ajax_loading"><img id="loading_image" class="vertical_alignment" src="' + $cms.img('{$IMG_INLINE*;,loading}') + '" alt="{!LOADING;^}" /> <span class="vertical_alignment">{!LOADING;^}<\/span><\/div><\/div>');
 
@@ -3778,7 +3739,7 @@
                 iNew.id = iDefault.id;
                 iDefault.parentNode.replaceChild(iNew, iDefault);
             }
-        }, 0);
+        });
     };
 
     /**
