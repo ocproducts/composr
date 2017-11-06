@@ -7608,6 +7608,21 @@
                 });
             }
         },
+        
+        // Implementation for [data-textarea-auto-height]
+        textareaAutoHeight: {
+            attach: function attach(context) {
+                if ($cms.$MOBILE()) {
+                    return;
+                }
+                
+                var textareas = $cms.dom.$$$(context, '[data-textarea-auto-height]');
+                
+                for (var i = 0; i < textareas.length; i++) {
+                    $cms.manageScrollHeight(textareas[i]);
+                }
+            }
+        },
 
         columnHeightBalancing: {
             attach: function attach(context) {
@@ -7951,8 +7966,13 @@
                 'keydown input[data-cms-invalid-pattern]': 'invalidPattern',
                 'keypress input[data-cms-invalid-pattern]': 'invalidPattern',
 
-                'change textarea[data-textarea-auto-height]': 'textareaAutoHeight',
-                'keyup textarea[data-textarea-auto-height]': 'textareaAutoHeight',
+                'click textarea[data-textarea-auto-height]': 'doTextareaAutoHeight',
+                'focus textarea[data-textarea-auto-height]': 'doTextareaAutoHeight',
+                'blur textarea[data-textarea-auto-height]': 'doTextareaAutoHeight',
+                'change textarea[data-textarea-auto-height]': 'doTextareaAutoHeight',
+                'input textarea[data-textarea-auto-height]': 'doTextareaAutoHeight',
+                'keyup textarea[data-textarea-auto-height]': 'doTextareaAutoHeight',
+                'keydown textarea[data-textarea-auto-height]': 'doTextareaAutoHeight',
 
                 // Open page in overlay
                 'click [data-open-as-overlay]': 'openOverlay',
@@ -8235,7 +8255,7 @@
         },
 
         // Implementation for textarea[data-textarea-auto-height]
-        textareaAutoHeight: function (e, textarea) {
+        doTextareaAutoHeight: function (e, textarea) {
             if ($cms.$MOBILE()) {
                 return;
             }
