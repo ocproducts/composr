@@ -43,6 +43,8 @@
             if ($cms.form.isModSecurityWorkaroundEnabled()) {
                 e.preventDefault();
                 $cms.form.modSecurityWorkaround(form);
+            } else {
+                form.submit();
             }
         });
 
