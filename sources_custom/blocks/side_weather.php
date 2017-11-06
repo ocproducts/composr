@@ -147,7 +147,7 @@ class Block_side_weather
             $GLOBALS['DO_NOT_CACHE_THIS'] = true;
             require_code('failure');
             relay_error_notification($GLOBALS['HTTP_MESSAGE_B'], false, 'error_occurred_weather');
-            if (cron_installed()) {
+            if (cron_installed(true)) {
                 if (!$GLOBALS['FORUM_DRIVER']->is_staff(get_member())) {
                     return new Tempcode();
                 }
