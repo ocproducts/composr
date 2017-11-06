@@ -5778,13 +5778,13 @@ function ecv_STAFF_TOOLTIPS_URL_PATTERNS_JSON($lang, $escaped, $param)
         }
     }
 
-    $url_patterns = json_encode($url_patterns, JSON_FORCE_OBJECT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
+    $_url_patterns = json_encode($url_patterns, JSON_FORCE_OBJECT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
 
     if ($escaped !== array()) {
-        apply_tempcode_escaping($escaped, $url_patterns);
+        apply_tempcode_escaping($escaped, $_url_patterns);
     }
 
-    return $url_patterns;
+    return $_url_patterns;
 }
 
 /**
@@ -5793,7 +5793,8 @@ function ecv_STAFF_TOOLTIPS_URL_PATTERNS_JSON($lang, $escaped, $param)
  * @param  string $pattern Pattern
  * @return string
  */
-function _escape_url_pattern_for_js_regex($pattern) {
+function _escape_url_pattern_for_js_regex($pattern)
+{
 
     $pattern = '^' . $pattern;
     $pattern = str_replace('/', '\\/', $pattern);

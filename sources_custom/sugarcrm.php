@@ -187,9 +187,11 @@ function save_composr_account_into_sugarcrm_as_configured($member_id, $timestamp
     if (in_array($sync_types, array('leads', 'leads_guarded', 'both', 'both_guarded'))) {
         // User metadata
         $attachments = array();
-        require_code('lookup');
-        $user_metadata_path = save_user_metadata();
-        $attachments[$user_metadata_path] = 'user_metadata.txt';
+        if (addon_installed('securitylogging')) {
+            require_code('lookup');
+            $user_metadata_path = save_user_metadata();
+            $attachments[$user_metadata_path] = 'user_metadata.txt';
+        }
 
         $body = do_lang('BODY_LEAD_FROM_ACCOUNT', $username);
         $data = array(do_lang('AUTOMATIC_NOTE') => $body) + $cpfs;

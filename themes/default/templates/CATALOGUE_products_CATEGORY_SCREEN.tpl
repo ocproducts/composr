@@ -40,11 +40,11 @@
 
 {+START,INCLUDE,STAFF_ACTIONS}
 	1_URL={ADD_ENTRY_URL*}
-	1_TITLE={!CATALOGUE_GENERIC_ADD,{CATALOGUE_TITLE*}}
+	1_TITLE={!do_next:NEXT_ITEM_add_one}
 	1_REL=add
 	1_ICON=menu/_generic_admin/add_one
 	2_URL={ADD_CAT_URL*}
-	2_TITLE={!CATALOGUE_GENERIC_ADD_CATEGORY,{CATALOGUE_TITLE*}}
+	2_TITLE={!do_next:NEXT_ITEM_add_one_category}
 	2_REL=add
 	2_ICON=menu/_generic_admin/add_one_category
 	3_ACCESSKEY=q

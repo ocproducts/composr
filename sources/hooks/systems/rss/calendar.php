@@ -95,7 +95,7 @@ class Hook_rss_calendar
 
             $row = $_row[1];
 
-            $id = strval($row['id']);
+            $id = strval($_row[0]);
             $author = '';
 
             // The "add" date'll be actually used for the event time
@@ -115,13 +115,13 @@ class Hook_rss_calendar
             $category = array_key_exists($row['e_type'], $categories) ? $categories[$row['e_type']] : '';
             $category_raw = strval($row['e_type']);
 
-            $view_url = build_url(array('page' => 'calendar', 'type' => 'view', 'id' => $row['id']), get_module_zone('calendar'), array(), false, false, true);
+            $view_url = build_url(array('page' => 'calendar', 'type' => 'view', 'id' => $_row[0]), get_module_zone('calendar'), array(), false, false, true);
 
             if (!array_key_exists('allow_comments', $row)) {
                 $row['allow_comments'] = 1;
             }
             if (($prefix == 'RSS_') && (get_option('is_on_comments') == '1') && ($row['allow_comments'] >= 1)) {
-                $if_comments = do_template('RSS_ENTRY_COMMENTS', array('_GUID' => '202a32693ce54d9ce960b72e66714df0', 'COMMENT_URL' => $view_url, 'ID' => strval($row['id'])), null, false, null, '.xml', 'xml');
+                $if_comments = do_template('RSS_ENTRY_COMMENTS', array('_GUID' => '202a32693ce54d9ce960b72e66714df0', 'COMMENT_URL' => $view_url, 'ID' => $id), null, false, null, '.xml', 'xml');
             } else {
                 $if_comments = new Tempcode();
             }

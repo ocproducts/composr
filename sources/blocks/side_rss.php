@@ -88,7 +88,7 @@ class Block_side_rss
             $GLOBALS['DO_NOT_CACHE_THIS'] = true;
             require_code('failure');
             relay_error_notification(do_lang('rss:ERROR_HANDLING_RSS_FEED', $url, $rss->error), false, 'error_occurred_rss');
-            if (cron_installed()) {
+            if (cron_installed(true)) {
                 if (!$GLOBALS['FORUM_DRIVER']->is_staff(get_member())) {
                     return new Tempcode();
                 }
@@ -130,9 +130,10 @@ class Block_side_rss
                 $__author = hyperlink(mailto_obfuscated() . obfuscate_email_address($rss->gleamed_feed['author_email']), $_author_string, true, true);
             }
             if ($__author !== null) {
-                $_author_string = $__author->evaluate();
+                $_author = do_lang_tempcode('RSS_SOURCE_FROM', $__author->evaluate());
+            } else {
+                $_author = do_lang_tempcode('RSS_SOURCE_FROM', escape_html($_author_string));
             }
-            $_author = do_lang_tempcode('RSS_SOURCE_FROM', escape_html($_author_string));
         } else {
             $_author = new Tempcode();
         }
@@ -195,5 +196,5 @@ class Block_side_rss
  */
 function block_side_rss__cache_on($map)
 {
-    return array(cron_installed() ? null : $GLOBALS['FORUM_DRIVER']->is_staff(get_member()), array_key_exists('max_entries', $map) ? intval($map['max_entries']) : 10, array_key_exists('title', $map) ? $map['title'] : '', array_key_exists('copyright', $map) ? $map['copyright'] : '', array_key_exists('param', $map) ? $map['param'] : '');
+    return array(cron_installed(true) ? null : $GLOBALS['FORUM_DRIVER']->is_staff(get_member()), array_key_exists('max_entries', $map) ? intval($map['max_entries']) : 10, array_key_exists('title', $map) ? $map['title'] : '', array_key_exists('copyright', $map) ? $map['copyright'] : '', array_key_exists('param', $map) ? $map['param'] : '');
 }

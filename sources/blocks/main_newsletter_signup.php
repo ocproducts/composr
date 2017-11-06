@@ -94,11 +94,12 @@ class Block_main_newsletter_signup
             if (!array_key_exists('path', $map)) {
                 $map['path'] = 'uploads/website_specific/signup.txt';
             }
+            $path_exists = file_exists(get_custom_file_base() . '/' . $map['path']);
 
             require_code('character_sets');
             $forename = post_param_string('firstname' . strval($newsletter_id), '');
             $surname = post_param_string('lastname' . strval($newsletter_id), '');
-            $password = basic_newsletter_join($address, null, !file_exists(get_custom_file_base() . '/' . $map['path'])/*Send confirm if we're not sending an intro email through this block*/, $newsletter_id, $forename, $surname);
+            $password = basic_newsletter_join($address, null, !$path_exists/*Send confirm if we're not sending an intro email through this block*/, $newsletter_id, $forename, $surname);
             if ($password == '') {
                 return do_template('INLINE_WIP_MESSAGE', array('_GUID' => 'bbbf2b31e71cbdbc2bcf2bdb7605142c', 'MESSAGE' => do_lang_tempcode('NEWSLETTER_THIS_ALSO')));
             }
@@ -108,7 +109,7 @@ class Block_main_newsletter_signup
             }
 
             require_code('mail');
-            if (file_exists(get_custom_file_base() . '/' . $map['path'])) {
+            if ($path_exists) {
                 $url = (url_is_local($map['path']) ? (get_custom_base_url() . '/') : '') . $map['path'];
                 $subject = empty($map['subject']) ? do_lang('_WELCOME') : $map['subject'];
                 $http_response = cms_http_request($url);
@@ -117,7 +118,7 @@ class Block_main_newsletter_signup
                 $body = str_replace('{email}', $address, $body);
                 $body = str_replace('{forename}', $forename, $body);
                 $body = str_replace('{surname}', $surname, $body);
-                dispatch_mail($subject, $body, array($address), array_key_exists('to', $map) ? $map['to'] : '', '', '', array('as_admin' => true));
+                dispatch_mail($subject, $body, array($address), empty($map['to']) ? null : $map['to'], '', '', array('as_admin' => true));
             }
 
             return do_template('BLOCK_MAIN_NEWSLETTER_SIGNUP_DONE', array(
@@ -126,6 +127,7 @@ class Block_main_newsletter_signup
                 'NEWSLETTER_TITLE' => $newsletter_title,
                 'NID' => strval($newsletter_id),
                 'PASSWORD' => $password,
+                'PATH_EXISTS' => $path_exists,
             ));
         } else {
             return do_template('BLOCK_MAIN_NEWSLETTER_SIGNUP', array(

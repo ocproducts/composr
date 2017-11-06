@@ -70,7 +70,7 @@ class Hook_rss_cns_unread_topics
         $content = new Tempcode();
         foreach ($rows as $row) {
             if ((($row['t_forum_id'] !== null) || ($row['t_pt_to'] == get_member())) && (has_category_access(get_member(), 'forums', strval($row['t_forum_id'])))) {
-                $id = strval($row['id']);
+                $id = strval($row['t_id']);
                 $author = $row['t_cache_first_username'];
 
                 $news_date = date($date_string, $row['t_cache_first_time']);
@@ -91,7 +91,7 @@ class Hook_rss_cns_unread_topics
                 $view_url = build_url(array('page' => 'topicview', 'id' => $row['t_id']), get_module_zone('topicview'));
 
                 if ($prefix == 'RSS_') {
-                    $if_comments = do_template('RSS_ENTRY_COMMENTS', array('_GUID' => '517e4d1be810446bda57d8632dadb4d6', 'COMMENT_URL' => $view_url, 'ID' => strval($row['t_id'])), null, false, null, '.xml', 'xml');
+                    $if_comments = do_template('RSS_ENTRY_COMMENTS', array('_GUID' => '517e4d1be810446bda57d8632dadb4d6', 'COMMENT_URL' => $view_url, 'ID' => $id), null, false, null, '.xml', 'xml');
                 } else {
                     $if_comments = new Tempcode();
                 }

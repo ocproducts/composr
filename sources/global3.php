@@ -2003,17 +2003,20 @@ function get_os_string()
 /**
  * Find if Cron is installed.
  *
+ * @param  boolean $absolutely_sure Whether Cron really needs to be installed (if set to false it will be assumed installed on dev-mode)
  * @return boolean Whether Cron is installed
  */
-function cron_installed()
+function cron_installed($absolutely_sure = false)
 {
     $test = get_param_integer('keep_has_cron', null);
     if ($test !== null) {
         return $test == 1;
     }
 
-    if ($GLOBALS['DEV_MODE']) {
-        return true;
+    if (!$absolutely_sure) {
+        if ($GLOBALS['DEV_MODE']) {
+            return true;
+        }
     }
 
     $last_cron = get_value('last_cron');

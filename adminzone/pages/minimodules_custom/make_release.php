@@ -79,9 +79,9 @@ function phase_0()
         $tracker_url .= '&product_version=' . urlencode($on_disk_version_previous);
     }
 
-    $changes .= ' For a list of the more important fixes, see the [url="tracker"]' . $tracker_url . '[/url].
+    $changes .= '[staff_note] For a list of the more important fixes, see the [url="tracker"]' . $tracker_url . '[/url].
 
-For all changes, see the [url="git history"]' . COMPOSR_REPOS_URL . '/commits/[/url].';
+[/staff_note]For all changes, see the [url="git history"]' . COMPOSR_REPOS_URL . '/commits/[/url].';
 
     $post_url = static_evaluate_tempcode(get_self_url(false, false, array('type' => '1')));
 
@@ -202,7 +202,8 @@ function phase_1()
 {
     require_code('version2');
 
-    $version_dotted = post_param_string('version');
+    $version_dotted = get_version_dotted();
+
     $is_bleeding_edge = (post_param_integer('bleeding_edge', 0) == 1);
     $is_old_tree = (post_param_integer('old_tree', 0) == 1);
     $is_substantial = is_substantial_release($version_dotted);
@@ -264,7 +265,7 @@ function phase_2()
 
     require_code('version2');
 
-    $version_dotted = post_param_string('version');
+    $version_dotted = get_version_dotted();
     $version_branch = get_version_branch();
     $version_number = float_to_raw_string(cms_version_number(), 2, true);
     $is_bleeding_edge = (post_param_integer('bleeding_edge', 0) == 1);

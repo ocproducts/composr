@@ -460,6 +460,18 @@ function _log_it($type, $a = null, $b = null)
         }
     }
 
+    // Cache clearing
+    static $logged = 0;
+    $logged++;
+    if ($logged == 1) {
+        delete_cache_entry('side_tag_cloud');
+        delete_cache_entry('main_staff_actions');
+        delete_cache_entry('main_staff_checklist');
+        delete_cache_entry('main_awards');
+        delete_cache_entry('main_multi_content');
+        delete_cache_entry('menu'); // Due to the content counts in the CMS/Admin Zones, and Sitemap menus
+    }
+
     // No more logging if site closed (possibly)
     if ((get_option('site_closed') == '1') && (get_option('stats_when_closed') == '0')) {
         return null;
@@ -484,19 +496,6 @@ function _log_it($type, $a = null, $b = null)
             'member_id' => get_member(),
             'ip' => $ip,
         ), true);
-    }
-
-    static $logged = 0;
-    $logged++;
-
-    // Cache clearing
-    if ($logged == 1) {
-        delete_cache_entry('side_tag_cloud');
-        delete_cache_entry('main_staff_actions');
-        delete_cache_entry('main_staff_checklist');
-        delete_cache_entry('main_awards');
-        delete_cache_entry('main_multi_content');
-        delete_cache_entry('menu'); // Due to the content counts in the CMS/Admin Zones, and Sitemap menus
     }
 
     // Tidy up auto-save

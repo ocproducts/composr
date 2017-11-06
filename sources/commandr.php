@@ -932,7 +932,7 @@ class Virtual_shell
             } else {
                 // It's not a lone command; see if it's a script - check first in the main script dir
                 if (file_exists(get_custom_file_base() . '/data/modules/admin_commandr/' . filter_naughty_harsh($this->parsed_input[SECTION_COMMAND], true))) {
-                    $script_file = get_custom_file_base() . '/data/modules/admin_commandr/' . filter_naughty_harsh($this->parsed_input[SECTION_COMMAND]); // It's in the main script dir
+                    $script_file = get_custom_file_base() . '/data/modules/admin_commandr/' . filter_naughty_harsh($this->parsed_input[SECTION_COMMAND], true); // It's in the main script dir
                 } else {
                     $script_file = $this->_find_script_file($this->parsed_input[SECTION_COMMAND]); // Exhaustive search
                 }

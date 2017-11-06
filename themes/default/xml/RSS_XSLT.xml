@@ -48,7 +48,7 @@
 		<h2>
 			<xsl:element name="a">
 				<xsl:attribute name="href"><xsl:value-of select="link" /></xsl:attribute>
-				<span name="decodeable"><xsl:value-of select="title" /></span>
+				<span name="decodeable"><xsl:value-of select="title" disable-output-escaping="yes" /></span>
 			</xsl:element>
 		</h2>
 		<p><span name="decodeable"><xsl:value-of select="description" disable-output-escaping="yes" /></span></p>

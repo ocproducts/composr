@@ -85,69 +85,71 @@ class Hook_rss_galleries
 
         $rows = array_merge($rows1, $rows2);
         foreach ($rows as $row) {
-            $id = strval($row['id']);
-            $author = $GLOBALS['FORUM_DRIVER']->get_username($row['submitter'], false, USERNAME_DEFAULT_BLANK);
+            if (has_category_access(get_member(), 'galleries', $row['cat'])) {
+                $id = strval($row['id']);
+                $author = $GLOBALS['FORUM_DRIVER']->get_username($row['submitter'], false, USERNAME_DEFAULT_BLANK);
 
-            $news_date = date($date_string, $row['add_date']);
-            $edit_date = ($row['edit_date'] === null) ? '' : date($date_string, $row['edit_date']);
+                $news_date = date($date_string, $row['add_date']);
+                $edit_date = ($row['edit_date'] === null) ? '' : date($date_string, $row['edit_date']);
 
-            if (get_translated_text($row['title']) != '') {
-                $news_title = xmlentities(get_translated_text($row['title']));
-            } else {
-                $news_title = xmlentities(do_lang('THIS_WITH_SIMPLE', (($row['type'] == 'video') ? do_lang('VIDEO') : do_lang('IMAGE')), strval($row['id'])));
-            }
-            $just_row = db_map_restrict($row, array('id', 'description'));
-            $_summary = get_translated_tempcode($row['type'] . 's', $just_row, 'description');
-            $summary = xmlentities($_summary->evaluate());
-            $news = '';
-
-            if (!array_key_exists($row['cat'], $galleries)) {
-                $_fullname = $GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'fullname', array('name' => $row['cat']));
-                if ($_fullname === null) {
-                    continue;
+                if (get_translated_text($row['title']) != '') {
+                    $news_title = xmlentities(get_translated_text($row['title']));
+                } else {
+                    $news_title = xmlentities(do_lang('THIS_WITH_SIMPLE', (($row['type'] == 'video') ? do_lang('VIDEO') : do_lang('IMAGE')), $id));
                 }
-                $galleries[$row['cat']] = get_translated_text($_fullname);
+                $just_row = db_map_restrict($row, array('id', 'description'));
+                $_summary = get_translated_tempcode($row['type'] . 's', $just_row, 'description');
+                $summary = xmlentities($_summary->evaluate());
+                $news = '';
+
+                if (!array_key_exists($row['cat'], $galleries)) {
+                    $_fullname = $GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'fullname', array('name' => $row['cat']));
+                    if ($_fullname === null) {
+                        continue;
+                    }
+                    $galleries[$row['cat']] = get_translated_text($_fullname);
+                }
+                $category = $galleries[$row['cat']];
+                $category_raw = $row['cat'];
+
+                $view_url = build_url(array('page' => 'galleries', 'type' => $row['type'], 'id' => $row['id']), get_module_zone('galleries'), array(), false, false, true);
+
+                if (($prefix == 'RSS_') && (get_option('is_on_comments') == '1') && ($row['allow_comments'] >= 1)) {
+                    $if_comments = do_template('RSS_ENTRY_COMMENTS', array('_GUID' => '65dc0cec8c75f565c58c95fa1667aa1e', 'COMMENT_URL' => $view_url, 'ID' => $id), null, false, null, '.xml', 'xml');
+                } else {
+                    $if_comments = new Tempcode();
+                }
+
+                require_code('images');
+                $thumb_url = ensure_thumbnail($row['url'], $row['thumb_url'], 'galleries', $row['type'] . 's', $row['id']);
+                $enclosure_url = $row['url'];
+                if (url_is_local($enclosure_url)) {
+                    $enclosure_url = get_custom_base_url() . '/' . $enclosure_url;
+                }
+                list($enclosure_length, $enclosure_type) = get_enclosure_details($row['url'], $enclosure_url);
+
+                $meta = seo_meta_get_for($row['type'], $id);
+                $keywords = trim($meta[0], ', ');
+
+                $content->attach(do_template($prefix . 'ENTRY', array(
+                    'ENCLOSURE_URL' => $enclosure_url,
+                    'ENCLOSURE_LENGTH' => $enclosure_length,
+                    'ENCLOSURE_TYPE' => $enclosure_type,
+                    'VIEW_URL' => $view_url,
+                    'SUMMARY' => $summary,
+                    'EDIT_DATE' => $edit_date,
+                    'IF_COMMENTS' => $if_comments,
+                    'TITLE' => $news_title,
+                    'CATEGORY_RAW' => $category_raw,
+                    'CATEGORY' => $category,
+                    'AUTHOR' => $author,
+                    'ID' => $id,
+                    'NEWS' => $news,
+                    'DATE' => $news_date,
+                    'DURATION' => array_key_exists('video_length', $row) ? (strval(intval(floor(floatval($row['video_length'])) / 60.0)) . ':' . strval($row['video_length'] % 60)) : null,
+                    'KEYWORDS' => $keywords,
+                ), null, false, null, '.xml', 'xml'));
             }
-            $category = $galleries[$row['cat']];
-            $category_raw = $row['cat'];
-
-            $view_url = build_url(array('page' => 'galleries', 'type' => $row['type'], 'id' => $row['id']), get_module_zone('galleries'), array(), false, false, true);
-
-            if (($prefix == 'RSS_') && (get_option('is_on_comments') == '1') && ($row['allow_comments'] >= 1)) {
-                $if_comments = do_template('RSS_ENTRY_COMMENTS', array('_GUID' => '65dc0cec8c75f565c58c95fa1667aa1e', 'COMMENT_URL' => $view_url, 'ID' => strval($row['id'])), null, false, null, '.xml', 'xml');
-            } else {
-                $if_comments = new Tempcode();
-            }
-
-            require_code('images');
-            $thumb_url = ensure_thumbnail($row['url'], $row['thumb_url'], 'galleries', $row['type'] . 's', $row['id']);
-            $enclosure_url = $row['url'];
-            if (url_is_local($enclosure_url)) {
-                $enclosure_url = get_custom_base_url() . '/' . $enclosure_url;
-            }
-            list($enclosure_length, $enclosure_type) = get_enclosure_details($row['url'], $enclosure_url);
-
-            $meta = seo_meta_get_for($row['type'], strval($row['id']));
-            $keywords = trim($meta[0], ', ');
-
-            $content->attach(do_template($prefix . 'ENTRY', array(
-                'ENCLOSURE_URL' => $enclosure_url,
-                'ENCLOSURE_LENGTH' => $enclosure_length,
-                'ENCLOSURE_TYPE' => $enclosure_type,
-                'VIEW_URL' => $view_url,
-                'SUMMARY' => $summary,
-                'EDIT_DATE' => $edit_date,
-                'IF_COMMENTS' => $if_comments,
-                'TITLE' => $news_title,
-                'CATEGORY_RAW' => $category_raw,
-                'CATEGORY' => $category,
-                'AUTHOR' => $author,
-                'ID' => $id,
-                'NEWS' => $news,
-                'DATE' => $news_date,
-                'DURATION' => array_key_exists('video_length', $row) ? (strval(intval(floor(floatval($row['video_length'])) / 60.0)) . ':' . strval($row['video_length'] % 60)) : null,
-                'KEYWORDS' => $keywords,
-            ), null, false, null, '.xml', 'xml'));
         }
 
         require_lang('galleries');

@@ -1950,7 +1950,7 @@ necessary (e.g. to make sure you align with a background's size). It makes it ve
 | Manually
 | Do not use floats unless doing it to make stuff sit next to something else.
 Do not float stuff just to make it not overlap with another float.
-Use a [tt]float_surrounder[/tt] CSS class like Composr does (i.e. [tt]overflow: hidden[/tt]) around stuff that is floated and what it is floated next to, to contain them without affecting other content. It is a much better stable solution.
+Use a [tt]float_surrounder[/tt] CSS class like Composr does (i.e. [tt]overflow: hidden[/tt]) around stuff that is floated and what it is floated next to, to contain them without affecting other content. It is a much better stable solution. The only exception is when positioned CSS layers are present, in which case use our [tt]clearfix[/tt] CSS class.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Do not use background images unless actually a background[/color]
