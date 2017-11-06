@@ -2351,7 +2351,7 @@
          * @param value
          * @returns {*}
          */
-        val: function val(el, value) {
+        value: function value(el, value) {
             el = elArg(el);
 
             if (value === undefined) {
