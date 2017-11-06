@@ -174,7 +174,7 @@ function erase_comcode_cache()
         foreach ($TABLE_LANG_FIELDS_CACHE as $table => $fields) {
             foreach ($fields as $field => $field_type) {
                 if (strpos($field_type, '__COMCODE') !== false) {
-                    $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . $table . ' SET ' . $field . '__text_parsed=\'\' WHERE ' . db_string_not_equal_to($field . '__text_parsed', '')/*this WHERE is so indexing helps*/);
+                    $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . $table . ' SET ' . $field . '__text_parsed=\'\' WHERE ' . db_string_not_equal_to($field . '__text_parsed', '')/*this WHERE is so indexing helps*/, null, 0, true/*in case of meta-DB corruption*/);
                 }
             }
         }

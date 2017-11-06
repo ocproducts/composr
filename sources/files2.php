@@ -194,8 +194,9 @@ function _intelligent_write_error_inline($path)
         $ret = do_lang_tempcode('WRITE_ERROR', escape_html($path));
     } elseif (file_exists(dirname($path))) {
         $ret = do_lang_tempcode('WRITE_ERROR_CREATE', escape_html($path), escape_html(dirname($path)));
+    } else {
+        $ret = do_lang_tempcode('WRITE_ERROR_MISSING_DIRECTORY', escape_html(dirname($path)), escape_html(dirname(dirname($path))));
     }
-    $ret = do_lang_tempcode('WRITE_ERROR_MISSING_DIRECTORY', escape_html(dirname($path)), escape_html(dirname(dirname($path))));
 
     $looping = false;
 
