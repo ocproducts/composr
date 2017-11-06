@@ -639,72 +639,55 @@
     function doInputPage(fieldName) {
         var result;
 
-        if (($cms.ui.showModalDialog !== undefined) || $cms.$CONFIG_OPTION('js_overlays')) {
-            $cms.ui.showModalDialog(
-                $cms.maintainThemeInLink('{$FIND_SCRIPT;,page_link_chooser}' + $cms.$KEEP(true)),
-                null,
-                'dialogWidth=600;dialogHeight=400;status=no;unadorned=yes',
-                function (result) {
-                    if (result == null) {
+        if ($cms.$CONFIG_OPTION('js_overlays')) {
+            $cms.ui.showModalDialog($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,page_link_chooser}' + $cms.$KEEP(true)), null, 'dialogWidth=600;dialogHeight=400;status=no;unadorned=yes',).then(function (result) {
+                if (result == null) {
+                    return;
+                }
+
+                $cms.ui.prompt('{!javascript:ENTER_CAPTION;^}', '', null, '{!comcode:INPUT_COMCODE_page;^}').then(function (vc) {
+                    var element = document.getElementById(fieldName);
+
+                    if (window.getSelectedText(element) !== '') {
+                        _doInputPage(fieldName, result, '');
                         return;
                     }
 
-                    $cms.ui.prompt(
-                        '{!javascript:ENTER_CAPTION;^}',
-                        '',
-                        function (vc) {
-                            var element = document.getElementById(fieldName);
-                            
-                            if (window.getSelectedText(element) !== '') {
-                                _doInputPage(fieldName, result, '');
-                                return;
-                            }
+                    _doInputPage(fieldName, result, vc);
+                })
+            });
+            
+            return;
+        } 
+        
+        $cms.ui.prompt('{!javascript:ENTER_ZONE;^}', '', null, '{!comcode:INPUT_COMCODE_page;^}').then(function (va) {
+            if (va !== null) {
+                $cms.ui.prompt('{!javascript:ENTER_PAGE;^}', '').then(function (vb) {
+                    if (vb !== null) {
+                        var element = document.getElementById(fieldName);
+                        result = va + ':' + vb;
 
-                            _doInputPage(fieldName, result, vc);
-                        },
-                        '{!comcode:INPUT_COMCODE_page;^}'
-                    );
-                }
-            );
-        } else {
-            $cms.ui.prompt(
-                '{!javascript:ENTER_ZONE;^}',
-                '',
-                function (va) {
-                    if (va !== null) {
+                        if (window.getSelectedText(element) !== '') {
+                            _doInputPage(fieldName, result, '');
+                            return;
+                        }
+
                         $cms.ui.prompt(
-                            '{!javascript:ENTER_PAGE;^}',
+                            '{!javascript:ENTER_CAPTION;^}',
                             '',
-                            function (vb) {
-                                if (vb !== null) {
-                                    
-                                    result = va + ':' + vb;
-
-                                    if (window.getSelectedText(element) != '') {
-                                        _doInputPage(fieldName, result, '');
-                                        return;
-                                    }
-
-                                    $cms.ui.prompt(
-                                        '{!javascript:ENTER_CAPTION;^}',
-                                        '',
-                                        function (vc) {
-                                            _doInputPage(fieldName, result, vc);
-                                        },
-                                        '{!comcode:INPUT_COMCODE_page;^}'
-                                    );
-                                }
-                            }
+                            function (vc) {
+                                _doInputPage(fieldName, result, vc);
+                            },
+                            '{!comcode:INPUT_COMCODE_page;^}'
                         );
                     }
-                },
-                '{!comcode:INPUT_COMCODE_page;^}'
-            );
-        }
+                });
+            }
+        });
 
         function _doInputPage(fieldName, result, vc) {
             var element = document.getElementById(fieldName);
-            if (vc == '') {
+            if (vc === '') {
                 window.insertTextboxWrapping(element, '[page=\"' + $cms.filter.comcode(result) + '\"]', '[/page]');
             } else {
                 window.insertTextbox(element, '[page=\"' + $cms.filter.comcode(result) + '\"]' + $cms.filter.comcode(vc) + '[/page]');

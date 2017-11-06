@@ -6591,6 +6591,7 @@
             this.topWindow.overlayZIndex || (this.topWindow.overlayZIndex = 999999); // Has to be higher than plupload, which is 99999
 
             this.el = $cms.dom.create('div', { // Black out the background
+                'className': 'js-modal-background',
                 'css': {
                     'background': 'rgba(0,0,0,0.7)',
                     'zIndex': this.topWindow.overlayZIndex++,
@@ -6606,7 +6607,7 @@
             this.topWindow.document.body.appendChild(this.el);
 
             this.overlayEl = this.el.appendChild($cms.dom.create('div', { // The main overlay
-                'className': 'box overlay js-modal-overlay ' + this.type,
+                'className': 'box overlay js-modal-overlay js-modal-' + this.type + ' ' + this.type,
                 'role': 'dialog',
                 'css': {
                     // This will be updated immediately in resetDimensions
@@ -6687,9 +6688,11 @@
                     $cms.dom.animateFrameLoad(iframe, 'overlay_iframe', 50, true);
 
                     setTimeout(function () {
-                        if (isEl(self.el)) {
-                            $cms.dom.on(self.el, 'click', function () {
-                                self.option('finished');
+                        if (self.el) {
+                            $cms.dom.on(self.el, 'click', function (e) {
+                                if (!self.containerEl.contains(e.target)) {
+                                    self.option('finished');
+                                }
                             });
                         }
                     }, 1000);
@@ -6726,24 +6729,21 @@
                             'className': 'buttons__proceed button_screen_item js-onclick-option-yes'
                         });
 
-                        // setTimeout(function () {
-                        //     if (self.el) {
-                        //         $cms.dom.on(self.el, 'click', function () {
-                        //             self.option('yes');
-                        //         });
-                        //     }
-                        // }, 1000);
-
                         this.buttonContainerEl.appendChild(button);
-                    } else {
-                        // setTimeout(function () {
-                        //     if (self.el) {
-                        //         $cms.dom.on(self.el, 'click', function () {
-                        //             self.option('cancel');
-                        //         });
-                        //     }
-                        // }, 1000);
                     }
+                    setTimeout(function () {
+                        if (self.el) {
+                            $cms.dom.on(self.el, 'click', function (e) {
+                                if (!self.containerEl.contains(e.target)) {
+                                    if (self.yes) {
+                                        self.option('yes');
+                                    } else {
+                                        self.option('cancel')
+                                    }
+                                }
+                            });
+                        }
+                    }, 1000);
                     break;
 
                 case 'confirm':
@@ -6786,14 +6786,16 @@
                         });
                         this.buttonContainerEl.appendChild(button);
                     }
-
-                    // setTimeout(function () {
-                    //     if (self.el) {
-                    //         $cms.dom.on(self.el, 'click', function () {
-                    //             self.option('cancel');
-                    //         });
-                    //     }
-                    // }, 1000);
+                    
+                    setTimeout(function () {
+                        if (self.el) {
+                            $cms.dom.on(self.el, 'click', function (e) {
+                                if (!self.containerEl.contains(e.target)) {
+                                    self.option('cancel');
+                                }
+                            });
+                        }
+                    }, 1000);
                     break;
             }
 
@@ -6803,20 +6805,17 @@
                     button = $cms.dom.create('button', {
                         'type': 'button',
                         'html': this.cancelButton,
-                        'className': 'button_screen_item buttons__cancel'
+                        'className': 'button_screen_item buttons__cancel ' + (this.cancel ? 'js-onclick-option-cancel' : 'js-onclick-option-finished')
                     });
                     this.buttonContainerEl.appendChild(button);
                 } else {
                     button = $cms.dom.create('img', {
                         'src': $cms.img('{$IMG;,button_lightbox_close}'),
                         'alt': this.cancelButton,
-                        'className': 'overlay_close_button'
+                        'className': 'overlay_close_button ' + (this.cancel ? 'js-onclick-option-cancel' : 'js-onclick-option-finished')
                     });
                     this.containerEl.appendChild(button);
                 }
-                $cms.dom.on(button, 'click', function () {
-                    self.option(this.cancel ? 'cancel' : 'finished');
-                });
             }
 
             // Put together
