@@ -15,6 +15,7 @@
     window.insertTextboxOpener = insertTextboxOpener;
     window.getSelectedText = getSelectedText;
     window.getWYSISWYGSelectedHtml = getWYSISWYGSelectedHtml;
+    window.getTextareaSelectedText = getTextareaSelectedText;
     window.insertTextboxWrapping = insertTextboxWrapping;
     window.setSelectionRange = setSelectionRange;
     window.showUploadSyndicationOptions = showUploadSyndicationOptions;

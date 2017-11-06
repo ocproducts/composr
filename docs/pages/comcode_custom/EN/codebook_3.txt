@@ -668,6 +668,7 @@ Values are like hidden configuration options. They are either hidden because the
  - Experimental functionality
   - [tt]list_unsubscribe_target[/tt] -- set to a URL for a [tt]List-Unsubscribe[/tt] header to be attached to e-mails with that URL, e.g. [tt]mailto:you@example.com?subject=Unsubscribe&body=Please%20unsubscribe%20me[/tt]
   - [tt]disable_modsecurity_workaround[/tt] -- set this to '1' if you want to disable the ModSecurity workaround 
+  - [tt]disable_handle_conflict_resolution[/tt] -- set this to '1' if you want to disable conflict resolution checking
 
 [title="4"]Hidden 'keep' parameters[/title]
 

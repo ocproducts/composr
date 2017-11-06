@@ -92,7 +92,7 @@
 
                 var post = 'contents=' + encodeURIComponent(getFileTextbox(file).value);
                 $cms.loadSnippet(url, post, true).then(function (ajaxResult) {
-                    $cms.ui.alert(ajaxResult, null, null, true);
+                    $cms.ui.alert(ajaxResult, null, true);
                     templateEditorTabMarkNonchangedContent(file);
                 });
             }

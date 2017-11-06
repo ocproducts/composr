@@ -88,6 +88,11 @@
          * @method
          * @returns {boolean}
          */
+        isMobile: constant(boolVal(symbols.MOBILE)),
+        /**
+         * @method
+         * @returns {boolean}
+         */
         $FORCE_PREVIEWS: constant(boolVal(symbols.FORCE_PREVIEWS)),
         /**
          * @method
@@ -146,17 +151,10 @@
          * @method
          * @returns {string}
          */
-        $_GET: function $_GET(name) {
-            return strVal($cms.pageSearchParams().get(name));
-        },
-        /**
-         * @method
-         * @returns {string}
-         */
         $PREVIEW_URL: function $PREVIEW_URL() {
             var value = '{$FIND_SCRIPT_NOHTTP;,preview}';
             value += '?page=' + urlencode($cms.getPageName());
-            value += '&type=' + urlencode($cms.pageSearchParams().get('type'));
+            value += '&type=' + urlencode(symbols['page_type']);
             return value;
         },
         /**
@@ -416,8 +414,6 @@
         /**@method*/
         manageScrollHeight: manageScrollHeight,
         /**@method*/
-        openModalWindow: openModalWindow,
-        /**@method*/
         executeJsFunctionCalls: executeJsFunctionCalls,
         /**@method*/
         doAjaxRequest: doAjaxRequest,
@@ -440,10 +436,6 @@
          * @namespace $cms.views
          */
         views: {},
-        /**
-         * @namespace $cms.viewInstances
-         */
-        viewInstances: {},
         /**
          * @namespace $cms.ui
          */
@@ -1319,20 +1311,13 @@
      * @returns {string}
      */
     function camelCase(str) {
-        // Lower cases the string
         return ((str != null) && (str = strVal(str))) ?
-            str.toLowerCase()
-            // Replaces any - or _ characters with a space
-                .replace(/[\-_]+/g, ' ')
-                // Removes any non alphanumeric characters
-                .replace(/[^\w\s]/g, '')
-                // Uppercases the first character in each group immediately following a space
-                // (delimited by spaces)
-                .replace(/ (.)/g, function ($1) {
+            str.replace(/[\-_]+/g, ' ') // Replaces any - or _ characters with a space
+                .replace(/[^\w\s]/g, '') // Removes any non alphanumeric characters
+                .replace(/ (.)/g, function ($1) { // Uppercases the first character in each group immediately following a space (delimited by spaces)
                     return $1.toUpperCase();
                 })
-                // Removes spaces
-                .replace(/ /g, '')
+                .replace(/ /g, '') // Removes spaces
             : '';
     }
 
@@ -1647,29 +1632,49 @@
 
         //$cms.inform('$cms.waitForResources(): Waiting for resources', resourceEls);
 
-        var scriptsToLoad = [];
+        var resourcesToLoad = new Set();
         resourceEls.forEach(function (el) {
             if (!isEl(el)) {
                 $cms.fatal('$cms.waitForResources(): Invalid item of type "' + typeName(resourceEls) + '" in the `resourceEls` parameter.');
                 return;
             }
+            
+            if ($cms.dom.hasElementLoaded(el)) {
+                return;
+            }
 
-            if (el.localName === 'script') {
-                if (el.src && !$cms.dom.hasScriptElementLoaded(el) && jsTypeRE.test(el.type) && !scriptsToLoad.includes(el)) {
-                    scriptsToLoad.push(el);
-                }
+            switch (el.localName) {
+                case 'script':
+                    if (el.src && jsTypeRE.test(el.type)) {
+                        resourcesToLoad.add(el);
+                    }
+                    break;
+                    
+                case 'link':
+                    if (el.rel === 'stylesheet') {
+                        resourcesToLoad.add(el);
+                    }
+                    break;
+                    
+                case 'img':
+                case 'iframe':
+                    resourcesToLoad.add(el);
+                    break;
             }
         });
 
-        if (scriptsToLoad.length < 1) {
+        if (resourcesToLoad.size < 1) {
             return Promise.resolve();
         }
 
         return new Promise(function (resolve) {
-            $cms.scriptsLoadedListeners.push(function scriptResourceListener(event) {
+            document.addEventListener('load', resourceLoadListener, true);
+            document.addEventListener('error', resourceLoadListener, true);
+
+            function resourceLoadListener(event) {
                 var loadedEl = event.target;
 
-                if (!scriptsToLoad.includes(loadedEl)) {
+                if (!resourcesToLoad.has(loadedEl)) {
                     return;
                 }
 
@@ -1679,14 +1684,12 @@
                     $cms.fatal('$cms.waitForResources(): Resource failed to load', loadedEl);
                 }
 
-                scriptsToLoad = scriptsToLoad.filter(function (el) {
-                    return el !== loadedEl;
-                });
+                resourcesToLoad.delete(loadedEl);
 
-                if (scriptsToLoad.length < 1) {
+                if (resourcesToLoad.size < 1) {
                     resolve(event);
                 }
-            });
+            }
         });
     }
 
@@ -1740,7 +1743,7 @@
         return null;
     }
     
-    function _findCssByHref (href) {
+    function _findCssByHref(href) {
         var els = $cms.dom.$$('link[rel="stylesheet"][href]'), el;
 
         href = $cms.url.schemeRelative(href);
@@ -1903,18 +1906,20 @@
         for (var i = 0; i < forms.length; i++) {
             form = forms[i];
 
-            if (form.elements['postData'] == null) {
+            if (form.elements['post_data'] == null) {
                 postData = document.createElement('input');
                 postData.type = 'hidden';
                 postData.name = 'post_data';
                 postData.value = '';
+                form.appendChild(postData);
             } else {
-                postData = form.elements['postData'];
-                postData.value += ',';
+                postData = form.elements['post_data'];
+                if (postData.value !== '') {
+                    postData.value += ',';
+                }
             }
 
             postData.value += flag;
-            form.appendChild(postData);
         }
     }
 
@@ -1991,7 +1996,7 @@
         var read = $cms.readCookie(cookieName);
 
         if (read && (read !== cookieValue) && $cms.$DEV_MODE() && !alertedCookieConflict) {
-            $cms.ui.alert('{!COOKIE_CONFLICT_DELETE_COOKIES;^}' + '... ' + document.cookie + ' (' + output + ')', null, '{!ERROR_OCCURRED;^}');
+            $cms.ui.alert('{!COOKIE_CONFLICT_DELETE_COOKIES;^}' + '... ' + document.cookie + ' (' + output + ')', '{!ERROR_OCCURRED;^}');
             alertedCookieConflict = true;
         }
     }
@@ -2057,7 +2062,7 @@
                 }
             }
 
-            $cms.support.inputTypes[type] = !!bool;
+            $cms.support.inputTypes[type] = Boolean(bool);
         }
     }());
 
@@ -2410,146 +2415,41 @@
             node.textContent = strVal((typeof newText === 'function') ? newText.call(node, node.textContent, node) : newText);
         }
     });
-
-    /** @class */
-    function Data() {
-        this.expando = $cms.id + '-data-' + Data.uid++;
-    }
-    Data.uid = 1;
-    properties(Data.prototype, /**@lends Data#*/ {
-        cache: function cache(owner) {
-            // Check if the owner object already has a cache
-            var value = owner[this.expando];
-            // If not, create one
-            if (!value) {
-                value = {};
-
-                // We can accept data for non-document/element nodes in modern browsers, but we should not, see jQuery bug#8335.
-                if (isNode(owner) && !isDocOrEl(owner)) {
-                    throw new TypeError('Setting data on non-document/element nodes is not allowed.');
-                }
-
-                properties(owner, keyValue(this.expando, value));
+    
+    var domDataMap = new WeakMap();
+    
+    function dataCache(el) {
+        // Check if the el object already has a cache
+        var value = domDataMap.get(el), key;
+        if (!value) { // If not, create one with the dataset
+            value = {};
+            domDataMap.set(el, value);
+            for (key in el.dataset) {
+                dataAttr(el, key);
             }
-
-            return value;
-        },
-        set: function set(owner, data, value) {
-            var prop, cache = this.cache(owner);
-
-            // Handle: [ owner, key, value ] args
-            // Always use camelCase key (gh-2257)
-            if (typeof data === 'string') {
-                cache[camelCase(data)] = value;
-                // Handle: [ owner, { properties } ] args
-            } else {
-                // Copy the properties one-by-one to the cache object
-                for (prop in data) {
-                    cache[camelCase(prop)] = data[prop];
-                }
-            }
-            return cache;
-        },
-        get: function get(owner, key) {
-            return key === undefined ?
-                this.cache(owner) :
-                // Always use camelCase key (gh-2257)
-                (owner[this.expando] && owner[this.expando][camelCase(key)]);
-        },
-        access: function access(owner, key, value) {
-            // In cases where either:
-            //
-            //   1. No key was specified
-            //   2. A string key was specified, but no value provided
-            //
-            // Take the "read" path and allow the get method to determine
-            // which value to return, respectively either:
-            //
-            //   1. The entire cache object
-            //   2. The data stored at the key
-            //
-            if ((key === undefined) || ((key && (typeof key === 'string')) && (value === undefined))) {
-                return this.get(owner, key);
-            }
-
-            // When the key is not a string, or both a key and value
-            // are specified, set or extend (existing objects) with either:
-            //
-            //   1. An object of properties
-            //   2. A key and value
-            //
-            this.set(owner, key, value);
-
-            // Since the "set" path can have two possible entry points
-            // return the expected data based on which path was taken[*]
-            return (value !== undefined) ? value : key;
-        },
-        remove: function remove(owner, key) {
-            var i, cache = owner[this.expando];
-
-            if (cache === undefined) {
-                return;
-            }
-
-            if (key !== undefined) {
-                // Support array or space separated string of keys
-                if (Array.isArray(key)) {
-                    // If key is an array of keys...
-                    // We always set camelCase keys, so remove that.
-                    key = key.map(camelCase);
-                } else {
-                    key = camelCase(key);
-                    // If a key with the spaces exists, use it.
-                    // Otherwise, create an array by matching non-whitespace
-                    key = (key in cache) ? [key] : (key.match(rgxNotWhite) || []);
-                }
-
-                i = key.length;
-
-                while (i--) {
-                    delete cache[key[i]];
-                }
-            }
-
-            // Remove the expando if there's no more data
-            if ((key === undefined) || !hasEnumerable(cache)) {
-                // Support: Chrome <=35 - 45
-                // Webkit & Blink performance suffers when deleting properties
-                // from DOM nodes, so set to undefined instead
-                // https://bugs.chromium.org/p/chromium/issues/detail?id=378607 (bug restricted)
-                if (isNode(owner)) {
-                    owner[this.expando] = undefined;
-                } else {
-                    delete owner[this.expando];
-                }
-            }
-        },
-        hasData: function hasData(owner) {
-            var cache = owner[this.expando];
-            return (cache !== undefined) && hasEnumerable(cache);
         }
-    });
 
-    function dataAttr(elem, key, data) {
-        var trimmed;
+        return value;
+    }
+    
+    function dataAttr(el, key) {
+        var data, trimmed;
         // If nothing was found internally, try to fetch any
         // data from the HTML5 data-* attribute
-        if ((data === undefined) && (typeof (data = elem.dataset[key]) === 'string')) {
+        if (typeof (data = el.dataset[key]) === 'string') {
             trimmed = data.trim();
 
             if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) { // Object or array?
                 data = parseJson5(data);
-            } else if (isNumeric(data)) { // A number?
+            } else if ((Number(data).toString() === data) && isFinite(data)) { // Only convert to a number if it doesn't change the string
                 data = Number(data);
             }
 
             // Make sure we set the data so it isn't changed later
-            domData.set(elem, key, data);
+            dataCache(el)[key] = data;
         }
         return data;
     }
-
-    var domData = new Data();
 
     /**
      * Data retrieval and storage
@@ -2562,65 +2462,77 @@
     $cms.dom.data = function data(el, key, value) {
         // Note: We have internalised caching here. You must not change data-* attributes manually and expect this API to pick up on it.
 
-        var name, data;
+        var data, prop;
 
         el = elArg(el);
 
         // Gets all values
         if (key === undefined) {
-            data = domData.get(el);
-
-            if (!domData.hasData(el)) {
-                for (name in el.dataset) {
-                    dataAttr(el, name, data[name]);
-                }
-            }
-
-            return data;
+            return dataCache(el);
         }
 
         // Sets multiple values
-        if (typeof key === 'object') {
-            return domData.set(el, key);
+        if (isObj(key)) {
+            data = dataCache(el);
+            // Copy the properties one-by-one to the cache object
+            for (prop in key) {
+                data[camelCase(key)] = key[prop];
+            }
+            
+            return data;
         }
 
         if (value === undefined) {
             // Attempt to get data from the cache
             // The key will always be camelCased in Data
-            data = domData.get(el, key);
-            if (data !== undefined) {
-                return data;
-            }
-            // Attempt to "discover" the data in
-            // HTML5 custom data-* attrs
-            try {
-                data = dataAttr(el, key);
-            } catch (e) {
-                $cms.fatal('$cms.dom.data(): Exception thrown while parsing JSON in data attribute "' + key + '" of', el, e);
-            }
-
-            if (data !== undefined) {
-                return data;
-            }
-
-            // We tried really hard, but the data doesn't exist.
-            return;
+            data = dataCache(el)[camelCase(key)];
+            
+            return (data !== undefined) ? data : dataAttr(el, key); // Check in el.dataset.* too
         }
 
         // Set the data...
         // We always store the camelCased key
-        domData.set(el, key, value);
+        return dataCache(el)[camelCase(key)] = value;
     };
 
     /**
      * @memberof $cms.dom
-     * @param el
+     * @param owner
      * @param key
      */
-    $cms.dom.removeData = function removeData(el, key) {
-        el = elArg(el);
+    $cms.dom.removeData = function removeData(owner, key) {
+        owner = elArg(owner);
 
-        domData.remove(el, key);
+        var i, cache = domDataMap.get(owner);
+
+        if (cache === undefined) {
+            return;
+        }
+
+        if (key !== undefined) {
+            // Support array or space separated string of keys
+            if (Array.isArray(key)) {
+                // If key is an array of keys...
+                // We always set camelCase keys, so remove that.
+                key = key.map(camelCase);
+            } else {
+                key = camelCase(key);
+                // If a key with the spaces exists, use it.
+                // Otherwise, create an array by matching non-whitespace
+                key = (key in cache) ? [key] : (key.match(rgxNotWhite) || []);
+            }
+
+            i = key.length;
+
+            while (i--) {
+                delete cache[key[i]];
+            }
+        }
+
+        // Remove if there's no more data
+        if ((key === undefined) || !hasEnumerable(cache)) {
+            domDataMap.delete(owner);
+        }
     };
 
     /**
@@ -2810,10 +2722,10 @@
         return parent;
     };
 
-    $cms.dom.hasScriptElementLoaded = function hasScriptElementLoaded(el) {
+    $cms.dom.hasElementLoaded = function hasElementLoaded(el) {
         el = elArg(el);
         
-        return $cms.scriptsLoaded.has(el);
+        return $cms.elementsLoaded.has(el);
     };
 
     /**
@@ -2822,18 +2734,8 @@
      * @return {*}
      */
     $cms.dom.hasScriptSrcLoaded = function hasScriptSrcLoaded(src) {
-        src = $cms.url.schemeRelative(src);
-        
-        var scripts = $cms.dom.$$('script[src]'), scriptEl;
-        
-        for (var i = 0; i < scripts.length; i++) {
-            scriptEl = scripts[i];
-            if ($cms.url.schemeRelative(scriptEl.src) === src) {
-                return $cms.scriptsLoaded.has(scriptEl);
-            }
-        }
-        
-        return false;
+        var scriptEl = _findScriptBySrc(src);
+        return (scriptEl != null) && $cms.dom.hasElementLoaded(scriptEl);
     };
     
     /**
@@ -3022,12 +2924,7 @@
             handler.del = delegator;
             var callback = delegator || fn;
             handler.proxy = function proxy(e) {
-                var args = [e, el];
-                //e.data = data;
-                if ((e._args != null) && Array.isArray(e._args)) {
-                    args = args.concat(e._args);
-                }
-                var result = callback.apply(el, args);
+                var result = callback.call(el, e, el);
                 if (result === false) {
                     e.stopPropagation();
                     e.preventDefault();
@@ -3806,9 +3703,7 @@
      * @param iframeId
      */
     $cms.dom.illustrateFrameLoad = function illustrateFrameLoad(iframeId) {
-        var head, cssText = '',
-            i, iframe = $cms.dom.$id(iframeId),
-            doc, de;
+        var iframe = $cms.dom.$id(iframeId), doc;
 
         if (!$cms.$CONFIG_OPTION('enable_animations') || !iframe || !iframe.contentDocument || !iframe.contentDocument.documentElement) {
             return;
@@ -3818,50 +3713,13 @@
 
         try {
             doc = iframe.contentDocument;
-            de = doc.documentElement;
         } catch (e) {
             // May be connection interference somehow
             iframe.scrolling = 'auto';
             return;
         }
 
-        head = '<style nonce="' + $cms.$CSP_NONCE() + '">';
-
-        for (i = 0; i < document.styleSheets.length; i++) {
-            try {
-                var stylesheet = document.styleSheets[i];
-                if (stylesheet.href && !stylesheet.href.includes('/global') && !stylesheet.href.includes('/merged')) {
-                    continue;
-                }
-
-                if (stylesheet.cssText !== undefined) {
-                    cssText += stylesheet.cssText;
-                } else {
-                    var rules = [];
-                    try {
-                        rules = stylesheet.cssRules ? stylesheet.cssRules : stylesheet.rules;
-                    } catch (ignore) {}
-
-                    if (rules) {
-                        for (var j = 0; j < rules.length; j++) {
-                            if (rules[j].cssText) {
-                                cssText += rules[j].cssText + '\n\n';
-                            } else {
-                                cssText += rules[j].selectorText + '{ ' + rules[j].style.cssText + '}\n\n';
-                            }
-                        }
-                    }
-                }
-            } catch (ignore) {}
-        }
-
-        head += cssText + '<\/style>';
-
         doc.body.classList.add('website_body', 'main_website_faux');
-
-        if (!de.querySelector('style')) { // The conditional is needed for Firefox - for some odd reason it is unable to parse any head tags twice
-            $cms.dom.html(doc.head, head);
-        }
 
         $cms.dom.html(doc.body, '<div aria-busy="true" class="spaced"><div class="ajax_loading"><img id="loading_image" class="vertical_alignment" src="' + $cms.img('{$IMG_INLINE*;,loading}') + '" alt="{!LOADING;^}" /> <span class="vertical_alignment">{!LOADING;^}<\/span><\/div><\/div>');
 
@@ -3881,7 +3739,7 @@
                 iNew.id = iDefault.id;
                 iDefault.parentNode.replaceChild(iNew, iDefault);
             }
-        }, 0);
+        });
     };
 
     /**
@@ -5019,6 +4877,7 @@
         }
     }
 
+    $cms.ui.openModalWindow = openModalWindow;
     /**
      * @param options
      * @returns { $cms.views.ModalWindow }
@@ -5196,9 +5055,11 @@
     $cms.View = View;
     /**
      * @memberof $cms
-     * @class
+     * @class $cms.View
      */
     function View(params, viewOptions) {
+        this.uid = $cms.uid(this);
+        
         /** @member {string} */
         this.tagName = 'div';
         /** @member { HTMLElement } */
@@ -5380,7 +5241,7 @@
                     attrs.id = result(this, 'id');
                 }
                 if (this.className) {
-                    attrs.class = result(this, 'className');
+                    attrs.className = result(this, 'className');
                 }
                 this.setElement($cms.dom.create(result(this, 'tagName') || 'div', attrs));
             } else {
@@ -6057,7 +5918,7 @@
                 },
                 width: '450'
             };
-            $cms.openModalWindow(myConfirm);
+            $cms.ui.openModalWindow(myConfirm);
         });
     };
 
@@ -6067,19 +5928,17 @@
     /**
      * @memberof $cms.ui
      * @param notice
-     * @param callback
      * @param title
      * @param unescaped
      * @returns { Promise }
      */
-    $cms.ui.alert = function alert(notice, callback, title, unescaped) {
+    $cms.ui.alert = function alert(notice, title, unescaped) {
         var options, 
             single = false;
         
         if (isObj(notice)) {
             options = notice;
             notice = strVal(options.notice);
-            callback = options.callback;
             title = strVal(options.title) || '{!MESSAGE;^}';
             unescaped = Boolean(options.unescaped);
             single = Boolean(options.single);
@@ -6098,9 +5957,6 @@
         currentAlertPromise = new Promise(function (resolveAlert) {
             if (!$cms.$CONFIG_OPTION('js_overlays')) {
                 window.alert(notice);
-                if (callback != null) {
-                    callback();
-                }
                 currentAlertNotice = null;
                 currentAlertTitle = null;
                 currentAlertPromise = null;
@@ -6114,9 +5970,6 @@
                 yesButton: '{!INPUTSYSTEM_OK;^}',
                 width: '600',
                 yes: function () {
-                    if (callback != null) {
-                        callback();
-                    }
                     currentAlertNotice = null;
                     currentAlertTitle = null;
                     currentAlertPromise = null;
@@ -6126,7 +5979,7 @@
                 cancelButton: null
             };
 
-            $cms.openModalWindow(myAlert);
+            $cms.ui.openModalWindow(myAlert);
         });
         
         return currentAlertPromise;
@@ -6180,7 +6033,7 @@
             if (inputType) {
                 myPrompt.inputType = inputType;
             }
-            $cms.openModalWindow(myPrompt);
+            $cms.ui.openModalWindow(myPrompt);
         });
     };
 
@@ -6199,7 +6052,7 @@
         name = strVal(name);
         options = strVal(options);
         target = strVal(target);
-        cancelText = strVal(cancelText, '{!INPUTSYSTEM_CANCEL;^}');
+        cancelText = strVal(cancelText) || '{!INPUTSYSTEM_CANCEL;^}';
 
         return new Promise(function (resolveModal) {
             if (!$cms.$CONFIG_OPTION('js_overlays')) {
@@ -6285,7 +6138,7 @@
             if (target) {
                 myFrame.target = target;
             }
-            $cms.openModalWindow(myFrame);
+            $cms.ui.openModalWindow(myFrame);
         });
     };
 
@@ -6451,7 +6304,7 @@
                 width: '450', // This will be updated with the real image width, when it has loaded
                 height: '300' // "
             },
-            modal = $cms.openModalWindow(myLightbox);
+            modal = $cms.ui.openModalWindow(myLightbox);
 
         // Load proper image
         setTimeout(function () { // Defer execution until the HTML was parsed
@@ -6487,7 +6340,7 @@
      * @param isVideo
      */
     $cms.ui.resizeLightboxDimensionsImg = function resizeLightboxDimensionsImg(modal, img, hasFullButton, isVideo) {
-        if (!modal.boxWrapperEl) {
+        if (!modal.el) {
             /* Overlay closed already */
             return;
         }
@@ -6587,14 +6440,12 @@
     $cms.views.ModalWindow = ModalWindow;
     /**
      * @memberof $cms.views
-     * @class
+     * @class $cms.views.ModalWindow
      * @extends $cms.View
      */
     function ModalWindow(params) {
-        ModalWindow.base(this, 'constructor', arguments);
-
         // Constants
-        this.WINDOW_SIDE_GAP = $cms.$MOBILE() ? 5 : 25;
+        this.WINDOW_SIDE_GAP = $cms.isMobile() ? 5 : 25;
         this.WINDOW_TOP_GAP = 25; // Will also be used for bottom gap for percentage heights
         this.BOX_EAST_PERIPHERARY = 4;
         this.BOX_WEST_PERIPHERARY = 4;
@@ -6604,12 +6455,18 @@
         this.LOADING_SCREEN_HEIGHT = 100;
 
         // Properties
-        this.boxWrapperEl =  null;
-        this.buttonContainer = null;
+        /** @type { Element }*/
+        this.el =  null;
+        /** @type { Element }*/
+        this.overlayEl = null;
+        /** @type { Element }*/
+        this.containerEl = null;
+        /** @type { Element }*/
+        this.buttonContainerEl = null;
         this.returnValue = null;
         this.topWindow = null;
         this.iframeRestyleTimer = null;
-
+        
         // Set params
         params = defaults({ // apply defaults
             type: 'alert',
@@ -6630,35 +6487,357 @@
             defaultValue: null,
             target: '_self',
             inputType: 'text'
-        }, (params || {}));
+        }, params || {});
 
         for (var key in params) {
             this[key] = params[key];
         }
-
+        
         this.topWindow = window.top;
-
-        this.close(this.topWindow);
-        this.initBox();
         this.opened = true;
+
+        ModalWindow.base(this, 'constructor', arguments);
     }
 
     $cms.inherits(ModalWindow, $cms.View, /**@lends $cms.views.ModalWindow#*/ {
+        events: function events() {
+            return {
+                'click .js-onclick-do-option-yes': 'doOptionYes',
+                'click .js-onclick-do-option-no': 'doOptionNo',
+                'click .js-onclick-do-option-cancel': 'doOptionCancel',
+                'click .js-onclick-do-option-finished': 'doOptionFinished',
+                'click .js-onclick-do-option-left': 'doOptionLeft',
+                'click .js-onclick-do-option-right': 'doOptionRight',
+            }
+        },
+
+        doOptionYes: function doOptionYes() {
+            this.option('yes')
+        },
+
+        doOptionNo: function doOptionNo() {
+            this.option('no')
+        },
+
+        doOptionCancel: function doOptionCancel() {
+            this.option('cancel')
+        },
+
+        doOptionFinished: function doOptionFinished() {
+            this.option('finished')
+        },
+
+        doOptionLeft: function doOptionLeft() {
+            this.option('left')
+        },
+
+        doOptionRight: function doOptionRight() {
+            this.option('right')
+        },
+        
+        _setElement: function _setElement() {
+            var button;
+
+            this.topWindow.overlayZIndex || (this.topWindow.overlayZIndex = 999999); // Has to be higher than plupload, which is 99999
+
+            this.el = $cms.dom.create('div', { // Black out the background
+                'className': 'js-modal-background js-modal-type-' + this.type,
+                'css': {
+                    'background': 'rgba(0,0,0,0.7)',
+                    'zIndex': this.topWindow.overlayZIndex++,
+                    'overflow': 'hidden',
+                    'position': $cms.$MOBILE() ? 'absolute' : 'fixed',
+                    'left': '0',
+                    'top': '0',
+                    'width': '100%',
+                    'height': '100%'
+                }
+            });
+            
+            this.topWindow.document.body.appendChild(this.el);
+
+            this.overlayEl = this.el.appendChild($cms.dom.create('div', { // The main overlay
+                'className': 'box overlay js-modal-overlay ' + this.type,
+                'role': 'dialog',
+                'css': {
+                    // This will be updated immediately in resetDimensions
+                    'position': $cms.$MOBILE() ? 'static' : 'fixed',
+                    'margin': '0 auto' // Centering for iOS/Android which is statically positioned (so the container height as auto can work)
+                }
+            }));
+
+            this.containerEl = this.overlayEl.appendChild($cms.dom.create('div', {
+                'className': 'box_inner js-modal-container',
+                'css': {
+                    'width': 'auto',
+                    'height': 'auto'
+                }
+            }));
+
+            var overlayHeader = null;
+            if (this.title !== '' || this.type === 'iframe') {
+                overlayHeader = $cms.dom.create('h3', {
+                    'html': this.title,
+                    'css': {
+                        'display': (this.title === '') ? 'none' : 'block'
+                    }
+                });
+                this.containerEl.appendChild(overlayHeader);
+            }
+
+            if (this.text !== '') {
+                if (this.type === 'prompt') {
+                    var div = $cms.dom.create('p');
+                    div.appendChild($cms.dom.create('label', {
+                        'htmlFor': 'overlay_prompt',
+                        'html': this.text
+                    }));
+                    this.containerEl.appendChild(div);
+                } else {
+                    this.containerEl.appendChild($cms.dom.create('div', {
+                        'html': this.text
+                    }));
+                }
+            }
+
+            this.buttonContainerEl = $cms.dom.create('p', {
+                'className': 'proceed_button js-modal-button-container'
+            });
+
+            var self = this;
+
+            $cms.dom.on(this.overlayEl, 'click', function (e) {
+                if ($cms.$MOBILE() && (self.type === 'lightbox')) { // IDEA: Swipe detect would be better, but JS does not have this natively yet
+                    self.option('right');
+                }
+            });
+
+            switch (this.type) {
+                case 'iframe':
+                    var iframeWidth = (this.width.match(/^[\d\.]+$/) !== null) ? ((this.width - 14) + 'px') : this.width,
+                        iframeHeight = (this.height.match(/^[\d\.]+$/) !== null) ? (this.height + 'px') : ((this.height === 'auto') ? (this.LOADING_SCREEN_HEIGHT + 'px') : this.height);
+
+                    var iframe = $cms.dom.create('iframe', {
+                        'frameBorder': '0',
+                        'scrolling': 'no',
+                        'title': '',
+                        'name': 'overlay_iframe',
+                        'id': 'overlay_iframe',
+                        'className': 'js-modal-overlay-iframe',
+                        'allowTransparency': 'true',
+                        //'seamless': 'seamless',// Not supported, and therefore testable yet. Would be great for mobile browsing.
+                        'css': {
+                            'width': iframeWidth,
+                            'height': iframeHeight,
+                            'background': 'transparent'
+                        }
+                    });
+
+                    this.containerEl.appendChild(iframe);
+
+                    $cms.dom.animateFrameLoad(iframe, 'overlay_iframe', 50, true);
+
+                    setTimeout(function () {
+                        if (self.el) {
+                            $cms.dom.on(self.el, 'click', function (e) {
+                                if (!self.containerEl.contains(e.target)) {
+                                    self.option('finished');
+                                }
+                            });
+                        }
+                    }, 1000);
+
+                    $cms.dom.on(iframe, 'load', function () {
+                        if ($cms.dom.hasIframeAccess(iframe) && (!iframe.contentDocument.querySelector('h1')) && (!iframe.contentDocument.querySelector('h2'))) {
+                            if (iframe.contentDocument.title) {
+                                $cms.dom.html(overlayHeader, $cms.filter.html(iframe.contentDocument.title));
+                                $cms.dom.show(overlayHeader);
+                            }
+                        }
+                    });
+
+                    // Fiddle it, to behave like a popup would
+                    setTimeout(function () {
+                        $cms.dom.illustrateFrameLoad('overlay_iframe');
+                        iframe.src = self.href;
+                        self.makeFrameLikePopup(iframe);
+
+                        if (self.iframeRestyleTimer == null) { // In case internal nav changes
+                            self.iframeRestyleTimer = setInterval(function () {
+                                self.makeFrameLikePopup(iframe);
+                            }, 300);
+                        }
+                    }, 0);
+                    break;
+
+                case 'lightbox':
+                case 'alert':
+                    if (this.yes) {
+                        button = $cms.dom.create('button', {
+                            'type': 'button',
+                            'html': this.yesButton,
+                            'className': 'buttons__proceed button_screen_item js-onclick-do-option-yes'
+                        });
+
+                        this.buttonContainerEl.appendChild(button);
+                    }
+                    setTimeout(function () {
+                        if (self.el) {
+                            $cms.dom.on(self.el, 'click', function (e) {
+                                if (!self.containerEl.contains(e.target)) {
+                                    if (self.yes) {
+                                        self.option('yes');
+                                    } else {
+                                        self.option('cancel')
+                                    }
+                                }
+                            });
+                        }
+                    }, 1000);
+                    break;
+
+                case 'confirm':
+                    button = $cms.dom.create('button', {
+                        'type': 'button',
+                        'html': this.yesButton,
+                        'className': 'buttons__yes button_screen_item js-onclick-do-option-yes',
+                        'style': 'font-weight: bold;'
+                    });
+                    this.buttonContainerEl.appendChild(button);
+                    button = $cms.dom.create('button', {
+                        'type': 'button',
+                        'html': this.noButton,
+                        'className': 'buttons__no button_screen_item js-onclick-do-option-no'
+                    });
+                    this.buttonContainerEl.appendChild(button);
+                    break;
+
+                case 'prompt':
+                    this.input = $cms.dom.create('input', {
+                        'name': 'prompt',
+                        'id': 'overlay_prompt',
+                        'type': this.inputType,
+                        'size': '40',
+                        'className': 'wide_field',
+                        'value': (this.defaultValue === null) ? '' : this.defaultValue
+                    });
+                    var inputWrap = $cms.dom.create('div');
+                    inputWrap.appendChild(this.input);
+                    this.containerEl.appendChild(inputWrap);
+
+                    if (this.yes) {
+                        button = $cms.dom.create('button', {
+                            'type': 'button',
+                            'html': this.yesButton,
+                            'className': 'buttons__yes button_screen_item js-onclick-do-option-yes',
+                            'css': {
+                                'font-weight': 'bold'
+                            }
+                        });
+                        this.buttonContainerEl.appendChild(button);
+                    }
+                    
+                    setTimeout(function () {
+                        if (self.el) {
+                            $cms.dom.on(self.el, 'click', function (e) {
+                                if (!self.containerEl.contains(e.target)) {
+                                    self.option('cancel');
+                                }
+                            });
+                        }
+                    }, 1000);
+                    break;
+            }
+
+            // Cancel button handled either via button in corner (if there's no other buttons) or another button in the panel (if there's other buttons)
+            if (this.cancelButton) {
+                if (this.buttonContainerEl.firstElementChild) {
+                    button = $cms.dom.create('button', {
+                        'type': 'button',
+                        'html': this.cancelButton,
+                        'className': 'button_screen_item buttons__cancel ' + (this.cancel ? 'js-onclick-do-option-cancel' : 'js-onclick-do-option-finished')
+                    });
+                    this.buttonContainerEl.appendChild(button);
+                } else {
+                    button = $cms.dom.create('img', {
+                        'src': $cms.img('{$IMG;,button_lightbox_close}'),
+                        'alt': this.cancelButton,
+                        'className': 'overlay_close_button ' + (this.cancel ? 'js-onclick-do-option-cancel' : 'js-onclick-do-option-finished')
+                    });
+                    this.containerEl.appendChild(button);
+                }
+            }
+
+            // Put together
+            if (this.buttonContainerEl.firstElementChild) {
+                if (this.type === 'iframe') {
+                    this.containerEl.appendChild($cms.dom.create('hr', {'className': 'spaced_rule'}));
+                }
+                this.containerEl.appendChild(this.buttonContainerEl);
+            }
+
+            // Handle dimensions
+            this.resetDimensions(this.width, this.height, true);
+            $cms.dom.on(window, 'resize', function () {
+                self.resetDimensions(self.width, self.height, false);
+            });
+
+            // Focus first button by default
+            if (this.input) {
+                setTimeout(function () {
+                    self.input.focus();
+                });
+            } else if (this.el.querySelector('button')) {
+                this.el.querySelector('button').focus();
+            }
+
+            setTimeout(function () { // Timeout needed else keyboard activation of overlay opener may cause instant shutdown also
+                $cms.dom.on(document, 'keyup.modalWindow' + this.uid, self.keyup.bind(self));
+                $cms.dom.on(document, 'mousemove.modalWindow' + this.uid, self.mousemove.bind(self));
+            }, 100);
+        },
+
+        keyup: function keyup(e) {
+            if (e.key === 'ArrowLeft') {
+                this.option('left');
+            } else if (e.key === 'ArrowRight') {
+                this.option('right');
+            } else if ((e.key === 'Enter') && (this.yes)) {
+                this.option('yes');
+            }
+            if ((e.key === 'Enter') && (this.finished)) {
+                this.option('finished');
+            } else if ((e.key === 'Escape') && (this.cancelButton) && ((this.type === 'prompt') || (this.type === 'confirm') || (this.type === 'lightbox') || (this.type === 'alert'))) {
+                this.option('cancel');
+            }
+        },
+
+        mousemove: function mousemove() {
+            var self = this;
+            if (!this.overlayEl.classList.contains('mousemove')) {
+                this.overlayEl.classList.add('mousemove');
+                setTimeout(function () {
+                    if (self.overlayEl) {
+                        self.overlayEl.classList.remove('mousemove');
+                    }
+                }, 2000);
+            }
+        },
         // Methods...
-        close: function (win) {
-            if (this.boxWrapperEl) {
+        close: function () {
+            if (this.el) {
                 this.topWindow.document.body.style.overflow = '';
 
-                this.remove(this.boxWrapperEl, win);
-                this.boxWrapperEl = null;
+                this.el.remove();
+                this.el = null;
 
-                $cms.dom.off(document, 'keyup mousemove', this.keyup);
+                $cms.dom.off(document, 'keyup.modalWindow' + this.uid);
+                $cms.dom.off(document, 'mousemove.modalWindow' + this.uid);
             }
             this.opened = false;
         },
 
         option: function (method) {
-            var win = this.topWindow; // The below call may end up killing our window reference (for nested alerts), so we need to grab it first
             if (this[method]) {
                 if (this.type === 'prompt') {
                     this[method](this.input.value);
@@ -6669,7 +6848,7 @@
                 }
             }
             if ((method !== 'left') && (method !== 'right')) {
-                this.close(win);
+                this.close();
             }
         },
 
@@ -6685,17 +6864,17 @@
             init = Boolean(init);
             forceHeight = Boolean(forceHeight);
 
-            if (!this.boxWrapperEl) {
+            if (!this.el) {
                 return;
             }
             
-            var topPageHeight = this.topWindow.$cms.dom.getWindowScrollHeight(this.topWindow),
-                topWindowWidth = this.topWindow.$cms.dom.getWindowWidth(this.topWindow),
+            var topPageHeight = this.topWindow.$cms.dom.getWindowScrollHeight(),
+                topWindowWidth = this.topWindow.$cms.dom.getWindowWidth(),
                 topWindowHeight = this.topWindow.$cms.dom.getWindowHeight();
                 
             var bottomGap = this.WINDOW_TOP_GAP;
-            if (this.buttonContainer.firstChild) {
-                bottomGap += this.buttonContainer.offsetHeight;
+            if (this.buttonContainerEl.firstElementChild) {
+                bottomGap += this.buttonContainerEl.offsetHeight;
             }
 
             if (!forceHeight) {
@@ -6749,11 +6928,11 @@
 
             // Save into HTML
             var detectedBoxHeight;
-            this.boxWrapperEl.firstElementChild.style.width = boxWidth;
-            this.boxWrapperEl.firstElementChild.style.height = boxHeight;
-            var iframe = this.boxWrapperEl.querySelector('iframe');
+            this.overlayEl.style.width = boxWidth;
+            this.overlayEl.style.height = boxHeight;
+            var iframe = this.el.querySelector('iframe');
 
-            if ($cms.dom.hasIframeAccess(iframe) && (iframe.contentWindow.document.body)) { // Balance iframe height
+            if ($cms.dom.hasIframeAccess(iframe) && (iframe.contentDocument.body)) { // Balance iframe height
                 iframe.style.width = '100%';
                 if (height === 'auto') {
                     if (!init) {
@@ -6767,7 +6946,7 @@
 
             // Work out box position
             if (!detectedBoxHeight) {
-                detectedBoxHeight = this.boxWrapperEl.firstElementChild.offsetHeight;
+                detectedBoxHeight = this.overlayEl.offsetHeight;
             }
             var boxPosTop, boxPosLeft;
 
@@ -6790,22 +6969,22 @@
             boxPosLeft = ((topWindowWidth / 2) - (parseInt(boxWidth) / 2));
 
             // Save into HTML
-            this.boxWrapperEl.firstElementChild.style.top = boxPosTop + 'px';
-            this.boxWrapperEl.firstElementChild.style.left = boxPosLeft + 'px';
+            this.overlayEl.style.top = boxPosTop + 'px';
+            this.overlayEl.style.left = boxPosLeft + 'px';
 
             var doScroll = false;
 
             // Absolute positioning instead of fixed positioning
-            if ($cms.$MOBILE() || (detectedBoxHeight > topWindowHeight) || (this.boxWrapperEl.style.position === 'absolute'/*don't switch back to fixed*/)) {
-                var wasFixed = (this.boxWrapperEl.style.position === 'fixed');
+            if ($cms.isMobile() || (detectedBoxHeight > topWindowHeight) || (this.el.style.position === 'absolute'/*don't switch back to fixed*/)) {
+                var wasFixed = (this.el.style.position === 'fixed');
 
-                this.boxWrapperEl.style.position = 'absolute';
-                this.boxWrapperEl.style.height = ((topPageHeight > (detectedBoxHeight + bottomGap + boxPosLeft)) ? topPageHeight : (detectedBoxHeight + bottomGap + boxPosLeft)) + 'px';
+                this.el.style.position = 'absolute';
+                this.el.style.height = ((topPageHeight > (detectedBoxHeight + bottomGap + boxPosLeft)) ? topPageHeight : (detectedBoxHeight + bottomGap + boxPosLeft)) + 'px';
                 this.topWindow.document.body.style.overflow = '';
 
-                if (!$cms.$MOBILE()) {
-                    this.boxWrapperEl.firstElementChild.style.position = 'absolute';
-                    this.boxWrapperEl.firstElementChild.style.top = this.WINDOW_TOP_GAP + 'px';
+                if (!$cms.isMobile()) {
+                    this.overlayEl.style.position = 'absolute';
+                    this.overlayEl.style.top = this.WINDOW_TOP_GAP + 'px';
                 }
 
                 if (init || wasFixed) {
@@ -6816,8 +6995,8 @@
                     doScroll = true;
                 }
             } else { // Fixed positioning, with scrolling turned off until the overlay is closed
-                this.boxWrapperEl.style.position = 'fixed';
-                this.boxWrapperEl.firstElementChild.style.position = 'fixed';
+                this.el.style.position = 'fixed';
+                this.overlayEl.style.position = 'fixed';
                 this.topWindow.document.body.style.overflow = 'hidden';
             }
 
@@ -6830,339 +7009,6 @@
                 } catch (ignore) {}
             }
         },
-
-        initBox: function () {
-            var button;
-
-            this.topWindow.overlayZIndex || (this.topWindow.overlayZIndex = 999999); // Has to be higher than plupload, which is 99999
-
-            this.boxWrapperEl = this.element('div', { // Black out the background
-                'css': {
-                    'background': 'rgba(0,0,0,0.7)',
-                    'zIndex': this.topWindow.overlayZIndex++,
-                    'overflow': 'hidden',
-                    'position': $cms.$MOBILE() ? 'absolute' : 'fixed',
-                    'left': '0',
-                    'top': '0',
-                    'width': '100%',
-                    'height': '100%'
-                }
-            });
-
-            this.boxWrapperEl.appendChild(this.element('div', { // The main overlay
-                'class': 'box overlay ' + this.type,
-                'role': 'dialog',
-                'css': {
-                    // This will be updated immediately in resetDimensions
-                    'position': $cms.$MOBILE() ? 'static' : 'fixed',
-                    'margin': '0 auto' // Centering for iOS/Android which is statically positioned (so the container height as auto can work)
-                }
-            }));
-            
-            this.topWindow.document.body.appendChild(this.boxWrapperEl);
-            
-            var container = this.element('div', {
-                'class': 'box_inner',
-                'css': {
-                    'width': 'auto',
-                    'height': 'auto'
-                }
-            });
-
-            var overlayHeader = null;
-            if (this.title != '' || this.type === 'iframe') {
-                overlayHeader = this.element('h3', {
-                    'html': this.title,
-                    'css': {
-                        'display': (this.title == '') ? 'none' : 'block'
-                    }
-                });
-                container.appendChild(overlayHeader);
-            }
-
-            if (this.text != '') {
-                if (this.type === 'prompt') {
-                    var div = this.element('p');
-                    div.appendChild(this.element('label', {
-                        'for': 'overlay_prompt',
-                        'html': this.text
-                    }));
-                    container.appendChild(div);
-                } else {
-                    container.appendChild(this.element('div', {
-                        'html': this.text
-                    }));
-                }
-            }
-
-            this.buttonContainer = this.element('p', {
-                'class': 'proceed_button'
-            });
-
-            var that = this;
-            this.clickoutCancel = function () {
-                that.option('cancel');
-            };
-
-            this.clickoutFinished = function () {
-                that.option('finished');
-            };
-
-            this.clickoutYes = function () {
-                that.option('yes');
-            };
-
-            this.keyup = function (e) {
-                var keyCode = (e) ? Number(e.which || e.keyCode) : null;
-
-                if (keyCode === 37) {// Left arrow
-                    that.option('left');
-                } else if (keyCode === 39) {// Right arrow
-                    that.option('right');
-                } else if ((keyCode === 13/*enter*/) && (that.yes)) {
-                    that.option('yes');
-                }
-                if ((keyCode === 13/*enter*/) && (that.finished)) {
-                    that.option('finished');
-                } else if ((keyCode === 27/*esc*/) && (that.cancelButton) && ((that.type === 'prompt') || (that.type === 'confirm') || (that.type === 'lightbox') || (that.type === 'alert'))) {
-                    that.option('cancel');
-                }
-            };
-
-            this.mousemove = function (e) {
-                if (that.boxWrapperEl && !that.boxWrapperEl.firstElementChild.classList.contains('mousemove')) {
-                    that.boxWrapperEl.firstElementChild.classList.add('mousemove');
-                    setTimeout(function () {
-                        if (that.boxWrapperEl) {
-                            that.boxWrapperEl.firstElementChild.classList.remove('mousemove');
-                        }
-                    }, 2000);
-                }
-            };
-
-            $cms.dom.on(this.boxWrapperEl.firstElementChild, 'click', function (e) {
-                if ($cms.$MOBILE() && (that.type === 'lightbox')) { // IDEA: Swipe detect would be better, but JS does not have this natively yet
-                    that.option('right');
-                }
-            });
-
-            switch (this.type) {
-                case 'iframe':
-                    var iframeWidth = (this.width.match(/^[\d\.]+$/) !== null) ? ((this.width - 14) + 'px') : this.width,
-                        iframeHeight = (this.height.match(/^[\d\.]+$/) !== null) ? (this.height + 'px') : ((this.height === 'auto') ? (this.LOADING_SCREEN_HEIGHT + 'px') : this.height);
-
-                    var iframe = this.element('iframe', {
-                        'frameBorder': '0',
-                        'scrolling': 'no',
-                        'title': '',
-                        'name': 'overlay_iframe',
-                        'id': 'overlay_iframe',
-                        'allowTransparency': 'true',
-                        //'seamless': 'seamless',// Not supported, and therefore testable yet. Would be great for mobile browsing.
-                        'css': {
-                            'width': iframeWidth,
-                            'height': iframeHeight,
-                            'background': 'transparent'
-                        }
-                    });
-
-                    container.appendChild(iframe);
-
-                    $cms.dom.animateFrameLoad(iframe, 'overlay_iframe', 50, true);
-
-                    setTimeout(function () {
-                        if (isEl(that.boxWrapperEl)) {
-                            $cms.dom.on(that.boxWrapperEl, 'click', that.clickoutFinished);
-                        }
-                    }, 1000);
-
-                    $cms.dom.on(iframe, 'load', function () {
-                        if (($cms.dom.hasIframeAccess(iframe)) && (!iframe.contentWindow.document.querySelector('h1')) && (!iframe.contentWindow.document.querySelector('h2'))) {
-                            if (iframe.contentWindow.document.title) {
-                                $cms.dom.html(overlayHeader, $cms.filter.html(iframe.contentWindow.document.title));
-                                overlayHeader.style.display = 'block';
-                            }
-                        }
-                    });
-
-                    // Fiddle it, to behave like a popup would
-                    setTimeout(function () {
-                        $cms.dom.illustrateFrameLoad('overlay_iframe');
-                        iframe.src = that.href;
-                        that.makeFrameLikePopup(iframe);
-
-                        if (that.iframeRestyleTimer == null) { // In case internal nav changes
-                            that.iframeRestyleTimer = setInterval(function () {
-                                that.makeFrameLikePopup(iframe);
-                            }, 300);
-                        }
-                    }, 0);
-                    break;
-
-                case 'lightbox':
-                case 'alert':
-                    if (this.yes) {
-                        button = this.element('button', {
-                            'html': this.yesButton,
-                            'class': 'buttons__proceed button_screen_item'
-                        });
-                        $cms.dom.on(button, 'click', function () {
-                            that.option('yes');
-                        });
-
-                        setTimeout(function () {
-                            if (that.boxWrapperEl) {
-                                $cms.dom.on(that.boxWrapperEl, 'click', that.clickoutYes);
-                            }
-                        }, 1000);
-
-                        this.buttonContainer.appendChild(button);
-                    } else {
-                        setTimeout(function () {
-                            if (that.boxWrapperEl) {
-                                $cms.dom.on(that.boxWrapperEl, 'click', that.clickoutCancel);
-                            }
-                        }, 1000);
-                    }
-                    break;
-
-                case 'confirm':
-                    button = this.element('button', {
-                        'html': this.yesButton,
-                        'class': 'buttons__yes button_screen_item',
-                        'style': 'font-weight: bold;'
-                    });
-                    $cms.dom.on(button, 'click', function () {
-                        that.option('yes');
-                    });
-                    this.buttonContainer.appendChild(button);
-                    button = this.element('button', {
-                        'html': this.noButton,
-                        'class': 'buttons__no button_screen_item'
-                    });
-                    $cms.dom.on(button, 'click', function () {
-                        that.option('no');
-                    });
-                    this.buttonContainer.appendChild(button);
-                    break;
-
-                case 'prompt':
-                    this.input = this.element('input', {
-                        'name': 'prompt',
-                        'id': 'overlay_prompt',
-                        'type': this.inputType,
-                        'size': '40',
-                        'class': 'wide_field',
-                        'value': (this.defaultValue === null) ? '' : this.defaultValue
-                    });
-                    var inputWrap = this.element('div', {});
-                    inputWrap.appendChild(this.input);
-                    container.appendChild(inputWrap);
-
-                    if (this.yes) {
-                        button = this.element('button', {
-                            'html': this.yesButton,
-                            'class': 'buttons__yes button_screen_item',
-                            'css': {
-                                'font-weight': 'bold'
-                            }
-                        });
-                        $cms.dom.on(button, 'click', function () {
-                            that.option('yes');
-                        });
-                        this.buttonContainer.appendChild(button);
-                    }
-
-                    setTimeout(function () {
-                        if (that.boxWrapperEl) {
-                            $cms.dom.on(that.boxWrapperEl, 'click', that.clickoutCancel);
-                        }
-                    }, 1000);
-                    break;
-            }
-
-            // Cancel button handled either via button in corner (if there's no other buttons) or another button in the panel (if there's other buttons)
-            if (this.cancelButton) {
-                if (this.buttonContainer.firstChild) {
-                    button = this.element('button', {
-                        'html': this.cancelButton,
-                        'class': 'button_screen_item buttons__cancel'
-                    });
-                    this.buttonContainer.appendChild(button);
-                } else {
-                    button = this.element('img', {
-                        'src': $cms.img('{$IMG;,button_lightbox_close}'),
-                        'alt': this.cancelButton,
-                        'class': 'overlay_close_button'
-                    });
-                    container.appendChild(button);
-                }
-                $cms.dom.on(button, 'click', function () {
-                    that.option(this.cancel ? 'cancel' : 'finished');
-                });
-            }
-
-            // Put together
-            if (this.buttonContainer.firstChild) {
-                if (this.type === 'iframe') {
-                    container.appendChild(this.element('hr', {'class': 'spaced_rule'}));
-                }
-                container.appendChild(this.buttonContainer);
-            }
-            this.boxWrapperEl.firstElementChild.appendChild(container);
-
-            // Handle dimensions
-            this.resetDimensions(this.width, this.height, true);
-            $cms.dom.on(window, 'resize', function () {
-                that.resetDimensions(that.width, that.height, false);
-            });
-
-            // Focus first button by default
-            if (this.input) {
-                setTimeout(function () {
-                    that.input.focus();
-                });
-            } else if (this.boxWrapperEl.querySelector('button')) {
-                this.boxWrapperEl.querySelector('button').focus();
-            }
-
-            setTimeout(function () { // Timeout needed else keyboard activation of overlay opener may cause instant shutdown also
-                $cms.dom.on(document, 'keyup', that.keyup);
-                $cms.dom.on(document, 'mousemove', that.mousemove);
-            }, 100);
-        },
-        
-        remove: function (el, win) {
-            if (!win) {
-                win = this.topWindow;
-            }
-            win.document.body.removeChild(el);
-        },
-
-        element: function (tag, options) {
-            var el = this.topWindow.document.createElement(tag);
-
-            if (isObj(options)) {
-                for (var name in options) {
-                    var value = options[name];
-                    if ((name === 'styles') || (name === 'css')) {
-                        $cms.dom.css(el, value);
-                    } else if (name === 'html') {
-                        $cms.dom.html(el, value);
-                    } else if (name === 'class') {
-                        el.className = value;
-                    } else if (name === 'text') {
-                        el.textContent = value;
-                    } else if (name === 'for') {
-                        el.htmlFor = value;
-                    } else {
-                        $cms.dom.attr(el, name, value);
-                    }
-                }
-            }
-            return el;
-        },
-        
         /**
          * Fiddle it, to behave like a popup would
          * @param { HTMLIFrameElement } iframe
@@ -7176,7 +7022,9 @@
                 return;
             }
             
-            if (!$cms.dom.hasIframeAccess(iframe) || !iframe.contentWindow.document.body || (iframe.contentWindow.document.body.donePopupTrans !== undefined)) {
+            var iDoc = iframe.contentDocument;
+            
+            if (!$cms.dom.hasIframeAccess(iframe) || !iDoc.body || (iDoc.body.donePopupTrans !== undefined)) {
                 if (hasIframeLoaded(iframe) && !hasIframeOwnership(iframe)) {
                     iframe.scrolling = 'yes';
                     iframe.style.height = '500px';
@@ -7189,63 +7037,62 @@
                 return;
             }
             
-            iframe.contentWindow.document.body.style.background = 'transparent';
-            
-            iframe.contentWindow.document.body.classList.add('overlay');
-            iframe.contentWindow.document.body.classList.add('lightbox');
+            iDoc.body.style.background = 'transparent';
+            iDoc.body.classList.add('overlay');
+            iDoc.body.classList.add('lightbox');
             
             // Allow scrolling, if we want it
             //iframe.scrolling = (_this.scrollbars === false) ? 'no' : 'auto';  Actually, not wanting this now
 
             // Remove fixed width
-            mainWebsiteInner = iframe.contentWindow.document.getElementById('main_website_inner');
+            mainWebsiteInner = iDoc.getElementById('main_website_inner');
 
             if (mainWebsiteInner) {
                 mainWebsiteInner.id = '';
             }
 
             // Remove main_website marker
-            mainWebsite = iframe.contentWindow.document.getElementById('main_website');
+            mainWebsite = iDoc.getElementById('main_website');
             if (mainWebsite) {
                 mainWebsite.id = '';
             }
 
             // Remove popup spacing
-            popupSpacer = iframe.contentWindow.document.getElementById('popup_spacer');
+            popupSpacer = iDoc.getElementById('popup_spacer');
             if (popupSpacer) {
                 popupSpacer.id = '';
             }
 
             // Set linking scheme
-            baseElement = iframe.contentWindow.document.querySelector('base');
+            baseElement = iDoc.querySelector('base');
 
             if (!baseElement) {
-                baseElement = iframe.contentWindow.document.createElement('base');
-                if (iframe.contentWindow.document && iframe.contentWindow.document.head) {
-                    iframe.contentWindow.document.head.appendChild(baseElement);
+                baseElement = iDoc.createElement('base');
+                if (iDoc.head) {
+                    iDoc.head.appendChild(baseElement);
                 }
             }
 
             baseElement.target = this.target;
 
             // Set frame name
-            if (this.name && (iframe.contentWindow.name != this.name)) {
+            if (this.name && (iframe.contentWindow.name !== this.name)) {
                 iframe.contentWindow.name = this.name;
             }
 
-            var that = this;
+            var self = this;
             // Create close function
             if (iframe.contentWindow.fauxClose === undefined) {
                 iframe.contentWindow.fauxClose = function fauxClose() {
                     if (iframe && iframe.contentWindow && (iframe.contentWindow.returnValue !== undefined)) {
-                        that.returnValue = iframe.contentWindow.returnValue;
+                        self.returnValue = iframe.contentWindow.returnValue;
                     }
-                    that.option('finished');
+                    self.option('finished');
                 };
             }
 
-            if ($cms.dom.html(iframe.contentWindow.document.body).length > 300) { // Loaded now
-                iframe.contentWindow.document.body.donePopupTrans = true;
+            if ($cms.dom.html(iDoc.body).length > 300) { // Loaded now
+                iDoc.body.donePopupTrans = true;
             }
 
             // Handle iframe sizing
@@ -7255,7 +7102,7 @@
 
             function hasIframeLoaded(iframe) {
                 try {
-                    return (iframe != null) && (iframe.contentWindow.location.host != '');
+                    return (iframe != null) && (iframe.contentWindow.location.host !== '');
                 } catch (ignore) {}
 
                 return false;
@@ -7263,7 +7110,7 @@
 
             function hasIframeOwnership(iframe) {
                 try {
-                    return (iframe != null) && (iframe.contentWindow.location.host == window.location.host) && (iframe.contentWindow.document != null);
+                    return (iframe != null) && (iframe.contentWindow.location.host === window.location.host) && (iframe.contentWindow.document != null);
                 } catch (ignore) {}
 
                 return false;
@@ -7326,7 +7173,7 @@
             }
 
             if (buttonSet.length === 1) {
-                $cms.ui.alert(fallbackMessage ? fallbackMessage : message, null, windowTitle).then(function () {
+                $cms.ui.alert(fallbackMessage ? fallbackMessage : message, windowTitle).then(function () {
                     if (callback != null) {
                         callback(buttonSet[0]);
                     }
@@ -7434,7 +7281,7 @@
                 var responseXML = (xhr.responseXML && xhr.responseXML.firstChild) ? xhr.responseXML : null;
 
                 if ((responseXML == null) && xhr.responseText && xhr.responseText.includes('<html')) {
-                    $cms.ui.alert(xhr.responseText, null, '{!ERROR_OCCURRED;^}', true);
+                    $cms.ui.alert(xhr.responseText, '{!ERROR_OCCURRED;^}', true);
                 }
 
                 if (ajaxCallback != null) {
@@ -7550,7 +7397,7 @@
                     if (xhr.responseText !== 'false') {
                         if (xhr.responseText.length > 1000) {
                             //$cms.inform('$cms.form.doAjaxFieldTest()', 'xhr.responseText:', xhr.responseText);
-                            $cms.ui.alert(xhr.responseText, null, '{!ERROR_OCCURRED;^}', true);
+                            $cms.ui.alert(xhr.responseText, '{!ERROR_OCCURRED;^}', true);
                         } else {
                             $cms.ui.alert(xhr.responseText);
                         }
@@ -7604,7 +7451,7 @@
 
                     try {
                         view = new $cms.views[el.dataset.view](params, viewOptions);
-                        $cms.viewInstances[$cms.uid(view)] = view;
+                        $cms.dom.data(el, 'viewObject', view);
                         //$cms.inform('$cms.behaviors.initializeViews.attach(): Initialized view "' + el.dataset.view + '" for', el, view);
                     } catch (ex) {
                         $cms.fatal('$cms.behaviors.initializeViews.attach(): Exception thrown while initializing view "' + el.dataset.view + '" for', el, ex);
@@ -7704,7 +7551,7 @@
                     if (boolVal('{$VALUE_OPTION;,js_keep_params}')) {
                         /* Keep parameters need propagating */
                         if (form.action && form.action.startsWith($cms.$BASE_URL() + '/')) {
-                            form.action += $cms.addKeepStub(form.action);
+                            form.action = $cms.addKeepStub(form.action);
                         }
                     }
 
@@ -7966,11 +7813,7 @@
                 link: '{$PAGE_LINK;,:privacy}',
                 theme: 'dark-top'
             };
-            document.body.appendChild($cms.dom.create('script', {
-                nonce: $cms.$CSP_NONCE(),
-                defer: true,
-                src: 'https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js'
-            }));
+            $cms.requireJavascript('https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js');
         }
 
         if ($cms.$CONFIG_OPTION('detect_javascript')) {
@@ -8983,7 +8826,7 @@
                     window.doneOneError = true;
                     var alert = '{!JAVASCRIPT_ERROR;^}\n\n' + code + ': ' + msg + '\n' + file;
                     if (document.body) { // i.e. if loaded
-                        $cms.ui.alert(alert, null, '{!ERROR_OCCURRED;^}');
+                        $cms.ui.alert(alert, '{!ERROR_OCCURRED;^}');
                     }
                 }
                 return false;
@@ -10595,11 +10438,17 @@
     };
 
     $cms.templates.handleConflictResolution = function (params) {
-        if (params.pingUrl) {
-            $cms.doAjaxRequest(params.pingUrl);
+        var pingUrl = strVal(params.pingUrl);
+        
+        if ('{$VALUE_OPTION;,disable_handle_conflict_resolution}' === '1') {
+            return;
+        }
+        
+        if (pingUrl) {
+            $cms.doAjaxRequest(pingUrl);
 
             setInterval(function () {
-                $cms.doAjaxRequest(params.pingUrl);
+                $cms.doAjaxRequest(pingUrl);
             }, 12000);
         }
     };
@@ -10654,7 +10503,7 @@
                         selected = (el.value == value);
                     }
                     if (selected) {
-                        $cms.ui.alert(notice, null, noticeTitle, true);
+                        $cms.ui.alert(notice, noticeTitle, true);
                     }
                 }
             }(els[i]));

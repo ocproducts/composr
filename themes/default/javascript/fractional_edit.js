@@ -157,7 +157,7 @@
         function cancelFunction() {
             cleanupFunction();
 
-            $cms.ui.alert('{!FRACTIONAL_EDIT_CANCELLED;^}', null, '{!FRACTIONAL_EDIT;^}');
+            $cms.ui.alert('{!FRACTIONAL_EDIT_CANCELLED;^}', '{!FRACTIONAL_EDIT;^}');
 
             return false;
         }
@@ -180,7 +180,7 @@
                             });
                         } else {
                             cleanupFunction(); // Has to happen before, as that would cause defocus then refocus, causing a second save attempt
-                            $cms.ui.alert((xhr.status === 500) ? xhr.responseText : '{!ERROR_FRACTIONAL_EDIT;^}', null, '{!FRACTIONAL_EDIT;^}');
+                            $cms.ui.alert((xhr.status === 500) ? xhr.responseText : '{!ERROR_FRACTIONAL_EDIT;^}', '{!FRACTIONAL_EDIT;^}');
                         }
                     });
                 } else { // Success
