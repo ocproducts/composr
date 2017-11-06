@@ -6552,12 +6552,12 @@
     $cms.inherits(ModalWindow, $cms.View, /**@lends $cms.views.ModalWindow#*/ {
         events: function events() {
             return {
-                'click .js-onclick-option-yes': 'doOptionYes',
-                'click .js-onclick-option-no': 'doOptionNo',
-                'click .js-onclick-option-cancel': 'doOptionCancel',
-                'click .js-onclick-option-finished': 'doOptionFinished',
-                'click .js-onclick-option-left': 'doOptionLeft',
-                'click .js-onclick-option-right': 'doOptionRight',
+                'click .js-onclick-do-option-yes': 'doOptionYes',
+                'click .js-onclick-do-option-no': 'doOptionNo',
+                'click .js-onclick-do-option-cancel': 'doOptionCancel',
+                'click .js-onclick-do-option-finished': 'doOptionFinished',
+                'click .js-onclick-do-option-left': 'doOptionLeft',
+                'click .js-onclick-do-option-right': 'doOptionRight',
             }
         },
 
@@ -6726,7 +6726,7 @@
                         button = $cms.dom.create('button', {
                             'type': 'button',
                             'html': this.yesButton,
-                            'className': 'buttons__proceed button_screen_item js-onclick-option-yes'
+                            'className': 'buttons__proceed button_screen_item js-onclick-do-option-yes'
                         });
 
                         this.buttonContainerEl.appendChild(button);
@@ -6750,14 +6750,14 @@
                     button = $cms.dom.create('button', {
                         'type': 'button',
                         'html': this.yesButton,
-                        'className': 'buttons__yes button_screen_item js-onclick-option-yes',
+                        'className': 'buttons__yes button_screen_item js-onclick-do-option-yes',
                         'style': 'font-weight: bold;'
                     });
                     this.buttonContainerEl.appendChild(button);
                     button = $cms.dom.create('button', {
                         'type': 'button',
                         'html': this.noButton,
-                        'className': 'buttons__no button_screen_item js-onclick-option-no'
+                        'className': 'buttons__no button_screen_item js-onclick-do-option-no'
                     });
                     this.buttonContainerEl.appendChild(button);
                     break;
@@ -6779,7 +6779,7 @@
                         button = $cms.dom.create('button', {
                             'type': 'button',
                             'html': this.yesButton,
-                            'className': 'buttons__yes button_screen_item js-onclick-option-yes',
+                            'className': 'buttons__yes button_screen_item js-onclick-do-option-yes',
                             'css': {
                                 'font-weight': 'bold'
                             }
@@ -6805,14 +6805,14 @@
                     button = $cms.dom.create('button', {
                         'type': 'button',
                         'html': this.cancelButton,
-                        'className': 'button_screen_item buttons__cancel ' + (this.cancel ? 'js-onclick-option-cancel' : 'js-onclick-option-finished')
+                        'className': 'button_screen_item buttons__cancel ' + (this.cancel ? 'js-onclick-do-option-cancel' : 'js-onclick-do-option-finished')
                     });
                     this.buttonContainerEl.appendChild(button);
                 } else {
                     button = $cms.dom.create('img', {
                         'src': $cms.img('{$IMG;,button_lightbox_close}'),
                         'alt': this.cancelButton,
-                        'className': 'overlay_close_button ' + (this.cancel ? 'js-onclick-option-cancel' : 'js-onclick-option-finished')
+                        'className': 'overlay_close_button ' + (this.cancel ? 'js-onclick-do-option-cancel' : 'js-onclick-do-option-finished')
                     });
                     this.containerEl.appendChild(button);
                 }
