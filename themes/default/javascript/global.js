@@ -1906,18 +1906,20 @@
         for (var i = 0; i < forms.length; i++) {
             form = forms[i];
 
-            if (form.elements['postData'] == null) {
+            if (form.elements['post_data'] == null) {
                 postData = document.createElement('input');
                 postData.type = 'hidden';
                 postData.name = 'post_data';
                 postData.value = '';
+                form.appendChild(postData);
             } else {
-                postData = form.elements['postData'];
-                postData.value += ',';
+                postData = form.elements['post_data'];
+                if (postData.value !== '') {
+                    postData.value += ',';
+                }
             }
 
             postData.value += flag;
-            form.appendChild(postData);
         }
     }
 
@@ -2922,12 +2924,7 @@
             handler.del = delegator;
             var callback = delegator || fn;
             handler.proxy = function proxy(e) {
-                var args = [e, el];
-                //e.data = data;
-                if ((e._args != null) && Array.isArray(e._args)) {
-                    args = args.concat(e._args);
-                }
-                var result = callback.apply(el, args);
+                var result = callback.call(el, e, el);
                 if (result === false) {
                     e.stopPropagation();
                     e.preventDefault();
