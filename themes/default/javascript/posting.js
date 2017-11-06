@@ -864,13 +864,15 @@
                     if (fieldSupportsAutosave(form.elements[i])) {
                         temp = _handleFormSaving(event, form.elements[i], true);
                         if (temp) {
-                            if (post != '') post += '&';
+                            if (post !== '') {
+                                post += '&';
+                            }
                             post += encodeURIComponent(temp[0]) + '=' + encodeURIComponent(temp[1]);
                         }
                     }
                 }
 
-                if (post != '') {
+                if (post !== '') {
                     document.body.style.cursor = 'wait';
 
                     // Save remotely
@@ -884,7 +886,7 @@
                             }
 
                             var message = foundValidatedField ? '{!javascript:DRAFT_SAVED_WITH_VALIDATION;^}' : '{!javascript:DRAFT_SAVED_WITHOUT_VALIDATION;^}';
-                            $cms.ui.alert(message, null, '{!javascript:DRAFT_SAVE;^}');
+                            $cms.ui.alert(message, '{!javascript:DRAFT_SAVE;^}');
                         });
                     }
                 }

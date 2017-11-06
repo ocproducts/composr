@@ -26,9 +26,9 @@ Spellcheck toggle button. Works on Chrome/Firefox/Safari/IE10
             }
             editor.setData(oldData); // Needed to force spellchecker reset
 
-            $cms.ui.alert(window.lang_SPELLCHECKER_ENABLED,function() {
+            $cms.ui.alert(window.lang_SPELLCHECKER_ENABLED, window.lang_SPELLCHECKER_LABEL).then(function() {
                 editor.focus();
-            },window.lang_SPELLCHECKER_LABEL);
+            });
         },
 
         disableSpellChecker: function(editor) {
@@ -42,7 +42,7 @@ Spellcheck toggle button. Works on Chrome/Firefox/Safari/IE10
 
                 editor.setData(editor.getData()); // Needed to force spellchecker reset
 
-                $cms.ui.alert(window.lang_SPELLCHECKER_DISABLED,null,window.lang_SPELLCHECKER_LABEL);
+                $cms.ui.alert(window.lang_SPELLCHECKER_DISABLED,window.lang_SPELLCHECKER_LABEL);
 
                 editor.window.$.document.body.oncontextmenu=function() { // Runs before CKEditor handler
                     // Let CKEditor handler happen

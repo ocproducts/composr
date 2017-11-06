@@ -1994,7 +1994,7 @@
         var read = $cms.readCookie(cookieName);
 
         if (read && (read !== cookieValue) && $cms.$DEV_MODE() && !alertedCookieConflict) {
-            $cms.ui.alert('{!COOKIE_CONFLICT_DELETE_COOKIES;^}' + '... ' + document.cookie + ' (' + output + ')', null, '{!ERROR_OCCURRED;^}');
+            $cms.ui.alert('{!COOKIE_CONFLICT_DELETE_COOKIES;^}' + '... ' + document.cookie + ' (' + output + ')', '{!ERROR_OCCURRED;^}');
             alertedCookieConflict = true;
         }
     }
@@ -5970,19 +5970,17 @@
     /**
      * @memberof $cms.ui
      * @param notice
-     * @param callback
      * @param title
      * @param unescaped
      * @returns { Promise }
      */
-    $cms.ui.alert = function alert(notice, callback, title, unescaped) {
+    $cms.ui.alert = function alert(notice, title, unescaped) {
         var options, 
             single = false;
         
         if (isObj(notice)) {
             options = notice;
             notice = strVal(options.notice);
-            callback = options.callback;
             title = strVal(options.title) || '{!MESSAGE;^}';
             unescaped = Boolean(options.unescaped);
             single = Boolean(options.single);
@@ -6001,9 +5999,6 @@
         currentAlertPromise = new Promise(function (resolveAlert) {
             if (!$cms.$CONFIG_OPTION('js_overlays')) {
                 window.alert(notice);
-                if (callback != null) {
-                    callback();
-                }
                 currentAlertNotice = null;
                 currentAlertTitle = null;
                 currentAlertPromise = null;
@@ -6017,9 +6012,6 @@
                 yesButton: '{!INPUTSYSTEM_OK;^}',
                 width: '600',
                 yes: function () {
-                    if (callback != null) {
-                        callback();
-                    }
                     currentAlertNotice = null;
                     currentAlertTitle = null;
                     currentAlertPromise = null;
@@ -7223,7 +7215,7 @@
             }
 
             if (buttonSet.length === 1) {
-                $cms.ui.alert(fallbackMessage ? fallbackMessage : message, null, windowTitle).then(function () {
+                $cms.ui.alert(fallbackMessage ? fallbackMessage : message, windowTitle).then(function () {
                     if (callback != null) {
                         callback(buttonSet[0]);
                     }
@@ -7331,7 +7323,7 @@
                 var responseXML = (xhr.responseXML && xhr.responseXML.firstChild) ? xhr.responseXML : null;
 
                 if ((responseXML == null) && xhr.responseText && xhr.responseText.includes('<html')) {
-                    $cms.ui.alert(xhr.responseText, null, '{!ERROR_OCCURRED;^}', true);
+                    $cms.ui.alert(xhr.responseText, '{!ERROR_OCCURRED;^}', true);
                 }
 
                 if (ajaxCallback != null) {
@@ -7447,7 +7439,7 @@
                     if (xhr.responseText !== 'false') {
                         if (xhr.responseText.length > 1000) {
                             //$cms.inform('$cms.form.doAjaxFieldTest()', 'xhr.responseText:', xhr.responseText);
-                            $cms.ui.alert(xhr.responseText, null, '{!ERROR_OCCURRED;^}', true);
+                            $cms.ui.alert(xhr.responseText, '{!ERROR_OCCURRED;^}', true);
                         } else {
                             $cms.ui.alert(xhr.responseText);
                         }
@@ -8876,7 +8868,7 @@
                     window.doneOneError = true;
                     var alert = '{!JAVASCRIPT_ERROR;^}\n\n' + code + ': ' + msg + '\n' + file;
                     if (document.body) { // i.e. if loaded
-                        $cms.ui.alert(alert, null, '{!ERROR_OCCURRED;^}');
+                        $cms.ui.alert(alert, '{!ERROR_OCCURRED;^}');
                     }
                 }
                 return false;
@@ -10547,7 +10539,7 @@
                         selected = (el.value == value);
                     }
                     if (selected) {
-                        $cms.ui.alert(notice, null, noticeTitle, true);
+                        $cms.ui.alert(notice, noticeTitle, true);
                     }
                 }
             }(els[i]));
