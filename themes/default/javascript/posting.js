@@ -296,7 +296,7 @@
                 }
                 
                 if (post !== '') {
-                    post + '&';
+                    post += '&';
                 }
                 
                 post += name + '=' + encodeURIComponent(value);
