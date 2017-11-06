@@ -85,7 +85,6 @@
 
         return new Promise(function (resolvePromise) {
             var post = document.getElementById(fieldName),
-                trueAttachmentUi = (post.classList.contains('true_attachment_ui')),
                 tmpForm = post.form;
 
             if (tmpForm && tmpForm.preview) {
@@ -138,16 +137,6 @@
 
             /*{+START,INCLUDE,ATTACHMENT_UI_DEFAULTS,.js,javascript}{+END}*/
             
-            // @TODO: Chris, what's this for? It prevents attachment comcdode from being inseerted into the textbox. It also doesn't exist in either of master and v10.1 branches.
-            // if (trueAttachmentUi) {
-            //     // Add field for next one
-            //     addAnotherField = (number == window.numAttachments) && (window.numAttachments < window.maxAttachments); // Needs running late, in case something happened inbetween
-            //     if (addAnotherField) {
-            //         addAttachment(window.numAttachments + 1, fieldName);
-            //     }
-            //     return resolvePromise();
-            // }
-
             if (!showOverlay) {
                 var comcode = '[' + tag;
                 for (var key in defaults) {
