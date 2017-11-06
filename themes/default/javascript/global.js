@@ -480,11 +480,7 @@
         } else {
             document.addEventListener('DOMContentLoaded', function listener() {
                 document.removeEventListener('DOMContentLoaded', listener);
-                // Workaround for browser bug, document.readyState == 'interactive' before [defer]'d <script>s are loaded.
-                // See: https://github.com/jquery/jquery/issues/3271
-                $cms.waitForResources(toArray(document.querySelectorAll('script[src][defer]'))).then(function () {
-                    executeCmsReadyQueue();
-                });
+                executeCmsReadyQueue();
             });
         }
 
@@ -1643,7 +1639,7 @@
                 return;
             }
             
-            if ($cms.elementsLoaded.has(el)) {
+            if ($cms.dom.hasElementLoaded(el)) {
                 return;
             }
 
@@ -1660,6 +1656,7 @@
                     }
                     break;
                     
+                case 'img':
                 case 'iframe':
                     resourcesToLoad.add(el);
                     break;
@@ -2723,7 +2720,7 @@
         return parent;
     };
 
-    $cms.dom.hasScriptElementLoaded = function hasScriptElementLoaded(el) {
+    $cms.dom.hasElementLoaded = function hasElementLoaded(el) {
         el = elArg(el);
         
         return $cms.elementsLoaded.has(el);
@@ -2736,7 +2733,7 @@
      */
     $cms.dom.hasScriptSrcLoaded = function hasScriptSrcLoaded(src) {
         var scriptEl = _findScriptBySrc(src);
-        return (scriptEl != null) && $cms.elementsLoaded.has(scriptEl);
+        return (scriptEl != null) && $cms.dom.hasElementLoaded(scriptEl);
     };
     
     /**
@@ -5103,6 +5100,8 @@
      * @class
      */
     function View(params, viewOptions) {
+        this.uid = $cms.uid(this);
+        
         /** @member {string} */
         this.tagName = 'div';
         /** @member { HTMLElement } */
@@ -6495,8 +6494,6 @@
      * @extends $cms.View
      */
     function ModalWindow(params) {
-        ModalWindow.base(this, 'constructor', arguments);
-        
         // Constants
         this.WINDOW_SIDE_GAP = $cms.isMobile() ? 5 : 25;
         this.WINDOW_TOP_GAP = 25; // Will also be used for bottom gap for percentage heights
@@ -6508,8 +6505,14 @@
         this.LOADING_SCREEN_HEIGHT = 100;
 
         // Properties
+        /** @type { Element }*/
         this.el =  null;
-        this.buttonContainer = null;
+        /** @type { Element }*/
+        this.overlayEl = null;
+        /** @type { Element }*/
+        this.containerEl = null;
+        /** @type { Element }*/
+        this.buttonContainerEl = null;
         this.returnValue = null;
         this.topWindow = null;
         this.iframeRestyleTimer = null;
@@ -6539,14 +6542,15 @@
         for (var key in params) {
             this[key] = params[key];
         }
-
+        
         this.topWindow = window.top;
-        this.initBox();
         this.opened = true;
+
+        ModalWindow.base(this, 'constructor', arguments);
     }
 
     $cms.inherits(ModalWindow, $cms.View, /**@lends $cms.views.ModalWindow#*/ {
-        initBox: function () {
+        _setElement: function _setElement() {
             var button;
 
             this.topWindow.overlayZIndex || (this.topWindow.overlayZIndex = 999999); // Has to be higher than plupload, which is 99999
@@ -6563,9 +6567,11 @@
                     'height': '100%'
                 }
             });
+            
+            this.topWindow.document.body.appendChild(this.el);
 
-            this.el.appendChild($cms.dom.create('div', { // The main overlay
-                'className': 'box overlay ' + this.type,
+            this.overlayEl = this.el.appendChild($cms.dom.create('div', { // The main overlay
+                'className': 'box overlay js-modal-overlay ' + this.type,
                 'role': 'dialog',
                 'css': {
                     // This will be updated immediately in resetDimensions
@@ -6574,88 +6580,47 @@
                 }
             }));
 
-            this.topWindow.document.body.appendChild(this.el);
-
-            var container = $cms.dom.create('div', {
-                'className': 'box_inner',
+            this.containerEl = this.overlayEl.appendChild($cms.dom.create('div', {
+                'className': 'box_inner js-modal-container',
                 'css': {
                     'width': 'auto',
                     'height': 'auto'
                 }
-            });
+            }));
 
             var overlayHeader = null;
-            if (this.title != '' || this.type === 'iframe') {
+            if (this.title !== '' || this.type === 'iframe') {
                 overlayHeader = $cms.dom.create('h3', {
                     'html': this.title,
                     'css': {
-                        'display': (this.title == '') ? 'none' : 'block'
+                        'display': (this.title === '') ? 'none' : 'block'
                     }
                 });
-                container.appendChild(overlayHeader);
+                this.containerEl.appendChild(overlayHeader);
             }
 
-            if (this.text != '') {
+            if (this.text !== '') {
                 if (this.type === 'prompt') {
                     var div = $cms.dom.create('p');
                     div.appendChild($cms.dom.create('label', {
                         'htmlFor': 'overlay_prompt',
                         'html': this.text
                     }));
-                    container.appendChild(div);
+                    this.containerEl.appendChild(div);
                 } else {
-                    container.appendChild($cms.dom.create('div', {
+                    this.containerEl.appendChild($cms.dom.create('div', {
                         'html': this.text
                     }));
                 }
             }
 
-            this.buttonContainer = $cms.dom.create('p', {
-                'className': 'proceed_button'
+            this.buttonContainerEl = $cms.dom.create('p', {
+                'className': 'proceed_button js-modal-button-container'
             });
 
             var self = this;
-            this.clickoutCancel = function () {
-                self.option('cancel');
-            };
 
-            this.clickoutFinished = function () {
-                self.option('finished');
-            };
-
-            this.clickoutYes = function () {
-                self.option('yes');
-            };
-
-            this.keyup = function (e) {
-                var keyCode = (e) ? Number(e.which || e.keyCode) : null;
-
-                if (keyCode === 37) {// Left arrow
-                    self.option('left');
-                } else if (keyCode === 39) {// Right arrow
-                    self.option('right');
-                } else if ((keyCode === 13/*enter*/) && (self.yes)) {
-                    self.option('yes');
-                }
-                if ((keyCode === 13/*enter*/) && (self.finished)) {
-                    self.option('finished');
-                } else if ((keyCode === 27/*esc*/) && (self.cancelButton) && ((self.type === 'prompt') || (self.type === 'confirm') || (self.type === 'lightbox') || (self.type === 'alert'))) {
-                    self.option('cancel');
-                }
-            };
-
-            this.mousemove = function (e) {
-                if (self.el && !self.el.firstElementChild.classList.contains('mousemove')) {
-                    self.el.firstElementChild.classList.add('mousemove');
-                    setTimeout(function () {
-                        if (self.el) {
-                            self.el.firstElementChild.classList.remove('mousemove');
-                        }
-                    }, 2000);
-                }
-            };
-
-            $cms.dom.on(this.el.firstElementChild, 'click', function (e) {
+            $cms.dom.on(this.overlayEl, 'click', function (e) {
                 if ($cms.$MOBILE() && (self.type === 'lightbox')) { // IDEA: Swipe detect would be better, but JS does not have this natively yet
                     self.option('right');
                 }
@@ -6672,6 +6637,7 @@
                         'title': '',
                         'name': 'overlay_iframe',
                         'id': 'overlay_iframe',
+                        'className': 'js-modal-overlay-iframe',
                         'allowTransparency': 'true',
                         //'seamless': 'seamless',// Not supported, and therefore testable yet. Would be great for mobile browsing.
                         'css': {
@@ -6681,21 +6647,23 @@
                         }
                     });
 
-                    container.appendChild(iframe);
+                    this.containerEl.appendChild(iframe);
 
                     $cms.dom.animateFrameLoad(iframe, 'overlay_iframe', 50, true);
 
                     setTimeout(function () {
                         if (isEl(self.el)) {
-                            $cms.dom.on(self.el, 'click', self.clickoutFinished);
+                            $cms.dom.on(self.el, 'click', function () {
+                                self.option('finished');
+                            });
                         }
                     }, 1000);
 
                     $cms.dom.on(iframe, 'load', function () {
-                        if (($cms.dom.hasIframeAccess(iframe)) && (!iframe.contentWindow.document.querySelector('h1')) && (!iframe.contentWindow.document.querySelector('h2'))) {
-                            if (iframe.contentWindow.document.title) {
-                                $cms.dom.html(overlayHeader, $cms.filter.html(iframe.contentWindow.document.title));
-                                overlayHeader.style.display = 'block';
+                        if ($cms.dom.hasIframeAccess(iframe) && (!iframe.contentDocument.querySelector('h1')) && (!iframe.contentDocument.querySelector('h2'))) {
+                            if (iframe.contentDocument.title) {
+                                $cms.dom.html(overlayHeader, $cms.filter.html(iframe.contentDocument.title));
+                                $cms.dom.show(overlayHeader);
                             }
                         }
                     });
@@ -6718,6 +6686,7 @@
                 case 'alert':
                     if (this.yes) {
                         button = $cms.dom.create('button', {
+                            'type': 'button',
                             'html': this.yesButton,
                             'className': 'buttons__proceed button_screen_item'
                         });
@@ -6727,15 +6696,19 @@
 
                         setTimeout(function () {
                             if (self.el) {
-                                $cms.dom.on(self.el, 'click', self.clickoutYes);
+                                $cms.dom.on(self.el, 'click', function () {
+                                    self.option('yes');
+                                });
                             }
                         }, 1000);
 
-                        this.buttonContainer.appendChild(button);
+                        this.buttonContainerEl.appendChild(button);
                     } else {
                         setTimeout(function () {
                             if (self.el) {
-                                $cms.dom.on(self.el, 'click', self.clickoutCancel);
+                                $cms.dom.on(self.el, 'click', function () {
+                                    self.option('cancel');
+                                });
                             }
                         }, 1000);
                     }
@@ -6743,6 +6716,7 @@
 
                 case 'confirm':
                     button = $cms.dom.create('button', {
+                        'type': 'button',
                         'html': this.yesButton,
                         'className': 'buttons__yes button_screen_item',
                         'style': 'font-weight: bold;'
@@ -6750,15 +6724,16 @@
                     $cms.dom.on(button, 'click', function () {
                         self.option('yes');
                     });
-                    this.buttonContainer.appendChild(button);
+                    this.buttonContainerEl.appendChild(button);
                     button = $cms.dom.create('button', {
+                        'type': 'button',
                         'html': this.noButton,
                         'className': 'buttons__no button_screen_item'
                     });
                     $cms.dom.on(button, 'click', function () {
                         self.option('no');
                     });
-                    this.buttonContainer.appendChild(button);
+                    this.buttonContainerEl.appendChild(button);
                     break;
 
                 case 'prompt':
@@ -6772,10 +6747,11 @@
                     });
                     var inputWrap = $cms.dom.create('div');
                     inputWrap.appendChild(this.input);
-                    container.appendChild(inputWrap);
+                    this.containerEl.appendChild(inputWrap);
 
                     if (this.yes) {
                         button = $cms.dom.create('button', {
+                            'type': 'button',
                             'html': this.yesButton,
                             'className': 'buttons__yes button_screen_item',
                             'css': {
@@ -6785,12 +6761,14 @@
                         $cms.dom.on(button, 'click', function () {
                             self.option('yes');
                         });
-                        this.buttonContainer.appendChild(button);
+                        this.buttonContainerEl.appendChild(button);
                     }
 
                     setTimeout(function () {
                         if (self.el) {
-                            $cms.dom.on(self.el, 'click', self.clickoutCancel);
+                            $cms.dom.on(self.el, 'click', function () {
+                                self.option('cancel');
+                            });
                         }
                     }, 1000);
                     break;
@@ -6798,19 +6776,20 @@
 
             // Cancel button handled either via button in corner (if there's no other buttons) or another button in the panel (if there's other buttons)
             if (this.cancelButton) {
-                if (this.buttonContainer.firstChild) {
+                if (this.buttonContainerEl.firstElementChild) {
                     button = $cms.dom.create('button', {
+                        'type': 'button',
                         'html': this.cancelButton,
                         'className': 'button_screen_item buttons__cancel'
                     });
-                    this.buttonContainer.appendChild(button);
+                    this.buttonContainerEl.appendChild(button);
                 } else {
                     button = $cms.dom.create('img', {
                         'src': $cms.img('{$IMG;,button_lightbox_close}'),
                         'alt': this.cancelButton,
                         'className': 'overlay_close_button'
                     });
-                    container.appendChild(button);
+                    this.containerEl.appendChild(button);
                 }
                 $cms.dom.on(button, 'click', function () {
                     self.option(this.cancel ? 'cancel' : 'finished');
@@ -6818,13 +6797,12 @@
             }
 
             // Put together
-            if (this.buttonContainer.firstChild) {
+            if (this.buttonContainerEl.firstElementChild) {
                 if (this.type === 'iframe') {
-                    container.appendChild($cms.dom.create('hr', {'className': 'spaced_rule'}));
+                    this.containerEl.appendChild($cms.dom.create('hr', {'className': 'spaced_rule'}));
                 }
-                container.appendChild(this.buttonContainer);
+                this.containerEl.appendChild(this.buttonContainerEl);
             }
-            this.el.firstElementChild.appendChild(container);
 
             // Handle dimensions
             this.resetDimensions(this.width, this.height, true);
@@ -6842,9 +6820,38 @@
             }
 
             setTimeout(function () { // Timeout needed else keyboard activation of overlay opener may cause instant shutdown also
-                $cms.dom.on(document, 'keyup', self.keyup);
-                $cms.dom.on(document, 'mousemove', self.mousemove);
+                $cms.dom.on(document, 'keyup.modalWindow' + this.uid, self.keyup.bind(this));
+                $cms.dom.on(document, 'mousemove.modalWindow' + this.uid, self.mousemove.bind(this));
             }, 100);
+        },
+
+        keyup: function keyup(e) {
+            var keyCode = (e) ? Number(e.which || e.keyCode) : null;
+
+            if (keyCode === 37) {// Left arrow
+                this.option('left');
+            } else if (keyCode === 39) {// Right arrow
+                this.option('right');
+            } else if ((keyCode === 13/*enter*/) && (this.yes)) {
+                this.option('yes');
+            }
+            if ((keyCode === 13/*enter*/) && (this.finished)) {
+                this.option('finished');
+            } else if ((keyCode === 27/*esc*/) && (this.cancelButton) && ((this.type === 'prompt') || (this.type === 'confirm') || (this.type === 'lightbox') || (this.type === 'alert'))) {
+                this.option('cancel');
+            }
+        },
+
+        mousemove: function mousemove() {
+            var self = this;
+            if (!this.overlayEl.classList.contains('mousemove')) {
+                this.overlayEl.classList.add('mousemove');
+                setTimeout(function () {
+                    if (self.overlayEl) {
+                        self.overlayEl.classList.remove('mousemove');
+                    }
+                }, 2000);
+            }
         },
         // Methods...
         close: function () {
@@ -6854,13 +6861,13 @@
                 this.el.remove();
                 this.el = null;
 
-                $cms.dom.off(document, 'keyup mousemove', this.keyup);
+                $cms.dom.off(document, 'keyup.modalWindow' + this.uid);
+                $cms.dom.off(document, 'mousemove.modalWindow' + this.uid);
             }
             this.opened = false;
         },
 
         option: function (method) {
-            var win = this.topWindow; // The below call may end up killing our window reference (for nested alerts), so we need to grab it first
             if (this[method]) {
                 if (this.type === 'prompt') {
                     this[method](this.input.value);
@@ -6871,7 +6878,7 @@
                 }
             }
             if ((method !== 'left') && (method !== 'right')) {
-                this.close(win);
+                this.close();
             }
         },
 
@@ -6896,8 +6903,8 @@
                 topWindowHeight = this.topWindow.$cms.dom.getWindowHeight();
                 
             var bottomGap = this.WINDOW_TOP_GAP;
-            if (this.buttonContainer.firstChild) {
-                bottomGap += this.buttonContainer.offsetHeight;
+            if (this.buttonContainerEl.firstElementChild) {
+                bottomGap += this.buttonContainerEl.offsetHeight;
             }
 
             if (!forceHeight) {
@@ -6951,8 +6958,8 @@
 
             // Save into HTML
             var detectedBoxHeight;
-            this.el.firstElementChild.style.width = boxWidth;
-            this.el.firstElementChild.style.height = boxHeight;
+            this.overlayEl.style.width = boxWidth;
+            this.overlayEl.style.height = boxHeight;
             var iframe = this.el.querySelector('iframe');
 
             if ($cms.dom.hasIframeAccess(iframe) && (iframe.contentWindow.document.body)) { // Balance iframe height
@@ -6969,7 +6976,7 @@
 
             // Work out box position
             if (!detectedBoxHeight) {
-                detectedBoxHeight = this.el.firstElementChild.offsetHeight;
+                detectedBoxHeight = this.overlayEl.offsetHeight;
             }
             var boxPosTop, boxPosLeft;
 
@@ -6992,8 +6999,8 @@
             boxPosLeft = ((topWindowWidth / 2) - (parseInt(boxWidth) / 2));
 
             // Save into HTML
-            this.el.firstElementChild.style.top = boxPosTop + 'px';
-            this.el.firstElementChild.style.left = boxPosLeft + 'px';
+            this.overlayEl.style.top = boxPosTop + 'px';
+            this.overlayEl.style.left = boxPosLeft + 'px';
 
             var doScroll = false;
 
@@ -7006,8 +7013,8 @@
                 this.topWindow.document.body.style.overflow = '';
 
                 if (!$cms.$MOBILE()) {
-                    this.el.firstElementChild.style.position = 'absolute';
-                    this.el.firstElementChild.style.top = this.WINDOW_TOP_GAP + 'px';
+                    this.overlayEl.style.position = 'absolute';
+                    this.overlayEl.style.top = this.WINDOW_TOP_GAP + 'px';
                 }
 
                 if (init || wasFixed) {
@@ -7019,7 +7026,7 @@
                 }
             } else { // Fixed positioning, with scrolling turned off until the overlay is closed
                 this.el.style.position = 'fixed';
-                this.el.firstElementChild.style.position = 'fixed';
+                this.overlayEl.style.position = 'fixed';
                 this.topWindow.document.body.style.overflow = 'hidden';
             }
 
@@ -7099,7 +7106,7 @@
             baseElement.target = this.target;
 
             // Set frame name
-            if (this.name && (iframe.contentWindow.name != this.name)) {
+            if (this.name && (iframe.contentWindow.name !== this.name)) {
                 iframe.contentWindow.name = this.name;
             }
 
@@ -7125,7 +7132,7 @@
 
             function hasIframeLoaded(iframe) {
                 try {
-                    return (iframe != null) && (iframe.contentWindow.location.host != '');
+                    return (iframe != null) && (iframe.contentWindow.location.host !== '');
                 } catch (ignore) {}
 
                 return false;
@@ -7133,7 +7140,7 @@
 
             function hasIframeOwnership(iframe) {
                 try {
-                    return (iframe != null) && (iframe.contentWindow.location.host == window.location.host) && (iframe.contentWindow.document != null);
+                    return (iframe != null) && (iframe.contentWindow.location.host === window.location.host) && (iframe.contentWindow.document != null);
                 } catch (ignore) {}
 
                 return false;
