@@ -5097,7 +5097,7 @@
     $cms.View = View;
     /**
      * @memberof $cms
-     * @class
+     * @class $cms.View
      */
     function View(params, viewOptions) {
         this.uid = $cms.uid(this);
@@ -6102,7 +6102,7 @@
         name = strVal(name);
         options = strVal(options);
         target = strVal(target);
-        cancelText = strVal(cancelText, '{!INPUTSYSTEM_CANCEL;^}');
+        cancelText = strVal(cancelText) || '{!INPUTSYSTEM_CANCEL;^}';
 
         return new Promise(function (resolveModal) {
             if (!$cms.$CONFIG_OPTION('js_overlays')) {
@@ -6490,7 +6490,7 @@
     $cms.views.ModalWindow = ModalWindow;
     /**
      * @memberof $cms.views
-     * @class
+     * @class $cms.views.ModalWindow
      * @extends $cms.View
      */
     function ModalWindow(params) {
@@ -6516,7 +6516,7 @@
         this.returnValue = null;
         this.topWindow = null;
         this.iframeRestyleTimer = null;
-
+        
         // Set params
         params = defaults({ // apply defaults
             type: 'alert',
@@ -6550,6 +6550,41 @@
     }
 
     $cms.inherits(ModalWindow, $cms.View, /**@lends $cms.views.ModalWindow#*/ {
+        events: function events() {
+            return {
+                'click .js-onclick-option-yes': 'doOptionYes',
+                'click .js-onclick-option-no': 'doOptionNo',
+                'click .js-onclick-option-cancel': 'doOptionCancel',
+                'click .js-onclick-option-finished': 'doOptionFinished',
+                'click .js-onclick-option-left': 'doOptionLeft',
+                'click .js-onclick-option-right': 'doOptionRight',
+            }
+        },
+
+        doOptionYes: function doOptionYes() {
+            this.option('yes')
+        },
+
+        doOptionNo: function doOptionNo() {
+            this.option('no')
+        },
+
+        doOptionCancel: function doOptionCancel() {
+            this.option('cancel')
+        },
+
+        doOptionFinished: function doOptionFinished() {
+            this.option('finished')
+        },
+
+        doOptionLeft: function doOptionLeft() {
+            this.option('left')
+        },
+
+        doOptionRight: function doOptionRight() {
+            this.option('right')
+        },
+        
         _setElement: function _setElement() {
             var button;
 
@@ -6688,29 +6723,26 @@
                         button = $cms.dom.create('button', {
                             'type': 'button',
                             'html': this.yesButton,
-                            'className': 'buttons__proceed button_screen_item'
-                        });
-                        $cms.dom.on(button, 'click', function () {
-                            self.option('yes');
+                            'className': 'buttons__proceed button_screen_item js-onclick-option-yes'
                         });
 
-                        setTimeout(function () {
-                            if (self.el) {
-                                $cms.dom.on(self.el, 'click', function () {
-                                    self.option('yes');
-                                });
-                            }
-                        }, 1000);
+                        // setTimeout(function () {
+                        //     if (self.el) {
+                        //         $cms.dom.on(self.el, 'click', function () {
+                        //             self.option('yes');
+                        //         });
+                        //     }
+                        // }, 1000);
 
                         this.buttonContainerEl.appendChild(button);
                     } else {
-                        setTimeout(function () {
-                            if (self.el) {
-                                $cms.dom.on(self.el, 'click', function () {
-                                    self.option('cancel');
-                                });
-                            }
-                        }, 1000);
+                        // setTimeout(function () {
+                        //     if (self.el) {
+                        //         $cms.dom.on(self.el, 'click', function () {
+                        //             self.option('cancel');
+                        //         });
+                        //     }
+                        // }, 1000);
                     }
                     break;
 
@@ -6718,20 +6750,14 @@
                     button = $cms.dom.create('button', {
                         'type': 'button',
                         'html': this.yesButton,
-                        'className': 'buttons__yes button_screen_item',
+                        'className': 'buttons__yes button_screen_item js-onclick-option-yes',
                         'style': 'font-weight: bold;'
-                    });
-                    $cms.dom.on(button, 'click', function () {
-                        self.option('yes');
                     });
                     this.buttonContainerEl.appendChild(button);
                     button = $cms.dom.create('button', {
                         'type': 'button',
                         'html': this.noButton,
-                        'className': 'buttons__no button_screen_item'
-                    });
-                    $cms.dom.on(button, 'click', function () {
-                        self.option('no');
+                        'className': 'buttons__no button_screen_item js-onclick-option-no'
                     });
                     this.buttonContainerEl.appendChild(button);
                     break;
@@ -6753,24 +6779,21 @@
                         button = $cms.dom.create('button', {
                             'type': 'button',
                             'html': this.yesButton,
-                            'className': 'buttons__yes button_screen_item',
+                            'className': 'buttons__yes button_screen_item js-onclick-option-yes',
                             'css': {
                                 'font-weight': 'bold'
                             }
                         });
-                        $cms.dom.on(button, 'click', function () {
-                            self.option('yes');
-                        });
                         this.buttonContainerEl.appendChild(button);
                     }
 
-                    setTimeout(function () {
-                        if (self.el) {
-                            $cms.dom.on(self.el, 'click', function () {
-                                self.option('cancel');
-                            });
-                        }
-                    }, 1000);
+                    // setTimeout(function () {
+                    //     if (self.el) {
+                    //         $cms.dom.on(self.el, 'click', function () {
+                    //             self.option('cancel');
+                    //         });
+                    //     }
+                    // }, 1000);
                     break;
             }
 
@@ -6820,24 +6843,22 @@
             }
 
             setTimeout(function () { // Timeout needed else keyboard activation of overlay opener may cause instant shutdown also
-                $cms.dom.on(document, 'keyup.modalWindow' + this.uid, self.keyup.bind(this));
-                $cms.dom.on(document, 'mousemove.modalWindow' + this.uid, self.mousemove.bind(this));
+                $cms.dom.on(document, 'keyup.modalWindow' + this.uid, self.keyup.bind(self));
+                $cms.dom.on(document, 'mousemove.modalWindow' + this.uid, self.mousemove.bind(self));
             }, 100);
         },
 
         keyup: function keyup(e) {
-            var keyCode = (e) ? Number(e.which || e.keyCode) : null;
-
-            if (keyCode === 37) {// Left arrow
+            if (e.key === 'ArrowLeft') {
                 this.option('left');
-            } else if (keyCode === 39) {// Right arrow
+            } else if (e.key === 'ArrowRight') {
                 this.option('right');
-            } else if ((keyCode === 13/*enter*/) && (this.yes)) {
+            } else if ((e.key === 'Enter') && (this.yes)) {
                 this.option('yes');
             }
-            if ((keyCode === 13/*enter*/) && (this.finished)) {
+            if ((e.key === 'Enter') && (this.finished)) {
                 this.option('finished');
-            } else if ((keyCode === 27/*esc*/) && (this.cancelButton) && ((this.type === 'prompt') || (this.type === 'confirm') || (this.type === 'lightbox') || (this.type === 'alert'))) {
+            } else if ((e.key === 'Escape') && (this.cancelButton) && ((this.type === 'prompt') || (this.type === 'confirm') || (this.type === 'lightbox') || (this.type === 'alert'))) {
                 this.option('cancel');
             }
         },
