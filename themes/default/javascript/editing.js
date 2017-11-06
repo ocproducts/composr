@@ -795,12 +795,12 @@
                 start = element.value.substring(0, from);
                 end = element.value.substring(to, element.value.length);
 
-                $cms.dom.changeValue(element, start + element.value.substring(from, to) + text + end);
+                element.value = start + element.value.substring(from, to) + text + end;
                 setSelectionRange(element, from + text.length, from + text.length);
             } else {
                 // :(
                 from += 2;
-                $cms.dom.changeValue(element, element.value + text);
+                element.value += text;
                 setSelectionRange(element, from + text.length, from + text.length);
             }
 

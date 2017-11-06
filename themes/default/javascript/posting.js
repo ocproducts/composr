@@ -596,33 +596,23 @@
     }
 
     function doInputUrl(fieldName, va) {
-        $cms.ui.prompt(
-            '{!javascript:ENTER_URL;^}',
-            va,
-            function (va) {
-                if ((va != null) && (va.indexOf('://') === -1)) {
-                    $cms.ui.alert('{!javascript:NOT_A_URL;^}').then(function () {
-                        doInputUrl(fieldName, va);
-                    });
-                    return;
-                }
+        $cms.ui.prompt('{!javascript:ENTER_URL;^}', va, null, '{!comcode:INPUT_COMCODE_url;^}').then(function (url) {
+            url = strVal(url);
+            
+            if (!url.includes('://')) {
+                $cms.ui.alert('{!javascript:NOT_A_URL;^}').then(function () {
+                    doInputUrl(fieldName, url);
+                });
+                return;
+            }
 
-                if (va !== null) {
-                    $cms.ui.prompt(
-                        '{!javascript:ENTER_LINK_NAME;^}',
-                        '',
-                        function (vb) {
-                            var element = document.getElementById(fieldName);
-                            if (vb != null) {
-                                window.insertTextbox(element, '[url=\"' + $cms.filter.comcode(vb) + '\"]' + $cms.filter.comcode(va) + '[/url]');
-                            }
-                        },
-                        '{!comcode:INPUT_COMCODE_url;^}'
-                    );
+            $cms.ui.prompt('{!javascript:ENTER_LINK_NAME;^}', '', null, '{!comcode:INPUT_COMCODE_url;^}').then(function (linkName) {
+                var element = document.getElementById(fieldName);
+                if (linkName != null) {
+                    window.insertTextbox(element, '[url=\"' + $cms.filter.comcode(linkName) + '\"]' + $cms.filter.comcode(url) + '[/url]');
                 }
-            },
-            '{!comcode:INPUT_COMCODE_url;^}'
-        );
+            });
+        });
     }
 
     function doInputPage(fieldName) {
@@ -840,7 +830,7 @@
         }
 
         function handleFormSavingExplicit(event, form) {
-            if (event.keyCode == 83/*s*/ && (navigator.platform.match('Mac') ? event.metaKey : event.ctrlKey) && (!navigator.platform.match('Mac') ? event.ctrlKey : event.metaKey) && (!event.altKey)) {
+            if (event.keyCode === 83/*s*/ && (navigator.platform.match('Mac') ? event.metaKey : event.ctrlKey) && (!navigator.platform.match('Mac') ? event.ctrlKey : event.metaKey) && (!event.altKey)) {
                 //$cms.inform('Doing explicit auto-save');
 
                 event.preventDefault(); // Prevent browser save dialog
@@ -848,7 +838,9 @@
                 // Go through al fields to save
                 var post = '', foundValidatedField = false, temp;
                 for (var i = 0; i < form.elements.length; i++) {
-                    if (form.elements[i].name == 'validated') foundValidatedField = true;
+                    if (form.elements[i].name === 'validated') {
+                        foundValidatedField = true;
+                    }
 
                     if (fieldSupportsAutosave(form.elements[i])) {
                         temp = _handleFormSaving(event, form.elements[i], true);

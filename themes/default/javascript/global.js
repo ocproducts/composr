@@ -7966,11 +7966,11 @@
                 'keydown input[data-cms-invalid-pattern]': 'invalidPattern',
                 'keypress input[data-cms-invalid-pattern]': 'invalidPattern',
 
-                'click textarea[data-textarea-auto-height]': 'doTextareaAutoHeight',
-                'focus textarea[data-textarea-auto-height]': 'doTextareaAutoHeight',
-                'blur textarea[data-textarea-auto-height]': 'doTextareaAutoHeight',
+                // 'click textarea[data-textarea-auto-height]': 'doTextareaAutoHeight',
+                // 'focus textarea[data-textarea-auto-height]': 'doTextareaAutoHeight',
+                // 'blur textarea[data-textarea-auto-height]': 'doTextareaAutoHeight',
+                // 'input textarea[data-textarea-auto-height]': 'doTextareaAutoHeight',
                 'change textarea[data-textarea-auto-height]': 'doTextareaAutoHeight',
-                'input textarea[data-textarea-auto-height]': 'doTextareaAutoHeight',
                 'keyup textarea[data-textarea-auto-height]': 'doTextareaAutoHeight',
                 'keydown textarea[data-textarea-auto-height]': 'doTextareaAutoHeight',
 
