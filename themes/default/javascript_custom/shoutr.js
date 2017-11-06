@@ -60,24 +60,28 @@ function sbChatCheck(roomId, lastMessageId, lastEventId) {
         function sbHandleSignals(ajaxResult) {
             var messages = ajaxResult.childNodes;
 
+            var _sbLastMessageId=window.sbLastMessageId;
+
             // Look through our messages
             for (var i = 0; i < messages.length; i++) {
                 if (messages[i].localName === 'div') {
                     var id = messages[i].getAttribute("id");
-                    if (id > window.sbLastMessageId && window.sbLastMessageId != -1) {
-                        window.sbLastMessageId = id;
-                        if ($cms.dom.html(messages[i]).indexOf('((SHAKE))') !== -1) {
-                            window.doShake();
-                        } else {
-                            window.showGhost($cms.dom.html(messages[i]));
-                        }
+                    if (id > window.sbLastMessageId) {
+                        window.sbLastMessageId = window.parseInt(id);
+                        if (window.sbLastMessageId != -1) {
+                            if ($cms.dom.html(messages[i]).indexOf('((SHAKE))') !== -1) {
+                                window.doShake();
+                            } else {
+                                window.showGhost($cms.dom.html(messages[i]));
+                            }
 
-                        var frames = window.parent.document.getElementsByTagName('iframe');
-                        for (var i = 0; i < frames.length; i++) {
-                            if ((frames[i].src == window.location.href) || (frames[i].contentWindow == window) || ((window.parent.frames[frames[i].id] != undefined) && (window.parent.frames[frames[i].id] == window))) {
-                                var sb = frames[i];
-                                if (sb.contentWindow.location.href.indexOf('posted') === -1) {
-                                    sb.contentWindow.location.reload();
+                            var frames = window.parent.document.getElementsByTagName('iframe');
+                            for (var i = 0; i < frames.length; i++) {
+                                if ((frames[i].src == window.location.href) || (frames[i].contentWindow == window) || ((window.parent.frames[frames[i].id] != undefined) && (window.parent.frames[frames[i].id] == window))) {
+                                    var sb = frames[i];
+                                    if (sb.contentWindow.location.href.indexOf('posted') === -1) {
+                                        sb.contentWindow.location.reload();
+                                    }
                                 }
                             }
                         }
@@ -87,6 +91,6 @@ function sbChatCheck(roomId, lastMessageId, lastEventId) {
         }
     }
 
-    var url = '{$FIND_SCRIPT_NOHTTP;,messages}?action=new&no_reenter_message=1&room_id=' + roomId + "&message_id=" + lastMessageId + "&event_id=" + lastEventId;
+    var url = '{$FIND_SCRIPT_NOHTTP;,messages}?action=new&no_reenter_message=1&room_id=' + roomId + "&message_id=" + ((lastMessageId === null) ? -1 : lastMessageId) + "&event_id=" + lastEventId;
     $cms.doAjaxRequest(url + $cms.$KEEP(), sbChatCheckResponse);
 }

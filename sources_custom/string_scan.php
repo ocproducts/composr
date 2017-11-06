@@ -4680,6 +4680,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         FIELD_TYPE_content_link_multi_x
         FIELD_TYPE_content_link_x
         FIELD_TYPE_date
+        FIELD_TYPE_date_time
+        FIELD_TYPE_time
         FIELD_TYPE_email
         FIELD_TYPE_float
         FIELD_TYPE_guid
@@ -9782,6 +9784,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         SUCCESS
         SUCCESSFUL_CONFIRM
         SUCCESS_NEWSLETTER_AUTO
+        SUCCESS_NEWSLETTER_AUTO_INSTANT
         SUCCESS_SAVE
         SUCCESS_UPLOAD_SYNDICATION_AUTH
         SUGGESTIONS_ONLY

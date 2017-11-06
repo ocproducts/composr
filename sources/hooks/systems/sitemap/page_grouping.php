@@ -379,7 +379,7 @@ class Hook_sitemap_page_grouping extends Hook_sitemap_base
 
                     if (preg_match('#^([^:]*):([^:]*)(:browse|:\w+=|$)#', $child_page_link, $matches) != 0) {
                         // Linking to a page, possibly all entry points under a module
-                        $child_node = $page_sitemap_ob->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $zone, $meta_gather, $child_row);
+                        $child_node = $page_sitemap_ob->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options & ~SITEMAP_GEN_USE_PAGE_GROUPINGS/*groupings already factored in, we don't want to get skipped*/, $zone, $meta_gather, $child_row);
                     } else {
                         // Linking to a deep entry-point
                         $child_node = $entry_point_sitemap_ob->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $zone, $meta_gather, $child_row);

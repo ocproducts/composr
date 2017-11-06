@@ -45,11 +45,11 @@ function init__files()
         define('IGNORE_NONBUNDLED_VERY_SCATTERED', 65536);
         define('IGNORE_NONBUNDLED_EXTREMELY_SCATTERED', 131072);
 
-        define('FILE_WRITE_FAILURE_SILENT', 0);
-        define('FILE_WRITE_FAILURE_SOFT', 1);
-        define('FILE_WRITE_FAILURE_HARD', 2);
-        define('FILE_WRITE_FIX_PERMISSIONS', 4);
-        define('FILE_WRITE_SYNC_FILE', 8);
+        define('FILE_WRITE_FAILURE_SILENT', 1);
+        define('FILE_WRITE_FAILURE_SOFT', 2);
+        define('FILE_WRITE_FAILURE_HARD', 4);
+        define('FILE_WRITE_FIX_PERMISSIONS', 8);
+        define('FILE_WRITE_SYNC_FILE', 16);
     }
 }
 
@@ -62,7 +62,7 @@ function init__files()
  * @param  integer $retry_depth How deep it is into retrying if somehow the data did not get written
  * @return boolean Success status
  */
-function cms_file_put_contents_safe($path, $contents, $flags = 2, $retry_depth = 0)
+function cms_file_put_contents_safe($path, $contents, $flags = 4, $retry_depth = 0)
 {
     $num_bytes_to_save = strlen($contents);
 
@@ -193,7 +193,7 @@ function cms_file_put_contents_safe($path, $contents, $flags = 2, $retry_depth =
  * @param  integer $flags FILE_WRITE_* flags
  * @return boolean Success status (always false)
  */
-function _cms_file_put_contents_safe_failed($error_message, $path, $flags = 2)
+function _cms_file_put_contents_safe_failed($error_message, $path, $flags = 4)
 {
     static $looping = false;
     if ($looping) {
@@ -202,6 +202,7 @@ function _cms_file_put_contents_safe_failed($error_message, $path, $flags = 2)
     $looping = true;
 
     if (($flags & FILE_WRITE_FAILURE_SOFT) != 0) {
+        require_code('site');
         attach_message($error_message, 'warn', false, true);
     }
 
@@ -692,7 +693,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
             }
             foreach ($hooks as $hook => $place) {
                 if ($place == 'sources_custom') {
-                    if (function_exists('filter_naughty_harsh')) {
+                    if (function_exists('extract_module_functions')) {
                         require_code('addons');
                         $addon_info = read_addon_info($hook);
                         $addon_files = array_merge($addon_files, array_map('strtolower', $addon_info['files']));

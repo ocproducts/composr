@@ -310,6 +310,11 @@ function filter_naughty($in)
     return $in;
 }
 
+function filter_naughty_harsh($in)
+{
+    return $in;
+}
+
 function do_lang($x, $a = null, $b = null, $c = null)
 {
     return do_lang_tempcode($x, $a, $b, $c);

@@ -55,7 +55,7 @@ class Hook_rss_wiki
         foreach ($rows as $row) {
             $id = strval($row['id']);
 
-            if (!has_category_access(get_member(), 'wiki_page', strval($row['id']))) {
+            if (!has_category_access(get_member(), 'wiki_page', $id)) {
                 continue;
             }
 

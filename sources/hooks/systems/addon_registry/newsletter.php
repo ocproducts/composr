@@ -353,6 +353,7 @@ class Hook_addon_registry_newsletter
                 'BLOCK_ID' => lorem_word(),
                 'PASSWORD' => lorem_phrase(),
                 'NEWSLETTER_TITLE' => lorem_word(),
+                'PATH_EXISTS' => true,
             )), null, '', true)
         );
     }

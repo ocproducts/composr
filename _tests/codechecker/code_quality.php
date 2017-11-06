@@ -1411,7 +1411,13 @@ function check_call($c, $c_pos, $class = null, $function_guard = '')
         return $ret['type'];
     }
     if (!$found) {
-        if (isset($GLOBALS['API'])) {
+        if (count($FUNCTION_SIGNATURES['__global']['functions']) == 0) {
+            static $warned_missing_api_once = false;
+            if (!$warned_missing_api_once) {
+                log_warning('No API function metabase available', $c_pos);
+            }
+            $warned_missing_api_once = true;
+        } elseif (isset($GLOBALS['API'])) {
             if (
                 (
                     ($GLOBALS['OK_EXTRA_FUNCTIONS'] === null) ||

@@ -65,44 +65,25 @@ public class Main {
             }
             if (!new File(textEditorPath).exists()) {
                 if (new File(
-                        "C:\\Program Files\\Macromedia\\Dreamweaver 7\\Dreamweaver.exe").
+                        "C:\\Program Files\\Macromedia\\Dreamweaver 9\\Dreamweaver.exe").
                         exists()) {
-                    textEditorPath
-                            = "C:\\Program Files\\Macromedia\\Dreamweaver 7\\Dreamweaver.exe";
+                    textEditorPath = "C:\\Program Files\\Macromedia\\Dreamweaver 9\\Dreamweaver.exe";
                 } else {
-                    if (new File(
-                            "C:\\Program Files\\Macromedia\\Dreamweaver 8\\Dreamweaver.exe").
+                    if (new File("C:\\Program Files\\jedit\\jedit.exe").
                             exists()) {
-                        textEditorPath
-                                = "C:\\Program Files\\Macromedia\\Dreamweaver 8\\Dreamweaver.exe";
+                        textEditorPath = "C:\\Program Files\\jedit\\jedit.exe";
                     } else {
                         if (new File(
-                                "C:\\Program Files\\Macromedia\\Dreamweaver 9\\Dreamweaver.exe").
-                                exists()) {
-                            textEditorPath
-                                    = "C:\\Program Files\\Macromedia\\Dreamweaver 9\\Dreamweaver.exe";
+                                "C:\\Program Files\\ConTEXT\\ConTEXT.exe").exists()) {
+                            textEditorPath = "C:\\Program Files\\ConTEXT\\ConTEXT.exe";
                         } else {
-                            if (new File("C:\\Program Files\\jedit\\jedit.exe").
-                                    exists()) {
-                                textEditorPath
-                                        = "C:\\Program Files\\jedit\\jedit.exe";
+                            if (new File("/usr/bin/kate").exists()) {
+                                textEditorPath = "/usr/bin/kate";
                             } else {
                                 if (new File(
-                                        "C:\\Program Files\\ConTEXT\\ConTEXT.exe").
+                                        "C:\\Program Files (x86)\\Codelobster Software\\CodelobsterPHPEdition\\ClPhpEd.exe").
                                         exists()) {
-                                    textEditorPath
-                                            = "C:\\Program Files\\ConTEXT\\ConTEXT.exe";
-                                } else {
-                                    if (new File("/usr/bin/kate").exists()) {
-                                        textEditorPath = "/usr/bin/kate";
-                                    } else {
-                                        if (new File(
-                                                "C:\\Program Files (x86)\\Codelobster Software\\CodelobsterPHPEdition\\ClPhpEd.exe").
-                                                exists()) {
-                                            textEditorPath
-                                                    = "C:\\Program Files (x86)\\Codelobster Software\\CodelobsterPHPEdition\\ClPhpEd.exe";
-                                        }
-                                    }
+                                    textEditorPath = "C:\\Program Files (x86)\\Codelobster Software\\CodelobsterPHPEdition\\ClPhpEd.exe";
                                 }
                             }
                         }

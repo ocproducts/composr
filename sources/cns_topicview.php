@@ -690,7 +690,7 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
         $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => 'fc13d12cfe58324d78befec29a663b4f', 'REL' => 'add reply nofollow', 'IMMEDIATE' => false, 'IMG' => ($topic_info['is_threaded'] == 1) ? 'buttons__new_reply' : 'buttons__new_quote', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url, 'ONCLICK_CALL_FUNCTIONS' => $onclick_call_functions)));
 
         if ($topic_info['is_threaded'] == 1) { // Second button for replying with explicit quote
-            $_title = do_lang_tempcode('QUOTE_POST');
+            $_title = do_lang_tempcode('_QUOTE_POST');
             $_title_full = new Tempcode();
             $_title_full->attach($_title);
             $_title_full->attach(do_lang_tempcode('ID_NUM', strval($_postdetails['id'])));

@@ -326,6 +326,7 @@ class css_file_test_set extends cms_test_case
             'block_main_members__media',
             'block_main_members__photos',
             'blue',
+            'clearfix',
             'box___block_main_content',
             'box___block_menu_embossed',
             'box___standardbox_accordion',
