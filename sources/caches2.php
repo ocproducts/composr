@@ -88,7 +88,7 @@ function _delete_cache_entry($cached_for, $identifier = null, $member_id = null)
 }
 
 /**
- * Request that CRON loads up a block's caching in the background.
+ * Request that Cron loads up a block's caching in the background.
  *
  * @param  ID_TEXT $codename The codename of the block
  * @param  array $map Parameters to call up block with if we have to defer caching

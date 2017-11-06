@@ -244,7 +244,7 @@ function preview_script()
 }
 
 /**
- * Script to perform Composr CRON jobs called by the real CRON.
+ * Script to perform Composr Cron jobs called by the real Cron.
  *
  * @param  PATH $caller File path of the cron_bridge.php script
  *
@@ -256,7 +256,7 @@ function cron_bridge_script($caller)
         @set_time_limit(1000); // May get overridden lower later on
     }
 
-    // In query mode, Composr will just give advice on CRON settings to use
+    // In query mode, Composr will just give advice on Cron settings to use
     if (get_param_integer('querymode', 0) == 1) {
         header('Content-type: text/plain; charset=' . get_charset());
         safe_ini_set('ocproducts.xss_detect', '0');
@@ -280,7 +280,7 @@ function cron_bridge_script($caller)
     }
 
     if (intval(get_value('last_cron')) < time() - 60 * 60 * 12) {
-        delete_cache_entry('main_staff_checklist'); // So the block knows CRON has run
+        delete_cache_entry('main_staff_checklist'); // So the block knows Cron has run
     }
 
     $limit_hook = get_param_string('limit_hook', '');

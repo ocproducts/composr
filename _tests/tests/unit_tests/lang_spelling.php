@@ -314,6 +314,11 @@ class lang_spelling_test_set extends cms_test_case
             $this->assertTrue(false, 'Use dashes for end-of-life, ' . $file . '.');
         }
 
+        // Cron
+        if (preg_match('#(^|[^\w])(cron|CRON)([^\w]|$)#', $string) != 0) {
+            $this->assertTrue(false, 'The word \'Cron\' was misspelled in ' . $file . '.');
+        }
+
         // Old-fashioned words
         if (stripos($string, 'amongst') !== false) {
             $this->assertTrue(false, 'The word \'amongst\' was used in ' . $file . '. This should be changed to \'among\'.');

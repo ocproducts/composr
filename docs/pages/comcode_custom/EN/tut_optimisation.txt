@@ -570,7 +570,7 @@ If you are planning on using Amazon instances, you can resize them after-the-fac
 http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-resize.html
 You effectively have to take it down, then get Amazon to shift over your hard disk image to where they need to put it for a larger instance.
 
-[title="2"]Debugging CRON performance[/title]
+[title="2"]Debugging Cron performance[/title]
 
 If you find the scheduler is running slowly, you can find out which individual hook is the cause by trying each one individually, like:
 [tt]http://yourbaseurl/data/cron_bridge.php?limit_hook=calendar[/tt]

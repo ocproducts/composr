@@ -19,7 +19,7 @@
 class Hook_cron_classifieds
 {
     /**
-     * Run function for CRON hooks. Searches for tasks to perform.
+     * Run function for Cron hooks. Searches for tasks to perform.
      */
     public function run()
     {
@@ -57,7 +57,7 @@ class Hook_cron_classifieds
                     delete_cache_entry('main_recent_cc_entries');
                     require_code('catalogues2');
                     calculate_category_child_count_cache($entry['cc_id']);
-                } elseif (($entry['ce_last_moved'] < $time + 60 * 60 * 24) && ($entry['ce_last_moved'] > $time + 60 * 60 * 23)) { /* one hour time window; assumes CRON runs at least once per hour */
+                } elseif (($entry['ce_last_moved'] < $time + 60 * 60 * 24) && ($entry['ce_last_moved'] > $time + 60 * 60 * 23)) { /* one hour time window; assumes Cron runs at least once per hour */
                     // Expiring in 24 hours
                     require_code('notifications');
                     require_lang('classifieds');

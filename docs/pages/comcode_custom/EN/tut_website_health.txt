@@ -28,7 +28,7 @@ In fact, you can detect problems stemming from many kinds of situation, includin
 
 [title="3"]Operation[/title]
 
-The Health Check can be run manually, or regularly run in the background (requires CRON to be set up and for you to enable the "Health Check results" notification).
+The Health Check can be run manually, or regularly run in the background (requires Cron to be set up and for you to enable the "Health Check results" notification).
 
 [title="3"]Check sections[/title]
 
@@ -42,8 +42,8 @@ At the time of writing the list of check sections is:
  - Build mistakes \ Incomplete content
  - Build mistakes \ Local linking
  - Build mistakes \ Manual checks for web standards
- - CRON \ CRON set up
- - CRON \ Slow CRON
+ - Cron \ Cron set up
+ - Cron \ Slow Cron
  - Deployment mistakes \ Site open-status
  - Domains \ DNS resolution
  - Domains \ Domain expiry
@@ -116,12 +116,12 @@ There are a large number of configuration options available, under Admin Zone > 
 This includes:
  - setting which pages to do deep scans of
  - calibrating the checks (setting thresholds)
- - configuring background ("CRON") checks, including the frequency, and which check sections to run
+ - configuring background ("Cron") checks, including the frequency, and which check sections to run
 
 [title="3"]Tips[/title]
 
-Make sure that your CRON is running the same PHP options as normal web requests, otherwise you may get spurious errors caused by differences in configuration.
-CRON configuration is documented in the [page="_SEARCH:tut_configuration"]Basic configuration and getting started[/url] tutorial, and this includes sample commands that will share your [tt].user.ini[/tt] PHP configuration.
+Make sure that your Cron is running the same PHP options as normal web requests, otherwise you may get spurious errors caused by differences in configuration.
+Cron configuration is documented in the [page="_SEARCH:tut_configuration"]Basic configuration and getting started[/url] tutorial, and this includes sample commands that will share your [tt].user.ini[/tt] PHP configuration.
 
 [title="3"]What if things break too badly for the Health Check to run?[/title]
 

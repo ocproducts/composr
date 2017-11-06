@@ -2114,7 +2114,7 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
 }
 
 /**
- * Get the Tempcode for a date input, or if cron is not on, return blank.
+ * Get the Tempcode for a date input, or if Cron is not on, return blank.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field

@@ -4,22 +4,22 @@ Being able to set up timed content on your Composr website is possibly something
 
 As Arvixe have kindly sponsored many of our tutorials, we will explain it directly for [url="Arvixe hosting"]https://www.arvixe.com/ocportal_hosting[/url]. Other cPanel-based hosting is the same, however.
 
-The first task is you need to do is known as "setting up a cron job". To do this you will need to log in to your Arvixe webhosting cPanel.
+The first task is you need to do is known as "setting up a Cron job". To do this you will need to log in to your Arvixe webhosting cPanel.
 
 Once you have logged into cPanel scroll down to the advanced section which is the second last section in the standard cPanel on Arvixe hosting. Click on the "Cron Jobs" option which will take you to a screen which will have a section which looks like this:
 [media thumb="0" description="Setting Cron in cPanel"]data_custom/images/docs/sup_setting_timed_content_for_composr_and_your_arvixe_webhosting/a99fdbadd75b4964d8f19460bee58de8.png[/media]
 
-To set up the cron job you need to fill in all of the options. Depending on how regularly you will want to post scheduled content will determine what settings you use in this section. You can set cron to run as often as you like from once every minute to once a month. In most cases once every 5 minutes will be more than adequate. To set this you need to input */5 in the minute box which is every 5 minutes. If this was */7 it would run every 7 minutes. You also need to fill in the hour, day month and weekday options. As you want it to run every hour, every day, every month and every weekday you need to put "*" in each of these boxes.
+To set up the Cron job you need to fill in all of the options. Depending on how regularly you will want to post scheduled content will determine what settings you use in this section. You can set Cron to run as often as you like from once every minute to once a month. In most cases once every 5 minutes will be more than adequate. To set this you need to input */5 in the minute box which is every 5 minutes. If this was */7 it would run every 7 minutes. You also need to fill in the hour, day month and weekday options. As you want it to run every hour, every day, every month and every weekday you need to put "*" in each of these boxes.
 
-If you want the cron to run very minute put "*" in all of the boxes or choose the every 1 minute option in the common settings.
+If you want the Cron to run very minute put "*" in all of the boxes or choose the every 1 minute option in the common settings.
 
 [media width="150" description="Adding the Cronjob" float="right"]data_custom/images/docs/sup_setting_timed_content_for_composr_and_your_arvixe_webhosting/12b04614d68047cd137a544f6a7574db.png[/media]
-The last part of this section of the tutorial is filling in the command box. In this box you need to tell cron to call the file which will tell Composr to check for scheduled content. In Composr the file is [tt]cron_bridge.php[/tt] and it is located in the data directory. So the command line will look something like this:
+The last part of this section of the tutorial is filling in the command box. In this box you need to tell Cron to call the file which will tell Composr to check for scheduled content. In Composr the file is [tt]cron_bridge.php[/tt] and it is located in the data directory. So the command line will look something like this:
 [code="Bash"]
 php /home/ACCOUNTNAME/public_html/data/cron_bridge.php
 [/code]
 
-The [tt]php[/tt] is telling cron it is calling a php file and the second part is the path to the file within your hosting. You can find the first part by looking at the stats section of your cPanel home screen which will tell you your home directory. The next part [tt]public_html[/tt] is where your root directory of your webhosting files will be and the [tt]data/cron_bridge.php[/tt] is the path of the file within your hosting. If you have not installed your Composr website on the root of your hosting you will need to add the directory of the website into the command line too.
+The [tt]php[/tt] is telling Cron it is calling a php file and the second part is the path to the file within your hosting. You can find the first part by looking at the stats section of your cPanel home screen which will tell you your home directory. The next part [tt]public_html[/tt] is where your root directory of your webhosting files will be and the [tt]data/cron_bridge.php[/tt] is the path of the file within your hosting. If you have not installed your Composr website on the root of your hosting you will need to add the directory of the website into the command line too.
 
 For example if your website is installed into a [tt]WEB[/tt] directory then the command line would be:
 [code="Bash"]

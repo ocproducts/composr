@@ -24,7 +24,7 @@
 class Hook_cron_implicit_usergroup_sync
 {
     /**
-     * Run function for CRON hooks. Searches for tasks to perform.
+     * Run function for Cron hooks. Searches for tasks to perform.
      */
     public function run()
     {
