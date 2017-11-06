@@ -14316,7 +14316,7 @@
         var placeholderField = document.getElementById(name),
             plObj = placeholderField.pluploadObject;
         
-        $cms.dom.changeVal(placeholderField, value);
+        $cms.dom.changeValue(placeholderField, value);
         
         if ((plObj == null) || (plObj.settings == null)) {
             return;

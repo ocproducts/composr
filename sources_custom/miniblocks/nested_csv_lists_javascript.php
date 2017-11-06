@@ -93,13 +93,13 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
         var changesMadeAlready = true;
 
         if (cpfField.csv_parent_heading !== null)  { // We need to look at parent to filter possibilities, if we have one
-            var currentValue = $cms.dom.val(selectEl);
+            var currentValue = $cms.dom.value(selectEl);
 
             $cms.dom.empty(selectEl);  // Wipe list contents
             var option;
 
             var parentCpfFieldElement = findCpfFieldElement(selectEl.form, cpfFields[cpfField.csv_parent_heading]);
-            var currentParentValue = $cms.dom.val(parentCpfFieldElement);
+            var currentParentValue = $cms.dom.value(parentCpfFieldElement);
             if (currentParentValue.length === 0) { // Parent unset, so this is
                 option = document.createElement('option');
                 selectEl.add(option, null);

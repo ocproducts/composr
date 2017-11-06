@@ -2370,7 +2370,7 @@
                 return values;
             }
 
-            el.value = strVal((typeof value === 'function') ? value.call(el, $cms.dom.val(el), el) : value);
+            el.value = strVal((typeof value === 'function') ? value.call(el, $cms.dom.value(el), el) : value);
         },
         /**
          * Also triggers the 'change' event
@@ -2379,10 +2379,10 @@
          * @param value
          * @returns {*}
          */
-        changeVal: function changeVal(el, value) {
+        changeValue: function changeValue(el, value) {
             el = elArg(el);
 
-            el.value = strVal((typeof value === 'function') ? value.call(el, $cms.dom.val(el), el) : value);
+            el.value = strVal((typeof value === 'function') ? value.call(el, $cms.dom.value(el), el) : value);
             $cms.dom.trigger(el, 'change');
         },
 
@@ -4305,7 +4305,7 @@
         arrVal(form.elements).forEach(function (field) {
             name = field.name;
             if (name && (field.localName !== 'fieldset') && !field.disabled && !(field.type in serializeExcludedTypes) && (!['radio', 'checkbox'].includes(field.type) || field.checked)) {
-                add($cms.dom.val(field));
+                add($cms.dom.value(field));
             }
         });
 
@@ -4869,9 +4869,9 @@
 
         if ((scrollHeight > 5) && (currentHeight < scrollHeight) && (offsetHeight < scrollHeight)) {
             $cms.dom.css(textAreaEl, {
-                height: scrollHeight + 'px',
+                height: (scrollHeight + 2) + 'px',
                 boxSizing: 'border-box',
-                overflowY: 'hidden'
+                overflowY: 'auto'
             });
             $cms.dom.triggerResize();
         }

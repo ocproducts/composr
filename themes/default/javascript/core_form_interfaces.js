@@ -1080,7 +1080,7 @@
 
         $cms.dom.on(container, 'click', '.js-click-clear-name-stub-input', function (e) {
             var input = $cms.dom.$('#' + nameStub + '_' + index);
-            $cms.dom.changeVal(input, '');
+            $cms.dom.changeValue(input, '');
         });
 
 
