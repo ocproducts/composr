@@ -10620,6 +10620,16 @@
     window.internaliseInfiniteScrollingGo = internaliseInfiniteScrollingGo;
     window.internaliseAjaxBlockWrapperLinks = internaliseAjaxBlockWrapperLinks;
 
+    /*
+     Faux frames and faux scrolling
+     */
+    $cms.dom.infiniteScrollingBlock = infiniteScrollingBlock;
+    $cms.dom.infiniteScrollingBlockHold = infiniteScrollingBlockHold;
+    $cms.dom.infiniteScrollingBlockUnhold = infiniteScrollingBlockUnhold;
+    $cms.dom.internaliseInfiniteScrolling = internaliseInfiniteScrolling;
+    $cms.dom.internaliseInfiniteScrollingGo = internaliseInfiniteScrollingGo;
+    $cms.dom.internaliseAjaxBlockWrapperLinks = internaliseAjaxBlockWrapperLinks;
+
     var infiniteScrollPending = false, // Blocked due to queued HTTP request
         infiniteScrollBlocked = false, // Blocked due to event tracking active
         infiniteScrollMouseHeld = false;
