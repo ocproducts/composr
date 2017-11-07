@@ -3729,16 +3729,14 @@
                 return;
             }
 
-            var iNew = doc.createElement('img');
-            iNew.src = doc.getElementById('loading_image').src;
-
-            var iDefault = doc.getElementById('loading_image');
-            if (iDefault) {
-                iNew.className = iDefault.className;
-                iNew.alt = iDefault.alt;
-                iNew.id = iDefault.id;
-                iDefault.parentNode.replaceChild(iNew, iDefault);
-            }
+            var iDefault = doc.getElementById('loading_image'),
+                iNew = doc.createElement('img');
+            
+            iNew.src = iDefault.src;
+            iNew.className = iDefault.className;
+            iNew.alt = iDefault.alt;
+            iNew.id = iDefault.id;
+            iDefault.parentNode.replaceChild(iNew, iDefault);
         });
     };
 
@@ -7966,10 +7964,8 @@
                 'keydown input[data-cms-invalid-pattern]': 'invalidPattern',
                 'keypress input[data-cms-invalid-pattern]': 'invalidPattern',
 
-                // 'click textarea[data-textarea-auto-height]': 'doTextareaAutoHeight',
-                // 'focus textarea[data-textarea-auto-height]': 'doTextareaAutoHeight',
-                // 'blur textarea[data-textarea-auto-height]': 'doTextareaAutoHeight',
-                // 'input textarea[data-textarea-auto-height]': 'doTextareaAutoHeight',
+                'click textarea[data-textarea-auto-height]': 'doTextareaAutoHeight',
+                'input textarea[data-textarea-auto-height]': 'doTextareaAutoHeight',
                 'change textarea[data-textarea-auto-height]': 'doTextareaAutoHeight',
                 'keyup textarea[data-textarea-auto-height]': 'doTextareaAutoHeight',
                 'keydown textarea[data-textarea-auto-height]': 'doTextareaAutoHeight',

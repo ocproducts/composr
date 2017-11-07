@@ -401,7 +401,7 @@
                 var form = $cms.dom.$(container, '#main_form');
 
                 form.action = checkbox.checked ? params.url : params.iframeUrl;
-                form.elements.opens_below.value = checkbox.checked ? '0' : '1';
+                form.elements['opens_below'].value = checkbox.checked ? '0' : '1';
                 form.target = checkbox.checked ? '_blank' : 'iframe_under';
             });
         }
@@ -1418,9 +1418,7 @@
         function foundChangeHandler() {
             if (iframe) {
                 if (iframe.contentDocument && (iframe.contentDocument.getElementsByTagName('form').length !== 0)) {
-                    $cms.ui.confirm(
-                        '{!Q_SURE_LOSE;^}'
-                    ).then(function (result) {
+                    $cms.ui.confirm('{!Q_SURE_LOSE;^}').then(function (result) {
                         if (result) {
                             _simplifiedFormContinueSubmit(iframe, formCatSelector);
                         }
