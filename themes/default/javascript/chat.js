@@ -256,20 +256,13 @@
 
     $cms.templates.chatSiteWideImPopup = function (params) {
         window.detectIfChatWindowClosedChecker = setInterval(function () {
-            if (detectIfChatWindowClosed !== undefined) {
-                detectIfChatWindowClosed();
-            }
+            detectIfChatWindowClosed();
         }, 5);
 
         function detectIfChatWindowClosed(dieOnLost, becomeAutonomousOnLost) {
             var lostConnection = false;
             try {
-                /*if ($cms.browserMatches('non_concurrent'))    Pointless as document.write doesn't work on iOS without tabbing back and forth, so initial load is horribly slow in first place
-                 {
-                 throw 'No multi-process on iOS';
-                 }*/
-
-                if ((!window.opener) || (!window.opener.document)) {
+                if (!window.opener || !window.opener.document) {
                     lostConnection = true;
                 } else {
                     var roomId = findCurrentImRoom();
@@ -287,10 +280,8 @@
                                 chatCheck(false, window.lastMessageId, window.lastEventId);
                                 window.alreadyAutonomous = false;
                             }
-
-                            if (window.opener.console.log !== undefined) {
-                                window.opener.console.log('Reattaching chat window to re-navigated master window.');
-                            }
+                            
+                            window.opener.console.log('Reattaching chat window to re-navigated master window.');
                         }
                     }
                 }
@@ -337,7 +328,7 @@
         });
     };
 
-    $cms.templates.blockSideShoutbox = function (params, container) {
+    $cms.templates.blockSideShoutbox = function blockSideShoutbox(params, container) {
         internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.wrapperId), [], {}, false, true);
 
         $cms.dom.on(container, 'submit', 'form.js-form-submit-side-shoutbox', function (e, form) {
@@ -359,13 +350,11 @@
         window.topWindow = window;
         window.lobbyLink = params.lobbyLink;
         window.participants = '';
-
-        $cms.ready.push(function () {
-            if (!window.loadFromRoomId) { // Only if not in chat lobby or chatroom, so as to avoid conflicts
-                beginImChatting();
-            }
-        });
-
+        
+        if (!window.loadFromRoomId) { // Only if not in chat lobby or chatroom, so as to avoid conflicts
+            beginImChatting();
+        }
+        
         function beginImChatting() {
             window.loadFromRoomId = -1;
             if ((window.chatCheck)) {

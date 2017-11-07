@@ -286,7 +286,7 @@
             replaceCommentsFormWithAjax(params.options, params.hash, 'comments_form', 'comments_wrapper');
 
             if (wrapper) {
-                internaliseAjaxBlockWrapperLinks(urlStem, wrapper, ['start_comments', 'max_comments'], {});
+                internaliseAjaxBlockWrapperLinks(urlStem, wrapper, ['^start_comments$', '^max_comments$'], {});
             }
 
             // Infinite scrolling hides the pagination when it comes into view, and auto-loads the next link, appending below the current results

@@ -7240,7 +7240,7 @@
      * @returns { Promise }
      */
     function doAjaxRequest(url, callback, post) {
-        url = $cms.url(strVal(url)).toString();
+        url = $cms.url(url).toString();
 
         return new Promise(function (resolvePromise) {
             var xhr = new XMLHttpRequest();
@@ -10366,7 +10366,7 @@
             infiniteScrollFunc;
         
         if (wrapperEl) {
-            internaliseAjaxBlockWrapperLinks(blockCallUrl, wrapperEl, ['[^_]*_start', '[^_]*_max'], {});
+            internaliseAjaxBlockWrapperLinks(blockCallUrl, wrapperEl, ['^[^_]*_start$', '^[^_]*_max$'], {});
 
             if (infiniteScrollCallUrl) {
                 infiniteScrollFunc = internaliseInfiniteScrolling.bind(undefined, infiniteScrollCallUrl, wrapperEl);
@@ -10431,7 +10431,7 @@
         if (onclickCallFunctions != null) {
             $cms.dom.on(btn, 'click', function (e) {
                 e.preventDefault();
-                $cms.executeJsFunctionCalls(onclickCallFunctions, btn)
+                $cms.executeJsFunctionCalls(onclickCallFunctions, btn);
             });
         }
     };
@@ -10839,10 +10839,9 @@
     function internaliseAjaxBlockWrapperLinks(urlStem, blockElement, lookFor, extraParams, append, formsToo, scrollToTop) {
         urlStem = strVal(urlStem);
         lookFor = arrVal(lookFor);
-        extraParams || (extraParams = {});
-        append = !!append;
-        formsToo = !!formsToo;
-        scrollToTop = boolVal(scrollToTop, true);
+        append = Boolean(append);
+        formsToo = Boolean(formsToo);
+        scrollToTop = (scrollToTop !== undefined) ? Boolean(scrollToTop) : true;
 
         if (!blockElement) {
             return;
@@ -10889,56 +10888,62 @@
         });
 
         function submitFunc(e) {
-            var urlStub = '', j, key,
-                href = (this.localName === 'a') ? this.href : this.action;
+            var blockCallUrl = $cms.url(urlStem),
+                hrefUrl = $cms.url((this.localName === 'a') ? this.href : this.action);
 
             e.preventDefault();
 
             // Any parameters matching a pattern must be sent in the URL to the AJAX block call
-            for (j = 0; j < lookFor.length; j++) {
-                var matches = href.match(new RegExp('[&\?](' + lookFor[j] + ')=([^&]*)'));
-                if (matches) {
-                    urlStub += urlStem.includes('?') ? '&' : '?';
-                    urlStub += matches[1] + '=' + matches[2];
-                }
-            }
+            Array.from(hrefUrl.searchParams.entries()).forEach(function (param) {
+                var paramName = param[0],
+                    paramValue = param[1];
+
+                lookFor.forEach(function (pattern) {
+                    pattern = new RegExp(pattern);
+                    
+                    if (pattern.test(paramName)) {
+                        blockCallUrl.searchParams.set(paramName, paramValue);
+                    }
+                });
+            });
             
             if (extraParams != null) {
-                for (key in extraParams) {
-                    urlStub += urlStem.includes('?') ? '&' : '?';
-                    urlStub += key + '=' + encodeURIComponent(strVal(extraParams[key]));
+                for (var key in extraParams) {
+                    blockCallUrl.searchParams.set(key, extraParams[key]);
                 }    
             }
             
             // Any POST parameters?
-            var postParams = null, param;
+            var j, postParams, paramName, paramValue;
 
             if (this.localName === 'form') {
-                postParams = '';
+                if (this.method.toLowerCase() === 'post') {
+                    postParams = '';
+                }
+                
                 for (j = 0; j < this.elements.length; j++) {
                     if (this.elements[j].name) {
-                        param = this.elements[j].name + '=' + encodeURIComponent($cms.form.cleverFindValue(this, this.elements[j]));
+                        paramName = this.elements[j].name;
+                        paramValue = $cms.form.cleverFindValue(this, this.elements[j]);
 
-                        if (!this.method || (this.method.toLowerCase() !== 'get')) {
+                        if (this.method.toLowerCase() === 'post') {
                             if (postParams !== '') {
                                 postParams += '&';
                             }
-                            postParams += param;
+                            postParams += paramName + '=' + encodeURIComponent(paramValue);
                         } else {
-                            urlStub += urlStem.includes('?') ? '&' : '?';
-                            urlStub += param;
+                            blockCallUrl.searchParams.set(paramName, paramValue);
                         }
                     }
                 }
             }
+
+            hrefUrl.searchParams.delete('ajax');
+            hrefUrl.searchParams.delete('zone');
             
             try {
-                href = $cms.url(href);
-                href.searchParams.delete('ajax');
-                href.searchParams.delete('zone');
-                
                 window.hasJsState = true;
-                window.history.pushState({ js: true }, document.title, href.toString());
+                window.history.pushState({ js: true }, document.title, hrefUrl.toString());
             } catch (ignore) {
                 // Exception could have occurred due to cross-origin error (e.g. "Failed to execute 'pushState' on 'History':
                 // A history state object with URL 'https://xxx' cannot be created in a document with origin 'http://xxx'")
@@ -10947,7 +10952,7 @@
             $cms.ui.clearOutTooltips();
 
             // Make AJAX block call
-            $cms.callBlock(urlStem + urlStub, '', blockElement, append, false, postParams).then(function () {
+            $cms.callBlock(blockCallUrl.toString(), '', blockElement, append, false, postParams).then(function () {
                 if (scrollToTop) {
                     window.scrollTo(0, blockPosY);
                 }
