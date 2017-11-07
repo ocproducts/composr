@@ -991,6 +991,8 @@
         }
 
         if ($cms.isNumeric(to)) {
+            to = Number(to);
+            
             for (i = 0; i < sections.length; i++) {
                 section = document.getElementById(id + '_section_' + sections[i]);
                 if (section) {
@@ -1004,7 +1006,7 @@
             currentPos += to;
         } else {
             for (i = 0; i < sections.length; i++) {
-                if (sections[i] == to) {
+                if (sections[i] === to) {
                     currentPos = i;
                     break;
                 }
