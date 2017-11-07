@@ -1379,33 +1379,6 @@
             delete _onced[flag][uid];
         });
     }
-
-    /**
-     * @param usp { URLSearchParams }
-     * @returns {object}
-     */
-    function entriesFromUsp(usp) {
-        var entries = arrayFromIterable(usp.entries()),
-            i, entryName, entryValue, params = {};
-
-        for (i = 0; i < entries.length; i++) {
-            entryName = entries[i][0];
-            entryValue = entries[i][1];
-
-            if (!(entryName in params)) {
-                params[entryName] = entryValue;
-            } else { // Multiple values
-                if (!Array.isArray(params[entryName])) {
-                    params[entryName] = [params[entryName]];
-                }
-
-                params[entryName].push(entryValue);
-            }
-        }
-
-        return params;
-    }
-
     /**
      * @param iterable
      * @returns { Array }
@@ -1450,7 +1423,7 @@
     });
 
     /**
-     * @param relativeUrl
+     * @param relativeUrl - Pass a relative URL but an absolute url works as well for robustness' sake
      * @returns {string}
      */
     function baseUrl(relativeUrl) {
@@ -1460,7 +1433,14 @@
             return $cms.$BASE_URL();
         }
         
-        return $cms.url(relativeUrl).toString();
+        var url = $cms.url(relativeUrl).toString();
+        
+        if (window.location.protocol === 'https:') {
+            // Match protocol with the current page if using SSL
+            url = url.replace(/^http\:/, 'https:');
+        }
+        
+        return url;
     }
     
     function getPageName() {
@@ -1569,7 +1549,7 @@
         }
 
         url = strVal(url);
-        target = strVal(target, '_self');
+        target = strVal(target) || '_self';
 
         if (!url) {
             return;
@@ -10893,9 +10873,9 @@
                 hrefUrl = $cms.url((this.localName === 'a') ? this.href : this.action);
             
             e.preventDefault();
-
+            
             // Any parameters matching a pattern must be sent in the URL to the AJAX block call
-            Array.from(hrefUrl.searchParams.entries()).forEach(function (param) {
+            eachIter(hrefUrl.searchParams.entries(), function (param) {
                 var paramName = param[0],
                     paramValue = param[1];
 

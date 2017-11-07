@@ -547,11 +547,18 @@
             shockerTick(id, time, params.maxColor, params.minColor);
         }, time);
     };
-
-    $cms.templates.comcodeSectionController = function (params) {
-        var container = this,
-            passId = $cms.filter.id(params.passId),
-            id = 'a' + passId + '_sections';
+    
+    $cms.views.ComcodeSectionController = ComcodeSectionController;
+    /**
+     * @memberof $cms.views
+     * @class $cms.views.ComcodeSectionController
+     * @extends $cms.View
+     */
+    function ComcodeSectionController(params) {
+        ComcodeSectionController.base(this, 'constructor', arguments);
+        
+        var passId = this.passId = $cms.filter.id(params.passId),
+            id = this.id = 'a' + passId + '_sections';
 
         window[id] = [];
 
@@ -559,17 +566,22 @@
             window[id].push(params.sections[i]);
         }
 
-        flipPage(0, passId, id);
+        flipPage(0, passId, window[id]);
+    }
+    
+    $cms.inherits(ComcodeSectionController, $cms.View, /**@lends $cms.views.ComcodeSectionController#*/{
+        events: function events() {
+            return {
+                'click .js-click-flip-page': 'doFlipPage'
+            };
+        },
+        
+        doFlipPage: function doFlipPage(e, clicked) {
+            var flipTo = clicked.dataset.vwFlipTo;
 
-        $cms.dom.on(container, 'click', '.js-click-flip-page', function (e, clicked) {
-            var flipTo = (clicked.dataset.vwFlipTo !== undefined) ? clicked.dataset.vwFlipTo : 0;
-            if ($cms.isNumeric(flipTo)) {
-                flipTo = +flipTo;
-            }
-
-            flipPage(flipTo, passId, id);
-        });
-    };
+            flipPage(flipTo, this.passId, window[this.id]);
+        }
+    });
 
     $cms.templates.emoticonClickCode = function emoticonClickCode(params, container) {
         var fieldName = strVal(params.fieldName);
@@ -632,29 +644,31 @@
             }, timein + 100);
         }
     };
-
-    $cms.templates.comcodeBigTabsController = function (params, container) {
-        var passId = $cms.filter.id(params.passId),
-            id = passId + '_' + params.bigTabSets,
-            fullId = 'a' + id + '_big_tab',
-            tabs = params.tabs,
-            sections = [], i;
-
+    
+    $cms.views.ComcodeBigTabsController = ComcodeBigTabsController;
+    /**
+     * @memberof $cms.views
+     * @class $cms.views.ComcodeBigTabsController
+     * @extends $cms.View
+     */
+    function ComcodeBigTabsController(params) {
+        ComcodeBigTabsController.base(this, 'constructor', arguments);
+        
+        var passId = this.passId = $cms.filter.id(params.passId),
+            id = this.id = passId + '_' + params.bigTabSets,
+            sections = this.sections = params.tabs.map($cms.filter.id);
+        
         /* Precache images */
         new Image().src = $cms.img('{$IMG;,big_tabs_controller_button}');
         new Image().src = $cms.img('{$IMG;,big_tabs_controller_button_active}');
         new Image().src = $cms.img('{$IMG;,big_tabs_controller_button_top_active}');
         new Image().src = $cms.img('{$IMG;,big_tabs_controller_button_top}');
-
-        for (i = 0; i < tabs.length; i++) {
-            sections.push($cms.filter.id(tabs[i]));
-        }
-
-        window[fullId] = sections;
+        
+        window['a' + id + '_big_tab'] = sections;
         window['big_tabs_auto_cycler_' + id] = null;
 
         if (params.switchTime !== undefined) {
-            window['big_tabs_switch_time_' + id] = params.switchtime;
+            window['big_tabs_switch_time_' + id] = params.switchTime;
             window['move_between_big_tabs_' + id] = function () {
                 var nextPage = 0, i, x;
 
@@ -674,16 +688,22 @@
 
             flipPage(0, id, sections);
         }
+    }
+    
+    $cms.inherits(ComcodeBigTabsController, $cms.View, /**@lends $cms.views.ComcodeBigTabsController#*/{
+        events: function events() {
+            return {
+                'click .js-onclick-flip-page': 'doFlipPage'
+            };
+        },
 
-        $cms.dom.on(container, 'click', '.js-click-flip-page', function (e, clicked) {
-            var flipTo = (clicked.dataset.vwFlipTo !== undefined) ? clicked.dataset.vwFlipTo : 0;
-            if ($cms.isNumeric(flipTo)) {
-                flipTo = Number(flipTo);
-            }
-
-            flipPage(flipTo, id, fullId);
-        });
-    };
+        doFlipPage: function doFlipPage(e, clicked) {
+            var flipTo = clicked.dataset.vwFlipTo;
+            
+            flipPage(flipTo, this.id, this.sections);
+        }
+    });
+    
 
     $cms.templates.comcodeTabBody = function (params) {
         var title = $cms.filter.id(params.title);
@@ -986,17 +1006,19 @@
         }, window['comcodeshocker' + id + '_left'][3]);
     }
 
-    function flipPage(to, passId, sections) {
+    function flipPage(to, id, sections) {
+        console.log('flipPage()', 'to:', to, 'id:', id, 'sections:', sections);
+        
         var i, currentPos = 0, section;
 
-        if (window['big_tabs_auto_cycler_' + passId]) {
-            clearTimeout(window['big_tabs_auto_cycler_' + passId]);
-            window['big_tabs_auto_cycler_' + passId] = null;
+        if (window['big_tabs_auto_cycler_' + id]) {
+            clearTimeout(window['big_tabs_auto_cycler_' + id]);
+            window['big_tabs_auto_cycler_' + id] = null;
         }
 
-        if (typeof to === 'number') {
+        if ($cms.isNumeric(to)) {
             for (i = 0; i < sections.length; i++) {
-                section = document.getElementById(passId + '_section_' + sections[i]);
+                section = document.getElementById(id + '_section_' + sections[i]);
                 if (section) {
                     if ((section.style.display === 'block') && (section.style.position !== 'absolute')) {
                         currentPos = i;
@@ -1017,80 +1039,73 @@
 
         // Previous/next updates
         var x;
-        x = document.getElementById(passId + '_has_next_yes');
+        x = document.getElementById(id + '_has_next_yes');
         if (x) {
-            x.style.display = (currentPos == sections.length - 1) ? 'none' : 'inline-block';
+            x.style.display = (currentPos === (sections.length - 1)) ? 'none' : 'inline-block';
         }
-        x = document.getElementById(passId + '_has_next_no');
+        x = document.getElementById(id + '_has_next_no');
         if (x) {
-            x.style.display = (currentPos == sections.length - 1) ? 'inline-block' : 'none';
+            x.style.display = (currentPos === (sections.length - 1)) ? 'inline-block' : 'none';
         }
-        x = document.getElementById(passId + '_has_previous_yes');
+        x = document.getElementById(id + '_has_previous_yes');
         if (x) {
-            x.style.display = (currentPos == 0) ? 'none' : 'inline-block';
+            x.style.display = (currentPos === 0) ? 'none' : 'inline-block';
         }
-        x = document.getElementById(passId + '_has_previous_no');
+        x = document.getElementById(id + '_has_previous_no');
         if (x) {
-            x.style.display = (currentPos == 0) ? 'inline-block' : 'none';
+            x.style.display = (currentPos === 0) ? 'inline-block' : 'none';
         }
 
         // We make our forthcoming one instantly visible to stop the browser possibly scrolling up if there is a tiny time interval when none are visible
-        x = document.getElementById(passId + '_section_' + sections[i]);
+        x = document.getElementById(id + '_section_' + sections[i]);
         if (x) x.style.display = 'block';
 
         for (i = 0; i < sections.length; i++) {
-            x = document.getElementById(passId + '_goto_' + sections[i]);
+            x = document.getElementById(id + '_goto_' + sections[i]);
             if (x) {
-                x.style.display = (i == currentPos) ? 'none' : 'inline-block';
+                x.style.display = (i === currentPos) ? 'none' : 'inline-block';
             }
-            x = document.getElementById(passId + '_btgoto_' + sections[i]);
+            x = document.getElementById(id + '_btgoto_' + sections[i]);
             if (x) {
-                x.classList.toggle('big_tab_active', (i == currentPos));
-                x.classList.toggle('big_tab_inactive', (i != currentPos));
+                x.classList.toggle('big_tab_active', (i === currentPos));
+                x.classList.toggle('big_tab_inactive', (i !== currentPos));
             }
-            x = document.getElementById(passId + '_isat_' + sections[i]);
+            x = document.getElementById(id + '_isat_' + sections[i]);
             if (x) {
-                x.style.display = (i == currentPos) ? 'inline-block' : 'none';
+                x.style.display = (i === currentPos) ? 'inline-block' : 'none';
             }
-            x = document.getElementById(passId + '_section_' + sections[i]);
-            var currentPlace = document.getElementById(passId + '_section_' + sections[currentPos]);
-            //var width=current_place?'100%':null;
-            var width = currentPlace ? $cms.dom.contentWidth(currentPlace) : null;
+            x = document.getElementById(id + '_section_' + sections[i]);
+            var currentPlace = document.getElementById(id + '_section_' + sections[currentPos]);
             if (x) {
-                if (x.className === 'comcode_big_tab') {
-                    if (i == currentPos) {
+                if (x.classList.contains('comcode_big_tab')) {
+                    if (i === currentPos) {
                         x.style.width = '';
                         x.style.position = 'static';
                         x.style.zIndex = 10;
                         x.style.opacity = 1;
                     } else {
-                        if (x.style.position !== 'static') {
-                            x.style.opacity = 0;
-                        } else {
-                            x.style.opacity = 1;
-                        }
-                        
-                        $cms.dom.fadeOut(x);
-                        
+                        x.style.opacity = (x.style.position !== 'static') ? 0 : 1;
                         x.style.width = (x.offsetWidth - 24) + 'px'; // 24=lhs padding+rhs padding+lhs border+rhs border
                         x.style.position = 'absolute';
                         x.style.zIndex = -10;
                         x.style.top = '0';
                         x.parentNode.style.position = 'relative';
+
+                        $cms.dom.fadeOut(x);
                     }
                     x.style.display = 'block';
                 } else {
-                    x.style.display = (i == currentPos) ? 'block' : 'none';
+                    x.style.display = (i === currentPos) ? 'block' : 'none';
 
-                    if (i == currentPos) {
+                    if (i === currentPos) {
                         $cms.dom.fadeIn(x);
                     }
                 }
             }
         }
 
-        if (window['move_between_big_tabs_' + passId]) {
-            window['big_tabs_auto_cycler_' + passId] = setInterval(window['move_between_big_tabs_' + passId], window['big_tabs_switch_time_' + passId]);
+        if (window['move_between_big_tabs_' + id] && window['big_tabs_switch_time_' + id]) {
+            window['big_tabs_auto_cycler_' + id] = setInterval(window['move_between_big_tabs_' + id], window['big_tabs_switch_time_' + id]);
         }
 
         return false;
