@@ -318,6 +318,8 @@
         /**@method*/
         each: each,
         /**@method*/
+        eachIter: eachIter,
+        /**@method*/
         extend: extend,
         /**@method*/
         extendOwn: extendOwn,
@@ -10607,9 +10609,7 @@
         hidden.value = checked ? '1' : '0';
         massDeleteForm.style.display = 'block';
     }
-}(window.$cms || (window.$cms = {})));
 
-(function () {
     /*
      Faux frames and faux scrolling
      */
@@ -10875,7 +10875,7 @@
             e.preventDefault();
             
             // Any parameters matching a pattern must be sent in the URL to the AJAX block call
-            eachIter(hrefUrl.searchParams.entries(), function (param) {
+            $cms.eachIter(hrefUrl.searchParams.entries(), function (param) {
                 var paramName = param[0],
                     paramValue = param[1];
 
@@ -10940,4 +10940,4 @@
             });
         }
     }
-}());
+}(window.$cms || (window.$cms = {})));
