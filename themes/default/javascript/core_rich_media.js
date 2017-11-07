@@ -508,7 +508,7 @@
             part = params.parts[key];
             use = part.val;
 
-            if (part.num > rand) {
+            if (key > rand) {
                 break;
             }
         }
