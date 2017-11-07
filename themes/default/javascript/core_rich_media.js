@@ -528,7 +528,7 @@
 
     $cms.templates.comcodeShocker = function (params) {
         var id = params.randIdShocker,
-            parts = param.parts || [], part,
+            parts = params.parts || [], part,
             time = +params.time;
 
         window.shockerParts || (window.shockerParts = {});
@@ -693,11 +693,10 @@
     $cms.templates.comcodeTicker = function (params, container) {
         window.tickPos || (window.tickPos = {});
 
-        var width = $cms.filter.id(params.width),
-            id = $cms.random();
+        var id = 'ticker-' + $cms.random();
 
         window.tickPos[id] = params.width;
-        $cms.dom.html(container, '<div class="ticker" style="text-indent: ' + width + 'px; width: ' + width + 'px;" id="' + id + '"><span>' +
+        $cms.dom.html(container, '<div class="ticker" style="text-indent: ' + params.width + 'px; width: ' + params.width + 'px;" id="' + id + '"><span>' +
             $cms.filter.nl(params.text) + '<\/span><\/div>'
         );
 
