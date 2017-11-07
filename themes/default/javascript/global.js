@@ -4630,10 +4630,10 @@
         scrollToTopOfWrapper = Boolean(scrollToTopOfWrapper);
         postParams = (postParams !== undefined) ? postParams : null;
         inner = Boolean(inner);
-        showLoadingAnimation = (showLoadingAnimation !== undefined) ? !!showLoadingAnimation : true;
+        showLoadingAnimation = (showLoadingAnimation !== undefined) ? Boolean(showLoadingAnimation) : true;
 
         if ((_blockDataCache[url] === undefined) && (newBlockParams !== '')) {
-            // Cache start position. For this to be useful we must be smart enough to pass blank new_block_params if returning to fresh state
+            // Cache start position. For this to be useful we must be smart enough to pass blank newBlockParams if returning to fresh state
             _blockDataCache[url] = $cms.dom.html(targetDiv);
         }
 
@@ -8241,7 +8241,7 @@
             if (e.type === 'input') {
                 if (input.value.length === 0) {
                     input.value = ''; // value.length is also 0 if invalid value is entered for input[type=number] et al., clear that
-                } else if (regex.test(input.value)) {
+                } else if (input.value.search(regex) !== -1) {
                     input.value = input.value.replace(regex, '');
                 }
             } else if ($cms.dom.keyOutput(e, regex)) { // keydown/keypress event
@@ -10732,6 +10732,7 @@
                 foundNewLinks = z;
             }
         }
+        
         for (z = 0; z < paginations.length; z++) {
             pagination = paginations[z];
             if (foundNewLinks != null) {// Cleanup old pagination
@@ -10890,7 +10891,7 @@
         function submitFunc(e) {
             var blockCallUrl = $cms.url(urlStem),
                 hrefUrl = $cms.url((this.localName === 'a') ? this.href : this.action);
-
+            
             e.preventDefault();
 
             // Any parameters matching a pattern must be sent in the URL to the AJAX block call
