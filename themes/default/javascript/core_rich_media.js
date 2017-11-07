@@ -713,7 +713,7 @@
         window.jumperPos[id] = 1;
 
         for (var i = 0, len = params.parts.length; i < len; i++) {
-            window.jumperParts[id].push(params.parts[i]);
+            window.jumperParts[id].push(params.parts[i].part);
         }
 
         $cms.dom.html(container, '<span id="' + id + '">' + window.jumperParts[id][0] + '<\/span>');
@@ -1012,67 +1012,69 @@
         }
 
         // Previous/next updates
-        var x;
-        x = document.getElementById(id + '_has_next_yes');
-        if (x) {
-            x.style.display = (currentPos === (sections.length - 1)) ? 'none' : 'inline-block';
+        var el;
+        el = document.getElementById(id + '_has_next_yes');
+        if (el) {
+            el.style.display = (currentPos === (sections.length - 1)) ? 'none' : 'inline-block';
         }
-        x = document.getElementById(id + '_has_next_no');
-        if (x) {
-            x.style.display = (currentPos === (sections.length - 1)) ? 'inline-block' : 'none';
+        el = document.getElementById(id + '_has_next_no');
+        if (el) {
+            el.style.display = (currentPos === (sections.length - 1)) ? 'inline-block' : 'none';
         }
-        x = document.getElementById(id + '_has_previous_yes');
-        if (x) {
-            x.style.display = (currentPos === 0) ? 'none' : 'inline-block';
+        el = document.getElementById(id + '_has_previous_yes');
+        if (el) {
+            el.style.display = (currentPos === 0) ? 'none' : 'inline-block';
         }
-        x = document.getElementById(id + '_has_previous_no');
-        if (x) {
-            x.style.display = (currentPos === 0) ? 'inline-block' : 'none';
+        el = document.getElementById(id + '_has_previous_no');
+        if (el) {
+            el.style.display = (currentPos === 0) ? 'inline-block' : 'none';
         }
 
         // We make our forthcoming one instantly visible to stop the browser possibly scrolling up if there is a tiny time interval when none are visible
-        x = document.getElementById(id + '_section_' + sections[i]);
-        if (x) x.style.display = 'block';
+        el = document.getElementById(id + '_section_' + sections[i]);
+        if (el) {
+            el.style.display = 'block';
+        }
 
         for (i = 0; i < sections.length; i++) {
-            x = document.getElementById(id + '_goto_' + sections[i]);
-            if (x) {
-                x.style.display = (i === currentPos) ? 'none' : 'inline-block';
+            el = document.getElementById(id + '_goto_' + sections[i]);
+            if (el) {
+                el.style.display = (i === currentPos) ? 'none' : 'inline-block';
             }
-            x = document.getElementById(id + '_btgoto_' + sections[i]);
-            if (x) {
-                x.classList.toggle('big_tab_active', (i === currentPos));
-                x.classList.toggle('big_tab_inactive', (i !== currentPos));
+            el = document.getElementById(id + '_btgoto_' + sections[i]);
+            if (el) {
+                el.classList.toggle('big_tab_active', (i === currentPos));
+                el.classList.toggle('big_tab_inactive', (i !== currentPos));
             }
-            x = document.getElementById(id + '_isat_' + sections[i]);
-            if (x) {
-                x.style.display = (i === currentPos) ? 'inline-block' : 'none';
+            el = document.getElementById(id + '_isat_' + sections[i]);
+            if (el) {
+                el.style.display = (i === currentPos) ? 'inline-block' : 'none';
             }
-            x = document.getElementById(id + '_section_' + sections[i]);
-            var currentPlace = document.getElementById(id + '_section_' + sections[currentPos]);
-            if (x) {
-                if (x.classList.contains('comcode_big_tab')) {
+            el = document.getElementById(id + '_section_' + sections[i]);
+
+            if (el) {
+                if (el.classList.contains('comcode_big_tab')) {
                     if (i === currentPos) {
-                        x.style.width = '';
-                        x.style.position = 'static';
-                        x.style.zIndex = 10;
-                        x.style.opacity = 1;
+                        el.style.width = '';
+                        el.style.position = 'static';
+                        el.style.zIndex = 10;
+                        el.style.opacity = 1;
                     } else {
-                        x.style.opacity = (x.style.position !== 'static') ? 0 : 1;
-                        x.style.width = (x.offsetWidth - 24) + 'px'; // 24=lhs padding+rhs padding+lhs border+rhs border
-                        x.style.position = 'absolute';
-                        x.style.zIndex = -10;
-                        x.style.top = '0';
-                        x.parentNode.style.position = 'relative';
+                        el.style.opacity = (el.style.position !== 'static') ? 0 : 1;
+                        el.style.width = (el.offsetWidth - 24) + 'px'; // 24=lhs padding+rhs padding+lhs border+rhs border
+                        el.style.position = 'absolute';
+                        el.style.zIndex = -10;
+                        el.style.top = '0';
+                        el.parentNode.style.position = 'relative';
 
-                        $cms.dom.fadeOut(x);
+                        $cms.dom.fadeOut(el);
                     }
-                    x.style.display = 'block';
+                    el.style.display = 'block';
                 } else {
-                    x.style.display = (i === currentPos) ? 'block' : 'none';
+                    el.style.display = (i === currentPos) ? 'block' : 'none';
 
                     if (i === currentPos) {
-                        $cms.dom.fadeIn(x);
+                        $cms.dom.fadeIn(el);
                     }
                 }
             }
@@ -1080,11 +1082,11 @@
         
         if (switchTime) {
             _flipPageTimeouts[id] = setTimeout(function () {
-                var nextPage = 0, i, x;
+                var nextPage = 0, i, el;
 
                 for (i = 0; i < sections.length; i++) {
-                    x = document.getElementById(id + '_section_' + sections[i]);
-                    if ((x.style.display === 'block') && (x.style.position !== 'absolute')) {
+                    el = document.getElementById(id + '_section_' + sections[i]);
+                    if ((el.style.display === 'block') && (el.style.position !== 'absolute')) {
                         nextPage = i + 1;
                     }
                 }
