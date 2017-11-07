@@ -557,16 +557,10 @@
     function ComcodeSectionController(params) {
         ComcodeSectionController.base(this, 'constructor', arguments);
         
-        var passId = this.passId = $cms.filter.id(params.passId),
-            id = this.id = 'a' + passId + '_sections';
+        this.passId = $cms.filter.id(params.passId);
+        this.sections = params.sections.map($cms.filter.id);
 
-        window[id] = [];
-
-        for (var i = 0, len = params.sections.length; i < len; i++) {
-            window[id].push(params.sections[i]);
-        }
-
-        flipPage(0, passId, window[id]);
+        flipPage(0, this.passId, this.sections);
     }
     
     $cms.inherits(ComcodeSectionController, $cms.View, /**@lends $cms.views.ComcodeSectionController#*/{
@@ -579,7 +573,7 @@
         doFlipPage: function doFlipPage(e, clicked) {
             var flipTo = clicked.dataset.vwFlipTo;
 
-            flipPage(flipTo, this.passId, window[this.id]);
+            flipPage(flipTo, this.passId, this.sections);
         }
     });
 
@@ -656,7 +650,8 @@
         
         var passId = this.passId = $cms.filter.id(params.passId),
             id = this.id = passId + '_' + params.bigTabSets,
-            sections = this.sections = params.tabs.map($cms.filter.id);
+            sections = this.sections = params.tabs.map($cms.filter.id),
+            switchTime = this.switchTime = params.switchTime;
         
         /* Precache images */
         new Image().src = $cms.img('{$IMG;,big_tabs_controller_button}');
@@ -664,30 +659,10 @@
         new Image().src = $cms.img('{$IMG;,big_tabs_controller_button_top_active}');
         new Image().src = $cms.img('{$IMG;,big_tabs_controller_button_top}');
         
-        window['a' + id + '_big_tab'] = sections;
-        window['big_tabs_auto_cycler_' + id] = null;
-
-        if (params.switchTime !== undefined) {
-            window['big_tabs_switch_time_' + id] = params.switchTime;
-            window['move_between_big_tabs_' + id] = function () {
-                var nextPage = 0, i, x;
-
-                for (i = 0; i < sections.length; i++) {
-                    x = document.getElementById(id + '_section_' + sections[i]);
-                    if ((x.style.display === 'block') && (x.style.position !== 'absolute')) {
-                        nextPage = i + 1;
-                    }
-                }
-
-                if (nextPage === sections.length) {
-                    nextPage = 0;
-                }
-
-                flipPage(sections[nextPage], id, sections);
-            };
-
-            flipPage(0, id, sections);
+        if (switchTime !== undefined) {
+            flipPage(0, id, sections, switchTime);
         }
+        
     }
     
     $cms.inherits(ComcodeBigTabsController, $cms.View, /**@lends $cms.views.ComcodeBigTabsController#*/{
@@ -700,7 +675,7 @@
         doFlipPage: function doFlipPage(e, clicked) {
             var flipTo = clicked.dataset.vwFlipTo;
             
-            flipPage(flipTo, this.id, this.sections);
+            flipPage(flipTo, this.id, this.sections, this.switchTime);
         }
     });
     
@@ -1006,14 +981,13 @@
         }, window['comcodeshocker' + id + '_left'][3]);
     }
 
-    function flipPage(to, id, sections) {
-        console.log('flipPage()', 'to:', to, 'id:', id, 'sections:', sections);
-        
+    var _flipPageTimeouts = {};
+    function flipPage(to, id, sections, switchTime) {
         var i, currentPos = 0, section;
-
-        if (window['big_tabs_auto_cycler_' + id]) {
-            clearTimeout(window['big_tabs_auto_cycler_' + id]);
-            window['big_tabs_auto_cycler_' + id] = null;
+        
+        if (_flipPageTimeouts[id]) {
+            clearTimeout(_flipPageTimeouts[id]);
+            delete _flipPageTimeouts[id];
         }
 
         if ($cms.isNumeric(to)) {
@@ -1103,9 +1077,24 @@
                 }
             }
         }
+        
+        if (switchTime) {
+            _flipPageTimeouts[id] = setTimeout(function () {
+                var nextPage = 0, i, x;
 
-        if (window['move_between_big_tabs_' + id] && window['big_tabs_switch_time_' + id]) {
-            window['big_tabs_auto_cycler_' + id] = setInterval(window['move_between_big_tabs_' + id], window['big_tabs_switch_time_' + id]);
+                for (i = 0; i < sections.length; i++) {
+                    x = document.getElementById(id + '_section_' + sections[i]);
+                    if ((x.style.display === 'block') && (x.style.position !== 'absolute')) {
+                        nextPage = i + 1;
+                    }
+                }
+
+                if (nextPage === sections.length) {
+                    nextPage = 0;
+                }
+
+                flipPage(sections[nextPage], id, sections, switchTime);
+            }, switchTime);
         }
 
         return false;
