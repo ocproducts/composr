@@ -670,6 +670,9 @@ function step_3()
         if (($database == 'sqlserver') && (!function_exists('mssql_connect')) && (!function_exists('sqlsrv_connect'))) {
             continue;
         }
+        if (($database == 'sqlserver_odbc') && (!function_exists('odbc_connect'))) {
+            continue;
+        }
 
         if (isset($SITE_INFO['db_type'])) {
             $selected = ($database == $SITE_INFO['db_type']);

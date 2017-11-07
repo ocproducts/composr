@@ -440,6 +440,7 @@ function db_function($function, $args = null)
             }
             switch (get_db_type()) {
                 case 'sqlserver':
+                case 'sqlserver_odbc':
                     $function = 'SUBSTRING'; // http://troels.arvin.dk/db/rdbms/#functions-REPLACE
                     break;
 
@@ -456,6 +457,7 @@ function db_function($function, $args = null)
             }
             switch (get_db_type()) {
                 case 'sqlserver':
+                case 'sqlserver_odbc':
                 case 'access':
                     $function = 'LEN';
                     break;
@@ -483,6 +485,17 @@ function db_function($function, $args = null)
                     $function = 'IIF';
                     $args[0] .= ' IS NULL';
                     break;
+                default:
+                    $all_null = true;
+                    foreach ($args as $arg) {
+                        if ($arg != 'NULL') {
+                            $all_null = false;
+                            break;
+                        }
+                    }
+                    if ($all_null) {
+                        return 'NULL';
+                    }
             }
             break;
 
@@ -492,6 +505,7 @@ function db_function($function, $args = null)
                     $function = 'MIN';
                     break;
                 case 'sqlserver':
+                case 'sqlserver_odbc':
                 case 'access':
                     $ret = '(SELECT MIN(X) FROM (';
                     foreach ($args as $i => $arg) {
@@ -511,6 +525,7 @@ function db_function($function, $args = null)
                     $function = 'MAX';
                     break;
                 case 'sqlserver':
+                case 'sqlserver_odbc':
                 case 'access':
                     $ret = '(SELECT MAX(X) FROM (';
                     foreach ($args as $i => $arg) {
@@ -533,6 +548,7 @@ function db_function($function, $args = null)
                     return $args[0] . ' MOD ' . $args[1];
                 case 'postgresql':
                 case 'sqlserver':
+                case 'sqlserver_odbc':
                 case 'sqlite':
                     return $args[0] . ' % ' . $args[1];
             }
@@ -548,7 +564,8 @@ function db_function($function, $args = null)
                     return 'SELECT LISTAGG(' . $args[0] . ', \',\') WITHIN GROUP (ORDER BY ' . $args[0] . ') FROM ' . $args[1];
                 case 'postgresql':
                     return 'SELECT array_to_string(array_agg(' . $args[0] . '), \',\') FROM ' . $args[1];
-                case 'sql_server':
+                case 'sqlserver':
+                case 'sqlserver_odbc':
                     return 'STUFF((SELECT \',\'+' . $args[0] . ' FROM ' . $args[1] . ' FOR XML PATH(\'\')), 1, 1, \'\')';
                 case 'access': // Not fully supported
                     return 'SELECT TOP 1 ' . $args[0] . ' FROM ' . $args[1];

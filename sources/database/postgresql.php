@@ -95,7 +95,8 @@ class Database_Static_postgresql
 
         $fields = explode(',', $_fields);
         foreach ($fields as $field) {
-            if (strpos($GLOBALS['SITE_DB']->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $raw_table_name, 'm_name' => $field)), 'LONG') !== false) {
+            $db_type = $GLOBALS['SITE_DB']->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $raw_table_name, 'm_name' => $field));
+            if (strpos($db_type, 'LONG') !== false) {
                 // We can't support this in PostgreSQL, too much data will give an error when inserting into the index
                 return array();
             }
@@ -377,7 +378,7 @@ class Database_Static_postgresql
             critical_error('PASSON', $error); //warn_exit(do_lang_tempcode('CONNECT_DB_ERROR'));
         }
 
-        if (!$db) {
+        if ($db === false) {
             fatal_exit(do_lang('CONNECT_DB_ERROR'));
         }
         $this->cache_db[$db_name][$db_host] = $db;

@@ -29,6 +29,16 @@ Make sure you have write permissions on the file as 'Everyone'.
 */
 
 /**
+ * Standard code module initialisation function.
+ *
+ * @ignore
+ */
+function init__database__access()
+{
+    safe_ini_set('odbc.defaultlrl', '20M');
+}
+
+/**
  * Database Driver.
  *
  * @package    core_database_drivers
@@ -282,16 +292,16 @@ class Database_Static_access
         $db_name_short = $db_name;
         if (strpos($db_name, '.mdb') !== false) {
             $db_name = '
-    DRIVER=Microsoft Access Driver (*.mdb);
-    DBQ=' . $db_name . ';
-    UserCommitSync=Yes;
-    Threads=3;
-    SafeTransactions=0;
-    PageTimeout=5;
-    MaxScanRows=8;
-    MaxBufferSize=2048;
-    DriverId=281;
-    DefaultDir=C:/ProgramFiles/CommonFiles/ODBC/DataSources';
+DRIVER=Microsoft Access Driver (*.mdb);
+DBQ=' . $db_name . ';
+UserCommitSync=Yes;
+Threads=3;
+SafeTransactions=0;
+PageTimeout=5;
+MaxScanRows=8;
+MaxBufferSize=2048;
+DriverId=281;
+DefaultDir=C:/ProgramFiles/CommonFiles/ODBC/DataSources';
         }
 
         if (!function_exists('odbc_connect')) {
@@ -305,7 +315,7 @@ class Database_Static_access
 
         $db = $persistent ? @odbc_pconnect($db_name, $db_user, $db_password) : @odbc_connect($db_name, $db_user, $db_password);
         if ($db === false) {
-            $error = 'Could not connect to database-server (' . odbc_errormsg() . ')';
+            $error = 'Could not connect to database-server (' . preg_replace('#[[:^print:]].*$#'/*error messages don't come through cleanly https://bugs.php.net/bug.php?id=73448*/, '', odbc_errormsg()) . ')';
             if ($fail_ok) {
                 echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
                 return null;
@@ -313,7 +323,7 @@ class Database_Static_access
             critical_error('PASSON', $error); //warn_exit(do_lang_tempcode('CONNECT_DB_ERROR'));
         }
 
-        if (!$db) {
+        if ($db === false) {
             fatal_exit(do_lang('CONNECT_DB_ERROR'));
         }
         $this->cache_db[$db_name_short][$db_host] = $db;
@@ -368,7 +378,7 @@ class Database_Static_access
 
         $results = @odbc_exec($db, $query);
         if ((($results === false) || (((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) && ($results === true))) && (!$fail_ok)) {
-            $err = odbc_errormsg($db);
+            $err = preg_replace('#[[:^print:]].*$#'/*error messages don't come through cleanly https://bugs.php.net/bug.php?id=73448*/, '', odbc_errormsg($db));
             if (function_exists('ocp_mark_as_escaped')) {
                 ocp_mark_as_escaped($err);
             }
@@ -397,8 +407,8 @@ class Database_Static_access
             $table_name = substr($query, 12, $pos - 13);
 
             $res2 = odbc_exec($db, 'SELECT MAX(id) FROM ' . $table_name);
-            $ar2 = odbc_fetch_row($res2);
-            return $ar2[0];
+            odbc_fetch_row($res2);
+            return odbc_result($res2, 1);
         }
 
         return null;

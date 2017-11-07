@@ -27,6 +27,16 @@ to the mdb file). In the properties there is option to choose username and passw
 */
 
 /**
+ * Standard code module initialisation function.
+ *
+ * @ignore
+ */
+function init__database__ibm()
+{
+    safe_ini_set('odbc.defaultlrl', '20M');
+}
+
+/**
  * Database Driver.
  *
  * @package    core_database_drivers
@@ -289,7 +299,7 @@ class Database_Static_ibm
 
         $db = $persistent ? @odbc_pconnect($db_name, $db_user, $db_password) : @odbc_connect($db_name, $db_user, $db_password);
         if ($db === false) {
-            $error = 'Could not connect to database-server (' . odbc_errormsg() . ')';
+            $error = 'Could not connect to database-server (' . preg_replace('#[[:^print:]].*$#'/*error messages don't come through cleanly https://bugs.php.net/bug.php?id=73448*/, '', odbc_errormsg()) . ')';
             if ($fail_ok) {
                 echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
                 return null;
@@ -297,7 +307,7 @@ class Database_Static_ibm
             critical_error('PASSON', $error); //warn_exit(do_lang_tempcode('CONNECT_DB_ERROR'));
         }
 
-        if (!$db) {
+        if ($db === false) {
             fatal_exit(do_lang('CONNECT_DB_ERROR'));
         }
         $this->cache_db[$db_name][$db_host] = $db;
@@ -352,7 +362,7 @@ class Database_Static_ibm
 
         $results = @odbc_exec($db, $query);
         if (($results === false) && (!$fail_ok)) {
-            $err = odbc_errormsg($db);
+            $err = preg_replace('#[[:^print:]].*$#'/*error messages don't come through cleanly https://bugs.php.net/bug.php?id=73448*/, '', odbc_errormsg($db));
             if (function_exists('ocp_mark_as_escaped')) {
                 ocp_mark_as_escaped($err);
             }
@@ -382,8 +392,8 @@ class Database_Static_ibm
             $table_name = substr($query, 12, $pos - 13);
 
             $res2 = odbc_exec($db, 'SELECT MAX(id) FROM ' . $table_name);
-            $ar2 = odbc_fetch_row($res2);
-            return $ar2[0];
+            odbc_fetch_row($res2);
+            return odbc_result($res2, 1);
         }
 
         return null;

@@ -309,7 +309,7 @@ class Database_Static_sqlite
         }
         sqlite_query($db, 'BEGIN TRANSACTION');
 
-        if (!$db) {
+        if ($db === false) {
             fatal_exit(do_lang('CONNECT_DB_ERROR'));
         }
         $this->cache_db[$db_name][$db_host] = $db;

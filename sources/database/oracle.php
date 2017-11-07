@@ -81,7 +81,8 @@ class Database_Static_oracle
 
         $fields = explode(',', $_fields);
         foreach ($fields as $field) {
-            if (strpos($GLOBALS['SITE_DB']->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $raw_table_name, 'm_name' => $field)), 'LONG') !== false) {
+            $db_type = $GLOBALS['SITE_DB']->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $raw_table_name, 'm_name' => $field));
+            if ((strpos($db_type, 'LONG') !== false) || ((!multi_lang_content()) && (strpos($db_type, 'SHORT_TRANS') !== false))) {
                 // We can't support this in SQL Server http://www.oratable.com/ora-01450-maximum-key-length-exceeded/.
                 // We assume shorter numbers than 250 are only being used on short columns anyway, which will index perfectly fine without any constraint.
                 return array();
@@ -356,7 +357,7 @@ class Database_Static_oracle
             critical_error('PASSON', $error); //warn_exit(do_lang_tempcode('CONNECT_DB_ERROR'));
         }
 
-        if (!$db) {
+        if ($db === false) {
             fatal_exit(do_lang('CONNECT_DB_ERROR'));
         }
         $this->cache_db[$db_name][$db_host] = $db;

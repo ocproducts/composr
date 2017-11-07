@@ -114,7 +114,7 @@ class filtering_test_set extends cms_test_case
                 }
             }
         ";
-        file_put_contents(get_file_base() . '/sources_custom/hooks/systems/content_meta_aware/temp_test.php', $hook_contents);
+        file_put_contents(get_file_base() . '/sources_custom/hooks/systems/content_meta_aware/temp_test.php', trim(preg_replace('#^            #m', '', $hook_contents)));
 
         $GLOBALS['SITE_DB']->create_table('temp_test', array(
             'id' => '*INTEGER',
