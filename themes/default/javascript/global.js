@@ -88,11 +88,6 @@
          * @method
          * @returns {boolean}
          */
-        isMobile: constant(boolVal(symbols.MOBILE)),
-        /**
-         * @method
-         * @returns {boolean}
-         */
         $FORCE_PREVIEWS: constant(boolVal(symbols.FORCE_PREVIEWS)),
         /**
          * @method
@@ -6425,7 +6420,7 @@
      */
     function ModalWindow(params) {
         // Constants
-        this.WINDOW_SIDE_GAP = $cms.isMobile() ? 5 : 25;
+        this.WINDOW_SIDE_GAP = $cms.$MOBILE() ? 5 : 25;
         this.WINDOW_TOP_GAP = 25; // Will also be used for bottom gap for percentage heights
         this.BOX_EAST_PERIPHERARY = 4;
         this.BOX_WEST_PERIPHERARY = 4;
@@ -6955,14 +6950,14 @@
             var doScroll = false;
 
             // Absolute positioning instead of fixed positioning
-            if ($cms.isMobile() || (detectedBoxHeight > topWindowHeight) || (this.el.style.position === 'absolute'/*don't switch back to fixed*/)) {
+            if ($cms.$MOBILE() || (detectedBoxHeight > topWindowHeight) || (this.el.style.position === 'absolute'/*don't switch back to fixed*/)) {
                 var wasFixed = (this.el.style.position === 'fixed');
 
                 this.el.style.position = 'absolute';
                 this.el.style.height = ((topPageHeight > (detectedBoxHeight + bottomGap + boxPosLeft)) ? topPageHeight : (detectedBoxHeight + bottomGap + boxPosLeft)) + 'px';
                 this.topWindow.document.body.style.overflow = '';
 
-                if (!$cms.isMobile()) {
+                if (!$cms.$MOBILE()) {
                     this.overlayEl.style.position = 'absolute';
                     this.overlayEl.style.top = this.WINDOW_TOP_GAP + 'px';
                 }
