@@ -292,14 +292,14 @@
             // Infinite scrolling hides the pagination when it comes into view, and auto-loads the next link, appending below the current results
             if (params.infiniteScroll) {
                 var infiniteScrollingCommentsWrapper = function (event) {
-                    internaliseInfiniteScrolling(urlStem, wrapper);
+                    $cms.dom.internaliseInfiniteScrolling(urlStem, wrapper);
                 };
 
                 $cms.dom.on(window, 'scroll', infiniteScrollingCommentsWrapper);
-                $cms.dom.on(window, 'keydown', infiniteScrollingBlock);
-                $cms.dom.on(window, 'mousedown', infiniteScrollingBlockHold);
+                $cms.dom.on(window, 'keydown', $cms.dom.infiniteScrollingBlock);
+                $cms.dom.on(window, 'mousedown', $cms.dom.infiniteScrollingBlockHold);
                 $cms.dom.on(window, 'mousemove', function () {
-                    infiniteScrollingBlockUnhold(infiniteScrollingCommentsWrapper);
+                    $cms.dom.infiniteScrollingBlockUnhold(infiniteScrollingCommentsWrapper);
                 });
 
                 // ^ mouseup/mousemove does not work on scrollbar, so best is to notice when mouse moves again (we know we're off-scrollbar then)

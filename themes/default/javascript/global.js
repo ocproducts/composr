@@ -10351,16 +10351,16 @@
             internaliseAjaxBlockWrapperLinks(blockCallUrl, wrapperEl, ['^[^_]*_start$', '^[^_]*_max$'], {});
 
             if (infiniteScrollCallUrl) {
-                infiniteScrollFunc = internaliseInfiniteScrolling.bind(undefined, infiniteScrollCallUrl, wrapperEl);
+                infiniteScrollFunc = $cms.dom.internaliseInfiniteScrolling.bind(undefined, infiniteScrollCallUrl, wrapperEl);
 
                 $cms.dom.on(window, {
                     scroll: infiniteScrollFunc,
                     touchmove: infiniteScrollFunc,
-                    keydown: infiniteScrollingBlock,
-                    mousedown: infiniteScrollingBlockHold,
+                    keydown: $cms.dom.infiniteScrollingBlock,
+                    mousedown: $cms.dom.infiniteScrollingBlockHold,
                     mousemove: function () {
                         // mouseup/mousemove does not work on scrollbar, so best is to notice when mouse moves again (we know we're off-scrollbar then)
-                        infiniteScrollingBlockUnhold(infiniteScrollFunc);
+                        $cms.dom.infiniteScrollingBlockUnhold(infiniteScrollFunc);
                     }
                 });
 
@@ -10609,17 +10609,6 @@
         hidden.value = checked ? '1' : '0';
         massDeleteForm.style.display = 'block';
     }
-
-    /*
-     Faux frames and faux scrolling
-     */
-    window.infiniteScrollingBlock = infiniteScrollingBlock;
-    window.infiniteScrollingBlockHold = infiniteScrollingBlockHold;
-    window.infiniteScrollingBlockUnhold = infiniteScrollingBlockUnhold;
-    window.internaliseInfiniteScrolling = internaliseInfiniteScrolling;
-    window.internaliseInfiniteScrollingGo = internaliseInfiniteScrollingGo;
-    window.internaliseAjaxBlockWrapperLinks = internaliseAjaxBlockWrapperLinks;
-
     /*
      Faux frames and faux scrolling
      */
@@ -10711,7 +10700,7 @@
                 loadMoreLinkA.href = '#!';
                 loadMoreLinkA.onclick = (function (moreLinks) {
                     return function () {
-                        internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks);
+                        $cms.dom.internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks);
                         return false;
                     };
                 }(moreLinks)); // Click link -- load
@@ -10770,7 +10759,7 @@
 
         // Scroll down -- load
         if ((scrollY + windowHeight > wrapperBottom - windowHeight * 2) && (scrollY + windowHeight < pageHeight - 30)) {// If within windowHeight*2 pixels of load area and not within 30 pixels of window bottom (so you can press End key)
-            return internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks);
+            return $cms.dom.internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks);
         }
 
         return false;
@@ -10808,7 +10797,7 @@
 
                     $cms.callBlock(urlStem + urlStub, '', wrapperInner, true).then(function () {
                         infiniteScrollPending = false;
-                        internaliseInfiniteScrolling(urlStem, wrapper);
+                        $cms.dom.internaliseInfiniteScrolling(urlStem, wrapper);
                     });
                     return false;
                 }
