@@ -397,8 +397,8 @@
 }(window.$cms));
 
 // Constants
-window.MESSAGE_CHECK_INTERVAL = +'{$ROUND%,{$MAX,3000,{$CONFIG_OPTION,chat_message_check_interval}}}';
-window.TRANSITORY_ALERT_TIME = +'{$ROUND%,{$CONFIG_OPTION,chat_transitory_alert_time}}';
+window.MESSAGE_CHECK_INTERVAL = Math.max(3000, parseInt('{$CONFIG_OPTION,chat_message_check_interval}'));
+window.TRANSITORY_ALERT_TIME = parseInt('{$CONFIG_OPTION,chat_transitory_alert_time}');
 window.LOGS_DOWNLOAD_INTERVAL = 3000;
 
 // Tracking variables
@@ -484,8 +484,9 @@ function getTickedPeople(form) {
     var people = '';
 
     for (var i = 0; i < form.elements.length; i++) {
-        if ((form.elements[i].type == 'checkbox') && (form.elements[i].checked))
+        if ((form.elements[i].type === 'checkbox') && (form.elements[i].checked)) {
             people += ((people != '') ? ',' : '') + form.elements[i].name.substr(7);
+        }
     }
 
     if (people === '') {
@@ -701,7 +702,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
     
     skipIncomingSound = Boolean(skipIncomingSound);
 
-    var messages = ajaxResult.childNodes,
+    var messages = arrVal(ajaxResult.children),
         messageContainer = document.getElementById('messages_window'),
         messageContainerGlobal = (messageContainer != null),
         clonedMessage,
@@ -970,8 +971,8 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                 roomName = messages[i].getAttribute('room_name');
                 avatarUrl = messages[i].getAttribute('avatar_url');
                 participants = messages[i].getAttribute('participants');
-                var isNew = (messages[i].getAttribute('num_posts') == '0');
-                var byYou = (messages[i].getAttribute('inviter') == messages[i].getAttribute('you'));
+                var isNew = (messages[i].getAttribute('num_posts') === '0');
+                var byYou = (messages[i].getAttribute('inviter') === messages[i].getAttribute('you'));
 
                 if ((!byYou) && (!window.instantGo) && (!document.getElementById('chat_lobby_convos_tabs'))) {
                     createOverlayEvent(skipIncomingSound, messages[i].getAttribute('inviter'), '{!chat:IM_INFO_CHAT_WITH;^}'.replace('{' + '1}', roomName), function () {
@@ -1060,7 +1061,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
             if (element) {// If we've actually got the HTML for the room setup
                 var pList = $cms.dom.html(element).toLowerCase();
 
-                if ((pList.indexOf('<em class="none">') != -1) || (pList.indexOf('<em class="loading">') != -1)) {
+                if ((pList.indexOf('<em class="none">') !== -1) || (pList.indexOf('<em class="loading">') !== -1)) {
                     $cms.dom.html(element, '');
                 }
                 element.appendChild(newParticipant);
@@ -1197,7 +1198,7 @@ function createOverlayEvent(skipIncomingSound, memberId, message, clickEvent, av
                     null,
                     function (answer) {
                         /*if (answer.toLowerCase()=='{!INPUTSYSTEM_CANCEL;^}'.toLowerCase()) return;*/
-                        if (answer.toLowerCase() == '{!CLOSE;^}'.toLowerCase()) {
+                        if (answer.toLowerCase() === '{!CLOSE;^}'.toLowerCase()) {
                             deinvolveIm(roomId, false, false);
                         }
                         document.body.removeChild(div);
