@@ -9818,11 +9818,11 @@
 
         /**@method*/
         toggle: function () {
-            if (this.trayCookie) {
-                $cms.setCookie('tray_' + this.trayCookie, $cms.dom.isDisplayed(this.el) ? 'closed' : 'open');
-            }
+            var openend = $cms.ui.toggleableTray(this.el);
 
-            $cms.ui.toggleableTray(this.el);
+            if (this.trayCookie) {
+                $cms.setCookie('tray_' + this.trayCookie, openend ? 'open' : 'closed');
+            }
         },
 
         /**@method*/
@@ -9861,6 +9861,7 @@
      * Toggle a ToggleableTray
      * @memberof $cms.ui
      * @param elOrOptions
+     * @return {boolean} - true when it is opened, false when it is closed
      */
     $cms.ui.toggleableTray = function toggleableTray(elOrOptions) {
         var options, el, animate,
@@ -9878,19 +9879,13 @@
             el = elOrOptions;
             animate = $cms.$CONFIG_OPTION('enable_animations');
         }
-
-        if (!$cms.isEl(el)) {
-            return;
-        }
+        
+        el = $cms.dom.elArg(el);
 
         if (!el.classList.contains('toggleable_tray')) { // Suspicious, maybe we need to probe deeper
             el = $cms.dom.$(el, '.toggleable_tray') || el;
         }
-
-        if (!el) {
-            return;
-        }
-
+        
         var pic = $cms.dom.$(el.parentNode, '.toggleable_tray_button img') || $cms.dom.$('img#e_' + el.id);
 
         if ($cms.dom.notDisplayed(el)) {
@@ -9905,6 +9900,10 @@
             if (pic) {
                 setTrayThemeImage('expand', 'contract', $IMG_expand, $IMG_contract, $IMG_contract2);
             }
+
+            $cms.dom.triggerResize(true);
+            
+            return true;
         } else {
             el.setAttribute('aria-expanded', 'false');
 
@@ -9919,10 +9918,12 @@
                 pic.setAttribute('alt', pic.getAttribute('alt').replace('{!CONTRACT;^}', '{!EXPAND;^}'));
                 pic.title = '{!EXPAND;^}';
             }
+
+            $cms.dom.triggerResize(true);
+            
+            return false;
         }
-
-        $cms.dom.triggerResize(true);
-
+        
         // Execution ends here
 
         var isThemeWizard = !!(pic && pic.src && pic.src.includes('themewizard.php'));
