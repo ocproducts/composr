@@ -7258,7 +7258,7 @@
                 var responseXML = (xhr.responseXML && xhr.responseXML.firstChild) ? xhr.responseXML : null;
 
                 if ((responseXML == null) && xhr.responseText && xhr.responseText.includes('<html')) {
-                    $cms.ui.alert(xhr.responseText, '{!ERROR_OCCURRED;^}', true);
+                    //$cms.ui.alert(xhr.responseText, '{!ERROR_OCCURRED;^}', true);
                 }
 
                 if (ajaxCallback != null) {

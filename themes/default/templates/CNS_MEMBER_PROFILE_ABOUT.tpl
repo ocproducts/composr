@@ -354,7 +354,7 @@
 							{+END}
 
 							{+START,IF,{$ADDON_INSTALLED,securitylogging}}
-								{+START,IF_NON_EMPTY,{IP_ADDRESS}}
+							{+START,IF_PASSED,IP_ADDRESS}{+START,IF_NON_EMPTY,{IP_ADDRESS}}
 									<tr>
 										<th class="de_th">{!IP_ADDRESS}:</th>
 										<td>
@@ -366,7 +366,7 @@
 											{+END}
 										</td>
 									</tr>
-								{+END}
+								{+END}{+END}
 							{+END}
 
 							{+START,IF_PASSED,USER_AGENT}

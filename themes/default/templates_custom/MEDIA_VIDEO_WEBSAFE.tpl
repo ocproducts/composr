@@ -1,3 +1,5 @@
+{$REQUIRE_JAVASCRIPT,core_rich_media}
+
 {+START,SET,media}
 	{$SET,player_id,player_{$RAND}}
 

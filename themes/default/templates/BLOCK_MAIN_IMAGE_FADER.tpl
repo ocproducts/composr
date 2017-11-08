@@ -1,3 +1,5 @@
+{$REQUIRE_JAVASCRIPT,galleries}
+
 {$SET,RAND_FADER_IMAGE,{$RAND}}
 
 {+START,IF,{$EQ,{BLOCK_ID},small_version}}

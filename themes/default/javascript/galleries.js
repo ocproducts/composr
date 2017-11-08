@@ -17,7 +17,7 @@
         BlockMainImageFader.base(this, 'constructor', arguments);
 
         var data = {},
-            id = params.randFaderImage,
+            id = strVal(params.randFaderImage),
             key;
 
         data.fpAnimation = document.getElementById('image_fader_' + id);
@@ -99,7 +99,7 @@
     $cms.views.GalleryNav = GalleryNav;
     /**
      * @memberof $cms.views
-     * @class
+     * @class $cms.views.GalleryNav
      * @extends $cms.View
      */
     function GalleryNav(params) {
@@ -113,7 +113,7 @@
         }
     }
 
-    $cms.inherits(GalleryNav, $cms.View, /**@lends GalleryNav#*/{
+    $cms.inherits(GalleryNav, $cms.View, /**@lends $cms.views.GalleryNav#*/{
         initializeSlideshow: function () {
             resetSlideshowCountdown();
             startSlideshowTimer();
