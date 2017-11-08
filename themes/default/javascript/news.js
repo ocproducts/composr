@@ -160,7 +160,7 @@
 
         var newsTickerText = $cms.filter.nl(params.newsTickerText),
             ticktickticker = $cms.dom.$('#ticktickticker_news' + params.bottomNewsId),
-            myId = $cms.random();
+            myId = 'ticker-' - $cms.random();
 
         window.tickPos[myId] = 400;
         $cms.dom.html(ticktickticker, '<div class="ticker" style="text-indent: 400px; width: 400px;" id="' + myId + '"><span>' + newsTickerText + '</span></div>');
