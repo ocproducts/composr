@@ -3,7 +3,7 @@
 
     var MESSAGE_CHECK_INTERVAL = window.MESSAGE_CHECK_INTERVAL = Math.max(3000, parseInt('{$CONFIG_OPTION,chat_message_check_interval}'));
     
-    var sbChatCheckTimer = null,
+    var sbChatCheckTimerId = null,
         sbChatRoomId = null,
         sbLastMessageId = null;
     
@@ -19,9 +19,11 @@
             setTimeout(function () {
                 sbChatCheck(chatRoomId, lastMessageId, -1);
             }, 2000);
+            
             if (!$cms.form.checkFieldForBlankness(el.form.elements['shoutbox_message'])) {
                 e.preventDefault();
             }
+            
             $cms.ui.disableButton(el);
         });
 
@@ -36,7 +38,7 @@
     
     function sbChatCheck(roomId, lastMessageId, lastEventId) {
         sbChatRoomId = roomId;
-        sbLastMessageId = lastMessageId;
+        sbLastMessageId = Number(lastMessageId);
 
         var url = '{$FIND_SCRIPT_NOHTTP;,messages}?action=new&no_reenter_message=1&room_id=' + roomId + "&message_id=" + ((lastMessageId == null) ? -1 : lastMessageId) + "&event_id=" + lastEventId;
         $cms.doAjaxRequest(url + $cms.$KEEP(), sbChatCheckResponse);
@@ -52,10 +54,10 @@
         sbHandleSignals(ajaxResult);
 
         // Schedule the next check
-        if (sbChatCheckTimer) {
-            clearTimeout(sbChatCheckTimer);
+        if (sbChatCheckTimerId) {
+            clearTimeout(sbChatCheckTimerId);
         }
-        sbChatCheckTimer = setTimeout((function (messageId) {
+        sbChatCheckTimerId = setTimeout((function (messageId) {
             sbChatCheck(sbChatRoomId, messageId, -1)
         }).bind(undefined, sbLastMessageId), MESSAGE_CHECK_INTERVAL);
 
@@ -67,7 +69,7 @@
             // Look through our messages
             for (var i = 0; i < messageEls.length; i++) {
                 var id = messageEls[i].getAttribute("id");
-                if (id > sbLastMessageId) {
+                if ((id > sbLastMessageId) && (sbLastMessageId !== -1)) {
                     sbLastMessageId = parseInt(id);
                     if (sbLastMessageId !== -1) {
                         if ($cms.dom.html(messageEls[i]).includes('((SHAKE))')) {
@@ -106,11 +108,11 @@
             }
         }
         for (var times = 0; times < 10; times++) {
-            window.setTimeout(shakeAnimateFunc(times, divs, amount), 100 * times * seconds);
+            window.setTimeout(shakeAnimateFunc(times, divs, amount), (100 * times * seconds));
         }
 
         for (var times2 = 8; times2 >= 0; times2--) {
-            window.setTimeout(shakeAnimateFunc(times2, divs, amount), 1000 * seconds + 100 * (8 - times2) * seconds);
+            window.setTimeout(shakeAnimateFunc(times2, divs, amount), (1000 * seconds + 100 * (8 - times2) * seconds));
         }
 
         window.setTimeout(function () {
