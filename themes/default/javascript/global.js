@@ -5033,8 +5033,8 @@
      * @class $cms.View
      */
     function View(params, viewOptions) {
+        /** @member {number}*/
         this.uid = $cms.uid(this);
-        
         /** @member {string} */
         this.tagName = 'div';
         /** @member { HTMLElement } */
@@ -6614,8 +6614,9 @@
 
                     setTimeout(function () {
                         if (self.el) {
-                            $cms.dom.on(self.el, 'click', function (e) {
+                            $cms.dom.on(self.el, 'click', function (e) { 
                                 if (!self.containerEl.contains(e.target)) {
+                                    // Background overlay clicked
                                     self.option('finished');
                                 }
                             });
@@ -6660,6 +6661,7 @@
                         if (self.el) {
                             $cms.dom.on(self.el, 'click', function (e) {
                                 if (!self.containerEl.contains(e.target)) {
+                                    // Background overlay clicked
                                     if (self.yes) {
                                         self.option('yes');
                                     } else {
@@ -6716,6 +6718,7 @@
                         if (self.el) {
                             $cms.dom.on(self.el, 'click', function (e) {
                                 if (!self.containerEl.contains(e.target)) {
+                                    // Background overlay clicked
                                     self.option('cancel');
                                 }
                             });
@@ -6779,10 +6782,9 @@
                 this.option('right');
             } else if ((e.key === 'Enter') && (this.yes)) {
                 this.option('yes');
-            }
-            if ((e.key === 'Enter') && (this.finished)) {
+            } else if ((e.key === 'Enter') && (this.finished)) {
                 this.option('finished');
-            } else if ((e.key === 'Escape') && (this.cancelButton) && ((this.type === 'prompt') || (this.type === 'confirm') || (this.type === 'lightbox') || (this.type === 'alert'))) {
+            } else if ((e.key === 'Escape') && (this.cancelButton) && /^(prompt|confirm|lightbox|alert)$/.test(this.type)) {
                 this.option('cancel');
             }
         },

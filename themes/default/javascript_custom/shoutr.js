@@ -37,15 +37,15 @@
     };
     
     function sbChatCheck(roomId, lastMessageId, lastEventId) {
-        sbChatRoomId = roomId;
+        sbChatRoomId = Number(roomId);
         sbLastMessageId = Number(lastMessageId);
 
         var url = '{$FIND_SCRIPT_NOHTTP;,messages}?action=new&no_reenter_message=1&room_id=' + roomId + "&message_id=" + ((lastMessageId == null) ? -1 : lastMessageId) + "&event_id=" + lastEventId;
-        $cms.doAjaxRequest(url + $cms.$KEEP(), sbChatCheckResponse);
+        $cms.doAjaxRequest(url + $cms.$KEEP()).then(sbChatCheckResponse);
     }
 
-    function sbChatCheckResponse(responseXML) {
-        var ajaxResult = responseXML && responseXML.querySelector('result');
+    function sbChatCheckResponse(xhr) {
+        var ajaxResult = xhr && xhr.responseXML && xhr.responseXML.querySelector('result');
 
         if (!ajaxResult) { // Some server side glitch. As this polls, lets ignore it
             return;
