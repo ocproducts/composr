@@ -10573,18 +10573,15 @@
     function confirmDelete(form, multi, callback) {
         multi = !!multi;
 
-        $cms.ui.confirm(
-            multi ? '{!_ARE_YOU_SURE_DELETE;^}' : '{!ARE_YOU_SURE_DELETE;^}',
-            function (result) {
-                if (result) {
-                    if (callback != null) {
-                        callback();
-                    } else {
-                        $cms.dom.submit(form);
-                    }
+        $cms.ui.confirm(multi ? '{!_ARE_YOU_SURE_DELETE;^}' : '{!ARE_YOU_SURE_DELETE;^}').then(function (result) {
+            if (result) {
+                if (callback != null) {
+                    callback();
+                } else {
+                    $cms.dom.submit(form);
                 }
             }
-        );
+        });
     }
 
     function prepareMassSelectMarker(set, type, id, checked) {
@@ -10608,13 +10605,6 @@
     /*
      Faux frames and faux scrolling
      */
-    $cms.dom.infiniteScrollingBlock = infiniteScrollingBlock;
-    $cms.dom.infiniteScrollingBlockHold = infiniteScrollingBlockHold;
-    $cms.dom.infiniteScrollingBlockUnhold = infiniteScrollingBlockUnhold;
-    $cms.dom.internaliseInfiniteScrolling = internaliseInfiniteScrolling;
-    $cms.dom.internaliseInfiniteScrollingGo = internaliseInfiniteScrollingGo;
-    $cms.dom.internaliseAjaxBlockWrapperLinks = internaliseAjaxBlockWrapperLinks;
-
     var infiniteScrollPending = false, // Blocked due to queued HTTP request
         infiniteScrollBlocked = false, // Blocked due to event tracking active
         infiniteScrollMouseHeld = false;
@@ -10622,39 +10612,39 @@
     /**
      * @param event
      */
-    function infiniteScrollingBlock(event) {
+    $cms.dom.infiniteScrollingBlockUnhold = function infiniteScrollingBlockUnhold(event) {
         if (event.keyCode === 35) { // 'End' key pressed, so stop the expand happening for a few seconds while the browser scrolls down
             infiniteScrollBlocked = true;
             setTimeout(function () {
                 infiniteScrollBlocked = false;
             }, 3000);
         }
-    }
+    };
 
-    function infiniteScrollingBlockHold() {
+    $cms.dom.infiniteScrollingBlockUnhold = function infiniteScrollingBlockUnhold() {
         if (!infiniteScrollBlocked) {
             infiniteScrollBlocked = true;
             infiniteScrollMouseHeld = true;
         }
-    }
+    };
 
     /**
      * @param infiniteScrolling
      */
-    function infiniteScrollingBlockUnhold(infiniteScrolling) {
+    $cms.dom.infiniteScrollingBlockUnhold = function infiniteScrollingBlockUnhold(infiniteScrolling) {
         if (infiniteScrollMouseHeld) {
             infiniteScrollBlocked = false;
             infiniteScrollMouseHeld = false;
             infiniteScrolling();
         }
-    }
+    };
 
     /**
      * @param urlStem
      * @param wrapper
      * @returns {*}
      */
-    function internaliseInfiniteScrolling(urlStem, wrapper) {
+    $cms.dom.internaliseInfiniteScrolling = function internaliseInfiniteScrolling(urlStem, wrapper) {
         if (infiniteScrollBlocked || infiniteScrollPending) {
             // Already waiting for a result
             return false;
@@ -10759,7 +10749,7 @@
         }
 
         return false;
-    }
+    };
 
     /**
      * @param urlStem
@@ -10767,7 +10757,7 @@
      * @param moreLinks
      * @returns {boolean}
      */
-    function internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks) {
+    $cms.dom.internaliseInfiniteScrollingGo = function internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks) {
         if (infiniteScrollPending) {
             return false;
         }
@@ -10801,7 +10791,7 @@
         }
 
         return false;
-    }
+    };
 
     /**
      * @param urlStem
@@ -10812,7 +10802,7 @@
      * @param formsToo
      * @param scrollToTop
      */
-    function internaliseAjaxBlockWrapperLinks(urlStem, blockElement, lookFor, extraParams, append, formsToo, scrollToTop) {
+    $cms.dom.internaliseAjaxBlockWrapperLinks = function internaliseAjaxBlockWrapperLinks(urlStem, blockElement, lookFor, extraParams, append, formsToo, scrollToTop) {
         urlStem = strVal(urlStem);
         lookFor = arrVal(lookFor);
         append = Boolean(append);
@@ -10934,5 +10924,5 @@
                 }
             });
         }
-    }
+    };
 }(window.$cms || (window.$cms = {})));
