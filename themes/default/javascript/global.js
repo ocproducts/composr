@@ -10333,7 +10333,7 @@
             }, refreshTime * 1000);
         }
 
-        internaliseAjaxBlockWrapperLinks(url, element, ['.*'], {}, false, true);
+        $cms.dom.internaliseAjaxBlockWrapperLinks(url, element, ['.*'], {}, false, true);
     };
 
     $cms.templates.ajaxPagination = function ajaxPagination(params) {
@@ -10343,7 +10343,7 @@
             infiniteScrollFunc;
         
         if (wrapperEl) {
-            internaliseAjaxBlockWrapperLinks(blockCallUrl, wrapperEl, ['^[^_]*_start$', '^[^_]*_max$'], {});
+            $cms.dom.internaliseAjaxBlockWrapperLinks(blockCallUrl, wrapperEl, ['^[^_]*_start$', '^[^_]*_max$'], {});
 
             if (infiniteScrollCallUrl) {
                 infiniteScrollFunc = $cms.dom.internaliseInfiniteScrolling.bind(undefined, infiniteScrollCallUrl, wrapperEl);

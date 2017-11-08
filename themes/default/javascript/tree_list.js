@@ -105,7 +105,7 @@
             var i, xml, tempNode, html;
             if (expandingId === '') { // Root
                 html = $cms.dom.$('#tree_list__root_' + this.name);
-                $cms.dom.html(html, '');
+                $cms.dom.empty(html);
 
                 this.treeListData = ajaxResult.cloneNode(true);
                 xml = this.treeListData;

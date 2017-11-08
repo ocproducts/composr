@@ -277,11 +277,11 @@
     };
 
     $cms.templates.blockMainStaffActions = function (params) {
-        internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.wrapperId), ['.*'], {}, false, true);
+        $cms.dom.internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.wrapperId), ['.*'], {}, false, true);
     };
 
     $cms.templates.blockMainStaffTips = function (params) {
-        internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.wrapperId), ['^staff_tips_dismiss$', '^rand$'/*cache breaker*/], {}, false, true, false);
+        $cms.dom.internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.wrapperId), ['^staff_tips_dismiss$', '^rand$'/*cache breaker*/], {}, false, true, false);
     };
 
     $cms.templates.blockMainStaffChecklistItem = function blockMainStaffChecklistItem(params, container) {

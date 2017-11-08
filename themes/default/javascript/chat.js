@@ -320,7 +320,7 @@
 
     $cms.templates.blockMainFriendsList = function (params, container) {
         if (params.wrapperId && params.blockCallUrl) {
-            internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.wrapperId), ['.*'], {}, false, true);
+            $cms.dom.internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.wrapperId), ['.*'], {}, false, true);
         }
 
         $cms.dom.on(container, 'keyup', '.js-input-friends-search', function (e, input) {
@@ -329,7 +329,7 @@
     };
 
     $cms.templates.blockSideShoutbox = function blockSideShoutbox(params, container) {
-        internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.wrapperId), [], {}, false, true);
+        $cms.dom.internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.wrapperId), [], {}, false, true);
 
         $cms.dom.on(container, 'submit', 'form.js-form-submit-side-shoutbox', function (e, form) {
             if ($cms.form.checkFieldForBlankness(form.elements['shoutbox_message'], e)) {
