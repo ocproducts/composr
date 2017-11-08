@@ -541,25 +541,15 @@ function doInputInvite(fieldName) {
 }
 
 function doInputNewRoom(fieldName) {
-    $cms.ui.prompt(
-        '{!chat:ENTER_CHATROOM;^}',
-        '',
-        function (va) {
-            if (va != null) {
-                $cms.ui.prompt(
-                    '{!chat:ENTER_ALLOW;^}',
-                    '',
-                    function (vb) {
-                        if (vb != null) {
-                            window.insertTextbox(document.getElementById(fieldName), '[newroom="' + va + '"]' + vb + '[/newroom]');
-                        }
-                    },
-                    '{!chat:INPUT_CHATCODE_new_room;^}'
-                );
-            }
-        },
-        '{!chat:INPUT_CHATCODE_new_room;^}'
-    );
+    $cms.ui.prompt('{!chat:ENTER_CHATROOM;^}', '', null, '{!chat:INPUT_CHATCODE_new_room;^}').then(function (chatroomName) {
+        if (chatroomName != null) {
+            $cms.ui.prompt('{!chat:ENTER_ALLOW;^}', '', null, '{!chat:INPUT_CHATCODE_new_room;^}').then(function (allowList) {
+                if (allowList != null) {
+                    window.insertTextbox(document.getElementById(fieldName), '[newroom="' + chatroomName + '"]' + allowList + '[/newroom]');
+                }
+            })
+        }
+    })
 }
 
 // Post a chat message
@@ -586,11 +576,11 @@ function chatPost(event, currentRoomId, fieldName, fontName, fontColour) {
         window.topWindow.currentlySendingMessage = true;
         var fullUrl = $cms.maintainThemeInLink(url + window.topWindow.$cms.$KEEP());
         var postData = 'room_id=' + encodeURIComponent(currentRoomId) + '&message=' + encodeURIComponent(messageText) + '&font=' + encodeURIComponent(fontName) + '&colour=' + encodeURIComponent(fontColour) + '&message_id=' + encodeURIComponent((window.topWindow.lastMessageId === null) ? -1 : window.topWindow.lastMessageId) + '&event_id=' + encodeURIComponent(window.topWindow.lastEventId);
-        $cms.doAjaxRequest(fullUrl, function (responseXml, xhr) {
-            if (responseXml != null) {
+        $cms.doAjaxRequest(fullUrl, function (responseXML, xhr) {
+            if (responseXML != null) {
                 window.topWindow.currentlySendingMessage = false;
                 element.disabled = false;
-                var responses = responseXml.getElementsByTagName('result');
+                var responses = responseXML.getElementsByTagName('result');
                 if (responses[0]) {
                     processChatXmlMessages(responses[0], true);
 
@@ -654,9 +644,9 @@ function chatCheck(backlog, messageId, eventId) {
             url = url + '&no_reenter_message=1';
         }
         var fullUrl = $cms.maintainThemeInLink(url + $cms.$KEEP());
-        $cms.doAjaxRequest(fullUrl, function (responseXml, xhr) {
-            if (responseXml != null) {
-                chatCheckResponse(responseXml, xhr, /*skipIncomingSound*/backlog);
+        $cms.doAjaxRequest(fullUrl, function (responseXML, xhr) {
+            if (responseXML != null) {
+                chatCheckResponse(responseXML, xhr, /*skipIncomingSound*/backlog);
             } else {
                 chatCheckResponse(null, null);
             }
@@ -677,8 +667,8 @@ function chatCheckTimeout(backlog, messageId, eventId) {
 }
 
 // Deal with the new messages response. Wraps around processChatXmlMessages as it also adds timers to ensure the message check continues to function even if background errors might have happened.
-function chatCheckResponse(responseXml, xhr, skipIncomingSound) {
-    var ajaxResult = responseXml && responseXml.querySelector('result');
+function chatCheckResponse(responseXML, xhr, skipIncomingSound) {
+    var ajaxResult = responseXML && responseXML.querySelector('result');
     
     if (ajaxResult != null) {
         if (skipIncomingSound === undefined) {
@@ -838,7 +828,9 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                         flashableAlert = true;
                         tmpElement = document.getElementById('online_' + memberId);
                         if (tmpElement) {
-                            if ($cms.dom.html(tmpElement).toLowerCase() == '{!chat:ACTIVE;^}'.toLowerCase()) break;
+                            if ($cms.dom.html(tmpElement).toLowerCase() === '{!chat:ACTIVE;^}'.toLowerCase()) {
+                                break;
+                            }
                             $cms.dom.html(tmpElement, '{!chat:ACTIVE;^}');
                             var friendImg = document.getElementById('friend_img_' + memberId);
                             if (friendImg) friendImg.className = 'friend_active';
@@ -1002,7 +994,6 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
     // Get attention, to indicate something has happened
     if (flashableAlert) {
         if ((roomId) && (window.openedPopups['room_' + roomId] !== undefined) && (!window.openedPopups['room_' + roomId].isShutdown)) {
-            if (window.openedPopups['room_' + roomId].getAttention !== undefined) window.openedPopups['room_' + roomId].getAttention();
             if (window.openedPopups['room_' + roomId].focus !== undefined) {
                 try {
                     window.openedPopups['room_' + roomId].focus();
@@ -1021,16 +1012,13 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                 }
             }
         } else {
-            if (window.getAttention !== undefined) {
-                window.getAttention();
-            }
             if (window.focus !== undefined) {
                 try {
                     focus();
                 } catch (e) {}
             }
             var post = document.getElementById('post');
-            if (post && post.name == 'message'/*The chat posting field is named message and IDd post*/) {
+            if (post && post.name === 'message'/*The chat posting field is named message and IDd post*/) {
                 try {
                     post.focus();
                 } catch (e) {}

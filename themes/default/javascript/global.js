@@ -9108,7 +9108,7 @@
     $cms.views.MobileMenu = MobileMenu;
     /**
      * @memberof $cms.views
-     * @class
+     * @class $cms.views.MobileMenu
      * @extends Menu
      */
     function MobileMenu() {
@@ -9116,7 +9116,7 @@
         this.menuContentEl = this.$('.js-el-menu-content');
     }
 
-    $cms.inherits(MobileMenu, Menu, /**@lends MobileMenu#*/{
+    $cms.inherits(MobileMenu, Menu, /**@lends $cms.views.MobileMenu#*/{
         events: function () {
             return {
                 'click .js-click-toggle-content': 'toggleContent',
@@ -9540,14 +9540,14 @@
         if (itm.style.display === 'none') {
             itm.style.display = 'block';
             if (img) {
-                img.src = $cms.$BASE_URL() + '/install.php?type=contract';
+                img.src = $cms.baseUrl('install.php?type=contract');
                 img.alt = img.alt.replace('{!EXPAND;}', '{!CONTRACT;}');
                 img.title = img.title.replace('{!EXPAND;}', '{!CONTRACT;}');
             }
         } else {
             itm.style.display = 'none';
             if (img) {
-                img.src = $cms.$BASE_URL() + '/install.php?type=expand';
+                img.src = $cms.baseUrl('install.php?type=expand');
                 img.alt = img.alt.replace('{!CONTRACT;}', '{!EXPAND;}');
                 img.title = img.title.replace('{!CONTRACT;}', '{!EXPAND;}');
             }
