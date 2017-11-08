@@ -104,14 +104,14 @@
 
             var i, xml, tempNode, html;
             if (expandingId === '') { // Root
-                html = $cms.dom.$id('tree_list__root_' + this.name);
+                html = $cms.dom.$('#tree_list__root_' + this.name);
                 $cms.dom.html(html, '');
 
                 this.treeListData = ajaxResult.cloneNode(true);
                 xml = this.treeListData;
 
                 if (!xml.firstElementChild) {
-                    var error = document.createTextNode((this.name.indexOf('category') === -1 && window.location.href.indexOf('category') === -1) ? '{!NO_ENTRIES;^}' : '{!NO_CATEGORIES;^}');
+                    var error = document.createTextNode((!this.name.includes('category') && !window.location.href.includes('category')) ? '{!NO_ENTRIES;^}' : '{!NO_CATEGORIES;^}');
                     html.className = 'red_alert';
                     html.appendChild(error);
                     return;
@@ -136,8 +136,11 @@
 
             element || (element = $cms.dom.$id(this.name));
 
-            $cms.dom.fadeIn(html);
-            $cms.dom.toggle(html, !!xml.firstElementChild);
+            if (xml.firstElementChild) {
+                $cms.dom.fadeIn(html);
+            } else {
+                $cms.dom.hide(html);
+            }
 
             arrVal(xml.children).forEach(function (node) {
                 var nodeSelfWrap, nodeSelf, el, label, htmlNode, expanding;
@@ -155,8 +158,8 @@
                         htmlNode = $cms.dom.$id(that.name + 'tree_list_c_' + $cms.dom.html(node));
                         expanding = (htmlNode.style.display !== 'block');
                         if (expanding) {
-                            if ($cms.dom.$id('choose_' + that.name)) {
-                                $cms.dom.$id('choose_' + that.name).click();
+                            if ($cms.dom.$('#choose_' + that.name)) {
+                                $cms.dom.$('#choose_' + that.name).click();
                             }
 
                             that.handleTreeClick(null, true, el);
@@ -170,8 +173,8 @@
                                 htmlNode = $cms.dom.$id(that.name + 'tree_list_c_' + xmlNode.getAttribute('id'));
                                 expanding = (htmlNode.style.display !== 'block');
                                 if (expanding) {
-                                    if ($cms.dom.$id('choose_' + that.name)) {
-                                        $cms.dom.$id('choose_' + that.name).click();
+                                    if ($cms.dom.$('#choose_' + that.name)) {
+                                        $cms.dom.$('#choose_' + that.name).click();
                                     }
 
                                     that.handleTreeClick(null, true, el);
@@ -245,8 +248,8 @@
                     $cms.dom.on(expandButton, 'click', function (e) {
                         e.preventDefault();
 
-                        if ($cms.dom.$id('choose_' + that.name)) {
-                            $cms.dom.$id('choose_' + that.name).click();
+                        if ($cms.dom.$('#choose_' + that.name)) {
+                            $cms.dom.$('#choose_' + that.name).click();
                         }
 
                         that.handleTreeClick(e, false, expandButton);
@@ -257,8 +260,8 @@
                         if (((event.keyCode ? event.keyCode : event.charCode) === 13) || ['+', '-', '='].includes(String.fromCharCode(event.keyCode ? event.keyCode : event.charCode))) {
                             event.preventDefault();
                             
-                            if ($cms.dom.$id('choose_' + that.name)) {
-                                $cms.dom.$id('choose_' + that.name).click();
+                            if ($cms.dom.$('#choose_' + that.name)) {
+                                $cms.dom.$('#choose_' + that.name).click();
                             }
 
                             that.handleTreeClick(event, false, expandButton);
@@ -288,9 +291,9 @@
                     newHtml = document.createElement('div');
                     newHtml.role = 'treeitem';
                     newHtml.id = that.name + 'tree_list_c_' + node.getAttribute('id');
-                    newHtml.style.display = ((!initiallyExpanded) || (node.getAttribute('has_children') != 'true')) ? 'none' : 'block';
+                    newHtml.style.display = ((!initiallyExpanded) || (node.getAttribute('has_children') !== 'true')) ? 'none' : 'block';
                     newHtml.style.paddingLeft = '15px';
-                    var selected = ((that.useServerId ? node.getAttribute('serverid') : node.getAttribute('id')) == element.value && element.value != '') || node.getAttribute('selected') == 'yes';
+                    var selected = ((that.useServerId ? node.getAttribute('serverid') : node.getAttribute('id')) === element.value && element.value !== '') || node.getAttribute('selected') === 'yes';
                     if (selectable) {
                         that.makeElementLookSelected($cms.dom.$id(that.name + 'tsel_c_' + node.getAttribute('id')), selected);
                         if (selected) {
@@ -307,15 +310,16 @@
                                 element.selectedTitle += node.getAttribute('title');
                             }
                             
-                            $cms.dom.changeValue(element, newVal);
+                            //$cms.dom.changeValue(element, newVal);
+                            element.value = newVal;
                         }
                     }
                     nodeSelf.appendChild(newHtml);
 
                     // Auto-expand
                     if (that.specialKeyPressed && !initiallyExpanded) {
-                        if ($cms.dom.$id('choose_' + that.name)) {
-                            $cms.dom.$id('choose_' + that.name).click();
+                        if ($cms.dom.$('#choose_' + that.name)) {
+                            $cms.dom.$('#choose_' + that.name).click();
                         }
 
                         that.handleTreeClick(null, false, expandButton);
@@ -485,7 +489,7 @@
             var htmlNode = $cms.dom.$id(this.name + 'tree_list_c_' + clickedId);
             var expandBtn = $cms.dom.$id(this.name + 'texp_c_' + clickedId);
 
-            var expanding = (htmlNode.style.display !== 'block');
+            var expanding = $cms.dom.notDisplayed(htmlNode);
 
             if (expanding) {
                 xmlNode = this.getElementByIdHack(clickedId, 'c');
@@ -647,8 +651,9 @@
                 if (newVal === '') {
                     element.selectedTitle = '';
                 }
-                
-                $cms.dom.changeValue(element, newVal);
+
+                element.value = newVal;
+                //$cms.dom.changeValue(element, newVal);
             }
 
             if (!assumeCtrl) {
