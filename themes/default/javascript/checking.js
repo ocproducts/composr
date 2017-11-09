@@ -135,9 +135,7 @@
     };
     
     $cms.form.startUploads = function startUploads(form) {
-        var plObj,
-            scrolled = false, 
-            alerted = false;
+        var plObj, scrolled = false;
 
         for (var i = 0; i < form.elements.length; i++) {
             plObj = form.elements[i].pluploadObject;
@@ -148,11 +146,6 @@
                 if (!scrolled) {
                     $cms.dom.smoothScroll(document.getElementById(plObj.settings.txtFileName));
                     scrolled = true;
-                }
-                
-                if (!alerted) { 
-                    $cms.ui.alert({ notice: '{!javascript:PLEASE_WAIT_WHILE_UPLOADING;^}', single: true });
-                    alerted = true;
                 }
             }
         }
@@ -193,6 +186,7 @@
                 }
                 
                 // Uploads pending
+                $cms.ui.alert({ notice: '{!javascript:PLEASE_WAIT_WHILE_UPLOADING;^}', single: true });
                 return $cms.form.startUploads(form);
             }).then(function () {
                 if (form.method.toLowerCase() === 'get') {
@@ -286,6 +280,7 @@
                 }
 
                 // Uploads pending
+                $cms.ui.alert({ notice: '{!javascript:PLEASE_WAIT_WHILE_UPLOADING;^}', single: true });
                 return $cms.form.startUploads(form);
             }).then(function () {
                 if ($cms.dom.trigger(form, 'submit', { detail: { triggeredByDoFormPreview: true } }) === false) {

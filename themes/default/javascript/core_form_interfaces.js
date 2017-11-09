@@ -785,6 +785,10 @@
     $cms.templates.previewScript = function (params, container) {
         var inner = $cms.dom.$(container, '.js-preview-box-scroll');
 
+        $cms.dom.on(container, 'click', function () {
+            $cms.dom.triggerResize();
+        });
+        
         if (inner) {
             $cms.dom.on(inner, $cms.browserMatches('gecko')/*LEGACY*/ ? 'DOMMouseScroll' : 'mousewheel', function (event) {
                 inner.scrollTop -= event.wheelDelta ? event.wheelDelta : event.detail;

@@ -118,27 +118,7 @@ function incoming_uploads_script()
         $outa['upload_name'] = $name;
         $outa['upload_savename'] = $savename;
         safe_ini_set('ocproducts.xss_detect', '0');
-        $outstr = '{';
-        $done = 0;
-        foreach ($outa as $key => $val) { // Put out data as JSON
-            if (is_float($val)) {
-                $val = float_to_raw_string($val);
-            } elseif (is_integer($val)) {
-                $val = strval($val);
-            }
-
-            if ((is_string($val)) && ($val != '')) {
-                $val = str_replace(chr(0), '', $val);
-
-                if ($done != 0) {
-                    $outstr .= ', ';
-                }
-                $outstr .= '"' . str_replace("\n", '\n', addcslashes($key, "\\\'\"&\n\r<>")) . '": "' . str_replace("\n", '\n', addcslashes($val, "\\\'\"&\n\r<>")) . '"';
-                $done++;
-            }
-        }
-        $outstr .= '}';
-        echo $outstr;
+        echo json_encode($outa);
     } else {
         //header('Content-type: text/plain; charset=' . get_charset()); @print('No file (' . serialize($_FILES) . ')');
         header('HTTP/1.1 500 File Upload Error');

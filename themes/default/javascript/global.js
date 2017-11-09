@@ -4452,7 +4452,7 @@
         var i, iframes = window.parent.document.querySelectorAll('iframe');
 
         for (i = 0; i < iframes.length; i++) {
-            if ((iframes[i].src === window.location.href) || (iframes[i].contentWindow === window) || ((iframes[i].id != '') && (window.parent.frames[iframes[i].id] !== undefined) && (window.parent.frames[iframes[i].id] == window))) {
+            if ((iframes[i].src === window.location.href) || (iframes[i].contentWindow === window) || ((iframes[i].id !== '') && (window.parent.frames[iframes[i].id] !== undefined) && (window.parent.frames[iframes[i].id] === window))) {
                 if (iframes[i].style.height === '900px') {
                     iframes[i].style.height = 'auto';
                 }
@@ -4463,7 +4463,7 @@
         if (andSubframes) {
             iframes = document.querySelectorAll('iframe');
             for (i = 0; i < iframes.length; i++) {
-                if ((iframes[i].name != '') && ((iframes[i].classList.contains('expandable_iframe')) || (iframes[i].classList.contains('dynamic_iframe')))) {
+                if ((iframes[i].name !== '') && ((iframes[i].classList.contains('expandable_iframe')) || (iframes[i].classList.contains('dynamic_iframe')))) {
                     $cms.dom.resizeFrame(iframes[i].name);
                 }
             }
@@ -10372,13 +10372,13 @@
     $cms.templates.confirmScreen = function confirmScreen(params) {};
 
     $cms.templates.warnScreen = function warnScreen() {
-        if ((window.$cms.dom.triggerResize != null) && (window.top !== window)) {
+        if (window.top !== window) {
             $cms.dom.triggerResize();
         }
     };
 
     $cms.templates.fatalScreen = function fatalScreen() {
-        if ((window.$cms.dom.triggerResize != null) && (window.top !== window)) {
+        if (window.top !== window) {
             $cms.dom.triggerResize();
         }
     };

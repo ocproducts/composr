@@ -3,7 +3,6 @@
 
     $cms.templates.formScreenInputMapPosition = function formScreenInputMapPosition(params, container) {
         var name = strVal(params.name),
-            googleMapKey = strVal(params.googleMapKey),
             latitude = strVal(params.latitude),
             latitudeInput = container.querySelector('#' + name + '_latitude'),
             longitude = strVal(params.longitude),
@@ -11,7 +10,7 @@
 
         $cms.requireJavascript('https://www.google.com/jsapi').then(function () {
             setTimeout(function () {
-                window.google.load('maps', '3', { callback: googleMapUsersInitialize, other_params: ((googleMapKey !== '') ? 'key=' + googleMapKey : '') });
+                window.google.load('maps', '3', { callback: googleMapUsersInitialize, other_params: (($cms.$CONFIG_OPTION('google_map_key') !== '') ? 'key=' + $cms.$CONFIG_OPTION('google_map_key') : '') });
             },0);
         });
 
@@ -95,11 +94,10 @@
 
     $cms.templates.blockMainGoogleMap = function blockMainGoogleMap(params) {
         var cluster = !!params.cluster,
-            googleMapKey = strVal(params.googleMapKey),
             latitude = strVal(params.latitude),
             longitude = strVal(params.longitude),
             divId = strVal(params.divId),
-            zoom = strVal(params.zoom),
+            zoom = Number(params.zoom),
             center = !!params.center,
             rawData = params.data,
             minLatitude = strVal(params.minLatitude),
@@ -116,7 +114,7 @@
 
         var options = {
             callback: googleMapInitialize,
-            other_params: (googleMapKey !== '') ? 'key=' + $cms.$CONFIG_OPTION('googleMapKey') : ''
+            other_params: ($cms.$CONFIG_OPTION('google_map_key') !== '') ? 'key=' + $cms.$CONFIG_OPTION('google_map_key') : ''
         };
 
         if (region !== '') {
