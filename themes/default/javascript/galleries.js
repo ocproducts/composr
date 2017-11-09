@@ -178,9 +178,11 @@
         var form = document.getElementById('main_form'),
             submitBtn = document.getElementById('submit_button'),
             validValue;
-        form.addEventListener('submit', function submitCheck() {
+        form.addEventListener('submit', function submitCheck(e) {
             var value = form.elements['name'].value;
-            
+            if (value === validValue) {
+                return;
+            }
             submitBtn.disabled = true;
             var url = '{$FIND_SCRIPT_NOHTTP;^,snippet}?snippet=exists_gallery&name=' + encodeURIComponent(value);
             e.preventDefault();
