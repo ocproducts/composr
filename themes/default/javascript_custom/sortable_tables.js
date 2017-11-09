@@ -941,7 +941,9 @@ var SortableTable = (function(){
         type = type || "default";
         c.title =c.title || table.AutoSortTitle;
         addClass(c,table.SortableClassName);
-        c.onclick = Function("","SortableTable.sort(this,{'sorttype':SortableTableSort['"+type+"']})");
+        c.onclick = function () {
+            SortableTable.sort(this, {'sorttype': SortableTableSort[type]})
+        };
         // If we are going to auto sort on a column, we need to keep track of what kind of sort it will be
         if (args.col!=null) {
           if (args.col==table.getActualCellIndex(c)) {
@@ -967,18 +969,14 @@ var SortableTable = (function(){
         if (type=="next") { type = 1; }
         else if (type=="previous") { type = -1; }
         if (type!=null) {
-          c.onclick = Function(""," \
-            SortableTable.pageJump(this,"+type+"); \
-            if (typeof window.scrollTo!='undefined') \
-            { \
-              try \
-              { \
-                scrollTo(0,$cms.dom.findPosY(document.getElementById('"+t.id+"'))); \
-              } \
-              catch (e) {}; \
-            } \
-            return false; \
-          ");
+            c.onclick = function () {
+                SortableTable.pageJump(this, type);
+                try {
+                    scrollTo(0,$cms.dom.findPosY(document.getElementById(t.id)));
+                } catch (e) {}
+    
+                return false;
+            };
         }
 
         if (hasClass(c, table.PageNumberPrefix.replace(/:$/,''))) {
