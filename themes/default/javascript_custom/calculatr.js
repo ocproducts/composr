@@ -22,7 +22,7 @@
                 }
             }
             var ret;
-            window.eval('ret = ' + equation);
+            eval('ret = ' + equation);
             return Math.round(ret);
         }
     };

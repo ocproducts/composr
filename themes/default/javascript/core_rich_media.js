@@ -1112,10 +1112,18 @@
         var countdown = (typeof id === 'object') ? id : document.getElementById(id), i;
         var inside = $cms.dom.html(countdown);
         var multiples = [];
-        if (tailing >= 4) multiples.push(365);
-        if (tailing >= 3) multiples.push(24);
-        if (tailing >= 2) multiples.push(60);
-        if (tailing >= 1) multiples.push(60);
+        if (tailing >= 4) {
+            multiples.push(365);
+        }
+        if (tailing >= 3) {
+            multiples.push(24);
+        }
+        if (tailing >= 2) {
+            multiples.push(60);
+        }
+        if (tailing >= 1) {
+            multiples.push(60);
+        }
         multiples.push(1);
         var us = inside.match(/\d+/g);
         var total = 0, multiplier = 1;
@@ -1130,11 +1138,11 @@
         }
 
         if (total > 0) {
-            total += direction;
+            total += Number(direction);
             inside = inside.replace(/\d+/g, '!!!');
 
-            if (total == 0) {
-                countdown.className = 'red_alert';
+            if (total === 0) {
+                countdown.classList.add('red_alert');
             }
 
             for (i = 0; i < us.length; i++) {
