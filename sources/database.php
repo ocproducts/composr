@@ -394,7 +394,7 @@ function db_escape_string($string)
  * Basic arithmetic and inequality operators are assumed supported without needing a function.
  *
  * @param string $function Function name
- * @set CONCAT REPLACE SUBSTR LENGTH RAND COALESCE LEAST GREATEST MOD GROUP_CONCAT
+ * @set CONCAT REPLACE SUBSTR LENGTH RAND COALESCE LEAST GREATEST MOD GROUP_CONCAT X_ORDER_BY_BOOLEAN
  * @param ?array $args List of string arguments, assumed already quoted/escaped correctly for the particular database (null: none)
  * @return string SQL fragment
  */
@@ -403,6 +403,8 @@ function db_function($function, $args = null)
     if ($args === null) {
         $args = array(); // TODO: Fix in v11, make like this as default parameter
     }
+
+    $args = @array_map('strval', $args);
 
     if (method_exists($GLOBALS['DB_STATIC_OBJECT'], 'db_function')) {
         return $GLOBALS['DB_STATIC_OBJECT']->db_function($function, $args);
@@ -512,9 +514,9 @@ function db_function($function, $args = null)
                         if ($i != 0) {
                             $ret .= ' UNION ALL ';
                         }
-                        $ret .= 'SELECT ' . $args[0] . ' AS X';
+                        $ret .= 'SELECT ' . $arg . ' AS X';
                     }
-                    $ret .= '))';
+                    $ret .= ') ' . 'x' . md5(uniqid('', true)) . ')';
                     return $ret;
             }
             break;
@@ -532,9 +534,9 @@ function db_function($function, $args = null)
                         if ($i != 0) {
                             $ret .= ' UNION ALL ';
                         }
-                        $ret .= 'SELECT ' . $args[0] . ' AS X';
+                        $ret .= 'SELECT ' . $arg . ' AS X';
                     }
-                    $ret .= '))';
+                    $ret .= ') ' . 'x' . md5(uniqid('', true)) . ')';
                     return $ret;
             }
             break;
@@ -579,6 +581,20 @@ function db_function($function, $args = null)
                 case 'sqlite':
                 default:
                     return 'SELECT GROUP_CONCAT(' . $args[0] . ') FROM ' . $args[1];
+            }
+            break;
+
+        case 'X_ORDER_BY_BOOLEAN':
+            if (count($args) != 1) {
+                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            }
+            switch (get_db_type()) {
+                case 'sqlserver':
+                case 'sqlserver_odbc':
+                    return '(CASE WHEN ' . $args[0] . ' THEN 0 ELSE 1 END)';
+
+                default:
+                    return $args[0];
             }
             break;
     }
@@ -1408,7 +1424,7 @@ class DatabaseConnector
     public function query($query, $max = null, $start = null, $fail_ok = false, $skip_safety_check = false, $lang_fields = null, $field_prefix = '')
     {
         global $DEV_MODE;
-        if (!$skip_safety_check && stripos($query, 'union') !== false) {
+        if (!$skip_safety_check && stripos($query, 'union') !== false && strpos(get_db_type(), 'mysql') !== false) {
             $_query = preg_replace('#\s#', ' ', strtolower($query));
             $queries = 1;//substr_count($_query,'insert into ')+substr_count($_query,'replace into ')+substr_count($_query,'update ')+substr_count($_query,'select ')+substr_count($_query,'delete from '); Not reliable
             if ((strpos(preg_replace('#\'[^\']*\'#', '\'\'', str_replace('\\\'', '', $_query)), ' union ') !== false) || ($queries > 1)) {

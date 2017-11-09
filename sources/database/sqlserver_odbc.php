@@ -135,15 +135,7 @@ class Database_Static_sqlserver_odbc extends Database_super_sqlserver
      */
     public function db_query($query, $db, $max = null, $start = null, $fail_ok = false, $get_insert_id = false)
     {
-        if (!is_null($max)) {
-            if (!is_null($start)) {
-                $max += $start;
-            }
-
-            if ((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) { // Unfortunately we can't apply to DELETE FROM and update :(. But its not too important, LIMIT'ing them was unnecessarily anyway
-                $query = 'SELECT TOP ' . strval(intval($max)) . substr($query, 6);
-            }
-        }
+        $this->apply_sql_limit_clause($query, $start, $max);
 
         $results = @odbc_exec($db, $query);
         if (($results === false) && (strtoupper(substr($query, 0, 12)) == 'INSERT INTO ') && (strpos($query, '(id, ') !== false)) {

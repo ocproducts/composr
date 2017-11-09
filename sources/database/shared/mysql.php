@@ -26,6 +26,24 @@
 class Database_super_mysql
 {
     /**
+     * Adjust an SQL query to apply offset/limit restriction.
+     *
+     * @param  string $query The complete SQL query
+     * @param  ?integer $max The maximum number of rows to affect (null: no limit)
+     * @param  ?integer $start The start row to affect (null: no specification)
+     */
+    public function apply_sql_limit_clause(&$query, $max = null, $start = 0)
+    {
+        if (($max !== null) && ($start !== null)) {
+            $query .= ' LIMIT ' . strval($start) . ',' . strval($max);
+        } elseif ($max !== null) {
+            $query .= ' LIMIT ' . strval($max);
+        } elseif ($start !== null) {
+            $query .= ' LIMIT ' . strval($start) . ',30000000';
+        }
+    }
+
+    /**
      * Find whether the database may run GROUP BY unfettered with restrictions on the SELECT'd fields having to be represented in it or aggregate functions
      *
      * @return boolean Whether it can

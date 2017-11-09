@@ -190,13 +190,7 @@ class Database_Static_mysql_dbx extends Database_super_mysql
             }
         }
 
-        if (($max !== null) && ($start !== null)) {
-            $query .= ' LIMIT ' . strval($start) . ',' . strval($max);
-        } elseif ($max !== null) {
-            $query .= ' LIMIT ' . strval($max);
-        } elseif ($start !== null) {
-            $query .= ' LIMIT ' . strval($start) . ',30000000';
-        }
+        $this->apply_sql_limit_clause($query, $start, $max);
 
         $results = @dbx_query($db, $query, DBX_RESULT_INFO);
         if (($results === 0) && ((!$fail_ok) || (strpos(dbx_error($db), 'is marked as crashed and should be repaired') !== false))) {

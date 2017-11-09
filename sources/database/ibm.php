@@ -338,6 +338,26 @@ class Database_Static_ibm
     }
 
     /**
+     * Adjust an SQL query to apply offset/limit restriction.
+     *
+     * @param  string $query The complete SQL query
+     * @param  ?integer $max The maximum number of rows to affect (null: no limit)
+     * @param  ?integer $start The start row to affect (null: no specification)
+     */
+    public function apply_sql_limit_clause(&$query, $max = null, $start = 0)
+    {
+        if ($max !== null) {
+            if ($start !== null) {
+                $max += $start;
+            }
+
+            if ((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) { // Unfortunately we can't apply to DELETE FROM and update :(. But its not too important, LIMIT'ing them was unnecessarily anyway
+                $query .= ' FETCH FIRST ' . strval($max + $start) . ' ROWS ONLY';
+            }
+        }
+    }
+
+    /**
      * This function is a very basic query executor. It shouldn't usually be used by you, as there are abstracted versions available.
      *
      * @param  string $query The complete SQL query
@@ -350,15 +370,7 @@ class Database_Static_ibm
      */
     public function db_query($query, $db, $max = null, $start = null, $fail_ok = false, $get_insert_id = false)
     {
-        if (!is_null($max)) {
-            if (!is_null($start)) {
-                $max += $start;
-            }
-
-            if ((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) { // Unfortunately we can't apply to DELETE FROM and update :(. But its not too important, LIMIT'ing them was unnecessarily anyway
-                $query .= ' FETCH FIRST ' . strval($max + $start) . ' ROWS ONLY';
-            }
-        }
+        $this->apply_sql_limit_clause($query, $start, $max);
 
         $results = @odbc_exec($db, $query);
         if (($results === false) && (!$fail_ok)) {

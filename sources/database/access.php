@@ -354,6 +354,26 @@ DefaultDir=C:/ProgramFiles/CommonFiles/ODBC/DataSources';
     }
 
     /**
+     * Adjust an SQL query to apply offset/limit restriction.
+     *
+     * @param  string $query The complete SQL query
+     * @param  ?integer $max The maximum number of rows to affect (null: no limit)
+     * @param  ?integer $start The start row to affect (null: no specification)
+     */
+    public function apply_sql_limit_clause(&$query, $max = null, $start = 0)
+    {
+        if ($max !== null) {
+            if ($start !== null) {
+                $max += $start;
+            }
+
+            if ((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) { // Unfortunately we can't apply to DELETE FROM and update :(. But its not too important, LIMIT'ing them was unnecessarily anyway
+                $query = 'SELECT TOP ' . strval(intval($max)) . substr($query, 6);
+            }
+        }
+    }
+
+    /**
      * This function is a very basic query executor. It shouldn't usually be used by you, as there are abstracted versions available.
      *
      * @param  string $query The complete SQL query
@@ -366,15 +386,7 @@ DefaultDir=C:/ProgramFiles/CommonFiles/ODBC/DataSources';
      */
     public function db_query($query, $db, $max = null, $start = null, $fail_ok = false, $get_insert_id = false)
     {
-        if (!is_null($max)) {
-            if (!is_null($start)) {
-                $max += $start;
-            }
-
-            if ((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) { // Unfortunately we can't apply to DELETE FROM and update :(. But its not too important, LIMIT'ing them was unnecessarily anyway
-                $query = 'SELECT TOP ' . strval(intval($max)) . substr($query, 6);
-            }
-        }
+        $this->apply_sql_limit_clause($query, $start, $max);
 
         $results = @odbc_exec($db, $query);
         if ((($results === false) || (((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) && ($results === true))) && (!$fail_ok)) {

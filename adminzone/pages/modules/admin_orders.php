@@ -292,7 +292,14 @@ class Module_admin_orders
         global $NO_DB_SCOPE_CHECK;
         $NO_DB_SCOPE_CHECK = true;
 
-        $rows = $GLOBALS['SITE_DB']->query('SELECT t1.*,SUM(t3.p_quantity*t3.included_tax) as tax FROM ' . get_table_prefix() . 'shopping_order t1' . $extra_join . ' LEFT JOIN ' . get_table_prefix() . 'shopping_order_details t3 ON t1.id=t3.order_id ' . $cond . ' GROUP BY t1.id ORDER BY t1.order_status=\'' . /*Not using db_string_equal_to because LIKE must not be used here*/db_escape_string('ORDER_STATUS_cancelled') . '\',' . $sortable . ' ' . $sort_order, $max, $start, false, true);
+        $sql = '
+            SELECT
+            t1.*,SUM(t3.p_quantity*t3.included_tax) as tax
+            FROM ' . get_table_prefix() . 'shopping_order t1' . $extra_join . ' LEFT JOIN ' . get_table_prefix() . 'shopping_order_details t3 ON t1.id=t3.order_id ' . $cond . '
+            GROUP BY t1.id,t1.c_member,t1.session_id,t1.add_date,t1.tot_price,t1.order_status,t1.notes,t1.transaction_id,t1.purchase_through,t1.tax_opted_out
+            ORDER BY ' . db_function('X_ORDER_BY_BOOLEAN', array(db_string_equal_to('t1.order_status', 'ORDER_STATUS_cancelled'))) . ',' . $sortable . ' ' . $sort_order;
+        // TODO: Fix above in v10.1
+        $rows = $GLOBALS['SITE_DB']->query($sql, $max, $start, false, true);
         $order_entries = new Tempcode();
         foreach ($rows as $row) {
             if ($row['purchase_through'] == 'cart') {

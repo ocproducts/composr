@@ -424,6 +424,24 @@ class Database_Static_xml
     }
 
     /**
+     * Adjust an SQL query to apply offset/limit restriction.
+     *
+     * @param  string $query The complete SQL query
+     * @param  ?integer $max The maximum number of rows to affect (null: no limit)
+     * @param  ?integer $start The start row to affect (null: no specification)
+     */
+    public function apply_sql_limit_clause(&$query, $max = null, $start = 0)
+    {
+        if (($max !== null) && ($start !== null)) {
+            $query .= ' LIMIT ' . strval($start) . ',' . strval($max);
+        } elseif ($max !== null) {
+            $query .= ' LIMIT ' . strval($max);
+        } elseif ($start !== null) {
+            $query .= ' LIMIT ' . strval($start) . ',30000000';
+        }
+    }
+
+    /**
      * This function is a very basic query executor. It shouldn't usually be used by you, as there are abstracted versions available.
      *
      * @param  string $query The complete SQL query

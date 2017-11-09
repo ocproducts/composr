@@ -225,13 +225,7 @@ class Database_Static_mysql extends Database_super_mysql
             $this->last_select_db = $db_name;
         }
 
-        if (($max !== null) && ($start !== null)) {
-            $query .= ' LIMIT ' . strval($start) . ',' . strval($max);
-        } elseif ($max !== null) {
-            $query .= ' LIMIT ' . strval($max);
-        } elseif ($start !== null) {
-            $query .= ' LIMIT ' . strval($start) . ',30000000';
-        }
+        $this->apply_sql_limit_clause($query, $start, $max);
 
         $results = @mysql_query($query, $db);
         if (($results === false) && ((!$fail_ok) || (strpos(mysql_error($db), 'is marked as crashed and should be repaired') !== false))) {

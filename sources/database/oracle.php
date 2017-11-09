@@ -415,19 +415,15 @@ class Database_Static_oracle
     }
 
     /**
-     * This function is a very basic query executor. It shouldn't usually be used by you, as there are abstracted versions available.
+     * Adjust an SQL query to apply offset/limit restriction.
      *
      * @param  string $query The complete SQL query
-     * @param  array $db A DB connection
      * @param  ?integer $max The maximum number of rows to affect (null: no limit)
      * @param  ?integer $start The start row to affect (null: no specification)
-     * @param  boolean $fail_ok Whether to output an error on failure
-     * @param  boolean $get_insert_id Whether to get the autoincrement ID created for an insert query
-     * @return ?mixed The results (null: no results), or the insert ID
      */
-    public function db_query($query, $db, $max = null, $start = null, $fail_ok = false, $get_insert_id = false)
+    public function apply_sql_limit_clause(&$query, $max = null, $start = 0)
     {
-        if ((!is_null($start)) && (!is_null($max)) && (strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) {
+        if (($start !== null) && ($max !== null) && (strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) {
             $old_query = $query;
 
             if (is_null($start)) {
@@ -459,6 +455,22 @@ class Database_Static_oracle
                 $query .= substr($old_query, $pos4);
             }
         }
+    }
+
+    /**
+     * This function is a very basic query executor. It shouldn't usually be used by you, as there are abstracted versions available.
+     *
+     * @param  string $query The complete SQL query
+     * @param  array $db A DB connection
+     * @param  ?integer $max The maximum number of rows to affect (null: no limit)
+     * @param  ?integer $start The start row to affect (null: no specification)
+     * @param  boolean $fail_ok Whether to output an error on failure
+     * @param  boolean $get_insert_id Whether to get the autoincrement ID created for an insert query
+     * @return ?mixed The results (null: no results), or the insert ID
+     */
+    public function db_query($query, $db, $max = null, $start = null, $fail_ok = false, $get_insert_id = false)
+    {
+        $this->apply_sql_limit_clause($query, $start, $max);
 
         $stmt = ociparse($db, $query, 0);
         $results = @ociexecute($stmt);

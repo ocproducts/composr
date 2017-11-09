@@ -341,6 +341,26 @@ class Database_Static_sqlite
     }
 
     /**
+     * Adjust an SQL query to apply offset/limit restriction.
+     *
+     * @param  string $query The complete SQL query
+     * @param  ?integer $max The maximum number of rows to affect (null: no limit)
+     * @param  ?integer $start The start row to affect (null: no specification)
+     */
+    public function apply_sql_limit_clause(&$query, $max = null, $start = 0)
+    {
+        if (substr($query, 0, 7) == 'SELECT') {
+            if (($max !== null) && (!$start !== null)) {
+                $query .= ' LIMIT ' . strval(intval($start)) . ',' . strval(intval($max));
+            } elseif ($max !== null) {
+                $query .= ' LIMIT ' . strval(intval($max));
+            } elseif ($start !== null) {
+                $query .= ' LIMIT ' . strval(intval($start)) . ',30000000';
+            }
+        }
+    }
+
+    /**
      * This function is a very basic query executor. It shouldn't usually be used by you, as there are abstracted versions available.
      *
      * @param  string $query The complete SQL query
@@ -353,15 +373,7 @@ class Database_Static_sqlite
      */
     public function db_query($query, $db, $max = null, $start = null, $fail_ok = false, $get_insert_id = false)
     {
-        if (substr($query, 0, 7) == 'SELECT') {
-            if ((!is_null($max)) && (!is_null($start))) {
-                $query .= ' LIMIT ' . strval(intval($start)) . ',' . strval(intval($max));
-            } elseif (!is_null($max)) {
-                $query .= ' LIMIT ' . strval(intval($max));
-            } elseif (!is_null($start)) {
-                $query .= ' LIMIT ' . strval(intval($start)) . ',30000000';
-            }
-        }
+        $this->apply_sql_limit_clause($query, $start, $max);
 
         $results = @sqlite_query($db, $query);
         if ((($results === false) || (((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) && ($results === true))) && (!$fail_ok)) {

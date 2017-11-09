@@ -31,6 +31,26 @@ You need to go into your server properties and turn the security to "SQL Server 
 class Database_super_sqlserver
 {
     /**
+     * Adjust an SQL query to apply offset/limit restriction.
+     *
+     * @param  string $query The complete SQL query
+     * @param  ?integer $max The maximum number of rows to affect (null: no limit)
+     * @param  ?integer $start The start row to affect (null: no specification)
+     */
+    public function apply_sql_limit_clause(&$query, $max = null, $start = 0)
+    {
+        if ($max !== null) {
+            if ($start !== null) {
+                $max += $start;
+            }
+
+            if ((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) { // Unfortunately we can't apply to DELETE FROM and update :(. But its not too important, LIMIT'ing them was unnecessarily anyway
+                $query = 'SELECT TOP ' . strval(intval($max)) . substr($query, 6);
+            }
+        }
+    }
+
+    /**
      * Get the default user for making db connections (used by the installer as a default).
      *
      * @return string The default user for db connections
@@ -68,14 +88,27 @@ class Database_super_sqlserver
             if (db_has_full_text($db)) {
                 $index_name = substr($index_name, 1);
 
+                // Only allowed one index per table
+                $existing_index_fields = $GLOBALS['SITE_DB']->query_select('db_meta_indices', array('i_name', 'i_fields'), array('i_table' => $raw_table_name));
+                foreach ($existing_index_fields as $existing_index_field) {
+                    if (substr($existing_index_field['i_name'], 0, 1) == '#') {
+                        $ret[] = 'DROP FULLTEXT INDEX ON ' . $table_name;
+
+                        $ret[] = 'DROP INDEX ' . substr($existing_index_field['i_name'], 1) . '__' . $table_name . ' ON ' . $table_name;
+                        $_fields .= ',' . $existing_index_field['i_fields'];
+                    }
+                }
+
+                if (count($ret) == 0) {
+                    $ret[] = 'CREATE FULLTEXT CATALOG ft AS DEFAULT';
+                }
+
+                $_fields = implode(',', array_unique(explode(',', $_fields)));
                 $unique_index_name = $index_name . '__' . $table_name;
-
                 $ret[] = 'CREATE UNIQUE INDEX ' . $unique_index_name . ' ON ' . $table_name . '(' . $unique_key_fields . ')';
-
-                $ret[] = 'CREATE FULLTEXT CATALOG ft AS DEFAULT';
-
                 $ret[] = 'CREATE FULLTEXT INDEX ON ' . $table_name . '(' . $_fields . ') KEY INDEX ' . $unique_index_name;
             }
+
             return $ret;
         }
 
@@ -284,7 +317,7 @@ class Database_super_sqlserver
      */
     public function db_encode_like($pattern)
     {
-        return $this->db_escape_string(str_replace('%', '*', $pattern));
+        return $this->db_escape_string($pattern);
     }
 
     /**
@@ -331,7 +364,7 @@ class Database_super_sqlserver
      */
     public function db_has_full_text_boolean()
     {
-        return true;
+        return false;
     }
 
     /**
