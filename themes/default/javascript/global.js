@@ -1664,7 +1664,7 @@
                 resourcesToLoad.delete(loadedEl);
 
                 if (resourcesToLoad.size < 1) {
-                    resolve(event);
+                    resolve();
                 }
             }
         });
@@ -9578,7 +9578,7 @@
                 type = 'block';
                 var label = document.getElementById('sep_forum');
                 if (label) {
-                    $cms.dom.html(label, el.nextSibling.nodeValue);
+                    $cms.dom.html(label, el.nextElementSibling.textContent);
                 }
             }
 

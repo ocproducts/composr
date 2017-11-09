@@ -2,17 +2,16 @@
     'use strict';
 
     $cms.templates.blockMainGoogleMapUsers = function blockMainGoogleMapUsers(params) {
-        var cluster = !!params.cluster,
+        var cluster = Boolean(params.cluster),
             latitude = strVal(params.latitude),
             longitude = strVal(params.longitude),
-            zoom = strVal(params.zoom),
+            zoom = Number(params.zoom),
             region = strVal(params.region),
-            dataEval = strVal(params.data),
-            geolocateUser = !!params.geolocateUser,
+            dataJson = strVal(params.data),
+            geolocateUser = Boolean(params.geolocateUser),
             setCoordUrl = strVal(params.setCoordUrl),
             username = strVal(params.username),
-            usernamePrefix = strVal(params.usernamePrefix),
-            googleMapKey = strVal(params.googleMapKey);
+            usernamePrefix = strVal(params.usernamePrefix);
 
         var scripts = ['https://www.google.com/jsapi'];
 
@@ -22,7 +21,7 @@
 
         var options = {
             callback: googleMapUsersInitialize,
-            other_params: (googleMapKey !== '') ? 'key=' + $cms.$CONFIG_OPTION('googleMapKey') : ''
+            other_params: ($cms.$CONFIG_OPTION('google_map_key') !== '') ? 'key=' + $cms.$CONFIG_OPTION('google_map_key') : ''
         };
 
         if (region !== '') {
@@ -51,10 +50,10 @@
                 } else {
                     if (navigator.geolocation !== undefined) {
                         try {
-                            navigator.geolocation.getCurrentPosition(function(position) {
-                                map.setCenter(new google.maps.LatLng(position.coords.latitude,position.coords.longitude));
+                            navigator.geolocation.getCurrentPosition(function (position) {
+                                map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
                             });
-                        } catch (e) {}
+                        } catch (ignore) {}
                     }
                 }
             }
@@ -66,18 +65,15 @@
                 infoWindow.close();
             });
 
-            if (dataEval !== '') {
-                eval.call(window, dataEval);
-            }
-
             // Show markers
-            var markers = [];
+            var data = (dataJson !== '') ? $cms.parseJson(dataJson) : [],
+                markers = [];
             for (var i = 0; i < data.length; i++) {
                 addDataPoint(data[i], bounds, markers, infoWindow, map);
             }
 
             if (cluster) {
-                var markerCluster = new MarkerClusterer(map,markers);
+                var markerCluster = new MarkerClusterer(map, markers);
             }
             // Fit the map around the markers, but only if we want the map centered
             if (params.center) {
@@ -88,13 +84,13 @@
                 // Geolocation for current member to get stored onto the map
                 if (navigator.geolocation !== undefined) {
                     try {
-                        navigator.geolocation.getCurrentPosition(function(position) {
+                        navigator.geolocation.getCurrentPosition(function (position) {
                             $cms.doAjaxRequest(setCoordUrl + position.coords.latitude + '_' + position.coords.longitude + $cms.$KEEP());
-                            var initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+                            var initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                             map.setCenter(initialLocation);
                             addDataPoint([username, position.coords.latitude, position.coords.longitude, ''], bounds, markers, infoWindow, map);
                         });
-                    } catch (e) {}
+                    } catch (ignore) {}
                 }
             }
 
@@ -109,7 +105,7 @@
              }*/
         }
 
-        function addDataPoint(dataPoint,bounds,markers,infoWindow,map) {
+        function addDataPoint(dataPoint, bounds, markers, infoWindow, map) {
             var latLng = new google.maps.LatLng(dataPoint[1], dataPoint[2]);
             bounds.extend(latLng);
 
@@ -135,9 +131,10 @@
             google.maps.event.addListener(marker, 'click', (function (argMarker, argMember) {
                 return function () {
                     // Dynamically load a specific members details only when their marker is clicked
-                    $cms.doAjaxRequest($cms.$BASE_URL() + '/data_custom/get_member_tooltip.php?member=' + argMember + $cms.$KEEP(), function (reply) {
-                        var content = reply.querySelector('result').firstChild.nodeValue;
-                        if (content != '') {
+                    $cms.doAjaxRequest('data_custom/get_member_tooltip.php?member=' + argMember + $cms.$KEEP()).then(function (xhr) {
+                        var content = xhr.responseXML && xhr.responseXML.querySelector('result').textContent;
+
+                        if (content) {
                             infoWindow.setContent('<div class="global_middle_faux float_surrounder">' + content + '<\/div>');
                             infoWindow.open(map, argMarker);
                         }

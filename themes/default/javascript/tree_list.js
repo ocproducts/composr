@@ -81,7 +81,7 @@
 
             var results = ob.getElementsByTagName((type === 'c') ? 'category' : 'entry');
             for (var i = 0; i < results.length; i++) {
-                if ((results[i].getAttribute !== undefined) && (results[i].getAttribute(serverid ? 'serverid' : 'id') == id)) {
+                if ((results[i].getAttribute !== undefined) && (results[i].getAttribute(serverid ? 'serverid' : 'id') === id)) {
                     return results[i];
                 }
             }
@@ -375,7 +375,7 @@
                         }
                     });
                     html.appendChild(nodeSelfWrap);
-                    var selected = ((that.useServerId ? node.getAttribute('serverid') : node.getAttribute('id')) == element.value) || node.getAttribute('selected') == 'yes';
+                    var selected = ((that.useServerId ? node.getAttribute('serverid') : node.getAttribute('id')) == element.value) || node.getAttribute('selected') === 'yes';
                     if ((that.multiSelection) && !selected) {
                         selected = (',' + element.value + ',').indexOf(',' + node.getAttribute('id') + ',') !== -1;
                     }
@@ -564,10 +564,10 @@
                     this.lastClicked = allLabels[0];
                 }
                 for (i = 0; i < allLabels.length; i++) {
-                    if (allLabels[i] == target || allLabels[i] == target.parentNode) {
+                    if (allLabels[i] == target || allLabels[i] === target.parentNode) {
                         posUs = i;
                     }
-                    if (allLabels[i] == this.lastClicked || allLabels[i] == this.lastClicked.parentNode) {
+                    if (allLabels[i] == this.lastClicked || allLabels[i] === this.lastClicked.parentNode) {
                         posLast = i;
                     }
                 }

@@ -206,6 +206,7 @@ function load_csp($options = null, $enable_more_open_html_for = null)
 
     // style-src
     $_sources_list = _csp_extract_sources_list(2);
+    $_sources_list[] = "*"; // Allow external stylesheets
     $_sources_list[] = "'unsafe-inline'"; // It's not feasible for us to remove all inline CSS
     //$_sources_list[] = "'nonce-{$CSP_NONCE}'"; Incompatible with unsafe-inline
     $clauses[] = 'style-src ' . implode(' ', $_sources_list);
