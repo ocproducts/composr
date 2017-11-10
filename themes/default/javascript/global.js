@@ -10514,8 +10514,10 @@
             el: null
         }, options);
 
-        if (options.width.match(/^\d+$/)) { // Restrain width to viewport width
-            options.width = Math.min(parseInt(options.width), $cms.dom.getWindowWidth() - 60) + '';
+        var width = strVal(options.width);
+        
+        if (width.match(/^\d+$/)) { // Restrain width to viewport width
+            width = Math.min(parseInt(width), $cms.dom.getWindowWidth() - 60) + '';
         }
 
         var el = options.el,
@@ -10523,7 +10525,7 @@
             urlStripped = url.replace(/#.*/, ''),
             newUrl = urlStripped + (!urlStripped.includes('?') ? '?' : '&') + 'wide_high=1' + url.replace(/^[^\#]+/, '');
 
-        $cms.ui.open(newUrl, null, 'width=' + options.width + ';height=' + options.height, options.target);
+        $cms.ui.open(newUrl, null, 'width=' + width + ';height=' + options.height, options.target);
     }
 
     function convertTooltip(el) {

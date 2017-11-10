@@ -38,7 +38,7 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
 }
 
 // Output JavaScript
-?>/*<script>*/
+?>
 (function ($cms){
     'use strict';
 

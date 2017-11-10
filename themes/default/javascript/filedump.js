@@ -23,7 +23,7 @@
 
         $cms.dom.findUrlTab();
 
-        $cms.dom.on(container, 'click', '.js-submit-check-filedump-selections', function (e, form) {
+        $cms.dom.on(container, 'submit', '.js-submit-check-filedump-selections', function (e, form) {
             if (checkFiledumpSelections(form) === false) {
                 e.preventDefault();
             }
