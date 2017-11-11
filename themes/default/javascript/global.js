@@ -305,6 +305,10 @@
         /**@method*/
         camelCase: camelCase,
         /**@method*/
+        throttle: throttle,
+        /**@method*/
+        debounce: debounce,
+        /**@method*/
         once: once,
         /**@method*/
         findOnce: findOnce,
@@ -1316,6 +1320,109 @@
                 })
                 .replace(/ /g, '') // Removes spaces
             : '';
+    }
+
+    /**
+     * Creates and returns a new, throttled version of the passed function, that, when invoked repeatedly, 
+     * will only actually call the original function at most once per every wait milliseconds. 
+     * Useful for rate-limiting events that occur faster than you can keep up with.
+     * By default, throttle will execute the function as soon as you call it for the first time, and, if you call it again any number of times during 
+     * the wait period, as soon as that period is over. If you'd like to disable the leading-edge call, pass {leading: false}, 
+     * and if you'd like to disable the execution on the trailing-edge, pass {trailing: false}.
+     * @param func
+     * @param wait
+     * @param options
+     * @return {function}
+     */
+    function throttle(func, wait, options) {
+        var context, args, result,
+            timeout = null,
+            previous = 0;
+        
+        if (!options) {
+            options = {};
+        }
+        
+        var later = function() {
+            previous = options.leading === false ? 0 : Date.now();
+            timeout = null;
+            result = func.apply(context, args);
+            if (!timeout) {
+                context = args = null;
+            }
+        };
+        
+        return function throttledFn() {
+            var now = Date.now();
+            if (!previous && options.leading === false) {
+                previous = now;
+            }
+            var remaining = wait - (now - previous);
+            context = this;
+            args = arguments;
+            if (remaining <= 0 || remaining > wait) {
+                if (timeout) {
+                    clearTimeout(timeout);
+                    timeout = null;
+                }
+                previous = now;
+                result = func.apply(context, args);
+                if (!timeout) {
+                    context = args = null;
+                }
+            } else if (!timeout && options.trailing !== false) {
+                timeout = setTimeout(later, remaining);
+            }
+            return result;
+        };
+    }
+
+    /**
+     * Creates and returns a new debounced version of the passed function which will postpone its execution until after wait milliseconds have elapsed since the last time it was invoked. 
+     * Useful for implementing behavior that should only happen after the input has stopped arriving. 
+     * For example: rendering a preview of a Markdown comment, recalculating a layout after the window has stopped being resized, and so on.
+     * At the end of the wait interval, the function will be called with the arguments that were passed most recently to the debounced function.
+     * Pass true for the immediate argument to cause debounce to trigger the function on the leading instead of the trailing edge of the wait interval. 
+     * Useful in circumstances like preventing accidental double-clicks on a "submit" button from firing a second time.
+     * @param func
+     * @param wait
+     * @param immediate
+     * @return {function}
+     */
+    function debounce(func, wait, immediate) {
+        var timeout, args, context, timestamp, result;
+
+        var later = function() {
+            var last = Date.now() - timestamp;
+
+            if (last < wait && last >= 0) {
+                timeout = setTimeout(later, wait - last);
+            } else {
+                timeout = null;
+                if (!immediate) {
+                    result = func.apply(context, args);
+                    if (!timeout) {
+                        context = args = null;
+                    }
+                }
+            }
+        };
+
+        return function debouncedFn() {
+            context = this;
+            args = arguments;
+            timestamp = Date.now();
+            var callNow = immediate && !timeout;
+            if (!timeout) {
+                timeout = setTimeout(later, wait);
+            }
+            if (callNow) {
+                result = func.apply(context, args);
+                context = args = null;
+            }
+
+            return result;
+        };
     }
 
     // Inspired by https://github.com/RobLoach/jquery-once
@@ -4386,7 +4493,7 @@
      * @param minHeight
      */
     $cms.dom.resizeFrame = function resizeFrame(name, minHeight) {
-        minHeight = +minHeight || 0;
+        minHeight = Number(minHeight) || 0;
 
         var frameElement = $cms.dom.$id(name),
             frameWindow;
@@ -4415,7 +4522,7 @@
             }
 
             if ((h + 'px') !== frameElement.style.height) {
-                if ((frameElement.scrolling !== 'auto' && frameElement.scrolling !== 'yes') || (frameElement.style.height == '0px')) {
+                if ((frameElement.scrolling !== 'auto' && frameElement.scrolling !== 'yes') || (frameElement.style.height === '0px')) {
                     frameElement.style.height = ((h >= minHeight) ? h : minHeight) + 'px';
                     if (frameWindow.parent) {
                         setTimeout(function () {
