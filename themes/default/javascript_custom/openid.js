@@ -132,7 +132,7 @@ Martin Conte Mac Donell <Reflejo@gmail.com>
 				inputarea.text(settings.txt.title);
 				if (!tidx) {
 					inputarea.fadeOut();
-                    $cms.dom.submit(form);
+                    $cms.dom.submit(form[0]);
 				}
 			}
 			return false;
