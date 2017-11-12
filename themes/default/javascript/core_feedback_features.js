@@ -145,22 +145,22 @@
                 return;
             }
 
-            if (!$cms.form.checkFieldForBlankness(form.elements.post, e)) {
+            if (!$cms.form.checkFieldForBlankness(form.elements.post)) {
                 e.preventDefault();
                 return;
             }
 
-            if (params.getName && !$cms.form.checkFieldForBlankness(form.elements['poster_name_if_guest'], e)) {
+            if (params.getName && !$cms.form.checkFieldForBlankness(form.elements['poster_name_if_guest'])) {
                 e.preventDefault();
                 return;
             }
 
-            if (params.getTitle && !params.titleOptional && !$cms.form.checkFieldForBlankness(form.elements.title, e)) {
+            if (params.getTitle && !params.titleOptional && !$cms.form.checkFieldForBlankness(form.elements.title)) {
                 e.preventDefault();
                 return;
             }
 
-            if (params.getEmail && !params.emailOptional && !$cms.form.checkFieldForBlankness(form.elements.email, e)) {
+            if (params.getEmail && !params.emailOptional && !$cms.form.checkFieldForBlankness(form.elements.email)) {
                 e.preventDefault();
                 return;
             }
