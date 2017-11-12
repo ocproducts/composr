@@ -1162,7 +1162,9 @@
 
         function fileIdToFile(fileId) {
             for (var file in window.templateEditorOpenFiles) {
-                if (fileToFileId(file) == fileId) return file;
+                if (fileToFileId(file) == fileId) {
+                    return file;
+                }
             }
             return null;
         }

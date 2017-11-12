@@ -5888,6 +5888,8 @@
      * @returns {boolean}
      */
     $cms.ui.selectTab = function selectTab(id, tab, fromUrl, automated) {
+        id = strVal(id);
+        tab = strVal(tab);
         fromUrl = !!fromUrl;
         automated = !!automated;
 
@@ -5905,6 +5907,11 @@
         var tabs = [], i, element;
 
         element = $cms.dom.$id('t_' + tab);
+        
+        if (!element) {
+            $cms.fatal('$cms.ui.selectTab(): "#t_' + tab + '" element not found');
+        }
+        
         for (i = 0; i < element.parentElement.children.length; i++) {
             if (element.parentElement.children[i].id && (element.parentElement.children[i].id.substr(0, 2) === 't_')) {
                 tabs.push(element.parentElement.children[i].id.substr(2));
@@ -5933,8 +5940,6 @@
             // Usually an AJAX loader
             window['load_tab__' + tab](automated, $cms.dom.$id(id + '_' + tab));
         }
-
-        return false;
     };
 
     /**
@@ -8179,7 +8184,7 @@
                 var els = $cms.once($cms.dom.$$$(context, '[data-toggleable-tray]'), 'behavior.toggleableTray');
 
                 els.forEach(function (el) {
-                    var options = objVal($cms.dom.data(el, 'toggleableTray')),
+                    var options = $cms.dom.data(el, 'toggleableTray') || {},
                         trayObject = new $cms.views.ToggleableTray(options, { el: el });
                     
                     $cms.dom.data(el, 'toggleableTrayObject', trayObject);
@@ -8807,14 +8812,11 @@
             if (!trayEl) {
                 return;
             }
-
-            trayCookie = strVal(trayEl.dataset.trayCookie);
-
-            if (trayCookie) {
-                $cms.setCookie('tray_' + trayCookie, $cms.dom.isDisplayed(trayEl) ? 'closed' : 'open');
+            
+            var ttObj = $cms.dom.data(trayEl, 'toggleableTrayObject');
+            if (ttObj) {
+                ttObj.toggleTray();
             }
-
-            $cms.ui.toggleableTray(trayEl);
         },
 
         // Implementation for [data-click-ui-open]
@@ -10241,7 +10243,7 @@
         
         ToggleableTray.base(this, 'constructor', arguments);
 
-        this.contentEl = this.$('.toggleable_tray');
+        this.contentEl = this.$('.js-tray-content');
         
         this.cookie = null;
         
@@ -10259,13 +10261,13 @@
         /**@method*/
         events: function () {
             return {
-                'click .js-btn-tray-toggle': 'toggle',
-                'click .js-btn-tray-accordion': 'toggleAccordionItems'
+                'click .js-btn-tray-toggle': 'toggleTray',
+                'click .js-btn-tray-accordion': 'handleToggleAccordion'
             };
         },
 
         /**@method*/
-        toggle: function () {
+        toggleTray: function () {
             var opened = $cms.ui.toggleableTray(this.el);
 
             if (this.cookie) {
@@ -10273,26 +10275,24 @@
             }
         },
 
-        /**@method*/
-        accordion: function (el) {
-            var nodes = $cms.dom.$$(el.parentNode.parentNode, '.toggleable_tray');
-
-            nodes.forEach(function (node) {
-                if ((node.parentNode !== el) && $cms.dom.isDisplayed(node) && node.parentNode.classList.contains('js-tray-accordion-item')) {
-                    $cms.ui.toggleableTray({ el: node, animate: false });
+        /**
+         * @param accordionItem - Accordion item to be made active
+         */
+        toggleAccordion: function (accordionItem) {
+            var accordionBodies = this.$$('.js-tray-accordion-item-body');
+            
+            accordionBodies.forEach(function (body) {
+                if (!accordionItem.contains(body) && $cms.dom.isDisplayed(body)) {
+                    $cms.ui.toggleableTray({ el: body });
                 }
             });
 
-            $cms.ui.toggleableTray(el);
+            $cms.ui.toggleableTray(accordionItem);
         },
 
-        /**@method*/
-        toggleAccordionItems: function (e, btn) {
-            var accordionItem = $cms.dom.closest(btn, '.js-tray-accordion-item');
-
-            if (accordionItem) {
-                this.accordion(accordionItem);
-            }
+        handleToggleAccordion: function (e, btn) {
+            var accordionItem = $cms.dom.closest(btn, '.js-tray-accordion-item'); // Accordion item to be made active
+            this.toggleAccordion(accordionItem);
         },
 
         /**@method*/
@@ -10332,10 +10332,6 @@
         
         el = $cms.dom.elArg(el);
 
-        if (!el.classList.contains('toggleable_tray')) { // Suspicious, maybe we need to probe deeper
-            el = $cms.dom.$(el, '.toggleable_tray') || el;
-        }
-        
         var pic = $cms.dom.$(el.parentNode, '.toggleable_tray_button img') || $cms.dom.$('img#e_' + el.id),
             isThemeWizard = Boolean(pic && pic.src && pic.src.includes('themewizard.php'));
 
