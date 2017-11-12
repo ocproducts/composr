@@ -4582,6 +4582,330 @@
         }
     };
 
+    /*
+     Faux frames and faux scrolling
+     */
+    var infiniteScrollPending = false, // Blocked due to queued HTTP request
+        infiniteScrollBlocked = false, // Blocked due to event tracking active
+        infiniteScrollMouseHeld = false;
+
+    /**
+     * @param event
+     */
+    $cms.dom.infiniteScrollingBlockUnhold = function infiniteScrollingBlockUnhold(event) {
+        if (event.keyCode === 35) { // 'End' key pressed, so stop the expand happening for a few seconds while the browser scrolls down
+            infiniteScrollBlocked = true;
+            setTimeout(function () {
+                infiniteScrollBlocked = false;
+            }, 3000);
+        }
+    };
+
+    $cms.dom.infiniteScrollingBlockUnhold = function infiniteScrollingBlockUnhold() {
+        if (!infiniteScrollBlocked) {
+            infiniteScrollBlocked = true;
+            infiniteScrollMouseHeld = true;
+        }
+    };
+
+    /**
+     * @param infiniteScrolling
+     */
+    $cms.dom.infiniteScrollingBlockUnhold = function infiniteScrollingBlockUnhold(infiniteScrolling) {
+        if (infiniteScrollMouseHeld) {
+            infiniteScrollBlocked = false;
+            infiniteScrollMouseHeld = false;
+            infiniteScrolling();
+        }
+    };
+
+    /**
+     * @param urlStem
+     * @param wrapper
+     * @returns {*}
+     */
+    $cms.dom.internaliseInfiniteScrolling = function internaliseInfiniteScrolling(urlStem, wrapper) {
+        if (infiniteScrollBlocked || infiniteScrollPending) {
+            // Already waiting for a result
+            return false;
+        }
+
+        var paginations = wrapper.querySelectorAll('.pagination'),
+            paginationLoadMore;
+
+        if (paginations.length === 0) {
+            return false;
+        }
+
+        var moreLinks = [], foundNewLinks = null, z, pagination, m;
+
+        for (z = 0; z < paginations.length; z++) {
+            pagination = paginations[z];
+            if (pagination.style.display !== 'none') {
+                // Remove visibility of pagination, now we've replaced with AJAX load more link
+                var paginationParent = pagination.parentNode;
+                pagination.style.display = 'none';
+                var numNodeChildren = paginationParent.children.length;
+
+                if (numNodeChildren === 0) { // Remove empty pagination wrapper
+                    paginationParent.style.display = 'none';
+                }
+
+                // Add AJAX load more link before where the last pagination control was
+                // Remove old pagination_load_more's
+                paginationLoadMore = wrapper.querySelector('.pagination_load_more');
+                if (paginationLoadMore) {
+                    paginationLoadMore.parentNode.removeChild(paginationLoadMore);
+                }
+
+                // Add in new one
+                var loadMoreLink = document.createElement('div');
+                loadMoreLink.className = 'pagination_load_more';
+                var loadMoreLinkA = document.createElement('a');
+                $cms.dom.html(loadMoreLinkA, '{!LOAD_MORE;^}');
+                loadMoreLinkA.href = '#!';
+                loadMoreLinkA.onclick = (function (moreLinks) {
+                    return function () {
+                        $cms.dom.internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks);
+                        return false;
+                    };
+                }(moreLinks)); // Click link -- load
+                loadMoreLink.appendChild(loadMoreLinkA);
+                paginations[paginations.length - 1].parentNode.insertBefore(loadMoreLink, paginations[paginations.length - 1].nextSibling);
+
+                moreLinks = pagination.getElementsByTagName('a');
+                foundNewLinks = z;
+            }
+        }
+
+        for (z = 0; z < paginations.length; z++) {
+            pagination = paginations[z];
+            if (foundNewLinks != null) {// Cleanup old pagination
+                if (z != foundNewLinks) {
+                    var _moreLinks = pagination.getElementsByTagName('a');
+                    var numLinks = _moreLinks.length;
+                    for (var i = numLinks - 1; i >= 0; i--) {
+                        _moreLinks[i].parentNode.removeChild(_moreLinks[i]);
+                    }
+                }
+            } else { // Find links from an already-hidden pagination
+
+                moreLinks = pagination.getElementsByTagName('a');
+                if (moreLinks.length !== 0) {
+                    break;
+                }
+            }
+        }
+
+        // Is more scrolling possible?
+        var rel, foundRel = false;
+        for (var k = 0; k < moreLinks.length; k++) {
+            rel = moreLinks[k].getAttribute('rel');
+            if (rel && rel.includes('next')) {
+                foundRel = true;
+            }
+        }
+        if (!foundRel) { // Ah, no more scrolling possible
+            // Remove old pagination_load_more's
+            paginationLoadMore = wrapper.querySelector('.pagination_load_more');
+            if (paginationLoadMore) {
+                paginationLoadMore.parentNode.removeChild(paginationLoadMore);
+            }
+
+            return;
+        }
+
+        // Used for calculating if we need to scroll down
+        var wrapperPosY = $cms.dom.findPosY(wrapper),
+            wrapperHeight = wrapper.offsetHeight,
+            wrapperBottom = wrapperPosY + wrapperHeight,
+            windowHeight = $cms.dom.getWindowHeight(),
+            pageHeight = $cms.dom.getWindowScrollHeight(),
+            scrollY = window.pageYOffset;
+
+        // Scroll down -- load
+        if ((scrollY + windowHeight > wrapperBottom - windowHeight * 2) && (scrollY + windowHeight < pageHeight - 30)) {// If within windowHeight*2 pixels of load area and not within 30 pixels of window bottom (so you can press End key)
+            return $cms.dom.internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks);
+        }
+
+        return false;
+    };
+
+    /**
+     * @param urlStem
+     * @param wrapper
+     * @param moreLinks
+     * @returns {boolean}
+     */
+    $cms.dom.internaliseInfiniteScrollingGo = function internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks) {
+        if (infiniteScrollPending) {
+            return false;
+        }
+
+        var wrapperInner = $cms.dom.$id(wrapper.id + '_inner');
+        if (!wrapperInner) {
+            wrapperInner = wrapper;
+        }
+
+        var rel;
+        for (var i = 0; i < moreLinks.length; i++) {
+            rel = moreLinks[i].getAttribute('rel');
+            if (rel && rel.indexOf('next') !== -1) {
+                var nextLink = moreLinks[i];
+                var urlStub = '';
+
+                var matches = nextLink.href.match(new RegExp('[&?](start|[^_]*_start|start_[^_]*)=([^&]*)'));
+                if (matches) {
+                    urlStub += (urlStem.indexOf('?') === -1) ? '?' : '&';
+                    urlStub += matches[1] + '=' + matches[2];
+                    urlStub += '&raw=1';
+                    infiniteScrollPending = true;
+
+                    $cms.callBlock(urlStem + urlStub, '', wrapperInner, true).then(function () {
+                        infiniteScrollPending = false;
+                        $cms.dom.internaliseInfiniteScrolling(urlStem, wrapper);
+                    });
+                    return false;
+                }
+            }
+        }
+
+        return false;
+    };
+
+    /**
+     * @param urlStem
+     * @param blockElement
+     * @param lookFor
+     * @param extraParams
+     * @param append
+     * @param formsToo
+     * @param scrollToTop
+     */
+    $cms.dom.internaliseAjaxBlockWrapperLinks = function internaliseAjaxBlockWrapperLinks(urlStem, blockElement, lookFor, extraParams, append, formsToo, scrollToTop) {
+        urlStem = strVal(urlStem);
+        lookFor = arrVal(lookFor);
+        append = Boolean(append);
+        formsToo = Boolean(formsToo);
+        scrollToTop = (scrollToTop !== undefined) ? Boolean(scrollToTop) : true;
+
+        if (!blockElement) {
+            return;
+        }
+
+        var blockPosY = blockElement ? $cms.dom.findPosY(blockElement, true) : 0;
+
+        if (blockPosY > window.pageYOffset) {
+            scrollToTop = false;
+        }
+
+        var linkWrappers = blockElement.querySelectorAll('.ajax_block_wrapper_links');
+        if (linkWrappers.length === 0) {
+            linkWrappers = [blockElement];
+        }
+        var targets = [];
+        for (var i = 0; i < linkWrappers.length; i++) {
+            var linkWrapper = linkWrappers[i],
+                links = $cms.dom.$$(linkWrapper, 'a');
+
+            targets = targets.concat(links);
+
+            if (formsToo) {
+                var forms = $cms.dom.$$(linkWrapper, 'form');
+
+                targets = targets.concat(forms);
+
+                if (linkWrapper.localName === 'form') {
+                    targets.push(linkWrapper);
+                }
+            }
+        }
+
+        targets.forEach(function (target) {
+            if ((target.target !== '_self') || (target.href && target.getAttribute('href').startsWith('#')) || (target.action && target.getAttribute('action').startsWith('#'))) {
+                return; // (continue)
+            }
+
+            if (target.localName === 'a') {
+                $cms.dom.on(target, 'click', submitFunc);
+            } else {
+                $cms.dom.on(target, 'submit', submitFunc);
+            }
+        });
+
+        function submitFunc(e) {
+            var blockCallUrl = $cms.url(urlStem),
+                hrefUrl = $cms.url((this.localName === 'a') ? this.href : this.action);
+
+            e.preventDefault();
+
+            // Any parameters matching a pattern must be sent in the URL to the AJAX block call
+            $cms.eachIter(hrefUrl.searchParams.entries(), function (param) {
+                var paramName = param[0],
+                    paramValue = param[1];
+
+                lookFor.forEach(function (pattern) {
+                    pattern = new RegExp(pattern);
+
+                    if (pattern.test(paramName)) {
+                        blockCallUrl.searchParams.set(paramName, paramValue);
+                    }
+                });
+            });
+
+            if (extraParams != null) {
+                for (var key in extraParams) {
+                    blockCallUrl.searchParams.set(key, extraParams[key]);
+                }
+            }
+
+            // Any POST parameters?
+            var j, postParams, paramName, paramValue;
+
+            if (this.localName === 'form') {
+                if (this.method.toLowerCase() === 'post') {
+                    postParams = '';
+                }
+
+                for (j = 0; j < this.elements.length; j++) {
+                    if (this.elements[j].name) {
+                        paramName = this.elements[j].name;
+                        paramValue = $cms.form.cleverFindValue(this, this.elements[j]);
+
+                        if (this.method.toLowerCase() === 'post') {
+                            if (postParams !== '') {
+                                postParams += '&';
+                            }
+                            postParams += paramName + '=' + encodeURIComponent(paramValue);
+                        } else {
+                            blockCallUrl.searchParams.set(paramName, paramValue);
+                        }
+                    }
+                }
+            }
+
+            hrefUrl.searchParams.delete('ajax');
+            hrefUrl.searchParams.delete('zone');
+
+            try {
+                window.hasJsState = true;
+                window.history.pushState({ js: true }, document.title, hrefUrl.toString());
+            } catch (ignore) {
+                // Exception could have occurred due to cross-origin error (e.g. "Failed to execute 'pushState' on 'History':
+                // A history state object with URL 'https://xxx' cannot be created in a document with origin 'http://xxx'")
+            }
+
+            $cms.ui.clearOutTooltips();
+
+            // Make AJAX block call
+            $cms.callBlock(blockCallUrl.toString(), '', blockElement, append, false, postParams).then(function () {
+                if (scrollToTop) {
+                    window.scrollTo(0, blockPosY);
+                }
+            });
+        }
+    };
+
     /**
      * @param behaviors
      */
@@ -10718,327 +11042,5 @@
         hidden.value = checked ? '1' : '0';
         massDeleteForm.style.display = 'block';
     }
-    /*
-     Faux frames and faux scrolling
-     */
-    var infiniteScrollPending = false, // Blocked due to queued HTTP request
-        infiniteScrollBlocked = false, // Blocked due to event tracking active
-        infiniteScrollMouseHeld = false;
-
-    /**
-     * @param event
-     */
-    $cms.dom.infiniteScrollingBlockUnhold = function infiniteScrollingBlockUnhold(event) {
-        if (event.keyCode === 35) { // 'End' key pressed, so stop the expand happening for a few seconds while the browser scrolls down
-            infiniteScrollBlocked = true;
-            setTimeout(function () {
-                infiniteScrollBlocked = false;
-            }, 3000);
-        }
-    };
-
-    $cms.dom.infiniteScrollingBlockUnhold = function infiniteScrollingBlockUnhold() {
-        if (!infiniteScrollBlocked) {
-            infiniteScrollBlocked = true;
-            infiniteScrollMouseHeld = true;
-        }
-    };
-
-    /**
-     * @param infiniteScrolling
-     */
-    $cms.dom.infiniteScrollingBlockUnhold = function infiniteScrollingBlockUnhold(infiniteScrolling) {
-        if (infiniteScrollMouseHeld) {
-            infiniteScrollBlocked = false;
-            infiniteScrollMouseHeld = false;
-            infiniteScrolling();
-        }
-    };
-
-    /**
-     * @param urlStem
-     * @param wrapper
-     * @returns {*}
-     */
-    $cms.dom.internaliseInfiniteScrolling = function internaliseInfiniteScrolling(urlStem, wrapper) {
-        if (infiniteScrollBlocked || infiniteScrollPending) {
-            // Already waiting for a result
-            return false;
-        }
-
-        var paginations = wrapper.querySelectorAll('.pagination'),
-            paginationLoadMore;
-
-        if (paginations.length === 0) {
-            return false;
-        }
-
-        var moreLinks = [], foundNewLinks = null, z, pagination, m;
-
-        for (z = 0; z < paginations.length; z++) {
-            pagination = paginations[z];
-            if (pagination.style.display !== 'none') {
-                // Remove visibility of pagination, now we've replaced with AJAX load more link
-                var paginationParent = pagination.parentNode;
-                pagination.style.display = 'none';
-                var numNodeChildren = paginationParent.children.length;
-                
-                if (numNodeChildren === 0) { // Remove empty pagination wrapper
-                    paginationParent.style.display = 'none';
-                }
-
-                // Add AJAX load more link before where the last pagination control was
-                // Remove old pagination_load_more's
-                paginationLoadMore = wrapper.querySelector('.pagination_load_more');
-                if (paginationLoadMore) {
-                    paginationLoadMore.parentNode.removeChild(paginationLoadMore);
-                }
-
-                // Add in new one
-                var loadMoreLink = document.createElement('div');
-                loadMoreLink.className = 'pagination_load_more';
-                var loadMoreLinkA = document.createElement('a');
-                $cms.dom.html(loadMoreLinkA, '{!LOAD_MORE;^}');
-                loadMoreLinkA.href = '#!';
-                loadMoreLinkA.onclick = (function (moreLinks) {
-                    return function () {
-                        $cms.dom.internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks);
-                        return false;
-                    };
-                }(moreLinks)); // Click link -- load
-                loadMoreLink.appendChild(loadMoreLinkA);
-                paginations[paginations.length - 1].parentNode.insertBefore(loadMoreLink, paginations[paginations.length - 1].nextSibling);
-
-                moreLinks = pagination.getElementsByTagName('a');
-                foundNewLinks = z;
-            }
-        }
-        
-        for (z = 0; z < paginations.length; z++) {
-            pagination = paginations[z];
-            if (foundNewLinks != null) {// Cleanup old pagination
-                if (z != foundNewLinks) {
-                    var _moreLinks = pagination.getElementsByTagName('a');
-                    var numLinks = _moreLinks.length;
-                    for (var i = numLinks - 1; i >= 0; i--) {
-                        _moreLinks[i].parentNode.removeChild(_moreLinks[i]);
-                    }
-                }
-            } else { // Find links from an already-hidden pagination
-
-                moreLinks = pagination.getElementsByTagName('a');
-                if (moreLinks.length !== 0) {
-                    break;
-                }
-            }
-        }
-
-        // Is more scrolling possible?
-        var rel, foundRel = false;
-        for (var k = 0; k < moreLinks.length; k++) {
-            rel = moreLinks[k].getAttribute('rel');
-            if (rel && rel.includes('next')) {
-                foundRel = true;
-            }
-        }
-        if (!foundRel) { // Ah, no more scrolling possible
-            // Remove old pagination_load_more's
-            paginationLoadMore = wrapper.querySelector('.pagination_load_more');
-            if (paginationLoadMore) {
-                paginationLoadMore.parentNode.removeChild(paginationLoadMore);
-            }
-
-            return;
-        }
-
-        // Used for calculating if we need to scroll down
-        var wrapperPosY = $cms.dom.findPosY(wrapper),
-            wrapperHeight = wrapper.offsetHeight,
-            wrapperBottom = wrapperPosY + wrapperHeight,
-            windowHeight = $cms.dom.getWindowHeight(),
-            pageHeight = $cms.dom.getWindowScrollHeight(),
-            scrollY = window.pageYOffset;
-
-        // Scroll down -- load
-        if ((scrollY + windowHeight > wrapperBottom - windowHeight * 2) && (scrollY + windowHeight < pageHeight - 30)) {// If within windowHeight*2 pixels of load area and not within 30 pixels of window bottom (so you can press End key)
-            return $cms.dom.internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks);
-        }
-
-        return false;
-    };
-
-    /**
-     * @param urlStem
-     * @param wrapper
-     * @param moreLinks
-     * @returns {boolean}
-     */
-    $cms.dom.internaliseInfiniteScrollingGo = function internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks) {
-        if (infiniteScrollPending) {
-            return false;
-        }
-
-        var wrapperInner = $cms.dom.$id(wrapper.id + '_inner');
-        if (!wrapperInner) {
-            wrapperInner = wrapper;
-        }
-
-        var rel;
-        for (var i = 0; i < moreLinks.length; i++) {
-            rel = moreLinks[i].getAttribute('rel');
-            if (rel && rel.indexOf('next') !== -1) {
-                var nextLink = moreLinks[i];
-                var urlStub = '';
-
-                var matches = nextLink.href.match(new RegExp('[&?](start|[^_]*_start|start_[^_]*)=([^&]*)'));
-                if (matches) {
-                    urlStub += (urlStem.indexOf('?') === -1) ? '?' : '&';
-                    urlStub += matches[1] + '=' + matches[2];
-                    urlStub += '&raw=1';
-                    infiniteScrollPending = true;
-
-                    $cms.callBlock(urlStem + urlStub, '', wrapperInner, true).then(function () {
-                        infiniteScrollPending = false;
-                        $cms.dom.internaliseInfiniteScrolling(urlStem, wrapper);
-                    });
-                    return false;
-                }
-            }
-        }
-
-        return false;
-    };
-
-    /**
-     * @param urlStem
-     * @param blockElement
-     * @param lookFor
-     * @param extraParams
-     * @param append
-     * @param formsToo
-     * @param scrollToTop
-     */
-    $cms.dom.internaliseAjaxBlockWrapperLinks = function internaliseAjaxBlockWrapperLinks(urlStem, blockElement, lookFor, extraParams, append, formsToo, scrollToTop) {
-        urlStem = strVal(urlStem);
-        lookFor = arrVal(lookFor);
-        append = Boolean(append);
-        formsToo = Boolean(formsToo);
-        scrollToTop = (scrollToTop !== undefined) ? Boolean(scrollToTop) : true;
-
-        if (!blockElement) {
-            return;
-        }
-
-        var blockPosY = blockElement ? $cms.dom.findPosY(blockElement, true) : 0;
-
-        if (blockPosY > window.pageYOffset) {
-            scrollToTop = false;
-        }
-        
-        var linkWrappers = blockElement.querySelectorAll('.ajax_block_wrapper_links');
-        if (linkWrappers.length === 0) {
-            linkWrappers = [blockElement];
-        }
-        var targets = [];
-        for (var i = 0; i < linkWrappers.length; i++) {
-            var linkWrapper = linkWrappers[i],
-                links = $cms.dom.$$(linkWrapper, 'a');
-
-            targets = targets.concat(links);
-
-            if (formsToo) {
-                var forms = $cms.dom.$$(linkWrapper, 'form');
-
-                targets = targets.concat(forms);
-
-                if (linkWrapper.localName === 'form') {
-                    targets.push(linkWrapper);
-                }
-            }
-        }
-        
-        targets.forEach(function (target) {
-            if ((target.target !== '_self') || (target.href && target.getAttribute('href').startsWith('#')) || (target.action && target.getAttribute('action').startsWith('#'))) {
-                return; // (continue)
-            }
-
-            if (target.localName === 'a') {
-                $cms.dom.on(target, 'click', submitFunc);
-            } else {
-                $cms.dom.on(target, 'submit', submitFunc);
-            }
-        });
-
-        function submitFunc(e) {
-            var blockCallUrl = $cms.url(urlStem),
-                hrefUrl = $cms.url((this.localName === 'a') ? this.href : this.action);
-            
-            e.preventDefault();
-            
-            // Any parameters matching a pattern must be sent in the URL to the AJAX block call
-            $cms.eachIter(hrefUrl.searchParams.entries(), function (param) {
-                var paramName = param[0],
-                    paramValue = param[1];
-
-                lookFor.forEach(function (pattern) {
-                    pattern = new RegExp(pattern);
-                    
-                    if (pattern.test(paramName)) {
-                        blockCallUrl.searchParams.set(paramName, paramValue);
-                    }
-                });
-            });
-            
-            if (extraParams != null) {
-                for (var key in extraParams) {
-                    blockCallUrl.searchParams.set(key, extraParams[key]);
-                }    
-            }
-            
-            // Any POST parameters?
-            var j, postParams, paramName, paramValue;
-
-            if (this.localName === 'form') {
-                if (this.method.toLowerCase() === 'post') {
-                    postParams = '';
-                }
-                
-                for (j = 0; j < this.elements.length; j++) {
-                    if (this.elements[j].name) {
-                        paramName = this.elements[j].name;
-                        paramValue = $cms.form.cleverFindValue(this, this.elements[j]);
-
-                        if (this.method.toLowerCase() === 'post') {
-                            if (postParams !== '') {
-                                postParams += '&';
-                            }
-                            postParams += paramName + '=' + encodeURIComponent(paramValue);
-                        } else {
-                            blockCallUrl.searchParams.set(paramName, paramValue);
-                        }
-                    }
-                }
-            }
-
-            hrefUrl.searchParams.delete('ajax');
-            hrefUrl.searchParams.delete('zone');
-            
-            try {
-                window.hasJsState = true;
-                window.history.pushState({ js: true }, document.title, hrefUrl.toString());
-            } catch (ignore) {
-                // Exception could have occurred due to cross-origin error (e.g. "Failed to execute 'pushState' on 'History':
-                // A history state object with URL 'https://xxx' cannot be created in a document with origin 'http://xxx'")
-            }
-
-            $cms.ui.clearOutTooltips();
-
-            // Make AJAX block call
-            $cms.callBlock(blockCallUrl.toString(), '', blockElement, append, false, postParams).then(function () {
-                if (scrollToTop) {
-                    window.scrollTo(0, blockPosY);
-                }
-            });
-        }
-    };
+ 
 }(window.$cms || (window.$cms = {})));
