@@ -60,7 +60,7 @@
 
 		{+START,IF,{$OR,{$IS_NON_EMPTY,{POSTS}},{$NOT,{HIDE_POSTS}}}}
 			{+START,IF,{HIDE_POSTS}}
-				<div data-view="ToggleableTray">
+				<div data-toggleable-tray="{}">
 					<p class="toggleable_tray_title js-tray-header">
 						<a class="toggleable_tray_button js-btn-tray-toggle" title="{!DISCUSSION}: {!EXPAND}/{!CONTRACT}" href="#!"><img alt="{!EXPAND}: {!DISCUSSION}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 						<a class="toggleable_tray_button js-btn-tray-toggle" title="{!DISCUSSION}: {!EXPAND}/{!CONTRACT}" href="#!">{!DISCUSSION}</a> ({!POST_PLU,{NUM_POSTS*}})

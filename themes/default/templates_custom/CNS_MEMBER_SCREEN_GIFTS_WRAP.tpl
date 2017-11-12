@@ -1,4 +1,4 @@
-<div data-view="ToggleableTray">
+<div data-toggleable-tray="{}">
 	<h2 class="js-tray-header">
 		<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}: {!GIFTR_TITLE}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 		<span class="js-btn-tray-toggle">{!GIFTR_TITLE}</span>

@@ -34,7 +34,7 @@
 				{+END}
 			{+END}
 			{+START,IF_NON_EMPTY,{ACTIONS_contact}{$GET,messenger_fields}}
-				<div data-view="ToggleableTray">
+				<div data-toggleable-tray="{}">
 					<h2 class="js-tray-header">
 						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!CONTRACT}: {!menus:CONTACT}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract}" srcset="{$IMG*,2x/trays/contract} 2x" /></a>
 						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!menus:CONTACT}</a>
@@ -50,7 +50,7 @@
 			{+END}
 
 			{+START,IF_NON_EMPTY,{ACTIONS_content}}
-				<div data-view="ToggleableTray">
+				<div data-toggleable-tray="{}">
 					<h2 class="js-tray-header">
 						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}: {!CONTENT}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!CONTENT}</a>
@@ -65,7 +65,7 @@
 			{+END}
 
 			{+START,IF_NON_EMPTY,{ACTIONS_views}{ACTIONS_profile}}
-				<div data-view="ToggleableTray">
+				<div data-toggleable-tray="{}">
 					<h2 class="js-tray-header">
 						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}: {!ACCOUNT}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!ACCOUNT}</a>
@@ -81,7 +81,7 @@
 			{+END}
 
 			{+START,IF_NON_EMPTY,{ACTIONS_audit}}
-				<div data-view="ToggleableTray">
+				<div data-toggleable-tray="{}">
 					<h2 class="js-tray-header">
 						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}: {!AUDIT}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!AUDIT}</a>

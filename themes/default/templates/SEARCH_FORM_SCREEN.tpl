@@ -23,7 +23,7 @@
 	{+END}
 
 	{+START,IF_PASSED,RESULTS}
-	<div class="box" data-view="ToggleableTray">
+	<div class="box" data-toggleable-tray="{}">
 	{+END}
 		{+START,IF_PASSED,RESULTS}
 			<h2 class="toggleable_tray_title js-tray-header">

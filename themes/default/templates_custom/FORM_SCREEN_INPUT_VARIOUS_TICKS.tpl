@@ -1,7 +1,7 @@
 {$REQUIRE_JAVASCRIPT,workflows}
 {$SET,early_description,1}
 
-<div data-require-javascript="workflows" data-tpl="formScreenInputVariousTicks" data-tpl-params="{+START,PARAMS_JSON,CUSTOM_ACCEPT_MULTIPLE,CUSTOM_NAME}{_*}{+END}" data-view="ToggleableTray">
+<div data-require-javascript="workflows" data-tpl="formScreenInputVariousTicks" data-tpl-params="{+START,PARAMS_JSON,CUSTOM_ACCEPT_MULTIPLE,CUSTOM_NAME}{_*}{+END}" data-toggleable-tray="{}">
 	{+START,IF_PASSED,EXPANDED}
 		<h4 class="comcode_quote_h4 js-tray-header">
 			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}/{!CONTRACT}" src="{$IMG*,1x/trays/{$?,{EXPANDED},contract,expand}}" srcset="{$IMG*,2x/trays/{$?,{EXPANDED},contract,expand}} 2x" /></a>

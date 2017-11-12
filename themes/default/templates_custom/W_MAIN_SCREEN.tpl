@@ -245,7 +245,7 @@
 			</div>
 		</div></section>
 
-		<div class="box box___w_main_screen" data-view="ToggleableTray">
+		<div class="box box___w_main_screen" data-toggleable-tray="{}">
 			<h2 class="toggleable_tray_title js-tray-header">
 				<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!W_ENVIRONMENT_ACTIONS}</a>
 				<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
@@ -538,7 +538,7 @@
 		</div>
 
 		{+START,IF,{MAY_DO_STUFF}}
-			<div class="box box___w_main_screen" data-view="ToggleableTray">
+			<div class="box box___w_main_screen" data-toggleable-tray="{}">
 				<h2 class="toggleable_tray_title js-tray-header">
 					<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!W_ENVIRONMENT_ADDITIONS}</a>
 					<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
@@ -568,7 +568,7 @@
 			</div>
 		{+END}
 
-		<div class="box box___w_main_screen" data-view="ToggleableTray">
+		<div class="box box___w_main_screen" data-toggleable-tray="{}">
 			<h2 class="toggleable_tray_title js-tray-header">
 				<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!W_ENVIRONMENT_MODIFICATIONS}</a>
 				<a class="js-click-set-hidemod-cookie toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>

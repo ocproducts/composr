@@ -12,7 +12,7 @@
 	<div class="float_surrounder">
 		<div class="download_metadata">
 			<div class="download_now_wrapper">
-				<div class="box box___download_screen" data-view="ToggleableTray">
+				<div class="box box___download_screen" data-toggleable-tray="{}">
 					{+START,IF_PASSED,LICENCE_HYPERLINK}
 					<p class="download_licence">
 						{!D_BEFORE_PROCEED_AGREE,{LICENCE_HYPERLINK}}

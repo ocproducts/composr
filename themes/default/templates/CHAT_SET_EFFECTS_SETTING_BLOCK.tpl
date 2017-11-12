@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,chat}
 
-<div data-tpl="chatSetEffectsSettingBlock" data-tpl-params="{+START,PARAMS_JSON,EFFECTS}{_*}{+END}"{+START,IF_PASSED,MEMBER_ID} data-view="ToggleableTray"{+END}>
+<div data-tpl="chatSetEffectsSettingBlock" data-tpl-params="{+START,PARAMS_JSON,EFFECTS}{_*}{+END}"{+START,IF_PASSED,MEMBER_ID} data-toggleable-tray="{}"{+END}>
 	{+START,IF_PASSED,USERNAME}{+START,IF_PASSED,MEMBER_ID}
 		<div class="toggleable_tray_title js-tray-header">
 			{!OVERRIDES_FOR_FRIEND,{USERNAME*}}

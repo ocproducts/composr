@@ -1,6 +1,6 @@
 {$SET,early_description,1}
 
-<div data-view="ToggleableTray" data-tpl="formScreenInputVariousTricks" data-tpl-params="{+START,PARAMS_JSON,CUSTOM_NAME,CUSTOM_ACCEPT_MULTIPLE}{_*}{+END}">
+<div data-toggleable-tray="{}" data-tpl="formScreenInputVariousTricks" data-tpl-params="{+START,PARAMS_JSON,CUSTOM_NAME,CUSTOM_ACCEPT_MULTIPLE}{_*}{+END}">
 	{+START,IF_PASSED,EXPANDED}
 		<h3 class="toggleable_tray_title js-tray-header">
 			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{$?,{EXPANDED},{!CONTRACT},{!EXPAND}}" title="{$?,{EXPANDED},{!CONTRACT},{!EXPAND}}" src="{$IMG*,1x/trays/{$?,{EXPANDED},contract,expand}}" srcset="{$IMG*,2x/trays/{$?,{EXPANDED},contract,expand}} 2x" /></a>

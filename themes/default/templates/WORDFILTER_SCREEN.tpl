@@ -7,7 +7,7 @@
 </p>
 
 {+START,IF_NON_EMPTY,{TPL}}
-	<div class="box" data-view="ToggleableTray">
+	<div class="box" data-toggleable-tray="{}">
 		<h3 class="toggleable_tray_title js-tray-header">
 			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
 			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!PROCEED}</a>

@@ -1,5 +1,5 @@
 {+START,IF_NON_EMPTY,{CATEGORY_NAME}}
-	<div data-view="ToggleableTray">
+	<div data-toggleable-tray="{}">
 		<h3 class="js-tray-header">
 			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}: {CATEGORY_NAME*}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{CATEGORY_NAME*}</a>

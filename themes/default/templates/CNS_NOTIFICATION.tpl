@@ -1,7 +1,7 @@
 {$REQUIRE_JAVASCRIPT,cns_forum}
 
 <div class="box cns_notification" data-tpl="cnsNotification" data-tpl-params="{+START,PARAMS_JSON,IGNORE_URL_2}{_*}{+END}">
-	<div class="box_inner" data-view="ToggleableTray">
+	<div class="box_inner" data-toggleable-tray="{}">
 		<p class="cns_notification_intro_line js-btn-tray-toggle">
 			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}: {TYPE*}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
 

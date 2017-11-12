@@ -28,7 +28,7 @@
 			<input type="hidden" name="title" value="" />
 		{+END}
 
-		<div class="box box___comments_posting_form"{+START,IF_PASSED,EXPAND_TYPE} data-view="ToggleableTray"{+END}>
+		<div class="box box___comments_posting_form"{+START,IF_PASSED,EXPAND_TYPE} data-toggleable-tray="{}"{+END}>
 			{+START,IF_NON_EMPTY,{TITLE}}
 				<h3 class="toggleable_tray_title js-tray-header">
 					{+START,IF_NON_PASSED,EXPAND_TYPE}
