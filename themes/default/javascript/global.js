@@ -1515,6 +1515,11 @@
         url = strVal(url);
         base = strVal(base) || ($cms.$BASE_URL() + '/');
 
+        if (url.startsWith('//')) {
+            // URL constructor throws on scheme-relative URLs
+            url = window.location.protocol + url;
+        }
+        
         return new URL(url, base);
     };
 

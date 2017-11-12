@@ -41,117 +41,113 @@
     
     $cms.templates.blockMainImageFaderNews = function blockMainImageFaderNews(params, container) {
         var rand = strVal(params.randFaderNews),
-            news = strVal(params.news),
-            itemsHtml = JSON.parse(strVal(params.newsItemsHtmlJson));
-
-        if (!Array.isArray(itemsHtml)) {
-            itemsHtml = [];
-        }
+            news = arrVal(params.news),
+            milliseconds = Number(params.mill) || 0;
 
         // Variables we will need
-        var fpAnimation = $cms.dom.$('#image_fader_news_' + rand),
+        var fpAnimationImg = $cms.dom.$('#image_fader_news_' + rand),
             fpAnimationUrl = $cms.dom.$('#image_fader_news_url_' + rand),
             fpAnimationHtml = $cms.dom.$('#image_fader_news_html_' + rand);
-
-        // For pause function
-        var pause = 'main_image_fader_news_pause_' + rand;
-
-        // For cycle Function
-        var cycleCount = 'main_image_fader_news_cycle_count_' + rand,
-            cycleTimer = 'main_image_fader_news_cycle_timer_' + rand,
-            cycle = 'main_image_fader_news_cycle_' + rand;
-
         // Create fader
-        var fpAnimationNews = document.createElement('img');
+        var fpAnimationNewsImg = document.createElement('img');
 
-        fpAnimationNews.style.position = 'absolute';
-        fpAnimationNews.src = $cms.img('{$IMG;,blank}');
-        fpAnimation.parentElement.insertBefore(fpAnimationNews, fpAnimation);
-        fpAnimation.parentElement.style.position = 'relative';
-        fpAnimation.parentElement.style.display = 'block';
+        fpAnimationNewsImg.style.position = 'absolute';
+        fpAnimationNewsImg.src = $cms.img('{$IMG;,blank}');
+        
+        fpAnimationImg.parentElement.insertBefore(fpAnimationNewsImg, fpAnimationImg);
+        fpAnimationImg.parentElement.style.position = 'relative';
+        fpAnimationImg.parentElement.style.display = 'block';
 
         var data = [], i;
-
+        
         for (i = 0; i < news.length; i++) {
             data.push({
-                html: itemsHtml[i],
+                html: $cms.dom.html('script#image-fader-' + rand + '-news-item-' + i + '-html'),
                 url:  news[i].url,
-                imageUrl: news[i].imageUrl
+                imageUrl: $cms.img(news[i].imageUrl)
             });
 
             new Image().src = news[i].imageUrl; // precache
         }
 
-        // Pause function
-        window[pause] = function () {
-            if (window[cycleTimer]) {
-                clearTimeout(cycleTimer);
-                window[cycleTimer] = null;
-                $cms.dom.$('#pause_button_' + rand).classList.add('button_depressed');
-            } else {
-                $cms.dom.$('#pause_button_' + rand).classList.remove('button_depressed');
-
-                window[cycleTimer] = setTimeout(function () {
-                    window[cycle](1);
-                }, +params.mill);
-            }
-            return false;
-        };
-
         // Cycling function
-        window[cycleCount] = 0;
-        window[cycleTimer] = null;
-        window[cycle] = function (dif) {
+        var cycleTimerId = null,
+            cycleIndex = 0;
+        
+        function doCycle(diff) {
+            diff = Number(diff) || 0;
+            
             //  Cycle
-            var j = window[cycleCount] + dif;
-            if (j < 0) {
-                j = data.length - 1;
+            cycleIndex = cycleIndex + diff;
+            if (cycleIndex < 0) {
+                cycleIndex = data.length - 1;
             }
-            if (j >= data.length) {
-                j = 0;
+            if (cycleIndex >= data.length) {
+                cycleIndex = 0;
             }
-            window[cycleCount] = j;
-
+            
             // Simple data copy
-            $cms.dom.html(fpAnimationHtml, data[j].html);
-            fpAnimationUrl.href = data[j].url;
+            $cms.dom.hide(fpAnimationHtml);
+            $cms.dom.html(fpAnimationHtml, data[cycleIndex].html);
+            $cms.dom.fadeIn(fpAnimationHtml);
+            fpAnimationUrl.href = data[cycleIndex].url;
 
             // Set up fade
-            fpAnimationNews.src = fpAnimation.src;
-            $cms.dom.fadeOut(fpAnimationNews);
-            $cms.dom.fadeIn(fpAnimation);
-            fpAnimation.src = data[j].imageUrl;
+            fpAnimationNewsImg.src = fpAnimationImg.src;
+            $cms.dom.fadeOut(fpAnimationNewsImg);
+            $cms.dom.fadeIn(fpAnimationImg);
+            fpAnimationImg.src = $cms.img(data[cycleIndex].imageUrl);
             setTimeout(function () { // Will know dimensions by the time the timeout happens
-                fpAnimationNews.style.left = ((fpAnimationNews.parentNode.offsetHeight - fpAnimationNews.offsetWidth) / 2) + 'px';
-                fpAnimationNews.style.top = ((fpAnimationNews.parentNode.offsetHeight - fpAnimationNews.offsetHeight) / 2) + 'px';
+                fpAnimationNewsImg.style.left = ((fpAnimationNewsImg.parentNode.offsetHeight - fpAnimationNewsImg.offsetWidth) / 2) + 'px';
+                fpAnimationNewsImg.style.top = ((fpAnimationNewsImg.parentNode.offsetHeight - fpAnimationNewsImg.offsetHeight) / 2) + 'px';
             }, 0);
+            
+            $cms.dom.$('#pause_button_' + rand).classList.remove('button_depressed');
 
             // Set up timer for next time
-            if (window[cycleTimer]) {
-                clearTimeout(window[cycleTimer]);
+            if (cycleTimerId) {
+                clearTimeout(cycleTimerId);
             }
-            $cms.dom.$('#pause_button_' + rand).classList.remove('button_depressed');
-            if (news.length > 1) {
-                window[cycleTimer] = setTimeout(function () {
-                    window[cycle](1);
-                }, params.mill);
+            
+            if (milliseconds && (news.length > 1)) {
+                cycleTimerId = setTimeout(function () {
+                    doCycle(1);
+                }, milliseconds);
             }
+        }
 
-            return false;
-        };
+        // Pause cycle
+        function pauseCycle() {
+            if (cycleTimerId) {
+                // Pause
+                clearTimeout(cycleTimerId);
+                cycleTimerId = null;
+                $cms.dom.$('#pause_button_' + rand).classList.add('button_depressed');
+            } else {
+                // Unpause
+                $cms.dom.$('#pause_button_' + rand).classList.remove('button_depressed');
 
-        window[cycle](0);
+                if (milliseconds && (news.length > 1)) {
+                    cycleTimerId = setTimeout(function () {
+                        doCycle(1);
+                    }, milliseconds);
+                }
+            }
+        }
+
+        /// Start cycle
+        doCycle();
 
         $cms.dom.on(container, 'click', '.js-click-btn-prev-cycle', function () {
-            window[cycle](-1);
+            doCycle(-1);
         });
 
         $cms.dom.on(container, 'click', '.js-click-btn-pause-cycle', function () {
-            window[pause]();
+            pauseCycle();
         });
 
         $cms.dom.on(container, 'click', '.js-click-btn-next-cycle', function () {
-            window[cycle](1);
+            doCycle(1);
         });
     };
 
