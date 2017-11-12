@@ -10266,10 +10266,10 @@
 
         /**@method*/
         toggle: function () {
-            var openend = $cms.ui.toggleableTray(this.el);
+            var opened = $cms.ui.toggleableTray(this.el);
 
             if (this.cookie) {
-                $cms.setCookie('tray_' + this.cookie, openend ? 'open' : 'closed');
+                $cms.setCookie(this.cookie, opened ? 'open' : 'closed');
             }
         },
 
@@ -10297,7 +10297,7 @@
 
         /**@method*/
         handleTrayCookie: function () {
-            var cookieValue = $cms.readCookie('tray_' + this.cookie);
+            var cookieValue = $cms.readCookie(this.cookie);
 
             if (($cms.dom.notDisplayed(this.contentEl) && (cookieValue === 'open')) || ($cms.dom.isDisplayed(this.contentEl) && (cookieValue === 'closed'))) {
                 $cms.ui.toggleableTray({ el: this.contentEl, animate: false });
