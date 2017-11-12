@@ -27,9 +27,9 @@
 	{+END}
 		{+START,IF_PASSED,RESULTS}
 			<h2 class="toggleable_tray_title js-tray-header">
-				<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!SETTINGS}</a>
+				<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!">{!SETTINGS}</a>
 				{+START,IF_NON_EMPTY,{RESULTS}}
-					<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" alt="{!SHOW_SEARCH_FORM}" title="{!SHOW_SEARCH_FORM}" /></a>
+					<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" alt="{!SHOW_SEARCH_FORM}" title="{!SHOW_SEARCH_FORM}" /></a>
 				{+END}
 			</h2>
 		{+END}

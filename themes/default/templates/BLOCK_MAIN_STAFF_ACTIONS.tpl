@@ -5,8 +5,8 @@
 
 <section id="tray_{!MODULE_TRANS_NAME_admin_actionlog|}" data-toggleable-tray="{ save: true }" data-tpl="blockMainStaffActions" data-tpl-params="{+START,PARAMS_JSON,ajax_block_main_staff_actions_wrapper,block_call_url}{_*}{+END}" class="box box___block_main_staff_actions">
 	<h3 class="toggleable_tray_title js-tray-header">
-		<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!MODULE_TRANS_NAME_admin_actionlog}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a>
-		<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!MODULE_TRANS_NAME_admin_actionlog}</a>
+		<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!MODULE_TRANS_NAME_admin_actionlog}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a>
+		<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!">{!MODULE_TRANS_NAME_admin_actionlog}</a>
 	</h3>
 
 	<div class="toggleable_tray js-tray-content">

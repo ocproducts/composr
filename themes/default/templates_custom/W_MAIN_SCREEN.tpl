@@ -247,8 +247,8 @@
 
 		<div class="box box___w_main_screen" data-toggleable-tray="{}">
 			<h2 class="toggleable_tray_title js-tray-header">
-				<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!W_ENVIRONMENT_ACTIONS}</a>
-				<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
+				<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!">{!W_ENVIRONMENT_ACTIONS}</a>
+				<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
 			</h2>
 
 			<div class="toggleable_tray js-tray-content" style="{HIDE_ACTIONS*}"{+START,IF,{HIDE_ACTIONS}} aria-expanded="false"{+END}>
@@ -540,8 +540,8 @@
 		{+START,IF,{MAY_DO_STUFF}}
 			<div class="box box___w_main_screen" data-toggleable-tray="{}">
 				<h2 class="toggleable_tray_title js-tray-header">
-					<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!W_ENVIRONMENT_ADDITIONS}</a>
-					<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
+					<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!">{!W_ENVIRONMENT_ADDITIONS}</a>
+					<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
 				</h2>
 
 				<div class="toggleable_tray js-tray-content" style="{HIDE_ADDITIONS*}"{+START,IF,{HIDE_ADDITIONS}} aria-expanded="false"{+END}>
@@ -570,8 +570,8 @@
 
 		<div class="box box___w_main_screen" data-toggleable-tray="{}">
 			<h2 class="toggleable_tray_title js-tray-header">
-				<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!W_ENVIRONMENT_MODIFICATIONS}</a>
-				<a class="js-click-set-hidemod-cookie toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
+				<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!">{!W_ENVIRONMENT_MODIFICATIONS}</a>
+				<a class="js-click-set-hidemod-cookie toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
 			</h2>
 
 			<div class="toggleable_tray js-tray-content" style="{HIDE_MODIFICATIONS*}"{+START,IF,{HIDE_MODIFICATIONS}} aria-expanded="false"{+END}>

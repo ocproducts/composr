@@ -10261,10 +10261,8 @@
         /**@method*/
         events: function () {
             return {
-                'click .js-btn-tray-toggle': 'toggleTray',
-                'click .js-onclick-toggle-tray': 'toggleTray',
-                'click .js-btn-tray-accordion': 'handleToggleAccordion',
-                'click .js-onclick-toggle-accordion': 'handleToggleAccordion'
+                'click .js-tray-onclick-toggle-tray': 'toggleTray',
+                'click .js-tray-onclick-toggle-accordion': 'handleToggleAccordion'
             };
         },
 
