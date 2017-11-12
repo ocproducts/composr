@@ -8180,7 +8180,9 @@
 
                 els.forEach(function (el) {
                     var options = objVal($cms.dom.data(el, 'toggleableTray')),
-                        tray = new $cms.views.ToggleableTray(options, { el: el });
+                        trayObject = new $cms.views.ToggleableTray(options, { el: el });
+                    
+                    $cms.dom.data(el, 'toggleableTrayObject', trayObject);
                 });
             }
         }
@@ -10234,14 +10236,14 @@
      * @class ToggleableTray
      * @extends $cms.View
      */
-    function ToggleableTray() {
+    function ToggleableTray(params) {
         ToggleableTray.base(this, 'constructor', arguments);
 
         this.contentEl = this.$('.toggleable_tray');
-        this.trayCookie = strVal(this.el.dataset.trayCookie);
+        this.cookie = params.cookie ? strVal(params.cookie) : strVal(this.el.dataset.trayCookie);
 
-        if (this.trayCookie) {
-            this.handleTrayCookie(this.trayCookie);
+        if (this.cookie) {
+            this.handleTrayCookie(this.cookie);
         }
     }
 
@@ -10258,8 +10260,8 @@
         toggle: function () {
             var openend = $cms.ui.toggleableTray(this.el);
 
-            if (this.trayCookie) {
-                $cms.setCookie('tray_' + this.trayCookie, openend ? 'open' : 'closed');
+            if (this.cookie) {
+                $cms.setCookie('tray_' + this.cookie, openend ? 'open' : 'closed');
             }
         },
 
@@ -10287,7 +10289,7 @@
 
         /**@method*/
         handleTrayCookie: function () {
-            var cookieValue = $cms.readCookie('tray_' + this.trayCookie);
+            var cookieValue = $cms.readCookie('tray_' + this.cookie);
 
             if (($cms.dom.notDisplayed(this.contentEl) && (cookieValue === 'open')) || ($cms.dom.isDisplayed(this.contentEl) && (cookieValue === 'closed'))) {
                 $cms.ui.toggleableTray({ el: this.contentEl, animate: false });
@@ -10307,6 +10309,8 @@
             $IMG_expand2 = '{$IMG;,1x/trays/expand2}',
             $IMG_contract = '{$IMG;,1x/trays/contract}',
             $IMG_contract2 = '{$IMG;,1x/trays/contract2}';
+        
+        
         // TODO: We have expcon and expcon2 theme images, for use during animation. Are we removing this? If so those theme images should be deleted fully.
 
         if ($cms.isPlainObj(elOrOptions)) {
@@ -10324,7 +10328,8 @@
             el = $cms.dom.$(el, '.toggleable_tray') || el;
         }
         
-        var pic = $cms.dom.$(el.parentNode, '.toggleable_tray_button img') || $cms.dom.$('img#e_' + el.id);
+        var pic = $cms.dom.$(el.parentNode, '.toggleable_tray_button img') || $cms.dom.$('img#e_' + el.id),
+            isThemeWizard = Boolean(pic && pic.src && pic.src.includes('themewizard.php'));
 
         if ($cms.dom.notDisplayed(el)) {
             el.setAttribute('aria-expanded', 'true');
@@ -10364,7 +10369,6 @@
         
         // Execution ends here
 
-        var isThemeWizard = !!(pic && pic.src && pic.src.includes('themewizard.php'));
         function setTrayThemeImage(beforeThemeImg, afterThemeImg, before1Url, after1Url, after2Url) {
             var is1 = $cms.dom.matchesThemeImage(pic.src, before1Url);
 

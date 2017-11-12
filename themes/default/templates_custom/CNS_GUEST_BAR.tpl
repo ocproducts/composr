@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,facebook_support}
 
-<section id="tray_{!MEMBER|}" data-require-javascript="facebook_support" data-tpl="cnsGuestBar" data-view="ToggleableTray" data-tray-cookie="{!MEMBER|}" class="box cns_information_bar_outer">
+<section id="tray_{!MEMBER|}" data-require-javascript="facebook_support" data-tpl="cnsGuestBar" data-toggleable-tray="{ cookie: '{!MEMBER|}' }" class="box cns_information_bar_outer">
 	<h2 class="toggleable_tray_title js-tray-header">
 		<a class="toggleable_tray_button js-btn-tray-toggle inline_desktop" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!_LOGIN}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a>
 

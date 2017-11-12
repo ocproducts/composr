@@ -2,7 +2,7 @@
 {$SET,RAND_WEBSITE_MONITORING,{$RAND}}
 
 <div class="form_ajax_target" data-view="BlockMainStaffWebsiteMonitoring" data-view-params="{+START,PARAMS_JSON,RAND_WEBSITE_MONITORING}{_*}{+END}">
-	<section id="tray_{!SITE_WATCHLIST|}" data-view="ToggleableTray" data-tray-cookie="{!SITE_WATCHLIST|}" class="box box___block_main_staff_website_monitoring">
+	<section id="tray_{!SITE_WATCHLIST|}" data-toggleable-tray="{ cookie: '{!SITE_WATCHLIST|}' }" class="box box___block_main_staff_website_monitoring">
 		<h3 class="toggleable_tray_title js-tray-header">
 			<a title="{!EDIT}: {!SITE_WATCHLIST}" class="top_left_toggleicon js-click-staff-block-flip" href="#!">{!EDIT}</a>
 
