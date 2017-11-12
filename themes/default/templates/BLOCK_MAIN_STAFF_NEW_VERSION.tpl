@@ -1,4 +1,4 @@
-<section id="tray_{!VERSION_ABOUT|,{VERSION}}" data-toggleable-tray="{ cookie: '{!VERSION_ABOUT|,{VERSION}}' }" class="box box___block_main_staff_new_version">
+<section id="tray_{!VERSION_ABOUT|,{VERSION}}" data-toggleable-tray="{ save: true }" class="box box___block_main_staff_new_version">
 	<h3 class="toggleable_tray_title js-tray-header">
 		<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!VERSION_ABOUT,{VERSION*}}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a>
 

@@ -10233,15 +10233,23 @@
     $cms.views.ToggleableTray = ToggleableTray;
     /**
      * @memberof $cms.views
-     * @class ToggleableTray
+     * @class $cms.views.ToggleableTray
      * @extends $cms.View
      */
     function ToggleableTray(params) {
+        var cookie;
+        
         ToggleableTray.base(this, 'constructor', arguments);
 
         this.contentEl = this.$('.toggleable_tray');
-        this.cookie = params.cookie ? strVal(params.cookie) : strVal(this.el.dataset.trayCookie);
-
+        
+        this.cookie = null;
+        
+        if (params.save) {
+            var id = $cms.dom.id(this.el, 'tray-');
+            this.cookie = id.startsWith('tray') ? id : 'tray-' + id;
+        }
+        
         if (this.cookie) {
             this.handleTrayCookie(this.cookie);
         }
