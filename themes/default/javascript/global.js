@@ -10237,7 +10237,7 @@
      * @extends $cms.View
      */
     function ToggleableTray(params) {
-        var cookie;
+        var id;
         
         ToggleableTray.base(this, 'constructor', arguments);
 
@@ -10246,7 +10246,7 @@
         this.cookie = null;
         
         if (params.save) {
-            var id = $cms.dom.id(this.el, 'tray-');
+            id = $cms.dom.id(this.el, 'tray-');
             this.cookie = id.startsWith('tray') ? id : 'tray-' + id;
         }
         
