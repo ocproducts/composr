@@ -27,7 +27,9 @@
 				</div>
 
 				<div class="right">
-					<a class="toggleable_tray_button js-btn-toggle-chat-comcode-panel" href="#!"><img id="e_chat_comcode_panel" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" alt="{!CHAT_TOGGLE_COMCODE_BOX}" title="{!CHAT_TOGGLE_COMCODE_BOX}" /></a>
+					<a class="toggleable_tray_button js-btn-toggle-chat-comcode-panel" href="#!">
+						<img id="e_chat_comcode_panel" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" alt="{!CHAT_TOGGLE_COMCODE_BOX}" title="{!CHAT_TOGGLE_COMCODE_BOX}" />
+					</a>
 				</div>
 
 				<div class="left">

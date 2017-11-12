@@ -8806,8 +8806,7 @@
         // Implementation for [data-click-tray-toggle="<TRAY ID>"]
         clickTrayToggle: function (e, clicked) {
             var trayId = strVal(clicked.dataset.clickTrayToggle),
-                trayEl = $cms.dom.$('#' + trayId),
-                trayCookie;
+                trayEl = $cms.dom.$(trayId);
 
             if (!trayEl) {
                 return;
@@ -10289,7 +10288,7 @@
 
             $cms.ui.toggleableTray(accordionItem.querySelector('.js-tray-accordion-item-body'));
         },
-
+        /**@method*/
         handleToggleAccordion: function (e, btn) {
             var accordionItem = $cms.dom.closest(btn, '.js-tray-accordion-item'); // Accordion item to be made active
             this.toggleAccordion(accordionItem);
