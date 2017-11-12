@@ -10268,7 +10268,7 @@
 
         /**@method*/
         toggleTray: function () {
-            var opened = $cms.ui.toggleableTray(this.el);
+            var opened = $cms.ui.toggleableTray(this.contentEl);
 
             if (this.cookie) {
                 $cms.setCookie(this.cookie, opened ? 'open' : 'closed');
@@ -10287,7 +10287,7 @@
                 }
             });
 
-            $cms.ui.toggleableTray(accordionItem);
+            $cms.ui.toggleableTray(accordionItem.querySelector('.js-tray-accordion-item-body'));
         },
 
         handleToggleAccordion: function (e, btn) {
