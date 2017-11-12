@@ -209,7 +209,7 @@
             form.setAttribute('action', moreUrl);
 
             // Handle threaded strip-on-focus
-            if ((form.elements['post'].stripOnFocus !== undefined) && (form.elements['post'].value == form.elements['post'].stripOnFocus)) {
+            if ((form.elements['post'].stripOnFocus !== undefined) && (form.elements['post'].value === form.elements['post'].stripOnFocus)) {
                 form.elements['post'].value = '';
             }
 
@@ -406,7 +406,7 @@
             }
             post += '&post=' + encodeURIComponent(postValue);
             $cms.doAjaxRequest('{$FIND_SCRIPT;,post_comment}' + $cms.$KEEP(true), null, post).then(function (xhr) {
-                if ((xhr.responseText != '') && (xhr.status !== 500)) {
+                if ((xhr.responseText !== '') && (xhr.status !== 500)) {
                     // Display
                     var oldAction = commentsForm.action;
                     $cms.dom.replaceWith(commentsWrapper, xhr.responseText);

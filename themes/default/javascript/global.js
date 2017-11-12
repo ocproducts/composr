@@ -9739,7 +9739,7 @@
     }
 
     function popUpMenu(id, place, menu, outsideFixedWidth) {
-        place = strVal(place, 'right');
+        place = strVal(place) || 'right';
         outsideFixedWidth = !!outsideFixedWidth;
 
         var el = $cms.dom.$('#' + id);

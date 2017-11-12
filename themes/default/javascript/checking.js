@@ -471,7 +471,7 @@
                         erroneous = true;
                     }
                     if (!alerted) {
-                        $cms.ui.alert('{!javascript:TOO_MUCH_FILE_DATA;^}'.replace(new RegExp('\\\\{' + '1' + '\\\\}', 'g'), Math.round(totalFileSize / 1024)).replace(new RegExp('\\\\{' + '2' + '\\\\}', 'g'), Math.round(theForm.elements['MAX_FILE_SIZE'].value / 1024)));
+                        $cms.ui.alert($cms.format('{!javascript:TOO_MUCH_FILE_DATA;^}', [Math.round(totalFileSize / 1024), Math.round(theForm.elements['MAX_FILE_SIZE'].value / 1024)]));
                         alerted = true;
                     }
                 }
