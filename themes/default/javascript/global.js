@@ -10158,14 +10158,14 @@
             function checkPassword(form, fieldName, fieldLabel) {
                 // Check matches with confirm field
                 if (form.elements[fieldName + '_confirm'].value !== form.elements[fieldName].value) {
-                    window.alert('{!PASSWORDS_DO_NOT_MATCH;^/}'.replace('\{1\}', fieldLabel));
+                    window.alert($cms.format('{!PASSWORDS_DO_NOT_MATCH;^/}', [fieldLabel]));
                     return false;
                 }
 
                 // Check does not match database password
                 if (form.elements['db_site_password'] != null) {
                     if ((form.elements[fieldName].value !== '') && (form.elements[fieldName].value === form.elements['db_site_password'].value)) {
-                        window.alert('{!PASSWORDS_DO_NOT_REUSE;^/}'.replace('\{1\}', fieldLabel));
+                        window.alert($cms.format('{!PASSWORDS_DO_NOT_REUSE;^/}', [fieldLabel]));
                         return false;
                     }
                 }
@@ -10189,7 +10189,7 @@
                 }
 
                 if (!isSecurePassword) {
-                    return window.confirm('{!PASSWORD_INSECURE;^/}'.replace('\{1\}', fieldLabel)) && window.confirm('{!CONFIRM_REALLY;^/} {!PASSWORD_INSECURE;^/}'.replace('\{1\}', fieldLabel));
+                    return window.confirm($cms.format('{!PASSWORD_INSECURE;^}', [fieldLabel])) && window.confirm($cms.format('{!CONFIRM_REALLY;^} {!PASSWORD_INSECURE;^}', [fieldLabel]));
                 }
 
                 return true;
@@ -10252,7 +10252,7 @@
         }
         
         if (this.cookie) {
-            this.handleTrayCookie(this.cookie);
+            this.handleTrayCookie();
         }
     }
 
@@ -10275,18 +10275,21 @@
         },
 
         /**
-         * @param accordionItem - Accordion item to be made active
+         * @param toggledAccordionItem - Accordion item to be made active
          */
-        toggleAccordion: function (accordionItem) {
-            var accordionBodies = this.$$('.js-tray-accordion-item-body');
+        toggleAccordion: function (toggledAccordionItem) {
+            var accordionItems = this.$$('.js-tray-accordion-item');
             
-            accordionBodies.forEach(function (body) {
-                if (!accordionItem.contains(body) && $cms.dom.isDisplayed(body)) {
-                    $cms.ui.toggleableTray({ el: body });
+            accordionItems.forEach(function (accordionItem) {
+                var body = accordionItem.querySelector('.js-tray-accordion-item-body'),
+                    opened;
+                
+                if ((accordionItem === toggledAccordionItem) || $cms.dom.isDisplayed(body)) {
+                    opened = $cms.ui.toggleableTray({ el: body });
+                    accordionItem.classList.toggle('accordion_trayitem-active', opened);
                 }
             });
-
-            $cms.ui.toggleableTray(accordionItem.querySelector('.js-tray-accordion-item-body'));
+            
         },
         /**@method*/
         handleToggleAccordion: function (e, btn) {
@@ -10345,6 +10348,8 @@
 
             if (pic) {
                 setTrayThemeImage('expand', 'contract', $IMG_expand, $IMG_contract, $IMG_contract2);
+                pic.setAttribute('alt', pic.getAttribute('alt').replace('{!EXPAND;^}', '{!CONTRACT;^}'));
+                pic.title = '{!CONTRACT;^}';
             }
 
             $cms.dom.triggerResize(true);
