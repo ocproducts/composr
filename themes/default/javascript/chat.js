@@ -419,7 +419,7 @@ window.allConversations = {};
 // Code...
 
 function playSoundUrl(url) { // Used for testing different sounds
-    var baseUrl = (!url.includes('data_custom') && !url.includes('uploads/')) ? $cms.baseUrlNohttp() : $cms.customBaseUrlNohttp();
+    var baseUrl = (!url.includes('data_custom') && !url.includes('uploads/')) ? $cms.getBaseUrlNohttp() : $cms.getCustomBaseUrlNohttp();
     var soundObject = window.soundManager.createSound({url: baseUrl + '/' + url});
     if (soundObject) {
         soundObject.play();

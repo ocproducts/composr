@@ -161,6 +161,11 @@
          */
         getSiteName: constant(strVal('{$SITE_NAME;}')),
         /**
+         * @method
+         * @returns {string}
+         */
+        getBaseUrl: constant(strVal('{$BASE_URL;}')),
+        /**
          * @param relativeUrl - Pass a relative URL but an absolute url works as well for robustness' sake
          * @returns {string}
          */
@@ -168,7 +173,7 @@
             relativeUrl = strVal(relativeUrl);
 
             if (relativeUrl === '') {
-                return '{$BASE_URL;}';
+                return $cms.getBaseUrl();
             }
 
             var url = $cms.url(relativeUrl).toString();
@@ -184,22 +189,22 @@
          * @method
          * @returns {string}
          */
-        baseUrlNohttp: constant(strVal('{$BASE_URL_NOHTTP;}')),
+        getBaseUrlNohttp: constant(strVal('{$BASE_URL_NOHTTP;}')),
         /**
          * @method
          * @returns {string}
          */
-        customBaseUrl: constant(strVal('{$CUSTOM_BASE_URL;}')),
+        getCustomBaseUrl: constant(strVal('{$CUSTOM_BASE_URL;}')),
         /**
          * @method
          * @returns {string}
          */
-        customBaseUrlNohttp: constant(strVal('{$CUSTOM_BASE_URL_NOHTTP;}')),
+        getCustomBaseUrlNohttp: constant(strVal('{$CUSTOM_BASE_URL_NOHTTP;}')),
         /**
          * @method
          * @returns {string}
          */
-        forumBaseUrl: constant(strVal('{$FORUM_BASE_URL;}')),
+        getForumBaseUrl: constant(strVal('{$FORUM_BASE_URL;}')),
         /**
          * @method
          * @returns {string}
@@ -8895,7 +8900,7 @@
             }
 
             /* Thumbnail tooltips */
-            if ($cms.isDevMode() || loc.replace($cms.baseUrlNohttp(), '').includes('/cms/')) {
+            if ($cms.isDevMode() || loc.replace($cms.getBaseUrlNohttp(), '').includes('/cms/')) {
                 var urlPatterns = $cms.staffTooltipsUrlPatterns(),
                     links, pattern, hook, patternRgx;
 
@@ -9090,7 +9095,7 @@
                     // Bubbling needs to be stopped because shift+click will open a new window on some lower event handler (in Firefox anyway)
                     event.preventDefault();
 
-                    if (src.includes($cms.baseUrlNohttp() + '/themes/')) {
+                    if (src.includes($cms.getBaseUrlNohttp() + '/themes/')) {
                         ob.editWindow = window.open('{$BASE_URL;,0}/adminzone/index.php?page=admin_themes&type=edit_image&lang=' + encodeURIComponent($cms.userLang()) + '&theme=' + encodeURIComponent($cms.getTheme()) + '&url=' + encodeURIComponent($cms.protectURLParameter(src.replace('{$BASE_URL;,0}/', ''))) + $cms.keep(), 'edit_theme_image_' + ob.id);
                     } else {
                         $cms.ui.alert('{!NOT_THEME_IMAGE;^}');
@@ -10813,7 +10818,7 @@
         } catch (e) {}
         
         var soundUrl = 'data/sounds/message_received.mp3',
-            baseUrl = (!soundUrl.includes('data_custom') && !soundUrl.includes('uploads/')) ? $cms.baseUrlNohttp() : $cms.customBaseUrlNohttp(),
+            baseUrl = (!soundUrl.includes('data_custom') && !soundUrl.includes('uploads/')) ? $cms.getBaseUrlNohttp() : $cms.getCustomBaseUrlNohttp(),
             soundObject = window.soundManager.createSound({ url: baseUrl + '/' + soundUrl });
 
         if (soundObject && document.hasFocus()/*don't want multiple tabs all pinging*/) {

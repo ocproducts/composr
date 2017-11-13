@@ -388,7 +388,7 @@
 
         // Send AJAX request
         if (setRequest !== '') {
-            $cms.doAjaxRequest($cms.baseUrlNohttp() + '/data/sitemap.php?set_perms=1' + $cms.keep(), null, setRequest).then(function () {
+            $cms.doAjaxRequest($cms.getBaseUrlNohttp() + '/data/sitemap.php?set_perms=1' + $cms.keep(), null, setRequest).then(function () {
                 $cms.ui.alert('{!permissions:PERMISSIONS_TREE_EDITOR_SAVED;^}');
             });
             return;
