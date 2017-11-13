@@ -385,7 +385,7 @@
                     fadeElement.parentNode.insertBefore(fadeElementOld, fadeElement);
                     fadeElement.parentNode.style.position = 'relative';
                     $cms.dom.fadeIn(fadeElement);
-                    $cms.dom.fadeOut(fadeElementOld, null, function () {
+                    $cms.dom.fadeOut(fadeElementOld).then(function () {
                         $cms.dom.remove(fadeElementOld);
                     });
                 } // else probably a video

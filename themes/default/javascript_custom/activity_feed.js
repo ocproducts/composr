@@ -89,9 +89,9 @@
                             view.notificationEl.textContent = '{!activities:WENT_WRONG;^}';
                             $cms.dom.hide(view.notificationEl);
 
-                            $cms.dom.fadeIn(view.notificationEl, 1200, function () {
+                            $cms.dom.fadeIn(view.notificationEl, 1200).then(function () {
                                 setTimeout(function () {
-                                    $cms.dom.fadeOut(view.notificationEl, 1200, function () {
+                                    $cms.dom.fadeOut(view.notificationEl, 1200).then(function () {
                                         view.maintainCharCount();
                                         $cms.dom.fadeIn(view.notificationEl, 1200);
                                     });
@@ -119,8 +119,8 @@
                                 sUpdateGetData();
                             }
 
-                            $cms.dom.fadeIn(view.notificationEl, 1200, function () {
-                                $cms.dom.fadeOut(view.notificationEl, 1200, function () {
+                            $cms.dom.fadeIn(view.notificationEl, 1200).then(function () {
+                                $cms.dom.fadeOut(view.notificationEl, 1200).then(function () {
                                     view.notificationEl.className = 'update_success';
                                     view.notificationEl.textContent = '254 {!activities:CHARACTERS_LEFT;^}';
                                     $cms.dom.fadeIn(view.notificationEl, 1200);
@@ -133,7 +133,7 @@
                                     view.textarea.classList.remove('field_input_filled');
                                     view.textarea.classList.add('field_input_non_filled');
 
-                                    $cms.dom.fadeIn(view.textarea, 1200, function () {
+                                    $cms.dom.fadeIn(view.textarea, 1200).then(function () {
                                         $cms.dom.height(textareaParentEl, '');
                                     });
                                 });

@@ -3375,48 +3375,43 @@
      * @memberof $cms.dom
      * @param el
      * @param duration
-     * @param {function} [callback]
      */
-    $cms.dom.fadeIn = function fadeIn(el, duration, callback) {
-        el = $cms.dom.elArg(el);
+    $cms.dom.fadeIn = function fadeIn(el, duration) {
+        return doFadeIn();
+        
+        function doFadeIn() {
+            return new Promise(function (resolve) {
+                el = $cms.dom.elArg(el);
+                duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
 
-        if ((typeof duration === 'function') && (callback === undefined)) {
-            callback = duration;
-            duration = undefined;
-        }
+                var target = /*Number($cms.dom.css(el, 'opacity')) || */1;
 
-        duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
+                $cms.dom.show(el);
 
-        var target = /*Number($cms.dom.css(el, 'opacity')) || */1;
+                if ($cms.support.animation && (duration > 0)) { // Progressive enhancement using the web animations API
+                    var keyFrames = [{ opacity: 0 }, { opacity: target }],
+                        options = { duration : duration },
+                        animation = el.animate(keyFrames, options);
 
-        $cms.dom.show(el);
+                    animation.onfinish = function (e) {
+                        el.style.removeProperty('opacity');
 
-        if ($cms.support.animation && (duration > 0)) { // Progressive enhancement using the web animations API
-            var keyFrames = [{ opacity: 0 }, { opacity: target }],
-                options = { duration : duration },
-                animation = el.animate(keyFrames, options);
+                        if (Number($cms.dom.css(el, 'opacity')) !== target) {
+                            el.style.opacity = target;
+                        }
 
-            animation.onfinish = function (e) {
-                el.style.removeProperty('opacity');
+                        resolve();
+                    };
+                } else {
+                    el.style.removeProperty('opacity');
 
-                if (Number($cms.dom.css(el, 'opacity')) !== target) {
-                    el.style.opacity = target;
+                    if (Number($cms.dom.css(el, 'opacity')) !== target) {
+                        el.style.opacity = target;
+                    }
+
+                    resolve();
                 }
-
-                if (callback) {
-                    callback.call(el, e, el);
-                }
-            };
-        } else {
-            el.style.removeProperty('opacity');
-
-            if (Number($cms.dom.css(el, 'opacity')) !== target) {
-                el.style.opacity = target;
-            }
-
-            if (callback) {
-                callback.call(el, null, el);
-            }
+            });
         }
     };
 
@@ -3424,34 +3419,29 @@
      * @memberof $cms.dom
      * @param el
      * @param duration
-     * @param {function} [callback]
      */
-    $cms.dom.fadeOut = function fadeOut(el, duration, callback) {
-        el = $cms.dom.elArg(el);
+    $cms.dom.fadeOut = function fadeOut(el, duration) {
+        return doFadeOut();
+        
+        function doFadeOut() {
+            return new Promise(function (resolve) {
+                el = $cms.dom.elArg(el);
+                duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
 
-        if ((typeof duration === 'function') && (callback === undefined)) {
-            callback = duration;
-            duration = undefined;
-        }
+                if ($cms.support.animation && (duration > 0)) { // Progressive enhancement using the web animations API
+                    var keyFrames = [{ opacity: $cms.dom.css(el, 'opacity')}, { opacity: 0 }],
+                        options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING },
+                        animation = el.animate(keyFrames, options);
 
-        duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
-
-        if ($cms.support.animation && (duration > 0)) { // Progressive enhancement using the web animations API
-            var keyFrames = [{ opacity: $cms.dom.css(el, 'opacity')}, { opacity: 0 }],
-                options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING },
-                animation = el.animate(keyFrames, options);
-
-            animation.onfinish = function (e) {
-                $cms.dom.hide(el);
-                if (callback) {
-                    callback.call(el, e, el);
+                    animation.onfinish = function (e) {
+                        $cms.dom.hide(el);
+                        resolve();
+                    };
+                } else {
+                    $cms.dom.hide(el);
+                    resolve();
                 }
-            };
-        } else {
-            $cms.dom.hide(el);
-            if (callback) {
-                callback.call(el, null, el);
-            }
+            });
         }
     };
 
@@ -3460,37 +3450,32 @@
      * @param el
      * @param duration
      * @param opacity
-     * @param {function} [callback]
      */
-    $cms.dom.fadeTo = function fadeTo(el, duration, opacity, callback) {
-        el = $cms.dom.elArg(el);
+    $cms.dom.fadeTo = function fadeTo(el, duration, opacity) {
+        return doFadeTo();
+        
+        function doFadeTo() {
+            return new Promise(function (resolve) {
+                el = $cms.dom.elArg(el);
+                duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
+                opacity = numVal(opacity);
 
-        if (opacity == null) { // Required argument
-            $cms.fatal('$cms.dom.fadeTo(): Argument "opacity" is required.');
-            return;
-        }
+                $cms.dom.show(el);
 
-        duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
-        opacity = numVal(opacity);
+                if ($cms.support.animation && (duration > 0)) { // Progressive enhancement using the web animations API
+                    var keyFrames = [{ opacity: $cms.dom.css(el, 'opacity')}, { opacity: opacity }],
+                        options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING },
+                        animation = el.animate(keyFrames, options);
 
-        $cms.dom.show(el);
-
-        if ($cms.support.animation && (duration > 0)) { // Progressive enhancement using the web animations API
-            var keyFrames = [{ opacity: $cms.dom.css(el, 'opacity')}, { opacity: opacity }],
-                options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING },
-                animation = el.animate(keyFrames, options);
-
-            animation.onfinish = function (e) {
-                el.style.opacity = opacity;
-                if (callback) {
-                    callback.call(el, e, el);
+                    animation.onfinish = function (e) {
+                        el.style.opacity = opacity;
+                        resolve();
+                    };
+                } else {
+                    el.style.opacity = opacity;
+                    resolve();
                 }
-            };
-        } else {
-            el.style.opacity = opacity;
-            if (callback) {
-                callback.call(el, null, el);
-            }
+            });
         }
     };
 
@@ -3498,86 +3483,22 @@
      * @memberof $cms.dom
      * @param el
      * @param duration
-     * @param {function} [callback]
      */
-    $cms.dom.fadeToggle = function fadeToggle(el, duration, callback) {
-        el = $cms.dom.elArg(el);
+    $cms.dom.fadeToggle = function fadeToggle(el, duration) {
+        return doFadeToggle();
+        
+        function doFadeToggle() {
+            return new Promise(function (resolve) {
+                el = $cms.dom.elArg(el);
 
-        var fadeIn = $cms.dom.notDisplayed(el);
+                var fadeIn = $cms.dom.isHidden(el);
 
-        if (fadeIn) {
-            $cms.dom.fadeIn(el, duration, callback);
-        } else {
-            $cms.dom.fadeOut(el, duration, callback)
-        }
-    };
-
-    /**
-     * @memberof $cms.dom
-     * @param el
-     * @param duration
-     * @param {function} [callback]
-     */
-    $cms.dom.slideDown = function slideDown(el, duration, callback) {
-        el = $cms.dom.elArg(el);
-
-        if ((typeof duration === 'function') && (callback === undefined)) {
-            callback = duration;
-            duration = undefined;
-        }
-
-        duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
-
-        // Show element if it is hidden
-        $cms.dom.show(el);
-
-        // Get the element position to restore it then
-        var prevPosition = el.style.position,
-            prevVisibility = el.style.visibility;
-
-        // place it so it displays as usually but hidden
-        el.style.position = 'absolute';
-        el.style.visibility = 'hidden';
-
-        var startKeyframe = {
-                height: 0,
-                marginTop: 0,
-                marginBottom: 0,
-                paddingTop: 0,
-                paddingBottom: 0
-            },
-            // Fetch natural height, margin, padding
-            endKeyframe = {
-                height: $cms.dom.css(el, 'height'),
-                marginTop: $cms.dom.css(el, 'margin-top'),
-                marginBottom: $cms.dom.css(el, 'margin-bottom'),
-                paddingTop: $cms.dom.css(el, 'padding-top'),
-                paddingBottom: $cms.dom.css(el, 'padding-bottom')
-            };
-
-        // Set initial css for animation
-        el.style.position = prevPosition;
-        el.style.visibility = prevVisibility;
-
-        var prevOverflow = el.style.overflow;
-        el.style.overflow = 'hidden';
-
-        if ($cms.support.animation) { // Progressive enhancement using the web animations API
-            var keyFrames = [startKeyframe, endKeyframe],
-                options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING },
-                animation = el.animate(keyFrames, options);
-
-            animation.onfinish = function (e) {
-                el.style.overflow = prevOverflow;
-                if (callback) {
-                    callback.call(el, e, el);
+                if (fadeIn) {
+                    return $cms.dom.fadeIn(el, duration).then(resolve);
+                } else {
+                    return $cms.dom.fadeOut(el, duration).then(resolve);
                 }
-            };
-        } else {
-            el.style.overflow = prevOverflow;
-            if (callback) {
-                callback.call(el, null, el);
-            }
+            });
         }
     };
 
@@ -3585,59 +3506,68 @@
      * @memberof $cms.dom
      * @param el
      * @param duration
-     * @param {function} [callback]
      */
-    $cms.dom.slideUp = function slideUp(el, duration, callback) {
-        el = $cms.dom.elArg(el);
+    $cms.dom.slideDown = function slideDown(el, duration) {
+        return doSlideDown();
+        
+        function doSlideDown() {
+            return new Promise(function (resolve) {
+                el = $cms.dom.elArg(el);
+                duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
 
-        if ((typeof duration === 'function') && (callback === undefined)) {
-            callback = duration;
-            duration = undefined;
-        }
-
-        duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
-
-        if ($cms.dom.notDisplayed(el)) {
-            // Already hidden
-            return;
-        }
-
-        var prevOverflow = el.style.overflow;
-        el.style.overflow = 'hidden';
-
-        var startKeyframe = {
-                height: $cms.dom.css(el, 'height'),
-                marginTop: $cms.dom.css(el, 'marginTop'),
-                marginBottom: $cms.dom.css(el, 'marginBottom'),
-                paddingTop: $cms.dom.css(el, 'paddingTop'),
-                paddingBottom: $cms.dom.css(el, 'paddingBottom')
-            },
-            endKeyframe = {
-                height: 0,
-                marginTop: 0,
-                marginBottom: 0,
-                paddingTop: 0,
-                paddingBottom: 0
-            };
-
-        if ($cms.support.animation) { // Progressive enhancement using the web animations API
-            var keyFrames = [startKeyframe, endKeyframe],
-                options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING },
-                animation = el.animate(keyFrames, options);
-
-            animation.onfinish = function (e) {
-                el.style.overflow = prevOverflow;
-                $cms.dom.hide(el);
-                if (callback) {
-                    callback.call(el, e, el);
+                if ($cms.dom.isVisible(el)) {
+                    resolve();
+                    return; // Nothing to do
                 }
-            };
-        } else {
-            el.style.overflow = prevOverflow;
-            $cms.dom.hide(el);
-            if (callback) {
-                callback.call(el, null, el);
-            }
+
+                // Show element if it is hidden
+                $cms.dom.show(el);
+
+                // Get the element position to restore it then
+                var prevPosition = el.style.position,
+                    prevVisibility = el.style.visibility;
+
+                // place it so it displays as usually but hidden
+                el.style.position = 'absolute';
+                el.style.visibility = 'hidden';
+
+                var startKeyframe = {
+                        height: 0,
+                        marginTop: 0,
+                        marginBottom: 0,
+                        paddingTop: 0,
+                        paddingBottom: 0
+                    },
+                    // Fetch natural height, margin, padding
+                    endKeyframe = {
+                        height: $cms.dom.css(el, 'height'),
+                        marginTop: $cms.dom.css(el, 'margin-top'),
+                        marginBottom: $cms.dom.css(el, 'margin-bottom'),
+                        paddingTop: $cms.dom.css(el, 'padding-top'),
+                        paddingBottom: $cms.dom.css(el, 'padding-bottom')
+                    };
+
+                // Set initial css for animation
+                el.style.position = prevPosition;
+                el.style.visibility = prevVisibility;
+
+                var prevOverflow = el.style.overflow;
+                el.style.overflow = 'hidden';
+
+                if ($cms.support.animation) { // Progressive enhancement using the web animations API
+                    var keyFrames = [startKeyframe, endKeyframe],
+                        options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING },
+                        animation = el.animate(keyFrames, options);
+
+                    animation.onfinish = function (e) {
+                        el.style.overflow = prevOverflow;
+                        resolve();
+                    };
+                } else {
+                    el.style.overflow = prevOverflow;
+                    resolve();
+                }
+            });
         }
     };
 
@@ -3645,17 +3575,76 @@
      * @memberof $cms.dom
      * @param el
      * @param duration
-     * @param {function} [callback]
      */
-    $cms.dom.slideToggle = function slideToggle(el, duration, callback) {
-        el = $cms.dom.elArg(el);
+    $cms.dom.slideUp = function slideUp(el, duration) {
+        return doSlideUp();
+        
+        function doSlideUp() {
+            return new Promise(function (resolve) {
+                el = $cms.dom.elArg(el);
+                duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
 
-        var slideDown = $cms.dom.notDisplayed(el);
+                if ($cms.dom.isHidden(el)) {
+                    // Already hidden
+                    resolve();
+                    return;
+                }
 
-        if (slideDown) {
-            $cms.dom.slideDown(el, duration, callback);
-        } else {
-            $cms.dom.slideUp(el, duration, callback)
+                var prevOverflow = el.style.overflow;
+                el.style.overflow = 'hidden';
+
+                var startKeyframe = {
+                        height: $cms.dom.css(el, 'height'),
+                        marginTop: $cms.dom.css(el, 'marginTop'),
+                        marginBottom: $cms.dom.css(el, 'marginBottom'),
+                        paddingTop: $cms.dom.css(el, 'paddingTop'),
+                        paddingBottom: $cms.dom.css(el, 'paddingBottom')
+                    },
+                    endKeyframe = {
+                        height: 0,
+                        marginTop: 0,
+                        marginBottom: 0,
+                        paddingTop: 0,
+                        paddingBottom: 0
+                    };
+
+                if ($cms.support.animation) { // Progressive enhancement using the web animations API
+                    var keyFrames = [startKeyframe, endKeyframe],
+                        options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING },
+                        animation = el.animate(keyFrames, options);
+
+                    animation.onfinish = function (e) {
+                        el.style.overflow = prevOverflow;
+                        $cms.dom.hide(el);
+                        resolve();
+                    };
+                } else {
+                    el.style.overflow = prevOverflow;
+                    $cms.dom.hide(el);
+                    resolve();
+                }
+            });
+        }
+    };
+
+    /**
+     * @memberof $cms.dom
+     * @param el
+     * @param duration
+     */
+    $cms.dom.slideToggle = function slideToggle(el, duration) {
+        return doSlideToggle();
+        
+        function doSlideToggle() {
+            return new Promise(function (resolve) {
+                el = $cms.dom.elArg(el);
+
+                if ($cms.dom.isVisible(el)) {
+                    $cms.dom.slideUp(el, duration).then(resolve);
+                } else {
+                    $cms.dom.slideDown(el, duration).then(resolve);
+                }
+            });
         }
     };
 
