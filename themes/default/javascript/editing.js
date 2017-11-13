@@ -534,25 +534,33 @@
 
         var comcodes = editor.document.$.body.querySelectorAll('.cms_keep_ui_controlled');
 
-        for (var i = 0; i < comcodes.length; i++) {
-            if (comcodes[i].onmouseout) {
-                continue;
+        arrVal(comcodes).forEach(function (comcode) {
+            if (comcode.onmouseout) {
+                return;
             }
-            comcodes[i].origTitle = comcodes[i].title;
-            comcodes[i].onmouseout = function () {
+            comcode.origTitle = comcode.title;
+            comcode.onmouseout = function () {
                 $cms.ui.deactivateTooltip(this);
             };
-            comcodes[i].onmousemove = function (event) {
+            comcode.onmousemove = function (event) {
                 if (event === undefined) {
                     event = editor.window.$.event;
                 }
 
                 var eventCopy = {};
                 if (event) {
-                    if (event.pageX) eventCopy.pageX = 3000;
-                    if (event.clientX) eventCopy.clientX = 3000;
-                    if (event.pageY) eventCopy.pageY = 3000;
-                    if (event.clientY) eventCopy.clientY = 3000;
+                    if (event.pageX) {
+                        eventCopy.pageX = 3000;
+                    }
+                    if (event.clientX) {
+                        eventCopy.clientX = 3000;
+                    }
+                    if (event.pageY) {
+                        eventCopy.pageY = 3000;
+                    }
+                    if (event.clientY) {
+                        eventCopy.clientY = 3000;
+                    }
 
                     if (this.origTitle != null) {
                         $cms.ui.repositionTooltip(this, eventCopy);
@@ -560,7 +568,7 @@
                     }
                 }
             };
-            comcodes[i].onmousedown = function (event) {
+            comcode.onmousedown = function (event) {
                 if (event === undefined) {
                     event = editor.window.$.event;
                 }
@@ -575,10 +583,10 @@
                 }
             };
 
-            if (comcodes[i].localName === 'input') {
-                comcodes[i].readOnly = true;
-                comcodes[i].contentEditable = true; // Undoes what ckeditor sets. Fixes weirdness with copy and paste in Chrome (adding extra block on end)
-                comcodes[i].ondblclick = function (e) {
+            if (comcode.localName === 'input') {
+                comcode.readOnly = true;
+                comcode.contentEditable = true; // Undoes what ckeditor sets. Fixes weirdness with copy and paste in Chrome (adding extra block on end)
+                comcode.ondblclick = function (e) {
                     e.preventDefault();
 
                     if (this.onmouseout) {
@@ -589,7 +597,7 @@
                         this.id = 'comcode_tag_' + Math.round(Math.random() * 10000000);
                     }
                     var tagType = (this.origTitle ? this.origTitle : this.title).replace(/^\[/, '').replace(/[= \]](.|\n)*$/, '');
-                    
+
                     if (tagType === 'block') {
                         var blockName = (this.origTitle ? this.origTitle : this.title).replace(/\[\/block\]$/, '').replace(/^(.|\s)*\]/, '');
                         var url = '{$FIND_SCRIPT;,block_helper}?type=step2&block=' + encodeURIComponent(blockName) + '&field_name=' + fieldName + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + $cms.$KEEP();
@@ -602,11 +610,11 @@
                 };
             }
 
-            comcodes[i].onmouseover = function (event) { // Shows preview
+            comcode.onmouseover = function (event) { // Shows preview
                 if (event === undefined) {
                     event = editor.window.$.event;
                 }
-                
+
                 var tagText = '';
                 if (this.nodeName.toLowerCase() === 'input') {
                     tagText = this.origTitle;
@@ -662,8 +670,7 @@
                     }
                 }
             };
-
-        }
+        });
     }
     
     // ============
