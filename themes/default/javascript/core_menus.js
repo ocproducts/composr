@@ -352,7 +352,7 @@
                 menuEditorBranchTypeChange(newId);
             }
 
-            $cms.dom.hide('#mini_form_hider');
+            $cms.dom.slideUp('#mini_form_hider');
         });
     };
     

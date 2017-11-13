@@ -310,8 +310,8 @@
                                 element.selectedTitle += node.getAttribute('title');
                             }
                             
-                            //$cms.dom.changeValue(element, newVal);
-                            element.value = newVal;
+                            $cms.dom.changeValue(element, newVal);
+                            //element.value = newVal;
                         }
                     }
                     nodeSelf.appendChild(newHtml);
@@ -652,8 +652,8 @@
                     element.selectedTitle = '';
                 }
 
-                element.value = newVal;
-                //$cms.dom.changeValue(element, newVal);
+                //element.value = newVal;
+                $cms.dom.changeValue(element, newVal);
             }
 
             if (!assumeCtrl) {

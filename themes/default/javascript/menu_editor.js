@@ -77,11 +77,8 @@ function copyFieldsIntoBottom(i, changed) {
     }
 
     var mfh = $cms.dom.$('#mini_form_hider');
-    mfh.style.display = 'block';
-
-    if (!changed) {
-        $cms.dom.fadeIn(mfh);
-    } else {
+    $cms.dom.slideDown(mfh);
+    if (changed) {
         $cms.dom.fadeIn(form.elements.url);
     }
 }
