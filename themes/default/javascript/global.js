@@ -254,27 +254,19 @@
          * @method
          * @returns {object}
          */
-        staffTooltipsUrlPatterns: constant(objVal(JSON.parse('{$STAFF_TOOLTIPS_URL_PATTERNS_JSON;}')))
-    });
+        staffTooltipsUrlPatterns: constant(objVal(JSON.parse('{$STAFF_TOOLTIPS_URL_PATTERNS_JSON;}'))),
 
-    extendDeep($cms, /**@lends $cms*/{
-        // Export useful stuff
+        /* Export useful stuff  */
         /**
          * @method
          * @returns { Array }
          */
         toArray: toArray,
-        /**@method*/
-        forEach: forEach,
-        /**@method*/
-        some: Function.bind.call(Function.call, emptyArr.some),
-        /**@method*/
-        every: Function.bind.call(Function.call, emptyArr.every),
-        /**@method*/
-        includes: includes,
-        /**@method*/
+        /**
+         * @method
+         * @returns {boolean}
+         */
         hasOwn: hasOwn,
-
         /**@method*/
         uid: uid,
         /**@method*/
@@ -317,6 +309,8 @@
         findOnce: findOnce,
         /**@method*/
         removeOnce: removeOnce,
+        /**@method*/
+        arrayFromIterable: arrayFromIterable,
         /**@method*/
         each: each,
         /**@method*/
@@ -373,8 +367,6 @@
         promiseHalt: promiseHalt,
         /**@method*/
         setPostDataFlag: setPostDataFlag,
-        /**@method*/
-        parseJson: parseJson,
         /**@method*/
         parseJson5: parseJson5,
         /**@method*/
@@ -449,10 +441,6 @@
          * @namespace $cms.form
          */
         form: {},
-        /**
-         * @namespace $cms.settings
-         */
-        settings: {},
         /**
          * Addons will add "behaviors" under this object
          * @namespace $cms.behaviors
@@ -661,52 +649,6 @@
         var proto;
         return isObj(obj) && (internalName(obj) === 'Object') && (((proto = Object.getPrototypeOf(obj)) === Object.prototype) || (proto === null));
     }
-    
-    /**
-     * @param val
-     * @returns {boolean}
-     */
-    function isScalar(val) {
-        return (val != null) && ((typeof val === 'boolean') || (typeof val === 'number') || (typeof val === 'string'));
-    }
-
-    /**
-     * @param obj
-     * @param keys
-     * @returns {boolean}
-     */
-    function hasMatchingKey(obj, keys) {
-        keys = arrVal(keys);
-
-        for (var i = 0, len = keys.length; i < len; i++) {
-            if (keys[i] in obj) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * @param prototype
-     * @param data
-     * @returns {prototype}
-     */
-    function withProto(prototype, data) {
-        var obj = Object.create(prototype);
-        if (data != null) {
-            Object.assign(obj, data);
-        }
-        return obj;
-    }
-
-    /**
-     * @param data
-     * @returns {prototype}
-     */
-    function pureObj(data) {
-        return withProto(null, data);
-    }
 
     /**
      * @param key
@@ -818,11 +760,9 @@
      * @returns {boolean}
      */
     function isNumeric(val) {
-        if (typeof val === 'string') {
-            return (val !== '') && isFinite(val);
-        }
+        val = strVal(val);
         
-        return Number.isFinite(val);
+        return (val !== '') && isFinite(val);
     }
 
     /**
@@ -855,24 +795,7 @@
 
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
-
-    /**
-     * Bind a number of an object's methods to that object. Remaining arguments
-     * are the method names to be bound. Useful for ensuring that all callbacks
-     * defined on an object belong to it.
-     * @param obj
-     * @param methodNames
-     * @returns {object}
-     */
-    function bindAll(obj, /*...*/methodNames) {
-        var i, len = arguments.length, methodName;
-        for (i = 1; i < len; i++) {
-            methodName = arguments[i];
-            obj[methodName] = obj[methodName].bind(obj);
-        }
-        return obj;
-    }
-
+    
     /**
      * @param obj
      * @param callback
@@ -1522,7 +1445,6 @@
         isAbsolute: isAbsolute,
         isRelative: isRelative,
         isSchemeRelative: isSchemeRelative,
-        isAbsoluteOrSchemeRelative: isAbsoluteOrSchemeRelative,
         schemeRelative: schemeRelative
     });
 
@@ -1595,17 +1517,12 @@
 
     function isRelative(url) {
         url = strVal(url);
-        return !isAbsoluteOrSchemeRelative(url);
+        return !isAbsolute(url) && !isSchemeRelative(url);
     }
 
     function isSchemeRelative(url) {
         url = strVal(url);
         return url.startsWith('//');
-    }
-    
-    function isAbsoluteOrSchemeRelative(url) {
-        url = strVal(url);
-        return rgxHttpRel.test(url);
     }
     /**
      * Make a URL scheme-relative
@@ -1664,14 +1581,6 @@
         } else {
             window.open(url, target);
         }
-    }
-
-    /**
-     * @param source
-     * @returns {*}
-     */
-    function parseJson(source) {
-        return window.JSON.parse(strVal(source));
     }
 
     /**
@@ -2006,9 +1915,21 @@
             postData.value += flag;
         }
     }
-
-    // Inspired by goog.inherits and Babel's generated output for ES6 classes
+    
     /**
+     * Emulates super.method() call
+     * @param SuperClass
+     * @param that
+     * @param method
+     * @param args
+     * @returns {*}
+     */
+    function base(SuperClass, that, method, args) {
+        return (args && (args.length > 0)) ? SuperClass.prototype[method].apply(that, args) : SuperClass.prototype[method].call(that);
+    }
+    
+    /**
+     * Inspired by goog.inherits and Babel's generated output for ES6 classes
      * @param SubClass
      * @param SuperClass
      * @param protoProps
@@ -2033,18 +1954,6 @@
 
     function getSessionId() {
         return readCookie($cms.$SESSION_COOKIE_NAME());
-    }
-
-    /**
-     * Emulates super.method() call
-     * @param SuperClass
-     * @param that
-     * @param method
-     * @param args
-     * @returns {*}
-     */
-    function base(SuperClass, that, method, args) {
-        return (args && (args.length > 0)) ? SuperClass.prototype[method].apply(that, args) : SuperClass.prototype[method].call(that);
     }
 
     /* Cookies */
@@ -2112,8 +2021,12 @@
 
         return decodeURIComponent(cookies.substring(startIdx + cookieName.length + 1, endIdx));
     }
-
-    // Web animations API support (https://developer.mozilla.org/de/docs/Web/API/Element/animate)
+    
+    /**
+     *  Web animations API support (https://developer.mozilla.org/de/docs/Web/API/Element/animate)
+     *  @memberof $cms.support
+     * @type {boolean}
+     */
     $cms.support.animation = ('animate' in emptyEl);
     /**
      * If the browser has support for an input[type=???]
@@ -2151,84 +2064,6 @@
     }());
 
     /**
-     * @param windowOrNodeOrSelector
-     * @returns { Window|Node }
-     */
-    function domArg(windowOrNodeOrSelector) {
-        var el;
-
-        if (windowOrNodeOrSelector != null) {
-            if (isWindow(windowOrNodeOrSelector) || isNode(windowOrNodeOrSelector)) {
-                return windowOrNodeOrSelector
-            }
-
-            if (typeof windowOrNodeOrSelector === 'string') {
-                el = $cms.dom.$(windowOrNodeOrSelector);
-
-                if (el == null) {
-                    throw new Error('domArg(): No element found for selector "' + strVal(windowOrNodeOrSelector) + '".');
-                }
-
-                return el;
-            }
-        }
-
-        throw new TypeError('domArg(): Argument 1 must be a {' + 'Window|Node|string}, "' + typeName(windowOrNodeOrSelector) + '" provided.');
-    }
-
-    /**
-     * @param nodeOrSelector
-     * @returns { Node }
-     */
-    function nodeArg(nodeOrSelector) {
-        var el;
-
-        if (nodeOrSelector != null) {
-            if (isNode(nodeOrSelector)) {
-                return nodeOrSelector;
-            }
-
-            if (typeof nodeOrSelector === 'string') {
-                el = $cms.dom.$(nodeOrSelector);
-
-                if (el == null) {
-                    throw new Error('nodeArg(): No element found for selector "' + strVal(nodeOrSelector) + '".');
-                }
-
-                return el;
-            }
-        }
-
-        throw new TypeError('nodeArg(): Argument 1 must be a {' + 'Node|string}, "' + typeName(nodeOrSelector) + '" provided.');
-    }
-
-    /**
-     * @param { string|Element } elementOrSelector
-     * @returns { Element }
-     */
-    function elArg(elementOrSelector) {
-        var el;
-
-        if (elementOrSelector != null) {
-            if (isEl(elementOrSelector)) {
-                return elementOrSelector;
-            }
-
-            if (typeof elementOrSelector === 'string') {
-                el = $cms.dom.$(elementOrSelector);
-
-                if (el == null) {
-                    throw new Error('elArg(): No element found for selector "' + strVal(elementOrSelector) + '".');
-                }
-
-                return el;
-            }
-        }
-
-        throw new TypeError('elArg(): Argument 1 must be a {' + 'Element|string}, "' + typeName(elementOrSelector) + '" provided.');
-    }
-
-    /**
      * @param el
      * @param property
      * @returns {*}
@@ -2247,12 +2082,84 @@
     var DOM_ANIMATE_DEFAULT_DURATION = 400, // Milliseconds
         DOM_ANIMATE_DEFAULT_EASING = 'ease-in-out'; // Possible values: https://developer.mozilla.org/en-US/docs/Web/API/AnimationEffectTimingProperties/easing
 
-    /** @namespace $cms */
     $cms.dom = extendDeep($cms.dom, /**@lends $cms.dom*/{
-        domArg: domArg,
-        nodeArg: nodeArg,
-        elArg: elArg,
-        
+        /**
+         * @param windowOrNodeOrSelector
+         * @returns { Window|Node }
+         */
+        domArg: function domArg(windowOrNodeOrSelector) {
+            var el;
+
+            if (windowOrNodeOrSelector != null) {
+                if (isWindow(windowOrNodeOrSelector) || isNode(windowOrNodeOrSelector)) {
+                    return windowOrNodeOrSelector
+                }
+
+                if (typeof windowOrNodeOrSelector === 'string') {
+                    el = $cms.dom.$(windowOrNodeOrSelector);
+
+                    if (el == null) {
+                        throw new Error('domArg(): No element found for selector "' + strVal(windowOrNodeOrSelector) + '".');
+                    }
+
+                    return el;
+                }
+            }
+
+            throw new TypeError('domArg(): Argument 1 must be a {' + 'Window|Node|string}, "' + typeName(windowOrNodeOrSelector) + '" provided.');
+        },
+
+        /**
+         * @param nodeOrSelector
+         * @returns { Node }
+         */
+        nodeArg: function nodeArg(nodeOrSelector) {
+            var el;
+
+            if (nodeOrSelector != null) {
+                if (isNode(nodeOrSelector)) {
+                    return nodeOrSelector;
+                }
+
+                if (typeof nodeOrSelector === 'string') {
+                    el = $cms.dom.$(nodeOrSelector);
+
+                    if (el == null) {
+                        throw new Error('nodeArg(): No element found for selector "' + strVal(nodeOrSelector) + '".');
+                    }
+
+                    return el;
+                }
+            }
+
+            throw new TypeError('nodeArg(): Argument 1 must be a {' + 'Node|string}, "' + typeName(nodeOrSelector) + '" provided.');
+        },
+
+        /**
+         * @param { string|Element } elementOrSelector
+         * @returns { Element }
+         */
+        elArg: function elArg(elementOrSelector) {
+            var el;
+
+            if (elementOrSelector != null) {
+                if (isEl(elementOrSelector)) {
+                    return elementOrSelector;
+                }
+
+                if (typeof elementOrSelector === 'string') {
+                    el = $cms.dom.$(elementOrSelector);
+
+                    if (el == null) {
+                        throw new Error('elArg(): No element found for selector "' + strVal(elementOrSelector) + '".');
+                    }
+
+                    return el;
+                }
+            }
+
+            throw new TypeError('elArg(): Argument 1 must be a {' + 'Element|string}, "' + typeName(elementOrSelector) + '" provided.');
+        },
         /**
          * Ensures the passed `el` has an id and returns the id
          * @param { Element } el
@@ -2260,7 +2167,7 @@
          * @return {string}
          */
         id: function id(el, prefix) {
-            el = elArg(el);
+            el = $cms.dom.elArg(el);
             prefix = strVal(prefix) || 'rand-';
             
             if (el.id === '') {
@@ -2272,7 +2179,7 @@
         
         /**
          * Returns a single matching child element, defaults to 'document' as parent
-         * @method
+         * @memberof $cms.dom
          * @param context
          * @param id
          * @returns {*}
@@ -2282,7 +2189,7 @@
                 id = context;
                 context = document;
             } else {
-                context = nodeArg(context);
+                context = $cms.dom.nodeArg(context);
             }
             id = strVal(id);
 
@@ -2300,7 +2207,7 @@
                 selector = context;
                 context = document;
             } else {
-                context = nodeArg(context);
+                context = $cms.dom.nodeArg(context);
             }
             selector = strVal(selector);
 
@@ -2320,7 +2227,7 @@
                 selector = context;
                 context = document;
             } else {
-                context = nodeArg(context);
+                context = $cms.dom.nodeArg(context);
             }
             selector = strVal(selector);
 
@@ -2364,7 +2271,7 @@
                 selector = context;
                 context = document;
             } else {
-                context = nodeArg(context);
+                context = $cms.dom.nodeArg(context);
             }
             selector = strVal(selector);
 
@@ -2415,7 +2322,7 @@
          * @return {boolean} - Whether the passed element is visible
          */
         isVisible: function (el) {
-            el = elArg(el);
+            el = $cms.dom.elArg(el);
             
             return Boolean($cms.dom.width(el) || $cms.dom.height(el)) && ($cms.dom.css(el, 'display') !== 'none');
         },
@@ -2425,7 +2332,7 @@
          * @return {boolean} - Whether the passed element is visible
          */
         isHidden: function (el) {
-            el = elArg(el);
+            el = $cms.dom.elArg(el);
             
             return !$cms.dom.isVisible(el);
         },
@@ -2436,7 +2343,7 @@
          * @returns {*}
          */
         value: function value(el, value) {
-            el = elArg(el);
+            el = $cms.dom.elArg(el);
 
             if (value === undefined) {
                 if ((el.localName !== 'select') || !el.multiple) {
@@ -2464,7 +2371,7 @@
          * @returns {*}
          */
         changeValue: function changeValue(el, value) {
-            el = elArg(el);
+            el = $cms.dom.elArg(el);
 
             el.value = strVal((typeof value === 'function') ? value.call(el, $cms.dom.value(el), el) : value);
             $cms.dom.trigger(el, 'change');
@@ -2478,7 +2385,7 @@
          * @returns {*}
          */
         changeChecked: function changeChecked(el, bool) {
-            el = elArg(el);
+            el = $cms.dom.elArg(el);
 
             el.checked = strVal((typeof bool === 'function') ? bool.call(el, el.checked, el) : bool);
             $cms.dom.trigger(el, 'change');
@@ -2490,7 +2397,7 @@
          * @returns {string|*}
          */
         text: function text(node, newText) {
-            node = nodeArg(node);
+            node = $cms.dom.nodeArg(node);
 
             if (newText === undefined) {
                 return node.textContent;
@@ -2560,7 +2467,7 @@
 
         var data, prop;
 
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
 
         // Gets all values
         if (key === undefined) {
@@ -2597,7 +2504,7 @@
      * @param key
      */
     $cms.dom.removeData = function removeData(owner, key) {
-        owner = elArg(owner);
+        owner = $cms.dom.elArg(owner);
 
         var i, cache = domDataMap.get(owner);
 
@@ -2677,7 +2584,7 @@
             return 0;
         }
 
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
         notRelative = Boolean(notRelative);
 
         var left = el.getBoundingClientRect().left + window.pageXOffset;
@@ -2708,7 +2615,7 @@
             return 0;
         }
 
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
         notRelative = Boolean(notRelative);
 
         var top = el.getBoundingClientRect().top + window.pageYOffset;
@@ -2735,7 +2642,7 @@
     $cms.dom.width = function width(obj, value) {
         var offset;
 
-        obj = domArg(obj);
+        obj = $cms.dom.domArg(obj);
 
         if (value === undefined) {
             return isWindow(obj) ? obj.innerWidth :
@@ -2755,7 +2662,7 @@
     $cms.dom.height = function height(obj, value) {
         var offset;
 
-        obj = domArg(obj);
+        obj = $cms.dom.domArg(obj);
 
         if (value === undefined) {
             return isWindow(obj) ? obj.innerHeight :
@@ -2773,7 +2680,7 @@
      * @returns {*}
      */
     $cms.dom.offset = function offset(el, coordinates) {
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
 
         if (coordinates === undefined) {
             if (!el.ownerDocument.documentElement.contains(el)) {
@@ -2809,7 +2716,7 @@
      * @returns { Element }
      */
     $cms.dom.offsetParent = function offsetParent(el) {
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
 
         var parent = el.offsetParent || el.ownerDocument.body;
         while (parent && (parent.localName !== 'html') && (parent.localName !== 'body') && ($cms.dom.css(parent, 'position') === 'static')) {
@@ -2819,7 +2726,7 @@
     };
 
     $cms.dom.hasElementLoaded = function hasElementLoaded(el) {
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
         
         return $cms.elementsLoaded.has(el);
     };
@@ -2860,7 +2767,7 @@
      * @returns {boolean}
      */
     $cms.dom.matches = function matches(el, selector) {
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
 
         return ((selector === '*') || el[_matchesFnName](selector));
     };
@@ -2874,7 +2781,7 @@
      * @returns {*}
      */
     $cms.dom.closest = function closest(el, selector, context) {
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
 
         while (el && (el !== context)) {
             if ($cms.dom.matches(el, selector)) {
@@ -2893,7 +2800,7 @@
      * @returns { Array }
      */
     $cms.dom.parents = function parents(el, selector) {
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
 
         var parents = [];
 
@@ -2913,7 +2820,7 @@
      * @returns { HTMLElement }
      */
     $cms.dom.parent = function parent(el, selector) {
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
 
         while (el = el.parentElement) {
             if ((selector === undefined) || $cms.dom.matches(el, selector)) {
@@ -2931,7 +2838,7 @@
      * @returns {*}
      */
     $cms.dom.next = function next(el, selector) {
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
 
         var sibling = el.nextElementSibling;
 
@@ -2957,7 +2864,7 @@
      * @returns {*}
      */
     $cms.dom.prev = function prev(el, selector) {
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
 
         var sibling = el.previousElementSibling;
 
@@ -2983,7 +2890,7 @@
      * @returns {boolean|*}
      */
     $cms.dom.contains = function contains(parentNode, childNode) {
-        parentNode = nodeArg(parentNode);
+        parentNode = $cms.dom.nodeArg(parentNode);
 
         return (parentNode !== childNode) && parentNode.contains(childNode);
     };
@@ -3075,7 +2982,7 @@
     $cms.dom.on = function on(el, event, selector, data, callback, one) {
         var autoRemove, delegator;
 
-        el = domArg(el);
+        el = $cms.dom.domArg(el);
 
         if (event && (typeof event !== 'string')) {
             each(event, function (type, fn) {
@@ -3130,7 +3037,7 @@
      * @param {function} [callback]
      */
     $cms.dom.one = function one(el, event, selector, data, callback) {
-        el = domArg(el);
+        el = $cms.dom.domArg(el);
 
         return $cms.dom.on(el, event, selector, data, callback, 1);
     };
@@ -3143,7 +3050,7 @@
      * @param {function} [callback]
      */
     $cms.dom.off = function off(el, event, selector, callback) {
-        el = domArg(el);
+        el = $cms.dom.domArg(el);
 
         if (event && (typeof event !== 'string')) {
             each(event, function (type, fn) {
@@ -3203,7 +3110,7 @@
      * @returns {boolean}
      */
     $cms.dom.trigger = function trigger(el, event, eventInit) {
-        el = domArg(el);
+        el = $cms.dom.domArg(el);
         event = isObj(event) ? event : $cms.dom.createEvent(event, eventInit);
 
         // handle focus(), blur() by calling them directly
@@ -3227,7 +3134,7 @@
      * @param {function} [callback]
      */
     $cms.dom.submit = function submit(el, callback) {
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
         
         if (callback === undefined) {
             var defaultNotPrevented = $cms.dom.trigger(el, 'submit');
@@ -3284,7 +3191,7 @@
     $cms.dom.css = function css(el, property, value) {
         var key;
 
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
 
         if (value === undefined) {
             if (typeof property === 'string') {
@@ -3327,7 +3234,7 @@
      * @returns {boolean}
      */
     $cms.dom.isCss = function isCss(el, property, values) {
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
         values = arrVal(values);
 
         return values.includes($cms.dom.css(el, property));
@@ -3339,7 +3246,7 @@
      * @returns {boolean}
      */
     $cms.dom.isDisplayed = function isDisplayed(el) {
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
         return $cms.dom.css(el, 'display') !== 'none';
     };
 
@@ -3349,7 +3256,7 @@
      * @returns {boolean}
      */
     $cms.dom.notDisplayed = function notDisplayed(el) {
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
         return $cms.dom.css(el, 'display') === 'none';
     };
 
@@ -3362,7 +3269,7 @@
      * @returns {*}
      */
     $cms.dom.initial = function initial(el, property) {
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
 
         var tag = el.localName, doc;
 
@@ -3393,7 +3300,7 @@
      * @param el
      */
     $cms.dom.show = function show(el) {
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
 
         if (el.style.display === 'none') {
             el.style.removeProperty('display');
@@ -3409,7 +3316,7 @@
      * @param el
      */
     $cms.dom.hide = function hide(el) {
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
         $cms.dom.css(el, 'display', 'none');
     };
 
@@ -3419,7 +3326,7 @@
      * @param show
      */
     $cms.dom.toggle = function toggle(el, show) {
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
         show = (show !== undefined) ? !!show : ($cms.dom.css(el, 'display') === 'none');
 
         if (show) {
@@ -3435,7 +3342,7 @@
      * @param show
      */
     $cms.dom.toggleWithAria = function toggleWithAria(el, show) {
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
         show = (show !== undefined) ? !!show : ($cms.dom.css(el, 'display') === 'none');
 
         if (show) {
@@ -3453,7 +3360,7 @@
      * @param disabled
      */
     $cms.dom.toggleDisabled = function toggleDisabled(el, disabled) {
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
         disabled = (disabled !== undefined) ? !!disabled : !el.disabled;
 
         el.disabled = disabled;
@@ -3465,7 +3372,7 @@
      * @param checked
      */
     $cms.dom.toggleChecked = function toggleChecked(el, checked) {
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
         checked = (checked !== undefined) ? !!checked : !el.checked;
 
         el.checked = checked;
@@ -3478,7 +3385,7 @@
      * @param {function} [callback]
      */
     $cms.dom.fadeIn = function fadeIn(el, duration, callback) {
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
 
         if ((typeof duration === 'function') && (callback === undefined)) {
             callback = duration;
@@ -3527,7 +3434,7 @@
      * @param {function} [callback]
      */
     $cms.dom.fadeOut = function fadeOut(el, duration, callback) {
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
 
         if ((typeof duration === 'function') && (callback === undefined)) {
             callback = duration;
@@ -3563,7 +3470,7 @@
      * @param {function} [callback]
      */
     $cms.dom.fadeTo = function fadeTo(el, duration, opacity, callback) {
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
 
         if (opacity == null) { // Required argument
             $cms.fatal('$cms.dom.fadeTo(): Argument "opacity" is required.');
@@ -3601,7 +3508,7 @@
      * @param {function} [callback]
      */
     $cms.dom.fadeToggle = function fadeToggle(el, duration, callback) {
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
 
         var fadeIn = $cms.dom.notDisplayed(el);
 
@@ -3619,7 +3526,7 @@
      * @param {function} [callback]
      */
     $cms.dom.slideDown = function slideDown(el, duration, callback) {
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
 
         if ((typeof duration === 'function') && (callback === undefined)) {
             callback = duration;
@@ -3688,7 +3595,7 @@
      * @param {function} [callback]
      */
     $cms.dom.slideUp = function slideUp(el, duration, callback) {
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
 
         if ((typeof duration === 'function') && (callback === undefined)) {
             callback = duration;
@@ -3748,7 +3655,7 @@
      * @param {function} [callback]
      */
     $cms.dom.slideToggle = function slideToggle(el, duration, callback) {
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
 
         var slideDown = $cms.dom.notDisplayed(el);
 
@@ -4002,7 +3909,7 @@
     $cms.dom.attr = function attr(el, name, value) {
         var key;
 
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
 
         if ((typeof name === 'string') && (value === undefined)) {
             return el.getAttribute(name);
@@ -4023,7 +3930,7 @@
      * @param name
      */
     $cms.dom.removeAttr = function removeAttr(el, name) {
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
         name = strVal(name);
 
         name.split(' ').forEach(function (attribute) {
@@ -4113,7 +4020,7 @@
         var inside = (funcName === 'prepend') || (funcName === 'append');
 
         return function insertionFunction(target, /*...*/args) {  // `args` can be nodes, arrays of nodes and HTML strings
-            target = elArg(target);
+            target = $cms.dom.elArg(target);
             args = toArray(arguments, 1);
 
             var nodes = [],
@@ -4215,7 +4122,7 @@
     }
 
     function cloneScriptEl(scriptEl) {
-        scriptEl = elArg(scriptEl);
+        scriptEl = $cms.dom.elArg(scriptEl);
 
         var clone = document.createElement('script');
 
@@ -4283,7 +4190,7 @@
      * @param el
      */
     $cms.dom.empty = function empty(el) {
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
 
         forEach(el.children, function (child) {
             $cms.detachBehaviors(child);
@@ -4299,7 +4206,7 @@
      * @returns {string|Promise}
      */
     $cms.dom.html = function html(el, html) {
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
 
         if (html === undefined) {
             return el.innerHTML;
@@ -4316,7 +4223,7 @@
      * @returns { Promise }
      */
     $cms.dom.replaceWith = function replaceWith(el, html) {
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
         
         var promise = $cms.dom.before(el, html);
         $cms.dom.remove(el);
@@ -4330,7 +4237,7 @@
      * @returns {string}
      */
     $cms.dom.text = function text(el, text) {
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
 
         if (text === undefined) {
             return el.textContent;
@@ -4344,7 +4251,7 @@
      * @param node
      */
     $cms.dom.remove = function remove(node) {
-        node = nodeArg(node);
+        node = $cms.dom.nodeArg(node);
 
         // if (isEl(node)) {
         //     $cms.detachBehaviors(node);
@@ -4360,7 +4267,7 @@
      * @returns {number}
      */
     $cms.dom.contentWidth = function contentWidth(el) {
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
 
         var cs = computedStyle(el),
             padding = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight),
@@ -4376,7 +4283,7 @@
      * @returns {number}
      */
     $cms.dom.contentHeight = function contentHeight(el) {
-        el = elArg(el);
+        el = $cms.dom.elArg(el);
 
         var cs = computedStyle(el),
             padding = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom),
@@ -4394,7 +4301,7 @@
     $cms.dom.serializeArray = function serializeArray(form) {
         var name, result = [];
 
-        form = elArg(form);
+        form = $cms.dom.elArg(form);
 
         arrVal(form.elements).forEach(function (field) {
             name = field.name;
@@ -4421,7 +4328,7 @@
     $cms.dom.serialize = function serialize(form) {
         var result = [];
 
-        form = elArg(form);
+        form = $cms.dom.elArg(form);
 
         $cms.dom.serializeArray(form).forEach(function (el) {
             result.push(encodeURIComponent(el.name) + '=' + encodeURIComponent(el.value))
@@ -6865,7 +6772,7 @@
     $cms.views.ModalWindow = ModalWindow;
     /**
      * @memberof $cms.views
-     * @class $cms.views.ModalWindow
+     * @class $cms.views.ModalWindow 
      * @extends $cms.View
      */
     function ModalWindow(params) {
@@ -7797,7 +7704,7 @@
             trimmed = data.trim();
 
             if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) {
-                data = parseJson(data);
+                data = parseJson5(data);
             } else if (isNumeric(trimmed)) {
                 data = Number(trimmed);
             }
@@ -8193,10 +8100,9 @@
                 var els = $cms.once($cms.dom.$$$(context, '[data-toggleable-tray]'), 'behavior.toggleableTray');
 
                 els.forEach(function (el) {
-                    var options = $cms.dom.data(el, 'toggleableTray') || {},
-                        trayObject = new $cms.views.ToggleableTray(options, { el: el });
+                    var options = $cms.dom.data(el, 'toggleableTray') || {};
                     
-                    $cms.dom.data(el, 'toggleableTrayObject', trayObject);
+                    $cms.dom.data(el).toggleableTrayObject = new $cms.views.ToggleableTray(options, { el: el });
                 });
             }
         }
@@ -8204,7 +8110,7 @@
 
     /**
      * @memberof $cms.views
-     * @class Global
+     * @class $cms.views.Global
      * @extends $cms.View
      * */
     $cms.views.Global = function Global() {
@@ -8346,7 +8252,7 @@
         }
     };
 
-    $cms.inherits($cms.views.Global, $cms.View, /**@lends Global#*/{
+    $cms.inherits($cms.views.Global, $cms.View, /**@lends $cms.views.Global#*/{
         events: function () {
             return {
                 // Show a confirmation dialog for clicks on a link (is higher up for priority)
@@ -8821,7 +8727,7 @@
                 return;
             }
             
-            var ttObj = $cms.dom.data(trayEl, 'toggleableTrayObject');
+            var ttObj = $cms.dom.data(trayEl).toggleableTrayObject;
             if (ttObj) {
                 ttObj.toggleTray();
             }
@@ -9597,7 +9503,10 @@
         }
     });
 
-    // For admin/templates/MENU_mobile.tp
+    // For admin/templates/MENU_mobile.tpl
+    /**
+     * @param params
+     */
     $cms.templates.menuMobile = function menuMobile(params) {
         var menuId = strVal(params.menuId);
         $cms.dom.on(document.body, 'click', '.js-click-toggle-' + menuId + '-content', function (e) {

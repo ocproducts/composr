@@ -355,16 +355,14 @@
         $cms.dom.on(commentsForm, 'submit', function commentsAjaxListener(event) {
             var ret;
             
-            if (event.detail && event.detail.triggeredByDoFormPreview) {
+            if (event.detail && (event.detail.triggeredByDoFormPreview || event.detail.triggeredByCommentsAjaxListener )) {
                 return true;
             }
 
             // Cancel the event from running
             event.preventDefault();
-            
-            $cms.dom.off(commentsForm, 'submit', commentsAjaxListener);
-            ret = $cms.dom.trigger(commentsForm, 'submit');
-            $cms.dom.on(commentsForm, 'submit', commentsAjaxListener);
+
+            ret = $cms.dom.trigger(commentsForm, 'submit', { detail: { triggeredByCommentsAjaxListener: true } });
             
             if (ret === false) {
                 return false;
@@ -395,7 +393,7 @@
                 postValue = postElement.value;
             
             if (postElement.defaultSubstringToStrip !== undefined) {// Strip off prefix if unchanged
-                if (postValue.substring(0, postElement.defaultSubstringToStrip.length) == postElement.defaultSubstringToStrip) {
+                if (postValue.substring(0, postElement.defaultSubstringToStrip.length) === postElement.defaultSubstringToStrip) {
                     postValue = postValue.substring(postElement.defaultSubstringToStrip.length, postValue.length);
                 }
             }
@@ -411,7 +409,7 @@
                     var oldAction = commentsForm.action;
                     $cms.dom.replaceWith(commentsWrapper, xhr.responseText);
                     commentsForm = $cms.dom.$id(commentsFormId);
-                    oldAction = commentsForm.action = oldAction; // AJAX will have mangled URL (as was not running in a page context), this will fix it back
+                    commentsForm.action = oldAction; // AJAX will have mangled URL (as was not running in a page context), this will fix it back
 
                     // Scroll back to comment
                     setTimeout(function () {
@@ -521,7 +519,6 @@
     
     /**
      * Reply to a topic using AJAX
-     * @param el
      * @param isThreaded
      * @param id
      * @param replyingToUsername

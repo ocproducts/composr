@@ -14384,7 +14384,7 @@
             return;
         }
 
-        var decodedData = $cms.parseJson(dataResponse);
+        var decodedData = JSON.parse(dataResponse);
 
         var id = document.getElementById(plObj.settings.hidFileID);
         if (id.value === '-1') {
@@ -14630,6 +14630,10 @@
         };
     }
 
+    /**
+     * @param settings
+     * @return {module:plupload.Uploader}
+     */
     function getUploaderObject(settings) {
         //console.log('getUploaderObject()', 'settings:', settings);
 
@@ -14801,7 +14805,7 @@
                             progress.setComplete();
                             progress.setStatus('{!javascript:PLUPLOAD_COMPLETE^;}');
 
-                            var decodedData = $cms.parseJson(request.responseText);
+                            var decodedData = JSON.parse(request.responseText);
                             document.getElementById('hidFileID_file' + attachmentBase).value = decodedData['upload_id'];
 
                             if ($cms.form.isWysiwygField(element)) {

@@ -66,7 +66,7 @@
             });
 
             // Show markers
-            var data = (dataJson !== '') ? $cms.parseJson(dataJson) : [],
+            var data = (dataJson !== '') ? JSON.parse(dataJson) : [],
                 markers = [];
             for (var i = 0; i < data.length; i++) {
                 addDataPoint(data[i], bounds, markers, infoWindow, map);
