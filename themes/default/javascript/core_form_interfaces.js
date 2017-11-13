@@ -889,7 +889,7 @@
         
         for (i = 0; i < inputs.length; i++) {
             if (((inputs[i].type === 'file') || ((inputs[i].type === 'text') && (inputs[i].disabled))) && (inputs[i].value !== '') && (inputs[i].name.match(/file\d+/))) {
-                if (inputs[i].pluploadObject !== undefined) {
+                if ($cms.dom.data(inputs[i]).pluploadObject != null) {
                     if ((inputs[i].value !== '-1') && (inputs[i].value !== '')) {
                         if (!doneOne) {
                             if (!oldComcode.includes('attachment_safe')) {
@@ -948,8 +948,8 @@
                 uploadEl = targetWin.document.getElementById('hidFileID_' + field);
             }
             
-            if ((uploadEl.pluploadObject != null) && isWysiwyg) {
-                var ob = uploadEl.pluploadObject;
+            if (($cms.dom.data(uploadEl).pluploadObject != null) && isWysiwyg) {
+                var ob = $cms.dom.data(uploadEl).pluploadObject;
                 if (Number(ob.state) === Number(targetWin.plupload.STARTED)) {
                     ob.bind('UploadComplete', function () {
                         setTimeout(dispatchBlockHelper, 100); // Give enough time for everything else to update

@@ -14256,8 +14256,8 @@
         
         if (element.determinedAttachmentProperties === undefined) {
             currentNum = name.replace('file', '');
-            window.setAttachment(postingFieldName, currentNum, fileName, multi, element.pluploadObject.settings);
-            if (!element.pluploadObject.settings.simplifiedAttachments) {
+            window.setAttachment(postingFieldName, currentNum, fileName, multi, $cms.dom.data(element).pluploadObject.settings);
+            if (!$cms.dom.data(element).pluploadObject.settings.simplifiedAttachments) {
                 element.onchange = null;     
             }
             if (multi) {
@@ -14314,7 +14314,7 @@
         value = strVal(value);
         
         var placeholderField = document.getElementById(name),
-            plObj = placeholderField.pluploadObject;
+            plObj = $cms.dom.data(placeholderField).pluploadObject;
         
         $cms.dom.changeValue(placeholderField, value);
         
@@ -14516,7 +14516,7 @@
 
         var plObj = getUploaderObject(settings);
 
-        placeholderField.pluploadObject = plObj;
+        $cms.dom.data(placeholderField).pluploadObject = plObj;
 
         // Rearrange clear buttons
         var clearButton = document.getElementById('clear_button_' + name);
@@ -14590,7 +14590,7 @@
         settings.runtimes = 'html5';
         settings.simplifiedAttachments = true;
 
-        placeholderField.pluploadObject = getUploaderObject(settings); // This will attach the new event
+        $cms.dom.data(placeholderField).pluploadObject = getUploaderObject(settings); // This will attach the new event
     }
 
     function getUploaderSettings(name, pageType, postingFieldName, filter) {

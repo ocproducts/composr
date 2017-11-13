@@ -92,7 +92,7 @@
         var plObj, uploadsComplete = true;
         
         for (var i = 0; i < form.elements.length; i++) {
-            plObj = form.elements[i].pluploadObject;
+            plObj = $cms.dom.data(form.elements[i]).pluploadObject;
             if ((plObj != null) && (Number(plObj.total.queued)/*Number of files yet to be uploaded*/ !== 0)) {
                 uploadsComplete = false;
                 break;
@@ -111,7 +111,7 @@
            var resolved = false;
 
             arrVal(form.elements).forEach(function (el) {
-               var plObj = el.pluploadObject;
+               var plObj = $cms.dom.data(el).pluploadObject;
                
                if (plObj == null) {
                    return;
@@ -138,7 +138,7 @@
         var plObj, scrolled = false;
 
         for (var i = 0; i < form.elements.length; i++) {
-            plObj = form.elements[i].pluploadObject;
+            plObj = $cms.dom.data(form.elements[i]).pluploadObject;
             
             if ((plObj != null) && (plObj.state === window.plupload.STOPPED) && (plObj.total.queued > 0)) { /* plObj.total.queued is number of files yet to be uploaded. */
                 plObj.start(); // Starts uploading the queued files.
@@ -603,8 +603,8 @@
                 isBlank = (required && (myValue.replace(/&nbsp;/g, ' ').replace(/<br\s*\/?>/g, ' ').replace(/\s/g, '') === '')),
                 validatePromise = Promise.resolve();
             
-            if (theElement.pluploadObject != null) { // Plupload placeholder field
-                var plObj = theElement.pluploadObject,
+            if ($cms.dom.data(theElement).pluploadObject != null) { // Plupload placeholder field
+                var plObj = $cms.dom.data(theElement).pluploadObject,
                     fileNameField = document.getElementById(plObj.settings.txtFileName);
                 
                 if (plObj.settings.required && (fileNameField.value === '')) {
@@ -786,8 +786,8 @@
                 element.className = element.className.replace(/(input_[a-z_]+)/g, '$1_required');
             }
 
-            if (element.pluploadObject) {
-                element.pluploadObject.settings.required = isRequired;
+            if ($cms.dom.data(element).pluploadObject != null) {
+                $cms.dom.data(element).pluploadObject.settings.required = isRequired;
             }
         }
 
