@@ -3371,19 +3371,22 @@
         el.checked = checked;
     };
 
+    var _animationQueue = {};
     /**
      * @memberof $cms.dom
      * @param el
      * @param duration
      */
     $cms.dom.fadeIn = function fadeIn(el, duration) {
-        return doFadeIn();
+        el = $cms.dom.elArg(el);
+        duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
+
+        var uid = $cms.uid(el);
+        _animationQueue[uid] || (_animationQueue[uid] = Promise.resolve());
+        return _animationQueue[uid] = _animationQueue[uid].then(doFadeIn);
         
         function doFadeIn() {
             return new Promise(function (resolve) {
-                el = $cms.dom.elArg(el);
-                duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
-
                 var target = /*Number($cms.dom.css(el, 'opacity')) || */1;
 
                 $cms.dom.show(el);
@@ -3421,13 +3424,15 @@
      * @param duration
      */
     $cms.dom.fadeOut = function fadeOut(el, duration) {
-        return doFadeOut();
+        el = $cms.dom.elArg(el);
+        duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
+
+        var uid = $cms.uid(el);
+        _animationQueue[uid] || (_animationQueue[uid] = Promise.resolve());
+        return _animationQueue[uid] = _animationQueue[uid].then(doFadeOut);
         
         function doFadeOut() {
             return new Promise(function (resolve) {
-                el = $cms.dom.elArg(el);
-                duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
-
                 if ($cms.support.animation && (duration > 0)) { // Progressive enhancement using the web animations API
                     var keyFrames = [{ opacity: $cms.dom.css(el, 'opacity')}, { opacity: 0 }],
                         options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING },
@@ -3452,14 +3457,16 @@
      * @param opacity
      */
     $cms.dom.fadeTo = function fadeTo(el, duration, opacity) {
-        return doFadeTo();
+        el = $cms.dom.elArg(el);
+        duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
+        opacity = numVal(opacity);
+
+        var uid = $cms.uid(el);
+        _animationQueue[uid] || (_animationQueue[uid] = Promise.resolve());
+        return _animationQueue[uid] = _animationQueue[uid].then(doFadeTo);
         
         function doFadeTo() {
             return new Promise(function (resolve) {
-                el = $cms.dom.elArg(el);
-                duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
-                opacity = numVal(opacity);
-
                 $cms.dom.show(el);
 
                 if ($cms.support.animation && (duration > 0)) { // Progressive enhancement using the web animations API
@@ -3485,12 +3492,15 @@
      * @param duration
      */
     $cms.dom.fadeToggle = function fadeToggle(el, duration) {
-        return doFadeToggle();
+        el = $cms.dom.elArg(el);
+        duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
+
+        var uid = $cms.uid(el);
+        _animationQueue[uid] || (_animationQueue[uid] = Promise.resolve());
+        return _animationQueue[uid] = _animationQueue[uid].then(doFadeToggle);
         
         function doFadeToggle() {
             return new Promise(function (resolve) {
-                el = $cms.dom.elArg(el);
-
                 var fadeIn = $cms.dom.isHidden(el);
 
                 if (fadeIn) {
@@ -3508,13 +3518,15 @@
      * @param duration
      */
     $cms.dom.slideDown = function slideDown(el, duration) {
-        return doSlideDown();
+        el = $cms.dom.elArg(el);
+        duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
+
+        var uid = $cms.uid(el);
+        _animationQueue[uid] || (_animationQueue[uid] = Promise.resolve());
+        return _animationQueue[uid] = _animationQueue[uid].then(doSlideDown);
         
         function doSlideDown() {
             return new Promise(function (resolve) {
-                el = $cms.dom.elArg(el);
-                duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
-
                 if ($cms.dom.isVisible(el)) {
                     resolve();
                     return; // Nothing to do
@@ -3577,13 +3589,15 @@
      * @param duration
      */
     $cms.dom.slideUp = function slideUp(el, duration) {
-        return doSlideUp();
+        el = $cms.dom.elArg(el);
+        duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
+
+        var uid = $cms.uid(el);
+        _animationQueue[uid] || (_animationQueue[uid] = Promise.resolve());
+        return _animationQueue[uid] = _animationQueue[uid].then(doSlideUp);
         
         function doSlideUp() {
             return new Promise(function (resolve) {
-                el = $cms.dom.elArg(el);
-                duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
-
                 if ($cms.dom.isHidden(el)) {
                     // Already hidden
                     resolve();
@@ -3633,12 +3647,15 @@
      * @param duration
      */
     $cms.dom.slideToggle = function slideToggle(el, duration) {
-        return doSlideToggle();
+        el = $cms.dom.elArg(el);
+        duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
+
+        var uid = $cms.uid(el);
+        _animationQueue[uid] || (_animationQueue[uid] = Promise.resolve());
+        return _animationQueue[uid] = _animationQueue[uid].then(doSlideToggle);
         
         function doSlideToggle() {
             return new Promise(function (resolve) {
-                el = $cms.dom.elArg(el);
-
                 if ($cms.dom.isVisible(el)) {
                     $cms.dom.slideUp(el, duration).then(resolve);
                 } else {
