@@ -21,7 +21,7 @@
 						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!"><img alt="{!EXPAND}: Background Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!">Background Properties</a>
 					</h4>
-					<div class="toggleable_tray js-tray-accordion-item-body" style="display: none" aria-expanded="false">
+					<div class="toggleable_tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
 						<table class="columned_table results_table" cellspacing="0" cellpadding="0" border="1" width="100%">
 							<tbody><tr>
 								<th width="28%" align="left">Property</th>
@@ -62,7 +62,7 @@
 						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!"><img alt="{!EXPAND}: Background Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!">Border Properties</a>
 					</h4>
-					<div class="toggleable_tray js-tray-accordion-item-body" style="display: none" aria-expanded="false">
+					<div class="toggleable_tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
 						<table class="columned_table results_table" cellspacing="0" cellpadding="0" border="1" width="100%">
 							<tbody><tr>
 								<th width="28%" align="left">Property</th>
@@ -118,7 +118,7 @@
 						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!"><img alt="{!EXPAND}: Dimension Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!">Dimension Properties</a>
 					</h4>
-					<div class="toggleable_tray js-tray-accordion-item-body" style="display: none" aria-expanded="false">
+					<div class="toggleable_tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
 						<table class="columned_table results_table" cellspacing="0" cellpadding="0" border="1" width="100%">
 							<tbody><tr>
 								<th width="28%" align="left">Property</th>
@@ -164,7 +164,7 @@
 						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!"><img alt="{!EXPAND}: List Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!">List Properties</a>
 					</h4>
-					<div class="toggleable_tray js-tray-accordion-item-body" style="display: none" aria-expanded="false">
+					<div class="toggleable_tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
 						<table class="columned_table results_table" cellspacing="0" cellpadding="0" border="1" width="100%">
 							<tbody><tr>
 								<th width="28%" align="left">Property</th>
@@ -190,7 +190,7 @@
 						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion"><img alt="{!EXPAND}: Margin/Padding Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion">Margin/Padding Properties</a>
 					</h4>
-					<div class="toggleable_tray js-tray-accordion-item-body" style="display: none" aria-expanded="false">
+					<div class="toggleable_tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
 						<table class="columned_table results_table" cellspacing="0" cellpadding="0" border="1" width="100%">
 							<tbody><tr>
 								<th width="28%" align="left">Property</th>
@@ -256,7 +256,7 @@
 						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!"><img alt="{!EXPAND}: Positioning Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!">Positioning Properties</a>
 					</h4>
-					<div class="toggleable_tray js-tray-accordion-item-body" style="display: none" aria-expanded="false">
+					<div class="toggleable_tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
 						<table class="columned_table results_table" cellspacing="0" cellpadding="0" border="1" width="100%">
 							<tbody><tr>
 								<th width="28%" align="left">Property</th>
@@ -327,7 +327,7 @@
 						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!"><img alt="{!EXPAND}: Text/Font Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!">Text/Font Properties</a>
 					</h4>
-					<div class="toggleable_tray js-tray-accordion-item-body" style="display: none" aria-expanded="false">
+					<div class="toggleable_tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
 						<table class="columned_table results_table" cellspacing="0" cellpadding="0" border="1" width="100%">
 							<tbody><tr>
 								<th width="28%" align="left">Property</th>

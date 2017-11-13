@@ -20,7 +20,7 @@
 
         forEach = Function.bind.call(Function.call, emptyArr.forEach),
         includes = Function.bind.call(Function.call, emptyArr.includes),
-        // Clever helper for merging arrays in-place using `[].push`
+        // Clever helper for merging existing arrays using `[].push`
         pushArray = Function.bind.call(Function.apply, emptyArr.push);
 
     function noop() {}
@@ -259,7 +259,10 @@
 
     extendDeep($cms, /**@lends $cms*/{
         // Export useful stuff
-        /**@method*/
+        /**
+         * @method
+         * @returns { Array }
+         */
         toArray: toArray,
         /**@method*/
         forEach: forEach,
@@ -658,15 +661,7 @@
         var proto;
         return isObj(obj) && (internalName(obj) === 'Object') && (((proto = Object.getPrototypeOf(obj)) === Object.prototype) || (proto === null));
     }
-
-    /**
-     * @param val
-     * @returns { boolean }
-     */
-    function isArrayOrPlainObj(val) {
-        return (val != null) && (Array.isArray(val) || isPlainObj(val));
-    }
-
+    
     /**
      * @param val
      * @returns {boolean}
@@ -2246,7 +2241,7 @@
     var rgxIdSelector = /^\#[\w\-]+$/,
         rgxSimpleSelector = /^[\#\.]?[\w\-]+$/,
         // Special attributes that should be set via method calls
-        methodAttributes = { val: true, css: true, html: true, text: true, data: true, width: true, height: true, offset: true },
+        methodAttributes = { value: true, css: true, html: true, text: true, data: true, width: true, height: true, offset: true },
         rgxNotWhite = /\S+/g;
 
     var DOM_ANIMATE_DEFAULT_DURATION = 400, // Milliseconds
@@ -2504,14 +2499,22 @@
             node.textContent = strVal((typeof newText === 'function') ? newText.call(node, node.textContent, node) : newText);
         }
     });
+
+    /**
+     * @class { CmsDomData }
+     */
+    function CmsDomData() {}
     
     var domDataMap = new WeakMap();
-    
+    /**
+     * @param el
+     * @return { CmsDomData }
+     */
     function dataCache(el) {
         // Check if the el object already has a cache
         var value = domDataMap.get(el), key;
         if (!value) { // If not, create one with the dataset
-            value = {};
+            value = new CmsDomData();
             domDataMap.set(el, value);
             for (key in el.dataset) {
                 dataAttr(el, key);
@@ -2520,7 +2523,12 @@
 
         return value;
     }
-    
+
+    /**
+     * @param el
+     * @param key
+     * @return {(object|number|string)}
+     */
     function dataAttr(el, key) {
         var data, trimmed;
         // If nothing was found internally, try to fetch any
@@ -2539,14 +2547,13 @@
         }
         return data;
     }
-
     /**
      * Data retrieval and storage
      * @memberof $cms.dom
      * @param el
      * @param [key]
      * @param [value]
-     * @returns {*}
+     * @returns {(CmsDomData|string|number)}
      */
     $cms.dom.data = function data(el, key, value) {
         // Note: We have internalised caching here. You must not change data-* attributes manually and expect this API to pick up on it.
@@ -3916,7 +3923,7 @@
             }
 
             if (isRegExp(checkKey)) {
-                return checkKey.test(key);
+                return key.search(checkKey) !== -1;
             }
 
             if (isArrayLike(checkKey, 1)) {
@@ -3950,7 +3957,7 @@
             }
 
             if (isRegExp(checkOutput)) {
-                return checkOutput.test(key);
+                return key.search(checkOutput) !== -1;
             }
 
             if (isArrayLike(checkOutput, 1)) {
@@ -5960,9 +5967,9 @@
      */
     $cms.ui.activateTooltip = function activateTooltip(el, event, tooltip, width, pic, height, bottom, noDelay, lightsOff, forceWidth, win, haveLinks) {
         event || (event = {});
-        width = strVal(width, 'auto');
+        width = strVal(width) || 'auto';
         pic = strVal(pic);
-        height = strVal(height, 'auto');
+        height = strVal(height) || 'auto';
         bottom = !!bottom;
         noDelay = !!noDelay;
         lightsOff = !!lightsOff;
@@ -5995,8 +6002,10 @@
 
         // Add in move/leave events if needed
         if (!haveLinks) {
-            $cms.dom.on(el, 'mouseout.cmsTooltip', function () {
-                $cms.ui.deactivateTooltip(el);
+            $cms.dom.on(el, 'mouseout.cmsTooltip', function (e) {
+                if (!e.relatedTarget || !el.contains(e.relatedTarget)) {
+                    $cms.ui.deactivateTooltip(el);
+                }
             });
 
             $cms.dom.on(el, 'mousemove.cmsTooltip', function () {
@@ -6300,7 +6309,7 @@
      */
     $cms.ui.confirm = function confirm(question, callback, title, unescaped) {
         question = strVal(question);
-        title = strVal(title, '{!Q_SURE;^}');
+        title = strVal(title) || '{!Q_SURE;^}';
         unescaped = boolVal(unescaped);
 
         return new Promise(function (resolveConfirm) {
@@ -6572,7 +6581,7 @@
         name = strVal(name);
         options = strVal(options);
         target = strVal(target);
-        cancelText = strVal(cancelText, '{!INPUTSYSTEM_CANCEL;^}');
+        cancelText = strVal(cancelText) || '{!INPUTSYSTEM_CANCEL;^}';
 
         return new Promise(function (resolveOpen) {
             if (!$cms.$CONFIG_OPTION('js_overlays')) {
@@ -7860,16 +7869,16 @@
             attach: function (context) {
                 $cms.once($cms.dom.$$$(context, '[data-view]'), 'behavior.initializeViews').forEach(function (el) {
                     var params = objVal($cms.dom.data(el, 'viewParams')),
-                        view, viewOptions = { el: el };
+                        viewName = el.dataset.view,
+                        viewOptions = { el: el };
 
-                    if (typeof $cms.views[el.dataset.view] !== 'function') {
-                        $cms.fatal('$cms.behaviors.initializeViews.attach(): Missing view constructor "' + el.dataset.view + '" for', el);
+                    if (typeof $cms.views[viewName] !== 'function') {
+                        $cms.fatal('$cms.behaviors.initializeViews.attach(): Missing view constructor "' + viewName + '" for', el);
                         return;
                     }
 
                     try {
-                        view = new $cms.views[el.dataset.view](params, viewOptions);
-                        $cms.dom.data(el, 'viewObject', view);
+                        $cms.dom.data(el).viewObject = new $cms.views[viewName](params, viewOptions);
                         //$cms.inform('$cms.behaviors.initializeViews.attach(): Initialized view "' + el.dataset.view + '" for', el, view);
                     } catch (ex) {
                         $cms.fatal('$cms.behaviors.initializeViews.attach(): Exception thrown while initializing view "' + el.dataset.view + '" for', el, ex);

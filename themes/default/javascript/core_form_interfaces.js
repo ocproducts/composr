@@ -1132,24 +1132,21 @@
 
         function assignRadioDeletionConfirm(name) {
             for (var i = 1; i < 3; i++) {
-                var e = document.getElementById('j_' + name + '_' + i);
-                if (e) {
-                    e.onchange = function () {
+                var el = document.getElementById('j_' + name + '_' + i);
+                if (el) {
+                    el.onchange = function () {
                         if (this.checked) {
-                            $cms.ui.confirm(
-                                '{!ARE_YOU_SURE_DELETE;^}',
-                                function (result) {
-                                    var e = document.getElementById('j_' + name + '_0');
-                                    if (e) {
-                                        if (result) {
-                                            var form = e.form;
-                                            form.action = form.action.replace(/([&\?])redirect=[^&]*/, '$1');
-                                        } else {
-                                            e.checked = true; // Check first radio
-                                        }
+                            $cms.ui.confirm('{!ARE_YOU_SURE_DELETE;^}',).then(function (result) {
+                                var el2 = document.getElementById('j_' + name + '_0');
+                                if (el2) {
+                                    if (result) {
+                                        var form = el2.form;
+                                        form.action = form.action.replace(/([&\?])redirect=[^&]*/, '$1');
+                                    } else {
+                                        el2.checked = true; // Check first radio
                                     }
                                 }
-                            );
+                            });
                         }
                     }
                 }
@@ -1273,6 +1270,9 @@
         return append !== '';
     };
 
+    /**
+     * @return {boolean}
+     */
     $cms.form.isModSecurityWorkaroundEnabled = function isModSecurityWorkaroundEnabled() {
         return '{$VALUE_OPTION;,disable_modsecurity_workaround}' !== '1';
     };
@@ -1573,7 +1573,7 @@
         $cms.dom.triggerResize();
     }
 
-    function choosePicture(jId, imgOb, name, event) {
+    function choosePicture(jId, imgOb, name) {
         var jEl = document.getElementById(jId);
         if (!jEl) {
             return;
@@ -1611,7 +1611,7 @@
     }
 
     /**
-     * 
+     * @TODO: NEEDS a description badly
      * @param setName
      * @param somethingRequired
      * @param defaultSet

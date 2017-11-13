@@ -13,7 +13,7 @@ function translate(name, old, langFrom, langTo) {
     }
 
     if (!apiKey) {
-        $cms.toggleableTray($cms.dom.$('#rexp_' + name));
+        $cms.ui.toggleableTray($cms.dom.$('#rexp_' + name));
 
         var element = document.getElementById('rexp_' + name);
         if (element.style.display !== 'none') {

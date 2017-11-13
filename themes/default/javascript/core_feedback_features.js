@@ -569,7 +569,7 @@
         } else {
             if ((post.stripOnFocus !== undefined) && (post.value == post.stripOnFocus)) {
                 post.value = '';
-            } else if (post.value != '') {
+            } else if (post.value !== '') {
                 post.value += '\n\n';
             }
 

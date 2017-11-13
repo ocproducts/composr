@@ -18,7 +18,7 @@
 
 						<span class="js-tray-onclick-toggle-accordion"><strong>{YEAR}</strong></span>:
 
-						<div class="toggleable_tray accordion_trayitem js-tray-accordion-item-body"{+START,IF,{$NOT,{$GET,is_current_year}}} style="display: none" aria-expanded="false"{+END}>
+						<div class="toggleable_tray accordion_trayitem_body js-tray-accordion-item-body"{+START,IF,{$NOT,{$GET,is_current_year}}} style="display: none" aria-expanded="false"{+END}>
 							<ul class="compact_list associated_details">
 								{+START,LOOP,TIMES}
 									<li>
