@@ -1449,7 +1449,7 @@
      */
     $cms.url = function url(url, base) {
         url = strVal(url);
-        base = strVal(base) || ($cms.baseUrl() + '/');
+        base = strVal(base) || ($cms.getBaseUrl() + '/');
 
         if (url.startsWith('//')) {
             // URL constructor throws on scheme-relative URLs
