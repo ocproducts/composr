@@ -823,6 +823,7 @@ class Hook_addon_registry_core
             'themes/default/images/jquery_ui/ui-icons_cd0a0a_256x240.png',
             'themes/default/css/jquery_ui.css',
             'themes/default/javascript/global.js',
+            'themes/default/javascript/jsdoc-conf.json',
             'data/polyfills/class-list.js',
             'data/polyfills/fetch.js',
             'data/polyfills/general.js',
