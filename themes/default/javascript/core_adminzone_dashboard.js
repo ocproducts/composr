@@ -316,7 +316,7 @@
         }
 
         return new Promise(function (resolve) {
-            $cms.doAjaxRequest($cms.maintainThemeInLink($SCRIPT_comcode_convert + $cms.$KEEP(true)), null, post).then(function (xhr) {
+            $cms.doAjaxRequest($cms.maintainThemeInLink($SCRIPT_comcode_convert + $cms.keep(true)), null, post).then(function (xhr) {
                 if (xhr.responseText && (xhr.responseText !== 'false')) {
                     var result = xhr.responseXML && xhr.responseXML.querySelector('result');
 

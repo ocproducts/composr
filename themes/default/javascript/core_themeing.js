@@ -49,7 +49,7 @@
             }, 2000);
         }
 
-        if ($cms.$CONFIG_OPTION('editarea')) {
+        if ($cms.configOption('editarea')) {
             aceComposrLoader('e_' + params.fileId, params.highlighterType, false);
         }
 
@@ -243,7 +243,7 @@
                         return;
                     } 
 
-                    var url = $cms.baseUrl('data/snippet.php?snippet=css_compile__text' + $cms.$KEEP()),
+                    var url = $cms.baseUrl('data/snippet.php?snippet=css_compile__text' + $cms.keep()),
                         post = 'css=' + encodeURIComponent(newCss);
                     if ($cms.form.isModSecurityWorkaroundEnabled()) {
                         post = $cms.form.modSecurityWorkaroundAjax(post);
@@ -277,7 +277,7 @@
                         var links = win.document.getElementsByTagName('link');
                         for (var i = 0; i < links.length; i++) {
                             e = links[i];
-                            if ((e.type == 'text/css') && (e.href.indexOf('/templates_cached/' + window.opener.$cms.$LANG() + '/' + doingCssFor) != -1)) {
+                            if ((e.type == 'text/css') && (e.href.indexOf('/templates_cached/' + window.opener.$cms.userLang() + '/' + doingCssFor) != -1)) {
                                 e.parentNode.removeChild(e);
                             }
                         }
@@ -538,12 +538,12 @@
                 request += encodeURIComponent(btn.form.elements[i].name) + '=' + encodeURIComponent(btn.form.elements[i].value) + '&';
             }
 
-            $cms.doAjaxRequest('{$FIND_SCRIPT;,tempcode_tester}' + $cms.$KEEP(true), null, request).then(function (xhr) {
+            $cms.doAjaxRequest('{$FIND_SCRIPT;,tempcode_tester}' + $cms.keep(true), null, request).then(function (xhr) {
                 $cms.dom.html(document.getElementById('preview_raw'), $cms.filter.html(xhr.responseText));
                 $cms.dom.html(document.getElementById('preview_html'), xhr.responseText);
             });
 
-            $cms.doAjaxRequest('{$FIND_SCRIPT;,tempcode_tester}?comcode=1' + $cms.$KEEP(), null, request).then(function (xhr) {
+            $cms.doAjaxRequest('{$FIND_SCRIPT;,tempcode_tester}?comcode=1' + $cms.keep(), null, request).then(function (xhr) {
                 $cms.dom.html(document.getElementById('preview_comcode'), xhr.responseText);
             });
         });
@@ -572,8 +572,8 @@
 
             var hasEditarea = editareaIsLoaded(textbox.name);
 
-            if ((value === 'BLOCK') && (($cms.ui.showModalDialog !== undefined) || $cms.$CONFIG_OPTION('js_overlays'))) {
-                var url = '{$FIND_SCRIPT_NOHTTP;,block_helper}?field_name=' + textbox.name + '&block_type=template' + $cms.$KEEP();
+            if ((value === 'BLOCK') && (($cms.ui.showModalDialog !== undefined) || $cms.configOption('js_overlays'))) {
+                var url = '{$FIND_SCRIPT_NOHTTP;,block_helper}?field_name=' + textbox.name + '&block_type=template' + $cms.keep();
                 $cms.ui.showModalDialog(
                     $cms.maintainThemeInLink(url),
                     null,
@@ -707,7 +707,7 @@
         templateEditorCleanTabs();
 
         $cms.requireJavascript('tree_list').then(function () {
-            window.sitemap = $cms.ui.createTreeList('theme_files', 'data/ajax_tree.php?hook=choose_theme_files&theme=' + params.theme + $cms.$KEEP(), null, '', false, null, false, true);
+            window.sitemap = $cms.ui.createTreeList('theme_files', 'data/ajax_tree.php?hook=choose_theme_files&theme=' + params.theme + $cms.keep(), null, '', false, null, false, true);
         });
 
         setTimeout(function () {

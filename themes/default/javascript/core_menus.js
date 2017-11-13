@@ -12,7 +12,7 @@
 
         window.currentSelection = '';
         $cms.requireJavascript('tree_list').then(function () {
-            window.sitemap = $cms.ui.createTreeList('tree_list', 'data/sitemap.php?get_perms=0' + $cms.$KEEP() + '&start_links=1', null, '', false, null, false, true);
+            window.sitemap = $cms.ui.createTreeList('tree_list', 'data/sitemap.php?get_perms=0' + $cms.keep() + '&start_links=1', null, '', false, null, false, true);
         });
 
         function doubleClick() {
@@ -25,7 +25,7 @@
             var form = $cms.dom.$id('edit_form');
 
             $cms.ui.prompt(
-                $cms.$CONFIG_OPTION('collapse_user_zones') ? '{!javascript:ENTER_ZONE_SPZ;^}' : '{!javascript:ENTER_ZONE;^}', '', null, '{!menus:SPECIFYING_NEW_PAGE;^}'
+                $cms.configOption('collapse_user_zones') ? '{!javascript:ENTER_ZONE_SPZ;^}' : '{!javascript:ENTER_ZONE;^}', '', null, '{!menus:SPECIFYING_NEW_PAGE;^}'
             ).then(function (zone) {
                 if (zone != null) {
                     $cms.ui.prompt(
@@ -249,7 +249,7 @@
         function deleteMenuBranch(ob) {
             var id = ob.id.substring(4, ob.id.length);
 
-            if (((window.showModalDialog !== undefined) || $cms.$CONFIG_OPTION('js_overlays')) || (ob.form.elements['branch_type_' + id] !== 'page')) {
+            if (((window.showModalDialog !== undefined) || $cms.configOption('js_overlays')) || (ob.form.elements['branch_type_' + id] !== 'page')) {
                 var choices = { buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}', menu___generic_admin__delete: '{!DELETE;^}', buttons__move: '{!menus:MOVETO_MENU;^}' };
                 $cms.ui.generateQuestionUi(
                     '{!menus:CONFIRM_DELETE_LINK_NICE;^,xxxx}'.replace('xxxx', document.getElementById('caption_' + id).value),
@@ -300,7 +300,7 @@
                         }
                     }
 
-                    $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,menu_management}' + '?id=' + encodeURIComponent(id) + '&menu=' + encodeURIComponent(answer) + $cms.$KEEP(), null, post);
+                    $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,menu_management}' + '?id=' + encodeURIComponent(id) + '&menu=' + encodeURIComponent(answer) + $cms.keep(), null, post);
                     deleteBranch('branch_wrap_' + ob.name.substr(4, ob.name.length));
                 });
             } else {
@@ -468,7 +468,7 @@
     };
 
     $cms.templates.pageLinkChooser = function pageLinkChooser(params, container) {
-        var ajaxUrl = 'data/sitemap.php?get_perms=0' + $cms.$KEEP() + '&start_links=1';
+        var ajaxUrl = 'data/sitemap.php?get_perms=0' + $cms.keep() + '&start_links=1';
 
         if (params.pageType != null) {
             ajaxUrl += '&page_type=' + params.pageType;

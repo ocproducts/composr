@@ -41,7 +41,7 @@
         sbLastMessageId = Number(lastMessageId);
 
         var url = '{$FIND_SCRIPT_NOHTTP;,messages}?action=new&no_reenter_message=1&room_id=' + roomId + "&message_id=" + ((lastMessageId == null) ? -1 : lastMessageId) + "&event_id=" + lastEventId;
-        $cms.doAjaxRequest(url + $cms.$KEEP()).then(sbChatCheckResponse);
+        $cms.doAjaxRequest(url + $cms.keep()).then(sbChatCheckResponse);
     }
 
     function sbChatCheckResponse(xhr) {

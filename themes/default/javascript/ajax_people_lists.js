@@ -63,7 +63,7 @@
             script = script + '&special=' + special;
         }
 
-        $cms.doAjaxRequest(script + $cms.$KEEP()).then(function (xhr) {
+        $cms.doAjaxRequest(script + $cms.keep()).then(function (xhr) {
             if (xhr.responseXML) {
                 updateAjaxNemberListResponse(xhr.responseXML);
             }

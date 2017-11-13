@@ -39,101 +39,104 @@
 
     /** @namespace $cms */
     $cms = extendDeep($cms, /**@lends $cms*/ {
-        // Unique for each copy of Composr on the page
-        /**@member {string}*/
-        id: 'composr' + ('' + Math.random()).substr(2),
+        /**
+         * Unique for each copy of Composr on the page
+         * @method
+         * @returns {boolean}
+         */
+        id: constant('composr' + ('' + Math.random()).substr(2)),
 
         // Load up symbols data
         /**
          * @method
          * @returns {boolean}
          */
-        $IS_GUEST: constant(boolVal(symbols.IS_GUEST)),
+        isGuest: constant(boolVal(symbols.IS_GUEST)),
         /**
          * @method
          * @returns {boolean}
          */
-        $IS_STAFF: constant(boolVal(symbols.IS_STAFF)),
+        isStaff: constant(boolVal(symbols.IS_STAFF)),
         /**
          * @method
          * @returns {boolean}
          */
-        $IS_ADMIN: constant(boolVal(symbols.IS_ADMIN)),
+        isAdmin: constant(boolVal(symbols.IS_ADMIN)),
         /**
          * @method
          * @returns {boolean}
          */
-        $IS_HTTPAUTH_LOGIN: constant(boolVal(symbols.IS_HTTPAUTH_LOGIN)),
+        isHttpauthLogin: constant(boolVal(symbols.IS_HTTPAUTH_LOGIN)),
         /**
          * @method
          * @returns {boolean}
          */
-        $IS_A_COOKIE_LOGIN: constant(boolVal(symbols.IS_A_COOKIE_LOGIN)),
+        isACookieLogin: constant(boolVal(symbols.IS_A_COOKIE_LOGIN)),
         /**
          * @method
          * @returns {boolean}
          */
-        $DEV_MODE: constant(IN_MINIKERNEL_VERSION || boolVal(symbols.DEV_MODE)),
+        isDevMode: constant(IN_MINIKERNEL_VERSION || boolVal(symbols.DEV_MODE)),
         /**
          * @method
          * @returns {boolean}
          */
-        $JS_ON: constant(boolVal(symbols.JS_ON)),
+        isJsOn: constant(boolVal(symbols.JS_ON)),
         /**
          * @method
          * @returns {boolean}
          */
-        $MOBILE: constant(boolVal(symbols.MOBILE)),
+        isMobile: constant(boolVal(symbols.MOBILE)),
         /**
          * @method
          * @returns {boolean}
          */
-        $FORCE_PREVIEWS: constant(boolVal(symbols.FORCE_PREVIEWS)),
+        isForcePreviews: constant(boolVal(symbols.FORCE_PREVIEWS)),
         /**
          * @method
          * @returns {boolean}
          */
-        $INLINE_STATS: constant(boolVal(symbols.INLINE_STATS)),
+        isInlineStats: constant(boolVal(symbols.INLINE_STATS)),
         /**
          * @method
          * @returns {number}
          */
-        $HTTP_STATUS_CODE: constant(+symbols.HTTP_STATUS_CODE || 0),
+        httpStatusCode: constant(Number(symbols.HTTP_STATUS_CODE)),
         /**
          * @method
          * @returns {string}
          */
-        $PAGE: constant(strVal(symbols.PAGE)),
+        getPageName: constant(strVal(symbols.PAGE)),
         /**
          * @method
          * @returns {string}
          */
-        $ZONE: constant(strVal(symbols.ZONE)),
+        getZoneName: constant(strVal(symbols.ZONE)),
         /**
          * @method
          * @returns {string}
          */
-        $MEMBER: constant(strVal(symbols.MEMBER)),
+        getMember: constant(strVal(symbols.MEMBER)),
         /**
          * @method
          * @returns {string}
          */
-        $USERNAME: constant(strVal(symbols.USERNAME)),
+        getUsername: constant(strVal(symbols.USERNAME)),
         /**
          * @method
          * @returns {string}
          */
-        $THEME: constant(strVal(symbols.THEME)),
+        getTheme: constant(strVal(symbols.THEME)),
         /**
          * @method
          * @returns {string}
          */
-        $LANG: constant(strVal(symbols.LANG)),
+        userLang: constant(strVal(symbols.LANG)),
         /**
          * @method
          * @returns {string}
          */
-        $KEEP: function $KEEP(starting, forceSession) {
+        keep: function keep(starting, forceSession) {
             var keep = pageKeepSearchParams(forceSession).toString();
             
             if (keep === '') {
@@ -146,7 +149,7 @@
          * @method
          * @returns {string}
          */
-        $PREVIEW_URL: function $PREVIEW_URL() {
+        getPreviewUrl: function getPreviewUrl() {
             var value = '{$FIND_SCRIPT_NOHTTP;,preview}';
             value += '?page=' + urlencode($cms.getPageName());
             value += '&type=' + urlencode(symbols['page_type']);
@@ -156,62 +159,77 @@
          * @method
          * @returns {string}
          */
-        $SITE_NAME: constant(strVal('{$SITE_NAME;}')),
+        getSiteName: constant(strVal('{$SITE_NAME;}')),
+        /**
+         * @param relativeUrl - Pass a relative URL but an absolute url works as well for robustness' sake
+         * @returns {string}
+         */
+        baseUrl: function baseUrl(relativeUrl) {
+            relativeUrl = strVal(relativeUrl);
+
+            if (relativeUrl === '') {
+                return '{$BASE_URL;}';
+            }
+
+            var url = $cms.url(relativeUrl).toString();
+
+            if (window.location.protocol === 'https:') {
+                // Match protocol with the current page if using SSL
+                url = url.replace(/^http\:/, 'https:');
+            }
+
+            return url;
+        },
         /**
          * @method
          * @returns {string}
          */
-        $BASE_URL: constant(strVal('{$BASE_URL;}')),
+        baseUrlNohttp: constant(strVal('{$BASE_URL_NOHTTP;}')),
         /**
          * @method
          * @returns {string}
          */
-        $BASE_URL_NOHTTP: constant(strVal('{$BASE_URL_NOHTTP;}')),
+        customBaseUrl: constant(strVal('{$CUSTOM_BASE_URL;}')),
         /**
          * @method
          * @returns {string}
          */
-        $CUSTOM_BASE_URL: constant(strVal('{$CUSTOM_BASE_URL;}')),
+        customBaseUrlNohttp: constant(strVal('{$CUSTOM_BASE_URL_NOHTTP;}')),
         /**
          * @method
          * @returns {string}
          */
-        $CUSTOM_BASE_URL_NOHTTP: constant(strVal('{$CUSTOM_BASE_URL_NOHTTP;}')),
+        forumBaseUrl: constant(strVal('{$FORUM_BASE_URL;}')),
         /**
          * @method
          * @returns {string}
          */
-        $FORUM_BASE_URL: constant(strVal('{$FORUM_BASE_URL;}')),
+        brandName: constant(strVal('{$BRAND_NAME;}')),
         /**
          * @method
          * @returns {string}
          */
-        $BRAND_NAME: constant(strVal('{$BRAND_NAME;}')),
+        getSessionCookie: constant(strVal('{$SESSION_COOKIE_NAME;}')),
         /**
          * @method
          * @returns {string}
          */
-        $SESSION_COOKIE_NAME: constant(strVal('{$SESSION_COOKIE_NAME;}')),
+        getCookiePath: constant(strVal('{$COOKIE_PATH;}')),
         /**
          * @method
          * @returns {string}
          */
-        $COOKIE_PATH: constant(strVal('{$COOKIE_PATH;}')),
+        getCookieDomain: constant(strVal('{$COOKIE_DOMAIN;}')),
         /**
          * @method
          * @returns {string}
          */
-        $COOKIE_DOMAIN: constant(strVal('{$COOKIE_DOMAIN;}')),
+        runningScript: constant(strVal(symbols.RUNNING_SCRIPT)),
         /**
          * @method
          * @returns {string}
          */
-        $RUNNING_SCRIPT: constant(strVal(symbols.RUNNING_SCRIPT)),
-        /**
-         * @method
-         * @returns {string}
-         */
-        $CSP_NONCE: constant(strVal(symbols.CSP_NONCE)),
+        getCspNonce: constant(strVal(symbols.CSP_NONCE)),
 
         /**
          * WARNING: This is a very limited subset of the $CONFIG_OPTION tempcode symbol
@@ -219,19 +237,19 @@
          * @param {string} optionName
          * @returns {boolean|string|number}
          */
-        $CONFIG_OPTION: (function () {
+        configOption: (function () {
             if (IN_MINIKERNEL_VERSION) {
                 // Installer, likely executing global.js
                 return constant('');
             }
 
-            var $PUBLIC_CONFIG_OPTIONS_JSON = JSON.parse('{$PUBLIC_CONFIG_OPTIONS_JSON;}');
-            return function $CONFIG_OPTION(optionName) {
-                if (hasOwn($PUBLIC_CONFIG_OPTIONS_JSON, optionName)) {
-                    return $PUBLIC_CONFIG_OPTIONS_JSON[optionName];
+            var configOptionsJson = JSON.parse('{$PUBLIC_CONFIG_OPTIONS_JSON;}');
+            return function configOption(optionName) {
+                if (hasOwn(configOptionsJson, optionName)) {
+                    return configOptionsJson[optionName];
                 }
 
-                $cms.fatal('$cms.$CONFIG_OPTION(): Option "' + optionName + '" is either unsupported in JS or doesn\'t exist. Please try using the actual Tempcode symbol.');
+                $cms.fatal('$cms.configOption(): Option "' + optionName + '" is either unsupported in JS or doesn\'t exist. Please try using the actual Tempcode symbol.');
             };
         }()),
         // Just some more useful stuff, (not tempcode symbols)
@@ -335,10 +353,6 @@
         numberFormat: numberFormat,
         /**@method*/
         inherits: inherits,
-        /**@method*/
-        baseUrl: baseUrl,
-        /**@method*/
-        getPageName: getPageName,
         /**@method*/
         pageUrl: pageUrl,
         /**@method*/
@@ -562,12 +576,12 @@
             throw new TypeError('$cms.uid(): Parameter `obj` must be an object or a function.');
         }
 
-        if (hasOwn(obj, $cms.id)) {
-            return obj[$cms.id];
+        if (hasOwn(obj, $cms.id())) {
+            return obj[$cms.id()];
         }
 
         var id = uniqueId();
-        properties(obj, keyValue($cms.id, id));
+        properties(obj, keyValue($cms.id(), id));
         return id;
     }
 
@@ -1418,20 +1432,19 @@
     }
     
     var rgxProtocol = /^[a-z0-9\-\.]+:(?=\/\/)/i,
-        rgxHttp = /^https?:(?=\/\/)/i,
-        rgxHttpRel = /^(?:https?:)?(?=\/\/)/i;
+        rgxHttp = /^https?:(?=\/\/)/i;
     /**
      * NB: Has a trailing slash when having the base url only
      * @memberof $cms
      * @namespace
      * @method
      * @param {string} url - An absolute or relative URL. If url is a relative URL, `base` will be used as the base URL. If url is an absolute URL, a given `base` will be ignored.
-     * @param {string} [base] - The base URL to use in case url is a relative URL. If not specified, it defaults to $cms.$BASE_URL().
+     * @param {string} [base] - The base URL to use in case url is a relative URL. If not specified, it defaults to $cms.baseUrl().
      * @return { URL }
      */
     $cms.url = function url(url, base) {
         url = strVal(url);
-        base = strVal(base) || ($cms.$BASE_URL() + '/');
+        base = strVal(base) || ($cms.baseUrl() + '/');
 
         if (url.startsWith('//')) {
             // URL constructor throws on scheme-relative URLs
@@ -1447,31 +1460,6 @@
         isSchemeRelative: isSchemeRelative,
         schemeRelative: schemeRelative
     });
-
-    /**
-     * @param relativeUrl - Pass a relative URL but an absolute url works as well for robustness' sake
-     * @returns {string}
-     */
-    function baseUrl(relativeUrl) {
-        relativeUrl = strVal(relativeUrl);
-
-        if (relativeUrl === '') {
-            return $cms.$BASE_URL();
-        }
-        
-        var url = $cms.url(relativeUrl).toString();
-        
-        if (window.location.protocol === 'https:') {
-            // Match protocol with the current page if using SSL
-            url = url.replace(/^http\:/, 'https:');
-        }
-        
-        return url;
-    }
-    
-    function getPageName() {
-        return $cms.$PAGE();
-    }
 
     /**
      * Returns a { URL } instance for the current page
@@ -1592,7 +1580,7 @@
     }
 
     function inform() {
-        if ($cms.$DEV_MODE()) {
+        if ($cms.isDevMode()) {
             return console.log.apply(undefined, arguments);
         }
     }
@@ -1696,7 +1684,7 @@
 
         if (validIdRE.test(sheetNameOrHref)) {
             sheetName = sheetNameOrHref;
-            sheetHref = $cms.url.schemeRelative('{$FIND_SCRIPT_NOHTTP;,sheet}?sheet=' + sheetName + $cms.$KEEP());
+            sheetHref = $cms.url.schemeRelative('{$FIND_SCRIPT_NOHTTP;,sheet}?sheet=' + sheetName + $cms.keep());
         } else {
             sheetHref = $cms.url.schemeRelative(sheetNameOrHref);
         }
@@ -1713,7 +1701,7 @@
             sheetEl = document.createElement('link');
             sheetEl.id = 'css-' + ((sheetName != null) ? sheetName : $cms.random());
             sheetEl.rel = 'stylesheet';
-            sheetEl.nonce = $cms.$CSP_NONCE();
+            sheetEl.nonce = $cms.getCspNonce();
             sheetEl.href = sheetHref;
             document.head.appendChild(sheetEl);
         }
@@ -1773,7 +1761,7 @@
         
         if (validIdRE.test(scriptNameOrSrc)) {
             scriptName = scriptNameOrSrc;
-            scriptSrc = $cms.url.schemeRelative('{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + scriptName + $cms.$KEEP());
+            scriptSrc = $cms.url.schemeRelative('{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + scriptName + $cms.keep());
         } else {
             scriptSrc = $cms.url.schemeRelative(scriptNameOrSrc);
         }
@@ -1790,7 +1778,7 @@
             scriptEl = document.createElement('script');
             scriptEl.defer = true;
             scriptEl.id = 'javascript-' + ((scriptName != null) ? scriptName : $cms.random());
-            scriptEl.nonce = $cms.$CSP_NONCE();
+            scriptEl.nonce = $cms.getCspNonce();
             scriptEl.src = scriptSrc;
             document.body.appendChild(scriptEl);
         }
@@ -1949,11 +1937,11 @@
     }
 
     function getCsrfToken() {
-        return readCookie($cms.$SESSION_COOKIE_NAME()); // Session also works as a CSRF-token, as client-side knows it (AJAX)
+        return readCookie($cms.getSessionCookie()); // Session also works as a CSRF-token, as client-side knows it (AJAX)
     }
 
     function getSessionId() {
-        return readCookie($cms.$SESSION_COOKIE_NAME());
+        return readCookie($cms.getSessionCookie());
     }
 
     /* Cookies */
@@ -1976,19 +1964,19 @@
 
         output = cookieName + '=' + encodeURIComponent(cookieValue) + ';expires=' + expires.toUTCString();
 
-        if ($cms.$COOKIE_PATH() !== '') {
-            output += ';path=' + $cms.$COOKIE_PATH();
+        if ($cms.getCookiePath() !== '') {
+            output += ';path=' + $cms.getCookiePath();
         }
 
-        if ($cms.$COOKIE_DOMAIN() !== '') {
-            output += ';domain=' + $cms.$COOKIE_DOMAIN();
+        if ($cms.getCookieDomain() !== '') {
+            output += ';domain=' + $cms.getCookieDomain();
         }
 
         document.cookie = output;
 
         var read = $cms.readCookie(cookieName);
 
-        if (read && (read !== cookieValue) && $cms.$DEV_MODE() && !alertedCookieConflict) {
+        if (read && (read !== cookieValue) && $cms.isDevMode() && !alertedCookieConflict) {
             $cms.ui.alert('{!COOKIE_CONFLICT_DELETE_COOKIES;^}' + '... ' + document.cookie + ' (' + output + ')', '{!ERROR_OCCURRED;^}');
             alertedCookieConflict = true;
         }
@@ -3708,7 +3696,7 @@
     $cms.dom.illustrateFrameLoad = function illustrateFrameLoad(iframeId) {
         var iframe = $cms.dom.$id(iframeId), doc;
 
-        if (!$cms.$CONFIG_OPTION('enable_animations') || !iframe || !iframe.contentDocument || !iframe.contentDocument.documentElement) {
+        if (!$cms.configOption('enable_animations') || !iframe || !iframe.contentDocument || !iframe.contentDocument.documentElement) {
             return;
         }
 
@@ -3756,7 +3744,7 @@
             destY = $cms.dom.findPosY(destY, true);
         }
         
-        if (!$cms.$CONFIG_OPTION('enable_animations')) {
+        if (!$cms.configOption('enable_animations')) {
             try {
                 scrollTo(0, destY);
             } catch (ignore) {}
@@ -3876,19 +3864,7 @@
 
         return key;
     };
-
-    /*$cms.dom.isActionEvent = */function isActionEvent(e) {
-        if ((e.type === 'click') && ((e.button === 0) || (e.button === 1))) {  // 0 = Left Click, 1 = Middle Click
-            return true;
-        }
-
-        if ((e.type === 'keydown') || (e.type === 'keypress')) {
-            return $cms.dom.keyPressed(e, ['Enter', 'Space']);
-        }
-
-        return false;
-    }
-
+    
     function setAttr(el, name, value) {
         if (value != null) {
             try {
@@ -4252,11 +4228,6 @@
      */
     $cms.dom.remove = function remove(node) {
         node = $cms.dom.nodeArg(node);
-
-        // if (isEl(node)) {
-        //     $cms.detachBehaviors(node);
-        // }
-
         node.parentNode.removeChild(node);
     };
 
@@ -4969,7 +4940,7 @@
             ajaxUrl += '&block_map_sup=' + encodeURIComponent(newBlockParams);
         }
 
-        ajaxUrl += '&utheme=' + $cms.$THEME();
+        ajaxUrl += '&utheme=' + $cms.getTheme();
         if ((_blockDataCache[ajaxUrl] !== undefined) && (postParams == null)) {
             // Show results from cache
             showBlockHtml(_blockDataCache[ajaxUrl], targetDiv, append, inner);
@@ -4984,7 +4955,7 @@
 
         return new Promise(function (resolvePromise) {
             // Make AJAX call
-            $cms.doAjaxRequest(ajaxUrl + $cms.$KEEP(), null, postParams).then(function (xhr) { // Show results when available
+            $cms.doAjaxRequest(ajaxUrl + $cms.keep(), null, postParams).then(function (xhr) { // Show results when available
                 callBlockRender(xhr, ajaxUrl, targetDiv, append, function () {
                     resolvePromise();
                 }, scrollToTopOfWrapper, inner);
@@ -5049,7 +5020,7 @@
         var title = $cms.dom.html(document.querySelector('title')).replace(/ \u2013 .*/, ''),
             canonical = document.querySelector('link[rel="canonical"]'),
             url = canonical ? canonical.getAttribute('href') : window.location.href,
-            url2 = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=' + snippetHook + '&url=' + encodeURIComponent($cms.protectURLParameter(url)) + '&title=' + encodeURIComponent(title) + $cms.$KEEP();
+            url2 = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=' + snippetHook + '&url=' + encodeURIComponent($cms.protectURLParameter(url)) + '&title=' + encodeURIComponent(title) + $cms.keep();
 
         return new Promise(function (resolve) {
             $cms.doAjaxRequest($cms.maintainThemeInLink(url2), null, post).then(function (xhr) {
@@ -5067,14 +5038,14 @@
         url = $cms.url(url);
         
         if (!url.searchParams.has('utheme') && !url.searchParams.has('keep_theme')) {
-            url.searchParams.set('utheme', $cms.$THEME());
+            url.searchParams.set('utheme', $cms.getTheme());
         }
 
         return url.toString();
     }
 
     /**
-     * Alternative to $cms.$KEEP(), accepts a URL and ensures not to cause duplicate keep_* params
+     * Alternative to $cms.keep(), accepts a URL and ensures not to cause duplicate keep_* params
      * @param url
      * @return {string}
      */
@@ -5105,7 +5076,7 @@
      * @returns {boolean}
      */
     function gaTrack(el, category, action, callback) {
-        if ($cms.$CONFIG_OPTION('google_analytics') && !$cms.$IS_STAFF() && !$cms.$IS_ADMIN()) {
+        if ($cms.configOption('google_analytics') && !$cms.isStaff() && !$cms.isAdmin()) {
             if (!category) {
                 category = '{!URL;^}';
             }
@@ -5345,7 +5316,7 @@
             case 'touch_enabled':
                 return ('ontouchstart' in docEl);
             case 'simplified_attachments_ui':
-                return Boolean($cms.$CONFIG_OPTION('simplified_attachments_ui') && $cms.$CONFIG_OPTION('complex_uploader'));
+                return Boolean($cms.configOption('simplified_attachments_ui') && $cms.configOption('complex_uploader'));
             case 'non_concurrent':
                 return browser.includes('iphone') || browser.includes('ipad') || browser.includes('android') || browser.includes('phone') || browser.includes('tablet');
             case 'ios':
@@ -5353,7 +5324,7 @@
             case 'android':
                 return browser.includes('android');
             case 'wysiwyg':
-                return !!$cms.$CONFIG_OPTION('wysiwyg');
+                return !!$cms.configOption('wysiwyg');
             case 'windows':
                 return os.includes('windows') || os.includes('win32');
             case 'mac':
@@ -5746,7 +5717,7 @@
      * @returns { Promise } - Resolves with a boolean indicating whether session confirmed or not
      */
     $cms.ui.confirmSession = function confirmSession() {
-        var scriptUrl = '{$FIND_SCRIPT_NOHTTP;,confirm_session}' + $cms.$KEEP(true);
+        var scriptUrl = '{$FIND_SCRIPT_NOHTTP;,confirm_session}' + $cms.keep(true);
 
         return new Promise(function (resolvePromise) {
             $cms.doAjaxRequest(scriptUrl).then(function (xhr) {
@@ -5776,7 +5747,7 @@
 
         function _confirmSession(callback, username) {
             $cms.ui.prompt(
-                $cms.$CONFIG_OPTION('js_overlays') ? '{!ENTER_PASSWORD_JS_2;^}' : '{!ENTER_PASSWORD_JS;^}', '', null, '{!_LOGIN;^}', 'password'
+                $cms.configOption('js_overlays') ? '{!ENTER_PASSWORD_JS_2;^}' : '{!ENTER_PASSWORD_JS;^}', '', null, '{!_LOGIN;^}', 'password'
             ).then(function (prompt) {
                 if (prompt != null) {
                     $cms.doAjaxRequest(scriptUrl, null, 'login_username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(prompt)).then(function (xhr) {
@@ -6220,7 +6191,7 @@
         unescaped = boolVal(unescaped);
 
         return new Promise(function (resolveConfirm) {
-            if (!$cms.$CONFIG_OPTION('js_overlays')) {
+            if (!$cms.configOption('js_overlays')) {
                 var bool = window.confirm(question);
                 if (callback != null) {
                     callback(bool);
@@ -6287,7 +6258,7 @@
         currentAlertNotice = notice;
         currentAlertTitle = title;
         currentAlertPromise = new Promise(function (resolveAlert) {
-            if (!$cms.$CONFIG_OPTION('js_overlays')) {
+            if (!$cms.configOption('js_overlays')) {
                 window.alert(notice);
                 currentAlertNotice = null;
                 currentAlertTitle = null;
@@ -6332,7 +6303,7 @@
         inputType = strVal(inputType);
 
         return new Promise(function (resolvePrompt) {
-            if (!$cms.$CONFIG_OPTION('js_overlays')) {
+            if (!$cms.configOption('js_overlays')) {
                 var value = window.prompt(question, defaultValue);
                 if (callback != null) {
                     callback(value);
@@ -6387,7 +6358,7 @@
         cancelText = strVal(cancelText) || '{!INPUTSYSTEM_CANCEL;^}';
 
         return new Promise(function (resolveModal) {
-            if (!$cms.$CONFIG_OPTION('js_overlays')) {
+            if (!$cms.configOption('js_overlays')) {
                 if (!window.showModalDialog) {
                     throw new Error('$cms.ui.showModalDialog(): window.showModalDialog is not supported by the current browser');
                 }
@@ -6491,7 +6462,7 @@
         cancelText = strVal(cancelText) || '{!INPUTSYSTEM_CANCEL;^}';
 
         return new Promise(function (resolveOpen) {
-            if (!$cms.$CONFIG_OPTION('js_overlays')) {
+            if (!$cms.configOption('js_overlays')) {
                 options = options.replace('height=auto', 'height=520');
                 window.open(url, name, options);
                 resolveOpen();
@@ -6777,7 +6748,7 @@
      */
     function ModalWindow(params) {
         // Constants
-        this.WINDOW_SIDE_GAP = $cms.$MOBILE() ? 5 : 25;
+        this.WINDOW_SIDE_GAP = $cms.isMobile() ? 5 : 25;
         this.WINDOW_TOP_GAP = 25; // Will also be used for bottom gap for percentage heights
         this.BOX_EAST_PERIPHERARY = 4;
         this.BOX_WEST_PERIPHERARY = 4;
@@ -6878,7 +6849,7 @@
                     'background': 'rgba(0,0,0,0.7)',
                     'zIndex': this.topWindow.overlayZIndex++,
                     'overflow': 'hidden',
-                    'position': $cms.$MOBILE() ? 'absolute' : 'fixed',
+                    'position': $cms.isMobile() ? 'absolute' : 'fixed',
                     'left': '0',
                     'top': '0',
                     'width': '100%',
@@ -6893,7 +6864,7 @@
                 'role': 'dialog',
                 'css': {
                     // This will be updated immediately in resetDimensions
-                    'position': $cms.$MOBILE() ? 'static' : 'fixed',
+                    'position': $cms.isMobile() ? 'static' : 'fixed',
                     'margin': '0 auto' // Centering for iOS/Android which is statically positioned (so the container height as auto can work)
                 }
             }));
@@ -6939,7 +6910,7 @@
             var self = this;
 
             $cms.dom.on(this.overlayEl, 'click', function (e) {
-                if ($cms.$MOBILE() && (self.type === 'lightbox')) { // IDEA: Swipe detect would be better, but JS does not have this natively yet
+                if ($cms.isMobile() && (self.type === 'lightbox')) { // IDEA: Swipe detect would be better, but JS does not have this natively yet
                     self.option('right');
                 }
             });
@@ -7309,14 +7280,14 @@
             var doScroll = false;
 
             // Absolute positioning instead of fixed positioning
-            if ($cms.$MOBILE() || (detectedBoxHeight > topWindowHeight) || (this.el.style.position === 'absolute'/*don't switch back to fixed*/)) {
+            if ($cms.isMobile() || (detectedBoxHeight > topWindowHeight) || (this.el.style.position === 'absolute'/*don't switch back to fixed*/)) {
                 var wasFixed = (this.el.style.position === 'fixed');
 
                 this.el.style.position = 'absolute';
                 this.el.style.height = ((topPageHeight > (detectedBoxHeight + bottomGap + boxPosLeft)) ? topPageHeight : (detectedBoxHeight + bottomGap + boxPosLeft)) + 'px';
                 this.topWindow.document.body.style.overflow = '';
 
-                if (!$cms.$MOBILE()) {
+                if (!$cms.isMobile()) {
                     this.overlayEl.style.position = 'absolute';
                     this.overlayEl.style.top = this.WINDOW_TOP_GAP + 'px';
                 }
@@ -7476,14 +7447,14 @@
             }
             buttonSet = newButtonSet;
 
-            if ((window.showModalDialog !== undefined) || $cms.$CONFIG_OPTION('js_overlays')) {
+            if ((window.showModalDialog !== undefined) || $cms.configOption('js_overlays')) {
                 // @TODO: window.showModalDialog() was removed completely in Chrome 43, and Firefox 55. See WebKit bug 151885 for possible future removal from Safari.
                 if (buttonSet.length > 4) {
                     dialogHeight += 5 * (buttonSet.length - 4);
                 }
 
                 // Intentionally FIND_SCRIPT and not FIND_SCRIPT_NOHTTP, because no needs-HTTPS security restriction applies to popups, yet popups do not know if they run on HTTPS if behind a transparent reverse proxy
-                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT;,question_ui}?message=' + encodeURIComponent(message) + '&image_set=' + encodeURIComponent(imageSet.join(',')) + '&button_set=' + encodeURIComponent(buttonSet.join(',')) + '&window_title=' + encodeURIComponent(windowTitle) + $cms.$KEEP());
+                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT;,question_ui}?message=' + encodeURIComponent(message) + '&image_set=' + encodeURIComponent(imageSet.join(',')) + '&button_set=' + encodeURIComponent(buttonSet.join(',')) + '&window_title=' + encodeURIComponent(windowTitle) + $cms.keep());
                 if (dialogWidth == null) {
                     dialogWidth = 440;
                 }
@@ -7667,7 +7638,7 @@
     function protectURLParameter(parameter) {
         parameter = strVal(parameter);
         
-        var baseUrl = $cms.$BASE_URL();
+        var baseUrl = $cms.baseUrl();
 
         if (parameter.startsWith('https://')) {
             baseUrl = baseUrl.replace(/^http:\/\//, 'https://');
@@ -7828,7 +7799,7 @@
                         anchor.setAttribute('href', window.location.href.replace(/#.*$/, '') + href);
                     }
 
-                    if ($cms.$CONFIG_OPTION('js_overlays')) {
+                    if ($cms.configOption('js_overlays')) {
                         // Lightboxes
                         if (anchor.rel && anchor.rel.includes('lightbox')) {
                             anchor.title = anchor.title.replace('{!LINK_NEW_WINDOW;^}', '').trim();
@@ -7842,7 +7813,7 @@
 
                     if (boolVal('{$VALUE_OPTION;,js_keep_params}')) {
                         // Keep parameters need propagating
-                        if (anchor.href && anchor.href.startsWith($cms.$BASE_URL() + '/')) {
+                        if (anchor.href && anchor.href.startsWith($cms.baseUrl() + '/')) {
                             anchor.href += $cms.addKeepStub(anchor.href);
                         }
                     }
@@ -7864,7 +7835,7 @@
                     form.title = '';
 
                     // Convert form element title attributes into composr tooltips
-                    if ($cms.$CONFIG_OPTION('js_overlays')) {
+                    if ($cms.configOption('js_overlays')) {
                         // Convert title attributes into composr tooltips
                         var elements = form.elements, j;
 
@@ -7884,7 +7855,7 @@
 
                     if (boolVal('{$VALUE_OPTION;,js_keep_params}')) {
                         /* Keep parameters need propagating */
-                        if (form.action && form.action.startsWith($cms.$BASE_URL() + '/')) {
+                        if (form.action && form.action.startsWith($cms.baseUrl() + '/')) {
                             form.action = $cms.addKeepStub(form.action);
                         }
                     }
@@ -7946,7 +7917,7 @@
         // Implementation for [data-textarea-auto-height]
         textareaAutoHeight: {
             attach: function attach(context) {
-                if ($cms.$MOBILE()) {
+                if ($cms.isMobile()) {
                     return;
                 }
                 
@@ -7981,7 +7952,7 @@
         // Convert img title attributes into composr tooltips
         imageTooltips: {
             attach: function (context) {
-                if (!$cms.$CONFIG_OPTION('js_overlays')) {
+                if (!$cms.configOption('js_overlays')) {
                     return;
                 }
 
@@ -8118,7 +8089,7 @@
 
         /*START JS from HTML_HEAD.tpl*/
         // Google Analytics account, if one set up
-        if ($cms.$CONFIG_OPTION('google_analytics').trim() && !$cms.$IS_STAFF() && !$cms.$IS_ADMIN()) {
+        if ($cms.configOption('google_analytics').trim() && !$cms.isStaff() && !$cms.isAdmin()) {
             (function (i, s, o, g, r, a, m) {
                 i['GoogleAnalyticsObject'] = r;
                 i[r] = i[r] || function () {
@@ -8134,17 +8105,17 @@
 
             var aConfig = {};
 
-            if ($cms.$COOKIE_DOMAIN() !== '') {
-                aConfig.cookieDomain = $cms.$COOKIE_DOMAIN();
+            if ($cms.getCookieDomain() !== '') {
+                aConfig.cookieDomain = $cms.getCookieDomain();
             }
-            if (!$cms.$CONFIG_OPTION('long_google_cookies')) {
+            if (!$cms.configOption('long_google_cookies')) {
                 aConfig.cookieExpires = 0;
             }
 
-            window.ga('create', $cms.$CONFIG_OPTION('google_analytics').trim(), aConfig);
+            window.ga('create', $cms.configOption('google_analytics').trim(), aConfig);
 
-            if (!$cms.$IS_GUEST()) {
-                window.ga('set', 'userId', strVal($cms.$MEMBER()));
+            if (!$cms.isGuest()) {
+                window.ga('set', 'userId', strVal($cms.getMember()));
             }
 
             if ($cms.pageSearchParams().has('_t')) {
@@ -8155,9 +8126,9 @@
         }
 
         // Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent
-        if ($cms.$CONFIG_OPTION('cookie_notice') && ($cms.$RUNNING_SCRIPT() === 'index')) {
+        if ($cms.configOption('cookie_notice') && ($cms.runningScript() === 'index')) {
             window.cookieconsent_options = {
-                message: $cms.format('{!COOKIE_NOTICE;}', [$cms.$SITE_NAME()]),
+                message: $cms.format('{!COOKIE_NOTICE;}', [$cms.getSiteName()]),
                 dismiss: '{!INPUTSYSTEM_OK;}',
                 learnMore: '{!READ_MORE;}',
                 link: '{$PAGE_LINK;,:privacy}',
@@ -8166,7 +8137,7 @@
             $cms.requireJavascript('https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js');
         }
 
-        if ($cms.$CONFIG_OPTION('detect_javascript')) {
+        if ($cms.configOption('detect_javascript')) {
             this.detectJavascript();
         }
         /*END JS from HTML_HEAD.tpl*/
@@ -8189,7 +8160,7 @@
             } catch (ignore) {}
         }
 
-        if (($cms.$ZONE() === 'adminzone') && $cms.$CONFIG_OPTION('background_template_compilation')) {
+        if (($cms.getZoneName() === 'adminzone') && $cms.configOption('background_template_compilation')) {
             var page = $cms.filter.url($cms.getPageName());
             $cms.loadSnippet('background_template_compilation&page=' + page, '', true);
         }
@@ -8212,11 +8183,11 @@
         preloader.src = $cms.img('{$IMG;,loading}');
 
         // Tell the server we have JavaScript, so do not degrade things for reasons of compatibility - plus also set other things the server would like to know
-        if ($cms.$CONFIG_OPTION('detect_javascript')) {
+        if ($cms.configOption('detect_javascript')) {
             $cms.setCookie('js_on', 1, 120);
         }
 
-        if ($cms.$CONFIG_OPTION('is_on_timezone_detection')) {
+        if ($cms.configOption('is_on_timezone_detection')) {
             if (!window.parent || (window.parent === window)) {
                 $cms.setCookie('client_time', (new Date()).toString(), 120);
                 $cms.setCookie('client_time_ref', (Date.now() / 1000), 120);
@@ -8242,12 +8213,12 @@
         window.addEventListener('paste', function (event) {
             var clipboardData = event.clipboardData || window.clipboardData;
             var pastedData = clipboardData.getData('Text');
-            if (pastedData && (pastedData.length > $cms.$CONFIG_OPTION('spam_heuristic_pasting'))) {
+            if (pastedData && (pastedData.length > $cms.configOption('spam_heuristic_pasting'))) {
                 $cms.setPostDataFlag('paste');
             }
         });
 
-        if ($cms.$IS_STAFF()) {
+        if ($cms.isStaff()) {
             this.loadStuffStaff()
         }
     };
@@ -8589,7 +8560,7 @@
 
         // Implementation for textarea[data-textarea-auto-height]
         doTextareaAutoHeight: function (e, textarea) {
-            if ($cms.$MOBILE()) {
+            if ($cms.isMobile()) {
                 return;
             }
 
@@ -8600,7 +8571,7 @@
         openOverlay: function (e, el) {
             var options, url = (el.href === undefined) ? el.action : el.href;
 
-            if (!($cms.$CONFIG_OPTION('js_overlays'))) {
+            if (!($cms.configOption('js_overlays'))) {
                 return;
             }
 
@@ -8624,7 +8595,7 @@
 
         // Implementation for `click a[rel*="lightbox"]`
         lightBoxes: function (e, el) {
-            if (!($cms.$CONFIG_OPTION('js_overlays'))) {
+            if (!($cms.configOption('js_overlays'))) {
                 return;
             }
 
@@ -8760,7 +8731,7 @@
             var url = window.location.href,
                 append = '?';
 
-            if ($cms.$JS_ON() || boolVal($cms.pageSearchParams().get('keep_has_js')) || url.includes('upgrader.php') || url.includes('webdav.php')) {
+            if ($cms.isJsOn() || boolVal($cms.pageSearchParams().get('keep_has_js')) || url.includes('upgrader.php') || url.includes('webdav.php')) {
                 return;
             }
 
@@ -8778,7 +8749,7 @@
 
             append += 'keep_has_js=1';
 
-            if ($cms.$DEV_MODE()) {
+            if ($cms.isDevMode()) {
                 append += '&keep_devtest=1';
             }
 
@@ -8789,14 +8760,14 @@
         /* Software Chat */
         loadSoftwareChat: function () {
             var url = 'https://kiwiirc.com/client/irc.kiwiirc.com/?nick=';
-            if ($cms.$USERNAME() !== 'admin') {
-                url += encodeURIComponent($cms.$USERNAME().replace(/[^a-zA-Z0-9\_\-\\\[\]\{\}\^`|]/g, ''));
+            if ($cms.getUsername() !== 'admin') {
+                url += encodeURIComponent($cms.getUsername().replace(/[^a-zA-Z0-9\_\-\\\[\]\{\}\^`|]/g, ''));
             } else {
-                url += encodeURIComponent($cms.$SITE_NAME().replace(/[^a-zA-Z0-9\_\-\\\[\]\{\}\^`|]/g, ''));
+                url += encodeURIComponent($cms.getSiteName().replace(/[^a-zA-Z0-9\_\-\\\[\]\{\}\^`|]/g, ''));
             }
             url += '#composrcms';
 
-            var SOFTWARE_CHAT_EXTRA = $cms.format('{!SOFTWARE_CHAT_EXTRA;^}', [$cms.filter.html(window.location.href.replace($cms.$BASE_URL(), 'http://baseurl'))]);
+            var SOFTWARE_CHAT_EXTRA = $cms.format('{!SOFTWARE_CHAT_EXTRA;^}', [$cms.filter.html(window.location.href.replace($cms.baseUrl(), 'http://baseurl'))]);
             var html = /** @lang HTML */' \
                 <div class="software_chat"> \
                     <h2>{!CMS_COMMUNITY_HELP}</h2> \
@@ -8900,7 +8871,7 @@
             var loc = window.location.href;
 
             // Navigation loading screen
-            if ($cms.$CONFIG_OPTION('enable_animations')) {
+            if ($cms.configOption('enable_animations')) {
                 if ((window.parent === window) && !loc.includes('js_cache=1') && (loc.includes('/cms/') || loc.includes('/adminzone/'))) {
                     window.addEventListener('beforeunload', function () {
                         staffUnloadAction();
@@ -8924,7 +8895,7 @@
             }
 
             /* Thumbnail tooltips */
-            if ($cms.$DEV_MODE() || loc.replace($cms.$BASE_URL_NOHTTP(), '').includes('/cms/')) {
+            if ($cms.isDevMode() || loc.replace($cms.baseUrlNohttp(), '').includes('/cms/')) {
                 var urlPatterns = $cms.staffTooltipsUrlPatterns(),
                     links, pattern, hook, patternRgx;
 
@@ -9006,7 +8977,7 @@
                     if (link.renderedTooltip === undefined) {
                         link.isOver = true;
 
-                        $cms.doAjaxRequest($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&raw_output=1&box_title={!PREVIEW;&}' + $cms.$KEEP()), null, 'data=' + encodeURIComponent(comcode)).then(function (xhr) {
+                        $cms.doAjaxRequest($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&raw_output=1&box_title={!PREVIEW;&}' + $cms.keep()), null, 'data=' + encodeURIComponent(comcode)).then(function (xhr) {
                             if (xhr && xhr.responseText) {
                                 link.renderedTooltip = xhr.responseText;
                             }
@@ -9043,7 +9014,7 @@
                     return;
                 }
 
-                if ($cms.$CONFIG_OPTION('enable_theme_img_buttons')) {
+                if ($cms.configOption('enable_theme_img_buttons')) {
                     // Remove other edit links
                     var old = document.querySelectorAll('.magic_image_edit_link');
                     for (var i = old.length - 1; i >= 0; i--) {
@@ -9083,7 +9054,7 @@
             function handleImageMouseOut(event) {
                 var target = event.target;
 
-                if ($cms.$CONFIG_OPTION('enable_theme_img_buttons')) {
+                if ($cms.configOption('enable_theme_img_buttons')) {
                     if (target.previousElementSibling && (target.previousElementSibling.classList.contains('magic_image_edit_link'))) {
                         if ((target.moLink !== undefined) && (target.moLink)) {// Clear timed display of new edit button
                             clearTimeout(target.moLink);
@@ -9119,8 +9090,8 @@
                     // Bubbling needs to be stopped because shift+click will open a new window on some lower event handler (in Firefox anyway)
                     event.preventDefault();
 
-                    if (src.includes($cms.$BASE_URL_NOHTTP() + '/themes/')) {
-                        ob.editWindow = window.open('{$BASE_URL;,0}/adminzone/index.php?page=admin_themes&type=edit_image&lang=' + encodeURIComponent($cms.$LANG()) + '&theme=' + encodeURIComponent($cms.$THEME()) + '&url=' + encodeURIComponent($cms.protectURLParameter(src.replace('{$BASE_URL;,0}/', ''))) + $cms.$KEEP(), 'edit_theme_image_' + ob.id);
+                    if (src.includes($cms.baseUrlNohttp() + '/themes/')) {
+                        ob.editWindow = window.open('{$BASE_URL;,0}/adminzone/index.php?page=admin_themes&type=edit_image&lang=' + encodeURIComponent($cms.userLang()) + '&theme=' + encodeURIComponent($cms.getTheme()) + '&url=' + encodeURIComponent($cms.protectURLParameter(src.replace('{$BASE_URL;,0}/', ''))) + $cms.keep(), 'edit_theme_image_' + ob.id);
                     } else {
                         $cms.ui.alert('{!NOT_THEME_IMAGE;^}');
                     }
@@ -9718,7 +9689,7 @@
 
         var fullWidth = (window.scrollX == 0) ? $cms.dom.getWindowWidth() : window.document.body.scrollWidth;
 
-        if ($cms.$CONFIG_OPTION('fixed_width') && !outsideFixedWidth) {
+        if ($cms.configOption('fixed_width') && !outsideFixedWidth) {
             var mainWebsiteInner = document.getElementById('main_website_inner');
             if (mainWebsiteInner) {
                 fullWidth = mainWebsiteInner.offsetWidth;
@@ -10244,10 +10215,10 @@
         if ($cms.isPlainObj(elOrOptions)) {
             options = elOrOptions;
             el =  options.el;
-            animate = $cms.$CONFIG_OPTION('enable_animations') ? boolVal(options.animate, true) : false;
+            animate = $cms.configOption('enable_animations') ? boolVal(options.animate, true) : false;
         } else {
             el = elOrOptions;
-            animate = $cms.$CONFIG_OPTION('enable_animations');
+            animate = $cms.configOption('enable_animations');
         }
         
         el = $cms.dom.elArg(el);
@@ -10501,7 +10472,7 @@
         var textarea = container.querySelector('#bans');
         $cms.manageScrollHeight(textarea);
 
-        if (!$cms.$MOBILE()) {
+        if (!$cms.isMobile()) {
             $cms.dom.on(container, 'keyup', '#bans', function (e, textarea) {
                 $cms.manageScrollHeight(textarea);
             });
@@ -10842,7 +10813,7 @@
         } catch (e) {}
         
         var soundUrl = 'data/sounds/message_received.mp3',
-            baseUrl = (!soundUrl.includes('data_custom') && !soundUrl.includes('uploads/')) ? $cms.$BASE_URL_NOHTTP : $cms.$CUSTOM_BASE_URL_NOHTTP,
+            baseUrl = (!soundUrl.includes('data_custom') && !soundUrl.includes('uploads/')) ? $cms.baseUrlNohttp() : $cms.customBaseUrlNohttp(),
             soundObject = window.soundManager.createSound({ url: baseUrl + '/' + soundUrl });
 
         if (soundObject && document.hasFocus()/*don't want multiple tabs all pinging*/) {

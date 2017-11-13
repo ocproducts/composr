@@ -102,8 +102,8 @@
                 break;
         }
         input.style.position = 'absolute';
-        input.style.left = $cms.$MOBILE() ? '0px' : (x + 'px');
-        input.style.width = $cms.$MOBILE() ? ($cms.dom.getWindowWidth() + 'px') : (width + 'px');
+        input.style.left = $cms.isMobile() ? '0px' : (x + 'px');
+        input.style.width = $cms.isMobile() ? ($cms.dom.getWindowWidth() + 'px') : (width + 'px');
         input.style.top = (y + 8) + 'px';
         input.style.margin = 0;
 
@@ -169,7 +169,7 @@
                 if (((xhr.responseText === '') && (input.value !== '')) || (xhr.status !== 200)) {
                     var sessionTestUrl = '{$FIND_SCRIPT_NOHTTP;,confirm_session}';
 
-                    $cms.doAjaxRequest(sessionTestUrl + $cms.$KEEP(true)).then(function (sessionXhr) {
+                    $cms.doAjaxRequest(sessionTestUrl + $cms.keep(true)).then(function (sessionXhr) {
                         if (sessionXhr.responseText) { // If it failed, see if it is due to a non-confirmed session
                             $cms.ui.confirmSession().then(function (sessionConfirmed) {
                                 if (sessionConfirmed) {

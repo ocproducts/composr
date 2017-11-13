@@ -213,7 +213,7 @@
             for (var def in defaults) {
                 url += '&default_' + def + '=' + encodeURIComponent(defaults[def]);
             }
-            url += $cms.$KEEP();
+            url += $cms.keep();
 
             setTimeout(function () {
                 $cms.ui.showModalDialog($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes,unadorned=yes').then(function (comcodeAdded) {
@@ -371,7 +371,7 @@
     }
 
     function doInputBlock(fieldName) {
-        var url = '{$FIND_SCRIPT;,block_helper}?field_name=' + fieldName + $cms.$KEEP();
+        var url = '{$FIND_SCRIPT;,block_helper}?field_name=' + fieldName + $cms.keep();
         url += '&block_type=' + ((!fieldName.includes('edit_panel_') && !window.location.href.includes(':panel_')) ? 'main' : 'side');
 
         return $cms.ui.open($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
@@ -444,7 +444,7 @@
         if (saveToId !== null) {
             url += '&save_to_id=' + encodeURIComponent(saveToId);
         }
-        url += $cms.$KEEP();
+        url += $cms.keep();
 
         $cms.ui.open($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
     }
@@ -618,8 +618,8 @@
     function doInputPage(fieldName) {
         var result;
 
-        if ($cms.$CONFIG_OPTION('js_overlays')) {
-            $cms.ui.showModalDialog($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,page_link_chooser}' + $cms.$KEEP(true)), null, 'dialogWidth=600;dialogHeight=400;status=no;unadorned=yes',).then(function (result) {
+        if ($cms.configOption('js_overlays')) {
+            $cms.ui.showModalDialog($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,page_link_chooser}' + $cms.keep(true)), null, 'dialogWidth=600;dialogHeight=400;status=no;unadorned=yes',).then(function (result) {
                 if (result == null) {
                     return;
                 }
@@ -818,7 +818,7 @@
 
             var url = '{$FIND_SCRIPT_NOHTTP;,autosave}?type=retrieve';
             url += '&stem=' + encodeURIComponent(getAutosaveUrlStem());
-            url += $cms.$KEEP();
+            url += $cms.keep();
             var callback = function (form) {
                 return function (responseXML) {
                     var result = responseXML && responseXML.querySelector('result');
@@ -861,7 +861,7 @@
                         if ($cms.form.isModSecurityWorkaroundEnabled()) {
                             post = $cms.form.modSecurityWorkaroundAjax(post);
                         }
-                        $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + $cms.$KEEP(), null, post).then(function () {
+                        $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + $cms.keep(), null, post).then(function () {
                             if (document.body.style.cursor === 'wait') {
                                 document.body.style.cursor = '';
                             }
@@ -1078,7 +1078,7 @@
                 if ($cms.form.isModSecurityWorkaroundEnabled()) {
                     post = $cms.form.modSecurityWorkaroundAjax(post);
                 }
-                $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + $cms.$KEEP(), null, post);
+                $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + $cms.keep(), null, post);
             }
         }
     }
@@ -1114,7 +1114,7 @@
 
         // Save locally
         if (window.localStorage !== undefined) {
-            if ($cms.$DEV_MODE()) {
+            if ($cms.isDevMode()) {
                 //$cms.inform('Doing local storage auto-save for ' + elementName + ' (' + autosaveName + ')');
             }
 

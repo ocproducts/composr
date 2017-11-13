@@ -229,7 +229,7 @@
 
         for (i = 0; i < files.options.length; i++) {
             $cms.dom.on(files[i], 'mouseover', function (event) {
-                $cms.ui.activateTooltip(this, event, '<img width="500" src="' + $cms.filter.html($cms.$BASE_URL()) + '/uploads/galleries/' + encodeURI(this.value) + '" \/>', 'auto');
+                $cms.ui.activateTooltip(this, event, '<img width="500" src="' + $cms.filter.html($cms.baseUrl()) + '/uploads/galleries/' + encodeURI(this.value) + '" \/>', 'auto');
             });
             $cms.dom.on(files[i], 'mousemove', function (event) {
                 $cms.ui.repositionTooltip(this, event);

@@ -85,7 +85,7 @@
         },
 
         openEmoticonChooserWindow: function () {
-            $cms.ui.open($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,emoticons}?field_name=post' + $cms.$KEEP()), 'emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
+            $cms.ui.open($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,emoticons}?field_name=post' + $cms.keep()), 'emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
         }
     });
 
@@ -160,7 +160,7 @@
         });
 
         $cms.dom.on(container, 'keyup', '.js-keyup-textarea-chat-post', function (e, textarea) {
-            if (!$cms.$MOBILE()) {
+            if (!$cms.isMobile()) {
                 $cms.manageScrollHeight(textarea);
             }
 
@@ -175,7 +175,7 @@
     };
 
     $cms.templates.chatLobbyScreen = function chatLobbyScreen(params, container) {
-        if ($cms.$IS_GUEST()) {
+        if ($cms.isGuest()) {
             return;
         }
 
@@ -371,14 +371,14 @@
         for (var effectName in effects) {
             var effect = effects[effectName];
 
-            if (!$cms.$IS_HTTPAUTH_LOGIN()) {
+            if (!$cms.isHttpauthLogin()) {
                 var name = 'upload_' + effect.key;
 
                 if (effect.memberId) {
                     name += '_' + effect.memberId;
                 }
 
-                if ($cms.$CONFIG_OPTION('complex_uploader')) {
+                if ($cms.configOption('complex_uploader')) {
                     window.preinitFileInput('chat_effect_settings', name, null, 'mp3');
                 }
             }
@@ -419,7 +419,7 @@ window.allConversations = {};
 // Code...
 
 function playSoundUrl(url) { // Used for testing different sounds
-    var baseUrl = (!url.includes('data_custom') && !url.includes('uploads/')) ? $cms.$BASE_URL_NOHTTP() : $cms.$CUSTOM_BASE_URL_NOHTTP();
+    var baseUrl = (!url.includes('data_custom') && !url.includes('uploads/')) ? $cms.baseUrlNohttp() : $cms.customBaseUrlNohttp();
     var soundObject = window.soundManager.createSound({url: baseUrl + '/' + url});
     if (soundObject) {
         soundObject.play();
@@ -575,7 +575,7 @@ function chatPost(event, currentRoomId, fieldName, fontName, fontColour) {
         var url = '{$FIND_SCRIPT;,messages}?action=post';
         element.disabled = true;
         window.topWindow.currentlySendingMessage = true;
-        var fullUrl = $cms.maintainThemeInLink(url + window.topWindow.$cms.$KEEP());
+        var fullUrl = $cms.maintainThemeInLink(url + window.topWindow.$cms.keep());
         var postData = 'room_id=' + encodeURIComponent(currentRoomId) + '&message=' + encodeURIComponent(messageText) + '&font=' + encodeURIComponent(fontName) + '&colour=' + encodeURIComponent(fontColour) + '&message_id=' + encodeURIComponent((window.topWindow.lastMessageId === null) ? -1 : window.topWindow.lastMessageId) + '&event_id=' + encodeURIComponent(window.topWindow.lastEventId);
         $cms.doAjaxRequest(fullUrl, function (responseXML, xhr) {
             if (responseXML != null) {
@@ -644,7 +644,7 @@ function chatCheck(backlog, messageId, eventId) {
         if (window.location.href.includes('no_reenter_message=1')) {
             url = url + '&no_reenter_message=1';
         }
-        var fullUrl = $cms.maintainThemeInLink(url + $cms.$KEEP());
+        var fullUrl = $cms.maintainThemeInLink(url + $cms.keep());
         $cms.doAjaxRequest(fullUrl, function (responseXML, xhr) {
             if (responseXML != null) {
                 chatCheckResponse(responseXML, xhr, /*skipIncomingSound*/backlog);
@@ -786,9 +786,9 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
 
             // Non-first message
             if (messageContainer.children.length > 0) {
-                if ($cms.$CONFIG_OPTION('chat_message_direction') === 'upwards') {
+                if ($cms.configOption('chat_message_direction') === 'upwards') {
                     messageContainer.insertBefore(clonedMessage, messageContainer.firstElementChild);
-                } else if ($cms.$CONFIG_OPTION('chat_message_direction') === 'downwards') {
+                } else if ($cms.configOption('chat_message_direction') === 'downwards') {
                     messageContainer.appendChild(clonedMessage);
                     messageContainer.scrollTop = 1000000;
                 }
@@ -1098,7 +1098,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
 
         window.topWindow.allConversations[participants] = roomId;
 
-        var url = '{$FIND_SCRIPT_NOHTTP;,messages}?action=join_im&event_id=' + window.topWindow.lastEventId + window.topWindow.$cms.$KEEP();
+        var url = '{$FIND_SCRIPT_NOHTTP;,messages}?action=join_im&event_id=' + window.topWindow.lastEventId + window.topWindow.$cms.keep();
         var post = 'room_id=' + encodeURIComponent(roomId);
 
         // Add in
@@ -1345,7 +1345,7 @@ function startIm(people, justRefocus) {
         div.className = 'loading_overlay';
         $cms.dom.html(div, '{!LOADING;^}');
         document.body.appendChild(div);
-        $cms.doAjaxRequest($cms.maintainThemeInLink('{$FIND_SCRIPT;,messages}?action=start_im&message_id=' + encodeURIComponent((window.topWindow.lastMessageId === null) ? -1 : window.topWindow.lastMessageId) + '&mayRecycle=' + (mayRecycle ? '1' : '0') + '&event_id=' + encodeURIComponent(window.topWindow.lastEventId) + $cms.$KEEP()), function (responseXml) {
+        $cms.doAjaxRequest($cms.maintainThemeInLink('{$FIND_SCRIPT;,messages}?action=start_im&message_id=' + encodeURIComponent((window.topWindow.lastMessageId === null) ? -1 : window.topWindow.lastMessageId) + '&mayRecycle=' + (mayRecycle ? '1' : '0') + '&event_id=' + encodeURIComponent(window.topWindow.lastEventId) + $cms.keep()), function (responseXml) {
             var result = responseXml.querySelector('result');
             if (result) {
                 window.instantGo = true;
@@ -1363,7 +1363,7 @@ function inviteIm(people) {
     if (!roomId) {
         $cms.ui.alert('{!chat:NO_IM_ACTIVE;^}');
     } else {
-        $cms.doAjaxRequest('{$FIND_SCRIPT;,messages}?action=invite_im' + $cms.$KEEP(), null, 'room_id=' + encodeURIComponent(roomId) + '&people=' + people);
+        $cms.doAjaxRequest('{$FIND_SCRIPT;,messages}?action=invite_im' + $cms.keep(), null, 'room_id=' + encodeURIComponent(roomId) + '&people=' + people);
     }
 }
 
@@ -1453,7 +1453,7 @@ function deinvolveIm(roomId, logs, isPopup) { // is_popup means that we show a p
     }
 
     setTimeout(function ()  { // Give time for any logs to download (download does not need to have finished - but must have loaded into a request response on the server side)
-        window.topWindow.$cms.doAjaxRequest('{$FIND_SCRIPT;,messages}?action=deinvolve_im' + window.topWindow.$cms.$KEEP(), null, 'room_id=' + encodeURIComponent(roomId)); // Has to be on topWindow or it will be lost if the window was explicitly closed (it is unloading mode and doesn't want to make a new request)
+        window.topWindow.$cms.doAjaxRequest('{$FIND_SCRIPT;,messages}?action=deinvolve_im' + window.topWindow.$cms.keep(), null, 'room_id=' + encodeURIComponent(roomId)); // Has to be on topWindow or it will be lost if the window was explicitly closed (it is unloading mode and doesn't want to make a new request)
 
         if (participants) {
             window.topWindow.allConversations[participants] = null;

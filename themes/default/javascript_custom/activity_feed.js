@@ -50,7 +50,7 @@
             textarea.classList.add('fade_input');
         },
         textareaKeyup: function (e, textarea) {
-            if (!$cms.$MOBILE()) {
+            if (!$cms.isMobile()) {
                 $cms.manageScrollHeight(textarea);
             }
             this.maintainCharCount();
@@ -75,7 +75,7 @@
             } else {
                 var view = this;
                 jQuery.ajax({
-                    url: $cms.baseUrl('data_custom/activities_handler.php' + $cms.$KEEP(true)),
+                    url: $cms.baseUrl('data_custom/activities_handler.php' + $cms.keep(true)),
                     type: 'POST',
                     data: $cms.dom.serialize(form),
                     cache: false,
@@ -222,7 +222,7 @@ function sUpdateGetData() {
                     window.latestActivity = parseInt(data);
 
                     // Now grab whatever updates are available
-                    var url = $cms.baseUrl('data_custom/activities_updater.php' + $cms.$KEEP(true)),
+                    var url = $cms.baseUrl('data_custom/activities_updater.php' + $cms.keep(true)),
                         listElements = jQuery('li', '#activities_feed'),
                         lastId = ((listElements.attr('id') == undefined) ? '-1' : listElements.attr('id').replace(/^activity_/, '')),
                         postVal = 'last_id=' + lastId + '&mode=' + window.activitiesMode;
@@ -315,7 +315,7 @@ function sUpdateRemove(event, id) {
         '{!activities:DELETE_CONFIRM;^}',
         function (result) {
             if (result) {
-                var url = $cms.baseUrl('data_custom/activities_removal.php' + $cms.$KEEP(true));
+                var url = $cms.baseUrl('data_custom/activities_removal.php' + $cms.keep(true));
 
                 var postVal = 'removal_id=' + id;
                 postVal += '&csrf_token=' + encodeURIComponent($cms.getCsrfToken()); // For CSRF prevention

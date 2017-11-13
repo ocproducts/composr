@@ -673,7 +673,7 @@ function setUpComcodeAutocomplete(name, wysiwyg) {
         token: '@',
         elementFactory: autoCompleteElementFactory,
         onFilterChanged: function (sew, token, expression) {
-            $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,namelike}?id=' + encodeURIComponent(token) + $cms.$KEEP()).then(function (responseXml) {
+            $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,namelike}?id=' + encodeURIComponent(token) + $cms.keep()).then(function (responseXml) {
                 var listContents = responseXml && responseXml.querySelector('result');
                 
                 var newValues = [];

@@ -174,7 +174,7 @@ function getMoreEvents(from, to) {
     from = Math.round(from);
     to = Math.round(to);
 
-    var url = $cms.baseUrl('data/realtime_rain.php?from=' + encodeURIComponent(from) + '&to=' + encodeURIComponent(to) + $cms.$KEEP());
+    var url = $cms.baseUrl('data/realtime_rain.php?from=' + encodeURIComponent(from) + '&to=' + encodeURIComponent(to) + $cms.keep());
     $cms.doAjaxRequest(url, receivedEvents);
 }
 

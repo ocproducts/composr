@@ -23,7 +23,7 @@
                     return;
                 }
                 
-                $cms.requireJavascript('https://www.google.com/recaptcha/api.js?render=explicit&onload=' + onLoadCallbackName + '&hl=' + $cms.$LANG().toLowerCase());
+                $cms.requireJavascript('https://www.google.com/recaptcha/api.js?render=explicit&onload=' + onLoadCallbackName + '&hl=' + $cms.userLang().toLowerCase());
                 
                 recaptchaLoadedPromise.then(function () {
                     captchaEls.forEach(function (captchaEl) {

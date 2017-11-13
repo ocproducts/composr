@@ -10,7 +10,7 @@
 
         $cms.requireJavascript('https://www.google.com/jsapi').then(function () {
             setTimeout(function () {
-                window.google.load('maps', '3', { callback: googleMapUsersInitialize, other_params: (($cms.$CONFIG_OPTION('google_map_key') !== '') ? 'key=' + $cms.$CONFIG_OPTION('google_map_key') : '') });
+                window.google.load('maps', '3', { callback: googleMapUsersInitialize, other_params: (($cms.configOption('google_map_key') !== '') ? 'key=' + $cms.configOption('google_map_key') : '') });
             },0);
         });
 
@@ -114,7 +114,7 @@
 
         var options = {
             callback: googleMapInitialize,
-            other_params: ($cms.$CONFIG_OPTION('google_map_key') !== '') ? 'key=' + $cms.$CONFIG_OPTION('google_map_key') : ''
+            other_params: ($cms.configOption('google_map_key') !== '') ? 'key=' + $cms.configOption('google_map_key') : ''
         };
 
         if (region !== '') {
@@ -205,7 +205,7 @@
                  var categoryIcon='{$BASE_URL;/}/themes/default/images_custom/map_icons/catalogue_category_'+data[i][3]+'.png';
                  marker_options.icon=categoryIcon;}*/
                 if (data[i][6] == 1) {
-                    var starIcon = $cms.$BASE_URL() + '/themes/default/images_custom/star_highlight.png';
+                    var starIcon = $cms.baseUrl() + '/themes/default/images_custom/star_highlight.png';
                     markerOptions.icon = starIcon;
                 }
 

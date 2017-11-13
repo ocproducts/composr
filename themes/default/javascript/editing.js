@@ -25,11 +25,11 @@
     // ===========
     function wysiwygOn() {
         var cookie = $cms.readCookie('use_wysiwyg');
-        return (!cookie || (cookie !== '0')) && $cms.$CONFIG_OPTION('wysiwyg') && !$cms.$MOBILE();
+        return (!cookie || (cookie !== '0')) && $cms.configOption('wysiwyg') && !$cms.isMobile();
     }
 
     function toggleWysiwyg(name) {
-        if (!$cms.$CONFIG_OPTION('wysiwyg')) {
+        if (!$cms.configOption('wysiwyg')) {
             $cms.ui.alert('{!comcode:TOGGLE_WYSIWYG_ERROR;^}');
             return;
         }
@@ -212,7 +212,7 @@
                     return resolvePromise();
                 }
 
-                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?from_html=1' + $cms.$KEEP());
+                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?from_html=1' + $cms.keep());
                 if (window.location.href.includes('topics')) {
                     url += '&forum_db=1';
                 }
@@ -295,7 +295,7 @@
             postingForm.appendChild(httpReferer);
         }
 
-        if (!window.CKEDITOR || !$cms.$CONFIG_OPTION('wysiwyg') || !wysiwygOn()) {
+        if (!window.CKEDITOR || !$cms.configOption('wysiwyg') || !wysiwygOn()) {
             return Promise.resolve();
         }
 
@@ -353,7 +353,7 @@
                     return resolvePromise();
                 }
 
-                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&from_html=0' + $cms.$KEEP());
+                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&from_html=0' + $cms.keep());
                 if (window.location.href.includes('topics')) {
                     url += '&forum_db=1';
                 }
@@ -506,7 +506,7 @@
 
             // Monitor pasting, for anti-spam reasons
             editor.on('paste', function (event) {
-                if (event.data.html && event.data.html.length > $cms.$CONFIG_OPTION('spam_heuristic_pasting')) {
+                if (event.data.html && event.data.html.length > $cms.configOption('spam_heuristic_pasting')) {
                     $cms.setPostDataFlag('paste');
                 }
             });
@@ -600,11 +600,11 @@
 
                     if (tagType === 'block') {
                         var blockName = (this.origTitle ? this.origTitle : this.title).replace(/\[\/block\]$/, '').replace(/^(.|\s)*\]/, '');
-                        var url = '{$FIND_SCRIPT;,block_helper}?type=step2&block=' + encodeURIComponent(blockName) + '&field_name=' + fieldName + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + $cms.$KEEP();
+                        var url = '{$FIND_SCRIPT;,block_helper}?type=step2&block=' + encodeURIComponent(blockName) + '&field_name=' + fieldName + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + $cms.keep();
                         url = url + '&block_type=' + (((fieldName.indexOf('edit_panel_') === -1) && (window.location.href.indexOf(':panel_') === -1)) ? 'main' : 'side');
                         $cms.ui.open($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
                     } else {
-                        var url = '{$FIND_SCRIPT;,comcode_helper}?type=step2&tag=' + encodeURIComponent(tagType) + '&field_name=' + fieldName + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + $cms.$KEEP();
+                        var url = '{$FIND_SCRIPT;,comcode_helper}?type=step2&tag=' + encodeURIComponent(tagType) + '&field_name=' + fieldName + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + $cms.keep();
                         $cms.ui.open($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
                     }
                 };
@@ -644,7 +644,7 @@
                         selfOb.tagText = tagText;
                         selfOb.isOver = true;
 
-                        var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&box_title={!PREVIEW&;^}' + $cms.$KEEP());
+                        var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&box_title={!PREVIEW&;^}' + $cms.keep());
                         if (window.location.href.includes('topics')) {
                             url += '&forum_db=1';
                         }
@@ -828,7 +828,7 @@
                     return resolvePromise();
                 } 
                 
-                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&lax_comcode=1' + $cms.$KEEP());
+                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&lax_comcode=1' + $cms.keep());
                 if (window.location.href.includes('topics')) {
                     url += '&forum_db=1';
                 }
@@ -985,7 +985,7 @@
                 }
 
                 var newHtml = '',
-                    url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&lax_comcode=1' + $cms.$KEEP());
+                    url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&lax_comcode=1' + $cms.keep());
 
                 if (window.location.href.includes('topics')) {
                     url += '&forum_db=1';
@@ -1058,9 +1058,9 @@
                     var el = document.getElementById(id);
                     if (el.checked && !authorised) {
                         //e.checked=false;  Better to assume success, not all oAuth support callback
-                        var url = '{$FIND_SCRIPT_NOHTTP;,upload_syndication_auth}?hook=' + encodeURIComponent(hook) + '&name=' + encodeURIComponent(name) + $cms.$KEEP();
+                        var url = '{$FIND_SCRIPT_NOHTTP;,upload_syndication_auth}?hook=' + encodeURIComponent(hook) + '&name=' + encodeURIComponent(name) + $cms.keep();
 
-                        if ($cms.$MOBILE()) {
+                        if ($cms.isMobile()) {
                             window.open(url);
                         } else {
                             $cms.ui.open(url, null, 'width=960;height=500', '_top');

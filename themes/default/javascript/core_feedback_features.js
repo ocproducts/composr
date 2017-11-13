@@ -17,7 +17,7 @@
             setUpComcodeAutocomplete('post', !!params.wysiwyg);
         });
 
-        if ($cms.$CONFIG_OPTION('enable_previews') && $cms.$FORCE_PREVIEWS()) {
+        if ($cms.configOption('enable_previews') && $cms.isForcePreviews()) {
             this.btnSubmit.style.display = 'none';
         }
 
@@ -110,7 +110,7 @@
         },
 
         openEmoticonChooserWindow: function () {
-            $cms.ui.open($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,emoticons}?field_name=post' + $cms.$KEEP()), 'site_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
+            $cms.ui.open($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,emoticons}?field_name=post' + $cms.keep()), 'site_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
         },
 
         clickBtnSubmit: function (e, button) {
@@ -132,7 +132,7 @@
 
         doPostingFormPreview: function (e, btn) {
             var form = btn.form,
-                url = $cms.maintainThemeInLink($cms.$PREVIEW_URL() + $cms.$KEEP());
+                url = $cms.maintainThemeInLink($cms.getPreviewUrl() + $cms.keep());
             
             $cms.form.doFormPreview(form, url);
         },
@@ -403,7 +403,7 @@
                 }
             }
             post += '&post=' + encodeURIComponent(postValue);
-            $cms.doAjaxRequest('{$FIND_SCRIPT;,post_comment}' + $cms.$KEEP(true), null, post).then(function (xhr) {
+            $cms.doAjaxRequest('{$FIND_SCRIPT;,post_comment}' + $cms.keep(true), null, post).then(function (xhr) {
                 if ((xhr.responseText !== '') && (xhr.status !== 500)) {
                     // Display
                     var oldAction = commentsForm.action;

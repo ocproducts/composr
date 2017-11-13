@@ -150,7 +150,7 @@
     function FromScreenInputUpload(params) {
         FromScreenInputUpload.base(this, 'constructor', arguments);
 
-        if (params.plupload && !$cms.$IS_HTTPAUTH_LOGIN() && $cms.$CONFIG_OPTION('complex_uploader')) {
+        if (params.plupload && !$cms.isHttpauthLogin() && $cms.configOption('complex_uploader')) {
             $cms.requireJavascript('plupload').then(function () {
                 window.preinitFileInput('upload', params.name, null, params.filter);
             });
@@ -497,7 +497,7 @@
             $cms.form.setUpChangeMonitor(input.parentElement);
         }
 
-        if (!$cms.$MOBILE()) {
+        if (!$cms.isMobile()) {
             $cms.manageScrollHeight(textarea);
         }
 
@@ -527,7 +527,7 @@
             multiSelect = !!params.multiSelect && (params.multiSelect !== '0');
 
         $cms.requireJavascript('tree_list').then(function () {
-            $cms.ui.createTreeList(params.name, 'data/ajax_tree.php?hook=' + hook + $cms.$KEEP(), rootId, opts, multiSelect, params.tabIndex, false, !!params.useServerId);
+            $cms.ui.createTreeList(params.name, 'data/ajax_tree.php?hook=' + hook + $cms.keep(), rootId, opts, multiSelect, params.tabIndex, false, !!params.useServerId);
         });
 
         $cms.dom.on(container, 'change', '.js-input-change-update-mirror', function (e, input) {
@@ -648,7 +648,7 @@
     };
 
     $cms.templates.formScreenInputCaptcha = function formScreenInputCaptcha(params, container) {
-        if ($cms.$CONFIG_OPTION('js_captcha')) {
+        if ($cms.configOption('js_captcha')) {
             $cms.dom.html($cms.dom.$('#captcha_spot'), params.captcha);
         } else {
             window.addEventListener('pageshow', function () {
@@ -765,7 +765,7 @@
             $cms.form.setUpChangeMonitor(el.parentElement);
         }
 
-        if (!$cms.$MOBILE()) {
+        if (!$cms.isMobile()) {
             $cms.manageScrollHeight(textArea);
 
             $cms.dom.on(textArea, 'change keyup', function () {
@@ -838,7 +838,7 @@
             }
         }
 
-        if (!$cms.$MOBILE()) {
+        if (!$cms.isMobile()) {
             $cms.manageScrollHeight(postEl);
         }
 
@@ -1072,7 +1072,7 @@
             });
         }
 
-        if (params.plupload && !$cms.$IS_HTTPAUTH_LOGIN() && $cms.$CONFIG_OPTION('complex_uploader')) {
+        if (params.plupload && !$cms.isHttpauthLogin() && $cms.configOption('complex_uploader')) {
             window.preinitFileInput('upload_multi', nameStub + '_' + index, null, params.filter);
         }
 
@@ -1210,7 +1210,7 @@
             }
         }
 
-        if (!$cms.$MOBILE()) {
+        if (!$cms.isMobile()) {
             $cms.manageScrollHeight(document.getElementById(params.name));
         }
     };
@@ -1467,7 +1467,7 @@
 
                 var geocodeUrl = '{$FIND_SCRIPT;,geocode}';
                 geocodeUrl += '?latitude=' + encodeURIComponent(position.coords.latitude) + '&longitude=' + encodeURIComponent(position.coords.longitude);
-                geocodeUrl += $cms.$KEEP();
+                geocodeUrl += $cms.keep();
 
                 $cms.doAjaxRequest(geocodeUrl).then(function (xhr) {
                     var parsed = JSON.parse(xhr.responseText);

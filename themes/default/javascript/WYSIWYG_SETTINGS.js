@@ -1,6 +1,6 @@
 // Carefully work out toolbar
 // Look to see if this Comcode button is here as a hint whether we are doing an advanced editor. Unfortunately we cannot put contextual Tempcode inside a JavaScript file, so this trick is needed.
-var precisionEditing = $cms.$IS_STAFF() || (document.body.querySelectorAll('.js-comcode-button-box').length > 1);
+var precisionEditing = $cms.isStaff() || (document.body.querySelectorAll('.js-comcode-button-box').length > 1);
 var toolbar = [];
 if (precisionEditing) {
     toolbar.push(['Source', '-']);
@@ -39,7 +39,7 @@ var editorSettings = {
     skin: 'kama',
     enterMode: window.CKEDITOR.ENTER_BR,
     uiColor: wysiwygColor,
-    ocpTheme: $cms.$THEME(),
+    ocpTheme: $cms.getTheme(),
     /*{+START,IF,{$EQ,{$CONFIG_OPTION,wysiwyg_font_units},em}}*/
         fontSize_sizes : '0.6em;0.85em;1em;1.1em;1.2em;1.3em;1.4em;1.5em;1.6em;1.7em;1.8em;2em',
     /*{+END}*/
@@ -50,15 +50,15 @@ var editorSettings = {
     /*{+END}*/
     bodyId: 'wysiwyg_editor',
     baseHref: $cms.url().toString(),
-    linkShowAdvancedTab: !$cms.$CONFIG_OPTION('eager_wysiwyg'),
-    imageShowAdvancedTab: !$cms.$CONFIG_OPTION('eager_wysiwyg'),
-    imageShowLinkTab: !$cms.$CONFIG_OPTION('eager_wysiwyg'),
-    imageShowSizing: !$cms.$CONFIG_OPTION('eager_wysiwyg'),
+    linkShowAdvancedTab: !$cms.configOption('eager_wysiwyg'),
+    imageShowAdvancedTab: !$cms.configOption('eager_wysiwyg'),
+    imageShowLinkTab: !$cms.configOption('eager_wysiwyg'),
+    imageShowSizing: !$cms.configOption('eager_wysiwyg'),
     autoUpdateElement: true,
     contentsCss: pageStylesheets,
     cssStatic: css,
     startupOutlineBlocks: true,
-    language: $cms.$LANG() ? $cms.$LANG().toLowerCase() : 'en',
+    language: $cms.userLang() ? $cms.userLang().toLowerCase() : 'en',
     emailProtection: false,
     resize_enabled: true,
     width: 'auto',

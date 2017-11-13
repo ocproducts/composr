@@ -49,7 +49,7 @@
 
         // We attach to an onclick handler, to enable desktop notifications later on; we need this as we cannot call requestPermission out of the blue
         function explicitNotificationsEnableRequest() {
-            if ($cms.$CONFIG_OPTION('notification_desktop_alerts')) {
+            if ($cms.configOption('notification_desktop_alerts')) {
                 window.notify.requestPermission();
             }
         }
@@ -93,7 +93,7 @@
             }
             url += '&time_barrier=' + encodeURIComponent(window.notificationsTimeBarrier);
             url += '&forced_update=1';
-            url += $cms.$KEEP();
+            url += $cms.keep();
             $cms.doAjaxRequest(url, window._pollForNotifications);
             _toggleMessagingBox(event, 'web_notifications', true);
             return false;
@@ -222,7 +222,7 @@ function pollForNotifications(forcedUpdate, delay) {
     if (forcedUpdate) {
         url += '&forced_update=1';
     }
-    url += $cms.$KEEP();
+    url += $cms.keep();
     $cms.doAjaxRequest(url, window._pollForNotifications);
 }
 
@@ -308,14 +308,14 @@ function _pollForNotifications(responseXml) {
         }
 
         // Show desktop notification
-        if ($cms.$CONFIG_OPTION('notification_desktop_alerts') && window.notify.isSupported) {
+        if ($cms.configOption('notification_desktop_alerts') && window.notify.isSupported) {
             var icon = $cms.img('{$IMG;,favicon}');
             var title = '{!notifications:DESKTOP_NOTIFICATION_SUBJECT;^}';
             title = title.replace(/\\{1\\}/, notification.getAttribute('subject'));
             title = title.replace(/\\{2\\}/, notification.getAttribute('from_username'));
             var body = '';//notification.getAttribute('rendered'); Looks ugly
             if (window.notify.permissionLevel() == window.notify.PERMISSION_GRANTED) {
-                var notificationWrapper = window.notify.createNotification(title, { icon: icon, body: body, tag: $cms.$SITE_NAME() + '__' + id });
+                var notificationWrapper = window.notify.createNotification(title, { icon: icon, body: body, tag: $cms.getSiteName() + '__' + id });
                 if (notificationWrapper) {
                     window.addEventListener('focus', function () {
                         notificationWrapper.close();
@@ -421,7 +421,7 @@ function _toggleMessagingBox(event, name, hide) {
  * Author: Tsvetan Tsvetkov (tsekach@gmail.com)
  */
 (function () {
-    if (!$cms.$CONFIG_OPTION('notification_desktop_alerts')) {
+    if (!$cms.configOption('notification_desktop_alerts')) {
         return;
     }
 

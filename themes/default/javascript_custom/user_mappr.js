@@ -21,7 +21,7 @@
 
         var options = {
             callback: googleMapUsersInitialize,
-            other_params: ($cms.$CONFIG_OPTION('google_map_key') !== '') ? 'key=' + $cms.$CONFIG_OPTION('google_map_key') : ''
+            other_params: ($cms.configOption('google_map_key') !== '') ? 'key=' + $cms.configOption('google_map_key') : ''
         };
 
         if (region !== '') {
@@ -85,7 +85,7 @@
                 if (navigator.geolocation !== undefined) {
                     try {
                         navigator.geolocation.getCurrentPosition(function (position) {
-                            $cms.doAjaxRequest(setCoordUrl + position.coords.latitude + '_' + position.coords.longitude + $cms.$KEEP());
+                            $cms.doAjaxRequest(setCoordUrl + position.coords.latitude + '_' + position.coords.longitude + $cms.keep());
                             var initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                             map.setCenter(initialLocation);
                             addDataPoint([username, position.coords.latitude, position.coords.longitude, ''], bounds, markers, infoWindow, map);
@@ -131,7 +131,7 @@
             google.maps.event.addListener(marker, 'click', (function (argMarker, argMember) {
                 return function () {
                     // Dynamically load a specific members details only when their marker is clicked
-                    $cms.doAjaxRequest('data_custom/get_member_tooltip.php?member=' + argMember + $cms.$KEEP()).then(function (xhr) {
+                    $cms.doAjaxRequest('data_custom/get_member_tooltip.php?member=' + argMember + $cms.keep()).then(function (xhr) {
                         var content = xhr.responseXML && xhr.responseXML.querySelector('result').textContent;
 
                         if (content) {
