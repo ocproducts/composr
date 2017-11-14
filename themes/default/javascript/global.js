@@ -10263,7 +10263,7 @@
 
     $cms.templates.standaloneHtmlWrap = function (params) {
         if (window.parent) {
-            $cms.load.push(function () {
+            $dom.load.then(function () {
                 document.body.classList.add('frame');
 
                 try {
