@@ -486,11 +486,6 @@
          */
         behaviors: {},
         /**
-         * Browser feature detection
-         * @namespace $cms.support
-         */
-        support: {},
-        /**
          * DOM helper methods
          * @namespace $cms.dom
          */
@@ -1954,18 +1949,17 @@
 
         return decodeURIComponent(cookies.substring(startIdx + cookieName.length + 1, endIdx));
     }
-    
+
+    $dom.support = {};
     /**
      *  Web animations API support (https://developer.mozilla.org/de/docs/Web/API/Element/animate)
-     *  @memberof $cms.support
      * @type {boolean}
      */
-    $cms.support.animation = ('animate' in emptyEl);
+    $dom.support.animation = ('animate' in emptyEl);
     /**
      * If the browser has support for an input[type=???]
-     * @memberof $cms.support
      */
-    $cms.support.inputTypes = {
+    $dom.support.inputTypes = {
         search: false, tel: false, url: false, email: false, datetime: false, date: false, month: false,
         week: false, time: false, 'datetime-local': false, number: false, range: false, color: false
     };
@@ -1973,7 +1967,7 @@
     (function () {
         var type, bool, inputEl = document.createElement('input');
 
-        for (type in $cms.support.inputTypes) {
+        for (type in $dom.support.inputTypes) {
             inputEl.setAttribute('type', type);
             bool = inputEl.type !== 'text';
 
@@ -1992,7 +1986,7 @@
                 }
             }
 
-            $cms.support.inputTypes[type] = Boolean(bool);
+            $dom.support.inputTypes[type] = Boolean(bool);
         }
     }());
 
@@ -3332,7 +3326,7 @@
 
                 $dom.show(el);
 
-                if ($cms.support.animation && (duration > 0)) { // Progressive enhancement using the web animations API
+                if ($dom.support.animation && (duration > 0)) { // Progressive enhancement using the web animations API
                     var keyFrames = [{ opacity: 0 }, { opacity: target }],
                         options = { duration : duration },
                         animation = el.animate(keyFrames, options);
@@ -3374,7 +3368,7 @@
         
         function doFadeOut() {
             return new Promise(function (resolve) {
-                if ($cms.support.animation && (duration > 0)) { // Progressive enhancement using the web animations API
+                if ($dom.support.animation && (duration > 0)) { // Progressive enhancement using the web animations API
                     var keyFrames = [{ opacity: $dom.css(el, 'opacity')}, { opacity: 0 }],
                         options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING },
                         animation = el.animate(keyFrames, options);
@@ -3410,7 +3404,7 @@
             return new Promise(function (resolve) {
                 $dom.show(el);
 
-                if ($cms.support.animation && (duration > 0)) { // Progressive enhancement using the web animations API
+                if ($dom.support.animation && (duration > 0)) { // Progressive enhancement using the web animations API
                     var keyFrames = [{ opacity: $dom.css(el, 'opacity')}, { opacity: opacity }],
                         options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING },
                         animation = el.animate(keyFrames, options);
@@ -3507,7 +3501,7 @@
                 var prevOverflow = el.style.overflow;
                 el.style.overflow = 'hidden';
 
-                if ($cms.support.animation) { // Progressive enhancement using the web animations API
+                if ($dom.support.animation) { // Progressive enhancement using the web animations API
                     var keyFrames = [startKeyframe, endKeyframe],
                         options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING },
                         animation = el.animate(keyFrames, options);
@@ -3563,7 +3557,7 @@
                         paddingBottom: 0
                     };
 
-                if ($cms.support.animation) { // Progressive enhancement using the web animations API
+                if ($dom.support.animation) { // Progressive enhancement using the web animations API
                     var keyFrames = [startKeyframe, endKeyframe],
                         options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING },
                         animation = el.animate(keyFrames, options);
