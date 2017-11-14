@@ -1,5 +1,22 @@
 (function ($dom) {
     'use strict';
+
+    /**
+     * @memberof $dom
+     * @type { Promise }
+     */
+    $dom.ready = new Promise(function (resolve) {
+        $dom._resolveReady = resolve;
+    });
+
+    /**
+     * @memberof $dom
+     * @type { Promise }
+     */
+    $dom.load = new Promise(function (resolve) {
+        $dom._resolveLoad = resolve;
+    });
+    
     /**
      * Required for $cms.requireCss and $cms.requireJavascript() to work properly as DOM does not currently provide any way to check if a particular element has been already loaded
      * @memberof $dom

@@ -836,7 +836,7 @@ class Hook_addon_registry_core
             'data/polyfills/url.js',
             'data/polyfills/web-animations.min.js',
             'data/polyfills/index.html',
-            'data/polyfills/log-loaded-scripts.js',
+            'data/polyfills/dom-init.js',
             'themes/default/templates/JAVASCRIPT_NEED.tpl',
             'themes/default/templates/JAVASCRIPT_NEED_FULL.tpl',
             'themes/default/templates/CSS_NEED.tpl',
