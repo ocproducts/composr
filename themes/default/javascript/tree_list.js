@@ -65,7 +65,7 @@
         });
     }
 
-    $cms.inherits(TreeList, $cms.View, /**@lends TreeList#*/{
+    $util.inherits(TreeList, $cms.View, /**@lends TreeList#*/{
         specialKeyPressed: false,
         /**@type { Node }*/
         treeListData: null,
@@ -243,7 +243,7 @@
                             <span id="' + that.name + 'extra_' + node.getAttribute('id') + '">' + extra + '</span> \
                         </div>');
                     var expandButton = nodeSelf.querySelector('input');
-                    expandButton.oncontextmenu = $cms.returnFalse;
+                    expandButton.oncontextmenu = function () { return false };
                     
                     $cms.dom.on(expandButton, 'click', function (e) {
                         e.preventDefault();
@@ -267,7 +267,7 @@
                             that.handleTreeClick(event, false, expandButton);
                         }
                     };
-                    label.oncontextmenu = $cms.returnFalse;
+                    label.oncontextmenu = function () { return false };
                     label.firstElementChild.addEventListener('focus', function () {
                         label.style.outline = '1px dotted';
                     });

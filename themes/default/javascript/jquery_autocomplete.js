@@ -665,7 +665,7 @@ function setUpComcodeAutocomplete(name, wysiwyg) {
     }
 
     if (!window.jQuery || !window.jQuery.fn.sew) {
-        $cms.fatal('setUpComcodeAutocomplete(): jQuery.fn.sew plugin is not loaded');
+        $util.fatal('setUpComcodeAutocomplete(): jQuery.fn.sew plugin is not loaded');
     }
 
     window.jQuery('#' + name).sew({

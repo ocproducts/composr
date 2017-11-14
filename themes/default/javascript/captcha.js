@@ -3,7 +3,7 @@
     
     var $CONFIG_OPTION_recaptcha_site_key = '{$CONFIG_OPTION;^,recaptcha_site_key}';
 
-    var onLoadCallbackName = 'recaptchaLoaded' + $cms.random();
+    var onLoadCallbackName = 'recaptchaLoaded' + $util.random();
     
     var recaptchaLoadedPromise = new Promise(function (resolve) {
         /* Called from reCAPTCHA's recaptcha/api.js, when it loads. */
@@ -17,7 +17,7 @@
         // Implementation for [data-recaptcha-captcha]
         initializeRecaptchaCaptcha: {
             attach: function attach(context) {
-                var captchaEls = $cms.once($cms.dom.$$$(context, '[data-recaptcha-captcha]'), 'behavior.initializeRecaptchaCaptcha');
+                var captchaEls = $util.once($cms.dom.$$$(context, '[data-recaptcha-captcha]'), 'behavior.initializeRecaptchaCaptcha');
 
                 if (captchaEls.length < 1) {
                     return;

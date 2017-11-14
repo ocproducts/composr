@@ -14221,11 +14221,11 @@
     function onPluploadLoaded(plObj) {
         console.log('onPluploadLoaded()', 'plObj:', plObj);
 
-        if (plLoadedHandled[$cms.uid(plObj)]) { // Called when Flash redisplayed after being obscured, so we need to return to avoid a recursion error
+        if (plLoadedHandled[$util.uid(plObj)]) { // Called when Flash redisplayed after being obscured, so we need to return to avoid a recursion error
             return;
         }
 
-        plLoadedHandled[$cms.uid(plObj)] = true;
+        plLoadedHandled[$util.uid(plObj)] = true;
 
         window.moxie.core.utils.Mime.addMimeType('image/vnd.microsoft.icon,ico');
     }
@@ -14721,7 +14721,7 @@
                 }
             }
             if (!goodType) {
-                $cms.ui.alert($cms.format('{!INVALID_FILE_TYPE_GENERAL;^}', [fileExt, validTypes.join(', ')]));
+                $cms.ui.alert($util.format('{!INVALID_FILE_TYPE_GENERAL;^}', [fileExt, validTypes.join(', ')]));
                 return;
             }
 
@@ -14889,7 +14889,7 @@
         this.height = this.fileProgressWrapper.offsetHeight;
     }
 
-    $cms.properties(FileProgress.prototype, /**@lends FileProgress#*/{
+    $util.properties(FileProgress.prototype, /**@lends FileProgress#*/{
         setProgress: function (percentage) {
             this.fileProgressElement.classList.remove('blue', 'red');
             this.fileProgressElement.classList.add('green');

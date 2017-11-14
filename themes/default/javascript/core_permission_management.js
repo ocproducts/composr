@@ -25,7 +25,7 @@
         });
     }
 
-    $cms.inherits(PermissionsTreeEditorScreen, $cms.View, /**@lends PermissionsTreeEditorScreen#*/{
+    $util.inherits(PermissionsTreeEditorScreen, $cms.View, /**@lends PermissionsTreeEditorScreen#*/{
         events: function () {
             return {
                 'click .js-click-update-group': 'updateGroupDisplayer',

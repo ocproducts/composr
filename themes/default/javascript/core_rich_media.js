@@ -21,7 +21,7 @@
         }
     }
 
-    $cms.inherits(Attachment, $cms.View, /**@lends Attachment#*/{
+    $util.inherits(Attachment, $cms.View, /**@lends Attachment#*/{
         events: function () {
             return {
                 'change .js-inp-file-change-set-attachment': 'setAttachment'
@@ -62,7 +62,7 @@
         });
     }
 
-    $cms.inherits(Carousel, $cms.View, /**@lends Carousel#*/{
+    $util.inherits(Carousel, $cms.View, /**@lends Carousel#*/{
         events: function () {
             return {
                 'mousedown .js-btn-car-move': 'move',
@@ -152,7 +152,7 @@
         }
     }
 
-    $cms.inherits(ComcodeMediaSet, $cms.View, /**@lends ComcodeMediaSet#*/{
+    $util.inherits(ComcodeMediaSet, $cms.View, /**@lends ComcodeMediaSet#*/{
         setup: function (params) {
             var imgs = window['imgs_' + params.rand] = [],
                 imgsThumbs = window['imgs_thumbs_' + params.rand] = [],
@@ -210,10 +210,10 @@
                     imgWidthHeight = setImgWidthHeight ? ' width="' + Number(params.width) + '" height="' + Number(params.height) + '"' : '',
                     mediaSetHtml = /** @lang HTML */' \
                         <figure class="attachment" ' + width + '> \
-                            <figcaption>' + $cms.format('{!comcode:MEDIA_SET;^}', [imgs.length]) + '<\/figcaption> \
+                            <figcaption>' + $util.format('{!comcode:MEDIA_SET;^}', [imgs.length]) + '<\/figcaption> \
                             <div> \
                                 <div class="attachment_details"> \
-                                    <a class="js-click-open-images-into-lightbox" target="_blank" title="' + $cms.filter.html($cms.format('{!comcode:MEDIA_SET^;}', [imgs.length])) + ' {!LINK_NEW_WINDOW^/}" href="#!"> \
+                                    <a class="js-click-open-images-into-lightbox" target="_blank" title="' + $cms.filter.html($util.format('{!comcode:MEDIA_SET^;}', [imgs.length])) + ' {!LINK_NEW_WINDOW^/}" href="#!"> \
                                         <img ' + imgWidthHeight + ' src="' + $cms.filter.html(imgsThumbs[0]) + '" /> \
                                     <\/a> \
                                 <\/div> \
@@ -321,7 +321,7 @@
         AttachmentsBrowser.base(this, 'constructor', arguments);
     }
 
-    $cms.inherits(AttachmentsBrowser, $cms.View, /**@lends AttachmentsBrowser#*/{
+    $util.inherits(AttachmentsBrowser, $cms.View, /**@lends AttachmentsBrowser#*/{
         events: function () {
             return {
                 'click .js-click-do-attachment-and-close': 'doAttachmentAndClose'
@@ -495,7 +495,7 @@
                 return;
             }
             
-            mainWindow['doInput' + $cms.ucFirst($cms.camelCase(b))](fieldName);
+            mainWindow['doInput' + $util.ucFirst($util.camelCase(b))](fieldName);
         });
     };
 
@@ -562,8 +562,8 @@
 
         flipPage(0, this.passId, this.sections);
     }
-    
-    $cms.inherits(ComcodeSectionController, $cms.View, /**@lends $cms.views.ComcodeSectionController#*/{
+
+    $util.inherits(ComcodeSectionController, $cms.View, /**@lends $cms.views.ComcodeSectionController#*/{
         events: function events() {
             return {
                 'click .js-click-flip-page': 'doFlipPage'
@@ -664,8 +664,8 @@
         }
         
     }
-    
-    $cms.inherits(ComcodeBigTabsController, $cms.View, /**@lends $cms.views.ComcodeBigTabsController#*/{
+
+    $util.inherits(ComcodeBigTabsController, $cms.View, /**@lends $cms.views.ComcodeBigTabsController#*/{
         events: function events() {
             return {
                 'click .js-onclick-flip-page': 'doFlipPage'
@@ -693,7 +693,7 @@
     $cms.templates.comcodeTicker = function (params, container) {
         window.tickPos || (window.tickPos = {});
 
-        var id = 'ticker-' + $cms.random();
+        var id = 'ticker-' + $util.random();
 
         window.tickPos[id] = params.width;
         $cms.dom.html(container, '<div class="ticker" style="text-indent: ' + params.width + 'px; width: ' + params.width + 'px;" id="' + id + '"><span>' +
@@ -706,7 +706,7 @@
     };
 
     $cms.templates.comcodeJumping = function (params, container) {
-        var id = $cms.random();
+        var id = $util.random();
 
         window.jumperParts[id] = [];
         window.jumperPos[id] = 1;
@@ -989,7 +989,7 @@
             delete _flipPageTimeouts[id];
         }
 
-        if ($cms.isNumeric(to)) {
+        if ($util.isNumeric(to)) {
             to = Number(to);
             
             for (i = 0; i < sections.length; i++) {

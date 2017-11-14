@@ -21,7 +21,7 @@
         this.imgChecklistStatus = this.$('.js-img-checklist-status');
     }
 
-    $cms.inherits(BlockMainStaffChecklistCustomTask, $cms.View, /**@lends BlockMainStaffChecklistCustomTask#*/{
+    $util.inherits(BlockMainStaffChecklistCustomTask, $cms.View, /**@lends BlockMainStaffChecklistCustomTask#*/{
         events: function () {
             return {
                 'mouseover': 'mouseover',
@@ -85,7 +85,7 @@
         BlockMainStaffLinks.base(this, 'constructor', arguments);
     }
 
-    $cms.inherits(BlockMainStaffLinks, $cms.View, /**@lends BlockMainStaffLinks#*/{
+    $util.inherits(BlockMainStaffLinks, $cms.View, /**@lends BlockMainStaffLinks#*/{
         events: function () {
             return {
                 'click .js-click-staff-block-flip': 'staffBlockFlip',
@@ -130,7 +130,7 @@
         this.formEl = this.$('.js-form-site-watchlist');
     }
 
-    $cms.inherits(BlockMainStaffWebsiteMonitoring, $cms.View, /**@lends BlockMainStaffWebsiteMonitoring#*/{
+    $util.inherits(BlockMainStaffWebsiteMonitoring, $cms.View, /**@lends BlockMainStaffWebsiteMonitoring#*/{
         events: function () {
             return {
                 'click .js-click-staff-block-flip': 'staffBlockFlip',
@@ -169,7 +169,7 @@
         this.formEl = this.$('.js-form-block-main-notes');
     }
 
-    $cms.inherits(BlockMainNotes, $cms.View, /**@lends BlockMainNotes#*/{
+    $util.inherits(BlockMainNotes, $cms.View, /**@lends BlockMainNotes#*/{
         events: function () {
             return {
                 'click .js-click-headless-submit': 'headlessSubmit',

@@ -9,8 +9,6 @@
     var smile = ':)',
         emptyObj = {},
         emptyArr = [],
-        docEl = document.documentElement,
-        emptyEl = document.createElement('div'),
         // hasOwnProperty shorcut
         hasOwn = Function.bind.call(Function.call, emptyObj.hasOwnProperty),
         toArray = Function.bind.call(Function.call, emptyArr.slice),
@@ -18,8 +16,6 @@
         includes = Function.bind.call(Function.call, emptyArr.includes),
         // Helper for merging existing arrays
         pushArray = Function.bind.call(Function.apply, emptyArr.push);
-
-    function noop() {}
 
     // Too useful to not have globally!
     window.intVal  = intVal;
@@ -274,7 +270,7 @@
                     return configOptionsJson[optionName];
                 }
 
-                $cms.fatal('$cms.configOption(): Option "' + optionName + '" is either unsupported in JS or doesn\'t exist. Please try using the actual Tempcode symbol.');
+                $util.fatal('$cms.configOption(): Option "' + optionName + '" is either unsupported in JS or doesn\'t exist. Please try using the actual Tempcode symbol.');
             };
         }()),
         // Just some more useful stuff, (not tempcode symbols)
@@ -300,78 +296,6 @@
         staffTooltipsUrlPatterns: constant(objVal(JSON.parse('{$STAFF_TOOLTIPS_URL_PATTERNS_JSON;}'))),
 
         /* Export useful stuff  */
-        /**
-         * @method
-         * @returns { Array }
-         */
-        toArray: toArray,
-        /**
-         * @method
-         * @returns {boolean}
-         */
-        hasOwn: hasOwn,
-        /**@method*/
-        uid: uid,
-        /**@method*/
-        returnTrue: returnTrue,
-        /**@method*/
-        returnFalse: returnFalse,
-        /**@method*/
-        isObj: isObj,
-        /**@method*/
-        hasEnumerable: hasEnumerable,
-        /**@method*/
-        hasOwnEnumerable: hasOwnEnumerable,
-        /**@method*/
-        isPlainObj: isPlainObj,
-        /**@method*/
-        nodeType: nodeType,
-        /**@method*/
-        isEl: isEl,
-        /**@method*/
-        isNumeric: isNumeric,
-        /**@method*/
-        isArrayLike: isArrayLike,
-        /**@method*/
-        isEmpty: boolVal,
-        /**@method*/
-        noop: noop,
-        /**@method*/
-        random: random,
-        /**@method*/
-        camelCase: camelCase,
-        /**@method*/
-        once: once,
-        /**@method*/
-        findOnce: findOnce,
-        /**@method*/
-        removeOnce: removeOnce,
-        /**@method*/
-        arrayFromIterable: arrayFromIterable,
-        /**@method*/
-        each: each,
-        /**@method*/
-        eachIter: eachIter,
-        /**@method*/
-        extend: extend,
-        /**@method*/
-        extendOwn: extendOwn,
-        /**@method*/
-        extendDeep: extendDeep,
-        /**@method*/
-        cloner: cloner,
-        /**@method*/
-        defaults: defaults,
-        /**@method*/
-        properties: properties,
-        /**@method*/
-        format: format,
-        /**@method*/
-        ucFirst: ucFirst,
-        /**@method*/
-        numberFormat: numberFormat,
-        /**@method*/
-        inherits: inherits,
         /**@method*/
         pageUrl: pageUrl,
         /**@method*/
@@ -380,14 +304,6 @@
         pageKeepSearchParams: pageKeepSearchParams,
         /**@method*/
         img: img,
-        /**@method*/
-        navigate: navigate,
-        /**@method*/
-        inform: inform,
-        /**@method*/
-        warn: warn,
-        /**@method*/
-        fatal: fatal,
         /**@method*/
         requireCss: requireCss,
         /**@method*/
@@ -398,8 +314,6 @@
         promiseHalt: promiseHalt,
         /**@method*/
         setPostDataFlag: setPostDataFlag,
-        /**@method*/
-        parseJson5: parseJson5,
         /**@method*/
         getCsrfToken: getCsrfToken,
         /**@method*/
@@ -446,8 +360,6 @@
         doAjaxRequest: doAjaxRequest,
         /**@method*/
         protectURLParameter: protectURLParameter,
-        /**@method*/
-        pageMeta: pageMeta,
         /**
          * Addons will add template related methods under this object
          * @namespace $cms.templates
@@ -486,6 +398,73 @@
 
     /**@namespace $util*/
     $util = extendDeep($util, /**@lends $util*/{
+        /**
+         * @method
+         * @returns { Array }
+         */
+        toArray: toArray,
+        /**
+         * @method
+         * @returns { Array }
+         */
+        pushArray: pushArray,
+        /**
+         * @method
+         * @returns {boolean}
+         */
+        hasOwn: hasOwn,
+        /**@method*/
+        isObj: isObj,
+        /**@method*/
+        isPlainObj: isPlainObj,
+        /**@method*/
+        isArrayLike: isArrayLike,
+        /**@method*/
+        isPromise: isPromise,
+        /**@method*/
+        isWindow: isWindow,
+        /**@method*/
+        isNode: isNode,
+        /**@method*/
+        isEl: isEl,
+        /**@method*/
+        isDoc: isDoc,
+        /**@method*/
+        isDocFrag: isDocFrag,
+        /**@method*/
+        isRegExp: isRegExp,
+        /**@method*/
+        isDate: isDate,
+        /**@method*/
+        isNumeric: isNumeric,
+        /**@method*/
+        uid: uid,
+        /**@method*/
+        hasEnumerable: hasEnumerable,
+        /**@method*/
+        hasOwnEnumerable: hasOwnEnumerable,
+        /**@method*/
+        each: each,
+        /**@method*/
+        eachIter: eachIter,
+        /**@method*/
+        extend: extend,
+        /**@method*/
+        extendOwn: extendOwn,
+        /**@method*/
+        extendDeep: extendDeep,
+        /**@method*/
+        defaults: defaults,
+        /**@method*/
+        properties: properties,
+        /**@method*/
+        inherits: inherits,
+        /**@method*/
+        camelCase: camelCase,
+        /**@method*/
+        ucFirst: ucFirst,
+        /**@method*/
+        format: format,
         /**@method*/
         isAbsolute: isAbsolute,
         /**@method*/
@@ -495,14 +474,39 @@
         /**@method*/
         schemeRelative: schemeRelative,
         /**@method*/
+        random: random,
+        /**@method*/
+        once: once,
+        /**@method*/
+        findOnce: findOnce,
+        /**@method*/
+        removeOnce: removeOnce,
+        /**@method*/
         throttle: throttle,
         /**@method*/
         debounce: debounce,
+        /**@method*/
+        arrayFromIterable: arrayFromIterable,
+        /**@method*/
+        parseJson5: parseJson5,
+        /**@method*/
+        pageMeta: pageMeta,
+        /**@method*/
+        navigate: navigate,
+        /**@method*/
+        inform: inform,
+        /**@method*/
+        warn: warn,
+        /**@method*/
+        fatal: fatal
     });
 
     // Generate a unique integer id (unique within the entire client session).
-    var _uniqueId = 0;
+    var _uniqueId;
     function uniqueId() {
+        if (_uniqueId === undefined) {
+            _uniqueId = 0;
+        }
         return ++_uniqueId;
     }
 
@@ -513,7 +517,7 @@
      */
     function uid(obj) {
         if ((obj == null) || ((typeof obj !== 'object') && (typeof obj !== 'function'))) {
-            throw new TypeError('$cms.uid(): Parameter `obj` must be an object or a function.');
+            throw new TypeError('$util.uid(): Parameter `obj` must be an object or a function.');
         }
 
         if (hasOwn(obj, $cms.id())) {
@@ -854,18 +858,6 @@
     }
 
     /**
-     * Returns a function that always returns a deep-clone of `obj`
-     * @param obj
-     * @returns {function}
-     */
-    function cloner(obj) {
-        obj = objVal(obj);
-        return function cloned() {
-            return extendDeep({}, obj);
-        };
-    }
-
-    /**
      * Apply `options` to the `defaults` object. Only copies over properties with keys already defined in the `defaults` object.
      * @param defaults
      * @param {...object} options - Options
@@ -978,16 +970,6 @@
         }
 
         return !!val && (val !== '0'); //&& ((typeof val !== 'object') || !((p = isPlainObj(val)) || isArrayLike(val)) || (p ? hasEnumerable(val) : (val.length > 0)));
-    }
-
-    /**
-     * Port of PHP's empty() function
-     * @param val
-     * @returns { Boolean }
-     */
-    function isEmpty(val) {
-        var p;
-        return !!val && (val !== '0'); // && ((typeof val !== 'object') || !((p = isPlainObj(val)) || isArrayLike(val)) || (p ? hasEnumerable(val) : (val.length > 0)));
     }
 
     /**
@@ -1294,7 +1276,7 @@
         _onced[flag] || (_onced[flag] = {});
 
         return objects.filter(function (obj) {
-            var uid = $cms.uid(obj);
+            var uid = $util.uid(obj);
             if (_onced[flag][uid] === true) {
                 return false;
             }
@@ -1316,7 +1298,7 @@
         }
 
         return objects.filter(function (obj) {
-            var uid = $cms.uid(obj);
+            var uid = $util.uid(obj);
             return _onced[flag][uid] === true;
         });
     }
@@ -1333,7 +1315,7 @@
         }
 
         objects.forEach(function (obj) {
-            var uid = $cms.uid(obj);
+            var uid = $util.uid(obj);
             delete _onced[flag][uid];
         });
     }
@@ -1533,7 +1515,7 @@
 
         if (sheetEl == null) {
             sheetEl = document.createElement('link');
-            sheetEl.id = 'css-' + ((sheetName != null) ? sheetName : $cms.random());
+            sheetEl.id = 'css-' + ((sheetName != null) ? sheetName : $util.random());
             sheetEl.rel = 'stylesheet';
             sheetEl.nonce = $cms.getCspNonce();
             sheetEl.href = sheetHref;
@@ -1611,7 +1593,7 @@
         if (scriptEl == null) {
             scriptEl = document.createElement('script');
             scriptEl.defer = true;
-            scriptEl.id = 'javascript-' + ((scriptName != null) ? scriptName : $cms.random());
+            scriptEl.id = 'javascript-' + ((scriptName != null) ? scriptName : $util.random());
             scriptEl.nonce = $cms.getCspNonce();
             scriptEl.src = scriptSrc;
             document.body.appendChild(scriptEl);
@@ -1849,7 +1831,7 @@
      *  Web animations API support (https://developer.mozilla.org/de/docs/Web/API/Element/animate)
      * @type {boolean}
      */
-    $dom.support.animation = ('animate' in emptyEl);
+    $dom.support.animation = ('animate' in document.createElement('div'));
     /**
      * If the browser has support for an input[type=???]
      */
@@ -1870,9 +1852,9 @@
                 inputEl.style.cssText = 'position:absolute;visibility:hidden;';
 
                 if ((type === 'range') && (inputEl.style.WebkitAppearance !== undefined)) {
-                    docEl.appendChild(inputEl);
+                    document.documentElement.appendChild(inputEl);
                     bool = (getComputedStyle(inputEl).WebkitAppearance !== 'textfield') && (inputEl.offsetHeight !== 0);
-                    docEl.removeChild(inputEl);
+                    document.documentElement.removeChild(inputEl);
                 } else if ((type === 'url') || (type === 'email')) {
                     bool = inputEl.checkValidity && (inputEl.checkValidity() === false);
                 } else {
@@ -1905,6 +1887,8 @@
 
     /**@namespace $dom*/
     $dom = extendDeep($dom, /**@lends $dom*/{
+        /**@method*/
+        nodeType: nodeType,
         /**
          * @param windowOrNodeOrSelector
          * @returns { Window|Node }
@@ -1993,7 +1977,7 @@
             prefix = strVal(prefix) || 'rand-';
             
             if (el.id === '') {
-                el.id = prefix + $cms.random();
+                el.id = prefix + $util.random();
             }
             
             return el.id;
@@ -2238,7 +2222,7 @@
             }
 
             if (!Array.isArray(resourceEls)) {
-                $cms.fatal('$dom.waitForResources(): Argument 1 must be of type {array|HTMLElement}, "' + typeName(resourceEls) + '" provided.');
+                $util.fatal('$dom.waitForResources(): Argument 1 must be of type {array|HTMLElement}, "' + typeName(resourceEls) + '" provided.');
                 return Promise.reject();
             }
 
@@ -2246,12 +2230,12 @@
                 return Promise.resolve();
             }
 
-            //$cms.inform('$dom.waitForResources(): Waiting for resources', resourceEls);
+            //$util.inform('$dom.waitForResources(): Waiting for resources', resourceEls);
 
             var resourcesToLoad = new Set();
             resourceEls.forEach(function (el) {
                 if (!isEl(el)) {
-                    $cms.fatal('$dom.waitForResources(): Invalid item of type "' + typeName(resourceEls) + '" in the `resourceEls` parameter.');
+                    $util.fatal('$dom.waitForResources(): Invalid item of type "' + typeName(resourceEls) + '" in the `resourceEls` parameter.');
                     return;
                 }
 
@@ -2295,9 +2279,9 @@
                     }
 
                     if (event.type === 'load') {
-                        //$cms.inform('$dom.waitForResources(): Resource loaded successfully', loadedEl);
+                        //$util.inform('$dom.waitForResources(): Resource loaded successfully', loadedEl);
                     } else {
-                        $cms.fatal('$dom.waitForResources(): Resource failed to load', loadedEl);
+                        $util.fatal('$dom.waitForResources(): Resource failed to load', loadedEl);
                     }
 
                     resourcesToLoad.delete(loadedEl);
@@ -2650,7 +2634,8 @@
     };
     
     $dom.matches = (function () {
-        var _matchesFnName = ('matches' in emptyEl) ? 'matches'
+        var emptyEl = document.createElement('div'),
+            matchesFnName = ('matches' in emptyEl) ? 'matches'
             : ('webkitMatchesSelector' in emptyEl) ? 'webkitMatchesSelector'
                 : ('msMatchesSelector' in emptyEl) ? 'msMatchesSelector'
                     : 'matches';
@@ -2664,7 +2649,7 @@
         return function matches(el, selector) {
             el = $dom.elArg(el);
 
-            return ((selector === '*') || el[_matchesFnName](selector));
+            return ((selector === '*') || el[matchesFnName](selector));
         };
     }());
 
@@ -3284,7 +3269,7 @@
         el = $dom.elArg(el);
         duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
 
-        var uid = $cms.uid(el);
+        var uid = $util.uid(el);
         _animationQueue[uid] || (_animationQueue[uid] = Promise.resolve());
         return _animationQueue[uid] = _animationQueue[uid].then(doFadeIn);
         
@@ -3330,7 +3315,7 @@
         el = $dom.elArg(el);
         duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
 
-        var uid = $cms.uid(el);
+        var uid = $util.uid(el);
         _animationQueue[uid] || (_animationQueue[uid] = Promise.resolve());
         return _animationQueue[uid] = _animationQueue[uid].then(doFadeOut);
         
@@ -3364,7 +3349,7 @@
         duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
         opacity = numVal(opacity);
 
-        var uid = $cms.uid(el);
+        var uid = $util.uid(el);
         _animationQueue[uid] || (_animationQueue[uid] = Promise.resolve());
         return _animationQueue[uid] = _animationQueue[uid].then(doFadeTo);
         
@@ -3398,7 +3383,7 @@
         el = $dom.elArg(el);
         duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
 
-        var uid = $cms.uid(el);
+        var uid = $util.uid(el);
         _animationQueue[uid] || (_animationQueue[uid] = Promise.resolve());
         return _animationQueue[uid] = _animationQueue[uid].then(doFadeToggle);
         
@@ -3424,7 +3409,7 @@
         el = $dom.elArg(el);
         duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
 
-        var uid = $cms.uid(el);
+        var uid = $util.uid(el);
         _animationQueue[uid] || (_animationQueue[uid] = Promise.resolve());
         return _animationQueue[uid] = _animationQueue[uid].then(doSlideDown);
         
@@ -3495,7 +3480,7 @@
         el = $dom.elArg(el);
         duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
 
-        var uid = $cms.uid(el);
+        var uid = $util.uid(el);
         _animationQueue[uid] || (_animationQueue[uid] = Promise.resolve());
         return _animationQueue[uid] = _animationQueue[uid].then(doSlideUp);
         
@@ -3553,7 +3538,7 @@
         el = $dom.elArg(el);
         duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
 
-        var uid = $cms.uid(el);
+        var uid = $util.uid(el);
         _animationQueue[uid] || (_animationQueue[uid] = Promise.resolve());
         return _animationQueue[uid] = _animationQueue[uid].then(doSlideToggle);
         
@@ -4250,7 +4235,7 @@
      * @memberof $dom
      */
     $dom.registerMouseListener = function registerMouseListener() {
-        $dom.registerMouseListener = noop; // ensure this function is only executed once
+        $dom.registerMouseListener = function () {}; // ensure this function is only executed once
 
         document.documentElement.addEventListener('mousemove', function (e) {
             window.currentMouseX = getMouseX(e);
@@ -4632,7 +4617,7 @@
             e.preventDefault();
 
             // Any parameters matching a pattern must be sent in the URL to the AJAX block call
-            $cms.eachIter(hrefUrl.searchParams.entries(), function (param) {
+            eachIter(hrefUrl.searchParams.entries(), function (param) {
                 var paramName = param[0],
                     paramValue = param[1];
 
@@ -4762,9 +4747,9 @@
             if (isObj($cms.behaviors[name]) && (typeof $cms.behaviors[name].attach === 'function')) {
                 try {
                     ret = $cms.behaviors[name].attach(context, settings);
-                    //$cms.inform('$cms.attachBehaviors(): attached behavior "' + name + '" to context', context);
+                    //$util.inform('$cms.attachBehaviors(): attached behavior "' + name + '" to context', context);
                 } catch (e) {
-                    $cms.fatal('$cms.attachBehaviors(): Error while attaching behavior "' + name + '"  to', context, '\n', e);
+                    $util.fatal('$cms.attachBehaviors(): Error while attaching behavior "' + name + '"  to', context, '\n', e);
                 }
             }
 
@@ -4805,9 +4790,9 @@
             if (isObj($cms.behaviors[name]) && (typeof $cms.behaviors[name].detach === 'function')) {
                 try {
                     $cms.behaviors[name].detach(context, settings, trigger);
-                    //$cms.inform('$cms.detachBehaviors(): detached behavior "' + name + '" from context', context);
+                    //$util.inform('$cms.detachBehaviors(): detached behavior "' + name + '" from context', context);
                 } catch (e) {
-                    $cms.fatal('$cms.detachBehaviors(): Error while detaching behavior \'' + name + '\' from', context, '\n', e);
+                    $util.fatal('$cms.detachBehaviors(): Error while detaching behavior \'' + name + '\' from', context, '\n', e);
                 }
             }
         }
@@ -4994,7 +4979,7 @@
 
             var okay = true;
             try {
-                $cms.inform('Beacon', 'send', 'event', category, action);
+                $util.inform('Beacon', 'send', 'event', category, action);
 
                 window.ga('send', 'event', category, action, { transport: 'beacon', hitCallback: callback});
             } catch(err) {
@@ -5004,7 +4989,7 @@
             if (okay) {
                 if (el) { // pass as null if you don't want this
                     setTimeout(function () {
-                        $cms.navigate(el);
+                        $util.navigate(el);
                     }, 100);
                 }
 
@@ -5095,7 +5080,7 @@
      */
     function executeJsFunctionCalls(functionCallsArray, thisRef) {
         if (!Array.isArray(functionCallsArray)) {
-            $cms.fatal('$cms.executeJsFunctionCalls(): Argument 1 must be an array, "' + typeName(functionCallsArray) + '" passed');
+            $util.fatal('$cms.executeJsFunctionCalls(): Argument 1 must be an array, "' + typeName(functionCallsArray) + '" passed');
             return;
         }
 
@@ -5107,7 +5092,7 @@
             }
 
             if (!Array.isArray(func) || (func.length < 1)) {
-                $cms.fatal('$cms.executeJsFunctionCalls(): Invalid function call format', func);
+                $util.fatal('$cms.executeJsFunctionCalls(): Invalid function call format', func);
                 return;
             }
 
@@ -5117,7 +5102,7 @@
             if (typeof $cms.functions[funcName] === 'function') {
                 $cms.functions[funcName].apply(thisRef, args);
             } else {
-                $cms.fatal('$cms.executeJsFunctionCalls(): Function not found: $cms.functions.' + funcName);
+                $util.fatal('$cms.executeJsFunctionCalls(): Function not found: $cms.functions.' + funcName);
             }
         });
     }
@@ -5221,7 +5206,7 @@
 
         switch (code) {
             case 'touch_enabled':
-                return ('ontouchstart' in docEl);
+                return ('ontouchstart' in document.documentElement);
             case 'simplified_attachments_ui':
                 return Boolean($cms.configOption('simplified_attachments_ui') && $cms.configOption('complex_uploader'));
             case 'non_concurrent':
@@ -5262,7 +5247,7 @@
      */
     function View(params, viewOptions) {
         /** @member {number}*/
-        this.uid = $cms.uid(this);
+        this.uid = $util.uid(this);
         /** @member {string} */
         this.tagName = 'div';
         /** @member { HTMLElement } */
@@ -5406,7 +5391,7 @@
          * @method
          */
         delegate: function (eventName, selector, listener) {
-            //$cms.inform('$cms.View#delegate(): delegating event "' + eventName + '" for selector "' + selector + '" with listener', listener, 'and view', this);
+            //$util.inform('$cms.View#delegate(): delegating event "' + eventName + '" for selector "' + selector + '" with listener', listener, 'and view', this);
             $dom.on(this.el, (eventName + '.delegateEvents' + uid(this)), selector, listener);
             return this;
         },
@@ -5701,7 +5686,7 @@
         element = $dom.$id('t_' + tab);
         
         if (!element) {
-            $cms.fatal('$cms.ui.selectTab(): "#t_' + tab + '" element not found');
+            $util.fatal('$cms.ui.selectTab(): "#t_' + tab + '" element not found');
         }
         
         for (i = 0; i < element.parentElement.children.length; i++) {
@@ -5864,7 +5849,7 @@
                 tooltipEl.style.overflow = 'auto';
             }
             tooltipEl.style.position = 'absolute';
-            tooltipEl.id = 't_' + $cms.random();
+            tooltipEl.id = 't_' + $util.random();
             el.tooltipId = tooltipEl.id;
             $cms.ui.repositionTooltip(el, event, bottom, true, tooltipEl, forceWidth);
             document.body.appendChild(tooltipEl);
@@ -6394,7 +6379,7 @@
             return;
         }
 
-        var uid = $cms.uid(btn),
+        var uid = $util.uid(btn),
             timeout, interval;
 
         setTimeout(function () {
@@ -6462,7 +6447,7 @@
         permanent = Boolean(permanent);
 
         buttons.forEach(function (btn) {
-            if (!btn.disabled && !tempDisabledButtons[$cms.uid(btn)]/*We do not want to interfere with other code potentially operating*/) {
+            if (!btn.disabled && !tempDisabledButtons[$util.uid(btn)]/*We do not want to interfere with other code potentially operating*/) {
                 $cms.ui.disableButton(btn, permanent);
             }
         });
@@ -6473,7 +6458,7 @@
         var buttons = $dom.$$('input[accesskey="u"], button[accesskey="u"], input[accesskey="p"], button[accesskey="p"]');
         
         buttons.forEach(function (btn) {
-            if (btn.disabled && !tempDisabledButtons[$cms.uid(btn)]/*We do not want to interfere with other code potentially operating*/) { 
+            if (btn.disabled && !tempDisabledButtons[$util.uid(btn)]/*We do not want to interfere with other code potentially operating*/) { 
                 btn.style.cursor = '';
                 btn.disabled = false;
             }
@@ -6709,7 +6694,7 @@
         ModalWindow.base(this, 'constructor', arguments);
     }
 
-    $cms.inherits(ModalWindow, $cms.View, /**@lends $cms.views.ModalWindow#*/ {
+    $util.inherits(ModalWindow, $cms.View, /**@lends $cms.views.ModalWindow#*/ {
         events: function events() {
             return {
                 'click .js-onclick-do-option-yes': 'doOptionYes',
@@ -7527,10 +7512,10 @@
                             networkDownAlerted = true;
                         }
                     } else {
-                        $cms.fatal('$cms.doAjaxRequest(): {!PROBLEM_RETRIEVING_XML;^}\n' + xhr.status + ': ' + xhr.statusText + '.', xhr);
+                        $util.fatal('$cms.doAjaxRequest(): {!PROBLEM_RETRIEVING_XML;^}\n' + xhr.status + ': ' + xhr.statusText + '.', xhr);
                     }
                 } catch (e) {
-                    $cms.fatal('$cms.doAjaxRequest(): {!PROBLEM_RETRIEVING_XML;^}', e); // This is probably clicking back
+                    $util.fatal('$cms.doAjaxRequest(): {!PROBLEM_RETRIEVING_XML;^}', e); // This is probably clicking back
                 }
             }
         }
@@ -7608,7 +7593,7 @@
                 if ((xhr.responseText !== '') && (xhr.responseText.replace(/[ \t\n\r]/g, '') !== '0'/*some cache layers may change blank to zero*/)) {
                     if (xhr.responseText !== 'false') {
                         if (xhr.responseText.length > 1000) {
-                            //$cms.inform('$cms.form.doAjaxFieldTest()', 'xhr.responseText:', xhr.responseText);
+                            //$util.inform('$cms.form.doAjaxFieldTest()', 'xhr.responseText:', xhr.responseText);
                             $cms.ui.alert(xhr.responseText, '{!ERROR_OCCURRED;^}', true);
                         } else {
                             $cms.ui.alert(xhr.responseText);
@@ -7652,21 +7637,21 @@
         // Implementation for [data-view]
         initializeViews: {
             attach: function (context) {
-                $cms.once($dom.$$$(context, '[data-view]'), 'behavior.initializeViews').forEach(function (el) {
+                $util.once($dom.$$$(context, '[data-view]'), 'behavior.initializeViews').forEach(function (el) {
                     var params = objVal($dom.data(el, 'viewParams')),
                         viewName = el.dataset.view,
                         viewOptions = { el: el };
 
                     if (typeof $cms.views[viewName] !== 'function') {
-                        $cms.fatal('$cms.behaviors.initializeViews.attach(): Missing view constructor "' + viewName + '" for', el);
+                        $util.fatal('$cms.behaviors.initializeViews.attach(): Missing view constructor "' + viewName + '" for', el);
                         return;
                     }
 
                     try {
                         $dom.data(el).viewObject = new $cms.views[viewName](params, viewOptions);
-                        //$cms.inform('$cms.behaviors.initializeViews.attach(): Initialized view "' + el.dataset.view + '" for', el, view);
+                        //$util.inform('$cms.behaviors.initializeViews.attach(): Initialized view "' + el.dataset.view + '" for', el, view);
                     } catch (ex) {
-                        $cms.fatal('$cms.behaviors.initializeViews.attach(): Exception thrown while initializing view "' + el.dataset.view + '" for', el, ex);
+                        $util.fatal('$cms.behaviors.initializeViews.attach(): Exception thrown while initializing view "' + el.dataset.view + '" for', el, ex);
                     }
                 });
             }
@@ -7675,20 +7660,20 @@
         // Implementation for [data-tpl]
         initializeTemplates: {
             attach: function (context) {
-                $cms.once($dom.$$$(context, '[data-tpl]'), 'behavior.initializeTemplates').forEach(function (el) {
+                $util.once($dom.$$$(context, '[data-tpl]'), 'behavior.initializeTemplates').forEach(function (el) {
                     var template = el.dataset.tpl,
                         params = objVal($dom.data(el, 'tplParams'));
 
                     if (typeof $cms.templates[template] !== 'function') {
-                        $cms.fatal('$cms.behaviors.initializeTemplates.attach(): Missing template function "' + template + '" for', el);
+                        $util.fatal('$cms.behaviors.initializeTemplates.attach(): Missing template function "' + template + '" for', el);
                         return;
                     }
 
                     try {
                         $cms.templates[template].call(el, params, el);
-                        //$cms.inform('$cms.behaviors.initializeTemplates.attach(): Initialized template "' + template + '" for', el);
+                        //$util.inform('$cms.behaviors.initializeTemplates.attach(): Initialized template "' + template + '" for', el);
                     } catch (ex) {
-                        $cms.fatal('$cms.behaviors.initializeTemplates.attach(): Exception thrown while calling the template function "' + template + '" for', el, ex);
+                        $util.fatal('$cms.behaviors.initializeTemplates.attach(): Exception thrown while calling the template function "' + template + '" for', el, ex);
                     }
                 });
             }
@@ -7696,7 +7681,7 @@
 
         initializeAnchors: {
             attach: function (context) {
-                var anchors = $cms.once($dom.$$$(context, 'a'), 'behavior.initializeAnchors'),
+                var anchors = $util.once($dom.$$$(context, 'a'), 'behavior.initializeAnchors'),
                     hasBaseEl = !!document.querySelector('base');
 
                 anchors.forEach(function (anchor) {
@@ -7730,7 +7715,7 @@
 
         initializeForms: {
             attach: function (context) {
-                var forms = $cms.once($dom.$$$(context, 'form'), 'behavior.initializeForms');
+                var forms = $util.once($dom.$$$(context, 'form'), 'behavior.initializeForms');
 
                 forms.forEach(function (form) {
                     // HTML editor
@@ -7781,7 +7766,7 @@
 
         initializeInputs: {
             attach: function (context) {
-                var inputs = $cms.once($dom.$$$(context, 'input'), 'behavior.initializeInputs');
+                var inputs = $util.once($dom.$$$(context, 'input'), 'behavior.initializeInputs');
 
                 inputs.forEach(function (input) {
                     if (input.type === 'checkbox') {
@@ -7796,7 +7781,7 @@
 
         initializeTables: {
             attach: function attach(context) {
-                var tables = $cms.once($dom.$$$(context, 'table'), 'behavior.initializeTables');
+                var tables = $util.once($dom.$$$(context, 'table'), 'behavior.initializeTables');
 
                 tables.forEach(function (table) {
                     // Responsive table prep work
@@ -7838,7 +7823,7 @@
 
         columnHeightBalancing: {
             attach: function attach(context) {
-                var cols = $cms.once($dom.$$$(context, '.col_balance_height'), 'behavior.columnHeightBalancing'),
+                var cols = $util.once($dom.$$$(context, '.col_balance_height'), 'behavior.columnHeightBalancing'),
                     i, max, j, height;
 
                 for (i = 0; i < cols.length; i++) {
@@ -7863,7 +7848,7 @@
                     return;
                 }
 
-                $cms.once($dom.$$$(context, 'img:not([data-cms-rich-tooltip])'), 'behavior.imageTooltips').forEach(function (img) {
+                $util.once($dom.$$$(context, 'img:not([data-cms-rich-tooltip])'), 'behavior.imageTooltips').forEach(function (img) {
                     convertTooltip(img);
                 });
             }
@@ -7883,7 +7868,7 @@
         // Implementation for [data-js-function-calls]
         jsFunctionCalls: {
             attach: function (context) {
-                var els = $cms.once($dom.$$$(context, '[data-js-function-calls]'), 'behavior.jsFunctionCalls');
+                var els = $util.once($dom.$$$(context, '[data-js-function-calls]'), 'behavior.jsFunctionCalls');
 
                 els.forEach(function (el) {
                     var jsFunctionCalls = $dom.data(el, 'jsFunctionCalls');
@@ -7908,7 +7893,7 @@
                 }
 
                 $cms.requireJavascript(['jquery', 'select2']).then(function () {
-                    var els = $cms.once($dom.$$$(context, '[data-cms-select2]'), 'behavior.select2Plugin');
+                    var els = $util.once($dom.$$$(context, '[data-cms-select2]'), 'behavior.select2Plugin');
 
                     // Select2 plugin hook
                     els.forEach(function (el) {
@@ -7924,7 +7909,7 @@
         // Implementation for img[data-gd-text]
         gdTextImages: {
             attach: function (context) {
-                var els = $cms.once($dom.$$$(context, 'img[data-gd-text]'), 'behavior.gdTextImages');
+                var els = $util.once($dom.$$$(context, 'img[data-gd-text]'), 'behavior.gdTextImages');
 
                 els.forEach(function (img) {
                     gdImageTransform(img);
@@ -7975,7 +7960,7 @@
         // Implementation for [data-toggleable-tray]
         toggleableTray: {
             attach: function (context) {
-                var els = $cms.once($dom.$$$(context, '[data-toggleable-tray]'), 'behavior.toggleableTray');
+                var els = $util.once($dom.$$$(context, '[data-toggleable-tray]'), 'behavior.toggleableTray');
 
                 els.forEach(function (el) {
                     var options = $dom.data(el, 'toggleableTray') || {};
@@ -8035,7 +8020,7 @@
         // Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent
         if ($cms.configOption('cookie_notice') && ($cms.runningScript() === 'index')) {
             window.cookieconsent_options = {
-                message: $cms.format('{!COOKIE_NOTICE;}', [$cms.getSiteName()]),
+                message: $util.format('{!COOKIE_NOTICE;}', [$cms.getSiteName()]),
                 dismiss: '{!INPUTSYSTEM_OK;}',
                 learnMore: '{!READ_MORE;}',
                 link: '{$PAGE_LINK;,:privacy}',
@@ -8130,7 +8115,7 @@
         }
     };
 
-    $cms.inherits($cms.views.Global, $cms.View, /**@lends $cms.views.Global#*/{
+    $util.inherits($cms.views.Global, $cms.View, /**@lends $cms.views.Global#*/{
         events: function () {
             return {
                 // Show a confirmation dialog for clicks on a link (is higher up for priority)
@@ -8289,7 +8274,7 @@
         // Implementation for [data-cms-confirm-click="<Message>"]
         confirmClick: function (e, clicked) {
             var view = this, message,
-                uid = $cms.uid(clicked);
+                uid = $util.uid(clicked);
 
             // Stores an element's `uid`
             this._confirmedClick || (this._confirmedClick = null);
@@ -8357,7 +8342,7 @@
 
             // Make sure a child <a> element wasn't clicked and default wasn't prevented
             if (!anchorClicked && !e.defaultPrevented) {
-                $cms.navigate(el);
+                $util.navigate(el);
             }
         },
 
@@ -8535,7 +8520,7 @@
                 //arguments: el, event, tooltip, width, pic, height, bottom, no_delay, lights_off, force_width, win, haveLinks
                 $cms.ui.activateTooltip.apply(undefined, args);
             } catch (ex) {
-                $cms.fatal('$cms.views.Global#mouseoverActivateTooltip(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
+                $util.fatal('$cms.views.Global#mouseoverActivateTooltip(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
             }
         },
 
@@ -8549,7 +8534,7 @@
                 //arguments: el, event, tooltip, width, pic, height, bottom, no_delay, lights_off, force_width, win, haveLinks
                 $cms.ui.activateTooltip.apply(undefined, args);
             } catch (ex) {
-                $cms.fatal('$cms.views.Global#focusActivateTooltip(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
+                $util.fatal('$cms.views.Global#focusActivateTooltip(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
             }
         },
 
@@ -8577,7 +8562,7 @@
             try {
                 $cms.ui.activateTooltip.apply(undefined, args);
             } catch (ex) {
-                $cms.fatal('$cms.views.Global#activateRichTooltip(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
+                $util.fatal('$cms.views.Global#activateRichTooltip(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
             }
         },
 
@@ -8624,12 +8609,12 @@
                 type = strVal(args[0]),
                 fieldName = strVal(args[1]),
                 tag = strVal(args[2]),
-                fnName = 'doInput' + $cms.ucFirst($cms.camelCase(type));
+                fnName = 'doInput' + $util.ucFirst($util.camelCase(type));
 
             if (typeof window[fnName] === 'function') {
                 window[fnName](fieldName, tag);
             } else {
-                $cms.fatal('$cms.views.Global#clickDoInput(): Function not found "window.' + fnName + '()"');
+                $util.fatal('$cms.views.Global#clickDoInput(): Function not found "window.' + fnName + '()"');
             }
         },
 
@@ -8674,7 +8659,7 @@
             }
             url += '#composrcms';
 
-            var SOFTWARE_CHAT_EXTRA = $cms.format('{!SOFTWARE_CHAT_EXTRA;^}', [$cms.filter.html(window.location.href.replace($cms.baseUrl(), 'http://baseurl'))]);
+            var SOFTWARE_CHAT_EXTRA = $util.format('{!SOFTWARE_CHAT_EXTRA;^}', [$cms.filter.html(window.location.href.replace($cms.baseUrl(), 'http://baseurl'))]);
             var html = /** @lang HTML */' \
                 <div class="software_chat"> \
                     <h2>{!CMS_COMMUNITY_HELP}</h2> \
@@ -9076,7 +9061,7 @@
         this.contentsEl = this.$('.js-helper-panel-contents');
     }
 
-    $cms.inherits(GlobalHelperPanel, $cms.View, /**@lends GlobalHelperPanel#*/{
+    $util.inherits(GlobalHelperPanel, $cms.View, /**@lends GlobalHelperPanel#*/{
         events: function () {
             return {
                 'click .js-click-toggle-helper-panel': 'toggleHelperPanel'
@@ -9150,7 +9135,7 @@
         }
     }
 
-    $cms.inherits(Menu, $cms.View);
+    $util.inherits(Menu, $cms.View);
 
     // Templates:
     // MENU_dropdown.tpl
@@ -9165,7 +9150,7 @@
         DropdownMenu.base(this, 'constructor', arguments);
     }
 
-    $cms.inherits(DropdownMenu, Menu, /**@lends DropdownMenu#*/{
+    $util.inherits(DropdownMenu, Menu, /**@lends DropdownMenu#*/{
         events: function () {
             return {
                 'mousemove .js-mousemove-timer-pop-up-menu': 'timerPopUpMenu',
@@ -9264,7 +9249,7 @@
         PopupMenu.base(this, 'constructor', arguments);
     }
 
-    $cms.inherits(PopupMenu, Menu, /**@lends PopupMenu#*/{
+    $util.inherits(PopupMenu, Menu, /**@lends PopupMenu#*/{
         events: function () {
             return {
                 'click .js-click-unset-active-menu': 'unsetActiveMenu',
@@ -9294,7 +9279,7 @@
         this.popup = this.menu + '_pexpand_' + this.rand;
     }
 
-    $cms.inherits(PopupMenuBranch, $cms.View, /**@lends PopupMenuBranch#*/{
+    $util.inherits(PopupMenuBranch, $cms.View, /**@lends PopupMenuBranch#*/{
         events: function () {
             return {
                 'focus .js-focus-pop-up-menu': 'popUpMenu',
@@ -9322,7 +9307,7 @@
         TreeMenu.base(this, 'constructor', arguments);
     }
 
-    $cms.inherits(TreeMenu, Menu, /**@lends TreeMenu#*/{
+    $util.inherits(TreeMenu, Menu, /**@lends TreeMenu#*/{
         events: function () {
             return {
                 'click [data-menu-tree-toggle]': 'toggleMenu'
@@ -9350,7 +9335,7 @@
         this.menuContentEl = this.$('.js-el-menu-content');
     }
 
-    $cms.inherits(MobileMenu, Menu, /**@lends $cms.views.MobileMenu#*/{
+    $util.inherits(MobileMenu, Menu, /**@lends $cms.views.MobileMenu#*/{
         events: function () {
             return {
                 'click .js-click-toggle-content': 'toggleContent',
@@ -9407,7 +9392,7 @@
         SelectMenu.base(this, 'constructor', arguments);
     }
 
-    $cms.inherits(SelectMenu, Menu, /**@lends SelectMenu#*/{
+    $util.inherits(SelectMenu, Menu, /**@lends SelectMenu#*/{
         events: function () {
             return {
                 'change .js-change-redirect-to-value': 'redirect'
@@ -9954,14 +9939,14 @@
             function checkPassword(form, fieldName, fieldLabel) {
                 // Check matches with confirm field
                 if (form.elements[fieldName + '_confirm'].value !== form.elements[fieldName].value) {
-                    window.alert($cms.format('{!PASSWORDS_DO_NOT_MATCH;^/}', [fieldLabel]));
+                    window.alert($util.format('{!PASSWORDS_DO_NOT_MATCH;^/}', [fieldLabel]));
                     return false;
                 }
 
                 // Check does not match database password
                 if (form.elements['db_site_password'] != null) {
                     if ((form.elements[fieldName].value !== '') && (form.elements[fieldName].value === form.elements['db_site_password'].value)) {
-                        window.alert($cms.format('{!PASSWORDS_DO_NOT_REUSE;^/}', [fieldLabel]));
+                        window.alert($util.format('{!PASSWORDS_DO_NOT_REUSE;^/}', [fieldLabel]));
                         return false;
                     }
                 }
@@ -9985,7 +9970,7 @@
                 }
 
                 if (!isSecurePassword) {
-                    return window.confirm($cms.format('{!PASSWORD_INSECURE;^}', [fieldLabel])) && window.confirm($cms.format('{!CONFIRM_REALLY;^} {!PASSWORD_INSECURE;^}', [fieldLabel]));
+                    return window.confirm($util.format('{!PASSWORD_INSECURE;^}', [fieldLabel])) && window.confirm($util.format('{!CONFIRM_REALLY;^} {!PASSWORD_INSECURE;^}', [fieldLabel]));
                 }
 
                 return true;
@@ -10052,7 +10037,7 @@
         }
     }
 
-    $cms.inherits(ToggleableTray, $cms.View, /**@lends $cms.views.ToggleableTray#*/{
+    $util.inherits(ToggleableTray, $cms.View, /**@lends $cms.views.ToggleableTray#*/{
         /**@method*/
         events: function () {
             return {
@@ -10119,7 +10104,7 @@
         
         // TODO: We have expcon and expcon2 theme images, for use during animation. Are we removing this? If so those theme images should be deleted fully.
 
-        if ($cms.isPlainObj(elOrOptions)) {
+        if ($util.isPlainObj(elOrOptions)) {
             options = elOrOptions;
             el =  options.el;
             animate = $cms.configOption('enable_animations') ? boolVal(options.animate, true) : false;
@@ -10459,7 +10444,7 @@
         var max = params.max,
             urlStub = params.urlStub,
             numPages = params.numPages,
-            message = $cms.format('{!javascript:ENTER_PAGE_NUMBER;^}', [numPages]);
+            message = $util.format('{!javascript:ENTER_PAGE_NUMBER;^}', [numPages]);
 
         $dom.on(link, 'click', function () {
             $cms.ui.prompt(message, numPages, function (res) {
@@ -10469,7 +10454,7 @@
 
                 res = parseInt(res);
                 if ((res >= 1) && (res <= numPages)) {
-                    $cms.navigate(urlStub + (urlStub.includes('?') ? '&' : '?') + 'start=' + (max * (res - 1)));
+                    $util.navigate(urlStub + (urlStub.includes('?') ? '&' : '?') + 'start=' + (max * (res - 1)));
                 }
             }, '{!JUMP_TO_PAGE;^}');
         });
@@ -10486,7 +10471,7 @@
             var clickedLink = $dom.closest(e.target, 'a', container);
 
             if (!clickedLink) {
-                $cms.navigate(url, target);
+                $util.navigate(url, target);
                 return;
             }
 
@@ -10498,7 +10483,7 @@
                         append += url.includes('?') ? '&' : '?';
                         append += autoAdd + '=1';
                     }
-                    $cms.navigate(url + append, target);
+                    $util.navigate(url + append, target);
                 });
                 return;
             }
@@ -10507,7 +10492,7 @@
                 e.preventDefault();
                 $cms.ui.confirm(warning, function (answer) {
                     if (answer) {
-                        $cms.navigate(url, target);
+                        $util.navigate(url, target);
                     }
                 });
             }
@@ -10554,7 +10539,7 @@
                                 link.href += autoAdd + '=1';
                             }
 
-                            $cms.navigate(link);
+                            $util.navigate(link);
                         }
                     );
                 };
@@ -10609,7 +10594,7 @@
                 infiniteScrollFunc();
             }            
         } else {
-            $cms.inform('$cms.templates.ajaxPagination(): Wrapper element not found.');
+            $util.inform('$cms.templates.ajaxPagination(): Wrapper element not found.');
         }
     };
 
@@ -10706,14 +10691,14 @@
             var response = strVal(xhr.responseText);
             if (response === '1') {
                 clearInterval(window.ajaxScreenDetectInterval);
-                $cms.inform('detectChange(): Change detected');
+                $util.inform('detectChange(): Change detected');
                 callback();
             }
         });
     }
 
     function detectedChange() {
-        $cms.inform('detectedChange(): Change notification running');
+        $util.inform('detectedChange(): Change notification running');
 
         try {
             window.focus();
@@ -10751,7 +10736,7 @@
     };
 
     function openLinkAsOverlay(options) {
-        options = $cms.defaults({
+        options = $util.defaults({
             width: '800',
             height: 'auto',
             target: '_top',

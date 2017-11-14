@@ -64,7 +64,7 @@
                     '{!facebook:HOW_TO_SYNDICATE_DESCRIPTION;^}',
                     ['{!INPUTSYSTEM_CANCEL;^}', '{!facebook:FACEBOOK_PAGE;^}', '{!facebook:FACEBOOK_WALL;^}'],
                     '{!facebook:HOW_TO_SYNDICATE;^}',
-                    $cms.format('{!facebook:SYNDICATE_TO_OWN_WALL;^}', [$cms.getSiteName()]),
+                    $util.format('{!facebook:SYNDICATE_TO_OWN_WALL;^}', [$cms.getSiteName()]),
                     function (val) {
                         if (val != '{!INPUTSYSTEM_CANCEL;^}') {
                             fbInput.value = (val == '{!facebook:FACEBOOK_PAGE;^}') ? '1' : '0';
@@ -100,7 +100,7 @@
                     // Must have JS FB login before can instruct to logout. Will not re-auth -- we know we have authed due to FB_CONNECT_LOGGED_OUT being set
                     if (justLoggedOut) {
                         window.FB.logout(function (response) {
-                            $cms.inform('Facebook: Logged out.');
+                            $util.inform('Facebook: Logged out.');
                         });
                     }
 
@@ -117,7 +117,7 @@
                         if (forms[i].action.includes(logoutPageUrl)) {
                             forms[i].addEventListener('submit', (function (logoutLink) {
                                 window.FB.logout(function (response) {
-                                    $cms.inform('Facebook: Logged out.');
+                                    $util.inform('Facebook: Logged out.');
                                     window.location = logoutLink;
                                 });
                                 // We cancel the form submit, as we need to wait for the AJAX request to happen

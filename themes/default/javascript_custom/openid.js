@@ -188,7 +188,7 @@ Martin Conte Mac Donell <Reflejo@gmail.com>
     $cms.defineBehaviors({
         initializeJqueryOpenid: {
             attach: function (context) {
-                $cms.once($cms.dom.$$$(context, '[data-jquery-openid]'), 'behavior.initializeJqueryOpenid').forEach(function (openidEl) {
+                $util.once($cms.dom.$$$(context, '[data-jquery-openid]'), 'behavior.initializeJqueryOpenid').forEach(function (openidEl) {
                     var options = objVal($cms.dom.data(openidEl, 'jqueryOpenid'));
 
                     window.jQuery(openidEl).openid(options);

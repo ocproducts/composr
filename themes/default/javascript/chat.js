@@ -21,7 +21,7 @@
         });
     }
 
-    $cms.inherits(ChatRoomScreen, $cms.View, /**@lends ChatRoomScreen#*/{
+    $util.inherits(ChatRoomScreen, $cms.View, /**@lends ChatRoomScreen#*/{
         events: function () {
             return {
                 'click .js-btn-toggle-chat-comcode-panel': 'toggleChatPanel',

@@ -11,7 +11,7 @@
         CnsForumTopicWrapper.base(this, 'constructor', arguments);
     }
 
-    $cms.inherits(CnsForumTopicWrapper, $cms.View, /**@lends CnsForumTopicWrapper#*/{
+    $util.inherits(CnsForumTopicWrapper, $cms.View, /**@lends CnsForumTopicWrapper#*/{
         events: function () {
             return {
                 'click .js-click-mark-all-topics': 'markAllTopics',
@@ -183,7 +183,7 @@
         var form = this,
             minSelections = +params.minimumSelections || 0,
             maxSelections = +params.maximumSelections || 0,
-            error  = (minSelections === maxSelections) ? $cms.format('{!cns:POLL_NOT_ENOUGH_ERROR_2;^}', minSelections) : $cms.format('{!cns:POLL_NOT_ENOUGH_ERROR;^}', [minSelections, maxSelections]);
+            error  = (minSelections === maxSelections) ? $util.format('{!cns:POLL_NOT_ENOUGH_ERROR_2;^}', minSelections) : $util.format('{!cns:POLL_NOT_ENOUGH_ERROR;^}', [minSelections, maxSelections]);
 
         $cms.dom.on(form, 'submit', function (e) {
             if (cnsCheckPoll() === false) {

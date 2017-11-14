@@ -61,7 +61,7 @@
         });
     };
 
-    $cms.inherits(CnsMemberProfileScreen, $cms.View, /**@lends CnsMemberProfileScreen#*/ {
+    $util.inherits(CnsMemberProfileScreen, $cms.View, /**@lends CnsMemberProfileScreen#*/ {
         events: function () {
             return {
                 'click .js-click-select-tab-g': 'onClickSelectTab'
@@ -89,7 +89,7 @@
         $cms.dom.on(container, 'click', '.js-click-select-edit-tab', function (e, clicked) {
             var tabSet = 'edit__',
                 tabCode = $cms.filter.id(clicked.dataset.tpTabCode).toLowerCase();
-            $cms.inform('Select tab', tabSet + tabCode);
+            $util.inform('Select tab', tabSet + tabCode);
             if (tabCode) {
                 $cms.ui.selectTab('g', tabSet + tabCode)
             }
@@ -418,7 +418,7 @@
 
         form.elements['username'].onchange = function () {
             if (form.elements['intro_title'])
-                form.elements['intro_title'].value = $cms.format('{!cns:INTRO_POST_DEFAULT;^}', [form.elements['username'].value]);
+                form.elements['intro_title'].value = $util.format('{!cns:INTRO_POST_DEFAULT;^}', [form.elements['username'].value]);
         };
 
         var validValues;

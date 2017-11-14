@@ -17,7 +17,7 @@
         catalogueFieldChangeWatching();
     }
 
-    $cms.inherits(CatalogueAddingScreen, $cms.View, /**@lends CatalogueAddingScreen#*/{
+    $util.inherits(CatalogueAddingScreen, $cms.View, /**@lends CatalogueAddingScreen#*/{
         events: function () {
             return {
                 'submit .js-form-catalogue-add': 'submit'
@@ -44,7 +44,7 @@
         catalogueFieldChangeWatching();
     }
 
-    $cms.inherits(CatalogueEditingScreen, $cms.View, /**@lends CatalogueEditingScreen#*/{
+    $util.inherits(CatalogueEditingScreen, $cms.View, /**@lends CatalogueEditingScreen#*/{
         events: function () {
             return {
                 'submit .js-form-catalogue-edit': 'submit'

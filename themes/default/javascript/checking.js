@@ -327,7 +327,7 @@
      * @returns {string}
      */
     $cms.form.cleverFindValue = function cleverFindValue(form, element) {
-        if ((element.nodeName === undefined) && $cms.isArrayLike(element)) { 
+        if ((element.nodeName === undefined) && $util.isArrayLike(element)) { 
             // A RadioNodeList? (returned by form.elements[<name of a radio input>])
             element = element[0];
         }
@@ -403,7 +403,7 @@
      * @returns { Date }
      */
     $cms.form.lastChangeTime = function lastChangeTime(form) {
-        var uid = $cms.uid(form);
+        var uid = $util.uid(form);
         
         if (_lastChangeTimes[uid] === undefined) {
             _lastChangeTimes[uid] = new Date();
@@ -471,7 +471,7 @@
                         erroneous = true;
                     }
                     if (!alerted) {
-                        $cms.ui.alert($cms.format('{!javascript:TOO_MUCH_FILE_DATA;^}', [Math.round(totalFileSize / 1024), Math.round(theForm.elements['MAX_FILE_SIZE'].value / 1024)]));
+                        $cms.ui.alert($util.format('{!javascript:TOO_MUCH_FILE_DATA;^}', [Math.round(totalFileSize / 1024), Math.round(theForm.elements['MAX_FILE_SIZE'].value / 1024)]));
                         alerted = true;
                     }
                 }
@@ -580,7 +580,7 @@
                         }
                     }
                     if (!typeOk) {
-                        errorMsg = $cms.format('{!INVALID_FILE_TYPE;^}', [theFileType, '{$VALID_FILE_TYPES}']).replace(/<[^>]*>/g, '').replace(/&[lr][sd]quo;/g, '\'').replace(/,/g, ', ');
+                        errorMsg = $util.format('{!INVALID_FILE_TYPE;^}', [theFileType, '{$VALID_FILE_TYPES}']).replace(/<[^>]*>/g, '').replace(/&[lr][sd]quo;/g, '\'').replace(/,/g, ', ');
                         if (!alerted) {
                             $cms.ui.alert(errorMsg);
                             alerted = true;
@@ -645,21 +645,21 @@
 
                 // Shim for HTML5 regexp patterns
                 if (theElement.getAttribute('pattern') && (myValue !== '') && (!myValue.match(new RegExp(theElement.getAttribute('pattern'))))) {
-                    errorMsg = $cms.format('{!javascript:PATTERN_NOT_MATCHED;^}', [myValue]);
+                    errorMsg = $util.format('{!javascript:PATTERN_NOT_MATCHED;^}', [myValue]);
                 } else if ((theElement.classList.contains('input_username') || theElement.classList.contains('input_username_required')) && (myValue !== '') && (myValue !== '****')) {
                     validatePromise = $cms.form.doAjaxFieldTest('{$FIND_SCRIPT_NOHTTP;,username_exists}?username=' + encodeURIComponent(myValue)).then(function (exists) {
                         if (!exists) {
-                            errorMsg = $cms.format('{!javascript:NOT_USERNAME;^}', [myValue]);
+                            errorMsg = $util.format('{!javascript:NOT_USERNAME;^}', [myValue]);
                         }
                     });
                 } else if ((theElement.classList.contains('input_email') || theElement.classList.contains('input_email_required')) && (myValue !== '') && (!myValue.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/))) {
-                    errorMsg = $cms.format('{!javascript:NOT_A_EMAIL;^}', [myValue]);
+                    errorMsg = $util.format('{!javascript:NOT_A_EMAIL;^}', [myValue]);
                 } else if ((theElement.classList.contains('input_codename') || theElement.classList.contains('input_codename_required')) && (myValue !== '') && (!myValue.match(/^[a-zA-Z0-9\-\._]*$/))) {
-                    errorMsg = $cms.format('{!javascript:NOT_CODENAME;^}', [myValue]);
+                    errorMsg = $util.format('{!javascript:NOT_CODENAME;^}', [myValue]);
                 } else if ((theElement.classList.contains('input_integer') || theElement.classList.contains('input_integer_required')) && (myValue !== '') && (parseInt(myValue, 10) !== Number(myValue))) {
-                    errorMsg = $cms.format('{!javascript:NOT_INTEGER;^}', [myValue]);
+                    errorMsg = $util.format('{!javascript:NOT_INTEGER;^}', [myValue]);
                 } else if ((theElement.classList.contains('input_float') || theElement.classList.contains('input_float_required')) && (myValue !== '') && (parseFloat(myValue) !== Number(myValue))) {
-                    errorMsg = $cms.format('{!javascript:NOT_FLOAT;^}', [myValue]);
+                    errorMsg = $util.format('{!javascript:NOT_FLOAT;^}', [myValue]);
                 }
             }
 
@@ -720,9 +720,9 @@
                 if (label) {
                     var labelNice = $cms.dom.html(label).replace('&raquo;', '').replace(/^\s*/, '').replace(/\s*$/, '');
                     if (field.type === 'file') {
-                        $cms.form.setFieldError(field, $cms.format('{!DISABLED_FORM_FIELD_ENCHANCEDMSG_UPLOAD;^}', [labelNice]));
+                        $cms.form.setFieldError(field, $util.format('{!DISABLED_FORM_FIELD_ENCHANCEDMSG_UPLOAD;^}', [labelNice]));
                     } else {
-                        $cms.form.setFieldError(field, $cms.format('{!DISABLED_FORM_FIELD_ENCHANCEDMSG;^}', [labelNice]));
+                        $cms.form.setFieldError(field, $util.format('{!DISABLED_FORM_FIELD_ENCHANCEDMSG;^}', [labelNice]));
                     }
                 } else {
                     $cms.form.setFieldError(field, '{!DISABLED_FORM_FIELD;^}');

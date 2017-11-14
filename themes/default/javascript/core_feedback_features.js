@@ -35,7 +35,7 @@
         }
     }
 
-    $cms.inherits(CommentsPostingForm, $cms.View, /**@lends CommentsPostingForm#*/{
+    $util.inherits(CommentsPostingForm, $cms.View, /**@lends CommentsPostingForm#*/{
         events: function () {
             return {
                 'click .js-btn-full-editor': 'moveToFullEditor',
@@ -253,7 +253,7 @@
         }
     });
 
-    $cms.extend($cms.templates, /**@lends $cms.templates*/{
+    $util.extend($cms.templates, /**@lends $cms.templates*/{
         ratingForm: function ratingForm(params) {
             var rating;
 
@@ -560,7 +560,7 @@
         }
 
         if (isThreaded) {
-            post.value = $cms.format('{!QUOTED_REPLY_MESSAGE;^}', [replyingToUsername, replyingToPostPlain]);
+            post.value = $util.format('{!QUOTED_REPLY_MESSAGE;^}', [replyingToUsername, replyingToPostPlain]);
             post.stripOnFocus = post.value;
             post.classList.add('field_input_non_filled');
         } else {

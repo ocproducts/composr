@@ -399,7 +399,7 @@
             function _generateMenuSitemap(target, node, theLevel) {
                 theLevel = Number(theLevel) || 0;
 
-                var branchId = 'sitemap_menu_branch_' + $cms.random(),
+                var branchId = 'sitemap_menu_branch_' + $util.random(),
                     li = $cms.dom.create('li', {
                         id: branchId,
                         className: (node.current ? 'current' : 'non_current') + ' ' + (node.img ? 'has_img' : 'has_no_img'),
@@ -430,7 +430,7 @@
 
                 if (node.children && node.children.length) {
                     var ul = $cms.dom.create('ul', {
-                        id: 'sitemap_menu_children_' + $cms.random(),
+                        id: 'sitemap_menu_children_' + $util.random(),
                         className: 'toggleable_tray'
                     });
                     // Show expand icon...

@@ -692,7 +692,7 @@
         }
         
         if (!element) {
-            $cms.fatal('doEmoticon(): Element not found "#' + fieldName + '"');
+            $util.fatal('doEmoticon(): Element not found "#' + fieldName + '"');
             return;
         }
 

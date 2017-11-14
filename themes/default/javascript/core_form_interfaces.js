@@ -20,7 +20,7 @@
         }
     }
 
-    $cms.inherits(PostingForm, $cms.View, {
+    $util.inherits(PostingForm, $cms.View, {
         events: function () {
             return {
                 'submit .js-submit-modsec-workaround': 'submitWithWorkaround',
@@ -81,7 +81,7 @@
         }
     }
 
-    $cms.inherits(FormStandardEnd, $cms.View, /**@lends FormStandardEnd#*/{
+    $util.inherits(FormStandardEnd, $cms.View, /**@lends FormStandardEnd#*/{
         events: function () {
             return {
                 'click .js-click-do-form-cancel': 'doFormCancel',
@@ -163,7 +163,7 @@
         }
     }
 
-    $cms.inherits(FromScreenInputUpload, $cms.View);
+    $util.inherits(FromScreenInputUpload, $cms.View);
 
     $cms.views.FormScreenInputPermission = FormScreenInputPermission;
     /**
@@ -193,7 +193,7 @@
         }
     }
 
-    $cms.inherits(FormScreenInputPermission, $cms.View, {
+    $util.inherits(FormScreenInputPermission, $cms.View, {
         events: function () {
             return {
                 'click .js-click-copy-perm-presets': 'copyPresets',
@@ -285,7 +285,7 @@
         }
     }
 
-    $cms.inherits(FormScreenInputPermissionOverride, $cms.View, /**@lends FormScreenInputPermissionOverride#*/{
+    $util.inherits(FormScreenInputPermissionOverride, $cms.View, /**@lends FormScreenInputPermissionOverride#*/{
         events: function () {
             return {
                 'click .js-click-perms-overridden': 'permissionsOverridden',
@@ -652,7 +652,7 @@
             $cms.dom.html($cms.dom.$('#captcha_spot'), params.captcha);
         } else {
             window.addEventListener('pageshow', function () {
-                $cms.dom.$('#captcha_readable').src += '&r=' + $cms.random(); // Force it to reload latest captcha
+                $cms.dom.$('#captcha_readable').src += '&r=' + $util.random(); // Force it to reload latest captcha
             });
         }
 

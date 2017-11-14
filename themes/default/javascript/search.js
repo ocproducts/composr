@@ -11,7 +11,7 @@
         BlockMainSearch.base(this, 'constructor', arguments);
     }
 
-    $cms.inherits(BlockMainSearch, $cms.View, /**@lends BlockMainSearch#*/{
+    $util.inherits(BlockMainSearch, $cms.View, /**@lends BlockMainSearch#*/{
         events: function () {
             return {
                 'submit form.js-form-submit-main-search': 'submitMainSearch',
@@ -51,7 +51,7 @@
         this.booleanOptionsEl = this.$('.js-el-boolean-options');
     }
 
-    $cms.inherits(SearchFormScreen, $cms.View, /**@lends SearchFormScreen#*/{
+    $util.inherits(SearchFormScreen, $cms.View, /**@lends SearchFormScreen#*/{
         events: function () {
             return {
                 'keypress .js-keypress-enter-submit-primary-form': 'submitPrimaryForm',

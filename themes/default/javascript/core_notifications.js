@@ -14,7 +14,7 @@
         this.enableFormEl = this.$('#nenable_' + params.notificationId);
     }
 
-    $cms.inherits(NotificationButtons, $cms.View, /**@lends NotificationButtons#*/{
+    $util.inherits(NotificationButtons, $cms.View, /**@lends NotificationButtons#*/{
         events: function () {
             return {
                 'submit .js-submit-show-disable-form': 'showDisableForm',

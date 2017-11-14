@@ -13,7 +13,7 @@
         aceComposrLoader('xml', 'xml');
     }
 
-    $cms.inherits(XmlConfigScreen, $cms.View, /**@lends XmlConfigScreen#*/{
+    $util.inherits(XmlConfigScreen, $cms.View, /**@lends XmlConfigScreen#*/{
         events: function () {
             return {
                 'submit .js-form-xml-config': 'submit'

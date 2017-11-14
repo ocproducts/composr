@@ -18,7 +18,7 @@
         this.notificationEl = this.$('.js-el-activities-update-notification');
     }
 
-    $cms.inherits(BlockMainActivitiesState, $cms.View, /**@lends BlockMainActivitiesState#*/{
+    $util.inherits(BlockMainActivitiesState, $cms.View, /**@lends BlockMainActivitiesState#*/{
         events: function () {
             return {
                 'focus textarea.js-textarea-activity-status': 'textareaFocus',

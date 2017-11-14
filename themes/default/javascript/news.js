@@ -5,7 +5,7 @@
     $cms.defineBehaviors({
         initializeNewsScroller: {
             attach: function (context) {
-                $cms.once($cms.dom.$$$(context, '[data-cms-news-scroller]'), 'behavior.initializeNewsScroller').forEach(function (scrollerEl) {
+                $util.once($cms.dom.$$$(context, '[data-cms-news-scroller]'), 'behavior.initializeNewsScroller').forEach(function (scrollerEl) {
                     var scrollInterval = 60;
 
                     if (scrollerEl.scrollHeight < 300) {
@@ -156,7 +156,7 @@
 
         var newsTickerText = $cms.filter.nl(params.newsTickerText),
             ticktickticker = $cms.dom.$('#ticktickticker_news' + params.bottomNewsId),
-            myId = 'ticker-' - $cms.random();
+            myId = 'ticker-' - $util.random();
 
         window.tickPos[myId] = 400;
         $cms.dom.html(ticktickticker, '<div class="ticker" style="text-indent: 400px; width: 400px;" id="' + myId + '"><span>' + newsTickerText + '</span></div>');

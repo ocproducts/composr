@@ -39,7 +39,7 @@
         this.formEl = this.$('form.js-form-primary');
     }
 
-    $cms.inherits(PurchaseWizardScreen, $cms.View, /**@lends PurchaseWizardScreen#*/{
+    $util.inherits(PurchaseWizardScreen, $cms.View, /**@lends PurchaseWizardScreen#*/{
         formEl: null,
         events: function () {
             return {

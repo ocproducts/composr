@@ -42,7 +42,7 @@
         }
     }
 
-    $cms.inherits(BlockMainImageFader, $cms.View, /**@lends BlockMainImageFader#*/{
+    $util.inherits(BlockMainImageFader, $cms.View, /**@lends BlockMainImageFader#*/{
         initializeTitle: function (data, value, index) {
             data['title' + index] = value;
             if (index === 0) {
@@ -113,7 +113,7 @@
         }
     }
 
-    $cms.inherits(GalleryNav, $cms.View, /**@lends $cms.views.GalleryNav#*/{
+    $util.inherits(GalleryNav, $cms.View, /**@lends $cms.views.GalleryNav#*/{
         initializeSlideshow: function () {
             resetSlideshowCountdown();
             startSlideshowTimer();
@@ -260,7 +260,7 @@
     function showCurrentSlideshowTime() {
         var changer = document.getElementById('changer_wrap');
         if (changer) {
-            $cms.dom.html(changer, $cms.format('{!galleries:CHANGING_IN;^}', [Math.max(0, window.slideshowTime)]));
+            $cms.dom.html(changer, $util.format('{!galleries:CHANGING_IN;^}', [Math.max(0, window.slideshowTime)]));
         }
     }
 
