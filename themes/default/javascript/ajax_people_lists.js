@@ -27,7 +27,7 @@
      * @param event
      */
     $cms.form.updateAjaxMemberList = function updateAjaxMemberList(target, special, delayed, event) {
-        if ((event && $cms.dom.keyPressed(event, 'Enter')) || target.disabled) {
+        if ((event && $dom.keyPressed(event, 'Enter')) || target.disabled) {
             return;
         }
 
@@ -70,7 +70,7 @@
         });
 
         function closeDownAjaxList() {
-            var current = $cms.dom.$('#ajax_list');
+            var current = $dom.$('#ajax_list');
             if (current) {
                 current.parentNode.removeChild(current);
             }
@@ -100,8 +100,8 @@
                     list.setAttribute('size', listContents.childNodes.length + 1);
                 }
                 list.style.position = 'absolute';
-                list.style.left = ($cms.dom.findPosX(currentListForEl)) + 'px';
-                list.style.top = ($cms.dom.findPosY(currentListForEl) + currentListForEl.offsetHeight) + 'px';
+                list.style.left = ($dom.findPosX(currentListForEl)) + 'px';
+                list.style.top = ($dom.findPosY(currentListForEl) + currentListForEl.offsetHeight) + 'px';
             }
             list.style.zIndex++;
 
@@ -133,7 +133,7 @@
                 return;
             }
             
-            $cms.dom.fadeIn(list);
+            $dom.fadeIn(list);
 
             var currentListForCopy = currentListForEl;
 
@@ -167,7 +167,7 @@
                     return ret;
                 }
 
-                if ($cms.dom.keyPressed(event, 'Enter')) { // ENTER
+                if ($dom.keyPressed(event, 'Enter')) { // ENTER
                     makeSelection(event);
                     currentListForCopy.disabled = true;
                     setTimeout(function () {
@@ -176,7 +176,7 @@
 
                     return true;
                 }
-                if (!event.shiftKey && $cms.dom.keyPressed(event, ['ArrowUp', 'ArrowDown'])) {
+                if (!event.shiftKey && $dom.keyPressed(event, ['ArrowUp', 'ArrowDown'])) {
                     if (event.cancelable) {
                         event.preventDefault();
                     }
@@ -186,7 +186,7 @@
             };
 
             currentListForEl.onkeypress = function (event) {
-                if (!event.shiftKey && $cms.dom.keyPressed(event, ['ArrowUp', 'ArrowDown'])) {
+                if (!event.shiftKey && $dom.keyPressed(event, ['ArrowUp', 'ArrowDown'])) {
                     if (event.cancelable) {
                         event.preventDefault();
                     }
@@ -195,7 +195,7 @@
                 return null;
             };
             list.onkeypress = function (event) {
-                if (!event.shiftKey && $cms.dom.keyPressed(event, ['Enter', 'ArrowUp', 'ArrowDown'])) {
+                if (!event.shiftKey && $dom.keyPressed(event, ['Enter', 'ArrowUp', 'ArrowDown'])) {
                     if (event.cancelable) {
                         event.preventDefault();
                     }
@@ -211,7 +211,7 @@
             function handleArrowUsage(event) {
                 var temp;
 
-                if (!event.shiftKey && $cms.dom.keyPressed(event, 'ArrowDown')) { // DOWN
+                if (!event.shiftKey && $dom.keyPressed(event, 'ArrowDown')) { // DOWN
                     currentListForCopy.disabled = true;
                     setTimeout(function () {
                         currentListForCopy.disabled = false;
@@ -234,7 +234,7 @@
                     return true;
                 }
 
-                if (!event.shiftKey && $cms.dom.keyPressed(event, 'ArrowUp')) { // UP
+                if (!event.shiftKey && $dom.keyPressed(event, 'ArrowUp')) { // UP
                     currentListForCopy.disabled = true;
                     setTimeout(function () {
                         currentListForCopy.disabled = false;
@@ -271,7 +271,7 @@
                 if (currentListForCopy.onchange) {
                     currentListForCopy.onchange(e);
                 }
-                var al = $cms.dom.$id('ajax_list');
+                var al = $dom.$id('ajax_list');
                 al.parentNode.removeChild(al);
                 setTimeout(function () {
                     currentListForCopy.focus();

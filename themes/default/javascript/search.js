@@ -62,8 +62,8 @@
             };
         },
         submitPrimaryForm: function (e) {
-            if ($cms.dom.keyPressed(e, 'Enter')) {
-                $cms.dom.submit(this.primaryFormEl);
+            if ($dom.keyPressed(e, 'Enter')) {
+                $dom.submit(this.primaryFormEl);
             }
         },
         updateAjaxSearchList: function (e, input) {
@@ -79,10 +79,10 @@
             $cms.form.updateAjaxMemberList(target, 'author', false, e);
         },
         triggerResize: function () {
-            $cms.dom.triggerResize();
+            $dom.triggerResize();
         },
         toggleBooleanOptions: function (e, checkbox) {
-            $cms.dom.toggle(this.booleanOptionsEl, checkbox.checked);
+            $dom.toggle(this.booleanOptionsEl, checkbox.checked);
         }
     });
 
@@ -90,7 +90,7 @@
     $cms.templates.blockTopSearch = function (params, container) {
         var searchType = $cms.filter.nl(params.searchType);
 
-        $cms.dom.on(container, 'submit', '.js-submit-check-search-content-element', function (e, form) {
+        $dom.on(container, 'submit', '.js-submit-check-search-content-element', function (e, form) {
             if (form.elements.content === undefined) {
                 $cms.ui.disableFormButtons(form);
                 return;
@@ -104,7 +104,7 @@
             e.preventDefault();
         });
 
-        $cms.dom.on(container, 'keyup', '.js-input-keyup-update-ajax-search-list', function (e, input) {
+        $dom.on(container, 'keyup', '.js-input-keyup-update-ajax-search-list', function (e, input) {
             $cms.form.updateAjaxSearchList(input, e, searchType);
         });
     };

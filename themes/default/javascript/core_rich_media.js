@@ -157,7 +157,7 @@
             var imgs = window['imgs_' + params.rand] = [],
                 imgsThumbs = window['imgs_thumbs_' + params.rand] = [],
                 setImgWidthHeight = false,
-                mediaSet = $cms.dom.$id('media_set_' + params.rand),
+                mediaSet = $dom.$id('media_set_' + params.rand),
                 as = window.as = mediaSet.querySelectorAll('a, video'),
                 containsVideo = false,
                 thumbWidthConfig = $cms.configOption('thumb_width') + 'x' + $cms.configOption('thumb_width'),
@@ -174,11 +174,11 @@
                         title = '';
 
                     if (span) {
-                        title = $cms.dom.html(span);
+                        title = $dom.html(span);
                         span.parentNode.removeChild(span);
                     }
 
-                    imgs.push([$cms.dom.html(as[i]), title, true]);
+                    imgs.push([$dom.html(as[i]), title, true]);
                     imgsThumbs.push(as[i].poster || '{$IMG^;,video_thumb}');
 
                     containsVideo = true;
@@ -219,8 +219,8 @@
                                 <\/div> \
                             <\/div> \
                         <\/figure>';
-                $cms.dom.html(mediaSet, mediaSetHtml);
-                $cms.dom.on(mediaSet.querySelector('.js-click-open-images-into-lightbox'), 'click', function () {
+                $dom.html(mediaSet, mediaSetHtml);
+                $dom.on(mediaSet.querySelector('.js-click-open-images-into-lightbox'), 'click', function () {
                     openImageIntoLightbox(imgs);
                 });
             }
@@ -278,7 +278,7 @@
                             video.className = 'lightbox_image';
                             video.controls = 'controls';
                             video.autoplay = 'autoplay';
-                            $cms.dom.html(video, imgs[position][0]);
+                            $dom.html(video, imgs[position][0]);
                             video.addEventListener('loadedmetadata', function () {
                                 $cms.ui.resizeLightboxDimensionsImg(modal, video, true, true);
                             });
@@ -295,15 +295,15 @@
                             }, 0);
                         }
 
-                        var lightboxDescription = modal.topWindow.$cms.dom.$id('lightbox_description'),
-                            lightboxPositionInSetX = modal.topWindow.$cms.dom.$id('lightbox_position_in_set_x');
+                        var lightboxDescription = modal.topWindow.$dom.$id('lightbox_description'),
+                            lightboxPositionInSetX = modal.topWindow.$dom.$id('lightbox_position_in_set_x');
 
                         if (lightboxDescription) {
-                            $cms.dom.html(lightboxDescription, imgs[position][1]);
+                            $dom.html(lightboxDescription, imgs[position][1]);
                         }
 
                         if (lightboxPositionInSetX) {
-                            $cms.dom.html(lightboxPositionInSetX, position + 1);
+                            $dom.html(lightboxPositionInSetX, position + 1);
                         }
                     });
                 }
@@ -340,7 +340,7 @@
     });
 
     $cms.functions.comcodeToolsComcodeConvertScript = function comcodeToolsComcodeConvertScript() {
-        var form = $cms.dom.$('#semihtml').form;
+        var form = $dom.$('#semihtml').form;
 
         form.elements['from_html'][0].addEventListener('click', refreshLockedInputs);
         form.elements['from_html'][1].addEventListener('click', refreshLockedInputs);
@@ -348,11 +348,11 @@
 
         function refreshLockedInputs() {
             var value = $cms.form.radioValue(form.elements['from_html']);
-            $cms.dom.$('#semihtml').disabled = (value != 0);
-            $cms.dom.$('#is_semihtml').disabled = (value != 0);
-            $cms.dom.$('#lax').disabled = (value != 0);
-            $cms.dom.$('#fix_bad_html').disabled = (value == 1);
-            $cms.dom.$('#force').disabled = (value != 1);
+            $dom.$('#semihtml').disabled = (value != 0);
+            $dom.$('#is_semihtml').disabled = (value != 0);
+            $dom.$('#lax').disabled = (value != 0);
+            $dom.$('#fix_bad_html').disabled = (value == 1);
+            $dom.$('#force').disabled = (value != 1);
         }
     };
 
@@ -365,8 +365,8 @@
     };
 
     $cms.templates.comcodeMemberLink = function comcodeMemberLink(params, container) {
-        $cms.dom.on(container, 'mouseover', '.js-mouseover-comcode-member-link', activateComcodeMemberLink);
-        $cms.dom.on(container, 'focus', '.js-focus-comcode-member-link', activateComcodeMemberLink);
+        $dom.on(container, 'mouseover', '.js-mouseover-comcode-member-link', activateComcodeMemberLink);
+        $dom.on(container, 'focus', '.js-focus-comcode-member-link', activateComcodeMemberLink);
 
         function activateComcodeMemberLink(e, el) {
             el.cancelled = false;
@@ -377,7 +377,7 @@
             })
         }
 
-        $cms.dom.on(container, 'mouseout', '.js-mouseout-comcode-member-link', function (e, el) {
+        $dom.on(container, 'mouseout', '.js-mouseout-comcode-member-link', function (e, el) {
             $cms.ui.deactivateTooltip(el);
             el.cancelled = true;
         });
@@ -386,12 +386,12 @@
     $cms.templates.comcodeMessage = function comcodeMessage(params, container) {
         var name = strVal(params.name);
 
-        $cms.dom.on(container, 'click', '.js-link-click-open-emoticon-chooser-window', function (e, link) {
+        $dom.on(container, 'click', '.js-link-click-open-emoticon-chooser-window', function (e, link) {
             var url = $cms.maintainThemeInLink(link.href);
             $cms.ui.open(url, 'field_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
         });
 
-        $cms.dom.on(container, 'click', '.js-click-toggle-wysiwyg', function () {
+        $dom.on(container, 'click', '.js-click-toggle-wysiwyg', function () {
             toggleWysiwyg(name);
         });
     };
@@ -400,7 +400,7 @@
         var tabSets = $cms.filter.id(params.tabSets),
             title = $cms.filter.id(params.title);
 
-        $cms.dom.on(container, 'click', function () {
+        $dom.on(container, 'click', function () {
             $cms.ui.selectTab('g', tabSets + '_' + title);
         });
     };
@@ -424,7 +424,7 @@
                 }
             });
         } else {
-            $cms.dom.on(container, 'click', '.js-click-open-attachment-popup', function (e, link) {
+            $dom.on(container, 'click', '.js-click-open-attachment-popup', function (e, link) {
                 e.preventDefault();
                 $cms.ui.open($cms.maintainThemeInLink(link.href), 'site_attachment_chooser', 'width=550,height=600,status=no,resizable=yes,scrollbars=yes');
             });
@@ -488,7 +488,7 @@
             b = strVal(params.b),
             fieldName = strVal(params.fieldName);
 
-        $cms.dom.on(btn, 'click', function () {
+        $dom.on(btn, 'click', function () {
             var mainWindow = btn.ownerDocument.defaultView;
             
             if ($cms.browserMatches('simplified_attachments_ui') && isPostingField && ((b === 'thumb') || (b === 'img'))) {
@@ -514,7 +514,7 @@
         }
 
         comcoderandom = document.getElementById('comcoderandom' + params.randIdRandom);
-        $cms.dom.html(comcoderandom, use);
+        $dom.html(comcoderandom, use);
     };
 
     $cms.templates.comcodePulse = function (params) {
@@ -580,7 +580,7 @@
     $cms.templates.emoticonClickCode = function emoticonClickCode(params, container) {
         var fieldName = strVal(params.fieldName);
 
-        $cms.dom.on(container, 'click', function (e) {
+        $dom.on(container, 'click', function (e) {
             e.preventDefault();
             window.doEmoticon(fieldName, container, false)
         });
@@ -591,7 +591,7 @@
             timeout = Number(params.timeout),
             timein = Number(params.timein);
 
-        $cms.dom.on(container, 'click', '.js-click-dismiss-overlay', function () {
+        $dom.on(container, 'click', '.js-click-dismiss-overlay', function () {
             var bi = document.getElementById('main_website_inner');
             if (bi) {
                 bi.style.opacity = 1;
@@ -608,7 +608,7 @@
             setTimeout(function () {
                 var element, bi;
 
-                $cms.dom.smoothScroll(0);
+                $dom.smoothScroll(0);
 
                 element = document.getElementById(params.randIdOverlay);
                 element.style.display = 'block';
@@ -621,7 +621,7 @@
                     bi.style.opacity = 0.4;
                 }
                 
-                $cms.dom.fadeIn(element);
+                $dom.fadeIn(element);
 
 
                 if (timeout !== -1) {
@@ -696,7 +696,7 @@
         var id = 'ticker-' + $util.random();
 
         window.tickPos[id] = params.width;
-        $cms.dom.html(container, '<div class="ticker" style="text-indent: ' + params.width + 'px; width: ' + params.width + 'px;" id="' + id + '"><span>' +
+        $dom.html(container, '<div class="ticker" style="text-indent: ' + params.width + 'px; width: ' + params.width + 'px;" id="' + id + '"><span>' +
             $cms.filter.nl(params.text) + '<\/span><\/div>'
         );
 
@@ -715,7 +715,7 @@
             window.jumperParts[id].push(params.parts[i].part);
         }
 
-        $cms.dom.html(container, '<span id="' + id + '">' + window.jumperParts[id][0] + '<\/span>');
+        $dom.html(container, '<span id="' + id + '">' + window.jumperParts[id][0] + '<\/span>');
 
         setInterval(function () {
             jumperTick(id);
@@ -964,13 +964,13 @@
         if (!eLeft) {
             return;
         }
-        $cms.dom.html(eLeft, window.shockerParts[id][window.shockerPos[id]][0]);
-        $cms.dom.fadeIn(eLeft);
+        $dom.html(eLeft, window.shockerParts[id][window.shockerPos[id]][0]);
+        $dom.fadeIn(eLeft);
 
         var eRight = document.getElementById('comcodeshocker' + id + '_right');
         if (!eRight) return;
-        $cms.dom.html(eRight, window.shockerParts[id][window.shockerPos[id]][1]);
-        $cms.dom.fadeIn(eRight);
+        $dom.html(eRight, window.shockerParts[id][window.shockerPos[id]][1]);
+        $dom.fadeIn(eRight);
 
         window.shockerPos[id]++;
 
@@ -1068,14 +1068,14 @@
                         el.style.top = '0';
                         el.parentNode.style.position = 'relative';
 
-                        $cms.dom.fadeOut(el);
+                        $dom.fadeOut(el);
                     }
                     el.style.display = 'block';
                 } else {
                     el.style.display = (i === currentPos) ? 'block' : 'none';
 
                     if (i === currentPos) {
-                        $cms.dom.fadeIn(el);
+                        $dom.fadeIn(el);
                     }
                 }
             }
@@ -1110,7 +1110,7 @@
     window.countdown = countdown;
     function countdown(id, direction, tailing) {
         var countdown = (typeof id === 'object') ? id : document.getElementById(id), i;
-        var inside = $cms.dom.html(countdown);
+        var inside = $dom.html(countdown);
         var multiples = [];
         if (tailing >= 4) {
             multiples.push(365);
@@ -1152,7 +1152,7 @@
                 inside = inside.replace('!!!', us[i]);
             }
 
-            $cms.dom.html(countdown, inside);
+            $dom.html(countdown, inside);
         }
     }
 
@@ -1165,7 +1165,7 @@
         }
 
         var el = document.getElementById(id);
-        if (!el || $cms.dom.$('#' + id + ':hover')) {
+        if (!el || $dom.$('#' + id + ':hover')) {
             return;
         }
 
@@ -1192,7 +1192,7 @@
         if (!el) {
             return;
         }
-        $cms.dom.html(el, window.jumperParts[id][window.jumperPos[id]]);
+        $dom.html(el, window.jumperParts[id][window.jumperPos[id]]);
         window.jumperPos[id]++;
     }
 

@@ -38,7 +38,7 @@
 
             $cms.ui.confirm(params.question, function (answer) {
                 if (answer) {
-                    $cms.dom.submit(form);
+                    $dom.submit(form);
                 }
             });
 

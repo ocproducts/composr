@@ -2,13 +2,13 @@
     'use strict';
 
     $cms.templates.menuEditorScreen = function (params, container) {
-        var menuEditorWrapEl = $cms.dom.$(container, '.js-el-menu-editor-wrap');
+        var menuEditorWrapEl = $dom.$(container, '.js-el-menu-editor-wrap');
 
         window.allMenus = params.allMenus;
 
-        $cms.dom.$('#url').addEventListener('dblclick', doubleClick);
-        $cms.dom.$('#caption_long').addEventListener('dblclick', doubleClick);
-        $cms.dom.$('#page_only').addEventListener('dblclick', doubleClick);
+        $dom.$('#url').addEventListener('dblclick', doubleClick);
+        $dom.$('#caption_long').addEventListener('dblclick', doubleClick);
+        $dom.$('#page_only').addEventListener('dblclick', doubleClick);
 
         window.currentSelection = '';
         $cms.requireJavascript('tree_list').then(function () {
@@ -17,12 +17,12 @@
 
         function doubleClick() {
             if (!menuEditorWrapEl.classList.contains('docked')) {
-                $cms.dom.smoothScroll($cms.dom.findPosY(document.getElementById('caption_' + window.currentSelection)));
+                $dom.smoothScroll($dom.findPosY(document.getElementById('caption_' + window.currentSelection)));
             }
         }
 
-        $cms.dom.on(container, 'click', '.js-click-menu-editor-add-new-page', function () {
-            var form = $cms.dom.$id('edit_form');
+        $dom.on(container, 'click', '.js-click-menu-editor-add-new-page', function () {
+            var form = $dom.$id('edit_form');
 
             $cms.ui.prompt(
                 $cms.configOption('collapse_user_zones') ? '{!javascript:ENTER_ZONE_SPZ;^}' : '{!javascript:ENTER_ZONE;^}', '', null, '{!menus:SPECIFYING_NEW_PAGE;^}'
@@ -39,7 +39,7 @@
             });
         });
 
-        $cms.dom.on(container, 'submit', '.js-submit-modsecurity-workaround', function (e, form) {
+        $dom.on(container, 'submit', '.js-submit-modsecurity-workaround', function (e, form) {
             if ($cms.form.isModSecurityWorkaroundEnabled()) {
                 e.preventDefault();
                 $cms.form.modSecurityWorkaround(form);
@@ -48,8 +48,8 @@
             }
         });
 
-        $cms.dom.on(container, 'change', '.js-input-change-update-selection', function (e, input) {
-            var el = $cms.dom.$('#url_' + window.currentSelection),
+        $dom.on(container, 'change', '.js-input-change-update-selection', function (e, input) {
+            var el = $dom.$('#url_' + window.currentSelection),
                 urlEl,
                 captionEl;
             
@@ -59,16 +59,16 @@
             
             el.value = input.value;
 
-            urlEl = $cms.dom.$('#edit_form').elements['url'];
+            urlEl = $dom.$('#edit_form').elements['url'];
             urlEl.value = input.value;
 
-            captionEl = $cms.dom.$('#edit_form').elements['caption_' + window.currentSelection];
+            captionEl = $dom.$('#edit_form').elements['caption_' + window.currentSelection];
             if ((captionEl.value === '') && input.selectedTitle) {
                 captionEl.value = input.selectedTitle.replace(/^.*:\s*/, '');
             }
         });
 
-        $cms.dom.on(container, 'click', '.js-click-check-menu', function (e, button) {
+        $dom.on(container, 'click', '.js-click-check-menu', function (e, button) {
             if (!checkMenu()) {
                 e.preventDefault();
                 return;
@@ -78,8 +78,8 @@
         });
 
 
-        $cms.dom.on(container, 'click', '.js-img-click-toggle-docked-field-editing', toggleDockedFieldEditing);
-        $cms.dom.on(container, 'keypress', '.js-img-keypress-toggle-docked-field-editing', toggleDockedFieldEditing);
+        $dom.on(container, 'click', '.js-img-click-toggle-docked-field-editing', toggleDockedFieldEditing);
+        $dom.on(container, 'keypress', '.js-img-keypress-toggle-docked-field-editing', toggleDockedFieldEditing);
 
         function toggleDockedFieldEditing(e, img) {
             if (!menuEditorWrapEl.classList.contains('docked')) {
@@ -110,33 +110,33 @@
 
         document.getElementById('branch_type_' + id).selectedIndex = sIndex;
 
-        $cms.dom.on(container, 'focus', '.js-focus-make-caption-field-selected', function (e, focused) {
+        $dom.on(container, 'focus', '.js-focus-make-caption-field-selected', function (e, focused) {
             makeFieldSelected(focused);
         });
 
-        $cms.dom.on(container, 'dblclick', '.js-dblclick-scroll-to-heading', function (e) {
+        $dom.on(container, 'dblclick', '.js-dblclick-scroll-to-heading', function (e) {
             if (!document.getElementById('menu_editor_wrap').classList.contains('docked')) {
-                $cms.dom.smoothScroll($cms.dom.findPosY(document.getElementsByTagName('h2')[2]));
+                $dom.smoothScroll($dom.findPosY(document.getElementsByTagName('h2')[2]));
             }
         });
 
-        $cms.dom.on(container, 'click', '.js-click-delete-menu-branch', function (e, clicked) {
+        $dom.on(container, 'click', '.js-click-delete-menu-branch', function (e, clicked) {
             deleteMenuBranch(clicked);
         });
 
-        $cms.dom.on(container, 'click', '.js-click-menu-editor-branch-type-change', function () {
+        $dom.on(container, 'click', '.js-click-menu-editor-branch-type-change', function () {
             menuEditorBranchTypeChange(id);
         });
 
-        $cms.dom.on(container, 'change', '.js-change-menu-editor-branch-type-change', function () {
+        $dom.on(container, 'change', '.js-change-menu-editor-branch-type-change', function () {
             menuEditorBranchTypeChange(id);
         });
 
-        $cms.dom.on(container, 'click', '.js-click-btn-move-down-handle-ordering', function (e, btn) {
+        $dom.on(container, 'click', '.js-click-btn-move-down-handle-ordering', function (e, btn) {
             handleOrdering(btn, /*up*/false, /*down*/true);
         });
 
-        $cms.dom.on(container, 'click', '.js-click-btn-move-up-handle-ordering', function (e, btn) {
+        $dom.on(container, 'click', '.js-click-btn-move-up-handle-ordering', function (e, btn) {
             handleOrdering(btn, /*up*/true, /*down*/false);
         });
 
@@ -159,14 +159,14 @@
         }
 
         function handleOrdering(el, upwards) {
-            var form = $cms.dom.$('#edit_form');
+            var form = $dom.$('#edit_form');
 
             // Find the num
             var index = el.id.substring(el.id.indexOf('_') + 1, el.id.length),
                 num = parseInt(form.elements['order_' + index].value) || 0;
 
             // Find the parent
-            var parentNum = $cms.dom.$('#parent_' + index).value,
+            var parentNum = $dom.$('#parent_' + index).value,
                 i, b, bindex,
                 best = -1, bestindex = -1;
 
@@ -317,13 +317,13 @@
         var parentId = strVal(params.i),
             clickableSections = Boolean(params.clickableSections);
 
-        $cms.dom.on(container, 'click', '.js-click-add-new-menu-item', function () {
+        $dom.on(container, 'click', '.js-click-add-new-menu-item', function () {
             var insertBeforeId = 'branches_go_before_' + parentId,
-                template = $cms.dom.$id('template').value,
-                before = $cms.dom.$id(insertBeforeId),
+                template = $dom.$id('template').value,
+                before = $dom.$id(insertBeforeId),
                 newId = 'm_' + Math.floor(Math.random() * 10000),
                 template2 = template.replace(/replace\_me\_with\_random/gi, newId),
-                highestOrderElement = $cms.dom.$id('highest_order'),
+                highestOrderElement = $dom.$id('highest_order'),
                 newOrder = highestOrderElement.value + 1;
             
             highestOrderElement.value++;
@@ -331,7 +331,7 @@
             template2 = template2.replace(/replace\_me\_with\_parent/gi, parentId);
 
             // Backup form branches
-            var form = $cms.dom.$id('edit_form'),
+            var form = $dom.$id('edit_form'),
                 _elementsBak = form.elements, 
                 elementsBak = [], i;
             
@@ -339,7 +339,7 @@
                 elementsBak.push([_elementsBak[i].name, _elementsBak[i].value]);
             }
 
-            $cms.dom.append(before, template2); // Technically we are actually putting after "branches_go_before_XXX", but it makes no difference. It only needs to act as a divider.
+            $dom.append(before, template2); // Technically we are actually putting after "branches_go_before_XXX", but it makes no difference. It only needs to act as a divider.
 
             // Restore form branches
             for (i = 0; i < elementsBak.length; i++) {
@@ -352,29 +352,29 @@
                 menuEditorBranchTypeChange(newId);
             }
 
-            $cms.dom.slideUp('#mini_form_hider');
+            $dom.slideUp('#mini_form_hider');
         });
     };
     
     function menuEditorBranchTypeChange(id) {
         var disabled = (document.getElementById('branch_type_' + id).value !== 'page'),
-            sub = $cms.dom.$id('branch_' + id + '_follow_1'),
-            sub2 = $cms.dom.$id('branch_' + id + '_follow_2');
+            sub = $dom.$id('branch_' + id + '_follow_1'),
+            sub2 = $dom.$id('branch_' + id + '_follow_2');
         
         if (sub) {
-            $cms.dom.toggle(sub, disabled);
+            $dom.toggle(sub, disabled);
         }
 
         if (sub2) {
-            $cms.dom.toggle(sub2, disabled);
+            $dom.toggle(sub2, disabled);
         }
     }
 
     $cms.templates.menuSitemap = function (params, container) {
         var menuId = strVal(params.menuSitemapId),
-            content = arrVal($cms.dom.data(container, 'tpMenuContent'));
+            content = arrVal($dom.data(container, 'tpMenuContent'));
 
-        generateMenuSitemap($cms.dom.$('#' + menuId), content, 0);
+        generateMenuSitemap($dom.$('#' + menuId), content, 0);
 
         // ==============================
         // DYNAMIC TREE CREATION FUNCTION
@@ -384,9 +384,9 @@
             theLevel = Number(theLevel) || 0;
 
             if (theLevel === 0) {
-                $cms.dom.empty(targetEl);
+                $dom.empty(targetEl);
                 var ul = document.createElement('ul');
-                $cms.dom.append(targetEl, ul);
+                $dom.append(targetEl, ul);
                 targetEl = ul;
             }
 
@@ -400,7 +400,7 @@
                 theLevel = Number(theLevel) || 0;
 
                 var branchId = 'sitemap_menu_branch_' + $util.random(),
-                    li = $cms.dom.create('li', {
+                    li = $dom.create('li', {
                         id: branchId,
                         className: (node.current ? 'current' : 'non_current') + ' ' + (node.img ? 'has_img' : 'has_no_img'),
                         dataset: {
@@ -408,15 +408,15 @@
                         }
                     });
 
-                var span = $cms.dom.create('span');
-                $cms.dom.append(li, span);
+                var span = $dom.create('span');
+                $dom.append(li, span);
 
                 if (node.img) {
-                    $cms.dom.append(span, $cms.dom.create('img', { src: node.img, srcset: node.img_2x + ' 2x' }));
-                    $cms.dom.append(span, document.createTextNode(' '));
+                    $dom.append(span, $dom.create('img', { src: node.img, srcset: node.img_2x + ' 2x' }));
+                    $dom.append(span, document.createTextNode(' '));
                 }
 
-                var a = $cms.dom.create(node.url ? 'a' : 'span');
+                var a = $dom.create(node.url ? 'a' : 'span');
                 if (node.url) {
                     if (node.tooltip) {
                         a.title = node.caption + ': ' + node.tooltip;
@@ -424,19 +424,19 @@
                     a.href = node.url;
                 }
 
-                $cms.dom.append(span, a);
-                $cms.dom.html(a, node.caption);
-                $cms.dom.append(target, li);
+                $dom.append(span, a);
+                $dom.html(a, node.caption);
+                $dom.append(target, li);
 
                 if (node.children && node.children.length) {
-                    var ul = $cms.dom.create('ul', {
+                    var ul = $dom.create('ul', {
                         id: 'sitemap_menu_children_' + $util.random(),
                         className: 'toggleable_tray'
                     });
                     // Show expand icon...
-                    $cms.dom.append(span, document.createTextNode(' '));
+                    $dom.append(span, document.createTextNode(' '));
 
-                    var expand = $cms.dom.create('a', {
+                    var expand = $dom.create('a', {
                         className: 'toggleable_tray_button',
                         href: '#!',
                         dataset: {
@@ -444,7 +444,7 @@
                         }
                     });
 
-                    var expandImg = $cms.dom.create('img');
+                    var expandImg = $dom.create('img');
                     if (theLevel < 2) { // High-levels start expanded
                         expandImg.alt = '{!CONTRACT;^}';
                         expandImg.src = $cms.img('{$IMG;^,1x/trays/contract}');
@@ -453,14 +453,14 @@
                         expandImg.alt = '{!EXPAND;^}';
                         expandImg.src = $cms.img('{$IMG;^,1x/trays/expand}');
                         expandImg.srcset = $cms.img('{$IMG;^,2x/trays/expand}') + ' 2x';
-                        $cms.dom.hide(ul);
+                        $dom.hide(ul);
                     }
 
-                    $cms.dom.append(expand, expandImg);
-                    $cms.dom.append(span, expand);
+                    $dom.append(expand, expandImg);
+                    $dom.append(span, expand);
 
                     // Show children...
-                    $cms.dom.append(li, ul);
+                    $dom.append(li, ul);
                     generateMenuSitemap(ul, node.children, theLevel + 1);
                 }
             }
@@ -478,7 +478,7 @@
             $cms.ui.createTreeList(params.name, ajaxUrl, '', '', false, null, false, true);
         });
 
-        $cms.dom.on(container, 'change', '.js-input-page-link-chooser', function (e, input) {
+        $dom.on(container, 'change', '.js-input-page-link-chooser', function (e, input) {
             if (!params.asField) {
                 window.returnValue = input.value;
                 if (window.fauxClose !== undefined) {

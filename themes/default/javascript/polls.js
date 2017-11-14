@@ -22,7 +22,7 @@
 
             $cms.ui.confirm('{!polls:VOTE_FORFEIGHT;^}', function(answer) {
                 if (answer) {
-                    $cms.dom.submit(form);
+                    $dom.submit(form);
                 }
             });
 
@@ -31,14 +31,14 @@
     });
 
     $cms.templates.blockMainPoll = function blockMainPoll(params) {
-        $cms.dom.internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.wrapperId), ['.*poll.*'], {}, false, true);
+        $dom.internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.wrapperId), ['.*poll.*'], {}, false, true);
     };
 
     $cms.templates.pollAnswer = function pollAnswer(params, container) {
         var pollId = strVal(params.pid);
 
-        $cms.dom.on(container, 'click', '.js-click-enable-poll-input', function () {
-            $cms.dom.$('#poll' + pollId).disabled = false;
+        $dom.on(container, 'click', '.js-click-enable-poll-input', function () {
+            $dom.$('#poll' + pollId).disabled = false;
         });
     };
 }(window.$cms));

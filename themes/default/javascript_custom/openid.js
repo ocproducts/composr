@@ -132,7 +132,7 @@ Martin Conte Mac Donell <Reflejo@gmail.com>
 				inputarea.text(settings.txt.title);
 				if (!tidx) {
 					inputarea.fadeOut();
-                    $cms.dom.submit(form[0]);
+                    $dom.submit(form[0]);
 				}
 			}
 			return false;
@@ -188,8 +188,8 @@ Martin Conte Mac Donell <Reflejo@gmail.com>
     $cms.defineBehaviors({
         initializeJqueryOpenid: {
             attach: function (context) {
-                $util.once($cms.dom.$$$(context, '[data-jquery-openid]'), 'behavior.initializeJqueryOpenid').forEach(function (openidEl) {
-                    var options = objVal($cms.dom.data(openidEl, 'jqueryOpenid'));
+                $util.once($dom.$$$(context, '[data-jquery-openid]'), 'behavior.initializeJqueryOpenid').forEach(function (openidEl) {
+                    var options = objVal($dom.data(openidEl, 'jqueryOpenid'));
 
                     window.jQuery(openidEl).openid(options);
                 });
@@ -204,7 +204,7 @@ Martin Conte Mac Donell <Reflejo@gmail.com>
             }
         });
 
-        $cms.dom.on(container, 'submit', '.js-submit-check-username-for-blankness', function (e, form) {
+        $dom.on(container, 'submit', '.js-submit-check-username-for-blankness', function (e, form) {
             if ($cms.form.checkFieldForBlankness(form.elements['login_username'])) {
                 $cms.ui.disableFormButtons(form);
             } else {
@@ -212,7 +212,7 @@ Martin Conte Mac Donell <Reflejo@gmail.com>
             }
         });
 
-        $cms.dom.on(container , 'click', '.js-click-confirm-remember-me', function (e, checkbox) {
+        $dom.on(container , 'click', '.js-click-confirm-remember-me', function (e, checkbox) {
             if (checkbox.checked) {
                 $cms.ui.confirm('{!REMEMBER_ME_COOKIE;}', function (answer) {
                     if (!answer) {

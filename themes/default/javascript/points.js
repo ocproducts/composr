@@ -3,7 +3,7 @@
 
     var givePointsFormLastValid;
     $cms.templates.pointsGive = function pointsGive(params, container) {
-        $cms.dom.on(container, 'submit', '.js-submit-check-form', function (e, form) {
+        $dom.on(container, 'submit', '.js-submit-check-form', function (e, form) {
             if (givePointsFormLastValid && (givePointsFormLastValid.getTime() === $cms.form.lastChangeTime(form).getTime())) {
                 return;
             }
@@ -13,7 +13,7 @@
             $cms.form.checkForm(form, false).then(function (valid) {
                 if (valid) {
                     givePointsFormLastValid = $cms.form.lastChangeTime(form);
-                    $cms.dom.submit(form);
+                    $dom.submit(form);
                 }
             });
         });

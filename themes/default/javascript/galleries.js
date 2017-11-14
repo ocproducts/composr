@@ -21,7 +21,7 @@
             milliseconds = Number(params.mill), i;
 
         this.fpAnimationEl = document.getElementById('image_fader_' + id);
-        this.fpAnimationFaderEl = $cms.dom.create('img', { className: 'img_thumb', src: $cms.img('{$IMG;,blank}'), css: { position: 'absolute' }});
+        this.fpAnimationFaderEl = $dom.create('img', { className: 'img_thumb', src: $cms.img('{$IMG;,blank}'), css: { position: 'absolute' }});
         this.teaseTitleEl = document.getElementById('image_fader_title_' + id);
         this.teaseScrollingTextEl =  document.getElementById('image_fader_scrolling_text_' + id);
         
@@ -47,7 +47,7 @@
             data['title' + index] = value;
             if (index === 0) {
                 if (this.teaseTitleEl) {
-                    $cms.dom.html(this.teaseTitleEl, data['title' + index]);
+                    $dom.html(this.teaseTitleEl, data['title' + index]);
                 }
             }
         },
@@ -55,7 +55,7 @@
             data['html' + index] = value;
             if (index === 0) {
                 if (this.teaseScrollingTextEl) {
-                    $cms.dom.html(this.teaseScrollingTextEl, (data['html' + index] === '') ? '{!MEDIA;^}' : data['html' + index]);
+                    $dom.html(this.teaseScrollingTextEl, (data['html' + index] === '') ? '{!MEDIA;^}' : data['html' + index]);
                 }
             }
         },
@@ -74,16 +74,16 @@
             setTimeout(function () {
                 function func() {
                     self.fpAnimationFaderEl.src = self.fpAnimationEl.src;
-                    $cms.dom.fadeOut(self.fpAnimationFaderEl);
-                    $cms.dom.fadeIn(self.fpAnimationEl);
+                    $dom.fadeOut(self.fpAnimationFaderEl);
+                    $dom.fadeIn(self.fpAnimationEl);
                     self.fpAnimationEl.src = $cms.img(data['url' + index]);
                     self.fpAnimationFaderEl.style.left = ((self.fpAnimationFaderEl.parentNode.offsetWidth - self.fpAnimationFaderEl.offsetWidth) / 2) + 'px';
                     self.fpAnimationFaderEl.style.top = ((self.fpAnimationFaderEl.parentNode.offsetHeight - self.fpAnimationFaderEl.offsetHeight) / 2) + 'px';
                     if (self.teaseTitleEl) {
-                        $cms.dom.html(self.teaseTitleEl, data['title' + index]);
+                        $dom.html(self.teaseTitleEl, data['title' + index]);
                     }
                     if (self.teaseScrollingTextEl) {
-                        $cms.dom.html(self.teaseScrollingTextEl, data['html' + index]);
+                        $dom.html(self.teaseScrollingTextEl, data['html' + index]);
                     }
                 }
 
@@ -189,7 +189,7 @@
             $cms.form.doAjaxFieldTest(url).then(function (valid) {
                 if (valid) {
                     validValue = value;
-                    $cms.dom.submit(form);
+                    $dom.submit(form);
                 } else {
                     submitBtn.disabled = false;
                 }
@@ -207,7 +207,7 @@
             return;
         }
 
-        $cms.dom.on(container, 'click', '.js-click-carousel-prepare-load-more', function () {
+        $dom.on(container, 'click', '.js-click-carousel-prepare-load-more', function () {
             var ob = document.getElementById('carousel_ns_' + carouselId);
 
             if ((ob.parentNode.scrollLeft + ob.offsetWidth * 2) < ob.scrollWidth) {
@@ -228,13 +228,13 @@
         }
 
         for (i = 0; i < files.options.length; i++) {
-            $cms.dom.on(files[i], 'mouseover', function (event) {
+            $dom.on(files[i], 'mouseover', function (event) {
                 $cms.ui.activateTooltip(this, event, '<img width="500" src="' + $cms.filter.html($cms.baseUrl()) + '/uploads/galleries/' + encodeURI(this.value) + '" \/>', 'auto');
             });
-            $cms.dom.on(files[i], 'mousemove', function (event) {
+            $dom.on(files[i], 'mousemove', function (event) {
                 $cms.ui.repositionTooltip(this, event);
             });
-            $cms.dom.on(files[i], 'mouseout', function (event) {
+            $dom.on(files[i], 'mouseout', function (event) {
                 $cms.ui.deactivateTooltip(this);
             });
         }
@@ -260,7 +260,7 @@
     function showCurrentSlideshowTime() {
         var changer = document.getElementById('changer_wrap');
         if (changer) {
-            $cms.dom.html(changer, $util.format('{!galleries:CHANGING_IN;^}', [Math.max(0, window.slideshowTime)]));
+            $dom.html(changer, $util.format('{!galleries:CHANGING_IN;^}', [Math.max(0, window.slideshowTime)]));
         }
     }
 
@@ -290,7 +290,7 @@
         }
         var changer = document.getElementById('changer_wrap');
         if (changer) {
-            $cms.dom.html(changer, message);
+            $dom.html(changer, message);
         }
         if (window.slideshowTimer) {
             clearInterval(window.slideshowTimer);
@@ -329,7 +329,7 @@
         }
 
         if (window.slideshowCurrentPosition === slide) { // Ah, it's where we are, so save that in
-            window.slideshowSlides[slide] = $cms.dom.html(document.getElementById('gallery_entry_screen'));
+            window.slideshowSlides[slide] = $dom.html(document.getElementById('gallery_entry_screen'));
             return;
         }
 
@@ -377,16 +377,16 @@
                 } // else probably a video
 
                 var cleanedSlideHtml = window.slideshowSlides[slide].replace(/<!DOCTYPE [^>]*>/i, ''); // FUDGE
-                $cms.dom.html(document.getElementById('gallery_entry_screen'), cleanedSlideHtml);
+                $dom.html(document.getElementById('gallery_entry_screen'), cleanedSlideHtml);
 
                 fadeElements = document.body.querySelectorAll('.scale_down');
                 if ((fadeElements[0] !== undefined) && (fadeElementsOld[0] !== undefined)) {
                     var fadeElement = fadeElements[0];
                     fadeElement.parentNode.insertBefore(fadeElementOld, fadeElement);
                     fadeElement.parentNode.style.position = 'relative';
-                    $cms.dom.fadeIn(fadeElement);
-                    $cms.dom.fadeOut(fadeElementOld).then(function () {
-                        $cms.dom.remove(fadeElementOld);
+                    $dom.fadeIn(fadeElement);
+                    $dom.fadeOut(fadeElementOld).then(function () {
+                        $dom.remove(fadeElementOld);
                     });
                 } // else probably a video
 

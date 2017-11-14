@@ -10,7 +10,7 @@
         var myId = parseInt(Math.random() * 10000),
             emoticoncrazy = document.getElementById('emoticoncrazy' + params.rndx);
 
-        $cms.dom.html(emoticoncrazy, '<img id="' + myId + '" style="position: relative" alt="{!EMOTICON;}" src="' + params.imgSrc + '">');
+        $dom.html(emoticoncrazy, '<img id="' + myId + '" style="position: relative" alt="{!EMOTICON;}" src="' + params.imgSrc + '">');
         window.crazyCriters.push(myId);
     };
 }(window.$cms));

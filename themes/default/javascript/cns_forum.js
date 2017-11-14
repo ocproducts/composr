@@ -21,13 +21,13 @@
         },
 
         markAllTopics: function () {
-            $cms.dom.$$('input[type="checkbox"][name^="mark_"]').forEach(function (checkbox) {
+            $dom.$$('input[type="checkbox"][name^="mark_"]').forEach(function (checkbox) {
                 checkbox.click();
             });
         },
 
         changeSubmit: function (e, select) {
-            $cms.dom.submit(select.form);
+            $dom.submit(select.form);
         },
 
         cnsAddFormMarkedPosts: function (e, btn) {
@@ -129,8 +129,8 @@
     $cms.templates.cnsVirtualForumFiltering = function cnsVirtualForumFiltering() {
         var container = this;
 
-        $cms.dom.on(container, 'change', '.js-select-change-form-submit', function (e, select) {
-            $cms.dom.submit(select.form);
+        $dom.on(container, 'change', '.js-select-change-form-submit', function (e, select) {
+            $dom.submit(select.form);
         });
     };
 
@@ -138,11 +138,11 @@
         var forumRulesUrl = params.forumRulesUrl,
             introQuestionUrl = params.introQuestionUrl;
 
-        $cms.dom.on(container, 'click', '.js-click-open-forum-rules-popup', function () {
+        $dom.on(container, 'click', '.js-click-open-forum-rules-popup', function () {
             $cms.ui.open($cms.maintainThemeInLink(forumRulesUrl), '', 'width=600,height=auto,status=yes,resizable=yes,scrollbars=yes');
         });
 
-        $cms.dom.on(container, 'click', '.js-click-open-intro-question-popup', function () {
+        $dom.on(container, 'click', '.js-click-open-intro-question-popup', function () {
             $cms.ui.open($cms.maintainThemeInLink(introQuestionUrl), '', 'width=600,height=auto,status=yes,resizable=yes,scrollbars=yes');
         });
     };
@@ -155,7 +155,7 @@
             window.commentsHash = params.hash;
         }
 
-        $cms.dom.on(container, 'click', '.js-click-check-marked-form-and-submit', function (e, clicked) {
+        $dom.on(container, 'click', '.js-click-check-marked-form-and-submit', function (e, clicked) {
             if (!$cms.form.addFormMarkedPosts(markedPostActionsForm, 'mark_')) {
                 $cms.ui.alert('{!NOTHING_SELECTED;}');
                 e.preventDefault();
@@ -170,8 +170,8 @@
             $cms.ui.disableButton(clicked);
         });
 
-        $cms.dom.on(container, 'click', '.js-click-require-tma-type-selection', function (e, btn) {
-            if ($cms.dom.$('#tma_type').selectedIndex !== -1) {
+        $dom.on(container, 'click', '.js-click-require-tma-type-selection', function (e, btn) {
+            if ($dom.$('#tma_type').selectedIndex !== -1) {
                 $cms.ui.disableButton(btn);
             } else {
                 e.preventDefault();
@@ -185,7 +185,7 @@
             maxSelections = +params.maximumSelections || 0,
             error  = (minSelections === maxSelections) ? $util.format('{!cns:POLL_NOT_ENOUGH_ERROR_2;^}', minSelections) : $util.format('{!cns:POLL_NOT_ENOUGH_ERROR;^}', [minSelections, maxSelections]);
 
-        $cms.dom.on(form, 'submit', function (e) {
+        $dom.on(form, 'submit', function (e) {
             if (cnsCheckPoll() === false) {
                 e.preventDefault();
             }
@@ -212,7 +212,7 @@
         var container = this,
             ignoreUrl = params.ignoreUrl2;
 
-        $cms.dom.on(container, 'click', '.js-click-ignore-notification', function () {
+        $dom.on(container, 'click', '.js-click-ignore-notification', function () {
             var el = this;
             $cms.doAjaxRequest(ignoreUrl, function () {
                 var o = el.parentNode.parentNode.parentNode.parentNode;
@@ -227,25 +227,25 @@
     };
 
     $cms.templates.cnsPrivateTopicLink = function (params, container) {
-        $cms.dom.on(container, 'click', '.js-click-poll-for-notifications', function () {
+        $dom.on(container, 'click', '.js-click-poll-for-notifications', function () {
             pollForNotifications(true, true);
         });
     };
 
     $cms.templates.cnsTopicPost = function cnsTopicPost(params, container) {
         var id = strVal(params.id),
-            cell = $cms.dom.$('#cell_mark_' + id);
+            cell = $dom.$('#cell_mark_' + id);
 
 
-        $cms.dom.on(container, 'click', '.js-click-checkbox-set-cell-mark-class', function (e, checkbox) {
+        $dom.on(container, 'click', '.js-click-checkbox-set-cell-mark-class', function (e, checkbox) {
             cell.classList.toggle('cns_on', checkbox.checked);
             cell.classList.toggle('cns_off', !checkbox.checked);
         });
     };
 
     $cms.templates.cnsTopicMarker = function cnsTopicMarker(params, container) {
-        $cms.dom.on(container, 'click', '.js-click-checkbox-set-row-mark-class', function (e, checkbox) {
-            var row = $cms.dom.closest(checkbox, 'tr');
+        $dom.on(container, 'click', '.js-click-checkbox-set-row-mark-class', function (e, checkbox) {
+            var row = $dom.closest(checkbox, 'tr');
             row.classList.toggle('cns_on', checkbox.checked);
             row.classList.toggle('cns_off', !checkbox.checked);
         });

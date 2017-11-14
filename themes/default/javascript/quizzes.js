@@ -24,11 +24,11 @@
     };
 
     $cms.templates.quizScreen = function quizScreen(params, container) {
-        var form = $cms.dom.$(container, '.js-quiz-form'),
+        var form = $dom.$(container, '.js-quiz-form'),
             timeout = +params.timeout || 0,
             quizFormLastValid;
 
-        $cms.dom.on(container, 'submit', '.js-submit-check-form', function (e, form) {
+        $dom.on(container, 'submit', '.js-submit-check-form', function (e, form) {
             if (quizFormLastValid && (quizFormLastValid.getTime() === $cms.form.lastChangeTime(form).getTime())) {
                 return;
             }
@@ -38,14 +38,14 @@
             $cms.form.checkForm(form, false).then(function (valid) {
                 if (valid) {
                     quizFormLastValid = $cms.form.lastChangeTime(form);
-                    $cms.dom.submit(form);
+                    $dom.submit(form);
                 }
             });
         });
 
         if (timeout > 0) {
             setTimeout(function () {
-                $cms.dom.submit(form);
+                $dom.submit(form);
             }, timeout * 1000);
 
             setInterval(function () {
@@ -54,7 +54,7 @@
             iterateCountdown(0); // Because quiz_timer_minutes_and_seconds needs setting correctly
         }
 
-        var e = $cms.dom.$$(form, '.field_input');
+        var e = $dom.$$(form, '.field_input');
         for (var i = 0; i < e.length; i++) {
             $cms.form.setUpChangeMonitor(e[i]);
         }
@@ -62,9 +62,9 @@
 
     function iterateCountdown(dif) {
         var st = document.getElementById('quiz_timer');
-        var newValue = parseInt($cms.dom.html(st)) + dif;
+        var newValue = parseInt($dom.html(st)) + dif;
         if (newValue >= 0) {
-            $cms.dom.html(st, newValue);
+            $dom.html(st, newValue);
         }
 
         var st2 = document.getElementById('quiz_timer_minutes_and_seconds');
@@ -75,7 +75,7 @@
                 v += ':';
                 if (newValue % 60 < 10) v += '0';
                 v += newValue % 60;
-                $cms.dom.html(st2, v);
+                $dom.html(st2, v);
             }
         }
     }

@@ -3,7 +3,7 @@
 
     $cms.templates.filedumpEmbedScreen = function filedumpEmbedScreen(params, container) {
         if (params && (params.generated !== undefined)) {
-            var el = $cms.dom.$('#generated_comcode');
+            var el = $dom.$('#generated_comcode');
             try {
                 el.focus();
             } catch (e) {}
@@ -11,7 +11,7 @@
             el.select();
         }
 
-        $cms.dom.on(container, 'click', '.js-click-input-img-size-select', function (e, input) {
+        $dom.on(container, 'click', '.js-click-input-img-size-select', function (e, input) {
             input.select();
         });
     };
@@ -21,15 +21,15 @@
             $cms.ui.open(params.fileLink, null, 'width=950;height=700', '_top');
         }
 
-        $cms.dom.findUrlTab();
+        $dom.findUrlTab();
 
-        $cms.dom.on(container, 'submit', '.js-submit-check-filedump-selections', function (e, form) {
+        $dom.on(container, 'submit', '.js-submit-check-filedump-selections', function (e, form) {
             if (checkFiledumpSelections(form) === false) {
                 e.preventDefault();
             }
         });
 
-        $cms.dom.on(container, 'click', '.js-click-select-tab-g', function (e, clicked) {
+        $dom.on(container, 'click', '.js-click-select-tab-g', function (e, clicked) {
             var tab = clicked.dataset.tpTab;
 
             if (tab) {

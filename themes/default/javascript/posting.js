@@ -46,14 +46,14 @@
         // Add new file input, if we are using naked file inputs
         if (window.attachmentTemplate.trim() !== '') { // ATTACHMENT.tpl
             var newDiv = document.createElement('div');
-            $cms.dom.html(newDiv, window.attachmentTemplate.replace(/\_\_num_attachments\_\_/g, window.numAttachments));
+            $dom.html(newDiv, window.attachmentTemplate.replace(/\_\_num_attachments\_\_/g, window.numAttachments));
             addTo.appendChild(newDiv);
         }
 
         // Rebuild uploader button, if we have a singular button
         window.rebuildAttachmentButtonForNext(postingFieldName);
 
-        $cms.dom.triggerResize();
+        $dom.triggerResize();
     }
 
     /**
@@ -220,7 +220,7 @@
                     if (!comcodeAdded) {  // Cancelled
                         var clearButton = document.getElementById('fsClear_file' + number);
                         if (clearButton) {
-                            $cms.dom.trigger(clearButton, 'click');    
+                            $dom.trigger(clearButton, 'click');    
                         }
                         return;
                     }
@@ -297,7 +297,7 @@
         }
 
         $cms.doAjaxRequest(window.formPreviewUrl + '&js_only=1&known_utf8=1', null, post).then(function (xhr) {
-            $cms.dom.append(document.body, xhr.responseText);
+            $dom.append(document.body, xhr.responseText);
         });
     }
 
@@ -402,7 +402,7 @@
                                 }
                             }
 
-                            defaultEmbed = $cms.dom.html(comcodeElement);
+                            defaultEmbed = $dom.html(comcodeElement);
 
                             if (comcodeElement.id === '') {
                                 comcodeElement.id = 'comcode_' + Date.now();
@@ -1008,7 +1008,7 @@
                     }
             }
 
-            $cms.dom.trigger(element, 'change');
+            $dom.trigger(element, 'change');
         }
 
         function fieldSupportsAutosave(element) {

@@ -17,7 +17,7 @@
 				if (element != null) {
 					func = {
 						exec: function () {
-							$cms.dom.trigger(element, 'click');
+							$dom.trigger(element, 'click');
 						}
 					};
 					editor.addCommand('composr_' + buttonName, func);
@@ -28,7 +28,7 @@
 						});
 					}
                     
-                    $cms.dom.hide($cms.dom.parent(element, '#post_special_options, #post_special_options2, .post_special_options'/*A parent matching any of these*/));
+                    $dom.hide($dom.parent(element, '#post_special_options, #post_special_options2, .post_special_options'/*A parent matching any of these*/));
 				}
 			});
 
@@ -37,7 +37,7 @@
 				doingAttachmentUploads = Boolean(aub) && (aub.classList.contains('for_field_' + editor.element.$.id));
             
 			if (doingAttachmentUploads) {
-				if (!aub || $cms.dom.notDisplayed($cms.dom.parent(aub, '#post_special_options, #post_special_options2, .post_special_options'))) { // If attachment button was not placed elsewhere
+				if (!aub || $dom.notDisplayed($dom.parent(aub, '#post_special_options, #post_special_options2, .post_special_options'))) { // If attachment button was not placed elsewhere
                     // Attach Plupload to the Image button on the WYSIWYG editor
 					setTimeout(function () {
 					    var imageButton = document.getElementById('cke_' + editor.element.$.id).querySelector('.cke_button__composr_image');

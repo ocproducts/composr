@@ -91,17 +91,17 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
         var changesMadeAlready = true;
 
         if (cpfField.csv_parent_heading !== null)  { // We need to look at parent to filter possibilities, if we have one
-            var currentValue = $cms.dom.value(selectEl);
+            var currentValue = $dom.value(selectEl);
 
-            $cms.dom.empty(selectEl);  // Wipe list contents
+            $dom.empty(selectEl);  // Wipe list contents
             var option;
 
             var parentCpfFieldElement = findCpfFieldElement(selectEl.form, cpfFields[cpfField.csv_parent_heading]);
-            var currentParentValue = $cms.dom.value(parentCpfFieldElement);
+            var currentParentValue = $dom.value(parentCpfFieldElement);
             if (currentParentValue.length === 0) { // Parent unset, so this is
                 option = document.createElement('option');
                 selectEl.add(option, null);
-                $cms.dom.html(option, <?= json_encode(strval(do_lang('SELECT_OTHER_FIRST', 'xxx'))) ?> +''.replace(/xxx/g, cpfFields[cpfField.csv_parent_heading].label));
+                $dom.html(option, <?= json_encode(strval(do_lang('SELECT_OTHER_FIRST', 'xxx'))) ?> +''.replace(/xxx/g, cpfFields[cpfField.csv_parent_heading].label));
                 option.value = '';
             } else { // Parent is set, so we need to filter possibilities
                 // Work out available (filtered) possibilities
@@ -140,7 +140,7 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
                 if (!selectEl.multiple) {
                     option = document.createElement('option');
                     selectEl.add(option, null);
-                    $cms.dom.html(option, <?= json_encode(strval(do_lang('PLEASE_SELECT'))) ?>);
+                    $dom.html(option, <?= json_encode(strval(do_lang('PLEASE_SELECT'))) ?>);
                     option.value = '';
                 }
                 var previousOne = null;
@@ -153,7 +153,7 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
                         // not a dupe
                         option = document.createElement('option');
                         selectEl.add(option, null);
-                        $cms.dom.html(option, escape_html(possibilities[i]));
+                        $dom.html(option, escape_html(possibilities[i]));
                         option.value = possibilities[i];
                         if (currentValue.length == 0) {
                             if (selectEl.multiple) { // Pre-select all, if multiple input
@@ -212,7 +212,7 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
                 }
             };
         } else {
-            $cms.dom.trigger(selectEl, 'change');  // Cascade
+            $dom.trigger(selectEl, 'change');  // Cascade
         }
     }
 

@@ -15,7 +15,7 @@
             sbChatCheck(chatRoomId, lastMessageId, -1);
         }
 
-        $cms.dom.on(container, 'click', '.js-click-btn-send-message', function (e, el) {
+        $dom.on(container, 'click', '.js-click-btn-send-message', function (e, el) {
             setTimeout(function () {
                 sbChatCheck(chatRoomId, lastMessageId, -1);
             }, 2000);
@@ -27,7 +27,7 @@
             $cms.ui.disableButton(el);
         });
 
-        $cms.dom.on(container, 'click', '.js-click-btn-shake-screen', function (e, el) {
+        $dom.on(container, 'click', '.js-click-btn-shake-screen', function (e, el) {
             el.form.elements['shoutbox_message'].value = '((SHAKE))';
             setTimeout(function () {
                 sbChatCheck(chatRoomId, lastMessageId, -1);
@@ -72,10 +72,10 @@
                 if ((id > sbLastMessageId) && (sbLastMessageId !== -1)) {
                     sbLastMessageId = parseInt(id);
                     if (sbLastMessageId !== -1) {
-                        if ($cms.dom.html(messageEls[i]).includes('((SHAKE))')) {
+                        if ($dom.html(messageEls[i]).includes('((SHAKE))')) {
                             doShake();
                         } else {
-                            showGhost($cms.dom.html(messageEls[i]));
+                            showGhost($dom.html(messageEls[i]));
                         }
 
                         var frames = window.parent.document.getElementsByTagName('iframe');
@@ -101,7 +101,7 @@
 
         var divs = document.getElementsByTagName('div'), currentPositioning;
         for (var i = 0; i < divs.length; i++) {
-            currentPositioning = $cms.dom.css(divs[i], 'position');
+            currentPositioning = $dom.css(divs[i], 'position');
             if ((currentPositioning === '') || (currentPositioning === 'static')) {
                 divs[i].vectorSpeed = Math.round(Math.random() * 2);
                 divs[i].style.position = 'relative';
@@ -145,7 +145,7 @@
         var div = document.createElement('div');
         div.style.position = 'absolute';
         div.className = 'ghost';
-        $cms.dom.html(div, htmlMessage);
+        $dom.html(div, htmlMessage);
         var limit = 36;
         for (var counter = 0; counter < limit; counter++) {
             setTimeout(buildGhostFunc(div, counter, limit), counter * 100);
@@ -159,8 +159,8 @@
             return function () {
                 div.style.fontSize = (1 + 0.05 * counter) + 'em';
                 div.style.opacity = 1.0 - counter / limit / 1.3;
-                div.style.left = (($cms.dom.getWindowWidth() - div.offsetWidth) / 2 + window.pageXOffset) + 'px';
-                div.style.top = (($cms.dom.getWindowHeight() - div.offsetHeight) / 2 - 20 + window.pageYOffset) + 'px';
+                div.style.left = (($dom.getWindowWidth() - div.offsetWidth) / 2 + window.pageXOffset) + 'px';
+                div.style.top = (($dom.getWindowHeight() - div.offsetHeight) / 2 - 20 + window.pageYOffset) + 'px';
             }
         }
     }

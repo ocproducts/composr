@@ -14,11 +14,11 @@
             },0);
         });
 
-        $cms.dom.on(container, 'change', '.js-change-set-place-marker', function () {
+        $dom.on(container, 'change', '.js-change-set-place-marker', function () {
             placeMarker(latitudeInput.value, longitudeInput.value);
         });
 
-        $cms.dom.on(container, 'click', '.js-click-geolocate-user-for-map-field', function () {
+        $dom.on(container, 'click', '.js-click-geolocate-user-for-map-field', function () {
             geolocateUserForMapField();
         });
 

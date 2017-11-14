@@ -77,7 +77,7 @@
                 jQuery.ajax({
                     url: $cms.baseUrl('data_custom/activities_handler.php' + $cms.keep(true)),
                     type: 'POST',
-                    data: $cms.dom.serialize(form),
+                    data: $dom.serialize(form),
                     cache: false,
                     timeout: 5000,
                     // Processes data retrieved for the activities feed and updates the list
@@ -87,13 +87,13 @@
                         if ((textStatus !== 'success') || !jqXHR.responseXML) {
                             view.notificationEl.className = 'update_error';
                             view.notificationEl.textContent = '{!activities:WENT_WRONG;^}';
-                            $cms.dom.hide(view.notificationEl);
+                            $dom.hide(view.notificationEl);
 
-                            $cms.dom.fadeIn(view.notificationEl, 1200).then(function () {
+                            $dom.fadeIn(view.notificationEl, 1200).then(function () {
                                 setTimeout(function () {
-                                    $cms.dom.fadeOut(view.notificationEl, 1200).then(function () {
+                                    $dom.fadeOut(view.notificationEl, 1200).then(function () {
                                         view.maintainCharCount();
-                                        $cms.dom.fadeIn(view.notificationEl, 1200);
+                                        $dom.fadeIn(view.notificationEl, 1200);
                                     });
                                 }, 2400);
                             });
@@ -115,26 +115,26 @@
                             view.notificationEl.className = 'update_success';
                             view.notificationEl.textContent = feedbackEl.textContent;
 
-                            if ($cms.dom.$('#activities_feed')) { // The update box won't necessarily have a displayed feed to update
+                            if ($dom.$('#activities_feed')) { // The update box won't necessarily have a displayed feed to update
                                 sUpdateGetData();
                             }
 
-                            $cms.dom.fadeIn(view.notificationEl, 1200).then(function () {
-                                $cms.dom.fadeOut(view.notificationEl, 1200).then(function () {
+                            $dom.fadeIn(view.notificationEl, 1200).then(function () {
+                                $dom.fadeOut(view.notificationEl, 1200).then(function () {
                                     view.notificationEl.className = 'update_success';
                                     view.notificationEl.textContent = '254 {!activities:CHARACTERS_LEFT;^}';
-                                    $cms.dom.fadeIn(view.notificationEl, 1200);
+                                    $dom.fadeIn(view.notificationEl, 1200);
 
                                     var textareaParentEl = view.textarea.parentElement;
 
-                                    $cms.dom.height(textareaParentEl, $cms.dom.height(textareaParentEl));
+                                    $dom.height(textareaParentEl, $dom.height(textareaParentEl));
 
                                     view.textarea.value = '{!activities:TYPE_HERE;^}';
                                     view.textarea.classList.remove('field_input_filled');
                                     view.textarea.classList.add('field_input_non_filled');
 
-                                    $cms.dom.fadeIn(view.textarea, 1200).then(function () {
-                                        $cms.dom.height(textareaParentEl, '');
+                                    $dom.fadeIn(view.textarea, 1200).then(function () {
+                                        $dom.height(textareaParentEl, '');
                                     });
                                 });
                             });
@@ -175,7 +175,7 @@
     $cms.templates.activity = function activity(params, container) {
         var liid = strVal(params.liid);
 
-        $cms.dom.on(container, 'click', '.js-submit-confirm-update-remove', function (e) {
+        $dom.on(container, 'click', '.js-submit-confirm-update-remove', function (e) {
             sUpdateRemove(e, liid);
         });
     };
@@ -279,7 +279,7 @@ function sUpdateShow(data, stat) {
                     thisLi.className = 'activities_box box';
                     thisLi.setAttribute('toFade', 'yes');
                     topOfList.parentNode.insertBefore(thisLi, topOfList);
-                    $cms.dom.html(thisLi, window.Base64.decode(jQuery(this).text()));
+                    $dom.html(thisLi, window.Base64.decode(jQuery(this).text()));
                 });
 
                 var noMessages = document.getElementById('activity_-1');

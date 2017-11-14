@@ -384,11 +384,6 @@
          * @namespace $cms.behaviors
          */
         behaviors: {},
-        /**
-         * DOM helper methods
-         * @namespace $cms.dom
-         */
-        dom: $dom
     });
 
     /**@namespace $util*/
@@ -2070,7 +2065,7 @@
             if (isObj(properties)) {
                 each(properties, function (key, value) {
                     if (key in methodAttributes) {
-                        $cms.dom[key](el, value);
+                        $dom[key](el, value);
                     } else if (isObj(el[key]) && isObj(value)) {
                         extendDeep(el[key], value);
                     } else {
@@ -3840,7 +3835,7 @@
                     }
 
                     if (methodAttributes[key]) {
-                        $cms.dom[key](node, value);
+                        $dom[key](node, value);
                     } else {
                         $dom.attr(node, key, value)
                     }

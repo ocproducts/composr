@@ -2,7 +2,7 @@
     'use strict';
 
     $cms.templates.sortableTable = function sortableTable(params, container) {
-        $cms.dom.on(container, 'change', '.js-change-sortable-table-filter', function (e, select) {
+        $dom.on(container, 'change', '.js-change-sortable-table-filter', function (e, select) {
             SortableTable.filter(select, select);
         });
     };
@@ -972,7 +972,7 @@ var SortableTable = (function(){
             c.onclick = function () {
                 SortableTable.pageJump(this, type);
                 try {
-                    scrollTo(0,$cms.dom.findPosY(document.getElementById(t.id)));
+                    scrollTo(0,$dom.findPosY(document.getElementById(t.id)));
                 } catch (e) {}
     
                 return false;

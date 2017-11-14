@@ -449,8 +449,8 @@ jQuery(function ($) {
                 var sel = cke.getSelection(); // text selection
                 var obj = sel.getStartElement().$; // the element the selected text resides in
 
-                var x = $cms.dom.findPosX(obj, true) - window.pageXOffset + cke.window.$.pageXOffset + $cms.dom.findPosX(iframe, true);
-                var y = $cms.dom.findPosY(obj, true) - window.pageYOffset + cke.window.$.pageYOffset + $cms.dom.findPosY(iframe, true) + 20;
+                var x = $dom.findPosX(obj, true) - window.pageXOffset + cke.window.$.pageXOffset + $dom.findPosX(iframe, true);
+                var y = $dom.findPosY(obj, true) - window.pageYOffset + cke.window.$.pageYOffset + $dom.findPosY(iframe, true) + 20;
                 // NB: The get_window_scroll_x/get_window_scroll_y is because calculation happened on wrong window object
 
                 var text = _this.getText().substring(0, this.startPos);

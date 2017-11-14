@@ -73,7 +73,7 @@
         },
 
         editorKeyPress: function (e, textarea) {
-            if ($cms.dom.keyPressed(e, 'Tab')) {
+            if ($dom.keyPressed(e, 'Tab')) {
                 e.preventDefault();
                 window.insertTextbox(textarea, "\t");
             }
@@ -195,7 +195,7 @@
                 function (url) {
                     if (url !== null) {
                         button.form.action = url;
-                        $cms.dom.submit(button.form);
+                        $dom.submit(button.form);
                     }
                 },
                 '{!PREVIEW;^}'
@@ -317,7 +317,7 @@
             var selectors = window.opener.findActiveSelectors(doingCssFor, window.opener);
 
             var list = document.getElementById('selector_list_' + fileId);
-            $cms.dom.html(list, '');
+            $dom.html(list, '');
 
             for (var i = 0; i < selectors.length; i++) {
                 selector = selectors[i].selectorText;
@@ -328,7 +328,7 @@
                 li.appendChild(a);
                 a.href = '#!';
                 a.id = 'selector_' + i;
-                $cms.dom.html(a, $cms.filter.html(selector));
+                $dom.html(a, $cms.filter.html(selector));
                 list.appendChild(li);
 
                 // Add tooltip so we can see what the CSS text is in when hovering the selector
@@ -522,7 +522,7 @@
             $cms.form.doAjaxFieldTest(url).then(function (valid) {
                 if (valid) {
                     validValue = value;
-                    $cms.dom.submit(form);
+                    $dom.submit(form);
                 } else {
                     submitBtn.disabled = false;
                 }
@@ -531,7 +531,7 @@
     };
 
     $cms.templates.tempcodeTesterScreen = function tempcodeTesterScreen(params, container) {
-        $cms.dom.on(container, 'click', '.js-click-btn-tempcode-tester-do-preview', function (e, btn) {
+        $dom.on(container, 'click', '.js-click-btn-tempcode-tester-do-preview', function (e, btn) {
             var request = '';
 
             for (var i = 0; i < btn.form.elements.length; i++) {
@@ -539,12 +539,12 @@
             }
 
             $cms.doAjaxRequest('{$FIND_SCRIPT;,tempcode_tester}' + $cms.keep(true), null, request).then(function (xhr) {
-                $cms.dom.html(document.getElementById('preview_raw'), $cms.filter.html(xhr.responseText));
-                $cms.dom.html(document.getElementById('preview_html'), xhr.responseText);
+                $dom.html(document.getElementById('preview_raw'), $cms.filter.html(xhr.responseText));
+                $dom.html(document.getElementById('preview_html'), xhr.responseText);
             });
 
             $cms.doAjaxRequest('{$FIND_SCRIPT;,tempcode_tester}?comcode=1' + $cms.keep(), null, request).then(function (xhr) {
-                $cms.dom.html(document.getElementById('preview_comcode'), xhr.responseText);
+                $dom.html(document.getElementById('preview_comcode'), xhr.responseText);
             });
         });
     };
@@ -553,7 +553,7 @@
         var fileId = strVal(params.fileId),
             stub = strVal(params.stub);
 
-        $cms.dom.on(container, 'click', '.js-click-template-insert-parameter', function () {
+        $dom.on(container, 'click', '.js-click-template-insert-parameter', function () {
             templateInsertParameter('b_' + fileId + '_' + stub, fileId);
         });
 
@@ -684,11 +684,11 @@
     $cms.templates.templateEditLink = function templateEditLink(params, container) {
         var editUrl = strVal(params.editUrl);
 
-        $cms.dom.on(container, 'click', '.js-click-open-edit-url', function () {
+        $dom.on(container, 'click', '.js-click-open-edit-url', function () {
             window.open(editUrl);
         });
 
-        $cms.dom.on(container, 'click', '.js-keypress-open-edit-url', function () {
+        $dom.on(container, 'click', '.js-keypress-open-edit-url', function () {
             window.open(editUrl);
         });
     };
@@ -720,11 +720,11 @@
 
         templateEditorAssignUnloadEvent();
 
-        $cms.dom.on(container, 'change', '.js-change-template-editor-add-tab-wrap', function () {
+        $dom.on(container, 'change', '.js-change-template-editor-add-tab-wrap', function () {
             templateEditorAddTab(document.getElementById('theme_files').value);
         });
 
-        $cms.dom.on(container, 'click', '.js-click-btn-add-template', function () {
+        $dom.on(container, 'click', '.js-click-btn-add-template', function () {
             addTemplate();
         });
 
@@ -801,7 +801,7 @@
         var file = strVal(params.file),
             revisionId = strVal(params.revisionId);
 
-        $cms.dom.on(container, 'click', function () {
+        $dom.on(container, 'click', function () {
             templateEditorRestoreRevision(file, revisionId);
         });
 
@@ -821,8 +821,8 @@
     };
 
     $cms.templates.templateTreeItem = function templateTreeItem(params, container) {
-        $cms.dom.on(container, 'click', '.js-click-checkbox-toggle-guid-input', function (e, checkbox) {
-            var el = $cms.dom.$('#f' + checkbox.id.replace(/file/, 'guid'));
+        $dom.on(container, 'click', '.js-click-checkbox-toggle-guid-input', function (e, checkbox) {
+            var el = $dom.$('#f' + checkbox.id.replace(/file/, 'guid'));
             if (el) {
                 el.disabled = !checkbox.checked;
             }
@@ -832,11 +832,11 @@
     $cms.templates.themeScreenPreview = function (params, container) {
         var template = strVal(params.template);
 
-        $cms.dom.on(container, 'click', '.js-link-click-open-template-preview-window', function (e, link) {
+        $dom.on(container, 'click', '.js-link-click-open-template-preview-window', function (e, link) {
             window.open(link.href, 'template_preview_' + template, 'width=800,height=600,status=no,resizable=yes,scrollbars=yes');
         });
 
-        $cms.dom.on(container, 'click', '.js-link-click-open-mobile-template-preview-window', function (e, link) {
+        $dom.on(container, 'click', '.js-link-click-open-mobile-template-preview-window', function (e, link) {
             window.open(link.href, 'template_preview_' + template, 'width=320,height=480,status=no,resizable=yes,scrollbars=yes');
         });
     };
@@ -1096,15 +1096,15 @@
         }
 
         if (numTabs === 0) {
-            $cms.dom.html(headers, '<a href="#!" id="t_default" class="tab"><span>&mdash;</span></a>');
-            $cms.dom.html(bodies, '<div id="g_default"><p class="nothing_here">{!NA}</p></div>');
+            $dom.html(headers, '<a href="#!" id="t_default" class="tab"><span>&mdash;</span></a>');
+            $dom.html(bodies, '<div id="g_default"><p class="nothing_here">{!NA}</p></div>');
         }
     }
 
     function templateEditorTabLoadedContent(html, file) {
         var fileId = fileToFileId(file);
 
-        $cms.dom.html('#g_' + fileId, html);
+        $dom.html('#g_' + fileId, html);
 
         setTimeout(function () {
             var textareaId = 'e_' + fileId;
@@ -1151,8 +1151,8 @@
                 resize: function (event, ui) {
                     var editor = window.aceEditors['e_' + fileId];
                     if (editor !== undefined) {
-                        $cms.dom.$('#e_' + fileId.replace(/\./g, '\\.') + '__ace').style.height = '100%';
-                        $cms.dom.$('#e_' + fileId.replace(/\./g, '\\.') + '__ace').parentNode.style.height = '100%';
+                        $dom.$('#e_' + fileId.replace(/\./g, '\\.') + '__ace').style.height = '100%';
+                        $dom.$('#e_' + fileId.replace(/\./g, '\\.') + '__ace').parentNode.style.height = '100%';
                         editor.resize();
                     }
                 },

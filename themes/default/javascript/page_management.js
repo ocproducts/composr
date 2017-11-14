@@ -18,7 +18,7 @@
             window.sitemap = $cms.ui.createTreeList('tree_list', 'data/sitemap.php?start_links=1&get_perms=0&label_content_types=1&keep_full_structure=1' + $cms.keep(), null, '', false, null, true);
         });
 
-        $cms.dom.on(container, 'change', '.js-change-update-details-box', function (e, changed) {
+        $dom.on(container, 'change', '.js-change-update-details-box', function (e, changed) {
             updateDetailsBox(changed);
         });
 
@@ -35,7 +35,7 @@
 
             var target = document.getElementById('details_target');
             if (!element.value) {
-                $cms.dom.html(target, '{!zones:NO_ENTRY_POINT_SELECTED;^}');
+                $dom.html(target, '{!zones:NO_ENTRY_POINT_SELECTED;^}');
                 return;
             }
 
@@ -119,16 +119,16 @@
             }
 
             // Output
-            $cms.dom.empty(target);
+            $dom.empty(target);
             if (actionBuildup) {
                 var actions = document.createElement('div');
-                $cms.dom.html(actions, actionsTpl.replace(/\[1\]/, actionBuildup));
+                $dom.html(actions, actionsTpl.replace(/\[1\]/, actionBuildup));
                 target.appendChild(actions);
             }
 
             if (infoBuildup) {
                 var info = document.createElement('div');
-                $cms.dom.html(info, infoTpl.replace(/\[1\]/, infoBuildup));
+                $dom.html(info, infoTpl.replace(/\[1\]/, infoBuildup));
                 target.appendChild(info);
             }
         }

@@ -172,10 +172,10 @@
 
             return $cms.promiseSequence(promiseCalls).then(function () {
                 if (so) {
-                    $cms.dom.show(so);
+                    $dom.show(so);
                 }
                 if (so2) {
-                    $cms.dom.hide(so2);
+                    $dom.hide(so2);
                 }
 
                 window.wysiwygOn = function () {
@@ -238,7 +238,7 @@
 
             function postWysiwygDisable(textarea) {
                 if (document.getElementById('toggle_wysiwyg_' + textarea.id)) {
-                    $cms.dom.html('#toggle_wysiwyg_' + textarea.id, '<img src="{$IMG*;^,icons/16x16/editor/wysiwyg_on}" srcset="{$IMG;^,icons/16x16/editor/wysiwyg_on} 2x" alt="{!comcode:ENABLE_WYSIWYG;^}" title="{!comcode:ENABLE_WYSIWYG;^}" class="vertical_alignment" />');
+                    $dom.html('#toggle_wysiwyg_' + textarea.id, '<img src="{$IMG*;^,icons/16x16/editor/wysiwyg_on}" srcset="{$IMG;^,icons/16x16/editor/wysiwyg_on} 2x" alt="{!comcode:ENABLE_WYSIWYG;^}" title="{!comcode:ENABLE_WYSIWYG;^}" class="vertical_alignment" />');
                 }
 
                 try {  // Unload editor 
@@ -304,10 +304,10 @@
 
         if (!postingForm.elements['post'] || postingForm.elements['post'].className.includes('wysiwyg')) {
             if (so) {
-                $cms.dom.hide(so);
+                $dom.hide(so);
             }
             if (so2) {
-                $cms.dom.show(so2);
+                $dom.show(so2);
             }
         }
 
@@ -338,7 +338,7 @@
                 indicator.value = '1';
 
                 if (document.getElementById('toggle_wysiwyg_' + id)) {
-                    $cms.dom.html(document.getElementById('toggle_wysiwyg_' + id), '<img src="{$IMG*;^,icons/16x16/editor/wysiwyg_off}" srcset="{$IMG;^,icons/32x32/editor/wysiwyg_off} 2x" alt="{!comcode:DISABLE_WYSIWYG;^}" title="{!comcode:DISABLE_WYSIWYG;^}" class="vertical_alignment" />');
+                    $dom.html(document.getElementById('toggle_wysiwyg_' + id), '<img src="{$IMG*;^,icons/16x16/editor/wysiwyg_off}" srcset="{$IMG;^,icons/32x32/editor/wysiwyg_off} 2x" alt="{!comcode:DISABLE_WYSIWYG;^}" title="{!comcode:DISABLE_WYSIWYG;^}" class="vertical_alignment" />');
                 }
 
                 window.wysiwygOriginalComcode[id] = textarea.value;
@@ -437,7 +437,7 @@
             linkedSheets = document.getElementsByTagName('style');
             var css = '';
             for (counter = 0; counter < linkedSheets.length; counter++) {
-                css += $cms.dom.html(linkedSheets[counter]);
+                css += $dom.html(linkedSheets[counter]);
             }
             window.CKEDITOR.addCss(css);
 
@@ -619,7 +619,7 @@
                 if (this.nodeName.toLowerCase() === 'input') {
                     tagText = this.origTitle;
                 } else {
-                    tagText = $cms.dom.html(this);
+                    tagText = $dom.html(this);
                 }
 
                 this.style.cursor = 'pointer';
@@ -706,9 +706,9 @@
         text = ' ' + title + ' ';
 
         if (isOpener) {
-            return insertTextboxOpener(element, text, true, $cms.dom.html(callerEl), true);
+            return insertTextboxOpener(element, text, true, $dom.html(callerEl), true);
         } else {
-            return insertTextbox(element, text, true, $cms.dom.html(callerEl), true);
+            return insertTextbox(element, text, true, $dom.html(callerEl), true);
         }
     }
 
@@ -909,7 +909,7 @@
         var selectedText = '';
         if (mySelection.getNative()) {
             try {
-                selectedText = $cms.dom.html(mySelection.getNative().getRangeAt(0).cloneContents());
+                selectedText = $dom.html(mySelection.getNative().getRangeAt(0).cloneContents());
             } catch (e) {}
         }
         return selectedText;
@@ -1054,7 +1054,7 @@
             }
 
             setTimeout((function (id, authorised, hook) {
-                $cms.dom.on('#' + id, 'click', function () {
+                $dom.on('#' + id, 'click', function () {
                     var el = document.getElementById(id);
                     if (el.checked && !authorised) {
                         //e.checked=false;  Better to assume success, not all oAuth support callback
@@ -1086,7 +1086,7 @@
 
         html = '<div>' + html + '</div>';
 
-        $cms.dom.html(htmlSpot, html);
+        $dom.html(htmlSpot, html);
     }
 
 }(window.$cms, (window.$editing || (window.$editing = {}))));

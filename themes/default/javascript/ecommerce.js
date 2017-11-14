@@ -78,7 +78,7 @@
     
     $cms.functions.ecommerceEmailGetNeededFieldsPop3 = function () {
         var form = document.getElementById('pass1').form;
-        $cms.dom.on(form, 'submit', function (e) {
+        $dom.on(form, 'submit', function (e) {
             if (form.elements['pass1'].value !== form.elements['pass2'].value) {
                 $cms.ui.alert('{!PASSWORD_MISMATCH;}');
                 e.preventDefault();
@@ -93,11 +93,11 @@
     };
 
     $cms.templates.purchaseWizardStageTerms = function purchaseWizardStageTerms(params, container) {
-        $cms.dom.on(container, 'click', '.js-checkbox-click-toggle-proceed-btn', function (e, checkbox) {
-            $cms.dom.$('#proceed_button').disabled = !checkbox.checked;
+        $dom.on(container, 'click', '.js-checkbox-click-toggle-proceed-btn', function (e, checkbox) {
+            $dom.$('#proceed_button').disabled = !checkbox.checked;
         });
 
-        $cms.dom.on(container, 'click', '.js-click-btn-i-disagree', function (e, btn) {
+        $dom.on(container, 'click', '.js-click-btn-i-disagree', function (e, btn) {
             if (btn.dataset.tpLocation) {
                 window.location = btn.dataset.tpLocation
             }
@@ -114,7 +114,7 @@
         
         if (typeCode.toUpperCase().startsWith('CART_ORDER_')) {
             // Automatic link clicking of purchase button for cart orders (because button was already pressed on cart screen)
-            $cms.dom.trigger('#purchase_button', 'click');
+            $dom.trigger('#purchase_button', 'click');
         }
     };
 }(window.$cms));

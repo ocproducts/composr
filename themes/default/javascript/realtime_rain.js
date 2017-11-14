@@ -13,7 +13,7 @@
 
         startRealtimeRain();
 
-        $cms.dom.on(container, 'mouseover mouseover', '.js-hover-window-pause', function (e, target) {
+        $dom.on(container, 'mouseover mouseover', '.js-hover-window-pause', function (e, target) {
             if (target.contains(e.relatedTarget)) {
                 return;
             }
@@ -31,34 +31,34 @@
             }
         });
 
-        $cms.dom.on(container, 'mouseover', '.js-mouseover-set-time-line-position', function () {
+        $dom.on(container, 'mouseover', '.js-mouseover-set-time-line-position', function () {
             setTimeLinePosition(window.currentTime);
         });
 
-        $cms.dom.on(container, 'click', '.js-click-toggle-window-pausing', function (e, btn) {
+        $dom.on(container, 'click', '.js-click-toggle-window-pausing', function (e, btn) {
             window.paused = !window.paused;
             btn.classList.toggle('paused', window.paused);
         });
 
-        $cms.dom.on(container, 'mousemove', '.js-mousemove-timeline-click', function () {
+        $dom.on(container, 'mousemove', '.js-mousemove-timeline-click', function () {
             timelineClick(true);
         });
 
-        $cms.dom.on(container, 'click', '.js-click-timeline-click', function () {
+        $dom.on(container, 'click', '.js-click-timeline-click', function () {
             timelineClick(false);
         });
 
-        $cms.dom.on(container, 'mouseover mouseout', '.js-hover-toggle-real-time-indicator', function (e, target) {
+        $dom.on(container, 'mouseover mouseout', '.js-hover-toggle-real-time-indicator', function (e, target) {
             if (!target.contains(e.relatedTarget)) {
                 window.disableRealTimeIndicator = (e.type === 'mouseover');
             }
         });
 
-        $cms.dom.on(container, 'click', '.js-click-rain-slow-down', function () {
+        $dom.on(container, 'click', '.js-click-rain-slow-down', function () {
             window.timeWindow = window.timeWindow / 1.2;
         });
 
-        $cms.dom.on(container, 'click', '.js-click-rain-slow-up', function () {
+        $dom.on(container, 'click', '.js-click-rain-slow-up', function () {
             window.timeWindow = window.timeWindow * 1.2;
         });
     };
@@ -67,7 +67,7 @@
         window.pendingEvalFunction = function (el) { // In webkit you can't get a node until it's been closed, so we need to set our code into a function and THEN run it
             if (params.tickerText !== undefined) {
                 setTimeout(function () {
-                    $cms.dom.html(document.getElementById('news_go_here'), params.tickerText);
+                    $dom.html(document.getElementById('news_go_here'), params.tickerText);
                 }, params.relativeTimestamp * 1000);
             }
             // Set up extra attributes
@@ -87,9 +87,9 @@
 
 // Handle the realtime_rain button on the bottom bar
 function realtimeRainButtonLoadHandler() {
-    var img = $cms.dom.$('#realtime_rain_img');
+    var img = $dom.$('#realtime_rain_img');
 
-    var e = $cms.dom.$('#real_time_surround');
+    var e = $dom.$('#real_time_surround');
     if (e) { // Clicked twice - so now we close it
         bubblesTidyUp();
         if (window.bubbleTimer1) {
@@ -130,15 +130,15 @@ function realtimeRainButtonLoadHandler() {
     document.body.appendChild(x);
 
     $cms.loadSnippet('realtime_rain_load', null, true).then(function (html) {
-        $cms.dom.html(x, html);
+        $dom.html(x, html);
         e = document.getElementById('real_time_surround');
         e.style.position = 'absolute';
         e.style.zIndex = 100;
         e.style.left = 0;
         e.style.top = 0;
         e.style.width = '100%';
-        e.style.height = ($cms.dom.getWindowScrollHeight() - 40) + 'px';
-        $cms.dom.smoothScroll(0);
+        e.style.height = ($dom.getWindowScrollHeight() - 40) + 'px';
+        $dom.smoothScroll(0);
 
         startRealtimeRain();
     });
@@ -148,7 +148,7 @@ function realtimeRainButtonLoadHandler() {
 function startRealtimeRain() {
     var newsTicker = document.getElementById('news_ticker');
     newsTicker.style.top = '20px';
-    newsTicker.style.left = ($cms.dom.getWindowWidth() / 2 - newsTicker.offsetWidth / 2) + 'px';
+    newsTicker.style.left = ($dom.getWindowWidth() / 2 - newsTicker.offsetWidth / 2) + 'px';
 
     document.getElementById('loading_icon').style.display = 'block';
 
@@ -190,7 +190,7 @@ function receivedEvents(responseXml) {
     var heightPerSecond = maxHeight / 10;
     var frameDelay = (1000 / heightPerSecond) / 1.1; // 1.1 is a fudge factor to reduce chance of overlap (creates slight inaccuracy in spacing though)
 
-    var windowWidth = $cms.dom.getWindowWidth(),
+    var windowWidth = $dom.getWindowWidth(),
         elements = ajaxResult.children,
         leftPos = 25;
 
@@ -208,10 +208,10 @@ function receivedEvents(responseXml) {
             _clonedMessage = document.importNode(element, true);
         } catch (ignore) {}
 
-        clonedMessage = $cms.dom.create('div', {
+        clonedMessage = $dom.create('div', {
             id: _clonedMessage.getAttribute('id'),
             className: _clonedMessage.getAttribute('class'),
-            html: $cms.dom.html(_clonedMessage)
+            html: $dom.html(_clonedMessage)
         });
 
         leftPos += (windowWidth > 900) ? 200 : 20;
@@ -254,19 +254,19 @@ function receivedEvents(responseXml) {
 
                 var num = clonedMessage.iconMultiplicity,
                     mainIcon = clonedMessage.querySelector('.email-icon'),
-                    iconSpot = $cms.dom.$('#real_time_surround');
+                    iconSpot = $dom.$('#real_time_surround');
 
-                if ($cms.dom.findPosY(iconSpot, true) > 0) {
+                if ($dom.findPosY(iconSpot, true) > 0) {
                     iconSpot = iconSpot.parentNode;
                 }
                 for (var x = 0; x < num; x++) {
                     setTimeout(function () {
                         var nextIcon = document.createElement('div');
                         nextIcon.className = mainIcon.className;
-                        $cms.dom.html(nextIcon, $cms.dom.html(mainIcon));
+                        $dom.html(nextIcon, $dom.html(mainIcon));
                         nextIcon.style.position = 'absolute';
-                        nextIcon.style.left = $cms.dom.findPosX(mainIcon, true) + 'px';
-                        nextIcon.style.top = $cms.dom.findPosY(mainIcon, true) + 'px';
+                        nextIcon.style.left = $dom.findPosX(mainIcon, true) + 'px';
+                        nextIcon.style.top = $dom.findPosY(mainIcon, true) + 'px';
                         nextIcon.style.zIndex = 80;
                         nextIcon.xVector = 5 - Math.random() * 10;
                         nextIcon.yVector = -Math.random() * 6;
@@ -334,7 +334,7 @@ function timeNow() {
 function timelineClick(prospective) {
     prospective = !!prospective;
 
-    var pos = window.currentMouseX - $cms.dom.findPosX(document.getElementById('time_line_image'), true);
+    var pos = window.currentMouseX - $dom.findPosX(document.getElementById('time_line_image'), true);
     var timelineLength = 808;
     var minTime = window.minTime;
     var maxTime = timeNow();
@@ -342,8 +342,8 @@ function timelineClick(prospective) {
     if (!prospective) {
         window.currentTime = time;
         bubblesTidyUp();
-        $cms.dom.html('#real_time_date', '{!SET;^}');
-        $cms.dom.html('#real_time_time', '');
+        $dom.html('#real_time_date', '{!SET;^}');
+        $dom.html('#real_time_time', '');
         document.getElementById('loading_icon').style.display = 'block';
     } else {
         setTimeLinePosition(time);
@@ -362,7 +362,7 @@ function bubblesTidyUp() {
             bubbles[i].timer = null;
         }
     }
-    $cms.dom.html(bubblesGoHere, '');
+    $dom.html(bubblesGoHere, '');
     window.bubbleGroups = [];
     window.totalLines = 0;
     var icons = document.getElementById('real_time_surround').parentNode.querySelectorAll('.email_icon');
@@ -394,6 +394,6 @@ function setTimeLinePosition(time) {
     if (!realtimedate) {
         return;
     }
-    $cms.dom.html(realtimedate, dateObject.getFullYear() + '/' + ('' + dateObject.getMonth()) + '/' + ('' + dateObject.getDate()));
-    $cms.dom.html(realtimetime, ('' + dateObject.getHours()) + ':' + ('' + dateObject.getMinutes()) + ':' + ('' + dateObject.getSeconds()));
+    $dom.html(realtimedate, dateObject.getFullYear() + '/' + ('' + dateObject.getMonth()) + '/' + ('' + dateObject.getDate()));
+    $dom.html(realtimetime, ('' + dateObject.getHours()) + ':' + ('' + dateObject.getMinutes()) + ':' + ('' + dateObject.getSeconds()));
 }

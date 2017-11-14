@@ -2,7 +2,7 @@
     'use strict';
 
     $cms.templates.comcodeFlip = function comcodeFlip(params, container) {
-        $cms.dom.on(container, 'click', function () {
+        $dom.on(container, 'click', function () {
             var $container = window.jQuery(container);
 
             if (container.flipped == null) {

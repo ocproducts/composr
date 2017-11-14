@@ -35,8 +35,8 @@
             setEditedPanel('panel_bottom');
             setEditedPanel(params.defaultZonePageName);
 
-            var form = $cms.dom.$id('middle_fields');
-            var editFieldStore = $cms.dom.$id('edit_field_store');
+            var form = $dom.$id('middle_fields');
+            var editFieldStore = $dom.$id('edit_field_store');
             var i, store;
             for (i = 0; i < form.elements.length; i++) {
                 store = document.createElement('input');
@@ -50,7 +50,7 @@
                 editFieldStore.appendChild(store);
             }
 
-            $cms.dom.submit(btn.form);
+            $dom.submit(btn.form);
         }
     });
 
@@ -66,12 +66,12 @@
         this.id = params.id;
 
         if (params.preview !== undefined) {
-            $cms.form.disablePreviewScripts($cms.dom.$('#view_' + params.id));
+            $cms.form.disablePreviewScripts($dom.$('#view_' + params.id));
         }
 
         if (params.comcode && params.class.includes('wysiwyg')) {
             if ((window.wysiwygOn) && (wysiwygOn())) {
-                $cms.dom.$('#edit_' + params.id + '_textarea').readOnly = true;
+                $dom.$('#edit_' + params.id + '_textarea').readOnly = true;
             }
         }
     }
@@ -101,12 +101,12 @@
                 var i, j, element, elementh, selects;
 
                 for (i = 0; i < tabs.length; i++) {
-                    element = $cms.dom.$id(tabs[i] + '_' + id);
-                    elementh = $cms.dom.$id(tabs[i] + '_tab_' + id);
+                    element = $dom.$id(tabs[i] + '_' + id);
+                    elementh = $dom.$id(tabs[i] + '_tab_' + id);
                     if (element) {
                         element.style.display = (tabs[i] === tab) ? 'block' : 'none';
                         if ((tabs[i] == tab) && (tab == 'edit')) {
-                            if ($cms.form.isWysiwygField($cms.dom.$id('edit_' + id + '_textarea'))) {
+                            if ($cms.form.isWysiwygField($dom.$id('edit_' + id + '_textarea'))) {
                                 // LEGACY Fix for Firefox
                                 if (window.wysiwygEditors['edit_' + id + '_textarea'].document !== undefined) {
                                     if (window.wysiwygEditors['edit_' + id + '_textarea'].document.getBody().$) {
@@ -117,7 +117,7 @@
                             }
                         }
                         if (tabs[i] === tab) {
-                            $cms.dom.fadeIn(element);
+                            $dom.fadeIn(element);
 
                             elementh.classList.add('tab_active');
                         } else {
@@ -128,14 +128,14 @@
             }
 
             function reloadPreview(id) {
-                var element = $cms.dom.$id('view_' + id);
+                var element = $dom.$id('view_' + id);
 
-                var editElement = $cms.dom.$id('edit_' + id + '_textarea');
+                var editElement = $dom.$id('edit_' + id + '_textarea');
                 if (!editElement) {
                     return; // Nothing interatively edited
                 }
 
-                $cms.dom.html(element, '<div aria-busy="true" class="ajax_loading vertical_alignment"><img src="' + $cms.img('{$IMG;,loading}') + '" /> <span>{!LOADING;^}</span></div>');
+                $dom.html(element, '<div aria-busy="true" class="ajax_loading vertical_alignment"><img src="' + $cms.img('{$IMG;,loading}') + '" /> <span>{!LOADING;^}</span></div>');
 
                 var loadingPreviewOf = id;
 
@@ -155,8 +155,8 @@
                         return;
                     }
 
-                    var element = $cms.dom.$id('view_' + loadingPreviewOf);
-                    $cms.dom.html(element, ajaxResult.textContent.replace(/^((\s)|(\<br\s*\>)|(&nbsp;))*/, '').replace(/((\s)|(\<br\s*\>)|(&nbsp;))*$/, ''));
+                    var element = $dom.$id('view_' + loadingPreviewOf);
+                    $dom.html(element, ajaxResult.textContent.replace(/^((\s)|(\<br\s*\>)|(&nbsp;))*/, '').replace(/((\s)|(\<br\s*\>)|(&nbsp;))*$/, ''));
                     $cms.form.disablePreviewScripts(element);
                 }
             }
@@ -175,7 +175,7 @@
 
         setEditedPanel: function (e, field) {
             var params = this.params,
-                editor = $cms.dom.$id('edit_tab_' + params.id);
+                editor = $dom.$id('edit_tab_' + params.id);
 
             setEditedPanel(params.id);
 
@@ -223,7 +223,7 @@
             $cms.form.doAjaxFieldTest(url).then(function (valid) {
                 if (valid) {
                     validValue = value;
-                    $cms.dom.submit(form);
+                    $dom.submit(form);
                 } else {
                     submitBtn.disabled = false;
                 }
@@ -236,42 +236,42 @@
 
         /* The editing box */
 
-        el = $cms.dom.$('teaxtarea#edit_' + id + '_textarea');
+        el = $dom.$('teaxtarea#edit_' + id + '_textarea');
         if (el) {
-            store = $cms.dom.$('#store_' + id);
+            store = $dom.$('#store_' + id);
             if (!store) {
                 store = document.createElement('textarea');
                 store.name = el.name;
                 store.id = 'store_' + id;
-                $cms.dom.$('#edit_field_store').appendChild(store);
+                $dom.$('#edit_field_store').appendChild(store);
             }
             store.value = getTextbox(el);
         }
 
         /* The WYSIWYG setting (not the actual HTML text value of the editor, the setting of whether WYSIWYG was used or not) */
 
-        el = $cms.dom.$id('edit_' + id + '_textarea__is_wysiwyg');
+        el = $dom.$id('edit_' + id + '_textarea__is_wysiwyg');
         if (el) {
-            store = $cms.dom.$id('wysiwyg_store_' + id);
+            store = $dom.$id('wysiwyg_store_' + id);
             if (!store) {
                 store = document.createElement('textarea');
                 store.id = 'wysiwyg_store_' + id;
                 store.name = el.name;
-                $cms.dom.$id('edit_field_store').appendChild(store);
+                $dom.$id('edit_field_store').appendChild(store);
             }
             store.value = el.value;
         }
 
         /* The redirect setting */
 
-        el = $cms.dom.$('select#redirect_' + id);
+        el = $dom.$('select#redirect_' + id);
         if (el) {
-            store = $cms.dom.$id('redirects_store_' + id);
+            store = $dom.$id('redirects_store_' + id);
             if (!store) {
                 store = document.createElement('textarea');
                 store.name = el.name;
                 store.id = 'redirects_store_' + id;
-                $cms.dom.$id('edit_field_store').appendChild(store);
+                $dom.$id('edit_field_store').appendChild(store);
             }
             store.value = el.options[el.selectedIndex].value;
         }

@@ -72,12 +72,12 @@ function makeColourChooser(name, color, context, tabindex, label, className) {
     }
 
     if (p.id === 'colours_go_here') {
-        $cms.dom.append(p, t);
+        $dom.append(p, t);
     } else {
-        $cms.dom.html(p, t);
+        $dom.html(p, t);
     }
 
-    $cms.dom.on(p, 'change', '.js-change-update-chooser', function (e, target) {
+    $dom.on(p, 'change', '.js-change-update-chooser', function (e, target) {
         updateChooser(target.id);
     });
 
@@ -169,8 +169,8 @@ function doColorChooser() {
                 }
                 innert = innert + '<div class="css_colour_strip js-click-do-color-change" style="' + style + '" id="' + tid + '"></div>';
             }
-            $cms.dom.html(c[d], innert);
-            $cms.dom.on(c[d].querySelector('.js-click-do-color-change'), 'click', function (e) {
+            $dom.html(c[d], innert);
+            $dom.on(c[d].querySelector('.js-click-do-color-change'), 'click', function (e) {
                 doColorChange(e);
             });
         }

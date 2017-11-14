@@ -34,11 +34,11 @@
             
             if (errorMsgElement) {
                 // Make error message visible, if there's an error
-                $cms.dom.toggle(errorMsgElement, (errorMsg !== ''));
+                $dom.toggle(errorMsgElement, (errorMsg !== ''));
 
                 // Changed error message
-                if ($cms.dom.html(errorMsgElement) !== $cms.filter.html(errorMsg)) {
-                    $cms.dom.html(errorMsgElement, '');
+                if ($dom.html(errorMsgElement) !== $cms.filter.html(errorMsg)) {
+                    $dom.html(errorMsgElement, '');
                     if (errorMsg !== '') {// If there actually an error
                         theElement.setAttribute('aria-invalid', 'true');
 
@@ -57,7 +57,7 @@
                         errorMsgElement.setAttribute('role', 'alert');
 
                         // Fade in
-                        $cms.dom.fadeIn(errorMsgElement);
+                        $dom.fadeIn(errorMsgElement);
 
                     } else {
                         theElement.setAttribute('aria-invalid', 'false');
@@ -92,7 +92,7 @@
         var plObj, uploadsComplete = true;
         
         for (var i = 0; i < form.elements.length; i++) {
-            plObj = $cms.dom.data(form.elements[i]).pluploadObject;
+            plObj = $dom.data(form.elements[i]).pluploadObject;
             if ((plObj != null) && (Number(plObj.total.queued)/*Number of files yet to be uploaded*/ !== 0)) {
                 uploadsComplete = false;
                 break;
@@ -111,7 +111,7 @@
            var resolved = false;
 
             arrVal(form.elements).forEach(function (el) {
-               var plObj = $cms.dom.data(el).pluploadObject;
+               var plObj = $dom.data(el).pluploadObject;
                
                if (plObj == null) {
                    return;
@@ -138,13 +138,13 @@
         var plObj, scrolled = false;
 
         for (var i = 0; i < form.elements.length; i++) {
-            plObj = $cms.dom.data(form.elements[i]).pluploadObject;
+            plObj = $dom.data(form.elements[i]).pluploadObject;
             
             if ((plObj != null) && (plObj.state === window.plupload.STOPPED) && (plObj.total.queued > 0)) { /* plObj.total.queued is number of files yet to be uploaded. */
                 plObj.start(); // Starts uploading the queued files.
                 
                 if (!scrolled) {
-                    $cms.dom.smoothScroll(document.getElementById(plObj.settings.txtFileName));
+                    $dom.smoothScroll(document.getElementById(plObj.settings.txtFileName));
                     scrolled = true;
                 }
             }
@@ -191,14 +191,14 @@
             }).then(function () {
                 if (form.method.toLowerCase() === 'get') {
                     /* Remove any stuff that is only in the form for previews if doing a GET request */
-                    var previewInputs = $cms.dom.$$(form, 'input[name^="label_for__"], input[name^="tick_on_form__"], input[name^="comcode__"], input[name^="require__"]');
+                    var previewInputs = $dom.$$(form, 'input[name^="label_for__"], input[name^="tick_on_form__"], input[name^="comcode__"], input[name^="require__"]');
 
                     previewInputs.forEach(function (input) {
-                        $cms.dom.remove(input);
+                        $dom.remove(input);
                     });
                 }
 
-                var ret = $cms.dom.trigger(form, 'submit');
+                var ret = $dom.trigger(form, 'submit');
                 
                 if (ret === false) {
                     $cms.ui.enableSubmitAndPreviewButtons();
@@ -232,12 +232,12 @@
      * @returns { Promise }
      */
     $cms.form.doFormPreview = function doFormPreview(form, previewUrl, hasSeparatePreview) {
-        form = $cms.dom.elArg(form);
+        form = $dom.elArg(form);
         previewUrl = $cms.url(previewUrl);
         hasSeparatePreview = Boolean(hasSeparatePreview);
 
         return new Promise(function (resolvePreviewPromise) {
-            if (!$cms.dom.$('#preview_iframe')) {
+            if (!$dom.$('#preview_iframe')) {
                 $cms.ui.alert('{!ADBLOCKER;^}');
                 return resolvePreviewPromise(false);
             }
@@ -283,7 +283,7 @@
                 $cms.ui.alert({ notice: '{!javascript:PLEASE_WAIT_WHILE_UPLOADING;^}', single: true });
                 return $cms.form.startUploads(form);
             }).then(function () {
-                if ($cms.dom.trigger(form, 'submit', { detail: { triggeredByDoFormPreview: true } }) === false) {
+                if ($dom.trigger(form, 'submit', { detail: { triggeredByDoFormPreview: true } }) === false) {
                     $cms.ui.enableSubmitAndPreviewButtons();
                     return resolvePreviewPromise(false);
                 }
@@ -298,9 +298,9 @@
                 }
 
                 /* Do our loading-animation */
-                setInterval($cms.dom.triggerResize, 500);
+                setInterval($dom.triggerResize, 500);
                 /* In case its running in an iframe itself */
-                $cms.dom.illustrateFrameLoad('preview_iframe');
+                $dom.illustrateFrameLoad('preview_iframe');
 
                 // Turn main post editing back off
                 window.wysiwygSetReadonly('post', true);
@@ -408,7 +408,7 @@
         if (_lastChangeTimes[uid] === undefined) {
             _lastChangeTimes[uid] = new Date();
             
-            $cms.dom.on(form, 'input change reset', function () {
+            $dom.on(form, 'input change reset', function () {
                 _lastChangeTimes[uid] = new Date();
             });
         }
@@ -423,7 +423,7 @@
      * @returns { Promise<boolean> }
      */
     $cms.form.checkForm = function checkForm(theForm, forPreview) {
-        var deleteElement = $cms.dom.$('#delete');
+        var deleteElement = $dom.$('#delete');
         
         // Skip checks if 'delete' checkbox is checked
         if (!forPreview && (deleteElement != null) && (((deleteElement.classList[0] === 'input_radio') && (deleteElement.value !== '0')) || (deleteElement.classList[0] === 'input_tick')) && (deleteElement.checked)) {
@@ -480,12 +480,12 @@
                     if (!alerted) {
                         $cms.ui.alert({ notice: '{!IMPROPERLY_FILLED_IN;^}', single: true });
                     }
-                    var posy = $cms.dom.findPosY(errorElement, true);
+                    var posy = $dom.findPosY(errorElement, true);
                     if (posy === 0) {
-                        posy = $cms.dom.findPosY(errorElement.parentNode, true);
+                        posy = $dom.findPosY(errorElement.parentNode, true);
                     }
                     if (posy !== 0) {
-                        $cms.dom.smoothScroll(posy - 50, null, null, function () {
+                        $dom.smoothScroll(posy - 50, null, null, function () {
                             try {
                                 errorElement.focus();
                             } catch (e) {} // Can have exception giving focus on IE for invisible fields
@@ -495,7 +495,7 @@
 
                 // Try and workaround max_input_vars problem if lots of usergroups
                 if (!erroneous) {
-                    var deleteE = $cms.dom.$id('delete'),
+                    var deleteE = $dom.$id('delete'),
                         isDelete = deleteE && deleteE.type === 'checkbox' && deleteE.checked,
                         es = document.getElementsByTagName('select'), selectEl;
 
@@ -522,15 +522,15 @@
 
                 if (!noRecurse && (theElement.classList.contains('date')) && (theElement.name.match(/_(day|month|year)$/))) {
                     var preid = theElement.id.replace(/\_(day|month|year)$/, ''),
-                        el = $cms.dom.$id(preid + '_day');
+                        el = $dom.$id(preid + '_day');
                     if (el !== theElement) {
                         autoResetError.call(el, null, true);
                     }
-                    el = $cms.dom.$id(preid + '_month');
+                    el = $dom.$id(preid + '_month');
                     if (el !== theElement) {
                         autoResetError.call(el, null, true);
                     }
-                    el = $cms.dom.$id(preid + '_year');
+                    el = $dom.$id(preid + '_year');
                     if (el !== theElement) {
                         autoResetError.call(el, null, true);
                     }
@@ -603,8 +603,8 @@
                 isBlank = (required && (myValue.replace(/&nbsp;/g, ' ').replace(/<br\s*\/?>/g, ' ').replace(/\s/g, '') === '')),
                 validatePromise = Promise.resolve();
             
-            if ($cms.dom.data(theElement).pluploadObject != null) { // Plupload placeholder field
-                var plObj = $cms.dom.data(theElement).pluploadObject,
+            if ($dom.data(theElement).pluploadObject != null) { // Plupload placeholder field
+                var plObj = $dom.data(theElement).pluploadObject,
                     fileNameField = document.getElementById(plObj.settings.txtFileName);
                 
                 if (plObj.settings.required && (fileNameField.value === '')) {
@@ -684,9 +684,9 @@
         });
 
         function getErrorMsgElement(id) {
-            var errorMsgElement = $cms.dom.$id('error_' + id);
+            var errorMsgElement = $dom.$id('error_' + id);
             if (!errorMsgElement) {
-                errorMsgElement = $cms.dom.$id('error_' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));
+                errorMsgElement = $dom.$id('error_' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));
             }
             return errorMsgElement;
         }
@@ -699,14 +699,14 @@
      * @param chosenOb
      */
     $cms.form.setLocked = function setLocked(field, isLocked, chosenOb) {
-        var radioButton = $cms.dom.$id('choose_' + field.name.replace(/\[\]$/, ''));
+        var radioButton = $dom.$id('choose_' + field.name.replace(/\[\]$/, ''));
         if (!radioButton) {
-            radioButton = $cms.dom.$id('choose_' + field.name.replace(/\_\d+$/, '_'));
+            radioButton = $dom.$id('choose_' + field.name.replace(/\_\d+$/, '_'));
         }
 
         // For All-and-not,Line-multi,Compound-Tick,Radio-List,Date/Time: $cms.form.setLocked assumes that the calling code is clever
         // special input types are coded to observe their master input field readonly status)
-        var button = $cms.dom.$id('uploadButton_' + field.name.replace(/\[\]$/, ''));
+        var button = $dom.$id('uploadButton_' + field.name.replace(/\[\]$/, ''));
 
         if (isLocked) {
             var labels = document.getElementsByTagName('label'), label = null;
@@ -718,7 +718,7 @@
             }
             if (!radioButton) {
                 if (label) {
-                    var labelNice = $cms.dom.html(label).replace('&raquo;', '').replace(/^\s*/, '').replace(/\s*$/, '');
+                    var labelNice = $dom.html(label).replace('&raquo;', '').replace(/^\s*/, '').replace(/\s*$/, '');
                     if (field.type === 'file') {
                         $cms.form.setFieldError(field, $util.format('{!DISABLED_FORM_FIELD_ENCHANCEDMSG_UPLOAD;^}', [labelNice]));
                     } else {
@@ -748,13 +748,13 @@
         fieldName = strVal(fieldName);
         isRequired = Boolean(isRequired);
         
-        var radioButton = $cms.dom.$('#choose_' + fieldName);
+        var radioButton = $dom.$('#choose_' + fieldName);
 
         if (!radioButton) {
-            var requiredA = $cms.dom.$('#form_table_field_name__' + fieldName),
-                requiredB = $cms.dom.$('#required_readable_marker__' + fieldName),
-                requiredC = $cms.dom.$('#required_posted__' + fieldName),
-                requiredD = $cms.dom.$('#form_table_field_input__' + fieldName);
+            var requiredA = $dom.$('#form_table_field_name__' + fieldName),
+                requiredB = $dom.$('#required_readable_marker__' + fieldName),
+                requiredC = $dom.$('#required_posted__' + fieldName),
+                requiredD = $dom.$('#form_table_field_input__' + fieldName);
 
             if (requiredA) {
                 requiredA.className = 'form_table_field_name';
@@ -765,7 +765,7 @@
             }
 
             if (requiredB) {
-                $cms.dom.toggle(requiredB, isRequired);
+                $dom.toggle(requiredB, isRequired);
             }
 
             if (requiredC) {
@@ -777,7 +777,7 @@
             }
         }
 
-        var element = $cms.dom.$('#' + fieldName);
+        var element = $dom.$('#' + fieldName);
 
         if (element) {
             element.className = element.className.replace(/(input_[a-z_]+)_required/g, '$1');
@@ -786,13 +786,13 @@
                 element.className = element.className.replace(/(input_[a-z_]+)/g, '$1_required');
             }
 
-            if ($cms.dom.data(element).pluploadObject != null) {
-                $cms.dom.data(element).pluploadObject.settings.required = isRequired;
+            if ($dom.data(element).pluploadObject != null) {
+                $dom.data(element).pluploadObject.settings.required = isRequired;
             }
         }
 
         if (!isRequired) {
-            var error = $cms.dom.$('#error__' + fieldName);
+            var error = $dom.$('#error__' + fieldName);
             if (error) {
                 error.style.display = 'none';
             }
@@ -810,13 +810,13 @@
 
         var elements, i;
 
-        elements = $cms.dom.$$(context, 'button, input[type="button"], input[type="image"]');
+        elements = $dom.$$(context, 'button, input[type="button"], input[type="image"]');
         for (i = 0; i < elements.length; i++) {
             elements[i].addEventListener('click', alertNotInPreviewMode);
         }
 
         // Make sure links in the preview don't break it - put in a new window
-        elements = $cms.dom.$$(context, 'a');
+        elements = $dom.$$(context, 'a');
         for (i = 0; i < elements.length; i++) {
             if (elements[i].href && elements[i].href.includes('://')) {
                 try {
@@ -840,13 +840,13 @@
      * @param container
      */
     $cms.form.setUpChangeMonitor = function setUpChangeMonitor(container) {
-        var firstInp = $cms.dom.$(container, 'input, select, textarea');
+        var firstInp = $dom.$(container, 'input, select, textarea');
 
         if (!firstInp || firstInp.id.includes('choose_')) {
             return;
         }
 
-        $cms.dom.on(container, 'blur change', function () {
+        $dom.on(container, 'blur change', function () {
             container.classList.toggle('filledin', $cms.form.findIfChildrenSet(container));
         });
     };
@@ -858,7 +858,7 @@
      */
     $cms.form.findIfChildrenSet = function findIfChildrenSet(container) {
         var value, blank = true, el,
-            elements = $cms.dom.$$(container, 'input, select, textarea');
+            elements = $dom.$$(container, 'input, select, textarea');
 
         for (var i = 0; i < elements.length; i++) {
             el = elements[i];
@@ -885,12 +885,12 @@
         }
 
         var value = field.value,
-            errorEl = $cms.dom.$('#error_' + field.id);
+            errorEl = $dom.$('#error_' + field.id);
 
         if ((value.trim() === '') || (value === '{!POST_WARNING;^}') || (value === '{!THREADED_REPLY_NOTICE;^,{!POST_WARNING}}')) {
             if (errorEl !== null) {
                 errorEl.style.display = 'block';
-                $cms.dom.html(errorEl, '{!REQUIRED_NOT_FILLED_IN;^}');
+                $dom.html(errorEl, '{!REQUIRED_NOT_FILLED_IN;^}');
             }
 
             if (!alreadyShownMessage) {

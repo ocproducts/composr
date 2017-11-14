@@ -2,7 +2,7 @@
     'use strict';
 
     $cms.templates.translateScreen = function (params, container) {
-        $cms.dom.on(container, 'submit', '.js-form-submit-modsecurity-workaround', function (e, form) {
+        $dom.on(container, 'submit', '.js-form-submit-modsecurity-workaround', function (e, form) {
             if ($cms.form.isModSecurityWorkaroundEnabled()) {
                 e.preventDefault();
                 $cms.form.modSecurityWorkaround(form);
@@ -11,13 +11,13 @@
     };
 
     $cms.templates.translateLine = function (params, container) {
-        $cms.dom.on(container, 'mouseover', '.js-mouseover-enable-textarea-translate-field', function () {
-            var textarea = $cms.dom.$(container, '.js-textarea-translate-field');
+        $dom.on(container, 'mouseover', '.js-mouseover-enable-textarea-translate-field', function () {
+            var textarea = $dom.$(container, '.js-textarea-translate-field');
             textarea.disabled = false;
         });
 
 
-        $cms.dom.on(container, 'click', '.js-textarea-click-set-value', function (e, textarea) {
+        $dom.on(container, 'click', '.js-textarea-click-set-value', function (e, textarea) {
             if (textarea.value === '') {
                 textarea.value = params.translateAuto;
             }
@@ -30,7 +30,7 @@
             langFrom = strVal(params.langFrom),
             langTo = strVal(params.langTo);
 
-        $cms.dom.on(container, 'click', function () {
+        $dom.on(container, 'click', function () {
             translate(name, old, langFrom, langTo);
         });
 

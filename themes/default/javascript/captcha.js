@@ -17,7 +17,7 @@
         // Implementation for [data-recaptcha-captcha]
         initializeRecaptchaCaptcha: {
             attach: function attach(context) {
-                var captchaEls = $util.once($cms.dom.$$$(context, '[data-recaptcha-captcha]'), 'behavior.initializeRecaptchaCaptcha');
+                var captchaEls = $util.once($dom.$$$(context, '[data-recaptcha-captcha]'), 'behavior.initializeRecaptchaCaptcha');
 
                 if (captchaEls.length < 1) {
                     return;
@@ -27,7 +27,7 @@
                 
                 recaptchaLoadedPromise.then(function () {
                     captchaEls.forEach(function (captchaEl) {
-                        var form = $cms.dom.parent(captchaEl, 'form'),
+                        var form = $dom.parent(captchaEl, 'form'),
                             grecaptchaParameters;
 
                         captchaEl.dataset.recaptchaSuccessful = '0';
@@ -36,7 +36,7 @@
                             sitekey: $CONFIG_OPTION_recaptcha_site_key,
                             callback: function() {
                                 captchaEl.dataset.recaptchaSuccessful = '1';
-                                $cms.dom.submit(form);
+                                $dom.submit(form);
                             },
                             theme: '{$?,{$THEME_DARK},dark,light}',
                             size: 'invisible'
@@ -47,7 +47,7 @@
                         }
                         window.grecaptcha.render(captchaEl, grecaptchaParameters, false);
                         
-                        $cms.dom.on(form, 'submit', function (e) {
+                        $dom.on(form, 'submit', function (e) {
                             if (!captchaEl.dataset.recaptchaSuccessful || (captchaEl.dataset.recaptchaSuccessful === '0')) {
                                 e.preventDefault();
                                 window.grecaptcha.execute();
@@ -86,7 +86,7 @@
             $cms.form.doAjaxFieldTest(url).then(function (valid) {
                 if (valid) {
                     validValue = value;
-                    $cms.dom.submit(form);
+                    $dom.submit(form);
                 } else {
                     document.getElementById('captcha').src += '&'; // Force it to reload latest captcha
                     submitBtn.disabled = false;

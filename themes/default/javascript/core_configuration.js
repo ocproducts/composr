@@ -29,7 +29,7 @@
     });
 
     $cms.templates.configCategoryScreen = function configCategoryScreen(params, container) {
-        $cms.dom.on(container, 'submit', '.js-form-primary-page', function (e, form) {
+        $dom.on(container, 'submit', '.js-form-primary-page', function (e, form) {
             $cms.form.modSecurityWorkaround(form);
         });
     };

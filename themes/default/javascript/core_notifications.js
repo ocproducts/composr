@@ -22,12 +22,12 @@
             };
         },
         showDisableForm: function () {
-            $cms.dom.show(this.disableFormEl);
-            $cms.dom.hide(this.enableFormEl);
+            $dom.show(this.disableFormEl);
+            $dom.hide(this.enableFormEl);
         },
         showEnableForm: function () {
-            $cms.dom.hide(this.disableFormEl);
-            $cms.dom.show(this.enableFormEl);
+            $dom.hide(this.disableFormEl);
+            $dom.show(this.enableFormEl);
         }
     });
 
@@ -58,31 +58,31 @@
     $cms.templates.blockTopNotifications = function blockTopNotifications(params, container) {
         window.maxNotificationsToShow = +params.max || 0;
 
-        $cms.dom.on(container, 'click', '.js-click-notifications-mark-all-read', function (e) {
+        $dom.on(container, 'click', '.js-click-notifications-mark-all-read', function (e) {
             notificationsMarkAllRead(e);
         });
 
-        $cms.dom.on(container, 'click', '.js-click-toggle-web-notifications', function (e) {
+        $dom.on(container, 'click', '.js-click-toggle-web-notifications', function (e) {
             if (toggleWebNotifications(e) === false) {
                 e.preventDefault();
             }
         });
 
-        $cms.dom.on(container, 'mouseup', '.js-mouseup-toggle-web-notifications', function (e) {
+        $dom.on(container, 'mouseup', '.js-mouseup-toggle-web-notifications', function (e) {
             toggleWebNotifications(e);
         });
 
-        $cms.dom.on(container, 'mouseup', '.js-mouseup-find-url-tab', function (e) {
-            $cms.dom.findUrlTab();
+        $dom.on(container, 'mouseup', '.js-mouseup-find-url-tab', function (e) {
+            $dom.findUrlTab();
         });
 
-        $cms.dom.on(container, 'click', '.js-click-toggle-pts', function (e) {
+        $dom.on(container, 'click', '.js-click-toggle-pts', function (e) {
             if (togglePts(e) === false) {
                 e.preventDefault();
             }
         });
 
-        $cms.dom.on(container, 'mouseup', '.js-mouseup-toggle-pts', function (e) {
+        $dom.on(container, 'mouseup', '.js-mouseup-toggle-pts', function (e) {
             togglePts(e);
         });
 
@@ -113,39 +113,39 @@
     };
 
     $cms.templates.notificationsManageScreen = function notificationsManageScreen(params, container) {
-        var soundRadioEl = $cms.dom.$('#sound_' + $cms.readCookie('sound', 'off'));
+        var soundRadioEl = $dom.$('#sound_' + $cms.readCookie('sound', 'off'));
 
         if (soundRadioEl) {
             soundRadioEl.checked = true;
         }
 
-        $cms.dom.on(container, 'click', '.js-click-set-sound-cookie-on', function () {
+        $dom.on(container, 'click', '.js-click-set-sound-cookie-on', function () {
             $cms.setCookie('sound', 'on');
         });
 
-        $cms.dom.on(container, 'click', '.js-click-set-sound-cookie-off', function () {
+        $dom.on(container, 'click', '.js-click-set-sound-cookie-off', function () {
             $cms.setCookie('sound', 'off');
         });
     };
 
     $cms.templates.notificationsTree = function notificationsTree(params, tableRow) {
-        $cms.dom.on(tableRow, 'click', '.js-click-copy-advanced-notifications', function () {
+        $dom.on(tableRow, 'click', '.js-click-copy-advanced-notifications', function () {
             advancedNotificationsCopyUnder(tableRow);
         });
 
         function advancedNotificationsCopyUnder(row) {
             var inputsFrom = row.querySelectorAll('input'),
-                parentDepth = $cms.dom.css(row.querySelector('th'), 'padding-left'),
+                parentDepth = $dom.css(row.querySelector('th'), 'padding-left'),
                 childDepth, inputsTo;
 
             while (true) {
-                row = $cms.dom.next(row, 'tr');
+                row = $dom.next(row, 'tr');
 
                 if (!row) {
                     return; // Should not happen
                 }
 
-                childDepth = $cms.dom.css(row.querySelector('th'), 'padding-left');
+                childDepth = $dom.css(row.querySelector('th'), 'padding-left');
 
                 if (childDepth === parentDepth) {
                     break; // Don't allow to progress one further
@@ -162,16 +162,16 @@
     };
 
     $cms.templates.notificationWeb = function notificationWeb(params, container) {
-        $cms.dom.on(container, 'click', '.js-click-poll-for-notifications', function () {
+        $dom.on(container, 'click', '.js-click-poll-for-notifications', function () {
             pollForNotifications(true, true);
         });
     };
 
     $cms.templates.notificationTypes_item = function notificationTypes_item(params, container) {
-        $cms.dom.on(container, 'click', '.js-click-handle-ntype-tick', function (e, checkbox) {
+        $dom.on(container, 'click', '.js-click-handle-ntype-tick', function (e, checkbox) {
             var raw = +checkbox.dataset.tpRaw || 0,
-                parentRow = $cms.dom.closest(checkbox, 'tr'),
-                inputEls = $cms.dom.$$(parentRow, 'input'),
+                parentRow = $dom.closest(checkbox, 'tr'),
+                inputEls = $dom.$$(parentRow, 'input'),
                 firstInput = inputEls[0],
                 secondInput = inputEls[1];
 
@@ -231,7 +231,7 @@ function _pollForNotifications(responseXml) {
         return; // Some kind of error
 
     var timeNode = responseXml.querySelector('time');
-    window.notificationsTimeBarrier = parseInt($cms.dom.html(timeNode));
+    window.notificationsTimeBarrier = parseInt($dom.html(timeNode));
 
     // HTML5 notification API
 
@@ -257,9 +257,9 @@ function _pollForNotifications(responseXml) {
         button = document.getElementById('web_notifications_button');
         if (display[0]) {
             unread = responseXml.getElementsByTagName('unread_web_notifications');
-            $cms.dom.html(spot, $cms.dom.html(display[0]));
-            $cms.dom.html(button.firstElementChild, $cms.dom.html(unread[0]));
-            button.className = 'count_' + $cms.dom.html(unread[0]);
+            $dom.html(spot, $dom.html(display[0]));
+            $dom.html(button.firstElementChild, $dom.html(unread[0]));
+            button.className = 'count_' + $dom.html(unread[0]);
         }
     }
 
@@ -269,9 +269,9 @@ function _pollForNotifications(responseXml) {
         button = document.getElementById('pts_button');
         if (display[0]) {
             unread = responseXml.getElementsByTagName('unread_pts');
-            $cms.dom.html(spot, $cms.dom.html(display[0]));
-            $cms.dom.html(button.firstElementChild, $cms.dom.html(unread[0]));
-            button.className = 'count_' + $cms.dom.html(unread[0]);
+            $dom.html(spot, $dom.html(display[0]));
+            $dom.html(button.firstElementChild, $dom.html(unread[0]));
+            button.className = 'count_' + $dom.html(unread[0]);
         }
     }
 
@@ -369,7 +369,7 @@ function _toggleMessagingBox(event, name, hide) {
     var button = document.getElementById(name + '_button');
     button.title = '';
     var setPosition = function () {
-        var buttonX = $cms.dom.findPosX(button, true);
+        var buttonX = $dom.findPosX(button, true);
         var buttonWidth = button.offsetWidth;
         var x = (buttonX + buttonWidth - el.offsetWidth);
         if (x < 0) {
@@ -378,7 +378,7 @@ function _toggleMessagingBox(event, name, hide) {
             x = 0;
         }
         el.style.left = x + 'px';
-        el.style.top = ($cms.dom.findPosY(button, true) + button.offsetHeight) + 'px';
+        el.style.top = ($dom.findPosY(button, true) + button.offsetHeight) + 'px';
         try {
             el.style.opacity = '1.0';
         } catch (ex) {}

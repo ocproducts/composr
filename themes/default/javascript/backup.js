@@ -3,17 +3,17 @@
 
     $cms.functions.adminBackupInterfaceCalendar = function adminBackupInterfaceCalendar() {
         var dOb = [
-            $cms.dom.$('#schedule_day'),
-            $cms.dom.$('#schedule_month'),
-            $cms.dom.$('#schedule_year'),
-            $cms.dom.$('#schedule_hour'),
-            $cms.dom.$('#schedule_minute')
+            $dom.$('#schedule_day'),
+            $dom.$('#schedule_month'),
+            $dom.$('#schedule_year'),
+            $dom.$('#schedule_hour'),
+            $dom.$('#schedule_minute')
         ];
 
         var hideFunc;
         if (dOb[0] != null) {
             hideFunc = function () {
-                $cms.dom.$('#recurrance_days').disabled = ((dOb[0].selectedIndex + dOb[1].selectedIndex + dOb[2].selectedIndex + dOb[3].selectedIndex + dOb[4].selectedIndex) > 0);
+                $dom.$('#recurrance_days').disabled = ((dOb[0].selectedIndex + dOb[1].selectedIndex + dOb[2].selectedIndex + dOb[3].selectedIndex + dOb[4].selectedIndex) > 0);
             };
 
             dOb[0].addEventListener('change', hideFunc);
@@ -23,11 +23,11 @@
             dOb[4].addEventListener('change', hideFunc);
         } else {
             dOb = [
-                $cms.dom.$('#schedule'),
-                $cms.dom.$('#schedule_time')
+                $dom.$('#schedule'),
+                $dom.$('#schedule_time')
             ];
             hideFunc = function () {
-                $cms.dom.$('#recurrance_days').disabled = ((dOb[0].value != '') || (dOb[1].value != ''));
+                $dom.$('#recurrance_days').disabled = ((dOb[0].value != '') || (dOb[1].value != ''));
             };
             dOb[0].addEventListener('change', hideFunc);
             dOb[1].addEventListener('change', hideFunc);
@@ -36,8 +36,8 @@
     };
 
     $cms.templates.backupLaunchScreen = function backupLaunchScreen() {
-        var submitButton = $cms.dom.$('#submit_button'),
-            maxSizeField = $cms.dom.$('#max_size');
+        var submitButton = $dom.$('#submit_button'),
+            maxSizeField = $dom.$('#max_size');
 
         if (!submitButton || !maxSizeField) {
             return;
