@@ -6,16 +6,12 @@
     var symbols =  (!IN_MINIKERNEL_VERSION ? JSON.parse(document.getElementById('composr-symbol-data').content) : {});
 
     // Cached references
-    var smile = ':)',
-        emptyObj = {},
-        emptyArr = [],
-        // hasOwnProperty shorcut
-        hasOwn = Function.bind.call(Function.call, emptyObj.hasOwnProperty),
-        toArray = Function.bind.call(Function.call, emptyArr.slice),
-        forEach = Function.bind.call(Function.call, emptyArr.forEach),
-        includes = Function.bind.call(Function.call, emptyArr.includes),
+    var hasOwn = Function.bind.call(Function.call, Object.prototype.hasOwnProperty),
+        toArray = Function.bind.call(Function.call, Array.prototype.slice),
+        forEach = Function.bind.call(Function.call, Array.prototype.forEach),
+        includes = Function.bind.call(Function.call, Array.prototype.includes),
         // Helper for merging existing arrays
-        pushArray = Function.bind.call(Function.apply, emptyArr.push);
+        pushArray = Function.bind.call(Function.apply, Array.prototype.push);
 
     // Too useful to not have globally!
     window.intVal  = intVal;
@@ -273,7 +269,6 @@
                 $util.fatal('$cms.configOption(): Option "' + optionName + '" is either unsupported in JS or doesn\'t exist. Please try using the actual Tempcode symbol.');
             };
         }()),
-        // Just some more useful stuff, (not tempcode symbols)
         /**
          * @method
          * @returns {boolean}
@@ -472,8 +467,6 @@
         /**@method*/
         isRelative: isRelative,
         /**@method*/
-        isSchemeRelative: isSchemeRelative,
-        /**@method*/
         schemeRelative: schemeRelative,
         /**@method*/
         random: random,
@@ -529,28 +522,6 @@
         var id = uniqueId();
         properties(obj, keyValue($cms.id(), id));
         return id;
-    }
-
-    /**
-     * @returns {boolean}
-     */
-    function returnTrue() {
-        return true;
-    }
-
-    /**
-     * @returns {boolean}
-     */
-    function returnFalse() {
-        return false;
-    }
-
-    /**
-     * @param first
-     * @returns {*}
-     */
-    function returnFirst(first) {
-        return first;
     }
 
     /**
@@ -933,7 +904,7 @@
      * @returns {string}
      */
     function internalName(val) {
-        return emptyObj.toString.call(val).slice(8, -1); // slice off the surrounding '[object ' and ']'
+        return Object.prototype.toString.call(val).slice(8, -1); // slice off the surrounding '[object ' and ']'
     }
 
     /**
@@ -988,7 +959,7 @@
             return defaultValue;
         }
 
-        // if (((typeof val === 'object') && (val.valueOf === emptyObj.valueOf)) || ((typeof val === 'function') && (val.valueOf === noop.valueOf))) {
+        // if (((typeof val === 'object') && (val.valueOf === Object.prototype.valueOf)) || ((typeof val === 'function') && (val.valueOf === noop.valueOf))) {
         //     throw new TypeError('intVal(): Cannot coerce `val` of type "' + typeName(val) + '" to an integer.');
         // }
 
@@ -1011,7 +982,7 @@
             return defaultValue;
         }
 
-        // if (((typeof val === 'object') && (val.valueOf === emptyObj.valueOf)) || ((typeof val === 'function') && (val.valueOf === noop.valueOf))) {
+        // if (((typeof val === 'object') && (val.valueOf === Object.prototype.valueOf)) || ((typeof val === 'function') && (val.valueOf === noop.valueOf))) {
         //     throw new TypeError('numVal(): Cannot coerce `val` of type "' + typeName(val) + '" to a number.');
         // }
 
@@ -1088,7 +1059,7 @@
             ret = val;
         } else if (typeof val === 'number') {
             ret = ((val !== Infinity) && (val !== -Infinity)) ? ('' + val) : '';
-        } else if ((typeof val === 'object') && (val.toString !== emptyObj.toString) && (typeof val.toString === 'function')) {
+        } else if ((typeof val === 'object') && (val.toString !== Object.prototype.toString) && (typeof val.toString === 'function')) {
             // `val` has a .toString() implementation other than the useless generic one
             ret = '' + val;
         } else {
@@ -1399,13 +1370,13 @@
 
     function isRelative(url) {
         url = strVal(url);
-        return !isAbsolute(url) && !isSchemeRelative(url);
+        return !isAbsolute(url) && !$util.isSchemeRelative(url);
     }
 
-    function isSchemeRelative(url) {
+    $util.isSchemeRelative = function isSchemeRelative(url) {
         url = strVal(url);
         return url.startsWith('//');
-    }
+    };
     /**
      * Make a URL scheme-relative
      * @param url
@@ -1838,7 +1809,7 @@
     };
 
     (function () {
-        var type, bool, inputEl = document.createElement('input');
+        var type, bool, inputEl = document.createElement('input'), smile = ':)';
 
         for (type in $dom.support.inputTypes) {
             inputEl.setAttribute('type', type);
@@ -2881,7 +2852,7 @@
         }
 
         if (callback === false) {
-            callback = returnFalse;
+            callback = function () { return false; };
         }
 
         if (one) {
@@ -2943,7 +2914,7 @@
         }
 
         if (callback === false) {
-            callback = returnFalse;
+            callback = function () { return false; };
         }
 
         removeEvent(el, event, callback, selector)
@@ -6660,7 +6631,7 @@
         this.iframeRestyleTimer = null;
         
         // Set params
-        params = defaults({ // apply defaults
+        params = $util.defaults({ // apply defaults
             type: 'alert',
             opacity: '0.5',
             width: 'auto',
