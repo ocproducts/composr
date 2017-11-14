@@ -400,6 +400,11 @@
     $util = extendDeep($util, /**@lends $util*/{
         /**
          * @method
+         * @returns {boolean}
+         */
+        hasOwn: hasOwn,
+        /**
+         * @method
          * @returns { Array }
          */
         toArray: toArray,
@@ -408,11 +413,6 @@
          * @returns { Array }
          */
         pushArray: pushArray,
-        /**
-         * @method
-         * @returns {boolean}
-         */
-        hasOwn: hasOwn,
         /**@method*/
         isObj: isObj,
         /**@method*/
@@ -463,6 +463,8 @@
         camelCase: camelCase,
         /**@method*/
         ucFirst: ucFirst,
+        /**@method*/
+        lcFirst: lcFirst,
         /**@method*/
         format: format,
         /**@method*/
@@ -1016,11 +1018,6 @@
         val = Number(val);
 
         return (val && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
-    }
-
-    function numberFormat(num) {
-        num = Number(num) || 0;
-        return num.toLocaleString();
     }
 
     /**
