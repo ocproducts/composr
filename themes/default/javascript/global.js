@@ -11,16 +11,12 @@
         emptyArr = [],
         docEl = document.documentElement,
         emptyEl = document.createElement('div'),
-        emptyElStyle = emptyEl.style,
-
         // hasOwnProperty shorcut
         hasOwn = Function.bind.call(Function.call, emptyObj.hasOwnProperty),
-
         toArray = Function.bind.call(Function.call, emptyArr.slice),
-
         forEach = Function.bind.call(Function.call, emptyArr.forEach),
         includes = Function.bind.call(Function.call, emptyArr.includes),
-        // Clever helper for merging existing arrays using `[].push`
+        // Helper for merging existing arrays
         pushArray = Function.bind.call(Function.apply, emptyArr.push);
 
     function noop() {}
@@ -334,8 +330,6 @@
         isEl: isEl,
         /**@method*/
         isNumeric: isNumeric,
-        /**@method*/
-        isDocOrEl: isDocOrEl,
         /**@method*/
         isArrayLike: isArrayLike,
         /**@method*/
@@ -680,25 +674,7 @@
     function isDocFrag(obj) {
         return nodeType(obj) === DOCUMENT_FRAGMENT_NODE;
     }
-
-    /**
-     * @param obj
-     * @returns {boolean}
-     */
-    function isDocOrEl(obj) {
-        var t = nodeType(obj);
-        return (t === ELEMENT_NODE) || (t === DOCUMENT_NODE);
-    }
-
-    /**
-     * @param obj
-     * @returns {boolean}
-     */
-    function isDocOrFragOrEl(obj) {
-        var t = nodeType(obj);
-        return (t === ELEMENT_NODE) || (t === DOCUMENT_NODE) || (t === DOCUMENT_FRAGMENT_NODE);
-    }
-
+    
     /**
      * @param obj
      * @returns {boolean}
@@ -804,7 +780,7 @@
     function _extend(target, source, mask) {
         var key, tgt, src, isSrcArr;
 
-        mask = +mask || 0;
+        mask = Number(mask) || 0;
 
         for (key in source) {
             tgt = target[key];
@@ -2078,7 +2054,7 @@
             selector = strVal(selector);
 
             // DocumentFragment is missing getElementById and getElementsBy(Tag|Class)Name in some implementations
-            if (rgxSimpleSelector.test(selector) && isDocOrEl(context)) {
+            if (rgxSimpleSelector.test(selector) && (isDoc(context) || isEl(context))) {
                 switch (selector[0]) {
                     case '#': // selector is an ID
                         return (found = (('getElementById' in context) ? context.getElementById(selector.substr(1)) : context.querySelector(selector))) ? [found] : [];
@@ -4768,7 +4744,7 @@
      * @param settings
      */
     function attachBehaviors(context, settings) {
-        if (!isDocOrEl(context)) {
+        if (!isDoc(context) && !isEl(context)) {
             throw new TypeError('Invalid argument type: `context` must be of type HTMLDocument or HTMLElement');
         }
 
@@ -4817,7 +4793,7 @@
     function detachBehaviors(context, settings, trigger) {
         var name;
 
-        if (!isDocOrEl(context)) {
+        if (!isDoc(context) && !isEl(context)) {
             throw new TypeError('Invalid argument type: `context` must be of type HTMLDocument or HTMLElement');
         }
 
