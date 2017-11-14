@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     var IN_MINIKERNEL_VERSION = document.documentElement.classList.contains('in-minikernel-version');
@@ -4837,7 +4837,7 @@
 
         for (i = 0; i < priorities.length; i++) {
             priority = priorities[i];
-            pushArray(names, byPriority[priority]);
+            names = names.concat(byPriority[priority]);
         }
 
         return names;
@@ -10955,4 +10955,4 @@
         massDeleteForm.style.display = 'block';
     }
  
-}(window.$cms || (window.$cms = {})));
+}(window.$cms || (window.$cms = {}), window.$util || (window.$util = {}), window.$dom || (window.$dom = {})));
