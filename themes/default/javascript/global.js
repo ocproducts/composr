@@ -32,6 +32,34 @@
     window.strVal  = strVal;
     window.arrVal  = arrVal;
     window.objVal  = objVal;
+    
+    setTimeout(function () {
+        $dom._resolveInit();
+
+        if (document.readyState === 'interactive') {
+            // Workaround for browser bug, document.readyState == 'interactive' before [defer]'d <script>s are loaded.
+            // See: https://github.com/jquery/jquery/issues/3271
+            $cms.waitForResources(toArray(document.querySelectorAll('script[src][defer]'))).then(function () {
+                $dom._resolveReady();
+            });
+        } else if (document.readyState === 'complete') {
+            $dom._resolveReady();
+        } else {
+            document.addEventListener('DOMContentLoaded', function listener() {
+                document.removeEventListener('DOMContentLoaded', listener);
+                $dom._resolveReady();
+            });
+        }
+
+        if (document.readyState === 'complete') {
+            $dom._resolveLoad();
+        } else {
+            window.addEventListener('load', function listener() {
+                window.removeEventListener('load', listener);
+                $dom._resolveLoad();
+            });
+        }
+    }, 0);
 
     /** @namespace $cms */
     $cms = extendDeep($cms, /**@lends $cms*/{
@@ -476,34 +504,6 @@
         /**@method*/
         debounce: debounce,
     });
-    
-    setTimeout(function () {
-        $dom._resolveInit();
-        
-        if (document.readyState === 'interactive') {
-            // Workaround for browser bug, document.readyState == 'interactive' before [defer]'d <script>s are loaded.
-            // See: https://github.com/jquery/jquery/issues/3271
-            $cms.waitForResources(toArray(document.querySelectorAll('script[src][defer]'))).then(function () {
-                $dom._resolveReady();
-            });
-        } else if (document.readyState === 'complete') {
-            $dom._resolveReady();
-        } else {
-            document.addEventListener('DOMContentLoaded', function listener() {
-                document.removeEventListener('DOMContentLoaded', listener);
-                $dom._resolveReady();
-            });
-        }
-
-        if (document.readyState === 'complete') {
-            $dom._resolveLoad();
-        } else {
-            window.addEventListener('load', function listener() {
-                window.removeEventListener('load', listener);
-                $dom._resolveLoad();
-            });
-        }
-    }, 0);
 
     // Generate a unique integer id (unique within the entire client session).
     var _uniqueId = 0;
