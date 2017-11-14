@@ -43,7 +43,7 @@
             }
         }
 
-        throw new TypeError('domArg(): Argument 1 must be a {' + 'Window|Node|string}, "' + typeName(windowOrNodeOrSelector) + '" provided.');
+        throw new TypeError('domArg(): Argument 1 must be a {' + 'Window|Node|string}, "' + $util.typeName(windowOrNodeOrSelector) + '" provided.');
     };
 
     /**
@@ -69,7 +69,7 @@
             }
         }
 
-        throw new TypeError('nodeArg(): Argument 1 must be a {' + 'Node|string}, "' + typeName(nodeOrSelector) + '" provided.');
+        throw new TypeError('nodeArg(): Argument 1 must be a {' + 'Node|string}, "' + $util.typeName(nodeOrSelector) + '" provided.');
     };
 
     /**
@@ -95,11 +95,16 @@
             }
         }
 
-        throw new TypeError('elArg(): Argument 1 must be a {' + 'Element|string}, "' + typeName(elementOrSelector) + '" provided.');
+        throw new TypeError('elArg(): Argument 1 must be a {' + 'Element|string}, "' + $util.typeName(elementOrSelector) + '" provided.');
     };
 
+    /**
+     * 
+     * @param obj
+     * @return {(Number|boolean)}
+     */
     $dom.nodeType = function nodeType(obj) {
-        return isObj(obj) && (typeof obj.nodeName === 'string') && (typeof obj.nodeType === 'number') && obj.nodeType;
+        return $util.isObj(obj) && (typeof obj.nodeName === 'string') && (typeof obj.nodeType === 'number') && obj.nodeType;
     };
 
     /**
@@ -181,16 +186,16 @@
                     break;
 
                 case '.': // selector is a class name
-                    return toArray(context.getElementsByClassName(selector.substr(1)));
+                    return $util.toArray(context.getElementsByClassName(selector.substr(1)));
                     break;
 
                 default: // selector is a tag name
-                    return toArray(context.getElementsByTagName(selector));
+                    return $util.toArray(context.getElementsByTagName(selector));
                     break;
             }
         }
 
-        return toArray(context.querySelectorAll(selector));
+        return $util.toArray(context.querySelectorAll(selector));
     };
     /**
      * @memberof $dom
@@ -240,7 +245,7 @@
                 if (key in methodAttributes) {
                     $dom[key](el, value);
                 } else if (isObj(el[key]) && isObj(value)) {
-                    extendDeep(el[key], value);
+                    $util.extendDeep(el[key], value);
                 } else {
                     el[key] = value;
                 }
@@ -248,7 +253,7 @@
         }
 
         if (isObj(attributes)) {
-            each(attributes, function (key, value) {
+            $util.each(attributes, function (key, value) {
                 $dom.attr(el, key, value)
             });
         }
@@ -398,7 +403,7 @@
         }
 
         if (!Array.isArray(resourceEls)) {
-            $util.fatal('$dom.waitForResources(): Argument 1 must be of type {array|HTMLElement}, "' + typeName(resourceEls) + '" provided.');
+            $util.fatal('$dom.waitForResources(): Argument 1 must be of type {array|HTMLElement}, "' + $util.typeName(resourceEls) + '" provided.');
             return Promise.reject();
         }
 
@@ -411,7 +416,7 @@
         var resourcesToLoad = new Set();
         resourceEls.forEach(function (el) {
             if (!isEl(el)) {
-                $util.fatal('$dom.waitForResources(): Invalid item of type "' + typeName(resourceEls) + '" in the `resourceEls` parameter.');
+                $util.fatal('$dom.waitForResources(): Invalid item of type "' + $util.typeName(resourceEls) + '" in the `resourceEls` parameter.');
                 return;
             }
 

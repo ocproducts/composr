@@ -386,23 +386,168 @@
         behaviors: {},
     });
 
+
+    /**
+     * Port of PHP's boolval() function
+     * @param val
+     * @param [defaultValue]
+     * @returns { Boolean }
+     */
+    function boolVal(val, defaultValue) {
+        var p;
+        if (defaultValue === undefined) {
+            defaultValue = false;
+        }
+
+        if (val == null) {
+            return defaultValue;
+        }
+
+        return !!val && (val !== '0'); //&& ((typeof val !== 'object') || !((p = isPlainObj(val)) || isArrayLike(val)) || (p ? hasEnumerable(val) : (val.length > 0)));
+    }
+
+    /**
+     * @param val
+     * @param [defaultValue]
+     * @returns { Number }
+     */
+    function intVal(val, defaultValue) {
+        if (defaultValue === undefined) {
+            defaultValue = 0;
+        }
+
+        if (val == null) {
+            return defaultValue;
+        }
+
+        // if (((typeof val === 'object') && (val.valueOf === Object.prototype.valueOf)) || ((typeof val === 'function') && (val.valueOf === noop.valueOf))) {
+        //     throw new TypeError('intVal(): Cannot coerce `val` of type "' + typeName(val) + '" to an integer.');
+        // }
+
+        val = Math.floor(val);
+
+        return (val && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
+    }
+
+    /**
+     * @param val
+     * @param [defaultValue]
+     * @returns { Number }
+     */
+    function numVal(val, defaultValue) {
+        if (defaultValue === undefined) {
+            defaultValue = 0;
+        }
+
+        if (val == null) {
+            return defaultValue;
+        }
+
+        // if (((typeof val === 'object') && (val.valueOf === Object.prototype.valueOf)) || ((typeof val === 'function') && (val.valueOf === noop.valueOf))) {
+        //     throw new TypeError('numVal(): Cannot coerce `val` of type "' + typeName(val) + '" to a number.');
+        // }
+
+        val = Number(val);
+
+        return (val && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
+    }
+
+    /**
+     * @param val
+     * @param [defaultValue]
+     * @returns { Array }
+     */
+    function arrVal(val, defaultValue) {
+        if (defaultValue === undefined) {
+            defaultValue = [];
+        }
+
+        if (val == null) {
+            return defaultValue;
+        }
+
+        if ((typeof val === 'object') && (Array.isArray(val) || isArrayLike(val))) {
+            return toArray(val);
+        }
+
+        return [val];
+    }
+
+    /**
+     * @param val
+     * @param [defaultValue]
+     * @param [defaultPropertyName]
+     * @returns { Object }
+     */
+    function objVal(val, defaultValue, defaultPropertyName) {
+        if (defaultValue === undefined) {
+            defaultValue = {};
+        }
+
+        if (val == null) {
+            return defaultValue;
+        }
+
+        if (!isObj(val)) {
+            if (defaultPropertyName != null) {
+                val = keyValue(defaultPropertyName, val);
+            } else {
+                throw new TypeError('objVal(): Cannot coerce `val` of type "' + $util.typeName(val) + '" to an object.');
+            }
+        }
+
+        return val;
+    }
+
+    /**
+     * Sensible PHP-like string coercion
+     * @param val
+     * @param [defaultValue]
+     * @returns { string }
+     */
+    function strVal(val, defaultValue) {
+        var ret;
+
+        if (defaultValue === undefined) {
+            defaultValue = '';
+        }
+
+        if (!val) {
+            ret = (val === 0) ? '0' : '';
+        } else if (val === true) {
+            ret = '1';
+        } else if (typeof val === 'string') {
+            ret = val;
+        } else if (typeof val === 'number') {
+            ret = ((val !== Infinity) && (val !== -Infinity)) ? ('' + val) : '';
+        } else if ((typeof val === 'object') && (val.toString !== Object.prototype.toString) && (typeof val.toString === 'function')) {
+            // `val` has a .toString() implementation other than the useless generic one
+            ret = '' + val;
+        } else {
+            throw new TypeError('strVal(): Cannot coerce `val` of type "' + $util.typeName(val) + '" to a string.');
+        }
+
+        return (ret !== '') ? ret : defaultValue;
+    }
+
     /**@namespace $util*/
+    /**
+     * @method
+     * @returns {boolean}
+     */
+    $util.hasOwn = hasOwn;
+    /**
+     * @method
+     * @returns { Array }
+     */
+    $util.toArray = toArray;
+    /**
+     * @method
+     * @returns { Array }
+     */
+    $util.pushArray = pushArray;
+    
     $util = extendDeep($util, /**@lends $util*/{
-        /**
-         * @method
-         * @returns {boolean}
-         */
-        hasOwn: hasOwn,
-        /**
-         * @method
-         * @returns { Array }
-         */
-        toArray: toArray,
-        /**
-         * @method
-         * @returns { Array }
-         */
-        pushArray: pushArray,
         /**@method*/
         isObj: isObj,
         /**@method*/
@@ -445,8 +590,6 @@
         extendDeep: extendDeep,
         /**@method*/
         defaults: defaults,
-        /**@method*/
-        properties: properties,
         /**@method*/
         inherits: inherits,
         /**@method*/
@@ -517,7 +660,7 @@
         }
 
         var id = uniqueId();
-        properties(obj, keyValue($cms.id(), id));
+        $util.properties(obj, keyValue($cms.id(), id));
         return id;
     }
 
@@ -575,7 +718,7 @@
      */
     function isPlainObj(obj) {
         var proto;
-        return isObj(obj) && (internalName(obj) === 'Object') && (((proto = Object.getPrototypeOf(obj)) === Object.prototype) || (proto === null));
+        return isObj(obj) && ($util.internalName(obj) === 'Object') && (((proto = Object.getPrototypeOf(obj)) === Object.prototype) || (proto === null));
     }
 
     /**
@@ -602,7 +745,7 @@
      * @returns {boolean}
      */
     function isWindow(obj) {
-        return isObj(obj) && (obj === obj.window) && (obj === obj.self) && (internalName(obj) === 'Window');
+        return isObj(obj) && (obj === obj.window) && (obj === obj.self) && ($util.internalName(obj) === 'Window');
     }
 
     /**
@@ -654,7 +797,7 @@
      * @returns {boolean}
      */
     function isRegExp(obj) {
-        return (obj != null) && (internalName(obj) === 'RegExp');
+        return (obj != null) && ($util.internalName(obj) === 'RegExp');
     }
 
     /**
@@ -662,7 +805,7 @@
      * @returns {boolean}
      */
     function isDate(obj) {
-        return (obj != null) && (internalName(obj) === 'Date');
+        return (obj != null) && ($util.internalName(obj) === 'Date');
     }
 
     /**
@@ -686,7 +829,7 @@
 
         return (obj != null)
             && (typeof obj === 'object')
-            && (internalName(obj) !== 'Window')
+            && ($util.internalName(obj) !== 'Window')
             && (typeof (len = obj.length) === 'number')
             && (len >= minLength)
             && ((len === 0) || ((0 in obj) && ((len - 1) in obj)));
@@ -861,7 +1004,7 @@
      * @param {object|string} props - is a single property's name if `value` is passed.
      * @returns {Object}
      */
-    function properties(mask, obj, props) {
+    $util.properties = function properties(mask, obj, props) {
         var key, descriptors, descriptor;
 
         if (typeof mask !== 'string') {
@@ -893,178 +1036,35 @@
         }
 
         return Object.defineProperties(obj, descriptors);
-    }
+    };
 
     /**
      * Gets the internal type/constructor name of the provided `val`
      * @param val
      * @returns {string}
      */
-    function internalName(val) {
+    $util.internalName = function internalName(val) {
         return Object.prototype.toString.call(val).slice(8, -1); // slice off the surrounding '[object ' and ']'
-    }
+    };
 
     /**
      * @param obj
      * @returns {*}
      */
-    function constructorName(obj) {
+    $util.constructorName = function constructorName(obj) {
         if ((obj != null) && (typeof obj.constructor === 'function') && (typeof obj.constructor.name === 'string')) {
             return obj.constructor.name;
         }
-    }
+    };
 
     /**
      * @param obj
      * @returns {*}
      */
-    function typeName(obj) {
-        var name = constructorName(obj);
-        return ((name !== undefined) && (name !== '')) ? name : internalName(obj);
-    }
-
-    /**
-     * Port of PHP's boolval() function
-     * @param val
-     * @param [defaultValue]
-     * @returns { Boolean }
-     */
-    function boolVal(val, defaultValue) {
-        var p;
-        if (defaultValue === undefined) {
-            defaultValue = false;
-        }
-
-        if (val == null) {
-            return defaultValue;
-        }
-
-        return !!val && (val !== '0'); //&& ((typeof val !== 'object') || !((p = isPlainObj(val)) || isArrayLike(val)) || (p ? hasEnumerable(val) : (val.length > 0)));
-    }
-
-    /**
-     * @param val
-     * @param [defaultValue]
-     * @returns { Number }
-     */
-    function intVal(val, defaultValue) {
-        if (defaultValue === undefined) {
-            defaultValue = 0;
-        }
-
-        if (val == null) {
-            return defaultValue;
-        }
-
-        // if (((typeof val === 'object') && (val.valueOf === Object.prototype.valueOf)) || ((typeof val === 'function') && (val.valueOf === noop.valueOf))) {
-        //     throw new TypeError('intVal(): Cannot coerce `val` of type "' + typeName(val) + '" to an integer.');
-        // }
-
-        val = Math.floor(val);
-
-        return (val && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
-    }
-
-    /**
-     * @param val
-     * @param [defaultValue]
-     * @returns { Number }
-     */
-    function numVal(val, defaultValue) {
-        if (defaultValue === undefined) {
-            defaultValue = 0;
-        }
-
-        if (val == null) {
-            return defaultValue;
-        }
-
-        // if (((typeof val === 'object') && (val.valueOf === Object.prototype.valueOf)) || ((typeof val === 'function') && (val.valueOf === noop.valueOf))) {
-        //     throw new TypeError('numVal(): Cannot coerce `val` of type "' + typeName(val) + '" to a number.');
-        // }
-
-        val = Number(val);
-
-        return (val && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
-    }
-
-    /**
-     * @param val
-     * @param [defaultValue]
-     * @returns { Array }
-     */
-    function arrVal(val, defaultValue) {
-        if (defaultValue === undefined) {
-            defaultValue = [];
-        }
-
-        if (val == null) {
-            return defaultValue;
-        }
-
-        if ((typeof val === 'object') && (Array.isArray(val) || isArrayLike(val))) {
-            return toArray(val);
-        }
-
-        return [val];
-    }
-
-    /**
-     * @param val
-     * @param [defaultValue]
-     * @param [defaultPropertyName]
-     * @returns { Object }
-     */
-    function objVal(val, defaultValue, defaultPropertyName) {
-        if (defaultValue === undefined) {
-            defaultValue = {};
-        }
-
-        if (val == null) {
-            return defaultValue;
-        }
-
-        if (!isObj(val)) {
-            if (defaultPropertyName != null) {
-                val = keyValue(defaultPropertyName, val);
-            } else {
-                throw new TypeError('objVal(): Cannot coerce `val` of type "' + typeName(val) + '" to an object.');
-            }
-        }
-        
-        return val;
-    }
-
-    /**
-     * Sensible PHP-like string coercion
-     * @param val
-     * @param [defaultValue]
-     * @returns { string }
-     */
-    function strVal(val, defaultValue) {
-        var ret;
-        
-        if (defaultValue === undefined) {
-            defaultValue = '';
-        }
-
-         if (!val) {
-            ret = (val === 0) ? '0' : '';
-        } else if (val === true) {
-            ret = '1';
-        } else if (typeof val === 'string') {
-            ret = val;
-        } else if (typeof val === 'number') {
-            ret = ((val !== Infinity) && (val !== -Infinity)) ? ('' + val) : '';
-        } else if ((typeof val === 'object') && (val.toString !== Object.prototype.toString) && (typeof val.toString === 'function')) {
-            // `val` has a .toString() implementation other than the useless generic one
-            ret = '' + val;
-        } else {
-            throw new TypeError('strVal(): Cannot coerce `val` of type "' + typeName(val) + '" to a string.');
-        }
-        
-        return (ret !== '') ? ret : defaultValue;
-    }
+    $util.typeName = function typeName(obj) {
+        var name = $util.constructorName(obj);
+        return ((name !== undefined) && (name !== '')) ? name : $util.internalName(obj);
+    };
 
     /**
      * String interpolation
@@ -1643,7 +1643,7 @@
     function promiseHalt() {
         if (_haltedPromise === undefined) {
             _haltedPromise = new Promise(function () {});
-            properties(_haltedPromise, {
+            $util.properties(_haltedPromise, {
                 then: function then() {
                     return _haltedPromise;
                 },
@@ -1706,7 +1706,7 @@
     function inherits(SubClass, SuperClass, protoProps) {
         Object.setPrototypeOf(SubClass, SuperClass);
 
-        properties(SubClass, { base: base.bind(undefined, SuperClass) });
+        $util.properties(SubClass, { base: base.bind(undefined, SuperClass) });
 
         // Set the prototype chain to inherit from `SuperClass`
         SubClass.prototype = Object.create(SuperClass.prototype);
@@ -1714,7 +1714,7 @@
         protoProps || (protoProps = {});
         protoProps.constructor = SubClass;
 
-        properties(SubClass.prototype, protoProps);
+        $util.properties(SubClass.prototype, protoProps);
     }
 
     function getCsrfToken() {
@@ -2188,7 +2188,7 @@
      */
     function executeJsFunctionCalls(functionCallsArray, thisRef) {
         if (!Array.isArray(functionCallsArray)) {
-            $util.fatal('$cms.executeJsFunctionCalls(): Argument 1 must be an array, "' + typeName(functionCallsArray) + '" passed');
+            $util.fatal('$cms.executeJsFunctionCalls(): Argument 1 must be an array, "' + $util.typeName(functionCallsArray) + '" passed');
             return;
         }
 
@@ -2366,7 +2366,7 @@
 
     // Cached regex to split keys for `delegate`.
     var rgxDelegateEventSplitter = /^(\S+)\s*(.*)$/;
-    properties(View.prototype, /**@lends $cms.View#*/{
+    $util.properties(View.prototype, /**@lends $cms.View#*/{
         /**
          * @method
          */
