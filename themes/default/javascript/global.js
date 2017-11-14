@@ -495,6 +495,14 @@
     /**@namespace $util*/
     $util = extendDeep($util, /**@lends $util*/{
         /**@method*/
+        isAbsolute: isAbsolute,
+        /**@method*/
+        isRelative: isRelative,
+        /**@method*/
+        isSchemeRelative: isSchemeRelative,
+        /**@method*/
+        schemeRelative: schemeRelative,
+        /**@method*/
         throttle: throttle,
         /**@method*/
         debounce: debounce,
@@ -1394,13 +1402,6 @@
         return new URL(url, base);
     };
 
-    extend($cms.url, /**@lends $cms.url*/{
-        isAbsolute: isAbsolute,
-        isRelative: isRelative,
-        isSchemeRelative: isSchemeRelative,
-        schemeRelative: schemeRelative
-    });
-
     /**
      * Returns a { URL } instance for the current page
      * @see https://developer.mozilla.org/en-US/docs/Web/API/URL
@@ -1624,9 +1625,9 @@
 
         if (validIdRE.test(sheetNameOrHref)) {
             sheetName = sheetNameOrHref;
-            sheetHref = $cms.url.schemeRelative('{$FIND_SCRIPT_NOHTTP;,sheet}?sheet=' + sheetName + $cms.keep());
+            sheetHref = schemeRelative('{$FIND_SCRIPT_NOHTTP;,sheet}?sheet=' + sheetName + $cms.keep());
         } else {
-            sheetHref = $cms.url.schemeRelative(sheetNameOrHref);
+            sheetHref = schemeRelative(sheetNameOrHref);
         }
 
         if (sheetName != null) {
@@ -1667,11 +1668,11 @@
     function _findCssByHref(href) {
         var els = $dom.$$('link[rel="stylesheet"][href]'), el;
 
-        href = $cms.url.schemeRelative(href);
+        href = schemeRelative(href);
 
         for (var i = 0; i < els.length; i++) {
             el = els[i];
-            if ($cms.url.schemeRelative(el.href) === href) {
+            if (schemeRelative(el.href) === href) {
                 return el;
             }
         }
@@ -1701,9 +1702,9 @@
         
         if (validIdRE.test(scriptNameOrSrc)) {
             scriptName = scriptNameOrSrc;
-            scriptSrc = $cms.url.schemeRelative('{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + scriptName + $cms.keep());
+            scriptSrc = schemeRelative('{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + scriptName + $cms.keep());
         } else {
-            scriptSrc = $cms.url.schemeRelative(scriptNameOrSrc);
+            scriptSrc = schemeRelative(scriptNameOrSrc);
         }
         
         if (scriptName != null) {
@@ -1744,11 +1745,11 @@
     function _findScriptBySrc(src) {
         var els = $dom.$$('script[src]'), el;
         
-        src = $cms.url.schemeRelative(src);
+        src = schemeRelative(src);
         
         for (var i = 0; i < els.length; i++) {
             el = els[i];
-            if ($cms.url.schemeRelative(el.src) === src) {
+            if (schemeRelative(el.src) === src) {
                 return el;
             }
         }
@@ -2334,137 +2335,139 @@
             node.textContent = strVal((typeof newText === 'function') ? newText.call(node, node.textContent, node) : newText);
         }
     });
-
-    /**
-     * @class { CmsDomData }
-     */
-    function CmsDomData() {}
     
-    var domDataMap = new WeakMap();
-    /**
-     * @param el
-     * @return { CmsDomData }
-     */
-    function dataCache(el) {
-        // Check if the el object already has a cache
-        var value = domDataMap.get(el), key;
-        if (!value) { // If not, create one with the dataset
-            value = new CmsDomData();
-            domDataMap.set(el, value);
-            for (key in el.dataset) {
-                dataAttr(el, key);
-            }
-        }
+    (function () {
+        /**
+         * @class { CmsDomData }
+         */
+        function CmsDomData() {}
 
-        return value;
-    }
-
-    /**
-     * @param el
-     * @param key
-     * @return {(object|number|string)}
-     */
-    function dataAttr(el, key) {
-        var data, trimmed;
-        // If nothing was found internally, try to fetch any
-        // data from the HTML5 data-* attribute
-        if (typeof (data = el.dataset[key]) === 'string') {
-            trimmed = data.trim();
-
-            if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) { // Object or array?
-                data = parseJson5(data);
-            } else if ((Number(data).toString() === data) && isFinite(data)) { // Only convert to a number if it doesn't change the string
-                data = Number(data);
+        var domDataMap = new WeakMap();
+        /**
+         * @param el
+         * @return { CmsDomData }
+         */
+        function dataCache(el) {
+            // Check if the el object already has a cache
+            var value = domDataMap.get(el), key;
+            if (!value) { // If not, create one with the dataset
+                value = new CmsDomData();
+                domDataMap.set(el, value);
+                for (key in el.dataset) {
+                    dataAttr(el, key);
+                }
             }
 
-            // Make sure we set the data so it isn't changed later
-            dataCache(el)[key] = data;
-        }
-        return data;
-    }
-    /**
-     * Data retrieval and storage
-     * @memberof $dom
-     * @param el
-     * @param [key]
-     * @param [value]
-     * @returns {(CmsDomData|string|number)}
-     */
-    $dom.data = function data(el, key, value) {
-        // Note: We have internalised caching here. You must not change data-* attributes manually and expect this API to pick up on it.
-
-        var data, prop;
-
-        el = $dom.elArg(el);
-
-        // Gets all values
-        if (key === undefined) {
-            return dataCache(el);
+            return value;
         }
 
-        // Sets multiple values
-        if (isObj(key)) {
-            data = dataCache(el);
-            // Copy the properties one-by-one to the cache object
-            for (prop in key) {
-                data[camelCase(key)] = key[prop];
+        /**
+         * @param el
+         * @param key
+         * @return {(object|number|string)}
+         */
+        function dataAttr(el, key) {
+            var data, trimmed;
+            // If nothing was found internally, try to fetch any
+            // data from the HTML5 data-* attribute
+            if (typeof (data = el.dataset[key]) === 'string') {
+                trimmed = data.trim();
+
+                if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) { // Object or array?
+                    data = parseJson5(data);
+                } else if ((Number(data).toString() === data) && isFinite(data)) { // Only convert to a number if it doesn't change the string
+                    data = Number(data);
+                }
+
+                // Make sure we set the data so it isn't changed later
+                dataCache(el)[key] = data;
             }
-            
             return data;
         }
+        /**
+         * Data retrieval and storage
+         * @memberof $dom
+         * @param el
+         * @param [key]
+         * @param [value]
+         * @returns {(CmsDomData|string|number)}
+         */
+        $dom.data = function data(el, key, value) {
+            // Note: We have internalised caching here. You must not change data-* attributes manually and expect this API to pick up on it.
 
-        if (value === undefined) {
-            // Attempt to get data from the cache
-            // The key will always be camelCased in Data
-            data = dataCache(el)[camelCase(key)];
-            
-            return (data !== undefined) ? data : dataAttr(el, key); // Check in el.dataset.* too
-        }
+            var data, prop;
 
-        // Set the data...
-        // We always store the camelCased key
-        return dataCache(el)[camelCase(key)] = value;
-    };
+            el = $dom.elArg(el);
 
-    /**
-     * @memberof $dom
-     * @param owner
-     * @param key
-     */
-    $dom.removeData = function removeData(owner, key) {
-        owner = $dom.elArg(owner);
-
-        var i, cache = domDataMap.get(owner);
-
-        if (cache === undefined) {
-            return;
-        }
-
-        if (key !== undefined) {
-            // Support array or space separated string of keys
-            if (Array.isArray(key)) {
-                // If key is an array of keys...
-                // We always set camelCase keys, so remove that.
-                key = key.map(camelCase);
-            } else {
-                key = camelCase(key);
-                // If a key with the spaces exists, use it.
-                // Otherwise, create an array by matching non-whitespace
-                key = (key in cache) ? [key] : (key.match(rgxNotWhite) || []);
+            // Gets all values
+            if (key === undefined) {
+                return dataCache(el);
             }
 
-            i = key.length;
+            // Sets multiple values
+            if (isObj(key)) {
+                data = dataCache(el);
+                // Copy the properties one-by-one to the cache object
+                for (prop in key) {
+                    data[camelCase(key)] = key[prop];
+                }
 
-            while (i--) {
-                delete cache[key[i]];
+                return data;
             }
-        }
 
-        // Remove if there's no more data
-        if ((key === undefined) || !hasEnumerable(cache)) {
-            domDataMap.delete(owner);
-        }
-    };
+            if (value === undefined) {
+                // Attempt to get data from the cache
+                // The key will always be camelCased in Data
+                data = dataCache(el)[camelCase(key)];
+
+                return (data !== undefined) ? data : dataAttr(el, key); // Check in el.dataset.* too
+            }
+
+            // Set the data...
+            // We always store the camelCased key
+            return dataCache(el)[camelCase(key)] = value;
+        };
+
+        /**
+         * @memberof $dom
+         * @param owner
+         * @param key
+         */
+        $dom.removeData = function removeData(owner, key) {
+            owner = $dom.elArg(owner);
+
+            var i, cache = domDataMap.get(owner);
+
+            if (cache === undefined) {
+                return;
+            }
+
+            if (key !== undefined) {
+                // Support array or space separated string of keys
+                if (Array.isArray(key)) {
+                    // If key is an array of keys...
+                    // We always set camelCase keys, so remove that.
+                    key = key.map(camelCase);
+                } else {
+                    key = camelCase(key);
+                    // If a key with the spaces exists, use it.
+                    // Otherwise, create an array by matching non-whitespace
+                    key = (key in cache) ? [key] : (key.match(rgxNotWhite) || []);
+                }
+
+                i = key.length;
+
+                while (i--) {
+                    delete cache[key[i]];
+                }
+            }
+
+            // Remove if there's no more data
+            if ((key === undefined) || !hasEnumerable(cache)) {
+                domDataMap.delete(owner);
+            }
+        };
+    }());
 
     /**
      * @memberof $dom
@@ -2658,16 +2661,6 @@
         
         return $dom.elementsLoaded.has(el);
     };
-
-    /**
-     * 
-     * @param { Element|string } src
-     * @return {*}
-     */
-    $dom.hasScriptSrcLoaded = function hasScriptSrcLoaded(src) {
-        var scriptEl = _findScriptBySrc(src);
-        return (scriptEl != null) && $dom.hasElementLoaded(scriptEl);
-    };
     
     /**
      * @memberof $dom
@@ -2681,24 +2674,25 @@
 
         return false;
     };
+    
+    $dom.matches = (function () {
+        var _matchesFnName = ('matches' in emptyEl) ? 'matches'
+            : ('webkitMatchesSelector' in emptyEl) ? 'webkitMatchesSelector'
+                : ('msMatchesSelector' in emptyEl) ? 'msMatchesSelector'
+                    : 'matches';
+        /**
+         * Check if the given element matches selector
+         * @memberof $dom
+         * @param el
+         * @param selector
+         * @returns {boolean}
+         */
+        return function matches(el, selector) {
+            el = $dom.elArg(el);
 
-    var _matchesFnName = ('matches' in emptyEl) ? 'matches'
-        : ('webkitMatchesSelector' in emptyEl) ? 'webkitMatchesSelector'
-            : ('msMatchesSelector' in emptyEl) ? 'msMatchesSelector'
-                : 'matches';
-
-    /**
-     * Check if the given element matches selector
-     * @memberof $dom
-     * @param el
-     * @param selector
-     * @returns {boolean}
-     */
-    $dom.matches = function matches(el, selector) {
-        el = $dom.elArg(el);
-
-        return ((selector === '*') || el[_matchesFnName](selector));
-    };
+            return ((selector === '*') || el[_matchesFnName](selector));
+        };
+    }());
 
     /**
      * Gets closest parent (or itself) element matching selector
