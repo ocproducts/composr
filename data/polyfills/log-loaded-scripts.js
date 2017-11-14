@@ -1,12 +1,11 @@
-(function ($cms) {
+(function ($dom) {
     'use strict';
-    
     /**
      * Required for $cms.requireCss and $cms.requireJavascript() to work properly as DOM does not currently provide any way to check if a particular element has been already loaded
-     * @memberOf $cms
+     * @memberof $dom
      * @type { WeakMap }
      */
-    $cms.elementsLoaded = new WeakMap();
+    $dom.elementsLoaded = new WeakMap();
     
     document.addEventListener('load', listener, /*useCapture*/true);
     document.addEventListener('error', listener, /*useCapture*/true);
@@ -18,20 +17,20 @@
         if (!loadedEl) {
             return;
         }
-        
-        $cms.elementsLoaded.set(loadedEl, hasLoaded);
+
+        $dom.elementsLoaded.set(loadedEl, hasLoaded);
     }
     
     window.addEventListener('click', function (e) {
         if (e.target && (e.target.localName === 'a') && (e.target.getAttribute('href') === '#!')) {
-            //e.preventDefault();
+            e.preventDefault();
         }
     }, /*useCapture*/true);
 
     window.addEventListener('submit', function (e) {
         if (e.target && (e.target.localName === 'form') && (e.target.getAttribute('action') === '#!')) {
-            //e.preventDefault();
+            e.preventDefault();
         }
     }, /*useCapture*/true);
 
-}(window.$cms || (window.$cms = {})));
+}(window.$dom || (window.$dom = {})));

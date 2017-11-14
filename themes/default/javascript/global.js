@@ -32,13 +32,12 @@
     window.strVal  = strVal;
     window.arrVal  = arrVal;
     window.objVal  = objVal;
-
-    $cms.init  || ($cms.init = []);
+    
     $cms.ready || ($cms.ready = []);
     $cms.load  || ($cms.load = []);
 
     /** @namespace $cms */
-    $cms = extendDeep($cms, /**@lends $cms*/ {
+    $cms = extendDeep($cms, /**@lends $cms*/{
         /**
          * Unique for each copy of Composr on the page
          * @method
@@ -476,10 +475,18 @@
          */
         dom: {}
     });
+    
+    /**@namespace $util*/
+    $util = extendDeep($util, {
+        
+    });
+    
+    /**@namespace $dom*/
+    $dom = extendDeep($dom, {
+        
+    });
 
     setTimeout(function () {
-        executeCmsInitQueue();
-
         if (document.readyState === 'interactive') {
             // Workaround for browser bug, document.readyState == 'interactive' before [defer]'d <script>s are loaded.
             // See: https://github.com/jquery/jquery/issues/3271
@@ -504,26 +511,6 @@
             });
         }
     }, 0);
-
-    function executeCmsInitQueue() {
-        var fn;
-
-        while ($cms.init.length > 0) {
-            fn = $cms.init.shift();
-            if (typeof fn === 'function') {
-                fn();
-            }
-        }
-
-        properties($cms.init, {
-            unshift: function unshift(fn) {
-                fn();
-            },
-            push: function push(fn) {
-                fn();
-            }
-        });
-    }
 
     function executeCmsReadyQueue() {
         var fn;
@@ -2721,7 +2708,7 @@
     $cms.dom.hasElementLoaded = function hasElementLoaded(el) {
         el = $cms.dom.elArg(el);
         
-        return $cms.elementsLoaded.has(el);
+        return $dom.elementsLoaded.has(el);
     };
 
     /**
