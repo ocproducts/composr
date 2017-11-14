@@ -39,7 +39,7 @@
         if (document.readyState === 'interactive') {
             // Workaround for browser bug, document.readyState == 'interactive' before [defer]'d <script>s are loaded.
             // See: https://github.com/jquery/jquery/issues/3271
-            $cms.waitForResources(toArray(document.querySelectorAll('script[src][defer]'))).then(function () {
+            $dom.waitForResources(toArray(document.querySelectorAll('script[src][defer]'))).then(function () {
                 $dom._resolveReady();
             });
         } else if (document.readyState === 'complete') {
@@ -394,8 +394,6 @@
         warn: warn,
         /**@method*/
         fatal: fatal,
-        /**@method*/
-        waitForResources: waitForResources,
         /**@method*/
         requireCss: requireCss,
         /**@method*/
@@ -1534,87 +1532,6 @@
         return console.error.apply(undefined, arguments);
     }
 
-    function waitForResources(resourceEls) {
-        if (resourceEls == null) {
-            return Promise.resolve();
-        }
-
-        if (isEl(resourceEls)) {
-            resourceEls = [resourceEls];
-        }
-
-        if (!Array.isArray(resourceEls)) {
-            $cms.fatal('$cms.waitForResources(): Argument 1 must be of type {array|HTMLElement}, "' + typeName(resourceEls) + '" provided.');
-            return Promise.reject();
-        }
-
-        if (resourceEls.length < 1) {
-            return Promise.resolve();
-        }
-
-        //$cms.inform('$cms.waitForResources(): Waiting for resources', resourceEls);
-
-        var resourcesToLoad = new Set();
-        resourceEls.forEach(function (el) {
-            if (!isEl(el)) {
-                $cms.fatal('$cms.waitForResources(): Invalid item of type "' + typeName(resourceEls) + '" in the `resourceEls` parameter.');
-                return;
-            }
-            
-            if ($dom.hasElementLoaded(el)) {
-                return;
-            }
-
-            switch (el.localName) {
-                case 'script':
-                    if (el.src && jsTypeRE.test(el.type)) {
-                        resourcesToLoad.add(el);
-                    }
-                    break;
-                    
-                case 'link':
-                    if (el.rel === 'stylesheet') {
-                        resourcesToLoad.add(el);
-                    }
-                    break;
-                    
-                case 'img':
-                case 'iframe':
-                    resourcesToLoad.add(el);
-                    break;
-            }
-        });
-
-        if (resourcesToLoad.size < 1) {
-            return Promise.resolve();
-        }
-
-        return new Promise(function (resolve) {
-            document.addEventListener('load', resourceLoadListener, true);
-            document.addEventListener('error', resourceLoadListener, true);
-
-            function resourceLoadListener(event) {
-                var loadedEl = event.target;
-
-                if (!resourcesToLoad.has(loadedEl)) {
-                    return;
-                }
-
-                if (event.type === 'load') {
-                    //$cms.inform('$cms.waitForResources(): Resource loaded successfully', loadedEl);
-                } else {
-                    $cms.fatal('$cms.waitForResources(): Resource failed to load', loadedEl);
-                }
-
-                resourcesToLoad.delete(loadedEl);
-
-                if (resourcesToLoad.size < 1) {
-                    resolve();
-                }
-            }
-        });
-    }
-
     var validIdRE = /^[a-zA-Z][\w:.-]*$/;
     /**
      * @private
@@ -1647,7 +1564,7 @@
             document.head.appendChild(sheetEl);
         }
 
-        return $cms.waitForResources(sheetEl);
+        return $dom.waitForResources(sheetEl);
     }
 
     function _findCssByName(stylesheetName) {
@@ -1724,7 +1641,7 @@
             document.body.appendChild(scriptEl);
         }
 
-        return $cms.waitForResources(scriptEl);
+        return $dom.waitForResources(scriptEl);
     }
     
     function _findScriptByName(scriptName) {
@@ -2333,6 +2250,87 @@
             }
 
             node.textContent = strVal((typeof newText === 'function') ? newText.call(node, node.textContent, node) : newText);
+        },
+        
+        waitForResources: function waitForResources(resourceEls) {
+            if (resourceEls == null) {
+                return Promise.resolve();
+            }
+
+            if (isEl(resourceEls)) {
+                resourceEls = [resourceEls];
+            }
+
+            if (!Array.isArray(resourceEls)) {
+                $cms.fatal('$dom.waitForResources(): Argument 1 must be of type {array|HTMLElement}, "' + typeName(resourceEls) + '" provided.');
+                return Promise.reject();
+            }
+
+            if (resourceEls.length < 1) {
+                return Promise.resolve();
+            }
+
+            //$cms.inform('$dom.waitForResources(): Waiting for resources', resourceEls);
+
+            var resourcesToLoad = new Set();
+            resourceEls.forEach(function (el) {
+                if (!isEl(el)) {
+                    $cms.fatal('$dom.waitForResources(): Invalid item of type "' + typeName(resourceEls) + '" in the `resourceEls` parameter.');
+                    return;
+                }
+
+                if ($dom.hasElementLoaded(el)) {
+                    return;
+                }
+
+                switch (el.localName) {
+                    case 'script':
+                        if (el.src && jsTypeRE.test(el.type)) {
+                            resourcesToLoad.add(el);
+                        }
+                        break;
+
+                    case 'link':
+                        if (el.rel === 'stylesheet') {
+                            resourcesToLoad.add(el);
+                        }
+                        break;
+
+                    case 'img':
+                    case 'iframe':
+                        resourcesToLoad.add(el);
+                        break;
+                }
+            });
+
+            if (resourcesToLoad.size < 1) {
+                return Promise.resolve();
+            }
+
+            return new Promise(function (resolve) {
+                document.addEventListener('load', resourceLoadListener, true);
+                document.addEventListener('error', resourceLoadListener, true);
+
+                function resourceLoadListener(event) {
+                    var loadedEl = event.target;
+
+                    if (!resourcesToLoad.has(loadedEl)) {
+                        return;
+                    }
+
+                    if (event.type === 'load') {
+                        //$cms.inform('$dom.waitForResources(): Resource loaded successfully', loadedEl);
+                    } else {
+                        $cms.fatal('$dom.waitForResources(): Resource failed to load', loadedEl);
+                    }
+
+                    resourcesToLoad.delete(loadedEl);
+
+                    if (resourcesToLoad.size < 1) {
+                        resolve();
+                    }
+                }
+            });
         }
     });
     
@@ -3924,13 +3922,6 @@
         return dom;
     };
 
-    function traverseNode(node, func) {
-        func(node);
-        for (var i = 0, len = node.childNodes.length; i < len; i++) {
-            traverseNode(node.childNodes[i], func);
-        }
-    }
-
     // Generates the `after`, `prepend`, `before` and `append` methods
     function createInsertionFunction(funcName) {
         var inside = (funcName === 'prepend') || (funcName === 'append');
@@ -4003,7 +3994,7 @@
 
             if (scriptEls.length > 0) {
                 return new Promise(function (resolve) {
-                    $cms.waitForResources(scriptEls).then(function () {
+                    $dom.waitForResources(scriptEls).then(function () {
                         // Patch stupid DOM behavior when dynamically inserting inline script elements
                         scriptEls.forEach(function (el) {
                             if (!el.src && jsTypeRE.test(el.type)) {
@@ -4783,7 +4774,7 @@
 
         settings || (settings = $cms.settings);
 
-        //$cms.waitForResources($dom.$$$(context, 'script[src]')).then(function () { // Wait for <script> dependencies to load
+        //$dom.waitForResources($dom.$$$(context, 'script[src]')).then(function () { // Wait for <script> dependencies to load
         // Execute all of them.
         var names = behaviorNamesByPriority();
 
