@@ -1,4 +1,5 @@
-(function ($dom) {
+(function ($cms, $util, $dom) {
+    'use strict';
     /**
      * @param el
      * @param property
@@ -1020,7 +1021,7 @@
     }
 
     // Enable for debugging only
-    $dom.findHandlers = findHandlers;
+    // $dom.findHandlers = findHandlers;
 
     /**
      * @memberof $dom
@@ -2853,4 +2854,4 @@
             });
         }
     };
-}(window.$dom))
+}(window.$cms, window.$util, window.$dom));
