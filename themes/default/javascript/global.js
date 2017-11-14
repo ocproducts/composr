@@ -1826,46 +1826,6 @@
         return decodeURIComponent(cookies.substring(startIdx + cookieName.length + 1, endIdx));
     }
 
-    $dom.support = {};
-    /**
-     *  Web animations API support (https://developer.mozilla.org/de/docs/Web/API/Element/animate)
-     * @type {boolean}
-     */
-    $dom.support.animation = ('animate' in document.createElement('div'));
-    /**
-     * If the browser has support for an input[type=???]
-     */
-    $dom.support.inputTypes = {
-        search: false, tel: false, url: false, email: false, datetime: false, date: false, month: false,
-        week: false, time: false, 'datetime-local': false, number: false, range: false, color: false
-    };
-
-    (function () {
-        var type, bool, inputEl = document.createElement('input');
-
-        for (type in $dom.support.inputTypes) {
-            inputEl.setAttribute('type', type);
-            bool = inputEl.type !== 'text';
-
-            if (bool && (type !== 'search') && (type !== 'tel')) {
-                inputEl.value = smile;
-                inputEl.style.cssText = 'position:absolute;visibility:hidden;';
-
-                if ((type === 'range') && (inputEl.style.WebkitAppearance !== undefined)) {
-                    document.documentElement.appendChild(inputEl);
-                    bool = (getComputedStyle(inputEl).WebkitAppearance !== 'textfield') && (inputEl.offsetHeight !== 0);
-                    document.documentElement.removeChild(inputEl);
-                } else if ((type === 'url') || (type === 'email')) {
-                    bool = inputEl.checkValidity && (inputEl.checkValidity() === false);
-                } else {
-                    bool = inputEl.value !== smile;
-                }
-            }
-
-            $dom.support.inputTypes[type] = Boolean(bool);
-        }
-    }());
-
     /**
      * @param el
      * @param property
@@ -1887,6 +1847,44 @@
 
     /**@namespace $dom*/
     $dom = extendDeep($dom, /**@lends $dom*/{
+        support: (function () {
+            var type, bool, 
+                inputEl = document.createElement('input'),
+                inputTypes = {
+                    search: false, tel: false, url: false, email: false, datetime: false, date: false, month: false,
+                    week: false, time: false, 'datetime-local': false, number: false, range: false, color: false
+                };
+
+            for (type in inputTypes) {
+                inputEl.setAttribute('type', type);
+                bool = inputEl.type !== 'text';
+
+                if (bool && (type !== 'search') && (type !== 'tel')) {
+                    inputEl.value = smile;
+                    inputEl.style.cssText = 'position:absolute;visibility:hidden;';
+
+                    if ((type === 'range') && (inputEl.style.WebkitAppearance !== undefined)) {
+                        document.documentElement.appendChild(inputEl);
+                        bool = (getComputedStyle(inputEl).WebkitAppearance !== 'textfield') && (inputEl.offsetHeight !== 0);
+                        document.documentElement.removeChild(inputEl);
+                    } else if ((type === 'url') || (type === 'email')) {
+                        bool = (inputEl.checkValidity != null) && (inputEl.checkValidity() === false);
+                    } else {
+                        bool = inputEl.value !== smile;
+                    }
+                }
+
+                inputTypes[type] = bool;
+            }
+            
+            return {
+                // Web animations API support (https://developer.mozilla.org/de/docs/Web/API/Element/animate)
+                animation: ('animate' in document.createElement('div')),
+                // If the browser has support for an input[type=???]
+                inputTypes: inputTypes
+            };
+        }()),
+        
         /**@method*/
         nodeType: nodeType,
         /**
