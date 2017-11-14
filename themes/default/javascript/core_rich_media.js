@@ -52,7 +52,7 @@
         this.el.style.display = 'block';
 
         var self = this;
-        $cms.load.push(function () {
+        $dom.load.then(function () {
             self.$$('.js-btn-car-move').forEach(function (btn) {
                 btn.style.height = self.mainEl.offsetHeight + 'px';    
             });
@@ -416,7 +416,7 @@
             window.numAttachments = 1;
             window.rebuildAttachmentButtonForNext = rebuildAttachmentButtonForNext;
 
-            $cms.load.push(function () {
+            $dom.load.then(function () {
                 var aub = document.getElementById('js-attachment-upload-button');
                 if (aub && (aub.classList.contains('for_field_' + postingFieldName))) {
                     // Attach Plupload with #js-attachment-upload-button as browse button
@@ -770,7 +770,7 @@
     $cms.templates.mediaRealmedia = function (params) {
         // Tie into callback event to see when finished, for our slideshows
         // API: http://service.real.com/help/library/guides/realone/ScriptingGuide/PDF/ScriptingGuide.pdf
-        $cms.load.push(function () {
+        $dom.load.then(function () {
             if (document.getElementById('next_slide')) {
                 stopSlideshowTimer();
                 setTimeout(function () {
@@ -789,7 +789,7 @@
     $cms.templates.mediaQuicktime = function (params) {
         // Tie into callback event to see when finished, for our slideshows
         // API: http://developer.apple.com/library/safari/#documentation/QuickTime/Conceptual/QTScripting_JavaScript/bQTScripting_JavaScri_Document/QuickTimeandJavaScri.html
-        $cms.load.push(function () {
+        $dom.load.then(function () {
             if (document.getElementById('next_slide')) {
                 stopSlideshowTimer();
                 setTimeout(function () {
@@ -807,7 +807,7 @@
         // Tie into callback event to see when finished, for our slideshows
         // API: http://developer.apple.com/library/safari/#documentation/QuickTime/Conceptual/QTScripting_JavaScript/bQTScripting_JavaScri_Document/QuickTimeandJavaScri.html
         // API: http://msdn.microsoft.com/en-us/library/windows/desktop/dd563945(v=vs.85).aspx
-        $cms.load.push(function () {
+        $dom.load.then(function () {
             if (document.getElementById('next_slide')) {
                 stopSlideshowTimer();
 

@@ -5,6 +5,14 @@
      * @memberof $dom
      * @type { Promise }
      */
+    $dom.init = new Promise(function (resolve) {
+        $dom._resolveInit = resolve;
+    });
+    
+    /**
+     * @memberof $dom
+     * @type { Promise }
+     */
     $dom.ready = new Promise(function (resolve) {
         $dom._resolveReady = resolve;
     });

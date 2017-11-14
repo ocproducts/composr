@@ -15,8 +15,8 @@
         
         // Used by this.checkChatOptions()
         this.chatOptionsFormLastValid = null;
-        
-        $cms.load.push(function () {
+
+        $dom.load.then(function () {
             chatLoad(params.chatroomId);
         });
     }
@@ -131,7 +131,7 @@
     $cms.templates.chatLobbyImArea = function chatLobbyImArea(params, container) {
         var chatroomId = strVal(params.chatroomId);
 
-        $cms.load.push(function () {
+        $dom.load.then(function () {
             try {
                 $cms.dom.$('#post_' + chatroomId).focus();
             } catch (e) {}

@@ -32,9 +32,6 @@
     window.strVal  = strVal;
     window.arrVal  = arrVal;
     window.objVal  = objVal;
-    
-    $cms.ready || ($cms.ready = []);
-    $cms.load  || ($cms.load = []);
 
     /** @namespace $cms */
     $cms = extendDeep($cms, /**@lends $cms*/{
@@ -487,70 +484,32 @@
     });
 
     setTimeout(function () {
+        $dom._resolveInit();
+        
         if (document.readyState === 'interactive') {
             // Workaround for browser bug, document.readyState == 'interactive' before [defer]'d <script>s are loaded.
             // See: https://github.com/jquery/jquery/issues/3271
             $cms.waitForResources(toArray(document.querySelectorAll('script[src][defer]'))).then(function () {
-                executeCmsReadyQueue();
+                $dom._resolveReady();
             });
         } else if (document.readyState === 'complete') {
-            executeCmsReadyQueue();
+            $dom._resolveReady();
         } else {
             document.addEventListener('DOMContentLoaded', function listener() {
                 document.removeEventListener('DOMContentLoaded', listener);
-                executeCmsReadyQueue();
+                $dom._resolveReady();
             });
         }
 
         if (document.readyState === 'complete') {
-            executeCmsLoadQueue();
+            $dom._resolveLoad();
         } else {
             window.addEventListener('load', function listener() {
                 window.removeEventListener('load', listener);
-                executeCmsLoadQueue();
+                $dom._resolveLoad();
             });
         }
     }, 0);
-
-    function executeCmsReadyQueue() {
-        var fn;
-
-        while ($cms.ready.length > 0) {
-            fn = $cms.ready.shift();
-            if (typeof fn === 'function') {
-                fn();
-            }
-        }
-
-        properties($cms.ready, {
-            unshift: function unshift(fn) {
-                fn();
-            },
-            push: function push(fn) {
-                fn();
-            }
-        });
-    }
-
-    function executeCmsLoadQueue() {
-        var fn;
-
-        while ($cms.load.length > 0) {
-            fn = $cms.load.shift();
-            if (typeof fn === 'function') {
-                fn();
-            }
-        }
-
-        properties($cms.load, {
-            unshift: function unshift(fn) {
-                fn();
-            },
-            push: function push(fn) {
-                fn();
-            }
-        });
-    }
 
     // Generate a unique integer id (unique within the entire client session).
     var _uniqueId = 0;
@@ -6151,7 +6110,7 @@
         });
     };
 
-    $cms.ready.push(function () {
+    $dom.ready.then(function () {
         // Tooltips close on browser resize
         $cms.dom.on(window, 'resize', function () {
             $cms.ui.clearOutTooltips();
@@ -7713,7 +7672,7 @@
         });
     };
 
-    $cms.ready.push(function () {
+    $dom.ready.then(function () {
         $cms.attachBehaviors(document);
     });
 
@@ -10942,4 +10901,4 @@
         massDeleteForm.style.display = 'block';
     }
  
-}(window.$cms || (window.$cms = {}), window.$util || (window.$util = {}), window.$dom || (window.$dom = {})));
+}(window.$cms || (window.$cms = {}), window.$util || (window.$util = {}), window.$dom));
