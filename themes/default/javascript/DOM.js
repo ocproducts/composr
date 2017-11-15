@@ -1100,7 +1100,7 @@
 
         if (event && (typeof event !== 'string')) {
             $util.each(event, function (type, fn) {
-                $dom.on(el, type, selector, data, fn, one)
+                $dom.on(el, type, selector, data, fn, one);
             });
             return;
         }
@@ -1961,7 +1961,7 @@
             }
 
             if ($util.isArrayLike(checkKey, 1)) {
-                return includes(checkKey, key);
+                return Array.prototype.includes.call(checkKey, key);
             }
 
             return false;
@@ -1995,7 +1995,7 @@
             }
 
             if ($util.isArrayLike(checkOutput, 1)) {
-                return includes(checkOutput, key);
+                return Array.prototype.includes.call(checkOutput, key);
             }
 
             return false;
