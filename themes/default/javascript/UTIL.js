@@ -153,7 +153,7 @@
      * @method
      * @returns { Array }
      */
-    $util.forEach = Function.bind.call(Function.call, Array.prototype.forEach)
+    $util.forEach = Function.bind.call(Function.call, Array.prototype.forEach);
     /**
      * @method
      * @returns { Array }
@@ -510,7 +510,7 @@
         for (var i = 0, len = sources.length; i < len; i++) {
             _extend(target, sources[i]);
         }
-        return target
+        return target;
     };
 
     /**
@@ -525,7 +525,7 @@
         for (var i = 0, len = sources.length; i < len; i++) {
             _extend(target, sources[i], EXTEND_SRC_OWN_ONLY);
         }
-        return target
+        return target;
     };
 
     /**
@@ -540,7 +540,7 @@
         for (var i = 0, len = sources.length; i < len; i++) {
             _extend(target, sources[i], EXTEND_DEEP);
         }
-        return target
+        return target;
     };
 
     /**
@@ -555,7 +555,7 @@
         for (var i = 0, len = options.length; i < len; i++) {
             _extend(defaults, options[i], EXTEND_TGT_OWN_ONLY);
         }
-        return defaults
+        return defaults;
     };
 
     /**
@@ -656,7 +656,7 @@
             return str.replace(/\{(\d+)\}/g, function (match, key) {
                 key--; // So that interpolation starts from '{1}'
                 return (key in values) ? strVal(values[key]) : match;
-            })
+            });
         }
 
         return str.replace(/\{(\w+)\}/g, function (match, key) {
@@ -872,7 +872,7 @@
 
         return array;
     };
-
+    var rgxHttp = /^https?:(?=\/\/)/i;
     $util.isAbsolute = function isAbsolute(url) {
         url = strVal(url);
         return rgxHttp.test(url);
@@ -969,7 +969,7 @@
     };
 
     $util.inform = function inform() {
-        if ($cms.isDevMode()) {
+        if (window.$cms && window.$cms.isDevMode()) {
             return console.log.apply(undefined, arguments);
         }
     };
