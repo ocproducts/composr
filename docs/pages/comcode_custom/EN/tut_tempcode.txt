@@ -205,6 +205,21 @@ It is absolutely crucial that Tempcode programmers use the proper escaping. With
 
 If you're wondering what the characters refer to: nothing. They are just characters that are easy to type on a regular keyboard. We like the ability to be able to apply the escapings in this shorthand, in the same way that maths benefits from concise symbolic shorthand.
 
+[title="3"]Escaping Tempcode itself[/title]
+
+Tempcode features a very simple escaping system if you need to output something that looks like Tempcode literally.
+
+It is rare that you actually need escaping, as Tempcode is not going to try and parse every brace it sees, only braces that are succeeded by an alphanumeric character or any of the following characters: [tt]$[/tt] / [tt]+[/tt] / [tt]![/tt] / [tt]_[/tt]. The typical brace used for JavaScript or CSS code is going to be followed by white-space.
+
+The following escaping substitutions work:
+ - To escape [tt]{[/tt] use [tt]\{[/tt]
+ - To escape [tt]}[/tt] use [tt]\}[/tt]
+ - To escape [tt],[/tt] use [tt]\,[/tt]
+
+Backslashes cannot be escaped. So [tt]\\[/tt] will output literally, and [tt]\\{EXAMPLE}[/tt] will output [tt]\{EXAMPLE}[/tt] (i.e. Tempcode will not be triggered because the first slash outputs literally and the second slash escapes Tempcode).
+This is intentional: we don't want Tempcode programmers to have to layer escaping schemes, as JavaScript and CSS feature similar backslash-based escaping.
+If you really need to output a backslash without it working as an escape character on a succeeding [tt]{[/tt] / [tt]}[/tt] / [tt]_[/tt] character you can use the [tt]{$BACKSLASH}[/tt] symbol. Or, you can drop down to a character-code scheme in the output you're generating (for example, HTML allows output characters using HTML entities, and JavaScript strings support escaped character codes).
+
 [title="3"]The Tempcode tree (advanced)[/title]
 
 Templates are composed together into a tree structure, and then the tree structure is output. This is discussed in further detail in the [page="_SEARCH:tut_structure"]Composr site structure[/page] tutorial.
@@ -396,6 +411,10 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		<tr style="background: #DDFFDD">
 			<td>{$PROTECT_URL_PARAMETER,http://example}</td>
 			<td>Convert the format of a URL so it can be embedded as a parameter that ModSecurity will not trigger security errors on.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$BACKSLASH}</td>
+			<td>Output a literal backslash. This is a workaround to possible complexities with escaping Tempcode.</td>
 		</tr>
 	</tbody>
 </table>
