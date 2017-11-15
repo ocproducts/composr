@@ -11,13 +11,6 @@
 
     /** @namespace $cms */
     $cms = $util.extendDeep($cms, /**@lends $cms*/{
-        /**
-         * Unique for each copy of Composr on the page
-         * @method
-         * @returns {boolean}
-         */
-        id: $util.constant('composr' + ('' + Math.random()).substr(2)),
-
         // Load up symbols data
         /**
          * @method
@@ -148,7 +141,7 @@
                 return $cms.getBaseUrl();
             }
 
-            var url = $cms.url(relativeUrl).toString();
+            var url = $util.url(relativeUrl).toString();
 
             if (window.location.protocol === 'https:') {
                 // Match protocol with the current page if using SSL
@@ -310,60 +303,40 @@
         /**@method*/
         doAjaxRequest: doAjaxRequest,
         /**@method*/
-        protectURLParameter: protectURLParameter,
-        /**
-         * Addons will add template related methods under this object
-         * @namespace $cms.templates
-         */
-        templates: {},
-        /**
-         * Addons can add functions under this object
-         * @namespace $cms.functions
-         */
-        functions: {},
-        /**
-         * Addons will add $cms.View subclasses under this object
-         * @namespace $cms.views
-         */
-        views: {},
-        /**
-         * @namespace $cms.ui
-         */
-        ui: {},
-        /**
-         * Validation code and other general code relating to forms
-         * @namespace $cms.form
-         */
-        form: {},
-        /**
-         * Addons will add "behaviors" under this object
-         * @namespace $cms.behaviors
-         */
-        behaviors: {},
+        protectURLParameter: protectURLParameter
     });
 
+    /**
+     * Addons can add functions under this namespace
+     * @namespace $cms.functions
+     */
+    $cms.functions = {};
+    /**
+     * Addons will add "behaviors" under this namespace
+     * @namespace $cms.behaviors
+     */
+    $cms.behaviors = {};
+    /**
+     * @namespace $cms.ui
+     */
+    $cms.ui = {};
+    /**
+     * Addons will add template related methods under this namespace
+     * @namespace $cms.templates
+     */
+    $cms.templates = {};
+    /**
+     * Addons will add $cms.View subclasses under this namespace
+     * @namespace $cms.views
+     */
+    $cms.views = {};
+    /**
+     * Validation code and other general code relating to forms
+     * @namespace $cms.form
+     */
+    $cms.form = {};
 
     var rgxHttp = /^https?:(?=\/\/)/i;
-    /**
-     * NB: Has a trailing slash when having the base url only
-     * @memberof $cms
-     * @namespace
-     * @method
-     * @param {string} url - An absolute or relative URL. If url is a relative URL, `base` will be used as the base URL. If url is an absolute URL, a given `base` will be ignored.
-     * @param {string} [base] - The base URL to use in case url is a relative URL. If not specified, it defaults to $cms.baseUrl().
-     * @return { URL }
-     */
-    $cms.url = function url(url, base) {
-        url = strVal(url);
-        base = strVal(base) || ($cms.getBaseUrl() + '/');
-
-        if (url.startsWith('//')) {
-            // URL constructor throws on scheme-relative URLs
-            url = window.location.protocol + url;
-        }
-
-        return new URL(url, base);
-    };
 
     /**
      * Dynamically fixes the protocol for image URLs
@@ -917,7 +890,7 @@
      * @returns {string}
      */
     function maintainThemeInLink(url) {
-        url = $cms.url(url);
+        url = $util.url(url);
         
         if (!url.searchParams.has('utheme') && !url.searchParams.has('keep_theme')) {
             url.searchParams.set('utheme', $cms.getTheme());
@@ -932,7 +905,7 @@
      * @return {string}
      */
     function addKeepStub(url) {
-        url = $cms.url(url);
+        url = $util.url(url);
 
         var keepSp = pageKeepSearchParams(true);
 
@@ -1382,7 +1355,7 @@
          */
         delegate: function (eventName, selector, listener) {
             //$util.inform('$cms.View#delegate(): delegating event "' + eventName + '" for selector "' + selector + '" with listener', listener, 'and view', this);
-            $dom.on(this.el, (eventName + '.delegateEvents' + uid(this)), selector, listener);
+            $dom.on(this.el, (eventName + '.delegateEvents' + $util.uid(this)), selector, listener);
             return this;
         },
 
@@ -1394,7 +1367,7 @@
          */
         undelegateEvents: function () {
             if (this.el) {
-                $dom.off(this.el, '.delegateEvents' + uid(this));
+                $dom.off(this.el, '.delegateEvents' + $util.uid(this));
             }
             return this;
         },
@@ -1404,7 +1377,7 @@
          * @method
          */
         undelegate: function (eventName, selector, listener) {
-            $dom.off(this.el, (eventName + '.delegateEvents' + uid(this)), selector, listener);
+            $dom.off(this.el, (eventName + '.delegateEvents' + $util.uid(this)), selector, listener);
             return this;
         },
 
@@ -3429,7 +3402,7 @@
      * @returns { Promise }
      */
     function doAjaxRequest(url, callback, post) {
-        url = $cms.url(url).toString();
+        url = $util.url(url).toString();
 
         return new Promise(function (resolvePromise) {
             var xhr = new XMLHttpRequest();

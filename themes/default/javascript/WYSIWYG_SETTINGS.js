@@ -49,7 +49,7 @@ var editorSettings = {
     customConfig: '',
     /*{+END}*/
     bodyId: 'wysiwyg_editor',
-    baseHref: $cms.url().toString(),
+    baseHref: $util.url().toString(),
     linkShowAdvancedTab: !$cms.configOption('eager_wysiwyg'),
     imageShowAdvancedTab: !$cms.configOption('eager_wysiwyg'),
     imageShowLinkTab: !$cms.configOption('eager_wysiwyg'),

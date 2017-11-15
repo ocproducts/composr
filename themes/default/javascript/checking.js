@@ -233,7 +233,7 @@
      */
     $cms.form.doFormPreview = function doFormPreview(form, previewUrl, hasSeparatePreview) {
         form = $dom.elArg(form);
-        previewUrl = $cms.url(previewUrl);
+        previewUrl = $util.url(previewUrl);
         hasSeparatePreview = Boolean(hasSeparatePreview);
 
         return new Promise(function (resolvePreviewPromise) {
@@ -259,7 +259,7 @@
                     form.oldAction = oldAction;
                 }
                 
-                if ($cms.url(form.oldAction).searchParams.get('uploading') === '1') {
+                if ($util.url(form.oldAction).searchParams.get('uploading') === '1') {
                     previewUrl.searchParams.set('uploading', '1');
                 }
                 
@@ -289,7 +289,7 @@
                 }
 
                 if (hasSeparatePreview) {
-                    var action = $cms.url(form.oldAction);
+                    var action = $util.url(form.oldAction);
                     action.searchParams.set('preview', 1);
                     form.setAttribute('action', action);
                     resolvePreviewPromise(true);

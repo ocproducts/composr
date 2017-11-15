@@ -108,7 +108,7 @@
         var el;
 
         if (elementOrSelector != null) {
-            if (isEl(elementOrSelector)) {
+            if ($util.isEl(elementOrSelector)) {
                 return elementOrSelector;
             }
 
@@ -252,7 +252,7 @@
 
         var els = $dom.$$(context, selector);
 
-        if (isEl(context) && $dom.matches(context, selector)) {
+        if ($util.isEl(context) && $dom.matches(context, selector)) {
             els.unshift(context);
         }
 
@@ -426,7 +426,7 @@
             return Promise.resolve();
         }
 
-        if (isEl(resourceEls)) {
+        if ($util.isEl(resourceEls)) {
             resourceEls = [resourceEls];
         }
 
@@ -443,7 +443,7 @@
 
         var resourcesToLoad = new Set();
         resourceEls.forEach(function (el) {
-            if (!isEl(el)) {
+            if (!$util.isEl(el)) {
                 $util.fatal('$dom.waitForResources(): Invalid item of type "' + $util.typeName(resourceEls) + '" in the `resourceEls` parameter.');
                 return;
             }
@@ -1034,7 +1034,7 @@
     }
 
     function addEvent(el, events, fn, selector, delegator, capture) {
-        var id = uid(el),
+        var id = $util.uid(el),
             set = eventHandlers[id] || (eventHandlers[id] = []);
 
         events.split(/\s/).forEach(function (event) {
@@ -1064,7 +1064,7 @@
         if (event.ns) {
             matcher = matcherFor(event.ns)
         }
-        return (eventHandlers[uid(element)] || []).filter(function (handler) {
+        return (eventHandlers[$util.uid(element)] || []).filter(function (handler) {
             return handler
                 && (!event.e || (handler.e === event.e))
                 && (!event.ns || matcher.test(handler.ns))
@@ -1074,7 +1074,7 @@
     }
 
     function removeEvent(element, events, fn, selector, capture) {
-        var id = uid(element);
+        var id = $util.uid(element);
 
         (events || '').split(/\s/).forEach(function (event) {
             findHandlers(element, event, fn, selector).forEach(function (handler) {
@@ -1135,7 +1135,7 @@
                 var match = $dom.closest(e.target, selector, el);
 
                 if (match) {
-                    var args = toArray(arguments);
+                    var args = $util.toArray(arguments);
                     args[1] = match; // Set the `element` arg to the matched element
                     return (autoRemove || callback).apply(match, args);
                 }
@@ -1875,7 +1875,7 @@
      * @param [eventAfter]
      */
     $dom.smoothScroll = function smoothScroll(destY, expectedScrollY, dir, eventAfter) {
-        if (isEl(destY)) {
+        if ($util.isEl(destY)) {
             destY = $dom.findPosY(destY, true);
         }
 
@@ -2087,7 +2087,7 @@
 
             container = containers[name];
             container.innerHTML = strVal(html);
-            dom = toArray(container.childNodes);
+            dom = $util.toArray(container.childNodes);
             $util.forEach(container.childNodes, function(child){
                 container.removeChild(child)
             });
@@ -2103,7 +2103,7 @@
         if ($util.isPlainObj(properties)) {
             $util.each(properties, function(key, value) {
                 dom.forEach(function (node) {
-                    if (!isEl(node)) {
+                    if (!$util.isEl(node)) {
                         return;
                     }
 
@@ -2125,7 +2125,7 @@
 
         return function insertionFunction(target, /*...*/args) {  // `args` can be nodes, arrays of nodes and HTML strings
             target = $dom.elArg(target);
-            args = toArray(arguments, 1);
+            args = $util.toArray(arguments, 1);
 
             var nodes = [],
                 newParent = inside ? target : target.parentNode;
@@ -2177,7 +2177,7 @@
                 // Insert the node
                 newParent.insertBefore(node, target);
 
-                if (!isEl(node)) {
+                if (!$util.isEl(node)) {
                     return;
                 }
 
@@ -2201,7 +2201,7 @@
                         });
 
                         nodes.forEach(function (node) {
-                            if (isEl(node)) {
+                            if ($util.isEl(node)) {
                                 $cms.attachBehaviors(node);
                             }
                         });
@@ -2214,7 +2214,7 @@
             return new Promise(function (resolve) {
                 setTimeout(function () {
                     nodes.forEach(function (node) {
-                        if (isEl(node)) {
+                        if ($util.isEl(node)) {
                             $cms.attachBehaviors(node);
                         }
                     });
@@ -2455,7 +2455,6 @@
             }
         }
     };
-
     /**
      * @memberof $dom
      * @param src
@@ -2463,7 +2462,7 @@
      * @returns {boolean}
      */
     $dom.matchesThemeImage = function matchesThemeImage(src, url) {
-        return $cms.img(src) === $cms.img(url);
+        return $util.schemeRelative(src) === $util.schemeRelative(url);
     };
 
     /**
@@ -2847,8 +2846,8 @@
         });
 
         function submitFunc(e) {
-            var blockCallUrl = $cms.url(urlStem),
-                hrefUrl = $cms.url((this.localName === 'a') ? this.href : this.action);
+            var blockCallUrl = $util.url(urlStem),
+                hrefUrl = $util.url((this.localName === 'a') ? this.href : this.action);
 
             e.preventDefault();
 

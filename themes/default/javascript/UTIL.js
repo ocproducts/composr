@@ -153,6 +153,11 @@
      * @method
      * @returns { Array }
      */
+    $util.forEach = Function.bind.call(Function.call, Array.prototype.forEach)
+    /**
+     * @method
+     * @returns { Array }
+     */
     $util.toArray = Function.bind.call(Function.call, Array.prototype.slice);
     /**
      * @method
@@ -168,6 +173,8 @@
         }
         return ++_uniqueId;
     }
+    
+    $util.id = 'util' + ('' + Math.random()).substr(2);
 
     /**
      * Used to uniquely identify objects/functions
@@ -179,12 +186,12 @@
             throw new TypeError('$util.uid(): Parameter `obj` must be an object or a function.');
         }
 
-        if ($util.hasOwn(obj, $cms.id())) {
-            return obj[$cms.id()];
+        if ($util.hasOwn(obj, $util.id)) {
+            return obj[$util.id];
         }
 
         var id = uniqueId();
-        $util.properties(obj, $util.keyValue($cms.id(), id));
+        $util.properties(obj, $util.keyValue($util.id, id));
         return id;
     };
 
@@ -389,7 +396,7 @@
      * @param minLength
      * @returns {boolean}
      */
-    $cms.isArrayLike = function isArrayLike(obj, minLength) {
+    $util.isArrayLike = function isArrayLike(obj, minLength) {
         var len;
         minLength = Number(minLength) || 0;
 
@@ -661,7 +668,7 @@
      * @param str
      * @returns {string}
      */
-    $cms.ucFirst = function ucFirst(str) {
+    $util.ucFirst = function ucFirst(str) {
         return ((str != null) && (str = strVal(str))) ? str.charAt(0).toUpperCase() + str.substr(1) : '';
     };
 
@@ -669,7 +676,7 @@
      * @param str
      * @returns {string}
      */
-    $cms.lcFirst = function lcFirst(str) {
+    $util.lcFirst = function lcFirst(str) {
         return ((str != null) && (str = strVal(str))) ? str.charAt(0).toLowerCase() + str.substr(1) : '';
     };
 
@@ -880,6 +887,28 @@
         url = strVal(url);
         return url.startsWith('//');
     };
+
+    /**
+     * NB: Has a trailing slash when having the base url only
+     * @memberof $cms
+     * @namespace
+     * @method
+     * @param {string} url - An absolute or relative URL. If url is a relative URL, `base` will be used as the base URL. If url is an absolute URL, a given `base` will be ignored.
+     * @param {string} [base] - The base URL to use in case url is a relative URL. If not specified, it defaults to $cms.baseUrl().
+     * @return { URL }
+     */
+    $util.url = function url(url, base) {
+        url = strVal(url);
+        base = strVal(base) || ('{$BASE_URL;}/');
+
+        if (url.startsWith('//')) {
+            // URL constructor throws on scheme-relative URLs
+            url = window.location.protocol + url;
+        }
+
+        return new URL(url, base);
+    };
+    
     var rgxProtocol = /^[a-z0-9\-\.]+:(?=\/\/)/i;
     /**
      * Make a URL scheme-relative
@@ -889,7 +918,7 @@
     $util.schemeRelative = function schemeRelative(url) {
         url = strVal(url);
 
-        return $cms.url(url).toString().replace(rgxProtocol, '');
+        return $util.url(url).toString().replace(rgxProtocol, '');
     };
 
     /**
