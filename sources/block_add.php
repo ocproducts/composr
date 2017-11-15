@@ -236,8 +236,13 @@ function block_helper_script()
         $param_classes = array('normal' => array(), 'advanced' => array());
         foreach ($parameters as $parameter) {
             $param_class = 'normal';
-            if (($parameter == 'cache') || ($parameter == 'quick_cache') || ($parameter == 'failsafe') || ($parameter == 'defer') || ($parameter == 'block_id') || (strpos(do_lang('BLOCK_' . $block . '_PARAM_' . $parameter), $advanced_ind) !== false)) {
+            if (in_array($parameter, get_standard_block_parameters())) {
                 $param_class = 'advanced';
+            } else {
+                $field_description = do_lang('BLOCK_' . $block . '_PARAM_' . $parameter, get_brand_base_url(), null, null, null, false);
+                if (($field_description !== null) && (strpos($field_description, $advanced_ind) !== false)) {
+                    $param_class = 'advanced';
+                }
             }
             $param_classes[$param_class][] = $parameter;
         }
@@ -275,7 +280,7 @@ function block_helper_script()
                         $description = do_lang('BLOCK_PARAM_' . $parameter, get_brand_base_url());
                         break;
                     default:
-                        $description = do_lang('BLOCK_' . $block . '_PARAM_' . $parameter, get_brand_base_url());
+                        $description = do_lang('BLOCK_' . $block . '_PARAM_' . $parameter, get_brand_base_url(), null, null, null, false);
                         break;
                 }
                 $description = str_replace(do_lang('BLOCK_IND_STRIPPABLE_1'), '', $description);

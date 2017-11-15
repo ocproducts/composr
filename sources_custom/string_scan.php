@@ -339,6 +339,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PGE_R
         PGE_HASH
         BLOCK_TRANS_NAME_main_join
+        BLOCK_top_search_PARAM_input_fields
         BLOCK_main_join_DESCRIPTION
         BLOCK_main_join_USE
         BLOCK_main_join_PARAM_subject_TITLE
