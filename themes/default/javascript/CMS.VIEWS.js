@@ -1,5 +1,206 @@
 (function ($cms, $util, $dom) { 
     'use strict';
+
+    // List of view options that can be set as properties.
+    var viewOptionsList = { el: 1, id: 1, attributes: 1, className: 1, tagName: 1, events: 1 };
+
+    $cms.View = View;
+    /**
+     * @memberof $cms
+     * @class $cms.View
+     */
+    function View(params, viewOptions) {
+        /** @member {number}*/
+        this.uid = $util.uid(this);
+        /** @member {string} */
+        this.tagName = 'div';
+        /** @member { HTMLElement } */
+        this.el = null;
+
+        this.initialize.apply(this, arguments);
+    }
+
+    // Cached regex to split keys for `delegate`.
+    var rgxDelegateEventSplitter = /^(\S+)\s*(.*)$/;
+    $util.properties(View.prototype, /**@lends $cms.View#*/{
+        /**
+         * @method
+         */
+        initialize: function (params, viewOptions) {
+            this.params = objVal(params);
+
+            if ($util.isObj(viewOptions)) {
+                for (var key in viewOptionsList) {
+                    if (key in viewOptions) {
+                        this[key] = viewOptions[key];
+                    }
+                }
+            }
+
+            this._ensureElement();
+        },
+        /**
+         * @method
+         */
+        $: function (selector) {
+            return $dom.$(this.el, selector);
+        },
+        /**
+         * @method
+         */
+        $$: function (selector) {
+            return $dom.$$(this.el, selector);
+        },
+        /**
+         * @method
+         */
+        $$$: function (selector) {
+            return $dom.$$$(this.el, selector);
+        },
+        /**
+         * @method
+         */
+        $closest: function (el, selector) {
+            return $dom.closest(el, selector, this.el);
+        },
+
+        /**
+         * Remove this view by taking the element out of the DOM.
+         * @method
+         */
+        remove: function () {
+            this._removeElement();
+            return this;
+        },
+
+        /**
+         * Remove this view's element from the document and all event listeners
+         * attached to it. Exposed for subclasses using an alternative DOM
+         * manipulation API.
+         * @method
+         */
+        _removeElement: function () {
+            this.el && this.el.parentNode && this.el.parentNode.removeChild(this.el);
+        },
+
+        /**
+         * Change the view's element (`this.el` property) and re-delegate the
+         * view's events on the new element.
+         * @method
+         */
+        setElement: function (element) {
+            this.undelegateEvents();
+            this._setElement(element);
+            this.delegateEvents();
+            return this;
+        },
+
+
+        /**
+         * Creates the `this.el` reference for this view using the
+         * given `el`. `el` can be a CSS selector or an HTML element.
+         * Subclasses can override this to utilize an
+         * alternative DOM manipulation API and are only required to set the `this.el` property.
+         * @method
+         */
+        _setElement: function (el) {
+            this.el = (typeof el === 'string') ? $dom.$(el) : el;
+        },
+
+        /**
+         * @method
+         */
+        events: function () {
+            return {};
+        },
+
+        /**
+         * Set callbacks, where `this.events` is a hash of
+         * *{"event selector": "callback"}*
+         * pairs. Callbacks will be bound to the view, with `this` set properly.
+         * Uses event delegation for efficiency.
+         * Omitting the selector binds the event to `this.el`.
+         * @method
+         */
+        delegateEvents: function (events) {
+            var key, method, match;
+
+            if (typeof events === 'function') {
+                events = events.call(this);
+            } else if ((events == null) && (typeof this.events === 'function')) {
+                events = this.events();
+            }
+
+            if (typeof events !== 'object') {
+                return this;
+            }
+
+            this.undelegateEvents();
+            for (key in events) {
+                method = events[key];
+                if (typeof method !== 'function') {
+                    method = this[method];
+                }
+                if (!method) {
+                    continue;
+                }
+                match = key.match(rgxDelegateEventSplitter);
+                this.delegate(match[1], match[2], method.bind(this));
+            }
+            return this;
+        },
+
+        /**
+         * Add a single event listener to the view's element (or a child element using `selector`).
+         * @method
+         */
+        delegate: function (eventName, selector, listener) {
+            //$util.inform('$cms.View#delegate(): delegating event "' + eventName + '" for selector "' + selector + '" with listener', listener, 'and view', this);
+            $dom.on(this.el, (eventName + '.delegateEvents' + $util.uid(this)), selector, listener);
+            return this;
+        },
+
+        /**
+         * Clears all callbacks previously bound to the view by `delegateEvents`.
+         * You usually don't need to use this, but may wish to if you have multiple
+         * views attached to the same DOM element.
+         * @method
+         */
+        undelegateEvents: function () {
+            if (this.el) {
+                $dom.off(this.el, '.delegateEvents' + $util.uid(this));
+            }
+            return this;
+        },
+
+        /**
+         * A finer-grained `undelegateEvents` for removing a single delegated event. `selector` and `listener` are both optional.
+         * @method
+         */
+        undelegate: function (eventName, selector, listener) {
+            $dom.off(this.el, (eventName + '.delegateEvents' + $util.uid(this)), selector, listener);
+            return this;
+        },
+
+        /**
+         * @method
+         */
+        _ensureElement: function () {
+            var attrs;
+            if (!this.el) {
+                attrs = Object.assign({}, $util.result(this, 'attributes'));
+                if (this.id) {
+                    attrs.id = $util.result(this, 'id');
+                }
+                if (this.className) {
+                    attrs.className = $util.result(this, 'className');
+                }
+                this.setElement($dom.create($util.result(this, 'tagName') || 'div', attrs));
+            } else {
+                this.setElement($util.result(this, 'el'));
+            }
+        }
+    });
     
     $cms.views.ToggleableTray = ToggleableTray;
     /**
