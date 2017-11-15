@@ -381,7 +381,7 @@ class Database_super_mysql
      *
      * @param string $field The field identifier
      * @param string $type The type wanted
-     * @set CHAR INT
+     * @set CHAR INT FLOAT
      * @return string The database type
      */
     public function db_cast($field, $type)
@@ -393,6 +393,10 @@ class Database_super_mysql
 
             case 'INT':
                 $_type = 'SIGNED';
+                break;
+
+            case 'FLOAT':
+                $_type = 'REAL';
                 break;
 
             default:

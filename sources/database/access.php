@@ -482,7 +482,7 @@ DefaultDir=C:/ProgramFiles/CommonFiles/ODBC/DataSources';
      *
      * @param string $field The field identifier
      * @param string $type The type wanted
-     * @set CHAR INT
+     * @set CHAR INT FLOAT
      * @return string The database type
      */
     public function db_cast($field, $type)
@@ -493,6 +493,9 @@ DefaultDir=C:/ProgramFiles/CommonFiles/ODBC/DataSources';
 
             case 'INT':
                 return 'CINT(' . $field . ')';
+
+            case 'FLOAT':
+                return 'CDEC(' . $field . ')';
 
             default:
                 fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));

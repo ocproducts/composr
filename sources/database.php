@@ -642,7 +642,7 @@ function get_table_count_approx($table, $where = null, $where_clause = null, $db
  *
  * @param string $field The field identifier
  * @param string $type The type wanted
- * @set CHAR INT
+ * @set CHAR INT FLOAT
  * @return string The database type
  */
 function db_cast($field, $type)
@@ -654,6 +654,7 @@ function db_cast($field, $type)
     switch ($type) {
         case 'CHAR':
         case 'INT':
+        case 'FLOAT':
             $_type = $type;
             break;
 
