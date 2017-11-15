@@ -3,10 +3,6 @@
 
     var IN_MINIKERNEL_VERSION = document.documentElement.classList.contains('in-minikernel-version');
 
-    $dom.ready.then(function () {
-        $cms.attachBehaviors(document);
-    });
-
     // Implementation for [data-require-javascript="[<scripts>...]"]
     //$cms.behaviors.initializeRequireJavascript = {
     //    priority: 10000,
