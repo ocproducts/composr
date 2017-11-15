@@ -366,7 +366,7 @@
     }
 
     function pageKeepSearchParams(forceSession) {
-        var keepSp = new URLSearchParams();
+        var keepSp = new window.URLSearchParams();
 
         $util.eachIter($cms.pageSearchParams().entries(), function (entry) {
             var name = entry[0],
@@ -537,7 +537,7 @@
 
         scripts.forEach(function (script) {
             calls.push(function () {
-                return _requireJavascript(script)
+                return _requireJavascript(script);
             });
         });
 
@@ -2219,9 +2219,9 @@
 
                 options = options.replace('height=auto', 'height=520');
 
-                var timer = new Date().getTime();
+                var timer = new Date().getTime(), result;
                 try {
-                    var result = window.showModalDialog(url, name, options);
+                    result = window.showModalDialog(url, name, options);
                 } catch (ignore) {
                     // IE gives "Access is denied" if popup was blocked, due to var result assignment to non-real window
                 }
@@ -2665,31 +2665,31 @@
                 'click .js-onclick-do-option-finished': 'doOptionFinished',
                 'click .js-onclick-do-option-left': 'doOptionLeft',
                 'click .js-onclick-do-option-right': 'doOptionRight',
-            }
+            };
         },
 
         doOptionYes: function doOptionYes() {
-            this.option('yes')
+            this.option('yes');
         },
 
         doOptionNo: function doOptionNo() {
-            this.option('no')
+            this.option('no');
         },
 
         doOptionCancel: function doOptionCancel() {
-            this.option('cancel')
+            this.option('cancel');
         },
 
         doOptionFinished: function doOptionFinished() {
-            this.option('finished')
+            this.option('finished');
         },
 
         doOptionLeft: function doOptionLeft() {
-            this.option('left')
+            this.option('left');
         },
 
         doOptionRight: function doOptionRight() {
-            this.option('right')
+            this.option('right');
         },
         
         _setElement: function _setElement() {
@@ -2847,7 +2847,7 @@
                                     if (self.yes) {
                                         self.option('yes');
                                     } else {
-                                        self.option('cancel')
+                                        self.option('cancel');
                                     }
                                 }
                             });
@@ -4680,7 +4680,7 @@
 
         loadRealtimeRain: function () {
             $cms.requireJavascript('button_realtime_rain').then(function () {
-                loadRealtimeRain();
+                window.loadRealtimeRain();
             });
         },
 
@@ -5422,7 +5422,7 @@
             if (globalBreadcrumbs) {
                 var links = globalBreadcrumbs.querySelectorAll('a');
                 for (var i = 0; i < links.length; i++) {
-                    if (url == links[links.length - 1 - i].href) {
+                    if (url === links[links.length - 1 - i].href) {
                         return i + 1;
                     }
                 }
@@ -5566,7 +5566,9 @@
         var e = (window.activeMenu == null) ? null : document.getElementById(window.activeMenu), t;
         var i, hideable;
         for (i = tags.length - 1; i >= 0; i--) {
-            if (tags[i].localName !== 'ul' && tags[i].localName !== 'div') continue;
+            if (tags[i].localName !== 'ul' && tags[i].localName !== 'div') {
+                continue;
+            }
 
             hideable = true;
             if (e) {
@@ -6661,7 +6663,7 @@
                     if (selected) {
                         $cms.ui.alert(notice, noticeTitle, true);
                     }
-                }
+                };
             }(els[i]));
         }
     };

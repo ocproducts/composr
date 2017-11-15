@@ -10,8 +10,8 @@
         return (property !== undefined) ? cs.getPropertyValue(dasherize(property)) : cs;
     }
 
-    var rgxIdSelector = /^\#[\w\-]+$/,
-        rgxSimpleSelector = /^[\#\.]?[\w\-]+$/,
+    var rgxIdSelector = /^#[\w\-]+$/,
+        rgxSimpleSelector = /^[#\.]?[\w\-]+$/,
         // Special attributes that should be set via method calls
         methodAttributes = { value: true, css: true, html: true, text: true, data: true, width: true, height: true, offset: true },
         rgxNotWhite = /\S+/g;
@@ -46,7 +46,7 @@
             });
         }
     }, 0);
-    
+
     /**@namespace $dom*/
     /**
      * @param windowOrNodeOrSelector
@@ -57,7 +57,7 @@
 
         if (windowOrNodeOrSelector != null) {
             if ($util.isWindow(windowOrNodeOrSelector) || $util.isNode(windowOrNodeOrSelector)) {
-                return windowOrNodeOrSelector
+                return windowOrNodeOrSelector;
             }
 
             if (typeof windowOrNodeOrSelector === 'string') {
@@ -127,7 +127,6 @@
     };
 
     /**
-     * 
      * @param obj
      * @return {(Number|boolean)}
      */
@@ -211,15 +210,10 @@
             switch (selector[0]) {
                 case '#': // selector is an ID
                     return (found = (('getElementById' in context) ? context.getElementById(selector.substr(1)) : context.querySelector(selector))) ? [found] : [];
-                    break;
-
                 case '.': // selector is a class name
                     return $util.toArray(context.getElementsByClassName(selector.substr(1)));
-                    break;
-
                 default: // selector is a tag name
                     return $util.toArray(context.getElementsByTagName(selector));
-                    break;
             }
         }
 
@@ -282,7 +276,7 @@
 
         if ($util.isObj(attributes)) {
             $util.each(attributes, function (key, value) {
-                $dom.attr(el, key, value)
+                $dom.attr(el, key, value);
             });
         }
 
@@ -441,7 +435,7 @@
 
         //$util.inform('$dom.waitForResources(): Waiting for resources', resourceEls);
 
-        var resourcesToLoad = new Set();
+        var resourcesToLoad = new window.Set();
         resourceEls.forEach(function (el) {
             if (!$util.isEl(el)) {
                 $util.fatal('$dom.waitForResources(): Invalid item of type "' + $util.typeName(resourceEls) + '" in the `resourceEls` parameter.');
@@ -507,7 +501,7 @@
      */
     function CmsDomData() {}
 
-    var domDataMap = new WeakMap();
+    var domDataMap = new window.WeakMap();
     /**
      * @param el
      * @return { CmsDomData }
@@ -595,7 +589,8 @@
 
         // Set the data...
         // We always store the camelCased key
-        return dataCache(el)[$util.camelCase(key)] = value;
+        dataCache(el)[$util.camelCase(key)] = value;
+        return value;
     };
 
     /**
@@ -721,7 +716,6 @@
         var left = el.getBoundingClientRect().left + window.pageXOffset;
 
         if (!notRelative) {
-            var position;
             while (el) {
                 if ($dom.isCss(el, 'position', ['absolute', 'relative', 'fixed'])) {
                     left -= $dom.findPosX(el, true);
@@ -752,7 +746,6 @@
         var top = el.getBoundingClientRect().top + window.pageYOffset;
 
         if (!notRelative) {
-            var position;
             while (el != null) {
                 if ($dom.isCss(el, 'position', ['absolute', 'relative', 'fixed'])) {
                     top -= $dom.findPosY(el, true);
@@ -835,7 +828,7 @@
             };
 
         if ($dom.css(el, 'position') === 'static') {
-            props.position = 'relative'
+            props.position = 'relative';
         }
 
         $dom.css(el, props);
@@ -869,7 +862,7 @@
      */
     $dom.hasIframeAccess = function hasIframeAccess(iframe) {
         try {
-            return (iframe.contentWindow['access' + random()] = true) === true;
+            return (iframe.contentWindow['access' + $util.random()] = true) === true;
         } catch (ignore) {}
 
         return false;
@@ -1066,13 +1059,13 @@
         var matcher;
         event = parseEventName(event);
         if (event.ns) {
-            matcher = matcherFor(event.ns)
+            matcher = matcherFor(event.ns);
         }
         return (eventHandlers[$util.uid(element)] || []).filter(function (handler) {
             return handler
                 && (!event.e || (handler.e === event.e))
                 && (!event.ns || matcher.test(handler.ns))
-                && (!fn || (uid(handler.fn) === uid(fn)))
+                && (!fn || ($util.uid(handler.fn) === $util.uid(fn)))
                 && (!selector || (handler.sel === selector));
         });
     }
@@ -1083,8 +1076,8 @@
         (events || '').split(/\s/).forEach(function (event) {
             findHandlers(element, event, fn, selector).forEach(function (handler) {
                 delete eventHandlers[id][handler.i];
-                element.removeEventListener(realEvent(handler.e), handler.proxy, eventCapture(handler, capture))
-            })
+                element.removeEventListener(realEvent(handler.e), handler.proxy, eventCapture(handler, capture));
+            });
         });
     }
 
@@ -1189,7 +1182,7 @@
             callback = function () { return false; };
         }
 
-        removeEvent(el, event, callback, selector)
+        removeEvent(el, event, callback, selector);
     };
 
     var mouseEvents = { click: true, mousedown: true, mouseup: true, mousemove: true };
@@ -1241,7 +1234,7 @@
             // For checkbox, fire native event so checked state will be right
             return el.click();
         } else {
-            return el.dispatchEvent(event)
+            return el.dispatchEvent(event);
         }
     };
 
@@ -1471,7 +1464,7 @@
             el.setAttribute('aria-hidden', 'false');
         } else {
             $dom.hide(el);
-            el.setAttribute('aria-hidden', 'true')
+            el.setAttribute('aria-hidden', 'true');
         }
     };
 
@@ -1511,7 +1504,8 @@
 
         var uid = $util.uid(el);
         _animationQueue[uid] || (_animationQueue[uid] = Promise.resolve());
-        return _animationQueue[uid] = _animationQueue[uid].then(doFadeIn);
+        _animationQueue[uid] = _animationQueue[uid].then(doFadeIn);
+        return _animationQueue[uid];
 
         function doFadeIn() {
             return new Promise(function (resolve) {
@@ -1557,7 +1551,8 @@
 
         var uid = $util.uid(el);
         _animationQueue[uid] || (_animationQueue[uid] = Promise.resolve());
-        return _animationQueue[uid] = _animationQueue[uid].then(doFadeOut);
+        _animationQueue[uid] = _animationQueue[uid].then(doFadeOut);
+        return _animationQueue[uid];
 
         function doFadeOut() {
             return new Promise(function (resolve) {
@@ -1591,7 +1586,8 @@
 
         var uid = $util.uid(el);
         _animationQueue[uid] || (_animationQueue[uid] = Promise.resolve());
-        return _animationQueue[uid] = _animationQueue[uid].then(doFadeTo);
+        _animationQueue[uid] = _animationQueue[uid].then(doFadeTo);
+        return _animationQueue[uid];
 
         function doFadeTo() {
             return new Promise(function (resolve) {
@@ -1625,7 +1621,8 @@
 
         var uid = $util.uid(el);
         _animationQueue[uid] || (_animationQueue[uid] = Promise.resolve());
-        return _animationQueue[uid] = _animationQueue[uid].then(doFadeToggle);
+        _animationQueue[uid] = _animationQueue[uid].then(doFadeToggle);
+        return _animationQueue[uid];
 
         function doFadeToggle() {
             return new Promise(function (resolve) {
@@ -1651,7 +1648,8 @@
 
         var uid = $util.uid(el);
         _animationQueue[uid] || (_animationQueue[uid] = Promise.resolve());
-        return _animationQueue[uid] = _animationQueue[uid].then(doSlideDown);
+        _animationQueue[uid] = _animationQueue[uid].then(doSlideDown);
+        return _animationQueue[uid];
 
         function doSlideDown() {
             return new Promise(function (resolve) {
@@ -1722,7 +1720,8 @@
 
         var uid = $util.uid(el);
         _animationQueue[uid] || (_animationQueue[uid] = Promise.resolve());
-        return _animationQueue[uid] = _animationQueue[uid].then(doSlideUp);
+        _animationQueue[uid] = _animationQueue[uid].then(doSlideUp);
+        return _animationQueue[uid];
 
         function doSlideUp() {
             return new Promise(function (resolve) {
@@ -1780,7 +1779,8 @@
 
         var uid = $util.uid(el);
         _animationQueue[uid] || (_animationQueue[uid] = Promise.resolve());
-        return _animationQueue[uid] = _animationQueue[uid].then(doSlideToggle);
+        _animationQueue[uid] = _animationQueue[uid].then(doSlideToggle);
+        return _animationQueue[uid];
 
         function doSlideToggle() {
             return new Promise(function (resolve) {
@@ -2114,10 +2114,10 @@
                     if (methodAttributes[key]) {
                         $dom[key](node, value);
                     } else {
-                        $dom.attr(node, key, value)
+                        $dom.attr(node, key, value);
                     }
                 });
-            })
+            });
         }
 
         return dom;
@@ -2434,7 +2434,7 @@
         form = $dom.elArg(form);
 
         $dom.serializeArray(form).forEach(function (el) {
-            result.push(encodeURIComponent(el.name) + '=' + encodeURIComponent(el.value))
+            result.push(encodeURIComponent(el.name) + '=' + encodeURIComponent(el.value));
         });
         return result.join('&');
     };
@@ -2447,8 +2447,8 @@
     $dom.findUrlTab = function findUrlTab(hash) {
         hash = strVal(hash, window.location.hash);
 
-        if (hash.replace(/^#\!?/, '') !== '') {
-            var tab = hash.replace(/^#/, '').replace(/^tab\_\_/, '');
+        if (hash.replace(/^#!?/, '') !== '') {
+            var tab = hash.replace(/^#/, '').replace(/^tab__/, '');
 
             if ($dom.$id('g_' + tab)) {
                 $cms.ui.selectTab('g', tab);
@@ -2849,9 +2849,9 @@
             }
         });
 
-        function submitFunc(e) {
+        function submitFunc(e, el) {
             var blockCallUrl = $util.url(urlStem),
-                hrefUrl = $util.url((this.localName === 'a') ? this.href : this.action);
+                hrefUrl = $util.url((el.localName === 'a') ? el.href : el.action);
 
             e.preventDefault();
 
@@ -2878,17 +2878,17 @@
             // Any POST parameters?
             var j, postParams, paramName, paramValue;
 
-            if (this.localName === 'form') {
-                if (this.method.toLowerCase() === 'post') {
+            if (el.localName === 'form') {
+                if (el.method.toLowerCase() === 'post') {
                     postParams = '';
                 }
 
-                for (j = 0; j < this.elements.length; j++) {
-                    if (this.elements[j].name) {
-                        paramName = this.elements[j].name;
-                        paramValue = $cms.form.cleverFindValue(this, this.elements[j]);
+                for (j = 0; j < el.elements.length; j++) {
+                    if (el.elements[j].name) {
+                        paramName = el.elements[j].name;
+                        paramValue = $cms.form.cleverFindValue(el, el.elements[j]);
 
-                        if (this.method.toLowerCase() === 'post') {
+                        if (el.method.toLowerCase() === 'post') {
                             if (postParams !== '') {
                                 postParams += '&';
                             }
