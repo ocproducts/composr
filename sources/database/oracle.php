@@ -470,7 +470,7 @@ class Database_Static_oracle
      */
     public function db_query($query, $db, $max = null, $start = null, $fail_ok = false, $get_insert_id = false)
     {
-        $this->apply_sql_limit_clause($query, $start, $max);
+        $this->apply_sql_limit_clause($query, $max, $start);
 
         $stmt = ociparse($db, $query, 0);
         $results = @ociexecute($stmt);

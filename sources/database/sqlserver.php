@@ -121,7 +121,7 @@ class Database_Static_sqlserver extends Database_super_sqlserver
      */
     public function db_query($query, $db, $max = null, $start = null, $fail_ok = false, $get_insert_id = false)
     {
-        $this->apply_sql_limit_clause($query, $start, $max);
+        $this->apply_sql_limit_clause($query, $max, $start);
 
         $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
         if (function_exists('sqlsrv_query')) {

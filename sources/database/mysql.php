@@ -225,7 +225,7 @@ class Database_Static_mysql extends Database_super_mysql
             $this->last_select_db = $db_name;
         }
 
-        $this->apply_sql_limit_clause($query, $start, $max);
+        $this->apply_sql_limit_clause($query, $max, $start);
 
         $results = @mysql_query($query, $db);
         if (($results === false) && ((!$fail_ok) || (strpos(mysql_error($db), 'is marked as crashed and should be repaired') !== false))) {

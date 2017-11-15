@@ -467,7 +467,7 @@ class Database_Static_postgresql
      */
     public function db_query($query, $db, $max = null, $start = null, $fail_ok = false, $get_insert_id = false)
     {
-        $this->apply_sql_limit_clause($query, $start, $max);
+        $this->apply_sql_limit_clause($query, $max, $start);
 
         $results = @pg_query($db, $query);
         if ((($results === false) || (((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) && ($results === true))) && (!$fail_ok)) {

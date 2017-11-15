@@ -386,7 +386,7 @@ DefaultDir=C:/ProgramFiles/CommonFiles/ODBC/DataSources';
      */
     public function db_query($query, $db, $max = null, $start = null, $fail_ok = false, $get_insert_id = false)
     {
-        $this->apply_sql_limit_clause($query, $start, $max);
+        $this->apply_sql_limit_clause($query, $max, $start);
 
         $results = @odbc_exec($db, $query);
         if ((($results === false) || (((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) && ($results === true))) && (!$fail_ok)) {

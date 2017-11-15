@@ -190,7 +190,7 @@ class Database_Static_mysql_dbx extends Database_super_mysql
             }
         }
 
-        $this->apply_sql_limit_clause($query, $start, $max);
+        $this->apply_sql_limit_clause($query, $max, $start);
 
         $results = @dbx_query($db, $query, DBX_RESULT_INFO);
         if (($results === 0) && ((!$fail_ok) || (strpos(dbx_error($db), 'is marked as crashed and should be repaired') !== false))) {
