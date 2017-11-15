@@ -281,6 +281,9 @@ function block_helper_script()
                         break;
                     default:
                         $description = do_lang('BLOCK_' . $block . '_PARAM_' . $parameter, get_brand_base_url(), null, null, null, false);
+                        if ($description === null) {
+                            $description = '';
+                        }
                         break;
                 }
                 $description = str_replace(do_lang('BLOCK_IND_STRIPPABLE_1'), '', $description);
