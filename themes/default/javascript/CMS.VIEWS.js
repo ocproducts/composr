@@ -1,6 +1,12 @@
 (function ($cms, $util, $dom) { 
     'use strict';
 
+    /**
+     * Addons will add $cms.View subclasses under this namespace
+     * @namespace $cms.views
+     */
+    $cms.views = {};
+    
     // List of view options that can be set as properties.
     var viewOptionsList = { el: 1, id: 1, attributes: 1, className: 1, tagName: 1, events: 1 };
 

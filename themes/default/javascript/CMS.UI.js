@@ -1,5 +1,9 @@
 (function ($cms, $util, $dom) {
     'use strict';
+    /**
+     * @namespace $cms.ui
+     */
+    $cms.ui = {};
     
     /**
      * Toggle a ToggleableTray

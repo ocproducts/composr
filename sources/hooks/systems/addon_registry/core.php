@@ -824,6 +824,7 @@ class Hook_addon_registry_core
             'themes/default/css/jquery_ui.css',
             'themes/default/javascript/global.js',
             'themes/default/javascript/CMS.js',
+            'themes/default/javascript/CMS.FORM.js',
             'themes/default/javascript/CMS.UI.js',
             'themes/default/javascript/CMS.TEMPLATES.js',
             'themes/default/javascript/CMS.BEHAVIORS.js',

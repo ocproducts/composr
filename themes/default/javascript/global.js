@@ -4,6 +4,8 @@
 
 /*{+START,INCLUDE,CMS,.js,javascript}{+END}*/
  
+/*{+START,INCLUDE,CMS.FORM,.js,javascript}{+END}*/
+
 /*{+START,INCLUDE,CMS.UI,.js,javascript}{+END}*/
 
 /*{+START,INCLUDE,CMS.TEMPLATES,.js,javascript}{+END}*/

@@ -97,7 +97,7 @@
          * @returns {string}
          */
         keep: function keep(starting, forceSession) {
-            var keep = pageKeepSearchParams(forceSession).toString();
+            var keep = $cms.pageKeepSearchParams(forceSession).toString();
 
             if (keep === '') {
                 return '';
@@ -237,68 +237,6 @@
          * @returns {object}
          */
         staffTooltipsUrlPatterns: $util.constant(objVal(JSON.parse('{$STAFF_TOOLTIPS_URL_PATTERNS_JSON;}'))),
-
-        /* Export useful stuff  */
-        /**@method*/
-        pageUrl: pageUrl,
-        /**@method*/
-        pageSearchParams: pageSearchParams,
-        /**@method*/
-        pageKeepSearchParams: pageKeepSearchParams,
-        /**@method*/
-        img: img,
-        /**@method*/
-        requireCss: requireCss,
-        /**@method*/
-        requireJavascript: requireJavascript,
-        /**@method*/
-        setPostDataFlag: setPostDataFlag,
-        /**@method*/
-        getCsrfToken: getCsrfToken,
-        /**@method*/
-        getSessionId: getSessionId,
-        /**@method*/
-        defineBehaviors: defineBehaviors,
-        /**@method*/
-        attachBehaviors: attachBehaviors,
-        /**@method*/
-        detachBehaviors: detachBehaviors,
-        /**@method*/
-        callBlock: callBlock,
-        /**@method*/
-        loadSnippet: loadSnippet,
-        /**@method*/
-        maintainThemeInLink: maintainThemeInLink,
-        /**@method*/
-        addKeepStub: addKeepStub,
-        /**@method*/
-        gaTrack: gaTrack,
-        /**@method*/
-        googlePlusTrack: googlePlusTrack,
-        /**@method*/
-        playSelfAudioLink: playSelfAudioLink,
-        /**@method*/
-        setCookie: setCookie,
-        /**@method*/
-        readCookie: readCookie,
-        /**@method*/
-        createRollover: createRollover,
-        /**@method*/
-        browserMatches: browserMatches,
-        /**@method*/
-        undoStaffUnloadAction: undoStaffUnloadAction,
-        /**@method*/
-        getMainCmsWindow: getMainCmsWindow,
-        /**@method*/
-        magicKeypress: magicKeypress,
-        /**@method*/
-        manageScrollHeight: manageScrollHeight,
-        /**@method*/
-        executeJsFunctionCalls: executeJsFunctionCalls,
-        /**@method*/
-        doAjaxRequest: doAjaxRequest,
-        /**@method*/
-        protectURLParameter: protectURLParameter
     });
 
     /**
@@ -306,61 +244,45 @@
      * @namespace $cms.functions
      */
     $cms.functions = {};
-    /**
-     * Addons will add "behaviors" under this namespace
-     * @namespace $cms.behaviors
-     */
-    $cms.behaviors = {};
-    /**
-     * @namespace $cms.ui
-     */
-    $cms.ui = {};
-    /**
-     * Addons will add template related methods under this namespace
-     * @namespace $cms.templates
-     */
-    $cms.templates = {};
-    /**
-     * Addons will add $cms.View subclasses under this namespace
-     * @namespace $cms.views
-     */
-    $cms.views = {};
-    /**
-     * Validation code and other general code relating to forms
-     * @namespace $cms.form
-     */
-    $cms.form = {};
 
     var rgxHttp = /^https?:(?=\/\/)/i;
 
     /**
      * Dynamically fixes the protocol for image URLs
+     * @memberof $cms
      * @param url
      * @returns {string}
      */
-    function img(url) {
+    $cms.img = function img(url) {
         return strVal(url).replace(rgxHttp, window.location.protocol);
-    }
+    };
 
     /**
      * Returns a { URL } instance for the current page
      * @see https://developer.mozilla.org/en-US/docs/Web/API/URL
+     * @memberof $cms
      * @return { URL }
      */
-    function pageUrl() {
+    $cms.pageUrl = function pageUrl() {
         return new URL(window.location);
-    }
+    };
 
     /**
      * Returns a { URLSearchParams } instance for the current page URL's query string
+     * @memberof $cms
      * @see https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
      * @return { URLSearchParams }
      */
-    function pageSearchParams() {
+    $cms.pageSearchParams = function pageSearchParams() {
         return $cms.pageUrl().searchParams;
-    }
+    };
 
-    function pageKeepSearchParams(forceSession) {
+    /**
+     * @memberof $cms
+     * @param forceSession
+     * @return {Window.URLSearchParams}
+     */
+    $cms.pageKeepSearchParams = function pageKeepSearchParams(forceSession) {
         var keepSp = new window.URLSearchParams();
 
         $util.eachIter($cms.pageSearchParams().entries(), function (entry) {
@@ -377,7 +299,7 @@
         }
 
         return keepSp;
-    }
+    };
 
     var validIdRE = /^[a-zA-Z][\w:.-]*$/;
     /**
@@ -445,14 +367,15 @@
     }
 
     /**
+     * @memberof $cms
      * @param sheetNames
      * @returns { Promise }
      */
-    function requireCss(sheetNames) {
+    $cms.requireCss = function requireCss(sheetNames) {
         sheetNames = arrVal(sheetNames);
 
         return Promise.all(sheetNames.map(_requireCss));
-    }
+    };
 
     /**
      * @private
@@ -522,10 +445,11 @@
     }
 
     /**
+     * @memberof $cms
      * @param scripts
      * @returns { Promise }
      */
-    function requireJavascript(scripts) {
+    $cms.requireJavascript = function requireJavascript(scripts) {
         var calls = [];
 
         scripts = arrVal(scripts);
@@ -537,12 +461,13 @@
         });
 
         return $util.promiseSequence(calls);
-    }
+    };
 
     /**
+     * @memberof $cms
      * @param flag
      */
-    function setPostDataFlag(flag) {
+    $cms.setPostDataFlag = function setPostDataFlag(flag) {
         flag = strVal(flag);
 
         var forms = $dom.$$('form'),
@@ -566,24 +491,34 @@
 
             postData.value += flag;
         }
-    }
-    function getCsrfToken() {
-        return readCookie($cms.getSessionCookie()); // Session also works as a CSRF-token, as client-side knows it (AJAX)
-    }
+    };
 
-    function getSessionId() {
-        return readCookie($cms.getSessionCookie());
-    }
+    /**
+     * @memberof $cms
+     * @return {string}
+     */
+    $cms.getCsrfToken = function getCsrfToken() {
+        return $cms.readCookie($cms.getSessionCookie()); // Session also works as a CSRF-token, as client-side knows it (AJAX)
+    };
+
+    /**
+     * @memberof $cms
+     * @return {string}
+     */
+    $cms.getSessionId = function getSessionId() {
+        return $cms.readCookie($cms.getSessionCookie());
+    };
 
     /* Cookies */
 
     var alertedCookieConflict = false;
     /**
+     * @memberof $cms
      * @param cookieName
      * @param cookieValue
      * @param numDays
      */
-    function setCookie(cookieName, cookieValue, numDays) {
+    $cms.setCookie = function setCookie(cookieName, cookieValue, numDays) {
         var expires = new Date(),
             output;
 
@@ -611,14 +546,15 @@
             $cms.ui.alert('{!COOKIE_CONFLICT_DELETE_COOKIES;^}' + '... ' + document.cookie + ' (' + output + ')', '{!ERROR_OCCURRED;^}');
             alertedCookieConflict = true;
         }
-    }
+    };
 
     /**
+     * @memberof $cms
      * @param cookieName
      * @param defaultValue
      * @returns {string}
      */
-    function readCookie(cookieName, defaultValue) {
+    $cms.readCookie = function readCookie(cookieName, defaultValue) {
         cookieName = strVal(cookieName);
         defaultValue = strVal(defaultValue);
 
@@ -639,18 +575,19 @@
         }
 
         return decodeURIComponent(cookies.substring(startIdx + cookieName.length + 1, endIdx));
-    }
+    };
 
     /**
+     * @memberof $cms
      * @param behaviors
      */
-    function defineBehaviors(behaviors) {
+    $cms.defineBehaviors = function defineBehaviors(behaviors) {
         behaviors = objVal(behaviors);
 
         for (var key in behaviors) {
             $cms.behaviors[key] = behaviors[key];
         }
-    }
+    };
 
     /**
      * @return {string[]}
@@ -683,9 +620,10 @@
     }
 
     /**
+     * @memberof $cms
      * @param context
      */
-    function attachBehaviors(context) {
+    $cms.attachBehaviors = function attachBehaviors(context) {
         if (!$util.isDoc(context) && !$util.isEl(context)) {
             throw new TypeError('Invalid argument type: `context` must be of type HTMLDocument or HTMLElement');
         }
@@ -723,13 +661,14 @@
         //});
 
         return Promise.all([]);
-    }
+    };
 
     /**
+     * @memberof $cms
      * @param context
      * @param trigger
      */
-    function detachBehaviors(context, trigger) {
+    $cms.detachBehaviors = function detachBehaviors(context, trigger) {
         var name;
 
         if (!$util.isDoc(context) && !$util.isEl(context)) {
@@ -751,12 +690,13 @@
         }
 
         return Promise.all([]);
-    }
+    };
 
     var _blockDataCache = {};
 
     /**
      * This function will load a block, with options for parameter changes, and render the results in specified way - with optional callback support
+     * @memberof $cms
      * @param url
      * @param newBlockParams
      * @param targetDiv
@@ -767,7 +707,7 @@
      * @param showLoadingAnimation
      * @returns { Promise }
      */
-    function callBlock(url, newBlockParams, targetDiv, append, scrollToTopOfWrapper, postParams, inner, showLoadingAnimation) {
+    $cms.callBlock = function callBlock(url, newBlockParams, targetDiv, append, scrollToTopOfWrapper, postParams, inner, showLoadingAnimation) {
         url = strVal(url);
         newBlockParams = strVal(newBlockParams);
         scrollToTopOfWrapper = Boolean(scrollToTopOfWrapper);
@@ -850,7 +790,7 @@
                 }
             }
         }
-    }
+    };
 
     /**
      * Dynamic inclusion
@@ -859,7 +799,7 @@
      * @param [post]
      * @returns { Promise|string }
      */
-    function loadSnippet(snippetHook, post) {
+    $cms.loadSnippet = function loadSnippet(snippetHook, post) {
         snippetHook = strVal(snippetHook);
 
         var title = $dom.html(document.querySelector('title')).replace(/ \u2013 .*/, ''),
@@ -872,14 +812,15 @@
                 resolve(xhr.responseText);
             });
         });
-    }
+    };
 
     /**
      * Update a URL to maintain the current theme into it
+     * @memberof $cms
      * @param url
      * @returns {string}
      */
-    function maintainThemeInLink(url) {
+    $cms.maintainThemeInLink = function maintainThemeInLink(url) {
         url = $util.url(url);
 
         if (!url.searchParams.has('utheme') && !url.searchParams.has('keep_theme')) {
@@ -887,17 +828,18 @@
         }
 
         return url.toString();
-    }
+    };
 
     /**
      * Alternative to $cms.keep(), accepts a URL and ensures not to cause duplicate keep_* params
+     * @memberof $cms
      * @param url
      * @return {string}
      */
-    function addKeepStub(url) {
+    $cms.addKeepStub = function addKeepStub(url) {
         url = $util.url(url);
 
-        var keepSp = pageKeepSearchParams(true);
+        var keepSp = $cms.pageKeepSearchParams(true);
 
         $util.eachIter(keepSp.entries(), function (entry) {
             var name = entry[0],
@@ -909,7 +851,7 @@
         });
 
         return url.toString();
-    }
+    };
 
     /**
      * Google Analytics tracking for links; particularly useful if you have no server-side stat collection
@@ -920,7 +862,7 @@
      * @param callback
      * @returns {boolean}
      */
-    function gaTrack(el, category, action, callback) {
+    $cms.gaTrack = function gaTrack(el, category, action, callback) {
         if ($cms.configOption('google_analytics') && !$cms.isStaff() && !$cms.isAdmin()) {
             if (!category) {
                 category = '{!URL;^}';
@@ -957,17 +899,21 @@
         }
 
         return null;
-    }
+    };
 
-    function googlePlusTrack() {
+    /**
+     * @memberof $cms
+     */
+    $cms.googlePlusTrack = function googlePlusTrack() {
         $cms.gaTrack(null, 'social__google_plus');
-    }
+    };
 
     /**
      * Used by audio CAPTCHA.
+     * @memberof $cms
      * @param ob
      */
-    function playSelfAudioLink(ob) {
+    $cms.playSelfAudioLink = function playSelfAudioLink(ob) {
         $cms.requireJavascript('sound').then(function () {
             window.soundManager.setup({
                 url: $cms.baseUrl('data'),
@@ -980,7 +926,7 @@
                 }
             });
         });
-    }
+    };
 
     // Serves as a flag to indicate any new errors are probably due to us transitioning
     window.unloaded = !!window.unloaded;
@@ -988,7 +934,10 @@
         window.unloaded = true;
     });
 
-    function undoStaffUnloadAction() {
+    /**
+     * @memberof $cms
+     */
+    $cms.undoStaffUnloadAction = function undoStaffUnloadAction() {
         var pre = document.body.querySelectorAll('.unload_action');
         for (var i = 0; i < pre.length; i++) {
             pre[i].parentNode.removeChild(pre[i]);
@@ -997,13 +946,14 @@
         if (bi) {
             bi.classList.remove('site_unloading');
         }
-    }
+    };
 
     /**
      * Making the height of a textarea match its contents
+     * @memberof $cms
      * @param textAreaEl
      */
-    function manageScrollHeight(textAreaEl) {
+    $cms.manageScrollHeight = function manageScrollHeight(textAreaEl) {
         var scrollHeight = textAreaEl.scrollHeight,
             offsetHeight = textAreaEl.offsetHeight,
             currentHeight = parseInt($dom.css(textAreaEl, 'height')) || 0;
@@ -1016,13 +966,14 @@
             });
             $dom.triggerResize();
         }
-    }
+    };
 
     /**
+     * @memberof $cms
      * @param functionCallsArray
      * @param [thisRef]
      */
-    function executeJsFunctionCalls(functionCallsArray, thisRef) {
+    $cms.executeJsFunctionCalls = function executeJsFunctionCalls(functionCallsArray, thisRef) {
         if (!Array.isArray(functionCallsArray)) {
             $util.fatal('$cms.executeJsFunctionCalls(): Argument 1 must be an array, "' + $util.typeName(functionCallsArray) + '" passed');
             return;
@@ -1049,14 +1000,15 @@
                 $util.fatal('$cms.executeJsFunctionCalls(): Function not found: $cms.functions.' + funcName);
             }
         });
-    }
+    };
 
     /**
      * Find the main Composr window
+     * @memberof $cms
      * @param anyLargeOk
      * @returns { Window }
      */
-    function getMainCmsWindow(anyLargeOk) {
+    $cms.getMainCmsWindow = function getMainCmsWindow(anyLargeOk) {
         anyLargeOk = !!anyLargeOk;
 
         if ($dom.$('#main_website')) {
@@ -1080,14 +1032,15 @@
         } catch (ignore) {}
 
         return window;
-    }
+    };
 
     /**
      * Find if the user performed the Composr "magic keypress" to initiate some action
+     * @memberof $cms
      * @param event
      * @returns {boolean}
      */
-    function magicKeypress(event) {
+    $cms.magicKeypress = function magicKeypress(event) {
         // Cmd+Shift works on Mac - cannot hold down control or alt in Mac Firefox at least
         var count = 0;
         if (event.shiftKey) {
@@ -1104,14 +1057,15 @@
         }
 
         return count >= 2;
-    }
+    };
 
     /**
      * Image rollover effects
+     * @memberof $cms
      * @param rand
      * @param rollover
      */
-    function createRollover(rand, rollover) {
+    $cms.createRollover = function createRollover(rand, rollover) {
         var img = rand && $dom.$id(rand);
         if (!img) {
             return;
@@ -1132,14 +1086,15 @@
         function deactivate() {
             img.setAttribute('src', img.oldSrc);
         }
-    }
+    };
 
     /**
      * Browser sniffing
+     * @memberof $cms
      * @param {string} code
      * @returns {boolean}
      */
-    function browserMatches(code) {
+    $cms.browserMatches = function browserMatches(code) {
         var browser = navigator.userAgent.toLowerCase(),
             os = navigator.platform.toLowerCase() + ' ' + browser;
 
@@ -1179,16 +1134,17 @@
 
         // Should never get here
         return false;
-    }
+    };
     
     var networkDownAlerted = false;
     /**
+     * @memberof $cms
      * @param {string} url
      * @param {function|null} [callback]
      * @param {string|null} [post] - Note that 'post' is not an array, it's a string (a=b)
      * @returns { Promise }
      */
-    function doAjaxRequest(url, callback, post) {
+    $cms.doAjaxRequest = function doAjaxRequest(url, callback, post) {
         url = $util.url(url).toString();
 
         return new Promise(function (resolvePromise) {
@@ -1269,7 +1225,7 @@
                 }
             }
         }
-    }
+    };
 
     /**
      * Convert the format of a URL so it can be embedded as a parameter that ModSecurity will not trigger security errors on
@@ -1277,7 +1233,7 @@
      * @param {string} parameter
      * @returns {string}
      */
-    function protectURLParameter(parameter) {
+    $cms.protectURLParameter = function protectURLParameter(parameter) {
         parameter = strVal(parameter);
 
         var baseUrl = $cms.baseUrl();
@@ -1295,7 +1251,7 @@
         }
 
         return parameter;
-    }
+    };
 
     /**
      * Tempcode filters ported to JS
@@ -1460,34 +1416,5 @@
             str.replace(/\\/g, '\\\\')
                 .replace(/"/g, '\\"')
             : '';
-    };
-
-    /**
-     * Calls up a URL to check something, giving any 'feedback' as an error (or if just 'false' then returning false with no message)
-     * @memberof $cms.form
-     * @param url
-     * @param post
-     * @returns { Promise }
-     */
-    $cms.form.doAjaxFieldTest = function doAjaxFieldTest(url, post) {
-        url = strVal(url);
-
-        return new Promise(function (resolve) {
-            $cms.doAjaxRequest(url, null, post).then(function (xhr) {
-                if ((xhr.responseText !== '') && (xhr.responseText.replace(/[ \t\n\r]/g, '') !== '0'/*some cache layers may change blank to zero*/)) {
-                    if (xhr.responseText !== 'false') {
-                        if (xhr.responseText.length > 1000) {
-                            //$util.inform('$cms.form.doAjaxFieldTest()', 'xhr.responseText:', xhr.responseText);
-                            $cms.ui.alert(xhr.responseText, '{!ERROR_OCCURRED;^}', true);
-                        } else {
-                            $cms.ui.alert(xhr.responseText);
-                        }
-                    }
-                    resolve(false);
-                    return;
-                }
-                resolve(true);
-            });
-        });
     };
 }(window.$cms || (window.$cms = {}), window.$util, window.$dom));

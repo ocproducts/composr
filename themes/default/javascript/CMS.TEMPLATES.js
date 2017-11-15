@@ -1,5 +1,11 @@
 (function ($cms, $util, $dom) {
     'use strict';
+    
+    /**
+     * Addons will add template related methods under this namespace
+     * @namespace $cms.templates
+     */
+    $cms.templates = {};
 
     $cms.templates.globalHtmlWrap = function () {
         if (document.getElementById('global_messages_2')) {

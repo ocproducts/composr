@@ -3,6 +3,12 @@
 
     var IN_MINIKERNEL_VERSION = document.documentElement.classList.contains('in-minikernel-version');
 
+    /**
+     * Addons will add "behaviors" under this namespace
+     * @namespace $cms.behaviors
+     */
+    $cms.behaviors = {};
+
     // Implementation for [data-require-javascript="[<scripts>...]"]
     //$cms.behaviors.initializeRequireJavascript = {
     //    priority: 10000,
