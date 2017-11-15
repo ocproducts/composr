@@ -539,7 +539,11 @@
             trimmed = data.trim();
 
             if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) { // Object or array?
-                data = $util.parseJson5(data);
+                try {
+                    data = $util.parseJson5(data);
+                } catch (e) {
+                    $util.fatal('dataAttr(): Invalid JSON5 occurred on data attribute "' + key + '" of element', el);
+                }
             } else if ((Number(data).toString() === data) && isFinite(data)) { // Only convert to a number if it doesn't change the string
                 data = Number(data);
             }
@@ -2917,4 +2921,4 @@
             });
         }
     };
-}(window.$cms, window.$util, window.$dom));
+}(window.$cms || (window.$cms = {}), window.$util, window.$dom));

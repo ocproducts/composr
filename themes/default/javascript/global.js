@@ -738,21 +738,20 @@
      * @param settings
      * @param trigger
      */
-    function detachBehaviors(context, settings, trigger) {
+    function detachBehaviors(context, trigger) {
         var name;
 
         if (!$util.isDoc(context) && !$util.isEl(context)) {
             throw new TypeError('Invalid argument type: `context` must be of type HTMLDocument or HTMLElement');
         }
-
-        settings || (settings = $cms.settings);
+        
         trigger || (trigger = 'unload');
 
         // Detach all of them.
         for (name in $cms.behaviors) {
             if ($util.isObj($cms.behaviors[name]) && (typeof $cms.behaviors[name].detach === 'function')) {
                 try {
-                    $cms.behaviors[name].detach(context, settings, trigger);
+                    $cms.behaviors[name].detach(context, trigger);
                     //$util.inform('$cms.detachBehaviors(): detached behavior "' + name + '" from context', context);
                 } catch (e) {
                     $util.fatal('$cms.detachBehaviors(): Error while detaching behavior \'' + name + '\' from', context, '\n', e);
