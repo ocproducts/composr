@@ -36,7 +36,7 @@
         }
 
         updateForm2();
-        $cms.dom.on(allDayEvent, 'click', updateForm2);
+        $dom.on(allDayEvent, 'click', updateForm2);
 
         form.addEventListener('submit', function () {
             if ((form.elements['end_day'] != null) && (form.elements['end_day'].selectedIndex !== 0) || (form.elements['end'] != null) && (form.elements['end'].value !== '')) {
@@ -96,8 +96,8 @@
                 url += '&all_day_event=' + (allDayEvent.checked ? '1' : '0');
                 
                 $cms.loadSnippet(url).then(function (newData) {
-                    var tr = $cms.dom.closest(form.elements['monthly_spec_type'][0], 'tr');
-                    $cms.dom.html(tr, newData.replace(/<tr [^>]*>/, '').replace(/<\/tr>/, ''));
+                    var tr = $dom.closest(form.elements['monthly_spec_type'][0], 'tr');
+                    $dom.html(tr, newData.replace(/<tr [^>]*>/, '').replace(/<\/tr>/, ''));
                     updateMonthlyRecurrence();
                 });
             } else {
@@ -130,11 +130,11 @@
     };
 
     $cms.templates.calendarEventType = function calendarEventType(params, container) {
-        $cms.dom.on(container, 'click', '.js-click-toggle-checkbox-event-type', function (e, el) {
+        $dom.on(container, 'click', '.js-click-toggle-checkbox-event-type', function (e, el) {
             var checkbox = el.querySelector('.js-checkbox-event-type');
 
             if (e.target !== checkbox) {
-                $cms.dom.toggleChecked(checkbox);
+                $dom.toggleChecked(checkbox);
             }
         });
     };

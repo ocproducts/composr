@@ -82,7 +82,7 @@ function goDecoding() {
         ) {
             // the null or markupless element needs no reworking
         } else {
-            $cms.dom.html(toDecode[i], s);  // that's the magic
+            $dom.html(toDecode[i], s);  // that's the magic
         }
     }
 

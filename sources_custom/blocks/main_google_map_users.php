@@ -141,19 +141,17 @@ class Block_main_google_map_users
         }
 
         // Make marker data JavaScript-friendly
-        $member_data_js = "var data=[";
+        $member_data_json = '[';
         foreach ($members_to_show as $i => $member_data) {
             if ($i != 0) {
-                $member_data_js .= ',';
+                $member_data_json .= ',';
             }
-            $member_data_js .= '[
-                \'' . addslashes($GLOBALS['FORUM_DRIVER']->get_displayname($member_data['m_username'])) . '\',' .
+            $member_data_json .= '["' . addslashes($GLOBALS['FORUM_DRIVER']->get_displayname($member_data['m_username'])) . '",' .
                 float_to_raw_string(@floatval($member_data['field_' . strval($latitude_cpf_id)]), 30) . ',' .
                 float_to_raw_string(@floatval($member_data['field_' . strval($longitude_cpf_id)]), 30) . ',' .
-                strval($member_data['m_primary_group']) . '
-            ]';
+                strval($member_data['m_primary_group']) . ']';
         }
-        $member_data_js .= "];";
+        $member_data_json .= ']';
 
         // See if we need to detect the current user's long/lat
         $member_longitude = @floatval(get_cms_cpf('longitude', get_member()));
@@ -171,7 +169,7 @@ class Block_main_google_map_users
             'CLUSTER' => $cluster,
             'SET_COORD_URL' => $set_coord_url,
             'REGION' => $map['region'],
-            'DATA' => $member_data_js,
+            'DATA_JSON' => $member_data_json,
             'USERNAME_PREFIX' => $map['username_prefix'],
             'WIDTH' => $map_width,
             'HEIGHT' => $map_height,

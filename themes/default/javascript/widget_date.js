@@ -320,7 +320,7 @@ HTML5 Date polyfill | Jonathan Stipe | https://github.com/jonstipe/date-polyfill
       return this;
     };
     $(function() {
-      if (!$cms.support.inputTypes.date || navigator.userAgent.includes('Firefox/')) {
+      if (!$dom.support.inputTypes.date || navigator.userAgent.includes('Firefox/')) {
         $('input[type="date"]').inputDate();
       }
       return null;
@@ -713,7 +713,7 @@ HTML5 Time polyfill | Jonathan Stipe | https://github.com/jonstipe/time-polyfill
       return this;
     };
     $(function() {
-      if (!$cms.support.inputTypes.time || navigator.userAgent.includes('Firefox/')) {
+      if (!$dom.support.inputTypes.time || navigator.userAgent.includes('Firefox/')) {
         $('input[type="time"]').inputTime();
       }
       return null;

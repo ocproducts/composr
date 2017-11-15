@@ -1,8 +1,8 @@
 {+START,IF_NON_EMPTY,{CATEGORIES}}
-	<div data-view="ToggleableTray">
+	<div data-toggleable-tray="{}">
 		<h2 class="js-tray-header">
-			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}: {!TEST_RESULTS}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
-			<span class="js-btn-tray-toggle">{!TEST_RESULTS}</span>
+			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!TEST_RESULTS}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+			<span class="js-tray-onclick-toggle-tray">{!TEST_RESULTS}</span>
 		</h2>
 
 		<div class="toggleable_tray js-tray-content" style="display: none" aria-expanded="false">

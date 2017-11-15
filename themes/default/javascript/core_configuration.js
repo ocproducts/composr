@@ -13,7 +13,7 @@
         aceComposrLoader('xml', 'xml');
     }
 
-    $cms.inherits(XmlConfigScreen, $cms.View, /**@lends XmlConfigScreen#*/{
+    $util.inherits(XmlConfigScreen, $cms.View, /**@lends XmlConfigScreen#*/{
         events: function () {
             return {
                 'submit .js-form-xml-config': 'submit'
@@ -29,7 +29,7 @@
     });
 
     $cms.templates.configCategoryScreen = function configCategoryScreen(params, container) {
-        $cms.dom.on(container, 'submit', '.js-form-primary-page', function (e, form) {
+        $dom.on(container, 'submit', '.js-form-primary-page', function (e, form) {
             $cms.form.modSecurityWorkaround(form);
         });
     };

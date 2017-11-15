@@ -6,23 +6,23 @@
 
 function copyFieldsIntoBottom(i, changed) {
     window.currentSelection = i;
-    var form = $cms.dom.$id('edit_form');
+    var form = $dom.$id('edit_form');
 
-    form.elements['caption_long'].value = $cms.dom.$id('caption_long_' + i).value;
+    form.elements['caption_long'].value = $dom.$id('caption_long_' + i).value;
     form.elements['caption_long'].addEventListener('change', function () {
-        $cms.dom.$('#caption_long_' + i).value = this.value;
-        $cms.dom.$('#caption_long_' + i).disabled = (this.value == '');
+        $dom.$('#caption_long_' + i).value = this.value;
+        $dom.$('#caption_long_' + i).disabled = (this.value == '');
     });
 
-    form.elements['url'].value = $cms.dom.$id('url_' + i).value;
+    form.elements['url'].value = $dom.$id('url_' + i).value;
     form.elements['url'].onchange = function () {
-        $cms.dom.$('#url_' + i).value = this.value;
+        $dom.$('#url_' + i).value = this.value;
     };
 
-    form.elements['page_only'].value = $cms.dom.$id('page_only_' + i).value;
+    form.elements['page_only'].value = $dom.$id('page_only_' + i).value;
     form.elements['page_only'].addEventListener('change', function () {
-        $cms.dom.$('#page_only_' + i).value = this.value;
-        $cms.dom.$('#page_only_' + i).disabled = (this.value === '');
+        $dom.$('#page_only_' + i).value = this.value;
+        $dom.$('#page_only_' + i).disabled = (this.value === '');
     });
 
     var s;
@@ -33,56 +33,53 @@ function copyFieldsIntoBottom(i, changed) {
     }
     if (s == form.elements['theme_img_code'].options.length) {
         s = 0;
-        $cms.ui.alert('{!menus:MISSING_THEME_IMAGE_FOR_MENU;^}'.replace(/\\{1\\}/, $cms.filter.html($cms.dom.$id('theme_img_code_' + i).value)));
+        $cms.ui.alert('{!menus:MISSING_THEME_IMAGE_FOR_MENU;^}'.replace(/\\{1\\}/, $cms.filter.html($dom.$id('theme_img_code_' + i).value)));
     }
     form.elements['theme_img_code'].selectedIndex = s;
     form.elements['theme_img_code'].addEventListener('change', function () {
-        $cms.dom.$('#theme_img_code_' + i).value = this.options[this.selectedIndex].value;
-        $cms.dom.$('#theme_img_code_' + i).disabled = (this.selectedIndex == 0);
+        $dom.$('#theme_img_code_' + i).value = this.options[this.selectedIndex].value;
+        $dom.$('#theme_img_code_' + i).disabled = (this.selectedIndex == 0);
     });
     if (window.jQuery && window.jQuery.fn.select2) {
         window.jQuery(form.elements['theme_img_code']).trigger('change');
     }
 
-    form.elements['new_window'].checked = $cms.dom.$id('new_window_' + i).value == '1';
+    form.elements['new_window'].checked = $dom.$id('new_window_' + i).value == '1';
     form.elements['new_window'].addEventListener('click', function () {
-        $cms.dom.$('#new_window_' + i).value = this.checked ? '1' : '0';
-        $cms.dom.$('#new_window_' + i).disabled = !this.checked;
+        $dom.$('#new_window_' + i).value = this.checked ? '1' : '0';
+        $dom.$('#new_window_' + i).disabled = !this.checked;
     });
 
-    form.elements['check_perms'].checked = $cms.dom.$id('check_perms_' + i).value == '1';
+    form.elements['check_perms'].checked = $dom.$id('check_perms_' + i).value == '1';
     form.elements['check_perms'].addEventListener('click', function () {
-        $cms.dom.$('#check_perms_' + i).value = this.checked ? '1' : '0';
-        $cms.dom.$('#check_perms_' + i).disabled = !this.checked;
+        $dom.$('#check_perms_' + i).value = this.checked ? '1' : '0';
+        $dom.$('#check_perms_' + i).disabled = !this.checked;
     });
 
-    form.elements['branch_type'].selectedIndex = $cms.dom.$id('branch_type_' + i).selectedIndex;
+    form.elements['branch_type'].selectedIndex = $dom.$id('branch_type_' + i).selectedIndex;
     form.elements['branch_type'].addEventListener('change', function (event) {
-        $cms.dom.$('#branch_type_' + i).selectedIndex = this.selectedIndex;
-        if ($cms.dom.$('#branch_type_' + i).onchange) {
-            $cms.dom.$('#branch_type_' + i).onchange(event);
+        $dom.$('#branch_type_' + i).selectedIndex = this.selectedIndex;
+        if ($dom.$('#branch_type_' + i).onchange) {
+            $dom.$('#branch_type_' + i).onchange(event);
         }
     });
     if (window.jQuery && window.jQuery.fn.select2) {
         window.jQuery(form.elements['branch_type']).trigger('change');
     }
 
-    form.elements['include_sitemap'].selectedIndex = $cms.dom.$id('include_sitemap_' + i).value;
+    form.elements['include_sitemap'].selectedIndex = $dom.$id('include_sitemap_' + i).value;
     form.elements['include_sitemap'].addEventListener('change', function (event) {
-        $cms.dom.$('#include_sitemap_' + i).value = this.selectedIndex;
-        $cms.dom.$('#include_sitemap_' + i).disabled = (this.selectedIndex == 0);
+        $dom.$('#include_sitemap_' + i).value = this.selectedIndex;
+        $dom.$('#include_sitemap_' + i).disabled = (this.selectedIndex == 0);
     });
     if (window.jQuery && window.jQuery.fn.select2) {
         window.jQuery(form.elements['include_sitemap']).trigger('change');
     }
 
-    var mfh = $cms.dom.$('#mini_form_hider');
-    mfh.style.display = 'block';
-
-    if (!changed) {
-        $cms.dom.fadeIn(mfh);
-    } else {
-        $cms.dom.fadeIn(form.elements.url);
+    var mfh = $dom.$('#mini_form_hider');
+    $dom.slideDown(mfh);
+    if (changed) {
+        $dom.fadeIn(form.elements.url);
     }
 }
 
@@ -97,12 +94,12 @@ function existsChild(elements, parent) {
 }
 
 function deleteBranch(id) {
-    var branch = $cms.dom.$id(id);
+    var branch = $dom.$id(id);
     branch.parentNode.removeChild(branch);
 }
 
 function checkMenu() {
-    var form = $cms.dom.$('#edit_form');
+    var form = $dom.$('#edit_form');
     var i, id, name, theParent, ignore, caption, url, branchType;
     for (i = 0; i < form.elements.length; i++) {
         name = form.elements[i].name.substr(0, 'parent_'.length);
@@ -122,15 +119,15 @@ function checkMenu() {
 
             if (!ignore) { // It's the real deal
                 // Check we have a caption
-                caption = $cms.dom.$id('caption_' + id);
-                url = $cms.dom.$id('url_' + id);
+                caption = $dom.$id('caption_' + id);
+                url = $dom.$id('url_' + id);
                 if ((caption.value == '') && (url.value != '')) {
                     $cms.ui.alert('{!menus:MISSING_CAPTION_ERROR;^}');
                     return false;
                 }
 
                 // If we are a page, check we have a URL
-                branchType = $cms.dom.$id('branch_type_' + id);
+                branchType = $dom.$id('branch_type_' + id);
                 if (branchType.options[branchType.selectedIndex].value === 'page') {
                     if ((caption.value != '') && (url.value == '')) {
                         $cms.ui.alert('{!menus:MISSING_URL_ERROR;^}');

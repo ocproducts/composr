@@ -21,7 +21,7 @@ function makeColourChooser(name, color, context, tabindex, label, className) {
     name = strVal(name);
     color = strVal(color);
     context = strVal(context);
-    label = strVal(label, '&lt;color-' + name + '&gt;');
+    label = strVal(label) || '&lt;color-' + name + '&gt;';
     className = strVal(className);
 
     if (className !== '') {
@@ -36,7 +36,7 @@ function makeColourChooser(name, color, context, tabindex, label, className) {
         p = document.getElementById('colours_go_here');
     }
 
-    if ((color != '') && (color.substr(0, 1) != '#') && (color.substr(0, 3) != 'rgb')) {
+    if ((color !== '') && (color.substr(0, 1) !== '#') && (color.substr(0, 3) !== 'rgb')) {
         if (color.match(/[A-Fa-f\d]\{6\}/)) {
             color = '#' + color;
         } else {
@@ -44,7 +44,7 @@ function makeColourChooser(name, color, context, tabindex, label, className) {
         }
     }
 
-    var _color = (color == '' || color == '#') ? '#000000' : ('#' + color.substr(1));
+    var _color = (color === '' || color === '#') ? '#000000' : ('#' + color.substr(1));
 
     var t = '';
     t = t + '<div class="css_colour_chooser">';
@@ -53,10 +53,10 @@ function makeColourChooser(name, color, context, tabindex, label, className) {
     t = t + '<input ' + className + 'alt="{!COLOUR;^}" type="color" value="' + _color + '" id="' + name + '" name="' + name + '" size="6" class="js-change-update-chooser" />';
     t = t + '	</div>';
     t = t + '	<div class="css_colour_chooser_fixed">';
-    t = t + '	<div class="css_colour_chooser_from" style="background-color: ' + ((color == '') ? '#000' : color) + '" id="cc_source_' + name + '">';
+    t = t + '	<div class="css_colour_chooser_from" style="background-color: ' + ((color === '') ? '#000' : color) + '" id="cc_source_' + name + '">';
     t = t + "		{!themes:FROM_COLOUR^#}";
     t = t + '	</div>';
-    t = t + '	<div class="css_colour_chooser_to" style="background-color: ' + ((color == '') ? '#000' : color) + '" id="cc_target_' + name + '">';
+    t = t + '	<div class="css_colour_chooser_to" style="background-color: ' + ((color === '') ? '#000' : color) + '" id="cc_target_' + name + '">';
     t = t + "		{!themes:TO_COLOUR^#}";
     t = t + '	</div>';
     t = t + '	<div class="css_colour_chooser_colour">';
@@ -72,12 +72,12 @@ function makeColourChooser(name, color, context, tabindex, label, className) {
     }
 
     if (p.id === 'colours_go_here') {
-        $cms.dom.append(p, t);
+        $dom.append(p, t);
     } else {
-        $cms.dom.html(p, t);
+        $dom.html(p, t);
     }
 
-    $cms.dom.on(p, 'change', '.js-change-update-chooser', function (e, target) {
+    $dom.on(p, 'change', '.js-change-update-chooser', function (e, target) {
         updateChooser(target.id);
     });
 
@@ -169,8 +169,8 @@ function doColorChooser() {
                 }
                 innert = innert + '<div class="css_colour_strip js-click-do-color-change" style="' + style + '" id="' + tid + '"></div>';
             }
-            $cms.dom.html(c[d], innert);
-            $cms.dom.on(c[d].querySelector('.js-click-do-color-change'), 'click', function (e) {
+            $dom.html(c[d], innert);
+            $dom.on(c[d].querySelector('.js-click-do-color-change'), 'click', function (e) {
                 doColorChange(e);
             });
         }

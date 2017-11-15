@@ -1,8 +1,7 @@
 // Based on http://welcome.totheinter.net/columnizer-jquery-plugin/
 //  But with fixes and better flexibility, and pure CSS-based activation
 
-window.$cms || (window.$cms = {});
-(window.$cms.load || (window.$cms.load = [])).push(function () {
+$dom.load.then(function () {
     jQuery('.column_wrapper').columnize({columns: 3});
     jQuery('.column_wrapper_2').columnize({columns: 2});
 });

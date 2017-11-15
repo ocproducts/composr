@@ -1229,7 +1229,7 @@ class HttpDownloaderSockets extends HttpDownloader
         $this->url_parts = @parse_url($url);
         $this->read_in_options($options);
 
-        if (($this->url_parts['scheme'] == 'http') && (!GOOGLE_APPENGINE) && (php_function_allowed('fsockopen'))) {
+        if (isset($this->url_parts['scheme']) && ($this->url_parts['scheme'] == 'http') && (!GOOGLE_APPENGINE) && (php_function_allowed('fsockopen'))) {
             return HttpDownloader::RUN_PRIORITY_MEDIUM;
         }
 

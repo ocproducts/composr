@@ -21,11 +21,11 @@
         window.usergroupTitles = params.usergroups;
 
         $cms.requireJavascript('tree_list').then(function () {
-            window.sitemap = $cms.ui.createTreeList('tree_list', 'data/sitemap.php?start_links=1&get_perms=1&label_content_types=1&keep_full_structure=1' + $cms.$KEEP(), null, '', true);
+            window.sitemap = $cms.ui.createTreeList('tree_list', 'data/sitemap.php?start_links=1&get_perms=1&label_content_types=1&keep_full_structure=1' + $cms.keep(), null, '', true);
         });
     }
 
-    $cms.inherits(PermissionsTreeEditorScreen, $cms.View, /**@lends PermissionsTreeEditorScreen#*/{
+    $util.inherits(PermissionsTreeEditorScreen, $cms.View, /**@lends PermissionsTreeEditorScreen#*/{
         events: function () {
             return {
                 'click .js-click-update-group': 'updateGroupDisplayer',
@@ -36,9 +36,9 @@
         },
 
         updateGroupDisplayer: function (e, select) {
-            $cms.dom.html(document.getElementById('group_name'), $cms.filter.html(window.usergroupTitles[select.options[select.selectedIndex].value]));
+            $dom.html(document.getElementById('group_name'), $cms.filter.html(window.usergroupTitles[select.options[select.selectedIndex].value]));
             var tree = document.getElementById('tree_list__root_tree_list');
-            $cms.dom.empty(tree);
+            $dom.empty(tree);
             window.sitemap.renderTree(window.sitemap.treeListData, tree);
         },
 
@@ -52,17 +52,17 @@
     });
 
     $cms.templates.permissionRow = function permissionRow(params, container) {
-        $cms.dom.on(container, 'click', '.js-click-input-toggle-value', function (e, input) {
+        $dom.on(container, 'click', '.js-click-input-toggle-value', function (e, input) {
             input.value = (input.value === '-') ? '+' : '-';
         });
     };
 
     $cms.templates.permissionKeysMessageRow = function permissionKeysMessageRow(params, container) {
-        $cms.dom.on(container, 'focus', '.js-focus-textarea-expand', function (e, textarea) {
+        $dom.on(container, 'focus', '.js-focus-textarea-expand', function (e, textarea) {
             textarea.setAttribute('rows', '10');
         });
 
-        $cms.dom.on(container, 'blur', '.js-blur-textarea-contract', function (e, textarea) {
+        $dom.on(container, 'blur', '.js-blur-textarea-contract', function (e, textarea) {
             if (!textarea.form.disableSizeChange) {
                 textarea.setAttribute('rows', '2');
             }
@@ -70,13 +70,13 @@
     };
 
     $cms.templates.permissionKeysPermissionRow = function permissionKeysPermissionRow(params, container) {
-        $cms.dom.on(container, 'click', '.js-click-btn-toggle-value', function (e, btn) {
+        $dom.on(container, 'click', '.js-click-btn-toggle-value', function (e, btn) {
             btn.value = (btn.value === '-') ? '+' : '-';
         });
     };
 
     $cms.templates.permissionKeysPermissionsScreen = function permissionKeysPermissionsScreen(params, container) {
-        $cms.dom.on(container, 'mouseover mouseout', '.js-btn-hover-toggle-disable-size-change', function (e, btn) {
+        $dom.on(container, 'mouseover mouseout', '.js-btn-hover-toggle-disable-size-change', function (e, btn) {
             btn.form.disableSizeChange = (e.type === 'mouseover');
         });
     };
@@ -90,7 +90,7 @@
         if (!setting.value) {
             document.getElementById('selection_form_fields').style.display = 'none';
             document.getElementById('selection_button').disabled = true;
-            $cms.dom.html(document.getElementById('selection_message'), '{!permissions:PERMISSIONS_TREE_EDITOR_NONE_SELECTED;^}');
+            $dom.html(document.getElementById('selection_message'), '{!permissions:PERMISSIONS_TREE_EDITOR_NONE_SELECTED;^}');
             return;
         }
 
@@ -125,7 +125,7 @@
                     element = document.getElementById('access_' + group + '_presets');
                     if (element.options[0].id !== 'access_' + group + '_custom_option') {
                         newOption = document.createElement('option');
-                        $cms.dom.html(newOption, '{!permissions:PINTERFACE_LEVEL_CUSTOM;^}');
+                        $dom.html(newOption, '{!permissions:PINTERFACE_LEVEL_CUSTOM;^}');
                         newOption.id = 'access_' + group + '_custom_option';
                         newOption.value = '';
                         element.insertBefore(newOption, element.options[0]);
@@ -193,7 +193,7 @@
                                 newCell = row.insertBefore(document.createElement('th'), row.cells[row.cells.length]);
                                 newCell.className = 'privilege_header';
                                 newCell.id = 'privilege_header_' + privilege;
-                                $cms.dom.html(newCell, '<img class="gd_text" data-gd-text="1" src="' + $cms.filter.html($cms.baseUrl('data/gd_text.php?color=' + window.columnColor + '&text=' + encodeURIComponent(privilegeTitle) + $cms.$KEEP())) + '" title="' + $cms.filter.html(privilegeTitle) + '" alt="' + $cms.filter.html(privilegeTitle) + '" />');
+                                $dom.html(newCell, '<img class="gd_text" data-gd-text="1" src="' + $cms.filter.html($cms.baseUrl('data/gd_text.php?color=' + window.columnColor + '&text=' + encodeURIComponent(privilegeTitle) + $cms.keep())) + '" title="' + $cms.filter.html(privilegeTitle) + '" alt="' + $cms.filter.html(privilegeTitle) + '" />');
 
                                 rows[rows.length - 1].appendChild(document.createElement('td')).className = 'form_table_field_input privilege_footer'; // Footer cell
 
@@ -208,8 +208,8 @@
                             newCell.className = 'form_table_field_input privilege_cell';
                             newCell.id = 'privilege_cell_' + group + '_' + privilege;
                             if (document.getElementById('access_' + group).name !== '_ignore') {
-                                $cms.dom.html(newCell, '<div class="accessibility_hidden"><label for="access_' + group + '_privilege_' + privilege + '">{!permissions:OVERRIDE;^}</label></div><select title="' + $cms.filter.html(privilegeTitle) + '" id="access_' + group + '_privilege_' + privilege + '" name="access_' + group + '_privilege_' + privilege + '"><option selected="selected" value="-1">/</option><option value="0">{!permissions:NO_COMPACT;^}</option><option value="1">{!permissions:YES_COMPACT;^}</option></select>');
-                                $cms.dom.on(newCell, 'mouseover', '.js-mouseover-show-permission-setting', function (e, select) {
+                                $dom.html(newCell, '<div class="accessibility_hidden"><label for="access_' + group + '_privilege_' + privilege + '">{!permissions:OVERRIDE;^}</label></div><select title="' + $cms.filter.html(privilegeTitle) + '" id="access_' + group + '_privilege_' + privilege + '" name="access_' + group + '_privilege_' + privilege + '"><option selected="selected" value="-1">/</option><option value="0">{!permissions:NO_COMPACT;^}</option><option value="1">{!permissions:YES_COMPACT;^}</option></select>');
+                                $dom.on(newCell, 'mouseover', '.js-mouseover-show-permission-setting', function (e, select) {
                                     if (select.value === '-1') {
                                         showPermissionSetting(select, e);
                                     }
@@ -267,7 +267,7 @@
 
             // Hide certain things if we only have view settings here, else show them
             if (numPrivilegeTotal == 0) {
-                $cms.dom.html(matrix.querySelector('tr').cells[0], '{!USERGROUP;^}');
+                $dom.html(matrix.querySelector('tr').cells[0], '{!USERGROUP;^}');
                 for (k = 0; k < knownGroups.length; k++) {
                     document.getElementById('access_' + knownGroups[k] + '_presets').style.display = 'none';
                     var button = document.getElementById('access_' + knownGroups[k] + '_privilege_container').querySelector('button');
@@ -276,7 +276,7 @@
                     }
                 }
             } else {
-                $cms.dom.html(matrix.querySelector('tr').cells[0], '<span class="heading_group">{!USERGROUP;^}</span> <span class="heading_presets">{!permissions:PINTERFACE_PRESETS;^}</span>');
+                $dom.html(matrix.querySelector('tr').cells[0], '<span class="heading_group">{!USERGROUP;^}</span> <span class="heading_presets">{!permissions:PINTERFACE_PRESETS;^}</span>');
                 for (k = 0; k < knownGroups.length; k++) {
                     document.getElementById('access_' + knownGroups[k] + '_presets').style.display = 'block';
                     var button = document.getElementById('access_' + knownGroups[k] + '_privilege_container').querySelector('button');
@@ -306,7 +306,7 @@
 
         document.getElementById('selection_form_fields').style.display = 'block';
         document.getElementById('selection_button').disabled = false;
-        $cms.dom.html(document.getElementById('selection_message'), (values.length <= 1) ? '{!permissions:PERMISSIONS_TREE_EDITOR_ONE_SELECTED;^}' : '{!permissions:PERMISSIONS_TREE_EDITOR_MULTI_SELECTED;^}');
+        $dom.html(document.getElementById('selection_message'), (values.length <= 1) ? '{!permissions:PERMISSIONS_TREE_EDITOR_ONE_SELECTED;^}' : '{!permissions:PERMISSIONS_TREE_EDITOR_MULTI_SELECTED;^}');
     }
 
     // Saving
@@ -378,7 +378,7 @@
                 }
 
                 // Update UI indicators
-                $cms.dom.html('#tree_listextra_' + id, permissionsImgFunc1(node, id) + permissionsImgFunc2(node, id));
+                $dom.html('#tree_listextra_' + id, permissionsImgFunc1(node, id) + permissionsImgFunc2(node, id));
             }
 
             if (setRequestB !== '') {
@@ -388,7 +388,7 @@
 
         // Send AJAX request
         if (setRequest !== '') {
-            $cms.doAjaxRequest($cms.$BASE_URL_NOHTTP() + '/data/sitemap.php?set_perms=1' + $cms.$KEEP(), null, setRequest).then(function () {
+            $cms.doAjaxRequest($cms.getBaseUrlNohttp() + '/data/sitemap.php?set_perms=1' + $cms.keep(), null, setRequest).then(function () {
                 $cms.ui.alert('{!permissions:PERMISSIONS_TREE_EDITOR_SAVED;^}');
             });
             return;
@@ -423,7 +423,7 @@
             }
 
             var url = '{$FIND_SCRIPT_NOHTTP;,find_permissions}?serverid=' + encodeURIComponent(serverid) + '&x=' + encodeURIComponent(ob.name);
-            $cms.doAjaxRequest(url + $cms.$KEEP()).then(function (xhr) {
+            $cms.doAjaxRequest(url + $cms.keep()).then(function (xhr) {
                 if (!xhr) {
                     return;
                 }

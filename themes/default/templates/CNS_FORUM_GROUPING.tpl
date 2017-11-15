@@ -1,9 +1,9 @@
-<div class="cns_forum_grouping" data-view="ToggleableTray">
+<div class="cns_forum_grouping" data-toggleable-tray="{}">
 	<h3 class="toggleable_tray_title_heading js-tray-header">
 		<span class="cns_forum_grouping_toggleable_tray_button">
-			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img title="{!TOGGLE_GROUPING_VISIBILITY}" alt="{!TOGGLE_GROUPING_VISIBILITY}" src="{$IMG*,1x/trays/{EXPAND_TYPE*}2}" srcset="{$IMG*,2x/trays/{EXPAND_TYPE*}2} 2x" /></a>
+			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img title="{!TOGGLE_GROUPING_VISIBILITY}" alt="{!TOGGLE_GROUPING_VISIBILITY}" src="{$IMG*,1x/trays/{EXPAND_TYPE*}2}" srcset="{$IMG*,2x/trays/{EXPAND_TYPE*}2} 2x" /></a>
 		</span>
-		<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{GROUPING_TITLE*}</a>
+		<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!">{GROUPING_TITLE*}</a>
 		{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,admin_cns_forum_groupings}}<span class="associated_details">(<a href="{$PAGE_LINK*,_SEARCH:admin_cns_forum_groupings:_edit:{GROUPING_ID}}">{!EDIT}</a>)</span>{+END}
 
 		{+START,IF_NON_EMPTY,{GROUPING_DESCRIPTION}}

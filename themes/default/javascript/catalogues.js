@@ -17,7 +17,7 @@
         catalogueFieldChangeWatching();
     }
 
-    $cms.inherits(CatalogueAddingScreen, $cms.View, /**@lends CatalogueAddingScreen#*/{
+    $util.inherits(CatalogueAddingScreen, $cms.View, /**@lends CatalogueAddingScreen#*/{
         events: function () {
             return {
                 'submit .js-form-catalogue-add': 'submit'
@@ -44,7 +44,7 @@
         catalogueFieldChangeWatching();
     }
 
-    $cms.inherits(CatalogueEditingScreen, $cms.View, /**@lends CatalogueEditingScreen#*/{
+    $util.inherits(CatalogueEditingScreen, $cms.View, /**@lends CatalogueEditingScreen#*/{
         events: function () {
             return {
                 'submit .js-form-catalogue-edit': 'submit'
@@ -100,7 +100,7 @@
             $cms.form.doAjaxFieldTest(url).then(function (valid) {
                 if (valid) {
                     validValue = value;
-                    $cms.dom.submit(form);
+                    $dom.submit(form);
                 } else {
                     submitBtn.disabled = false;
                 }
@@ -118,7 +118,7 @@
                     form.elements['move_days_higher'].disabled = s;
                 };
             crf();
-            $cms.dom.on(mt, 'click', crf);
+            $dom.on(mt, 'click', crf);
         }
     };
 

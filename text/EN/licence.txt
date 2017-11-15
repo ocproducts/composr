@@ -171,5 +171,7 @@ This product includes:
   - Assorted polyfills (Joshua Bell, Mozilla, public domain)
   - Fetch API (Xavier Badosa, public domain)
   - Class Lists (Eli Grey, public domain)
+  - WeakMap polyfill (BSD-style license, https://github.com/Polymer/WeakMap/blob/master/LICENSE)
+  - $cms.debounce() and $cms.throttle() functions inspired by Underscore.js (License: https://github.com/jashkenas/underscore/blob/master/LICENSE)
 
 Non-bundled addons will often have their own third party materials documented within the addon.

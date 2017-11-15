@@ -5748,37 +5748,41 @@ function ecv_PUBLIC_CONFIG_OPTIONS_JSON($lang, $escaped, $param)
  */
 function ecv_STAFF_TOOLTIPS_URL_PATTERNS_JSON($lang, $escaped, $param)
 {
-    require_code('content');
+    $_url_patterns = '{}';
 
-    $url_patterns = array();
-    $cma_hooks = find_all_hooks('systems', 'content_meta_aware');
-    foreach (array_keys($cma_hooks) as $content_type) {
-        $content_type_ob = get_content_object($content_type);
+    if (!$GLOBALS['IN_MINIKERNEL_VERSION']) {
+        require_code('content');
 
-        if (!isset($content_type_ob)) {
-            continue;
+        $url_patterns = array();
+        $cma_hooks = find_all_hooks('systems', 'content_meta_aware');
+        foreach (array_keys($cma_hooks) as $content_type) {
+            $content_type_ob = get_content_object($content_type);
+
+            if (!isset($content_type_ob)) {
+                continue;
+            }
+
+            $info = $content_type_ob->info();
+            if (isset($info['view_page_link_pattern'])) {
+                list($zone, $attributes,) = page_link_decode($info['view_page_link_pattern']);
+                $url = build_url($attributes, $zone, array(), false, false, true);
+                $pattern = _escape_url_pattern_for_js_regex($url->evaluate());
+                $hook = $content_type;
+                $url_patterns[$pattern] = $hook;
+            }
+            if (isset($info['edit_page_link_pattern'])) {
+                list($zone, $attributes,) = page_link_decode($info['edit_page_link_pattern']);
+                $url = build_url($attributes, $zone, array(), false, false, true);
+
+                $pattern = _escape_url_pattern_for_js_regex($url->evaluate());
+
+                $hook = $content_type;
+                $url_patterns[$pattern] = $hook;
+            }
         }
 
-        $info = $content_type_ob->info();
-        if (isset($info['view_page_link_pattern'])) {
-            list($zone, $attributes,) = page_link_decode($info['view_page_link_pattern']);
-            $url = build_url($attributes, $zone, array(), false, false, true);
-            $pattern = _escape_url_pattern_for_js_regex($url->evaluate());
-            $hook = $content_type;
-            $url_patterns[$pattern] = $hook;
-        }
-        if (isset($info['edit_page_link_pattern'])) {
-            list($zone, $attributes,) = page_link_decode($info['edit_page_link_pattern']);
-            $url = build_url($attributes, $zone, array(), false, false, true);
-
-            $pattern = _escape_url_pattern_for_js_regex($url->evaluate());
-
-            $hook = $content_type;
-            $url_patterns[$pattern] = $hook;
-        }
+        $_url_patterns = json_encode($url_patterns, JSON_FORCE_OBJECT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
     }
-
-    $_url_patterns = json_encode($url_patterns, JSON_FORCE_OBJECT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $_url_patterns);

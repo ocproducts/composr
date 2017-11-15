@@ -18,7 +18,7 @@
         this.notificationEl = this.$('.js-el-activities-update-notification');
     }
 
-    $cms.inherits(BlockMainActivitiesState, $cms.View, /**@lends BlockMainActivitiesState#*/{
+    $util.inherits(BlockMainActivitiesState, $cms.View, /**@lends BlockMainActivitiesState#*/{
         events: function () {
             return {
                 'focus textarea.js-textarea-activity-status': 'textareaFocus',
@@ -50,7 +50,7 @@
             textarea.classList.add('fade_input');
         },
         textareaKeyup: function (e, textarea) {
-            if (!$cms.$MOBILE()) {
+            if (!$cms.isMobile()) {
                 $cms.manageScrollHeight(textarea);
             }
             this.maintainCharCount();
@@ -75,9 +75,9 @@
             } else {
                 var view = this;
                 jQuery.ajax({
-                    url: $cms.baseUrl('data_custom/activities_handler.php' + $cms.$KEEP(true)),
+                    url: $cms.baseUrl('data_custom/activities_handler.php' + $cms.keep(true)),
                     type: 'POST',
-                    data: $cms.dom.serialize(form),
+                    data: $dom.serialize(form),
                     cache: false,
                     timeout: 5000,
                     // Processes data retrieved for the activities feed and updates the list
@@ -87,13 +87,13 @@
                         if ((textStatus !== 'success') || !jqXHR.responseXML) {
                             view.notificationEl.className = 'update_error';
                             view.notificationEl.textContent = '{!activities:WENT_WRONG;^}';
-                            $cms.dom.hide(view.notificationEl);
+                            $dom.hide(view.notificationEl);
 
-                            $cms.dom.fadeIn(view.notificationEl, 1200, function () {
+                            $dom.fadeIn(view.notificationEl, 1200).then(function () {
                                 setTimeout(function () {
-                                    $cms.dom.fadeOut(view.notificationEl, 1200, function () {
+                                    $dom.fadeOut(view.notificationEl, 1200).then(function () {
                                         view.maintainCharCount();
-                                        $cms.dom.fadeIn(view.notificationEl, 1200);
+                                        $dom.fadeIn(view.notificationEl, 1200);
                                     });
                                 }, 2400);
                             });
@@ -115,26 +115,26 @@
                             view.notificationEl.className = 'update_success';
                             view.notificationEl.textContent = feedbackEl.textContent;
 
-                            if ($cms.dom.$('#activities_feed')) { // The update box won't necessarily have a displayed feed to update
+                            if ($dom.$('#activities_feed')) { // The update box won't necessarily have a displayed feed to update
                                 sUpdateGetData();
                             }
 
-                            $cms.dom.fadeIn(view.notificationEl, 1200, function () {
-                                $cms.dom.fadeOut(view.notificationEl, 1200, function () {
+                            $dom.fadeIn(view.notificationEl, 1200).then(function () {
+                                $dom.fadeOut(view.notificationEl, 1200).then(function () {
                                     view.notificationEl.className = 'update_success';
                                     view.notificationEl.textContent = '254 {!activities:CHARACTERS_LEFT;^}';
-                                    $cms.dom.fadeIn(view.notificationEl, 1200);
+                                    $dom.fadeIn(view.notificationEl, 1200);
 
                                     var textareaParentEl = view.textarea.parentElement;
 
-                                    $cms.dom.height(textareaParentEl, $cms.dom.height(textareaParentEl));
+                                    $dom.height(textareaParentEl, $dom.height(textareaParentEl));
 
                                     view.textarea.value = '{!activities:TYPE_HERE;^}';
                                     view.textarea.classList.remove('field_input_filled');
                                     view.textarea.classList.add('field_input_non_filled');
 
-                                    $cms.dom.fadeIn(view.textarea, 1200, function () {
-                                        $cms.dom.height(textareaParentEl, '');
+                                    $dom.fadeIn(view.textarea, 1200).then(function () {
+                                        $dom.height(textareaParentEl, '');
                                     });
                                 });
                             });
@@ -175,7 +175,7 @@
     $cms.templates.activity = function activity(params, container) {
         var liid = strVal(params.liid);
 
-        $cms.dom.on(container, 'click', '.js-submit-confirm-update-remove', function (e) {
+        $dom.on(container, 'click', '.js-submit-confirm-update-remove', function (e) {
             sUpdateRemove(e, liid);
         });
     };
@@ -222,7 +222,7 @@ function sUpdateGetData() {
                     window.latestActivity = parseInt(data);
 
                     // Now grab whatever updates are available
-                    var url = $cms.baseUrl('data_custom/activities_updater.php' + $cms.$KEEP(true)),
+                    var url = $cms.baseUrl('data_custom/activities_updater.php' + $cms.keep(true)),
                         listElements = jQuery('li', '#activities_feed'),
                         lastId = ((listElements.attr('id') == undefined) ? '-1' : listElements.attr('id').replace(/^activity_/, '')),
                         postVal = 'last_id=' + lastId + '&mode=' + window.activitiesMode;
@@ -279,7 +279,7 @@ function sUpdateShow(data, stat) {
                     thisLi.className = 'activities_box box';
                     thisLi.setAttribute('toFade', 'yes');
                     topOfList.parentNode.insertBefore(thisLi, topOfList);
-                    $cms.dom.html(thisLi, window.Base64.decode(jQuery(this).text()));
+                    $dom.html(thisLi, window.Base64.decode(jQuery(this).text()));
                 });
 
                 var noMessages = document.getElementById('activity_-1');
@@ -315,7 +315,7 @@ function sUpdateRemove(event, id) {
         '{!activities:DELETE_CONFIRM;^}',
         function (result) {
             if (result) {
-                var url = $cms.baseUrl('data_custom/activities_removal.php' + $cms.$KEEP(true));
+                var url = $cms.baseUrl('data_custom/activities_removal.php' + $cms.keep(true));
 
                 var postVal = 'removal_id=' + id;
                 postVal += '&csrf_token=' + encodeURIComponent($cms.getCsrfToken()); // For CSRF prevention

@@ -7,10 +7,10 @@
 {$,Toolbarish}
 
 {+START,IF,{INCLUDE_CSS_EDITING}}
-	<div class="template_editing_toolbar" data-view="ToggleableTray">
+	<div class="template_editing_toolbar" data-toggleable-tray="{}">
 		<h3 class="js-tray-header">
-			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{!CSS_EDITING_TOOLS}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
-			<a class="non_link js-btn-tray-toggle" href="#!">{!CSS_EDITING_TOOLS}</a>
+			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{!CSS_EDITING_TOOLS}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+			<a class="non_link js-tray-onclick-toggle-tray" href="#!">{!CSS_EDITING_TOOLS}</a>
 		</h3>
 		<div class="toggleable_tray js-tray-content" style="display: none" id="c_{FILE_ID*}" aria-expanded="false">
 			<div class="css_editor_rhs_column"><section class="box"><div class="box_inner">
@@ -18,10 +18,10 @@
 
 				<div class="accordion_trayitem js-tray-accordion-item">
 					<h4 class="toggleable_tray_title">
-						<a class="toggleable_tray_button js-btn-tray-accordion" href="#!"><img alt="{!EXPAND}: Background Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
-						<a class="toggleable_tray_button js-btn-tray-accordion" href="#!">Background Properties</a>
+						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!"><img alt="{!EXPAND}: Background Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!">Background Properties</a>
 					</h4>
-					<div class="toggleable_tray" style="display: none" aria-expanded="false">
+					<div class="toggleable_tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
 						<table class="columned_table results_table" cellspacing="0" cellpadding="0" border="1" width="100%">
 							<tbody><tr>
 								<th width="28%" align="left">Property</th>
@@ -59,10 +59,10 @@
 
 				<div class="accordion_trayitem js-tray-accordion-item">
 					<h4 class="toggleable_tray_title">
-						<a class="toggleable_tray_button js-btn-tray-accordion" href="#!"><img alt="{!EXPAND}: Background Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
-						<a class="toggleable_tray_button js-btn-tray-accordion" href="#!">Border Properties</a>
+						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!"><img alt="{!EXPAND}: Background Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!">Border Properties</a>
 					</h4>
-					<div class="toggleable_tray" style="display: none" aria-expanded="false">
+					<div class="toggleable_tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
 						<table class="columned_table results_table" cellspacing="0" cellpadding="0" border="1" width="100%">
 							<tbody><tr>
 								<th width="28%" align="left">Property</th>
@@ -115,10 +115,10 @@
 
 				<div class="accordion_trayitem js-tray-accordion-item">
 					<h4 class="toggleable_tray_title">
-						<a class="toggleable_tray_button js-btn-tray-accordion" href="#!"><img alt="{!EXPAND}: Dimension Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
-						<a class="toggleable_tray_button js-btn-tray-accordion" href="#!">Dimension Properties</a>
+						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!"><img alt="{!EXPAND}: Dimension Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!">Dimension Properties</a>
 					</h4>
-					<div class="toggleable_tray" style="display: none" aria-expanded="false">
+					<div class="toggleable_tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
 						<table class="columned_table results_table" cellspacing="0" cellpadding="0" border="1" width="100%">
 							<tbody><tr>
 								<th width="28%" align="left">Property</th>
@@ -161,10 +161,10 @@
 
 				<div class="accordion_trayitem js-tray-accordion-item">
 					<h4 class="toggleable_tray_title">
-						<a class="toggleable_tray_button js-btn-tray-accordion" href="#!"><img alt="{!EXPAND}: List Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
-						<a class="toggleable_tray_button js-btn-tray-accordion" href="#!">List Properties</a>
+						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!"><img alt="{!EXPAND}: List Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!">List Properties</a>
 					</h4>
-					<div class="toggleable_tray" style="display: none" aria-expanded="false">
+					<div class="toggleable_tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
 						<table class="columned_table results_table" cellspacing="0" cellpadding="0" border="1" width="100%">
 							<tbody><tr>
 								<th width="28%" align="left">Property</th>
@@ -187,10 +187,10 @@
 
 				<div class="accordion_trayitem js-tray-accordion-item">
 					<h4 class="toggleable_tray_title">
-						<a class="toggleable_tray_button js-btn-tray-accordion"><img alt="{!EXPAND}: Margin/Padding Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
-						<a class="toggleable_tray_button js-btn-tray-accordion">Margin/Padding Properties</a>
+						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion"><img alt="{!EXPAND}: Margin/Padding Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion">Margin/Padding Properties</a>
 					</h4>
-					<div class="toggleable_tray" style="display: none" aria-expanded="false">
+					<div class="toggleable_tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
 						<table class="columned_table results_table" cellspacing="0" cellpadding="0" border="1" width="100%">
 							<tbody><tr>
 								<th width="28%" align="left">Property</th>
@@ -253,10 +253,10 @@
 
 				<div class="accordion_trayitem js-tray-accordion-item">
 					<h4 class="toggleable_tray_title">
-						<a class="toggleable_tray_button js-btn-tray-accordion" href="#!"><img alt="{!EXPAND}: Positioning Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
-						<a class="toggleable_tray_button js-btn-tray-accordion" href="#!">Positioning Properties</a>
+						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!"><img alt="{!EXPAND}: Positioning Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!">Positioning Properties</a>
 					</h4>
-					<div class="toggleable_tray" style="display: none" aria-expanded="false">
+					<div class="toggleable_tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
 						<table class="columned_table results_table" cellspacing="0" cellpadding="0" border="1" width="100%">
 							<tbody><tr>
 								<th width="28%" align="left">Property</th>
@@ -324,10 +324,10 @@
 
 				<div class="accordion_trayitem js-tray-accordion-item">
 					<h4 class="toggleable_tray_title">
-						<a class="toggleable_tray_button js-btn-tray-accordion" href="#!"><img alt="{!EXPAND}: Text/Font Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
-						<a class="toggleable_tray_button js-btn-tray-accordion" href="#!">Text/Font Properties</a>
+						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!"><img alt="{!EXPAND}: Text/Font Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!">Text/Font Properties</a>
 					</h4>
-					<div class="toggleable_tray" style="display: none" aria-expanded="false">
+					<div class="toggleable_tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
 						<table class="columned_table results_table" cellspacing="0" cellpadding="0" border="1" width="100%">
 							<tbody><tr>
 								<th width="28%" align="left">Property</th>
@@ -439,10 +439,10 @@
 {+END}
 
 {+START,IF,{INCLUDE_TEMPCODE_EDITING}}
-	<div class="template_editing_toolbar" data-view="ToggleableTray">
+	<div class="template_editing_toolbar" data-toggleable-tray="{}">
 		<h3 class="js-tray-header">
-			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{!SYMBOLS_AND_DIRECTIVES}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
-			<a class="non_link js-btn-tray-toggle" href="#!">{!SYMBOLS_AND_DIRECTIVES}</a>
+			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{!SYMBOLS_AND_DIRECTIVES}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+			<a class="non_link js-tray-onclick-toggle-tray" href="#!">{!SYMBOLS_AND_DIRECTIVES}</a>
 		</h3>
 		<div class="toggleable_tray js-tray-content" style="display: none" id="b_{FILE_ID*}" aria-expanded="false">
 			{PARAMETERS}
@@ -491,10 +491,10 @@
 {$,GUIDs}
 
 {+START,IF_NON_EMPTY,{GUIDS}}
-	<div class="guids" data-view="ToggleableTray">
+	<div class="guids" data-toggleable-tray="{}">
 		<h3 class="js-tray-header">
-			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{!TEMPLATE_GUIDS}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
-			<a class="non_link js-btn-tray-toggle" href="#!">{!TEMPLATE_GUIDS}</a>
+			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{!TEMPLATE_GUIDS}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+			<a class="non_link js-tray-onclick-toggle-tray" href="#!">{!TEMPLATE_GUIDS}</a>
 		</h3>
 		<div class="toggleable_tray js-tray-content" style="display: none" aria-expanded="false">
 			<div class="wide_table_wrap"><table class="columned_table autosized_table revision_box results_table wide_table">
@@ -533,10 +533,10 @@
 {$,Related templates}
 
 {+START,IF_NON_EMPTY,{RELATED}}
-	<div class="related" data-view="ToggleableTray">
+	<div class="related" data-toggleable-tray="{}">
 		<h3 class="js-tray-header">
-			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{!RELATED_TEMPLATES}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
-			<a class="non_link js-btn-tray-toggle" href="#!">{!RELATED_TEMPLATES}</a>
+			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{!RELATED_TEMPLATES}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+			<a class="non_link js-tray-onclick-toggle-tray" href="#!">{!RELATED_TEMPLATES}</a>
 		</h3>
 		<div class="toggleable_tray js-tray-content" style="display: none" aria-expanded="false">
 			<ul>

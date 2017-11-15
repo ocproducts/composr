@@ -2,7 +2,7 @@
     'use strict';
 
     $cms.templates.bookingFleshOutScreen = function bookingFleshOutScreen(params, container) {
-        $cms.dom.on(container, 'change', 'js-change-recalculate-booking-price', function (e, el) {
+        $dom.on(container, 'change', 'js-change-recalculate-booking-price', function (e, el) {
             recalculatePrice(el.form);
         });
     };
@@ -28,8 +28,8 @@
             }
             post += form.elements[i].name + '=' + encodeURIComponent(value) + '&';
         }
-        $cms.doAjaxRequest('{$FIND_SCRIPT;,booking_price_ajax}' + $cms.$KEEP(true), null, post).then(function (xhr) {
-            $cms.dom.html(document.getElementById('price'), $cms.filter.html(xhr.responseText));
+        $cms.doAjaxRequest('{$FIND_SCRIPT;,booking_price_ajax}' + $cms.keep(true), null, post).then(function (xhr) {
+            $dom.html(document.getElementById('price'), $cms.filter.html(xhr.responseText));
         });
     }
 }(window.$cms));

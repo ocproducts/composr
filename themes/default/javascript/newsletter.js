@@ -20,7 +20,7 @@
             var de = window.frames[frameId].document.documentElement;
             var body = de.querySelector('body');
             if (!body) {
-                $cms.dom.html(de, adjustedPreview);
+                $dom.html(de, adjustedPreview);
             } else {
                 var headElement = de.querySelector('head');
                 if (!headElement) {
@@ -28,24 +28,24 @@
                     de.appendChild(headElement);
                 }
                 if (!de.querySelector('style') && adjustedPreview.indexOf('<head') !== -1) { /* The conditional is needed for Firefox - for some odd reason it is unable to parse any head tags twice */
-                    $cms.dom.html(headElement, adjustedPreview.replace(/^(.|\n)*<head[^>]*>((.|\n)*)<\/head>(.|\n)*$/i, '$2'));
+                    $dom.html(headElement, adjustedPreview.replace(/^(.|\n)*<head[^>]*>((.|\n)*)<\/head>(.|\n)*$/i, '$2'));
                 }
 
-                $cms.dom.html(body, adjustedPreview.replace(/^(.|\n)*<body[^>]*>((.|\n)*)<\/body>(.|\n)*$/i, '$2'));
+                $dom.html(body, adjustedPreview.replace(/^(.|\n)*<body[^>]*>((.|\n)*)<\/body>(.|\n)*$/i, '$2'));
             }
 
-            $cms.dom.resizeFrame(frameId, 300);
+            $dom.resizeFrame(frameId, 300);
         }, 500);
 
         setInterval(function () {
-            $cms.dom.resizeFrame(frameId, 300);
+            $dom.resizeFrame(frameId, 300);
         }, 1000);
     };
 
     $cms.templates.blockMainNewsletterSignup = function (params, container) {
         var nid = strVal(params.nid);
 
-        $cms.dom.on(container, 'submit', '.js-form-submit-newsletter-check-email-field', function (e, form) {
+        $dom.on(container, 'submit', '.js-form-submit-newsletter-check-email-field', function (e, form) {
             if (!$cms.form.checkFieldForBlankness(form.elements['address' + nid])) {
                 e.preventDefault();
                 return;
@@ -62,13 +62,13 @@
             // Tracking
             e.preventDefault();
             $cms.gaTrack(null, '{!newsletter:NEWSLETTER_JOIN;}', null, function () {
-                $cms.dom.submit(form);
+                $dom.submit(form);
             });
         });
     };
 
     $cms.templates.periodicNewsletterRemove = function periodicNewsletterRemove(params, container) {
-        $cms.dom.on(container, 'click', '.js-click-btn-disable-self', function (e, btn) {
+        $dom.on(container, 'click', '.js-click-btn-disable-self', function (e, btn) {
             setTimeout(function () {
                 btn.disabled = true;
             }, 100);

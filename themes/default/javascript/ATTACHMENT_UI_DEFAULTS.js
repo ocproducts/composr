@@ -10,11 +10,11 @@
  */
 
 // Add any defaults into URL
-defaults.thumb = ($cms.$CONFIG_OPTION('simplified_attachments_ui') && isImage && !multi) ? '0' : '1';
+defaults.thumb = ($cms.configOption('simplified_attachments_ui') && isImage && !multi) ? '0' : '1';
 defaults.type = ''; // =autodetect rendering type
 
 // Shall we show the options overlay?
-showOverlay = !(multi || (isImage && $cms.$CONFIG_OPTION('simplified_attachments_ui')) || isArchive);
+showOverlay = !(multi || (isImage && $cms.configOption('simplified_attachments_ui')) || isArchive);
 
 if (isImage) {
     tag = 'attachment_safe'; // [attachment_safe]

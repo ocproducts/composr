@@ -1,7 +1,7 @@
-<div data-view="ToggleableTray">
+<div data-toggleable-tray="{}">
 	<h2 class="js-tray-header">
-		<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}: {!MODULE_TRANS_NAME_subscriptions}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract}" srcset="{$IMG*,2x/trays/contract} 2x" /></a>
-		<span class="js-btn-tray-toggle">{!MODULE_TRANS_NAME_subscriptions}</span>
+		<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!MODULE_TRANS_NAME_subscriptions}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract}" srcset="{$IMG*,2x/trays/contract} 2x" /></a>
+		<span class="js-tray-onclick-toggle-tray">{!MODULE_TRANS_NAME_subscriptions}</span>
 	</h2>
 
 	<div class="toggleable_tray js-tray-content" style="display: block" aria-expanded="true">

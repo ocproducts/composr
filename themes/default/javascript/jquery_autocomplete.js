@@ -449,8 +449,8 @@ jQuery(function ($) {
                 var sel = cke.getSelection(); // text selection
                 var obj = sel.getStartElement().$; // the element the selected text resides in
 
-                var x = $cms.dom.findPosX(obj, true) - window.pageXOffset + cke.window.$.pageXOffset + $cms.dom.findPosX(iframe, true);
-                var y = $cms.dom.findPosY(obj, true) - window.pageYOffset + cke.window.$.pageYOffset + $cms.dom.findPosY(iframe, true) + 20;
+                var x = $dom.findPosX(obj, true) - window.pageXOffset + cke.window.$.pageXOffset + $dom.findPosX(iframe, true);
+                var y = $dom.findPosY(obj, true) - window.pageYOffset + cke.window.$.pageYOffset + $dom.findPosY(iframe, true) + 20;
                 // NB: The get_window_scroll_x/get_window_scroll_y is because calculation happened on wrong window object
 
                 var text = _this.getText().substring(0, this.startPos);
@@ -665,7 +665,7 @@ function setUpComcodeAutocomplete(name, wysiwyg) {
     }
 
     if (!window.jQuery || !window.jQuery.fn.sew) {
-        $cms.fatal('setUpComcodeAutocomplete(): jQuery.fn.sew plugin is not loaded');
+        $util.fatal('setUpComcodeAutocomplete(): jQuery.fn.sew plugin is not loaded');
     }
 
     window.jQuery('#' + name).sew({
@@ -673,7 +673,7 @@ function setUpComcodeAutocomplete(name, wysiwyg) {
         token: '@',
         elementFactory: autoCompleteElementFactory,
         onFilterChanged: function (sew, token, expression) {
-            $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,namelike}?id=' + encodeURIComponent(token) + $cms.$KEEP()).then(function (responseXml) {
+            $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,namelike}?id=' + encodeURIComponent(token) + $cms.keep()).then(function (responseXml) {
                 var listContents = responseXml && responseXml.querySelector('result');
                 
                 var newValues = [];

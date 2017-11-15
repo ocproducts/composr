@@ -136,15 +136,15 @@ In Composr, JavaScript libraries are automatically minified to save on bandwidth
 
  - [b]Escaping[/b]: [tt]$cms.filter.html[/tt], [tt]$cms.filter.comcode[/tt]
  - [b]Cookies[/b]: [tt]$cms.setCookie[/tt], [tt]$cms.readCookie[/tt]
- - [b]Introspection[/b]: [tt]$cms.dom.$$[/tt], [tt]$cms.dom.css[/tt], [tt]$cms.browserMatches[/tt]
+ - [b]Introspection[/b]: [tt]$dom.$$[/tt], [tt]$dom.css[/tt], [tt]$cms.browserMatches[/tt]
  - [b]Calling up dependencies[/b]: [tt]$cms.loadSnippet[/tt], [tt]$cms.requireJavascript[/tt]
- - [b]Viewport[/b]: [tt]$cms.dom.getWindowWidth[/tt], [tt]$cms.dom.getWindowHeight[/tt], [tt]$cms.dom.getWindowScrollHeight[/tt], [tt]get_window_scroll_x[/tt], [tt]get_window_scroll_y[/tt]
- - [b]Element positioning[/b]: [tt]$cms.dom.findPosX[/tt], [tt]$cms.dom.findPosY[/tt], [tt]find_width[/tt], [tt]find_height[/tt]
+ - [b]Viewport[/b]: [tt]$dom.getWindowWidth[/tt], [tt]$dom.getWindowHeight[/tt], [tt]$dom.getWindowScrollHeight[/tt], [tt]get_window_scroll_x[/tt], [tt]get_window_scroll_y[/tt]
+ - [b]Element positioning[/b]: [tt]$dom.findPosX[/tt], [tt]$dom.findPosY[/tt], [tt]find_width[/tt], [tt]find_height[/tt]
  - [b]Tooltips[/b]: [tt]$cms.ui.activateTooltip[/tt]
- - [b]Misc[/b]: [tt]$cms.dom.on[/tt]
- - [b]HTML manipulation[/b]: [tt]$cms.dom.html[/tt]
+ - [b]Misc[/b]: [tt]$dom.on[/tt]
+ - [b]HTML manipulation[/b]: [tt]$dom.html[/tt]
  - [b]AJAX[/b]: [tt]$cms.doAjaxRequest[/tt]
- - [b]Animation[/b]: [tt]$cms.ui.toggleableTray[/tt], [tt]$cms.dom.smoothScroll[/tt], transitions.js: [tt]$cms.dom.fadeIn[/tt]
+ - [b]Animation[/b]: [tt]$cms.ui.toggleableTray[/tt], [tt]$dom.smoothScroll[/tt], transitions.js: [tt]$dom.fadeIn[/tt]
 
 [title="3"]JavaScript event handlers[/title]
 

@@ -9,11 +9,11 @@
             editType = strVal(params.editType);
 
         if (!explicitEditingLinks) {
-            $cms.dom.on(el, 'click', function (e) {
+            $dom.on(el, 'click', function (e) {
                 fractionalEdit(e, el, url, editText, editParamName, null, null, editType);
             });
 
-            $cms.dom.on(el, 'mouseover mouseout', function (e, target) {
+            $dom.on(el, 'mouseover mouseout', function (e, target) {
                 if (e.relatedTarget && target.contains(e.relatedTarget)) {
                     return;
                 }
@@ -30,7 +30,7 @@
                 }
             });
         } else {
-            $cms.dom.on(el, 'click', function (e) {
+            $dom.on(el, 'click', function (e) {
                 fractionalEdit(e, el.previousElementSibling.previousElementSibling, url, editText, editParamName);
             });
         }
@@ -57,8 +57,8 @@
         if (width < 160) {
             width = 160;
         }
-        var x = $cms.dom.findPosX(object, true);
-        var y = $cms.dom.findPosY(object, true) - 8;
+        var x = $dom.findPosX(object, true);
+        var y = $dom.findPosY(object, true) - 8;
 
         // Record old JS events
         object.oldOnclick = object.onclick;
@@ -95,15 +95,15 @@
                 var listOption;
                 for (var i = 0; i < listOptions.length; i++) {
                     listOption = document.createElement('option');
-                    $cms.dom.html(listOption, $cms.filter.html(listOptions[i]));
+                    $dom.html(listOption, $cms.filter.html(listOptions[i]));
                     listOption.selected = (populatedValue == listOptions[i]);
                     input.appendChild(listOption);
                 }
                 break;
         }
         input.style.position = 'absolute';
-        input.style.left = $cms.$MOBILE() ? '0px' : (x + 'px');
-        input.style.width = $cms.$MOBILE() ? ($cms.dom.getWindowWidth() + 'px') : (width + 'px');
+        input.style.left = $cms.isMobile() ? '0px' : (x + 'px');
+        input.style.width = $cms.isMobile() ? ($dom.getWindowWidth() + 'px') : (width + 'px');
         input.style.top = (y + 8) + 'px';
         input.style.margin = 0;
 
@@ -123,11 +123,11 @@
             }
         }
         input.name = editParamName;
-        $cms.dom.on(form, 'submit', function (e) {
+        $dom.on(form, 'submit', function (e) {
             e.preventDefault();
         });
         if (controlButton) {
-            $cms.dom.html(controlButton, '{!SAVE;^}');
+            $dom.html(controlButton, '{!SAVE;^}');
         }
 
         function cleanupFunction() {
@@ -141,7 +141,7 @@
             }
 
             if (controlButton) {
-                $cms.dom.html(controlButton, '{!EDIT;^}');
+                $dom.html(controlButton, '{!EDIT;^}');
 
                 // To stop it instantly re-clicking
                 var backup = controlButton.onclick;
@@ -169,7 +169,7 @@
                 if (((xhr.responseText === '') && (input.value !== '')) || (xhr.status !== 200)) {
                     var sessionTestUrl = '{$FIND_SCRIPT_NOHTTP;,confirm_session}';
 
-                    $cms.doAjaxRequest(sessionTestUrl + $cms.$KEEP(true)).then(function (sessionXhr) {
+                    $cms.doAjaxRequest(sessionTestUrl + $cms.keep(true)).then(function (sessionXhr) {
                         if (sessionXhr.responseText) { // If it failed, see if it is due to a non-confirmed session
                             $cms.ui.confirmSession().then(function (sessionConfirmed) {
                                 if (sessionConfirmed) {
@@ -185,7 +185,7 @@
                     });
                 } else { // Success
                     object.rawText = input.value;
-                    $cms.dom.html(object, xhr.responseText);
+                    $dom.html(object, xhr.responseText);
 
                     cleanupFunction();
                 }
@@ -208,7 +208,7 @@
         // Cancel or save actions
         if (type === 'line') {
             input.onkeyup = function (event) { // Not using onkeypress because that only works for actual represented characters in the input box
-                if ($cms.dom.keyPressed(event, 'Escape')) { // Cancel (escape key)
+                if ($dom.keyPressed(event, 'Escape')) { // Cancel (escape key)
                     var tmp = input.onblur;
                     input.onblur = null;
                     $cms.ui.confirm('{!javascript:FRACTIONAL_EDIT_CANCEL_CONFIRM;^}', function (result) {
@@ -222,7 +222,7 @@
                     return null;
                 }
 
-                if ($cms.dom.keyPressed(event, 'Enter') && (this.value != '')) { // Save
+                if ($dom.keyPressed(event, 'Enter') && (this.value != '')) { // Save
                     return saveFunction();
                 }
 

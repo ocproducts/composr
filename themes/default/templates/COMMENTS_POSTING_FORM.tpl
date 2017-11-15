@@ -28,15 +28,15 @@
 			<input type="hidden" name="title" value="" />
 		{+END}
 
-		<div class="box box___comments_posting_form"{+START,IF_PASSED,EXPAND_TYPE} data-view="ToggleableTray"{+END}>
+		<div class="box box___comments_posting_form"{+START,IF_PASSED,EXPAND_TYPE} data-toggleable-tray="{}"{+END}>
 			{+START,IF_NON_EMPTY,{TITLE}}
 				<h3 class="toggleable_tray_title js-tray-header">
 					{+START,IF_NON_PASSED,EXPAND_TYPE}
 						{TITLE*}
 					{+END}
 					{+START,IF_PASSED,EXPAND_TYPE}
-						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{$?,{$EQ,{EXPAND_TYPE},contract},{!CONTRACT},{!EXPAND}}" title="{$?,{$EQ,{EXPAND_TYPE},contract},{!CONTRACT},{!EXPAND}}" src="{$IMG*,1x/trays/{EXPAND_TYPE}2}" srcset="{$IMG*,2x/trays/{EXPAND_TYPE}2} 2x" /></a>
-						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{TITLE*}</a>
+						<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{$?,{$EQ,{EXPAND_TYPE},contract},{!CONTRACT},{!EXPAND}}" title="{$?,{$EQ,{EXPAND_TYPE},contract},{!CONTRACT},{!EXPAND}}" src="{$IMG*,1x/trays/{EXPAND_TYPE}2}" srcset="{$IMG*,2x/trays/{EXPAND_TYPE}2} 2x" /></a>
+						<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!">{TITLE*}</a>
 					{+END}
 				</h3>
 			{+END}

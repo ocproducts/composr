@@ -10,7 +10,7 @@
 
         for (var counter = 0; counter < selectElementLength; counter++) {
             selectElements[counter].addEventListener('change', function () {
-                $cms.dom.submit(selectElements[0].form);
+                $dom.submit(selectElements[0].form);
             });
         }
         selectSubmit.style.display = 'none';

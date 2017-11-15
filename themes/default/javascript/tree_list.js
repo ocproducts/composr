@@ -23,7 +23,7 @@
                 allNodesSelectable: allNodesSelectable,
                 useServerId: useServerId
             },
-            el = $cms.dom.$id('tree_list__root_' + name);
+            el = $dom.$id('tree_list__root_' + name);
 
         return new $cms.views.TreeList(options, {el: el});
     };
@@ -45,7 +45,7 @@
         this.allNodesSelectable = Boolean(params.allNodesSelectable);
         this.useServerId = Boolean(params.useServerId);
 
-        $cms.dom.html(this.el, '<div class="ajax_loading vertical_alignment"><img src="' + $cms.img('{$IMG*;^,loading}') + '" alt="" /> <span>{!LOADING;^}</span></div>');
+        $dom.html(this.el, '<div class="ajax_loading vertical_alignment"><img src="' + $cms.img('{$IMG*;^,loading}') + '" alt="" /> <span>{!LOADING;^}</span></div>');
 
         // Initial rendering
         var url = $cms.baseUrl(this.ajaxUrl), 
@@ -54,18 +54,18 @@
             url += '&id=' + encodeURIComponent(params.rootId);
         }
         url += '&options=' + this.options;
-        url += '&default=' + encodeURIComponent($cms.dom.$id(this.name).value);
+        url += '&default=' + encodeURIComponent($dom.$id(this.name).value);
         
         $cms.doAjaxRequest(url).then(function (xhr) {
             that.response(xhr);
         });
 
-        $cms.dom.on(document.documentElement, 'mousemove', function (event) {
+        $dom.on(document.documentElement, 'mousemove', function (event) {
             that.specialKeyPressed = !!(event.ctrlKey || event.altKey || event.metaKey || event.shiftKey)
         });
     }
 
-    $cms.inherits(TreeList, $cms.View, /**@lends TreeList#*/{
+    $util.inherits(TreeList, $cms.View, /**@lends TreeList#*/{
         specialKeyPressed: false,
         /**@type { Node }*/
         treeListData: null,
@@ -81,7 +81,7 @@
 
             var results = ob.getElementsByTagName((type === 'c') ? 'category' : 'entry');
             for (var i = 0; i < results.length; i++) {
-                if ((results[i].getAttribute !== undefined) && (results[i].getAttribute(serverid ? 'serverid' : 'id') == id)) {
+                if ((results[i].getAttribute !== undefined) && (results[i].getAttribute(serverid ? 'serverid' : 'id') === id)) {
                     return results[i];
                 }
             }
@@ -104,14 +104,14 @@
 
             var i, xml, tempNode, html;
             if (expandingId === '') { // Root
-                html = $cms.dom.$id('tree_list__root_' + this.name);
-                $cms.dom.html(html, '');
+                html = $dom.$('#tree_list__root_' + this.name);
+                $dom.empty(html);
 
                 this.treeListData = ajaxResult.cloneNode(true);
                 xml = this.treeListData;
 
                 if (!xml.firstElementChild) {
-                    var error = document.createTextNode((this.name.indexOf('category') === -1 && window.location.href.indexOf('category') === -1) ? '{!NO_ENTRIES;^}' : '{!NO_CATEGORIES;^}');
+                    var error = document.createTextNode((!this.name.includes('category') && !window.location.href.includes('category')) ? '{!NO_ENTRIES;^}' : '{!NO_CATEGORIES;^}');
                     html.className = 'red_alert';
                     html.appendChild(error);
                     return;
@@ -122,7 +122,7 @@
                     tempNode = ajaxResult.childNodes[i];
                     xml.appendChild(tempNode.cloneNode(true));
                 }
-                html = $cms.dom.$id(this.name + 'tree_list_c_' + expandingId);
+                html = $dom.$id(this.name + 'tree_list_c_' + expandingId);
             }
 
             attributesFullFixup(xml);
@@ -134,44 +134,47 @@
             var that = this, colour, newHtml, escapedTitle, initiallyExpanded, 
                 selectable, extra, title, func, masterHtml;
 
-            element || (element = $cms.dom.$id(this.name));
+            element || (element = $dom.$id(this.name));
 
-            $cms.dom.fadeIn(html);
-            $cms.dom.toggle(html, !!xml.firstElementChild);
+            if (xml.firstElementChild) {
+                $dom.fadeIn(html);
+            } else {
+                $dom.hide(html);
+            }
 
             arrVal(xml.children).forEach(function (node) {
                 var nodeSelfWrap, nodeSelf, el, label, htmlNode, expanding;
 
                 // Special handling of 'options' nodes, inject new options
                 if (node.localName === 'options') {
-                    that.options = encodeURIComponent($cms.dom.html(node));
+                    that.options = encodeURIComponent($dom.html(node));
                     return;
                 }
 
                 // Special handling of 'expand' nodes, which say to pre-expand some categories as soon as the page loads
                 if (node.localName === 'expand') {
-                    el = $cms.dom.$id(that.name + 'texp_c_' + $cms.dom.html(node));
+                    el = $dom.$id(that.name + 'texp_c_' + $dom.html(node));
                     if (el) {
-                        htmlNode = $cms.dom.$id(that.name + 'tree_list_c_' + $cms.dom.html(node));
+                        htmlNode = $dom.$id(that.name + 'tree_list_c_' + $dom.html(node));
                         expanding = (htmlNode.style.display !== 'block');
                         if (expanding) {
-                            if ($cms.dom.$id('choose_' + that.name)) {
-                                $cms.dom.$id('choose_' + that.name).click();
+                            if ($dom.$('#choose_' + that.name)) {
+                                $dom.$('#choose_' + that.name).click();
                             }
 
                             that.handleTreeClick(null, true, el);
                         }
                     } else {
                         // Now try against serverid
-                        var xmlNode = that.getElementByIdHack($cms.dom.html(node), 'c', null, true);
+                        var xmlNode = that.getElementByIdHack($dom.html(node), 'c', null, true);
                         if (xmlNode) {
-                            el = $cms.dom.$id(that.name + 'texp_c_' + xmlNode.getAttribute('id'));
+                            el = $dom.$id(that.name + 'texp_c_' + xmlNode.getAttribute('id'));
                             if (el) {
-                                htmlNode = $cms.dom.$id(that.name + 'tree_list_c_' + xmlNode.getAttribute('id'));
+                                htmlNode = $dom.$id(that.name + 'tree_list_c_' + xmlNode.getAttribute('id'));
                                 expanding = (htmlNode.style.display !== 'block');
                                 if (expanding) {
-                                    if ($cms.dom.$id('choose_' + that.name)) {
-                                        $cms.dom.$id('choose_' + that.name).click();
+                                    if ($dom.$('#choose_' + that.name)) {
+                                        $dom.$('#choose_' + that.name).click();
                                     }
 
                                     that.handleTreeClick(null, true, el);
@@ -232,7 +235,7 @@
                         imgUrl = node.getAttribute('img_url');
                         imgUrl2 = node.getAttribute('img_url_2');
                     }
-                    $cms.dom.html(nodeSelf, /** @lang HTML */' \
+                    $dom.html(nodeSelf, /** @lang HTML */' \
                         <div> \
                             <input class="ajax_tree_expand_icon"' + (that.tabindex ? (' tabindex="' + that.tabindex + '"') : '') + ' type="image" alt="' + ((!initiallyExpanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + ': ' + escapedTitle + '" title="' + ((!initiallyExpanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + '" id="' + that.name + 'texp_c_' + node.getAttribute('id') + '" src="' + $cms.img(!initiallyExpanded ? '{$IMG*;,1x/treefield/expand}' : '{$IMG*;,1x/treefield/collapse}') + '" srcset="' + $cms.img(!initiallyExpanded ? '{$IMG*;,2x/treefield/expand}' : '{$IMG*;,2x/treefield/collapse}') + ' 2x" /> \
                             <img class="ajax_tree_cat_icon" alt="{!CATEGORY;^}" src="' + $cms.filter.html(imgUrl) + '" srcset="' + $cms.filter.html(imgUrl2) + ' 2x" /> \
@@ -240,13 +243,13 @@
                             <span id="' + that.name + 'extra_' + node.getAttribute('id') + '">' + extra + '</span> \
                         </div>');
                     var expandButton = nodeSelf.querySelector('input');
-                    expandButton.oncontextmenu = $cms.returnFalse;
+                    expandButton.oncontextmenu = function () { return false };
                     
-                    $cms.dom.on(expandButton, 'click', function (e) {
+                    $dom.on(expandButton, 'click', function (e) {
                         e.preventDefault();
 
-                        if ($cms.dom.$id('choose_' + that.name)) {
-                            $cms.dom.$id('choose_' + that.name).click();
+                        if ($dom.$('#choose_' + that.name)) {
+                            $dom.$('#choose_' + that.name).click();
                         }
 
                         that.handleTreeClick(e, false, expandButton);
@@ -257,14 +260,14 @@
                         if (((event.keyCode ? event.keyCode : event.charCode) === 13) || ['+', '-', '='].includes(String.fromCharCode(event.keyCode ? event.keyCode : event.charCode))) {
                             event.preventDefault();
                             
-                            if ($cms.dom.$id('choose_' + that.name)) {
-                                $cms.dom.$id('choose_' + that.name).click();
+                            if ($dom.$('#choose_' + that.name)) {
+                                $dom.$('#choose_' + that.name).click();
                             }
 
                             that.handleTreeClick(event, false, expandButton);
                         }
                     };
-                    label.oncontextmenu = $cms.returnFalse;
+                    label.oncontextmenu = function () { return false };
                     label.firstElementChild.addEventListener('focus', function () {
                         label.style.outline = '1px dotted';
                     });
@@ -288,11 +291,11 @@
                     newHtml = document.createElement('div');
                     newHtml.role = 'treeitem';
                     newHtml.id = that.name + 'tree_list_c_' + node.getAttribute('id');
-                    newHtml.style.display = ((!initiallyExpanded) || (node.getAttribute('has_children') != 'true')) ? 'none' : 'block';
+                    newHtml.style.display = ((!initiallyExpanded) || (node.getAttribute('has_children') !== 'true')) ? 'none' : 'block';
                     newHtml.style.paddingLeft = '15px';
-                    var selected = ((that.useServerId ? node.getAttribute('serverid') : node.getAttribute('id')) == element.value && element.value != '') || node.getAttribute('selected') == 'yes';
+                    var selected = ((that.useServerId ? node.getAttribute('serverid') : node.getAttribute('id')) === element.value && element.value !== '') || node.getAttribute('selected') === 'yes';
                     if (selectable) {
-                        that.makeElementLookSelected($cms.dom.$id(that.name + 'tsel_c_' + node.getAttribute('id')), selected);
+                        that.makeElementLookSelected($dom.$id(that.name + 'tsel_c_' + node.getAttribute('id')), selected);
                         if (selected) {
                             // Copy in proper ID for what is selected, not relying on what we currently have as accurate
                             var newVal = strVal(that.useServerId ? node.getAttribute('serverid') : node.getAttribute('id'));
@@ -307,15 +310,16 @@
                                 element.selectedTitle += node.getAttribute('title');
                             }
                             
-                            $cms.dom.changeVal(element, newVal);
+                            $dom.changeValue(element, newVal);
+                            //element.value = newVal;
                         }
                     }
                     nodeSelf.appendChild(newHtml);
 
                     // Auto-expand
                     if (that.specialKeyPressed && !initiallyExpanded) {
-                        if ($cms.dom.$id('choose_' + that.name)) {
-                            $cms.dom.$id('choose_' + that.name).click();
+                        if ($dom.$('#choose_' + that.name)) {
+                            $dom.$('#choose_' + that.name).click();
                         }
 
                         that.handleTreeClick(null, false, expandButton);
@@ -348,7 +352,7 @@
                         imgUrl = node.getAttribute('img_url');
                         imgUrl2 = node.getAttribute('img_url_2');
                     }
-                    $cms.dom.html(nodeSelf, '<div><img alt="{!ENTRY;^}" src="' + $cms.filter.html(imgUrl) + '" srcset="' + $cms.filter.html(imgUrl2) + ' 2x" style="width: 14px; height: 14px" /> ' +
+                    $dom.html(nodeSelf, '<div><img alt="{!ENTRY;^}" src="' + $cms.filter.html(imgUrl) + '" srcset="' + $cms.filter.html(imgUrl2) + ' 2x" style="width: 14px; height: 14px" /> ' +
                         '<label id="' + that.name + 'tsel_e_' + node.getAttribute('id') + '" class="ajax_tree_magic_button ' + colour + '" for="' + that.name + 'tsel_s_' + node.getAttribute('id') + '" data-mouseover-activate-tooltip="[\'' + (node.getAttribute('description_html') ? '' : (descriptionInUse.replace(/\n/g, '').replace(/'/g, '\\\''))) + '\', \'800px\']">' +
                         '<input' + (that.tabindex ? (' tabindex="' + that.tabindex + '"') : '') + ' id="' + that.name + 'tsel_s_' + node.getAttribute('id') + '" style="position: absolute; left: -10000px" type="radio" name="_' + that.name + '" value="1" />' + escapedTitle + '</label>' + extra + '</div>');
                     
@@ -371,15 +375,15 @@
                         }
                     });
                     html.appendChild(nodeSelfWrap);
-                    var selected = ((that.useServerId ? node.getAttribute('serverid') : node.getAttribute('id')) == element.value) || node.getAttribute('selected') == 'yes';
+                    var selected = ((that.useServerId ? node.getAttribute('serverid') : node.getAttribute('id')) == element.value) || node.getAttribute('selected') === 'yes';
                     if ((that.multiSelection) && !selected) {
                         selected = (',' + element.value + ',').indexOf(',' + node.getAttribute('id') + ',') !== -1;
                     }
-                    that.makeElementLookSelected($cms.dom.$id(that.name + 'tsel_e_' + node.getAttribute('id')), selected);
+                    that.makeElementLookSelected($dom.$id(that.name + 'tsel_e_' + node.getAttribute('id')), selected);
                 }
 
                 if (node.getAttribute('draggable') && (node.getAttribute('draggable') !== 'false')) {
-                    masterHtml = $cms.dom.$id('tree_list__root_' + that.name);
+                    masterHtml = $dom.$id('tree_list__root_' + that.name);
                     fixUpNodePosition(nodeSelf);
                     nodeSelf.cmsDraggable = node.getAttribute('draggable');
                     nodeSelf.draggable = true;
@@ -414,7 +418,7 @@
                                 var targetXmlNode = that.getElementByIdHack(nodeSelf.lastHit.id.substr(12 + that.name.length));
 
                                 if ((nodeSelf.lastHit.childNodes.length === 1) && (nodeSelf.lastHit.childNodes[0].nodeName === '#text')) {
-                                    $cms.dom.empty(nodeSelf.lastHit);
+                                    $dom.empty(nodeSelf.lastHit);
                                     that.renderTree(targetXmlNode, nodeSelf.lastHit);
                                 }
 
@@ -450,11 +454,11 @@
                 if (initiallyExpanded) {
                     that.renderTree(node, newHtml, element);
                 } else if (newHtml) {
-                    $cms.dom.append(newHtml, '{!PLEASE_WAIT;^}');
+                    $dom.append(newHtml, '{!PLEASE_WAIT;^}');
                 }
             });
 
-            $cms.dom.triggerResize();
+            $dom.triggerResize();
 
             function dragPage(from, to) {
                 var newZone = to.replace(/:/, ''),
@@ -473,7 +477,7 @@
         },
 
         handleTreeClick: function handleTreeClick(_, automated, target) {
-            var element = $cms.dom.$id(this.name),
+            var element = $dom.$id(this.name),
                 xmlNode;
             if (element.disabled || this.busy) {
                 return false;
@@ -482,10 +486,10 @@
             this.busy = true;
 
             var clickedId = target.getAttribute('id').substr(7 + this.name.length);
-            var htmlNode = $cms.dom.$id(this.name + 'tree_list_c_' + clickedId);
-            var expandBtn = $cms.dom.$id(this.name + 'texp_c_' + clickedId);
+            var htmlNode = $dom.$id(this.name + 'tree_list_c_' + clickedId);
+            var expandBtn = $dom.$id(this.name + 'texp_c_' + clickedId);
 
-            var expanding = (htmlNode.style.display !== 'block');
+            var expanding = $dom.notDisplayed(htmlNode);
 
             if (expanding) {
                 xmlNode = this.getElementByIdHack(clickedId, 'c');
@@ -499,19 +503,19 @@
                     var url = $cms.baseUrl(this.ajaxUrl + '&id=' + encodeURIComponent(realClickedId) + '&options=' + this.options + '&default=' + encodeURIComponent(element.value));
                     var that = this;
                     $cms.doAjaxRequest(url).then(function (xhr) {
-                        $cms.dom.empty(htmlNode);
+                        $dom.empty(htmlNode);
                         that.response(xhr, clickedId);
                     });
-                    $cms.dom.html(htmlNode, '<div aria-busy="true" class="vertical_alignment"><img src="' + $cms.img('{$IMG*;,loading}') + '" alt="" /> <span>{!LOADING;^}</span></div>');
-                    var container = $cms.dom.$id('tree_list__root_' + that.name);
+                    $dom.html(htmlNode, '<div aria-busy="true" class="vertical_alignment"><img src="' + $cms.img('{$IMG*;,loading}') + '" alt="" /> <span>{!LOADING;^}</span></div>');
+                    var container = $dom.$id('tree_list__root_' + that.name);
                     if (automated && container && (container.style.overflowY === 'auto')) {
                         setTimeout(function () {
-                            container.scrollTop = $cms.dom.findPosY(htmlNode) - 20;
+                            container.scrollTop = $dom.findPosY(htmlNode) - 20;
                         }, 0);
                     }
                 }
                 
-                $cms.dom.fadeIn(htmlNode);
+                $dom.fadeIn(htmlNode);
 
                 expandBtn.src = $cms.img('{$IMG;,1x/treefield/collapse}');
                 expandBtn.srcset = $cms.img('{$IMG;,2x/treefield/collapse}') + ' 2x';
@@ -530,7 +534,7 @@
 
             fixupNodePositions(this.name);
 
-            $cms.dom.triggerResize();
+            $dom.triggerResize();
 
             this.busy = false;
         },
@@ -540,7 +544,7 @@
 
             assumeCtrl = !!assumeCtrl;
 
-            var element = $cms.dom.$id(this.name);
+            var element = $dom.$id(this.name);
             
             if (element.disabled) {
                 return;
@@ -552,7 +556,7 @@
 
             if (!assumeCtrl && event.shiftKey && this.multiSelection) {
                 // We're holding down shift so we need to force selection of everything bounded between our last click spot and here
-                var allLabels = $cms.dom.$id('tree_list__root_' + this.name).getElementsByTagName('label'),
+                var allLabels = $dom.$id('tree_list__root_' + this.name).getElementsByTagName('label'),
                     posLast = -1,
                     posUs = -1;
                 
@@ -560,10 +564,10 @@
                     this.lastClicked = allLabels[0];
                 }
                 for (i = 0; i < allLabels.length; i++) {
-                    if (allLabels[i] == target || allLabels[i] == target.parentNode) {
+                    if (allLabels[i] == target || allLabels[i] === target.parentNode) {
                         posUs = i;
                     }
-                    if (allLabels[i] == this.lastClicked || allLabels[i] == this.lastClicked.parentNode) {
+                    if (allLabels[i] == this.lastClicked || allLabels[i] === this.lastClicked.parentNode) {
                         posLast = i;
                     }
                 }
@@ -615,7 +619,7 @@
             if ((xmlNode.getAttribute('selectable') === 'true') || this.allNodesSelectable) {
                 var selectedAfter = selectedBefore;
                 for (i = 0; i < selectedBefore.length; i++) {
-                    this.makeElementLookSelected($cms.dom.$id(this.name + 'tsel_' + type + '_' + selectedBefore[i]), false);
+                    this.makeElementLookSelected($dom.$id(this.name + 'tsel_' + type + '_' + selectedBefore[i]), false);
                 }
                 if (!this.multiSelection || ((!event.ctrlKey && !event.metaKey && !event.altKey) && !assumeCtrl)) {
                     selectedAfter = [];
@@ -629,16 +633,16 @@
                 } else if (selectedAfter.indexOf(selectedId) === -1) {
                     selectedAfter.push(selectedId);
                     if (!this.multiSelection) { // This is a bit of a hack to make selection look nice, even though we aren't storing natural IDs of what is selected
-                        var anchors = $cms.dom.$id('tree_list__root_' + this.name).getElementsByTagName('label');
+                        var anchors = $dom.$id('tree_list__root_' + this.name).getElementsByTagName('label');
                         for (i = 0; i < anchors.length; i++) {
                             this.makeElementLookSelected(anchors[i], false);
                         }
-                        this.makeElementLookSelected($cms.dom.$id(this.name + 'tsel_' + type + '_' + realSelectedId), true);
+                        this.makeElementLookSelected($dom.$id(this.name + 'tsel_' + type + '_' + realSelectedId), true);
                     } 
                 } 
                  
                 for (i = 0; i < selectedAfter.length; i++) {
-                    this.makeElementLookSelected($cms.dom.$id(this.name + 'tsel_' + type + '_' + selectedAfter[i]), true);
+                    this.makeElementLookSelected($dom.$id(this.name + 'tsel_' + type + '_' + selectedAfter[i]), true);
                 } 
                 
                 var newVal = selectedAfter.join(',');
@@ -647,8 +651,9 @@
                 if (newVal === '') {
                     element.selectedTitle = '';
                 }
-                
-                $cms.dom.changeVal(element, newVal);
+
+                //element.value = newVal;
+                $dom.changeValue(element, newVal);
             }
 
             if (!assumeCtrl) {
@@ -685,7 +690,7 @@
     }
 
     function fixupNodePositions(name) {
-        var html = $cms.dom.$id('tree_list__root_' + name),
+        var html = $dom.$id('tree_list__root_' + name),
             toFix = html.getElementsByTagName('div'), i;
         
         for (i = 0; i < toFix.length; i++) {
@@ -696,8 +701,8 @@
     }
 
     function fixUpNodePosition(nodeSelf) {
-        nodeSelf.style.left = $cms.dom.findPosX(nodeSelf.parentNode, true) + 'px';
-        nodeSelf.style.top = $cms.dom.findPosY(nodeSelf.parentNode, true) + 'px';
+        nodeSelf.style.left = $dom.findPosX(nodeSelf.parentNode, true) + 'px';
+        nodeSelf.style.top = $dom.findPosY(nodeSelf.parentNode, true) + 'px';
     }
 
     function findOverlappingSelectable(mouseY, element, node, name) { // Find drop targets
@@ -715,8 +720,8 @@
         }
 
         if (node.getAttribute('droppable') == element.cmsDraggable) {
-            childNodeElement = $cms.dom.$id(name + 'tree_list_' + ((node.localName === 'category') ? 'c' : 'e') + '_' + node.getAttribute('id'));
-            y = $cms.dom.findPosY(childNodeElement.parentNode.parentNode, true);
+            childNodeElement = $dom.$id(name + 'tree_list_' + ((node.localName === 'category') ? 'c' : 'e') + '_' + node.getAttribute('id'));
+            y = $dom.findPosY(childNodeElement.parentNode.parentNode, true);
             height = childNodeElement.parentNode.parentNode.offsetHeight;
             if ((y < mouseY) && (y + height > mouseY)) {
                 return childNodeElement;

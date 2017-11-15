@@ -58,7 +58,7 @@ function semi_dev_mode_startup()
 
         if ((strpos($_SERVER['HTTP_REFERER'], get_local_hostname()) !== false) && (strpos($_SERVER['HTTP_REFERER'], 'keep_devtest') !== false) && (!running_script('attachment')) && (!running_script('external_url_proxy')) && (!running_script('upgrader')) && (strpos($_SERVER['HTTP_REFERER'], 'login') === false) && (get_page_name() != 'login') && (get_param_string('keep_devtest', null) === null)) {
             $_GET['keep_devtest'] = '1';
-            attach_message('URL not constructed properly: development mode in use but keep_devtest was not specified. This indicates that links have been made without build_url (in PHP) or $cms.$KEEP (in JavaScript). While not fatal this time, failure to use these functions can cause problems when your site goes live. See the Composr codebook for more details.', 'warn', false, true);
+            attach_message('URL not constructed properly: development mode in use but keep_devtest was not specified. This indicates that links have been made without build_url (in PHP) or $cms.keep() (in JavaScript). While not fatal this time, failure to use these functions can cause problems when your site goes live. See the Composr codebook for more details.', 'warn', false, true);
         } else {
             $_GET['keep_devtest'] = '1';
         }

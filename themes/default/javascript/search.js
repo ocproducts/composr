@@ -11,7 +11,7 @@
         BlockMainSearch.base(this, 'constructor', arguments);
     }
 
-    $cms.inherits(BlockMainSearch, $cms.View, /**@lends BlockMainSearch#*/{
+    $util.inherits(BlockMainSearch, $cms.View, /**@lends BlockMainSearch#*/{
         events: function () {
             return {
                 'submit form.js-form-submit-main-search': 'submitMainSearch',
@@ -21,7 +21,7 @@
         },
 
         submitMainSearch: function (e, form) {
-            if ((form.elements.content == null) || $cms.form.checkFieldForBlankness(form.elements.content, e)) {
+            if ((form.elements.content == null) || $cms.form.checkFieldForBlankness(form.elements.content)) {
                 $cms.ui.disableFormButtons(form);
             } else {
                 e.preventDefault();
@@ -51,7 +51,7 @@
         this.booleanOptionsEl = this.$('.js-el-boolean-options');
     }
 
-    $cms.inherits(SearchFormScreen, $cms.View, /**@lends SearchFormScreen#*/{
+    $util.inherits(SearchFormScreen, $cms.View, /**@lends SearchFormScreen#*/{
         events: function () {
             return {
                 'keypress .js-keypress-enter-submit-primary-form': 'submitPrimaryForm',
@@ -62,8 +62,8 @@
             };
         },
         submitPrimaryForm: function (e) {
-            if ($cms.dom.keyPressed(e, 'Enter')) {
-                $cms.dom.submit(this.primaryFormEl);
+            if ($dom.keyPressed(e, 'Enter')) {
+                $dom.submit(this.primaryFormEl);
             }
         },
         updateAjaxSearchList: function (e, input) {
@@ -79,10 +79,10 @@
             $cms.form.updateAjaxMemberList(target, 'author', false, e);
         },
         triggerResize: function () {
-            $cms.dom.triggerResize();
+            $dom.triggerResize();
         },
         toggleBooleanOptions: function (e, checkbox) {
-            $cms.dom.toggle(this.booleanOptionsEl, checkbox.checked);
+            $dom.toggle(this.booleanOptionsEl, checkbox.checked);
         }
     });
 
@@ -90,13 +90,13 @@
     $cms.templates.blockTopSearch = function (params, container) {
         var searchType = $cms.filter.nl(params.searchType);
 
-        $cms.dom.on(container, 'submit', '.js-submit-check-search-content-element', function (e, form) {
+        $dom.on(container, 'submit', '.js-submit-check-search-content-element', function (e, form) {
             if (form.elements.content === undefined) {
                 $cms.ui.disableFormButtons(form);
                 return;
             }
 
-            if ($cms.form.checkFieldForBlankness(form.elements.content, e)) {
+            if ($cms.form.checkFieldForBlankness(form.elements.content)) {
                 $cms.ui.disableFormButtons(form);
                 return;
             }
@@ -104,7 +104,7 @@
             e.preventDefault();
         });
 
-        $cms.dom.on(container, 'keyup', '.js-input-keyup-update-ajax-search-list', function (e, input) {
+        $dom.on(container, 'keyup', '.js-input-keyup-update-ajax-search-list', function (e, input) {
             $cms.form.updateAjaxSearchList(input, e, searchType);
         });
     };

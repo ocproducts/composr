@@ -14221,11 +14221,11 @@
     function onPluploadLoaded(plObj) {
         console.log('onPluploadLoaded()', 'plObj:', plObj);
 
-        if (plLoadedHandled[$cms.uid(plObj)]) { // Called when Flash redisplayed after being obscured, so we need to return to avoid a recursion error
+        if (plLoadedHandled[$util.uid(plObj)]) { // Called when Flash redisplayed after being obscured, so we need to return to avoid a recursion error
             return;
         }
 
-        plLoadedHandled[$cms.uid(plObj)] = true;
+        plLoadedHandled[$util.uid(plObj)] = true;
 
         window.moxie.core.utils.Mime.addMimeType('image/vnd.microsoft.icon,ico');
     }
@@ -14256,8 +14256,8 @@
         
         if (element.determinedAttachmentProperties === undefined) {
             currentNum = name.replace('file', '');
-            window.setAttachment(postingFieldName, currentNum, fileName, multi, element.pluploadObject.settings);
-            if (!element.pluploadObject.settings.simplifiedAttachments) {
+            window.setAttachment(postingFieldName, currentNum, fileName, multi, $dom.data(element).pluploadObject.settings);
+            if (!$dom.data(element).pluploadObject.settings.simplifiedAttachments) {
                 element.onchange = null;     
             }
             if (multi) {
@@ -14275,7 +14275,7 @@
             fileIdField = document.getElementById(plObj.settings.hidFileID);
 
         if (fileNameField.value !== '-1') {
-            $cms.dom.html(document.getElementById(plObj.settings.progress_target), ''); // Remove old progress indicators
+            $dom.html(document.getElementById(plObj.settings.progress_target), ''); // Remove old progress indicators
             plObj.stop();
         }
 
@@ -14314,9 +14314,9 @@
         value = strVal(value);
         
         var placeholderField = document.getElementById(name),
-            plObj = placeholderField.pluploadObject;
+            plObj = $dom.data(placeholderField).pluploadObject;
         
-        $cms.dom.changeVal(placeholderField, value);
+        $dom.changeValue(placeholderField, value);
         
         if ((plObj == null) || (plObj.settings == null)) {
             return;
@@ -14384,7 +14384,7 @@
             return;
         }
 
-        var decodedData = $cms.parseJson(dataResponse);
+        var decodedData = JSON.parse(dataResponse);
 
         var id = document.getElementById(plObj.settings.hidFileID);
         if (id.value === '-1') {
@@ -14436,7 +14436,7 @@
         
         var clearButton = document.getElementById('fsClear_' + plObj.settings.txtName);
         if (clearButton) {
-            $cms.dom.show(clearButton);
+            $dom.show(clearButton);
         }
         var uploadButton = document.getElementById('uploadButton_' + plObj.settings.txtName);
         if (uploadButton) {
@@ -14487,7 +14487,7 @@
         rep.name = name + '_old';
         rep.id = name + '_old';
 
-        $cms.dom.append(
+        $dom.append(
             rep.parentNode,
             '<div id="mainDiv_' + name + '" style="display: inline-block;">' +
             '<div id="subDiv_' + name + '" class="vertical_alignment">' +
@@ -14516,7 +14516,7 @@
 
         var plObj = getUploaderObject(settings);
 
-        placeholderField.pluploadObject = plObj;
+        $dom.data(placeholderField).pluploadObject = plObj;
 
         // Rearrange clear buttons
         var clearButton = document.getElementById('clear_button_' + name);
@@ -14524,7 +14524,7 @@
             clearButton.style.display = 'none';
         }
 
-        $cms.dom.on('#fsClear_' + name, 'click', function () {
+        $dom.on('#fsClear_' + name, 'click', function () {
             var filenameField = document.getElementById('txtFileName_' + name);
             filenameField.value = '';
             if ((rep.form.elements[postingFieldName] != null) && name.includes('file')) {
@@ -14555,17 +14555,17 @@
         var mainDiv = document.getElementById('js-attachment-store');
 
         if (!document.getElementById(name)) {
-            $cms.dom.append(mainDiv, '<input type="text" id="' + name + '" name="' + name + '" style="display: none;" disabled>');
+            $dom.append(mainDiv, '<input type="text" id="' + name + '" name="' + name + '" style="display: none;" disabled>');
         }
 
         if (!document.getElementById('txtFileName_' + name)) {
             // This input field stores the file name(s) of the uploading/uploaded file to the user
-            $cms.dom.append(mainDiv, '<input type="hidden" id="txtFileName_' + name + '" name="txtFileName_' + name + '" value="">');
+            $dom.append(mainDiv, '<input type="hidden" id="txtFileName_' + name + '" name="txtFileName_' + name + '" value="">');
         }
         
         if (!document.getElementById('hidFileID_' + name)) {
             // This hidden input field holds the server-side 'upload_id' after upload is finished
-            $cms.dom.append(mainDiv, '<input type="hidden" id="hidFileID_' + name + '" name="hidFileID_' + name + '" value="-1">');
+            $dom.append(mainDiv, '<input type="hidden" id="hidFileID_' + name + '" name="hidFileID_' + name + '" value="-1">');
         }
 
         var placeholderField = document.getElementById(name);
@@ -14590,7 +14590,7 @@
         settings.runtimes = 'html5';
         settings.simplifiedAttachments = true;
 
-        placeholderField.pluploadObject = getUploaderObject(settings); // This will attach the new event
+        $dom.data(placeholderField).pluploadObject = getUploaderObject(settings); // This will attach the new event
     }
 
     function getUploaderSettings(name, pageType, postingFieldName, filter) {
@@ -14601,7 +14601,7 @@
 
             // General settings
             runtimes: 'html5,silverlight,flash',
-            url: '{$FIND_SCRIPT;,incoming_uploads}' + $cms.$KEEP(true),
+            url: '{$FIND_SCRIPT;,incoming_uploads}' + $cms.keep(true),
             max_file_size: (window.mfs == null) ? '2000mb' : (((window.mfs[0] != null) ? window.mfs[0].value : window.mfs.value) + 'b'),
 
             // Specify what files to browse for
@@ -14630,6 +14630,10 @@
         };
     }
 
+    /**
+     * @param settings
+     * @return {module:plupload.Uploader}
+     */
     function getUploaderObject(settings) {
         //console.log('getUploaderObject()', 'settings:', settings);
 
@@ -14656,11 +14660,11 @@
 
         var el = document.getElementById(id);
 
-        $cms.dom.on(el, 'dragover', function (event) {
+        $dom.on(el, 'dragover', function (event) {
             html5UploadEventDragOver(event);
         });
 
-        $cms.dom.on(el, 'drop', function (event) {
+        $dom.on(el, 'drop', function (event) {
             html5UploadEventDrop(event, el, id2);
         });
     }
@@ -14717,7 +14721,7 @@
                 }
             }
             if (!goodType) {
-                $cms.ui.alert($cms.format('{!INVALID_FILE_TYPE_GENERAL;^}', [fileExt, validTypes.join(', ')]));
+                $cms.ui.alert($util.format('{!INVALID_FILE_TYPE_GENERAL;^}', [fileExt, validTypes.join(', ')]));
                 return;
             }
 
@@ -14734,7 +14738,7 @@
             xhr.onreadystatechange = buildHtml5UploadHandler(xhr, fileUpload.file_progress, window.extraAttachmentBase, fieldName);
 
             // Send
-            xhr.open('POST', '{$FIND_SCRIPT;,incoming_uploads}' + $cms.$KEEP(true));
+            xhr.open('POST', '{$FIND_SCRIPT;,incoming_uploads}' + $cms.keep(true));
             var formData = new FormData();
             formData.append('file', file);
             xhr.send(formData);
@@ -14801,7 +14805,7 @@
                             progress.setComplete();
                             progress.setStatus('{!javascript:PLUPLOAD_COMPLETE^;}');
 
-                            var decodedData = $cms.parseJson(request.responseText);
+                            var decodedData = JSON.parse(request.responseText);
                             document.getElementById('hidFileID_file' + attachmentBase).value = decodedData['upload_id'];
 
                             if ($cms.form.isWysiwygField(element)) {
@@ -14852,7 +14856,7 @@
 
         this.fileProgressWrapper = document.getElementById(this.fileProgressID);
         if (!this.fileProgressWrapper) {
-            $cms.dom.append(
+            $dom.append(
                 targetEl,
                 '<div id="' + this.fileProgressID + '" class="progressWrapper">' +
                 '<div class="progressContainer" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">' +
@@ -14876,7 +14880,7 @@
             this.appear();
 
             if (file && (file.name != null)) {
-                $cms.dom.html(this.fileProgressElement.querySelector('.progressName'), file.name);
+                $dom.html(this.fileProgressElement.querySelector('.progressName'), file.name);
             }
         }
 
@@ -14885,7 +14889,7 @@
         this.height = this.fileProgressWrapper.offsetHeight;
     }
 
-    $cms.properties(FileProgress.prototype, /**@lends FileProgress#*/{
+    $util.properties(FileProgress.prototype, /**@lends FileProgress#*/{
         setProgress: function (percentage) {
             this.fileProgressElement.classList.remove('blue', 'red');
             this.fileProgressElement.classList.add('green');
@@ -14929,7 +14933,7 @@
             }, 2000);
         },
         setStatus: function (status) {
-            $cms.dom.html(this.fileProgressElement.children[2], status);
+            $dom.html(this.fileProgressElement.children[2], status);
         },
         // Makes sure the FileProgress box is visible
         appear: function () {

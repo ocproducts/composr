@@ -22,10 +22,10 @@
                     imHere = parseInt(document.getElementById("importancemodulus").value),
                     imTotal = parseInt(_imTotal.className.replace("im_", "")) + imHere;
 
-                $cms.dom.html(_imHere, imHere);
-                $cms.dom.html(document.getElementById("im_here_2"), imHere);
-                $cms.dom.html(_imTotal, imTotal);
-                $cms.dom.html(document.getElementById("im_total_2"), imTotal);
+                $dom.html(_imHere, imHere);
+                $dom.html(document.getElementById("im_here_2"), imHere);
+                $dom.html(_imTotal, imTotal);
+                $dom.html(document.getElementById("im_total_2"), imTotal);
             }
         }
     };
@@ -48,7 +48,7 @@
             $cms.form.doAjaxFieldTest(url).then(function (valid) {
                 if (valid) {
                     validValue = value;
-                    $cms.dom.submit(form);
+                    $dom.submit(form);
                 } else {
                     submitBtn.disabled = false;
                 }
@@ -74,7 +74,7 @@
             $cms.form.doAjaxFieldTest(url).then(function (valid) {
                 if (valid) {
                     validValue = value;
-                    $cms.dom.submit(form);
+                    $dom.submit(form);
                 } else {
                     submitBtn.disabled = false;
                 }

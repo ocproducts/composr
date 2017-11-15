@@ -1,12 +1,12 @@
 {$REQUIRE_JAVASCRIPT,core_adminzone_dashboard}
 
-<section id="tray_{!CHECK_LIST|}" class="box box___block_main_staff_checklist" data-tpl="blockMainStaffChecklist" data-view="ToggleableTray" data-tray-cookie="{!CHECK_LIST|}">
+<section id="tray_{!CHECK_LIST|}" class="box box___block_main_staff_checklist" data-toggleable-tray="{ save: true }" data-tpl="blockMainStaffChecklist">
 	<h3 class="toggleable_tray_title js-tray-header">
 		<a href="#!" id="checklist_show_all_link" class="top_left_toggleicon js-click-disable-task-hiding" title="{!SHOW_ALL}: {!CHECK_LIST}">{!SHOW_ALL}</a>
 		<a href="#!" id="checklist_hide_done_link" class="top_left_toggleicon js-click-enable-task-hiding">{!HIDE_DONE}</a>
 
-		<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!CHECK_LIST}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a>
-		<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!CHECK_LIST}</a>
+		<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!CHECK_LIST}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a>
+		<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!">{!CHECK_LIST}</a>
 	</h3>
 
 	<div class="toggleable_tray js-tray-content">

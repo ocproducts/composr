@@ -25,11 +25,11 @@
     // ===========
     function wysiwygOn() {
         var cookie = $cms.readCookie('use_wysiwyg');
-        return (!cookie || (cookie !== '0')) && $cms.$CONFIG_OPTION('wysiwyg') && !$cms.$MOBILE();
+        return (!cookie || (cookie !== '0')) && $cms.configOption('wysiwyg') && !$cms.isMobile();
     }
 
     function toggleWysiwyg(name) {
-        if (!$cms.$CONFIG_OPTION('wysiwyg')) {
+        if (!$cms.configOption('wysiwyg')) {
             $cms.ui.alert('{!comcode:TOGGLE_WYSIWYG_ERROR;^}');
             return;
         }
@@ -146,7 +146,7 @@
                 });
             });
 
-            return $cms.promiseSequence(promiseCalls);
+            return $util.promiseSequence(promiseCalls);
         }
 
         function disableWysiwyg(forms, so, so2, discard) {
@@ -170,12 +170,12 @@
                 }
             }
 
-            return $cms.promiseSequence(promiseCalls).then(function () {
+            return $util.promiseSequence(promiseCalls).then(function () {
                 if (so) {
-                    $cms.dom.show(so);
+                    $dom.show(so);
                 }
                 if (so2) {
-                    $cms.dom.hide(so2);
+                    $dom.hide(so2);
                 }
 
                 window.wysiwygOn = function () {
@@ -212,7 +212,7 @@
                     return resolvePromise();
                 }
 
-                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?from_html=1' + $cms.$KEEP());
+                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?from_html=1' + $cms.keep());
                 if (window.location.href.includes('topics')) {
                     url += '&forum_db=1';
                 }
@@ -238,7 +238,7 @@
 
             function postWysiwygDisable(textarea) {
                 if (document.getElementById('toggle_wysiwyg_' + textarea.id)) {
-                    $cms.dom.html('#toggle_wysiwyg_' + textarea.id, '<img src="{$IMG*;^,icons/16x16/editor/wysiwyg_on}" srcset="{$IMG;^,icons/16x16/editor/wysiwyg_on} 2x" alt="{!comcode:ENABLE_WYSIWYG;^}" title="{!comcode:ENABLE_WYSIWYG;^}" class="vertical_alignment" />');
+                    $dom.html('#toggle_wysiwyg_' + textarea.id, '<img src="{$IMG*;^,icons/16x16/editor/wysiwyg_on}" srcset="{$IMG;^,icons/16x16/editor/wysiwyg_on} 2x" alt="{!comcode:ENABLE_WYSIWYG;^}" title="{!comcode:ENABLE_WYSIWYG;^}" class="vertical_alignment" />');
                 }
 
                 try {  // Unload editor 
@@ -295,7 +295,7 @@
             postingForm.appendChild(httpReferer);
         }
 
-        if (!window.CKEDITOR || !$cms.$CONFIG_OPTION('wysiwyg') || !wysiwygOn()) {
+        if (!window.CKEDITOR || !$cms.configOption('wysiwyg') || !wysiwygOn()) {
             return Promise.resolve();
         }
 
@@ -304,10 +304,10 @@
 
         if (!postingForm.elements['post'] || postingForm.elements['post'].className.includes('wysiwyg')) {
             if (so) {
-                $cms.dom.hide(so);
+                $dom.hide(so);
             }
             if (so2) {
-                $cms.dom.show(so2);
+                $dom.show(so2);
             }
         }
 
@@ -320,7 +320,7 @@
             }
         });
 
-        return $cms.promiseSequence(promiseCalls);
+        return $util.promiseSequence(promiseCalls);
 
         function loadHtmlForTextarea(postingForm, textarea, ajaxCopy) {
             return new Promise(function (resolvePromise) {
@@ -338,7 +338,7 @@
                 indicator.value = '1';
 
                 if (document.getElementById('toggle_wysiwyg_' + id)) {
-                    $cms.dom.html(document.getElementById('toggle_wysiwyg_' + id), '<img src="{$IMG*;^,icons/16x16/editor/wysiwyg_off}" srcset="{$IMG;^,icons/32x32/editor/wysiwyg_off} 2x" alt="{!comcode:DISABLE_WYSIWYG;^}" title="{!comcode:DISABLE_WYSIWYG;^}" class="vertical_alignment" />');
+                    $dom.html(document.getElementById('toggle_wysiwyg_' + id), '<img src="{$IMG*;^,icons/16x16/editor/wysiwyg_off}" srcset="{$IMG;^,icons/32x32/editor/wysiwyg_off} 2x" alt="{!comcode:DISABLE_WYSIWYG;^}" title="{!comcode:DISABLE_WYSIWYG;^}" class="vertical_alignment" />');
                 }
 
                 window.wysiwygOriginalComcode[id] = textarea.value;
@@ -353,7 +353,7 @@
                     return resolvePromise();
                 }
 
-                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&from_html=0' + $cms.$KEEP());
+                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&from_html=0' + $cms.keep());
                 if (window.location.href.includes('topics')) {
                     url += '&forum_db=1';
                 }
@@ -437,7 +437,7 @@
             linkedSheets = document.getElementsByTagName('style');
             var css = '';
             for (counter = 0; counter < linkedSheets.length; counter++) {
-                css += $cms.dom.html(linkedSheets[counter]);
+                css += $dom.html(linkedSheets[counter]);
             }
             window.CKEDITOR.addCss(css);
 
@@ -506,7 +506,7 @@
 
             // Monitor pasting, for anti-spam reasons
             editor.on('paste', function (event) {
-                if (event.data.html && event.data.html.length > $cms.$CONFIG_OPTION('spam_heuristic_pasting')) {
+                if (event.data.html && event.data.html.length > $cms.configOption('spam_heuristic_pasting')) {
                     $cms.setPostDataFlag('paste');
                 }
             });
@@ -534,25 +534,33 @@
 
         var comcodes = editor.document.$.body.querySelectorAll('.cms_keep_ui_controlled');
 
-        for (var i = 0; i < comcodes.length; i++) {
-            if (comcodes[i].onmouseout) {
-                continue;
+        arrVal(comcodes).forEach(function (comcode) {
+            if (comcode.onmouseout) {
+                return;
             }
-            comcodes[i].origTitle = comcodes[i].title;
-            comcodes[i].onmouseout = function () {
+            comcode.origTitle = comcode.title;
+            comcode.onmouseout = function () {
                 $cms.ui.deactivateTooltip(this);
             };
-            comcodes[i].onmousemove = function (event) {
+            comcode.onmousemove = function (event) {
                 if (event === undefined) {
                     event = editor.window.$.event;
                 }
 
                 var eventCopy = {};
                 if (event) {
-                    if (event.pageX) eventCopy.pageX = 3000;
-                    if (event.clientX) eventCopy.clientX = 3000;
-                    if (event.pageY) eventCopy.pageY = 3000;
-                    if (event.clientY) eventCopy.clientY = 3000;
+                    if (event.pageX) {
+                        eventCopy.pageX = 3000;
+                    }
+                    if (event.clientX) {
+                        eventCopy.clientX = 3000;
+                    }
+                    if (event.pageY) {
+                        eventCopy.pageY = 3000;
+                    }
+                    if (event.clientY) {
+                        eventCopy.clientY = 3000;
+                    }
 
                     if (this.origTitle != null) {
                         $cms.ui.repositionTooltip(this, eventCopy);
@@ -560,7 +568,7 @@
                     }
                 }
             };
-            comcodes[i].onmousedown = function (event) {
+            comcode.onmousedown = function (event) {
                 if (event === undefined) {
                     event = editor.window.$.event;
                 }
@@ -575,10 +583,10 @@
                 }
             };
 
-            if (comcodes[i].localName === 'input') {
-                comcodes[i].readOnly = true;
-                comcodes[i].contentEditable = true; // Undoes what ckeditor sets. Fixes weirdness with copy and paste in Chrome (adding extra block on end)
-                comcodes[i].ondblclick = function (e) {
+            if (comcode.localName === 'input') {
+                comcode.readOnly = true;
+                comcode.contentEditable = true; // Undoes what ckeditor sets. Fixes weirdness with copy and paste in Chrome (adding extra block on end)
+                comcode.ondblclick = function (e) {
                     e.preventDefault();
 
                     if (this.onmouseout) {
@@ -589,29 +597,29 @@
                         this.id = 'comcode_tag_' + Math.round(Math.random() * 10000000);
                     }
                     var tagType = (this.origTitle ? this.origTitle : this.title).replace(/^\[/, '').replace(/[= \]](.|\n)*$/, '');
-                    
+
                     if (tagType === 'block') {
                         var blockName = (this.origTitle ? this.origTitle : this.title).replace(/\[\/block\]$/, '').replace(/^(.|\s)*\]/, '');
-                        var url = '{$FIND_SCRIPT;,block_helper}?type=step2&block=' + encodeURIComponent(blockName) + '&field_name=' + fieldName + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + $cms.$KEEP();
+                        var url = '{$FIND_SCRIPT;,block_helper}?type=step2&block=' + encodeURIComponent(blockName) + '&field_name=' + fieldName + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + $cms.keep();
                         url = url + '&block_type=' + (((fieldName.indexOf('edit_panel_') === -1) && (window.location.href.indexOf(':panel_') === -1)) ? 'main' : 'side');
                         $cms.ui.open($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
                     } else {
-                        var url = '{$FIND_SCRIPT;,comcode_helper}?type=step2&tag=' + encodeURIComponent(tagType) + '&field_name=' + fieldName + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + $cms.$KEEP();
+                        var url = '{$FIND_SCRIPT;,comcode_helper}?type=step2&tag=' + encodeURIComponent(tagType) + '&field_name=' + fieldName + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + $cms.keep();
                         $cms.ui.open($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
                     }
                 };
             }
 
-            comcodes[i].onmouseover = function (event) { // Shows preview
+            comcode.onmouseover = function (event) { // Shows preview
                 if (event === undefined) {
                     event = editor.window.$.event;
                 }
-                
+
                 var tagText = '';
                 if (this.nodeName.toLowerCase() === 'input') {
                     tagText = this.origTitle;
                 } else {
-                    tagText = $cms.dom.html(this);
+                    tagText = $dom.html(this);
                 }
 
                 this.style.cursor = 'pointer';
@@ -636,7 +644,7 @@
                         selfOb.tagText = tagText;
                         selfOb.isOver = true;
 
-                        var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&box_title={!PREVIEW&;^}' + $cms.$KEEP());
+                        var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&box_title={!PREVIEW&;^}' + $cms.keep());
                         if (window.location.href.includes('topics')) {
                             url += '&forum_db=1';
                         }
@@ -662,8 +670,7 @@
                     }
                 }
             };
-
-        }
+        });
     }
     
     // ============
@@ -685,7 +692,7 @@
         }
         
         if (!element) {
-            $cms.fatal('doEmoticon(): Element not found "#' + fieldName + '"');
+            $util.fatal('doEmoticon(): Element not found "#' + fieldName + '"');
             return;
         }
 
@@ -699,9 +706,9 @@
         text = ' ' + title + ' ';
 
         if (isOpener) {
-            return insertTextboxOpener(element, text, true, $cms.dom.html(callerEl), true);
+            return insertTextboxOpener(element, text, true, $dom.html(callerEl), true);
         } else {
-            return insertTextbox(element, text, true, $cms.dom.html(callerEl), true);
+            return insertTextbox(element, text, true, $dom.html(callerEl), true);
         }
     }
 
@@ -821,7 +828,7 @@
                     return resolvePromise();
                 } 
                 
-                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&lax_comcode=1' + $cms.$KEEP());
+                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&lax_comcode=1' + $cms.keep());
                 if (window.location.href.includes('topics')) {
                     url += '&forum_db=1';
                 }
@@ -902,7 +909,7 @@
         var selectedText = '';
         if (mySelection.getNative()) {
             try {
-                selectedText = $cms.dom.html(mySelection.getNative().getRangeAt(0).cloneContents());
+                selectedText = $dom.html(mySelection.getNative().getRangeAt(0).cloneContents());
             } catch (e) {}
         }
         return selectedText;
@@ -978,7 +985,7 @@
                 }
 
                 var newHtml = '',
-                    url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&lax_comcode=1' + $cms.$KEEP());
+                    url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&lax_comcode=1' + $cms.keep());
 
                 if (window.location.href.includes('topics')) {
                     url += '&forum_db=1';
@@ -1047,13 +1054,13 @@
             }
 
             setTimeout((function (id, authorised, hook) {
-                $cms.dom.on('#' + id, 'click', function () {
+                $dom.on('#' + id, 'click', function () {
                     var el = document.getElementById(id);
                     if (el.checked && !authorised) {
                         //e.checked=false;  Better to assume success, not all oAuth support callback
-                        var url = '{$FIND_SCRIPT_NOHTTP;,upload_syndication_auth}?hook=' + encodeURIComponent(hook) + '&name=' + encodeURIComponent(name) + $cms.$KEEP();
+                        var url = '{$FIND_SCRIPT_NOHTTP;,upload_syndication_auth}?hook=' + encodeURIComponent(hook) + '&name=' + encodeURIComponent(name) + $cms.keep();
 
-                        if ($cms.$MOBILE()) {
+                        if ($cms.isMobile()) {
                             window.open(url);
                         } else {
                             $cms.ui.open(url, null, 'width=960;height=500', '_top');
@@ -1079,7 +1086,7 @@
 
         html = '<div>' + html + '</div>';
 
-        $cms.dom.html(htmlSpot, html);
+        $dom.html(htmlSpot, html);
     }
 
 }(window.$cms, (window.$editing || (window.$editing = {}))));

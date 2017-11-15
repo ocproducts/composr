@@ -275,8 +275,8 @@ function loadTagCloud(container) {
     var speed = 1000;
 
     var animateIt = function () {
-        var offsetX = $cms.dom.findPosX(container, true);
-        var offsetY = $cms.dom.findPosY(container, true);
+        var offsetX = $dom.findPosX(container, true);
+        var offsetY = $dom.findPosY(container, true);
         var width = container.offsetWidth;
         var height = container.offsetHeight;
 

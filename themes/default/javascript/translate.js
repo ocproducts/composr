@@ -13,17 +13,17 @@ function translate(name, old, langFrom, langTo) {
     }
 
     if (!apiKey) {
-        $cms.toggleableTray($cms.dom.$('#rexp_' + name));
+        $cms.ui.toggleableTray($dom.$('#rexp_' + name));
 
         var element = document.getElementById('rexp_' + name);
         if (element.style.display !== 'none') {
             element = document.getElementById('exp_' + name);
-            $cms.dom.html(element, '<iframe src="{$BASE_URL_NOHTTP*;}/data/empty.html" id="iframe_' + name + '" name="iframe_' + name + '" class="translate_iframe">{!IGNORE^}</iframe>');
+            $dom.html(element, '<iframe src="{$BASE_URL_NOHTTP*;}/data/empty.html" id="iframe_' + name + '" name="iframe_' + name + '" class="translate_iframe">{!IGNORE^}</iframe>');
             var form = document.getElementById('hack_form');
             form.setAttribute('target', 'iframe_' + name);
             var inputText = document.getElementById('hack_input');
             inputText.value = old;
-            $cms.dom.submit(form);
+            $dom.submit(form);
         }
     } else {
         window.translating = name;

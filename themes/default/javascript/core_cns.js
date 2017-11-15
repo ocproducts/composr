@@ -26,8 +26,8 @@
                     }
 
                     $cms.loadSnippet('profile_tab&tab=' + tabCode + '&member_id=' + this.memberId + window.location.search.replace('?', '&'), null, true).then(function (result) {
-                        $cms.dom.html('#g_' + tabCode, result);
-                        $cms.dom.findUrlTab();
+                        $dom.html('#g_' + tabCode, result);
+                        $dom.findUrlTab();
                     });
                 }).bind(this);
             }
@@ -37,12 +37,12 @@
             // we do not want it to scroll down
             var oldHash = window.location.hash;
             window.location.hash = '#';
-            $cms.dom.findUrlTab(oldHash);
+            $dom.findUrlTab(oldHash);
         }
     }
 
     $cms.templates.cnsGuestBar = function cnsGuestBar(params, container) {
-        $cms.dom.on(container, 'submit', '.js-submit-check-field-login-username', function (e, form) {
+        $dom.on(container, 'submit', '.js-submit-check-field-login-username', function (e, form) {
             if ($cms.form.checkFieldForBlankness(form.elements['login_username'])) {
                 $cms.ui.disableFormButtons(form);
             } else {
@@ -50,7 +50,7 @@
             }
         });
 
-        $cms.dom.on(container, 'click', '.js-click-checkbox-remember-me-confirm', function (e, checkbox) {
+        $dom.on(container, 'click', '.js-click-checkbox-remember-me-confirm', function (e, checkbox) {
             if (checkbox.checked) {
                 $cms.ui.confirm('{!REMEMBER_ME_COOKIE;}', function (answer) {
                     if (!answer) {
@@ -61,7 +61,7 @@
         });
     };
 
-    $cms.inherits(CnsMemberProfileScreen, $cms.View, /**@lends CnsMemberProfileScreen#*/ {
+    $util.inherits(CnsMemberProfileScreen, $cms.View, /**@lends CnsMemberProfileScreen#*/ {
         events: function () {
             return {
                 'click .js-click-select-tab-g': 'onClickSelectTab'
@@ -77,19 +77,19 @@
     });
     
     $cms.templates.blockMainJoinDone = function blockMainJoinDone(params, container) {
-        $cms.dom.on(container, 'submit', '.js-submit-ga-track-dl-whitepaper', function (e, form) {
+        $dom.on(container, 'submit', '.js-submit-ga-track-dl-whitepaper', function (e, form) {
             $cms.gaTrack(null, '{!cns:DOWNLOAD_WHITEPAPER;}', null, function () {
-                $cms.dom.submit(form);
+                $dom.submit(form);
             });
             e.preventDefault();
         });
     };
 
     $cms.templates.cnsMemberProfileEdit = function cnsMemberProfileEdit(params, container) {
-        $cms.dom.on(container, 'click', '.js-click-select-edit-tab', function (e, clicked) {
+        $dom.on(container, 'click', '.js-click-select-edit-tab', function (e, clicked) {
             var tabSet = 'edit__',
                 tabCode = $cms.filter.id(clicked.dataset.tpTabCode).toLowerCase();
-            $cms.inform('Select tab', tabSet + tabCode);
+            $util.inform('Select tab', tabSet + tabCode);
             if (tabCode) {
                 $cms.ui.selectTab('g', tabSet + tabCode)
             }
@@ -97,13 +97,13 @@
     };
 
     $cms.templates.cnsMemberDirectoryScreenFilter = function cnsMemberDirectoryScreenFilter(params, container) {
-        $cms.dom.on(container, 'keyup', '.js-keyup-input-filter-update-ajax-member-list', function (e, input) {
+        $dom.on(container, 'keyup', '.js-keyup-input-filter-update-ajax-member-list', function (e, input) {
             $cms.form.updateAjaxMemberList(input, null, false, e);
         });
     };
 
     $cms.templates.cnsMemberProfileAbout = function cnsMemberProfileAbout(params, container) {
-        $cms.dom.on(container, 'click', '.js-click-member-profile-about-decrypt-data', function () {
+        $dom.on(container, 'click', '.js-click-member-profile-about-decrypt-data', function () {
             decryptData();
         });
     };
@@ -166,7 +166,7 @@
             $cms.form.doAjaxFieldTest(url).then(function (valid) {
                 if (valid) {
                     validValue = value;
-                    $cms.dom.submit(form);
+                    $dom.submit(form);
                 } else {
                     submitBtn.disabled = false;
                 }
@@ -192,7 +192,7 @@
             $cms.form.doAjaxFieldTest(url).then(function (valid) {
                 if (valid) {
                     validValue = value;
-                    $cms.dom.submit(form);
+                    $dom.submit(form);
                 } else {
                     submitBtn.disabled = false;
                 }
@@ -201,10 +201,10 @@
     };
 
     $cms.functions.adminCnsMembersDownloadCsv = function adminCnsMembersDownloadCsv() {
-        var form = $cms.dom.$('#filename').form;
+        var form = $dom.$('#filename').form;
         crf();
         for (var i = 0; i < form.elements['preset'].length; i++) {
-            $cms.dom.on(form.elements['preset'][i], 'click', crf);
+            $dom.on(form.elements['preset'][i], 'click', crf);
         }
 
         function crf() {
@@ -262,7 +262,7 @@
                 $cms.form.doAjaxFieldTest(url, 'password=' + encodeURIComponent(value)).then(function (valid) {
                     if (valid) {
                         validValue = value;
-                        $cms.dom.submit(form);
+                        $dom.submit(form);
                     } else {
                         submitBtn.disabled = false;
                     }
@@ -272,18 +272,18 @@
     };
 
     $cms.templates.cnsJoinStep1Screen = function cnsJoinStep1Screen(params, container) {
-        $cms.dom.on(container, 'click', '.js-chb-click-toggle-proceed-btn', function (e, checkbox) {
+        $dom.on(container, 'click', '.js-chb-click-toggle-proceed-btn', function (e, checkbox) {
             document.getElementById('proceed_button').disabled = !checkbox.checked;
         });
 
-        $cms.dom.on(container, 'click', '.js-click-set-top-location', function (e, target) {
+        $dom.on(container, 'click', '.js-click-set-top-location', function (e, target) {
             window.top.location = strVal(target.dataset.tpTopLocation);
         });
     };
 
 
     $cms.templates.cnsViewGroupScreen = function cnsViewGroupScreen(params, container) {
-        $cms.dom.on(container, 'submit', '.js-form-submit-add-member-to-group', function (e, form) {
+        $dom.on(container, 'submit', '.js-form-submit-add-member-to-group', function (e, form) {
             if ($cms.form.checkFieldForBlankness(form.elements.username)) {
                 $cms.ui.disableFormButtons(form);
             } else {
@@ -291,13 +291,13 @@
             }
         });
 
-        $cms.dom.on(container, 'keyup', '.js-input-add-member-username', function (e, input) {
+        $dom.on(container, 'keyup', '.js-input-add-member-username', function (e, input) {
             $cms.form.updateAjaxMemberList(input, null, false, e);
         });
     };
 
     $cms.templates.cnsEmoticonTable = function cnsEmoticonTable(params, container) {
-        $cms.dom.on(container, 'click', '.js-click-do-emoticon', function (e, target) {
+        $dom.on(container, 'click', '.js-click-do-emoticon', function (e, target) {
             var fieldName = target.dataset.tpFieldName;
             if (fieldName) {
                 window.doEmoticon(fieldName, target, true)
@@ -310,11 +310,11 @@
 
         joinForm(params);
 
-        $cms.dom.on(container, 'click', '.js-click-btn-skip-step', function () {
-            $cms.dom.$('#' + skippable).value = '1';
+        $dom.on(container, 'click', '.js-click-btn-skip-step', function () {
+            $dom.$('#' + skippable).value = '1';
         });
 
-        $cms.dom.on(container, 'submit', '.js-submit-modesecurity-workaround', function (e, form) {
+        $dom.on(container, 'submit', '.js-submit-modesecurity-workaround', function (e, form) {
             if ($cms.form.isModSecurityWorkaroundEnabled()) {
                 e.preventDefault();
                 $cms.form.modSecurityWorkaround(form);
@@ -334,8 +334,8 @@
         container.style.position = 'absolute';
         container.style.width = '26em';
         container.style.padding = '0.5em';
-        container.style.left = ($cms.dom.getWindowWidth() / 2 - 200).toString() + 'px';
-        container.style.top = ($cms.dom.getWindowHeight() / 2 - 100).toString() + 'px';
+        container.style.left = ($dom.getWindowWidth() / 2 - 200).toString() + 'px';
+        container.style.top = ($dom.getWindowHeight() / 2 - 100).toString() + 'px';
         try {
             scrollTo(0, 0);
         } catch (e) {}
@@ -418,7 +418,7 @@
 
         form.elements['username'].onchange = function () {
             if (form.elements['intro_title'])
-                form.elements['intro_title'].value = $cms.format('{!cns:INTRO_POST_DEFAULT;^}', [form.elements['username'].value]);
+                form.elements['intro_title'].value = $util.format('{!cns:INTRO_POST_DEFAULT;^}', [form.elements['username'].value]);
         };
 
         var validValues;
@@ -492,7 +492,7 @@
                 if (!validities.includes(false)) {
                     // All valid!
                     validValues = values;
-                    $cms.dom.submit(form);
+                    $dom.submit(form);
                 } else {
                     submitBtn.disabled = false;
                 }

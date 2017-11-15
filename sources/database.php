@@ -1334,17 +1334,21 @@ class DatabaseConnector
                             $select[$i] = 'main.' . $s;
                         }
                     }
-                    foreach ($where_map as $i => $s) {
-                        if (!is_string($i)) {
-                            $lang_fields_provisional = array();
-                            break; // Bad API call, but we'll let it fail naturally
-                        }
 
-                        if (preg_match('#^[A-Za-z_]+$#', $i) !== 0) {
-                            unset($where_map[$i]);
-                            $where_map['main.' . $i] = $s;
+                    if (is_array($where_map)) {
+                        foreach ($where_map as $i => $s) {
+                            if (!is_string($i)) {
+                                $lang_fields_provisional = array();
+                                break; // Bad API call, but we'll let it fail naturally
+                            }
+
+                            if (preg_match('#^[A-Za-z_]+$#', $i) !== 0) {
+                                unset($where_map[$i]);
+                                $where_map['main.' . $i] = $s;
+                            }
                         }
                     }
+
                     if ($end !== '') {
                         $end = preg_replace('#(^|,|\s)([a-z]+)($|,|\s)#', '${1}main.${2}${3}', $end);
                     }

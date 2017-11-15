@@ -2,7 +2,7 @@
     'use strict';
 
     $cms.templates.mantisTracker = function mantisTracker(params, container) {
-        $cms.dom.on(container, 'click', '.js-click-add-voted-class', function (e, el) {
+        $dom.on(container, 'click', '.js-click-add-voted-class', function (e, el) {
             el.classList.remove('tracker_issue_not_voted');
             el.classList.add('tracker_issue_voted');
         });
@@ -11,7 +11,7 @@
     $cms.templates.blockCreditExpsInner = function blockCreditExpsInner(params, container) {
         updateProductInfoDisplay();
 
-        $cms.dom.on(container, 'change', '.js-change-update-product-info-display', function () {
+        $dom.on(container, 'change', '.js-change-update-product-info-display', function () {
             updateProductInfoDisplay();
         });
 

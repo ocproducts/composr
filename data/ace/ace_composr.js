@@ -55,7 +55,7 @@ function editareaDoSearch(textareaId, regexp) {
     });
 
     try {
-        window.scrollTo(0, $cms.dom.findPosY(document.getElementById(textareaId).parentNode, true));
+        window.scrollTo(0, $dom.findPosY(document.getElementById(textareaId).parentNode, true));
     } catch (e) {}
 }
 

@@ -3,7 +3,6 @@
 
     $cms.templates.formScreenInputMapPosition = function formScreenInputMapPosition(params, container) {
         var name = strVal(params.name),
-            googleMapKey = strVal(params.googleMapKey),
             latitude = strVal(params.latitude),
             latitudeInput = container.querySelector('#' + name + '_latitude'),
             longitude = strVal(params.longitude),
@@ -11,15 +10,15 @@
 
         $cms.requireJavascript('https://www.google.com/jsapi').then(function () {
             setTimeout(function () {
-                window.google.load('maps', '3', { callback: googleMapUsersInitialize, other_params: ((googleMapKey !== '') ? 'key=' + googleMapKey : '') });
+                window.google.load('maps', '3', { callback: googleMapUsersInitialize, other_params: (($cms.configOption('google_map_key') !== '') ? 'key=' + $cms.configOption('google_map_key') : '') });
             },0);
         });
 
-        $cms.dom.on(container, 'change', '.js-change-set-place-marker', function () {
+        $dom.on(container, 'change', '.js-change-set-place-marker', function () {
             placeMarker(latitudeInput.value, longitudeInput.value);
         });
 
-        $cms.dom.on(container, 'click', '.js-click-geolocate-user-for-map-field', function () {
+        $dom.on(container, 'click', '.js-click-geolocate-user-for-map-field', function () {
             geolocateUserForMapField();
         });
 
@@ -95,11 +94,10 @@
 
     $cms.templates.blockMainGoogleMap = function blockMainGoogleMap(params) {
         var cluster = !!params.cluster,
-            googleMapKey = strVal(params.googleMapKey),
             latitude = strVal(params.latitude),
             longitude = strVal(params.longitude),
             divId = strVal(params.divId),
-            zoom = strVal(params.zoom),
+            zoom = Number(params.zoom),
             center = !!params.center,
             rawData = params.data,
             minLatitude = strVal(params.minLatitude),
@@ -116,7 +114,7 @@
 
         var options = {
             callback: googleMapInitialize,
-            other_params: (googleMapKey !== '') ? 'key=' + $cms.$CONFIG_OPTION('googleMapKey') : ''
+            other_params: ($cms.configOption('google_map_key') !== '') ? 'key=' + $cms.configOption('google_map_key') : ''
         };
 
         if (region !== '') {
@@ -207,7 +205,7 @@
                  var categoryIcon='{$BASE_URL;/}/themes/default/images_custom/map_icons/catalogue_category_'+data[i][3]+'.png';
                  marker_options.icon=categoryIcon;}*/
                 if (data[i][6] == 1) {
-                    var starIcon = $cms.$BASE_URL() + '/themes/default/images_custom/star_highlight.png';
+                    var starIcon = $cms.baseUrl() + '/themes/default/images_custom/star_highlight.png';
                     markerOptions.icon = starIcon;
                 }
 
@@ -251,7 +249,7 @@
                 lastPoint = point.latLng;
             });
             google.maps.event.addListener(dataMap, 'click', function () {
-                $cms.inform(lastPoint.lat() + ', ' + lastPoint.lng());
+                $util.inform(lastPoint.lat() + ', ' + lastPoint.lng());
             });
         }
     }

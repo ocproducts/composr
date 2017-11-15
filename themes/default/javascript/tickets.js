@@ -2,7 +2,7 @@
     'use strict';
 
     $cms.templates.supportTicketsScreen = function (params, container) {
-        $cms.dom.on(container, 'submit', '.js-form-submit-scroll-to-top', function () {
+        $dom.on(container, 'submit', '.js-form-submit-scroll-to-top', function () {
             scrollTo(0, 0);
         });
     };
@@ -13,17 +13,17 @@
             window.commentsHash = strVal(params.hash);
         }
 
-        $cms.dom.on(container, 'focus', '.js-focus-update-ajax-member-list', function (e, input) {
+        $dom.on(container, 'focus', '.js-focus-update-ajax-member-list', function (e, input) {
             if (input.value === '') {
                 $cms.form.updateAjaxMemberList(input, null, true, e);
             }
         });
 
-        $cms.dom.on(container, 'keyup', '.js-keyup-update-ajax-member-list', function (e, input) {
+        $dom.on(container, 'keyup', '.js-keyup-update-ajax-member-list', function (e, input) {
             $cms.form.updateAjaxMemberList(input, null, false, e);
         });
 
-        $cms.dom.on(container, 'submit', '.js-submit-check-post-and-ticket-type-id-fields', function (e, form) {
+        $dom.on(container, 'submit', '.js-submit-check-post-and-ticket-type-id-fields', function (e, form) {
             if (!$cms.form.checkFieldForBlankness(form.elements.post) || (form.elements['ticket_type_id'] && !$cms.form.checkFieldForBlankness(form.elements['ticket_type_id']))) {
                 e.preventDefault();
             }

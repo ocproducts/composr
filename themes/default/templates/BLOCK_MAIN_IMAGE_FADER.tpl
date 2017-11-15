@@ -1,8 +1,9 @@
+{$REQUIRE_JAVASCRIPT,galleries}
+
 {$SET,RAND_FADER_IMAGE,{$RAND}}
 
 {+START,IF,{$EQ,{BLOCK_ID},small_version}}
-	{$,TODO: We need to wrap all the image URLs with the ENSURE_PROTOCOL_SUITABILITY symbol somehow}
-	<div class="box box___block_main_image_fader" data-view="BlockMainImageFader" data-view-params="{+START,PARAMS_JSON,RAND_FADER_IMAGE,TITLES,HTML,IMAGES}{_*}{+END}">
+	<div class="box box___block_main_image_fader" data-view="BlockMainImageFader" data-view-params="{+START,PARAMS_JSON,RAND_FADER_IMAGE,MILL,TITLES,HTML,IMAGES}{_*}{+END}" data-keep-fix="{TITLES}{HTML}{IMAGES}{MILL}">
 		<div class="box_inner">
 			<h2>{!MEDIA}</h2>
 
@@ -13,7 +14,7 @@
 	</div>
 {+END}
 {+START,IF,{$NEQ,{BLOCK_ID},small_version}}
-	<div class="gallery_tease_pic_wrap" data-view="BlockMainImageFader" data-view-params="{+START,PARAMS_JSON,RAND_FADER_IMAGE,TITLES,HTML,IMAGES}{_*}{+END}">
+	<div class="gallery_tease_pic_wrap" data-view="BlockMainImageFader" data-view-params="{+START,PARAMS_JSON,RAND_FADER_IMAGE,MILL,TITLES,HTML,IMAGES}{_*}{+END}" data-keep-fix="{TITLES}{HTML}{IMAGES}{MILL}">
 		<div class="gallery_tease_pic">
 		<div class="box box___gallery_tease_pic"><div class="box_inner">
 			<div class="float_surrounder">

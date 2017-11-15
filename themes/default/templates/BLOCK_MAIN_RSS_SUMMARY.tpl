@@ -29,9 +29,9 @@
 	{+END}
 
 	{+START,COMMENT}
-		<div data-view="ToggleableTray">
+		<div data-toggleable-tray="{}">
 			<div class="js-tray-header">
-				<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!EXPAND}</a>
+				<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!">{!EXPAND}</a>
 			</div>
 
 			<div class="toggleable_tray_pulldown_spacer toggleable_tray js-tray-content" style="display: none" aria-expanded="false">

@@ -17,89 +17,89 @@
         BlockMainImageFader.base(this, 'constructor', arguments);
 
         var data = {},
-            id = params.randFaderImage,
-            key;
+            id = strVal(params.randFaderImage), 
+            milliseconds = Number(params.mill), i;
 
-        data.fpAnimation = document.getElementById('image_fader_' + id);
-        data.fpAnimationFader = document.createElement('img');
-        data.teaseTitle = document.getElementById('image_fader_title_' + id);
-        data.teaseScrollingText = document.getElementById('image_fader_scrolling_text_' + id);
-        data.fpAnimationFader.className = 'img_thumb';
-        data.fpAnimation.parentNode.insertBefore(data.fpAnimationFader, data.fpAnimation);
-        data.fpAnimation.parentNode.style.position = 'relative';
-        data.fpAnimation.parentNode.style.display = 'block';
-        data.fpAnimationFader.style.position = 'absolute';
-        data.fpAnimationFader.src = $cms.img('{$IMG;,blank}');
+        this.fpAnimationEl = document.getElementById('image_fader_' + id);
+        this.fpAnimationFaderEl = $dom.create('img', { className: 'img_thumb', src: $cms.img('{$IMG;,blank}'), css: { position: 'absolute' }});
+        this.teaseTitleEl = document.getElementById('image_fader_title_' + id);
+        this.teaseScrollingTextEl =  document.getElementById('image_fader_scrolling_text_' + id);
+        
+        this.fpAnimationEl.parentNode.insertBefore(this.fpAnimationFaderEl, this.fpAnimationEl);
+        this.fpAnimationEl.parentNode.style.position = 'relative';
+        this.fpAnimationEl.parentNode.style.display = 'block';
 
-        for (key in params.titles) {
-            this.initializeTitle(data, params.titles[key], key);
+        for (i = 0; i < params.titles.length; i++) {
+            this.initializeTitle(data, params.titles[i], i);
         }
 
-        for (key in params.html) {
-            this.initializeHtml(data, params.html[key], key);
+        for (i = 0; i < params.html.length; i++) {
+            this.initializeHtml(data, params.html[i], i);
         }
 
-        for (key in params.images) {
-            this.initializeImage(data, params.images[key], key, params.mill, params.images.length);
+        for (i = 0; i < params.images.length; i++) {
+            this.initializeImage(data, params.images[i], i, milliseconds, params.images.length);
         }
     }
 
-    $cms.inherits(BlockMainImageFader, $cms.View, /**@lends BlockMainImageFader#*/{
-        initializeTitle: function (data, v, k) {
-            data['title' + k] = v;
-            if (k == 0) {
-                if (data.teaseTitle) {
-                    $cms.dom.html(data.teaseTitle, data['title' + k]);
+    $util.inherits(BlockMainImageFader, $cms.View, /**@lends BlockMainImageFader#*/{
+        initializeTitle: function (data, value, index) {
+            data['title' + index] = value;
+            if (index === 0) {
+                if (this.teaseTitleEl) {
+                    $dom.html(this.teaseTitleEl, data['title' + index]);
                 }
             }
         },
-        initializeHtml: function (data, v, k) {
-            data['html' + k] = v;
-            if (k == 0) {
-                if (data.teaseScrollingText) {
-                    $cms.dom.html(data.teaseScrollingText, (data['html' + k] == '') ? '{!MEDIA;^}' : data['html' + k]);
+        initializeHtml: function (data, value, index) {
+            data['html' + index] = value;
+            if (index === 0) {
+                if (this.teaseScrollingTextEl) {
+                    $dom.html(this.teaseScrollingTextEl, (data['html' + index] === '') ? '{!MEDIA;^}' : data['html' + index]);
                 }
             }
         },
-        initializeImage: function (data, v, k, mill, total) {
-            var periodInMsecs = 50;
-            var increment = 3;
-            if (periodInMsecs * 100 / increment > mill) {
-                periodInMsecs = mill * increment / 100;
+        initializeImage: function (data, value, index, milliseconds, total) {
+            var periodInMsecs = 50,
+                increment = 3;
+            
+            if (periodInMsecs * 100 / increment > milliseconds) {
+                periodInMsecs = milliseconds * increment / 100;
                 periodInMsecs *= 0.9; // A little give
             }
 
-            data['url' + k] = v;
-            new Image().src = data['url' + k]; // precache
+            data['url' + index] = value;
+            new Image().src = data['url' + index]; // precache
+            var self = this;
             setTimeout(function () {
                 function func() {
-                    data.fpAnimationFader.src = data.fpAnimation.src;
-                    $cms.dom.fadeOut(data.fpAnimationFader);
-                    $cms.dom.fadeIn(data.fpAnimation);
-                    data.fpAnimation.src = data['url' + k];
-                    data.fpAnimationFader.style.left = ((data.fpAnimationFader.parentNode.offsetWidth - data.fpAnimationFader.offsetWidth) / 2) + 'px';
-                    data.fpAnimationFader.style.top = ((data.fpAnimationFader.parentNode.offsetHeight - data.fpAnimationFader.offsetHeight) / 2) + 'px';
-                    if (data.teaseTitle) {
-                        $cms.dom.html(data.teaseTitle, data['title' + k]);
+                    self.fpAnimationFaderEl.src = self.fpAnimationEl.src;
+                    $dom.fadeOut(self.fpAnimationFaderEl);
+                    $dom.fadeIn(self.fpAnimationEl);
+                    self.fpAnimationEl.src = $cms.img(data['url' + index]);
+                    self.fpAnimationFaderEl.style.left = ((self.fpAnimationFaderEl.parentNode.offsetWidth - self.fpAnimationFaderEl.offsetWidth) / 2) + 'px';
+                    self.fpAnimationFaderEl.style.top = ((self.fpAnimationFaderEl.parentNode.offsetHeight - self.fpAnimationFaderEl.offsetHeight) / 2) + 'px';
+                    if (self.teaseTitleEl) {
+                        $dom.html(self.teaseTitleEl, data['title' + index]);
                     }
-                    if (data.teaseScrollingText) {
-                        $cms.dom.html(data.teaseScrollingText, data['html' + k]);
+                    if (self.teaseScrollingTextEl) {
+                        $dom.html(self.teaseScrollingTextEl, data['html' + index]);
                     }
                 }
 
-                if (k != 0) {
+                if (index !== 0) {
                     func();
                 }
 
-                setInterval(func, mill * total);
-            }, k * mill);
+                setInterval(func, milliseconds * total);
+            }, index * milliseconds);
         }
     });
 
     $cms.views.GalleryNav = GalleryNav;
     /**
      * @memberof $cms.views
-     * @class
+     * @class $cms.views.GalleryNav
      * @extends $cms.View
      */
     function GalleryNav(params) {
@@ -113,7 +113,7 @@
         }
     }
 
-    $cms.inherits(GalleryNav, $cms.View, /**@lends GalleryNav#*/{
+    $util.inherits(GalleryNav, $cms.View, /**@lends $cms.views.GalleryNav#*/{
         initializeSlideshow: function () {
             resetSlideshowCountdown();
             startSlideshowTimer();
@@ -178,16 +178,18 @@
         var form = document.getElementById('main_form'),
             submitBtn = document.getElementById('submit_button'),
             validValue;
-        form.addEventListener('submit', function submitCheck() {
+        form.addEventListener('submit', function submitCheck(e) {
             var value = form.elements['name'].value;
-            
+            if (value === validValue) {
+                return;
+            }
             submitBtn.disabled = true;
             var url = '{$FIND_SCRIPT_NOHTTP;^,snippet}?snippet=exists_gallery&name=' + encodeURIComponent(value);
             e.preventDefault();
             $cms.form.doAjaxFieldTest(url).then(function (valid) {
                 if (valid) {
                     validValue = value;
-                    $cms.dom.submit(form);
+                    $dom.submit(form);
                 } else {
                     submitBtn.disabled = false;
                 }
@@ -205,7 +207,7 @@
             return;
         }
 
-        $cms.dom.on(container, 'click', '.js-click-carousel-prepare-load-more', function () {
+        $dom.on(container, 'click', '.js-click-carousel-prepare-load-more', function () {
             var ob = document.getElementById('carousel_ns_' + carouselId);
 
             if ((ob.parentNode.scrollLeft + ob.offsetWidth * 2) < ob.scrollWidth) {
@@ -226,13 +228,13 @@
         }
 
         for (i = 0; i < files.options.length; i++) {
-            $cms.dom.on(files[i], 'mouseover', function (event) {
-                $cms.ui.activateTooltip(this, event, '<img width="500" src="' + $cms.filter.html($cms.$BASE_URL()) + '/uploads/galleries/' + encodeURI(this.value) + '" \/>', 'auto');
+            $dom.on(files[i], 'mouseover', function (event) {
+                $cms.ui.activateTooltip(this, event, '<img width="500" src="' + $cms.filter.html($cms.baseUrl()) + '/uploads/galleries/' + encodeURI(this.value) + '" \/>', 'auto');
             });
-            $cms.dom.on(files[i], 'mousemove', function (event) {
+            $dom.on(files[i], 'mousemove', function (event) {
                 $cms.ui.repositionTooltip(this, event);
             });
-            $cms.dom.on(files[i], 'mouseout', function (event) {
+            $dom.on(files[i], 'mouseout', function (event) {
                 $cms.ui.deactivateTooltip(this);
             });
         }
@@ -258,7 +260,7 @@
     function showCurrentSlideshowTime() {
         var changer = document.getElementById('changer_wrap');
         if (changer) {
-            $cms.dom.html(changer, $cms.format('{!galleries:CHANGING_IN;^}', [Math.max(0, window.slideshowTime)]));
+            $dom.html(changer, $util.format('{!galleries:CHANGING_IN;^}', [Math.max(0, window.slideshowTime)]));
         }
     }
 
@@ -288,7 +290,7 @@
         }
         var changer = document.getElementById('changer_wrap');
         if (changer) {
-            $cms.dom.html(changer, message);
+            $dom.html(changer, message);
         }
         if (window.slideshowTimer) {
             clearInterval(window.slideshowTimer);
@@ -327,7 +329,7 @@
         }
 
         if (window.slideshowCurrentPosition === slide) { // Ah, it's where we are, so save that in
-            window.slideshowSlides[slide] = $cms.dom.html(document.getElementById('gallery_entry_screen'));
+            window.slideshowSlides[slide] = $dom.html(document.getElementById('gallery_entry_screen'));
             return;
         }
 
@@ -375,16 +377,16 @@
                 } // else probably a video
 
                 var cleanedSlideHtml = window.slideshowSlides[slide].replace(/<!DOCTYPE [^>]*>/i, ''); // FUDGE
-                $cms.dom.html(document.getElementById('gallery_entry_screen'), cleanedSlideHtml);
+                $dom.html(document.getElementById('gallery_entry_screen'), cleanedSlideHtml);
 
                 fadeElements = document.body.querySelectorAll('.scale_down');
                 if ((fadeElements[0] !== undefined) && (fadeElementsOld[0] !== undefined)) {
                     var fadeElement = fadeElements[0];
                     fadeElement.parentNode.insertBefore(fadeElementOld, fadeElement);
                     fadeElement.parentNode.style.position = 'relative';
-                    $cms.dom.fadeIn(fadeElement);
-                    $cms.dom.fadeOut(fadeElementOld, null, function () {
-                        $cms.dom.remove(fadeElementOld);
+                    $dom.fadeIn(fadeElement);
+                    $dom.fadeOut(fadeElementOld).then(function () {
+                        $dom.remove(fadeElementOld);
                     });
                 } // else probably a video
 

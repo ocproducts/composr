@@ -11,7 +11,7 @@
         AddonInstallConfirmScreen.base(this, 'constructor', arguments);
     }
 
-    $cms.inherits(AddonInstallConfirmScreen, $cms.View);
+    $util.inherits(AddonInstallConfirmScreen, $cms.View);
 
     // Templates:
     // ADDON_SCREEN.tpl
@@ -26,7 +26,7 @@
         AddonScreen.base(this, 'constructor', arguments);
     }
 
-    $cms.inherits(AddonScreen, $cms.View, /**@lends AddonScreen#*/{
+    $util.inherits(AddonScreen, $cms.View, /**@lends AddonScreen#*/{
         events: function () {
             return {
                 'click .js-click-check-uninstall-all': 'checkUninstallAll',

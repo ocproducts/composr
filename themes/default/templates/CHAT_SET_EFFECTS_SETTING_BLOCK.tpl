@@ -1,10 +1,10 @@
 {$REQUIRE_JAVASCRIPT,chat}
 
-<div data-tpl="chatSetEffectsSettingBlock" data-tpl-params="{+START,PARAMS_JSON,EFFECTS}{_*}{+END}"{+START,IF_PASSED,MEMBER_ID} data-view="ToggleableTray"{+END}>
+<div data-tpl="chatSetEffectsSettingBlock" data-tpl-params="{+START,PARAMS_JSON,EFFECTS}{_*}{+END}"{+START,IF_PASSED,MEMBER_ID} data-toggleable-tray="{}"{+END}>
 	{+START,IF_PASSED,USERNAME}{+START,IF_PASSED,MEMBER_ID}
 		<div class="toggleable_tray_title js-tray-header">
 			{!OVERRIDES_FOR_FRIEND,{USERNAME*}}
-			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{$?,{HAS_SOME},{!CONTRACT},{!EXPAND}}" title="{$?,{HAS_SOME},{!CONTRACT},{!EXPAND}}" src="{$IMG*,1x/trays/{$?,{HAS_SOME},contract,expand}}" srcset="{$IMG*,2x/trays/{$?,{HAS_SOME},contract,expand}} 2x" /></a>
+			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{$?,{HAS_SOME},{!CONTRACT},{!EXPAND}}" title="{$?,{HAS_SOME},{!CONTRACT},{!EXPAND}}" src="{$IMG*,1x/trays/{$?,{HAS_SOME},contract,expand}}" srcset="{$IMG*,2x/trays/{$?,{HAS_SOME},contract,expand}} 2x" /></a>
 		</div>
 	{+END}{+END}
 

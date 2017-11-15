@@ -1,4 +1,7 @@
 {$REQUIRE_JAVASCRIPT,core_rich_media}
+{$REQUIRE_JAVASCRIPT,news}
+
+{$SET,bottom_news_id,{$RAND}}
 
 <div data-tpl="blockBottomNews" data-tpl-params="{+START,PARAMS_JSON,bottom_news_id,news_ticker_text}{_*}{+END}">
 	{+START,SET,news_ticker_text}
@@ -8,8 +11,6 @@
 			{+END}
 		</ol>
 	{+END}
-
-	{$SET,bottom_news_id,{$RAND}}
 
 	<div class="ticker_wrap" role="marquee" id="ticktickticker_news{$GET%,bottom_news_id}"></div>
 </div>

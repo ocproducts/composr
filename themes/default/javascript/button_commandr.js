@@ -10,8 +10,8 @@ function loadCommandr() {
         tmpEl.id = 'commandr_img_loader';
         tmpEl.src = $cms.img('{$IMG;,loading}');
         tmpEl.style.position = 'absolute';
-        tmpEl.style.left = ($cms.dom.findPosX(img) + 2) + 'px';
-        tmpEl.style.top = ($cms.dom.findPosY(img) + 1) + 'px';
+        tmpEl.style.left = ($dom.findPosX(img) + 2) + 'px';
+        tmpEl.style.top = ($dom.findPosY(img) + 1) + 'px';
         img.parentNode.appendChild(tmpEl);
     }
 
@@ -30,13 +30,13 @@ function loadCommandr() {
             // Set up Commandr window
             var commandrBox = document.getElementById('commandr_box');
             if (!commandrBox) {
-                commandrBox = $cms.dom.create('div', {
+                commandrBox = $dom.create('div', {
                     id: 'commandr_box',
                     css: {
                         position: 'absolute',
                         zIndex: 2000,
-                        left: ($cms.dom.getWindowWidth() - 800) / 2 + 'px',
-                        top: Math.max(100, ($cms.dom.getWindowHeight() - 600) / 2) + 'px',
+                        left: ($dom.getWindowWidth() - 800) / 2 + 'px',
+                        top: Math.max(100, ($dom.getWindowHeight() - 600) / 2) + 'px',
                         display: 'none',
                         width: '800px',
                         height: '500px'
@@ -44,7 +44,7 @@ function loadCommandr() {
                 });
                 document.body.appendChild(commandrBox);
                 $cms.loadSnippet('commandr').then(function (result) {
-                    $cms.dom.html(commandrBox, result);
+                    $dom.html(commandrBox, result);
                     doCommandrBox();
                 });
             } else {
@@ -58,8 +58,8 @@ function loadCommandr() {
             img = document.getElementById('commandr_img'),
             bi, cmdLine;
 
-        if ($cms.dom.notDisplayed(commandrBox)) { // Showing Commandr again
-            $cms.dom.show(commandrBox);
+        if ($dom.notDisplayed(commandrBox)) { // Showing Commandr again
+            $dom.show(commandrBox);
 
             if (img) {
                 img.src = $cms.img('{$IMG;,icons/24x24/tool_buttons/commandr_off}');
@@ -67,18 +67,18 @@ function loadCommandr() {
                 img.className = '';
             }
 
-            $cms.dom.smoothScroll(0, null, null, function () {
+            $dom.smoothScroll(0, null, null, function () {
                 document.getElementById('commandr_command').focus();
             });
 
             cmdLine = document.getElementById('command_line');
             cmdLine.style.opacity = 0.0;
-            $cms.dom.fadeTo(cmdLine, null, 0.9);
+            $dom.fadeTo(cmdLine, null, 0.9);
 
             bi = document.getElementById('main_website_inner');
             if (bi) {
                 bi.style.opacity = 1.0;
-                $cms.dom.fadeTo(bi, null, 0.3);
+                $dom.fadeTo(bi, null, 0.3);
             }
 
             document.getElementById('commandr_command').focus();
@@ -89,10 +89,10 @@ function loadCommandr() {
                 img.style.opacity = 1.0;
             }
 
-            $cms.dom.hide(commandrBox);
+            $dom.hide(commandrBox);
             bi = document.getElementById('main_website_inner');
             if (bi) {
-                $cms.dom.fadeIn(bi);
+                $dom.fadeIn(bi);
             }
         }
     }
