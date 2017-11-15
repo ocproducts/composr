@@ -1,3 +1,7 @@
+/*{+START,INCLUDE,UTIL,.js,javascript}{+END}*/
+
+/*{+START,INCLUDE,DOM,.js,javascript}{+END}*/
+
 (function ($cms, $util, $dom) {
     'use strict';
 
@@ -5,145 +9,101 @@
 
     var symbols =  (!IN_MINIKERNEL_VERSION ? JSON.parse(document.getElementById('composr-symbol-data').content) : {});
 
-    // Cached references
-    var hasOwn = Function.bind.call(Function.call, Object.prototype.hasOwnProperty),
-        toArray = Function.bind.call(Function.call, Array.prototype.slice),
-        forEach = Function.bind.call(Function.call, Array.prototype.forEach),
-        includes = Function.bind.call(Function.call, Array.prototype.includes),
-        // Helper for merging existing arrays
-        pushArray = Function.bind.call(Function.apply, Array.prototype.push);
-
-    // Too useful to not have globally!
-    window.intVal  = intVal;
-    window.numVal  = numVal;
-    window.boolVal = boolVal;
-    window.strVal  = strVal;
-    window.arrVal  = arrVal;
-    window.objVal  = objVal;
-    
-    setTimeout(function () {
-        $dom._resolveInit();
-
-        if (document.readyState === 'interactive') {
-            // Workaround for browser bug, document.readyState == 'interactive' before [defer]'d <script>s are loaded.
-            // See: https://github.com/jquery/jquery/issues/3271
-            $dom.waitForResources(toArray(document.querySelectorAll('script[src][defer]'))).then(function () {
-                $dom._resolveReady();
-            });
-        } else if (document.readyState === 'complete') {
-            $dom._resolveReady();
-        } else {
-            document.addEventListener('DOMContentLoaded', function listener() {
-                document.removeEventListener('DOMContentLoaded', listener);
-                $dom._resolveReady();
-            });
-        }
-
-        if (document.readyState === 'complete') {
-            $dom._resolveLoad();
-        } else {
-            window.addEventListener('load', function listener() {
-                window.removeEventListener('load', listener);
-                $dom._resolveLoad();
-            });
-        }
-    }, 0);
-
     /** @namespace $cms */
-    $cms = extendDeep($cms, /**@lends $cms*/{
+    $cms = $util.extendDeep($cms, /**@lends $cms*/{
         /**
          * Unique for each copy of Composr on the page
          * @method
          * @returns {boolean}
          */
-        id: constant('composr' + ('' + Math.random()).substr(2)),
+        id: $util.constant('composr' + ('' + Math.random()).substr(2)),
 
         // Load up symbols data
         /**
          * @method
          * @returns {boolean}
          */
-        isGuest: constant(boolVal(symbols.IS_GUEST)),
+        isGuest: $util.constant(boolVal(symbols.IS_GUEST)),
         /**
          * @method
          * @returns {boolean}
          */
-        isStaff: constant(boolVal(symbols.IS_STAFF)),
+        isStaff: $util.constant(boolVal(symbols.IS_STAFF)),
         /**
          * @method
          * @returns {boolean}
          */
-        isAdmin: constant(boolVal(symbols.IS_ADMIN)),
+        isAdmin: $util.constant(boolVal(symbols.IS_ADMIN)),
         /**
          * @method
          * @returns {boolean}
          */
-        isHttpauthLogin: constant(boolVal(symbols.IS_HTTPAUTH_LOGIN)),
+        isHttpauthLogin: $util.constant(boolVal(symbols.IS_HTTPAUTH_LOGIN)),
         /**
          * @method
          * @returns {boolean}
          */
-        isACookieLogin: constant(boolVal(symbols.IS_A_COOKIE_LOGIN)),
+        isACookieLogin: $util.constant(boolVal(symbols.IS_A_COOKIE_LOGIN)),
         /**
          * @method
          * @returns {boolean}
          */
-        isDevMode: constant(IN_MINIKERNEL_VERSION || boolVal(symbols.DEV_MODE)),
+        isDevMode: $util.constant(IN_MINIKERNEL_VERSION || boolVal(symbols.DEV_MODE)),
         /**
          * @method
          * @returns {boolean}
          */
-        isJsOn: constant(boolVal(symbols.JS_ON)),
+        isJsOn: $util.constant(boolVal(symbols.JS_ON)),
         /**
          * @method
          * @returns {boolean}
          */
-        isMobile: constant(boolVal(symbols.MOBILE)),
+        isMobile: $util.constant(boolVal(symbols.MOBILE)),
         /**
          * @method
          * @returns {boolean}
          */
-        isForcePreviews: constant(boolVal(symbols.FORCE_PREVIEWS)),
+        isForcePreviews: $util.constant(boolVal(symbols.FORCE_PREVIEWS)),
         /**
          * @method
          * @returns {boolean}
          */
-        isInlineStats: constant(boolVal(symbols.INLINE_STATS)),
+        isInlineStats: $util.constant(boolVal(symbols.INLINE_STATS)),
         /**
          * @method
          * @returns {number}
          */
-        httpStatusCode: constant(Number(symbols.HTTP_STATUS_CODE)),
+        httpStatusCode: $util.constant(Number(symbols.HTTP_STATUS_CODE)),
         /**
          * @method
          * @returns {string}
          */
-        getPageName: constant(strVal(symbols.PAGE)),
+        getPageName: $util.constant(strVal(symbols.PAGE)),
         /**
          * @method
          * @returns {string}
          */
-        getZoneName: constant(strVal(symbols.ZONE)),
+        getZoneName: $util.constant(strVal(symbols.ZONE)),
         /**
          * @method
          * @returns {string}
          */
-        getMember: constant(strVal(symbols.MEMBER)),
+        getMember: $util.constant(strVal(symbols.MEMBER)),
         /**
          * @method
          * @returns {string}
          */
-        getUsername: constant(strVal(symbols.USERNAME)),
+        getUsername: $util.constant(strVal(symbols.USERNAME)),
         /**
          * @method
          * @returns {string}
          */
-        getTheme: constant(strVal(symbols.THEME)),
+        getTheme: $util.constant(strVal(symbols.THEME)),
         /**
          * @method
          * @returns {string}
          */
-        userLang: constant(strVal(symbols.LANG)),
+        userLang: $util.constant(strVal(symbols.LANG)),
         /**
          * @method
          * @returns {string}
@@ -171,12 +131,12 @@
          * @method
          * @returns {string}
          */
-        getSiteName: constant(strVal('{$SITE_NAME;}')),
+        getSiteName: $util.constant(strVal('{$SITE_NAME;}')),
         /**
          * @method
          * @returns {string}
          */
-        getBaseUrl: constant(strVal('{$BASE_URL;}')),
+        getBaseUrl: $util.constant(strVal('{$BASE_URL;}')),
         /**
          * @param relativeUrl - Pass a relative URL but an absolute url works as well for robustness' sake
          * @returns {string}
@@ -201,52 +161,52 @@
          * @method
          * @returns {string}
          */
-        getBaseUrlNohttp: constant(strVal('{$BASE_URL_NOHTTP;}')),
+        getBaseUrlNohttp: $util.constant(strVal('{$BASE_URL_NOHTTP;}')),
         /**
          * @method
          * @returns {string}
          */
-        getCustomBaseUrl: constant(strVal('{$CUSTOM_BASE_URL;}')),
+        getCustomBaseUrl: $util.constant(strVal('{$CUSTOM_BASE_URL;}')),
         /**
          * @method
          * @returns {string}
          */
-        getCustomBaseUrlNohttp: constant(strVal('{$CUSTOM_BASE_URL_NOHTTP;}')),
+        getCustomBaseUrlNohttp: $util.constant(strVal('{$CUSTOM_BASE_URL_NOHTTP;}')),
         /**
          * @method
          * @returns {string}
          */
-        getForumBaseUrl: constant(strVal('{$FORUM_BASE_URL;}')),
+        getForumBaseUrl: $util.constant(strVal('{$FORUM_BASE_URL;}')),
         /**
          * @method
          * @returns {string}
          */
-        brandName: constant(strVal('{$BRAND_NAME;}')),
+        brandName: $util.constant(strVal('{$BRAND_NAME;}')),
         /**
          * @method
          * @returns {string}
          */
-        getSessionCookie: constant(strVal('{$SESSION_COOKIE_NAME;}')),
+        getSessionCookie: $util.constant(strVal('{$SESSION_COOKIE_NAME;}')),
         /**
          * @method
          * @returns {string}
          */
-        getCookiePath: constant(strVal('{$COOKIE_PATH;}')),
+        getCookiePath: $util.constant(strVal('{$COOKIE_PATH;}')),
         /**
          * @method
          * @returns {string}
          */
-        getCookieDomain: constant(strVal('{$COOKIE_DOMAIN;}')),
+        getCookieDomain: $util.constant(strVal('{$COOKIE_DOMAIN;}')),
         /**
          * @method
          * @returns {string}
          */
-        runningScript: constant(strVal(symbols.RUNNING_SCRIPT)),
+        runningScript: $util.constant(strVal(symbols.RUNNING_SCRIPT)),
         /**
          * @method
          * @returns {string}
          */
-        getCspNonce: constant(strVal(symbols.CSP_NONCE)),
+        getCspNonce: $util.constant(strVal(symbols.CSP_NONCE)),
 
         /**
          * WARNING: This is a very limited subset of the $CONFIG_OPTION tempcode symbol
@@ -257,12 +217,12 @@
         configOption: (function () {
             if (IN_MINIKERNEL_VERSION) {
                 // Installer, likely executing global.js
-                return constant('');
+                return $util.constant('');
             }
 
             var configOptionsJson = JSON.parse('{$PUBLIC_CONFIG_OPTIONS_JSON;}');
             return function configOption(optionName) {
-                if (hasOwn(configOptionsJson, optionName)) {
+                if ($util.hasOwn(configOptionsJson, optionName)) {
                     return configOptionsJson[optionName];
                 }
 
@@ -273,22 +233,22 @@
          * @method
          * @returns {boolean}
          */
-        seesJavascriptErrorAlerts: constant(boolVal(symbols['sees_javascript_error_alerts'])),
+        seesJavascriptErrorAlerts: $util.constant(boolVal(symbols['sees_javascript_error_alerts'])),
         /**
          * @method
          * @returns {boolean}
          */
-        canTryUrlSchemes: constant(boolVal(symbols['can_try_url_schemes'])),
+        canTryUrlSchemes: $util.constant(boolVal(symbols['can_try_url_schemes'])),
         /**
          * @method
          * @returns {string}
          */
-        zoneDefaultPage: constant(strVal(symbols['zone_default_page'])),
+        zoneDefaultPage: $util.constant(strVal(symbols['zone_default_page'])),
         /**
          * @method
          * @returns {object}
          */
-        staffTooltipsUrlPatterns: constant(objVal(JSON.parse('{$STAFF_TOOLTIPS_URL_PATTERNS_JSON;}'))),
+        staffTooltipsUrlPatterns: $util.constant(objVal(JSON.parse('{$STAFF_TOOLTIPS_URL_PATTERNS_JSON;}'))),
 
         /* Export useful stuff  */
         /**@method*/
@@ -303,10 +263,6 @@
         requireCss: requireCss,
         /**@method*/
         requireJavascript: requireJavascript,
-        /**@method*/
-        promiseSequence: promiseSequence,
-        /**@method*/
-        promiseHalt: promiseHalt,
         /**@method*/
         setPostDataFlag: setPostDataFlag,
         /**@method*/
@@ -387,875 +343,7 @@
     });
 
 
-    /**
-     * Port of PHP's boolval() function
-     * @param val
-     * @param [defaultValue]
-     * @returns { Boolean }
-     */
-    function boolVal(val, defaultValue) {
-        var p;
-        if (defaultValue === undefined) {
-            defaultValue = false;
-        }
-
-        if (val == null) {
-            return defaultValue;
-        }
-
-        return !!val && (val !== '0'); //&& ((typeof val !== 'object') || !((p = $util.isPlainObj(val)) || $util.isArrayLike(val)) || (p ? $util.hasEnumerable(val) : (val.length > 0)));
-    }
-
-    /**
-     * @param val
-     * @param [defaultValue]
-     * @returns { Number }
-     */
-    function intVal(val, defaultValue) {
-        if (defaultValue === undefined) {
-            defaultValue = 0;
-        }
-
-        if (val == null) {
-            return defaultValue;
-        }
-
-        // if (((typeof val === 'object') && (val.valueOf === Object.prototype.valueOf)) || ((typeof val === 'function') && (val.valueOf === noop.valueOf))) {
-        //     throw new TypeError('intVal(): Cannot coerce `val` of type "' + typeName(val) + '" to an integer.');
-        // }
-
-        val = Math.floor(val);
-
-        return (val && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
-    }
-
-    /**
-     * @param val
-     * @param [defaultValue]
-     * @returns { Number }
-     */
-    function numVal(val, defaultValue) {
-        if (defaultValue === undefined) {
-            defaultValue = 0;
-        }
-
-        if (val == null) {
-            return defaultValue;
-        }
-
-        // if (((typeof val === 'object') && (val.valueOf === Object.prototype.valueOf)) || ((typeof val === 'function') && (val.valueOf === noop.valueOf))) {
-        //     throw new TypeError('numVal(): Cannot coerce `val` of type "' + typeName(val) + '" to a number.');
-        // }
-
-        val = Number(val);
-
-        return (val && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
-    }
-
-    /**
-     * @param val
-     * @param [defaultValue]
-     * @returns { Array }
-     */
-    function arrVal(val, defaultValue) {
-        if (defaultValue === undefined) {
-            defaultValue = [];
-        }
-
-        if (val == null) {
-            return defaultValue;
-        }
-
-        if ((typeof val === 'object') && (Array.isArray(val) || $util.isArrayLike(val))) {
-            return toArray(val);
-        }
-
-        return [val];
-    }
-
-    /**
-     * @param val
-     * @param [defaultValue]
-     * @param [defaultPropertyName]
-     * @returns { Object }
-     */
-    function objVal(val, defaultValue, defaultPropertyName) {
-        if (defaultValue === undefined) {
-            defaultValue = {};
-        }
-
-        if (val == null) {
-            return defaultValue;
-        }
-
-        if (!$util.isObj(val)) {
-            if (defaultPropertyName != null) {
-                val = keyValue(defaultPropertyName, val);
-            } else {
-                throw new TypeError('objVal(): Cannot coerce `val` of type "' + $util.typeName(val) + '" to an object.');
-            }
-        }
-
-        return val;
-    }
-
-    /**
-     * Sensible PHP-like string coercion
-     * @param val
-     * @param [defaultValue]
-     * @returns { string }
-     */
-    function strVal(val, defaultValue) {
-        var ret;
-
-        if (defaultValue === undefined) {
-            defaultValue = '';
-        }
-
-        if (!val) {
-            ret = (val === 0) ? '0' : '';
-        } else if (val === true) {
-            ret = '1';
-        } else if (typeof val === 'string') {
-            ret = val;
-        } else if (typeof val === 'number') {
-            ret = ((val !== Infinity) && (val !== -Infinity)) ? ('' + val) : '';
-        } else if ((typeof val === 'object') && (val.toString !== Object.prototype.toString) && (typeof val.toString === 'function')) {
-            // `val` has a .toString() implementation other than the useless generic one
-            ret = '' + val;
-        } else {
-            throw new TypeError('strVal(): Cannot coerce `val` of type "' + $util.typeName(val) + '" to a string.');
-        }
-
-        return (ret !== '') ? ret : defaultValue;
-    }
-
-    /**@namespace $util*/
-    /**
-     * @method
-     * @returns {boolean}
-     */
-    $util.hasOwn = hasOwn;
-    /**
-     * @method
-     * @returns { Array }
-     */
-    $util.toArray = toArray;
-    /**
-     * @method
-     * @returns { Array }
-     */
-    $util.pushArray = pushArray;
-    
-    $util = extendDeep($util, /**@lends $util*/{
-        /**@method*/
-        extend: extend,
-        /**@method*/
-        extendOwn: extendOwn,
-        /**@method*/
-        extendDeep: extendDeep,
-        /**@method*/
-        defaults: defaults,
-        /**@method*/
-        inherits: inherits,
-        /**@method*/
-        isAbsolute: isAbsolute,
-        /**@method*/
-        isRelative: isRelative,
-        /**@method*/
-        schemeRelative: schemeRelative,
-        /**@method*/
-        once: once,
-        /**@method*/
-        findOnce: findOnce,
-        /**@method*/
-        removeOnce: removeOnce,
-        /**@method*/
-        arrayFromIterable: arrayFromIterable,
-        /**@method*/
-        parseJson5: parseJson5,
-        /**@method*/
-        pageMeta: pageMeta,
-        /**@method*/
-        navigate: navigate,
-        /**@method*/
-        inform: inform,
-        /**@method*/
-        warn: warn,
-        /**@method*/
-        fatal: fatal
-    });
-
-    /*{+START,INCLUDE,DOM,.js,javascript}{+END}*/
-
-    // Generate a unique integer id (unique within the entire client session).
-    var _uniqueId;
-    function uniqueId() {
-        if (_uniqueId === undefined) {
-            _uniqueId = 0;
-        }
-        return ++_uniqueId;
-    }
-
-    $util.uid = uid;
-    /**
-     * Used to uniquely identify objects/functions
-     * @param {object|function} obj
-     * @returns {number}
-     */
-    function uid(obj) {
-        if ((obj == null) || ((typeof obj !== 'object') && (typeof obj !== 'function'))) {
-            throw new TypeError('$util.uid(): Parameter `obj` must be an object or a function.');
-        }
-
-        if ($util.hasOwn(obj, $cms.id())) {
-            return obj[$cms.id()];
-        }
-
-        var id = uniqueId();
-        $util.properties(obj, keyValue($cms.id(), id));
-        return id;
-    }
-
-    $util.constant = constant;
-    /**
-     * Creates a function that always returns the same value that is passed as the first argument here
-     * @param value
-     * @returns { function }
-     */
-    function constant(value) {
-        return function _constant() {
-            return value;
-        };
-    }
-    
-    /**
-     * @param val
-     * @param withEnumerable (boolean)
-     * @returns {boolean}
-     */
-    $util.isObj = function isObj(val, withEnumerable) {
-        return (val != null) && (typeof val === 'object') && (!withEnumerable || $util.hasEnumerable(val));
-    };
-
-    /**
-     * @param val
-     * @returns {boolean}
-     */
-    $util.hasEnumerable = function hasEnumerable(val) {
-        if (val != null) {
-            for (var key in val) {
-                return true;
-            }
-        }
-        return false;
-    };
-
-    /**
-     * @param val
-     * @returns {boolean}
-     */
-    $util.hasOwnEnumerable = function hasOwnEnumerable(val) {
-        if (val != null) {
-            for (var key in val) {
-                if ($util.hasOwn(val, key)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    };
-
-    /**
-     * @param obj
-     * @returns {*|boolean}
-     */
-    $util.isPlainObj = function isPlainObj(obj) {
-        var proto;
-        return $util.isObj(obj) && ($util.internalName(obj) === 'Object') && (((proto = Object.getPrototypeOf(obj)) === Object.prototype) || (proto === null));
-    };
-
-    /**
-     * @param key
-     * @param value
-     * @returns {object}
-     */
-    function keyValue(key, value) {
-        var obj = {};
-        obj[key] = value;
-        return obj;
-    }
-
-    /**
-     * @param obj
-     * @returns {boolean}
-     */
-    $util.isPromise = function isPromise(obj) {
-        return (obj != null) && (typeof obj === 'object') && (typeof obj.then === 'function');
-    };
-
-    /**
-     * @param obj
-     * @returns {boolean}
-     */
-    $util.isWindow = function isWindow(obj) {
-        return $util.isObj(obj) && (obj === obj.window) && (obj === obj.self) && ($util.internalName(obj) === 'Window');
-    };
-
-    /**
-     * @param obj
-     * @returns {boolean|*}
-     */
-    $util.nodeType = function nodeType(obj) {
-        return $util.isObj(obj) && (typeof obj.nodeName === 'string') && (typeof obj.nodeType === 'number') && obj.nodeType;
-    };
-
-    var ELEMENT_NODE = 1,
-        DOCUMENT_NODE = 9,
-        DOCUMENT_FRAGMENT_NODE = 11;
-
-    /**
-     * @param obj
-     * @returns {boolean}
-     */
-    $util.isNode = function isNode(obj) {
-        return $util.nodeType(obj) !== false;
-    };
-
-    /**
-     * @param obj
-     * @returns {boolean}
-     */
-    $util.isEl = function isEl(obj) {
-        return $util.nodeType(obj) === ELEMENT_NODE;
-    };
-
-    /**
-     * @param obj
-     * @returns {boolean}
-     */
-    $util.isDoc = function isDoc(obj) {
-        return $util.nodeType(obj) === DOCUMENT_NODE;
-    };
-
-    /**
-     * @param obj
-     * @returns {boolean}
-     */
-    $util.isDocFrag = function isDocFrag(obj) {
-        return $util.nodeType(obj) === DOCUMENT_FRAGMENT_NODE;
-    };
-    
-    /**
-     * @param obj
-     * @returns {boolean}
-     */
-    $util.isRegExp = function isRegExp(obj) {
-        return (obj != null) && ($util.internalName(obj) === 'RegExp');
-    };
-
-    /**
-     * @param obj
-     * @returns {boolean}
-     */
-    $util.isDate = function isDate(obj) {
-        return (obj != null) && ($util.internalName(obj) === 'Date');
-    };
-
-    /**
-     * @param val
-     * @returns {boolean}
-     */
-    $util.isNumeric = function isNumeric(val) {
-        val = strVal(val);
-        
-        return (val !== '') && isFinite(val);
-    };
-
-    /**
-     * @param obj
-     * @param minLength
-     * @returns {boolean}
-     */
-    $cms.isArrayLike = function isArrayLike(obj, minLength) {
-        var len;
-        minLength = Number(minLength) || 0;
-
-        return (obj != null)
-            && (typeof obj === 'object')
-            && ($util.internalName(obj) !== 'Window')
-            && (typeof (len = obj.length) === 'number')
-            && (len >= minLength)
-            && ((len === 0) || ((0 in obj) && ((len - 1) in obj)));
-    };
-
-    /**
-     * Returns a random integer between min (inclusive) and max (inclusive)
-     * Using Math.round() will give you a non-uniform distribution!
-     * @param [min] {number}
-     * @param [max] {number}
-     * @returns {number}
-     */
-    $util.random = function random(min, max) {
-        min = intVal(min, 0);
-        max = intVal(max, 1000000000000); // 1 Trillion
-
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    };
-    
-    /**
-     * @param obj
-     * @param callback
-     * @returns {*}
-     */
-    $util.each = function each(obj, callback) {
-        if (obj == null) {
-            return obj;
-        }
-
-        for (var name in obj) {
-            if (callback.call(obj, name, obj[name]) === false) {
-                return obj;
-            }
-        }
-
-        return obj;
-    };
-
-    /**
-     * Iterates over iterable objects
-     * @param iterable
-     * @param callback
-     * @returns {*}
-     */
-    $util.eachIter = function eachIter(iterable, callback) {
-        var item, i = 0;
-
-        if (iterable == null) {
-            return iterable;
-        }
-
-        while (!(item = iterable.next()).done) {
-            if (callback.call(undefined, item.value, i++) === false) {
-                break;
-            }
-        }
-
-        return iterable;
-    };
-
-    var EXTEND_DEEP = 1,
-        EXTEND_TGT_OWN_ONLY = 2,
-        EXTEND_SRC_OWN_ONLY = 4;
-
-    function _extend(target, source, mask) {
-        var key, tgt, src, isSrcArr;
-
-        mask = Number(mask) || 0;
-
-        for (key in source) {
-            tgt = target[key];
-            src = source[key];
-
-            if (
-                (src === undefined)
-                || ((mask & EXTEND_TGT_OWN_ONLY) && !$util.hasOwn(target, key))
-                || ((mask & EXTEND_SRC_OWN_ONLY) && !$util.hasOwn(source, key))
-            ) {
-                continue;
-            }
-
-            if ((mask & EXTEND_DEEP) && src && (typeof src === 'object') && ((isSrcArr = Array.isArray(src)) || $util.isPlainObj(src))) {
-                if (isSrcArr && !Array.isArray(tgt)) {
-                    tgt = {};
-                } else if (!isSrcArr && !$util.isPlainObj(tgt)) {
-                    tgt = [];
-                }
-
-                target[key] = _extend(tgt, src, mask);
-            } else {
-                target[key] = src;
-            }
-        }
-    }
-
-    /**
-     * Copy all except undefined properties from one or more objects to the `target` object.
-     * @param target
-     * @param {...object} sources - Source objects
-     * @returns {*}
-     */
-    function extend(target, /*...*/sources) {
-        sources = toArray(arguments, 1);
-
-        for (var i = 0, len = sources.length; i < len; i++) {
-            _extend(target, sources[i]);
-        }
-        return target
-    }
-
-    /**
-     * Extends `target` with source own-properties only.
-     * @param target
-     * @param {...object} sources - Source objects
-     * @returns {*}
-     */
-    function extendOwn(target, /*...*/sources) {
-        sources = toArray(arguments, 1);
-
-        for (var i = 0, len = sources.length; i < len; i++) {
-            _extend(target, sources[i], EXTEND_SRC_OWN_ONLY);
-        }
-        return target
-    }
-
-    /**
-     * Deep extend, clones any arrays and plain objects found in sources.
-     * @param target
-     * @param {...object} sources - Source objects
-     * @returns {object}
-     */
-    function extendDeep(target, /*...*/sources) {
-        sources = toArray(arguments, 1);
-
-        for (var i = 0, len = sources.length; i < len; i++) {
-            _extend(target, sources[i], EXTEND_DEEP);
-        }
-        return target
-    }
-
-    /**
-     * Apply `options` to the `defaults` object. Only copies over properties with keys already defined in the `defaults` object.
-     * @param defaults
-     * @param {...object} options - Options
-     * @returns {*}
-     */
-    function defaults(defaults, /*...*/options) {
-        options = toArray(arguments, 1);
-
-        for (var i = 0, len = options.length; i < len; i++) {
-            _extend(defaults, options[i], EXTEND_TGT_OWN_ONLY);
-        }
-        return defaults
-    }
-
-    /**
-     * If the value of the named `property` is a function then invoke it with the
-     * `object` as context; otherwise, return it.
-     * @param object
-     * @param property
-     * @param fallback
-     * @returns {*}
-     */
-    function result(object, property, fallback) {
-        var value = ((object != null) && (object[property] !== undefined)) ? object[property] : fallback;
-        return (typeof value === 'function') ? value.call(object) : value;
-    }
-
-    /**
-     * @param {string} [mask] - optional, assumed to be `obj` if not of type number.
-     * @param {object} obj - the target object to define properties on.
-     * @param {object|string} props - is a single property's name if `value` is passed.
-     * @returns {Object}
-     */
-    $util.properties = function properties(mask, obj, props) {
-        var key, descriptors, descriptor;
-
-        if (typeof mask !== 'string') {
-            props = obj;
-            obj = mask;
-            mask = 'cw';
-        }
-
-        mask = strVal(mask);
-
-        var configurable = mask.includes('c'),
-            enumerable = mask.includes('e'),
-            writeable = mask.includes('w');
-
-        descriptors = {};
-        for (key in props) {
-            if (!$util.hasOwn(props, key)) {
-                continue;
-            }
-
-            descriptor = Object.getOwnPropertyDescriptor(props, key);
-            descriptor.configurable = configurable;
-            descriptor.enumerable = enumerable;
-            if (descriptor.writeable !== undefined) {
-                // ^ It's not an accessor property, otherwise we just let descriptor.get/set pass-through
-                descriptor.writeable = writeable;
-            }
-            descriptors[key] = descriptor;
-        }
-
-        return Object.defineProperties(obj, descriptors);
-    };
-
-    /**
-     * Gets the internal type/constructor name of the provided `val`
-     * @param val
-     * @returns {string}
-     */
-    $util.internalName = function internalName(val) {
-        return Object.prototype.toString.call(val).slice(8, -1); // slice off the surrounding '[object ' and ']'
-    };
-
-    /**
-     * @param obj
-     * @returns {*}
-     */
-    $util.constructorName = function constructorName(obj) {
-        if ((obj != null) && (typeof obj.constructor === 'function') && (typeof obj.constructor.name === 'string')) {
-            return obj.constructor.name;
-        }
-    };
-
-    /**
-     * @param obj
-     * @returns {*}
-     */
-    $util.typeName = function typeName(obj) {
-        var name = $util.constructorName(obj);
-        return ((name !== undefined) && (name !== '')) ? name : $util.internalName(obj);
-    };
-
-    /**
-     * String interpolation
-     * @param str
-     * @param { Array|object } values
-     * @returns { string }
-     */
-    $util.format = function format(str, values) {
-        str = strVal(str);
-
-        if ((str === '') || (values == null) || (typeof values !== 'object')) {
-            return str; // Nothing to do
-        }
-        
-        if ($util.isArrayLike(values)) {
-            return str.replace(/\{(\d+)\}/g, function (match, key) {
-                key--; // So that interpolation starts from '{1}'
-                return (key in values) ? strVal(values[key]) : match;
-            })
-        }
-
-        return str.replace(/\{(\w+)\}/g, function (match, key) {
-            return (key in values) ? strVal(values[key]) : match;
-        });
-    };
-
-    /**
-     * @param str
-     * @returns {string}
-     */
-    $cms.ucFirst = function ucFirst(str) {
-        return ((str != null) && (str = strVal(str))) ? str.charAt(0).toUpperCase() + str.substr(1) : '';
-    };
-
-    /**
-     * @param str
-     * @returns {string}
-     */
-    $cms.lcFirst = function lcFirst(str) {
-        return ((str != null) && (str = strVal(str))) ? str.charAt(0).toLowerCase() + str.substr(1) : '';
-    };
-
-    /**
-     * Credit: http://stackoverflow.com/a/32604073/362006
-     * @param str
-     * @returns {string}
-     */
-    $util.camelCase = function camelCase(str) {
-        return ((str != null) && (str = strVal(str))) ?
-            str.replace(/[\-_]+/g, ' ') // Replaces any - or _ characters with a space
-                .replace(/[^\w\s]/g, '') // Removes any non alphanumeric characters
-                .replace(/ (.)/g, function ($1) { // Uppercases the first character in each group immediately following a space (delimited by spaces)
-                    return $1.toUpperCase();
-                })
-                .replace(/ /g, '') // Removes spaces
-            : '';
-    };
-
-    /**
-     * Creates and returns a new, throttled version of the passed function, that, when invoked repeatedly, 
-     * will only actually call the original function at most once per every wait milliseconds. 
-     * Useful for rate-limiting events that occur faster than you can keep up with.
-     * By default, throttle will execute the function as soon as you call it for the first time, and, if you call it again any number of times during 
-     * the wait period, as soon as that period is over. If you'd like to disable the leading-edge call, pass {leading: false}, 
-     * and if you'd like to disable the execution on the trailing-edge, pass {trailing: false}.
-     * @param func
-     * @param wait
-     * @param options
-     * @return {function}
-     */
-    $util.throttle = function throttle(func, wait, options) {
-        var context, args, result,
-            timeout = null,
-            previous = 0;
-        
-        if (!options) {
-            options = {};
-        }
-        
-        var later = function() {
-            previous = options.leading === false ? 0 : Date.now();
-            timeout = null;
-            result = func.apply(context, args);
-            if (!timeout) {
-                context = args = null;
-            }
-        };
-        
-        return function throttledFn() {
-            var now = Date.now();
-            if (!previous && options.leading === false) {
-                previous = now;
-            }
-            var remaining = wait - (now - previous);
-            context = this;
-            args = arguments;
-            if (remaining <= 0 || remaining > wait) {
-                if (timeout) {
-                    clearTimeout(timeout);
-                    timeout = null;
-                }
-                previous = now;
-                result = func.apply(context, args);
-                if (!timeout) {
-                    context = args = null;
-                }
-            } else if (!timeout && options.trailing !== false) {
-                timeout = setTimeout(later, remaining);
-            }
-            return result;
-        };
-    };
-
-    /**
-     * Creates and returns a new debounced version of the passed function which will postpone its execution until after wait milliseconds have elapsed since the last time it was invoked. 
-     * Useful for implementing behavior that should only happen after the input has stopped arriving. 
-     * For example: rendering a preview of a Markdown comment, recalculating a layout after the window has stopped being resized, and so on.
-     * At the end of the wait interval, the function will be called with the arguments that were passed most recently to the debounced function.
-     * Pass true for the immediate argument to cause debounce to trigger the function on the leading instead of the trailing edge of the wait interval. 
-     * Useful in circumstances like preventing accidental double-clicks on a "submit" button from firing a second time.
-     * @param func
-     * @param wait
-     * @param immediate
-     * @return {function}
-     */
-    $util.debounce = function debounce(func, wait, immediate) {
-        var timeout, args, context, timestamp, result;
-
-        var later = function() {
-            var last = Date.now() - timestamp;
-
-            if (last < wait && last >= 0) {
-                timeout = setTimeout(later, wait - last);
-            } else {
-                timeout = null;
-                if (!immediate) {
-                    result = func.apply(context, args);
-                    if (!timeout) {
-                        context = args = null;
-                    }
-                }
-            }
-        };
-
-        return function debouncedFn() {
-            context = this;
-            args = arguments;
-            timestamp = Date.now();
-            var callNow = immediate && !timeout;
-            if (!timeout) {
-                timeout = setTimeout(later, wait);
-            }
-            if (callNow) {
-                result = func.apply(context, args);
-                context = args = null;
-            }
-
-            return result;
-        };
-    };
-
-    // Inspired by https://github.com/RobLoach/jquery-once
-    // https://www.drupal.org/docs/7/api/javascript-api/managing-javascript-in-drupal-7#jquery-once
-    var _onced = {};
-    /**
-     * @param objects
-     * @param flag
-     * @return { Array.<T> }
-     */
-    function once(objects, flag) {
-        objects = arrVal(objects);
-        flag = strVal(flag);
-
-        _onced[flag] || (_onced[flag] = {});
-
-        return objects.filter(function (obj) {
-            var uid = $util.uid(obj);
-            if (_onced[flag][uid] === true) {
-                return false;
-            }
-            _onced[flag][uid] = true;
-            return true;
-        });
-    }
-    /**
-     * @param objects
-     * @param flag
-     * @return { Array.<T> }
-     */
-    function findOnce(objects, flag) {
-        objects = arrVal(objects);
-        flag = strVal(flag);
-
-        if (!_onced[flag]) {
-            return [];
-        }
-
-        return objects.filter(function (obj) {
-            var uid = $util.uid(obj);
-            return _onced[flag][uid] === true;
-        });
-    }
-    /**
-     * @param objects
-     * @param flag
-     */
-    function removeOnce(objects, flag) {
-        objects = arrVal(objects);
-        flag = strVal(flag);
-
-        if (!_onced[flag]) {
-            return;
-        }
-
-        objects.forEach(function (obj) {
-            var uid = $util.uid(obj);
-            delete _onced[flag][uid];
-        });
-    }
-    /**
-     * @param iterable
-     * @returns { Array }
-     */
-    function arrayFromIterable(iterable) {
-        var item, array = [];
-
-        if (iterable != null) {
-            while (!(item = iterable.next()).done) {
-                array.push(item.value);
-            }
-        }
-
-        return array;
-    }
-    
-    var rgxProtocol = /^[a-z0-9\-\.]+:(?=\/\/)/i,
-        rgxHttp = /^https?:(?=\/\/)/i;
+    var rgxHttp = /^https?:(?=\/\/)/i;
     /**
      * NB: Has a trailing slash when having the base url only
      * @memberof $cms
@@ -1273,9 +361,18 @@
             // URL constructor throws on scheme-relative URLs
             url = window.location.protocol + url;
         }
-        
+
         return new URL(url, base);
     };
+
+    /**
+     * Dynamically fixes the protocol for image URLs
+     * @param url
+     * @returns {string}
+     */
+    function img(url) {
+        return strVal(url).replace(rgxHttp, window.location.protocol);
+    }
 
     /**
      * Returns a { URL } instance for the current page
@@ -1294,7 +391,7 @@
     function pageSearchParams() {
         return pageUrl().searchParams;
     }
-    
+
     function pageKeepSearchParams(forceSession) {
         var keepSp = new URLSearchParams();
 
@@ -1310,103 +407,8 @@
         if (forceSession && !keepSp.has('keep_session') && ($cms.getSessionId() !== '')) {
             keepSp.set('keep_session', $cms.getSessionId());
         }
-        
+
         return keepSp;
-    }
-
-    function isAbsolute(url) {
-        url = strVal(url);
-        return rgxHttp.test(url);
-    }
-
-    function isRelative(url) {
-        url = strVal(url);
-        return !isAbsolute(url) && !$util.isSchemeRelative(url);
-    }
-
-    $util.isSchemeRelative = function isSchemeRelative(url) {
-        url = strVal(url);
-        return url.startsWith('//');
-    };
-    /**
-     * Make a URL scheme-relative
-     * @param url
-     * @returns {string}
-     */
-    function schemeRelative(url) {
-        url = strVal(url);
-
-        return $cms.url(url).toString().replace(rgxProtocol, '');
-    }
-
-    /**
-     * Dynamically fixes the protocol for image URLs
-     * @param url
-     * @returns {string}
-     */
-    function img(url) {
-        return strVal(url).replace(rgxHttp, window.location.protocol);
-    }
-
-    /**
-     * Force a link to be clicked without user clicking it directly (useful if there's a confirmation dialog inbetween their click)
-     * @param url
-     * @param target
-     */
-    function navigate(url, target) {
-        var el;
-
-        if ($util.isEl(url)) {
-            el = url;
-            url = '';
-
-            if (el.localName === 'a') {
-                url = el.href;
-                if ('target' in el) {
-                    target = el.target;
-                }
-            } else if (el.dataset && ('cmsHref' in el.dataset)) {
-                url = el.dataset.cmsHref;
-                if ('cmsTarget' in el.dataset) {
-                    target = el.dataset.cmsTarget;
-                }
-            }
-        }
-
-        url = strVal(url);
-        target = strVal(target) || '_self';
-
-        if (!url) {
-            return;
-        }
-
-        if (target === '_self') {
-            window.location = url;
-        } else {
-            window.open(url, target);
-        }
-    }
-
-    /**
-     * @param source
-     * @returns {*}
-     */
-    function parseJson5(source) {
-        return window.JSON5.parse(strVal(source));
-    }
-
-    function inform() {
-        if ($cms.isDevMode()) {
-            return console.log.apply(undefined, arguments);
-        }
-    }
-
-    function warn() {
-        return console.warn.apply(undefined, arguments);
-    }
-
-    function fatal() {
-        return console.error.apply(undefined, arguments);
     }
 
     var validIdRE = /^[a-zA-Z][\w:.-]*$/;
@@ -1419,9 +421,9 @@
 
         if (validIdRE.test(sheetNameOrHref)) {
             sheetName = sheetNameOrHref;
-            sheetHref = schemeRelative('{$FIND_SCRIPT_NOHTTP;,sheet}?sheet=' + sheetName + $cms.keep());
+            sheetHref = $util.schemeRelative('{$FIND_SCRIPT_NOHTTP;,sheet}?sheet=' + sheetName + $cms.keep());
         } else {
-            sheetHref = schemeRelative(sheetNameOrHref);
+            sheetHref = $util.schemeRelative(sheetNameOrHref);
         }
 
         if (sheetName != null) {
@@ -1462,11 +464,11 @@
     function _findCssByHref(href) {
         var els = $dom.$$('link[rel="stylesheet"][href]'), el;
 
-        href = schemeRelative(href);
+        href = $util.schemeRelative(href);
 
         for (var i = 0; i < els.length; i++) {
             el = els[i];
-            if (schemeRelative(el.href) === href) {
+            if ($util.schemeRelative(el.href) === href) {
                 return el;
             }
         }
@@ -1496,9 +498,9 @@
         
         if (validIdRE.test(scriptNameOrSrc)) {
             scriptName = scriptNameOrSrc;
-            scriptSrc = schemeRelative('{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + scriptName + $cms.keep());
+            scriptSrc = $util.schemeRelative('{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + scriptName + $cms.keep());
         } else {
-            scriptSrc = schemeRelative(scriptNameOrSrc);
+            scriptSrc = $util.schemeRelative(scriptNameOrSrc);
         }
         
         if (scriptName != null) {
@@ -1539,11 +541,11 @@
     function _findScriptBySrc(src) {
         var els = $dom.$$('script[src]'), el;
         
-        src = schemeRelative(src);
+        src = $util.schemeRelative(src);
         
         for (var i = 0; i < els.length; i++) {
             el = els[i];
-            if (schemeRelative(el.src) === src) {
+            if ($util.schemeRelative(el.src) === src) {
                 return el;
             }
         }
@@ -1566,48 +568,7 @@
             });
         });
 
-        return promiseSequence(calls);
-    }
-
-    /**
-     * Used to execute a series promises one after another, in a sequence.
-     * @see https://pouchdb.com/2015/05/18/we-have-a-problem-with-promises.html
-     * @param {function[]} promiseFactories
-     * @returns { Promise }
-     */
-    function promiseSequence(promiseFactories) {
-        promiseFactories = arrVal(promiseFactories);
-
-        var result = Promise.resolve();
-        promiseFactories.forEach(function (promiseFactory) {
-            result = result.then(promiseFactory);
-        });
-
-        return result;
-    }
-
-    var _haltedPromise;
-    /**
-     * Use this to halt promise chain execution since using unresolved promises used to stop the execution chain can cause memory leaks.
-     * This will simply keep a single unresolved promise around, which will be the only promise that isn't garbage collected.
-     * Since then() and catch() are overridden in this new promise, the chain should not build up, and old parts of the chain should be garbage collected.
-     * @see https://github.com/elastic/kibana/issues/3015
-     * @return { Promise }
-     */
-    function promiseHalt() {
-        if (_haltedPromise === undefined) {
-            _haltedPromise = new Promise(function () {});
-            $util.properties(_haltedPromise, {
-                then: function then() {
-                    return _haltedPromise;
-                },
-                'catch': function _catch() {
-                    return _haltedPromise;
-                }
-            });
-        }
-
-        return _haltedPromise;
+        return $util.promiseSequence(calls);
     }
 
     /**
@@ -1638,39 +599,6 @@
             postData.value += flag;
         }
     }
-    
-    /**
-     * Emulates super.method() call
-     * @param SuperClass
-     * @param that
-     * @param method
-     * @param args
-     * @returns {*}
-     */
-    function base(SuperClass, that, method, args) {
-        return (args && (args.length > 0)) ? SuperClass.prototype[method].apply(that, args) : SuperClass.prototype[method].call(that);
-    }
-    
-    /**
-     * Inspired by goog.inherits and Babel's generated output for ES6 classes
-     * @param SubClass
-     * @param SuperClass
-     * @param protoProps
-     */
-    function inherits(SubClass, SuperClass, protoProps) {
-        Object.setPrototypeOf(SubClass, SuperClass);
-
-        $util.properties(SubClass, { base: base.bind(undefined, SuperClass) });
-
-        // Set the prototype chain to inherit from `SuperClass`
-        SubClass.prototype = Object.create(SuperClass.prototype);
-
-        protoProps || (protoProps = {});
-        protoProps.constructor = SubClass;
-
-        $util.properties(SubClass.prototype, protoProps);
-    }
-
     function getCsrfToken() {
         return readCookie($cms.getSessionCookie()); // Session also works as a CSRF-token, as client-side knows it (AJAX)
     }
@@ -2486,16 +1414,16 @@
         _ensureElement: function () {
             var attrs;
             if (!this.el) {
-                attrs = Object.assign({}, result(this, 'attributes'));
+                attrs = Object.assign({}, $util.result(this, 'attributes'));
                 if (this.id) {
-                    attrs.id = result(this, 'id');
+                    attrs.id = $util.result(this, 'id');
                 }
                 if (this.className) {
-                    attrs.className = result(this, 'className');
+                    attrs.className = $util.result(this, 'className');
                 }
-                this.setElement($dom.create(result(this, 'tagName') || 'div', attrs));
+                this.setElement($dom.create($util.result(this, 'tagName') || 'div', attrs));
             } else {
-                this.setElement(result(this, 'el'));
+                this.setElement($util.result(this, 'el'));
             }
         }
     });
@@ -4607,37 +3535,6 @@
         }
 
         return parameter;
-    }
-
-    var pageMetaCache;
-    function pageMeta(name) {
-        if (pageMetaCache === undefined) {
-            pageMetaCache = {};
-        }
-
-        name = strVal(name);
-
-        var metaEl = document.querySelector('meta[name="' + name + '"]'),
-            data = pageMetaCache[name], trimmed;
-
-        if (metaEl == null) {
-            return '';
-        }
-
-        // If nothing was found internally, try to fetch any
-        if ((data === undefined) && (typeof (data = metaEl.content) === 'string')) {
-            trimmed = data.trim();
-
-            if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) {
-                data = $util.parseJson5(data);
-            } else if ($util.isNumeric(trimmed)) {
-                data = Number(trimmed);
-            }
-
-            pageMetaCache[name] = data;
-        }
-
-        return data;
     }
 
     /**

@@ -146,7 +146,7 @@
                 });
             });
 
-            return $cms.promiseSequence(promiseCalls);
+            return $util.promiseSequence(promiseCalls);
         }
 
         function disableWysiwyg(forms, so, so2, discard) {
@@ -170,7 +170,7 @@
                 }
             }
 
-            return $cms.promiseSequence(promiseCalls).then(function () {
+            return $util.promiseSequence(promiseCalls).then(function () {
                 if (so) {
                     $dom.show(so);
                 }
@@ -320,7 +320,7 @@
             }
         });
 
-        return $cms.promiseSequence(promiseCalls);
+        return $util.promiseSequence(promiseCalls);
 
         function loadHtmlForTextarea(postingForm, textarea, ajaxCopy) {
             return new Promise(function (resolvePromise) {

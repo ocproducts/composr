@@ -166,7 +166,7 @@
             checkFormPromise.then(function (valid) {
                 if (!valid) {
                     resolveSubmitPromise(false);
-                    return $cms.promiseHalt();
+                    return $util.promiseHalt();
                 }
 
                 if (form.oldAction) {
@@ -247,7 +247,7 @@
             checkFormPromise.then(function (valid) {
                 if (!valid) {
                     resolvePreviewPromise(false);
-                    return $cms.promiseHalt();
+                    return $util.promiseHalt();
                 }
                 
                 if (window.mobileVersionForPreview !== undefined) {
@@ -463,8 +463,8 @@
                     });
                 });
             });
-            
-            $cms.promiseSequence(fieldCheckPromiseCalls).then(function () {
+
+            $util.promiseSequence(fieldCheckPromiseCalls).then(function () {
                 if ((totalFileSize > 0) && (theForm.elements['MAX_FILE_SIZE']) && (totalFileSize > theForm.elements['MAX_FILE_SIZE'].value)) {
                     if (!erroneous) {
                         errorElement = theElements[theElements.length - 1];

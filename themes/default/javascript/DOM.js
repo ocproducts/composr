@@ -19,6 +19,34 @@
     var DOM_ANIMATE_DEFAULT_DURATION = 400, // Milliseconds
         DOM_ANIMATE_DEFAULT_EASING = 'ease-in-out'; // Possible values: https://developer.mozilla.org/en-US/docs/Web/API/AnimationEffectTimingProperties/easing
 
+    setTimeout(function () {
+        $dom._resolveInit();
+
+        if (document.readyState === 'interactive') {
+            // Workaround for browser bug, document.readyState == 'interactive' before [defer]'d <script>s are loaded.
+            // See: https://github.com/jquery/jquery/issues/3271
+            $dom.waitForResources($util.toArray(document.querySelectorAll('script[src][defer]'))).then(function () {
+                $dom._resolveReady();
+            });
+        } else if (document.readyState === 'complete') {
+            $dom._resolveReady();
+        } else {
+            document.addEventListener('DOMContentLoaded', function listener() {
+                document.removeEventListener('DOMContentLoaded', listener);
+                $dom._resolveReady();
+            });
+        }
+
+        if (document.readyState === 'complete') {
+            $dom._resolveLoad();
+        } else {
+            window.addEventListener('load', function listener() {
+                window.removeEventListener('load', listener);
+                $dom._resolveLoad();
+            });
+        }
+    }, 0);
+    
     /**@namespace $dom*/
     /**
      * @param windowOrNodeOrSelector
@@ -511,7 +539,7 @@
             trimmed = data.trim();
 
             if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) { // Object or array?
-                data = parseJson5(data);
+                data = $util.parseJson5(data);
             } else if ((Number(data).toString() === data) && isFinite(data)) { // Only convert to a number if it doesn't change the string
                 data = Number(data);
             }
@@ -604,6 +632,37 @@
         if ((key === undefined) || !$util.hasEnumerable(cache)) {
             domDataMap.delete(owner);
         }
+    };
+
+    var pageMetaCache;
+    $dom.pageMeta = function pageMeta(name) {
+        if (pageMetaCache === undefined) {
+            pageMetaCache = {};
+        }
+
+        name = strVal(name);
+
+        var metaEl = document.querySelector('meta[name="' + name + '"]'),
+            data = pageMetaCache[name], trimmed;
+
+        if (metaEl == null) {
+            return '';
+        }
+
+        // If nothing was found internally, try to fetch any
+        if ((data === undefined) && (typeof (data = metaEl.content) === 'string')) {
+            trimmed = data.trim();
+
+            if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) {
+                data = $util.parseJson5(data);
+            } else if ((Number(data).toString() === data) && isFinite(data)) { // Only convert to a number if it doesn't change the string
+                data = Number(trimmed);
+            }
+
+            pageMetaCache[name] = data;
+        }
+
+        return data;
     };
 
     /**
@@ -2029,7 +2088,7 @@
             container = containers[name];
             container.innerHTML = strVal(html);
             dom = toArray(container.childNodes);
-            forEach(container.childNodes, function(child){
+            $util.forEach(container.childNodes, function(child){
                 container.removeChild(child)
             });
 
@@ -2237,7 +2296,7 @@
     $dom.empty = function empty(el) {
         el = $dom.elArg(el);
 
-        forEach(el.children, function (child) {
+        $util.forEach(el.children, function (child) {
             $cms.detachBehaviors(child);
         });
 

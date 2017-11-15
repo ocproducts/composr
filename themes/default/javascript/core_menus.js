@@ -273,7 +273,7 @@
                     }
                     
                     // Halt here unless we're moving an item
-                    return $cms.promiseHalt();
+                    return $util.promiseHalt();
                 }).then(function (answer) {
                     if (answer.toLowerCase() === '{!INPUTSYSTEM_CANCEL;^}'.toLowerCase()) {
                         return;

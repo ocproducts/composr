@@ -181,7 +181,7 @@
                     });
                 }
 
-                return $cms.promiseSequence(promiseCalls).then(function () {
+                return $util.promiseSequence(promiseCalls).then(function () {
                     // Add field for next one
                     var addAnotherField = (number == window.numAttachments) && (window.numAttachments < window.maxAttachments); // Needs running late, in case something happened inbetween
                     if (addAnotherField) {
@@ -490,7 +490,7 @@
                 }
             });
 
-            return $cms.promiseSequence(promiseCalls);
+            return $util.promiseSequence(promiseCalls);
         });
     }
 
@@ -534,14 +534,14 @@
             url = strVal(_url);
 
             if (!url) {
-                return $cms.promiseHalt();
+                return $util.promiseHalt();
             }
 
             if (!url.includes('://')) {
                 $cms.ui.alert('{!javascript:NOT_A_URL;^}').then(function () {
                     doInputUrl(fieldName, url);
                 });
-                return $cms.promiseHalt();
+                return $util.promiseHalt();
             }
 
             return $cms.ui.generateQuestionUi(
