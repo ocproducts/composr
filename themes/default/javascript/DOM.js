@@ -28,7 +28,7 @@
         var el;
 
         if (windowOrNodeOrSelector != null) {
-            if (isWindow(windowOrNodeOrSelector) || isNode(windowOrNodeOrSelector)) {
+            if ($util.isWindow(windowOrNodeOrSelector) || $util.isNode(windowOrNodeOrSelector)) {
                 return windowOrNodeOrSelector
             }
 
@@ -54,7 +54,7 @@
         var el;
 
         if (nodeOrSelector != null) {
-            if (isNode(nodeOrSelector)) {
+            if ($util.isNode(nodeOrSelector)) {
                 return nodeOrSelector;
             }
 
@@ -179,7 +179,7 @@
         selector = strVal(selector);
 
         // DocumentFragment is missing getElementById and getElementsBy(Tag|Class)Name in some implementations
-        if (rgxSimpleSelector.test(selector) && (isDoc(context) || isEl(context))) {
+        if (rgxSimpleSelector.test(selector) && ($util.isDoc(context) || $util.isEl(context))) {
             switch (selector[0]) {
                 case '#': // selector is an ID
                     return (found = (('getElementById' in context) ? context.getElementById(selector.substr(1)) : context.querySelector(selector))) ? [found] : [];
@@ -240,11 +240,11 @@
     $dom.create = function create(tag, properties, attributes) {
         var el = document.createElement(strVal(tag));
 
-        if (isObj(properties)) {
-            each(properties, function (key, value) {
+        if ($util.isObj(properties)) {
+            $util.each(properties, function (key, value) {
                 if (key in methodAttributes) {
                     $dom[key](el, value);
-                } else if (isObj(el[key]) && isObj(value)) {
+                } else if ($util.isObj(el[key]) && $util.isObj(value)) {
                     $util.extendDeep(el[key], value);
                 } else {
                     el[key] = value;
@@ -252,7 +252,7 @@
             });
         }
 
-        if (isObj(attributes)) {
+        if ($util.isObj(attributes)) {
             $util.each(attributes, function (key, value) {
                 $dom.attr(el, key, value)
             });
@@ -543,11 +543,11 @@
         }
 
         // Sets multiple values
-        if (isObj(key)) {
+        if ($util.isObj(key)) {
             data = dataCache(el);
             // Copy the properties one-by-one to the cache object
             for (prop in key) {
-                data[camelCase(key)] = key[prop];
+                data[$util.camelCase(key)] = key[prop];
             }
 
             return data;
@@ -556,14 +556,14 @@
         if (value === undefined) {
             // Attempt to get data from the cache
             // The key will always be camelCased in Data
-            data = dataCache(el)[camelCase(key)];
+            data = dataCache(el)[$util.camelCase(key)];
 
             return (data !== undefined) ? data : dataAttr(el, key); // Check in el.dataset.* too
         }
 
         // Set the data...
         // We always store the camelCased key
-        return dataCache(el)[camelCase(key)] = value;
+        return dataCache(el)[$util.camelCase(key)] = value;
     };
 
     /**
@@ -585,9 +585,9 @@
             if (Array.isArray(key)) {
                 // If key is an array of keys...
                 // We always set camelCase keys, so remove that.
-                key = key.map(camelCase);
+                key = key.map($util.camelCase);
             } else {
-                key = camelCase(key);
+                key = $util.camelCase(key);
                 // If a key with the spaces exists, use it.
                 // Otherwise, create an array by matching non-whitespace
                 key = (key in cache) ? [key] : (key.match(rgxNotWhite) || []);
@@ -601,7 +601,7 @@
         }
 
         // Remove if there's no more data
-        if ((key === undefined) || !hasEnumerable(cache)) {
+        if ((key === undefined) || !$util.hasEnumerable(cache)) {
             domDataMap.delete(owner);
         }
     };
@@ -713,8 +713,8 @@
         obj = $dom.domArg(obj);
 
         if (value === undefined) {
-            return isWindow(obj) ? obj.innerWidth :
-                isDoc(obj) ? obj.documentElement.scrollWidth :
+            return $util.isWindow(obj) ? obj.innerWidth :
+                $util.isDoc(obj) ? obj.documentElement.scrollWidth :
                     (offset = $dom.offset(obj)) && (Number(offset.width) || 0);
         }
 
@@ -733,8 +733,8 @@
         obj = $dom.domArg(obj);
 
         if (value === undefined) {
-            return isWindow(obj) ? obj.innerHeight :
-                isDoc(obj) ? obj.documentElement.scrollHeight :
+            return $util.isWindow(obj) ? obj.innerHeight :
+                $util.isDoc(obj) ? obj.documentElement.scrollHeight :
                     (offset = $dom.offset(obj)) && (Number(offset.height) || 0);
         }
 
@@ -1043,7 +1043,7 @@
         el = $dom.domArg(el);
 
         if (event && (typeof event !== 'string')) {
-            each(event, function (type, fn) {
+            $util.each(event, function (type, fn) {
                 $dom.on(el, type, selector, data, fn, one)
             });
             return;
@@ -1111,7 +1111,7 @@
         el = $dom.domArg(el);
 
         if (event && (typeof event !== 'string')) {
-            each(event, function (type, fn) {
+            $util.each(event, function (type, fn) {
                 $dom.off(el, type, selector, fn);
             });
             return;
@@ -1169,7 +1169,7 @@
      */
     $dom.trigger = function trigger(el, event, eventInit) {
         el = $dom.domArg(el);
-        event = isObj(event) ? event : $dom.createEvent(event, eventInit);
+        event = $util.isObj(event) ? event : $dom.createEvent(event, eventInit);
 
         // handle focus(), blur() by calling them directly
         if ((event.type in focusEvents) && (typeof el[event.type] === 'function')) {
@@ -1893,11 +1893,11 @@
                 return key === checkKey;
             }
 
-            if (isRegExp(checkKey)) {
+            if ($util.isRegExp(checkKey)) {
                 return key.search(checkKey) !== -1;
             }
 
-            if (isArrayLike(checkKey, 1)) {
+            if ($util.isArrayLike(checkKey, 1)) {
                 return includes(checkKey, key);
             }
 
@@ -1927,11 +1927,11 @@
                 return key === checkOutput;
             }
 
-            if (isRegExp(checkOutput)) {
+            if ($util.isRegExp(checkOutput)) {
                 return key.search(checkOutput) !== -1;
             }
 
-            if (isArrayLike(checkOutput, 1)) {
+            if ($util.isArrayLike(checkOutput, 1)) {
                 return includes(checkOutput, key);
             }
 
@@ -1967,7 +1967,7 @@
             return el.getAttribute(name);
         }
 
-        if (isObj(name)) {
+        if ($util.isObj(name)) {
             for (key in name) {
                 setAttr(el, key, name[key]);
             }
@@ -2041,8 +2041,8 @@
             }
         }
 
-        if (isPlainObj(properties)) {
-            each(properties, function(key, value) {
+        if ($util.isPlainObj(properties)) {
+            $util.each(properties, function(key, value) {
                 dom.forEach(function (node) {
                     if (!isEl(node)) {
                         return;
@@ -2076,7 +2076,7 @@
                     arg.forEach(function(el) {
                         if (Array.isArray(el)) {
                             nodes = nodes.concat(el);
-                        } else if (isNode(el)) {
+                        } else if ($util.isNode(el)) {
                             nodes.push(el);
                         } else {
                             // Probably an html string
@@ -2084,7 +2084,7 @@
                             nodes = nodes.concat($dom.fragment(html));
                         }
                     });
-                } else if (isNode(arg)) {
+                } else if ($util.isNode(arg)) {
                     nodes.push(arg);
                 } else {
                     // Probably an html string
@@ -2107,7 +2107,7 @@
                 scriptEls = [];
 
             nodes.forEach(function (node) {
-                if (!isNode(node)) {
+                if (!$util.isNode(node)) {
                     return;
                 }
 
@@ -2794,7 +2794,7 @@
             e.preventDefault();
 
             // Any parameters matching a pattern must be sent in the URL to the AJAX block call
-            eachIter(hrefUrl.searchParams.entries(), function (param) {
+            $util.eachIter(hrefUrl.searchParams.entries(), function (param) {
                 var paramName = param[0],
                     paramValue = param[1];
 

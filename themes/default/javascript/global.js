@@ -403,7 +403,7 @@
             return defaultValue;
         }
 
-        return !!val && (val !== '0'); //&& ((typeof val !== 'object') || !((p = isPlainObj(val)) || isArrayLike(val)) || (p ? hasEnumerable(val) : (val.length > 0)));
+        return !!val && (val !== '0'); //&& ((typeof val !== 'object') || !((p = $util.isPlainObj(val)) || $util.isArrayLike(val)) || (p ? $util.hasEnumerable(val) : (val.length > 0)));
     }
 
     /**
@@ -466,7 +466,7 @@
             return defaultValue;
         }
 
-        if ((typeof val === 'object') && (Array.isArray(val) || isArrayLike(val))) {
+        if ((typeof val === 'object') && (Array.isArray(val) || $util.isArrayLike(val))) {
             return toArray(val);
         }
 
@@ -488,7 +488,7 @@
             return defaultValue;
         }
 
-        if (!isObj(val)) {
+        if (!$util.isObj(val)) {
             if (defaultPropertyName != null) {
                 val = keyValue(defaultPropertyName, val);
             } else {
@@ -549,40 +549,6 @@
     
     $util = extendDeep($util, /**@lends $util*/{
         /**@method*/
-        isObj: isObj,
-        /**@method*/
-        isPlainObj: isPlainObj,
-        /**@method*/
-        isArrayLike: isArrayLike,
-        /**@method*/
-        isPromise: isPromise,
-        /**@method*/
-        isWindow: isWindow,
-        /**@method*/
-        isNode: isNode,
-        /**@method*/
-        isEl: isEl,
-        /**@method*/
-        isDoc: isDoc,
-        /**@method*/
-        isDocFrag: isDocFrag,
-        /**@method*/
-        isRegExp: isRegExp,
-        /**@method*/
-        isDate: isDate,
-        /**@method*/
-        isNumeric: isNumeric,
-        /**@method*/
-        uid: uid,
-        /**@method*/
-        hasEnumerable: hasEnumerable,
-        /**@method*/
-        hasOwnEnumerable: hasOwnEnumerable,
-        /**@method*/
-        each: each,
-        /**@method*/
-        eachIter: eachIter,
-        /**@method*/
         extend: extend,
         /**@method*/
         extendOwn: extendOwn,
@@ -593,31 +559,17 @@
         /**@method*/
         inherits: inherits,
         /**@method*/
-        camelCase: camelCase,
-        /**@method*/
-        ucFirst: ucFirst,
-        /**@method*/
-        lcFirst: lcFirst,
-        /**@method*/
-        format: format,
-        /**@method*/
         isAbsolute: isAbsolute,
         /**@method*/
         isRelative: isRelative,
         /**@method*/
         schemeRelative: schemeRelative,
         /**@method*/
-        random: random,
-        /**@method*/
         once: once,
         /**@method*/
         findOnce: findOnce,
         /**@method*/
         removeOnce: removeOnce,
-        /**@method*/
-        throttle: throttle,
-        /**@method*/
-        debounce: debounce,
         /**@method*/
         arrayFromIterable: arrayFromIterable,
         /**@method*/
@@ -645,6 +597,7 @@
         return ++_uniqueId;
     }
 
+    $util.uid = uid;
     /**
      * Used to uniquely identify objects/functions
      * @param {object|function} obj
@@ -664,6 +617,7 @@
         return id;
     }
 
+    $util.constant = constant;
     /**
      * Creates a function that always returns the same value that is passed as the first argument here
      * @param value
@@ -674,34 +628,34 @@
             return value;
         };
     }
-
+    
     /**
      * @param val
      * @param withEnumerable (boolean)
      * @returns {boolean}
      */
-    function isObj(val, withEnumerable) {
-        return (val != null) && (typeof val === 'object') && (!withEnumerable || hasEnumerable(val));
-    }
+    $util.isObj = function isObj(val, withEnumerable) {
+        return (val != null) && (typeof val === 'object') && (!withEnumerable || $util.hasEnumerable(val));
+    };
 
     /**
      * @param val
      * @returns {boolean}
      */
-    function hasEnumerable(val) {
+    $util.hasEnumerable = function hasEnumerable(val) {
         if (val != null) {
             for (var key in val) {
                 return true;
             }
         }
         return false;
-    }
+    };
 
     /**
      * @param val
      * @returns {boolean}
      */
-    function hasOwnEnumerable(val) {
+    $util.hasOwnEnumerable = function hasOwnEnumerable(val) {
         if (val != null) {
             for (var key in val) {
                 if ($util.hasOwn(val, key)) {
@@ -710,16 +664,16 @@
             }
         }
         return false;
-    }
+    };
 
     /**
      * @param obj
      * @returns {*|boolean}
      */
-    function isPlainObj(obj) {
+    $util.isPlainObj = function isPlainObj(obj) {
         var proto;
-        return isObj(obj) && ($util.internalName(obj) === 'Object') && (((proto = Object.getPrototypeOf(obj)) === Object.prototype) || (proto === null));
-    }
+        return $util.isObj(obj) && ($util.internalName(obj) === 'Object') && (((proto = Object.getPrototypeOf(obj)) === Object.prototype) || (proto === null));
+    };
 
     /**
      * @param key
@@ -736,25 +690,25 @@
      * @param obj
      * @returns {boolean}
      */
-    function isPromise(obj) {
+    $util.isPromise = function isPromise(obj) {
         return (obj != null) && (typeof obj === 'object') && (typeof obj.then === 'function');
-    }
+    };
 
     /**
      * @param obj
      * @returns {boolean}
      */
-    function isWindow(obj) {
-        return isObj(obj) && (obj === obj.window) && (obj === obj.self) && ($util.internalName(obj) === 'Window');
-    }
+    $util.isWindow = function isWindow(obj) {
+        return $util.isObj(obj) && (obj === obj.window) && (obj === obj.self) && ($util.internalName(obj) === 'Window');
+    };
 
     /**
      * @param obj
      * @returns {boolean|*}
      */
-    function nodeType(obj) {
-        return isObj(obj) && (typeof obj.nodeName === 'string') && (typeof obj.nodeType === 'number') && obj.nodeType;
-    }
+    $util.nodeType = function nodeType(obj) {
+        return $util.isObj(obj) && (typeof obj.nodeName === 'string') && (typeof obj.nodeType === 'number') && obj.nodeType;
+    };
 
     var ELEMENT_NODE = 1,
         DOCUMENT_NODE = 9,
@@ -764,66 +718,66 @@
      * @param obj
      * @returns {boolean}
      */
-    function isNode(obj) {
-        return nodeType(obj) !== false;
-    }
+    $util.isNode = function isNode(obj) {
+        return $util.nodeType(obj) !== false;
+    };
 
     /**
      * @param obj
      * @returns {boolean}
      */
-    function isEl(obj) {
-        return nodeType(obj) === ELEMENT_NODE;
-    }
+    $util.isEl = function isEl(obj) {
+        return $util.nodeType(obj) === ELEMENT_NODE;
+    };
 
     /**
      * @param obj
      * @returns {boolean}
      */
-    function isDoc(obj) {
-        return nodeType(obj) === DOCUMENT_NODE;
-    }
+    $util.isDoc = function isDoc(obj) {
+        return $util.nodeType(obj) === DOCUMENT_NODE;
+    };
 
     /**
      * @param obj
      * @returns {boolean}
      */
-    function isDocFrag(obj) {
-        return nodeType(obj) === DOCUMENT_FRAGMENT_NODE;
-    }
+    $util.isDocFrag = function isDocFrag(obj) {
+        return $util.nodeType(obj) === DOCUMENT_FRAGMENT_NODE;
+    };
     
     /**
      * @param obj
      * @returns {boolean}
      */
-    function isRegExp(obj) {
+    $util.isRegExp = function isRegExp(obj) {
         return (obj != null) && ($util.internalName(obj) === 'RegExp');
-    }
+    };
 
     /**
      * @param obj
      * @returns {boolean}
      */
-    function isDate(obj) {
+    $util.isDate = function isDate(obj) {
         return (obj != null) && ($util.internalName(obj) === 'Date');
-    }
+    };
 
     /**
      * @param val
      * @returns {boolean}
      */
-    function isNumeric(val) {
+    $util.isNumeric = function isNumeric(val) {
         val = strVal(val);
         
         return (val !== '') && isFinite(val);
-    }
+    };
 
     /**
      * @param obj
      * @param minLength
      * @returns {boolean}
      */
-    function isArrayLike(obj, minLength) {
+    $cms.isArrayLike = function isArrayLike(obj, minLength) {
         var len;
         minLength = Number(minLength) || 0;
 
@@ -833,7 +787,7 @@
             && (typeof (len = obj.length) === 'number')
             && (len >= minLength)
             && ((len === 0) || ((0 in obj) && ((len - 1) in obj)));
-    }
+    };
 
     /**
      * Returns a random integer between min (inclusive) and max (inclusive)
@@ -842,19 +796,19 @@
      * @param [max] {number}
      * @returns {number}
      */
-    function random(min, max) {
+    $util.random = function random(min, max) {
         min = intVal(min, 0);
         max = intVal(max, 1000000000000); // 1 Trillion
 
         return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
+    };
     
     /**
      * @param obj
      * @param callback
      * @returns {*}
      */
-    function each(obj, callback) {
+    $util.each = function each(obj, callback) {
         if (obj == null) {
             return obj;
         }
@@ -866,7 +820,7 @@
         }
 
         return obj;
-    }
+    };
 
     /**
      * Iterates over iterable objects
@@ -874,7 +828,7 @@
      * @param callback
      * @returns {*}
      */
-    function eachIter(iterable, callback) {
+    $util.eachIter = function eachIter(iterable, callback) {
         var item, i = 0;
 
         if (iterable == null) {
@@ -888,7 +842,7 @@
         }
 
         return iterable;
-    }
+    };
 
     var EXTEND_DEEP = 1,
         EXTEND_TGT_OWN_ONLY = 2,
@@ -911,10 +865,10 @@
                 continue;
             }
 
-            if ((mask & EXTEND_DEEP) && src && (typeof src === 'object') && ((isSrcArr = Array.isArray(src)) || isPlainObj(src))) {
+            if ((mask & EXTEND_DEEP) && src && (typeof src === 'object') && ((isSrcArr = Array.isArray(src)) || $util.isPlainObj(src))) {
                 if (isSrcArr && !Array.isArray(tgt)) {
                     tgt = {};
-                } else if (!isSrcArr && !isPlainObj(tgt)) {
+                } else if (!isSrcArr && !$util.isPlainObj(tgt)) {
                     tgt = [];
                 }
 
@@ -1072,14 +1026,14 @@
      * @param { Array|object } values
      * @returns { string }
      */
-    function format(str, values) {
+    $util.format = function format(str, values) {
         str = strVal(str);
 
         if ((str === '') || (values == null) || (typeof values !== 'object')) {
             return str; // Nothing to do
         }
         
-        if (isArrayLike(values)) {
+        if ($util.isArrayLike(values)) {
             return str.replace(/\{(\d+)\}/g, function (match, key) {
                 key--; // So that interpolation starts from '{1}'
                 return (key in values) ? strVal(values[key]) : match;
@@ -1089,30 +1043,30 @@
         return str.replace(/\{(\w+)\}/g, function (match, key) {
             return (key in values) ? strVal(values[key]) : match;
         });
-    }
+    };
 
     /**
      * @param str
      * @returns {string}
      */
-    function ucFirst(str) {
+    $cms.ucFirst = function ucFirst(str) {
         return ((str != null) && (str = strVal(str))) ? str.charAt(0).toUpperCase() + str.substr(1) : '';
-    }
+    };
 
     /**
      * @param str
      * @returns {string}
      */
-    function lcFirst(str) {
+    $cms.lcFirst = function lcFirst(str) {
         return ((str != null) && (str = strVal(str))) ? str.charAt(0).toLowerCase() + str.substr(1) : '';
-    }
+    };
 
     /**
      * Credit: http://stackoverflow.com/a/32604073/362006
      * @param str
      * @returns {string}
      */
-    function camelCase(str) {
+    $util.camelCase = function camelCase(str) {
         return ((str != null) && (str = strVal(str))) ?
             str.replace(/[\-_]+/g, ' ') // Replaces any - or _ characters with a space
                 .replace(/[^\w\s]/g, '') // Removes any non alphanumeric characters
@@ -1121,7 +1075,7 @@
                 })
                 .replace(/ /g, '') // Removes spaces
             : '';
-    }
+    };
 
     /**
      * Creates and returns a new, throttled version of the passed function, that, when invoked repeatedly, 
@@ -1135,7 +1089,7 @@
      * @param options
      * @return {function}
      */
-    function throttle(func, wait, options) {
+    $util.throttle = function throttle(func, wait, options) {
         var context, args, result,
             timeout = null,
             previous = 0;
@@ -1176,7 +1130,7 @@
             }
             return result;
         };
-    }
+    };
 
     /**
      * Creates and returns a new debounced version of the passed function which will postpone its execution until after wait milliseconds have elapsed since the last time it was invoked. 
@@ -1190,7 +1144,7 @@
      * @param immediate
      * @return {function}
      */
-    function debounce(func, wait, immediate) {
+    $util.debounce = function debounce(func, wait, immediate) {
         var timeout, args, context, timestamp, result;
 
         var later = function() {
@@ -1224,7 +1178,7 @@
 
             return result;
         };
-    }
+    };
 
     // Inspired by https://github.com/RobLoach/jquery-once
     // https://www.drupal.org/docs/7/api/javascript-api/managing-javascript-in-drupal-7#jquery-once
@@ -1344,7 +1298,7 @@
     function pageKeepSearchParams(forceSession) {
         var keepSp = new URLSearchParams();
 
-        eachIter($cms.pageSearchParams().entries(), function (entry) {
+        $util.eachIter($cms.pageSearchParams().entries(), function (entry) {
             var name = entry[0],
                 value = entry[1];
 
@@ -1402,7 +1356,7 @@
     function navigate(url, target) {
         var el;
 
-        if (isEl(url)) {
+        if ($util.isEl(url)) {
             el = url;
             url = '';
 
@@ -1837,7 +1791,7 @@
      * @param settings
      */
     function attachBehaviors(context, settings) {
-        if (!isDoc(context) && !isEl(context)) {
+        if (!$util.isDoc(context) && !$util.isEl(context)) {
             throw new TypeError('Invalid argument type: `context` must be of type HTMLDocument or HTMLElement');
         }
 
@@ -1852,7 +1806,7 @@
         function _attach(i) {
             var name = names[i], ret;
 
-            if (isObj($cms.behaviors[name]) && (typeof $cms.behaviors[name].attach === 'function')) {
+            if ($util.isObj($cms.behaviors[name]) && (typeof $cms.behaviors[name].attach === 'function')) {
                 try {
                     ret = $cms.behaviors[name].attach(context, settings);
                     //$util.inform('$cms.attachBehaviors(): attached behavior "' + name + '" to context', context);
@@ -1867,7 +1821,7 @@
                 return;
             }
 
-            if (isPromise(ret)) { // If the behavior returns a promise, we wait for it before moving on
+            if ($util.isPromise(ret)) { // If the behavior returns a promise, we wait for it before moving on
                 ret.then(_attach.bind(undefined, i), _attach.bind(undefined, i));
             } else { // no promise!
                 _attach(i);
@@ -1886,7 +1840,7 @@
     function detachBehaviors(context, settings, trigger) {
         var name;
 
-        if (!isDoc(context) && !isEl(context)) {
+        if (!$util.isDoc(context) && !$util.isEl(context)) {
             throw new TypeError('Invalid argument type: `context` must be of type HTMLDocument or HTMLElement');
         }
 
@@ -1895,7 +1849,7 @@
 
         // Detach all of them.
         for (name in $cms.behaviors) {
-            if (isObj($cms.behaviors[name]) && (typeof $cms.behaviors[name].detach === 'function')) {
+            if ($util.isObj($cms.behaviors[name]) && (typeof $cms.behaviors[name].detach === 'function')) {
                 try {
                     $cms.behaviors[name].detach(context, settings, trigger);
                     //$util.inform('$cms.detachBehaviors(): detached behavior "' + name + '" from context', context);
@@ -2053,8 +2007,8 @@
         url = $cms.url(url);
 
         var keepSp = pageKeepSearchParams(true);
-        
-        eachIter(keepSp.entries(), function (entry) {
+
+        $util.eachIter(keepSp.entries(), function (entry) {
             var name = entry[0],
                 value = entry[1];
 
@@ -2373,7 +2327,7 @@
         initialize: function (params, viewOptions) {
             this.params = objVal(params);
 
-            if (isObj(viewOptions)) {
+            if ($util.isObj(viewOptions)) {
                 for (var key in viewOptionsList) {
                     if (key in viewOptions) {
                         this[key] = viewOptions[key];
@@ -3239,7 +3193,7 @@
         var options, 
             single = false;
         
-        if (isObj(notice)) {
+        if ($util.isObj(notice)) {
             options = notice;
             notice = strVal(options.notice);
             title = strVal(options.title) || '{!MESSAGE;^}';
@@ -4675,8 +4629,8 @@
             trimmed = data.trim();
 
             if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) {
-                data = parseJson5(data);
-            } else if (isNumeric(trimmed)) {
+                data = $util.parseJson5(data);
+            } else if ($util.isNumeric(trimmed)) {
                 data = Number(trimmed);
             }
 
