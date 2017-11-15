@@ -2117,6 +2117,7 @@ function ecv2_LAST_VISIT_TIME($lang, $escaped, $param)
     $value = '';
 
     if (get_forum_type() == 'cns') {
+        require_code('cns_general');
         $member_info = cns_read_in_member_profile(get_member(), true);
         $value = strval($member_info['last_visit_time']);
     }
@@ -2358,6 +2359,7 @@ function ecv2_NUM_NEW_POSTS($lang, $escaped, $param)
     $value = '';
 
     if (get_forum_type() == 'cns') {
+        require_code('cns_general');
         $member_info = cns_read_in_member_profile(get_member(), true);
         $_new_posts = $GLOBALS['FORUM_DB']->query('SELECT COUNT(*) AS mycnt FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_cache_forum_id IS NOT NULL AND p_time>' . strval($member_info['last_visit_time']));
         $new_posts = $_new_posts[0]['mycnt'];
@@ -2385,6 +2387,7 @@ function ecv2_NUM_NEW_TOPICS($lang, $escaped, $param)
     $value = '';
 
     if (get_forum_type() == 'cns') {
+        require_code('cns_general');
         $member_info = cns_read_in_member_profile(get_member(), true);
         $_new_topics = $GLOBALS['FORUM_DB']->query('SELECT COUNT(*) AS mycnt FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics WHERE t_forum_id IS NOT NULL AND t_cache_first_time>' . strval($member_info['last_visit_time']));
         $new_topics = $_new_topics[0]['mycnt'];
