@@ -606,7 +606,7 @@ class Module_search
                     's_title' => $save_title,
                     's_member_id' => get_member(),
                     's_time' => time(),
-                    's_primary' => $content,
+                    's_primary' => cms_mb_substr($content, 0, 255),
                     's_auxillary' => serialize(array_merge($_POST, $_GET)),
                 ));
                 $saved_search = true;
