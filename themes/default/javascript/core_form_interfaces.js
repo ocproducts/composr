@@ -1,6 +1,6 @@
 'use strict';
 
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     // Templates:
@@ -1136,7 +1136,7 @@
                 if (el) {
                     el.onchange = function () {
                         if (this.checked) {
-                            $cms.ui.confirm('{!ARE_YOU_SURE_DELETE;^}',).then(function (result) {
+                            $cms.ui.confirm('{!ARE_YOU_SURE_DELETE;^}').then(function (result) {
                                 var el2 = document.getElementById('j_' + name + '_0');
                                 if (el2) {
                                     if (result) {
@@ -1156,7 +1156,7 @@
 
     $cms.templates.formScreenInputMultiList = function formScreenInputMultiList(params, container) {
         $dom.on(container, 'keypress', '.js-keypress-input-ensure-next-field', function (e, input) {
-            _ensureNextField(e, input)
+            _ensureNextField(e, input);
         });
     };
 
@@ -1205,7 +1205,7 @@
 
     $cms.templates.formScreenInputText = function formScreenInputText(params) {
         if (params.required.includes('wysiwyg')) {
-            if ((window.wysiwygOn) && (wysiwygOn())) {
+            if ((window.wysiwygOn) && (window.wysiwygOn())) {
                 document.getElementById(params.name).readOnly = true;
             }
         }
@@ -1222,6 +1222,7 @@
     
     /**
      * Marking things (to avoid illegally nested forms)
+     * @memberof $cms.form
      * @param form
      * @param prefix
      * @returns {boolean}
@@ -1271,6 +1272,7 @@
     };
 
     /**
+     * @memberof $cms.form
      * @return {boolean}
      */
     $cms.form.isModSecurityWorkaroundEnabled = function isModSecurityWorkaroundEnabled() {
@@ -1829,7 +1831,7 @@
             }
         }
     }
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));
 
 // ===========
 // Multi-field

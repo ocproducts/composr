@@ -1228,7 +1228,7 @@
     };
 
     /**
-     * Convert the format of a URL so it can be embedded as a parameter that ModSecurity will not trigger security errors on
+     * Convert the format of a URL so it can be embedded as a parameter that ModSecurity will not trigger security errors on.
      * @memberof $cms
      * @param {string} parameter
      * @returns {string}

@@ -1,4 +1,4 @@
-(function ($cms){
+(function ($cms, $util, $dom) {
     'use strict';
 
     $cms.templates.translateScreen = function (params, container) {
@@ -31,8 +31,8 @@
             langTo = strVal(params.langTo);
 
         $dom.on(container, 'click', function () {
-            translate(name, old, langFrom, langTo);
+            window.translate(name, old, langFrom, langTo);
         });
 
     };
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));
