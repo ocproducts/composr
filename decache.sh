@@ -18,7 +18,7 @@ if [ -e "data_custom/failover_rewritemap.txt" ]; then
 fi
 
 if [ -e "_config.php" ]; then
-	printf "\n\ndefine('DO_PLANNED_DECACHE', true);" >> _config.php
+	printf "\n\nif (!defined('DO_PLANNED_DECACHE')) define('DO_PLANNED_DECACHE', true);" >> _config.php
 fi
 
 if [ -e "sites" ]; then
