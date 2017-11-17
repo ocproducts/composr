@@ -1326,6 +1326,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'docs/pages/comcode_custom/EN/tut_intl_code_philosophy.txt',
             'docs/pages/comcode_custom/EN/tut_intl_content.txt',
             'docs/pages/comcode_custom/EN/tut_intl_users.txt',
+            'docs/pages/comcode_custom/EN/tut_javascript.txt',
             'docs/pages/comcode_custom/EN/tut_keymap.txt',
             'docs/pages/comcode_custom/EN/tut_ldap.txt',
             'docs/pages/comcode_custom/EN/tut_legal.txt',
