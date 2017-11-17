@@ -7,7 +7,6 @@
      * @returns { Boolean }
      */
     window.boolVal = function boolVal(val, defaultValue) {
-        var p;
         if (defaultValue === undefined) {
             defaultValue = false;
         }
@@ -890,9 +889,6 @@
 
     /**
      * NB: Has a trailing slash when having the base url only
-     * @memberof $cms
-     * @namespace
-     * @method
      * @param {string} url - An absolute or relative URL. If url is a relative URL, `base` will be used as the base URL. If url is an absolute URL, a given `base` will be ignored.
      * @param {string} [base] - The base URL to use in case url is a relative URL. If not specified, it defaults to $cms.baseUrl().
      * @return { URL }

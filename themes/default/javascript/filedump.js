@@ -21,7 +21,7 @@
             $cms.ui.open(params.fileLink, null, 'width=950;height=700', '_top');
         }
 
-        $dom.findUrlTab();
+        $cms.ui.findUrlTab();
 
         $dom.on(container, 'submit', '.js-submit-check-filedump-selections', function (e, form) {
             if (checkFiledumpSelections(form) === false) {

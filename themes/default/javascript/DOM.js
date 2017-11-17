@@ -2438,27 +2438,7 @@
         });
         return result.join('&');
     };
-
-    /**
-     * Tabs
-     * @memberof $dom
-     * @param [hash]
-     */
-    $dom.findUrlTab = function findUrlTab(hash) {
-        hash = strVal(hash, window.location.hash);
-
-        if (hash.replace(/^#!?/, '') !== '') {
-            var tab = hash.replace(/^#/, '').replace(/^tab__/, '');
-
-            if ($dom.$id('g_' + tab)) {
-                $cms.ui.selectTab('g', tab);
-            } else if ((tab.indexOf('__') !== -1) && ($dom.$id('g_' + tab.substr(0, tab.indexOf('__'))))) {
-                var old = hash;
-                $cms.ui.selectTab('g', tab.substr(0, tab.indexOf('__')));
-                window.location.hash = old;
-            }
-        }
-    };
+    
     /**
      * @memberof $dom
      * @param src
