@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     $cms.functions.moduleAdminCnsCustomProfileFields_createSelectionListChooseTable = function (formId) {
@@ -15,4 +15,4 @@
         }
         selectSubmit.style.display = 'none';
     };
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

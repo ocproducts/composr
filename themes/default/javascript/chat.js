@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     $cms.views.ChatRoomScreen = ChatRoomScreen;
@@ -392,7 +392,7 @@
         });
     };
 
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));
 
 // Constants
 window.MESSAGE_CHECK_INTERVAL = Math.max(3000, parseInt('{$CONFIG_OPTION,chat_message_check_interval}'));

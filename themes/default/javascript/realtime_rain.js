@@ -1,6 +1,4 @@
-'use strict';
-
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     $cms.templates.realtimeRainOverlay = function (params, container) {
@@ -83,7 +81,9 @@
             }
         };
     };
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));
+
+'use strict';
 
 // Handle the realtime_rain button on the bottom bar
 function realtimeRainButtonLoadHandler() {

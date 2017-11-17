@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     $cms.functions.getBannerFormFields = function getBannerFormFields() {
@@ -27,7 +27,7 @@
                 $dom.html(_imTotal, imTotal);
                 $dom.html(document.getElementById("im_total_2"), imTotal);
             }
-        }
+        };
     };
 
     $cms.functions.moduleCmsBannersRunStartAdd = function moduleCmsBannersRunStartAdd() {
@@ -81,4 +81,4 @@
             });
         });
     };
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

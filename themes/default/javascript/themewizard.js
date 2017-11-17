@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     $cms.functions.adminThemeWizardStep1 = function () {
@@ -31,4 +31,4 @@
             });
         });
     };
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

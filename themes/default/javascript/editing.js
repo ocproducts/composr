@@ -1,5 +1,5 @@
 /* Form editing code (general, may be used on many different kinds of form) */
-(function ($cms, $editing) {
+(function ($cms, $util, $dom, $editing) {
     'use strict';
 
     window.wysiwygOn = wysiwygOn;
@@ -1089,4 +1089,4 @@
         $dom.html(htmlSpot, html);
     }
 
-}(window.$cms, (window.$editing || (window.$editing = {}))));
+}(window.$cms, window.$util, window.$dom, (window.$editing || (window.$editing = {}))));

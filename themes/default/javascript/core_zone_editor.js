@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     $cms.views.ZoneEditorScreen = ZoneEditorScreen;
@@ -276,4 +276,4 @@
             store.value = el.options[el.selectedIndex].value;
         }
     }
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

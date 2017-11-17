@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     $cms.functions.newsletterNewsletterForm = function newsletterNewsletterForm() {
@@ -74,4 +74,4 @@
             }, 100);
         });
     };
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

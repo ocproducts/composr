@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
     
     var $CONFIG_OPTION_recaptcha_site_key = '{$CONFIG_OPTION;^,recaptcha_site_key}';
@@ -10,7 +10,7 @@
         window[onLoadCallbackName] = function () {
             resolve();
             delete window[onLoadCallbackName];
-        }
+        };
     });
     
     $cms.defineBehaviors(/**@lends $cms.behaviors*/{
@@ -94,4 +94,4 @@
             });
         });
     };
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
     
     // This is from the v10.1 branch, merged into the new JS framework...
@@ -117,4 +117,4 @@
             $dom.trigger('#purchase_button', 'click');
         }
     };
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     $cms.functions.moduleAdminCnsWelcomeEmailsRunStart = function moduleAdminCnsWelcomeEmailsRunStart() {
@@ -17,4 +17,4 @@
             newsletterField.form.elements['usergroup_type'][2].disabled = hasNewsletter || !hasUsergroup;
         }
     };
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

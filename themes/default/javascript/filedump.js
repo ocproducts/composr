@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     $cms.templates.filedumpEmbedScreen = function filedumpEmbedScreen(params, container) {
@@ -59,4 +59,4 @@
             return false;
         }
     };
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     $cms.views.CnsMemberProfileScreen = CnsMemberProfileScreen;
@@ -500,4 +500,4 @@
         });
     }
 
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

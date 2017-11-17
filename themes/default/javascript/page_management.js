@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     var $ADDON_INSTALLED_code_editor = !!+'{$ADDON_INSTALLED,code_editor}',
@@ -134,4 +134,4 @@
         }
 
     };
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

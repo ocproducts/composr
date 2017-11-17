@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     var givePointsFormLastValid;
@@ -18,4 +18,4 @@
             });
         });
     };
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

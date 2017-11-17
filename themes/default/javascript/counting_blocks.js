@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     $cms.templates.blockMainCount = function (params) {
@@ -12,4 +12,4 @@
             countdown(el, (params.positive ? -1 : +1) * params.distanceForPrecision, params.tailing);
         }, params.millisecondsForPrecision);
     };
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

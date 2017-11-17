@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     $cms.templates.revisionsScreen = function (params, container) {
@@ -18,4 +18,4 @@
             $cms.ui.repositionTooltip(container, e, true);
         });
     };
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

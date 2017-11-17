@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     $cms.functions.adminBackupInterfaceCalendar = function adminBackupInterfaceCalendar() {
@@ -66,4 +66,4 @@
 
         maxSizeField.parentNode.insertBefore(button, maxSizeField.nextSibling.nextSibling);
     };
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

@@ -1,43 +1,41 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     // Implementation for [data-cms-news-scroller]
-    $cms.defineBehaviors({
-        initializeNewsScroller: {
-            attach: function (context) {
-                $util.once($dom.$$$(context, '[data-cms-news-scroller]'), 'behavior.initializeNewsScroller').forEach(function (scrollerEl) {
-                    var scrollInterval = 60;
+    $cms.behaviors.initializeNewsScroller = {
+        attach: function (context) {
+            $util.once($dom.$$$(context, '[data-cms-news-scroller]'), 'behavior.initializeNewsScroller').forEach(function (scrollerEl) {
+                var scrollInterval = 60;
 
-                    if (scrollerEl.scrollHeight < 300) {
-                        scrollInterval = 300; // Slow, as not much to scroll
-                    }
+                if (scrollerEl.scrollHeight < 300) {
+                    scrollInterval = 300; // Slow, as not much to scroll
+                }
 
-                    scrollerEl.paused = false;
+                scrollerEl.paused = false;
 
-                    setTimeout(function () {
-                        setInterval(function () {
-                            if (scrollerEl.paused) {
-                                return;
-                            }
-
-                            if ((scrollerEl.scrollTop + scrollerEl.offsetHeight) >= (scrollerEl.scrollHeight - 1)) {
-                                scrollerEl.scrollTop = 0;
-                            } else {
-                                scrollerEl.scrollTop++;
-                            }
-                        }, scrollInterval);
-                    }, 2000);
-
-                    $dom.on(scrollerEl, 'mouseover mouseout', function (e) {
-                        if (scrollerEl.contains(e.relatedTarget)) {
+                setTimeout(function () {
+                    setInterval(function () {
+                        if (scrollerEl.paused) {
                             return;
                         }
-                        scrollerEl.paused = (e.type === 'mouseover');
-                    });
+
+                        if ((scrollerEl.scrollTop + scrollerEl.offsetHeight) >= (scrollerEl.scrollHeight - 1)) {
+                            scrollerEl.scrollTop = 0;
+                        } else {
+                            scrollerEl.scrollTop++;
+                        }
+                    }, scrollInterval);
+                }, 2000);
+
+                $dom.on(scrollerEl, 'mouseover mouseout', function (e) {
+                    if (scrollerEl.contains(e.relatedTarget)) {
+                        return;
+                    }
+                    scrollerEl.paused = (e.type === 'mouseover');
                 });
-            }
+            });
         }
-    });
+    };
     
     $cms.templates.blockMainImageFaderNews = function blockMainImageFaderNews(params, container) {
         var rand = strVal(params.randFaderNews),
@@ -165,4 +163,4 @@
             tickerTick(myId, 400);
         }, 50);
     };
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

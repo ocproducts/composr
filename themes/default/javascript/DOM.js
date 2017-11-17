@@ -1897,7 +1897,7 @@
         if (destY < 0) {
             destY = 0;
         }
-        if ((expectedScrollY != null) && (expectedScrollY != scrollY)) {
+        if ((expectedScrollY != null) && (Number(expectedScrollY) !== scrollY)) {
             // We must terminate, as the user has scrolled during our animation and we do not want to interfere with their action -- or because our last scroll failed, due to us being on the last scroll screen already
             return;
         }
@@ -2477,7 +2477,7 @@
                     if (event.pageY) {
                         return event.pageY;
                     } else if (event.clientY) {
-                        return event.clientY + window.pageYOffset
+                        return event.clientY + window.pageYOffset;
                     }
                 } catch (ignore) {}
 

@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     $dom.ready.then(function () {
@@ -142,4 +142,4 @@
         $dom.submit(form);
         return true;
     }
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

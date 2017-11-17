@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     $cms.views.Attachment = Attachment;
@@ -1241,4 +1241,4 @@
             e.style.position = 'absolute';
         }
     }
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     $cms.templates.supportTicketsScreen = function (params, container) {
@@ -29,4 +29,4 @@
             }
         });
     };
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

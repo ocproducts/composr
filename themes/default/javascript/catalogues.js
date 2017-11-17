@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     $cms.views.CatalogueAddingScreen = CatalogueAddingScreen;
@@ -175,4 +175,4 @@
             }
         }
     }
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     $cms.templates.cnsPostTemplateSelect = function (params, container) {
@@ -14,4 +14,4 @@
             window.insertTextbox(form.elements['post'], ins.replace(/\\n/g, '\n'), true, $cms.filter.html(ins).replace(/\\n/g, '<br />'));
         });
     };
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));
