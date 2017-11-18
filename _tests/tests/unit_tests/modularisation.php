@@ -124,9 +124,13 @@ class modularisation_test_set extends cms_test_case
         $full_dir = get_file_base() . '/' . $dir;
         $dh = opendir($full_dir);
         while (($file = readdir($dh)) !== false) {
+            if ($file[0] == '.') {
+                continue;
+            }
+
             $ignore = IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_NONBUNDLED_EXTREMELY_SCATTERED | IGNORE_CUSTOM_ZONES | IGNORE_CUSTOM_THEMES | IGNORE_NON_EN_SCATTERED_LANGS | IGNORE_BUNDLED_UNSHIPPED_VOLATILE | IGNORE_REVISION_FILES;
             //$ignore = IGNORE_NONBUNDLED_EXTREMELY_SCATTERED | IGNORE_CUSTOM_THEMES | IGNORE_NON_EN_SCATTERED_LANGS | IGNORE_BUNDLED_UNSHIPPED_VOLATILE; Uncomment for more careful testing
-            if (should_ignore_file($dir . $file, $ignore, 0)) {
+            if ((should_ignore_file($dir . $file, $ignore, 0)) && (preg_match('#^docs#', $dir . $file) == 0)) {
                 continue;
             }
 
