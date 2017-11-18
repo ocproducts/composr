@@ -24,6 +24,8 @@
 This driver works by ODBC. You create a mdb database in access, then create a mapping in the
 ODBC part of control panel. You need to add a 'System DSN' (the DSN is the database name mapping
 to the mdb file). In the properties there is option to choose username and password.
+
+We have not used the PHP DB2 extension, although we probably could have done so (http://php.net/manual/en/book.ibm-db2.php).
 */
 
 /**
