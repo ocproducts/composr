@@ -55,6 +55,10 @@ class modularisation_test_set extends cms_test_case
         $this->do_dir();
         $unput_files = array();
         foreach ($GFILE_ARRAY as $path) {
+            if ($path == 'sources_custom/hooks/systems/content_meta_aware/temp_test.php') {
+                continue;
+            }
+
             $found = false;
             foreach ($addon_data as $addon_name => $addon_files) {
                 foreach ($addon_files as $fileindex => $file) {

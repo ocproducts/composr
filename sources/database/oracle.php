@@ -430,11 +430,11 @@ class Database_Static_oracle
                 $start = 0;
             }
 
-            $pos = strpos($old_query, 'FROM ');
+            $pos = stripos($old_query, 'FROM ');
             $pos2 = strpos($old_query, ' ', $pos + 5);
-            $pos3 = strpos($old_query, 'WHERE ', $pos2);
+            $pos3 = stripos($old_query, 'WHERE ', $pos2);
             if ($pos3 === false) { // No where
-                $pos4 = strpos($old_query, ' ORDER BY');
+                $pos4 = stripos($old_query, ' ORDER BY');
                 if ($pos4 === false) {
                     $pos4 = strlen($old_query);
                 }
@@ -444,7 +444,7 @@ class Database_Static_oracle
                 }
                 $query .= substr($old_query, $pos4);
             } else {
-                $pos4 = strpos($old_query, ' ORDER BY');
+                $pos4 = stripos($old_query, ' ORDER BY');
                 if ($pos4 === false) {
                     $pos4 = strlen($old_query);
                 }
@@ -493,7 +493,7 @@ class Database_Static_oracle
 
         $sub = substr(ltrim($query), 0, 4);
         if (($results !== true) && (($sub === '(SEL') || ($sub === 'SELE') || ($sub === 'sele') || ($sub === 'CHEC') || ($sub === 'EXPL') || ($sub === 'REPA') || ($sub === 'DESC') || ($sub === 'SHOW')) && ($results !== false)) {
-            return $this->db_get_query_rows($stmt);
+            return $this->db_get_query_rows($stmt, $query, $start);
         }
 
         if ($get_insert_id) {
@@ -517,10 +517,11 @@ class Database_Static_oracle
      * Get the rows returned from a SELECT query.
      *
      * @param  resource $stmt The query result pointer
-     * @param  ?integer $start Whether to start reading from (null: irrelevant for this forum driver)
+     * @param  string $query The complete SQL query (useful for debugging)
+     * @param  ?integer $start Whether to start reading from (null: irrelevant)
      * @return array A list of row maps
      */
-    public function db_get_query_rows($stmt, $start = null)
+    public function db_get_query_rows($stmt, $query, $start = null)
     {
         $out = array();
         $i = 0;

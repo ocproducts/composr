@@ -392,7 +392,7 @@ class Database_Static_ibm
 
         $sub = substr(ltrim($query), 0, 4);
         if ((($sub === '(SEL') || ($sub === 'SELE') || ($sub === 'sele') || ($sub === 'CHEC') || ($sub === 'EXPL') || ($sub === 'REPA') || ($sub === 'DESC') || ($sub === 'SHOW')) && ($results !== false)) {
-            return $this->db_get_query_rows($results);
+            return $this->db_get_query_rows($results, $query, $start);
         }
 
         if ($get_insert_id) {
@@ -415,10 +415,11 @@ class Database_Static_ibm
      * Get the rows returned from a SELECT query.
      *
      * @param  resource $results The query result pointer
-     * @param  ?integer $start Whether to start reading from (null: irrelevant for this forum driver)
+     * @param  string $query The complete SQL query (useful for debugging)
+     * @param  ?integer $start Whether to start reading from (null: irrelevant)
      * @return array A list of row maps
      */
-    public function db_get_query_rows($results, $start = null)
+    public function db_get_query_rows($results, $query, $start = null)
     {
         $out = array();
         $i = 0;

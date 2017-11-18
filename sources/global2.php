@@ -880,7 +880,7 @@ function is_browser_decaching()
     if (defined('DO_PLANNED_DECACHE')) { // Used by decache.sh
         $config_file_orig = cms_file_get_contents_safe(get_file_base() . '/_config.php');
         $config_file = $config_file_orig;
-        $config_file = rtrim(str_replace('define(\'DO_PLANNED_DECACHE\', true);', '', $config_file)) . "\n\n";
+        $config_file = rtrim(str_replace(array('if (!defined(\'DO_PLANNED_DECACHE\')) ', 'define(\'DO_PLANNED_DECACHE\', true);'), array('', ''), $config_file)) . "\n\n";
         require_code('files');
         cms_file_put_contents_safe(get_file_base() . '/_config.php', $config_file, FILE_WRITE_FIX_PERMISSIONS);
         return true;

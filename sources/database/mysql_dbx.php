@@ -216,7 +216,7 @@ class Database_Static_mysql_dbx extends Database_super_mysql
 
         $sub = substr(ltrim($query), 0, 4);
         if ((is_object($results)) && (($sub === '(SEL') || ($sub === 'SELE') || ($sub === 'sele') || ($sub === 'CHEC') || ($sub === 'EXPL') || ($sub === 'REPA') || ($sub === 'DESC') || ($sub === 'SHOW'))) {
-            return $this->db_get_query_rows($results);
+            return $this->db_get_query_rows($results, $query, $start);
         }
 
         if ($get_insert_id) {
@@ -241,10 +241,12 @@ class Database_Static_mysql_dbx extends Database_super_mysql
     /**
      * Get the rows returned from a SELECT query.
      *
-     * @param  object $results The query result pointer
+     * @param  resource $results The query result pointer
+     * @param  string $query The complete SQL query (useful for debugging)
+     * @param  ?integer $start Whether to start reading from (null: irrelevant)
      * @return array A list of row maps
      */
-    public function db_get_query_rows($results)
+    public function db_get_query_rows($results, $query, $start = null)
     {
         $num_fields = $results->cols;
         $names = array();

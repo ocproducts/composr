@@ -44,8 +44,12 @@ class Database_super_sqlserver
                 $max += $start;
             }
 
-            if ((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) { // Unfortunately we can't apply to DELETE FROM and update :(. But its not too important, LIMIT'ing them was unnecessarily anyway
-                $query = 'SELECT TOP ' . strval(intval($max)) . substr($query, 6);
+            // Unfortunately we can't apply to DELETE FROM and update :(. But its not too important, LIMIT'ing them was unnecessarily anyway
+            if (strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') {
+                $query = 'SELECT TOP ' . strval(intval($max)) . substr(ltrim($query), 6);
+            }
+            if (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ') {
+                $query = '(SELECT TOP ' . strval(intval($max)) . substr(ltrim($query), 7);
             }
         }
     }
@@ -88,27 +92,27 @@ class Database_super_sqlserver
             if (db_has_full_text($db)) {
                 $index_name = substr($index_name, 1);
 
-                // Only allowed one index per table
+                // Only allowed one index per table, so we need to merge in any existing indices
                 $existing_index_fields = $GLOBALS['SITE_DB']->query_select('db_meta_indices', array('i_name', 'i_fields'), array('i_table' => $raw_table_name));
                 foreach ($existing_index_fields as $existing_index_field) {
                     if (substr($existing_index_field['i_name'], 0, 1) == '#') {
-                        $ret[] = 'DROP FULLTEXT INDEX ON ' . $table_name;
-
-                        $ret[] = 'DROP INDEX ' . substr($existing_index_field['i_name'], 1) . '__' . $table_name . ' ON ' . $table_name;
                         $_fields .= ',' . $existing_index_field['i_fields'];
                     }
                 }
-
-                if (count($ret) == 0) {
-                    $ret[] = 'CREATE FULLTEXT CATALOG ft AS DEFAULT';
-                }
-
                 $_fields = implode(',', array_unique(explode(',', $_fields)));
-                $unique_index_name = $index_name . '__' . $table_name;
+
+                // Full-text catalogue needed
+                $ret[] = 'CREATE FULLTEXT CATALOG ft AS DEFAULT'; // Will fail if already exists, but that's ok
+
+                // Create unique index on primary key (needed for full-text to function)
+                $unique_index_name = 'unique__' . $table_name;
+                $ret[] = 'DROP INDEX ' . $unique_index_name . ' ON ' . $table_name; // Just in case already there. Will fail if does not already exist, but that's ok
                 $ret[] = 'CREATE UNIQUE INDEX ' . $unique_index_name . ' ON ' . $table_name . '(' . $unique_key_fields . ')';
+
+                // Create full-text index on all fields that need it
+                $ret[] = 'DROP FULLTEXT INDEX ON ' . $table_name; // Just in case already there. Will fail if does not already exist, but that's ok
                 $ret[] = 'CREATE FULLTEXT INDEX ON ' . $table_name . '(' . $_fields . ') KEY INDEX ' . $unique_index_name;
             }
-
             return $ret;
         }
 
@@ -186,7 +190,7 @@ class Database_super_sqlserver
             'LONG_TRANS__COMCODE' => 'bigint',
             'SHORT_TRANS__COMCODE' => 'bigint',
             'SHORT_TEXT' => 'varchar(255)',
-            'LONG_TEXT' => 'varchar(MAX)',
+            'LONG_TEXT' => 'varchar(MAX)', // 'TEXT' cannot be indexed.
             'ID_TEXT' => 'varchar(80)',
             'MINIID_TEXT' => 'varchar(40)',
             'IP' => 'varchar(40)',
@@ -377,6 +381,19 @@ class Database_super_sqlserver
     {
         $string = fix_bad_unicode($string);
 
-        return str_replace("'", "''", $string);
+        $new_str = '';
+        $len = strlen($string);
+        for ($i = 0; $i < $len; $i++) {
+            $char = $string[$i];
+            if ($char == "'") {
+                $char = "''";
+            }/* elseif ((ord($char) > 127) || (ord($char) < 20)) {
+                Does not work due to truncation at 8000 characters https://stackoverflow.com/questions/12639948/sql-nvarchar-and-varchar-limits
+                $char = "'+char(" . strval(ord($char)) . ")+'";
+            }*/
+            $new_str .= $char;
+        }
+
+        return $new_str;
     }
 }

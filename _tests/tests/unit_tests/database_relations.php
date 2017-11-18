@@ -30,8 +30,14 @@ class database_relations_test_set extends cms_test_case
         $table_purposes = get_table_purpose_flags();
 
         $all_tables = $GLOBALS['SITE_DB']->query_select('db_meta', array('DISTINCT m_table'));
-        foreach ($all_tables as $table) {
-            $this->assertTrue(array_key_exists($table['m_table'], $table_purposes), 'Table purposes not described: ' . $table['m_table']);
+        foreach ($all_tables as $_table) {
+            $table = $_table['m_table'];
+
+            if (in_array($table, array('testy_test_test', 'temp_test', 'temp_test_linked'))) {
+                continue;
+            }
+
+            $this->assertTrue(array_key_exists($table, $table_purposes), 'Table purposes not described: ' . $table);
         }
     }
 
@@ -122,6 +128,11 @@ class database_relations_test_set extends cms_test_case
         $all_tables = $GLOBALS['SITE_DB']->query_select('db_meta', array('DISTINCT m_table'));
         foreach ($all_tables as $_table) {
             $table = $_table['m_table'];
+
+            if (in_array($table, array('testy_test_test', 'temp_test', 'temp_test_linked'))) {
+                continue;
+            }
+
             if (!table_has_purpose_flag($table, $skip_flags)) {
                 $this->assertTrue(isset($tables_in_hooks[$table]), 'Table not in a content or resource hook: ' . $table);
             }

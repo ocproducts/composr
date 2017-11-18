@@ -42,6 +42,24 @@ Instructions:
 5) When installing use the DSN for the database name
 
 Be aware of this bug https://bugs.php.net/bug.php?id=73448
+And this bug https://bugs.php.net/bug.php?id=75534 (not yet fixed in PHP at time of writing)
+And this bug https://bugs.php.net/bug.php?id=44278 (not yet fixed in PHP at time of writing)
+
+Content Translations are not supported, as duplicate inserts on an identity column are not supported, even if there are multiple key columns.
+Proper Unicode is not supported, due to non-standardness in SQL Server (special nvarchar and ntext columns, and a need to denote strings like N'foobar'). We just store utf-8 data as ISO-8859-1.
+
+Sample unixODBC config (/usr/local/etc/odbc.ini)...
+
+[cms]
+Driver=FreeTDS
+Trace=No
+Server=192.168.0.22
+Port=1433
+Database=cms
+TDS_Version=7.2
+Charset = ISO-8859-1
+
+Version 7.2 is the minimum version supported (consistent with Microsoft SQL Server 2005).
 */
 
 require_code('database/shared/sqlserver');
@@ -141,7 +159,7 @@ class Database_Static_sqlserver_odbc extends Database_super_sqlserver
         if (($results === false) && (strtoupper(substr($query, 0, 12)) == 'INSERT INTO ') && (strpos($query, '(id, ') !== false)) {
             $pos = strpos($query, '(');
             $table_name = substr($query, 12, $pos - 13);
-            @odbc_exec($db, 'SET IDENTITY_INSERT ' . $table_name . ' ON');
+            $results = @odbc_exec($db, 'SET IDENTITY_INSERT ' . $table_name . ' ON; ' . $query);
         }
         if ((($results === false) || (((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) && ($results === true))) && (!$fail_ok)) {
             $err = preg_replace('#[[:^print:]].*$#'/*error messages don't come through cleanly https://bugs.php.net/bug.php?id=73448*/, '', odbc_errormsg($db));
@@ -162,7 +180,7 @@ class Database_Static_sqlserver_odbc extends Database_super_sqlserver
 
         $sub = substr(ltrim($query), 0, 4);
         if (($results !== true) && (($sub === '(SEL') || ($sub === 'SELE') || ($sub === 'sele') || ($sub === 'CHEC') || ($sub === 'EXPL') || ($sub === 'REPA') || ($sub === 'DESC') || ($sub === 'SHOW')) && ($results !== false)) {
-            return $this->db_get_query_rows($results, $start);
+            return $this->db_get_query_rows($results, $query, $start);
         }
 
         if ($get_insert_id) {
@@ -185,10 +203,11 @@ class Database_Static_sqlserver_odbc extends Database_super_sqlserver
      * Get the rows returned from a SELECT query.
      *
      * @param  resource $results The query result pointer
-     * @param  ?integer $start Whether to start reading from (null: irrelevant for this forum driver)
+     * @param  string $query The complete SQL query (useful for debugging)
+     * @param  ?integer $start Whether to start reading from (null: irrelevant)
      * @return array A list of row maps
      */
-    public function db_get_query_rows($results, $start = null)
+    public function db_get_query_rows($results, $query, $start = null)
     {
         $out = array();
         if ($start === null) {
@@ -200,7 +219,7 @@ class Database_Static_sqlserver_odbc extends Database_super_sqlserver
         $types = array();
         $names = array();
         for ($x = 1; $x <= $num_fields; $x++) {
-            $types[$x] = odbc_field_type($results, $x);
+            $types[$x] = strtoupper(odbc_field_type($results, $x));
             $names[$x] = strtolower(odbc_field_name($results, $x));
         }
 
@@ -213,7 +232,7 @@ class Database_Static_sqlserver_odbc extends Database_super_sqlserver
                 $type = $types[$j];
                 $name = $names[$j];
 
-                if (($type == 'SMALLINT') || ($type == 'INT') || ($type == 'INTEGER') || ($type == 'UINTEGER') || ($type == 'BYTE') || ($type == 'COUNTER')) {
+                if (($type == 'SMALLINT') || ($type == 'BIGINT') || ($type == 'INT') || ($type == 'INTEGER') || ($type == 'UINTEGER') || ($type == 'BYTE') || ($type == 'COUNTER')) {
                     if (!is_null($v)) {
                         $newrow[$name] = intval($v);
                     } else {

@@ -175,7 +175,7 @@ class Database_Static_sqlserver extends Database_super_sqlserver
 
         $sub = substr(ltrim($query), 0, 4);
         if (($results !== true) && (($sub === '(SEL') || ($sub === 'SELE') || ($sub === 'sele') || ($sub === 'CHEC') || ($sub === 'EXPL') || ($sub === 'REPA') || ($sub === 'DESC') || ($sub === 'SHOW')) && ($results !== false)) {
-            return $this->db_get_query_rows($results);
+            return $this->db_get_query_rows($results, $query, $start);
         }
 
         if ($get_insert_id) {
@@ -202,10 +202,11 @@ class Database_Static_sqlserver extends Database_super_sqlserver
      * Get the rows returned from a SELECT query.
      *
      * @param  resource $results The query result pointer
-     * @param  ?integer $start Whether to start reading from (null: irrelevant for this forum driver)
+     * @param  string $query The complete SQL query (useful for debugging)
+     * @param  ?integer $start Whether to start reading from (null: irrelevant)
      * @return array A list of row maps
      */
-    public function db_get_query_rows($results, $start = null)
+    public function db_get_query_rows($results, $query, $start = null)
     {
         $out = array();
 
@@ -214,7 +215,7 @@ class Database_Static_sqlserver extends Database_super_sqlserver
             $types = array();
             $names = array();
             for ($x = 1; $x <= $num_fields; $x++) {
-                $types[$x - 1] = mssql_field_type($results, $x - 1);
+                $types[$x - 1] = strtoupper(mssql_field_type($results, $x - 1));
                 $names[$x - 1] = strtolower(mssql_field_name($results, $x - 1));
             }
 
@@ -226,7 +227,7 @@ class Database_Static_sqlserver extends Database_super_sqlserver
                     $type = strtoupper($types[$j]);
                     $name = $names[$j];
 
-                    if (($type == 'SMALLINT') || ($type == 'INT') || ($type == 'INTEGER') || ($type == 'UINTEGER') || ($type == 'BYTE') || ($type == 'COUNTER')) {
+                    if (($type == 'SMALLINT') || ($type == 'BIGINT') || ($type == 'INT') || ($type == 'INTEGER') || ($type == 'UINTEGER') || ($type == 'BYTE') || ($type == 'COUNTER')) {
                         if (!is_null($v)) {
                             $newrow[$name] = intval($v);
                         } else {

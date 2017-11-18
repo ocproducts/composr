@@ -350,7 +350,7 @@ class Database_Static_sqlite
     public function apply_sql_limit_clause(&$query, $max = null, $start = 0)
     {
         if (substr($query, 0, 7) == 'SELECT') {
-            if (($max !== null) && (!$start !== null)) {
+            if (($max !== null) && ($start !== null)) {
                 $query .= ' LIMIT ' . strval(intval($start)) . ',' . strval(intval($max));
             } elseif ($max !== null) {
                 $query .= ' LIMIT ' . strval(intval($max));
@@ -395,7 +395,7 @@ class Database_Static_sqlite
 
         $sub = substr(ltrim($query), 0, 4);
         if (($results !== true) && (($sub === '(SEL') || ($sub === 'SELE') || ($sub === 'sele') || ($sub === 'CHEC') || ($sub === 'EXPL') || ($sub === 'REPA') || ($sub === 'DESC') || ($sub === 'SHOW')) && ($results !== false)) {
-            return $this->db_get_query_rows($results);
+            return $this->db_get_query_rows($results, $query, $start);
         }
 
         if ($get_insert_id) {
@@ -413,10 +413,11 @@ class Database_Static_sqlite
      * Get the rows returned from a SELECT query.
      *
      * @param  resource $results The query result pointer
-     * @param  ?integer $start Whether to start reading from (null: irrelevant for this forum driver)
+     * @param  string $query The complete SQL query (useful for debugging)
+     * @param  ?integer $start Whether to start reading from (null: irrelevant)
      * @return array A list of row maps
      */
-    public function db_get_query_rows($results, $start = null)
+    public function db_get_query_rows($results, $query, $start = null)
     {
         $out = array();
         while (($row = sqlite_fetch_array($results)) !== false) {
