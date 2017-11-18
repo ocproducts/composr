@@ -403,9 +403,9 @@ function _load_comcode_page_not_cached($string, $zone, $codename, $file_base, $c
 
             $trans_map = array('source_user' => $page_submitter, 'broken' => 0, 'importance_level' => 1, 'text_original' => $comcode, 'text_parsed' => $text_parsed, 'language' => $lang);
             if ($map['string_index'] === null) {
-                $map['string_index'] = $GLOBALS['SITE_DB']->query_insert('translate', $trans_map, true, false, true);
+                $map['string_index'] = $GLOBALS['SITE_DB']->query_insert('translate', $trans_map, true, true, true);
             } else {
-                $GLOBALS['SITE_DB']->query_insert('translate', array('id' => $map['string_index']) + $trans_map, true, false, true);
+                $GLOBALS['SITE_DB']->query_insert('translate', array('id' => $map['string_index']) + $trans_map, false, true, true);
             }
 
             table_id_locking_end($GLOBALS['SITE_DB'], $map['string_index'], $lock);
@@ -414,14 +414,14 @@ function _load_comcode_page_not_cached($string, $zone, $codename, $file_base, $c
             $map['string_index__source_user'] = $page_submitter;
             $map['string_index__text_parsed'] = $text_parsed;
         }
-        $GLOBALS['SITE_DB']->query_insert('cached_comcode_pages', $map, false, true); // Race conditions
+        $GLOBALS['SITE_DB']->query_insert('cached_comcode_pages', $map, false, true, true);
 
         decache('main_comcode_page_children');
 
         // Try and insert corresponding page; will silently fail if already exists. This is only going to add a row for a page that was not created in-system
         if (is_null($comcode_page_row)) {
             $comcode_page_row = $new_comcode_page_row;
-            $GLOBALS['SITE_DB']->query_insert('comcode_pages', $comcode_page_row, false, true);
+            $GLOBALS['SITE_DB']->query_insert('comcode_pages', $comcode_page_row, false, true, true);
 
             if (addon_installed('content_reviews')) {
                 require_code('content_reviews2');
@@ -446,14 +446,14 @@ function _load_comcode_page_not_cached($string, $zone, $codename, $file_base, $c
         if (multi_lang_content()) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('translate', 'id', array('id' => $trans_key, 'language' => $lang));
             if (is_null($test)) {
-                $GLOBALS['SITE_DB']->query_insert('translate', array('id' => $trans_key, 'source_user' => $page_submitter, 'broken' => 0, 'importance_level' => 1, 'text_original' => $comcode, 'text_parsed' => $text_parsed, 'language' => $lang), false, true);
+                $GLOBALS['SITE_DB']->query_insert('translate', array('id' => $trans_key, 'source_user' => $page_submitter, 'broken' => 0, 'importance_level' => 1, 'text_original' => $comcode, 'text_parsed' => $text_parsed, 'language' => $lang), false, true, true);
                 $index = $trans_key;
 
                 $trans_cc_page_title_key = $GLOBALS['SITE_DB']->query_select_value_if_there('cached_comcode_pages', 'cc_page_title', array('the_page' => $codename, 'the_zone' => $zone, 'the_theme' => $GLOBALS['FORUM_DRIVER']->get_theme()));
                 if (!is_null($trans_cc_page_title_key)) {
                     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('translate', 'id', array('id' => $trans_cc_page_title_key, 'language' => $lang));
                     if (is_null($test)) {
-                        $GLOBALS['SITE_DB']->query_insert('translate', array('id' => $trans_cc_page_title_key, 'source_user' => $page_submitter, 'broken' => 0, 'importance_level' => 1, 'text_original' => $title_to_use, 'text_parsed' => '', 'language' => $lang), true);
+                        $GLOBALS['SITE_DB']->query_insert('translate', array('id' => $trans_cc_page_title_key, 'source_user' => $page_submitter, 'broken' => 0, 'importance_level' => 1, 'text_original' => $title_to_use, 'text_parsed' => '', 'language' => $lang), false, true, true);
                     }
                 } // else race condition, decached while being recached
             }

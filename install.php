@@ -1963,7 +1963,7 @@ function step_5_core()
 
     $GLOBALS['SITE_DB']->drop_table_if_exists('translate');
     $GLOBALS['SITE_DB']->create_table('translate', array(
-        'id' => '*AUTO',
+        'id' => (strpos(get_db_type(), 'sqlserver') !== false) ? '*AUTO_LINK' : '*AUTO',
         'language' => '*LANGUAGE_NAME',
         'importance_level' => 'SHORT_INTEGER',
         'text_original' => 'LONG_TEXT',
@@ -1971,7 +1971,7 @@ function step_5_core()
         'broken' => 'BINARY',
         'source_user' => 'MEMBER'
     ));
-    $GLOBALS['SITE_DB']->create_index('translate', '#tsearch', array('text_original'));
+    $GLOBALS['SITE_DB']->create_index('translate', '#tsearch', array('text_original'), 'id,language');
     $GLOBALS['SITE_DB']->create_index('translate', 'importance_level', array('importance_level'));
     if (substr(get_db_type(), 0, 5) == 'mysql') {
         $GLOBALS['SITE_DB']->create_index('translate', 'equiv_lang', array('text_original(4)'));

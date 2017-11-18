@@ -363,6 +363,40 @@ function db_supports_truncate_table($db)
 }
 
 /**
+ * Start a transaction
+ *
+ * @param  array $db A DB connection
+ */
+function db_start_transaction($db)
+{
+    if (count($db) > 4) { // Okay, we can't be lazy anymore
+        $db = call_user_func_array(array($GLOBALS['DB_STATIC_OBJECT'], 'db_get_connection'), $db);
+        _general_db_init();
+    }
+
+    if (method_exists($GLOBALS['DB_STATIC_OBJECT'], 'db_start_transaction')) {
+        $GLOBALS['DB_STATIC_OBJECT']->db_start_transaction($db);
+    }
+}
+
+/**
+ * End a transaction
+ *
+ * @param  array $db A DB connection
+ */
+function db_end_transaction($db)
+{
+    if (count($db) > 4) { // Okay, we can't be lazy anymore
+        $db = call_user_func_array(array($GLOBALS['DB_STATIC_OBJECT'], 'db_get_connection'), $db);
+        _general_db_init();
+    }
+
+    if (method_exists($GLOBALS['DB_STATIC_OBJECT'], 'db_end_transaction')) {
+        $GLOBALS['DB_STATIC_OBJECT']->db_end_transaction($db);
+    }
+}
+
+/**
  * Escape a string so it may be inserted into a query. If SQL statements are being built up and passed using db_query then it is essential that this is used for security reasons. Otherwise, the abstraction layer deals with the situation.
  *
  * @param  string $string The string

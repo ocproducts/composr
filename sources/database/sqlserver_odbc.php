@@ -27,6 +27,10 @@ e.g:
 PHP Windows > (Inbuilt support on Windows) > Windows ODBC > SQL Server Native Client 10.0 > SQL Server Express
 PHP Linux > PHP ODBC extension > unixODBC > FreeTDS > SQL Server Express
 
+Therefore host name is ignored.
+
+It would be possible for us to use a connection string to tell FreeTDS (for example) how to connect through to the SQL Server Express machine. However, this would require telling PHP explicitly to use FreeTDS along with all the specific configuration FreeTDS understands, and we don't provide any configuration for that in _config.php. Hence we rely on locally configured ODBC connections, which is cleaner.
+
 Instructions:
 1) Make sure you have the SQL Server network service started
 2) In SQL Server Management Studio, create your new database.
@@ -45,7 +49,6 @@ Be aware of this bug https://bugs.php.net/bug.php?id=73448
 And this bug https://bugs.php.net/bug.php?id=75534 (not yet fixed in PHP at time of writing)
 And this bug https://bugs.php.net/bug.php?id=44278 (not yet fixed in PHP at time of writing)
 
-Content Translations are not supported, as duplicate inserts on an identity column are not supported, even if there are multiple key columns.
 Full-text search is supported, however searching in SQL Server is per-table, not per-field, so precision is a bit more limited than other database engines. You may disable full-text search via the hidden 'skip_fulltext_sqlserver' option. Full-text search on SQL Server can be a bit spotty, the index builds in the background and has been seen to lag or not build at all during some testing (at least on SQL Server Express).
 
 Sample unixODBC config (/usr/local/etc/odbc.ini)...
@@ -161,7 +164,9 @@ class Database_Static_sqlserver_odbc extends Database_super_sqlserver
         if (($results === false) && (strtoupper(substr($query, 0, 12)) == 'INSERT INTO ') && (strpos($query, '(id, ') !== false)) {
             $pos = strpos($query, '(');
             $table_name = substr($query, 12, $pos - 13);
-            $results = @odbc_exec($db, 'SET IDENTITY_INSERT ' . $table_name . ' ON; ' . $query);
+            if ((!multi_lang_content()) || (substr($table_name, -strlen('translate')) != 'translate')) {
+                $results = @odbc_exec($db, 'SET IDENTITY_INSERT ' . $table_name . ' ON; ' . $query);
+            }
         }
         if ((($results === false) || (((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) && ($results === true))) && (!$fail_ok)) {
             $err = preg_replace('#[[:^print:]].*$#'/*error messages don't come through cleanly https://bugs.php.net/bug.php?id=73448*/, '', odbc_errormsg($db));
@@ -254,5 +259,26 @@ class Database_Static_sqlserver_odbc extends Database_super_sqlserver
 
         odbc_free_result($results);
         return $out;
+    }
+
+    /**
+     * Start a transaction
+     *
+     * @param  array $db A DB connection
+     */
+    public function db_start_transaction($db)
+    {
+        odbc_autocommit($db, false);
+    }
+
+    /**
+     * End a transaction
+     *
+     * @param  array $db A DB connection
+     */
+    public function db_end_transaction($db)
+    {
+        odbc_commit($db);
+        odbc_autocommit($db, true);
     }
 }

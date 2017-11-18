@@ -136,10 +136,12 @@ class Database_Static_sqlserver extends Database_super_sqlserver
         if (($results === false) && (strtoupper(substr($query, 0, 12)) == 'INSERT INTO ') && (strpos($query, '(id, ') !== false)) {
             $pos = strpos($query, '(');
             $table_name = substr($query, 12, $pos - 13);
-            if (function_exists('sqlsrv_query')) {
-                @sqlsrv_query($db, 'SET IDENTITY_INSERT ' . $table_name . ' ON');
-            } else {
-                @mssql_query('SET IDENTITY_INSERT ' . $table_name . ' ON', $db);
+            if ((!multi_lang_content()) || (substr($table_name, -strlen('translate')) != 'translate')) {
+                if (function_exists('sqlsrv_query')) {
+                    @sqlsrv_query($db, 'SET IDENTITY_INSERT ' . $table_name . ' ON');
+                } else {
+                    @mssql_query('SET IDENTITY_INSERT ' . $table_name . ' ON', $db);
+                }
             }
         }
         if (!is_null($start)) {
@@ -270,5 +272,29 @@ class Database_Static_sqlserver extends Database_super_sqlserver
             mssql_free_result($results);
         }
         return $out;
+    }
+
+    /**
+     * Start a transaction
+     *
+     * @param  array $db A DB connection
+     */
+    public function db_start_transaction($db)
+    {
+        if (function_exists('sqlsrv_begin_transaction')) {
+            sqlsrv_begin_transaction($db, false);
+        }
+    }
+
+    /**
+     * End a transaction
+     *
+     * @param  array $db A DB connection
+     */
+    public function db_end_transaction($db)
+    {
+        if (function_exists('sqlsrv_commit')) {
+            sqlsrv_commit($db, true);
+        }
     }
 }
