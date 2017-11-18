@@ -31,6 +31,7 @@ function init__database__sqlserver()
 {
     safe_ini_set('mssql.textlimit', '300000');
     safe_ini_set('mssql.textsize', '300000');
+    safe_ini_set('mssql.charset', get_charset());
 }
 
 /**
@@ -122,6 +123,8 @@ class Database_Static_sqlserver extends Database_super_sqlserver
     public function db_query($query, $db, $max = null, $start = null, $fail_ok = false, $get_insert_id = false)
     {
         $this->apply_sql_limit_clause($query, $max, $start);
+
+        $this->rewrite_to_unicode_syntax($query);
 
         $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
         if (function_exists('sqlsrv_query')) {

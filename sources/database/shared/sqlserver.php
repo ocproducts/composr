@@ -55,6 +55,55 @@ class Database_super_sqlserver
     }
 
     /**
+     * Adjust an SQL query to use T-SQL's unique Unicode syntax.
+     *
+     * @param  string $query The complete SQL query
+     */
+    protected function rewrite_to_unicode_syntax(&$query)
+    {
+        if (get_charset() != 'utf-8') {
+            return;
+        }
+
+        if (strpos($query, "'") === false) {
+            return;
+        }
+
+        $new_query = '';
+        $len = strlen($query);
+        $in_string = false;
+        for ($i = 0; $i < $len; $i++) {
+            $char = $query[$i];
+
+            if ($in_string) {
+                if ($char == "'") {
+                    if (($i < $len - 1) && ($query[$i + 1] == "'")) {
+                        // Escaped, so put it out and jump ahead a bit
+                        $new_query .= "''";
+                        $i++;
+                        continue;
+                    } else {
+                        // End of string section
+                        $in_string = false;
+                    }
+                }
+            } else {
+                if ($char == "'") {
+                    // Start of string section
+                    $in_string = true;
+                    if (($i == 0) || ($new_query[$i - 1] != 'N')) {
+                        $new_query .= 'N';
+                    }
+                }
+            }
+
+            $new_query .= $char;
+        }
+
+        $query = $new_query;
+    }
+
+    /**
      * Get the default user for making db connections (used by the installer as a default).
      *
      * @return string The default user for db connections
@@ -189,13 +238,13 @@ class Database_super_sqlserver
             'SHORT_TRANS' => 'bigint',
             'LONG_TRANS__COMCODE' => 'bigint',
             'SHORT_TRANS__COMCODE' => 'bigint',
-            'SHORT_TEXT' => 'varchar(255)',
-            'LONG_TEXT' => 'varchar(MAX)', // 'TEXT' cannot be indexed.
-            'ID_TEXT' => 'varchar(80)',
-            'MINIID_TEXT' => 'varchar(40)',
-            'IP' => 'varchar(40)',
-            'LANGUAGE_NAME' => 'varchar(5)',
-            'URLPATH' => 'varchar(255)',
+            'SHORT_TEXT' => 'nvarchar(255)',
+            'LONG_TEXT' => 'nvarchar(MAX)', // 'TEXT' cannot be indexed.
+            'ID_TEXT' => 'nvarchar(80)',
+            'MINIID_TEXT' => 'nvarchar(40)',
+            'IP' => 'nvarchar(40)',
+            'LANGUAGE_NAME' => 'nvarchar(5)',
+            'URLPATH' => 'nvarchar(255)',
         );
         return $type_remap;
     }
@@ -387,10 +436,7 @@ class Database_super_sqlserver
             $char = $string[$i];
             if ($char == "'") {
                 $char = "''";
-            }/* elseif ((ord($char) > 127) || (ord($char) < 20)) {
-                Does not work due to truncation at 8000 characters https://stackoverflow.com/questions/12639948/sql-nvarchar-and-varchar-limits
-                $char = "'+char(" . strval(ord($char)) . ")+'";
-            }*/
+            }
             $new_str .= $char;
         }
 

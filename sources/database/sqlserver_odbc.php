@@ -46,7 +46,6 @@ And this bug https://bugs.php.net/bug.php?id=75534 (not yet fixed in PHP at time
 And this bug https://bugs.php.net/bug.php?id=44278 (not yet fixed in PHP at time of writing)
 
 Content Translations are not supported, as duplicate inserts on an identity column are not supported, even if there are multiple key columns.
-Proper Unicode is not supported, due to non-standardness in SQL Server (special nvarchar and ntext columns, and a need to denote strings like N'foobar'). We just store utf-8 data as ISO-8859-1.
 
 Sample unixODBC config (/usr/local/etc/odbc.ini)...
 
@@ -57,7 +56,7 @@ Server=192.168.0.22
 Port=1433
 Database=cms
 TDS_Version=7.2
-Charset = ISO-8859-1
+ClientCharset=UTF-8
 
 Version 7.2 is the minimum version supported (consistent with Microsoft SQL Server 2005).
 */
@@ -154,6 +153,8 @@ class Database_Static_sqlserver_odbc extends Database_super_sqlserver
     public function db_query($query, $db, $max = null, $start = null, $fail_ok = false, $get_insert_id = false)
     {
         $this->apply_sql_limit_clause($query, $max, $start);
+
+        $this->rewrite_to_unicode_syntax($query);
 
         $results = @odbc_exec($db, $query);
         if (($results === false) && (strtoupper(substr($query, 0, 12)) == 'INSERT INTO ') && (strpos($query, '(id, ') !== false)) {

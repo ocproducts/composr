@@ -239,6 +239,30 @@ class database_misc_test_set extends cms_test_case
         $this->assertTrue(get_table_count_approx('download_categories', array('id' => db_get_first_id()), 'id=' . strval(db_get_first_id())) > 0);
     }
 
+    public function testSmoothUtf8()
+    {
+        // Really you should also manually check the DB is storing utf-8, not just working as a byte-bucket
+
+        $GLOBALS['SITE_DB']->drop_table_if_exists('testy_test_test_2');
+        $GLOBALS['SITE_DB']->create_table('testy_test_test_2', array(
+            'id' => '*AUTO',
+            'test_data_1' => 'LONG_TEXT',
+            'test_data_2' => 'SHORT_TEXT',
+        ));
+
+        $data = chr(hexdec('E2')) . chr(hexdec('80')) . chr(hexdec('BE'));
+
+        $GLOBALS['SITE_DB']->query_insert('testy_test_test_2', array(
+            'test_data_1' => $data,
+            'test_data_2' => $data,
+        ));
+
+        $this->assertTrue($GLOBALS['SITE_DB']->query_select_value('testy_test_test_2', 'test_data_1') == $data);
+        $this->assertTrue($GLOBALS['SITE_DB']->query_select_value('testy_test_test_2', 'test_data_2') == $data);
+
+        $GLOBALS['SITE_DB']->drop_table_if_exists('testy_test_test_2');
+    }
+
     public function testFullTextSearch()
     {
         require_code('database_search');
@@ -283,7 +307,7 @@ class database_misc_test_set extends cms_test_case
                 /*$fields = */array(),
                 /*$raw_fields = */array('r.test_data_1'),
             ),
-            'boolean_no__success' => array(
+            'boolean_no__success' => array( // If this is failing on SQL Server, try resetting the SQL Server process (auto-indexing may be buggy or delayed, but nothing we can do)
                 /*$content = */'abacus',
                 /*$boolean_search = */false,
                 /*$expected = */1,

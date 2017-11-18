@@ -33,7 +33,7 @@ class database_relations_test_set extends cms_test_case
         foreach ($all_tables as $_table) {
             $table = $_table['m_table'];
 
-            if (in_array($table, array('testy_test_test', 'temp_test', 'temp_test_linked'))) {
+            if (in_array($table, array('testy_test_test', 'testy_test_test_2', 'temp_test', 'temp_test_linked'))) {
                 continue;
             }
 
@@ -129,7 +129,7 @@ class database_relations_test_set extends cms_test_case
         foreach ($all_tables as $_table) {
             $table = $_table['m_table'];
 
-            if (in_array($table, array('testy_test_test', 'temp_test', 'temp_test_linked'))) {
+            if (in_array($table, array('testy_test_test', 'testy_test_test_2', 'temp_test', 'temp_test_linked'))) {
                 continue;
             }
 
