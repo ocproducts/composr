@@ -28,7 +28,7 @@ Nothing in the above list is likely to be of concern for the vast majority of Co
 The following parts of our ecosystem are supported by MySQL and Postgres (and possibly some other database drivers, but not all):
  - Showing database server version on the PHP-Info page
  - Commandr [tt]db_table_sizes[/tt] command
- - Full-text search (actually we have an SQL Server implementation too)
+ - Full-text search
  - Proper Unicode support (so full-text search will search using knowledge of Unicode characters, so sorting will, and maximum column lengths will be based on character length)
 
 Third-parties may write code that assumes (intentionally or not) MySQL, so don't assume any third party code is going to work without putting it through testing.

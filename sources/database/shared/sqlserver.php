@@ -403,11 +403,7 @@ class Database_super_sqlserver
      */
     public function db_has_full_text($db)
     {
-        global $SITE_INFO;
-        if ((!empty($SITE_INFO['skip_fulltext_sqlserver'])) && ($SITE_INFO['skip_fulltext_sqlserver'] == '1')) {
-            return false;
-        }
-        return true;
+        return (get_value('skip_fulltext_sqlserver') !== '1');
     }
 
     /**
