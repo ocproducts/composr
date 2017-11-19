@@ -1,0 +1,141 @@
+[title sub="Written by Chris Graham (ocProducts)"]Composr Supplementary: Using SQL Server with Composr[/title]
+
+[media float="right" framed="0"]data_custom/images/docs/sup_sqlserver/sqlserver_logo.png[/media]This tutorial provides some advice targeted towards Microsoft SQL Server (including SQL Server Express).
+
+General details of Composr's database driver functionality are included in the [page="_SEARCH:sup_postgresql"]Using PostgreSQL with Composr[/page] tutorial. You may wish to read this first, as we are not repeating the same information here -- this will be a much shorter tutorial only covering the specifics of the SQL Server support.
+
+SQL Server has been tested for Composr v10.0.x under a commercial relationship (starting with 10.0.10). We tested on SQL Server Express 2017 across our whole test set and all screens and blocks, with both multi-lang-content on and off. We expect in practice SQL Server 2005+ is supported (we use [tt]VARCHAR(MAX)[/tt]).
+
+SQL Server is a very high quality database backend developed over decades by Microsoft (and formerly, Sybase). It is much more sophisticated than MySQL, although it also tends to be stricter in a number of ways. Usage is likely of most interest to organisations that are standardising on Microsoft technology.
+
+[title="2"]What is and is not supported[/title]
+
+The same functionality is supported as is supported on [page="_SEARCH:sup_postgresql"]Postgres[/page].
+
+[title="2"]Installing SQL Server[/title]
+
+SQL Server only runs on Windows. You can download SQL Server Express for free, which will work fine. You should install full-text searching (included by default), and when asked select mixed authentication and set a password.
+
+You will need either the PHP [tt]sqlsrv[/tt] extension to be installed (Windows-only, this is an official Microsoft PHP extension), or the PHP [tt]odbc[/tt] extension.
+
+It is recommended to also install SQL Management Studio.
+
+[title="2"]After installing SQL Server[/title]
+
+Make sure you have the SQL Server network service started. It will start automatically unless you set it to manual starting when installing SQL Server (or later from Services).
+
+You will need to manually create your database in SQL Server, using SQL Management Studio.
+
+If using SQL Server Express, you need to [url="enable Network connections"]https://technet.microsoft.com/en-us/library/ms165718(v=sql.105).aspx[/url]. Also make sure TCP/IP is enabled on any network interface you're connecting on, in the same area of configuration, "IP Addresses tab". Also set the "IPAll" port to "1433" in here.
+
+If you are using Mac or Linux for your web server you will need to use ODBC, as the PHP [tt]sqlsrv[/tt] extension is Windows only. Set up for ODBC is a bit complicated, so we will cover it below.
+
+[title="3"]ODBC[/title]
+
+ODBC is an unusual technology when viewed from a current reference point. It does not itself use TCP/IP, it is only an API standard, not a networking standard.
+PHP -->[compiled in] Some PHP ODBC extension -->[software interface] Some ODBC implementation -->[configured] Some ODBC driver -->[?] Some database server
+e.g:
+ - PHP Windows -->[compiled in] (Inbuilt support on Windows) -->[software interface] Windows ODBC -->[configured] SQL Server Native Client 10.0 -->[network protocol] SQL Server Express
+ - PHP Linux -->[compiled in] PHP ODBC extension -->[software interface] unixODBC -->[configured] FreeTDS -->[network protocol] SQL Server Express
+
+FreeTDS is basically a unixODBC driver that implements support for Microsoft SQL Server's TDS protocol, which is their TCP/IP database protocol.
+
+An ODBC connection to the database server needs setting up on the webserver. This set up is called a "DSN".
+
+It would be theoretically possible for us to use an ODBC connection string to tell FreeTDS (for example) how to connect through to the SQL Server Express machine, bypassing the need to set up a DSN. However, this would require telling PHP explicitly to use FreeTDS along with all the specific configuration FreeTDS understands, and we don't provide any configuration for that in [tt]_config.php[/tt] because we don't want to bake in assumptions about specific ODBC implementations and drivers.
+
+[title="4"]Setting up an ODBC DSN[/title]
+
+[title="5"]Windows[/title]
+
+Create a mapping in the ODBC part of control panel:
+1) It will be a System DSN
+2) Use "SQL Server Native Client 10.0"
+3) Set the Name as the same name as your database, to keep things simple
+4) Set the Server as '127.0.0.1' if the database is running on the webserver, else the correct IP address or hostname
+5) Finish
+
+[title="5"]Mac/Linux[/title]
+
+For Linux or MacOS, we suggest using unixODBC with FreeTDS (avoid iODBC and Microsoft's own drivers, they are a bit more esoteric). PHP will need to be compiled with unixODBC support.
+
+Make sure the unixODBC and FreeTDS packages are installed via your package manager, or manually compiled and installed. Homebrew works on Mac.
+
+You will need to use the [tt]odbcinst[/tt] command to create a DSN.
+
+Create a file named tds.driver.template with a few lines describing the driver:
+[code="Text"]
+[cms]
+Driver=FreeTDS
+Trace=No
+Server=192.168.0.22
+Port=1433
+Database=cms
+TDS_Version=7.2
+ClientCharset=UTF-8
+[/code]
+Obviously replace [tt]192.168.0.22[/tt] with your actual database server, and replace [tt]cms[/tt] (both times) with your chosen database name.
+Version 7.2 is the minimum protocol version supported (consistent with Microsoft SQL Server 2005).
+
+Then run [tt]odbcinst -i -d -f tds.driver.template[/tt]
+
+Full documentation is included in the [url="unixODBC manual"]http://www.unixodbc.org/doc/FreeTDS2.html[/url].
+
+If you need to edit the template configuration later, you'll find it's just in an [tt]odbc.ini[/tt] file, e.g. [tt]/usr/local/etc/odbc.ini[/tt].
+
+[title="4"]PHP[/title]
+
+Be aware that the PHP ODBC extension has been historically very buggy. Your PHP version must have all these bugs fixed:
+ - https://bugs.php.net/bug.php?id=73448
+ - https://bugs.php.net/bug.php?id=75534 (not yet fixed in PHP at time of writing, as I had to create this patch myself)
+ - https://bugs.php.net/bug.php?id=44278 (ditto)
+
+[title="4"]Installing Composr[/title]
+
+When you install Composr select the appropriate SQL Server database driver. Then on the next screen the database name will be your DSN name. The host name entered is not used, so I recommend just saying [tt]localhost[/tt].
+
+[title="2"]Migration to SQL Server[/title]
+
+Migrate via this process:[list="1"]
+[*] Commandr can export an SQL dump compatible with any database that Composr supports, assuming you have the PHP extensions needed installed:
+[code="Commandr"]
+sql_dump sqlserver
+[/code]
+(yes, you can be running MySQL and export a SQL Server SQL dump!)
+[*] Edit the [tt].sql[/tt] file. The [tt]cached_comcode_pages[/tt] and [tt]translate[/tt] structure is a little different
+[*] Copy the [tt].sql[/tt] file generated to a machine you can run SQL Management Studio from, if this is different from your website machine
+[*] Open a command prompt
+[*] Run this command:[code="BAT"]
+sqlcmd -S <server> -d <databasename> -i <filepath>
+[/code]
+[*] You then edit Composr's [tt]_config.php[/tt] to have the correct database details.
+[/list]
+
+[title="2"]Full-text search (advanced)[/title]
+
+While full-text search is supported, indexing can be a bit spotty. The index builds in the background and has been seen to lag or not build at all during some testing (at least on SQL Server Express). You may disable full-text search via the hidden [tt]skip_fulltext_sqlserver[/tt] option if you want to just use boolean search instead.
+
+Ideally (not importantly) Composr would know the correct stop-word list for SQL Server so it knows whether to direct searches only for a stopword to a non-full-text search. This is controlled in the [url="SQL Server configuration"]https://docs.microsoft.com/en-us/sql/relational-databases/search/configure-and-manage-stopwords-and-stoplists-for-full-text-search[/url] (unlike MySQL, where it's hard-coded, and hence we were able to hard-code in our code also). To provide Composr an accurate full-text search word list you need to override the [tt]get_stopwords_list()[/tt] function.
+
+You may also want to configure the [url="text language"]https://docs.microsoft.com/en-us/sql/database-engine/configure-windows/configure-the-default-full-text-language-server-configuration-option[/url].
+
+[title="2"]Technical information for developers (advanced)[/title]
+
+The main complexities of SQL Server support, for MySQL developers are:
+1) Points 1, 2, 3, 5, 7, & 8 from the [page="_SEARCH:sup_postgresql"]Postgres[/page] tutorial
+2) The MySQL [tt]LIMIT max,start[/tt] syntax is not supported. You can do [tt]TOP (max+start)[/tt] though. The Composr [tt]query*[/tt] methods abstract this for 99.9% of cases you may have.
+3) You need to use SQL Server string escaping, not MySQL string escaping. This is very different, it uses doubling of apostrophes rather than backslash escaping.
+4) Unicode strings are put in quotes (as normal in SQL) but then prefixed with [tt]N[/tt]. This is abstracted in the driver's own query interface, so you should not need to worry about it when writing normal code.
+5) [tt](N)VARCHAR(MAX)[/tt] fields are used rather than [tt](N)TEXT[/tt] fields, as SQL Server cannot index [tt](N)TEXT[/tt] fields.
+6) Full-text search indexes requires a unique index on a single column, which restricts what kind of tables you can run it on.
+7) You cannot insert into an identity column explicitly, unless you turn an option off. The database driver handles this automatically though.
+
+[title="2"]See also[/title]
+
+ - https://www.microsoft.com/en-gb/sql-server/sql-server-editions-express
+ - http://www.unixodbc.org/
+ - http://www.freetds.org/
+ - [page="_SEARCH:tut_sql"]Manually editing your database with phpMyAdmin[/page]
+ - [page="_SEARCH:sup_postgresql"]Using PostgreSQL with Composr[/page]
+
+{$SET,tutorial_tags,core_database_drivers,Installation,expert}{$SET,tutorial_add_date,Nov 2017}{$SET,tutorial_summary,A guide on using SQL Server with Composr.}[block]main_tutorial_rating[/block]

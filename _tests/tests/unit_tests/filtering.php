@@ -130,7 +130,6 @@ class filtering_test_set extends cms_test_case
             't_linker' => 'INTEGER',
         ));
         $GLOBALS['SITE_DB']->create_index('temp_test', '#t_short_text', array('t_short_text'));
-        $GLOBALS['SITE_DB']->create_index('temp_test', '#t_short_trans', array('t_short_trans'));
         $GLOBALS['SITE_DB']->create_index('temp_test', '#t_language_name', array('t_language_name'));
         $GLOBALS['SITE_DB']->create_index('temp_test', '#t_id_text', array('t_id_text'));
 
@@ -358,9 +357,9 @@ class filtering_test_set extends cms_test_case
             'id=1,t_binary=0' => array(1),
 
             // Filtering on multiple keys
-            'id|t_id_text=1' => array(1),
-            'id|t_id_text=axxxxx' => array(1),
-            'id|t_id_text=zxxxxx' => array(),
+            //Depends on DB 'id|t_id_text=1' => array(1),
+            //Depends on DB 'id|t_id_text=axxxxx' => array(1),
+            //Depends on DB 'id|t_id_text=zxxxxx' => array(),
             'id|t_member=4' => array(),
 
             // Filtering on multiple values

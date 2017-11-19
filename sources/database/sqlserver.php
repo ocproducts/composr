@@ -12,27 +12,17 @@
 
 */
 
-/*EXTRA FUNCTIONS: (mssql|sqlsrv)\_.+*/
-
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
  * @package    core_database_drivers
  */
 
-require_code('database/shared/sqlserver');
+/*EXTRA FUNCTIONS: (mssql|sqlsrv)\_.+*/
 
-/**
- * Standard code module initialisation function.
- *
- * @ignore
- */
-function init__database__sqlserver()
-{
-    safe_ini_set('mssql.textlimit', '300000');
-    safe_ini_set('mssql.textsize', '300000');
-    safe_ini_set('mssql.charset', get_charset());
-}
+// See sup_sqlserver tutorial for documentation on using SQL Server.
+
+require_code('database/shared/sqlserver');
 
 /**
  * Database Driver.
@@ -69,7 +59,7 @@ class Database_Static_sqlserver extends Database_super_sqlserver
             return $this->cache_db[$db_name][$db_host];
         }
 
-        if ((!function_exists('sqlsrv_connect')) && (!function_exists('mssql_pconnect'))) {
+        if (!function_exists('sqlsrv_connect')) {
             $error = 'The sqlserver PHP extension not installed (anymore?). You need to contact the system administrator of this server.';
             if ($fail_ok) {
                 echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
@@ -78,14 +68,10 @@ class Database_Static_sqlserver extends Database_super_sqlserver
             critical_error('PASSON', $error);
         }
 
-        if (function_exists('sqlsrv_connect')) {
-            if ($db_host == '127.0.0.1' || $db_host == 'localhost') {
-                $db_host = '(local)';
-            }
-            $db = @sqlsrv_connect($db_host, ($db_user == '') ? array('Database' => $db_name) : array('UID' => $db_user, 'PWD' => $db_password, 'Database' => $db_name));
-        } else {
-            $db = $persistent ? @mssql_pconnect($db_host, $db_user, $db_password) : @mssql_connect($db_host, $db_user, $db_password);
+        if ($db_host == '127.0.0.1' || $db_host == 'localhost') {
+            $db_host = '(local)';
         }
+        $db = @sqlsrv_connect($db_host, ($db_user == '') ? array('Database' => $db_name) : array('UID' => $db_user, 'PWD' => $db_password, 'Database' => $db_name));
         if ($db === false) {
             $error = 'Could not connect to database-server (' . @strval($php_errormsg) . ')';
             if ($fail_ok) {
@@ -93,16 +79,6 @@ class Database_Static_sqlserver extends Database_super_sqlserver
                 return null;
             }
             critical_error('PASSON', $error); //warn_exit(do_lang_tempcode('CONNECT_DB_ERROR'));
-        }
-        if (!function_exists('sqlsrv_connect')) {
-            if (!mssql_select_db($db_name, $db)) {
-                $error = 'Could not connect to database (' . mssql_get_last_message() . ')';
-                if ($fail_ok) {
-                    echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
-                    return null;
-                }
-                critical_error('PASSON', $error); //warn_exit(do_lang_tempcode('CONNECT_ERROR'));
-            }
         }
 
         $this->cache_db[$db_name][$db_host] = $db;
@@ -122,50 +98,26 @@ class Database_Static_sqlserver extends Database_super_sqlserver
      */
     public function db_query($query, $db, $max = null, $start = null, $fail_ok = false, $get_insert_id = false)
     {
+        if ($max === 0) {
+            return array();
+        }
         $this->apply_sql_limit_clause($query, $max, $start);
 
         $this->rewrite_to_unicode_syntax($query);
 
         $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
-        if (function_exists('sqlsrv_query')) {
-            $results = sqlsrv_query($db, $query, array(), array('Scrollable' => 'static'));
-        } else {
-            $results = mssql_query($query, $db);
-        }
+        $results = sqlsrv_query($db, $query, array(), array('Scrollable' => 'static'));
         $GLOBALS['SUPPRESS_ERROR_DEATH'] = false;
-        if (($results === false) && (strtoupper(substr($query, 0, 12)) == 'INSERT INTO ') && (strpos($query, '(id, ') !== false)) {
+        if (($results === false) && (strtoupper(substr($query, 0, 12)) == 'INSERT INTO ') && ((strpos($query, '(id, ') !== false) || (strpos($query, '(_id, ') !== false))) {
             $pos = strpos($query, '(');
             $table_name = substr($query, 12, $pos - 13);
-            if ((!multi_lang_content()) || (substr($table_name, -strlen('translate')) != 'translate')) {
-                if (function_exists('sqlsrv_query')) {
-                    @sqlsrv_query($db, 'SET IDENTITY_INSERT ' . $table_name . ' ON');
-                } else {
-                    @mssql_query('SET IDENTITY_INSERT ' . $table_name . ' ON', $db);
-                }
-            }
+            @sqlsrv_query($db, 'SET IDENTITY_INSERT ' . $table_name . ' ON');
         }
         if (!is_null($start)) {
-            if (function_exists('sqlsrv_fetch_array')) {
-                sqlsrv_fetch($results, SQLSRV_SCROLL_ABSOLUTE, $start - 1);
-            } else {
-                @mssql_data_seek($results, $start);
-            }
+            @sqlsrv_fetch($results, SQLSRV_SCROLL_ABSOLUTE, $start - 1);
         }
         if ((($results === false) || (((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT '))) && ($results === true)) && (!$fail_ok)) {
-            if (function_exists('sqlsrv_errors')) {
-                $err = serialize(sqlsrv_errors());
-            } else {
-                $_error_msg = array_pop($GLOBALS['ATTACHED_MESSAGES_RAW']);
-                if (is_null($_error_msg)) {
-                    $error_msg = make_string_tempcode('?');
-                } else {
-                    $error_msg = $_error_msg[0];
-                }
-                $err = mssql_get_last_message() . '/' . $error_msg->evaluate();
-                if (function_exists('ocp_mark_as_escaped')) {
-                    ocp_mark_as_escaped($err);
-                }
-            }
+            $err = serialize(sqlsrv_errors());
             if ((!running_script('upgrader')) && ((!get_mass_import_mode()) || (get_param_integer('keep_fatalistic', 0) == 1))) {
                 if (!function_exists('do_lang') || is_null(do_lang('QUERY_FAILED', null, null, null, null, false))) {
                     fatal_exit(htmlentities('Query failed: ' . $query . ' : ' . $err));
@@ -190,13 +142,8 @@ class Database_Static_sqlserver extends Database_super_sqlserver
 
             $pos = strpos($query, '(');
             $table_name = substr($query, 12, $pos - 13);
-            if (function_exists('sqlsrv_query')) {
-                $res2 = sqlsrv_query($db, 'SELECT MAX(IDENTITYCOL) AS v FROM ' . $table_name);
-                $ar2 = sqlsrv_fetch_array($res2, SQLSRV_FETCH_ASSOC);
-            } else {
-                $res2 = mssql_query('SELECT MAX(IDENTITYCOL) AS v FROM ' . $table_name, $db);
-                $ar2 = mssql_fetch_array($res2);
-            }
+            $res2 = sqlsrv_query($db, 'SELECT MAX(IDENTITYCOL) AS v FROM ' . $table_name);
+            $ar2 = sqlsrv_fetch_array($res2, SQLSRV_FETCH_ASSOC);
             return $ar2['v'];
         }
 
@@ -215,62 +162,16 @@ class Database_Static_sqlserver extends Database_super_sqlserver
     {
         $out = array();
 
-        if (!function_exists('sqlsrv_num_fields')) {
-            $num_fields = mssql_num_fields($results);
-            $types = array();
-            $names = array();
-            for ($x = 1; $x <= $num_fields; $x++) {
-                $types[$x - 1] = strtoupper(mssql_field_type($results, $x - 1));
-                $names[$x - 1] = strtolower(mssql_field_name($results, $x - 1));
+        $i = 0;
+        while (($row = sqlsrv_fetch_array($results, SQLSRV_FETCH_ASSOC)) !== null) {
+            if ($i >= $start) {
+                $out[] = $row;
             }
-
-            $i = 0;
-            while (($row = mssql_fetch_row($results)) !== false) {
-                $j = 0;
-                $newrow = array();
-                foreach ($row as $v) {
-                    $type = strtoupper($types[$j]);
-                    $name = $names[$j];
-
-                    if (($type == 'SMALLINT') || ($type == 'BIGINT') || ($type == 'INT') || ($type == 'INTEGER') || ($type == 'UINTEGER') || ($type == 'BYTE') || ($type == 'COUNTER')) {
-                        if (!is_null($v)) {
-                            $newrow[$name] = intval($v);
-                        } else {
-                            $newrow[$name] = null;
-                        }
-                    } elseif (substr($type, 0, 5) == 'FLOAT') {
-                        $newrow[$name] = floatval($v);
-                    } else {
-                        if ($v == ' ') {
-                            $v = '';
-                        }
-                        $newrow[$name] = $v;
-                    }
-
-                    $j++;
-                }
-
-                $out[] = $newrow;
-
-                $i++;
-            }
-        } else {
-            if (function_exists('sqlsrv_fetch_array')) {
-                while (($row = sqlsrv_fetch_array($results, SQLSRV_FETCH_ASSOC)) !== null) {
-                    $out[] = $row;
-                }
-            } else {
-                while (($row = mssql_fetch_row($results)) !== false) {
-                    $out[] = $row;
-                }
-            }
+            $i++;
         }
 
-        if (function_exists('sqlsrv_free_stmt')) {
-            sqlsrv_free_stmt($results);
-        } else {
-            mssql_free_result($results);
-        }
+        sqlsrv_free_stmt($results);
+
         return $out;
     }
 
@@ -281,9 +182,7 @@ class Database_Static_sqlserver extends Database_super_sqlserver
      */
     public function db_start_transaction($db)
     {
-        if (function_exists('sqlsrv_begin_transaction')) {
-            sqlsrv_begin_transaction($db, false);
-        }
+        sqlsrv_begin_transaction($db, false);
     }
 
     /**
@@ -293,8 +192,6 @@ class Database_Static_sqlserver extends Database_super_sqlserver
      */
     public function db_end_transaction($db)
     {
-        if (function_exists('sqlsrv_commit')) {
-            sqlsrv_commit($db, true);
-        }
+        sqlsrv_commit($db, true);
     }
 }

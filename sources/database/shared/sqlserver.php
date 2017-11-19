@@ -40,16 +40,31 @@ class Database_super_sqlserver
     public function apply_sql_limit_clause(&$query, $max = null, $start = 0)
     {
         if ($max !== null) {
+            $_max = $max;
             if ($start !== null) {
-                $max += $start;
+                $_max += $start;
             }
 
+            $query = ltrim($query);
+
             // Unfortunately we can't apply to DELETE FROM and update :(. But its not too important, LIMIT'ing them was unnecessarily anyway
-            if (strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') {
-                $query = 'SELECT TOP ' . strval(intval($max)) . substr(ltrim($query), 6);
-            }
-            if (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ') {
-                $query = '(SELECT TOP ' . strval(intval($max)) . substr(ltrim($query), 7);
+            $prefixes_recognised = array(
+                'SELECT DISTINCT TOP' => false,
+                'SELECT DISTINCT' => true,
+                'SELECT TOP' => false,
+                'SELECT' => true,
+                '(SELECT DISTINCT TOP' => false,
+                '(SELECT DISTINCT' => true,
+                '(SELECT TOP' => false,
+                '(SELECT' => true,
+            );
+            foreach ($prefixes_recognised as $prefix => $use) {
+                if (strtoupper(substr($query, 0, strlen($prefix) + 1)) == $prefix . ' ') {
+                    if ($use) {
+                        $query = $prefix . ' TOP ' . strval(intval($_max)) . ' ' . substr($query, strlen($prefix) + 1);
+                    }
+                    break;
+                }
             }
         }
     }
@@ -305,7 +320,7 @@ class Database_super_sqlserver
      */
     public function db_string_equal_to($attribute, $compare)
     {
-        return $attribute . " LIKE '" . $this->db_escape_string($compare) . "'";
+        return $attribute . "='" . $this->db_escape_string($compare) . "'";
     }
 
     /**
@@ -403,7 +418,7 @@ class Database_super_sqlserver
      */
     public function db_has_full_text($db)
     {
-        return (get_value('skip_fulltext_sqlserver') !== '1');
+        return ((!function_exists('get_value')) || (get_value('skip_fulltext_sqlserver') !== '1'));
     }
 
     /**

@@ -667,7 +667,7 @@ function step_3()
         if (($database == 'sqlite') && (!function_exists('sqlite_popen'))) {
             continue;
         }
-        if (($database == 'sqlserver') && (!function_exists('mssql_connect')) && (!function_exists('sqlsrv_connect'))) {
+        if (($database == 'sqlserver') && (!function_exists('sqlsrv_connect'))) {
             continue;
         }
         if (($database == 'sqlserver_odbc') && (!function_exists('odbc_connect'))) {
@@ -1962,16 +1962,22 @@ function step_5_core()
     $GLOBALS['SITE_DB']->create_index('db_meta', 'findtransfields', array('m_type'));
 
     $GLOBALS['SITE_DB']->drop_table_if_exists('translate');
-    $GLOBALS['SITE_DB']->create_table('translate', array(
-        'id' => (strpos(get_db_type(), 'sqlserver') !== false) ? '*AUTO_LINK' : '*AUTO',
+    $fields = array(
+        'id' => '*AUTO',
         'language' => '*LANGUAGE_NAME',
         'importance_level' => 'SHORT_INTEGER',
         'text_original' => 'LONG_TEXT',
         'text_parsed' => 'LONG_TEXT',
         'broken' => 'BINARY',
         'source_user' => 'MEMBER'
-    ));
-    $GLOBALS['SITE_DB']->create_index('translate', '#tsearch', array('text_original'), 'id,language');
+    );
+    if (strpos(get_db_type(), 'sqlserver') !== false) { // Full-text search requires a single key
+        $fields['_id'] = '*AUTO';
+        $fields['id'] = 'AUTO_LINK';
+        $fields['language'] = 'LANGUAGE_NAME';
+    }
+    $GLOBALS['SITE_DB']->create_table('translate', $fields);
+    $GLOBALS['SITE_DB']->create_index('translate', '#tsearch', array('text_original'));
     $GLOBALS['SITE_DB']->create_index('translate', 'importance_level', array('importance_level'));
     if (substr(get_db_type(), 0, 5) == 'mysql') {
         $GLOBALS['SITE_DB']->create_index('translate', 'equiv_lang', array('text_original(4)'));

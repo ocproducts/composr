@@ -1014,12 +1014,12 @@ class DatabaseConnector
      * @param  ID_TEXT $table_name The table name
      * @param  ID_TEXT $index_name The index name
      * @param  array $fields The fields
-     * @param  ID_TEXT $unique_key_field The name of the unique key field for the table
+     * @param  ?string $unique_key_fields Comma-separated names of the unique key field for the table (null: lookup)
      */
-    public function create_index($table_name, $index_name, $fields, $unique_key_field = 'id')
+    public function create_index($table_name, $index_name, $fields, $unique_key_fields = null)
     {
         require_code('database_helper');
-        _helper_create_index($this, $table_name, $index_name, $fields, $unique_key_field);
+        _helper_create_index($this, $table_name, $index_name, $fields, $unique_key_fields);
     }
 
     /**

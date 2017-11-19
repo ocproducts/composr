@@ -159,6 +159,7 @@ The main complexities of Postgres support, for MySQL developers are:
  - http://dbeaver.jkiss.org/ (a free cross-platform Postgres GUI)
  - http://squirrel-sql.sourceforge.net/ (a free cross-platform Postgres GUI)
  - [page="_SEARCH:tut_sql"]Manually editing your database with phpMyAdmin[/page]
+ - [page="_SEARCH:sup_sqlserver"]Using SQL Server with Composr[/page]
  - http://troels.arvin.dk/db/rdbms/ (a comparison of SQL support in different databases)
 
 {$SET,tutorial_tags,core_database_drivers,Installation,expert}{$SET,tutorial_add_date,May 2017}{$SET,tutorial_summary,A guide on using PostgreSQL with Composr, and providing some information relevant to other non-MySQL backends.}[block]main_tutorial_rating[/block]

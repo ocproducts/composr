@@ -1082,7 +1082,7 @@ class Module_admin
                     $breadcrumbs->attach(do_template('BREADCRUMB_SEPARATOR'));
                     $breadcrumbs->attach(hyperlink(build_url(array('page' => 'admin_themes', 'type' => 'manage_images', 'theme' => $image['theme']), get_module_zone('admin_themes')), do_lang_tempcode('EDIT_THEME_IMAGE'), false, false));
                     $breadcrumbs->attach(do_template('BREADCRUMB_SEPARATOR'));
-                    $breadcrumbs->attach(do_template('BREADCRUMB_LONE_WRAP', array('LABEL' => $image['theme'])));
+                    $breadcrumbs->attach(do_template('BREADCRUMB_LONE_WRAP', array('_GUID' => '78d769e2d7fb010318078f13f3b34ba2', 'LABEL' => $image['theme'])));
                     $sup = do_lang_tempcode('LOCATED_IN', $breadcrumbs);
                     $lang = $image['lang'];
                     $lang_map = better_parse_ini_file(file_exists(get_file_base() . '/lang_custom/langs.ini') ? (get_file_base() . '/lang_custom/langs.ini') : (get_file_base() . '/lang/langs.ini'));

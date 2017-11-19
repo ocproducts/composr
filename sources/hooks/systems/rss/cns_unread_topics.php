@@ -53,7 +53,7 @@ class Hook_rss_cns_unread_topics
         } else {
             $query .= ',p_post,p_post__text_parsed,p_post__source_user';
         }
-        $query .= ' FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics top LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_read_logs l ON t.id=l.l_topic_id AND l.l_member_id=' . strval((integer)get_member());
+        $query .= ' FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_read_logs l ON t.id=l.l_topic_id AND l.l_member_id=' . strval((integer)get_member());
         if (!multi_lang_content()) {
             $query .= ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p ON p.id=t.t_cache_first_post_id';
         }
