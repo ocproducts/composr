@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     $cms.views.CnsForumTopicWrapper = CnsForumTopicWrapper;
@@ -250,4 +250,4 @@
             row.classList.toggle('cns_off', !checkbox.checked);
         });
     };
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

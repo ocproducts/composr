@@ -7,7 +7,6 @@
      * @returns { Boolean }
      */
     window.boolVal = function boolVal(val, defaultValue) {
-        var p;
         if (defaultValue === undefined) {
             defaultValue = false;
         }
@@ -174,6 +173,7 @@
         return ++_uniqueId;
     }
     
+    // Unique for every instance of $util
     $util.id = 'util' + ('' + Math.random()).substr(2);
 
     /**
@@ -322,6 +322,7 @@
     };
 
     /**
+     * Returns the node type
      * @param obj
      * @returns {boolean|*}
      */
@@ -382,6 +383,7 @@
     };
 
     /**
+     * Returns true if `val` is a numeric string
      * @param val
      * @returns {boolean}
      */
@@ -392,6 +394,7 @@
     };
 
     /**
+     * Returns true if `obj` is an array-like object
      * @param obj
      * @param minLength
      * @returns {boolean}
@@ -423,6 +426,7 @@
     };
 
     /**
+     * Iterates over an object
      * @param obj
      * @param callback
      * @returns {*}
@@ -486,9 +490,9 @@
 
             if ((mask & EXTEND_DEEP) && src && (typeof src === 'object') && ((isSrcArr = Array.isArray(src)) || $util.isPlainObj(src))) {
                 if (isSrcArr && !Array.isArray(tgt)) {
-                    tgt = {};
-                } else if (!isSrcArr && !$util.isPlainObj(tgt)) {
                     tgt = [];
+                } else if (!isSrcArr && !$util.isPlainObj(tgt)) {
+                    tgt = {};
                 }
 
                 target[key] = _extend(tgt, src, mask);
@@ -572,6 +576,7 @@
     };
 
     /**
+     * Less verbose alternative to Object.defineProperties()
      * @param {string} [mask] - optional, assumed to be `obj` if not of type number.
      * @param {object} obj - the target object to define properties on.
      * @param {object|string} props - is a single property's name if `value` is passed.
@@ -631,6 +636,7 @@
     };
 
     /**
+     * 
      * @param obj
      * @returns {*}
      */
@@ -665,6 +671,7 @@
     };
 
     /**
+     * Upper-case the first letter of a string
      * @param str
      * @returns {string}
      */
@@ -673,6 +680,7 @@
     };
 
     /**
+     * Lower-case the first letter of a string
      * @param str
      * @returns {string}
      */
@@ -681,6 +689,7 @@
     };
 
     /**
+     * Returns a camelCased string.
      * Credit: http://stackoverflow.com/a/32604073/362006
      * @param str
      * @returns {string}
@@ -890,16 +899,13 @@
 
     /**
      * NB: Has a trailing slash when having the base url only
-     * @memberof $cms
-     * @namespace
-     * @method
      * @param {string} url - An absolute or relative URL. If url is a relative URL, `base` will be used as the base URL. If url is an absolute URL, a given `base` will be ignored.
      * @param {string} [base] - The base URL to use in case url is a relative URL. If not specified, it defaults to $cms.baseUrl().
      * @return { URL }
      */
     $util.url = function url(url, base) {
         url = strVal(url);
-        base = strVal(base) || ('{$BASE_URL;}/');
+        base = strVal(base) || '{$BASE_URL;}/';
 
         if (url.startsWith('//')) {
             // URL constructor throws on scheme-relative URLs
@@ -996,6 +1002,7 @@
 
     /**
      * Inspired by goog.inherits and Babel's generated output for ES6 classes
+     * @memberof $util
      * @param SubClass
      * @param SuperClass
      * @param protoProps

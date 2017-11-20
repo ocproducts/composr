@@ -1,7 +1,8 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     /**
+     * @memberof $cms.ui
      * @param name
      * @param ajaxUrl
      * @param rootId
@@ -730,4 +731,4 @@
 
         return null;
     }
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

@@ -1,366 +1,321 @@
 (function ($cms, $util, $dom) {
     'use strict';
-    
+
     var IN_MINIKERNEL_VERSION = document.documentElement.classList.contains('in-minikernel-version'),
         symbols = (!IN_MINIKERNEL_VERSION ? JSON.parse(document.getElementById('composr-symbol-data').content) : {});
 
     /** @namespace $cms */
-    $cms = $util.extendDeep($cms, /**@lends $cms*/{
-        // Load up symbols data
-        /**
-         * @method
-         * @returns {boolean}
-         */
-        isGuest: $util.constant(boolVal(symbols.IS_GUEST)),
-        /**
-         * @method
-         * @returns {boolean}
-         */
-        isStaff: $util.constant(boolVal(symbols.IS_STAFF)),
-        /**
-         * @method
-         * @returns {boolean}
-         */
-        isAdmin: $util.constant(boolVal(symbols.IS_ADMIN)),
-        /**
-         * @method
-         * @returns {boolean}
-         */
-        isHttpauthLogin: $util.constant(boolVal(symbols.IS_HTTPAUTH_LOGIN)),
-        /**
-         * @method
-         * @returns {boolean}
-         */
-        isACookieLogin: $util.constant(boolVal(symbols.IS_A_COOKIE_LOGIN)),
-        /**
-         * @method
-         * @returns {boolean}
-         */
-        isDevMode: $util.constant(IN_MINIKERNEL_VERSION || boolVal(symbols.DEV_MODE)),
-        /**
-         * @method
-         * @returns {boolean}
-         */
-        isJsOn: $util.constant(boolVal(symbols.JS_ON)),
-        /**
-         * @method
-         * @returns {boolean}
-         */
-        isMobile: $util.constant(boolVal(symbols.MOBILE)),
-        /**
-         * @method
-         * @returns {boolean}
-         */
-        isForcePreviews: $util.constant(boolVal(symbols.FORCE_PREVIEWS)),
-        /**
-         * @method
-         * @returns {boolean}
-         */
-        isInlineStats: $util.constant(boolVal(symbols.INLINE_STATS)),
-        /**
-         * @method
-         * @returns {number}
-         */
-        httpStatusCode: $util.constant(Number(symbols.HTTP_STATUS_CODE)),
-        /**
-         * @method
-         * @returns {string}
-         */
-        getPageName: $util.constant(strVal(symbols.PAGE)),
-        /**
-         * @method
-         * @returns {string}
-         */
-        getZoneName: $util.constant(strVal(symbols.ZONE)),
-        /**
-         * @method
-         * @returns {string}
-         */
-        getMember: $util.constant(strVal(symbols.MEMBER)),
-        /**
-         * @method
-         * @returns {string}
-         */
-        getUsername: $util.constant(strVal(symbols.USERNAME)),
-        /**
-         * @method
-         * @returns {string}
-         */
-        getTheme: $util.constant(strVal(symbols.THEME)),
-        /**
-         * @method
-         * @returns {string}
-         */
-        userLang: $util.constant(strVal(symbols.LANG)),
-        /**
-         * @method
-         * @returns {string}
-         */
-        keep: function keep(starting, forceSession) {
-            var keep = pageKeepSearchParams(forceSession).toString();
+    // Load up symbols data
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {boolean}
+     */
+    $cms.isGuest = $util.constant(boolVal(symbols.IS_GUEST));
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {boolean}
+     */
+    $cms.isStaff = $util.constant(boolVal(symbols.IS_STAFF));
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {boolean}
+     */
+    $cms.isAdmin = $util.constant(boolVal(symbols.IS_ADMIN));
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {boolean}
+     */
+    $cms.isHttpauthLogin = $util.constant(boolVal(symbols.IS_HTTPAUTH_LOGIN));
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {boolean}
+     */
+    $cms.isACookieLogin = $util.constant(boolVal(symbols.IS_A_COOKIE_LOGIN));
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {boolean}
+     */
+    $cms.isDevMode = $util.constant(IN_MINIKERNEL_VERSION || boolVal(symbols.DEV_MODE));
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {boolean}
+     */
+    $cms.isJsOn = $util.constant(boolVal(symbols.JS_ON));
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {boolean}
+     */
+    $cms.isMobile = $util.constant(boolVal(symbols.MOBILE));
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {boolean}
+     */
+    $cms.isForcePreviews = $util.constant(boolVal(symbols.FORCE_PREVIEWS));
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {boolean}
+     */
+    $cms.isInlineStats = $util.constant(boolVal(symbols.INLINE_STATS));
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {number}
+     */
+    $cms.httpStatusCode = $util.constant(Number(symbols.HTTP_STATUS_CODE));
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {string}
+     */
+    $cms.getPageName = $util.constant(strVal(symbols.PAGE));
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {string}
+     */
+    $cms.getZoneName = $util.constant(strVal(symbols.ZONE));
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {string}
+     */
+    $cms.getMember = $util.constant(strVal(symbols.MEMBER));
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {string}
+     */
+    $cms.getUsername = $util.constant(strVal(symbols.USERNAME));
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {string}
+     */
+    $cms.getTheme = $util.constant(strVal(symbols.THEME));
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {string}
+     */
+    $cms.userLang = $util.constant(strVal(symbols.LANG));
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {string}
+     */
+    $cms.keep = function keep(starting, forceSession) {
+        var keep = $cms.pageKeepSearchParams(forceSession).toString();
 
-            if (keep === '') {
-                return '';
-            }
+        if (keep === '') {
+            return '';
+        }
 
-            return (starting ? '?' : '&') + keep;
-        },
-        /**
-         * @method
-         * @returns {string}
-         */
-        getPreviewUrl: function getPreviewUrl() {
-            var value = '{$FIND_SCRIPT_NOHTTP;,preview}';
-            value += '?page=' + urlencode($cms.getPageName());
-            value += '&type=' + urlencode(symbols['page_type']);
-            return value;
-        },
-        /**
-         * @method
-         * @returns {string}
-         */
-        getSiteName: $util.constant(strVal('{$SITE_NAME;}')),
-        /**
-         * @method
-         * @returns {string}
-         */
-        getBaseUrl: $util.constant(strVal('{$BASE_URL;}')),
-        /**
-         * @param relativeUrl - Pass a relative URL but an absolute url works as well for robustness' sake
-         * @returns {string}
-         */
-        baseUrl: function baseUrl(relativeUrl) {
-            relativeUrl = strVal(relativeUrl);
+        return (starting ? '?' : '&') + keep;
+    };
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {string}
+     */
+    $cms.getPreviewUrl = function getPreviewUrl() {
+        var value = '{$FIND_SCRIPT_NOHTTP;,preview}';
+        value += '?page=' + urlencode($cms.getPageName());
+        value += '&type=' + urlencode(symbols['page_type']);
+        return value;
+    };
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {string}
+     */
+    $cms.getSiteName = $util.constant(strVal('{$SITE_NAME;}'));
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {string}
+     */
+    $cms.getBaseUrl = $util.constant(strVal('{$BASE_URL;}'));
+    /**
+     * @memberof $cms
+     * @param relativeUrl - Pass a relative URL but an absolute url works as well for robustness' sake
+     * @returns {string}
+     */
+    $cms.baseUrl = function baseUrl(relativeUrl) {
+        relativeUrl = strVal(relativeUrl);
 
-            if (relativeUrl === '') {
-                return $cms.getBaseUrl();
-            }
+        if (relativeUrl === '') {
+            return $cms.getBaseUrl();
+        }
 
-            var url = $util.url(relativeUrl).toString();
+        var url = $util.url(relativeUrl).toString();
 
-            if (window.location.protocol === 'https:') {
-                // Match protocol with the current page if using SSL
-                url = url.replace(/^http\:/, 'https:');
-            }
+        if (window.location.protocol === 'https:') {
+            // Match protocol with the current page if using SSL
+            url = url.replace(/^http\:/, 'https:');
+        }
 
-            return url;
-        },
-        /**
-         * @method
-         * @returns {string}
-         */
-        getBaseUrlNohttp: $util.constant(strVal('{$BASE_URL_NOHTTP;}')),
-        /**
-         * @method
-         * @returns {string}
-         */
-        getCustomBaseUrl: $util.constant(strVal('{$CUSTOM_BASE_URL;}')),
-        /**
-         * @method
-         * @returns {string}
-         */
-        getCustomBaseUrlNohttp: $util.constant(strVal('{$CUSTOM_BASE_URL_NOHTTP;}')),
-        /**
-         * @method
-         * @returns {string}
-         */
-        getForumBaseUrl: $util.constant(strVal('{$FORUM_BASE_URL;}')),
-        /**
-         * @method
-         * @returns {string}
-         */
-        brandName: $util.constant(strVal('{$BRAND_NAME;}')),
-        /**
-         * @method
-         * @returns {string}
-         */
-        getSessionCookie: $util.constant(strVal('{$SESSION_COOKIE_NAME;}')),
-        /**
-         * @method
-         * @returns {string}
-         */
-        getCookiePath: $util.constant(strVal('{$COOKIE_PATH;}')),
-        /**
-         * @method
-         * @returns {string}
-         */
-        getCookieDomain: $util.constant(strVal('{$COOKIE_DOMAIN;}')),
-        /**
-         * @method
-         * @returns {string}
-         */
-        runningScript: $util.constant(strVal(symbols.RUNNING_SCRIPT)),
-        /**
-         * @method
-         * @returns {string}
-         */
-        getCspNonce: $util.constant(strVal(symbols.CSP_NONCE)),
+        return url;
+    };
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {string}
+     */
+    $cms.getBaseUrlNohttp = $util.constant(strVal('{$BASE_URL_NOHTTP;}'));
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {string}
+     */
+    $cms.getCustomBaseUrl = $util.constant(strVal('{$CUSTOM_BASE_URL;}'));
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {string}
+     */
+    $cms.getCustomBaseUrlNohttp = $util.constant(strVal('{$CUSTOM_BASE_URL_NOHTTP;}'));
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {string}
+     */
+    $cms.getForumBaseUrl = $util.constant(strVal('{$FORUM_BASE_URL;}'));
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {string}
+     */
+    $cms.brandName = $util.constant(strVal('{$BRAND_NAME;}'));
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {string}
+     */
+    $cms.getSessionCookie = $util.constant(strVal('{$SESSION_COOKIE_NAME;}'));
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {string}
+     */
+    $cms.getCookiePath = $util.constant(strVal('{$COOKIE_PATH;}'));
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {string}
+     */
+    $cms.getCookieDomain = $util.constant(strVal('{$COOKIE_DOMAIN;}'));
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {string}
+     */
+    $cms.runningScript = $util.constant(strVal(symbols.RUNNING_SCRIPT));
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {string}
+     */
+    $cms.getCspNonce = $util.constant(strVal(symbols.CSP_NONCE));
+    
+    var configOptionsJson = JSON.parse('{$PUBLIC_CONFIG_OPTIONS_JSON;}');
+    /**
+     * WARNING: This is a very limited subset of the $CONFIG_OPTION tempcode symbol
+     * @memberof $cms
+     * @method
+     * @param {string} optionName
+     * @returns {boolean|string|number}
+     */
+    $cms.configOption = function configOption(optionName) {
+        if (IN_MINIKERNEL_VERSION) {
+            // Installer, likely executing global.js
+            return $util.constant('');
+        }
 
-        /**
-         * WARNING: This is a very limited subset of the $CONFIG_OPTION tempcode symbol
-         * @method
-         * @param {string} optionName
-         * @returns {boolean|string|number}
-         */
-        configOption: (function () {
-            if (IN_MINIKERNEL_VERSION) {
-                // Installer, likely executing global.js
-                return $util.constant('');
-            }
+        if ($util.hasOwn(configOptionsJson, optionName)) {
+            return configOptionsJson[optionName];
+        }
 
-            var configOptionsJson = JSON.parse('{$PUBLIC_CONFIG_OPTIONS_JSON;}');
-            return function configOption(optionName) {
-                if ($util.hasOwn(configOptionsJson, optionName)) {
-                    return configOptionsJson[optionName];
-                }
-
-                $util.fatal('$cms.configOption(): Option "' + optionName + '" is either unsupported in JS or doesn\'t exist. Please try using the actual Tempcode symbol.');
-            };
-        }()),
-        /**
-         * @method
-         * @returns {boolean}
-         */
-        seesJavascriptErrorAlerts: $util.constant(boolVal(symbols['sees_javascript_error_alerts'])),
-        /**
-         * @method
-         * @returns {boolean}
-         */
-        canTryUrlSchemes: $util.constant(boolVal(symbols['can_try_url_schemes'])),
-        /**
-         * @method
-         * @returns {string}
-         */
-        zoneDefaultPage: $util.constant(strVal(symbols['zone_default_page'])),
-        /**
-         * @method
-         * @returns {object}
-         */
-        staffTooltipsUrlPatterns: $util.constant(objVal(JSON.parse('{$STAFF_TOOLTIPS_URL_PATTERNS_JSON;}'))),
-
-        /* Export useful stuff  */
-        /**@method*/
-        pageUrl: pageUrl,
-        /**@method*/
-        pageSearchParams: pageSearchParams,
-        /**@method*/
-        pageKeepSearchParams: pageKeepSearchParams,
-        /**@method*/
-        img: img,
-        /**@method*/
-        requireCss: requireCss,
-        /**@method*/
-        requireJavascript: requireJavascript,
-        /**@method*/
-        setPostDataFlag: setPostDataFlag,
-        /**@method*/
-        getCsrfToken: getCsrfToken,
-        /**@method*/
-        getSessionId: getSessionId,
-        /**@method*/
-        defineBehaviors: defineBehaviors,
-        /**@method*/
-        attachBehaviors: attachBehaviors,
-        /**@method*/
-        detachBehaviors: detachBehaviors,
-        /**@method*/
-        callBlock: callBlock,
-        /**@method*/
-        loadSnippet: loadSnippet,
-        /**@method*/
-        maintainThemeInLink: maintainThemeInLink,
-        /**@method*/
-        addKeepStub: addKeepStub,
-        /**@method*/
-        gaTrack: gaTrack,
-        /**@method*/
-        googlePlusTrack: googlePlusTrack,
-        /**@method*/
-        playSelfAudioLink: playSelfAudioLink,
-        /**@method*/
-        setCookie: setCookie,
-        /**@method*/
-        readCookie: readCookie,
-        /**@method*/
-        createRollover: createRollover,
-        /**@method*/
-        browserMatches: browserMatches,
-        /**@method*/
-        undoStaffUnloadAction: undoStaffUnloadAction,
-        /**@method*/
-        getMainCmsWindow: getMainCmsWindow,
-        /**@method*/
-        magicKeypress: magicKeypress,
-        /**@method*/
-        manageScrollHeight: manageScrollHeight,
-        /**@method*/
-        executeJsFunctionCalls: executeJsFunctionCalls,
-        /**@method*/
-        doAjaxRequest: doAjaxRequest,
-        /**@method*/
-        protectURLParameter: protectURLParameter
-    });
+        $util.fatal('$cms.configOption(): Option "' + optionName + '" is either unsupported in JS or doesn\'t exist. Please try using the actual Tempcode symbol.');
+    };
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {boolean}
+     */
+    $cms.seesJavascriptErrorAlerts = $util.constant(boolVal(symbols['sees_javascript_error_alerts']));
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {boolean}
+     */
+    $cms.canTryUrlSchemes = $util.constant(boolVal(symbols['can_try_url_schemes']));
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {string}
+     */
+    $cms.zoneDefaultPage = $util.constant(strVal(symbols['zone_default_page']));
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {object}
+     */
+    $cms.staffTooltipsUrlPatterns = $util.constant(objVal(JSON.parse('{$STAFF_TOOLTIPS_URL_PATTERNS_JSON;}')));
 
     /**
      * Addons can add functions under this namespace
      * @namespace $cms.functions
      */
     $cms.functions = {};
-    /**
-     * Addons will add "behaviors" under this namespace
-     * @namespace $cms.behaviors
-     */
-    $cms.behaviors = {};
-    /**
-     * @namespace $cms.ui
-     */
-    $cms.ui = {};
-    /**
-     * Addons will add template related methods under this namespace
-     * @namespace $cms.templates
-     */
-    $cms.templates = {};
-    /**
-     * Addons will add $cms.View subclasses under this namespace
-     * @namespace $cms.views
-     */
-    $cms.views = {};
-    /**
-     * Validation code and other general code relating to forms
-     * @namespace $cms.form
-     */
-    $cms.form = {};
 
     var rgxHttp = /^https?:(?=\/\/)/i;
 
     /**
      * Dynamically fixes the protocol for image URLs
+     * @memberof $cms
      * @param url
      * @returns {string}
      */
-    function img(url) {
+    $cms.img = function img(url) {
         return strVal(url).replace(rgxHttp, window.location.protocol);
-    }
+    };
 
     /**
      * Returns a { URL } instance for the current page
      * @see https://developer.mozilla.org/en-US/docs/Web/API/URL
+     * @memberof $cms
      * @return { URL }
      */
-    function pageUrl() {
+    $cms.pageUrl = function pageUrl() {
         return new URL(window.location);
-    }
+    };
 
     /**
      * Returns a { URLSearchParams } instance for the current page URL's query string
+     * @memberof $cms
      * @see https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
      * @return { URLSearchParams }
      */
-    function pageSearchParams() {
-        return pageUrl().searchParams;
-    }
+    $cms.pageSearchParams = function pageSearchParams() {
+        return $cms.pageUrl().searchParams;
+    };
 
-    function pageKeepSearchParams(forceSession) {
+    /**
+     * @memberof $cms
+     * @param forceSession
+     * @return {Window.URLSearchParams}
+     */
+    $cms.pageKeepSearchParams = function pageKeepSearchParams(forceSession) {
         var keepSp = new window.URLSearchParams();
 
         $util.eachIter($cms.pageSearchParams().entries(), function (entry) {
@@ -377,9 +332,10 @@
         }
 
         return keepSp;
-    }
+    };
 
     var validIdRE = /^[a-zA-Z][\w:.-]*$/;
+
     /**
      * @private
      * @param sheetNameOrHref
@@ -445,14 +401,15 @@
     }
 
     /**
+     * @memberof $cms
      * @param sheetNames
      * @returns { Promise }
      */
-    function requireCss(sheetNames) {
+    $cms.requireCss = function requireCss(sheetNames) {
         sheetNames = arrVal(sheetNames);
 
         return Promise.all(sheetNames.map(_requireCss));
-    }
+    };
 
     /**
      * @private
@@ -522,10 +479,11 @@
     }
 
     /**
+     * @memberof $cms
      * @param scripts
      * @returns { Promise }
      */
-    function requireJavascript(scripts) {
+    $cms.requireJavascript = function requireJavascript(scripts) {
         var calls = [];
 
         scripts = arrVal(scripts);
@@ -537,12 +495,13 @@
         });
 
         return $util.promiseSequence(calls);
-    }
+    };
 
     /**
+     * @memberof $cms
      * @param flag
      */
-    function setPostDataFlag(flag) {
+    $cms.setPostDataFlag = function setPostDataFlag(flag) {
         flag = strVal(flag);
 
         var forms = $dom.$$('form'),
@@ -566,24 +525,34 @@
 
             postData.value += flag;
         }
-    }
-    function getCsrfToken() {
-        return readCookie($cms.getSessionCookie()); // Session also works as a CSRF-token, as client-side knows it (AJAX)
-    }
+    };
 
-    function getSessionId() {
-        return readCookie($cms.getSessionCookie());
-    }
+    /**
+     * @memberof $cms
+     * @return {string}
+     */
+    $cms.getCsrfToken = function getCsrfToken() {
+        return $cms.readCookie($cms.getSessionCookie()); // Session also works as a CSRF-token, as client-side knows it (AJAX)
+    };
+
+    /**
+     * @memberof $cms
+     * @return {string}
+     */
+    $cms.getSessionId = function getSessionId() {
+        return $cms.readCookie($cms.getSessionCookie());
+    };
 
     /* Cookies */
 
     var alertedCookieConflict = false;
     /**
+     * @memberof $cms
      * @param cookieName
      * @param cookieValue
      * @param numDays
      */
-    function setCookie(cookieName, cookieValue, numDays) {
+    $cms.setCookie = function setCookie(cookieName, cookieValue, numDays) {
         var expires = new Date(),
             output;
 
@@ -611,14 +580,15 @@
             $cms.ui.alert('{!COOKIE_CONFLICT_DELETE_COOKIES;^}' + '... ' + document.cookie + ' (' + output + ')', '{!ERROR_OCCURRED;^}');
             alertedCookieConflict = true;
         }
-    }
+    };
 
     /**
+     * @memberof $cms
      * @param cookieName
      * @param defaultValue
      * @returns {string}
      */
-    function readCookie(cookieName, defaultValue) {
+    $cms.readCookie = function readCookie(cookieName, defaultValue) {
         cookieName = strVal(cookieName);
         defaultValue = strVal(defaultValue);
 
@@ -639,19 +609,8 @@
         }
 
         return decodeURIComponent(cookies.substring(startIdx + cookieName.length + 1, endIdx));
-    }
-
-    /**
-     * @param behaviors
-     */
-    function defineBehaviors(behaviors) {
-        behaviors = objVal(behaviors);
-
-        for (var key in behaviors) {
-            $cms.behaviors[key] = behaviors[key];
-        }
-    }
-
+    };
+    
     /**
      * @return {string[]}
      */
@@ -683,9 +642,10 @@
     }
 
     /**
+     * @memberof $cms
      * @param context
      */
-    function attachBehaviors(context) {
+    $cms.attachBehaviors = function attachBehaviors(context) {
         if (!$util.isDoc(context) && !$util.isEl(context)) {
             throw new TypeError('Invalid argument type: `context` must be of type HTMLDocument or HTMLElement');
         }
@@ -720,16 +680,18 @@
                 _attach(i);
             }
         }
+
         //});
 
         return Promise.all([]);
-    }
+    };
 
     /**
+     * @memberof $cms
      * @param context
      * @param trigger
      */
-    function detachBehaviors(context, trigger) {
+    $cms.detachBehaviors = function detachBehaviors(context, trigger) {
         var name;
 
         if (!$util.isDoc(context) && !$util.isEl(context)) {
@@ -751,12 +713,13 @@
         }
 
         return Promise.all([]);
-    }
+    };
 
     var _blockDataCache = {};
 
     /**
      * This function will load a block, with options for parameter changes, and render the results in specified way - with optional callback support
+     * @memberof $cms
      * @param url
      * @param newBlockParams
      * @param targetDiv
@@ -767,7 +730,7 @@
      * @param showLoadingAnimation
      * @returns { Promise }
      */
-    function callBlock(url, newBlockParams, targetDiv, append, scrollToTopOfWrapper, postParams, inner, showLoadingAnimation) {
+    $cms.callBlock = function callBlock(url, newBlockParams, targetDiv, append, scrollToTopOfWrapper, postParams, inner, showLoadingAnimation) {
         url = strVal(url);
         newBlockParams = strVal(newBlockParams);
         scrollToTopOfWrapper = Boolean(scrollToTopOfWrapper);
@@ -826,7 +789,8 @@
             if (scrollToTopOfWrapper) {
                 try {
                     window.scrollTo(0, $dom.findPosY(targetDiv));
-                } catch (e) {}
+                } catch (e) {
+                }
             }
 
             // Defined callback
@@ -850,7 +814,7 @@
                 }
             }
         }
-    }
+    };
 
     /**
      * Dynamic inclusion
@@ -859,7 +823,7 @@
      * @param [post]
      * @returns { Promise|string }
      */
-    function loadSnippet(snippetHook, post) {
+    $cms.loadSnippet = function loadSnippet(snippetHook, post) {
         snippetHook = strVal(snippetHook);
 
         var title = $dom.html(document.querySelector('title')).replace(/ \u2013 .*/, ''),
@@ -872,14 +836,15 @@
                 resolve(xhr.responseText);
             });
         });
-    }
+    };
 
     /**
      * Update a URL to maintain the current theme into it
+     * @memberof $cms
      * @param url
      * @returns {string}
      */
-    function maintainThemeInLink(url) {
+    $cms.maintainThemeInLink = function maintainThemeInLink(url) {
         url = $util.url(url);
 
         if (!url.searchParams.has('utheme') && !url.searchParams.has('keep_theme')) {
@@ -887,17 +852,18 @@
         }
 
         return url.toString();
-    }
+    };
 
     /**
      * Alternative to $cms.keep(), accepts a URL and ensures not to cause duplicate keep_* params
+     * @memberof $cms
      * @param url
      * @return {string}
      */
-    function addKeepStub(url) {
+    $cms.addKeepStub = function addKeepStub(url) {
         url = $util.url(url);
 
-        var keepSp = pageKeepSearchParams(true);
+        var keepSp = $cms.pageKeepSearchParams(true);
 
         $util.eachIter(keepSp.entries(), function (entry) {
             var name = entry[0],
@@ -909,7 +875,7 @@
         });
 
         return url.toString();
-    }
+    };
 
     /**
      * Google Analytics tracking for links; particularly useful if you have no server-side stat collection
@@ -920,7 +886,7 @@
      * @param callback
      * @returns {boolean}
      */
-    function gaTrack(el, category, action, callback) {
+    $cms.gaTrack = function gaTrack(el, category, action, callback) {
         if ($cms.configOption('google_analytics') && !$cms.isStaff() && !$cms.isAdmin()) {
             if (!category) {
                 category = '{!URL;^}';
@@ -934,8 +900,8 @@
             try {
                 $util.inform('Beacon', 'send', 'event', category, action);
 
-                window.ga('send', 'event', category, action, { transport: 'beacon', hitCallback: callback});
-            } catch(err) {
+                window.ga('send', 'event', category, action, {transport: 'beacon', hitCallback: callback});
+            } catch (err) {
                 okay = false;
             }
 
@@ -957,17 +923,21 @@
         }
 
         return null;
-    }
+    };
 
-    function googlePlusTrack() {
+    /**
+     * @memberof $cms
+     */
+    $cms.googlePlusTrack = function googlePlusTrack() {
         $cms.gaTrack(null, 'social__google_plus');
-    }
+    };
 
     /**
      * Used by audio CAPTCHA.
+     * @memberof $cms
      * @param ob
      */
-    function playSelfAudioLink(ob) {
+    $cms.playSelfAudioLink = function playSelfAudioLink(ob) {
         $cms.requireJavascript('sound').then(function () {
             window.soundManager.setup({
                 url: $cms.baseUrl('data'),
@@ -980,7 +950,7 @@
                 }
             });
         });
-    }
+    };
 
     // Serves as a flag to indicate any new errors are probably due to us transitioning
     window.unloaded = !!window.unloaded;
@@ -988,7 +958,10 @@
         window.unloaded = true;
     });
 
-    function undoStaffUnloadAction() {
+    /**
+     * @memberof $cms
+     */
+    $cms.undoStaffUnloadAction = function undoStaffUnloadAction() {
         var pre = document.body.querySelectorAll('.unload_action');
         for (var i = 0; i < pre.length; i++) {
             pre[i].parentNode.removeChild(pre[i]);
@@ -997,13 +970,14 @@
         if (bi) {
             bi.classList.remove('site_unloading');
         }
-    }
+    };
 
     /**
      * Making the height of a textarea match its contents
+     * @memberof $cms
      * @param textAreaEl
      */
-    function manageScrollHeight(textAreaEl) {
+    $cms.manageScrollHeight = function manageScrollHeight(textAreaEl) {
         var scrollHeight = textAreaEl.scrollHeight,
             offsetHeight = textAreaEl.offsetHeight,
             currentHeight = parseInt($dom.css(textAreaEl, 'height')) || 0;
@@ -1016,13 +990,14 @@
             });
             $dom.triggerResize();
         }
-    }
+    };
 
     /**
+     * @memberof $cms
      * @param functionCallsArray
      * @param [thisRef]
      */
-    function executeJsFunctionCalls(functionCallsArray, thisRef) {
+    $cms.executeJsFunctionCalls = function executeJsFunctionCalls(functionCallsArray, thisRef) {
         if (!Array.isArray(functionCallsArray)) {
             $util.fatal('$cms.executeJsFunctionCalls(): Argument 1 must be an array, "' + $util.typeName(functionCallsArray) + '" passed');
             return;
@@ -1049,14 +1024,15 @@
                 $util.fatal('$cms.executeJsFunctionCalls(): Function not found: $cms.functions.' + funcName);
             }
         });
-    }
+    };
 
     /**
      * Find the main Composr window
+     * @memberof $cms
      * @param anyLargeOk
      * @returns { Window }
      */
-    function getMainCmsWindow(anyLargeOk) {
+    $cms.getMainCmsWindow = function getMainCmsWindow(anyLargeOk) {
         anyLargeOk = !!anyLargeOk;
 
         if ($dom.$('#main_website')) {
@@ -1071,23 +1047,26 @@
             if (window.parent && (window.parent !== window) && (window.parent.$cms.getMainCmsWindow !== undefined)) {
                 return window.parent.$cms.getMainCmsWindow();
             }
-        } catch (ignore) {}
+        } catch (ignore) {
+        }
 
         try {
             if (window.opener && (window.opener.$cms.getMainCmsWindow !== undefined)) {
                 return window.opener.$cms.getMainCmsWindow();
             }
-        } catch (ignore) {}
+        } catch (ignore) {
+        }
 
         return window;
-    }
+    };
 
     /**
      * Find if the user performed the Composr "magic keypress" to initiate some action
+     * @memberof $cms
      * @param event
      * @returns {boolean}
      */
-    function magicKeypress(event) {
+    $cms.magicKeypress = function magicKeypress(event) {
         // Cmd+Shift works on Mac - cannot hold down control or alt in Mac Firefox at least
         var count = 0;
         if (event.shiftKey) {
@@ -1104,14 +1083,15 @@
         }
 
         return count >= 2;
-    }
+    };
 
     /**
      * Image rollover effects
+     * @memberof $cms
      * @param rand
      * @param rollover
      */
-    function createRollover(rand, rollover) {
+    $cms.createRollover = function createRollover(rand, rollover) {
         var img = rand && $dom.$id(rand);
         if (!img) {
             return;
@@ -1132,14 +1112,15 @@
         function deactivate() {
             img.setAttribute('src', img.oldSrc);
         }
-    }
+    };
 
     /**
      * Browser sniffing
+     * @memberof $cms
      * @param {string} code
      * @returns {boolean}
      */
-    function browserMatches(code) {
+    $cms.browserMatches = function browserMatches(code) {
         var browser = navigator.userAgent.toLowerCase(),
             os = navigator.platform.toLowerCase() + ' ' + browser;
 
@@ -1179,16 +1160,17 @@
 
         // Should never get here
         return false;
-    }
-    
+    };
+
     var networkDownAlerted = false;
     /**
+     * @memberof $cms
      * @param {string} url
      * @param {function|null} [callback]
      * @param {string|null} [post] - Note that 'post' is not an array, it's a string (a=b)
      * @returns { Promise }
      */
-    function doAjaxRequest(url, callback, post) {
+    $cms.doAjaxRequest = function doAjaxRequest(url, callback, post) {
         url = $util.url(url).toString();
 
         return new Promise(function (resolvePromise) {
@@ -1242,11 +1224,11 @@
                         var message = messageEl.firstChild.textContent;
                         if (responseXML.querySelector('error')) {
                             // It's an error :|
-                            $cms.ui.alert({ notice: 'An error (' + responseXML.querySelector('error').firstChild.textContent + ') message was returned by the server: ' + message });
+                            $cms.ui.alert({notice: 'An error (' + responseXML.querySelector('error').firstChild.textContent + ') message was returned by the server: ' + message});
                             return;
                         }
 
-                        $cms.ui.alert({ notice: 'An informational message was returned by the server: ' + message });
+                        $cms.ui.alert({notice: 'An informational message was returned by the server: ' + message});
                     }
                 }
             } else {
@@ -1269,15 +1251,15 @@
                 }
             }
         }
-    }
+    };
 
     /**
-     * Convert the format of a URL so it can be embedded as a parameter that ModSecurity will not trigger security errors on
+     * Convert the format of a URL so it can be embedded as a parameter that ModSecurity will not trigger security errors on.
      * @memberof $cms
      * @param {string} parameter
      * @returns {string}
      */
-    function protectURLParameter(parameter) {
+    $cms.protectURLParameter = function protectURLParameter(parameter) {
         parameter = strVal(parameter);
 
         var baseUrl = $cms.baseUrl();
@@ -1295,208 +1277,7 @@
         }
 
         return parameter;
-    }
-
-    // List of view options that can be set as properties.
-    var viewOptionsList = { el: 1, id: 1, attributes: 1, className: 1, tagName: 1, events: 1 };
-
-    $cms.View = View;
-    /**
-     * @memberof $cms
-     * @class $cms.View
-     */
-    function View(params, viewOptions) {
-        /** @member {number}*/
-        this.uid = $util.uid(this);
-        /** @member {string} */
-        this.tagName = 'div';
-        /** @member { HTMLElement } */
-        this.el = null;
-
-        this.initialize.apply(this, arguments);
-    }
-
-    // Cached regex to split keys for `delegate`.
-    var rgxDelegateEventSplitter = /^(\S+)\s*(.*)$/;
-    $util.properties(View.prototype, /**@lends $cms.View#*/{
-        /**
-         * @method
-         */
-        initialize: function (params, viewOptions) {
-            this.params = objVal(params);
-
-            if ($util.isObj(viewOptions)) {
-                for (var key in viewOptionsList) {
-                    if (key in viewOptions) {
-                        this[key] = viewOptions[key];
-                    }
-                }
-            }
-
-            this._ensureElement();
-        },
-        /**
-         * @method
-         */
-        $: function (selector) {
-            return $dom.$(this.el, selector);
-        },
-        /**
-         * @method
-         */
-        $$: function (selector) {
-            return $dom.$$(this.el, selector);
-        },
-        /**
-         * @method
-         */
-        $$$: function (selector) {
-            return $dom.$$$(this.el, selector);
-        },
-        /**
-         * @method
-         */
-        $closest: function (el, selector) {
-            return $dom.closest(el, selector, this.el);
-        },
-
-        /**
-         * Remove this view by taking the element out of the DOM.
-         * @method
-         */
-        remove: function () {
-            this._removeElement();
-            return this;
-        },
-
-        /**
-         * Remove this view's element from the document and all event listeners
-         * attached to it. Exposed for subclasses using an alternative DOM
-         * manipulation API.
-         * @method
-         */
-        _removeElement: function () {
-            this.el && this.el.parentNode && this.el.parentNode.removeChild(this.el);
-        },
-
-        /**
-         * Change the view's element (`this.el` property) and re-delegate the
-         * view's events on the new element.
-         * @method
-         */
-        setElement: function (element) {
-            this.undelegateEvents();
-            this._setElement(element);
-            this.delegateEvents();
-            return this;
-        },
-
-
-        /**
-         * Creates the `this.el` reference for this view using the
-         * given `el`. `el` can be a CSS selector or an HTML element.
-         * Subclasses can override this to utilize an
-         * alternative DOM manipulation API and are only required to set the `this.el` property.
-         * @method
-         */
-        _setElement: function (el) {
-            this.el = (typeof el === 'string') ? $dom.$(el) : el;
-        },
-
-        /**
-         * @method
-         */
-        events: function () {
-            return {};
-        },
-
-        /**
-         * Set callbacks, where `this.events` is a hash of
-         * *{"event selector": "callback"}*
-         * pairs. Callbacks will be bound to the view, with `this` set properly.
-         * Uses event delegation for efficiency.
-         * Omitting the selector binds the event to `this.el`.
-         * @method
-         */
-        delegateEvents: function (events) {
-            var key, method, match;
-
-            if (typeof events === 'function') {
-                events = events.call(this);
-            } else if ((events == null) && (typeof this.events === 'function')) {
-                events = this.events();
-            }
-
-            if (typeof events !== 'object') {
-                return this;
-            }
-
-            this.undelegateEvents();
-            for (key in events) {
-                method = events[key];
-                if (typeof method !== 'function') {
-                    method = this[method];
-                }
-                if (!method) {
-                    continue;
-                }
-                match = key.match(rgxDelegateEventSplitter);
-                this.delegate(match[1], match[2], method.bind(this));
-            }
-            return this;
-        },
-
-        /**
-         * Add a single event listener to the view's element (or a child element using `selector`).
-         * @method
-         */
-        delegate: function (eventName, selector, listener) {
-            //$util.inform('$cms.View#delegate(): delegating event "' + eventName + '" for selector "' + selector + '" with listener', listener, 'and view', this);
-            $dom.on(this.el, (eventName + '.delegateEvents' + $util.uid(this)), selector, listener);
-            return this;
-        },
-
-        /**
-         * Clears all callbacks previously bound to the view by `delegateEvents`.
-         * You usually don't need to use this, but may wish to if you have multiple
-         * views attached to the same DOM element.
-         * @method
-         */
-        undelegateEvents: function () {
-            if (this.el) {
-                $dom.off(this.el, '.delegateEvents' + $util.uid(this));
-            }
-            return this;
-        },
-
-        /**
-         * A finer-grained `undelegateEvents` for removing a single delegated event. `selector` and `listener` are both optional.
-         * @method
-         */
-        undelegate: function (eventName, selector, listener) {
-            $dom.off(this.el, (eventName + '.delegateEvents' + $util.uid(this)), selector, listener);
-            return this;
-        },
-
-        /**
-         * @method
-         */
-        _ensureElement: function () {
-            var attrs;
-            if (!this.el) {
-                attrs = Object.assign({}, $util.result(this, 'attributes'));
-                if (this.id) {
-                    attrs.id = $util.result(this, 'id');
-                }
-                if (this.className) {
-                    attrs.className = $util.result(this, 'className');
-                }
-                this.setElement($dom.create($util.result(this, 'tagName') || 'div', attrs));
-            } else {
-                this.setElement($util.result(this, 'el'));
-            }
-        }
-    });
+    };
 
     /**
      * Tempcode filters ported to JS
@@ -1661,34 +1442,5 @@
             str.replace(/\\/g, '\\\\')
                 .replace(/"/g, '\\"')
             : '';
-    };
-
-    /**
-     * Calls up a URL to check something, giving any 'feedback' as an error (or if just 'false' then returning false with no message)
-     * @memberof $cms.form
-     * @param url
-     * @param post
-     * @returns { Promise }
-     */
-    $cms.form.doAjaxFieldTest = function doAjaxFieldTest(url, post) {
-        url = strVal(url);
-
-        return new Promise(function (resolve) {
-            $cms.doAjaxRequest(url, null, post).then(function (xhr) {
-                if ((xhr.responseText !== '') && (xhr.responseText.replace(/[ \t\n\r]/g, '') !== '0'/*some cache layers may change blank to zero*/)) {
-                    if (xhr.responseText !== 'false') {
-                        if (xhr.responseText.length > 1000) {
-                            //$util.inform('$cms.form.doAjaxFieldTest()', 'xhr.responseText:', xhr.responseText);
-                            $cms.ui.alert(xhr.responseText, '{!ERROR_OCCURRED;^}', true);
-                        } else {
-                            $cms.ui.alert(xhr.responseText);
-                        }
-                    }
-                    resolve(false);
-                    return;
-                }
-                resolve(true);
-            });
-        });
     };
 }(window.$cms || (window.$cms = {}), window.$util, window.$dom));

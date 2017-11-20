@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     $cms.templates.redirectETableRedirect = function redirectETableRedirect(params, container) {
@@ -10,4 +10,4 @@
             });
         });
     };
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     $cms.templates.setupWizard7 = function setupWizard7(params, container) {
@@ -37,4 +37,4 @@
             document.getElementById('closed').disabled = !this.checked;
         });
     };
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

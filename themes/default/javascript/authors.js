@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     $cms.templates.authorPopup = function (params, container) {
@@ -19,4 +19,4 @@
             }
         });
     };
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

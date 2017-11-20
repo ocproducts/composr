@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     $cms.views.PollBox = PollBox;
@@ -41,4 +41,4 @@
             $dom.$('#poll' + pollId).disabled = false;
         });
     };
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

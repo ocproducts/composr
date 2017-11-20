@@ -3,7 +3,7 @@
 window.previousCommands || (window.previousCommands = []);
 (window.currentCommand !== undefined) ||  (window.currentCommand = null);
 
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     $cms.templates.commandrMain = function commandrMain(params, container) {
@@ -300,4 +300,4 @@ window.previousCommands || (window.previousCommands = []);
         }
     }
 
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

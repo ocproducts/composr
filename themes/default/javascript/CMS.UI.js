@@ -1,5 +1,9 @@
 (function ($cms, $util, $dom) {
     'use strict';
+    /**
+     * @namespace $cms.ui
+     */
+    $cms.ui = {};
     
     /**
      * Toggle a ToggleableTray
@@ -212,6 +216,27 @@
         if (window['load_tab__' + tab] !== undefined) {
             // Usually an AJAX loader
             window['load_tab__' + tab](automated, $dom.$id(id + '_' + tab));
+        }
+    };
+
+    /**
+     * Tabs
+     * @memberof $cms.ui
+     * @param [hash]
+     */
+    $cms.ui.findUrlTab = function findUrlTab(hash) {
+        hash = strVal(hash) || window.location.hash;
+
+        if (hash.replace(/^#!?/, '') !== '') {
+            var tab = hash.replace(/^#/, '').replace(/^tab__/, '');
+
+            if ($dom.$id('g_' + tab)) {
+                $cms.ui.selectTab('g', tab);
+            } else if ((tab.indexOf('__') !== -1) && ($dom.$id('g_' + tab.substr(0, tab.indexOf('__'))))) {
+                var old = hash;
+                $cms.ui.selectTab('g', tab.substr(0, tab.indexOf('__')));
+                window.location.hash = old;
+            }
         }
     };
 

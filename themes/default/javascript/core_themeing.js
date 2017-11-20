@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     /*
@@ -1210,4 +1210,4 @@
         var hexbase = '0123456789ABCDEF';
         return hexbase.charAt((number >> 4) & 0xf) + hexbase.charAt(number & 0xf);
     }
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

@@ -1,10 +1,10 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     $cms.views.CommentsPostingForm = CommentsPostingForm;
     /**
      * @memberof $cms.views
-     * @class
+     * @class $cms.views.CommentsPostingForm
      * @extends $cms.View
      */
     function CommentsPostingForm(params) {
@@ -35,7 +35,7 @@
         }
     }
 
-    $util.inherits(CommentsPostingForm, $cms.View, /**@lends CommentsPostingForm#*/{
+    $util.inherits(CommentsPostingForm, $cms.View, /**@lends $cms.views.CommentsPostingForm#*/{
         events: function () {
             return {
                 'click .js-btn-full-editor': 'moveToFullEditor',
@@ -253,60 +253,58 @@
         }
     });
 
-    $util.extend($cms.templates, /**@lends $cms.templates*/{
-        ratingForm: function ratingForm(params) {
-            var rating;
+    $cms.templates.ratingForm = function ratingForm(params) {
+        var rating;
 
-            if (params.error) {
-                return;
-            }
-
-            for (var i = 0, len = params.allRatingCriteria; i < len; i++) {
-                rating = objVal(params.allRatingCriteria[i]);
-
-                applyRatingHighlightAndAjaxCode((rating.likes === 1), rating.rating, rating.contentType, rating.id, rating.type, rating.rating, rating.contentUrl, rating.contentTitle, true);
-            }
-        },
-
-        commentsWrapper: function (params, container) {
-            if ((params.serializedOptions !== undefined) && (params.hash !== undefined)) {
-                window.commentsSerializedOptions = params.serializedOptions;
-                window.commentsHash = params.hash;
-            }
-
-            $dom.on(container, 'change', '.js-change-select-submit-form', function (e, select) {
-                $dom.submit(select.form);
-            });
-        },
-
-        commentAjaxHandler: function (params) {
-            var urlStem = params.urlStem,
-                wrapper = $dom.$id('comments_wrapper');
-
-            replaceCommentsFormWithAjax(params.options, params.hash, 'comments_form', 'comments_wrapper');
-
-            if (wrapper) {
-                $dom.internaliseAjaxBlockWrapperLinks(urlStem, wrapper, ['^start_comments$', '^max_comments$'], {});
-            }
-
-            // Infinite scrolling hides the pagination when it comes into view, and auto-loads the next link, appending below the current results
-            if (params.infiniteScroll) {
-                var infiniteScrollingCommentsWrapper = function (event) {
-                    $dom.internaliseInfiniteScrolling(urlStem, wrapper);
-                };
-
-                $dom.on(window, 'scroll', infiniteScrollingCommentsWrapper);
-                $dom.on(window, 'keydown', $dom.infiniteScrollingBlock);
-                $dom.on(window, 'mousedown', $dom.infiniteScrollingBlockHold);
-                $dom.on(window, 'mousemove', function () {
-                    $dom.infiniteScrollingBlockUnhold(infiniteScrollingCommentsWrapper);
-                });
-
-                // ^ mouseup/mousemove does not work on scrollbar, so best is to notice when mouse moves again (we know we're off-scrollbar then)
-                infiniteScrollingCommentsWrapper();
-            }
+        if (params.error) {
+            return;
         }
-    });
+
+        for (var i = 0, len = params.allRatingCriteria; i < len; i++) {
+            rating = objVal(params.allRatingCriteria[i]);
+
+            applyRatingHighlightAndAjaxCode((rating.likes === 1), rating.rating, rating.contentType, rating.id, rating.type, rating.rating, rating.contentUrl, rating.contentTitle, true);
+        }
+    };
+
+    $cms.templates.commentsWrapper = function (params, container) {
+        if ((params.serializedOptions !== undefined) && (params.hash !== undefined)) {
+            window.commentsSerializedOptions = params.serializedOptions;
+            window.commentsHash = params.hash;
+        }
+
+        $dom.on(container, 'change', '.js-change-select-submit-form', function (e, select) {
+            $dom.submit(select.form);
+        });
+    };
+
+    $cms.templates.commentAjaxHandler = function (params) {
+        var urlStem = params.urlStem,
+            wrapper = $dom.$id('comments_wrapper');
+
+        replaceCommentsFormWithAjax(params.options, params.hash, 'comments_form', 'comments_wrapper');
+
+        if (wrapper) {
+            $dom.internaliseAjaxBlockWrapperLinks(urlStem, wrapper, ['^start_comments$', '^max_comments$'], {});
+        }
+
+        // Infinite scrolling hides the pagination when it comes into view, and auto-loads the next link, appending below the current results
+        if (params.infiniteScroll) {
+            var infiniteScrollingCommentsWrapper = function (event) {
+                $dom.internaliseInfiniteScrolling(urlStem, wrapper);
+            };
+
+            $dom.on(window, 'scroll', infiniteScrollingCommentsWrapper);
+            $dom.on(window, 'keydown', $dom.infiniteScrollingBlock);
+            $dom.on(window, 'mousedown', $dom.infiniteScrollingBlockHold);
+            $dom.on(window, 'mousemove', function () {
+                $dom.infiniteScrollingBlockUnhold(infiniteScrollingCommentsWrapper);
+            });
+
+            // ^ mouseup/mousemove does not work on scrollbar, so best is to notice when mouse moves again (we know we're off-scrollbar then)
+            infiniteScrollingCommentsWrapper();
+        }
+    };
     
     $cms.templates.postChildLoadLink = function (params, container) {
         var ids = params.implodedIds,
@@ -581,4 +579,4 @@
         $cms.manageScrollHeight(post);
         post.scrollTop = post.scrollHeight;
     };
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

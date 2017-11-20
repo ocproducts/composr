@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     $cms.views.XmlConfigScreen = XmlConfigScreen;
@@ -33,4 +33,4 @@
             $cms.form.modSecurityWorkaround(form);
         });
     };
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

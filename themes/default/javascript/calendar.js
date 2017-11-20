@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     $cms.functions.cmsCalendarRunStart = function cmsCalendarRunStart() {
@@ -138,4 +138,4 @@
             }
         });
     };
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

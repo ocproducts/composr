@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     $cms.functions.gfxRolloverButton  = function gfxRolloverButton(combId, url) {
@@ -12,7 +12,7 @@
             var i = 0, param;
             do {
                 param = document.getElementById('parameters_' + i);
-                if ((param) && (param.value != '')) {
+                if ((param) && (param.value !== '')) {
                     e.value += ' ' + param.value.replace('=', '="') + '"';
                 }
                 i++;
@@ -63,4 +63,4 @@
             });
         });
     };
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     /**
@@ -36,7 +36,7 @@
                 setTimeout(function () {
                     closeDownAjaxList();
                 }, 300);
-            }
+            };
         }
 
         if (!delayed) { // A delay, so as not to throw out too many requests
@@ -279,4 +279,4 @@
             }
         }
     };
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

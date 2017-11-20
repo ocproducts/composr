@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     var $IMG_checklist_checklist1 = '{$IMG;,checklist/checklist1}',
@@ -344,4 +344,4 @@
             })
         });
     }
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

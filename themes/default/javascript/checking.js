@@ -1,5 +1,5 @@
 /* Validation code and other general code relating to forms */
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     /**
@@ -100,8 +100,13 @@
         }
         
         return uploadsComplete;
-    }; 
+    };
     
+    /**
+     * @memberof $cms.form
+     * @param form
+     * @return { Promise }
+     */
     $cms.form.whenUploadsComplete = function whenUploadsComplete(form) {
         if ($cms.form.areUploadsComplete(form)) {
             return Promise.resolve();
@@ -134,6 +139,11 @@
         });
     };
     
+    /**
+     * @memberof $cms.form
+     * @param form
+     * @return { Promise }
+     */
     $cms.form.startUploads = function startUploads(form) {
         var plObj, scrolled = false;
 
@@ -399,6 +409,7 @@
     
     var _lastChangeTimes = {};
     /**
+     * @memberof $cms.form
      * @param form
      * @returns { Date }
      */
@@ -874,6 +885,7 @@
 
     /**
      * Very simple form control flow
+     * @memberof $cms.form
      * @param field
      * @param alreadyShownMessage
      * @returns {boolean}
@@ -907,4 +919,4 @@
         return true;
     };
 
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

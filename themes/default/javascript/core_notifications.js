@@ -73,7 +73,7 @@
         });
 
         $dom.on(container, 'mouseup', '.js-mouseup-find-url-tab', function (e) {
-            $dom.findUrlTab();
+            $cms.ui.findUrlTab();
         });
 
         $dom.on(container, 'click', '.js-click-toggle-pts', function (e) {

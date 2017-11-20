@@ -1,5 +1,5 @@
 /* Form editing code (general, may be used on many different kinds of form) */
-(function ($cms, $editing) {
+(function ($cms, $util, $dom, $editing) {
     'use strict';
 
     window.wysiwygOn = wysiwygOn;
@@ -165,7 +165,7 @@
                     promiseCalls.push((function (textarea) {
                         return function () {
                             return disableWysiwygTextarea(textarea, discard);
-                        }
+                        };
                     }(textarea)));
                 }
             }
@@ -418,7 +418,8 @@
                 wysiwygColor += (parseInt(matches[3]) + 4) + matches[4];
                 wysiwygColor += (parseInt(matches[5]) + 4) + matches[6];
             }
-
+            
+            var editorSettings = {};
             /*{+START,INCLUDE,WYSIWYG_SETTINGS,.js,javascript}{+END}*/
 
             if (window.CKEDITOR.instances[element.id]) {
@@ -491,8 +492,9 @@
                 findTagsInEditor(editor, element);
             });
             setInterval(function () {
-                if ($cms.form.isWysiwygField(element))
+                if ($cms.form.isWysiwygField(element)) {
                     findTagsInEditor(editor, element);
+                }
             }, 1000);
 
             // Weird issues in Chrome cutting+pasting blocks etc
@@ -596,15 +598,16 @@
                     if (this.id === '') {
                         this.id = 'comcode_tag_' + Math.round(Math.random() * 10000000);
                     }
-                    var tagType = (this.origTitle ? this.origTitle : this.title).replace(/^\[/, '').replace(/[= \]](.|\n)*$/, '');
+                    var tagType = (this.origTitle ? this.origTitle : this.title).replace(/^\[/, '').replace(/[= \]](.|\n)*$/, ''),
+                        url;
 
                     if (tagType === 'block') {
                         var blockName = (this.origTitle ? this.origTitle : this.title).replace(/\[\/block\]$/, '').replace(/^(.|\s)*\]/, '');
-                        var url = '{$FIND_SCRIPT;,block_helper}?type=step2&block=' + encodeURIComponent(blockName) + '&field_name=' + fieldName + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + $cms.keep();
+                        url = '{$FIND_SCRIPT;,block_helper}?type=step2&block=' + encodeURIComponent(blockName) + '&field_name=' + fieldName + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + $cms.keep();
                         url = url + '&block_type=' + (((fieldName.indexOf('edit_panel_') === -1) && (window.location.href.indexOf(':panel_') === -1)) ? 'main' : 'side');
                         $cms.ui.open($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
                     } else {
-                        var url = '{$FIND_SCRIPT;,comcode_helper}?type=step2&tag=' + encodeURIComponent(tagType) + '&field_name=' + fieldName + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + $cms.keep();
+                        url = '{$FIND_SCRIPT;,comcode_helper}?type=step2&tag=' + encodeURIComponent(tagType) + '&field_name=' + fieldName + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + $cms.keep();
                         $cms.ui.open($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
                     }
                 };
@@ -1089,4 +1092,4 @@
         $dom.html(htmlSpot, html);
     }
 
-}(window.$cms, (window.$editing || (window.$editing = {}))));
+}(window.$cms, window.$util, window.$dom, (window.$editing || (window.$editing = {}))));

@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
     
     $cms.functions.moduleCmsQuiz = function moduleCmsQuiz() {
@@ -79,4 +79,4 @@
             }
         }
     }
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

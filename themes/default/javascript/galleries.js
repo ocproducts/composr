@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     if (window.slideshowTimer === undefined) {
@@ -417,4 +417,4 @@
     // Exports to be gotten rid of later
     window.playerStopped = playerStopped;
     window.stopSlideshowTimer = stopSlideshowTimer;
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

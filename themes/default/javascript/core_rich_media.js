@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     $cms.views.Attachment = Attachment;
@@ -361,7 +361,7 @@
             if (this.checked && document.getElementById('_safe')) {
                 document.getElementById('_safe').checked = false;
             }
-        })
+        });
     };
 
     $cms.templates.comcodeMemberLink = function comcodeMemberLink(params, container) {
@@ -374,7 +374,7 @@
                 if (!el.cancelled) {
                     $cms.ui.activateTooltip(el, e, result, 'auto', null, null, false, true);
                 }
-            })
+            });
         }
 
         $dom.on(container, 'mouseout', '.js-mouseout-comcode-member-link', function (e, el) {
@@ -1241,4 +1241,4 @@
             e.style.position = 'absolute';
         }
     }
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

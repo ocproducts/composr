@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     $cms.templates.securityScreen = function securityScreen(params, container) {
@@ -12,4 +12,4 @@
 
         });
     };
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

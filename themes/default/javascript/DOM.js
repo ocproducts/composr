@@ -135,7 +135,7 @@
     };
 
     /**
-     * Ensures the passed `el` has an id and returns the id
+     * Ensures the passed `el` has an id attribute and returns the id
      * @param { Element } el
      * @param {string} prefix
      * @return {string}
@@ -1897,7 +1897,7 @@
         if (destY < 0) {
             destY = 0;
         }
-        if ((expectedScrollY != null) && (expectedScrollY != scrollY)) {
+        if ((expectedScrollY != null) && (Number(expectedScrollY) !== scrollY)) {
             // We must terminate, as the user has scrolled during our animation and we do not want to interfere with their action -- or because our last scroll failed, due to us being on the last scroll screen already
             return;
         }
@@ -2438,27 +2438,7 @@
         });
         return result.join('&');
     };
-
-    /**
-     * Tabs
-     * @memberof $dom
-     * @param [hash]
-     */
-    $dom.findUrlTab = function findUrlTab(hash) {
-        hash = strVal(hash, window.location.hash);
-
-        if (hash.replace(/^#!?/, '') !== '') {
-            var tab = hash.replace(/^#/, '').replace(/^tab__/, '');
-
-            if ($dom.$id('g_' + tab)) {
-                $cms.ui.selectTab('g', tab);
-            } else if ((tab.indexOf('__') !== -1) && ($dom.$id('g_' + tab.substr(0, tab.indexOf('__'))))) {
-                var old = hash;
-                $cms.ui.selectTab('g', tab.substr(0, tab.indexOf('__')));
-                window.location.hash = old;
-            }
-        }
-    };
+    
     /**
      * @memberof $dom
      * @param src
@@ -2497,7 +2477,7 @@
                     if (event.pageY) {
                         return event.pageY;
                     } else if (event.clientY) {
-                        return event.clientY + window.pageYOffset
+                        return event.clientY + window.pageYOffset;
                     }
                 } catch (ignore) {}
 

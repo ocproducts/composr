@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     $cms.views.BlockMainSearch = BlockMainSearch;
@@ -108,4 +108,4 @@
             $cms.form.updateAjaxSearchList(input, e, searchType);
         });
     };
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

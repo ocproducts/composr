@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     $cms.functions.moduleCmsDownloads = function moduleCmsDownloads() {
@@ -35,4 +35,4 @@
             }
         }
     };
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));
