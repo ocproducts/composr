@@ -41,8 +41,7 @@ class Hook_check_modsecurity
             {
                 $test_b = http_download_file($test_url, 0, false, true, 'Composr', array('test_a' => '/usr/bin/unzip -o @_SRC_@ -x -d @_DST_@', 'test_b' => '<iframe src="http://example.com/"></iframe>', 'test_c' => '<script>console.log(document.cookie);</script>'));
                 $message_b = $GLOBALS['HTTP_MESSAGE'];
-                if ($message_b != '200')
-                {
+                if ($message_b != '200') {
                     $warning[] = do_lang_tempcode('MOD_SECURITY', escape_html($message_b));
                 }
             }

@@ -2886,7 +2886,7 @@ function get_dir_contents($dir, $php = false)
     $_dir = @opendir($dir);
     if ($_dir !== false) {
         while (false !== ($file = readdir($_dir))) {
-            if (($file != 'index.php') && ($file != '.htaccess') && ($file != '.') && ($file != '..')) {
+            if (($file != 'index.php') && ($file != '.htaccess') && ($file[0] != '.')) {
                 if ($php) {
                     if (strtolower(substr($file, -4, 4)) == '.php') {
                         $file2 = substr($file, 0, strlen($file) - 4);

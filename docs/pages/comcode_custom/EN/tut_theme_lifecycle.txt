@@ -82,6 +82,10 @@ It is easier to do this on your desktop than trying to do it all directly throug
 Here is some documentation for Winmerge that explains how to use these kinds of tools (they're all very similar) a bit better:
 http://tour.winmerge.org/
 
+[title="2"]Our Themeing compatibility changes tool[/title]
+
+On the Composr website you will find a [url="tool for showing all the changes made across Composr releases"]http://compo.sr/themeing_changes.htm[/url]. This is very useful as an alternative to you using the [tt].editfrom[/tt] files within your own diff tool.
+
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_themes"]Themeing your site[/page]
