@@ -2,6 +2,7 @@
     'use strict';
 
     /**
+     * @memberof $cms.ui
      * @param name
      * @param ajaxUrl
      * @param rootId

@@ -135,7 +135,7 @@
     };
 
     /**
-     * Ensures the passed `el` has an id and returns the id
+     * Ensures the passed `el` has an id attribute and returns the id
      * @param { Element } el
      * @param {string} prefix
      * @return {string}

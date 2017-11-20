@@ -185,17 +185,15 @@ Martin Conte Mac Donell <Reflejo@gmail.com>
     'use strict';
 
     // Implementation for [data-jquery-openid]
-    $cms.defineBehaviors({
-        initializeJqueryOpenid: {
-            attach: function (context) {
-                $util.once($dom.$$$(context, '[data-jquery-openid]'), 'behavior.initializeJqueryOpenid').forEach(function (openidEl) {
-                    var options = objVal($dom.data(openidEl, 'jqueryOpenid'));
-
-                    window.jQuery(openidEl).openid(options);
-                });
-            }
+    $cms.behaviors.initializeJqueryOpenid =  {
+        attach: function (context) {
+            $util.once($dom.$$$(context, '[data-jquery-openid]'), 'behavior.initializeJqueryOpenid').forEach(function (openidEl) {
+                var options = objVal($dom.data(openidEl, 'jqueryOpenid'));
+    
+                window.jQuery(openidEl).openid(options);
+            });
         }
-    });
+    };
 
     $cms.templates.loginScreen = function loginScreen(params, container) {
         $dom.load.then(function () {

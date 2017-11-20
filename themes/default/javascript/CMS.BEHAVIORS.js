@@ -101,7 +101,7 @@
 
                 if (boolVal('{$VALUE_OPTION;,js_keep_params}')) {
                     // Keep parameters need propagating
-                    if (anchor.href && anchor.href.startsWith($cms.baseUrl() + '/')) {
+                    if (anchor.href && anchor.href.startsWith($cms.getBaseUrl() + '/')) {
                         anchor.href += $cms.addKeepStub(anchor.href);
                     }
                 }
@@ -143,7 +143,7 @@
 
                 if (boolVal('{$VALUE_OPTION;,js_keep_params}')) {
                     /* Keep parameters need propagating */
-                    if (form.action && form.action.startsWith($cms.baseUrl() + '/')) {
+                    if (form.action && form.action.startsWith($cms.getBaseUrl() + '/')) {
                         form.action = $cms.addKeepStub(form.action);
                     }
                 }
@@ -166,7 +166,7 @@
 
             inputs.forEach(function (input) {
                 if (input.type === 'checkbox') {
-                    // Implementatioin for input[data-cms-unchecked-is-indeterminate]
+                    // Implementation for input[data-cms-unchecked-is-indeterminate]
                     if (input.dataset.cmsUncheckedIsIndeterminate != null) {
                         input.indeterminate = !input.checked;
                     }
