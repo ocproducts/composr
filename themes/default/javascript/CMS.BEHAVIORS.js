@@ -160,21 +160,6 @@
         }
     };
 
-    $cms.behaviors.initializeInputs = {
-        attach: function (context) {
-            var inputs = $util.once($dom.$$$(context, 'input'), 'behavior.initializeInputs');
-
-            inputs.forEach(function (input) {
-                if (input.type === 'checkbox') {
-                    // Implementation for input[data-cms-unchecked-is-indeterminate]
-                    if (input.dataset.cmsUncheckedIsIndeterminate != null) {
-                        input.indeterminate = !input.checked;
-                    }
-                }
-            });
-        }
-    };
-
     $cms.behaviors.initializeTables = {
         attach: function attach(context) {
             var tables = $util.once($dom.$$$(context, 'table'), 'behavior.initializeTables');
@@ -202,18 +187,127 @@
         }
     };
 
-    // Implementation for [data-textarea-auto-height]
-    $cms.behaviors.textareaAutoHeight = {
-        attach: function attach(context) {
-            if ($cms.isMobile()) {
-                return;
-            }
+    // Implementation for input[data-cms-unchecked-is-indeterminate]
+    $cms.behaviors.uncheckedIsIndeterminate = {
+        attach: function (context) {
+            var inputs = $util.once($dom.$$$(context, 'input[data-cms-unchecked-is-indeterminate]'), 'behavior.uncheckedIsIndeterminate');
 
-            var textareas = $dom.$$$(context, '[data-textarea-auto-height]');
+            inputs.forEach(function (input) {
+                if (input.type === 'checkbox') {
+                    if (!input.checked) {
+                        input.indeterminate = true;
+                    }
 
-            for (var i = 0; i < textareas.length; i++) {
-                $cms.manageScrollHeight(textareas[i]);
-            }
+                    $dom.on(input, 'change', function uncheckedIsIndeterminate() {
+                        if (!input.checked) {
+                            input.indeterminate = true;
+                        }
+                    });
+                }
+            });
+        }
+    };
+
+    // Implementation for [data-click-eval="<code to eval>"]
+    $cms.behaviors.clickEval = {
+        attach: function (context) {
+            var els = $util.once($dom.$$$(context, '[data-click-eval]'), 'behavior.clickEval');
+            
+            els.forEach(function (el) {
+                $dom.on(el, 'click', function clickEval() {
+                    var code = strVal(el.dataset.clickEval);
+
+                    if (code !== '') {
+                        window.eval.call(el, code); // eval() call
+                    }
+                });
+            });
+        }
+    };
+
+    // Implementation for [data-click-alert]
+    $cms.behaviors.onclickShowModalAlert = {
+        attach: function (context) {
+            var els = $util.once($dom.$$$(context, '[data-click-alert]'), 'behavior.onclickShowModalAlert');
+
+            els.forEach(function (el) {
+                $dom.on(el, 'click', function onclickShowModalAlert() {
+                    var options = objVal($dom.data(el, 'clickAlert'), {}, 'notice');
+                    $cms.ui.alert(options.notice);
+                });
+            });
+        }
+    };
+
+    // Implementation for [data-keypress-alert]
+    $cms.behaviors.onkeypressShowModalAlert = {
+        attach: function (context) {
+            var els = $util.once($dom.$$$(context, '[data-keypress-alert]'), 'behavior.onkeypressShowModalAlert');
+
+            els.forEach(function (el) {
+                $dom.on(el, 'keypress', function onkeypressShowModalAlert() {
+                    var options = objVal($dom.data(el, 'keypressAlert'), {}, 'notice');
+                    $cms.ui.alert(options.notice);
+                });
+            });
+        }
+    };
+
+    // Implementation for [data-submit-on-enter]
+    $cms.behaviors.submitOnEnter = {
+        attach: function (context) {
+            var inputs = $util.once($dom.$$$(context, '[data-submit-on-enter]'), 'behavior.submitOnEnter');
+
+            inputs.forEach(function (input) {
+                $dom.on(input, 'keypress', function submitOnEnter(e) {
+                    if ($dom.keyPressed(e, 'Enter')) {
+                        $dom.submit(input.form);
+                        e.preventDefault();
+                    }
+                });
+            });
+        }
+    };
+
+    // Implementation for [data-mouseover-class="{ 'some-class' : 1|0 }"]
+    // Toggle classes based on mouse location
+    $cms.behaviors.mouseoverClass = {
+        attach: function (context) {
+            var els = $util.once($dom.$$$(context, '[data-mouseover-class]'), 'behavior.mouseoverClass');
+
+            els.forEach(function (el) {
+                $dom.on(el, 'mouseover', function mouseoverClass(e) {
+                    var classes = objVal($dom.data(el, 'mouseoverClass')), key, bool;
+
+                    if (!e.relatedTarget || !el.contains(e.relatedTarget)) {
+                        for (key in classes) {
+                            bool = Boolean(classes[key]) && (classes[key] !== '0');
+                            el.classList.toggle(key, bool);
+                        }
+                    }
+                });
+            });
+        }
+    };
+
+    // Implementation for [data-mouseout-class="{ 'some-class' : 1|0 }"]
+    // Toggle classes based on mouse location
+    $cms.behaviors.mouseoutClass = {
+        attach: function (context) {
+            var els = $util.once($dom.$$$(context, '[data-mouseout-class]'), 'behavior.mouseoutClass');
+
+            els.forEach(function (el) {
+                $dom.on(el, 'mouseout', function mouseoutClass(e) {
+                    var classes = objVal($dom.data(el, 'mouseoutClass')), key, bool;
+
+                    if (!e.relatedTarget || !el.contains(e.relatedTarget)) {
+                        for (key in classes) {
+                            bool = Boolean(classes[key]) && (classes[key] !== '0');
+                            el.classList.toggle(key, bool);
+                        }
+                    }
+                });
+            });
         }
     };
 
@@ -279,7 +373,6 @@
             });
         }
     };
-
 
     // Implementation for [data-cms-select2]
     $cms.behaviors.select2Plugin = {
@@ -361,11 +454,74 @@
             els.forEach(function (el) {
                 var options = $dom.data(el, 'toggleableTray') || {};
 
+                /**
+                 * @type {$cms.views.ToggleableTray}
+                 */
                 $dom.data(el).toggleableTrayObject = new $cms.views.ToggleableTray(options, {el: el});
             });
         }
     };
+    
+    // Implementation for [data-textarea-auto-height]
+    $cms.behaviors.textareaAutoHeight = {
+        attach: function (context) {
+            if ($cms.isMobile()) {
+                return;
+            }
+            
+            var textareas = $util.once($dom.$$$(context, '[data-textarea-auto-height]'), 'behavior.textareaAutoHeight');
+            textareas.forEach(function (textarea) {
+                $cms.manageScrollHeight(textarea);
+                
+                $dom.on(textarea, 'click input change keyup keydown', function manageScrollHeight() {
+                    $cms.manageScrollHeight(textarea);
+                });
+            });
+        }
+    };
+    
+    var _invalidPatternCache = {};
+    // Implementation for [data-cms-invalid-pattern="...REGEX..."]
+    // Prevents input of matching characters
+    $cms.behaviors.cmsInvalidPattern = {
+        attach: function (context) {
+            var inputs = $util.once($dom.$$$(context, '[data-cms-invalid-pattern]'), 'behavior.cmsInvalidPattern');
+            
+            inputs.forEach(function (input) {
+                var pattern = input.dataset.cmsInvalidPattern, regex;
+                
+                regex = _invalidPatternCache[pattern] || (_invalidPatternCache[pattern] = new RegExp(pattern, 'g'));
 
+                $dom.on(input, 'input keydown keypress', function (e) {
+                    if (e.type === 'input') {
+                        if (input.value.length === 0) {
+                            input.value = ''; // value.length is also 0 if invalid value is entered for input[type=number] et al., clear that
+                        } else if (input.value.search(regex) !== -1) {
+                            input.value = input.value.replace(regex, '');
+                        }
+                    } else if ($dom.keyOutput(e, regex)) { // keydown/keypress event
+                        // pattern matched, prevent input
+                        e.preventDefault();
+                    }
+                });
+            });
+        }
+    };
+    
+    // Implementation for [data-cms-btn-go-back]
+    // Go back in browser history
+    $cms.behaviors.btnGoBack = {
+        attach: function (context) {
+            var btns = $util.once($dom.$$$(context, '[data-cms-btn-go-back]'), 'behavior.btnGoBack');
+            
+            btns.forEach(function (btn) {
+                $dom.on(btn, 'click', function () {
+                    window.history.back();
+                });
+            });
+        }
+    };
+    
     function convertTooltip(el) {
         var title = el.title;
 

@@ -1137,13 +1137,6 @@
                 // Show a confirmation dialog for clicks on a link (is higher up for priority)
                 'click [data-cms-confirm-click]': 'confirmClick',
 
-                'click [data-click-eval]': 'clickEval',
-
-                'click [data-click-alert]': 'showModalAlert',
-                'keypress [data-keypress-alert]': 'showModalAlert',
-
-                'keypress [data-submit-on-enter]': 'submitOnEnter',
-
                 // Prevent url change for clicks on anchor tags with a placeholder href
                 'click a[href$="#!"]': 'preventDefault',
                 // Prevent form submission for forms with a placeholder action
@@ -1156,10 +1149,6 @@
                 'click [data-cms-href]': 'cmsHref',
 
                 'click [data-click-forward]': 'clickForward',
-
-                // Toggle classes on mouseover/out
-                'mouseover [data-mouseover-class]': 'mouseoverClass',
-                'mouseout [data-mouseout-class]': 'mouseoutClass',
 
                 'click [data-click-toggle-checked]': 'clickToggleChecked',
 
@@ -1175,17 +1164,6 @@
                 // mod_security workaround
                 'submit form[data-submit-modsecurity-workaround]': 'submitModSecurityWorkaround',
 
-                // Prevents input of matching characters
-                'input input[data-cms-invalid-pattern]': 'invalidPattern',
-                'keydown input[data-cms-invalid-pattern]': 'invalidPattern',
-                'keypress input[data-cms-invalid-pattern]': 'invalidPattern',
-
-                'click textarea[data-textarea-auto-height]': 'doTextareaAutoHeight',
-                'input textarea[data-textarea-auto-height]': 'doTextareaAutoHeight',
-                'change textarea[data-textarea-auto-height]': 'doTextareaAutoHeight',
-                'keyup textarea[data-textarea-auto-height]': 'doTextareaAutoHeight',
-                'keydown textarea[data-textarea-auto-height]': 'doTextareaAutoHeight',
-
                 // Open page in overlay
                 'click [data-open-as-overlay]': 'openOverlay',
 
@@ -1193,9 +1171,6 @@
 
                 // Lightboxes
                 'click a[rel*="lightbox"]': 'lightBoxes',
-
-                // Go back in browser history
-                'click [data-cms-btn-go-back]': 'goBackInHistory',
 
                 'mouseover [data-mouseover-activate-tooltip]': 'mouseoverActivateTooltip',
                 'focus [data-focus-activate-tooltip]': 'focusActivateTooltip',
@@ -1205,8 +1180,6 @@
                 'click [data-cms-rich-tooltip]': 'activateRichTooltip',
                 'mouseover [data-cms-rich-tooltip]': 'activateRichTooltip',
                 'keypress [data-cms-rich-tooltip]': 'activateRichTooltip',
-
-                'change input[data-cms-unchecked-is-indeterminate]': 'uncheckedIsIndeterminate',
 
                 'click [data-click-ga-track]': 'gaTrackClick',
 
@@ -1311,29 +1284,6 @@
             });
         },
 
-        // Implementation for [data-click-eval="<code to eval>"]
-        clickEval: function (e, target) {
-            var code = strVal(target.dataset.clickEval);
-
-            if (code) {
-                window.eval.call(target, code);
-            }
-        },
-
-        // Implementation for [data-click-alert] and [data-keypress-alert]
-        showModalAlert: function (e, target) {
-            var options = objVal($dom.data(target, e.type + 'Alert'), {}, 'notice');
-            $cms.ui.alert(options.notice);
-        },
-
-        // Implementation for [data-submit-on-enter]
-        submitOnEnter: function submitOnEnter(e, input) {
-            if ($dom.keyPressed(e, 'Enter')) {
-                $dom.submit(input.form);
-                e.preventDefault();
-            }
-        },
-
         preventDefault: function (e) {
             e.preventDefault();
         },
@@ -1381,30 +1331,6 @@
             }
         },
 
-        // Implementation for [data-mouseover-class="{ 'some-class' : 1|0 }"]
-        mouseoverClass: function (e, target) {
-            var classes = objVal($dom.data(target, 'mouseoverClass')), key, bool;
-
-            if (!e.relatedTarget || !target.contains(e.relatedTarget)) {
-                for (key in classes) {
-                    bool = !!classes[key] && (classes[key] !== '0');
-                    target.classList.toggle(key, bool);
-                }
-            }
-        },
-
-        // Implementation for [data-mouseout-class="{ 'some-class' : 1|0 }"]
-        mouseoutClass: function (e, target) {
-            var classes = objVal($dom.data(target, 'mouseoutClass')), key, bool;
-
-            if (!e.relatedTarget || !target.contains(e.relatedTarget)) {
-                for (key in classes) {
-                    bool = !!classes[key] && (classes[key] !== '0');
-                    target.classList.toggle(key, bool);
-                }
-            }
-        },
-
         // Implementation for [data-click-toggle-checked]
         clickToggleChecked: function (e, target) {
             var selector = strVal(target.dataset.clickToggleChecked),
@@ -1444,35 +1370,6 @@
                 e.preventDefault();
                 $cms.form.modSecurityWorkaround(form);
             }
-        },
-
-        // Implementation for input[data-cms-invalid-pattern]
-        invalidPattern: function (e, input) {
-            var pattern = input.dataset.cmsInvalidPattern, regex;
-
-            this._invalidPatternCache || (this._invalidPatternCache = {});
-
-            regex = this._invalidPatternCache[pattern] || (this._invalidPatternCache[pattern] = new RegExp(pattern, 'g'));
-
-            if (e.type === 'input') {
-                if (input.value.length === 0) {
-                    input.value = ''; // value.length is also 0 if invalid value is entered for input[type=number] et al., clear that
-                } else if (input.value.search(regex) !== -1) {
-                    input.value = input.value.replace(regex, '');
-                }
-            } else if ($dom.keyOutput(e, regex)) { // keydown/keypress event
-                // pattern matched, prevent input
-                e.preventDefault();
-            }
-        },
-
-        // Implementation for textarea[data-textarea-auto-height]
-        doTextareaAutoHeight: function (e, textarea) {
-            if ($cms.isMobile()) {
-                return;
-            }
-
-            $cms.manageScrollHeight(textarea);
         },
 
         // Implementation for [data-open-as-overlay]
@@ -1519,11 +1416,6 @@
                 var hasFullButton = (el.firstElementChild === null) || (el.href !== el.firstElementChild.src);
                 $cms.ui.openImageIntoLightbox(el.href, ((el.cmsTooltipTitle !== undefined) ? el.cmsTooltipTitle : el.title), null, null, hasFullButton);
             }
-        },
-
-        // Implementation for [data-cms-btn-go-back]
-        goBackInHistory: function () {
-            window.history.back();
         },
 
         // Implementation for [data-mouseover-activate-tooltip]
@@ -1581,14 +1473,7 @@
                 $util.fatal('$cms.views.Global#activateRichTooltip(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
             }
         },
-
-        // Implementatioin for input[data-cms-unchecked-is-indeterminate]
-        uncheckedIsIndeterminate: function (e, input) {
-            if (!input.checked) {
-                input.indeterminate = true;
-            }
-        },
-
+        
         // Implementation for [data-click-ga-track]
         gaTrackClick: function (e, clicked) {
             var options = objVal($dom.data(clicked, 'clickGaTrack'));

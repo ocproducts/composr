@@ -497,20 +497,20 @@
     };
 
     /**
-     * @class { CmsDomData }
+     * @class { DomData }
      */
-    function CmsDomData() {}
+    function DomData() {}
 
     var domDataMap = new window.WeakMap();
     /**
      * @param el
-     * @return { CmsDomData }
+     * @return { DomData }
      */
     function dataCache(el) {
         // Check if the el object already has a cache
         var value = domDataMap.get(el), key;
         if (!value) { // If not, create one with the dataset
-            value = new CmsDomData();
+            value = new DomData();
             domDataMap.set(el, value);
             for (key in el.dataset) {
                 dataAttr(el, key);
@@ -554,7 +554,7 @@
      * @param el
      * @param [key]
      * @param [value]
-     * @returns {(CmsDomData|string|number)}
+     * @returns {(DomData|string|number)}
      */
     $dom.data = function data(el, key, value) {
         // Note: We have internalised caching here. You must not change data-* attributes manually and expect this API to pick up on it.
