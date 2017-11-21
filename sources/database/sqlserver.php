@@ -142,6 +142,7 @@ class Database_Static_sqlserver extends Database_super_sqlserver
 
             $pos = strpos($query, '(');
             $table_name = substr($query, 12, $pos - 13);
+
             $res2 = sqlsrv_query($db, 'SELECT MAX(IDENTITYCOL) AS v FROM ' . $table_name);
             $ar2 = sqlsrv_fetch_array($res2, SQLSRV_FETCH_ASSOC);
             return $ar2['v'];
