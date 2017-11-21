@@ -1196,7 +1196,7 @@ function _do_template($theme, $directory, $codename, $_codename, $lang, $suffix,
     $matches = array();
     if (!$GLOBALS['IN_MINIKERNEL_VERSION'] && ($GLOBALS['SEMI_DEV_MODE']) && ($suffix === '.tpl') && (preg_match('#<script[^>]*>.*<\/script>#is', $template_contents, $matches) > 0)) {
         if (strpos($matches[0], 'CSP_NONCE_HTML') === false) {
-            // attach_message(do_lang_tempcode('DO_NOT_USE_INLINE_SCRIPT_TAGS', escape_html($codename)), 'warn', false, true);  TODO: Salman, re-enable once INSTALLER_HTML_WRAP.tpl passes
+            // attach_message(do_lang_tempcode('DO_NOT_USE_INLINE_SCRIPT_TAGS', escape_html($codename)), 'warn', false, true);  TODO: Salman, re-enable once INSTALLER_HTML_WRAP.tpl passes #508
         }
     }
 

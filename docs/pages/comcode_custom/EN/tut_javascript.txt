@@ -1,1 +1,3 @@
 [title sub="Written by Salman Abbas (ocProducts)"]Composr Tutorial: JavaScript guide[/title]
+
+TODO: Salman will write tutorial #508

@@ -19,7 +19,7 @@
             $IMG_contract2 = '{$IMG;,1x/trays/contract2}';
 
 
-        // TODO: We have expcon and expcon2 theme images, for use during animation. Are we removing this? If so those theme images should be deleted fully.
+        // TODO: We have expcon and expcon2 theme images, for use during animation. Are we removing this? If so those theme images should be deleted fully. #508
 
         if ($util.isPlainObj(elOrOptions)) {
             options = elOrOptions;
@@ -1158,8 +1158,9 @@
             }
             buttonSet = newButtonSet;
 
-            if ((window.showModalDialog !== undefined) || $cms.configOption('js_overlays')) {
-                // @TODO: window.showModalDialog() was removed completely in Chrome 43, and Firefox 55. See WebKit bug 151885 for possible future removal from Safari.
+            if ((window.showModalDialog !== undefined) && $cms.configOption('js_overlays')) {
+                // NB: window.showModalDialog() was removed completely in Chrome 43, and Firefox 55. See WebKit bug 151885 for possible future removal from Safari.
+
                 if (buttonSet.length > 4) {
                     dialogHeight += 5 * (buttonSet.length - 4);
                 }

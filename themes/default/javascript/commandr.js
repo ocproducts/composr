@@ -299,5 +299,4 @@ window.previousCommands || (window.previousCommands = []);
             }
         }
     }
-
 }(window.$cms, window.$util, window.$dom));

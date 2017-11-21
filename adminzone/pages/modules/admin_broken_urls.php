@@ -52,7 +52,7 @@ class Module_admin_broken_urls
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
         return array(
-            'browse' => array('BROKEN_URLS', 'menu/adminzone/tools/cleanup'), // TODO new icon needed
+            'browse' => array('BROKEN_URLS', 'menu/adminzone/tools/cleanup'), // TODO new icon needed #2966
         );
     }
 

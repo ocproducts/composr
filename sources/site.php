@@ -876,7 +876,7 @@ function do_site()
         initialise_special_page_types($special_page_type);
     }
     $doing_special_page_type = ($special_page_type != 'view') && ($special_page_type != 'show_markers') && ($special_page_type != 'show_edit_links') && ($special_page_type != 'memory') && ((has_privilege(get_member(), 'view_profiling_modes')) || ($GLOBALS['IS_ACTUALLY_ADMIN']));
-    if (get_option('grow_template_meta_tree') == '1' || get_param_integer('keep_grow_template_meta_tree', 0) == 1) {
+    if (((get_option('grow_template_meta_tree') == '1') && (running_script('index'))) || (get_param_integer('keep_grow_template_meta_tree', 0) == 1)) {
         global $RECORD_TEMPLATES_USED;
         $RECORD_TEMPLATES_USED = true;
     }
