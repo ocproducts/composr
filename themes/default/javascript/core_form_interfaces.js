@@ -1613,7 +1613,7 @@
     }
 
     /**
-     * @TODO: NEEDS a description badly
+     * @TODO: NEEDS a description badly #508
      * @param setName
      * @param somethingRequired
      * @param defaultSet

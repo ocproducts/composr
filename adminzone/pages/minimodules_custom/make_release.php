@@ -162,7 +162,8 @@ function phase_1_pre()
         <li>Go through a full quick installer test install, and then through the full Setup Wizard</li>
         <li>Upgrading prep and testing:<ul>
             <li>Copy <kbd>data/files.dat</kbd> from the most recent past release to <kbd>data/files_previous.dat</kbd> in the new release (the hosted upgrade generator does this for upgrade TARs dynamically, but we want our main release to have the correct metadata also)</li>
-            <li>Write custom theme upgrading code into <kbd>sources/upgrade.php</kbd>. Make sure all ocProducts themes are up-to-date (CSS changes, template changes, theme image changes). TODO: Update this when Convertr done.</li>
+            <li>Make sure <kbd>upgrade.php</kbd> migration code is written.</li>
+            <li>Make sure any ocProducts themes are up-to-date (CSS changes, template changes, theme image changes).</li>
             <li>Test doing an upgrade from the prior version</li>
             <li>A good way to test that module/block/addon upgrade code is working as expected is to use the MySQL cleanup tool. It will say if tables/indices/privileges are not in the database as they are expected to be (assuming you already generated <kbd>db_meta.dat</kbd> via <kbd>data_custom/build_db_meta_file.php</kbd> on a clean install).</li>
         </ul></li>

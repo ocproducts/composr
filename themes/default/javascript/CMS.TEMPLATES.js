@@ -956,5 +956,4 @@
         hidden.value = checked ? '1' : '0';
         massDeleteForm.style.display = 'block';
     }
-
 }(window.$cms, window.$util, window.$dom));

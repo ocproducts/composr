@@ -1091,5 +1091,4 @@
 
         $dom.html(htmlSpot, html);
     }
-
 }(window.$cms, window.$util, window.$dom, (window.$editing || (window.$editing = {}))));

@@ -28,7 +28,7 @@
     //        }
     //    }
     //};
-    // TODO: Is this dead code? Is data-require-javascript in use or should be stripped? What's the purpose verses Tempcode method?
+    // TODO: Is this dead code? Is data-require-javascript in use or should be stripped? What's the purpose verses Tempcode method? #508
 
     // Implementation for [data-view]
     $cms.behaviors.initializeViews = {
@@ -411,5 +411,4 @@
             global.$cms.ui.deactivateTooltip(el);
         });
     }
-
 }(window.$cms, window.$util, window.$dom));

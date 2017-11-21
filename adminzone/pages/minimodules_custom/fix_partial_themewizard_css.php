@@ -19,7 +19,7 @@ It could fix CSS upgraded via diff, or just poor copy-and-pasting of code back f
 
 Take BACKUPs before running this.
 
-TODO: Merge into ":theme_debug" #600
+TODO: Merge into ":theme_debug" #3361
 */
 
 $title = get_screen_title('Themewizard theme repair', false);

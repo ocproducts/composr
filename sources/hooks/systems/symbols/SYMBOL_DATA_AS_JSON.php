@@ -36,7 +36,7 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
         require_code('global2');
         require_code('symbols');
 
-        // TODO: As stuff is removed from here, re-review the symbols.php/symbols2.php split to ensure it doesn't load symbols2.php on a typical page request yet symbols.php is minimal
+        // TODO: As stuff is removed from here, re-review the symbols.php/symbols2.php split to ensure it doesn't load symbols2.php on a typical page request yet symbols.php is minimal #508
 
         $lang = user_lang();
         $value = array(

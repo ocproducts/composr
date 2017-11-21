@@ -83,37 +83,31 @@ However, it is useful for us to document the strings involved, and an illustrati
 |-
 | [tt]date_concise_near_date[/tt]
 ([tt]global[/tt] language file)
-| A date in concise long-form ~ within year
+| A date ~ within year
 | [tt]%e %b[/tt] (e.g. 14 Feb)
 | [tt]%b %e[/tt] (e.g. Feb 14)
 |-
 | [tt]date_no_year[/tt]
 ([tt]global[/tt] language file)
-| A date in verbose long-form ~ within year
+| A date ~ within year
 | [tt]%e%o %B %Y[/tt] (e.g. 14th February)
 | [tt]%B %e%o %Y[/tt] (e.g. February 14th)
 |-
-| [tt]date_regular_date[/tt]
+| [tt]date_date[/tt]
 ([tt]global[/tt] language file)
-| A date in regular long-form
+| A date
 | [tt]%e%o %B %Y[/tt] (e.g. 14th February 2017)
 | [tt]%B %e%o %Y[/tt] (e.g. February 14th 2017)
 |-
-| [tt]date_verbose_date[/tt]
-([tt]global[/tt] language file)
-| A date in verbose long-form
-| [tt]%a %e%o %B %Y[/tt] (e.g. Mon 14th February 2017)
-| [tt]%a %B %e%o %Y[/tt] (e.g. Mon February 14th 2017)
-|-
 | [tt]calendar_date[/tt]
 ([tt]calendar[/tt] language file)
-| A date in short-form (calendar-only)
+| A date in conciser form (calendar-only)
 | [tt]%d-%m-%Y[/tt] (e.g. 14-02-2017)
 | [tt]%m-%d-%Y[/tt] (e.g. 02-14-2017)
 |-
 | [tt]calendar_date_verbose[/tt]
 ([tt]calendar[/tt] language file)
-| A date in verbose long-form (calendar-only)
+| A date in verboser form (calendar-only)
 | [tt]%a %e%o %B %Y[/tt] (e.g. Mon 14th February 2017)
 | [tt]%a %B %e%o %Y[/tt] (e.g. Mon February 14th 2017)
 |-
@@ -123,7 +117,6 @@ However, it is useful for us to document the strings involved, and an illustrati
 | [tt]%a %e%o[/tt] (e.g. Mon 14th)
 | [tt]%a %e%o[/tt] (e.g. Mon 14th)
 |}
-[staff_note]TODO: Update for v11; verbose gone, regular name shortened[/staff_note]
 
 Non-English speaking users may want to make other changes, e.g. remove [tt]%o[/tt] so that suffixes like [tt]th[/tt] and [tt]st[/tt] aren't used.
 
