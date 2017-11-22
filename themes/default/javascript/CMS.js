@@ -157,14 +157,7 @@
             return $cms.getBaseUrl();
         }
 
-        var url = $util.url(relativeUrl).toString();
-
-        if (window.location.protocol === 'https:') {
-            // Match protocol with the current page if using SSL
-            url = url.replace(/^http\:/, 'https:');
-        }
-
-        return url;
+        return $util.url(relativeUrl).toString();
     };
     /**
      * @memberof $cms

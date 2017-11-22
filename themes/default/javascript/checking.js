@@ -25,10 +25,10 @@
         errorMsg = strVal(errorMsg);
         
         if (theElement.name !== undefined) {
-            var id = theElement.name,
-                errorMsgElement = getErrorMsgElement(id);
+            var name = theElement.name,
+                errorMsgElement = getErrorMsgElement(name);
             
-            if ((errorMsg === '') && (id.includes('_hour')) || (id.includes('_minute'))) { // Do not blank out as day/month/year (which comes first) would have already done it
+            if ((errorMsg === '') && (name.includes('_hour')) || (name.includes('_minute'))) { // Do not blank out as day/month/year (which comes first) would have already done it
                 return;
             }
             
@@ -38,7 +38,7 @@
 
                 // Changed error message
                 if ($dom.html(errorMsgElement) !== $cms.filter.html(errorMsg)) {
-                    $dom.html(errorMsgElement, '');
+                    $dom.empty(errorMsgElement);
                     if (errorMsg !== '') {// If there actually an error
                         theElement.setAttribute('aria-invalid', 'true');
 
@@ -85,6 +85,7 @@
 
     /**
      * Whether all Plupload file uploads are complete
+     * @memberof $cms.form
      * @param form
      * @return {boolean}
      */

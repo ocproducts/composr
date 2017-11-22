@@ -270,8 +270,7 @@
     $util.isPromise = function isPromise(obj) {
         return (obj != null) && (typeof obj === 'object') && (typeof obj.then === 'function');
     };
-
-
+    
     /**
      * Used to execute a series promises one after another, in a sequence.
      * @see https://pouchdb.com/2015/05/18/we-have-a-problem-with-promises.html
@@ -324,7 +323,7 @@
     /**
      * Returns the node type
      * @param obj
-     * @returns {boolean|*}
+     * @returns {boolean|number}
      */
     $util.nodeType = function nodeType(obj) {
         return $util.isObj(obj) && (typeof obj.nodeName === 'string') && (typeof obj.nodeType === 'number') && obj.nodeType;
