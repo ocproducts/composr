@@ -72,8 +72,8 @@ class Database_Static_sqlserver_odbc extends Database_super_sqlserver
             critical_error('PASSON', $error);
         }
 
-        $db = $persistent ? @odbc_pconnect($dsn, $db_user, $db_password) : @odbc_connect($dsn, $db_user, $db_password);
-        if ($db === false) {
+        $connection = $persistent ? @odbc_pconnect($dsn, $db_user, $db_password) : @odbc_connect($dsn, $db_user, $db_password);
+        if ($connection === false) {
             $error = 'Could not connect to database-server (' . odbc_errormsg() . ')';
             if ($fail_ok) {
                 echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
@@ -82,10 +82,10 @@ class Database_Static_sqlserver_odbc extends Database_super_sqlserver
             critical_error('PASSON', $error);
         }
 
-        odbc_exec($db, 'SET TEXTSIZE 300000');
+        odbc_exec($connection, 'SET TEXTSIZE 300000');
 
-        $this->cache_db[$db_name][$db_host] = $db;
-        return $db;
+        $this->cache_db[$db_name][$db_host] = $connection;
+        return $connection;
     }
 
     /**
@@ -112,7 +112,9 @@ class Database_Static_sqlserver_odbc extends Database_super_sqlserver
         if (($results === false) && (strtoupper(substr($query, 0, 12)) == 'INSERT INTO ') && ((strpos($query, '(id, ') !== false) || (strpos($query, '(_id, ') !== false))) {
             $pos = strpos($query, '(');
             $table_name = substr($query, 12, $pos - 13);
-            $results = @odbc_exec($connection, 'SET IDENTITY_INSERT ' . $table_name . ' ON; ' . $query);
+            if ((!multi_lang_content()) || (substr($table_name, -strlen('translate')) != 'translate')) {
+                $results = @odbc_exec($connection, 'SET IDENTITY_INSERT ' . $table_name . ' ON; ' . $query);
+            }
         }
         if ((($results === false) || (((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) && ($results === true))) && (!$fail_ok)) {
             $err = odbc_errormsg($connection);
@@ -132,7 +134,7 @@ class Database_Static_sqlserver_odbc extends Database_super_sqlserver
         }
 
         $sub = substr(ltrim($query), 0, 4);
-        if (($results !== true) && (($sub === '(SEL') || ($sub === 'SELE') || ($sub === 'sele') || ($sub === 'CHEC') || ($sub === 'EXPL') || ($sub === 'REPA') || ($sub === 'DESC') || ($sub === 'SHOW')) && ($results !== false)) {
+        if (((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) && ($results !== false) && ($results !== true)) {
             return $this->db_get_query_rows($results, $query, $start);
         }
 
