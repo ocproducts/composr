@@ -81,6 +81,8 @@ class Database_Static_sqlserver extends Database_super_sqlserver
             critical_error('PASSON', $error); //warn_exit(do_lang_tempcode('CONNECT_DB_ERROR'));
         }
 
+        sqlsrv_query($db, 'SET TEXTSIZE 300000');
+
         $this->cache_db[$db_name][$db_host] = $db;
         return $db;
     }

@@ -124,7 +124,9 @@ class Database_Static_sqlserver_odbc extends Database_super_sqlserver
         if (($results === false) && (strtoupper(substr($query, 0, 12)) == 'INSERT INTO ') && ((strpos($query, '(id, ') !== false) || (strpos($query, '(_id, ') !== false))) {
             $pos = strpos($query, '(');
             $table_name = substr($query, 12, $pos - 13);
-            $results = @odbc_exec($db, 'SET IDENTITY_INSERT ' . $table_name . ' ON; ' . $query);
+            if ((!multi_lang_content()) || (substr($table_name, -strlen('translate')) != 'translate')) {
+                $results = @odbc_exec($db, 'SET IDENTITY_INSERT ' . $table_name . ' ON; ' . $query);
+            }
         }
         if ((($results === false) || (((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) && ($results === true))) && (!$fail_ok)) {
             $err = preg_replace('#[[:^print:]].*$#'/*error messages don't come through cleanly https://bugs.php.net/bug.php?id=73448*/, '', odbc_errormsg($db));
