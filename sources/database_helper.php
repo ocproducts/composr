@@ -348,7 +348,7 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
         }
 
         $queries = $GLOBALS['DB_STATIC_OBJECT']->create_index($this_ref->table_prefix . $table_name, $index_name, $_fields, $this_ref->connection_write, $table_name, $unique_key_fields, $this_ref->get_table_prefix());
-        foreach ($queries as $sql) {
+        foreach ($queries as $i => $sql) {
             $GLOBALS['DB_STATIC_OBJECT']->query($sql, $this_ref->connection_write, null, 0, $is_full_text/*May fail on database backends that don't cleanup full-text well when dropping tables*/);
         }
     }

@@ -345,7 +345,7 @@ function db_map_restrict($row, $fields)
  *
  * @param  string $field The field identifier
  * @param  string $type The type wanted
- * @set CHAR INT
+ * @set CHAR INT FLOAT
  * @return string The database type
  */
 function db_cast($field, $type)
@@ -668,7 +668,7 @@ class DatabaseDriver
      *
      * @param  string $field The field identifier
      * @param  string $type The type wanted
-     * @set CHAR INT
+     * @set CHAR INT FLOAT
      * @return string The database type
      */
     public function cast($field, $type)
@@ -680,6 +680,7 @@ class DatabaseDriver
         switch ($type) {
             case 'CHAR':
             case 'INT':
+            case 'FLOAT':
                 $_type = $type;
                 break;
 
@@ -841,25 +842,15 @@ class DatabaseDriver
      * Note that AVG may return an integer or float, depending on whether the DB engine auto-converts round numbers to integers. MySQL seems to.
      *
      * @param  string $function Function name
-     * @set CONCAT REPLACE SUBSTR LENGTH RAND COALESCE LEAST GREATEST MOD GROUP_CONCAT
+     * @set CONCAT REPLACE SUBSTR LENGTH RAND COALESCE LEAST GREATEST MOD GROUP_CONCAT X_ORDER_BY_BOOLEAN
      * @param  array $args List of string arguments, assumed already quoted/escaped correctly for the particular database
      * @return string SQL fragment
      */
     public function db_function($function, $args = array())
     {
+        $args = @array_map('strval', $args);
+
         switch ($function) {
-            case 'CONCAT':
-                switch (get_db_type()) {
-                    // Supported on most
-
-                    case 'sqlite':
-                        return implode(' || ', $args);
-
-                    case 'access':
-                        return implode(' & ', $args);
-                }
-                break;
-
             case 'REPLACE':
                 if (count($args) != 3) {
                     fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
@@ -879,12 +870,8 @@ class DatabaseDriver
                 }
                 switch (get_db_type()) {
                     case 'sqlserver':
+                    case 'sqlserver_odbc':
                         $function = 'SUBSTRING'; // http://troels.arvin.dk/db/rdbms/#functions-REPLACE
-                        break;
-
-                    case 'access':
-                        $function = 'LEFT'; // http://stackoverflow.com/questions/809120/is-there-an-equivalent-to-the-substring-function-in-ms-access-sql
-                        $args = array($args[0], $args[2]);
                         break;
                 }
                 break;
@@ -895,7 +882,7 @@ class DatabaseDriver
                 }
                 switch (get_db_type()) {
                     case 'sqlserver':
-                    case 'access':
+                    case 'sqlserver_odbc':
                         $function = 'LEN';
                         break;
                 }
@@ -907,7 +894,6 @@ class DatabaseDriver
                 }
                 switch (get_db_type()) {
                     case 'postgresql':
-                    case 'sqlite':
                         $function = 'RANDOM';
                         break;
                 }
@@ -918,47 +904,48 @@ class DatabaseDriver
                     fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
                 }
                 switch (get_db_type()) {
-                    case 'access':
-                        $function = 'IIF';
-                        $args[0] .= ' IS NULL';
-                        break;
+                    default:
+                        $all_null = true;
+                        foreach ($args as $arg) {
+                            if ($arg != 'NULL') {
+                                $all_null = false;
+                                break;
+                            }
+                        }
+                        if ($all_null) {
+                            return 'NULL';
+                        }
                 }
                 break;
 
             case 'LEAST':
                 switch (get_db_type()) {
-                    case 'sqlite':
-                        $function = 'MIN';
-                        break;
                     case 'sqlserver':
-                    case 'access':
+                    case 'sqlserver_odbc':
                         $ret = '(SELECT MIN(X) FROM (';
                         foreach ($args as $i => $arg) {
                             if ($i != 0) {
                                 $ret .= ' UNION ALL ';
                             }
-                            $ret .= 'SELECT ' . $args[0] . ' AS X';
+                            $ret .= 'SELECT ' . $arg . ' AS X';
                         }
-                        $ret .= '))';
+                        $ret .= ') ' . 'x' . md5(uniqid('', true)) . ')';
                         return $ret;
                 }
                 break;
 
             case 'GREATEST':
                 switch (get_db_type()) {
-                    case 'sqlite':
-                        $function = 'MAX';
-                        break;
                     case 'sqlserver':
-                    case 'access':
+                    case 'sqlserver_odbc':
                         $ret = '(SELECT MAX(X) FROM (';
                         foreach ($args as $i => $arg) {
                             if ($i != 0) {
                                 $ret .= ' UNION ALL ';
                             }
-                            $ret .= 'SELECT ' . $args[0] . ' AS X';
+                            $ret .= 'SELECT ' . $arg . ' AS X';
                         }
-                        $ret .= '))';
+                        $ret .= ') ' . 'x' . md5(uniqid('', true)) . ')';
                         return $ret;
                 }
                 break;
@@ -968,11 +955,9 @@ class DatabaseDriver
                     fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
                 }
                 switch (get_db_type()) {
-                    case 'access':
-                        return $args[0] . ' MOD ' . $args[1];
                     case 'postgresql':
                     case 'sqlserver':
-                    case 'sqlite':
+                    case 'sqlserver_odbc':
                         return $args[0] . ' % ' . $args[1];
                 }
                 break;
@@ -987,20 +972,30 @@ class DatabaseDriver
                         return 'SELECT LISTAGG(' . $args[0] . ', \',\') WITHIN GROUP (ORDER BY ' . $args[0] . ') FROM ' . $args[1];
                     case 'postgresql':
                         return 'SELECT array_to_string(array_agg(' . $args[0] . '), \',\') FROM ' . $args[1];
-                    case 'sql_server':
+                    case 'sqlserver':
                         return 'STUFF((SELECT \',\'+' . $args[0] . ' FROM ' . $args[1] . ' FOR XML PATH(\'\')), 1, 1, \'\')';
-                    case 'access': // Not fully supported
-                        return 'SELECT TOP 1 ' . $args[0] . ' FROM ' . $args[1];
                     case 'ibm': // Not fully supported
                         return 'SELECT ' . $args[0] . ' FROM ' . $args[1] . ' fetch first 1 rows only';
                     case 'xml':
                         return 'SELECT X_GROUP_CONCAT(' . $args[0] . ') FROM ' . $args[1];
                     case 'mysql':
                     case 'mysqli':
-                    case 'mysql_dbx':
-                    case 'sqlite':
                     default:
                         return 'SELECT GROUP_CONCAT(' . $args[0] . ') FROM ' . $args[1];
+                }
+                break;
+
+            case 'X_ORDER_BY_BOOLEAN':
+                if (count($args) != 1) {
+                    fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+                }
+                switch (get_db_type()) {
+                    case 'sqlserver':
+                    case 'sqlserver_odbc':
+                        return '(CASE WHEN ' . $args[0] . ' THEN 0 ELSE 1 END)';
+
+                    default:
+                        return $args[0];
                 }
                 break;
         }
@@ -1434,7 +1429,7 @@ class DatabaseConnector
     public function query($query, $max = null, $start = 0, $fail_ok = false, $skip_safety_check = false, $lang_fields = null, $field_prefix = '')
     {
         global $DEV_MODE;
-        if (!$skip_safety_check && stripos($query, 'union') !== false) {
+        if (!$skip_safety_check && stripos($query, 'union') !== false && strpos(get_db_type(), 'mysql') !== false) {
             $_query = preg_replace('#\s#', ' ', strtolower($query));
             $queries = 1;//substr_count($_query, 'insert into ') + substr_count($_query, 'replace into ') + substr_count($_query, 'update ') + substr_count($_query, 'select ') + substr_count($_query, 'delete from '); Not reliable
             if ((strpos(preg_replace('#\'[^\']*\'#', '\'\'', str_replace('\\\'', '', $_query)), ' union ') !== false) || ($queries > 1)) {
@@ -2233,12 +2228,12 @@ class DatabaseConnector
      * @param  ID_TEXT $table_name The table name
      * @param  ID_TEXT $index_name The index name
      * @param  array $fields The fields
-     * @param  ID_TEXT $unique_key_field The name of the unique key field for the table
+     * @param  ?string $unique_key_fields Comma-separated names of the unique key field for the table (null: lookup)
      */
-    public function create_index($table_name, $index_name, $fields, $unique_key_field = 'id')
+    public function create_index($table_name, $index_name, $fields, $unique_key_fields = null)
     {
         require_code('database_helper');
-        _helper_create_index($this, $table_name, $index_name, $fields, $unique_key_field);
+        _helper_create_index($this, $table_name, $index_name, $fields, $unique_key_fields);
     }
 
     /**
@@ -2251,6 +2246,26 @@ class DatabaseConnector
     {
         require_code('database_helper');
         _helper_delete_index_if_exists($this, $table_name, $index_name);
+    }
+
+    /**
+     * Start a transaction.
+     */
+    public function start_transaction()
+    {
+        if (method_exists($this->static_ob, 'db_start_transaction')) {
+            $this->static_ob->start_transaction($this->connection_write);
+        }
+    }
+
+    /**
+     * End a transaction.
+     */
+    public function end_transaction()
+    {
+        if (method_exists($this->static_ob, 'db_end_transaction')) {
+            $this->static_ob->end_transaction($this->connection_write);
+        }
     }
 
     /**

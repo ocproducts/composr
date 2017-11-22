@@ -11,6 +11,7 @@ Postgres is a very high quality Open Source database backend developed by develo
 [title="2"]What is and is not supported[/title]
 
 The following parts of our ecosystem are MySQL-specific:
+ - Automatic database creation when installing, if installing using a MySQL admin account
  - Some non-bundled addons marked as requiring MySQL (at the time of writing nothing significant)
  - Certain esoteric performance optimisations for certain cases of large amounts of data are only for MySQL (the MySQL support is heavily optimised for a wide range of high load scenarios; similar Postgres optimisations will be made as client requirements come up)
  - Commandr-fs feature for listing when tables were last updated is only for MySQL (other database backends tend to not provide last-updated timestamps for tables)
@@ -24,10 +25,11 @@ The following parts of our ecosystem are MySQL-specific:
  - Laxness modes designed to help ensure amateur Composr developers write or port code without knowing too much about database portability (MySQL is the only database backend that has non-strictness, and in other cases we are just doing some niceties to smooth things over when developers assume MySQL)
 Nothing in the above list is likely to be of concern for the vast majority of Composr users who also who would want to use Postgres.
 
-The following parts of our ecosystem are only supported on MySQL and Postgres (at the time of writing):
- - Commandr [tt]db_table_sizes[/tt] command
+The following parts of our ecosystem are supported by MySQL and Postgres (and possibly some other database drivers, but not all):
  - Showing database server version on the PHP-Info page
- - Full-text search (actually we have an SQL Server implementation too)
+ - Commandr [tt]db_table_sizes[/tt] command
+ - Full-text search
+ - Proper Unicode support (so full-text search will search using knowledge of Unicode characters, so sorting will, and maximum column lengths will be based on character length)
 
 Third-parties may write code that assumes (intentionally or not) MySQL, so don't assume any third party code is going to work without putting it through testing.
 
@@ -157,6 +159,7 @@ The main complexities of Postgres support, for MySQL developers are:
  - http://dbeaver.jkiss.org/ (a free cross-platform Postgres GUI)
  - http://squirrel-sql.sourceforge.net/ (a free cross-platform Postgres GUI)
  - [page="_SEARCH:tut_sql"]Manually editing your database with phpMyAdmin[/page]
+ - [page="_SEARCH:sup_sqlserver"]Using SQL Server with Composr[/page]
  - http://troels.arvin.dk/db/rdbms/ (a comparison of SQL support in different databases)
 
 {$SET,tutorial_tags,core_database_drivers,Installation,expert}{$SET,tutorial_add_date,May 2017}{$SET,tutorial_summary,A guide on using PostgreSQL with Composr, and providing some information relevant to other non-MySQL backends.}[block]main_tutorial_rating[/block]

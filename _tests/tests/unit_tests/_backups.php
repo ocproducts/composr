@@ -78,7 +78,11 @@ $SITE_INFO[\'multi_lang_content\'] = \'' . addslashes($SITE_INFO['multi_lang_con
         for ($i = 0; $i < 2; $i++) {
             $test = cms_http_request(get_base_url() . '/exports/backups/test/restore.php?time_limit=1000', array('trigger_error' => false, 'post_params' => array(), 'timeout' => 100.0));
             $success = (strpos($test->data, do_lang('backups:BACKUP_RESTORE_SUCCESS')) !== false);
-            $this->assertTrue($success, 'Failed to run restorer script on iteration ' . strval($i + 1) . ' [' . $test->data . ']; to debug manually run exports/backups/test/restore.php?time_limit=1000');
+            $message = 'Failed to run restorer script on iteration ' . strval($i + 1) . ' [' . $test->data . ']; to debug manually run exports/backups/test/restore.php?time_limit=1000';
+            if (strpos(get_db_type(), 'odbc') !== false) {
+                $message .= '. Ensure that an ODBC connection has been added for cms_backup_test (we have auto-created the database itself)';
+            }
+            $this->assertTrue($success, $message);
             if (!$success) {
                 return;
             }

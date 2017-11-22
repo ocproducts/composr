@@ -113,7 +113,9 @@ class Hook_addon_registry_core_database_drivers
             'sources/database/postgresql.php',
             'sources/database/xml.php',
             'sources/database/shared/mysql.php',
+            'sources/database/shared/sqlserver.php',
             'sources/database/sqlserver.php',
+            'sources/database/sqlserver_odbc.php',
             'sources/hooks/systems/cron/oracle.php',
         );
     }

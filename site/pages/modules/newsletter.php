@@ -195,7 +195,7 @@ class Module_newsletter
             $GLOBALS['SITE_DB']->delete_table_field('newsletter_subscribe', 'the_level');
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 12)) {
+        if (($upgrade_from === null) || ($upgrade_from < 12)) {
             $GLOBALS['SITE_DB']->create_index('newsletter_subscribers', 'email', array('email'));
         }
     }

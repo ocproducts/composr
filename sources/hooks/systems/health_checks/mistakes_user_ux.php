@@ -96,7 +96,7 @@ class Hook_health_check_mistakes_user_ux extends Hook_Health_Check
                 return;
             }
 
-            //$url = preg_replace('#(://.*)/.*$#U', '$1/uploads/index.html', $this->get_page_url(':'));
+            //$url = preg_replace('#(://.*)/.*$#U', '$1/data/empty.php', $this->get_page_url(':'));
             if ($zone == '') {
                 $url = $this->get_page_url($zone . ':privacy');
             } else {

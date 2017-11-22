@@ -1,7 +1,6 @@
 (function ($cms, $util, $dom) {
     'use strict';
     
-    // This is from the v10.1 branch, merged into the new JS framework...
     $dom.ready.then(function () {
         var addressFields = ['street_address', 'city', 'county', 'state', 'post_code', 'country'];
         for (var i = 0; i < addressFields.length; i++) {

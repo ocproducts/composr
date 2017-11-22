@@ -157,7 +157,8 @@ if ($minor != '') {
 }
 $CHMOD_ARRAY = get_chmod_array($INSTALL_LANG);
 
-$password_prompt = new Tempcode();
+global $PASSWORD_PROMPT;
+$PASSWORD_PROMPT = new Tempcode();
 
 if (!array_key_exists('step', $_GET)) {
     $_GET['step'] = '1';
@@ -181,7 +182,7 @@ if (intval($_GET['step']) == 4) { // Define settings
     if ($forum_type == 'none') {
         $username = 'admin';
     }
-    $password_prompt = do_lang_tempcode('CONFIRM_MASTER_PASSWORD');
+    $PASSWORD_PROMPT = do_lang_tempcode('CONFIRM_MASTER_PASSWORD');
 }
 
 if (intval($_GET['step']) == 5) {
@@ -223,7 +224,7 @@ $out_final = do_template('INSTALLER_HTML_WRAP', array(
     '_GUID' => '29aa056c05fa360b72dbb01c46608c4b',
     'CSS_NOCACHE' => $css_nocache,
     'DEFAULT_FORUM' => $DEFAULT_FORUM,
-    'PASSWORD_PROMPT' => $password_prompt,
+    'PASSWORD_PROMPT' => $PASSWORD_PROMPT,
     'CSS_URL' => $css_url,
     'CSS_URL_2' => $css_url_2,
     'LOGO_URL' => $logo_url,
@@ -656,7 +657,10 @@ function step_3()
         if (($database == 'postgresql') && (!function_exists('pg_connect'))) {
             continue;
         }
-        if (($database == 'sqlserver') && (!function_exists('mssql_connect')) && (!function_exists('sqlsrv_connect'))) {
+        if (($database == 'sqlserver') && (!function_exists('sqlsrv_connect'))) {
+            continue;
+        }
+        if (($database == 'sqlserver_odbc') && (!function_exists('odbc_connect'))) {
             continue;
         }
 
@@ -1070,7 +1074,7 @@ function step_4()
 
     $hidden = build_keep_post_fields();
 
-    global $password_prompt;
+    global $PASSWORD_PROMPT;
     return do_template('INSTALLER_STEP_4', array(
         '_GUID' => '73c3ac0a7108709b74b2e89cae30be12',
         'URL' => $url,
@@ -1082,7 +1086,7 @@ function step_4()
         'BOARD_PATH' => $board_path,
         'SECTIONS' => $sections,
         'MAX' => strval(post_param_integer('max', 1000)),
-        'PASSWORD_PROMPT' => $password_prompt,
+        'PASSWORD_PROMPT' => $PASSWORD_PROMPT,
     ));
 }
 
@@ -1224,7 +1228,7 @@ function step_5()
             $hidden = build_keep_post_fields();
             $hidden->attach(form_input_hidden('confirm', '1'));
 
-            global $password_prompt;
+            global $PASSWORD_PROMPT;
             return do_template('INSTALLER_STEP_4', array(
                 '_GUID' => 'aaf0386966dd4b75c8027a6b1f7454c6',
                 'URL' => $url,
@@ -1235,7 +1239,7 @@ function step_5()
                 'FORUM_TYPE' => post_param_string('forum_type'),
                 'BOARD_PATH' => post_param_string('board_path'),
                 'SECTIONS' => $sections,
-                'PASSWORD_PROMPT' => $password_prompt,
+                'PASSWORD_PROMPT' => $PASSWORD_PROMPT,
             ));
         }
     }
@@ -1947,7 +1951,7 @@ function step_5_core()
     $GLOBALS['SITE_DB']->create_index('db_meta', 'findtransfields', array('m_type'));
 
     $GLOBALS['SITE_DB']->drop_table_if_exists('translate');
-    $GLOBALS['SITE_DB']->create_table('translate', array(
+    $fields = array(
         'id' => '*AUTO',
         'language' => '*LANGUAGE_NAME',
         'importance_level' => 'SHORT_INTEGER',
@@ -1955,7 +1959,13 @@ function step_5_core()
         'text_parsed' => 'LONG_TEXT',
         'broken' => 'BINARY',
         'source_user' => 'MEMBER',
-    ));
+    );
+    if (strpos(get_db_type(), 'sqlserver') !== false) { // Full-text search requires a single key
+        $fields['_id'] = '*AUTO';
+        $fields['id'] = 'AUTO_LINK';
+        $fields['language'] = 'LANGUAGE_NAME';
+    }
+    $GLOBALS['SITE_DB']->create_table('translate', $fields);
     $GLOBALS['SITE_DB']->create_index('translate', '#tsearch', array('text_original'));
     $GLOBALS['SITE_DB']->create_index('translate', 'importance_level', array('importance_level'));
     if (substr(get_db_type(), 0, 5) == 'mysql') {
@@ -2889,7 +2899,7 @@ function get_dir_contents($dir, $php = false)
     $_dir = @opendir($dir);
     if ($_dir !== false) {
         while (false !== ($file = readdir($_dir))) {
-            if (($file != 'index.php') && ($file != '.htaccess') && ($file != '.') && ($file != '..')) {
+            if (($file != 'index.php') && ($file != '.htaccess') && ($file[0] != '.')) {
                 if ($php) {
                     if (strtolower(substr($file, -4, 4)) == '.php') {
                         $file2 = substr($file, 0, strlen($file) - 4);
