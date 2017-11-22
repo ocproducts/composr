@@ -187,6 +187,32 @@
         }
     };
 
+    // Implementation for [data-click-pd]
+    // Prevent-default for JS-activated elements (which may have noscript fallbacks as default actions)
+    $cms.behaviors.onclickPreventDefault = {
+        attach: function (context) {
+            var els = $util.once($dom.$$$(context, '[data-click-pd]'), 'behavior.onclickPreventDefault');
+            els.forEach(function (el) {
+                $dom.on(el, 'click', function (e) {
+                    e.preventDefault();
+                });
+            });
+        }
+    };
+
+    // Implementation for [data-submit-pd]
+    // Prevent-default for JS-activated elements (which may have noscript fallbacks as default actions)
+    $cms.behaviors.onsubmitPreventDefault = {
+        attach: function (context) {
+            var forms = $util.once($dom.$$$(context, '[data-submit-pd]'), 'behavior.onsubmitPreventDefault');
+            forms.forEach(function (form) {
+                $dom.on(form, 'submit', function (e) {
+                    e.preventDefault();
+                });
+            });
+        }
+    };
+
     // Implementation for input[data-cms-unchecked-is-indeterminate]
     $cms.behaviors.uncheckedIsIndeterminate = {
         attach: function (context) {

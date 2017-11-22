@@ -1132,14 +1132,6 @@
     $util.inherits($cms.views.Global, $cms.View, /**@lends $cms.views.Global#*/{
         events: function () {
             return {
-                // Prevent url change for clicks on anchor tags with a placeholder href
-                'click a[href$="#!"]': 'preventDefault',
-                // Prevent form submission for forms with a placeholder action
-                'submit form[action$="#!"]': 'preventDefault',
-                // Prevent-default for JS-activated elements (which may have noscript fallbacks as default actions)
-                'click [data-click-pd]': 'clickPreventDefault',
-                'submit [data-submit-pd]': 'submitPreventDefault',
-
                 /* Footer links */
                 'click .js-global-click-load-software-chat': 'loadSoftwareChat',
 
@@ -1151,24 +1143,6 @@
 
                 'click .js-global-click-load-commandr': 'loadCommandr'
             };
-        },
-
-        preventDefault: function (e) {
-            e.preventDefault();
-        },
-
-        // Implementation for [data-click-pd]
-        clickPreventDefault: function (e, el) {
-            if (el.dataset.clickPd !== '0') {
-                e.preventDefault();
-            }
-        },
-
-        // Implementation for [data-submit-pd]
-        submitPreventDefault: function (e, form) {
-            if (form.dataset.submitPd !== '0') {
-                e.preventDefault();
-            }
         },
         
         // Detecting of JavaScript support

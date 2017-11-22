@@ -45,13 +45,22 @@
 
         $dom.elementsLoaded.set(loadedEl, hasLoaded);
     }
-    
+
+    // Prevent url change for clicks on anchor tags with a placeholder href
     window.addEventListener('click', function (e) {
-        if (e.target && (e.target.localName === 'a') && (e.target.getAttribute('href') === '#!')) {
+        var anchor = e.target;
+        
+        // A child elemenet within an <a> element might've been clicked
+        while ((anchor.localName !== 'a') && anchor.parentElement) {
+            anchor = anchor.parentElement;
+        }
+        
+        if ((anchor.localName === 'a') && (anchor.getAttribute('href') === '#!')) {
             e.preventDefault();
         }
     }, /*useCapture*/true);
 
+    // Prevent form submission for forms with a placeholder action
     window.addEventListener('submit', function (e) {
         if (e.target && (e.target.localName === 'form') && (e.target.getAttribute('action') === '#!')) {
             e.preventDefault();
