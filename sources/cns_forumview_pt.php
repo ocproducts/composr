@@ -47,14 +47,14 @@ function cns_get_private_topics($start = 0, $true_start = 0, $max = null, $sql_s
     $where = '(t_pt_from=' . strval($member_id) . ' OR t_pt_to=' . strval($member_id) . ') AND t_forum_id IS NULL';
     $filter = get_param_string('category', '');
     $where .= ' AND (' . db_string_equal_to('t_pt_from_category', $filter) . ' AND t_pt_from=' . strval($member_id) . ' OR ' . db_string_equal_to('t_pt_to_category', $filter) . ' AND t_pt_to=' . strval($member_id) . ')';
-    $query = 'FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics top';
+    $query = 'FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t';
     if (!multi_lang_content()) {
-        $query .= ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p ON p.id=top.t_cache_first_post_id';
+        $query .= ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p ON p.id=t.t_cache_first_post_id';
     }
     $query .= ' WHERE ' . $where;
     $max_rows = 0;
     $union = '';
-    $select = 'SELECT top.*';
+    $select = 'SELECT t.*';
     if (multi_lang_content()) {
         $select .= ',t_cache_first_post AS p_post';
     } else {
@@ -67,12 +67,12 @@ function cns_get_private_topics($start = 0, $true_start = 0, $max = null, $sql_s
             if ($or_list != '') {
                 $or_list .= ' OR ';
             }
-            $or_list .= 'top.id=' . strval($s_row['s_topic_id']);
+            $or_list .= 't.id=' . strval($s_row['s_topic_id']);
         }
         if ($or_list != '') {
-            $query2 = 'FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics top';
+            $query2 = 'FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t';
             if (!multi_lang_content()) {
-                $query2 .= ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p ON p.id=top.t_cache_first_post_id';
+                $query2 .= ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p ON p.id=t.t_cache_first_post_id';
             }
             $query2 .= ' WHERE ' . $or_list;
             $union = ' UNION ' . $select . ' ' . $query2;

@@ -182,6 +182,13 @@ class Module_admin_phpinfo
             }
         }
 
+        if (strpos(get_db_type(), 'sqlserver') !== false) {
+            $sqlserver_version = $GLOBALS['SITE_DB']->query('SELECT @@version AS version');
+            if (isset($sqlserver_version[0]['version'])) {
+                $out .= '<p><strong>SQL Server version</strong>: ' . escape_html($sqlserver_version[0]['version']) . '</p>';
+            }
+        }
+
         if (php_function_allowed('shell_exec')) {
             $commands = array(
                 'uptime',

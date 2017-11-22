@@ -208,7 +208,7 @@ class Hook_health_check_security_ssl extends Hook_Health_Check
                 $domains = $this->get_domains();
                 foreach ($domains as $domain) {
                     if (get_value('disable_ssl_for__' . $domain) !== '1') {
-                        $test_url = get_base_url(true) . '/uploads/index.html';
+                        $test_url = get_base_url(true) . '/data/empty.php';
 
                         delete_value('disable_ssl_for__' . $domain);
                         $data = http_get_contents($test_url, array('trigger_error' => false));

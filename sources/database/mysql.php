@@ -29,7 +29,7 @@ require_code('database/shared/mysql');
  */
 class Database_Static_mysql extends Database_super_mysql
 {
-    public $cache_db = array();
+    protected $cache_db = array();
     public $last_select_db = null;
     public $reconnected_once = false;
 
@@ -73,7 +73,7 @@ class Database_Static_mysql extends Database_super_mysql
                 echo $error . "\n";
                 return null;
             }
-            critical_error('PASSON', $error); //warn_exit(do_lang_tempcode('CONNECT_DB_ERROR'));
+            critical_error('PASSON', $error);
         }
         if (!mysql_select_db($db_name, $db_link)) {
             if ($db_user == 'root') {
@@ -132,13 +132,7 @@ class Database_Static_mysql extends Database_super_mysql
             $this->last_select_db = $db_name;
         }
 
-        if (($max !== null) && ($start != 0)) {
-            $query .= ' LIMIT ' . strval($start) . ',' . strval($max);
-        } elseif ($max !== null) {
-            $query .= ' LIMIT ' . strval($max);
-        } elseif ($start != 0) {
-            $query .= ' LIMIT ' . strval($start) . ',30000000';
-        }
+        $this->apply_sql_limit_clause($query, $max, $start);
 
         $results = @mysql_query($query, $db_link);
         if (($results === false) && ((!$fail_ok) || (strpos(@strval(mysql_error($db_link)), 'is marked as crashed and should be repaired') !== false))) {
@@ -163,7 +157,7 @@ class Database_Static_mysql extends Database_super_mysql
 
         $sub = substr(ltrim($query), 0, 4);
         if (($results !== true) && (($sub === '(SEL') || ($sub === 'SELE') || ($sub === 'sele') || ($sub === 'CHEC') || ($sub === 'EXPL') || ($sub === 'REPA') || ($sub === 'DESC') || ($sub === 'SHOW')) && ($results !== false)) {
-            return $this->get_query_rows($results);
+            return $this->get_query_rows($results, $query, $start);
         }
 
         if ($get_insert_id) {
@@ -186,9 +180,11 @@ class Database_Static_mysql extends Database_super_mysql
      * Get the rows returned from a SELECT query.
      *
      * @param  resource $results The query result pointer
+     * @param  string $query The complete SQL query (useful for debugging)
+     * @param  integer $start Where to start reading from
      * @return array A list of row maps
      */
-    public function get_query_rows($results)
+    protected function get_query_rows($results, $query, $start)
     {
         $row = mysql_fetch_row($results); // cannot use mysql_fetch_assoc because no dupe results are returned, which knocks off the offsets used by mysql_field_type
         if ($row === false) { // Quick get away

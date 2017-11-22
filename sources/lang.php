@@ -1349,6 +1349,11 @@ function table_id_locking_start($db, &$id, &$lock, $table = 'translate', $id_fie
         $lock = true;
         $id = $db->query_select_value($table, 'MAX(' . $id_field . ')');
         $id = ($id === null) ? null : ($id + 1);
+    } elseif (($id === null) && (multi_lang()) && (strpos(get_db_type(), 'sqlserver') !== false)) { // Needed as on SQL Server we need to choose our own key, as we cannot use an identity as a part of a shared key.
+        $db->start_transaction();
+        $lock = true;
+        $id = $db->query_select_value($table, 'MAX(' . $id_field . ')');
+        $id = ($id === null) ? db_get_first_id() : ($id + 1);
     } else {
         $lock = false;
     }
@@ -1366,7 +1371,11 @@ function table_id_locking_start($db, &$id, &$lock, $table = 'translate', $id_fie
 function table_id_locking_end($db, $id, $lock, $table = 'translate', $id_field = 'id')
 {
     if ($lock) {
-        $db->query('UNLOCK TABLES', null, 0, true);
+        if (strpos(get_db_type(), 'mysql') !== false) {
+            $db->query('UNLOCK TABLES', null, 0, true);
+        } elseif (strpos(get_db_type(), 'sqlserver') !== false) {
+            $db->end_transaction();
+        }
     }
 }
 

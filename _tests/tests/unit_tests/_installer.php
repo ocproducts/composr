@@ -18,8 +18,17 @@
  */
 class _installer_test_set extends cms_test_case
 {
+    public function testIsMySQL()
+    {
+        $this->assertTrue(strpos(get_db_type(), 'mysql') !== false, 'Test can only run with MySQL');
+    }
+
     public function testQuickInstaller()
     {
+        if (strpos(get_db_type(), 'mysql') === false) {
+            return;
+        }
+
         $_GET['skip_quick'] = '0';
         $_GET['skip_manual'] = '0';
         $_GET['skip_bundled'] = '0';
@@ -49,6 +58,10 @@ class _installer_test_set extends cms_test_case
 
     public function testDoesNotFullyCrash()
     {
+        if (strpos(get_db_type(), 'mysql') === false) {
+            return;
+        }
+
         $http_result = cms_http_request(get_base_url() . '/install.php?skip_disk_checks=1', array('trigger_error' => false, 'timeout' => 60));
 
         $this->assertTrue($http_result->message == '200', 'Wrong HTTP status code ' . $http_result->message);
@@ -63,6 +76,10 @@ class _installer_test_set extends cms_test_case
 
     public function testFullInstallSafeMode()
     {
+        if (strpos(get_db_type(), 'mysql') === false) {
+            return;
+        }
+
         $result = $this->doHeadlessInstall(true);
         if (!$result) {
             return;
@@ -76,6 +93,10 @@ class _installer_test_set extends cms_test_case
 
     private function doHeadlessInstall($safe_mode)
     {
+        if (strpos(get_db_type(), 'mysql') === false) {
+            return;
+        }
+
         $database = 'test';
         $table_prefix = 'cms_installer_test_';
 

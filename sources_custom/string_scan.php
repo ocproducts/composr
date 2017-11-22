@@ -3320,7 +3320,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFLICTING_PAGE_NAME
         CONFLICTING_ZONE_NAME
         CONFLICTING_ZONE_NAME__PAGE
-        CONNECT_DB_ERROR
         CONNECT_ERROR
         CONTENT_DATE_TIME
         CONTENT_NEEDING_REVIEWING

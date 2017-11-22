@@ -390,7 +390,7 @@ function init__global2()
     // Register Internationalisation settings
     @header('Content-type: text/html; charset=' . get_charset());
     setlocale(LC_ALL, explode(',', do_lang('locale')));
-    if (substr(strftime('%M'), 0, 2) == '??') { // Windows may do this because it can't output a utf-8 character set, so gets mangled to question marks by PHP
+    if (substr(@strftime('%M'), 0, 2) == '??') { // Windows may do this because it can't output a utf-8 character set, so gets mangled to question marks by PHP
         setlocale(LC_ALL, explode(',', 'en-GB.UTF-8,en_GB.UTF-8,en-US.UTF-8,en_US.UTF-8,en.UTF-8,en-GB,en_GB,en-US,en_US,en')); // The user will have to define locale_subst correctly
     }
 
@@ -1057,7 +1057,7 @@ function is_browser_decaching()
     if (defined('DO_PLANNED_DECACHE')) { // Used by decache.sh
         $config_file_orig = cms_file_get_contents_safe(get_file_base() . '/_config.php');
         $config_file = $config_file_orig;
-        $config_file = rtrim(str_replace('define(\'DO_PLANNED_DECACHE\', true);', '', $config_file)) . "\n\n";
+        $config_file = rtrim(str_replace(array('if (!defined(\'DO_PLANNED_DECACHE\')) ', 'define(\'DO_PLANNED_DECACHE\', true);'), array('', ''), $config_file)) . "\n\n";
         require_code('files');
         cms_file_put_contents_safe(get_file_base() . '/_config.php', $config_file, FILE_WRITE_FIX_PERMISSIONS);
         return true;

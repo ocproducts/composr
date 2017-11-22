@@ -129,8 +129,8 @@ class Hook_health_check_install_env extends Hook_Health_Check
      */
     public function testBaseURL($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
-        if (file_exists(get_file_base() . '/uploads/index.html')) {
-            $test_url = get_base_url() . '/uploads/index.html'; // Should normally exist, simple static URL call
+        if (file_exists(get_file_base() . '/data/empty.php')) {
+            $test_url = get_base_url() . '/data/empty.php'; // Should normally exist, simple static URL call
         } else {
             $test_url = static_evaluate_tempcode(build_url(array('page' => ''), '', array(), false, false, true)); // But this definitely must exist
         }
@@ -306,7 +306,7 @@ class Hook_health_check_install_env extends Hook_Health_Check
     public function testModSecurity($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
         // Test to see if we have any ModSecurity issue that blocks config form submissions, via posting through some perfectly legitimate things that it might be paranoid about
-        $test_url = get_custom_base_url() . '/uploads/index.html';
+        $test_url = get_custom_base_url() . '/data/empty.php';
         $test_a = cms_http_request($test_url, array('byte_limit' => 0, 'trigger_error' => false, 'no_redirect' => true));
         $message_a = $test_a->message;
         if ($message_a == '200') {

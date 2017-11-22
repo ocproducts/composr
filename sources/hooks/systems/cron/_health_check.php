@@ -50,7 +50,7 @@ class Hook_cron__health_check
         $categories = run_health_check($has_fails, $sections_to_run, $passes, $skips, $manual_checks, false, null);
 
         if ((count($categories) > 0) || ($cron_notify_regardless == '1')) {
-            $results = do_template('HEALTH_CHECK_RESULTS', array('CATEGORIES' => $categories));
+            $results = do_template('HEALTH_CHECK_RESULTS', array('_GUID' => 'b7bbb671bacc1a5eee03a71c3f1a1eac', 'CATEGORIES' => $categories));
 
             require_code('notifications');
             $subject = do_lang('HEALTH_CHECK_SUBJECT_' . ($has_fails ? 'fail' : 'misc'));

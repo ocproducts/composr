@@ -24,7 +24,19 @@
 This driver works by ODBC. You create a mdb database in access, then create a mapping in the
 ODBC part of control panel. You need to add a 'System DSN' (the DSN is the database name mapping
 to the mdb file). In the properties there is option to choose username and password.
+
+We have not used the PHP DB2 extension, although we probably could have done so (http://php.net/manual/en/book.ibm-db2.php).
 */
+
+/**
+ * Standard code module initialisation function.
+ *
+ * @ignore
+ */
+function init__database__ibm()
+{
+    safe_ini_set('odbc.defaultlrl', '20M');
+}
 
 /**
  * Database Driver.
@@ -33,7 +45,7 @@ to the mdb file). In the properties there is option to choose username and passw
  */
 class Database_Static_ibm extends DatabaseDriver
 {
-    public $cache_db = array();
+    protected $cache_db = array();
 
     /**
      * Get the default user for making db connections (used by the installer as a default).
@@ -93,10 +105,10 @@ class Database_Static_ibm extends DatabaseDriver
                 echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
                 return null;
             }
-            critical_error('PASSON', $error); //warn_exit(do_lang_tempcode('CONNECT_DB_ERROR'));
+            critical_error('PASSON', $error);
         }
 
-        if (!$connection) {
+        if ($connection === false) {
             fatal_exit(do_lang('CONNECT_DB_ERROR'));
         }
         $this->cache_db[$db_name][$db_host] = $connection;
@@ -218,6 +230,24 @@ class Database_Static_ibm extends DatabaseDriver
     }
 
     /**
+     * Adjust an SQL query to apply offset/limit restriction.
+     *
+     * @param  string $query The complete SQL query
+     * @param  ?integer $max The maximum number of rows to affect (null: no limit)
+     * @param  integer $start The start row to affect
+     */
+    public function apply_sql_limit_clause(&$query, $max = null, $start = 0)
+    {
+        if ($max !== null) {
+            $max += $start;
+
+            if ((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) { // Unfortunately we can't apply to DELETE FROM and update :(. But its not too important, LIMIT'ing them was unnecessarily anyway
+                $query .= ' FETCH FIRST ' . strval($max + $start) . ' ROWS ONLY';
+            }
+        }
+    }
+
+    /**
      * This function is a very basic query executor. It shouldn't usually be used by you, as there are abstracted versions available.
      *
      * @param  string $query The complete SQL query
@@ -230,9 +260,7 @@ class Database_Static_ibm extends DatabaseDriver
      */
     public function query($query, $connection, $max = null, $start = 0, $fail_ok = false, $get_insert_id = false)
     {
-        if ($max !== null) {
-            $max += $start;
-        }
+        $this->apply_sql_limit_clause($query, $max, $start);
 
         if ((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) { // Unfortunately we can't apply to DELETE FROM and update :(. But its not too important, LIMIT'ing them was unnecessarily anyway
             $query .= ' FETCH FIRST ' . strval($max) . ' ROWS ONLY';
@@ -257,7 +285,7 @@ class Database_Static_ibm extends DatabaseDriver
         }
 
         if ((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ') && (!$results !== false)) {
-            return $this->get_query_rows($results);
+            return $this->get_query_rows($results, $query, $start);
         }
 
         if ($get_insert_id) {
@@ -269,8 +297,8 @@ class Database_Static_ibm extends DatabaseDriver
             $table_name = substr(ltrim($query), 12, $pos - 13);
 
             $res2 = odbc_exec($connection, 'SELECT MAX(id) FROM ' . $table_name);
-            $ar2 = odbc_fetch_row($res2);
-            return $ar2[0];
+            odbc_fetch_row($res2);
+            return odbc_result($res2, 1);
         }
 
         return null;
@@ -280,10 +308,11 @@ class Database_Static_ibm extends DatabaseDriver
      * Get the rows returned from a SELECT query.
      *
      * @param  resource $results The query result pointer
-     * @param  integer $start Whether to start reading from
+     * @param  string $query The complete SQL query (useful for debugging)
+     * @param  integer $start Where to start reading from
      * @return array A list of row maps
      */
-    public function get_query_rows($results, $start = 0)
+    protected function get_query_rows($results, $query, $start)
     {
         $out = array();
         $i = 0;

@@ -31,7 +31,7 @@ For: php_oci8.dll
  */
 class Database_Static_oracle extends DatabaseDriver
 {
-    public $cache_db = array();
+    protected $cache_db = array();
 
     /**
      * Get the default user for making db connections (used by the installer as a default).
@@ -91,14 +91,52 @@ class Database_Static_oracle extends DatabaseDriver
                 echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
                 return null;
             }
-            critical_error('PASSON', $error); //warn_exit(do_lang_tempcode('CONNECT_DB_ERROR'));
+            critical_error('PASSON', $error);
         }
 
-        if (!$connection) {
+        if ($connection === false) {
             fatal_exit(do_lang('CONNECT_DB_ERROR'));
         }
         $this->cache_db[$db_name][$db_host] = $connection;
         return $connection;
+    }
+
+    /**
+     * Adjust an SQL query to apply offset/limit restriction.
+     *
+     * @param  string $query The complete SQL query
+     * @param  ?integer $max The maximum number of rows to affect (null: no limit)
+     * @param  integer $start The start row to affect
+     */
+    public function apply_sql_limit_clause(&$query, $max = null, $start = 0)
+    {
+        if (($start != 0) && ($max !== null) && (strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) {
+            $old_query = $query;
+            $pos = stripos($old_query, 'FROM ');
+            $pos2 = strpos($old_query, ' ', $pos + 5);
+            $pos3 = stripos($old_query, 'WHERE ', $pos2);
+            if ($pos3 === false) { // No where
+                $pos4 = stripos($old_query, ' ORDER BY');
+                if ($pos4 === false) {
+                    $pos4 = strlen($old_query);
+                }
+                $query = substr($old_query, 0, $pos4) . ' WHERE rownum>=' . strval(intval($start));
+                if ($max !== null) {
+                    $query .= ' AND rownum<' . strval(intval($start + $max));
+                }
+                $query .= substr($old_query, $pos4);
+            } else {
+                $pos4 = stripos($old_query, ' ORDER BY');
+                if ($pos4 === false) {
+                    $pos4 = strlen($old_query);
+                }
+                $query = substr($old_query, 0, $pos3) . 'WHERE (' . substr($old_query, $pos3 + 6, $pos4 - $pos3 - 6) . ') AND rownum>=' . strval(intval($start));
+                if ($max !== null) {
+                    $query .= ' AND rownum<' . strval(intval($start + $max));
+                }
+                $query .= substr($old_query, $pos4);
+            }
+        }
     }
 
     /**
@@ -114,34 +152,7 @@ class Database_Static_oracle extends DatabaseDriver
      */
     public function query($query, $connection, $max = null, $start = 0, $fail_ok = false, $get_insert_id = false)
     {
-        if (($start != 0) && ($max !== null) && ((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT '))) {
-            $old_query = $query;
-
-            $pos = strpos($old_query, 'FROM ');
-            $pos2 = strpos($old_query, ' ', $pos + 5);
-            $pos3 = strpos($old_query, 'WHERE ', $pos2);
-            if ($pos3 === false) { // No where
-                $pos4 = strpos($old_query, ' ORDER BY');
-                if ($pos4 === false) {
-                    $pos4 = strlen($old_query);
-                }
-                $query = substr($old_query, 0, $pos4) . ' WHERE rownum>=' . strval($start);
-                if ($max !== null) {
-                    $query .= ' AND rownum<' . strval($start + $max);
-                }
-                $query .= substr($old_query, $pos4);
-            } else {
-                $pos4 = strpos($old_query, ' ORDER BY');
-                if ($pos4 === false) {
-                    $pos4 = strlen($old_query);
-                }
-                $query = substr($old_query, 0, $pos3) . 'WHERE (' . substr($old_query, $pos3 + 6, $pos4 - $pos3 - 6) . ') AND rownum>=' . strval($start);
-                if ($max !== null) {
-                    $query .= ' AND rownum<' . strval($start + $max);
-                }
-                $query .= substr($old_query, $pos4);
-            }
-        }
+        $this->apply_sql_limit_clause($query, $max, $start);
 
         $stmt = ociparse($connection, $query, 0);
         $results = @ociexecute($stmt);
@@ -163,7 +174,7 @@ class Database_Static_oracle extends DatabaseDriver
         }
 
         if (($results !== true) && ((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) && ($results !== false)) {
-            return $this->get_query_rows($stmt);
+            return $this->get_query_rows($stmt, $query, $start);
         }
 
         if ($get_insert_id) {
@@ -187,10 +198,11 @@ class Database_Static_oracle extends DatabaseDriver
      * Get the rows returned from a SELECT query.
      *
      * @param  resource $stmt The query result pointer
-     * @param  integer $start Whether to start reading from
+     * @param  string $query The complete SQL query (useful for debugging)
+     * @param  integer $start Where to start reading from
      * @return array A list of row maps
      */
-    public function get_query_rows($stmt, $start = 0)
+    public function get_query_rows($stmt, $query, $start)
     {
         $out = array();
         $i = 0;
@@ -394,8 +406,8 @@ class Database_Static_oracle extends DatabaseDriver
             $first = $values[0];
             $field_type = current($first); // Result found
 
-            if (strpos($field_type, 'LONG') !== false) {
-                // We can't support this in SQL Server http://www.oratable.com/ora-01450-maximum-key-length-exceeded/.
+            if ((strpos($field_type, 'LONG') !== false) || ((!multi_lang_content()) && (strpos($field_type, 'SHORT_TRANS') !== false))) {
+                // We can't support this in Oracle http://www.oratable.com/ora-01450-maximum-key-length-exceeded/.
                 // We assume shorter numbers than 250 are only being used on short columns anyway, which will index perfectly fine without any constraint.
                 return array();
             }

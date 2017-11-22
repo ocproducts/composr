@@ -300,13 +300,22 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->create_index('comcode_pages', 'p_add_date', array('p_add_date'));
             $GLOBALS['SITE_DB']->create_index('comcode_pages', 'p_validated', array('p_validated'));
 
-            $GLOBALS['SITE_DB']->create_table('cached_comcode_pages', array(
+            $fields = array(
                 'the_zone' => '*ID_TEXT',
                 'the_page' => '*ID_TEXT',
                 'string_index' => 'LONG_TRANS__COMCODE',
                 'the_theme' => '*ID_TEXT',
                 'cc_page_title' => '?SHORT_TRANS',
-            ));
+            );
+            if (strpos(get_db_type(), 'sqlserver') !== false) { // Full-text search requires a single key
+                $fields = array(
+                    'id' => '*AUTO',
+                    'the_zone' => 'ID_TEXT',
+                    'the_page' => 'ID_TEXT',
+                    'the_theme' => 'ID_TEXT',
+                ) + $fields;
+            }
+            $GLOBALS['SITE_DB']->create_table('cached_comcode_pages', $fields);
 
             $GLOBALS['SITE_DB']->create_index('cached_comcode_pages', 'ftjoin_ccpt', array('cc_page_title'));
             $GLOBALS['SITE_DB']->create_index('cached_comcode_pages', 'ftjoin_ccsi', array('string_index'));

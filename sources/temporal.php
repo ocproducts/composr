@@ -436,7 +436,7 @@ function cms_strftime($format, $timestamp = null)
         $format = str_replace('%l', '%-I', $format);
     }
     $format = str_replace('%o', date('S'/*English ordinal suffix for the day of the month, 2 characters*/, $timestamp), $format);
-    $ret = strftime($format, $timestamp);
+    $ret = @strftime($format, $timestamp);
     if ($ret === false) {
         $ret = '';
     }

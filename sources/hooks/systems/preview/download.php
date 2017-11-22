@@ -50,7 +50,6 @@ class Hook_preview_download
         $name = post_param_string('name');
         $out_mode_id = post_param_integer('out_mode_id', null);
         $licence = post_param_integer('licence', null);
-
         $description = post_param_string('description', '');
         $author = post_param_string('author', get_site_name());
         $comments = post_param_string('comments', '');
@@ -106,7 +105,7 @@ class Hook_preview_download
             'allow_rating' => $allow_rating,
             'allow_comments' => $allow_comments,
             'allow_trackbacks' => $allow_trackbacks,
-            'notes' => post_param_string('notes', ''),
+            'notes' => $notes,
             'submitter' => $submitter,
             'default_pic' => 1,
             'num_downloads' => $num_downloads,

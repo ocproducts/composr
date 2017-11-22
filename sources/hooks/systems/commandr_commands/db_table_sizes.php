@@ -38,7 +38,7 @@ class Hook_commandr_command_db_table_sizes
         } else {
             require_code('files');
 
-            if ((strpos(get_db_type(), 'mysql') === false) && (get_db_type() != 'postgresql')) {
+            if ((strpos(get_db_type(), 'mysql') === false) && (strpos(get_db_type(), 'sqlserver') === false) && (get_db_type() != 'postgresql')) {
                 warn_exit(do_lang_tempcode('NOT_SUPPORTED_ON_DB'));
             }
 
@@ -48,13 +48,23 @@ class Hook_commandr_command_db_table_sizes
             require_code('files');
 
             if (strpos(get_db_type(), 'mysql') !== false) {
-                $results = $db->query('SHOW TABLE STATUS WHERE Name LIKE \'' . db_encode_like($db->get_table_prefix() . '%') . '\'');
+                $sql = 'SHOW TABLE STATUS WHERE Name LIKE \'' . db_encode_like($db->get_table_prefix() . '%') . '\'';
+                $results = $db->query($sql);
                 $sizes = list_to_map('Name', $results);
                 foreach ($sizes as $key => $vals) {
                     $sizes[$key] = $vals['Data_length'] + $vals['Index_length'] - $vals['Data_free'];
                 }
+            } elseif (strpos(get_db_type(), 'sqlserver') !== false) {
+                $sql = '
+                    SELECT t.NAME AS tablename, SUM(a.used_pages) * 8 * 1024 AS usedpace
+                    FROM sys.tables t JOIN sys.indexes i ON t.OBJECT_ID = i.object_id JOIN sys.partitions p ON i.object_id = p.OBJECT_ID AND i.index_id = p.index_id JOIN sys.allocation_units a ON p.partition_id = a.container_id LEFT JOIN sys.schemas s ON t.schema_id = s.schema_id
+                    WHERE t.NAME NOT LIKE \'dt%\' AND t.is_ms_shipped = 0 AND i.OBJECT_ID > 255
+                    GROUP BY t.Name, s.Name, p.Rows';
+                $results = $db->query($sql);
+                $sizes = collapse_2d_complexity('tablename', 'usedpace', $results);
             } elseif (get_db_type() == 'postgresql') {
-                $results = $db->query('SELECT relname,(pg_total_relation_size(relid)-pg_relation_size(relid)) AS size FROM pg_catalog.pg_statio_user_tables WHERE relname LIKE \'' . db_encode_like($db->get_table_prefix() . '%') . '\'');
+                $sql = 'SELECT relname,(pg_total_relation_size(relid)-pg_relation_size(relid)) AS size FROM pg_catalog.pg_statio_user_tables WHERE relname LIKE \'' . db_encode_like($db->get_table_prefix() . '%') . '\'';
+                $results = $db->query($sql);
                 $sizes = collapse_2d_complexity('relname', 'size', $results);
             }
 

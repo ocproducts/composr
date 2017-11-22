@@ -50,7 +50,8 @@ class Hook_rss_tickets
 
         require_code('tickets');
 
-        $ticket_types = selectcode_to_idlist_using_callback($_filters, '', null, null, null, null, false);
+        $_ticket_types = collapse_2d_complexity('id', '_null', $GLOBALS['SITE_DB']->query_select('ticket_types', array('id', 'NULL as _null')));
+        $ticket_types = selectcode_to_idlist_using_memory($_filters, $_ticket_types);
         if (count($ticket_types) != 0) {
             $rows = array();
             foreach ($ticket_types as $ticket_type_id) {

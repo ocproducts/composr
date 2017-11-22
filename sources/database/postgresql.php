@@ -29,7 +29,7 @@
  */
 class Database_Static_postgresql extends DatabaseDriver
 {
-    public $cache_db = array();
+    protected $cache_db = array();
 
     /**
      * Get the default user for making db connections (used by the installer as a default).
@@ -93,14 +93,31 @@ class Database_Static_postgresql extends DatabaseDriver
                 echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
                 return null;
             }
-            critical_error('PASSON', $error); //warn_exit(do_lang_tempcode('CONNECT_DB_ERROR'));
+            critical_error('PASSON', $error);
         }
 
-        if (!$connection) {
-            fatal_exit(do_lang('CONNECT_DB_ERROR'));
-        }
         $this->cache_db[$db_name][$db_host] = $connection;
         return $connection;
+    }
+
+    /**
+     * Adjust an SQL query to apply offset/limit restriction.
+     *
+     * @param  string $query The complete SQL query
+     * @param  ?integer $max The maximum number of rows to affect (null: no limit)
+     * @param  integer $start The start row to affect
+     */
+    public function apply_sql_limit_clause(&$query, $max = null, $start = 0)
+    {
+        if ((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) {
+            if (($max !== null) && ($start != 0)) {
+                $query .= ' LIMIT ' . strval(intval($max)) . ' OFFSET ' . strval(intval($start));
+            } elseif ($max !== null) {
+                $query .= ' LIMIT ' . strval(intval($max));
+            } elseif ($start != 0) {
+                $query .= ' OFFSET ' . strval(intval($start));
+            }
+        }
     }
 
     /**
@@ -116,15 +133,7 @@ class Database_Static_postgresql extends DatabaseDriver
      */
     public function query($query, $connection, $max = null, $start = 0, $fail_ok = false, $get_insert_id = false)
     {
-        if ((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) {
-            if (($max !== null) && ($start != 0)) {
-                $query .= ' LIMIT ' . strval($max) . ' OFFSET ' . strval($start);
-            } elseif ($max !== null) {
-                $query .= ' LIMIT ' . strval($max);
-            } elseif ($start != 0) {
-                $query .= ' OFFSET ' . strval($start);
-            }
-        }
+        $this->apply_sql_limit_clause($query, $max, $start);
 
         $sub = substr(ltrim($query), 0, 4);
         $has_results = (($sub === '(SEL') || ($sub === 'SELE') || ($sub === 'sele') || ($sub === 'CHEC') || ($sub === 'EXPL') || ($sub === 'REPA') || ($sub === 'DESC') || ($sub === 'SHOW'));
@@ -148,7 +157,7 @@ class Database_Static_postgresql extends DatabaseDriver
         }
 
         if (($results !== true) && ($has_results) && ($results !== false)) {
-            return $this->get_query_rows($results);
+            return $this->get_query_rows($results, $query, $start);
         }
 
         if ($get_insert_id) {
@@ -174,10 +183,11 @@ class Database_Static_postgresql extends DatabaseDriver
      * Get the rows returned from a SELECT query.
      *
      * @param  resource $results The query result pointer
-     * @param  integer $start Whether to start reading from
+     * @param  string $query The complete SQL query (useful for debugging)
+     * @param  integer $start Where to start reading from
      * @return array A list of row maps
      */
-    public function get_query_rows($results, $start = 0)
+    protected function get_query_rows($results, $query, $start)
     {
         $num_fields = pg_num_fields($results);
         $types = array();
