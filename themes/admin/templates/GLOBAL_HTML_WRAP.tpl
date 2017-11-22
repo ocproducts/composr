@@ -80,7 +80,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 
 			{+START,IF_NON_EMPTY,{$TRIM,{$LOAD_PANEL,left}}}
 				<div id="panel_left" class="global_side_panel" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
-					<div class="stuck_nav">{$LOAD_PANEL,left}</div>
+					<div class="stuck_nav" data-stuck-nav>{$LOAD_PANEL,left}</div>
 				</div>
 			{+END}
 
@@ -90,7 +90,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 			{+START,IF,{$OR,{$GET,helper_panel},{$IS_NON_EMPTY,{$TRIM,{$LOAD_PANEL,right}}}}}
 				<div id="panel_right" class="global_side_panel{+START,IF_EMPTY,{$TRIM,{$LOAD_PANEL,right}}} helper_panel {$?,{$HIDE_HELP_PANEL},helper_panel_hidden,helper_panel_visible}{+END}" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
 					{+START,IF_NON_EMPTY,{$TRIM,{$LOAD_PANEL,right}}}
-						<div class="stuck_nav">{$LOAD_PANEL,right}</div>
+						<div class="stuck_nav" data-stuck-nav>{$LOAD_PANEL,right}</div>
 					{+END}
 
 					{+START,IF_EMPTY,{$TRIM,{$LOAD_PANEL,right}}}

@@ -1106,8 +1106,6 @@
         window.currentMouseX = 0;
         window.currentMouseY = 0;
 
-        this.stuckNavs();
-
         // If back button pressed back from an AJAX-generated page variant we need to refresh page because we aren't doing full JS state management
         window.addEventListener('popstate', function () {
             setTimeout(function () {
@@ -1134,9 +1132,6 @@
     $util.inherits($cms.views.Global, $cms.View, /**@lends $cms.views.Global#*/{
         events: function () {
             return {
-                // Show a confirmation dialog for clicks on a link (is higher up for priority)
-                'click [data-cms-confirm-click]': 'confirmClick',
-
                 // Prevent url change for clicks on anchor tags with a placeholder href
                 'click a[href$="#!"]': 'preventDefault',
                 // Prevent form submission for forms with a placeholder action
@@ -1144,51 +1139,6 @@
                 // Prevent-default for JS-activated elements (which may have noscript fallbacks as default actions)
                 'click [data-click-pd]': 'clickPreventDefault',
                 'submit [data-submit-pd]': 'submitPreventDefault',
-
-                // Simulated href for non <a> elements
-                'click [data-cms-href]': 'cmsHref',
-
-                'click [data-click-forward]': 'clickForward',
-
-                'click [data-click-toggle-checked]': 'clickToggleChecked',
-
-                // Disable button after click
-                'click [data-disable-on-click]': 'disableButton',
-
-                // Submit form when the change event is fired on an input element
-                'change [data-change-submit-form]': 'changeSubmitForm',
-
-                // Disable form buttons
-                'submit form[data-disable-buttons-on-submit]': 'disableFormButtons',
-
-                // mod_security workaround
-                'submit form[data-submit-modsecurity-workaround]': 'submitModSecurityWorkaround',
-
-                // Open page in overlay
-                'click [data-open-as-overlay]': 'openOverlay',
-
-                'click [data-click-faux-open]': 'clickFauxOpen',
-
-                // Lightboxes
-                'click a[rel*="lightbox"]': 'lightBoxes',
-
-                'mouseover [data-mouseover-activate-tooltip]': 'mouseoverActivateTooltip',
-                'focus [data-focus-activate-tooltip]': 'focusActivateTooltip',
-                'blur [data-blur-deactivate-tooltip]': 'blurDeactivateTooltip',
-
-                // "Rich semantic tooltips"
-                'click [data-cms-rich-tooltip]': 'activateRichTooltip',
-                'mouseover [data-cms-rich-tooltip]': 'activateRichTooltip',
-                'keypress [data-cms-rich-tooltip]': 'activateRichTooltip',
-
-                'click [data-click-ga-track]': 'gaTrackClick',
-
-                // Toggle tray
-                'click [data-click-tray-toggle]': 'clickTrayToggle',
-
-                'click [data-click-ui-open]': 'clickUiOpen',
-
-                'click [data-click-do-input]': 'clickDoInput',
 
                 /* Footer links */
                 'click .js-global-click-load-software-chat': 'loadSoftwareChat',
@@ -1201,87 +1151,6 @@
 
                 'click .js-global-click-load-commandr': 'loadCommandr'
             };
-        },
-
-        stuckNavs: function () {
-            // Pinning to top if scroll out (LEGACY: CSS is going to have a better solution to this soon)
-            var stuckNavs = $dom.$$('.stuck_nav');
-
-            if (!stuckNavs.length) {
-                return;
-            }
-
-            $dom.on(window, 'scroll', function () {
-                for (var i = 0; i < stuckNavs.length; i++) {
-                    var stuckNav = stuckNavs[i],
-                        stuckNavHeight = (stuckNav.realHeight === undefined) ? $dom.contentHeight(stuckNav) : stuckNav.realHeight;
-
-                    stuckNav.realHeight = stuckNavHeight;
-                    var posY = $dom.findPosY(stuckNav.parentNode, true),
-                        footerHeight = document.querySelector('footer') ? document.querySelector('footer').offsetHeight : 0,
-                        panelBottom = $dom.$id('panel_bottom');
-
-                    if (panelBottom) {
-                        footerHeight += panelBottom.offsetHeight;
-                    }
-                    panelBottom = $dom.$id('global_messages_2');
-                    if (panelBottom) {
-                        footerHeight += panelBottom.offsetHeight;
-                    }
-                    if (stuckNavHeight < $dom.getWindowHeight() - footerHeight) { // If there's space in the window to make it "float" between header/footer
-                        var extraHeight = (window.pageYOffset - posY);
-                        if (extraHeight > 0) {
-                            var width = $dom.contentWidth(stuckNav);
-                            var height = $dom.contentHeight(stuckNav);
-                            var stuckNavWidth = $dom.contentWidth(stuckNav);
-                            if (!window.getComputedStyle(stuckNav).getPropertyValue('width')) { // May be centered or something, we should be careful
-                                stuckNav.parentNode.style.width = width + 'px';
-                            }
-                            stuckNav.parentNode.style.height = height + 'px';
-                            stuckNav.style.position = 'fixed';
-                            stuckNav.style.top = '0px';
-                            stuckNav.style.zIndex = '1000';
-                            stuckNav.style.width = stuckNavWidth + 'px';
-                        } else {
-                            stuckNav.parentNode.style.width = '';
-                            stuckNav.parentNode.style.height = '';
-                            stuckNav.style.position = '';
-                            stuckNav.style.top = '';
-                            stuckNav.style.width = '';
-                        }
-                    } else {
-                        stuckNav.parentNode.style.width = '';
-                        stuckNav.parentNode.style.height = '';
-                        stuckNav.style.position = '';
-                        stuckNav.style.top = '';
-                        stuckNav.style.width = '';
-                    }
-                }
-            });
-        },
-
-        // Implementation for [data-cms-confirm-click="<Message>"]
-        confirmClick: function (e, clicked) {
-            var view = this, message,
-                uid = $util.uid(clicked);
-
-            // Stores an element's `uid`
-            this._confirmedClick || (this._confirmedClick = null);
-
-            if (uid === this._confirmedClick) {
-                // Confirmed, let it through
-                this._confirmedClick = null;
-                return;
-            }
-
-            e.preventDefault();
-            message = clicked.dataset.cmsConfirmClick;
-            $cms.ui.confirm(message, function (result) {
-                if (result) {
-                    view._confirmedClick = uid;
-                    clicked.click();
-                }
-            });
         },
 
         preventDefault: function (e) {
@@ -1301,224 +1170,7 @@
                 e.preventDefault();
             }
         },
-
-        // Implementation for [data-cms-href="<URL>"]
-        cmsHref: function (e, el) {
-            var anchorClicked = !!$dom.closest(e.target, 'a', el);
-
-            // Make sure a child <a> element wasn't clicked and default wasn't prevented
-            if (!anchorClicked && !e.defaultPrevented) {
-                $util.navigate(el);
-            }
-        },
-
-        // Implementation for [data-click-forward="{ child: '.some-selector' }"]
-        clickForward: function (e, el) {
-            var options = objVal($dom.data(el, 'clickForward'), {}, 'child'),
-                child = strVal(options.child), // Selector for target child element
-                except = strVal(options.except), // Optional selector for excluded elements to let pass-through
-                childEl = $dom.$(el, child);
-
-            if (!childEl) {
-                // Nothing to do
-                return;
-            }
-
-            if (!childEl.contains(e.target) && (!except || !$dom.closest(e.target, except, el.parentElement))) {
-                // ^ Make sure the child isn't the current event's target already, and check for excluded elements to let pass-through
-                e.preventDefault();
-                $dom.trigger(childEl, 'click');
-            }
-        },
-
-        // Implementation for [data-click-toggle-checked]
-        clickToggleChecked: function (e, target) {
-            var selector = strVal(target.dataset.clickToggleChecked),
-                checkboxes  = [];
-
-            if (selector === '') {
-                checkboxes.push(target);
-            } else {
-                checkboxes = $dom.$$$(selector);
-            }
-
-            checkboxes.forEach(function (checkbox) {
-                $dom.toggleChecked(checkbox);
-            });
-        },
-
-        // Implementation for [data-disable-on-click]
-        disableButton: function (e, target) {
-            $cms.ui.disableButton(target);
-        },
-
-        // Implementation for [data-change-submit-form]
-        changeSubmitForm: function (e, input) {
-            if (input.form != null) {
-                $dom.submit(input.form);
-            }
-        },
-
-        // Implementation for form[data-disable-buttons-on-submit]
-        disableFormButtons: function (e, target) {
-            $cms.ui.disableFormButtons(target);
-        },
-
-        // Implementation for form[data-submit-modsecurity-workaround]
-        submitModSecurityWorkaround: function (e, form) {
-            if ($cms.form.isModSecurityWorkaroundEnabled()) {
-                e.preventDefault();
-                $cms.form.modSecurityWorkaround(form);
-            }
-        },
-
-        // Implementation for [data-open-as-overlay]
-        openOverlay: function (e, el) {
-            var options, url = (el.href === undefined) ? el.action : el.href;
-
-            if (!($cms.configOption('js_overlays'))) {
-                return;
-            }
-
-            if (/:\/\/(.[^\/]+)/.exec(url)[1] !== window.location.hostname) {
-                return; // Cannot overlay, different domain
-            }
-
-            e.preventDefault();
-
-            options = objVal($dom.data(el, 'openAsOverlay'));
-            options.el = el;
-
-            openLinkAsOverlay(options);
-        },
-
-        // Implementation for [data-click-faux-open]
-        clickFauxOpen: function (e, el) {
-            var args = arrVal($dom.data(el, 'clickFauxOpen'));
-            $cms.ui.open.apply(undefined, args);
-        },
-
-        // Implementation for `click a[rel*="lightbox"]`
-        lightBoxes: function (e, el) {
-            if (!($cms.configOption('js_overlays'))) {
-                return;
-            }
-
-            e.preventDefault();
-
-            if (el.querySelector('img, video')) {
-                openImageIntoLightbox(el);
-            } else {
-                openLinkAsOverlay({ el: el });
-            }
-
-            function openImageIntoLightbox(el) {
-                var hasFullButton = (el.firstElementChild === null) || (el.href !== el.firstElementChild.src);
-                $cms.ui.openImageIntoLightbox(el.href, ((el.cmsTooltipTitle !== undefined) ? el.cmsTooltipTitle : el.title), null, null, hasFullButton);
-            }
-        },
-
-        // Implementation for [data-mouseover-activate-tooltip]
-        mouseoverActivateTooltip: function (e, el) {
-            var args = arrVal($dom.data(el, 'mouseoverActivateTooltip'));
-
-            args.unshift(el, e);
-
-            try {
-                //arguments: el, event, tooltip, width, pic, height, bottom, no_delay, lights_off, force_width, win, haveLinks
-                $cms.ui.activateTooltip.apply(undefined, args);
-            } catch (ex) {
-                $util.fatal('$cms.views.Global#mouseoverActivateTooltip(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
-            }
-        },
-
-        // Implementation for [data-focus-activate-tooltip]
-        focusActivateTooltip: function (e, el) {
-            var args = arrVal($dom.data(el, 'focusActivateTooltip'));
-
-            args.unshift(el, e);
-
-            try {
-                //arguments: el, event, tooltip, width, pic, height, bottom, no_delay, lights_off, force_width, win, haveLinks
-                $cms.ui.activateTooltip.apply(undefined, args);
-            } catch (ex) {
-                $util.fatal('$cms.views.Global#focusActivateTooltip(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
-            }
-        },
-
-        // Implementation for [data-blur-deactivate-tooltip]
-        blurDeactivateTooltip: function (e, el) {
-            $cms.ui.deactivateTooltip(el);
-        },
-
-        // Implementation for [data-cms-rich-tooltip]
-        activateRichTooltip: function (e, el) {
-            var options = objVal($dom.data(el, 'cmsRichTooltip'));
-
-            if (el.ttitle === undefined) {
-                el.ttitle = (el.attributes['data-title'] ? el.getAttribute('data-title') : el.title);
-                el.title = '';
-            }
-
-            if ((e.type === 'mouseover') && options.haveLinks) {
-                return;
-            }
-
-            //arguments: el, event, tooltip, width, pic, height, bottom, no_delay, lights_off, force_width, win, haveLinks
-            var args = [el, e, el.ttitle, 'auto', null, null, false, true, false, false, window, true/*!!el.haveLinks*/];
-
-            try {
-                $cms.ui.activateTooltip.apply(undefined, args);
-            } catch (ex) {
-                $util.fatal('$cms.views.Global#activateRichTooltip(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
-            }
-        },
         
-        // Implementation for [data-click-ga-track]
-        gaTrackClick: function (e, clicked) {
-            var options = objVal($dom.data(clicked, 'clickGaTrack'));
-
-            e.preventDefault();
-            $cms.gaTrack(clicked, options.category, options.action);
-        },
-
-        // Implementation for [data-click-tray-toggle="<TRAY ID>"]
-        clickTrayToggle: function (e, clicked) {
-            var trayId = strVal(clicked.dataset.clickTrayToggle),
-                trayEl = $dom.$(trayId);
-
-            if (!trayEl) {
-                return;
-            }
-
-            var ttObj = $dom.data(trayEl).toggleableTrayObject;
-            if (ttObj) {
-                ttObj.toggleTray();
-            }
-        },
-
-        // Implementation for [data-click-ui-open]
-        clickUiOpen: function (e, clicked) {
-            var args = arrVal($dom.data(clicked, 'clickUiOpen'));
-            args[0] = $cms.maintainThemeInLink(args[0]);
-            $cms.ui.open.apply(undefined, args);
-        },
-
-        // Implementation for [data-click-do-input]
-        clickDoInput: function (e, clicked) {
-            var args = arrVal($dom.data(clicked, 'clickDoInput')),
-                type = strVal(args[0]),
-                fieldName = strVal(args[1]),
-                tag = strVal(args[2]),
-                fnName = 'doInput' + $util.ucFirst($util.camelCase(type));
-
-            if (typeof window[fnName] === 'function') {
-                window[fnName](fieldName, tag);
-            } else {
-                $util.fatal('$cms.views.Global#clickDoInput(): Function not found "window.' + fnName + '()"');
-            }
-        },
-
         // Detecting of JavaScript support
         detectJavascript: function () {
             var url = window.location.href,
@@ -2557,27 +2209,5 @@
                 tags[i].style.display = 'none';
             }
         }
-    }
-
-    function openLinkAsOverlay(options) {
-        options = $util.defaults({
-            width: '800',
-            height: 'auto',
-            target: '_top',
-            el: null
-        }, options);
-
-        var width = strVal(options.width);
-
-        if (width.match(/^\d+$/)) { // Restrain width to viewport width
-            width = Math.min(parseInt(width), $dom.getWindowWidth() - 60) + '';
-        }
-
-        var el = options.el,
-            url = (el.href === undefined) ? el.action : el.href,
-            urlStripped = url.replace(/#.*/, ''),
-            newUrl = urlStripped + (!urlStripped.includes('?') ? '?' : '&') + 'wide_high=1' + url.replace(/^[^\#]+/, '');
-
-        $cms.ui.open(newUrl, null, 'width=' + width + ';height=' + options.height, options.target);
     }
 }(window.$cms, window.$util, window.$dom));

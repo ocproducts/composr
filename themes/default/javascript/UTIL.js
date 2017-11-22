@@ -814,7 +814,7 @@
     /**
      * @param objects
      * @param flag
-     * @return { Array.<T> }
+     * @return { Array }
      */
     $util.once = function once(objects, flag) {
         objects = arrVal(objects);

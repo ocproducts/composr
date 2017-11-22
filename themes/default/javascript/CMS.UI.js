@@ -422,6 +422,7 @@
     };
 
     /**
+     * @memberof $cms.ui
      * @param el
      * @param event
      * @param bottom
@@ -529,6 +530,7 @@
     };
 
     /**
+     * @memberof $cms.ui
      * @param el
      * @param tooltipElement
      */
@@ -553,6 +555,7 @@
     };
 
     /**
+     * @memberof $cms.ui
      * @param tooltipBeingOpened
      */
     $cms.ui.clearOutTooltips = function clearOutTooltips(tooltipBeingOpened) {

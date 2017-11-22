@@ -78,7 +78,7 @@
     $cms.behaviors.initializeAnchors = {
         attach: function (context) {
             var anchors = $util.once($dom.$$$(context, 'a'), 'behavior.initializeAnchors'),
-                hasBaseEl = !!document.querySelector('base');
+                hasBaseEl = Boolean(document.querySelector('base'));
 
             anchors.forEach(function (anchor) {
                 var href = strVal(anchor.getAttribute('href'));
@@ -102,7 +102,7 @@
                 if (boolVal('{$VALUE_OPTION;,js_keep_params}')) {
                     // Keep parameters need propagating
                     if (anchor.href && anchor.href.startsWith($cms.getBaseUrl() + '/')) {
-                        anchor.href += $cms.addKeepStub(anchor.href);
+                        anchor.href = $cms.addKeepStub(anchor.href);
                     }
                 }
             });
@@ -311,6 +311,65 @@
         }
     };
 
+    // Implementation for [data-cms-confirm-click="<Message>"]
+    // Show a confirmation dialog for clicks on a link (is higher up for priority)
+    var _confirmedClick;
+    $cms.behaviors.confirmClick = {
+        attach: function (context) {
+            var els = $util.once($dom.$$$(context, '[data-cms-confirm-click]'), 'behavior.confirmClick');
+            
+            els.forEach(function (el) {
+                var uid = $util.uid(el),
+                    message = strVal(el.dataset.cmsConfirmClick);
+                
+                $dom.on(el, 'click', function (e) {
+                    if (_confirmedClick === uid) {
+                        // Confirmed, let it through
+                        return;
+                    }
+                    e.preventDefault();
+                    $cms.ui.confirm(message, function (result) {
+                        if (result) {
+                            _confirmedClick = uid;
+                            $dom.trigger(el, 'click');
+                        }
+                    });
+                });
+            });
+        }
+    };
+    
+    // Implementation for form[data-submit-modsecurity-workaround]
+    // mod_security workaround
+    $cms.behaviors.submitModSecurityWorkaround = {
+        attach: function (context) {
+            var forms = $util.once($dom.$$$(context, 'form[data-submit-modsecurity-workaround]'), 'behavior.submitModSecurityWorkaround');
+            
+            forms.forEach(function (form) {
+                $dom.on(form, 'submit', function (e) {
+                    if ($cms.form.isModSecurityWorkaroundEnabled()) {
+                        e.preventDefault();
+                        $cms.form.modSecurityWorkaround(form);
+                    }
+                });
+            });
+        }
+    };
+
+    // Implementation for form[data-disable-buttons-on-submit]
+    // Disable form buttons on submit
+    $cms.behaviors.disableButtonsOnFormSubmit = {
+        attach: function (context) {
+            var forms = $util.once($dom.$$$(context, 'form[data-disable-buttons-on-submit]'), 'behavior.disableButtonsOnFormSubmit');
+            
+            forms.forEach(function (form) {
+                $dom.on(form, 'submit', function () {
+                    $cms.ui.disableFormButtons(form);
+                });
+            });
+        }
+    };
+
     $cms.behaviors.columnHeightBalancing = {
         attach: function attach(context) {
             var cols = $util.once($dom.$$$(context, '.col_balance_height'), 'behavior.columnHeightBalancing'),
@@ -461,6 +520,30 @@
             });
         }
     };
+
+    // Implementation for [data-click-tray-toggle="<SELECTOR FOR TRAY ELEMENT>"]
+    // Toggle a tray on click on an element
+    $cms.behaviors.clickToggleTray = {
+        attach: function (context) {
+            var els = $util.once($dom.$$$(context, '[data-click-tray-toggle]'), 'behavior.clickToggleTray');
+            
+            els.forEach(function (el) {
+                $dom.on(el, 'click', function () {
+                    var trayId = strVal(el.dataset.clickTrayToggle),
+                        trayEl = $dom.$(trayId);
+
+                    if (!trayEl) {
+                        return;
+                    }
+
+                    var ttObj = $dom.data(trayEl).toggleableTrayObject;
+                    if (ttObj) {
+                        ttObj.toggleTray();
+                    }
+                });
+            });
+        }
+    };
     
     // Implementation for [data-textarea-auto-height]
     $cms.behaviors.textareaAutoHeight = {
@@ -481,7 +564,7 @@
     };
     
     var _invalidPatternCache = {};
-    // Implementation for [data-cms-invalid-pattern="...REGEX..."]
+    // Implementation for [data-cms-invalid-pattern="<REGEX FOR DISALLOWED CHARACTERS>"]
     // Prevents input of matching characters
     $cms.behaviors.cmsInvalidPattern = {
         attach: function (context) {
@@ -507,6 +590,22 @@
             });
         }
     };
+
+    // Implementation for [data-change-submit-form]
+    // Submit form when the change event is fired on an input element
+    $cms.behaviors.changeSubmitForm = {
+        attach: function (context) {
+            var inputs = $util.once($dom.$$$(context, '[data-change-submit-form]'), 'behavior.changeSubmitForm');
+            
+            inputs.forEach(function (input) {
+                $dom.on(input, 'change', function () {
+                    if (input.form != null) {
+                        $dom.submit(input.form);
+                    }
+                });
+            });
+        }
+    };
     
     // Implementation for [data-cms-btn-go-back]
     // Go back in browser history
@@ -521,6 +620,368 @@
             });
         }
     };
+
+    // Implementation for [data-click-ga-track]
+    $cms.behaviors.clickGaTrack = {
+        attach: function (context) {
+            var els = $util.once($dom.$$$(context, '[data-click-ga-track]'), 'behavior.clickGaTrack');
+            
+            els.forEach(function (el) {
+                $dom.on(el, 'click', function (e) {
+                    var options = objVal($dom.data(el, 'clickGaTrack'));
+
+                    e.preventDefault();
+                    $cms.gaTrack(el, options.category, options.action);
+                });
+            });
+        }
+    };
+
+    // Implementation for [data-click-ui-open]
+    $cms.behaviors.onclickUiOpen = {
+        attach: function (context) {
+            var els = $util.once($dom.$$$(context, '[data-click-ui-open]'), 'behavior.onclickUiOpen');
+            els.forEach(function (el) {
+                $dom.on(el, 'click', function () {
+                    var args = arrVal($dom.data(el, 'clickUiOpen'));
+                    $cms.ui.open($cms.maintainThemeInLink(args[0]), args[1], args[2], args[3], args[4]);
+                });
+            });
+        }
+    };
+
+    // Implementation for [data-click-do-input]
+    $cms.behaviors.onclickDoInput = {
+        attach: function (context) {
+            var els = $util.once($dom.$$$(context, '[data-click-do-input]'), 'behavior.onclickDoInput');
+            
+            els.forEach(function (el) {
+                $dom.on(el, 'click', function () {
+                    var args = arrVal($dom.data(el, 'clickDoInput')),
+                        type = strVal(args[0]),
+                        fieldName = strVal(args[1]),
+                        tag = strVal(args[2]),
+                        fnName = 'doInput' + $util.ucFirst($util.camelCase(type));
+
+                    if (typeof window[fnName] === 'function') {
+                        window[fnName](fieldName, tag);
+                    } else {
+                        $util.fatal('$cms.behaviors.onclickDoInput.attach(): Function not found "window.' + fnName + '()"');
+                    }
+                });
+            });
+        }
+    };
+
+    // Implementation for [data-click-toggle-checked="<SELECTOR FOR TARGET CHECKBOX(ES)>"]
+    $cms.behaviors.onclickToggleCheckboxes = {
+        attach: function (context) {
+            var els = $util.once($dom.$$$(context, '[data-click-toggle-checked]'), 'behavior.onclickToggleCheckboxes');
+            
+            els.forEach(function (el) {
+                $dom.on(el, 'click', function () {
+                    var selector = strVal(el.dataset.clickToggleChecked),
+                        checkboxes = $dom.$$(selector);
+
+                    checkboxes.forEach(function (checkbox) {
+                        $dom.toggleChecked(checkbox);
+                    });
+                });
+            });
+        }
+    };
+
+    // Implementation for [data-cms-rich-tooltip]
+    // "Rich semantic tooltips"
+    $cms.behaviors.cmsRichTooltip = {
+        attach: function (context) {
+            var els = $util.once($dom.$$$(context, '[data-cms-rich-tooltip]'), 'behavior.cmsRichTooltip');
+            
+            els.forEach(function (el) {
+                var options = objVal($dom.data(el, 'cmsRichTooltip'));
+                
+                $dom.on(el, 'click mouseover keypress', function (e) {
+                    if (el.ttitle === undefined) {
+                        el.ttitle = (el.attributes['data-title'] ? el.getAttribute('data-title') : el.title);
+                        el.title = '';
+                    }
+
+                    if ((e.type === 'mouseover') && options.haveLinks) {
+                        return;
+                    }
+
+                    //arguments: el, event, tooltip, width, pic, height, bottom, no_delay, lights_off, force_width, win, haveLinks
+                    var args = [el, e, el.ttitle, 'auto', null, null, false, true, false, false, window, true/*!!el.haveLinks*/];
+
+                    try {
+                        $cms.ui.activateTooltip.apply(undefined, args);
+                    } catch (ex) {
+                        $util.fatal('$cms.behaviors.cmsRichTooltip.attach(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
+                    }
+                });
+            });
+        }
+    };
+
+    // Implementation for [data-disable-on-click]
+    // Disable button after click
+    $cms.behaviors.disableOnClick = {
+        attach: function (context) {
+            var els = $util.once($dom.$$$(context, '[data-disable-on-click]'), 'behavior.disableOnClick');
+            
+            els.forEach(function (el) {
+                $dom.on(el, 'click', function () {
+                    $cms.ui.disableButton(el);
+                });
+            });
+        }
+    };
+
+    // Implementation for [data-mouseover-activate-tooltip]
+    $cms.behaviors.onmouseoverActivateTooltip = {
+        attach: function (context) {
+            var els = $util.once($dom.$$$(context, '[data-mouseover-activate-tooltip]'), 'behavior.onmouseoverActivateTooltip');
+            
+            els.forEach(function (el) {
+                $dom.on(el, 'mouseover', function (e) {
+                    var args = arrVal($dom.data(el, 'mouseoverActivateTooltip'));
+
+                    args.unshift(el, e);
+
+                    try {
+                        //arguments: el, event, tooltip, width, pic, height, bottom, no_delay, lights_off, force_width, win, haveLinks
+                        $cms.ui.activateTooltip.apply(undefined, args);
+                    } catch (ex) {
+                        $util.fatal('$cms.behaviors.onmouseoverActivateTooltip.attach(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
+                    }
+                });
+            });
+        }
+    };
+
+    // Implementation for [data-focus-activate-tooltip]
+    $cms.behaviors.onfocusActivateTooltip = {
+        attach: function (context) {
+            var els = $util.once($dom.$$$(context, '[data-focus-activate-tooltip]'), 'behavior.onfocusActivateTooltip');
+
+            els.forEach(function (el) {
+                $dom.on(el, 'focus', function (e) {
+                    var args = arrVal($dom.data(el, 'focusActivateTooltip'));
+
+                    args.unshift(el, e);
+
+                    try {
+                        //arguments: el, event, tooltip, width, pic, height, bottom, no_delay, lights_off, force_width, win, haveLinks
+                        $cms.ui.activateTooltip.apply(undefined, args);
+                    } catch (ex) {
+                        $util.fatal('$cms.behaviors.onfocusActivateTooltip.attach(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
+                    }
+                });
+            });
+        }
+    };
+    
+    // Implementation for [data-blur-deactivate-tooltip]
+    $cms.behaviors.onblurDeactivateTooltip = {
+        attach: function (context) {
+            var els = $util.once($dom.$$$(context, '[data-blur-deactivate-tooltip]'), 'behavior.onblurDeactivateTooltip');
+            
+            els.forEach(function (el) {
+                $dom.on(el, 'blur', function () {
+                    $cms.ui.deactivateTooltip(el);
+                });
+            });
+        }
+    };
+
+    // Implementation for [data-click-forward="{ child: '.some-selector' }"]
+    $cms.behaviors.onclickForwardTo = {
+        attach: function (context) {
+            var els = $util.once($dom.$$$(context, '[data-click-forward]'), 'behavior.onclickForwardTo');
+            
+            els.forEach(function (el) {
+                $dom.on(el, 'click', function (e) {
+                    var options = objVal($dom.data(el, 'clickForward'), {}, 'child'),
+                        child = strVal(options.child), // Selector for target child element
+                        except = strVal(options.except), // Optional selector for excluded elements to let pass-through
+                        childEl = $dom.$(el, child);
+
+                    if (!childEl) {
+                        // Nothing to do
+                        return;
+                    }
+
+                    if (!childEl.contains(e.target) && (!except || !$dom.closest(e.target, except, el.parentElement))) {
+                        // ^ Make sure the child isn't the current event's target already, and check for excluded elements to let pass-through
+                        e.preventDefault();
+                        $dom.trigger(childEl, 'click');
+                    }
+                });
+            });
+        }
+    };
+
+    // Implementation for [data-open-as-overlay]
+    // Open page in overlay
+    $cms.behaviors.onclickOpenOverlay = {
+        attach: function (context) {
+            if (!$cms.configOption('js_overlays')) {
+                return;
+            }
+            
+            var els = $util.once($dom.$$$(context, '[data-open-as-overlay]'), 'behavior.onclickOpenOverlay');
+            
+            els.forEach(function (el) {
+                $dom.on(el, 'click', function (e) {
+                    var options, url = (el.href === undefined) ? el.action : el.href;
+                    
+                    if ($util.url(url).hostname !== window.location.hostname) {
+                        return; // Cannot overlay, different domain
+                    }
+
+                    e.preventDefault();
+
+                    options = objVal($dom.data(el, 'openAsOverlay'));
+                    options.el = el;
+
+                    openLinkAsOverlay(options);
+                });
+            });
+        }
+    };
+
+    // Implementation for `click a[rel*="lightbox"]`
+    // Open link in a lightbox
+    $cms.behaviors.onclickOpenLightbox = {
+        attach: function (context) {
+            if (!($cms.configOption('js_overlays'))) {
+                return;
+            }
+
+            var els = $util.once($dom.$$$(context, 'a[rel*="lightbox"]'), 'behavior.onclickOpenLightbox');
+            
+            els.forEach(function (el) {
+                $dom.on(el, 'click', function (e) {
+                    e.preventDefault();
+
+                    if (el.querySelector('img, video')) {
+                        openImageIntoLightbox(el);
+                    } else {
+                        openLinkAsOverlay({ el: el });
+                    }
+
+                    function openImageIntoLightbox(el) {
+                        var hasFullButton = (el.firstElementChild == null) || (el.href !== el.firstElementChild.src);
+                        $cms.ui.openImageIntoLightbox(el.href, ((el.cmsTooltipTitle !== undefined) ? el.cmsTooltipTitle : el.title), null, null, hasFullButton);
+                    }
+                });
+            });
+        }
+    };
+
+    // Implementation for [data-cms-href="<URL>"]
+    // Simulated [href] for non <a> elements
+    $cms.behaviors.cmsHref = {
+        attach: function (context) {
+            var els = $util.once($dom.$$$(context, '[data-cms-href]'), 'behavior.cmsHref');
+            
+            els.forEach(function (el) {
+                $dom.on(el, 'click', function (e) {
+                    var anchorClicked = Boolean($dom.closest(e.target, 'a', el));
+
+                    // Make sure a child <a> element wasn't clicked and default wasn't prevented
+                    if (!anchorClicked && !e.defaultPrevented) {
+                        $util.navigate(el);
+                    }
+                });
+            });
+        }
+    };
+
+    // Implementation for [data-stuck-nav]
+    // Pinning to top if scroll out (LEGACY: CSS is going to have a better solution to this soon)
+    $cms.behaviors.stuckNav = {
+        attach: function (context) {
+            var els = $util.once($dom.$$$(context, '[data-stuck-nav]'), 'behavior.stuckNav');
+
+            els.forEach(function (stuckNav) {
+                window.addEventListener('scroll', $util.throttle(function () {
+                    scrollListener(stuckNav);
+                }, 400));
+            });
+
+            /**
+             * @param { Element } stuckNav
+             */
+            function scrollListener(stuckNav) {
+                var stuckNavHeight = (stuckNav.realHeight == null) ? $dom.contentHeight(stuckNav) : stuckNav.realHeight;
+
+                stuckNav.realHeight = stuckNavHeight;
+                var posY = $dom.findPosY(stuckNav.parentNode, true),
+                    footerHeight = document.querySelector('footer') ? document.querySelector('footer').offsetHeight : 0,
+                    panelBottom = $dom.$('#panel_bottom');
+
+                if (panelBottom) {
+                    footerHeight += panelBottom.offsetHeight;
+                }
+                panelBottom = $dom.$('#global_messages_2');
+                if (panelBottom) {
+                    footerHeight += panelBottom.offsetHeight;
+                }
+                if (stuckNavHeight < ($dom.getWindowHeight() - footerHeight)) { // If there's space in the window to make it "float" between header/footer
+                    var extraHeight = (window.pageYOffset - posY);
+                    if (extraHeight > 0) {
+                        var width = $dom.contentWidth(stuckNav),
+                            height = $dom.contentHeight(stuckNav),
+                            stuckNavWidth = $dom.contentWidth(stuckNav);
+
+                        if (!window.getComputedStyle(stuckNav).getPropertyValue('width')) { // May be centered or something, we should be careful
+                            stuckNav.parentNode.style.width = width + 'px';
+                        }
+                        stuckNav.parentNode.style.height = height + 'px';
+                        stuckNav.style.position = 'fixed';
+                        stuckNav.style.top = '0px';
+                        stuckNav.style.zIndex = '1000';
+                        stuckNav.style.width = stuckNavWidth + 'px';
+                    } else {
+                        stuckNav.parentNode.style.width = '';
+                        stuckNav.parentNode.style.height = '';
+                        stuckNav.style.position = '';
+                        stuckNav.style.top = '';
+                        stuckNav.style.width = '';
+                    }
+                } else {
+                    stuckNav.parentNode.style.width = '';
+                    stuckNav.parentNode.style.height = '';
+                    stuckNav.style.position = '';
+                    stuckNav.style.top = '';
+                    stuckNav.style.width = '';
+                }
+            }
+        }
+    };
+
+    function openLinkAsOverlay(options) {
+        options = $util.defaults({
+            width: '800',
+            height: 'auto',
+            target: '_top',
+            el: null
+        }, options);
+
+        var width = strVal(options.width);
+
+        if (width.match(/^\d+$/)) { // Restrain width to viewport width
+            width = Math.min(parseInt(width), $dom.getWindowWidth() - 60) + '';
+        }
+
+        var el = options.el,
+            url = (el.href === undefined) ? el.action : el.href,
+            urlStripped = url.replace(/#.*/, ''),
+            newUrl = urlStripped + (!urlStripped.includes('?') ? '?' : '&') + 'wide_high=1' + url.replace(/^[^\#]+/, '');
+
+        $cms.ui.open(newUrl, null, 'width=' + width + ';height=' + options.height, options.target);
+    }
     
     function convertTooltip(el) {
         var title = el.title;

@@ -97,13 +97,13 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 
 			{+START,IF,{$GET,has_left_panel}}
 				<div id="panel_left" class="global_side_panel{+START,IF,{$GET,has_right_panel}} with_both_panels{+END}" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
-					<div class="stuck_nav">{$LOAD_PANEL,left}</div>
+					<div class="stuck_nav" data-stuck-nav>{$LOAD_PANEL,left}</div>
 				</div>
 			{+END}
 
 			{+START,IF,{$GET,has_right_panel}}
 				<div id="panel_right" class="global_side_panel{+START,IF,{$GET,has_left_panel}} with_both_panels{+END}" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
-					<div class="stuck_nav">{$LOAD_PANEL,right}</div>
+					<div class="stuck_nav" data-stuck-nav>{$LOAD_PANEL,right}</div>
 				</div>
 			{+END}
 		</div>
