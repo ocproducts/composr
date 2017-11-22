@@ -1,3 +1,224 @@
-[title sub="Written by Salman Abbas (ocProducts)"]Composr Tutorial: JavaScript guide[/title]
+[title sub="Written by Salman Abbas (ocProducts)"]Composr Tutorial: JavaScript Reference[/title]
 
-TODO: Salman will write tutorial #508
+[title="2"]Introduction[/title]
+This tutorial guides you through using JavaScript in Composr.
+
+[title="2"]Libraries[/title]
+
+In order to avoid polluting the JavaScript environment with global variables and functions, Composr exports its public JavaScript API using "libraries" instead. 
+"Libraries" are plain JavaScript objects that are global and named with a dollar sign ($) prefix. Composr core consists of three main libraries: [b]$cms[/b], [b]$util[/b] and [b]$dom[/b].
+
+[title="3"]The [b]$cms[/b] library[/title]
+This library mainly consists of important functions specific to Composr, and some ported from PHP. It has further sub-libraries, like [b]$cms.form[/b] --- which has form validation functions.
+Following are some of the most commonly used [b]$cms[/b] functions:
+[code="JavaScript"]
+$cms.isGuest(); // Returns true if the user is not logged in.
+
+$cms.isStaff(); // Returns true if the current user is a staff member.
+
+$cms.isAdmin(); // Returns true if the current user is an administrator.
+ 
+$cms.isMobile(); // Returns true if mobile mode is active, false for desktop mode.
+
+$cms.configOption('js_overlays'); // Pass the name of a config option to get its value. Please note that this function only works for a subset of config options that are marked as public. 
+
+$cms.requireJavascript('captcha');// Equivalent of require_javascript() in PHP, returns an ES6 promise that's resolved once the script is loaded.
+
+$cms.doAjaxRequest('some/url.php').then(function (xhr) { // Returns an ES6 promise that's resolved with the XHR object once the request is complete.
+    var response = xhr.responseText;
+    // Do something with the response
+});
+[/code]
+
+[title="3"]The [b]$cms.ui[/b] library[/title]
+This library consists of functions you can use to open nifty modals or lightboxes and manipulate Composr UI widgets
+[code="JavaScript"]
+$cms.ui.alert('Notice goes here...!', 'Modal title'); // Shows an alert modal, returns an ES6 promise that's resolved once the modal is closed
+
+$cms.ui.confirm('Question goes here', null, 'Modal title'); // Shows a confirmation modal, returns an ES6 promise that resolved with a boolean indicating whether yes or no was clicked.
+
+$cms.ui.prompt('Question goes here', 'Default value', null, 'Modal title'); // Shows a prompt modal, returns an ES6 promise that's resolved with the input provided by the user.
+[/code]
+
+[title="3"]The [b]$cms.form[/b] library[/title]
+This library consists of form validation and manipulation functions.
+[code="JavaScript"]
+$cms.form.checkForm(formElement); // Returns an ES6 promise that resolves with a boolean indicating form validity.
+
+$cms.form.doAjaxFieldTest(checkUrl); // Returns an ES6 promise that resolves with a boolean indicating field validity.
+
+$cms.form.areUploadsComplete(formElement); // Whether all on-going file uploads have completed for a form.
+[/code]
+
+[title="3"]The [b]$cms.behaviors[/b] library[/title]
+Composr borrows the concept of behaviors from Drupal. You are encouraged to quickly learn about them before continuing with this tutorial: [url="https://www.drupal.org/docs/7/api/javascript-api/javascript-api-overview#drupal-behaviors"]Drupal.behaviors[/url].
+Please note that unlike Drupal behaviors which depend on jQuery.once plugin, we use our own $util.once() function.
+
+[title="3"]The [b]$util[/b] library[/title]
+This library consists of utility functions. [b]$util[/b] is inspired by [url="http://underscorejs.org"]Underscore.js[/url].
+
+[code="JavaScript"]
+$util.random(); // Returns a random integer between zero and a trillion.
+
+// String interpolation
+$util.format('My name is {1}', ['Salman']); // "My name is Salman"
+
+$util.isNumeric('123'); // Returns true if the string is numeric
+[/code]
+
+Among other niceties [b]$util[/b] provides a way to declare ES6 classes while keeping backwards compatibility:
+[code="JavaScript"]
+/* Creating a class */
+function Animal() {
+    this.speak();
+}
+
+$util.properties(Animal.prototype, { // First parameter is a prototype object, second is the methods you want to add to it.
+    speak: function () {
+        console.log('Not implemented yet');
+    }
+});
+[/code]
+The above is equivalent to the following ES6 code:
+[code="JavaScript"]
+class Animal {
+    constructor () {
+        this.speak();
+    }
+	
+    speak() {
+        console.log('Not implemented yet');
+    }
+}
+[/code]
+[b]$util[/b] also allows for backwards-compatible sub-classing:
+[code="JavaScript"]
+/* Creating a sub-class */
+function Cow() {
+    Cow.base(this, 'constructor', arguments); // Call the parent constructor
+}
+
+$util.inherits(Cow, Animal, { // First parameter is the new sub-class, second is the parent class and finally any instance methods for the sub-class
+    speak: function () {
+        console.log('Mooo!');
+    }
+});
+[/code]
+The above is equivalent to the following ES6 code:
+[code="JavaScript"]
+class Cow extends Animal {
+    constructor() {
+        super(); // Call the parent constructor
+    }
+	
+    speak() {
+        console.log('Mooo!');
+    }
+}
+[/code]
+
+[title="3"]The [b]$dom[/b] library[/title]
+This library consists of DOM manipulation functions. [b]$dom[/b] is inspired by jQuery, except it works on individual elements instead of collections of them.
+
+[code="JavaScript"]
+$dom.ready.then(function () { // $dom.ready is an ES6 promise that's resolved when DOM is ready.
+    // DOM ready
+});
+
+$dom.load.then(function () { // $dom.load is an ES6 promise that's resolved when all the page content has fully loaded (once the window "load" event has fired).
+    // DOM fully loaded
+});
+
+$dom.$('.my-element'); // Returns a single element which has a class "my-element", null if not found.
+
+$dom.$$('.some-element'); // Returns an array of all elements with the class "some-element"
+
+$dom.$$$(someElement, '.child-element'); // (Three dollar signs) Returns an array of all elements within `someElement` that have the class "child-element" plus `someElement` too if it has the class "child-element".
+
+// Event listening
+$dom.on('.my-element', 'click', function () {
+    // Listen to the click event on .my-element
+});
+
+// Event delegation
+$dom.on('.parent-element', 'click', '.child-element', function () {
+    // Listens to the click event on .parent-element but only calls this function when clicked inside .child-element 
+});
+[/code]
+
+[title="2"]Content Security Policy (CSP)[/title]
+Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks, including Cross Site Scripting (XSS) and data injection attacks. 
+CSP prohibits developers from using inline event handlers and inline script tags. Composr core strictly adheres to these guidelines and thus is completely free of inline event handlers and script elements. 
+
+
+[title="2"]Templates/Views[/title]
+In order to adhere with CSP guidelines, instead of using inline event handlers or script tags, Composr keeps all code related to Tempcode templates under either template functions in the [b]$cms.templates[/b] library or as the more advanced view classes under [b]$cms.views[/b].
+To make this possible the [b]data-tpl[/b] ($cms.behaviors.initializeTemplates) and [b]data-view[/b] ($cms.behaviors.initializeViews) behaviors along with the PARAMS_JSON tempcode directive are used.
+
+[title="3"]Example for [b]data-tpl[/b]:[/title]
+Create a file named EXAMPLE.tpl under the [i]templates_custom[/i] folder with the following contents:
+[code="HTML"]
+<!-- Add a data-tpl attribute to the outer-most element naming a template function, optionally pass a parameters object using the data-tpl-params attribute -->
+<div data-tpl="example" data-tpl-params="{ message: 'Button was clicked' }">
+    <button type="button" class="js-click-show-alert-with-message">Click me!</button>
+    <!-- If you look closely, to avoid adding an inline event handler here we have added a CSS class to the interactive element, we can later attach event listeners in the template function below. -->
+    <!-- Composr convention is to prefix all CSS classes that trigger JS functionality with 'js-' followed by the event name it's triggered on ('click' here) and the remainder describes what is being done. -->
+</div>
+[/code]
+The corresponding JS for the above HTML would look like:
+[code="JavaScript"]
+// The data-tpl attribute was set to "example" so we will create a function named so under the $cms.templates library.
+$cms.templates.example = function (params, container) { 
+    // The first parameter provided to template functions is the params object passed to the data-tpl-params attribute, second is the container element having the data-tpl attribute.
+    var message = params.message;
+    
+    // You can add any template initialization code here...
+    
+    // Attach an event listener using event delegation
+    $dom.on(container, 'click', '.js-click-show-alert-with-message', function () {
+        window.alert(message); // This will show an alert modal whenever the button in EXAMPLE.tpl is clicked
+    });
+};
+[/code]
+
+Template functions suffice for most common use cases except for some templates which have lots of JS involved, where you can use OOP-based view classes instead.
+Composr View classes are heavily inspired by Backbone views, you can learn more about them here: [url="http://backbonejs.org/#View"]Backbone.View[/url].
+
+[title="3"]Example for [b]data-view[/b]:[/title]
+
+Create a file named EXAMPLE_VIEW.tpl under the [i]templates_custom[/i] folder with the following contents:
+[code="HTML"]
+<!-- Add a data-view attribute to the outer-most element naming a view class, optionally pass a parameters object using the data-view-params attribute -->
+<div data-view="ExampleView" data-view-params="{ message: 'Button was clicked' }">
+    <button type="button" class="js-click-show-alert-with-message">Click me!</button>
+</div>
+[/code]
+The corresponding JS for the above HTML would look like as follows:
+[code="JavaScript"]
+// The data-view attribute was set to "ExampleView" so we need to create a class named so under the $cms.views library.
+$cms.views.ExampleView = ExampleView; // Remember to add your view class to [b]$cms.views[/b].
+function ExampleView(params) {
+    ExampleView.base(this, 'constructor', arguments); // Call the parent constructor
+    
+    // You can access the view container element using this.el
+    this.el.style.color = 'red';
+    
+    // You can access the view container element's child elements using this.$(), passing a selector to it
+    var button = this.$('button'); // Button element
+    // this.$$() for multiple elements
+    var buttons = this.$$('button'); // Array of button elements
+}
+
+$util.inherits(ExampleView, $cms.View, { // Sub-class the $cms.View class
+    // The events function allows for a convenient way to use event delegation, it must return a map of event name + selector -> method name strings.
+    events: function () {
+        return {
+            'click .js-click-show-alert-with-message': 'showAlertWithMessage'
+        };
+    };
+    
+    showAlertWithMessage: function () {
+        window.alert(this.params.message);
+    }
+});
+[/code]
