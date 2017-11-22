@@ -1006,13 +1006,13 @@
 
         // Set up overlay for Lightbox
         var lightboxCode = /** @lang HTML */'' +
-           '<div style="text-align: center">' +
-                '<p class="ajax_loading" id="lightbox_image"><img src="' + $cms.img('{$IMG*;,loading}') + '" /></p>' +
-                '<p id="lightbox_meta" style="display: none" class="associated_link associated_links_block_group">' +
-                    '<span id="lightbox_description">' + description + '</span>' +
-                    ((n == null) ? '' : ('<span id="lightbox_position_in_set"><span id="lightbox_position_in_set_x">' + x + '</span> / <span id="lightbox_position_in_set_n">' + n + '</span></span>')) +
-                    (isVideo ? '' : ('<span id="lightbox_full_link"><a href="' + $cms.filter.html(initialImgUrl) + '" target="_blank" title="{$STRIP_TAGS;^,{!SEE_FULL_IMAGE}} {!LINK_NEW_WINDOW;^}">{!SEE_FULL_IMAGE;^}</a></span>')) +
-                '</p>' +
+            '<div style="text-align: center">' +
+            '    <p class="ajax_loading" id="lightbox_image"><img src="' + $cms.img('{$IMG*;,loading}') + '" /></p>' +
+            '    <p id="lightbox_meta" style="display: none" class="associated_link associated_links_block_group">' +
+            '         <span id="lightbox_description">' + description + '</span>' +
+            ((n == null) ? '' : ('<span id="lightbox_position_in_set"><span id="lightbox_position_in_set_x">' + x + '</span> / <span id="lightbox_position_in_set_n">' + n + '</span></span>')) +
+            (isVideo ? '' : ('<span id="lightbox_full_link"><a href="' + $cms.filter.html(initialImgUrl) + '" target="_blank" title="{$STRIP_TAGS;^,{!SEE_FULL_IMAGE}} {!LINK_NEW_WINDOW;^}">{!SEE_FULL_IMAGE;^}</a></span>')) +
+            '    </p>' +
             '</div>';
 
         // Show overlay
@@ -1085,21 +1085,24 @@
         sup.style.overflow = 'hidden';
 
         dimsFunc();
-        $dom.on(window, 'resize', dimsFunc);
+        $dom.on(window, 'resize', $util.throttle(dimsFunc, 400));
 
         function dimsFunc() {
+            var maxWidth, maxHeight, showLightboxFullLink;
+            
             lightboxDescription.style.display = (lightboxDescription.firstChild) ? 'inline' : 'none';
             if (lightboxFullLink) {
-                var showLightboxFullLink = !!(!isVideo && hasFullButton && ((realWidth > maxWidth) || (realHeight > maxHeight)));
+                showLightboxFullLink = Boolean(!isVideo && hasFullButton && ((realWidth > maxWidth) || (realHeight > maxHeight)));
                 $dom.toggle(lightboxFullLink, showLightboxFullLink);
             }
-            var showLightboxMeta = !!((lightboxDescription.style.display === 'inline') || (lightboxPositionInSet !== null) || (lightboxFullLink && lightboxFullLink.style.display === 'inline'));
+            var showLightboxMeta = Boolean((lightboxDescription.style.display === 'inline') || (lightboxPositionInSet != null) || (lightboxFullLink && lightboxFullLink.style.display === 'inline'));
             $dom.toggle(lightboxMeta, showLightboxMeta);
 
             // Might need to rescale using some maths, if natural size is too big
-            var maxDims = _getMaxLightboxImgDims(modal, hasFullButton),
-                maxWidth = maxDims[0],
-                maxHeight = maxDims[1];
+            var maxDims = _getMaxLightboxImgDims(modal, hasFullButton);
+            
+            maxWidth = maxDims[0];
+            maxHeight = maxDims[1];
 
             if (width > maxWidth) {
                 width = maxWidth;
@@ -1113,10 +1116,10 @@
 
             img.width = width;
             img.height = height;
-            modal.resetDimensions('' + width, '' + height, false, true); // Temporarily forced, until real height is known (includes extra text space etc)
+            modal.resetDimensions(width, height, false, true); // Temporarily forced, until real height is known (includes extra text space etc)
 
             setTimeout(function () {
-                modal.resetDimensions('' + width, '' + height, false);
+                modal.resetDimensions(width, height, false);
             });
 
             if (img.parentElement) {

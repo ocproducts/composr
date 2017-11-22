@@ -160,7 +160,7 @@
         $dom.html(ticktickticker, '<div class="ticker" style="text-indent: 400px; width: 400px;" id="' + myId + '"><span>' + newsTickerText + '</span></div>');
 
         setInterval(function () {
-            tickerTick(myId, 400);
+            window.tickerTick(myId, 400);
         }, 50);
     };
 }(window.$cms, window.$util, window.$dom));

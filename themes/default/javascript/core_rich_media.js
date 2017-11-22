@@ -208,17 +208,17 @@
             if (containsVideo) { // Remove this 'if' (so it always runs) if you do not want the grid-style layout (plus remove the media_set class from the outer div
                 var width = params.width ? 'style="width: ' + Number(params.width) + 'px"' : '',
                     imgWidthHeight = setImgWidthHeight ? ' width="' + Number(params.width) + '" height="' + Number(params.height) + '"' : '',
-                    mediaSetHtml = /** @lang HTML */' \
-                        <figure class="attachment" ' + width + '> \
-                            <figcaption>' + $util.format('{!comcode:MEDIA_SET;^}', [imgs.length]) + '<\/figcaption> \
-                            <div> \
-                                <div class="attachment_details"> \
-                                    <a class="js-click-open-images-into-lightbox" target="_blank" title="' + $cms.filter.html($util.format('{!comcode:MEDIA_SET^;}', [imgs.length])) + ' {!LINK_NEW_WINDOW^/}" href="#!"> \
-                                        <img ' + imgWidthHeight + ' src="' + $cms.filter.html(imgsThumbs[0]) + '" /> \
-                                    <\/a> \
-                                <\/div> \
-                            <\/div> \
-                        <\/figure>';
+                    mediaSetHtml = /** @lang HTML */'' +
+                        '<figure class="attachment" ' + width + '>' +
+                        '   <figcaption>' + $util.format('{!comcode:MEDIA_SET;^}', [imgs.length]) + '</figcaption>' +
+                        '   <div>' +
+                        '        <div class="attachment_details">' +
+                        '            <a class="js-click-open-images-into-lightbox" target="_blank" title="' + $cms.filter.html($util.format('{!comcode:MEDIA_SET^;}', [imgs.length])) + ' {!LINK_NEW_WINDOW^/}" href="#!">' +
+                        '                <img ' + imgWidthHeight + ' src="' + $cms.filter.html(imgsThumbs[0]) + '">' +
+                        '            </a>' +
+                        '        </div>' +
+                        '    </div>' +
+                        '</figure>';
                 $dom.html(mediaSet, mediaSetHtml);
                 $dom.on(mediaSet.querySelector('.js-click-open-images-into-lightbox'), 'click', function () {
                     openImageIntoLightbox(imgs);
@@ -226,7 +226,7 @@
             }
 
             function openImageIntoLightbox(imgs, start) {
-                start = +start || 0;
+                start = Number(start) || 0;
 
                 var modal = $cms.ui.openImageIntoLightbox(imgs[start][0], imgs[start][1], start + 1, imgs.length, true, imgs[start][2]);
                 modal.positionInSet = start;
@@ -236,8 +236,6 @@
                 previousButton.src = $cms.img('{$IMG;,mediaset_previous}');
                 previousButton.addEventListener('click', clickPreviousButton);
                 function clickPreviousButton(e) {
-                    e.preventDefault();
-
                     var newPosition = modal.positionInSet - 1;
                     if (newPosition < 0) {
                         newPosition = imgs.length - 1;
@@ -246,7 +244,7 @@
                     _openDifferentImageIntoLightbox(modal, newPosition, imgs);
                 }
 
-                modal.left = previous;
+                modal.left = clickPreviousButton;
                 modal.el.firstElementChild.appendChild(previousButton);
 
                 var nextButton = document.createElement('img');
@@ -254,8 +252,6 @@
                 nextButton.src = $cms.img('{$IMG;,mediaset_next}');
                 nextButton.addEventListener('click', clickNextButton);
                 function clickNextButton(e) {
-                    e.preventDefault();
-
                     var newPosition = modal.positionInSet + 1;
                     if (newPosition >= imgs.length) {
                         newPosition = 0;
@@ -264,7 +260,7 @@
                     _openDifferentImageIntoLightbox(modal, newPosition, imgs);
                 }
 
-                modal.right = next;
+                modal.right = clickNextButton;
                 modal.el.firstElementChild.appendChild(nextButton);
 
                 function _openDifferentImageIntoLightbox(modal, position, imgs) {

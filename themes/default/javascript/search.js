@@ -38,7 +38,6 @@
     });
 
     $cms.views.SearchFormScreen = SearchFormScreen;
-
     /**
      * @memberof $cms.views
      * @class

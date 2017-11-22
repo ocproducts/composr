@@ -6,6 +6,8 @@
     };
 
     $cms.functions.moduleAdminCustomComcode = function moduleAdminCustomComcode() {
+        var tag = document.getElementById('tag');
+        
         var updateFunc = function () {
             var e = document.getElementById('example');
             e.value = '[' + tag.value;
@@ -20,7 +22,6 @@
             e.value += '][/' + tag.value + ']';
         };
 
-        var tag = document.getElementById('tag');
         var i = 0, param;
         do {
             param = document.getElementById('parameters_' + i);
@@ -32,7 +33,7 @@
         tag.addEventListener('blur', function () {
             updateFunc();
             var title = document.getElementById('title');
-            if (title.value == '') {
+            if (title.value === '') {
                 title.value = tag.value.substr(0, 1).toUpperCase() + tag.value.substring(1, tag.value.length).replace(/\_/g, ' ');
             }
         });

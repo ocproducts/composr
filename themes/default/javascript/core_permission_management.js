@@ -277,7 +277,7 @@
 
             var button;
             // Hide certain things if we only have view settings here, else show them
-            if (numPrivilegeTotal == 0) {
+            if (numPrivilegeTotal === 0) {
                 $dom.html(matrix.querySelector('tr').cells[0], '{!USERGROUP;^}');
                 for (k = 0; k < knownGroups.length; k++) {
                     document.getElementById('access_' + knownGroups[k] + '_presets').style.display = 'none';
@@ -404,7 +404,7 @@
 
         // Send AJAX request
         if (setRequest !== '') {
-            $cms.doAjaxRequest($cms.getBaseUrlNohttp() + '/data/sitemap.php?set_perms=1' + $cms.keep(), null, setRequest).then(function () {
+            $cms.doAjaxRequest('data/sitemap.php?set_perms=1' + $cms.keep(), null, setRequest).then(function () {
                 $cms.ui.alert('{!permissions:PERMISSIONS_TREE_EDITOR_SAVED;^}');
             });
             return;

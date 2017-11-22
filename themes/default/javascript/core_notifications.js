@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     $cms.views.NotificationButtons = NotificationButtons;
@@ -192,7 +192,7 @@
             }
         });
     };
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));
 
 
 /*

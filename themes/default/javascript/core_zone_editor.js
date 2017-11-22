@@ -42,7 +42,7 @@
                 store = document.createElement('input');
                 store.setAttribute('type', 'hidden');
                 store.name = form.elements[i].name;
-                if (form.elements[i].getAttribute('type') == 'checkbox') {
+                if (form.elements[i].getAttribute('type') === 'checkbox') {
                     store.value = form.elements[i].checked ? '1' : '0';
                 } else {
                     store.value = form.elements[i].value;
@@ -70,7 +70,7 @@
         }
 
         if (params.comcode && params.class.includes('wysiwyg')) {
-            if ((window.wysiwygOn) && (wysiwygOn())) {
+            if ((window.wysiwygOn) && (window.wysiwygOn())) {
                 $dom.$('#edit_' + params.id + '_textarea').readOnly = true;
             }
         }
@@ -98,14 +98,14 @@
 
             function selectZeTab(id, tab) {
                 var tabs = ['view', 'edit', 'info', 'settings'];
-                var i, j, element, elementh, selects;
+                var i, element, elementh;
 
                 for (i = 0; i < tabs.length; i++) {
                     element = $dom.$id(tabs[i] + '_' + id);
                     elementh = $dom.$id(tabs[i] + '_tab_' + id);
                     if (element) {
                         element.style.display = (tabs[i] === tab) ? 'block' : 'none';
-                        if ((tabs[i] == tab) && (tab == 'edit')) {
+                        if ((tabs[i] === tab) && (tab === 'edit')) {
                             if ($cms.form.isWysiwygField($dom.$id('edit_' + id + '_textarea'))) {
                                 // LEGACY Fix for Firefox
                                 if (window.wysiwygEditors['edit_' + id + '_textarea'].document !== undefined) {
@@ -141,7 +141,7 @@
 
                 var data = '';
                 data += window.getTextbox(editElement);
-                var url = '{$FIND_SCRIPT_NOHTTP;,comcode_convert}?fix_bad_html=1&css=1&javascript=1&from_html=0&is_semihtml=' + ($cms.form.isWysiwygField(editElement) ? '1' : '0') + '&panel=' + (((id == 'panel_left') || (id == 'panel_right')) ? '1' : '0') + $cms.keep();
+                var url = '{$FIND_SCRIPT_NOHTTP;,comcode_convert}?fix_bad_html=1&css=1&javascript=1&from_html=0&is_semihtml=' + ($cms.form.isWysiwygField(editElement) ? '1' : '0') + '&panel=' + (((id === 'panel_left') || (id === 'panel_right')) ? '1' : '0') + $cms.keep();
                 var post = ($cms.form.isWysiwygField(editElement) ? 'data__is_wysiwyg=1&' : '') + 'data=' + encodeURIComponent(data);
                 if ($cms.form.isModSecurityWorkaroundEnabled()) {
                     post = $cms.form.modSecurityWorkaroundAjax(post);
@@ -162,7 +162,7 @@
             }
         },
 
-        submitComcode: function (e, target) {
+        submitComcode: function (e, form) {
             if ($cms.form.isModSecurityWorkaroundEnabled()) {
                 e.preventDefault();
                 $cms.form.modSecurityWorkaround(form);
@@ -170,7 +170,7 @@
         },
 
         toggleWysiwyg: function () {
-            toggleWysiwyg('edit_' + this.params.id + '_textarea');
+            window.toggleWysiwyg('edit_' + this.params.id + '_textarea');
         },
 
         setEditedPanel: function (e, field) {
@@ -197,7 +197,7 @@
         if (zone) {
             zone.addEventListener('blur', function () {
                 var title = document.getElementById('title');
-                if (title.value == '') {
+                if (title.value === '') {
                     title.value = zone.value.substr(0, 1).toUpperCase() + zone.value.substring(1, zone.value.length).replace(/\_/g, ' ');
                 }
             });
@@ -245,7 +245,7 @@
                 store.id = 'store_' + id;
                 $dom.$('#edit_field_store').appendChild(store);
             }
-            store.value = getTextbox(el);
+            store.value = window.getTextbox(el);
         }
 
         /* The WYSIWYG setting (not the actual HTML text value of the editor, the setting of whether WYSIWYG was used or not) */

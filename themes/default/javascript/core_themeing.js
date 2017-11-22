@@ -227,10 +227,14 @@
 
             editor.cssRecompilerTimer = setInterval(function () {
                 if ((window.opener) && (window.opener.document)) {
-                    if (editor.lastChange === undefined) return; // No change made at all
+                    if (editor.lastChange === undefined) { // No change made at all
+                        return;
+                    } 
 
                     var millisecondsAgo = (new Date()).getTime() - editor.lastChange;
-                    if (millisecondsAgo > 3 * 1000) return; // Not changed recently enough (within last 3 seconds)
+                    if (millisecondsAgo > 3 * 1000) { // Not changed recently enough (within last 3 seconds)
+                        return;
+                    } 
 
                     if (window.opener.haveSetUpParentPageHighlighting === undefined) {
                         setUpParentPageHighlighting(file, fileId);
@@ -260,7 +264,7 @@
         function receiveCompiledCss(ajaxResultFrame, file, win) {
             var doingCssFor = file.replace(/^css\//, '').replace('.css', '');
 
-            win || (win = window.opener)
+            win || (win = window.opener);
 
             if (win) {
                 try {
@@ -268,7 +272,7 @@
 
                     // Remove old link tag
                     var e;
-                    if (doingCssFor == 'no_cache') {
+                    if (doingCssFor === 'no_cache') {
                         e = win.document.getElementById('inline_css');
                         if (e) {
                             e.parentNode.removeChild(e);
@@ -277,7 +281,7 @@
                         var links = win.document.getElementsByTagName('link');
                         for (var i = 0; i < links.length; i++) {
                             e = links[i];
-                            if ((e.type == 'text/css') && (e.href.indexOf('/templates_cached/' + window.opener.$cms.userLang() + '/' + doingCssFor) != -1)) {
+                            if ((e.type === 'text/css') && (e.href.indexOf('/templates_cached/' + window.opener.$cms.userLang() + '/' + doingCssFor) !== -1)) {
                                 e.parentNode.removeChild(e);
                             }
                         }
@@ -285,22 +289,25 @@
 
                     // Create style tag for this
                     var style = win.document.getElementById('style_for_' + doingCssFor);
-                    if (!style) style = win.document.createElement('style');
+                    if (!style) {
+                        style = win.document.createElement('style');
+                    }
                     style.type = 'text/css';
                     style.id = 'style_for_' + doingCssFor;
                     if (style.styleSheet) {
                         style.styleSheet.cssText = css;
                     } else {
-                        if (style.childNodes[0] !== undefined) style.removeChild(style.childNodes[0]);
+                        if (style.childNodes[0] !== undefined) {
+                            style.removeChild(style.childNodes[0]);
+                        }
                         var tn = win.document.createTextNode(css);
                         style.appendChild(tn);
                     }
                     win.document.querySelector('head').appendChild(style);
 
-                    for (var i = 0; i < win.frames.length; i++) {
-                        if (win.frames[i]) // If test needed for some browsers, as window.frames can get out-of-date
-                        {
-                            receiveCompiledCss(ajaxResultFrame, file, win.frames[i]);
+                    for (var j = 0; j < win.frames.length; j++) {
+                        if (win.frames[j]) {// If test needed for some browsers, as window.frames can get out-of-date
+                            receiveCompiledCss(ajaxResultFrame, file, win.frames[j]);
                         }
                     }
                 } catch (ex) {}
@@ -314,7 +321,7 @@
 
             var li, a, selector, elements, element, j, css_text;
 
-            var selectors = window.opener.findActiveSelectors(doingCssFor, window.opener);
+            var selectors = findActiveSelectors(doingCssFor, window.opener);
 
             var list = document.getElementById('selector_list_' + fileId);
             $dom.html(list, '');
@@ -347,18 +354,18 @@
                 li.addEventListener('mouseover', function (cssText) {
                     return function (event) {
                         $cms.ui.activateTooltip(this, event, cssText, 'auto');
-                    }
+                    };
                 }(css_text));
 
                 // Jump-to
                 a.addEventListener('click', function (selector) {
-                    return function (event) {
+                    return function () {
                         editareaDoSearch(
                             'e_' + fileId,
                             '^[ \t]*' + selector.replace(/\./g, '\\.').replace(/\[/g, '\\[').replace(/\]/g, '\\]').replace(/\{/g, '\\{').replace(/\}/g, '\\}').replace(/\+/g, '\\+').replace(/\*/g, '\\*').replace(/\s/g, '[ \t]+') + '\\s*\\{'
                         );
                         return false;
-                    }
+                    };
                 }(selector));
 
                 // Highlighting on parent page
@@ -371,7 +378,7 @@
                                 elements[i].style.backgroundColor = 'green';
                             }
                         }
-                    }
+                    };
                 }(selector));
                 a.addEventListener('mouseout', function (selector) {
                     return function (event) {
@@ -382,7 +389,7 @@
                                 elements[i].style.backgroundColor = '';
                             }
                         }
-                    }
+                    };
                 }(selector));
 
                 // Highlighting from parent page
@@ -397,11 +404,15 @@
                                 var targetDistance = 0;
                                 var elementRecurse = element;
                                 do {
-                                    if (elementRecurse == target) break;
+                                    if (elementRecurse == target) {
+                                        break;
+                                    }
                                     elementRecurse = elementRecurse.parentNode;
                                     targetDistance++;
                                 } while (elementRecurse);
-                                if (targetDistance > 10) targetDistance = 10; // Max range
+                                if (targetDistance > 10) { // Max range
+                                    targetDistance = 10;
+                                } 
 
                                 a.style.outline = '1px dotted green';
                                 a.style.background = '#00' + (decToHex(255 - targetDistance * 25)) + '00';
@@ -410,7 +421,7 @@
                                 else
                                     a.style.color = 'black';
                             }
-                        }
+                        };
                     }(a, element));
                     element.addEventListener('mouseout', function (a) {
                         return function (event) {
@@ -419,7 +430,7 @@
                                 a.style.background = '';
                                 a.style.color = '';
                             }
-                        }
+                        };
                     }(a));
                 }
             }
@@ -428,15 +439,18 @@
                 var result = [], result2;
                 try {
                     result2 = opener.document.querySelectorAll(selector);
-                    for (var j = 0; j < result2.length; j++) result.push(result2[j]);
-                }
-                catch (e) {
-                }
+                    for (var j = 0; j < result2.length; j++) {
+                        result.push(result2[j]);
+                    }
+                } catch (e) {}
+                
                 for (var i = 0; i < opener.frames.length; i++) {
                     if (opener.frames[i]) // If test needed for some browsers, as window.frames can get out-of-date
                     {
                         result2 = findSelectorsFor(opener.frames[i], selector);
-                        for (var j = 0; j < result2.length; j++) result.push(result2[j]);
+                        for (var j = 0; j < result2.length; j++) {
+                            result.push(result2[j]);
+                        }
                     }
                 }
                 return result;
@@ -449,31 +463,30 @@
                         try {
                             if (
                                 (!match) ||
-                                (!win.document.styleSheets[i].href && ((win.document.styleSheets[i].ownerNode && win.document.styleSheets[i].ownerNode.id == 'style_for_' + match) ||
-                                (!win.document.styleSheets[i].ownerNode && win.document.styleSheets[i].id == 'style_for_' + match))) ||
-                                (win.document.styleSheets[i].href && win.document.styleSheets[i].href.indexOf('/' + match) != -1) ||
-                                (win.document.styleSheets[i].href && win.document.styleSheets[i].href.indexOf('sheet=' + match) != -1)
+                                (!win.document.styleSheets[i].href && ((win.document.styleSheets[i].ownerNode && win.document.styleSheets[i].ownerNode.id === 'style_for_' + match) ||
+                                (!win.document.styleSheets[i].ownerNode && win.document.styleSheets[i].id === 'style_for_' + match))) ||
+                                (win.document.styleSheets[i].href && win.document.styleSheets[i].href.indexOf('/' + match) !== -1) ||
+                                (win.document.styleSheets[i].href && win.document.styleSheets[i].href.indexOf('sheet=' + match) !== -1)
                             ) {
                                 classes = win.document.styleSheets[i].rules || win.document.styleSheets[i].cssRules;
                                 for (j = 0; j < classes.length; j++) {
                                     selector = classes[j].selectorText;
                                     test = win.document.querySelectorAll(selector);
-                                    if (test.length != 0) selectors.push(classes[j]);
+                                    if (test.length !== 0) {
+                                        selectors.push(classes[j]);
+                                    }
                                 }
                             }
-                        }
-                        catch (e) {
-                        }
+                        } catch (e) {}
                     }
-                }
-                catch (e) {
-                }
+                } catch (e) {}
 
                 for (i = 0; i < win.frames.length; i++) {
-                    if (win.frames[i]) // If test needed for some browsers, as window.frames can get out-of-date
-                    {
+                    if (win.frames[i]) {// If test needed for some browsers, as window.frames can get out-of-date
                         result2 = findActiveSelectors(match, win.frames[i]);
-                        for (var j = 0; j < result2.length; j++) selectors.push(result2[j]);
+                        for (j = 0; j < result2.length; j++) {
+                            selectors.push(result2[j]);
+                        }
                     }
                 }
 
@@ -501,7 +514,7 @@
         var title = document.getElementById('title');
         title.addEventListener('change', function () {
             var codename = document.getElementById('theme');
-            if (codename.value == '') {
+            if (codename.value === '') {
                 codename.value = title.value.replace(/[^{$URL_CONTENT_REGEXP_JS}]/g, '');
             }
         });
@@ -539,12 +552,12 @@
             }
 
             $cms.doAjaxRequest('{$FIND_SCRIPT;,tempcode_tester}' + $cms.keep(true), null, request).then(function (xhr) {
-                $dom.html(document.getElementById('preview_raw'), $cms.filter.html(xhr.responseText));
-                $dom.html(document.getElementById('preview_html'), xhr.responseText);
+                $dom.html('#preview_raw', $cms.filter.html(xhr.responseText));
+                $dom.html('#preview_html', xhr.responseText);
             });
 
             $cms.doAjaxRequest('{$FIND_SCRIPT;,tempcode_tester}?comcode=1' + $cms.keep(), null, request).then(function (xhr) {
-                $dom.html(document.getElementById('preview_comcode'), xhr.responseText);
+                $dom.html('#preview_comcode', xhr.responseText);
             });
         });
     };
@@ -875,7 +888,9 @@
                             var closerMatch = decoded.match('</(templates/.*)>');
                             if (closerMatch != null) {
                                 var at = inside.indexOf(closerMatch[1]);
-                                if (at != -1) inside.splice(at, 1);
+                                if (at != -1) {
+                                    inside.splice(at, 1);
+                                }
                             }
 
                             node.data = node.data.replace(matches[i], ''); // Strip it, to clean document
@@ -883,7 +898,9 @@
                     }
                 } else if (node.nodeType === 1) { // Element node
                     var before = node.getAttribute('data-template');
-                    if (!before) before = '';
+                    if (!before) {
+                        before = '';
+                    }
                     node.setAttribute('data-template', before + ' ' + inside.join(' ') + ' ');
                 }
 
@@ -902,7 +919,7 @@
                     _bitsRep = '';
                     for (_bit = 0; _bit < 8; _bit++) {
                         character = string.substr(i * 8 + _bit, 1);
-                        bit = (character == "\u200B") ? "1" : "0";
+                        bit = (character === "\u200B") ? "1" : "0";
                         _bitsRep += bit;
                     }
                     bitsRep = parseInt(_bitsRep, 2);
@@ -942,28 +959,28 @@
             return false;
         });
 
-        var ext = (tabTitle.indexOf('.') != -1) ? tabTitle.substring(tabTitle.indexOf('.') + 1, tabTitle.length) : '';
-        if (ext != '') {
+        var ext = (tabTitle.indexOf('.') !== -1) ? tabTitle.substring(tabTitle.indexOf('.') + 1, tabTitle.length) : '';
+        if (ext !== '') {
             tabTitle = tabTitle.substr(0, tabTitle.length - 4);
         }
         var iconImg = document.createElement('img');
-        if (ext == 'tpl') {
+        if (ext === 'tpl') {
             iconImg.src = $cms.img('{$IMG;,icons/16x16/filetypes/tpl}');
             iconImg.setAttribute('srcset', $cms.img('{$IMG;,icons/32x32/filetypes/tpl}'));
         }
-        if (ext == 'css') {
+        if (ext === 'css') {
             iconImg.src = $cms.img('{$IMG;,icons/16x16/filetypes/css}');
             iconImg.setAttribute('srcset', $cms.img('{$IMG;,icons/32x32/filetypes/css}'));
         }
-        if (ext == 'js') {
+        if (ext === 'js') {
             iconImg.src = $cms.img('{$IMG;,icons/16x16/filetypes/js}');
             iconImg.setAttribute('srcset', $cms.img('{$IMG;,icons/32x32/filetypes/js}'));
         }
-        if (ext == 'xml') {
+        if (ext === 'xml') {
             iconImg.src = $cms.img('{$IMG;,icons/16x16/filetypes/xml}');
             iconImg.setAttribute('srcset', $cms.img('{$IMG;,icons/32x32/filetypes/xml}'));
         }
-        if (ext == 'txt' || ext == '') {
+        if (ext === 'txt' || ext === '') {
             iconImg.src = $cms.img('{$IMG;,icons/16x16/filetypes/page_txt}');
             iconImg.setAttribute('srcset', $cms.img('{$IMG;,icons/32x32/filetypes/page_txt}'));
         }

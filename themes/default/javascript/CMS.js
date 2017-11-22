@@ -108,10 +108,12 @@
      * @returns {string}
      */
     $cms.userLang = $util.constant(strVal(symbols.LANG));
+
     /**
      * @memberof $cms
-     * @method
-     * @returns {string}
+     * @param [starting]
+     * @param [forceSession]
+     * @return {string}
      */
     $cms.keep = function keep(starting, forceSession) {
         var keep = $cms.pageKeepSearchParams(forceSession).toString();

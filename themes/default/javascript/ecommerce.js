@@ -12,8 +12,8 @@
                         if (billing.nodeName.toLowerCase() === 'select') {
                             if (shipping.selectedIndex === 0) {
                                 shipping.selectedIndex = billing.selectedIndex;
-                                if ($(shipping).select2 !== undefined) {
-                                    $(shipping).trigger('change');
+                                if (window.jQuery && (window.jQuery.fn.select2 !== undefined)) {
+                                    window.jQuery(shipping).trigger('change');
                                 }
                             }
                         } else {
@@ -21,7 +21,7 @@
                                 shipping.value = billing.value;
                             }
                         }
-                    }
+                    };
                 }(billing, shipping));
             }
         }
@@ -59,14 +59,21 @@
             var lengthUnits = _lengthUnits.options[_lengthUnits.selectedIndex].value, length = _length.value;
             if (document.getElementById('auto_recur').checked) {
                 // Limits based on https://developer.paypal.com/docs/classic/paypal-payments-standard/integration-guide/Appx_websitestandard_htmlvariables/
-                if ((lengthUnits == 'd') && ((length < 1) || (length > 90)))
+                if ((lengthUnits === 'd') && ((length < 1) || (length > 90))) {
                     _length.value = (length < 1) ? 1 : 90;
-                if ((lengthUnits == 'w') && ((length < 1) || (length > 52)))
+                }
+                
+                if ((lengthUnits === 'w') && ((length < 1) || (length > 52))) {
                     _length.value = (length < 1) ? 1 : 52;
-                if ((lengthUnits == 'm') && ((length < 1) || (length > 24)))
+                }
+                
+                if ((lengthUnits === 'm') && ((length < 1) || (length > 24))) {
                     _length.value = (length < 1) ? 1 : 24;
-                if ((lengthUnits == 'y') && ((length < 1) || (length > 5)))
+                }
+                
+                if ((lengthUnits === 'y') && ((length < 1) || (length > 5))) {
                     _length.value = (length < 1) ? 1 : 5;
+                }
             } else {
                 if (length < 1) {
                     _length.value = 1;
@@ -97,8 +104,10 @@
         });
 
         $dom.on(container, 'click', '.js-click-btn-i-disagree', function (e, btn) {
-            if (btn.dataset.tpLocation) {
-                window.location = btn.dataset.tpLocation
+            var newLocation = strVal(btn.dataset.tpLocation);
+            
+            if (newLocation) {
+                window.location = newLocation;
             }
         });
     };

@@ -41,6 +41,8 @@
     });
     
     $cms.functions.moduleTopicsPostJavascript = function moduleTopicsPostJavascript(size, stub) {
+        stub = strVal(stub);
+        
         var form = document.getElementById('post').form;
         form.addEventListener('submit', function () {
             var post = form.elements['post'],
@@ -62,15 +64,15 @@
                 return false;
             }
 
-            if (stub != '') {
+            if (stub !== '') {
                 var df = stub;
                 var pv = post.value;
-                if (post && (pv.substring(0, df.length) == df)) {
+                if (post && (pv.substring(0, df.length) === df)) {
                     pv = pv.substring(df.length, pv.length);
                 }
                 post.value = pv;
             }
-        })
+        });
     };
 
     $cms.functions.moduleTopicsPostJavascriptForceGuestNames = function moduleTopicsPostJavascriptForceGuestNames() {
@@ -176,7 +178,7 @@
             } else {
                 e.preventDefault();
             }
-        })
+        });
     };
 
     $cms.templates.cnsTopicPoll = function (params) {
