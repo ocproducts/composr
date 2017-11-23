@@ -997,7 +997,7 @@
 
         /*START JS from HTML_HEAD.tpl*/
         // Google Analytics account, if one set up
-        if ($cms.configOption('google_analytics').trim() && !$cms.isStaff() && !$cms.isAdmin()) {
+        if (strVal($cms.configOption('google_analytics')).trim() && !$cms.isStaff() && !$cms.isAdmin()) {
             (function (i, s, o, g, r, a, m) {
                 i['GoogleAnalyticsObject'] = r;
                 i[r] = i[r] || function () {
@@ -1020,7 +1020,7 @@
                 aConfig.cookieExpires = 0;
             }
 
-            window.ga('create', $cms.configOption('google_analytics').trim(), aConfig);
+            window.ga('create', strVal($cms.configOption('google_analytics')).trim(), aConfig);
 
             if (!$cms.isGuest()) {
                 window.ga('set', 'userId', strVal($cms.getMember()));
