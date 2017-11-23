@@ -13,11 +13,12 @@
         this.memberId = strVal(params.memberId);
         this.tabs = arrVal(params.tabs);
 
-        this.tabs.forEach((function (tab) {
+        var self = this;
+        this.tabs.forEach(function (tab) {
             var tabCode = strVal(tab.tabCode);
 
             if (tab.tabContent == null) {
-                window['load_tab__' + tabCode] = (function (automated) {
+                window['load_tab__' + tabCode] = function (automated) {
                     // Self destruct loader after this first run
                     window['load_tab__' + tabCode] = function () {};
 
@@ -25,13 +26,13 @@
                         scrollTo(0, 0);
                     }
 
-                    $cms.loadSnippet('profile_tab&tab=' + tabCode + '&member_id=' + this.memberId + window.location.search.replace('?', '&'), null, true).then(function (result) {
+                    $cms.loadSnippet('profile_tab&tab=' + tabCode + '&member_id=' + self.memberId + window.location.search.replace('?', '&')).then(function (result) {
                         $dom.html('#g_' + tabCode, result);
                         $cms.ui.findUrlTab();
                     });
-                }).bind(this);
+                };
             }
-        }).bind(this));
+        });
 
         if (this.tabs.length > 1) {
             // we do not want it to scroll down
@@ -91,7 +92,7 @@
                 tabCode = $cms.filter.id(clicked.dataset.tpTabCode).toLowerCase();
             $util.inform('Select tab', tabSet + tabCode);
             if (tabCode) {
-                $cms.ui.selectTab('g', tabSet + tabCode)
+                $cms.ui.selectTab('g', tabSet + tabCode);
             }
         });
     };

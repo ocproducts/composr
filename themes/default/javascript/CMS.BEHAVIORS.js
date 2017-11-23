@@ -125,17 +125,12 @@
                 // Convert form element title attributes into composr tooltips
                 if ($cms.configOption('js_overlays')) {
                     // Convert title attributes into composr tooltips
-                    var elements = form.elements, j;
+                    var elements = arrVal(form.elements), j;
+
+                    elements = elements.concat(form.querySelectorAll('input[type="image"]')); // JS DOM does not include input[type="image"] ones in form.elements
 
                     for (j = 0; j < elements.length; j++) {
                         if ((elements[j].title !== undefined) && (elements[j]['original-title'] === undefined/*check tipsy not used*/) && !elements[j].classList.contains('no_tooltip')) {
-                            convertTooltip(elements[j]);
-                        }
-                    }
-
-                    elements = form.querySelectorAll('input[type="image"][title]'); // JS DOM does not include input[type="image"] ones in form.elements
-                    for (j = 0; j < elements.length; j++) {
-                        if ((elements[j]['original-title'] === undefined/*check tipsy not used*/) && !elements[j].classList.contains('no_tooltip')) {
                             convertTooltip(elements[j]);
                         }
                     }
@@ -238,13 +233,15 @@
     $cms.behaviors.clickEval = {
         attach: function (context) {
             var els = $util.once($dom.$$$(context, '[data-click-eval]'), 'behavior.clickEval');
-            
+
             els.forEach(function (el) {
                 $dom.on(el, 'click', function clickEval() {
                     var code = strVal(el.dataset.clickEval);
 
                     if (code !== '') {
-                        window.eval.call(el, code); // eval() call
+                        (function () {
+                            eval(code); // eval() call
+                        }).call(el); // Set `this` context for eval
                     }
                 });
             });
@@ -416,7 +413,7 @@
         }
     };
 
-    // Convert img title attributes into composr tooltips
+    // Convert img title attributes into Composr tooltips
     $cms.behaviors.imageTooltips = {
         attach: function (context) {
             if (!$cms.configOption('js_overlays')) {

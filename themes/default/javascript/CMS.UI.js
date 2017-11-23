@@ -48,6 +48,9 @@
                 setTrayThemeImage('expand', 'contract', $IMG_expand, $IMG_contract, $IMG_contract2);
                 pic.setAttribute('alt', pic.getAttribute('alt').replace('{!EXPAND;^}', '{!CONTRACT;^}'));
                 pic.title = '{!CONTRACT;^}';
+                if (pic.cmsTooltipTitle !== undefined) {
+                    pic.cmsTooltipTitle = '{!CONTRACT;^}';
+                }
             }
 
             $dom.triggerResize(true);
@@ -66,6 +69,9 @@
                 setTrayThemeImage('contract', 'expand', $IMG_contract, $IMG_expand, $IMG_expand2);
                 pic.setAttribute('alt', pic.getAttribute('alt').replace('{!CONTRACT;^}', '{!EXPAND;^}'));
                 pic.title = '{!EXPAND;^}';
+                if (pic.cmsTooltipTitle !== undefined) {
+                    pic.cmsTooltipTitle = '{!EXPAND;^}';
+                }
             }
 
             $dom.triggerResize(true);
@@ -257,6 +263,7 @@
      * @param haveLinks - set to true if we activate/deactivate by clicking due to possible links in the tooltip or the need for it to work on mobile
      */
     $cms.ui.activateTooltip = function activateTooltip(el, event, tooltip, width, pic, height, bottom, noDelay, lightsOff, forceWidth, win, haveLinks) {
+        el = $dom.elArg(el);
         event || (event = {});
         width = strVal(width) || 'auto';
         pic = strVal(pic);
@@ -268,9 +275,15 @@
         win || (win = window);
         haveLinks = !!haveLinks;
 
-        if ((el.deactivatedAt) && (Date.now() - el.deactivatedAt < 200)) {
+        if (el.deactivatedAt && (Date.now() - el.deactivatedAt < 200)) {
             return;
         }
+
+        if (typeof tooltip === 'function') {
+            tooltip = tooltip();
+        }
+
+        tooltip = strVal(tooltip);
 
         if (!tooltip) {
             return;
@@ -278,10 +291,6 @@
 
         if (window.isDoingADrag) {
             // Don't want tooltips appearing when doing a drag and drop operation
-            return;
-        }
-
-        if (!el) {
             return;
         }
 
@@ -303,23 +312,13 @@
                 $cms.ui.repositionTooltip(el, event, false, false, null, false, win);
             });
         } else {
-            $dom.on(window, 'click.cmsTooltip', function (e) {
+            $dom.on(window, 'click.cmsTooltip' + $util.uid(el), function (e) {
                 if ($dom.$id(el.tooltipId) && $dom.isDisplayed($dom.$id(el.tooltipId))) {
                     $cms.ui.deactivateTooltip(el);
                 }
             });
         }
-
-        if (typeof tooltip === 'function') {
-            tooltip = tooltip();
-        }
-
-        tooltip = strVal(tooltip);
-
-        if (!tooltip) {
-            return;
-        }
-
+        
         el.isOver = true;
         el.deactivatedAt = null;
         el.tooltipOn = false;
@@ -389,10 +388,10 @@
         }
 
         var eventCopy = { // Needs to be copied as it will get erased on IE after this function ends
-            'pageX': +event.pageX || 0,
-            'pageY': +event.pageY || 0,
-            'clientX': +event.clientX || 0,
-            'clientY': +event.clientY || 0,
+            'pageX': Number(event.pageX) || 0,
+            'pageY': Number(event.pageY) || 0,
+            'clientX': Number(event.clientX) || 0,
+            'clientY': Number(event.clientY) || 0,
             'type': event.type || ''
         };
 
@@ -450,9 +449,6 @@
         }
 
         if (!el.tooltipId) {
-            if (el.onmouseover) {
-                el.onmouseover(event);
-            }
             return;
         }
 
@@ -549,7 +545,7 @@
         if (tooltipElement) {
             $dom.off(tooltipElement, 'mouseout.cmsTooltip');
             $dom.off(tooltipElement, 'mousemove.cmsTooltip');
-            // $dom.off(window, 'click.cmsTooltip');
+            $dom.off(window, 'click.cmsTooltip' + $util.uid(el));
             $dom.hide(tooltipElement);
         }
     };
@@ -788,7 +784,7 @@
                     // IE gives "Access is denied" if popup was blocked, due to var result assignment to non-real window
                 }
                 var timerNow = new Date().getTime();
-                if (timerNow - 100 > timer) { // Not popup blocked
+                if ((timerNow - 100) > timer) { // Not popup blocked
                     if (result == null) {
                         if (callback != null) {
                             callback(null);

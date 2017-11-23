@@ -2,7 +2,7 @@
     'use strict';
 
     $cms.templates.cnsPostTemplateSelect = function (params, container) {
-        var resets = booVal(params.resets);
+        var resets = boolVal(params.resets);
         
         $dom.on(container, 'click', '.js-click-reset-and-insert-textbox', function (e, button) {
             var form = button.form,

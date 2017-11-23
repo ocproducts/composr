@@ -51,11 +51,11 @@
             }
 
             if (data.vwTaskDone === 'not_completed') {
-                $cms.loadSnippet('checklist_task_manage', 'type=mark_done&id=' + id, true);
+                $cms.loadSnippet('checklist_task_manage', 'type=mark_done&id=' + id);
                 this.imgChecklistStatus.src = $IMG_checklist_checklist1;
                 data.vwTaskDone = 'checklist1';
             } else {
-                $cms.loadSnippet('checklist_task_manage', 'type=mark_undone&id=' + id, true);
+                $cms.loadSnippet('checklist_task_manage', 'type=mark_undone&id=' + id);
                 this.imgChecklistStatus.src = $IMG_checklist_not_completed;
                 data.vwTaskDone = 'not_completed';
             }
@@ -69,7 +69,7 @@
 
             $cms.ui.confirm(message, function (result) {
                 if (result) {
-                    $cms.loadSnippet('checklist_task_manage', 'type=delete&id=' + id, true);
+                    $cms.loadSnippet('checklist_task_manage', 'type=delete&id=' + id);
                     $dom.hide(viewEl);
                 }
             });

@@ -1051,7 +1051,7 @@
             handler.i = set.length;
             set.push(handler);
 
-            el.addEventListener(realEvent(handler.e), handler.proxy, eventCapture(handler, capture))
+            el.addEventListener(realEvent(handler.e), handler.proxy, eventCapture(handler, capture));
         });
     }
 
@@ -1089,33 +1089,26 @@
      * @param el { Window|Document|Element|string }
      * @param event {string|object}
      * @param [selector] {string|function}
-     * @param [data] {object|function}
      * @param [callback] {function}
      * @param [one] {number}
      */
-    $dom.on = function on(el, event, selector, data, callback, one) {
+    $dom.on = function on(el, event, selector, callback, one) {
         var autoRemove, delegator;
 
         el = $dom.domArg(el);
 
         if (event && (typeof event !== 'string')) {
             $util.each(event, function (type, fn) {
-                $dom.on(el, type, selector, data, fn, one);
+                $dom.on(el, type, selector, fn, one);
             });
             return;
         }
 
         if ((typeof selector !== 'string') && (typeof callback !== 'function') && (callback !== false)) {
-            callback = data;
-            data = selector;
+            callback = selector;
             selector = undefined;
         }
-
-        if ((callback === undefined) || (data === false)) {
-            callback = data;
-            data = undefined;
-        }
-
+        
         if (callback === false) {
             callback = function () { return false; };
         }
@@ -1147,13 +1140,12 @@
      * @param { Window|Document|Element|string } el
      * @param {string|object} event
      * @param {string|function} selector
-     * @param {object|function} [data]
      * @param {function} [callback]
      */
-    $dom.one = function one(el, event, selector, data, callback) {
+    $dom.one = function one(el, event, selector, callback) {
         el = $dom.domArg(el);
 
-        return $dom.on(el, event, selector, data, callback, 1);
+        return $dom.on(el, event, selector, callback, 1);
     };
 
     /**
