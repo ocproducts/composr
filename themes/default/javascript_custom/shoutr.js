@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     var MESSAGE_CHECK_INTERVAL = window.MESSAGE_CHECK_INTERVAL = Math.max(3000, parseInt('{$CONFIG_OPTION,chat_message_check_interval}'));
@@ -58,7 +58,7 @@
             clearTimeout(sbChatCheckTimerId);
         }
         sbChatCheckTimerId = setTimeout((function (messageId) {
-            sbChatCheck(sbChatRoomId, messageId, -1)
+            sbChatCheck(sbChatRoomId, messageId, -1);
         }).bind(undefined, sbLastMessageId), MESSAGE_CHECK_INTERVAL);
 
         function sbHandleSignals(ajaxResult) {
@@ -68,7 +68,7 @@
 
             // Look through our messages
             for (var i = 0; i < messageEls.length; i++) {
-                var id = messageEls[i].getAttribute("id");
+                var id = messageEls[i].getAttribute('id');
                 if ((id > sbLastMessageId) && (sbLastMessageId !== -1)) {
                     sbLastMessageId = parseInt(id);
                     if (sbLastMessageId !== -1) {
@@ -79,9 +79,9 @@
                         }
 
                         var frames = window.parent.document.getElementsByTagName('iframe');
-                        for (var i = 0; i < frames.length; i++) {
-                            if ((frames[i].src === window.location.href) || (frames[i].contentWindow === window) || ((window.parent.frames[frames[i].id] != null) && (window.parent.frames[frames[i].id] === window))) {
-                                var sb = frames[i];
+                        for (var j = 0; j < frames.length; j++) {
+                            if ((frames[j].src === window.location.href) || (frames[j].contentWindow === window) || ((window.parent.frames[frames[j].id] != null) && (window.parent.frames[frames[j].id] === window))) {
+                                var sb = frames[j];
                                 if (!sb.contentWindow.location.href.includes('posted') ) {
                                     sb.contentWindow.location.reload();
                                 }
@@ -161,7 +161,7 @@
                 div.style.opacity = 1.0 - counter / limit / 1.3;
                 div.style.left = (($dom.getWindowWidth() - div.offsetWidth) / 2 + window.pageXOffset) + 'px';
                 div.style.top = (($dom.getWindowHeight() - div.offsetHeight) / 2 - 20 + window.pageYOffset) + 'px';
-            }
+            };
         }
     }
-}(window.$cms));
+}(window.$cms, window.$util, window.$dom));

@@ -301,7 +301,7 @@
         $dom.on(container, 'click', '.js-click-do-emoticon', function (e, target) {
             var fieldName = target.dataset.tpFieldName;
             if (fieldName) {
-                window.doEmoticon(fieldName, target, true)
+                window.doEmoticon(fieldName, target, true);
             }
         });
     };
@@ -418,8 +418,9 @@
             submitBtn = document.getElementById('submit_button');
 
         form.elements['username'].onchange = function () {
-            if (form.elements['intro_title'])
+            if (form.elements['intro_title']) {
                 form.elements['intro_title'].value = $util.format('{!cns:INTRO_POST_DEFAULT;^}', [form.elements['username'].value]);
+            }
         };
 
         var validValues;
