@@ -233,7 +233,7 @@
     $cms.configOption = function configOption(optionName) {
         if (IN_MINIKERNEL_VERSION) {
             // Installer, likely executing global.js
-            return $util.constant('');
+            return '';
         }
 
         if ($util.hasOwn(configOptionsJson, optionName)) {

@@ -9,8 +9,8 @@
         updateNewsletterSettings();
 
         function updateNewsletterSettings() {
-            var hasNewsletter = (newsletterField.selectedIndex != 0);
-            var hasUsergroup = (usergroupField.selectedIndex != 0);
+            var hasNewsletter = (newsletterField.selectedIndex !== 0);
+            var hasUsergroup = (usergroupField.selectedIndex !== 0);
             newsletterField.form.elements['usergroup'].disabled = hasNewsletter;
             newsletterField.form.elements['usergroup_type'][0].disabled = hasNewsletter || !hasUsergroup;
             newsletterField.form.elements['usergroup_type'][1].disabled = hasNewsletter || !hasUsergroup;

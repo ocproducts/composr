@@ -216,7 +216,7 @@
                     nodeSelf.className = (node.getAttribute('highlighted') === 'true') ? 'tree_list_highlighted' : 'tree_list_nonhighlighted';
                     initiallyExpanded = (node.getAttribute('has_children') !== 'true') || (node.getAttribute('expanded') === 'true');
                     escapedTitle = $cms.filter.html((node.getAttribute('title') !== undefined) ? node.getAttribute('title') : '');
-                    if (escapedTitle == '') {
+                    if (escapedTitle === '') {
                         escapedTitle = '{!NA_EM;^}';
                     }
                     var description = '',
