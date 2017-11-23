@@ -902,7 +902,11 @@
         return window.getTextareaSelectedText(element);
     }
 
-    // Get selected HTML from CKEditor
+    /**
+     * Get selected HTML from CKEditor
+     * @param editor
+     * @return {string}
+     */
     function getWYSISWYGSelectedHtml(editor) {
         var mySelection = editor.getSelection();
         if (!mySelection || mySelection.getType() == window.CKEDITOR.SELECTION_NONE) {
@@ -918,6 +922,10 @@
         return selectedText;
     }
 
+    /**
+     * @param element
+     * @return {string}
+     */
     function getTextareaSelectedText(element) {
         if (typeof element.selectionEnd !== 'undefined') {
             var from = element.selectionStart,

@@ -301,9 +301,9 @@
         });
     }
 
-// ====================
-// COMCODE UI FUNCTIONS
-// ====================
+    // ====================
+    // COMCODE UI FUNCTIONS
+    // ====================
 
     function doInputHtml(fieldName) {
         var post = document.getElementById(fieldName);
@@ -515,7 +515,7 @@
                     '{!comcode:INPUT_COMCODE_hide;^}'
                 );
             }
-        })
+        });
     }
 
     function doInputThumb(fieldName, url) {
@@ -633,7 +633,7 @@
                     }
 
                     _doInputPage(fieldName, result, vc);
-                })
+                });
             });
             
             return;
@@ -733,9 +733,9 @@
         return window.insertTextboxWrapping(document.getElementById(fieldName), '[font=\"' + $cms.filter.comcode(face.value) + '\" color=\"' + $cms.filter.comcode(colour.value) + '\" size=\"' + $cms.filter.comcode(size.value) + '\"]', '[/font]', true);
     }
 
-// ==================
-// Auto-saving/drafts
-// ==================
+    // ==================
+    // Auto-saving/drafts
+    // ==================
 
     /*
      We support both remote and local saving.
