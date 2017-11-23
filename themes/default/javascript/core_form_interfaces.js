@@ -1613,7 +1613,6 @@
     }
 
     /**
-     * @TODO: NEEDS a description badly #508
      * @param setName
      * @param somethingRequired
      * @param defaultSet
@@ -1712,7 +1711,9 @@
             }
 
             function ___standardAlternateFieldUpdateEditability(field, chosenField, isLocked, isChosen, somethingRequired) {
-                if (!field) return;
+                if (!field) {
+                    return;
+                }
 
                 var radioButton = document.getElementById('choose_' + field.name.replace(/\[\]$/, ''));
                 if (!radioButton) {
@@ -1783,7 +1784,9 @@
                 var isSet = force || ((field.value !== '') && (field.value !== '-1'));
 
                 var radioButton = document.getElementById('choose_' + (field ? field.name : '').replace(/\[\]$/, '')); // Radio button handles field alternation
-                if (!radioButton) radioButton = document.getElementById('choose_' + field.name.replace(/\_\d+$/, '_'));
+                if (!radioButton) {
+                    radioButton = document.getElementById('choose_' + field.name.replace(/\_\d+$/, '_'));
+                }
                 if (secondRun) {
                     if (radioButton) {
                         return radioButton.checked;

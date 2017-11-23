@@ -1,11 +1,15 @@
 (function ($cms, $util, $dom) {
     'use strict';
 
-    var IN_MINIKERNEL_VERSION = document.documentElement.classList.contains('in-minikernel-version'),
-        symbols = (!IN_MINIKERNEL_VERSION ? JSON.parse(document.getElementById('composr-symbol-data').content) : {});
-
     /** @namespace $cms */
-    // Load up symbols data
+    /**
+     * @memberof $cms
+     * @method
+     * @returns {boolean}
+     */
+    $cms.inMinikernelVersion = $util.constant(document.documentElement.classList.contains('in-minikernel-version'));
+    
+    var symbols = (!$cms.inMinikernelVersion() ? JSON.parse(document.getElementById('composr-symbol-data').content) : {});
     /**
      * @memberof $cms
      * @method
@@ -41,7 +45,7 @@
      * @method
      * @returns {boolean}
      */
-    $cms.isDevMode = $util.constant(IN_MINIKERNEL_VERSION || boolVal(symbols.DEV_MODE));
+    $cms.isDevMode = $util.constant($cms.inMinikernelVersion() || boolVal(symbols.DEV_MODE));
     /**
      * @memberof $cms
      * @method
@@ -231,7 +235,7 @@
      * @returns {boolean|string|number}
      */
     $cms.configOption = function configOption(optionName) {
-        if (IN_MINIKERNEL_VERSION) {
+        if ($cms.inMinikernelVersion()) {
             // Installer, likely executing global.js
             return '';
         }

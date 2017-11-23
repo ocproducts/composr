@@ -17,10 +17,7 @@
             $IMG_expand2 = '{$IMG;,1x/trays/expand2}',
             $IMG_contract = '{$IMG;,1x/trays/contract}',
             $IMG_contract2 = '{$IMG;,1x/trays/contract2}';
-
-
-        // TODO: We have expcon and expcon2 theme images, for use during animation. Are we removing this? If so those theme images should be deleted fully. #508
-
+        
         if ($util.isPlainObj(elOrOptions)) {
             options = elOrOptions;
             el =  options.el;

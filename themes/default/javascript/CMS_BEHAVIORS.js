@@ -9,27 +9,6 @@
      */
     $cms.behaviors = {};
 
-    // Implementation for [data-require-javascript="[<scripts>...]"]
-    //$cms.behaviors.initializeRequireJavascript = {
-    //    priority: 10000,
-    //    attach: function (context) {
-    //        var promises = [];
-    //
-    //        $dom.$$$(context, '[data-require-javascript]').forEach(function (el) {
-    //            var scripts = arrVal($dom.data(el, 'requireJavascript'));
-    //
-    //            if (scripts.length) {
-    //                promises.push($cms.requireJavascript(scripts));
-    //            }
-    //        });
-    //
-    //        if (promises.length > 0) {
-    //            return Promise.all(promises);
-    //        }
-    //    }
-    //};
-    // TODO: Is this dead code? Is data-require-javascript in use or should be stripped? What's the purpose verses Tempcode method? #508
-
     // Implementation for [data-view]
     $cms.behaviors.initializeViews = {
         attach: function (context) {

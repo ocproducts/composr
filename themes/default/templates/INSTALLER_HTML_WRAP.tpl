@@ -47,7 +47,7 @@
 			</p>
 		</div>
 	
-		<script>
+		<script {$CSP_NONCE_HTML}>
 			{+START,IF_PASSED,GLOBAL_JS}{GLOBAL_JS/}{+END}
 		</script>
 	</body>
