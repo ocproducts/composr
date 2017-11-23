@@ -2163,6 +2163,7 @@
         var tags = m.querySelectorAll('.nlevel');
         var e = (window.activeMenu == null) ? null : document.getElementById(window.activeMenu), t;
         var i, hideable;
+        
         for (i = tags.length - 1; i >= 0; i--) {
             if (tags[i].localName !== 'ul' && tags[i].localName !== 'div') {
                 continue;
@@ -2175,8 +2176,8 @@
                     if (tags[i].id === t.id) {
                         hideable = false;
                     }
-                    t = t.parentNode.parentNode;
-                } while (t.id !== 'r_' + lastActiveMenu);
+                    t = t.parentNode ? t.parentNode.parentNode : null;
+                } while (t && (t.id !== 'r_' + lastActiveMenu));
             }
             if (hideable) {
                 tags[i].style.left = '-999px';
