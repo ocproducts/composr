@@ -455,11 +455,6 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
         'api' => 'docs',
         'composr-api-template' => 'docs',
 
-        // PHP compiler temporary files
-        'hphp-static-cache' => '',
-        'hphp.files.list' => '',
-        'hphp' => '',
-
         // Temporary files
         'temp' => '',
 
