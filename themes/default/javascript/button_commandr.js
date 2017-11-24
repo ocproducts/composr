@@ -1,26 +1,38 @@
-function loadCommandr() {
+(function ($cms, $util, $dom) {
     'use strict';
     
-    $cms.requireCss('commandr');
+    $cms.behaviors.btnLoadCommandr = {
+        attach: function (context) {
+            $util.once($dom.$$$(context, '[data-btn-load-commandr]'), 'behavior.btnLoadCommandr').forEach(function (btn) {
+                $dom.on(btn, 'click', function (e) {
+                    e.preventDefault();
+                    loadCommandr();
+                });
+            });
+        }
+    };
+    
+    function loadCommandr() {
+        if (!document.getElementById('commandr_img_loader')) {
+            var img = document.getElementById('commandr_img');
+            img.className = 'footer_button_loading';
+            var tmpEl = document.createElement('img');
+            tmpEl.id = 'commandr_img_loader';
+            tmpEl.src = $cms.img('{$IMG;,loading}');
+            tmpEl.style.position = 'absolute';
+            tmpEl.style.left = ($dom.findPosX(img) + 2) + 'px';
+            tmpEl.style.top = ($dom.findPosY(img) + 1) + 'px';
+            img.parentNode.appendChild(tmpEl);
+        }
 
-    if (!document.getElementById('commandr_img_loader')) {
-        var img = document.getElementById('commandr_img');
-        img.className = 'footer_button_loading';
-        var tmpEl = document.createElement('img');
-        tmpEl.id = 'commandr_img_loader';
-        tmpEl.src = $cms.img('{$IMG;,loading}');
-        tmpEl.style.position = 'absolute';
-        tmpEl.style.left = ($dom.findPosX(img) + 2) + 'px';
-        tmpEl.style.top = ($dom.findPosY(img) + 1) + 'px';
-        img.parentNode.appendChild(tmpEl);
-    }
-
-    $cms.requireJavascript('commandr').then(function () {
-        $cms.ui.confirmSession().then(function (sessionConfirmed) {
+        $cms.requireCss('commandr');
+        $cms.requireJavascript('commandr').then(function () {
+            return $cms.ui.confirmSession();
+        }).then(function (sessionConfirmed) {
             // Remove "loading" indicator from button
-            var tmpElement = document.getElementById('commandr_img_loader');
-            if (tmpElement) {
-                tmpElement.parentNode.removeChild(tmpElement);
+            var tmpEl = document.getElementById('commandr_img_loader');
+            if (tmpEl) {
+                tmpEl.remove();
             }
 
             if (!sessionConfirmed) {
@@ -51,49 +63,49 @@ function loadCommandr() {
                 doCommandrBox();
             }
         });
-    });
-    
-    function doCommandrBox() {
-        var commandrBox = document.getElementById('commandr_box'),
-            img = document.getElementById('commandr_img'),
-            bi, cmdLine;
 
-        if ($dom.notDisplayed(commandrBox)) { // Showing Commandr again
-            $dom.show(commandrBox);
+        function doCommandrBox() {
+            var commandrBox = document.getElementById('commandr_box'),
+                img = document.getElementById('commandr_img'),
+                bi, cmdLine;
 
-            if (img) {
-                img.src = $cms.img('{$IMG;,icons/24x24/tool_buttons/commandr_off}');
-                img.srcset = $cms.img('{$IMG;,icons/48x48/tool_buttons/commandr_off} 2x');
-                img.className = '';
-            }
+            if ($dom.notDisplayed(commandrBox)) { // Showing Commandr again
+                $dom.show(commandrBox);
 
-            $dom.smoothScroll(0, null, null, function () {
+                if (img) {
+                    img.src = $cms.img('{$IMG;,icons/24x24/tool_buttons/commandr_off}');
+                    img.srcset = $cms.img('{$IMG;,icons/48x48/tool_buttons/commandr_off} 2x');
+                    img.className = '';
+                }
+
+                $dom.smoothScroll(0, null, null, function () {
+                    document.getElementById('commandr_command').focus();
+                });
+
+                cmdLine = document.getElementById('command_line');
+                cmdLine.style.opacity = 0.0;
+                $dom.fadeTo(cmdLine, null, 0.9);
+
+                bi = document.getElementById('main_website_inner');
+                if (bi) {
+                    bi.style.opacity = 1.0;
+                    $dom.fadeTo(bi, null, 0.3);
+                }
+
                 document.getElementById('commandr_command').focus();
-            });
+            } else { // Hiding Commandr
+                if (img) {
+                    img.src = $cms.img('{$IMG;,icons/24x24/tool_buttons/commandr_on}');
+                    img.srcset = $cms.img('{$IMG;,icons/48x48/tool_buttons/commandr_on}') + ' 2x';
+                    img.style.opacity = 1.0;
+                }
 
-            cmdLine = document.getElementById('command_line');
-            cmdLine.style.opacity = 0.0;
-            $dom.fadeTo(cmdLine, null, 0.9);
-
-            bi = document.getElementById('main_website_inner');
-            if (bi) {
-                bi.style.opacity = 1.0;
-                $dom.fadeTo(bi, null, 0.3);
-            }
-
-            document.getElementById('commandr_command').focus();
-        } else { // Hiding Commandr
-            if (img) {
-                img.src = $cms.img('{$IMG;,icons/24x24/tool_buttons/commandr_on}');
-                img.srcset = $cms.img('{$IMG;,icons/48x48/tool_buttons/commandr_on}') + ' 2x';
-                img.style.opacity = 1.0;
-            }
-
-            $dom.hide(commandrBox);
-            bi = document.getElementById('main_website_inner');
-            if (bi) {
-                $dom.fadeIn(bi);
+                $dom.hide(commandrBox);
+                bi = document.getElementById('main_website_inner');
+                if (bi) {
+                    $dom.fadeIn(bi);
+                }
             }
         }
     }
-}
+}(window.$cms, window.$util, window.$dom));

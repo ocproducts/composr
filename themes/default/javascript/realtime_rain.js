@@ -85,7 +85,7 @@
     };
 
     // Handle the realtime_rain button on the bottom bar
-    $realtimeRain.realtimeRainButtonLoadHandler = function realtimeRainButtonLoadHandler() {
+    $realtimeRain.load = function load() {
         var img = $dom.$('#realtime_rain_img');
 
         var e = $dom.$('#real_time_surround');

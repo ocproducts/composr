@@ -1137,11 +1137,7 @@
 
                 'submit .js-global-submit-staff-actions-select': 'staffActionsSelect',
 
-                'keypress .js-global-input-su-keypress-enter-submit-form': 'inputSuKeypress',
-
-                'click .js-global-click-load-realtime-rain': 'loadRealtimeRain',
-
-                'click .js-global-click-load-commandr': 'loadCommandr'
+                'keypress .js-global-input-su-keypress-enter-submit-form': 'inputSuKeypress'
             };
         },
         
@@ -1271,18 +1267,6 @@
         inputSuKeypress: function (e, input) {
             if ($dom.keyPressed(e, 'Enter')) {
                 $dom.submit(input.form);
-            }
-        },
-
-        loadRealtimeRain: function () {
-            $cms.requireJavascript('button_realtime_rain').then(function () {
-                window.loadRealtimeRain();
-            });
-        },
-
-        loadCommandr: function () {
-            if (window.loadCommandr) {
-                window.loadCommandr();
             }
         },
 
