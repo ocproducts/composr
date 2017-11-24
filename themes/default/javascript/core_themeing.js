@@ -1191,8 +1191,6 @@
 
 
             function _highlightTemplate(node, templatePath, depth) {
-                var inside = [];
-
                 node = node.firstChild;
                 while (node) {
                     if (node.nodeType === 1) { // Element node
