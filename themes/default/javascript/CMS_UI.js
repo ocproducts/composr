@@ -1136,6 +1136,7 @@
     /**
      * Ask a user a question: they must click a button
      * 'Cancel' should come as index 0 and Ok/default-option should come as index 1. This is so that the fallback works right.
+     * @memberof $cms.ui
      * @param message
      * @param buttonSet
      * @param windowTitle

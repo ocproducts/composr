@@ -25,7 +25,7 @@
 
     $cms.templates.quizScreen = function quizScreen(params, container) {
         var form = $dom.$(container, '.js-quiz-form'),
-            timeout = +params.timeout || 0,
+            timeout = Number(params.timeout) || 0,
             quizFormLastValid;
 
         $dom.on(container, 'submit', '.js-submit-check-form', function (e, form) {

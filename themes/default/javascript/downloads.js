@@ -19,7 +19,7 @@
         }
 
         function crf() {
-            var s = url.value != '';
+            var s = url.value !== '';
             if (form.elements['copy_to_server']) {
                 form.elements['copy_to_server'].disabled = !s;
             }
@@ -29,7 +29,7 @@
         }
 
         function crf2() {
-            var s = (cost.value != '') && (cost.value != '0');
+            var s = (cost.value !== '') && (cost.value !== '0');
             if (form.elements['submitter_gets_points']) {
                 form.elements['submitter_gets_points'].disabled = !s;
             }

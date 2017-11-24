@@ -415,7 +415,7 @@
                                 } 
 
                                 a.style.outline = '1px dotted green';
-                                a.style.background = '#00' + (decToHex(255 - targetDistance * 25)) + '00';
+                                a.style.background = '#00' + ($util.decToHex(255 - targetDistance * 25)) + '00';
                                 if (targetDistance > 4)
                                     a.style.color = 'white';
                                 else
@@ -1222,9 +1222,5 @@
     function fileToFileId(file) {
         return file.replace(/\//, '__').replace(/:/, '__').replace(/\./, '__');
     }
-
-    function decToHex(number) {
-        var hexbase = '0123456789ABCDEF';
-        return hexbase.charAt((number >> 4) & 0xf) + hexbase.charAt(number & 0xf);
-    }
+    
 }(window.$cms, window.$util, window.$dom));

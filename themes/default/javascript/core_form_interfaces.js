@@ -823,7 +823,7 @@
             attachmentsUiInputRow = $dom.$('#field-' + id +'-attachments-ui-input');
 
         if (params.class.includes('wysiwyg')) {
-            if (window.wysiwygOn && wysiwygOn()) {
+            if (window.wysiwygOn && window.wysiwygOn()) {
                 postEl.readOnly = true; // Stop typing while it loads
 
                 setTimeout(function () {

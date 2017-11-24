@@ -1,14 +1,5 @@
 'use strict';
 
-function decToHex(number) {
-    var hexbase = '0123456789ABCDEF';
-    return hexbase.charAt((number >> 4) & 0xf) + hexbase.charAt(number & 0xf);
-}
-
-function hexToDec(number) {
-    return parseInt(number, 16);
-}
-
 function processWave(el) {
     if (!el) {
         return;
@@ -61,17 +52,17 @@ function processWave(el) {
     }
 
     function colorInterpolation(maxColor, minColor, fraction) {
-        var minColorR = hexToDec(minColor.substr(0, 2)),
-            minColorG = hexToDec(minColor.substr(2, 2)),
-            minColorB = hexToDec(minColor.substr(4, 2)),
-            maxColorR = hexToDec(maxColor.substr(0, 2)),
-            maxColorG = hexToDec(maxColor.substr(2, 2)),
-            maxColorB = hexToDec(maxColor.substr(4, 2)),
+        var minColorR = $util.hexToDec(minColor.substr(0, 2)),
+            minColorG = $util.hexToDec(minColor.substr(2, 2)),
+            minColorB = $util.hexToDec(minColor.substr(4, 2)),
+            maxColorR = $util.hexToDec(maxColor.substr(0, 2)),
+            maxColorG = $util.hexToDec(maxColor.substr(2, 2)),
+            maxColorB = $util.hexToDec(maxColor.substr(4, 2)),
             colorR = minColorR + fraction * (maxColorR - minColorR),
             colorG = minColorG + fraction * (maxColorG - minColorG),
             colorB = minColorB + fraction * (maxColorB - minColorB);
 
-        return decToHex(parseInt(colorR)) + decToHex(parseInt(colorG)) + decToHex(parseInt(colorB));
+        return $util.decToHex(parseInt(colorR)) + $util.decToHex(parseInt(colorG)) + $util.decToHex(parseInt(colorB));
     }
 
     function findTextNodes(e) {

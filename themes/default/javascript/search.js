@@ -46,7 +46,7 @@
     function SearchFormScreen() {
         SearchFormScreen.base(this, 'constructor', arguments);
 
-        this.primaryFormEl = this.$('js-form-primary-form');
+        this.primaryFormEl = this.$('.js-form-primary-form');
         this.booleanOptionsEl = this.$('.js-el-boolean-options');
     }
 

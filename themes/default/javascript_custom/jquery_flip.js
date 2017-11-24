@@ -99,7 +99,7 @@ var colors = {
 };
 
 var acceptHexColor=function(color) {
-	if(color && color.indexOf("#")==-1 && color.indexOf("(")==-1){
+	if(color && color.indexOf("#")===-1 && color.indexOf("(")===-1){
 		return "rgb("+colors[color].toString()+")";
 	} else {
 		return color;
@@ -326,7 +326,9 @@ $.fn.flip = function(settings){
 			$this.css({visibility: "visible"});
 
 			var nC = newContent();
-			if(nC)\{$this.html(nC);}
+			if(nC) {
+			    $this.html(nC);
+			}
 			$clone.remove();
 			flipObj.onEnd($clone,$this);
 			$this.removeData('flipLock');

@@ -50,7 +50,7 @@
         var fbButton = document.getElementById('syndicate_start__facebook');
         if (fbButton) {
             var fbInput;
-            if (fbButton.form.elements['facebook_syndicate_to_page'] == undefined) {
+            if (fbButton.form.elements['facebook_syndicate_to_page'] == null) {
                 fbInput = document.createElement('input');
                 fbInput.type = 'hidden';
                 fbInput.name = 'facebook_syndicate_to_page';
@@ -66,8 +66,8 @@
                     '{!facebook:HOW_TO_SYNDICATE;^}',
                     $util.format('{!facebook:SYNDICATE_TO_OWN_WALL;^}', [$cms.getSiteName()]),
                     function (val) {
-                        if (val != '{!INPUTSYSTEM_CANCEL;^}') {
-                            fbInput.value = (val == '{!facebook:FACEBOOK_PAGE;^}') ? '1' : '0';
+                        if (val !== '{!INPUTSYSTEM_CANCEL;^}') {
+                            fbInput.value = (val === '{!facebook:FACEBOOK_PAGE;^}') ? '1' : '0';
                             fbButton.removeEventListener('click', listener);
                             fbButton.click();
                         }

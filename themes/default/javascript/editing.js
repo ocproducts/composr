@@ -34,7 +34,7 @@
             return;
         }
 
-        var isWysiwygOn = wysiwygOn();
+        var isWysiwygOn = window.wysiwygOn();
         if (isWysiwygOn) {
             if ($cms.readCookie('use_wysiwyg') === '-1') {
                 _toggleWysiwyg(name);
@@ -80,7 +80,7 @@
         }
 
         function _toggleWysiwyg(name) {
-            var isWysiwygOn = wysiwygOn(),
+            var isWysiwygOn = window.wysiwygOn(),
                 forms = document.getElementsByTagName('form'),
                 so = document.getElementById('post_special_options'),
                 so2 = document.getElementById('post_special_options2');
@@ -295,7 +295,7 @@
             postingForm.appendChild(httpReferer);
         }
 
-        if (!window.CKEDITOR || !$cms.configOption('wysiwyg') || !wysiwygOn()) {
+        if (!window.CKEDITOR || !$cms.configOption('wysiwyg') || !window.wysiwygOn()) {
             return Promise.resolve();
         }
 

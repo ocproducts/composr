@@ -469,15 +469,6 @@ function beginChatting(roomId) {
     playChatSound('you_connect');
 }
 
-function decToHex(number) {
-    var hexbase = '0123456789ABCDEF';
-    return hexbase.charAt((number >> 4) & 0xf) + hexbase.charAt(number & 0xf);
-}
-
-function hexToDec(number) {
-    return parseInt(number, 16);
-}
-
 function getTickedPeople(form) {
     var people = '';
 
@@ -834,12 +825,17 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                             var friendImg = document.getElementById('friend_img_' + memberId);
                             if (friendImg) friendImg.className = 'friend_active';
                             var alertBoxWrap = document.getElementById('alert_box_wrap');
-                            if (alertBoxWrap) alertBoxWrap.style.display = 'block';
+                            if (alertBoxWrap) {
+                                alertBoxWrap.style.display = 'block';
+                            }
                             var alertBox = document.getElementById('alert_box');
-                            if (alertBox) $dom.html(alertBox, '{!chat:NOW_ONLINE;^}'.replace('{' + '1}', username));
+                            if (alertBox) {
+                                $dom.html(alertBox, '{!chat:NOW_ONLINE;^}'.replace('{' + '1}', username));
+                            }
                             setTimeout(function () {
-                                if (document.getElementById('alert_box')) // If the alert box is still there, remove it
+                                if (document.getElementById('alert_box')) { // If the alert box is still there, remove it
                                     alertBoxWrap.style.display = 'none';
+                                }
                             }, window.TRANSITORY_ALERT_TIME);
 
                             if (!skipIncomingSound) {
@@ -872,7 +868,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                     var friendBeingTracked = false;
                     tmpElement = document.getElementById('online_' + memberId);
                     if (tmpElement) {
-                        if ($dom.html(tmpElement).toLowerCase() == '{!chat:INACTIVE;^}'.toLowerCase()) {
+                        if ($dom.html(tmpElement).toLowerCase() === '{!chat:INACTIVE;^}'.toLowerCase()) {
                             break;
                         }
                         $dom.html(tmpElement, '{!chat:INACTIVE;^}');
@@ -885,11 +881,15 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                         roomId = rooms[r];
                         var doc = document;
                         if (window.openedPopups['room_' + roomId] !== undefined) {
-                            if (!window.openedPopups['room_' + roomId].document) continue;
+                            if (!window.openedPopups['room_' + roomId].document) {
+                                continue;
+                            }
                             doc = window.openedPopups['room_' + roomId].document;
                         }
                         tmpElement = doc.getElementById('participant_online__' + roomId + '__' + memberId);
-                        if (tmpElement) $dom.html(tmpElement, '{!chat:INACTIVE;^}');
+                        if (tmpElement) {
+                            $dom.html(tmpElement, '{!chat:INACTIVE;^}');
+                        }
                         friendBeingTracked = true;
                     }
 
@@ -1214,7 +1214,7 @@ function createOverlayEvent(skipIncomingSound, memberId, message, clickEvent, av
         roomId = null;
     }
 
-    if (window != window.topWindow) { // Can't display in an autonomous popup
+    if (window !== window.topWindow) { // Can't display in an autonomous popup
         return;
     }
 
