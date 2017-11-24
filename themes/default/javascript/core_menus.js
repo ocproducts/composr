@@ -158,6 +158,10 @@
             copyFieldsIntoBottom(el.id.substr(8), changed);
         }
 
+        /**
+         * @param element
+         * @param upwards
+         */
         function handleOrdering(element, upwards) {
             var form = $dom.$('#edit_form');
 

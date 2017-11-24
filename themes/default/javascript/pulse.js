@@ -36,9 +36,13 @@ function processWave(el) {
     // Apply colour wave
     for (var i = 0; i < textNodes.length; i++) {
         var distLeftwards = i - pos;
-        if (distLeftwards < 0) distLeftwards = i + range - pos;
+        if (distLeftwards < 0) {
+            distLeftwards = i + range - pos;
+        }
         var distRightwards = pos - i;
-        if (distRightwards < 0) distRightwards = pos + range - i;
+        if (distRightwards < 0) {
+            distRightwards = pos + range - i;
+        }
 
         var diff = (distLeftwards < distRightwards) ? distLeftwards : distRightwards;
         var fraction = diff / (range / 2);

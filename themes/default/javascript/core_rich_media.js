@@ -475,7 +475,7 @@
                 } else {
                     img.src = img.src.replace(/time=\d+/, 'time=' + img.timer);
                 }
-            }, refreshTime)
+            }, refreshTime);
         }
     };
 
@@ -951,7 +951,9 @@
     };
 
     function shockerTick(id, time, minColor, maxColor) {
-        if ((document.hidden !== undefined) && (document.hidden)) return;
+        if ((document.hidden !== undefined) && (document.hidden)) {
+            return;
+        }
 
         if (window.shockerPos[id] == window.shockerParts[id].length - 1) {
             window.shockerPos[id] = 0;
@@ -964,7 +966,9 @@
         $dom.fadeIn(eLeft);
 
         var eRight = document.getElementById('comcodeshocker' + id + '_right');
-        if (!eRight) return;
+        if (!eRight) {
+            return;
+        }
         $dom.html(eRight, window.shockerParts[id][window.shockerPos[id]][1]);
         $dom.fadeIn(eRight);
 
