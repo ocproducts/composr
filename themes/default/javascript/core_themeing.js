@@ -14,7 +14,7 @@
     window.templateEditorOpenFiles || (window.templateEditorOpenFiles = {});
     window.doneCleanupTemplateMarkers = window.doneCleanupTemplateMarkers !== undefined ? !!window.doneCleanupTemplateMarkers : false;
 
-    if (window.location.href.includes('keep_template_magic_markers=1')) {
+    if ($cms.pageSearchParams().get('keep_template_magic_markers') === '1') {
         $dom.ready.then(function () {
             cleanupTemplateMarkers(window);
         });
@@ -155,15 +155,14 @@
 
         cssEquationHelper: function (e) {
             var params = this.params,
-                url = 'themewizard_equation',
-                result;
+                url = 'themewizard_equation';
 
             e.preventDefault();
 
             url += '&theme=' + encodeURIComponent(params.theme);
             url += '&css_equation=' + encodeURIComponent(document.getElementById('css_equation_' + params.fileId).value);
 
-            $cms.loadSnippet(url, null, true).then(function (result) {
+            $cms.loadSnippet(url).then(function (result) {
                 if (!result || result.includes('<html')) {
                     $cms.ui.alert('{!ERROR_OCCURRED;^}');
                 } else {
@@ -358,7 +357,7 @@
                 }(css_text));
 
                 // Jump-to
-                a.addEventListener('click', function (selector) {
+                a.addEventListener('click', (function (selector) {
                     return function () {
                         editareaDoSearch(
                             'e_' + fileId,
@@ -366,10 +365,10 @@
                         );
                         return false;
                     };
-                }(selector));
+                }(selector)));
 
                 // Highlighting on parent page
-                a.addEventListener('onmouseover', function (selector) {
+                a.addEventListener('onmouseover', (function (selector) {
                     return function (event) {
                         if ((window.opener) && (!event.ctrlKey) && (!event.metaKey)) {
                             var elements = findSelectorsFor(window.opener, selector);
@@ -379,8 +378,8 @@
                             }
                         }
                     };
-                }(selector));
-                a.addEventListener('mouseout', function (selector) {
+                }(selector)));
+                a.addEventListener('mouseout', (function (selector) {
                     return function (event) {
                         if ((window.opener) && (!event.ctrlKey) && (!event.metaKey)) {
                             var elements = findSelectorsFor(window.opener, selector);
@@ -390,7 +389,7 @@
                             }
                         }
                     };
-                }(selector));
+                }(selector)));
 
                 // Highlighting from parent page
                 elements = findSelectorsFor(window.opener, selector);
@@ -416,10 +415,11 @@
 
                                 a.style.outline = '1px dotted green';
                                 a.style.background = '#00' + ($util.decToHex(255 - targetDistance * 25)) + '00';
-                                if (targetDistance > 4)
+                                if (targetDistance > 4) {
                                     a.style.color = 'white';
-                                else
+                                } else {
                                     a.style.color = 'black';
+                                }
                             }
                         };
                     }(a, element));
@@ -602,15 +602,25 @@
 
             var arity = valueParts[1];
             var definiteGets = 0;
-            if (arity === '1') definiteGets = 1;
-            else if (arity === '2') definiteGets = 2;
-            else if (arity === '3') definiteGets = 3;
-            else if (arity === '4') definiteGets = 4;
-            else if (arity === '5') definiteGets = 5;
-            else if (arity === '0-1') definiteGets = 0;
-            else if (arity === '3-4') definiteGets = 3;
-            else if (arity === '0+') definiteGets = 0;
-            else if (arity === '1+') definiteGets = 1;
+            if (arity === '1') {
+                definiteGets = 1;
+            } else if (arity === '2') {
+                definiteGets = 2;
+            } else if (arity === '3') {
+                definiteGets = 3;
+            } else if (arity === '4') {
+                definiteGets = 4;
+            } else if (arity === '5') {
+                definiteGets = 5;
+            } else if (arity === '0-1') {
+                definiteGets = 0;
+            } else if (arity === '3-4') {
+                definiteGets = 3;
+            } else if (arity === '0+') {
+                definiteGets = 0;
+            } else if (arity === '1+') {
+                definiteGets = 1;
+            }
             var parameter = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'];
 
             _getParameterParameters(
@@ -658,7 +668,7 @@
                         '{!themes:INSERT_PARAMETER;^}'
                     );
                 } else {
-                    if ((arity == '0+') || (arity == '1+')) {
+                    if ((arity === '0+') || (arity === '1+')) {
                         $cms.ui.prompt(
                             '{!themes:INPUT_OPTIONAL_PARAMETER;^}',
                             '',
@@ -673,7 +683,7 @@
                             '{!themes:INSERT_PARAMETER;^}'
                         );
                     }
-                    else if ((arity == '0-1') || (arity == '3-4')) {
+                    else if ((arity === '0-1') || (arity === '3-4')) {
                         $cms.ui.prompt(
                             '{!themes:INPUT_OPTIONAL_PARAMETER;^}',
                             '',
@@ -888,7 +898,7 @@
                             var closerMatch = decoded.match('</(templates/.*)>');
                             if (closerMatch != null) {
                                 var at = inside.indexOf(closerMatch[1]);
-                                if (at != -1) {
+                                if (at !== -1) {
                                     inside.splice(at, 1);
                                 }
                             }

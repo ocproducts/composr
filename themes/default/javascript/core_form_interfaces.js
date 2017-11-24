@@ -1094,7 +1094,6 @@
                 thisNum = thisField.name.substring(mid + 1, thisField.name.length) - 0,
                 nextNum = thisNum + 1,
                 nextField = document.getElementById('multi_' + nextNum),
-                name = nameStub + nextNum,
                 thisId = thisField.id;
 
             if (!nextField) {
@@ -1103,16 +1102,14 @@
                 nextField = document.createElement('input');
                 nextField.className = 'input_upload';
                 nextField.setAttribute('id', 'multi_' + nextNum);
-                nextField.addEventListener('change', _ensureNextFieldUpload);
+                nextField.addEventListener('change', function (event) {
+                    if (!$dom.keyPressed(event, 'Tab')) {
+                        ensureNextFieldUpload(this);
+                    }
+                });
                 nextField.setAttribute('type', 'file');
                 nextField.name = nameStub + nextNum;
                 thisField.parentNode.appendChild(nextField);
-            }
-
-            function _ensureNextFieldUpload(event) {
-                if (!$dom.keyPressed(event, 'Tab')) {
-                    ensureNextFieldUpload(this);
-                }
             }
         }
     };
@@ -1181,7 +1178,7 @@
         }
     };
 
-    $cms.templates.formScreenInputVariousTricks = function formScreenInputVariousTricks(params, container) {
+    $cms.templates.formScreenInputVariousTicks = function formScreenInputVariousTicks(params, container) {
         var customName = strVal(params.customName);
 
         if (customName && !params.customAcceptMultiple) {
@@ -1834,88 +1831,88 @@
             }
         }
     }
-}(window.$cms, window.$util, window.$dom));
+    
+    // ===========
+    // Multi-field
+    // ===========
+    window._ensureNextField = _ensureNextField;
+    function _ensureNextField(event, el) {
+        if ($dom.keyPressed(event, 'Enter')) {
+            gotoNextField(el);
+        } else if (!$dom.keyPressed(event, 'Tab')) {
+            ensureNextField(el);
+        }
 
-// ===========
-// Multi-field
-// ===========
+        function gotoNextField(thisField) {
+            var mid = thisField.id.lastIndexOf('_'),
+                nameStub = thisField.id.substring(0, mid + 1),
+                thisNum = thisField.id.substring(mid + 1, thisField.id.length) - 0,
+                nextNum = thisNum + 1,
+                nextField = document.getElementById(nameStub + nextNum);
 
-function _ensureNextField(event, el) {
-    if ($dom.keyPressed(event, 'Enter')) {
-        gotoNextField(el);
-    } else if (!$dom.keyPressed(event, 'Tab')) {
-        ensureNextField(el);
+            if (nextField) {
+                try {
+                    nextField.focus();
+                } catch (e) {}
+            }
+        }
     }
 
-    function gotoNextField(thisField) {
+    function ensureNextField(thisField) {
         var mid = thisField.id.lastIndexOf('_'),
             nameStub = thisField.id.substring(0, mid + 1),
             thisNum = thisField.id.substring(mid + 1, thisField.id.length) - 0,
             nextNum = thisNum + 1,
-            nextField = document.getElementById(nameStub + nextNum);
+            nextField = document.getElementById(nameStub + nextNum),
+            thisId = thisField.id;
 
-        if (nextField) {
-            try {
-                nextField.focus();
-            } catch (e) {}
+        if (!nextField) {
+            nextNum = thisNum + 1;
+            thisField = document.getElementById(thisId);
+            var nextFieldWrap = document.createElement('div');
+            nextFieldWrap.className = thisField.parentNode.className;
+            if (thisField.localName === 'textarea') {
+                nextField = document.createElement('textarea');
+            } else {
+                nextField = document.createElement('input');
+                nextField.setAttribute('size', thisField.getAttribute('size'));
+            }
+            nextField.className = thisField.className.replace(/\_required/g, '');
+            if (thisField.form.elements['label_for__' + nameStub + '0']) {
+                var nextLabel = document.createElement('input');
+                nextLabel.setAttribute('type', 'hidden');
+                nextLabel.value = thisField.form.elements['label_for__' + nameStub + '0'].value + ' (' + (nextNum + 1) + ')';
+                nextLabel.name = 'label_for__' + nameStub + nextNum;
+                nextFieldWrap.appendChild(nextLabel);
+            }
+            nextField.setAttribute('tabindex', thisField.getAttribute('tabindex'));
+            nextField.setAttribute('id', nameStub + nextNum);
+            if (thisField.onfocus) {
+                nextField.onfocus = thisField.onfocus;
+            }
+            if (thisField.onblur) {
+                nextField.onblur = thisField.onblur;
+            }
+            if (thisField.onkeyup) {
+                nextField.onkeyup = thisField.onkeyup;
+            }
+            nextField.onkeypress = function (event) {
+                _ensureNextField(event, nextField);
+            };
+            if (thisField.onchange) {
+                nextField.onchange = thisField.onchange;
+            }
+            if (thisField.onrealchange != null) {
+                nextField.onchange = thisField.onrealchange;
+            }
+            if (thisField.localName !== 'textarea') {
+                nextField.type = thisField.type;
+            }
+            nextField.value = '';
+            nextField.name = (thisField.name.includes('[]') ? thisField.name : (nameStub + nextNum));
+            nextFieldWrap.appendChild(nextField);
+            thisField.parentNode.parentNode.insertBefore(nextFieldWrap, thisField.parentNode.nextSibling);
         }
     }
-}
 
-function ensureNextField(thisField) {
-    var mid = thisField.id.lastIndexOf('_'),
-        nameStub = thisField.id.substring(0, mid + 1),
-        thisNum = thisField.id.substring(mid + 1, thisField.id.length) - 0,
-        nextNum = thisNum + 1,
-        nextField = document.getElementById(nameStub + nextNum),
-        name = nameStub + nextNum,
-        thisId = thisField.id;
-
-    if (!nextField) {
-        nextNum = thisNum + 1;
-        thisField = document.getElementById(thisId);
-        var nextFieldWrap = document.createElement('div');
-        nextFieldWrap.className = thisField.parentNode.className;
-        if (thisField.localName === 'textarea') {
-            nextField = document.createElement('textarea');
-        } else {
-            nextField = document.createElement('input');
-            nextField.setAttribute('size', thisField.getAttribute('size'));
-        }
-        nextField.className = thisField.className.replace(/\_required/g, '');
-        if (thisField.form.elements['label_for__' + nameStub + '0']) {
-            var nextLabel = document.createElement('input');
-            nextLabel.setAttribute('type', 'hidden');
-            nextLabel.value = thisField.form.elements['label_for__' + nameStub + '0'].value + ' (' + (nextNum + 1) + ')';
-            nextLabel.name = 'label_for__' + nameStub + nextNum;
-            nextFieldWrap.appendChild(nextLabel);
-        }
-        nextField.setAttribute('tabindex', thisField.getAttribute('tabindex'));
-        nextField.setAttribute('id', nameStub + nextNum);
-        if (thisField.onfocus) {
-            nextField.onfocus = thisField.onfocus;
-        }
-        if (thisField.onblur) {
-            nextField.onblur = thisField.onblur;
-        }
-        if (thisField.onkeyup) {
-            nextField.onkeyup = thisField.onkeyup;
-        }
-        nextField.onkeypress = function (event) {
-            _ensureNextField(event, nextField);
-        };
-        if (thisField.onchange) {
-            nextField.onchange = thisField.onchange;
-        }
-        if (thisField.onrealchange != null) {
-            nextField.onchange = thisField.onrealchange;
-        }
-        if (thisField.localName !== 'textarea') {
-            nextField.type = thisField.type;
-        }
-        nextField.value = '';
-        nextField.name = (thisField.name.includes('[]') ? thisField.name : (nameStub + nextNum));
-        nextFieldWrap.appendChild(nextField);
-        thisField.parentNode.parentNode.insertBefore(nextFieldWrap, thisField.parentNode.nextSibling);
-    }
-}
+}(window.$cms, window.$util, window.$dom));

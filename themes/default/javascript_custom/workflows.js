@@ -3,7 +3,7 @@
 
     $cms.templates.formScreenInputVariousTicks = function formScreenInputVariousTicks(params, container) {
         $dom.on(container, 'keypress', '.js-keypress-ensure-next-field', function (e, el) {
-            _ensureNextField(e, el);
+            window._ensureNextField(e, el);
         });
 
         if ((params.customName != null) && !params.customAcceptMultiple) {
