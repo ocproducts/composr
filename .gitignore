@@ -44,9 +44,6 @@ test_a
 /*.clpprj
 /.project
 /data_custom/latest_activity.txt
-/hphp-static-cache
-/hphp.files.list
-/hphp
 tmpfile__*
 *.tmp
 *~
