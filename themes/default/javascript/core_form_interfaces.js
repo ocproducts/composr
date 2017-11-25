@@ -515,8 +515,8 @@
     $cms.templates.formScreenInputColour = function (params) {
         var label = params.rawField ? ' ' : params.prettyName;
 
-        makeColourChooser(params.name, params.default, '', params.tabindex, label, 'input_colour' + params._required);
-        doColorChooser();
+        window.$themeColours.makeColourChooser(params.name, params.default, '', params.tabindex, label, 'input_colour' + params._required);
+        window.$themeColours.doColorChooser();
     };
 
     $cms.templates.formScreenInputTreeList = function formScreenInputTreeList(params, container) {
