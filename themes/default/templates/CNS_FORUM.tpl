@@ -93,6 +93,11 @@
 				2_ACCESSKEY=q
 				2_REL=edit
 				2_ICON=menu/_generic_admin/edit_this_category
+				{+START,IF_EMPTY,{PARENT_FORUM}}
+					3_URL={$PAGE_LINK*,_SEARCH:admin_cns_forum_groupings:add}
+					3_TITLE={!ADD_FORUM_GROUPING}
+					3_ICON=menu/_generic_admin/view_archive
+				{+END}
 			{+END}
 		{+END}
 	{+END}

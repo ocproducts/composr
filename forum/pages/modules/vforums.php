@@ -423,6 +423,7 @@ class Module_vforums
             'BUTTONS' => $_buttons,
             'TOPIC_WRAPPER' => $topic_wrapper,
             'FORUM_GROUPINGS' => '',
+            'PARENT_FORUM' => '-1',
         );
         if (!is_null($extra_tpl_map)) {
             $tpl_map += $extra_tpl_map;

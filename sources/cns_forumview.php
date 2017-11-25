@@ -468,13 +468,13 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
         '_GUID' => '1c14afd9265b1bf69375169dd6faf83c',
         'STARTER_TITLE' => $starter_title,
         'ID' => is_null($id) ? null : strval($id),
-        'DESCRIPTION' => array_key_exists('description',
-            $details) ? $details['description'] : '',
+        'DESCRIPTION' => array_key_exists('description', $details) ? $details['description'] : '',
         'FILTERS' => $filters,
         'BUTTONS' => $buttons,
         'TOPIC_WRAPPER' => $topic_wrapper,
         'BREADCRUMBS' => $breadcrumbs,
         'FORUM_GROUPINGS' => $forum_groupings,
+        'PARENT_FORUM' => ($forum_info === null) ? '-1' : (($forum_info['f_parent_forum'] === null) ? '' : strval($forum_info['f_parent_forum'])),
     );
     $content = do_template('CNS_FORUM', $map);
 
