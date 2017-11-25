@@ -323,6 +323,7 @@ class Hook_addon_registry_testing_platform
             //   Whatever we can quickly achieve as a testing win for our total platform stability/coherence, we go with.
             //   Contributions for deeper, detailed, testing, are very welcome.
             '_tests/tests/unit_tests/.htaccess',
+            '_tests/tests/unit_tests/url_monikers.php',
             '_tests/tests/unit_tests/calendar_event.php',
             '_tests/tests/unit_tests/calendar_event_type.php',
             '_tests/tests/unit_tests/gallery_images.php',
