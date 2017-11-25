@@ -819,9 +819,26 @@ function _generate_moniker($moniker_src)
         }
     }
 
-    // Then strip down / substitute to force it to be URL-ready
+    // Substitute to force it to be URL-ready
     $moniker = str_replace("'", '', $moniker);
     $moniker = cms_mb_strtolower(preg_replace('#[^' . URL_CONTENT_REGEXP . ']#', '-', $moniker));
+
+    // Strip stop words
+    $moniker_bak = $moniker;
+    require_code('textfiles');
+    $bad_word_text = read_text_file('too_common_words', user_lang());
+    $bad_word_text = preg_replace("#\n\n.+$#s", '', $bad_word_text);
+    $bad = array_flip(explode("\n", $bad_word_text));
+    unset($bad['']);
+    $bad = array_flip($bad);
+    foreach ($bad as $bad_word) {
+        $moniker = preg_replace('#(^|\-)' . preg_quote($bad_word, '#') . '(\-|$)#Ui', '-', $moniker);
+    }
+    if (trim($moniker, '-') == '') {
+        $moniker = $moniker_bak;
+    }
+
+    // Strip down by length
     if (cms_mb_strlen($moniker) > $max_moniker_length) {
         $pos = strrpos(cms_mb_substr($moniker, 0, $max_moniker_length), '-');
         if (($pos === false) || ($pos < 12)) {
@@ -829,8 +846,10 @@ function _generate_moniker($moniker_src)
         }
         $moniker = cms_mb_substr($moniker, 0, $pos);
     }
+
+    // Strip extraneous dashes
     $moniker = preg_replace('#\-+#', '-', $moniker);
-    $moniker = rtrim($moniker, '-');
+    $moniker = trim($moniker, '-');
 
     // A bit lame, but maybe we'll have to
     if ($moniker == '') {
