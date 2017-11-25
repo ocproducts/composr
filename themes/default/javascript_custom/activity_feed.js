@@ -1,5 +1,13 @@
 (function ($cms) {
     'use strict';
+    
+    // Assume that our activity feed needs updating to start with
+    if (window.latestActivity === undefined) {
+        window.latestActivity = 0;
+        window.sAjaxUpdateLocking = 0;
+        window.activitiesFeedGrow = true;
+    }
+    
     /*
      This provides the JavaScript necessary for the "status" part of activities
      */
@@ -196,41 +204,118 @@
             }
         }
     };
-}(window.$cms));
+    
+    function sUpdateGetData() {
+        // Lock feed updates by setting sAjaxUpdateLocking to 1
+        if ((++window.sAjaxUpdateLocking) > 1) {
+            window.sAjaxUpdateLocking = 1;
+        } else {
+            // First we check whether our feed is already up to date
+            jQuery.ajax({
+                url: $cms.baseUrl('data_custom/latest_activity.txt?cache_break=' + Math.floor(Math.random() * 10000)),
+                data: {},
+                success: function (data) {
+                    if (parseInt(data) != window.latestActivity) {
+                        // If not then remember the new value
+                        window.latestActivity = parseInt(data);
 
+                        // Now grab whatever updates are available
+                        var url = $cms.baseUrl('data_custom/activities_updater.php' + $cms.keep(true)),
+                            listElements = jQuery('li', '#activities_feed'),
+                            lastId = ((listElements.attr('id') == null) ? '-1' : listElements.attr('id').replace(/^activity_/, '')),
+                            postVal = 'last_id=' + lastId + '&mode=' + window.activitiesMode;
 
+                        if ((window.activitiesMemberIds != null) && (window.activitiesMemberIds !== '')) {
+                            postVal = postVal + '&member_ids=' + window.activitiesMemberIds;
+                        }
 
-// Assume that our activity feed needs updating to start with
-if (window.latestActivity === undefined) {
-    window.latestActivity = 0;
-    window.sAjaxUpdateLocking = 0;
-    window.activitiesFeedGrow = true;
-}
+                        postVal += '&csrf_token=' + encodeURIComponent($cms.getCsrfToken()); // For CSRF prevention
 
-function sUpdateGetData() {
-    // Lock feed updates by setting sAjaxUpdateLocking to 1
-    if ((++window.sAjaxUpdateLocking) > 1) {
-        window.sAjaxUpdateLocking = 1;
-    } else {
-        // First we check whether our feed is already up to date
-        jQuery.ajax({
-            url: $cms.baseUrl('data_custom/latest_activity.txt?cache_break=' + Math.floor(Math.random() * 10000)),
-            data: {},
-            success: function (data) {
-                if (parseInt(data) != window.latestActivity) {
-                    // If not then remember the new value
-                    window.latestActivity = parseInt(data);
+                        jQuery.ajax({
+                            url: url,
+                            type: 'POST',
+                            data: postVal,
+                            cache: false,
+                            timeout: 5000,
+                            success: function (data, stat) {
+                                sUpdateShow(data, stat);
+                            },
+                            error: function (a, stat, err) {
+                                sUpdateShow(err, stat);
+                            }
+                        });
+                    } else {
+                        // Allow feed updates
+                        window.sAjaxUpdateLocking = 0;
+                    }
+                },
+                dataType: 'text'
+            });
+        }
+    }
 
-                    // Now grab whatever updates are available
-                    var url = $cms.baseUrl('data_custom/activities_updater.php' + $cms.keep(true)),
-                        listElements = jQuery('li', '#activities_feed'),
-                        lastId = ((listElements.attr('id') == undefined) ? '-1' : listElements.attr('id').replace(/^activity_/, '')),
-                        postVal = 'last_id=' + lastId + '&mode=' + window.activitiesMode;
+    /**
+     * Receive and parse data for the activities activities feed
+     */
+    function sUpdateShow(data, stat) {
+        if (window.sAjaxUpdateLocking > 1) {
+            window.sAjaxUpdateLocking = 1;
+        } else {
+            var succeeded = false;
+            if (stat === 'success') {
+                if (jQuery('success', data).text() === '1') {
+                    var listElements = jQuery('li', '#activities_feed'); // Querying from current browser DOM
+                    var listItems = jQuery('listitem', data); // Querying from XML definition o new data
 
-                    if ((window.activitiesMemberIds != null) && (window.activitiesMemberIds !== '')) {
-                        postVal = postVal + '&member_ids=' + window.activitiesMemberIds;
+                    listElements.removeAttr('toFade');
+
+                    // Add in new items
+                    var topOfList = document.getElementById('activities_holder').firstChild;
+                    jQuery.each(listItems, function () {
+                        var thisLi = document.createElement('li');
+                        thisLi.id = 'activity_' + jQuery(this).attr('id');
+                        thisLi.className = 'activities_box box';
+                        thisLi.setAttribute('toFade', 'yes');
+                        topOfList.parentNode.insertBefore(thisLi, topOfList);
+                        $dom.html(thisLi, window.Base64.decode(jQuery(this).text()));
+                    });
+
+                    var noMessages = document.getElementById('activity_-1');
+                    if (noMessages) noMessages.style.display = 'none';
+
+                    listElements = jQuery('li', '#activities_feed'); // Refresh, so as to include the new activity nodes
+
+                    if ((!window.activitiesFeedGrow) && (listElements.length > window.activitiesFeedMax)) {// Remove anything passed the grow length
+                        for (var i = window.activitiesFeedMax; i < listElements.length; i++) {
+                            listElements.last().remove();
+                        }
                     }
 
+                    jQuery('#activities_general_notify').text('');
+                    jQuery('li[toFade="yes"]', '#activities_feed').hide().fadeIn(1200);
+                    succeeded = true;
+                } else {
+                    if (jQuery('success', data).text() === '2') {
+                        jQuery('#activities_general_notify').text('');
+                        succeeded = true;
+                    }
+                }
+            }
+            if (!succeeded) {
+                jQuery('#activities_general_notify').text('{!INTERNAL_ERROR;^}');
+            }
+            window.sAjaxUpdateLocking = 0;
+        }
+    }
+
+    function sUpdateRemove(event, id) {
+        $cms.ui.confirm(
+            '{!activities:DELETE_CONFIRM;^}',
+            function (result) {
+                if (result) {
+                    var url = $cms.baseUrl('data_custom/activities_removal.php' + $cms.keep(true));
+
+                    var postVal = 'removal_id=' + id;
                     postVal += '&csrf_token=' + encodeURIComponent($cms.getCsrfToken()); // For CSRF prevention
 
                     jQuery.ajax({
@@ -240,134 +325,48 @@ function sUpdateGetData() {
                         cache: false,
                         timeout: 5000,
                         success: function (data, stat) {
-                            sUpdateShow(data, stat);
+                            sUpdateRemoveShow(data, stat);
                         },
                         error: function (a, stat, err) {
-                            sUpdateShow(err, stat);
+                            sUpdateRemoveShow(err, stat);
                         }
                     });
-                } else {
-                    // Allow feed updates
-                    window.sAjaxUpdateLocking = 0;
                 }
-            },
-            dataType: 'text'
-        });
+            }
+        );
+        event.preventDefault();
     }
-}
 
-/**
- * Receive and parse data for the activities activities feed
- */
-function sUpdateShow(data, stat) {
-    if (window.sAjaxUpdateLocking > 1) {
-        window.sAjaxUpdateLocking = 1;
-    } else {
+    function sUpdateRemoveShow(data, stat) {
         var succeeded = false;
-        if (stat == 'success') {
-            if (jQuery('success', data).text() == '1') {
-                var listElements = jQuery('li', '#activities_feed'); // Querying from current browser DOM
-                var listItems = jQuery('listitem', data); // Querying from XML definition o new data
+        var statusId = '';
 
-                listElements.removeAttr('toFade');
+        var animationSpeed = 1600;
 
-                // Add in new items
-                var topOfList = document.getElementById('activities_holder').firstChild;
-                jQuery.each(listItems, function () {
-                    var thisLi = document.createElement('li');
-                    thisLi.id = 'activity_' + jQuery(this).attr('id');
-                    thisLi.className = 'activities_box box';
-                    thisLi.setAttribute('toFade', 'yes');
-                    topOfList.parentNode.insertBefore(thisLi, topOfList);
-                    $dom.html(thisLi, window.Base64.decode(jQuery(this).text()));
-                });
-
-                var noMessages = document.getElementById('activity_-1');
-                if (noMessages) noMessages.style.display = 'none';
-
-                listElements = jQuery('li', '#activities_feed'); // Refresh, so as to include the new activity nodes
-
-                if ((!window.activitiesFeedGrow) && (listElements.length > window.activitiesFeedMax)) {// Remove anything passed the grow length
-                    for (var i = window.activitiesFeedMax; i < listElements.length; i++) {
-                        listElements.last().remove();
-                    }
-                }
-
-                jQuery('#activities_general_notify').text('');
-                jQuery('li[toFade="yes"]', '#activities_feed').hide().fadeIn(1200);
-                succeeded = true;
-            } else {
-                if (jQuery('success', data).text() == '2') {
-                    jQuery('#activities_general_notify').text('');
-                    succeeded = true;
-                }
-            }
-        }
-        if (!succeeded) {
-            jQuery('#activities_general_notify').text('{!INTERNAL_ERROR;^}');
-        }
-        window.sAjaxUpdateLocking = 0;
-    }
-}
-
-function sUpdateRemove(event, id) {
-    $cms.ui.confirm(
-        '{!activities:DELETE_CONFIRM;^}',
-        function (result) {
-            if (result) {
-                var url = $cms.baseUrl('data_custom/activities_removal.php' + $cms.keep(true));
-
-                var postVal = 'removal_id=' + id;
-                postVal += '&csrf_token=' + encodeURIComponent($cms.getCsrfToken()); // For CSRF prevention
-
-                jQuery.ajax({
-                    url: url,
-                    type: 'POST',
-                    data: postVal,
-                    cache: false,
-                    timeout: 5000,
-                    success: function (data, stat) {
-                        sUpdateRemoveShow(data, stat);
-                    },
-                    error: function (a, stat, err) {
-                        sUpdateRemoveShow(err, stat);
-                    }
-                });
-            }
-        }
-    );
-    event.preventDefault();
-}
-
-function sUpdateRemoveShow(data, stat) {
-    var succeeded = false;
-    var statusId = '';
-
-    var animationSpeed = 1600;
-
-    if (stat == 'success') {
-        if (jQuery('success', data).text() == '1') {
-            statusId = '#activity_' + jQuery('status_id', data).text();
-            jQuery('.activities_content', statusId, '#activities_feed').text(jQuery('feedback', data).text()).addClass('activities_content__remove_success').hide().fadeIn(animationSpeed, function () {
-                jQuery(statusId, '#activities_feed').fadeOut(animationSpeed, function () {
-                    jQuery(statusId, '#activities_feed').remove();
-                });
-            });
-        } else {
-            switch (jQuery('err', data).text()) {
-                case 'perms':
-                    statusId = '#activity_' + jQuery('status_id', data).text();
-                    var backupUpText = jQuery('activities_content', statusId, '#activities_feed').text();
-                    jQuery('.activities_content', statusId, '#activities_feed').text(jQuery('feedback', data).text()).addClass('activities_content__remove_failure').hide().fadeIn(animationSpeed, function () {
-                        jQuery('.activities_content', statusId, '#activities_feed').fadeOut(animationSpeed, function () {
-                            jQuery('.activities_content', statusId, '#activities_feed').text(backupUpText).removeClass('activities_content__remove_failure').fadeIn(animationSpeed);
-                        });
+        if (stat === 'success') {
+            if (jQuery('success', data).text() === '1') {
+                statusId = '#activity_' + jQuery('status_id', data).text();
+                jQuery('.activities_content', statusId, '#activities_feed').text(jQuery('feedback', data).text()).addClass('activities_content__remove_success').hide().fadeIn(animationSpeed, function () {
+                    jQuery(statusId, '#activities_feed').fadeOut(animationSpeed, function () {
+                        jQuery(statusId, '#activities_feed').remove();
                     });
-                    break;
-                case 'missing':
-                default:
-                    break;
+                });
+            } else {
+                switch (jQuery('err', data).text()) {
+                    case 'perms':
+                        statusId = '#activity_' + jQuery('status_id', data).text();
+                        var backupUpText = jQuery('activities_content', statusId, '#activities_feed').text();
+                        jQuery('.activities_content', statusId, '#activities_feed').text(jQuery('feedback', data).text()).addClass('activities_content__remove_failure').hide().fadeIn(animationSpeed, function () {
+                            jQuery('.activities_content', statusId, '#activities_feed').fadeOut(animationSpeed, function () {
+                                jQuery('.activities_content', statusId, '#activities_feed').text(backupUpText).removeClass('activities_content__remove_failure').fadeIn(animationSpeed);
+                            });
+                        });
+                        break;
+                    case 'missing':
+                    default:
+                        break;
+                }
             }
         }
     }
-}
+}(window.$cms));

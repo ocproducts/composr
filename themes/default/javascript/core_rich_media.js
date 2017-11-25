@@ -518,7 +518,7 @@
 
         window[id] = [0, params.maxColor, params.minColor, params.speed, []];
         setInterval(function () {
-            processWave(document.getElementById(id));
+            window.$pulse.processWave(document.getElementById(id));
         }, params.speed);
     };
 
@@ -976,7 +976,7 @@
 
         window['comcodeshocker' + id + '_left'] = [0, minColor, maxColor, time / 13, []];
         setInterval(function () {
-            processWave(eLeft);
+            window.$pulse.processWave(eLeft);
         }, window['comcodeshocker' + id + '_left'][3]);
     }
 

@@ -31,7 +31,7 @@
             langTo = strVal(params.langTo);
 
         $dom.on(container, 'click', function () {
-            window.translate(name, old, langFrom, langTo);
+            window.$translate.translate(name, old, langFrom, langTo);
         });
 
     };

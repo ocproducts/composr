@@ -458,11 +458,11 @@
         });
 
         $dom.on(container, 'change', '.js-change-ensure-next-field', function (e, input) {
-            ensureNextField(input)
+            ensureNextField(input);
         });
 
         $dom.on(container, 'keypress', '.js-keypress-ensure-next-field', function (e, input) {
-            ensureNextField(input)
+            ensureNextField(input);
         });
     };
 
@@ -643,7 +643,7 @@
                         }
                     );
                 }
-            }
+            };
         }
     };
 
@@ -1478,7 +1478,9 @@
                         label = $dom.html(labels[i]);
                         for (var j = 0; j < fields.length; j++) {
                             if (fields[j].replace(/^.*: /, '') === label) {
-                                if (parsed[j + 1] === null) parsed[j + 1] = '';
+                                if (parsed[j + 1] === null) {
+                                    parsed[j + 1] = '';
+                                }
 
                                 fieldName = labels[i].getAttribute('for');
                                 field = document.getElementById(fieldName);

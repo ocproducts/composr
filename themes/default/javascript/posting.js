@@ -1,11 +1,18 @@
 /* Form editing code (mostly stuff only used on posting forms) */
-(function ($cms, $util, $dom, $posting) {
+(function ($cms, $util, $dom) {
     'use strict';
 
+    var $posting = window.$posting = {};
+    
     window.addAttachment = addAttachment;
     window.attachmentPresent = attachmentPresent;
     window.setAttachment = setAttachment;
     window.showPreviewImagesForAttachmentComcodes = showPreviewImagesForAttachmentComcodes;
+    window.initFormSaving = initFormSaving;
+    window.handleFormSaving = handleFormSaving;
+    window.getAutosaveUrlStem = getAutosaveUrlStem;
+    window.getAutosaveName = getAutosaveName;
+
     window.doInputHtml = doInputHtml;
     window.doInputCode = doInputCode;
     window.doInputQuote = doInputQuote;
@@ -23,10 +30,6 @@
     window.doInputB = doInputB;
     window.doInputI = doInputI;
     window.doInputFont = doInputFont;
-    window.initFormSaving = initFormSaving;
-    window.handleFormSaving = handleFormSaving;
-    window.getAutosaveUrlStem = getAutosaveUrlStem;
-    window.getAutosaveName = getAutosaveName;
     
     // ===========
     // ATTACHMENTS
@@ -1170,4 +1173,4 @@
     function getAutosaveName(fieldName) {
         return getAutosaveUrlStem() + ':' + fieldName;
     }
-}(window.$cms, window.$util, window.$dom, (window.$posting || (window.$posting = {}))));
+}(window.$cms, window.$util, window.$dom));

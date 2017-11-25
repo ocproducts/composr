@@ -73,7 +73,9 @@
                 var v = '';
                 v += Math.floor(newValue / 60);
                 v += ':';
-                if (newValue % 60 < 10) v += '0';
+                if (newValue % 60 < 10) {
+                    v += '0';
+                }
                 v += newValue % 60;
                 $dom.html(st2, v);
             }
