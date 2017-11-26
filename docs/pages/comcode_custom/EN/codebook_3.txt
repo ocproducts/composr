@@ -556,6 +556,7 @@ Values are like hidden configuration options. They are either hidden because the
   - [tt]allow_member_mail_relay[/tt] -- set to '1' if the [tt]form_to_email.php[/tt] script should allow e-mailing to arbitrary members via the [tt]allow_member_mail_relay[/tt] parameter. This potentially allows people to spam your members, so you may want to add some kind of extra security here at a web-server level (i.e. restricting access to the script).
   - [tt]windows_auth_is_enabled[/tt] -- set to '1' to enable Integrated Windows Kerberos Authentication for automatic desktop client logins
   - [tt]postgres_fulltext_language[/tt] -- set to a PostgreSQL full-text configuration name for defining how to tokenise text (only set if you don't want 'english'). Existing indices would need hand-editing to the new value too.
+  - [tt]skip_fulltext_sqlserver[/tt] -- set this to '1' if you are using Microsoft SQL Server and want to disable full-text search support. You may do this if you don't like the limitations of SQL Server full-text search (per-table searching, not per-field searching).
  - Unofficial functionality that may or may not work correctly
   - [tt]unofficial_ecommerce[/tt] -- set to '1' if your forum driver contains usergroup manipulation functions (we don't support this, but wanted to be able to allow those willing to extend forum drivers to use our full eCommerce framework)
  - Workarounds for difficult server configurations
@@ -568,6 +569,7 @@ Values are like hidden configuration options. They are either hidden because the
   - [tt]manualproc_mail[/tt] -- set this to '1' to debug problems with the PHP mail command (the PHP mail command won't relay error information from the sendmail process, this will replace it with something that does); it only works on servers that allow PHP process control
   - [tt]disable_cookie_checks[/tt] -- set this to '1' if you are somehow proxying traffic into your web server with an incorrect hostname header, so cookie checks must be skipped
   - [tt]disable_sitemap[/tt] -- set this to '1' if you need to disable Sitemap menus for any reason (perhaps it is too slow to generate or there is some kind of infinite loop bug that is not yet fixed). Set this to '2' to greatly reduce the depth of the Sitemap (this is probably what you want, as you don't want your admin menus disappearing).
+  - [tt]avoid_register_shutdown_function[/tt] -- set this to '1' if [tt]register_shutdown_function[/tt] is not reliable on this system (may appear to be unreliable on some Windows servers, for example)
  - Used internally by Composr
   - [tt]cdn[/tt] -- this is used for storage of autodetected CDNs, prior to the config option for them being properly filled in
   - [tt]brand_base_url[/tt] -- the base URL to the brand site (by default this is {$BRAND_BASE_URL} but may be changed)
@@ -619,17 +621,14 @@ Values are like hidden configuration options. They are either hidden because the
   - [tt]search_days__<search-hook>[/tt] -- set the default day search period for a search hook (e.g. 60, or blank for no limit). This may be set for reasons of user experience, or for performance -- searching without a day constraint is actually faster.
   - [tt]no_cannot_access_url_messages[/tt] -- set this to '1' to turn off attached messages about broken URLs that Composr tries to process
   - [tt]force_spell_checker[/tt] -- set to 'pspell' or 'enchant' to force that particular spell-checker, rather than auto-detecting
-  - [tt]avoid_register_shutdown_function[/tt] -- set this to '1' if [tt]register_shutdown_function[/tt] is not reliable on this system (may appear to be unreliable on some Windows servers, for example)
   - [tt]disable_comcode_page_order[/tt] -- set this to '1' to disable the Comcode page ordering feature
   - [tt]disable_comcode_page_show_as_edited[/tt] -- set this to '1' to disable the Comcode Page "show as edited" feature
   - [tt]hide_import[/tt] -- set this to '1' to hide the import icon from the Admin Zone (as some other addons may depend on it, but you may not need an icon)
   - [tt]hide_zone_editor[/tt] -- set this to '1' to hide the zone editor from the Admin Zone (if you're not using side panels)
-  - [tt]hide_blogs[/tt] -- set this to '1' if you don't want to separate news and blogs
   - [tt]hide_polls[/tt] -- set this to '1' if you don't want to show polls in the CMS menu (if you have the forum you need the polls addon, but may not use polls outside the forum)
   - [tt]hide_rss[/tt] -- set this to '1' to hide the RSS links from the Admin Zone
   - [tt]disable_bulkhelper[/tt] -- set this to '1' to disable the feature that asks you if you are bulk-adding records
   - [tt]disable_news_repimages[/tt] -- set this to '1' to disable rep-images for news categories
-  - [tt]skip_fulltext_sqlserver[/tt] -- set this to '1' if you are using Microsoft SQL Server and want to disable full-text search support. You may do this if you don't like the limitations of SQL Server full-text search (per-table searching, not per-field searching).
  - Performance tuning (positive) [not official options as will break normal expectations of how the system will behave / complicate things]
   - [tt]lots_of_data_in_*[/tt] -- set this to '1', with '*' replaced with a database table name, if you want the Selectcode mechanism to work with recursive DB lookups rather than one huge flat lookup
   - [tt]disable_cat_cat_perms[/tt] -- set this to '1' if you want to disable catalogue category permissions
@@ -659,7 +658,7 @@ Values are like hidden configuration options. They are either hidden because the
   - [tt]maximum_result_count_point[/tt] -- the number of search results to count up to (defaults to '1000'); a higher figure means that for multi-condition searches extra computation will be required to see which result rows match the search conditions (single-condition search counting is usually fast because an index gives an instant answer)
   - [tt]search_days__<search-hook>[/tt] -- (see "Low-level tuning")
   - [tt]js_keep_params[/tt] -- handle keep variable propagation via JavaScript. Used in conjunction with [tt]$SITE_INFO['no_keep_params'] = '1';[/tt]
-  - [tt]slow_counts[/tt] -- set this to '1' if you have switched to InnoDB, as table row counts are slow and this switch enables an approximation instead in certain places. Do not use with other databases than MySQL or PostgreSQL.
+  - [tt]slow_counts[/tt] -- set this to '1' if you have switched to InnoDB, as table row counts are slow and this switch enables an approximation instead in certain places. Do not use with other databases than MySQL or PostgreSQL or SQL Server.
   - [tt]innodb[/tt] -- set this to '1' if you have switched to MySQL's InnoDB
   - [tt]no_post_rating[/tt] -- set this to '1' if you don't want to allow post ratings, which saves one query per displayed post
  - Performance tuning (negative)

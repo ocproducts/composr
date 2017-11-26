@@ -59,7 +59,7 @@ class Module_cms_blogs extends Standard_crud_module
             return null;
         }
 
-        if (get_value('hide_blogs') === '1') {
+        if (get_option('separate_blogs') == '0') {
             return null;
         }
 
