@@ -114,6 +114,7 @@
     $cms.userLang = $util.constant(strVal(symbols.LANG));
 
     /**
+     * Get URL stub to propagate keep_* parameters
      * @memberof $cms
      * @param [starting]
      * @param [forceSession]

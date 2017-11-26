@@ -142,7 +142,6 @@ class Hook_addon_registry_core_menus
             'themes/default/templates/MENU_EDITOR_BRANCH.tpl',
             'themes/default/templates/MENU_EDITOR_SCREEN.tpl',
             'themes/default/templates/MENU_EDITOR_BRANCH_WRAP.tpl',
-            'themes/default/javascript/menu_editor.js',
             'themes/default/templates/BLOCK_MENU.tpl',
             'themes/default/templates/MENU_LINK_PROPERTIES.tpl',
             'adminzone/pages/modules/admin_menus.php',

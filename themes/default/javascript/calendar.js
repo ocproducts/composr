@@ -4,6 +4,7 @@
     $cms.functions.cmsCalendarRunStart = function cmsCalendarRunStart() {
         var form = document.getElementById('recurrence_pattern').form,
             start = document.getElementById('start'),
+            end = document.getElementById('end'),
             startDay = document.getElementById('start_day'),
             startMonth = document.getElementById('start_month'),
             startYear = document.getElementById('start_year'),

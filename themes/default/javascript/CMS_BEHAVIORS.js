@@ -94,8 +94,8 @@
 
             forms.forEach(function (form) {
                 // HTML editor
-                if (window.loadHtmlEdit !== undefined) {
-                    window.loadHtmlEdit(form);
+                if (window.$editing !== undefined) {
+                    window.$editing.loadHtmlEdit(form);
                 }
 
                 // Remove tooltips from forms as they are for screen-reader accessibility only

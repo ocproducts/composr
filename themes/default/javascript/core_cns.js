@@ -1,5 +1,7 @@
 (function ($cms, $util, $dom) {
     'use strict';
+    
+    var $coreCns = window.$coreCns = {};
 
     $cms.views.CnsMemberProfileScreen = CnsMemberProfileScreen;
     /**
@@ -105,7 +107,7 @@
 
     $cms.templates.cnsMemberProfileAbout = function cnsMemberProfileAbout(params, container) {
         $dom.on(container, 'click', '.js-click-member-profile-about-decrypt-data', function () {
-            decryptData();
+            $coreCns.decryptData();
         });
     };
 
@@ -301,7 +303,7 @@
         $dom.on(container, 'click', '.js-click-do-emoticon', function (e, target) {
             var fieldName = target.dataset.tpFieldName;
             if (fieldName) {
-                window.doEmoticon(fieldName, target, true);
+                window.$editing.doEmoticon(fieldName, target, true);
             }
         });
     };
@@ -322,9 +324,8 @@
             }
         });
     };
-
-    window.decryptData = decryptData;
-    function decryptData() {
+    
+    $coreCns.decryptData = function decryptData() {
         if (document.getElementById('decryption_overlay')) {
             return;
         }
@@ -411,7 +412,7 @@
                 input.focus();
             } catch (e) {}
         }, 0);
-    }
+    };
 
     function joinForm(params) {
         var form = document.getElementById('username').form,
@@ -464,10 +465,10 @@
                 });
 
                 if (areSame) {
+                    // All valid
                     return;
                 }
             }
-            
 
             var url = params.usernameCheckScript + '?username=' + encodeURIComponent(form.elements['username'].value);
             checkPromises.push($cms.form.doAjaxFieldTest(url, 'password=' + encodeURIComponent(form.elements['password'].value)));

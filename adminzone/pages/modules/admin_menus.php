@@ -110,8 +110,6 @@ class Module_admin_menus
         require_code('input_filter_2');
         rescue_shortened_post_request();
 
-        require_javascript('menu_editor');
-
         require_code('menus');
         require_code('menus2');
 

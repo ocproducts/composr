@@ -425,6 +425,23 @@
     };
 
     /**
+     * @param number {number}
+     * @returns {string}
+     */
+    $util.decToHex = function decToHex(number) {
+        var hexbase = '0123456789ABCDEF';
+        return hexbase.charAt((number >> 4) & 0xf) + hexbase.charAt(number & 0xf);
+    };
+
+    /**
+     * @param number {string}
+     * @returns {number}
+     */
+    $util.hexToDec = function hexToDec(number) {
+        return parseInt(number, 16);
+    };
+
+    /**
      * Iterates over an object
      * @param obj
      * @param callback

@@ -16,11 +16,11 @@
                     }
                     if (document.getElementById('next_slide')) {
                         media.addEventListener('canplay', function () {
-                            stopSlideshowTimer();
+                            window.$galleries.stopSlideshowTimer();
                             player.play();
                         });
                         media.addEventListener('ended', function () {
-                            playerStopped();
+                            window.$galleries.playerStopped();
                         });
                     }
                 }
@@ -55,11 +55,11 @@
                         media.preload = 'auto';
                         media.loop = false;
                         media.addEventListener('canplay', function () {
-                            stopSlideshowTimer();
+                            window.$galleries.stopSlideshowTimer();
                             player.play();
                         });
                         media.addEventListener('ended', function () {
-                            playerStopped();
+                            window.$galleries.playerStopped();
                         });
                     }
                 }

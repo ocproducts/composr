@@ -1,6 +1,8 @@
 (function ($cms, $util, $dom) {
     'use strict';
-
+    
+    var $galleries = window.$galleries = {};
+    
     if (window.slideshowTimer === undefined) {
         window.slideshowTimer = null;
         window.slideshowSlides = {};
@@ -151,7 +153,7 @@
             resetSlideshowCountdown();
         },
         stopTimer: function () {
-            stopSlideshowTimer('{!galleries:STOPPED^;}');
+            $galleries.stopSlideshowTimer('{!galleries:STOPPED^;}');
         },
         slideshowBackward: function () {
             slideshowBackward();
@@ -277,14 +279,14 @@
 
     function toggleSlideshowTimer() {
         if (window.slideshowTimer) {
-            stopSlideshowTimer();
+            $galleries.stopSlideshowTimer();
         } else {
             showCurrentSlideshowTime();
             startSlideshowTimer();
         }
     }
 
-    function stopSlideshowTimer(message) {
+    $galleries.stopSlideshowTimer = function stopSlideshowTimer(message) {
         if (message === undefined) {
             message = '{!galleries:STOPPED;^}';
         }
@@ -297,7 +299,7 @@
         }
         window.slideshowTimer = null;
         document.getElementById('gallery_entry_screen').style.cursor = '';
-    }
+    };
 
     function slideshowBackward() {
         if (window.slideshowCurrentPosition === 0) {
@@ -307,13 +309,13 @@
         slideshowShowSlide(window.slideshowCurrentPosition - 1);
     }
 
-    function playerStopped() {
+    $galleries.playerStopped = function playerStopped() {
         slideshowForward();
-    }
+    };
 
     function slideshowForward() {
         if (window.slideshowCurrentPosition === (window.slideshowTotalSlides - 1)) {
-            stopSlideshowTimer('{!galleries:LAST_SLIDE;^}');
+            $galleries.stopSlideshowTimer('{!galleries:LAST_SLIDE;^}');
             return;
         }
 
@@ -357,8 +359,8 @@
         }
     }
 
-    function _slideshowReadInSlide(ajaxResultRaw, slide) {
-        window.slideshowSlides[slide] = ajaxResultRaw.responseText.replace(/(.|\n)*<div class="gallery_entry_screen"[^<>]*>/i, '').replace(/<!--DO_NOT_REMOVE_THIS_COMMENT-->\s*<\/div>(.|\n)*/i, ''); // FUDGE
+    function _slideshowReadInSlide(xhr, slide) {
+        window.slideshowSlides[slide] = xhr.responseText.replace(/(.|\n)*<div class="gallery_entry_screen"[^<>]*>/i, '').replace(/<!--DO_NOT_REMOVE_THIS_COMMENT-->\s*<\/div>(.|\n)*/i, ''); // FUDGE
     }
 
     function slideshowShowSlide(slide) {
@@ -368,9 +370,10 @@
             if (window.slideshowCurrentPosition !== slide) { // If not already here
                 var slideshowFrom = document.getElementById('slideshow_from');
 
-                var fadeElementsOld = document.body.querySelectorAll('.scale_down');
+                var fadeElementsOld = document.body.querySelectorAll('.scale_down'),
+                    fadeElementOld;
                 if (fadeElementsOld[0] !== undefined) {
-                    var fadeElementOld = fadeElementsOld[0];
+                    fadeElementOld = fadeElementsOld[0];
                     var leftPos = fadeElementOld.parentNode.offsetWidth / 2 - fadeElementOld.offsetWidth / 2;
                     fadeElementOld.style.left = leftPos + 'px';
                     fadeElementOld.style.position = 'absolute';
@@ -403,7 +406,7 @@
                 startSlideshowTimer();
                 resetSlideshowCountdown();
             } else { // Is video
-                stopSlideshowTimer('{!galleries:WILL_CONTINUE_AFTER_VIDEO_FINISHED;^}');
+                $galleries.stopSlideshowTimer('{!galleries:WILL_CONTINUE_AFTER_VIDEO_FINISHED;^}');
             }
 
             if (window.slideshowCurrentPosition != window.slideshowTotalSlides - 1) {
@@ -413,8 +416,4 @@
             }
         });
     }
-
-    // Exports to be gotten rid of later
-    window.playerStopped = playerStopped;
-    window.stopSlideshowTimer = stopSlideshowTimer;
 }(window.$cms, window.$util, window.$dom));

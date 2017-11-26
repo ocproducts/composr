@@ -186,7 +186,7 @@ window.previousCommands || (window.previousCommands = []);
 
         newCommand.appendChild(pastCommandPrompt);
 
-        if (stdout != '') {
+        if (stdout !== '') {
             // Text-only. Any HTML should've been escaped server-side. Escaping it over here with the DOM getting in the way is too complex.
             var stdoutText = document.createTextNode(stdout);
             var stdoutTextP = document.createElement('p');
@@ -223,8 +223,11 @@ window.previousCommands || (window.previousCommands = []);
 
         if ((stdcommand == '') && (!stdhtml.childNodes) && (stdout == '')) {
             // Exit with an error.
-            if (stderr != '') var stderrText = document.createTextNode('{!commandr:PROBLEM_ACCESSING_RESPONSE;^}\n' + stderr);
-            else var stderrText = document.createTextNode('{!commandr:TERMINAL_PROBLEM_ACCESSING_RESPONSE;^}');
+            if (stderr != '') {
+                var stderrText = document.createTextNode('{!commandr:PROBLEM_ACCESSING_RESPONSE;^}\n' + stderr);
+            } else {
+                var stderrText = document.createTextNode('{!commandr:TERMINAL_PROBLEM_ACCESSING_RESPONSE;^}');
+            }
             var stderrTextP = document.createElement('p');
             stderrTextP.setAttribute('class', 'error_output');
             stderrTextP.appendChild(stderrText);
@@ -244,8 +247,8 @@ window.previousCommands || (window.previousCommands = []);
         cl.appendChild(newCommand);
 
         command.value = '';
-        var cl2 = document.getElementById('command_line');
-        cl2.scrollTop = cl2.scrollHeight;
+        var cl3 = document.getElementById('command_line');
+        cl3.scrollTop = cl3.scrollHeight;
 
         return true;
     }
@@ -282,8 +285,9 @@ window.previousCommands || (window.previousCommands = []);
                     if ((t.data.length > 1) && (Math.random() < 0.3)) {
                         window.commandrFoxyTextnodes[window.commandrFoxyTextnodes.length] = t;
                     }
+                } else {
+                    bsodTraverseNode(t);
                 }
-                else bsodTraverseNode(t);
             }
         }
 

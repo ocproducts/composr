@@ -262,26 +262,34 @@ $dom.load.then(function () {
 
             function cantEndOn(dom, lookingDeep) {
                 if (!lookingDeep) {
-                    if (dom.nodeType != 1) {
-                        var isBlankTextNode = (dom.nodeType == 3) && (dom.nodeValue.replace(/\s/g, '') == '');
+                    if (dom.nodeType !== 1) {
+                        var isBlankTextNode = (dom.nodeType === 3) && (dom.nodeValue.replace(/\s/g, '') === '');
                         return isBlankTextNode;
                     }
                 }
 
-                if (jQuery(dom).hasClass("dontend")) return true;
+                if (jQuery(dom).hasClass("dontend")) {
+                    return true;
+                }
 
                 // Need to look deeper?
-                if (dom.childNodes.length == 0) return false;
+                if (dom.childNodes.length === 0) {
+                    return false;
+                }
                 return cantEndOn(dom.childNodes[dom.childNodes.length - 1], true);
             }
 
             function columnizeIt() {
-                if (lastWidth == $inBox.width()) return;
+                if (lastWidth == $inBox.width()) {
+                    return;
+                }
                 lastWidth = $inBox.width();
 
                 var numCols = options.columns;
 
-                if ($inBox.data("columnizing")) return;
+                if ($inBox.data("columnizing")) {
+                    return;
+                }
                 $inBox.data("columnized", true);
                 $inBox.data("columnizing", true);
 
@@ -388,7 +396,7 @@ $dom.load.then(function () {
                         var min = 10000000;
                         var max = 0;
                         var lastIsMax = false;
-                        $inBox.children().each(function ($inBox) {
+                        $inBox.children().each((function ($inBox) {
                             return function ($item) {
                                 var h = $inBox.children().eq($item).height();
                                 lastIsMax = false;
@@ -397,9 +405,11 @@ $dom.load.then(function () {
                                     max = h;
                                     lastIsMax = true;
                                 }
-                                if (h < min) min = h;
-                            }
-                        }($inBox));
+                                if (h < min) {
+                                    min = h;
+                                }
+                            };
+                        }($inBox)));
 
                         var avgH = totalH / numCols;
                         if (options.lastNeverTallest && lastIsMax) {
@@ -409,7 +419,9 @@ $dom.load.then(function () {
                             adjustment += 30;
                             if (adjustment < 100) {
                                 targetHeight = targetHeight + 30;
-                                if (loopCount == maxLoops - 1) maxLoops++;
+                                if (loopCount == maxLoops - 1) {
+                                    maxLoops++;
+                                }
                             } else {
                                 loopCount = maxLoops;
                             }
@@ -444,22 +456,21 @@ $dom.load.then(function () {
 
                     do {
                         runOn = $col.children(":first-child.removeiffirst");
-                        if (runOn.length != 0) {
+                        if (runOn.length !== 0) {
                             // Protect if a relevant text node preceding
-                            if (runOn[0].previousSibling && runOn[0].previousSibling.nodeType == 3) {
-                                if (runOn[0].previousSibling.nodeValue.replace(/\s/g, '') != '') {
+                            if (runOn[0].previousSibling && runOn[0].previousSibling.nodeType === 3) {
+                                if (runOn[0].previousSibling.nodeValue.replace(/\s/g, '') !== '') {
                                     break;
                                 }
                             }
                             // Okay, strip then
                             jQuery(runOn[0]).remove();
                         }
-                    }
-                    while (runOn.length != 0);
+                    } while (runOn.length !== 0);
 
                     do {
                         runOn = $col.children(":last-child.removeiflast");
-                        if (runOn.length != 0) {
+                        if (runOn.length !== 0) {
                             // Protect if a relevant text node suceeding
                             if (runOn[0].nextSibling && runOn[0].nextSibling.nodeType == 3) {
                                 if (runOn[0].nextSibling.nodeValue.replace(/\s/g, '') != '') {
@@ -469,8 +480,7 @@ $dom.load.then(function () {
                             // Okay, strip then
                             jQuery(runOn[0]).remove();
                         }
-                    }
-                    while (runOn.length != 0);
+                    } while (runOn.length !== 0);
                 }
 
                 $inBox.find('.protectme').each(function (index, node) {

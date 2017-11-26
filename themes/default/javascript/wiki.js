@@ -9,7 +9,7 @@
         }
 
         $dom.on(container, 'change', '.js-change-input-tree-update-children-value', function (e, input) {
-            if (input.value != '') {
+            if (input.value !== '') {
                 $dom.$('#children').value += input.value + '=' + input.selectedTitle + '\n';
             }
         });

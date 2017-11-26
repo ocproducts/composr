@@ -75,7 +75,7 @@
         if (params.supportAutosave && params.formName) {
             setTimeout(function () {
                 if ('{$VALUE_OPTION;,disable_form_auto_saving}' !== '1') {
-                    initFormSaving(params.formName);
+                    $posting.initFormSaving(params.formName);
                 }
             }, 3000/*Let CKEditor load*/);
         }
@@ -152,13 +152,13 @@
 
         if (params.plupload && !$cms.isHttpauthLogin() && $cms.configOption('complex_uploader')) {
             $cms.requireJavascript('plupload').then(function () {
-                window.preinitFileInput('upload', params.name, null, params.filter);
+                window.$plupload.preinitFileInput('upload', params.name, null, params.filter);
             });
         }
 
         if (params.syndicationJson != null) {
             $cms.requireJavascript('editing').then(function () {
-                window.showUploadSyndicationOptions(params.name, params.syndicationJson);
+                window.$editing.showUploadSyndicationOptions(params.name, params.syndicationJson);
             });
         }
     }
@@ -458,11 +458,11 @@
         });
 
         $dom.on(container, 'change', '.js-change-ensure-next-field', function (e, input) {
-            ensureNextField(input)
+            ensureNextField(input);
         });
 
         $dom.on(container, 'keypress', '.js-keypress-ensure-next-field', function (e, input) {
-            ensureNextField(input)
+            ensureNextField(input);
         });
     };
 
@@ -489,7 +489,7 @@
             textarea = $dom.$id(params.name),
             input = $dom.$id('form_table_field_input__' + params.randomisedId);
 
-        if (required.includes('wysiwyg') && wysiwygOn()) {
+        if (required.includes('wysiwyg') && window.$editing.wysiwygOn()) {
             textarea.readOnly = true;
         }
 
@@ -515,8 +515,8 @@
     $cms.templates.formScreenInputColour = function (params) {
         var label = params.rawField ? ' ' : params.prettyName;
 
-        makeColourChooser(params.name, params.default, '', params.tabindex, label, 'input_colour' + params._required);
-        doColorChooser();
+        window.$themeColours.makeColourChooser(params.name, params.default, '', params.tabindex, label, 'input_colour' + params._required);
+        window.$themeColours.doColorChooser();
     };
 
     $cms.templates.formScreenInputTreeList = function formScreenInputTreeList(params, container) {
@@ -643,7 +643,7 @@
                         }
                     );
                 }
-            }
+            };
         }
     };
 
@@ -823,7 +823,7 @@
             attachmentsUiInputRow = $dom.$('#field-' + id +'-attachments-ui-input');
 
         if (params.class.includes('wysiwyg')) {
-            if (window.wysiwygOn && wysiwygOn()) {
+            if (window.$editing && window.$editing.wysiwygOn()) {
                 postEl.readOnly = true; // Stop typing while it loads
 
                 setTimeout(function () {
@@ -848,12 +848,12 @@
 
         if (initDragDrop) {
             $cms.requireJavascript('plupload').then(function () {
-                window.initialiseHtml5DragdropUpload('container_for_' + name, name);
+                window.$plupload.initialiseHtml5DragdropUpload('container_for_' + name, name);
             });
         }
 
         $dom.on(labelRow, 'click', '.js-click-toggle-wysiwyg', function () {
-            toggleWysiwyg(name);
+            window.$editing.toggleWysiwyg(name);
         });
 
         $dom.on(labelRow, 'click', '.js-link-click-open-field-emoticon-chooser-window', function (e, link) {
@@ -875,12 +875,12 @@
         var post = mainWindow.document.getElementById('post');
 
         // Replace Comcode
-        var oldComcode = mainWindow.getTextbox(post);
-        mainWindow.setTextbox(post, newPostValue.replace(/&#111;/g, 'o').replace(/&#79;/g, 'O'), newPostValueHtml);
+        var oldComcode = mainWindow.$editing.getTextbox(post);
+        mainWindow.$editing.setTextbox(post, newPostValue.replace(/&#111;/g, 'o').replace(/&#79;/g, 'O'), newPostValueHtml);
 
         // Turn main post editing back on
-        if (window.wysiwygSetReadonly !== undefined) {
-            wysiwygSetReadonly('post', false);
+        if (window.$editing !== undefined) {
+            window.$editing.wysiwygSetReadonly('post', false);
         }
 
         // Remove attachment uploads
@@ -1033,7 +1033,7 @@
 
                 var promise = Promise.resolve();
                 if (!element.value.includes(comcodeSemihtml) || !comcode.includes('[attachment')) { // Don't allow attachments to add twice
-                    promise = targetWin.insertTextbox(element, newComcode, true, newComcodeSemihtml);
+                    promise = targetWin.$editing.insertTextbox(element, newComcode, true, newComcodeSemihtml);
                 }
                 
                 promise.then(function () {
@@ -1045,7 +1045,7 @@
 
             var promise = Promise.resolve();
             if (params.prefix !== undefined) {
-                promise = targetWin.insertTextbox(element, params.prefix, true, '');
+                promise = targetWin.$editing.insertTextbox(element, params.prefix, true, '');
             }
             promise.then(function () {
                 targetWin.insertComcodeTag(null, null, false, function () {
@@ -1068,12 +1068,12 @@
 
         if (params.syndicationJson !== undefined) {
             $cms.requireJavascript('editing').then(function () {
-                window.showUploadSyndicationOptions(nameStub, syndicationJson);
+                window.$editing.showUploadSyndicationOptions(nameStub, syndicationJson);
             });
         }
 
         if (params.plupload && !$cms.isHttpauthLogin() && $cms.configOption('complex_uploader')) {
-            window.preinitFileInput('upload_multi', nameStub + '_' + index, null, params.filter);
+            window.$plupload.preinitFileInput('upload_multi', nameStub + '_' + index, null, params.filter);
         }
 
         $dom.on(container, 'change', '.js-input-change-ensure-next-field-upload', function (e, input) {
@@ -1094,7 +1094,6 @@
                 thisNum = thisField.name.substring(mid + 1, thisField.name.length) - 0,
                 nextNum = thisNum + 1,
                 nextField = document.getElementById('multi_' + nextNum),
-                name = nameStub + nextNum,
                 thisId = thisField.id;
 
             if (!nextField) {
@@ -1103,16 +1102,14 @@
                 nextField = document.createElement('input');
                 nextField.className = 'input_upload';
                 nextField.setAttribute('id', 'multi_' + nextNum);
-                nextField.addEventListener('change', _ensureNextFieldUpload);
+                nextField.addEventListener('change', function (event) {
+                    if (!$dom.keyPressed(event, 'Tab')) {
+                        ensureNextFieldUpload(this);
+                    }
+                });
                 nextField.setAttribute('type', 'file');
                 nextField.name = nameStub + nextNum;
                 thisField.parentNode.appendChild(nextField);
-            }
-
-            function _ensureNextFieldUpload(event) {
-                if (!$dom.keyPressed(event, 'Tab')) {
-                    ensureNextFieldUpload(this);
-                }
             }
         }
     };
@@ -1181,7 +1178,7 @@
         }
     };
 
-    $cms.templates.formScreenInputVariousTricks = function formScreenInputVariousTricks(params, container) {
+    $cms.templates.formScreenInputVariousTicks = function formScreenInputVariousTicks(params, container) {
         var customName = strVal(params.customName);
 
         if (customName && !params.customAcceptMultiple) {
@@ -1205,7 +1202,7 @@
 
     $cms.templates.formScreenInputText = function formScreenInputText(params) {
         if (params.required.includes('wysiwyg')) {
-            if ((window.wysiwygOn) && (window.wysiwygOn())) {
+            if (window.$editing && window.$editing.wysiwygOn()) {
                 document.getElementById(params.name).readOnly = true;
             }
         }
@@ -1481,7 +1478,9 @@
                         label = $dom.html(labels[i]);
                         for (var j = 0; j < fields.length; j++) {
                             if (fields[j].replace(/^.*: /, '') === label) {
-                                if (parsed[j + 1] === null) parsed[j + 1] = '';
+                                if (parsed[j + 1] === null) {
+                                    parsed[j + 1] = '';
+                                }
 
                                 fieldName = labels[i].getAttribute('for');
                                 field = document.getElementById(fieldName);
@@ -1834,88 +1833,88 @@
             }
         }
     }
-}(window.$cms, window.$util, window.$dom));
+    
+    // ===========
+    // Multi-field
+    // ===========
+    window._ensureNextField = _ensureNextField;
+    function _ensureNextField(event, el) {
+        if ($dom.keyPressed(event, 'Enter')) {
+            gotoNextField(el);
+        } else if (!$dom.keyPressed(event, 'Tab')) {
+            ensureNextField(el);
+        }
 
-// ===========
-// Multi-field
-// ===========
+        function gotoNextField(thisField) {
+            var mid = thisField.id.lastIndexOf('_'),
+                nameStub = thisField.id.substring(0, mid + 1),
+                thisNum = thisField.id.substring(mid + 1, thisField.id.length) - 0,
+                nextNum = thisNum + 1,
+                nextField = document.getElementById(nameStub + nextNum);
 
-function _ensureNextField(event, el) {
-    if ($dom.keyPressed(event, 'Enter')) {
-        gotoNextField(el);
-    } else if (!$dom.keyPressed(event, 'Tab')) {
-        ensureNextField(el);
+            if (nextField) {
+                try {
+                    nextField.focus();
+                } catch (e) {}
+            }
+        }
     }
 
-    function gotoNextField(thisField) {
+    function ensureNextField(thisField) {
         var mid = thisField.id.lastIndexOf('_'),
             nameStub = thisField.id.substring(0, mid + 1),
             thisNum = thisField.id.substring(mid + 1, thisField.id.length) - 0,
             nextNum = thisNum + 1,
-            nextField = document.getElementById(nameStub + nextNum);
+            nextField = document.getElementById(nameStub + nextNum),
+            thisId = thisField.id;
 
-        if (nextField) {
-            try {
-                nextField.focus();
-            } catch (e) {}
+        if (!nextField) {
+            nextNum = thisNum + 1;
+            thisField = document.getElementById(thisId);
+            var nextFieldWrap = document.createElement('div');
+            nextFieldWrap.className = thisField.parentNode.className;
+            if (thisField.localName === 'textarea') {
+                nextField = document.createElement('textarea');
+            } else {
+                nextField = document.createElement('input');
+                nextField.setAttribute('size', thisField.getAttribute('size'));
+            }
+            nextField.className = thisField.className.replace(/\_required/g, '');
+            if (thisField.form.elements['label_for__' + nameStub + '0']) {
+                var nextLabel = document.createElement('input');
+                nextLabel.setAttribute('type', 'hidden');
+                nextLabel.value = thisField.form.elements['label_for__' + nameStub + '0'].value + ' (' + (nextNum + 1) + ')';
+                nextLabel.name = 'label_for__' + nameStub + nextNum;
+                nextFieldWrap.appendChild(nextLabel);
+            }
+            nextField.setAttribute('tabindex', thisField.getAttribute('tabindex'));
+            nextField.setAttribute('id', nameStub + nextNum);
+            if (thisField.onfocus) {
+                nextField.onfocus = thisField.onfocus;
+            }
+            if (thisField.onblur) {
+                nextField.onblur = thisField.onblur;
+            }
+            if (thisField.onkeyup) {
+                nextField.onkeyup = thisField.onkeyup;
+            }
+            nextField.onkeypress = function (event) {
+                _ensureNextField(event, nextField);
+            };
+            if (thisField.onchange) {
+                nextField.onchange = thisField.onchange;
+            }
+            if (thisField.onrealchange != null) {
+                nextField.onchange = thisField.onrealchange;
+            }
+            if (thisField.localName !== 'textarea') {
+                nextField.type = thisField.type;
+            }
+            nextField.value = '';
+            nextField.name = (thisField.name.includes('[]') ? thisField.name : (nameStub + nextNum));
+            nextFieldWrap.appendChild(nextField);
+            thisField.parentNode.parentNode.insertBefore(nextFieldWrap, thisField.parentNode.nextSibling);
         }
     }
-}
 
-function ensureNextField(thisField) {
-    var mid = thisField.id.lastIndexOf('_'),
-        nameStub = thisField.id.substring(0, mid + 1),
-        thisNum = thisField.id.substring(mid + 1, thisField.id.length) - 0,
-        nextNum = thisNum + 1,
-        nextField = document.getElementById(nameStub + nextNum),
-        name = nameStub + nextNum,
-        thisId = thisField.id;
-
-    if (!nextField) {
-        nextNum = thisNum + 1;
-        thisField = document.getElementById(thisId);
-        var nextFieldWrap = document.createElement('div');
-        nextFieldWrap.className = thisField.parentNode.className;
-        if (thisField.localName === 'textarea') {
-            nextField = document.createElement('textarea');
-        } else {
-            nextField = document.createElement('input');
-            nextField.setAttribute('size', thisField.getAttribute('size'));
-        }
-        nextField.className = thisField.className.replace(/\_required/g, '');
-        if (thisField.form.elements['label_for__' + nameStub + '0']) {
-            var nextLabel = document.createElement('input');
-            nextLabel.setAttribute('type', 'hidden');
-            nextLabel.value = thisField.form.elements['label_for__' + nameStub + '0'].value + ' (' + (nextNum + 1) + ')';
-            nextLabel.name = 'label_for__' + nameStub + nextNum;
-            nextFieldWrap.appendChild(nextLabel);
-        }
-        nextField.setAttribute('tabindex', thisField.getAttribute('tabindex'));
-        nextField.setAttribute('id', nameStub + nextNum);
-        if (thisField.onfocus) {
-            nextField.onfocus = thisField.onfocus;
-        }
-        if (thisField.onblur) {
-            nextField.onblur = thisField.onblur;
-        }
-        if (thisField.onkeyup) {
-            nextField.onkeyup = thisField.onkeyup;
-        }
-        nextField.onkeypress = function (event) {
-            _ensureNextField(event, nextField);
-        };
-        if (thisField.onchange) {
-            nextField.onchange = thisField.onchange;
-        }
-        if (thisField.onrealchange != null) {
-            nextField.onchange = thisField.onrealchange;
-        }
-        if (thisField.localName !== 'textarea') {
-            nextField.type = thisField.type;
-        }
-        nextField.value = '';
-        nextField.name = (thisField.name.includes('[]') ? thisField.name : (nameStub + nextNum));
-        nextFieldWrap.appendChild(nextField);
-        thisField.parentNode.parentNode.insertBefore(nextFieldWrap, thisField.parentNode.nextSibling);
-    }
-}
+}(window.$cms, window.$util, window.$dom));

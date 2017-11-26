@@ -25,7 +25,7 @@
 
     $cms.templates.quizScreen = function quizScreen(params, container) {
         var form = $dom.$(container, '.js-quiz-form'),
-            timeout = +params.timeout || 0,
+            timeout = Number(params.timeout) || 0,
             quizFormLastValid;
 
         $dom.on(container, 'submit', '.js-submit-check-form', function (e, form) {
@@ -73,7 +73,9 @@
                 var v = '';
                 v += Math.floor(newValue / 60);
                 v += ':';
-                if (newValue % 60 < 10) v += '0';
+                if (newValue % 60 < 10) {
+                    v += '0';
+                }
                 v += newValue % 60;
                 $dom.html(st2, v);
             }
