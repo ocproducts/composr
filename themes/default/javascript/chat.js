@@ -401,7 +401,7 @@
                 }
 
                 if ($cms.configOption('complex_uploader')) {
-                    window.preinitFileInput('chat_effect_settings', name, null, 'mp3');
+                    window.$plupload.preinitFileInput('chat_effect_settings', name, null, 'mp3');
                 }
             }
         }

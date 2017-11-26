@@ -16,7 +16,7 @@
                     speed: params.speed,
                     direction: 'tb',
                     content: params.content
-                })
+                });
             }
             container.flipped = !container.flipped;
         });

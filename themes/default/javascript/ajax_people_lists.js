@@ -18,7 +18,6 @@
 
     var currentlyDoingListTimer = 0,
         currentListForEl = null;
-
     /**
      * @memberof $cms.form
      * @param target

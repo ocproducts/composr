@@ -152,7 +152,7 @@
 
         if (params.plupload && !$cms.isHttpauthLogin() && $cms.configOption('complex_uploader')) {
             $cms.requireJavascript('plupload').then(function () {
-                window.preinitFileInput('upload', params.name, null, params.filter);
+                window.$plupload.preinitFileInput('upload', params.name, null, params.filter);
             });
         }
 
@@ -848,7 +848,7 @@
 
         if (initDragDrop) {
             $cms.requireJavascript('plupload').then(function () {
-                window.initialiseHtml5DragdropUpload('container_for_' + name, name);
+                window.$plupload.initialiseHtml5DragdropUpload('container_for_' + name, name);
             });
         }
 
@@ -1073,7 +1073,7 @@
         }
 
         if (params.plupload && !$cms.isHttpauthLogin() && $cms.configOption('complex_uploader')) {
-            window.preinitFileInput('upload_multi', nameStub + '_' + index, null, params.filter);
+            window.$plupload.preinitFileInput('upload_multi', nameStub + '_' + index, null, params.filter);
         }
 
         $dom.on(container, 'change', '.js-input-change-ensure-next-field-upload', function (e, input) {

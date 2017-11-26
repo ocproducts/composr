@@ -252,5 +252,5 @@
                 $util.inform(lastPoint.lat() + ', ' + lastPoint.lng());
             });
         }
-    }
+    };
 }(window.$cms));

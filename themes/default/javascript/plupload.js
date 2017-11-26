@@ -14210,12 +14210,14 @@
 
 (function ($cms) {
     'use strict';
+    
+    var $plupload = window.$plupload = {};
 
-    window.preinitFileInput = preinitFileInput;
-    window.prepareSimplifiedFileInput = prepareSimplifiedFileInput;
-    window.initialiseHtml5DragdropUpload = initialiseHtml5DragdropUpload;
-    window.html5UploadEventDragOver = html5UploadEventDragOver;
-    window.html5UploadEventDrop = html5UploadEventDrop;
+    $plupload.preinitFileInput = preinitFileInput;
+    $plupload.prepareSimplifiedFileInput = prepareSimplifiedFileInput;
+    $plupload.initialiseHtml5DragdropUpload = initialiseHtml5DragdropUpload;
+    $plupload.html5UploadEventDragOver = html5UploadEventDragOver;
+    $plupload.html5UploadEventDrop = html5UploadEventDrop;
 
     var plLoadedHandled = {};
     function onPluploadLoaded(plObj) {
@@ -14231,7 +14233,6 @@
     }
     
     /**
-     * 
      * @param pageType
      * @param name
      * @param fileName
@@ -14458,14 +14459,14 @@
     }
     
     /**
-     * preinitFileInput() is for normal Composr forms, shows dedicated input elements
+     * $plupload.preinitFileInput() is for normal Composr forms, shows dedicated input elements
      * @param pageType
      * @param name
      * @param postingFieldName
      * @param filter
      */
     function preinitFileInput(pageType, name, postingFieldName, filter) {
-        console.log('preinitFileInput()', 'pageType:', pageType, 'name:', name, 'postingFieldName:', postingFieldName, 'filter:', filter);
+        console.log('$plupload.preinitFileInput()', 'pageType:', pageType, 'name:', name, 'postingFieldName:', postingFieldName, 'filter:', filter);
 
         pageType = strVal(pageType);
         name = strVal(name);
@@ -14537,7 +14538,7 @@
     }
 
     /**
-     * prepareSimplifiedFileInput() is for attachments, transparently binds to an existing image upload button
+     * $plupload.prepareSimplifiedFileInput() is for attachments, transparently binds to an existing image upload button
      * NB: Only used by $cms.templates.attachments()
      * @param pageType
      * @param name
@@ -14546,7 +14547,7 @@
      * @param attachmentBrowseButton - ID of file browse button, required by Plupload
      */
     function prepareSimplifiedFileInput(pageType, name, postingFieldName, filter, attachmentBrowseButton) {
-        console.log('prepareSimplifiedFileInput()', 'pageType:', pageType, 'name:', name, 'postingFieldName:', postingFieldName, 'filter:', filter, 'attachmentBrowseButton:', attachmentBrowseButton);
+        console.log('$plupload.prepareSimplifiedFileInput()', 'pageType:', pageType, 'name:', name, 'postingFieldName:', postingFieldName, 'filter:', filter, 'attachmentBrowseButton:', attachmentBrowseButton);
 
         name = strVal(name);
         filter = strVal(filter) || '{$CONFIG_OPTION;^,valid_types}';
@@ -14656,21 +14657,21 @@
     /* HTML5 UPLOAD */
 
     function initialiseHtml5DragdropUpload(id, id2) {
-        console.log('initialiseHtml5DragdropUpload()', 'id:', id, 'id2:', id2);
+        console.log('$plupload.initialiseHtml5DragdropUpload()', 'id:', id, 'id2:', id2);
 
         var el = document.getElementById(id);
 
         $dom.on(el, 'dragover', function (event) {
-            html5UploadEventDragOver(event);
+            $plupload.html5UploadEventDragOver(event);
         });
 
         $dom.on(el, 'drop', function (event) {
-            html5UploadEventDrop(event, el, id2);
+            $plupload.html5UploadEventDrop(event, el, id2);
         });
     }
 
     function html5UploadEventDragOver(event) {
-        console.log('html5UploadEventDragOver()', 'event:', event);
+        console.log('$plupload.html5UploadEventDragOver()', 'event:', event);
         if ((event.dataTransfer != null) && (event.dataTransfer.types != null) && !event.dataTransfer.types[0].includes('text')) {
             event.preventDefault();
         }
@@ -14678,12 +14679,12 @@
     }
 
     function html5UploadEventDrop(event, ob, key2) {
-        console.log('html5UploadEventDragOver()', 'event:', event, 'ob:', ob, 'key2:', key2);
+        console.log('$plupload.html5UploadEventDragOver()', 'event:', event, 'ob:', ob, 'key2:', key2);
         html5Upload(event, key2);
     }
 
     function html5Upload(event, fieldName, files) {
-        //console.log('html5UploadEventDragOver()', 'event:', event, 'fieldName:', fieldName, 'files:', files);
+        //console.log('$plupload.html5UploadEventDragOver()', 'event:', event, 'fieldName:', fieldName, 'files:', files);
 
         if (!event.dataTransfer) {
             return;

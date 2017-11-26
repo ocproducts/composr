@@ -11,7 +11,7 @@
         Attachment.base(this, 'constructor', arguments);
 
         if ($cms.configOption('complex_uploader')) {
-            window.preinitFileInput("attachment_multi", "file" + params.i, params.postingFieldName, params.filter);
+            window.$plupload.preinitFileInput("attachment_multi", "file" + params.i, params.postingFieldName, params.filter);
         }
 
         if (params.syndicationJson !== undefined) {
@@ -448,7 +448,7 @@
             lastAttachmentBrowseButton = attachmentBrowseButton;
 
             $cms.requireJavascript('plupload').then(function () {
-                window.prepareSimplifiedFileInput('attachment_multi', 'file' + window.numAttachments, postingFieldName, strVal(params.filter), attachmentBrowseButton);
+                window.$plupload.prepareSimplifiedFileInput('attachment_multi', 'file' + window.numAttachments, postingFieldName, strVal(params.filter), attachmentBrowseButton);
             });
         }
     };
@@ -753,7 +753,7 @@
                         onStateChange: function (newState) {
                             if (slideshowMode) {
                                 if (newState == 0) {
-                                    playerStopped();
+                                    window.$galleries.playerStopped();
                                 }
                             }
                         }
@@ -768,11 +768,11 @@
         // API: http://service.real.com/help/library/guides/realone/ScriptingGuide/PDF/ScriptingGuide.pdf
         $dom.load.then(function () {
             if (document.getElementById('next_slide')) {
-                stopSlideshowTimer();
+                window.$galleries.stopSlideshowTimer();
                 setTimeout(function () {
                     document.getElementById(params.playerId).addEventListener('stateChange', function (newState) {
                         if (newState == 0) {
-                            playerStopped();
+                            window.$galleries.playerStopped();
                         }
                     });
                     document.getElementById(params.playerId).DoPlay();
@@ -787,10 +787,10 @@
         // API: http://developer.apple.com/library/safari/#documentation/QuickTime/Conceptual/QTScripting_JavaScript/bQTScripting_JavaScri_Document/QuickTimeandJavaScri.html
         $dom.load.then(function () {
             if (document.getElementById('next_slide')) {
-                stopSlideshowTimer();
+                window.$galleries.stopSlideshowTimer();
                 setTimeout(function () {
                     document.getElementById(params.playerId).addEventListener('qt_ended', function () {
-                        playerStopped();
+                        window.$galleries.playerStopped();
                     });
                     document.getElementById(params.playerId).Play();
                 }, 1000);
@@ -805,20 +805,20 @@
         // API: http://msdn.microsoft.com/en-us/library/windows/desktop/dd563945(v=vs.85).aspx
         $dom.load.then(function () {
             if (document.getElementById('next_slide')) {
-                stopSlideshowTimer();
+                window.$galleries.stopSlideshowTimer();
 
                 setTimeout(function () {
                     var player = document.getElementById(params.playerId);
                     // WMP
                     player.addEventListener('playstatechange', function (newState) {
                         if (newState == 1) {
-                            playerStopped();
+                            window.$galleries.playerStopped();
                         }
                     });
 
                     // Quicktime
                     player.addEventListener('qt_ended', function () {
-                        playerStopped();
+                        window.$galleries.playerStopped();
                     });
 
                     try {
@@ -836,9 +836,9 @@
     $cms.templates.mediaVimeo = function (params) {
         // Tie into callback event to see when finished, for our slideshows
         if (document.getElementById('next_slide')) {
-            stopSlideshowTimer();
+            window.$galleries.stopSlideshowTimer();
             setTimeout(function () {
-                window.addEventListener('message', playerStopped, false);
+                window.addEventListener('message', window.$galleries.playerStopped, false);
 
                 var player = document.getElementById(params.playerId);
                 player.contentWindow.postMessage(JSON.stringify({method: 'addEventListener', value: 'finish'}), 'https://player.vimeo.com/video/' + params.remoteId);
@@ -860,12 +860,12 @@
             events: {
                 onComplete: function () {
                     if (document.getElementById('next_slide')) {
-                        playerStopped();
+                        window.$galleries.playerStopped();
                     }
                 },
                 onReady: function () {
                     if (document.getElementById('next_slide')) {
-                        stopSlideshowTimer();
+                        window.$galleries.stopSlideshowTimer();
                         jwplayer(params.playerId).play(true);
                     }
                 }
@@ -896,11 +896,13 @@
             flashplayer: params.flashplayer,
             events: {
                 onComplete: function () {
-                    if (document.getElementById('next_slide')) playerStopped();
+                    if (document.getElementById('next_slide')) {
+                        window.$galleries.playerStopped();
+                    }
                 },
                 onReady: function () {
                     if (document.getElementById('next_slide')) {
-                        stopSlideshowTimer();
+                        window.$galleries.stopSlideshowTimer();
                         jwplayer(params.playerId).play(true);
                     }
                 }

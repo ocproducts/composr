@@ -14,9 +14,10 @@ function complaining(s) {
     return s;
 }
 
-if (!(    document.getElementById && document.getElementsByName))
+if (!(document.getElementById && document.getElementsByName)) {
     throw complaining("Your browser is too old to render this page properly."
         + "  Consider going to getfirefox.com to upgrade.");
+}
 
 function checkDecoding() {
     var d = document.getElementById('cometestme');

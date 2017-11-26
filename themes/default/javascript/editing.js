@@ -513,11 +513,11 @@
             // Allow drag and drop uploading
             editor.on('contentDom', function () {
                 editor.document.on('dragover', function (e) {
-                    window.html5UploadEventDragOver(e.data.$);
+                    window.$plupload.html5UploadEventDragOver(e.data.$);
                 });
 
                 editor.document.on('drop', function (e) {
-                    window.html5UploadEventDrop(e.data.$, element, element.id);
+                    window.$plupload.html5UploadEventDrop(e.data.$, element, element.id);
                 });
             });
 
