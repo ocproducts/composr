@@ -144,38 +144,16 @@ function phase_1_pre()
     <ul>
         <li>Run the <a href="' . escape_html(static_evaluate_tempcode(build_url(array('page' => 'plug_guid'), 'adminzone'))) . '" target="_blank">plug_guid</a> tool to build needed GUIDs into the PHP.</li>
     ';
-    if (is_maintained('import_phpbb3')) {
-        echo '
-            <li>Test with a non-Conversr forum driver (e.g. phpBB)</li>
-        ';
-    }
-    if (is_maintained('import_none')) {
-        echo '
-            <li>Test with the none forum driver (no forums and members)</li>
-        ';
-    }
     echo '
         <li><a href="https://docs.google.com/spreadsheets/d/1Im6ICITZmzoBVMizD0CkM7N0kXH5Rb-NQJzD1hk49cU/edit#gid=0" title="Re-sync third-party code (this link will open in a new window)" target="_blank">Re-sync third-party code</a> as appropriate</li>
-        <li>Run all the <kbd>_</kbd> prefixed unit tests individually</li>
-        <li>Do profiling (usually mainly xdebug) to make sure there are no serious performance regressions, particularly around unneeded code files being loaded, excessively used function calls, expensive function calls, excessive queries, expensive queries, excessive IO operations, expected caching not activating</li>
-        <li>Install test content then view the <kbd>lorem:start</kbd>, <kbd>lorem:lorem</kbd> and <kbd>lorem:menus</kbd> pages to ensure blocks are working</li>
-        <li>Go through a full quick installer test install, and then through the full Setup Wizard</li>
-        <li>Upgrading prep and testing:<ul>
+        <li>Upgrading prep:<ul>
             <li>Copy <kbd>data/files.dat</kbd> from the most recent past release to <kbd>data/files_previous.dat</kbd> in the new release (the hosted upgrade generator does this for upgrade TARs dynamically, but we want our main release to have the correct metadata also)</li>
-            <li>Make sure <kbd>upgrade.php</kbd> migration code is written.</li>
             <li>Make sure any ocProducts themes are up-to-date (CSS changes, template changes, theme image changes).</li>
-            <li>Test doing an upgrade from the prior version</li>
-            <li>A good way to test that module/block/addon upgrade code is working as expected is to use the MySQL cleanup tool. It will say if tables/indices/privileges are not in the database as they are expected to be (assuming you already generated <kbd>db_meta.dat</kbd> via <kbd>data_custom/build_db_meta_file.php</kbd> on a clean install).</li>
         </ul></li>
         <li>Consider updating the <kbd>$discontinued</kbd> array in <kbd>sources_custom/composr_homesite.php</kbd>.</li>
-        <li>Consider moving Composr to a fresh repository, so you can have a clean history and a clean set of branches; update the COMPOSR_REPOS_URL constant if you do this</li>
-    </ul>
-    <p>Ideally do these at least on some major versions:</p>
-    <ul>
-        <li>Run a PHPStorm Code Inspection and see if any warning stands out as a bug</li>
-        <li>Run a HHVM analyze: <kbd>hhvm --hphp -t analyze `find . -name "*.php" -not -path "./_tests/*" -not -path "./tracker/*" -not -path "./uploads/*" -not -path "./sources_custom/photobucket/*" -not -path "./sources_custom/geshi/*" -not -path "./sources_custom/getid3/*" -not -path "./sources_custom/sabredav/*" -not -path "./sources_custom/Swift-4.1.1/*" -not -path "./sources_custom/programe/*"`</kbd></li>
-        <li>For all data entry forms, add <kbd>' . escape_html('<IMG """><SCRIPT>alert("XSS hole")</SCRIPT>"><script>alert(\'XSS hole\')</script>') . '</kbd> wherever possible. Go through all screens on the sitemap, all Comcode tags in the add tag assistant, and all blocks in the add block assistant, ensuring no alerts, console warnings, or corruption (double-escaping or other bad output) happens.</li>
-        <li>Review the <a title="Non-maintained feature list (this link will open in a new window)" target="_blank" href="http://compo.sr/maintenance-status.htm">non-maintained feature list</a> to see if there are any obscure features this release may have broken (even if non-maintained we want things to generally remain as working)</li>
+        <li>Consider moving Composr to a fresh repository, so you can have a clean history and a clean set of branches; update the <kbd>COMPOSR_REPOS_URL</kbd> constant if you do this</li>
+        <li>Consider updating the <kbd>$discontinued</kbd> array in <kbd>sources_custom/composr_homesite.php</kbd>.</li>
+        <li>Go through <a href="https://compo.sr/tracker/view.php?id=3383">advanced testing</a>.</li>
     </ul>
     ';
 
