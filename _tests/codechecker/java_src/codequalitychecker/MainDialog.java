@@ -259,7 +259,7 @@ public class MainDialog extends JFrame {
                     continue;
                 }
 
-                if ((skip_custom) && ((theFiles[i].equals("transcoder")) || (theFiles[i].equals("uploads")) || (theFiles[i].equals("_tests")) || (theFiles[i].equals("mobiquo")) || (theFiles[i].equals("ocproducts")) || (theFiles[i].equals("buildr")) || (theFiles[i].equals("tracker")) || (theFiles[i].equals("exports")) || (theFiles[i].equals("simpletest")) || (theFiles[i].indexOf("_custom") != -1))) {
+                if ((skip_custom) && ((theFiles[i].equals("uploads")) || (theFiles[i].equals("_tests")) || (theFiles[i].equals("mobiquo")) || (theFiles[i].equals("ocproducts")) || (theFiles[i].equals("buildr")) || (theFiles[i].equals("tracker")) || (theFiles[i].equals("exports")) || (theFiles[i].equals("simpletest")) || (theFiles[i].indexOf("_custom") != -1))) {
                     continue;
                 }
 

@@ -26,8 +26,7 @@ The following are known limitations with GAE:
  - The comments above extend to other applications you may wish to integrate. You need to be comfortable of their compatibility, or that you will get them updated, or that you will run them on another server.
  - LDAP will not work (LDAP would typically be used on a local corporate network anyway).
  - There is a 32MB upload limit, which means uploading large files is not realistic. This could be worked around, [url="with investment"]http://compo.sr/tracker/view.php?id=1426[/url].
- - FFMPEG will not run. You would need to use a third-party transcoding service, or syndicate to YouTube (note: that addon is not currently tested on GAE). Most users, however, will be fine with Composr's support for integrating videos that were separately uploaded to Youtube.
- - Outgoing web requests cannot exceed 10MB, which limits some external transcoding and syndication options.
+ - Outgoing web requests cannot exceed 10MB, which limits some syndication options.
  - There is a 32MB response size limit. This should not generally be a problem for most users, but worth noting.
  - You will need to maintain a local development site, and won't be able to do things such as themeing or addon management directly on the live site.
  - You won't be able to have the [i]full[/i] set of Composr addons installed, due to size constraints. This should generally not be a problem, and we provide advice on it in this tutorial.

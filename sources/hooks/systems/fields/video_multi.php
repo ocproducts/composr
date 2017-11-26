@@ -238,9 +238,6 @@ class Hook_fields_video_multi
                     if (addon_installed('galleries')) {
                         require_code('galleries');
                         require_code('galleries2');
-                        require_code('transcoding');
-
-                        $ev = transcode_video($ev, null, null, null, null, null, null, null);
 
                         $thumb_url = create_video_thumb($ev);
                     } else {

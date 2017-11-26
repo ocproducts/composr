@@ -119,8 +119,6 @@ class lang_spelling_test_set extends cms_test_case
                 $key != 'MYSQL_TOO_OLD' &&
                 $key != 'LOW_MEMORY_LIMIT' &&
                 $key != 'NO_ZIP_ON_SERVER' &&
-                $key != 'TRANSCODING_SERVER' &&
-                $key != 'CONFIG_OPTION_transcoding_server' &&
                 $key != 'CONFIG_OPTION_network_links' &&
                 $key != 'WARNING_MBSTRING_FUNC_OVERLOAD' &&
                 $key != 'DISABLED_FUNCTION' &&

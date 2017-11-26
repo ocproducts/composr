@@ -30,7 +30,6 @@ NO_DATA_TABLES_A=
 if [ "$1" == "simplified" ] ;
 then
 read -d '' NO_DATA_TABLES_A << EOF
---ignore-table=${DB_NAME}.${DB_TABLE_PREFIX}video_transcoding
 --ignore-table=${DB_NAME}.${DB_TABLE_PREFIX}stats
 --ignore-table=${DB_NAME}.${DB_TABLE_PREFIX}f_moderator_logs
 --ignore-table=${DB_NAME}.${DB_TABLE_PREFIX}adminlogs
@@ -70,7 +69,6 @@ NO_DATA_TABLES_B=
 if [ "$1" == "simplified" ] ;
 then
 read -d '' NO_DATA_TABLES_B << EOF
-${DB_TABLE_PREFIX}video_transcoding
 ${DB_TABLE_PREFIX}stats
 ${DB_TABLE_PREFIX}f_moderator_logs
 ${DB_TABLE_PREFIX}adminlogs

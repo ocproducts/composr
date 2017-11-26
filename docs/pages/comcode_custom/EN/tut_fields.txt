@@ -602,7 +602,7 @@ The first image-like field will be injected into screen metadata (i.e. will come
 | An uploaded video
 |-
 ! Storage format (for programmer reference)
-| Up to 255 characters of text ([tt]<url>[ <width> <height> <length>][/tt], or blank) (if we can we will transcode the video and create a thumbnail)
+| Up to 255 characters of text ([tt]<url>[ <width> <height> <length>][/tt], or blank)
 |-
 ! Special default values
 | [i]None[/i]
@@ -626,7 +626,7 @@ The first image-like field will be injected into screen metadata (i.e. will come
 | Multiple uploaded videos
 |-
 ! Storage format (for programmer reference)
-| [tt]<url>[ <width> <height> <length>][/tt] separated by linebreaks (if we can we will transcode the video and create a thumbnail)
+| [tt]<url>[ <width> <height> <length>][/tt] separated by linebreaks
 |-
 ! Special default values
 | [i]None[/i]

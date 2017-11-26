@@ -591,7 +591,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
             array('(?!index\.html$)(?!\.htaccess$).*', 'data_custom/modules/admin_stats'), // Various temporary XML files get created under here, for SVG graphs
             array('(?!index\.html$)(?!\.htaccess$).*', 'data_custom/modules/chat'), // Various chat data files
             array('(?!index\.html$)(?!\.htaccess$).*', 'data/spelling/aspell'), // We don't supply aspell outside git, too much space taken
-            array('(?!pre_transcoding$)(?!index.html$)(?!\.htaccess$).*', 'uploads/.*'), // Uploads
+            array('(?!index.html$)(?!\.htaccess$).*', 'uploads/.*'), // Uploads
             array('(?!index\.html$)(?!\.htaccess$).*', '.*/(comcode|html)_custom/.*'), // Comcode pages
             array('.*', 'exports/builds/.*'),
         ));

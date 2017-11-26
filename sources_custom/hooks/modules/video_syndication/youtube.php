@@ -64,19 +64,17 @@ class Hook_video_syndication_youtube
         return ($youtube_client_id != '');
     }
 
-    public function get_remote_videos($local_id = null, $transcoding_id = null)
+    public function get_remote_videos($local_id)
     {
         $videos = array();
 
-        if ($local_id !== null) {
-            // This code is a bit annoying. Ideally we'd do a remote tag search, but Youtube's API is lagged here, and only works for listed videos. We'll therefore look at our local mappings.
-            $transcoding_id = $GLOBALS['SITE_DB']->query_value_if_there('SELECT t_id FROM ' . get_table_prefix() . 'video_transcoding WHERE t_local_id=' . strval($local_id) . ' AND t_id LIKE \'' . db_encode_like('youtube\_%') . '\'');
-            if ($transcoding_id === null) {
-                return array(); // Not uploaded yet
-            }
-
-            $transcoding_id = preg_replace('#^youtube_#', '', $transcoding_id);
+        // This code is a bit annoying. Ideally we'd do a remote tag search, but Youtube's API is lagged here, and only works for listed videos. We'll therefore look at our local mappings.
+        $transcoding_id = $GLOBALS['SITE_DB']->query_value_if_there('SELECT t_id FROM ' . get_table_prefix() . 'video_transcoding WHERE t_local_id=' . strval($local_id) . ' AND t_id LIKE \'' . db_encode_like('youtube\_%') . '\'');
+        if ($transcoding_id === null) {
+            return array(); // Not uploaded yet
         }
+
+        $transcoding_id = preg_replace('#^youtube_#', '', $transcoding_id);
 
         $start = 1;
         do {

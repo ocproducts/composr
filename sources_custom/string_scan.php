@@ -630,7 +630,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ASCII_ENTITY_URL_HACK
         ASSIGN_RANDOM_AVATARS
         ATTACHMENT_CLEANUP
-        AUDIO_BITRATE
         AUDIO_CAPTCHA
         AUDIO_TYPES
         AUTHOR_MANAGE
@@ -2695,7 +2694,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_GROUP_DESCRIP_SPECIAL_CPF_TO_SHOW
         CONFIG_GROUP_DESCRIP_STATISTICS
         CONFIG_GROUP_DESCRIP_SUPPORT_TICKETS
-        CONFIG_GROUP_DESCRIP_TRANSCODING
         CONFIG_GROUP_DESCRIP_UPLOAD
         CONFIG_OPTION_activity_show_stats_count_users_online
         CONFIG_OPTION_activity_show_stats_count_users_online_forum
@@ -2722,7 +2720,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_attachment_cleanup
         CONFIG_OPTION_attachment_default_height
         CONFIG_OPTION_attachment_default_width
-        CONFIG_OPTION_audio_bitrate
         CONFIG_OPTION_audio_captcha
         CONFIG_OPTION_auto_submit_sitemap
         CONFIG_OPTION_autoban
@@ -3253,9 +3250,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_topic_pin_price_points
         CONFIG_OPTION_tornevall_api_password
         CONFIG_OPTION_tornevall_api_username
-        CONFIG_OPTION_transcoding_server
-        CONFIG_OPTION_transcoding_zencoder_api_key
-        CONFIG_OPTION_transcoding_zencoder_ftp_path
         CONFIG_OPTION_tree_lists
         CONFIG_OPTION_unzip_cmd
         CONFIG_OPTION_unzip_dir
@@ -3285,9 +3279,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_valid_images
         CONFIG_OPTION_valid_types
         CONFIG_OPTION_valid_videos
-        CONFIG_OPTION_video_bitrate
-        CONFIG_OPTION_video_height_setting
-        CONFIG_OPTION_video_width_setting
         CONFIG_OPTION_vote_member_ip_restrict
         CONFIG_OPTION_payment_gateway_vpn_username
         CONFIG_OPTION_payment_gateway_vpn_password
@@ -7106,13 +7097,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         TRACKBACK_SPAM
         TRANSACTIONS
         TRANSACTION_FEES
-        TRANSCODING
-        TRANSCODING_ERROR
-        TRANSCODING_ERROR_2
-        TRANSCODING_LOCALHOST
-        TRANSCODING_SERVER
-        TRANSCODING_ZENCODER_API_KEY
-        TRANSCODING_ZENCODER_FTP_PATH
         TRANSLATE_CODE
         TRANSLATE_CONTENT
         TRANSLATE_CONTENT_SCREEN
@@ -7235,7 +7219,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         VERSION
         VERSION_ABOUT
         VERSION_NUM
-        VIDEO_BITRATE
         VIDEO_HEIGHT_SETTING
         VIDEO_TYPES
         VIDEO_WIDTH_SETTING
@@ -9899,7 +9882,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         TRANSACTION_ID_WRITTEN
         TRANSACTION_NOT_COMPLETE
         TRANSACT_INFO
-        TRANSCODING_IN_PROGRESS
         TREE
         TT_COMPLAINT
         TT_OTHER

@@ -33,7 +33,6 @@ forum_in_portal,"""Show forum within website"" option",,,Not regularly tested an
 sms,SMS notifications,,,Not regularly tested. Could potentially break due to third-party changes.,No,
 google_geocoding,Google Geocoding,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,
 google_translate,Google Translate integration,,,Not regularly tested. Could potentially break due to third-party changes.,No,
-zencoder,Zencoder transcoding,,,Currently broken due to third-party change and has the potential to keep breaking for the same reason.,No,
 ldap,LDAP,,,Not regularly tested due to the complexity of having multiple working LDAP test environments.,No,
 httpauth,HTTP authentication,,,Not regularly tested.,No,
 cpf_encryption,CPF encryption,ocProducts,,Not regularly tested.,No,

@@ -150,7 +150,6 @@ Unfortunately YouTube support is currently not functional (https://compo.sr/trac
             'sources_custom/gallery_syndication.php',
             'sources_custom/hooks/modules/video_syndication/youtube.php',
             'sources_custom/hooks/systems/cron/gallery_syndication.php',
-            'sources_custom/hooks/systems/config/video_sync_transcoding.php',
             'sources_custom/hooks/systems/config/gallery_sync_selectcode.php',
             'sources_custom/hooks/systems/config/gallery_sync_orphaned_handling.php',
         );

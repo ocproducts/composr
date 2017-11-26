@@ -510,7 +510,6 @@ Ask us if you wanted to be listed as one of the [page=\"site:stars\"]Composr dev
                     'Let your users host their own customised sites under yours',
                     'Advanced intranet support (e.g. LDAP login or automatic Kerberos login)',
                     'Bookings system (e.g. events, hotels, taxis, ...)',
-                    'Automatic video transcoding (take videos in any format and make them web-friendly)',
                 ),
                 'options' => 'widget=vertical_checkboxes',
                 'required' => false,

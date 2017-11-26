@@ -927,9 +927,6 @@ function add_video($title, $cat, $description, $url, $thumb_url, $validated, $al
         $GLOBALS['SITE_DB']->query_insert('content_regions', array('content_type' => 'video', 'content_id' => strval($id), 'region' => $region));
     }
 
-    require_code('transcoding');
-    transcode_video($url, 'videos', $id, 'id', 'url', null, 'video_width', 'video_height');
-
     log_it('ADD_VIDEO', strval($id), $title);
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
@@ -1068,9 +1065,6 @@ function edit_video($id, $title, $cat, $description, $url, $thumb_url, $validate
     foreach ($regions as $region) {
         $GLOBALS['SITE_DB']->query_insert('content_regions', array('content_type' => 'video', 'content_id' => strval($id), 'region' => $region));
     }
-
-    require_code('transcoding');
-    transcode_video($url, 'videos', $id, 'id', 'url', null, 'video_width', 'video_height');
 
     $self_url = build_url(array('page' => 'galleries', 'type' => 'video', 'id' => $id), get_module_zone('galleries'), array(), false, false, true);
 

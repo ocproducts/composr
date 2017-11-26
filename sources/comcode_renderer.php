@@ -2340,15 +2340,6 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 );
                 $attachment_row['id'] = $db->query_insert('attachments', $attachment_row, true);
 
-                // Transcode
-                if (addon_installed('galleries')) {
-                    require_code('images');
-                    if ((is_video($url, $as_admin)) && (!$db->is_forum_db())) {
-                        require_code('transcoding');
-                        transcode_video($url, 'attachments', $attachment_row['id'], 'id', 'a_url', 'a_original_filename', null, null);
-                    }
-                }
-
                 // Create and document attachment
                 $COMCODE_ATTACHMENTS[$pass_id][] = array('type' => 'new', 'initial_id' => $id, 'id' => $attachment_row['id']); // Marker will allow us to search back and replace this with the added ID
             }

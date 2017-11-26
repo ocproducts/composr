@@ -959,11 +959,6 @@ This section is not designed as primary documentation for the tools. Those tools
 | [tt]windows_helper_scripts[/tt]
 | Command-line prompt on Windows
 |-
-| [tt]transcoder/go.sh[/tt]
-| Launch video transcoder background service.
-| [tt]transcoder[/tt]
-| Command-line via Bash + 'screen'
-|-
 | [tt]data/failover_script.php[/tt]
 | Continually check system load, and initiate/deinitiate failover mode as required.
 | [tt]failover[/tt]

@@ -30,12 +30,6 @@ class Hook_cron_gallery_syndication
 
                 require_code('gallery_syndication');
 
-                // Sync of videos that were explicitly deferred
-                $videos = $GLOBALS['SITE_DB']->query('SELECT t_local_id,t_id FROM ' . get_table_prefix() . 'video_transcoding WHERE t_id LIKE \'' . db_encode_like('sync\_defer\_%') . '\'');
-                foreach ($videos as $video) {
-                    sync_video_syndication($video['t_local_id'], substr($video['t_id'], -strlen('__new_upload')) == '__new_upload', substr($video['t_id'], -strlen('__reupload')) == '__reupload');
-                }
-
                 // Main sync of everything
                 sync_video_syndication();
 

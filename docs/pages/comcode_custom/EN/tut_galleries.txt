@@ -92,13 +92,12 @@ At the end of the day it may be best just to use the galleries on your site as a
 
 [title="4"]Transcoding[/title]
 
-You can set it up so that any video format is 'transcoded' to MP4 by setting the FFMPEG executable path in the configuration. For this to work, 'FFMPEG' needs to be installed on the server. The default transcoder settings are set to produce MP4 h.264 DVD-quality movie files.
-
-Unfortunately FFMPEG does have some major problems with audio/video synchronisation, mixed bit-rates, and lack of adaption to corrupt files, and incompatibilities between versions. It is also fairly slow to run, so can consume server resources, and could result in timeouts on some configurations.
-
-The best solutions (for those who can't invest heavily in heavy-weight transcoding solutions) are:
+Composr does not have inbuilt transcoding support, so you either need to:
 1) just use YouTube. You can post videos on YouTube, then add a video in Composr using the normal YouTube URL as the video URL. Composr will then automatically embed the YouTube player.
-2) just post in h.264 [tt].mp4[/tt] to start with. It has become the standard and is supported in all browsers. The only down-side is having to learn how to set your codec settings right when you make the video file.
+2) install the [tt]gallery_syndication[/tt] addon, to automatically use YouTube as a transcoder.
+3) just post in h.264 [tt].mp4[/tt] to start with. It has become the standard and is supported in all browsers. The only down-side is having to learn how to set your codec settings right when you make the video file.
+
+We did previously have native inbuilt transcoding support, but due to the bugginess of transcoders, the server overhead, and because the world has standardised on h.264, it's been removed.
 
 [title="3"]Audio[/title]
 
