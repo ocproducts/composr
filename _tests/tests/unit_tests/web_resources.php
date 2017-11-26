@@ -78,7 +78,6 @@ class web_resources_test_set extends cms_test_case
             'widget_date.js',
             'jquery.js',
             'sortable_tables.js',
-            'openid.js',
             'unslider.js',
             'tag_cloud.js',
             'mediaelement-and-player.js',

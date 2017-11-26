@@ -15,7 +15,7 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
-$ie_needed = array_key_exists('ie_needed', $map) ? floatval($map['ie_needed']) : 7.0; // Latest at time of writing is 8.0. Suggest 6.0 or 7.0 as often people have no choice about upgrading (if they are on corporate PC's, if they pirated Windows (!), or if they are on an old version of Windows
+$ie_needed = array_key_exists('ie_needed', $map) ? floatval($map['ie_needed']) : 11.0;
 $firefox_needed = array_key_exists('firefox_needed', $map) ? floatval($map['firefox_needed']) : 8.0;
 $safari_needed = array_key_exists('safari_needed', $map) ? floatval($map['safari_needed']) : 5.0;
 $chrome_needed = array_key_exists('chrome_needed', $map) ? floatval($map['chrome_needed']) : 15.0;

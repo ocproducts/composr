@@ -86,7 +86,7 @@ class Hook_addon_registry_external_db_login
      */
     public function get_description()
     {
-        return 'A customisable login_provider hook, to help allowing login with logins defined in another database/table. See comments in sources_custom/external_db.php for usage documentation. Requires programming. Unlike other Composr user-sync addons, it runs only on Composr\'s end and interactively, no changes to other systems or batch importing required.';
+        return 'A customisable login_provider hook, to help allowing login with logins defined in another database/table. See comments in [tt]sources_custom/external_db.php[/tt] for usage documentation. Requires programming. Unlike other Composr user-sync addons, it runs only on Composr\'s end and interactively, no changes to other systems or batch importing required.';
     }
 
     /**

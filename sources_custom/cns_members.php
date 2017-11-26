@@ -11,7 +11,6 @@
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
  * @package    facebook_support
- * @package    openid
  */
 
 /**
@@ -24,7 +23,7 @@ function cns_is_httpauth_member($member_id)
 {
     $scheme = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_password_compat_scheme');
 
-    if (($scheme == 'facebook') || ($scheme == 'openid')) {
+    if ($scheme == 'facebook') {
         return true;
     }
 

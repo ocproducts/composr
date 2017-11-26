@@ -1,7 +1,6 @@
 {$REQUIRE_JAVASCRIPT,checking}
-{$REQUIRE_JAVASCRIPT,openid}
 
-<div data-require-javascript="openid" data-tpl="loginScreen">
+<div data-tpl="loginScreen">
 	{TITLE}
 
 	{$SET,login_screen,1}
@@ -82,14 +81,6 @@
 			<p class="login_note">
 				{EXTRA}
 			</p>
-		{+END}
-
-		{+START,IF_NON_EMPTY,{$BLOCK,block=openid,failsafe=1}}
-			<div class="openid_wrap">
-				<h2>Log in using OpenID</h2>
-
-				{$BLOCK,block=openid}
-			</div>
 		{+END}
 	</div>
 </div>
