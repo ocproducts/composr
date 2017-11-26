@@ -75,7 +75,7 @@
         if (params.supportAutosave && params.formName) {
             setTimeout(function () {
                 if ('{$VALUE_OPTION;,disable_form_auto_saving}' !== '1') {
-                    initFormSaving(params.formName);
+                    $posting.initFormSaving(params.formName);
                 }
             }, 3000/*Let CKEditor load*/);
         }
@@ -158,7 +158,7 @@
 
         if (params.syndicationJson != null) {
             $cms.requireJavascript('editing').then(function () {
-                window.showUploadSyndicationOptions(params.name, params.syndicationJson);
+                window.$editing.showUploadSyndicationOptions(params.name, params.syndicationJson);
             });
         }
     }
@@ -489,7 +489,7 @@
             textarea = $dom.$id(params.name),
             input = $dom.$id('form_table_field_input__' + params.randomisedId);
 
-        if (required.includes('wysiwyg') && wysiwygOn()) {
+        if (required.includes('wysiwyg') && window.$editing.wysiwygOn()) {
             textarea.readOnly = true;
         }
 
@@ -823,7 +823,7 @@
             attachmentsUiInputRow = $dom.$('#field-' + id +'-attachments-ui-input');
 
         if (params.class.includes('wysiwyg')) {
-            if (window.wysiwygOn && window.wysiwygOn()) {
+            if (window.$editing && window.$editing.wysiwygOn()) {
                 postEl.readOnly = true; // Stop typing while it loads
 
                 setTimeout(function () {
@@ -853,7 +853,7 @@
         }
 
         $dom.on(labelRow, 'click', '.js-click-toggle-wysiwyg', function () {
-            toggleWysiwyg(name);
+            window.$editing.toggleWysiwyg(name);
         });
 
         $dom.on(labelRow, 'click', '.js-link-click-open-field-emoticon-chooser-window', function (e, link) {
@@ -875,12 +875,12 @@
         var post = mainWindow.document.getElementById('post');
 
         // Replace Comcode
-        var oldComcode = mainWindow.getTextbox(post);
-        mainWindow.setTextbox(post, newPostValue.replace(/&#111;/g, 'o').replace(/&#79;/g, 'O'), newPostValueHtml);
+        var oldComcode = mainWindow.$editing.getTextbox(post);
+        mainWindow.$editing.setTextbox(post, newPostValue.replace(/&#111;/g, 'o').replace(/&#79;/g, 'O'), newPostValueHtml);
 
         // Turn main post editing back on
-        if (window.wysiwygSetReadonly !== undefined) {
-            wysiwygSetReadonly('post', false);
+        if (window.$editing !== undefined) {
+            window.$editing.wysiwygSetReadonly('post', false);
         }
 
         // Remove attachment uploads
@@ -1033,7 +1033,7 @@
 
                 var promise = Promise.resolve();
                 if (!element.value.includes(comcodeSemihtml) || !comcode.includes('[attachment')) { // Don't allow attachments to add twice
-                    promise = targetWin.insertTextbox(element, newComcode, true, newComcodeSemihtml);
+                    promise = targetWin.$editing.insertTextbox(element, newComcode, true, newComcodeSemihtml);
                 }
                 
                 promise.then(function () {
@@ -1045,7 +1045,7 @@
 
             var promise = Promise.resolve();
             if (params.prefix !== undefined) {
-                promise = targetWin.insertTextbox(element, params.prefix, true, '');
+                promise = targetWin.$editing.insertTextbox(element, params.prefix, true, '');
             }
             promise.then(function () {
                 targetWin.insertComcodeTag(null, null, false, function () {
@@ -1068,7 +1068,7 @@
 
         if (params.syndicationJson !== undefined) {
             $cms.requireJavascript('editing').then(function () {
-                window.showUploadSyndicationOptions(nameStub, syndicationJson);
+                window.$editing.showUploadSyndicationOptions(nameStub, syndicationJson);
             });
         }
 
@@ -1202,7 +1202,7 @@
 
     $cms.templates.formScreenInputText = function formScreenInputText(params) {
         if (params.required.includes('wysiwyg')) {
-            if ((window.wysiwygOn) && (window.wysiwygOn())) {
+            if (window.$editing && window.$editing.wysiwygOn()) {
                 document.getElementById(params.name).readOnly = true;
             }
         }

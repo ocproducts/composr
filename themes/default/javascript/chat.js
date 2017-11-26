@@ -497,7 +497,7 @@
                         '',
                         function (vb) {
                             if (vb != null) {
-                                window.insertTextbox(document.getElementById(fieldName), '[private="' + va + '"]' + vb + '[/private]');
+                                window.$editing.insertTextbox(document.getElementById(fieldName), '[private="' + va + '"]' + vb + '[/private]');
                             }
                         },
                         '{!chat:INPUT_CHATCODE_private_message;^}'
@@ -519,7 +519,7 @@
                         '',
                         function (vb) {
                             if (vb != null) {
-                                window.insertTextbox(document.getElementById(fieldName), '[invite="' + va + '"]' + vb + '[/invite]');
+                                window.$editing.insertTextbox(document.getElementById(fieldName), '[invite="' + va + '"]' + vb + '[/invite]');
                             }
                         },
                         '{!chat:INPUT_CHATCODE_invite;^}'
@@ -535,7 +535,7 @@
             if (chatroomName != null) {
                 $cms.ui.prompt('{!chat:ENTER_ALLOW;^}', '', null, '{!chat:INPUT_CHATCODE_new_room;^}').then(function (allowList) {
                     if (allowList != null) {
-                        window.insertTextbox(document.getElementById(fieldName), '[newroom="' + chatroomName + '"]' + allowList + '[/newroom]');
+                        window.$editing.insertTextbox(document.getElementById(fieldName), '[newroom="' + chatroomName + '"]' + allowList + '[/newroom]');
                     }
                 });
             }

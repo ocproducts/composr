@@ -314,7 +314,7 @@
                 $dom.illustrateFrameLoad('preview_iframe');
 
                 // Turn main post editing back off
-                window.wysiwygSetReadonly('post', true);
+                window.$editing.wysiwygSetReadonly('post', true);
 
                 resolvePreviewPromise(true);
                 form.submit();
@@ -346,7 +346,7 @@
         var value = '';
         switch (element.localName) {
             case 'textarea':
-                value = window.getTextbox(element);
+                value = window.$editing.getTextbox(element);
                 break;
             case 'select':
                 value = '';

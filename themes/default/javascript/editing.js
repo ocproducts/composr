@@ -1,24 +1,21 @@
 /* Form editing code (general, may be used on many different kinds of form) */
-(function ($cms, $util, $dom, $editing) {
+(function ($cms, $util, $dom) {
     'use strict';
 
-    window.wysiwygOn = wysiwygOn;
-    window.toggleWysiwyg = toggleWysiwyg;
-    window.wysiwygSetReadonly = wysiwygSetReadonly;
-    window.loadHtmlEdit = loadHtmlEdit;
-    window.findTagsInEditor = findTagsInEditor;
-    window.doEmoticon = doEmoticon;
-    window.doAttachment = doAttachment;
-    window.getTextbox = getTextbox;
-    window.setTextbox = setTextbox;
-    window.insertTextbox = insertTextbox;
-    window.insertTextboxOpener = insertTextboxOpener;
-    window.getSelectedText = getSelectedText;
-    window.getWYSISWYGSelectedHtml = getWYSISWYGSelectedHtml;
-    window.getTextareaSelectedText = getTextareaSelectedText;
-    window.insertTextboxWrapping = insertTextboxWrapping;
-    window.setSelectionRange = setSelectionRange;
-    window.showUploadSyndicationOptions = showUploadSyndicationOptions;
+    var $editing = window.$editing = {};
+
+    $editing.wysiwygOn = wysiwygOn;
+    $editing.toggleWysiwyg = toggleWysiwyg;
+    $editing.wysiwygSetReadonly = wysiwygSetReadonly;
+    $editing.loadHtmlEdit = loadHtmlEdit;
+    $editing.doEmoticon = doEmoticon;
+    $editing.doAttachment = doAttachment;
+    $editing.getTextbox = getTextbox;
+    $editing.setTextbox = setTextbox;
+    $editing.insertTextbox = insertTextbox;
+    $editing.insertTextboxWrapping = insertTextboxWrapping;
+    $editing.getSelectedText = getSelectedText;
+    $editing.showUploadSyndicationOptions = showUploadSyndicationOptions;
     
     // ===========
     // HTML EDITOR
@@ -34,7 +31,7 @@
             return;
         }
 
-        var isWysiwygOn = window.wysiwygOn();
+        var isWysiwygOn = $editing.wysiwygOn();
         if (isWysiwygOn) {
             if ($cms.readCookie('use_wysiwyg') === '-1') {
                 _toggleWysiwyg(name);
@@ -80,7 +77,7 @@
         }
 
         function _toggleWysiwyg(name) {
-            var isWysiwygOn = window.wysiwygOn(),
+            var isWysiwygOn = $editing.wysiwygOn(),
                 forms = document.getElementsByTagName('form'),
                 so = document.getElementById('post_special_options'),
                 so2 = document.getElementById('post_special_options2');
@@ -135,14 +132,14 @@
         function enableWysiwyg(forms, so, so2) {
             forms = window.arrVal(forms);
 
-            window.wysiwygOn = function () {
+            $editing.wysiwygOn = function () {
                 return true;
             };
 
             var promiseCalls = [];
             forms.forEach(function (form) {
                 promiseCalls.push(function () {
-                    return window.loadHtmlEdit(form, true);
+                    return $editing.loadHtmlEdit(form, true);
                 });
             });
 
@@ -178,7 +175,7 @@
                     $dom.hide(so2);
                 }
 
-                window.wysiwygOn = function () {
+                $editing.wysiwygOn = function () {
                     return false;
                 };
             });
@@ -268,12 +265,12 @@
         }
         if (readonly) {
             window.wysiwygReadonlyTimer[name] = setTimeout(function () {
-                wysiwygSetReadonly(name, false);
+                $editing.wysiwygSetReadonly(name, false);
             }, 5000);
         }
     }
 
-// Initialising the HTML editor if requested later (i.e. toggling it to on)
+    // Initialising the HTML editor if requested later (i.e. toggling it to on)
     window.wysiwygEditors || (window.wysiwygEditors = {});
     window.wysiwygOriginalComcode || (window.wysiwygOriginalComcode = {});
 
@@ -295,7 +292,7 @@
             postingForm.appendChild(httpReferer);
         }
 
-        if (!window.CKEDITOR || !$cms.configOption('wysiwyg') || !window.wysiwygOn()) {
+        if (!window.CKEDITOR || !$cms.configOption('wysiwyg') || !$editing.wysiwygOn()) {
             return Promise.resolve();
         }
 
@@ -343,7 +340,7 @@
 
                 window.wysiwygOriginalComcode[id] = textarea.value;
                 if (!ajaxCopy) {
-                    if ((postingForm.elements[id + '_parsed'] !== undefined) && (postingForm.elements[id + '_parsed'].value !== '') && ((textarea.defaultValue == ''/*LEGACY IE bug*/) || (textarea.defaultValue == textarea.value))) {// The extra conditionals are for if back button used
+                    if ((postingForm.elements[id + '_parsed'] !== undefined) && (postingForm.elements[id + '_parsed'].value !== '') && ((textarea.defaultValue === ''/*LEGACY IE bug*/) || (textarea.defaultValue == textarea.value))) {// The extra conditionals are for if back button used
                         textarea.value = postingForm.elements[id + '_parsed'].value;
                     }
 
@@ -695,7 +692,7 @@
         }
         
         if (!element) {
-            $util.fatal('doEmoticon(): Element not found "#' + fieldName + '"');
+            $util.fatal('$editing.doEmoticon(): Element not found "#' + fieldName + '"');
             return;
         }
 
@@ -711,7 +708,7 @@
         if (isOpener) {
             return insertTextboxOpener(element, text, true, $dom.html(callerEl), true);
         } else {
-            return insertTextbox(element, text, true, $dom.html(callerEl), true);
+            return $editing.insertTextbox(element, text, true, $dom.html(callerEl), true);
         }
     }
 
@@ -774,7 +771,7 @@
 
     /**
      * Insert some text, with WYSIWYG support...
-     * (Use insertTextboxWrapping to wrap Comcode tags around a selection)
+     * (Use $editing.insertTextboxWrapping to wrap Comcode tags around a selection)
      *
      * @param { Element } element - non-WYSIWYG element
      * @param {string} text - text to insert (non-HTML)
@@ -891,9 +888,13 @@
      * @return { Promise }
      */
     function insertTextboxOpener(element, text, isPlainInsert, html) {
-        return $cms.getMainCmsWindow().insertTextbox(element, text, isPlainInsert, html);
+        return $cms.getMainCmsWindow().$editing.insertTextbox(element, text, isPlainInsert, html);
     }
 
+    /**
+     * @param element
+     * @return {string}
+     */
     function getSelectedText(element) {
         if ($cms.form.isWysiwygField(element)) {
             var editor = window.wysiwygEditors[element.id];
@@ -1099,4 +1100,4 @@
 
         $dom.html(htmlSpot, html);
     }
-}(window.$cms, window.$util, window.$dom, (window.$editing || (window.$editing = {}))));
+}(window.$cms, window.$util, window.$dom));

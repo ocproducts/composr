@@ -303,7 +303,7 @@
         $dom.on(container, 'click', '.js-click-do-emoticon', function (e, target) {
             var fieldName = target.dataset.tpFieldName;
             if (fieldName) {
-                window.doEmoticon(fieldName, target, true);
+                window.$editing.doEmoticon(fieldName, target, true);
             }
         });
     };

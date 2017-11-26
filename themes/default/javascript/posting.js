@@ -3,15 +3,6 @@
     'use strict';
 
     var $posting = window.$posting = {};
-    
-    window.addAttachment = addAttachment;
-    window.attachmentPresent = attachmentPresent;
-    window.setAttachment = setAttachment;
-    window.showPreviewImagesForAttachmentComcodes = showPreviewImagesForAttachmentComcodes;
-    window.initFormSaving = initFormSaving;
-    window.handleFormSaving = handleFormSaving;
-    window.getAutosaveUrlStem = getAutosaveUrlStem;
-    window.getAutosaveName = getAutosaveName;
 
     window.doInputHtml = doInputHtml;
     window.doInputCode = doInputCode;
@@ -78,7 +69,7 @@
      * @param uploaderSettings
      * @return { Promise }
      */
-    function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
+    $posting.setAttachment = function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
         console.log('setAttachment()', 'fieldName:', fieldName, 'number:', number, 'filename:', filename, 'multi:', multi, 'uploaderSettings:', uploaderSettings);
 
         fieldName = strVal(fieldName);
@@ -95,7 +86,7 @@
                 tmpForm.preview.disabled = true;
             }
 
-            var postValue = window.getTextbox(post),
+            var postValue = window.$editing.getTextbox(post),
                 done = attachmentPresent(post.value, number) || attachmentPresent(postValue, number),
                 addAnotherField;
 
@@ -150,7 +141,7 @@
                 var promiseCalls = [];
                 if (prefix !== '') {
                     promiseCalls.push(function () {
-                        return window.insertTextbox(post, prefix);
+                        return window.$editing.insertTextbox(post, prefix);
                     });
                 }
 
@@ -165,7 +156,7 @@
                             if (!fileName.includes('fakepath')) {
                                 newComcode = newComcode.replace(' description="' + defaults.description.replace(/"/g, '\\"') + '"', ' description="' + fileName.replace(/"/g, '\\"') + '"');
                             }
-                            return window.insertTextbox(post, newComcode);
+                            return window.$editing.insertTextbox(post, newComcode);
                         });
                     });
                     promiseCalls.push(function () {
@@ -174,13 +165,13 @@
                     });
                 } else {
                     promiseCalls.push(function () {
-                        return window.insertTextbox(post, comcode);
+                        return window.$editing.insertTextbox(post, comcode);
                     });
                 }
 
                 if (suffix !== '') {
                     promiseCalls.push(function () {
-                        return window.insertTextbox(post, suffix);
+                        return window.$editing.insertTextbox(post, suffix);
                     });
                 }
 
@@ -195,7 +186,7 @@
                         // Previously named: uploader_settings.callbacks
                         uploaderSettings.onAllUploadsDoneCallbacks.push(function () {
                             // Do insta-preview for image attachments
-                            showPreviewImagesForAttachmentComcodes(post);
+                            $posting.showPreviewImagesForAttachmentComcodes(post);
                         });
                     }
                 });
@@ -248,7 +239,7 @@
                             comcodeSemihtml += suffix;
                         }
 
-                        promise = window.insertTextbox(post, comcode, true, comcodeSemihtml);
+                        promise = window.$editing.insertTextbox(post, comcode, true, comcodeSemihtml);
                     }
 
                     promise.then(function () {
@@ -260,7 +251,7 @@
 
                         // Do insta-preview
                         if (comcodeAdded.includes('[attachment_safe') && $cms.form.isWysiwygField(post)) {
-                            showPreviewImagesForAttachmentComcodes(post);
+                            $posting.showPreviewImagesForAttachmentComcodes(post);
                         }
                     });
                 });
@@ -268,13 +259,13 @@
 
             return resolvePromise();
         });
-    }
+    };
 
     /**
      * WYSIWYG preview for image attachments
      * @param { HTMLTextAreaElement } postTextArea
      */
-    function showPreviewImagesForAttachmentComcodes(postTextArea) {
+    $posting.showPreviewImagesForAttachmentComcodes = function showPreviewImagesForAttachmentComcodes(postTextArea) {
         var post = '';
         var form = postTextArea.form;
 
@@ -302,7 +293,7 @@
         $cms.doAjaxRequest(window.formPreviewUrl + '&js_only=1&known_utf8=1', null, post).then(function (xhr) {
             $dom.append(document.body, xhr.responseText);
         });
-    }
+    };
 
     // ====================
     // COMCODE UI FUNCTIONS
@@ -310,12 +301,12 @@
 
     function doInputHtml(fieldName) {
         var post = document.getElementById(fieldName);
-        return window.insertTextboxWrapping(post, 'semihtml', '');
+        return window.$editing.insertTextboxWrapping(post, 'semihtml', '');
     }
 
     function doInputCode(fieldName) {
         var post = document.getElementById(fieldName);
-        return window.insertTextboxWrapping(post, (post.name === 'message') ? 'tt' : 'codebox', '');
+        return window.$editing.insertTextboxWrapping(post, (post.name === 'message') ? 'tt' : 'codebox', '');
     }
 
     function doInputQuote(fieldName) {
@@ -325,7 +316,7 @@
             '',
             function (va) {
                 if (va != null) {
-                    window.insertTextboxWrapping(post, '[quote=\"' + va + '\"]', '[/quote]');
+                    window.$editing.insertTextboxWrapping(post, '[quote=\"' + va + '\"]', '[/quote]');
                 }
             },
             '{!comcode:INPUT_COMCODE_quote;^}'
@@ -339,7 +330,7 @@
             '',
             function (va) {
                 if (va != null) {
-                    window.insertTextboxWrapping(post, '[box=\"' + va + '\"]', '[/box]');
+                    window.$editing.insertTextboxWrapping(post, '[box=\"' + va + '\"]', '[/box]');
                 }
             },
             '{!comcode:INPUT_COMCODE_box;^}'
@@ -363,7 +354,7 @@
                             var add;
                             var element = document.getElementById(fieldName);
                             add = '[block=\"' + $cms.filter.comcode(va) + '\" caption=\"' + $cms.filter.comcode(vb) + '\" type=\"tree\"]menu[/block]';
-                            window.insertTextbox(element, add);
+                            window.$editing.insertTextbox(element, add);
                         },
                         '{!comcode:INPUT_COMCODE_menu;^}'
                     );
@@ -457,7 +448,7 @@
 
         var post = document.getElementById(fieldName);
 
-        return window.insertTextbox(post, '\n').then(function () {
+        return window.$editing.insertTextbox(post, '\n').then(function () {
             return $cms.ui.prompt('{!javascript:ENTER_LIST_ENTRY;^}', '', null, '{!comcode:INPUT_COMCODE_list;^}');
         }).then(function (va) {
             if (va) {
@@ -473,23 +464,23 @@
 
             promiseCalls.push(function () {
                 if (post.value.includes('[semihtml')) {
-                    return window.insertTextbox(post, '[list]\n');
+                    return window.$editing.insertTextbox(post, '[list]\n');
                 }
             });
 
             add.forEach(function (entryName) {
                 promiseCalls.push(function () {
                     if (post.value.includes('[semihtml')) {
-                        return window.insertTextbox(post, '[*]' + entryName + '\n')
+                        return window.$editing.insertTextbox(post, '[*]' + entryName + '\n')
                     } else {
-                        return window.insertTextbox(post, ' - ' + entryName + '\n')
+                        return window.$editing.insertTextbox(post, ' - ' + entryName + '\n')
                     }
                 });
             });
 
             promiseCalls.push(function () {
                 if (post.value.includes('[semihtml')) {
-                    return window.insertTextbox(post, '[/list]\n');
+                    return window.$editing.insertTextbox(post, '[/list]\n');
                 }
             });
 
@@ -502,8 +493,8 @@
             if (va) {
                 var element = document.getElementById(fieldName);
 
-                if (window.getSelectedText(element) != '') {
-                    window.insertTextbox(element, '[hide=\"' + $cms.filter.comcode(va) + '\"]', '[/hide]');
+                if (window.$editing.getSelectedText(element) !== '') {
+                    window.$editing.insertTextbox(element, '[hide=\"' + $cms.filter.comcode(va) + '\"]', '[/hide]');
                     return;
                 }
 
@@ -512,7 +503,7 @@
                     '',
                     function (vb) {
                         if (vb) {
-                            window.insertTextbox(element, '[hide=\"' + $cms.filter.comcode(va) + '\"]' + $cms.filter.comcode(vb) + '[/hide]');
+                            window.$editing.insertTextbox(element, '[hide=\"' + $cms.filter.comcode(va) + '\"]' + $cms.filter.comcode(vb) + '[/hide]');
                         }
                     },
                     '{!comcode:INPUT_COMCODE_hide;^}'
@@ -560,9 +551,9 @@
 
             var element = document.getElementById(fieldName);
             if (answer.toLowerCase() === '{!IMAGE;^}'.toLowerCase()) {
-                window.insertTextbox(element, '[img="' + $cms.filter.comcode(caption) + '"]' + $cms.filter.comcode(url) + '[/img]');
+                window.$editing.insertTextbox(element, '[img="' + $cms.filter.comcode(caption) + '"]' + $cms.filter.comcode(url) + '[/img]');
             } else {
-                window.insertTextbox(element, '[thumb caption="' + $cms.filter.comcode(caption) + '"]' + $cms.filter.comcode(url) + '[/thumb]');
+                window.$editing.insertTextbox(element, '[thumb caption="' + $cms.filter.comcode(caption) + '"]' + $cms.filter.comcode(url) + '[/thumb]');
             }
         });
     }
@@ -576,7 +567,7 @@
                     $cms.ui.alert('{!javascript:NOT_VALID_ATTACHMENT;^}');
                 } else {
                     var element = document.getElementById(fieldName);
-                    window.insertTextbox(element, '[attachment]new_' + val + '[/attachment]');
+                    window.$editing.insertTextbox(element, '[attachment]new_' + val + '[/attachment]');
                 }
             },
             '{!comcode:INPUT_COMCODE_attachment;^}'
@@ -612,7 +603,7 @@
             $cms.ui.prompt('{!javascript:ENTER_LINK_NAME;^}', '', null, '{!comcode:INPUT_COMCODE_url;^}').then(function (linkName) {
                 var element = document.getElementById(fieldName);
                 if (linkName != null) {
-                    window.insertTextbox(element, '[url=\"' + $cms.filter.comcode(linkName) + '\"]' + $cms.filter.comcode(url) + '[/url]');
+                    window.$editing.insertTextbox(element, '[url=\"' + $cms.filter.comcode(linkName) + '\"]' + $cms.filter.comcode(url) + '[/url]');
                 }
             });
         });
@@ -630,7 +621,7 @@
                 $cms.ui.prompt('{!javascript:ENTER_CAPTION;^}', '', null, '{!comcode:INPUT_COMCODE_page;^}').then(function (vc) {
                     var element = document.getElementById(fieldName);
 
-                    if (window.getSelectedText(element) !== '') {
+                    if (window.$editing.getSelectedText(element) !== '') {
                         _doInputPage(fieldName, result, '');
                         return;
                     }
@@ -649,7 +640,7 @@
                         var element = document.getElementById(fieldName);
                         result = va + ':' + vb;
 
-                        if (window.getSelectedText(element) !== '') {
+                        if (window.$editing.getSelectedText(element) !== '') {
                             _doInputPage(fieldName, result, '');
                             return;
                         }
@@ -670,9 +661,9 @@
         function _doInputPage(fieldName, result, vc) {
             var element = document.getElementById(fieldName);
             if (vc === '') {
-                window.insertTextboxWrapping(element, '[page=\"' + $cms.filter.comcode(result) + '\"]', '[/page]');
+                window.$editing.insertTextboxWrapping(element, '[page=\"' + $cms.filter.comcode(result) + '\"]', '[/page]');
             } else {
-                window.insertTextbox(element, '[page=\"' + $cms.filter.comcode(result) + '\"]' + $cms.filter.comcode(vc) + '[/page]');
+                window.$editing.insertTextbox(element, '[page=\"' + $cms.filter.comcode(result) + '\"]' + $cms.filter.comcode(vc) + '[/page]');
             }
         }
     }
@@ -692,8 +683,8 @@
                 if (va !== null) {
                     var element = document.getElementById(fieldName);
 
-                    if (window.getSelectedText(element) != '') {
-                        window.insertTextbox(element, '[email=\"' + $cms.filter.comcode(va) + '\"]', '[/email]');
+                    if (window.$editing.getSelectedText(element) != '') {
+                        window.$editing.insertTextbox(element, '[email=\"' + $cms.filter.comcode(va) + '\"]', '[/email]');
                         return;
                     }
 
@@ -702,7 +693,7 @@
                         '',
                         function (vb) {
                             if (vb !== null) {
-                                window.insertTextbox(element, '[email=\"' + $cms.filter.comcode(vb) + '\"]' + $cms.filter.comcode(va) + '[/email]');
+                                window.$editing.insertTextbox(element, '[email=\"' + $cms.filter.comcode(vb) + '\"]' + $cms.filter.comcode(va) + '[/email]');
                             }
                         },
                         '{!comcode:INPUT_COMCODE_email;^}'
@@ -715,12 +706,12 @@
 
     function doInputB(fieldName) {
         var element = document.getElementById(fieldName);
-        return window.insertTextboxWrapping(element, 'b', '');
+        return window.$editing.insertTextboxWrapping(element, 'b', '');
     }
 
     function doInputI(fieldName) {
         var element = document.getElementById(fieldName);
-        return window.insertTextboxWrapping(element, 'i', '');
+        return window.$editing.insertTextboxWrapping(element, 'i', '');
     }
 
     function doInputFont(fieldName) {
@@ -729,11 +720,11 @@
         var face = form.elements['f_face'];
         var size = form.elements['f_size'];
         var colour = form.elements['f_colour'];
-        if ((face.value == '') && (size.value == '') && (colour.value == '')) {
+        if ((face.value === '') && (size.value === '') && (colour.value === '')) {
             $cms.ui.alert('{!javascript:NO_FONT_SELECTED;^}');
             return;
         }
-        return window.insertTextboxWrapping(document.getElementById(fieldName), '[font=\"' + $cms.filter.comcode(face.value) + '\" color=\"' + $cms.filter.comcode(colour.value) + '\" size=\"' + $cms.filter.comcode(size.value) + '\"]', '[/font]', true);
+        return window.$editing.insertTextboxWrapping(document.getElementById(fieldName), '[font=\"' + $cms.filter.comcode(face.value) + '\" color=\"' + $cms.filter.comcode(colour.value) + '\" size=\"' + $cms.filter.comcode(size.value) + '\"]', '[/font]', true);
     }
 
     // ==================
@@ -749,7 +740,7 @@
      The advantage of remove saving is you can switch machines.
      */
 
-    function initFormSaving(formId) {
+    $posting.initFormSaving = function initFormSaving(formId) {
         window.lastAutosave = new Date();
 
         //$util.inform('Initialising auto-save subsystem');
@@ -769,7 +760,7 @@
         document.body.addEventListener('keydown', function (form) {
             return function (event) {
                 handleFormSavingExplicit(event, form);
-            }
+            };
         }(form));
 
         // Load via local storage
@@ -965,7 +956,7 @@
 
             switch (element.nodeName.toLowerCase()) {
                 case 'textarea':
-                    window.setTextbox(element, value, value);
+                    window.$editing.setTextbox(element, value, value);
                     break;
                 case 'select':
                     for (var i = 0; i < element.options.length; i++) {
@@ -1025,10 +1016,10 @@
             }
 
             var name = element.name;
-            if (name == '') {
+            if (name === '') {
                 return false;
             }
-            if (name.substr(-2) == '[]') {
+            if (name.substr(-2) === '[]') {
                 return false;
             }
 
@@ -1067,7 +1058,7 @@
 
             return false;
         }
-    }
+    };
 
     function handleFormSaving(event, element, force) {
         var temp = _handleFormSaving(event, element, force);

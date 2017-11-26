@@ -75,7 +75,7 @@
         editorKeyPress: function (e, textarea) {
             if ($dom.keyPressed(e, 'Tab')) {
                 e.preventDefault();
-                window.insertTextbox(textarea, "\t");
+                window.$editing.insertTextbox(textarea, "\t");
             }
         },
 
@@ -139,7 +139,7 @@
 
                 editareaReverseRefresh('e_' + fileToFileId(file));
 
-                window.insertTextbox(textbox, '{' + '+START,IF,{' + '$EQ,{' + '_GUID},' + guid + '}}\n{' + '+END}').then(function () {
+                window.$editing.insertTextbox(textbox, '{' + '+START,IF,{' + '$EQ,{' + '_GUID},' + guid + '}}\n{' + '+END}').then(function () {
                     if (hasEditarea) {
                         editareaRefresh(textbox.id);
                     }
@@ -628,7 +628,7 @@
                 dropdownName, value, 0, '',
                 function (textbox, name, value, params) {
                     if (name.indexOf('ppdirective') !== -1) {
-                        window.insertTextboxWrapping(textbox, '{' + '+START,' + value + params + '}', '{' + '+END}').then(function () {
+                        window.$editing.insertTextboxWrapping(textbox, '{' + '+START,' + value + params + '}', '{' + '+END}').then(function () {
                             if (hasEditarea) {
                                 editareaRefresh(textbox.name);
                             }
@@ -643,7 +643,7 @@
 
                         value = stValue + value + '*' + params + '}';
 
-                        window.insertTextbox(textbox, value).then(function () {
+                        window.$editing.insertTextbox(textbox, value).then(function () {
                             if (hasEditarea) {
                                 editareaRefresh(textbox.name);
                             }

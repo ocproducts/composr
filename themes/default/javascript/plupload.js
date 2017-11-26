@@ -14256,7 +14256,7 @@
         
         if (element.determinedAttachmentProperties === undefined) {
             currentNum = name.replace('file', '');
-            window.setAttachment(postingFieldName, currentNum, fileName, multi, $dom.data(element).pluploadObject.settings);
+            window.$posting.setAttachment(postingFieldName, currentNum, fileName, multi, $dom.data(element).pluploadObject.settings);
             if (!$dom.data(element).pluploadObject.settings.simplifiedAttachments) {
                 element.onchange = null;     
             }
@@ -14799,7 +14799,7 @@
                     } else {
                         var element = document.getElementById(fieldName);
 
-                        window.insertTextbox(element, "[attachment_safe framed=\"0\" description=\"" + fileProgress.name.replace(/"/g, '\'') + "\"]new_" + attachmentBase + "[/attachment_safe]\n").then(function () {
+                        window.$editing.insertTextbox(element, "[attachment_safe framed=\"0\" description=\"" + fileProgress.name.replace(/"/g, '\'') + "\"]new_" + attachmentBase + "[/attachment_safe]\n").then(function () {
                             var progress = new FileProgress(fileProgress, 'container_for_' + fieldName);
                             progress.setProgress(100);
                             progress.setComplete();
@@ -14809,7 +14809,7 @@
                             document.getElementById('hidFileID_file' + attachmentBase).value = decodedData['upload_id'];
 
                             if ($cms.form.isWysiwygField(element)) {
-                                window.showPreviewImagesForAttachmentComcodes(element);
+                                window.$posting.showPreviewImagesForAttachmentComcodes(element);
                             }
                         });
                     }
@@ -14824,10 +14824,10 @@
     function clearAttachmentComcode(index, postField) {
         //console.log('clearAttachmentComcode()', 'index:', index, 'postField:', postField);
 
-        var newContents = window.getTextbox(postField);
+        var newContents = window.$editing.getTextbox(postField);
         newContents = newContents.replace(new RegExp('\\[(attachment|attachment_safe)[^\\]]*\\]new_' + index + '\\[/(attachment|attachment_safe)\\]', 'g'), '');
         newContents = newContents.replace(new RegExp('<input[^<>]* class="cms_keep_ui_controlled"[^<>]* title="[^<>]*" value="[^"]+"[^<>]* />'), ''); // Shell of the above
-        window.setTextbox(postField, newContents, newContents);
+        window.$editing.setTextbox(postField, newContents, newContents);
         document.getElementById('file' + index).value = '';
     }
     

@@ -9,9 +9,9 @@
                 ins = form.elements['post_template'].value;
             
             if (resets) {
-                window.setTextbox(form.elements['post'], '');
+                window.$editing.setTextbox(form.elements['post'], '');
             }
-            window.insertTextbox(form.elements['post'], ins.replace(/\\n/g, '\n'), true, $cms.filter.html(ins).replace(/\\n/g, '<br />'));
+            window.$editing.insertTextbox(form.elements['post'], ins.replace(/\\n/g, '\n'), true, $cms.filter.html(ins).replace(/\\n/g, '<br />'));
         });
     };
 }(window.$cms, window.$util, window.$dom));

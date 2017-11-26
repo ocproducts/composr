@@ -16,7 +16,7 @@
 
         if (params.syndicationJson !== undefined) {
             $cms.requireJavascript('editing').then(function () {
-                window.showUploadSyndicationOptions("file" + params.i, params.syndicationJson, !!params.noQuota);
+                window.$editing.showUploadSyndicationOptions("file" + params.i, params.syndicationJson, !!params.noQuota);
             });
         }
     }
@@ -29,7 +29,7 @@
         },
 
         setAttachment: function () {
-            window.setAttachment('post', this.params.i, '');
+            window.$posting.setAttachment('post', this.params.i, '');
         }
     });
 
@@ -329,7 +329,7 @@
                 id = params.id || '',
                 description = params.description || '';
 
-            doAttachment(fieldName, id, description).then(function () {
+            window.$editing.doAttachment(fieldName, id, description).then(function () {
                 window.fauxClose ? window.fauxClose() :  window.close();
             });
         }
@@ -388,7 +388,7 @@
         });
 
         $dom.on(container, 'click', '.js-click-toggle-wysiwyg', function () {
-            toggleWysiwyg(name);
+            window.$editing.toggleWysiwyg(name);
         });
     };
 
@@ -578,7 +578,7 @@
 
         $dom.on(container, 'click', function (e) {
             e.preventDefault();
-            window.doEmoticon(fieldName, container, false)
+            window.$editing.doEmoticon(fieldName, container, false);
         });
     };
 

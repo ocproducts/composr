@@ -660,7 +660,7 @@ function autoCompleteElementFactory(element,e) {
 /* Composr binder code */
 
 function setUpComcodeAutocomplete(name, wysiwyg) {
-    if (wysiwyg && window.wysiwygOn && window.wysiwygOn() && ((window.CKEDITOR == null) ||  (!window.CKEDITOR.instances[name]))) {
+    if (wysiwyg && window.$editing && window.$editing.wysiwygOn() && ((window.CKEDITOR == null) ||  (!window.CKEDITOR.instances[name]))) {
         return;
     }
 

@@ -70,7 +70,7 @@
         }
 
         if (params.comcode && params.class.includes('wysiwyg')) {
-            if ((window.wysiwygOn) && (window.wysiwygOn())) {
+            if (window.$editing && window.$editing.wysiwygOn()) {
                 $dom.$('#edit_' + params.id + '_textarea').readOnly = true;
             }
         }
@@ -140,7 +140,7 @@
                 var loadingPreviewOf = id;
 
                 var data = '';
-                data += window.getTextbox(editElement);
+                data += window.$editing.getTextbox(editElement);
                 var url = '{$FIND_SCRIPT_NOHTTP;,comcode_convert}?fix_bad_html=1&css=1&javascript=1&from_html=0&is_semihtml=' + ($cms.form.isWysiwygField(editElement) ? '1' : '0') + '&panel=' + (((id === 'panel_left') || (id === 'panel_right')) ? '1' : '0') + $cms.keep();
                 var post = ($cms.form.isWysiwygField(editElement) ? 'data__is_wysiwyg=1&' : '') + 'data=' + encodeURIComponent(data);
                 if ($cms.form.isModSecurityWorkaroundEnabled()) {
@@ -170,7 +170,7 @@
         },
 
         toggleWysiwyg: function () {
-            window.toggleWysiwyg('edit_' + this.params.id + '_textarea');
+            window.$editing.toggleWysiwyg('edit_' + this.params.id + '_textarea');
         },
 
         setEditedPanel: function (e, field) {
@@ -245,7 +245,7 @@
                 store.id = 'store_' + id;
                 $dom.$('#edit_field_store').appendChild(store);
             }
-            store.value = window.getTextbox(el);
+            store.value = window.$editing.getTextbox(el);
         }
 
         /* The WYSIWYG setting (not the actual HTML text value of the editor, the setting of whether WYSIWYG was used or not) */
