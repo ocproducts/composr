@@ -103,7 +103,7 @@ Composr is built on top of standard web/Internet protocols, languages and [abbr=
 		</tr>
 		<tr>
 			<td>[abbr="Scalable Vector Graphics"][url="http://www.w3.org/Graphics/SVG/"]SVG[/url][/abbr]</td>
-			<td>Vector graphics standard, used for drawing statistics graphs.</td>
+			<td>Vector graphics standard, used for icons and drawing statistics graphs.</td>
 			<td>You are unlikely to need any awareness of this.</td>
 		</tr>
 		<tr>

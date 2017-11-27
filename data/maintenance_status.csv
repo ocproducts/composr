@@ -126,6 +126,7 @@ php_unsupported,Detect if a PHP version is used that is no longer maintained by 
 external_health_check,Various tools that the Health Check will link out to when manual checks are enabled.,ocProducts,,Not regularly Tested.,No,Automated test to make sure links are not broken.
 google_safe_browsing_api,The Google Safe Browsing API.,ocProducts,,Not regularly Tested.,No,Automated test to run Health Checks.
 google_recaptcha,The Google Safe Browsing API.,ocProducts,,Not regularly Tested.,No,Automated test to run Health Checks.
-google_search_console,The Google Search Console API.,ocProducts,,Not regularly Tested.,No
-moz,Moz API.,ocProducts,,Not regularly Tested.,No
-google_analytics,Google Analytics integration.,ocProducts,,Not regularly Tested.,No
+google_search_console,The Google Search Console API.,ocProducts,,Not regularly Tested.,No,
+moz,Moz API.,ocProducts,,Not regularly Tested.,No,
+google_analytics,Google Analytics integration.,ocProducts,,Not regularly Tested.,No,
+cors,Cross-Origin Resource Sharing (CORS),ocProducts,,Not regularly Tested.,No,
