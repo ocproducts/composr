@@ -62,7 +62,7 @@ var editorSettings = {
     emailProtection: false,
     resize_enabled: true,
     width: 'auto',
-    height: window.location.href.includes('cms_comcode_pages') ? 250 : 500,
+    height: window.location.href.includes('cms_comcode_pages') ? 250 : 500,// TODO: FIXME Salman (do direct compare to page name, which presumably the JS framework knows)
     toolbar: toolbar,
     allowedContent: true,
     browserContextMenuOnCtrl: true,

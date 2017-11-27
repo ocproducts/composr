@@ -82,7 +82,7 @@
                         for (var j = 0; j < frames.length; j++) {
                             if ((frames[j].src === window.location.href) || (frames[j].contentWindow === window) || ((window.parent.frames[frames[j].id] != null) && (window.parent.frames[frames[j].id] === window))) {
                                 var sb = frames[j];
-                                if (!sb.contentWindow.location.href.includes('posted') ) {
+                                if (!sb.contentWindow.location.href.includes('posted') ) { // TODO: FIXME Salman (do direct GET param check, posted==1 style)
                                     sb.contentWindow.location.reload();
                                 }
                             }

@@ -417,7 +417,7 @@
     };
     
     function playSoundUrl(url) { // Used for testing different sounds
-        var baseUrl = (!url.includes('data_custom') && !url.includes('uploads/')) ? $cms.getBaseUrlNohttp() : $cms.getCustomBaseUrlNohttp();
+        var baseUrl = (!url.includes('data_custom/') && !url.includes('uploads/')) ? $cms.getBaseUrlNohttp() : $cms.getCustomBaseUrlNohttp();
         var soundObject = window.soundManager.createSound({url: baseUrl + '/' + url});
         if (soundObject) {
             soundObject.play();
@@ -450,7 +450,7 @@
             document.getElementById('post').focus();
         } catch (ignore) {}
 
-        if (!window.location.href.includes('keep_chattest')) {
+        if (!window.location.href.includes('keep_chattest')) { // TODO: FIXME Salman (do direct GET param check, keep_chattest==1 style)
             beginChatting(roomId);
         }
 
@@ -630,7 +630,7 @@
             } else {
                 url = '{$FIND_SCRIPT;,messages}?action=new&room_id=' + encodeURIComponent(_roomId) + '&message_id=' + encodeURIComponent(messageId ? messageId : '-1') + '&event_id=' + encodeURIComponent(eventId);
             }
-            if (window.location.href.includes('no_reenter_message=1')) {
+            if (window.location.href.includes('no_reenter_message=1')) { // TODO: FIXME Salman (do direct GET param check, no_reenter_message==1 style)
                 url = url + '&no_reenter_message=1';
             }
             var fullUrl = $cms.maintainThemeInLink(url + $cms.keep());

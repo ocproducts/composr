@@ -30,7 +30,7 @@
         el = $dom.elArg(el);
 
         var pic = $dom.$(el.parentNode, '.toggleable_tray_button img') || $dom.$('img#e_' + el.id),
-            isThemeWizard = Boolean(pic && pic.src && pic.src.includes('themewizard.php'));
+            isThemeWizard = Boolean(pic && pic.src && pic.src.includes('/themewizard.php'));
 
         if ($dom.notDisplayed(el)) {
             el.setAttribute('aria-expanded', 'true');
@@ -828,7 +828,7 @@
                 }
             }
 
-            if (url.includes(window.location.host)) {
+            if (url.includes(window.location.host)) { // TODO: FIXME Salman (only compare the actual hostname component of the url variable, vaguelly like host(url)==window.location.host)
                 url += (!url.includes('?') ? '?' : '&') + 'overlay=1';
             }
 

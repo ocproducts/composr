@@ -112,7 +112,7 @@
                 xml = this.treeListData;
 
                 if (!xml.firstElementChild) {
-                    var error = document.createTextNode((!this.name.includes('category') && !window.location.href.includes('category')) ? '{!NO_ENTRIES;^}' : '{!NO_CATEGORIES;^}');
+                    var error = document.createTextNode((!this.name.includes('category') && !window.location.href.includes('category')) ? '{!NO_ENTRIES;^}' : '{!NO_CATEGORIES;^}');// TODO: FIXME Salman (check URL contains 'category' only after the final slash in it [i.e. last segment before GET params])
                     html.className = 'red_alert';
                     html.appendChild(error);
                     return;

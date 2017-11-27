@@ -1146,7 +1146,7 @@
             var url = window.location.href,
                 append = '?';
 
-            if ($cms.isJsOn() || boolVal($cms.pageSearchParams().get('keep_has_js')) || url.includes('upgrader.php') || url.includes('webdav.php')) {
+            if ($cms.isJsOn() || boolVal($cms.pageSearchParams().get('keep_has_js')) || url.includes('/upgrader.php') || url.includes('/webdav.php')) {
                 return;
             }
 
@@ -1248,7 +1248,7 @@
 
                     setTimeout(function () { // Do a refresh with magic markers, in a comfortable few seconds
                         var oldUrl = window.location.href;
-                        if (!oldUrl.includes('keep_template_magic_markers=1')) {
+                        if (!oldUrl.includes('keep_template_magic_markers=1')) { // TODO: FIXME Salman (do direct compare to GET param)
                             window.location.href = oldUrl + (oldUrl.includes('?') ? '&' : '?') + 'keep_template_magic_markers=1&cache_blocks=0&cache_comcode_pages=0';
                         }
                     }, 10000);
@@ -1275,7 +1275,7 @@
 
             // Navigation loading screen
             if ($cms.configOption('enable_animations')) {
-                if ((window.parent === window) && !loc.includes('js_cache=1') && (loc.includes('/cms/') || loc.includes('/adminzone/'))) {
+                if ((window.parent === window) && !loc.includes('js_cache=1')/*TODO: FIXME Salman (do direct compare to GET param)*/ && (loc.includes('/cms/') || loc.includes('/adminzone/'))) {
                     window.addEventListener('beforeunload', function () {
                         staffUnloadAction();
                     });
@@ -1413,7 +1413,7 @@
                 if ((target.src === undefined) && (!event.ctrlKey) && (!event.metaKey) && (!event.altKey)) {
                     return;  // Needs ctrl key for background images
                 }
-                if (!src.includes('/themes/') || window.location.href.includes('admin_themes')) {
+                if (!src.includes('/themes/') || window.location.href.includes('admin_themes')) { // TODO: FIXME Salman (do direct compare to page name)
                     return;
                 }
 
