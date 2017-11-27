@@ -1,8 +1,15 @@
 {TITLE}
 
-<p>You can chat here with other Composr users using your compo.sr username ({$USERNAME*}) or you can chat from inside your own website using your website name.</p>
+<p>You can chat here with other Composr users using your compo.sr username ({$USERNAME*}), or you can chat from inside your own website using your website name (chat icon in the website footer when logged in as an administrator).</p>
 
-<p>Be advised you may be better off <a href="{$PAGE_LINK*,forum:}">posting in the forum</a> if there is no one here to answer you immediately or if your question is quite long and complex. If you really need an answer you should consider professional support, as otherwise you're relying on volunteers.</p>
+<p>The chat can only be as popular as Composr users make it, as a venue for Composr users to help each other. The Composr developers get income from intense commercial work that (along with Composr development) takes up most of their time and concentration, so are unlikely to be able to spend time in the chat.</p>
+
+<p>If you can't get an answer in the chat (due to lack of expertise here, or if your question is long and complex), it is best to pursuit one of the following avenues:</p>
+<ul>
+	<li><a href="{$PAGE_LINK*,forum:}">Posting in the forum</a></li>
+	<li>The weekly live chats, which are announced on the forum and across Composr social media</li>
+	<li>Professional support (so you're not relying on volunteers)</li>
+</ul>
 
 <iframe style="width: 100%; height: 700px" src="https://kiwiirc.com/client/irc.kiwiirc.com/?nick={$USERNAME&*}#composrcms"></iframe>
 
