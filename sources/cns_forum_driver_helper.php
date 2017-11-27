@@ -367,7 +367,7 @@ function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows,
         $out[$i]['closed'] = 1 - $r['t_is_open'];
         $out[$i]['forum_id'] = $r['t_forum_id'];
 
-        $_post_query_sql = str_replace('t.id', strval($out[$i]['id']), $post_query_sql);
+        $_post_query_sql = preg_replace('/(?<=\W)t.id/', strval($out[$i]['id']), $post_query_sql);
         $fp_rows = $this_ref->connection->query($_post_query_sql, 1, null, false, true/*, array('p_post' => 'LONG_TRANS__COMCODE') we already added it further up*/);
         if (!array_key_exists(0, $fp_rows)) {
             unset($out[$i]);
