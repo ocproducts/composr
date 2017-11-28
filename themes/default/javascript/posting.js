@@ -1,5 +1,5 @@
 /* Form editing code (mostly stuff only used on posting forms) */
-(function ($cms, $util, $dom) {
+(function ($cms, $util, $dom, $editing) {
     'use strict';
 
     var $posting = window.$posting = {};
@@ -86,7 +86,7 @@
                 tmpForm.preview.disabled = true;
             }
 
-            var postValue = window.$editing.getTextbox(post),
+            var postValue = $editing.getTextbox(post),
                 done = attachmentPresent(post.value, number) || attachmentPresent(postValue, number),
                 addAnotherField;
 
@@ -141,7 +141,7 @@
                 var promiseCalls = [];
                 if (prefix !== '') {
                     promiseCalls.push(function () {
-                        return window.$editing.insertTextbox(post, prefix);
+                        return $editing.insertTextbox(post, prefix);
                     });
                 }
 
@@ -156,7 +156,7 @@
                             if (!fileName.includes('fakepath')) {
                                 newComcode = newComcode.replace(' description="' + defaults.description.replace(/"/g, '\\"') + '"', ' description="' + fileName.replace(/"/g, '\\"') + '"');
                             }
-                            return window.$editing.insertTextbox(post, newComcode);
+                            return $editing.insertTextbox(post, newComcode);
                         });
                     });
                     promiseCalls.push(function () {
@@ -165,13 +165,13 @@
                     });
                 } else {
                     promiseCalls.push(function () {
-                        return window.$editing.insertTextbox(post, comcode);
+                        return $editing.insertTextbox(post, comcode);
                     });
                 }
 
                 if (suffix !== '') {
                     promiseCalls.push(function () {
-                        return window.$editing.insertTextbox(post, suffix);
+                        return $editing.insertTextbox(post, suffix);
                     });
                 }
 
@@ -239,7 +239,7 @@
                             comcodeSemihtml += suffix;
                         }
 
-                        promise = window.$editing.insertTextbox(post, comcode, true, comcodeSemihtml);
+                        promise = $editing.insertTextbox(post, comcode, true, comcodeSemihtml);
                     }
 
                     promise.then(function () {
@@ -301,12 +301,12 @@
 
     function doInputHtml(fieldName) {
         var post = document.getElementById(fieldName);
-        return window.$editing.insertTextboxWrapping(post, 'semihtml', '');
+        return $editing.insertTextboxWrapping(post, 'semihtml', '');
     }
 
     function doInputCode(fieldName) {
         var post = document.getElementById(fieldName);
-        return window.$editing.insertTextboxWrapping(post, (post.name === 'message') ? 'tt' : 'codebox', '');
+        return $editing.insertTextboxWrapping(post, (post.name === 'message') ? 'tt' : 'codebox', '');
     }
 
     function doInputQuote(fieldName) {
@@ -316,7 +316,7 @@
             '',
             function (va) {
                 if (va != null) {
-                    window.$editing.insertTextboxWrapping(post, '[quote=\"' + va + '\"]', '[/quote]');
+                    $editing.insertTextboxWrapping(post, '[quote=\"' + va + '\"]', '[/quote]');
                 }
             },
             '{!comcode:INPUT_COMCODE_quote;^}'
@@ -330,7 +330,7 @@
             '',
             function (va) {
                 if (va != null) {
-                    window.$editing.insertTextboxWrapping(post, '[box=\"' + va + '\"]', '[/box]');
+                    $editing.insertTextboxWrapping(post, '[box=\"' + va + '\"]', '[/box]');
                 }
             },
             '{!comcode:INPUT_COMCODE_box;^}'
@@ -354,7 +354,7 @@
                             var add;
                             var element = document.getElementById(fieldName);
                             add = '[block=\"' + $cms.filter.comcode(va) + '\" caption=\"' + $cms.filter.comcode(vb) + '\" type=\"tree\"]menu[/block]';
-                            window.$editing.insertTextbox(element, add);
+                            $editing.insertTextbox(element, add);
                         },
                         '{!comcode:INPUT_COMCODE_menu;^}'
                     );
@@ -448,7 +448,7 @@
 
         var post = document.getElementById(fieldName);
 
-        return window.$editing.insertTextbox(post, '\n').then(function () {
+        return $editing.insertTextbox(post, '\n').then(function () {
             return $cms.ui.prompt('{!javascript:ENTER_LIST_ENTRY;^}', '', null, '{!comcode:INPUT_COMCODE_list;^}');
         }).then(function (va) {
             if (va) {
@@ -464,23 +464,23 @@
 
             promiseCalls.push(function () {
                 if (post.value.includes('[semihtml')) {
-                    return window.$editing.insertTextbox(post, '[list]\n');
+                    return $editing.insertTextbox(post, '[list]\n');
                 }
             });
 
             add.forEach(function (entryName) {
                 promiseCalls.push(function () {
                     if (post.value.includes('[semihtml')) {
-                        return window.$editing.insertTextbox(post, '[*]' + entryName + '\n')
+                        return $editing.insertTextbox(post, '[*]' + entryName + '\n')
                     } else {
-                        return window.$editing.insertTextbox(post, ' - ' + entryName + '\n')
+                        return $editing.insertTextbox(post, ' - ' + entryName + '\n')
                     }
                 });
             });
 
             promiseCalls.push(function () {
                 if (post.value.includes('[semihtml')) {
-                    return window.$editing.insertTextbox(post, '[/list]\n');
+                    return $editing.insertTextbox(post, '[/list]\n');
                 }
             });
 
@@ -493,8 +493,8 @@
             if (va) {
                 var element = document.getElementById(fieldName);
 
-                if (window.$editing.getSelectedText(element) !== '') {
-                    window.$editing.insertTextbox(element, '[hide=\"' + $cms.filter.comcode(va) + '\"]', '[/hide]');
+                if ($editing.getSelectedText(element) !== '') {
+                    $editing.insertTextbox(element, '[hide=\"' + $cms.filter.comcode(va) + '\"]', '[/hide]');
                     return;
                 }
 
@@ -503,7 +503,7 @@
                     '',
                     function (vb) {
                         if (vb) {
-                            window.$editing.insertTextbox(element, '[hide=\"' + $cms.filter.comcode(va) + '\"]' + $cms.filter.comcode(vb) + '[/hide]');
+                            $editing.insertTextbox(element, '[hide=\"' + $cms.filter.comcode(va) + '\"]' + $cms.filter.comcode(vb) + '[/hide]');
                         }
                     },
                     '{!comcode:INPUT_COMCODE_hide;^}'
@@ -551,9 +551,9 @@
 
             var element = document.getElementById(fieldName);
             if (answer.toLowerCase() === '{!IMAGE;^}'.toLowerCase()) {
-                window.$editing.insertTextbox(element, '[img="' + $cms.filter.comcode(caption) + '"]' + $cms.filter.comcode(url) + '[/img]');
+                $editing.insertTextbox(element, '[img="' + $cms.filter.comcode(caption) + '"]' + $cms.filter.comcode(url) + '[/img]');
             } else {
-                window.$editing.insertTextbox(element, '[thumb caption="' + $cms.filter.comcode(caption) + '"]' + $cms.filter.comcode(url) + '[/thumb]');
+                $editing.insertTextbox(element, '[thumb caption="' + $cms.filter.comcode(caption) + '"]' + $cms.filter.comcode(url) + '[/thumb]');
             }
         });
     }
@@ -567,7 +567,7 @@
                     $cms.ui.alert('{!javascript:NOT_VALID_ATTACHMENT;^}');
                 } else {
                     var element = document.getElementById(fieldName);
-                    window.$editing.insertTextbox(element, '[attachment]new_' + val + '[/attachment]');
+                    $editing.insertTextbox(element, '[attachment]new_' + val + '[/attachment]');
                 }
             },
             '{!comcode:INPUT_COMCODE_attachment;^}'
@@ -603,7 +603,7 @@
             $cms.ui.prompt('{!javascript:ENTER_LINK_NAME;^}', '', null, '{!comcode:INPUT_COMCODE_url;^}').then(function (linkName) {
                 var element = document.getElementById(fieldName);
                 if (linkName != null) {
-                    window.$editing.insertTextbox(element, '[url=\"' + $cms.filter.comcode(linkName) + '\"]' + $cms.filter.comcode(url) + '[/url]');
+                    $editing.insertTextbox(element, '[url=\"' + $cms.filter.comcode(linkName) + '\"]' + $cms.filter.comcode(url) + '[/url]');
                 }
             });
         });
@@ -621,7 +621,7 @@
                 $cms.ui.prompt('{!javascript:ENTER_CAPTION;^}', '', null, '{!comcode:INPUT_COMCODE_page;^}').then(function (vc) {
                     var element = document.getElementById(fieldName);
 
-                    if (window.$editing.getSelectedText(element) !== '') {
+                    if ($editing.getSelectedText(element) !== '') {
                         _doInputPage(fieldName, result, '');
                         return;
                     }
@@ -640,7 +640,7 @@
                         var element = document.getElementById(fieldName);
                         result = va + ':' + vb;
 
-                        if (window.$editing.getSelectedText(element) !== '') {
+                        if ($editing.getSelectedText(element) !== '') {
                             _doInputPage(fieldName, result, '');
                             return;
                         }
@@ -661,9 +661,9 @@
         function _doInputPage(fieldName, result, vc) {
             var element = document.getElementById(fieldName);
             if (vc === '') {
-                window.$editing.insertTextboxWrapping(element, '[page=\"' + $cms.filter.comcode(result) + '\"]', '[/page]');
+                $editing.insertTextboxWrapping(element, '[page=\"' + $cms.filter.comcode(result) + '\"]', '[/page]');
             } else {
-                window.$editing.insertTextbox(element, '[page=\"' + $cms.filter.comcode(result) + '\"]' + $cms.filter.comcode(vc) + '[/page]');
+                $editing.insertTextbox(element, '[page=\"' + $cms.filter.comcode(result) + '\"]' + $cms.filter.comcode(vc) + '[/page]');
             }
         }
     }
@@ -683,8 +683,8 @@
                 if (va !== null) {
                     var element = document.getElementById(fieldName);
 
-                    if (window.$editing.getSelectedText(element) != '') {
-                        window.$editing.insertTextbox(element, '[email=\"' + $cms.filter.comcode(va) + '\"]', '[/email]');
+                    if ($editing.getSelectedText(element) !== '') {
+                        $editing.insertTextbox(element, '[email=\"' + $cms.filter.comcode(va) + '\"]', '[/email]');
                         return;
                     }
 
@@ -693,7 +693,7 @@
                         '',
                         function (vb) {
                             if (vb !== null) {
-                                window.$editing.insertTextbox(element, '[email=\"' + $cms.filter.comcode(vb) + '\"]' + $cms.filter.comcode(va) + '[/email]');
+                                $editing.insertTextbox(element, '[email=\"' + $cms.filter.comcode(vb) + '\"]' + $cms.filter.comcode(va) + '[/email]');
                             }
                         },
                         '{!comcode:INPUT_COMCODE_email;^}'
@@ -706,12 +706,12 @@
 
     function doInputB(fieldName) {
         var element = document.getElementById(fieldName);
-        return window.$editing.insertTextboxWrapping(element, 'b', '');
+        return $editing.insertTextboxWrapping(element, 'b', '');
     }
 
     function doInputI(fieldName) {
         var element = document.getElementById(fieldName);
-        return window.$editing.insertTextboxWrapping(element, 'i', '');
+        return $editing.insertTextboxWrapping(element, 'i', '');
     }
 
     function doInputFont(fieldName) {
@@ -724,7 +724,7 @@
             $cms.ui.alert('{!javascript:NO_FONT_SELECTED;^}');
             return;
         }
-        return window.$editing.insertTextboxWrapping(document.getElementById(fieldName), '[font=\"' + $cms.filter.comcode(face.value) + '\" color=\"' + $cms.filter.comcode(colour.value) + '\" size=\"' + $cms.filter.comcode(size.value) + '\"]', '[/font]', true);
+        return $editing.insertTextboxWrapping(document.getElementById(fieldName), '[font=\"' + $cms.filter.comcode(face.value) + '\" color=\"' + $cms.filter.comcode(colour.value) + '\" size=\"' + $cms.filter.comcode(size.value) + '\"]', '[/font]', true);
     }
 
     // ==================
@@ -757,15 +757,15 @@
         }
 
         // Register event for explicit draft save
-        document.body.addEventListener('keydown', function (form) {
+        document.body.addEventListener('keydown', (function (form) {
             return function (event) {
                 handleFormSavingExplicit(event, form);
             };
-        }(form));
+        }(form)));
 
         // Load via local storage
         var autosaveValue = $cms.readCookie(encodeURIComponent(getAutosaveUrlStem()));
-        if ((autosaveValue != '') && (autosaveValue != '0')) {
+        if ((autosaveValue !== '') && (autosaveValue !== '0')) {
             if (window.localStorage !== undefined) {
                 var fieldsToDo = {}, fieldsToDoCounter = 0, biggestLengthData = '';
                 var key, value;
@@ -813,13 +813,13 @@
             var url = '{$FIND_SCRIPT_NOHTTP;,autosave}?type=retrieve';
             url += '&stem=' + encodeURIComponent(getAutosaveUrlStem());
             url += $cms.keep();
-            var callback = function (form) {
+            var callback = (function (form) {
                 return function (responseXML) {
                     var result = responseXML && responseXML.querySelector('result');
                     //$util.inform('Auto-save AJAX says', result);
                     _retrieveFormAutosave(result, form);
-                }
-            }(form);
+                };
+            }(form));
             $cms.doAjaxRequest(url, callback);
         }
 
@@ -888,7 +888,7 @@
                 }
 
                 if (element) {
-                    if (element.value != undefined && element.value.replace(/\s/g, '') == value.replace(/\s/g, '')) {
+                    if (element.value != null && element.value.replace(/\s/g, '') === value.replace(/\s/g, '')) {
                         continue;
                     }
 
@@ -956,7 +956,7 @@
 
             switch (element.nodeName.toLowerCase()) {
                 case 'textarea':
-                    window.$editing.setTextbox(element, value, value);
+                    $editing.setTextbox(element, value, value);
                     break;
                 case 'select':
                     for (var i = 0; i < element.options.length; i++) {
@@ -1164,4 +1164,4 @@
     function getAutosaveName(fieldName) {
         return getAutosaveUrlStem() + ':' + fieldName;
     }
-}(window.$cms, window.$util, window.$dom));
+}(window.$cms, window.$util, window.$dom, window.$editing));

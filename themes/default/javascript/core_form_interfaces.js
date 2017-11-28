@@ -75,7 +75,7 @@
         if (params.supportAutosave && params.formName) {
             setTimeout(function () {
                 if ('{$VALUE_OPTION;,disable_form_auto_saving}' !== '1') {
-                    $posting.initFormSaving(params.formName);
+                    window.$posting.initFormSaving(params.formName);
                 }
             }, 3000/*Let CKEditor load*/);
         }
