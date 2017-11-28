@@ -14,7 +14,7 @@
     window.templateEditorOpenFiles || (window.templateEditorOpenFiles = {});
     window.doneCleanupTemplateMarkers = window.doneCleanupTemplateMarkers !== undefined ? !!window.doneCleanupTemplateMarkers : false;
 
-    if ($cms.pageSearchParams().get('keep_template_magic_markers') === '1') {
+    if ($cms.pageUrl().searchParams.get('keep_template_magic_markers') === '1') {
         $dom.ready.then(function () {
             cleanupTemplateMarkers(window);
         });

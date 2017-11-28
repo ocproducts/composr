@@ -450,7 +450,7 @@
             document.getElementById('post').focus();
         } catch (ignore) {}
 
-        if (!window.location.href.includes('keep_chattest')) { // TODO: FIXME Salman (do direct GET param check, keep_chattest==1 style)
+        if ($cms.pageUrl().searchParams.get('keep_chattest') !== '1') {
             beginChatting(roomId);
         }
 

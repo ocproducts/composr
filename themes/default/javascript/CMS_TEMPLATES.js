@@ -18,7 +18,7 @@
             m2.parentNode.removeChild(m2);
         }
 
-        if (boolVal($cms.pageSearchParams().get('wide_print'))) {
+        if (boolVal($cms.pageUrl().searchParams.get('wide_print'))) {
             try {
                 window.print();
             } catch (ignore) {}

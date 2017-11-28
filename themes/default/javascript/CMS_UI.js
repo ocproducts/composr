@@ -970,6 +970,9 @@
         });
     };
 
+    /**
+     * @memberof $cms.ui
+     */
     $cms.ui.enableSubmitAndPreviewButtons = function enableSubmitAndPreviewButtons() {
         // [accesskey="u"] identifies submit button, [accesskey="p"] identifies preview button
         var buttons = $dom.$$('input[accesskey="u"], button[accesskey="u"], input[accesskey="p"], button[accesskey="p"]');

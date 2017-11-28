@@ -84,7 +84,7 @@
             var container = this.$closest(reviewBar, '.js-container-review-rating'),
                 ratingInput = container.querySelector('.js-inp-review-rating');
 
-            ratingInput.value = +reviewBar.dataset.vwRating || 0;
+            ratingInput.value = Number(reviewBar.dataset.vwRating) || 0;
             this.displayReviewRating(container);
         },
 

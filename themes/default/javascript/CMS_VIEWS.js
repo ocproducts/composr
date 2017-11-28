@@ -1026,8 +1026,8 @@
                 window.ga('set', 'userId', strVal($cms.getMember()));
             }
 
-            if ($cms.pageSearchParams().has('_t')) {
-                window.ga('send', 'event', 'tracking__' + strVal($cms.pageSearchParams().get('_t')), window.location.href);
+            if ($cms.pageUrl().searchParams.has('_t')) {
+                window.ga('send', 'event', 'tracking__' + strVal($cms.pageUrl().searchParams.get('_t')), window.location.href);
             }
 
             window.ga('send', 'pageview');
@@ -1062,7 +1062,7 @@
             m2.parentNode.removeChild(m2);
         }
 
-        if (boolVal($cms.pageSearchParams().get('wide_print'))) {
+        if (boolVal($cms.pageUrl().searchParams.get('wide_print'))) {
             try {
                 window.print();
             } catch (ignore) {}
@@ -1146,7 +1146,7 @@
             var url = window.location.href,
                 append = '?';
 
-            if ($cms.isJsOn() || boolVal($cms.pageSearchParams().get('keep_has_js')) || url.includes('/upgrader.php') || url.includes('/webdav.php')) {
+            if ($cms.isJsOn() || boolVal($cms.pageUrl().searchParams.get('keep_has_js')) || url.includes('/upgrader.php') || url.includes('/webdav.php')) {
                 return;
             }
 
