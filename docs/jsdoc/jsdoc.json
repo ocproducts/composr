@@ -1,7 +1,14 @@
 {
   "source": {
     "include": [
-      "../../themes/default/javascript/composr.js"
+      "../../themes/default/javascript/UTIL.js",
+      "../../themes/default/javascript/DOM.js",
+      "../../themes/default/javascript/CMS.js",
+      "../../themes/default/javascript/CMS_FORM.js",
+      "../../themes/default/javascript/CMS_UI.js",
+      "../../themes/default/javascript/CMS_VIEWS.js",
+      "../../themes/default/javascript/CMS_BEHAVIORS.js",
+      "../../themes/default/javascript/CMS_TEMPLATES.js"
     ],
     "exclude": [],
     "includePattern": ".+\\.js(doc)?$",
