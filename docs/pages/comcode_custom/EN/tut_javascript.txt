@@ -210,7 +210,7 @@ function ExampleView(params) {
 }
 
 $util.inherits(ExampleView, $cms.View, { // Sub-class the $cms.View class
-    // The events function allows for a convenient way to use event delegation, it must return a map of event name + selector -> method name strings.
+    // The events function allows for a convenient way to use event delegation, it must return an object mapping event names and selectors to method names that are to be called when the events are triggered.
     events: function () {
         return {
             'click .js-click-show-alert-with-message': 'showAlertWithMessage'

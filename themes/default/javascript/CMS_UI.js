@@ -828,7 +828,7 @@
                 }
             }
 
-            if (url.includes(window.location.host)) { // TODO: FIXME Salman (only compare the actual hostname component of the url variable, vaguelly like host(url)==window.location.host)
+            if ($util.url(url).host === window.location.host) {
                 url += (!url.includes('?') ? '?' : '&') + 'overlay=1';
             }
 

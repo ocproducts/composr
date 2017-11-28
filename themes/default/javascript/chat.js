@@ -630,7 +630,7 @@
             } else {
                 url = '{$FIND_SCRIPT;,messages}?action=new&room_id=' + encodeURIComponent(_roomId) + '&message_id=' + encodeURIComponent(messageId ? messageId : '-1') + '&event_id=' + encodeURIComponent(eventId);
             }
-            if (window.location.href.includes('no_reenter_message=1')) { // TODO: FIXME Salman (do direct GET param check, no_reenter_message==1 style)
+            if ($cms.pageUrl().searchParams.get('no_reenter_message') === '1') {
                 url = url + '&no_reenter_message=1';
             }
             var fullUrl = $cms.maintainThemeInLink(url + $cms.keep());
