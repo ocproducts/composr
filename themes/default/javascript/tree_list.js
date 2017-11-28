@@ -191,17 +191,17 @@
                 func = node.getAttribute('img_func_1');
                 if (func) {
                     if (func === 'permissionsImgFunc1') {
-                        extra = extra + window.permissionsImgFunc1(node);
+                        extra = extra + window.$corePermissionManagement.permissionsImgFunc1(node);
                     } else if (func === 'permissionsImgFunc2') {
-                        extra = extra + window.permissionsImgFunc2(node);
+                        extra = extra + window.$corePermissionManagement.permissionsImgFunc2(node);
                     }
                 }
                 func = node.getAttribute('img_func_2');
                 if (func) {
                     if (func === 'permissionsImgFunc1') {
-                        extra = extra + window.permissionsImgFunc1(node);
+                        extra = extra + window.$corePermissionManagement.permissionsImgFunc1(node);
                     } else if (func === 'permissionsImgFunc2') {
-                        extra = extra + window.permissionsImgFunc2(node);
+                        extra = extra + window.$corePermissionManagement.permissionsImgFunc2(node);
                     }
                 }
                 nodeSelfWrap = document.createElement('div');

@@ -14,7 +14,7 @@
         this.btnSubmit = this.$('.js-btn-submit-comments');
 
         $cms.requireJavascript(['jquery', 'jquery_autocomplete']).then(function () {
-            setUpComcodeAutocomplete('post', !!params.wysiwyg);
+            window.$jqueryAutocomplete.setUpComcodeAutocomplete('post', Boolean(params.wysiwyg));
         });
 
         if ($cms.configOption('enable_previews') && $cms.isForcePreviews()) {

@@ -481,8 +481,8 @@
             editor.on('instanceReady', function (event) {
                 editor.setReadOnly(false); // Workaround for CKEditor bug found in 4.5.6, where it started sometimes without contentEditable=true
 
-                if (window.setUpComcodeAutocomplete !== undefined) {
-                    window.setUpComcodeAutocomplete(element.id);
+                if (window.$jqueryAutocomplete !== undefined) {
+                    window.$jqueryAutocomplete.setUpComcodeAutocomplete(element.id);
                 }
 
                 // Instant preview of Comcode

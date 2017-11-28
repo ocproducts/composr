@@ -1,4 +1,4 @@
-(function ($cms, $util, $dom) {
+(function ($cms, $util, $dom, $corePermissionManagement) {
     'use strict';
 
     var $coreFormInterfaces = window.$coreFormInterfaces = {};
@@ -181,13 +181,13 @@
         if (!params.allGlobal) {
             var list = document.getElementById(prefix + '_presets');
             // Test to see what we wouldn't have to make a change to get - and that is what we're set at
-            if (!copyPermissionPresets(prefix, '0', true)) {
+            if (!$corePermissionManagement.copyPermissionPresets(prefix, '0', true)) {
                 list.selectedIndex = list.options.length - 4;
-            } else if (!copyPermissionPresets(prefix, '1', true)) {
+            } else if (!$corePermissionManagement.copyPermissionPresets(prefix, '1', true)) {
                 list.selectedIndex = list.options.length - 3;
-            } else if (!copyPermissionPresets(prefix, '2', true)) {
+            } else if (!$corePermissionManagement.copyPermissionPresets(prefix, '2', true)) {
                 list.selectedIndex = list.options.length - 2;
-            } else if (!copyPermissionPresets(prefix, '3', true)) {
+            } else if (!$corePermissionManagement.copyPermissionPresets(prefix, '3', true)) {
                 list.selectedIndex = list.options.length - 1;
             }
         }
@@ -203,8 +203,8 @@
         },
 
         copyPresets: function (e, select) {
-            copyPermissionPresets(this.prefix, select.options[select.selectedIndex].value);
-            cleanupPermissionList(this.prefix);
+            $corePermissionManagement.copyPermissionPresets(this.prefix, select.options[select.selectedIndex].value);
+            $corePermissionManagement.cleanupPermissionList(this.prefix);
         },
 
         permissionRepeating: function (e, button) {
@@ -268,18 +268,18 @@
         this.groupId = params.groupId;
         this.prefix = prefix;
 
-        setupPrivilegeOverrideSelector(prefix, defaultAccess, params.privilege, params.title, !!params.allGlobal);
+        $corePermissionManagement.setupPrivilegeOverrideSelector(prefix, defaultAccess, params.privilege, params.title, !!params.allGlobal);
 
         if (!params.allGlobal) {
             var list = document.getElementById(prefix + '_presets');
             // Test to see what we wouldn't have to make a change to get - and that is what we're set at
-            if (!copyPermissionPresets(prefix, '0', true)) {
+            if (!$corePermissionManagement.copyPermissionPresets(prefix, '0', true)) {
                 list.selectedIndex = list.options.length - 4;
-            } else if (!copyPermissionPresets(prefix, '1', true)) {
+            } else if (!$corePermissionManagement.copyPermissionPresets(prefix, '1', true)) {
                 list.selectedIndex = list.options.length - 3;
-            } else if (!copyPermissionPresets(prefix, '2', true)) {
+            } else if (!$corePermissionManagement.copyPermissionPresets(prefix, '2', true)) {
                 list.selectedIndex = list.options.length - 2;
-            } else if (!copyPermissionPresets(prefix, '3', true)) {
+            } else if (!$corePermissionManagement.copyPermissionPresets(prefix, '3', true)) {
                 list.selectedIndex = list.options.length - 1;
             }
         }
@@ -290,7 +290,7 @@
             return {
                 'click .js-click-perms-overridden': 'permissionsOverridden',
                 'change .js-change-perms-overridden': 'permissionsOverridden',
-                'mouseover .js-mouseover-show-perm-setting': 'showPermissionSetting'
+                'mouseover .js-mouseover-show-perm-setting': 'showPermSetting'
             };
         },
 
@@ -298,9 +298,9 @@
             permissionsOverridden(this.prefix);
         },
 
-        showPermissionSetting: function (e, select) {
+        showPermSetting: function (e, select) {
             if (select.options[select.selectedIndex].value === '-1') {
-                showPermissionSetting(select);
+                $corePermissionManagement.showPermissionSetting(select);
             }
         }
     });
@@ -423,7 +423,7 @@
 
     $cms.templates.formScreenInputLine = function formScreenInputLine(params) {
         $cms.requireJavascript(['jquery', 'jquery_autocomplete']).then(function () {
-            setUpComcodeAutocomplete(params.name, !!params.wysiwyg);
+            window.$jqueryAutocomplete.setUpComcodeAutocomplete(params.name, !!params.wysiwyg);
         });
     };
 
@@ -502,7 +502,7 @@
         }
 
         $cms.requireJavascript(['jquery', 'jquery_autocomplete']).then(function () {
-            setUpComcodeAutocomplete(params.name, required.includes('wysiwyg'));
+            window.$jqueryAutocomplete.setUpComcodeAutocomplete(params.name, required.includes('wysiwyg'));
         });
     };
 
@@ -843,7 +843,7 @@
         }
 
         $cms.requireJavascript(['jquery', 'jquery_autocomplete']).then(function () {
-            setUpComcodeAutocomplete(name, true);
+            window.$jqueryAutocomplete.setUpComcodeAutocomplete(name, true);
         });
 
         if (initDragDrop) {
@@ -1916,4 +1916,4 @@
         }
     }
 
-}(window.$cms, window.$util, window.$dom));
+}(window.$cms, window.$util, window.$dom, window.$corePermissionManagement));
