@@ -158,7 +158,7 @@
                 return;
             }
 
-            if ((window.location.href.indexOf('login') != -1) && (window == window.top)) {
+            if ((window.location.href.includes('login')) && (window === window.top)) {
                 window.location = homePageUrl; // If currently on login screen, should go to home page not refresh
             } else {
                 var currentUrl = window.top.location.href;

@@ -4,7 +4,7 @@
     $cms.functions.newsletterNewsletterForm = function newsletterNewsletterForm() {
         var form = document.getElementById('password').form;
         form.addEventListener('submit', function () {
-            if ((form.elements['password_confirm']) && (form.elements['password_confirm'].value != form.elements['password'].value)) {
+            if ((form.elements['password_confirm']) && (form.elements['password_confirm'].value !== form.elements['password'].value)) {
                 $cms.ui.alert('{!PASSWORD_MISMATCH;^}');
                 return false;
             }

@@ -1,8 +1,8 @@
 (function ($cms, $util, $dom) {
     'use strict';
 
-    var $ADDON_INSTALLED_code_editor = !!+'{$ADDON_INSTALLED,code_editor}',
-        $ADDON_INSTALLED_stats = !!+'{$ADDON_INSTALLED,stats}';
+    var $ADDON_INSTALLED_code_editor = boolVal('{$ADDON_INSTALLED,code_editor}'),
+        $ADDON_INSTALLED_stats = boolVal('{$ADDON_INSTALLED,stats}');
 
     $cms.templates.sitemapEditorScreen = function sitemapEditorScreen(params, container) {
         var editZoneUrl = params.editZoneUrl,
@@ -67,7 +67,7 @@
                 case 'modules_custom':
                 case 'minimodule':
                 case 'minimodule_custom':
-                    path = pageLinkBits[0] + ((pageLinkBits[0] == '') ? '' : '/') + 'pages/' + type + '/' + pageLinkBits[1] + '.php';
+                    path = pageLinkBits[0] + ((pageLinkBits[0] === '') ? '' : '/') + 'pages/' + type + '/' + pageLinkBits[1] + '.php';
                     if ($ADDON_INSTALLED_code_editor && !$cms.configOption('collapse_user_zones')) {
                         actionBuildup += actionsTplItem.replace(/\[1\]/, '{!EDIT;^}').replace(/\[2\]/, '{$BASE_URL;,0}/code_editor.php?path=' + encodeURIComponent(path));
                     }
@@ -75,9 +75,15 @@
                         case 'modules':
                         case 'modules_custom':
                             actionBuildup += actionsTplItem.replace(/\[1\]/, '{!permissions:PERMISSIONS_TREE;^}').replace(/\[2\]/, permissionTreeEditorUrl.replace(/%21/, pageLink.replace(/:/, '%3A', pageLink)));
-                            if (node.getAttribute('author')) infoBuildup += infoTplItem.replace(/\[1\]/, '{!AUTHOR;^}').replace(/\[2\]/, $cms.filter.html(node.getAttribute('author')));
-                            if (node.getAttribute('organisation')) infoBuildup += infoTplItem.replace(/\[1\]/, '{!ORGANISATION;^}').replace(/\[2\]/, $cms.filter.html(node.getAttribute('organisation')));
-                            if (node.getAttribute('version')) infoBuildup += infoTplItem.replace(/\[1\]/, '{!VERSION;^}').replace(/\[2\]/, $cms.filter.html(node.getAttribute('version')));
+                            if (node.getAttribute('author')) {
+                                infoBuildup += infoTplItem.replace(/\[1\]/, '{!AUTHOR;^}').replace(/\[2\]/, $cms.filter.html(node.getAttribute('author')));
+                            }
+                            if (node.getAttribute('organisation')) {
+                                infoBuildup += infoTplItem.replace(/\[1\]/, '{!ORGANISATION;^}').replace(/\[2\]/, $cms.filter.html(node.getAttribute('organisation')));
+                            }
+                            if (node.getAttribute('version')) {
+                                infoBuildup += infoTplItem.replace(/\[1\]/, '{!VERSION;^}').replace(/\[2\]/, $cms.filter.html(node.getAttribute('version')));
+                            }
                             break;
                         case 'minimodule':
                         case 'minimodule_custom':

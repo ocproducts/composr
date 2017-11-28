@@ -27,8 +27,7 @@
 
     $cms.templates.installerStepLog = function installerStepLog() {
         /* Code to auto-submit the form after 5 seconds, but only if there were no errors */
-        var doh = !!document.querySelector('.installer_warning');
-        if (doh) {
+        if (document.querySelector('.installer_warning')) {
             return;
         }
 

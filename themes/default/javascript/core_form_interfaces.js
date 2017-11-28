@@ -1,8 +1,8 @@
-'use strict';
-
 (function ($cms, $util, $dom) {
     'use strict';
 
+    var $coreFormInterfaces = window.$coreFormInterfaces = {};
+    
     // Templates:
     // POSTING_FORM.tpl
     // - POSTING_FIELD.tpl
@@ -480,7 +480,7 @@
 
     $cms.templates.formScreenInputLineMulti = function (params, container) {
         $dom.on(container, 'keypress', '.js-keypress-ensure-next-field', function (e, input) {
-            _ensureNextField(e, input);
+            $coreFormInterfaces.ensureNextField2(e, input);
         });
     };
 
@@ -1153,7 +1153,7 @@
 
     $cms.templates.formScreenInputMultiList = function formScreenInputMultiList(params, container) {
         $dom.on(container, 'keypress', '.js-keypress-input-ensure-next-field', function (e, input) {
-            _ensureNextField(e, input);
+            $coreFormInterfaces.ensureNextField2(e, input);
         });
     };
 
@@ -1196,7 +1196,7 @@
         });
 
         $dom.on(container, 'keypress', '.js-keypress-input-ensure-next-field', function (e, input) {
-            _ensureNextField(e, input);
+            $coreFormInterfaces.ensureNextField2(e, input);
         });
     };
 
@@ -1837,8 +1837,7 @@
     // ===========
     // Multi-field
     // ===========
-    window._ensureNextField = _ensureNextField;
-    function _ensureNextField(event, el) {
+    $coreFormInterfaces.ensureNextField2 = function ensureNextField2(event, el) {
         if ($dom.keyPressed(event, 'Enter')) {
             gotoNextField(el);
         } else if (!$dom.keyPressed(event, 'Tab')) {
@@ -1858,7 +1857,7 @@
                 } catch (e) {}
             }
         }
-    }
+    };
 
     function ensureNextField(thisField) {
         var mid = thisField.id.lastIndexOf('_'),
@@ -1899,7 +1898,7 @@
                 nextField.onkeyup = thisField.onkeyup;
             }
             nextField.onkeypress = function (event) {
-                _ensureNextField(event, nextField);
+                $coreFormInterfaces.ensureNextField2(event, nextField);
             };
             if (thisField.onchange) {
                 nextField.onchange = thisField.onchange;
