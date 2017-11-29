@@ -108,8 +108,7 @@ function get_default_workflow()
 {
     // Grab every workflow ID
     $workflows = get_all_workflows();
-    // Only bother doing anything more complicated if we've got multiple
-    // workflows to dig through
+    // Only bother doing anything more complicated if we've got multiple workflows to dig through
     if (count($workflows) > 1) {
         // Look for those which are set as default
         $defaults = $GLOBALS['SITE_DB']->query_select('workflows', array('id'), array('is_default' => 1));
@@ -118,8 +117,7 @@ function get_default_workflow()
         if ($defaults == array()) {
             return null;
         }
-        // Likewise we cannot choose between multiple defaults, so return
-        // an empty array
+        // Likewise we cannot choose between multiple defaults, so return an empty array
         elseif (count($defaults) > 1) {
             return null;
         }
@@ -132,6 +130,17 @@ function get_default_workflow()
     } else {
         return null;
     }
+}
+
+/**
+ * Get a workflow name.
+ *
+ * @param  AUTO_LINK $workflow_id The workflow ID
+ * @return string The workflow name
+ */
+function get_workflow_name($workflow_id)
+{
+    return get_translated_text($GLOBALS['SITE_DB']->query_select_value('workflows', 'workflow_name', array('id' => $workflow_id)));
 }
 
 /**
@@ -208,16 +217,16 @@ function get_workflow_form($workflow_content_id)
     // Approval tick boxes //
     /////////////////////////
 
-    $available_groups = $GLOBALS['FORUM_DRIVER']->get_members_groups(get_member());        // What groups our user is in
-    $existing_status = array();        // This shows the current approval status, but is not editable
-    $approval_status = array();        // This holds tick-boxes for editing the approval status
-    $send_next = array();        // This holds the details for who to send this to next
-    $approve_count = 0;        // This keeps each approval box distinct
-    $send_count = 0;        // This keeps the 'send next' boxes distinct
-    $groups_shown = array();        // This keeps track of the groups we've already shown
-    $group_names = $GLOBALS['FORUM_DRIVER']->get_usergroup_list();        // Allows us to find readable group names
-    $permission_limit = false;        // Points are added in order, so take notice when we no longer have permission (so we can send to whoever does)
-    $next_point = null;        // This will store the next workflow point for which we don't have the permission to approve
+    $available_groups = $GLOBALS['FORUM_DRIVER']->get_members_groups(get_member()); // What groups our user is in
+    $existing_status = array(); // This shows the current approval status, but is not editable
+    $approval_status = array(); // This list of tuples holds tick-boxes for editing the approval status
+    $send_next = array(); // This map of group names to tuples holds the details for who to send this to next
+    $approve_count = 0; // This keeps each approval box distinct
+    $send_count = 0; // This keeps the 'send next' boxes distinct
+    $groups_shown = array(); // This keeps track of the groups we've already shown
+    $group_names = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(); // Allows us to find readable group names
+    $permission_limit = false; // Points are added in order, so take notice when we no longer have permission (so we can send to whoever does)
+    $next_point = null; // This will store the next workflow point for which we don't have the permission to approve
 
     // Get the status of each point
     $statuses = array();
@@ -246,44 +255,42 @@ function get_workflow_form($workflow_content_id)
 
                 // Add the details to the editable tick-box values
                 $approval_status[$approve_count] = array();
-                $approval_status[$approve_count][] = $approval_point_name;        // Pretty name
-                $approval_status[$approve_count][] = 'approval_' . strval($point);        // Name
-                $approval_status[$approve_count][] = array_key_exists($point, $statuses) ? $statuses[$point] : 0;        // The value (defaults to 0)
-                $approval_status[$approve_count][] = do_lang_tempcode('APPROVAL_TICK_DESCRIPTION', escape_html($approval_point_name));        // Description
-                $approval_status[$approve_count][] = false;        // Not disabled, since we have permission
+                $approval_status[$approve_count][] = $approval_point_name; // Pretty name
+                $approval_status[$approve_count][] = 'approval_' . strval($point); // Name
+                $approval_status[$approve_count][] = array_key_exists($point, $statuses) ? $statuses[$point] : 0; // The value (defaults to 0)
+                $approval_status[$approve_count][] = do_lang_tempcode('APPROVAL_TICK_DESCRIPTION', escape_html($approval_point_name)); // Description
+                $approval_status[$approve_count][] = false; // Not disabled, since we have permission
 
                 // Add the details to the uneditable, existing status values
                 $existing_status[$approve_count] = array();
-                $existing_status[$approve_count][] = $approval_point_name;        // Pretty name
-                $existing_status[$approve_count][] = 'existing_' . strval($point);        // Name
+                $existing_status[$approve_count][] = $approval_point_name; // Pretty name
+                $existing_status[$approve_count][] = 'existing_' . strval($point); // Name
                 if (array_key_exists($point, $statuses) && ($statuses[$point] == 1)) {
-                    $existing_status[$approve_count][] = 1;        // The value (1 due to our if condition)
-                    $existing_status[$approve_count][] = do_lang_tempcode('ALREADY_APPROVED', escape_html($approval_point_name));        // Description
+                    $existing_status[$approve_count][] = 1; // The value (1 due to our if condition)
+                    $existing_status[$approve_count][] = do_lang_tempcode('ALREADY_APPROVED', escape_html($approval_point_name)); // Description
                 } else {
-                    $existing_status[$approve_count][] = 0;        // The value defaults to 0
-                    $existing_status[$approve_count][] = do_lang_tempcode('NOT_YET_APPROVED', escape_html($approval_point_name));        // Description
+                    $existing_status[$approve_count][] = 0; // The value defaults to 0
+                    $existing_status[$approve_count][] = do_lang_tempcode('NOT_YET_APPROVED', escape_html($approval_point_name)); // Description
                 }
-                $existing_status[$approve_count][] = true;        // Disabled, since this is for informative purposes only
+                $existing_status[$approve_count][] = true; // Disabled, since this is for informative purposes only
 
                 // Increment the unique ID for the array elements
                 $approve_count++;
             }
 
-            // We want the send boxes to name usergroups, rather than
-            // approval points, so we may as well add those here.
+            // We want the send boxes to name usergroups, rather than approval points, so we may as well add those here.
             // Take care not to add groups we've already got!
             if (!in_array($allowed_group, $groups_shown)) {
                 $send_next[$allowed_group] = array();
-                $send_next[$allowed_group][] = $group_names[$allowed_group];        // Pretty name
-                $send_next[$allowed_group][] = 'send_' . strval($allowed_group);        // Name
-                // Set the default value. We want groups allowed to approve the
-                // next+1 point ticked (assuming we're approving the next one)
+                $send_next[$allowed_group][] = $group_names[$allowed_group]; // Pretty name
+                $send_next[$allowed_group][] = 'send_' . strval($allowed_group); // Name
+                // Set the default value. We want groups allowed to approve the next+1 point ticked (assuming we're approving the next one)
                 // For simplicity, let's keep these unticked for now.
                 //if (in_array($allowed_group['usergroup'], $groups_shown))
                 //{
                 $send_next[$allowed_group][] = false;
                 //}
-                $send_next[$allowed_group][] = do_lang_tempcode('NEXT_APPROVAL_DESCRIPTION', $group_names[$allowed_group]);        // Description
+                $send_next[$allowed_group][] = do_lang_tempcode('NEXT_APPROVAL_DESCRIPTION', $group_names[$allowed_group]); // Description
                 $groups_shown[] = $allowed_group;
             }
         }
@@ -292,19 +299,17 @@ function get_workflow_form($workflow_content_id)
         if (!$approval_shown) {
             // Thus we should show a disabled check box
             $existing_status[$approve_count] = array();
-            $existing_status[$approve_count][] = $approval_point_name;        // Pretty name
-            $existing_status[$approve_count][] = 'approval_' . strval($point);        // Name
-            $existing_status[$approve_count][] = array_key_exists($point, $statuses) ? $statuses[$point] : 0;        // Value (defaults to 0)
-            $existing_status[$approve_count][] = do_lang_tempcode('APPROVAL_TICK_DESCRIPTION', escape_html($approval_point_name));        // Description
-            $existing_status[$approve_count][] = true;        // Disabled, we have no permission
+            $existing_status[$approve_count][] = $approval_point_name; // Pretty name
+            $existing_status[$approve_count][] = 'approval_' . strval($point); // Name
+            $existing_status[$approve_count][] = array_key_exists($point, $statuses) ? $statuses[$point] : 0; // Value (defaults to 0)
+            $existing_status[$approve_count][] = do_lang_tempcode('APPROVAL_TICK_DESCRIPTION', escape_html($approval_point_name)); // Description
+            $existing_status[$approve_count][] = true; // Disabled, we have no permission
             // Increment the unique ID for the array elements
             $approve_count++;
 
-            // If this is the first entry we're not permitted to change and
-            // it is not already ticked...
+            // If this is the first entry we're not permitted to change and it is not already ticked...
             if (!$permission_limit && (!array_key_exists($point, $statuses) || ($statuses[$point] == 0))) {
-                // ... remember it (since we can send-to those who are
-                // permitted)
+                // ... remember it (since we can send-to those who are permitted)
                 $next_point = $point;
                 $permission_limit = true;
             }
@@ -321,17 +326,14 @@ function get_workflow_form($workflow_content_id)
     ///////////////////
 
     // Now we attempt to impose some sort of order to the send-to boxes.
-    // The order we're going to use is to collect groups where the sum of
-    // the workflow positions they can approve is equal, and put the
-    // collections in ascending order. The collections are ordered based
-    // on the group's average workflow approval position. Any further
-    // ambiguity is not worth considering.
-    $group_scores = array();        // Track the sum of positions for each group
-    $group_counts = array();        // Track the number of points each group can approve (so we can calculate the average)
-    $active_groups = array();        // Note which groups have permission to approve the next workflow point we can't do ourselves
+    // The order we're going to use is to collect groups where the sum of the workflow positions they can approve is equal, and put the
+    // collections in ascending order. The collections are ordered based on the group's average workflow approval position. Any further ambiguity is not worth considering.
+    $group_scores = array(); // Track the sum of positions for each group
+    $group_counts = array(); // Track the number of points each group can approve (so we can calculate the average)
+    $active_groups = array(); // Note which groups have permission to approve the next workflow point we can't do ourselves
     // Get all of the approval points and all of the groups
     foreach ($approval_points as $point => $approval_point_name) {
-        foreach (array_keys(get_usergroups_for_approval_point($point)) as $group) {
+        foreach (get_usergroups_for_approval_point($point) as $group) {
             // See whether this group should be active
             if ($next_point == $point) {
                 $active_groups[] = $group;
@@ -351,7 +353,7 @@ function get_workflow_form($workflow_content_id)
         }
     }
     // Now we can order the groups:
-    $group_order = array();        // This will store collections of groups in order of score
+    $group_order = array(); // This will store collections of groups in order of score
     foreach ($group_scores as $group_id => $score) {
         // Make a new collection if we've not got one
         if (!array_key_exists($score, $group_order)) {
@@ -361,34 +363,31 @@ function get_workflow_form($workflow_content_id)
         $group_order[$score][] = $group_id;
     }
 
-    // Finally we can get the tick-box details we found earlier and put
-    // them in the right order
+    // Finally we can get the tick-box details we found earlier and put them in the right order
     $send_to_boxes = array();
-    foreach ($group_order as $score => $collection) {
+    foreach ($group_order as $score => $list_of_groups) {
         // Add the group if its the only one
-        if (count($collection) == 1) {
+        if (count($list_of_groups) == 1) {
             // Before adding the tick box, see if it should be active
-            if (in_array($collection[0], $active_groups)) {
-                $send_next[$collection[0]][2] = 1;
+            if (in_array($list_of_groups[0], $active_groups)) {
+                $send_next[$list_of_groups[0]][2] = 1;
             }
-            $send_to_boxes[] = $send_next[$collection[0]];
+            $send_to_boxes[] = $send_next[$list_of_groups[0]];
         } else {
             // Otherwise order the collection first
-            $collection_order = array();
-            foreach ($collection as $group_id) {
-                // Work out the average position of each group's approval
-                // points (we need an int for use as an index, but add a
-                // couple of orders of magnitude to give us 2 more sig figs)
+            $list_of_groups_order = array();
+            foreach ($list_of_groups as $group_id) {
+                // Work out the average position of each group's approval points (we need an int for use as an index, but add a couple of orders of magnitude to give us 2 more sig figs)
                 $group_average = intval((floatval($score) / floatval($group_counts[$group_id])) * 100);
                 // Make a new collection if we've not got one
-                if (!array_key_exists($group_average, $collection_order)) {
-                    $collection_order[$group_average] = array();
+                if (!array_key_exists($group_average, $list_of_groups_order)) {
+                    $list_of_groups_order[$group_average] = array();
                 }
                 // Add this group to the average collection
-                $collection_order[$group_average][] = $group_id;
+                $list_of_groups_order[$group_average][] = $group_id;
             }
             // Now we can add them in order of average
-            foreach ($collection_order as $average_collection) {
+            foreach ($list_of_groups_order as $average_collection) {
                 foreach ($average_collection as $group_id) {
                     // Before adding the tick box, see if it should be active
                     if (in_array($group_id, $active_groups)) {
@@ -400,20 +399,19 @@ function get_workflow_form($workflow_content_id)
         }
     }
 
-    // Now tack the original submitter onto the end of the send-to list,
-    // if we know who it is
+    // Now tack the original submitter onto the end of the send-to list, if we know who it is
     $submitter = get_submitter_of_workflow_content($workflow_content_id);
     if (!is_null($submitter)) {
-        $submitter_details = array();        // Build the array independently
+        $submitter_details = array(); // Build the array independently
         $submitter_details[] = $GLOBALS['FORUM_DRIVER']->get_username($submitter) . ' (' . do_lang('SUBMITTER') . ')';
-        $submitter_details[] = 'send_author';        // Name
-        $submitter_details[] = false;        // Value
+        $submitter_details[] = 'send_author'; // Name
+        $submitter_details[] = false; // Value
         $username = $GLOBALS['FORUM_DRIVER']->get_username($submitter);
         if (is_null($username)) {
             $username = do_lang('DELETED');
         }
-        $submitter_details[] = do_lang_tempcode('NEXT_APPROVAL_AUTHOR', escape_html($username));        // Description
-        $send_to_boxes[] = $submitter_details;        // Then tack it on the end
+        $submitter_details[] = do_lang_tempcode('NEXT_APPROVAL_AUTHOR', escape_html($username)); // Description
+        $send_to_boxes[] = $submitter_details; // Then tack it on the end
     }
 
     ////////////////////////
@@ -435,8 +433,7 @@ function get_workflow_form($workflow_content_id)
     $workflow_fields->attach(form_input_various_ticks($approval_status, '', null, do_lang_tempcode('POINTS_TO_APPROVE'), false));
 
     // Add the 'live' tickbox
-    // NOTE: Not used at the moment; content becomes live once all points
-    // have been approved
+    // NOTE: Not used at the moment; content becomes live once all points have been approved
     //$workflow_fields->attach($live_box);
 
     // Add a section for notes
@@ -453,7 +450,16 @@ function get_workflow_form($workflow_content_id)
     $workflow_hidden->attach(form_input_hidden('return_url', get_self_url(true)));
 
     // Add all of these to the form
-    $workflow_form = do_template('FORM', array('_GUID' => '9eb9a74add2b4fea737d0af7b65a2d85', 'FIELDS' => $workflow_fields, 'HIDDEN' => $workflow_hidden, 'TEXT' => '', 'URL' => $post_url, 'SUBMIT_NAME' => do_lang_tempcode('SUBMIT_WORKFLOW_CHANGES'), 'SKIP_REQUIRED' => true));
+    $workflow_form = do_template('FORM', array(
+        '_GUID' => '9eb9a74add2b4fea737d0af7b65a2d85',
+        'FIELDS' => $workflow_fields,
+        'HIDDEN' => $workflow_hidden,
+        'TEXT' => '',
+        'URL' => $post_url,
+        'SUBMIT_NAME' => do_lang_tempcode('SUBMIT_WORKFLOW_CHANGES'),
+        'SKIP_REQUIRED' => true,
+        'SUBMIT_ICON' => 'menu__adminzone__audit__unvalidated',
+    ));
 
     // Then pass it to whoever wanted it
     return do_template('WORKFLOW_BOX', array('_GUID' => 'cc80db735825a058c0d90e40e783ed30', 'FORM' => $workflow_form));
@@ -492,7 +498,7 @@ function workflow_update_handler()
     // Find out which groups/members to inform, starting with the
     // original submitter
     $send_to_members = array();
-    if (post_param_integer('send_author') == 1) {
+    if (post_param_integer('send_author', 0) == 1) {
         $submitter = get_submitter_of_workflow_content($content_id);
         if (!is_null($submitter)) {
             $send_to_members[$submitter] = 1;
@@ -500,7 +506,7 @@ function workflow_update_handler()
     }
 
     // Now get the groups
-    $group_ids = array();        // Only remember 1 copy of each group
+    $group_ids = array(); // Only remember 1 copy of each group
     foreach (array_keys(get_all_approval_points($workflow_id)) as $point_id) {
         foreach (get_usergroups_for_approval_point($point_id) as $group) {
             if (!in_array($group, $group_ids)) {
@@ -554,9 +560,7 @@ function workflow_update_handler()
             }
         }
         if (!$noted) {
-            // If we're here then this status has either not been passed or
-            // it does not need modifying. Either way we can grab a valid
-            // status from the database.
+            // If we're here then this status has either not been passed or it does not need modifying. Either way we can grab a valid status from the database.
             $all_approval_statuses[$old_value['workflow_approval_point_id']] = $old_value['status_code'];
         }
     }
@@ -612,9 +616,7 @@ function workflow_update_handler()
     // See if we're going live //
     /////////////////////////////
 
-    // Validation is stored, for the most part, in a 'validated' field
-    // of the content's table. Those which store it elsewhere must
-    // specify this via their content-meta-aware info.
+    // Validation is stored, for the most part, in a 'validated' field of the content's table. Those which store it elsewhere must specify this via their content-meta-aware info.
 
     // Grab lookup data from the workflows database
     $content_details = $GLOBALS['SITE_DB']->query_select('workflow_content', array('content_type', 'content_id'), array('id' => $content_id), '', 1);
@@ -638,9 +640,7 @@ function workflow_update_handler()
         $content_validated_field = 'validated';
     }
 
-    // Now we have the details required to lookup this entry, wherever it
-    // is. Let's get its current validation status and compare to what
-    // the workflow would have it be
+    // Now we have the details required to lookup this entry, wherever it is. Let's get its current validation status and compare to what the workflow would have it be
     $content_is_validated = $GLOBALS['SITE_DB']->query_select($content_table, array($content_validated_field), array($content_field => $info['id_field_numeric'] ? intval($content_details[0]['content_id']) : $content_details[0]['content_id']), '', 1);
 
     // Make sure we've actually found something
@@ -650,16 +650,13 @@ function workflow_update_handler()
         warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html($content_table . '->' . $content_field . '->' . $validated_field)));
     }
 
-    // In order for content to go live all points must be approved
-    // See if all points have been approved. If so, none will have
-    // status 0
+    // In order for content to go live all points must be approved. See if all points have been approved. If so, none will have status 0
     $all_points_approved = false;
     if ($GLOBALS['SITE_DB']->query_select('workflow_content_status', array('workflow_approval_point_id'), array('workflow_content_id' => $content_id, 'status_code' => 0)) == array()) {
         $all_points_approved = true;
     }
 
-    // We need to act if the validation status is different to the total
-    // completion of the workflow
+    // We need to act if the validation status is different to the total completion of the workflow
     if (($content_is_validated[0][$content_validated_field] == 1) != $all_points_approved) {
         $success_message = $all_points_approved ? do_lang('APPROVAL_COMPLETE') : do_lang('APPROVAL_REVOKED');
         $GLOBALS['SITE_DB']->query_update($content_table, array($content_validated_field => $all_points_approved ? 1 : 0), array($content_field => $info['id_field_numeric'] ? intval($content_details[0]['content_id']) : $content_details[0]['content_id']), '', 1);
@@ -682,9 +679,8 @@ function workflow_update_handler()
     if (count($send_to_members) > 0) {
         $success_message .= do_lang('APPROVAL_CHANGED_NOTIFICATIONS');
     }
-    $subject = do_lang('APPROVAL_EMAIL_SUBJECT',/*TODO: Should pass title in, for unique email subject line*/
-        null, null, null, get_site_default_lang());
-    $body = do_notification_lang('APPROVAL_EMAIL_BODY', post_param_string('http_referer', cms_srv('HTTP_REFERER')), $status_list, $workflow_notes, get_site_default_lang());
+    $subject = do_lang('APPROVAL_EMAIL_SUBJECT',/*TODO: Should pass title in, for unique email subject line*/null, null, null, get_site_default_lang());
+    $body = do_notification_lang('APPROVAL_EMAIL_BODY', str_replace('&keep_devtest=1', '', post_param_string('http_referer', cms_srv('HTTP_REFERER'))), $status_list, $workflow_notes, get_site_default_lang());
     dispatch_notification('workflow_step', strval($workflow_id), $subject, $body, $send_to_members);
 
     // Finally return a success message
@@ -723,10 +719,8 @@ function add_content_to_workflow($content_type = '', $content_id = '', $workflow
     $content_field = $info['id_field'];
 
     // Now we have the information required to access the content.
-    // However, we still don't know if the provided ID is valid, so we
-    // have to check that too!
-    // Need different paths based on ID type, to prevent breaking strict
-    // databases
+    // However, we still don't know if the provided ID is valid, so we have to check that too!
+    // Need different paths based on ID type, to prevent breaking strict atabases
 
     // Query the database for content matching the found parameters
     if ($GLOBALS['SITE_DB']->query_select($content_table, array($content_field), array($content_field => $info['id_field_numeric'] ? $content_id : intval($content_id)), '', 1) == array()) {
@@ -734,8 +728,7 @@ function add_content_to_workflow($content_type = '', $content_id = '', $workflow
         warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html($content_table . '/' . $content_field . '/' . $content_id)));
     }
 
-    // If we've made it this far then we have been asked to apply a
-    // valid workflow to a valid piece of content, so let's go ahead
+    // If we've made it this far then we have been asked to apply a valid workflow to a valid piece of content, so let's go ahead
 
     // Remove existing associations if we've been asked to
     if ($remove_existing) {
@@ -768,8 +761,7 @@ function add_content_to_workflow($content_type = '', $content_id = '', $workflow
 }
 
 /**
- * Returns all of the approval point which are currently defined. Indices are
- * IDs, values are names.
+ * Returns all of the approval point which are currently defined. Indices are IDs, values are names.
  *
  * @param  AUTO_LINK $workflow_id The workflow ID.
  * @return array The approval points which are defined. Empty if none are defined.
@@ -837,8 +829,7 @@ function get_workflow_content_id($content_type, $content_id)
 
 /**
  * Returns the workflow that the given content is in. This is useful for putting
- * a workflow on a container, like a gallery, and applying it to its contents,
- * like images.
+ * a workflow on a container, like a gallery, and applying it to its contents, like images.
  *
  * @param  string $type The type of content (as specified when it was entered into the workflow system)
  * @param  string $id The ID of the content (as specified when it was entered into the workflow system)
