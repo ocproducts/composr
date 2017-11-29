@@ -8,65 +8,48 @@
     /**
      * Toggle a ToggleableTray
      * @memberof $cms.ui
-     * @param elOrOptions
      * @return {boolean} - true when it is opened, false when it is closed
      */
-    $cms.ui.toggleableTray = function toggleableTray(elOrOptions) {
-        var options, el, animate,
-            $IMG_expand = '{$IMG;,1x/trays/expand}',
+    $cms.ui.toggleableTray = function toggleableTray(el, animate) {
+        var $IMG_expand = '{$IMG;,1x/trays/expand}',
             $IMG_expand2 = '{$IMG;,1x/trays/expand2}',
             $IMG_contract = '{$IMG;,1x/trays/contract}',
             $IMG_contract2 = '{$IMG;,1x/trays/contract2}';
         
-        if ($util.isPlainObj(elOrOptions)) {
-            options = elOrOptions;
-            el =  options.el;
-            animate = $cms.configOption('enable_animations') ? boolVal(options.animate, true) : false;
-        } else {
-            el = elOrOptions;
-            animate = $cms.configOption('enable_animations');
-        }
-
         el = $dom.elArg(el);
+        animate = $cms.configOption('enable_animations') ? boolVal(animate, true) : false;
 
         var iconImg = $dom.$(el.parentNode, '.toggleable_tray_button img') || $dom.$('img#e_' + el.id),
-            isThemeWizard = Boolean(iconImg && iconImg.src && iconImg.src.includes('/themewizard.php'));
-        
-        if ($dom.notDisplayed(el)) {
-            el.setAttribute('aria-expanded', 'true');
-            el.classList.add('is-expanded');
-            el.classList.remove('is-collapsed');
+            isThemeWizard = Boolean(iconImg && iconImg.src && iconImg.src.includes('/themewizard.php')),
+            expanding = $dom.notDisplayed(el);
 
-            if (animate) {
+        el.setAttribute('aria-expanded', expanding ? 'true' : 'false');
+        el.classList.toggle('is-expanded', expanding);
+        el.classList.toggle('is-collapsed', !expanding);
+
+        if (animate) {
+            if (expanding) {
                 $dom.slideDown(el);
             } else {
-                $dom.fadeIn(el);
+                $dom.slideUp(el);
             }
-
-            if (iconImg) {
+        } else {
+            if (expanding) {
+                $dom.fadeIn(el);
+            } else {
+                $dom.hide(el);
+            }
+        }
+        
+        if (iconImg) {
+            if (expanding) {
                 setTrayThemeImage('expand', 'contract', $IMG_expand, $IMG_contract, $IMG_contract2);
                 iconImg.setAttribute('alt', iconImg.getAttribute('alt').replace('{!EXPAND;^}', '{!CONTRACT;^}'));
                 iconImg.title = '{!CONTRACT;^}';
                 if (iconImg.cmsTooltipTitle !== undefined) {
                     iconImg.cmsTooltipTitle = '{!CONTRACT;^}';
                 }
-            }
-
-            $dom.triggerResize(true);
-
-            return true;
-        } else {
-            el.setAttribute('aria-expanded', 'false');
-            el.classList.remove('is-expanded');
-            el.classList.add('is-collapsed');
-
-            if (animate) {
-                $dom.slideUp(el);
             } else {
-                $dom.hide(el);
-            }
-
-            if (iconImg) {
                 setTrayThemeImage('contract', 'expand', $IMG_contract, $IMG_expand, $IMG_expand2);
                 iconImg.setAttribute('alt', iconImg.getAttribute('alt').replace('{!CONTRACT;^}', '{!EXPAND;^}'));
                 iconImg.title = '{!EXPAND;^}';
@@ -74,11 +57,11 @@
                     iconImg.cmsTooltipTitle = '{!EXPAND;^}';
                 }
             }
-
-            $dom.triggerResize(true);
-
-            return false;
         }
+
+        $dom.triggerResize(true);
+        
+        return expanding;
 
         // Execution ends here
 

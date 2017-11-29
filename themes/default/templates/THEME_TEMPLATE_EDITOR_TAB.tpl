@@ -7,7 +7,7 @@
 {$,Toolbarish}
 
 {+START,IF,{INCLUDE_CSS_EDITING}}
-	<div class="template_editing_toolbar" data-toggleable-tray="{}">
+	<div class="template_editing_toolbar" data-toggleable-tray="{ accordion: true }">
 		<h3 class="js-tray-header">
 			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{!CSS_EDITING_TOOLS}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" /></a>
 			<a class="non_link js-tray-onclick-toggle-tray" href="#!">{!CSS_EDITING_TOOLS}</a>

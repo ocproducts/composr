@@ -2192,7 +2192,9 @@
                         scriptEls.forEach(function (el) {
                             if (!el.src && jsTypeRE.test(el.type)) {
                                 var win = el.ownerDocument ? el.ownerDocument.defaultView : window;
-                                win['eval'].call(win, el.innerHTML); // eval() call
+                                (function () {
+                                    eval(el.innerHTML); // eval() call
+                                }).call(win); // Set `this` context for eval
                             }
                         });
 
@@ -2544,7 +2546,7 @@
      * @param andSubframes
      */
     $dom.triggerResize = function triggerResize(andSubframes) {
-        andSubframes = !!andSubframes;
+        andSubframes = Boolean(andSubframes);
 
         if (!window.parent || !window.parent.document) {
             return;

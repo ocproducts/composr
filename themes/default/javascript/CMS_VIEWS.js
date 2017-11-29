@@ -219,17 +219,18 @@
 
         ToggleableTray.base(this, 'constructor', arguments);
 
-        this.contentEl = this.$('.js-tray-content');
-
         this.cookie = null;
-
         if (params.save) {
             id = $dom.id(this.el, 'tray-');
             this.cookie = id.startsWith('tray') ? id : 'tray-' + id;
         }
-
-        if (this.cookie) {
-            this.handleTrayCookie();
+        
+        if (!params.accordion) {
+            this.contentEl = this.$('.js-tray-content');
+            
+            if (this.cookie) {
+                this.handleTrayCookie();
+            }
         }
     }
 
@@ -244,10 +245,13 @@
 
         /**@method*/
         toggleTray: function () {
-            var opened = $cms.ui.toggleableTray(this.contentEl);
+            var expanded = $cms.ui.toggleableTray(this.contentEl);
 
+            this.el.classList.toggle('is-expanded', expanded);
+            this.el.classList.toggle('is-collapsed', !expanded);
+            
             if (this.cookie) {
-                $cms.setCookie(this.cookie, opened ? 'open' : 'closed');
+                $cms.setCookie(this.cookie, expanded ? 'open' : 'closed');
             }
         },
 
@@ -259,11 +263,13 @@
 
             accordionItems.forEach(function (accordionItem) {
                 var body = accordionItem.querySelector('.js-tray-accordion-item-body'),
-                    opened;
+                    expanded;
 
                 if ((accordionItem === toggledAccordionItem) || $dom.isDisplayed(body)) {
-                    opened = $cms.ui.toggleableTray({ el: body });
-                    accordionItem.classList.toggle('accordion_trayitem-active', opened);
+                    expanded = $cms.ui.toggleableTray(body);
+                    accordionItem.classList.toggle('accordion_trayitem-active', expanded);
+                    accordionItem.classList.toggle('is-expanded', expanded);
+                    accordionItem.classList.toggle('is-collapsed', !expanded);
                 }
             });
 
@@ -276,10 +282,13 @@
 
         /**@method*/
         handleTrayCookie: function () {
-            var cookieValue = $cms.readCookie(this.cookie);
+            var cookieValue = $cms.readCookie(this.cookie), expanded;
 
             if (($dom.notDisplayed(this.contentEl) && (cookieValue === 'open')) || ($dom.isDisplayed(this.contentEl) && (cookieValue === 'closed'))) {
-                $cms.ui.toggleableTray({ el: this.contentEl, animate: false });
+                expanded = $cms.ui.toggleableTray(this.contentEl, false);
+
+                expanded = this.el.classList.toggle('is-expanded', expanded);
+                expanded = this.el.classList.toggle('is-collapsed', !expanded);
             }
         }
     });
