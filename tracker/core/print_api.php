@@ -663,17 +663,17 @@ function print_category_option_list( $p_category_id = 0, $p_project_id = null ) 
 		$t_project_id = $p_project_id;
 	}
 
+	$cat_arr = category_get_all_rows( $t_project_id, /* inherit */ null, /* sortByProject */ true );
+
 	if( config_get( 'allow_no_category' ) ) {
 		echo "<option value=\"0\"", check_selected( $p_category_id, 0 ), '>';
 		echo category_full_name( 0, /* show project */ false ), '</option>';
 	} else {
-		if( 0 == $p_category_id ) {
+		if(( 0 == $p_category_id ) && (count($cat_arr) > 1)) {
 			echo "<option value=\"0\"", check_selected( $p_category_id, 0 ), '>';
 			echo string_attribute( lang_get( 'select_option' ) ), '</option>';
 		}
 	}
-
-	$cat_arr = category_get_all_rows( $t_project_id, /* inherit */ null, /* sortByProject */ true );
 
 	foreach( $cat_arr as $t_category_row ) {
 		$t_category_id = $t_category_row['id'];
