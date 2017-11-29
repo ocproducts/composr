@@ -63,7 +63,7 @@
 
 <div class="box box___calendar_main_screen_interests" data-toggleable-tray="{}">
 	<h2 class="toggleable_tray_title js-tray-header">
-		<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!INTERESTS}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
+		<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!INTERESTS}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" /></a>
 		<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!">{!INTERESTS}</a>
 	</h2>
 
@@ -113,7 +113,7 @@
 {+START,IF,{$ADDON_INSTALLED,syndication_blocks}}
 	<div class="box box___calendar_main_screen_feeds_to_overlay" data-toggleable-tray="{}">
 		<h2 class="toggleable_tray_title js-tray-header">
-			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!FEEDS_TO_OVERLAY}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
+			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!FEEDS_TO_OVERLAY}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" /></a>
 			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!">{!FEEDS_TO_OVERLAY}</a>
 		</h2>
 

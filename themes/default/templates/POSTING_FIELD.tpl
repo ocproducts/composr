@@ -125,7 +125,7 @@
 	{$SET,init_drag_drop,1}
 	<tr class="form_table_field_spacer" id="field-{$GET*,id}-attachments-ui">
 		<th colspan="2" class="table_heading_cell">
-			<a class="toggleable_tray_button js-click-pf-toggle-subord-fields" id="fes_attachments" href="#!"><img alt="{!EXPAND}: {!ATTACHMENTS}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+			<a class="toggleable_tray_button js-click-pf-toggle-subord-fields" id="fes_attachments" href="#!"><img alt="{!EXPAND}: {!ATTACHMENTS}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" /></a>
 
 			<span class="faux_h2 toggleable_tray_button js-click-pf-toggle-subord-fields">
 				{!ATTACHMENTS}

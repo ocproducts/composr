@@ -9,7 +9,7 @@
 {+START,IF,{INCLUDE_CSS_EDITING}}
 	<div class="template_editing_toolbar" data-toggleable-tray="{}">
 		<h3 class="js-tray-header">
-			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{!CSS_EDITING_TOOLS}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{!CSS_EDITING_TOOLS}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" /></a>
 			<a class="non_link js-tray-onclick-toggle-tray" href="#!">{!CSS_EDITING_TOOLS}</a>
 		</h3>
 		<div class="toggleable_tray js-tray-content" style="display: none" id="c_{FILE_ID*}" aria-expanded="false">
@@ -18,7 +18,7 @@
 
 				<div class="accordion_trayitem js-tray-accordion-item">
 					<h4 class="toggleable_tray_title">
-						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!"><img alt="{!EXPAND}: Background Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!"><img alt="{!EXPAND}: Background Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" /></a>
 						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!">Background Properties</a>
 					</h4>
 					<div class="toggleable_tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
@@ -59,7 +59,7 @@
 
 				<div class="accordion_trayitem js-tray-accordion-item">
 					<h4 class="toggleable_tray_title">
-						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!"><img alt="{!EXPAND}: Background Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!"><img alt="{!EXPAND}: Background Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" /></a>
 						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!">Border Properties</a>
 					</h4>
 					<div class="toggleable_tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
@@ -115,7 +115,7 @@
 
 				<div class="accordion_trayitem js-tray-accordion-item">
 					<h4 class="toggleable_tray_title">
-						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!"><img alt="{!EXPAND}: Dimension Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!"><img alt="{!EXPAND}: Dimension Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" /></a>
 						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!">Dimension Properties</a>
 					</h4>
 					<div class="toggleable_tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
@@ -161,7 +161,7 @@
 
 				<div class="accordion_trayitem js-tray-accordion-item">
 					<h4 class="toggleable_tray_title">
-						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!"><img alt="{!EXPAND}: List Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!"><img alt="{!EXPAND}: List Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" /></a>
 						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!">List Properties</a>
 					</h4>
 					<div class="toggleable_tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
@@ -187,7 +187,7 @@
 
 				<div class="accordion_trayitem js-tray-accordion-item">
 					<h4 class="toggleable_tray_title">
-						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion"><img alt="{!EXPAND}: Margin/Padding Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion"><img alt="{!EXPAND}: Margin/Padding Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" /></a>
 						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion">Margin/Padding Properties</a>
 					</h4>
 					<div class="toggleable_tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
@@ -253,7 +253,7 @@
 
 				<div class="accordion_trayitem js-tray-accordion-item">
 					<h4 class="toggleable_tray_title">
-						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!"><img alt="{!EXPAND}: Positioning Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!"><img alt="{!EXPAND}: Positioning Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" /></a>
 						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!">Positioning Properties</a>
 					</h4>
 					<div class="toggleable_tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
@@ -324,7 +324,7 @@
 
 				<div class="accordion_trayitem js-tray-accordion-item">
 					<h4 class="toggleable_tray_title">
-						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!"><img alt="{!EXPAND}: Text/Font Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!"><img alt="{!EXPAND}: Text/Font Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" /></a>
 						<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!">Text/Font Properties</a>
 					</h4>
 					<div class="toggleable_tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
@@ -441,7 +441,7 @@
 {+START,IF,{INCLUDE_TEMPCODE_EDITING}}
 	<div class="template_editing_toolbar" data-toggleable-tray="{}">
 		<h3 class="js-tray-header">
-			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{!SYMBOLS_AND_DIRECTIVES}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{!SYMBOLS_AND_DIRECTIVES}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" /></a>
 			<a class="non_link js-tray-onclick-toggle-tray" href="#!">{!SYMBOLS_AND_DIRECTIVES}</a>
 		</h3>
 		<div class="toggleable_tray js-tray-content" style="display: none" id="b_{FILE_ID*}" aria-expanded="false">
@@ -493,7 +493,7 @@
 {+START,IF_NON_EMPTY,{GUIDS}}
 	<div class="guids" data-toggleable-tray="{}">
 		<h3 class="js-tray-header">
-			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{!TEMPLATE_GUIDS}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{!TEMPLATE_GUIDS}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" /></a>
 			<a class="non_link js-tray-onclick-toggle-tray" href="#!">{!TEMPLATE_GUIDS}</a>
 		</h3>
 		<div class="toggleable_tray js-tray-content" style="display: none" aria-expanded="false">
@@ -535,7 +535,7 @@
 {+START,IF_NON_EMPTY,{RELATED}}
 	<div class="related" data-toggleable-tray="{}">
 		<h3 class="js-tray-header">
-			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{!RELATED_TEMPLATES}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{!RELATED_TEMPLATES}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" /></a>
 			<a class="non_link js-tray-onclick-toggle-tray" href="#!">{!RELATED_TEMPLATES}</a>
 		</h3>
 		<div class="toggleable_tray js-tray-content" style="display: none" aria-expanded="false">
