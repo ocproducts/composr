@@ -64,15 +64,14 @@
                     '{!facebook:HOW_TO_SYNDICATE_DESCRIPTION;^}',
                     ['{!INPUTSYSTEM_CANCEL;^}', '{!facebook:FACEBOOK_PAGE;^}', '{!facebook:FACEBOOK_WALL;^}'],
                     '{!facebook:HOW_TO_SYNDICATE;^}',
-                    $util.format('{!facebook:SYNDICATE_TO_OWN_WALL;^}', [$cms.getSiteName()]),
-                    function (val) {
-                        if (val !== '{!INPUTSYSTEM_CANCEL;^}') {
-                            fbInput.value = (val === '{!facebook:FACEBOOK_PAGE;^}') ? '1' : '0';
-                            fbButton.removeEventListener('click', listener);
-                            fbButton.click();
-                        }
+                    $util.format('{!facebook:SYNDICATE_TO_OWN_WALL;^}', [$cms.getSiteName()])
+                ).then(function (val) {
+                    if (val !== '{!INPUTSYSTEM_CANCEL;^}') {
+                        fbInput.value = (val === '{!facebook:FACEBOOK_PAGE;^}') ? '1' : '0';
+                        fbButton.removeEventListener('click', listener);
+                        fbButton.click();
                     }
-                );
+                });
 
                 return false;
             });
