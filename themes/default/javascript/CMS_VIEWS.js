@@ -1866,8 +1866,8 @@
             $dom.toggle(this.menuContentEl);
         },
         toggleSubMenu: function (e, link) {
-            var rand = link.dataset.vwRand,
-                subEl = this.$('#' + this.menuId + '_pexpand_' + rand),
+            var subId = link.dataset.vwSubMenuId,
+                subEl = this.$('#' + subId),
                 href;
 
             if ($dom.notDisplayed(subEl)) {
