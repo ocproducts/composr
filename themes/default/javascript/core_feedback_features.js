@@ -14,7 +14,7 @@
         this.btnSubmit = this.$('.js-btn-submit-comments');
 
         $cms.requireJavascript(['jquery', 'jquery_autocomplete']).then(function () {
-            setUpComcodeAutocomplete('post', !!params.wysiwyg);
+            window.$jqueryAutocomplete.setUpComcodeAutocomplete('post', Boolean(params.wysiwyg));
         });
 
         if ($cms.configOption('enable_previews') && $cms.isForcePreviews()) {
@@ -84,7 +84,7 @@
             var container = this.$closest(reviewBar, '.js-container-review-rating'),
                 ratingInput = container.querySelector('.js-inp-review-rating');
 
-            ratingInput.value = +reviewBar.dataset.vwRating || 0;
+            ratingInput.value = Number(reviewBar.dataset.vwRating) || 0;
             this.displayReviewRating(container);
         },
 

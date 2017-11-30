@@ -6,7 +6,7 @@
 		<h3 class="toggleable_tray_title js-tray-header">
 			<a title="{!EDIT}: {!SITE_WATCHLIST}" class="top_left_toggleicon js-click-staff-block-flip" href="#!">{!EDIT}</a>
 
-			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!SITE_WATCHLIST}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a>
+			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!SITE_WATCHLIST}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" /></a>
 
 			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!">{!SITE_WATCHLIST}</a>
 		</h3>

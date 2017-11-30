@@ -42,7 +42,7 @@
     $cms.templates.facebookFooter = function facebookFooter(params) {
         var facebookAppid = strVal(params.facebookAppid);
         if (facebookAppid !== '') {
-            facebookInit(facebookAppid, $cms.baseUrl('facebook_connect.php'), (params.fbConnectFinishingProfile || params.fbConnectLoggedOut), (params.fbConnectUid === '' ? null : params.fbConnectUid), '{$PAGE_LINK;,:}', '{$PAGE_LINK;,:login:logout}');
+            facebookInit(facebookAppid, $util.url('facebook_connect.php').toString(), (params.fbConnectFinishingProfile || params.fbConnectLoggedOut), (params.fbConnectUid === '' ? null : params.fbConnectUid), '{$PAGE_LINK;,:}', '{$PAGE_LINK;,:login:logout}');
         }
     };
 
@@ -64,15 +64,14 @@
                     '{!facebook:HOW_TO_SYNDICATE_DESCRIPTION;^}',
                     ['{!INPUTSYSTEM_CANCEL;^}', '{!facebook:FACEBOOK_PAGE;^}', '{!facebook:FACEBOOK_WALL;^}'],
                     '{!facebook:HOW_TO_SYNDICATE;^}',
-                    $util.format('{!facebook:SYNDICATE_TO_OWN_WALL;^}', [$cms.getSiteName()]),
-                    function (val) {
-                        if (val !== '{!INPUTSYSTEM_CANCEL;^}') {
-                            fbInput.value = (val === '{!facebook:FACEBOOK_PAGE;^}') ? '1' : '0';
-                            fbButton.removeEventListener('click', listener);
-                            fbButton.click();
-                        }
+                    $util.format('{!facebook:SYNDICATE_TO_OWN_WALL;^}', [$cms.getSiteName()])
+                ).then(function (val) {
+                    if (val !== '{!INPUTSYSTEM_CANCEL;^}') {
+                        fbInput.value = (val === '{!facebook:FACEBOOK_PAGE;^}') ? '1' : '0';
+                        fbButton.removeEventListener('click', listener);
+                        fbButton.click();
                     }
-                );
+                });
 
                 return false;
             });
@@ -95,7 +94,7 @@
 
             // Calling this effectively waits until the login is active on the client side, which we must do before we can do anything (including calling a log out)
             window.FB.getLoginStatus(function (response) {
-                if ((response.status == 'connected') && (response.authResponse)) {
+                if ((response.status === 'connected') && (response.authResponse)) {
                     // If Composr is currently logging out, tell FB connect to disentangle
                     // Must have JS FB login before can instruct to logout. Will not re-auth -- we know we have authed due to FB_CONNECT_LOGGED_OUT being set
                     if (justLoggedOut) {
@@ -132,7 +131,7 @@
                 window.FB.Event.subscribe('auth.login', function (response) { // New login status arrived - so a Composr Facebook login session should be established, or ignore as we are calling a logout within this request (above)
                     if (!justLoggedOut) { // Check it is not that logout
                         // ... and therefore refresh to let Composr server-side re-sync, as this was a new login initiated just now on the client side
-                        if ((response.status == 'connected') && (response.authResponse)) { // Check we really are logged in, in case this event calls without us being
+                        if ((response.status === 'connected') && (response.authResponse)) { // Check we really are logged in, in case this event calls without us being
                             facebookTriggerRefresh(homePageUrl);
                         }
                     }
@@ -144,7 +143,9 @@
         // Load the SDK Asynchronously
         (function (d, s, id) {
             var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) return;
+            if (d.getElementById(id)) {
+                return;
+            }
             js = d.createElement(s);
             js.id = id;
             js.src = '//connect.facebook.net/en_US/all.js#xfbml=1&appId={$CONFIG_OPTION;,facebook_appid}';
@@ -158,17 +159,16 @@
                 return;
             }
 
-            if ((window.location.href.indexOf('login') != -1) && (window == window.top)) {
+            if (($cms.getPageName() === 'login') && (window === window.top)) {
                 window.location = homePageUrl; // If currently on login screen, should go to home page not refresh
             } else {
                 var currentUrl = window.top.location.href;
-                if (currentUrl.indexOf('refreshed_once=1') == -1) {
-                    currentUrl += ((currentUrl.indexOf('?') == -1) ? '?' : '&') + 'refreshed_once=1';
+                if ($util.url(currentUrl).searchParams.get('refreshed_once') !== '1') {
+                    currentUrl += (currentUrl.includes('?') ? '&' : '?') + 'refreshed_once=1';
                     window.top.location = currentUrl;
-                }
-                else if (currentUrl.indexOf('keep_refreshed_once=1') == -1) {
+                } else if ($util.url(currentUrl).searchParams.get('keep_refreshed_once') !== '1') {
                     //alert('Could not login, probably due to restrictive cookie settings.');
-                    window.top.location = window.top.location.toString() + '&keep_refreshed_once=1';
+                    window.top.location = window.top.location.href + '&keep_refreshed_once=1';
                 }
             }
         }, 500);

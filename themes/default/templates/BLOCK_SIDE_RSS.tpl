@@ -2,7 +2,7 @@
 {+START,IF,{$NOT,{TICKER}}}
 	<section id="tray_{TITLE|}" data-toggleable-tray="{ save: true }" class="box box___block_side_rss">
 		<h3 class="toggleable_tray_title js-tray-header">
-			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{TITLE`}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a>
+			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{TITLE`}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" /></a>
 
 			{+START,IF_NON_EMPTY,{TITLE}}
 				<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!">{TITLE`}</a>

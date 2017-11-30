@@ -1,12 +1,14 @@
 (function ($cms, $util, $dom) {
     'use strict';
     
-    window.showPermissionSetting = showPermissionSetting;
-    window.cleanupPermissionList = cleanupPermissionList;
-    window.copyPermissionPresets = copyPermissionPresets;
-    window.setupPrivilegeOverrideSelector = setupPrivilegeOverrideSelector;
-    window.permissionsImgFunc1 = permissionsImgFunc1;
-    window.permissionsImgFunc2 = permissionsImgFunc2;
+    var $corePermissionManagement = window.$corePermissionManagement = {};
+
+    $corePermissionManagement.showPermissionSetting = showPermissionSetting;
+    $corePermissionManagement.cleanupPermissionList = cleanupPermissionList;
+    $corePermissionManagement.copyPermissionPresets = copyPermissionPresets;
+    $corePermissionManagement.setupPrivilegeOverrideSelector = setupPrivilegeOverrideSelector;
+    $corePermissionManagement.permissionsImgFunc1 = permissionsImgFunc1;
+    $corePermissionManagement.permissionsImgFunc2 = permissionsImgFunc2;
 
     $cms.views.PermissionsTreeEditorScreen = PermissionsTreeEditorScreen;
     /**
@@ -221,13 +223,13 @@
                                 $dom.html(newCell, '<div class="accessibility_hidden"><label for="access_' + group + '_privilege_' + privilege + '">{!permissions:OVERRIDE;^}</label></div><select title="' + $cms.filter.html(privilegeTitle) + '" id="access_' + group + '_privilege_' + privilege + '" name="access_' + group + '_privilege_' + privilege + '"><option selected="selected" value="-1">/</option><option value="0">{!permissions:NO_COMPACT;^}</option><option value="1">{!permissions:YES_COMPACT;^}</option></select>');
                                 $dom.on(newCell, 'mouseover', '.js-mouseover-show-permission-setting', function (e, select) {
                                     if (select.value === '-1') {
-                                        showPermissionSetting(select, e);
+                                        $corePermissionManagement.showPermissionSetting(select, e);
                                     }
                                 });
 
                                 element = document.getElementById('access_' + group + '_privilege_' + privilege);
 
-                                setupPrivilegeOverrideSelector('access_' + group, '-1', privilege, privilegeTitle, false);
+                                $corePermissionManagement.setupPrivilegeOverrideSelector('access_' + group, '-1', privilege, privilegeTitle, false);
                             }
                         }
                         if (element) {
@@ -265,7 +267,7 @@
                 if (numPrivilegeDefault == numPrivilege) {
                     element = document.getElementById('access_' + group + '_presets');
                     element.selectedIndex = 1;
-                    cleanupPermissionList('access_' + group);
+                    $corePermissionManagement.cleanupPermissionList('access_' + group);
                     for (j = 0; j < knownPrivileges.length; j++) {
                         element = document.getElementById('access_' + group + '_privilege_' + knownPrivileges[j]);
                         if (window.sitemap == null) {
@@ -301,13 +303,13 @@
             for (k = 0; k < knownGroups.length; k++) {
                 group = knownGroups[k];
                 var list = document.getElementById('access_' + group + '_presets');
-                if (!copyPermissionPresets('access_' + group, '0', true)) {
+                if (!$corePermissionManagement.copyPermissionPresets('access_' + group, '0', true)) {
                     list.selectedIndex = list.options.length - 4;
-                } else if (!copyPermissionPresets('access_' + group, '1', true)) {
+                } else if (!$corePermissionManagement.copyPermissionPresets('access_' + group, '1', true)) {
                     list.selectedIndex = list.options.length - 3;
-                } else if (!copyPermissionPresets('access_' + group, '2', true)) {
+                } else if (!$corePermissionManagement.copyPermissionPresets('access_' + group, '2', true)) {
                     list.selectedIndex = list.options.length - 2;
-                } else if (!copyPermissionPresets('access_' + group, '3', true)) {
+                } else if (!$corePermissionManagement.copyPermissionPresets('access_' + group, '3', true)) {
                     list.selectedIndex = list.options.length - 1;
                 }
             }
@@ -394,7 +396,7 @@
                 }
 
                 // Update UI indicators
-                $dom.html('#tree_listextra_' + id, permissionsImgFunc1(node, id) + permissionsImgFunc2(node, id));
+                $dom.html('#tree_listextra_' + id, $corePermissionManagement.permissionsImgFunc1(node, id) + $corePermissionManagement.permissionsImgFunc2(node, id));
             }
 
             if (setRequestB !== '') {

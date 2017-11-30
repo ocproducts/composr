@@ -2,6 +2,8 @@
 (function ($cms, $util, $dom) {
     'use strict';
 
+    var $checking = window.$checking = {};
+    
     /**
      * @memberof $cms.form
      * @param radios
@@ -465,10 +467,10 @@
                             if (result.erroneous) {
                                 if (theElement.type === 'radio') {
                                     for (var i = 0; i < theForm.elements.length; i++) {
-                                        theForm.elements[i].onchange = autoResetError;
+                                        theForm.elements[i].onchange = function () { autoResetError(this); };
                                     }
                                 } else {
-                                    theElement.onblur = autoResetError;
+                                    theElement.onblur = function () { autoResetError(theElement); };
                                 }
                             }
                         }
@@ -508,7 +510,7 @@
                 // Try and workaround max_input_vars problem if lots of usergroups
                 if (!erroneous) {
                     var deleteE = $dom.$id('delete'),
-                        isDelete = deleteE && deleteE.type === 'checkbox' && deleteE.checked,
+                        isDelete = deleteE && (deleteE.type === 'checkbox') && deleteE.checked,
                         es = document.getElementsByTagName('select'), selectEl;
 
                     for (var k = 0; k < es.length; k++) {
@@ -523,28 +525,27 @@
             });
         });
         
-        function autoResetError(e, noRecurse) {
-            var theElement = this,
-                checkResult = checkField(theElement, theForm);
+        function autoResetError(theElement, recursing) {
+            var checkResult = checkField(theElement, theForm);
 
             checkResult.then(function (result) {
                 if ((result != null) && !result.erroneous) {
                     $cms.form.setFieldError(theElement, '');
                 }
 
-                if (!noRecurse && (theElement.classList.contains('date')) && (theElement.name.match(/_(day|month|year)$/))) {
+                if (!recursing && (theElement.classList.contains('date')) && (theElement.name.match(/_(day|month|year)$/))) {
                     var preid = theElement.id.replace(/\_(day|month|year)$/, ''),
                         el = $dom.$id(preid + '_day');
                     if (el !== theElement) {
-                        autoResetError.call(el, null, true);
+                        autoResetError(el, true);
                     }
                     el = $dom.$id(preid + '_month');
                     if (el !== theElement) {
-                        autoResetError.call(el, null, true);
+                        autoResetError(el, true);
                     }
                     el = $dom.$id(preid + '_year');
                     if (el !== theElement) {
-                        autoResetError.call(el, null, true);
+                        autoResetError(el, true);
                     }
                 }
             });
@@ -885,11 +886,12 @@
 
 
     /**
-     * Very simple form control flow
+     * Very simple form control flow.
+     * Shows the associated error message element if the field is blank, and an alert dialog - unless `alreadyShownMessage` is true.
      * @memberof $cms.form
      * @param field
      * @param alreadyShownMessage
-     * @returns {boolean}
+     * @returns {boolean} - true if the field isn't empty, false otherwise
      */
     $cms.form.checkFieldForBlankness = function checkFieldForBlankness(field, alreadyShownMessage) {
         if (!field) {
@@ -901,8 +903,8 @@
             errorEl = $dom.$('#error_' + field.id);
 
         if ((value.trim() === '') || (value === '{!POST_WARNING;^}') || (value === '{!THREADED_REPLY_NOTICE;^,{!POST_WARNING}}')) {
-            if (errorEl !== null) {
-                errorEl.style.display = 'block';
+            if (errorEl != null) {
+                $dom.show(errorEl);
                 $dom.html(errorEl, '{!REQUIRED_NOT_FILLED_IN;^}');
             }
 
@@ -914,7 +916,7 @@
         }
 
         if (errorEl != null) {
-            errorEl.style.display = 'none';
+            $dom.hide(errorEl);
         }
 
         return true;

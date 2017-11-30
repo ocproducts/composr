@@ -210,7 +210,7 @@
                 }
 
                 var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?from_html=1' + $cms.keep());
-                if (window.location.href.includes('topics')) { // TODO: FIXME Salman (do direct compare to page name, which presumably the JS framework knows)
+                if ($cms.getPageName() === 'topics') {
                     url += '&forum_db=1';
                 }
                 var post = 'data=' + encodeURIComponent(wysiwygData.replace(new RegExp(String.fromCharCode(8203), 'g'), ''));
@@ -351,7 +351,7 @@
                 }
 
                 var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&from_html=0' + $cms.keep());
-                if (window.location.href.includes('topics')) { // TODO: FIXME Salman (do direct compare to page name, which presumably the JS framework knows)
+                if ($cms.getPageName() === 'topics') {
                     url += '&forum_db=1';
                 }
 
@@ -481,8 +481,8 @@
             editor.on('instanceReady', function (event) {
                 editor.setReadOnly(false); // Workaround for CKEditor bug found in 4.5.6, where it started sometimes without contentEditable=true
 
-                if (window.setUpComcodeAutocomplete !== undefined) {
-                    window.setUpComcodeAutocomplete(element.id);
+                if (window.$jqueryAutocomplete !== undefined) {
+                    window.$jqueryAutocomplete.setUpComcodeAutocomplete(element.id);
                 }
 
                 // Instant preview of Comcode
@@ -645,7 +645,7 @@
                         selfOb.isOver = true;
 
                         var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&box_title={!PREVIEW&;^}' + $cms.keep());
-                        if (window.location.href.includes('topics')) { // TODO: FIXME Salman (do direct compare to page name, which presumably the JS framework knows)
+                        if ($cms.getPageName() === 'topics') {
                             url += '&forum_db=1';
                         }
 
@@ -829,7 +829,7 @@
                 } 
                 
                 var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&lax_comcode=1' + $cms.keep());
-                if (window.location.href.includes('topics')) { // TODO: FIXME Salman (do direct compare to page name, which presumably the JS framework knows)
+                if ($cms.getPageName() === 'topics') {
                     url += '&forum_db=1';
                 }
                 
@@ -999,7 +999,7 @@
                 var newHtml = '',
                     url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&lax_comcode=1' + $cms.keep());
 
-                if (window.location.href.includes('topics')) { // TODO: FIXME Salman (do direct compare to page name, which presumably the JS framework knows)
+                if ($cms.getPageName() === 'topics') {
                     url += '&forum_db=1';
                 }
 

@@ -1026,8 +1026,8 @@
                 window.ga('set', 'userId', strVal($cms.getMember()));
             }
 
-            if ($cms.pageSearchParams().has('_t')) {
-                window.ga('send', 'event', 'tracking__' + strVal($cms.pageSearchParams().get('_t')), window.location.href);
+            if ($cms.pageUrl().searchParams.has('_t')) {
+                window.ga('send', 'event', 'tracking__' + strVal($cms.pageUrl().searchParams.get('_t')), window.location.href);
             }
 
             window.ga('send', 'pageview');
@@ -1062,7 +1062,7 @@
             m2.parentNode.removeChild(m2);
         }
 
-        if (boolVal($cms.pageSearchParams().get('wide_print'))) {
+        if (boolVal($cms.pageUrl().searchParams.get('wide_print'))) {
             try {
                 window.print();
             } catch (ignore) {}
@@ -1146,7 +1146,7 @@
             var url = window.location.href,
                 append = '?';
 
-            if ($cms.isJsOn() || boolVal($cms.pageSearchParams().get('keep_has_js')) || url.includes('/upgrader.php') || url.includes('/webdav.php')) {
+            if ($cms.isJsOn() || boolVal($cms.pageUrl().searchParams.get('keep_has_js')) || url.includes('/upgrader.php') || url.includes('/webdav.php')) {
                 return;
             }
 
@@ -1248,7 +1248,7 @@
 
                     setTimeout(function () { // Do a refresh with magic markers, in a comfortable few seconds
                         var oldUrl = window.location.href;
-                        if (!oldUrl.includes('keep_template_magic_markers=1')) { // TODO: FIXME Salman (do direct compare to GET param)
+                        if ($cms.pageUrl().searchParams.get('keep_template_magic_markers') !== '1') {
                             window.location.href = oldUrl + (oldUrl.includes('?') ? '&' : '?') + 'keep_template_magic_markers=1&cache_blocks=0&cache_comcode_pages=0';
                         }
                     }, 10000);
@@ -1272,10 +1272,9 @@
 
         loadStuffStaff: function () {
             var loc = window.location.href;
-
             // Navigation loading screen
             if ($cms.configOption('enable_animations')) {
-                if ((window.parent === window) && !loc.includes('js_cache=1')/*TODO: FIXME Salman (do direct compare to GET param)*/ && (loc.includes('/cms/') || loc.includes('/adminzone/'))) {
+                if ((window.parent === window) && ($cms.pageUrl().searchParams.get('js_cache') !== '1') && (loc.includes('/cms/') || loc.includes('/adminzone/'))) {
                     window.addEventListener('beforeunload', function () {
                         staffUnloadAction();
                     });
@@ -1413,7 +1412,7 @@
                 if ((target.src === undefined) && (!event.ctrlKey) && (!event.metaKey) && (!event.altKey)) {
                     return;  // Needs ctrl key for background images
                 }
-                if (!src.includes('/themes/') || window.location.href.includes('admin_themes')) { // TODO: FIXME Salman (do direct compare to page name)
+                if (!src.includes('/themes/') || ($cms.getPageName() === 'admin_themes')) { 
                     return;
                 }
 

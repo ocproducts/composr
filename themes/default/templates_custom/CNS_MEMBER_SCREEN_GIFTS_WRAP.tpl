@@ -1,6 +1,6 @@
 <div data-toggleable-tray="{}">
 	<h2 class="js-tray-header">
-		<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!GIFTR_TITLE}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+		<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!GIFTR_TITLE}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" /></a>
 		<span class="js-tray-onclick-toggle-tray">{!GIFTR_TITLE}</span>
 	</h2>
 

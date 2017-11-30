@@ -18,7 +18,7 @@
             m2.parentNode.removeChild(m2);
         }
 
-        if (boolVal($cms.pageSearchParams().get('wide_print'))) {
+        if (boolVal($cms.pageUrl().searchParams.get('wide_print'))) {
             try {
                 window.print();
             } catch (ignore) {}
@@ -27,8 +27,7 @@
 
     $cms.templates.installerStepLog = function installerStepLog() {
         /* Code to auto-submit the form after 5 seconds, but only if there were no errors */
-        var doh = !!document.querySelector('.installer_warning');
-        if (doh) {
+        if (document.querySelector('.installer_warning')) {
             return;
         }
 

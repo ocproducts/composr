@@ -1,8 +1,8 @@
-'use strict';
-
-(function ($cms, $util, $dom) {
+(function ($cms, $util, $dom, $corePermissionManagement) {
     'use strict';
 
+    var $coreFormInterfaces = window.$coreFormInterfaces = {};
+    
     // Templates:
     // POSTING_FORM.tpl
     // - POSTING_FIELD.tpl
@@ -75,7 +75,7 @@
         if (params.supportAutosave && params.formName) {
             setTimeout(function () {
                 if ('{$VALUE_OPTION;,disable_form_auto_saving}' !== '1') {
-                    $posting.initFormSaving(params.formName);
+                    window.$posting.initFormSaving(params.formName);
                 }
             }, 3000/*Let CKEditor load*/);
         }
@@ -181,13 +181,13 @@
         if (!params.allGlobal) {
             var list = document.getElementById(prefix + '_presets');
             // Test to see what we wouldn't have to make a change to get - and that is what we're set at
-            if (!copyPermissionPresets(prefix, '0', true)) {
+            if (!$corePermissionManagement.copyPermissionPresets(prefix, '0', true)) {
                 list.selectedIndex = list.options.length - 4;
-            } else if (!copyPermissionPresets(prefix, '1', true)) {
+            } else if (!$corePermissionManagement.copyPermissionPresets(prefix, '1', true)) {
                 list.selectedIndex = list.options.length - 3;
-            } else if (!copyPermissionPresets(prefix, '2', true)) {
+            } else if (!$corePermissionManagement.copyPermissionPresets(prefix, '2', true)) {
                 list.selectedIndex = list.options.length - 2;
-            } else if (!copyPermissionPresets(prefix, '3', true)) {
+            } else if (!$corePermissionManagement.copyPermissionPresets(prefix, '3', true)) {
                 list.selectedIndex = list.options.length - 1;
             }
         }
@@ -203,8 +203,8 @@
         },
 
         copyPresets: function (e, select) {
-            copyPermissionPresets(this.prefix, select.options[select.selectedIndex].value);
-            cleanupPermissionList(this.prefix);
+            $corePermissionManagement.copyPermissionPresets(this.prefix, select.options[select.selectedIndex].value);
+            $corePermissionManagement.cleanupPermissionList(this.prefix);
         },
 
         permissionRepeating: function (e, button) {
@@ -268,18 +268,18 @@
         this.groupId = params.groupId;
         this.prefix = prefix;
 
-        setupPrivilegeOverrideSelector(prefix, defaultAccess, params.privilege, params.title, !!params.allGlobal);
+        $corePermissionManagement.setupPrivilegeOverrideSelector(prefix, defaultAccess, params.privilege, params.title, !!params.allGlobal);
 
         if (!params.allGlobal) {
             var list = document.getElementById(prefix + '_presets');
             // Test to see what we wouldn't have to make a change to get - and that is what we're set at
-            if (!copyPermissionPresets(prefix, '0', true)) {
+            if (!$corePermissionManagement.copyPermissionPresets(prefix, '0', true)) {
                 list.selectedIndex = list.options.length - 4;
-            } else if (!copyPermissionPresets(prefix, '1', true)) {
+            } else if (!$corePermissionManagement.copyPermissionPresets(prefix, '1', true)) {
                 list.selectedIndex = list.options.length - 3;
-            } else if (!copyPermissionPresets(prefix, '2', true)) {
+            } else if (!$corePermissionManagement.copyPermissionPresets(prefix, '2', true)) {
                 list.selectedIndex = list.options.length - 2;
-            } else if (!copyPermissionPresets(prefix, '3', true)) {
+            } else if (!$corePermissionManagement.copyPermissionPresets(prefix, '3', true)) {
                 list.selectedIndex = list.options.length - 1;
             }
         }
@@ -290,7 +290,7 @@
             return {
                 'click .js-click-perms-overridden': 'permissionsOverridden',
                 'change .js-change-perms-overridden': 'permissionsOverridden',
-                'mouseover .js-mouseover-show-perm-setting': 'showPermissionSetting'
+                'mouseover .js-mouseover-show-perm-setting': 'showPermSetting'
             };
         },
 
@@ -298,9 +298,9 @@
             permissionsOverridden(this.prefix);
         },
 
-        showPermissionSetting: function (e, select) {
+        showPermSetting: function (e, select) {
             if (select.options[select.selectedIndex].value === '-1') {
-                showPermissionSetting(select);
+                $corePermissionManagement.showPermissionSetting(select);
             }
         }
     });
@@ -423,7 +423,7 @@
 
     $cms.templates.formScreenInputLine = function formScreenInputLine(params) {
         $cms.requireJavascript(['jquery', 'jquery_autocomplete']).then(function () {
-            setUpComcodeAutocomplete(params.name, !!params.wysiwyg);
+            window.$jqueryAutocomplete.setUpComcodeAutocomplete(params.name, !!params.wysiwyg);
         });
     };
 
@@ -480,7 +480,7 @@
 
     $cms.templates.formScreenInputLineMulti = function (params, container) {
         $dom.on(container, 'keypress', '.js-keypress-ensure-next-field', function (e, input) {
-            _ensureNextField(e, input);
+            $coreFormInterfaces.ensureNextField2(e, input);
         });
     };
 
@@ -502,7 +502,7 @@
         }
 
         $cms.requireJavascript(['jquery', 'jquery_autocomplete']).then(function () {
-            setUpComcodeAutocomplete(params.name, required.includes('wysiwyg'));
+            window.$jqueryAutocomplete.setUpComcodeAutocomplete(params.name, required.includes('wysiwyg'));
         });
     };
 
@@ -843,7 +843,7 @@
         }
 
         $cms.requireJavascript(['jquery', 'jquery_autocomplete']).then(function () {
-            setUpComcodeAutocomplete(name, true);
+            window.$jqueryAutocomplete.setUpComcodeAutocomplete(name, true);
         });
 
         if (initDragDrop) {
@@ -1153,7 +1153,7 @@
 
     $cms.templates.formScreenInputMultiList = function formScreenInputMultiList(params, container) {
         $dom.on(container, 'keypress', '.js-keypress-input-ensure-next-field', function (e, input) {
-            _ensureNextField(e, input);
+            $coreFormInterfaces.ensureNextField2(e, input);
         });
     };
 
@@ -1196,7 +1196,7 @@
         });
 
         $dom.on(container, 'keypress', '.js-keypress-input-ensure-next-field', function (e, input) {
-            _ensureNextField(e, input);
+            $coreFormInterfaces.ensureNextField2(e, input);
         });
     };
 
@@ -1520,18 +1520,12 @@
 
         if ((!next && (pic.src.includes('expand'))) || (next && (next.style.display === 'none'))) {/* Expanding now */
             pic.src = pic.src.includes('themewizard.php') ? pic.src.replace('expand', 'contract') : $cms.img('{$IMG;,1x/trays/contract}');
-            if (pic.srcset !== undefined) {
-                pic.srcset.includes('themewizard.php') ? pic.srcset.replace('expand', 'contract') : ($cms.img('{$IMG;,2x/trays/contract}') + ' 2x');
-            }
             pic.alt = '{!CONTRACT;^}';
             pic.title = '{!CONTRACT;^}';
             newDisplayState = ''; // default state from CSS
             newDisplayState2 = ''; // default state from CSS
         } else { /* Contracting now */
             pic.src = pic.src.includes('themewizard.php') ? pic.src.replace('contract', 'expand') : $cms.img('{$IMG;,1x/trays/expand}');
-            if (pic.srcset !== undefined) {
-                pic.srcset = pic.src.includes('themewizard.php') ? pic.srcset.replace('contract', 'expand') : ($cms.img('{$IMG;,2x/trays/expand}') + ' 2x');
-            }
             pic.alt = '{!EXPAND;^}';
             pic.title = '{!EXPAND;^}';
             newDisplayState = 'none';
@@ -1837,8 +1831,7 @@
     // ===========
     // Multi-field
     // ===========
-    window._ensureNextField = _ensureNextField;
-    function _ensureNextField(event, el) {
+    $coreFormInterfaces.ensureNextField2 = function ensureNextField2(event, el) {
         if ($dom.keyPressed(event, 'Enter')) {
             gotoNextField(el);
         } else if (!$dom.keyPressed(event, 'Tab')) {
@@ -1858,7 +1851,7 @@
                 } catch (e) {}
             }
         }
-    }
+    };
 
     function ensureNextField(thisField) {
         var mid = thisField.id.lastIndexOf('_'),
@@ -1899,7 +1892,7 @@
                 nextField.onkeyup = thisField.onkeyup;
             }
             nextField.onkeypress = function (event) {
-                _ensureNextField(event, nextField);
+                $coreFormInterfaces.ensureNextField2(event, nextField);
             };
             if (thisField.onchange) {
                 nextField.onchange = thisField.onchange;
@@ -1917,4 +1910,4 @@
         }
     }
 
-}(window.$cms, window.$util, window.$dom));
+}(window.$cms, window.$util, window.$dom, window.$corePermissionManagement));

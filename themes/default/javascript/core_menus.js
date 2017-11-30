@@ -452,11 +452,9 @@
                     if (theLevel < 2) { // High-levels start expanded
                         expandImg.alt = '{!CONTRACT;^}';
                         expandImg.src = $cms.img('{$IMG;^,1x/trays/contract}');
-                        expandImg.srcset = $cms.img('{$IMG;^,2x/trays/contract}') + ' 2x';
                     } else {
                         expandImg.alt = '{!EXPAND;^}';
                         expandImg.src = $cms.img('{$IMG;^,1x/trays/expand}');
-                        expandImg.srcset = $cms.img('{$IMG;^,2x/trays/expand}') + ' 2x';
                         $dom.hide(ul);
                     }
 

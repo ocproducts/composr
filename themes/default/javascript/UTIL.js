@@ -944,6 +944,18 @@
     };
 
     /**
+     * Make a URL scheme-relative (alias of $util.schemeRelative())
+     * 'http://example.com' -> '//example.com'
+     * @param url
+     * @returns {string}
+     */
+    $util.srl = function srl(url) {
+        url = strVal(url);
+
+        return $util.url(url).toString().replace(rgxProtocol, '');
+    };
+
+    /**
      * Force a link to be clicked without user clicking it directly (useful if there's a confirmation dialog inbetween their click)
      * @param url
      * @param target

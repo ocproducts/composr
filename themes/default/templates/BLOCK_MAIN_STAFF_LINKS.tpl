@@ -8,7 +8,7 @@
 		<h3 class="toggleable_tray_title js-tray-header">
 			<a title="{!EDIT}: {!EXTERNAL_LINKS}" href="#!" class="top_left_toggleicon js-click-staff-block-flip">{!EDIT}</a>
 
-			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!EXTERNAL_LINKS}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a>
+			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!EXTERNAL_LINKS}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" /></a>
 
 			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!">{!EXTERNAL_LINKS}</a>
 		</h3>

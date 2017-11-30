@@ -644,47 +644,57 @@ jQuery(function ($) {
     };
 }(jQuery, window));
 
-/**
- * @param {jQuery} element the target element (LI)
- * @param {*} e object containing the val and meta properties (from the input list)
- */
-function autoCompleteElementFactory(element,e) {
-    var customItemTemplate = '<div><span />&nbsp;<small /></div>';
-    var template = window.jQuery(customItemTemplate).find('span')
-        .text('@' + e.val).end()
-        .find('small')
-        .text((e.meta == '') ? '' : '(' + e.meta + ')').end();
-    element.append(template);
-}
-
-/* Composr binder code */
-
-function setUpComcodeAutocomplete(name, wysiwyg) {
-    if (wysiwyg && window.$editing && window.$editing.wysiwygOn() && ((window.CKEDITOR == null) ||  (!window.CKEDITOR.instances[name]))) {
-        return;
+(function ($cms, $util, $dom) {
+    'use strict';
+    
+    var $jqueryAutocomplete = window.$jqueryAutocomplete = {};
+    
+    /**
+     * @param {jQuery} element the target element (LI)
+     * @param {*} e object containing the val and meta properties (from the input list)
+     */
+    function autoCompleteElementFactory(element,e) {
+        var customItemTemplate = '<div><span />&nbsp;<small /></div>';
+        var template = window.jQuery(customItemTemplate).find('span')
+            .text('@' + e.val).end()
+            .find('small')
+            .text((e.meta == '') ? '' : '(' + e.meta + ')').end();
+        element.append(template);
     }
 
-    if (!window.jQuery || !window.jQuery.fn.sew) {
-        $util.fatal('setUpComcodeAutocomplete(): jQuery.fn.sew plugin is not loaded');
-    }
-
-    window.jQuery('#' + name).sew({
-        values: [],
-        token: '@',
-        elementFactory: autoCompleteElementFactory,
-        onFilterChanged: function (sew, token, expression) {
-            $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,namelike}?id=' + encodeURIComponent(token) + $cms.keep()).then(function (responseXml) {
-                var listContents = responseXml && responseXml.querySelector('result');
-                
-                var newValues = [];
-                for (var i = 0; i < listContents.childNodes.length; i++) {
-                    newValues.push({
-                        val: listContents.childNodes[i].getAttribute('value'),
-                        meta: listContents.childNodes[i].getAttribute('displayname')
-                    });
-                }
-                sew.setValues(newValues);
-            });
+    /* Composr binder code */
+    /**
+     * @param name
+     * @param wysiwyg
+     */
+    $jqueryAutocomplete.setUpComcodeAutocomplete = function setUpComcodeAutocomplete(name, wysiwyg) {
+        if (wysiwyg && window.$editing && window.$editing.wysiwygOn() && ((window.CKEDITOR == null) ||  (!window.CKEDITOR.instances[name]))) {
+            return;
         }
-    });
-}
+
+        if (!window.jQuery || !window.jQuery.fn.sew) {
+            $util.fatal('$jqueryAutocomplete.setUpComcodeAutocomplete(): jQuery.fn.sew plugin is not loaded');
+            return;
+        }
+
+        window.jQuery('#' + name).sew({
+            values: [],
+            token: '@',
+            elementFactory: autoCompleteElementFactory,
+            onFilterChanged: function (sew, token, expression) {
+                $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,namelike}?id=' + encodeURIComponent(token) + $cms.keep()).then(function (responseXml) {
+                    var listContents = responseXml && responseXml.querySelector('result');
+
+                    var newValues = [];
+                    for (var i = 0; i < listContents.childNodes.length; i++) {
+                        newValues.push({
+                            val: listContents.childNodes[i].getAttribute('value'),
+                            meta: listContents.childNodes[i].getAttribute('displayname')
+                        });
+                    }
+                    sew.setValues(newValues);
+                });
+            }
+        });
+    };
+}(window.$cms, window.$util, window.$dom));

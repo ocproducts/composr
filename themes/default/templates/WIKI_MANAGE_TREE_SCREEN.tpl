@@ -11,7 +11,7 @@
 	{+START,SET,advanced_help}
 		<div class="ttb_left_spaced" data-toggleable-tray="{}">
 			<div class="js-tray-header">
-				<a class="toggleable_tray_button ttb_left js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!ADVANCED}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+				<a class="toggleable_tray_button ttb_left js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!ADVANCED}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" /></a>
 				<a class="toggleable_tray_button ttb_light js-tray-onclick-toggle-tray" href="#!">{!WIKI_MANAGE_TREE_TEXT_ADVANCED_LABEL}</a>:
 			</div>
 

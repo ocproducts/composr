@@ -29,11 +29,13 @@
 
         el = $dom.elArg(el);
 
-        var pic = $dom.$(el.parentNode, '.toggleable_tray_button img') || $dom.$('img#e_' + el.id),
-            isThemeWizard = Boolean(pic && pic.src && pic.src.includes('/themewizard.php'));
-
+        var iconImg = $dom.$(el.parentNode, '.toggleable_tray_button img') || $dom.$('img#e_' + el.id),
+            isThemeWizard = Boolean(iconImg && iconImg.src && iconImg.src.includes('/themewizard.php'));
+        
         if ($dom.notDisplayed(el)) {
             el.setAttribute('aria-expanded', 'true');
+            el.classList.add('is-expanded');
+            el.classList.remove('is-collapsed');
 
             if (animate) {
                 $dom.slideDown(el);
@@ -41,12 +43,12 @@
                 $dom.fadeIn(el);
             }
 
-            if (pic) {
+            if (iconImg) {
                 setTrayThemeImage('expand', 'contract', $IMG_expand, $IMG_contract, $IMG_contract2);
-                pic.setAttribute('alt', pic.getAttribute('alt').replace('{!EXPAND;^}', '{!CONTRACT;^}'));
-                pic.title = '{!CONTRACT;^}';
-                if (pic.cmsTooltipTitle !== undefined) {
-                    pic.cmsTooltipTitle = '{!CONTRACT;^}';
+                iconImg.setAttribute('alt', iconImg.getAttribute('alt').replace('{!EXPAND;^}', '{!CONTRACT;^}'));
+                iconImg.title = '{!CONTRACT;^}';
+                if (iconImg.cmsTooltipTitle !== undefined) {
+                    iconImg.cmsTooltipTitle = '{!CONTRACT;^}';
                 }
             }
 
@@ -55,6 +57,8 @@
             return true;
         } else {
             el.setAttribute('aria-expanded', 'false');
+            el.classList.remove('is-expanded');
+            el.classList.add('is-collapsed');
 
             if (animate) {
                 $dom.slideUp(el);
@@ -62,12 +66,12 @@
                 $dom.hide(el);
             }
 
-            if (pic) {
+            if (iconImg) {
                 setTrayThemeImage('contract', 'expand', $IMG_contract, $IMG_expand, $IMG_expand2);
-                pic.setAttribute('alt', pic.getAttribute('alt').replace('{!CONTRACT;^}', '{!EXPAND;^}'));
-                pic.title = '{!EXPAND;^}';
-                if (pic.cmsTooltipTitle !== undefined) {
-                    pic.cmsTooltipTitle = '{!EXPAND;^}';
+                iconImg.setAttribute('alt', iconImg.getAttribute('alt').replace('{!CONTRACT;^}', '{!EXPAND;^}'));
+                iconImg.title = '{!EXPAND;^}';
+                if (iconImg.cmsTooltipTitle !== undefined) {
+                    iconImg.cmsTooltipTitle = '{!EXPAND;^}';
                 }
             }
 
@@ -79,19 +83,19 @@
         // Execution ends here
 
         function setTrayThemeImage(beforeThemeImg, afterThemeImg, before1Url, after1Url, after2Url) {
-            var is1 = $dom.matchesThemeImage(pic.src, before1Url);
+            var is1 = $dom.matchesThemeImage(iconImg.src, before1Url);
 
             if (is1) {
                 if (isThemeWizard) {
-                    pic.src = pic.src.replace(beforeThemeImg, afterThemeImg);
+                    iconImg.src = iconImg.src.replace(beforeThemeImg, afterThemeImg);
                 } else {
-                    pic.src = $cms.img(after1Url);
+                    iconImg.src = $util.srl(after1Url);
                 }
             } else {
                 if (isThemeWizard) {
-                    pic.src = pic.src.replace(beforeThemeImg + '2', afterThemeImg + '2');
+                    iconImg.src = iconImg.src.replace(beforeThemeImg + '2', afterThemeImg + '2');
                 } else {
-                    pic.src = $cms.img(after2Url);
+                    iconImg.src = $util.srl(after2Url);
                 }
             }
         }
@@ -828,7 +832,7 @@
                 }
             }
 
-            if (url.includes(window.location.host)) { // TODO: FIXME Salman (only compare the actual hostname component of the url variable, vaguelly like host(url)==window.location.host)
+            if ($util.url(url).host === window.location.host) {
                 url += (!url.includes('?') ? '?' : '&') + 'overlay=1';
             }
 
@@ -970,6 +974,9 @@
         });
     };
 
+    /**
+     * @memberof $cms.ui
+     */
     $cms.ui.enableSubmitAndPreviewButtons = function enableSubmitAndPreviewButtons() {
         // [accesskey="u"] identifies submit button, [accesskey="p"] identifies preview button
         var buttons = $dom.$$('input[accesskey="u"], button[accesskey="u"], input[accesskey="p"], button[accesskey="p"]');

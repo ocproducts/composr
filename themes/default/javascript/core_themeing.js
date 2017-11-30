@@ -12,9 +12,9 @@
 
     // INIT CODE
     window.templateEditorOpenFiles || (window.templateEditorOpenFiles = {});
-    window.doneCleanupTemplateMarkers = window.doneCleanupTemplateMarkers !== undefined ? !!window.doneCleanupTemplateMarkers : false;
+    window.doneCleanupTemplateMarkers = Boolean(window.doneCleanupTemplateMarkers);
 
-    if ($cms.pageSearchParams().get('keep_template_magic_markers') === '1') {
+    if ($cms.pageUrl().searchParams.get('keep_template_magic_markers') === '1') {
         $dom.ready.then(function () {
             cleanupTemplateMarkers(window);
         });
@@ -183,7 +183,7 @@
         }
 
         if (document.getElementById('mobile_preview_' + fileId).checked) {
-            url += (url.indexOf('?') == -1) ? '?' : '&';
+            url += (url.indexOf('?') === -1) ? '?' : '&';
             url += 'keep_mobile=1';
         }
 
@@ -350,11 +350,11 @@
                 li.addEventListener('mousemove', function (event) {
                     $cms.ui.repositionTooltip(this, event);
                 });
-                li.addEventListener('mouseover', function (cssText) {
+                li.addEventListener('mouseover', (function (cssText) {
                     return function (event) {
                         $cms.ui.activateTooltip(this, event, cssText, 'auto');
                     };
-                }(css_text));
+                }(css_text)));
 
                 // Jump-to
                 a.addEventListener('click', (function (selector) {
@@ -833,7 +833,7 @@
 
             // Set content from revision
             var url = templateEditorLoadingUrl(file, revisionId);
-            $cms.loadSnippet(url, null, true).then(function (html) {
+            $cms.loadSnippet(url).then(function (html) {
                 document.getElementById('t_' + fileId).className = 'tab tab_active';
 
                 templateEditorTabLoadedContent(html, file);

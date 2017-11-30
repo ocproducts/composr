@@ -2438,7 +2438,7 @@
      * @returns {boolean}
      */
     $dom.matchesThemeImage = function matchesThemeImage(src, url) {
-        return $util.schemeRelative(src) === $util.schemeRelative(url);
+        return $util.srl(src) === $util.srl(url);
     };
 
     /**

@@ -178,9 +178,9 @@ It is important that:
 [*] You use the "//" bits. Usually Composr will be running as HTML even though it is marked-up as XHTML (this is a little known fact but is the case for almost websites out there, whatever they are running). HTML interprets everything in the script tag as CDATA automatically so everything inside there is parsed as JavaScript; the "//" bits are simply JavaScript comments to stop the CDATA bits being interpreted as JavaScript code.
 [*] You should actually use CDATA so the document does conform as XHTML.
 [*] You should not put it all on one line, because then the JavaScript line-comment will end up commenting all the code out and nothing will happen.
-[*] Don't use any Composr JavaScript except for JavaScript in the main [tt]global.js[/tt] library, unless you have put it inside an [tt]onload[/tt] event handler, like:
+[*] Don't use any Composr JavaScript except for JavaScript in the main [tt]global.js[/tt] library, unless you have put it inside a [tt]$dom.ready[/tt] promise callback function, like:
 [code="JavaScript"]
-add_event_listener_abstract(window,'load',function() { ... });
+$dom.ready.then(function () { ... });
 [/code]
 [*] This is because Composr does not want to pre-load any more JavaScript library code than is necessary via loading it in <head> (it stops the page rendering at all until the files have been downloaded), and we can't assume the order JavaScript will be loaded in compared to the order in which inline code is executed (it changes randomly, and between browsers). By putting our code inside an onload handler we force it to only run after all our dependent JavaScript files have loaded.
 [/list]
@@ -196,18 +196,18 @@ In the template:
 Placing on the window object is the same as setting a global variable.
 Writing it like this just makes it more clear it's a global variable which reduces the risk of obscure bugs.
 Note the escaping here: It adds escaping for both the string quotes (;) as well as the CDATA section (/). This makes sure the parameter can not be used to create an XSS injection vulnerability. */
-window.my_template_parameter='{MY_TEMPLATE_PARAMETER;/}';
+window.myTemplateParameter='{MY_TEMPLATE_PARAMETER;/}';
 //]]></script>
 
-<a href="#" onclick="output_my_parameter();">Click me</a>
+<a href="#!" onclick="outputMyParameter();">Click me</a>
 [/code]
 
 In the JavaScript library (which must have been loaded using [tt]require_javascript[/tt]):
 [code="JavaScript"]
-function output_my_parameter()
+function outputMyParameter()
 {
 	// Output the global variable we made.
-	window.alert(window.my_template_parameter);
+	window.alert(window.myTemplateParameter);
 }
 [/code]
 
@@ -217,11 +217,11 @@ The above example used global variables which is bad programming practice. I did
 
 In the template:
 [code="HTML"]
-<a href="#" onclick="output_my_parameter('{MY_TEMPLATE_PARAMETER;*}');">Click me</a>
+<a href="#!" onclick="outputMyParameter('{MY_TEMPLATE_PARAMETER;*}');">Click me</a>
 [/code]
 In the JavaScript library:
 [code="JavaScript"]
-function output_my_parameter(message)
+function outputMyParameter(message)
 {
 	window.alert(message);
 }
