@@ -31,7 +31,6 @@ import_vb3,vBulletin importer,,,"Needs ongoing maintenance, and liable to be ine
 import_wordpress,Wordpress importer,,,"Needs ongoing maintenance, and liable to be ineffective as people need plugin data importing too.",No,
 forum_in_portal,"""Show forum within website"" option",,,Not regularly tested and has the potential for instability.,No,
 sms,SMS notifications,,,Not regularly tested. Could potentially break due to third-party changes.,No,
-google_geocoding,Google Geocoding,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,geocoding automated test.
 google_translate,Google Translate integration,,,Not regularly tested. Could potentially break due to third-party changes.,No,
 ldap,LDAP,,,Not regularly tested due to the complexity of having multiple working LDAP test environments.,No,
 httpauth,HTTP authentication,,,Not regularly tested.,No,
@@ -73,7 +72,7 @@ rootkit_detector,Rootkit detector,ocProducts,,Not regularly tested. Not compatib
 failover_mode,Failover Mode,ocProducts,,Not regularly tested.,No,
 rate_limit,Rate Limiting,ocProducts,,Not regularly tested.,No,
 youtube,YouTube media,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,
-sitemap_submit,XML Sitemap auto-submit,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,geocoding automated test.
+sitemap_submit,XML Sitemap auto-submit,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,sitemap_submit automated test.
 external_urls,"Recommended links on staff dashboard, and accuracy of external URLs in general",ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,Broken links automated test.
 platform_modsecurity,ModSecurity,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,
 platform_suhosin,Suhosin,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,
@@ -113,8 +112,9 @@ country_codes,ISO countries (internal list),ocProducts,,Could potentially break 
 currency,Currency conversion,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,
 stop_forum_spam,Stop Forum Spam integration,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,
 newsletter_spam_check,Postmark spam-check integration,ocProducts,,Could potentially break due to third-party changes.,No,
-geocode_internal,IP address geocoding (internal list),ocProducts,ocProducts,Could potentially break due to third-party changes.,No,Part of release process / geocoding automated test..
-geocode_external,"IP address geocoding (web service, more detailed)",ocProducts,ocProducts,Could potentially break due to third-party changes.,No,geocoding automated test.
+geocoding_google,Google Geocoding,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,geocoding automated test.
+reverse_geocoding_google,Google Geocoding (reverse),ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,geocoding automated test.
+ip_geocoding,IP address geocoding (internal list),ocProducts,ocProducts,Could potentially break due to third-party changes.,No,Part of release process / geocoding automated test..
 ssl_trust_internal,SSL certificate trust chains (internal list),ocProducts,,Could potentially break due to third-party changes.,No,Part of release process.
 taxcloud,TaxCloud integration for US sales tax,ocProducts,,Could potentially break due to third-party changes.,No,Unit test.
 shippo,Shippo integration for shipping calculations,ocProducts,,Could potentially break due to third-party changes.,No,Unit test.
