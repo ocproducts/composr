@@ -18,7 +18,7 @@
  */
 class geocoding_test_set extends cms_test_case
 {
-    public function testGeocodeInternal()
+    public function testIPGeocode()
     {
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('ip_country', 'id');
         $has_geolocation_data = ($test !== null);
@@ -32,7 +32,17 @@ class geocoding_test_set extends cms_test_case
         $this->assertTrue(geolocate_ip('217.160.72.6') == 'DE');
     }
 
-    public function testGeocodeExternal()
+    public function testGeocodeGoogle()
+    {
+        require_code('locations_geocoding');
+
+        $result = geocode('Berlin, DE');
+        $this->assertTrue(($result !== null) && ($result[0] > 52.0) && ($result[0] < 53.0) && ($result[1] > 13.0) && ($result[1] < 14.0));
+
+        // Note if this breaks there's also similar code in locations_catalogues_geoposition and locations_catalogues_geopositioning (non-bundled addons)
+    }
+
+    public function testReverseGeocodeGoogle()
     {
         require_code('locations_geocoding');
 
