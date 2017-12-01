@@ -12,16 +12,127 @@ For example:
  "nlevel" has the image to the left of the anchor, like with most of the other menu types.
 */
 
+.menu_type__dropdown li.toplevel {
+	border-left: 1px solid #cacaca;
+	margin-bottom: 0;
+	transition: color,background-color 0.5s linear;
+	font-size: 0.9em;
+	box-sizing: border-box;
+}
+
+.menu_type__dropdown a.toplevel_link,
+.menu_type__dropdown a.nlevel_link {
+	display: block;
+	outline: 0;
+	text-decoration: none;
+	color: inherit;
+}
+
+.menu_type__dropdown .nlevel .has_img > a > img {
+	width: 20px;
+}
+
+.menu_type__dropdown img, .menu_type__dropdown span {
+	vertical-align: middle;
+}
+
+.menu_type__dropdown img {
+	margin-right: 0.2em;
+}
+
+/*{+START,CSS_MODE,mobile}*/
+.menu-dropdown-toggle-btn {
+	text-decoration: none;
+	color: {$GET,WB} !important;
+	position: absolute;
+	padding: 0.75em;
+}
+
+.menu-dropdown-toggle-btn:hover {
+	color: {$GET,WB};
+}
+
+.menu-dropdown-toggle-btn:hover span {
+	text-decoration: underline;
+}
+
+.menu-dropdown-toggle-btn * {
+	vertical-align: middle;
+}
+
+.menu-dropdown-toggle-btn::after {
+	padding-left: 0.25em;
+	content: "\25bc"; /* Downward triangle arrow */
+	vertical-align: middle;
+	font-size: 0.85em;
+}
+
+.menu-dropdown-content {
+	display: none;
+	position: absolute;
+	top: 100%;
+	width: 100%;
+	left: 0;
+	z-index: 1000;
+	background-color: {$GET,area_5_background};
+	box-shadow: 0px 20px 25px 0px {$GET,dark_border};
+}
+
+.menu_type__dropdown li {
+	border-top: 1px solid {$GET,standard_border};
+	border-left: 1px solid {$GET,standard_border};
+	color: {$GET,BW};
+}
+
+.menu_type__dropdown li.nlevel {
+	margin-left: 2em;
+}
+
+.menu_type__dropdown li.toplevel,
+.menu_type__dropdown li.nlevel {
+	background-color: {$GET,area_5_background};
+}
+
+.menu_type__dropdown a.toplevel_link,
+.menu_type__dropdown a.nlevel_link {
+	padding: 1.2em 3em 1.2em 1em;
+	background: url('{$IMG;,icons/24x24/buttons/proceed}') transparent no-repeat top 1em right 1em;
+}
+
+.menu_type__dropdown li.toplevel:hover,
+.menu_type__dropdown li.nlevel:hover,
+.menu_type__dropdown a.toplevel_link:hover,
+.menu_type__dropdown a.nlevel_link:hover,
+.menu_type__dropdown li.current > a.toplevel_link,
+.menu_type__dropdown li.current > a.nlevel_link {
+	background-color: {$GET,area_hover_2_background};
+}
+
+/*{+END}*/
+
+/*{+START,CSS_MODE,desktop}*/
+.menu-dropdown-toggle-btn {
+	display: none;
+}
 
 .menu_type__dropdown li.toplevel {
 	float: left;
-	border-left: 1px solid #cacaca;
-	margin-bottom: 0;
-	transition: color, background-color 0.5s linear;
-	font-size: 0.9em;
 	padding: 0.5em 0.25em;
-	box-sizing: border-box;
 	width: {$DIV_FLOAT*,100,9}%;
+}
+
+.menu_type__dropdown li.toplevel.current,
+.menu_type__dropdown li.toplevel:hover {
+	background-image: linear-gradient(to bottom, #ffffff, #cbdbeb);
+}
+
+.menu_type__dropdown a.toplevel_link,
+.menu_type__dropdown a.nlevel_link {
+	padding: 0.3em 0.4em !important;
+}
+
+.menu_type__dropdown li.toplevel.first {
+	border-left: 0;
 }
 
 .menu_type__dropdown li.toplevel.last {
@@ -39,15 +150,8 @@ For example:
 	float: left;
 }
 
-.menu_type__dropdown li.toplevel.current, .menu_type__dropdown li.toplevel:hover {
-	background-image: linear-gradient(to bottom, #ffffff, #cbdbeb);
-}
-
 .menu_type__dropdown a.toplevel_link {
-	display: block;
 	padding: 0.4em 0.5em;
-	outline: 0;
-	text-decoration: none;
 	text-align: center;
 	color: {$GET,area_text};
 	max-width: 107px;
@@ -56,6 +160,12 @@ For example:
 
 .menu_type__dropdown a.toplevel_link span {
 	display: block;
+}
+
+.menu_type__dropdown li.nlevel.has_children > a.nlevel_link::after {
+	display: inline-block;
+	vertical-align: middle;
+	content: '→'; /* Right arrow */
 }
 
 .menu_type__dropdown .toplevel_link a, .menu_type__dropdown .toplevel_link a:visited, .menu_type__dropdown .toplevel_link a:hover {
@@ -67,18 +177,16 @@ For example:
 	margin-bottom: 0.75em;
 }
 
-
 .menu_type__dropdown ul.nlevel, .menu_type__dropdown div.nlevel {
 	box-shadow: 3px 5px 13px #c9c9c9;
 	line-height: 1.4em;
 }
 
-.menu_type__dropdown .nlevel ul.nlevel {
+.menu_type__dropdown ul.nlevel ul.nlevel {
 	margin-top: -1px; /* To compensate for border size */
 }
 
 .menu_type__dropdown .nlevel li {
-	padding: 0.3em 0.4em !important;
 	white-space: nowrap;
 	overflow: hidden; /* Needed as images are set to float */
 }
@@ -94,7 +202,7 @@ For example:
 	font-weight: normal;
 	border-bottom: 1px solid #e7eef8;
 	min-height: 20px;
-
+	
 	/* We do want wrapping for this, as menu labels could be longer than the available space between the start of the dropdown label and the edge of the fixed width */
 	white-space: normal;
 }
@@ -117,14 +225,17 @@ For example:
 	text-decoration: underline;
 }
 
-.menu_type__dropdown .nlevel, .menu_type__dropdown .nlevel a, .menu_type__dropdown .nlevel a:visited, .menu_type__dropdown .nlevel a:hover {
+.menu_type__dropdown .nlevel, 
+.menu_type__dropdown .nlevel a, 
+.menu_type__dropdown .nlevel a:visited, 
+.menu_type__dropdown .nlevel a:hover {
 	color: {$GET,area_text};
 }
 
 .menu_type__dropdown .nlevel .current a {
 	background: transparent url('{$IMG;,1x/menus/menu_bullet_current}') no-repeat 5px 6px !important;
 }
-.menu_type__dropdown .nlevel .has_img>a, .menu_type__dropdown .nlevel.current.has_img>a {
+body .menu_type__dropdown .nlevel .has_img>a, body .menu_type__dropdown .nlevel.current.has_img>a {
 	background: none !important;
 }
 
@@ -149,17 +260,4 @@ For example:
 		background-image: url('{$IMG;,2x/menus/menu_bullet_hover}');
 	}
 }
-
-.menu_type__dropdown .nlevel .has_img>img {
-	width: 20px;
-	float: left; /* So that wrapping alignment is neat */
-}
-
-
-.menu_type__dropdown img, .menu_type__dropdown span {
-	vertical-align: middle;
-}
-
-.menu_type__dropdown img {
-	margin-right: 0.5em;
-}
+/*{+END}*/

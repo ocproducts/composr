@@ -1191,7 +1191,7 @@
             }
             url += '#composrcms';
 
-            var SOFTWARE_CHAT_EXTRA = $util.format('{!SOFTWARE_CHAT_EXTRA;^}', [$cms.filter.html(window.location.href.replace($cms.baseUrl(), 'http://baseurl'))]);
+            var SOFTWARE_CHAT_EXTRA = $util.format('{!SOFTWARE_CHAT_EXTRA;^}', [$cms.filter.html(window.location.href.replace($cms.getBaseUrl(), 'http://baseurl'))]);
             var html = /** @lang HTML */'' +
                 '<div class="software_chat">' +
                 '   <h2>{!CMS_COMMUNITY_HELP}</h2>' +
@@ -1605,7 +1605,7 @@
 
                 helperPanelToggle.firstElementChild.src = $cms.img('{$IMG;,icons/14x14/helper_panel_hide}');
                 if (helperPanelToggle.firstElementChild.srcset !== undefined) {
-                    helperPanelToggle.firstElementChild.srcset = $cms.img('{$IMG;,icons/28x28/helper_panel_hide} 2x');
+                    helperPanelToggle.firstElementChild.srcset = $cms.img('{$IMG;,icons/28x28/helper_panel_hide}') + ' 2x';
                 }
             } else {
                 if ($cms.readCookie('hide_helper_panel') === '') {
@@ -1628,7 +1628,7 @@
                 helperPanelToggle.firstElementChild.src = $cms.img('{$IMG;,icons/14x14/helper_panel_show}');
 
                 if (helperPanelToggle.firstElementChild.srcset !== undefined) {
-                    helperPanelToggle.firstElementChild.srcset = $cms.img('{$IMG;,icons/28x28/helper_panel_show} 2x');
+                    helperPanelToggle.firstElementChild.srcset = $cms.img('{$IMG;,icons/28x28/helper_panel_show}') + ' 2x';
                 }
             }
         }
@@ -1662,16 +1662,33 @@
     $cms.views.DropdownMenu = DropdownMenu;
     /**
      * @memberof $cms.views
-     * @class
+     * @class $cms.views.DropdownMenu
      * @extends Menu
      */
     function DropdownMenu(params) {
         DropdownMenu.base(this, 'constructor', arguments);
+        
+        this.menuContentEl = this.$('.js-el-menu-content');
+        
+        var isMobile = $cms.isCssMode('mobile'),
+            that = this;
+        $dom.on(window, 'resize orientationchange', $util.debounce(function () {
+            if (isMobile !== $cms.isCssMode('mobile')) {
+                // CSS mode changed, re-attach event listeners
+                isMobile = $cms.isCssMode('mobile');
+                that.delegateEvents();
+            }
+        }, 200));
     }
 
-    $util.inherits(DropdownMenu, Menu, /**@lends DropdownMenu#*/{
+    $util.inherits(DropdownMenu, Menu, /**@lends $cms.views.DropdownMenu#*/{
         events: function () {
-            return {
+            var mobileEvents = {
+                'click .js-click-toggle-menu-content': 'toggleMenuContent',
+                'click .js-click-toggle-sub-menu': 'togleSubMenu'
+            };
+            
+            var desktopEvents = {
                 'mousemove .js-mousemove-timer-pop-up-menu': 'timerPopUpMenu',
                 'mouseout .js-mouseout-clear-pop-up-timer': 'clearPopUpTimer',
                 'focus .js-focus-pop-up-menu': 'focusPopUpMenu',
@@ -1683,7 +1700,24 @@
                 'mousemove .js-mousemove-admin-timer-pop-up-menu': 'adminTimerPopUpMenu',
                 'mouseout .js-mouseout-admin-clear-pop-up-timer': 'adminClearPopUpTimer'
             };
+            
+            return $cms.isCssMode('mobile') ? mobileEvents : desktopEvents;
         },
+        
+        /* Mobile methods */
+        
+        toggleMenuContent: function (e) {
+            e.preventDefault();
+            $dom.toggle(this.menuContentEl);
+        },
+
+        togleSubMenu: function (e, clicked) {
+            var subMenuId = clicked.dataset.vwSubMenuId;
+            e.preventDefault();
+            $dom.toggle('#' + subMenuId);
+        },
+        
+        /* Desktop methods */
 
         timerPopUpMenu: function (e, target) {
             var menu = $cms.filter.id(this.menu),
@@ -1691,7 +1725,7 @@
 
             if (!target.timer) {
                 target.timer = setTimeout(function () {
-                    popUpMenu(menu + '_dexpand_' + rand, 'below', menu + '_d');
+                    popupMenu(menu + '_dexpand_' + rand, 'below', menu + '_d');
                 }, 200);
             }
         },
@@ -1707,21 +1741,21 @@
             var menu = $cms.filter.id(this.menu),
                 rand = strVal(target.dataset.vwRand);
 
-            popUpMenu(menu + '_dexpand_' + rand, 'below', menu + '_d', true);
+            popupMenu(menu + '_dexpand_' + rand, 'below', menu + '_d', true);
         },
 
         popUpMenu: function (e, target) {
             var menu = $cms.filter.id(this.menu),
                 rand = strVal(target.dataset.vwRand);
 
-            popUpMenu(menu + '_dexpand_' + rand, null, menu + '_d');
+            popupMenu(menu + '_dexpand_' + rand, null, menu + '_d');
         },
 
         setActiveMenu: function (e, target) {
             if (!target.contains(e.relatedTarget)) {
                 var menu = $cms.filter.id(this.menu);
 
-                if (window.activeMenu == null) {
+                if (getActiveMenu() == null) {
                     setActiveMenu(target.id, menu + '_d');
                 }
             }
@@ -1729,7 +1763,7 @@
 
         unsetActiveMenu: function (e, target) {
             if (!target.contains(e.relatedTarget)) {
-                window.activeMenu = null;
+                setActiveMenu(null);
                 recreateCleanTimeout();
             }
         },
@@ -1739,21 +1773,20 @@
             var menu = $cms.filter.id(this.menu),
                 rand = strVal(target.dataset.vwRand);
 
-            window.menuHoldTime = 3000;
-            if (!target.dataset.timer) {
-                target.dataset.timer = setTimeout(function () {
-                    var ret = popUpMenu(menu + '_dexpand_' + rand, 'below', menu + '_d', true);
+            setMenuHoldTime(3000);
+            if (!target.timer) {
+                target.timer = setTimeout(function () {
+                    popupMenu(menu + '_dexpand_' + rand, 'below', menu + '_d', true);
                     try {
                         document.getElementById('search_content').focus();
                     } catch (ignore) {}
-                    return ret;
                 }, 200);
             }
         },
         adminClearPopUpTimer: function (e, target) {
-            if (target.dataset.timer) {
-                clearTimeout(target.dataset.timer);
-                target.dataset.timer = null;
+            if (target.timer) {
+                clearTimeout(target.timer);
+                target.timer = null;
             }
         }
     });
@@ -1778,7 +1811,7 @@
 
         unsetActiveMenu: function (e, target) {
             if (!target.contains(e.relatedTarget)) {
-                window.activeMenu = null;
+                setActiveMenu(null);
                 recreateCleanTimeout();
             }
         }
@@ -1807,10 +1840,10 @@
             };
         },
         popUpMenu: function () {
-            popUpMenu(this.popup, null, this.menu + '_p');
+            popupMenu(this.popup, null, this.menu + '_p');
         },
         setActiveMenu: function () {
-            if (!window.activeMenu) {
+            if (getActiveMenu() == null) {
                 setActiveMenu(this.popup, this.menu + '_p');
             }
         }
@@ -1869,8 +1902,9 @@
             var subId = link.dataset.vwSubMenuId,
                 subEl = this.$('#' + subId),
                 href;
-
+            
             if ($dom.notDisplayed(subEl)) {
+                e.preventDefault();
                 $dom.show(subEl);
             } else {
                 href = link.getAttribute('href');
@@ -1878,10 +1912,9 @@
                 if (href && !href.startsWith('#')) {
                     return;
                 }
+                e.preventDefault();
                 $dom.hide(subEl);
             }
-
-            e.preventDefault();
         }
     });
 
@@ -1904,14 +1937,14 @@
     $cms.views.SelectMenu = SelectMenu;
     /**
      * @memberof $cms.views
-     * @class
+     * @class $cms.views.SelectMenu
      * @extends Menu
      */
     function SelectMenu() {
         SelectMenu.base(this, 'constructor', arguments);
     }
 
-    $util.inherits(SelectMenu, Menu, /**@lends SelectMenu#*/{
+    $util.inherits(SelectMenu, Menu, /**@lends $cms.views.SelectMenu#*/{
         events: function () {
             return {
                 'change .js-change-redirect-to-value': 'redirect'
@@ -1946,9 +1979,9 @@
                     return a.score - b.score;
                 });
 
-                minScore = possibilities[0].score;
+                minScore = Number(possibilities[0].score);
                 for (i = 0; i < possibilities.length; i++) {
-                    if (possibilities[i].score != minScore) {
+                    if (Number(possibilities[i].score) !== minScore) {
                         break;
                     }
                     possibilities[i].element.selected = true;
@@ -1983,9 +2016,9 @@
                     return a.score - b.score;
                 });
 
-                minScore = possibilities[0].score;
+                minScore = Number(possibilities[0].score);
                 for (i = 0; i < possibilities.length; i++) {
-                    if (possibilities[i].score != minScore) {
+                    if (Number(possibilities[i].score) !== minScore) {
                         break;
                     }
                     possibilities[i].element.classList.remove('non_current');
@@ -1994,6 +2027,10 @@
             }
         }
 
+        /**
+         * @param url
+         * @return {number|null}
+         */
         function menuItemIsSelected(url) {
             url = strVal(url);
 
@@ -2019,35 +2056,49 @@
             return null;
         }
     }
-
-    window.menuHoldTime = 500;
-    window.activeMenu = null;
-    window.lastActiveMenu = null;
-
-    var cleanMenusTimeout,
+    
+    var menuHoldTime = 500,
+        activeMenu,
+        cleanMenusTimeout,
         lastActiveMenu;
+    
+    function setMenuHoldTime(milliseconds) {
+        menuHoldTime = milliseconds;
+    }
 
     function setActiveMenu(id, menu) {
-        window.activeMenu = id;
+        activeMenu = id;
         if (menu != null) {
             lastActiveMenu = menu;
         }
+    }
+    
+    function getActiveMenu() {
+        return activeMenu;
     }
 
     function recreateCleanTimeout() {
         if (cleanMenusTimeout) {
             clearTimeout(cleanMenusTimeout);
         }
-        cleanMenusTimeout = setTimeout(cleanMenus, window.menuHoldTime);
+        cleanMenusTimeout = setTimeout(cleanMenus, menuHoldTime);
     }
 
-    function popUpMenu(id, place, menu, outsideFixedWidth) {
+    /**
+     * @param popupId
+     * @param place
+     * @param menu
+     * @param outsideFixedWidth
+     */
+    function popupMenu(popupId, place, menu, outsideFixedWidth) {
+        popupId = strVal(popupId);
         place = strVal(place) || 'right';
-        outsideFixedWidth = !!outsideFixedWidth;
+        menu = strVal(menu);
+        outsideFixedWidth = Boolean(outsideFixedWidth);
 
-        var el = $dom.$('#' + id);
+        var popupEl = $dom.$('#' + popupId);
 
-        if (!el) {
+        if (!popupEl) {
             return;
         }
 
@@ -2055,48 +2106,47 @@
             clearTimeout(cleanMenusTimeout);
         }
 
-        if ($dom.isDisplayed(el)) {
-            return false;
+        if ($dom.isDisplayed(popupEl)) {
+            return;
         }
-
-        window.activeMenu = id;
+        
+        setActiveMenu(popupId);
         lastActiveMenu = menu;
         cleanMenus();
 
-        var l = 0;
-        var t = 0;
-        var p = el.parentNode;
+        var left = 0,
+            top = 0,
+            parentEl = popupEl.parentElement;
 
         // Our own position computation as we are positioning relatively, as things expand out
-        if ($dom.isCss(p.parentElement, 'position', 'absolute')) {
-            l += p.offsetLeft;
-            t += p.offsetTop;
+        if ($dom.isCss(parentEl.parentElement, 'position', 'absolute')) {
+            left += parentEl.offsetLeft;
+            top += parentEl.offsetTop;
         } else {
-            while (p) {
-                if (p && $dom.isCss(p, 'position', 'relative')) {
+            while (parentEl) {
+                if (parentEl && $dom.isCss(parentEl, 'position', 'relative')) {
                     break;
                 }
 
-                l += p.offsetLeft;
-                t += p.offsetTop - (parseInt(p.style.borderTop) || 0);
-                p = p.offsetParent;
+                left += parentEl.offsetLeft;
+                top += parentEl.offsetTop - (parseInt(parentEl.style.borderTop) || 0);
+                parentEl = parentEl.offsetParent;
 
-                if (p && $dom.isCss(p, 'position', 'absolute')) {
+                if (parentEl && $dom.isCss(parentEl, 'position', 'absolute')) {
                     break;
                 }
             }
         }
         if (place === 'below') {
-            t += el.parentNode.offsetHeight;
+            top += popupEl.parentElement.offsetHeight;
         } else {
-            l += el.parentNode.offsetWidth;
+            left += popupEl.parentElement.offsetWidth;
         }
 
         var fullHeight = $dom.getWindowScrollHeight(); // Has to be got before e is visible, else results skewed
-        el.style.position = 'absolute';
-        el.style.left = '0'; // Setting this lets the browser calculate a more appropriate (larger) width, before we set the correct left for that width will fit
-        el.style.display = 'block';
-        $dom.fadeIn(el);
+        popupEl.style.position = 'absolute';
+        popupEl.style.left = '0'; // Setting this lets the browser calculate a more appropriate (larger) width, before we set the correct left for that width will fit
+        $dom.fadeIn(popupEl);
 
         var fullWidth = (window.scrollX === 0) ? $dom.getWindowWidth() : window.document.body.scrollWidth;
 
@@ -2107,70 +2157,55 @@
             }
         }
 
-        var eParentWidth = el.parentNode.offsetWidth;
-        el.style.minWidth = eParentWidth + 'px';
-        var eParentHeight = el.parentNode.offsetHeight;
-        var eWidth = el.offsetWidth;
-        function positionL() {
-            var posLeft = l;
+        var eParentWidth = popupEl.parentElement.offsetWidth;
+        popupEl.style.minWidth = eParentWidth + 'px';
+        var eParentHeight = popupEl.parentElement.offsetHeight;
+        var eWidth = popupEl.offsetWidth;
+        function positionLeft() {
+            var posLeft = left;
             if (place === 'below') { // Top-level of drop-down
                 if (posLeft + eWidth > fullWidth) {
                     posLeft += eParentWidth - eWidth;
                 }
             } else { // NB: For non-below, we can't assume 'left' is absolute, as it is actually relative to parent node which is itself positioned
-                if ($dom.findPosX(el.parentNode, true) + eWidth + eParentWidth + 10 > fullWidth) {
+                if ($dom.findPosX(popupEl.parentNode, true) + eWidth + eParentWidth + 10 > fullWidth) {
                     posLeft -= eWidth + eParentWidth;
                 }
             }
-            el.style.left = posLeft + 'px';
+            popupEl.style.left = posLeft + 'px';
         }
-        positionL();
-        setTimeout(positionL, 0);
-        function positionT() {
-            var posTop = t;
-            if (posTop + el.offsetHeight + 10 > fullHeight) {
-                var abovePosTop = posTop - $dom.contentHeight(el) + eParentHeight - 10;
+        positionLeft();
+        setTimeout(positionLeft, 0);
+        function positionTop() {
+            var posTop = top;
+            if (posTop + popupEl.offsetHeight + 10 > fullHeight) {
+                var abovePosTop = posTop - $dom.contentHeight(popupEl) + eParentHeight - 10;
                 if (abovePosTop > 0) {
                     posTop = abovePosTop;
                 }
             }
-            el.style.top = posTop + 'px';
+            popupEl.style.top = posTop + 'px';
         }
-        positionT();
-        setTimeout(positionT, 0);
-        el.style.zIndex = 200;
+        positionTop();
+        setTimeout(positionTop, 0);
+        popupEl.style.zIndex = 200;
 
         recreateCleanTimeout();
-
-        return false;
     }
 
     function cleanMenus() {
         cleanMenusTimeout = null;
 
-        var m = $dom.$('#r_' + lastActiveMenu);
-        if (!m) {
+        var menuEl = $dom.$('#r_' + lastActiveMenu);
+        if (!menuEl) {
             return;
         }
-        var tags = m.querySelectorAll('.nlevel');
-        var e = (window.activeMenu == null) ? null : document.getElementById(window.activeMenu), t;
-        var i, hideable;
+        var tags = menuEl.querySelectorAll('ul.nlevel, div.nlevel'),
+            activeMenuEl = (getActiveMenu() != null) ? document.getElementById(getActiveMenu()) : null,
+            hideable;
         
-        for (i = tags.length - 1; i >= 0; i--) {
-            if (tags[i].localName !== 'ul' && tags[i].localName !== 'div') {
-                continue;
-            }
-
-            hideable = true;
-            if (e) {
-                t = e;
-                do {
-                    if (tags[i].id === t.id) {
-                        hideable = false;
-                    }
-                    t = t.parentNode ? t.parentNode.parentNode : null;
-                } while (t && (t.id !== 'r_' + lastActiveMenu));
-            }
+        for (var i = tags.length - 1; i >= 0; i--) {
+            hideable = activeMenuEl ? !tags[i].contains(activeMenuEl) : true;
             if (hideable) {
                 tags[i].style.left = '-999px';
                 tags[i].style.display = 'none';

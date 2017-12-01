@@ -32,8 +32,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 
 				{$,Main menu}
 				<div class="global_navigation">
-					{+START,IF,{$DESKTOP}}<div class="block_desktop">{$BLOCK,block=menu,param={$CONFIG_OPTION,header_menu_call_string},type=dropdown}</div>{+END}
-					<div class="block_mobile">{$BLOCK,block=menu,param={$CONFIG_OPTION,header_menu_call_string},type=mobile}</div>
+					{$BLOCK,block=menu,param={$CONFIG_OPTION,header_menu_call_string},type=dropdown}
 
 					<div class="global_navigation_inner">
 						{$,Login form for guests}

@@ -35,6 +35,7 @@ In mobile mode:
 */
 
 /* The basic ones */
+/* NB: Remember to update $cms.isCssMode() too if you make changes here. */
 {$CSS_MODE,mobile,0-982,mobileModeKeep}
 {$CSS_MODE,desktop,983-infinity,mobileModeDiscard}
 
@@ -43,7 +44,7 @@ In mobile mode:
 {$CSS_MODE,smartphone_portrait,320-666,mobileModeMedia}/*Based on up to what iPhone6 can do; higher-res phones like phablets may fall under the smartphone_landscape range even in portrait mode which is fine*/
 {$CSS_MODE,smartphone_landscape,667-982,mobileModeMedia}/*Based on from iPhone6 landscape up to our tablet size; also good for small tablets in portrait mode*/
 {$CSS_MODE,tablet_fixed_viewport,982-982,mobileModeDiscard}/*This corresponds to the fixed width tablet mode viewport defined in HTML_HEAD.tpl optimised for landscape mode; fixed width is not on by default, so tablet is the same as desktop in that case*/
-{$CSS_MODE,desktop,982-infinity,mobileModeMedia}/*1024 is considered the industry-standard, which is 982 with scrollbar; also good for small tablets in landscape mode and large tablets in portrait mode*/
+{$CSS_MODE,regular_desktop,982-infinity,mobileModeMedia}/*1024 is considered the industry-standard, which is 982 with scrollbar; also good for small tablets in landscape mode and large tablets in portrait mode*/
 {$CSS_MODE,large_desktop,1200-infinity,mobileModeMedia}/*Also good for tablets in landscape mode*/
 
 /*
@@ -4513,8 +4514,9 @@ ul.nl, .nl ul {
 }
 
 .has_img>a {
+	/*
 	background: none !important;
-	padding-left: 0 !important;
+	padding-left: 0 !important;*/
 	vertical-align: middle;
 }
 

@@ -916,7 +916,7 @@
     /**
      * NB: Has a trailing slash when having the base url only
      * @param {string} url - An absolute or relative URL. If url is a relative URL, `base` will be used as the base URL. If url is an absolute URL, a given `base` will be ignored.
-     * @param {string} [base] - The base URL to use in case url is a relative URL. If not specified, it defaults to $cms.baseUrl().
+     * @param {string} [base] - The base URL to use in case url is a relative URL. If not specified, it defaults to $cms.getBaseUrl().
      * @return { URL }
      */
     $util.url = function url(url, base) {
@@ -929,6 +929,13 @@
         }
 
         return new URL(url, base);
+    };
+
+    /*
+     * @return { URL }
+     */
+    $util.pageUrl = function pageUrl() {
+        return new URL(window.location);
     };
     
     var rgxProtocol = /^[a-z0-9\-\.]+:(?=\/\/)/i;

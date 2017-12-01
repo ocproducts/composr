@@ -650,15 +650,14 @@
             switchTime = this.switchTime = params.switchTime;
         
         /* Precache images */
-        new Image().src = $cms.img('{$IMG;,big_tabs_controller_button}');
-        new Image().src = $cms.img('{$IMG;,big_tabs_controller_button_active}');
-        new Image().src = $cms.img('{$IMG;,big_tabs_controller_button_top_active}');
-        new Image().src = $cms.img('{$IMG;,big_tabs_controller_button_top}');
+        new Image().src = $util.srl('{$IMG;,big_tabs_controller_button}');
+        new Image().src = $util.srl('{$IMG;,big_tabs_controller_button_active}');
+        new Image().src = $util.srl('{$IMG;,big_tabs_controller_button_top_active}');
+        new Image().src = $util.srl('{$IMG;,big_tabs_controller_button_top}');
         
         if (switchTime !== undefined) {
             flipPage(0, id, sections, switchTime);
         }
-        
     }
 
     $util.inherits(ComcodeBigTabsController, $cms.View, /**@lends $cms.views.ComcodeBigTabsController#*/{

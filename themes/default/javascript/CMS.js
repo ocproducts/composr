@@ -279,7 +279,6 @@
     $cms.functions = {};
 
     var rgxHttp = /^https?:(?=\/\/)/i;
-
     /**
      * Dynamically fixes the protocol for image URLs
      * @memberof $cms
@@ -288,6 +287,25 @@
      */
     $cms.img = function img(url) {
         return strVal(url).replace(rgxHttp, window.location.protocol);
+    };
+    
+    var mobileModeMql = window.matchMedia('(max-width: 982px)'),
+        desktopModeMql = window.matchMedia('(min-width: 983px)');
+    /**
+     * @param {string} modeName
+     * @return {boolean}
+     */
+    $cms.isCssMode = function (modeName) {
+        modeName = strVal(modeName);
+        
+        switch (modeName) {
+            case 'mobile':
+                return mobileModeMql.matches;
+            case 'desktop':
+                return desktopModeMql.matches;
+        }
+        
+        return false;
     };
 
     /**
@@ -1252,7 +1270,7 @@
     $cms.protectURLParameter = function protectURLParameter(parameter) {
         parameter = strVal(parameter);
 
-        var baseUrl = $cms.baseUrl();
+        var baseUrl = $cms.getBaseUrl();
 
         if (parameter.startsWith('https://')) {
             baseUrl = baseUrl.replace(/^http:\/\//, 'https://');
