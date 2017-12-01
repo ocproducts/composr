@@ -277,17 +277,6 @@
      * @namespace $cms.functions
      */
     $cms.functions = {};
-
-    var rgxHttp = /^https?:(?=\/\/)/i;
-    /**
-     * Dynamically fixes the protocol for image URLs
-     * @memberof $cms
-     * @param url
-     * @returns {string}
-     */
-    $cms.img = function img(url) {
-        return strVal(url).replace(rgxHttp, window.location.protocol);
-    };
     
     var mobileModeMql = window.matchMedia('(max-width: 982px)'),
         desktopModeMql = window.matchMedia('(min-width: 983px)');

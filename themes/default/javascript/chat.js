@@ -1262,7 +1262,7 @@
         links.className = 'actions_list';
 
         var imgClose = document.createElement('img');
-        imgClose.src = $cms.img('{$IMG;,icons/14x14/delete}');
+        imgClose.src = $util.srl('{$IMG;,icons/14x14/delete}');
         imgClose.className = 'im_popup_close_button blend';
         $dom.on(imgClose, 'click', closePopup);
         div.appendChild(imgClose);
@@ -1441,7 +1441,7 @@
     function deinvolveIm(roomId, logs, isPopup) { // is_popup means that we show a progress indicator over it, then kill the window after deinvolvement
         if (isPopup && document.body) {
             document.body.classList.add('site_unloading');
-            $dom.html(document.body, '<div class="spaced"><div aria-busy="true" class="ajax_loading vertical_alignment"><img src="' + $cms.img('{$IMG*;,loading}') + '" alt="{!LOADING;^}" /> <span>{!LOADING;^}<\/span><\/div><\/div>');
+            $dom.html(document.body, '<div class="spaced"><div aria-busy="true" class="ajax_loading vertical_alignment"><img src="' + $util.srl('{$IMG*;,loading}') + '" alt="{!LOADING;^}" /> <span>{!LOADING;^}<\/span><\/div><\/div>');
         }
 
         var element, participants = null;

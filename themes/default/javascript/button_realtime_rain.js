@@ -26,7 +26,7 @@
         var img = document.getElementById('realtime_rain_img');
         img.className = 'footer_button_loading';
         var tmpEl = document.createElement('img');
-        tmpEl.src = $cms.img('{$IMG;,loading}');
+        tmpEl.src = $util.srl('{$IMG;,loading}');
         tmpEl.style.position = 'absolute';
         tmpEl.style.left = ($dom.findPosX(img) + 2) + 'px';
         tmpEl.style.top = ($dom.findPosY(img) + 1) + 'px';

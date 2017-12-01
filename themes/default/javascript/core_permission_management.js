@@ -577,22 +577,22 @@
             if (((window.attributesFull[id]['group_privileges_delete_highrange_content_' + group]) && (window.attributesFull[id]['group_privileges_delete_highrange_content_' + group] == '1')) ||
                 ((window.attributesFull[id]['group_privileges_delete_midrange_content_' + group]) && (window.attributesFull[id]['group_privileges_delete_midrange_content_' + group] == '1')) ||
                 ((window.attributesFull[id]['group_privileges_delete_lowrange_content_' + group]) && (window.attributesFull[id]['group_privileges_delete_lowrange_content_' + group] == '1'))) {
-                return [$cms.img('{$IMG;,permlevels/3}'), '{!permissions:PINTERFACE_LEVEL_3;^}'];
+                return [$util.srl('{$IMG;,permlevels/3}'), '{!permissions:PINTERFACE_LEVEL_3;^}'];
             } else if (((window.attributesFull[id]['group_privileges_bypass_validation_highrange_content_' + group]) && (window.attributesFull[id]['group_privileges_bypass_validation_highrange_content_' + group] == '1')) ||
                 ((window.attributesFull[id]['group_privileges_bypass_validation_midrange_content_' + group]) && (window.attributesFull[id]['group_privileges_bypass_validation_midrange_content_' + group] == '1')) ||
                 ((window.attributesFull[id]['group_privileges_bypass_validation_lowrange_content_' + group]) && (window.attributesFull[id]['group_privileges_bypass_validation_lowrange_content_' + group] == '1'))) {
-                return [$cms.img('{$IMG;,permlevels/2}'), '{!permissions:PINTERFACE_LEVEL_2;^}'];
+                return [$util.srl('{$IMG;,permlevels/2}'), '{!permissions:PINTERFACE_LEVEL_2;^}'];
             } else if (((window.attributesFull[id]['group_privileges_submit_highrange_content_' + group]) && (window.attributesFull[id]['group_privileges_submit_highrange_content_' + group] == '1')) ||
                 ((window.attributesFull[id]['group_privileges_submit_midrange_content_' + group]) && (window.attributesFull[id]['group_privileges_submit_midrange_content_' + group] == '1')) ||
                 ((window.attributesFull[id]['group_privileges_submit_lowrange_content_' + group]) && (window.attributesFull[id]['group_privileges_submit_lowrange_content_' + group] == '1'))) {
-                return [$cms.img('{$IMG;,permlevels/1}'), '{!permissions:PINTERFACE_LEVEL_1;^}'];
+                return [$util.srl('{$IMG;,permlevels/1}'), '{!permissions:PINTERFACE_LEVEL_1;^}'];
             } else if (window.attributesFull[id]['inherits_something']) {
-                return [$cms.img('{$IMG;,permlevels/inherit}'), '{!permissions:PINTERFACE_LEVEL_GLOBAL;^}'];
+                return [$util.srl('{$IMG;,permlevels/inherit}'), '{!permissions:PINTERFACE_LEVEL_GLOBAL;^}'];
             } else if (window.attributesFull[id]['no_privileges']) {
-                return [$cms.img('{$IMG;,blank}'), ''];
+                return [$util.srl('{$IMG;,blank}'), ''];
             }
 
-            return [$cms.img('{$IMG;,permlevels/0}'), '{!permissions:PINTERFACE_LEVEL_0;^}'];
+            return [$util.srl('{$IMG;,permlevels/0}'), '{!permissions:PINTERFACE_LEVEL_0;^}'];
         }
     }
 
@@ -610,10 +610,10 @@
             var group = document.getElementById('group').value;
 
             if (node.getAttribute('g_view_' + group) === 'true') {
-                return [$cms.img('{$IMG;,led_on}'), '{!permissions:PINTERFACE_VIEW;^}'];
+                return [$util.srl('{$IMG;,led_on}'), '{!permissions:PINTERFACE_VIEW;^}'];
             }
 
-            return [$cms.img('{$IMG;,led_off}'), '{!permissions:PINTERFACE_VIEW_NO;^}'];
+            return [$util.srl('{$IMG;,led_off}'), '{!permissions:PINTERFACE_VIEW_NO;^}'];
         }
     }
 }(window.$cms, window.$util, window.$dom));

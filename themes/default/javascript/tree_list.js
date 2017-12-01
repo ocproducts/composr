@@ -46,7 +46,7 @@
         this.allNodesSelectable = Boolean(params.allNodesSelectable);
         this.useServerId = Boolean(params.useServerId);
 
-        $dom.html(this.el, '<div class="ajax_loading vertical_alignment"><img src="' + $cms.img('{$IMG*;^,loading}') + '" alt="" /> <span>{!LOADING;^}</span></div>');
+        $dom.html(this.el, '<div class="ajax_loading vertical_alignment"><img src="' + $util.srl('{$IMG*;^,loading}') + '" alt="" /> <span>{!LOADING;^}</span></div>');
 
         // Initial rendering
         var url = $cms.baseUrl(this.ajaxUrl), 
@@ -230,15 +230,15 @@
                         }
                         descriptionInUse = escapedTitle + ': {!TREE_LIST_SELECT*;^}' + description + ((node.getAttribute('serverid') == '') ? (' (' + $cms.filter.html(node.getAttribute('serverid')) + ')') : '');
                     }
-                    var imgUrl = $cms.img('{$IMG;,1x/treefield/category}'),
-                        imgUrl2 = $cms.img('{$IMG;,2x/treefield/category}');
+                    var imgUrl = $util.srl('{$IMG;,1x/treefield/category}'),
+                        imgUrl2 = $util.srl('{$IMG;,2x/treefield/category}');
                     if (node.getAttribute('img_url')) {
                         imgUrl = node.getAttribute('img_url');
                         imgUrl2 = node.getAttribute('img_url_2');
                     }
                     $dom.html(nodeSelf, /** @lang HTML */'' +
                         '<div>' +
-                        '    <input class="ajax_tree_expand_icon"' + (that.tabindex ? (' tabindex="' + that.tabindex + '"') : '') + ' type="image" alt="' + ((!initiallyExpanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + ': ' + escapedTitle + '" title="' + ((!initiallyExpanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + '" id="' + that.name + 'texp_c_' + node.getAttribute('id') + '" src="' + $cms.img(!initiallyExpanded ? '{$IMG*;,1x/treefield/expand}' : '{$IMG*;,1x/treefield/collapse}') + '" srcset="' + $cms.img(!initiallyExpanded ? '{$IMG*;,2x/treefield/expand}' : '{$IMG*;,2x/treefield/collapse}') + ' 2x" />' +
+                        '    <input class="ajax_tree_expand_icon"' + (that.tabindex ? (' tabindex="' + that.tabindex + '"') : '') + ' type="image" alt="' + ((!initiallyExpanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + ': ' + escapedTitle + '" title="' + ((!initiallyExpanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + '" id="' + that.name + 'texp_c_' + node.getAttribute('id') + '" src="' + $util.srl(!initiallyExpanded ? '{$IMG*;,1x/treefield/expand}' : '{$IMG*;,1x/treefield/collapse}') + '" srcset="' + $util.srl(!initiallyExpanded ? '{$IMG*;,2x/treefield/expand}' : '{$IMG*;,2x/treefield/collapse}') + ' 2x" />' +
                         '    <img class="ajax_tree_cat_icon" alt="{!CATEGORY;^}" src="' + $cms.filter.html(imgUrl) + '" srcset="' + $cms.filter.html(imgUrl2) + ' 2x" />' +
                         '    <label id="' + that.name + 'tsel_c_' + node.getAttribute('id') + '" for="' + that.name + 'tsel_r_' + node.getAttribute('id') + '" data-mouseover-activate-tooltip="[\'' + (node.getAttribute('description_html') ? '' : $cms.filter.html(descriptionInUse)) + '\', \'auto\']" class="ajax_tree_magic_button ' + colour + '">\ <input ' + (that.tabindex ? ('tabindex="' + that.tabindex + '" ') : '') + 'id="' + that.name + 'tsel_r_' + node.getAttribute('id') + '" style="position: absolute; left: -10000px" type="radio" name="_' + that.name + '" value="1" title="' + descriptionInUse + '" />' + escapedTitle + '</label>' +
                         '    <span id="' + that.name + 'extra_' + node.getAttribute('id') + '">' + extra + '</span>' +
@@ -347,8 +347,8 @@
 
                     // Render self
                     initiallyExpanded = false;
-                    var imgUrl = $cms.img('{$IMG;,1x/treefield/entry}'),
-                        imgUrl2 = $cms.img('{$IMG;,2x/treefield/entry}');
+                    var imgUrl = $util.srl('{$IMG;,1x/treefield/entry}'),
+                        imgUrl2 = $util.srl('{$IMG;,2x/treefield/entry}');
                     if (node.getAttribute('img_url')) {
                         imgUrl = node.getAttribute('img_url');
                         imgUrl2 = node.getAttribute('img_url_2');
@@ -507,7 +507,7 @@
                         $dom.empty(htmlNode);
                         that.response(xhr, clickedId);
                     });
-                    $dom.html(htmlNode, '<div aria-busy="true" class="vertical_alignment"><img src="' + $cms.img('{$IMG*;,loading}') + '" alt="" /> <span>{!LOADING;^}</span></div>');
+                    $dom.html(htmlNode, '<div aria-busy="true" class="vertical_alignment"><img src="' + $util.srl('{$IMG*;,loading}') + '" alt="" /> <span>{!LOADING;^}</span></div>');
                     var container = $dom.$id('tree_list__root_' + that.name);
                     if (automated && container && (container.style.overflowY === 'auto')) {
                         setTimeout(function () {
@@ -518,8 +518,8 @@
                 
                 $dom.fadeIn(htmlNode);
 
-                expandBtn.src = $cms.img('{$IMG;,1x/treefield/collapse}');
-                expandBtn.srcset = $cms.img('{$IMG;,2x/treefield/collapse}') + ' 2x';
+                expandBtn.src = $util.srl('{$IMG;,1x/treefield/collapse}');
+                expandBtn.srcset = $util.srl('{$IMG;,2x/treefield/collapse}') + ' 2x';
                 expandBtn.title = expandBtn.title.replace('{!EXPAND;^}', '{!CONTRACT;^}');
                 expandBtn.alt = expandBtn.alt.replace('{!EXPAND;^}', '{!CONTRACT;^}');
             } else {
@@ -527,8 +527,8 @@
                 xmlNode.setAttribute('expanded', 'false');
                 htmlNode.style.display = 'none';
 
-                expandBtn.src = $cms.img('{$IMG;,1x/treefield/expand}');
-                expandBtn.srcset = $cms.img('{$IMG;,2x/treefield/expand}') + ' 2x';
+                expandBtn.src = $util.srl('{$IMG;,1x/treefield/expand}');
+                expandBtn.srcset = $util.srl('{$IMG;,2x/treefield/expand}') + ' 2x';
                 expandBtn.title = expandBtn.title.replace('{!CONTRACT;^}', '{!EXPAND;^}');
                 expandBtn.alt = expandBtn.alt.replace('{!CONTRACT;^}', '{!EXPAND;^}');
             }

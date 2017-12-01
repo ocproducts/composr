@@ -499,7 +499,7 @@
                 $dom.html(_replaceSpot, '');
                 var loadingImage = document.createElement('img');
                 loadingImage.className = 'ajax_loading';
-                loadingImage.src = $cms.img('{$IMG;,loading}');
+                loadingImage.src = $util.srl('{$IMG;,loading}');
                 loadingImage.style.height = '12px';
                 _replaceSpot.appendChild(loadingImage);
 

@@ -18,7 +18,7 @@
             img.className = 'footer_button_loading';
             var tmpEl = document.createElement('img');
             tmpEl.id = 'commandr_img_loader';
-            tmpEl.src = $cms.img('{$IMG;,loading}');
+            tmpEl.src = $util.srl('{$IMG;,loading}');
             tmpEl.style.position = 'absolute';
             tmpEl.style.left = ($dom.findPosX(img) + 2) + 'px';
             tmpEl.style.top = ($dom.findPosY(img) + 1) + 'px';
@@ -73,8 +73,8 @@
                 $dom.show(commandrBox);
 
                 if (img) {
-                    img.src = $cms.img('{$IMG;,icons/24x24/tool_buttons/commandr_off}');
-                    img.srcset = $cms.img('{$IMG;,icons/48x48/tool_buttons/commandr_off} 2x');
+                    img.src = $util.srl('{$IMG;,icons/24x24/tool_buttons/commandr_off}');
+                    img.srcset = $util.srl('{$IMG;,icons/48x48/tool_buttons/commandr_off} 2x');
                     img.className = '';
                 }
 
@@ -95,8 +95,8 @@
                 document.getElementById('commandr_command').focus();
             } else { // Hiding Commandr
                 if (img) {
-                    img.src = $cms.img('{$IMG;,icons/24x24/tool_buttons/commandr_on}');
-                    img.srcset = $cms.img('{$IMG;,icons/48x48/tool_buttons/commandr_on}') + ' 2x';
+                    img.src = $util.srl('{$IMG;,icons/24x24/tool_buttons/commandr_on}');
+                    img.srcset = $util.srl('{$IMG;,icons/48x48/tool_buttons/commandr_on}') + ' 2x';
                     img.style.opacity = 1.0;
                 }
 

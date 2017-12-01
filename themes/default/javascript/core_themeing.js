@@ -975,24 +975,24 @@
         }
         var iconImg = document.createElement('img');
         if (ext === 'tpl') {
-            iconImg.src = $cms.img('{$IMG;,icons/16x16/filetypes/tpl}');
-            iconImg.setAttribute('srcset', $cms.img('{$IMG;,icons/32x32/filetypes/tpl}'));
+            iconImg.src = $util.srl('{$IMG;,icons/16x16/filetypes/tpl}');
+            iconImg.setAttribute('srcset', $util.srl('{$IMG;,icons/32x32/filetypes/tpl}'));
         }
         if (ext === 'css') {
-            iconImg.src = $cms.img('{$IMG;,icons/16x16/filetypes/css}');
-            iconImg.setAttribute('srcset', $cms.img('{$IMG;,icons/32x32/filetypes/css}'));
+            iconImg.src = $util.srl('{$IMG;,icons/16x16/filetypes/css}');
+            iconImg.setAttribute('srcset', $util.srl('{$IMG;,icons/32x32/filetypes/css}'));
         }
         if (ext === 'js') {
-            iconImg.src = $cms.img('{$IMG;,icons/16x16/filetypes/js}');
-            iconImg.setAttribute('srcset', $cms.img('{$IMG;,icons/32x32/filetypes/js}'));
+            iconImg.src = $util.srl('{$IMG;,icons/16x16/filetypes/js}');
+            iconImg.setAttribute('srcset', $util.srl('{$IMG;,icons/32x32/filetypes/js}'));
         }
         if (ext === 'xml') {
-            iconImg.src = $cms.img('{$IMG;,icons/16x16/filetypes/xml}');
-            iconImg.setAttribute('srcset', $cms.img('{$IMG;,icons/32x32/filetypes/xml}'));
+            iconImg.src = $util.srl('{$IMG;,icons/16x16/filetypes/xml}');
+            iconImg.setAttribute('srcset', $util.srl('{$IMG;,icons/32x32/filetypes/xml}'));
         }
         if (ext === 'txt' || ext === '') {
-            iconImg.src = $cms.img('{$IMG;,icons/16x16/filetypes/page_txt}');
-            iconImg.setAttribute('srcset', $cms.img('{$IMG;,icons/32x32/filetypes/page_txt}'));
+            iconImg.src = $util.srl('{$IMG;,icons/16x16/filetypes/page_txt}');
+            iconImg.setAttribute('srcset', $util.srl('{$IMG;,icons/32x32/filetypes/page_txt}'));
         }
         iconImg.style.width = '16px';
         header.appendChild(iconImg);
@@ -1001,9 +1001,9 @@
         span.textContent = tabTitle;
         header.appendChild(span);
         var closeButton = document.createElement('img');
-        closeButton.src = $cms.img('{$IMG;,icons/16x16/close}');
+        closeButton.src = $util.srl('{$IMG;,icons/16x16/close}');
         if (closeButton.srcset !== undefined) {
-            closeButton.srcset = $cms.img('{$IMG;,icons/32x32/close}') + ' 2x';
+            closeButton.srcset = $util.srl('{$IMG;,icons/32x32/close}') + ' 2x';
         }
         closeButton.alt = '{!CLOSE;^}';
         closeButton.style.paddingLeft = '5px';
@@ -1035,7 +1035,7 @@
         body.style.display = 'none';
         var loadingImage = document.createElement('img');
         loadingImage.className = 'ajax_loading';
-        loadingImage.src = $cms.img('{$IMG;,loading}');
+        loadingImage.src = $util.srl('{$IMG;,loading}');
         loadingImage.style.height = '12px';
         body.appendChild(loadingImage);
         bodies.appendChild(body);

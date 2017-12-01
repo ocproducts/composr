@@ -638,7 +638,7 @@
                     this.buttonContainerEl.appendChild(button);
                 } else {
                     button = $dom.create('img', {
-                        'src': $cms.img('{$IMG;,button_lightbox_close}'),
+                        'src': $util.srl('{$IMG;,button_lightbox_close}'),
                         'alt': this.cancelButton,
                         'className': 'overlay_close_button ' + (this.cancel ? 'js-onclick-do-option-cancel' : 'js-onclick-do-option-finished')
                     });
@@ -1097,7 +1097,7 @@
 
         // Dynamic images need preloading
         var preloader = new Image();
-        preloader.src = $cms.img('{$IMG;,loading}');
+        preloader.src = $util.srl('{$IMG;,loading}');
 
         // Tell the server we have JavaScript, so do not degrade things for reasons of compatibility - plus also set other things the server would like to know
         if ($cms.configOption('detect_javascript')) {
@@ -1603,9 +1603,9 @@
                     $cms.setCookie('hide_helper_panel', '0', 100);
                 }
 
-                helperPanelToggle.firstElementChild.src = $cms.img('{$IMG;,icons/14x14/helper_panel_hide}');
+                helperPanelToggle.firstElementChild.src = $util.srl('{$IMG;,icons/14x14/helper_panel_hide}');
                 if (helperPanelToggle.firstElementChild.srcset !== undefined) {
-                    helperPanelToggle.firstElementChild.srcset = $cms.img('{$IMG;,icons/28x28/helper_panel_hide}') + ' 2x';
+                    helperPanelToggle.firstElementChild.srcset = $util.srl('{$IMG;,icons/28x28/helper_panel_hide}') + ' 2x';
                 }
             } else {
                 if ($cms.readCookie('hide_helper_panel') === '') {
@@ -1625,10 +1625,10 @@
                 helperPanelContents.setAttribute('aria-expanded', 'false');
                 helperPanelContents.style.display = 'none';
                 $cms.setCookie('hide_helper_panel', '1', 100);
-                helperPanelToggle.firstElementChild.src = $cms.img('{$IMG;,icons/14x14/helper_panel_show}');
+                helperPanelToggle.firstElementChild.src = $util.srl('{$IMG;,icons/14x14/helper_panel_show}');
 
                 if (helperPanelToggle.firstElementChild.srcset !== undefined) {
-                    helperPanelToggle.firstElementChild.srcset = $cms.img('{$IMG;,icons/28x28/helper_panel_show}') + ' 2x';
+                    helperPanelToggle.firstElementChild.srcset = $util.srl('{$IMG;,icons/28x28/helper_panel_show}') + ' 2x';
                 }
             }
         }

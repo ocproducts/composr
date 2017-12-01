@@ -1519,13 +1519,13 @@
         }
 
         if ((!next && (pic.src.includes('expand'))) || (next && (next.style.display === 'none'))) {/* Expanding now */
-            pic.src = pic.src.includes('themewizard.php') ? pic.src.replace('expand', 'contract') : $cms.img('{$IMG;,1x/trays/contract}');
+            pic.src = pic.src.includes('themewizard.php') ? pic.src.replace('expand', 'contract') : $util.srl('{$IMG;,1x/trays/contract}');
             pic.alt = '{!CONTRACT;^}';
             pic.title = '{!CONTRACT;^}';
             newDisplayState = ''; // default state from CSS
             newDisplayState2 = ''; // default state from CSS
         } else { /* Contracting now */
-            pic.src = pic.src.includes('themewizard.php') ? pic.src.replace('contract', 'expand') : $cms.img('{$IMG;,1x/trays/expand}');
+            pic.src = pic.src.includes('themewizard.php') ? pic.src.replace('contract', 'expand') : $util.srl('{$IMG;,1x/trays/expand}');
             pic.alt = '{!EXPAND;^}';
             pic.title = '{!EXPAND;^}';
             newDisplayState = 'none';

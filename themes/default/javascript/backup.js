@@ -53,7 +53,7 @@
         button.value = '{!backups:CALCULATE_SIZE;^}';
         button.addEventListener('click', function () {
             var progressTicker = document.createElement('img');
-            progressTicker.setAttribute('src', $cms.img('{$IMG;,loading}'));
+            progressTicker.setAttribute('src', $util.srl('{$IMG;,loading}'));
             progressTicker.style.verticalAlign = 'middle';
             progressTicker.style.marginLeft = '20px';
             button.parentNode.appendChild(progressTicker);

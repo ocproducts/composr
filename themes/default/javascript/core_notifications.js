@@ -309,7 +309,7 @@ function _pollForNotifications(responseXml) {
 
         // Show desktop notification
         if ($cms.configOption('notification_desktop_alerts') && window.notify.isSupported) {
-            var icon = $cms.img('{$IMG;,favicon}');
+            var icon = $util.srl('{$IMG;,favicon}');
             var title = '{!notifications:DESKTOP_NOTIFICATION_SUBJECT;^}';
             title = title.replace(/\\{1\\}/, notification.getAttribute('subject'));
             title = title.replace(/\\{2\\}/, notification.getAttribute('from_username'));

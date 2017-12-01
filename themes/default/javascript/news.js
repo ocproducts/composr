@@ -50,7 +50,7 @@
         var fpAnimationNewsImg = document.createElement('img');
 
         fpAnimationNewsImg.style.position = 'absolute';
-        fpAnimationNewsImg.src = $cms.img('{$IMG;,blank}');
+        fpAnimationNewsImg.src = $util.srl('{$IMG;,blank}');
         
         fpAnimationImg.parentElement.insertBefore(fpAnimationNewsImg, fpAnimationImg);
         fpAnimationImg.parentElement.style.position = 'relative';
@@ -62,7 +62,7 @@
             data.push({
                 html: $dom.html('script#image-fader-' + rand + '-news-item-' + i + '-html'),
                 url:  news[i].url,
-                imageUrl: $cms.img(news[i].imageUrl)
+                imageUrl: $util.srl(news[i].imageUrl)
             });
 
             new Image().src = news[i].imageUrl; // precache
@@ -94,7 +94,7 @@
             fpAnimationNewsImg.src = fpAnimationImg.src;
             $dom.fadeOut(fpAnimationNewsImg);
             $dom.fadeIn(fpAnimationImg);
-            fpAnimationImg.src = $cms.img(data[cycleIndex].imageUrl);
+            fpAnimationImg.src = $util.srl(data[cycleIndex].imageUrl);
             setTimeout(function () { // Will know dimensions by the time the timeout happens
                 fpAnimationNewsImg.style.left = ((fpAnimationNewsImg.parentNode.offsetHeight - fpAnimationNewsImg.offsetWidth) / 2) + 'px';
                 fpAnimationNewsImg.style.top = ((fpAnimationNewsImg.parentNode.offsetHeight - fpAnimationNewsImg.offsetHeight) / 2) + 'px';

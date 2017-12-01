@@ -73,14 +73,14 @@
         createFaders: function () {
             var mainEl = this.mainEl;
             var left = document.createElement('img');
-            left.src = $cms.img('{$IMG;,carousel/fade_left}');
+            left.src = $util.srl('{$IMG;,carousel/fade_left}');
             left.style.position = 'absolute';
             left.style.left = '43px';
             left.style.top = '0';
             mainEl.parentNode.appendChild(left);
 
             var right = document.createElement('img');
-            right.src = $cms.img('{$IMG;,carousel/fade_right}');
+            right.src = $util.srl('{$IMG;,carousel/fade_right}');
             right.style.position = 'absolute';
             right.style.right = '43px';
             right.style.top = '0';
@@ -233,7 +233,7 @@
 
                 var previousButton = document.createElement('img');
                 previousButton.className = 'previous_button';
-                previousButton.src = $cms.img('{$IMG;,mediaset_previous}');
+                previousButton.src = $util.srl('{$IMG;,mediaset_previous}');
                 previousButton.addEventListener('click', clickPreviousButton);
                 function clickPreviousButton(e) {
                     var newPosition = modal.positionInSet - 1;
@@ -249,7 +249,7 @@
 
                 var nextButton = document.createElement('img');
                 nextButton.className = 'next_button';
-                nextButton.src = $cms.img('{$IMG;,mediaset_next}');
+                nextButton.src = $util.srl('{$IMG;,mediaset_next}');
                 nextButton.addEventListener('click', clickNextButton);
                 function clickNextButton(e) {
                     var newPosition = modal.positionInSet + 1;

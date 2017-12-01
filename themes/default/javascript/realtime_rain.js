@@ -105,17 +105,17 @@
                 e.parentNode.parentNode.removeChild(e.parentNode);
             }
 
-            img.src = $cms.img('{$IMG;,icons/24x24/tool_buttons/realtime_rain_on}');
+            img.src = $util.srl('{$IMG;,icons/24x24/tool_buttons/realtime_rain_on}');
             if (img.srcset !== undefined) {
-                img.srcset = $cms.img('{$IMG;,icons/48x48/tool_buttons/realtime_rain_on}') + ' 2x';
+                img.srcset = $util.srl('{$IMG;,icons/48x48/tool_buttons/realtime_rain_on}') + ' 2x';
             }
 
             return false;
         }
 
-        img.src = $cms.img('{$IMG;,icons/24x24/tool_buttons/realtime_rain_off}');
+        img.src = $util.srl('{$IMG;,icons/24x24/tool_buttons/realtime_rain_off}');
         if (img.srcset !== undefined) {
-            img.srcset = $cms.img('{$IMG;,icons/48x48/tool_buttons/realtime_rain_off}') + ' 2x';
+            img.srcset = $util.srl('{$IMG;,icons/48x48/tool_buttons/realtime_rain_off}') + ' 2x';
         }
 
         var tmpElement = document.getElementById('realtime_rain_img_loader');

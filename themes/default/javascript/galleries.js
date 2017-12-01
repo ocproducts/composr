@@ -23,7 +23,7 @@
             milliseconds = Number(params.mill), i;
 
         this.fpAnimationEl = document.getElementById('image_fader_' + id);
-        this.fpAnimationFaderEl = $dom.create('img', { className: 'img_thumb', src: $cms.img('{$IMG;,blank}'), css: { position: 'absolute' }});
+        this.fpAnimationFaderEl = $dom.create('img', { className: 'img_thumb', src: $util.srl('{$IMG;,blank}'), css: { position: 'absolute' }});
         this.teaseTitleEl = document.getElementById('image_fader_title_' + id);
         this.teaseScrollingTextEl =  document.getElementById('image_fader_scrolling_text_' + id);
         
@@ -78,7 +78,7 @@
                     self.fpAnimationFaderEl.src = self.fpAnimationEl.src;
                     $dom.fadeOut(self.fpAnimationFaderEl);
                     $dom.fadeIn(self.fpAnimationEl);
-                    self.fpAnimationEl.src = $cms.img(data['url' + index]);
+                    self.fpAnimationEl.src = $util.srl(data['url' + index]);
                     self.fpAnimationFaderEl.style.left = ((self.fpAnimationFaderEl.parentNode.offsetWidth - self.fpAnimationFaderEl.offsetWidth) / 2) + 'px';
                     self.fpAnimationFaderEl.style.top = ((self.fpAnimationFaderEl.parentNode.offsetHeight - self.fpAnimationFaderEl.offsetHeight) / 2) + 'px';
                     if (self.teaseTitleEl) {

@@ -285,8 +285,8 @@
     };
 
     $cms.templates.blockMainStaffChecklistItem = function blockMainStaffChecklistItem(params, container) {
-        var $IMG_checklist_toggleicon = $cms.img('{$IMG;,checklist/toggleicon}'),
-            $IMG_checklist_toggleicon2 = $cms.img('{$IMG;,checklist/toggleicon2}');
+        var $IMG_checklist_toggleicon = $util.srl('{$IMG;,checklist/toggleicon}'),
+            $IMG_checklist_toggleicon2 = $util.srl('{$IMG;,checklist/toggleicon2}');
 
         $dom.on(container, 'mouseover mouseout', function (e, target) {
             var changeToggleIcon = $dom.closest(target, '.js-hover-change-img-toggle-icon', container.parentNode);
