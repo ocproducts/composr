@@ -154,20 +154,6 @@
     $cms.getBaseUrl = $util.constant(strVal('{$BASE_URL;}'));
     /**
      * @memberof $cms
-     * @param relativeUrl - Pass a relative URL but an absolute url works as well for robustness' sake
-     * @returns {string}
-     */
-    $cms.baseUrl = function baseUrl(relativeUrl) {
-        relativeUrl = strVal(relativeUrl);
-
-        if (relativeUrl === '') {
-            return $cms.getBaseUrl();
-        }
-
-        return $util.url(relativeUrl).toString();
-    };
-    /**
-     * @memberof $cms
      * @method
      * @returns {string}
      */
@@ -420,9 +406,9 @@
 
         if (validIdRE.test(scriptNameOrSrc)) {
             scriptName = scriptNameOrSrc;
-            scriptSrc = $util.schemeRelative('{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + scriptName + $cms.keep());
+            scriptSrc = $util.srl('{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + scriptName + $cms.keep());
         } else {
-            scriptSrc = $util.schemeRelative(scriptNameOrSrc);
+            scriptSrc = $util.srl(scriptNameOrSrc);
         }
 
         if (scriptName != null) {
@@ -937,7 +923,7 @@
     $cms.playSelfAudioLink = function playSelfAudioLink(ob) {
         $cms.requireJavascript('sound').then(function () {
             window.soundManager.setup({
-                url: $cms.baseUrl('data'),
+                url: $util.url('data').toString(),
                 debugMode: false,
                 onready: function () {
                     var soundObject = window.soundManager.createSound({url: ob.href});

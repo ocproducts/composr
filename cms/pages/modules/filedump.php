@@ -1406,7 +1406,7 @@ class Module_filedump
             'URL' => $url,
             'TEXT' => '',
             'SUBMIT_NAME' => do_lang_tempcode('FIX_BROKEN_FILEDUMP_LINKS'),
-            'SUBMIT_ICON' => 'menu__adminzone__tools__cleanup',
+            'SUBMIT_ICON' => 'menu-adminzone-tools-cleanup',
         ));
     }
 

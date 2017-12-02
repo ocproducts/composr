@@ -83,7 +83,7 @@
             } else {
                 var view = this;
                 jQuery.ajax({
-                    url: $cms.baseUrl('data_custom/activities_handler.php' + $cms.keep(true)),
+                    url: $util.url('data_custom/activities_handler.php' + $cms.keep(true)).toString(),
                     type: 'POST',
                     data: $dom.serialize(form),
                     cache: false,
@@ -212,7 +212,7 @@
         } else {
             // First we check whether our feed is already up to date
             jQuery.ajax({
-                url: $cms.baseUrl('data_custom/latest_activity.txt?cache_break=' + Math.floor(Math.random() * 10000)),
+                url: $util.url('data_custom/latest_activity.txt?cache_break=' + Math.floor(Math.random() * 10000)).toString(),
                 data: {},
                 success: function (data) {
                     if (parseInt(data) != window.latestActivity) {
@@ -220,7 +220,7 @@
                         window.latestActivity = parseInt(data);
 
                         // Now grab whatever updates are available
-                        var url = $cms.baseUrl('data_custom/activities_updater.php' + $cms.keep(true)),
+                        var url = $util.url('data_custom/activities_updater.php' + $cms.keep(true)).toString(),
                             listElements = jQuery('li', '#activities_feed'),
                             lastId = ((listElements.attr('id') == null) ? '-1' : listElements.attr('id').replace(/^activity_/, '')),
                             postVal = 'last_id=' + lastId + '&mode=' + window.activitiesMode;
@@ -313,7 +313,7 @@
             '{!activities:DELETE_CONFIRM;^}',
             function (result) {
                 if (result) {
-                    var url = $cms.baseUrl('data_custom/activities_removal.php' + $cms.keep(true));
+                    var url = $util.url('data_custom/activities_removal.php' + $cms.keep(true)).toString();
 
                     var postVal = 'removal_id=' + id;
                     postVal += '&csrf_token=' + encodeURIComponent($cms.getCsrfToken()); // For CSRF prevention

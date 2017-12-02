@@ -294,14 +294,14 @@ function _pollForNotifications(responseXml) {
         var notificationCode = notification.getAttribute('notification_code');
         if (sound === 'on' && notificationCode !== 'ticket_reply' && notificationCode !== 'ticket_reply_staff') {
             var goFunc = function goFunc() {
-                var soundObject = window.soundManager.createSound({url: $cms.baseUrl('data/sounds/message_received.mp3')});
+                var soundObject = window.soundManager.createSound({url: $util.url('data/sounds/message_received.mp3').toString() });
                 if (soundObject && document.hasFocus()/*don't want multiple tabs all pinging*/) {
                     soundObject.play();
                 }
             };
 
             if (!window.soundManager.setupOptions.url) {
-                window.soundManager.setup({onready: goFunc, url: $cms.baseUrl('data/soundmanager'), debugMode: false});
+                window.soundManager.setup({onready: goFunc, url: $util.url('data/soundmanager').toString(), debugMode: false});
             } else {
                 goFunc();
             }

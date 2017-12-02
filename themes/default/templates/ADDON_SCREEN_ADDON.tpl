@@ -1,7 +1,7 @@
 {$REQUIRE_JAVASCRIPT,core_addon_management}
 
 <tr>
-	<td class="addon_name">
+	<td class="addon-name">
 		{+START,SET,description}
 			{DESCRIPTION_PARSED}
 
@@ -63,7 +63,7 @@
 	<td>
 		{VERSION*}
 	</td>
-	<td class="status_{COLOUR*}">
+	<td class="status-{COLOUR*}">
 		{STATUS*}
 	</td>
 	<td class="column_mobile">
@@ -74,7 +74,7 @@
 			{$GET,FILE_LIST}
 		{+END}
 	</td>
-	<td class="results_table_field addon_actions">
+	<td class="results_table_field addon-actions">
 		{ACTIONS}
 
 		<label class="accessibility_hidden" for="install_{NAME*}">{!INSTALL} {NAME*}</label>

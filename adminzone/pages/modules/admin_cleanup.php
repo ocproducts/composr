@@ -165,7 +165,7 @@ class Module_admin_cleanup
             '_GUID' => '85bfdf171484604594a157aa8983f920',
             'SKIP_WEBSTANDARDS' => true,
             'TEXT' => '',
-            'SUBMIT_ICON' => 'menu__adminzone__tools__cleanup',
+            'SUBMIT_ICON' => 'menu-adminzone-tools-cleanup',
             'SUBMIT_NAME' => do_lang_tempcode('PROCEED'),
             'HIDDEN' => '',
             'TITLE' => $this->title,

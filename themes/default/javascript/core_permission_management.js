@@ -205,7 +205,7 @@
                                 newCell = row.insertBefore(document.createElement('th'), row.cells[row.cells.length]);
                                 newCell.className = 'privilege_header';
                                 newCell.id = 'privilege_header_' + privilege;
-                                $dom.html(newCell, '<img class="gd_text" data-gd-text="1" src="' + $cms.filter.html($cms.baseUrl('data/gd_text.php?color=' + window.columnColor + '&text=' + encodeURIComponent(privilegeTitle) + $cms.keep())) + '" title="' + $cms.filter.html(privilegeTitle) + '" alt="' + $cms.filter.html(privilegeTitle) + '" />');
+                                $dom.html(newCell, '<img class="gd_text" data-gd-text="1" src="' + $cms.filter.html($util.url('data/gd_text.php?color=' + window.columnColor + '&text=' + encodeURIComponent(privilegeTitle) + $cms.keep())) + '" title="' + $cms.filter.html(privilegeTitle) + '" alt="' + $cms.filter.html(privilegeTitle) + '" />');
 
                                 rows[rows.length - 1].appendChild(document.createElement('td')).className = 'form_table_field_input privilege_footer'; // Footer cell
 

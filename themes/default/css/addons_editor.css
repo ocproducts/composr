@@ -3,27 +3,27 @@
  Copyright (c) ocProducts, 2004-2017
 */
 
-.not_too_tall_addons {
+.not-too-tall-addons {
 	/*overflow: scroll;	Actually, this annoys some users
 	height: 500px;*/
 }
 
-.addon_name {
+.addon-name {
 	font-style: italic;
 }
 
-.addon_actions {
+.addon-actions {
 	white-space: nowrap;
 }
 
-.addon_actions * {
+.addon-actions * {
 	vertical-align: middle;
 }
 
-.status_green {
+.status-green {
 	color: {$GET,green_highlight_text} !important;
 }
 
-.status_orange {
+.status-orange {
 	color: {$GET,orange_highlight_text} !important;
 }

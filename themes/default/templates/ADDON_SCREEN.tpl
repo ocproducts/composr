@@ -23,7 +23,7 @@
 	<form title="{!PRIMARY_PAGE_FORM}" action="{MULTI_ACTION*}" method="post" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
-		<div class="not_too_tall_addons">
+		<div class="not-too-tall-addons">
 			<div class="wide_table_wrap"><table class="columned_table wide_table results_table autosized_table zebra responsive_table">
 				<thead>
 					<tr>

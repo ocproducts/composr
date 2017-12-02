@@ -246,7 +246,7 @@
                         return;
                     } 
 
-                    var url = $cms.baseUrl('data/snippet.php?snippet=css_compile__text' + $cms.keep()),
+                    var url = $util.url('data/snippet.php?snippet=css_compile__text' + $cms.keep()),
                         post = 'css=' + encodeURIComponent(newCss);
                     if ($cms.form.isModSecurityWorkaroundEnabled()) {
                         post = $cms.form.modSecurityWorkaroundAjax(post);

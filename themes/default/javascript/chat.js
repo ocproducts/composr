@@ -114,7 +114,7 @@
         window.preparedChatSounds = true;
 
         window.soundManager.setup({
-            url: $cms.baseUrl('data'),
+            url: $util.url('data').toString(),
             debugMode: false,
             onready: function () {
                 var soundEffects = params.soundEffects, i;
@@ -1143,7 +1143,7 @@
             } else {
                 // Open popup
                 var imPopupWindowOptions = 'width=370,height=460,menubar=no,toolbar=no,location=no,resizable=no,scrollbars=yes,top=' + ((screen.height - 520) / 2) + ',left=' + ((screen.width - 440) / 2);
-                var newWindow = window.open($cms.baseUrl('data/empty.html?instant_messaging'), 'room_' + roomId, imPopupWindowOptions); // The "?instant_messaging" is just to make the location bar less surprising to the user ;-) [modern browsers always show the location bar for security, even if we try and disable it]
+                var newWindow = window.open($util.url('data/empty.html?instant_messaging'), 'room_' + roomId, imPopupWindowOptions); // The "?instant_messaging" is just to make the location bar less surprising to the user ;-) [modern browsers always show the location bar for security, even if we try and disable it]
                 if (!newWindow || (newWindow.window === undefined /*BetterPopupBlocker for Chrome returns a fake new window but won't have this defined in it*/)) {
                     $cms.ui.alert('{!chat:_FAILED_TO_OPEN_POPUP;,{$PAGE_LINK*,_SEARCH:popup_blockers:failure=1,0,1}}', '{!chat:FAILED_TO_OPEN_POPUP;^}', true);
                 }

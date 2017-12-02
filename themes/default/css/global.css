@@ -4001,7 +4001,7 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 .buttons__proceed {
 	background-image: url('{$IMG,icons/24x24/buttons/proceed}') !important;
 }
-.menu__adminzone__tools__cleanup {
+.menu-adminzone-tools-cleanup {
 	background-image: url('{$IMG,icons/24x24/menu/adminzone/tools/cleanup}') !important;
 }
 .buttons__copy {

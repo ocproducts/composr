@@ -49,7 +49,7 @@
         $dom.html(this.el, '<div class="ajax_loading vertical_alignment"><img src="' + $util.srl('{$IMG*;^,loading}') + '" alt="" /> <span>{!LOADING;^}</span></div>');
 
         // Initial rendering
-        var url = $cms.baseUrl(this.ajaxUrl), 
+        var url = $util.url(this.ajaxUrl), 
             that = this;
         if (params.rootId) {
             url += '&id=' + encodeURIComponent(params.rootId);
@@ -501,7 +501,7 @@
                 }
 
                 if ((xmlNode.getAttribute('has_children') === 'true') && !xmlNode.firstElementChild) {
-                    var url = $cms.baseUrl(this.ajaxUrl + '&id=' + encodeURIComponent(realClickedId) + '&options=' + this.options + '&default=' + encodeURIComponent(element.value));
+                    var url = this.ajaxUrl + '&id=' + encodeURIComponent(realClickedId) + '&options=' + this.options + '&default=' + encodeURIComponent(element.value);
                     var that = this;
                     $cms.doAjaxRequest(url).then(function (xhr) {
                         $dom.empty(htmlNode);
