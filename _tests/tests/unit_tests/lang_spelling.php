@@ -241,6 +241,7 @@ class lang_spelling_test_set extends cms_test_case
 
         // Common spelling errors
         $common_spelling_mistakes = array(
+			'occurrence' => 'recurrence',
             'cacheing' => 'caching',
             'publically' => 'publicly',
             'seperate' => 'separate',
