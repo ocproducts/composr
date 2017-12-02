@@ -271,7 +271,7 @@ function ecv2_CUSTOM_BASE_URL($lang, $escaped, $param)
 function ecv2_BASE_URL_NOHTTP($lang, $escaped, $param)
 {
     if ($GLOBALS['DEV_MODE']) {// Dev mode changes base domain so we need to actually use it in full (fine, we don't have HTTPS in dev mode).
-        return ecv2_BASE_URL($lang, $escaped, $param);
+        return ecv_BASE_URL($lang, $escaped, $param);
     }
 
     $value = preg_replace('#^https?://[^/]+#', '', get_base_url());
@@ -298,7 +298,7 @@ function ecv2_BASE_URL_NOHTTP($lang, $escaped, $param)
 function ecv2_CUSTOM_BASE_URL_NOHTTP($lang, $escaped, $param)
 {
     if ($GLOBALS['DEV_MODE']) {// Dev mode changes base domain so we need to actually use it in full (fine, we don't have HTTPS in dev mode).
-        return ecv2_BASE_URL($lang, $escaped, $param);
+        return ecv_BASE_URL($lang, $escaped, $param);
     }
 
     $value = preg_replace('#^https?://[^/]+/#', '/', get_custom_base_url());
