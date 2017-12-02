@@ -4,15 +4,15 @@
 */
 
 /*{+START,CSS_MODE,desktop}*/
-	.award_extra_details {
+	.award-extra-details {
 		float: left;
 	}
 
-	.award_extra_details {
+	.award-extra-details {
 		width: 200px;
 	}
 
-	.award_main {
+	.award-main {
 		border-left: 1px solid {$GET,standard_border};
 		padding-left: 2em;
 		margin-left: 220px;

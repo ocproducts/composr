@@ -1,4 +1,4 @@
-<div class="float_surrounder" itemscope="itemscope" itemtype="http://schema.org/VideoObject">
+<div class="float-surrounder" itemscope="itemscope" itemtype="http://schema.org/VideoObject">
 	<div class="media_box">
 		{VIDEO_PLAYER}
 	</div>
@@ -59,7 +59,7 @@
 					</tbody>
 				</table>
 
-				<ul class="horizontal_links associated_links_block_group">
+				<ul class="horizontal_links associated-links-block-group">
 					<li><img src="{$IMG*,icons/24x24/feedback/comment}" srcset="{$IMG*,icons/48x48/feedback/comment} 2x" alt="" /> <a href="{VIEW_URL*}">{$COMMENT_COUNT,images,{ID}}</a></li>
 				</ul>
 

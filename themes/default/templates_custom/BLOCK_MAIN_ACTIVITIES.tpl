@@ -4,10 +4,10 @@
 {+START,IF,{$NOT,{$GET,is_block_raw}}}
 	{$SET,ajax_block_main_activities_wrapper,ajax_block_main_activities_wrapper_{$RAND%}}
 	<div id="{$GET*,ajax_block_main_activities_wrapper}" data-require-javascript="['activities', 'activity_feed']" data-tpl="blockMainActivities" data-tpl-params="{+START,PARAMS_JSON,is_block_raw,MODE,MEMBER_IDS,START,GROW,MAX,REFRESH_TIME}{_*}{+END}">
-		<div class="float_surrounder">
+		<div class="float-surrounder">
 			<div id="activities_feed">
 				<div id="activities_general_notify"></div>
-				<ul class="float_surrounder activities_holder raw_ajax_grow_spot" id="activities_holder">
+				<ul class="float-surrounder activities_holder raw_ajax_grow_spot" id="activities_holder">
 					{+START,IF_EMPTY,{CONTENT}}
 						<li id="activity_-1"><p class="nothing_here">{!NO_ACTIVITIES}</p></li>
 					{+END}
@@ -21,7 +21,7 @@
 			</div>
 
 			{+START,IF_NON_EMPTY,{PAGINATION}}
-				<div class="pagination_spacing float_surrounder ajax_block_wrapper_links">
+				<div class="pagination_spacing float-surrounder ajax_block_wrapper_links">
 					{PAGINATION}
 				</div>
 			{+END}

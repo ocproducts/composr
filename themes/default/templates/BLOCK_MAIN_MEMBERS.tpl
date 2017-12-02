@@ -1,6 +1,6 @@
 {+START,IF,{INCLUDE_FORM}}
 	{+START,IF_PASSED,SYMBOLS}
-		<div class="float_surrounder"><div class="pagination alphabetical_jumper">
+		<div class="float-surrounder"><div class="pagination alphabetical_jumper">
 			{+START,LOOP,SYMBOLS}{+START,IF,{$EQ,{$_GET,{BLOCK_ID}_start},{START}}}<span class="results_page_num">{SYMBOL*}</span>{+END}{+START,IF,{$NEQ,{$_GET,{BLOCK_ID}_start},{START}}}<a class="results_continue alphabetical_jumper_cont" target="_self" href="{$PAGE_LINK*,_SELF:_SELF:{BLOCK_ID}_start={START}:{BLOCK_ID}_max={MAX}:{BLOCK_ID}_sort=m_username ASC}">{SYMBOL*}</a>{+END}{+END}
 		</div></div>
 	{+END}
@@ -12,7 +12,7 @@
 			<form title="{!SEARCH}" action="{$URL_FOR_GET_FORM*,{$SELF_URL}}" target="_self" method="get" autocomplete="off">
 				{$HIDDENS_FOR_GET_FORM,{$SELF_URL},{BLOCK_ID}_start,{BLOCK_ID}_max,{BLOCK_ID}_sort,{BLOCK_ID}_filter_*}
 
-				<div class="search_fields float_surrounder">
+				<div class="search_fields float-surrounder">
 					<div class="search_button">
 						<input data-disable-on-click="1" accesskey="u" class="button_screen_item buttons__filter" type="submit" value="{!FILTER}{+START,IF_NON_EMPTY,{FILTERS_ROW_B}} &#9745;{+END}" />
 					</div>
@@ -27,7 +27,7 @@
 				</div>
 
 				{+START,IF_NON_EMPTY,{FILTERS_ROW_B}}
-					<div class="search_fields float_surrounder">
+					<div class="search_fields float-surrounder">
 						<div class="search_button">
 							<input data-cms-href="{$PAGE_LINK*,_SELF:_SELF}" class="button_screen_item buttons__clear" type="button" value="{$,{!RESET_FILTER} }&#9746;" />
 						</div>
@@ -67,7 +67,7 @@
 
 {+START,IF,{$NEQ,{DISPLAY_MODE},listing}}
 	{$SET,fancy_screen,1}
-	<div class="block_main_members block_main_members__{DISPLAY_MODE%}{+START,IF_NON_EMPTY,{ITEM_WIDTH}} has_item_width{+END} float_surrounder">
+	<div class="block_main_members block_main_members__{DISPLAY_MODE%}{+START,IF_NON_EMPTY,{ITEM_WIDTH}} has_item_width{+END} float-surrounder">
 		{+START,LOOP,MEMBER_BOXES}
 			{+START,IF,{$EQ,{DISPLAY_MODE},avatars,photos}}
 				<div data-mouseover-activate-tooltip="['{BOX;^*}','auto']"{+START,IF_NON_EMPTY,{ITEM_WIDTH}} style="width: {ITEM_WIDTH*}"{+END}>
@@ -101,7 +101,7 @@
 
 							{$BLOCK,block=main_image_fader,param={GALLERY_NAME}}
 
-							<ul class="horizontal_links associated_links_block_group">
+							<ul class="horizontal_links associated-links-block-group">
 								<li>
 									<a data-mouseover-activate-tooltip="['{BOX;^*}','auto']" data-focus-activate-tooltip="['{BOX;^*}','auto']" data-blur-deactivate-tooltip="" href="{$MEMBER_PROFILE_URL*,{MEMBER_ID}}">{$USERNAME*,{MEMBER_ID}}</a>
 								</li>
@@ -129,7 +129,7 @@
 	{$SET,fancy_screen,0}
 
 	{+START,IF,{$OR,{INCLUDE_FORM},{$IS_NON_EMPTY,{PAGINATION}}}}
-		<div class="box results_table_under"><div class="box_inner float_surrounder">
+		<div class="box results_table_under"><div class="box_inner float-surrounder">
 			{+START,IF,{INCLUDE_FORM}}
 				{+START,IF_NON_EMPTY,{SORT}}
 					<div class="results_table_sorter">

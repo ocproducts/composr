@@ -12,7 +12,7 @@
 	{+END}
 
 	{+START,IF_NON_EMPTY,{LINKS}}
-		<ul class="associated_links_block_group">
+		<ul class="associated-links-block-group">
 			{LINKS}
 		</ul>
 	{+END}

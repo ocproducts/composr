@@ -2,7 +2,7 @@
 	{$SET,ajax_catalogue_products_category_embed_wrapper,ajax_catalogue_products_category_embed_wrapper_{$RAND%}}
 	<div id="{$GET*,ajax_catalogue_products_category_embed_wrapper}" class="box_wrapper">
 		{+START,SET,sorting}
-			<div class="cart_info">
+			<div class="cart-info">
 				{$SET,show_sort_button,1}
 				{+START,IF_NON_EMPTY,{SORTING}}
 					<div class="box category_sorter inline_block"><div class="box_inner">
@@ -19,7 +19,7 @@
 		{+END}
 
 		{+START,IF_NON_EMPTY,{ENTRIES}}
-			<div class="float_surrounder display_type_{DISPLAY_TYPE*} raw_ajax_grow_spot">
+			<div class="float-surrounder display-type-{DISPLAY_TYPE*} raw_ajax_grow_spot">
 				{ENTRIES}
 			</div>
 		{+END}
@@ -35,7 +35,7 @@
 		{+END}
 
 		{+START,IF_NON_EMPTY,{PAGINATION}}
-			<div class="pagination_spacing float_surrounder ajax_block_wrapper_links">
+			<div class="pagination_spacing float-surrounder ajax_block_wrapper_links">
 				{PAGINATION}
 			</div>
 

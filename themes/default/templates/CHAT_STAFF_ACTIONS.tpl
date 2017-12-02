@@ -1,4 +1,4 @@
-{+START,IF_NON_EMPTY,{EDIT_URL}{BAN_URL}{CHAT_BAN_URL}}<ul class="horiz_field_sep icon_links_block_group">
+{+START,IF_NON_EMPTY,{EDIT_URL}{BAN_URL}{CHAT_BAN_URL}}<ul class="horiz-field-sep icon_links_block_group">
 	{+START,IF_NON_EMPTY,{EDIT_URL}}
 		<li class="icon_14_edit2"><a rel="edit" target="_blank" title="{!EDIT} {!LINK_NEW_WINDOW}" href="{EDIT_URL*}">{!EDIT}</a></li>
 	{+END}

@@ -8,7 +8,7 @@
 	</h2>
 
 	<div class="toggleable_tray js-tray-content">
-		<div class="cns_information_bar float_surrounder">
+		<div class="cns_information_bar float-surrounder">
 			<div class="cns_guest_column cns_guest_column_a">
 				<form title="{!_LOGIN}" class="inline js-submit-check-field-login-username" action="{LOGIN_URL*}" method="post" autocomplete="on">
 					{$INSERT_SPAMMER_BLACKHOLE}
@@ -24,7 +24,7 @@
 						{+END}
 						<input class="button_screen_item menu__site_meta__user_actions__login" type="submit" value="{!_LOGIN}" />
 
-						<ul class="horizontal_links associated_links_block_group">
+						<ul class="horizontal_links associated-links-block-group">
 							<li><a href="{JOIN_URL*}">{!_JOIN}</a></li>
 							<li><a data-open-as-overlay="{}" rel="nofollow" href="{FULL_LOGIN_URL*}" title="{!MORE}: {!_LOGIN}">{!MORE}</a></li>
 						</ul>

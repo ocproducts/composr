@@ -1,17 +1,17 @@
-<td class="calendar_year_month">
+<td class="calendar-year-month">
 	<div class="block_mobile">
 		<h2><a href="{MONTH_URL*}">{MONTH_NAME*}</a></h2>
 	</div>
 
-	<table class="spread_table calendar_year_month_table">
+	<table class="spread_table calendar-year-month-table">
 		<colgroup>
-			<col class="calendar_weekly_column" />
-			<col class="calendar_weekly_column" />
-			<col class="calendar_weekly_column" />
-			<col class="calendar_weekly_column" />
-			<col class="calendar_weekly_column" />
-			<col class="calendar_weekly_column" />
-			<col class="calendar_weekly_column" />
+			<col class="calendar-weekly-column" />
+			<col class="calendar-weekly-column" />
+			<col class="calendar-weekly-column" />
+			<col class="calendar-weekly-column" />
+			<col class="calendar-weekly-column" />
+			<col class="calendar-weekly-column" />
+			<col class="calendar-weekly-column" />
 		</colgroup>
 
 		<thead>

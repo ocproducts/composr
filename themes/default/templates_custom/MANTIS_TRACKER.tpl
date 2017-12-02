@@ -34,7 +34,7 @@
 
 						{+START,IF_PASSED,COST}
 							<br />
-							<span class="associated_details">({!FEATURES_CREDITS_HOURS_COST,{CREDITS*},{HOURS*},{$TRIM,{COST}}})</span>
+							<span class="associated-details">({!FEATURES_CREDITS_HOURS_COST,{CREDITS*},{HOURS*},{$TRIM,{COST}}})</span>
 						{+END}
 					</p>
 				</div>
@@ -44,7 +44,7 @@
 						{$TRUNCATE_LEFT,{DESCRIPTION},310,1,1}
 					</p>
 
-					<p class="associated_details tracker_issue_poster">
+					<p class="associated-details tracker_issue_poster">
 						{!FEATURES_SUGGESTED_BY,{MEMBER_LINK},{DATE*}}
 					</p>
 
@@ -58,7 +58,7 @@
 {+END}
 
 {+START,IF_NON_EMPTY,{PAGINATION}}
-	<div class="float_surrounder">
+	<div class="float-surrounder">
 		<br />
 		{PAGINATION}
 	</div>

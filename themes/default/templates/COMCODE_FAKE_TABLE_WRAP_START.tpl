@@ -1,1 +1,1 @@
-<div class="float_surrounder comcode_fake_table">
+<div class="float-surrounder comcode_fake_table">

@@ -1,6 +1,6 @@
 {+START,SET,PREVIEW_CONTENTS}
 	{+START,IF_NON_EMPTY,{SUMMARY}}
-		<div class="float_surrounder">
+		<div class="float-surrounder">
 			{$TRUNCATE_LEFT,{SUMMARY},300,0,1}
 		</div>
 	{+END}

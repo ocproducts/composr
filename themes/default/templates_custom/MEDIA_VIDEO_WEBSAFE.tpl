@@ -30,7 +30,7 @@
 	</div>
 
 	{+START,IF_NON_EMPTY,{DESCRIPTION}}
-		<figcaption class="associated_details">
+		<figcaption class="associated-details">
 			{$PARAGRAPH,{DESCRIPTION}}
 		</figcaption>
 	{+END}

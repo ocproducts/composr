@@ -8,7 +8,7 @@
 			<h2>{TITLE}</h2>
 
 			{+START,IF_NON_EMPTY,{TEXT}}
-				<p class="associated_details">
+				<p class="associated-details">
 					{TEXT}
 				</p>
 			{+END}

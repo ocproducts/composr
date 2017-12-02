@@ -24,7 +24,7 @@
 		</ul>
 	</div>
 
-	<div itemprop="articleBody" class="float_surrounder">
+	<div itemprop="articleBody" class="float-surrounder">
 		{NEWS_FULL}
 	</div>
 
@@ -56,7 +56,7 @@
 		{+END}
 	{+END}
 
-	<div class="float_surrounder lined_up_boxes">
+	<div class="float-surrounder lined_up_boxes">
 		{+START,IF_NON_EMPTY,{TRACKBACK_DETAILS}}
 			<div class="trackbacks right">
 				{TRACKBACK_DETAILS}

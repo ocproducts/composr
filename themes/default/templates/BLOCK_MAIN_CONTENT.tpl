@@ -14,7 +14,7 @@
 	{$PREG_REPLACE,^\s*<section class="box [^"]+"><div class="box_inner">,,{$PREG_REPLACE,</div></section>\s*$,,{$GET,eval_content}}}
 
 	{+START,IF_NON_EMPTY,{SUBMIT_URL}{ARCHIVE_URL}}
-		<ul class="horizontal_links associated_links_block_group force_margin">
+		<ul class="horizontal_links associated-links-block-group force_margin">
 			{+START,IF_NON_EMPTY,{SUBMIT_URL}}
 				<li><a rel="add" href="{SUBMIT_URL*}">{!ADD}</a></li>
 			{+END}

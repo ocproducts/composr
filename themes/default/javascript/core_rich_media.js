@@ -1045,8 +1045,8 @@
             }
             el = document.getElementById(id + '_btgoto_' + sections[i]);
             if (el) {
-                el.classList.toggle('big_tab_active', (i === currentPos));
-                el.classList.toggle('big_tab_inactive', (i !== currentPos));
+                el.classList.toggle('big-tab-active', (i === currentPos));
+                el.classList.toggle('big-tab-inactive', (i !== currentPos));
             }
             el = document.getElementById(id + '_isat_' + sections[i]);
             if (el) {
@@ -1055,7 +1055,7 @@
             el = document.getElementById(id + '_section_' + sections[i]);
 
             if (el) {
-                if (el.classList.contains('comcode_big_tab')) {
+                if (el.classList.contains('comcode-big-tab')) {
                     if (i === currentPos) {
                         el.style.width = '';
                         el.style.position = 'static';

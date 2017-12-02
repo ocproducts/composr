@@ -2,7 +2,7 @@
 	<h3><span class="name">{FIELD_0}</span></h3>
 
 	{+START,IF_NON_EMPTY,{FIELD_7_THUMB}}
-		<div class="catalogue_entry_box_thumbnail">
+		<div class="catalogue-entry-box-thumbnail">
 			<a href="{VIEW_URL*}">{FIELD_7_THUMB}</a>
 		</div>
 	{+END}
@@ -13,7 +13,7 @@
 		</div>
 	{+END}{+END}
 
-	<div class="price_box">
+	<div class="price-box">
 		<span class="price">{$CURRENCY,{FIELD_2_PLAIN},,{$?,{$CONFIG_OPTION,currency_auto},{$CURRENCY_USER},{$CURRENCY}}}</span>
 	</div>
 

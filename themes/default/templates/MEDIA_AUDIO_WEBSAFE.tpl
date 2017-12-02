@@ -26,7 +26,7 @@
 	<div class="webstandards_checker_off" id="{$GET%,player_id}"></div>
 
 	{+START,IF_NON_EMPTY,{DESCRIPTION}}
-		<figcaption class="associated_details">
+		<figcaption class="associated-details">
 			{$PARAGRAPH,{DESCRIPTION}}
 		</figcaption>
 	{+END}

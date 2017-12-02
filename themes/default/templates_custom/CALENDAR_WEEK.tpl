@@ -1,6 +1,6 @@
 {$SET,rowspan_detected,0}
 
-<table class="spread_table calendar_week spaced_table autosized_table columned_table" itemprop="significantLinks">
+<table class="spread_table calendar-week spaced_table autosized_table columned_table" itemprop="significantLinks">
 	<thead>
 		<tr>
 			<th></th>

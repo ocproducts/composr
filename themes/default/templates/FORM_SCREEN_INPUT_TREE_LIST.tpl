@@ -10,7 +10,7 @@
 	</div>
 
 	{+START,IF_NON_EMPTY,{DEFAULT}}
-		<p class="associated_details">
+		<p class="associated-details">
 			{!TREE_LIST_FEEDBACK,<span class="whitespace_visible" id="{NAME*}_mirror">{NICE_LABEL*}</span>}
 		</p>
 	{+END}

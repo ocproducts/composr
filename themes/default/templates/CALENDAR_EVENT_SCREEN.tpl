@@ -14,9 +14,9 @@
 
 	{WARNING_DETAILS}
 
-	<div class="float_surrounder">
+	<div class="float-surrounder">
 		{+START,IF_NON_EMPTY,{SUBSCRIBE_URL}}
-			<div class="event_right">
+			<div class="event-right">
 				{+START,IF_NON_EMPTY,{SUBSCRIBED}}
 					<div class="box box___calendar_event_screen_subscribed"><div class="box_inner">
 						<h2>{!SUBSCRIBED_REMINDERS}</h2>
@@ -34,45 +34,45 @@
 					<h2>{!REMINDERS}</h2>
 
 					{+START,IF_NON_EMPTY,{SUBSCRIPTIONS}}
-						<ul class="event_subscriptions">
+						<ul class="event-subscriptions">
 							{+START,LOOP,SUBSCRIPTIONS}
-								<li class="float_surrounder">
+								<li class="float-surrounder">
 									{TIME*}
 
-									<span class="horiz_field_sep associated_link"><a href="{UNSUBSCRIBE_URL*}" title="{!UNSUBSCRIBE}: {TIME*}">{!UNSUBSCRIBE}</a></span>
+									<span class="horiz-field-sep associated_link"><a href="{UNSUBSCRIBE_URL*}" title="{!UNSUBSCRIBE}: {TIME*}">{!UNSUBSCRIBE}</a></span>
 								</li>
 							{+END}
 						</ul>
 					{+END}
 
-					<ul class="horizontal_links associated_links_block_group">
+					<ul class="horizontal_links associated-links-block-group">
 						<li><img alt="" src="{$IMG*,icons/24x24/buttons/enable_notifications}" srcset="{$IMG*,icons/48x48/buttons/enable_notifications} 2x" /> <a href="{SUBSCRIBE_URL*}">{!SUBSCRIBE_EVENT}</a></li>
 					</ul>
 				</div></div>
 			</div>
 		{+END}
 
-		<div {+START,IF_NON_EMPTY,{SUBSCRIBE_URL}} class="event_left"{+END}>
+		<div {+START,IF_NON_EMPTY,{SUBSCRIBE_URL}} class="event-left"{+END}>
 			<div class="box box___calendar_event_screen_description"><div class="box_inner">
 				<h2>{!DESCRIPTION}</h2>
 
-				<div class="float_surrounder">
+				<div class="float-surrounder">
 					{+START,IF_NON_EMPTY,{LOGO}}
-						<img class="event_type_image" src="{$IMG*,{LOGO}}" alt="{TYPE*}" title="{TYPE*}" />
+						<img class="event-type-image" src="{$IMG*,{LOGO}}" alt="{TYPE*}" title="{TYPE*}" />
 					{+END}
 					{+START,IF_NON_EMPTY,{CONTENT}}
 						<div class="description" itemprop="description">{CONTENT}</div>
 					{+END}
 					{+START,IF_EMPTY,{CONTENT}}
-						<div class="no_description">{!NO_DESCRIPTION}</div>
+						<div class="no-description">{!NO_DESCRIPTION}</div>
 					{+END}
 				</div>
 			</div></div>
 		</div>
 	</div>
 
-	<div class="float_surrounder">
-		<div class="event_right">
+	<div class="float-surrounder">
+		<div class="event-right">
 			{+START,IF_NON_EMPTY,{TRACKBACK_DETAILS}}
 				<div class="trackbacks right">
 					{TRACKBACK_DETAILS}
@@ -85,7 +85,7 @@
 			{+END}
 		</div>
 
-		<div class="event_left">
+		<div class="event-left">
 			<div class="wide_table_wrap"><table class="map_table wide_table results_table autosized_table" role="note">
 				<tbody>
 					{+START,IF_NON_EMPTY,{TIME}}

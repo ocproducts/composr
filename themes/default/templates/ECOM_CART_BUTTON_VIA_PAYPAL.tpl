@@ -31,7 +31,7 @@
 
 			<p>
 				<input type="hidden" name="on0_{$ADD*,1,{_loop_key}}" value="Size" />
-				<label for="os0_{$ADD*,1,{_loop_key}}">Size of {PRODUCT_NAME*} <span class="associated_details">(if applicable)</span></label>
+				<label for="os0_{$ADD*,1,{_loop_key}}">Size of {PRODUCT_NAME*} <span class="associated-details">(if applicable)</span></label>
 				<select name="os0_{$ADD*,1,{_loop_key}}" id="os0_{$ADD*,1,{_loop_key}}">
 					<option>Small</option>
 					<option selected="selected">Medium</option>

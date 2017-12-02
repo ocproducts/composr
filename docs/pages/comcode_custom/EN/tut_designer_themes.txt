@@ -505,7 +505,7 @@ This is the default [tt]BLOCK_SIDE_NEWS.tpl[/tt]...
 	{+END}
 
 	{+START,IF_NON_EMPTY,{ARCHIVE_URL}{SUBMIT_URL}}
-		<ul class="horizontal_links associated_links_block_group">
+		<ul class="horizontal_links associated-links-block-group">
 			{+START,IF_NON_EMPTY,{ARCHIVE_URL}}
 				<li><a rel="archives" href="{ARCHIVE_URL*}">{!VIEW_ARCHIVE}</a></li>
 			{+END}

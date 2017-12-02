@@ -17,7 +17,7 @@
 
 	{+START,IF_PASSED,FIELD_1_THUMB}
 		{+START,IF_NON_EMPTY,{FIELD_1_THUMB}}
-			<div class="catalogue_entry_box_thumbnail">
+			<div class="catalogue-entry-box-thumbnail">
 				{+START,IF_NON_EMPTY,{$GET,view_url}}
 					<a data-mouseover-activate-tooltip="['{$TRIM*;^,{$GET,TOOLTIP}}','500px']" href="{$GET*,view_url}">{FIELD_1_THUMB}</a>
 				{+END}

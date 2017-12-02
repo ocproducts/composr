@@ -68,7 +68,7 @@
 		</div>
 
 		<div class="cns_topic_post_area cns_post_main_column">
-			<div class="float_surrounder">
+			<div class="float-surrounder">
 				{+START,IF,{$DESKTOP}}
 					{+START,IF_NON_EMPTY,{ID}}{+START,IF_NON_PASSED_OR_FALSE,PREVIEWING}
 						<div id="cell_mark_{ID*}" class="cns_off mass_select_marker block_desktop">

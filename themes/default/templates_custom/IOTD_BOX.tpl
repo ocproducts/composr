@@ -27,7 +27,7 @@
 		{+END}{+END}
 
 		{+START,IF_NON_EMPTY,{CAPTION}}
-			<div class="associated_details">
+			<div class="associated-details">
 				{$PARAGRAPH,{CAPTION}}
 			</div>
 		{+END}

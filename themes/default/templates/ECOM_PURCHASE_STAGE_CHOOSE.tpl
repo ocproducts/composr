@@ -19,7 +19,7 @@
 					<div class="box box___ecom_purchase_stage_choose"><div class="box_inner">
 						<h2>{ITEM_NAME*}</h2>
 
-						<div class="float_surrounder">
+						<div class="float-surrounder">
 							{+START,IF_NON_EMPTY,{IMAGE_URL}}
 								<img src="{$THUMBNAIL,{IMAGE_URL*},48x48}" alt="" class="right float_separation" />
 							{+END}
@@ -37,7 +37,7 @@
 							{+END}
 
 							{+START,IF_PASSED,URL}
-								<ul class="horizontal_links associated_links_block_group">
+								<ul class="horizontal_links associated-links-block-group">
 									<li><a title="{!CHOOSE}: {ITEM_NAME*}" href="{URL*}">{!CHOOSE}</a></li>
 								</ul>
 							{+END}

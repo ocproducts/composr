@@ -6,7 +6,7 @@
 
 	<div>
 		<a class="js-click-poll-for-notifications" data-click-pd="1" data-open-as-overlay="{}" title="{!POST_PLU,{NUM_POSTS*}}, {TITLE*~}" href="{TOPIC_URL*}">{$TRUNCATE_LEFT,{TITLE},30}</a>, {$GET,label}<br />
-		<span class="associated_details">({$?,{HAS_READ},{!notifications:HAS_READ},{!notifications:HAS_NOT_READ}})</span>
+		<span class="associated-details">({$?,{HAS_READ},{!notifications:HAS_READ},{!notifications:HAS_NOT_READ}})</span>
 	</div>
 
 	{+START,IF_NON_EMPTY,{LAST_POST_BY_USERNAME}}

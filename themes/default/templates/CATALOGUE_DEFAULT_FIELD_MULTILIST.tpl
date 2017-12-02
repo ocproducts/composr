@@ -1,5 +1,5 @@
 {+START,IF_NON_EMPTY,{ALL}}
-	<div class="field_multilist">
+	<div class="field-multilist">
 		{+START,LOOP,ALL}<p>
 			{+START,IF,{SHOW_UNSET_VALUES}}
 				{+START,IF,{HAS}}
@@ -13,7 +13,7 @@
 			{OPTION*}
 
 			{+START,IF_PASSED_AND_TRUE,IS_OTHER}
-				<span class="associated_details">({!fields:ADDITIONAL_CUSTOM})</span>
+				<span class="associated-details">({!fields:ADDITIONAL_CUSTOM})</span>
 			{+END}
 		</p>{+END}
 	</div>

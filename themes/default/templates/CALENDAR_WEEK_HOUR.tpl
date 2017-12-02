@@ -1,5 +1,5 @@
 <tr>
-	<th class="calendar_week_hour">
+	<th class="calendar-week-hour">
 		{HOUR*}
 	</th>
 

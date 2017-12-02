@@ -13,7 +13,7 @@
 					</p>
 
 					<div role="note">
-						<ul class="compact_list tiny_paragraph associated_details">
+						<ul class="compact_list tiny_paragraph associated-details">
 							<li>{!BY_SIMPLE,{$DISPLAYED_USERNAME*,{FIRSTUSERNAME}}}</li>
 							<li>{!_COMMENTS,{$SUBTRACT,{REPLIES},1}}</li>
 							<li><span class="must_show_together">{!LAST_POST}:</span> <span class="must_show_together">{DATE*}</span></li>
@@ -25,7 +25,7 @@
 	{+END}
 
 	{+START,IF_NON_EMPTY,{ARCHIVE_URL}{SUBMIT_URL}}
-		<ul class="horizontal_links associated_links_block_group force_margin">
+		<ul class="horizontal_links associated-links-block-group force_margin">
 			{+START,IF_NON_EMPTY,{ARCHIVE_URL}}
 				<li><a rel="archives" href="{ARCHIVE_URL*}">{!VIEW_ARCHIVE}</a></li>
 			{+END}

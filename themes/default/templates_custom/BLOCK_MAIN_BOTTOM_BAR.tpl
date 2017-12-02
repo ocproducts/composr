@@ -14,7 +14,7 @@
 				<tr>
 					<th class="de_th cns_stats_usersonline_1">
 						<p class="field_name">{!USERS_ONLINE}:</p>
-						{+START,IF_NON_EMPTY,{USERS_ONLINE_URL}}<p class="associated_link associated_links_block_group"><a href="{USERS_ONLINE_URL*}" title="{!USERS_ONLINE}" rel="nofollow">{!DETAILS}</a></p>{+END}
+						{+START,IF_NON_EMPTY,{USERS_ONLINE_URL}}<p class="associated_link associated-links-block-group"><a href="{USERS_ONLINE_URL*}" title="{!USERS_ONLINE}" rel="nofollow">{!DETAILS}</a></p>{+END}
 					</th>
 
 					<td class="cns_stats_usersonline_2">

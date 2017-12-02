@@ -8,7 +8,7 @@
 	</h2>
 
 	<div class="toggleable_tray js-tray-content">
-		<div class="cns_information_bar float_surrounder">
+		<div class="cns_information_bar float-surrounder">
 			<div class="cns_guest_column cns_guest_column_a">
 				<form title="{!_LOGIN}" class="inline js-submit-check-username-for-blankness" action="{LOGIN_URL*}" method="post" autocomplete="on">
 					{$INSERT_SPAMMER_BLACKHOLE}
@@ -29,7 +29,7 @@
 								<div class="fb-login-button" data-scope="email{$,Asking for this stuff is now a big hassle as it needs a screencast(s) making: user_birthday,user_about_me,user_hometown,user_location,user_website}{+START,IF,{$CONFIG_OPTION,facebook_auto_syndicate}},publish_actions,publish_pages{+END}"></div>
 							{+END}{+END}
 						{+END}
-						<ul class="horizontal_links associated_links_block_group">
+						<ul class="horizontal_links associated-links-block-group">
 							<li><a href="{JOIN_URL*}">{!_JOIN}</a></li>
 							<li><a data-open-as-overlay="{}" rel="nofollow" href="{FULL_LOGIN_URL*}" title="{!MORE}: {!_LOGIN}">{!MORE}</a></li>
 						</ul>

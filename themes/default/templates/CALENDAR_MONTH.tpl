@@ -1,13 +1,13 @@
-<table class="spread_table calendar_month">
+<table class="spread_table calendar-month">
 	<colgroup>
-		<col class="calendar_month_column_heading" />
-		<col class="calendar_month_column_day" />
-		<col class="calendar_month_column_day" />
-		<col class="calendar_month_column_day" />
-		<col class="calendar_month_column_day" />
-		<col class="calendar_month_column_day" />
-		<col class="calendar_month_column_day" />
-		<col class="calendar_month_column_day" />
+		<col class="calendar-month-column-heading" />
+		<col class="calendar-month-column-day" />
+		<col class="calendar-month-column-day" />
+		<col class="calendar-month-column-day" />
+		<col class="calendar-month-column-day" />
+		<col class="calendar-month-column-day" />
+		<col class="calendar-month-column-day" />
+		<col class="calendar-month-column-day" />
 	</colgroup>
 
 	<thead>

@@ -139,9 +139,9 @@
 				<th>{!W_POSITION}</th>
 				<td>
 					<label for="position_0">{!W_UP} <input type="radio" checked="checked" id="position_0" name="position" value="0" /></label>
-					<label for="position_1" class="horiz_field_sep">{!W_DOWN}<input type="radio" id="position_1" name="position" value="1" /></label>
-					<label for="position_2" class="horiz_field_sep">{!W_RIGHT} <input type="radio" id="position_2" name="position" value="2" /></label>
-					<label for="position_3" class="horiz_field_sep">{!W_LEFT} <input type="radio" id="position_3" name="position" value="3" /></label>
+					<label for="position_1" class="horiz-field-sep">{!W_DOWN}<input type="radio" id="position_1" name="position" value="1" /></label>
+					<label for="position_2" class="horiz-field-sep">{!W_RIGHT} <input type="radio" id="position_2" name="position" value="2" /></label>
+					<label for="position_3" class="horiz-field-sep">{!W_LEFT} <input type="radio" id="position_3" name="position" value="3" /></label>
 				</td>
 				<td>{!W_ROOM_POS}</td>
 			</tr>

@@ -45,7 +45,7 @@ foreach ($group_points as $group_id => $points) {
         echo '<tr>
             <td>' . escape_html($group_name) . '</td>
             <td>' . escape_html(integer_format($points['p_points_one_off'])) . '</td>
-            <td>' . escape_html(integer_format($points['p_points_per_month'])) . ' <span class="associated_details">per month</span></td>
+            <td>' . escape_html(integer_format($points['p_points_per_month'])) . ' <span class="associated-details">per month</span></td>
             <td>' . (in_array($group_id, $my_groups) ? '<img src="' . escape_html(find_theme_image('checklist/checklist1')) . '" /> Yes' : '<img src="' . escape_html(find_theme_image('checklist/checklist0')) . '" /> No') . '</td>
         </tr>';
 

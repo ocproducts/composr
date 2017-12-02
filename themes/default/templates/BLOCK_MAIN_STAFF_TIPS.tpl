@@ -14,9 +14,9 @@
 				{TIP}
 			</p>
 
-			<div class="tips_trail">
+			<div class="tips-trail">
 				{+START,IF_NON_EMPTY,{TIP_CODE}}
-					<ul class="horizontal_links associated_links_block_group">
+					<ul class="horizontal_links associated-links-block-group">
 						<li><a target="_self" href="{$PAGE_LINK*,adminzone:staff_tips_dismiss={TIP_CODE}}">{!DISMISS_TIP}</a></li>
 						{+START,IF,{$NEQ,{TIP_CODE},0a}}
 							<li><a target="_self" accesskey="k" href="{$PAGE_LINK*,adminzone:rand={$RAND}}">{!ANOTHER_TIP}</a></li>

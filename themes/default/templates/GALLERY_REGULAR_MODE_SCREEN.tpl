@@ -76,7 +76,7 @@
 		{+END}
 	{+END}
 
-	<div class="float_surrounder lined_up_boxes">
+	<div class="float-surrounder lined_up_boxes">
 		{+START,IF_NON_EMPTY,{MEMBER_DETAILS}}
 			<div class="right">
 				<div class="box box___gallery_regular_mode_screen"><div class="box_inner">

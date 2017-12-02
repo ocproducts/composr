@@ -14,13 +14,13 @@
 			{+END}
 
 			{+START,IF_NON_EMPTY,{LINKS_ECOMMERCE}}
-				<ul class="associated_links_block_group">
+				<ul class="associated-links-block-group">
 					{LINKS_ECOMMERCE}
 				</ul>
 			{+END}
 
 			{+START,IF_NON_EMPTY,{LINKS}}
-				<ul class="associated_links_block_group horizontal_links">
+				<ul class="associated-links-block-group horizontal_links">
 					{LINKS}
 				</ul>
 			{+END}

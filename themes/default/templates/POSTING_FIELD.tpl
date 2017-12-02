@@ -30,7 +30,7 @@
 
 		{+START,IF,{$OR,{$IN_STR,{CLASS},wysiwyg},{$AND,{$MATCH_KEY_MATCH,_WILD:cms_comcode_pages},{$SHOW_DOCS}}}}
 			<div class="comcode_supported posting_form_main_comcode_button">
-				<ul class="horizontal_links horiz_field_sep associated_links_block_group">
+				<ul class="horizontal_links horiz-field-sep associated-links-block-group">
 					{+START,IF,{$SHOW_DOCS}}{+START,IF_PASSED,COMCODE_URL}
 						{+START,IF,{$NOT,{$MATCH_KEY_MATCH,_WILD:cms_comcode_pages}}}
 							<li><a data-open-as-overlay="{}" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{COMCODE_URL*}"><img src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical_alignment" alt="{!COMCODE_MESSAGE,Comcode}" /></a></li>
@@ -60,8 +60,8 @@
 			<textarea cols="1" rows="1" style="display: none" readonly="readonly" disabled="disabled" name="{NAME*}_parsed">{DEFAULT_PARSED*}</textarea>
 		{+END}
 
-		<div class="float_surrounder">
-			<div role="toolbar" class="float_surrounder post_options_wrap">
+		<div class="float-surrounder">
+			<div role="toolbar" class="float-surrounder post_options_wrap">
 				<div id="post_special_options2" style="display: none">
 					{COMCODE_EDITOR_SMALL}
 				</div>
@@ -85,7 +85,7 @@
 				{+START,IF,{$DESKTOP}}{+START,IF,{$OR,{$CONFIG_OPTION,is_on_emoticon_choosers},{$CNS}}}
 					<div {+START,IF,{$CONFIG_OPTION,is_on_emoticon_choosers}} class="emoticon_chooser box block_desktop"{+END}>
 						{+START,IF,{$CNS}}
-							<span class="right horiz_field_sep associated_link"><a rel="nofollow" target="_blank" class="js-link-click-open-site-emoticon-chooser-window" href="{$FIND_SCRIPT*,emoticons}?field_name={NAME*}{$KEEP*,0,1}" data-click-pd="1" title="{!EMOTICONS_POPUP} {!LINK_NEW_WINDOW}">{$?,{$CONFIG_OPTION,is_on_emoticon_choosers},{!VIEW_ARCHIVE},{!EMOTICONS_POPUP}}</a></span>
+							<span class="right horiz-field-sep associated_link"><a rel="nofollow" target="_blank" class="js-link-click-open-site-emoticon-chooser-window" href="{$FIND_SCRIPT*,emoticons}?field_name={NAME*}{$KEEP*,0,1}" data-click-pd="1" title="{!EMOTICONS_POPUP} {!LINK_NEW_WINDOW}">{$?,{$CONFIG_OPTION,is_on_emoticon_choosers},{!VIEW_ARCHIVE},{!EMOTICONS_POPUP}}</a></span>
 						{+END}
 
 						{+START,IF,{$CONFIG_OPTION,is_on_emoticon_choosers}}

@@ -991,7 +991,7 @@
         var lightboxCode = /** @lang HTML */'' +
             '<div style="text-align: center">' +
             '    <p class="ajax_loading" id="lightbox_image"><img src="' + $util.srl('{$IMG*;,loading}') + '" /></p>' +
-            '    <p id="lightbox_meta" style="display: none" class="associated_link associated_links_block_group">' +
+            '    <p id="lightbox_meta" style="display: none" class="associated_link associated-links-block-group">' +
             '         <span id="lightbox_description">' + description + '</span>' +
             ((n == null) ? '' : ('<span id="lightbox_position_in_set"><span id="lightbox_position_in_set_x">' + x + '</span> / <span id="lightbox_position_in_set_n">' + n + '</span></span>')) +
             (isVideo ? '' : ('<span id="lightbox_full_link"><a href="' + $cms.filter.html(initialImgUrl) + '" target="_blank" title="{$STRIP_TAGS;^,{!SEE_FULL_IMAGE}} {!LINK_NEW_WINDOW;^}">{!SEE_FULL_IMAGE;^}</a></span>')) +

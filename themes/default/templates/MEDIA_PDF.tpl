@@ -2,7 +2,7 @@
 	<iframe width="{WIDTH*}" height="{HEIGHT*}" title="{!DOCUMENT}" class="gallery_pdf" src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}">{!DOCUMENT}</iframe>
 
 	{+START,IF_NON_EMPTY,{DESCRIPTION}}
-		<figcaption class="associated_details">
+		<figcaption class="associated-details">
 			{$PARAGRAPH,{DESCRIPTION}}
 		</figcaption>
 	{+END}

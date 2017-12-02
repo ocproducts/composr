@@ -10,7 +10,7 @@
 			<div id="tree_list__root_{NAME*}">
 				<!-- List put in here -->
 			</div>
-			<p class="associated_details">
+			<p class="associated-details">
 				{!CLICK_ENTRY_POINT_TO_USE_2}
 			</p>
 		</div>

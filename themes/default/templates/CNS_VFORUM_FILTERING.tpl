@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,cns_forum}
 
-<div class="float_surrounder" data-tpl="cnsVirtualForumFiltering">
+<div class="float-surrounder" data-tpl="cnsVirtualForumFiltering">
 	<form title="{!FILTER}" class="right" action="{$URL_FOR_GET_FORM*,{$SELF_URL}}" method="get" autocomplete="off">
 		{$HIDDENS_FOR_GET_FORM,{$SELF_URL},seconds_back}
 

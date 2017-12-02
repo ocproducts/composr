@@ -1,4 +1,4 @@
-<div class="float_surrounder">
+<div class="float-surrounder">
 	{+START,IF,{$ADDON_INSTALLED,search}}
 		{$SET,search_url,{$SELF_URL}}
 		<form class="filedump_filter" role="search" title="{!SEARCH}" data-disable-buttons-on-submit="{}" action="{$URL_FOR_GET_FORM*,{$GET,search_url},search,type_filter,sort,place,recurse,file}#tab__{TAB%}" method="get" autocomplete="off">
@@ -8,14 +8,14 @@
 				<label class="accessibility_hidden" for="search_filedump_{I*}">{!SEARCH}</label>
 				<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" size="22" type="search" id="search_filedump_{I*}" name="search" placeholder="{!SEARCH*}" />
 
-				<label class="recurse horiz_field_sep" for="recurse_filedump_{I*}">
+				<label class="recurse horiz-field-sep" for="recurse_filedump_{I*}">
 					{!INCLUDE_SUBFOLDERS}
 					<input {+START,IF,{$NEQ,{$_GET,recurse},0}} checked="checked"{+END} type="checkbox" name="recurse" id="recurse_filedump_{I*}" value="1" />
 				</label>
 
 				<br class="block_mobile" />
 
-				<label class="type_filter_filedump horiz_field_sep" for="type_filter_filedump_{I*}">
+				<label class="type_filter_filedump horiz-field-sep" for="type_filter_filedump_{I*}">
 					{!SHOW}
 					<select id="type_filter_filedump_{I*}" name="type_filter">
 						<option {+START,IF,{$EQ,{TYPE_FILTER},}} selected="selected"{+END} value="">{!ALL}</option>
@@ -26,7 +26,7 @@
 					</select>
 				</label>
 
-				<label class="jump_to_filedump horiz_field_sep" for="jump_to_filedump_{I*}">
+				<label class="jump_to_filedump horiz-field-sep" for="jump_to_filedump_{I*}">
 					{!JUMP_TO_FOLDER}
 					<select id="jump_to_filedump_{I*}" name="place">
 						{+START,IF_NON_EMPTY,{FILTERED_DIRECTORIES_MISSES}}
@@ -50,7 +50,7 @@
 
 				<br class="block_mobile" />
 
-				<label class="sort_filedump horiz_field_sep" for="sort_filedump_{I*}">
+				<label class="sort_filedump horiz-field-sep" for="sort_filedump_{I*}">
 					{!SORT_BY}
 					<select id="sort_filedump_{I*}" name="sort">
 						<option {+START,IF,{$EQ,{SORT},time ASC}} selected="selected"{+END} value="time ASC">{!DATE_TIME},{!_ASCENDING}</option>

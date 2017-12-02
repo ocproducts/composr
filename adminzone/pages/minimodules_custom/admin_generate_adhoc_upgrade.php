@@ -278,7 +278,7 @@ echo '
             </label>
         </p>
 
-        <p class="associated_details">
+        <p class="associated-details">
             Only run this on projects you trust - as _config.php will be executed so as to connect to the project\'s database.
         </p>
 

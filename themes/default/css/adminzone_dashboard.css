@@ -5,7 +5,7 @@
 
 /* Checklist */
 
-a.top_left_toggleicon {
+a.top-left-toggleicon {
 	color: {$GET,inverted_text};
 	padding: 1px 0 5px 28px !important;
 	font-size: 0.8em;
@@ -14,89 +14,89 @@ a.top_left_toggleicon {
 	opacity: 0.7;
 }
 
-a.top_left_toggleicon:hover {
+a.top-left-toggleicon:hover {
 	background: url('{$IMG;,checklist/toggleicon2}') no-repeat 10px 1px !important;
 	opacity: 1.0;
 }
 
-.checklist_header {
+.checklist-header {
 	color: {$GET,slightly_seeded_text};
 	font-size: 1.1em;
 	font-weight: bold;
 	border-bottom: 1px solid {$GET,pale_border};
 }
 
-.checklist_row {
+.checklist-row {
 	border: 1px solid {$GET,pale_border};
 	padding: 0.2em;
 	background-color: {$GET,main_background};
 }
-.checklist_row:hover {
+.checklist-row:hover {
 	background-color: {$GET,area_hover_2_background};
 }
-.checklist_row+.checklist_row {
+.checklist-row+.checklist-row {
 	border-top-width: 0;
 }
-.task_hidden+.checklist_row {
+.task-hidden+.checklist-row {
 	border-top-width: 1px !important;
 }
 
-.checklist_other_maintenance .checklist_row {
+.checklist-other-maintenance .checklist-row {
 	float: left;
 	width: 50%;
 	box-sizing: border-box;
 	min-height: 3.8em;
 }
 
-.checklist_task {
+.checklist-task {
 	margin: 0.3em 0 0.5em 0.5em;
 	float: left;
 }
 
-.checklist_task>span {
+.checklist-task>span {
 	display: inline-block;
 	max-width: 350px;
 }
 
-.checklist_task>* {
+.checklist-task>* {
 	vertical-align: middle;
 }
 
-.checklist_task_status {
+.checklist-task-status {
 	font-size: 0.85em;
 	margin: 0.3em 0.5em 0.3em 0;
 	float: right;
 }
 
-.checklist_task_status img, .checklist_task_status span {
+.checklist-task-status img, .checklist-task-status span {
 	vertical-align: middle;
 }
 
-.add_custom_task {
+.add-custom-task {
 	margin-top: 0.5em;
 	border: 1px solid {$GET,pale_border};
 	padding-top: 0.2em;
 	font-size: 0.9em;
 }
 
-#recur_interval {
+#recur-interval {
 	width: 3em;
 }
 
 /* Tips */
 
-.tips_trail {
+.tips-trail {
 	bottom: 5px;
 	left: 15px;
 }
 
 /* New version indicator */
 
-.staff_new_versions .notes_about {
+.staff-new-versions .notes-about {
 	display: none;
 }
 
-.staff_new_versions .version {
+.staff-new-versions .version {
 	margin: 0.5em 0;
 	padding: 0.3em;
 	border: 1px solid {$GET,standard_border};
@@ -105,39 +105,39 @@ a.top_left_toggleicon:hover {
 	position: relative;
 }
 
-.staff_new_versions .version_number {
+.staff-new-versions .version-number {
 	font-weight: bold;
 	color: {$GET,area_text};
 	font-size: 1.2em;
 }
 
-.staff_new_versions .version_news_link {
+.staff-new-versions .version-news-link {
 	float: right;
 	margin-right: 1em;
 }
 
-.staff_new_versions .version_help_icon {
+.staff-new-versions .version-help-icon {
 	position: absolute;
 	bottom: 5px;
 	right: 5px;
 }
 
-.staff_new_versions .version_details {
+.staff-new-versions .version-details {
 	margin-top: 0.61em; /* 0.61 to workaround weird bug where border for surrounding box was disappearing */
 	float: left;
 	width: 100%;
 }
 
-.staff_new_versions .img_wrap {
+.staff-new-versions .img-wrap {
 	text-align: center;
 }
 /*{+START,CSS_MODE,mobile}*/
-	.staff_new_versions .img_wrap {
+	.staff-new-versions .img-wrap {
 		display: none;
 	}
 /*{+END}*/
 
-.staff_new_versions .img_wrap img:not([width]):not([height]) {
+.staff-new-versions .img-wrap img:not([width]):not([height]) {
 	max-width: 100%;
 	height: auto;
 }

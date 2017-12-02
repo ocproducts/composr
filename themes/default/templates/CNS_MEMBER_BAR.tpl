@@ -5,7 +5,7 @@
 	</h2>
 
 	<div class="toggleable_tray js-tray-content">
-		<div class="cns_information_bar float_surrounder">
+		<div class="cns_information_bar float-surrounder">
 			{+START,IF_NON_EMPTY,{AVATAR_URL}}
 				<div style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px" class="cns_member_column cns_member_column_a">
 					<img alt="{!AVATAR}" title="{!AVATAR}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{AVATAR_URL}}" />

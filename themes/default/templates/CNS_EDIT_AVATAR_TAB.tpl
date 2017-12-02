@@ -1,4 +1,4 @@
-<div class="float_surrounder">
+<div class="float-surrounder">
 	<div class="cns_avatar_page_old_avatar">
 		{AVATAR}
 	</div>

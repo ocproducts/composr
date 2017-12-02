@@ -17,7 +17,7 @@
 		<form title="{!PRIMARY_PAGE_FORM}" id="edit_form" action="{URL*}" method="post" autocomplete="off" class="js-submit-modsecurity-workaround" data-submit-pd="1">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
-			<div class="float_surrounder menu_edit_main">
+			<div class="float-surrounder menu_edit_main">
 				<div class="menu_editor_rh_side">
 					<h2>{!HELP}</h2>
 
@@ -41,7 +41,7 @@
 				</p>
 			</div>
 
-			<div id="mini_form_hider" style="display: none" class="float_surrounder">
+			<div id="mini_form_hider" style="display: none" class="float-surrounder">
 				<div class="menu_editor_rh_side">
 					<img class="dock_button js-img-click-toggle-docked-field-editing" alt="" title="{!TOGGLE_DOCKED_FIELD_EDITING}" src="{$IMG*,1x/arrow_box_hover}" srcset="{$IMG*,2x/arrow_box_hover} 2x" />
 
@@ -53,7 +53,7 @@
 						<!-- List put in here -->
 					</div>
 
-					<p class="associated_details">
+					<p class="associated-details">
 						{!CLICK_ENTRY_POINT_TO_USE}
 					</p>
 

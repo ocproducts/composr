@@ -113,7 +113,7 @@
 
 			{$,If the video is not large, we will put the boxes right alongside it}
 			{+START,IF,{$NOT,{$GT,{$METADATA,video:width},500}}}
-				<div class="float_surrounder">
+				<div class="float-surrounder">
 					<div class="lined_up_boxes">
 						{$GET,boxes}
 					</div>
@@ -150,7 +150,7 @@
 		{+END}
 
 		{+START,IF,{$OR,{$NEQ,{MEDIA_TYPE},video},{$GT,{$METADATA,video:width},500}}}
-			<div class="float_surrounder lined_up_boxes">
+			<div class="float-surrounder lined_up_boxes">
 				{$GET,boxes}
 			</div>
 		{+END}

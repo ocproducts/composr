@@ -6,7 +6,7 @@
 			<div class="box_inner">
 				<h2>{!AUTHOR_ABOUT}</h2>
 
-				<div itemprop="description" class="float_surrounder">
+				<div itemprop="description" class="float-surrounder">
 					{DESCRIPTION}
 				</div>
 			</div>

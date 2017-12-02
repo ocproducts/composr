@@ -1,1 +1,1 @@
-<a href="{URL*}">{NAME*}</a> <span class="horiz_field_sep associated_link"><a href="{ACCEPT_URL*}">{!ACCEPT_INTO_GROUP}</a></span> <span class="horiz_field_sep associated_link"><a href="{DECLINE_URL*}">{!DECLINE_FROM_GROUP}</a></span>
+<a href="{URL*}">{NAME*}</a> <span class="horiz-field-sep associated_link"><a href="{ACCEPT_URL*}">{!ACCEPT_INTO_GROUP}</a></span> <span class="horiz-field-sep associated_link"><a href="{DECLINE_URL*}">{!DECLINE_FROM_GROUP}</a></span>

@@ -15,7 +15,7 @@
 		{+END}
 
 		{+START,IF,{$NEQ,{$GET,rating_loop},0}}
-			<span class="reviews_average horiz_field_sep">({!AVERAGED})</span>
+			<span class="reviews_average horiz-field-sep">({!AVERAGED})</span>
 		{+END}
 
 		{+START,IF,{$EQ,{$GET,rating_loop},0}}
@@ -27,7 +27,7 @@
 		<div class="box box___comments_wrapper"><div class="box_inner">
 			<h2 class="comments_header">{$?,{$IS_NON_EMPTY,{REVIEW_RATING_CRITERIA}},{$GET,REVIEWS_TITLE},{!COMMENTS}}</h2>
 
-			<div class="float_surrounder">
+			<div class="float-surrounder">
 				<div class="comments_notification_buttons">
 					{+START,INCLUDE,NOTIFICATION_BUTTONS}
 						NOTIFICATIONS_TYPE=comment_posted
@@ -80,7 +80,7 @@
 			</div>
 
 			{+START,IF_PASSED,PAGINATION}
-				<div class="float_surrounder">
+				<div class="float-surrounder">
 					{PAGINATION}
 				</div>
 			{+END}

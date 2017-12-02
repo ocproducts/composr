@@ -6,7 +6,7 @@
 	</select>
 
 	{+START,IF_PASSED,CUSTOM_NAME}
-		<div class="various_ticks float_surrounder">
+		<div class="various_ticks float-surrounder">
 			<div class="input_other_tick">
 				{+START,IF,{CUSTOM_ACCEPT_MULTIPLE}}
 					{+START,LOOP,CUSTOM_VALUE}

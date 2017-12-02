@@ -9,7 +9,7 @@
 	{+END}
 
 	{+START,IF_NON_EMPTY,{ARCHIVE_URL}{SUBMIT_URL}}
-		<ul class="horizontal_links associated_links_block_group force_margin">
+		<ul class="horizontal_links associated-links-block-group force_margin">
 			{+START,IF_NON_EMPTY,{ARCHIVE_URL}}
 				<li><a rel="archives" href="{ARCHIVE_URL*}">{!VIEW_ARCHIVE}</a></li>
 			{+END}

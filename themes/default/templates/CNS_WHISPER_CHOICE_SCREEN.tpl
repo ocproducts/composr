@@ -9,7 +9,7 @@
 </div>
 
 
-<div class="float_surrounder">
+<div class="float-surrounder">
 	{+START,IF,{$HAS_PRIVILEGE,use_pt}}
 		<div class="cns_whisper_choose_box right">
 			<div class="box box___cns_whisper_choice_screen"><div class="box_inner">

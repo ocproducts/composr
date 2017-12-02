@@ -5,7 +5,7 @@
 
 	<div id="{$GET,RAND_ID}" class="bubble_wrap attitude_{TYPE%}{$?,{IS_POSITIVE},_positive,}{$?,{IS_NEGATIVE},_negative,}">
 		<div id="{$GET,RAND_ID}_main" class="bubble bubble_{TYPE%}">
-			<div class="float_surrounder">
+			<div class="float-surrounder">
 				<div class="email_icon">
 					{+START,IF_PASSED,SPECIAL_ICON}
 						<img src="{$IMG*,realtime_rain/{SPECIAL_ICON}}" alt="{SPECIAL_TOOLTIP*}" title="{SPECIAL_TOOLTIP*}" />

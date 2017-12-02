@@ -19,10 +19,10 @@
 	{+END}
 
 	{+START,IF_PASSED,DESCRIPTION}{+START,IF_NON_EMPTY,{DESCRIPTION}}
-		<p class="associated_details">{$TRUNCATE_LEFT,{DESCRIPTION},100,0,1}</p>
+		<p class="associated-details">{$TRUNCATE_LEFT,{DESCRIPTION},100,0,1}</p>
 	{+END}{+END}
 
-	<p class="associated_details">
+	<p class="associated-details">
 		{$,Displays summary of gallery contents}
 		({LANG})
 	</p>

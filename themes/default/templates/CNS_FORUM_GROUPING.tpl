@@ -4,10 +4,10 @@
 			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img title="{!TOGGLE_GROUPING_VISIBILITY}" alt="{!TOGGLE_GROUPING_VISIBILITY}" src="{$IMG*,1x/trays/{EXPAND_TYPE*}2}" /></a>
 		</span>
 		<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!">{GROUPING_TITLE*}</a>
-		{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,admin_cns_forum_groupings}}<span class="associated_details">(<a href="{$PAGE_LINK*,_SEARCH:admin_cns_forum_groupings:_edit:{GROUPING_ID}}">{!EDIT}</a>)</span>{+END}
+		{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,admin_cns_forum_groupings}}<span class="associated-details">(<a href="{$PAGE_LINK*,_SEARCH:admin_cns_forum_groupings:_edit:{GROUPING_ID}}">{!EDIT}</a>)</span>{+END}
 
 		{+START,IF_NON_EMPTY,{GROUPING_DESCRIPTION}}
-			&ndash; <span class="associated_details">{GROUPING_DESCRIPTION*}</span>
+			&ndash; <span class="associated-details">{GROUPING_DESCRIPTION*}</span>
 		{+END}
 	</h3>
 

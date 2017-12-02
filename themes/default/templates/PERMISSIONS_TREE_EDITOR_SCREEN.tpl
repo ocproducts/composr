@@ -3,7 +3,7 @@
 
 	<p>{!PERMISSIONS_TREE_EDITOR_ABOUT_PRIVILEGE,{$PAGE_LINK*,adminzone:admin_permissions:specific}}</p>
 
-	<div class="float_surrounder">
+	<div class="float-surrounder">
 		<div class="pte_help_box">
 			<div class="box box___permissions_tree_editor_screen"><div class="box_inner">
 				<h2>{!PERMISSIONS_TREE_EDITOR_HOW_WORK}</h2>
@@ -60,7 +60,7 @@
 			<form id="permissions_form" title="{!PRIMARY_PAGE_FORM}" method="post" action="index.php" autocomplete="off">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
-				<div class="float_surrounder">
+				<div class="float-surrounder">
 					<div style="display: none" id="selection_form_fields">
 						{EDITOR}
 					</div>

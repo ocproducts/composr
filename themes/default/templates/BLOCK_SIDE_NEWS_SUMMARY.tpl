@@ -3,11 +3,11 @@
 		<a title="{$STRIP_TAGS,{NEWS_TITLE}}" href="{FULL_URL*}">{$TRUNCATE_LEFT,{NEWS_TITLE},30,0,1}</a>
 	</p>
 
-	<p class="tiny_paragraph associated_details">
+	<p class="tiny_paragraph associated-details">
 		{!BY_SIMPLE,{AUTHOR*}}
 	</p>
 
-	<p class="tiny_paragraph associated_details">
+	<p class="tiny_paragraph associated-details">
 		{!POSTED_TIME_SIMPLE,{DATE*}}
 	</p>
 </div></div>

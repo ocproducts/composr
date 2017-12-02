@@ -1,3 +1,3 @@
-<div class="banner_wrap">
+<div class="banner-wrap">
 	{BANNER}
 </div>

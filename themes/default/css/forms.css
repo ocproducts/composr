@@ -746,7 +746,7 @@ span.validated_checkbox+input[name="validated"].input_tick {
 	overflow: hidden;
 }
 
-.fields_set_contents .associated_details {
+.fields_set_contents .associated-details {
 	margin-top: 0.2em;
 }
 

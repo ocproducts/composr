@@ -11,8 +11,8 @@
 	{CHAT_SOUND}
 
 	{+START,SET,posting_box}
-		<div class="chat_posting_area">
-			<div class="float_surrounder">
+		<div class="chat-posting-area">
+			<div class="float-surrounder">
 				<div class="left">
 					<form title="{!MESSAGE}" action="{MESSAGES_PHP*}?action=post&amp;room_id={CHATROOM_ID*}" method="post" class="inline" autocomplete="off">
 						{$INSERT_SPAMMER_BLACKHOLE}
@@ -28,7 +28,7 @@
 
 				<div class="right">
 					<a class="toggleable_tray_button js-btn-toggle-chat-comcode-panel" href="#!">
-						<img id="e_chat_comcode_panel" src="{$IMG*,1x/trays/expand}" alt="{!CHAT_TOGGLE_COMCODE_BOX}" title="{!CHAT_TOGGLE_COMCODE_BOX}" />
+						<img id="e_chat-comcode-panel" src="{$IMG*,1x/trays/expand}" alt="{!CHAT_TOGGLE_COMCODE_BOX}" title="{!CHAT_TOGGLE_COMCODE_BOX}" />
 					</a>
 				</div>
 
@@ -42,18 +42,18 @@
 						<span class="inline_desktop">
 							{MICRO_BUTTONS}
 							{+START,IF,{$CNS}}
-								<a rel="nofollow" class="horiz_field_sep js-click-open-emoticon-chooser-window" tabindex="6" href="#!" title="{!EMOTICONS_POPUP}"><img alt="" src="{$IMG*,icons/16x16/editor/insert_emoticons}" srcset="{$IMG*,icons/32x32/editor/insert_emoticons} 2x" /></a>
+								<a rel="nofollow" class="horiz-field-sep js-click-open-emoticon-chooser-window" tabindex="6" href="#!" title="{!EMOTICONS_POPUP}"><img alt="" src="{$IMG*,icons/16x16/editor/insert_emoticons}" srcset="{$IMG*,icons/32x32/editor/insert_emoticons} 2x" /></a>
 							{+END}
 						</span>
 					{+END}
 				</div>
 			</div>
 
-			<div style="display: none" id="chat_comcode_panel">
+			<div style="display: none" id="chat-comcode-panel">
 				{BUTTONS}
 
 				{+START,IF_NON_EMPTY,{COMCODE_HELP}{CHATCODE_HELP}}
-					<ul class="horizontal_links horiz_field_sep associated_links_block_group">
+					<ul class="horizontal_links horiz-field-sep associated-links-block-group">
 						{+START,IF_NON_EMPTY,{COMCODE_HELP}}
 							<li><a data-open-as-overlay="{}" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{COMCODE_HELP*}"><img src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical_alignment" alt="{!COMCODE_MESSAGE,Comcode}" /></a></li>
 						{+END}
@@ -70,7 +70,7 @@
 		{$GET,posting_box}
 	{+END}
 
-	<div class="messages_window"><div role="marquee" class="messages_window_full_chat" id="messages_window"></div></div>
+	<div class="messages-window"><div role="marquee" class="messages-window-full-chat" id="messages-window"></div></div>
 
 	{+START,IF,{$EQ,{$CONFIG_OPTION,chat_message_direction},downwards}}
 		{$GET,posting_box}
@@ -80,19 +80,19 @@
 		{!USERS_IN_CHATROOM} <span id="chat_members_update">{CHATTERS}</span>
 	</p></div>
 
-	<form title="{$STRIP_TAGS,{!CHAT_OPTIONS_DESCRIPTION}}" class="below_main_chat_window js-form-submit-check-chat-options" method="post" action="{OPTIONS_URL*}" autocomplete="off">
+	<form title="{$STRIP_TAGS,{!CHAT_OPTIONS_DESCRIPTION}}" class="below-main-chat-window js-form-submit-check-chat-options" method="post" action="{OPTIONS_URL*}" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div class="box box___chat_screen_options box_prominent"><div class="box_inner">
 			<h2>{!OPTIONS}</h2>
 
-			<div class="chat_room_options">
-				<p class="chat_options_title">
+			<div class="chat-room-options">
+				<p class="chat-options-title">
 					{!CHAT_OPTIONS_DESCRIPTION}
 				</p>
 
-				<div class="float_surrounder">
-					<div class="chat_colour_option">
+				<div class="float-surrounder">
+					<div class="chat-colour-option">
 						<p>
 							<label for="text_colour">{!CHAT_OPTIONS_COLOUR_NAME}:</label>
 						</p>
@@ -101,7 +101,7 @@
 						</p>
 					</div>
 
-					<div class="chat_font_option">
+					<div class="chat-font-option">
 						<p>
 							<label for="font_name">{!CHAT_OPTIONS_TEXT_NAME}:</label>
 						</p>
@@ -124,7 +124,7 @@
 				</p>
 			</div>
 
-			<div class="chat_room_actions">
+			<div class="chat-room-actions">
 				<p class="lonely_label">{!ACTIONS}:</p>
 				<nav>
 					<ul class="actions_list">

@@ -58,7 +58,7 @@
 				{+END}
 			{+END}
 
-			<p class="associated_details">{!ALL_DATES_IN,{$TIMEZONE*}}</p>
+			<p class="associated-details">{!ALL_DATES_IN,{$TIMEZONE*}}</p>
 
 			{+START,LOOP,CATEGORIES}
 				<h2>{CATEGORY_TITLE*}</h2>
@@ -148,7 +148,7 @@
 
 									<td class="vertical_alignment">
 										{$CURRENCY,{BOOKABLE_PRICE},{CURRENCY},{$?,{$CONFIG_OPTION,currency_auto},{$CURRENCY_USER},{$CURRENCY}}}
-										<span class="associated_details">{!BOOKING_PER}</span>
+										<span class="associated-details">{!BOOKING_PER}</span>
 									</td>
 								</tr>
 							{+END}

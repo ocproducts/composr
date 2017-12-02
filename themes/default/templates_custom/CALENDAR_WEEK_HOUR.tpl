@@ -2,7 +2,7 @@
 
 {+START,IF,{$OR,{$GET,rowspan_detected},{$IN_STR,{DAYS},<img},{$AND,{$GT,{_HOUR},5},{$LT,{_HOUR},25}}}}
 	<tr>
-		<th class="calendar_week_hour">
+		<th class="calendar-week-hour">
 			{HOUR*}
 		</th>
 

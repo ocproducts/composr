@@ -31,12 +31,12 @@
 				</div>
 
 				<div class="revisions_filter_item">
-					<label class="lonely_label" for="resource_id">{!IDENTIFIER} <span class="associated_details">({!ADVANCED})</span>:</label>
+					<label class="lonely_label" for="resource_id">{!IDENTIFIER} <span class="associated-details">({!ADVANCED})</span>:</label>
 					<input type="text" name="resource_id" id="resource_id" value="{$_GET*,resource_id}" />
 				</div>
 
 				<div class="revisions_filter_item">
-					<label class="lonely_label" for="category_id">{!CATEGORY} <span class="associated_details">({!ADVANCED})</span>:</label>
+					<label class="lonely_label" for="category_id">{!CATEGORY} <span class="associated-details">({!ADVANCED})</span>:</label>
 					<input type="text" name="category_id" id="category_id" value="{$_GET*,category_id}" />
 				</div>
 

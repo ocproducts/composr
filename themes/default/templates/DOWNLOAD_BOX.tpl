@@ -47,7 +47,7 @@
 	</div>
 
 	{+START,IF_NON_EMPTY,{URL}}
-		<ul class="horizontal_links associated_links_block_group">
+		<ul class="horizontal_links associated-links-block-group">
 			{+START,IF_PASSED,LICENCE}
 				<li><a href="{URL*}">{!VIEW}</a></li>
 			{+END}

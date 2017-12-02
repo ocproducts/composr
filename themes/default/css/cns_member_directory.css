@@ -26,7 +26,7 @@
 	margin: 0;
 }
 
-.block_main_members .associated_details {
+.block_main_members .associated-details {
 	margin: 0;
 }
 
@@ -44,7 +44,7 @@
 	max-height: none !important;
 	display: inline-block;
 }
-.block_main_members__media.has_item_width .img_thumb {
+.block_main_members__media.has_item_width .img-thumb {
 	width: 100% !important;
 	max-width: none !important;
 	max-height: none !important;

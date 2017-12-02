@@ -1329,7 +1329,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
             if ($addon != '') {
                 $ret_str .= do_lang('WARNING_FILE_ADDON', $addon);
             }
-            $ret_str .= '<p class="associated_details"><a href="#!" onclick="var checkmarks=this.parentNode.parentNode.getElementsByTagName(\'input\'); for (var i=0;i&lt;checkmarks.length;i++) { checkmarks[i].checked=true; } return false;">' . do_lang('FU_CHECK_ALL') . '</a></p>';
+            $ret_str .= '<p class="associated-details"><a href="#!" onclick="var checkmarks=this.parentNode.parentNode.getElementsByTagName(\'input\'); for (var i=0;i&lt;checkmarks.length;i++) { checkmarks[i].checked=true; } return false;">' . do_lang('FU_CHECK_ALL') . '</a></p>';
             $ret_str .= '<input class="buttons__proceed button_screen" accesskey="c" type="submit" value="' . do_lang('FU_AUTO_HANDLE') . '" />';
             $ret_str .= '</div>';
 

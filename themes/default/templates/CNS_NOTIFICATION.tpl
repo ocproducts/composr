@@ -13,7 +13,7 @@
 				{$TRUNCATE_LEFT,{POST},1000,0,1}
 			</div>
 
-			<ul class="horizontal_links associated_links_block_group force_margin">
+			<ul class="horizontal_links associated-links-block-group force_margin">
 				<li><span><a href="{TOPIC_URL*}" title="{!VIEW}: {!FORUM_POST} #{ID*}">{!VIEW}</a></span>{+START,IF,{$NEQ,{_ADDITIONAL_POSTS},0}} <img data-cms-rich-tooltip="{}" title="{!cns:ADDITIONAL_PT_POSTS,{ADDITIONAL_POSTS}}" alt="{!HELP}" src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" class="top_vertical_alignment help_icon" />{+END}</li>
 				<li><a href="{REPLY_URL*}" title="{!REPLY}: {!FORUM_POST} #{ID*}">{!REPLY}</a></li>
 				<li><a class="js-click-ignore-notification" data-click-pd="1" href="{IGNORE_URL*}" title="{!MARK_READ}: {!FORUM_POST} #{ID*}">{!IGNORE}</a></li>

@@ -151,7 +151,7 @@ table.points_summary_table .answer {
 	text-align: left;
 }
 /*{+START,CSS_MODE,mobile}*/
-.global_side_panel .leader_board_table th, .global_side_panel .leader_board_table td {
+.global-side-panel .leader_board_table th, .global-side-panel .leader_board_table td {
 		width: 50%;
 	}
 /*{+END}*/

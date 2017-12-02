@@ -969,7 +969,7 @@ abstract class Standard_crud_module
                 'URL' => $post_url,
                 'FIELDS' => $fields->evaluate()/*FUDGE*/,
                 'FIELDS_NEW' => $fields_new->evaluate()/*FUDGE*/,
-                'SUBMIT_ICON' => 'menu__cms__catalogues__add_one_catalogue',
+                'SUBMIT_ICON' => 'menu--cms--catalogues--add-one-catalogue',
                 'SUBMIT_NAME' => $submit_name,
                 'JS_FUNCTION_CALLS' => $this->js_function_calls,
             ) + $extra_tpl_params);
@@ -1546,7 +1546,7 @@ abstract class Standard_crud_module
                 'FIELDS' => $fields->evaluate()/*FUDGE*/,
                 'FIELDS_EXISTING' => $fields_existing->evaluate()/*FUDGE*/,
                 'FIELDS_NEW' => $fields_new->evaluate()/*FUDGE*/,
-                'SUBMIT_ICON' => 'menu__cms__catalogues__edit_this_catalogue',
+                'SUBMIT_ICON' => 'menu--cms--catalogues--edit-this-catalogue',
                 'SUBMIT_NAME' => $submit_name,
                 'JS_FUNCTION_CALLS' => $this->js_function_calls,
             ) + $extra_tpl_params);

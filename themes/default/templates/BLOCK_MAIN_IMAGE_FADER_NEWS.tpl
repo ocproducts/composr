@@ -52,7 +52,7 @@
 
 	{+START,IF,{$NEQ,{NEWS},1}}
 	<div class="pagination">
-		<nav class="float_surrounder">
+		<nav class="float-surrounder">
 			<a href="#!" rel="prev" accesskey="j" title="&laquo;&nbsp;{!PREVIOUS}: {!NEWS}" class="light js-click-btn-prev-cycle">&laquo;&nbsp;{!PREVIOUS}</a>
 			<a href="#!" id="pause_button_{$GET,RAND_FADER_NEWS}" title="{!PAUSE}" class="light js-click-btn-pause-cycle">{!PAUSE}</a>
 			<a href="#!" rel="next" accesskey="k" title="&laquo;&nbsp;{!NEXT}: {!NEWS}" class="light js-click-btn-next-cycle">{!NEXT}&nbsp;&raquo;</a>

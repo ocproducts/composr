@@ -3,7 +3,7 @@
 <div class="comcode_supported block_desktop" data-tpl="comcodeMessage" data-tpl-params="{+START,PARAMS_JSON,NAME}{_*}{+END}">
 	<input type="hidden" name="comcode__{NAME*}" value="1" />
 
-	<ul class="horizontal_links horiz_field_sep">
+	<ul class="horizontal_links horiz-field-sep">
 		{+START,IF,{$SHOW_DOCS}}{+START,IF_PASSED,URL}
 			<li><a data-open-as-overlay="{}" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{URL*}"><img src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical_alignment" alt="{!COMCODE_MESSAGE,Comcode}" /></a></li>
 		{+END}{+END}

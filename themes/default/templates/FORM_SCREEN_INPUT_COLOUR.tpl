@@ -5,7 +5,7 @@
 {$REQUIRE_CSS,widget_color}
 
 {+START,IF,{RAW_FIELD}}
-	<div class="float_surrounder" data-tpl="formScreenInputColour" data-tpl-params="{+START,PARAMS_JSON,RAW_FIELD,NAME,DEFAULT,TABINDEX,PRETTY_NAME,_REQUIRED}{_*}{+END}">
+	<div class="float-surrounder" data-tpl="formScreenInputColour" data-tpl-params="{+START,PARAMS_JSON,RAW_FIELD,NAME,DEFAULT,TABINDEX,PRETTY_NAME,_REQUIRED}{_*}{+END}">
 		<div id="colours_go_here_{NAME*}">
 			<div aria-busy="true" class="spaced">
 				<div class="ajax_loading vertical_alignment">

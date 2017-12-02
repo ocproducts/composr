@@ -3,12 +3,12 @@
  Copyright (c) ocProducts, 2004-2017
 */
 
-.comcode_big_tab_controller {
+.comcode-big-tab-controller {
 	float: left;
 	width: 186px;
 }
 
-.comcode_big_tab_controller a {
+.comcode-big-tab-controller a {
 	display: block;
 	height: 41px;
 	font-size: 0.92em;
@@ -19,35 +19,35 @@
 	margin-bottom: 2px !important;
 }
 
-.big_tab_inactive a {
+.big-tab-inactive a {
 	background: url('{$IMG_INLINE;,big_tabs_controller_button}') no-repeat !important;
 }
 
-.big_tab_active a, .big_tab_inactive a:hover {
+.big-tab-active a, .big-tab-inactive a:hover {
 	background: url('{$IMG_INLINE;,big_tabs_controller_button_active}') no-repeat !important;
 }
 
-.big_tab_first.big_tab_inactive a {
+.big-tab-first.big-tab-inactive a {
 	background: url('{$IMG_INLINE;,big_tabs_controller_button_top}') no-repeat !important;
 }
 
-.big_tab_first.big_tab_active a, .big_tab_first.big_tab_inactive a:hover {
+.big-tab-first.big-tab-active a, .big-tab-first.big-tab-inactive a:hover {
 	background: url('{$IMG_INLINE;,big_tabs_controller_button_top_active}') no-repeat !important;
 }
 
-.comcode_big_tab {
+.comcode-big-tab {
 	padding: 1em;
 	border: 2px solid {$GET,pale_border};
 	background-color: {$GET,area_background};
 }
 /*{+START,CSS_MODE,mobile}*/
-	.comcode_big_tab {
+	.comcode-big-tab {
 		float: left;
 		margin: 1em 0;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,desktop}*/
-	.comcode_big_tab {
+	.comcode-big-tab {
 		margin-left: 186px;
 		min-height: 190px;
 	}

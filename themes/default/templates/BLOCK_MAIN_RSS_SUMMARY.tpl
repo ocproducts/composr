@@ -1,4 +1,4 @@
-<div class="float_surrounder rss_summary">
+<div class="float-surrounder rss_summary">
 	<h3><a href="{FULL_URL_RAW*}">{$TRUNCATE_LEFT,{NEWS_TITLE`},70,1,1}</a></h3>
 
 	{+START,IF_EMPTY,{CATEGORY_IMG}}
@@ -41,6 +41,6 @@
 	{+END}
 </div>
 
-<ul class="horizontal_links associated_links_block_group">
+<ul class="horizontal_links associated-links-block-group">
 	<li>{FULL_URL}</li>
 </ul>

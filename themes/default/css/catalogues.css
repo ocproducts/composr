@@ -5,35 +5,35 @@
 
 /* Field map display */
 
-.catalogue_fieldmap_entry_wrap {
+.catalogue-fieldmap-entry-wrap {
 	margin: 1em 0;
 }
 
-.catalogue_fieldmap_field_name_column {
+.catalogue-fieldmap-field-name-column {
 	width: 13em;
 }
-.catalogue_fieldmap_field_value_column {
+.catalogue-fieldmap-field-value-column {
 	width: 100%;
 }
 /*{+START,CSS_MODE,mobile}*/
-	.catalogue_fieldmap_field_name_column, .catalogue_fieldmap_field_value_column {
+	.catalogue-fieldmap-field-name-column, .catalogue-fieldmap-field-value-column {
 		width: auto;
 	}
 /*{+END}*/
 
 /* Tabular display */
 
-.catalogue_tabular_view_link_column {
+.catalogue-tabular-view-link-column {
 	width: 8em;
 }
 
-.catalogue_tabular_rating_column {
+.catalogue-tabular-rating-column {
 	width: 85px;
 }
 
 /* Grid display */
 
-.display_type_GRID {
+.display-type-GRID {
 	{$BETA_CSS_PROPERTY,display: flex;}
 	{$BETA_CSS_PROPERTY,flex-wrap: wrap;}
 	margin: -0.5em 0 0 -0.5em;
@@ -42,101 +42,101 @@
 	border: 1px;
 }
 
-.display_type_GRID .box {
+.display-type-GRID .box {
 	margin: 0.5em 0 0 0.5em;
 }
 /*{+START,CSS_MODE,desktop}*/
-	.display_type_GRID .box {
+	.display-type-GRID .box {
 		width: calc(25% - 0.5em - 2px);
 	}
 /*{+END}*/
 
-.display_type_GRID .box h3 span {
+.display-type-GRID .box h3 span {
 	white-space: nowrap;
 	{$BETA_CSS_PROPERTY,text-overflow: ellipsis;}
 	overflow: hidden;
 }
 
-.display_type_GRID .catalogue_entry_box_thumbnail a {
+.display-type-GRID .catalogue-entry-box-thumbnail a {
 	outline: 0;
 }
 
-.display_type_GRID .catalogue_entry_box_thumbnail img {
+.display-type-GRID .catalogue-entry-box-thumbnail img {
 	width: 100%;
 }
 
-.display_type_GRID .box .ratings {
+.display-type-GRID .box .ratings {
 	min-height: 20px;
 }
 
 /* Shopping catalogue entry screen */
 
-.catalogue_fields_table {
+.catalogue-fields-table {
 	margin: 1em 0;
 	font-size: 0.85em;
 }
 
-.catalogue_fields_table th, .catalogue_fields_table td {
+.catalogue-fields-table th, .catalogue-fields-table td {
 	padding: 0.5em;
 	text-align: left;
 }
 
-.catalogue_entry_screen .ratings .rating_box {
+.catalogue-entry-screen .ratings .rating-box {
 	float: left;
 	margin-right: 1em;
 }
 
 /* Particular fields types */
 
-.field_multilist>p:first-child {
+.field-multilist>p:first-child {
 	margin-top: 0;
 }
 
-.field_multilist>p:last-child {
+.field-multilist>p:last-child {
 	margin-bottom: 0;
 }
 
 /* Shopping cart link template */
 
-.cart_info {
+.cart-info {
 	overflow: hidden;
 }
 
-.product_view .cart_info {
+.product-view .cart-info {
 	margin-bottom: 2em;
 }
 
-.cart_info .box {
+.cart-info .box {
 	margin-top: 0.25em;
 }
 
-.cart_info .rating_part {
+.cart-info .rating_part {
 	padding-top: 1em;
 	float: left;
 }
 
-.cart_info img, .cart_info span {
+.cart-info img, .cart-info span {
 	vertical-align: middle;
 }
 
-.cart_link {
+.cart-link {
 	float: right;
 }
 
 /* Shopping cart button template */
 
-.add_to_cart {
+.add-to-cart {
 	padding-top: 1em;
 }
 
-.purchase_buy {
+.purchase-buy {
 	float: left;
 	margin-right: 0.5em;
 }
 
 /* Shopping catalogue entry screen AND eCommerce product entries */
 
-.price_box {
+.price-box {
 	font-weight: bold;
 	margin: 1em 0;
 	font-size: 1.15em;
@@ -146,12 +146,12 @@
 
 /* Shopping catalogue entry screen */
 
-.product_view .catalogue_entry_box_thumbnail {
+.product-view .catalogue-entry-box-thumbnail {
 	float: right;
 	margin: 3em 0 3em 3em;
 }
 
-.product_view .sku, .product_view .stock_level {
+.product-view .sku, .product-view .stock-level {
 	float: right;
 	padding-top: 0.5em;
 	padding-left: 1em;
@@ -163,18 +163,18 @@
 =========================
 */
 
-.menu__cms__catalogues__add_one_catalogue {
+.menu--cms--catalogues--add-one-catalogue {
 	background-image: url('{$IMG,icons/24x24/menu/cms/catalogues/add_one_catalogue}') !important;
 }
-.menu__cms__catalogues__edit_this_catalogue {
+.menu--cms--catalogues--edit-this-catalogue {
 	background-image: url('{$IMG,icons/24x24/menu/cms/catalogues/edit_this_catalogue}') !important;
 }
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.menu__cms__catalogues__add_one_catalogue {
+	.menu--cms--catalogues--add-one-catalogue {
 		background-image: url('{$IMG,icons/48x48/menu/cms/catalogues/add_one_catalogue}') !important;
 	}
-	.menu__cms__catalogues__edit_this_catalogue {
+	.menu--cms--catalogues--edit-this-catalogue {
 		background-image: url('{$IMG,icons/48x48/menu/cms/catalogues/edit_this_catalogue}') !important;
 	}
 }

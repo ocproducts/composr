@@ -64,7 +64,7 @@
 				</table></div>
 			</div>
 
-			<div class="float_surrounder">
+			<div class="float-surrounder">
 				<p class="lonely_label">
 					<a class="toggleable_tray_button js-click-toggle-advanced-db-setup-section" data-tp-section="{!ADVANCED_DATABASE_SETUP~|*}" href="#!">{!ADVANCED_DATABASE_SETUP}</a>
 					<a class="toggleable_tray_button js-click-toggle-advanced-db-setup-section" data-tp-section="{!ADVANCED_DATABASE_SETUP~|*}" href="#!"><img id="img_{!ADVANCED_DATABASE_SETUP|*}" alt="{!EXPAND}: {$STRIP_TAGS,{!ADVANCED_DATABASE_SETUP}}" title="{!EXPAND}" src="{$BASE_URL*}/install.php?type=expand" /></a>
@@ -79,7 +79,7 @@
 
 						<tbody>
 							<tr>
-								<th class="form_table_field_name">{!USE_MULTI_DB} <div class="associated_details">{!REQUIRES_MORE_INFO}</div></th>
+								<th class="form_table_field_name">{!USE_MULTI_DB} <div class="associated-details">{!REQUIRES_MORE_INFO}</div></th>
 								<td class="form_table_field_input">
 									<label for="yes"><input type="radio" name="use_multi_db" value="1" id="yes" />{!YES}</label>
 									<label class="radio_horiz_spacer" for="no"><input type="radio" name="use_multi_db" value="0" id="no" checked="checked" />{!NO}</label>
@@ -87,7 +87,7 @@
 							</tr>
 
 							<tr>
-								<th class="form_table_field_name">{!USE_MSN} <div class="associated_details">{!REQUIRES_MORE_INFO}</div></th>
+								<th class="form_table_field_name">{!USE_MSN} <div class="associated-details">{!REQUIRES_MORE_INFO}</div></th>
 								<td class="form_table_field_input">
 									<label for="yes2"><input type="radio" name="use_msn" value="1" id="yes2" />{!YES}</label>
 									<label class="radio_horiz_spacer" for="no2"><input type="radio" name="use_msn" value="0" id="no2" checked="checked" />{!NO}</label>

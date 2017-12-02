@@ -37,7 +37,7 @@
 
 {+START,IF,{$NOT,{$IS_GUEST}}}{+START,IF,{$NOTIFICATIONS_AVAILABLE,{$GET,NOTIFICATIONS_TYPE}}}
 	<div data-require-javascript="core_notifications" data-view="NotificationButtons" data-view-params="{+START,PARAMS_JSON,notification_id}{_*}{+END}">
-	{+START,IF_PASSED_AND_TRUE,RIGHT}<div class="float_surrounder"><div class="right force_margin">{+END}
+	{+START,IF_PASSED_AND_TRUE,RIGHT}<div class="float-surrounder"><div class="right force_margin">{+END}
 
 	{$INC,notification_id}
 	<form id="nenable_{$GET*,notification_id}" title="{!notifications:NOTIFICATIONS}"{+START,IF,{$NOTIFICATIONS_ENABLED,{NOTIFICATIONS_ID},{$GET,NOTIFICATIONS_TYPE}}} style="display: none" aria-hidden="true"{+END} data-open-as-overlay="{}" class="inline js-submit-show-disable-form" rel="enable-notifications" method="post" action="{$PAGE_LINK*,{$GET,NOTIFICATIONS_PAGE_LINK}:redirect={$SELF_URL&*,1,0,0,wide_high=<null>}}" autocomplete="off">

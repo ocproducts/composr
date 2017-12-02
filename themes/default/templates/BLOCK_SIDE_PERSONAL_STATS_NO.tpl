@@ -17,12 +17,12 @@
 
 				{+START,IF,{$CONFIG_OPTION,password_cookies}}
 					<div class="login_block_cookies">
-						<div class="float_surrounder">
+						<div class="float-surrounder">
 							<label for="ps_remember">{!REMEMBER_ME}</label>
 							<input {+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END} class="{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}}js-click-checkbox-remember-me-confirm{+END}" type="checkbox" value="1" id="ps_remember" name="remember" />
 						</div>
 						{+START,IF,{$CONFIG_OPTION,is_on_invisibility}}
-							<div class="float_surrounder">
+							<div class="float-surrounder">
 								<label for="login_invisible">{!INVISIBLE}</label>
 								<input type="checkbox" value="1" id="login_invisible" name="login_invisible" />
 							</div>
@@ -36,7 +36,7 @@
 			</div>
 		</form>
 
-		<ul class="horizontal_links associated_links_block_group force_margin">
+		<ul class="horizontal_links associated-links-block-group force_margin">
 			{+START,IF_NON_EMPTY,{JOIN_URL}}<li><a href="{JOIN_URL*}">{!_JOIN}</a></li>{+END}
 			<li><a data-open-as-overlay="{}" rel="nofollow" href="{FULL_LOGIN_URL*}" title="{!MORE}: {!_LOGIN}">{!MORE}</a></li>
 		</ul>

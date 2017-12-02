@@ -5,7 +5,7 @@
 	</div>
 
 	{$,Tab buttons}
-	<div class="float_surrounder">
+	<div class="float-surrounder">
 		<div class="ze_tabs tabs" role="tablist">
 			{+START,IF_PASSED,PREVIEW}
 				<a aria-controls="view_{ID*}" role="tab" title="{!PREVIEW}: {ID*}" href="#!" id="view_tab_{ID*}" class="tab tab_first tab_selected js-click-select-tab" data-js-tab="view"><img alt="" src="{$IMG*,icons/24x24/tabs/preview}" srcset="{$IMG*,icons/48x48/tabs/preview} 2x" /> <span>{!PREVIEW}</span></a>
@@ -41,13 +41,13 @@
 				<p>
 					<label for="edit_{ID*}_textarea">{!COMCODE}:</label> <a data-open-as-overlay="{}" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="{!COMCODE_MESSAGE,Comcode}" src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical_alignment" /></a>
 					{+START,IF,{$IN_STR,{CLASS},wysiwyg}}
-						<span class="horiz_field_sep associated_link"><a id="toggle_wysiwyg_edit_{ID*}_textarea" href="#!" class="js-a-toggle-wysiwyg"><abbr title="{!TOGGLE_WYSIWYG_2}"><img src="{$IMG*,icons/16x16/editor/wysiwyg_on}" srcset="{$IMG*,icons/32x32/editor/wysiwyg_on} 2x" alt="{!comcode:ENABLE_WYSIWYG}" title="{!comcode:ENABLE_WYSIWYG}" class="vertical_alignment" /></abbr></a></span>
+						<span class="horiz-field-sep associated_link"><a id="toggle_wysiwyg_edit_{ID*}_textarea" href="#!" class="js-a-toggle-wysiwyg"><abbr title="{!TOGGLE_WYSIWYG_2}"><img src="{$IMG*,icons/16x16/editor/wysiwyg_on}" srcset="{$IMG*,icons/32x32/editor/wysiwyg_on} 2x" alt="{!comcode:ENABLE_WYSIWYG}" title="{!comcode:ENABLE_WYSIWYG}" class="vertical_alignment" /></abbr></a></span>
 					{+END}
 				</p>
 				{+START,IF_NON_EMPTY,{COMCODE_EDITOR}}
 					<div>
 						<div class="post_special_options">
-							<div class="float_surrounder" role="toolbar">
+							<div class="float-surrounder" role="toolbar">
 								{COMCODE_EDITOR}
 							</div>
 						</div>

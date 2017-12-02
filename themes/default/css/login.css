@@ -81,11 +81,11 @@ table.login_page_form {
 	display: block;
 }
 
-.login_page_options .associated_details {
+.login_page_options .associated-details {
 	display: inline-block;
 }
 /*{+START,CSS_MODE,desktop}*/
-	.login_page_options .associated_details {
+	.login_page_options .associated-details {
 		padding-left: 2em;
 	}
 /*{+END}*/

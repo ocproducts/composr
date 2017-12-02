@@ -1,4 +1,4 @@
-<div itemscope="itemscope" itemtype="http://schema.org/ItemPage" class="catalogue_entry_screen">
+<div itemscope="itemscope" itemtype="http://schema.org/ItemPage" class="catalogue-entry-screen">
 	{TITLE}
 
 	<div class="meta_details" role="note">
@@ -16,7 +16,7 @@
 
 	{ENTRY}
 
-	<div class="float_surrounder lined_up_boxes">
+	<div class="float-surrounder lined_up_boxes">
 		{+START,IF_NON_EMPTY,{TRACKBACK_DETAILS}}
 			<div class="trackbacks right">
 				{TRACKBACK_DETAILS}

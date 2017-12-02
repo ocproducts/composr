@@ -9,20 +9,20 @@
 	position: relative;
 }
 
-.carousel_temp {
+.carousel-temp {
 	white-space: nowrap !important;
 }
 
-.carousel .img_thumb {
+.carousel .img-thumb {
 	max-width: 140px;
 }
 
-.carousel .move_left, .carousel .move_right {
+.carousel .move-left, .carousel .move-right {
 	min-height: 16px;
 	width: 17px;
 }
 
-.carousel .move_left {
+.carousel .move-left {
 	margin-right: 20px;
 	padding-right: 5px;
 	float: left;
@@ -30,11 +30,11 @@
 	border-right: 1px dotted {$GET,standard_border};
 }
 
-.carousel .move_left:hover {
+.carousel .move-left:hover {
 	background-image: url('{$IMG;,carousel/button_left_hover}');
 }
 
-.carousel .move_right {
+.carousel .move-right {
 	margin-left: 20px;
 	padding-left: 5px;
 	float: right;
@@ -42,7 +42,7 @@
 	border-left: 1px dotted {$GET,standard_border};
 }
 
-.carousel .move_right:hover {
+.carousel .move-right:hover {
 	background-image: url('{$IMG;,carousel/button_right_hover}');
 }
 
@@ -50,7 +50,7 @@
 	overflow: hidden;
 }
 
-.carousel .box, .carousel_temp>* {
+.carousel .box, .carousel-temp>* {
 	display: inline-block;
 	max-width: 25em;
 	white-space: normal;

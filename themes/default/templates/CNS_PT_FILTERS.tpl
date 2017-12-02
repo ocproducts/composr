@@ -14,6 +14,6 @@
 	{+END}
 
 	{+START,IF,{$GET,has_filter}}
-		<span class="associated_details right">(<a href="{RESET_URL*}">reset</a>)</span>
+		<span class="associated-details right">(<a href="{RESET_URL*}">reset</a>)</span>
 	{+END}
 {+END}

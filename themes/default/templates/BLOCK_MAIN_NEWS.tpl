@@ -24,14 +24,14 @@
 
 			{+START,IF_PASSED,PAGINATION}
 				{+START,IF_NON_EMPTY,{PAGINATION}}
-					<div class="pagination_spacing float_surrounder ajax_block_wrapper_links">
+					<div class="pagination_spacing float-surrounder ajax_block_wrapper_links">
 						{PAGINATION}
 					</div>
 				{+END}
 			{+END}
 
 			{+START,IF_NON_EMPTY,{ARCHIVE_URL}{SUBMIT_URL}{RSS_URL}{ATOM_URL}}
-				<ul class="horizontal_links associated_links_block_group">
+				<ul class="horizontal_links associated-links-block-group">
 					{+START,IF_NON_EMPTY,{ARCHIVE_URL}}
 						<li><a rel="archives" href="{ARCHIVE_URL*}">{!VIEW_ARCHIVE}</a></li>
 					{+END}

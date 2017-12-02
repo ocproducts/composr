@@ -4,7 +4,7 @@
 <div class="form_ajax_target" data-view="BlockMainStaffWebsiteMonitoring" data-view-params="{+START,PARAMS_JSON,RAND_WEBSITE_MONITORING}{_*}{+END}">
 	<section id="tray_{!SITE_WATCHLIST|}" data-toggleable-tray="{ save: true }" class="box box___block_main_staff_website_monitoring">
 		<h3 class="toggleable_tray_title js-tray-header">
-			<a title="{!EDIT}: {!SITE_WATCHLIST}" class="top_left_toggleicon js-click-staff-block-flip" href="#!">{!EDIT}</a>
+			<a title="{!EDIT}: {!SITE_WATCHLIST}" class="top-left-toggleicon js-click-staff-block-flip" href="#!">{!EDIT}</a>
 
 			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!SITE_WATCHLIST}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" /></a>
 

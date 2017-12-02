@@ -1097,7 +1097,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 break;
             }
 
-            $class = (array_key_exists('param', $attributes) && ($attributes['param'] != '')) ? $attributes['param'] : 'float_surrounder';
+            $class = (array_key_exists('param', $attributes) && ($attributes['param'] != '')) ? $attributes['param'] : 'float-surrounder';
             $style = array_key_exists('style', $attributes) ? $attributes['style'] : null;
             if (!$comcode_dangerous) {
                 $style = null;

@@ -6,7 +6,7 @@
 	</h3>
 
 	<div class="toggleable_tray js-tray-content">
-		<div class="staff_new_versions">
+		<div class="staff-new-versions">
 			{VERSION_TABLE}
 
 			{+START,IF,{HAS_UPDATED_ADDONS}}
@@ -15,7 +15,7 @@
 				</p>
 			{+END}
 
-			<div class="img_wrap">
+			<div class="img-wrap">
 				<img src="{$IMG*,product_logo}" alt="" />
 			</div>
 		</div>

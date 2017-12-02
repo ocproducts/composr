@@ -3,7 +3,7 @@
 
 	{+START,IF_NON_PASSED_OR_FALSE,FRAMED}
 		{+START,IF_NON_EMPTY,{DESCRIPTION}}
-			<figcaption class="associated_details">
+			<figcaption class="associated-details">
 				{$PARAGRAPH,{DESCRIPTION}}
 			</figcaption>
 		{+END}

@@ -9,12 +9,12 @@
 
 	<p>{!USE_CHAT_RULES,{$PAGE_LINK*,:rules},{$PAGE_LINK*,:privacy}}</p>
 
-	<div class="box box___chat_lobby_screen_rooms box_prominent"><div class="box_inner">
+	<div class="box box---chat-lobby-screen-rooms box_prominent"><div class="box_inner">
 		<h2>{!CHATROOMS_LOBBY_TITLE}</h2>
 
-		<div class="float_surrounder">
+		<div class="float-surrounder">
 			{+START,IF_NON_EMPTY,{ADD_CHATROOM_URL}{PRIVATE_CHATROOM}{BLOCKING_LINK}{MOD_LINK}{SETEFFECTS_LINK}}
-				<nav class="chat_actions">
+				<nav class="chat-actions">
 					<h3>{!OTHER_ACTIONS}</h3>
 
 					<nav>
@@ -39,17 +39,17 @@
 				</nav>
 			{+END}
 
-			<div class="chat_rooms">
+			<div class="chat-rooms">
 				<h3>{!SELECT_CHATROOM}</h3>
 
 				{+START,IF_NON_EMPTY,{CHATROOMS}}
 					<ul class="actions_list">
 						{+START,LOOP,CHATROOMS}
-							<li><a href="{URL*}">{NAME*}</a> <em class="associated_details">({$?,{PRIVATE},{!CHATROOM_STATUS_PRIVATE},{!CHATROOM_STATUS_PUBLIC}})</em><span class="associated_details">({!STATIC_USERS_ONLINE,{$TIME*},{USERNAMES}})</span></li>
+							<li><a href="{URL*}">{NAME*}</a> <em class="associated-details">({$?,{PRIVATE},{!CHATROOM_STATUS_PRIVATE},{!CHATROOM_STATUS_PUBLIC}})</em><span class="associated-details">({!STATIC_USERS_ONLINE,{$TIME*},{USERNAMES}})</span></li>
 						{+END}
 					</ul>
 
-					<p class="chat_multi_tab">{!OPEN_CHATROOMS_IN_TABS}</p>
+					<p class="chat-multi-tab">{!OPEN_CHATROOMS_IN_TABS}</p>
 				{+END}
 				{+START,IF_EMPTY,{CHATROOMS}}
 					<p class="nothing_here">{!NO_CATEGORIES,chat}</p>
@@ -59,21 +59,21 @@
 	</div></div>
 
 	{+START,IF,{$NOT,{$IS_GUEST}}}
-		<div class="chat_im_convos_wrap">
+		<div class="chat-im-convos-wrap">
 			<div class="box box___chat_lobby_screen_im box_prominent"><div class="box_inner">
 				<h2>{!INSTANT_MESSAGING}</h2>
 
-				<div class="float_surrounder chat_im_convos_inner">
-					<div class="chat_lobby_convos">
-						<div class="chat_lobby_convos_tabs" id="chat_lobby_convos_tabs" style="display: none"></div>
-						<div class="chat_lobby_convos_areas" id="chat_lobby_convos_areas">
+				<div class="float-surrounder chat_im_convos_inner">
+					<div class="chat-lobby-convos">
+						<div class="chat-lobby-convos-tabs" id="chat-lobby-convos-tabs" style="display: none"></div>
+						<div class="chat-lobby-convos-areas" id="chat-lobby-convos-areas">
 							<p class="nothing_here">
 								{!NO_IM_CONVERSATIONS}
 							</p>
 						</div>
 					</div>
 
-					<div class="chat_lobby_friends">
+					<div class="chat-lobby-friends">
 						<h3>{!FRIEND_LIST}</h3>
 
 						{+START,IF_NON_EMPTY,{FRIENDS}}
@@ -84,7 +84,7 @@
 									{FRIENDS}
 								</div>
 
-								<div class="friend_actions">
+								<div class="friend-actions">
 									{+START,IF,{CAN_IM}}
 										<input class="button_screen_item menu___generic_admin__add_to_category js-click-btn-im-invite-ticked-people" disabled="disabled" id="invite_ongoing_im_button" type="button" value="{!INVITE_CURRENT_IM}" />
 										<input class="button_screen_item menu__social__chat__chat js-click-btn-im-start-ticked-people" type="button" value="{!START_IM}" />
@@ -120,7 +120,7 @@
 							</p>
 						</form>
 
-						<div class="alert_box_wrap" id="alert_box_wrap" style="display: none">
+						<div class="alert-box-wrap" id="alert-box-wrap" style="display: none">
 							<section class="box"><div class="box_inner">
 								<h3>{!ALERT}</h3>
 

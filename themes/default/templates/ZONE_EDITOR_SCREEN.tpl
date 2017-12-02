@@ -12,7 +12,7 @@
 		<img src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" alt="" /> <span>{!ZE_HOW_TO_SAVE}</span>
 	</p>
 
-	<div class="float_surrounder" id="ze_panels_wrap">
+	<div class="float-surrounder" id="ze_panels_wrap">
 		<div id="p_panel_left" class="ze_panel" data-mouseover-class="{ ze_panel_expanded: 1 }" data-mouseout-class="{ ze_panel_expanded: 0 }">
 			{LEFT_EDITOR}
 		</div>
@@ -35,7 +35,7 @@
 		</div>
 
 		<p class="proceed_button vertical_alignment">
-			<input class="button_screen buttons__save js-btn-fetch-and-submit" type="button" value="{!SAVE}" /> <span class="associated_details">{!ZE_CLICK_TO_EDIT}</span>
+			<input class="button_screen buttons__save js-btn-fetch-and-submit" type="button" value="{!SAVE}" /> <span class="associated-details">{!ZE_CLICK_TO_EDIT}</span>
 		</p>
 	</form>
 

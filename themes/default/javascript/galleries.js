@@ -23,7 +23,7 @@
             milliseconds = Number(params.mill), i;
 
         this.fpAnimationEl = document.getElementById('image_fader_' + id);
-        this.fpAnimationFaderEl = $dom.create('img', { className: 'img_thumb', src: $util.srl('{$IMG;,blank}'), css: { position: 'absolute' }});
+        this.fpAnimationFaderEl = $dom.create('img', { className: 'img-thumb', src: $util.srl('{$IMG;,blank}'), css: { position: 'absolute' }});
         this.teaseTitleEl = document.getElementById('image_fader_title_' + id);
         this.teaseScrollingTextEl =  document.getElementById('image_fader_scrolling_text_' + id);
         

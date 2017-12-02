@@ -237,7 +237,7 @@
             new Image().src = $IMG_checklist_cross2;
             new Image().src = $IMG_checklist_toggleicon2;
 
-            var i, checklistRows = document.querySelectorAll('.checklist_row'), rowImgs, src;
+            var i, checklistRows = document.querySelectorAll('.checklist-row'), rowImgs, src;
 
             for (i = 0; i < checklistRows.length; i++) {
                 rowImgs = checklistRows[i].querySelectorAll('img');
@@ -248,16 +248,16 @@
                     }
                     if (src && src.includes('checklist1')) {
                         $dom.hide(checklistRows[i]);
-                        checklistRows[i].classList.add('task_hidden');
+                        checklistRows[i].classList.add('task-hidden');
                     } else {
-                        checklistRows[i].classList.remove('task_hidden');
+                        checklistRows[i].classList.remove('task-hidden');
                     }
                 } else {
                     if (!$dom.isDisplayed(checklistRows[i])) {
                         $dom.fadeIn(checklistRows[i]);
                     }
                     $dom.show(checklistRows[i]);
-                    checklistRows[i].classList.remove('task_hidden');
+                    checklistRows[i].classList.remove('task-hidden');
                 }
             }
 
@@ -266,12 +266,12 @@
         }
 
         function submitCustomTask(form) {
-            $cms.loadSnippet('checklist_task_manage', 'type=add&recur_every=' + encodeURIComponent(form.elements['recur_every'].value) + '&recur_interval=' + encodeURIComponent(form.elements['recur_interval'].value) + '&task_title=' + encodeURIComponent(form.elements['newTask'].value), true).then(function (newTask) {
+            $cms.loadSnippet('checklist_task_manage', 'type=add&recur_every=' + encodeURIComponent(form.elements['recur_every'].value) + '&recur_interval=' + encodeURIComponent(form.elements['recur_interval'].value) + '&task_title=' + encodeURIComponent(form.elements['newTask'].value)).then(function (newTask) {
                 form.elements['recur_every'].value = '';
                 form.elements['recur_interval'].value = '';
                 form.elements['new_task'].value = '';
 
-                $dom.append(document.getElementById('custom_tasks_go_here'), newTask);
+                $dom.append('#custom_tasks_go_here', newTask);
             });
         }
     };

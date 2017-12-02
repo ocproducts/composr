@@ -13,7 +13,7 @@ table.cart_table td {
 	vertical-align: middle;
 }
 
-table.cart_table .associated_details {
+table.cart_table .associated-details {
 	display: block;
 	margin-top: 0.25em;
 }

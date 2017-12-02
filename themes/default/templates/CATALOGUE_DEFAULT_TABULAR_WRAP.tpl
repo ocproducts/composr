@@ -10,10 +10,10 @@
 					{$INC,INC}
 				{+END}
 				{+START,IF,{$IN_STR,{CONTENT},<!--VIEWLINK-->}}
-					<col class="catalogue_tabular_view_link_column" />
+					<col class="catalogue-tabular-view-link-column" />
 				{+END}
 				{$, Uncomment to show ratings
-					<col class="catalogue_tabular_rating_column" />
+					<col class="catalogue-tabular-rating-column" />
 				}
 			</colgroup>
 		{+END}

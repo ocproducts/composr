@@ -22,7 +22,7 @@
 		{+END}
 
 		{+START,IF_PASSED,DESCRIPTION_SIDE}{+START,IF_NON_EMPTY,{DESCRIPTION_SIDE}}
-			<p class="associated_details">{DESCRIPTION_SIDE}</p>
+			<p class="associated-details">{DESCRIPTION_SIDE}</p>
 		{+END}{+END}
 	</th>
 

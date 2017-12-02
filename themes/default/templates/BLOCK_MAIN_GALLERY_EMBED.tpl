@@ -11,7 +11,7 @@
 				</div>
 
 				{+START,IF_NON_EMPTY,{PAGINATION}}
-					<div class="pagination_spacing float_surrounder ajax_block_wrapper_links">
+					<div class="pagination_spacing float-surrounder ajax_block_wrapper_links">
 						{PAGINATION}
 					</div>
 
@@ -28,13 +28,13 @@
 			{$SET,block_call_url,{$FACILITATE_AJAX_BLOCK_CALL,{BLOCK_PARAMS},raw=.*\,cache=.*,{START_PARAM}=.*}&{START_PARAM}=current_loading_from_pos_{$GET,carousel_id}}
 
 			<div id="carousel_{$GET*,carousel_id}" class="carousel" style="display: none" data-view="Carousel" data-view-params="{+START,PARAMS_JSON,carousel_id}{_*}{+END}">
-				<div class="move_left js-btn-car-move " data-move-amount="-47"></div>
-				<div class="move_right js-btn-car-move js-click-carousel-prepare-load-more" data-move-amount="+47"></div>
+				<div class="move-left js-btn-car-move " data-move-amount="-47"></div>
+				<div class="move-right js-btn-car-move js-click-carousel-prepare-load-more" data-move-amount="+47"></div>
 
 				<div class="main raw_ajax_grow_spot" id="carousel_{$GET*,carousel_id}_container"></div>
 			</div>
 
-			<div class="carousel_temp" id="carousel_ns_{$GET*,carousel_id}">
+			<div class="carousel-temp" id="carousel_ns_{$GET*,carousel_id}">
 				{ENTRIES}
 			</div>
 		{+END}

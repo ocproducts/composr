@@ -7,7 +7,7 @@
 		{RESULTS_TABLE}
 
 		{+START,IF_NON_EMPTY,{PAGINATION}}
-			<div class="pagination_spacing float_surrounder">
+			<div class="pagination_spacing float-surrounder">
 				{PAGINATION}
 			</div>
 		{+END}

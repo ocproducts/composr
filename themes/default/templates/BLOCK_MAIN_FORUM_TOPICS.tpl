@@ -15,20 +15,20 @@
 				</p>
 
 				<div role="note">
-					<ul class="tiny_paragraph associated_details horizontal_meta_details">
+					<ul class="tiny_paragraph associated-details horizontal_meta_details">
 						<li>{!BY_SIMPLE,{$DISPLAYED_USERNAME*,{USERNAME}}}</li>
 						<li>{!POST_PLU,{NUM_POSTS*}}</li>
 					</ul>
 				</div>
 
-				<p class="tiny_paragraph associated_details">
+				<p class="tiny_paragraph associated-details">
 					<span class="field_name">{!LAST_POST}:</span> {DATE*}
 				</p>
 			</div></div>
 		{+END}
 
 		{+START,IF_NON_EMPTY,{SUBMIT_URL}}
-			<ul class="horizontal_links associated_links_block_group force_margin">
+			<ul class="horizontal_links associated-links-block-group force_margin">
 				<li><a href="{SUBMIT_URL*}">{!ADD_TOPIC}</a></li>
 			</ul>
 		{+END}

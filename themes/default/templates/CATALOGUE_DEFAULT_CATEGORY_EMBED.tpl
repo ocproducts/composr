@@ -15,7 +15,7 @@
 		{+END}
 
 		{+START,IF_NON_EMPTY,{ENTRIES}}
-			<div class="float_surrounder display_type_{DISPLAY_TYPE*} raw_ajax_grow_spot">
+			<div class="float-surrounder display-type-{DISPLAY_TYPE*} raw_ajax_grow_spot">
 				{ENTRIES}
 			</div>
 		{+END}
@@ -31,7 +31,7 @@
 		{+END}
 
 		{+START,IF_NON_EMPTY,{PAGINATION}}
-			<div class="pagination_spacing float_surrounder ajax_block_wrapper_links">
+			<div class="pagination_spacing float-surrounder ajax_block_wrapper_links">
 				{PAGINATION}
 			</div>
 

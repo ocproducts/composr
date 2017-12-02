@@ -1,13 +1,13 @@
-<div class="side_calendar_wrap">
-	<div class="wide_table_wrap_internal_borders"><table class="spread_table autosized_table wide_table side_calendar calendar_year_month_table">
+<div class="side-calendar-wrap">
+	<div class="wide_table_wrap_internal_borders"><table class="spread_table autosized_table wide_table side-calendar calendar-year-month-table">
 		<colgroup>
-			<col class="calendar_weekly_column" />
-			<col class="calendar_weekly_column" />
-			<col class="calendar_weekly_column" />
-			<col class="calendar_weekly_column" />
-			<col class="calendar_weekly_column" />
-			<col class="calendar_weekly_column" />
-			<col class="calendar_weekly_column" />
+			<col class="calendar-weekly-column" />
+			<col class="calendar-weekly-column" />
+			<col class="calendar-weekly-column" />
+			<col class="calendar-weekly-column" />
+			<col class="calendar-weekly-column" />
+			<col class="calendar-weekly-column" />
+			<col class="calendar-weekly-column" />
 		</colgroup>
 		<thead>
 			<tr>

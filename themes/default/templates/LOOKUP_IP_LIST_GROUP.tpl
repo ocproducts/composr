@@ -1,11 +1,11 @@
 {$SET,rndx,{$RAND}}
 
-<li class="float_surrounder" data-toggleable-tray="{}">
+<li class="float-surrounder" data-toggleable-tray="{}">
 	<div class="js-tray-header">
 		<label for="banned_{$GET*,rndx}">
 			<kbd>{MASK*}</kbd>
 			{+START,IF,{$ADDON_INSTALLED,securitylogging}}
-				<span class="horiz_field_sep"><em>{!BANNED}: <input type="checkbox" id="banned_{$GET*,rndx}" name="banned[]" value="{MASK*}"{+START,IF,{BANNED}} checked="checked"{+END} /></em></span>
+				<span class="horiz-field-sep"><em>{!BANNED}: <input type="checkbox" id="banned_{$GET*,rndx}" name="banned[]" value="{MASK*}"{+START,IF,{BANNED}} checked="checked"{+END} /></em></span>
 			{+END}
 		</label>
 

@@ -1,8 +1,8 @@
 {TITLE}
 
-<div class="float_surrounder">
-	<div class="calendar_top_navigation">
-		<div class="calendar_date_span_link"><div class="calendar_date_span_link_inner">
+<div class="float-surrounder">
+	<div class="calendar-top-navigation">
+		<div class="calendar-date-span-link"><div class="calendar-date-span-link-inner">
 			{+START,IF_NON_EMPTY,{YEAR_URL}}
 				<a href="{YEAR_URL*}">{!YEARLY}</a>
 			{+END}
@@ -10,7 +10,7 @@
 				<span>{!YEARLY}</span>
 			{+END}
 		</div></div>
-		<div class="calendar_date_span_link"><div class="calendar_date_span_link_inner">
+		<div class="calendar-date-span-link"><div class="calendar-date-span-link-inner">
 			{+START,IF_NON_EMPTY,{MONTH_URL}}
 				<a href="{MONTH_URL*}">{!MONTHLY}</a>
 			{+END}
@@ -18,7 +18,7 @@
 				<span>{!MONTHLY}</span>
 			{+END}
 		</div></div>
-		<div class="calendar_date_span_link"><div class="calendar_date_span_link_inner">
+		<div class="calendar-date-span-link"><div class="calendar-date-span-link-inner">
 			{+START,IF_NON_EMPTY,{WEEK_URL}}
 				<a href="{WEEK_URL*}">{!WEEKLY}</a>
 			{+END}
@@ -26,7 +26,7 @@
 				<span>{!WEEKLY}</span>
 			{+END}
 		</div></div>
-		<div class="calendar_date_span_link"><div class="calendar_date_span_link_inner">
+		<div class="calendar-date-span-link"><div class="calendar-date-span-link-inner">
 			{+START,IF_NON_EMPTY,{DAY_URL}}
 				<a href="{DAY_URL*}">{!DAILY}</a>
 			{+END}
@@ -61,22 +61,22 @@
 	</p>
 {+END}
 
-<div class="box box___calendar_main_screen_interests" data-toggleable-tray="{}">
+<div class="box box---calendar-main-screen-interests" data-toggleable-tray="{}">
 	<h2 class="toggleable_tray_title js-tray-header">
 		<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!INTERESTS}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" /></a>
 		<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!">{!INTERESTS}</a>
 	</h2>
 
 	<div class="toggleable_tray js-tray-content" style="display: none" aria-expanded="false">
-		<div class="float_surrounder">
+		<div class="float-surrounder">
 			{+START,IF_NON_EMPTY,{EVENT_TYPES_1}}
-				<div class="right event_interest_box"><section class="box"><div class="box_inner">
+				<div class="right event-interest-box"><section class="box"><div class="box_inner">
 					<form title="{!INTERESTS}" method="post" action="{INTERESTS_URL*}" autocomplete="off">
 						{$INSERT_SPAMMER_BLACKHOLE}
 
 						<p><strong>{!DESCRIPTION_INTERESTS}</strong></p>
 
-						<div class="calendar_main_page_hidden_data">
+						<div class="calendar-main-page-hidden-data">
 							{EVENT_TYPES_1}
 						</div>
 
@@ -87,7 +87,7 @@
 				</div></section></div>
 			{+END}
 			{+START,IF_NON_EMPTY,{EVENT_TYPES_2}}
-				<div class="left event_interest_box"><section class="box"><div class="box_inner">
+				<div class="left event-interest-box"><section class="box"><div class="box_inner">
 					<form title="{!FILTER}" action="{$URL_FOR_GET_FORM*,{FILTER_URL}}" method="get" autocomplete="off">
 						{$INSERT_SPAMMER_BLACKHOLE}
 
@@ -95,7 +95,7 @@
 
 						<p><strong>{!DESCRIPTION_INTERESTS_2}</strong></p>
 
-						<div class="calendar_main_page_hidden_data">
+						<div class="calendar-main-page-hidden-data">
 							{EVENT_TYPES_2}
 						</div>
 

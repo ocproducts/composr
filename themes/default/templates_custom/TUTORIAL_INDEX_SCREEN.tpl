@@ -1,6 +1,6 @@
 {TITLE}
 
-<div class="float_surrounder">
+<div class="float-surrounder">
 	<div class="left" style="padding-right: 2em">
 		<h2>Tags</h2>
 

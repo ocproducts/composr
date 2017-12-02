@@ -112,7 +112,7 @@ if ($download_row !== null) {
         'add_date' => $download_row['add_date'],
     );
 }
-echo '<h3 class="notes_about">Notes about your current version (' . escape_html($version_pretty) . ')</h3>';
+echo '<h3 class="notes-about">Notes about your current version (' . escape_html($version_pretty) . ')</h3>';
 if ($our_version !== null) {
     if (!$has_jump) {
         $descrip = $our_version['download_description'] . ' You are running the latest version.';
@@ -186,7 +186,7 @@ function display_version_upgrade_path($higher_version)
     ?>
     <p class="version vertical_alignment">
         <!-- Version number -->
-        <span class="version_number"> <?= escape_html($higher_version['version_pretty']) ?></span>
+        <span class="version-number"> <?= escape_html($higher_version['version_pretty']) ?></span>
         <!-- Output upgrader link -->
         <span class="version_button" id="link_pos_<?= strval($i) ?>"></span>
         <script>
@@ -198,11 +198,11 @@ function display_version_upgrade_path($higher_version)
             }());
         </script>
         <!-- Version News link -->
-        <span class="version_news_link">[ <a onclick="window.open(this.href,null,'status=yes,toolbar=no,location=no,menubar=no,resizable=yes,scrollbars=yes,width=976,height=600'); return false;" target="_blank" title="<?= escape_html($higher_version['version_pretty']) ?> news post (this link will open in a new window)" href="<?= escape_html($upgrade_url) ?>">view news post</a> ]</span>
+        <span class="version-news-link">[ <a onclick="window.open(this.href,null,'status=yes,toolbar=no,location=no,menubar=no,resizable=yes,scrollbars=yes,width=976,height=600'); return false;" target="_blank" title="<?= escape_html($higher_version['version_pretty']) ?> news post (this link will open in a new window)" href="<?= escape_html($upgrade_url) ?>">view news post</a> ]</span>
         <!-- Details -->
-        <span class="version_details">(<?= escape_html($higher_version['version_pretty']) ?>, released <?= display_time_period(time() - $higher_version['add_date']) ?> ago)</span>
+        <span class="version-details">(<?= escape_html($higher_version['version_pretty']) ?>, released <?= display_time_period(time() - $higher_version['add_date']) ?> ago)</span>
         <span class="version_note"><?= $note ?></span>
-        <img class="version_help_icon" onmouseout="$cms.ui.deactivateTooltip(this);" onmousemove="$cms.ui.repositionTooltip(this,event);" onmouseover="if (this.parentNode.title != null) { this.parentNode.title = ''; } $cms.ui.activateTooltip(this, event, <?= escape_html(json_encode($tooltip->evaluate())) ?>, '600px', null, null, false, true);" alt="Help" src="<?= escape_html(find_theme_image('icons/16x16/help')) ?>" />
+        <img class="version-help-icon" onmouseout="$cms.ui.deactivateTooltip(this);" onmousemove="$cms.ui.repositionTooltip(this,event);" onmouseover="if (this.parentNode.title != null) { this.parentNode.title = ''; } $cms.ui.activateTooltip(this, event, <?= escape_html(json_encode($tooltip->evaluate())) ?>, '600px', null, null, false, true);" alt="Help" src="<?= escape_html(find_theme_image('icons/16x16/help')) ?>" />
     </p>
     <!-- Noscript version -->
     <noscript>

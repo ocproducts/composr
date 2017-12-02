@@ -1,4 +1,4 @@
-<div class="float_surrounder">
+<div class="float-surrounder">
 	<div class="confluence_left">
 		{$SET,confluence_menu,{$?,{$CONFIG_OPTION,collapse_user_zones},,site}:docs:{ROOT_ID}}
 
@@ -6,7 +6,7 @@
 	</div>
 
 	<div class="confluence_main">
-		<div class="float_surrounder">
+		<div class="float-surrounder">
 			{HTML}
 		</div>
 	</div>

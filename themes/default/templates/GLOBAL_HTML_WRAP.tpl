@@ -73,7 +73,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 			{$MESSAGES_TOP}
 		</div>
 
-		{$,The main panels and content; float_surrounder contains the layout into a rendering box so that the footer etc can sit underneath}
+		{$,The main panels and content; float-surrounder contains the layout into a rendering box so that the footer etc can sit underneath}
 		<div class="global_middle_outer">
 			{$SET,has_left_panel,{$IS_NON_EMPTY,{$TRIM,{$LOAD_PANEL,left}}}}
 			{$SET,has_right_panel,{$IS_NON_EMPTY,{$TRIM,{$LOAD_PANEL,right}}}}
@@ -95,13 +95,13 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 			</article>
 
 			{+START,IF,{$GET,has_left_panel}}
-				<div id="panel_left" class="global_side_panel{+START,IF,{$GET,has_right_panel}} with_both_panels{+END}" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
+				<div id="panel_left" class="global-side-panel{+START,IF,{$GET,has_right_panel}} with_both_panels{+END}" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
 					<div class="stuck_nav" data-stuck-nav>{$LOAD_PANEL,left}</div>
 				</div>
 			{+END}
 
 			{+START,IF,{$GET,has_right_panel}}
-				<div id="panel_right" class="global_side_panel{+START,IF,{$GET,has_left_panel}} with_both_panels{+END}" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
+				<div id="panel_right" class="global-side-panel{+START,IF,{$GET,has_left_panel}} with_both_panels{+END}" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
 					<div class="stuck_nav" data-stuck-nav>{$LOAD_PANEL,right}</div>
 				</div>
 			{+END}
@@ -136,7 +136,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 
 		{$,This is the main site footer}
 		{+START,IF,{$SHOW_FOOTER}}
-			<footer class="float_surrounder" itemscope="itemscope" itemtype="http://schema.org/WPFooter" role="contentinfo">
+			<footer class="float-surrounder" itemscope="itemscope" itemtype="http://schema.org/WPFooter" role="contentinfo">
 				<div class="global_footer_left block_desktop">
 					{+START,SET,FOOTER_BUTTONS}
 						{+START,IF,{$CONFIG_OPTION,bottom_show_top_button}}

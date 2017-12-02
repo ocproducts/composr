@@ -13,7 +13,7 @@
 	{+END}
 
 	{+START,IF,{$NOT,{SIMPLE_STYLE}}}
-		<div class="various_ticks float_surrounder">
+		<div class="various_ticks float-surrounder">
 			{+START,LOOP,OUT}
 				<div class="input_individual_tick">
 					<label for="i_{NAME*}"><input title="{DESCRIPTION*}" tabindex="{TABINDEX*}" class="input_tick"{+START,IF,{CHECKED}} checked="checked"{+END} type="checkbox" id="i_{NAME*}" name="{NAME*}" value="1"{+START,IF,{DISABLED}} disabled="disabled"{+END} /> {PRETTY_NAME*}</label>
@@ -49,7 +49,7 @@
 			{+START,IF,{$NOT,{CUSTOM_ACCEPT_MULTIPLE}}}
 				<div><div>
 					<input value="1" class="input_tick js-click-value-input-toggle-disabled" id="{CUSTOM_NAME*}" name="{CUSTOM_NAME*}" type="checkbox" />
-					<label for="{CUSTOM_NAME*}">{!OTHER}</label> <label for="{CUSTOM_NAME*}_value"><span class="associated_details">({!fields:PLEASE_STATE})</span></label>
+					<label for="{CUSTOM_NAME*}">{!OTHER}</label> <label for="{CUSTOM_NAME*}_value"><span class="associated-details">({!fields:PLEASE_STATE})</span></label>
 					<input id="{CUSTOM_NAME*}_value" class="js-change-value-checkbox-toggle-checked" name="{CUSTOM_NAME*}_value"
 						value="{+START,IF_PASSED,CUSTOM_VALUE}{CUSTOM_VALUE*}{+END}" size="15" type="text" />
 				</div></div>

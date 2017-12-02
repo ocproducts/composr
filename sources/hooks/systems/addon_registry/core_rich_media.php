@@ -459,7 +459,7 @@ class Hook_addon_registry_core_rich_media
         }
 
         $content = do_lorem_template('COMCODE_SURROUND', array(
-            'CLASS' => 'float_surrounder',
+            'CLASS' => 'float-surrounder',
             'CONTENT' => $content,
         ));
 

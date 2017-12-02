@@ -19,7 +19,7 @@
 	</ul>
 {+END}
 
-<div class="float_surrounder">
+<div class="float-surrounder">
 	<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 

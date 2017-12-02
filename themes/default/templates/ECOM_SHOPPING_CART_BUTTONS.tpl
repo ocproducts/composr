@@ -1,9 +1,9 @@
 {$,Embedded into catalogue views for example, not used for the shopping cart itself}
 
-<div class="float_surrounder">
-	<div class="add_to_cart">
+<div class="float-surrounder">
+	<div class="add-to-cart">
 		{+START,IF_NON_EMPTY,{ACTION_URL}}
-			<div class="purchase_buy">
+			<div class="purchase-buy">
 				<form title="{!ADD_TO_CART}" method="post" action="{ACTION_URL*}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
@@ -17,7 +17,7 @@
 		{$,Re-enable this if you want to be able to buy with bypassing the cart}
 		{+START,SET,commented_out}
 			{+START,IF_NON_EMPTY,{PURCHASE_ACTION_URL}}
-				<div class="purchase_buy">
+				<div class="purchase-buy">
 					<form title="{!BUY_NOW}" method="post" enctype="multipart/form-data" action="{PURCHASE_ACTION_URL*}" autocomplete="off">
 						{$INSERT_SPAMMER_BLACKHOLE}
 
@@ -30,5 +30,5 @@
 </div>
 
 {+START,IF,{$IS_GUEST}}
-	<p class="associated_details">{!COOKIES_AS_GUEST}</p>
+	<p class="associated-details">{!COOKIES_AS_GUEST}</p>
 {+END}

@@ -53,7 +53,7 @@
 					{!MINUTES_AGO,{TIME*}}
 
 					{+START,IF,{$HAS_PRIVILEGE,show_user_browsing}}
-						<p class="associated_details block_mobile">
+						<p class="associated-details block_mobile">
 							{$GET,location}
 						</p>
 					{+END}

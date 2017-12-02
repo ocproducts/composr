@@ -6,13 +6,13 @@
 	</div>
 
 	{+START,IF_NON_EMPTY,{DESCRIPTION}}
-		<figcaption class="associated_details">
+		<figcaption class="associated-details">
 			{DESCRIPTION}
 		</figcaption>
 	{+END}
 
 	{+START,IF_NON_EMPTY,{EDIT_URL}}
-		<p class="associated_link associated_links_block_group">
+		<p class="associated_link associated-links-block-group">
 			<a href="{EDIT_URL*}" title="{!EDIT_IMAGE}, #{ID*}">{!EDIT_LINK}</a>
 		</p>
 	{+END}

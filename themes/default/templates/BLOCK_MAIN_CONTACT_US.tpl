@@ -1,3 +1,3 @@
-<div class="float_surrounder" itemscope="itemscope" itemtype="http://schema.org/ContactPage">
+<div class="float-surrounder" itemscope="itemscope" itemtype="http://schema.org/ContactPage">
 	{COMMENT_DETAILS}
 </div>

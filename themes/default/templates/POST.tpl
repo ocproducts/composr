@@ -15,7 +15,7 @@
 		<div id="post_wrap_{ID*}" class="post time_{TIME_RAW*}" itemprop="reviews" itemscope="itemscope" itemtype="http://schema.org/Review">
 			{+START,IF_NON_EMPTY,{ID}}<a id="post_{ID*}"></a>{+END}
 
-			<div class="float_surrounder">
+			<div class="float-surrounder">
 				{+START,IF_NON_EMPTY,{TITLE}}{+START,IF,{$NEQ,{TITLE},{$GET,topic_title}}}<h3 class="post_title" itemprop="name">{TITLE*}</h3>{+END}{+END}
 
 				<div class="post_subline">

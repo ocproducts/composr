@@ -9,7 +9,7 @@
 	{TITLE}
 
 	<div class="filedump_screen">
-		<div class="float_surrounder"><div class="tabs" role="tablist">
+		<div class="float-surrounder"><div class="tabs" role="tablist">
 			<a aria-controls="g_thumbnails" role="tab" href="#!" id="t_thumbnails" class="tab tab_active tab_first js-click-select-tab-g" data-tp-tab="thumbnails"><span>{!VIEW_THUMBNAILS}</span></a>
 
 			<a aria-controls="g_listing" role="tab" href="#!" id="t_listing" class="tab{+START,IF_EMPTY,{CREATE_FOLDER_FORM}{UPLOAD_FORM}} tab_last{+END} js-click-select-tab-g" data-tp-tab="listing"><span>{!VIEW_LISTING}</span></a>
@@ -35,7 +35,7 @@
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					{+START,IF_NON_EMPTY,{THUMBNAILS}}
-						<div class="float_surrounder filedump_thumbnails">
+						<div class="float-surrounder filedump_thumbnails">
 							{+START,LOOP,THUMBNAILS}
 								<div class="box"><div class="box_inner">
 									{+START,IF,{CHOOSABLE}}
@@ -48,9 +48,9 @@
 
 									<p><a {+START,IF,{IS_IMAGE}} rel="lightbox"{+END} href="{URL*}">{THUMBNAIL}</a></p>
 
-									<p class="meta associated_details">
+									<p class="meta associated-details">
 										<strong>{FILENAME*}</strong><br />
-										<span class="associated_details">({+START,IF_NON_EMPTY,{_SIZE}}{SIZE*}{+END}{+START,IF_NON_EMPTY,{DATE}}{+START,IF_NON_EMPTY,{_SIZE}}, {+END}{DATE*}{+END}{+START,IF_NON_EMPTY,{WIDTH}}, {WIDTH*}&times;{HEIGHT*}{+END})</span>
+										<span class="associated-details">({+START,IF_NON_EMPTY,{_SIZE}}{SIZE*}{+END}{+START,IF_NON_EMPTY,{DATE}}{+START,IF_NON_EMPTY,{_SIZE}}, {+END}{DATE*}{+END}{+START,IF_NON_EMPTY,{WIDTH}}, {WIDTH*}&times;{HEIGHT*}{+END})</span>
 									</p>
 								</div></div>
 							{+END}
@@ -70,7 +70,7 @@
 				{+END}
 
 				{+START,IF_NON_EMPTY,{PAGINATION_THUMBNAILS}}
-					<div class="float_surrounder force_margin">
+					<div class="float-surrounder force_margin">
 						{PAGINATION_THUMBNAILS}
 					</div>
 				{+END}
@@ -104,7 +104,7 @@
 				{+END}
 
 				{+START,IF_NON_EMPTY,{PAGINATION_LISTING}}
-					<div class="float_surrounder force_margin">
+					<div class="float-surrounder force_margin">
 						{PAGINATION_LISTING}
 					</div>
 				{+END}

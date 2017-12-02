@@ -94,7 +94,7 @@
 		</div>
 
 		{+START,IF_PASSED,PAGINATION}
-			<div class="float_surrounder">
+			<div class="float-surrounder">
 				{PAGINATION}
 			</div>
 		{+END}
@@ -201,7 +201,7 @@
 
 			<ul class="nl">
 				{+START,LOOP,WHOS_READ}
-					<li><a title="{USERNAME*}" href="{MEMBER_URL*}">{$DISPLAYED_USERNAME*,{USERNAME}}</a> {+START,INCLUDE,MEMBER_TOOLTIP}SUBMITTER={MEMBER_ID}{+END} &ndash; <span class="associated_details">{DATE*}</span></li>
+					<li><a title="{USERNAME*}" href="{MEMBER_URL*}">{$DISPLAYED_USERNAME*,{USERNAME}}</a> {+START,INCLUDE,MEMBER_TOOLTIP}SUBMITTER={MEMBER_ID}{+END} &ndash; <span class="associated-details">{DATE*}</span></li>
 				{+END}
 			</ul>
 		{+END}

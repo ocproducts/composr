@@ -1,5 +1,5 @@
-<div class="float_surrounder">
-	<div class="award_extra_details">
+<div class="float-surrounder">
+	<div class="award-extra-details">
 		<h3>{AWARD_DATE*}</h3>
 
 		{+START,IF_NON_EMPTY,{AWARDEE_USERNAME}}
@@ -9,7 +9,7 @@
 		{+END}
 	</div>
 
-	<div class="award_main">
+	<div class="award-main">
 		{CONTENT}
 	</div>
 </div>

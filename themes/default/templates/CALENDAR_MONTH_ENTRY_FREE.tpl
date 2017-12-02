@@ -1,3 +1,3 @@
-<div class="calendar_month_entry">
+<div class="calendar-month-entry">
 	{TEXT}
 </div>

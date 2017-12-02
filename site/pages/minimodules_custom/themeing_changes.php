@@ -100,7 +100,7 @@ require_javascript('jquery');
 require_javascript('select2');
 require_css('widget_select2');
 
-echo '<div class="float_surrounder">';
+echo '<div class="float-surrounder">';
 echo '<form action="' . escape_html(static_evaluate_tempcode(build_url(array('page' => '_SELF', 'show_all' => get_param_integer('show_all', 0)), '_SELF'))) . '" method="post">';
 echo static_evaluate_tempcode(symbol_tempcode('INSERT_SPAMMER_BLACKHOLE'));
 

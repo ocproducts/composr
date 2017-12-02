@@ -28,20 +28,20 @@
 			{$SET,carousel_id,{$RAND}}
 
 			<div id="carousel_{$GET*,carousel_id}" class="carousel" data-view="Carousel" data-view-params="{+START,PARAMS_JSON,carousel_id}{_*}{+END}">
-				<div class="move_left js-btn-car-move" data-move-amount="-100"></div>
-				<div class="move_right js-btn-car-move" data-move-amount="+100"></div>
+				<div class="move-left js-btn-car-move" data-move-amount="-100"></div>
+				<div class="move-right js-btn-car-move" data-move-amount="+100"></div>
 
 				<div class="main" itemprop="significantLinks">
 				</div>
 			</div>
 
-			<div class="carousel_temp" id="carousel_ns_{$GET*,carousel_id}">
+			<div class="carousel-temp" id="carousel_ns_{$GET*,carousel_id}">
 				{ENTRIES}
 			</div>
 
 			<hr />
 
-			<ul class="horizontal_links associated_links_block_group">
+			<ul class="horizontal_links associated-links-block-group">
 				<li>{SORTING}</li>
 				<li><img src="{$IMG*,icons/24x24/buttons/proceed}" srcset="{$IMG*,icons/48x48/buttons/slideshow} 2x" alt="" /> <a {+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!_SLIDESHOW} {!LINK_NEW_WINDOW}"{+END} href="{$PAGE_LINK*,_SELF:galleries:{FIRST_ENTRY_ID*}:slideshow=1:wide_high=1}">{!_SLIDESHOW}</a></li>
 			</ul>
@@ -66,7 +66,7 @@
 		RIGHT=1
 	{+END}
 
-	<div class="float_surrounder lined_up_boxes flow_mode_details">
+	<div class="float-surrounder lined_up_boxes flow_mode_details">
 		{+START,IF_NON_EMPTY,{MEMBER_DETAILS}}
 			<div class="right">
 				<div class="box box___gallery_flow_mode_screen__member"><div class="box_inner">

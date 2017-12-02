@@ -1196,7 +1196,7 @@
                 '<div class="software_chat">' +
                 '   <h2>{!CMS_COMMUNITY_HELP}</h2>' +
                 '   <ul class="spaced_list">' + SOFTWARE_CHAT_EXTRA + '</ul>' +
-                '   <p class="associated_link associated_links_block_group">' +
+                '   <p class="associated_link associated-links-block-group">' +
                 '       <a title="{!SOFTWARE_CHAT_STANDALONE} {!LINK_NEW_WINDOW;^}" target="_blank" href="' + $cms.filter.html(url) + '">{!SOFTWARE_CHAT_STANDALONE}</a>' +
                 '       <a href="#!" class="js-global-click-load-software-chat">{!HIDE}</a>' +
                 '   </p>' +

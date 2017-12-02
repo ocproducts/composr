@@ -63,7 +63,7 @@
 									<td>
 										<input id="poster_name_if_guest" name="poster_name_if_guest" type="text" tabindex="1" maxlength="255" size="24" />
 										{+START,IF_PASSED,JOIN_BITS}{+START,IF_NON_EMPTY,{JOIN_BITS}}
-											<span class="horiz_field_sep">{JOIN_BITS}</span>
+											<span class="horiz-field-sep">{JOIN_BITS}</span>
 										{+END}{+END}
 									</td>
 								</tr>
@@ -73,7 +73,7 @@
 								<tr>
 									<th class="de_th vertical_alignment">
 										<label for="email">{!YOUR_EMAIL_ADDRESS}:</label>
-										{+START,IF,{EMAIL_OPTIONAL}}<br /><span class="associated_details">({!OPTIONAL})</span>{+END}
+										{+START,IF,{EMAIL_OPTIONAL}}<br /><span class="associated-details">({!OPTIONAL})</span>{+END}
 									</th>
 
 									<td>
@@ -90,7 +90,7 @@
 								<tr>
 									<th class="de_th vertical_alignment">
 										<label for="title">{!SUBJECT}:</label>
-										{+START,IF,{TITLE_OPTIONAL}}<br /><span class="associated_details">({!OPTIONAL})</span>{+END}
+										{+START,IF,{TITLE_OPTIONAL}}<br /><span class="associated-details">({!OPTIONAL})</span>{+END}
 									</th>
 
 									<td>
@@ -133,7 +133,7 @@
 									{+END}
 
 									{+START,IF_NON_EMPTY,{FIRST_POST}{RULES_TEXT}}
-										<ul class="associated_links_block_group">
+										<ul class="associated-links-block-group">
 											{+START,IF_NON_EMPTY,{FIRST_POST}}
 												<li><a class="non_link" title="{!cns:FIRST_POST} {!LINK_NEW_WINDOW}" target="_blank" href="{FIRST_POST_URL*}" data-blur-deactivate-tooltip="" data-focus-activate-tooltip="['{FIRST_POST*~;^}','320px',null,null,false,true]" data-mouseover-activate-tooltip="['{FIRST_POST*~;^}','320px',null,null,false,true]">{!cns:FIRST_POST}</a></li>
 											{+END}
@@ -158,7 +158,7 @@
 													{EMOTICONS}
 
 													{+START,IF,{$CNS}}
-														<p class="associated_link associated_links_block_group"><a rel="nofollow" href="#!" class="js-click-open-site-emoticon-chooser-window">{!EMOTICONS_POPUP}</a></p>
+														<p class="associated_link associated-links-block-group"><a rel="nofollow" href="#!" class="js-click-open-site-emoticon-chooser-window">{!EMOTICONS_POPUP}</a></p>
 													{+END}
 												</div>
 											</div></div>

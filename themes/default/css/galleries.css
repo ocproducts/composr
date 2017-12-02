@@ -96,7 +96,7 @@
 	outline: 0;
 }
 
-.img_thumb_wrap .img_thumb {
+.img_thumb_wrap .img-thumb {
 	width: 100%;
 	vertical-align: bottom; /* Removes gap under this centered inline image, by moving it to baseline */
 }
@@ -156,7 +156,7 @@
 	opacity: 1.0;
 	transition: opacity 0.2s linear !important;
 }
-.flow_mode_thumb .img_thumb {
+.flow_mode_thumb .img-thumb {
 	opacity: 1.0;
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
@@ -261,13 +261,13 @@
 }
 
 /* Make sure it fits okay on the side panel */
-.global_side_panel .gallery_tease_pic {
+.global-side-panel .gallery_tease_pic {
 	width: auto;
 }
-.global_side_panel .gallery_tease_pic_wrap h2, .global_side_panel .gallery_tease_pic_wrap h3 {
+.global-side-panel .gallery_tease_pic_wrap h2, .global-side-panel .gallery_tease_pic_wrap h3 {
 	display: none;
 }
-.global_side_panel .img_thumb_wrap .img_thumb:not([width]):not([height]) {
+.global-side-panel .img_thumb_wrap .img-thumb:not([width]):not([height]) {
 	max-width: 100%;
 	height: auto;
 }

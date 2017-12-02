@@ -19,7 +19,7 @@
 		</p>
 	{+END}
 
-	<ul class="horizontal_links associated_links_block_group force_margin">
+	<ul class="horizontal_links associated-links-block-group force_margin">
 		{+START,IF_NON_EMPTY,{SUBMIT_URL}}
 			<li><a rel="add" href="{SUBMIT_URL*}">{!ADD}</a></li>
 		{+END}

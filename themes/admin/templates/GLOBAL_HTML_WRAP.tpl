@@ -60,8 +60,8 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 			{$MESSAGES_TOP}
 		</div>
 
-		{$,The main panels and content; float_surrounder contains the layout into a rendering box so that the footer etc can sit underneath}
-		<div class="global_middle_outer float_surrounder">
+		{$,The main panels and content; float-surrounder contains the layout into a rendering box so that the footer etc can sit underneath}
+		<div class="global_middle_outer float-surrounder">
 			<article class="global_middle" role="main">
 				{$,Breadcrumbs}
 				{+START,IF,{$IN_STR,{$BREADCRUMBS},<a }}{+START,IF,{$SHOW_HEADER}}
@@ -79,7 +79,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 			</article>
 
 			{+START,IF_NON_EMPTY,{$TRIM,{$LOAD_PANEL,left}}}
-				<div id="panel_left" class="global_side_panel" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
+				<div id="panel_left" class="global-side-panel" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
 					<div class="stuck_nav" data-stuck-nav>{$LOAD_PANEL,left}</div>
 				</div>
 			{+END}
@@ -88,7 +88,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 			{$SET,HELPER_PANEL_TUTORIAL,{$?,{$HAS_PRIVILEGE,see_software_docs},{$HELPER_PANEL_TUTORIAL}}}
 			{$SET,helper_panel,{$OR,{$IS_NON_EMPTY,{$GET,HELPER_PANEL_TUTORIAL}},{$IS_NON_EMPTY,{$HELPER_PANEL_TEXT}}}}
 			{+START,IF,{$OR,{$GET,helper_panel},{$IS_NON_EMPTY,{$TRIM,{$LOAD_PANEL,right}}}}}
-				<div id="panel_right" class="global_side_panel{+START,IF_EMPTY,{$TRIM,{$LOAD_PANEL,right}}} helper_panel {$?,{$HIDE_HELP_PANEL},helper_panel_hidden,helper_panel_visible}{+END}" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
+				<div id="panel_right" class="global-side-panel{+START,IF_EMPTY,{$TRIM,{$LOAD_PANEL,right}}} helper_panel {$?,{$HIDE_HELP_PANEL},helper_panel_hidden,helper_panel_visible}{+END}" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
 					{+START,IF_NON_EMPTY,{$TRIM,{$LOAD_PANEL,right}}}
 						<div class="stuck_nav" data-stuck-nav>{$LOAD_PANEL,right}</div>
 					{+END}
@@ -127,7 +127,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 
 	{$,This is the main site footer}
 	{+START,IF,{$SHOW_FOOTER}}
-		<footer class="float_surrounder" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
+		<footer class="float-surrounder" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
 			<div class="footer_inner">
 				<div class="global_footer_left block_desktop">
 					{+START,SET,FOOTER_BUTTONS}

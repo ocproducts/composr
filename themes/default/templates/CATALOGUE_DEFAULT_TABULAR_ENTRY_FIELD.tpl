@@ -5,7 +5,7 @@
 
 	{+START,IF,{$NEQ,{FIELDID},0}}
 		{+START,IF_NON_EMPTY,{$GET,EDIT_URL}}
-			<p class="associated_details">
+			<p class="associated-details">
 				( <a href="{$GET*,EDIT_URL}">{!EDIT}</a> )
 			</p>
 		{+END}

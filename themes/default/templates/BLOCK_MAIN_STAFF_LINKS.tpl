@@ -6,7 +6,7 @@
 <div class="form_ajax_target" data-view="BlockMainStaffLinks" data-view-params="{+START,PARAMS_JSON,RAND_STAFF_LINKS,BLOCK_NAME,MAP}{_*}{+END}">
 	<section id="tray_{!EXTERNAL_LINKS|}" data-toggleable-tray="{ save: true }" class="box box___block_main_staff_links">
 		<h3 class="toggleable_tray_title js-tray-header">
-			<a title="{!EDIT}: {!EXTERNAL_LINKS}" href="#!" class="top_left_toggleicon js-click-staff-block-flip">{!EDIT}</a>
+			<a title="{!EDIT}: {!EXTERNAL_LINKS}" href="#!" class="top-left-toggleicon js-click-staff-block-flip">{!EDIT}</a>
 
 			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!EXTERNAL_LINKS}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" /></a>
 

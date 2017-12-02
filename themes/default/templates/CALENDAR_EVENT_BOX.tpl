@@ -13,12 +13,12 @@
 	{+END}
 
 	{+START,IF_NON_EMPTY,{SUMMARY}}
-		<div class="float_surrounder">
+		<div class="float-surrounder">
 			{SUMMARY}
 		</div>
 	{+END}
 
-	<ul class="horizontal_links associated_links_block_group force_margin">
+	<ul class="horizontal_links associated-links-block-group force_margin">
 		<li><a title="{TITLE*}: {!READ_MORE}" class="more" href="{URL*}">{!READ_MORE}</a></li>
 	</ul>
 </div></div>

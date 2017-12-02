@@ -30,7 +30,7 @@
 
 				{PASSION}
 
-				<div class="float_surrounder">
+				<div class="float-surrounder">
 					<table class="map_table autosized_table login_page_form">
 						<tbody>
 							<tr>
@@ -55,7 +55,7 @@
 									<input class="{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}}js-click-confirm-remember-me{+END}" id="remember" type="checkbox" value="1" name="remember"{+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END} />
 									<span class="field_name">{!REMEMBER_ME}</span>
 								</label>
-								<span class="associated_details">{!REMEMBER_ME_TEXT}</span>
+								<span class="associated-details">{!REMEMBER_ME_TEXT}</span>
 							</p>
 
 							{+START,IF,{$CONFIG_OPTION,is_on_invisibility}}
@@ -64,7 +64,7 @@
 										<input id="login_invisible" type="checkbox" value="1" name="login_invisible" />
 										<span class="field_name">{!INVISIBLE}</span>
 									</label>
-									<span class="associated_details">{!INVISIBLE_TEXT}</span>
+									<span class="associated-details">{!INVISIBLE_TEXT}</span>
 								</p>
 							{+END}
 						</div>

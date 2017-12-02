@@ -153,7 +153,7 @@ window.previousCommands || (window.previousCommands = []);
         var pastCommandPrompt = document.createElement('p');
         var pastCommand = document.createElement('div');
 
-        newCommand.setAttribute('class', 'command float_surrounder');
+        newCommand.setAttribute('class', 'command float-surrounder');
         pastCommandPrompt.setAttribute('class', 'past_command_prompt');
         pastCommand.setAttribute('class', 'past_command');
 

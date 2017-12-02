@@ -1,13 +1,13 @@
 {TITLE}
 
-<div class="float_surrounder">
+<div class="float-surrounder">
 	<div class="themewizard_info_box">
 		<div class="box box___themewizard_2_screen"><div class="box_inner">
 			<h2>{!SEED_COLOUR}</h2>
 
 			<div>#<span class="themewizard_info_box_label">{SEED*}</span></div>
 			<div>({!RED}: <span class="themewizard_colour">{RED*}</span>, {!GREEN}: <span class="themewizard_colour">{GREEN*}</span>, {!BLUE}: <span class="themewizard_colour">{BLUE*}</span>)</div>
-			<div><span class="themewizard_change_colour horiz_field_sep associated_link"><a href="{CHANGE_URL*}">{!CHANGE}</a></span></div>
+			<div><span class="themewizard_change_colour horiz-field-sep associated_link"><a href="{CHANGE_URL*}">{!CHANGE}</a></span></div>
 		</div></div>
 	</div>
 

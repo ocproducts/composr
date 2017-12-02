@@ -3,7 +3,7 @@
 {+END}
 
 {+START,IF,{$NEQ,{MAX},1}}
-	<div class="banner_wrap">
+	<div class="banner-wrap">
 		{BANNER}
 	</div>
 {+END}

@@ -6,14 +6,14 @@
 			<p class="nothing_here">{!NO_ENTRIES,event}</p>
 		{+END}
 		{+START,LOOP,DAYS}
-			<h4 class="event_listing_day">{TIME*}</h4>
+			<h4 class="event-listing-day">{TIME*}</h4>
 
 			<div class="wide_table_wrap">
-				<table class="map_table results_table wide_table events_listing_table autosized_table">
+				<table class="map_table results_table wide_table events-listing-table autosized_table">
 					<colgroup>
-						<col class="event_listing_col_1" />
-						<col class="event_listing_col_2" />
-						<col class="event_listing_col_3" />
+						<col class="event-listing-col-1" />
+						<col class="event-listing-col-2" />
+						<col class="event-listing-col-3" />
 					</colgroup>
 
 					<tbody>
@@ -33,7 +33,7 @@
 									<a href="{VIEW_URL*}" class="url" itemprop="name">{TITLE*}</a>
 									{+START,IF_PASSED,TO_DAY}
 										<span {+START,IF,{$EQ,{FROM_DAY},{TO_DAY}}} style="display: none"{+END}>
-											<span class="associated_details">({!EVENT_ENDS_ON,<time class="dtend" datetime="{TO_TIME_VCAL*}" itemprop="endDate">{TO_DAY*}</time>})</span>
+											<span class="associated-details">({!EVENT_ENDS_ON,<time class="dtend" datetime="{TO_TIME_VCAL*}" itemprop="endDate">{TO_DAY*}</time>})</span>
 										</span>
 									{+END}
 								</td>

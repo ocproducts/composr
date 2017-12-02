@@ -1,5 +1,5 @@
 <div class="box box___trackback"><div class="box_inner">
-	<h4>{TITLE*} &ndash; {DATE*} <a class="associated_link horiz_field_sep" href="{URL*}">{NAME*}</a></h4>
+	<h4>{TITLE*} &ndash; {DATE*} <a class="associated_link horiz-field-sep" href="{URL*}">{NAME*}</a></h4>
 
 	{+START,IF_NON_EMPTY,{EXCERPT}}
 		<p>{EXCERPT}</p>

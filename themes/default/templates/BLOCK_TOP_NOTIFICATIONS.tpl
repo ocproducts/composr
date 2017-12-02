@@ -13,7 +13,7 @@
 				{+END}
 			</div>
 
-			<ul class="associated_links_block_group horizontal_links">
+			<ul class="associated-links-block-group horizontal_links">
 				<li><a href="{$PAGE_LINK*,_SEARCH:notifications:browse}">{!VIEW_ARCHIVE}</a></li>
 				{+START,IF,{$NOT,{$MATCH_KEY_MATCH,_WILD:members:view}}}
 					<li><a class="js-mouseup-toggle-web-notifications js-mouseup-find-url-tab" title="{!VIEW_ARCHIVE} {!notifications:NOTIFICATIONS}: {!SETTINGS}" href="{$PAGE_LINK*,{$?,{$CNS},_SEARCH:members:view#tab__edit__notifications,_SEARCH:notifications:overall}}">{!SETTINGS}</a></li>
@@ -36,7 +36,7 @@
 					{+END}
 				</div>
 
-				<ul class="associated_links_block_group horizontal_links">
+				<ul class="associated-links-block-group horizontal_links">
 					<li><a class="js-mouseup-find-url-tab js-mouseup-toggle-pts" href="{$PAGE_LINK*,_SEARCH:members:view#tab__pts}">{!cns:PRIVATE_TOPICS_INBOX}</a></li>
 					<li><a href="{$PAGE_LINK*,_SEARCH:topics:new_pt}">{!cns:NEW_PRIVATE_TOPIC}</a></li>
 				</ul>

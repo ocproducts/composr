@@ -14,7 +14,7 @@
 		</nav>
 	{+END}
 
-	<div class="float_surrounder">
+	<div class="float-surrounder">
 		<p class="right associated_link">
 			<a href="#!" class="js-click-check-uninstall-all">{!UNINSTALL}: {!USE_ALL}</a>
 		</p>

@@ -3,16 +3,16 @@
 	<div class="wide_table_wrap" data-tpl="chatFriends" data-tpl-params="{+START,PARAMS_JSON,FRIENDS}{_*}{+END}">
 		<table class="columned_table results_table wide_table autosized_table">
 		<colgroup>
-			<col class="chat_friends_column" />
+			<col class="chat-friends-column" />
 
-			<col class="chat_name_column" />
+			<col class="chat-name-column" />
 
 			{+START,IF,{$NOT,{SIMPLER}}}
-				<col class="chat_online_column" />
+				<col class="chat-online-column" />
 			{+END}
 
 			{+START,IF,{$NOT,{SIMPLER}}}
-				<col class="chat_choose_column" />
+				<col class="chat-choose-column" />
 			{+END}
 		</colgroup>
 

@@ -1063,7 +1063,7 @@ Ask us if you wanted to be listed as one of the [page=\"site:stars\"]Composr dev
     ),
 
     'support' => array(
-        'title' => 'Technical support <span class="associated_details">(single&nbsp;question&nbsp;support&nbsp;/&nbsp;very&nbsp;quick&nbsp;jobs)</span>',
+        'title' => 'Technical support <span class="associated-details">(single&nbsp;question&nbsp;support&nbsp;/&nbsp;very&nbsp;quick&nbsp;jobs)</span>',
         'text' => 'Great, let\'s get to it!' . "\n\n" . 'Please do make sure you are entering single-questions only (or at least related-questions); we need to be able to assign the ticket to a particular person with particular experience in the area you are asking about.' . "\n\n" . 'Please make sure your ticket needs to be completely self-explanatory. If it is necessary to reference another ticket please ensure that the exact title/URL of the ticket is given. Different members of staff may work on different tickets so we won\'t necessarily know the details relating to other tickets.' . "\n\n" . 'A professional ticket usually will be charged/due-for-payment only if you agree to the quote we give. Exceptions are if you tell us to work immediately without a quote, or if the quote would be the minimum for the ticket priority selected.' . "\n\n" . 'If you sometimes need things more urgent than the reply times available, you will need to go back and look into our secondment option so that you have someone permanently and directly assigned to you (as we don\'t always have someone available to jump on very urgent tickets; we need ongoing commitments to guarantee staffing of very skilled developers).' . "\n\n" . 'If you already have a ticket for this work/issue please don\'t create a new ticket. It is important to stay within one ticket to ensure the assigned staff member is aware of past progress on that ticket.',
         'notice' => array_merge($extra_support_notice, array(
             //    Parameter         Value                                                   Warning
@@ -1120,7 +1120,7 @@ Ask us if you wanted to be listed as one of the [page=\"site:stars\"]Composr dev
 
     'sponsor' => array(
         'title' => 'Sponsor Composr enhancements',
-        'text' => 
+        'text' =>
             'Wow, thanks! Composr moves forward when people sponsor new functionality, or when new functionality is developed as part of a wider commercial project. If you want to see something integrated cleanly into Composr\'s open roadmap, and don\'t need a custom deployment, feature sponsorship is a great way to do it. Sponsored features are developed at ocProduct\'s back-burner hourly rate.' . "\n\n" .
             'To sponsor something you should:[list="1"]' . "\n\n" .
             '[*] Go to the [url="tracker"]' . get_base_url() . '/tracker[/url].' . "\n\n" .

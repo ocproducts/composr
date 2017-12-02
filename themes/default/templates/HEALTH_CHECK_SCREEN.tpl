@@ -10,7 +10,7 @@
 		</select>
 	</div>
 
-	<div class="float_surrounder force_margin">
+	<div class="float-surrounder force_margin">
 		<div class="left float_separation">
 			<label for="fails">{!SHOW_FAILS}:</label>
 			<input type="checkbox" name="fails" id="fails" value="1" checked="checked" disabled="disabled" />

@@ -314,7 +314,7 @@
                 title = title.replace(/\\{1\\}/, notification.getAttribute('subject'));
                 title = title.replace(/\\{2\\}/, notification.getAttribute('from_username'));
                 var body = '';//notification.getAttribute('rendered'); Looks ugly
-                if (window.notify.permissionLevel() == window.notify.PERMISSION_GRANTED) {
+                if (window.notify.permissionLevel() === window.notify.PERMISSION_GRANTED) {
                     var notificationWrapper = window.notify.createNotification(title, { icon: icon, body: body, tag: $cms.getSiteName() + '__' + id });
                     if (notificationWrapper) {
                         window.addEventListener('focus', function () {
@@ -348,15 +348,14 @@
 
         event.withinMessageBox = true;
 
-        var body = document.body;
-        if (el.parentNode !== body) { // Move over, so it is not cut off by overflow:hidden of the header
+        if (el.parentNode !== document.body) { // Move over, so it is not cut off by overflow:hidden of the header
             el.parentNode.removeChild(el);
-            body.appendChild(el);
+            document.body.appendChild(el);
 
             el.addEventListener('click', function (event) {
                 event.withinMessageBox = true;
             });
-            body.addEventListener('click', function (event) {
+            document.body.addEventListener('click', function (event) {
                 if (event.withinMessageBox !== undefined) {
                     return;
                 }
@@ -385,19 +384,18 @@
         };
         setTimeout(setPosition, 0);
 
-        if ((el.style.display === 'none') && (!hide)) {
-            var tooltips = document.querySelectorAll('body>.tooltip');
-            if (tooltips[0] !== undefined) { // Hide tooltip, to stop it being a mess
-                tooltips[0].style.display = 'none';
+        if ((el.style.display === 'none') && !hide) {
+            var tooltip = document.querySelector('body > .tooltip');
+            if (tooltip != null) { // Hide tooltip, to stop it being a mess
+                tooltip.style.display = 'none';
             } 
 
             el.style.display = 'inline';
         } else {
             el.style.display = 'none';
         }
-        try {
-            el.style.opacity = '0.0'; // Render, but invisibly, until we've positioned it
-        } catch (ex) {}
+        
+        el.style.opacity = 0; // Render, but invisibly, until we've positioned it
 
         return false;
     };
@@ -423,6 +421,8 @@
  * Author: Tsvetan Tsvetkov (tsekach@gmail.com)
  */
 (function () {
+    'use strict';
+    
     if (!$cms.configOption('notification_desktop_alerts')) {
         return;
     }

@@ -16,19 +16,19 @@
 	{+END}
 
 	{+START,IF_NON_EMPTY,{SUMMARY}}
-		<div class="float_surrounder">
+		<div class="float-surrounder">
 			{$PARAGRAPH,{SUMMARY}}
 		</div>
 	{+END}
 
 	{+START,IF_PASSED,ENTRY_DETAILS}
-		<p class="associated_details">
+		<p class="associated-details">
 			{$,Displays summary of category contents}
 			({ENTRY_DETAILS})
 		</p>
 	{+END}
 	{+START,IF_PASSED,ENTRY_DETAILS_PREBRACKETED}
-		<p class="associated_details">
+		<p class="associated-details">
 			{$,Displays summary of category contents}
 			{ENTRY_DETAILS}
 		</p>

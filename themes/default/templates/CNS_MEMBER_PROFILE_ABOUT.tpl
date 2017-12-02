@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,core_cns}
 
-<div class="float_surrounder" data-tpl="cnsMemberProfileAbout">
+<div class="float-surrounder" data-tpl="cnsMemberProfileAbout">
 	<div class="cns_profile_column">
 		{+START,IF_NON_EMPTY,{AVATAR_URL}}
 			<div class="cns_member_profile_avatar">
@@ -245,7 +245,7 @@
 
 						<tr>
 							<th class="de_th">{!ONLINE_NOW}:</th>
-							<td>{ONLINE_NOW*} <span class="associated_details">({$DATE_TIME*,{LAST_VISIT_TIME_RAW}})</span></td>
+							<td>{ONLINE_NOW*} <span class="associated-details">({$DATE_TIME*,{LAST_VISIT_TIME_RAW}})</span></td>
 						</tr>
 
 						{+START,IF_NON_EMPTY,{JOIN_DATE}}

@@ -222,7 +222,7 @@
                         // Dynamically load entry details only when their marker is clicked
                         var content = entryContent.replace(/<colgroup>(.|\n)*<\/colgroup>/, '').replace(/&nbsp;/g, ' ');
                         if (content != '') {
-                            infoWindow.setContent('<div class="global_middle_faux float_surrounder">' + content + '<\/div>');
+                            infoWindow.setContent('<div class="global_middle_faux float-surrounder">' + content + '<\/div>');
                             infoWindow.open(dataMap, argMarker);
                         }
                     };

@@ -53,7 +53,7 @@ foreach (array_keys($themes) as $theme) {
 
         echo '<li>';
         echo '<a href="' . static_evaluate_tempcode(build_url(array('page' => '', 'keep_theme_test' => '1', 'keep_theme' => $theme), '')) . '">' . escape_html($theme) . '</a><br />
-                    <span class="associated_details">(Other useful views:
+                    <span class="associated-details">(Other useful views:
                         <a href="' . static_evaluate_tempcode(build_url(array('page' => '', 'keep_theme_test' => '1', 'keep_theme' => $theme, 'keep_theme_seed' => '664422', 'keep_theme_algorithm' => 'hsv', 'keep_theme_source' => $theme), '')) . '">with brown seed</a> /
                         <a href="' . static_evaluate_tempcode(build_url(array('page' => '', 'keep_theme_test' => '1', 'keep_theme' => $theme, 'keep_su' => 'Guest'), '')) . '">as Guest</a> /
                         <a href="' . static_evaluate_tempcode(build_url(array('page' => 'cms_news', 'type' => 'ad', 'keep_theme_test' => '1', 'keep_theme' => $theme), 'cms')) . '">Add News Form</a> /

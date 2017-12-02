@@ -1,7 +1,7 @@
 {+START,IF,{$NEQ,{$COMMA_LIST_GET,{BLOCK_PARAMS},raw},1}}
 	{+START,SET,links}
 		{+START,IF_NON_EMPTY,{SUBMIT_URL}{ARCHIVE_URL}}
-			<ul class="horizontal_links associated_links_block_group">
+			<ul class="horizontal_links associated-links-block-group">
 				{+START,IF_NON_EMPTY,{SUBMIT_URL}}
 					<li><a rel="add" href="{SUBMIT_URL*}">{ADD_STRING*}</a></li>
 				{+END}
@@ -24,14 +24,14 @@
 
 		{+START,IF_NON_EMPTY,{CONTENT}}
 			<div id="carousel_{$GET*,carousel_id}" class="carousel" style="display: none" data-view="Carousel" data-view-params="{+START,PARAMS_JSON,carousel_id}{_*}{+END}">
-				<div class="move_left js-btn-car-move" data-move-amount="-30"></div>
-				<div class="move_right js-btn-car-move" data-move-amount="+30"></div>
+				<div class="move-left js-btn-car-move" data-move-amount="-30"></div>
+				<div class="move-right js-btn-car-move" data-move-amount="+30"></div>
 
 				<div class="main raw_ajax_grow_spot">
 				</div>
 			</div>
 
-			<div class="carousel_temp" id="carousel_ns_{$GET*,carousel_id}">
+			<div class="carousel-temp" id="carousel_ns_{$GET*,carousel_id}">
 				{+START,LOOP,CONTENT}
 					{_loop_var}
 				{+END}
@@ -54,7 +54,7 @@
 
 		{$SET,ajax_block_main_multi_content_wrapper,ajax_block_main_multi_content_wrapper_{$RAND%}}
 		<div id="{$GET*,ajax_block_main_multi_content_wrapper}" class="box_wrapper">
-			<div class="float_surrounder cguid_{_GUID|*} raw_ajax_grow_spot">
+			<div class="float-surrounder cguid_{_GUID|*} raw_ajax_grow_spot">
 				{+START,IF_NON_EMPTY,{CONTENT}}
 					{+START,LOOP,CONTENT}
 						{_loop_var}
@@ -68,7 +68,7 @@
 
 			{+START,IF_PASSED,PAGINATION}
 				{+START,IF_NON_EMPTY,{PAGINATION}}
-					<div class="pagination_spacing float_surrounder ajax_block_wrapper_links">
+					<div class="pagination_spacing float-surrounder ajax_block_wrapper_links">
 						{PAGINATION}
 					</div>
 

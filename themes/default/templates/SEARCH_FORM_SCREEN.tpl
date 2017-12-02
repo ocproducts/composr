@@ -10,12 +10,12 @@
 		{+START,IF_NON_EMPTY,{RESULTS}}
 			<h2>{$?,{$IS_EMPTY,{SEARCH_TERM}},{!SEARCH_RESULTS_ARE_UNNAMED,{NUM_RESULTS*}{$?,{$EQ,{NUM_RESULTS},{$NUMBER_FORMAT,{$MAXIMUM_RESULT_COUNT_POINT}}},+}},{!SEARCH_RESULTS_ARE,{NUM_RESULTS*}{$?,{$EQ,{NUM_RESULTS},{$NUMBER_FORMAT,{$MAXIMUM_RESULT_COUNT_POINT}}},+},{SEARCH_TERM*}}}</h2>
 
-			<div class="float_surrounder" itemscope="itemscope" itemtype="http://schema.org/SearchResultsPage">
+			<div class="float-surrounder" itemscope="itemscope" itemtype="http://schema.org/SearchResultsPage">
 				{RESULTS}
 			</div>
 
 			{+START,IF_NON_EMPTY,{PAGINATION}}
-				<div class="float_surrounder pagination_spacing">
+				<div class="float-surrounder pagination_spacing">
 					{PAGINATION}
 				</div>
 			{+END}
@@ -73,7 +73,7 @@
 								</div>
 
 								{+START,IF,{HAS_TEMPLATE_SEARCH}}
-									<p class="associated_details">{!MAY_LEAVE_BLANK_ADVANCED}</p>
+									<p class="associated-details">{!MAY_LEAVE_BLANK_ADVANCED}</p>
 								{+END}
 							</td>
 						</tr>

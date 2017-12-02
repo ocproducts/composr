@@ -5,7 +5,7 @@
 		<ul class="compact_list">
 			{+START,LOOP,AUTHORS}
 				<li>
-					<a href="#!" rel="nofollow" class="{$?,{DEFINED},author_defined,author_undefined} js-click-set-author-and-close" data-tp-field-name="{FIELD_NAME*}" data-tp-author="{AUTHOR*}">{AUTHOR*}</a>
+					<a href="#!" rel="nofollow" class="{$?,{DEFINED},author-defined,author-undefined} js-click-set-author-and-close" data-tp-field-name="{FIELD_NAME*}" data-tp-author="{AUTHOR*}">{AUTHOR*}</a>
 				</li>
 			{+END}
 		</ul>

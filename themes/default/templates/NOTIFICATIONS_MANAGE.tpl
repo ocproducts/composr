@@ -62,7 +62,7 @@
 							{+END}
 						{+END}
 					{+END}
-					<td class="associated_details">{$TRIM,{$GET,advanced_link}}</td>
+					<td class="associated-details">{$TRIM,{$GET,advanced_link}}</td>
 				</tr>
 			{+END}
 		{+END}

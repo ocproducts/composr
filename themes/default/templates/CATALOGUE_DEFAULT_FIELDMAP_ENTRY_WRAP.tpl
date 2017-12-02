@@ -4,7 +4,7 @@
 <div class="box"><div class="box_inner">
 {+END}
 {+START,IF,{$NOT,{GIVE_CONTEXT}}}
-<div class="catalogue_fieldmap_entry_wrap">
+<div class="catalogue-fieldmap-entry-wrap">
 {+END}
 	{+START,IF,{GIVE_CONTEXT}}
 		<h3>{!CATALOGUE_GENERIC,{CATALOGUE_TITLE*}}</h3>
@@ -13,8 +13,8 @@
 	<div class="wide_table_wrap"><table class="map_table wide_table results_table spaced_table responsive_blocked_table">
 		{+START,IF,{$DESKTOP}}
 			<colgroup>
-				<col class="catalogue_fieldmap_field_name_column" />
-				<col class="catalogue_fieldmap_field_value_column" />
+				<col class="catalogue-fieldmap-field-name-column" />
+				<col class="catalogue-fieldmap-field-value-column" />
 			</colgroup>
 		{+END}
 
@@ -31,7 +31,7 @@
 	{+END}
 
 	{+START,IF_NON_PASSED_OR_FALSE,ENTRY_SCREEN}
-		<div class="float_surrounder">
+		<div class="float-surrounder">
 			{+START,IF,{$NOT,{GIVE_CONTEXT}}}
 				<p class="left">
 					<a rel="back_to_top" target="_self" href="#!"><img class="back_to_top_by_buttons" title="{!BACK_TO_TOP}" alt="{!BACK_TO_TOP}" src="{$IMG*,icons/24x24/tool_buttons/top}" srcset="{$IMG*,icons/48x48/tool_buttons/top} 2x" /></a>

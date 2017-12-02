@@ -8,7 +8,7 @@
 
 	{+START,IF,{$GET,fancy_screen}}
 		{+START,IF,{$GET,main}}
-			<div class="associated_details">{$TRUNCATE_LEFT,{VALUE},40,1,1}</div>
+			<div class="associated-details">{$TRUNCATE_LEFT,{VALUE},40,1,1}</div>
 		{+END}
 		{+START,IF,{$NOT,{$GET,main}}}
 			<tr>

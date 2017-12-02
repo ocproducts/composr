@@ -162,7 +162,7 @@ Pick the appropriate instructions below, depending on your scenario:
 (if you're using [tt]main_cc_embed[/tt] to display the category):
 Open the file [tt]CATALOGUE_cars_CATEGORY_EMBED.tpl[/tt] in your text editor and clear its contents. Paste the below code to create the new template for the embed block:
 [code="HTML"]
-<div class="float_surrounder car_catalogue">
+<div class="float-surrounder car_catalogue">
 	<h1>{CATALOGUE*}</h1>
 
 	{ENTRIES}
@@ -178,7 +178,7 @@ Open the file [tt]CATALOGUE_cars_CATEGORY_SCREEN.tpl[/tt] in your text editor an
 [code="HTML"]
 {TITLE}
 
-<div class="float_surrounder car_catalogue">
+<div class="float-surrounder car_catalogue">
 	{ENTRIES}
 </div>
 [/code]

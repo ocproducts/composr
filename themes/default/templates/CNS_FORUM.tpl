@@ -36,7 +36,7 @@
 	{+START,IF_PASSED,ID}{$,Does not show on PT/virtual-forum view as those are less actiony places}
 		{+START,IF,{$CONFIG_OPTION,enable_forum_dupe_buttons}}
 			<div class="non_accessibility_redundancy cns_forum_buttons">
-				<div class="float_surrounder">
+				<div class="float-surrounder">
 					<div class="buttons_group cns_buttons_screen">
 						{+START,IF_PASSED,ID}
 							{+START,INCLUDE,NOTIFICATION_BUTTONS}
@@ -56,7 +56,7 @@
 {TOPIC_WRAPPER}
 
 {+START,IF,{$NOT,{$WIDE_HIGH}}}
-	<div class="float_surrounder cns_forum_buttons">
+	<div class="float-surrounder cns_forum_buttons">
 		<div class="buttons_group cns_buttons_screen">
 			{+START,IF_PASSED,ID}
 				{+START,INCLUDE,NOTIFICATION_BUTTONS}

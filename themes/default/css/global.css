@@ -886,7 +886,7 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 	height: auto;
 }
 
-.global_side_panel h2 {
+.global-side-panel h2 {
 	border-bottom: 1px solid;
 	text-transform: lowercase;
 	font-weight: normal;
@@ -895,12 +895,12 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 	margin-left: 10px;
 }
 
-.global_side_panel {
+.global-side-panel {
 	word-wrap: break-word;
 	color: {$GET,slightly_seeded_gray_text};
 }
 
-.global_middle_faux>.global_side_panel {
+.global_middle_faux>.global-side-panel {
 	width: auto;
 }
 
@@ -929,7 +929,7 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 		margin-right: 1em;
 	}
 
-	.global_side_panel {
+	.global-side-panel {
 		margin-top: -1em;
 		width: 13em;
 	}
@@ -973,14 +973,14 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 		box-sizing: border-box;
 	}
 
-	.global_side_panel .stuck_nav { /* overrides possibility from the inline style the stuck_nav JS puts there */
+	.global-side-panel .stuck_nav { /* overrides possibility from the inline style the stuck_nav JS puts there */
 		position: static !important;
 		width: 100% !important;
 	}
-	.global_side_panel {
+	.global-side-panel {
 		width: 100% !important;
 	}
-	.global_side_panel.with_both_panels {
+	.global-side-panel.with_both_panels {
 		width: 50%;
 	}
 
@@ -1249,7 +1249,7 @@ body .accessibility_hidden { /* Contents should be made visible (or interpreted)
 */
 
 /* All floats within this will be contained to it */
-.float_surrounder {
+.float-surrounder {
 	overflow: hidden;
 }
 
@@ -1575,7 +1575,7 @@ div.red_alert, p.red_alert {
 	font-size: 0.9em;
 	position: relative;
 }
-.associated_links_block_group>li .comment_count {
+.associated-links-block-group>li .comment_count {
 	top: 2px;
 }
 .comment_count:hover {
@@ -1621,14 +1621,14 @@ th.metadata_title {
 	font-style: italic;
 }
 
-.img_thumb { /* Membership of this class is used as a tag to turn on the thumbnail blend effect */
+.img-thumb { /* Membership of this class is used as a tag to turn on the thumbnail blend effect */
 	opacity: 0.7;
 }
-.img_thumb:not([width]):not([height]) {
+.img-thumb:not([width]):not([height]) {
 	max-width: 100%;
 	height: auto;
 }
-.img_thumb:hover, body.touch_enabled .img_thumb {
+.img-thumb:hover, body.touch_enabled .img-thumb {
 	opacity: 1.0;
 	transition: opacity 0.2s linear !important;
 }
@@ -1676,13 +1676,13 @@ td>.comcode_quote:first-child, .fake_table_cell>.comcode_quote:first-child, .fak
 }
 
 /* Don't let boxes on side panels get too much styling (focuses the eye away) */
-.global_side_panel .box, .box.nested {
+.global-side-panel .box, .box.nested {
 	background-color: {$GET,area_5_background};
 }
 .box.nested {
 	border: 1px solid {$GET,pale_border};
 }
-.global_side_panel .box_inner>h1, .global_side_panel .box_inner>h2, .global_side_panel .box_inner>h3, .global_side_panel .box_inner>h4, .global_side_panel .box_inner>h5, .global_side_panel .box_inner>h6, .global_side_panel .box>.toggleable_tray_title {
+.global-side-panel .box_inner>h1, .global-side-panel .box_inner>h2, .global-side-panel .box_inner>h3, .global-side-panel .box_inner>h4, .global-side-panel .box_inner>h5, .global-side-panel .box_inner>h6, .global-side-panel .box>.toggleable_tray_title {
 	background-image: none;
 }
 
@@ -1785,7 +1785,7 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 	text-transform: uppercase;
 	border-radius: 0;
 }
-.global_side_panel .boxless_space .box>.box_inner>h1, .global_side_panel .boxless_space .box>.box_inner>h2, .global_side_panel .boxless_space .box>.box_inner>h3, .global_side_panel .boxless_space .box>.box_inner>h4, .global_side_panel .boxless_space .box>.box_inner>h5, .global_side_panel .boxless_space .box>.box_inner>h6,
+.global-side-panel .boxless_space .box>.box_inner>h1, .global-side-panel .boxless_space .box>.box_inner>h2, .global-side-panel .boxless_space .box>.box_inner>h3, .global-side-panel .boxless_space .box>.box_inner>h4, .global-side-panel .boxless_space .box>.box_inner>h5, .global-side-panel .boxless_space .box>.box_inner>h6,
 .boxless_space .box .box>.box_inner>h1, .boxless_space .box .box>.box_inner>h2, .boxless_space .box .box>.box_inner>h3, .boxless_space .box .box>.box_inner>h4, .boxless_space .box .box>.box_inner>h5, .boxless_space .box .box>.box_inner>h6 {
 	background: url('{$IMG_INLINE;,1x/boxless_title_leadin_leftcomp}') no-repeat !important;
 	color: {$GET,slightly_seeded_left_complement_text} !important;
@@ -1795,15 +1795,15 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 		background-image: url('{$IMG_INLINE;,2x/boxless_title_leadin_rightcomp}');
 		background-size: 18px 18px;
 	}
-	.global_side_panel .boxless_space .box>.box_inner>h1, .global_side_panel .boxless_space .box>.box_inner>h2, .global_side_panel .boxless_space .box>.box_inner>h3, .global_side_panel .boxless_space .box>.box_inner>h4, .global_side_panel .boxless_space .box>.box_inner>h5, .global_side_panel .boxless_space .box>.box_inner>h6,
+	.global-side-panel .boxless_space .box>.box_inner>h1, .global-side-panel .boxless_space .box>.box_inner>h2, .global-side-panel .boxless_space .box>.box_inner>h3, .global-side-panel .boxless_space .box>.box_inner>h4, .global-side-panel .boxless_space .box>.box_inner>h5, .global-side-panel .boxless_space .box>.box_inner>h6,
 	.boxless_space .box .box>.box_inner>h1, .boxless_space .box .box>.box_inner>h2, .boxless_space .box .box>.box_inner>h3, .boxless_space .box .box>.box_inner>h4, .boxless_space .box .box>.box_inner>h5, .boxless_space .box .box>.box_inner>h6 {
 		background-image: url('{$IMG_INLINE;,2x/boxless_title_leadin_leftcomp}');
 		background-size: 18px 18px;
 	}
 }
-.global_side_panel .boxless_space .box>.box_inner>h1, .global_side_panel .boxless_space .box>.box_inner>h2, .global_side_panel .boxless_space .box>.box_inner>h3, .global_side_panel .boxless_space .box>.box_inner>h4, .global_side_panel .boxless_space .box>.box_inner>h5, .global_side_panel .boxless_space .box>.box_inner>h6 {
+.global-side-panel .boxless_space .box>.box_inner>h1, .global-side-panel .boxless_space .box>.box_inner>h2, .global-side-panel .boxless_space .box>.box_inner>h3, .global-side-panel .boxless_space .box>.box_inner>h4, .global-side-panel .boxless_space .box>.box_inner>h5, .global-side-panel .boxless_space .box>.box_inner>h6 {
 }
-.boxless_space .buttons_group, .boxless_space .associated_links_block_group, .boxless_space .media_box, .boxless_space .proceed_button {
+.boxless_space .buttons_group, .boxless_space .associated-links-block-group, .boxless_space .media_box, .boxless_space .proceed_button {
 	text-align: left;
 	width: auto;
 }
@@ -1822,7 +1822,7 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 .boxless_space .box .box + .box, .comments_wrapper .boxless_space .box + .box { /* Nested dividers more subtle */
 	border-top: 0 !important;
 }
-.global_side_panel .boxless_space .box .box + .box {
+.global-side-panel .boxless_space .box .box + .box {
 	padding-top: 0;
 }
 .global_middle .boxless_space .box .box + .box:before {
@@ -1994,7 +1994,7 @@ h3 .toggleable_tray_button img {
 	color: {$GET,a.hover};
 }
 
-.global_side_panel .meta_details {
+.global-side-panel .meta_details {
 	border-bottom: 0;
 	padding-left: 0;
 	padding-top: 0.5em;
@@ -2008,7 +2008,7 @@ h3 .toggleable_tray_button img {
 .box.overlay.lightbox>.box_inner {
 	margin: 0;
 }
-.box.overlay .associated_links_block_group {
+.box.overlay .associated-links-block-group {
 	margin: 1em;
 }
 
@@ -2143,16 +2143,16 @@ hr.spaced_rule {
 }
 
 /* Used to align stuff horizontally, i.e. force a gap between separate bits */
-.horiz_field_sep, ul.horizontal_links.horiz_field_sep {
+.horiz-field-sep, ul.horizontal_links.horiz-field-sep {
 	padding-left: 0.8em;
 }
-.horiz_field_sep, .horiz_field_sep_rightward {
+.horiz-field-sep, .horiz_field_sep_rightward {
 	display: inline-block !important; /* Side-effect: stops internal wrapping */
 }
 .horiz_field_sep_rightward {
 	padding-right: 0.8em; /* Useful so subsequent wrapped text doesn't get indented */
 }
-ul.horizontal_links.horiz_field_sep {
+ul.horizontal_links.horiz-field-sep {
 	display: inline !important;
 }
 
@@ -2688,7 +2688,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 .compacted_subbox_stream .box a {
 	font-size: 1.1em;
 }
-.compacted_subbox_stream .box .associated_details {
+.compacted_subbox_stream .box .associated-details {
 	margin-bottom: 0;
 }
 .compacted_subbox_stream.less_compact .box {
@@ -3170,11 +3170,11 @@ div .post_buttons>*, div .buttons_group_faded>* {
 	text-decoration: underline;
 }
 
-.comments_posting_form_inner .associated_links_block_group {
+.comments_posting_form_inner .associated-links-block-group {
 	font-size: 0.85em;
 	font-weight: normal;
 }
-.comments_posting_form_inner .associated_links_block_group li {
+.comments_posting_form_inner .associated-links-block-group li {
 	white-space: normal !important;
 }
 
@@ -3222,12 +3222,12 @@ div .post_buttons>*, div .buttons_group_faded>* {
 =========================
 */
 
-ul.compact_list, .global_side_panel ul, ol.compact_list {
+ul.compact_list, .global-side-panel ul, ol.compact_list {
 	margin: 0;
 	padding: 0;
 	text-align: left; /* In case cascading from somewhere */
 }
-ul.compact_list>li, .global_side_panel ul>li, ol.compact_list>li {
+ul.compact_list>li, .global-side-panel ul>li, ol.compact_list>li {
 	margin: 0 0 0 17px;
 	padding: 0;
 }
@@ -3246,7 +3246,7 @@ dl.compact_list>dt {
 	margin: 0 0.5em 0 8px;
 	clear: both;
 }
-.global_side_panel .box dl.compact_list>dt {
+.global-side-panel .box dl.compact_list>dt {
 	margin-left: 0;
 }
 dl.compact_list>dt:after {
@@ -3416,11 +3416,11 @@ dl.meta_details_list>dt, dl.meta_details_list>dd {
 	white-space: nowrap !important;
 }
 
-.associated_details {
+.associated-details {
 	font-weight: normal; /* Undo what may be set on a surrounding element */
 }
 
-.associated_minor_button_action, .associated_details {
+.associated_minor_button_action, .associated-details {
 	font-size: 0.9em;
 }
 
@@ -3428,7 +3428,7 @@ dl.meta_details_list>dt, dl.meta_details_list>dd {
 	font-size: 0.8em;
 }
 
-.global_side_panel .associated_minor_button_action, .global_side_panel .associated_details, .associated_link {
+.global-side-panel .associated_minor_button_action, .global-side-panel .associated-details, .associated_link {
 	font-size: 0.95em;
 }
 
@@ -3436,7 +3436,7 @@ dl.meta_details_list>dt, dl.meta_details_list>dd {
 	position: absolute;
 }
 
-div.associated_details {
+div.associated-details {
 	margin: 1em 0;
 }
 
@@ -3448,66 +3448,66 @@ div.associated_details {
 /*
 a.associated_link / form.associated_link / span.associated_link - a single associated link displayed inline, with CSS-generated brackets around
 p.associated_link / div.associated_link - a single associated link displayed in a block, with CSS-generated brackets around
-ul.associated_links_block_group - a group of associated links displayed in a block, each link on its own line with its own CSS-generated brackets around
-ul.horizontal_links / ul.horizontal_links_comma - a group of associated links displayed in a block, the links on the same line with a CSS-generated separation character; often used to represent block actions; often used in conjunction with associated_links_block_group to get the CSS-generated brackets
+ul.associated-links-block-group - a group of associated links displayed in a block, each link on its own line with its own CSS-generated brackets around
+ul.horizontal_links / ul.horizontal_links_comma - a group of associated links displayed in a block, the links on the same line with a CSS-generated separation character; often used to represent block actions; often used in conjunction with associated-links-block-group to get the CSS-generated brackets
 .horizontal_meta_details / .horizontal_buttons / .horizontal_ticker - Additional horizontal list types for things other than links
 .buttons_group - used for a button set, like horizontal_links but for centred buttons
 
 There is 'actions_list' too (defined elsewhere). These are for links that are given more focus as key navigation mechanisms in a task-based UI.
 */
 
-ul.associated_links_block_group.horizontal_links>li:first-child:before, p.associated_link:before, div.associated_link:before {
+ul.associated-links-block-group.horizontal_links>li:first-child:before, p.associated_link:before, div.associated_link:before {
 	opacity: 0.7;
 	font-size: 0.8em;
 }
 /*{+START,CSS_MODE,desktop}*/
-	ul.associated_links_block_group.horizontal_links>li:first-child:before, p.associated_link:before, div.associated_link:before {
+	ul.associated-links-block-group.horizontal_links>li:first-child:before, p.associated_link:before, div.associated_link:before {
 		content: "( " !important;
 	}
 /*{+END}*/
-ul.associated_links_block_group.horizontal_links>li:last-child:after, p.associated_link:after, div.associated_link:after {
+ul.associated-links-block-group.horizontal_links>li:last-child:after, p.associated_link:after, div.associated_link:after {
 	opacity: 0.7;
 	font-size: 0.8em;
 }
 /*{+START,CSS_MODE,desktop}*/
-	ul.associated_links_block_group.horizontal_links>li:last-child:after, p.associated_link:after, div.associated_link:after {
+	ul.associated-links-block-group.horizontal_links>li:last-child:after, p.associated_link:after, div.associated_link:after {
 		content: " )" !important;
 	}
 /*{+END}*/
 span.associated_link, a.associated_link, form.associated_link {
 	white-space: nowrap;
 }
-ul.associated_links_block_group>li:before, span.associated_link:before, a.associated_link:before, form.associated_link:before {
+ul.associated-links-block-group>li:before, span.associated_link:before, a.associated_link:before, form.associated_link:before {
 	opacity: 0.7;
 }
 /*{+START,CSS_MODE,desktop}*/
-	ul.associated_links_block_group>li:before, span.associated_link:before, a.associated_link:before, form.associated_link:before {
+	ul.associated-links-block-group>li:before, span.associated_link:before, a.associated_link:before, form.associated_link:before {
 		content: "(" !important;
 	}
 /*{+END}*/
-ul.associated_links_block_group>li:first-child:before, span.associated_link:first-child:before, a.associated_link:first-child:before, form.associated_link:first-child:before {
+ul.associated-links-block-group>li:first-child:before, span.associated_link:first-child:before, a.associated_link:first-child:before, form.associated_link:first-child:before {
 	vertical-align: baseline !important;
 }
-ul.associated_links_block_group.horizontal_links>li:after { /* Undoes the above rules for if 'horizontal_links' is set (the rule further up will run instead and the middot one below) */
+ul.associated-links-block-group.horizontal_links>li:after { /* Undoes the above rules for if 'horizontal_links' is set (the rule further up will run instead and the middot one below) */
 	content: "" !important;
 }
-ul.associated_links_block_group>li:after, span.associated_link:after, a.associated_link:after, form.associated_link:after {
+ul.associated-links-block-group>li:after, span.associated_link:after, a.associated_link:after, form.associated_link:after {
 	opacity: 0.7;
 }
 /*{+START,CSS_MODE,desktop}*/
-	ul.associated_links_block_group>li:after, span.associated_link:after, a.associated_link:after, form.associated_link:after {
+	ul.associated-links-block-group>li:after, span.associated_link:after, a.associated_link:after, form.associated_link:after {
 		content: ")" !important;
 	}
 /*{+END}*/
 
-ul.associated_links_block_group.horizontal_links>li:before,
+ul.associated-links-block-group.horizontal_links>li:before,
 .horizontal_meta_details li:before,
 .horizontal_links>li:before,
 .horizontal_ticker li:before {
 	vertical-align: -20%;
 }
 /*{+START,CSS_MODE,desktop}*/
-	ul.associated_links_block_group.horizontal_links>li:before,
+	ul.associated-links-block-group.horizontal_links>li:before,
 	.horizontal_meta_details li:before,
 	.horizontal_links>li:before,
 	.horizontal_ticker li:before {
@@ -3516,7 +3516,7 @@ ul.associated_links_block_group.horizontal_links>li:before,
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	ul.associated_links_block_group.horizontal_links>li:before,
+	ul.associated-links-block-group.horizontal_links>li:before,
 	.horizontal_meta_details li:before,
 	.horizontal_links>li:before,
 	.horizontal_ticker li:before {
@@ -3525,7 +3525,7 @@ ul.associated_links_block_group.horizontal_links>li:before,
 		content: "|" !important;
 		font-size: 0.8em;
 	}
-	.with_images ul.associated_links_block_group.horizontal_links>li:before,
+	.with_images ul.associated-links-block-group.horizontal_links>li:before,
 	.with_images .horizontal_meta_details li:before,
 	.with_images .horizontal_links>li:before,
 	.with_images .horizontal_ticker li:before {
@@ -3599,14 +3599,14 @@ ul.horizontal_links li img, ul.associated_link li img, ul.horizontal_links a, ul
 	}
 /*{+END}*/
 
-.associated_links_block_group>li{
+.associated-links-block-group>li{
 	margin: 0.5em 0 !important;
 	white-space: nowrap; /* To force breaking between links */
 }
-.global_side_panel .associated_links_block_group>li {
+.global-side-panel .associated-links-block-group>li {
 	white-space: normal;
 }
-.buttons_group, .associated_links_block_group {
+.buttons_group, .associated-links-block-group {
 	text-align: center;
 	padding: 0;
 	margin: 1em 0;
@@ -3616,7 +3616,7 @@ ul.horizontal_links li img, ul.associated_link li img, ul.horizontal_links a, ul
 .horizontal_links, .associated_link {
 	font-size: 0.9em;
 }
-ul.buttons_group, ul.associated_links_block_group {
+ul.buttons_group, ul.associated-links-block-group {
 	margin: 0; /* Margin will go on li elements if its a list */
 }
 .force_normal_margin {
@@ -3625,7 +3625,7 @@ ul.buttons_group, ul.associated_links_block_group {
 .force_margin {
 	margin-top: 1.5em !important;
 }
-.global_side_panel .force_margin {
+.global-side-panel .force_margin {
 	margin-top: 1em !important;
 }
 
@@ -3905,7 +3905,7 @@ div.proceed_button_left_2 {
 	box-shadow: 3px 3px 10px {$GET,standard_border};
 }
 
-.global_button_ref_point .associated_links_block_group, .notification+.notification {
+.global_button_ref_point .associated-links-block-group, .notification+.notification {
 	margin-top: 0.5em;
 	border-top: 1px solid {$GET,pale_border};
 	padding-top: 0.5em;
@@ -5298,13 +5298,13 @@ span:not(:empty)+#lightbox_position_in_set:before, span:not(:empty)+#lightbox_fu
 	.non_accessibility_redundancy,
 	.menu_type__top,
 	.buttons_group,
-	.associated_links_block_group,
+	.associated-links-block-group,
 	.screen_actions_outer,
 	.adminzone_search,
 	.global_banner,
 	header,
 	footer,
-	.global_side_panel,
+	.global-side-panel,
 	.toggleable_tray_button,
 	.post_buttons,
 	.quick_self_edit_link, .staff_actions,

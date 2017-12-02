@@ -1,11 +1,11 @@
-<div itemscope="itemscope" itemtype="http://schema.org/Offer" class="product_view">
+<div itemscope="itemscope" itemtype="http://schema.org/Offer" class="product-view">
 	<div class="fn product-name" itemprop="itemOffered">{TITLE}</div>
 
 	{$REQUIRE_CSS,shopping}
 
 	{WARNINGS}
 
-	<div class="cart_info">
+	<div class="cart-info">
 		{$SET,rating,{$RATING,catalogues__{CATALOGUE},{ID},{SUBMITTER},,,RATING_INLINE_DYNAMIC}}
 		{+START,IF_NON_EMPTY,{$TRIM,{$GET,rating}}}
 			<div class="rating_part">
@@ -18,9 +18,9 @@
 
 	<div class="box box___catalogue_products_entry_screen"><div class="box_inner">
 		<div class="hproduct"{$?,{$MATCH_KEY_MATCH,_WILD:_WILD:browse}, itemscope="itemscope" itemtype="http://schema.org/Offer"}>
-			<div class="float_surrounder">
+			<div class="float-surrounder">
 				{+START,IF_NON_EMPTY,{FIELD_7_THUMB}}
-					<p class="catalogue_entry_box_thumbnail">
+					<p class="catalogue-entry-box-thumbnail">
 						{$REPLACE, rel="lightbox", rel="lightbox" itemprop="image",{FIELD_7}}
 					</p>
 				{+END}
@@ -32,7 +32,7 @@
 				{+END}
 
 				{+START,IF_NON_EMPTY,{FIELD_2}}
-					<div class="price_box">
+					<div class="price-box">
 						<span class="price">{!PRICE}: <span itemprop="price">{$CURRENCY,{FIELD_2_PLAIN},,{$?,{$CONFIG_OPTION,currency_auto},{$CURRENCY_USER},{$CURRENCY}}}</span>{$,Product price}</span>
 					</div>
 				{+END}
@@ -40,11 +40,11 @@
 
 			{+START,IF_NON_EMPTY,{$TRIM,{FIELDS}}}
 				<div class="wide_table_wrap">
-					<table id="product-attribute-specs-table" class="map_table catalogue_fields_table wide_table results_table">
+					<table id="product-attribute-specs-table" class="map_table catalogue-fields-table wide_table results_table">
 						{+START,IF,{$DESKTOP}}
 							<colgroup>
-								<col class="catalogue_fieldmap_field_name_column" />
-								<col class="catalogue_fieldmap_field_value_column" />
+								<col class="catalogue-fieldmap-field-name-column" />
+								<col class="catalogue-fieldmap-field-value-column" />
 							</colgroup>
 						{+END}
 
@@ -59,7 +59,7 @@
 				<p class="product-ids sku">{!ECOM_CAT_sku}: <kbd>{FIELD_1}</kbd>{$,Product code}</p>
 			{+END}
 			{+START,IF_NON_EMPTY,{FIELD_3}}
-				<p class="stock_level">{!STOCK}: <kbd>{$NUMBER_FORMAT*,{$STOCK_CHECK,{ID}}}</kbd>{$,Stock level}</p>
+				<p class="stock-level">{!STOCK}: <kbd>{$NUMBER_FORMAT*,{$STOCK_CHECK,{ID}}}</kbd>{$,Stock level}</p>
 			{+END}
 
 			{CART_BUTTONS}

@@ -16,7 +16,7 @@
 			{+END}
 
 			{+START,IF,{HAS_RATINGS}}
-				<span class="horiz_field_sep">{!VOTES,{OVERALL_NUM_RATINGS*}}</span>
+				<span class="horiz-field-sep">{!VOTES,{OVERALL_NUM_RATINGS*}}</span>
 			{+END}
 		</div>
 
