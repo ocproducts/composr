@@ -21,28 +21,34 @@
 
     setTimeout(function () {
         $dom._resolveInit();
+        delete $dom._resolveInit;
 
         if (document.readyState === 'interactive') {
             // Workaround for browser bug, document.readyState == 'interactive' before [defer]'d <script>s are loaded.
             // See: https://github.com/jquery/jquery/issues/3271
             $dom.waitForResources($util.toArray(document.querySelectorAll('script[src][defer]'))).then(function () {
                 $dom._resolveReady();
+                delete $dom._resolveReady;
             });
         } else if (document.readyState === 'complete') {
             $dom._resolveReady();
+            delete $dom._resolveReady;
         } else {
             document.addEventListener('DOMContentLoaded', function listener() {
                 document.removeEventListener('DOMContentLoaded', listener);
                 $dom._resolveReady();
+                delete $dom._resolveReady;
             });
         }
 
         if (document.readyState === 'complete') {
             $dom._resolveLoad();
+            delete $dom._resolveLoad;
         } else {
             window.addEventListener('load', function listener() {
                 window.removeEventListener('load', listener);
                 $dom._resolveLoad();
+                delete $dom._resolveLoad;
             });
         }
     }, 0);
@@ -1015,7 +1021,7 @@
 
     function parseEventName(event) {
         var parts = ('' + event).split('.');
-        return {e: parts[0], ns: parts.slice(1).sort().join(' ')};
+        return { e: parts[0], ns: parts.slice(1).sort().join(' ') };
     }
 
     function matcherFor(ns) {
@@ -1039,19 +1045,29 @@
             handler.fn = fn;
             handler.sel = selector;
             handler.del = delegator;
-            var callback = delegator || fn;
+            handler.i = set.length;
             handler.proxy = function proxy(e) {
-                var result = callback.call(el, e, el);
+                if (handler.e === 'clickout') {
+                    if (!delegator && el.contains(e.target)) {
+                        return;
+                    }
+                    e = $dom.createEvent('clickout', { originalEvent: e });
+                }
+                
+                var result = (delegator || fn).call(el, e, el);
                 if (result === false) {
                     e.stopPropagation();
                     e.preventDefault();
                 }
                 return result;
             };
-            handler.i = set.length;
             set.push(handler);
 
-            el.addEventListener(realEvent(handler.e), handler.proxy, eventCapture(handler, capture));
+            if (handler.e === 'clickout') {
+                document.addEventListener('click', handler.proxy, eventCapture(handler, capture));
+            } else {
+                el.addEventListener(realEvent(handler.e), handler.proxy, eventCapture(handler, capture));
+            }
         });
     }
 
@@ -1076,7 +1092,11 @@
         (events || '').split(/\s/).forEach(function (event) {
             findHandlers(element, event, fn, selector).forEach(function (handler) {
                 delete eventHandlers[id][handler.i];
-                element.removeEventListener(realEvent(handler.e), handler.proxy, eventCapture(handler, capture));
+                if (handler.e === 'clickout') {
+                    document.removeEventListener('click', handler.proxy, eventCapture(handler, capture));
+                } else {
+                    element.removeEventListener(realEvent(handler.e), handler.proxy, eventCapture(handler, capture));
+                }
             });
         });
     }
@@ -1122,17 +1142,32 @@
 
         if (selector) {
             delegator = function (e) {
-                var match = $dom.closest(e.target, selector, el);
+                var clicked, matches = [], match;
+                
+                if (e.type === 'clickout') {
+                    clicked = e.originalEvent.target;
+                    matches = $dom.$$(el, selector);
+                    if (el.contains(clicked)) {
+                        matches = matches.filter(function (elem) {
+                            return !elem.contains(clicked);
+                        });
+                    }
+                } else {
+                    match = $dom.closest(e.target, selector, el);
+                    if (match) {
+                        matches.push(match);
+                    }
+                }
 
-                if (match) {
-                    var args = $util.toArray(arguments);
+                var args = $util.toArray(arguments);
+                matches.forEach(function (match) {
                     args[1] = match; // Set the `element` arg to the matched element
                     return (autoRemove || callback).apply(match, args);
-                }
+                });
             };
         }
 
-        addEvent(el, event, callback, selector, delegator || autoRemove);
+        addEvent(el, event, callback, selector, (delegator || autoRemove));
     };
 
     /**
@@ -1145,7 +1180,7 @@
     $dom.one = function one(el, event, selector, callback) {
         el = $dom.domArg(el);
 
-        return $dom.on(el, event, selector, callback, 1);
+        return $dom.on(el, event, selector, callback, true);
     };
 
     /**
