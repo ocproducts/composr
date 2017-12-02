@@ -230,7 +230,7 @@
 
     $cms.templates.cnsPrivateTopicLink = function (params, container) {
         $dom.on(container, 'click', '.js-click-poll-for-notifications', function () {
-            pollForNotifications(true, true);
+            window.$coreNotifications.pollForNotifications(true, true);
         });
     };
 

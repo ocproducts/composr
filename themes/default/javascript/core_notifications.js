@@ -1,5 +1,14 @@
 (function ($cms, $util, $dom) {
     'use strict';
+    
+    var $coreNotifications = window.$coreNotifications = {};
+
+    /*
+     Poll for notifications (and unread PTs)
+     */
+    window.notificationsAlreadyPresented || (window.notificationsAlreadyPresented = {});
+    (window.NOTIFICATION_POLL_FREQUENCY != null) || (window.NOTIFICATION_POLL_FREQUENCY = '{$CONFIG_OPTION%,notification_poll_frequency}');
+    (window.notificationsTimeBarrier != null) || (window.notificationsTimeBarrier = 0);
 
     $cms.views.NotificationButtons = NotificationButtons;
     /**
@@ -39,7 +48,7 @@
 
             window.notificationsTimeBarrier = timeBarrier;
 
-            setInterval(window.pollForNotifications, window.NOTIFICATION_POLL_FREQUENCY * 1000);
+            setInterval($coreNotifications.pollForNotifications, window.NOTIFICATION_POLL_FREQUENCY * 1000);
 
             var webNotificationsButton = document.getElementById('web_notifications_button');
             if (webNotificationsButton) {
@@ -94,21 +103,21 @@
             url += '&time_barrier=' + encodeURIComponent(window.notificationsTimeBarrier);
             url += '&forced_update=1';
             url += $cms.keep();
-            $cms.doAjaxRequest(url, window._pollForNotifications);
-            _toggleMessagingBox(event, 'web_notifications', true);
+            $cms.doAjaxRequest(url, _pollForNotifications);
+            $coreNotifications.toggleMessagingBox(event, 'web_notifications', true);
             return false;
         }
 
         function toggleWebNotifications(event) {
-            _toggleMessagingBox(event, 'top_personal_stats', true);
-            _toggleMessagingBox(event, 'pts', true);
-            return _toggleMessagingBox(event, 'web_notifications');
+            $coreNotifications.toggleMessagingBox(event, 'top_personal_stats', true);
+            $coreNotifications.toggleMessagingBox(event, 'pts', true);
+            return $coreNotifications.toggleMessagingBox(event, 'web_notifications');
         }
 
         function togglePts(event) {
-            _toggleMessagingBox(event, 'top_personal_stats', true);
-            _toggleMessagingBox(event, 'web_notifications', true);
-            return _toggleMessagingBox(event, 'pts');
+            $coreNotifications.toggleMessagingBox(event, 'top_personal_stats', true);
+            $coreNotifications.toggleMessagingBox(event, 'web_notifications', true);
+            return $coreNotifications.toggleMessagingBox(event, 'pts');
         }
     };
 
@@ -163,7 +172,7 @@
 
     $cms.templates.notificationWeb = function notificationWeb(params, container) {
         $dom.on(container, 'click', '.js-click-poll-for-notifications', function () {
-            pollForNotifications(true, true);
+            $coreNotifications.pollForNotifications(true, true);
         });
     };
 
@@ -192,214 +201,207 @@
             }
         });
     };
-}(window.$cms, window.$util, window.$dom));
+    
+    $coreNotifications.pollForNotifications = function pollForNotifications(forcedUpdate, delay) {
+        forcedUpdate = !!forcedUpdate;
+        delay = !!delay;
 
-
-/*
- Poll for notifications (and unread PTs)
- */
-
-window.notificationsAlreadyPresented || (window.notificationsAlreadyPresented = {});
-(window.NOTIFICATION_POLL_FREQUENCY != null) || (window.NOTIFICATION_POLL_FREQUENCY = '{$CONFIG_OPTION%,notification_poll_frequency}');
-(window.notificationsTimeBarrier != null) || (window.notificationsTimeBarrier = 0);
-
-function pollForNotifications(forcedUpdate, delay) {
-    forcedUpdate = !!forcedUpdate;
-    delay = !!delay;
-
-    if (delay) {
-        setTimeout(function () {
-            pollForNotifications(forcedUpdate);
-        }, 1000);
-        return;
-    }
-
-    var url = '{$FIND_SCRIPT_NOHTTP;,notifications}?type=poller&type=poller';
-    if (window.maxNotificationsToShow !== undefined) {
-        url += '&max=' + window.maxNotificationsToShow;
-    }
-    url += '&time_barrier=' + encodeURIComponent(window.notificationsTimeBarrier);
-    if (forcedUpdate) {
-        url += '&forced_update=1';
-    }
-    url += $cms.keep();
-    $cms.doAjaxRequest(url, window._pollForNotifications);
-}
-
-function _pollForNotifications(responseXml) {
-    if (!responseXml || responseXml.getElementsByTagName === undefined)
-        return; // Some kind of error
-
-    var timeNode = responseXml.querySelector('time');
-    window.notificationsTimeBarrier = parseInt($dom.html(timeNode));
-
-    // HTML5 notification API
-
-    var alerts;
-
-    alerts = responseXml.getElementsByTagName('web_notification');
-    for (var i = 0; i < alerts.length; i++) {
-        displayAlert(alerts[i]);
-    }
-
-    alerts = responseXml.getElementsByTagName('pt');
-    for (var i = 0; i < alerts.length; i++) {
-        displayAlert(alerts[i]);
-    }
-
-    // Show in the software directly, if possible
-
-    var spot, display, button, unread;
-
-    spot = document.getElementById('web_notifications_spot');
-    if (spot) {
-        display = responseXml.getElementsByTagName('display_web_notifications');
-        button = document.getElementById('web_notifications_button');
-        if (display[0]) {
-            unread = responseXml.getElementsByTagName('unread_web_notifications');
-            $dom.html(spot, $dom.html(display[0]));
-            $dom.html(button.firstElementChild, $dom.html(unread[0]));
-            button.className = 'count_' + $dom.html(unread[0]);
-        }
-    }
-
-    spot = document.getElementById('pts_spot');
-    if (spot) {
-        display = responseXml.getElementsByTagName('display_pts');
-        button = document.getElementById('pts_button');
-        if (display[0]) {
-            unread = responseXml.getElementsByTagName('unread_pts');
-            $dom.html(spot, $dom.html(display[0]));
-            $dom.html(button.firstElementChild, $dom.html(unread[0]));
-            button.className = 'count_' + $dom.html(unread[0]);
-        }
-    }
-
-    function displayAlert(notification) {
-        var id = notification.getAttribute('id');
-
-        if (window.notificationsAlreadyPresented[id] !== undefined) {
-            // Already handled this one
+        if (delay) {
+            setTimeout(function () {
+                $coreNotifications.pollForNotifications(forcedUpdate);
+            }, 1000);
             return;
         }
 
-        // Play sound, if requested
-        var sound = notification.getAttribute('sound');
-        if (!sound) {
-            sound = (parseInt(notification.getAttribute('priority')) < 3) ? 'on' : 'off';
+        var url = '{$FIND_SCRIPT_NOHTTP;,notifications}?type=poller&type=poller';
+        if (window.maxNotificationsToShow !== undefined) {
+            url += '&max=' + window.maxNotificationsToShow;
         }
-        if ($cms.readCookie('sound', 'off') === 'off') {
-            sound = 'off';
+        url += '&time_barrier=' + encodeURIComponent(window.notificationsTimeBarrier);
+        if (forcedUpdate) {
+            url += '&forced_update=1';
         }
-        var notificationCode = notification.getAttribute('notification_code');
-        if (sound === 'on' && notificationCode !== 'ticket_reply' && notificationCode !== 'ticket_reply_staff') {
-            var goFunc = function goFunc() {
-                var soundObject = window.soundManager.createSound({url: $util.url('data/sounds/message_received.mp3').toString() });
-                if (soundObject && document.hasFocus()/*don't want multiple tabs all pinging*/) {
-                    soundObject.play();
-                }
-            };
+        url += $cms.keep();
+        $cms.doAjaxRequest(url, _pollForNotifications);
+    };
 
-            if (!window.soundManager.setupOptions.url) {
-                window.soundManager.setup({onready: goFunc, url: $util.url('data/soundmanager').toString(), debugMode: false});
-            } else {
-                goFunc();
+    function _pollForNotifications(responseXml) {
+        if (!responseXml || responseXml.getElementsByTagName === undefined){
+            return; // Some kind of error
+        }
+
+        var timeNode = responseXml.querySelector('time');
+        window.notificationsTimeBarrier = parseInt($dom.html(timeNode));
+
+        // HTML5 notification API
+
+        var alerts;
+
+        alerts = responseXml.getElementsByTagName('web_notification');
+        for (var i = 0; i < alerts.length; i++) {
+            displayAlert(alerts[i]);
+        }
+
+        alerts = responseXml.getElementsByTagName('pt');
+        for (var i = 0; i < alerts.length; i++) {
+            displayAlert(alerts[i]);
+        }
+
+        // Show in the software directly, if possible
+
+        var spot, display, button, unread;
+
+        spot = document.getElementById('web_notifications_spot');
+        if (spot) {
+            display = responseXml.getElementsByTagName('display_web_notifications');
+            button = document.getElementById('web_notifications_button');
+            if (display[0]) {
+                unread = responseXml.getElementsByTagName('unread_web_notifications');
+                $dom.html(spot, $dom.html(display[0]));
+                $dom.html(button.firstElementChild, $dom.html(unread[0]));
+                button.className = 'count_' + $dom.html(unread[0]);
             }
         }
 
-        // Show desktop notification
-        if ($cms.configOption('notification_desktop_alerts') && window.notify.isSupported) {
-            var icon = $util.srl('{$IMG;,favicon}');
-            var title = '{!notifications:DESKTOP_NOTIFICATION_SUBJECT;^}';
-            title = title.replace(/\\{1\\}/, notification.getAttribute('subject'));
-            title = title.replace(/\\{2\\}/, notification.getAttribute('from_username'));
-            var body = '';//notification.getAttribute('rendered'); Looks ugly
-            if (window.notify.permissionLevel() == window.notify.PERMISSION_GRANTED) {
-                var notificationWrapper = window.notify.createNotification(title, { icon: icon, body: body, tag: $cms.getSiteName() + '__' + id });
-                if (notificationWrapper) {
-                    window.addEventListener('focus', function () {
-                        notificationWrapper.close();
-                    });
-
-                    notificationWrapper.notification.addEventListener('click', function () {
-                        try {
-                            focus();
-                        } catch (ignore) {}
-                    });
-                }
-            } else {
-                window.notify.requestPermission(); // Probably won't actually work (silent fail), as we're not running via a user-initiated event; this is why we have explicit_notifications_enable_request called elsewhere
+        spot = document.getElementById('pts_spot');
+        if (spot) {
+            display = responseXml.getElementsByTagName('display_pts');
+            button = document.getElementById('pts_button');
+            if (display[0]) {
+                unread = responseXml.getElementsByTagName('unread_pts');
+                $dom.html(spot, $dom.html(display[0]));
+                $dom.html(button.firstElementChild, $dom.html(unread[0]));
+                button.className = 'count_' + $dom.html(unread[0]);
             }
         }
 
-        // Mark done
-        window.notificationsAlreadyPresented[id] = true;
-    }
-}
+        function displayAlert(notification) {
+            var id = notification.getAttribute('id');
 
-function _toggleMessagingBox(event, name, hide) {
-    hide = !!hide;
-
-    var el = document.getElementById(name + '_rel');
-
-    if (!el) {
-        return;
-    }
-
-    event.withinMessageBox = true;
-
-    var body = document.body;
-    if (el.parentNode !== body) { // Move over, so it is not cut off by overflow:hidden of the header
-        el.parentNode.removeChild(el);
-        body.appendChild(el);
-
-        el.addEventListener('click', function (event) {
-            event.withinMessageBox = true;
-        });
-        body.addEventListener('click', function (event) {
-            if (event.withinMessageBox !== undefined) {
+            if (window.notificationsAlreadyPresented[id] !== undefined) {
+                // Already handled this one
                 return;
             }
-            _toggleMessagingBox(event, 'top_personal_stats', true);
-            _toggleMessagingBox(event, 'web_notifications', true);
-            _toggleMessagingBox(event, 'pts', true);
-        });
-    }
 
-    var button = document.getElementById(name + '_button');
-    button.title = '';
-    var setPosition = function () {
-        var buttonX = $dom.findPosX(button, true);
-        var buttonWidth = button.offsetWidth;
-        var x = (buttonX + buttonWidth - el.offsetWidth);
-        if (x < 0) {
-            var span = el.querySelector('span');
-            span.style.marginLeft = (buttonX + buttonWidth / 4) + 'px';
-            x = 0;
+            // Play sound, if requested
+            var sound = notification.getAttribute('sound');
+            if (!sound) {
+                sound = (parseInt(notification.getAttribute('priority')) < 3) ? 'on' : 'off';
+            }
+            if ($cms.readCookie('sound', 'off') === 'off') {
+                sound = 'off';
+            }
+            var notificationCode = notification.getAttribute('notification_code');
+            if (sound === 'on' && notificationCode !== 'ticket_reply' && notificationCode !== 'ticket_reply_staff') {
+                var goFunc = function goFunc() {
+                    var soundObject = window.soundManager.createSound({url: $util.url('data/sounds/message_received.mp3').toString() });
+                    if (soundObject && document.hasFocus()/*don't want multiple tabs all pinging*/) {
+                        soundObject.play();
+                    }
+                };
+
+                if (!window.soundManager.setupOptions.url) {
+                    window.soundManager.setup({onready: goFunc, url: $util.url('data/soundmanager').toString(), debugMode: false});
+                } else {
+                    goFunc();
+                }
+            }
+
+            // Show desktop notification
+            if ($cms.configOption('notification_desktop_alerts') && window.notify.isSupported) {
+                var icon = $util.srl('{$IMG;,favicon}');
+                var title = '{!notifications:DESKTOP_NOTIFICATION_SUBJECT;^}';
+                title = title.replace(/\\{1\\}/, notification.getAttribute('subject'));
+                title = title.replace(/\\{2\\}/, notification.getAttribute('from_username'));
+                var body = '';//notification.getAttribute('rendered'); Looks ugly
+                if (window.notify.permissionLevel() == window.notify.PERMISSION_GRANTED) {
+                    var notificationWrapper = window.notify.createNotification(title, { icon: icon, body: body, tag: $cms.getSiteName() + '__' + id });
+                    if (notificationWrapper) {
+                        window.addEventListener('focus', function () {
+                            notificationWrapper.close();
+                        });
+
+                        notificationWrapper.notification.addEventListener('click', function () {
+                            try {
+                                focus();
+                            } catch (ignore) {}
+                        });
+                    }
+                } else {
+                    window.notify.requestPermission(); // Probably won't actually work (silent fail), as we're not running via a user-initiated event; this is why we have explicit_notifications_enable_request called elsewhere
+                }
+            }
+
+            // Mark done
+            window.notificationsAlreadyPresented[id] = true;
         }
-        el.style.left = x + 'px';
-        el.style.top = ($dom.findPosY(button, true) + button.offsetHeight) + 'px';
-        try {
-            el.style.opacity = '1.0';
-        } catch (ex) {}
-    };
-    setTimeout(setPosition, 0);
-
-    if ((el.style.display == 'none') && (!hide)) {
-        var tooltips = document.querySelectorAll('body>.tooltip');
-        if (tooltips[0] !== undefined)
-            tooltips[0].style.display = 'none'; // Hide tooltip, to stop it being a mess
-
-        el.style.display = 'inline';
-    } else {
-        el.style.display = 'none';
     }
-    try {
-        el.style.opacity = '0.0'; // Render, but invisibly, until we've positioned it
-    } catch (ex) {}
 
-    return false;
-}
+    $coreNotifications.toggleMessagingBox = function toggleMessagingBox(event, name, hide) {
+        hide = Boolean(hide);
+
+        var el = document.getElementById(name + '_rel');
+
+        if (!el) {
+            return;
+        }
+
+        event.withinMessageBox = true;
+
+        var body = document.body;
+        if (el.parentNode !== body) { // Move over, so it is not cut off by overflow:hidden of the header
+            el.parentNode.removeChild(el);
+            body.appendChild(el);
+
+            el.addEventListener('click', function (event) {
+                event.withinMessageBox = true;
+            });
+            body.addEventListener('click', function (event) {
+                if (event.withinMessageBox !== undefined) {
+                    return;
+                }
+                $coreNotifications.toggleMessagingBox(event, 'top_personal_stats', true);
+                $coreNotifications.toggleMessagingBox(event, 'web_notifications', true);
+                $coreNotifications.toggleMessagingBox(event, 'pts', true);
+            });
+        }
+
+        var button = document.getElementById(name + '_button');
+        button.title = '';
+        var setPosition = function () {
+            var buttonX = $dom.findPosX(button, true);
+            var buttonWidth = button.offsetWidth;
+            var x = (buttonX + buttonWidth - el.offsetWidth);
+            if (x < 0) {
+                var span = el.querySelector('span');
+                span.style.marginLeft = (buttonX + buttonWidth / 4) + 'px';
+                x = 0;
+            }
+            el.style.left = x + 'px';
+            el.style.top = ($dom.findPosY(button, true) + button.offsetHeight) + 'px';
+            try {
+                el.style.opacity = '1.0';
+            } catch (ex) {}
+        };
+        setTimeout(setPosition, 0);
+
+        if ((el.style.display === 'none') && (!hide)) {
+            var tooltips = document.querySelectorAll('body>.tooltip');
+            if (tooltips[0] !== undefined) { // Hide tooltip, to stop it being a mess
+                tooltips[0].style.display = 'none';
+            } 
+
+            el.style.display = 'inline';
+        } else {
+            el.style.display = 'none';
+        }
+        try {
+            el.style.opacity = '0.0'; // Render, but invisibly, until we've positioned it
+        } catch (ex) {}
+
+        return false;
+    };
+}(window.$cms, window.$util, window.$dom));
 
 // LEGACY
 
