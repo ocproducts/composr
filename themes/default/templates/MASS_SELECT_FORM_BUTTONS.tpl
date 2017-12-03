@@ -31,7 +31,14 @@
 		}
 
 		add_event_listener_abstract(window,'load',function() {
-			document.getElementById('id').fakeonchange=initialise_button_visibility;
+			var id_field=document.getElementById('id');
+			if (id_field.nodeName.toLowerCase()=='select')
+			{
+				id_field.onchange=initialise_button_visibility;
+			} else
+			{
+				id_field.fakeonchange=initialise_button_visibility;
+			}
 			initialise_button_visibility();
 		});
 	//]]></script>

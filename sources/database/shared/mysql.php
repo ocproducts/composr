@@ -396,7 +396,7 @@ class Database_super_mysql
                 break;
 
             case 'FLOAT':
-                $_type = 'REAL';
+                $_type = 'DECIMAL';
                 break;
 
             default:

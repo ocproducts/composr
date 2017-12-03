@@ -21,9 +21,11 @@ function init__site__pages__modules_custom__quiz($in = null)
         "\$type = 'Test';",
         "
         <ditto>
-        require_code('points2');
-        \$cost = \$quiz['q_points_for_passing'] / 2;
-        charge_member(get_member(), \$cost, 'Entered a test');
+        if (addon_installed('points')) {
+            require_code('points2');
+            \$cost = \$quiz['q_points_for_passing'] / 2;
+            charge_member(get_member(), \$cost, 'Entered a test');
+        }
         ",
         $in
     );

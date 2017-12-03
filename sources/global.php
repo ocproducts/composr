@@ -342,7 +342,7 @@ function override_str_replace_exactly($search, $replace, $subject, $times = 1)
 
     if ($cnt != $times) {
         $lines = debug_backtrace();
-        critical_error('CORRUPT_OVERRIDE', preg_replace('#^' . preg_quote(get_file_base() . '/').'#', '', $lines[0]['file']) . ':' . strval($lines[0]['line']));
+        critical_error('CORRUPT_OVERRIDE', preg_replace('#^' . preg_quote(get_file_base() . '/') . '#', '', $lines[0]['file']) . ':' . strval($lines[0]['line']));
     }
 
     $replace = str_replace('<ditto>', $search, $replace);

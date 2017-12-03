@@ -2123,7 +2123,7 @@ function compare_ip_address_ip6($wild, $full_parts)
 /**
  * Check to see if an IP address is banned.
  *
- * @param  string $ip The IP address to check for banning (potentially encoded with *'s)
+ * @param  string $ip The IP address to check for banning
  * @param  boolean $force_db Force check via database
  * @param  boolean $handle_uncertainties Handle uncertainities (used for the external bans - if true, we may return null, showing we need to do an external check). Only works with $force_db.
  * @return ?boolean Whether the IP address is banned (null: unknown)
