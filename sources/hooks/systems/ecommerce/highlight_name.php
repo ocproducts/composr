@@ -74,11 +74,7 @@ class Hook_ecommerce_highlight_name
      */
     public function is_available($type_code, $member_id, $req_quantity = 1, $must_be_listed = false)
     {
-        if ((get_option('is_on_highlight_name_buy') == '0') || (get_forum_type() != 'cns')) {
-            return ECOMMERCE_PRODUCT_DISABLED;
-        }
-
-        if (get_option('enable_highlight_name') == '0') {
+        if ((get_forum_type() != 'cns') || (get_option('enable_highlight_name') == '0') || (get_option('is_on_highlight_name_buy') == '0')) {
             return ECOMMERCE_PRODUCT_DISABLED;
         }
 
