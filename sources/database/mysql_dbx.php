@@ -190,13 +190,7 @@ class Database_Static_mysql_dbx extends Database_super_mysql
             }
         }
 
-        if (($max !== null) && ($start !== null)) {
-            $query .= ' LIMIT ' . strval($start) . ',' . strval($max);
-        } elseif ($max !== null) {
-            $query .= ' LIMIT ' . strval($max);
-        } elseif ($start !== null) {
-            $query .= ' LIMIT ' . strval($start) . ',30000000';
-        }
+        $this->apply_sql_limit_clause($query, $max, $start);
 
         $results = @dbx_query($db, $query, DBX_RESULT_INFO);
         if (($results === 0) && ((!$fail_ok) || (strpos(dbx_error($db), 'is marked as crashed and should be repaired') !== false))) {
@@ -222,7 +216,7 @@ class Database_Static_mysql_dbx extends Database_super_mysql
 
         $sub = substr(ltrim($query), 0, 4);
         if ((is_object($results)) && (($sub === '(SEL') || ($sub === 'SELE') || ($sub === 'sele') || ($sub === 'CHEC') || ($sub === 'EXPL') || ($sub === 'REPA') || ($sub === 'DESC') || ($sub === 'SHOW'))) {
-            return $this->db_get_query_rows($results);
+            return $this->db_get_query_rows($results, $query, $start);
         }
 
         if ($get_insert_id) {
@@ -247,10 +241,12 @@ class Database_Static_mysql_dbx extends Database_super_mysql
     /**
      * Get the rows returned from a SELECT query.
      *
-     * @param  object $results The query result pointer
+     * @param  resource $results The query result pointer
+     * @param  string $query The complete SQL query (useful for debugging)
+     * @param  ?integer $start Whether to start reading from (null: irrelevant)
      * @return array A list of row maps
      */
-    public function db_get_query_rows($results)
+    public function db_get_query_rows($results, $query, $start = null)
     {
         $num_fields = $results->cols;
         $names = array();

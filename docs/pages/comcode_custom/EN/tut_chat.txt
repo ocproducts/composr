@@ -211,6 +211,8 @@ Video chat either needs a powerful central video server, or a complex peer-to-pe
 
 For video chat it is therefore best just to use an established third-party infrastructure such as:
  - [url="Talky"]https://talky.io/[/url] (which lets you access rooms by just giving an identifying URL -- meaning you can integrate it into a Composr chat template easily)
+ - Jitsi (similar)
+ - appear.in (similar)
  - Google Hangouts (you'd need to direct people to start a hangout)
  - Skype (ditto)
  - CometChat (they provide a video chat option on their Platinum Edition)

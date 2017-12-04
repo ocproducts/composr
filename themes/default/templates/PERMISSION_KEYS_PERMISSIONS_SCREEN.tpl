@@ -41,8 +41,13 @@
 
 			<thead>
 				<tr>
-					<th>{!MATCH_KEY}</th>
-					<th>{!MATCH_KEY_MESSAGE_FIELD}</th>
+					<th>
+						{!MATCH_KEY}
+					</th>
+					<th>
+						{!MATCH_KEY_MESSAGE_FIELD}
+						<a onclick="return open_link_as_overlay(this);" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,:userguide_comcode}"><img src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical_alignment" alt="{!COMCODE_MESSAGE,Comcode}" /></a>
+					</th>
 				</tr>
 			</thead>
 

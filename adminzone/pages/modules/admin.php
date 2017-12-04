@@ -498,6 +498,7 @@ class Module_admin
                             } else {
                                 $n = (preg_match('#^[A-Z\_]+$#', $val) == 0) ? make_string_tempcode($val) : do_lang_tempcode($val);
                             }
+
                             if (($this->_keyword_match($n->evaluate())) && (has_actual_page_access(get_member(), $page, $zone))) {
                                 $breadcrumbs = new Tempcode();
                                 $breadcrumbs->attach(hyperlink(build_url(array('page' => ''), $zone), $zone_details[1], false, true));
@@ -548,14 +549,14 @@ class Module_admin
                                 $sup = $breadcrumbs->is_empty() ? null : do_lang_tempcode('LOCATED_IN', $breadcrumbs);
                                 $sitemap_editor_url = build_url(array('page' => 'admin_sitemap', 'type' => 'sitemap', 'id' => $zone . ':' . $page), get_module_zone('admin_sitemap'));
                                 $permission_tree_editor_url = build_url(array('page' => 'admin_permissions', 'id' => $zone . ':' . $page), get_module_zone('admin_permissions'));
-                               /* $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array(
+                                $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array(
                                     '_GUID' => 'f656efd513099deac516d3273f9adfc4',
                                     'NAME' => $n,
                                     'URL' => $_url,
                                     'TITLE' => '',
                                     'DESCRIPTION' => do_lang_tempcode('FIND_IN_SITEMAP_EDITOR', escape_html($sitemap_editor_url->evaluate()), escape_html($permission_tree_editor_url->evaluate())),
                                     'SUP' => $sup,
-                                )));*/
+                                )));
                             }
                         }
                     }
@@ -1081,7 +1082,7 @@ class Module_admin
                     $breadcrumbs->attach(do_template('BREADCRUMB_SEPARATOR'));
                     $breadcrumbs->attach(hyperlink(build_url(array('page' => 'admin_themes', 'type' => 'manage_images', 'theme' => $image['theme']), get_module_zone('admin_themes')), do_lang_tempcode('EDIT_THEME_IMAGE'), false, false));
                     $breadcrumbs->attach(do_template('BREADCRUMB_SEPARATOR'));
-                    $breadcrumbs->attach(do_template('BREADCRUMB_LONE_WRAP', array('LABEL' => $image['theme'])));
+                    $breadcrumbs->attach(do_template('BREADCRUMB_LONE_WRAP', array('_GUID' => '78d769e2d7fb010318078f13f3b34ba2', 'LABEL' => $image['theme'])));
                     $sup = do_lang_tempcode('LOCATED_IN', $breadcrumbs);
                     $lang = $image['lang'];
                     $lang_map = better_parse_ini_file(file_exists(get_file_base() . '/lang_custom/langs.ini') ? (get_file_base() . '/lang_custom/langs.ini') : (get_file_base() . '/lang/langs.ini'));

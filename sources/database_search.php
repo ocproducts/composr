@@ -1080,9 +1080,10 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
             if (!db_has_subqueries($db->connection_read)) {
                 $_count_query_keywords_search = 'SELECT COUNT(*) FROM ' . $_keywords_query;
             } else {
-                $_count_query_keywords_search = '(SELECT COUNT(*) FROM (';
-                $_count_query_keywords_search .= 'SELECT 1 FROM ' . $_keywords_query;
-                $_count_query_keywords_search .= ' LIMIT ' . strval(MAXIMUM_RESULT_COUNT_POINT) . ') counter)';
+                $tmp_subquery = 'SELECT 1 AS x FROM ' . $_keywords_query;
+                $GLOBALS['SITE_DB']->static_ob->apply_sql_limit_clause($tmp_subquery, MAXIMUM_RESULT_COUNT_POINT);
+
+                $_count_query_keywords_search = '(SELECT COUNT(*) FROM (' . $tmp_subquery . ') counter)';
             }
 
             if (($order != '') && ($order . ' ' . $direction != 'contextual_relevance DESC')) {
@@ -1212,34 +1213,31 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
             }
 
             // Work out main query
-            $query = '(';
+            $query = '';
+            $main_query_parts = array();
             foreach ($where_alternative_matches as $parts) { // We UNION them, because doing OR's on MATCH's is insanely slow in MySQL (sometimes I hate SQL...)
                 list($where_clause_2, $where_clause_3, $_select, $_table_clause, $tid) = $parts;
 
-                if ($query != '(') {
-                    if (($order != '') && ($order . ' ' . $direction != 'contextual_relevance DESC') && ($order != 'contextual_relevance DESC')) {
-                        $query .= ' ORDER BY ' . $order;
-                        if (($direction == 'DESC') && (substr($order, -4) != ' ASC') && (substr($order, -5) != ' DESC')) {
-                            $query .= ' DESC';
-                        }
-                    }
-                    $query .= ' LIMIT ' . strval($max + $start);
-                    $query .= ') UNION (';
-                }
-
                 $where_clause_3 = $where_clause_2 . (($where_clause_3 == '') ? '' : ((($where_clause_2 == '') ? '' : ' AND ') . $where_clause_3));
 
-                $query .= 'SELECT ' . $select . (($_select == '') ? '' : ',') . $_select . ' FROM ' . $_table_clause . (($where_clause_3 == '') ? '' : ' WHERE ' . $where_clause_3);
-            }
-            $query .= ($group_by_ok ? ' GROUP BY r.id' : '');
-            if (($order != '') && ($order . ' ' . $direction != 'contextual_relevance DESC') && ($order != 'contextual_relevance DESC')) {
-                $query .= ' ORDER BY ' . $order;
-                if (($direction == 'DESC') && (substr($order, -4) != ' ASC') && (substr($order, -5) != ' DESC')) {
-                    $query .= ' DESC';
+                $main_query_part = 'SELECT ' . $select . (($_select == '') ? '' : ',') . $_select . ' FROM ' . $_table_clause . (($where_clause_3 == '') ? '' : ' WHERE ' . $where_clause_3);
+                if (($order != '') && ($order . ' ' . $direction != 'contextual_relevance DESC') && ($order != 'contextual_relevance DESC')) {
+                    $main_query_part .= ' ORDER BY ' . $order;
+                    if (($direction == 'DESC') && (substr($order, -4) != ' ASC') && (substr($order, -5) != ' DESC')) {
+                        $main_query_part .= ' DESC';
+                    }
                 }
+
+                $GLOBALS['SITE_DB']->static_ob->apply_sql_limit_clause($main_query_part, $max + $start);
+
+                $main_query_parts[] = $main_query_part;
             }
-            $query .= ' LIMIT ' . strval($max + $start);
-            $query .= ')';
+            foreach ($main_query_parts as $part_i => $main_query_part) {
+                if ($part_i != 0) {
+                    $query .= ' UNION ';
+                }
+                $query .= '(' . $main_query_part . ')';
+            }
             // Work out COUNT(*) query using one of a few possible methods. It's not efficient and stops us doing proper merge-sorting between content types (and possible not accurate - if we use an efficient but non-deduping COUNT strategy) if we have to use this, so we only do it if there are too many rows to fetch in one go.
             $_query = '';
             if (!db_has_subqueries($db->connection_read)) {
@@ -1264,9 +1262,10 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
                     if (!db_has_subqueries($db->connection_read)) {
                         $_query .= '(SELECT COUNT(*) FROM ' . $_table_clause . (($where_clause_3 == '') ? '' : (' WHERE ' . $where_clause_3)) . ')';
                     } else { // Has to do a nested subquery to reduce scope of COUNT(*), because the unbounded full-text's binary tree descendence can be extremely slow on physical disks if common words exist that aren't defined as MySQL stop words
-                        $_query .= '(SELECT COUNT(*) FROM (';
-                        $_query .= 'SELECT 1 FROM ' . $_table_clause . (($where_clause_3 == '') ? '' : (' WHERE ' . $where_clause_3));
-                        $_query .= ' LIMIT ' . strval(MAXIMUM_RESULT_COUNT_POINT) . ') counter)';
+                        $tmp_subquery = 'SELECT 1 AS x FROM ' . $_table_clause . (($where_clause_3 == '') ? '' : (' WHERE ' . $where_clause_3));
+                        $GLOBALS['SITE_DB']->static_ob->apply_sql_limit_clause($tmp_subquery, MAXIMUM_RESULT_COUNT_POINT);
+
+                        $_query .= '(SELECT COUNT(*) FROM (' . $tmp_subquery . ') counter)';
                     }
                 }
                 $_count_query_main_search = 'SELECT (' . $_query . ')';
@@ -1431,9 +1430,10 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
                 if (!db_has_subqueries($db->connection_read)) {
                     $_count_query_main_search = 'SELECT COUNT(*) ' . $query;
                 } else { // Has to do a nested subquery to reduce scope of COUNT(*), because the unbounded full-text's binary tree descendence can be extremely slow on physical disks if common words exist that aren't defined as MySQL stop words
-                    $_count_query_main_search = 'SELECT COUNT(*) FROM (';
-                    $_count_query_main_search .= 'SELECT 1 ' . $query;
-                    $_count_query_main_search .= ' LIMIT ' . strval(MAXIMUM_RESULT_COUNT_POINT) . ') counter';
+                    $tmp_subquery = 'SELECT 1 AS x' . $query;
+                    $GLOBALS['SITE_DB']->static_ob->apply_sql_limit_clause($tmp_subquery, MAXIMUM_RESULT_COUNT_POINT);
+
+                    $_count_query_main_search = '(SELECT COUNT(*) FROM (' . $tmp_subquery . ') counter)';
                 }
             }
             $query = 'SELECT ' . $select . $query . ($group_by_ok ? ' GROUP BY r.id' : '');

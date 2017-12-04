@@ -263,6 +263,7 @@ function _helper_create_table($this_ref, $table_name, $fields, $skip_size_check 
     $this_ref->table_exists_cache[$table_name] = true;
 
     if (!multi_lang_content()) {
+        $keys = array_keys($fields);
         foreach ($fields_copy as $name => $type) {
             if (strpos($type, '_TRANS') !== false) {
                 $GLOBALS['SITE_DB']->create_index($table_name, '#' . $name, array($name));
@@ -364,7 +365,7 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
         }
 
         $queries = $this_ref->static_ob->db_create_index($this_ref->table_prefix . $table_name, $index_name, $_fields, $this_ref->connection_write, $table_name, $unique_key_fields);
-        foreach ($queries as $sql) {
+        foreach ($queries as $i => $sql) {
             $this_ref->static_ob->db_query($sql, $this_ref->connection_write, null, null, $is_full_text/*May fail on database backends that don't cleanup full-text well when dropping tables*/);
         }
     }

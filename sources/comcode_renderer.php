@@ -1713,7 +1713,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 $rel .= 'nofollow';
             }
             if ($attributes['target'] == '_blank') {
-                $title = strip_tags(is_object($caption) ? static_evaluate_tempcode($caption) : $caption) . ' ' . do_lang('LINK_NEW_WINDOW');
+                $title = trim(strip_tags(is_object($caption) ? static_evaluate_tempcode($caption) : $caption) . ' ' . do_lang('LINK_NEW_WINDOW'));
             } else {
                 $title = '';
             }

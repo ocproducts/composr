@@ -742,7 +742,7 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
 /**
  * Add an IP-ban.
  *
- * @param  IP $ip The IP address to ban
+ * @param  IP $ip The IP address to ban (potentially encoded with *'s)
  * @param  LONG_TEXT $descrip Explanation for ban
  * @param  ?TIME $ban_until When to ban until (null: no limit)
  * @param  boolean $ban_positive Whether this is a positive ban (as opposed to a cached negative)
@@ -783,7 +783,7 @@ function add_ip_ban($ip, $descrip = '', $ban_until = null, $ban_positive = true)
 /**
  * Remove an IP-ban.
  *
- * @param  IP $ip The IP address to unban
+ * @param  IP $ip The IP address to unban (potentially encoded with *'s, although this will only unban an exact matching wildcard ban)
  */
 function remove_ip_ban($ip)
 {

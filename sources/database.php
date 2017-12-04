@@ -363,6 +363,40 @@ function db_supports_truncate_table($db)
 }
 
 /**
+ * Start a transaction
+ *
+ * @param  array $db A DB connection
+ */
+function db_start_transaction($db)
+{
+    if (count($db) > 4) { // Okay, we can't be lazy anymore
+        $db = call_user_func_array(array($GLOBALS['DB_STATIC_OBJECT'], 'db_get_connection'), $db);
+        _general_db_init();
+    }
+
+    if (method_exists($GLOBALS['DB_STATIC_OBJECT'], 'db_start_transaction')) {
+        $GLOBALS['DB_STATIC_OBJECT']->db_start_transaction($db);
+    }
+}
+
+/**
+ * End a transaction
+ *
+ * @param  array $db A DB connection
+ */
+function db_end_transaction($db)
+{
+    if (count($db) > 4) { // Okay, we can't be lazy anymore
+        $db = call_user_func_array(array($GLOBALS['DB_STATIC_OBJECT'], 'db_get_connection'), $db);
+        _general_db_init();
+    }
+
+    if (method_exists($GLOBALS['DB_STATIC_OBJECT'], 'db_end_transaction')) {
+        $GLOBALS['DB_STATIC_OBJECT']->db_end_transaction($db);
+    }
+}
+
+/**
  * Escape a string so it may be inserted into a query. If SQL statements are being built up and passed using db_query then it is essential that this is used for security reasons. Otherwise, the abstraction layer deals with the situation.
  *
  * @param  string $string The string
@@ -394,7 +428,7 @@ function db_escape_string($string)
  * Basic arithmetic and inequality operators are assumed supported without needing a function.
  *
  * @param string $function Function name
- * @set CONCAT REPLACE SUBSTR LENGTH RAND COALESCE LEAST GREATEST MOD GROUP_CONCAT
+ * @set CONCAT REPLACE SUBSTR LENGTH RAND COALESCE LEAST GREATEST MOD GROUP_CONCAT X_ORDER_BY_BOOLEAN
  * @param ?array $args List of string arguments, assumed already quoted/escaped correctly for the particular database (null: none)
  * @return string SQL fragment
  */
@@ -403,6 +437,8 @@ function db_function($function, $args = null)
     if ($args === null) {
         $args = array(); // TODO: Fix in v11, make like this as default parameter
     }
+
+    $args = @array_map('strval', $args);
 
     if (method_exists($GLOBALS['DB_STATIC_OBJECT'], 'db_function')) {
         return $GLOBALS['DB_STATIC_OBJECT']->db_function($function, $args);
@@ -440,6 +476,7 @@ function db_function($function, $args = null)
             }
             switch (get_db_type()) {
                 case 'sqlserver':
+                case 'sqlserver_odbc':
                     $function = 'SUBSTRING'; // http://troels.arvin.dk/db/rdbms/#functions-REPLACE
                     break;
 
@@ -456,6 +493,7 @@ function db_function($function, $args = null)
             }
             switch (get_db_type()) {
                 case 'sqlserver':
+                case 'sqlserver_odbc':
                 case 'access':
                     $function = 'LEN';
                     break;
@@ -483,6 +521,17 @@ function db_function($function, $args = null)
                     $function = 'IIF';
                     $args[0] .= ' IS NULL';
                     break;
+                default:
+                    $all_null = true;
+                    foreach ($args as $arg) {
+                        if ($arg != 'NULL') {
+                            $all_null = false;
+                            break;
+                        }
+                    }
+                    if ($all_null) {
+                        return 'NULL';
+                    }
             }
             break;
 
@@ -492,15 +541,16 @@ function db_function($function, $args = null)
                     $function = 'MIN';
                     break;
                 case 'sqlserver':
+                case 'sqlserver_odbc':
                 case 'access':
                     $ret = '(SELECT MIN(X) FROM (';
                     foreach ($args as $i => $arg) {
                         if ($i != 0) {
                             $ret .= ' UNION ALL ';
                         }
-                        $ret .= 'SELECT ' . $args[0] . ' AS X';
+                        $ret .= 'SELECT ' . $arg . ' AS X';
                     }
-                    $ret .= '))';
+                    $ret .= ') ' . 'x' . md5(uniqid('', true)) . ')';
                     return $ret;
             }
             break;
@@ -511,15 +561,16 @@ function db_function($function, $args = null)
                     $function = 'MAX';
                     break;
                 case 'sqlserver':
+                case 'sqlserver_odbc':
                 case 'access':
                     $ret = '(SELECT MAX(X) FROM (';
                     foreach ($args as $i => $arg) {
                         if ($i != 0) {
                             $ret .= ' UNION ALL ';
                         }
-                        $ret .= 'SELECT ' . $args[0] . ' AS X';
+                        $ret .= 'SELECT ' . $arg . ' AS X';
                     }
-                    $ret .= '))';
+                    $ret .= ') ' . 'x' . md5(uniqid('', true)) . ')';
                     return $ret;
             }
             break;
@@ -533,6 +584,7 @@ function db_function($function, $args = null)
                     return $args[0] . ' MOD ' . $args[1];
                 case 'postgresql':
                 case 'sqlserver':
+                case 'sqlserver_odbc':
                 case 'sqlite':
                     return $args[0] . ' % ' . $args[1];
             }
@@ -545,23 +597,38 @@ function db_function($function, $args = null)
             }
             switch (get_db_type()) {
                 case 'oracle':
-                    return 'SELECT LISTAGG(' . $args[0] . ', \',\') WITHIN GROUP (ORDER BY ' . $args[0] . ') FROM ' . $args[1];
+                    return '(SELECT LISTAGG(' . $args[0] . ', \',\') WITHIN GROUP (ORDER BY ' . $args[0] . ') FROM ' . $args[1] . ')';
                 case 'postgresql':
-                    return 'SELECT array_to_string(array_agg(' . $args[0] . '), \',\') FROM ' . $args[1];
-                case 'sql_server':
-                    return 'STUFF((SELECT \',\'+' . $args[0] . ' FROM ' . $args[1] . ' FOR XML PATH(\'\')), 1, 1, \'\')';
+                    return '(SELECT array_to_string(array_agg(' . $args[0] . '), \',\') FROM ' . $args[1] . ')';
+                case 'sqlserver':
+                case 'sqlserver_odbc':
+                    return '(STUFF((SELECT \',\'+' . $args[0] . ' FROM ' . $args[1] . ' FOR XML PATH(\'\')), 1, 1, \'\'))';
                 case 'access': // Not fully supported
-                    return 'SELECT TOP 1 ' . $args[0] . ' FROM ' . $args[1];
+                    return '(SELECT TOP 1 ' . $args[0] . ' FROM ' . $args[1] . ')';
                 case 'ibm': // Not fully supported
-                    return 'SELECT ' . $args[0] . ' FROM ' . $args[1] . ' fetch first 1 rows only';
+                    return '(SELECT ' . $args[0] . ' FROM ' . $args[1] . ' fetch first 1 rows only)';
                 case 'xml':
-                    return 'SELECT X_GROUP_CONCAT(' . $args[0] . ') FROM ' . $args[1];
+                    return '(SELECT X_GROUP_CONCAT(' . $args[0] . ') FROM ' . $args[1] . ')';
                 case 'mysql':
                 case 'mysqli':
                 case 'mysql_dbx':
                 case 'sqlite':
                 default:
-                    return 'SELECT GROUP_CONCAT(' . $args[0] . ') FROM ' . $args[1];
+                    return '(SELECT GROUP_CONCAT(' . $args[0] . ') FROM ' . $args[1] . ')';
+            }
+            break;
+
+        case 'X_ORDER_BY_BOOLEAN':
+            if (count($args) != 1) {
+                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            }
+            switch (get_db_type()) {
+                case 'sqlserver':
+                case 'sqlserver_odbc':
+                    return '(CASE WHEN ' . $args[0] . ' THEN 0 ELSE 1 END)';
+
+                default:
+                    return $args[0];
             }
             break;
     }
@@ -609,7 +676,7 @@ function get_table_count_approx($table, $where = null, $where_clause = null, $db
  *
  * @param string $field The field identifier
  * @param string $type The type wanted
- * @set CHAR INT
+ * @set CHAR INT FLOAT
  * @return string The database type
  */
 function db_cast($field, $type)
@@ -621,6 +688,7 @@ function db_cast($field, $type)
     switch ($type) {
         case 'CHAR':
         case 'INT':
+        case 'FLOAT':
             $_type = $type;
             break;
 
@@ -946,12 +1014,12 @@ class DatabaseConnector
      * @param  ID_TEXT $table_name The table name
      * @param  ID_TEXT $index_name The index name
      * @param  array $fields The fields
-     * @param  ID_TEXT $unique_key_field The name of the unique key field for the table
+     * @param  ?string $unique_key_fields Comma-separated names of the unique key field for the table (null: lookup)
      */
-    public function create_index($table_name, $index_name, $fields, $unique_key_field = 'id')
+    public function create_index($table_name, $index_name, $fields, $unique_key_fields = null)
     {
         require_code('database_helper');
-        _helper_create_index($this, $table_name, $index_name, $fields, $unique_key_field);
+        _helper_create_index($this, $table_name, $index_name, $fields, $unique_key_fields);
     }
 
     /**
@@ -1391,7 +1459,7 @@ class DatabaseConnector
     public function query($query, $max = null, $start = null, $fail_ok = false, $skip_safety_check = false, $lang_fields = null, $field_prefix = '')
     {
         global $DEV_MODE;
-        if (!$skip_safety_check && stripos($query, 'union') !== false) {
+        if (!$skip_safety_check && stripos($query, 'union') !== false && strpos(get_db_type(), 'mysql') !== false) {
             $_query = preg_replace('#\s#', ' ', strtolower($query));
             $queries = 1;//substr_count($_query,'insert into ')+substr_count($_query,'replace into ')+substr_count($_query,'update ')+substr_count($_query,'select ')+substr_count($_query,'delete from '); Not reliable
             if ((strpos(preg_replace('#\'[^\']*\'#', '\'\'', str_replace('\\\'', '', $_query)), ' union ') !== false) || ($queries > 1)) {

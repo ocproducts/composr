@@ -29,6 +29,16 @@ Make sure you have write permissions on the file as 'Everyone'.
 */
 
 /**
+ * Standard code module initialisation function.
+ *
+ * @ignore
+ */
+function init__database__access()
+{
+    safe_ini_set('odbc.defaultlrl', '20M');
+}
+
+/**
  * Database Driver.
  *
  * @package    core_database_drivers
@@ -282,16 +292,16 @@ class Database_Static_access
         $db_name_short = $db_name;
         if (strpos($db_name, '.mdb') !== false) {
             $db_name = '
-    DRIVER=Microsoft Access Driver (*.mdb);
-    DBQ=' . $db_name . ';
-    UserCommitSync=Yes;
-    Threads=3;
-    SafeTransactions=0;
-    PageTimeout=5;
-    MaxScanRows=8;
-    MaxBufferSize=2048;
-    DriverId=281;
-    DefaultDir=C:/ProgramFiles/CommonFiles/ODBC/DataSources';
+DRIVER=Microsoft Access Driver (*.mdb);
+DBQ=' . $db_name . ';
+UserCommitSync=Yes;
+Threads=3;
+SafeTransactions=0;
+PageTimeout=5;
+MaxScanRows=8;
+MaxBufferSize=2048;
+DriverId=281;
+DefaultDir=C:/ProgramFiles/CommonFiles/ODBC/DataSources';
         }
 
         if (!function_exists('odbc_connect')) {
@@ -305,7 +315,7 @@ class Database_Static_access
 
         $db = $persistent ? @odbc_pconnect($db_name, $db_user, $db_password) : @odbc_connect($db_name, $db_user, $db_password);
         if ($db === false) {
-            $error = 'Could not connect to database-server (' . odbc_errormsg() . ')';
+            $error = 'Could not connect to database-server (' . preg_replace('#[[:^print:]].*$#'/*error messages don't come through cleanly https://bugs.php.net/bug.php?id=73448*/, '', odbc_errormsg()) . ')';
             if ($fail_ok) {
                 echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
                 return null;
@@ -313,7 +323,7 @@ class Database_Static_access
             critical_error('PASSON', $error); //warn_exit(do_lang_tempcode('CONNECT_DB_ERROR'));
         }
 
-        if (!$db) {
+        if ($db === false) {
             fatal_exit(do_lang('CONNECT_DB_ERROR'));
         }
         $this->cache_db[$db_name_short][$db_host] = $db;
@@ -344,6 +354,26 @@ class Database_Static_access
     }
 
     /**
+     * Adjust an SQL query to apply offset/limit restriction.
+     *
+     * @param  string $query The complete SQL query
+     * @param  ?integer $max The maximum number of rows to affect (null: no limit)
+     * @param  ?integer $start The start row to affect (null: no specification)
+     */
+    public function apply_sql_limit_clause(&$query, $max = null, $start = 0)
+    {
+        if ($max !== null) {
+            if ($start !== null) {
+                $max += $start;
+            }
+
+            if ((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) { // Unfortunately we can't apply to DELETE FROM and update :(. But its not too important, LIMIT'ing them was unnecessarily anyway
+                $query = 'SELECT TOP ' . strval(intval($max)) . substr($query, 6);
+            }
+        }
+    }
+
+    /**
      * This function is a very basic query executor. It shouldn't usually be used by you, as there are abstracted versions available.
      *
      * @param  string $query The complete SQL query
@@ -356,19 +386,11 @@ class Database_Static_access
      */
     public function db_query($query, $db, $max = null, $start = null, $fail_ok = false, $get_insert_id = false)
     {
-        if (!is_null($max)) {
-            if (!is_null($start)) {
-                $max += $start;
-            }
-
-            if ((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) { // Unfortunately we can't apply to DELETE FROM and update :(. But its not too important, LIMIT'ing them was unnecessarily anyway
-                $query = 'SELECT TOP ' . strval(intval($max)) . substr($query, 6);
-            }
-        }
+        $this->apply_sql_limit_clause($query, $max, $start);
 
         $results = @odbc_exec($db, $query);
         if ((($results === false) || (((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) && ($results === true))) && (!$fail_ok)) {
-            $err = odbc_errormsg($db);
+            $err = preg_replace('#[[:^print:]].*$#'/*error messages don't come through cleanly https://bugs.php.net/bug.php?id=73448*/, '', odbc_errormsg($db));
             if (function_exists('ocp_mark_as_escaped')) {
                 ocp_mark_as_escaped($err);
             }
@@ -386,7 +408,7 @@ class Database_Static_access
 
         $sub = substr(ltrim($query), 0, 4);
         if (($results !== true) && (($sub === '(SEL') || ($sub === 'SELE') || ($sub === 'sele') || ($sub === 'CHEC') || ($sub === 'EXPL') || ($sub === 'REPA') || ($sub === 'DESC') || ($sub === 'SHOW')) && ($results !== false)) {
-            return $this->db_get_query_rows($results);
+            return $this->db_get_query_rows($results, $query, $start);
         }
 
         if ($get_insert_id) {
@@ -397,8 +419,8 @@ class Database_Static_access
             $table_name = substr($query, 12, $pos - 13);
 
             $res2 = odbc_exec($db, 'SELECT MAX(id) FROM ' . $table_name);
-            $ar2 = odbc_fetch_row($res2);
-            return $ar2[0];
+            odbc_fetch_row($res2);
+            return odbc_result($res2, 1);
         }
 
         return null;
@@ -408,10 +430,11 @@ class Database_Static_access
      * Get the rows returned from a SELECT query.
      *
      * @param  resource $results The query result pointer
-     * @param  ?integer $start Whether to start reading from (null: irrelevant for this forum driver)
+     * @param  string $query The complete SQL query (useful for debugging)
+     * @param  ?integer $start Whether to start reading from (null: irrelevant)
      * @return array A list of row maps
      */
-    public function db_get_query_rows($results, $start = null)
+    public function db_get_query_rows($results, $query, $start = null)
     {
         $out = array();
         $i = 0;
@@ -460,7 +483,7 @@ class Database_Static_access
      *
      * @param string $field The field identifier
      * @param string $type The type wanted
-     * @set CHAR INT
+     * @set CHAR INT FLOAT
      * @return string The database type
      */
     public function db_cast($field, $type)
@@ -471,6 +494,9 @@ class Database_Static_access
 
             case 'INT':
                 return 'CINT(' . $field . ')';
+
+            case 'FLOAT':
+                return 'CDEC(' . $field . ')';
 
             default:
                 fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));

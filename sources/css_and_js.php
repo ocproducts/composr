@@ -115,6 +115,10 @@ function css_inherit($css_file, $theme, $destination_theme, $seed, $dark, $algor
  */
 function js_compile($j, $js_cache_path, $minify = true)
 {
+    if (php_function_allowed('set_time_limit')) {
+        @set_time_limit(30);
+    }
+
     cms_profile_start_for('js_compile');
 
     global $KEEP_MARKERS, $SHOW_EDIT_LINKS;
