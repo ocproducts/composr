@@ -1441,7 +1441,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                 }
 
                                                 // Receive body
-                                                if ($HTTP_MESSAGE != '200') {
+                                                if (!in_array($HTTP_MESSAGE, array('200', '201'))) {
                                                     $CURL_BODY = null;
 
                                                     switch ($HTTP_MESSAGE ) {
