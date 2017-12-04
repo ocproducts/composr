@@ -78,20 +78,27 @@ class Hook_page_groupings_catalogues
                             $page_grouping = 'social';
                         }
 
+                        $show_direct_to_category_screen = false;
+                        $num_categories = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(*)', array('c_name' => $row['c_name']));
                         if ($row['c_is_tree'] == 0) {
-                            $num_categories = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(*)', array('c_name' => $row['c_name']));
                             /*if ($num_categories == 0) { // Actually we should show an empty index - catalogue exists, show it does
                                 continue;
                             }
                             else*/
                             if ($num_categories == 1) {
-                                $only_category = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'id', array('c_name' => $row['c_name']));
-                                $ret2[] = array($page_grouping, $menu_icon, array('catalogues', array('type' => 'browse', 'id' => strval($only_category)), get_module_zone('catalogues')), make_string_tempcode(escape_html(get_translated_text($row['c_title']))), get_translated_tempcode('catalogues', $row, 'c_description'));
-                                continue;
+                                $show_direct_to_category_screen = true;
+                            }
+                        } else {
+                            if ($num_categories >= 1) {
+                                $show_direct_to_category_screen = true;
                             }
                         }
-
-                        $ret2[] = array($page_grouping, $menu_icon, array('catalogues', array('type' => 'index', 'id' => $row['c_name'], 'tree' => $row['c_is_tree']), get_module_zone('catalogues')), make_string_tempcode(escape_html(get_translated_text($row['c_title']))), get_translated_tempcode('catalogues', $row, 'c_description'));
+                        if ($show_direct_to_category_screen) {
+                            $only_category = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'id', array('c_name' => $row['c_name']));
+                            $ret2[] = array($page_grouping, $menu_icon, array('catalogues', array('type' => 'category', 'id' => strval($only_category)), get_module_zone('catalogues')), make_string_tempcode(escape_html(get_translated_text($row['c_title']))), get_translated_tempcode('catalogues', $row, 'c_description'));
+                        } else {
+                            $ret2[] = array($page_grouping, $menu_icon, array('catalogues', array('type' => 'index', 'id' => $row['c_name'], 'tree' => $row['c_is_tree']), get_module_zone('catalogues')), make_string_tempcode(escape_html(get_translated_text($row['c_title']))), get_translated_tempcode('catalogues', $row, 'c_description'));
+                        }
                     }
                 }
 

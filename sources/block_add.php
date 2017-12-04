@@ -192,6 +192,10 @@ function block_helper_script()
         unset($block_types['adminzone_dashboard']);
         $block_types['adminzone_dashboard'] = $move_after;
         foreach ($block_types as $block_type => $_links) {
+            if (($block_type == 'bottom') && ($type_wanted == 'side')) {
+                continue;
+            }
+
             switch ($block_type) {
                 case 'side':
                 case 'main':

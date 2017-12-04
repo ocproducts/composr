@@ -492,7 +492,7 @@ function find_images_do_dir($theme, $subdir, $langs)
     $_dir = @opendir($full);
     if ($_dir !== false) {
         while (false !== ($file = readdir($_dir))) {
-            if (($file != '.') && ($file != '..')) {
+            if ($file[0] != '.') {
                 if (is_dir($full . $file)) {
                     $out = array_merge($out, find_images_do_dir($theme, $subdir . $file . '/', $langs));
                 } else {

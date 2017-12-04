@@ -2042,17 +2042,20 @@ function get_os_string()
 /**
  * Find if Cron is installed
  *
+ * @param  boolean $absolutely_sure Whether Cron really needs to be installed (if set to false it will be assumed installed on dev-mode)
  * @return boolean Whether Cron is installed
  */
-function cron_installed()
+function cron_installed($absolutely_sure = false)
 {
     $test = get_param_integer('keep_has_cron', null);
     if ($test !== null) {
         return $test == 1;
     }
 
-    if ($GLOBALS['DEV_MODE']) {
-        return true;
+    if (!$absolutely_sure) {
+        if ($GLOBALS['DEV_MODE']) {
+            return true;
+        }
     }
 
     $last_cron = get_value('last_cron');
@@ -2120,7 +2123,7 @@ function compare_ip_address_ip6($wild, $full_parts)
 /**
  * Check to see if an IP address is banned.
  *
- * @param  string $ip The IP address to check for banning (potentially encoded with *'s)
+ * @param  string $ip The IP address to check for banning
  * @param  boolean $force_db Force check via database
  * @param  boolean $handle_uncertainties Handle uncertainities (used for the external bans - if true, we may return null, showing we need to do an external check). Only works with $force_db.
  * @return ?boolean Whether the IP address is banned (null: unknown)

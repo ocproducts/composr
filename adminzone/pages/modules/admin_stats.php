@@ -217,10 +217,6 @@ class Module_admin_stats
         }
 
         set_helper_panel_tutorial('tut_statistics');
-        if ($type == 'clear' || $type == '_clear') {
-        } elseif ($type == 'install_data') {
-        } else {
-        }
 
         if ($type == 'users_online') {
             $this->title = get_screen_title('USERS_ONLINE_STATISTICS');
