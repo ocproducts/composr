@@ -7,7 +7,7 @@
 
 			<div>#<span class="themewizard_info_box_label">{SEED*}</span></div>
 			<div>({!RED}: <span class="themewizard_colour">{RED*}</span>, {!GREEN}: <span class="themewizard_colour">{GREEN*}</span>, {!BLUE}: <span class="themewizard_colour">{BLUE*}</span>)</div>
-			<div><span class="themewizard_change_colour horiz-field-sep associated_link"><a href="{CHANGE_URL*}">{!CHANGE}</a></span></div>
+			<div><span class="themewizard_change_colour horiz-field-sep associated-link"><a href="{CHANGE_URL*}">{!CHANGE}</a></span></div>
 		</div></div>
 	</div>
 
@@ -25,7 +25,7 @@
 </div>
 
 <nav>
-	<ul class="actions_list">
+	<ul class="actions-list">
 		<li class="actions_list_strong"><a href="{STAGE3_URL*}">{!THEMEWIZARD_2_USE}</a></li>
 
 		<li><a target="_blank" title="{!PREVIEW} {!LINK_NEW_WINDOW}" href="{$PAGE_LINK*,::keep_theme_seed={SEED#}:keep_theme_dark={DARK#}:keep_theme_source={SOURCE_THEME#}:keep_theme={SOURCE_THEME#}:keep_theme_algorithm={ALGORITHM#}}">{!PREVIEW}</a></li>

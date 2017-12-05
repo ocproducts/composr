@@ -6,7 +6,7 @@
 			{CATEGORY_TITLE*}
 
 			{+START,IF_NON_EMPTY,{$TRIM,{CHILDREN}}}
-				<span class="horiz-field-sep associated_link">
+				<span class="horiz-field-sep associated-link">
 					<a class="js-click-copy-advanced-notifications" href="#!">{!NOTIFICATIONS_COPY_UNDER}</a>
 				</span>
 			{+END}

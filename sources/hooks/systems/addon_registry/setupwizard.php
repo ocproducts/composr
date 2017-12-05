@@ -178,7 +178,7 @@ class Hook_addon_registry_setupwizard
             'SKIP_WEBSTANDARDS' => true,
             'TITLE' => lorem_title(),
             'URL' => placeholder_url(),
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => lorem_word(),
         ));
 

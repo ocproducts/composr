@@ -213,7 +213,7 @@
 	height: auto;
 }
 
-.page_running_admin_themewizard .radio_list label {
+.page-running-admin-themewizard .radio_list label {
 	float: left;
 	min-width: 19em;
 	height: 2em;
@@ -252,18 +252,18 @@
 =========================
 */
 
-.buttons__simple {
+.buttons--simple {
 	background-image: url('{$IMG,icons/24x24/buttons/simple}') !important;
 }
-.buttons__advanced {
+.buttons--advanced {
 	background-image: url('{$IMG,icons/24x24/buttons/advanced}') !important;
 }
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.buttons__simple {
+	.buttons--simple {
 		background-image: url('{$IMG,icons/48x48/buttons/simple}') !important;
 	}
-	.buttons__advanced {
+	.buttons--advanced {
 		background-image: url('{$IMG,icons/48x48/buttons/advanced}') !important;
 	}
 }

@@ -1,7 +1,7 @@
 <div class="float-surrounder">
 	<div class="cns_avatar_page_old_avatar">
 		{+START,IF_NON_EMPTY,{PHOTO}}
-			<img class="cns_topic_post_avatar" alt="{!PHOTO}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{PHOTO}}" />
+			<img class="cns-topic-post-avatar" alt="{!PHOTO}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{PHOTO}}" />
 		{+END}
 		{+START,IF_EMPTY,{PHOTO}}
 			{!NONE_EM}

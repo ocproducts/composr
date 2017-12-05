@@ -29,7 +29,7 @@
 	{+END}
 
 	{+START,IF_NON_EMPTY,{ADD_URL}}
-		<div class="group_add_member">
+		<div class="group-add-member">
 			<div class="box box___cns_view_group_screen"><div class="box_inner">
 				<h2>{!ADD_MEMBER_TO_GROUP}</h2>
 
@@ -48,7 +48,7 @@
 
 	{+START,IF_NON_EMPTY,{APPLY_URL}}
 		<nav>
-			<ul class="force_margin actions_list">
+			<ul class="force_margin actions-list">
 				<li><a href="{APPLY_URL*}">{APPLY_TEXT*}</a></li>
 			</ul>
 		</nav>

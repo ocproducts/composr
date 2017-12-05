@@ -171,7 +171,7 @@ class Hook_addon_registry_cns_post_templates
                 'TITLE' => lorem_title(),
                 'URL' => placeholder_url(),
                 'FIELDS' => $fields,
-                'SUBMIT_ICON' => 'buttons__proceed',
+                'SUBMIT_ICON' => 'buttons--proceed',
                 'SUBMIT_NAME' => lorem_phrase(),
                 'TEXT' => lorem_sentence_html(),
             )), null, '', true)

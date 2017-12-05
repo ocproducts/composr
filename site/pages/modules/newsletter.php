@@ -339,7 +339,7 @@ class Module_newsletter
         $message = get_option('newsletter_text');
         if (has_actual_page_access(get_member(), 'admin_config')) {
             if ($message != '') {
-                $message .= ' [semihtml]<span class="associated_link"><a href="{$PAGE_LINK*,_SEARCH:admin_config:category:FEATURE#group_NEWSLETTER}">' . do_lang('EDIT') . '</a></span>[/semihtml]';
+                $message .= ' [semihtml]<span class="associated-link"><a href="{$PAGE_LINK*,_SEARCH:admin_config:category:FEATURE#group_NEWSLETTER}">' . do_lang('EDIT') . '</a></span>[/semihtml]';
             }
         }
         $text = comcode_to_tempcode($message, null, true);
@@ -372,7 +372,7 @@ class Module_newsletter
             'JS_FUNCTION_CALLS' => array('newsletterNewsletterForm'),
             'HIDDEN' => '',
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
             'TITLE' => $this->title,

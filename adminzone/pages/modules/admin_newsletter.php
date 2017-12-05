@@ -403,7 +403,7 @@ class Module_admin_newsletter extends Standard_crud_module
             'TITLE' => $this->title,
             'TEXT' => do_lang_tempcode('ENTER_IMAP_DETAILS'),
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));
@@ -445,7 +445,7 @@ class Module_admin_newsletter extends Standard_crud_module
             'TITLE' => $this->title,
             'TEXT' => '',
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));
@@ -510,7 +510,7 @@ class Module_admin_newsletter extends Standard_crud_module
             'TITLE' => $this->title,
             'TEXT' => do_lang_tempcode('BOUNCE_WHICH'),
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
             'MODSECURITY_WORKAROUND' => true,
@@ -614,7 +614,7 @@ class Module_admin_newsletter extends Standard_crud_module
                 'TITLE' => $this->title,
                 'TEXT' => do_lang_tempcode('NEWSLETTER_SUBSCRIBERS_FORM', escape_html($prune_url->evaluate())),
                 'FIELDS' => $fields,
-                'SUBMIT_ICON' => 'buttons__proceed',
+                'SUBMIT_ICON' => 'buttons--proceed',
                 'SUBMIT_NAME' => $submit_name,
                 'URL' => $post_url,
             ));
@@ -854,7 +854,7 @@ class Module_admin_newsletter extends Standard_crud_module
             'TEXT' => $text,
             'FIELDS' => $fields,
             'PREVIEW' => true,
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => do_lang_tempcode('NEXT'),
             'URL' => get_self_url(false, false, array('lang' => $lang, 'type' => 'whatsnew_2')),
         ));
@@ -893,7 +893,7 @@ class Module_admin_newsletter extends Standard_crud_module
             'TEXT' => $text,
             'FIELDS' => $fields,
             'PREVIEW' => true,
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => do_lang_tempcode('NEXT'),
             'URL' => get_self_url(false, false, array('lang' => $lang, 'type' => 'whatsnew_3')),
         ));
@@ -1633,7 +1633,7 @@ class Module_admin_newsletter extends Standard_crud_module
         $hidden->attach(form_input_hidden('template', $rows[0]['template']));
         $hidden->attach(form_input_hidden('html_only', strval($rows[0]['html_only'])));
         $hidden->attach(form_input_hidden('message', $message));
-        $buttons->attach(do_template('BUTTON_SCREEN', array('IMMEDIATE' => true, 'URL' => $copy_url, 'TITLE' => do_lang_tempcode('RESEND_NEWSLETTER'), 'IMG' => 'buttons__send', 'HIDDEN' => $hidden)));
+        $buttons->attach(do_template('BUTTON_SCREEN', array('IMMEDIATE' => true, 'URL' => $copy_url, 'TITLE' => do_lang_tempcode('RESEND_NEWSLETTER'), 'IMG' => 'buttons--send', 'HIDDEN' => $hidden)));
 
         $text = do_lang_tempcode('NEWSLETTER_WITH_SAMPLE_NAME');
 

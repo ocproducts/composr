@@ -807,7 +807,7 @@ class Module_admin_customers
             'HIDDEN' => '',
             'TEXT' => $text,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));

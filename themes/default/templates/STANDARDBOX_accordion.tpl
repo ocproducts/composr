@@ -4,17 +4,17 @@
 	{+START,IF_NON_EMPTY,{TITLE}}
 		<h3 class="toggleable_tray_title js-tray-onclick-toggle-accordion">
 			{+START,IF_NOT_IN_ARRAY,OPTIONS,tray_open}
-				<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{TITLE}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" /></a>
+				<a class="toggleable-tray-button js-tray-onclick-toggle-accordion" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{TITLE}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" /></a>
 			{+END}
 			{+START,IF_IN_ARRAY,OPTIONS,tray_open}
-				<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{TITLE}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" /></a>
+				<a class="toggleable-tray-button js-tray-onclick-toggle-accordion" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{TITLE}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" /></a>
 			{+END}
 
 			{+START,IF_NON_EMPTY,{TOP_LINKS}}
 				{TOP_LINKS}
 			{+END}
 
-			<a class="toggleable_tray_button js-tray-onclick-toggle-accordion" href="#!">{TITLE}</a>
+			<a class="toggleable-tray-button js-tray-onclick-toggle-accordion" href="#!">{TITLE}</a>
 		</h3>
 	{+END}
 	<div class="toggleable_tray"{+START,IF_NOT_IN_ARRAY,OPTIONS,tray_open} style="display: none" aria-expanded="false"{+END}>

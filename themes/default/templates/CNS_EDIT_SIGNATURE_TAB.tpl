@@ -3,7 +3,7 @@
 		<section class="box box___cns_edit_signature_tab"><div class="box_inner">
 			<h3>{!SIGNATURE_NOW}</h3>
 
-			<div class="cns_member_signature">{SIGNATURE}</div>
+			<div class="cns-member-signature">{SIGNATURE}</div>
 		</div></section>
 	</div></div>
 {+END}

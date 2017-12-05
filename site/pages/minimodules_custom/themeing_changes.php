@@ -186,7 +186,7 @@ foreach (array_reverse($releases) as $version => $release_details) {
 echo '</select>';
 echo '</div>';
 
-echo '<input style="margin-left: 8px; margin-top: 15px" type="submit" value="Filter" class="button_screen buttons__proceed" />';
+echo '<input style="margin-left: 8px; margin-top: 15px" type="submit" value="Filter" class="button_screen buttons--proceed" />';
 echo '</form>';
 echo '</div>';
 

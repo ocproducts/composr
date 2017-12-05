@@ -42,11 +42,11 @@
 	{$INC,notification_id}
 	<form id="nenable_{$GET*,notification_id}" title="{!notifications:NOTIFICATIONS}"{+START,IF,{$NOTIFICATIONS_ENABLED,{NOTIFICATIONS_ID},{$GET,NOTIFICATIONS_TYPE}}} style="display: none" aria-hidden="true"{+END} data-open-as-overlay="{}" class="inline js-submit-show-disable-form" rel="enable-notifications" method="post" action="{$PAGE_LINK*,{$GET,NOTIFICATIONS_PAGE_LINK}:redirect={$SELF_URL&*,1,0,0,wide_high=<null>}}" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE,1}
-		<input type="submit" class="buttons__enable_notifications {$GET*,button_type}" value="{$GET,button_label_enable}" />
+		<input type="submit" class="buttons--enable-notifications {$GET*,button_type}" value="{$GET,button_label_enable}" />
 	</form>
 	<form id="ndisable_{$GET*,notification_id}" title="{!notifications:NOTIFICATIONS}"{+START,IF,{$NOT,{$NOTIFICATIONS_ENABLED,{NOTIFICATIONS_ID},{$GET,NOTIFICATIONS_TYPE}}}} style="display: none" aria-hidden="true"{+END} data-open-as-overlay="{}" class="inline js-submit-show-enable-form" rel="disable-notifications" method="post" action="{$PAGE_LINK*,{$GET,NOTIFICATIONS_PAGE_LINK}:redirect={$SELF_URL&*,1,0,0,wide_high=<null>}}" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE,1}
-		<input type="submit" class="buttons__disable_notifications {$GET*,button_type}" value="{$GET,button_label_disable}" />
+		<input type="submit" class="buttons--disable-notifications {$GET*,button_type}" value="{$GET,button_label_disable}" />
 	</form>
 
 	{+START,IF_PASSED_AND_TRUE,RIGHT}</div></div>{+END}

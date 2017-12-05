@@ -12,12 +12,12 @@
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			<div>
-				<p class="accessibility_hidden"><label for="shoutbox_message">{!MESSAGE}</label></p>
-				<p><input autocomplete="off" type="text" id="shoutbox_message" name="shoutbox_message" alt="{!MESSAGE}" class="wide_field" /></p>
+				<p class="accessibility_hidden"><label for="shoutbox-message">{!MESSAGE}</label></p>
+				<p><input autocomplete="off" type="text" id="shoutbox-message" name="shoutbox_message" alt="{!MESSAGE}" class="wide_field" /></p>
 			</div>
 
 			<p class="proceed_button">
-				<input type="submit" value="{!SEND_MESSAGE}" class="button_screen_item buttons__send" />
+				<input type="submit" value="{!SEND_MESSAGE}" class="button_screen_item buttons--send" />
 			</p>
 		</form>
 	</div></section>

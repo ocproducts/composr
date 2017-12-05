@@ -23,7 +23,7 @@
         });
 
         function updateDetailsBox(element) {
-            var actionsTpl = '{!ACTIONS;^}:<nav><ul class="actions_list">[1]<\/ul><\/nav><br />',
+            var actionsTpl = '{!ACTIONS;^}:<nav><ul class="actions-list">[1]<\/ul><\/nav><br />',
                 actionsTplItem = '<li><a href="[2]">[1]<\/a><\/li>',
                 infoTpl = '<div class="wide_table_wrap"><table class="map_table results_table wide_table autosized_table"><tbody>[1]<\/tbody><\/table><\/div>',
                 infoTplItem = '<tr><th>[1]<\/th><td>[2]<\/td><\/tr>';

@@ -770,7 +770,7 @@ abstract class Standard_crud_module
             'TEXT' => paragraph(do_lang_tempcode('CHOOSE_CATALOGUE')),
             'URL' => $post_url,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => $submit_name,
             'SKIP_WEBSTANDARDS' => true,
         ));
@@ -1261,7 +1261,7 @@ abstract class Standard_crud_module
                 'FORM_ID' => $this->form_id,
                 'TEXT' => $text,
                 'TABLE' => $table,
-                'SUBMIT_ICON' => 'buttons__sort',
+                'SUBMIT_ICON' => 'buttons--sort',
                 'SUBMIT_NAME' => $has_ordering ? do_lang_tempcode('SORT') : null,
                 'POST_URL' => get_self_url(),
                 'JS_FUNCTION_CALLS' => $this->js_function_calls_for_choose,

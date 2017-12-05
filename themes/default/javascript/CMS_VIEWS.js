@@ -552,7 +552,7 @@
                         button = $dom.create('button', {
                             'type': 'button',
                             'html': this.yesButton,
-                            'className': 'buttons__proceed button_screen_item js-onclick-do-option-yes'
+                            'className': 'buttons--proceed button_screen_item js-onclick-do-option-yes'
                         });
 
                         this.buttonContainerEl.appendChild(button);
@@ -577,14 +577,14 @@
                     button = $dom.create('button', {
                         'type': 'button',
                         'html': this.yesButton,
-                        'className': 'buttons__yes button_screen_item js-onclick-do-option-yes',
+                        'className': 'buttons--yes button_screen_item js-onclick-do-option-yes',
                         'style': 'font-weight: bold;'
                     });
                     this.buttonContainerEl.appendChild(button);
                     button = $dom.create('button', {
                         'type': 'button',
                         'html': this.noButton,
-                        'className': 'buttons__no button_screen_item js-onclick-do-option-no'
+                        'className': 'buttons--no button_screen_item js-onclick-do-option-no'
                     });
                     this.buttonContainerEl.appendChild(button);
                     break;
@@ -606,7 +606,7 @@
                         button = $dom.create('button', {
                             'type': 'button',
                             'html': this.yesButton,
-                            'className': 'buttons__yes button_screen_item js-onclick-do-option-yes',
+                            'className': 'buttons--yes button_screen_item js-onclick-do-option-yes',
                             'css': {
                                 'font-weight': 'bold'
                             }
@@ -633,7 +633,7 @@
                     button = $dom.create('button', {
                         'type': 'button',
                         'html': this.cancelButton,
-                        'className': 'button_screen_item buttons__cancel ' + (this.cancel ? 'js-onclick-do-option-cancel' : 'js-onclick-do-option-finished')
+                        'className': 'button_screen_item buttons--cancel ' + (this.cancel ? 'js-onclick-do-option-cancel' : 'js-onclick-do-option-finished')
                     });
                     this.buttonContainerEl.appendChild(button);
                 } else {
@@ -1196,7 +1196,7 @@
                 '<div class="software_chat">' +
                 '   <h2>{!CMS_COMMUNITY_HELP}</h2>' +
                 '   <ul class="spaced_list">' + SOFTWARE_CHAT_EXTRA + '</ul>' +
-                '   <p class="associated_link associated-links-block-group">' +
+                '   <p class="associated-link associated-links-block-group">' +
                 '       <a title="{!SOFTWARE_CHAT_STANDALONE} {!LINK_NEW_WINDOW;^}" target="_blank" href="' + $cms.filter.html(url) + '">{!SOFTWARE_CHAT_STANDALONE}</a>' +
                 '       <a href="#!" class="js-global-click-load-software-chat">{!HIDE}</a>' +
                 '   </p>' +

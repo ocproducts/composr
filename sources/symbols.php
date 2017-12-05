@@ -533,7 +533,7 @@ function ecv($lang, $escaped, $type, $name, $param)
                             $attributes = isset($matches[3]) ? $matches[3] : '';
 
                             if ($element == 'table') {
-                                if (strpos($attributes, 'responsive_table') !== false) {
+                                if (strpos($attributes, 'responsive-table') !== false) {
                                     $is_in_remaining_table = true;
                                     return $matches[0];
                                 }
@@ -541,9 +541,9 @@ function ecv($lang, $escaped, $type, $name, $param)
                                 if ((preg_match('#\s+border=["\']?[1-9]#i', $attributes) != 0) || (preg_match('#\s+style="[^"]*border:\s*[1-9]#i', $attributes) != 0) || (strpos($attributes, 'results_table') !== false)) {
                                     $is_in_remaining_table = true;
                                     if (preg_match('#\s+class=["\']#i', $attributes) == 0) {
-                                        $attributes .= ' class="responsive_table"';
+                                        $attributes .= ' class="responsive-table"';
                                     } else {
-                                        $attributes = preg_replace('#\s+class=["\']#i', '$0responsive_table ', $attributes);
+                                        $attributes = preg_replace('#\s+class=["\']#i', '$0responsive-table ', $attributes);
                                     }
                                     return '<table' . $attributes . '>';
                                 }

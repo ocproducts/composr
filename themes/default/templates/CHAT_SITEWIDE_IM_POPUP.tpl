@@ -1,7 +1,7 @@
 <div data-tpl="chatSiteWideImPopup">
 	{CONTENT}
 
-	<form class="chat_sound_effects_checkbox inline" title="{!SOUND_EFFECTS}" action="index.php" method="post" autocomplete="off">
+	<form class="chat-sound-effects-checkbox inline" title="{!SOUND_EFFECTS}" action="index.php" method="post" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<p>
@@ -9,7 +9,7 @@
 		</p>
 	</form>
 
-	<ul class="actions_list">
+	<ul class="actions-list">
 		<li>{!GOTO_CHAT_LOBBY_FOR_MORE,{$PAGE_LINK*,_SEARCH:chat}}</li>
 	</ul>
 

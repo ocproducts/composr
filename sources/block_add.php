@@ -460,7 +460,7 @@ function block_helper_script()
             'FIELDS' => $fields,
             'URL' => $post_url,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => $submit_name,
             'HIDDEN' => $hidden,
             'PREVIEW' => true,

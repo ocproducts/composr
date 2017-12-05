@@ -254,7 +254,7 @@ class Module_admin_import
             'GET' => true,
             'HIDDEN' => '',
             'SKIP_WEBSTANDARDS' => true,
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => do_lang_tempcode('PROCEED'),
             'TITLE' => $this->title,
             'FIELDS' => $fields,
@@ -306,7 +306,7 @@ class Module_admin_import
             '_GUID' => 'f474980f7263f2def2ff75e7ee40be33',
             'SKIP_WEBSTANDARDS' => true,
             'HIDDEN' => form_input_hidden('importer', get_param_string('importer')),
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => do_lang_tempcode('CHOOSE'),
             'TITLE' => $this->title,
             'FIELDS' => $fields,
@@ -398,7 +398,7 @@ class Module_admin_import
             'FIELDS' => $fields,
             'URL' => $url,
             'HIDDEN' => '',
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => do_lang_tempcode('PROCEED'),
         ));
     }

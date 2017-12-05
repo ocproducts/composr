@@ -2,7 +2,7 @@
 
 {+START,IF_NON_EMPTY,{LI}}
 	<nav>
-		<ul class="actions_list">
+		<ul class="actions-list">
 			{LI}
 		</ul>
 	</nav>

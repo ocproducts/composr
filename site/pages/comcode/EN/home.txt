@@ -1,7 +1,7 @@
 [semihtml]
 [title]{$SITE_NAME*}[/title]
 
-[surround="boxless_space"]
+[surround="boxless-space"]
 	[block failsafe="1"]main_news[/block]
 
 	[surround="fp_col_blocks_wrap pale_box"]

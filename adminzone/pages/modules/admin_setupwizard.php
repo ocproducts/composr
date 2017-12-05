@@ -199,7 +199,7 @@ class Module_admin_setupwizard
             'FIELDS' => $fields,
             'URL' => $post_url,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => $submit_name,
             'HIDDEN' => '',
         ));
@@ -268,7 +268,7 @@ class Module_admin_setupwizard
             '_GUID' => '2042f3786d10c7c5be5d38ea28942b47',
             'SKIP_WEBSTANDARDS' => true,
             'URL' => $post_url,
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => $submit_name,
         ));
 
@@ -278,7 +278,7 @@ class Module_admin_setupwizard
             'FIELDS' => $fields,
             'URL' => $post_url,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => $submit_name,
             'HIDDEN' => $hidden,
         ));
@@ -406,7 +406,7 @@ class Module_admin_setupwizard
             'FIELDS' => $fields,
             'URL' => $post_url,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => $submit_name,
             'HIDDEN' => '',
         ));
@@ -643,7 +643,7 @@ class Module_admin_setupwizard
             'FIELDS' => $fields,
             'URL' => $post_url,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => $submit_name,
             'HIDDEN' => $hidden,
         ));
@@ -727,7 +727,7 @@ class Module_admin_setupwizard
             'FIELDS' => $fields,
             'URL' => $post_url,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => $submit_name,
             'HIDDEN' => $hidden,
         ));
@@ -861,7 +861,7 @@ class Module_admin_setupwizard
             'URL' => $post_url,
             'TEXT' => $text,
             'PREVIEW' => true,
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => $submit_name,
             'HIDDEN' => $hidden,
         ));
@@ -922,7 +922,7 @@ class Module_admin_setupwizard
             'FIELDS' => $fields,
             'URL' => $post_url,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => $submit_name,
             'HIDDEN' => $hidden,
             'JS_FUNCTION_CALLS' => $js_function_calls,
@@ -969,7 +969,7 @@ class Module_admin_setupwizard
             'FIELDS' => $fields,
             'URL' => $post_url,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => $submit_name,
             'HIDDEN' => $hidden,
         ));
@@ -1008,7 +1008,7 @@ class Module_admin_setupwizard
             'FIELDS' => $fields,
             'URL' => $post_url,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => $submit_name,
             'HIDDEN' => $hidden,
             'JS_FUNCTION_CALLS' => $js_function_calls,

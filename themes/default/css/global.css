@@ -333,12 +333,12 @@ th, .fake_th {
 th a, th a:hover, th a:visited, .fake_th a, .fake_th a:hover, .fake_th a:visited {
 	color: {$GET,box_title_text};
 }
-thead>tr>th, .boxless_space .box>table>thead>tr>th, .pte_set_box .box>table>thead>tr>th {
+thead>tr>th, .boxless-space .box>table>thead>tr>th, .pte_set_box .box>table>thead>tr>th {
 	background-color: {$GET,box_title_background};
 	color: {$GET,box_title_text};
 	background-repeat: repeat-x;
 }
-.light_table th, .light_table .fake_th, .light_table thead>tr>th, .light_table .boxless_space .box>table>thead>tr>th, .light_table .pte_set_box .box>table>thead>tr>th {
+.light_table th, .light_table .fake_th, .light_table thead>tr>th, .light_table .boxless-space .box>table>thead>tr>th, .light_table .pte_set_box .box>table>thead>tr>th {
 	background-color: {$GET,area_6_background};
 }
 .box>table>thead>tr>th {
@@ -807,7 +807,7 @@ header h1 {
 	}
 /*{+END}*/
 
-.non_accessibility_redundancy .breadcrumbs {
+.non-accessibility-redundancy .breadcrumbs {
 	width: 100%;
 }
 
@@ -859,20 +859,20 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 
 /* Should not be flush with site borders (but the menu above it will be, so don't do the whole panel */
 /*{+START,CSS_MODE,desktop}*/
-	#panel_top .cns_member_bar_etc {
+	#panel_top .cns-member-bar-etc {
 		margin: 0 1em;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	#panel_top .cns_member_bar_etc {
+	#panel_top .cns-member-bar-etc {
 		margin: 0 2px;
 	}
 /*{+END}*/
 
-.zone_running_docs .comcode_page {
+.zone-running-docs .comcode_page {
 	line-height: 1.35em;
 }
-.zone_running_docs .comcode_page img:not([width]):not([height]) {
+.zone-running-docs .comcode_page img:not([width]):not([height]) {
 	max-width: 100%;
 	height: auto;
 }
@@ -1237,7 +1237,7 @@ body .accessibility_hidden { /* Contents should be made visible (or interpreted)
 }
 
 /*{+START,CSS_MODE,mobile}*/
-	.non_accessibility_redundancy { /* Contents should be skipped by screen-readers */
+	.non-accessibility-redundancy { /* Contents should be skipped by screen-readers */
 		display: none;
 	}
 /*{+END}*/
@@ -1689,7 +1689,7 @@ td>.comcode_quote:first-child, .fake_table_cell>.comcode_quote:first-child, .fak
 .box>.box_inner, .box>.toggleable_tray {
 	margin: 5px; /* not em so that header may be positioned properly */
 }
-.boxless_space .box>.box_inner, .boxless_space .box>.toggleable_tray {
+.boxless-space .box>.box_inner, .boxless-space .box>.toggleable_tray {
 	margin: 0;
 }
 .email_body .box .box_inner { /* Outlook.com does not support margins or complex use of the sibling selector */
@@ -1732,13 +1732,13 @@ td>.comcode_quote:first-child, .fake_table_cell>.comcode_quote:first-child, .fak
 	color: inherit;
 	text-decoration: underline;
 }
-a.toggleable_tray_button { /* Override above for toggleable_tray_button */
+a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 	text-decoration: none !important;
 }
 .box_inner>h1 a:hover, .box_inner>h2 a:hover, .box_inner>h3 a:hover, .box_inner>h4 a:hover, .box_inner>h5 a:hover, .box_inner>h6 a:hover, .toggleable_tray_title a:hover {
 	color: {$GET,box_title_text_hover};
 }
-.boxless_space .box_inner>h1 a:hover, .boxless_space .box_inner>h2 a:hover, .boxless_space .box_inner>h3 a:hover, .boxless_space .box_inner>h4 a:hover, .boxless_space .box_inner>h5 a:hover, .boxless_space .box_inner>h6 a:hover, .boxless_space .toggleable_tray_title a:hover {
+.boxless-space .box_inner>h1 a:hover, .boxless-space .box_inner>h2 a:hover, .boxless-space .box_inner>h3 a:hover, .boxless-space .box_inner>h4 a:hover, .boxless-space .box_inner>h5 a:hover, .boxless-space .box_inner>h6 a:hover, .boxless-space .toggleable_tray_title a:hover {
 	color: inherit;
 }
 
@@ -1752,27 +1752,27 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 	color: {$GET,area_key_text} !important;
 }
 
-/* If you want to mark a region as box-less, wrap a div with class 'boxless_space' around it -- it'll invoke a very different kind of modern styling */
-.boxless_space .box {
+/* If you want to mark a region as box-less, wrap a div with class 'boxless-space' around it -- it'll invoke a very different kind of modern styling */
+.boxless-space .box {
 	background: none;
 	border: none !important;
 	padding: 0;
 	margin: 1em 0; /* Big margin, necessary as the boxes have no border around them */
 	border-radius: 0;
 }
-.frame>.boxless_space .box:first-child {
+.frame>.boxless-space .box:first-child {
 	margin-top: 0; /* No top margin for boxes in a frame */
 }
-.boxless_space>.box:last-child {
+.boxless-space>.box:last-child {
 	margin-bottom: 0; /* No margin on the last box */
 }
-.boxless_space .fp_col_blocks_wrap .box {
+.boxless-space .fp_col_blocks_wrap .box {
 	margin: 0.5em 0; /* Half-sized margins for the fake-columns on front pages, as the overflow blocks margin collapsing */
 }
-.boxless_space .box>.box_inner {
+.boxless-space .box>.box_inner {
 	margin: 0;
 }
-.boxless_space .box>.box_inner>h1, .boxless_space .box>.box_inner>h2, .boxless_space .box>.box_inner>h3, .boxless_space .box>.box_inner>h4, .boxless_space .box>.box_inner>h5, .boxless_space .box>.box_inner>h6, .boxless_space .box>.toggleable_tray_title {
+.boxless-space .box>.box_inner>h1, .boxless-space .box>.box_inner>h2, .boxless-space .box>.box_inner>h3, .boxless-space .box>.box_inner>h4, .boxless-space .box>.box_inner>h5, .boxless-space .box>.box_inner>h6, .boxless-space .box>.toggleable_tray_title {
 	background: url('{$IMG_INLINE;,1x/boxless_title_leadin_rightcomp}') no-repeat !important;
 	color: {$GET,slightly_seeded_right_complement_text} !important;
 	text-align: left;
@@ -1785,47 +1785,47 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 	text-transform: uppercase;
 	border-radius: 0;
 }
-.global-side-panel .boxless_space .box>.box_inner>h1, .global-side-panel .boxless_space .box>.box_inner>h2, .global-side-panel .boxless_space .box>.box_inner>h3, .global-side-panel .boxless_space .box>.box_inner>h4, .global-side-panel .boxless_space .box>.box_inner>h5, .global-side-panel .boxless_space .box>.box_inner>h6,
-.boxless_space .box .box>.box_inner>h1, .boxless_space .box .box>.box_inner>h2, .boxless_space .box .box>.box_inner>h3, .boxless_space .box .box>.box_inner>h4, .boxless_space .box .box>.box_inner>h5, .boxless_space .box .box>.box_inner>h6 {
+.global-side-panel .boxless-space .box>.box_inner>h1, .global-side-panel .boxless-space .box>.box_inner>h2, .global-side-panel .boxless-space .box>.box_inner>h3, .global-side-panel .boxless-space .box>.box_inner>h4, .global-side-panel .boxless-space .box>.box_inner>h5, .global-side-panel .boxless-space .box>.box_inner>h6,
+.boxless-space .box .box>.box_inner>h1, .boxless-space .box .box>.box_inner>h2, .boxless-space .box .box>.box_inner>h3, .boxless-space .box .box>.box_inner>h4, .boxless-space .box .box>.box_inner>h5, .boxless-space .box .box>.box_inner>h6 {
 	background: url('{$IMG_INLINE;,1x/boxless_title_leadin_leftcomp}') no-repeat !important;
 	color: {$GET,slightly_seeded_left_complement_text} !important;
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.boxless_space .box>.box_inner>h1, .boxless_space .box>.box_inner>h2, .boxless_space .box>.box_inner>h3, .boxless_space .box>.box_inner>h4, .boxless_space .box>.box_inner>h5, .boxless_space .box>.box_inner>h6, .boxless_space .box>.toggleable_tray_title {
+	.boxless-space .box>.box_inner>h1, .boxless-space .box>.box_inner>h2, .boxless-space .box>.box_inner>h3, .boxless-space .box>.box_inner>h4, .boxless-space .box>.box_inner>h5, .boxless-space .box>.box_inner>h6, .boxless-space .box>.toggleable_tray_title {
 		background-image: url('{$IMG_INLINE;,2x/boxless_title_leadin_rightcomp}');
 		background-size: 18px 18px;
 	}
-	.global-side-panel .boxless_space .box>.box_inner>h1, .global-side-panel .boxless_space .box>.box_inner>h2, .global-side-panel .boxless_space .box>.box_inner>h3, .global-side-panel .boxless_space .box>.box_inner>h4, .global-side-panel .boxless_space .box>.box_inner>h5, .global-side-panel .boxless_space .box>.box_inner>h6,
-	.boxless_space .box .box>.box_inner>h1, .boxless_space .box .box>.box_inner>h2, .boxless_space .box .box>.box_inner>h3, .boxless_space .box .box>.box_inner>h4, .boxless_space .box .box>.box_inner>h5, .boxless_space .box .box>.box_inner>h6 {
+	.global-side-panel .boxless-space .box>.box_inner>h1, .global-side-panel .boxless-space .box>.box_inner>h2, .global-side-panel .boxless-space .box>.box_inner>h3, .global-side-panel .boxless-space .box>.box_inner>h4, .global-side-panel .boxless-space .box>.box_inner>h5, .global-side-panel .boxless-space .box>.box_inner>h6,
+	.boxless-space .box .box>.box_inner>h1, .boxless-space .box .box>.box_inner>h2, .boxless-space .box .box>.box_inner>h3, .boxless-space .box .box>.box_inner>h4, .boxless-space .box .box>.box_inner>h5, .boxless-space .box .box>.box_inner>h6 {
 		background-image: url('{$IMG_INLINE;,2x/boxless_title_leadin_leftcomp}');
 		background-size: 18px 18px;
 	}
 }
-.global-side-panel .boxless_space .box>.box_inner>h1, .global-side-panel .boxless_space .box>.box_inner>h2, .global-side-panel .boxless_space .box>.box_inner>h3, .global-side-panel .boxless_space .box>.box_inner>h4, .global-side-panel .boxless_space .box>.box_inner>h5, .global-side-panel .boxless_space .box>.box_inner>h6 {
+.global-side-panel .boxless-space .box>.box_inner>h1, .global-side-panel .boxless-space .box>.box_inner>h2, .global-side-panel .boxless-space .box>.box_inner>h3, .global-side-panel .boxless-space .box>.box_inner>h4, .global-side-panel .boxless-space .box>.box_inner>h5, .global-side-panel .boxless-space .box>.box_inner>h6 {
 }
-.boxless_space .buttons_group, .boxless_space .associated-links-block-group, .boxless_space .media_box, .boxless_space .proceed_button {
+.boxless-space .buttons-group, .boxless-space .associated-links-block-group, .boxless-space .media_box, .boxless-space .proceed_button {
 	text-align: left;
 	width: auto;
 }
 
 /* ... Dividers within boxless area... */
-.boxless_space .box_wrapper + .box,
-.boxless_space .box_wrapper + .fp_col_blocks_wrap,
-.boxless_space .box + .box,
-.boxless_space .box + .fp_col_blocks_wrap,
-.boxless_space .fp_col_blocks_wrap + .box_wrapper,
-.boxless_space .fp_col_blocks_wrap + .box {
+.boxless-space .box_wrapper + .box,
+.boxless-space .box_wrapper + .fp_col_blocks_wrap,
+.boxless-space .box + .box,
+.boxless-space .box + .fp_col_blocks_wrap,
+.boxless-space .fp_col_blocks_wrap + .box_wrapper,
+.boxless-space .fp_col_blocks_wrap + .box {
 	border-top: 2px solid {$GET,standard_border} !important;
 	margin-top: 1.5em;
 	padding-top: 0.5em;
 }
-.boxless_space .box .box + .box, .comments_wrapper .boxless_space .box + .box { /* Nested dividers more subtle */
+.boxless-space .box .box + .box, .comments-wrapper .boxless-space .box + .box { /* Nested dividers more subtle */
 	border-top: 0 !important;
 }
-.global-side-panel .boxless_space .box .box + .box {
+.global-side-panel .boxless-space .box .box + .box {
 	padding-top: 0;
 }
-.global_middle .boxless_space .box .box + .box:before {
+.global_middle .boxless-space .box .box + .box:before {
 	content: "";
 	width: 60%;
 	display: block;
@@ -1833,14 +1833,14 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 	border-top: 2px dotted {$GET,pale_border} !important;
 	padding-top: 0.4em;
 }
-.comments_wrapper .boxless_space .box + .box:before {
+.comments-wrapper .boxless-space .box + .box:before {
 	content: "";
 	width: 60%;
 	display: block;
 	margin: 0 auto 2em auto;
 	border-top: 2px dotted {$GET,pale_border} !important;
 }
-.boxless_space .box + .fp_col_blocks_wrap {
+.boxless-space .box + .fp_col_blocks_wrap {
 	padding-top: 0;
 }
 
@@ -1870,7 +1870,7 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 	padding: 0.3em 0; /* Centered so needs no horizontal padding, which would also mess with our 100% width */
 }
 
-.toggleable_tray_button {
+.toggleable-tray-button {
 	transition: opacity 0.2s linear !important;
 	outline: 0;
 	font-weight: bold;
@@ -1879,30 +1879,30 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 	cursor: pointer;
 }
 
-.toggleable_tray_button img {
+.toggleable-tray-button img {
 	float: right;
 	margin: 0 0 0 0.3em !important;
 }
-.box .toggleable_tray_button img {
+.box .toggleable-tray-button img {
 	margin-right: 0.5em;
 }
-.toggleable_tray_title .toggleable_tray_button img {
+.toggleable_tray_title .toggleable-tray-button img {
 	margin: -2px 0.4em 0 0.4em !important;
 }
-.toggleable_tray_button img, .box .toggleable_tray_title .toggleable_tray_button img {
+.toggleable-tray-button img, .box .toggleable_tray_title .toggleable-tray-button img {
 	width: 20px;
 }
-h3 .toggleable_tray_button img {
+h3 .toggleable-tray-button img {
 	width: 18px;
 }
 .ttb_left_spaced, .ttb_left_spaced div {
 	margin-top: 0.3em;
 }
-.toggleable_tray_button.ttb_left img {
+.toggleable-tray-button.ttb_left img {
 	float: left;
 	padding-left: 0 !important;
 }
-.toggleable_tray_button.ttb_light {
+.toggleable-tray-button.ttb_light {
 	font-weight: normal;
 }
 
@@ -1973,7 +1973,7 @@ h3 .toggleable_tray_button img {
 		width: 25em;
 	}
 /*{+END}*/
-.boxless_space .meta_details {
+.boxless-space .meta_details {
 	padding-left: 0;
 	margin-top: -0.5em !important;
 }
@@ -2146,10 +2146,10 @@ hr.spaced_rule {
 .horiz-field-sep, ul.horizontal_links.horiz-field-sep {
 	padding-left: 0.8em;
 }
-.horiz-field-sep, .horiz_field_sep_rightward {
+.horiz-field-sep, .horiz-field-sep-rightward {
 	display: inline-block !important; /* Side-effect: stops internal wrapping */
 }
-.horiz_field_sep_rightward {
+.horiz-field-sep-rightward {
 	padding-right: 0.8em; /* Useful so subsequent wrapped text doesn't get indented */
 }
 ul.horizontal_links.horiz-field-sep {
@@ -2358,20 +2358,20 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 
 /* This relies on some JavaScript running too, to set the data attributes; works great though for properly marked up thead'd tables*/
 /*{+START,CSS_MODE,mobile}*/
-	.responsive_table, .responsive_table>caption, .responsive_table>tbody, .responsive_table>tbody>tr, .responsive_table>tbody>tr>th, .responsive_table>tbody>tr>td, .responsive_table>tfoot, .responsive_table>tfoot>tr, .responsive_table>tfoot>tr>th, .responsive_table>tfoot>tr>td, .responsive_table>tr, .responsive_table>tr>th, .responsive_table>tr>td {
+	.responsive-table, .responsive-table>caption, .responsive-table>tbody, .responsive-table>tbody>tr, .responsive-table>tbody>tr>th, .responsive-table>tbody>tr>td, .responsive-table>tfoot, .responsive-table>tfoot>tr, .responsive-table>tfoot>tr>th, .responsive-table>tfoot>tr>td, .responsive-table>tr, .responsive-table>tr>th, .responsive-table>tr>td {
 		display: block;
 		width: auto;
 		overflow: hidden;
 		text-align: left !important;
 	}
-	.responsive_table>thead {
+	.responsive-table>thead {
 		display: none !important;
 	}
-	.responsive_table>tbody>tr, .responsive_table>tfoot>tr, .responsive_table>tr {
+	.responsive-table>tbody>tr, .responsive-table>tfoot>tr, .responsive-table>tr {
 		border-bottom: 1px solid {$GET,standard_border};
 		margin-bottom: 1em;
 	}
-	.responsive_table>tbody>tr>th[data-th]::before, .responsive_table>tbody>tr>td[data-th]::before, .responsive_table>tfoot>tr>th[data-th]::before, .responsive_table>tfoot>tr>td[data-th]::before, .responsive_table>tr>th[data-th]::before, .responsive_table>tr>td[data-th]::before {
+	.responsive-table>tbody>tr>th[data-th]::before, .responsive-table>tbody>tr>td[data-th]::before, .responsive-table>tfoot>tr>th[data-th]::before, .responsive-table>tfoot>tr>td[data-th]::before, .responsive-table>tr>th[data-th]::before, .responsive-table>tr>td[data-th]::before {
 		content: attr(data-th) ":";
 		font-weight: bold;
 		width: 7em;
@@ -2379,37 +2379,37 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 		display: inline-block;
 		vertical-align: top;
 	}
-	.responsive_table>tbody>tr>th, .responsive_table>tbody>tr>td, .responsive_table>tfoot>tr>th, .responsive_table>tfoot>tr>td, .responsive_table>tr>th, .responsive_table>tr>td {
+	.responsive-table>tbody>tr>th, .responsive-table>tbody>tr>td, .responsive-table>tfoot>tr>th, .responsive-table>tfoot>tr>td, .responsive-table>tr>th, .responsive-table>tr>td {
 		border-left: 1px solid {$GET,standard_border};
 		border-radius: 0 !important;
 	}
-	.responsive_table>tbody>tr>th .field_name, .responsive_table>tbody>tr>td .field_name, .responsive_table>tr>th .field_name, .responsive_table>tr>td .field_name {
+	.responsive-table>tbody>tr>th .field_name, .responsive-table>tbody>tr>td .field_name, .responsive-table>tr>th .field_name, .responsive-table>tr>td .field_name {
 		font-weight: normal;
 		font-style: italic;
 	}
-	.responsive_table>tbody>tr>th:empty, .responsive_table>tbody>tr>td:empty, .responsive_table>tfoot>tr>th:empty, .responsive_table>tfoot>tr>td:empty, .responsive_table>tr>th:empty, .responsive_table>tr>td:empty {
+	.responsive-table>tbody>tr>th:empty, .responsive-table>tbody>tr>td:empty, .responsive-table>tfoot>tr>th:empty, .responsive-table>tfoot>tr>td:empty, .responsive-table>tr>th:empty, .responsive-table>tr>td:empty {
 		display: none;
 	}
-	.responsive_table>tbody>tr:last-child>td, .responsive_table>tbody>tr.last>td, .responsive_table>tfoot>tr:last-child>td, .responsive_table>tfoot>tr.last>td, .responsive_table>tbody>tr:last-child>th {
+	.responsive-table>tbody>tr:last-child>td, .responsive-table>tbody>tr.last>td, .responsive-table>tfoot>tr:last-child>td, .responsive-table>tfoot>tr.last>td, .responsive-table>tbody>tr:last-child>th {
 		border-bottom: 0;
 	}
 
-	.responsive_table .form_table_field_spacer {
+	.responsive-table .form_table_field_spacer {
 		border: 0 !important;
 	}
-	.responsive_table .form_table_field_spacer .table_heading_cell {
+	.responsive-table .form_table_field_spacer .table_heading_cell {
 		border: 0 !important;
 		padding: 0 !important;
 	}
 
-	.responsive_table_bolded_first_column>tbody>tr>th:first-child, .responsive_table_bolded_first_column>tbody>tr>td:first-child, .responsive_table_bolded_first_column>tfoot>tr>th:first-child, .responsive_table_bolded_first_column>tfoot>tr>td:first-child, .responsive_table_bolded_first_column>tr>th:first-child, .responsive_table_bolded_first_column>tr>td:first-child {
+	.responsive-table-bolded-first-column>tbody>tr>th:first-child, .responsive-table-bolded-first-column>tbody>tr>td:first-child, .responsive-table-bolded-first-column>tfoot>tr>th:first-child, .responsive-table-bolded-first-column>tfoot>tr>td:first-child, .responsive-table-bolded-first-column>tr>th:first-child, .responsive-table-bolded-first-column>tr>td:first-child {
 		font-weight: bold;
 	}
-	.responsive_table_bolded_first_column>tbody>tr>th[data-th]::before, .responsive_table_bolded_first_column>tbody>tr>td[data-th]::before, .responsive_table_bolded_first_column>tfoot>tr>th[data-th]::before, .responsive_table_bolded_first_column>tfoot>tr>td[data-th]::before, .responsive_table_bolded_first_column>tr>th[data-th]::before, .responsive_table_bolded_first_column>tr>td[data-th]::before {
+	.responsive-table-bolded-first-column>tbody>tr>th[data-th]::before, .responsive-table-bolded-first-column>tbody>tr>td[data-th]::before, .responsive-table-bolded-first-column>tfoot>tr>th[data-th]::before, .responsive-table-bolded-first-column>tfoot>tr>td[data-th]::before, .responsive-table-bolded-first-column>tr>th[data-th]::before, .responsive-table-bolded-first-column>tr>td[data-th]::before {
 		font-weight: normal; /* Overridden from above */
 	}
 
-	.responsive_table_separate_lines>tbody>tr>th[data-th]::before, .responsive_table_separate_lines>tbody>tr>td[data-th]::before, .responsive_table_separate_lines>tfoot>tr>th[data-th]::before, .responsive_table_separate_lines>tfoot>tr>td[data-th]::before, .responsive_table_separate_lines>tr>th[data-th]::before, .responsive_table_separate_lines>tr>td[data-th]::before {
+	.responsive-table-separate-lines>tbody>tr>th[data-th]::before, .responsive-table-separate-lines>tbody>tr>td[data-th]::before, .responsive-table-separate-lines>tfoot>tr>th[data-th]::before, .responsive-table-separate-lines>tfoot>tr>td[data-th]::before, .responsive-table-separate-lines>tr>th[data-th]::before, .responsive-table-separate-lines>tr>td[data-th]::before {
 		width: auto;
 		display: block;
 		margin-bottom: 0.5em;
@@ -2459,7 +2459,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	max-height: 5em;
 	overflow: auto;
 }
-.tooltip .associated_link {
+.tooltip .associated-link {
 	display: none;
 }
 .tooltip_img {
@@ -2988,7 +2988,7 @@ div.ajax_loading, p.ajax_loading {
 	}
 /*{+END}*/
 
-.content_screen_comments .comments_wrapper {
+.content_screen_comments .comments-wrapper {
 	margin-top: 2em;
 }
 
@@ -3028,26 +3028,26 @@ div.ajax_loading, p.ajax_loading {
 	}
 /*{+END}*/
 
-.post_buttons {
-	text-align: left !important; /* Overrides buttons_group */
+.post-buttons {
+	text-align: left !important; /* Overrides buttons-group */
 }
 
-.post .post_buttons {
+.post .post-buttons {
 	margin-top: 1.3em;
 }
 
-div .post_buttons>*, div .buttons_group_faded>* {
+div .post-buttons>*, div .buttons-group-faded>* {
 	opacity: 0.25;
 	transition-property : opacity;
 	transition-duration : 0.5s;
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
 
-.post_buttons>*[rel="add reply"], .post_buttons>a[rel="back_to_top"] {
+.post-buttons>*[rel="add reply"], .post-buttons>a[rel="back_to_top"] {
 	opacity: 1.0 !important;
 }
 
-.post_buttons:hover>*, body.touch_enabled .post_buttons>*, .buttons_group_faded:hover>*, body.touch_enabled .buttons_group_faded>* {
+.post-buttons:hover>*, body.touch_enabled .post-buttons>*, .buttons-group-faded:hover>*, body.touch_enabled .buttons-group-faded>* {
 	opacity: 1.0 !important;
 }
 
@@ -3075,7 +3075,7 @@ div .post_buttons>*, div .buttons_group_faded>* {
 	margin-top: 1em;
 	border: 1px dotted {$GET,slightly_seeded_complement_text} !important;
 }
-.comments_wrapper .boxless_space .comment_wrapper .highlighted_post.box {
+.comments-wrapper .boxless-space .comment_wrapper .highlighted_post.box {
 	border-top: 1px dotted {$GET,slightly_seeded_complement_text} !important; /* Needs to be more explicit as boxless-space rules will remove borders */
 }
 
@@ -3256,14 +3256,14 @@ dl.compact_list>dd {
 	margin: 0;
 }
 
-ul.spaced_list, .spaced_list ul, ol.spaced_list, .spaced_list ol, .zone_running_docs .comcode_page ul:not([class]), .zone_running_docs .comcode_page ol:not([class]) {
+ul.spaced_list, .spaced_list ul, ol.spaced_list, .spaced_list ol, .zone-running-docs .comcode_page ul:not([class]), .zone-running-docs .comcode_page ol:not([class]) {
 	margin: 0;
 	padding: 0 !important;
 }
-ul.spaced_list, .spaced_list ul, .zone_running_docs .comcode_page ul:not([class]) {
+ul.spaced_list, .spaced_list ul, .zone-running-docs .comcode_page ul:not([class]) {
 	list-style-type: square;
 }
-.spaced_list li, .zone_running_docs .comcode_page ul:not([class])>li, .zone_running_docs .comcode_page ol:not([class])>li {
+.spaced_list li, .zone-running-docs .comcode_page ul:not([class])>li, .zone-running-docs .comcode_page ol:not([class])>li {
 	margin: 0.5em 0 0.5em 30px !important;
 	padding: 0;
 }
@@ -3274,32 +3274,32 @@ ul.tick_list, ul.tick_list li {
 	list-style-type: none;
 }
 
-ul.actions_list {
+ul.actions-list {
 	padding: 0;
 	margin: 0;
 }
-ul.actions_list>li, .attachment ul.actions_list>li /*for higher precedence for attachments within docs zone*/ {
+ul.actions-list>li, .attachment ul.actions-list>li /*for higher precedence for attachments within docs zone*/ {
 	padding: 2px 0 2px 18px !important;
 	margin: 0 !important;
 }
 ul.actions_list_compact>li, ul.actions_list_super_compact>li {
 	padding: 0 0 0 18px;
 }
-ul.actions_list>li, ul.actions_list_compact>li, ul.actions_list_super_compact>li {
+ul.actions-list>li, ul.actions_list_compact>li, ul.actions_list_super_compact>li {
 	background: url('{$IMG_INLINE;,icons/14x14/action_link}') left 4px no-repeat;
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	ul.actions_list>li, ul.actions_list_compact>li, ul.actions_list_super_compact>li {
+	ul.actions-list>li, ul.actions_list_compact>li, ul.actions_list_super_compact>li {
 		background-image: url('{$IMG_INLINE;,icons/28x28/action_link}');
 		background-size: 14px 14px;
 	}
 }
-ul.actions_list>li, ul.actions_list_compact>li, ul.actions_list_super_compact>li {
+ul.actions-list>li, ul.actions_list_compact>li, ul.actions_list_super_compact>li {
 	margin: 0;
 	list-style-type: none;
 	list-style-image: none;
 }
-ul.actions_list h4 {
+ul.actions-list h4 {
 	display: inline;
 	line-height: 2em;
 }
@@ -3318,7 +3318,7 @@ A note about display of metadata...
 
 It may be displayed using:
  - meta_details_list (usually used on full screen views of content)
- - horizontal_meta_details (usually used on blocks where the meta details are important to encourage a click through)
+ - horizontal-meta-details (usually used on blocks where the meta details are important to encourage a click through)
  - a table (usually used where the content defines its own metadata beyond what all Composr content has, such as a length or resolution)
  - a tooltip (good for tucking it away, although it's not touch friendly so should only be used if non-important)
 But it should always have role="note" on it (ARIA)
@@ -3428,7 +3428,7 @@ dl.meta_details_list>dt, dl.meta_details_list>dd {
 	font-size: 0.8em;
 }
 
-.global-side-panel .associated_minor_button_action, .global-side-panel .associated-details, .associated_link {
+.global-side-panel .associated_minor_button_action, .global-side-panel .associated-details, .associated-link {
 	font-size: 0.95em;
 }
 
@@ -3446,69 +3446,69 @@ div.associated-details {
 }
 
 /*
-a.associated_link / form.associated_link / span.associated_link - a single associated link displayed inline, with CSS-generated brackets around
-p.associated_link / div.associated_link - a single associated link displayed in a block, with CSS-generated brackets around
+a.associated-link / form.associated-link / span.associated-link - a single associated link displayed inline, with CSS-generated brackets around
+p.associated-link / div.associated-link - a single associated link displayed in a block, with CSS-generated brackets around
 ul.associated-links-block-group - a group of associated links displayed in a block, each link on its own line with its own CSS-generated brackets around
 ul.horizontal_links / ul.horizontal_links_comma - a group of associated links displayed in a block, the links on the same line with a CSS-generated separation character; often used to represent block actions; often used in conjunction with associated-links-block-group to get the CSS-generated brackets
-.horizontal_meta_details / .horizontal_buttons / .horizontal_ticker - Additional horizontal list types for things other than links
-.buttons_group - used for a button set, like horizontal_links but for centred buttons
+.horizontal-meta-details / .horizontal_buttons / .horizontal_ticker - Additional horizontal list types for things other than links
+.buttons-group - used for a button set, like horizontal_links but for centred buttons
 
-There is 'actions_list' too (defined elsewhere). These are for links that are given more focus as key navigation mechanisms in a task-based UI.
+There is 'actions-list' too (defined elsewhere). These are for links that are given more focus as key navigation mechanisms in a task-based UI.
 */
 
-ul.associated-links-block-group.horizontal_links>li:first-child:before, p.associated_link:before, div.associated_link:before {
+ul.associated-links-block-group.horizontal_links>li:first-child:before, p.associated-link:before, div.associated-link:before {
 	opacity: 0.7;
 	font-size: 0.8em;
 }
 /*{+START,CSS_MODE,desktop}*/
-	ul.associated-links-block-group.horizontal_links>li:first-child:before, p.associated_link:before, div.associated_link:before {
+	ul.associated-links-block-group.horizontal_links>li:first-child:before, p.associated-link:before, div.associated-link:before {
 		content: "( " !important;
 	}
 /*{+END}*/
-ul.associated-links-block-group.horizontal_links>li:last-child:after, p.associated_link:after, div.associated_link:after {
+ul.associated-links-block-group.horizontal_links>li:last-child:after, p.associated-link:after, div.associated-link:after {
 	opacity: 0.7;
 	font-size: 0.8em;
 }
 /*{+START,CSS_MODE,desktop}*/
-	ul.associated-links-block-group.horizontal_links>li:last-child:after, p.associated_link:after, div.associated_link:after {
+	ul.associated-links-block-group.horizontal_links>li:last-child:after, p.associated-link:after, div.associated-link:after {
 		content: " )" !important;
 	}
 /*{+END}*/
-span.associated_link, a.associated_link, form.associated_link {
+span.associated-link, a.associated-link, form.associated-link {
 	white-space: nowrap;
 }
-ul.associated-links-block-group>li:before, span.associated_link:before, a.associated_link:before, form.associated_link:before {
+ul.associated-links-block-group>li:before, span.associated-link:before, a.associated-link:before, form.associated-link:before {
 	opacity: 0.7;
 }
 /*{+START,CSS_MODE,desktop}*/
-	ul.associated-links-block-group>li:before, span.associated_link:before, a.associated_link:before, form.associated_link:before {
+	ul.associated-links-block-group>li:before, span.associated-link:before, a.associated-link:before, form.associated-link:before {
 		content: "(" !important;
 	}
 /*{+END}*/
-ul.associated-links-block-group>li:first-child:before, span.associated_link:first-child:before, a.associated_link:first-child:before, form.associated_link:first-child:before {
+ul.associated-links-block-group>li:first-child:before, span.associated-link:first-child:before, a.associated-link:first-child:before, form.associated-link:first-child:before {
 	vertical-align: baseline !important;
 }
 ul.associated-links-block-group.horizontal_links>li:after { /* Undoes the above rules for if 'horizontal_links' is set (the rule further up will run instead and the middot one below) */
 	content: "" !important;
 }
-ul.associated-links-block-group>li:after, span.associated_link:after, a.associated_link:after, form.associated_link:after {
+ul.associated-links-block-group>li:after, span.associated-link:after, a.associated-link:after, form.associated-link:after {
 	opacity: 0.7;
 }
 /*{+START,CSS_MODE,desktop}*/
-	ul.associated-links-block-group>li:after, span.associated_link:after, a.associated_link:after, form.associated_link:after {
+	ul.associated-links-block-group>li:after, span.associated-link:after, a.associated-link:after, form.associated-link:after {
 		content: ")" !important;
 	}
 /*{+END}*/
 
 ul.associated-links-block-group.horizontal_links>li:before,
-.horizontal_meta_details li:before,
+.horizontal-meta-details li:before,
 .horizontal_links>li:before,
 .horizontal_ticker li:before {
 	vertical-align: -20%;
 }
 /*{+START,CSS_MODE,desktop}*/
 	ul.associated-links-block-group.horizontal_links>li:before,
-	.horizontal_meta_details li:before,
+	.horizontal-meta-details li:before,
 	.horizontal_links>li:before,
 	.horizontal_ticker li:before {
 		padding: 0 0.5em 0 0.1em;
@@ -3517,7 +3517,7 @@ ul.associated-links-block-group.horizontal_links>li:before,
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
 	ul.associated-links-block-group.horizontal_links>li:before,
-	.horizontal_meta_details li:before,
+	.horizontal-meta-details li:before,
 	.horizontal_links>li:before,
 	.horizontal_ticker li:before {
 		padding: 0 0.2em 0 0;
@@ -3526,14 +3526,14 @@ ul.associated-links-block-group.horizontal_links>li:before,
 		font-size: 0.8em;
 	}
 	.with_images ul.associated-links-block-group.horizontal_links>li:before,
-	.with_images .horizontal_meta_details li:before,
+	.with_images .horizontal-meta-details li:before,
 	.with_images .horizontal_links>li:before,
 	.with_images .horizontal_ticker li:before {
 		margin-left: 0.5em;
 		content: "" !important;
 	}
 /*{+END}*/
-.horizontal_meta_details li:before {
+.horizontal-meta-details li:before {
 	vertical-align: middle;
 }
 .horizontal_buttons li {
@@ -3546,7 +3546,7 @@ ul.associated-links-block-group.horizontal_links>li:before,
 .horizontal_links_comma li:before {
 	content: ", \A";
 }
-.horizontal_meta_details li:first-child:before,
+.horizontal-meta-details li:first-child:before,
 .horizontal_links li:first-child:before,
 .horizontal_buttons li:first-child:before,
 .horizontal_ticker li:first-child:before,
@@ -3556,7 +3556,7 @@ ul.associated-links-block-group.horizontal_links>li:before,
 	padding-left: 0 !important;
 	padding-right: 0 !important;
 }
-ul.associated_link, ul.horizontal_meta_details, ul.horizontal_links, ul.horizontal_links_comma, ul.horizontal_buttons, .horizontal_ticker {
+ul.associated-link, ul.horizontal-meta-details, ul.horizontal_links, ul.horizontal_links_comma, ul.horizontal_buttons, .horizontal_ticker {
 	list-style: none;
 	margin: 0;
 	padding: 0;
@@ -3568,33 +3568,33 @@ ul.horizontal_links_comma {
 	vertical-align: baseline !important;
 	width: auto !important;
 }
-ul.associated_link {
+ul.associated-link {
 	display: block;
 }
-ul.horizontal_meta_details, ul.horizontal_links, ul.horizontal_links_comma, ul.horizontal_buttons, .horizontal_ticker {
+ul.horizontal-meta-details, ul.horizontal_links, ul.horizontal_links_comma, ul.horizontal_buttons, .horizontal_ticker {
 	/* As these go across horizontally, we need to do this to allow centering to work for the group */
 	display: inline-block !important;
 	width: 100%;
 }
-ul.associated_link>li, .horizontal_meta_details>li, .horizontal_links>li, ul.horizontal_links_comma>li, .horizontal_buttons>li, .horizontal_ticker>li {
+ul.associated-link>li, .horizontal-meta-details>li, .horizontal_links>li, ul.horizontal_links_comma>li, .horizontal_buttons>li, .horizontal_ticker>li {
 	display: inline;
 	margin: 0;
 	padding: 0;
 }
-ul.associated_link>li {
+ul.associated-link>li {
 	display: block !important; /* Undoes "display: inline" above */
 }
 ul.horizontal_links li img {
 	max-width: 20px;
 }
-ul.associated_link li img {
+ul.associated-link li img {
 	max-width: 14px;
 }
-ul.horizontal_links li img, ul.associated_link li img, ul.horizontal_links a, ul.horizontal_links form {
+ul.horizontal_links li img, ul.associated-link li img, ul.horizontal_links a, ul.horizontal_links form {
 	vertical-align: middle;
 }
 /*{+START,CSS_MODE,mobile}*/
-	ul.horizontal_links li img, ul.associated_link li img, ul.horizontal_links a, ul.horizontal_links form {
+	ul.horizontal_links li img, ul.associated-link li img, ul.horizontal_links a, ul.horizontal_links form {
 		white-space: nowrap !important;
 	}
 /*{+END}*/
@@ -3606,17 +3606,17 @@ ul.horizontal_links li img, ul.associated_link li img, ul.horizontal_links a, ul
 .global-side-panel .associated-links-block-group>li {
 	white-space: normal;
 }
-.buttons_group, .associated-links-block-group {
+.buttons-group, .associated-links-block-group {
 	text-align: center;
 	padding: 0;
 	margin: 1em 0;
 	display: block;
 	list-style: none;
 }
-.horizontal_links, .associated_link {
+.horizontal_links, .associated-link {
 	font-size: 0.9em;
 }
-ul.buttons_group, ul.associated-links-block-group {
+ul.buttons-group, ul.associated-links-block-group {
 	margin: 0; /* Margin will go on li elements if its a list */
 }
 .force_normal_margin {
@@ -3629,7 +3629,7 @@ ul.buttons_group, ul.associated-links-block-group {
 	margin-top: 1em !important;
 }
 
-.associated_link.suggested {
+.associated-link.suggested {
 	font-weight: bold;
 }
 
@@ -3808,7 +3808,8 @@ div>.button_micro:first-child, div>.button_screen:first-child, div>.button_scree
 	font-size: 13px;
 	min-width: 8em;
 }
-.buttons__previous.button_screen, .buttons__previous_none.button_screen {
+.buttons--previous.button_screen, 
+.buttons--previous-none.button_screen {
 	padding: 6px 7px 7px 39px !important;
 	background-position: 7px 3px !important;
 }
@@ -3838,18 +3839,19 @@ div .button_micro {
 	border-radius: 1px;
 }
 
-.button_screen, .button_screen_item, .button_micro, .toggleable_tray_button img {
+.button_screen, .button_screen_item, .button_micro, .toggleable-tray-button img {
 	opacity: 0.85;
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 	display: inline-block;
 }
-.buttons__previous_none, .buttons__next_none {
+.buttons--previous-none, 
+.buttons--next-none {
 	opacity: 0.85 !important;
 	cursor: not-allowed;
 }
 .button_micro:hover, .button_screen:hover, .button_screen_item:hover,
-.button_screen:hover, .button_screen_item:hover, .button_micro:hover, .toggleable_tray_button:hover img,
-body.touch_enabled .button_screen, body.touch_enabled .button_screen_item, body.touch_enabled .button_micro, body.touch_enabled .toggleable_tray_button img {
+.button_screen:hover, .button_screen_item:hover, .button_micro:hover, .toggleable-tray-button:hover img,
+body.touch_enabled .button_screen, body.touch_enabled .button_screen_item, body.touch_enabled .button_micro, body.touch_enabled .toggleable-tray-button img {
 	opacity: 1.0;
 }
 .button_micro:disabled, .button_screen:disabled, .button_screen_item:disabled {
@@ -3917,11 +3919,16 @@ NB: Form buttons are wrapped in either:
  - .shunted_button
  - .proceed_button
  - .mini_proceed_button
- - .buttons_group (defined elsewhere, in "Associations/Summaries")
+ - .buttons-group (defined elsewhere, in "Associations/Summaries")
 */
 
 
-.menu___generic_admin__delete, .tabs__member_account__warnings, .buttons_group .buttons__edit, .buttons_group .buttons__edit_tree, .buttons_group .menu___generic_admin__merge, .buttons_group .buttons__move {
+.menu___generic_admin__delete, 
+.tabs--member-account--warnings, 
+.buttons-group .buttons--edit, 
+.buttons-group .buttons--edit-tree, 
+.buttons-group .menu___generic_admin__merge, 
+.buttons-group .buttons--move {
 	background-color: {$GET,red_highlight_background};
 	border-color: {$GET,red_highlight_text};
 }
@@ -3929,138 +3936,138 @@ NB: Form buttons are wrapped in either:
 /*
 Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 */
-.buttons__menu__pages__help {
+.buttons--menu--pages--help {
 	background-image: url('{$IMG,icons/24x24/menu/pages/help}') !important;
 }
-.buttons__back {
+.buttons--back {
 	background-image: url('{$IMG,icons/24x24/buttons/back}') !important;
 }
-.buttons__gotopage {
+.buttons--gotopage {
 	background-image: url('{$IMG,icons/24x24/buttons/gotopage}') !important;
 }
-.buttons__perpage {
+.buttons--perpage {
 	background-image: url('{$IMG,icons/24x24/buttons/perpage}') !important;
 }
-.buttons__filter {
+.buttons--filter {
 	background-image: url('{$IMG,icons/24x24/buttons/filter}') !important;
 }
-.buttons__sort {
+.buttons--sort {
 	background-image: url('{$IMG,icons/24x24/buttons/sort}') !important;
 }
-.buttons__all {
+.buttons--all {
 	background-image: url('{$IMG,icons/24x24/buttons/all}') !important;
 }
-.buttons__all2 {
+.buttons--all2 {
 	background-image: url('{$IMG,icons/24x24/buttons/all2}') !important;
 }
-.buttons__convert {
+.buttons--convert {
 	background-image: url('{$IMG,icons/24x24/buttons/convert}') !important;
 }
-.buttons__thumbnail {
+.buttons--thumbnail {
 	background-image: url('{$IMG,icons/24x24/buttons/thumbnail}') !important;
 }
-.buttons__fullsize {
+.buttons--fullsize {
 	background-image: url('{$IMG,icons/24x24/buttons/fullsize}') !important;
 }
-.buttons__calculate {
+.buttons--calculate {
 	background-image: url('{$IMG,icons/24x24/buttons/calculate}') !important;
 }
-.buttons__choose {
+.buttons--choose {
 	background-image: url('{$IMG,icons/24x24/buttons/choose}') !important;
 }
-.buttons__clear {
+.buttons--clear {
 	background-image: url('{$IMG,icons/24x24/buttons/clear}') !important;
 }
-.buttons__ignore {
+.buttons--ignore {
 	background-image: url('{$IMG,icons/24x24/buttons/ignore}') !important;
 }
-.buttons__closed {
+.buttons--closed {
 	background-image: url('{$IMG,icons/24x24/buttons/closed}') !important;
 }
-.buttons__enable_notifications {
+.buttons--enable-notifications {
 	background-image: url('{$IMG,icons/24x24/buttons/enable_notifications}') !important;
 }
-.buttons__disable_notifications {
+.buttons--disable-notifications {
 	background-image: url('{$IMG,icons/24x24/buttons/disable_notifications}') !important;
 }
-.buttons__edit {
+.buttons--edit {
 	background-image: url('{$IMG,icons/24x24/buttons/edit}') !important;
 }
-.buttons__more {
+.buttons--more {
 	background-image: url('{$IMG,icons/24x24/buttons/more}') !important;
 }
-.buttons__move {
+.buttons--move {
 	background-image: url('{$IMG,icons/24x24/buttons/move}') !important;
 }
-.buttons__no {
+.buttons--no {
 	background-image: url('{$IMG,icons/24x24/buttons/no}') !important;
 }
-.buttons__yes {
+.buttons--yes {
 	background-image: url('{$IMG,icons/24x24/buttons/yes}') !important;
 }
-.buttons__proceed {
+.buttons--proceed {
 	background-image: url('{$IMG,icons/24x24/buttons/proceed}') !important;
 }
 .menu-adminzone-tools-cleanup {
 	background-image: url('{$IMG,icons/24x24/menu/adminzone/tools/cleanup}') !important;
 }
-.buttons__copy {
+.buttons--copy {
 	background-image: url('{$IMG,icons/24x24/buttons/copy}') !important;
 }
-.buttons__skip {
+.buttons--skip {
 	background-image: url('{$IMG,icons/24x24/buttons/skip}') !important;
 }
-.buttons__cancel {
+.buttons--cancel {
 	background-image: url('{$IMG,icons/24x24/buttons/cancel}') !important;
 }
-.buttons__previous {
+.buttons--previous {
 	background-image: url('{$IMG,icons/24x24/buttons/previous}') !important;
 }
-.buttons__previous_none {
+.buttons--previous-none {
 	background-image: url('{$IMG,icons/24x24/buttons/previous_none}') !important;
 }
-.buttons__next {
+.buttons--next {
 	background-image: url('{$IMG,icons/24x24/buttons/next}') !important;
 }
-.buttons__next_none {
+.buttons--next-none {
 	background-image: url('{$IMG,icons/24x24/buttons/next_none}') !important;
 }
-.buttons__new_comment {
+.buttons--new-comment {
 	background-image: url('{$IMG,icons/24x24/buttons/new_comment}') !important;
 }
-.buttons__new_reply {
+.buttons--new-reply {
 	background-image: url('{$IMG,icons/24x24/buttons/new_reply}') !important;
 }
-.buttons__redirect {
+.buttons--redirect {
 	background-image: url('{$IMG,icons/24x24/buttons/redirect}') !important;
 }
-.buttons__report {
+.buttons--report {
 	background-image: url('{$IMG,icons/24x24/buttons/report}') !important;
 }
 /*{+START,IF,{$ADDON_INSTALLED,actionlog}}*/
-	.buttons__undo {
+	.buttons--undo {
 		background-image: url('{$IMG,icons/24x24/buttons/undo}') !important;
 	}
-	.buttons__revisions {
+	.buttons--revisions {
 		background-image: url('{$IMG,icons/24x24/buttons/revisions}') !important;
 	}
 /*{+END}*/
-.buttons__save {
+.buttons--save {
 	background-image: url('{$IMG,icons/24x24/buttons/save}') !important;
 }
-.buttons__search {
+.buttons--search {
 	background-image: url('{$IMG,icons/24x24/buttons/search}') !important;
 }
-.buttons__send {
+.buttons--send {
 	background-image: url('{$IMG,icons/24x24/buttons/send}') !important;
 }
-.buttons__upload {
+.buttons--upload {
 	background-image: url('{$IMG,icons/24x24/buttons/upload}') !important;
 }
 .menu__adminzone__audit__unvalidated {
 	background-image: url('{$IMG,icons/24x24/menu/adminzone/audit/unvalidated}') !important;
 }
-.buttons__vote {
+.buttons--vote {
 	background-image: url('{$IMG,icons/24x24/buttons/vote}') !important;
 }
 .feedback__rate {
@@ -4116,135 +4123,135 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 }
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.buttons__menu__pages__help {
+	.buttons--menu--pages--help {
 		background-image: url('{$IMG,icons/48x48/menu/pages/help}') !important;
 	}
-	.buttons__back {
+	.buttons--back {
 		background-image: url('{$IMG,icons/48x48/buttons/back}') !important;
 	}
-	.buttons__gotopage {
+	.buttons--gotopage {
 		background-image: url('{$IMG,icons/48x48/buttons/gotopage}') !important;
 	}
-	.buttons__perpage {
+	.buttons--perpage {
 		background-image: url('{$IMG,icons/48x48/buttons/perpage}') !important;
 	}
-	.buttons__filter {
+	.buttons--filter {
 		background-image: url('{$IMG,icons/48x48/buttons/filter}') !important;
 	}
-	.buttons__sort {
+	.buttons--sort {
 		background-image: url('{$IMG,icons/48x48/buttons/sort}') !important;
 	}
-	.buttons__all {
+	.buttons--all {
 		background-image: url('{$IMG,icons/48x48/buttons/all}') !important;
 	}
-	.buttons__all2 {
+	.buttons--all2 {
 		background-image: url('{$IMG,icons/48x48/buttons/all2}') !important;
 	}
-	.buttons__convert {
+	.buttons--convert {
 		background-image: url('{$IMG,icons/48x48/buttons/convert}') !important;
 	}
-	.buttons__thumbnail {
+	.buttons--thumbnail {
 		background-image: url('{$IMG,icons/48x48/buttons/thumbnail}') !important;
 	}
-	.buttons__fullsize {
+	.buttons--fullsize {
 		background-image: url('{$IMG,icons/48x48/buttons/fullsize}') !important;
 	}
-	.buttons__calculate {
+	.buttons--calculate {
 		background-image: url('{$IMG,icons/48x48/buttons/calculate}') !important;
 	}
-	.buttons__choose {
+	.buttons--choose {
 		background-image: url('{$IMG,icons/48x48/buttons/choose}') !important;
 	}
-	.buttons__clear {
+	.buttons--clear {
 		background-image: url('{$IMG,icons/48x48/buttons/clear}') !important;
 	}
-	.buttons__ignore {
+	.buttons--ignore {
 		background-image: url('{$IMG,icons/48x48/buttons/ignore}') !important;
 	}
-	.buttons__closed {
+	.buttons--closed {
 		background-image: url('{$IMG,icons/48x48/buttons/closed}') !important;
 	}
-	.buttons__enable_notifications {
+	.buttons--enable-notifications {
 		background-image: url('{$IMG,icons/48x48/buttons/enable_notifications}') !important;
 	}
-	.buttons__disable_notifications {
+	.buttons--disable-notifications {
 		background-image: url('{$IMG,icons/48x48/buttons/disable_notifications}') !important;
 	}
-	.buttons__edit {
+	.buttons--edit {
 		background-image: url('{$IMG,icons/48x48/buttons/edit}') !important;
 	}
-	.buttons__more {
+	.buttons--more {
 		background-image: url('{$IMG,icons/48x48/buttons/more}') !important;
 	}
-	.buttons__move {
+	.buttons--move {
 		background-image: url('{$IMG,icons/48x48/buttons/move}') !important;
 	}
-	.buttons__no {
+	.buttons--no {
 		background-image: url('{$IMG,icons/48x48/buttons/no}') !important;
 	}
-	.buttons__yes {
+	.buttons--yes {
 		background-image: url('{$IMG,icons/48x48/buttons/yes}') !important;
 	}
-	.buttons__proceed {
+	.buttons--proceed {
 		background-image: url('{$IMG,icons/48x48/buttons/proceed}') !important;
 	}
-	.buttons__copy {
+	.buttons--copy {
 		background-image: url('{$IMG,icons/48x48/buttons/copy}') !important;
 	}
-	.buttons__skip {
+	.buttons--skip {
 		background-image: url('{$IMG,icons/48x48/buttons/skip}') !important;
 	}
-	.buttons__cancel {
+	.buttons--cancel {
 		background-image: url('{$IMG,icons/48x48/buttons/cancel}') !important;
 	}
-	.buttons__previous {
+	.buttons--previous {
 		background-image: url('{$IMG,icons/48x48/buttons/previous}') !important;
 	}
-	.buttons__previous_none {
+	.buttons--previous-none {
 		background-image: url('{$IMG,icons/48x48/buttons/previous_none}') !important;
 	}
-	.buttons__next {
+	.buttons--next {
 		background-image: url('{$IMG,icons/48x48/buttons/next}') !important;
 	}
-	.buttons__next_none {
+	.buttons--next-none {
 		background-image: url('{$IMG,icons/48x48/buttons/next_none}') !important;
 	}
-	.buttons__new_comment {
+	.buttons--new-comment {
 		background-image: url('{$IMG,icons/48x48/buttons/new_comment}') !important;
 	}
-	.buttons__new_reply {
+	.buttons--new-reply {
 		background-image: url('{$IMG,icons/48x48/buttons/new_reply}') !important;
 	}
-	.buttons__redirect {
+	.buttons--redirect {
 		background-image: url('{$IMG,icons/48x48/buttons/redirect}') !important;
 	}
-	.buttons__report {
+	.buttons--report {
 		background-image: url('{$IMG,icons/48x48/buttons/report}') !important;
 	}
 	/*{+START,IF,{$ADDON_INSTALLED,actionlog}}*/
-		.buttons__undo {
+		.buttons--undo {
 			background-image: url('{$IMG,icons/48x48/buttons/undo}') !important;
 		}
-		.buttons__revisions {
+		.buttons--revisions {
 			background-image: url('{$IMG,icons/48x48/buttons/revisions}') !important;
 		}
 	/*{+END}*/
-	.buttons__save {
+	.buttons--save {
 		background-image: url('{$IMG,icons/48x48/buttons/save}') !important;
 	}
-	.buttons__search {
+	.buttons--search {
 		background-image: url('{$IMG,icons/48x48/buttons/search}') !important;
 	}
-	.buttons__send {
+	.buttons--send {
 		background-image: url('{$IMG,icons/48x48/buttons/send}') !important;
 	}
-	.buttons__upload {
+	.buttons--upload {
 		background-image: url('{$IMG,icons/48x48/buttons/upload}') !important;
 	}
 	.menu__adminzone__audit__unvalidated {
 		background-image: url('{$IMG,icons/48x48/menu/adminzone/audit/unvalidated}') !important;
 	}
-	.buttons__vote {
+	.buttons--vote {
 		background-image: url('{$IMG,icons/48x48/buttons/vote}') !important;
 	}
 	.feedback__rate {
@@ -5295,9 +5302,9 @@ span:not(:empty)+#lightbox_position_in_set:before, span:not(:empty)+#lightbox_fu
 		background: none !important;
 	}
 
-	.non_accessibility_redundancy,
+	.non-accessibility-redundancy,
 	.menu_type__top,
-	.buttons_group,
+	.buttons-group,
 	.associated-links-block-group,
 	.screen_actions_outer,
 	.adminzone_search,
@@ -5305,8 +5312,8 @@ span:not(:empty)+#lightbox_position_in_set:before, span:not(:empty)+#lightbox_fu
 	header,
 	footer,
 	.global-side-panel,
-	.toggleable_tray_button,
-	.post_buttons,
+	.toggleable-tray-button,
+	.post-buttons,
 	.quick_self_edit_link, .staff_actions,
 	.comments_form,
 	.ratings, .trackbacks {

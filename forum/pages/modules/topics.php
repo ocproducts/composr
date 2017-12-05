@@ -255,7 +255,7 @@ class Module_topics
     {
         $title = get_screen_title($_title);
         $text = paragraph(do_lang_tempcode('OPTIONAL_REASON'));
-        $submit_icon = 'buttons__proceed';
+        $submit_icon = 'buttons--proceed';
         $submit_name = do_lang_tempcode('PROCEED');
         $type = '_' . get_param_string('type', 'browse');
         $post_url = build_url(array('page' => '_SELF', 'type' => $type, 'id' => get_param_integer('id', null)), '_SELF', array(), true);
@@ -530,7 +530,7 @@ class Module_topics
             'TITLE' => $title,
             'FIELDS' => $fields,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'buttons__move',
+            'SUBMIT_ICON' => 'buttons--move',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));
@@ -584,7 +584,7 @@ class Module_topics
             'TITLE' => $title,
             'FIELDS' => $fields,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'buttons__move',
+            'SUBMIT_ICON' => 'buttons--move',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));
@@ -1053,7 +1053,7 @@ class Module_topics
             'TEXT' => $text,
             'URL' => $post_url,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'menu__adminzone__structure__forum__multi_moderations',
+            'SUBMIT_ICON' => 'menu--adminzone--structure--forum--multi-moderations',
             'SUBMIT_NAME' => $submit_name,
         ));
     }
@@ -1135,7 +1135,7 @@ class Module_topics
             'TITLE' => $title,
             'FIELDS' => $fields,
             'TEXT' => '',
-            'SUBMIT_ICON' => 'buttons__move',
+            'SUBMIT_ICON' => 'buttons--move',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));
@@ -1329,7 +1329,7 @@ class Module_topics
             'TITLE' => $title,
             'FIELDS' => $fields,
             'TEXT' => '',
-            'SUBMIT_ICON' => 'buttons__save',
+            'SUBMIT_ICON' => 'buttons--save',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));
@@ -1783,7 +1783,7 @@ class Module_topics
         }
 
         // Render form
-        $posting_form = get_posting_form(do_lang($private_topic ? 'ADD_PRIVATE_TOPIC' : 'ADD_TOPIC'), 'buttons__new_topic', $post, $post_url, $hidden_fields, $specialisation, null, '', $specialisation2, null, $js_function_calls, null, true, true, false, true, is_mobile());
+        $posting_form = get_posting_form(do_lang($private_topic ? 'ADD_PRIVATE_TOPIC' : 'ADD_TOPIC'), 'buttons--new-topic', $post, $post_url, $hidden_fields, $specialisation, null, '', $specialisation2, null, $js_function_calls, null, true, true, false, true, is_mobile());
 
         url_default_parameters__disable();
 
@@ -2112,7 +2112,7 @@ class Module_topics
             $post = $post->evaluate();
         }
         $js_function_calls = $this->_post_javascript();
-        $posting_form = get_posting_form(do_lang('REPLY'), 'buttons__new_reply', $post, $post_url, $hidden_fields, $specialisation, null, $topic_posts->evaluate(), $specialisation2, null, $js_function_calls);
+        $posting_form = get_posting_form(do_lang('REPLY'), 'buttons--new-reply', $post, $post_url, $hidden_fields, $specialisation, null, $topic_posts->evaluate(), $specialisation2, null, $js_function_calls);
 
         if ($parent_id === null) {
             if ($forum_id !== null && get_param_integer('threaded', $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_is_threaded', array('id' => $forum_id))) == 1) {
@@ -3158,7 +3158,7 @@ END;
             $parsed = null;
         }
         $js_function_calls = $this->_post_javascript();
-        $posting_form = get_posting_form(do_lang('SAVE'), 'buttons__edit', $post, $post_url, $hidden_fields, $specialisation, null, '', $specialisation2, $parsed, $js_function_calls);
+        $posting_form = get_posting_form(do_lang('SAVE'), 'buttons--edit', $post, $post_url, $hidden_fields, $specialisation, null, '', $specialisation2, $parsed, $js_function_calls);
 
         list($warning_details, $ping_url) = handle_conflict_resolution();
 
@@ -3562,7 +3562,7 @@ END;
             'TITLE' => $title,
             'FIELDS' => $fields,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));
@@ -3779,7 +3779,7 @@ END;
             'TITLE' => $title,
             'FIELDS' => $fields,
             'TEXT' => '',
-            'SUBMIT_ICON' => 'buttons__move',
+            'SUBMIT_ICON' => 'buttons--move',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));
@@ -3966,7 +3966,7 @@ END;
             'TEXT' => $text,
             'URL' => $post_url,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'menu__adminzone__structure__forum__multi_moderations',
+            'SUBMIT_ICON' => 'menu--adminzone--structure--forum--multi-moderations',
             'SUBMIT_NAME' => $submit_name,
             'SUPPORT_AUTOSAVE' => true,
             'CANCEL_URL' => build_url(array('page' => 'topicview', 'type' => 'browse', 'id' => $topic_id, 'clear_autosave' => 1), '_SELF'),
@@ -4067,7 +4067,7 @@ END;
             'TEXT' => $text,
             'URL' => $post_url,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => $submit_name,
         ));
     }

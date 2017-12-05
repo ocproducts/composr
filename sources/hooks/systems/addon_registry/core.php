@@ -2213,7 +2213,7 @@ class Hook_addon_registry_core
                 'TITLE' => lorem_title(),
                 'URL' => placeholder_url(),
                 'FIELDS' => $fields,
-                'SUBMIT_ICON' => 'buttons__proceed',
+                'SUBMIT_ICON' => 'buttons--proceed',
                 'SUBMIT_NAME' => lorem_word(),
                 'TEXT' => '',
             )), null, '', true)
@@ -2234,7 +2234,7 @@ class Hook_addon_registry_core
                 'BLOCK_ID' => lorem_word(),
                 'FIELDS' => placeholder_fields(),
                 'ACTIVE_FILTER' => placeholder_id(),
-                'SUBMIT_ICON' => 'buttons__proceed',
+                'SUBMIT_ICON' => 'buttons--proceed',
                 'LINKS' => array(
                     array(
                         'ACTIVE' => true,

@@ -501,12 +501,12 @@ For languages that have very high-quality release-ready translations an addon is
 Some languages may require stock phrases to be gendered. One known example is the member usergroup titles in French, which would need to be written as masculine or feminine based on the gender of the member being displayed. For example, the default title of a usergroup (given to members within it) is "Standard member" in English, but needs to be gendered on a french website.
 A solution to this can be implemented via a template edit. We can edit the [tt]CNS_TOPIC_POST.tpl[/tt] template to change:
 [code="Tempcode"]
-	{+START,IF_NON_EMPTY,{POSTER_TITLE}}<div class="cns_topic_poster_title">{POSTER_TITLE*}</div>{+END}
+	{+START,IF_NON_EMPTY,{POSTER_TITLE}}<div class="cns-topic-poster-title">{POSTER_TITLE*}</div>{+END}
 [/code]
 to:
 [code="Tempcode"]
 	{+START,IF_NON_EMPTY,{POSTER_TITLE}}
-		<div class="cns_topic_poster_title">
+		<div class="cns-topic-poster-title">
 			{+START,CASES,{$CPF_VALUE,Gender}}
 			Mâle=Un mâle
 			Femelle=Une femelle
@@ -514,12 +514,12 @@ to:
 			{+END}
 		</div>
 	{+END}
-	{+START,IF_NON_EMPTY,{RANK_IMAGES}}<div class="cns_topic_poster_rank_images">{RANK_IMAGES}</div>{+END}
+	{+START,IF_NON_EMPTY,{RANK_IMAGES}}<div class="cns-topic-poster-rank-images">{RANK_IMAGES}</div>{+END}
 [/code]
 This assumes we have created a custom profile field titled "Gender" with the options of "Mâle" and "Femelle". If filled in, it will remap their usergroup's title to either "Un mâle" or "Une femelle" accordingly. If not set, it will just use the regular usergroup title.
 Of course this system is hard-coding gender-specific labels into a template, so it is not perfect. However, sites could use more elaborate Tempcode if they need to preserve the feature of having different labels for different usergroups. We'll give such an example in the next section.
 
-Alternatively, you could just remove [tt]{+START,IF_NON_EMPTY,{POSTER_TITLE}}<div class="cns_topic_poster_title">{POSTER_TITLE*}</div>{+END}[/tt] entirely if you don't require the feature at all.
+Alternatively, you could just remove [tt]{+START,IF_NON_EMPTY,{POSTER_TITLE}}<div class="cns-topic-poster-title">{POSTER_TITLE*}</div>{+END}[/tt] entirely if you don't require the feature at all.
 
 [title="4"]Elaborate example[/title]
 
@@ -527,7 +527,7 @@ Using additional Tempcode, we could do additional deep remapping.
 
 [code="Tempcode"]
 	{+START,IF_NON_EMPTY,{POSTER_TITLE}}
-		<div class="cns_topic_poster_title">
+		<div class="cns-topic-poster-title">
 			{+START,IF,{$EQ,{POSTER_TITLE},Acteur}
 				{+START,CASES,{$CPF_VALUE,Gender}}
 				Mâle=Acteur
@@ -544,7 +544,7 @@ Using additional Tempcode, we could do additional deep remapping.
 			{+END}
 		</div>
 	{+END}
-	{+START,IF_NON_EMPTY,{RANK_IMAGES}}<div class="cns_topic_poster_rank_images">{RANK_IMAGES}</div>{+END}
+	{+START,IF_NON_EMPTY,{RANK_IMAGES}}<div class="cns-topic-poster-rank-images">{RANK_IMAGES}</div>{+END}
 [/code]
 
 This will remap the title based on what it already is. For each of the possible values ("Acteur" and "Policier" in our example) it will provide the gendered options for it.

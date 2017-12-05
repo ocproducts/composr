@@ -11,7 +11,7 @@
 <form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
-	<div class="wide_table_wrap really_long_table_wrap"><table class="columned_table results_table wide_table autosized_table responsive_table">
+	<div class="wide_table_wrap really_long_table_wrap"><table class="columned_table results_table wide_table autosized_table responsive-table">
 		<thead>
 			<tr>
 				<th>
@@ -36,7 +36,7 @@
 	</table></div>
 
 	<p class="proceed_button">
-		<input accesskey="u" data-disable-on-click="1" class="button_screen buttons__save" type="submit" value="{!SAVE}" />
+		<input accesskey="u" data-disable-on-click="1" class="button_screen buttons--save" type="submit" value="{!SAVE}" />
 	</p>
 
 	{+START,IF,{TOO_MANY}}

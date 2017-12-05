@@ -27,7 +27,7 @@
 				</div>
 
 				<div class="right">
-					<a class="toggleable_tray_button js-btn-toggle-chat-comcode-panel" href="#!">
+					<a class="toggleable-tray-button js-btn-toggle-chat-comcode-panel" href="#!">
 						<img id="e_chat-comcode-panel" src="{$IMG*,1x/trays/expand}" alt="{!CHAT_TOGGLE_COMCODE_BOX}" title="{!CHAT_TOGGLE_COMCODE_BOX}" />
 					</a>
 				</div>
@@ -36,7 +36,7 @@
 					<form title="{SUBMIT_VALUE*}" action="{MESSAGES_PHP*}?action=post&amp;room_id={CHATROOM_ID*}" method="post" class="inline" autocomplete="off">
 						{$INSERT_SPAMMER_BLACKHOLE}
 
-						<input type="button" class="button_micro buttons__send js-click-post-chat-message" value="{SUBMIT_VALUE*}" />
+						<input type="button" class="button_micro buttons--send js-click-post-chat-message" value="{SUBMIT_VALUE*}" />
 					</form>
 					{+START,IF,{$DESKTOP}}
 						<span class="inline_desktop">
@@ -120,17 +120,17 @@
 				</p>
 
 				<p>
-					<input class="button_screen_item buttons__save" data-cms-confirm-click="{!SAVE_COMPUTER_USING_COOKIE*}" type="submit" value="{$STRIP_TAGS,{!CHAT_CHANGE_OPTIONS}}" />
+					<input class="button_screen_item buttons--save" data-cms-confirm-click="{!SAVE_COMPUTER_USING_COOKIE*}" type="submit" value="{$STRIP_TAGS,{!CHAT_CHANGE_OPTIONS}}" />
 				</p>
 			</div>
 
 			<div class="chat-room-actions">
 				<p class="lonely_label">{!ACTIONS}:</p>
 				<nav>
-					<ul class="actions_list">
+					<ul class="actions-list">
 						{+START,LOOP,LINKS}
 							{+START,IF_NON_EMPTY,{_loop_var}}
-								<li class="icon_14_{_loop_key*}">{_loop_var}</li>
+								<li class="icon-14-{_loop_key*}">{_loop_var}</li>
 							{+END}
 						{+END}
 					</ul>

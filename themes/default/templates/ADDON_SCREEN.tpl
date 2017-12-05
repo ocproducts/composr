@@ -6,7 +6,7 @@
 	{+START,IF_NON_EMPTY,{UPDATED_ADDONS}}
 		{$,Link repeated here and below because it is important}
 		<nav>
-			<ul class="actions_list spaced_list">
+			<ul class="actions-list spaced_list">
 				<li>
 					<a href="{$PAGE_LINK*,_SELF:_SELF:addon_import:to_import={UPDATED_ADDONS}}"><strong>{!IMPORT_UPDATED_ADDONS}</strong></a>
 				</li>
@@ -15,7 +15,7 @@
 	{+END}
 
 	<div class="float-surrounder">
-		<p class="right associated_link">
+		<p class="right associated-link">
 			<a href="#!" class="js-click-check-uninstall-all">{!UNINSTALL}: {!USE_ALL}</a>
 		</p>
 	</div>
@@ -24,7 +24,7 @@
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div class="not-too-tall-addons">
-			<div class="wide_table_wrap"><table class="columned_table wide_table results_table autosized_table zebra responsive_table">
+			<div class="wide_table_wrap"><table class="columned_table wide_table results_table autosized_table zebra responsive-table">
 				<thead>
 					<tr>
 						<th>
@@ -58,14 +58,14 @@
 		</div>
 
 		<p class="proceed_button">
-			<input data-disable-on-click="1" class="button_screen buttons__proceed" type="submit" value="{!INSTALL_AND_UNINSTALL}" />
+			<input data-disable-on-click="1" class="button_screen buttons--proceed" type="submit" value="{!INSTALL_AND_UNINSTALL}" />
 		</p>
 	</form>
 
 	<h2>{!ACTIONS}</h2>
 
 	<nav>
-		<ul class="actions_list spaced_list">
+		<ul class="actions-list spaced_list">
 			{+START,IF_NON_EMPTY,{UPDATED_ADDONS}}
 				<li>
 					<a href="{$PAGE_LINK*,_SELF:_SELF:addon_import:to_import={UPDATED_ADDONS}}">{!IMPORT_UPDATED_ADDONS}</a>

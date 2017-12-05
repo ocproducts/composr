@@ -1,4 +1,4 @@
-<div class="box box___post_map">
+<div class="box box---post-map">
 	<h3>{!POST_MAP_REPLIES}</h3>
 
 	<ul>

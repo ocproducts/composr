@@ -108,7 +108,7 @@
 	<h2>{!ADD_THEME}</h2>
 
 	<nav>
-		<ul class="actions_list">
+		<ul class="actions-list">
 			{+START,IF,{$ADDON_INSTALLED,themewizard}}
 				<li><a href="{$PAGE_LINK*,adminzone:admin_themewizard:browse}">{!THEMEWIZARD}</a></li>
 			{+END}
@@ -130,7 +130,7 @@
 		<p class="lonely_label">{!THEMES_AND_ZONES}</p>
 		<ul>
 			{+START,LOOP,ZONES}
-				<li>{1*} <span class="associated_link"><a title="edit: {!EDIT_ZONE}: {1*}" data-cms-confirm-click="{!SWITCH_MODULE_WARNING*}" href="{$PAGE_LINK*,_SEARCH:admin_zones:_edit:{0}:redirect={$SELF_URL&}}">{!EDIT}</a></span></li>
+				<li>{1*} <span class="associated-link"><a title="edit: {!EDIT_ZONE}: {1*}" data-cms-confirm-click="{!SWITCH_MODULE_WARNING*}" href="{$PAGE_LINK*,_SEARCH:admin_zones:_edit:{0}:redirect={$SELF_URL&}}">{!EDIT}</a></span></li>
 			{+END}
 		</ul>
 	{+END}

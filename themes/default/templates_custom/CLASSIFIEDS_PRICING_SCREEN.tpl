@@ -8,7 +8,7 @@
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div>
-		<div class="wide_table_wrap"><table class="wide_table results_table autosized_table columned_table responsive_table">
+		<div class="wide_table_wrap"><table class="wide_table results_table autosized_table columned_table responsive-table">
 			<thead>
 				<tr>
 					<th>{!CATALOGUE}</th>

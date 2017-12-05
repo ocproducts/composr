@@ -753,7 +753,7 @@ class Module_cms_comcode_pages
                  'SKIP_WEBSTANDARDS' => true,
                  'GET' => true,
                  'HIDDEN' => $hidden,
-                 'SUBMIT_ICON' => 'buttons__proceed',
+                 'SUBMIT_ICON' => 'buttons--proceed',
                  'SUBMIT_NAME' => do_lang_tempcode('PROCEED'),
                  'TITLE' => $this->title,
                  'FIELDS' => $fields,

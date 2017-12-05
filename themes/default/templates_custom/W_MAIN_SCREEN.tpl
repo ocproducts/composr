@@ -139,7 +139,7 @@
 						<option value="0">
 							{!W_EVERYONE}
 						</option>
-					</select> <input class="button_screen_item buttons__send" type="submit" value="{!SEND_MESSAGE}" /></div>
+					</select> <input class="button_screen_item buttons--send" type="submit" value="{!SEND_MESSAGE}" /></div>
 				</form>
 			</div>
 
@@ -147,7 +147,7 @@
 				<h4>{!W_MEMBERS_IN_ROOM}</h4>
 
 				<div class="wide_table_wrap">
-					<table class="columned_table wide_table results_table autosized_table responsive_table">
+					<table class="columned_table wide_table results_table autosized_table responsive-table">
 						<thead>
 							<tr>
 								<th>
@@ -172,7 +172,7 @@
 				{+START,IF_NON_EMPTY,{ITEMS}}
 					<h4>{!W_ITEMS_IN_ROOM}</h4>
 
-					<table class="columned_table buildr_centered_contents wide_table results_table responsive_table">
+					<table class="columned_table buildr_centered_contents wide_table results_table responsive-table">
 						<thead>
 							<tr>
 								<th>
@@ -190,7 +190,7 @@
 				{+START,IF_NON_EMPTY,{ITEMS_SALE}}
 					<br />
 
-					<table class="columned_table buildr_centered_contents wide_table results_table responsive_table">
+					<table class="columned_table buildr_centered_contents wide_table results_table responsive-table">
 						<thead>
 							<tr>
 								<th colspan="3" class="buildr_posttop">
@@ -247,8 +247,8 @@
 
 		<div class="box box___w_main_screen" data-toggleable-tray="{}">
 			<h2 class="toggleable_tray_title js-tray-header">
-				<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!">{!W_ENVIRONMENT_ACTIONS}</a>
-				<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" /></a>
+				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!W_ENVIRONMENT_ACTIONS}</a>
+				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" /></a>
 			</h2>
 
 			<div class="toggleable_tray js-tray-content" style="{HIDE_ACTIONS*}"{+START,IF,{HIDE_ACTIONS}} aria-expanded="false"{+END}>
@@ -298,7 +298,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="drop" />
-									<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
+									<input class="button_screen_item buttons--proceed" type="submit" value="{!PROCEED}" />
 								</td>
 							</tr>
 
@@ -317,7 +317,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="give" />
-									<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
+									<input class="button_screen_item buttons--proceed" type="submit" value="{!PROCEED}" />
 								</td>
 							</tr>
 
@@ -336,7 +336,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="btype" value="pickpocket" />
-									<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
+									<input class="button_screen_item buttons--proceed" type="submit" value="{!PROCEED}" />
 								</td>
 							</tr>
 
@@ -355,7 +355,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="use" />
-									<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
+									<input class="button_screen_item buttons--proceed" type="submit" value="{!PROCEED}" />
 								</td>
 							</tr>
 
@@ -374,7 +374,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="btype" value="delete-message-by-person" />
-									<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
+									<input class="button_screen_item buttons--proceed" type="submit" value="{!PROCEED}" />
 								</td>
 							</tr>
 						{+END}
@@ -394,7 +394,7 @@
 							</td>
 							<td>
 								<input type="hidden" name="type" value="findperson" />
-								<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
+								<input class="button_screen_item buttons--proceed" type="submit" value="{!PROCEED}" />
 							</td>
 						</tr>
 
@@ -414,7 +414,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="teleport-person" />
-									<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
+									<input class="button_screen_item buttons--proceed" type="submit" value="{!PROCEED}" />
 								</td>
 							</tr>
 
@@ -433,7 +433,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="imprison-person" />
-									<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
+									<input class="button_screen_item buttons--proceed" type="submit" value="{!PROCEED}" />
 								</td>
 							</tr>
 
@@ -452,7 +452,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="hurt-person" />
-									<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
+									<input class="button_screen_item buttons--proceed" type="submit" value="{!PROCEED}" />
 								</td>
 							</tr>
 
@@ -471,7 +471,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="dehurt-person" />
-									<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
+									<input class="button_screen_item buttons--proceed" type="submit" value="{!PROCEED}" />
 								</td>
 							</tr>
 
@@ -490,7 +490,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="ban-person" />
-									<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
+									<input class="button_screen_item buttons--proceed" type="submit" value="{!PROCEED}" />
 								</td>
 							</tr>
 
@@ -509,7 +509,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="unban-person" />
-									<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
+									<input class="button_screen_item buttons--proceed" type="submit" value="{!PROCEED}" />
 								</td>
 							</tr>
 
@@ -528,7 +528,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="take-from-person" />
-									<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
+									<input class="button_screen_item buttons--proceed" type="submit" value="{!PROCEED}" />
 								</td>
 							</tr>
 						{+END}
@@ -540,8 +540,8 @@
 		{+START,IF,{MAY_DO_STUFF}}
 			<div class="box box___w_main_screen" data-toggleable-tray="{}">
 				<h2 class="toggleable_tray_title js-tray-header">
-					<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!">{!W_ENVIRONMENT_ADDITIONS}</a>
-					<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" /></a>
+					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!W_ENVIRONMENT_ADDITIONS}</a>
+					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" /></a>
 				</h2>
 
 				<div class="toggleable_tray js-tray-content" style="{HIDE_ADDITIONS*}"{+START,IF,{HIDE_ADDITIONS}} aria-expanded="false"{+END}>
@@ -570,8 +570,8 @@
 
 		<div class="box box___w_main_screen" data-toggleable-tray="{}">
 			<h2 class="toggleable_tray_title js-tray-header">
-				<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!">{!W_ENVIRONMENT_MODIFICATIONS}</a>
-				<a class="js-click-set-hidemod-cookie toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" /></a>
+				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!W_ENVIRONMENT_MODIFICATIONS}</a>
+				<a class="js-click-set-hidemod-cookie toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" /></a>
 			</h2>
 
 			<div class="toggleable_tray js-tray-content" style="{HIDE_MODIFICATIONS*}"{+START,IF,{HIDE_MODIFICATIONS}} aria-expanded="false"{+END}>
@@ -580,7 +580,7 @@
 						{$INSERT_SPAMMER_BLACKHOLE}
 
 						<label for="item">{!W_ITEMS}</label>: {ITEMS_OWNED} <input type="hidden" name="type" value="edititem" />
-						<input class="js-click-set-type-edititem button_screen_item buttons__edit" type="submit" value="{!W_EDIT_ITEM}" />
+						<input class="js-click-set-type-edititem button_screen_item buttons--edit" type="submit" value="{!W_EDIT_ITEM}" />
 						<input class="js-click-set-type-confirm button_screen_item menu___generic_admin__delete" type="submit" value="{!W_DELETE_ITEM}" />
 					</div></form>
 

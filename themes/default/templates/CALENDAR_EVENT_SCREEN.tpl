@@ -39,7 +39,7 @@
 								<li class="float-surrounder">
 									{TIME*}
 
-									<span class="horiz-field-sep associated_link"><a href="{UNSUBSCRIBE_URL*}" title="{!UNSUBSCRIBE}: {TIME*}">{!UNSUBSCRIBE}</a></span>
+									<span class="horiz-field-sep associated-link"><a href="{UNSUBSCRIBE_URL*}" title="{!UNSUBSCRIBE}: {TIME*}">{!UNSUBSCRIBE}</a></span>
 								</li>
 							{+END}
 						</ul>

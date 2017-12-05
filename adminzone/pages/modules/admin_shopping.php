@@ -457,7 +457,7 @@ class Module_admin_shopping
             'HIDDEN' => '',
             'FIELDS' => $fields,
             'URL' => $update_url,
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => $submit_name,
             'SUPPORT_AUTOSAVE' => true,
         ));

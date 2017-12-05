@@ -3,8 +3,8 @@
 <div data-toggleable-tray="{}" data-tpl="formScreenInputVariousTicks" data-tpl-params="{+START,PARAMS_JSON,CUSTOM_NAME,CUSTOM_ACCEPT_MULTIPLE}{_*}{+END}">
 	{+START,IF_PASSED,EXPANDED}
 		<h3 class="toggleable_tray_title js-tray-header">
-			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{$?,{EXPANDED},{!CONTRACT},{!EXPAND}}" title="{$?,{EXPANDED},{!CONTRACT},{!EXPAND}}" src="{$IMG*,1x/trays/{$?,{EXPANDED},contract,expand}}" /></a>
-			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!">{SECTION_TITLE*}</a>
+			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{$?,{EXPANDED},{!CONTRACT},{!EXPAND}}" title="{$?,{EXPANDED},{!CONTRACT},{!EXPAND}}" src="{$IMG*,1x/trays/{$?,{EXPANDED},contract,expand}}" /></a>
+			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{SECTION_TITLE*}</a>
 		</h3>
 		<div class="toggleable_tray js-tray-content" style="display: {$?,{EXPANDED},block,none}"{+START,IF,{$NOT,{EXPANDED}}} aria-expanded="false"{+END}>
 			<div>

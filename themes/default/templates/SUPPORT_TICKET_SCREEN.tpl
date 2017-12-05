@@ -51,7 +51,7 @@
 
 						<label for="assign_username" class="accessibility_hidden">{!USERNAME}</label>
 						<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" class="input_username js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" id="assign_username" name="username" value="{$USERNAME*}" />
-						<input class="button_micro buttons__proceed" type="submit" value="{!ASSIGN_TO}" />
+						<input class="button_micro buttons--proceed" type="submit" value="{!ASSIGN_TO}" />
 					</form>
 				</li>
 			{+END}
@@ -157,7 +157,7 @@
 		<hr class="spaced_rule" />
 	{+END}
 
-	<div class="buttons_group buttons_group_faded">
+	<div class="buttons-group buttons-group-faded">
 		{+START,IF,{$NEQ,{$_GET,type},ticket}}
 			{+START,INCLUDE,BUTTON_SCREEN}
 				TITLE={!CREATE_SUPPORT_TICKET}
@@ -179,7 +179,7 @@
 		{+START,IF_PASSED,EDIT_URL}
 			{+START,INCLUDE,BUTTON_SCREEN}
 				TITLE={!EDIT_TICKET}
-				IMG=buttons__save
+				IMG=buttons--save
 				URL={EDIT_URL}
 				IMMEDIATE=0
 			{+END}
@@ -188,7 +188,7 @@
 		{+START,IF_PASSED,TOGGLE_TICKET_CLOSED_URL}
 			{+START,INCLUDE,BUTTON_SCREEN}
 				TITLE={$?,{CLOSED},{!OPEN_TICKET},{!CLOSE_TICKET}}
-				IMG={$?,{CLOSED},buttons__closed,buttons__clear}
+				IMG={$?,{CLOSED},buttons--closed,buttons--clear}
 				IMMEDIATE=1
 				URL={TOGGLE_TICKET_CLOSED_URL}
 			{+END}
@@ -213,7 +213,7 @@
 		<p class="nothing_here">{!NONE}</p>
 	{+END}
 	{+START,IF_NON_EMPTY,{OTHER_TICKETS}}
-		<div class="wide_table_wrap"><table class="columned_table results_table wide_table support_tickets autosized_table responsive_table">
+		<div class="wide_table_wrap"><table class="columned_table results_table wide_table support_tickets autosized_table responsive-table">
 			<thead>
 				<tr>
 					<th>

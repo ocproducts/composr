@@ -171,7 +171,7 @@ function upgrade_script()
         <tbody>
             <tr><th>X</th><td>{$l_not_for_patch} {$l_tutorial}</td><td>" . escape_html(display_time_period(60 * 120)) . "</td></tr>
             <tr><th>1</th><td>{$l_take_backup}</td><td>" . escape_html(display_time_period(60 * 120)) . "</td></tr>
-            <tr><th>2</th><td>{$l_close_site}  {$l_fu_closedness}<br /><q style=\"font-style: italic\">" . $closed->evaluate() . "</q> <span class=\"associated_link\"><a href=\"" . escape_html($closed_url->evaluate()) . "\" title=\"(this link will open in a new window)\" target=\"_blank\">" . do_lang('CHANGE') . "</a></span></td><td>" . escape_html(display_time_period(60)) . "</td></tr>
+            <tr><th>2</th><td>{$l_close_site}  {$l_fu_closedness}<br /><q style=\"font-style: italic\">" . $closed->evaluate() . "</q> <span class=\"associated-link\"><a href=\"" . escape_html($closed_url->evaluate()) . "\" title=\"(this link will open in a new window)\" target=\"_blank\">" . do_lang('CHANGE') . "</a></span></td><td>" . escape_html(display_time_period(60)) . "</td></tr>
             <tr><th>3</th><td>{$l_download}</td><td>" . escape_html(display_time_period(60 * 5)) . "</td></tr>
             <tr><th>4</th><td>{$l_not_for_patch} {$l_integrity_scan_no_merging}<!-- " . do_lang('OR') . " {$l_integrity_scan}--></td><td>" . str_replace(' ', '&nbsp;', escape_html(display_time_period(60 * 10))) . "&nbsp;&dagger;</td></tr>
             <tr><th>5</th><td>{$l_not_for_patch} {$l_database_upgrade}<br />{$l_up_info}</td><td>" . escape_html(display_time_period(60 * 5)) . "</td></tr>
@@ -240,7 +240,7 @@ function upgrade_script()
                         echo '<p><label for="upload">' . do_lang('ALT_FIELD', do_lang('UPLOAD')) . '</label> <input type="file" id="upload" name="upload" /></p>';
                         echo '<script ' . csp_nonce_html() . '>var url=document.getElementById(\'url\'); url.addEventListener(\'change\', function() { document.getElementById(\'upload\').disabled=url.value!=\'\'; });</script>';
                     }
-                    echo '<p><input class="buttons__proceed button_screen" type="submit" value="' . do_lang('PROCEED') . '" /></p>';
+                    echo '<p><input class="buttons--proceed button_screen" type="submit" value="' . do_lang('PROCEED') . '" /></p>';
                     echo '</form>';
                     $show_more_link = false;
                     break;
@@ -643,9 +643,9 @@ function fu_link($url, $text, $disabled = false, $js = '')
     if (get_param_integer('keep_show_loading', 0) == 1) {
         $url .= '&keep_show_loading=1';
     }
-    $class = 'buttons__proceed';
+    $class = 'buttons--proceed';
     if ($text == do_lang('MORE_OPTIONS')) {
-        $class = 'buttons__back';
+        $class = 'buttons--back';
     }
 
     $ret = '<form title="' . escape_html($text) . '" style="display: inline" action="' . escape_html($url) . '" method="post">';
@@ -1330,7 +1330,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
                 $ret_str .= do_lang('WARNING_FILE_ADDON', $addon);
             }
             $ret_str .= '<p class="associated-details"><a href="#!" onclick="var checkmarks=this.parentNode.parentNode.getElementsByTagName(\'input\'); for (var i=0;i&lt;checkmarks.length;i++) { checkmarks[i].checked=true; } return false;">' . do_lang('FU_CHECK_ALL') . '</a></p>';
-            $ret_str .= '<input class="buttons__proceed button_screen" accesskey="c" type="submit" value="' . do_lang('FU_AUTO_HANDLE') . '" />';
+            $ret_str .= '<input class="buttons--proceed button_screen" accesskey="c" type="submit" value="' . do_lang('FU_AUTO_HANDLE') . '" />';
             $ret_str .= '</div>';
 
             $found_something = true;

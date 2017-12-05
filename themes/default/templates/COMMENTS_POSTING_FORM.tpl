@@ -35,8 +35,8 @@
 						{TITLE*}
 					{+END}
 					{+START,IF_PASSED,EXPAND_TYPE}
-						<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{$?,{$EQ,{EXPAND_TYPE},contract},{!CONTRACT},{!EXPAND}}" title="{$?,{$EQ,{EXPAND_TYPE},contract},{!CONTRACT},{!EXPAND}}" src="{$IMG*,1x/trays/{EXPAND_TYPE}2}" /></a>
-						<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!">{TITLE*}</a>
+						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{$?,{$EQ,{EXPAND_TYPE},contract},{!CONTRACT},{!EXPAND}}" title="{$?,{$EQ,{EXPAND_TYPE},contract},{!CONTRACT},{!EXPAND}}" src="{$IMG*,1x/trays/{EXPAND_TYPE}2}" /></a>
+						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{TITLE*}</a>
 					{+END}
 				</h3>
 			{+END}
@@ -158,7 +158,7 @@
 													{EMOTICONS}
 
 													{+START,IF,{$CNS}}
-														<p class="associated_link associated-links-block-group"><a rel="nofollow" href="#!" class="js-click-open-site-emoticon-chooser-window">{!EMOTICONS_POPUP}</a></p>
+														<p class="associated-link associated-links-block-group"><a rel="nofollow" href="#!" class="js-click-open-site-emoticon-chooser-window">{!EMOTICONS_POPUP}</a></p>
 													{+END}
 												</div>
 											</div></div>
@@ -200,7 +200,7 @@
 						{$SET,has_preview_button,{$AND,{$DESKTOP},{$JS_ON},{$CONFIG_OPTION,enable_previews},{$NOT,{$VALUE_OPTION,xhtml_strict}}}}
 						{+START,IF_PASSED,SKIP_PREVIEW}{$SET,has_preview_button,0}{+END}
 
-						<div class="proceed_button buttons_group {$?,{$GET,has_preview_button},contains_preview_button,contains_no_preview_button}">
+						<div class="proceed_button buttons-group {$?,{$GET,has_preview_button},contains_preview_button,contains_no_preview_button}">
 							{+START,IF,{$DESKTOP}}
 								{+START,IF,{$GET,has_preview_button}}
 									<input id="preview_button" accesskey="p" tabindex="250" class="tabs__preview js-click-do-form-preview {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item} desktop_inline" type="button" value="{!PREVIEW}" />
@@ -208,17 +208,17 @@
 							{+END}
 
 							{+START,IF_PASSED,MORE_URL}
-								<button tabindex="6" accesskey="y" class="buttons__new_post_full {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item} js-btn-full-editor" type="button">{+START,IF,{$DESKTOP}}<span class="inline_desktop">{!FULL_EDITOR}</span>{+END}<span class="inline_mobile">{!MORE}</span></button>
+								<button tabindex="6" accesskey="y" class="buttons--new-post-full {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item} js-btn-full-editor" type="button">{+START,IF,{$DESKTOP}}<span class="inline_desktop">{!FULL_EDITOR}</span>{+END}<span class="inline_mobile">{!MORE}</span></button>
 							{+END}
 
 							{+START,IF_PASSED,ATTACHMENTS}
 								{+START,IF,{$AND,{TRUE_ATTACHMENT_UI},{$BROWSER_MATCHES,simplified_attachments_ui}}}
-									<input tabindex="7" id="js-attachment-upload-button" class="for_field_post buttons__thumbnail {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item}" type="button" value="{!comcode:ADD_IMAGES}" />
+									<input tabindex="7" id="js-attachment-upload-button" class="for_field_post buttons--thumbnail {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item}" type="button" value="{!comcode:ADD_IMAGES}" />
 								{+END}
 							{+END}
 
 							{+START,SET,button_title}{+START,IF_PASSED,SUBMIT_NAME}{SUBMIT_NAME*}{+END}{+START,IF_NON_PASSED,SUBMIT_NAME}{+START,IF_NON_EMPTY,{TITLE}}{TITLE*}{+END}{+START,IF_EMPTY,{TITLE}}{!SEND}{+END}{+END}{+END}
-							{+START,SET,button_icon}{+START,IF_PASSED,SUBMIT_ICON}{SUBMIT_ICON*}{+END}{+START,IF_NON_PASSED,SUBMIT_ICON}{+START,IF_NON_PASSED,MORE_URL}buttons__new_comment{+END}{+START,IF_PASSED,MORE_URL}buttons__new_reply{+END}{+END}{+END}
+							{+START,SET,button_icon}{+START,IF_PASSED,SUBMIT_ICON}{SUBMIT_ICON*}{+END}{+START,IF_NON_PASSED,SUBMIT_ICON}{+START,IF_NON_PASSED,MORE_URL}buttons--new-comment{+END}{+START,IF_PASSED,MORE_URL}buttons--new-reply{+END}{+END}{+END}
 							<button tabindex="8" accesskey="u" id="submit_button" class="{$GET,button_icon} {$?,{$GET,has_preview_button},near_preview_button,not_near_preview_button} {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item} js-btn-submit-comments" type="button">{+START,IF,{$DESKTOP}}<span class="inline_desktop">{$GET,button_title}</span>{+END}<span class="inline_mobile">{$REPLACE,{!cns:REPLY},{!_REPLY},{$GET,button_title}}</span></button>
 						</div>
 					</div>

@@ -6,13 +6,13 @@
 		<h3 class="toggleable_tray_title js-tray-header">
 			<a title="{!EDIT}: {!SITE_WATCHLIST}" class="top-left-toggleicon js-click-staff-block-flip" href="#!">{!EDIT}</a>
 
-			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!SITE_WATCHLIST}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" /></a>
+			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!SITE_WATCHLIST}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" /></a>
 
-			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!">{!SITE_WATCHLIST}</a>
+			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!SITE_WATCHLIST}</a>
 		</h3>
 
 		<div class="toggleable_tray js-tray-content">
-			<div class="wide_table_wrap" id="website_monitoring_list_{$GET%,RAND_WEBSITE_MONITORING}"><table class="columned_table results_table wide_table autosized_table responsive_table">
+			<div class="wide_table_wrap" id="website_monitoring_list_{$GET%,RAND_WEBSITE_MONITORING}"><table class="columned_table results_table wide_table autosized_table responsive-table">
 				<thead>
 					<tr>
 						<th>{!config:SITE_NAME}</th>
@@ -45,8 +45,8 @@
 					<textarea class="wide_field" id="website_monitoring_list_edit" name="website_monitoring_list_edit" rows="10" cols="90">{+START,LOOP,SITES_BEING_WATCHED}{_loop_key*}={_loop_var*}&#10;&#10;{+END}</textarea>
 				</div>
 
-				<div class="buttons_group">
-					<input data-disable-on-click="1" class="button_screen_item buttons__save {+START,IF,{$HAS_PRIVILEGE,comcode_dangerous}}js-click-headless-submit{+END}" type="submit" value="{!SAVE}" />
+				<div class="buttons-group">
+					<input data-disable-on-click="1" class="button_screen_item buttons--save {+START,IF,{$HAS_PRIVILEGE,comcode_dangerous}}js-click-headless-submit{+END}" type="submit" value="{!SAVE}" />
 				</div>
 			</form>
 

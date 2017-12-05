@@ -438,22 +438,22 @@
 	display: block;
 }
 
-.sound_effects_form p {
+.sound-effects-form p {
 	margin-bottom: 0;
 	padding-bottom: 1em;
 }
 
 /* Instant messaging (site-wide) */
 
-.sitewide_im_popup_body {
+.sitewide-im-popup-body {
 	background-color: {$GET,area_background} !important;
 }
 
-.chat_sound_effects_checkbox {
+.chat-sound-effects-checkbox {
 	margin-top: -2.2em;
 }
 
-.im_event {
+.im-event {
 	position: fixed;
 	width: 11em;
 	z-index: 1000;
@@ -466,30 +466,30 @@
 	padding: 1em;
 }
 
-.im_event p {
+.im-event p {
 	margin-top: 0;
 }
 
-.im_event .im_popup_close_button {
+.im-event .im-popup-close-button {
 	float: right;
 	margin: 0 0 0.5em 0.5em;
 	cursor: pointer;
 }
 
-.im_event .im_popup_avatar {
+.im-event .im-popup-avatar {
 	float: left;
 	width: 25px;
 	height: 25px;
 	margin-right: 0.5em;
 }
 
-.im_event .actions_list {
+.im-event .actions-list {
 	float: right;
 }
 
 /* Shoutbox */
 
-.shoutbox_message {
+.shoutbox-message {
 	font-weight: bold;
 	font-size: 0.9em;
 	text-indent: 0;
@@ -502,7 +502,7 @@
 	position: relative;
 }
 
-.block_side_friends {
+.block-side-friends {
 	/*position: fixed;	Useful start for tying to bottom, but you probably want to leave a footer gap so you can move it fully down
 	bottom: 7.5em;
 	background-color: {$GET,main_background};
@@ -517,18 +517,18 @@
 =========================
 */
 
-.menu__social__chat__chat {
+.menu--social--chat--chat {
 	background-image: url('{$IMG,icons/24x24/menu/social/chat/chat}') !important;
 }
-.menu__social__chat__sound {
+.menu--social--chat--sound {
 	background-image: url('{$IMG,icons/24x24/menu/social/chat/sound}') !important;
 }
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.menu__social__chat__chat {
+	.menu--social--chat--chat {
 		background-image: url('{$IMG,icons/48x48/menu/social/chat/chat}') !important;
 	}
-	.menu__social__chat__sound {
+	.menu--social--chat--sound {
 		background-image: url('{$IMG,icons/48x48/menu/social/chat/sound}') !important;
 	}
 }
@@ -539,19 +539,19 @@
 =========================
 */
 
-ul.icon_links_block_group {
+ul.icon-links-block-group {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
 	float: right;
 }
 /*{+START,CSS_MODE,mobile}*/
-	ul.icon_links_block_group {
+	ul.icon-links-block-group {
 		margin: 1em 0;
 	}
 /*{+END}*/
 
-ul.icon_links_block_group>li {
+ul.icon-links-block-group>li {
 	list-style-type: none;
 	margin: 0 0 0 1em;
 	padding: 0 0 0 17px;
@@ -561,61 +561,61 @@ ul.icon_links_block_group>li {
 	min-height: 15px;
 }
 
-.icon_14_add {
+.icon-14-add {
 	background-image: url('{$IMG,icons/14x14/add}') !important;
 }
-.icon_14_edit2 {
+.icon-14-edit2 {
 	background-image: url('{$IMG,icons/14x14/edit2}') !important;
 }
-.icon_14_export {
+.icon-14-export {
 	background-image: url('{$IMG,icons/14x14/export}') !important;
 }
-.icon_14_proceed {
+.icon-14-proceed {
 	background-image: url('{$IMG,icons/14x14/proceed}') !important;
 }
-.icon_14_remove_manage {
+.icon-14-remove-manage {
 	background-image: url('{$IMG,icons/14x14/remove_manage}') !important;
 }
-.icon_14_remove {
+.icon-14-remove {
 	background-image: url('{$IMG,icons/14x14/remove}') !important;
 }
-.icon_14_sound_effects {
+.icon-14-sound-effects {
 	background-image: url('{$IMG,icons/14x14/sound_effects}') !important;
 }
-.icon_14_tools {
+.icon-14-tools {
 	background-image: url('{$IMG,icons/14x14/tools}') !important;
 }
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.icon_14_add {
+	.icon-14-add {
 		background-image: url('{$IMG,icons/28x28/add}') !important;
 		background-size: 14px 14px;
 	}
-	.icon_14_edit2 {
+	.icon-14-edit2 {
 		background-image: url('{$IMG,icons/28x28/edit2}') !important;
 		background-size: 14px 14px;
 	}
-	.icon_14_export {
+	.icon-14-export {
 		background-image: url('{$IMG,icons/28x28/export}') !important;
 		background-size: 14px 14px;
 	}
-	.icon_14_proceed {
+	.icon-14-proceed {
 		background-image: url('{$IMG,icons/28x28/proceed}') !important;
 		background-size: 14px 14px;
 	}
-	.icon_14_remove_manage {
+	.icon-14-remove-manage {
 		background-image: url('{$IMG,icons/28x28/remove_manage}') !important;
 		background-size: 14px 14px;
 	}
-	.icon_14_remove {
+	.icon-14-remove {
 		background-image: url('{$IMG,icons/28x28/remove}') !important;
 		background-size: 14px 14px;
 	}
-	.icon_14_sound_effects {
+	.icon-14-sound-effects {
 		background-image: url('{$IMG,icons/28x28/sound_effects}') !important;
 		background-size: 14px 14px;
 	}
-	.icon_14_tools {
+	.icon-14-tools {
 		background-image: url('{$IMG,icons/28x28/tools}') !important;
 		background-size: 14px 14px;
 	}

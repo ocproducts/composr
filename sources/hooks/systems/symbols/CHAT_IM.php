@@ -79,7 +79,7 @@ class Hook_symbol_CHAT_IM
                 ));
                 $im_area_template_c = do_template('STANDALONE_HTML_WRAP', array(
                     '_GUID' => '5032bfa802af3fe14e610d09078ef849',
-                    'CSS' => 'sitewide_im_popup_body',
+                    'CSS' => 'sitewide-im-popup-body',
                     'TITLE' => $title,
                     'TARGET' => '_site_opener',
                     'CONTENT' => $im_area_template_b,

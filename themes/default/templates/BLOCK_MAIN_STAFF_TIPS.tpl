@@ -5,8 +5,8 @@
 <div id="{$GET*,ajax_block_main_staff_tips_wrapper}" class="box_wrapper" data-tpl="blockMainStaffTips" data-tpl-params="{+START,PARAMS_JSON,ajax_block_main_staff_tips_wrapper,block_call_url}{_*}{+END}">
 	<section id="tray_{!TIPS|}" class="box box___block_main_staff_tips" data-toggleable-tray="{ save: true }">
 		<h3 class="toggleable_tray_title js-tray-header">
-			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!TIPS}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" /></a>
-			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!">{!TIPS}</a>
+			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!TIPS}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" /></a>
+			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!TIPS}</a>
 		</h3>
 
 		<div class="toggleable_tray js-tray-content">

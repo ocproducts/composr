@@ -26,9 +26,9 @@
 		{HIDDEN}
 
 		<p class="proceed_button">
-			<input class="button_screen buttons__back" type="button" data-cms-btn-go-back="1" value="{!GO_BACK}" />
+			<input class="button_screen buttons--back" type="button" data-cms-btn-go-back="1" value="{!GO_BACK}" />
 
-			<input data-disable-on-click="1" class="button_screen buttons__proceed" type="submit" value="{!PROCEED}" />
+			<input data-disable-on-click="1" class="button_screen buttons--proceed" type="submit" value="{!PROCEED}" />
 		</p>
 	</form>
 </div>

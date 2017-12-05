@@ -1207,7 +1207,7 @@
                 if (roomId) {
                     $cms.ui.generateQuestionUi(
                         '{!chat:HOW_REMOVE_CHAT_NOTIFICATION;^}',
-                        {/*buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}',*/buttons__proceed: '{!CLOSE;^}', buttons__ignore: '{!HIDE;^}'},
+                        {/*'buttons--cancel': '{!INPUTSYSTEM_CANCEL;^}',*/'buttons--proceed': '{!CLOSE;^}', 'buttons--ignore': '{!HIDE;^}'},
                         '{!chat:REMOVE_CHAT_NOTIFICATION;^}',
                         null,
                         function (answer) {
@@ -1254,16 +1254,16 @@
 
         // Start DOM stuff
         div = document.createElement('div');
-        div.className = 'im_event';
+        div.className = 'im-event';
         //div.style.left=($dom.getWindowWidth()/2-140)+'px';
         div.style.right = '1em';
-        div.style.bottom = ((document.body.querySelectorAll('.im_event').length) * 185 + 20) + 'px';
+        div.style.bottom = ((document.body.querySelectorAll('.im-event').length) * 185 + 20) + 'px';
         var links = document.createElement('ul');
-        links.className = 'actions_list';
+        links.className = 'actions-list';
 
         var imgClose = document.createElement('img');
         imgClose.src = $util.srl('{$IMG;,icons/14x14/delete}');
-        imgClose.className = 'im_popup_close_button blend';
+        imgClose.className = 'im-popup-close-button blend';
         $dom.on(imgClose, 'click', closePopup);
         div.appendChild(imgClose);
 
@@ -1271,7 +1271,7 @@
         if (avatarUrl) {
             var img1 = document.createElement('img');
             img1.setAttribute('src', avatarUrl);
-            img1.className = 'im_popup_avatar';
+            img1.className = 'im-popup-avatar';
             div.appendChild(img1);
         }
 
@@ -1415,11 +1415,11 @@
     }
 
     function closeChatConversation(roomId) {
-        var isPopup = (document.body.classList.contains('sitewide_im_popup_body'));
+        var isPopup = (document.body.classList.contains('sitewide-im-popup-body'));
         /*{+START,IF,{$OR,{$NOT,{$ADDON_INSTALLED,cns_forum}},{$NOT,{$CNS}}}}*/
         $cms.ui.generateQuestionUi(
             '{!chat:WANT_TO_DOWNLOAD_LOGS*;^}',
-            { buttons__cancel: '{!INPUTSYSTEM_CANCEL*;^}', buttons__yes: '{!YES*;^}', buttons__no: '{!NO*;^}' },
+            { 'buttons--cancel': '{!INPUTSYSTEM_CANCEL*;^}', 'buttons--yes': '{!YES*;^}', 'buttons--no': '{!NO*;^}' },
             '{!chat:CHAT_DOWNLOAD_LOGS*;^}',
             null,
             function (logs) {

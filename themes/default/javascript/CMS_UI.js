@@ -19,7 +19,7 @@
         el = $dom.elArg(el);
         animate = $cms.configOption('enable_animations') ? boolVal(animate, true) : false;
 
-        var iconImg = $dom.$(el.parentNode, '.toggleable_tray_button img') || $dom.$('img#e_' + el.id),
+        var iconImg = $dom.$(el.parentNode, '.toggleable-tray-button img') || $dom.$('img#e_' + el.id),
             isThemeWizard = Boolean(iconImg && iconImg.src && iconImg.src.includes('/themewizard.php')),
             expanding = $dom.notDisplayed(el);
 
@@ -327,7 +327,7 @@
             tooltipEl.role = 'tooltip';
             tooltipEl.style.display = 'none';
             var rtPos = tooltip.indexOf('results_table');
-            tooltipEl.className = 'tooltip ' + ((rtPos === -1 || rtPos > 100) ? 'tooltip_ownlayout' : 'tooltip_nolayout') + ' boxless_space' + (haveLinks ? ' have_links' : '');
+            tooltipEl.className = 'tooltip ' + ((rtPos === -1 || rtPos > 100) ? 'tooltip_ownlayout' : 'tooltip_nolayout') + ' boxless-space' + (haveLinks ? ' have_links' : '');
             if (el.className.substr(0, 3) === 'tt_') {
                 tooltipEl.className += ' ' + el.className;
             }
@@ -940,7 +940,7 @@
     };
 
     /**
-     * This is kinda dumb, ported from checking.js, originally named as disable_buttons_just_clicked()
+     * Ported from checking.js, originally named as disable_buttons_just_clicked()
      * @memberof $cms.ui
      * @param permanent
      */
@@ -991,7 +991,7 @@
         var lightboxCode = /** @lang HTML */'' +
             '<div style="text-align: center">' +
             '    <p class="ajax_loading" id="lightbox_image"><img src="' + $util.srl('{$IMG*;,loading}') + '" /></p>' +
-            '    <p id="lightbox_meta" style="display: none" class="associated_link associated-links-block-group">' +
+            '    <p id="lightbox_meta" style="display: none" class="associated-link associated-links-block-group">' +
             '         <span id="lightbox_description">' + description + '</span>' +
             ((n == null) ? '' : ('<span id="lightbox_position_in_set"><span id="lightbox_position_in_set_x">' + x + '</span> / <span id="lightbox_position_in_set_n">' + n + '</span></span>')) +
             (isVideo ? '' : ('<span id="lightbox_full_link"><a href="' + $cms.filter.html(initialImgUrl) + '" target="_blank" title="{$STRIP_TAGS;^,{!SEE_FULL_IMAGE}} {!LINK_NEW_WINDOW;^}">{!SEE_FULL_IMAGE;^}</a></span>')) +

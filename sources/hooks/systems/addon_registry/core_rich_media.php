@@ -594,7 +594,7 @@ class Hook_addon_registry_core_rich_media
                 'EXTRA' => lorem_phrase(),
                 'POST_COMMENT' => lorem_phrase(),
                 'EMOTICON_CHOOSER' => lorem_phrase(),
-                'SUBMIT_ICON' => 'buttons__proceed',
+                'SUBMIT_ICON' => 'buttons--proceed',
                 'SUBMIT_NAME' => lorem_word(),
                 'HIDDEN_FIELDS' => '',
                 'URL' => placeholder_url(),

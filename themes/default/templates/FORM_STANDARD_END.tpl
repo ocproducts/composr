@@ -42,15 +42,15 @@
 
 	<p class="proceed_button{+START,IF_PASSED,SUBMIT_BUTTON_CLASS} {SUBMIT_BUTTON_CLASS*}{+END}">
 		{+START,IF_PASSED_AND_TRUE,BACK}
-			<input class="button_screen buttons__back" type="button" data-cms-btn-go-back="1" value="{!GO_BACK}" />
+			<input class="button_screen buttons--back" type="button" data-cms-btn-go-back="1" value="{!GO_BACK}" />
 		{+END}
 		{+START,IF_PASSED,BACK_URL}
-			<input class="button_screen buttons__back js-click-btn-go-back" type="button" value="{!GO_BACK}" />
+			<input class="button_screen buttons--back js-click-btn-go-back" type="button" value="{!GO_BACK}" />
 		{+END}
 
 		{+START,IF_PASSED,EXTRA_BUTTONS}{EXTRA_BUTTONS}{+END}
 		{+START,IF_PASSED,CANCEL_URL}
-			<input class="button_screen buttons__cancel js-click-do-form-cancel" type="button" value="{!INPUTSYSTEM_CANCEL}" />
+			<input class="button_screen buttons--cancel js-click-do-form-cancel" type="button" value="{!INPUTSYSTEM_CANCEL}" />
 		{+END}
 		{+START,IF_PASSED_AND_TRUE,PREVIEW}{+START,IF,{$CONFIG_OPTION,enable_previews}}
 			<input class="button_screen tabs__preview js-click-do-form-preview" id="preview_button" accesskey="p" tabindex="{+START,IF_PASSED,TABINDEX}{TABINDEX}{+END}{+START,IF_NON_PASSED,TABINDEX}250{+END}" type="button" value="{!PREVIEW}" />

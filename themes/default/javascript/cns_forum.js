@@ -240,16 +240,16 @@
 
 
         $dom.on(container, 'click', '.js-click-checkbox-set-cell-mark-class', function (e, checkbox) {
-            cell.classList.toggle('cns_on', checkbox.checked);
-            cell.classList.toggle('cns_off', !checkbox.checked);
+            cell.classList.toggle('cns-on', checkbox.checked);
+            cell.classList.toggle('cns-off', !checkbox.checked);
         });
     };
 
     $cms.templates.cnsTopicMarker = function cnsTopicMarker(params, container) {
         $dom.on(container, 'click', '.js-click-checkbox-set-row-mark-class', function (e, checkbox) {
             var row = $dom.closest(checkbox, 'tr');
-            row.classList.toggle('cns_on', checkbox.checked);
-            row.classList.toggle('cns_off', !checkbox.checked);
+            row.classList.toggle('cns-on', checkbox.checked);
+            row.classList.toggle('cns-off', !checkbox.checked);
         });
     };
 }(window.$cms, window.$util, window.$dom));

@@ -132,7 +132,7 @@ class Block_main_contact_simple
         if ($support_attachments) {
             require_code('form_templates');
             list($attachments, $attach_size_field) = get_attachments('post', false);
-        } else 
+        } else
         {
             $attachments = null;
             $attach_size_field = null;
@@ -159,7 +159,7 @@ class Block_main_contact_simple
             'FIRST_POST' => '',
             'COMMENT_URL' => $comment_url,
             'SUBMIT_NAME' => do_lang_tempcode('SEND'),
-            'SUBMIT_ICON' => 'buttons__send',
+            'SUBMIT_ICON' => 'buttons--send',
             'SKIP_PREVIEW' => true,
             'ANALYTIC_EVENT_CATEGORY' => do_lang('CONTACT_US'),
         ));

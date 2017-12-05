@@ -229,7 +229,7 @@ class Module_admin_aggregate_types extends Standard_crud_module
                     'URL' => $url,
                     'FIELDS' => $fields,
                     'TEXT' => '',
-                    'SUBMIT_ICON' => 'buttons__proceed',
+                    'SUBMIT_ICON' => 'buttons--proceed',
                     'SUBMIT_NAME' => $submit_name,
                 ));
             }

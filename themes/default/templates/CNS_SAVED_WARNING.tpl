@@ -4,7 +4,7 @@
 		{TITLE*}
 	</h3>
 	<nav>
-		<ul class="actions_list">
+		<ul class="actions-list">
 			<li>
 				<form title="{!LOAD} {$STRIP_TAGS,{TITLE|}}" action="#" method="post" class="inline" id="saved_use__{TITLE|}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}

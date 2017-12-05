@@ -9,7 +9,7 @@
 
 			<input type="hidden" name="set_pause" value="0" />
 
-			<input class="button_screen_item buttons__proceed" type="submit" value="{!UNPAUSE}" />
+			<input class="button_screen_item buttons--proceed" type="submit" value="{!UNPAUSE}" />
 		</form>
 	{+END}
 
@@ -19,7 +19,7 @@
 
 			<input type="hidden" name="set_pause" value="1" />
 
-			<input class="button_screen_item buttons__proceed" type="submit" value="{!PAUSE}" />
+			<input class="button_screen_item buttons--proceed" type="submit" value="{!PAUSE}" />
 		</form>
 	{+END}
 {+END}

@@ -637,7 +637,7 @@ class Module_admin_config
             'TITLE' => $this->title,
             'URL' => $post_url,
             'GROUPS' => $groups_arr,
-            'SUBMIT_ICON' => 'buttons__save',
+            'SUBMIT_ICON' => 'buttons--save',
             'SUBMIT_NAME' => do_lang_tempcode('SAVE'),
         ));
     }

@@ -3,7 +3,7 @@
 <div class="box cns_notification" data-tpl="cnsNotification" data-tpl-params="{+START,PARAMS_JSON,IGNORE_URL_2}{_*}{+END}">
 	<div class="box_inner" data-toggleable-tray="{}">
 		<p class="cns_notification_intro_line js-tray-onclick-toggle-tray">
-			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {TYPE*}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" /></a>
+			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {TYPE*}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" /></a>
 
 			{!cns:NEW_PT_NOTIFICATION_DETAILS,<span class="cns_notification_type">{TYPE*}</span>,<span class="cns_notification_type_title">{U_TITLE*}</span>,<span class="cns_notification_by">{$?,{$IS_EMPTY,{PROFILE_URL}},{$DISPLAYED_USERNAME*,{BY}},<a href="{PROFILE_URL*}">{$DISPLAYED_USERNAME*,{BY}}</a>}</span>,<span class="cns_notification_time">{DATE*}</span>}
 		</p>

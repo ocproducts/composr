@@ -687,7 +687,7 @@ class Hook_addon_registry_core_cns
             'TEXT' => '',
             'HIDDEN' => '',
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => do_lang_tempcode('PROCEED'),
             'URL' => placeholder_url(),
             'BATCH_IMPORT_ARCHIVE_CONTENTS' => lorem_phrase(),
@@ -1057,7 +1057,7 @@ class Hook_addon_registry_core_cns
         );
         $tab_content = do_lorem_template('CNS_MEMBER_PROFILE_EDIT', array(
             'URL' => placeholder_url(),
-            'SUBMIT_ICON' => 'buttons__edit',
+            'SUBMIT_ICON' => 'buttons--edit',
             'SUBMIT_NAME' => lorem_phrase(),
             'SKIP_WEBSTANDARDS' => true,
             'TABS' => $tabs2,

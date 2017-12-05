@@ -17,7 +17,7 @@
 	}
 /*{+END}*/
 
-.page_running_contact .site_special_message {
+.page-running-contact .site_special_message {
 	text-align: justify;
 }
 
@@ -51,7 +51,7 @@
 	background: url('{$IMG;,messageicons/inform_large}') right 20px no-repeat;
 }
 
-.page_running_contact .ssm_inform {
+.page-running-contact .ssm_inform {
 	padding-top: 0 !important;
 }
 

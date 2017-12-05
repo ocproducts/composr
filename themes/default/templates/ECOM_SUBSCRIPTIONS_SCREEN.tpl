@@ -3,7 +3,7 @@
 <p>{!SUBSCRIPTIONS_SCREEN}</p>
 
 {+START,IF_NON_EMPTY,{SUBSCRIPTIONS}}
-	<div class="wide_table_wrap"><table class="columned_table wide_table results_table autosized_table responsive_table" itemprop="significantLinks">
+	<div class="wide_table_wrap"><table class="columned_table wide_table results_table autosized_table responsive-table" itemprop="significantLinks">
 		<thead>
 			<tr>
 				<th>
@@ -102,6 +102,6 @@
 	</p>
 {+END}
 
-<p class="buttons_group">
-	<a class="button_screen buttons__proceed" rel="add" href="{$PAGE_LINK*,_SEARCH:purchase:type_filter={$PRODUCT_SUBSCRIPTION}}"><span>{!START_NEW_SUBSCRIPTION}</span></a>
+<p class="buttons-group">
+	<a class="button_screen buttons--proceed" rel="add" href="{$PAGE_LINK*,_SEARCH:purchase:type_filter={$PRODUCT_SUBSCRIPTION}}"><span>{!START_NEW_SUBSCRIPTION}</span></a>
 </p>

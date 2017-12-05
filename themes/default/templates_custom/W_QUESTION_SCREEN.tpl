@@ -14,6 +14,6 @@
 	</p>
 
 	<p class="proceed_button">
-		<input class="button_screen buttons__proceed" type="submit" value="{!PROCEED}" />
+		<input class="button_screen buttons--proceed" type="submit" value="{!PROCEED}" />
 	</p>
 </form>

@@ -687,7 +687,7 @@ class Module_chat
 
         $seteffects_link = hyperlink(build_url(array('page' => '_SELF', 'type' => 'set_effects'/*, 'redirect' => protect_url_parameter(SELF_REDIRECT)*/), '_SELF'), do_lang_tempcode('CHAT_SET_EFFECTS'), true, false);
 
-        $links = array('edit2' => $admin_link, 'tools' => $mod_link, 'export' => $download_link, 'sound_effects' => $seteffects_link);
+        $links = array('edit2' => $admin_link, 'tools' => $mod_link, 'export' => $download_link, 'sound-effects' => $seteffects_link);
 
         return do_template('CHAT_ROOM_SCREEN', array(
             '_GUID' => '867a0b050c050c81d33482d131783eb0',
@@ -848,7 +848,7 @@ class Module_chat
             'HIDDEN' => '',
             'SKIP_WEBSTANDARDS' => true,
             'TEXT' => do_lang_tempcode('ABOUT_BLOCKING'),
-            'SUBMIT_ICON' => 'buttons__ignore',
+            'SUBMIT_ICON' => 'buttons--ignore',
             'SUBMIT_NAME' => do_lang_tempcode('PROCEED'),
             'FIELDS' => $fields,
             'URL' => $post_url,
@@ -1129,7 +1129,7 @@ class Module_chat
             'HIDDEN' => '',
             'TITLE' => $this->title,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => $posting_name,
             'URL' => $posting_url,
             'TEXT' => '',
@@ -1254,7 +1254,7 @@ class Module_chat
             '_GUID' => 'f965b4376d603fc14dbcac7fb3c5580d',
             'TITLE' => $this->title,
             'CHAT_SOUND' => get_chat_sound_tpl(),
-            'SUBMIT_ICON' => 'buttons__save',
+            'SUBMIT_ICON' => 'buttons--save',
             'SUBMIT_NAME' => do_lang_tempcode('SAVE'),
             'HIDDEN' => $hidden,
             'POST_URL' => $post_url,

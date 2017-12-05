@@ -523,7 +523,7 @@ class Module_cms_chat
             'TEXT' => '',
             'FIELDS' => $fields,
             'URL' => $post_url,
-            'SUBMIT_ICON' => 'buttons__save',
+            'SUBMIT_ICON' => 'buttons--save',
             'SUBMIT_NAME' => do_lang_tempcode('SAVE'),
         ));
     }

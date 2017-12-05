@@ -3,13 +3,13 @@
 	<th colspan="2" class="table_heading_cell vertical_alignment">
 		{+START,IF_PASSED,TITLE}
 			{+START,IF_NON_PASSED_OR_FALSE,FORCE_OPEN}
-				<a class="toggleable_tray_button js-click-toggle-subord-fields js-keypress-toggle-subord-fields" id="fes{TITLE|}" href="#!"><img class="vertical_alignment right" alt="{!CONTRACT}: {TITLE*}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract}" /></a>
+				<a class="toggleable-tray-button js-click-toggle-subord-fields js-keypress-toggle-subord-fields" id="fes{TITLE|}" href="#!"><img class="vertical_alignment right" alt="{!CONTRACT}: {TITLE*}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract}" /></a>
 			{+END}
 
-			<span class="faux_h2 {+START,IF_NON_PASSED_OR_FALSE,FORCE_OPEN} toggleable_tray_button js-click-toggle-subord-fields js-keypress-toggle-subord-fields{+END}">{TITLE*}</span>
+			<span class="faux_h2 {+START,IF_NON_PASSED_OR_FALSE,FORCE_OPEN} toggleable-tray-button js-click-toggle-subord-fields js-keypress-toggle-subord-fields{+END}">{TITLE*}</span>
 
 			{+START,IF,{$EQ,{TITLE},{!ADDRESS}}}
-				<input class="button_micro buttons__search js-click-geolocate-address-fields" type="button" value="{!locations:FIND_ME}" />
+				<input class="button_micro buttons--search js-click-geolocate-address-fields" type="button" value="{!locations:FIND_ME}" />
 			{+END}
 		{+END}
 

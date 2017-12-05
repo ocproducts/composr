@@ -233,7 +233,7 @@ class Module_admin_lang
             'GET' => true,
             'SKIP_WEBSTANDARDS' => true,
             'HIDDEN' => '',
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => do_lang_tempcode('PROCEED'),
             'TITLE' => $title,
             'FIELDS' => $fields,
@@ -605,7 +605,7 @@ class Module_admin_lang
                 'FIELDS' => $fields,
                 'URL' => $post_url,
                 'TEXT' => '',
-                'SUBMIT_ICON' => 'buttons__save',
+                'SUBMIT_ICON' => 'buttons--save',
                 'SUBMIT_NAME' => do_lang('TRANSLATE_CODE'),
             ));
         }

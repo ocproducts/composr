@@ -1,7 +1,7 @@
 <section id="tray_{!MEMBER|}" data-toggleable-tray="{ save: true }" class="box cns_information_bar_outer">
 	<h2 class="toggleable_tray_title js-tray-header">
-		<a class="toggleable_tray_button js-tray-onclick-toggle-tray inline_desktop" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!MEMBER}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" /></a>
-		<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!">{!MEMBER_INFORMATION,{$USERNAME*,{$MEMBER},1}}{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,search}} / {!SEARCH}{+END}</a>
+		<a class="toggleable-tray-button js-tray-onclick-toggle-tray inline_desktop" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!MEMBER}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" /></a>
+		<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!MEMBER_INFORMATION,{$USERNAME*,{$MEMBER},1}}{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,search}} / {!SEARCH}{+END}</a>
 	</h2>
 
 	<div class="toggleable_tray js-tray-content">
@@ -16,7 +16,7 @@
 				<p class="cns_member_column_title">{!WELCOME_BACK,<a href="{PROFILE_URL*}">{$DISPLAYED_USERNAME*,{USERNAME}}</a>}</p>
 				{+START,IF,{$NOT,{$IS_HTTPAUTH_LOGIN}}}
 					<div class="inline_desktop">
-						<form class="inline associated_link" title="{!LOGOUT}" method="post" action="{LOGOUT_URL*}" autocomplete="off"><input class="button_hyperlink" type="submit" value="{!LOGOUT}" /></form>
+						<form class="inline associated-link" title="{!LOGOUT}" method="post" action="{LOGOUT_URL*}" autocomplete="off"><input class="button_hyperlink" type="submit" value="{!LOGOUT}" /></form>
 					</div>
 				{+END}
 
@@ -44,7 +44,7 @@
 
 			<nav style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px" class="cns_member_column cns_member_column_d">
 				{$,<p class="cns_member_column_title">{!VIEW}:</p>}
-				<ul class="actions_list">
+				<ul class="actions-list">
 					<!--<li><a href="{PRIVATE_TOPIC_URL*}">{!PRIVATE_TOPICS}{+START,IF_NON_EMPTY,{PT_EXTRA}} <span class="cns_member_column_pts">{PT_EXTRA}</span>{+END}</a></li>-->
 					<li><a {+START,IF,{$DESKTOP}} data-open-as-overlay="{}"{+END} href="{NEW_POSTS_URL*}">{!POSTS_SINCE}</a></li>
 					<li><a {+START,IF,{$DESKTOP}} data-open-as-overlay="{}"{+END} href="{UNREAD_TOPICS_URL*}">{!TOPICS_UNREAD}</a></li>

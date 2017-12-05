@@ -233,7 +233,7 @@ class Hook_addon_registry_wiki
             'URL' => placeholder_url(),
             'TITLE' => do_lang_tempcode('EDIT'),
             'FULL_TITLE' => do_lang_tempcode('EDIT'),
-            'IMG' => 'buttons__edit',
+            'IMG' => 'buttons--edit',
         ));
         $extra->attach(do_lorem_template('BUTTON_SCREEN_ITEM', array(
             'REL' => 'move',
@@ -241,7 +241,7 @@ class Hook_addon_registry_wiki
             'URL' => placeholder_url(),
             'TITLE' => do_lang_tempcode('MOVE'),
             'FULL_TITLE' => do_lang_tempcode('MOVE'),
-            'IMG' => 'buttons__move',
+            'IMG' => 'buttons--move',
         )));
 
         $all_rating_criteria = array();

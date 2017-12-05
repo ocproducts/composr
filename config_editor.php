@@ -117,7 +117,7 @@ function ce_do_footer()
     if (array_key_exists('base_url', $SITE_INFO)) {
         echo '
             <hr />
-            <ul class="actions_list" role="navigation">
+            <ul class="actions-list" role="navigation">
                     <li><a href="' . htmlentities($SITE_INFO['base_url']) . '/adminzone/index.php">Go to Admin Zone</a></li>
             </ul>
         ';
@@ -319,7 +319,7 @@ function do_access($given_password)
 
     echo '
         <p class="proceed_button" style="text-align: center">
-            <input class="button_screen buttons__save" type="submit" value="Save" onclick="return checkPasswords(this.form);" />
+            <input class="button_screen buttons--save" type="submit" value="Save" onclick="return checkPasswords(this.form);" />
         </p>
 
         <input type="hidden" name="given_password" value="' . htmlentities($given_password) . '" />

@@ -876,7 +876,7 @@ class Module_groups
                 'TEXT' => $text,
                 'URL' => $post_url,
                 'FIELDS' => $fields,
-                'SUBMIT_ICON' => 'buttons__no',
+                'SUBMIT_ICON' => 'buttons--no',
                 'SUBMIT_NAME' => $submit_name,
             ));
         }

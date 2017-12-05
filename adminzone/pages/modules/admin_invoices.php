@@ -226,7 +226,7 @@ class Module_admin_invoices
             'TITLE' => $this->title,
             'URL' => $post_url,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => $submit_name,
             'TEXT' => do_lang_tempcode('DESCRIPTION_INVOICE_PAGE'),
             'SUPPORT_AUTOSAVE' => true,

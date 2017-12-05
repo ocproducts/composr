@@ -1,7 +1,7 @@
 {TITLE}
 
 {+START,IF_NON_EMPTY,{ROWS}}
-	<div class="wide_table_wrap"><table class="columned_table wide_table results_table responsive_table">
+	<div class="wide_table_wrap"><table class="columned_table wide_table results_table responsive-table">
 		<thead>
 			<tr>
 				<th><a href="{$PAGE_LINK*,_SELF:admin_cmsusers:users:sortby=name{NAMEORD}}">{!CMS_WEBSITE_NAME}</a></th>

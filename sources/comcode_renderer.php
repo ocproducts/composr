@@ -445,7 +445,7 @@ function comcode_parse_error($preparse_mode, $_message, $pos, $comcode, $check_o
         'TEXT' => '',
         'HIDDEN' => $hidden,
         'FIELDS' => $fields,
-        'SUBMIT_ICON' => 'buttons__proceed',
+        'SUBMIT_ICON' => 'buttons--proceed',
         'SUBMIT_NAME' => do_lang_tempcode('PROCEED'),
         'SKIP_REQUIRED' => true,
         'MODSECURITY_WORKAROUND' => true,

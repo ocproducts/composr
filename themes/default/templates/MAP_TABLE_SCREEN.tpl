@@ -11,7 +11,7 @@
 </table></div>
 
 {+START,IF_PASSED,BUTTONS}
-	<div class="buttons_group">
+	<div class="buttons-group">
 		{BUTTONS}
 	</div>
 {+END}

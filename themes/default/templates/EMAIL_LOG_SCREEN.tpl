@@ -2,7 +2,7 @@
 
 {RESULTS_TABLE}
 
-<div class="buttons_group">
+<div class="buttons-group">
 	<form title="{!DELETE_ALL}" class="right" action="{MASS_DELETE_URL*}" method="post" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
@@ -14,7 +14,7 @@
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div class="inline">
-			<input class="button_screen buttons__send" type="submit" value="{!SEND_ALL}" />
+			<input class="button_screen buttons--send" type="submit" value="{!SEND_ALL}" />
 		</div>
 	</form>
 </div>

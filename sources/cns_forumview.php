@@ -371,35 +371,35 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
     if ((!is_guest()) && ($type != 'pt')) {
         if (get_option('enable_mark_forum_read') == '1') {
             $read_url = build_url(array('page' => 'topics', 'type' => 'mark_read', 'id' => $id), get_module_zone('topics'));
-            $button_array[] = array('immediate' => true, 'title' => do_lang_tempcode('MARK_READ'), 'url' => $read_url, 'img' => 'buttons__mark_read_forum');
+            $button_array[] = array('immediate' => true, 'title' => do_lang_tempcode('MARK_READ'), 'url' => $read_url, 'img' => 'buttons--mark-read-forum');
         }
     }
     if ($type != 'pt') {
         if (addon_installed('search')) {
             $search_url = build_url(array('page' => 'search', 'type' => 'browse', 'id' => 'cns_posts', 'search_under' => $id), get_module_zone('search'));
-            $button_array[] = array('immediate' => false, 'rel' => 'search', 'title' => do_lang_tempcode('SEARCH'), 'url' => $search_url, 'img' => 'buttons__search');
+            $button_array[] = array('immediate' => false, 'rel' => 'search', 'title' => do_lang_tempcode('SEARCH'), 'url' => $search_url, 'img' => 'buttons--search');
         }
         $new_topic_url = build_url(array('page' => 'topics', 'type' => 'new_topic', 'id' => $id), get_module_zone('topics'));
     } else {
         if (addon_installed('search')) {
             $search_url = build_url(array('page' => 'search', 'type' => 'browse', 'id' => 'cns_own_pt'), get_module_zone('search'));
-            $button_array[] = array('immediate' => false, 'rel' => 'search', 'title' => do_lang_tempcode('SEARCH'), 'url' => $search_url, 'img' => 'buttons__search');
+            $button_array[] = array('immediate' => false, 'rel' => 'search', 'title' => do_lang_tempcode('SEARCH'), 'url' => $search_url, 'img' => 'buttons--search');
         }
         $new_topic_url = build_url(array('page' => 'topics', 'type' => 'new_pt', 'id' => get_member()), get_module_zone('topics'));
     }
     if ($type == 'pt') {
         // There has been debate in the past whether to have a link from PTs to the forum or not! Currently using the Social menu is considered canon - templating could add a button in though.
         // $archive_url = $GLOBALS['FORUM_DRIVER']->forum_url(db_get_first_id(), true);
-        // $button_array[] = array('immediate' => false, 'title' => do_lang_tempcode('ROOT_FORUM'), 'url' => $archive_url, 'img' => 'buttons__forum');
+        // $button_array[] = array('immediate' => false, 'title' => do_lang_tempcode('ROOT_FORUM'), 'url' => $archive_url, 'img' => 'buttons--forum');
     }
     if (array_key_exists('may_post_topic', $details)) {
         if ($type == 'pt') {
             //if ($of_member_id!==get_member())    Actually we'll leave the "send message" button in your inbox, as a way for being able to type in who to send it to
             {
-                $button_array[] = array('immediate' => false, 'rel' => 'add nofollow', 'title' => do_lang_tempcode('ADD_PRIVATE_TOPIC'), 'url' => $new_topic_url, 'img' => 'buttons__send');
+                $button_array[] = array('immediate' => false, 'rel' => 'add nofollow', 'title' => do_lang_tempcode('ADD_PRIVATE_TOPIC'), 'url' => $new_topic_url, 'img' => 'buttons--send');
             }
         } else {
-            $button_array[] = array('immediate' => false, 'rel' => 'add nofollow', 'title' => do_lang_tempcode('ADD_TOPIC'), 'url' => $new_topic_url, 'img' => 'buttons__new_topic');
+            $button_array[] = array('immediate' => false, 'rel' => 'add nofollow', 'title' => do_lang_tempcode('ADD_TOPIC'), 'url' => $new_topic_url, 'img' => 'buttons--new-topic');
         }
     }
     $buttons = cns_button_screen_wrap($button_array);

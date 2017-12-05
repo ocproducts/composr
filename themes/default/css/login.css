@@ -3,7 +3,7 @@
  Copyright (c) ocProducts, 2004-2017
 */
 
-.page_running_login #main_website_inner {
+.page-running-login #main_website_inner {
 	background-image: linear-gradient(to top right, {$GET,main_background}, {$GET,main_2_background});
 }
 

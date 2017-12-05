@@ -39,10 +39,10 @@
                 $cms.ui.generateQuestionUi(
                     '{!comcode:WHETHER_SAVE_WYSIWYG_SELECTION;^}',
                     {
-                        buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}',
-                        buttons__clear: '{!javascript:WYSIWYG_DISABLE_ONCE;^}',
-                        //buttons__no: '{!javascript:WYSIWYG_DISABLE_ONCE_AND_DONT_ASK;^}', Too confusing, re-enable if you want it
-                        buttons__yes: '{!javascript:WYSIWYG_DISABLE_ALWAYS;^}'
+                        'buttons--cancel': '{!INPUTSYSTEM_CANCEL;^}',
+                        'buttons--clear': '{!javascript:WYSIWYG_DISABLE_ONCE;^}',
+                        //'buttons--no': '{!javascript:WYSIWYG_DISABLE_ONCE_AND_DONT_ASK;^}', Too confusing, re-enable if you want it
+                        'buttons--yes': '{!javascript:WYSIWYG_DISABLE_ALWAYS;^}'
                     },
                     '{!comcode:DISABLE_WYSIWYG;^}',
                     '{!javascript:DISCARD_WYSIWYG_CHANGES;^}', 
@@ -106,9 +106,9 @@
                     $cms.ui.generateQuestionUi(
                         '{!javascript:DISCARD_WYSIWYG_CHANGES_NICE;^}',
                         {
-                            buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}',
-                            buttons__convert: '{!javascript:DISCARD_WYSIWYG_CHANGES_LINE_CONVERT;^}',
-                            buttons__no: '{!javascript:DISCARD_WYSIWYG_CHANGES_LINE;^}'
+                            'buttons--cancel': '{!INPUTSYSTEM_CANCEL;^}',
+                            'buttons--convert': '{!javascript:DISCARD_WYSIWYG_CHANGES_LINE_CONVERT;^}',
+                            'buttons--no': '{!javascript:DISCARD_WYSIWYG_CHANGES_LINE;^}'
                         },
                         '{!comcode:DISABLE_WYSIWYG;^}',
                         '{!javascript:DISCARD_WYSIWYG_CHANGES;^}'

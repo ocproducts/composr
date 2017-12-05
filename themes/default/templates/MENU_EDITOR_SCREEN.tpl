@@ -37,7 +37,7 @@
 				</div>
 
 				<p class="proceed_button">
-					<input accesskey="u" class="button_screen buttons__save js-click-check-menu" type="submit" value="{!SAVE}" />
+					<input accesskey="u" class="button_screen buttons--save js-click-check-menu" type="submit" value="{!SAVE}" />
 				</p>
 			</div>
 
@@ -58,7 +58,7 @@
 					</p>
 
 					<nav>
-						<ul class="actions_list">
+						<ul class="actions-list">
 							<li><a href="#!" class="js-click-menu-editor-add-new-page">{!SPECIFY_NEW_PAGE}</a></li>
 						</ul>
 					</nav>
@@ -87,8 +87,8 @@
 
 		<div class="box box___menu_editor_screen" data-toggleable-tray="{}">
 			<h2 class="toggleable_tray_title">
-				<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!DELETE_MENU}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" /></a>
-				<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!">{!DELETE_MENU}</a>
+				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!DELETE_MENU}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" /></a>
+				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!DELETE_MENU}</a>
 			</h2>
 
 			<div class="toggleable_tray js-tray-content" id="delete_menu" style="display: none" aria-expanded="false">

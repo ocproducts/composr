@@ -166,7 +166,7 @@ class Module_admin_referrals
             'HIDDEN' => '',
             'TEXT' => '',
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'buttons__save',
+            'SUBMIT_ICON' => 'buttons--save',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));

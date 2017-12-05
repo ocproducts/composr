@@ -2,7 +2,7 @@
 	{$?,{$MATCH_KEY_MATCH,_SEARCH:admin_notifications},{!NOTIFICATIONS_DEFINE_LOCKDOWN},{!NOTIFICATIONS_INTRO}}
 </p>
 
-<div class="wide_table_wrap"><table class="columned_table wide_table results_table notifications_form responsive_table responsive_table_bolded_first_column">
+<div class="wide_table_wrap"><table class="columned_table wide_table results_table notifications_form responsive-table responsive-table-bolded-first-column">
 	<colgroup>
 		<col class="notifications_field_name_column" />
 		{+START,IF_PASSED_AND_TRUE,SHOW_PRIVILEGES}
@@ -40,7 +40,7 @@
 	<tbody>
 		{+START,LOOP,NOTIFICATION_SECTIONS}
 			<tr class="form_table_field_spacer">
-				<th class="responsive_table_no_prefix table_heading_cell" colspan="{+START,IF_PASSED_AND_TRUE,SHOW_PRIVILEGES}{$ADD*,{NOTIFICATION_TYPES_TITLES},3}{+END}{+START,IF_NON_PASSED_OR_FALSE,SHOW_PRIVILEGES}{$ADD*,{NOTIFICATION_TYPES_TITLES},2}{+END}">
+				<th class="responsive-table-no-prefix table_heading_cell" colspan="{+START,IF_PASSED_AND_TRUE,SHOW_PRIVILEGES}{$ADD*,{NOTIFICATION_TYPES_TITLES},3}{+END}{+START,IF_NON_PASSED_OR_FALSE,SHOW_PRIVILEGES}{$ADD*,{NOTIFICATION_TYPES_TITLES},2}{+END}">
 					<span class="faux_h2">{NOTIFICATION_SECTION*}</span>
 				</th>
 			</tr>
@@ -58,7 +58,7 @@
 					{+START,IF,{ADVANCED_COLUMN}}
 						{+START,SET,advanced_link}
 							{+START,IF,{SUPPORTS_CATEGORIES}}
-								<span class="associated_link"><a data-open-as-overlay="{'target': '_self'}" href="{$PAGE_LINK*,_SEARCH:notifications:advanced:notification_code={NOTIFICATION_CODE}{$?,{$NEQ,{MEMBER_ID},{$MEMBER}},:keep_su={$USERNAME&,{MEMBER_ID}}}}">{+START,IF,{$DESKTOP}}<span class="inline_desktop">{!ADVANCED}</span>{+END}<span class="inline_mobile">{!MORE}</span></a></span>
+								<span class="associated-link"><a data-open-as-overlay="{'target': '_self'}" href="{$PAGE_LINK*,_SEARCH:notifications:advanced:notification_code={NOTIFICATION_CODE}{$?,{$NEQ,{MEMBER_ID},{$MEMBER}},:keep_su={$USERNAME&,{MEMBER_ID}}}}">{+START,IF,{$DESKTOP}}<span class="inline_desktop">{!ADVANCED}</span>{+END}<span class="inline_mobile">{!MORE}</span></a></span>
 							{+END}
 						{+END}
 					{+END}

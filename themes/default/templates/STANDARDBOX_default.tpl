@@ -3,17 +3,17 @@
 		{+START,IF_IN_ARRAY,OPTIONS,tray_open,tray_closed}
 			<h3 class="toggleable_tray_title js-tray-header">
 				{+START,IF_IN_ARRAY,OPTIONS,tray_open}
-					<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{TITLE}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" /></a>
+					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{TITLE}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" /></a>
 				{+END}
 				{+START,IF_IN_ARRAY,OPTIONS,tray_closed}
-					<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{TITLE}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" /></a>
+					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{TITLE}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" /></a>
 				{+END}
 
 				{+START,IF_NON_EMPTY,{TOP_LINKS}}
 					{TOP_LINKS}
 				{+END}
 
-				<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!">{TITLE}</a>
+				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{TITLE}</a>
 			</h3>
 		{+END}
 	{+END}

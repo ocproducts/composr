@@ -29,7 +29,7 @@
 					</div>
 
 					<div class="inline spaced filter_button">
-						<input data-disable-on-click="1" class="button_screen_item buttons__filter" type="submit" value="{!FILTER}" />
+						<input data-disable-on-click="1" class="button_screen_item buttons--filter" type="submit" value="{!FILTER}" />
 					</div>
 				</div>
 			</form>
@@ -39,7 +39,7 @@
 			{$?,{$HAS_PRIVILEGE,support_operator},<p class="nothing_here">{!NO_ENTRIES}</p>,{$PARAGRAPH,{!SUPPORT_NO_TICKETS}}}
 		{+END}
 		{+START,IF_NON_EMPTY,{LINKS}}
-			<div class="wide_table_wrap"><table class="columned_table results_table wide_table support_tickets autosized_table responsive_table">
+			<div class="wide_table_wrap"><table class="columned_table results_table wide_table support_tickets autosized_table responsive-table">
 				<thead>
 					<tr>
 						<th>
@@ -71,7 +71,7 @@
 		{+END}
 	{+END}
 
-	<p class="buttons_group">
-		<a class="button_screen buttons__add_ticket" rel="add" href="{ADD_TICKET_URL*}"><span>{!ADD_TICKET}</span></a>
+	<p class="buttons-group">
+		<a class="button_screen buttons--add-ticket" rel="add" href="{ADD_TICKET_URL*}"><span>{!ADD_TICKET}</span></a>
 	</p>
 </div>

@@ -7,11 +7,11 @@
 		{+START,SET,sort_button}
 			{+START,IF,{$GET,show_sort_button}}
 				{+START,IF_NON_PASSED,FILTER}
-					<input data-disable-on-click="1" class="button_micro buttons__sort" type="submit" title="{!SORT}{+START,IF_NON_EMPTY,{$GET,TEXT_ID}}: {$GET*,TEXT_ID}{+END}" value="{!SORT}" />
+					<input data-disable-on-click="1" class="button_micro buttons--sort" type="submit" title="{!SORT}{+START,IF_NON_EMPTY,{$GET,TEXT_ID}}: {$GET*,TEXT_ID}{+END}" value="{!SORT}" />
 				{+END}
 			{+END}
 			{+START,IF_PASSED,FILTER}
-				<input data-disable-on-click="1" class="button_micro buttons__filter" type="submit" title="{!PROCEED}{+START,IF_NON_EMPTY,{$GET,TEXT_ID}}: {$GET*,TEXT_ID}{+END}" value="{!PROCEED}" />
+				<input data-disable-on-click="1" class="button_micro buttons--filter" type="submit" title="{!PROCEED}{+START,IF_NON_EMPTY,{$GET,TEXT_ID}}: {$GET*,TEXT_ID}{+END}" value="{!PROCEED}" />
 			{+END}
 		{+END}
 

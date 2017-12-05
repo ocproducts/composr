@@ -127,11 +127,11 @@ Branch layout
 	margin-top: 1em;
 }
 
-/* Undoes main actions_list style */
-.menu_editor_branch_wrap .actions_list {
+/* Undoes main actions-list style */
+.menu_editor_branch_wrap .actions-list {
 	margin: 0.5em 0;
 }
-.menu_editor_branch_wrap .actions_list li {
+.menu_editor_branch_wrap .actions-list li {
 	background: none;
 	padding-left: 0 !important;
 	margin-left: 0 !important;

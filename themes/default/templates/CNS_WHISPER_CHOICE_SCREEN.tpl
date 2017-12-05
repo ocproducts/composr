@@ -2,7 +2,7 @@
 
 {$GET,whisper_screen_text}
 
-<div class="cns_whisper_lead_in">
+<div class="cns-whisper-lead-in">
 	<img src="{$IMG*,icons/48x48/buttons/new_topic}" alt="" class="right" />
 
 	{+START,IF,{$HAS_PRIVILEGE,use_pt}}<p>{!WHISPER_TEXT}</p>{+END}
@@ -11,7 +11,7 @@
 
 <div class="float-surrounder">
 	{+START,IF,{$HAS_PRIVILEGE,use_pt}}
-		<div class="cns_whisper_choose_box right">
+		<div class="cns-whisper-choose-box right">
 			<div class="box box___cns_whisper_choice_screen"><div class="box_inner">
 				<h2>{!PRIVATE_TOPIC}</h2>
 
@@ -24,7 +24,7 @@
 						<input type="hidden" name="type" value="new_pt" />
 
 						<p class="proceed_button">
-							<input class="button_screen buttons__new_topic" type="submit" data-disable-on-click="1" value="{!QUOTE_TO_PT}" />
+							<input class="button_screen buttons--new-topic" type="submit" data-disable-on-click="1" value="{!QUOTE_TO_PT}" />
 						</p>
 					</div>
 				</form>
@@ -32,7 +32,7 @@
 		</div>
 	{+END}
 
-	<div class="cns_whisper_choose_box">
+	<div class="cns-whisper-choose-box">
 		<div class="box box___cns_whisper_choice_screen"><div class="box_inner">
 			<h2>{!PERSONAL_POST}</h2>
 
@@ -45,7 +45,7 @@
 					<input type="hidden" name="type" value="new_post" />
 
 					<p class="proceed_button">
-						<input class="button_screen buttons__new_post_full" type="submit" data-disable-on-click="1" value="{!IN_TOPIC_PP}" />
+						<input class="button_screen buttons--new-post-full" type="submit" data-disable-on-click="1" value="{!IN_TOPIC_PP}" />
 					</p>
 				</div>
 			</form>

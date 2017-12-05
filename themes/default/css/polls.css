@@ -33,9 +33,9 @@
 	/*margin-bottom: 8em;*/
 }
 
-.boxless_space .fp_col_block .box___block_main_content,
-.boxless_space .box___block_no_entries_image_of_the_day,
-.boxless_space .fp_col_block .box___poll_box,
-.boxless_space .fp_col_block .box___block_no_entries_poll {
+.boxless-space .fp_col_block .box___block_main_content,
+.boxless-space .box___block_no_entries_image_of_the_day,
+.boxless-space .fp_col_block .box___poll_box,
+.boxless-space .fp_col_block .box___block_no_entries_poll {
 	/*min-height: 0; boxless spaces don't need a min height */
 }

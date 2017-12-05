@@ -70,7 +70,7 @@ $form = do_template('FORM_SCREEN', array(
     'HIDDEN' => '',
     'TEXT' => paragraph('Enter how many points being in each usergroup is worth. For the one-off bonuses, Composr will look at all the usergroups each member is in, and count these numbers within the point totals. The monthly points are assigned to members as system gifts, on the 1st of each month (the Cron scheduler must be enabled).'),
     'FIELDS' => $fields,
-    'SUBMIT_ICON' => 'buttons__save',
+    'SUBMIT_ICON' => 'buttons--save',
     'SUBMIT_NAME' => 'Set points',
     'URL' => get_self_url(),
 ));

@@ -164,7 +164,7 @@ function warn_exit_wordfilter($name, $message)
         'URL' => $post_url,
         'HIDDEN' => $hidden,
         'FIELDS' => $fields,
-        'SUBMIT_ICON' => 'buttons__proceed',
+        'SUBMIT_ICON' => 'buttons--proceed',
         'SUBMIT_NAME' => do_lang_tempcode('PROCEED'),
     ));
     $echo = globalise($output, null, '', true);

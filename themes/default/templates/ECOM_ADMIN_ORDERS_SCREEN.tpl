@@ -21,7 +21,7 @@
 
 			<label for="order_filter">
 				<span class="invisible_ref_point"></span>
-				<input maxlength="255" type="text" id="order_filter" name="search" value="{SEARCH_VAL*}" /><input data-disable-on-click="1" class="button_micro buttons__search" type="submit" value="{!SEARCH}" /> ({!SEARCH_ORDERS})
+				<input maxlength="255" type="text" id="order_filter" name="search" value="{SEARCH_VAL*}" /><input data-disable-on-click="1" class="button_micro buttons--search" type="submit" value="{!SEARCH}" /> ({!SEARCH_ORDERS})
 			</label>
 		</div>
 	</form>
@@ -32,7 +32,7 @@
 		{!ACTIONS}:
 	</p>
 	<nav>
-		<ul class="actions_list">
+		<ul class="actions-list">
 			<li class="actions_list_strong">
 				<a href="{$PAGE_LINK*,_SELF:_SELF:order_export}">{!EXPORT_ORDER_LIST}</a>
 			</li>

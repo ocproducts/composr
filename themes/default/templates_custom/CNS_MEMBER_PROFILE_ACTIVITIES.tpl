@@ -27,10 +27,10 @@
 			<p>
 				{+START,LOOP,SYNDICATIONS}
 					{+START,IF,{SYNDICATION_IS_SET}}
-						<input class="button_screen_item buttons__cancel" data-disable-on-click="1" type="submit" id="syndicate_stop__{_loop_key*}" name="syndicate_stop__{_loop_key*}" value="{!STOP_SYNDICATING_TO,{SYNDICATION_SERVICE_NAME*}}" />
+						<input class="button_screen_item buttons--cancel" data-disable-on-click="1" type="submit" id="syndicate_stop__{_loop_key*}" name="syndicate_stop__{_loop_key*}" value="{!STOP_SYNDICATING_TO,{SYNDICATION_SERVICE_NAME*}}" />
 					{+END}
 					{+START,IF,{$NOT,{SYNDICATION_IS_SET}}}
-						<input class="button_screen_item buttons__proceed" data-disable-on-click="1" type="submit" id="syndicate_start__{_loop_key*}" name="syndicate_start__{_loop_key*}" value="{!START_SYNDICATING_TO,{SYNDICATION_SERVICE_NAME*}}" />
+						<input class="button_screen_item buttons--proceed" data-disable-on-click="1" type="submit" id="syndicate_start__{_loop_key*}" name="syndicate_start__{_loop_key*}" value="{!START_SYNDICATING_TO,{SYNDICATION_SERVICE_NAME*}}" />
 					{+END}
 				{+END}
 			</p>

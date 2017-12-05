@@ -103,7 +103,7 @@ class Hook_preview_cns_post
         } elseif ($intended_solely_for !== null) {
             $emphasis = do_lang_tempcode('PP_TO', escape_html($intended_solely_for));
         }
-        $class = $is_emphasised ? 'cns_post_emphasis' : (($intended_solely_for !== null) ? 'cns_post_personal' : '');
+        $class = $is_emphasised ? 'cns-post-emphasis' : (($intended_solely_for !== null) ? 'cns-post-personal' : '');
 
         // Member details
         $member_row = $GLOBALS['FORUM_DRIVER']->get_member_row($post_owner);

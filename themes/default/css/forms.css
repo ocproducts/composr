@@ -103,12 +103,12 @@ span.form_field_name {
 	/*display: inline-block;	Actually, this breaks vertical centring, so let it be inline*/
 }
 
-/* Overrides .toggleable_tray_button */
-.form_table .toggleable_tray_button {
+/* Overrides .toggleable-tray-button */
+.form_table .toggleable-tray-button {
 	color: {$GET,heading_text} !important;
 	font-weight: normal !important;
 }
-.form_table .toggleable_tray_button .help_icon {
+.form_table .toggleable-tray-button .help_icon {
 	float: none;
 	vertical-align: middle;
 }
@@ -457,7 +457,7 @@ span.validated_checkbox+input[name="validated"].input_tick {
 	height: 0;
 	font-size: 0;
 }
-.page_running_admin_themes .radio_list_picture label.js_widget, .page_running_admin_zones .radio_list_picture label.js_widget {
+.page-running-admin-themes .radio_list_picture label.js_widget, .page-running-admin-zones .radio_list_picture label.js_widget {
 	visibility: visible;
 	width: auto;
 	height: auto;

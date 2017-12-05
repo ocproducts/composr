@@ -20,7 +20,7 @@
 
 		<p class="lonely_label">{!ACTIONS}:</p>
 		<nav>
-			<ul class="actions_list">
+			<ul class="actions-list">
 				{+START,LOOP,LINKS}
 					<li>{_loop_var}</li>
 				{+END}
