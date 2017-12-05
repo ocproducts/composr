@@ -29,7 +29,9 @@ For other language packs you can copy this file to the obvious new name. This is
  */
 class LangFilter_EN extends LangFilter
 {
-    private $vowels;
+    protected $vowels;
+	protected $make_uncle_sam_happy = null, $the_sun_never_sets_on_the_british_empire = null;
+    protected $_is_american = null;
 
     /**
      * Constructor.
@@ -55,10 +57,8 @@ class LangFilter_EN extends LangFilter
 
         // Broken into sets. We don't need to include "d"/"s"/"r" suffixes because the base word is a stem of that. But "ing" suffixes mean removing a letter so are needed. Some completely standard long stem transfers are done as universal replaces elsewhere.
         // All words are stem bound, but not tail bound.
-        static $make_uncle_sam_happy = null;
-        static $the_sun_never_sets_on_the_british_empire = null;
-        if ($make_uncle_sam_happy === null) {
-            $make_uncle_sam_happy = array(
+        if ($this->make_uncle_sam_happy === null) {
+            $this->make_uncle_sam_happy = array(
                 // Spelling...
 
                 'analyse' => 'analyze',
@@ -207,7 +207,7 @@ class LangFilter_EN extends LangFilter
                 //'bill' => 'invoice', not needed and likely to be substring
             );
 
-            $the_sun_never_sets_on_the_british_empire = array( // Tally ho
+            $this->the_sun_never_sets_on_the_british_empire = array( // Tally ho
                 'tick (check)' => 'tick',
                 'untick (uncheck)' => 'untick',
                 'ticked (checked)' => 'ticked',
@@ -229,21 +229,20 @@ class LangFilter_EN extends LangFilter
             $remapping['on Yesterday'] = 'Yesterday';
             $remapping['on Today'] = 'Today';
 
-            $the_sun_never_sets_on_the_british_empire += $remapping;
-            $make_uncle_sam_happy += $remapping;
+            $this->the_sun_never_sets_on_the_british_empire += $remapping;
+            $this->make_uncle_sam_happy += $remapping;
         }
 
         // American <> British
-        static $_is_american = null;
-        if ($_is_american === null) {
+        if ($this->_is_american === null) {
             if (function_exists('get_option')) {
-                $_is_american = (get_option('yeehaw') == '1') || ($lang == 'EN_US');
-                $is_american = $_is_american;
+                $this->_is_american = (get_option('yeehaw') == '1') || ($lang == 'EN_US');
+                $is_american = $this->_is_american;
             } else {
                 $is_american = true;
             }
         } else {
-            $is_american = $_is_american;
+            $is_american = $this->_is_american;
         }
         if ($is_american) {
             // NB: Below you will see there are exceptions, typically when the base word already naturally ends with "se" on the end, it uses "s" not "z"
@@ -264,14 +263,13 @@ class LangFilter_EN extends LangFilter
             $value = str_replace('sational', 'zational', $value);
             $value = str_replace('senzational', 'sensational', $value); // Exception, put this back
 
-            $remapping = $make_uncle_sam_happy;
+            $remapping = $this->make_uncle_sam_happy;
         } else {
-            $remapping = $the_sun_never_sets_on_the_british_empire;
+            $remapping = $this->the_sun_never_sets_on_the_british_empire;
         }
 
         // Better labelling for eCommerce config
         if ((addon_installed('ecommerce')) && (function_exists('get_option')) && (($key === null) || (strpos($key, 'ECOM_CAT') === false/*gets saved into database*/))) {
-            $remapping = array();
             $remapping['the configured weight units'] = 'the configured weight units (currently ' . get_option('shipping_weight_units') . ')';
             $remapping['the configured length units'] = 'the configured length units (currently ' . get_option('shipping_distance_units') . ')';
             $remapping['for each unit weight of product'] = 'for each unit weight of product (currently ' . get_option('shipping_weight_units') . ')';
@@ -460,7 +458,7 @@ class LangFilter_EN extends LangFilter
                         }
                     }
                     //$value = str_replace(array_keys($reps), array_values($reps), $value); This doesn't work when a replacement itself might be replaced in a further iteration of $reps
-                    
+
                 }
             }
         }

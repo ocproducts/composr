@@ -121,7 +121,7 @@ We would choose to edit the cricket practice event:
  - to end 1 hour after that date
  - and select 'Edit with fixing past recurrences'
 
-It is preferable that we did this before the actual cancelled event occurrence. If we were too late, we would undergo the same process, but delete the last hard-coded event that was added.
+It is preferable that we did this before the actual cancelled event recurrence. If we were too late, we would undergo the same process, but delete the last hard-coded event that was added.
 
 [title="2"]Scheduling commands[/title]
 
@@ -143,7 +143,7 @@ It is possible to customise the calendar to have a different start-of-week-day, 
 
 [concepts
  1_key="Event"                1_value="An entry in the calendar system that may recur"
- 2_key="Recurrence pattern"   2_value="A pattern, written in binary, that indicates the on/off sequences of an events occurrence, masked and repeating over the recurrences that would happen by default"
+ 2_key="Recurrence pattern"   2_value="A pattern, written in binary, that indicates the on/off sequences of an events recurrence, masked and repeating over the recurrences that would happen by default"
  3_key="Event fixing"         3_value="The process of hard-coding recurring events into individual events, so as to allow a change in the recurrence"
  4_key="Event type"           4_value="The classification of an event; appointment for example"
 ]Concepts[/concepts]

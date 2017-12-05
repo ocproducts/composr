@@ -28,9 +28,9 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
                 continue;
             }
 
-            require_code('hooks/systems/addon_registry/' . filter_naughty($hook));
+            require_code('hooks/systems/addon_registry/' . filter_naughty_harsh($hook));
 
-            $ob = object_factory('Hook_addon_registry_' . $hook);
+            $ob = object_factory('Hook_addon_registry_' . filter_naughty_harsh($hook));
             if (method_exists($ob, 'tpl_previews')) {
                 $previews = $ob->tpl_previews();
                 foreach ($previews as $template => $preview) {
@@ -4477,6 +4477,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         FIX_BROKEN_FILEDUMP_LINKS
         FIX_INVALID_HTML
         FIX_PAST_RECURRENCES
+		EDIT_ALL_RECURRENCES
         FLOOD_CONTROL
         FLOOD_CONTROL_ACCESS_SECS
         FLOOD_CONTROL_SCREEN
@@ -9407,6 +9408,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         SUCCESS
         SUCCESSFUL_CONFIRM
         SUCCESS_NEWSLETTER_AUTO
+        SUCCESS_NEWSLETTER_AUTO_INSTANT
         SUCCESS_SAVE
         SUCCESS_UPLOAD_SYNDICATION_AUTH
         SUGGESTIONS_ONLY
@@ -9871,9 +9873,9 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
                 continue;
             }
 
-            require_code('hooks/systems/config/' . filter_naughty($hook));
+            require_code('hooks/systems/config/' . filter_naughty_harsh($hook));
 
-            $ob = object_factory('Hook_config_' . $hook);
+            $ob = object_factory('Hook_config_' . filter_naughty_harsh($hook));
             if (method_exists($ob, 'get_details')) {
                 $details = $ob->get_details();
 

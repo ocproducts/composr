@@ -1,6 +1,6 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Webhosting for Composr[/title]
 
-[media float="right" thumb="0" framed="0"]data_custom/images/docs/advantage.png[/media]
+[media width="350" float="right" framed="0"]data_custom/images/docs/tut_webhosting/kind.png[/media]
 To put a website on-to the Internet, you need to arrange for 'webhosting'. This is usually done by paying for the services of a [concept]webhost[/concept], who will provide you space-on and access-to, a computer (a web server) that is permanently connected to the Internet via a high-speed connection.
 
 This tutorial covers requirements for hosting Composr and some general information about webhosting and security.
@@ -11,6 +11,7 @@ This tutorial goes into great detail of all the low-level requirements (much of 
 
 [title="2"]Different hosting options[/title]
 
+[media width="400" float="right" framed="0"]data_custom/images/docs/tut_webhosting/pick_webhost.png[/media]
 You have the following options for hosting Composr (roughly):
  - Traditional shared webhosting (with a control panel)
  - Traditional VPS webhosting (with a control panel)
@@ -61,7 +62,6 @@ Most companies competing on price may appear to be good if you compare features/
 [/staff_note]
 [title="2"]Requirements and recommendations[/title]
 
-[media width="480" thumb="1" framed="1" description="Easy-reference summary of the key hosting recommendations." float="right"]data_custom/images/docs/tut_webhosting/image.png[/media]
 When choosing a webhost, you need to make sure that they meet all the requirements of Composr. Composr is intentionally designed to have very low requirements, but like when making virtually any choice in life, there are various different kinds of product that companies may try and sell.
 If a random commercial [concept]PHP[/concept]/[concept]MySQL[/concept]-supporting webhost was chosen, it is very likely that they would support these requirements: however the developers cannot be held accountable for incompatibilities with systems that do not.
 
@@ -72,7 +72,7 @@ The remainder of this section details Composr's requirements. If you have troubl
   - If you are using PHP 5.2.0 or lower then PHP must have been compiled with [tt]--enable-memory-limit[/tt]
   - If you intend to use WebDAV, PHP 5.3 or higher is required
   - Other non-bundled addons may have different dependencies
-  - If you install with PHP 5.5 or newer, you may not then down-grade to anything older than PHP 5.5 (as Composr will have already made use of PHP 5.5's password security features for saved passwords)
+  - If you install with PHP 5.5 or newer, you may not then down-grade to anything older than PHP 5.5 (as Composr will have already made use of PHP 5.5's password security features for saved passwords)[media width="480" thumb="1" framed="1" description="Easy-reference summary of the key hosting recommendations." float="right"]data_custom/images/docs/tut_webhosting/image.png[/media]
  - A PHP environment with the following (a competent webhost geared towards running PHP web applications should be able to provide this):
   - GD2 extension (including PNG and JPEG support). GD is used by PHP for image generation, e.g. to generate thumbnails.
   - file uploads with at least 5MB (or higher, depending on your particular needs)

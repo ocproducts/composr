@@ -326,6 +326,31 @@ function require_code_no_override($codename)
 }
 
 /**
+ * Replace a limited number of occurrences of the search string with the replacement string.
+ * If there are the wrong number of occurrences (including zero) an error is put out, as this indicates an override is broken.
+ * The phrase "<ditto>" will repeat the original $search string back into $replace.
+ *
+ * @param  mixed $search What's being replaced (string or array).
+ * @param  mixed $replace What's being replaced with (string or array).
+ * @param  mixed $subject Subject (string or array).
+ * @param  integer $times Number of times to replace (to expect to replace).
+ * @return mixed Result (string or array).
+ */
+function override_str_replace_exactly($search, $replace, $subject, $times = 1)
+{
+    $cnt = substr_count($subject, $search);
+
+    if ($cnt != $times) {
+        $lines = debug_backtrace();
+        critical_error('CORRUPT_OVERRIDE', preg_replace('#^' . preg_quote(get_file_base() . '/') . '#', '', $lines[0]['file']) . ':' . strval($lines[0]['line']));
+    }
+
+    $replace = str_replace('<ditto>', $search, $replace);
+
+    return str_replace($search, $replace, $subject);
+}
+
+/**
  * Find if we are running on a live Google App Engine application.
  *
  * @return boolean If it is running as a live Google App Engine application

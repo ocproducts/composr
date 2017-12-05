@@ -263,6 +263,9 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
             $message_plain = preg_replace('#\{\{([^\}\{]*)\}\}#', '\1', $message_plain);
         }
 
+		$message_plain = str_replace('{$SITE_NAME}', get_site_name(), $message_plain);
+		$message_plain = str_replace('{$SITE_NAME*}', get_site_name(), $message_plain);
+
         if (stripos($message_plain, '{') !== false) {
             // Remove directives etc
             do {
@@ -402,7 +405,7 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
 
     if (stripos($message_plain, '[title') !== false) {
         if (!in_array('title', $tags_to_preserve)) {
-            $message_plain = preg_replace_callback('#(\s*)\[title([^\]])*\](.*)\[/title\]#Usi', '_title_callback', $message_plain);
+            $message_plain = preg_replace_callback('#(\s*)\[title([^\]]*)\](.*)\[/title\]#Usi', '_title_callback', $message_plain);
         }
     }
 

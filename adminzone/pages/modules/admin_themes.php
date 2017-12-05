@@ -169,7 +169,7 @@ class Module_admin_themes
 
             $theme = post_param_string('theme');
             $file = post_param_string('file');
- 
+
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('MANAGE_THEMES')), array('_SELF:_SELF:edit_css:theme=' . $theme, do_lang_tempcode('CHOOSE_CSS')), array('_SELF:_SELF:_edit_css:file=' . $file, do_lang_tempcode('EDIT_CSS'))));
             breadcrumb_set_self(do_lang_tempcode('DONE'));
 
@@ -1169,16 +1169,18 @@ class Module_admin_themes
         $custom_path = get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/css_custom/' . $file;
 
         // Store revision
-        require_code('revisions_engine_files');
-        $revision_engine = new RevisionEngineFiles();
-        $existing_path = $custom_path;
-        if (!file_exists($existing_path)) {
-            $existing_path = get_custom_file_base() . '/themes/default/css_custom/' . $file;
+        if (addon_installed('actionlog')) {
+            require_code('revisions_engine_files');
+            $revision_engine = new RevisionEngineFiles();
+            $existing_path = $custom_path;
+            if (!file_exists($existing_path)) {
+                $existing_path = get_custom_file_base() . '/themes/default/css_custom/' . $file;
+            }
+            if (!file_exists($existing_path)) {
+                $existing_path = get_custom_file_base() . '/themes/default/css/' . $file;
+            }
+            $revision_engine->add_revision(dirname($custom_path), basename($custom_path, '.css'), 'css', file_get_contents($existing_path), filemtime($existing_path));
         }
-        if (!file_exists($existing_path)) {
-            $existing_path = get_custom_file_base() . '/themes/default/css/' . $file;
-        }
-        $revision_engine->add_revision(dirname($custom_path), basename($custom_path, '.css'), 'css', file_get_contents($existing_path), filemtime($existing_path));
 
         require_code('files');
 
@@ -1768,14 +1770,16 @@ class Module_admin_themes
             $full_path = get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/' . $file;
 
             // Store revision
-            if (file_exists($full_path)) {
-                require_code('revisions_engine_files');
-                $revision_engine = new RevisionEngineFiles();
-                $existing_path = $full_path;
-                if (!file_exists($existing_path)) {
-                    $existing_path = get_custom_file_base() . '/themes/default/' . $_file;
+            if (addon_installed('actionlog')) {
+                if (file_exists($full_path)) {
+                    require_code('revisions_engine_files');
+                    $revision_engine = new RevisionEngineFiles();
+                    $existing_path = $full_path;
+                    if (!file_exists($existing_path)) {
+                        $existing_path = get_custom_file_base() . '/themes/default/' . $_file;
+                    }
+                    $revision_engine->add_revision(dirname($full_path), basename($_file, '.' . get_file_extension($_file)), get_file_extension($_file), file_get_contents($existing_path), filemtime($existing_path));
                 }
-                $revision_engine->add_revision(dirname($full_path), basename($_file, '.' . get_file_extension($_file)), get_file_extension($_file), file_get_contents($existing_path), filemtime($existing_path));
             }
 
             // Save

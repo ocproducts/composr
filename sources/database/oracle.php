@@ -81,7 +81,8 @@ class Database_Static_oracle
 
         $fields = explode(',', $_fields);
         foreach ($fields as $field) {
-            if (strpos($GLOBALS['SITE_DB']->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $raw_table_name, 'm_name' => $field)), 'LONG') !== false) {
+            $db_type = $GLOBALS['SITE_DB']->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $raw_table_name, 'm_name' => $field));
+            if ((strpos($db_type, 'LONG') !== false) || ((!multi_lang_content()) && (strpos($db_type, 'SHORT_TRANS') !== false))) {
                 // We can't support this in SQL Server http://www.oratable.com/ora-01450-maximum-key-length-exceeded/.
                 // We assume shorter numbers than 250 are only being used on short columns anyway, which will index perfectly fine without any constraint.
                 return array();
@@ -356,7 +357,7 @@ class Database_Static_oracle
             critical_error('PASSON', $error); //warn_exit(do_lang_tempcode('CONNECT_DB_ERROR'));
         }
 
-        if (!$db) {
+        if ($db === false) {
             fatal_exit(do_lang('CONNECT_DB_ERROR'));
         }
         $this->cache_db[$db_name][$db_host] = $db;
@@ -414,6 +415,49 @@ class Database_Static_oracle
     }
 
     /**
+     * Adjust an SQL query to apply offset/limit restriction.
+     *
+     * @param  string $query The complete SQL query
+     * @param  ?integer $max The maximum number of rows to affect (null: no limit)
+     * @param  ?integer $start The start row to affect (null: no specification)
+     */
+    public function apply_sql_limit_clause(&$query, $max = null, $start = 0)
+    {
+        if (($start !== null) && ($max !== null) && (strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) {
+            $old_query = $query;
+
+            if (is_null($start)) {
+                $start = 0;
+            }
+
+            $pos = stripos($old_query, 'FROM ');
+            $pos2 = strpos($old_query, ' ', $pos + 5);
+            $pos3 = stripos($old_query, 'WHERE ', $pos2);
+            if ($pos3 === false) { // No where
+                $pos4 = stripos($old_query, ' ORDER BY');
+                if ($pos4 === false) {
+                    $pos4 = strlen($old_query);
+                }
+                $query = substr($old_query, 0, $pos4) . ' WHERE rownum>=' . strval(intval($start));
+                if (!is_null($max)) {
+                    $query .= ' AND rownum<' . strval(intval($start + $max));
+                }
+                $query .= substr($old_query, $pos4);
+            } else {
+                $pos4 = stripos($old_query, ' ORDER BY');
+                if ($pos4 === false) {
+                    $pos4 = strlen($old_query);
+                }
+                $query = substr($old_query, 0, $pos3) . 'WHERE (' . substr($old_query, $pos3 + 6, $pos4 - $pos3 - 6) . ') AND rownum>=' . strval(intval($start));
+                if (!is_null($max)) {
+                    $query .= ' AND rownum<' . strval(intval($start + $max));
+                }
+                $query .= substr($old_query, $pos4);
+            }
+        }
+    }
+
+    /**
      * This function is a very basic query executor. It shouldn't usually be used by you, as there are abstracted versions available.
      *
      * @param  string $query The complete SQL query
@@ -426,38 +470,7 @@ class Database_Static_oracle
      */
     public function db_query($query, $db, $max = null, $start = null, $fail_ok = false, $get_insert_id = false)
     {
-        if ((!is_null($start)) && (!is_null($max)) && (strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) {
-            $old_query = $query;
-
-            if (is_null($start)) {
-                $start = 0;
-            }
-
-            $pos = strpos($old_query, 'FROM ');
-            $pos2 = strpos($old_query, ' ', $pos + 5);
-            $pos3 = strpos($old_query, 'WHERE ', $pos2);
-            if ($pos3 === false) { // No where
-                $pos4 = strpos($old_query, ' ORDER BY');
-                if ($pos4 === false) {
-                    $pos4 = strlen($old_query);
-                }
-                $query = substr($old_query, 0, $pos4) . ' WHERE rownum>=' . strval(intval($start));
-                if (!is_null($max)) {
-                    $query .= ' AND rownum<' . strval(intval($start + $max));
-                }
-                $query .= substr($old_query, $pos4);
-            } else {
-                $pos4 = strpos($old_query, ' ORDER BY');
-                if ($pos4 === false) {
-                    $pos4 = strlen($old_query);
-                }
-                $query = substr($old_query, 0, $pos3) . 'WHERE (' . substr($old_query, $pos3 + 6, $pos4 - $pos3 - 6) . ') AND rownum>=' . strval(intval($start));
-                if (!is_null($max)) {
-                    $query .= ' AND rownum<' . strval(intval($start + $max));
-                }
-                $query .= substr($old_query, $pos4);
-            }
-        }
+        $this->apply_sql_limit_clause($query, $max, $start);
 
         $stmt = ociparse($db, $query, 0);
         $results = @ociexecute($stmt);
@@ -480,7 +493,7 @@ class Database_Static_oracle
 
         $sub = substr(ltrim($query), 0, 4);
         if (($results !== true) && (($sub === '(SEL') || ($sub === 'SELE') || ($sub === 'sele') || ($sub === 'CHEC') || ($sub === 'EXPL') || ($sub === 'REPA') || ($sub === 'DESC') || ($sub === 'SHOW')) && ($results !== false)) {
-            return $this->db_get_query_rows($stmt);
+            return $this->db_get_query_rows($stmt, $query, $start);
         }
 
         if ($get_insert_id) {
@@ -504,10 +517,11 @@ class Database_Static_oracle
      * Get the rows returned from a SELECT query.
      *
      * @param  resource $stmt The query result pointer
-     * @param  ?integer $start Whether to start reading from (null: irrelevant for this forum driver)
+     * @param  string $query The complete SQL query (useful for debugging)
+     * @param  ?integer $start Whether to start reading from (null: irrelevant)
      * @return array A list of row maps
      */
-    public function db_get_query_rows($stmt, $start = null)
+    public function db_get_query_rows($stmt, $query, $start = null)
     {
         $out = array();
         $i = 0;

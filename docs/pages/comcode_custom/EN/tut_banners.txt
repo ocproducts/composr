@@ -40,6 +40,10 @@ The banner system supports different broad categories of media type:
  - Frames (given by "Image URL")
  - Direct code
 
+[title="4"]Images[/title]
+
+By default image banners will open a new window when clicked, unless the banner is to a local URL in which case the same window will be used. This behaviour can be modified by editing the [tt]BANNER_IMAGE[/tt] template.
+
 [title="4"]Flash[/title]
 
 Flash ([tt].swf[/tt] format) is not recommended anymore for modern websites, as many users (e.g. mobile users) will not have the Adobe Flash plugin installed. Desktop browsers are moving toward dropping it completely.

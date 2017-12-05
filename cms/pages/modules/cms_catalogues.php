@@ -1530,16 +1530,16 @@ class Module_cms_catalogues_cat extends Standard_crud_module
             null,
             null,
             /* TYPED-ORDERED LIST OF 'LINKS'  */
-            (!is_null($id)) ? null : array('_SELF', array('type' => 'add_entry', 'catalogue_name' => $catalogue_name), '_SELF'),// Add one
+            array('_SELF', array('type' => 'add_entry', 'category_id' => $id, 'catalogue_name' => $catalogue_name), '_SELF'), // Add one
             null, // Edit this
             has_privilege(get_member(), 'edit_own_midrange_content', 'cms_catalogues') ? array('_SELF', array('type' => 'edit_entry', 'catalogue_name' => $catalogue_name), '_SELF') : null, // Edit one
             null, // View this
             null, // View archive
-            is_null($id) ? null : array('_SELF', array('type' => 'add_entry', 'category_id' => $id, 'catalogue_name' => $catalogue_name), '_SELF'),// Add to category
+            null, // Add to category
             has_privilege(get_member(), 'submit_cat_midrange_content', 'cms_catalogues') ? array('_SELF', array('type' => 'add_category', 'catalogue_name' => $catalogue_name), '_SELF') : null, // Add one category
             has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_catalogues') ? array('_SELF', array('type' => 'edit_category', 'catalogue_name' => $catalogue_name), '_SELF') : null, // Edit one category
             (is_null($id) || (!has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_catalogues'))) ? null : array('_SELF', array('type' => '_edit_category', 'id' => $id, 'catalogue_name' => $catalogue_name), '_SELF'), // Edit this category
-            is_null($id) ? null : array('catalogues', array('type' => 'category', 'id' => $id), get_module_zone('catalogues')),// View this category
+            is_null($id) ? null : array('catalogues', array('type' => 'category', 'id' => $id), get_module_zone('catalogues')), // View this category
 
             /* SPECIALLY TYPED 'LINKS' */
             array(), array(),

@@ -189,7 +189,7 @@ public class MainDialog extends JFrame {
     public void initiateFileSearch(String type) {
         boolean sort_new = false, skip_custom = false;
 
-		String path = new String(Main.projectPath.replace("\"", ""));
+        String path = new String(Main.projectPath.replace("\"", ""));
         if ((path.equals(".")) || (path.equals("./")) || (path.equals(".\\"))) {
             path = "";
         }
@@ -228,30 +228,34 @@ public class MainDialog extends JFrame {
         ArrayList<SearchFile> finalFiles = new ArrayList();
 
         File myFile = new File(path);
-        String thefiles[] = myFile.list();
-        if (thefiles == null) {
+        String[] theFiles = myFile.list();
+        if (theFiles == null) {
             JOptionPane.showMessageDialog(this,
                     "Could not search the directory " + path + ".");
             return finalFiles;
         }
-        Arrays.sort(thefiles);
+        Arrays.sort(theFiles);
         int i;
         long last_m;
         File tmpFile;
-        for (i = 0; i < thefiles.length; i++) {
-            if (thefiles[i].equals(".")) {
+        for (i = 0; i < theFiles.length; i++) {
+            if (theFiles[i].equals(".")) {
                 continue;
             }
-            if (thefiles[i].equals("..")) {
+            if (theFiles[i].equals("..")) {
                 continue;
             }
 
-            tmpFile = new File(path + File.separator + thefiles[i]);
+            tmpFile = new File(path + File.separator + theFiles[i]);
 
             last_m = tmpFile.lastModified() / 1000 + 60 * 60 * 24;
 
             if (tmpFile.isDirectory()) {
-                if ((skip_custom) && ((thefiles[i].equals("transcoder")) || (thefiles[i].equals("uploads")) || (thefiles[i].equals("_tests")) || (thefiles[i].equals("mobiquo")) || (thefiles[i].equals("ocproducts")) || (thefiles[i].equals("buildr")) || (thefiles[i].equals("tracker")) || (thefiles[i].equals("exports")) || (thefiles[i].equals("simpletest")) || (thefiles[i].indexOf("_custom") != -1))) {
+                if (theFiles[i].equals("_meta_tree")) {
+                    continue;
+                }
+
+                if ((skip_custom) && ((theFiles[i].equals("transcoder")) || (theFiles[i].equals("uploads")) || (theFiles[i].equals("_tests")) || (theFiles[i].equals("mobiquo")) || (theFiles[i].equals("ocproducts")) || (theFiles[i].equals("buildr")) || (theFiles[i].equals("tracker")) || (theFiles[i].equals("exports")) || (theFiles[i].equals("simpletest")) || (theFiles[i].indexOf("_custom") != -1))) {
                     continue;
                 }
 
@@ -260,19 +264,19 @@ public class MainDialog extends JFrame {
                         + tmpFile.getName(), skip_custom);
                 finalFiles.addAll(next);
             } else if (tmpFile.isFile()) {
-                if (thefiles[i].equals("_config.php")) {
+                if (theFiles[i].equals("_config.php")) {
                     continue;
                 }
-                
-                if ((type.equals("PHP")) && (!thefiles[i].toLowerCase().endsWith(".php"))) {
+
+                if ((type.equals("PHP")) && (!theFiles[i].toLowerCase().endsWith(".php"))) {
                     continue;
                 }
                 if ((type.equals("HTML"))
-                        && (!thefiles[i].toLowerCase().endsWith(".html"))
-                        && (!thefiles[i].toLowerCase().endsWith(".htm"))
-                        && (!thefiles[i].toLowerCase().endsWith(".css"))
-                        && (!thefiles[i].endsWith(".tpl"))
-                        && (!thefiles[i].toLowerCase().endsWith(".ini"))) {
+                        && (!theFiles[i].toLowerCase().endsWith(".html"))
+                        && (!theFiles[i].toLowerCase().endsWith(".htm"))
+                        && (!theFiles[i].toLowerCase().endsWith(".css"))
+                        && (!theFiles[i].endsWith(".tpl"))
+                        && (!theFiles[i].toLowerCase().endsWith(".ini"))) {
                     continue;
                 }
 
@@ -559,42 +563,42 @@ public class MainDialog extends JFrame {
             line = Main.textEditorPath + " \""
                     + (((((String) decomposed.get(1)).charAt(1) == ':')
                     || (((String) decomposed.get(1)).charAt(0) == '/')) ? ""
-                    : Main.projectPath) + File.separator + decomposed.get(1) + "\"" + params;
+                            : Main.projectPath) + File.separator + decomposed.get(1) + "\"" + params;
         } else if (Main.textEditorPath.toLowerCase().endsWith("context.exe")) {
             params = " /g" + decomposed.get(3) + ":" + decomposed.get(2);
             line = Main.textEditorPath + " \""
                     + (((((String) decomposed.get(1)).charAt(1) == ':')
                     || (((String) decomposed.get(1)).charAt(0) == '/')) ? ""
-                    : Main.projectPath) + File.separator + decomposed.get(1) + "\"" + params;
+                            : Main.projectPath) + File.separator + decomposed.get(1) + "\"" + params;
         } else if ((Main.textEditorPath.toLowerCase().endsWith("netbeans")) || (Main.textEditorPath.toLowerCase().endsWith("netbeans.exe"))) {
             line = Main.textEditorPath + " --open \""
                     + (((((String) decomposed.get(1)).charAt(1) == ':')
                     || (((String) decomposed.get(1)).charAt(0) == '/')) ? ""
-                    : Main.projectPath) + File.separator + decomposed.get(1) + "\":" + decomposed.get(2);
+                            : Main.projectPath) + File.separator + decomposed.get(1) + "\":" + decomposed.get(2);
         } else if (Main.textEditorPath.toLowerCase().endsWith("jedit.exe")) {
             params = " +line:" + decomposed.get(2);
             line = Main.textEditorPath + " \""
                     + (((((String) decomposed.get(1)).charAt(1) == ':')
                     || (((String) decomposed.get(1)).charAt(0) == '/')) ? ""
-                    : Main.projectPath) + File.separator + decomposed.get(1) + "\"" + params;
+                            : Main.projectPath) + File.separator + decomposed.get(1) + "\"" + params;
         } else if (Main.textEditorPath.toLowerCase().endsWith("kate")) {
             params = " --line " + decomposed.get(2) + " --column "
                     + decomposed.get(3);
             line = Main.textEditorPath + " \""
                     + (((((String) decomposed.get(1)).charAt(1) == ':')
                     || (((String) decomposed.get(1)).charAt(0) == '/')) ? ""
-                    : Main.projectPath) + File.separator + decomposed.get(1) + "\"" + params;
+                            : Main.projectPath) + File.separator + decomposed.get(1) + "\"" + params;
         } else if (Main.textEditorPath.toLowerCase().endsWith("mate")) {
             params = " -wl" + decomposed.get(2);
             line = Main.textEditorPath + " " + params + " "
                     + (((((String) decomposed.get(1)).charAt(1) == ':')
                     || (((String) decomposed.get(1)).charAt(0) == '/')) ? ""
-                    : Main.projectPath) + File.separator + decomposed.get(1);
+                            : Main.projectPath) + File.separator + decomposed.get(1);
         } else {
             line = Main.textEditorPath + " \""
                     + (((((String) decomposed.get(1)).charAt(1) == ':')
                     || (((String) decomposed.get(1)).charAt(0) == '/')) ? ""
-                    : Main.projectPath) + File.separator + decomposed.get(1) + "\"" + params;
+                            : Main.projectPath) + File.separator + decomposed.get(1) + "\"" + params;
         }
 
         if (this.errors.getSelectedIndex() == -1) {
@@ -614,7 +618,7 @@ public class MainDialog extends JFrame {
     }
 
     public void ForgetErrorBtn_actionPerformed(ActionEvent e) {
-        Main.skipped_errors.add((String)errors.getSelectedValue());
+        Main.skipped_errors.add((String) errors.getSelectedValue());
         DefaultListModel model = (DefaultListModel) errors.getModel();
         model.remove(errors.getSelectedIndex());
         String writePath = "non_errors.txt";

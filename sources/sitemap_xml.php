@@ -212,26 +212,25 @@ function rebuild_sitemap_index()
  * Ping search engines with an updated sitemap.
  *
  * @param  URLPATH $url Sitemap URL
+ * @param  boolean $trigger_error Whether to throw a Composr error, on error
  * @return string HTTP result output
  */
-function ping_sitemap_xml($url)
+function ping_sitemap_xml($url, $trigger_error = false)
 {
     // Ping search engines
     $out = '';
     if (get_option('auto_submit_sitemap') == '1') {
         $ping = true;
-        $base_url = get_base_url();
-        $not_local = (substr($base_url, 0, 16) != 'http://localhost') && (substr($base_url, 0, 16) != 'http://127.0.0.1') && (substr($base_url, 0, 15) != 'http://192.168.') && (substr($base_url, 0, 10) != 'http://10.');
+        $test_url = str_replace('https://', 'http://', $url);
+        $not_local = (substr($test_url, 0, 16) != 'http://localhost') && (substr($test_url, 0, 16) != 'http://127.0.0.1') && (substr($test_url, 0, 15) != 'http://192.168.') && (substr($test_url, 0, 10) != 'http://10.');
         if (($ping) && (get_option('site_closed') == '0') && ($not_local)) {
             // Submit to search engines
             $services = array(
                 'http://www.google.com/webmasters/tools/ping?sitemap=',
-                'http://submissions.ask.com/ping?sitemap=',
                 'http://www.bing.com/webmaster/ping.aspx?siteMap=',
-                'http://search.yahooapis.com/SiteExplorerService/V1/updateNotification?appid=SitemapWriter&url=',
             );
             foreach ($services as $service) {
-                $out .= http_download_file($service . urlencode($url), null, false);
+                $out .= http_download_file($service . urlencode($url), null, $trigger_error);
             }
         }
     }

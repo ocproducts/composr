@@ -50,8 +50,8 @@ function get_upload_syndication_json($file_handling_types)
 
     $hooks = find_all_hooks('systems', 'upload_syndication');
     foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/upload_syndication/' . filter_naughty($hook));
-        $ob = object_factory('Hook_upload_syndication_' . $hook);
+        require_code('hooks/systems/upload_syndication/' . filter_naughty_harsh($hook));
+        $ob = object_factory('Hook_upload_syndication_' . filter_naughty_harsh($hook));
         if ($ob->is_enabled()) {
             $hook_file_handling_types = $ob->get_file_handling_types();
             if (($hook_file_handling_types & $file_handling_types) != 0) {
@@ -108,8 +108,8 @@ function upload_syndication_auth_script()
     $hook = get_param_string('hook');
     $name = get_param_string('name');
 
-    require_code('hooks/systems/upload_syndication/' . filter_naughty($hook));
-    $ob = object_factory('Hook_upload_syndication_' . $hook);
+    require_code('hooks/systems/upload_syndication/' . filter_naughty_harsh($hook));
+    $ob = object_factory('Hook_upload_syndication_' . filter_naughty_harsh($hook));
     $success = $ob->receive_authorisation();
 
     require_lang('upload_syndication');
@@ -141,8 +141,8 @@ function upload_will_syndicate($name)
 {
     $hooks = find_all_hooks('systems', 'upload_syndication');
     foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/upload_syndication/' . filter_naughty($hook));
-        $ob = object_factory('Hook_upload_syndication_' . $hook);
+        require_code('hooks/systems/upload_syndication/' . filter_naughty_harsh($hook));
+        $ob = object_factory('Hook_upload_syndication_' . filter_naughty_harsh($hook));
         if ((post_param_integer('upload_syndicate__' . $hook . '__' . $name, 0) == 1) || ($ob->happens_always())) {
             if (($ob->is_enabled()) && ($ob->is_authorised())) {
                 require_code('uploads');
@@ -184,8 +184,8 @@ function handle_upload_syndication($name, $title, $description, $url, $filename,
     $remote_urls = array();
     $hooks = find_all_hooks('systems', 'upload_syndication');
     foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/upload_syndication/' . filter_naughty($hook));
-        $ob = object_factory('Hook_upload_syndication_' . $hook);
+        require_code('hooks/systems/upload_syndication/' . filter_naughty_harsh($hook));
+        $ob = object_factory('Hook_upload_syndication_' . filter_naughty_harsh($hook));
         if ((post_param_integer('upload_syndicate__' . $hook . '__' . $name, 0) == 1) || ($ob->happens_always())) {
             if (($ob->is_enabled()) && ($ob->is_authorised())) {
                 $hook_file_handling_types = $ob->get_file_handling_types();

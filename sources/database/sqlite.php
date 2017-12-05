@@ -309,7 +309,7 @@ class Database_Static_sqlite
         }
         sqlite_query($db, 'BEGIN TRANSACTION');
 
-        if (!$db) {
+        if ($db === false) {
             fatal_exit(do_lang('CONNECT_DB_ERROR'));
         }
         $this->cache_db[$db_name][$db_host] = $db;
@@ -341,6 +341,26 @@ class Database_Static_sqlite
     }
 
     /**
+     * Adjust an SQL query to apply offset/limit restriction.
+     *
+     * @param  string $query The complete SQL query
+     * @param  ?integer $max The maximum number of rows to affect (null: no limit)
+     * @param  ?integer $start The start row to affect (null: no specification)
+     */
+    public function apply_sql_limit_clause(&$query, $max = null, $start = 0)
+    {
+        if (substr($query, 0, 7) == 'SELECT') {
+            if (($max !== null) && ($start !== null)) {
+                $query .= ' LIMIT ' . strval(intval($start)) . ',' . strval(intval($max));
+            } elseif ($max !== null) {
+                $query .= ' LIMIT ' . strval(intval($max));
+            } elseif ($start !== null) {
+                $query .= ' LIMIT ' . strval(intval($start)) . ',30000000';
+            }
+        }
+    }
+
+    /**
      * This function is a very basic query executor. It shouldn't usually be used by you, as there are abstracted versions available.
      *
      * @param  string $query The complete SQL query
@@ -353,15 +373,7 @@ class Database_Static_sqlite
      */
     public function db_query($query, $db, $max = null, $start = null, $fail_ok = false, $get_insert_id = false)
     {
-        if (substr($query, 0, 7) == 'SELECT') {
-            if ((!is_null($max)) && (!is_null($start))) {
-                $query .= ' LIMIT ' . strval(intval($start)) . ',' . strval(intval($max));
-            } elseif (!is_null($max)) {
-                $query .= ' LIMIT ' . strval(intval($max));
-            } elseif (!is_null($start)) {
-                $query .= ' LIMIT ' . strval(intval($start)) . ',30000000';
-            }
-        }
+        $this->apply_sql_limit_clause($query, $max, $start);
 
         $results = @sqlite_query($db, $query);
         if ((($results === false) || (((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) && ($results === true))) && (!$fail_ok)) {
@@ -383,7 +395,7 @@ class Database_Static_sqlite
 
         $sub = substr(ltrim($query), 0, 4);
         if (($results !== true) && (($sub === '(SEL') || ($sub === 'SELE') || ($sub === 'sele') || ($sub === 'CHEC') || ($sub === 'EXPL') || ($sub === 'REPA') || ($sub === 'DESC') || ($sub === 'SHOW')) && ($results !== false)) {
-            return $this->db_get_query_rows($results);
+            return $this->db_get_query_rows($results, $query, $start);
         }
 
         if ($get_insert_id) {
@@ -401,10 +413,11 @@ class Database_Static_sqlite
      * Get the rows returned from a SELECT query.
      *
      * @param  resource $results The query result pointer
-     * @param  ?integer $start Whether to start reading from (null: irrelevant for this forum driver)
+     * @param  string $query The complete SQL query (useful for debugging)
+     * @param  ?integer $start Whether to start reading from (null: irrelevant)
      * @return array A list of row maps
      */
-    public function db_get_query_rows($results, $start = null)
+    public function db_get_query_rows($results, $query, $start = null)
     {
         $out = array();
         while (($row = sqlite_fetch_array($results)) !== false) {

@@ -18,17 +18,29 @@ function init__cns_join($in = null)
     // More referral fields in form
     $ini_file = parse_ini_file(get_custom_file_base() . '/text_custom/referrals.txt', true);
     if ((!isset($ini_file['visible_referrer_field'])) || ($ini_file['visible_referrer_field'] == '1')) {
-        $extra_code = '$fields->attach(get_referrer_field(true));';
+        $extra_code = "\$fields->attach(get_referrer_field(true));";
     } else {
-        $extra_code = '$hidden->attach(get_referrer_field(false));';
+        $extra_code = "\$hidden->attach(get_referrer_field(false));";
     }
-    $in = str_replace('/*PSEUDO-HOOK: cns_join_form special fields*/', $extra_code, $in);
+    $in = override_str_replace_exactly(
+        "/*PSEUDO-HOOK: cns_join_form special fields*/",
+        $extra_code,
+        $in
+    );
 
     // Better referral detection, and proper qualification management
-    $in = str_replace('/*PSEUDO-HOOK: cns_join_actual referrals*/', 'set_from_referrer_field();', $in);
+    $in = override_str_replace_exactly(
+        "/*PSEUDO-HOOK: cns_join_actual referrals*/",
+        "set_from_referrer_field();",
+        $in
+    );
 
     // Handle signup referrals
-    $in = str_replace('/*PSEUDO-HOOK: cns_join_actual ends*/', 'require_code(\'referrals\'); assign_referral_awards($member_id, \'join\');', $in);
+    $in = override_str_replace_exactly(
+        "/*PSEUDO-HOOK: cns_join_actual ends*/",
+        "require_code('referrals'); assign_referral_awards(\$member_id, 'join');",
+        $in
+    );
 
     return $in;
 }

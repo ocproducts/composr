@@ -76,8 +76,8 @@ function find_health_check_categories_and_sections()
 
     $hooks = find_all_hooks('systems', 'health_checks'); // TODO: Fix in v11
     foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/health_checks/' . filter_naughty($hook));
-        $ob = object_factory('Hook_health_check_' . $hook);
+        require_code('hooks/systems/health_checks/' . filter_naughty_harsh($hook));
+        $ob = object_factory('Hook_health_check_' . filter_naughty_harsh($hook));
 
         list($category_label, $sections) = $ob->run(null, $check_context, true);
 
@@ -167,8 +167,8 @@ function run_health_check(&$has_fails, $sections_to_run = null, $passes = false,
 
     $hooks = find_all_hooks('systems', 'health_checks'); // TODO: Fix in v11
     foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/health_checks/' . filter_naughty($hook));
-        $ob = object_factory('Hook_health_check_' . $hook);
+        require_code('hooks/systems/health_checks/' . filter_naughty_harsh($hook));
+        $ob = object_factory('Hook_health_check_' . filter_naughty_harsh($hook));
 
         list($category_label, $sections) = $ob->run($sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
 

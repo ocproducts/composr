@@ -174,7 +174,8 @@ function erase_comcode_cache()
         foreach ($TABLE_LANG_FIELDS_CACHE as $table => $fields) {
             foreach ($fields as $field => $field_type) {
                 if (strpos($field_type, '__COMCODE') !== false) {
-                    $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . $table . ' SET ' . $field . '__text_parsed=\'\' WHERE ' . db_string_not_equal_to($field . '__text_parsed', '')/*this WHERE is so indexing helps*/);
+                    $db = (substr($table, 0, 2) == 'f_') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
+                    $db->query('UPDATE ' . $db->get_table_prefix() . $table . ' SET ' . $field . '__text_parsed=\'\' WHERE ' . db_string_not_equal_to($field . '__text_parsed', '')/*this WHERE is so indexing helps*/);
                 }
             }
         }
@@ -301,27 +302,27 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
         }
 
         $theme_dirs = array(
-            'css',
-            'css_custom',
-            'javascript',
-            'javascript_custom',
-            'templates',
-            'templates_custom',
-            'text',
-            'text_custom',
-            'xml',
-            'xml_custom',
+            'css' => '.css',
+            'css_custom' => '.css',
+            'javascript' => '.js',
+            'javascript_custom' => '.js',
+            'templates' => '.tpl',
+            'templates_custom' => '.tpl',
+            'text' => '.txt',
+            'text_custom' => '.txt',
+            'xml' => '.xml',
+            'xml_custom' => '.xml',
         );
 
         foreach ($base_dirs as $base_dir) {
             foreach ($themes as $theme) {
-                foreach ($theme_dirs as $theme_dir) {
+                foreach ($theme_dirs as $theme_dir => $ext) {
                     $dir_path = $base_dir . '/themes/' . $theme . '/' . $theme_dir;
                     $_dir = @opendir($dir_path);
                     if ($_dir !== false) {
                         while (false !== ($file = readdir($_dir))) {
                             // Basic filter
-                            if ($file[0] == '.' || $file == 'index.html') {
+                            if (substr($file, -strlen($ext)) != $ext) {
                                 continue;
                             }
 
@@ -343,7 +344,7 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
     foreach ($themes as $theme) {
         $using_less =
             (addon_installed('less')) || /*LESS-regeneration is too intensive and assumed cache-safe anyway*/
-            is_file(get_custom_file_base() . '/themes/' . $theme . '/css/global.less') || 
+            is_file(get_custom_file_base() . '/themes/' . $theme . '/css/global.less') ||
             is_file(get_custom_file_base() . '/themes/' . $theme . '/css_custom/global.less');
 
         foreach (array_keys($langs) as $lang) {

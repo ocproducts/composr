@@ -262,6 +262,9 @@ class lang_spelling_test_set extends cms_test_case
             'eratic' => 'erratic',
             'psuedo' => 'pseudo',
         );
+        if (strpos($file, 'calendar') !== false) {
+            $common_spelling_mistakes['occurrence'] = 'recurrence';
+        }
         foreach ($common_spelling_mistakes as $from => $to) {
             if (stripos($string, $from) !== false) {
                 $this->assertTrue(false, $from . ' should be ' . $to . ' in ' . $file . '.');

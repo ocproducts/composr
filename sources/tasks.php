@@ -79,8 +79,8 @@ function execute_task_background($task_row)
 
         fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
-    require_code('hooks/systems/tasks/' . filter_naughty($hook));
-    $ob = object_factory('Hook_task_' . $hook);
+    require_code('hooks/systems/tasks/' . filter_naughty_harsh($hook));
+    $ob = object_factory('Hook_task_' . filter_naughty_harsh($hook));
     $result = call_user_func_array(array($ob, 'run'), $args);
 
     if ($task_row['t_send_notification'] == 1) {
@@ -190,8 +190,8 @@ function call_user_func_array__long_task($plain_title, $title, $hook, $args = nu
         }
 
         // Run task
-        require_code('hooks/systems/tasks/' . filter_naughty($hook));
-        $ob = object_factory('Hook_task_' . $hook);
+        require_code('hooks/systems/tasks/' . filter_naughty_harsh($hook));
+        $ob = object_factory('Hook_task_' . filter_naughty_harsh($hook));
         $result = call_user_func_array(array($ob, 'run'), $args);
         if (is_null($result)) {
             if (is_null($title)) {

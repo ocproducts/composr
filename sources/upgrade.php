@@ -1784,8 +1784,8 @@ function version_specific()
             $GLOBALS['SITE_DB']->add_table_field('config', 'c_needs_dereference', 'BINARY', 0);
             $hooks = find_all_hooks('systems', 'config');
             foreach (array_keys($hooks) as $hook) {
-                require_code('hooks/systems/config/' . filter_naughty($hook));
-                $ob = object_factory('Hook_config_' . $hook);
+                require_code('hooks/systems/config/' . filter_naughty_harsh($hook));
+                $ob = object_factory('Hook_config_' . filter_naughty_harsh($hook));
                 $option = $ob->get_details();
                 $needs_dereference = ($option['type'] == 'transtext' || $option['type'] == 'transline' || $option['type'] == 'comcodetext' || $option['type'] == 'comcodeline') ? 1 : 0;
                 $GLOBALS['SITE_DB']->query_update('config', array('c_needs_dereference' => $needs_dereference), array('c_name' => $hook), '', 1);

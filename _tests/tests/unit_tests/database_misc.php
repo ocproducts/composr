@@ -106,7 +106,7 @@ class database_misc_test_set extends cms_test_case
 
     public function testGROUP_CONCAT()
     {
-        $sql = db_function('GROUP_CONCAT', array('x', '(SELECT \'a\' AS x UNION SELECT \'b\' AS x) x'));
+        $sql = 'SELECT ' . db_function('GROUP_CONCAT', array('x', '(SELECT \'a\' AS x UNION SELECT \'b\' AS x) x'));
         $expected_result = 'a,b';
         $result = $GLOBALS['SITE_DB']->query_value_if_there($sql, false, true);
         $this->assertTrue($result == $expected_result);
@@ -114,12 +114,12 @@ class database_misc_test_set extends cms_test_case
 
     public function testCOUNT()
     {
-        $sql = 'SELECT COUNT(*) FROM (SELECT 1 UNION SELECT 2 UNION SELECT 3) x';
+        $sql = 'SELECT COUNT(*) FROM (SELECT 1 AS x UNION SELECT 2 AS x UNION SELECT 3 AS x) x';
         $expected_result = 3;
         $result = $GLOBALS['SITE_DB']->query_value_if_there($sql, false, true);
         $this->assertTrue($result == $expected_result);
 
-        $sql = 'SELECT COUNT(1) FROM (SELECT 1 UNION SELECT 2 UNION SELECT 3) x';
+        $sql = 'SELECT COUNT(1) FROM (SELECT 1 AS x UNION SELECT 2 AS x UNION SELECT 3 AS x) x';
         $expected_result = 3;
         $result = $GLOBALS['SITE_DB']->query_value_if_there($sql, false, true);
         $this->assertTrue($result == $expected_result);
@@ -182,43 +182,43 @@ class database_misc_test_set extends cms_test_case
 
     public function testInequalities()
     {
-        $sql = 'SELECT 1 FROM (SELECT 1) x WHERE 1>2';
+        $sql = 'SELECT 1 FROM (SELECT 1 AS x) x WHERE 1>2';
         $result = $GLOBALS['SITE_DB']->query($sql);
         $this->assertTrue(count($result) == 0);
 
-        $sql = 'SELECT 1 FROM (SELECT 1) x WHERE 2>1';
+        $sql = 'SELECT 1 FROM (SELECT 1 AS x) x WHERE 2>1';
         $result = $GLOBALS['SITE_DB']->query($sql);
         $this->assertTrue(count($result) == 1);
 
-        $sql = 'SELECT 1 FROM (SELECT 1) x WHERE 1<2';
+        $sql = 'SELECT 1 FROM (SELECT 1 AS x) x WHERE 1<2';
         $result = $GLOBALS['SITE_DB']->query($sql);
         $this->assertTrue(count($result) == 1);
 
-        $sql = 'SELECT 1 FROM (SELECT 1) x WHERE 2<1';
+        $sql = 'SELECT 1 FROM (SELECT 1 AS x) x WHERE 2<1';
         $result = $GLOBALS['SITE_DB']->query($sql);
         $this->assertTrue(count($result) == 0);
 
-        $sql = 'SELECT 1 FROM (SELECT 1) x WHERE 1>=2';
+        $sql = 'SELECT 1 FROM (SELECT 1 AS x) x WHERE 1>=2';
         $result = $GLOBALS['SITE_DB']->query($sql);
         $this->assertTrue(count($result) == 0);
 
-        $sql = 'SELECT 1 FROM (SELECT 1) x WHERE 2>=1';
+        $sql = 'SELECT 1 FROM (SELECT 1 AS x) x WHERE 2>=1';
         $result = $GLOBALS['SITE_DB']->query($sql);
         $this->assertTrue(count($result) == 1);
 
-        $sql = 'SELECT 1 FROM (SELECT 1) x WHERE 1<=2';
+        $sql = 'SELECT 1 FROM (SELECT 1 AS x) x WHERE 1<=2';
         $result = $GLOBALS['SITE_DB']->query($sql);
         $this->assertTrue(count($result) == 1);
 
-        $sql = 'SELECT 1 FROM (SELECT 1) x WHERE 2<=1';
+        $sql = 'SELECT 1 FROM (SELECT 1 AS x) x WHERE 2<=1';
         $result = $GLOBALS['SITE_DB']->query($sql);
         $this->assertTrue(count($result) == 0);
 
-        $sql = 'SELECT 1 FROM (SELECT 1) x WHERE 1=1';
+        $sql = 'SELECT 1 FROM (SELECT 1 AS x) x WHERE 1=1';
         $result = $GLOBALS['SITE_DB']->query($sql);
         $this->assertTrue(count($result) == 1);
 
-        $sql = 'SELECT 1 FROM (SELECT 1) x WHERE 1=0';
+        $sql = 'SELECT 1 FROM (SELECT 1 AS x) x WHERE 1=0';
         $result = $GLOBALS['SITE_DB']->query($sql);
         $this->assertTrue(count($result) == 0);
     }
@@ -237,6 +237,30 @@ class database_misc_test_set extends cms_test_case
         $this->assertTrue(get_table_count_approx('download_categories', array('id' => db_get_first_id()), null) > 0);
         $this->assertTrue(get_table_count_approx('download_categories', null, 'id=' . strval(db_get_first_id())) > 0);
         $this->assertTrue(get_table_count_approx('download_categories', array('id' => db_get_first_id()), 'id=' . strval(db_get_first_id())) > 0);
+    }
+
+    public function testSmoothUtf8()
+    {
+        // Really you should also manually check the DB is storing utf-8, not just working as a byte-bucket
+
+        $GLOBALS['SITE_DB']->drop_table_if_exists('testy_test_test_2');
+        $GLOBALS['SITE_DB']->create_table('testy_test_test_2', array(
+            'id' => '*AUTO',
+            'test_data_1' => 'LONG_TEXT',
+            'test_data_2' => 'SHORT_TEXT',
+        ));
+
+        $data = chr(hexdec('E2')) . chr(hexdec('80')) . chr(hexdec('BE'));
+
+        $GLOBALS['SITE_DB']->query_insert('testy_test_test_2', array(
+            'test_data_1' => $data,
+            'test_data_2' => $data,
+        ));
+
+        $this->assertTrue($GLOBALS['SITE_DB']->query_select_value('testy_test_test_2', 'test_data_1') == $data);
+        $this->assertTrue($GLOBALS['SITE_DB']->query_select_value('testy_test_test_2', 'test_data_2') == $data);
+
+        $GLOBALS['SITE_DB']->drop_table_if_exists('testy_test_test_2');
     }
 
     public function testFullTextSearch()
@@ -263,6 +287,8 @@ class database_misc_test_set extends cms_test_case
             seo_meta_set_for_explicit('test', strval($id), 'sample', '');
         }
 
+        sleep(2); // Some databases may take some time to fill up the index, via a background process
+
         $searches = array(
             // By keyword
             'by_keyword' => array(
@@ -281,7 +307,7 @@ class database_misc_test_set extends cms_test_case
                 /*$fields = */array(),
                 /*$raw_fields = */array('r.test_data_1'),
             ),
-            'boolean_no__success' => array(
+            'boolean_no__success' => array( // If this is failing on SQL Server, try resetting the SQL Server process (auto-indexing may be buggy or delayed, but nothing we can do)
                 /*$content = */'abacus',
                 /*$boolean_search = */false,
                 /*$expected = */1,
@@ -335,6 +361,8 @@ class database_misc_test_set extends cms_test_case
             $this->assertTrue(count($rows) == $expected, $test_codename . ' failed, got ' . integer_format(count($rows)) . ' rows but expected ' . integer_format($expected) . ' rows');
         }
 
-        $GLOBALS['SITE_DB']->drop_table_if_exists('testy_test_test');
+        if ($limit_to === null) {
+            $GLOBALS['SITE_DB']->drop_table_if_exists('testy_test_test');
+        } // Otherwise we're probably testing via manual queries too, so need the table
     }
 }

@@ -192,6 +192,10 @@ function block_helper_script()
         unset($block_types['adminzone_dashboard']);
         $block_types['adminzone_dashboard'] = $move_after;
         foreach ($block_types as $block_type => $_links) {
+            if (($block_type == 'bottom') && ($type_wanted == 'side')) {
+                continue;
+            }
+
             switch ($block_type) {
                 case 'side':
                 case 'main':
@@ -230,8 +234,8 @@ function block_helper_script()
         $block_ui_renderers = array();
         $_block_ui_renderers = find_all_hooks('systems', 'block_ui_renderers');
         foreach (array_keys($_block_ui_renderers) as $_block_ui_renderer) {
-            require_code('hooks/systems/block_ui_renderers/' . filter_naughty($_block_ui_renderer));
-            $block_ui_renderers[] = object_factory('Hook_block_ui_renderers_' . $_block_ui_renderer);
+            require_code('hooks/systems/block_ui_renderers/' . filter_naughty_harsh($_block_ui_renderer));
+            $block_ui_renderers[] = object_factory('Hook_block_ui_renderers_' . filter_naughty_harsh($_block_ui_renderer));
         }
 
         // Work out parameters involved, and their sets ("classes")

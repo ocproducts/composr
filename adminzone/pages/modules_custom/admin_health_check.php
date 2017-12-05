@@ -121,12 +121,13 @@ class Module_admin_health_check
             $has_fails = false;
             $categories = run_health_check($has_fails, $sections_to_run, $passes, $skips, $manual_checks, $automatic_repair);
 
-            $results = do_template('HEALTH_CHECK_RESULTS', array('CATEGORIES' => $categories));
+            $results = do_template('HEALTH_CHECK_RESULTS', array('_GUID' => 'f428b63eacc19bdd041d2b1a1d2f1155', 'CATEGORIES' => $categories));
         } else {
             $results = null;
         }
 
         return do_template('HEALTH_CHECK_SCREEN', array(
+            '_GUID' => '49bd5111885d47974a4718acc5316f41',
             'TITLE' => $this->title,
             'SECTIONS' => $sections,
             'PASSES' => $passes,

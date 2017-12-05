@@ -69,48 +69,43 @@ class Module_admin_workflow extends Standard_crud_module
         require_lang('workflows');
 
         $GLOBALS['SITE_DB']->create_table('workflows', array(
-            'id' => '*AUTO',        // ID
-            'workflow_name' => 'SHORT_TRANS',        // The name (and ID) of this approval point
+            'id' => '*AUTO', // ID
+            'workflow_name' => 'SHORT_TRANS', // The name (and ID) of this approval point
             'is_default' => 'BINARY',
         ));
 
         // The workflow_approval_points table records which workflows require which points to approve
         $GLOBALS['SITE_DB']->create_table('workflow_approval_points', array(
-            'id' => '*AUTO',        // ID for reference
-            'workflow_id' => 'AUTO_LINK',        // The name (and ID) of this workflow
-            'workflow_approval_name' => 'SHORT_TRANS',        // The name (and ID) of the approval point to require in this workflow
-            'the_position' => 'INTEGER',        // The position of this approval point in the workflow (ie. any approval can be given at any time, but encourage users into a prespecified order)
+            'id' => '*AUTO', // ID for reference
+            'workflow_id' => 'AUTO_LINK', // The name (and ID) of this workflow
+            'workflow_approval_name' => 'SHORT_TRANS', // The name (and ID) of the approval point to require in this workflow
+            'the_position' => 'INTEGER', // The position of this approval point in the workflow (ie. any approval can be given at any time, but encourage users into a prespecified order)
         ));
 
-        // The workflow_permissions table stores which usergroups are
-        // allowed to approve which points
+        // The workflow_permissions table stores which usergroups are allowed to approve which points
         $GLOBALS['SITE_DB']->create_table('workflow_permissions', array(
-            'id' => '*AUTO',        // ID for reference
-            'workflow_approval_point_id' => 'AUTO_LINK',        // The ID of the approval point
-            'usergroup' => 'GROUP',        // The usergroup to give permission to
+            'id' => '*AUTO', // ID for reference
+            'workflow_approval_point_id' => 'AUTO_LINK', // The ID of the approval point
+            'usergroup' => 'GROUP', // The usergroup to give permission to
         ));
 
-        // The workflow_content table records which site resources are in
-        // which workflows, along with any notes made during the approval
-        // process
+        // The workflow_content table records which site resources are in which workflows, along with any notes made during the approval process
         $GLOBALS['SITE_DB']->create_table('workflow_content', array(
-            'id' => '*AUTO',        // ID for reference
-            'content_type' => 'ID_TEXT',        // The content-meta-aware type we'd find this content in
-            'content_id' => 'ID_TEXT',        // The ID of the content, wherever it happens to be
-            'workflow_id' => 'AUTO_LINK',        // The ID of the workflow this content is in
-            'notes' => 'LONG_TEXT',        // No point translating the notes, since they're transient
-            'original_submitter' => 'MEMBER'        // Save this here since there's no standard way to discover it later (eg. through content-meta-aware hooks)
+            'id' => '*AUTO', // ID for reference
+            'content_type' => 'ID_TEXT', // The content-meta-aware type we'd find this content in
+            'content_id' => 'ID_TEXT', // The ID of the content, wherever it happens to be
+            'workflow_id' => 'AUTO_LINK', // The ID of the workflow this content is in
+            'notes' => 'LONG_TEXT', // No point translating the notes, since they're transient
+            'original_submitter' => 'MEMBER', // Save this here since there's no standard way to discover it later (eg. through content-meta-aware hooks)
         ));
 
-        // The workflow_content_status table records the status of each
-        // approval point for a piece of content and the member who
-        // approved the point (if any)
+        // The workflow_content_status table records the status of each approval point for a piece of content and the member who approved the point (if any)
         $GLOBALS['SITE_DB']->create_table('workflow_content_status', array(
-            'id' => '*AUTO',        // ID for reference. Larger IDs will override smaller ones if they report a different status (nondeterministic for non-incremental IDs!)
-            'workflow_content_id' => 'INTEGER',        // The ID of this content in the workflow_content table
-            'workflow_approval_point_id' => 'AUTO_LINK',        // The ID of the approval point
-            'status_code' => 'SHORT_INTEGER',        // A code indicating the status
-            'approved_by' => 'MEMBER'        // Remember who set this status, if the need arises to investigate this later
+            'id' => '*AUTO', // ID for reference. Larger IDs will override smaller ones if they report a different status (nondeterministic for non-incremental IDs!)
+            'workflow_content_id' => 'INTEGER', // The ID of this content in the workflow_content table
+            'workflow_approval_point_id' => 'AUTO_LINK', // The ID of the approval point
+            'status_code' => 'SHORT_INTEGER', // A code indicating the status
+            'approved_by' => 'MEMBER', // Remember who set this status, if the need arises to investigate this later
         ));
     }
 
@@ -184,10 +179,6 @@ class Module_admin_workflow extends Standard_crud_module
      */
     public function run_start($type)
     {
-        // TODO: Add pic & tutorial
-        //$GLOBALS['HELPER_PANEL_PIC']='pagepics/usergroups';
-        //$GLOBALS['HELPER_PANEL_TUTORIAL']='tut_subcom';
-
         require_lang('workflows');
         require_code('workflows');
         require_code('workflows2');
@@ -291,9 +282,7 @@ class Module_admin_workflow extends Standard_crud_module
         // Build the form //
         ////////////////////
 
-        // First we must be given a name (defaulting to the given name if
-        // it has been passed). We want to show the user which names are
-        // unavailable, so search the database for this information.
+        // First we must be given a name (defaulting to the given name if it has been passed). We want to show the user which names are unavailable, so search the database for this information.
         $workflows = get_all_workflows();
         if (count($workflows) > 0) {
             $defined_names = do_lang_tempcode('DEFINED_WORKFLOWS', escape_html(implode(', ', $workflows)));
@@ -303,7 +292,7 @@ class Module_admin_workflow extends Standard_crud_module
 
         $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('WORKFLOW_NAME_DESCRIPTION', $defined_names), 'name', $workflow_name, true));
 
-        $all_points = is_null($id) ? array() : get_all_approval_points($id);        // We need to display which points are available
+        $all_points = is_null($id) ? array() : get_all_approval_points($id); // We need to display which points are available
         if ($all_points == array()) {
             $points_list = do_lang_tempcode('APPROVAL_POINTS_DESCRIPTION_EMPTY_LIST');
         } else {
@@ -316,21 +305,21 @@ class Module_admin_workflow extends Standard_crud_module
         // Add an option to make this default
         $fields->attach(form_input_tick(do_lang('DEFAULT_WORKFLOW'), do_lang('DEFAULT_WORKFLOW_DESCRIPTION'), 'is_default', $default));
 
-        // Actions
-        $fields2 = new Tempcode();
-        $fields2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'e578cf36d2552947dfe406f38a2e2877', 'TITLE' => do_lang_tempcode('ACTIONS'))));
-
         // Add an option to redefine the approval permissions
-        $fields2->attach(form_input_tick(do_lang('REDEFINE_WORKFLOW_POINTS'), do_lang('REDEFINE_WORKFLOW_POINTS_DESC'), 'redefine_points', false));
+        $fields2 = new Tempcode();
+        if ($id !== null) {
+            // Actions
+            $fields2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'e578cf36d2552947dfe406f38a2e2877', 'TITLE' => do_lang_tempcode('ACTIONS'))));
+
+            $fields2->attach(form_input_tick(do_lang('REDEFINE_WORKFLOW_POINTS'), do_lang('REDEFINE_WORKFLOW_POINTS_DESC'), 'redefine_points', false));
+        }
 
         return array($fields, $hidden, new Tempcode(), '', false, '', $fields2);
     }
 
     /**
-     * Tells us if more information is needed from the user. This is required
-     * since the user may create a workflow out of predefined components, which
-     * requires no further information, or they may want to define new approval
-     * points, which requires more information.
+     * Tells us if more information is needed from the user. This is required since the user may create a workflow out of predefined components, which
+     * requires no further information, or they may want to define new approval points, which requires more information.
      *
      * @return boolean Whether more information is needed from the user.
      */
@@ -340,14 +329,12 @@ class Module_admin_workflow extends Standard_crud_module
             return false;
         }
 
-        // We need to show the second screen if it has been specifically requested
-        // via the edit form
+        // We need to show the second screen if it has been specifically requested via the edit form
         if (post_param_integer('redefine_points', 0) == 1) {
             return true;
         }
 
-        // Otherwise the only reason we might need more information is if there
-        // are approval points specified that haven't been defined.
+        // Otherwise the only reason we might need more information is if there are approval points specified that haven't been defined.
 
         $point_names = $this->get_points_in_edited_workflow();
 
@@ -410,8 +397,7 @@ class Module_admin_workflow extends Standard_crud_module
             $hidden->attach(form_input_hidden('id', strval($workflow_id)));
         }
 
-        // We need a list of groups so that the user can choose those to give
-        // permission to
+        // We need a list of groups so that the user can choose those to give permission to
         $usergroups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(true, true, false, null, null);
 
         // Add the form elements for each section
@@ -448,8 +434,7 @@ class Module_admin_workflow extends Standard_crud_module
             $all_points = ($workflow_id === null) ? array() : array_flip(get_all_approval_points($workflow_id));
 
             foreach ($redefine_points as $seq_id => $p) {
-                // Now add a list of the groups to allow, defaulting to those which
-                // already have permission
+                // Now add a list of the groups to allow, defaulting to those which already have permission
                 $groups = get_usergroups_for_approval_point($all_points[$p], false);
 
                 $content = array();
@@ -567,9 +552,7 @@ class Module_admin_workflow extends Standard_crud_module
             }
         }
 
-        // Now we remove those points which are not wanted. We have to do this
-        // after the insertions, since we need to keep at least one approval point
-        // for the workflow in order for it to exist.
+        // Now we remove those points which are not wanted. We have to do this after the insertions, since we need to keep at least one approval point for the workflow in order for it to exist.
         $sql = 'DELETE FROM ' . get_table_prefix() . 'workflow_approval_points WHERE workflow_id=' . strval($workflow_id) . ' AND id NOT IN (' . implode(',', array_map('strval', array_keys($point_ids))) . ')';
         $GLOBALS['SITE_DB']->query($sql);
 
@@ -617,8 +600,7 @@ class Module_admin_workflow extends Standard_crud_module
      */
     public function add_actualisation()
     {
-        // Grab our data. We pass true so that it will create non-existant content
-        // for us (workflow and approval points)
+        // Grab our data. We pass true so that it will create non-existant content for us (workflow and approval points)
         list($workflow_id, $workflow_name, $approval_points, $is_default) = $this->read_in_data(true);
 
         return strval($workflow_id);

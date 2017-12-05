@@ -20,108 +20,141 @@
  */
 function init__site__pages__modules_custom__galleries($code)
 {
-    if (!$GLOBALS['SITE_DB']->table_exists('workflow_content')) { // Not installed
-        i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+    i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+    if (!$GLOBALS['SITE_DB']->table_exists('workflow_content')) { // Not installed
         return $code;
     }
 
     // Add a redirection for the workflow handling
-    $code = str_replace('if ($type == \'list\') return $this->list_galleries();',
-        'if ($type == \'list\') return $this->list_galleries();
-        if ($type == \'workflow\') return $this->workflow_handler();',
-        $code);
+    $code = override_str_replace_exactly(
+        "// What are we doing?\n        \$type = get_param_string('type', 'browse');",
+        "
+        <ditto>
+        if (\$type == 'workflow') {
+            return \$this->workflow_handler();
+        }
+        ",
+        $code
+    );
 
-    // Add workflow warnings to flow mode galleries. This has to be done for
-    // images...
-    $code = str_replace(
-        '$current_entry = do_template(\'GALLERY_FLOW_MODE_IMAGE\'',
-        '// Add the workflow form if this entry is unvalidated
-        if (array_key_exists(\'validated\', $row) && $row[\'validated\'] != 1) {
-            require_code(\'workflows\');
-            require_lang(\'workflows\');
-            // We need to find our ID first
-            $wf = get_workflow_of_content(\'image\', strval($row[\'id\']));
-            if (!is_null($wf)) {
-                $workflow_content_id = get_workflow_content_id(\'image\', strval($row[\'id\']));
-                if (!is_null($workflow_content_id)) $warning_details->attach(get_workflow_form($workflow_content_id));
+    // Add workflow warnings to flow mode galleries. This has to be done for images...
+    $code = override_str_replace_exactly(
+        "\$current_entry = do_template('GALLERY_FLOW_MODE_IMAGE'",
+        "
+        // Add the workflow form if this entry is unvalidated
+        if (\$row['validated'] == 0) {
+            require_code('workflows');
+            require_lang('workflows');
+
+            \$wf = get_workflow_of_content('image', strval(\$row['id']));
+            if (\$wf !== null) {
+                \$workflow_content_id = get_workflow_content_id('image', strval(\$row['id']));
+                if (\$workflow_content_id !== null) {
+                    \$warning_details->attach(get_workflow_form(\$workflow_content_id));
+                }
             }
         }
-        $current_entry = do_template(\'GALLERY_FLOW_MODE_IMAGE\'',
+        <ditto>
+        ",
         $code
     );
 
     // ...and videos separately.
-    $code = str_replace('$current_entry = do_template(\'GALLERY_FLOW_MODE_VIDEO',
-        '// Add the workflow form if this entry is unvalidated
-        if (array_key_exists(\'validated\', $row) && $row[\'validated\'] != 1) {
-            require_code(\'workflows\');
-            require_lang(\'workflows\');
-            // We need to find our ID first
-            $wf = get_workflow_of_content(\'video\', strval($row[\'id\']));
-            if (!is_null($wf)) {
-                $workflow_content_id = get_workflow_content_id(\'video\', strval($row[\'id\']));
-                if (!is_null($workflow_content_id)) $warning_details->attach(get_workflow_form($workflow_content_id));
+    $code = override_str_replace_exactly(
+        "\$current_entry = do_template('GALLERY_FLOW_MODE_VIDEO",
+        "
+        // Add the workflow form if this entry is unvalidated
+        if (\$row['validated'] == 0) {
+            require_code('workflows');
+            require_lang('workflows');
+
+            \$wf = get_workflow_of_content('video', strval(\$row['id']));
+            if (\$wf !== null) {
+                \$workflow_content_id = get_workflow_content_id('video', strval(\$row['id']));
+                if (\$workflow_content_id !== null) {
+                    \$warning_details->attach(get_workflow_form(\$workflow_content_id));
+                }
             }
         }
-        $current_entry = do_template(\'GALLERY_FLOW_MODE_VIDEO',
+        <ditto>
+        ",
         $code
     );
 
     // Add workflow warnings to images
-    $code = str_replace(
-        '} else $warning_details = new Tempcode();
+    $code = override_str_replace_exactly(
+        "} else {
+            \$warning_details = new Tempcode();
+        }
 
-        if ((has_actual_page_access',
-        '// Add the workflow form here for now, to save duplicating the condition
-        require_code(\'workflows\');
-        require_lang(\'workflows\');
-        // We need to find our ID first
-        // Hack to see whether we are an image or video
-        if (array_key_exists(\'image_views\', $myrow)) $content_type = \'image\';
-        if (array_key_exists(\'video_views\', $myrow)) $content_type = \'video\';
-        $workflow_content_id = get_workflow_content_id($content_type, strval($myrow[\'id\']));
-        if (!is_null($workflow_content_id)) $warning_details->attach(get_workflow_form($workflow_content_id));
-        } else $warning_details = new Tempcode();
+        if ((has_actual_page_access(null, 'cms_galleries', null, null)) && (has_edit_permission('mid', get_member(), \$myrow['submitter'], 'cms_galleries', array('galleries', \$cat)))) {
+            \$edit_url = build_url(array('page' => 'cms_galleries', 'type' => '_edit', 'id' => \$id), get_module_zone('cms_galleries'));
+        } else {
+            \$edit_url = new Tempcode();
+        }",
+        "
+        <ditto>
 
-        if ((has_actual_page_access',
+        if (\$myrow['validated'] == 0) {
+            require_code('workflows');
+            require_lang('workflows');
+
+            \$workflow_content_id = get_workflow_content_id('image', strval(\$myrow['id']));
+            if (\$workflow_content_id !== null) {
+                \$warning_details->attach(get_workflow_form(\$workflow_content_id));
+            }
+        }
+        ",
         $code
     );
 
-    // Add workflow warnings to videos
-    $code = str_replace(
-        '} else $warning_details = new Tempcode();
+    // ...and videos separately.
+    $code = override_str_replace_exactly(
+        "} else {
+            \$warning_details = new Tempcode();
+        }
 
-        // Comments',
-        'require_code(\'workflows\');
-        require_lang(\'workflows\');
-        // We need to find our ID first
-        $workflow_content_id = get_workflow_content_id(\'video\', strval($id));
-        if (!is_null($workflow_content_id)) $warning_details->attach(get_workflow_form($workflow_content_id));
-        } else $warning_details = new Tempcode();
+        if ((has_actual_page_access(null, 'cms_galleries', null, null)) && (has_edit_permission('mid', get_member(), \$myrow['submitter'], 'cms_galleries', array('galleries', \$cat)))) {
+            \$edit_url = build_url(array('page' => 'cms_galleries', 'type' => '_edit_other', 'id' => \$id), get_module_zone('cms_galleries'));
+        } else {
+            \$edit_url = new Tempcode();
+        }",
+        "
+        <ditto>
 
-        // Comments',
+        if (\$myrow['validated'] == 0) {
+            require_code('workflows');
+            require_lang('workflows');
+
+            \$workflow_content_id = get_workflow_content_id('video', strval(\$myrow['id']));
+            if (\$workflow_content_id !== null) {
+                \$warning_details->attach(get_workflow_form(\$workflow_content_id));
+            }
+        }
+        ",
         $code
     );
 
     // Add workflow handling to the end of the class definition
-    $code = str_replace('\'MORE_URL\' => $more_url, \'CATEGORY_NAME\' => $category_name));
-    }',
-        '\'MORE_URL\' => $more_url, \'CATEGORY_NAME\' => $category_name));
-    }
-        /**
-         * Handler for workflow requests
-         */
-        function workflow_handler()
-        {
-            // Only act if workflows are installed
-            require_code(\'workflows\');     // Load workflow-related code
-            return workflow_update_handler();
-        }',
+    $code = override_str_replace_exactly(
+        "\n    }\n}\n",
+        "
+            }
+
+            /**
+             * Handler for workflow requests
+             */
+            function workflow_handler()
+            {
+                // Only act if workflows are installed
+                require_code('workflows'); // Load workflow-related code
+                return workflow_update_handler();
+            }
+        }
+        ",
         $code
     );
-
-    $code = str_replace("function pre_run()\n    {", "function pre_run()\n    { i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);", $code);
 
     return $code;
 }

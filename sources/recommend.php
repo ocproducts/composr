@@ -48,7 +48,7 @@ function send_recommendation_email($name, $email_address, $message, $is_invite =
         $message = '(' . do_lang('NONE') . ')';
     }
 
-    mail_wrap(do_lang('RECOMMEND_MEMBER_SUBJECT', get_site_name()), $message, $email_address, is_null($names) ? $email_address : $names, $recommender_email, $name);
+    mail_wrap($subject, $message, $email_address, is_null($names) ? $email_address : $names, $recommender_email, $name);
 }
 
 /**

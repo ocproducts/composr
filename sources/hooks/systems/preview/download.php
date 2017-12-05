@@ -106,7 +106,7 @@ class Hook_preview_download
             'allow_rating' => $allow_rating,
             'allow_comments' => $allow_comments,
             'allow_trackbacks' => $allow_trackbacks,
-            'notes' => post_param_string('notes'),
+            'notes' => $notes,
             'submitter' => $submitter,
             'default_pic' => 1,
             'num_downloads' => $num_downloads,

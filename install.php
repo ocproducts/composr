@@ -403,8 +403,8 @@ function step_1()
     // Various checks
     $hooks = find_all_hooks('systems', 'checks');
     foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/checks/' . filter_naughty($hook));
-        $ob = object_factory('Hook_check_' . $hook);
+        require_code('hooks/systems/checks/' . filter_naughty_harsh($hook));
+        $ob = object_factory('Hook_check_' . filter_naughty_harsh($hook));
         $warning = $ob->run();
         foreach ($warning as $_warning) {
             $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => $_warning)));
@@ -667,7 +667,10 @@ function step_3()
         if (($database == 'sqlite') && (!function_exists('sqlite_popen'))) {
             continue;
         }
-        if (($database == 'sqlserver') && (!function_exists('mssql_connect')) && (!function_exists('sqlsrv_connect'))) {
+        if (($database == 'sqlserver') && (!function_exists('sqlsrv_connect'))) {
+            continue;
+        }
+        if (($database == 'sqlserver_odbc') && (!function_exists('odbc_connect'))) {
             continue;
         }
 
@@ -1683,8 +1686,8 @@ function step_5_checks_b()
     $hooks = find_all_hooks('systems', 'checks');
     foreach (array_keys($hooks) as $hook) {
         if ($hook == 'mysql') {
-            require_code('hooks/systems/checks/' . filter_naughty($hook));
-            $ob = object_factory('Hook_check_' . $hook);
+            require_code('hooks/systems/checks/' . filter_naughty_harsh($hook));
+            $ob = object_factory('Hook_check_' . filter_naughty_harsh($hook));
             $warning = $ob->run();
             foreach ($warning as $_warning) {
                 $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('SOMETHING' => do_template('INSTALLER_WARNING', array('MESSAGE' => $_warning)))));
@@ -1959,7 +1962,7 @@ function step_5_core()
     $GLOBALS['SITE_DB']->create_index('db_meta', 'findtransfields', array('m_type'));
 
     $GLOBALS['SITE_DB']->drop_table_if_exists('translate');
-    $GLOBALS['SITE_DB']->create_table('translate', array(
+    $fields = array(
         'id' => '*AUTO',
         'language' => '*LANGUAGE_NAME',
         'importance_level' => 'SHORT_INTEGER',
@@ -1967,7 +1970,13 @@ function step_5_core()
         'text_parsed' => 'LONG_TEXT',
         'broken' => 'BINARY',
         'source_user' => 'MEMBER'
-    ));
+    );
+    if (strpos(get_db_type(), 'sqlserver') !== false) { // Full-text search requires a single key
+        $fields['_id'] = '*AUTO';
+        $fields['id'] = 'AUTO_LINK';
+        $fields['language'] = 'LANGUAGE_NAME';
+    }
+    $GLOBALS['SITE_DB']->create_table('translate', $fields);
     $GLOBALS['SITE_DB']->create_index('translate', '#tsearch', array('text_original'));
     $GLOBALS['SITE_DB']->create_index('translate', 'importance_level', array('importance_level'));
     if (substr(get_db_type(), 0, 5) == 'mysql') {
@@ -2877,7 +2886,7 @@ function get_dir_contents($dir, $php = false)
     $_dir = @opendir($dir);
     if ($_dir !== false) {
         while (false !== ($file = readdir($_dir))) {
-            if (($file != 'index.php') && ($file != '.htaccess') && ($file != '.') && ($file != '..')) {
+            if (($file != 'index.php') && ($file != '.htaccess') && ($file[0] != '.')) {
                 if ($php) {
                     if (strtolower(substr($file, -4, 4)) == '.php') {
                         $file2 = substr($file, 0, strlen($file) - 4);

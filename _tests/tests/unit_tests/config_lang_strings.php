@@ -25,14 +25,14 @@ class config_lang_strings_test_set extends cms_test_case
         $hooks = find_all_hooks('systems', 'config');
         $options = array();
         foreach (array_keys($hooks) as $hook) {
-            $path = get_file_base() . '/sources/hooks/systems/config/' . filter_naughty($hook) . '.php';
+            $path = get_file_base() . '/sources/hooks/systems/config/' . filter_naughty_harsh($hook) . '.php';
             if (!file_exists($path)) {
-                $path = get_file_base() . '/sources_custom/hooks/systems/config/' . filter_naughty($hook) . '.php';
+                $path = get_file_base() . '/sources_custom/hooks/systems/config/' . filter_naughty_harsh($hook) . '.php';
             }
             $code = file_get_contents($path);
 
-            require_code('hooks/systems/config/' . filter_naughty($hook));
-            $ob = object_factory('Hook_config_' . $hook);
+            require_code('hooks/systems/config/' . filter_naughty_harsh($hook));
+            $ob = object_factory('Hook_config_' . filter_naughty_harsh($hook));
             $details = $ob->get_details();
             $options[] = $details;
 

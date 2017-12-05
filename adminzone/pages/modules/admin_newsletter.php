@@ -539,6 +539,10 @@ class Module_admin_newsletter extends Standard_crud_module
             return $lang;
         }
 
+        if (php_function_allowed('set_time_limit')) {
+            @set_time_limit(1000);
+        }
+
         $id = either_param_string('id', null);
         $level = get_param_integer('level', null);
 
@@ -658,7 +662,7 @@ class Module_admin_newsletter extends Standard_crud_module
                         if (!is_null($level)) {
                             echo '"LEVEL ' . do_lang('NEWSLETTER_' . strval($level)) . '"' . "\n";
                         }
-                        echo '"' . str_replace('"', '""', do_lang('EMAIL_ADDRESS')) . '",' . '"' . str_replace('"', '""', do_lang('FORENAME')) . '",' . '"' . str_replace('"', '""', do_lang('SURNAME')) . '",' . '"' . str_replace('"', '""', do_lang('NAME')) . '",' . '"' . str_replace('"', '""', do_lang('NEWSLETTER_SEND_ID')) . '",' . '"' . str_replace('"', '""', do_lang('NEWSLETTER_HASH')) . '",' . '"' . str_replace('"', '""', do_lang('PASSWORD_HASH')) . '",' . '"' . str_replace('"', '""', do_lang('SALT')) . '",' . '"' . str_replace('"', '""', do_lang('LANGUAGE')) . '",' . '"' . str_replace('"', '""', do_lang('CONFIRM_CODE')) . '",' . '"' . str_replace('"', '""', do_lang('JOIN_DATE')) . '",' . '"' . str_replace('"', '""', do_lang('SUBSCRIPTION_LEVEL')) . '"' . "\n";
+                        echo '"' . str_replace('"', '""', do_lang('EMAIL_ADDRESS')) . '",' . '"' . str_replace('"', '""', do_lang('FORENAME')) . '",' . '"' . str_replace('"', '""', do_lang('SURNAME')) . '",' . '"' . str_replace('"', '""', do_lang('NAME')) . '",' . '"' . str_replace('"', '""', do_lang('NEWSLETTER_SEND_ID')) . '",'/*Too slow with ratchet hash . '"' . str_replace('"', '""', do_lang('NEWSLETTER_HASH')) . '",'*/ . '"' . str_replace('"', '""', do_lang('PASSWORD_HASH')) . '",' . '"' . str_replace('"', '""', do_lang('SALT')) . '",' . '"' . str_replace('"', '""', do_lang('LANGUAGE')) . '",' . '"' . str_replace('"', '""', do_lang('CONFIRM_CODE')) . '",' . '"' . str_replace('"', '""', do_lang('JOIN_DATE')) . '",' . '"' . str_replace('"', '""', do_lang('SUBSCRIPTION_LEVEL')) . '"' . "\n";
                     }
                 } else {
                     $out = '';
@@ -677,10 +681,10 @@ class Module_admin_newsletter extends Standard_crud_module
 
                     $send_id = (array_key_exists('m_username', $r) ? 'm' : 'n') . (array_key_exists('id', $r) ? strval($r['id']) : $email);
                     $hash = array_key_exists('the_password', $r) ? $r['the_password'] : '';
-                    $unsub = array_key_exists('the_password', $r) ? ratchet_hash($r['the_password'], 'xunsub') : '';
+                    //$unsub = array_key_exists('the_password', $r) ? ratchet_hash($r['the_password'], 'xunsub') : '';
 
                     if ($csv == 1) {
-                        echo '"' . str_replace('"', '""', $email) . '",' . '"' . str_replace('"', '""', $forename) . '",' . '"' . str_replace('"', '""', $surname) . '",' . '"' . str_replace('"', '""', $name) . '",' . '"' . str_replace('"', '""', $send_id) . '",' . '"' . str_replace('"', '""', $unsub) . '",' . '"' . str_replace('"', '""', $hash) . '",' . '"' . str_replace('"', '""', $salt) . '",' . '"' . str_replace('"', '""', $_language) . '",' . '"' . str_replace('"', '""', strval($confirm_code)) . '",' . '"' . str_replace('"', '""', date('Y-m-d h:i:s', $join_time)) . '",' . '"' . strval($level) . '"' . "\n";
+                        echo '"' . str_replace('"', '""', $email) . '",' . '"' . str_replace('"', '""', $forename) . '",' . '"' . str_replace('"', '""', $surname) . '",' . '"' . str_replace('"', '""', $name) . '",' . '"' . str_replace('"', '""', $send_id) . '",'/* . '"' . str_replace('"', '""', $unsub) . '",'*/ . '"' . str_replace('"', '""', $hash) . '",' . '"' . str_replace('"', '""', $salt) . '",' . '"' . str_replace('"', '""', $_language) . '",' . '"' . str_replace('"', '""', strval($confirm_code)) . '",' . '"' . str_replace('"', '""', date('Y-m-d h:i:s', $join_time)) . '",' . '"' . strval($level) . '"' . "\n";
                     } else {
                         $tpl = do_template('NEWSLETTER_SUBSCRIBER', array('_GUID' => 'ca45867a23cbaa7c6788d3cd2ba2793c', 'EMAIL' => $email, 'FORENAME' => $forename, 'SURNAME' => $surname, 'NAME' => $name, 'NEWSLETTER_SEND_ID' => $send_id, 'NEWSLETTER_HASH' => $hash));
                         $out .= $tpl->evaluate();

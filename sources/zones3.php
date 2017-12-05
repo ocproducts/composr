@@ -505,7 +505,7 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
         // Got to rename various resources
 
         $GLOBALS['SITE_DB']->query_update('attachment_refs', array('r_referer_id' => $new_file), array('r_referer_id' => $file, 'r_referer_type' => 'comcode_page'));
- 
+
         if (addon_installed('catalogues')) {
             update_catalogue_content_ref('comcode_page', $file, $new_file);
         }
@@ -561,11 +561,13 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
 
     // Save revision
     if ($file_changed) {
-        require_code('revisions_engine_files');
-        $revision_engine = new RevisionEngineFiles();
-        list(, , $existing_path) = find_comcode_page($lang, $file, $zone);
-        if ($existing_path != '') {
-            $revision_engine->add_revision(dirname($full_path), $new_file, 'txt', cms_file_get_contents_safe($existing_path), filemtime($existing_path));
+        if (addon_installed('actionlog')) {
+            require_code('revisions_engine_files');
+            $revision_engine = new RevisionEngineFiles();
+            list(, , $existing_path) = find_comcode_page($lang, $file, $zone);
+            if ($existing_path != '') {
+                $revision_engine->add_revision(dirname($full_path), $new_file, 'txt', cms_file_get_contents_safe($existing_path), filemtime($existing_path));
+            }
         }
     }
 

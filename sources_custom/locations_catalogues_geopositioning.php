@@ -27,7 +27,7 @@ function init__locations_catalogues_geopositioning()
 
 function fix_geoposition($lstring, $category_id)
 {
-    $type = 'google';
+    $type = 'google'; // Other values not supported
 
     $lstring = preg_replace('#, (Africa|Americas|Asia|Europe|Oceania)$#', '', $lstring); // Confuses Bing
 

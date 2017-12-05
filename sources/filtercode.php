@@ -182,7 +182,7 @@ function form_for_filtercode($filter, $labels = null, $content_type = null, $typ
         // Operator
         $matches = array();
         if (preg_match('#^<([^<>]+)>$#', $filter_op, $matches) != 0) {
-            $field_name = filter_naughty_harsh($matches[1]);
+            $field_name = filter_naughty_harsh($matches[1], true);
             if (array_key_exists($field_name, $labels)) {
                 $field_title = escape_html($labels[$field_name]);
             } else {
@@ -219,7 +219,7 @@ function form_for_filtercode($filter, $labels = null, $content_type = null, $typ
         // Filter inputter
         $matches = array();
         if (preg_match('#^<([^<>]+)>$#', $filter_val, $matches) != 0) {
-            $field_name = filter_naughty_harsh($matches[1]);
+            $field_name = filter_naughty_harsh($matches[1], true);
 
             $extra = mixed();
 
@@ -239,7 +239,7 @@ function form_for_filtercode($filter, $labels = null, $content_type = null, $typ
                                 }
                             }
                         } elseif (($field_name != 'meta_keywords') && ($field_name != 'meta_description') && ($field_name != 'compound_rating') && ($field_name != 'average_rating')) {
-                            $_extra = $db->query_select($table, array('DISTINCT ' . filter_naughty_harsh($field_name)), null, 'ORDER BY ' . filter_naughty_harsh($field_name));
+                            $_extra = $db->query_select($table, array('DISTINCT ' . filter_naughty_harsh($field_name, true)), null, 'ORDER BY ' . filter_naughty_harsh($field_name, true));
                             foreach ($_extra as $e) {
                                 if (!is_string($e[$field_name])) {
                                     $e[$field_name] = strval($e[$field_name]);
@@ -633,7 +633,7 @@ function _default_conv_func($db, $info, $catalogue_name, &$extra_join, &$extra_s
         if ($filter_key == 'average_rating') {
             $matches[1] .= '__' . $catalogue_name;
         }
-        $clause = '(SELECT AVG(rating)/2 FROM ' . $db->get_table_prefix() . 'rating rat WHERE ' . db_string_equal_to('rat.rating_for_type', $matches[1]) . ' AND rat.rating_for_id=' . db_cast($table_join_code . '.' . $first_id_field, 'CHAR') . ')';
+        $clause = '(SELECT AVG(' . db_cast('rating' , 'FLOAT') . ')/2 FROM ' . $db->get_table_prefix() . 'rating rat WHERE ' . db_string_equal_to('rat.rating_for_type', $matches[1]) . ' AND rat.rating_for_id=' . db_cast($table_join_code . '.' . $first_id_field, 'CHAR') . ')';
         $extra_select[$filter_key] = ', ' . $clause . ' AS average_rating_' . fix_id($matches[1]);
         return array($clause, '', $filter_val);
     }

@@ -34,9 +34,11 @@ PayPal was chosen because it is without doubt the leading form of payment on the
 
 [title="4"]PayPal[/title]
 
-To accept website payments via credit card, [url="you will need a Business Account"]https://www.paypal.com/us/webapps/helpcenter/helphub/article/?solutionId=FAQ2347[/url]. The business accounts are free, but the fees are higher.
+To accept website payments via credit card, or to take subscriptions, [url="you will need a Business Account"]https://www.paypal.com/us/webapps/helpcenter/helphub/article/?solutionId=FAQ2347[/url]. The business accounts are free, but the fees are higher.
 
 You will need to have SSL set up for your site, as PayPal requires IPN messages to go via SSL from Sep 30, 2016, and we have already imposed this in our default code.
+
+You must [b]not[/b] lock down PayPal to [url="only accept encrypted forms"]https://developer.paypal.com/docs/classic/paypal-payments-standard/integration-guide/encryptedwebpayments/#id08A3I0R00ZJ[/url].
 
 [title="3"]Configuration[/title]
 

@@ -25,15 +25,15 @@
 		<h3>{$GET,content_box_title}</h3>
 	{+END}
 
-	{+START,IF,{$AND,{$NOT,{BLOG}},{$IS_NON_EMPTY,{AUTHOR_URL}}}}
+	{+START,IF,{$AND,{$NOT,{BLOG}},{$IS_NON_EMPTY,{IMG}}}}
 		<div class="newscat_img newscat_img_author">
-			{+START,IF,{$NOT,{$MOBILE}}}{+START,IF_NON_EMPTY,{CATEGORY}}
+			{+START,IF,{$NOT,{$MOBILE}}}
 				<img src="{$ENSURE_PROTOCOL_SUITABILITY*,{IMG}}" alt="" />
-			{+END}{+END}
+			{+END}
 		</div>
 	{+END}
 
-	{+START,IF,{$NOT,{$IS_NON_EMPTY,{AUTHOR_URL}}}}
+	{+START,IF,{$NAND,{$NOT,{BLOG}},{$IS_NON_EMPTY,{IMG}}}}
 		<div class="newscat_img newscat_img_member">
 			{+START,IF,{$NOT,{$MOBILE}}}{+START,IF_NON_EMPTY,{$AVATAR,{SUBMITTER}}}
 				<img src="{$ENSURE_PROTOCOL_SUITABILITY*,{$AVATAR,{SUBMITTER}}}" title="{!AVATAR}" alt="{!AVATAR}" />

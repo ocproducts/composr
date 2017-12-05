@@ -378,8 +378,8 @@ class Hook_commandr_fs_groups extends Resource_fs_base
         $hooks = find_all_hooks('systems', 'commandr_fs_extended_member');
         foreach (array_keys($hooks) as $hook) {
             if (isset($properties[$hook])) {
-                require_code('hooks/systems/commandr_fs_extended_member/' . filter_naughty($hook));
-                $ob = object_factory('Hook_commandr_fs_extended_member__' . $hook);
+                require_code('hooks/systems/commandr_fs_extended_member/' . filter_naughty_harsh($hook));
+                $ob = object_factory('Hook_commandr_fs_extended_member__' . filter_naughty_harsh($hook));
                 $ob->write_property($id, $properties[$hook]);
             }
         }
@@ -458,8 +458,8 @@ class Hook_commandr_fs_groups extends Resource_fs_base
 
         $hooks = find_all_hooks('systems', 'commandr_fs_extended_member');
         foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/commandr_fs_extended_member/' . filter_naughty($hook));
-            $ob = object_factory('Hook_commandr_fs_extended_member__' . $hook);
+            require_code('hooks/systems/commandr_fs_extended_member/' . filter_naughty_harsh($hook));
+            $ob = object_factory('Hook_commandr_fs_extended_member__' . filter_naughty_harsh($hook));
             $properties[$hook] = $ob->read_property(intval($resource_id));
         }
 
@@ -498,8 +498,8 @@ class Hook_commandr_fs_groups extends Resource_fs_base
         $hooks = find_all_hooks('systems', 'commandr_fs_extended_member');
         foreach (array_keys($hooks) as $hook) {
             if (isset($properties[$hook])) {
-                require_code('hooks/systems/commandr_fs_extended_member/' . filter_naughty($hook));
-                $ob = object_factory('Hook_commandr_fs_extended_member__' . $hook);
+                require_code('hooks/systems/commandr_fs_extended_member/' . filter_naughty_harsh($hook));
+                $ob = object_factory('Hook_commandr_fs_extended_member__' . filter_naughty_harsh($hook));
                 $ob->write_property(intval($resource_id), $properties[$hook]);
             }
         }

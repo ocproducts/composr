@@ -252,11 +252,11 @@ function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows,
         }
     }
 
-    $post_query_select = 'p.p_title,top.id,p.p_poster,p.p_poster_name_if_guest,p.id AS p_id,p_post';
+    $post_query_select = 'p.p_title,t.id,p.p_poster,p.p_poster_name_if_guest,p.id AS p_id,p_post';
     if (!multi_lang_content()) {
         $post_query_select .= ',p_post__text_parsed,p_post__source_user';
     }
-    $post_query_where = 'p_validated=1 AND p_topic_id=top.id ' . not_like_spacer_posts($GLOBALS['FORUM_DB']->translate_field_ref('p_post'));
+    $post_query_where = 'p_validated=1 AND p_topic_id=t.id ' . not_like_spacer_posts($GLOBALS['FORUM_DB']->translate_field_ref('p_post'));
     $post_query_sql = 'SELECT ' . $post_query_select . ' FROM ' . $this_ref->connection->get_table_prefix() . 'f_posts p ';
     if (strpos(get_db_type(), 'mysql') !== false) {
         $post_query_sql .= 'FORCE INDEX(in_topic) ';
@@ -275,7 +275,7 @@ function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows,
     $topic_filter_sup .= ' AND t_validated=1';
     if (($filter_topic_title == '') && ($filter_topic_description == '')) {
         if (($filter_topic_title == '') && ($filter_topic_description == '')) {
-            $query = 'SELECT * FROM ' . $this_ref->connection->get_table_prefix() . 'f_topics top';
+            $query = 'SELECT * FROM ' . $this_ref->connection->get_table_prefix() . 'f_topics t';
             if (strpos(get_db_type(), 'mysql') !== false) {
                 $query .= ' FORCE INDEX (unread_forums)';
             }
@@ -300,7 +300,7 @@ function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows,
                 if ($query != '') {
                     $query_more .= ' UNION ';
                 }
-                $query_more .= 'SELECT * FROM ' . $this_ref->connection->get_table_prefix() . 'f_topics top';
+                $query_more .= 'SELECT * FROM ' . $this_ref->connection->get_table_prefix() . 'f_topics t';
                 if (strpos(get_db_type(), 'mysql') !== false) {
                     $query_more .= ' FORCE INDEX (in_forum)';
                 }
@@ -328,7 +328,7 @@ function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows,
             if ($query != '') {
                 $query_more .= ' UNION ';
             }
-            $query_more .= 'SELECT * FROM ' . $this_ref->connection->get_table_prefix() . 'f_topics top WHERE (' . $id_list . ') AND ' . $topic_filter . $topic_filter_sup;
+            $query_more .= 'SELECT * FROM ' . $this_ref->connection->get_table_prefix() . 'f_topics t WHERE (' . $id_list . ') AND ' . $topic_filter . $topic_filter_sup;
             $query .= $query_more;
             $query_simplified .= $query_more;
 
@@ -367,7 +367,7 @@ function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows,
         $out[$i]['closed'] = 1 - $r['t_is_open'];
         $out[$i]['forum_id'] = $r['t_forum_id'];
 
-        $_post_query_sql = str_replace('top.id', strval($out[$i]['id']), $post_query_sql);
+        $_post_query_sql = preg_replace('/(?<=\W)t.id/', strval($out[$i]['id']), $post_query_sql);
         $fp_rows = $this_ref->connection->query($_post_query_sql, 1, null, false, true/*, array('p_post' => 'LONG_TRANS__COMCODE') we already added it further up*/);
         if (!array_key_exists(0, $fp_rows)) {
             unset($out[$i]);

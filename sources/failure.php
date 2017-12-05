@@ -742,7 +742,7 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
 /**
  * Add an IP-ban.
  *
- * @param  IP $ip The IP address to ban
+ * @param  IP $ip The IP address to ban (potentially encoded with *'s)
  * @param  LONG_TEXT $descrip Explanation for ban
  * @param  ?TIME $ban_until When to ban until (null: no limit)
  * @param  boolean $ban_positive Whether this is a positive ban (as opposed to a cached negative)
@@ -783,7 +783,7 @@ function add_ip_ban($ip, $descrip = '', $ban_until = null, $ban_positive = true)
 /**
  * Remove an IP-ban.
  *
- * @param  IP $ip The IP address to unban
+ * @param  IP $ip The IP address to unban (potentially encoded with *'s, although this will only unban an exact matching wildcard ban)
  */
 function remove_ip_ban($ip)
 {
@@ -1389,8 +1389,8 @@ function _access_denied($class, $param, $force_login)
     // Run hooks, if any exist
     $hooks = find_all_hooks('systems', 'upon_access_denied');
     foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/upon_access_denied/' . filter_naughty($hook));
-        $ob = object_factory('Hook_upon_access_denied_' . filter_naughty($hook), true);
+        require_code('hooks/systems/upon_access_denied/' . filter_naughty_harsh($hook));
+        $ob = object_factory('Hook_upon_access_denied_' . filter_naughty_harsh($hook), true);
         if (is_null($ob)) {
             continue;
         }

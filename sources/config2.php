@@ -122,8 +122,8 @@ function set_option($name, $value, $will_be_formally_set = 1)
 {
     global $CONFIG_OPTIONS_CACHE;
 
-    require_code('hooks/systems/config/' . filter_naughty($name));
-    $ob = object_factory('Hook_config_' . $name, true);
+    require_code('hooks/systems/config/' . filter_naughty_harsh($name));
+    $ob = object_factory('Hook_config_' . filter_naughty_harsh($name), true);
     if (is_null($ob)) {
         return;
     }
@@ -203,8 +203,8 @@ function config_update_value_ref($old_setting, $setting, $type)
     $hooks = find_all_hooks('systems', 'config');
     $all_options = array();
     foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/config/' . filter_naughty($hook));
-        $ob = object_factory('Hook_config_' . $hook);
+        require_code('hooks/systems/config/' . filter_naughty_harsh($hook));
+        $ob = object_factory('Hook_config_' . filter_naughty_harsh($hook));
         $option = $ob->get_details();
         if (($option['type'] == $type) && (get_option($hook) == $old_setting)) {
             $GLOBALS['FORUM_DB']->query_update('config', array('c_value' => $setting), array('c_name' => $hook), '', 1);
@@ -225,8 +225,8 @@ function config_option_url($name)
         return null;
     }
 
-    require_code('hooks/systems/config/' . filter_naughty($name));
-    $ob = object_factory('Hook_config_' . $name);
+    require_code('hooks/systems/config/' . filter_naughty_harsh($name));
+    $ob = object_factory('Hook_config_' . filter_naughty_harsh($name));
     $option = $ob->get_details();
 
     $_config_url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => $option['category']), get_module_zone('admin_config'));
