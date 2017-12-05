@@ -181,7 +181,7 @@ class chmod_consistency_test_set extends cms_test_case
                             $c_stripped = preg_replace('#<for-each-\w+>#', '*', $c_stripped);
                         }
 
-                        if ($is_runtime) {
+                        if (($is_runtime) && ($place != 'fixperms.bat')) {
                             $wildcard_support = false; // Literal comparison of wildcards
                         }
 
@@ -195,7 +195,8 @@ class chmod_consistency_test_set extends cms_test_case
                         } else {
                             if ($wildcard_support) {
                                 $search_regexp = preg_quote($pre, '#');
-                                foreach (explode($slash, $_item) as $i => $__item) {
+                                $path_components = explode($slash, $_item);
+                                foreach ($path_components as $i => $__item) {
                                     if ($i != 0) {
                                         $search_regexp .= preg_quote($slash, '#');
                                     }
@@ -203,6 +204,13 @@ class chmod_consistency_test_set extends cms_test_case
                                         '\*',
                                         preg_quote($__item, '#'),
                                     );
+                                    if (($place == 'fixperms.bat') && ($__item == '*')) {
+                                        if ($i != count($path_components) - 1) {
+                                            $possibilities_for_term[] = '.*'; // For fixperms.bat we cannot have wildcards as path components
+                                        } else {
+                                            $possibilities_for_term[] = '\*\.\w+'; // For fixperms.bat we are sometimes more specific about file extensions
+                                        }
+                                    }
                                     if (substr($__item, -strlen('_custom')) == '_custom') {
                                         $possibilities_for_term[] = '\*_custom';
                                     }

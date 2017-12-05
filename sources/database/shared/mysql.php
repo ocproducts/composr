@@ -143,7 +143,7 @@ class Database_super_mysql extends DatabaseDriver
                 break;
 
             case 'FLOAT':
-                $_type = 'REAL';
+                $_type = 'DECIMAL';
                 break;
 
             default:

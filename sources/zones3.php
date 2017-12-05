@@ -712,11 +712,13 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated = null, $p
 
     // Save revision
     if ($file_changed) {
-        require_code('revisions_engine_files');
-        $revision_engine = new RevisionEngineFiles();
-        list(, , $existing_path) = find_comcode_page($lang, $file, $zone);
-        if ($existing_path != '') {
-            $revision_engine->add_revision(dirname($full_path), $new_file, 'txt', cms_file_get_contents_safe($existing_path), filemtime($existing_path));
+        if (addon_installed('actionlog')) {
+            require_code('revisions_engine_files');
+            $revision_engine = new RevisionEngineFiles();
+            list(, , $existing_path) = find_comcode_page($lang, $file, $zone);
+            if ($existing_path != '') {
+                $revision_engine->add_revision(dirname($full_path), $new_file, 'txt', cms_file_get_contents_safe($existing_path), filemtime($existing_path));
+            }
         }
     }
 

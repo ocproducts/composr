@@ -153,11 +153,11 @@ function transifex_push_script()
     @header('Content-type: text/plain; charset=' . get_charset());
     safe_ini_set('ocproducts.xss_detect', '0');
 
-    $core_only = (get_param_integer('core_only', 0) == 1);
-    $push_cms = (get_param_integer('push_cms', 1) == 1);
-    $push_ini = (get_param_integer('push_ini', 1) == 1);
-    $push_translations = (get_param_integer('push_translations', 0) == 1);
-    $limit_substring = get_param_string('limit_substring', null, INPUT_FILTER_GET_COMPLEX);
+    $core_only = _transifex_env_setting('core_only');
+    $push_cms = _transifex_env_setting('push_cms');
+    $push_ini = _transifex_env_setting('push_ini');
+    $push_translations = _transifex_env_setting('push_translations');
+    $limit_substring = _transifex_env_limit_substring();
 
     push_to_transifex($core_only, $push_cms, $push_ini, $push_translations, $limit_substring);
 
@@ -207,7 +207,8 @@ function push_to_transifex($core_only, $push_cms, $push_ini, $push_translations,
                 } else {
                     $coordinators = array();
                 }
-                $coordinators[] = get_value('transifex_username', null, true);
+                list($username, $password) = _transifex_credentials();
+                $coordinators[] = $username;
 
                 $args = array(
                     'language_code' => convert_lang_code_to_transifex($lang),
@@ -384,7 +385,7 @@ function _push_ini_file_to_transifex($f, $project_slug, $custom, $administrative
     }
 
     // Upload
-    $test = _transifex('/project/' . $project_slug . '/resource/' . $_f_extended . '/', 'GET');
+    $test = _transifex('/project/' . $project_slug . '/resource/' . $_f_extended . '/', 'GET', null, false);
     $categories = array($category);
     if ($LANGUAGE_FILES_ADDON[$_f] != $category) {
         // Addon name
@@ -425,7 +426,7 @@ function _push_ini_file_to_transifex($f, $project_slug, $custom, $administrative
             $descrip = $LANGUAGE_STRING_DESCRIPTIONS[$key];
             $hash = md5($key . ':');
             $args = array('comment' => $descrip);
-            $test = _transifex('/project/' . $project_slug . '/resource/' . $_f_extended . '/source/' . $hash . '/', 'PUT', json_encode($args));
+            $test = _transifex('/project/' . $project_slug . '/resource/' . $_f_extended . '/source/' . $hash . '/', 'PUT', json_encode($args), false/*getting errors recently*/);
         }
     }
 
@@ -457,10 +458,10 @@ function _push_ini_file_to_transifex($f, $project_slug, $custom, $administrative
 
 function transifex_pull_script()
 {
-    $version = get_param_string('version', strval(cms_version()));
-    $output = (get_param_integer('output', 0) == 1);
-    $lang = get_param_string('lang', null);
-    $core_only = (get_param_integer('core_only', 0) == 1);
+    $version = _transifex_env_version();
+    $lang = _transifex_env_lang();
+    $output = _transifex_env_setting('output');
+    $core_only = _transifex_env_setting('core_only');
 
     $cli = is_cli();
     if (!$cli) {
@@ -793,7 +794,7 @@ function _pull_cms_file_from_transifex($project_slug, $tar_file, $lang, $path, $
 
     $trans_full_path = get_file_base() . '/' . $trans_path;
 
-    $limit_substring = get_param_string('limit_substring', null, INPUT_FILTER_GET_COMPLEX);
+    $limit_substring = _transifex_env_limit_substring();
     if ($limit_substring !== null && strpos($path, $limit_substring) === false) {
         $files[] = $trans_path;
 
@@ -826,7 +827,7 @@ function _pull_ini_file_from_transifex($project_slug, $tar_file, $lang, $_f, &$f
     $trans_path = 'lang_custom/' . $lang . '/' . $_f . '.ini';
     $trans_full_path = get_file_base() . '/' . $trans_path;
 
-    $limit_substring = get_param_string('limit_substring', null, INPUT_FILTER_GET_COMPLEX);
+    $limit_substring = _transifex_env_limit_substring();
     if ($limit_substring !== null && strpos($_f, $limit_substring) === false) {
         $files[] = $trans_path;
 
@@ -872,15 +873,7 @@ function _pull_ini_file_from_transifex($project_slug, $tar_file, $lang, $_f, &$f
 
 function _transifex($call, $http_verb, $params = array(), $trigger_error = true)
 {
-    $username = get_param_string('username', get_value('transifex_username', null, true), INPUT_FILTER_GET_COMPLEX);
-    $password = get_param_string('password', get_value('transifex_password', null, true), INPUT_FILTER_GET_COMPLEX);
-
-    if (empty($username)) {
-        warn_exit('Transifex username must be set with :set_value(\'transifex_username\', \'...\', true);', true);
-    }
-    if (empty($password)) {
-        warn_exit('Transifex password must be set with :set_value(\'transifex_password\', \'...\', true);', true);
-    }
+    list($username, $password) = _transifex_credentials();
 
     if (substr($call, 0, 1) != '/') {
         warn_exit('Calls must start with /');
@@ -926,4 +919,52 @@ function _transifex($call, $http_verb, $params = array(), $trigger_error = true)
     }*/
 
     return array($result, $http_result->message);
+}
+
+function _transifex_credentials()
+{
+    if (isset($_SERVER['argv'][1])) {
+        $username = $_SERVER['argv'][1];
+    } else {
+        $username = get_param_string('username', get_value('transifex_username', null, true));
+    }
+    if (isset($_SERVER['argv'][2])) {
+        $password = $_SERVER['argv'][2];
+    } else {
+        $password = get_param_string('password', get_value('transifex_password', null, true));
+    }
+
+    if (empty($username)) {
+        warn_exit('Transifex username must be set with :set_value(\'transifex_username\', \'...\', true); or passed as the first CLI parameter', true);
+    }
+    if (empty($password)) {
+        warn_exit('Transifex password must be set with :set_value(\'transifex_password\', \'...\', true); or passed as the second CLI parameter', true);
+    }
+
+    return array($username, $password);
+}
+
+function _transifex_env_limit_substring()
+{
+    if (isset($_SERVER['argv'][3])) {
+        $limit_substring = $_SERVER['argv'][3];
+    } else {
+        $limit_substring = get_param_string('limit_substring', null, INPUT_FILTER_GET_COMPLEX);
+    }
+    return $limit_substring;
+}
+
+function _transifex_env_setting($setting)
+{
+    return (in_array($setting, $_SERVER['argv'])) || (get_param_integer($setting, 0) == 1);
+}
+
+function _transifex_env_version()
+{
+    return get_param_string('version', strval(cms_version()));
+}
+
+function _transifex_env_lang()
+{
+    return get_param_string('lang', null);
 }

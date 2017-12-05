@@ -969,19 +969,19 @@ class DatabaseDriver
                 }
                 switch (get_db_type()) {
                     case 'oracle':
-                        return 'SELECT LISTAGG(' . $args[0] . ', \',\') WITHIN GROUP (ORDER BY ' . $args[0] . ') FROM ' . $args[1];
+                        return '(SELECT LISTAGG(' . $args[0] . ', \',\') WITHIN GROUP (ORDER BY ' . $args[0] . ') FROM ' . $args[1] . ')';
                     case 'postgresql':
-                        return 'SELECT array_to_string(array_agg(' . $args[0] . '), \',\') FROM ' . $args[1];
+                        return '(SELECT array_to_string(array_agg(' . $args[0] . '), \',\') FROM ' . $args[1] . ')';
                     case 'sqlserver':
                         return 'STUFF((SELECT \',\'+' . $args[0] . ' FROM ' . $args[1] . ' FOR XML PATH(\'\')), 1, 1, \'\')';
                     case 'ibm': // Not fully supported
-                        return 'SELECT ' . $args[0] . ' FROM ' . $args[1] . ' fetch first 1 rows only';
+                        return '(SELECT ' . $args[0] . ' FROM ' . $args[1] . ' fetch first 1 rows only)';
                     case 'xml':
-                        return 'SELECT X_GROUP_CONCAT(' . $args[0] . ') FROM ' . $args[1];
+                        return '(SELECT X_GROUP_CONCAT(' . $args[0] . ') FROM ' . $args[1] . ')';
                     case 'mysql':
                     case 'mysqli':
                     default:
-                        return 'SELECT GROUP_CONCAT(' . $args[0] . ') FROM ' . $args[1];
+                        return '(SELECT GROUP_CONCAT(' . $args[0] . ') FROM ' . $args[1] . ')';
                 }
                 break;
 

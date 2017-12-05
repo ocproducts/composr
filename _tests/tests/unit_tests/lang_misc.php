@@ -20,6 +20,32 @@ class lang_misc_test_set extends cms_test_case
 {
     private $lang_file_mapping = array();
 
+    public function testLangStringsWork()
+    {
+        $dir = get_file_base() . '/lang_custom/EX';
+        $path = $dir . '/global.ini';
+        @mkdir($dir);
+        file_put_contents($path, "[strings]\nSETTINGS=Foo");
+
+        // Overridden
+        $en = do_lang('SETTINGS', null, null, null, 'EN');
+        $ex = do_lang('SETTINGS', null, null, null, 'EX');
+        $this->assertTrue(!empty($en));
+        $this->assertTrue(!empty($ex));
+        $this->assertTrue($ex == 'Foo');
+        $this->assertTrue($en != $ex);
+
+        // Non-overridden
+        $en = do_lang('ACTIVITY', null, null, null, 'EN');
+        $ex = do_lang('ACTIVITY', null, null, null, 'EX');
+        $this->assertTrue(!empty($en));
+        $this->assertTrue(!empty($ex));
+        $this->assertTrue($en == $ex);
+
+        @unlink($path);
+        @rmdir($dir);
+    }
+
     public function testPluralisation()
     {
         require_code('lang2');

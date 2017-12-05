@@ -99,7 +99,7 @@ class Module_calendar
                 'e_content' => 'LONG_TRANS__COMCODE',
                 'e_add_date' => 'TIME',
                 'e_edit_date' => '?TIME',
-                'e_recurrence' => 'ID_TEXT', // [none, daily, weekly, monthly, yearly, xth_dotw_of_monthly] X [fractional-occurrence]. e.g. "daily yyyyynn" for weekdays
+                'e_recurrence' => 'ID_TEXT', // [none, daily, weekly, monthly, yearly, xth_dotw_of_monthly] X [fractional-recurrence]. e.g. "daily yyyyynn" for weekdays
                 'e_recurrences' => '?SHORT_INTEGER', // null means none/infinite
                 'e_seg_recurrences' => 'BINARY',
                 'e_start_year' => 'INTEGER',

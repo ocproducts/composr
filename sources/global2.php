@@ -1447,10 +1447,10 @@ function get_base_url($https = null, $zone_for = null)
         if ($https === null) {
             require_code('urls');
             if (running_script('index')) {
-                if (!addon_installed('ssl')) {
-                    $https = tacit_https();
-                } else {
+                if (addon_installed('ssl')) {
                     $https = ((tacit_https()) || (function_exists('is_page_https')) && (function_exists('get_zone_name')) && (is_page_https(get_zone_name(), get_page_name())));
+                } else {
+                    $https = tacit_https();
                 }
             } else {
                 $https = function_exists('tacit_https') && tacit_https();

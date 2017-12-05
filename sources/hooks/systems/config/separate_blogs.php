@@ -38,6 +38,7 @@ class Hook_config_separate_blogs
             'explanation' => 'CONFIG_OPTION_separate_blogs',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 6,
             'required' => true,
 
             'public' => true,

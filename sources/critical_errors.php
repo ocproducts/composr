@@ -85,6 +85,9 @@ if (!function_exists('critical_error')) {
         $may_show_footer = true;
 
         switch ($code) {
+            case 'CORRUPT_OVERRIDE':
+                $error = 'An override seems to no longer be compatible, ' . htmlentities($relay) . '.';
+                break;
             case 'MISSING_SOURCE':
                 $error = 'A source-code (' . $relay . ') file is missing/corrupt/incompatible.';
                 break;

@@ -143,6 +143,7 @@ class Hook_addon_registry_news
             'themes/default/images/newscats/entertainment.jpg',
             'themes/default/images/newscats/general.jpg',
             'themes/default/images/newscats/technology.jpg',
+            'sources/hooks/systems/config/separate_blogs.php',
             'cms/pages/modules/cms_news.php',
             'cms/pages/modules/cms_blogs.php',
             'site/pages/modules/news.php',

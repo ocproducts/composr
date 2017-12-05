@@ -1080,12 +1080,12 @@ class Forum_driver_cns extends Forum_driver_base
             $avatar = '';
         } else {
             $base_url = get_base_url();
-            if (substr($avatar, 0, strlen($base_url) + 1) == $base_url . '/') { // So we can do an is_file check
+            if ((!is_on_multi_site_network()) && (substr($avatar, 0, strlen($base_url) + 1) == $base_url . '/')) { // So we can do an is_file check
                 $avatar = substr($avatar, strlen($base_url) + 1);
             }
 
             if ((url_is_local($avatar)) && ($avatar != '')) {
-                if ((is_file(get_file_base() . '/' . rawurldecode($avatar))) || (is_file(get_custom_file_base() . '/' . rawurldecode($avatar)))) {
+                if ((is_on_multi_site_network()) || (is_file(get_file_base() . '/' . rawurldecode($avatar))) || (is_file(get_custom_file_base() . '/' . rawurldecode($avatar)))) {
                     $avatar = get_complex_base_url($avatar) . '/' . $avatar;
                 } else {
                     $avatar = '';

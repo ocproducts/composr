@@ -741,7 +741,7 @@ class Module_cms_calendar extends Standard_crud_module
         $fields = $this->get_form_fields($myrow['id'], $myrow['e_type'], $myrow['e_start_year'], $myrow['e_start_month'], $myrow['e_start_day'], $myrow['e_start_monthly_spec_type'], $myrow['e_start_hour'], $myrow['e_start_minute'], get_translated_text($myrow['e_title']), $content, $myrow['e_recurrence'], $myrow['e_recurrences'], $myrow['e_seg_recurrences'], $myrow['e_priority'], $myrow['e_end_year'], $myrow['e_end_month'], $myrow['e_end_day'], $myrow['e_end_monthly_spec_type'], $myrow['e_end_hour'], $myrow['e_end_minute'], $myrow['e_timezone'], $myrow['e_do_timezone_conv'], $myrow['e_member_calendar'], $myrow['validated'], $myrow['allow_rating'], $myrow['allow_comments'], $myrow['allow_trackbacks'], $myrow['notes'], $regions);
 
         if (has_delete_permission('low', get_member(), $myrow['e_submitter'], 'cms_calendar')) {
-            $radios = form_input_radio_entry('delete', '0', true, do_lang_tempcode('EDIT'));
+            $radios = form_input_radio_entry('delete', '0', true, do_lang_tempcode('EDIT_ALL_RECURRENCES'));
             $radios->attach(form_input_radio_entry('delete', '3', false, do_lang_tempcode('FIX_PAST_RECURRENCES')));
             $radios->attach(form_input_radio_entry('delete', '1', false, do_lang_tempcode('DELETE')));
             $delete_fields = form_input_radio(do_lang_tempcode('ACTION'), do_lang_tempcode('DESCRIPTION_FIX_PAST_RECURRENCES'), 'delete', $radios);

@@ -25,6 +25,7 @@ class file_naming_test_set extends cms_test_case
 
         $ignore_stubs = array(
             '.user.ini',
+            'themes/default/javascript/jsdoc-conf.json',
             'aps/',
             'data/polyfills/',
             'data/ace/',

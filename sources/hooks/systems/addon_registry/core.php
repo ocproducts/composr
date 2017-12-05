@@ -110,7 +110,7 @@ class Hook_addon_registry_core
     {
         return array(
             'data/maintenance_status.csv',
-        	'data/empty.php',
+            'data/empty.php',
             'adminzone/pages/comcode/EN/_modsecurity.txt',
             'themes/default/images/icons/24x24/menu/_generic_admin/merge.png',
             'themes/default/images/icons/48x48/menu/_generic_admin/merge.png',
@@ -830,6 +830,7 @@ class Hook_addon_registry_core
             'themes/default/javascript/UTIL.js',
             'themes/default/javascript/jsdoc-conf.json',
             'data/polyfills/class-list.js',
+            'data/polyfills/node-remove.js',
             'data/polyfills/fetch.js',
             'data/polyfills/general.js',
             'data/polyfills/json5.js',

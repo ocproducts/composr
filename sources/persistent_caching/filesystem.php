@@ -147,6 +147,9 @@ class Persistent_caching_filesystem
 
         // Ideally we'd lock while we delete, but it's not stable (and the workaround would be too slow for our efficiency context). So some people reading may get errors while we're clearing the cache. Fortunately this is a rare op to perform.
         @unlink(get_custom_file_base() . '/caches/persistent/' . md5($key) . '.gcd');
+
+        global $PC_FC_CACHE;
+        unset($PC_FC_CACHE[$key]);
     }
 
     /**
@@ -166,5 +169,8 @@ class Persistent_caching_filesystem
             }
         }
         closedir($d);
+
+        global $PC_FC_CACHE;
+        $PC_FC_CACHE = array();
     }
 }

@@ -3279,6 +3279,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_valid_images
         CONFIG_OPTION_valid_types
         CONFIG_OPTION_valid_videos
+        CONFIG_OPTION_video_height_setting
+        CONFIG_OPTION_video_width_setting
         CONFIG_OPTION_vote_member_ip_restrict
         CONFIG_OPTION_payment_gateway_vpn_username
         CONFIG_OPTION_payment_gateway_vpn_password
@@ -4767,6 +4769,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         FIX_BROKEN_FILEDUMP_LINKS
         FIX_INVALID_HTML
         FIX_PAST_RECURRENCES
+		EDIT_ALL_RECURRENCES
         FLOOD_CONTROL
         FLOOD_CONTROL_ACCESS_SECS
         FLOOD_CONTROL_SCREEN
@@ -7445,6 +7448,11 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ZONE_OPTIONS
         ZONE_OR_BLOCKS
         ZONE_WRITE
+        CONFIG_OPTION_separate_blogs
+        MISC_SYMBOL__DESKTOP
+        MISC_SYMBOL__LTR
+        MISC_SYMBOL__RTL
+        SEPARATE_BLOGS
         PAYMENT_RECEIVED_BODY
         PAYMENT_RECEIVED_BODY_memo
         PAYMENT_RECEIVED_BODY_tax_invoice

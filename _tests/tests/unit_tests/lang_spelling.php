@@ -254,7 +254,7 @@ class lang_spelling_test_set extends cms_test_case
         if (preg_match('#([^A-Za-z]+)mySQL([^A-Za-z]+)#', $string) != 0) {
             $this->assertTrue(false, 'The word \'mySQL\' was used in ' . $file . '. This should be changed to \'MySQL\'.');
         }
-        if (preg_match('#([^/\.A-Za-z]+)tar([^A-Za-z]+)#', $string) != 0) {
+        if (preg_match('#([^/\.A-Za-z>]+)tar([^A-Za-z]+)#', $string) != 0) {
             $this->assertTrue(false, 'The filetype \'tar\' was used in ' . $file . '. This should be changed to \'TAR\'.');
         }
         if ((preg_match('#([^/_\-\.A-Za-z]+)zip([^A-Za-z]+)#', $string) != 0) && (($key === null) || (!in_array($key, array('ZIP_NEEDED_FOR_USA', 'INVALID_ZIP_FOR_USA', 'CONFIG_OPTION_business_post_code'))))) {
@@ -356,6 +356,9 @@ class lang_spelling_test_set extends cms_test_case
             'eratic' => 'erratic',
             'psuedo' => 'pseudo',
         );
+        if (strpos($file, 'calendar') !== false) {
+            $common_spelling_mistakes['occurrence'] = 'recurrence';
+        }
         foreach ($common_spelling_mistakes as $from => $to) {
             if (stripos($string, $from) !== false) {
                 $this->assertTrue(false, $from . ' should be ' . $to . ' in ' . $file . '.');

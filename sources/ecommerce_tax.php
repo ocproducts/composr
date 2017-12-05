@@ -462,9 +462,13 @@ function taxcloud_declare_completed($tracking_id, $txn_id, $member_id, $session_
     if ($response['ResponseType'] != 3) {
         $messages = array();
         foreach ($response['Messages'] as $message) {
-            $messages[] = $message['Message'];
+            if (strpos($message['Message'], 'already') !== false) {
+                $messages[] = $message['Message'];
+            }
         }
-        trigger_error(implode('; ', $messages), E_USER_WARNING);
+        if (count($messages) != 0) {
+            trigger_error(implode('; ', $messages), E_USER_WARNING);
+        }
     }
 }
 
@@ -625,7 +629,7 @@ function generate_tax_invoice($txn_id)
             'TAX_RATE' => float_format(backcalculate_tax_rate($item['unit_price'], $item['unit_tax']), 1, true),
         );
     }
-    if (count($invoicing_breakdown) == 0) { 
+    if (count($invoicing_breakdown) == 0) {
         // We don't have a break-down so at least find a single line-item
 
         list($details) = find_product_details($transaction_row['t_type_code']);

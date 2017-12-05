@@ -108,9 +108,6 @@ class Database_Static_ibm extends DatabaseDriver
             critical_error('PASSON', $error);
         }
 
-        if ($connection === false) {
-            fatal_exit(do_lang('CONNECT_DB_ERROR'));
-        }
         $this->cache_db[$db_name][$db_host] = $connection;
         return $connection;
     }

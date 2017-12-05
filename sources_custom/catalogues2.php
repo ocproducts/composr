@@ -15,5 +15,12 @@
 
 function init__catalogues2($code)
 {
-    return str_replace('delete_cache_entry(\'main_cc_embed\');', 'delete_cache_entry(\'main_cc_embed\'); delete_cache_entry(\'main_google_map\');', $code);
+    return str_replace(
+        "delete_cache_entry('main_cc_embed');",
+        "
+        delete_cache_entry('main_cc_embed');
+        delete_cache_entry('main_google_map');
+        ",
+        $code
+    );
 }

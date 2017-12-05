@@ -130,6 +130,7 @@ function init__webstandards_js_lint()
 
         /* Composr-specific */
         '$cms' => array('Object', array()),
+        '$dom' => array('Object', array()),
         'strVal' => array('function', array()),
         'objVal' => array('function', array()),
         'arrayVal' => array('function', array()),

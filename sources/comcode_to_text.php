@@ -68,6 +68,9 @@ function _strip_comcode($in, $for_extract = false, $tags_to_preserve = array())
             $text = preg_replace('#\{\{([^\}\{]*)\}\}#', '\1', $text);
         }
 
+        $text = str_replace('{$SITE_NAME}', get_site_name(), $text);
+        $text = str_replace('{$SITE_NAME*}', escape_html(get_site_name()), $text);
+
         if (stripos($text, '{') !== false) {
             // Remove directives etc
             do {
@@ -206,7 +209,7 @@ function _strip_comcode($in, $for_extract = false, $tags_to_preserve = array())
 
     if (stripos($text, '[title') !== false) {
         if (!in_array('title', $tags_to_preserve)) {
-            $text = preg_replace_callback('#(\s*)\[title([^\]])*\](.*)\[/title\]#Usi', '_title_callback', $text);
+            $text = preg_replace_callback('#(\s*)\[title([^\]]*)\](.*)\[/title\]#Usi', '_title_callback', $text);
         }
     }
 

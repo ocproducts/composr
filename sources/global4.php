@@ -399,6 +399,10 @@ function prevent_double_submit($type, $a = null, $b = null)
         return;
     }
 
+    if (post_param_integer('confirm_double_post', 0) == 1) {
+        return;
+    }
+
     if (strpos($_SERVER['SCRIPT_NAME'], '_tests') !== false) {
         return;
     }
@@ -426,7 +430,17 @@ function prevent_double_submit($type, $a = null, $b = null)
     $time_window = 60 * 5; // 5 minutes seems reasonable
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('actionlogs', 'date_and_time', $where, ' AND date_and_time>' . strval(time() - $time_window));
     if ($test !== null) {
-        warn_exit(do_lang_tempcode('DOUBLE_SUBMISSION_PREVENTED', display_time_period($time_window), display_time_period($time_window - (time() - $test))));
+        $title = get_screen_title('ERROR_OCCURRED');
+        require_code('templates_confirm_screen');
+        $_time_window = display_time_period($time_window);
+        $_time_remaining = display_time_period($time_window - (time() - $test));
+        $_time_since = display_time_period(time() - $test);
+        $preview = do_lang_tempcode('DOUBLE_SUBMISSION_PREVENTED', $_time_window, $_time_remaining, array($_time_since));
+        $output = confirm_screen($title, $preview, get_self_url(), null, array('confirm_double_post' => 1));
+        $echo = globalise($output, null, '', true);
+        $echo->handle_symbol_preprocessing();
+        $echo->evaluate_echo();
+        exit();
     }
 }
 

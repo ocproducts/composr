@@ -288,3 +288,78 @@ function _sync_onlylocal_video($ob, $local_video)
         }
     }
 }
+
+/**
+ * Handle that a transcode has worked.
+ *
+ * @param  ID_TEXT $transcoder_id Transcoding ID
+ * @param  URLPATH $new_url Transcoded URL
+ */
+function store_transcoding_success($transcoder_id, $new_url)
+{
+    if (php_function_allowed('set_time_limit')) {
+        @set_time_limit(0);
+    }
+
+    // Stuff about the transcoding
+    $descript_rows = $GLOBALS['SITE_DB']->query_select('video_transcoding', array('*'), array(
+        't_id' => $transcoder_id,
+    ), '', 1);
+    if (!array_key_exists(0, $descript_rows)) {
+        return; // No match
+    }
+    $descript_row = $descript_rows[0];
+
+    // The database for for what has been transcoded
+    $rows = $GLOBALS['SITE_DB']->query_select($descript_row['t_table'], array('*'), array($descript_row['t_url_field'] => $descript_row['t_url']), '', 1, null, false, array());
+    if (!array_key_exists(0, $rows)) {
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+    }
+    $row = $rows[0];
+
+    // Deal with old file
+    $old_file_path = get_custom_file_base() . '/' . rawurldecode($row['url']);
+    if (url_is_local($descript_row['t_url'])) {
+        $new_file_path = str_replace('/uploads/galleries/', '/uploads/galleries/pre_transcoding/', $old_file_path);
+        if (file_exists(get_custom_file_base() . '/uploads/galleries/pre_transcoding')) { // Move the old media file to the archive directory
+            @rename($old_file_path, $new_file_path);
+            sync_file_move($old_file_path, $new_file_path);
+        } else { // Delete old media
+            @unlink($old_file_path);
+            sync_file($old_file_path);
+        }
+    }
+
+    // Update width/height, to what we specified we want to transcode to
+    $ext = get_file_extension($descript_row['t_output_filename']);
+    require_code('mime_types');
+    $mime_type = get_mime_type($ext, true);
+    if (substr($mime_type, 0, 6) != 'audio/') {
+        if ($descript_row['t_width_field'] != '') {
+            $row[$descript_row['t_width_field']] = intval(get_option('video_width_setting'));
+        }
+        if ($descript_row['t_height_field'] != '') {
+            $row[$descript_row['t_height_field']] = intval(get_option('video_height_setting'));
+        }
+    } else {
+        if ($descript_row['t_width_field'] != '') {
+            $row[$descript_row['t_width_field']] = intval(get_option('video_width_setting'));
+        }
+        if ($descript_row['t_height_field'] != '') {
+            $row[$descript_row['t_height_field']] = 20;
+        }
+    }
+
+    // Update original filename
+    if ($descript_row['t_orig_filename_field'] != '') {
+        $row[$descript_row['t_orig_filename_field']] = preg_replace('#\..*$#', '.' . $ext, $row[$descript_row['t_orig_filename_field']]);
+    }
+
+    // Update URL to transcoded one
+    $row[$descript_row['t_url_field']] = $new_url;
+
+    // Update record to point to new file
+    if ($descript_row['t_local_id_field'] !== null) {
+        $GLOBALS['SITE_DB']->query_update($descript_row['t_table'], $row, array($descript_row['t_local_id_field'] => $descript_row['t_local_id']), '', 1);
+    }
+}
