@@ -751,7 +751,7 @@ function _check_link_accessibility($tag, $attributes, $self_close, $close)
         $bad_strings = array('click'/*,'here'*/);
         $_content = strip_tags($content);
         if (trim($_content) != $_content) {
-            $errors[] = array('XHTML_A_SPACES');
+            //$errors[] = array('XHTML_A_SPACES'); // TODO Salman re-enable when fixed
         }
         if (($_content == $content) && (strlen($content) < 12)) {
             $in_strings = str_word_count($_content, 1);

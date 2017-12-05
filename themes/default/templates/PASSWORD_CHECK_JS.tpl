@@ -45,19 +45,19 @@ function checkPasswords(form) {
 		// Check password is secure
 		var isSecurePassword = true;
 		if (form.elements[fieldName].value.length < 8) {
-		    isSecurePassword = false;
+			isSecurePassword = false;
 		}
 		if (!form.elements[fieldName].value.match(/[a-z]/)) {
-		    isSecurePassword = false;
+			isSecurePassword = false;
 		}
 		if (!form.elements[fieldName].value.match(/[A-Z]/)) {
-		    isSecurePassword = false;
+			isSecurePassword = false;
 		}
 		if (!form.elements[fieldName].value.match(/\d/)) {
-		    isSecurePassword = false;
+			isSecurePassword = false;
 		}
 		if (!form.elements[fieldName].value.match(/[^a-zA-Z\d]/)) {
-		    isSecurePassword = false;
+			isSecurePassword = false;
 		}
 		
 		if (!isSecurePassword) {
