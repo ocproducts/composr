@@ -139,24 +139,24 @@
         var versions = strVal(params.versions);
 
         $dom.on(container, 'click', '.js-click-do-forum-choose', function (e, clicked) {
-            doForumChoose(clicked, $cms.filter.nl(versions));
+            doForumChoose(clicked, versions);
         });
 
         function doForumChoose(el, versions) {
             $dom.html('#versions', versions);
-
-            var type = 'none';
+            
+            var show = false;
             if ((el.id !== 'none') && (el.id !== 'cns')) {
-                type = 'block';
-                var label = document.getElementById('sep_forum');
+                show = true;
+                var label = $dom.$('#sep_forum');
                 if (label) {
                     $dom.html(label, el.nextElementSibling.textContent);
                 }
             }
-
-            document.getElementById('forum_database_info').style.display = type;
-            if (document.getElementById('forum_path')) {
-                document.getElementById('forum_path').style.display = type;
+            
+            $dom.toggle('#forum_database_info', show);
+            if ($dom.$('#forum_path')) {
+                $dom.toggle('#forum_path', show);
             }
         }
     };
