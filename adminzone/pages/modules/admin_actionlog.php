@@ -201,7 +201,7 @@ class Module_admin_actionlog
             'TEXT' => '',
             'URL' => $post_url,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => $submit_name,
         ));
     }

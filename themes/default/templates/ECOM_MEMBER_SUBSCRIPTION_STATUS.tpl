@@ -1,11 +1,11 @@
 <div data-toggleable-tray="{}">
 	<h2 class="js-tray-header">
-		<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!MODULE_TRANS_NAME_subscriptions}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract}" /></a>
+		<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!MODULE_TRANS_NAME_subscriptions}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract}" /></a>
 		<span class="js-tray-onclick-toggle-tray">{!MODULE_TRANS_NAME_subscriptions}</span>
 	</h2>
 
 	<div class="toggleable_tray js-tray-content" style="display: block" aria-expanded="true">
-		<div class="wide_table_wrap"><table class="columned_table wide_table results_table autosized_table responsive_table" itemprop="significantLinks">
+		<div class="wide_table_wrap"><table class="columned_table wide_table results_table autosized_table responsive-table" itemprop="significantLinks">
 			<thead>
 				<tr>
 					<th>
@@ -70,6 +70,6 @@
 			</tbody>
 		</table></div>
 
-		<p class="associated_link suggested_link"><a title="{!MODULE_TRANS_NAME_subscriptions}" href="{$PAGE_LINK*,_SEARCH:subscriptions:browse:{MEMBER_ID}}">{!MORE}</a></p>
+		<p class="associated-link suggested_link"><a title="{!MODULE_TRANS_NAME_subscriptions}" href="{$PAGE_LINK*,_SEARCH:subscriptions:browse:{MEMBER_ID}}">{!MORE}</a></p>
 	</div>
 </div>

@@ -7,7 +7,7 @@
 			{LIST}
 		</select></label>
 
-		<input data-disable-on-click="1" class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
+		<input data-disable-on-click="1" class="button_screen_item buttons--proceed" type="submit" value="{!PROCEED}" />
 	</form>
 
 	<hr class="spaced_rule" />
@@ -15,8 +15,8 @@
 	{+START,LOOP,ATTACHMENTS}
 		{TPL}
 
-		<div class="buttons_group">
-			<a class="button_screen_item buttons__choose js-click-do-attachment-and-close" href="#!"><span>{!CHOOSE}</span></a>
+		<div class="buttons-group">
+			<a class="button_screen_item buttons--choose js-click-do-attachment-and-close" href="#!"><span>{!CHOOSE}</span></a>
 
 			{+START,IF,{MAY_DELETE}}
 				<form title="{!DELETE}" class="inline" method="post" action="{DELETE_URL*}" autocomplete="off">

@@ -14,7 +14,7 @@
 
 	<h2>{!EXISTING_REDIRECTS}</h2>
 
-	<div class="wide_table_wrap"><table class="columned_table wide_table redirect_table results_table responsive_table">
+	<div class="wide_table_wrap"><table class="columned_table wide_table redirect_table results_table responsive-table">
 		<colgroup>
 			<col class="redirect_table_input_column" />
 			<col class="redirect_table_input_column" />
@@ -52,7 +52,7 @@
 
 	<h2>{!NEW_REDIRECT}</h2>
 
-	<div class="wide_table_wrap"><table class="columned_table wide_table redirect_table results_table responsive_table">
+	<div class="wide_table_wrap"><table class="columned_table wide_table redirect_table results_table responsive-table">
 		<colgroup>
 			<col class="redirect_table_input_column" />
 			<col class="redirect_table_input_column" />
@@ -89,7 +89,7 @@
 	</table></div>
 
 	<p class="proceed_button">
-		<input accesskey="u" data-disable-on-click="1" class="button_screen buttons__save" type="submit" value="{!SAVE}" />
+		<input accesskey="u" data-disable-on-click="1" class="button_screen buttons--save" type="submit" value="{!SAVE}" />
 	</p>
 
 	<hr class="spaced_rule" />

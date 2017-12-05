@@ -1,7 +1,7 @@
 <div class="cns_edit_forum_forum zebra_{$CYCLE,f_colour,0,1}">
 	<div class="float-surrounder">
 		<div class="cns_edit_forum_type">
-			<span class="horiz-field-sep associated_link"><a rel="edit" href="{EDIT_URL*}" title="{!EDIT}: {FORUM*} ({ID*})">{!EDIT}</a></span>
+			<span class="horiz-field-sep associated-link"><a rel="edit" href="{EDIT_URL*}" title="{!EDIT}: {FORUM*} ({ID*})">{!EDIT}</a></span>
 		</div>
 		<div class="cns_edit_forum_title">
 			<a href="{VIEW_URL*}"><span class="{CLASS*}" title="#{ID*}">{FORUM*}</span></a>

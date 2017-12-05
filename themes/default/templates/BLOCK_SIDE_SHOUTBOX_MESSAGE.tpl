@@ -7,5 +7,5 @@
 		{!POSTED_TIME_SIMPLE,{DATE*}}
 	</p>
 
-	<blockquote class="shoutbox_message">{$TRUNCATE_LEFT,{MESSAGE},92,1,1}</blockquote>
+	<blockquote class="shoutbox-message">{$TRUNCATE_LEFT,{MESSAGE},92,1,1}</blockquote>
 </div></div>

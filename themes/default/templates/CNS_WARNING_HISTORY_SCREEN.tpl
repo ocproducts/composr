@@ -4,7 +4,7 @@
 
 <p class="lonely_label">{!ACTIONS}:</p>
 <nav>
-	<ul class="actions_list">
+	<ul class="actions-list">
 		<li class="actions_list_strong">
 			<a href="{ADD_WARNING_URL*}">{!ADD_WARNING}</a>
 		</li>

@@ -202,7 +202,7 @@ END;
         <input class="button_screen menu__site_meta__user_actions__login" type="submit" value="Log in" />
     </p>
     <hr />
-    <ul class="actions_list" role="navigation">
+    <ul class="actions-list" role="navigation">
         <li><a title="ocProducts programming tutorial (this link will open in a new window)" target="_blank" href="http://compo.sr/docs/tut-programming.htm">Read the ocProducts programming tutorial</a></li>
 END;
     if (array_key_exists('base_url', $SITE_INFO)) {
@@ -282,7 +282,7 @@ END;
         OR, existing file: <select name="path">{$paths}</select>
     </p>
     <p class="proceed_button">
-        <input class="button_screen buttons__save" type="submit" value="Edit file" />
+        <input class="button_screen buttons--save" type="submit" value="Edit file" />
     </p>
 END;
 }

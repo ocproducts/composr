@@ -60,11 +60,11 @@
 	white-space: inherit !important;
 }
 
-.notification img, .topic_list_topic img {
+.notification img, .topic-list-topic img {
 	width: 40px;
 }
 
-.notification_meta, .topic_list_meta {
+.notification_meta, .topic-list-meta {
 	margin-top: 0.8em !important;
 	width: auto !important;
 	font-size: 0.9em;

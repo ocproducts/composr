@@ -351,7 +351,7 @@ class Module_recommend
             'HIDDEN' => $hidden,
             'FIELDS' => $fields,
             'URL' => $post_url,
-            'SUBMIT_ICON' => 'buttons__send',
+            'SUBMIT_ICON' => 'buttons--send',
             'SUBMIT_NAME' => $submit_name,
             'TEXT' => $text,
             'SUPPORT_AUTOSAVE' => true,

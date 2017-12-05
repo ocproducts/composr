@@ -591,7 +591,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
             'FIELDS' => $fields,
             'TEXT' => '',
             'URL' => $post_url,
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => $submit_name,
         ));
     }

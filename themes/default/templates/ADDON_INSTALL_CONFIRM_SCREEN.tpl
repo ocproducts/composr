@@ -17,14 +17,14 @@
 	</div></div>
 
 	<p class="proceed_button">
-		<input class="button_screen buttons__back" data-cms-btn-go-back="1" type="button" value="{!GO_BACK}" />
+		<input class="button_screen buttons--back" data-cms-btn-go-back="1" type="button" value="{!GO_BACK}" />
 
-		<input data-disable-on-click="1" class="button_screen buttons__proceed" type="submit" value="{!PROCEED}" />
+		<input data-disable-on-click="1" class="button_screen buttons--proceed" type="submit" value="{!PROCEED}" />
 	</p>
 
 	<h2>{!DETAILS}</h2>
 
-	<div class="wide_table_wrap"><table class="map_table results_table wide_table autosized_table responsive_table">
+	<div class="wide_table_wrap"><table class="map_table results_table wide_table autosized_table responsive-table">
 		<tbody>
 			<tr>
 				<th>{!NAME}</th>

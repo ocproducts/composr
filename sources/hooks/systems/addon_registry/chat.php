@@ -724,7 +724,7 @@ class Hook_addon_registry_chat
         return array(
             lorem_globalise(do_lorem_template('CHAT_SET_EFFECTS_SCREEN', array(
                 'TITLE' => lorem_title(),
-                'SUBMIT_ICON' => 'buttons__save',
+                'SUBMIT_ICON' => 'buttons--save',
                 'SUBMIT_NAME' => lorem_word(),
                 'HIDDEN' => '',
                 'POST_URL' => placeholder_url(),

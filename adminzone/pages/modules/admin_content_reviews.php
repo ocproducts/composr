@@ -178,7 +178,7 @@ class Module_admin_content_reviews
                     'SKIP_REQUIRED' => true,
                     'GET' => true,
                     'HIDDEN' => '',
-                    'SUBMIT_ICON' => 'buttons__proceed',
+                    'SUBMIT_ICON' => 'buttons--proceed',
                     'SUBMIT_NAME' => do_lang_tempcode('EDIT'),
                     'FIELDS' => $fields,
                     'URL' => $post_url,

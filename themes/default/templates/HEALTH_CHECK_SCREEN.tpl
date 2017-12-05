@@ -33,7 +33,7 @@
 	</div>
 
 	<p class="proceed_button">
-		<input class="button_screen buttons__proceed" type="submit" value="{!HEALTH_CHECK}" />
+		<input class="button_screen buttons--proceed" type="submit" value="{!HEALTH_CHECK}" />
 	</p>
 </form>
 

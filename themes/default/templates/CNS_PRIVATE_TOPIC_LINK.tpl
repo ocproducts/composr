@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,cns_forum}
 
-<div class="topic_list_topic notification_{$?,{HAS_READ},has_read,has_not_read}" data-tpl="cnsPrivateTopicLink">
+<div class="topic-list-topic notification_{$?,{HAS_READ},has_read,has_not_read}" data-tpl="cnsPrivateTopicLink">
 	{$SET,label,{$?,{$EQ,{BY_POSTER_ID},{$MEMBER}},{!WITH_SIMPLE_LOWER,{$DISPLAYED_USERNAME*,{TO_USERNAME}}},{!BY_SIMPLE_LOWER,{$DISPLAYED_USERNAME*,{BY_USERNAME}}}}}
 	<img class="right spaced" src="{$?*,{$IS_EMPTY,{$AVATAR,{WITH_POSTER_ID}}},{$IMG,cns_default_avatars/default},{$ENSURE_PROTOCOL_SUITABILITY*,{$AVATAR,{WITH_POSTER_ID}}}}" title="{$GET,label}" alt="{$GET,label}" />
 
@@ -10,8 +10,8 @@
 	</div>
 
 	{+START,IF_NON_EMPTY,{LAST_POST_BY_USERNAME}}
-		<div class="topic_list_meta">
-			{!LAST_POST_BY_SIMPLE,<a class="topic_list_by" href="{LAST_POST_BY_POSTER_URL*}">{$DISPLAYED_USERNAME*,{LAST_POST_BY_USERNAME}}</a>} @ <span class="must_show_together">{DATE*}</span>
+		<div class="topic-list-meta">
+			{!LAST_POST_BY_SIMPLE,<a class="topic-list-by" href="{LAST_POST_BY_POSTER_URL*}">{$DISPLAYED_USERNAME*,{LAST_POST_BY_USERNAME}}</a>} @ <span class="must_show_together">{DATE*}</span>
 		</div>
 	{+END}
 </div>

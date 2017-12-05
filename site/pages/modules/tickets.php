@@ -1126,7 +1126,7 @@ class Module_tickets
             'HIDDEN' => '',
             'TEXT' => $text,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'buttons__save',
+            'SUBMIT_ICON' => 'buttons--save',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));

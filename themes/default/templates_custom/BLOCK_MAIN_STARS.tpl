@@ -1,4 +1,4 @@
-<div class="wide_table_wrap"><table class="wide_table results_table spaced_table autosized_table columned_table responsive_table">
+<div class="wide_table_wrap"><table class="wide_table results_table spaced_table autosized_table columned_table responsive-table">
 	<thead>
 		<tr>
 			<th>{!AVATAR}</th>
@@ -28,7 +28,7 @@
 
 		{+START,IF_EMPTY,{STARS}}
 			<tr>
-				<td class="responsive_table_no_prefix" colspan="3" style="font-weight: bold; padding: 10px">Nobody yet &ndash; could you be here?</td>
+				<td class="responsive-table-no-prefix" colspan="3" style="font-weight: bold; padding: 10px">Nobody yet &ndash; could you be here?</td>
 			</tr>
 		{+END}
 	</tbody>

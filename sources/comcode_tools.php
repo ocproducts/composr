@@ -72,7 +72,7 @@ function comcode_convert_script()
             '_GUID' => 'dd82970fa1196132e07049871c51aab7',
             'TITLE' => $title,
             'SUBMIT_NAME' => do_lang_tempcode('VIEW'),
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'TEXT' => '',
             'HIDDEN' => $hidden,
             'URL' => find_script('comcode_convert', true),

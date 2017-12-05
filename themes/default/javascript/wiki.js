@@ -20,8 +20,8 @@
 
         $dom.on(container, 'click', '.js-click-checkbox-set-cell-mark-class', function (e, checkbox) {
             var cell = $dom.$('#cell_mark_' + id);
-            cell.classList.toggle('cns_on', checkbox.checked);
-            cell.classList.toggle('cns_off', !checkbox.checked);
+            cell.classList.toggle('cns-on', checkbox.checked);
+            cell.classList.toggle('cns-off', !checkbox.checked);
         });
 
         $dom.on(container, 'click', '.js-click-show-wiki-merge-button', function (e, checkbox) {

@@ -4,7 +4,7 @@
 	{+START,IF_PASSED,USERNAME}{+START,IF_PASSED,MEMBER_ID}
 		<div class="toggleable_tray_title js-tray-header">
 			{!OVERRIDES_FOR_FRIEND,{USERNAME*}}
-			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{$?,{HAS_SOME},{!CONTRACT},{!EXPAND}}" title="{$?,{HAS_SOME},{!CONTRACT},{!EXPAND}}" src="{$IMG*,1x/trays/{$?,{HAS_SOME},contract,expand}}" /></a>
+			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{$?,{HAS_SOME},{!CONTRACT},{!EXPAND}}" title="{$?,{HAS_SOME},{!CONTRACT},{!EXPAND}}" src="{$IMG*,1x/trays/{$?,{HAS_SOME},contract,expand}}" /></a>
 		</div>
 	{+END}{+END}
 
@@ -44,7 +44,7 @@
 								{+END}
 							</select>
 
-							<input class="button_screen_item menu__social__chat__sound js-click-require-sound-selection" data-tp-select-id="select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" type="button" title="{EFFECT_TITLE*}" value="{!TEST_SOUND}" />
+							<input class="button_screen_item menu--social--chat--sound js-click-require-sound-selection" data-tp-select-id="select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" type="button" title="{EFFECT_TITLE*}" value="{!TEST_SOUND}" />
 						</td>
 					</tr>
 

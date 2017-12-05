@@ -925,7 +925,7 @@ class Module_filedump
             'TEXT' => '',
             'URL' => get_self_url(),
             'SUBMIT_NAME' => do_lang_tempcode('GENERATE_COMCODE'),
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'TARGET' => '_self',
         ));
 

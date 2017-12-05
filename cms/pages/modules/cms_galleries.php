@@ -303,7 +303,7 @@ class Module_cms_galleries extends Standard_crud_module
             'TEXT' => '',
             'FIELDS' => $fields,
             'URL' => $post_url,
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => $submit_name,
         ));
     }

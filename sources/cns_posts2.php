@@ -197,7 +197,7 @@ function render_post_box($row, $use_post_title = false, $give_context = true, $i
         'TOPIC_FIRST_POSTER' => '',
         'POST_ID' => strval($row['id']),
         'URL' => $post_url,
-        'CLASS' => ($row['p_is_emphasised'] == 1) ? 'cns_post_emphasis' : (($row['p_intended_solely_for'] !== null) ? 'cns_post_personal' : ''),
+        'CLASS' => ($row['p_is_emphasised'] == 1) ? 'cns-post-emphasis' : (($row['p_intended_solely_for'] !== null) ? 'cns-post-personal' : ''),
         'EMPHASIS' => $emphasis,
         'FIRST_UNREAD' => '',
         'POSTER_TITLE' => $poster_title,

@@ -428,7 +428,7 @@ class Module_admin_stats
             'TEXT' => $message,
             'HIDDEN' => '',
             'URL' => $post_url,
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => do_lang_tempcode('CHOOSE'),
         ));
     }
@@ -1555,7 +1555,7 @@ class Module_admin_stats
             '_GUID' => '82f3410d45e4d9ea53b2c033792a3207',
             'SKIP_WEBSTANDARDS' => true,
             'TITLE' => $this->title,
-            'SUBMIT_ICON' => 'buttons__clear',
+            'SUBMIT_ICON' => 'buttons--clear',
             'SUBMIT_NAME' => do_lang_tempcode('CLEAR_STATISTICS'),
             'TEXT' => paragraph(do_lang_tempcode('DESCRIPTION_CLEAR_STATISTICS')),
             'URL' => build_url(array('page' => '_SELF', 'type' => '_clear'), '_SELF'),

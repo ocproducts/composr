@@ -17,6 +17,6 @@
 			<option value="zip">{!FILEDUMP_ZIP}</option>
 		</select>
 
-		<input type="submit" value="{!PROCEED}" class="button_micro buttons__proceed" />
+		<input type="submit" value="{!PROCEED}" class="button_micro buttons--proceed" />
 	</div>
 </div>

@@ -258,7 +258,7 @@ class Module_points
             'TITLE' => $this->title,
             'URL' => $post_url,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'buttons__search',
+            'SUBMIT_ICON' => 'buttons--search',
             'SUBMIT_NAME' => $submit_name,
             'TEXT' => $text,
         ));

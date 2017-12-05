@@ -1,5 +1,5 @@
-<div class="cns_post_box">
-	<div class="wide_table_wrap"><div class="wide_table cns_topic">
+<div class="cns-post-box">
+	<div class="wide_table_wrap"><div class="wide_table cns-topic">
 			{POST}
 	</div></div>
 
@@ -10,7 +10,7 @@
 
 		{+START,IF_PASSED,URL}
 			<p class="shunted_button">
-				<a class="button_screen_item buttons__more" href="{URL*}" title="{!FORUM_POST} #{ID*}"><span>{!VIEW}</span></a>
+				<a class="button_screen_item buttons--more" href="{URL*}" title="{!FORUM_POST} #{ID*}"><span>{!VIEW}</span></a>
 			</p>
 		{+END}
 	{+END}

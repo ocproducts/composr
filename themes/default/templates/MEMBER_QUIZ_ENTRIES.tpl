@@ -1,7 +1,7 @@
 {+START,IF_NON_EMPTY,{CATEGORIES}}
 	<div data-toggleable-tray="{}">
 		<h2 class="js-tray-header">
-			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!TEST_RESULTS}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" /></a>
+			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!TEST_RESULTS}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" /></a>
 			<span class="js-tray-onclick-toggle-tray">{!TEST_RESULTS}</span>
 		</h2>
 
@@ -16,7 +16,7 @@
 				<form action="{DELETE_URL*}" method="post" title="{!QUIZ}: {!DELETE}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 				{+END}
-				<div class="wide_table_wrap"><table class="columned_table wide_table results_table autosized_table responsive_table">
+				<div class="wide_table_wrap"><table class="columned_table wide_table results_table autosized_table responsive-table">
 					<thead>
 						<tr>
 							<th>

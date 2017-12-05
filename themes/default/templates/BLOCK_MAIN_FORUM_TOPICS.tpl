@@ -1,9 +1,9 @@
 <section id="tray_{TITLE|}" data-toggleable-tray="{ save: true }" class="box box___block_main_forum_topics">
 	<h3 class="toggleable_tray_title js-tray-header">
-		<a class="toggleable_tray_button" data-click-tray-toggle="#tray_{TITLE|}" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{TITLE}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" /></a>
+		<a class="toggleable-tray-button" data-click-tray-toggle="#tray_{TITLE|}" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{TITLE}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" /></a>
 
 		{+START,IF_NON_EMPTY,{TITLE}}
-			<a class="toggleable_tray_button" data-click-tray-toggle="#tray_{TITLE|}" href="#!">{TITLE}</a>
+			<a class="toggleable-tray-button" data-click-tray-toggle="#tray_{TITLE|}" href="#!">{TITLE}</a>
 		{+END}
 	</h3>
 
@@ -15,7 +15,7 @@
 				</p>
 
 				<div role="note">
-					<ul class="tiny_paragraph associated-details horizontal_meta_details">
+					<ul class="tiny_paragraph associated-details horizontal-meta-details">
 						<li>{!BY_SIMPLE,{$DISPLAYED_USERNAME*,{USERNAME}}}</li>
 						<li>{!POST_PLU,{NUM_POSTS*}}</li>
 					</ul>

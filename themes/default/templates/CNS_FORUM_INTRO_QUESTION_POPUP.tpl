@@ -3,5 +3,5 @@
 </div></div>
 
 {+START,IF_NON_EMPTY,{ANSWER}}
-	<div class="cns_intro_question_answer_box"><p>{!ENTER_FORUM_TO_ANSWER}</p></div>
+	<div class="cns-intro-question-answer-box"><p>{!ENTER_FORUM_TO_ANSWER}</p></div>
 {+END}

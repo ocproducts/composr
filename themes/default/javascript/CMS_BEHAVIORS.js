@@ -140,7 +140,7 @@
 
             tables.forEach(function (table) {
                 // Responsive table prep work
-                if (table.classList.contains('responsive_table')) {
+                if (table.classList.contains('responsive-table')) {
                     var trs = table.getElementsByTagName('tr'),
                         thsFirstRow = trs[0].cells,
                         i, tds, j, data;
@@ -148,8 +148,8 @@
                     for (i = 0; i < trs.length; i++) {
                         tds = trs[i].cells;
                         for (j = 0; j < tds.length; j++) {
-                            if (!tds[j].classList.contains('responsive_table_no_prefix')) {
-                                data = (thsFirstRow[j] === undefined) ? '' : thsFirstRow[j].textContent.replace(/^\s+/, '').replace(/\s+$/, '');
+                            if (!tds[j].classList.contains('responsive-table-no-prefix')) {
+                                data = (thsFirstRow[j] == null) ? '' : thsFirstRow[j].textContent.replace(/^\s+/, '').replace(/\s+$/, '');
                                 if (data !== '') {
                                     tds[j].setAttribute('data-th', data);
                                 }
@@ -516,7 +516,7 @@
                 var options = $dom.data(el, 'toggleableTray') || {};
 
                 /**
-                 * @type {$cms.views.ToggleableTray}
+                 * @type { $cms.views.ToggleableTray }
                  */
                 $dom.data(el).toggleableTrayObject = new $cms.views.ToggleableTray(options, {el: el});
             });

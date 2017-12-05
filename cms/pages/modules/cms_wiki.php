@@ -386,7 +386,7 @@ class Module_cms_wiki
             'SKIP_WEBSTANDARDS' => true,
             'TITLE' => $this->title,
             'HIDDEN' => '',
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => $submit_name,
             'TEXT' => $text,
             'FIELDS' => $fields,
@@ -578,7 +578,7 @@ class Module_cms_wiki
             'URL' => $post_url,
             'HIDDEN' => '',
             'TEXT' => '',
-            'SUBMIT_ICON' => 'buttons__save',
+            'SUBMIT_ICON' => 'buttons--save',
             'SUBMIT_NAME' => do_lang_tempcode('SAVE'),
             'SUPPORT_AUTOSAVE' => true,
         ));

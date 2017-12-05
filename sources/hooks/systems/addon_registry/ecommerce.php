@@ -888,7 +888,7 @@ class Hook_addon_registry_ecommerce
                 'CONTENT' => $fields,
                 'URL' => placeholder_url(),
                 'SUBMIT_NAME' => lorem_phrase(),
-                'ICON' => 'buttons__proceed',
+                'ICON' => 'buttons--proceed',
             )), null, '', true)
         );
     }

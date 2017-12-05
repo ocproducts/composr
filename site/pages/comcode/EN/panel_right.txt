@@ -1,4 +1,4 @@
-[surround="boxless_space"]
+[surround="boxless-space"]
 [block failsafe="1"]side_calendar[/block]
 [block failsafe="1"]side_stats[/block]
 [block failsafe="1"]main_newsletter_signup[/block]

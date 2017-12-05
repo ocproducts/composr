@@ -18,21 +18,21 @@
 					<h3>{!OTHER_ACTIONS}</h3>
 
 					<nav>
-						<ul class="actions_list">
+						<ul class="actions-list">
 							{+START,IF_NON_EMPTY,{ADD_CHATROOM_URL}}
-								<li class="icon_14_add"><a href="{ADD_CHATROOM_URL*}" rel="add">{!ADD_CHATROOM}</a></li>
+								<li class="icon-14-add"><a href="{ADD_CHATROOM_URL*}" rel="add">{!ADD_CHATROOM}</a></li>
 							{+END}
 							{+START,IF_NON_EMPTY,{PRIVATE_CHATROOM}}
-								<li class="icon_14_proceed">{PRIVATE_CHATROOM}</li>
+								<li class="icon-14-proceed">{PRIVATE_CHATROOM}</li>
 							{+END}
 							{+START,IF_NON_EMPTY,{BLOCKING_LINK}}
-								<li class="icon_14_remove_manage">{BLOCKING_LINK}</li>
+								<li class="icon-14-remove-manage">{BLOCKING_LINK}</li>
 							{+END}
 							{+START,IF_NON_EMPTY,{MOD_LINK}}
-								<li class="icon_14_tools">{MOD_LINK}</li>
+								<li class="icon-14-tools">{MOD_LINK}</li>
 							{+END}
 							{+START,IF_NON_EMPTY,{SETEFFECTS_LINK}}
-								<li class="icon_14_sound_effects">{SETEFFECTS_LINK}</li>
+								<li class="icon-14-sound-effects">{SETEFFECTS_LINK}</li>
 							{+END}
 						</ul>
 					</nav>
@@ -43,7 +43,7 @@
 				<h3>{!SELECT_CHATROOM}</h3>
 
 				{+START,IF_NON_EMPTY,{CHATROOMS}}
-					<ul class="actions_list">
+					<ul class="actions-list">
 						{+START,LOOP,CHATROOMS}
 							<li><a href="{URL*}">{NAME*}</a> <em class="associated-details">({$?,{PRIVATE},{!CHATROOM_STATUS_PRIVATE},{!CHATROOM_STATUS_PUBLIC}})</em><span class="associated-details">({!STATIC_USERS_ONLINE,{$TIME*},{USERNAMES}})</span></li>
 						{+END}
@@ -87,7 +87,7 @@
 								<div class="friend-actions">
 									{+START,IF,{CAN_IM}}
 										<input class="button_screen_item menu___generic_admin__add_to_category js-click-btn-im-invite-ticked-people" disabled="disabled" id="invite_ongoing_im_button" type="button" value="{!INVITE_CURRENT_IM}" />
-										<input class="button_screen_item menu__social__chat__chat js-click-btn-im-start-ticked-people" type="button" value="{!START_IM}" />
+										<input class="button_screen_item menu--social--chat--chat js-click-btn-im-start-ticked-people" type="button" value="{!START_IM}" />
 									{+END}
 									{+START,IF_NON_EMPTY,{URL_REMOVE_FRIENDS}}
 										<input data-click-pd="1" class="button_screen_item menu___generic_admin__delete js-click-btn-dump-friends-confirm" type="submit" value="{!DUMP_FRIENDS}" />
@@ -112,7 +112,7 @@
 
 						{CHAT_SOUND}
 
-						<form title="{!SOUND_EFFECTS}" action="index.php" method="post" class="inline sound_effects_form" autocomplete="off">
+						<form title="{!SOUND_EFFECTS}" action="index.php" method="post" class="inline sound-effects-form" autocomplete="off">
 							{$INSERT_SPAMMER_BLACKHOLE}
 
 							<p>

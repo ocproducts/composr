@@ -555,7 +555,7 @@ class Module_purchase
      * @param  string $icon CSS icon label to use
      * @return Tempcode Wrapped
      */
-    protected function _wrap($content, $title, $url, $get = false, $submit_name = null, $icon = 'buttons__proceed')
+    protected function _wrap($content, $title, $url, $get = false, $submit_name = null, $icon = 'buttons--proceed')
     {
         if ($url === null) {
             $url = '';
@@ -1138,7 +1138,7 @@ class Module_purchase
                 } else {
                     $confirmation_box = do_lang_tempcode('BUYING_FOR_FREE_CONFIRMATION', escape_html($item_name));
 
-                    $icon = 'buttons__proceed';
+                    $icon = 'buttons--proceed';
                 }
             }
 
@@ -1283,7 +1283,7 @@ class Module_purchase
 
             $finish_url = null; // The embedded button will take the user through to the payment gateway
             $submit_name = null;
-            $icon = 'buttons__proceed';
+            $icon = 'buttons--proceed';
         }
 
         return $this->_wrap($result, $this->title, $finish_url, false, $submit_name, $icon);

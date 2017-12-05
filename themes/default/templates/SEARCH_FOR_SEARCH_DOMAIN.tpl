@@ -3,7 +3,7 @@
 
 	<td class="form_table_field_input search_for_search_domain_checkbox" colspan="2">
 		{+START,IF_NON_EMPTY,{OPTIONS_URL}}
-			<span class="search_for_search_domain_more associated_link"><a title="{!ADVANCED}: {$STRIP_TAGS,{LANG*}}" target="_self" href="{OPTIONS_URL*}">{!ADVANCED}</a></span>
+			<span class="search_for_search_domain_more associated-link"><a title="{!ADVANCED}: {$STRIP_TAGS,{LANG*}}" target="_self" href="{OPTIONS_URL*}">{!ADVANCED}</a></span>
 		{+END}
 
 		{+START,IF,{$NOT,{ADVANCED_ONLY}}}

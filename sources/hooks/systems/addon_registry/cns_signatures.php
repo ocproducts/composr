@@ -200,7 +200,7 @@ class Hook_addon_registry_cns_signatures
             'EXTRA' => '',
             'POST_COMMENT' => lorem_phrase(),
             'EMOTICON_CHOOSER' => '',
-            'SUBMIT_ICON' => 'buttons__save',
+            'SUBMIT_ICON' => 'buttons--save',
             'SUBMIT_NAME' => lorem_word(),
             'HIDDEN_FIELDS' => new Tempcode(),
             'URL' => placeholder_url(),

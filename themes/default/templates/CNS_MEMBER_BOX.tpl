@@ -11,7 +11,7 @@
 	<div class="inline_lined_up">
 		{+START,IF,{$DESKTOP}}
 			{+START,IF_NON_EMPTY,{AVATAR_URL}}
-				<img class="cns_member_box_avatar inline_desktop" src="{$ENSURE_PROTOCOL_SUITABILITY*,{AVATAR_URL}}" alt="{!SPECIFIC_AVATAR,{USERNAME*}}" title="{!SPECIFIC_AVATAR,{USERNAME*}}" />
+				<img class="cns-member-box-avatar inline_desktop" src="{$ENSURE_PROTOCOL_SUITABILITY*,{AVATAR_URL}}" alt="{!SPECIFIC_AVATAR,{USERNAME*}}" title="{!SPECIFIC_AVATAR,{USERNAME*}}" />
 			{+END}
 		{+END}
 

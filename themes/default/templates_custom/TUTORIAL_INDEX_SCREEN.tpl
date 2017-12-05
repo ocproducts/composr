@@ -44,7 +44,7 @@
 
 						<dt class="field_name">Tags:</dt>
 						<dd>
-							<ul class="horizontal_meta_details" style="width: auto">
+							<ul class="horizontal-meta-details" style="width: auto">
 								{+START,LOOP,TAGS}
 									<li><a href="{$PAGE_LINK*,_SEARCH:tutorials:{_loop_var}}">{_loop_var*}</a></li>
 								{+END}

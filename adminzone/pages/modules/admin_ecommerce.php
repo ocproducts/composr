@@ -558,7 +558,7 @@ class Module_admin_ecommerce extends Standard_crud_module
                 '_GUID' => 'bf025026dcfc86cfd0a8ef3728bbf6d8',
                 'TEXT' => '',
                 'FIELD_GROUPS' => $field_groups,
-                'SUBMIT_ICON' => 'buttons__save',
+                'SUBMIT_ICON' => 'buttons--save',
                 'SUBMIT_NAME' => $submit_name,
                 'SUBMIT_BUTTON_CLASS' => 'proceed_button_left_2',
                 'URL' => $post_url,

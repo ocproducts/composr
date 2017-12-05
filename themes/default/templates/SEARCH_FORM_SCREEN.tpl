@@ -27,9 +27,9 @@
 	{+END}
 		{+START,IF_PASSED,RESULTS}
 			<h2 class="toggleable_tray_title js-tray-header">
-				<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!">{!SETTINGS}</a>
+				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!SETTINGS}</a>
 				{+START,IF_NON_EMPTY,{RESULTS}}
-					<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img src="{$IMG*,1x/trays/expand2}" alt="{!SHOW_SEARCH_FORM}" title="{!SHOW_SEARCH_FORM}" /></a>
+					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img src="{$IMG*,1x/trays/expand2}" alt="{!SHOW_SEARCH_FORM}" title="{!SHOW_SEARCH_FORM}" /></a>
 				{+END}
 			</h2>
 		{+END}
@@ -195,7 +195,7 @@
 				</table></div>
 
 				<p class="proceed_button">
-					<input data-disable-on-click="1" accesskey="u" class="button_screen buttons__search" type="submit" value="{!SEARCH_TITLE}" />
+					<input data-disable-on-click="1" accesskey="u" class="button_screen buttons--search" type="submit" value="{!SEARCH_TITLE}" />
 				</p>
 			</form>
 		</div>

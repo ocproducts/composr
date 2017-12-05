@@ -1017,7 +1017,7 @@ class Module_admin_themes
             'GET' => true,
             'URL' => $post_url,
             'FIELD' => $fields,
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => new Tempcode(), // We don't want a button because clicking on images takes you through
         ));
 

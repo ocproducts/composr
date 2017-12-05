@@ -13,7 +13,7 @@
 		<p>
 			<label for="filter">{!FILTER}:</label>
 			<input type="text" id="filter" name="filter" value="{FILTER*}" data-submit-on-enter="true" />
-			<input class="button_micro buttons__filter" type="submit" value="{!FILTER}" />
+			<input class="button_micro buttons--filter" type="submit" value="{!FILTER}" />
 		</p>
 	</form>
 	
@@ -26,7 +26,7 @@
 	{+START,IF_NON_EMPTY,{LINKS}}
 		<h2>{!ADVANCED}</h2>
 	
-		<ul class="actions_list">
+		<ul class="actions-list">
 			{+START,LOOP,LINKS}
 				<li style="background-image: url('{LINK_IMAGE;*}'); background-size: 18px 18px; background-position: 0 0; padding-left: 20px"><a href="{LINK_URL*}">{LINK_TEXT*}</a></li>
 			{+END}

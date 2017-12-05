@@ -34,7 +34,7 @@
 			<div class="skip_step_button_wrap{+START,IF,{$IN_STR,{FIELDS},required_star}} skip_step_button_wrap_with_req_note{+END}">
 				<div>
 					<input type="hidden" id="{SKIPPABLE*}" name="{SKIPPABLE*}" value="0" />
-					<input data-disable-on-click="1" tabindex="151" class="button_screen_item buttons__skip js-btn-skip-step" type="submit" value="{!SKIP}" />
+					<input data-disable-on-click="1" tabindex="151" class="button_screen_item buttons--skip js-btn-skip-step" type="submit" value="{!SKIP}" />
 				</div>
 			</div>
 		{+END}
@@ -66,7 +66,7 @@
 
 		<div class="arrow_ruler">
 			<form action="#!" method="post" autocomplete="off">
-				<div class="associated_link">
+				<div class="associated-link">
 					<input type="checkbox" name="will_open_new" id="will_open_new" class="js-checkbox-will-open-new" />
 					<label for="will_open_new">{!CHOOSE_OPEN_NEW_WINDOW}</label>
 				</div>

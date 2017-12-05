@@ -13,14 +13,14 @@
 {$THEMEWIZARD_COLOR,#777777,bubblescape_island,100% #777777}
 {$THEMEWIZARD_COLOR,#3a3a3a,bubblescape_outside,100% #3A3A3A}
 
-.page_running_admin_realtime_rain {
+.page-running-admin-realtime-rain {
 	background: {$GET,bubblescape_outside};
 	overflow: hidden;
 }
-.page_running_admin_realtime_rain .breadcrumbs {
+.page-running-admin-realtime-rain .breadcrumbs {
 	margin-bottom: 1em;
 }
-.page_running_admin_realtime_rain #real_time_surround {
+.page-running-admin-realtime-rain #real_time_surround {
 	border: 1px dotted {$GET,bubblescape_background};
 }
 #real_time_surround {

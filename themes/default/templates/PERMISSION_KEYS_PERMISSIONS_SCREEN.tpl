@@ -11,7 +11,7 @@
 				{!PAGE_MATCH_KEY_ACCESS_TEXT}
 			</p>
 
-			<div class="wide_table_wrap"><table class="columned_table wide_table results_table privileges responsive_table">
+			<div class="wide_table_wrap"><table class="columned_table wide_table results_table privileges responsive-table">
 				<colgroup>
 					<col class="match_key_name_column" />
 					{COLS}
@@ -36,7 +36,7 @@
 				{!PAGE_MATCH_KEY_MESSAGES_TEXT}
 			</p>
 
-			<div class="wide_table_wrap"><table class="columned_table wide_table results_table responsive_table">
+			<div class="wide_table_wrap"><table class="columned_table wide_table results_table responsive-table">
 				<colgroup>
 					<col class="match_key_name_column" />
 					<col class="permission_match_key_message_column" />
@@ -60,7 +60,7 @@
 			</table></div>
 
 			<p class="proceed_button">
-				<input accesskey="u" data-disable-on-click="1" class="button_screen buttons__save js-btn-hover-toggle-disable-size-change" type="submit" value="{!SAVE}" />
+				<input accesskey="u" data-disable-on-click="1" class="button_screen buttons--save js-btn-hover-toggle-disable-size-change" type="submit" value="{!SAVE}" />
 			</p>
 		</div>
 	</form>

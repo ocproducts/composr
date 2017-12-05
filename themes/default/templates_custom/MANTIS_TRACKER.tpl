@@ -48,7 +48,7 @@
 						{!FEATURES_SUGGESTED_BY,{MEMBER_LINK},{DATE*}}
 					</p>
 
-					<p class="associated_link_to_small tracker_issue_link">
+					<p class="associated-link_to_small tracker_issue_link">
 						&raquo; <a href="{FULL_URL*}">{!FEATURES_FULL_DETAILS}</a> ({!FEATURES_COMMENTS_lc,{NUM_COMMENTS*}})
 					</p>
 				</div>

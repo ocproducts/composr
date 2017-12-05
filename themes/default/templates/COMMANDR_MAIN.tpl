@@ -14,7 +14,7 @@
 			<div id="command_prompt">
 				<label for="commandr_command">{PROMPT*}</label>
 				<input type="text" id="commandr_command" name="command" autofocus class="js-keyup-input-commandr-handle-history" />
-				<input class="button_micro buttons__proceed" type="submit" value="{$STRIP_TAGS,{!PROCEED_SHORT}}" role="textbox" />
+				<input class="button_micro buttons--proceed" type="submit" value="{$STRIP_TAGS,{!PROCEED_SHORT}}" role="textbox" />
 			</div>
 		</form>
 	</div>

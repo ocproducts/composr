@@ -41,7 +41,7 @@
 				<p>
 					<label for="edit_{ID*}_textarea">{!COMCODE}:</label> <a data-open-as-overlay="{}" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="{!COMCODE_MESSAGE,Comcode}" src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical_alignment" /></a>
 					{+START,IF,{$IN_STR,{CLASS},wysiwyg}}
-						<span class="horiz-field-sep associated_link"><a id="toggle_wysiwyg_edit_{ID*}_textarea" href="#!" class="js-a-toggle-wysiwyg"><abbr title="{!TOGGLE_WYSIWYG_2}"><img src="{$IMG*,icons/16x16/editor/wysiwyg_on}" srcset="{$IMG*,icons/32x32/editor/wysiwyg_on} 2x" alt="{!comcode:ENABLE_WYSIWYG}" title="{!comcode:ENABLE_WYSIWYG}" class="vertical_alignment" /></abbr></a></span>
+						<span class="horiz-field-sep associated-link"><a id="toggle_wysiwyg_edit_{ID*}_textarea" href="#!" class="js-a-toggle-wysiwyg"><abbr title="{!TOGGLE_WYSIWYG_2}"><img src="{$IMG*,icons/16x16/editor/wysiwyg_on}" srcset="{$IMG*,icons/32x32/editor/wysiwyg_on} 2x" alt="{!comcode:ENABLE_WYSIWYG}" title="{!comcode:ENABLE_WYSIWYG}" class="vertical_alignment" /></abbr></a></span>
 					{+END}
 				</p>
 				{+START,IF_NON_EMPTY,{COMCODE_EDITOR}}
@@ -79,7 +79,7 @@
 			<p class="lonely_label">
 				<span class="field_name">{!ACTIONS}:</span>
 			</p>
-			<ul class="actions_list">
+			<ul class="actions-list">
 				<li><a title="{!EDIT_IN_FULL_PAGE_EDITOR}: {ID*} {!LINK_NEW_WINDOW}" target="_blank" href="{EDIT_URL*}">{!EDIT_IN_FULL_PAGE_EDITOR}</a></li>
 			</ul>
 		{+END}

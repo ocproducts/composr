@@ -32,7 +32,7 @@
 		{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,admin_config}}
 			<hr class="spaced_rule" />
 
-			<ul class="actions_list">
+			<ul class="actions-list">
 				<li><a href="{$PAGE_LINK*,adminzone:admin_config:category:SITE#group_ERROR_HANDLING}">{!CHANGE_ERROR_HANDLING_SETTINGS}</a></li>
 			</ul>
 		{+END}

@@ -60,7 +60,7 @@
 .block_main_members__boxes .box_inner {
 	margin: 0;
 }
-.block_main_members__boxes .cns_member_box_avatar {
+.block_main_members__boxes .cns-member-box-avatar {
 	float: right;
 	margin-top: 0.5em; /* balance the th/td to the left, which have some padding above */
 	margin-left: 1em;

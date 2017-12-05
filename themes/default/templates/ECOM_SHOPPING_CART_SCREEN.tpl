@@ -9,18 +9,18 @@
 		{RESULTS_TABLE}
 
 		<div class="cart_buttons">
-			<div class="buttons_group cart_update_buttons" itemprop="significantLinks">
+			<div class="buttons-group cart_update_buttons" itemprop="significantLinks">
 				{$,Put first, so it associates with the enter key}
 				{+START,IF_NON_EMPTY,{TYPE_CODES}}
-					<input id="cart_update_button" class="buttons__cart_update button_screen button_faded js-click-btn-cart-update" type="submit" name="update" title="{!UPDATE_CART}" value="{!_UPDATE_CART}" />
+					<input id="cart_update_button" class="buttons--cart-update button_screen button_faded js-click-btn-cart-update" type="submit" name="update" title="{!UPDATE_CART}" value="{!_UPDATE_CART}" />
 				{+END}
 
 				{+START,IF_NON_EMPTY,{EMPTY_CART_URL*}}
-					<input class="button_screen_item buttons__cart_empty js-click-btn-cart-empty" type="submit" value="{!EMPTY_CART}" />
+					<input class="button_screen_item buttons--cart-empty js-click-btn-cart-empty" type="submit" value="{!EMPTY_CART}" />
 				{+END}
 			</div>
 
-			<div class="buttons_group cart_continue_button" itemprop="significantLinks">
+			<div class="buttons-group cart_continue_button" itemprop="significantLinks">
 				<input type="hidden" name="type_codes" id="type_codes" value="{TYPE_CODES*}" />
 
 				{+START,IF_NON_EMPTY,{CONTINUE_SHOPPING_URL}}
@@ -61,7 +61,7 @@
 		{+END}
 
 		<p class="purchase_button">
-			<input id="proceed_button" class="button_screen buttons__proceed js-click-do-cart-form-submit" accesskey="u" type="button" value="{!CHECKOUT}" />
+			<input id="proceed_button" class="button_screen buttons--proceed js-click-do-cart-form-submit" accesskey="u" type="button" value="{!CHECKOUT}" />
 		</p>
 	</form>
 </div>

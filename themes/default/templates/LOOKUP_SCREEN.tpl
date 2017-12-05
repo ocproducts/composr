@@ -38,7 +38,7 @@
 						<div><em>{!BANNED}, {$LCASE,{IP_BANNED*}}</em>{+START,IF_PASSED,IP_BAN_LINK} {IP_BAN_LINK}{+END}</div>
 
 						{+START,IF_NON_EMPTY,{$CONFIG_OPTION,stopforumspam_api_key}{$CONFIG_OPTION,tornevall_api_username}}
-							<div><span class="associated_link"><a href="{$PAGE_LINK*,_SEARCH:admin_actionlog:syndicate_ip_ban:ip={IP}:member_id={ID}:reason={!MANUAL}:redirect={$SELF_URL&}}">{!SYNDICATE_TO_STOPFORUMSPAM}</a></span></div>
+							<div><span class="associated-link"><a href="{$PAGE_LINK*,_SEARCH:admin_actionlog:syndicate_ip_ban:ip={IP}:member_id={ID}:reason={!MANUAL}:redirect={$SELF_URL&}}">{!SYNDICATE_TO_STOPFORUMSPAM}</a></span></div>
 						{+END}
 					</div>
 				</td>
@@ -49,7 +49,7 @@
 			<th>{!RELATED_SCREENS}</th>
 			<td>
 				<nav>
-					<ul class="actions_list">
+					<ul class="actions-list">
 						{+START,IF_PASSED,PROFILE_URL}
 							<li><a href="{PROFILE_URL*}">{!VIEW_PROFILE}</a></li>
 						{+END}
@@ -76,7 +76,7 @@
 				<td>
 					<!-- If you like new windows, add this... title="{!LINK_NEW_WINDOW}" target="_blank" -->
 					<nav>
-						<ul class="actions_list">
+						<ul class="actions-list">
 							<li><a rel="external" href="http://whatismyipaddress.com/ip/{IP*}">Reverse-DNS/WHOIS</a></li>
 							<li><a rel="external" href="http://network-tools.com/default.asp?prog=ping&amp;Netnic=whois.arin.net&amp;host={IP*}">Ping</a></li>
 							<li><a rel="external" href="http://network-tools.com/default.asp?prog=trace&amp;Netnic=whois.arin.net&amp;host={IP*}">Tracert</a></li>
@@ -102,7 +102,7 @@
 			{IP_LIST}
 		</ul>
 
-		<input data-disable-on-click="1" class="button_screen buttons__save" type="submit" value="{!SET}" />
+		<input data-disable-on-click="1" class="button_screen buttons--save" type="submit" value="{!SET}" />
 	</form>
 {+END}
 {+START,IF_EMPTY,{IP_LIST}}

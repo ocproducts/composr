@@ -1,21 +1,21 @@
 {$REQUIRE_JAVASCRIPT,core_form_interfaces}
 {$REQUIRE_JAVASCRIPT,cns_forum}
 <div data-view="CnsForumTopicWrapper">
-	<div class="wide_table_wrap"><table class="columned_table wide_table cns_topic_list">
+	<div class="wide_table_wrap"><table class="columned_table wide_table cns-topic-list">
 		{+START,IF,{$DESKTOP}}
 			<colgroup>
 				{+START,IF,{$CONFIG_OPTION,is_on_topic_emoticons}}
-					<col class="cns_forum_topic_wrapper_column_column1 column_desktop" />
+					<col class="cns-forum-topic-wrapper-column-column1 column_desktop" />
 				{+END}
-				<col class="cns_forum_topic_wrapper_column_column2" />
-				<col class="cns_forum_topic_wrapper_column_column3 column_desktop" />
-				<col class="cns_forum_topic_wrapper_column_column4 column_desktop" />
-				<col class="cns_forum_topic_wrapper_column_column5 column_desktop" />
+				<col class="cns-forum-topic-wrapper-column-column2" />
+				<col class="cns-forum-topic-wrapper-column-column3 column_desktop" />
+				<col class="cns-forum-topic-wrapper-column-column4 column_desktop" />
+				<col class="cns-forum-topic-wrapper-column-column5 column_desktop" />
 				{+START,IF,{$OR,{$EQ,{$LANG},EN},{$LT,{$LENGTH,{!COUNT_POSTS}{!COUNT_VIEWS}},12}}}
-					<col class="cns_forum_topic_wrapper_column_column6{$?,{$MATCH_KEY_MATCH,_WILD:members},_shorter}" />
+					<col class="cns-forum-topic-wrapper-column-column6{$?,{$MATCH_KEY_MATCH,_WILD:members},_shorter}" />
 				{+END}
 				{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}{+START,IF,{$NOT,{$_GET,overlay}}}
-					<col class="cns_forum_topic_wrapper_column_column7 column_desktop" />
+					<col class="cns-forum-topic-wrapper-column-column7 column_desktop" />
 				{+END}{+END}
 			</colgroup>
 		{+END}
@@ -24,7 +24,7 @@
 			<tr>
 				{+START,IF,{$DESKTOP}}
 					{+START,IF,{$CONFIG_OPTION,is_on_topic_emoticons}}
-						<th class="cns_forum_box_left column_desktop"></th>
+						<th class="cns-forum-box-left column_desktop"></th>
 					{+END}
 				{+END}
 				<th>{!TITLE}</th>
@@ -35,10 +35,10 @@
 						<th class="cell_desktop">{!COUNT_VIEWS}</th>
 					{+END}
 				{+END}
-				<th {+START,IF_EMPTY,{MODERATOR_ACTIONS}} class="cns_forum_box_right"{+END}>{!LAST_POST}</th>
+				<th {+START,IF_EMPTY,{MODERATOR_ACTIONS}} class="cns-forum-box-right"{+END}>{!LAST_POST}</th>
 				{+START,IF,{$DESKTOP}}
 					{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}{+START,IF,{$NOT,{$_GET,overlay}}}
-						<th class="cns_forum_box_right">
+						<th class="cns-forum-box-right">
 							<a href="#!" class="js-click-mark-all-topics"><img src="{$IMG*,icons/14x14/cns_topic_modifiers/unvalidated}" srcset="{$IMG*,icons/28x28/cns_topic_modifiers/unvalidated} 2x" alt="{!TOGGLE_SELECTION}" title="{!TOGGLE_SELECTION}" /></a>
 						</th>
 					{+END}{+END}{+END}
@@ -49,24 +49,24 @@
 		<tbody>
 			{TOPICS}
 
-			<tr class="cns_table_footer">
+			<tr class="cns-table-footer">
 				{+START,IF,{$DESKTOP}}
 					{+START,IF,{$CONFIG_OPTION,is_on_topic_emoticons}}
-						<td class="cns_column1 cns_forum_box_bleft cell_desktop"></td>
+						<td class="cns-column1 cns-forum-box-bleft cell_desktop"></td>
 					{+END}
 				{+END}
-				<td class="cns_column1{+START,IF,{$MOBILE}} cns_forum_box_bleft{+END}"></td>
-				<td class="cns_column1"></td>
+				<td class="cns-column1{+START,IF,{$MOBILE}} cns_forum_box_bleft{+END}"></td>
+				<td class="cns-column1"></td>
 				{+START,IF,{$DESKTOP}}
-					<td class="cns_column1 cell_desktop"></td>
+					<td class="cns-column1 cell_desktop"></td>
 					{+START,IF,{$OR,{$EQ,{$LANG},EN},{$LT,{$LENGTH,{!COUNT_POSTS}{!COUNT_VIEWS}},12}}}
-						<td class="cns_column1 cell_desktop"></td>
+						<td class="cns-column1 cell_desktop"></td>
 					{+END}
 				{+END}
-				<td class="cns_column1{+START,IF,{$OR,{$MOBILE},{$IS_EMPTY,{MODERATOR_ACTIONS}}}} cns_forum_box_bright{+END}"></td>
+				<td class="cns-column1{+START,IF,{$OR,{$MOBILE},{$IS_EMPTY,{MODERATOR_ACTIONS}}}} cns-forum-box-bright{+END}"></td>
 				{+START,IF,{$DESKTOP}}
 					{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}{+START,IF,{$NOT,{$_GET,overlay}}}
-						<td class="cns_column1 cns_forum_box_bright cell_desktop"></td>
+						<td class="cns-column1 cns-forum-box-bright cell_desktop"></td>
 					{+END}{+END}
 				{+END}
 			</tr>
@@ -82,7 +82,7 @@
 {+START,IF,{$NOT,{$WIDE_HIGH}}}
 	{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}
 		{+START,IF,{$DESKTOP}}
-			<div class="box cns_topic_actions block_desktop"><div class="box_inner">
+			<div class="box cns-topic-actions block_desktop"><div class="box_inner">
 				<span class="field_name">
 					<label for="fma_type">{!TOPIC_ACTIONS}: </label>
 				</span>
@@ -90,10 +90,10 @@
 					{$HIDDENS_FOR_GET_FORM,{ACTION_URL}}
 
 					<div class="inline">
-						<select class="dropdown_actions" name="type" id="fma_type">
+						<select class="dropdown-actions" name="type" id="fma_type">
 							<option value="browse">-</option>
 							{MODERATOR_ACTIONS}
-						</select><input class="button_micro buttons__proceed js-click-btn-add-form-marked-posts" type="submit" value="{!PROCEED}" />
+						</select><input class="button_micro buttons--proceed js-click-btn-add-form-marked-posts" type="submit" value="{!PROCEED}" />
 					</div>
 				</form>
 
@@ -110,7 +110,7 @@
 								<option value="50"{$?,{$EQ,{MAX},50}, selected="selected",}>50</option>
 								<option value="100"{$?,{$EQ,{MAX},100}, selected="selected",}>100</option>
 								<option value="300"{$?,{$EQ,{MAX},300}, selected="selected",}>300</option>
-							</select><input class="button_micro buttons__proceed js-click-btn-add-form-marked-posts" type="submit" value="{!PROCEED}" />
+							</select><input class="button_micro buttons--proceed js-click-btn-add-form-marked-posts" type="submit" value="{!PROCEED}" />
 						</div>
 					</form>
 

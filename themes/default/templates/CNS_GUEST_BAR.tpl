@@ -2,9 +2,9 @@
 
 <section id="tray_{!MEMBER|}" data-tpl="cnsGuestBar" data-toggleable-tray="{ save: true }" class="box cns_information_bar_outer">
 	<h2 class="toggleable_tray_title js-tray-header">
-		<a class="toggleable_tray_button js-tray-onclick-toggle-tray inline_desktop" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!_LOGIN}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" /></a>
+		<a class="toggleable-tray-button js-tray-onclick-toggle-tray inline_desktop" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!_LOGIN}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" /></a>
 
-		<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!">{!_LOGIN}{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,search}} / {!SEARCH}{+END}</a>
+		<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!_LOGIN}{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,search}} / {!SEARCH}{+END}</a>
 	</h2>
 
 	<div class="toggleable_tray js-tray-content">
@@ -39,7 +39,7 @@
 
 			<nav class="cns_guest_column cns_member_column_d">
 				{$,<p class="cns_member_column_title">{!VIEW}:</p>}
-				<ul class="actions_list">
+				<ul class="actions-list">
 					<li><a data-open-as-overlay="{}" href="{NEW_POSTS_URL*}">{!POSTS_SINCE}</a></li>
 					<li><a data-open-as-overlay="{}" href="{UNANSWERED_TOPICS_URL*}">{!UNANSWERED_TOPICS}</a></li>
 				</ul>

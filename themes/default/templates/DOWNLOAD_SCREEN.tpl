@@ -19,8 +19,8 @@
 					</p>
 
 					<div class="toggleable_tray_title js-tray-header">
-						<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!I_AGREE}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" /></a>
-						<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!">{!I_AGREE}</a>
+						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!I_AGREE}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" /></a>
+						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!I_AGREE}</a>
 					</div>
 
 					<div class="toggleable_tray js-tray-content" style="display: none" aria-expanded="false">
@@ -30,7 +30,7 @@
 					{+END}
 						<div class="download_now" itemprop="significantLinks">
 							{+START,IF,{MAY_DOWNLOAD}}
-								<p class="download_link associated_link suggested_link"><a {+START,IF,{$NOT,{$INLINE_STATS}}} data-click-ga-track="{ category: '{!DOWNLOAD;^*}', action: '{ORIGINAL_FILENAME;^*}' }"{+END} rel="nofollow" href="{DOWNLOAD_URL*}"><strong>{!DOWNLOAD_NOW}</strong></a></p>
+								<p class="download_link associated-link suggested_link"><a {+START,IF,{$NOT,{$INLINE_STATS}}} data-click-ga-track="{ category: '{!DOWNLOAD;^*}', action: '{ORIGINAL_FILENAME;^*}' }"{+END} rel="nofollow" href="{DOWNLOAD_URL*}"><strong>{!DOWNLOAD_NOW}</strong></a></p>
 							{+END}
 							{+START,IF,{$NOT,{MAY_DOWNLOAD}}}
 								<p>{!NO_DOWNLOAD_ACCESS}</p>
@@ -162,7 +162,7 @@
 				{IMAGES_DETAILS}
 			</div>
 
-			{$,<p class="download_start_slideshow"><span class="associated_link"><a target="_blank" title="\{!galleries:_SLIDESHOW\}: \{!LINK_NEW_WINDOW\}" href="\{$PAGE_LINK*,_SEARCH:galleries:image:\{$GET*,FIRST_IMAGE_ID\}:slideshow=1:wide_high=1\}">\{!galleries:_SLIDESHOW\}</a></span></p>}
+			{$,<p class="download_start_slideshow"><span class="associated-link"><a target="_blank" title="\{!galleries:_SLIDESHOW\}: \{!LINK_NEW_WINDOW\}" href="\{$PAGE_LINK*,_SEARCH:galleries:image:\{$GET*,FIRST_IMAGE_ID\}:slideshow=1:wide_high=1\}">\{!galleries:_SLIDESHOW\}</a></span></p>}
 		</div></div>
 	{+END}
 

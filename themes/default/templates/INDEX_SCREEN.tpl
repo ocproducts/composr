@@ -8,7 +8,7 @@
 
 {+START,IF_NON_EMPTY,{CONTENT}}
 	<nav>
-		<ul class="actions_list" itemprop="significantLinks">
+		<ul class="actions-list" itemprop="significantLinks">
 			{CONTENT}
 		</ul>
 	</nav>

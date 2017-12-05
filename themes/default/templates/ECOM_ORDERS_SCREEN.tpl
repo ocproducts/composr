@@ -1,6 +1,6 @@
 {TITLE}
 
-<div class="wide_table_wrap"><table class="columned_table wide_table results_table autosized_table responsive_table" itemprop="significantLinks">
+<div class="wide_table_wrap"><table class="columned_table wide_table results_table autosized_table responsive-table" itemprop="significantLinks">
 	<thead>
 		<tr>
 			<th>{!ECOM_ORDER}</th>
@@ -55,7 +55,7 @@
 			</tr>
 			{+START,IF_NON_EMPTY,{NOTE}}
 				<tr>
-					<td class="responsive_table_no_prefix" colspan="7">
+					<td class="responsive-table-no-prefix" colspan="7">
 						{NOTE*}
 					</td>
 				</tr>

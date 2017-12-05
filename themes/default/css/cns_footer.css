@@ -3,11 +3,11 @@
  Copyright (c) ocProducts, 2004-2017
 */
 
-.box___block_main_bottom_bar>.box_inner {
+.box---block-main-bottom-bar>.box_inner {
 	margin: 0;
 }
 
-.box___block_main_bottom_bar>.box_inner>h2 {
+.box---block-main-bottom-bar>.box_inner>h2 {
 	margin: 0;
 	padding: 0.3em 0 0.4em 0;
 }

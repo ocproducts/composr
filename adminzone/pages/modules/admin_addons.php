@@ -1276,7 +1276,7 @@ class Module_admin_addons
             'TEXT' => do_lang_tempcode('CHOOSE_ZONE_OF_MODULES'),
             'FIELDS' => $fields,
             'URL' => $post_url,
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => $submit_name,
         ));
     }

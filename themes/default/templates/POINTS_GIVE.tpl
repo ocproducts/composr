@@ -23,7 +23,7 @@
 
 				<label class="points_anon" for="give_anonymous">{!TICK_ANON}: <input type="checkbox" id="give_anonymous" name="anonymous" value="1" /></label>
 
-				<input id="give_points_submit" class="button_screen_item buttons__points" type="submit" value="{!GIVE_POINTS}" />
+				<input id="give_points_submit" class="button_screen_item buttons--points" type="submit" value="{!GIVE_POINTS}" />
 			</div>
 		</form>
 	{+END}
@@ -51,7 +51,7 @@
 					<label class="accessibility_hidden" for="give_reason">{!REASON}</label>
 					<input maxlength="255" size="18" id="give_reason" class="input_line_required" placeholder="{!REASON}" type="text" name="reason" />
 
-					<input id="give_points_submit" class="button_screen_item buttons__points" type="submit" value="{!PROCEED_SHORT}" />
+					<input id="give_points_submit" class="button_screen_item buttons--points" type="submit" value="{!PROCEED_SHORT}" />
 				</div>
 
 				<div class="points_give_choices">

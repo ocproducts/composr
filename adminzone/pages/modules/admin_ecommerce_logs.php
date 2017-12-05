@@ -303,7 +303,7 @@ class Module_admin_ecommerce_logs
             return do_template('FORM_SCREEN', array(
                 '_GUID' => 'a2fe914c23e378c493f6e1dad0dc11eb',
                 'TITLE' => $this->title,
-                'SUBMIT_ICON' => 'buttons__proceed',
+                'SUBMIT_ICON' => 'buttons--proceed',
                 'SUBMIT_NAME' => $submit_name,
                 'FIELDS' => $fields,
                 'TEXT' => $text,
@@ -343,7 +343,7 @@ class Module_admin_ecommerce_logs
                 return do_template('FORM_SCREEN', array(
                     '_GUID' => '90ee397ac24dcf0b3a0176da9e9c9741',
                     'TITLE' => $this->title,
-                    'SUBMIT_ICON' => 'buttons__proceed',
+                    'SUBMIT_ICON' => 'buttons--proceed',
                     'SUBMIT_NAME' => $submit_name,
                     'FIELDS' => $needed_fields,
                     'TEXT' => $text,
@@ -832,7 +832,7 @@ class Module_admin_ecommerce_logs
             'TEXT' => '',
             'HIDDEN' => '',
             'URL' => get_self_url(false, false, array(), false, true),
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => do_lang_tempcode('PROCEED'),
         ));
     }

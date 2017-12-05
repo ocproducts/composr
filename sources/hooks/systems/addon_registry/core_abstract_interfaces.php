@@ -893,7 +893,7 @@ class Hook_addon_registry_core_abstract_interfaces
             'TEXT' => '',
             'URL' => '#',
             'FIELD_GROUPS' => $field_rows,
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => lorem_word_2(),
         ));
 
@@ -1109,7 +1109,7 @@ class Hook_addon_registry_core_abstract_interfaces
             lorem_globalise(do_lorem_template('COLUMNED_TABLE_SCREEN', array(
                 'TITLE' => lorem_title(),
                 'TABLE' => placeholder_table(),
-                'SUBMIT_ICON' => 'buttons__proceed',
+                'SUBMIT_ICON' => 'buttons--proceed',
                 'SUBMIT_NAME' => lorem_word(),
                 'POST_URL' => placeholder_url(),
             )), null, '', true)

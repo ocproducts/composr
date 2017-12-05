@@ -203,7 +203,7 @@ class Hook_addon_registry_captcha
                 'TITLE' => lorem_title(),
                 'URL' => placeholder_url(),
                 'FIELDS' => $captcha,
-                'SUBMIT_ICON' => 'buttons__proceed',
+                'SUBMIT_ICON' => 'buttons--proceed',
                 'SUBMIT_NAME' => lorem_word(),
                 'TEXT' => lorem_sentence_html(),
             )), null, '', true)
@@ -247,7 +247,7 @@ class Hook_addon_registry_captcha
             'TITLE' => lorem_title(),
             'URL' => placeholder_url(),
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_ICON' => 'buttons--proceed',
             'SUBMIT_NAME' => lorem_word(),
             'TEXT' => lorem_sentence_html(),
         ));

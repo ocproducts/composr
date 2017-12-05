@@ -20,7 +20,7 @@
 		<hr />
 
 		<nav>
-			<ul class="actions_list">
+			<ul class="actions-list">
 				<li><a title="{!MORE}: {!AUTHORS}" href="{NEXT_URL*}">{!MORE}</a></li>
 			</ul>
 		</nav>

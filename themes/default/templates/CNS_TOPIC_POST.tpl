@@ -1,9 +1,9 @@
 {$REQUIRE_JAVASCRIPT,core_cns}
 {$REQUIRE_JAVASCRIPT,cns_forum}
 
-<div class="cns_topic_post" data-tpl="cnsTopicPost" data-tpl-params="{+START,PARAMS_JSON,ID}{_*}{+END}">
-	<div class="cns_topic_section cns_topic_header">
-		<div class="cns_forum_box_left{+START,IF_NON_EMPTY,{CLASS}} {CLASS*}{+END}">
+<div class="cns-topic-post" data-tpl="cnsTopicPost" data-tpl-params="{+START,PARAMS_JSON,ID}{_*}{+END}">
+	<div class="cns-topic-section cns-topic-header">
+		<div class="cns-forum-box-left{+START,IF_NON_EMPTY,{CLASS}} {CLASS*}{+END}">
 			<h2 class="accessibility_hidden">
 				{!FORUM_POST}
 			</h2>
@@ -15,29 +15,29 @@
 			{FIRST_UNREAD}
 		</div>
 
-		<div class="cns_forum_box_right cns_post_details" role="note">
-			<div class="cns_post_details_date">
+		<div class="cns-forum-box-right cns-post-details" role="note">
+			<div class="cns-post-details-date">
 				{$SET,post_date,<time datetime="{$FROM_TIMESTAMP*,Y-m-d\TH:i:s\Z,{POST_DATE_RAW}}">{POST_DATE*}</time>}
 				{+START,IF,{$DESKTOP}}<span class="inline_desktop">{!POSTED_TIME_SIMPLE,{$GET,post_date}}</span>{+END}<span class="inline_mobile">{$GET,post_date}</span>
 			</div>
 
 			{+START,IF_NON_EMPTY,{POSTER}}
 				{+START,IF_PASSED,RATING}
-					<div class="cns_post_details_rating">
+					<div class="cns-post-details-rating">
 						<div class="accessibility_hidden">{!RATING}:</div>
 						{RATING}
 					</div>
 				{+END}
 
 				{+START,IF_NON_EMPTY,{UNVALIDATED}}
-					<div class="cns_post_details_unvalidated">
+					<div class="cns-post-details-unvalidated">
 						{UNVALIDATED*}
 					</div>
 				{+END}
 			{+END}
 
 			{+START,IF,{$DESKTOP}}
-				<div class="cns_post_details_grapple block_desktop">
+				<div class="cns-post-details-grapple block_desktop">
 					{+START,IF_NON_EMPTY,{URL}}
 						{+START,IF_NON_EMPTY,{POST_ID*}}
 							<a href="{URL*}" rel="nofollow">#{POST_ID*}</a>
@@ -52,26 +52,26 @@
 		</div>
 	</div>
 
-	<div class="cns_topic_section cns_topic_body">
-		<div class="cns_topic_post_member_details" role="note">
+	<div class="cns-topic-section cns-topic-body">
+		<div class="cns-topic-post-member-details" role="note">
 			{+START,IF_NON_EMPTY,{POSTER}}
-				<div class="cns_topic_poster_name">
+				<div class="cns-topic-poster-name">
 					{POSTER}
 				</div>
 
 				<div>
 					{POST_AVATAR}
-					{+START,IF_NON_EMPTY,{POSTER_TITLE}}<div class="cns_topic_poster_title">{POSTER_TITLE*}</div>{+END}
-					{+START,IF_NON_EMPTY,{RANK_IMAGES}}<div class="cns_topic_poster_rank_images">{RANK_IMAGES}</div>{+END}
+					{+START,IF_NON_EMPTY,{POSTER_TITLE}}<div class="cns-topic-poster-title">{POSTER_TITLE*}</div>{+END}
+					{+START,IF_NON_EMPTY,{RANK_IMAGES}}<div class="cns-topic-poster-rank-images">{RANK_IMAGES}</div>{+END}
 				</div>
 			{+END}
 		</div>
 
-		<div class="cns_topic_post_area cns_post_main_column">
+		<div class="cns-topic-post-area cns-post-main-column">
 			<div class="float-surrounder">
 				{+START,IF,{$DESKTOP}}
 					{+START,IF_NON_EMPTY,{ID}}{+START,IF_NON_PASSED_OR_FALSE,PREVIEWING}
-						<div id="cell_mark_{ID*}" class="cns_off mass_select_marker block_desktop">
+						<div id="cell_mark_{ID*}" class="cns-off mass_select_marker block_desktop">
 							<form class="webstandards_checker_off" title="{!FORUM_POST} {!MARKER} #{ID*}" method="post" action="index.php" id="form_mark_{ID*}" autocomplete="off">
 								{$INSERT_SPAMMER_BLACKHOLE}
 
@@ -110,9 +110,9 @@
 
 			{+START,IF_NON_EMPTY,{SIGNATURE}}
 				<div>
-					<hr class="cns_sig_barrier" />
+					<hr class="cns-sig-barrier" />
 
-					<div class="cns_member_signature">
+					<div class="cns-member-signature">
 						{SIGNATURE}
 					</div>
 				</div>
@@ -120,13 +120,13 @@
 		</div>
 	</div>
 
-	<div class="cns_topic_section cns_topic_footer">
-		<div class="cns_left_post_buttons {CLASS*}">
+	<div class="cns-topic-section cns-topic-footer">
+		<div class="cns-left-post-buttons {CLASS*}">
 			{EMPHASIS*}
 
 			{+START,IF,{$NOT,{GIVE_CONTEXT}}}
 				{+START,IF_EMPTY,{EMPHASIS}}{+START,IF_NON_EMPTY,{ID}}
-					<div class="cns_post_back_to_top">
+					<div class="cns-post-back-to-top">
 						{$,is on/offline}
 						{+START,IF,{$NOT,{$VALUE_OPTION,no_member_tracking}}}
 							{+START,IF_PASSED,POSTER_ONLINE}
@@ -140,7 +140,7 @@
 			{+END}
 		</div>
 
-		<div class="buttons_group post_buttons cns_post_main_column">
+		<div class="buttons-group post-buttons cns-post-main-column">
 			{BUTTONS}
 		</div>
 	</div>

@@ -216,7 +216,7 @@ class Module_admin_backup
                 'JS_FUNCTION_CALLS' => $js_function_calls,
                 'TEXT' => '',
                 'FIELDS' => $fields,
-                'SUBMIT_ICON' => 'buttons__proceed',
+                'SUBMIT_ICON' => 'buttons--proceed',
                 'SUBMIT_NAME' => do_lang_tempcode('BACKUP'),
                 'URL' => $url,
             ));

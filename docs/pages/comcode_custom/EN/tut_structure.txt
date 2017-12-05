@@ -163,7 +163,7 @@ Most of the default block templates put a box around the block to make things ap
 
 If you'd like to make things more subtle, with headers and dividers, wrapping this Comcode around the block(s) automatically activates some overriding styling:
 [code="Comcode"]
-[surround="boxless_space"]
+[surround="boxless-space"]
 ...
 [/surround]
 [/code]

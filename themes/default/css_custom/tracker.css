@@ -1,22 +1,22 @@
 /* Tabs */
 
-.page_running_tracker .tab {
+.page-running-tracker .tab {
 	display: inline-block;
 }
 /*{+START,CSS_MODE,desktop}*/
-	.page_running_tracker .tab {
+	.page-running-tracker .tab {
 		width: 110px;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.page_running_tracker .tab {
+	.page-running-tracker .tab {
 		width: auto;
 		text-align: left;
 		min-width: 0;
 	}
 /*{+END}*/
 
-.page_running_tracker .tab span {
+.page-running-tracker .tab span {
 	display: inline-block;
 	padding-top: 2px;
 	padding-left: 20px;

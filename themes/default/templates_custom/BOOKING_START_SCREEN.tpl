@@ -64,7 +64,7 @@
 				<h2>{CATEGORY_TITLE*}</h2>
 
 				<div class="wide_table_wrap">
-					<table class="wide_table results_table columned_table spaced_table responsive_table">
+					<table class="wide_table results_table columned_table spaced_table responsive-table">
 						<thead>
 							<tr>
 								<th>{!ITEM}</th>
@@ -159,7 +159,7 @@
 		</div>
 
 		<p class="proceed_button">
-			<input class="button_screen buttons__proceed" type="submit" value="{!PROCEED}" />
+			<input class="button_screen buttons--proceed" type="submit" value="{!PROCEED}" />
 		</p>
 	</form>
 {+END}

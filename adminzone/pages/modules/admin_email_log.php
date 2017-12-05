@@ -469,7 +469,7 @@ class Module_admin_email_log
             'TEXT' => '',
             'URL' => $post_url,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'buttons__save',
+            'SUBMIT_ICON' => 'buttons--save',
             'SUBMIT_NAME' => $submit_name,
         ));
     }

@@ -283,7 +283,7 @@ echo '
         </p>
 
         <p class="proceed_button">
-            <input class="buttons__proceed button_screen" type="submit" value="Auto-probe" />
+            <input class="buttons--proceed button_screen" type="submit" value="Auto-probe" />
         </p>
     </form>
 ';
@@ -323,7 +323,7 @@ foreach (array_merge(array_keys($addons['bundled']), array_keys($addons['non_bun
 
 echo '
         <p class="proceed_button">
-            <input class="buttons__proceed button_screen" type="submit" value="Generate" />
+            <input class="buttons--proceed button_screen" type="submit" value="Generate" />
         </p>
     </form>
 ';

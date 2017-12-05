@@ -1,4 +1,4 @@
-<section class="box box___block_main_bottom_bar pale_box"><div class="box_inner">
+<section class="box box---block-main-bottom-bar pale_box"><div class="box_inner">
 	<h2>{!_STATISTICS}</h2>
 
 	<div class="wide_table_wrap"><table class="map_table cns_stats_table wide_table">
@@ -14,7 +14,7 @@
 				<tr>
 					<th class="de_th cns_stats_usersonline_1">
 						<p class="field_name">{!USERS_ONLINE}:</p>
-						{+START,IF_NON_EMPTY,{USERS_ONLINE_URL}}<p class="associated_link associated-links-block-group"><a href="{USERS_ONLINE_URL*}" title="{!USERS_ONLINE}" rel="nofollow">{!DETAILS}</a></p>{+END}
+						{+START,IF_NON_EMPTY,{USERS_ONLINE_URL}}<p class="associated-link associated-links-block-group"><a href="{USERS_ONLINE_URL*}" title="{!USERS_ONLINE}" rel="nofollow">{!DETAILS}</a></p>{+END}
 					</th>
 
 					<td class="cns_stats_usersonline_2">

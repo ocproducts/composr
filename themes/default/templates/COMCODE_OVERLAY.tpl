@@ -8,7 +8,7 @@
 		</div>
 
 		<div class="comcode_overlay_dismiss">
-			<p class="associated_link suggested_link">
+			<p class="associated-link suggested_link">
 				<a href="#!" class="js-click-dismiss-overlay">{!DISMISS}</a>
 			</p>
 		</div>

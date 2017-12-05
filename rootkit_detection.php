@@ -75,7 +75,7 @@ END;
     }
 
     echo <<<END
-            <input class="buttons__proceed button_screen" type="submit" value="Begin" />
+            <input class="buttons--proceed button_screen" type="submit" value="Begin" />
         </div>
 END;
 } else {

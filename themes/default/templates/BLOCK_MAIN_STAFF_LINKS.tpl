@@ -8,9 +8,9 @@
 		<h3 class="toggleable_tray_title js-tray-header">
 			<a title="{!EDIT}: {!EXTERNAL_LINKS}" href="#!" class="top-left-toggleicon js-click-staff-block-flip">{!EDIT}</a>
 
-			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!EXTERNAL_LINKS}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" /></a>
+			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!EXTERNAL_LINKS}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" /></a>
 
-			<a class="toggleable_tray_button js-tray-onclick-toggle-tray" href="#!">{!EXTERNAL_LINKS}</a>
+			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!EXTERNAL_LINKS}</a>
 		</h3>
 
 		<div class="toggleable_tray js-tray-content">
@@ -25,8 +25,8 @@
 
 				<div><label for="staff_links_edit" class="accessibility_hidden">{!EDIT}</label><textarea cols="100" rows="30" id="staff_links_edit" name="staff_links_edit" class="wide_field">{+START,LOOP,UNFORMATTED_LINKS}{LINKS*}&#10;&#10;{+END}</textarea></div>
 
-				<div class="buttons_group">
-					<input data-disable-on-click="1" class="button_screen_item buttons__save {+START,IF,{$HAS_PRIVILEGE,comcode_dangerous}}js-click-form-submit-headless{+END}" type="submit" value="{!SAVE}" />
+				<div class="buttons-group">
+					<input data-disable-on-click="1" class="button_screen_item buttons--save {+START,IF,{$HAS_PRIVILEGE,comcode_dangerous}}js-click-form-submit-headless{+END}" type="submit" value="{!SAVE}" />
 				</div>
 			</form>
 		</div>

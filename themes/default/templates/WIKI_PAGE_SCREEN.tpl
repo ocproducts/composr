@@ -62,8 +62,8 @@
 			{+START,IF,{HIDE_POSTS}}
 				<div data-toggleable-tray="{}">
 					<p class="toggleable_tray_title js-tray-header">
-						<a class="toggleable_tray_button js-tray-onclick-toggle-tray" title="{!DISCUSSION}: {!EXPAND}/{!CONTRACT}" href="#!"><img alt="{!EXPAND}: {!DISCUSSION}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" /></a>
-						<a class="toggleable_tray_button js-tray-onclick-toggle-tray" title="{!DISCUSSION}: {!EXPAND}/{!CONTRACT}" href="#!">{!DISCUSSION}</a> ({!POST_PLU,{NUM_POSTS*}})
+						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" title="{!DISCUSSION}: {!EXPAND}/{!CONTRACT}" href="#!"><img alt="{!EXPAND}: {!DISCUSSION}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" /></a>
+						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" title="{!DISCUSSION}: {!EXPAND}/{!CONTRACT}" href="#!">{!DISCUSSION}</a> ({!POST_PLU,{NUM_POSTS*}})
 					</p>
 					<div class="toggleable_tray js-tray-content" id="hidden_posts" style="display: {$JS_ON,none,block}" aria-expanded="false">
 			{+END}
@@ -72,7 +72,7 @@
 				<p class="nothing_here">{!NO_POSTS}</p>
 			{+END}
 			{+START,IF_NON_EMPTY,{POSTS}}
-				<div class="wide_table_wrap"><div class="map_table results_table wide_table cns_topic wiki_table">
+				<div class="wide_table_wrap"><div class="map_table results_table wide_table cns-topic wiki_table">
 					<div>
 						{POSTS}
 					</div>
@@ -85,7 +85,7 @@
 			{+END}
 		{+END}
 
-		<div class="buttons_group">
+		<div class="buttons-group">
 			{+START,INCLUDE,NOTIFICATION_BUTTONS}
 				NOTIFICATIONS_TYPE=wiki
 				NOTIFICATIONS_ID={ID}

@@ -1,5 +1,5 @@
 <nav>
-	<ul class="actions_list">
+	<ul class="actions-list">
 		<li class="actions_list_strong">
 			<a {+START,IF,{$NOT,{$INLINE_STATS}}} data-click-ga-track="{ category: '{!_ATTACHMENT;^*}', action: '{FILENAME;^*}' }"{+END} class="user_link" rel="enclosure" target="_blank" title="{!_DOWNLOAD,{FILENAME*}} {!LINK_NEW_WINDOW}" href="{URL*}">{!_DOWNLOAD,{FILENAME*}}</a>
 

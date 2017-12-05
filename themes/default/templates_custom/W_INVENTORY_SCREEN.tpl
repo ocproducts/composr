@@ -16,7 +16,7 @@
 </div>
 
 {+START,IF_NON_EMPTY,{INVENTORY}}
-	<div class="wide_table_wrap"><table class="columned_table wide_table buildr_inventory results_table buildr_centered_contents autosized_table responsive_table">
+	<div class="wide_table_wrap"><table class="columned_table wide_table buildr_inventory results_table buildr_centered_contents autosized_table responsive-table">
 		<thead>
 			<tr>
 				<th>{!W_PICTURE}</th>

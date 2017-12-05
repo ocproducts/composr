@@ -85,7 +85,7 @@
 				{+START,IF,{$DESKTOP}}{+START,IF,{$OR,{$CONFIG_OPTION,is_on_emoticon_choosers},{$CNS}}}
 					<div {+START,IF,{$CONFIG_OPTION,is_on_emoticon_choosers}} class="emoticon_chooser box block_desktop"{+END}>
 						{+START,IF,{$CNS}}
-							<span class="right horiz-field-sep associated_link"><a rel="nofollow" target="_blank" class="js-link-click-open-site-emoticon-chooser-window" href="{$FIND_SCRIPT*,emoticons}?field_name={NAME*}{$KEEP*,0,1}" data-click-pd="1" title="{!EMOTICONS_POPUP} {!LINK_NEW_WINDOW}">{$?,{$CONFIG_OPTION,is_on_emoticon_choosers},{!VIEW_ARCHIVE},{!EMOTICONS_POPUP}}</a></span>
+							<span class="right horiz-field-sep associated-link"><a rel="nofollow" target="_blank" class="js-link-click-open-site-emoticon-chooser-window" href="{$FIND_SCRIPT*,emoticons}?field_name={NAME*}{$KEEP*,0,1}" data-click-pd="1" title="{!EMOTICONS_POPUP} {!LINK_NEW_WINDOW}">{$?,{$CONFIG_OPTION,is_on_emoticon_choosers},{!VIEW_ARCHIVE},{!EMOTICONS_POPUP}}</a></span>
 						{+END}
 
 						{+START,IF,{$CONFIG_OPTION,is_on_emoticon_choosers}}
@@ -125,9 +125,9 @@
 	{$SET,init_drag_drop,1}
 	<tr class="form_table_field_spacer" id="field-{$GET*,id}-attachments-ui">
 		<th colspan="2" class="table_heading_cell">
-			<a class="toggleable_tray_button js-click-pf-toggle-subord-fields" id="fes_attachments" href="#!"><img alt="{!EXPAND}: {!ATTACHMENTS}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" /></a>
+			<a class="toggleable-tray-button js-click-pf-toggle-subord-fields" id="fes_attachments" href="#!"><img alt="{!EXPAND}: {!ATTACHMENTS}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" /></a>
 
-			<span class="faux_h2 toggleable_tray_button js-click-pf-toggle-subord-fields">
+			<span class="faux_h2 toggleable-tray-button js-click-pf-toggle-subord-fields">
 				{!ATTACHMENTS}
 
 				{+START,IF,{$DESKTOP}}

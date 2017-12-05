@@ -18,7 +18,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 </head>
 
 {$,You can use main_website_inner to help you create fixed width designs; never put fixed-width stuff directly on ".website_body" or "body" because it will affects things like the preview or banner frames or popups/overlays}
-<body class="website_body zone_running_{$ZONE*} page_running_{$PAGE*}" id="main_website" itemscope="itemscope" itemtype="http://schema.org/WebPage">
+<body class="website_body zone-running-{$REPLACE*,_,-,{$ZONE}} page-running-{$REPLACE*,_,-,{$PAGE}}" id="main_website" itemscope="itemscope" itemtype="http://schema.org/WebPage">
 	{$,This is the main site header}
 	{+START,IF,{$SHOW_HEADER}}
 		<header itemscope="itemscope" itemtype="http://schema.org/WPHeader">
@@ -159,7 +159,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 							<div class="inline">
 								<p class="accessibility_hidden"><label for="special_page_type">{!SCREEN_DEV_TOOLS}</label></p>
 								<select id="special_page_type" name="special_page_type">{$STAFF_ACTIONS}</select>
-                                <input class="button_micro buttons__proceed" type="submit" value="{!PROCEED_SHORT}" />
+                                <input class="button_micro buttons--proceed" type="submit" value="{!PROCEED_SHORT}" />
 							</div>
 						</form>
 					{+END}{+END}{+END}

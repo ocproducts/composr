@@ -46,7 +46,7 @@
 
 	<td>
 		{+START,IF_NON_EMPTY,{ASSIGNED}}
-			<ul class="horizontal_meta_details">
+			<ul class="horizontal-meta-details">
 				{+START,LOOP,ASSIGNED}
 					<li>{_loop_var*}</li>
 				{+END}

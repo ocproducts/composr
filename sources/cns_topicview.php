@@ -687,14 +687,14 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
         $_title_full->attach(do_lang_tempcode(($topic_info['is_threaded'] == 1) ? 'REPLY' : 'QUOTE_POST'));
         $_title_full->attach(do_lang_tempcode('ID_NUM', strval($_postdetails['id'])));
 
-        $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => 'fc13d12cfe58324d78befec29a663b4f', 'REL' => 'add reply nofollow', 'IMMEDIATE' => false, 'IMG' => ($topic_info['is_threaded'] == 1) ? 'buttons__new_reply' : 'buttons__new_quote', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url, 'ONCLICK_CALL_FUNCTIONS' => $onclick_call_functions)));
+        $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => 'fc13d12cfe58324d78befec29a663b4f', 'REL' => 'add reply nofollow', 'IMMEDIATE' => false, 'IMG' => ($topic_info['is_threaded'] == 1) ? 'buttons--new-reply' : 'buttons--new-quote', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url, 'ONCLICK_CALL_FUNCTIONS' => $onclick_call_functions)));
 
         if ($topic_info['is_threaded'] == 1) { // Second button for replying with explicit quote
             $_title = do_lang_tempcode('_QUOTE_POST');
             $_title_full = new Tempcode();
             $_title_full->attach($_title);
             $_title_full->attach(do_lang_tempcode('ID_NUM', strval($_postdetails['id'])));
-            $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => 'fc13d12cfe58324d78befec29a663b4f', 'REL' => 'add reply nofollow', 'IMMEDIATE' => false, 'IMG' => 'buttons__new_quote', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url, 'ONCLICK_CALL_FUNCTIONS' => $onclick_call_functions_explicit_quote)));
+            $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => 'fc13d12cfe58324d78befec29a663b4f', 'REL' => 'add reply nofollow', 'IMMEDIATE' => false, 'IMG' => 'buttons--new-quote', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url, 'ONCLICK_CALL_FUNCTIONS' => $onclick_call_functions_explicit_quote)));
         }
     }
 
@@ -718,7 +718,7 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
                     $quote_to_new_post = do_lang('POSTING_TICKET_AS', $GLOBALS['FORUM_DRIVER']->get_username(get_member()), $ticket_url, $_postdetails['message_comcode']);
                     $hidden = form_input_hidden('post', $quote_to_new_post);
 
-                    $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => '927d758415a3358d6b69e1587cab1e8d', 'IMMEDIATE' => true, 'HIDDEN' => $hidden, 'IMG' => 'buttons__new_quote', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url, 'TARGET' => '_blank')));
+                    $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => '927d758415a3358d6b69e1587cab1e8d', 'IMMEDIATE' => true, 'HIDDEN' => $hidden, 'IMG' => 'buttons--new-quote', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url, 'TARGET' => '_blank')));
                 }
             }
         }
@@ -731,7 +731,7 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
         $_title_full = new Tempcode();
         $_title_full->attach($_title);
         $_title_full->attach(do_lang_tempcode('ID_NUM', strval($_postdetails['id'])));
-        $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => 'fb1c74bae9c553dc160ade85adf289b5', 'REL' => 'add reply contact nofollow', 'IMMEDIATE' => false, 'IMG' => (get_option('inline_pp_advertise') == '0') ? 'buttons__send' : 'buttons__whisper', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url)));
+        $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => 'fb1c74bae9c553dc160ade85adf289b5', 'REL' => 'add reply contact nofollow', 'IMMEDIATE' => false, 'IMG' => (get_option('inline_pp_advertise') == '0') ? 'buttons--send' : 'buttons--whisper', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url)));
     }
 
     if (array_key_exists('may_edit', $_postdetails)) {
@@ -754,7 +754,7 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
         $_title_full = do_lang_tempcode('EDIT_POST');
         $_title_full->attach($_title);
         $_title_full->attach(do_lang_tempcode('ID_NUM', strval($_postdetails['id'])));
-        $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => 'f341cfc94b3d705437d43e89f572bff6', 'REL' => 'edit nofollow', 'IMMEDIATE' => false, 'IMG' => 'buttons__edit', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $edit_url)));
+        $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => 'f341cfc94b3d705437d43e89f572bff6', 'REL' => 'edit nofollow', 'IMMEDIATE' => false, 'IMG' => 'buttons--edit', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $edit_url)));
     }
 
     if (array_key_exists('may_delete', $_postdetails)) {
@@ -788,7 +788,7 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
             $_title_full = new Tempcode();
             $_title_full->attach(do_lang_tempcode('REPORT_POST'));
             $_title_full->attach(do_lang_tempcode('ID_NUM', strval($_postdetails['id'])));
-            $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => 'f81cbe84f524b4ed9e089c6e89a7c717', 'REL' => 'report nofollow', 'IMMEDIATE' => false, 'IMG' => 'buttons__report', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url, 'EXTRA_ATTRS' => ' data-open-as-overlay=\'{"height": "100%"}\' ')));
+            $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => 'f81cbe84f524b4ed9e089c6e89a7c717', 'REL' => 'report nofollow', 'IMMEDIATE' => false, 'IMG' => 'buttons--report', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url, 'EXTRA_ATTRS' => ' data-open-as-overlay=\'{"height": "100%"}\' ')));
         }
 
         if ((array_key_exists('may_warn_members', $topic_info)) && ($_postdetails['poster'] != $GLOBALS['CNS_DRIVER']->get_guest_id()) && (addon_installed('cns_warnings'))) {
@@ -798,7 +798,7 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
             $_title = do_lang_tempcode('__WARN_MEMBER');
             $_title_full = do_lang_tempcode('WARN_MEMBER');
             $_title_full->attach(do_lang_tempcode('ID_NUM', strval($_postdetails['id'])));
-            $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => '2698c51b06a72773ac7135bbfe791318', 'REL' => 'nofollow', 'IMMEDIATE' => false, 'IMG' => 'buttons__warn', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url)));
+            $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => '2698c51b06a72773ac7135bbfe791318', 'REL' => 'nofollow', 'IMMEDIATE' => false, 'IMG' => 'buttons--warn', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url)));
         }
     }
 
@@ -808,7 +808,7 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
         $_title_full = new Tempcode();
         $_title_full->attach($_title);
         $_title_full->attach(do_lang_tempcode('ID_NUM', strval($_postdetails['id'])));
-        $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => '6086b2ae226bf2a69d1e34641d22ae21', 'REL' => 'history nofollow', 'IMMEDIATE' => false, 'IMG' => 'buttons__revisions', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url)));
+        $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => '6086b2ae226bf2a69d1e34641d22ae21', 'REL' => 'history nofollow', 'IMMEDIATE' => false, 'IMG' => 'buttons--revisions', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url)));
     }
 
     if ($rendering_context != 'tickets') {
@@ -817,7 +817,7 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
             $action_url = build_url(array('page' => 'points', 'type' => 'member', 'id' => $_postdetails['poster']), get_module_zone('points'));
             $_title = do_lang_tempcode('__POINTS_THANKS');
             $_title_full = do_lang_tempcode('POINTS_THANKS');
-            $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => 'a66f98cb4d56bd0d64e9ecc44d357141', 'IMMEDIATE' => false, 'IMG' => 'buttons__points', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url)));
+            $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => 'a66f98cb4d56bd0d64e9ecc44d357141', 'IMMEDIATE' => false, 'IMG' => 'buttons--points', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url)));
         }
     }
 

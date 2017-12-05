@@ -1,3 +1,3 @@
-<div class="cns_member_bar_etc pale_box">
+<div class="cns-member-bar-etc pale_box">
 	{BAR}
 </div>

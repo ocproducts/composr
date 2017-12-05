@@ -125,7 +125,7 @@ class Block_main_contact_catalogues
 
             // Send e-mail
             form_to_email($subject, $subject_prefix, $subject_suffix, $body_prefix, $body_suffix, $field_results, $to_email, false);
-  
+
             // Redirect/messaging
             $redirect = array_key_exists('redirect', $map) ? $map['redirect'] : '';
             if ($redirect != '') {
@@ -231,7 +231,7 @@ class Block_main_contact_catalogues
             '_GUID' => $guid,
             'FIELDS' => $fields,
             'HIDDEN' => $hidden,
-            'SUBMIT_ICON' => 'buttons__send',
+            'SUBMIT_ICON' => 'buttons--send',
             'SUBMIT_NAME' => do_lang_tempcode('SEND'),
             'URL' => $url,
             'TEXT' => $text,

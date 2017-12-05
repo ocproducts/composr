@@ -49,7 +49,7 @@
 
         var button = document.createElement('input');
         button.type = 'button';
-        button.className = 'button_micro buttons__proceed';
+        button.className = 'button_micro buttons--proceed';
         button.value = '{!backups:CALCULATE_SIZE;^}';
         button.addEventListener('click', function () {
             var progressTicker = document.createElement('img');

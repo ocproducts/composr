@@ -3,7 +3,7 @@
 		{!INSTALL_LOG_BELOW,{CURRENT_STEP*}}:
 	</p>
 	
-	<div class="actions_list installer_main_min">
+	<div class="actions-list installer_main_min">
 		<div class="install_log_table">
 			<p class="lonely_label">{!INSTALL_LOG}:</p>
 			<ul>
@@ -17,7 +17,7 @@
 			{HIDDEN}
 	
 			<p class="proceed_button">
-				<input id="proceed_button" class="button_screen buttons__proceed" type="submit" value="{!PROCEED}" />
+				<input id="proceed_button" class="button_screen buttons--proceed" type="submit" value="{!PROCEED}" />
 			</p>
 		</div>
 	</form>

@@ -17,14 +17,14 @@
 
 	{+START,IF_PASSED,ADD_REDIRECT_URL}
 		{+START,IF_NON_EMPTY,{ADD_REDIRECT_URL}}
-			<a class="button_screen buttons__redirect" href="{ADD_REDIRECT_URL*}"><span>{!redirects:NEW_REDIRECT}</span></a>
+			<a class="button_screen buttons--redirect" href="{ADD_REDIRECT_URL*}"><span>{!redirects:NEW_REDIRECT}</span></a>
 		{+END}
 	{+END}
 {+END}
 {+START,IF_NON_EMPTY,{$TRIM,{$GET,BUTTONS}}}
 	<div class="float-surrounder">
 		<div class="trinav_left">
-			<p class="buttons_group">
+			<p class="buttons-group">
 				{$GET,BUTTONS}
 			</p>
 		</div>

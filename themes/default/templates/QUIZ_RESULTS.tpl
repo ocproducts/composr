@@ -1,4 +1,4 @@
-<div class="wide_table_wrap"><table class="columned_table results_table wide_table autosized_table responsive_table">
+<div class="wide_table_wrap"><table class="columned_table results_table wide_table autosized_table responsive-table">
 	<colgroup>
 		<col class="quiz_done_results_col_was_correct" />
 		<col class="quiz_done_results_col_question" />
@@ -54,7 +54,7 @@
 
 			{+START,IF_PASSED,CORRECT_EXPLANATION}{+START,IF_NON_EMPTY,{CORRECT_EXPLANATION}}
 				<tr class="{$GET,cycle}">
-					<td class="responsive_table_no_prefix" colspan="4">
+					<td class="responsive-table-no-prefix" colspan="4">
 						<span class="field_name">{!EXPLANATION}:</span> {$COMCODE,{CORRECT_EXPLANATION}}
 					</td>
 				</tr>

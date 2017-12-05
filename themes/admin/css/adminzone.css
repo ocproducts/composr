@@ -95,7 +95,7 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 	padding-right: 2em;
 }
 
-.page_running_login #main_website_inner {
+.page-running-login #main_website_inner {
 	background-image: none !important;
 }
 
@@ -107,7 +107,7 @@ footer .global_minilinks {
 	padding: 0.5em 0;
 }
 
-.toggleable_tray_title .toggleable_tray_button img {
+.toggleable_tray_title .toggleable-tray-button img {
 	margin-left: 0.25em;
 }
 
@@ -128,7 +128,7 @@ footer .global_minilinks {
 }
 
 /*{+START,CSS_MODE,mobile}*/
-	.adminzone_search .buttons__menu__pages__help {
+	.adminzone_search .buttons--menu--pages--help {
 		display: none !important;
 	}
 /*{+END}*/

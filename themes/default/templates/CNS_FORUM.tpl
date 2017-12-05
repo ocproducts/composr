@@ -16,7 +16,7 @@
 
 {+START,IF_NON_EMPTY,{$TRIM,{FILTERS}}}
 	<div class="box box___cns_forum"><div class="box_inner">
-		<span class="cns_pt_category_filters">{!CATEGORIES}:</span> {FILTERS}
+		<span class="cns-pt-category-filters">{!CATEGORIES}:</span> {FILTERS}
 	</div></div>
 {+END}
 
@@ -35,9 +35,9 @@
 {+START,IF_NON_EMPTY,{TOPIC_WRAPPER}}{$,Does not show if no topics as that would double it up}
 	{+START,IF_PASSED,ID}{$,Does not show on PT/virtual-forum view as those are less actiony places}
 		{+START,IF,{$CONFIG_OPTION,enable_forum_dupe_buttons}}
-			<div class="non_accessibility_redundancy cns_forum_buttons">
+			<div class="non-accessibility-redundancy cns-forum-buttons">
 				<div class="float-surrounder">
-					<div class="buttons_group cns_buttons_screen">
+					<div class="buttons-group cns-buttons-screen">
 						{+START,IF_PASSED,ID}
 							{+START,INCLUDE,NOTIFICATION_BUTTONS}
 								NOTIFICATIONS_TYPE=cns_topic
@@ -56,8 +56,8 @@
 {TOPIC_WRAPPER}
 
 {+START,IF,{$NOT,{$WIDE_HIGH}}}
-	<div class="float-surrounder cns_forum_buttons">
-		<div class="buttons_group cns_buttons_screen">
+	<div class="float-surrounder cns-forum-buttons">
+		<div class="buttons-group cns-buttons-screen">
 			{+START,IF_PASSED,ID}
 				{+START,INCLUDE,NOTIFICATION_BUTTONS}
 					NOTIFICATIONS_TYPE=cns_topic
@@ -70,7 +70,7 @@
 	</div>
 
 	{+START,IF_PASSED,ID}
-		<div class="non_accessibility_redundancy">
+		<div class="non-accessibility-redundancy">
 			<nav class="breadcrumbs" itemprop="breadcrumb">
 				<img class="breadcrumbs_img" src="{$IMG*,1x/breadcrumbs}" srcset="{$IMG*,2x/breadcrumbs} 2x" alt="&gt; " title="{!YOU_ARE_HERE}" />
 				{BREADCRUMBS}
