@@ -422,6 +422,7 @@ class filtering_test_set extends cms_test_case
                 $_POST['filter_' . $key . '_hour'] = 3;
                 $_POST['filter_' . $key . '_minute'] = 33;
                 $_POST['filter_' . $key . '_seconds'] = 20;
+                $_POST['timezone'] = 'UTC';
             } else {
                 $_POST['filter_' . $key] = $val;
             }
@@ -431,7 +432,7 @@ class filtering_test_set extends cms_test_case
             list($extra_select, $extra_join, $extra_where) = filtercode_to_sql($GLOBALS['SITE_DB'], parse_filtercode($filter), 'temp_test');
             $sql = 'SELECT r.id' . implode('', $extra_select) . ' FROM ' . get_table_prefix() . 'temp_test r' . implode('', $extra_join) . ' WHERE 1=1' . $extra_where;
             $results = collapse_1d_complexity('id', $GLOBALS['SITE_DB']->query($sql));
-            $this->assertTrue($results == $filter_expected, 'Failed Filtercode check for: ' . $filter . ', got: ' . implode(',', array_map('strval', $results)));
+            $this->assertTrue($results == $filter_expected, 'Failed Filtercode check for: ' . $filter . ', got: ' . implode(',', array_map('strval', $results)) . ', expected: ' . implode(',', array_map('strval', $filter_expected)) . ', with: ' . $sql);
         }
 
         // Test automatic filter form seems okay
@@ -498,7 +499,7 @@ class filtering_test_set extends cms_test_case
         $this->selectcode = '1,3-10,!6,12*';
         $this->expected_lazy = array(1, 3, 4, 5, 7, 8, 9, 10, 100, 101);
         $this->expected_full = array(1, 3, 4, 5, 7, 8, 100, 101);
- 
+
         $sql = selectcode_to_sqlfragment($this->selectcode, 'id', 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
         $results = collapse_1d_complexity('id', $GLOBALS['SITE_DB']->query_select('temp_test_entries', array('id'), null, 'WHERE ' . $sql));
         $this->assertTrue($results == $this->expected_full);
@@ -517,7 +518,7 @@ class filtering_test_set extends cms_test_case
 
         $this->selectcode = '*,!1';
         $this->expected = array(2, 3, 4, 5, 6, 7, 8, 100, 101);
- 
+
         $sql = selectcode_to_sqlfragment($this->selectcode, 'id', 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
         $results = collapse_1d_complexity('id', $GLOBALS['SITE_DB']->query_select('temp_test_entries', array('id'), null, 'WHERE ' . $sql));
         $this->assertTrue($results == $this->expected);
@@ -536,7 +537,7 @@ class filtering_test_set extends cms_test_case
 
         $this->selectcode = '8+';
         $this->expected = array(8, 100, 101);
- 
+
         $sql = selectcode_to_sqlfragment($this->selectcode, 'id', 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
         $results = collapse_1d_complexity('id', $GLOBALS['SITE_DB']->query_select('temp_test_entries', array('id'), null, 'WHERE ' . $sql));
         $this->assertTrue($results == $this->expected);
@@ -555,7 +556,7 @@ class filtering_test_set extends cms_test_case
 
         $this->selectcode = '2#';
         $this->expected = array(1, 2, 3);
- 
+
         $sql = selectcode_to_sqlfragment($this->selectcode, 'id', 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
         $results = collapse_1d_complexity('id', $GLOBALS['SITE_DB']->query_select('temp_test_entries', array('id'), null, 'WHERE ' . $sql));
         $this->assertTrue($results == $this->expected);
@@ -574,7 +575,7 @@ class filtering_test_set extends cms_test_case
 
         $this->selectcode = '12>';
         $this->expected = array(101);
- 
+
         $sql = selectcode_to_sqlfragment($this->selectcode, 'id', 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
         $results = collapse_1d_complexity('id', $GLOBALS['SITE_DB']->query_select('temp_test_entries', array('id'), null, 'WHERE ' . $sql));
         $this->assertTrue($results == $this->expected);
@@ -593,7 +594,7 @@ class filtering_test_set extends cms_test_case
 
         $this->selectcode = '12*,13~';
         $this->expected = array(100);
- 
+
         $sql = selectcode_to_sqlfragment($this->selectcode, 'id', 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
         $results = collapse_1d_complexity('id', $GLOBALS['SITE_DB']->query_select('temp_test_entries', array('id'), null, 'WHERE ' . $sql));
         $this->assertTrue($results == $this->expected);
