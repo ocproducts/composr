@@ -956,7 +956,7 @@ function _transifex_env_limit_substring()
 
 function _transifex_env_setting($setting)
 {
-    return (in_array($setting, $_SERVER['argv'])) || (get_param_integer($setting, 0) == 1);
+    return ((isset($_SERVER['argv'])) && (in_array($setting, $_SERVER['argv']))) || (get_param_integer($setting, 0) == 1);
 }
 
 function _transifex_env_version()
