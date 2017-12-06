@@ -78,17 +78,17 @@
 				{+END}{+END}{+END}
 			{+END}
 
-    		{+START,IF_NON_EMPTY,{POST_TITLE}}{+START,IF,{$NEQ,{TOPIC_FIRST_POST_ID},{ID}}}
-    			<h3>
-    				{POST_TITLE*}
-    			</h3>
-    		{+END}{+END}
+			{+START,IF_NON_EMPTY,{POST_TITLE}}{+START,IF,{$NEQ,{TOPIC_FIRST_POST_ID},{ID}}}
+				<h3>
+					{POST_TITLE*}
+				</h3>
+			{+END}{+END}
 
-    		{+START,IF_PASSED,DESCRIPTION}{+START,IF_NON_EMPTY,{DESCRIPTION}}{+START,IF,{$NEQ,{DESCRIPTION},{POST_TITLE}}}
-    			<h3>
-    				{DESCRIPTION*}
-    			</h3>
-    		{+END}{+END}{+END}
+			{+START,IF_PASSED,DESCRIPTION}{+START,IF_NON_EMPTY,{DESCRIPTION}}{+START,IF,{$NEQ,{DESCRIPTION},{POST_TITLE}}}
+				<h3>
+					{DESCRIPTION*}
+				</h3>
+			{+END}{+END}{+END}
 
 			{POST}
 		</div>

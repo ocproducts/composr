@@ -22,6 +22,8 @@ class lang_spelling_test_set extends cms_test_case
     {
         require_code('lang_compile');
 
+        disable_php_memory_limit();
+
         parent::setUp();
     }
 
@@ -176,7 +178,7 @@ class lang_spelling_test_set extends cms_test_case
         if (preg_match('#([^A-Za-z]+)Javascript([^A-Za-z]+)#', $string) != 0) {
             $this->assertTrue(false, 'The word \'Javascript\' was used in ' . $file . '. This should be changed to \'JavaScript\'.');
         }
-        if (preg_match('#([^/\.A-Za-z]+)tar([^A-Za-z]+)#', $string) != 0) {
+        if (preg_match('#([^/\.A-Za-z>]+)tar([^A-Za-z]+)#', $string) != 0) {
             $this->assertTrue(false, 'The filetype \'tar\' was used in ' . $file . '. This should be changed to \'TAR\'.');
         }
         if ((preg_match('#([^/\_\-\.A-Za-z]+)zip([^A-Za-z]+)#', $string) != 0) && (($key === null) || (!in_array($key, array('ZIP_NEEDED_FOR_USA', 'INVALID_ZIP_FOR_USA', 'CONFIG_OPTION_business_post_code'))))) {

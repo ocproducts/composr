@@ -263,8 +263,8 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
             $message_plain = preg_replace('#\{\{([^\}\{]*)\}\}#', '\1', $message_plain);
         }
 
-		$message_plain = str_replace('{$SITE_NAME}', get_site_name(), $message_plain);
-		$message_plain = str_replace('{$SITE_NAME*}', get_site_name(), $message_plain);
+        $message_plain = str_replace('{$SITE_NAME}', get_site_name(), $message_plain);
+        $message_plain = str_replace('{$SITE_NAME*}', get_site_name(), $message_plain);
 
         if (stripos($message_plain, '{') !== false) {
             // Remove directives etc
@@ -1588,22 +1588,22 @@ function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '
         }
         foreach (array_diff(array_keys($_POST), $boring_fields) as $key) {
             $is_hidden =  // NB: Keep in sync with static_export.php
-                (strpos($key, 'hour') !== false) || 
-                (strpos($key, 'access_') !== false) || 
-                (strpos($key, 'minute') !== false) || 
-                (strpos($key, 'confirm') !== false) || 
-                (strpos($key, 'pre_f_') !== false) || 
-                (strpos($key, 'tick_on_form__') !== false) || 
-                (strpos($key, 'label_for__') !== false) || 
-                (strpos($key, 'description_for__') !== false) || 
-                (strpos($key, 'wysiwyg_version_of_') !== false) || 
-                (strpos($key, 'is_wysiwyg') !== false) || 
-                (strpos($key, 'require__') !== false) || 
-                (strpos($key, 'tempcodecss__') !== false) || 
-                (strpos($key, 'comcode__') !== false) || 
-                (strpos($key, '_parsed') !== false) || 
-                (substr($key, 0, 1) == '_') || 
-                (substr($key, 0, 9) == 'hidFileID') || 
+                (strpos($key, 'hour') !== false) ||
+                (strpos($key, 'access_') !== false) ||
+                (strpos($key, 'minute') !== false) ||
+                (strpos($key, 'confirm') !== false) ||
+                (strpos($key, 'pre_f_') !== false) ||
+                (strpos($key, 'tick_on_form__') !== false) ||
+                (strpos($key, 'label_for__') !== false) ||
+                (strpos($key, 'description_for__') !== false) ||
+                (strpos($key, 'wysiwyg_version_of_') !== false) ||
+                (strpos($key, 'is_wysiwyg') !== false) ||
+                (strpos($key, 'require__') !== false) ||
+                (strpos($key, 'tempcodecss__') !== false) ||
+                (strpos($key, 'comcode__') !== false) ||
+                (strpos($key, '_parsed') !== false) ||
+                (substr($key, 0, 1) == '_') ||
+                (substr($key, 0, 9) == 'hidFileID') ||
                 (substr($key, 0, 11) == 'hidFileName');
             if ($is_hidden) {
                 continue;

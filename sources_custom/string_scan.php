@@ -4477,7 +4477,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         FIX_BROKEN_FILEDUMP_LINKS
         FIX_INVALID_HTML
         FIX_PAST_RECURRENCES
-		EDIT_ALL_RECURRENCES
+        EDIT_ALL_RECURRENCES
         FLOOD_CONTROL
         FLOOD_CONTROL_ACCESS_SECS
         FLOOD_CONTROL_SCREEN
