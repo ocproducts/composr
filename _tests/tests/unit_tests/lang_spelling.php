@@ -22,6 +22,8 @@ class lang_spelling_test_set extends cms_test_case
     {
         require_code('lang_compile');
 
+        disable_php_memory_limit();
+
         parent::setUp();
     }
 
