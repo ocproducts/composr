@@ -326,7 +326,7 @@ function _get_view_access_for_node($admin_groups, $groups, $node)
             break;
     }
 
-	return $access;
+    return $access;
 }
 
 /**
@@ -380,7 +380,7 @@ function _get_privileges_for_node($admin_groups, $groups, $node)
             break;
     }
 
-	return $privilege_access;
+    return $privilege_access;
 }
 
 /**
