@@ -18,6 +18,13 @@
  */
 class ssl_test_set extends cms_test_case
 {
+    public function setUp()
+    {
+        parent::setUp();
+
+        set_value('disable_ssl_for__' . $_SERVER['HTTP_HOST'], '1');
+    }
+
     public function testHTTPSStatus()
     {
         if (strpos(get_base_url(), 'https://') === 0) {
@@ -26,21 +33,26 @@ class ssl_test_set extends cms_test_case
         }
 
         global $HTTPS_PAGES_CACHE;
+        $HTTPS_PAGES_CACHE = null;
 
-        set_value('disable_ssl_for__' . $_SERVER['HTTP_HOST'], '1');
-
+        // HTTPS (SSL) version
         $GLOBALS['SITE_DB']->query_insert('https_pages', array('https_page_name' => ':login'), false, true/*in case previous test didn't finish*/);
-        $HTTPS_PAGES_CACHE = array();
         $url = build_url(array('page' => 'login'), get_module_zone('login'));
         $contents = http_get_contents($url->evaluate());
         $this->assertTrue(strpos($contents, 'src="http://') === false);
 
+        // HTTP version
         $GLOBALS['SITE_DB']->query_delete('https_pages', array('https_page_name' => ':login'));
         $HTTPS_PAGES_CACHE = array();
         $url = build_url(array('page' => 'login'), get_module_zone('login'));
         $contents = http_get_contents($url->evaluate());
         $this->assertTrue(strpos($contents, 'src="https://') === false);
+    }
 
+    public function tearDown()
+    {
         set_value('disable_ssl_for__' . $_SERVER['HTTP_HOST'], '0');
+
+        parent::tearDown();
     }
 }

@@ -77,6 +77,9 @@ function init__urls()
     $HAS_NO_KEEP_CONTEXT = false;
     $NO_KEEP_CONTEXT_STACK = array();
 
+    global $HTTPS_PAGES_CACHE;
+    $HTTPS_PAGES_CACHE = null;
+
     if (!defined('SELF_REDIRECT_RIP')) {
         define('SELF_REDIRECT_RIP', '!--:)defUNLIKELY1'); // Use this if you want a self-URL that goes back to the root if there's been a POST request
         define('SELF_REDIRECT', '!--:)defUNLIKELY2'); // Use this if you want a self-URL that goes back to the root if there's been a POST request
@@ -301,23 +304,23 @@ function is_page_https($zone, $page)
         }
     }
 
-    static $https_pages_cache = null;
-    if (($https_pages_cache === null) && (function_exists('persistent_cache_get'))) {
-        $https_pages_cache = persistent_cache_get('HTTPS_PAGES_CACHE');
+    global $HTTPS_PAGES_CACHE;
+    if (($HTTPS_PAGES_CACHE === null) && (function_exists('persistent_cache_get'))) {
+        $HTTPS_PAGES_CACHE = persistent_cache_get('HTTPS_PAGES_CACHE');
     }
-    if ($https_pages_cache === null) {
+    if ($HTTPS_PAGES_CACHE === null) {
         if (isset($GLOBALS['SITE_DB'])) {
             $results = $GLOBALS['SITE_DB']->query_select('https_pages', array('*'), array(), '', null, 0, true);
-            $https_pages_cache = array();
+            $HTTPS_PAGES_CACHE = array();
             foreach ($results as $r) {
-                $https_pages_cache[$r['https_page_name']] = true;
+                $HTTPS_PAGES_CACHE[$r['https_page_name']] = true;
             }
             if (function_exists('persistent_cache_set')) {
-                persistent_cache_set('HTTPS_PAGES_CACHE', $https_pages_cache);
+                persistent_cache_set('HTTPS_PAGES_CACHE', $HTTPS_PAGES_CACHE);
             }
         }
     }
-    return isset($https_pages_cache[$zone . ':' . $page]);
+    return isset($HTTPS_PAGES_CACHE[$zone . ':' . $page]);
 }
 
 /**

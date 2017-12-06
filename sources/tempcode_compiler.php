@@ -65,7 +65,7 @@ function init__tempcode_compiler()
         'IS_EMPTY' => SYMBOL_COMPILE_STATIC_SAFE,
         'IS_NON_EMPTY' => SYMBOL_COMPILE_STATIC_SAFE,
         'CDN_FILTER' => SYMBOL_COMPILE_STATIC_SAFE,
-        'LOGO_URL' => SYMBOL_COMPILE_STATIC_SAFE,
+        'LOGO_URL' => SYMBOL_COMPILE_STATIC_SAFE_SIMPLE_BASE_URLS,
         'TRIM' => SYMBOL_COMPILE_STATIC_SAFE,
         'MEMBER_PROFILE_URL' => SYMBOL_COMPILE_STATIC_IF_AGGRESSIVE,
         'PHOTO' => SYMBOL_COMPILE_STATIC_IF_AGGRESSIVE,
@@ -1061,6 +1061,10 @@ function may_optimise_out_symbol($symbol)
     }
 
     if (($v & SYMBOL_COMPILE_STATIC_SAFE_SIMPLE_BASE_URLS) !== 0) {
+        if ($GLOBALS['DEV_MODE']) {
+            return false; // May be experimenting with different base URLs, e.g. both http and https
+        }
+
         if (addon_installed('ssl')) {
             return false;
         }
