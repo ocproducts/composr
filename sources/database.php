@@ -602,7 +602,7 @@ function db_function($function, $args = null)
                     return '(SELECT array_to_string(array_agg(' . $args[0] . '), \',\') FROM ' . $args[1] . ')';
                 case 'sqlserver':
                 case 'sqlserver_odbc':
-                    return '(STUFF((SELECT \',\'+' . $args[0] . ' FROM ' . $args[1] . ' FOR XML PATH(\'\')), 1, 1, \'\'))';
+                    return 'STUFF((SELECT \',\'+' . $args[0] . ' FROM ' . $args[1] . ' FOR XML PATH(\'\')), 1, 1, \'\')';
                 case 'access': // Not fully supported
                     return '(SELECT TOP 1 ' . $args[0] . ' FROM ' . $args[1] . ')';
                 case 'ibm': // Not fully supported

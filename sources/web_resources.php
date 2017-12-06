@@ -564,7 +564,7 @@ function _get_web_resources_env($_seed = null, $_minify = null, $_https = null, 
         $mobile = $mobile_cached;
     }
 
-	return array($minify, $https, $mobile, $seed);
+    return array($minify, $https, $mobile, $seed);
 }
 
 /**

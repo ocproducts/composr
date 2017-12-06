@@ -30,7 +30,7 @@ For other language packs you can copy this file to the obvious new name. This is
 class LangFilter_EN extends LangFilter
 {
     protected $vowels;
-	protected $make_uncle_sam_happy = null, $the_sun_never_sets_on_the_british_empire = null;
+    protected $make_uncle_sam_happy = null, $the_sun_never_sets_on_the_british_empire = null;
     protected $_is_american = null;
 
     /**
@@ -450,7 +450,7 @@ class LangFilter_EN extends LangFilter
                         }
                     }
                     //$value = str_replace(array_keys($reps), array_values($reps), $value); This doesn't work when a replacement itself might be replaced in a further iteration of $reps
-                    
+
                 }
             }
         }

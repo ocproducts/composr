@@ -106,7 +106,7 @@ function get_loc_details($member_id, $null_ok = false)
  */
 function merge_items($from, $to)
 {
-	if ($from == $to) {
+    if ($from == $to) {
         warn_exit('Cannot merge item into itself.');
     }
 
