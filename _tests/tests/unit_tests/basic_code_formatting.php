@@ -16,10 +16,91 @@
 /**
  * Composr test case class (unit testing).
  */
-class blank_lines_test_set extends cms_test_case
+class basic_code_formatting_test_set extends cms_test_case
 {
-    public function testCorrectLineTermination()
+    public function setUp()
     {
+        parent::setUp();
+
+        require_code('files2');
+        $this->contents = get_directory_contents(get_file_base());
+    }
+
+    public function testTabbing()
+    {
+        $file_types_spaces = array(
+            'js',
+            'php',
+        );
+
+        $file_types_tabs = array(
+            'css',
+            'tpl',
+            'xml',
+            'sh',
+            'txt',
+        );
+
+        $exceptions = array(
+            '_tests/tests/unit_tests/tempcode.php',
+            '_tests/tests/unit_tests/xss.php',
+            'data_custom/sitemaps/news_sitemap.xml',
+            'manifest.xml',
+            'mobiquo/lib/xmlrpc.php',
+            'mobiquo/lib/xmlrpcs.php',
+            'mobiquo/smartbanner/appbanner.css',
+            'mobiquo/smartbanner/appbanner.js',
+            'mobiquo/tapatalkdetect.js',
+            'parameters.xml',
+            'site/pages/comcode/EN/userguide_comcode.txt',
+            'sources_custom/twitter.php',
+            'themes/default/css/widget_color.css',
+            'themes/default/css/widget_select2.css',
+            'themes/default/css_custom/mediaelementplayer.css',
+            'themes/default/javascript/jquery.js',
+            'themes/default/javascript/jquery_ui.js',
+            'themes/default/javascript/plupload.js',
+            'themes/default/javascript/select2.js',
+            'themes/default/javascript/theme_colours.js',
+            'themes/default/javascript/widget_date.js',
+            'themes/default/javascript_custom/columns.js',
+            'themes/default/javascript_custom/jquery_flip.js',
+            'themes/default/javascript_custom/mediaelement-and-player.js',
+            'themes/default/javascript_custom/skitter.js',
+            'themes/default/javascript_custom/sortable_tables.js',
+            'themes/default/javascript_custom/unslider.js',
+        );
+
+        foreach ($this->contents as $path) {
+            if (in_array($path, $exceptions)) {
+                continue;
+            }
+
+            if (preg_match('#^(data_custom/sitemap|sources_custom/sabredav|docs/pages/comcode_custom/EN|data_custom/modules/admin_stats|data/polyfills|exports/builds|aps|_tests/codechecker/netbeans|data/ace|data/ckeditor|sources_custom/composr_mobile_sdk|tracker|sources_custom/ILess|sources_custom/spout|sources_custom/getid3|sources_custom/programe|_tests/simpletest)/#', $path) != 0) {
+                continue;
+            }
+
+            $ext = get_file_extension($path);
+
+            if ((in_array($ext, $file_types_spaces)) || (in_array($ext, $file_types_tabs))) {
+                $c = file_get_contents($path);
+
+                $contains_tabs = strpos($c, "\t");
+                $contains_spaced_tabs = strpos($c, '    ');
+
+                if (in_array($ext, $file_types_spaces)) {
+                    $this->assertTrue(!$contains_tabs, 'Tabs are in ' . $path);
+                } elseif (in_array($ext, $file_types_tabs)) {
+                    $this->assertTrue(!$contains_spaced_tabs, 'Spaced tabs are in ' . $path);
+                }
+            }
+        }
+    }
+
+    public function testCorrectLineTerminationAndLineFormat()
+    {
+        return; // TODO
+
         if (php_function_allowed('set_time_limit')) {
             @set_time_limit(0);
         }
@@ -40,9 +121,7 @@ class blank_lines_test_set extends cms_test_case
             'xml',
         ));
 
-        require_code('files2');
-        $contents = get_directory_contents(get_file_base());
-        foreach ($contents as $path) {
+        foreach ($this->contents as $path) {
             if (filesize($path) == 0) {
                 continue;
             }

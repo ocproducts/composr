@@ -12,7 +12,7 @@ find . -type d -not -path "./sites/*" -not -path "./servers/*" -not -path "./_ol
 
 # Commonly the uploads directory can be missing in git repositories backing up live sites (due to size); but we need it
 if [ ! -e "uploads" ]; then
-    mkdir uploads
+	mkdir uploads
 fi
 
 # Change permissions

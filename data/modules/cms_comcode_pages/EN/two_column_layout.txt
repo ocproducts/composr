@@ -2,16 +2,16 @@
 
 [semihtml]
 [surround="fp_col_blocks_wrap"]
-    [surround="fp_col_block left"]
-        [title="2"]Left column[/title]
+	[surround="fp_col_block left"]
+		[title="2"]Left column[/title]
 
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus adipiscing semper pellentesque. Aliquam egestas tristique leo, vitae hendrerit ipsum aliquam id. Aenean fringilla eros sit amet risus iaculis eu commodo magna ornare. Quisque iaculis feugiat imperdiet. Vivamus mattis, massa ut congue vestibulum, turpis orci pulvinar neque, in scelerisque nisi nulla eget tortor. Duis id eros dignissim magna bibendum molestie. Maecenas scelerisque, neque id porttitor vulputate, metus diam tincidunt urna, ac mollis nibh augue eu felis. Nullam ac dapibus diam.
-    [/surround]
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus adipiscing semper pellentesque. Aliquam egestas tristique leo, vitae hendrerit ipsum aliquam id. Aenean fringilla eros sit amet risus iaculis eu commodo magna ornare. Quisque iaculis feugiat imperdiet. Vivamus mattis, massa ut congue vestibulum, turpis orci pulvinar neque, in scelerisque nisi nulla eget tortor. Duis id eros dignissim magna bibendum molestie. Maecenas scelerisque, neque id porttitor vulputate, metus diam tincidunt urna, ac mollis nibh augue eu felis. Nullam ac dapibus diam.
+	[/surround]
 
-    [surround="fp_col_block right"]
-        [title="2"]Right column[/title]
+	[surround="fp_col_block right"]
+		[title="2"]Right column[/title]
 
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus adipiscing semper pellentesque. Aliquam egestas tristique leo, vitae hendrerit ipsum aliquam id. Aenean fringilla eros sit amet risus iaculis eu commodo magna ornare. Quisque iaculis feugiat imperdiet. Vivamus mattis, massa ut congue vestibulum, turpis orci pulvinar neque, in scelerisque nisi nulla eget tortor. Duis id eros dignissim magna bibendum molestie. Maecenas scelerisque, neque id porttitor vulputate, metus diam tincidunt urna, ac mollis nibh augue eu felis. Nullam ac dapibus diam.
-    [/surround]
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus adipiscing semper pellentesque. Aliquam egestas tristique leo, vitae hendrerit ipsum aliquam id. Aenean fringilla eros sit amet risus iaculis eu commodo magna ornare. Quisque iaculis feugiat imperdiet. Vivamus mattis, massa ut congue vestibulum, turpis orci pulvinar neque, in scelerisque nisi nulla eget tortor. Duis id eros dignissim magna bibendum molestie. Maecenas scelerisque, neque id porttitor vulputate, metus diam tincidunt urna, ac mollis nibh augue eu felis. Nullam ac dapibus diam.
+	[/surround]
 [/surround]
 [/semihtml]

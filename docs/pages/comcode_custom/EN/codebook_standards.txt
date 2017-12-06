@@ -190,7 +190,7 @@ Comment your code, but not too much
 Blank lines at the end of files
 | Portability
 | Product development only
-| Automated test ([tt]blank_lines.php[/tt])
+| Automated test ([tt]basic_code_formatting.php[/tt])
 | There is a Unix standard that text files should have a terminating line break. As various tools enforce this we standardise on a single line-break for most files. A few exceptions are defined within the automated test for the rare cases where we can't do this.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
@@ -1713,7 +1713,7 @@ Use [tt]CHANGE[/tt] and [tt]PER_PAGE[/tt] where appropriate
 [color="red"]Use tabs for HTML code[/color]
 | Performance
 | Product development only
-| [tt].editorconfig[/tt]
+| [tt].editorconfig[/tt] / Automated test ([tt]basic_code_formatting.php[/tt])
 | HTML code (e.g. in templates) should be written using tab for indentations rather than spaces, unlike most other file types in Composr. This is to reduce page size slightly (while JavaScript and CSS is minified, HTML is not due to the overhead and risk of doing so).
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
@@ -1898,7 +1898,21 @@ Guidance for tables...
 | Consistency
 | Product development only
 | Manually
-| Use the same tabbing style, bracing style, naming style, use of quotes, and way of layout out attributes, as existing CSS code broadly is using.
+| Use the same bracing style, use of quotes, and way of layout out attributes, as existing CSS code broadly is using. The way we do it is very mainstream.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+[color="red"]Use hyphens to split words[/color]
+| Consistency
+| Product development only
+| Manually
+| By mainstream contention we use hyphens to split words, not underscores or camelCase.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+[color="red"]Use tabs for CSS code[/color]
+| Consistency
+| Product development only
+| [tt].editorconfig[/tt] / Automated test ([tt]basic_code_formatting.php[/tt])
+| To keep things tidy we use tabs for indentation rather than spaces.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 Use reliable CSS

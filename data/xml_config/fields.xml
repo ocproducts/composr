@@ -35,7 +35,7 @@
 <!--
 More possibilities:
 
-    Make a field required:
+	Make a field required:
 	<qualify pages="cms_galleries" types="add,add_other,_add,_add_other" fields="description">
 		<minLength>1</minLength>
 	</qualify>

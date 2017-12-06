@@ -344,7 +344,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/comcode_wysiwyg.php',
             '_tests/tests/unit_tests/_bash_parser.php',
             '_tests/tests/unit_tests/_backups.php',
-            '_tests/tests/unit_tests/blank_lines.php',
+            '_tests/tests/unit_tests/basic_code_formatting.php',
             '_tests/tests/unit_tests/js_strict_mode.php',
             '_tests/tests/unit_tests/http.php',
             '_tests/tests/unit_tests/js_lang_references.php',

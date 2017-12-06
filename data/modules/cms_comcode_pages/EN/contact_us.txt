@@ -2,17 +2,17 @@
 [title]Contact Us[/title]
 
 [surround="fp_col_blocks_wrap"]
-    [surround="fp_col_block left"]
-        [title="2"]<img alt="" class="vertical_alignment" src="{$IMG*,icons/24x24/contact_methods/telephone}" srcset="{$IMG*,icons/48x48/contact_methods/telephone} 2x" /> <span class="vertical_alignment">Phone</span>[/title]
+	[surround="fp_col_block left"]
+		[title="2"]<img alt="" class="vertical_alignment" src="{$IMG*,icons/24x24/contact_methods/telephone}" srcset="{$IMG*,icons/48x48/contact_methods/telephone} 2x" /> <span class="vertical_alignment">Phone</span>[/title]
 
-        <a class="non_link" href="tel:+4412345678910">(+44) 1234 5678910</a>
-    [/surround]
+		<a class="non_link" href="tel:+4412345678910">(+44) 1234 5678910</a>
+	[/surround]
 
-    [surround="fp_col_block right link_exempt_wrap"]
-        [title="2"]<img alt="" class="vertical_alignment" src="{$IMG*,icons/24x24/contact_methods/email}" srcset="{$IMG*,icons/48x48/contact_methods/email} 2x" /> <span class="vertical_alignment">E-mail</span>[/title]
+	[surround="fp_col_block right link_exempt_wrap"]
+		[title="2"]<img alt="" class="vertical_alignment" src="{$IMG*,icons/24x24/contact_methods/email}" srcset="{$IMG*,icons/48x48/contact_methods/email} 2x" /> <span class="vertical_alignment">E-mail</span>[/title]
 
-        [email]{$STAFF_ADDRESS}[/email]
-    [/surround]
+		[email]{$STAFF_ADDRESS}[/email]
+	[/surround]
 [/surround]
 
 [title="2"]<img alt="" class="vertical_alignment" src="{$IMG*,icons/24x24/contact_methods/address}" srcset="{$IMG*,icons/48x48/contact_methods/address} 2x" /> <span class="vertical_alignment">Address</span>[/title]
