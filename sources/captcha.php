@@ -319,8 +319,7 @@ function check_captcha($code_entered, $regenerate_on_error = true)
  */
 function _cleanout_captcha()
 {
-	if (!running_script('snippet'))
-	{
+    if (!running_script('snippet')) {
         $GLOBALS['SITE_DB']->query_delete('captchas', array('si_session_id' => get_session_id())); // Only allowed to check once
     }
 }

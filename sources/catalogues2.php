@@ -735,7 +735,7 @@ function actual_edit_catalogue_category($id, $title, $description, $notes, $pare
         if ($under_category_id === $_under_category_id) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
-		$under_category_id = $_under_category_id;
+        $under_category_id = $_under_category_id;
     }
 
     $rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('cc_description', 'cc_title', 'c_name'), array('id' => $id), '', 1);
