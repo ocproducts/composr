@@ -222,7 +222,7 @@ You can also put [tt]&keep_query_limit=0[/tt] into the URL to have query limits 
 
 [title="4"]IDEs[/title]
 
-Some developers like to use [acronym="Integrated Development Environment, an advanced code editing suite"]IDE[/acronym]s with breakpoint support, watches, code-stepping, etc. [url="PhpStorm"]https://www.jetbrains.com/phpstorm/[/url] is generally considered the best IDE, and is our official IDE; [url="NetBeans"]https://netbeans.org/[/url] is good too. The core Composr staff generally work with simpler editors most of the time.
+Some IDEs have breakpoint support, watches, code-stepping, etc.
 
 [title="4"]Simple but effective[/title]
 

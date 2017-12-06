@@ -1021,9 +1021,9 @@ These tools may now be downloaded:
 
 For coding you'll want to use either an [acronym="Integrated Development Environment, an advanced code editing suite"]IDE[/acronym] or a text editor. IDEs are heavier but have more features.
 
-[url="PhpStorm"]https://www.jetbrains.com/phpstorm/[/url] is our official  IDE. We also love [url="NetBeans"]https://netbeans.org/[/url].
+[url="PhpStorm"]https://www.jetbrains.com/phpstorm/[/url], [url="NetBeans"]https://netbeans.org/[/url], [url="Codelobster"]http://codelobster.com/[/url] and [url="Zend Studio"]http://www.zend.com/en/products/studio[/url] are all very good IDEs.
 
-We have found the best text editors for Composr have been [url="ConTEXT"]http://www.contexteditor.org/index.php[/url] (Windows), [url="TextMate"]https://macromates.com/[/url] (Mac), and 'Kate' (Linux).
+We have found the best text editors for Composr have been [url="Notepad++"]https://notepad-plus-plus.org/[/url] (Windows), [url="TextMate"]https://macromates.com/[/url] (Mac), and 'Kate' (Linux).
 
 The above are just suggestions. Use whatever you like (within reason -- not Windows Notepad).
 
