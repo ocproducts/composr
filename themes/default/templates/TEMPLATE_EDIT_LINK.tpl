@@ -15,7 +15,7 @@
 	{+END}
 
 	{$,Decide whether we can show it now (otherwise it will defer) }
-	{$SET,tpl_go_ahead,{$AND,{$NOT,{$IN_STR,{CONTENTS},<td,<tr,<th}},{$IN_STR,{CONTENTS},<}}}
+	{$SET,tpl_go_ahead,{$AND,{$NOT,{$PREG_MATCH,^\s*<(td|tr|th),{CONTENTS}}},{$IN_STR,{CONTENTS},<}}}
 
 	{+START,IF,{$GET,tpl_go_ahead}}
 		{$GET,tpl_marker_open}
@@ -29,6 +29,7 @@
 	{+END}
 
 	{+START,IF,{$NOT,{$GET,tpl_go_ahead}}}
+		<!-- {CODENAME/}.tpl -->
 		{CONTENTS`}
 	{+END}
 {+END}

@@ -53,7 +53,7 @@ class filter_xml_test_set extends cms_test_case
 
         $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), null, 'ORDER BY date_and_time DESC', 1);
         $row = $rows[0];
-        $this->assertTrue($row['title'] == 'Example' . $rnd);
+        $this->assertTrue(get_translated_text($row['title']) == 'Example' . $rnd);
 
         @unlink(get_file_base() . '/data_custom/xml_config/fields.xml');
         sync_file(get_file_base() . '/data_custom/xml_config/fields.xml');
