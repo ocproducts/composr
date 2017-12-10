@@ -1887,9 +1887,9 @@ function rebuild_zone_files()
     foreach ($zones as $zone) {
         if (!in_array($zone, array('', 'cms', 'adminzone', 'site', 'forum', 'collaboration'/*LEGACY*/))) {
             if (strpos(file_get_contents(get_custom_file_base() . '/' . $zone . '/index.php'), 'core') !== false) {
-                @file_put_contents(get_custom_file_base() . '/' . $zone . '/index.php', file_get_contents(get_custom_file_base() . '/site/index.php'));
-                fix_permissions(get_custom_file_base() . '/' . $zone . '/index.php');
-                sync_file(get_custom_file_base() . '/' . $zone . '/index.php');
+                @file_put_contents(get_custom_file_base() . (($zone == '') ? '' : '/') . $zone . '/index.php', file_get_contents(get_custom_file_base() . '/site/index.php'));
+                fix_permissions(get_custom_file_base() . (($zone == '') ? '' : '/') . $zone . '/index.php');
+                sync_file(get_custom_file_base() . (($zone == '') ? '' : '/') . $zone . '/index.php');
             }
         }
     }
@@ -1995,7 +1995,7 @@ function fu_rename_zone($zone, $new_zone, $dont_bother_with_main_row = false)
     actual_rename_zone_lite($zone, $new_zone, $dont_bother_with_main_row);
     $pages = find_all_pages_wrap($zone, true, false, FIND_ALL_PAGES__ALL);
     foreach ($pages as $page => $type) {
-        $path = get_file_base() . '/' . $zone . '/pages/' . $type . '/' . $page;
+        $path = get_file_base() . (($zone == '') ? '' : '/') . $zone . '/pages/' . $type . '/' . $page;
         $new_path = get_file_base() . '/' . $new_zone . '/pages/' . $type . '/' . $page;
         if ((is_writable_wrap($path)) && (is_writable_wrap($new_path))) {
             rename($path, $new_path);

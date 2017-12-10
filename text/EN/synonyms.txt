@@ -137,3 +137,4 @@ permalink	url	link
 importance	priority	precedence	level
 chance	probability	likelihood
 empty	blank	purge	flush
+raw	plain	pure

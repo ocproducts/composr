@@ -222,7 +222,7 @@ class Hook_search_comcode_pages extends FieldsSearchHook
                             }
                         }
 
-                        $path = zone_black_magic_filterer((($dir == 'comcode_custom') ? get_custom_file_base() : get_file_base()) . '/' . $zone . '/pages/' . $dir . '/' . $page . '.txt');
+                        $path = zone_black_magic_filterer((($dir == 'comcode_custom') ? get_custom_file_base() : get_file_base()) . (($zone == '') ? '' : '/') . $zone . '/pages/' . $dir . '/' . $page . '.txt');
                         if (!$this->_handle_date_check_runtime($cutoff, filemtime($path))) {
                             continue;
                         }
@@ -296,7 +296,8 @@ class Hook_search_comcode_pages extends FieldsSearchHook
             if (strpos($page_request[0], 'COMCODE') === false) {
                 return new Tempcode();
             }
-            $comcode_file = get_custom_file_base() . '/' . $page_request[count($page_request) - 1];
+            $_zone = $page_request[count($page_request) - 1];
+            $comcode_file = get_custom_file_base() . (($_zone == '') ? '' : '/') . $_zone;
 
             if (file_exists($comcode_file)) {
                 global $LAX_COMCODE;

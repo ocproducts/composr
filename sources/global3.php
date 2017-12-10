@@ -3202,7 +3202,7 @@ function get_tutorial_url($tutorial)
 function get_brand_page_url($params, $zone)
 {
     // Assumes brand site supports .htm URLs, which it should
-    return get_brand_base_url() . '/' . $zone . (($zone == '') ? '' : '/') . urlencode(str_replace('_', '-', $params['page'])) . '.htm';
+    return get_brand_base_url() . (($zone == '') ? '' : '/') . $zone . '/' . urlencode(str_replace('_', '-', $params['page'])) . '.htm';
 }
 
 /**

@@ -551,7 +551,7 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
     ));
 
     // Find file
-    $full_path = zone_black_magic_filterer(get_custom_file_base() . '/' . filter_naughty($zone) . '/pages/comcode_custom/' . filter_naughty($lang) . '/' . filter_naughty($new_file) . '.txt');
+    $full_path = zone_black_magic_filterer(get_custom_file_base() . (($zone == '') ? '' : '/') . filter_naughty($zone) . '/pages/comcode_custom/' . filter_naughty($lang) . '/' . filter_naughty($new_file) . '.txt');
     $file_changed = ((!file_exists($full_path)) || ($text != file_get_contents($full_path)));
 
     // Save revision
