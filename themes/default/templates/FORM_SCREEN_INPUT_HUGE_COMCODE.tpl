@@ -12,7 +12,7 @@
 
 		{COMCODE}
 
-		<p class="field_name lonely_label">
+		<p class="field-name lonely_label">
 			<label for="{NAME*}">{PRETTY_NAME*}<span class="inline_desktop">:</span></label>
 		</p>
 

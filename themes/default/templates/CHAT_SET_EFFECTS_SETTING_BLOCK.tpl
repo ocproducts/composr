@@ -27,7 +27,7 @@
 
 					<tr class="field_input">
 						<th id="form_table_field_name__select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" class="form_table_field_name">
-							<label for="select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}"><span class="form_field_name field_name">{!BROWSE}</span></label>
+							<label for="select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}"><span class="form_field_name field-name">{!BROWSE}</span></label>
 						</th>
 
 						<td id="form_table_field_input__select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" class="form_table_field_input">
@@ -50,7 +50,7 @@
 
 					<tr class="field_input">
 						<th id="form_table_field_name__upload_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" class="form_table_field_name">
-							<span class="form_field_name field_name">{!ALT_FIELD,{!UPLOAD}}</span>
+							<span class="form_field_name field-name">{!ALT_FIELD,{!UPLOAD}}</span>
 						</th>
 
 						<td id="form_table_field_input__upload_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" class="form_table_field_input">

@@ -44,7 +44,7 @@
 							{+END}
 
 							<p class="assocated_details block_mobile">
-								<span class="field_name">{!PAYMENT_GATEWAY}:</span> {PAYMENT_GATEWAY*}
+								<span class="field-name">{!PAYMENT_GATEWAY}:</span> {PAYMENT_GATEWAY*}
 							</p>
 						</th>
 

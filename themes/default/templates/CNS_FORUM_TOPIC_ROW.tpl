@@ -55,10 +55,10 @@
 
 			<div role="note">
 				<ul class="horizontal-meta-details associated-details">
-					<li><span class="field_name">{!COUNT_POSTS}:</span> {$PREG_REPLACE,\,\d\d\d$,k,{NUM_POSTS*}}</li>
-					<li><span class="field_name">{!COUNT_VIEWS}:</span> {$PREG_REPLACE,\,\d\d\d$,k,{NUM_VIEWS*}}</li>
+					<li><span class="field-name">{!COUNT_POSTS}:</span> {$PREG_REPLACE,\,\d\d\d$,k,{NUM_POSTS*}}</li>
+					<li><span class="field-name">{!COUNT_VIEWS}:</span> {$PREG_REPLACE,\,\d\d\d$,k,{NUM_VIEWS*}}</li>
 				</ul>
-				<span class="field_name">{!STARTER}:</span> {POSTER}
+				<span class="field-name">{!STARTER}:</span> {POSTER}
 			</div>
 
 			<div class="cns-forum-topic-title-bits-left">

@@ -78,7 +78,7 @@
 
 		{+START,IF,{$OR,{$IS_NON_EMPTY,{MODERATOR_ACTIONS}},{$IS_NON_EMPTY,{MARKED_POST_ACTIONS}},{THREADED}}}
 			<div class="box cns-topic-control-functions{+START,IF,{$NOR,{$IS_NON_EMPTY,{MARKED_POST_ACTIONS}},{THREADED}}} block_desktop{+END}"><div class="box-inner">
-				{+START,IF,{$DESKTOP}}<span class="field_name inline_desktop">{!CONTROL_FUNCTIONS}:</span>{+END}
+				{+START,IF,{$DESKTOP}}<span class="field-name inline_desktop">{!CONTROL_FUNCTIONS}:</span>{+END}
 
 				{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}
 					<form title="{!TOPIC_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get" class="inline horiz-field-sep-rightward" autocomplete="off">

@@ -20,14 +20,14 @@
 	<div class="meta_details" role="note">
 		<dl class="meta_details_list">
 			{+START,IF_NON_EMPTY,{AUTHOR}}
-				<dt class="field_name">{!BY}:</dt> <dd>{AUTHOR*}</dd>
+				<dt class="field-name">{!BY}:</dt> <dd>{AUTHOR*}</dd>
 			{+END}
 			{+START,IF,{$INLINE_STATS}}
-				<dt class="field_name">{!COUNT_DOWNLOADS}:</dt> <dd>{DOWNLOADS*}</dd>
+				<dt class="field-name">{!COUNT_DOWNLOADS}:</dt> <dd>{DOWNLOADS*}</dd>
 			{+END}
-			<dt class="field_name">{!ADDED}:</dt> <dd>{DATE*}</dd>
+			<dt class="field-name">{!ADDED}:</dt> <dd>{DATE*}</dd>
 			{+START,IF_PASSED,RATING}{+START,IF_NON_EMPTY,{RATING}}
-				<dt class="field_name">{!RATING}:</dt> <dd>{RATING}</dd>
+				<dt class="field-name">{!RATING}:</dt> <dd>{RATING}</dd>
 			{+END}{+END}
 		</dl>
 	</div>

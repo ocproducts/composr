@@ -55,7 +55,7 @@
 			{+START,IF_PASSED,CORRECT_EXPLANATION}{+START,IF_NON_EMPTY,{CORRECT_EXPLANATION}}
 				<tr class="{$GET,cycle}">
 					<td class="responsive-table-no-prefix" colspan="4">
-						<span class="field_name">{!EXPLANATION}:</span> {$COMCODE,{CORRECT_EXPLANATION}}
+						<span class="field-name">{!EXPLANATION}:</span> {$COMCODE,{CORRECT_EXPLANATION}}
 					</td>
 				</tr>
 			{+END}{+END}

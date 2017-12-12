@@ -50,10 +50,10 @@
 						{+END}
 
 						<p class="assocated_details block_mobile">
-							<span class="field_name">{!PAYMENT_GATEWAY}:</span> {PAYMENT_GATEWAY*}
+							<span class="field-name">{!PAYMENT_GATEWAY}:</span> {PAYMENT_GATEWAY*}
 						</p>
 						<p class="assocated_details block_mobile">
-							<span class="field_name">{!STATUS}:</span> {STATE*}
+							<span class="field-name">{!STATUS}:</span> {STATE*}
 						</p>
 					</th>
 

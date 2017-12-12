@@ -7,22 +7,22 @@
 
 			{+START,IF_NON_EMPTY,{ORGANISATION}}
 				<p>
-					<span class="field_name">{!ORGANISATION}:</span>
+					<span class="field-name">{!ORGANISATION}:</span>
 					{ORGANISATION*}
 				</p>
 			{+END}
 			{+START,IF_NON_EMPTY,{COPYRIGHT_ATTRIBUTION}}
-				<span class="field_name">{!COPYRIGHT_ATTRIBUTION}:</span>
+				<span class="field-name">{!COPYRIGHT_ATTRIBUTION}:</span>
 				<div class="whitespace_visible">{COPYRIGHT_ATTRIBUTION*}</div>
 			{+END}
 			{+START,IF_NON_EMPTY,{LICENCE}}
 				<p>
-					<span class="field_name">{!LICENCE}:</span>
+					<span class="field-name">{!LICENCE}:</span>
 					{LICENCE*}
 				</p>
 			{+END}
 			<p>
-				<span class="field_name">{!CATEGORY}:</span>
+				<span class="field-name">{!CATEGORY}:</span>
 				{CATEGORY*}
 			</p>
 		{+END}

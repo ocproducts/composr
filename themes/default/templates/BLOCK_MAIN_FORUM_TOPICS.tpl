@@ -22,7 +22,7 @@
 				</div>
 
 				<p class="tiny_paragraph associated-details">
-					<span class="field_name">{!LAST_POST}:</span> {DATE*}
+					<span class="field-name">{!LAST_POST}:</span> {DATE*}
 				</p>
 			</div></div>
 		{+END}

@@ -7,8 +7,8 @@
 
 	<div>
 		<p>
-			<label for="type_code"><span class="field_name">{!PRODUCT}:</span> <select id="type_code" name="type_code">{PRODUCTS}</select></label>
-			<label class="horiz-field-sep" for="purchase_id"><span class="field_name">{!PURCHASE_ID}:</span> <input maxlength="80" id="purchase_id" name="purchase_id" size="10" value="{PURCHASE_ID*}" type="text" /></label>
+			<label for="type_code"><span class="field-name">{!PRODUCT}:</span> <select id="type_code" name="type_code">{PRODUCTS}</select></label>
+			<label class="horiz-field-sep" for="purchase_id"><span class="field-name">{!PURCHASE_ID}:</span> <input maxlength="80" id="purchase_id" name="purchase_id" size="10" value="{PURCHASE_ID*}" type="text" /></label>
 			<input data-disable-on-click="1" class="button_micro buttons--filter" type="submit" value="{!FILTER}" />
 		</p>
 	</div>

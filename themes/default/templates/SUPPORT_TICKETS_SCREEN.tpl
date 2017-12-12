@@ -14,7 +14,7 @@
 
 				<div class="float-surrounder ticket_filters">
 					<div class="inline ticket_type_filter">
-						<label class="field_name" for="ticket_type_id">{!TICKET_TYPE}:</label>
+						<label class="field-name" for="ticket_type_id">{!TICKET_TYPE}:</label>
 						<select id="ticket_type_id" name="ticket_type_id" class="input_list_required">
 							<option value="">&mdash;</option>
 							{+START,LOOP,TYPES}
@@ -24,7 +24,7 @@
 					</div>
 
 					<div class="inline spaced open_ticket_filter">
-						<label class="field_name" for="open">{!OPEN_TICKETS_ONLY}:</label>
+						<label class="field-name" for="open">{!OPEN_TICKETS_ONLY}:</label>
 						<input type="checkbox" id="open" name="open" value="1"{+START,IF,{$_GET,open}} checked="checked"{+END} />
 					</div>
 

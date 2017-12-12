@@ -16,7 +16,7 @@
 			{+END}
 		{+END}
 		{+START,IF_NON_PASSED,POST_COMMENT}
-			<span class="field_name">
+			<span class="field-name">
 				<label class="accessibility_hidden" for="{NAME*}">{!TEXT}</label>
 			</span>
 

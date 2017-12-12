@@ -20,7 +20,7 @@
 		{+END}
 
 		{+START,IF_PASSED,FILTER}
-			<label for="filter"><span class="field_name">{!SEARCH}:</span> <input value="{FILTER*}" name="filter" id="filter" size="10" /></label>
+			<label for="filter"><span class="field-name">{!SEARCH}:</span> <input value="{FILTER*}" name="filter" id="filter" size="10" /></label>
 		{+END}
 
 		<label for="r_{$GET*,RAND_PAGINATION}">{!SORT_BY} <span class="accessibility_hidden">{$GET*,TEXT_ID}</span></label>

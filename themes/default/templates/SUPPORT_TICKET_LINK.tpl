@@ -6,7 +6,7 @@
 			<span class="closed_ticket">{!CLOSED}</span>
 		{+END}
 
-		<p class="block_desktop"><span class="field_name">{!COUNT_POSTS}:</span> {NUM_POSTS*}</p>
+		<p class="block_desktop"><span class="field-name">{!COUNT_POSTS}:</span> {NUM_POSTS*}</p>
 
 		{+START,IF_NON_EMPTY,{EXTRA_DETAILS}}
 			<br />

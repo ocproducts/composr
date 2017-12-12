@@ -23,7 +23,7 @@
 					<strong>{INVOICE_TITLE*}</strong>
 
 					<p class="assocated_details block_mobile">
-						<span class="field_name">{!STATUS}:</span> {STATE*}
+						<span class="field-name">{!STATUS}:</span> {STATE*}
 					</p>
 				</td>
 				<td>

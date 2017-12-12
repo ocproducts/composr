@@ -7,7 +7,7 @@
 	margin: 0;
 }
 
-.box---block-main-bottom-bar>.box-inner>h2 {
+.box---block-main-bottom-bar>.box_inner>h2 {
 	margin: 0;
 	padding: 0.3em 0 0.4em 0;
 }
@@ -38,24 +38,25 @@
 	text-align: right;
 }
 
-.cns-stats-usersonline-1 .field_name {
+.cns-stats-usersonline-1 .field-name {
 	margin-bottom: 0.1em;
 }
 .cns-stats-usersonline-1 .associated-links-block-group {
 	margin-top: 0.1em;
 }
 
-.cns_stats_usersonline_2 {
+.cns-stats-usersonline-2 {
 	border-left: 1px solid {$GET,dark_border};
 	border-bottom: 1px solid {$GET,dark_border};
 	padding: 0.5em;
 }
 
-.cns_stats_usersonline_2 .users_online {
+.cns-stats-usersonline-2 .users_online {
 	margin-bottom: 0.3em;
 }
 
-.cns_stats_usersonline_2 .usergroups p, .cns_stats_usersonline_2 .horizontal_links_comma {
+.cns-stats-usersonline-2 .usergroups p, 
+.cns-stats-usersonline-2 .horizontal_links_comma {
 	display: inline-block;
 	width: auto;
 }

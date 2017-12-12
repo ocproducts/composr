@@ -1,1 +1,1 @@
-<li><span class="field_name">{KEY*}:</span> {VALUE*}</li>
+<li><span class="field-name">{KEY*}:</span> {VALUE*}</li>

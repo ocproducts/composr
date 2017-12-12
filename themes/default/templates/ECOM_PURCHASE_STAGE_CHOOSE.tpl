@@ -32,7 +32,7 @@
 
 							{+START,IF_PASSED,WRITTEN_PRICE}
 								<p>
-									<span class="field_name">{!PRICE}</span>: {WRITTEN_PRICE*}
+									<span class="field-name">{!PRICE}</span>: {WRITTEN_PRICE*}
 								</p>
 							{+END}
 

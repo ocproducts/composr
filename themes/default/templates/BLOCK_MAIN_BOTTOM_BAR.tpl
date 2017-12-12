@@ -13,17 +13,17 @@
 			{+START,IF_NON_EMPTY,{USERS_ONLINE}}
 				<tr>
 					<th class="de_th cns-stats-usersonline-1">
-						<p class="field_name">{!USERS_ONLINE}:</p>
+						<p class="field-name">{!USERS_ONLINE}:</p>
 						{+START,IF_NON_EMPTY,{USERS_ONLINE_URL}}<p class="associated-link associated-links-block-group"><a href="{USERS_ONLINE_URL*}" title="{!USERS_ONLINE}" rel="nofollow">{!DETAILS}</a></p>{+END}
 					</th>
 
-					<td class="cns_stats_usersonline_2">
+					<td class="cns-stats-usersonline-2">
 						<p class="users_online cns_group_colours">{USERS_ONLINE}</p>
 
 						{+START,IF_NON_EMPTY,{GROUPS}}
 							<div class="usergroups cns_group_colours">
 								<p>
-									<span class="field_name">{!USERGROUPS}:&nbsp;</span>
+									<span class="field-name">{!USERGROUPS}:&nbsp;</span>
 								</p>
 								<ul class="horizontal_links_comma">
 									{+START,LOOP,GROUPS}
@@ -38,7 +38,7 @@
 
 			<tr>
 				<th class="de_th cns-stats-main-1">
-					<span class="field_name">{!FORUM_STATISTICS}:</span>
+					<span class="field-name">{!FORUM_STATISTICS}:</span>
 				</th>
 
 				<td class="cns_stats_main_2">
@@ -48,7 +48,7 @@
 					</ul>
 
 					{+START,IF_NON_EMPTY,{BIRTHDAYS}}
-						<span class="field_name">{!BIRTHDAYS}:</span>
+						<span class="field-name">{!BIRTHDAYS}:</span>
 						<ul class="horizontal_links_comma">{+START,LOOP,BIRTHDAYS}<li><span class="birthday"><a {+START,IF_PASSED,COLOUR} class="{COLOUR}"{+END} href="{BIRTHDAY_URL*}" title="{!CREATE_BIRTHDAY_TOPIC}: {$DISPLAYED_USERNAME*,{USERNAME}}">{$DISPLAYED_USERNAME*,{USERNAME}}</a>{+START,IF_PASSED,AGE} ({AGE*}){+END}</span></li>{+END}</ul>
 					{+END}
 				</td>

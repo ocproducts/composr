@@ -11,7 +11,7 @@
 			<li>{!ADDED_SIMPLE,<time datetime="{$FROM_TIMESTAMP*,Y-m-d\TH:i:s\Z,{ADD_DATE_RAW}}" itemprop="datePublished">{DATE*}</time>}</li>
 			{+START,IF_NON_EMPTY,{AUTHOR_URL}}
 				<li>
-					<span class="field_name">{!AUTHOR}:</span> <a rel="author" itemprop="author" href="{AUTHOR_URL*}" title="{!AUTHOR}: {AUTHOR*}">{AUTHOR*}</a>
+					<span class="field-name">{!AUTHOR}:</span> <a rel="author" itemprop="author" href="{AUTHOR_URL*}" title="{!AUTHOR}: {AUTHOR*}">{AUTHOR*}</a>
 					{+START,INCLUDE,MEMBER_TOOLTIP}SUBMITTER={$AUTHOR_MEMBER,{AUTHOR}}{+END}
 				</li>
 			{+END}

@@ -1,3 +1,3 @@
 <p>
-	<span class="field_name">{!comcode:REFERENCE_SOURCE}:</span> {SOURCE}
+	<span class="field-name">{!comcode:REFERENCE_SOURCE}:</span> {SOURCE}
 </p>

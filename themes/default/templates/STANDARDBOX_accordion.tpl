@@ -22,7 +22,7 @@
 			<div class="meta_details" role="note">
 				<dl class="meta_details_list">
 					{+START,LOOP,META}
-						<dt class="field_name">{KEY}:</dt> <dd>{VALUE}</dd>
+						<dt class="field-name">{KEY}:</dt> <dd>{VALUE}</dd>
 					{+END}
 				</dl>
 			</div>

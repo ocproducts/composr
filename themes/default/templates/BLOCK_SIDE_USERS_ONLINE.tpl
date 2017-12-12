@@ -9,7 +9,7 @@
 
 	{+START,IF_NON_EMPTY,{BIRTHDAYS}}
 		<div>
-			<span class="field_name">{!BIRTHDAYS}:</span>
+			<span class="field-name">{!BIRTHDAYS}:</span>
 			<ul class="horizontal_links_comma">{+START,LOOP,BIRTHDAYS}<li><span class="birthday"><a {+START,IF_PASSED,COLOUR} class="{COLOUR}"{+END} href="{PROFILE_URL*}">{$DISPLAYED_USERNAME*,{USERNAME}}</a></span></li>{+END}</ul>
 		</div>
 	{+END}
