@@ -414,7 +414,11 @@ function php_function_allowed($function)
             return false;
         }
     }
-    $cache[$function] = (@preg_match('#(\s|,|^)' . str_replace('#', '\#', preg_quote($function)) . '(\s|$|,)#', strtolower(@ini_get('disable_functions') . ',' . ini_get('suhosin.executor.func.blacklist') . ',' . ini_get('suhosin.executor.include.blacklist') . ',' . ini_get('suhosin.executor.eval.blacklist'))) == 0);
+    static $disabled_functions = null;
+    if ($disabled_functions === null) {
+        $disabled_functions = strtolower(@ini_get('disable_functions') . ',' . ini_get('suhosin.executor.func.blacklist') . ',' . ini_get('suhosin.executor.include.blacklist') . ',' . ini_get('suhosin.executor.eval.blacklist'));
+    }
+    $cache[$function] = (@preg_match('#(\s|,|^)' . preg_quote($function, '#') . '(\s|$|,)#', $disabled_functions) == 0);
     return $cache[$function];
 }
 

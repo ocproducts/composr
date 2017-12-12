@@ -150,7 +150,7 @@ function cms_file_put_contents_safe($path, $contents, $flags = 4, $retry_depth =
     }
 
     // Find file size
-    clearstatcache();
+    clearstatcache(true, $path);
     $size = @filesize($path);
 
     // Special condition: File already deleted

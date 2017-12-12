@@ -2582,7 +2582,7 @@ function is_mobile($user_agent = null, $truth = false)
                         return false;
                     }
                 } else {
-                    if (preg_match('#(^|,)\s*' . str_replace('#', '\#', preg_quote(get_page_name())) . '\s*(,|$)#', $details['mobile_pages']) == 0 && preg_match('#(^|,)\s*' . str_replace('#', '\#', preg_quote(get_zone_name() . ':' . get_page_name())) . '\s*(,|$)#', $details['mobile_pages']) == 0) {
+                    if (preg_match('#(^|,)\s*' . preg_quote(get_page_name(), '#') . '\s*(,|$)#', $details['mobile_pages']) == 0 && preg_match('#(^|,)\s*' . preg_quote(get_zone_name() . ':' . get_page_name(), '#') . '\s*(,|$)#', $details['mobile_pages']) == 0) {
                         $IS_MOBILE_CACHE = false;
                         return false;
                     }

@@ -140,6 +140,7 @@ class Self_learning_cache
     private $pending_save = false;
     public $paused = false;
     public $empty = true;
+    private $already_invalidated = false;
 
     /**
      * Constructor. Initialise our cache.
@@ -338,6 +339,11 @@ class Self_learning_cache
             return;
         }
 
+        if ($this->already_invalidated) {
+            return;
+        }
+        $this->already_invalidated = true;
+
         if (!is_null($this->path)) {
             @unlink($this->path);
         } else {
@@ -355,6 +361,12 @@ class Self_learning_cache
         if (!Self_learning_cache::is_on()) {
             return;
         }
+
+        static $done_once = false;
+        if ($done_once) {
+            return;
+        }
+        $done_once = true;
 
         $dh = @opendir(get_custom_file_base() . '/caches/self_learning');
         if ($dh !== false) {

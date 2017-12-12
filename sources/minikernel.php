@@ -177,7 +177,7 @@ function php_function_allowed($function)
             return false;
         }
     }
-    return (@preg_match('#(\s|,|^)' . str_replace('#', '\#', preg_quote($function)) . '(\s|$|,)#', strtolower(@ini_get('disable_functions') . ',' . ini_get('suhosin.executor.func.blacklist') . ',' . ini_get('suhosin.executor.include.blacklist') . ',' . ini_get('suhosin.executor.eval.blacklist'))) == 0);
+    return (@preg_match('#(\s|,|^)' . preg_quote($function, '#') . '(\s|$|,)#', strtolower(@ini_get('disable_functions') . ',' . ini_get('suhosin.executor.func.blacklist') . ',' . ini_get('suhosin.executor.include.blacklist') . ',' . ini_get('suhosin.executor.eval.blacklist'))) == 0);
 }
 
 /**

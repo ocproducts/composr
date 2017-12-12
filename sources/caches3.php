@@ -216,6 +216,12 @@ function erase_thumb_cache()
  */
 function erase_cached_language()
 {
+    static $done_once = false;
+    if ($done_once) {
+        return;
+    }
+    $done_once = true;
+
     cms_profile_start_for('erase_cached_language');
 
     $langs = find_all_langs(true);
@@ -284,6 +290,16 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
         return; // Optimisation
     }
 
+    if ((!$rebuild_some_deleted_files) && ($preserve_some)) {
+        static $done_sweeping_decache_already = false;
+        if ($done_sweeping_decache_already) {
+            return;
+        }
+        if (($only_templates === null) && ($raw_file_regexp === null)) {
+            $done_sweeping_decache_already = true;
+        }
+    }
+
     cms_profile_start_for('erase_cached_templates');
 
     global $ERASED_TEMPLATES_ONCE;
@@ -344,7 +360,7 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
     foreach ($themes as $theme) {
         $using_less =
             (addon_installed('less')) || /*LESS-regeneration is too intensive and assumed cache-safe anyway*/
-            is_file(get_custom_file_base() . '/themes/' . $theme . '/css/global.less') || 
+            is_file(get_custom_file_base() . '/themes/' . $theme . '/css/global.less') ||
             is_file(get_custom_file_base() . '/themes/' . $theme . '/css_custom/global.less');
 
         foreach (array_keys($langs) as $lang) {

@@ -845,7 +845,7 @@ function _find_all_pages($zone, $type, $ext = 'php', $keep_ext_on = false, $cuto
     $dh = @opendir($stub . '/' . $module_path);
     if ($dh !== false) {
         while (($file = readdir($dh)) !== false) {
-            if ((substr($file, -4) == '.' . $ext) && (file_exists($stub . '/' . $module_path . '/' . $file)) && (preg_match('#^[^\.][' . URL_CONTENT_REGEXP . ']*$#', substr($file, 0, strlen($file) - 4)) != 0)) {
+            if ((substr($file, -4) == '.' . $ext) && (is_file($stub . '/' . $module_path . '/' . $file)) && (preg_match('#^[^\.][' . URL_CONTENT_REGEXP . ']*$#', substr($file, 0, strlen($file) - 4)) != 0)) {
                 if (!is_null($cutoff_time)) {
                     if (filectime($stub . '/' . $module_path . '/' . $file) < $cutoff_time) {
                         continue;
@@ -861,7 +861,7 @@ function _find_all_pages($zone, $type, $ext = 'php', $keep_ext_on = false, $cuto
                                 foreach ($records as $record) {
                                     $file = $record['the_page'] . '.txt';
 
-                                    if (!file_exists($stub . '/' . $module_path . '/' . $file)) {
+                                    if (!is_file($stub . '/' . $module_path . '/' . $file)) {
                                         continue;
                                     }
 
@@ -887,7 +887,7 @@ function _find_all_pages($zone, $type, $ext = 'php', $keep_ext_on = false, $cuto
                                 foreach ($records as $record) {
                                     $file = $record['the_page'] . '.txt';
 
-                                    if (!file_exists($stub . '/' . $module_path . '/' . $file)) {
+                                    if (!is_file($stub . '/' . $module_path . '/' . $file)) {
                                         continue;
                                     }
 
