@@ -4,20 +4,21 @@
 */
 
 /*{+START,CSS_MODE,desktop}*/
-	.cns_information_bar { /* either CNS_GUEST_BAR.tpl or CNS_MEMBER_BAR.tpl */
+	.cns-information-bar { /* either CNS_GUEST_BAR.tpl or CNS_MEMBER_BAR.tpl */
 		font-size: 0.9em;
 	}
 /*{+END}*/
 
-.cns_information_bar_outer>.toggleable_tray {
+.cns-information-bar-outer>.toggleable-tray {
 	margin: 0; /* Undoes what .box-inner sets, so that our dividers are flush with the box border */
 	width: auto !important;
 }
 
-.cns_information_bar_outer .toggleable_tray_title img {
+.cns-information-bar-outer .toggleable-tray-title img {
 	opacity: 0.2;
 }
-.cns_information_bar_outer .toggleable_tray_title:hover img, body.touch_enabled .cns_information_bar_outer body.touch_enabled .toggleable_tray_title img {
+.cns-information-bar-outer .toggleable-tray-title:hover img, 
+body.touch_enabled .cns-information-bar-outer body.touch_enabled .toggleable-tray-title img {
 	opacity: 1.0;
 }
 

@@ -65,7 +65,7 @@ Knowing how to program, I now have written my code, with my modified files saved
                <th class="de_th cns-column1 cns-stats-main-1">
                   {!FORUM_STATISTICS}:
                </th>
-               <td class="cns_stats_main_2">
+               <td class="cns-stats-main-2">
                {!FORUM_NUM_TOPICS,{NUM_TOPICS*}}, {!FORUM_NUM_POSTS,{NUM_POSTS*}}, {!FORUM_NUM_MEMBERS,{NUM_MEMBERS*}}<br />
                {!NEWEST_MEMBER,<a href="{NEWEST_MEMBER_PROFILE_URL*}">{NEWEST_MEMBER_USERNAME*}</a>}<br />
                {BIRTHDAYS}

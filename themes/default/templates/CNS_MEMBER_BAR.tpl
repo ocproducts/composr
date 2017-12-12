@@ -1,11 +1,11 @@
-<section id="tray_{!MEMBER|}" data-toggleable-tray="{ save: true }" class="box cns_information_bar_outer">
-	<h2 class="toggleable_tray_title js-tray-header">
+<section id="tray_{!MEMBER|}" data-toggleable-tray="{ save: true }" class="box cns-information-bar-outer">
+	<h2 class="toggleable-tray-title js-tray-header">
 		<a class="toggleable-tray-button js-tray-onclick-toggle-tray inline_desktop" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!MEMBER}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" /></a>
 		<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!MEMBER_INFORMATION,{$USERNAME*,{$MEMBER},1}}{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,search}} / {!SEARCH}{+END}</a>
 	</h2>
 
-	<div class="toggleable_tray js-tray-content">
-		<div class="cns_information_bar float-surrounder">
+	<div class="toggleable-tray js-tray-content">
+		<div class="cns-information-bar float-surrounder">
 			{+START,IF_NON_EMPTY,{AVATAR_URL}}
 				<div style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px" class="cns_member_column cns_member_column_a">
 					<img alt="{!AVATAR}" title="{!AVATAR}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{AVATAR_URL}}" />

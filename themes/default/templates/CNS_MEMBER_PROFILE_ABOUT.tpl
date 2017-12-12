@@ -40,7 +40,7 @@
 						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!menus:CONTACT}</a>
 					</h2>
 
-					<nav class="toggleable_tray js-tray-content" style="display: block">
+					<nav class="toggleable-tray js-tray-content" style="display: block">
 						<ul class="nl">
 							{ACTIONS_contact}
 							{$GET,messenger_fields}
@@ -56,7 +56,7 @@
 						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!CONTENT}</a>
 					</h2>
 
-					<nav class="toggleable_tray js-tray-content" style="display: none" aria-expanded="false">
+					<nav class="toggleable-tray js-tray-content" style="display: none" aria-expanded="false">
 						<ul class="nl">
 							{ACTIONS_content}
 						</ul>
@@ -71,7 +71,7 @@
 						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!ACCOUNT}</a>
 					</h2>
 
-					<nav class="toggleable_tray js-tray-content" style="display: none" aria-expanded="false">
+					<nav class="toggleable-tray js-tray-content" style="display: none" aria-expanded="false">
 						<ul class="nl">
 							{ACTIONS_views}
 							{ACTIONS_profile}
@@ -87,7 +87,7 @@
 						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!AUDIT}</a>
 					</h2>
 
-					<nav class="toggleable_tray js-tray-content" style="display: none" aria-expanded="false">
+					<nav class="toggleable-tray js-tray-content" style="display: none" aria-expanded="false">
 						<ul class="nl">
 							{ACTIONS_audit}
 						</ul>

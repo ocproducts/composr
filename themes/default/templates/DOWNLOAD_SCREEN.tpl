@@ -18,12 +18,12 @@
 						{!D_BEFORE_PROCEED_AGREE,{LICENCE_HYPERLINK}}
 					</p>
 
-					<div class="toggleable_tray_title js-tray-header">
+					<div class="toggleable-tray-title js-tray-header">
 						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!I_AGREE}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" /></a>
 						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!I_AGREE}</a>
 					</div>
 
-					<div class="toggleable_tray js-tray-content" style="display: none" aria-expanded="false">
+					<div class="toggleable-tray js-tray-content" style="display: none" aria-expanded="false">
 					{+END}
 					{+START,IF_NON_PASSED,LICENCE_HYPERLINK}
 					<div class="box-inner">

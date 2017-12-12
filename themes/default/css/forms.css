@@ -121,7 +121,7 @@ table.form_table { /* Some people think tables for forms are bad semantics. You 
 	margin: 1em 0;
 }
 
-.toggleable_tray>.wide_table_wrap:first-child>.form_table {
+.toggleable-tray>.wide_table_wrap:first-child>.form_table {
 	margin-top: 0;
 }
 

@@ -86,12 +86,12 @@
 		</form>
 
 		<div class="box box___menu_editor_screen" data-toggleable-tray="{}">
-			<h2 class="toggleable_tray_title">
+			<h2 class="toggleable-tray-title">
 				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!DELETE_MENU}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" /></a>
 				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!DELETE_MENU}</a>
 			</h2>
 
-			<div class="toggleable_tray js-tray-content" id="delete_menu" style="display: none" aria-expanded="false">
+			<div class="toggleable-tray js-tray-content" id="delete_menu" style="display: none" aria-expanded="false">
 				<p>{!ABOUT_DELETE_MENU}</p>
 
 				<form title="{!DELETE}" action="{DELETE_URL*}" method="post" autocomplete="off">

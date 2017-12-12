@@ -1,14 +1,14 @@
 {$REQUIRE_JAVASCRIPT,core_cns}
 
-<section id="tray_{!MEMBER|}" data-tpl="cnsGuestBar" data-toggleable-tray="{ save: true }" class="box cns_information_bar_outer">
-	<h2 class="toggleable_tray_title js-tray-header">
+<section id="tray_{!MEMBER|}" data-tpl="cnsGuestBar" data-toggleable-tray="{ save: true }" class="box cns-information-bar-outer">
+	<h2 class="toggleable-tray-title js-tray-header">
 		<a class="toggleable-tray-button js-tray-onclick-toggle-tray inline_desktop" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!_LOGIN}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" /></a>
 
 		<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!_LOGIN}{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,search}} / {!SEARCH}{+END}</a>
 	</h2>
 
-	<div class="toggleable_tray js-tray-content">
-		<div class="cns_information_bar float-surrounder">
+	<div class="toggleable-tray js-tray-content">
+		<div class="cns-information-bar float-surrounder">
 			<div class="cns_guest_column cns_guest_column_a">
 				<form title="{!_LOGIN}" class="inline js-submit-check-field-login-username" action="{LOGIN_URL*}" method="post" autocomplete="on">
 					{$INSERT_SPAMMER_BLACKHOLE}

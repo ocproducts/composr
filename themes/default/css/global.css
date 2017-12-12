@@ -1682,14 +1682,14 @@ td>.comcode_quote:first-child, .fake_table_cell>.comcode_quote:first-child, .fak
 .box.nested {
 	border: 1px solid {$GET,pale_border};
 }
-.global-side-panel .box-inner>h1, .global-side-panel .box-inner>h2, .global-side-panel .box-inner>h3, .global-side-panel .box-inner>h4, .global-side-panel .box-inner>h5, .global-side-panel .box-inner>h6, .global-side-panel .box>.toggleable_tray_title {
+.global-side-panel .box-inner>h1, .global-side-panel .box-inner>h2, .global-side-panel .box-inner>h3, .global-side-panel .box-inner>h4, .global-side-panel .box-inner>h5, .global-side-panel .box-inner>h6, .global-side-panel .box>.toggleable-tray-title {
 	background-image: none;
 }
 
-.box>.box-inner, .box>.toggleable_tray {
+.box>.box-inner, .box>.toggleable-tray {
 	margin: 5px; /* not em so that header may be positioned properly */
 }
-.boxless-space .box>.box-inner, .boxless-space .box>.toggleable_tray {
+.boxless-space .box>.box-inner, .boxless-space .box>.toggleable-tray {
 	margin: 0;
 }
 .email_body .box .box-inner { /* Outlook.com does not support margins or complex use of the sibling selector */
@@ -1697,7 +1697,7 @@ td>.comcode_quote:first-child, .fake_table_cell>.comcode_quote:first-child, .fak
 	padding: 5px; /* not em so that header may be positioned properly */
 }
 
-.box-inner>h1, .box-inner>h2, .box-inner>h3, .box-inner>h4, .box-inner>h5, .box-inner>h6, .toggleable_tray_title, #standalone_html_wrap .box .box .box-inner>h2, #standalone_html_wrap .box .box .box-inner>h3 {
+.box-inner>h1, .box-inner>h2, .box-inner>h3, .box-inner>h4, .box-inner>h5, .box-inner>h6, .toggleable-tray-title, #standalone_html_wrap .box .box .box-inner>h2, #standalone_html_wrap .box .box .box-inner>h3 {
 	border-top-left-radius: 3px;
 	border-top-right-radius: 3px;
 	background-image: linear-gradient(to bottom, {$GET,lgrad}, {$GET,dgrad});
@@ -1728,17 +1728,17 @@ td>.comcode_quote:first-child, .fake_table_cell>.comcode_quote:first-child, .fak
 	font-weight: normal;
 }
 
-.box-inner>h1 a, .box-inner>h2 a, .box-inner>h3 a, .box-inner>h4 a, .box-inner>h5 a, .box-inner>h6 a, .toggleable_tray_title a, .box-inner>h1 a:visited, .box-inner>h2 a:visited, .box-inner>h3 a:visited, .box-inner>h4 a:visited, .box-inner>h5 a:visited, .box-inner>h6 a:visited, .toggleable_tray_title a:visited {
+.box-inner>h1 a, .box-inner>h2 a, .box-inner>h3 a, .box-inner>h4 a, .box-inner>h5 a, .box-inner>h6 a, .toggleable-tray-title a, .box-inner>h1 a:visited, .box-inner>h2 a:visited, .box-inner>h3 a:visited, .box-inner>h4 a:visited, .box-inner>h5 a:visited, .box-inner>h6 a:visited, .toggleable-tray-title a:visited {
 	color: inherit;
 	text-decoration: underline;
 }
 a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 	text-decoration: none !important;
 }
-.box-inner>h1 a:hover, .box-inner>h2 a:hover, .box-inner>h3 a:hover, .box-inner>h4 a:hover, .box-inner>h5 a:hover, .box-inner>h6 a:hover, .toggleable_tray_title a:hover {
+.box-inner>h1 a:hover, .box-inner>h2 a:hover, .box-inner>h3 a:hover, .box-inner>h4 a:hover, .box-inner>h5 a:hover, .box-inner>h6 a:hover, .toggleable-tray-title a:hover {
 	color: {$GET,box_title_text_hover};
 }
-.boxless-space .box-inner>h1 a:hover, .boxless-space .box-inner>h2 a:hover, .boxless-space .box-inner>h3 a:hover, .boxless-space .box-inner>h4 a:hover, .boxless-space .box-inner>h5 a:hover, .boxless-space .box-inner>h6 a:hover, .boxless-space .toggleable_tray_title a:hover {
+.boxless-space .box-inner>h1 a:hover, .boxless-space .box-inner>h2 a:hover, .boxless-space .box-inner>h3 a:hover, .boxless-space .box-inner>h4 a:hover, .boxless-space .box-inner>h5 a:hover, .boxless-space .box-inner>h6 a:hover, .boxless-space .toggleable-tray-title a:hover {
 	color: inherit;
 }
 
@@ -1772,7 +1772,7 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 .boxless-space .box>.box-inner {
 	margin: 0;
 }
-.boxless-space .box>.box-inner>h1, .boxless-space .box>.box-inner>h2, .boxless-space .box>.box-inner>h3, .boxless-space .box>.box-inner>h4, .boxless-space .box>.box-inner>h5, .boxless-space .box>.box-inner>h6, .boxless-space .box>.toggleable_tray_title {
+.boxless-space .box>.box-inner>h1, .boxless-space .box>.box-inner>h2, .boxless-space .box>.box-inner>h3, .boxless-space .box>.box-inner>h4, .boxless-space .box>.box-inner>h5, .boxless-space .box>.box-inner>h6, .boxless-space .box>.toggleable-tray-title {
 	background: url('{$IMG_INLINE;,1x/boxless_title_leadin_rightcomp}') no-repeat !important;
 	color: {$GET,slightly_seeded_right_complement_text} !important;
 	text-align: left;
@@ -1791,7 +1791,7 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 	color: {$GET,slightly_seeded_left_complement_text} !important;
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.boxless-space .box>.box-inner>h1, .boxless-space .box>.box-inner>h2, .boxless-space .box>.box-inner>h3, .boxless-space .box>.box-inner>h4, .boxless-space .box>.box-inner>h5, .boxless-space .box>.box-inner>h6, .boxless-space .box>.toggleable_tray_title {
+	.boxless-space .box>.box-inner>h1, .boxless-space .box>.box-inner>h2, .boxless-space .box>.box-inner>h3, .boxless-space .box>.box-inner>h4, .boxless-space .box>.box-inner>h5, .boxless-space .box>.box-inner>h6, .boxless-space .box>.toggleable-tray-title {
 		background-image: url('{$IMG_INLINE;,2x/boxless_title_leadin_rightcomp}');
 		background-size: 18px 18px;
 	}
@@ -1846,23 +1846,23 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 
 /* Boxes under boxes shouldn't have the title style - would be ugly */
 
-.box .box .box-inner>h1, .box .box .box-inner>h2, .box .box .box-inner>h3, .box .box .box-inner>h4, .box .box .box-inner>h5, .box .box .box-inner>h6, .box .box .toggleable_tray_title, #standalone_html_wrap .box .box .box .box-inner>h2, #standalone_html_wrap .box .box .box .box-inner>h3 {
+.box .box .box-inner>h1, .box .box .box-inner>h2, .box .box .box-inner>h3, .box .box .box-inner>h4, .box .box .box-inner>h5, .box .box .box-inner>h6, .box .box .toggleable-tray-title, #standalone_html_wrap .box .box .box .box-inner>h2, #standalone_html_wrap .box .box .box .box-inner>h3 {
 	background: none;
 	color: inherit;
 	padding-left: 0;
 	font-size: 1.1em;
 } /* This rule is not applied to boxes under the top level box in the preview (#standalone_html_wrap) as those should show verbatim */
-.box .box .box-inner>h1 a, .box .box .box-inner>h2 a, .box .box .box-inner>h3 a, .box .box .box-inner>h4 a, .box .box .box-inner>h5 a, .box .box .box-inner>h6 a, .box .box .toggleable_tray_title a, #standalone_html_wrap .box .box .box .box-inner>h2 a, #standalone_html_wrap .box .box .box .box-inner>h3 a {
+.box .box .box-inner>h1 a, .box .box .box-inner>h2 a, .box .box .box-inner>h3 a, .box .box .box-inner>h4 a, .box .box .box-inner>h5 a, .box .box .box-inner>h6 a, .box .box .toggleable-tray-title a, #standalone_html_wrap .box .box .box .box-inner>h2 a, #standalone_html_wrap .box .box .box .box-inner>h3 a {
 	color: {$GET,a.hover};
 }
 
 /* Expanding and contracting, mostly for boxes but not necessarily always */
 
-.toggleable_tray_title_heading {
+.toggleable-tray-title-heading {
 	min-height: 20px;
 }
 
-.toggleable_tray_title {
+.toggleable-tray-title {
 	font-size: 1.1em;
 	font-weight: bold;
 	vertical-align: middle;
@@ -1886,10 +1886,10 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 .box .toggleable-tray-button img {
 	margin-right: 0.5em;
 }
-.toggleable_tray_title .toggleable-tray-button img {
+.toggleable-tray-title .toggleable-tray-button img {
 	margin: -2px 0.4em 0 0.4em !important;
 }
-.toggleable-tray-button img, .box .toggleable_tray_title .toggleable-tray-button img {
+.toggleable-tray-button img, .box .toggleable-tray-title .toggleable-tray-button img {
 	width: 20px;
 }
 h3 .toggleable-tray-button img {
@@ -1906,12 +1906,12 @@ h3 .toggleable-tray-button img {
 	font-weight: normal;
 }
 
-.toggleable_tray {
+.toggleable-tray {
 	overflow: hidden;
 }
 
 /* Used very rarely if our toggleable boxes need some extra space at their top) */
-.toggleable_tray_pulldown_spacer {
+.toggleable-tray-pulldown-spacer {
 	padding-top: 1em;
 }
 
@@ -3449,7 +3449,7 @@ div.associated-details {
 a.associated-link / form.associated-link / span.associated-link - a single associated link displayed inline, with CSS-generated brackets around
 p.associated-link / div.associated-link - a single associated link displayed in a block, with CSS-generated brackets around
 ul.associated-links-block-group - a group of associated links displayed in a block, each link on its own line with its own CSS-generated brackets around
-ul.horizontal_links / ul.horizontal_links_comma - a group of associated links displayed in a block, the links on the same line with a CSS-generated separation character; often used to represent block actions; often used in conjunction with associated-links-block-group to get the CSS-generated brackets
+ul.horizontal_links / ul.horizontal-links-comma - a group of associated links displayed in a block, the links on the same line with a CSS-generated separation character; often used to represent block actions; often used in conjunction with associated-links-block-group to get the CSS-generated brackets
 .horizontal-meta-details / .horizontal_buttons / .horizontal_ticker - Additional horizontal list types for things other than links
 .buttons-group - used for a button set, like horizontal_links but for centred buttons
 
@@ -3543,20 +3543,20 @@ ul.associated-links-block-group.horizontal_links>li:before,
 	/* Undoes the li padding defined above */
 	padding-left: 0 !important;
 }
-.horizontal_links_comma li:before {
+.horizontal-links-comma li:before {
 	content: ", \A";
 }
 .horizontal-meta-details li:first-child:before,
 .horizontal_links li:first-child:before,
 .horizontal_buttons li:first-child:before,
 .horizontal_ticker li:first-child:before,
-.horizontal_links_comma li:first-child:before {
+.horizontal-links-comma li:first-child:before {
 	/* Undoes the middot/comma separator */
 	content: "" !important;
 	padding-left: 0 !important;
 	padding-right: 0 !important;
 }
-ul.associated-link, ul.horizontal-meta-details, ul.horizontal_links, ul.horizontal_links_comma, ul.horizontal_buttons, .horizontal_ticker {
+ul.associated-link, ul.horizontal-meta-details, ul.horizontal_links, ul.horizontal-links-comma, ul.horizontal_buttons, .horizontal_ticker {
 	list-style: none;
 	margin: 0;
 	padding: 0;
@@ -3564,19 +3564,19 @@ ul.associated-link, ul.horizontal-meta-details, ul.horizontal_links, ul.horizont
 .horizontal_buttons {
 	list-style: none;
 }
-ul.horizontal_links_comma {
+ul.horizontal-links-comma {
 	vertical-align: baseline !important;
 	width: auto !important;
 }
 ul.associated-link {
 	display: block;
 }
-ul.horizontal-meta-details, ul.horizontal_links, ul.horizontal_links_comma, ul.horizontal_buttons, .horizontal_ticker {
+ul.horizontal-meta-details, ul.horizontal_links, ul.horizontal-links-comma, ul.horizontal_buttons, .horizontal_ticker {
 	/* As these go across horizontally, we need to do this to allow centering to work for the group */
 	display: inline-block !important;
 	width: 100%;
 }
-ul.associated-link>li, .horizontal-meta-details>li, .horizontal_links>li, ul.horizontal_links_comma>li, .horizontal_buttons>li, .horizontal_ticker>li {
+ul.associated-link>li, .horizontal-meta-details>li, .horizontal_links>li, ul.horizontal-links-comma>li, .horizontal_buttons>li, .horizontal_ticker>li {
 	display: inline;
 	margin: 0;
 	padding: 0;

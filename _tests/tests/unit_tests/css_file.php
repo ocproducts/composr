@@ -274,7 +274,7 @@ class css_file_test_set extends cms_test_case
             'menu__',
             'buttons--',
             'box___block_no_entries_',
-            'cns_gcol_',
+            'cns-gcol-',
             'calendar-priority-',
             'cke_',
             'bubble_',

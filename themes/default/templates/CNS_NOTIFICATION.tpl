@@ -8,7 +8,7 @@
 			{!cns:NEW_PT_NOTIFICATION_DETAILS,<span class="cns_notification_type">{TYPE*}</span>,<span class="cns_notification_type_title">{U_TITLE*}</span>,<span class="cns_notification_by">{$?,{$IS_EMPTY,{PROFILE_URL}},{$DISPLAYED_USERNAME*,{BY}},<a href="{PROFILE_URL*}">{$DISPLAYED_USERNAME*,{BY}}</a>}</span>,<span class="cns_notification_time">{DATE*}</span>}
 		</p>
 
-		<div class="toggleable_tray js-tray-content" style="display: none" aria-expanded="false">
+		<div class="toggleable-tray js-tray-content" style="display: none" aria-expanded="false">
 			<div class="cns_notification_post">
 				{$TRUNCATE_LEFT,{POST},1000,0,1}
 			</div>

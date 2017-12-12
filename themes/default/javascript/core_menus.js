@@ -435,7 +435,7 @@
                 if (node.children && node.children.length) {
                     var ul = $dom.create('ul', {
                         id: 'sitemap_menu_children_' + $util.random(),
-                        className: 'toggleable_tray'
+                        className: 'toggleable-tray'
                     });
                     // Show expand icon...
                     $dom.append(span, document.createTextNode(' '));

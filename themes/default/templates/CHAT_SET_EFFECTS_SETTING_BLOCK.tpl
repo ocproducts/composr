@@ -2,13 +2,13 @@
 
 <div data-tpl="chatSetEffectsSettingBlock" data-tpl-params="{+START,PARAMS_JSON,EFFECTS}{_*}{+END}"{+START,IF_PASSED,MEMBER_ID} data-toggleable-tray="{}"{+END}>
 	{+START,IF_PASSED,USERNAME}{+START,IF_PASSED,MEMBER_ID}
-		<div class="toggleable_tray_title js-tray-header">
+		<div class="toggleable-tray-title js-tray-header">
 			{!OVERRIDES_FOR_FRIEND,{USERNAME*}}
 			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{$?,{HAS_SOME},{!CONTRACT},{!EXPAND}}" title="{$?,{HAS_SOME},{!CONTRACT},{!EXPAND}}" src="{$IMG*,1x/trays/{$?,{HAS_SOME},contract,expand}}" /></a>
 		</div>
 	{+END}{+END}
 
-	<div class="toggleable_tray js-tray-content"{+START,IF_PASSED,MEMBER_ID} id="user_{MEMBER_ID*}"{+END}{+START,IF,{$NOT,{HAS_SOME}}} style="display: none"{+END} aria-expanded="false">
+	<div class="toggleable-tray js-tray-content"{+START,IF_PASSED,MEMBER_ID} id="user_{MEMBER_ID*}"{+END}{+START,IF,{$NOT,{HAS_SOME}}} style="display: none"{+END} aria-expanded="false">
 		<div class="wide_table_wrap"><table class="map_table form_table wide_table scrollable_inside">
 			{+START,IF,{$DESKTOP}}
 				<colgroup>
