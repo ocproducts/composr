@@ -465,7 +465,7 @@ function restore_output_state($just_tempcode = false, $merge_current = false, $k
                             $GLOBALS[$var] = new Tempcode();
                         }
                         $GLOBALS[$var]->attach($val);
-                    } elseif (!$merge_current || $GLOBALS[$var] === array() || $GLOBALS[$var] === null || $GLOBALS[$var] === false || $GLOBALS[$var] === '' || $var == 'REFRESH_URL') {
+                    } elseif (!$merge_current || $GLOBALS[$var] === array() || !isset($GLOBALS[$var]) || $GLOBALS[$var] === false || $GLOBALS[$var] === '' || $var == 'REFRESH_URL') {
                         $GLOBALS[$var] = $val;
                     }
                 }
