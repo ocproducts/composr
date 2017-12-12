@@ -1,4 +1,4 @@
-<section class="box box___quiz_box"><div class="box_inner">
+<section class="box box___quiz_box"><div class="box-inner">
 	{+START,SET,content_box_title}
 		{NAME*}
 	{+END}

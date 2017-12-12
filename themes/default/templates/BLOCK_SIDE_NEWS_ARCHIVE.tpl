@@ -5,7 +5,7 @@
 {$SET,news_archive_year,{$?,{$IS_EMPTY,{$_GET,year}},{$?,{$IS_EMPTY,{$METADATA,created}},{$FROM_TIMESTAMP,Y},{$PREG_REPLACE,-.*$,,{$METADATA,created}}},{$_GET,year}}}
 
 <section class="box box___block_side_news_archive" data-toggleable-tray="{ accordion: true }">
-	<div class="box_inner">
+	<div class="box-inner">
 		<h3>{TITLE*}</h3>
 
 		<ul class="compact_list">

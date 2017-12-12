@@ -68,7 +68,7 @@
 			</div>
 		{+END}
 
-		<aside class="box box___news_entry_screen"><nav class="box_inner">
+		<aside class="box box___news_entry_screen"><nav class="box-inner">
 			<p class="lonely_label">
 				{$?,{BLOG},{!BLOG_NEWS_UNDER_THESE},{!NEWS_UNDER_THESE}}
 			</p>

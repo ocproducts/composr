@@ -36,14 +36,14 @@ Knowing how to program, I now have written my code, with my modified files saved
 <br />
 
 <div class="box guid_{_GUID}">
-   <div class="box_inner">
+   <div class="box-inner">
       <h4>{!_STATISTICS}</h4>
 
       <div class="cns_stats_1">
          <table cellpadding="0" cellspacing="0" class="map_table cns_stats_2">
             <colgroup span="2">
-               <col class="cns_bottom_bar_left_column" />
-               <col class="cns_bottom_bar_right_column" />
+               <col class="cns-bottom-bar-left-column" />
+               <col class="cns-bottom-bar-right-column" />
             </colgroup>
 
             <tr>
@@ -62,7 +62,7 @@ Knowing how to program, I now have written my code, with my modified files saved
                </td>
             </tr>
             <tr>
-               <th class="de_th cns-column1 cns_stats_main_1">
+               <th class="de_th cns-column1 cns-stats-main-1">
                   {!FORUM_STATISTICS}:
                </th>
                <td class="cns_stats_main_2">

@@ -17,7 +17,7 @@
 		<h2>Tutorials</h2>
 
 		{+START,LOOP,TUTORIALS}
-			<div class="box"><div class="box_inner">
+			<div class="box"><div class="box-inner">
 				<h3>{TITLE*}</h3>
 
 				<a class="left spaced" href="{URL*}"><img src="{ICON*}" alt="" /></a>

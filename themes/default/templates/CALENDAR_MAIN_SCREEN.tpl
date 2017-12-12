@@ -70,7 +70,7 @@
 	<div class="toggleable_tray js-tray-content" style="display: none" aria-expanded="false">
 		<div class="float-surrounder">
 			{+START,IF_NON_EMPTY,{EVENT_TYPES_1}}
-				<div class="right event-interest-box"><section class="box"><div class="box_inner">
+				<div class="right event-interest-box"><section class="box"><div class="box-inner">
 					<form title="{!INTERESTS}" method="post" action="{INTERESTS_URL*}" autocomplete="off">
 						{$INSERT_SPAMMER_BLACKHOLE}
 
@@ -87,7 +87,7 @@
 				</div></section></div>
 			{+END}
 			{+START,IF_NON_EMPTY,{EVENT_TYPES_2}}
-				<div class="left event-interest-box"><section class="box"><div class="box_inner">
+				<div class="left event-interest-box"><section class="box"><div class="box-inner">
 					<form title="{!FILTER}" action="{$URL_FOR_GET_FORM*,{FILTER_URL}}" method="get" autocomplete="off">
 						{$INSERT_SPAMMER_BLACKHOLE}
 

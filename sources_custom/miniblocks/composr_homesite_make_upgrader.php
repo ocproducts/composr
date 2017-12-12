@@ -84,7 +84,7 @@ $to_version_pretty = get_version_pretty__from_dotted($to_version_dotted);
 
 echo <<<END
     <div class="box">
-        <div class="box_inner">
+        <div class="box-inner">
             <h4>Your upgrade to version {$to_version_pretty}</h4>
 END;
 

@@ -4,7 +4,7 @@
 		{+START,SET,sorting}
 			{$SET,show_sort_button,1}
 			{+START,IF_NON_EMPTY,{SORTING}}
-				<div class="box category_sorter inline_block"><div class="box_inner">
+				<div class="box category_sorter inline_block"><div class="box-inner">
 					{SORTING}
 				</div></div>
 			{+END}

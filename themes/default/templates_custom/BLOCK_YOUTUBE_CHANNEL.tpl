@@ -1,4 +1,4 @@
-<section class="box box___block_main_quotes"><div class="box_inner">
+<section class="box box___block_main_quotes"><div class="box-inner">
 	{+START,IF_NON_EMPTY,{CHANNEL_TITLE}}<h3>{CHANNEL_TITLE*}</h3>{+END}
 	{+START,IF_EMPTY,{CHANNEL_ERROR}}
 		<div class="xhtml_validator_off">

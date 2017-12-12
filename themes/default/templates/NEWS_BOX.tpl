@@ -1,4 +1,4 @@
-<div class="box box___news_box"><div class="box_inner">
+<div class="box box___news_box"><div class="box-inner">
 	{+START,IF,{$HAS_DELETE_PERMISSION,mid,{SUBMITTER},{$MEMBER},cms_news}}
 		{+START,INCLUDE,MASS_SELECT_MARKER}
 			TYPE=news

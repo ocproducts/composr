@@ -8,7 +8,7 @@
 	{+END}
 
 	{+START,IF,{$NOT,{$IS_GUEST}}}
-		<div class="box box___support_tickets_screen"><div class="box_inner vertical_alignment">
+		<div class="box box___support_tickets_screen"><div class="box-inner vertical_alignment">
 			<form title="{!FILTER}" class="float-surrounder js-form-submit-scroll-to-top" id="ticket_type_form" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}" method="get" autocomplete="off">
 				{$HIDDENS_FOR_GET_FORM,{$SELF_URL,0,1},ticket_type_id,open}
 

@@ -1,7 +1,7 @@
 {TITLE}
 
 {+START,IF_NON_EMPTY,{DESCRIPTION}}
-	<div class="box box___catalogue_default_category_screen__description"><div class="box_inner">
+	<div class="box box___catalogue_default_category_screen__description"><div class="box-inner">
 		<div itemprop="description">
 			{$PARAGRAPH,{DESCRIPTION}}
 		</div>
@@ -16,7 +16,7 @@
 {+END}
 
 {+START,IF_NON_EMPTY,{SUBCATEGORIES}}
-	<div class="box box___catalogue_category_screen"><div class="box_inner compacted_subbox_stream">
+	<div class="box box___catalogue_category_screen"><div class="box-inner compacted_subbox_stream">
 		<h2>{!SUBCATEGORIES_HERE}</h2>
 
 		<div>

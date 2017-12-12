@@ -19,7 +19,7 @@
 				</div>
 
 				<div class="rss_main_inner">
-					<div class="box box___opml_xslt"><div class="box_inner">
+					<div class="box box___opml_xslt"><div class="box-inner">
 						<h1><span name="decodeable"><xsl:value-of disable-output-escaping="yes" select="/opml/head/title" /></span></h1>
 
 						<p id="xslt_introduction">{$COMCODE,{!OPML_INDEX_DESCRIPTION}}</p>

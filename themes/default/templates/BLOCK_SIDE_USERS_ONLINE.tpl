@@ -1,4 +1,4 @@
-<section class="box box___block_side_users_online"><div class="box_inner">
+<section class="box box___block_side_users_online"><div class="box-inner">
 	<h3>{!USERS_ONLINE}</h3>
 
 	<p>{!FORUM_NUM_MEMBERS,{MEMBERS}}, {!NUM_GUESTS,{GUESTS*}}</p>

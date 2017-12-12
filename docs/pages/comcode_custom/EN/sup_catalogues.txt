@@ -139,7 +139,7 @@ In our example, the field entries are mapped as follows:
 Clear the contents of [tt]CATALOGUE_cars_FIELDMAP_ENTRY_WRAP.tpl[/tt] file again, so we can write in something proper this time. Paste the below code, which we've prepared as an example:
 [code="HTML"]
 <div class="box" style="width:220px;float:left;margin:10px;">
-	<div class="box_inner">
+	<div class="box-inner">
 		<div style="text-align:center;">
 			<h2><a href="{VIEW_URL*}">{FIELD_0}</a></h2>
 		</div>
@@ -199,7 +199,7 @@ If you wish to write your own CSS, it's best to place it in the [tt]catalogues.c
 When we wrote our example [tt]CATALOGUE_cars_FIELDMAP_ENTRY_WRAP.tpl[/tt] file, we were quite sloppy. We used a lot of inline CSS. We could rewrite the template as follows:
 [code="HTML"]
 <div class="box">
-	<div class="box_inner">
+	<div class="box-inner">
 		<h2><a href="{VIEW_URL*}">{FIELD_0}</a></h2>
 
 		<div>{FIELD_3}</div>
@@ -226,7 +226,7 @@ And put this into our [tt]catalogues.css[/tt] file (at the start or end, don't e
 	text-align: center;
 }
 
-.car_catalogue .box .box_inner {
+.car_catalogue .box .box-inner {
 	width: 200px;
 	height: 110px;
 	overflow: hidden;
@@ -268,7 +268,7 @@ Replace [tt]{FIELD_3}[/tt] with the following this line of code
 Now the contents of the [tt]CATALOGUE_cars_FIELDMAP_ENTRY_WRAP.tpl[/tt] file would look something like:
 [code="HTML"]
 <div class="box" style="width:220px;float:left;margin:10px;">
-	<div class="box_inner">
+	<div class="box-inner">
 		<div style="text-align:center;"><h2><a href="{VIEW_URL}">{FIELD_0}</a></h2></div>
 		<div style="width:200px;height:110px;overflow:hidden;">
 			<img src="{$THUMBNAIL,{FIELD_3_PLAIN},150}" alt="{$STRIP_TAGS,{FIELD_1}}" />

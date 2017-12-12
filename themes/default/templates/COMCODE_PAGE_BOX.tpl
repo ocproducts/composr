@@ -17,7 +17,7 @@
 {+END}
 
 {+START,IF_PASSED,TITLE}
-	<section class="box box___comcode_page_box"><div class="box_inner">
+	<section class="box box___comcode_page_box"><div class="box-inner">
 		{+START,SET,content_box_title}
 			{+START,IF,{GIVE_CONTEXT}}
 				{!CONTENT_IS_OF_TYPE,{!PAGE},{TITLE*}}

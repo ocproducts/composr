@@ -44,7 +44,7 @@
 	margin: 0.5em 0 0 0.5em;
 }
 
-.filedump_thumbnails .box .box_inner {
+.filedump_thumbnails .box .box-inner {
 	width: {$CONFIG_OPTION,thumb_width}px;
 	height: {$CONFIG_OPTION,thumb_width}px;
 	text-align: center;
@@ -54,7 +54,7 @@
 }
 
 /*
-.filedump_thumbnails .box .box_inner:hover .meta {
+.filedump_thumbnails .box .box-inner:hover .meta {
 	opacity: 0.3;
 }
 */
@@ -78,16 +78,16 @@
 	right: 0;
 }
 
-.filedump_thumbnails .box .box_inner p {
+.filedump_thumbnails .box .box-inner p {
 	margin: 0;
 }
 
-.filedump_thumbnails .box .box_inner p img {
+.filedump_thumbnails .box .box-inner p img {
 	display: inline-block;
 	vertical-align: top;
 }
 
-.filedump_thumbnails .box .box_inner .meta {
+.filedump_thumbnails .box .box-inner .meta {
 	position: absolute;
 	left: 0;
 	bottom: 0.5em;

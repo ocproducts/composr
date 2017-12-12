@@ -1,5 +1,5 @@
 {$,
-<section class="box box___block_main_facebook_page"><div class="box_inner">
+<section class="box box___block_main_facebook_page"><div class="box-inner">
 	<h3>{!facebook:FACEBOOK_PAGE}</h3>
 }
 

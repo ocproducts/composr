@@ -2,7 +2,7 @@
 	{$SET,ajax_block_main_personal_galleries_list_wrapper,ajax_block_main_personal_galleries_list_wrapper_{$RAND%}}
 	<div id="{$GET*,ajax_block_main_personal_galleries_list_wrapper}">
 		{+START,IF_NON_EMPTY,{GALLERIES}}
-			<div class="box box___block_main_personal_galleries_list"><div class="box_inner compacted_subbox_stream">
+			<div class="box box___block_main_personal_galleries_list"><div class="box-inner compacted_subbox_stream">
 				<div class="raw_ajax_grow_spot">
 					{GALLERIES}
 				</div>

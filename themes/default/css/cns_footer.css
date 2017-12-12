@@ -3,45 +3,45 @@
  Copyright (c) ocProducts, 2004-2017
 */
 
-.box---block-main-bottom-bar>.box_inner {
+.box---block-main-bottom-bar>.box-inner {
 	margin: 0;
 }
 
-.box---block-main-bottom-bar>.box_inner>h2 {
+.box---block-main-bottom-bar>.box-inner>h2 {
 	margin: 0;
 	padding: 0.3em 0 0.4em 0;
 }
 
-.cns_bottom_bar_left_column {
+.cns-bottom-bar-left-column {
 	width: 10em;
 }
-.cns_bottom_bar_right_column {
+.cns-bottom-bar-right-column {
 	width: 100%;
 }
 /*{+START,CSS_MODE,mobile}*/
-	.cns_bottom_bar_left_column, .cns_bottom_bar_right_column {
+	.cns-bottom-bar-left-column, .cns-bottom-bar-right-column {
 		width: auto;
 	}
 /*{+END}*/
 
-.cns_stats_table {
+.cns-stats-table {
 	border: 0;
 	border-collapse: collapse;
 }
 
-.cns_stats_usersonline_1, .cns_stats_main_1 {
+.cns-stats-usersonline-1, .cns-stats-main-1 {
 	text-align: right !important;
 	padding: 0.8em 0.8em 0.8em 0;
 }
 
-.cns_stats_usersonline_1 .associated-links-block-group {
+.cns-stats-usersonline-1 .associated-links-block-group {
 	text-align: right;
 }
 
-.cns_stats_usersonline_1 .field_name {
+.cns-stats-usersonline-1 .field_name {
 	margin-bottom: 0.1em;
 }
-.cns_stats_usersonline_1 .associated-links-block-group {
+.cns-stats-usersonline-1 .associated-links-block-group {
 	margin-top: 0.1em;
 }
 
@@ -60,7 +60,7 @@
 	width: auto;
 }
 
-.cns_stats_main_1 {
+.cns-stats-main-1 {
 	font-weight: bold;
 }
 

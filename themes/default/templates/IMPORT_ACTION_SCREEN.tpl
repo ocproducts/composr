@@ -39,7 +39,7 @@
 {+START,IF_NON_EMPTY,{MESSAGE}}
 	<hr class="spaced_rule" />
 
-	<section class="box"><div class="box_inner">
+	<section class="box"><div class="box-inner">
 		<p>{MESSAGE*}</p>
 	</div></section>
 {+END}

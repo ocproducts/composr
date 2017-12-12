@@ -1,4 +1,4 @@
-<section class="box box___catalogue_default_grid_entry_wrap"><div class="box_inner">
+<section class="box box___catalogue_default_grid_entry_wrap"><div class="box-inner">
 	<h3><span class="name">{$TRUNCATE_LEFT,{FIELD_0},25,1,1}</h3>
 
 	{+START,SET,TOOLTIP}

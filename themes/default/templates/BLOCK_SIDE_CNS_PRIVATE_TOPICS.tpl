@@ -1,4 +1,4 @@
-<section class="box box___block_side_cns_private_topics"><div class="box_inner">
+<section class="box box___block_side_cns_private_topics"><div class="box-inner">
 	<h3>{!UNSEEN_PERSONAL_POSTS}</h3>
 
 	{+START,IF_NON_EMPTY,{CONTENT}}

@@ -5,7 +5,7 @@
 	<p>{MSG}</p>
 {+END}
 
-<section class="box box___block_main_newsletter_signup" data-require-javascript="['checking', 'newsletter']" data-tpl="blockMainNewsletterSignup" data-tpl-params="{+START,PARAMS_JSON,NID}{_*}{+END}"><div class="box_inner">
+<section class="box box___block_main_newsletter_signup" data-require-javascript="['checking', 'newsletter']" data-tpl="blockMainNewsletterSignup" data-tpl-params="{+START,PARAMS_JSON,NID}{_*}{+END}"><div class="box-inner">
 	<h3>{!NEWSLETTER}{$?,{$NEQ,{NEWSLETTER_TITLE},{!GENERAL}},: {NEWSLETTER_TITLE*}}</h3>
 
 	<form class="js-form-submit-newsletter-check-email-field" title="{!NEWSLETTER}" action="{URL*}" method="post" autocomplete="off">

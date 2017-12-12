@@ -13,7 +13,7 @@
 			<a class="non_link js-tray-onclick-toggle-tray" href="#!">{!CSS_EDITING_TOOLS}</a>
 		</h3>
 		<div class="toggleable_tray js-tray-content" style="display: none" id="c_{FILE_ID*}" aria-expanded="false">
-			<div class="css_editor_rhs_column"><section class="box"><div class="box_inner">
+			<div class="css_editor_rhs_column"><section class="box"><div class="box-inner">
 				<h3>{!COMMON_CSS_PROPERTIES}:</h3>
 
 				<div class="accordion_trayitem js-tray-accordion-item">
@@ -400,14 +400,14 @@
 						<p class="lonely_label">{!SELECTORS_PARENT_PAGE}:</p>
 					</div>
 
-					<section class="box"><div class="box_inner">
+					<section class="box"><div class="box-inner">
 						<h2>{!HELP}</h2>
 						<p>{!CSS_EDITOR_SELECTOR_TIPS}</p>
 					</div></section>
 				</div>
 
 				{+START,IF,{$EQ,{FILE},css/global.css}}
-					<section class="box"><div class="box_inner">
+					<section class="box"><div class="box-inner">
 						<h3>{!QUICK_CSS_CHANGE_LINKS}:</h3>
 						<ul>
 							<li>
@@ -557,7 +557,7 @@
 {$,CSS equation helper}
 
 {+START,IF,{INCLUDE_CSS_EDITING}}
-	<section class="box box__css_equation_helper"><div class="box_inner">
+	<section class="box box__css_equation_helper"><div class="box-inner">
 		<h2>{!CSS_EQUATION_HELPER}</h2>
 
 		<p>{!DESCRIP_CSS_EQUATION_HELPER}</p>

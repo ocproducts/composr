@@ -1,4 +1,4 @@
-<section class="box box___block_no_entries_{$LCASE|,{TITLE}}"><div class="box_inner">
+<section class="box box___block_no_entries_{$LCASE|,{TITLE}}"><div class="box-inner">
 	{+START,IF_NON_EMPTY,{TITLE}}
 		<h3>{TITLE*}</h3>
 	{+END}

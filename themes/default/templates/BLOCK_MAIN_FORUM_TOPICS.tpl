@@ -9,7 +9,7 @@
 
 	<div class="toggleable_tray js-tray-content">
 		{+START,LOOP,TOPICS}
-			<div class="box box___block_main_forum_topics_topic"><div class="box_inner">
+			<div class="box box___block_main_forum_topics_topic"><div class="box-inner">
 				<p class="tiny_paragraph">
 					<a title="{$STRIP_TAGS,{TITLE}}" href="{TOPIC_URL*}">{$TRUNCATE_LEFT,{TITLE},30,0,1}</a>
 				</p>

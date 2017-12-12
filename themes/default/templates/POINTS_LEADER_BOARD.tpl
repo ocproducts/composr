@@ -1,4 +1,4 @@
-<section class="box box___points_leader_board"><div class="box_inner">
+<section class="box box___points_leader_board"><div class="box-inner">
 	<h3>{!POINT_LEADER_BOARD}</h3>
 
 	<p>{!LEADER_BOARD_ABOUT,{LIMIT*}}</p>

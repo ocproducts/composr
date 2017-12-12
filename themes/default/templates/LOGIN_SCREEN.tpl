@@ -6,7 +6,7 @@
 
 	<div class="login_page">
 		{+START,IF,{$HAS_FORUM,1}}
-			<div class="box box___login_screen"><div class="box_inner">
+			<div class="box box___login_screen"><div class="box-inner">
 				{!LOGIN_TEXT,<a href="{JOIN_URL*}"><strong>{!JOIN_HERE}</strong></a>}
 			</div></div>
 		{+END}

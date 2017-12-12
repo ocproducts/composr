@@ -7,7 +7,7 @@
 		</p>
 
 		{+START,IF,{$IN_STR,{PREVIEW},class="box"}}
-			<div class="box box___confirm_screen"><div class="box_inner">
+			<div class="box box___confirm_screen"><div class="box-inner">
 				{PREVIEW}
 			</div></div>
 		{+END}

@@ -10,7 +10,7 @@
 /*{+END}*/
 
 .cns_information_bar_outer>.toggleable_tray {
-	margin: 0; /* Undoes what .box_inner sets, so that our dividers are flush with the box border */
+	margin: 0; /* Undoes what .box-inner sets, so that our dividers are flush with the box border */
 	width: auto !important;
 }
 

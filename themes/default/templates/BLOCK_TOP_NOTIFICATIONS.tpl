@@ -3,7 +3,7 @@
 
 <div data-tpl="blockTopNotifications" data-tpl-params="{+START,PARAMS_JSON,MAX}{_*}{+END}">
 	<div class="global_button_ref_point" id="web_notifications_rel" style="display: none">
-		<div class="box box_arrow box__block_top_notifications_web"><span></span><div class="box_inner">
+		<div class="box box_arrow box__block_top_notifications_web"><span></span><div class="box-inner">
 			<div id="web_notifications_spot" role="log">
 				{+START,IF_EMPTY,{NOTIFICATIONS}}
 					<p class="nothing_here">{!notifications:NO_NOTIFICATIONS}</p>
@@ -26,7 +26,7 @@
 
 	{+START,IF,{$NOT,{$CONFIG_OPTION,pt_notifications_as_web}}}{+START,IF,{$CNS}}
 		<div class="global_button_ref_point" id="pts_rel" style="display: none">
-			<div class="box box_arrow box__block_top_notifications_pts"><span></span><div class="box_inner">
+			<div class="box box_arrow box__block_top_notifications_pts"><span></span><div class="box-inner">
 				<div id="pts_spot" role="log">
 					{+START,IF_EMPTY,{PTS}}
 						<p class="nothing_here">{!cns:NO_INBOX}</p>

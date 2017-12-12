@@ -20,7 +20,7 @@
 			<h2>{!facebook:LOGIN_NATIVE_HEADER,{$SITE_NAME*}}</h2>
 		{+END}{+END}
 
-		<div class="box box___login_screen"><div class="box_inner">
+		<div class="box box___login_screen"><div class="box-inner">
 			{!LOGIN_TEXT,<a href="{JOIN_URL*}"><strong>{!JOIN_HERE}</strong></a>}
 		</div></div>
 

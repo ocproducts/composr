@@ -31,7 +31,7 @@
 
 			<div style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px" class="cns_member_column cns_member_column_c">
 				{+START,IF,{$ADDON_INSTALLED,search}}{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,search}}
-					<div class="box nested"><div class="box_inner">{+START,INCLUDE,MEMBER_BAR_SEARCH}{+END}</div></div>
+					<div class="box nested"><div class="box-inner">{+START,INCLUDE,MEMBER_BAR_SEARCH}{+END}</div></div>
 				{+END}{+END}
 
 				<div class="cns_member_column_last_visit">{!LAST_VISIT,{LAST_VISIT_DATE*}}

@@ -8,7 +8,7 @@
 	{$REQUIRE_JAVASCRIPT,ajax_people_lists}
 
 	{+START,IF_NON_EMPTY,{FILTERS_ROW_A}{FILTERS_ROW_B}}
-		<div class="box advanced_member_search"><div class="box_inner">
+		<div class="box advanced_member_search"><div class="box-inner">
 			<form title="{!SEARCH}" action="{$URL_FOR_GET_FORM*,{$SELF_URL}}" target="_self" method="get" autocomplete="off">
 				{$HIDDENS_FOR_GET_FORM,{$SELF_URL},{BLOCK_ID}_start,{BLOCK_ID}_max,{BLOCK_ID}_sort,{BLOCK_ID}_filter_*}
 
@@ -96,7 +96,7 @@
 			{+START,IF,{$EQ,{DISPLAY_MODE},media}}
 				<div {+START,IF_NON_EMPTY,{ITEM_WIDTH}} style="width: {ITEM_WIDTH*}"{+END} class="image_fader_item">
 					{+START,NO_PREPROCESSING}
-						<div class="box"><div class="box_inner">
+						<div class="box"><div class="box-inner">
 							<h3>{GALLERY_TITLE*}</h3>
 
 							{$BLOCK,block=main_image_fader,param={GALLERY_NAME}}
@@ -116,7 +116,7 @@
 			{+END}
 
 			{+START,IF,{$EQ,{DISPLAY_MODE},boxes}}
-				<div {+START,IF_NON_EMPTY,{ITEM_WIDTH}} style="width: {ITEM_WIDTH*}"{+END}><div class="box"><div class="box_inner">
+				<div {+START,IF_NON_EMPTY,{ITEM_WIDTH}} style="width: {ITEM_WIDTH*}"{+END}><div class="box"><div class="box-inner">
 					{BOX}
 				</div></div></div>
 
@@ -129,7 +129,7 @@
 	{$SET,fancy_screen,0}
 
 	{+START,IF,{$OR,{INCLUDE_FORM},{$IS_NON_EMPTY,{PAGINATION}}}}
-		<div class="box results_table_under"><div class="box_inner float-surrounder">
+		<div class="box results_table_under"><div class="box-inner float-surrounder">
 			{+START,IF,{INCLUDE_FORM}}
 				{+START,IF_NON_EMPTY,{SORT}}
 					<div class="results_table_sorter">

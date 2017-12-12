@@ -11,7 +11,7 @@
 		{+START,IF_NON_EMPTY,{DESCRIPTION}}
 			{+START,IF,{$NOT,{HIDE_POSTS}}}
 				<div class="pe_wiki_page_description" itemprop="description">
-					<div class="box box___wiki_page_screen"><div class="box_inner">
+					<div class="box box___wiki_page_screen"><div class="box-inner">
 						<div>{$,To disassociated headers}
 							{DESCRIPTION}
 						</div>

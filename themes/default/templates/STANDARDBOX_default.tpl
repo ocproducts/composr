@@ -25,7 +25,7 @@
 	<div class="toggleable_tray js-tray-content" style="display: none" aria-expanded="false">
 	{+END}
 	{+START,IF_NOT_IN_ARRAY,OPTIONS,tray_open,tray_closed}
-	<div class="box_inner js-tray-content">
+	<div class="box-inner js-tray-content">
 	{+END}
 		{+START,IF_NOT_IN_ARRAY,OPTIONS,tray_open,tray_closed}{+START,IF_NON_EMPTY,{TITLE}}
 			<h3>{TITLE}</h3>

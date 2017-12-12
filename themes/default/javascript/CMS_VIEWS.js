@@ -442,7 +442,7 @@
             }));
 
             this.containerEl = this.overlayEl.appendChild($dom.create('div', {
-                'className': 'box_inner js-modal-container',
+                'className': 'box-inner js-modal-container',
                 'css': {
                     'width': 'auto',
                     'height': 'auto'

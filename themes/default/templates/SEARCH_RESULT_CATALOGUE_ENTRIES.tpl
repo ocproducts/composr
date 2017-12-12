@@ -1,4 +1,4 @@
-<section class="box box___search_result_catalogue_entries"><div class="box_inner">
+<section class="box box___search_result_catalogue_entries"><div class="box-inner">
 	<h3>{!CATALOGUE}: {TITLE*}</h3>
 
 	{BUILDUP}

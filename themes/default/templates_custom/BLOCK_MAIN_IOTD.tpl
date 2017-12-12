@@ -1,5 +1,5 @@
 <div class="hslice">
-	<section class="box box___block_main_iotd"><div class="box_inner">
+	<section class="box box___block_main_iotd"><div class="box-inner">
 		<h3><span class="entry-title">{!IOTD}</span></h3>
 
 		<div class="entry-content">

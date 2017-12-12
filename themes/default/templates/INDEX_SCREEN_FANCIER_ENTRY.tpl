@@ -1,4 +1,4 @@
-<div class="box index_screen_fancier_entry"><div class="box_inner">
+<div class="box index_screen_fancier_entry"><div class="box-inner">
 	{+START,IF_PASSED,IMG}
 		{+START,IF_NON_EMPTY,{URL}}<a {+START,IF_PASSED,TARGET} target="{TARGET*}"{+END} href="{URL*}"{+START,IF_NON_EMPTY,{TITLE}} title="{TITLE*}"{+END}>{+END}<img class="right float_separation" alt="" src="{$ENSURE_PROTOCOL_SUITABILITY*,{IMG}}" />{+START,IF_NON_EMPTY,{URL}}</a>{+END}
 	{+END}

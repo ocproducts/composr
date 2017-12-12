@@ -11,7 +11,7 @@ Please note that staff may view private messages if they so choose to. For this 
 
 {| floats 50%:47%
 | [code="Comcode"][private="Philip"]This message would not be displayed to anyone except Philip.[/private][/code]
-| [semihtml]<div class="box"><div class="box_inner">Private message from Jim:<br /><blockquote>This message would not be displayed to anyone except Philip.</blockquote></div></div>[/semihtml]
+| [semihtml]<div class="box"><div class="box-inner">Private message from Jim:<br /><blockquote>This message would not be displayed to anyone except Philip.</blockquote></div></div>[/semihtml]
 |}
 
 [title="2"]Bots[/title]
@@ -28,7 +28,7 @@ Invitations should not be used in conjunction with IM conversations -- they are 
 
 {| floats 50%:47%
 | [code="Comcode"][invite="Philip,Allen,Chris"]My Chatroom Name[/invite][/code]
-| [semihtml]<div class="box"><div class="box_inner">Jim has invited you to join him/her in General Chat<br /><ul class="actions-list" role="navigation"><li class="actions_list_strong"><a href="http://example.com">Join them</a></li></ul></div></div>[/semihtml]
+| [semihtml]<div class="box"><div class="box-inner">Jim has invited you to join him/her in General Chat<br /><ul class="actions-list" role="navigation"><li class="actions_list_strong"><a href="http://example.com">Join them</a></li></ul></div></div>[/semihtml]
 |}
 
 [title="2"]New Rooms[/title]

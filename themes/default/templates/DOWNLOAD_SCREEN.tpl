@@ -26,7 +26,7 @@
 					<div class="toggleable_tray js-tray-content" style="display: none" aria-expanded="false">
 					{+END}
 					{+START,IF_NON_PASSED,LICENCE_HYPERLINK}
-					<div class="box_inner">
+					<div class="box-inner">
 					{+END}
 						<div class="download_now" itemprop="significantLinks">
 							{+START,IF,{MAY_DOWNLOAD}}
@@ -142,7 +142,7 @@
 	</div>
 
 	{+START,IF_NON_EMPTY,{IMAGES_DETAILS}}
-		<div class="box box___download_screen"><div class="box_inner">
+		<div class="box box___download_screen"><div class="box-inner">
 			<h2>{!IMAGES}</h2>
 
 			{$REQUIRE_JAVASCRIPT,core_rich_media}

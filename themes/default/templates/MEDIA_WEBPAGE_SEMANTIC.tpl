@@ -1,4 +1,4 @@
-<section class="box box___simple_preview_box"><div class="box_inner">
+<section class="box box___simple_preview_box"><div class="box-inner">
 	{+START,IF_NON_EMPTY,{META_TITLE}}
 		<h3>
 			{META_TITLE`}

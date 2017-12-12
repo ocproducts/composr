@@ -9,7 +9,7 @@
 
 	<p>{!USE_CHAT_RULES,{$PAGE_LINK*,:rules},{$PAGE_LINK*,:privacy}}</p>
 
-	<div class="box box---chat-lobby-screen-rooms box_prominent"><div class="box_inner">
+	<div class="box box---chat-lobby-screen-rooms box_prominent"><div class="box-inner">
 		<h2>{!CHATROOMS_LOBBY_TITLE}</h2>
 
 		<div class="float-surrounder">
@@ -60,7 +60,7 @@
 
 	{+START,IF,{$NOT,{$IS_GUEST}}}
 		<div class="chat-im-convos-wrap">
-			<div class="box box___chat_lobby_screen_im box_prominent"><div class="box_inner">
+			<div class="box box___chat_lobby_screen_im box_prominent"><div class="box-inner">
 				<h2>{!INSTANT_MESSAGING}</h2>
 
 				<div class="float-surrounder chat_im_convos_inner">
@@ -121,7 +121,7 @@
 						</form>
 
 						<div class="alert-box-wrap" id="alert-box-wrap" style="display: none">
-							<section class="box"><div class="box_inner">
+							<section class="box"><div class="box-inner">
 								<h3>{!ALERT}</h3>
 
 								<div id="alert_box"></div>

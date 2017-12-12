@@ -3,7 +3,7 @@
 <div data-require-javascript="buildr" data-tpl="wMainScreen">
 	{TITLE}
 
-	<section class="box box___realm_main"><div class="box_inner">
+	<section class="box box___realm_main"><div class="box-inner">
 		<h2>&ldquo;{REALM_NAME*}&rdquo;, &lsquo;{ROOM_NAME*}&rsquo;, <kbd>{REALM*}:{X*}:{Y*}</kbd></h2>
 
 		<div class="buildr_navigation">
@@ -123,7 +123,7 @@
 
 	<br />
 
-	<section class="box box___room_info"><div class="box_inner">
+	<section class="box box___room_info"><div class="box-inner">
 		<h3>{!W_ROOM_INFORMATION}</h3>
 
 		<div class="float-surrounder">
@@ -219,7 +219,7 @@
 	<br />
 
 	<div class="buildr_centered_contents">
-		<section class="box"><div class="box_inner buildr_icons_wrap">
+		<section class="box"><div class="box-inner buildr_icons_wrap">
 			<h3>{!W_TOOLS}</h3>
 
 			<div class="buildr_icon">

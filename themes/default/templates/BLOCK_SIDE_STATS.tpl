@@ -1,4 +1,4 @@
-<section class="box box___block_side_stats"><div class="box_inner">
+<section class="box box___block_side_stats"><div class="box-inner">
 	<h3>{!STATISTICS}</h3>
 
 	{CONTENT}

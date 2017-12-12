@@ -1,18 +1,18 @@
-<section class="box box---block-main-bottom-bar pale_box"><div class="box_inner">
+<section class="box box---block-main-bottom-bar pale_box"><div class="box-inner">
 	<h2>{!_STATISTICS}</h2>
 
-	<div class="wide_table_wrap"><table class="map_table cns_stats_table wide_table">
+	<div class="wide_table_wrap"><table class="map_table cns-stats-table wide_table">
 		{+START,IF,{$DESKTOP}}
 			<colgroup>
-				<col class="cns_bottom_bar_left_column" />
-				<col class="cns_bottom_bar_right_column" />
+				<col class="cns-bottom-bar-left-column" />
+				<col class="cns-bottom-bar-right-column" />
 			</colgroup>
 		{+END}
 
 		<tbody>
 			{+START,IF_NON_EMPTY,{USERS_ONLINE}}
 				<tr>
-					<th class="de_th cns_stats_usersonline_1">
+					<th class="de_th cns-stats-usersonline-1">
 						<p class="field_name">{!USERS_ONLINE}:</p>
 						{+START,IF_NON_EMPTY,{USERS_ONLINE_URL}}<p class="associated-link associated-links-block-group"><a href="{USERS_ONLINE_URL*}" title="{!USERS_ONLINE}" rel="nofollow">{!DETAILS}</a></p>{+END}
 					</th>
@@ -37,7 +37,7 @@
 			{+END}
 
 			<tr>
-				<th class="de_th cns_stats_main_1">
+				<th class="de_th cns-stats-main-1">
 					<span class="field_name">{!FORUM_STATISTICS}:</span>
 				</th>
 

@@ -5,7 +5,7 @@
 
 	{FORM}
 
-	<div class="box box___theme_image_manage_screen"><div class="box_inner">
+	<div class="box box___theme_image_manage_screen"><div class="box-inner">
 		<h2 class="force_margin">{!ADD} ({!ADVANCED})</h2>
 
 		<p>{!ADDING_THEME_IMAGE}</p>

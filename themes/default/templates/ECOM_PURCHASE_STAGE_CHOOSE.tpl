@@ -16,7 +16,7 @@
 		{+START,LOOP,PRODUCTS}
 			{+START,IF,{$NEQ,{NUM_PRODUCTS_IN_CATEGORY},0}}{+START,IF,{CAN_PURCHASE}}
 				<div class="ecom_product">
-					<div class="box box___ecom_purchase_stage_choose"><div class="box_inner">
+					<div class="box box___ecom_purchase_stage_choose"><div class="box-inner">
 						<h2>{ITEM_NAME*}</h2>
 
 						<div class="float-surrounder">

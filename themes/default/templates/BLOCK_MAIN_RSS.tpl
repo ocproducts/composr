@@ -1,4 +1,4 @@
-<section class="box box___block_main_rss"><div class="box_inner compacted_subbox_stream">
+<section class="box box___block_main_rss"><div class="box-inner compacted_subbox_stream">
 	<h3>{$?,{$IS_NON_EMPTY,{TITLE}},{!NEWS_FROM}: {TITLE`}}</h3>
 
 	<div class="webstandards_checker_off">

@@ -94,7 +94,7 @@
 
 	<hr class="spaced_rule" />
 
-	<div class="box box___redirecte_table_screen"><div class="box_inner">
+	<div class="box box___redirecte_table_screen"><div class="box-inner">
 		<h2>{!NOTES}</h2>
 
 		<p>

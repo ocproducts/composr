@@ -154,7 +154,7 @@
 									{+START,IF,{$DESKTOP}}
 										{+START,IF_NON_EMPTY,{EMOTICONS}}
 											<div class="comments_posting_form_emoticons block_desktop">
-												<div class="box box___comments_posting_form"><div class="box_inner">
+												<div class="box box___comments_posting_form"><div class="box-inner">
 													{EMOTICONS}
 
 													{+START,IF,{$CNS}}

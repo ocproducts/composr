@@ -25,7 +25,7 @@
 {+START,IF,{TICKER}}
 	{$SET,side_news_id,{$RAND}}
 
-	<section class="box box___block_side_rss"><div class="box_inner">
+	<section class="box box___block_side_rss"><div class="box-inner">
 		{+START,IF_NON_EMPTY,{TITLE}}<h3>{TITLE`}</h3>{+END}
 
 		{+START,IF_EMPTY,{CONTENT}}

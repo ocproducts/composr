@@ -1,5 +1,5 @@
 {+START,IF_PASSED,DESCRIPTION}{+START,IF_NON_EMPTY,{DESCRIPTION}}
-	<div class="box box___cns_forum"><div class="box_inner">
+	<div class="box box___cns_forum"><div class="box-inner">
 		<div itemprop="description">
 			{$PARAGRAPH,{DESCRIPTION}}
 		</div>
@@ -15,7 +15,7 @@
 {+END}{+END}
 
 {+START,IF_NON_EMPTY,{$TRIM,{FILTERS}}}
-	<div class="box box___cns_forum"><div class="box_inner">
+	<div class="box box___cns_forum"><div class="box-inner">
 		<span class="cns-pt-category-filters">{!CATEGORIES}:</span> {FILTERS}
 	</div></div>
 {+END}

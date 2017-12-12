@@ -118,7 +118,7 @@
 
 	<h2>{!THEME_EXPORT}</h2>
 
-	<div class="box box___theme_manage_screen"><div class="box_inner help_jumpout">
+	<div class="box box___theme_manage_screen"><div class="box-inner help_jumpout">
 		<p>
 			{!IMPORT_EXPORT_THEME_HELP,{$PAGE_LINK*,adminzone:admin_addons:addon_import}}
 		</p>

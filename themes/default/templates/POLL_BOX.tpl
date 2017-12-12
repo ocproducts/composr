@@ -1,5 +1,5 @@
 {$REQUIRE_JAVASCRIPT,polls}
-<section class="box box___poll_box" data-view="PollBox"><div class="box_inner">
+<section class="box box___poll_box" data-view="PollBox"><div class="box-inner">
 	{+START,SET,content_box_title}
 		{+START,IF,{GIVE_CONTEXT}}
 			{!CONTENT_IS_OF_TYPE,{!POLL},{QUESTION}}

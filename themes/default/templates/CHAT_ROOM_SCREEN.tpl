@@ -74,14 +74,14 @@
 		{$GET,posting_box}
 	{+END}
 
-	<div class="box box___chat_screen_chatters"><p class="box_inner">
+	<div class="box box___chat_screen_chatters"><p class="box-inner">
 		{!USERS_IN_CHATROOM} <span id="chat_members_update">{CHATTERS}</span>
 	</p></div>
 
 	<form title="{$STRIP_TAGS,{!CHAT_OPTIONS_DESCRIPTION}}" class="below-main-chat-window js-form-submit-check-chat-options" method="post" action="{OPTIONS_URL*}" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
-		<div class="box box___chat_screen_options box_prominent"><div class="box_inner">
+		<div class="box box___chat_screen_options box_prominent"><div class="box-inner">
 			<h2>{!OPTIONS}</h2>
 
 			<div class="chat-room-options">

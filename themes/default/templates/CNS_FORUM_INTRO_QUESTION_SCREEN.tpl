@@ -4,7 +4,7 @@
 
 <p class="red_alert" role="alert">{$?,{$IS_NON_EMPTY,{ANSWER}},{!FORUM_INTRO_QUESTION_TEXT},{!FORUM_INTRO_QUESTION_TEXT_ALT}}</p>
 
-<div class="box box___cns_forum_intro_question_screen"><div class="box_inner">
+<div class="box box___cns_forum_intro_question_screen"><div class="box-inner">
 	{+START,IF_NON_EMPTY,{ANSWER}}
 		<h2>{!QUESTION}</h2>
 	{+END}

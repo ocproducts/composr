@@ -9,7 +9,7 @@
 {+START,IF_NON_EMPTY,{ISSUES}}
 	<div class="tracker_issues" data-require-javascript="composr_homesite_support_credits" data-tpl="mantisTracker">
 		{+START,LOOP,ISSUES}
-			<div class="box"><div class="box_inner">
+			<div class="box"><div class="box-inner">
 				<h3>{CATEGORY*}: {SUMMARY*}</h3>
 
 				<div class="tracker_issue_a">

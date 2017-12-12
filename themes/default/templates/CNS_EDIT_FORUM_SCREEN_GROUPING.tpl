@@ -1,13 +1,13 @@
-<div class="cns_edit_forum_grouping">
+<div class="cns-edit-forum-grouping">
 	<div class="float-surrounder">
-		<div class="cns_edit_forum_type">
+		<div class="cns-edit-forum-type">
 			{!FORUM_GROUPING}
 		</div>
-		<div class="cns_edit_forum_title">
+		<div class="cns-edit-forum-title">
 			<h3>{GROUPING*}</h3>
 		</div>
 		{+START,IF_NON_EMPTY,{ORDERINGS}}
-			<div class="cns_edit_forum_orderings">
+			<div class="cns-edit-forum-orderings">
 				{ORDERINGS}
 			</div>
 		{+END}

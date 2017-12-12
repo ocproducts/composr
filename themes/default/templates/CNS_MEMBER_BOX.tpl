@@ -1,5 +1,5 @@
 {+START,IF,{GIVE_CONTEXT}}
-<div class="box"><div class="box_inner">
+<div class="box"><div class="box-inner">
 {+END}
 {+START,IF,{$NOT,{GIVE_CONTEXT}}}
 <div class="cns_member_box">

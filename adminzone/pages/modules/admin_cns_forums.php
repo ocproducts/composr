@@ -236,7 +236,7 @@ class Module_admin_cns_forums extends Standard_crud_module
         if (get_option('is_on_anonymous_posts') == '1') {
             $fields->attach(form_input_tick(do_lang_tempcode('ALLOWS_ANONYMOUS_POSTS'), do_lang_tempcode('DESCRIPTION_ALLOWS_ANONYMOUS_POSTS'), 'allows_anonymous_posts', $allows_anonymous_posts == 1));
         }
-    
+
         $fields->attach(metadata_get_fields('forum', ($id === null) ? null : strval($id)));
 
         if (addon_installed('content_reviews')) {
@@ -372,7 +372,7 @@ class Module_admin_cns_forums extends Standard_crud_module
         }
         $view_url = build_url($view_map, get_module_zone('forumview'));
 
-        $class = (!has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', strval($id))) ? 'access_restricted_in_list' : '';
+        $class = (!has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', strval($id))) ? 'access-restricted-in-list' : '';
 
         $orderings = '';
         if ($parent_order_sub_alpha == 0) {

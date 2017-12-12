@@ -2,7 +2,7 @@
 
 {$SET,RAND_FADER_NEWS,{$RAND}}
 <section class="box box___block_main_image_fader_news" data-tpl="blockMainImageFaderNews" data-tpl-params="{+START,PARAMS_JSON,RAND_FADER_NEWS,NEWS,MILL}{_*}{+END}">
-	<div class="box_inner">
+	<div class="box-inner">
 		{+START,IF_NON_EMPTY,{TITLE}}
 			<h2>{TITLE}</h2>
 		{+END}

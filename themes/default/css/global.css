@@ -956,7 +956,7 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 		display: none;
 	}
 
-	.overlay.alert .box_inner div, .overlay.confirm .box_inner div {
+	.overlay.alert .box-inner div, .overlay.confirm .box-inner div {
 		{$BETA_CSS_PROPERTY,user-select: none;} {$,To stop accidental touching when dismissing}
 	}
 
@@ -1682,22 +1682,22 @@ td>.comcode_quote:first-child, .fake_table_cell>.comcode_quote:first-child, .fak
 .box.nested {
 	border: 1px solid {$GET,pale_border};
 }
-.global-side-panel .box_inner>h1, .global-side-panel .box_inner>h2, .global-side-panel .box_inner>h3, .global-side-panel .box_inner>h4, .global-side-panel .box_inner>h5, .global-side-panel .box_inner>h6, .global-side-panel .box>.toggleable_tray_title {
+.global-side-panel .box-inner>h1, .global-side-panel .box-inner>h2, .global-side-panel .box-inner>h3, .global-side-panel .box-inner>h4, .global-side-panel .box-inner>h5, .global-side-panel .box-inner>h6, .global-side-panel .box>.toggleable_tray_title {
 	background-image: none;
 }
 
-.box>.box_inner, .box>.toggleable_tray {
+.box>.box-inner, .box>.toggleable_tray {
 	margin: 5px; /* not em so that header may be positioned properly */
 }
-.boxless-space .box>.box_inner, .boxless-space .box>.toggleable_tray {
+.boxless-space .box>.box-inner, .boxless-space .box>.toggleable_tray {
 	margin: 0;
 }
-.email_body .box .box_inner { /* Outlook.com does not support margins or complex use of the sibling selector */
+.email_body .box .box-inner { /* Outlook.com does not support margins or complex use of the sibling selector */
 	margin: 0;
 	padding: 5px; /* not em so that header may be positioned properly */
 }
 
-.box_inner>h1, .box_inner>h2, .box_inner>h3, .box_inner>h4, .box_inner>h5, .box_inner>h6, .toggleable_tray_title, #standalone_html_wrap .box .box .box_inner>h2, #standalone_html_wrap .box .box .box_inner>h3 {
+.box-inner>h1, .box-inner>h2, .box-inner>h3, .box-inner>h4, .box-inner>h5, .box-inner>h6, .toggleable_tray_title, #standalone_html_wrap .box .box .box-inner>h2, #standalone_html_wrap .box .box .box-inner>h3 {
 	border-top-left-radius: 3px;
 	border-top-right-radius: 3px;
 	background-image: linear-gradient(to bottom, {$GET,lgrad}, {$GET,dgrad});
@@ -1709,18 +1709,18 @@ td>.comcode_quote:first-child, .fake_table_cell>.comcode_quote:first-child, .fak
 	border: 0;
 	letter-spacing: 0;
 
-	/* .box_inner set us in the wrong position, so fiddle around a bit to move us back to be flush */
+	/* .box-inner set us in the wrong position, so fiddle around a bit to move us back to be flush */
 	margin: -5px 0 5px -5px;
 	padding: 0.4em 0.8em 0.4em 0.3em;
 	width: 100%;
 }
-.box_inner>h2>.right .button_screen {
+.box-inner>h2>.right .button_screen {
 	vertical-align: top;
 }
-.box.box_prominent>.box_inner {
+.box.box_prominent>.box-inner {
 	margin: 0;
 }
-.box.box_prominent>.box_inner>h2 {
+.box.box_prominent>.box-inner>h2 {
 	padding: 0.8em;
 	margin: 0;
 	text-align: left;
@@ -1728,17 +1728,17 @@ td>.comcode_quote:first-child, .fake_table_cell>.comcode_quote:first-child, .fak
 	font-weight: normal;
 }
 
-.box_inner>h1 a, .box_inner>h2 a, .box_inner>h3 a, .box_inner>h4 a, .box_inner>h5 a, .box_inner>h6 a, .toggleable_tray_title a, .box_inner>h1 a:visited, .box_inner>h2 a:visited, .box_inner>h3 a:visited, .box_inner>h4 a:visited, .box_inner>h5 a:visited, .box_inner>h6 a:visited, .toggleable_tray_title a:visited {
+.box-inner>h1 a, .box-inner>h2 a, .box-inner>h3 a, .box-inner>h4 a, .box-inner>h5 a, .box-inner>h6 a, .toggleable_tray_title a, .box-inner>h1 a:visited, .box-inner>h2 a:visited, .box-inner>h3 a:visited, .box-inner>h4 a:visited, .box-inner>h5 a:visited, .box-inner>h6 a:visited, .toggleable_tray_title a:visited {
 	color: inherit;
 	text-decoration: underline;
 }
 a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 	text-decoration: none !important;
 }
-.box_inner>h1 a:hover, .box_inner>h2 a:hover, .box_inner>h3 a:hover, .box_inner>h4 a:hover, .box_inner>h5 a:hover, .box_inner>h6 a:hover, .toggleable_tray_title a:hover {
+.box-inner>h1 a:hover, .box-inner>h2 a:hover, .box-inner>h3 a:hover, .box-inner>h4 a:hover, .box-inner>h5 a:hover, .box-inner>h6 a:hover, .toggleable_tray_title a:hover {
 	color: {$GET,box_title_text_hover};
 }
-.boxless-space .box_inner>h1 a:hover, .boxless-space .box_inner>h2 a:hover, .boxless-space .box_inner>h3 a:hover, .boxless-space .box_inner>h4 a:hover, .boxless-space .box_inner>h5 a:hover, .boxless-space .box_inner>h6 a:hover, .boxless-space .toggleable_tray_title a:hover {
+.boxless-space .box-inner>h1 a:hover, .boxless-space .box-inner>h2 a:hover, .boxless-space .box-inner>h3 a:hover, .boxless-space .box-inner>h4 a:hover, .boxless-space .box-inner>h5 a:hover, .boxless-space .box-inner>h6 a:hover, .boxless-space .toggleable_tray_title a:hover {
 	color: inherit;
 }
 
@@ -1769,10 +1769,10 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 .boxless-space .fp_col_blocks_wrap .box {
 	margin: 0.5em 0; /* Half-sized margins for the fake-columns on front pages, as the overflow blocks margin collapsing */
 }
-.boxless-space .box>.box_inner {
+.boxless-space .box>.box-inner {
 	margin: 0;
 }
-.boxless-space .box>.box_inner>h1, .boxless-space .box>.box_inner>h2, .boxless-space .box>.box_inner>h3, .boxless-space .box>.box_inner>h4, .boxless-space .box>.box_inner>h5, .boxless-space .box>.box_inner>h6, .boxless-space .box>.toggleable_tray_title {
+.boxless-space .box>.box-inner>h1, .boxless-space .box>.box-inner>h2, .boxless-space .box>.box-inner>h3, .boxless-space .box>.box-inner>h4, .boxless-space .box>.box-inner>h5, .boxless-space .box>.box-inner>h6, .boxless-space .box>.toggleable_tray_title {
 	background: url('{$IMG_INLINE;,1x/boxless_title_leadin_rightcomp}') no-repeat !important;
 	color: {$GET,slightly_seeded_right_complement_text} !important;
 	text-align: left;
@@ -1785,23 +1785,23 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 	text-transform: uppercase;
 	border-radius: 0;
 }
-.global-side-panel .boxless-space .box>.box_inner>h1, .global-side-panel .boxless-space .box>.box_inner>h2, .global-side-panel .boxless-space .box>.box_inner>h3, .global-side-panel .boxless-space .box>.box_inner>h4, .global-side-panel .boxless-space .box>.box_inner>h5, .global-side-panel .boxless-space .box>.box_inner>h6,
-.boxless-space .box .box>.box_inner>h1, .boxless-space .box .box>.box_inner>h2, .boxless-space .box .box>.box_inner>h3, .boxless-space .box .box>.box_inner>h4, .boxless-space .box .box>.box_inner>h5, .boxless-space .box .box>.box_inner>h6 {
+.global-side-panel .boxless-space .box>.box-inner>h1, .global-side-panel .boxless-space .box>.box-inner>h2, .global-side-panel .boxless-space .box>.box-inner>h3, .global-side-panel .boxless-space .box>.box-inner>h4, .global-side-panel .boxless-space .box>.box-inner>h5, .global-side-panel .boxless-space .box>.box-inner>h6,
+.boxless-space .box .box>.box-inner>h1, .boxless-space .box .box>.box-inner>h2, .boxless-space .box .box>.box-inner>h3, .boxless-space .box .box>.box-inner>h4, .boxless-space .box .box>.box-inner>h5, .boxless-space .box .box>.box-inner>h6 {
 	background: url('{$IMG_INLINE;,1x/boxless_title_leadin_leftcomp}') no-repeat !important;
 	color: {$GET,slightly_seeded_left_complement_text} !important;
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.boxless-space .box>.box_inner>h1, .boxless-space .box>.box_inner>h2, .boxless-space .box>.box_inner>h3, .boxless-space .box>.box_inner>h4, .boxless-space .box>.box_inner>h5, .boxless-space .box>.box_inner>h6, .boxless-space .box>.toggleable_tray_title {
+	.boxless-space .box>.box-inner>h1, .boxless-space .box>.box-inner>h2, .boxless-space .box>.box-inner>h3, .boxless-space .box>.box-inner>h4, .boxless-space .box>.box-inner>h5, .boxless-space .box>.box-inner>h6, .boxless-space .box>.toggleable_tray_title {
 		background-image: url('{$IMG_INLINE;,2x/boxless_title_leadin_rightcomp}');
 		background-size: 18px 18px;
 	}
-	.global-side-panel .boxless-space .box>.box_inner>h1, .global-side-panel .boxless-space .box>.box_inner>h2, .global-side-panel .boxless-space .box>.box_inner>h3, .global-side-panel .boxless-space .box>.box_inner>h4, .global-side-panel .boxless-space .box>.box_inner>h5, .global-side-panel .boxless-space .box>.box_inner>h6,
-	.boxless-space .box .box>.box_inner>h1, .boxless-space .box .box>.box_inner>h2, .boxless-space .box .box>.box_inner>h3, .boxless-space .box .box>.box_inner>h4, .boxless-space .box .box>.box_inner>h5, .boxless-space .box .box>.box_inner>h6 {
+	.global-side-panel .boxless-space .box>.box-inner>h1, .global-side-panel .boxless-space .box>.box-inner>h2, .global-side-panel .boxless-space .box>.box-inner>h3, .global-side-panel .boxless-space .box>.box-inner>h4, .global-side-panel .boxless-space .box>.box-inner>h5, .global-side-panel .boxless-space .box>.box-inner>h6,
+	.boxless-space .box .box>.box-inner>h1, .boxless-space .box .box>.box-inner>h2, .boxless-space .box .box>.box-inner>h3, .boxless-space .box .box>.box-inner>h4, .boxless-space .box .box>.box-inner>h5, .boxless-space .box .box>.box-inner>h6 {
 		background-image: url('{$IMG_INLINE;,2x/boxless_title_leadin_leftcomp}');
 		background-size: 18px 18px;
 	}
 }
-.global-side-panel .boxless-space .box>.box_inner>h1, .global-side-panel .boxless-space .box>.box_inner>h2, .global-side-panel .boxless-space .box>.box_inner>h3, .global-side-panel .boxless-space .box>.box_inner>h4, .global-side-panel .boxless-space .box>.box_inner>h5, .global-side-panel .boxless-space .box>.box_inner>h6 {
+.global-side-panel .boxless-space .box>.box-inner>h1, .global-side-panel .boxless-space .box>.box-inner>h2, .global-side-panel .boxless-space .box>.box-inner>h3, .global-side-panel .boxless-space .box>.box-inner>h4, .global-side-panel .boxless-space .box>.box-inner>h5, .global-side-panel .boxless-space .box>.box-inner>h6 {
 }
 .boxless-space .buttons-group, .boxless-space .associated-links-block-group, .boxless-space .media_box, .boxless-space .proceed_button {
 	text-align: left;
@@ -1846,13 +1846,13 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 
 /* Boxes under boxes shouldn't have the title style - would be ugly */
 
-.box .box .box_inner>h1, .box .box .box_inner>h2, .box .box .box_inner>h3, .box .box .box_inner>h4, .box .box .box_inner>h5, .box .box .box_inner>h6, .box .box .toggleable_tray_title, #standalone_html_wrap .box .box .box .box_inner>h2, #standalone_html_wrap .box .box .box .box_inner>h3 {
+.box .box .box-inner>h1, .box .box .box-inner>h2, .box .box .box-inner>h3, .box .box .box-inner>h4, .box .box .box-inner>h5, .box .box .box-inner>h6, .box .box .toggleable_tray_title, #standalone_html_wrap .box .box .box .box-inner>h2, #standalone_html_wrap .box .box .box .box-inner>h3 {
 	background: none;
 	color: inherit;
 	padding-left: 0;
 	font-size: 1.1em;
 } /* This rule is not applied to boxes under the top level box in the preview (#standalone_html_wrap) as those should show verbatim */
-.box .box .box_inner>h1 a, .box .box .box_inner>h2 a, .box .box .box_inner>h3 a, .box .box .box_inner>h4 a, .box .box .box_inner>h5 a, .box .box .box_inner>h6 a, .box .box .toggleable_tray_title a, #standalone_html_wrap .box .box .box .box_inner>h2 a, #standalone_html_wrap .box .box .box .box_inner>h3 a {
+.box .box .box-inner>h1 a, .box .box .box-inner>h2 a, .box .box .box-inner>h3 a, .box .box .box-inner>h4 a, .box .box .box-inner>h5 a, .box .box .box-inner>h6 a, .box .box .toggleable_tray_title a, #standalone_html_wrap .box .box .box .box-inner>h2 a, #standalone_html_wrap .box .box .box .box-inner>h3 a {
 	color: {$GET,a.hover};
 }
 
@@ -1866,7 +1866,7 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 	font-size: 1.1em;
 	font-weight: bold;
 	vertical-align: middle;
-	margin: 0; /* Outside .box_inner so remove the margin added above */
+	margin: 0; /* Outside .box-inner so remove the margin added above */
 	padding: 0.3em 0; /* Centered so needs no horizontal padding, which would also mess with our 100% width */
 }
 
@@ -1982,7 +1982,7 @@ h3 .toggleable-tray-button img {
 	border-bottom: 0;
 	margin-bottom: 0.5em;
 }
-.box_inner>h3+.meta_details {
+.box-inner>h3+.meta_details {
 	margin-top: 0;
 }
 
@@ -2005,7 +2005,7 @@ h3 .toggleable-tray-button img {
 .box.overlay {
 	box-shadow: 0px 0px 20px {$GET,dark_shadow};
 }
-.box.overlay.lightbox>.box_inner {
+.box.overlay.lightbox>.box-inner {
 	margin: 0;
 }
 .box.overlay .associated-links-block-group {
@@ -2656,7 +2656,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	padding: 0 3px;
 }
 
-.compacted_subbox_stream.box_inner {
+.compacted_subbox_stream.box-inner {
 	margin-left: 0 !important;
 	margin-right: 0 !important;
 }
@@ -2695,7 +2695,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	padding-top: 1.5em !important;
 	margin: 2em 0;
 }
-.compacted_subbox_stream.less_compact .box_inner>h3 {
+.compacted_subbox_stream.less_compact .box-inner>h3 {
 	font-size: 1.3em;
 	margin-bottom: 1em;
 }
@@ -3401,7 +3401,7 @@ dl.meta_details_list>dt, dl.meta_details_list>dd {
 .staff_actions:hover, body.touch_enabled .staff_actions {
 	opacity: 1.0;
 }
-.staff_actions .box_inner {
+.staff_actions .box-inner {
 	padding-right: 25px;
 }
 .staff_actions .field_name.standard_field_name {
@@ -3885,7 +3885,7 @@ div.proceed_button_left_2 {
 	min-width: 0; /* Works around webkit bug, where it breaks max-width:100% inside because the size calculation has been inverted by the default "min-width: -webkit-min-content;" rule  */
 }
 
-.box_inner>.innocuous_fieldset {
+.box-inner>.innocuous_fieldset {
 	margin: 0;
 }
 
@@ -4728,12 +4728,12 @@ pre .comcode_code_inner {
 	display: none;
 }
 
-body div.comcode_table_of_contents>div.box_inner>ol {
+body div.comcode_table_of_contents>div.box-inner>ol {
 	padding: 0 !important;
 	margin: 0 !important;
 	margin-left: 20px !important;
 }
-body div.comcode_table_of_contents>div.box_inner>ol>li {
+body div.comcode_table_of_contents>div.box-inner>ol>li {
 	margin: 0.2em 0 !important;
 	padding: 0 !important;
 }

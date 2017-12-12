@@ -3,54 +3,54 @@
  Copyright (c) ocProducts, 2004-2017
 */
 
-.access_restricted_in_list {
+.access-restricted-in-list {
 	font-style: italic;
 	color: red;
 }
 
-.cns_edit_forum_grouping {
+.cns-edit-forum-grouping {
 	background-color: {$GET,box_title_background};
 }
 
-.cns_edit_forum_grouping, .cns_edit_forum_forum {
+.cns-edit-forum-grouping, .cns-edit-forum-forum {
 	border: 1px solid {$GET,dark_border};
 	margin-top: -1px;
 	padding: 1em;
 	font-size: 1em;
 }
 
-.cns_edit_forum_forum {
+.cns-edit-forum-forum {
 }
 
-.cns_edit_forum_type {
+.cns-edit-forum-type {
 	float: right;
 }
 
-.cns_edit_forum_title {
+.cns-edit-forum-title {
 	float: left;
 	width: 40%;
 }
 
-.cns_edit_forum_orderings {
+.cns-edit-forum-orderings {
 	padding-top: 1em;
 }
 
-.cns_edit_forum_title h3, .cns_edit_forum_orderings label, .cns_edit_forum_type {
+.cns-edit-forum-title h3, .cns-edit-forum-orderings label, .cns-edit-forum-type {
 	color: {$GET,box_title_text};
 	border: none;
 }
 
-.cns_edit_forum_orderings_f {
+.cns-edit-forum-orderings-f {
 	padding-left: 25px;
 }
 
 /*{+START,CSS_MODE,desktop}*/
-	.cns_edit_forum_under {
+	.cns-edit-forum-under {
 		padding-left: 50px;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.cns_edit_forum_under {
+	.cns-edit-forum-under {
 		padding-left: 10px;
 	}
 /*{+END}*/

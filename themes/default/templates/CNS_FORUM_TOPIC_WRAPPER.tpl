@@ -82,7 +82,7 @@
 {+START,IF,{$NOT,{$WIDE_HIGH}}}
 	{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}
 		{+START,IF,{$DESKTOP}}
-			<div class="box cns-topic-actions block_desktop"><div class="box_inner">
+			<div class="box cns-topic-actions block_desktop"><div class="box-inner">
 				<span class="field_name">
 					<label for="fma_type">{!TOPIC_ACTIONS}: </label>
 				</span>

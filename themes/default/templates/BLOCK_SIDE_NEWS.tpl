@@ -1,4 +1,4 @@
-<section class="box box___block_side_news"><div class="box_inner">
+<section class="box box___block_side_news"><div class="box-inner">
 	{+START,IF_NON_EMPTY,{TITLE}}<h3>{TITLE}</h3>{+END}
 
 	{+START,IF_EMPTY,{CONTENT}}
