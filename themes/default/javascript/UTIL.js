@@ -941,17 +941,6 @@
     var rgxProtocol = /^[a-z0-9\-\.]+:(?=\/\/)/i;
     /**
      * Make a URL scheme-relative
-     * @param url
-     * @returns {string}
-     */
-    $util.schemeRelative = function schemeRelative(url) {
-        url = strVal(url);
-
-        return $util.url(url).toString().replace(rgxProtocol, '');
-    };
-
-    /**
-     * Make a URL scheme-relative (alias of $util.schemeRelative())
      * 'http://example.com' -> '//example.com'
      * @param url
      * @returns {string}

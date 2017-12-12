@@ -11,10 +11,10 @@
      * @return {boolean} - true when it is opened, false when it is closed
      */
     $cms.ui.toggleableTray = function toggleableTray(el, animate) {
-        var $IMG_expand = '{$IMG;,1x/trays/expand}',
-            $IMG_expand2 = '{$IMG;,1x/trays/expand2}',
-            $IMG_contract = '{$IMG;,1x/trays/contract}',
-            $IMG_contract2 = '{$IMG;,1x/trays/contract2}';
+        var $IMG_expand = $util.srl('{$IMG;,1x/trays/expand}'),
+            $IMG_expand2 = $util.srl('{$IMG;,1x/trays/expand2}'),
+            $IMG_contract = $util.srl('{$IMG;,1x/trays/contract}'),
+            $IMG_contract2 = $util.srl('{$IMG;,1x/trays/contract2}');
         
         el = $dom.elArg(el);
         animate = $cms.configOption('enable_animations') ? boolVal(animate, true) : false;
