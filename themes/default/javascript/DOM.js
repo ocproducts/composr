@@ -2468,16 +2468,6 @@
         });
         return result.join('&');
     };
-    
-    /**
-     * @memberof $dom
-     * @param src
-     * @param url
-     * @returns {boolean}
-     */
-    $dom.matchesThemeImage = function matchesThemeImage(src, url) {
-        return $util.srl(src) === $util.srl(url);
-    };
 
     /**
      * Dimension functions
