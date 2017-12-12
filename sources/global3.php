@@ -117,6 +117,7 @@ function init__global3()
         'CSS_OUTPUT_STARTED',
         'CYCLES',
         'TEMPCODE_SETGET',
+        'COMCODE_PARSE_TITLE',
     );
     _load_blank_output_state();
 
@@ -418,7 +419,7 @@ function push_output_state($just_tempcode = false, $true_blank = false)
     global $OUTPUT_STATE_STACK, $OUTPUT_STATE_VARS;
     $current_state = array();
     foreach ($OUTPUT_STATE_VARS as $var) {
-        $current_state[$var] = $GLOBALS[$var];
+        $current_state[$var] = isset($GLOBALS[$var]) ? $GLOBALS[$var] : null;
     }
     array_push($OUTPUT_STATE_STACK, $current_state);
     _load_blank_output_state($just_tempcode, $true_blank);

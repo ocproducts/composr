@@ -138,7 +138,9 @@ function render_comcode_page_box($row, $give_context = true, $include_breadcrumb
     $summary = $_summary[1];
 
     if (get_option('is_on_comcode_page_cache') == '1') { // Try and force a parse of the page
+        push_output_state();
         request_page($row['the_page'], false, $row['the_zone'], null, true);
+        restore_output_state();
     }
 
     $row2 = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages', array('*'), array('the_zone' => $row['the_zone'], 'the_page' => $row['the_page']), '', 1);
