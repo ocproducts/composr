@@ -130,6 +130,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONTINUE_RESTORATION
         CONFIG_OPTION_news_summary_required
         OWNER
+        DEEPER_CONFIGURATION
         LOST_DISK_CONTENT
         DESCRIPTION_LOST_DISK_CONTENT
         TICKETS_STAFF
