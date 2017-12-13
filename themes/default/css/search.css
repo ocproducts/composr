@@ -42,29 +42,29 @@
 	display: block;
 }
 
-.search_option {
+.search-option {
 	padding: 0.2em 0;
 }
 
-.search_option+.left {
+.search-option + .left {
 	max-width: 40em;
 }
 
 /*{+START,CSS_MODE,desktop}*/
-	.search_option label {
+	.search-option label {
 		float: left;
 		width: 250px;
 		max-width: 100%;
 	}
 
-	.search_option_value, .search_option select {
+	.search-option-value, .search-option select {
 		width: 20em;
 		max-width: 100%;
 		font-size: 1em; /* Makes em units consistent for both input types */
 	}
 /*{+END}*/
 
-.search_option * {
+.search-option * {
 	margin-left: 0;
 }
 

@@ -6,7 +6,7 @@
 	</blockquote>
 
 	{+START,IF_NON_EMPTY,{EDIT_URL}}
-		<ul class="horizontal_links associated-links-block-group">
+		<ul class="horizontal-links associated-links-block-group">
 			<li><a href="{EDIT_URL*}" title="{!EDIT}: {TITLE*}">{!EDIT}</a></li>
 		</ul>
 	{+END}

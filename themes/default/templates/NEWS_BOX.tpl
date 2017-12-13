@@ -83,7 +83,7 @@
 		{+START,IF,{$THEME_OPTION,show_content_tagging_inline}}{TAGS}{+END}
 	{+END}
 
-	<ul class="horizontal_links associated-links-block-group">
+	<ul class="horizontal-links associated-links-block-group">
 		<li><a title="{!READ_MORE}: #{ID*}" href="{FULL_URL*}">{!READ_MORE}</a>{+START,IF,{$NOT,{$MATCH_KEY_MATCH,forum:topicview,forum:forumview}}} {+START,IF_PASSED_AND_TRUE,COMMENT_COUNT} <span class="comment_count">{$COMMENT_COUNT,news,{ID}}</span>{+END}{+END}</li>
 	</ul>
 </div></div>

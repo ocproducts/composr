@@ -9,7 +9,7 @@
 
 	<div class="toggleable-tray js-tray-content">
 		<div class="cns-information-bar float-surrounder">
-			<div class="cns_guest_column cns_guest_column_a">
+			<div class="cns-guest-column cns-guest-column-a">
 				<form title="{!_LOGIN}" class="inline js-submit-check-username-for-blankness" action="{LOGIN_URL*}" method="post" autocomplete="on">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
@@ -29,7 +29,7 @@
 								<div class="fb-login-button" data-scope="email{$,Asking for this stuff is now a big hassle as it needs a screencast(s) making: user_birthday,user_about_me,user_hometown,user_location,user_website}{+START,IF,{$CONFIG_OPTION,facebook_auto_syndicate}},publish_actions,publish_pages{+END}"></div>
 							{+END}{+END}
 						{+END}
-						<ul class="horizontal_links associated-links-block-group">
+						<ul class="horizontal-links associated-links-block-group">
 							<li><a href="{JOIN_URL*}">{!_JOIN}</a></li>
 							<li><a data-open-as-overlay="{}" rel="nofollow" href="{FULL_LOGIN_URL*}" title="{!MORE}: {!_LOGIN}">{!MORE}</a></li>
 						</ul>
@@ -37,13 +37,13 @@
 				</form>
 			</div>
 			{+START,IF,{$ADDON_INSTALLED,search}}{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,search}}
-				<div class="cns_guest_column cns_guest_column_c">
+				<div class="cns-guest-column cns-guest-column-c">
 					{+START,INCLUDE,MEMBER_BAR_SEARCH}{+END}
 				</div>
 			{+END}{+END}
 
-			<nav class="cns_guest_column cns_member_column_d">
-				{$,<p class="cns_member_column_title">{!VIEW}:</p>}
+			<nav class="cns-guest-column cns-member-column-d">
+				{$,<p class="cns-member-column-title">{!VIEW}:</p>}
 				<ul class="actions-list">
 					<li><a data-open-as-overlay="{}" href="{NEW_POSTS_URL*}">{!POSTS_SINCE}</a></li>
 					<li><a data-open-as-overlay="{}" href="{UNANSWERED_TOPICS_URL*}">{!UNANSWERED_TOPICS}</a></li>

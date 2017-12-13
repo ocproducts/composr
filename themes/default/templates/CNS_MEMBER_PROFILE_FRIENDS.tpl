@@ -1,7 +1,7 @@
 {$BLOCK,block=main_friends_list,member_id={MEMBER_ID},max=12}
 
 {+START,IF_NON_EMPTY,{ADD_FRIEND_URL}{REMOVE_FRIEND_URL}}
-	<ul class="horizontal_links associated-links-block-group force_margin">
+	<ul class="horizontal-links associated-links-block-group force_margin">
 		{+START,IF_NON_EMPTY,{ADD_FRIEND_URL}}
 			<li><a title="{$STRIP_TAGS,{!cns:_ADD_AS_FRIEND,{$USERNAME*,{MEMBER_ID}}}}" href="{ADD_FRIEND_URL*}">{!cns:_ADD_AS_FRIEND,{$USERNAME*,{MEMBER_ID},1}}</a></li>
 		{+END}

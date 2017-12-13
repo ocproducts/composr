@@ -1088,7 +1088,7 @@
 
         // Are we dealing with a touch device?
         if ($cms.browserMatches('touch_enabled')) {
-            document.body.classList.add('touch_enabled');
+            document.body.classList.add('touch-enabled');
         }
 
         if ($cms.seesJavascriptErrorAlerts()) {

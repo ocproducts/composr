@@ -1,7 +1,7 @@
 {$,Forum/private topic search}
 {+START,IF,{$EQ,{$PAGE},forumview}}
 	{+START,IF,{$EQ,{$_GET,type},pt}}
-		<div class="cns_search_box">
+		<div class="cns-search-box">
 			<form title="{!SEARCH}" action="{$URL_FOR_GET_FORM*,{$PAGE_LINK*,_SEARCH:search:results:cns_own_pt,1}}" method="get" autocomplete="off">
 				{$HIDDENS_FOR_GET_FORM,{$PAGE_LINK,_SEARCH:search:results:cns_own_pt,1}}
 
@@ -12,7 +12,7 @@
 		</div>
 	{+END}
 	{+START,IF,{$NEQ,{$_GET,type},pt}}
-		<div class="cns_search_box">
+		<div class="cns-search-box">
 			<form title="{!SEARCH}" action="{$URL_FOR_GET_FORM*,{$PAGE_LINK*,_SEARCH:search:results:cns_posts:search_under={$_GET,id},1}}" method="get" autocomplete="off">
 				{$HIDDENS_FOR_GET_FORM,{$PAGE_LINK,_SEARCH:search:results:cns_posts:search_under={$_GET,id},1}}
 
@@ -26,7 +26,7 @@
 
 {$,Topic search}
 {+START,IF,{$EQ,{$PAGE},topicview}}
-	<div class="cns_search_box">
+	<div class="cns-search-box">
 		<form title="{!SEARCH}" action="{$URL_FOR_GET_FORM*,{$PAGE_LINK,_SEARCH:search:results:cns_within_topic:search_under={$_GET,id}}}" method="get" autocomplete="off">
 			{$HIDDENS_FOR_GET_FORM,{$PAGE_LINK,_SEARCH:search:results:cns_within_topic:search_under={$_GET,id}}}
 
@@ -39,7 +39,7 @@
 
 {$,General search}
 {+START,IF,{$NEQ,{$PAGE},forumview,topicview}}
-	<div class="cns_search_box">
+	<div class="cns-search-box">
 		<form title="{!SEARCH}" action="{$URL_FOR_GET_FORM*,{$PAGE_LINK,_SEARCH:search:results}}" method="get" autocomplete="off">
 			{$HIDDENS_FOR_GET_FORM,{$PAGE_LINK,_SEARCH:search:results}}
 

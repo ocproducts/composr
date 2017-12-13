@@ -59,7 +59,7 @@
 					</tbody>
 				</table>
 
-				<ul class="horizontal_links associated-links-block-group">
+				<ul class="horizontal-links associated-links-block-group">
 					<li><img src="{$IMG*,icons/24x24/feedback/comment}" srcset="{$IMG*,icons/48x48/feedback/comment} 2x" alt="" /> <a href="{VIEW_URL*}">{$COMMENT_COUNT,images,{ID}}</a></li>
 				</ul>
 

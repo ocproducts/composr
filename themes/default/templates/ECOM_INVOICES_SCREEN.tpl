@@ -45,7 +45,7 @@
 						{TRANSACTION_BUTTON}
 					{+END}
 					{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,admin_invoices}}
-						<ul class="horizontal_links horiz-field-sep">
+						<ul class="horizontal-links horiz-field-sep">
 							<li><a class="button_screen_item menu___generic_admin__delete" href="{$PAGE_LINK*,adminzone:admin_invoices:delete:{INVOICE_ID}}"><span>{!DELETE}: #{INVOICE_ID}</span></a></li>
 							{+START,IF,{FULFILLABLE}}
 								<li><a title="{!MARK_AS_FULFILLED}: #{INVOICE_ID}" href="{$PAGE_LINK*,adminzone:admin_invoices:fulfill:{INVOICE_ID}}">{!FULFILL}</a></li>

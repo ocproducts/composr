@@ -31,7 +31,7 @@
 		{$PARAGRAPH,{CONTENT}}
 
 		{+START,IF_NON_EMPTY,{LINKS}}
-			<ul class="horizontal_links associated-links-block-group">
+			<ul class="horizontal-links associated-links-block-group">
 				{+START,LOOP,LINKS}
 					<li>{_loop_var}</li>
 				{+END}

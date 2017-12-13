@@ -9,7 +9,7 @@
 	{+END}
 
 	{+START,IF_NON_EMPTY,{SEND_URL}{VIEW_URL}}
-		<ul class="horizontal_links associated-links-block-group force_margin">
+		<ul class="horizontal-links associated-links-block-group force_margin">
 			{+START,IF_NON_EMPTY,{SEND_URL}}
 				<li><a rel="archives" href="{SEND_URL*}">{!NEW_PRIVATE_TOPIC_SHORT}</a></li>
 			{+END}

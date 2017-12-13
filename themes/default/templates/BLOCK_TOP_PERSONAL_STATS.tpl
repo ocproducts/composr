@@ -20,7 +20,7 @@
 			{+END}
 
 			{+START,IF_NON_EMPTY,{LINKS}}
-				<ul class="associated-links-block-group horizontal_links">
+				<ul class="associated-links-block-group horizontal-links">
 					{LINKS}
 				</ul>
 			{+END}

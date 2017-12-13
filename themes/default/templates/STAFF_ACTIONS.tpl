@@ -31,6 +31,6 @@
 			{+START,IF_PASSED,STAFF_ACTIONS_TITLE}{STAFF_ACTIONS_TITLE*}:{+END}
 			{+START,IF_NON_PASSED,STAFF_ACTIONS_TITLE}{!CONTROL_FUNCTIONS}:{+END}
 		</span>
-		<ul class="horizontal_links">{$GET,staff_actions}</ul>
+		<ul class="horizontal-links">{$GET,staff_actions}</ul>
 	</aside></div>
 {+END}

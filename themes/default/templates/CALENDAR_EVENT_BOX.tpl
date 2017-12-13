@@ -18,7 +18,7 @@
 		</div>
 	{+END}
 
-	<ul class="horizontal_links associated-links-block-group force_margin">
+	<ul class="horizontal-links associated-links-block-group force_margin">
 		<li><a title="{TITLE*}: {!READ_MORE}" class="more" href="{URL*}">{!READ_MORE}</a></li>
 	</ul>
 </div></div>

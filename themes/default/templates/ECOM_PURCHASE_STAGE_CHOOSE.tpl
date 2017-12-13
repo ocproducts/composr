@@ -37,7 +37,7 @@
 							{+END}
 
 							{+START,IF_PASSED,URL}
-								<ul class="horizontal_links associated-links-block-group">
+								<ul class="horizontal-links associated-links-block-group">
 									<li><a title="{!CHOOSE}: {ITEM_NAME*}" href="{URL*}">{!CHOOSE}</a></li>
 								</ul>
 							{+END}

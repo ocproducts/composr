@@ -41,6 +41,6 @@
 	{+END}
 </div>
 
-<ul class="horizontal_links associated-links-block-group">
+<ul class="horizontal-links associated-links-block-group">
 	<li>{FULL_URL}</li>
 </ul>

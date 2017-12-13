@@ -7,13 +7,13 @@
 	<div class="toggleable-tray js-tray-content">
 		<div class="cns-information-bar float-surrounder">
 			{+START,IF_NON_EMPTY,{AVATAR_URL}}
-				<div style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px" class="cns_member_column cns_member_column_a">
+				<div style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px" class="cns-member-column cns-member-column-a">
 					<img alt="{!AVATAR}" title="{!AVATAR}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{AVATAR_URL}}" />
 				</div>
 			{+END}
 
-			<div style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px" class="cns_member_column cns_member_column_b">
-				<p class="cns_member_column_title">{!WELCOME_BACK,<a href="{PROFILE_URL*}">{$DISPLAYED_USERNAME*,{USERNAME}}</a>}</p>
+			<div style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px" class="cns-member-column cns-member-column-b">
+				<p class="cns-member-column-title">{!WELCOME_BACK,<a href="{PROFILE_URL*}">{$DISPLAYED_USERNAME*,{USERNAME}}</a>}</p>
 				{+START,IF,{$NOT,{$IS_HTTPAUTH_LOGIN}}}
 					<div class="inline_desktop">
 						<form class="inline associated-link" title="{!LOGOUT}" method="post" action="{LOGOUT_URL*}" autocomplete="off"><input class="button_hyperlink" type="submit" value="{!LOGOUT}" /></form>
@@ -29,12 +29,12 @@
 				</dl>
 			</div>
 
-			<div style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px" class="cns_member_column cns_member_column_c">
+			<div style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px" class="cns-member-column cns-member-column-c">
 				{+START,IF,{$ADDON_INSTALLED,search}}{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,search}}
 					<div class="box nested"><div class="box-inner">{+START,INCLUDE,MEMBER_BAR_SEARCH}{+END}</div></div>
 				{+END}{+END}
 
-				<div class="cns_member_column_last_visit">{!LAST_VISIT,{LAST_VISIT_DATE*}}
+				<div class="cns-member-column-last-visit">{!LAST_VISIT,{LAST_VISIT_DATE*}}
 					<ul class="meta_details_list">
 						<li>{!NEW_TOPICS,{NEW_TOPICS*}}</li>
 						<li>{!NEW_POSTS,{NEW_POSTS*}}</li>
@@ -42,10 +42,10 @@
 				</div>
 			</div>
 
-			<nav style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px" class="cns_member_column cns_member_column_d">
-				{$,<p class="cns_member_column_title">{!VIEW}:</p>}
+			<nav style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px" class="cns-member-column cns-member-column-d">
+				{$,<p class="cns-member-column-title">{!VIEW}:</p>}
 				<ul class="actions-list">
-					<!--<li><a href="{PRIVATE_TOPIC_URL*}">{!PRIVATE_TOPICS}{+START,IF_NON_EMPTY,{PT_EXTRA}} <span class="cns_member_column_pts">{PT_EXTRA}</span>{+END}</a></li>-->
+					<!--<li><a href="{PRIVATE_TOPIC_URL*}">{!PRIVATE_TOPICS}{+START,IF_NON_EMPTY,{PT_EXTRA}} <span class="cns-member-column-pts">{PT_EXTRA}</span>{+END}</a></li>-->
 					<li><a {+START,IF,{$DESKTOP}} data-open-as-overlay="{}"{+END} href="{NEW_POSTS_URL*}">{!POSTS_SINCE}</a></li>
 					<li><a {+START,IF,{$DESKTOP}} data-open-as-overlay="{}"{+END} href="{UNREAD_TOPICS_URL*}">{!TOPICS_UNREAD}</a></li>
 					<li><a {+START,IF,{$DESKTOP}} data-open-as-overlay="{}"{+END} href="{RECENTLY_READ_URL*}">{!RECENTLY_READ}</a></li>

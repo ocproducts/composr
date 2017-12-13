@@ -15,7 +15,7 @@
 	{+END}
 
 	{+START,IF,{$AND,{$HAS_ACTUAL_PAGE_ACCESS,users_online},{$CNS}}}
-		<ul class="horizontal_links associated-links-block-group">
+		<ul class="horizontal-links associated-links-block-group">
 			<li><a href="{$PAGE_LINK*,_SEARCH:users_online}" title="{!USERS_ONLINE}">{!DETAILS}</a></li>
 		</ul>
 	{+END}

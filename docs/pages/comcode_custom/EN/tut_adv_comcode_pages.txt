@@ -175,7 +175,7 @@ And then alter the [tt]BLOCK_MAIN_QUOTES.tpl[/tt] template like...
         </blockquote>
 
         {+START,IF_NON_EMPTY,{EDIT_URL}}
-            <ul class="horizontal_links associated-links-block-group">
+            <ul class="horizontal-links associated-links-block-group">
                 <li>{EDIT_URL*}</li>
             </ul>
         {+END}

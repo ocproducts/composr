@@ -8,7 +8,7 @@
 		{+END}
 
 		<div class="image_fader_news_pic">
-			<div class="img_thumb_wrap">
+			<div class="img-thumb-wrap">
 				<a id="image_fader_news_url_{$GET%,RAND_FADER_NEWS}" href="#!"><img id="image_fader_news_{$GET,RAND_FADER_NEWS}" src="{$IMG*,blank}" alt="" /></a>
 			</div>
 		</div>

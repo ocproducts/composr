@@ -31,7 +31,7 @@
 			{+END}
 
 			{+START,IF_NON_EMPTY,{ARCHIVE_URL}{SUBMIT_URL}{RSS_URL}{ATOM_URL}}
-				<ul class="horizontal_links associated-links-block-group">
+				<ul class="horizontal-links associated-links-block-group">
 					{+START,IF_NON_EMPTY,{ARCHIVE_URL}}
 						<li><a rel="archives" href="{ARCHIVE_URL*}">{!VIEW_ARCHIVE}</a></li>
 					{+END}

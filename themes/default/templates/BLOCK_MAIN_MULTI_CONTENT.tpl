@@ -1,7 +1,7 @@
 {+START,IF,{$NEQ,{$COMMA_LIST_GET,{BLOCK_PARAMS},raw},1}}
 	{+START,SET,links}
 		{+START,IF_NON_EMPTY,{SUBMIT_URL}{ARCHIVE_URL}}
-			<ul class="horizontal_links associated-links-block-group">
+			<ul class="horizontal-links associated-links-block-group">
 				{+START,IF_NON_EMPTY,{SUBMIT_URL}}
 					<li><a rel="add" href="{SUBMIT_URL*}">{ADD_STRING*}</a></li>
 				{+END}

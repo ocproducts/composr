@@ -45,7 +45,7 @@
 						</ul>
 					{+END}
 
-					<ul class="horizontal_links associated-links-block-group">
+					<ul class="horizontal-links associated-links-block-group">
 						<li><img alt="" src="{$IMG*,icons/24x24/buttons/enable_notifications}" srcset="{$IMG*,icons/48x48/buttons/enable_notifications} 2x" /> <a href="{SUBSCRIBE_URL*}">{!SUBSCRIBE_EVENT}</a></li>
 					</ul>
 				</div></div>
