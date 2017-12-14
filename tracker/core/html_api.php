@@ -1370,7 +1370,7 @@ function html_button_bug_change_status( $p_bug_id ) {
 	if( count( $t_enum_list ) > 0 ) {
 
 		# resort the list into ascending order after noting the key from the first element (the default)
-		$t_default_arr = each( $t_enum_list );
+		$t_default_arr = @each( $t_enum_list );
 		$t_default = $t_default_arr['key'];
 		ksort( $t_enum_list );
 		reset( $t_enum_list );

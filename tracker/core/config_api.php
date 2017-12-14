@@ -135,9 +135,9 @@ function config_get( $p_option, $p_default = null, $p_user = null, $p_project = 
 			if( isset( $g_cache_config[$p_option] ) ) {
 				$t_found = false;
 				reset( $t_users );
-				while(( list(, $t_user ) = each( $t_users ) ) && !$t_found ) {
+				while(( list(, $t_user ) = @each( $t_users ) ) && !$t_found ) {
 					reset( $t_projects );
-					while(( list(, $t_project ) = each( $t_projects ) ) && !$t_found ) {
+					while(( list(, $t_project ) = @each( $t_projects ) ) && !$t_found ) {
 						if( isset( $g_cache_config[$p_option][$t_user][$t_project] ) ) {
 							$t_value = $g_cache_config[$p_option][$t_user][$t_project];
 							$t_found = true;
@@ -234,9 +234,9 @@ function config_get_access( $p_option, $p_user = null, $p_project = null ) {
 	$t_found = false;
 	if( isset( $g_cache_config[$p_option] ) ) {
 		reset( $t_users );
-		while(( list(, $t_user ) = each( $t_users ) ) && !$t_found ) {
+		while(( list(, $t_user ) = @each( $t_users ) ) && !$t_found ) {
 			reset( $t_projects );
-			while(( list(, $t_project ) = each( $t_projects ) ) && !$t_found ) {
+			while(( list(, $t_project ) = @each( $t_projects ) ) && !$t_found ) {
 				if( isset( $g_cache_config[$p_option][$t_user][$t_project] ) ) {
 					$t_access = $g_cache_config_access[$p_option][$t_user][$t_project];
 					$t_found = true;
@@ -288,9 +288,9 @@ function config_is_set( $p_option, $p_user = null, $p_project = null ) {
 
 	$t_found = false;
 	reset( $t_users );
-	while(( list(, $t_user ) = each( $t_users ) ) && !$t_found ) {
+	while(( list(, $t_user ) = @each( $t_users ) ) && !$t_found ) {
 		reset( $t_projects );
-		while(( list(, $t_project ) = each( $t_projects ) ) && !$t_found ) {
+		while(( list(, $t_project ) = @each( $t_projects ) ) && !$t_found ) {
 			if( isset( $g_cache_config[$p_option][$t_user][$t_project] ) ) {
 				$t_found = true;
 			}

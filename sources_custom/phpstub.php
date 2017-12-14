@@ -3677,17 +3677,6 @@ function decbin($number)
 }
 
 /**
- * Return the current key and value pair from an array and advance the array cursor.
- *
- * @param  array $array Array we're progressing through.
- * @return array (key, value) pair.
- */
-function each($array)
-{
-    return array();
-}
-
-/**
  * Determine whether a variable is empty (empty being defined differently for different types).
  *
  * @param  mixed $var Input.
@@ -3880,7 +3869,7 @@ function log10($arg)
 /**
  * Converts an (IPv4) Internet network address into a string in Internet standard dotted format.
  *
- * @param  string $proper_address The IP address.
+ * @param  integer $proper_address The IP address.
  * @return integer The long form.
  */
 function long2ip($proper_address)

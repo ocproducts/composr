@@ -3049,7 +3049,7 @@ class xmlrpcval
 			echo "$key => $val<br />";
 			if ($key=='array')
 			{
-				while (list($key2,$val2)=each($val))
+				while (list($key2,$val2)=@each($val))
 				{
 					echo "-- $key2 => $val2<br />";
 				}
@@ -3170,7 +3170,7 @@ class xmlrpcval
 		//if (is_object($o) && (get_class($o) == 'xmlrpcval' || is_subclass_of($o, 'xmlrpcval')))
 		//{
 		reset($this->me);
-		list($typ,$val)=each($this->me);
+		list($typ,$val)=@each($this->me);
 		return '<value>'.$this->serializedata($typ,$val,$charset_encoding)."</value>\n";
 		//}
 	}
@@ -3183,7 +3183,7 @@ class xmlrpcval
 		//{
 		$ar=$o->me;
 		reset($ar);
-		list($typ,$val)=each($ar);
+		list($typ,$val)=@each($ar);
 		return '<value>'.$this->serializedata($typ,$val)."</value>\n";
 		//}
 	}
@@ -3232,7 +3232,7 @@ class xmlrpcval
 	 */
 	function structeach()
 	{
-		return each($this->me['struct']);
+		return @each($this->me['struct']);
 	}
 
 	// DEPRECATED! this code looks like it is very fragile and has not been fixed
@@ -3241,7 +3241,7 @@ class xmlrpcval
 	{
 		// UNSTABLE
 		reset($this->me);
-		list($a,$b)=each($this->me);
+		list($a,$b)=@each($this->me);
 		// contributed by I Sofer, 2001-03-24
 		// add support for nested arrays to scalarval
 		// i've created a new method here, so as to
@@ -3284,7 +3284,7 @@ class xmlrpcval
 	function scalarval()
 	{
 		reset($this->me);
-		list(,$b)=each($this->me);
+		list(,$b)=@each($this->me);
 		return $b;
 	}
 
@@ -3298,7 +3298,7 @@ class xmlrpcval
 	function scalartyp()
 	{
 		reset($this->me);
-		list($a,)=each($this->me);
+		list($a,)=@each($this->me);
 		if ($a==$GLOBALS['xmlrpcI4'])
 		{
 			$a=$GLOBALS['xmlrpcInt'];
@@ -3435,7 +3435,7 @@ function php_xmlrpc_decode($xmlrpc_val,$options=array())
 			if (in_array('extension_api',$options))
 			{
 				reset($xmlrpc_val->me);
-				list($typ,$val)=each($xmlrpc_val->me);
+				list($typ,$val)=@each($xmlrpc_val->me);
 				switch ($typ)
 				{
 					case 'dateTime.iso8601':
@@ -3588,7 +3588,7 @@ function &php_xmlrpc_encode($php_val,$options=array())
 			else
 			{
 				$arr=array();
-				while (list($k,$v)=each($php_val))
+				while (list($k,$v)=@each($php_val))
 				{
 					$arr[$k]=php_xmlrpc_encode($v,$options);
 				}
