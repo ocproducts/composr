@@ -1545,6 +1545,7 @@ function do_block_get_cache_identifier($cache_on, $map)
             foreach ($_cache_on as $on) {
                 $_cache_identifier[] = $on;
             }
+            $_cache_identifier[] = tacit_ssl();
         }
     }
 
