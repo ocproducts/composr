@@ -67,7 +67,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         $as = $GLOBALS['FORUM_DRIVER']->get_guest_id();
     }
 
-    if (count($attachments) == 0) {
+    if (empty($attachments)) {
         $attachments = null;
     }
     if (is_null($extra_cc_addresses)) {

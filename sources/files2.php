@@ -914,10 +914,6 @@ function check_shared_space_usage($extra)
  */
 function _http_download_file($url, $byte_limit = null, $trigger_error = true, $no_redirect = false, $ua = 'Composr', $post_params = null, $cookies = null, $accept = null, $accept_charset = null, $accept_language = null, $write_to_file = null, $referer = null, $auth = null, $timeout = 6.0, $raw_post = false, $files = null, $extra_headers = null, $http_verb = null, $raw_content_type = 'application/xml')
 {
-    if ($files === null) {
-        $files = array();
-    }
-
     // Normalise the URL
     require_code('urls');
     $url = str_replace(' ', '%20', $url);
@@ -1080,7 +1076,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
     $put = mixed();
     $put_path = mixed();
     $put_no_delete = false;
-    if ((!is_null($post_params)) || ($raw_post) || (count($files) != 0)) {
+    if ((!is_null($post_params)) || ($raw_post) || (!empty($files))) {
         if (is_null($post_params)) {
             $post_params = array(); // POST is implied
         }

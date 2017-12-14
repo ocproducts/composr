@@ -852,6 +852,7 @@ class phpstub_accuracy_test_set extends cms_test_case
                 'apache_get_version',
                 'apache_get_modules',
                 'getallheaders',
+                'each',
             );
 
             $defined = get_defined_functions();

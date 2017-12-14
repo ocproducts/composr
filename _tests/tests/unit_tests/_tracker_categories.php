@@ -16,7 +16,7 @@
 /**
  * Composr test case class (unit testing).
  */
-class tracker_categories_test_set extends cms_test_case
+class _tracker_categories_test_set extends cms_test_case
 {
     public function testHasAddons()
     {

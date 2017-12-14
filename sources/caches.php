@@ -28,6 +28,9 @@ function init__caches()
     global $BLOCK_CACHE_ON_CACHE;
     $BLOCK_CACHE_ON_CACHE = null;
 
+    global $ALLOW_DOUBLE_DECACHE;
+    $ALLOW_DOUBLE_DECACHE = false;
+
     if (!defined('CACHE_AGAINST_NOTHING_SPECIAL')) {
         // These are ways we might enhance block caching with standardised (queryable) additional caching restraints
         define('CACHE_AGAINST_NOTHING_SPECIAL', 0);
@@ -363,8 +366,11 @@ class Self_learning_cache
         }
 
         static $done_once = false;
-        if ($done_once) {
-            return;
+        global $ALLOW_DOUBLE_DECACHE;
+        if (!$ALLOW_DOUBLE_DECACHE) {
+            if ($done_once) {
+                return;
+            }
         }
         $done_once = true;
 
@@ -478,8 +484,11 @@ function persistent_cache_delete($key, $substring = false)
 function erase_persistent_cache()
 {
     static $done_once = false;
-    if ($done_once) {
-        return;
+    global $ALLOW_DOUBLE_DECACHE;
+    if (!$ALLOW_DOUBLE_DECACHE) {
+        if ($done_once) {
+            return;
+        }
     }
     $done_once = true;
 

@@ -154,8 +154,11 @@ function erase_block_cache($erase_cache_signatures_too = false, $theme = null)
 function erase_comcode_cache()
 {
     static $done_once = false; // Useful to stop it running multiple times in admin_cleanup module, as this code takes time
-    if ($done_once) {
-        return;
+    global $ALLOW_DOUBLE_DECACHE;
+    if (!$ALLOW_DOUBLE_DECACHE) {
+        if ($done_once) {
+            return;
+        }
     }
 
     cms_profile_start_for('erase_comcode_cache');
@@ -217,8 +220,11 @@ function erase_thumb_cache()
 function erase_cached_language()
 {
     static $done_once = false;
-    if ($done_once) {
-        return;
+    global $ALLOW_DOUBLE_DECACHE;
+    if (!$ALLOW_DOUBLE_DECACHE) {
+        if ($done_once) {
+            return;
+        }
     }
     $done_once = true;
 

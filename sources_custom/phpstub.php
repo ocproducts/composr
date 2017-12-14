@@ -416,9 +416,9 @@ function class_exists($class_name)
  * Clears file status cache.
  *
  * @param  boolean $clear_realcache_path Whether to clear the realpath cache or not.
- * @param  PATH $filename Clear the realpath and the stat cache for a specific filename only; only used if clear_realpath_cache is true.
+ * @param  ?PATH $filename Clear the realpath and the stat cache for a specific filename only; only used if clear_realpath_cache is true (null: clear for all).
  */
-function clearstatcache($clear_realcache_path, $filename)
+function clearstatcache($clear_realcache_path = false, $filename = null)
 {
 }
 
