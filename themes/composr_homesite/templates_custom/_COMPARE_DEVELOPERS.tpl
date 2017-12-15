@@ -14,4 +14,5 @@
 	<li>We find and fix bugs remarkably quickly, usually within just a couple of working days</li>
 	<li>Everything we do is free and online: no need to invest in extra books or commercial addons</li>
 	<li>Composr is secure-by-design, with layers of security and an inbuilt Web Application Firewall</li>
+	<li>Download our <a href="{$BASE_URL*}/uploads/website_specific/compo.sr/composr-for-web-developers.pdf">PDF presentation</a></li>
 </ul>
