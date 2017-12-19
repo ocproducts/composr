@@ -316,8 +316,6 @@ class Module_cms_blogs extends Standard_crud_module
             $fields2->attach(form_input_multi_list(do_lang_tempcode('SECONDARY_CATEGORIES'), do_lang_tempcode('DESCRIPTION_SECONDARY_CATEGORIES', 'news'), 'news_category', $cats2));
         }
 
-        $fields2->attach(form_input_upload_multi_source(do_lang_tempcode('IMAGE'), do_lang_tempcode('DESCRIPTION_NEWS_IMAGE_OVERRIDE'), $hidden, 'image', 'newscats', false, $image));
-
         if ((addon_installed('calendar')) && (has_privilege(get_member(), 'scheduled_publication_times'))) {
             $fields2->attach(form_input_date__scheduler(do_lang_tempcode('PUBLICATION_TIME'), do_lang_tempcode('DESCRIPTION_PUBLICATION_TIME'), 'schedule', false, true, true, $scheduled, intval(date('Y')) - 1970 + 2, 1970));
         }
@@ -443,9 +441,6 @@ class Module_cms_blogs extends Standard_crud_module
         $allow_trackbacks = post_param_integer('allow_trackbacks', 0);
         $notes = post_param_string('notes', '');
 
-        require_code('themes2');
-        $url = resize_rep_image(post_param_image('image', 'uploads/repimages', 'newscats', false));
-
         $schedule = post_param_date('schedule');
         if ((addon_installed('calendar')) && (has_privilege(get_member(), 'scheduled_publication_times')) && (!is_null($schedule)) && ($schedule > time())) {
             $validated = 0;
@@ -462,7 +457,7 @@ class Module_cms_blogs extends Standard_crud_module
 
         $metadata = actual_metadata_get_fields('news', null);
 
-        $id = add_news($title, $news, $author, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, $metadata['add_time'], $metadata['submitter'], $metadata['views'], null, null, $url);
+        $id = add_news($title, $news, $author, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, $metadata['add_time'], $metadata['submitter'], $metadata['views'], null, null, '');
 
         require_code('feedback2');
         send_trackbacks(post_param_string('send_trackbacks', ''), $title, $news);
@@ -529,12 +524,7 @@ class Module_cms_blogs extends Standard_crud_module
 
         $this->donext_type = $main_news_category;
 
-        if (!fractional_edit()) {
-            require_code('themes2');
-            $url = resize_rep_image(post_param_image('image', 'uploads/repimages', 'newscats', false));
-        } else {
-            $url = STRING_MAGIC_NULL;
-        }
+        $url = STRING_MAGIC_NULL;
 
         $owner = $GLOBALS['SITE_DB']->query_select_value_if_there('news_categories', 'nc_owner', array('id' => $main_news_category)); // if_there in case somehow category setting corrupted
         if ((!is_null($owner)) && ($owner != get_member())) {
