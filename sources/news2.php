@@ -876,7 +876,7 @@ function _news_import_grab_images_and_fix_links($download_images, &$data, $impor
     // Go through other items, in case this news article/page is linking to them and needs a fixed link
     foreach ($imported_news as $item) {
         if (array_key_exists('full_url', $item)) {
-            $num_matches = preg_match_all('#<a\s*([^<>]*)href="' . str_replace('#', '\#', preg_quote(escape_html($item['full_url']))) . '"([^<>]*)>(.*)</a>#isU', $data, $matches);
+            $num_matches = preg_match_all('#<a\s*([^<>]*)href="' . preg_quote(escape_html($item['full_url']), '#') . '"([^<>]*)>(.*)</a>#isU', $data, $matches);
             for ($i = 0; $i < $num_matches; $i++) {
                 if (($matches[1][$i] == '') && ($matches[2][$i] == '') && (strpos($data, '[html]') === false)) {
                     $data = str_replace($matches[0][$i], '[page="_SEARCH:news:view:' . strval($item['import_id']) . '"]' . $matches[3][$i] . '[/page]', $data);

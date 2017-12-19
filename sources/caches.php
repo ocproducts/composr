@@ -28,6 +28,9 @@ function init__caches()
     global $BLOCK_CACHE_ON_CACHE;
     $BLOCK_CACHE_ON_CACHE = null;
 
+    global $ALLOW_DOUBLE_DECACHE;
+    $ALLOW_DOUBLE_DECACHE = false;
+
     if (!defined('CACHE_AGAINST_NOTHING_SPECIAL')) {
         // These are ways we might enhance block caching with standardised (queryable) additional caching restraints
         define('CACHE_AGAINST_NOTHING_SPECIAL', 0);
@@ -140,6 +143,7 @@ class Self_learning_cache
     private $pending_save = false;
     public $paused = false;
     public $empty = true;
+    private $already_invalidated = false;
 
     /**
      * Constructor. Initialise our cache.
@@ -338,6 +342,11 @@ class Self_learning_cache
             return;
         }
 
+        if ($this->already_invalidated) {
+            return;
+        }
+        $this->already_invalidated = true;
+
         if (!is_null($this->path)) {
             @unlink($this->path);
         } else {
@@ -355,6 +364,15 @@ class Self_learning_cache
         if (!Self_learning_cache::is_on()) {
             return;
         }
+
+        static $done_once = false;
+        global $ALLOW_DOUBLE_DECACHE;
+        if (!$ALLOW_DOUBLE_DECACHE) {
+            if ($done_once) {
+                return;
+            }
+        }
+        $done_once = true;
 
         $dh = @opendir(get_custom_file_base() . '/caches/self_learning');
         if ($dh !== false) {
@@ -466,8 +484,11 @@ function persistent_cache_delete($key, $substring = false)
 function erase_persistent_cache()
 {
     static $done_once = false;
-    if ($done_once) {
-        return;
+    global $ALLOW_DOUBLE_DECACHE;
+    if (!$ALLOW_DOUBLE_DECACHE) {
+        if ($done_once) {
+            return;
+        }
     }
     $done_once = true;
 
@@ -598,7 +619,7 @@ function get_cache_entry($codename, $cache_identifier, $special_cache_flags, $tt
 
     global $SMART_CACHE;
     $test = (get_page_name() == 'admin_addons'/*special case*/) ? array() : $SMART_CACHE->get('blocks_needed');
-    if (count($test) < 20) {
+    if (($test === null) || (count($test) < 20)) {
         $SMART_CACHE->append('blocks_needed', serialize($det));
     } else {
         $SMART_CACHE->get('blocks_needed', false); // Disable it for this smart-cache bucket, we probably have some block(s) with the cache signature varying too much

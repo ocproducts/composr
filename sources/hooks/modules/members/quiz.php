@@ -150,9 +150,10 @@ class Hook_members_quiz
             {
                     $entry['q_points_for_passing']=$out_of;
             }*/
+            $just_entry_row = db_map_restrict(array('id' => $entry['e_id']) + $entry, array('id', 'q_start_text'));
             $categories[$category_title]['QUIZZES'][$entry['id']] = array(
                 'QUIZ_NAME' => $quiz_name,
-                'QUIZ_START_TEXT' => get_translated_tempcode('quizzes', $entry, 'q_start_text'),
+                'QUIZ_START_TEXT' => get_translated_tempcode('quizzes', $just_entry_row, 'q_start_text'),
                 'QUIZ_ID' => strval($entry['id']),
                 'QUIZ_URL' => build_url(array('page' => 'quiz', 'type' => 'do', 'id' => $entry['id']), get_module_zone('quiz')),
                 'ENTRY_ID' => strval($entry['e_id']),

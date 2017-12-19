@@ -206,7 +206,7 @@ class Hook_task_find_broken_urls
             foreach ($pages as $page => $type) {
                 $COMCODE_BROKEN_URLS = array();
 
-                $file_path = zone_black_magic_filterer(((strpos($type, '_custom') !== false) ? get_custom_file_base() : get_file_base()) . '/' . $zone . '/pages/' . $type . '/' . $page);
+                $file_path = zone_black_magic_filterer(((strpos($type, '_custom') !== false) ? get_custom_file_base() : get_file_base()) . (($zone == '') ? '' : '/') . $zone . '/pages/' . $type . '/' . $page);
                 $comcode = file_get_contents($file_path);
                 comcode_to_tempcode($comcode, null, true);
 

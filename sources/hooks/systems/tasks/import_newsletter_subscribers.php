@@ -57,6 +57,8 @@ class Hook_task_import_newsletter_subscribers
         }
         rewind($myfile);
 
+        set_mass_import_mode();
+
         $email_index = 0;
         $forename_index = null;
         $surname_index = null;
@@ -71,6 +73,10 @@ class Hook_task_import_newsletter_subscribers
         $count = 0;
         $count2 = 0;
 
+        $j = 0;
+
+        $has_interest_levels = (get_option('interest_levels') == '1');
+
         do {
             $i = 0;
             $_csv_data = array();
@@ -83,10 +89,10 @@ class Hook_task_import_newsletter_subscribers
             }
 
             // Process data
-            foreach ($_csv_data as $i => $csv_line) {
-                if (($i <= 1) && (count($csv_line) >= 1) && (!is_null($csv_line[$email_index])) && (strpos($csv_line[$email_index], '@') === false)) {
+            foreach ($_csv_data as $csv_line) {
+                if (($j == 0) && (count($csv_line) >= 1) && (!is_null($csv_line[$email_index])) && (strpos($csv_line[$email_index], '@') === false)) {
                     foreach ($csv_line as $j => $val) {
-                        if (in_array(strtolower($val), array('e-mail', 'email', 'email address', 'e-mail address', strtolower(do_lang('EMAIL_ADDRESS'))))) {
+                        if (in_array(strtolower($val), array('e-mail', 'email', 'email address', 'e-mail address', strtolower(do_lang('EMAIL_ADDRESS')), 'to'))) {
                             $email_index = $j;
                         }
                         if (in_array(strtolower($val), array('forename', 'forenames', 'first name', strtolower(do_lang('FORENAME'))))) {
@@ -117,15 +123,18 @@ class Hook_task_import_newsletter_subscribers
                             $level_index = $j;
                         }
                     }
+                    $j++;
                     continue;
                 }
+
+                $j++;
 
                 if ((count($csv_line) >= 1) && (!is_null($csv_line[$email_index])) && (strpos($csv_line[$email_index], '@') !== false)) {
                     $email = $csv_line[$email_index];
                     $forename = ((!is_null($forename_index)) && (array_key_exists($forename_index, $csv_line))) ? $csv_line[$forename_index] : '';
                     if ($forename == $email) {
                         $forename = ucfirst(strtolower(preg_replace('#^(\w+)([^\w].*)?$#', '\\1', $forename)));
-                        if (in_array($forename, array('Sales', 'Info', 'Business', 'Enquiries', 'Admin'))) {
+                        if (in_array($forename, array('Sales', 'Info', 'Business', 'Enquiries', 'Admin', 'Webmaster'))) {
                             $forename = '';
                         }
                     }
@@ -177,7 +186,9 @@ class Hook_task_import_newsletter_subscribers
                                 $count++;
                             }
                         } else {
-                            edit_newsletter_subscriber($test, null, null, null, null, null, null, $forename, $surname);
+                            if (($forename != '') || ($surname != '')) {
+                                edit_newsletter_subscriber($test, null, null, null, null, null, null, $forename, $surname);
+                            }
 
                             if ($level == 0) {
                                 $count++;
@@ -185,10 +196,12 @@ class Hook_task_import_newsletter_subscribers
                         }
 
                         // In case $email is already a subscriber, we delete first
-                        $GLOBALS['SITE_DB']->query_delete('newsletter_subscribe', array(
-                            'newsletter_id' => $newsletter_id,
-                            'email' => $email,
-                        ), '', 1);
+                        if (($has_interest_levels) || ($level == 0)) {
+                            $GLOBALS['SITE_DB']->query_delete('newsletter_subscribe', array(
+                                'newsletter_id' => $newsletter_id,
+                                'email' => $email,
+                            ), '', 1);
+                        }
                         if ($level == 0) { // Allow deletion CSV via setting subscription level to 0
                             $cnt = $GLOBALS['SITE_DB']->query_select_value('newsletter_subscribe', 'COUNT(*)', array('email' => $email));
                             if ($cnt == 0) { // No newsletters for them now, so remove entirely
@@ -201,7 +214,7 @@ class Hook_task_import_newsletter_subscribers
                                 'newsletter_id' => $newsletter_id,
                                 'the_level' => $level,
                                 'email' => $email,
-                            ));
+                            ), false, true/*in case already exists*/);
                         }
                     }
 

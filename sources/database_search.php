@@ -676,11 +676,9 @@ function generate_text_summary($_temp_summary, $words_searched)
                     // Adjust all stores occurrence offsets
                     foreach ($all_occurrences as $i => $occ) {
                         if ($occ[0] > $last_pos) {
-                            $all_occurrences[$i][0] += strlen($extra_pre) + strlen($extra_post);
-                            $all_occurrences[$i][1] += strlen($extra_pre) + strlen($extra_post);
+                            $all_occurrences[$i] = array($all_occurrences[$i][0] + strlen($extra_pre) + strlen($extra_post), $all_occurrences[$i][0] + strlen($extra_pre) + strlen($extra_post));
                         } elseif ($occ[0] > $content_bit_pos) {
-                            $all_occurrences[$i][0] += strlen($extra_pre);
-                            $all_occurrences[$i][1] += strlen($extra_pre);
+                            $all_occurrences[$i] = array($all_occurrences[$i][0] + strlen($extra_pre), $all_occurrences[$i][0] + strlen($extra_pre));
                         }
                     }
 

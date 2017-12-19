@@ -1076,7 +1076,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
     $put = mixed();
     $put_path = mixed();
     $put_no_delete = false;
-    if ((!is_null($post_params)) || ($raw_post) || (count($files) != 0)) {
+    if ((!is_null($post_params)) || ($raw_post) || (!empty($files))) {
         if (is_null($post_params)) {
             $post_params = array(); // POST is implied
         }

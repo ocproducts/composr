@@ -627,7 +627,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         $as = $GLOBALS['FORUM_DRIVER']->get_guest_id();
     }
 
-    if (count($attachments) == 0) {
+    if (empty($attachments)) {
         $attachments = null;
     }
     if (is_null($extra_cc_addresses)) {
@@ -1219,7 +1219,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     } else {
         $worked = false;
         foreach ($to_email as $i => $to) {
-            //exit($headers."\n".$sending_message);
+            $bak = $GLOBALS['SUPPRESS_ERROR_DEATH'];
             $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
 
             $additional = '';
@@ -1256,7 +1256,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             if ((!$worked) && (isset($php_errormsg))) {
                 $error = $php_errormsg;
             }
-            $GLOBALS['SUPPRESS_ERROR_DEATH'] = false;
+            $GLOBALS['SUPPRESS_ERROR_DEATH'] = $bak;
         }
     }
 

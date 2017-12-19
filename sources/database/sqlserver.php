@@ -107,9 +107,10 @@ class Database_Static_sqlserver extends Database_super_sqlserver
 
         $this->rewrite_to_unicode_syntax($query);
 
+        $bak = $GLOBALS['SUPPRESS_ERROR_DEATH'];
         $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
         $results = sqlsrv_query($db, $query, array(), array('Scrollable' => 'static'));
-        $GLOBALS['SUPPRESS_ERROR_DEATH'] = false;
+        $GLOBALS['SUPPRESS_ERROR_DEATH'] = $bak;
         if (($results === false) && (strtoupper(substr($query, 0, 12)) == 'INSERT INTO ') && ((strpos($query, '(id, ') !== false) || (strpos($query, '(_id, ') !== false))) {
             $pos = strpos($query, '(');
             $table_name = substr($query, 12, $pos - 13);

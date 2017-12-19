@@ -177,7 +177,7 @@ function php_function_allowed($function)
             return false;
         }
     }
-    return (@preg_match('#(\s|,|^)' . str_replace('#', '\#', preg_quote($function)) . '(\s|$|,)#', strtolower(@ini_get('disable_functions') . ',' . ini_get('suhosin.executor.func.blacklist') . ',' . ini_get('suhosin.executor.include.blacklist') . ',' . ini_get('suhosin.executor.eval.blacklist'))) == 0);
+    return (@preg_match('#(\s|,|^)' . preg_quote($function, '#') . '(\s|$|,)#', strtolower(@ini_get('disable_functions') . ',' . ini_get('suhosin.executor.func.blacklist') . ',' . ini_get('suhosin.executor.include.blacklist') . ',' . ini_get('suhosin.executor.eval.blacklist'))) == 0);
 }
 
 /**
@@ -192,7 +192,10 @@ function get_html_trace()
     if (is_string($x)) {
         @print($x);
     }
+
+    $bak = $GLOBALS['SUPPRESS_ERROR_DEATH'];
     $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
+
     $_trace = debug_backtrace();
     $trace = array();
     foreach ($_trace as $i => $stage) {
@@ -248,7 +251,8 @@ function get_html_trace()
         }
         $trace[] = array('TRACES' => $traces);
     }
-    $GLOBALS['SUPPRESS_ERROR_DEATH'] = false;
+
+    $GLOBALS['SUPPRESS_ERROR_DEATH'] = $bak;
 
     return do_template('STACK_TRACE', array('_GUID' => 'da6c0ef0d8d793807d22e51555d73929', 'TRACE' => $trace, 'POST' => ''));
 }
