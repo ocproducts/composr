@@ -181,6 +181,8 @@ class Block_side_news
             $_title = protect_from_escaping(escape_html($map['title']));
         }
 
+        $base_url = get_base_url();
+
         foreach ($news as $myrow) {
             if (has_category_access(get_member(), 'news', strval($myrow['news_category']))) {
                 $url_map = array('page' => 'news', 'type' => 'view', 'id' => $myrow['id']);
@@ -212,11 +214,21 @@ class Block_side_news
                         $NEWS_CATS_CACHE[$myrow['news_category']] = $_news_cats[0];
                     }
                 }
-                $category = get_translated_text($NEWS_CATS_CACHE[$myrow['news_category']]['nc_title']);
+                $news_cat_row = $NEWS_CATS_CACHE[$myrow['news_category']];
+
+                $category = get_translated_text($news_cat_row['nc_title']);
+                if ($myrow['news_image'] != '') {
+                    $img_raw = $myrow['news_image'];
+                    if (url_is_local($img_raw)) {
+                        $img_raw = $base_url . '/' . $img_raw;
+                    }
+                } else {
+                    $img_raw = get_news_category_image_url($news_cat_row['nc_img']);
+                }
 
                 $content->attach(do_template('BLOCK_SIDE_NEWS_SUMMARY', array(
                     '_GUID' => 'f7bc5288680e68641ca94ca4a3111d4a',
-                    'IMG_URL' => get_news_category_image_url($NEWS_CATS_CACHE[$myrow['news_category']]['nc_img']),
+                    'IMG_URL' => $img_raw,
                     'AUTHOR' => $myrow['author'],
                     'ID' => strval($myrow['id']),
                     'SUBMITTER' => strval($myrow['submitter']),
@@ -231,6 +243,7 @@ class Block_side_news
             }
         }
 
+        // Work out management URLs
         $tmp = array('page' => 'news', 'type' => 'browse');
         if ($select != '*') {
             $tmp[is_numeric($select) ? 'id' : 'select'] = $select;
