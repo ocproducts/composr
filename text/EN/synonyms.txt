@@ -146,3 +146,4 @@ empty	blank
 merchant retailer seller	business	company	firm	enterprise	corporation	store	shop
 customer	payer	buyer	purchaser
 empty	blank	purge	flush
+raw	plain	pure

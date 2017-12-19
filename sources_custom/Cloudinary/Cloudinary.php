@@ -11,7 +11,7 @@
  * @param  boolean $accept_errors Whether to accept upload errors
  * @return ?array A pair: the URL and the filename (NULL: did nothing)
  */
-public function cloudinary_transfer_upload($attach_name, $upload_folder, $filename, $obfuscate = 0, $accept_errors = false)
+function cloudinary_transfer_upload($attach_name, $upload_folder, $filename, $obfuscate = 0, $accept_errors = false)
 {
     require_code('Cloudinary/Uploader');
 
@@ -119,7 +119,7 @@ class Cloudinary {
             if (isset($uri["query"])) {
                 parse_str($uri["query"], $q_params);
             }
-            $private_cdn = isset($uri["path"]) && $uri["path"] != "/"; 
+            $private_cdn = isset($uri["path"]) && $uri["path"] != "/";
             $config = array_merge($q_params, array(
                             "cloud_name" => $uri["host"],
                             "api_key" => $uri["user"],
@@ -164,22 +164,22 @@ class Cloudinary {
             return array($value);
         }
     }
-    
+
     public static function encode_array($array) {
       return implode(",", Cloudinary::build_array($array));
     }
-    
+
     public static function encode_double_array($array) {
       $array = Cloudinary::build_array($array);
       if (count($array) > 0 && !is_array($array[0])) {
         return Cloudinary::encode_array($array);
       } else {
-        $array = array_map('Cloudinary::encode_array', $array);        
+        $array = array_map('Cloudinary::encode_array', $array);
       }
-      
+
       return implode("|", $array);
     }
-    
+
     public static function encode_assoc_array($array) {
       if (Cloudinary::is_assoc($array)){
         $encoded = array();
@@ -191,7 +191,7 @@ class Cloudinary {
         return $array;
       }
     }
-    
+
     private static function is_assoc($array) {
       if (!is_array($array)) return FALSE;
       return $array != array_values($array);
@@ -263,23 +263,23 @@ class Cloudinary {
         $offset = Cloudinary::split_range(Cloudinary::option_consume($options, "offset"));
         if (!empty($offset)) {
             $start_offset = Cloudinary::norm_range_value($offset[0]);
-            $end_offset = Cloudinary::norm_range_value($offset[1]);  
+            $end_offset = Cloudinary::norm_range_value($offset[1]);
         }
-        
+
         $video_codec = Cloudinary::process_video_codec_param(Cloudinary::option_consume($options, "video_codec"));
 
         $params = array(
-          "a"   => $angle, 
-          "b"   => $background, 
-          "bo"  => $border, 
-          "c"   => $crop, 
-          "co"  => $color, 
+          "a"   => $angle,
+          "b"   => $background,
+          "bo"  => $border,
+          "c"   => $crop,
+          "co"  => $color,
           "dpr" => $dpr,
           "du"  => $duration,
-          "e"   => $effect, 
+          "e"   => $effect,
           "eo"  => $end_offset,
-          "fl"  => $flags, 
-          "h"   => $height, 
+          "fl"  => $flags,
+          "h"   => $height,
           "so"  => $start_offset,
           "t"   => $named_transformation,
           "vc"  => $video_codec,
@@ -331,7 +331,7 @@ class Cloudinary {
         }
         return implode("/", array_filter($base_transformations));
     }
-    
+
     private static function split_range($range) {
         if (is_array($range) && count($range) >= 2) {
             return array($range[0], end($range));
@@ -346,9 +346,9 @@ class Cloudinary {
         if (empty($value)) {
           return NULL;
         }
-        
+
         preg_match(Cloudinary::RANGE_VALUE_RE, $value, $matches);
-        
+
         if (empty($matches)) {
           return NULL;
         }
@@ -416,12 +416,12 @@ class Cloudinary {
         $sources = Cloudinary::finalize_source($source, $format, $url_suffix);
         $source = $sources["source"];
         $source_to_sign = $sources["source_to_sign"];
-        
+
         if (strpos($source_to_sign, "/") && !preg_match("/^https?:\//", $source_to_sign) && !preg_match("/^v[0-9]+/", $source_to_sign) && empty($version)) {
             $version = "1";
         }
         $version = $version ? "v" . $version : NULL;
-        
+
         $signature = NULL;
         if ($sign_url) {
           $to_sign = implode("/", array_filter(array($transformation, $source_to_sign)));
@@ -429,10 +429,10 @@ class Cloudinary {
           $signature = 's--' . substr($signature, 0, 8) . '--';
         }
 
-        $prefix = Cloudinary::unsigned_download_url_prefix($source, $cloud_name, $private_cdn, $cdn_subdomain, $secure_cdn_subdomain, 
+        $prefix = Cloudinary::unsigned_download_url_prefix($source, $cloud_name, $private_cdn, $cdn_subdomain, $secure_cdn_subdomain,
           $cname, $secure, $secure_distribution);
 
-        return preg_replace("/([^:])\/+/", "$1/", implode("/", array_filter(array($prefix, $resource_type_and_type, 
+        return preg_replace("/([^:])\/+/", "$1/", implode("/", array_filter(array($prefix, $resource_type_and_type,
           $signature, $transformation, $version, $source))));
     }
 
@@ -454,11 +454,11 @@ class Cloudinary {
         }
       }
       return array("source" => $source, "source_to_sign" => $source_to_sign);
-    }    
+    }
 
     private static function finalize_resource_type($resource_type, $type, $url_suffix, $use_root_path, $shorten) {
-      if (empty($type)) { 
-        $type = "upload"; 
+      if (empty($type)) {
+        $type = "upload";
       }
 
       if (!empty($url_suffix)) {
@@ -498,7 +498,7 @@ class Cloudinary {
     // cdn_subdomain and secure_cdn_subdomain
     // 1) Customers in shared distribution (e.g. res.cloudinary.com)
     //   if cdn_domain is true uses res-[1-5].cloudinary.com for both http and https. Setting secure_cdn_subdomain to false disables this for https.
-    // 2) Customers with private cdn 
+    // 2) Customers with private cdn
     //   if cdn_domain is true uses cloudname-res-[1-5].cloudinary.com for http
     //   if secure_cdn_domain is true uses cloudname-res-[1-5].cloudinary.com for https (please contact support if you require this)
     // 3) Customers with cname
@@ -535,7 +535,7 @@ class Cloudinary {
         $prefix = $prefix . '/' . $cloud_name;
       }
       return $prefix;
-    } 
+    }
 
     // [<resource_type>/][<image_type>/][v<version>/]<public_id>[.<format>][#<signature>]
     // Warning: $options are being destructively updated!
@@ -587,22 +587,22 @@ class Cloudinary {
     public static function zip_download_url($tag, $options=array()) {
         $params = array("timestamp"=>time(), "tag"=>$tag, "transformation" => \Cloudinary::generate_transformation_string($options));
         $params = Cloudinary::sign_request($params, $options);
-        return Cloudinary::cloudinary_api_url("download_tag.zip", $options) . "?" . http_build_query($params); 
+        return Cloudinary::cloudinary_api_url("download_tag.zip", $options) . "?" . http_build_query($params);
     }
-    
+
     public static function private_download_url($public_id, $format, $options = array()) {
         $cloudinary_params = Cloudinary::sign_request(array(
-          "timestamp"=>time(), 
-          "public_id"=>$public_id, 
-          "format"=>$format, 
+          "timestamp"=>time(),
+          "public_id"=>$public_id,
+          "format"=>$format,
           "type"=>Cloudinary::option_get($options, "type"),
           "attachment"=>Cloudinary::option_get($options, "attachment"),
           "expires_at"=>Cloudinary::option_get($options, "expires_at")
         ), $options);
 
-        return Cloudinary::cloudinary_api_url("download", $options) . "?" . http_build_query($cloudinary_params); 
+        return Cloudinary::cloudinary_api_url("download", $options) . "?" . http_build_query($cloudinary_params);
     }
-    
+
     public static function sign_request($params, &$options) {
         $api_key = Cloudinary::option_get($options, "api_key", Cloudinary::config_get("api_key"));
         if (!$api_key) throw new \InvalidArgumentException("Must supply api_key");
@@ -614,7 +614,7 @@ class Cloudinary {
 
         $params["signature"] = Cloudinary::api_sign_request($params, $api_secret);
         $params["api_key"] = $api_key;
-        
+
         return $params;
     }
 
@@ -638,20 +638,20 @@ class Cloudinary {
           $value = $v;
           if (is_int($k)) {
             $key = $v;
-            $value = "";  
+            $value = "";
           }
           if (is_array($only) && array_search($key, $only) !== FALSE || !is_array($only)) {
             $attrs[$key] = $value;
           }
         }
         ksort($attrs);
-        
-        $join_pair = function($key, $value) { 
+
+        $join_pair = function($key, $value) {
           $out = $key;
           if (!empty($value)) {
             $out .= '=\'' . $value . '\'';
           }
-          return $out; 
+          return $out;
         };
         return implode(" ", array_map($join_pair, array_keys($attrs), array_values($attrs)));
     }

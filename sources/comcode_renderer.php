@@ -1087,9 +1087,9 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 break;
             }
 
-            $temp_comcode_parse_title = $COMCODE_PARSE_TITLE;
+            push_output_state();
             $temp = request_page($codename, false, $zone, null, true);
-            $COMCODE_PARSE_TITLE = $temp_comcode_parse_title;
+            restore_output_state();
             if ($temp->is_empty()) {
                 $temp_tpl = do_template('WARNING_BOX', array(
                     '_GUID' => '1d617fd24b632640dddeeadd8432d7a9',

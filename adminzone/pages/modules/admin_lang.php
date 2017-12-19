@@ -627,11 +627,11 @@ class Module_admin_lang
             // Make comcode page dirs
             $zones = find_all_zones();
             foreach ($zones as $zone) {
-                $_special_dir = get_custom_file_base() . '/' . $zone . '/pages/comcode_custom/' . $lang;
+                $_special_dir = get_custom_file_base() . (($zone == '') ? '' : '/') . $zone . '/pages/comcode_custom/' . $lang;
                 if (!file_exists($_special_dir)) {
                     afm_make_directory($zone . (($zone == '') ? '' : '/') . 'pages/comcode_custom/' . $lang, true);
                 }
-                $_special_dir = get_custom_file_base() . '/' . $zone . '/pages/html_custom/' . $lang;
+                $_special_dir = get_custom_file_base() . (($zone == '') ? '' : '/') . $zone . '/pages/html_custom/' . $lang;
                 if (!file_exists($_special_dir)) {
                     afm_make_directory($zone . (($zone == '') ? '' : '/') . 'pages/html_custom/' . $lang, true);
                 }

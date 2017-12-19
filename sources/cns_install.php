@@ -275,6 +275,8 @@ function install_cns($upgrade_from = null)
 
         $GLOBALS['FORUM_DB']->add_table_field('f_members', 'm_auto_mark_read', 'BINARY');
 
+        $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'db_meta_indices WHERE i_name LIKE \'#mcf%\'');
+
         $GLOBALS['FORUM_DB']->drop_table_if_exists('f_post_history');
 
         rename_config_option('post_history_days', 'post_read_history_days');

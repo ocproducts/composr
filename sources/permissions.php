@@ -729,7 +729,7 @@ function has_privilege($member_id, $permission, $page = null, $cats = null)
                     if (isset($PRIVILEGE_CACHE[$member_id][$permission][''][$cats[$i * 2 + 0]][$cats[$i * 2 + 1]])) {
                         $result = $PRIVILEGE_CACHE[$member_id][$permission][''][$cats[$i * 2 + 0]][$cats[$i * 2 + 1]] == 1;
                         if (!$result) { // Negative overrides take precedence over positive ones; got to be careful of that!
-                            handle_permission_check_logging($member_id, 'has_privilege', array_merge(array($permission, $page), is_null($cats) ? array() : (is_array($cats) ? $cats : array($cats))), $result);
+                            handle_permission_check_logging($member_id, 'has_privilege', array_merge(array($permission, $page), is_null($cats) ? array() : $cats), $result);
                             return $result;
                         }
                         $okay = true;
@@ -779,7 +779,7 @@ function has_privilege($member_id, $permission, $page = null, $cats = null)
     } else {
         $all_privileges_needed = array();
     }
-    $all_privileges_needed[$permission] = true; 
+    $all_privileges_needed[$permission] = true;
     foreach ($all_privileges_needed as $privilege_needed => $_) {
         if (is_integer($privilege_needed)) {
             $privilege_needed = strval($privilege_needed);

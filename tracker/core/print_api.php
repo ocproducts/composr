@@ -1039,7 +1039,7 @@ function print_all_bug_action_option_list() {
 		}
 	}
 
-	while( list( $key, $val ) = each( $commands ) ) {
+	while( list( $key, $val ) = @each( $commands ) ) {
 		echo '<option value="' . $key . '">' . $val . '</option>';
 	}
 }
@@ -1667,7 +1667,7 @@ function get_dropdown( $p_control_array, $p_control_name, $p_match = '', $p_add_
 	if( $p_add_any ) {
 		array_unshift_assoc( $t_control_array, META_FILTER_ANY, lang_trans( '[any]' ) );
 	}
-	while( list( $t_name, $t_desc ) = each( $t_control_array ) ) {
+	while( list( $t_name, $t_desc ) = @each( $t_control_array ) ) {
 		$t_sel = '';
 		if( is_array( $p_match ) ) {
 			if( in_array( $t_name, array_values( $p_match ) ) || in_array( $t_desc, array_values( $p_match ) ) ) {

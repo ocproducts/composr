@@ -20,7 +20,10 @@ if (!function_exists('init__comcode_compiler')) {
             "if (\$as_admin)",
             "
             require_code('textfiles');
-            \$whitelists = explode(\"\n\", read_text_file('comcode_whitelist', null, true));
+            static \$whitelists = null;
+            if (\$whitelists === null) {
+                \$whitelists = explode(\"\n\", read_text_file('comcode_whitelist', null, true));
+            }
             foreach (\$whitelists as \$w) {
                 if (trim(\$w) != '') {
                     if (\$w[0] != '/') {
@@ -42,7 +45,10 @@ if (!function_exists('init__comcode_compiler')) {
             global \$OBSCURE_REPLACEMENTS;
             \$OBSCURE_REPLACEMENTS = array();
             require_code('textfiles');
-            \$whitelists = explode(\"\n\", read_text_file('comcode_whitelist', null, true));
+            static \$whitelists = null;
+            if (\$whitelists === null) {
+                \$whitelists = explode(\"\n\", read_text_file('comcode_whitelist', null, true));
+            }
             foreach (\$whitelists as \$i => \$w) {
                 if (trim(\$w) != '') {
                     if (\$w[0] != '/') {

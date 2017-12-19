@@ -149,6 +149,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         TRANSACTION_PERCENTAGE_FEE
         PAYMENT_GATEWAY_authorize
         PAYMENT_GATEWAY_ccbill
+        DEEPER_CONFIGURATION
         LOST_DISK_CONTENT
         DESCRIPTION_LOST_DISK_CONTENT
         TICKETS_STAFF

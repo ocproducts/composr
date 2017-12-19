@@ -87,6 +87,11 @@ function _find_all_langs($even_empty_langs = false)
 {
     require_code('files');
 
+    static $cached = array();
+    if (isset($cached[$even_empty_langs])) {
+        return $cached[$even_empty_langs];
+    }
+
     // NB: This code is heavily optimised
 
     $_langs = array(fallback_lang() => 'lang');
@@ -94,6 +99,7 @@ function _find_all_langs($even_empty_langs = false)
     if (!in_safe_mode()) {
         $test = persistent_cache_get('LANGS_LIST');
         if ($test !== null) {
+            $cached[$even_empty_langs] = $test;
             return $test;
         }
 
@@ -160,6 +166,7 @@ function _find_all_langs($even_empty_langs = false)
         persistent_cache_set('LANGS_LIST', $_langs);
     }
 
+    $cached[$even_empty_langs] = $_langs;
     return $_langs;
 }
 

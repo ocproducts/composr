@@ -30,13 +30,15 @@ class ssl_test_set extends cms_test_case
         set_value('disable_ssl_for__' . $_SERVER['HTTP_HOST'], '1');
 
         $GLOBALS['SITE_DB']->query_insert('https_pages', array('https_page_name' => 'forum:forumview'), false, true/*in case previous test didn't finish*/);
-        $HTTPS_PAGES_CACHE = array();
+        $HTTPS_PAGES_CACHE = null;
+        erase_persistent_cache();
         $url = build_url(array('page' => 'forumview'), get_module_zone('forumview'));
         $contents = http_download_file($url->evaluate());
         $this->assertTrue(strpos($contents, 'src="http://') === false);
 
         $GLOBALS['SITE_DB']->query_delete('https_pages', array('https_page_name' => 'forum:forumview'));
-        $HTTPS_PAGES_CACHE = array();
+        $HTTPS_PAGES_CACHE = null;
+        erase_persistent_cache();
         $url = build_url(array('page' => 'forumview'), get_module_zone('forumview'));
         $contents = http_download_file($url->evaluate());
         $this->assertTrue(strpos($contents, 'src="https://') === false);

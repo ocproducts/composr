@@ -414,8 +414,11 @@ function class_exists($class_name)
 
 /**
  * Clears file status cache.
+ *
+ * @param  boolean $clear_realcache_path Whether to clear the realpath cache or not.
+ * @param  ?PATH $filename Clear the realpath and the stat cache for a specific filename only; only used if clear_realpath_cache is true (null: clear for all).
  */
-function clearstatcache()
+function clearstatcache($clear_realcache_path = false, $filename = null)
 {
 }
 
@@ -3674,17 +3677,6 @@ function decbin($number)
 }
 
 /**
- * Return the current key and value pair from an array and advance the array cursor.
- *
- * @param  array $array Array we're progressing through.
- * @return array (key, value) pair.
- */
-function each($array)
-{
-    return array();
-}
-
-/**
  * Determine whether a variable is empty (empty being defined differently for different types).
  *
  * @param  mixed $var Input.
@@ -3877,7 +3869,7 @@ function log10($arg)
 /**
  * Converts an (IPv4) Internet network address into a string in Internet standard dotted format.
  *
- * @param  string $proper_address The IP address.
+ * @param  integer $proper_address The IP address.
  * @return integer The long form.
  */
 function long2ip($proper_address)

@@ -173,9 +173,14 @@ function require_code($codename, $light_exit = false)
                 // Note we load the original and then the override. This is so function_exists can be used in the overrides (as we can't support the re-definition) OR in the case of Mx_ class derivation, so that the base class is loaded first.
 
                 if (isset($_GET['keep_show_parse_errors'])) {
-                    safe_ini_set('display_errors', '0');
                     $orig = str_replace('?' . '>', '', str_replace('<' . '?php', '', file_get_contents($path_orig)));
-                    if (eval($orig) === false) {
+                    $bak = $GLOBALS['SUPPRESS_ERROR_DEATH'];
+                    $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
+                    $php_errormsg = '';
+                    safe_ini_set('display_errors', '0');
+                    $eval_result = eval($orig);
+                    $GLOBALS['SUPPRESS_ERROR_DEATH'] = $bak;
+                    if ((php_error_has_happened($php_errormsg)) || ($eval_result === false)) {
                         if ((!function_exists('fatal_exit')) || ($codename === 'failure')) {
                             critical_error('PASSON', @strval($php_errormsg) . ' [sources/' . $codename . '.php]');
                         }
@@ -189,9 +194,14 @@ function require_code($codename, $light_exit = false)
                     }
                 }
                 if (isset($_GET['keep_show_parse_errors'])) {
+                    $custom = str_replace('?' . '>', '', str_replace('<' . '?php', '', file_get_contents($path_custom)));
+                    $bak = $GLOBALS['SUPPRESS_ERROR_DEATH'];
+                    $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
+                    $php_errormsg = '';
                     safe_ini_set('display_errors', '0');
-                    $orig = str_replace('?' . '>', '', str_replace('<' . '?php', '', file_get_contents($path_custom)));
-                    if (eval($orig) === false) {
+                    $eval_result = eval($custom);
+                    $GLOBALS['SUPPRESS_ERROR_DEATH'] = $bak;
+                    if ((php_error_has_happened($php_errormsg)) || ($eval_result === false)) {
                         if ((!function_exists('fatal_exit')) || ($codename === 'failure')) {
                             critical_error('PASSON', @strval($php_errormsg) . ' [sources_custom/' . $codename . '.php]');
                         }
@@ -207,9 +217,14 @@ function require_code($codename, $light_exit = false)
             }
         } else {
             if (isset($_GET['keep_show_parse_errors'])) {
-                safe_ini_set('display_errors', '0');
                 $orig = str_replace('?' . '>', '', str_replace('<' . '?php', '', file_get_contents($path_custom)));
-                if (eval($orig) === false) {
+                $bak = $GLOBALS['SUPPRESS_ERROR_DEATH'];
+                $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
+                $php_errormsg = '';
+                safe_ini_set('display_errors', '0');
+                $eval_result = eval($orig);
+                $GLOBALS['SUPPRESS_ERROR_DEATH'] = $bak;
+                if ((php_error_has_happened($php_errormsg)) || ($eval_result === false)) {
                     if ((!function_exists('fatal_exit')) || ($codename === 'failure')) {
                         critical_error('PASSON', @strval($php_errormsg) . ' [sources_custom/' . $codename . '.php]');
                     }
@@ -244,10 +259,14 @@ function require_code($codename, $light_exit = false)
         if (isset($_GET['keep_show_parse_errors'])) {
             $contents = @file_get_contents($path_orig);
             if ($contents !== false) {
-                safe_ini_set('display_errors', '0');
                 $orig = str_replace(array('?' . '>', '<' . '?php'), array('', ''), $contents);
-
-                if (eval($orig) === false) {
+                $bak = $GLOBALS['SUPPRESS_ERROR_DEATH'];
+                $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
+                $php_errormsg = '';
+                safe_ini_set('display_errors', '0');
+                $eval_result = eval($orig);
+                $GLOBALS['SUPPRESS_ERROR_DEATH'] = $bak;
+                if ((php_error_has_happened($php_errormsg)) || ($eval_result === false)) {
                     if ((!function_exists('fatal_exit')) || ($codename === 'failure')) {
                         critical_error('PASSON', @strval($php_errormsg) . ' [sources/' . $codename . '.php]');
                     }
@@ -263,7 +282,7 @@ function require_code($codename, $light_exit = false)
             } else {
                 @include($path_orig);
             }
-            if ($php_errormsg == '' || stripos($php_errormsg, 'deprecated') !== false/*deprecated errors can leak through because even though we return true in our error handler, error handlers won't run recursively, so if this code is loaded during an error it'll stream through deprecated stuff here*/) {
+            if (!php_error_has_happened($php_errormsg)) {
                 $worked = true;
             }
         }
@@ -305,6 +324,17 @@ function require_code($codename, $light_exit = false)
         critical_error('MISSING_SOURCE', $codename);
     }
     fatal_exit(do_lang_tempcode('MISSING_SOURCE_FILE', escape_html($codename), escape_html($path_orig)));
+}
+
+/**
+ * Find whether a PHP error has happened.
+ *
+ * @param string $errormsg Error message
+ * @return boolean Whether a PHP error has happened
+ */
+function php_error_has_happened($errormsg)
+{
+	return (($errormsg != '') && (stripos($errormsg, 'deprecated') === false/*deprecated errors can leak through because even though we return true in our error handler, error handlers won't run recursively, so if this code is loaded during an error it'll stream through deprecated stuff here*/));
 }
 
 /**
@@ -414,7 +444,11 @@ function php_function_allowed($function)
             return false;
         }
     }
-    $cache[$function] = (@preg_match('#(\s|,|^)' . str_replace('#', '\#', preg_quote($function)) . '(\s|$|,)#', strtolower(@ini_get('disable_functions') . ',' . ini_get('suhosin.executor.func.blacklist') . ',' . ini_get('suhosin.executor.include.blacklist') . ',' . ini_get('suhosin.executor.eval.blacklist'))) == 0);
+    static $disabled_functions = null;
+    if ($disabled_functions === null) {
+        $disabled_functions = strtolower(@ini_get('disable_functions') . ',' . ini_get('suhosin.executor.func.blacklist') . ',' . ini_get('suhosin.executor.include.blacklist') . ',' . ini_get('suhosin.executor.eval.blacklist'));
+    }
+    $cache[$function] = (@preg_match('#(\s|,|^)' . preg_quote($function, '#') . '(\s|$|,)#', $disabled_functions) == 0);
     return $cache[$function];
 }
 

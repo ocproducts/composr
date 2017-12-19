@@ -50,9 +50,8 @@ function init__files()
 
         define('FILE_WRITE_FAILURE_SILENT', 1);
         define('FILE_WRITE_FAILURE_SOFT', 2);
-        define('FILE_WRITE_FAILURE_HARD', 4);
+        define('FILE_WRITE_SYNC_FILE', 4);
         define('FILE_WRITE_FIX_PERMISSIONS', 8);
-        define('FILE_WRITE_SYNC_FILE', 16);
     }
 }
 
@@ -151,7 +150,7 @@ function cms_file_put_contents_safe($path, $contents, $flags = 4, $retry_depth =
     }
 
     // Find file size
-    clearstatcache();
+    clearstatcache(true, $path);
     $size = @filesize($path);
 
     // Special condition: File already deleted
@@ -198,6 +197,10 @@ function cms_file_put_contents_safe($path, $contents, $flags = 4, $retry_depth =
  */
 function _cms_file_put_contents_safe_failed($error_message, $path, $flags = 4)
 {
+    if (($flags & FILE_WRITE_FAILURE_SOFT) != 0) {
+        return false;
+    }
+
     static $looping = false;
     if ($looping) {
         critical_error('PASSON', 'Could not write to ' . htmlentities($path)); // Bail out hard if would cause a loop
@@ -207,9 +210,7 @@ function _cms_file_put_contents_safe_failed($error_message, $path, $flags = 4)
     if (($flags & FILE_WRITE_FAILURE_SOFT) != 0) {
         require_code('site');
         attach_message($error_message, 'warn');
-    }
-
-    if (($flags & FILE_WRITE_FAILURE_HARD) != 0) {
+    } else { // default to hard error
         warn_exit($error_message);
     }
 

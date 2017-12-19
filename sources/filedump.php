@@ -81,7 +81,7 @@ function update_filedump_links($from, $to)
                 $old_comcode = get_translated_text($ref[0][$ref[1]]);
             } else {
                 list($zone, $page, $lang) = explode(':', $ref, 3);
-                $path = get_custom_file_base() . '/' . $zone . '/pages/comcode_custom/' . $lang . '/' . $page . '.txt';
+                $path = get_custom_file_base() . (($zone == '') ? '' : '/') . $zone . '/pages/comcode_custom/' . $lang . '/' . $page . '.txt';
                 $old_comcode = file_get_contents($path);
             }
 
@@ -153,7 +153,7 @@ function find_filedump_links($focus = '')
                 $page = strval($page);
             }
             foreach ($langs as $lang) {
-                $path = get_custom_file_base() . '/' . $zone . '/pages/comcode_custom/' . $lang . '/' . $page . '.txt';
+                $path = get_custom_file_base() . (($zone == '') ? '' : '/') . $zone . '/pages/comcode_custom/' . $lang . '/' . $page . '.txt';
                 if (is_file($path)) {
                     $comcode = file_get_contents($path);
                     extract_filedump_links($comcode, $zone . ':' . $page . ':' . $lang, $focus, $paths_used);

@@ -591,12 +591,15 @@ function _helper_add_table_field($this_ref, $table_name, $name, $_type, $default
     $this_ref->_query($query);
 
     $lang_level = 3;
- 
+
     if (multi_lang_content()) {
         if (!is_null($default_st)) {
             $start = 0;
             do {
                 $rows = $this_ref->_query('SELECT * FROM ' . $this_ref->get_table_prefix() . $table_name, 1000, $start);
+                if ($rows === null) {
+                    break; // Issue inside upgrader
+                }
                 foreach ($rows as $row) {
                     $this_ref->query_update($table_name, insert_lang($name, $default_st, $lang_level), $row);
                 }
@@ -842,7 +845,7 @@ function _helper_change_primary_key($this_ref, $table_name, $new_key)
 
     $this_ref->query('UPDATE ' . $this_ref->get_table_prefix() . 'db_meta SET m_type=REPLACE(m_type,\'*\',\'\') WHERE ' . db_string_equal_to('m_table', $table_name));
     foreach ($new_key as $_new_key) {
-        $this_ref->query('UPDATE ' . $this_ref->get_table_prefix() . 'db_meta SET m_type=' . db_function('CONCAT', array('\'*\'', 'm_type')) . ' WHERE ' . db_string_equal_to('m_table', $table_name) . ' AND ' . db_string_equal_to('m_name', $_new_key));
+        $this_ref->query('UPDATE ' . $this_ref->get_table_prefix() . 'db_meta SET m_type=' . db_function('CONCAT', array('\'*\'', 'm_type')) . ' WHERE ' . db_string_equal_to('m_table', $table_name) . ' AND ' . db_string_equal_to('m_name', $_new_key) . ' AND m_type NOT LIKE \'' . db_encode_like('*%') . '\'');
     }
 
     $this_ref->static_ob->db_change_primary_key($this_ref->table_prefix . $table_name, $new_key, $this_ref->connection_write);
@@ -900,6 +903,9 @@ function _helper_add_auto_key($this_ref, $table_name, $field_name)
 function _helper_promote_text_field_to_comcode($this_ref, $table_name, $name, $key = 'id', $level = 2, $in_assembly = false)
 {
     $rows = $this_ref->query_select($table_name, array($name, $key));
+    if ($rows === null) {
+        return; // Issue in upgrader
+    }
     $this_ref->delete_table_field($table_name, $name);
     $this_ref->add_table_field($table_name, $name, 'SHORT_TRANS__COMCODE');
     foreach ($rows as $row) {

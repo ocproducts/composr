@@ -31,7 +31,7 @@ if ($get_url != '') {
     $filename_stub = preg_replace('#\..*$#s', '', $filename);
     $filename_ext = strtolower(preg_replace('#^[^\.]*\.#s', '', $filename));
 
-    if (!in_array($filename_ext, array('avi', 'mp4', 'm4v', 'mkv', 'webm', 'flv', 'vob', 'ogv', 'drc', 'mov', 'qt', 'wmv', 'rm', 'asf', 'mpg', 'mp2', 'mpeg', 'mpe', 'mpv', 'm2v', '3gp', '3g2')) {
+    if (!in_array($filename_ext, array('avi', 'mp4', 'm4v', 'mkv', 'webm', 'flv', 'vob', 'ogv', 'drc', 'mov', 'qt', 'wmv', 'rm', 'asf', 'mpg', 'mp2', 'mpeg', 'mpe', 'mpv', 'm2v', '3gp', '3g2'))) {
         exit('Unknown file extension');
     }
 

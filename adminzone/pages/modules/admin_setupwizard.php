@@ -1080,7 +1080,7 @@ class Module_admin_setupwizard
 
             foreach ($page_structure as $zone => $zone_pages) {
                 // Start
-                $full_path = get_custom_file_base() . '/' . $zone . '/pages/comcode_custom/' . get_site_default_lang() . '/start.txt';
+                $full_path = get_custom_file_base() . (($zone == '') ? '' : '/') . $zone . '/pages/comcode_custom/' . get_site_default_lang() . '/start.txt';
                 if (file_exists($full_path)) {
                     @copy($full_path, $full_path . '.' . strval(time()));
                     fix_permissions($full_path . '.' . strval(time()));
@@ -1089,7 +1089,7 @@ class Module_admin_setupwizard
                 cms_file_put_contents_safe($full_path, $zone_pages['start'], FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
                 // Left
-                $full_path = get_custom_file_base() . '/' . $zone . '/pages/comcode_custom/' . get_site_default_lang() . '/panel_left.txt';
+                $full_path = get_custom_file_base() . (($zone == '') ? '' : '/') . $zone . '/pages/comcode_custom/' . get_site_default_lang() . '/panel_left.txt';
                 if (file_exists($full_path)) {
                     @copy($full_path, $full_path . '.' . strval(time()));
                     fix_permissions($full_path . '.' . strval(time()));
@@ -1098,7 +1098,7 @@ class Module_admin_setupwizard
                 cms_file_put_contents_safe($full_path, $zone_pages['left'], FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
                 // Right
-                $full_path = get_custom_file_base() . '/' . $zone . '/pages/comcode_custom/' . get_site_default_lang() . '/panel_right.txt';
+                $full_path = get_custom_file_base() . (($zone == '') ? '' : '/') . $zone . '/pages/comcode_custom/' . get_site_default_lang() . '/panel_right.txt';
                 if (file_exists($full_path)) {
                     @copy($full_path, $full_path . '.' . strval(time()));
                     fix_permissions($full_path . '.' . strval(time()));

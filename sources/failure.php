@@ -1084,7 +1084,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, 'Incorrect string value') === false) &&
         (strpos($text, 'Can\'t create/write to file') === false) &&  // MySQL
         (strpos($text, 'Error writing file') === false) && // E.g. cannot PHP create a temporary file
-        (strpos($text, 'possibly out of free disk space') === false) && 
+        (strpos($text, 'possibly out of free disk space') === false) &&
         (strpos($text, 'Illegal mix of collations') === false) &&
         (strpos($text, 'Query execution was interrupted') === false) &&
         (strpos($text, 'The MySQL server is running with the --read-only option so it cannot execute this statement') === false) &&
@@ -1242,7 +1242,9 @@ function get_html_trace()
 {
     require_code('templates');
 
+    $bak = $GLOBALS['SUPPRESS_ERROR_DEATH'];
     $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
+
     $_trace = debug_backtrace();
     $trace = array();
     foreach ($_trace as $i => $stage) {
@@ -1274,7 +1276,7 @@ function get_html_trace()
         }
         $trace[] = array('TRACES' => $traces);
     }
-    $GLOBALS['SUPPRESS_ERROR_DEATH'] = false;
+    $GLOBALS['SUPPRESS_ERROR_DEATH'] = $bak;
 
     return do_template('STACK_TRACE', array('_GUID' => '9620695fb8c3e411a6a4926432cea64f', 'POST' => (count($_POST) < 200) ? $_POST : array(), 'TRACE' => $trace));
 }

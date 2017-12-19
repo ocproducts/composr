@@ -647,7 +647,7 @@ function add_newsletter_subscriber($email, $join_time, $code_confirm, $password,
         'n_surname' => $surname,
     ), true, true/*race condition*/);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('newsletter_subscriber', strval($id), null, null, true);
     }
