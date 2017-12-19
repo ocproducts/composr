@@ -101,7 +101,7 @@
 					{+START,IF_NON_EMPTY,{DELETE_URL}}
 						<tfoot>
 							<tr>
-								<td colspan="5	">
+								<td colspan="5">
 								</td>
 
 								<td>
