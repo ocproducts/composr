@@ -960,6 +960,7 @@ function fix_perms()
     require_code('themes2');
     $themes = find_all_themes();
 
+    $bak = $GLOBALS['SUPPRESS_ERROR_DEATH'];
     $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
 
     for ($i = 0; $i < count($array); $i++) {
@@ -1024,7 +1025,7 @@ function fix_perms()
 
     $super_out .= '<p>' . do_lang('SUCCESS') . '</p>';
 
-    $GLOBALS['SUPPRESS_ERROR_DEATH'] = false;
+    $GLOBALS['SUPPRESS_ERROR_DEATH'] = $bak;
 
     return $super_out;
 }

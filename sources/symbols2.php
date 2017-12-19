@@ -2439,9 +2439,10 @@ function ecv2_PREG_MATCH($lang, $escaped, $param)
     $value = '';
 
     if (isset($param[1])) {
+        $bak = $GLOBALS['SUPPRESS_ERROR_DEATH'];
         $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
         $value = (preg_match('#' . str_replace('#', '\#', $param[0]) . '#' . (isset($param[2]) ? str_replace('e', '', $param[2]) : ''), $param[1]) != 0) ? '1' : '0';
-        $GLOBALS['SUPPRESS_ERROR_DEATH'] = false;
+        $GLOBALS['SUPPRESS_ERROR_DEATH'] = $bak;
         if (isset($php_errormsg)) {
             attach_message($php_errormsg, 'warn');
         }
