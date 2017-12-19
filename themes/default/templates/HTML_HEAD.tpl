@@ -13,8 +13,8 @@
 <title>{+START,IF_NON_PASSED,TITLE}{+START,IF_NON_EMPTY,{$HEADER_TEXT}}{$HEADER_TEXT*} &ndash; {+END}{$SITE_NAME*}{+END}{+START,IF_PASSED,TITLE}{TITLE}{+END}</title>
 
 {$,In developer mode we totally break relative URLs so we know if they're used - we shouldn't ever use them, as they reflect path assumptions}
-{+START,IF,{$NOT,{$DEV_MODE}}}{+START,IF_PASSED,TARGET}<base href="{$BASE_URL*}/{$ZONE*}" target="{TARGET}" />{+END}{+END}
-{+START,IF,{$DEV_MODE}}<base href="http://example.com/"{+START,IF_PASSED,TARGET} target="{TARGET}"{+END} />{+END}
+{+START,IF,{$NOT,{$DEV_MODE}}}{+START,IF_PASSED,TARGET}<base href="{$BASE_URL*}/{$ZONE*}" target="{TARGET*}" />{+END}{+END}
+{+START,IF,{$DEV_MODE}}<base href="http://example.com/"{+START,IF_PASSED,TARGET} target="{TARGET*}"{+END} />{+END}
 
 {$,Hints to Google etc that may be set by Composr code}
 {+START,IF_PASSED_AND_TRUE,NOFOLLOW}

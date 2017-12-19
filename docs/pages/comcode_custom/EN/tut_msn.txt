@@ -9,11 +9,15 @@
 [media width="150" description="Choose this option if you want to run each site' discussion forum from its own code and URL (optional only shows if applicable to your site)" float="right"]data_custom/images/docs/tut_msn/msn_cns_local.png[/media]
 All that needs to be done to create an M.S.N. is to install each Composr such that they all share a common forum driver and forum database. At its heart, this is all a M.S.N. is: Composr provides special features that allow this to work comfortably, but there is no specific 'M.S.N.' feature or setting in Composr, nor does Composr need such.
 
+The site sharing the forum is the "central site", and all other sites are "satellite sites".
+
 [i]This functionality is not fully supported by the developers[/i]. Bug fixes will be produced if the functionality is not working correctly, but it is not proactively and regularly tested. Those relying on it for large deployments should make sure they have appropriate budgets to deal with the maintenance of the volume of sites desired, and to sponsor custom functionality they are likely to want running such a large/custom/special/complex operation. At the time of writing this note (2016), a more normal approach to sharing member databases is to leave it to Facebook, using the Facebook addon to handle log-ins. Usage of Facebook has obvious disadvantages, but also for most people the advantages far outweigh them. Facebook is de-facto the world's standard identity service.
 
-If you are using a third-party forum, unless the forum itself is modified to work from different URLs, the forums interface will not be integrated into each site. However, all Composr functions that work through the forum driver (e.g. comment topics, or support tickets) may be completely customised for the individual websites.
-
-If you are using the Composr forum system (Conversr) as your forum, then it is possible to run Conversr from each site, without members even knowing (from a feature and visual point of view) that a multi-site-network is in action. All you need to do to achieve this is to set the forum-base-URL to that of the central Composr site, but enable the option shown in the screen-shot (available under site configuration). Note that if you do this, and you decide to move a site you are connecting to the M.S.N. with, then URLs may be broken for things such as photos, avatars and attachments -- as these get uploaded locally and are stored on the forum using full URLs. In other words, they are not stored on the central site if they got uploaded from a member site, thus the other sites get a dependency on the member site's URL Scheme.
+If you are using the Composr forum system (Conversr) as your forum, then it is possible to run Conversr from each site, without members even knowing (from a feature and visual point of view) that a multi-site-network is in action. All you need to do to achieve this is to:
+1) set the forum-base-URL to that of the central Composr site
+2) enable the "Show forum within website" option shown in the screen-shot (available under site configuration)
+3) enable the [tt]on_msn[/tt] installation option
+Note that if you do this, and you decide to move a site you are connecting to the M.S.N. with, then URLs may be broken for things such as photos, avatars and attachments -- as these get uploaded locally and are stored on the forum using full URLs. In other words, they are not stored on the central site if they got uploaded from a member site, thus the other sites get a dependency on the member site's URL Scheme.
 
 Important notes about Conversr M.S.N. sites:
  - Each site on the network must have the same setting for "Support content translations". If not, you'll find massive corruption happening.
@@ -24,7 +28,7 @@ Conversr may be administered from an M.S.N. site, although some very minor restr
 
 [title="3"]Special note: upgrading[/title]
 
-If you are upgrading to a new major release then you will need to upgrade all the sites together, starting with the one that hosts the forums.
+If you are upgrading to a new major release then you will need to upgrade all the sites together, starting with the central site.
 
 [title="2"]Custom profile fields[/title]
 

@@ -322,7 +322,7 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
         if ($ret) {
             return $content;
         }
-        $echo = do_template('BASIC_HTML_WRAP', array('_GUID' => 'd23424ded86c850f4ae0006241407ff9', 'TITLE' => do_lang_tempcode('BANNER'), 'CONTENT' => $content));
+        $echo = do_template('BASIC_HTML_WRAP', array('_GUID' => 'd23424ded86c850f4ae0006241407ff9', 'TITLE' => do_lang_tempcode('BANNER'), 'CONTENT' => $content, 'TARGET' => '_top'));
         $echo->evaluate_echo();
     }
 
