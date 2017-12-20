@@ -150,12 +150,10 @@ class Hook_members_quiz
             {
                     $entry['q_points_for_passing']=$out_of;
             }*/
-            $entry_copy = $entry;
-            unset($entry_copy['e_id']); // 'e_id' causes invalid SQL query for get_translated_tempcode()
-            unset($entry_copy['q_time']); // 'q_time' causes invalid SQL query for get_translated_tempcode()
+            $just_entry_row = db_map_restrict(array('id' => $entry['e_id']) + $entry, array('id', 'q_start_text'));
             $categories[$category_title]['QUIZZES'][$entry['id']] = array(
                 'QUIZ_NAME' => $quiz_name,
-                'QUIZ_START_TEXT' => get_translated_tempcode('quizzes', $entry_copy, 'q_start_text'),
+                'QUIZ_START_TEXT' => get_translated_tempcode('quizzes', $just_entry_row, 'q_start_text'),
                 'QUIZ_ID' => strval($entry['id']),
                 'QUIZ_URL' => build_url(array('page' => 'quiz', 'type' => 'do', 'id' => $entry['id']), get_module_zone('quiz')),
                 'ENTRY_ID' => strval($entry['e_id']),

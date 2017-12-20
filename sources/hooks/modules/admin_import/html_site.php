@@ -412,7 +412,7 @@ class Hook_import_html_site
             }
 
             if (substr($content_file, -4) == '.php') {
-                $file_path = zone_black_magic_filterer(get_custom_file_base() . '/' . $zone . '/pages/minimodules_custom/' . $page . '.php');
+                $file_path = zone_black_magic_filterer(get_custom_file_base() . (($zone == '') ? '' : '/') . $zone . '/pages/minimodules_custom/' . $page . '.php');
                 cms_file_put_contents_safe($file_path, $file_contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
             } else {
                 $filtered = $this->_html_filter($file_contents, $fix_html, $base_url, $files, $file_base);
@@ -451,7 +451,7 @@ class Hook_import_html_site
                         $filtered = "<h1>" . $page_title . "</h1>\n\n" . $filtered;
                     }
 
-                    $file_path = zone_black_magic_filterer(get_custom_file_base() . '/' . $zone . '/pages/comcode_custom/' . get_site_default_lang() . '/' . $page . '.txt');
+                    $file_path = zone_black_magic_filterer(get_custom_file_base() . (($zone == '') ? '' : '/') . $zone . '/pages/comcode_custom/' . get_site_default_lang() . '/' . $page . '.txt');
 
                     cms_file_put_contents_safe($file_path, '[semihtml]' . $filtered . '[/semihtml]', FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                 } else { // Or copy htm/html's as Comcode-converted instead, if the user chose this
@@ -462,7 +462,7 @@ class Hook_import_html_site
 
                     require_code('comcode_from_html');
                     $comcode = semihtml_to_comcode($filtered);
-                    $file_path = zone_black_magic_filterer(get_custom_file_base() . '/' . $zone . '/pages/comcode_custom/' . get_site_default_lang() . '/' . $page . '.txt');
+                    $file_path = zone_black_magic_filterer(get_custom_file_base() . (($zone == '') ? '' : '/') . $zone . '/pages/comcode_custom/' . get_site_default_lang() . '/' . $page . '.txt');
                     cms_file_put_contents_safe($file_path, $comcode, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                 }
             }
@@ -486,7 +486,7 @@ class Hook_import_html_site
         foreach (array('site/', '') as $zone) {
             $panels = array('panel_left', 'panel_right');
             foreach ($panels as $panel) {
-                $path = zone_black_magic_filterer(get_custom_file_base() . '/' . $zone . 'pages/comcode_custom/' . filter_naughty(fallback_lang()) . '/' . filter_naughty($panel) . '.txt');
+                $path = zone_black_magic_filterer(get_custom_file_base() . (($zone == '') ? '' : '/') . $zone . 'pages/comcode_custom/' . filter_naughty(fallback_lang()) . '/' . filter_naughty($panel) . '.txt');
                 cms_file_put_contents_safe($path, '', FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
             }
         }

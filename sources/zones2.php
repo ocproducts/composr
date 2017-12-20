@@ -142,7 +142,9 @@ function render_comcode_page_box($row, $give_context = true, $include_breadcrumb
     $summary = $_summary[1];
 
     if (get_option('is_on_comcode_page_cache') == '1') { // Try and force a parse of the page
+        push_output_state();
         request_page($row['the_page'], false, $row['the_zone'], null, true);
+        restore_output_state();
     }
 
     $row2 = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages', array('*'), array('the_zone' => $row['the_zone'], 'the_page' => $row['the_page']), '', 1);
@@ -851,7 +853,7 @@ function _find_all_pages($zone, $type, $ext = 'php', $keep_ext_on = false, $cuto
     $dh = @opendir($stub . '/' . $module_path);
     if ($dh !== false) {
         while (($file = readdir($dh)) !== false) {
-            if ((substr($file, -4) == '.' . $ext) && (file_exists($stub . '/' . $module_path . '/' . $file)) && (preg_match('#^[^\.][' . URL_CONTENT_REGEXP . ']*$#', substr($file, 0, strlen($file) - 4)) != 0)) {
+            if ((substr($file, -4) == '.' . $ext) && (is_file($stub . '/' . $module_path . '/' . $file)) && (preg_match('#^[^\.][' . URL_CONTENT_REGEXP . ']*$#', substr($file, 0, strlen($file) - 4)) != 0)) {
                 if ($cutoff_time !== null) {
                     if (filectime($stub . '/' . $module_path . '/' . $file) < $cutoff_time) {
                         continue;
@@ -867,7 +869,7 @@ function _find_all_pages($zone, $type, $ext = 'php', $keep_ext_on = false, $cuto
                                 foreach ($records as $record) {
                                     $file = $record['the_page'] . '.txt';
 
-                                    if (!file_exists($stub . '/' . $module_path . '/' . $file)) {
+                                    if (!is_file($stub . '/' . $module_path . '/' . $file)) {
                                         continue;
                                     }
 
@@ -893,7 +895,7 @@ function _find_all_pages($zone, $type, $ext = 'php', $keep_ext_on = false, $cuto
                                 foreach ($records as $record) {
                                     $file = $record['the_page'] . '.txt';
 
-                                    if (!file_exists($stub . '/' . $module_path . '/' . $file)) {
+                                    if (!is_file($stub . '/' . $module_path . '/' . $file)) {
                                         continue;
                                     }
 

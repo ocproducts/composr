@@ -213,7 +213,13 @@ function get_member($quick_only = false)
             (array_key_exists($session, $SESSION_CACHE)) &&
             ($SESSION_CACHE[$session] !== null) &&
             (array_key_exists('member_id', $SESSION_CACHE[$session])) &&
-            ((get_option('ip_strict_for_sessions') == '0') || ($SESSION_CACHE[$session]['ip'] == $ip) || ((is_guest($SESSION_CACHE[$session]['member_id'])) && ($allow_unbound_guest)) || (($SESSION_CACHE[$session]['session_confirmed'] == 0) && (!is_guest($SESSION_CACHE[$session]['member_id'])))) &&
+            (
+                (get_option('ip_strict_for_sessions') == '0') ||
+                ($SESSION_CACHE[$session]['ip'] == '0000:0000:0000:0000:0000:0000:*:*') && ($ip == '127.0.0.*') || // Conflicting network interfaces between server loopback choice and web browser inbound choice, when testing localhost
+                ($SESSION_CACHE[$session]['ip'] == $ip) ||
+                ((is_guest($SESSION_CACHE[$session]['member_id'])) && ($allow_unbound_guest)) ||
+                (($SESSION_CACHE[$session]['session_confirmed'] == 0) && (!is_guest($SESSION_CACHE[$session]['member_id'])))
+            ) &&
             ($SESSION_CACHE[$session]['last_activity'] > time() - intval(60.0 * 60.0 * max(0.017, floatval(get_option('session_expiry_time')))))
         ) {
             $member_row = $SESSION_CACHE[$session];

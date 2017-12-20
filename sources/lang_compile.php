@@ -79,7 +79,7 @@ function require_lang_compile($codename, $lang, $type, $cache_path, $ignore_erro
 
         // Load originals
         $lang_file = get_file_base() . '/lang/' . $lang . '/' . filter_naughty($codename) . '.ini';
-        if (file_exists($lang_file)) { // Non-custom, Proper language
+        if (is_file($lang_file)) { // Non-custom, Proper language
             _get_lang_file_map($lang_file, $load_target, 'strings', false, true, $lang);
             $bad = false;
         }
@@ -87,11 +87,11 @@ function require_lang_compile($codename, $lang, $type, $cache_path, $ignore_erro
         // Load overrides now if they are there
         if ($type !== 'lang') {
             $lang_file = get_custom_file_base() . '/lang_custom/' . $lang . '/' . $codename . '.ini';
-            if ((!file_exists($lang_file)) && (get_file_base() !== get_custom_file_base())) {
+            if ((!is_file($lang_file)) && (get_file_base() !== get_custom_file_base())) {
                 $lang_file = get_file_base() . '/lang_custom/' . $lang . '/' . $codename . '.ini';
             }
         }
-        if (($type !== 'lang') && (file_exists($lang_file))) {
+        if (($type !== 'lang') && (is_file($lang_file))) {
             _get_lang_file_map($lang_file, $load_target, 'strings', false, true, $lang);
             $bad = false;
             $dirty = true; // Tainted from the official pack, so can't store server wide
@@ -103,7 +103,7 @@ function require_lang_compile($codename, $lang, $type, $cache_path, $ignore_erro
             require_lang($codename, fallback_lang(), $type, $ignore_errors);
             $REQUIRE_LANG_LOOP--;
             $fallback_cache_path = get_custom_file_base() . '/caches/lang/' . fallback_lang() . '/' . $codename . '.lcd';
-            if (file_exists($fallback_cache_path)) {
+            if (is_file($fallback_cache_path)) {
                 require_code('files');
                 @copy($fallback_cache_path, $cache_path);
                 fix_permissions($cache_path);
@@ -203,14 +203,14 @@ function get_lang_file_section($lang, $file = null, $section = 'descriptions')
 function get_lang_file_map($lang, $file, $non_custom = false, $apply_filter = true)
 {
     $a = get_custom_file_base() . '/lang_custom/' . $lang . '/' . $file . '.ini';
-    if ((get_custom_file_base() !== get_file_base()) && (!file_exists($a))) {
+    if ((get_custom_file_base() !== get_file_base()) && (!is_file($a))) {
         $a = get_file_base() . '/lang_custom/' . $lang . '/' . $file . '.ini';
     }
 
-    if ((!file_exists($a)) || ($non_custom)) {
+    if ((!is_file($a)) || ($non_custom)) {
         $b = get_custom_file_base() . '/lang/' . $lang . '/' . $file . '.ini';
 
-        if (file_exists($b)) {
+        if (is_file($b)) {
             $a = $b;
         } else {
             if ($non_custom) {
@@ -239,7 +239,7 @@ function get_lang_file_map($lang, $file, $non_custom = false, $apply_filter = tr
 function _get_lang_file_map($b, &$entries, $section = 'strings', $given_whole_file = false, $apply_filter = true, $lang = null)
 {
     if (!$given_whole_file) {
-        if (!file_exists($b)) {
+        if (!is_file($b)) {
             return;
         }
 

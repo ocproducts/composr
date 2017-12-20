@@ -20,10 +20,7 @@ class _setupwizard_test_set extends cms_test_case
 {
     public function testFinalStep()
     {
-        global $SITE_INFO;
-        if ((!isset($SITE_INFO['backdoor_ip'])) || ($SITE_INFO['backdoor_ip'] != '127.0.0.1')) {
-            warn_exit(protect_from_escaping('<kbd>backdoor_ip</kbd> must be set to <kbd>127.0.0.1</kbd> temporarily until the test finishes running in <kbd>_config.php</kbd>, <kbd>$SITE_INFO[\'backdoor_ip\'] = \'127.0.0.1\';</kbd>'));
-        }
+        $this->establish_admin_session();
 
         $post_params = array(
             'skip_9' => '0',
@@ -94,9 +91,7 @@ class _setupwizard_test_set extends cms_test_case
 
         $url = build_url(array('page' => 'admin_setupwizard', 'type' => 'step10'), 'adminzone');
 
-        $this->establish_admin_session();
-
-        $http = cms_http_request($url->evaluate(), array('post_params' => $post_params));
+        $http = cms_http_request($url->evaluate(), array('post_params' => $post_params, 'cookies' => array(get_session_cookie() => get_session_id())));
 
         $this->assertTrue($http->message == '200');
     }

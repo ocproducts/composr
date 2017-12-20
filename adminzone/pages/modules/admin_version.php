@@ -675,7 +675,8 @@ class Module_admin_version
             }
             foreach ($comcode_lang_fields as $table => $fields) {
                 foreach ($fields as $field) {
-                    $GLOBALS['SITE_DB']->query('UPDATE ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'db_meta SET m_type=' . db_function('CONCAT', array('m_type', '\'__COMCODE\'')) . ' WHERE ' . db_string_equal_to('m_table', $table) . ' AND ' . db_string_equal_to('m_name', $field));
+                    $sql = 'UPDATE ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'db_meta SET m_type=' . db_function('CONCAT', array('m_type', '\'__COMCODE\'')) . ' WHERE ' . db_string_equal_to('m_table', $table) . ' AND ' . db_string_equal_to('m_name', $field) . ' AND m_type NOT LIKE \'' . db_encode_like('%__COMCODE') . '\'';
+                    $GLOBALS['SITE_DB']->query($sql);
                 }
             }
 

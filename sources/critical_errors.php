@@ -162,7 +162,19 @@ if (!function_exists('critical_error')) {
 
         $extra = '';
 
-        if ((strpos($error, 'Allowed memory') === false) && (($relay === null) || (strpos($relay, 'Stack trace') === false)) && ((($_SERVER['REMOTE_ADDR'] == $_SERVER['SERVER_ADDR']) && ($_SERVER['HTTP_X_FORWARDED_FOR'] == '')) || ((isset($SITE_INFO['backdoor_ip'])) && ($_SERVER['REMOTE_ADDR'] == $SITE_INFO['backdoor_ip']) && ($_SERVER['HTTP_X_FORWARDED_FOR'] == '')) || (preg_match('#^localhost(\.|\:|$)#', get_local_hostname()) != 0) && (function_exists('get_base_url')) && (substr(get_base_url(), 0, 16) == 'http://localhost'))) {
+        $script_name = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : (isset($_ENV['SCRIPT_NAME']) ? $_ENV['SCRIPT_NAME'] : '');
+        $in_upgrader = (strpos($script_name, 'upgrader.php') !== false);
+
+        if (
+            (strpos($error, 'Allowed memory') === false) &&
+            ((($relay === null)) || (strpos($relay, 'Stack trace') === false)) &&
+            (
+                (($_SERVER['REMOTE_ADDR'] == $_SERVER['SERVER_ADDR']) && ($_SERVER['HTTP_X_FORWARDED_FOR'] == '')) ||
+                ((isset($SITE_INFO['backdoor_ip'])) && ($_SERVER['REMOTE_ADDR'] == $SITE_INFO['backdoor_ip']) && ($_SERVER['HTTP_X_FORWARDED_FOR'] == ''))
+                ((preg_match('#^localhost(\.|\:|$)#', $_SERVER['HTTP_HOST']) != 0) && (function_exists('get_base_url')) && (substr(get_base_url(), 0, 16) == 'http://localhost')) ||
+                ($in_upgrader)
+            )
+        ) {
             $_trace = debug_backtrace();
             $extra = '<div class="box guid_{_GUID}"><div class="box_inner"><h2>Stack trace&hellip;</h2>';
             foreach ($_trace as $stage) {
@@ -234,8 +246,7 @@ END;
         }
         echo '<h1 class="screen_title">Critical error &ndash; bailing out</h1>' . "\n" . '<div class="red_alert" role="error">' . $error . '</div>' . "\n";
         flush();
-        $script_name = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : (isset($_ENV['SCRIPT_NAME']) ? $_ENV['SCRIPT_NAME'] : '');
-        if ((strpos($script_name, 'upgrader.php') !== false) && (strpos($error, 'Allowed memory') === false)) {
+        if (($in_upgrader) && (strpos($error, 'Allowed memory') === false)) {
             require_code('upgrade');
             echo '<div class="box guid_{_GUID}"><div class="box_inner"><h2>Integrity check</h2><p><strong>If you think this problem could be due to corruption caused by a failed upgrade (e.g. time-out during extraction), check the following integrity check&hellip;</strong></p>', run_integrity_check(true), '</div></div><br />';
         }

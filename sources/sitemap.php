@@ -1149,6 +1149,11 @@ function get_root_comcode_pages($zone, $include_zone = false)
 
     // This uses more memory than the above, but is needed as pages may not have got into the database yet...
 
+    static $cache = array();
+    if (isset($cache[$zone][$include_zone])) {
+        return $cache[$zone][$include_zone];
+    }
+
     disable_php_memory_limit();
 
     static $rows = array();
@@ -1186,6 +1191,7 @@ function get_root_comcode_pages($zone, $include_zone = false)
 
         $page_links[$key] = isset($root[$page]) ? $root[$page] : 1;
     }
+    $cache[$zone][$include_zone] = $page_links;
     return $page_links;
 }
 

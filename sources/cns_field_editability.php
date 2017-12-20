@@ -21,6 +21,26 @@
 /* This file is designed to be overwritten by addons that implement external user sync schemes. */
 
 /**
+ * Get special type of a member.
+ *
+ * @param  MEMBER $member_id The ID of the member
+ * @return ID_TEXT Special type
+ */
+function get_member_special_type($member_id)
+{
+    $special_type = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_password_compat_scheme');
+    if ($special_type != '') {
+        return $special_type;
+    }
+    if (cns_is_ldap_member($member_id)) {
+        $special_type = 'ldap';
+    } elseif (cns_is_httpauth_member($member_id)) {
+        $special_type = 'httpauth';
+    }
+    return $special_type;
+}
+
+/**
  * Find is a field is editable.
  * Called for fields that have a fair chance of being set to auto-sync, and hence be locked to local edits.
  *

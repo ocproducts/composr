@@ -47,15 +47,15 @@ function _find_text_file_path($codename, $lang)
     do {
         $lang = $langs[$i];
         $path = get_custom_file_base() . '/text_custom/' . $lang . '/' . $codename . '.txt';
-        if (!file_exists($path)) {
+        if (!is_file($path)) {
             $path = get_file_base() . '/text_custom/' . $lang . '/' . $codename . '.txt';
         }
-        if (!file_exists($path)) {
+        if (!is_file($path)) {
             $path = get_file_base() . '/text/' . $lang . '/' . $codename . '.txt';
         }
         $i++;
-    } while ((!file_exists($path)) && (array_key_exists($i, $langs)));
-    if (!file_exists($path)) {
+    } while ((!is_file($path)) && (array_key_exists($i, $langs)));
+    if (!is_file($path)) {
         $path = '';
     }
 
@@ -74,8 +74,7 @@ function read_text_file($codename, $lang = null, $missing_blank = false)
 {
     $path = _find_text_file_path($codename, $lang);
 
-    $tmp = @fopen($path, 'rb');
-    if ($tmp === false) {
+    if (!is_file($path)) {
         if ($lang !== fallback_lang()) {
             return read_text_file($codename, fallback_lang(), $missing_blank);
         }
@@ -85,11 +84,7 @@ function read_text_file($codename, $lang = null, $missing_blank = false)
         }
         warn_exit(do_lang_tempcode('MISSING_TEXT_FILE', escape_html($codename), escape_html('text/' . (($lang === null) ? '' : ($lang . '/')) . $codename . '.txt')), false, true);
     }
-    flock($tmp, LOCK_SH);
-    $in = @file_get_contents($path);
-    flock($tmp, LOCK_UN);
-    fclose($tmp);
-    $in = unixify_line_format($in);
+    $in = unixify_line_format(cms_file_get_contents_safe($path));
 
     if (strpos($path, '_custom/') === false) {
         global $LANG_FILTER_OB;

@@ -46,6 +46,10 @@ class addon_references_test_set extends cms_test_case
     {
         foreach ($this->contents as $c) {
             if (substr($c, -4) == '.tpl') {
+                if (substr($c, 0, 17) == 'themes/_unnamed_/') {
+                    continue;
+                }
+
                 $_c = file_get_contents(get_file_base() . '/' . $c);
                 $matches = array();
                 $num_matches = preg_match_all('#\{\$ADDON_INSTALLED,(\w+)\}#', $_c, $matches);

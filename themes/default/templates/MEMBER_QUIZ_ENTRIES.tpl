@@ -101,10 +101,10 @@
 					{+START,IF_NON_EMPTY,{DELETE_URL}}
 						<tfoot>
 							<tr>
-								<td colspan="6"></td>
+								<td colspan="5"></td>
 
 								<td>
-									<input type="submit" value="{!DELETE}" />
+									<input class="button_screen_item menu___generic_admin__delete" type="submit" value="{!DELETE}" />
 								</td>
 							</tr>
 						</tfoot>
@@ -114,7 +114,7 @@
 				</form>
 				{+END}
 
-				{SORTING}
+				<br />{SORTING}
 
 				{$,If more than one category of quiz entered then show summaries}
 				{+START,IF,{$OR,{$GET,want_sections},{$NEQ,{CATEGORIES},1}}}

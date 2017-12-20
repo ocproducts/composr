@@ -103,7 +103,9 @@ class Block_main_comcode_page_children
                     );
 
                     // Execute child page and get its title
+                    push_output_state();
                     request_page($child['the_page'], false, $child['the_zone'], null, true);
+                    restore_output_state();
                     $_title = $GLOBALS['SITE_DB']->query_select_value_if_there('cached_comcode_pages', 'cc_page_title', array('the_page' => $child['the_page'], 'the_zone' => $child['the_zone']));
                     if ($_title !== null) {
                         $title = get_translated_text($_title);

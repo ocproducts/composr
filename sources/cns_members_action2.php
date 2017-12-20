@@ -424,13 +424,7 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
     require_code('form_templates');
     require_code('encryption');
     if (($special_type == '') && ($member_id !== null)) {
-        if (cns_is_ldap_member($member_id)) {
-            $special_type = 'ldap';
-        }
-        if (cns_is_httpauth_member($member_id)) {
-            $special_type = 'httpauth';
-        }
-        $special_type = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_password_compat_scheme');
+        $special_type = get_member_special_type($member_id);
     }
 
     if ($groups === null) {

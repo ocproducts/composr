@@ -6,6 +6,8 @@
 		{$,The character set of the page}
 		<meta http-equiv="Content-Type" content="text/html; charset={$CHARSET*}" />
 
+		{+START,IF_PASSED,TARGET}<base href="{$BASE_URL*}/{$ZONE*}" target="{TARGET*}" />{+END}
+
 		{+START,IF_PASSED_AND_TRUE,NOINDEX}
 			<meta name="robots" content="noindex" />
 		{+END}

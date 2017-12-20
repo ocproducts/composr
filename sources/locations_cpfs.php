@@ -127,16 +127,16 @@ function _autofill_geo_cpfs($row)
             $address_parts = reverse_geocode($latitude, $longitude);
             if ($address_parts !== null) {
                 list(, , $city, $county, $state, , $country) = $address_parts;
-                if (!$has_city && !empty($city)) {
+                if (!$has_city && !empty($city) && (!empty($row['field_' . strval($city_field)]))) {
                     $changes['field_' . strval($city_field)] = $city;
                 }
-                if (!$has_county && !empty($county)) {
+                if (!$has_county && !empty($county) && (!empty($row['field_' . strval($county_field)]))) {
                     $changes['field_' . strval($county_field)] = $county;
                 }
-                if (!$has_state && !empty($state)) {
+                if (!$has_state && !empty($state) && (!empty($row['field_' . strval($state_field)]))) {
                     $changes['field_' . strval($state_field)] = $state;
                 }
-                if (!$has_country && !empty($country)) {
+                if (!$has_country && !empty($country) && (!empty($row['field_' . strval($country_field)]))) {
                     $changes['field_' . strval($country_field)] = $country;
                 }
                 // We cannot reliably geocode street addresses, so we don't go deeper than cities. We geocode *from* this to get GPS, but not vice-versa.

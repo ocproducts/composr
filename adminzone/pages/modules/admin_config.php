@@ -311,13 +311,61 @@ class Module_admin_config
                 'URL' => $url,
             )));
         }
+
+        $categories_tpl->attach(do_template('COMCODE_SUBTITLE', array(
+            '_GUID' => '7fde99ae81367fb7405e94b6731a7d9x',
+            'TITLE' => do_lang('DEEPER_CONFIGURATION'),
+            'LEVEL' => '2',
+        )));
+
         $categories_tpl->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array(
             '_GUID' => '6fde99ae81367fb7405e94b6731a7d9a',
             'COUNT' => null,
             'TITLE' => '',
-            'URL' => get_base_url() . '/config_editor.php',
+            'URL' => build_url(array('page' => '_SELF', 'type' => 'base'), '_SELF'),
             'NAME' => do_lang_tempcode('BASE_CONFIGURATION'),
             'DESCRIPTION' => do_lang_tempcode('DOC_BASE_CONFIGURATION'),
+        )));
+
+        $categories_tpl->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array(
+            '_GUID' => '7fde99ae81367fb7405e94b6731a7d9a',
+            'COUNT' => null,
+            'TITLE' => '',
+            'URL' => build_url(array('page' => '_SELF', 'type' => 'xml_fields'), '_SELF'),
+            'NAME' => do_lang_tempcode('FIELD_FILTERS'),
+            'DESCRIPTION' => do_lang_tempcode('DOC_FIELD_FILTERS'),
+        )));
+        $categories_tpl->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array(
+            '_GUID' => '8fde99ae81367fb7405e94b6731a7d9a',
+            'COUNT' => null,
+            'TITLE' => '',
+            'URL' => build_url(array('page' => '_SELF', 'type' => 'xml_breadcrumbs'), '_SELF'),
+            'NAME' => do_lang_tempcode('BREADCRUMB_OVERRIDES'),
+            'DESCRIPTION' => do_lang_tempcode('DOC_BREADCRUMB_OVERRIDES'),
+        )));
+        $categories_tpl->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array(
+            '_GUID' => '9fde99ae81367fb7405e94b6731a7d9a',
+            'COUNT' => null,
+            'TITLE' => '',
+            'URL' => build_url(array('page' => '_SELF', 'type' => 'upgrader'), '_SELF'),
+            'NAME' => do_lang_tempcode('FU_UPGRADER_TITLE'),
+            'DESCRIPTION' => do_lang_tempcode('FU_UPGRADER_INTRO'),
+        )));
+        $categories_tpl->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array(
+            '_GUID' => '0fde99ae81367fb7405e94b6731a7d9a',
+            'COUNT' => null,
+            'TITLE' => '',
+            'URL' => build_url(array('page' => '_SELF', 'type' => 'backend'), '_SELF'),
+            'NAME' => do_lang_tempcode('_FEEDS'),
+            'DESCRIPTION' => comcode_to_tempcode(do_lang('OPML_INDEX_DESCRIPTION')),
+        )));
+        $categories_tpl->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array(
+            '_GUID' => '1fde99ae81367fb7405e94b6731a7d9a',
+            'COUNT' => null,
+            'TITLE' => '',
+            'URL' => build_url(array('page' => '_SELF', 'type' => 'code_editor'), '_SELF'),
+            'NAME' => do_lang_tempcode('CODE_EDITOR'),
+            'DESCRIPTION' => do_lang_tempcode('DOC_CODE_EDITOR'),
         )));
 
         // Wrapper

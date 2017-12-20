@@ -125,6 +125,8 @@ It would not match URLs generated from the following page-links:
 
 In the menu editor, multiple match-keys may be entered in the "Restrict link visibility" field with commas to separate them.
 
+If you use match-keys, you must disable caching on your menu block.
+
 [title="2"]Images[/title]
 
 Any theme images available with a prefix of [tt]icons/[/tt] will be available for attachment to menu items, so long as those theme images are defined in the default theme.

@@ -424,11 +424,11 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
                     $ext = (($obfuscate == 2) && (!is_image($http_result->filename, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous')))) ? 'dat' : get_file_extension($http_result->filename);
                     list($place, , $filename) = find_unique_path($upload_folder, $filename);
                 } else {
-                    $filename = $http_result->filename;
+                    $filename = shorten_urlencoded_filename($http_result->filename);
                     $place = $upload_folder_full . '/' . $filename;
                 }
             } else {
-                $place = $upload_folder_full . '/' . $filename;
+                $place = $upload_folder_full . '/' . shorten_urlencoded_filename($filename);
             }
             if (!has_privilege($member_id, 'exceed_filesize_limit')) {
                 $max_size = intval(get_option('max_download_size')) * 1024;
@@ -772,7 +772,7 @@ function _get_upload_url($member_id, $attach_name, $upload_folder, $upload_folde
     $filearrays = array();
     get_upload_filearray($attach_name, $filearrays);
 
-    $file = $filearrays[$attach_name]['name'];
+    $file = shorten_urlencoded_filename($filearrays[$attach_name]['name']);
 
     if (!check_extension($file, $obfuscate == 2, null, $accept_errors)) {
         if ($obfuscate == 3) { // We'll try again, with obfuscation to see if this would get through
@@ -916,4 +916,40 @@ function get_upload_filearray($name, &$filearrays)
     }
 
     $filearrays[$name] = $_FILES[$name];
+}
+
+/**
+ * Shorten a filename so it will fit in the database.
+ *
+ * @param  string $filename The filename
+ * @param  integer $length The length
+ * @return string The shortened filename
+ */
+function shorten_urlencoded_filename($filename, $length = 226)
+{
+    // Default length is... maxDBFieldSize - maxUploadDirSize - suffixingLeeWay = 255 - (7 + 1 + 23 + 1) - 6 = 230
+    // (maxUploadDirSize is LEN('uploads') + LEN('/') + LEN(maxUploadSubdirSize) + LEN('/')
+    // Suffixing leeway is so we can have up to ~99999 different files with the same base filename, varying by auto-generated suffixes
+
+    $matches = array();
+    if (preg_match('#^(.*)\.(.*)$#', $filename, $matches) != 0) {
+        $filename_suffix = $matches[2];
+        $_filename_stem = $matches[1];
+
+        $i = 0;
+        $mb_len = cms_mb_strlen($_filename_stem);
+        $filename_stem = '';
+        do {
+            $next_mb_char = cms_mb_substr($_filename_stem, $i, 1);
+            if (strlen(urlencode($filename_stem . $next_mb_char . '.' . $filename_suffix)) > $length) {
+                break;
+            }
+            $filename_stem .= $next_mb_char;
+            $i++;
+        }
+        while ($i < $mb_len);
+
+        $filename = $filename_stem . '.' . $filename_suffix;
+    }
+    return $filename;
 }

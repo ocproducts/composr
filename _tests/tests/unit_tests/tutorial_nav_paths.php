@@ -22,6 +22,13 @@ class tutorial_nav_paths_test_set extends cms_test_case
     {
         $config_hooks = find_all_hook_obs('systems', 'config', 'Hook_config_');
 
+        set_option('yeehaw', '0');
+
+        // Flush main caches
+        require_code('caches3');
+        erase_persistent_cache();
+        erase_cached_language();
+
         require_all_lang();
 
         $paths_found = array();
@@ -60,15 +67,16 @@ class tutorial_nav_paths_test_set extends cms_test_case
                 $ok = true;
             }
 
-            foreach ($config_hooks as $ob) {
+            foreach ($config_hooks as $file => $ob) {
                 $details = $ob->get_details();
+
                 if ((strip_tags(do_lang('CONFIG_CATEGORY_' . $details['category'])) == $category) && (($group == '') || (strip_tags(do_lang($details['group'])) == $group))) {
                     $ok = true;
                     break;
                 }
             }
 
-            $this->assertTrue($ok, 'Could not find ' . $total. '; category=' . $category . '; group=' . $group);
+            $this->assertTrue($ok, 'Could not find ' . $total. '; category="' . $category . '"; group="' . $group . '"');
         }
     }
 }

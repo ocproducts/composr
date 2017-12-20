@@ -444,9 +444,10 @@ class Module_cms_comcode_pages
             foreach ($page_rows as $row) {
                 $located = _request_page($row['the_page'], $row['the_zone'], null, $lang);
                 if ($located !== false && $located[0] != 'REDIRECT') {
-                    $page_path = get_custom_file_base() . '/' . $located[count($located) - 1];
+                    $_zone = $located[count($located) - 1];
+                    $page_path = get_custom_file_base() . (($_zone == '') ? '' : '/') . $_zone;
                     if (is_file($page_path)) {
-                        $page_path = get_file_base() . '/' . $located[count($located) - 1];
+                        $page_path = get_file_base() . (($_zone == '') ? '' : '/') . $_zone;
                     }
 
                     $files_list[$row['the_zone'] . ':' . $row['the_page']] = array(
@@ -1373,10 +1374,11 @@ class Module_cms_comcode_pages
                 $page_contents = is_string($page['string_index']) ? $page['string_index'] : get_translated_text($page['string_index']);
             } else {
                 $located = _request_page($page['the_page'], $page['the_zone']);
+                $_zone = $located[count($located) - 1];
                 if ($located !== false && $located[0] != 'REDIRECT' && isset($located[4])) {
-                    $page_path = get_custom_file_base() . '/' . $located[count($located) - 1];
+                    $page_path = get_custom_file_base() . (($_zone == '') ? '' : '/') . $_zone;
                     if (is_file($page_path)) {
-                        $page_path = get_file_base() . '/' . $located[count($located) - 1];
+                        $page_path = get_file_base() . (($_zone == '') ? '' : '/') . $_zone;
                     }
                     $page_contents = cms_file_get_contents_safe($page_path);
                 } else {

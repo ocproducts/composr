@@ -277,7 +277,6 @@ function _sync_onlylocal_video($ob, $local_video)
         attach_message(do_lang_tempcode('TRANSCODING_IN_PROGRESS'), 'inform');
 
         // Actually carry over the DB mapping as an actual transcoding
-        require_code('transcoding');
         store_transcoding_success($transcoding_id, $remote_video['url']);
 
         // Now copy over thumbnail, if applicable

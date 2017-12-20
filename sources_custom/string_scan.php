@@ -225,6 +225,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_CATEGORY_TRANSACTION_FEES
         PAYMENT_GATEWAY_authorize
         PAYMENT_GATEWAY_ccbill
+        DEEPER_CONFIGURATION
+        TRANSCODING
         LOST_DISK_CONTENT
         DESCRIPTION_LOST_DISK_CONTENT
         CONFIG_CATEGORY_DESCRIPTION__TRANSACTION_FEES

@@ -57,6 +57,8 @@ class Hook_task_import_newsletter_subscribers
         }
         rewind($myfile);
 
+        set_mass_import_mode();
+
         $email_index = 0;
         $forename_index = null;
         $surname_index = null;
@@ -69,6 +71,8 @@ class Hook_task_import_newsletter_subscribers
 
         $count = 0;
         $count2 = 0;
+
+        $j = 0;
 
         do {
             $i = 0;
@@ -83,9 +87,9 @@ class Hook_task_import_newsletter_subscribers
 
             // Process data
             foreach ($_csv_data as $i => $csv_line) {
-                if (($i <= 1) && (count($csv_line) >= 1) && ($csv_line[$email_index] !== null) && (strpos($csv_line[$email_index], '@') === false)) {
+                if (($j == 0) && (count($csv_line) >= 1) && ($csv_line[$email_index] !== null) && (strpos($csv_line[$email_index], '@') === false)) {
                     foreach ($csv_line as $j => $val) {
-                        if (in_array(strtolower($val), array('e-mail', 'email', 'email address', 'e-mail address', strtolower(do_lang('EMAIL_ADDRESS'))))) {
+                        if (in_array(strtolower($val), array('e-mail', 'email', 'email address', 'e-mail address', strtolower(do_lang('EMAIL_ADDRESS')), 'to'))) {
                             $email_index = $j;
                         }
                         if (in_array(strtolower($val), array('forename', 'forenames', 'first name', strtolower(do_lang('FORENAME'))))) {
@@ -113,15 +117,18 @@ class Hook_task_import_newsletter_subscribers
                             $join_time_index = $j;
                         }
                     }
+                    $j++;
                     continue;
                 }
+
+                $j++;
 
                 if ((count($csv_line) >= 1) && ($csv_line[$email_index] !== null) && (strpos($csv_line[$email_index], '@') !== false)) {
                     $email = $csv_line[$email_index];
                     $forename = (($forename_index !== null) && (array_key_exists($forename_index, $csv_line))) ? $csv_line[$forename_index] : '';
                     if ($forename == $email) {
                         $forename = ucfirst(strtolower(preg_replace('#^(\w+)([^\w].*)?$#', '\\1', $forename)));
-                        if (in_array($forename, array('Sales', 'Info', 'Business', 'Enquiries', 'Admin'))) {
+                        if (in_array($forename, array('Sales', 'Info', 'Business', 'Enquiries', 'Admin', 'Webmaster'))) {
                             $forename = '';
                         }
                     }
@@ -165,7 +172,9 @@ class Hook_task_import_newsletter_subscribers
                                 $count++;
                             }
                         } else {
-                            edit_newsletter_subscriber($test, null, null, null, null, null, null, $forename, $surname);
+                            if (($forename != '') || ($surname != '')) {
+                                edit_newsletter_subscriber($test, null, null, null, null, null, null, $forename, $surname);
+                            }
 
                             if (!$subscribe) {
                                 $count++;
@@ -181,7 +190,7 @@ class Hook_task_import_newsletter_subscribers
                             $GLOBALS['SITE_DB']->query_insert('newsletter_subscribe', array(
                                 'newsletter_id' => $newsletter_id,
                                 'email' => $email,
-                            ));
+                            ), false, true/*in case already exists*/);
                         }
                     }
 

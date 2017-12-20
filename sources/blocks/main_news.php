@@ -310,7 +310,6 @@ class Block_main_news
                     if (url_is_local($img_raw)) {
                         $img_raw = $base_url . '/' . $img_raw;
                     }
-                    require_code('images');
                     $img = $img_raw;
                 } else {
                     $img_raw = get_news_category_image_url($news_cat_row['nc_img']);

@@ -59,7 +59,7 @@ function init__global2()
     }
     $error_log_path = get_custom_file_base() . '/data_custom/errorlog.php';
     safe_ini_set('error_log', $error_log_path);
-    if (is_file($error_log_path) && filesize($error_log_path) < 17) {
+    if ((is_file($error_log_path)) && (filesize($error_log_path) < 17)) {
         @file_put_contents($error_log_path, "<" . "?php return; ?" . ">\n", LOCK_EX);
     }
 
@@ -1051,6 +1051,7 @@ function is_browser_decaching()
     }
 
     if (GOOGLE_APPENGINE) {
+        $BROWSER_DECACHEING_CACHE = false;
         return false; // Decaching by mistake is real-bad when Google Cloud Storage is involved
     }
 
@@ -1060,11 +1061,13 @@ function is_browser_decaching()
         $config_file = rtrim(str_replace(array('if (!defined(\'DO_PLANNED_DECACHE\')) ', 'define(\'DO_PLANNED_DECACHE\', true);'), array('', ''), $config_file)) . "\n\n";
         require_code('files');
         cms_file_put_contents_safe(get_file_base() . '/_config.php', $config_file, FILE_WRITE_FIX_PERMISSIONS);
+        $BROWSER_DECACHEING_CACHE = true;
         return true;
     }
 
     if (get_value('ran_once') === null) { // Track whether Composr has run at least once
         set_value('ran_once', '1');
+        $BROWSER_DECACHEING_CACHE = true;
         return true;
     }
 

@@ -33,6 +33,9 @@ class us_english_test_set extends cms_test_case
 
     protected function clearCaches()
     {
+        global $ALLOW_DOUBLE_DECACHE;
+        $ALLOW_DOUBLE_DECACHE = true;
+
         // Flush main caches
         require_code('caches3');
         erase_persistent_cache();

@@ -544,7 +544,7 @@ class CMS_Topic
                 $other_ids[] = strval($u['id']);
             }
         }
-        $ret->attach(do_template('POST_CHILD_LOAD_LINK', array('_GUID' => '79e1f3feec7a6d48cd554b41e831b287', 'NUM_TO_SHOW_LIMIT' => strval($num_to_show_limit), 'OTHER_IDS' => $other_ids, 'ID' => '', 'CHILDREN' => (count($other_ids) == 0) ? '' : '1')));
+        $ret->attach(do_template('POST_CHILD_LOAD_LINK', array('_GUID' => '79e1f3feec7a6d48cd554b41e831b287', 'NUM_TO_SHOW_LIMIT' => strval($num_to_show_limit), 'OTHER_IDS' => $other_ids, 'ID' => '', 'CHILDREN' => (($other_ids === null) || (count($other_ids) == 0)) ? '' : '1')));
 
         if ($this->topic_id !== null) {
             $serialized_options = serialize(array($this->topic_id, $num_to_show_limit, true, false, strval($forum_id), $this->reverse, $may_reply, $highlight_by_member, count($all_individual_review_ratings) != 0));

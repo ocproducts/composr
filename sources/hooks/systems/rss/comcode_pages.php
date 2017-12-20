@@ -91,7 +91,8 @@ class Hook_rss_comcode_pages
                 if (strpos($page_request[0], 'COMCODE') === false) {
                     continue;
                 }
-                $path = get_custom_file_base() . '/' . $page_request[count($page_request) - 1];
+                $_zone = $page_request[count($page_request) - 1];
+                $path = get_custom_file_base() . (($_zone == '') ? '' : '/') . $_zone;
                 if (!file_exists($path)) {
                     continue;
                 }

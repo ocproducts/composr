@@ -178,7 +178,7 @@ class Hook_health_check_install_env_php_lock_down extends Hook_Health_Check
             uasort ucfirst lcfirst ucwords uksort uniqid unlink unserialize unset urldecode urlencode usort
             utf8_decode utf8_encode wordwrap cos array_rand array_unshift asin assert
             assert_options atan base_convert basename bin2hex bindec call_user_func_array
-            connection_aborted connection_status crc32 decbin each empty fflush fileatime flock flush
+            connection_aborted connection_status crc32 decbin empty fflush fileatime flock flush
             gethostbyaddr getrandmax gmmktime gmstrftime ip2long is_dir is_file
             levenshtein log log10 long2ip md5_file pow preg_quote prev rad2deg
             range readfile shuffle similar_text sqrt strcasecmp strcoll strcspn stristr strnatcasecmp
