@@ -220,8 +220,8 @@
                 var o = el.parentNode.parentNode.parentNode.parentNode;
                 o.parentNode.removeChild(o);
 
-                var nots = document.querySelector('.cns_member_column_pts');
-                if (nots && (document.querySelectorAll('.cns_notification').length === 0)) {
+                var nots = document.querySelector('.cns-member-column-pts');
+                if (nots && !document.querySelector('.cns-notification')) {
                     nots.parentNode.removeChild(nots);
                 }
             });

@@ -167,7 +167,7 @@ And then alter the [tt]BLOCK_MAIN_QUOTES.tpl[/tt] template like...
 {+END}
 
 {+START,IF,{$NEQ,{$GET,main_quote_display_method},A,B}}
-    <section class="box box___block_main_quotes"><div class="box_inner">
+    <section class="box box___block_main_quotes"><div class="box-inner">
         {+START,IF_NON_EMPTY,{TITLE}}<h3>{TITLE}</h3>{+END}
 
         <blockquote class="quotes_block">
@@ -175,7 +175,7 @@ And then alter the [tt]BLOCK_MAIN_QUOTES.tpl[/tt] template like...
         </blockquote>
 
         {+START,IF_NON_EMPTY,{EDIT_URL}}
-            <ul class="horizontal_links associated-links-block-group">
+            <ul class="horizontal-links associated-links-block-group">
                 <li>{EDIT_URL*}</li>
             </ul>
         {+END}

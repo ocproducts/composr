@@ -5,7 +5,7 @@
 
 	{+START,IF,{$NEQ,{TEXT},{!MISSING_RESOURCE}}}
 		{+START,IF_PASSED,WEBSERVICE_RESULT}
-			<div class="box box___warn_screen"><div class="box_inner">
+			<div class="box box___warn_screen"><div class="box-inner">
 				{TEXT*}
 			</div></div>
 
@@ -18,7 +18,7 @@
 		{+START,IF_NON_PASSED,WEBSERVICE_RESULT}
 			<div class="site_special_message ssm_warn" role="alert">
 				<div class="site_special_message_inner">
-					<div class="box box___warn_screen"><div class="box_inner">
+					<div class="box box___warn_screen"><div class="box-inner">
 						{TEXT*}
 					</div></div>
 				</div>

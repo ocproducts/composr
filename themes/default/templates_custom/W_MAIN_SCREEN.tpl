@@ -3,7 +3,7 @@
 <div data-require-javascript="buildr" data-tpl="wMainScreen">
 	{TITLE}
 
-	<section class="box box___realm_main"><div class="box_inner">
+	<section class="box box___realm_main"><div class="box-inner">
 		<h2>&ldquo;{REALM_NAME*}&rdquo;, &lsquo;{ROOM_NAME*}&rsquo;, <kbd>{REALM*}:{X*}:{Y*}</kbd></h2>
 
 		<div class="buildr_navigation">
@@ -123,7 +123,7 @@
 
 	<br />
 
-	<section class="box box___room_info"><div class="box_inner">
+	<section class="box box___room_info"><div class="box-inner">
 		<h3>{!W_ROOM_INFORMATION}</h3>
 
 		<div class="float-surrounder">
@@ -219,7 +219,7 @@
 	<br />
 
 	<div class="buildr_centered_contents">
-		<section class="box"><div class="box_inner buildr_icons_wrap">
+		<section class="box"><div class="box-inner buildr_icons_wrap">
 			<h3>{!W_TOOLS}</h3>
 
 			<div class="buildr_icon">
@@ -246,12 +246,12 @@
 		</div></section>
 
 		<div class="box box___w_main_screen" data-toggleable-tray="{}">
-			<h2 class="toggleable_tray_title js-tray-header">
+			<h2 class="toggleable-tray-title js-tray-header">
 				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!W_ENVIRONMENT_ACTIONS}</a>
 				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" /></a>
 			</h2>
 
-			<div class="toggleable_tray js-tray-content" style="{HIDE_ACTIONS*}"{+START,IF,{HIDE_ACTIONS}} aria-expanded="false"{+END}>
+			<div class="toggleable-tray js-tray-content" style="{HIDE_ACTIONS*}"{+START,IF,{HIDE_ACTIONS}} aria-expanded="false"{+END}>
 				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
@@ -539,12 +539,12 @@
 
 		{+START,IF,{MAY_DO_STUFF}}
 			<div class="box box___w_main_screen" data-toggleable-tray="{}">
-				<h2 class="toggleable_tray_title js-tray-header">
+				<h2 class="toggleable-tray-title js-tray-header">
 					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!W_ENVIRONMENT_ADDITIONS}</a>
 					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" /></a>
 				</h2>
 
-				<div class="toggleable_tray js-tray-content" style="{HIDE_ADDITIONS*}"{+START,IF,{HIDE_ADDITIONS}} aria-expanded="false"{+END}>
+				<div class="toggleable-tray js-tray-content" style="{HIDE_ADDITIONS*}"{+START,IF,{HIDE_ADDITIONS}} aria-expanded="false"{+END}>
 					<div class="float-surrounder buildr_icons_wrap">
 						<div class="buildr_icon" style="width: {$?,{MAY_ADD_PORTAL},20%,25%};">
 							<a href="{$PAGE_LINK*,_SELF:_SELF:addrealm}"><img alt="{!W_ADD_REALM}" src="{$IMG*,buildr/realms}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:addrealm}">{!W_ADD_REALM}</a>
@@ -569,12 +569,12 @@
 		{+END}
 
 		<div class="box box___w_main_screen" data-toggleable-tray="{}">
-			<h2 class="toggleable_tray_title js-tray-header">
+			<h2 class="toggleable-tray-title js-tray-header">
 				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!W_ENVIRONMENT_MODIFICATIONS}</a>
 				<a class="js-click-set-hidemod-cookie toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" /></a>
 			</h2>
 
-			<div class="toggleable_tray js-tray-content" style="{HIDE_MODIFICATIONS*}"{+START,IF,{HIDE_MODIFICATIONS}} aria-expanded="false"{+END}>
+			<div class="toggleable-tray js-tray-content" style="{HIDE_MODIFICATIONS*}"{+START,IF,{HIDE_MODIFICATIONS}} aria-expanded="false"{+END}>
 				{+START,IF_NON_EMPTY,{ITEMS_OWNED}}
 					<form method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off"><div>
 						{$INSERT_SPAMMER_BLACKHOLE}

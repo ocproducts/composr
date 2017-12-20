@@ -2,7 +2,7 @@
 
 {$REQUIRE_CSS,comcode_mistakes}
 
-<div class="box box___comcode_mistake_screen"><div class="box_inner">
+<div class="box box___comcode_mistake_screen"><div class="box-inner">
 	<h2>{!COMCODE_ERROR_TITLE}</h2>
 
 	<p class="red_alert" role="error">

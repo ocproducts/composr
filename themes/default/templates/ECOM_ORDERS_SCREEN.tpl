@@ -29,7 +29,7 @@
 					{+END}
 
 					<p class="assocated_details block_mobile">
-						<span class="field_name">{!STATUS}:</span> {STATUS*}
+						<span class="field-name">{!STATUS}:</span> {STATUS*}
 					</p>
 				</td>
 				<td>

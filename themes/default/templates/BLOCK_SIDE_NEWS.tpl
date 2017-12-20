@@ -1,4 +1,4 @@
-<section class="box box___block_side_news"><div class="box_inner">
+<section class="box box___block_side_news"><div class="box-inner">
 	{+START,IF_NON_EMPTY,{TITLE}}<h3>{TITLE}</h3>{+END}
 
 	{+START,IF_EMPTY,{CONTENT}}
@@ -9,7 +9,7 @@
 	{+END}
 
 	{+START,IF_NON_EMPTY,{ARCHIVE_URL}{SUBMIT_URL}}
-		<ul class="horizontal_links associated-links-block-group force_margin">
+		<ul class="horizontal-links associated-links-block-group force_margin">
 			{+START,IF_NON_EMPTY,{ARCHIVE_URL}}
 				<li><a rel="archives" href="{ARCHIVE_URL*}">{!VIEW_ARCHIVE}</a></li>
 			{+END}

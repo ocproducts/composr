@@ -7,7 +7,7 @@
 		</td>
 	{+END}
 	<td class="cns-forum-in-category-forum cns-column2">
-		<a class="field_name" href="{FORUM_URL*}">{FORUM_NAME*}</a>
+		<a class="field-name" href="{FORUM_URL*}">{FORUM_NAME*}</a>
 
 		{+START,IF_NON_EMPTY,{EDIT_URL}}
 			<a class="horiz-field-sep associated-link suggested_link" rel="edit" href="{EDIT_URL*}" title="{!EDIT}: {FORUM_NAME*}">{!EDIT}</a>
@@ -27,14 +27,14 @@
 
 		{+START,IF_NON_EMPTY,{SUBFORUMS}}
 			<div class="cns-forum-subforums">
-				<p><span class="field_name">{!SUBFORUMS}:</span> {SUBFORUMS}</p>
+				<p><span class="field-name">{!SUBFORUMS}:</span> {SUBFORUMS}</p>
 			</div>
 		{+END}
 
 		<div role="note" class="block_mobile">
 			<ul class="horizontal-meta-details associated-details">
-				<li><span class="field_name">{!COUNT_TOPICS}:</span> {$PREG_REPLACE,\,\d\d\d$,k,{NUM_TOPICS*}}</li>
-				<li><span class="field_name">{!COUNT_POSTS}:</span> {$PREG_REPLACE,\,\d\d\d$,k,{NUM_POSTS*}}</li>
+				<li><span class="field-name">{!COUNT_TOPICS}:</span> {$PREG_REPLACE,\,\d\d\d$,k,{NUM_TOPICS*}}</li>
+				<li><span class="field-name">{!COUNT_POSTS}:</span> {$PREG_REPLACE,\,\d\d\d$,k,{NUM_POSTS*}}</li>
 			</ul>
 		</div>
 	</td>

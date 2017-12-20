@@ -19,7 +19,7 @@
 	{$SET,support_mass_select,cms_galleries}
 
 	{+START,IF_NON_EMPTY,{ENTRIES}}
-		<div class="box box___gallery_flow_mode_screen__other"><div class="box_inner">
+		<div class="box box___gallery_flow_mode_screen__other"><div class="box-inner">
 			<h2>{!OTHER_IMAGES_IN_GALLERY}</h2>
 
 			{$REQUIRE_JAVASCRIPT,core_rich_media}
@@ -41,7 +41,7 @@
 
 			<hr />
 
-			<ul class="horizontal_links associated-links-block-group">
+			<ul class="horizontal-links associated-links-block-group">
 				<li>{SORTING}</li>
 				<li><img src="{$IMG*,icons/24x24/buttons/proceed}" srcset="{$IMG*,icons/48x48/buttons/slideshow} 2x" alt="" /> <a {+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!_SLIDESHOW} {!LINK_NEW_WINDOW}"{+END} href="{$PAGE_LINK*,_SELF:galleries:{FIRST_ENTRY_ID*}:slideshow=1:wide_high=1}">{!_SLIDESHOW}</a></li>
 			</ul>
@@ -69,7 +69,7 @@
 	<div class="float-surrounder lined_up_boxes flow_mode_details">
 		{+START,IF_NON_EMPTY,{MEMBER_DETAILS}}
 			<div class="right">
-				<div class="box box___gallery_flow_mode_screen__member"><div class="box_inner">
+				<div class="box box___gallery_flow_mode_screen__member"><div class="box-inner">
 					<h2>{_TITLE*}</h2>
 
 					{MEMBER_DETAILS}

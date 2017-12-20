@@ -940,7 +940,7 @@ function init__webstandards()
         'script.for' => '.+',
         'script.src' => $enforce_link,
         'script.nonce' => '\w+',
-        'script.type' => 'text/javascript',
+        'script.type' => '(text/javascript|text/html)',
         'select.autofocus' => '(autofocus)',
         'select.disabled' => 'disabled',
         'select.form' => $enforce_name,

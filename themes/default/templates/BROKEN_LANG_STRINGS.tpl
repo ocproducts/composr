@@ -1,5 +1,5 @@
 {+START,IF_ARRAY_NON_EMPTY,MISSING_LANG_STRINGS}
-	<section class="box box___broken_lang_strings"><div class="box_inner">
+	<section class="box box___broken_lang_strings"><div class="box-inner">
 		<h3>{!MISSING_LANG_STRINGS}</h3>
 
 		<p>
@@ -9,7 +9,7 @@
 {+END}
 
 {+START,IF_ARRAY_NON_EMPTY,MISSING_LANG_STRINGS_ZERO}
-	<section class="box box___broken_lang_strings"><div class="box_inner">
+	<section class="box box___broken_lang_strings"><div class="box-inner">
 		<h3>{!MISSING_LANG_STRINGS_ZERO}</h3>
 
 		<p>
@@ -19,7 +19,7 @@
 {+END}
 
 {+START,IF_ARRAY_NON_EMPTY,FUSED_LANG_STRINGS}
-	<section class="box box___broken_lang_strings"><div class="box_inner">
+	<section class="box box___broken_lang_strings"><div class="box-inner">
 		<h3>{!FUSED_LANG_STRINGS}</h3>
 
 		<p>
@@ -29,7 +29,7 @@
 {+END}
 
 {+START,IF_ARRAY_NON_EMPTY,ORPHANED_LANG_STRINGS}
-	<section class="box box___broken_lang_strings"><div class="box_inner">
+	<section class="box box___broken_lang_strings"><div class="box-inner">
 		<h3>{!ORPHANED_LANG_STRINGS}</h3>
 
 		<p>

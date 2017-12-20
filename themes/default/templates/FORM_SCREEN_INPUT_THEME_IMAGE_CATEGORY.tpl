@@ -5,7 +5,7 @@
 			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{CATEGORY_NAME*}</a>
 		</h3>
 
-		<div class="toggleable_tray js-tray-content" style="display: {DISPLAY*}"{+START,IF,{$EQ,{DISPLAY},none}} aria-expanded="false"{+END}>
+		<div class="toggleable-tray js-tray-content" style="display: {DISPLAY*}"{+START,IF,{$EQ,{DISPLAY},none}} aria-expanded="false"{+END}>
 			<div class="float-surrounder">
 				{CATEGORY}
 			</div>

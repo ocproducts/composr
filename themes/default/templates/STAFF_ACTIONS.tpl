@@ -26,11 +26,11 @@
 {+END}
 
 {+START,IF_NON_EMPTY,{$TRIM,{$GET,staff_actions}}}
-	<div class="box staff_actions{+START,IF_PASSED,1_ICON} with_images{+END}"><aside class="box_inner">
-		<span class="field_name{+START,IF_NON_PASSED,STAFF_ACTIONS_TITLE} standard_field_name{+END}">
+	<div class="box staff_actions{+START,IF_PASSED,1_ICON} with_images{+END}"><aside class="box-inner">
+		<span class="field-name {+START,IF_NON_PASSED,STAFF_ACTIONS_TITLE} standard_field_name{+END}">
 			{+START,IF_PASSED,STAFF_ACTIONS_TITLE}{STAFF_ACTIONS_TITLE*}:{+END}
 			{+START,IF_NON_PASSED,STAFF_ACTIONS_TITLE}{!CONTROL_FUNCTIONS}:{+END}
 		</span>
-		<ul class="horizontal_links">{$GET,staff_actions}</ul>
+		<ul class="horizontal-links">{$GET,staff_actions}</ul>
 	</aside></div>
 {+END}

@@ -4,7 +4,7 @@
 	</div>
 	<div class="lined_up_boxes">
 		<div class="gallery_entry_details right">
-			<section class="box box___gallery_flow_mode_video"><div class="box_inner">
+			<section class="box box___gallery_flow_mode_video"><div class="box-inner">
 				<h3>{!DETAILS}</h3>
 
 				<table class="map_table results_table">
@@ -59,7 +59,7 @@
 					</tbody>
 				</table>
 
-				<ul class="horizontal_links associated-links-block-group">
+				<ul class="horizontal-links associated-links-block-group">
 					<li><img src="{$IMG*,icons/24x24/feedback/comment}" srcset="{$IMG*,icons/48x48/feedback/comment} 2x" alt="" /> <a href="{VIEW_URL*}">{$COMMENT_COUNT,images,{ID}}</a></li>
 				</ul>
 

@@ -1,4 +1,4 @@
-<div class="box box___download_box"><div class="box_inner">
+<div class="box box___download_box"><div class="box-inner">
 	{+START,SET,content_box_title}
 		{+START,IF,{GIVE_CONTEXT}}
 			{!CONTENT_IS_OF_TYPE,{!DOWNLOAD},{NAME*}}
@@ -20,14 +20,14 @@
 	<div class="meta_details" role="note">
 		<dl class="meta_details_list">
 			{+START,IF_NON_EMPTY,{AUTHOR}}
-				<dt class="field_name">{!BY}:</dt> <dd>{AUTHOR*}</dd>
+				<dt class="field-name">{!BY}:</dt> <dd>{AUTHOR*}</dd>
 			{+END}
 			{+START,IF,{$INLINE_STATS}}
-				<dt class="field_name">{!COUNT_DOWNLOADS}:</dt> <dd>{DOWNLOADS*}</dd>
+				<dt class="field-name">{!COUNT_DOWNLOADS}:</dt> <dd>{DOWNLOADS*}</dd>
 			{+END}
-			<dt class="field_name">{!ADDED}:</dt> <dd>{DATE*}</dd>
+			<dt class="field-name">{!ADDED}:</dt> <dd>{DATE*}</dd>
 			{+START,IF_PASSED,RATING}{+START,IF_NON_EMPTY,{RATING}}
-				<dt class="field_name">{!RATING}:</dt> <dd>{RATING}</dd>
+				<dt class="field-name">{!RATING}:</dt> <dd>{RATING}</dd>
 			{+END}{+END}
 		</dl>
 	</div>
@@ -47,7 +47,7 @@
 	</div>
 
 	{+START,IF_NON_EMPTY,{URL}}
-		<ul class="horizontal_links associated-links-block-group">
+		<ul class="horizontal-links associated-links-block-group">
 			{+START,IF_PASSED,LICENCE}
 				<li><a href="{URL*}">{!VIEW}</a></li>
 			{+END}

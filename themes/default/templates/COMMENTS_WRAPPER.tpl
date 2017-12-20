@@ -24,7 +24,7 @@
 	{+END}
 
 	<div class="boxless-space">
-		<div class="box box___comments_wrapper"><div class="box_inner">
+		<div class="box box___comments_wrapper"><div class="box-inner">
 			<h2 class="comments_header">{$?,{$IS_NON_EMPTY,{REVIEW_RATING_CRITERIA}},{$GET,REVIEWS_TITLE},{!COMMENTS}}</h2>
 
 			<div class="float-surrounder">

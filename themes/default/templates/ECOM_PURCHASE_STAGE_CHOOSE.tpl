@@ -16,7 +16,7 @@
 		{+START,LOOP,PRODUCTS}
 			{+START,IF,{$NEQ,{NUM_PRODUCTS_IN_CATEGORY},0}}{+START,IF,{CAN_PURCHASE}}
 				<div class="ecom_product">
-					<div class="box box___ecom_purchase_stage_choose"><div class="box_inner">
+					<div class="box box___ecom_purchase_stage_choose"><div class="box-inner">
 						<h2>{ITEM_NAME*}</h2>
 
 						<div class="float-surrounder">
@@ -32,12 +32,12 @@
 
 							{+START,IF_PASSED,WRITTEN_PRICE}
 								<p>
-									<span class="field_name">{!PRICE}</span>: {WRITTEN_PRICE*}
+									<span class="field-name">{!PRICE}</span>: {WRITTEN_PRICE*}
 								</p>
 							{+END}
 
 							{+START,IF_PASSED,URL}
-								<ul class="horizontal_links associated-links-block-group">
+								<ul class="horizontal-links associated-links-block-group">
 									<li><a title="{!CHOOSE}: {ITEM_NAME*}" href="{URL*}">{!CHOOSE}</a></li>
 								</ul>
 							{+END}

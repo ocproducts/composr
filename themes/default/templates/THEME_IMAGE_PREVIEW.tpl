@@ -1,4 +1,4 @@
-<div class="box box___theme_image_preview"><div class="box_inner">
+<div class="box box___theme_image_preview"><div class="box-inner">
 	<h2>{!CURRENT}</h2>
 
 	<div class="float-surrounder">

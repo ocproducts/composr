@@ -52,7 +52,7 @@
 						</p>
 						{+START,IF_NON_EMPTY,{T_PENDING_REASON}{T_REASON}{T_MEMO}}
 							<p class="standard_indent">
-								<span class="field_name">{!DETAILS}:</span> {T_PENDING_REASON*}{T_REASON*}{T_MEMO*}
+								<span class="field-name">{!DETAILS}:</span> {T_PENDING_REASON*}{T_REASON*}{T_MEMO*}
 							</p>
 						{+END}
 					{+END}

@@ -1,5 +1,5 @@
 {+START,IF,{$NOR,{$GET,login_screen},{$MATCH_KEY_MATCH,_WILD:login}}}
-	<section class="box box___block_side_personal_stats_no" data-tpl="blockSidePersonalStatsNo"><div class="box_inner">
+	<section class="box box___block_side_personal_stats_no" data-tpl="blockSidePersonalStatsNo"><div class="box-inner">
 		{+START,IF_NON_EMPTY,{TITLE}}<h3>{TITLE}</h3>{+END}
 
 		<form title="{!_LOGIN}" class="js-submit-check-login-username-field" action="{LOGIN_URL*}" method="post" autocomplete="on">
@@ -36,7 +36,7 @@
 			</div>
 		</form>
 
-		<ul class="horizontal_links associated-links-block-group force_margin">
+		<ul class="horizontal-links associated-links-block-group force_margin">
 			{+START,IF_NON_EMPTY,{JOIN_URL}}<li><a href="{JOIN_URL*}">{!_JOIN}</a></li>{+END}
 			<li><a data-open-as-overlay="{}" rel="nofollow" href="{FULL_LOGIN_URL*}" title="{!MORE}: {!_LOGIN}">{!MORE}</a></li>
 		</ul>

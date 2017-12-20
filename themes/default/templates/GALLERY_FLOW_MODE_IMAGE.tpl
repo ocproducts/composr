@@ -11,7 +11,7 @@
 
 	<div class="float-surrounder lined_up_boxes">
 		<div class="gallery_entry_details right">
-			<section class="box box___gallery_flow_mode_image"><div class="box_inner">
+			<section class="box box___gallery_flow_mode_image"><div class="box-inner">
 				<h3>{!DETAILS}</h3>
 
 				<table class="map_table results_table">
@@ -64,7 +64,7 @@
 					</tbody>
 				</table>
 
-				<ul class="horizontal_links associated-links-block-group">
+				<ul class="horizontal-links associated-links-block-group">
 					{+START,IF,{$ADDON_INSTALLED,recommend}}
 						<li><img src="{$IMG*,icons/16x16/filetypes/email_link}" srcset="{$IMG*,icons/16x16/filetypes/email_link} 2x" alt="" /> <a href="{$PAGE_LINK*,:recommend:browse:subject={!ECARD_FOR_YOU_SUBJECT}:page_title={!SEND_AS_ECARD}:s_message={!ECARD_FOR_YOU,{$SELF_URL},{FULL_URL*},{$SITE_NAME}}}">{!SEND_AS_ECARD}</a></li>
 					{+END}

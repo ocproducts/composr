@@ -1,4 +1,4 @@
-<section class="box box___block_side_forum_news"><div class="box_inner">
+<section class="box box___block_side_forum_news"><div class="box-inner">
 	{+START,IF_NON_EMPTY,{TITLE}}<h3>{TITLE}</h3>{+END}
 
 	{+START,IF_EMPTY,{NEWS}}
@@ -7,7 +7,7 @@
 	{+START,IF_NON_EMPTY,{NEWS}}
 		<div class="webstandards_checker_off">
 			{+START,LOOP,NEWS}
-				<div class="box box___block_side_forum_news_summary"><div class="box_inner">
+				<div class="box box___block_side_forum_news_summary"><div class="box-inner">
 					<p class="tiny_paragraph">
 						<a title="{$STRIP_TAGS,{NEWS_TITLE}}" href="{FULL_URL*}">{$TRUNCATE_LEFT,{NEWS_TITLE},30,0,1}</a>
 					</p>
@@ -25,7 +25,7 @@
 	{+END}
 
 	{+START,IF_NON_EMPTY,{ARCHIVE_URL}{SUBMIT_URL}}
-		<ul class="horizontal_links associated-links-block-group force_margin">
+		<ul class="horizontal-links associated-links-block-group force_margin">
 			{+START,IF_NON_EMPTY,{ARCHIVE_URL}}
 				<li><a rel="archives" href="{ARCHIVE_URL*}">{!VIEW_ARCHIVE}</a></li>
 			{+END}

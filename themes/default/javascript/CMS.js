@@ -328,9 +328,9 @@
 
         if (validIdRE.test(sheetNameOrHref)) {
             sheetName = sheetNameOrHref;
-            sheetHref = $util.schemeRelative('{$FIND_SCRIPT_NOHTTP;,sheet}?sheet=' + sheetName + $cms.keep());
+            sheetHref = $util.srl('{$FIND_SCRIPT_NOHTTP;,sheet}?sheet=' + sheetName + $cms.keep());
         } else {
-            sheetHref = $util.schemeRelative(sheetNameOrHref);
+            sheetHref = $util.srl(sheetNameOrHref);
         }
 
         if (sheetName != null) {
@@ -371,11 +371,11 @@
     function _findCssByHref(href) {
         var els = $dom.$$('link[rel="stylesheet"][href]'), el;
 
-        href = $util.schemeRelative(href);
+        href = $util.srl(href);
 
         for (var i = 0; i < els.length; i++) {
             el = els[i];
-            if ($util.schemeRelative(el.href) === href) {
+            if ($util.srl(el.href) === href) {
                 return el;
             }
         }
@@ -449,11 +449,11 @@
     function _findScriptBySrc(src) {
         var els = $dom.$$('script[src]'), el;
 
-        src = $util.schemeRelative(src);
+        src = $util.srl(src);
 
         for (var i = 0; i < els.length; i++) {
             el = els[i];
-            if ($util.schemeRelative(el.src) === src) {
+            if ($util.srl(el.src) === src) {
                 return el;
             }
         }

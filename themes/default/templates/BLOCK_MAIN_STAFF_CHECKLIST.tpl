@@ -1,7 +1,7 @@
 {$REQUIRE_JAVASCRIPT,core_adminzone_dashboard}
 
 <section id="tray_{!CHECK_LIST|}" class="box box___block_main_staff_checklist" data-toggleable-tray="{ save: true }" data-tpl="blockMainStaffChecklist">
-	<h3 class="toggleable_tray_title js-tray-header">
+	<h3 class="toggleable-tray-title js-tray-header">
 		<a href="#!" id="checklist_show_all_link" class="top-left-toggleicon js-click-disable-task-hiding" title="{!SHOW_ALL}: {!CHECK_LIST}">{!SHOW_ALL}</a>
 		<a href="#!" id="checklist_hide_done_link" class="top-left-toggleicon js-click-enable-task-hiding">{!HIDE_DONE}</a>
 
@@ -9,7 +9,7 @@
 		<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!CHECK_LIST}</a>
 	</h3>
 
-	<div class="toggleable_tray js-tray-content">
+	<div class="toggleable-tray js-tray-content">
 		{+START,IF_NON_EMPTY,{DATES}}
 			<h4 class="checklist-header">{!REGULAR_TASKS}</h4>
 

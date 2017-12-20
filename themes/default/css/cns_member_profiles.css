@@ -127,7 +127,7 @@ table.cns_profile_about_section .associated-details {
 	width: 15px;
 }
 
-.cns_account_links .toggleable_tray img {
+.cns_account_links .toggleable-tray img {
 	float: left;
 	margin-right: 0.5em;
 	margin-top: -2px; /* Tied to "padding-top: 4px;" on ".cns_account_links ul.nl li" */

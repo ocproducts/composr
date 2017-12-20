@@ -1,5 +1,5 @@
 {$REQUIRE_JAVASCRIPT,polls}
-<section class="box box___poll_box" data-view="PollBox"><div class="box_inner">
+<section class="box box___poll_box" data-view="PollBox"><div class="box-inner">
 	{+START,SET,content_box_title}
 		{+START,IF,{GIVE_CONTEXT}}
 			{!CONTENT_IS_OF_TYPE,{!POLL},{QUESTION}}
@@ -28,7 +28,7 @@
 		{+END}
 	</form>
 
-	<ul class="horizontal_links associated-links-block-group">
+	<ul class="horizontal-links associated-links-block-group">
 		{+START,IF_NON_EMPTY,{FULL_URL}}<li><a target="_top" href="{FULL_URL*}" title="{!VIEW}: {!POLL} #{PID*}">{!VIEW}</a>{+START,IF,{$NOT,{$MATCH_KEY_MATCH,forum:topicview}}}{+START,IF_PASSED_AND_TRUE,COMMENT_COUNT} <span class="comment_count">{$COMMENT_COUNT,polls,{PID}}</span>{+END}{+END}{+END}</li>
 		{+START,IF_NON_EMPTY,{ARCHIVE_URL}}<li><a rel="archives" target="_top" href="{ARCHIVE_URL*}" title="{!VIEW_ARCHIVE}: {!POLLS}">{!VIEW_ARCHIVE}</a></li>{+END}
 		{+START,IF_NON_EMPTY,{RESULT_URL}}<li><form title="{!POLL_RESULTS}" target="_self" class="inline" action="{VOTE_URL*}" method="post" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input data-click-pd="1" class="button_hyperlink js-click-confirm-forfeit" type="submit" value="{!POLL_RESULTS}" /></form></li>{+END}

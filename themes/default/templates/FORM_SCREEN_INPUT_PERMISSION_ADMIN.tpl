@@ -1,6 +1,6 @@
 <tr id="access_{GROUP_ID*}_privilege_container" class="{$CYCLE,permissions_zebra,zebra_0,zebra_1}">
 	<th class="form_table_field_name">
-		<p class="form_field_name field_name">{GROUP_NAME*}</p>
+		<p class="form_field_name field-name">{GROUP_NAME*}</p>
 	</th>
 
 	<td class="form_table_field_input">

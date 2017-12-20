@@ -1,5 +1,5 @@
 <div class="RATING_BOX">
-	<section class="box box___rating_box"><div class="box_inner">
+	<section class="box box___rating_box"><div class="box-inner">
 		<h3>{!RATING}</h3>
 
 		<div class="rating_inner" itemscope="itemscope" itemtype="http://schema.org/AggregateRating">

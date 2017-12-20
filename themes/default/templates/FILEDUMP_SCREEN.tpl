@@ -37,7 +37,7 @@
 					{+START,IF_NON_EMPTY,{THUMBNAILS}}
 						<div class="float-surrounder filedump_thumbnails">
 							{+START,LOOP,THUMBNAILS}
-								<div class="box"><div class="box_inner">
+								<div class="box"><div class="box-inner">
 									{+START,IF,{CHOOSABLE}}
 										<span class="filedump_select">{ACTIONS}</span>
 									{+END}

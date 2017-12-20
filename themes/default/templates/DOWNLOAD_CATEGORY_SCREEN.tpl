@@ -12,7 +12,7 @@
 {+START,IF_NON_EMPTY,{$GET,bound_catalogue_entry}}{$CATALOGUE_ENTRY_ALL_FIELD_VALUES,{$GET,bound_catalogue_entry}}{+END}
 
 {+START,IF_NON_EMPTY,{SUBCATEGORIES}}
-	<div class="box box___download_category_screen"><div class="box_inner compacted_subbox_stream">
+	<div class="box box___download_category_screen"><div class="box-inner compacted_subbox_stream">
 		<h2>{$?,{$EQ,{ID},1},{!CATEGORIES},{!SUBCATEGORIES_HERE}}</h2>
 
 		<div>
@@ -32,7 +32,7 @@
 	{+END}
 </div>
 
-<div class="box category_sorter inline_block"><div class="box_inner">
+<div class="box category_sorter inline_block"><div class="box-inner">
 	{$SET,show_sort_button,1}
 	{SORTING}
 </div></div>

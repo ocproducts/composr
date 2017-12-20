@@ -3,7 +3,7 @@
  Copyright (c) ocProducts, 2004-2017
 */
 
-.box---block-main-bottom-bar>.box_inner {
+.box---block-main-bottom-bar>.box-inner {
 	margin: 0;
 }
 
@@ -12,110 +12,111 @@
 	padding: 0.3em 0 0.4em 0;
 }
 
-.cns_bottom_bar_left_column {
+.cns-bottom-bar-left-column {
 	width: 10em;
 }
-.cns_bottom_bar_right_column {
+.cns-bottom-bar-right-column {
 	width: 100%;
 }
 /*{+START,CSS_MODE,mobile}*/
-	.cns_bottom_bar_left_column, .cns_bottom_bar_right_column {
+	.cns-bottom-bar-left-column, .cns-bottom-bar-right-column {
 		width: auto;
 	}
 /*{+END}*/
 
-.cns_stats_table {
+.cns-stats-table {
 	border: 0;
 	border-collapse: collapse;
 }
 
-.cns_stats_usersonline_1, .cns_stats_main_1 {
+.cns-stats-usersonline-1, .cns-stats-main-1 {
 	text-align: right !important;
 	padding: 0.8em 0.8em 0.8em 0;
 }
 
-.cns_stats_usersonline_1 .associated-links-block-group {
+.cns-stats-usersonline-1 .associated-links-block-group {
 	text-align: right;
 }
 
-.cns_stats_usersonline_1 .field_name {
+.cns-stats-usersonline-1 .field-name {
 	margin-bottom: 0.1em;
 }
-.cns_stats_usersonline_1 .associated-links-block-group {
+.cns-stats-usersonline-1 .associated-links-block-group {
 	margin-top: 0.1em;
 }
 
-.cns_stats_usersonline_2 {
+.cns-stats-usersonline-2 {
 	border-left: 1px solid {$GET,dark_border};
 	border-bottom: 1px solid {$GET,dark_border};
 	padding: 0.5em;
 }
 
-.cns_stats_usersonline_2 .users_online {
+.cns-stats-usersonline-2 .users-online {
 	margin-bottom: 0.3em;
 }
 
-.cns_stats_usersonline_2 .usergroups p, .cns_stats_usersonline_2 .horizontal_links_comma {
+.cns-stats-usersonline-2 .usergroups p, 
+.cns-stats-usersonline-2 .horizontal-links-comma {
 	display: inline-block;
 	width: auto;
 }
 
-.cns_stats_main_1 {
+.cns-stats-main-1 {
 	font-weight: bold;
 }
 
-.cns_stats_main_2 {
+.cns-stats-main-2 {
 	border-left: 1px solid {$GET,dark_border};
 	padding: 0.5em;
 	line-height: 1.4em;
 }
 
-.cns_stats_main_2 .birthday {
+.cns-stats-main-2 .birthday {
 	white-space: nowrap;
 }
 
-a.cns_gcol_1, a.cns_gcol_1:visited, a.cns_gcol_1:hover {
+a.cns-gcol-1, a.cns-gcol-1:visited, a.cns-gcol-1:hover {
 	color: {$GET,gcol_1};
 }
-a.cns_gcol_2, a.cns_gcol_2:visited, a.cns_gcol_2:hover {
+a.cns-gcol-2, a.cns-gcol-2:visited, a.cns-gcol-2:hover {
 	color: {$GET,gcol_2};
 }
-a.cns_gcol_3, a.cns_gcol_3:visited, a.cns_gcol_3:hover {
+a.cns-gcol-3, a.cns-gcol-3:visited, a.cns-gcol-3:hover {
 	color: {$GET,gcol_3};
 }
-a.cns_gcol_4, a.cns_gcol_4:visited, a.cns_gcol_4:hover {
+a.cns-gcol-4, a.cns-gcol-4:visited, a.cns-gcol-4:hover {
 	color: {$GET,gcol_4};
 }
-a.cns_gcol_5, a.cns_gcol_5:visited, a.cns_gcol_5:hover {
+a.cns-gcol-5, a.cns-gcol-5:visited, a.cns-gcol-5:hover {
 	color: {$GET,gcol_5};
 }
-a.cns_gcol_6, a.cns_gcol_6:visited, a.cns_gcol_6:hover {
+a.cns-gcol-6, a.cns-gcol-6:visited, a.cns-gcol-6:hover {
 	color: {$GET,gcol_6};
 }
-a.cns_gcol_7, a.cns_gcol_7:visited, a.cns_gcol_7:hover {
+a.cns-gcol-7, a.cns-gcol-7:visited, a.cns-gcol-7:hover {
 	color: {$GET,gcol_7};
 }
-a.cns_gcol_8, a.cns_gcol_8:visited, a.cns_gcol_8:hover {
+a.cns-gcol-8, a.cns-gcol-8:visited, a.cns-gcol-8:hover {
 	color: {$GET,gcol_8};
 }
-a.cns_gcol_9, a.cns_gcol_9:visited, a.cns_gcol_9:hover {
+a.cns-gcol-9, a.cns-gcol-9:visited, a.cns-gcol-9:hover {
 	color: {$GET,gcol_9};
 }
-a.cns_gcol_10, a.cns_gcol_10:visited, a.cns_gcol_10:hover {
+a.cns-gcol-10, a.cns-gcol-10:visited, a.cns-gcol-10:hover {
 	color: {$GET,gcol_10};
 }
-a.cns_gcol_11, a.cns_gcol_11:visited, a.cns_gcol_11:hover {
+a.cns-gcol-11, a.cns-gcol-11:visited, a.cns-gcol-11:hover {
 	color: {$GET,gcol_11};
 }
-a.cns_gcol_12, a.cns_gcol_12:visited, a.cns_gcol_12:hover {
+a.cns-gcol-12, a.cns-gcol-12:visited, a.cns-gcol-12:hover {
 	color: {$GET,gcol_12};
 }
-a.cns_gcol_13, a.cns_gcol_13:visited, a.cns_gcol_13:hover {
+a.cns-gcol-13, a.cns-gcol-13:visited, a.cns-gcol-13:hover {
 	color: {$GET,gcol_13};
 }
-a.cns_gcol_14, a.cns_gcol_14:visited, a.cns_gcol_14:hover {
+a.cns-gcol-14, a.cns-gcol-14:visited, a.cns-gcol-14:hover {
 	color: {$GET,gcol_14};
 }
-a.cns_gcol_15, a.cns_gcol_15:visited, a.cns_gcol_15:hover {
+a.cns-gcol-15, a.cns-gcol-15:visited, a.cns-gcol-15:hover {
 	color: {$GET,gcol_15};
 }

@@ -442,7 +442,7 @@
             }));
 
             this.containerEl = this.overlayEl.appendChild($dom.create('div', {
-                'className': 'box_inner js-modal-container',
+                'className': 'box-inner js-modal-container',
                 'css': {
                     'width': 'auto',
                     'height': 'auto'
@@ -1088,7 +1088,7 @@
 
         // Are we dealing with a touch device?
         if ($cms.browserMatches('touch_enabled')) {
-            document.body.classList.add('touch_enabled');
+            document.body.classList.add('touch-enabled');
         }
 
         if ($cms.seesJavascriptErrorAlerts()) {

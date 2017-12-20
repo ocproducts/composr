@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,search}
 
-<section class="box box___block_main_search" data-view="BlockMainSearch" data-view-params="{+START,PARAMS_JSON,SEARCH_TYPE}{_*}{+END}"><div class="box_inner">
+<section class="box box___block_main_search" data-view="BlockMainSearch" data-view-params="{+START,PARAMS_JSON,SEARCH_TYPE}{_*}{+END}"><div class="box-inner">
 	<h3>{TITLE*}</h3>
 
 	<form role="search" title="{TITLE*}" class="js-form-submit-main-search" action="{$URL_FOR_GET_FORM*,{URL}}" method="get" autocomplete="off">
@@ -16,7 +16,7 @@
 			{+START,IF,{$NEQ,{INPUT_FIELDS},1}}
 				{+START,LOOP,INPUT_FIELDS}
 					{+START,IF_EMPTY,{INPUT}}
-						<div class="search_option float-surrounder">
+						<div class="search-option float-surrounder">
 							<label for="search_{_loop_key*}">{LABEL*}:</label><br />
 							{+START,IF,{$EQ,{_loop_key},content}}
 								<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" class="js-keyup-update-ajax-search-list" type="text" id="search_{_loop_key*}" name="content" value="{$_GET*,content}" />
@@ -54,7 +54,7 @@
 	</form>
 
 	{+START,IF_NON_EMPTY,{FULL_SEARCH_URL}}
-		<ul class="horizontal_links associated-links-block-group">
+		<ul class="horizontal-links associated-links-block-group">
 			<li><a href="{FULL_SEARCH_URL*}" title="{!MORE_OPTIONS}: {!SEARCH_TITLE}">{!MORE_OPTIONS}</a></li>
 		</ul>
 	{+END}

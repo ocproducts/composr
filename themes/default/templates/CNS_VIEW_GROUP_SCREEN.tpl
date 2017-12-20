@@ -30,7 +30,7 @@
 
 	{+START,IF_NON_EMPTY,{ADD_URL}}
 		<div class="group-add-member">
-			<div class="box box___cns_view_group_screen"><div class="box_inner">
+			<div class="box box___cns_view_group_screen"><div class="box-inner">
 				<h2>{!ADD_MEMBER_TO_GROUP}</h2>
 
 				<form title="{!ADD_MEMBER_TO_GROUP}" class="js-form-submit-add-member-to-group" action="{ADD_URL*}" method="post" autocomplete="off">

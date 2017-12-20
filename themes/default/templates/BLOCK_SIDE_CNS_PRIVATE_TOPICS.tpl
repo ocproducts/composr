@@ -1,4 +1,4 @@
-<section class="box box___block_side_cns_private_topics"><div class="box_inner">
+<section class="box box___block_side_cns_private_topics"><div class="box-inner">
 	<h3>{!UNSEEN_PERSONAL_POSTS}</h3>
 
 	{+START,IF_NON_EMPTY,{CONTENT}}
@@ -9,7 +9,7 @@
 	{+END}
 
 	{+START,IF_NON_EMPTY,{SEND_URL}{VIEW_URL}}
-		<ul class="horizontal_links associated-links-block-group force_margin">
+		<ul class="horizontal-links associated-links-block-group force_margin">
 			{+START,IF_NON_EMPTY,{SEND_URL}}
 				<li><a rel="archives" href="{SEND_URL*}">{!NEW_PRIVATE_TOPIC_SHORT}</a></li>
 			{+END}

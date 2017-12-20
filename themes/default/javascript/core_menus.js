@@ -87,14 +87,14 @@
                 menuEditorWrapEl.classList.remove('docked');
                 img.src = '{$IMG;*,1x/arrow_box_hover}';
                 if (img.srcset !== undefined) {
-                    img.srcset = '{$IMG;*,2x/arrow_box_hover} 2x';
+                    img.srcset = '{$IMG;*,2x/arrow_box_hover}' + ' 2x';
                 }
             } else {
                 menuEditorWrapEl.classList.add('non_docked');
                 menuEditorWrapEl.classList.remove('docked');
                 img.src = '{$IMG;*,1x/arrow_box}';
                 if (img.srcset !== undefined) {
-                    img.srcset = '{$IMG;*,2x/arrow_box} 2x';
+                    img.srcset = '{$IMG;*,2x/arrow_box}' + ' 2x';
                 }
             }
         }
@@ -435,7 +435,7 @@
                 if (node.children && node.children.length) {
                     var ul = $dom.create('ul', {
                         id: 'sitemap_menu_children_' + $util.random(),
-                        className: 'toggleable_tray'
+                        className: 'toggleable-tray'
                     });
                     // Show expand icon...
                     $dom.append(span, document.createTextNode(' '));

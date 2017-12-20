@@ -1,7 +1,7 @@
 {$,Read the catalogue tutorial for information on custom catalogue layouts}
 
 {+START,IF,{GIVE_CONTEXT}}
-<div class="box"><div class="box_inner">
+<div class="box"><div class="box-inner">
 {+END}
 {+START,IF,{$NOT,{GIVE_CONTEXT}}}
 <div class="catalogue-fieldmap-entry-wrap">

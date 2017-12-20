@@ -2,7 +2,7 @@
 
 <div data-tpl="previewScript">
 	{+START,IF_NON_EMPTY,{SPELLING}}
-		<div class="box box___preview_script"><div class="box_inner">
+		<div class="box box___preview_script"><div class="box-inner">
 			<h2>{!SPELLCHECK}</h2>
 
 			<div>
@@ -11,7 +11,7 @@
 		</div></div>
 	{+END}
 	{+START,IF_NON_EMPTY,{KEYWORD_DENSITY}}
-		<div class="box box___preview_script"><div class="box_inner">
+		<div class="box box___preview_script"><div class="box-inner">
 			<h2>{!KEYWORDCHECK}</h2>
 
 			<div>
@@ -20,7 +20,7 @@
 		</div></div>
 	{+END}
 	{+START,IF_NON_EMPTY,{WEBSTANDARDS}}
-		<div class="box box___preview_script"><div class="box_inner">
+		<div class="box box___preview_script"><div class="box-inner">
 			<h2>{!WEBSTANDARDS}</h2>
 
 			<div>
@@ -29,7 +29,7 @@
 		</div></div>
 	{+END}
 	{+START,IF_EMPTY,{WEBSTANDARDS}}
-		<section class="box box___preview_script global_middle_faux"><div class="box_inner">
+		<section class="box box___preview_script global_middle_faux"><div class="box-inner">
 			<h2>{!PREVIEW}</h2>
 
 			<div class="preview_box{+START,IF,{$AND,{$NOT,{$MOBILE,1}},{$MOBILE}}} mobile{+END}">

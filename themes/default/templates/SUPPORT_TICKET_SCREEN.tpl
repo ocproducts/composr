@@ -63,7 +63,7 @@
 			{+START,IF,{NEW}}
 				<tr>
 					<th class="de_th">
-						<span class="field_name"><label for="ticket_type_id">{!TICKET_TYPE}:</label></span>
+						<span class="field-name"><label for="ticket_type_id">{!TICKET_TYPE}:</label></span>
 					</th>
 					<td>
 						<select id="ticket_type_id" name="ticket_type_id" class="input_list_required wide_field">
@@ -80,7 +80,7 @@
 			{+START,IF_NON_EMPTY,{POST_TEMPLATES}}
 				<tr>
 					<th class="de_th">
-						<span class="field_name"><label for="post_template">{!cns_post_templates:POST_TEMPLATE}:</label></span>
+						<span class="field-name"><label for="post_template">{!cns_post_templates:POST_TEMPLATE}:</label></span>
 					</th>
 					<td>
 						{POST_TEMPLATES}
@@ -125,7 +125,7 @@
 		{+START,IF,{STAFF_ONLY}}
 			<tr>
 				<th class="de_th">
-					<span class="field_name">{!TICKET_STAFF_ONLY}:</span>
+					<span class="field-name">{!TICKET_STAFF_ONLY}:</span>
 				</th>
 				<td class="one_line">
 					<label for="staff_only"><input type="checkbox" id="staff_only" name="staff_only" value="1" /> {!TICKET_STAFF_ONLY_DESCRIPTION}</label>
@@ -136,7 +136,7 @@
 		{+START,IF,{$NOT,{CLOSED}}}{+START,IF,{$NOT,{NEW}}}{+START,IF,{$CNS}}
 			<tr>
 				<th class="de_th">
-					<span class="field_name">{!CLOSE_TICKET}:</span>
+					<span class="field-name">{!CLOSE_TICKET}:</span>
 				</th>
 				<td class="one_line">
 					<label for="close"><input type="checkbox" id="close" name="close" value="1" /> {!DESCRIPTION_CLOSE_TICKET}</label>

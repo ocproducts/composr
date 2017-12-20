@@ -6,7 +6,7 @@
 
 	<div class="login_page">
 		{+START,IF,{$HAS_FORUM,1}}
-			<div class="box box___login_screen"><div class="box_inner">
+			<div class="box box___login_screen"><div class="box-inner">
 				{!LOGIN_TEXT,<a href="{JOIN_URL*}"><strong>{!JOIN_HERE}</strong></a>}
 			</div></div>
 		{+END}
@@ -40,7 +40,7 @@
 							<p>
 								<label for="remember">
 									<input id="remember" type="checkbox" value="1" name="remember"{+START,IF,{$OR,{$EQ,{$_POST,remember},1},{$CONFIG_OPTION,remember_me_by_default}}} checked="checked"{+END} class="{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}}js-click-checkbox-remember-me-confirm{+END}" />
-									<span class="field_name">{!REMEMBER_ME}</span>
+									<span class="field-name">{!REMEMBER_ME}</span>
 								</label>
 								<span class="associated-details">{!REMEMBER_ME_TEXT}</span>
 							</p>
@@ -49,7 +49,7 @@
 								<p>
 									<label for="login_invisible">
 										<input id="login_invisible" type="checkbox" value="1" name="login_invisible" />
-										<span class="field_name">{!INVISIBLE}</span>
+										<span class="field-name">{!INVISIBLE}</span>
 									</label>
 									<span class="associated-details">{!INVISIBLE_TEXT}</span>
 								</p>

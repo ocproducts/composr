@@ -13,7 +13,7 @@
 
 	<div class="float-surrounder">
 		<div class="sitemap_right">
-			<div class="box box___sitemap_editor_screen"><div class="box_inner">
+			<div class="box box___sitemap_editor_screen"><div class="box-inner">
 				<h2>{!SELECTION_DETAILS}</h2>
 
 				<div id="details_target">
@@ -23,7 +23,7 @@
 		</div>
 
 		<div class="sitemap_left">
-			<div class="box box___sitemap_editor_screen"><div class="box_inner">
+			<div class="box box___sitemap_editor_screen"><div class="box-inner">
 				<h2>{!SITEMAP}</h2>
 
 				<div class="accessibility_hidden"><label for="tree_list">{!ENTRY}</label></div>

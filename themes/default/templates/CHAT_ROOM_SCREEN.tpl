@@ -51,7 +51,7 @@
 				{BUTTONS}
 
 				{+START,IF_NON_EMPTY,{COMCODE_HELP}{CHATCODE_HELP}}
-					<ul class="horizontal_links horiz-field-sep associated-links-block-group">
+					<ul class="horizontal-links horiz-field-sep associated-links-block-group">
 						{+START,IF_NON_EMPTY,{COMCODE_HELP}}
 							<li><a data-open-as-overlay="{}" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{COMCODE_HELP*}"><img src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical_alignment" alt="{!COMCODE_MESSAGE,Comcode}" /></a></li>
 						{+END}
@@ -74,14 +74,14 @@
 		{$GET,posting_box}
 	{+END}
 
-	<div class="box box___chat_screen_chatters"><p class="box_inner">
+	<div class="box box___chat_screen_chatters"><p class="box-inner">
 		{!USERS_IN_CHATROOM} <span id="chat_members_update">{CHATTERS}</span>
 	</p></div>
 
 	<form title="{$STRIP_TAGS,{!CHAT_OPTIONS_DESCRIPTION}}" class="below-main-chat-window js-form-submit-check-chat-options" method="post" action="{OPTIONS_URL*}" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
-		<div class="box box___chat_screen_options box_prominent"><div class="box_inner">
+		<div class="box box___chat_screen_options box_prominent"><div class="box-inner">
 			<h2>{!OPTIONS}</h2>
 
 			<div class="chat-room-options">

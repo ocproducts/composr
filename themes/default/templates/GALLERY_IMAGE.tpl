@@ -58,7 +58,7 @@
 			{+END}
 		{+END}
 
-		<div class="img_thumb_wrap" data-mouseover-activate-tooltip="['{$GET;^*,TOOLTIP}','auto',null,null,false,true]">
+		<div class="img-thumb-wrap" data-mouseover-activate-tooltip="['{$GET;^*,TOOLTIP}','auto',null,null,false,true]">
 			<a href="{VIEW_URL*}">{$TRIM,{THUMB}}</a>
 		</div>
 

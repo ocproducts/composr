@@ -4,7 +4,7 @@
 	<th id="form_table_field_name__{$GET,randomised_id}" colspan="2" class="form_table_description_above_cell{+START,IF,{REQUIRED}} required{+END}">
 		<input type="hidden" name="label_for__{NAME*}" value="{$STRIP_TAGS,{PRETTY_NAME*}}" />
 
-		<p class="field_name lonely_label">
+		<p class="field-name lonely_label">
 			<label for="{NAME*}">{PRETTY_NAME*}<span class="inline_desktop">:</span></label>
 		</p>
 

@@ -1142,9 +1142,10 @@
 
         if (selector) {
             delegator = function (e) {
-                var clicked, matches = [], match;
+                var clicked, matches, match;
                 
-                if (e.type === 'clickout') {
+                if (e.type === 'clickout') { 
+                    // Our custom 'clickout' event needs some special handling and may be fired on multiple matches
                     clicked = e.originalEvent.target;
                     matches = $dom.$$(el, selector);
                     if (el.contains(clicked)) {
@@ -1155,12 +1156,12 @@
                 } else {
                     match = $dom.closest(e.target, selector, el);
                     if (match) {
-                        matches.push(match);
+                        matches = [match];
                     }
                 }
 
                 var args = $util.toArray(arguments);
-                matches.forEach(function (match) {
+                (matches || []).forEach(function (match) {
                     args[1] = match; // Set the `element` arg to the matched element
                     return (autoRemove || callback).apply(match, args);
                 });
@@ -2466,16 +2467,6 @@
             result.push(encodeURIComponent(el.name) + '=' + encodeURIComponent(el.value));
         });
         return result.join('&');
-    };
-    
-    /**
-     * @memberof $dom
-     * @param src
-     * @param url
-     * @returns {boolean}
-     */
-    $dom.matchesThemeImage = function matchesThemeImage(src, url) {
-        return $util.srl(src) === $util.srl(url);
     };
 
     /**

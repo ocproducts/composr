@@ -26,7 +26,7 @@
 	<div class="box" data-toggleable-tray="{}">
 	{+END}
 		{+START,IF_PASSED,RESULTS}
-			<h2 class="toggleable_tray_title js-tray-header">
+			<h2 class="toggleable-tray-title js-tray-header">
 				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!SETTINGS}</a>
 				{+START,IF_NON_EMPTY,{RESULTS}}
 					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img src="{$IMG*,1x/trays/expand2}" alt="{!SHOW_SEARCH_FORM}" title="{!SHOW_SEARCH_FORM}" /></a>
@@ -34,7 +34,7 @@
 			</h2>
 		{+END}
 
-		<div id="search_form" class="toggleable_tray js-tray-content"{+START,IF_PASSED,RESULTS}{+START,IF_NON_EMPTY,{RESULTS}} style="display: none"{+END}{+END} aria-expanded="false">
+		<div id="search_form" class="toggleable-tray js-tray-content"{+START,IF_PASSED,RESULTS}{+START,IF_NON_EMPTY,{RESULTS}} style="display: none"{+END}{+END} aria-expanded="false">
 			<p>
 				{!SEARCH_HELP}
 			</p>

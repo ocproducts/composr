@@ -420,7 +420,7 @@
 
                     // Collapse, so user can see what happening
                     var outer = $dom.$id('comments_posting_form_outer');
-                    if (outer && outer.classList.contains('toggleable_tray')) {
+                    if (outer && outer.classList.contains('toggleable-tray')) {
                         $cms.ui.toggleableTray(outer);
                     }
 

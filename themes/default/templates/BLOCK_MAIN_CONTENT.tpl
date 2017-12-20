@@ -1,4 +1,4 @@
-<section class="box box___main_content cguid_{_GUID|*}"><div class="box_inner">
+<section class="box box___main_content cguid_{_GUID|*}"><div class="box-inner">
 	{+START,NO_PREPROCESSING}
 		{$SET,content_box_title,}
 		{$SET,skip_content_box_title,1}
@@ -11,10 +11,10 @@
 		{$SET,skip_content_box_title,0}
 	{+END}
 
-	{$PREG_REPLACE,^\s*<section class="box [^"]+"><div class="box_inner">,,{$PREG_REPLACE,</div></section>\s*$,,{$GET,eval_content}}}
+	{$PREG_REPLACE,^\s*<section class="box [^"]+"><div class="box-inner">,,{$PREG_REPLACE,</div></section>\s*$,,{$GET,eval_content}}}
 
 	{+START,IF_NON_EMPTY,{SUBMIT_URL}{ARCHIVE_URL}}
-		<ul class="horizontal_links associated-links-block-group force_margin">
+		<ul class="horizontal-links associated-links-block-group force_margin">
 			{+START,IF_NON_EMPTY,{SUBMIT_URL}}
 				<li><a rel="add" href="{SUBMIT_URL*}">{!ADD}</a></li>
 			{+END}

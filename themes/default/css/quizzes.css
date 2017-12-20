@@ -45,7 +45,7 @@
 	vertical-align: middle;
 }
 
-.quiz_form th>span.field_name {
+.quiz_form th>span.field-name {
 	position: relative;
 	display: inline-block;
 	padding-left: 60px;
@@ -116,7 +116,7 @@
 	opacity: 0.5;
 }*/
 
-.quiz_form tr.field_input:hover th, .quiz_form tr.field_input:hover td, body.touch_enabled .quiz_form tr.field_input th, body.touch_enabled .quiz_form tr.field_input td {
+.quiz_form tr.field_input:hover th, .quiz_form tr.field_input:hover td, body.touch-enabled .quiz_form tr.field_input th, body.touch-enabled .quiz_form tr.field_input td {
 	opacity: 1.0 !important;
 }
 

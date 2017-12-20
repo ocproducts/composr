@@ -1,4 +1,4 @@
-<div class="box box___community_billboard_details"><div class="box_inner">
+<div class="box box___community_billboard_details"><div class="box-inner">
 	<h2>{!DETAILS}</h2>
 
 	<div class="wide_table_wrap"><table class="map_table wide_table results_table">

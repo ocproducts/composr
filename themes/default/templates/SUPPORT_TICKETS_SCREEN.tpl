@@ -8,13 +8,13 @@
 	{+END}
 
 	{+START,IF,{$NOT,{$IS_GUEST}}}
-		<div class="box box___support_tickets_screen"><div class="box_inner vertical_alignment">
+		<div class="box box___support_tickets_screen"><div class="box-inner vertical_alignment">
 			<form title="{!FILTER}" class="float-surrounder js-form-submit-scroll-to-top" id="ticket_type_form" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}" method="get" autocomplete="off">
 				{$HIDDENS_FOR_GET_FORM,{$SELF_URL,0,1},ticket_type_id,open}
 
 				<div class="float-surrounder ticket_filters">
 					<div class="inline ticket_type_filter">
-						<label class="field_name" for="ticket_type_id">{!TICKET_TYPE}:</label>
+						<label class="field-name" for="ticket_type_id">{!TICKET_TYPE}:</label>
 						<select id="ticket_type_id" name="ticket_type_id" class="input_list_required">
 							<option value="">&mdash;</option>
 							{+START,LOOP,TYPES}
@@ -24,7 +24,7 @@
 					</div>
 
 					<div class="inline spaced open_ticket_filter">
-						<label class="field_name" for="open">{!OPEN_TICKETS_ONLY}:</label>
+						<label class="field-name" for="open">{!OPEN_TICKETS_ONLY}:</label>
 						<input type="checkbox" id="open" name="open" value="1"{+START,IF,{$_GET,open}} checked="checked"{+END} />
 					</div>
 

@@ -494,7 +494,7 @@ If you are not just making a theme, but a whole site, you will need to do some o
 
 This is the default [tt]BLOCK_SIDE_NEWS.tpl[/tt]...
 [code="HTML"]
-<div class="box guid_{_GUID}"><div class="box_inner">
+<div class="box guid_{_GUID}"><div class="box-inner">
 	<h3>{TITLE}</h3>
 
 	{+START,IF_EMPTY,{CONTENT}}
@@ -505,7 +505,7 @@ This is the default [tt]BLOCK_SIDE_NEWS.tpl[/tt]...
 	{+END}
 
 	{+START,IF_NON_EMPTY,{ARCHIVE_URL}{SUBMIT_URL}}
-		<ul class="horizontal_links associated-links-block-group">
+		<ul class="horizontal-links associated-links-block-group">
 			{+START,IF_NON_EMPTY,{ARCHIVE_URL}}
 				<li><a rel="archives" href="{ARCHIVE_URL*}">{!VIEW_ARCHIVE}</a></li>
 			{+END}

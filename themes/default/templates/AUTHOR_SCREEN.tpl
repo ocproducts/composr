@@ -3,7 +3,7 @@
 
 	{+START,IF_NON_EMPTY,{DESCRIPTION}}
 		<div class="box box___author_screen__description">
-			<div class="box_inner">
+			<div class="box-inner">
 				<h2>{!AUTHOR_ABOUT}</h2>
 
 				<div itemprop="description" class="float-surrounder">
@@ -15,7 +15,7 @@
 
 	{+START,IF_NON_EMPTY,{SKILLS}}
 		<div class="box box___author_screen_skills">
-			<div class="box_inner">
+			<div class="box-inner">
 				<h2>{!SKILLS}</h2>
 
 				{SKILLS}
@@ -28,7 +28,7 @@
 
 	{+START,IF_NON_EMPTY,{URL_DETAILS}{FORUM_DETAILS}{POINT_DETAILS}}
 		<div class="box box___author_screen__functions">
-			<div class="box_inner">
+			<div class="box-inner">
 				<p>
 					{!AUTHOR_FUNCTIONS,{AUTHOR*}}&hellip;
 				</p>
@@ -50,7 +50,7 @@
 
 	{+START,IF,{$ADDON_INSTALLED,downloads}}
 		<div class="box box___author_screen__downloads">
-			<div class="box_inner">
+			<div class="box-inner">
 				<p>
 					{!DOWNLOADS_RELEASED}&hellip;
 				</p>
@@ -64,7 +64,7 @@
 
 	{+START,IF,{$ADDON_INSTALLED,news}}
 		<div class="box box___author_screen__news">
-			<div class="box_inner">
+			<div class="box-inner">
 				<p>
 					{!NEWS_RELEASED}&hellip;
 				</p>

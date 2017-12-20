@@ -34,13 +34,13 @@
 				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!EXPAND}</a>
 			</div>
 
-			<div class="toggleable_tray_pulldown_spacer toggleable_tray js-tray-content" style="display: none" aria-expanded="false">
+			<div class="toggleable-tray-pulldown-spacer toggleable-tray js-tray-content" style="display: none" aria-expanded="false">
 				{NEWS_FULL}
 			</div>
 		</div>
 	{+END}
 </div>
 
-<ul class="horizontal_links associated-links-block-group">
+<ul class="horizontal-links associated-links-block-group">
 	<li>{FULL_URL}</li>
 </ul>

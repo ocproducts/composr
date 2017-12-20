@@ -1,7 +1,7 @@
 {$REQUIRE_JAVASCRIPT,facebook_support}
 
 <aside class="screen_actions_outer box" data-require-javascript="facebook_support" data-tpl="blockMainScreenActions" data-tpl-params="{+START,PARAMS_JSON,EASY_SELF_URL}{_*}{+END}">
-<nav class="screen_actions box_inner">
+<nav class="screen_actions box-inner">
 	{+START,IF_NON_EMPTY,{$CONFIG_OPTION,facebook_appid}}
 		<div class="facebook_like"><div class="fb-like" data-send="false" data-layout="button_count" data-width="55" data-show-faces="false"></div></div>
 	{+END}

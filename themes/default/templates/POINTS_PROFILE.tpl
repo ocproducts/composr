@@ -109,7 +109,7 @@
 {+END}
 
 {+START,IF_NON_EMPTY,{GIVE}}
-	<div class="box box___points_profile"><div class="box_inner">
+	<div class="box box___points_profile"><div class="box-inner">
 		{GIVE}
 	</div></div>
 {+END}

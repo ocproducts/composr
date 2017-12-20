@@ -15,7 +15,7 @@
 				<a class="toggleable-tray-button ttb_light js-tray-onclick-toggle-tray" href="#!">{!WIKI_MANAGE_TREE_TEXT_ADVANCED_LABEL}</a>:
 			</div>
 
-			<div class="toggleable_tray js-tray-content" style="display: none" aria-expanded="false">
+			<div class="toggleable-tray js-tray-content" style="display: none" aria-expanded="false">
 				{!WIKI_MANAGE_TREE_TEXT_ADVANCED}
 			</div>
 		</div>

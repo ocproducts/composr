@@ -4,7 +4,7 @@
 
 {DEFINE_FORM}
 
-<div class="box"><div class="box_inner">
+<div class="box"><div class="box-inner">
 	<p class="help_jumpout">
 		{!STAR_ALREADY_DEFINED}
 	</p>

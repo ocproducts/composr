@@ -5,7 +5,7 @@
 
 <tr class="field_input">
 	<th id="form_table_field_name__{$GET,randomised_id}" class="form_table_field_name{+START,IF,{REQUIRED}} required{+END}">
-		<span class="form_field_name field_name">
+		<span class="form_field_name field-name">
 			{$SET,show_label,{$AND,{$IS_NON_EMPTY,{NAME}},{$NOT,{SKIP_LABEL}}}}
 			{+START,IF,{$GET,show_label}}
 				<label for="{NAME*}">{PRETTY_NAME*}</label>

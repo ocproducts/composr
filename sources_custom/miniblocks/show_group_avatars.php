@@ -72,7 +72,7 @@ foreach ($rows as $row) {
     $tooltip = static_evaluate_tempcode(render_member_box($row['id'], true, false));
 
     echo '
-        <div class="box left float_separation"><div class="box_inner">
+        <div class="box left float_separation"><div class="box-inner">
             <a href="' . escape_html($url->evaluate()) . '"><img src="' . escape_html($avatar_url) . '" /></a><br />
 
             <a href="' . escape_html($url->evaluate()) . '" data-focus-activate-tooltip="[\'' . escape_html(str_replace("\n", '\n', addslashes($tooltip))) . '\',\'auto\']" data-mouseover-activate-tooltip="[\'' . escape_html(str_replace("\n", '\n', addslashes($tooltip))) . '\',\'auto\']" data-blur-deactivate-tooltip>' . escape_html($username) . '</a><br />

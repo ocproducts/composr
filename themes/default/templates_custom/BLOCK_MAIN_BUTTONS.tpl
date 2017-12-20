@@ -1,4 +1,4 @@
-<section class="box box___block_main_buttons"><div class="box_inner">
+<section class="box box___block_main_buttons"><div class="box-inner">
 	<h3>{TITLE*}</h3>
 
 	{+START,IF,{$EQ,{EXTRA},side}}

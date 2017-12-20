@@ -3,7 +3,7 @@
 
 <div class="form_ajax_target" data-view="BlockMainStaffWebsiteMonitoring" data-view-params="{+START,PARAMS_JSON,RAND_WEBSITE_MONITORING}{_*}{+END}">
 	<section id="tray_{!SITE_WATCHLIST|}" data-toggleable-tray="{ save: true }" class="box box___block_main_staff_website_monitoring">
-		<h3 class="toggleable_tray_title js-tray-header">
+		<h3 class="toggleable-tray-title js-tray-header">
 			<a title="{!EDIT}: {!SITE_WATCHLIST}" class="top-left-toggleicon js-click-staff-block-flip" href="#!">{!EDIT}</a>
 
 			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!SITE_WATCHLIST}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" /></a>
@@ -11,7 +11,7 @@
 			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!SITE_WATCHLIST}</a>
 		</h3>
 
-		<div class="toggleable_tray js-tray-content">
+		<div class="toggleable-tray js-tray-content">
 			<div class="wide_table_wrap" id="website_monitoring_list_{$GET%,RAND_WEBSITE_MONITORING}"><table class="columned_table results_table wide_table autosized_table responsive-table">
 				<thead>
 					<tr>

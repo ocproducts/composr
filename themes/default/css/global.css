@@ -722,17 +722,17 @@ header h1 {
 	vertical-align: middle;
 }
 
-.global_navigation .top_login .horizontal_links {
+.global_navigation .top_login .horizontal-links {
 	margin-left: 0.5em;
 	width: auto;
 	padding-top: 2px; /* To force it align correctly with the form in a different block (which is taller) */
 }
 
-.global_navigation .top_login .horizontal_links a {
+.global_navigation .top_login .horizontal-links a {
 	color: inherit;
 	text-decoration: none;
 }
-.global_navigation .top_login .horizontal_links a:hover {
+.global_navigation .top_login .horizontal-links a:hover {
 	text-decoration: underline;
 }
 
@@ -956,7 +956,7 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 		display: none;
 	}
 
-	.overlay.alert .box_inner div, .overlay.confirm .box_inner div {
+	.overlay.alert .box-inner div, .overlay.confirm .box-inner div {
 		{$BETA_CSS_PROPERTY,user-select: none;} {$,To stop accidental touching when dismissing}
 	}
 
@@ -1048,7 +1048,7 @@ footer {
 	}
 /*{+END}*/
 
-footer .button_hyperlink, footer a, footer a:visited, footer .horizontal_links {
+footer .button_hyperlink, footer a, footer a:visited, footer .horizontal-links {
 	color: {$GET,footer_text};
 }
 
@@ -1547,7 +1547,7 @@ div.red_alert, p.red_alert {
 	}
 }
 
-.field_name {
+.field-name {
 	font-weight: bold;
 }
 
@@ -1628,7 +1628,7 @@ th.metadata_title {
 	max-width: 100%;
 	height: auto;
 }
-.img-thumb:hover, body.touch_enabled .img-thumb {
+.img-thumb:hover, body.touch-enabled .img-thumb {
 	opacity: 1.0;
 	transition: opacity 0.2s linear !important;
 }
@@ -1682,22 +1682,22 @@ td>.comcode_quote:first-child, .fake_table_cell>.comcode_quote:first-child, .fak
 .box.nested {
 	border: 1px solid {$GET,pale_border};
 }
-.global-side-panel .box_inner>h1, .global-side-panel .box_inner>h2, .global-side-panel .box_inner>h3, .global-side-panel .box_inner>h4, .global-side-panel .box_inner>h5, .global-side-panel .box_inner>h6, .global-side-panel .box>.toggleable_tray_title {
+.global-side-panel .box-inner>h1, .global-side-panel .box-inner>h2, .global-side-panel .box-inner>h3, .global-side-panel .box-inner>h4, .global-side-panel .box-inner>h5, .global-side-panel .box-inner>h6, .global-side-panel .box>.toggleable-tray-title {
 	background-image: none;
 }
 
-.box>.box_inner, .box>.toggleable_tray {
+.box>.box-inner, .box>.toggleable-tray {
 	margin: 5px; /* not em so that header may be positioned properly */
 }
-.boxless-space .box>.box_inner, .boxless-space .box>.toggleable_tray {
+.boxless-space .box>.box-inner, .boxless-space .box>.toggleable-tray {
 	margin: 0;
 }
-.email_body .box .box_inner { /* Outlook.com does not support margins or complex use of the sibling selector */
+.email_body .box .box-inner { /* Outlook.com does not support margins or complex use of the sibling selector */
 	margin: 0;
 	padding: 5px; /* not em so that header may be positioned properly */
 }
 
-.box_inner>h1, .box_inner>h2, .box_inner>h3, .box_inner>h4, .box_inner>h5, .box_inner>h6, .toggleable_tray_title, #standalone_html_wrap .box .box .box_inner>h2, #standalone_html_wrap .box .box .box_inner>h3 {
+.box-inner>h1, .box-inner>h2, .box-inner>h3, .box-inner>h4, .box-inner>h5, .box-inner>h6, .toggleable-tray-title, #standalone_html_wrap .box .box .box-inner>h2, #standalone_html_wrap .box .box .box-inner>h3 {
 	border-top-left-radius: 3px;
 	border-top-right-radius: 3px;
 	background-image: linear-gradient(to bottom, {$GET,lgrad}, {$GET,dgrad});
@@ -1709,18 +1709,18 @@ td>.comcode_quote:first-child, .fake_table_cell>.comcode_quote:first-child, .fak
 	border: 0;
 	letter-spacing: 0;
 
-	/* .box_inner set us in the wrong position, so fiddle around a bit to move us back to be flush */
+	/* .box-inner set us in the wrong position, so fiddle around a bit to move us back to be flush */
 	margin: -5px 0 5px -5px;
 	padding: 0.4em 0.8em 0.4em 0.3em;
 	width: 100%;
 }
-.box_inner>h2>.right .button_screen {
+.box-inner>h2>.right .button_screen {
 	vertical-align: top;
 }
-.box.box_prominent>.box_inner {
+.box.box_prominent>.box-inner {
 	margin: 0;
 }
-.box.box_prominent>.box_inner>h2 {
+.box.box_prominent>.box-inner>h2 {
 	padding: 0.8em;
 	margin: 0;
 	text-align: left;
@@ -1728,17 +1728,17 @@ td>.comcode_quote:first-child, .fake_table_cell>.comcode_quote:first-child, .fak
 	font-weight: normal;
 }
 
-.box_inner>h1 a, .box_inner>h2 a, .box_inner>h3 a, .box_inner>h4 a, .box_inner>h5 a, .box_inner>h6 a, .toggleable_tray_title a, .box_inner>h1 a:visited, .box_inner>h2 a:visited, .box_inner>h3 a:visited, .box_inner>h4 a:visited, .box_inner>h5 a:visited, .box_inner>h6 a:visited, .toggleable_tray_title a:visited {
+.box-inner>h1 a, .box-inner>h2 a, .box-inner>h3 a, .box-inner>h4 a, .box-inner>h5 a, .box-inner>h6 a, .toggleable-tray-title a, .box-inner>h1 a:visited, .box-inner>h2 a:visited, .box-inner>h3 a:visited, .box-inner>h4 a:visited, .box-inner>h5 a:visited, .box-inner>h6 a:visited, .toggleable-tray-title a:visited {
 	color: inherit;
 	text-decoration: underline;
 }
 a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 	text-decoration: none !important;
 }
-.box_inner>h1 a:hover, .box_inner>h2 a:hover, .box_inner>h3 a:hover, .box_inner>h4 a:hover, .box_inner>h5 a:hover, .box_inner>h6 a:hover, .toggleable_tray_title a:hover {
+.box-inner>h1 a:hover, .box-inner>h2 a:hover, .box-inner>h3 a:hover, .box-inner>h4 a:hover, .box-inner>h5 a:hover, .box-inner>h6 a:hover, .toggleable-tray-title a:hover {
 	color: {$GET,box_title_text_hover};
 }
-.boxless-space .box_inner>h1 a:hover, .boxless-space .box_inner>h2 a:hover, .boxless-space .box_inner>h3 a:hover, .boxless-space .box_inner>h4 a:hover, .boxless-space .box_inner>h5 a:hover, .boxless-space .box_inner>h6 a:hover, .boxless-space .toggleable_tray_title a:hover {
+.boxless-space .box-inner>h1 a:hover, .boxless-space .box-inner>h2 a:hover, .boxless-space .box-inner>h3 a:hover, .boxless-space .box-inner>h4 a:hover, .boxless-space .box-inner>h5 a:hover, .boxless-space .box-inner>h6 a:hover, .boxless-space .toggleable-tray-title a:hover {
 	color: inherit;
 }
 
@@ -1769,10 +1769,10 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 .boxless-space .fp_col_blocks_wrap .box {
 	margin: 0.5em 0; /* Half-sized margins for the fake-columns on front pages, as the overflow blocks margin collapsing */
 }
-.boxless-space .box>.box_inner {
+.boxless-space .box>.box-inner {
 	margin: 0;
 }
-.boxless-space .box>.box_inner>h1, .boxless-space .box>.box_inner>h2, .boxless-space .box>.box_inner>h3, .boxless-space .box>.box_inner>h4, .boxless-space .box>.box_inner>h5, .boxless-space .box>.box_inner>h6, .boxless-space .box>.toggleable_tray_title {
+.boxless-space .box>.box-inner>h1, .boxless-space .box>.box-inner>h2, .boxless-space .box>.box-inner>h3, .boxless-space .box>.box-inner>h4, .boxless-space .box>.box-inner>h5, .boxless-space .box>.box-inner>h6, .boxless-space .box>.toggleable-tray-title {
 	background: url('{$IMG_INLINE;,1x/boxless_title_leadin_rightcomp}') no-repeat !important;
 	color: {$GET,slightly_seeded_right_complement_text} !important;
 	text-align: left;
@@ -1785,23 +1785,23 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 	text-transform: uppercase;
 	border-radius: 0;
 }
-.global-side-panel .boxless-space .box>.box_inner>h1, .global-side-panel .boxless-space .box>.box_inner>h2, .global-side-panel .boxless-space .box>.box_inner>h3, .global-side-panel .boxless-space .box>.box_inner>h4, .global-side-panel .boxless-space .box>.box_inner>h5, .global-side-panel .boxless-space .box>.box_inner>h6,
-.boxless-space .box .box>.box_inner>h1, .boxless-space .box .box>.box_inner>h2, .boxless-space .box .box>.box_inner>h3, .boxless-space .box .box>.box_inner>h4, .boxless-space .box .box>.box_inner>h5, .boxless-space .box .box>.box_inner>h6 {
+.global-side-panel .boxless-space .box>.box-inner>h1, .global-side-panel .boxless-space .box>.box-inner>h2, .global-side-panel .boxless-space .box>.box-inner>h3, .global-side-panel .boxless-space .box>.box-inner>h4, .global-side-panel .boxless-space .box>.box-inner>h5, .global-side-panel .boxless-space .box>.box-inner>h6,
+.boxless-space .box .box>.box-inner>h1, .boxless-space .box .box>.box-inner>h2, .boxless-space .box .box>.box-inner>h3, .boxless-space .box .box>.box-inner>h4, .boxless-space .box .box>.box-inner>h5, .boxless-space .box .box>.box-inner>h6 {
 	background: url('{$IMG_INLINE;,1x/boxless_title_leadin_leftcomp}') no-repeat !important;
 	color: {$GET,slightly_seeded_left_complement_text} !important;
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.boxless-space .box>.box_inner>h1, .boxless-space .box>.box_inner>h2, .boxless-space .box>.box_inner>h3, .boxless-space .box>.box_inner>h4, .boxless-space .box>.box_inner>h5, .boxless-space .box>.box_inner>h6, .boxless-space .box>.toggleable_tray_title {
+	.boxless-space .box>.box-inner>h1, .boxless-space .box>.box-inner>h2, .boxless-space .box>.box-inner>h3, .boxless-space .box>.box-inner>h4, .boxless-space .box>.box-inner>h5, .boxless-space .box>.box-inner>h6, .boxless-space .box>.toggleable-tray-title {
 		background-image: url('{$IMG_INLINE;,2x/boxless_title_leadin_rightcomp}');
 		background-size: 18px 18px;
 	}
-	.global-side-panel .boxless-space .box>.box_inner>h1, .global-side-panel .boxless-space .box>.box_inner>h2, .global-side-panel .boxless-space .box>.box_inner>h3, .global-side-panel .boxless-space .box>.box_inner>h4, .global-side-panel .boxless-space .box>.box_inner>h5, .global-side-panel .boxless-space .box>.box_inner>h6,
-	.boxless-space .box .box>.box_inner>h1, .boxless-space .box .box>.box_inner>h2, .boxless-space .box .box>.box_inner>h3, .boxless-space .box .box>.box_inner>h4, .boxless-space .box .box>.box_inner>h5, .boxless-space .box .box>.box_inner>h6 {
+	.global-side-panel .boxless-space .box>.box-inner>h1, .global-side-panel .boxless-space .box>.box-inner>h2, .global-side-panel .boxless-space .box>.box-inner>h3, .global-side-panel .boxless-space .box>.box-inner>h4, .global-side-panel .boxless-space .box>.box-inner>h5, .global-side-panel .boxless-space .box>.box-inner>h6,
+	.boxless-space .box .box>.box-inner>h1, .boxless-space .box .box>.box-inner>h2, .boxless-space .box .box>.box-inner>h3, .boxless-space .box .box>.box-inner>h4, .boxless-space .box .box>.box-inner>h5, .boxless-space .box .box>.box-inner>h6 {
 		background-image: url('{$IMG_INLINE;,2x/boxless_title_leadin_leftcomp}');
 		background-size: 18px 18px;
 	}
 }
-.global-side-panel .boxless-space .box>.box_inner>h1, .global-side-panel .boxless-space .box>.box_inner>h2, .global-side-panel .boxless-space .box>.box_inner>h3, .global-side-panel .boxless-space .box>.box_inner>h4, .global-side-panel .boxless-space .box>.box_inner>h5, .global-side-panel .boxless-space .box>.box_inner>h6 {
+.global-side-panel .boxless-space .box>.box-inner>h1, .global-side-panel .boxless-space .box>.box-inner>h2, .global-side-panel .boxless-space .box>.box-inner>h3, .global-side-panel .boxless-space .box>.box-inner>h4, .global-side-panel .boxless-space .box>.box-inner>h5, .global-side-panel .boxless-space .box>.box-inner>h6 {
 }
 .boxless-space .buttons-group, .boxless-space .associated-links-block-group, .boxless-space .media_box, .boxless-space .proceed_button {
 	text-align: left;
@@ -1846,27 +1846,27 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 
 /* Boxes under boxes shouldn't have the title style - would be ugly */
 
-.box .box .box_inner>h1, .box .box .box_inner>h2, .box .box .box_inner>h3, .box .box .box_inner>h4, .box .box .box_inner>h5, .box .box .box_inner>h6, .box .box .toggleable_tray_title, #standalone_html_wrap .box .box .box .box_inner>h2, #standalone_html_wrap .box .box .box .box_inner>h3 {
+.box .box .box-inner>h1, .box .box .box-inner>h2, .box .box .box-inner>h3, .box .box .box-inner>h4, .box .box .box-inner>h5, .box .box .box-inner>h6, .box .box .toggleable-tray-title, #standalone_html_wrap .box .box .box .box-inner>h2, #standalone_html_wrap .box .box .box .box-inner>h3 {
 	background: none;
 	color: inherit;
 	padding-left: 0;
 	font-size: 1.1em;
 } /* This rule is not applied to boxes under the top level box in the preview (#standalone_html_wrap) as those should show verbatim */
-.box .box .box_inner>h1 a, .box .box .box_inner>h2 a, .box .box .box_inner>h3 a, .box .box .box_inner>h4 a, .box .box .box_inner>h5 a, .box .box .box_inner>h6 a, .box .box .toggleable_tray_title a, #standalone_html_wrap .box .box .box .box_inner>h2 a, #standalone_html_wrap .box .box .box .box_inner>h3 a {
+.box .box .box-inner>h1 a, .box .box .box-inner>h2 a, .box .box .box-inner>h3 a, .box .box .box-inner>h4 a, .box .box .box-inner>h5 a, .box .box .box-inner>h6 a, .box .box .toggleable-tray-title a, #standalone_html_wrap .box .box .box .box-inner>h2 a, #standalone_html_wrap .box .box .box .box-inner>h3 a {
 	color: {$GET,a.hover};
 }
 
 /* Expanding and contracting, mostly for boxes but not necessarily always */
 
-.toggleable_tray_title_heading {
+.toggleable-tray-title-heading {
 	min-height: 20px;
 }
 
-.toggleable_tray_title {
+.toggleable-tray-title {
 	font-size: 1.1em;
 	font-weight: bold;
 	vertical-align: middle;
-	margin: 0; /* Outside .box_inner so remove the margin added above */
+	margin: 0; /* Outside .box-inner so remove the margin added above */
 	padding: 0.3em 0; /* Centered so needs no horizontal padding, which would also mess with our 100% width */
 }
 
@@ -1886,10 +1886,10 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 .box .toggleable-tray-button img {
 	margin-right: 0.5em;
 }
-.toggleable_tray_title .toggleable-tray-button img {
+.toggleable-tray-title .toggleable-tray-button img {
 	margin: -2px 0.4em 0 0.4em !important;
 }
-.toggleable-tray-button img, .box .toggleable_tray_title .toggleable-tray-button img {
+.toggleable-tray-button img, .box .toggleable-tray-title .toggleable-tray-button img {
 	width: 20px;
 }
 h3 .toggleable-tray-button img {
@@ -1906,12 +1906,12 @@ h3 .toggleable-tray-button img {
 	font-weight: normal;
 }
 
-.toggleable_tray {
+.toggleable-tray {
 	overflow: hidden;
 }
 
 /* Used very rarely if our toggleable boxes need some extra space at their top) */
-.toggleable_tray_pulldown_spacer {
+.toggleable-tray-pulldown-spacer {
 	padding-top: 1em;
 }
 
@@ -1982,7 +1982,7 @@ h3 .toggleable-tray-button img {
 	border-bottom: 0;
 	margin-bottom: 0.5em;
 }
-.box_inner>h3+.meta_details {
+.box-inner>h3+.meta_details {
 	margin-top: 0;
 }
 
@@ -2005,7 +2005,7 @@ h3 .toggleable-tray-button img {
 .box.overlay {
 	box-shadow: 0px 0px 20px {$GET,dark_shadow};
 }
-.box.overlay.lightbox>.box_inner {
+.box.overlay.lightbox>.box-inner {
 	margin: 0;
 }
 .box.overlay .associated-links-block-group {
@@ -2143,7 +2143,7 @@ hr.spaced_rule {
 }
 
 /* Used to align stuff horizontally, i.e. force a gap between separate bits */
-.horiz-field-sep, ul.horizontal_links.horiz-field-sep {
+.horiz-field-sep, ul.horizontal-links.horiz-field-sep {
 	padding-left: 0.8em;
 }
 .horiz-field-sep, .horiz-field-sep-rightward {
@@ -2152,7 +2152,7 @@ hr.spaced_rule {
 .horiz-field-sep-rightward {
 	padding-right: 0.8em; /* Useful so subsequent wrapped text doesn't get indented */
 }
-ul.horizontal_links.horiz-field-sep {
+ul.horizontal-links.horiz-field-sep {
 	display: inline !important;
 }
 
@@ -2656,7 +2656,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	padding: 0 3px;
 }
 
-.compacted_subbox_stream.box_inner {
+.compacted_subbox_stream.box-inner {
 	margin-left: 0 !important;
 	margin-right: 0 !important;
 }
@@ -2695,7 +2695,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	padding-top: 1.5em !important;
 	margin: 2em 0;
 }
-.compacted_subbox_stream.less_compact .box_inner>h3 {
+.compacted_subbox_stream.less_compact .box-inner>h3 {
 	font-size: 1.3em;
 	margin-bottom: 1em;
 }
@@ -3047,7 +3047,7 @@ div .post-buttons>*, div .buttons-group-faded>* {
 	opacity: 1.0 !important;
 }
 
-.post-buttons:hover>*, body.touch_enabled .post-buttons>*, .buttons-group-faded:hover>*, body.touch_enabled .buttons-group-faded>* {
+.post-buttons:hover>*, body.touch-enabled .post-buttons>*, .buttons-group-faded:hover>*, body.touch-enabled .buttons-group-faded>* {
 	opacity: 1.0 !important;
 }
 
@@ -3398,16 +3398,16 @@ dl.meta_details_list>dt, dl.meta_details_list>dd {
 		background-size: 24px 24px;
 	}
 }
-.staff_actions:hover, body.touch_enabled .staff_actions {
+.staff_actions:hover, body.touch-enabled .staff_actions {
 	opacity: 1.0;
 }
-.staff_actions .box_inner {
+.staff_actions .box-inner {
 	padding-right: 25px;
 }
 .staff_actions .field_name.standard_field_name {
 	display: none;
 }
-.staff_actions ul.horizontal_links {
+.staff_actions ul.horizontal-links {
 	width: auto;
 	font-size: 1em;
 	display: block !important;
@@ -3449,28 +3449,28 @@ div.associated-details {
 a.associated-link / form.associated-link / span.associated-link - a single associated link displayed inline, with CSS-generated brackets around
 p.associated-link / div.associated-link - a single associated link displayed in a block, with CSS-generated brackets around
 ul.associated-links-block-group - a group of associated links displayed in a block, each link on its own line with its own CSS-generated brackets around
-ul.horizontal_links / ul.horizontal_links_comma - a group of associated links displayed in a block, the links on the same line with a CSS-generated separation character; often used to represent block actions; often used in conjunction with associated-links-block-group to get the CSS-generated brackets
+ul.horizontal-links / ul.horizontal-links-comma - a group of associated links displayed in a block, the links on the same line with a CSS-generated separation character; often used to represent block actions; often used in conjunction with associated-links-block-group to get the CSS-generated brackets
 .horizontal-meta-details / .horizontal_buttons / .horizontal_ticker - Additional horizontal list types for things other than links
-.buttons-group - used for a button set, like horizontal_links but for centred buttons
+.buttons-group - used for a button set, like horizontal-links but for centred buttons
 
 There is 'actions-list' too (defined elsewhere). These are for links that are given more focus as key navigation mechanisms in a task-based UI.
 */
 
-ul.associated-links-block-group.horizontal_links>li:first-child:before, p.associated-link:before, div.associated-link:before {
+ul.associated-links-block-group.horizontal-links>li:first-child:before, p.associated-link:before, div.associated-link:before {
 	opacity: 0.7;
 	font-size: 0.8em;
 }
 /*{+START,CSS_MODE,desktop}*/
-	ul.associated-links-block-group.horizontal_links>li:first-child:before, p.associated-link:before, div.associated-link:before {
+	ul.associated-links-block-group.horizontal-links>li:first-child:before, p.associated-link:before, div.associated-link:before {
 		content: "( " !important;
 	}
 /*{+END}*/
-ul.associated-links-block-group.horizontal_links>li:last-child:after, p.associated-link:after, div.associated-link:after {
+ul.associated-links-block-group.horizontal-links>li:last-child:after, p.associated-link:after, div.associated-link:after {
 	opacity: 0.7;
 	font-size: 0.8em;
 }
 /*{+START,CSS_MODE,desktop}*/
-	ul.associated-links-block-group.horizontal_links>li:last-child:after, p.associated-link:after, div.associated-link:after {
+	ul.associated-links-block-group.horizontal-links>li:last-child:after, p.associated-link:after, div.associated-link:after {
 		content: " )" !important;
 	}
 /*{+END}*/
@@ -3488,7 +3488,7 @@ ul.associated-links-block-group>li:before, span.associated-link:before, a.associ
 ul.associated-links-block-group>li:first-child:before, span.associated-link:first-child:before, a.associated-link:first-child:before, form.associated-link:first-child:before {
 	vertical-align: baseline !important;
 }
-ul.associated-links-block-group.horizontal_links>li:after { /* Undoes the above rules for if 'horizontal_links' is set (the rule further up will run instead and the middot one below) */
+ul.associated-links-block-group.horizontal-links>li:after { /* Undoes the above rules for if 'horizontal-links' is set (the rule further up will run instead and the middot one below) */
 	content: "" !important;
 }
 ul.associated-links-block-group>li:after, span.associated-link:after, a.associated-link:after, form.associated-link:after {
@@ -3500,34 +3500,34 @@ ul.associated-links-block-group>li:after, span.associated-link:after, a.associat
 	}
 /*{+END}*/
 
-ul.associated-links-block-group.horizontal_links>li:before,
+ul.associated-links-block-group.horizontal-links>li:before,
 .horizontal-meta-details li:before,
-.horizontal_links>li:before,
+.horizontal-links>li:before,
 .horizontal_ticker li:before {
 	vertical-align: -20%;
 }
 /*{+START,CSS_MODE,desktop}*/
-	ul.associated-links-block-group.horizontal_links>li:before,
+	ul.associated-links-block-group.horizontal-links>li:before,
 	.horizontal-meta-details li:before,
-	.horizontal_links>li:before,
+	.horizontal-links>li:before,
 	.horizontal_ticker li:before {
 		padding: 0 0.5em 0 0.1em;
 		content: "\00b7" !important; /* a &middot; */
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	ul.associated-links-block-group.horizontal_links>li:before,
+	ul.associated-links-block-group.horizontal-links>li:before,
 	.horizontal-meta-details li:before,
-	.horizontal_links>li:before,
+	.horizontal-links>li:before,
 	.horizontal_ticker li:before {
 		padding: 0 0.2em 0 0;
 		margin-left: -0.2em;
 		content: "|" !important;
 		font-size: 0.8em;
 	}
-	.with_images ul.associated-links-block-group.horizontal_links>li:before,
+	.with_images ul.associated-links-block-group.horizontal-links>li:before,
 	.with_images .horizontal-meta-details li:before,
-	.with_images .horizontal_links>li:before,
+	.with_images .horizontal-links>li:before,
 	.with_images .horizontal_ticker li:before {
 		margin-left: 0.5em;
 		content: "" !important;
@@ -3543,20 +3543,20 @@ ul.associated-links-block-group.horizontal_links>li:before,
 	/* Undoes the li padding defined above */
 	padding-left: 0 !important;
 }
-.horizontal_links_comma li:before {
+.horizontal-links-comma li:before {
 	content: ", \A";
 }
 .horizontal-meta-details li:first-child:before,
-.horizontal_links li:first-child:before,
+.horizontal-links li:first-child:before,
 .horizontal_buttons li:first-child:before,
 .horizontal_ticker li:first-child:before,
-.horizontal_links_comma li:first-child:before {
+.horizontal-links-comma li:first-child:before {
 	/* Undoes the middot/comma separator */
 	content: "" !important;
 	padding-left: 0 !important;
 	padding-right: 0 !important;
 }
-ul.associated-link, ul.horizontal-meta-details, ul.horizontal_links, ul.horizontal_links_comma, ul.horizontal_buttons, .horizontal_ticker {
+ul.associated-link, ul.horizontal-meta-details, ul.horizontal-links, ul.horizontal-links-comma, ul.horizontal_buttons, .horizontal_ticker {
 	list-style: none;
 	margin: 0;
 	padding: 0;
@@ -3564,19 +3564,19 @@ ul.associated-link, ul.horizontal-meta-details, ul.horizontal_links, ul.horizont
 .horizontal_buttons {
 	list-style: none;
 }
-ul.horizontal_links_comma {
+ul.horizontal-links-comma {
 	vertical-align: baseline !important;
 	width: auto !important;
 }
 ul.associated-link {
 	display: block;
 }
-ul.horizontal-meta-details, ul.horizontal_links, ul.horizontal_links_comma, ul.horizontal_buttons, .horizontal_ticker {
+ul.horizontal-meta-details, ul.horizontal-links, ul.horizontal-links-comma, ul.horizontal_buttons, .horizontal_ticker {
 	/* As these go across horizontally, we need to do this to allow centering to work for the group */
 	display: inline-block !important;
 	width: 100%;
 }
-ul.associated-link>li, .horizontal-meta-details>li, .horizontal_links>li, ul.horizontal_links_comma>li, .horizontal_buttons>li, .horizontal_ticker>li {
+ul.associated-link>li, .horizontal-meta-details>li, .horizontal-links>li, ul.horizontal-links-comma>li, .horizontal_buttons>li, .horizontal_ticker>li {
 	display: inline;
 	margin: 0;
 	padding: 0;
@@ -3584,17 +3584,17 @@ ul.associated-link>li, .horizontal-meta-details>li, .horizontal_links>li, ul.hor
 ul.associated-link>li {
 	display: block !important; /* Undoes "display: inline" above */
 }
-ul.horizontal_links li img {
+ul.horizontal-links li img {
 	max-width: 20px;
 }
 ul.associated-link li img {
 	max-width: 14px;
 }
-ul.horizontal_links li img, ul.associated-link li img, ul.horizontal_links a, ul.horizontal_links form {
+ul.horizontal-links li img, ul.associated-link li img, ul.horizontal-links a, ul.horizontal-links form {
 	vertical-align: middle;
 }
 /*{+START,CSS_MODE,mobile}*/
-	ul.horizontal_links li img, ul.associated-link li img, ul.horizontal_links a, ul.horizontal_links form {
+	ul.horizontal-links li img, ul.associated-link li img, ul.horizontal-links a, ul.horizontal-links form {
 		white-space: nowrap !important;
 	}
 /*{+END}*/
@@ -3613,7 +3613,7 @@ ul.horizontal_links li img, ul.associated-link li img, ul.horizontal_links a, ul
 	display: block;
 	list-style: none;
 }
-.horizontal_links, .associated-link {
+.horizontal-links, .associated-link {
 	font-size: 0.9em;
 }
 ul.buttons-group, ul.associated-links-block-group {
@@ -3851,7 +3851,7 @@ div .button_micro {
 }
 .button_micro:hover, .button_screen:hover, .button_screen_item:hover,
 .button_screen:hover, .button_screen_item:hover, .button_micro:hover, .toggleable-tray-button:hover img,
-body.touch_enabled .button_screen, body.touch_enabled .button_screen_item, body.touch_enabled .button_micro, body.touch_enabled .toggleable-tray-button img {
+body.touch-enabled .button_screen, body.touch-enabled .button_screen_item, body.touch-enabled .button_micro, body.touch-enabled .toggleable-tray-button img {
 	opacity: 1.0;
 }
 .button_micro:disabled, .button_screen:disabled, .button_screen_item:disabled {
@@ -3885,7 +3885,7 @@ div.proceed_button_left_2 {
 	min-width: 0; /* Works around webkit bug, where it breaks max-width:100% inside because the size calculation has been inverted by the default "min-width: -webkit-min-content;" rule  */
 }
 
-.box_inner>.innocuous_fieldset {
+.box-inner>.innocuous_fieldset {
 	margin: 0;
 }
 
@@ -4429,7 +4429,7 @@ a.tab>span {
 	opacity: 1.0 !important;
 }
 
-.tab:hover, body.touch_enabled .tab {
+.tab:hover, body.touch-enabled .tab {
 	opacity: 1.0;
 }
 
@@ -4728,12 +4728,12 @@ pre .comcode_code_inner {
 	display: none;
 }
 
-body div.comcode_table_of_contents>div.box_inner>ol {
+body div.comcode_table_of_contents>div.box-inner>ol {
 	padding: 0 !important;
 	margin: 0 !important;
 	margin-left: 20px !important;
 }
-body div.comcode_table_of_contents>div.box_inner>ol>li {
+body div.comcode_table_of_contents>div.box-inner>ol>li {
 	margin: 0.2em 0 !important;
 	padding: 0 !important;
 }
@@ -5235,7 +5235,7 @@ a[title="{!VIRTUAL_ROOT}"]:hover {
 	transition-property : opacity;
 	transition-duration : 0.5s;
 }
-.overlay .previous_button:hover, .overlay .next_button:hover, .overlay.mousemove .previous_button, .overlay.mousemove .next_button, body.touch_enabled .overlay.mousemove .previous_button, body.touch_enabled .overlay.mousemove .next_button {
+.overlay .previous_button:hover, .overlay .next_button:hover, .overlay.mousemove .previous_button, .overlay.mousemove .next_button, body.touch-enabled .overlay.mousemove .previous_button, body.touch-enabled .overlay.mousemove .next_button {
 	opacity: 1.0 !important;
 }
 

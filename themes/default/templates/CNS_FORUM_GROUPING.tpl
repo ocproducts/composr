@@ -1,5 +1,5 @@
 <div class="cns-forum-grouping" data-toggleable-tray="{}">
-	<h3 class="toggleable_tray_title_heading js-tray-header">
+	<h3 class="toggleable-tray-title-heading js-tray-header">
 		<span class="cns-forum-grouping-toggleable-tray-button">
 			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img title="{!TOGGLE_GROUPING_VISIBILITY}" alt="{!TOGGLE_GROUPING_VISIBILITY}" src="{$IMG*,1x/trays/{EXPAND_TYPE*}2}" /></a>
 		</span>
@@ -11,7 +11,7 @@
 		{+END}
 	</h3>
 
-	<div class="toggleable_tray js-tray-content" id="c_{GROUPING_ID*}"{+START,IF,{$NEQ,{DISPLAY},block}} style="display: {DISPLAY*}"{+END}>
+	<div class="toggleable-tray js-tray-content" id="c_{GROUPING_ID*}"{+START,IF,{$NEQ,{DISPLAY},block}} style="display: {DISPLAY*}"{+END}>
 		<div class="wide_table_wrap">
 			<table class="columned_table wide_table cns-forum-grouping" itemprop="significantLinks">
 				{+START,IF,{$DESKTOP}}

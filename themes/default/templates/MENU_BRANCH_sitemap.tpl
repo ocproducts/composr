@@ -13,7 +13,7 @@
 			{+END}
 		</span>
 		{+START,IF_NON_EMPTY,{CHILDREN}}
-			<ul class="toggleable_tray">
+			<ul class="toggleable-tray">
 				{CHILDREN}
 			</ul>
 		{+END}

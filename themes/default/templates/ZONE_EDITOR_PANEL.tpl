@@ -66,18 +66,18 @@
 
 	<div id="info_{ID*}" style="{+START,IF_NON_PASSED,PREVIEW}display: block{+END}{+START,IF_PASSED,PREVIEW}display: none{+END}" aria-labeledby="info_tab_{ID*}" role="tabpanel">
 		<p class="lonely_label">
-			<span class="field_name">{!PAGE_TYPE}:</span>
+			<span class="field-name">{!PAGE_TYPE}:</span>
 		</p>
 		<p>{TYPE*}</p>
 
 		<p class="lonely_label">
-			<span class="field_name">{!NAME}:</span>
+			<span class="field-name">{!NAME}:</span>
 		</p>
 		<p><kbd>{ID*}</kbd></p>
 
 		{+START,IF_NON_EMPTY,{EDIT_URL}}
 			<p class="lonely_label">
-				<span class="field_name">{!ACTIONS}:</span>
+				<span class="field-name">{!ACTIONS}:</span>
 			</p>
 			<ul class="actions-list">
 				<li><a title="{!EDIT_IN_FULL_PAGE_EDITOR}: {ID*} {!LINK_NEW_WINDOW}" target="_blank" href="{EDIT_URL*}">{!EDIT_IN_FULL_PAGE_EDITOR}</a></li>
@@ -91,7 +91,7 @@
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<p class="lonely_label">
-						<label for="redirect_{ID*}" class="field_name">{!DRAWS_FROM}:</label>
+						<label for="redirect_{ID*}" class="field-name">{!DRAWS_FROM}:</label>
 					</p>
 					{+START,IF_NON_EMPTY,{ZONES}}
 						<select class="js-sel-zones-draw" id="redirect_{ID*}" name="redirect_{ID*}">

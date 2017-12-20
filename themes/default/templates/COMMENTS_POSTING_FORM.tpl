@@ -30,7 +30,7 @@
 
 		<div class="box box___comments_posting_form"{+START,IF_PASSED,EXPAND_TYPE} data-toggleable-tray="{}"{+END}>
 			{+START,IF_NON_EMPTY,{TITLE}}
-				<h3 class="toggleable_tray_title js-tray-header">
+				<h3 class="toggleable-tray-title js-tray-header">
 					{+START,IF_NON_PASSED,EXPAND_TYPE}
 						{TITLE*}
 					{+END}
@@ -40,7 +40,7 @@
 					{+END}
 				</h3>
 			{+END}
-			<div class="comments_posting_form_outer {+START,IF_PASSED,EXPAND_TYPE} toggleable_tray js-tray-content{+END}"{+START,IF_PASSED,EXPAND_TYPE} aria-expanded="false"{+END} id="comments_posting_form_outer" style="display: {DISPLAY*}">
+			<div class="comments_posting_form_outer {+START,IF_PASSED,EXPAND_TYPE} toggleable-tray js-tray-content{+END}"{+START,IF_PASSED,EXPAND_TYPE} aria-expanded="false"{+END} id="comments_posting_form_outer" style="display: {DISPLAY*}">
 				<div class="comments_posting_form_inner">
 					<div class="wide_table_wrap"><table class="map_table wide_table">
 						{+START,IF,{$DESKTOP}}
@@ -154,7 +154,7 @@
 									{+START,IF,{$DESKTOP}}
 										{+START,IF_NON_EMPTY,{EMOTICONS}}
 											<div class="comments_posting_form_emoticons block_desktop">
-												<div class="box box___comments_posting_form"><div class="box_inner">
+												<div class="box box___comments_posting_form"><div class="box-inner">
 													{EMOTICONS}
 
 													{+START,IF,{$CNS}}

@@ -1,4 +1,4 @@
-<section class="box box___block_side_personal_stats"><div class="box_inner">
+<section class="box box___block_side_personal_stats"><div class="box-inner">
 	<h3>{$DISPLAYED_USERNAME*,{USERNAME}}</h3>
 
 	{+START,IF_NON_EMPTY,{AVATAR_URL}}

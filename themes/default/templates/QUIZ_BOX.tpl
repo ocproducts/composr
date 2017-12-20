@@ -1,4 +1,4 @@
-<section class="box box___quiz_box"><div class="box_inner">
+<section class="box box___quiz_box"><div class="box-inner">
 	{+START,SET,content_box_title}
 		{+START,IF,{GIVE_CONTEXT}}
 			{!CONTENT_IS_OF_TYPE,{TYPE*},{NAME*}}
@@ -15,12 +15,12 @@
 	<div class="meta_details" role="note">
 		<dl class="meta_details_list">
 			{+START,IF_NON_EMPTY,{TIMEOUT}}
-				<dt class="field_name">{!TIMEOUT}:</dt> <dd>{TIMEOUT*}</dd>
+				<dt class="field-name">{!TIMEOUT}:</dt> <dd>{TIMEOUT*}</dd>
 			{+END}
 			{+START,IF_NON_EMPTY,{REDO_TIME}}
-				<dt class="field_name">{!REDO_TIME}:</dt> <dd>{REDO_TIME*}</dd>
+				<dt class="field-name">{!REDO_TIME}:</dt> <dd>{REDO_TIME*}</dd>
 			{+END}
-			<dt class="field_name">{!ADDED}:</dt> <dd>{DATE*}</dd>
+			<dt class="field-name">{!ADDED}:</dt> <dd>{DATE*}</dd>
 		</dl>
 	</div>
 
