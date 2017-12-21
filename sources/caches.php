@@ -327,7 +327,11 @@ class Self_learning_cache
             $contents = serialize($this->data);
 
             require_code('files');
-            cms_file_put_contents_safe($this->path, $contents, FILE_WRITE_FIX_PERMISSIONS);
+            $flags = FILE_WRITE_FIX_PERMISSIONS;
+            if (!headers_sent()) {
+                $flags |= FILE_WRITE_FAILURE_SOFT;
+            }
+            cms_file_put_contents_safe($this->path, $contents, $flags);
         } else {
             fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
@@ -529,8 +533,8 @@ function erase_persistent_cache()
     closedir($d);
 
     require_code('files');
-    cms_file_put_contents_safe(get_custom_file_base() . '/data_custom/failover_rewritemap.txt', '', FILE_WRITE_FAILURE_SILENT | FILE_WRITE_FIX_PERMISSIONS);
-    cms_file_put_contents_safe(get_custom_file_base() . '/data_custom/failover_rewritemap__mobile.txt', '', FILE_WRITE_FAILURE_SILENT | FILE_WRITE_FIX_PERMISSIONS);
+    cms_file_put_contents_safe(get_custom_file_base() . '/data_custom/failover_rewritemap.txt', '', FILE_WRITE_FAILURE_SOFT | FILE_WRITE_FIX_PERMISSIONS);
+    cms_file_put_contents_safe(get_custom_file_base() . '/data_custom/failover_rewritemap__mobile.txt', '', FILE_WRITE_FAILURE_SOFT | FILE_WRITE_FIX_PERMISSIONS);
 
     global $PERSISTENT_CACHE;
     if ($PERSISTENT_CACHE === null) {
