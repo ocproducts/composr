@@ -138,7 +138,7 @@ function require_lang_compile($codename, $lang, $type, $cache_path, $ignore_erro
     // Cache
     if ($desire_cache) {
         require_code('files');
-        cms_file_put_contents_safe($cache_path, serialize($load_target), FILE_WRITE_FAILURE_SILENT | FILE_WRITE_FIX_PERMISSIONS);
+        cms_file_put_contents_safe($cache_path, serialize($load_target), FILE_WRITE_FAILURE_SOFT | FILE_WRITE_FIX_PERMISSIONS);
     }
 
     if ($desire_cache) {

@@ -71,7 +71,11 @@ function get_comcode_page_title_from_disk($path, $include_subtitle = false, $in_
 
     if (($raw_title == '') || ($raw_title == 'TODO')) {
         // Blank title
-        return $fallback_title;
+        if ($in_tempcode) {
+            return make_string_tempcode(escape_html($fallback_title));
+        } else {
+            return $fallback_title;
+        }
     }
 
     if ($include_subtitle) {

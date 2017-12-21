@@ -142,7 +142,7 @@ function lang_load_runtime_processing()
             require_code('lang_compile');
             require_code('files');
             $LANG_RUNTIME_PROCESSING = get_lang_file_section(user_lang(), null, 'runtime_processing');
-            cms_file_put_contents_safe($path, serialize($LANG_RUNTIME_PROCESSING), FILE_WRITE_FAILURE_SILENT | FILE_WRITE_FIX_PERMISSIONS);
+            cms_file_put_contents_safe($path, serialize($LANG_RUNTIME_PROCESSING), FILE_WRITE_FAILURE_SOFT | FILE_WRITE_FIX_PERMISSIONS);
         }
     }
 }
@@ -262,7 +262,7 @@ function user_lang()
                 (get_forum_type() == 'cns') ||
                 (get_option('detect_lang_forum') == '1') ||
                 (get_option('detect_lang_browser') == '1')
-            ) && 
+            ) &&
             (
                 (!$GLOBALS['DEV_MODE']) ||
                 (get_site_default_lang() != 'Gibb')

@@ -400,7 +400,7 @@ function _generic_exit($text, $template, $support_match_key_messages = false)
     @header('Content-type: text/html; charset=' . get_charset());
     @header('Content-Disposition: inline');
 
-    if ($GLOBALS['HTTP_STATUS_CODE'] == '200') {
+    if (($GLOBALS['HTTP_STATUS_CODE'] == '200') && (function_exists('do_lang'))) {
         if (($text_eval == do_lang('cns:NO_MARKERS_SELECTED')) || ($text_eval == do_lang('NOTHING_SELECTED'))) {
             if (!headers_sent()) {
                 set_http_status_code('400');
@@ -425,14 +425,15 @@ function _generic_exit($text, $template, $support_match_key_messages = false)
     }
 
     global $EXITING, $MICRO_BOOTUP;
-    if ((running_script('upgrader')) || (!function_exists('get_screen_title')) || ($MICRO_BOOTUP)) {
-        critical_error('PASSON', is_object($text) ? $text->evaluate() : $text);
+    if ((running_script('upgrader')) || ($MICRO_BOOTUP)) {
+        critical_error('PASSON', is_object($text) ? $text->evaluate() : escape_html($text));
     }
 
-    if (($EXITING >= 1) || (!function_exists('get_member'))) {
+    if (($EXITING >= 1) || (!function_exists('get_member')) || (!function_exists('get_screen_title')) || (!function_exists('do_lang'))) {
         critical_error('EMERGENCY', is_object($text) ? $text->evaluate() : escape_html($text));
     }
     $EXITING++;
+
     if (!function_exists('do_header')) {
         require_code('site');
     }

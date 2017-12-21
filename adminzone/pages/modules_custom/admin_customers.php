@@ -46,7 +46,6 @@ class Module_admin_customers
         delete_config_option('support_priority_regular_minutes');
         $GLOBALS['SITE_DB']->drop_table_if_exists('credit_purchases');
         $GLOBALS['SITE_DB']->drop_table_if_exists('credit_charge_log');
-        $GLOBALS['SITE_DB']->drop_table_if_exists('group_points');
 
         if (substr(get_db_type(), 0, 5) != 'mysql') {
             return;
@@ -100,12 +99,6 @@ class Module_admin_customers
         }
 
         require_lang('customers');
-
-        $GLOBALS['SITE_DB']->create_table('group_points', array(
-            'p_group_id' => '*GROUP',
-            'p_points_one_off' => 'INTEGER',
-            'p_points_per_month' => 'INTEGER',
-        ));
 
         // CPFs...
 
