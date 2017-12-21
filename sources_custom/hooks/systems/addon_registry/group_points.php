@@ -142,4 +142,28 @@ class Hook_addon_registry_group_points
             'sources_custom/miniblocks/group_points.php',
         );
     }
+
+    /**
+     * Uninstall the addon.
+     */
+    public function uninstall()
+    {
+        $GLOBALS['SITE_DB']->drop_table_if_exists('group_points');
+    }
+
+    /**
+     * Install the addon.
+     *
+     * @param  ?integer $upgrade_from What version we're upgrading from (null: new install)
+     */
+    public function install($upgrade_from = null)
+    {
+        if ($upgrade_from === null) {
+            $GLOBALS['SITE_DB']->create_table('group_points', array(
+                'p_group_id' => '*GROUP',
+                'p_points_one_off' => 'INTEGER',
+                'p_points_per_month' => 'INTEGER',
+            ));
+        }
+    }
 }

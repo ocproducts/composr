@@ -166,12 +166,16 @@ function require_code($codename, $light_exit = false)
 
                 if (isset($_GET['keep_show_parse_errors'])) {
                     $orig = str_replace('?' . '>', '', str_replace('<' . '?php', '', file_get_contents($path_orig)));
-                    $bak = $GLOBALS['SUPPRESS_ERROR_DEATH'];
-                    $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
+                    $do_sed = function_exists('push_suppress_error_death');
+                    if ($do_sed) {
+                        push_suppress_error_death(true);
+                    }
                     $php_errormsg = '';
                     safe_ini_set('display_errors', '0');
                     $eval_result = eval($orig);
-                    $GLOBALS['SUPPRESS_ERROR_DEATH'] = $bak;
+                    if ($do_sed) {
+                        pop_suppress_error_death();
+                    }
                     if ((php_error_has_happened($php_errormsg)) || ($eval_result === false)) {
                         if ((!function_exists('fatal_exit')) || ($codename === 'failure')) {
                             critical_error('PASSON', @strval($php_errormsg) . ' [sources/' . $codename . '.php]');
@@ -184,12 +188,16 @@ function require_code($codename, $light_exit = false)
 
                 if (isset($_GET['keep_show_parse_errors'])) {
                     $custom = str_replace('?' . '>', '', str_replace('<' . '?php', '', file_get_contents($path_custom)));
-                    $bak = $GLOBALS['SUPPRESS_ERROR_DEATH'];
-                    $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
+                    $do_sed = function_exists('push_suppress_error_death');
+                    if ($do_sed) {
+                        push_suppress_error_death(true);
+                    }
                     $php_errormsg = '';
                     safe_ini_set('display_errors', '0');
                     $eval_result = eval($custom);
-                    $GLOBALS['SUPPRESS_ERROR_DEATH'] = $bak;
+                    if ($do_sed) {
+                        pop_suppress_error_death();
+                    }
                     if ((php_error_has_happened($php_errormsg)) || ($eval_result === false)) {
                         if ((!function_exists('fatal_exit')) || ($codename === 'failure')) {
                             critical_error('PASSON', @strval($php_errormsg) . ' [sources_custom/' . $codename . '.php]');
@@ -203,12 +211,16 @@ function require_code($codename, $light_exit = false)
         } else {
             if (isset($_GET['keep_show_parse_errors'])) {
                 $orig = str_replace('?' . '>', '', str_replace('<' . '?php', '', file_get_contents($path_custom)));
-                $bak = $GLOBALS['SUPPRESS_ERROR_DEATH'];
-                $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
+                $do_sed = function_exists('push_suppress_error_death');
+                if ($do_sed) {
+                    push_suppress_error_death(true);
+                }
                 $php_errormsg = '';
                 safe_ini_set('display_errors', '0');
                 $eval_result = eval($orig);
-                $GLOBALS['SUPPRESS_ERROR_DEATH'] = $bak;
+                if ($do_sed) {
+                    pop_suppress_error_death();
+                }
                 if ((php_error_has_happened($php_errormsg)) || ($eval_result === false)) {
                     if ((!function_exists('fatal_exit')) || ($codename === 'failure')) {
                         critical_error('PASSON', @strval($php_errormsg) . ' [sources_custom/' . $codename . '.php]');
@@ -241,12 +253,16 @@ function require_code($codename, $light_exit = false)
             $contents = @file_get_contents($path_orig);
             if ($contents !== false) {
                 $orig = str_replace(array('?' . '>', '<' . '?php'), array('', ''), $contents);
-                $bak = $GLOBALS['SUPPRESS_ERROR_DEATH'];
-                $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
+                $do_sed = function_exists('push_suppress_error_death');
+                if ($do_sed) {
+                    push_suppress_error_death(true);
+                }
                 $php_errormsg = '';
                 safe_ini_set('display_errors', '0');
                 $eval_result = eval($orig);
-                $GLOBALS['SUPPRESS_ERROR_DEATH'] = $bak;
+                if ($do_sed) {
+                    pop_suppress_error_death();
+                }
                 if ((php_error_has_happened($php_errormsg)) || ($eval_result === false)) {
                     if ((!function_exists('fatal_exit')) || ($codename === 'failure')) {
                         critical_error('PASSON', @strval($php_errormsg) . ' [sources/' . $codename . '.php]');

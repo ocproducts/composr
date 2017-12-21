@@ -41,7 +41,7 @@ Speaking personally, as a programmer I think in abstracts. One of the biggest ma
 
 [title="2"]Get out there[/title]
 
-There's a common phrase "build it and they will come", and it is horribly wrong. It only applies in the rare case where you are first to market with something that people have been looking really hard to find but hasn't yet been available. Most businesses do not fulfil a need that is both consciously known and previously unsatisfiable.
+There's a common phrase "build it and they will come", and it is usually wrong. It only applies in the rare cases where you are first to market (or first serious player to market) with something that people have been looking really hard to find but hasn't yet been available. Most businesses do not fulfil a need that is both consciously known and previously unsatisfiable.
 
 It's really important to be (or employ, or co-opt) a bit of an extrovert, to be regularly out there promoting your company, and to have the common touch to ensure you can fully relate and influence uninformed outsiders. People you want to work with who are outside your industry are usually too busy to learn anything about it for themselves, so they will rely on you to introduce them to it. As a rule, people don't go out of their way to research things on their own unless they feel a compelling need and don't have anyone to go ask.
 

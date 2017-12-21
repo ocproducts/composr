@@ -1231,7 +1231,7 @@ function _do_template($theme, $directory, $codename, $_codename, $lang, $suffix,
 
         require_code('files');
         $data_to_write = '<' . '?php' . "\n" . $result->to_assembly($lang) . "\n";
-        cms_file_put_contents_safe($_path2, $data_to_write, FILE_WRITE_FAILURE_SILENT | FILE_WRITE_FIX_PERMISSIONS);
+        cms_file_put_contents_safe($_path2, $data_to_write, FILE_WRITE_FAILURE_SOFT | FILE_WRITE_FIX_PERMISSIONS);
     }
 
     return $result;

@@ -73,7 +73,7 @@ function cms_file_put_contents_safe($path, $contents, $flags = 4, $retry_depth =
         // If the directory is missing
         if (!is_dir(dirname($path))) {
             require_code('files2');
-            if ((($flags & FILE_WRITE_FAILURE_SOFT) != 0) && (($flags & FILE_WRITE_FAILURE_HARD) != 0)) {
+            if ((($flags & FILE_WRITE_FAILURE_SOFT) != 0) || (($flags & FILE_WRITE_FAILURE_HARD) != 0)) {
                 make_missing_directory(dirname($path));
             } else {
                 $test = @make_missing_directory(dirname($path));
@@ -194,7 +194,7 @@ function cms_file_put_contents_safe($path, $contents, $flags = 4, $retry_depth =
  */
 function _cms_file_put_contents_safe_failed($error_message, $path, $flags = 4)
 {
-    if (($flags & FILE_WRITE_FAILURE_SOFT) != 0) {
+    if (($flags & FILE_WRITE_FAILURE_SILENT) != 0) {
         return false;
     }
 

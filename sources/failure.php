@@ -481,7 +481,7 @@ function _generic_exit($text, $template, $support_match_key_messages = false, $l
     @header('Content-type: text/html; charset=' . get_charset());
     @header('Content-Disposition: inline');
 
-    if ($GLOBALS['HTTP_STATUS_CODE'] == 200) {
+    if (($GLOBALS['HTTP_STATUS_CODE'] == 200) && (function_exists('do_lang'))) {
         if (($text_eval == do_lang('cns:NO_MARKERS_SELECTED')) || ($text_eval == do_lang('NOTHING_SELECTED'))) {
             if (!headers_sent()) {
                 set_http_status_code(400);
@@ -506,7 +506,7 @@ function _generic_exit($text, $template, $support_match_key_messages = false, $l
     }
 
     global $EXITING, $MICRO_BOOTUP;
-    if (($EXITING >= 1) || (!function_exists('get_member')) || (!function_exists('get_screen_title')) || (running_script('upgrader')) || (!class_exists('Tempcode')) || ($MICRO_BOOTUP)) {
+    if (($EXITING >= 1) || (!function_exists('get_member')) || (!function_exists('get_screen_title')) || (!function_exists('do_lang')) || (running_script('upgrader')) || (!class_exists('Tempcode')) || ($MICRO_BOOTUP)) {
         if (($EXITING == 2) && (function_exists('may_see_stack_traces')) && (may_see_stack_traces()) && ($GLOBALS['HAS_SET_ERROR_HANDLER'])) {
             die_html_trace($text_eval);
         } else { // Failed even in die_html_trace
