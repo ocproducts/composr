@@ -1821,7 +1821,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
         return $html;
     }
 
-    if (has_edit_comcode_page_permission($zone, $codename, $comcode_page_row['p_submitter'])) {
+    if ((function_exists('has_edit_comcode_page_permission')) && (has_edit_comcode_page_permission($zone, $codename, $comcode_page_row['p_submitter']))) {
         $redirect = get_self_url(true, false, array('redirect' => null, 'redirected' => null));
         if ((($codename == 'panel_left') || ($codename == 'panel_right')) && (has_js()) && (has_actual_page_access(get_member(), 'admin_zones'))) {
             $edit_url = build_url(array('page' => 'admin_zones', 'type' => '_editor', 'id' => get_zone_name(), 'redirect' => $redirect), get_module_zone('admin_zones'));

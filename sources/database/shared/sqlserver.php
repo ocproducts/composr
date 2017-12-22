@@ -166,16 +166,14 @@ class Database_super_sqlserver
                 $_fields = implode(',', array_unique(explode(',', $_fields)));
 
                 // Full-text catalogue needed
-                $ret[] = 'CREATE FULLTEXT CATALOG ft AS DEFAULT'; // Will fail if already exists, but that's ok
+                $ret[] = 'IF NOT EXISTS (SELECT * FROM sys.fulltext_catalogs WHERE name=\'ft\') CREATE FULLTEXT CATALOG ft AS DEFAULT';
 
-                // Create unique index on primary key (needed for full-text to function)
+                // Create unique index on primary key if needed (required for full-text to function)
                 $unique_index_name = 'unique__' . $table_name;
-                $ret[] = 'DROP INDEX ' . $unique_index_name . ' ON ' . $table_name; // Just in case already there. Will fail if does not already exist, but that's ok
-                $ret[] = 'CREATE UNIQUE INDEX ' . $unique_index_name . ' ON ' . $table_name . '(' . $unique_key_fields . ')';
+                $ret[] = 'IF NOT EXISTS (SELECT * FROM sys.indexes WHERE name=\'' . $unique_index_name . '\' AND object_id=OBJECT_ID(\'' . $table_name . '\')) CREATE UNIQUE INDEX ' . $unique_index_name . ' ON ' . $table_name . '(' . $unique_key_fields . ')';
 
-                // Create full-text index on all fields that need it
-                $ret[] = 'DROP FULLTEXT INDEX ON ' . $table_name; // Just in case already there. Will fail if does not already exist, but that's ok
-                $ret[] = 'CREATE FULLTEXT INDEX ON ' . $table_name . '(' . $_fields . ') KEY INDEX ' . $unique_index_name;
+                // Create full-text index on table if needed
+                $ret[] = 'IF NOT EXISTS (SELECT * FROM sys.fulltext_indexes WHERE object_id=OBJECT_ID(\'' . $table_name . '\')) CREATE FULLTEXT INDEX ON ' . $table_name . '(' . $_fields . ') KEY INDEX ' . $unique_index_name;
             }
             return $ret;
         }
@@ -307,8 +305,23 @@ class Database_super_sqlserver
             $_fields .= ' ' . $perhaps_null . ',' . "\n";
         }
 
-        $query = 'CREATE TABLE ' . $table_name . ' (' . "\n" . $_fields . '    PRIMARY KEY (' . $keys . ")\n)";
-        return array($query);
+        $query_create = 'CREATE TABLE ' . $table_name . ' (' . "\n" . $_fields . '    PRIMARY KEY (' . $keys . ")\n)";
+        $ret = array($query_create);
+
+        if (running_script('commandr')) {
+            if (in_array('*AUTO', $fields)) {
+                static $query_insert_last_table_name = null;
+                if ($query_insert_last_table_name !== null) {
+                    $query_identity_off = 'SET IDENTITY_INSERT ' . $query_insert_last_table_name . ' OFF';
+                    $ret[] = $query_identity_off;
+                }
+                $query_insert_last_table_name = $table_name;
+                $query_identity_on = 'SET IDENTITY_INSERT ' . $table_name . ' ON';
+                $ret[] = $query_identity_on;
+            }
+        }
+
+        return $ret;
     }
 
     /**
@@ -364,7 +377,7 @@ class Database_super_sqlserver
      */
     public function db_drop_table_if_exists($table, $db)
     {
-        return array('DROP TABLE ' . $table);
+        return array('IF EXISTS (SELECT * FROM sys.objects WHERE object_id=OBJECT_ID(\'' . $table . '\') AND type IN (\'U\')) DROP TABLE ' . $table);
     }
 
     /**

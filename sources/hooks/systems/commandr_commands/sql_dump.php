@@ -38,9 +38,9 @@ class Hook_commandr_command_sql_dump
         } else {
             $intended_db_type = empty($parameters[0]) ? get_db_type() : $parameters[0];
 
-            if (count($parameters) > 1) {
+            if (count($parameters) > 2) {
                 $only = array();
-                for ($i = 1; $i < count($parameters); $i++) {
+                for ($i = 2; $i < count($parameters); $i++) {
                     $only[] = $parameters[$i];
                 }
             } else {
@@ -48,7 +48,11 @@ class Hook_commandr_command_sql_dump
             }
 
             // Where to save dump
-            $out_filename = 'dump_' . uniqid('', true) . '.sql';
+            if (isset($parameters[1])) {
+                $out_filename = $parameters[1];
+            } else {
+                $out_filename = 'dump_' . uniqid('', true) . '.sql';
+            }
             $out_file_path = get_custom_file_base() . '/safe_mode_temp/' . $out_filename;
 
             // Generate dump
