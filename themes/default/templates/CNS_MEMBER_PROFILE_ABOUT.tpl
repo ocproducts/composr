@@ -1,9 +1,9 @@
 {$REQUIRE_JAVASCRIPT,core_cns}
 
 <div class="float-surrounder" data-tpl="cnsMemberProfileAbout">
-	<div class="cns_profile_column">
+	<div class="cns-profile-column">
 		{+START,IF_NON_EMPTY,{AVATAR_URL}}
-			<div class="cns_member_profile_avatar">
+			<div class="cns-member-profile-avatar">
 				<img src="{$ENSURE_PROTOCOL_SUITABILITY*,{AVATAR_URL}}" alt="{!AVATAR}" />
 			</div>
 		{+END}
@@ -17,7 +17,7 @@
 			{+END}
 		</ul>
 
-		<div class="cns_account_links">
+		<div class="cns-account-links">
 			{+START,IF,{VIEW_PROFILES}}
 				{+START,LOOP,CUSTOM_FIELDS}
 					{$SET,is_messenger_field,{$EQ,{NAME},{!cns_special_cpf:DEFAULT_CPF_im_skype_NAME},{!cns_special_cpf:DEFAULT_CPF_im_jabber_NAME},{!cns_special_cpf:DEFAULT_CPF_sn_twitter_NAME},{!cns_special_cpf:DEFAULT_CPF_sn_facebook_NAME},{!cns_special_cpf:DEFAULT_CPF_sn_google_NAME}}}
@@ -99,7 +99,7 @@
 		{$REVIEW_STATUS,member,{MEMBER_ID}}
 	</div>
 
-	<div class="cns_profile_main">
+	<div class="cns-profile-main">
 		{+START,IF,{$NOT,{VIEW_PROFILES}}}
 			<p class="red_alert" role="alert">
 				{!ACCESS_DENIED}
@@ -110,11 +110,11 @@
 			<h2>{!ABOUT}</h2>
 
 			<div class="wide_table_wrap">
-				<table class="map_table wide_table cns_profile_fields cns_profile_about_section responsive_blocked_table">
+				<table class="map_table wide_table cns_profile_fields cns-profile-about-section responsive_blocked_table">
 					{+START,IF,{$DESKTOP}}
 						<colgroup>
-							<col class="cns_profile_about_field_name_column" />
-							<col class="cns_profile_about_field_value_column" />
+							<col class="cns-profile-about-field-name-column" />
+							<col class="cns-profile-about-field-value-column" />
 						</colgroup>
 					{+END}
 
@@ -174,11 +174,11 @@
 					<h2>{_loop_key*}</h2>
 
 					<div class="wide_table_wrap">
-						<table class="map_table wide_table cns_profile_fields cns_profile_about_section responsive_blocked_table">
+						<table class="map_table wide_table cns_profile_fields cns-profile-about-section responsive_blocked_table">
 							{+START,IF,{$DESKTOP}}
 								<colgroup>
-									<col class="cns_profile_about_field_name_column" />
-									<col class="cns_profile_about_field_value_column" />
+									<col class="cns-profile-about-field-name-column" />
+									<col class="cns-profile-about-field-value-column" />
 								</colgroup>
 							{+END}
 
@@ -227,11 +227,11 @@
 			<meta class="fn given-name" itemprop="name" content="{$DISPLAYED_USERNAME*,{USERNAME}}" />
 
 			<div class="wide_table_wrap">
-				<table class="map_table wide_table cns_profile_details cns_profile_about_section responsive_blocked_table">
+				<table class="map_table wide_table cns_profile_details cns-profile-about-section responsive_blocked_table">
 					{+START,IF,{$DESKTOP}}
 						<colgroup>
-							<col class="cns_profile_about_field_name_column" />
-							<col class="cns_profile_about_field_value_column" />
+							<col class="cns-profile-about-field-name-column" />
+							<col class="cns-profile-about-field-value-column" />
 						</colgroup>
 					{+END}
 
@@ -308,7 +308,7 @@
 			{+START,IF_NON_EMPTY,{PHOTO_URL}}
 				<h2>{!PHOTO}</h2>
 
-				<div class="cns_member_profile_photo">
+				<div class="cns-member-profile-photo">
 					<a rel="lightbox" href="{$ENSURE_PROTOCOL_SUITABILITY*,{PHOTO_URL}}"><img src="{PHOTO_THUMB_URL*}" alt="{!PHOTO}" class="photo" itemprop="primaryImageOfPage" /></a>
 				</div>
 			{+END}
@@ -323,11 +323,11 @@
 				<h2>{!TRACKING}</h2>
 
 				<div class="wide_table_wrap">
-					<table class="map_table wide_table cns_profile_tracking cns_profile_about_section responsive_blocked_table">
+					<table class="map_table wide_table cns_profile_tracking cns-profile-about-section responsive_blocked_table">
 						{+START,IF,{$DESKTOP}}
 							<colgroup>
-								<col class="cns_profile_about_field_name_column" />
-								<col class="cns_profile_about_field_value_column" />
+								<col class="cns-profile-about-field-name-column" />
+								<col class="cns-profile-about-field-value-column" />
 							</colgroup>
 						{+END}
 

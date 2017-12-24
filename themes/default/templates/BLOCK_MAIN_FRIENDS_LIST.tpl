@@ -19,7 +19,7 @@
 		<p>{!DESCRIPTION_FRIENDS,{$USERNAME*,{MEMBER_ID},1}}</p>
 
 		{+START,IF_NON_EMPTY,{FRIENDS_FORWARD}}
-			<div class="cns_profile_friends block-main-members block-main-members--boxes raw_ajax_grow_spot">
+			<div class="cns-profile-friends block-main-members block-main-members--boxes raw_ajax_grow_spot">
 				{+START,LOOP,FRIENDS_FORWARD}
 					<div class="box"><div class="box-inner">
 						{BOX}

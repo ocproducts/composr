@@ -3,8 +3,8 @@
 		<table class="map_table wide_table cns_profile_fields">
 			{+START,IF,{$DESKTOP}}
 				<colgroup>
-					<col class="cns_profile_about_field_name_column" />
-					<col class="cns_profile_about_field_value_column" />
+					<col class="cns-profile-about-field-name-column" />
+					<col class="cns-profile-about-field-value-column" />
 				</colgroup>
 			{+END}
 

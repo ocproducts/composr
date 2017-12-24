@@ -79,10 +79,10 @@
                 }
 
                 $dom.smoothScroll(0, null, null, function () {
-                    document.getElementById('commandr_command').focus();
+                    document.getElementById('commandr-command').focus();
                 });
 
-                cmdLine = document.getElementById('command_line');
+                cmdLine = document.getElementById('command-line');
                 cmdLine.style.opacity = 0.0;
                 $dom.fadeTo(cmdLine, null, 0.9);
 
@@ -92,7 +92,7 @@
                     $dom.fadeTo(bi, null, 0.3);
                 }
 
-                document.getElementById('commandr_command').focus();
+                document.getElementById('commandr-command').focus();
             } else { // Hiding Commandr
                 if (img) {
                     img.src = $util.srl('{$IMG;,icons/24x24/tool_buttons/commandr_on}');

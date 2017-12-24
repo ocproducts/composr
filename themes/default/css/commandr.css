@@ -10,7 +10,7 @@
 {$THEMEWIZARD_COLOR,#39669f,commandr_directory_listing,100% 39669F}
 {$THEMEWIZARD_COLOR,#39ff9f,commandr_file_listing,100% 39FF9F}
 
-#command_line { /* This wraps the Commandr module/window as a whole */
+#command-line { /* This wraps the Commandr module/window as a whole */
 	/* Styled to look like generic command prompt */
 	height: 600px;
 	overflow-y: auto;
@@ -23,12 +23,12 @@
 	direction: ltr;
 }
 
-#command_prompt {
+#command-prompt {
 	width: 100%;
 }
 
-#commandr_command {
-	/* Styled to blend in with #command_line */
+#commandr-command {
+	/* Styled to blend in with #command-line */
 	padding: 2px;
 	color: {$GET,commandr_text};
 	background-color: {$GET,commandr_background};
@@ -37,30 +37,30 @@
 	font-family: monospace;
 }
 /*{+START,CSS_MODE,desktop}*/
-	#commandr_command {
+	#commandr-command {
 		width: 400px;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	#commandr_command {
+	#commandr-command {
 		width: 100%;
 	}
 /*{+END}*/
 
-.past_command {
+.past-command {
 	color: {$GET,commandr_faded_text};
 	margin-left: 10px;
 }
 
-.text_output {
+.text-output {
 	white-space: pre !important;
 	overflow-x: auto;
 }
 
-.command_output, .past_command td {
+.command-output, .past-command td {
 	color: {$GET,commandr_text};
 }
-.command_output, .past_command .results_table td {
+.command-output, .past-command .results_table td {
 	color: {$GET,slightly_seeded_text}; /* Undoes the above td rule as needed */
 	background-color: {$GET,main_background};
 }

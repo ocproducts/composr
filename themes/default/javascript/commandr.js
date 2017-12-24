@@ -9,7 +9,7 @@ window.previousCommands || (window.previousCommands = []);
     $cms.templates.commandrMain = function commandrMain(params, container) {
         $dom.on(container, 'submit', '.js-submit-commandr-form-submission', function (e, form) {
             $cms.requireJavascript('core_form_interfaces').then(function () {
-                commandrFormSubmission($dom.$('#commandr_command').value, form);
+                commandrFormSubmission($dom.$('#commandr-command').value, form);
             });
         });
 
@@ -23,7 +23,7 @@ window.previousCommands || (window.previousCommands = []);
     $cms.templates.commandrLs = function commandrLs(params, container) {
         $dom.on(container, 'click', '.js-click-set-directory-command', function (e, clicked) {
             var filename = strVal(clicked.dataset.tpFilename),
-                commandInput = $dom.$('#commandr_command');
+                commandInput = $dom.$('#commandr-command');
 
             commandInput.value = 'cd "' + filename + '"';
             $dom.trigger(commandInput.nextElementSibling, 'click');
@@ -31,7 +31,7 @@ window.previousCommands || (window.previousCommands = []);
 
         $dom.on(container, 'click', '.js-click-set-file-command', function (e, clicked) {
             var filename = strVal(clicked.dataset.tpFilename),
-                commandInput = $dom.$('#commandr_command');
+                commandInput = $dom.$('#commandr-command');
 
             if (commandInput.value !== '') {
                 commandInput.value = commandInput.value.replace(/\s*$/, '') + ' "' + filename + '"';
@@ -52,7 +52,7 @@ window.previousCommands || (window.previousCommands = []);
     };
 
     $cms.templates.commandrCommands = function commandrCommands(params, container) {
-        var commandInput = $dom.$('#commandr_command');
+        var commandInput = $dom.$('#commandr-command');
         
         $dom.on(container, 'click', '.js-click-enter-command', function (e, target) {
             var command = strVal(target.dataset.tpCommand);
@@ -111,10 +111,10 @@ window.previousCommands || (window.previousCommands = []);
     // Submit an Commandr command
     function commandrFormSubmission(command, form) {
         // Catch the data being submitted by the form, and send it through XMLHttpRequest if possible. Stop the form submission if this is achieved.
-        // var command=document.getElementById('commandr_command').value;
+        // var command=document.getElementById('commandr-command').value;
         // Send it through XMLHttpRequest, and append the results.
-        document.getElementById('commandr_command').focus();
-        document.getElementById('commandr_command').disabled = true;
+        document.getElementById('commandr-command').focus();
+        document.getElementById('commandr-command').disabled = true;
 
         var post = 'command=' + encodeURIComponent(command);
         if ($cms.form.isModSecurityWorkaroundEnabled()) {
@@ -123,8 +123,8 @@ window.previousCommands || (window.previousCommands = []);
         $cms.doAjaxRequest('{$FIND_SCRIPT;,commandr}' + $cms.keep(true, true), commandrCommandResponse, post);
 
         window.disableTimeout = setTimeout(function () {
-            document.getElementById('commandr_command').disabled = false;
-            document.getElementById('commandr_command').focus();
+            document.getElementById('commandr-command').disabled = false;
+            document.getElementById('commandr-command').focus();
             if (window.disableTimeout) {
                 clearTimeout(window.disableTimeout);
                 window.disableTimeout = null;
@@ -143,19 +143,19 @@ window.previousCommands || (window.previousCommands = []);
             window.disableTimeout = null;
         }
 
-        document.getElementById('commandr_command').disabled = false;
-        document.getElementById('commandr_command').focus();
+        document.getElementById('commandr-command').disabled = false;
+        document.getElementById('commandr-command').focus();
 
-        var command = document.getElementById('commandr_command');
-        var commandPrompt = document.getElementById('command_prompt');
+        var command = document.getElementById('commandr-command');
+        var commandPrompt = document.getElementById('command-prompt');
         var cl = document.getElementById('commands_go_here');
         var newCommand = document.createElement('div');
         var pastCommandPrompt = document.createElement('p');
         var pastCommand = document.createElement('div');
 
         newCommand.setAttribute('class', 'command float-surrounder');
-        pastCommandPrompt.setAttribute('class', 'past_command_prompt');
-        pastCommand.setAttribute('class', 'past_command');
+        pastCommandPrompt.setAttribute('class', 'past-command-prompt');
+        pastCommand.setAttribute('class', 'past-command');
 
         if (!ajaxResult) {
             var stderrText = document.createTextNode('{!commandr:ERROR_NON_TERMINAL;^}\n{!INTERNAL_ERROR;^}');
@@ -168,13 +168,13 @@ window.previousCommands || (window.previousCommands = []);
             cl.appendChild(newCommand);
 
             command.value = '';
-            var cl2 = document.getElementById('command_line');
+            var cl2 = document.getElementById('command-line');
             cl2.scrollTop = cl2.scrollHeight;
 
             return;
         }
 
-        // Deal with the response: add the result to the command_line
+        // Deal with the response: add the result to the command-line
         var method = ajaxResult.querySelector('command').textContent;
         var stdcommand = ajaxResult.querySelector('stdcommand').textContent;
         var stdhtml = ajaxResult.querySelector('stdhtml').firstElementChild;
@@ -190,7 +190,7 @@ window.previousCommands || (window.previousCommands = []);
             // Text-only. Any HTML should've been escaped server-side. Escaping it over here with the DOM getting in the way is too complex.
             var stdoutText = document.createTextNode(stdout);
             var stdoutTextP = document.createElement('p');
-            stdoutTextP.setAttribute('class', 'text_output');
+            stdoutTextP.setAttribute('class', 'text-output');
             stdoutTextP.appendChild(stdoutText);
             pastCommand.appendChild(stdoutTextP);
         }
@@ -216,7 +216,7 @@ window.previousCommands || (window.previousCommands = []);
 
             var stdcommandText = document.createTextNode('{!commandr:JAVASCRIPT_EXECUTED;^}');
             var stdcommandTextP = document.createElement('p');
-            stdcommandTextP.setAttribute('class', 'command_output');
+            stdcommandTextP.setAttribute('class', 'command-output');
             stdcommandTextP.appendChild(stdcommandText);
             pastCommand.appendChild(stdcommandTextP);
         }
@@ -247,7 +247,7 @@ window.previousCommands || (window.previousCommands = []);
         cl.appendChild(newCommand);
 
         command.value = '';
-        var cl3 = document.getElementById('command_line');
+        var cl3 = document.getElementById('command-line');
         cl3.scrollTop = cl3.scrollHeight;
 
         return true;

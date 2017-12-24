@@ -3,134 +3,134 @@
  Copyright (c) ocProducts, 2004-2017
 */
 
-.cns_profile_column {
+.cns-profile-column {
 	background-color: {$GET,area_background};
 	border: 1px solid {$GET,pale_border};
 	margin-top: 1em;
 }
 
-.cns_profile_about_field_name_column {
+.cns-profile-about-field-name-column {
 	width: 13em;
 }
-.cns_profile_about_field_value_column {
+.cns-profile-about-field-value-column {
 	width: 100%;
 }
 /*{+START,CSS_MODE,mobile}*/
-	.cns_profile_about_field_name_column, .cns_profile_about_field_value_column {
+	.cns-profile-about-field-name-column, .cns-profile-about-field-value-column {
 		width: auto;
 	}
 /*{+END}*/
 
 /*{+START,CSS_MODE,mobile}*/
-	.cns_profile_column {
+	.cns-profile-column {
 		padding: 0.5em;
 		font-size: 0.9em;
 	}
 
-	.cns_profile_main {
+	.cns-profile-main {
 		padding: 10px 0 0 0;
 		float: left;
 		width: 100%;
 	}
 
-	.cns_member_profile_avatar {
+	.cns-member-profile-avatar {
 		text-align: center;
 		margin-top: 1em;
 	}
 /*{+END}*/
 
 /*{+START,CSS_MODE,desktop}*/
-	.cns_profile_column {
+	.cns-profile-column {
 		float: right;
 		width: 14em;
 		padding: 1em;
 		font-size: 0.9em;
 	}
 
-	.cns_profile_column>h2:first-child {
+	.cns-profile-column>h2:first-child {
 		margin-top: 0;
 	}
 
-	.cns_profile_main {
+	.cns-profile-main {
 		padding: 1em 16em 0 0;
 	}
 
-	.cns_member_profile_avatar {
+	.cns-member-profile-avatar {
 		text-align: center;
 		margin-top: 1.5em;
 	}
 /*{+END}*/
 
-.cns_member_profile_avatar img {
+.cns-member-profile-avatar img {
 	border: 1px solid {$GET,standard_border};
 	max-width: 100px;
 }
 
-.cns_profile_column h2 {
+.cns-profile-column h2 {
 	font-size: 1.1em;
 }
 
-.cns_member_profile_photo {
+.cns-member-profile-photo {
 	text-align: center;
 }
 
-.cns_member_profile_photo img {
+.cns-member-profile-photo img {
 	border: 1px solid {$GET,standard_border};
 }
-.cns_member_profile_photo img:not([width]):not([height]) {
+.cns-member-profile-photo img:not([width]):not([height]) {
 	max-width: 100%;
 	height: auto;
 }
 
-table.cns_profile_about_section {
+table.cns-profile-about-section {
 	border-collapse: collapse;
 }
 
-table.cns_profile_about_section th {
+table.cns-profile-about-section th {
 	padding: 0.5em 0;
 	font-weight: bold !important;
 }
 /*{+START,CSS_MODE,desktop}*/
-	table.cns_profile_about_section th {
+	table.cns-profile-about-section th {
 		border-right: 1px solid {$GET,pale_border};
 	}
 /*{+END}*/
 
-table.cns_profile_about_section td {
+table.cns-profile-about-section td {
 	padding: 0.5em;
 	font-size: 1em;
 }
 
-table.cns_profile_about_section .associated-details {
+table.cns-profile-about-section .associated-details {
 	display: block;
 }
 
-.cns_profile_friends {
+.cns-profile-friends {
 	{$BETA_CSS_PROPERTY,display: flex;}
 	{$BETA_CSS_PROPERTY,flex-wrap: wrap;}
 	margin: -0.5em 0 0 -0.5em;
 }
 
-.cns_profile_friends>.box {
+.cns-profile-friends>.box {
 	margin: 0.5em 0 0 0.5em;
 	border: 1px solid {$GET,standard_border};
 	background: {$GET,area_background};
 }
 
-.cns_account_links ul.nl li {
+.cns-account-links ul.nl li {
 	overflow: hidden;
 	margin-bottom: 0.5em;
 	padding-top: 4px;
 }
 
-.cns_account_links .toggleable-tray-button img {
+.cns-account-links .toggleable-tray-button img {
 	width: 15px;
 }
 
-.cns_account_links .toggleable-tray img {
+.cns-account-links .toggleable-tray img {
 	float: left;
 	margin-right: 0.5em;
-	margin-top: -2px; /* Tied to "padding-top: 4px;" on ".cns_account_links ul.nl li" */
+	margin-top: -2px; /* Tied to "padding-top: 4px;" on ".cns-account-links ul.nl li" */
 	width: 20px;
 }
 
@@ -141,22 +141,22 @@ table.cns_profile_about_section .associated-details {
 */
 
 /*{+START,CSS_MODE,desktop}*/
-	.cns_sig_requirements {
+	.cns-sig-requirements {
 		width: 25em;
 		margin: 1em auto !important;
 	}
 /*{+END}*/
 
-.cns_avatar_page_old_avatar {
+.cns-avatar-page-old-avatar {
 	float: right;
 	padding: 1em 0.5em 1em 1em;
 	text-align: right;
 }
 
-.cns_current_sig_wrap {
+.cns-current-sig-wrap {
 	margin-bottom: 1.5em;
 }
 
-.decryption_overlay label {
+.decryption-overlay label {
 	font-weight: bold;
 }

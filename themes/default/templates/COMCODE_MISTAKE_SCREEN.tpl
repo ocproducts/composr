@@ -10,13 +10,13 @@
 	</p>
 
 	<div class="float-surrounder">
-		<div class="comcode_error_help_div">
+		<div class="comcode-error-help-div">
 			<h2>{!WHAT_IS_COMCODE}</h2>
 
 			{!COMCODE_ERROR_HELP_A}
 		</div>
 
-		<div class="comcode_error_details_div">
+		<div class="comcode-error-details-div">
 			{+START,IF,{EDITABLE}}
 				{FORM}
 			{+END}

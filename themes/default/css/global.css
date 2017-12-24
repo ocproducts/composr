@@ -2516,17 +2516,17 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	margin: 1em 0;
 }
 
-.results_table_sorter {
+.results-table-sorter {
 	float: left;
 	margin-right: 0.75em;
 }
 /*{+START,CSS_MODE,desktop}*/
-	.results_table_sorter {
+	.results-table-sorter {
 		max-width: 400px;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.results_table_sorter {
+	.results-table-sorter {
 		max-width: 315px;
 	}
 /*{+END}*/

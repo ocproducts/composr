@@ -132,7 +132,7 @@
 		<div class="box results_table_under"><div class="box-inner float-surrounder">
 			{+START,IF,{INCLUDE_FORM}}
 				{+START,IF_NON_EMPTY,{SORT}}
-					<div class="results_table_sorter">
+					<div class="results-table-sorter">
 						{SORT}
 					</div>
 				{+END}

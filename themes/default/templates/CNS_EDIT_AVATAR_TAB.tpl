@@ -1,5 +1,5 @@
 <div class="float-surrounder">
-	<div class="cns_avatar_page_old_avatar">
+	<div class="cns-avatar-page-old-avatar">
 		{AVATAR}
 	</div>
 	<div class="cns_avatar_page_text">

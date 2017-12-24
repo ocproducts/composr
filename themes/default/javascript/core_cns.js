@@ -331,7 +331,7 @@
         }
 
         var container = document.createElement('div');
-        container.className = 'decryption_overlay box';
+        container.className = 'decryption-overlay box';
         container.id = 'decryption_overlay';
         container.style.position = 'absolute';
         container.style.width = '26em';
