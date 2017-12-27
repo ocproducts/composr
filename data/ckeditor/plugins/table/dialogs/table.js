@@ -8,22 +8,22 @@
 c);if(b.info){b=b.info;if(!this._.selectedElement)for(var h=c.append(n("tbody")),f=parseInt(b.txtRows,10)||0,g=parseInt(b.txtCols,10)||0,k=0;k<f;k++)for(var l=h.append(n("tr")),m=0;m<g;m++)l.append(n("td")).appendBogus();f=b.selHeaders;if(!c.$.tHead&&("row"==f||"both"==f)){l=new CKEDITOR.dom.element(c.$.createTHead());h=c.getElementsByTag("tbody").getItem(0);h=h.getElementsByTag("tr").getItem(0);for(k=0;k<h.getChildCount();k++)g=h.getChild(k),g.type!=CKEDITOR.NODE_ELEMENT||g.data("cke-bookmark")||
 (g.renameNode("th"),g.setAttribute("scope","col"));l.append(h.remove())}if(null!==c.$.tHead&&"row"!=f&&"both"!=f){l=new CKEDITOR.dom.element(c.$.tHead);h=c.getElementsByTag("tbody").getItem(0);for(m=h.getFirst();0<l.getChildCount();){h=l.getFirst();for(k=0;k<h.getChildCount();k++)g=h.getChild(k),g.type==CKEDITOR.NODE_ELEMENT&&(g.renameNode("td"),g.removeAttribute("scope"));h.insertBefore(m)}l.remove()}if(!this.hasColumnHeaders&&("col"==f||"both"==f))for(l=0;l<c.$.rows.length;l++)g=new CKEDITOR.dom.element(c.$.rows[l].cells[0]),
 	g.renameNode("th"),g.setAttribute("scope","row");if(this.hasColumnHeaders&&"col"!=f&&"both"!=f)for(k=0;k<c.$.rows.length;k++)l=new CKEDITOR.dom.element(c.$.rows[k]),"tbody"==l.getParent().getName()&&(g=new CKEDITOR.dom.element(l.$.cells[0]),g.renameNode("td"),g.removeAttribute("scope"));b.txtHeight?c.setStyle("height",b.txtHeight):c.removeStyle("height");b.txtWidth?c.setStyle("width",b.txtWidth):c.removeStyle("width");c.getAttribute("style")||c.removeAttribute("style");
-	if (c.$.className.match(/^(|results_table columned_table|results_table)$/)) {
+	if (c.$.className.match(/^(|results-table columned_table|results-table)$/)) {
 		switch (f) {
 			case "":
 				c.$.className = "";
 				break;
 
 			case "row":
-				c.$.className = "results_table columned_table";
+				c.$.className = "results-table columned_table";
 				break;
 
 			case "col":
-				c.$.className = "results_table";
+				c.$.className = "results-table";
 				break;
 
 			case "both":
-				c.$.className = "results_table columned_table";
+				c.$.className = "results-table columned_table";
 				break;
 		}
 	}

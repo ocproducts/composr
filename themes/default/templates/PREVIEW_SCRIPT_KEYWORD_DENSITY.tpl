@@ -1,6 +1,6 @@
 <h2>{FIELD*}</h2>
 
-<table class="columned_table autosized_table results_table spaced_table">
+<table class="columned_table autosized_table results-table spaced_table">
 	<thead>
 		<tr>
 			<th>{!KEYWORD}</th>

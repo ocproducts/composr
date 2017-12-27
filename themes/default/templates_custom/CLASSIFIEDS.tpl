@@ -2,7 +2,7 @@
 	{!CLASSIFIEDS_PRICING}
 </p>
 
-<div class="wide_table_wrap"><table class="columned_table wide_table results_table autosized_table spaced_table">
+<div class="wide-table-wrap"><table class="columned_table wide-table results-table autosized_table spaced_table">
 	<thead>
 		<tr>
 			<th>

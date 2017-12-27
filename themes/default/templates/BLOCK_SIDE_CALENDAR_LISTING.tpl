@@ -8,8 +8,8 @@
 		{+START,LOOP,DAYS}
 			<h4 class="event-listing-day">{TIME*}</h4>
 
-			<div class="wide_table_wrap">
-				<table class="map_table results_table wide_table events-listing-table autosized_table">
+			<div class="wide-table-wrap">
+				<table class="map_table results-table wide-table events-listing-table autosized_table">
 					<colgroup>
 						<col class="event-listing-col-1" />
 						<col class="event-listing-col-2" />

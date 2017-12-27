@@ -1,7 +1,7 @@
 <section class="box box---block-main-bottom-bar pale_box"><div class="box-inner">
 	<h2>{!_STATISTICS}</h2>
 
-	<div class="wide_table_wrap"><table class="map_table cns-stats-table wide_table">
+	<div class="wide-table-wrap"><table class="map_table cns-stats-table wide-table">
 		{+START,IF,{$DESKTOP}}
 			<colgroup>
 				<col class="cns-bottom-bar-left-column" />

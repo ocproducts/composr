@@ -1,5 +1,5 @@
 {+START,IF_NON_EMPTY,{TAGS}}
-	<div class="wide_table_wrap"><table class="columned_table autosized_table results_table wide_table">
+	<div class="wide-table-wrap"><table class="columned_table autosized_table results-table wide-table">
 		<thead>
 			<tr>
 				<th>{!TITLE}</th>

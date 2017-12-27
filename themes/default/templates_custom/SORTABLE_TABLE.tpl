@@ -1,7 +1,7 @@
 {$REQUIRE_JAVASCRIPT,sortable_tables}
 
-<div data-require-javascript="sortable_tables" data-tpl="sortableTable" class="wide_table_wrap">
-	<table id="sortable_table_{ID*}" class="results_table wide_table columned_table autosized_table sortable_table table-autosort:{DEFAULT_SORT_COLUMN*} table-autofilter table-autopage:{MAX*}">
+<div data-require-javascript="sortable_tables" data-tpl="sortableTable" class="wide-table-wrap">
+	<table id="sortable_table_{ID*}" class="results-table wide-table columned_table autosized_table sortable_table table-autosort:{DEFAULT_SORT_COLUMN*} table-autofilter table-autopage:{MAX*}">
 		<thead>
 			<tr>
 				{+START,LOOP,HEADERS}

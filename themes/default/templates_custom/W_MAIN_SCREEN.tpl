@@ -11,7 +11,7 @@
 				{!W_MOVEMENT_TABLE}
 			</p>
 
-			<table class="results_table columned_table">
+			<table class="results-table columned_table">
 				<thead>
 					<tr>
 						<th colspan="3" style="text-align: center">
@@ -127,7 +127,7 @@
 		<h3>{!W_ROOM_INFORMATION}</h3>
 
 		<div class="float-surrounder">
-			<div class="buildr_room_chat results_table">
+			<div class="buildr_room_chat results-table">
 				<h4 class="buildr_posttop">{!MESSAGES}</h4>
 				<div>
 					<iframe {$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} title="{!MESSAGES}" src="{$FIND_SCRIPT*,wmessages}{$KEEP*,1}">{!MESSAGES}</iframe> {EMOTICON_CHOOSER}
@@ -146,8 +146,8 @@
 			<div class="buildr_in_room">
 				<h4>{!W_MEMBERS_IN_ROOM}</h4>
 
-				<div class="wide_table_wrap">
-					<table class="columned_table wide_table results_table autosized_table responsive-table">
+				<div class="wide-table-wrap">
+					<table class="columned_table wide-table results-table autosized_table responsive-table">
 						<thead>
 							<tr>
 								<th>
@@ -172,7 +172,7 @@
 				{+START,IF_NON_EMPTY,{ITEMS}}
 					<h4>{!W_ITEMS_IN_ROOM}</h4>
 
-					<table class="columned_table buildr_centered_contents wide_table results_table responsive-table">
+					<table class="columned_table buildr_centered_contents wide-table results-table responsive-table">
 						<thead>
 							<tr>
 								<th>
@@ -190,7 +190,7 @@
 				{+START,IF_NON_EMPTY,{ITEMS_SALE}}
 					<br />
 
-					<table class="columned_table buildr_centered_contents wide_table results_table responsive-table">
+					<table class="columned_table buildr_centered_contents wide-table results-table responsive-table">
 						<thead>
 							<tr>
 								<th colspan="3" class="buildr_posttop">
@@ -255,7 +255,7 @@
 				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<table class="columned_table results_table wide_table autosized_table">
+					<table class="columned_table results-table wide-table autosized_table">
 						<colgroup>
 							<col style="width: 20%" />
 							<col style="width: 20%" />

@@ -68,7 +68,7 @@ class Hook_commandr_command_db_search
                 foreach ($ofs as $of) {
                     $out .= '<h2>' . escape_html($field['m_table']) . '</h2>';
 
-                    $out .= '<table class="results_table">';
+                    $out .= '<table class="results-table">';
                     $val = mixed();
                     foreach ($of as $key => $val) {
                         if (!is_string($val)) {

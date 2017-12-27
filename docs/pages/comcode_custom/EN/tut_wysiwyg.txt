@@ -82,7 +82,7 @@ You can set the border when you add the table in CKEditor, or when you edit the 
 
 If you set a border of "1" then Composr makes sure that borders between cells become visible again, rather than it only being a border around the whole table. This is done via a special rule within our default CSS file.
 
-Another technique you can use is to edit the HTML source within the editor. You can removing the default border/spacing/padding/width/style that CKEditor added, and use [tt]class="results_table"[/tt] instead. This will activate some of Composr's default styling for visually attractive tables.
+Another technique you can use is to edit the HTML source within the editor. You can removing the default border/spacing/padding/width/style that CKEditor added, and use [tt]class="results-table"[/tt] instead. This will activate some of Composr's default styling for visually attractive tables.
 
 [title="2"]Embedding files[/title]
 

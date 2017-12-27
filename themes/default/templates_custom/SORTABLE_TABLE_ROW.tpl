@@ -1,6 +1,6 @@
 {+START,SET,tooltip}
 	{+START,IF_NON_EMPTY,{TOOLTIP_VALUES}}
-		<div class="wide_table_wrap"><table class="results_table wide_table map_table">
+		<div class="wide-table-wrap"><table class="results-table wide-table map_table">
 			<tbody>
 				{+START,LOOP,TOOLTIP_VALUES}
 					<tr>

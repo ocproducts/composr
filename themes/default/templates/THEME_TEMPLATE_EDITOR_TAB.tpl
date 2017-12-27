@@ -22,7 +22,7 @@
 						<a class="toggleable-tray-button js-tray-onclick-toggle-accordion" href="#!">Background Properties</a>
 					</h4>
 					<div class="toggleable-tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
-						<table class="columned_table results_table" cellspacing="0" cellpadding="0" border="1" width="100%">
+						<table class="columned_table results-table" cellspacing="0" cellpadding="0" border="1" width="100%">
 							<tbody><tr>
 								<th width="28%" align="left">Property</th>
 								<th width="67%" align="left">Description</th>
@@ -63,7 +63,7 @@
 						<a class="toggleable-tray-button js-tray-onclick-toggle-accordion" href="#!">Border Properties</a>
 					</h4>
 					<div class="toggleable-tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
-						<table class="columned_table results_table" cellspacing="0" cellpadding="0" border="1" width="100%">
+						<table class="columned_table results-table" cellspacing="0" cellpadding="0" border="1" width="100%">
 							<tbody><tr>
 								<th width="28%" align="left">Property</th>
 								<th width="67%" align="left">Description</th>
@@ -119,7 +119,7 @@
 						<a class="toggleable-tray-button js-tray-onclick-toggle-accordion" href="#!">Dimension Properties</a>
 					</h4>
 					<div class="toggleable-tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
-						<table class="columned_table results_table" cellspacing="0" cellpadding="0" border="1" width="100%">
+						<table class="columned_table results-table" cellspacing="0" cellpadding="0" border="1" width="100%">
 							<tbody><tr>
 								<th width="28%" align="left">Property</th>
 								<th width="67%" align="left">Description</th>
@@ -165,7 +165,7 @@
 						<a class="toggleable-tray-button js-tray-onclick-toggle-accordion" href="#!">List Properties</a>
 					</h4>
 					<div class="toggleable-tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
-						<table class="columned_table results_table" cellspacing="0" cellpadding="0" border="1" width="100%">
+						<table class="columned_table results-table" cellspacing="0" cellpadding="0" border="1" width="100%">
 							<tbody><tr>
 								<th width="28%" align="left">Property</th>
 								<th width="67%" align="left">Description</th>
@@ -191,7 +191,7 @@
 						<a class="toggleable-tray-button js-tray-onclick-toggle-accordion">Margin/Padding Properties</a>
 					</h4>
 					<div class="toggleable-tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
-						<table class="columned_table results_table" cellspacing="0" cellpadding="0" border="1" width="100%">
+						<table class="columned_table results-table" cellspacing="0" cellpadding="0" border="1" width="100%">
 							<tbody><tr>
 								<th width="28%" align="left">Property</th>
 								<th width="67%" align="left">Description</th>
@@ -257,7 +257,7 @@
 						<a class="toggleable-tray-button js-tray-onclick-toggle-accordion" href="#!">Positioning Properties</a>
 					</h4>
 					<div class="toggleable-tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
-						<table class="columned_table results_table" cellspacing="0" cellpadding="0" border="1" width="100%">
+						<table class="columned_table results-table" cellspacing="0" cellpadding="0" border="1" width="100%">
 							<tbody><tr>
 								<th width="28%" align="left">Property</th>
 								<th width="67%" align="left">Description</th>
@@ -328,7 +328,7 @@
 						<a class="toggleable-tray-button js-tray-onclick-toggle-accordion" href="#!">Text/Font Properties</a>
 					</h4>
 					<div class="toggleable-tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
-						<table class="columned_table results_table" cellspacing="0" cellpadding="0" border="1" width="100%">
+						<table class="columned_table results-table" cellspacing="0" cellpadding="0" border="1" width="100%">
 							<tbody><tr>
 								<th width="28%" align="left">Property</th>
 								<th width="67%" align="left">Description</th>
@@ -497,7 +497,7 @@
 			<a class="non_link js-tray-onclick-toggle-tray" href="#!">{!TEMPLATE_GUIDS}</a>
 		</h3>
 		<div class="toggleable-tray js-tray-content" style="display: none" aria-expanded="false">
-			<div class="wide_table_wrap"><table class="columned_table autosized_table revision_box results_table wide_table">
+			<div class="wide-table-wrap"><table class="columned_table autosized_table revision_box results-table wide-table">
 				<thead>
 					<tr>
 						<th>{!FILENAME}</th>

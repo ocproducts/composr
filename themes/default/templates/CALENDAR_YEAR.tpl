@@ -1,4 +1,4 @@
-<div class="wide_table_wrap"><table class="grid_table wide_table autosized_table calendar-year-wrap">
+<div class="wide-table-wrap"><table class="grid_table wide-table autosized_table calendar-year-wrap">
 	<tbody>
 		{MONTH_ROWS}
 	</tbody>

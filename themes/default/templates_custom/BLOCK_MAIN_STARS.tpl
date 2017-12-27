@@ -1,4 +1,4 @@
-<div class="wide_table_wrap"><table class="wide_table results_table spaced_table autosized_table columned_table responsive-table">
+<div class="wide-table-wrap"><table class="wide-table results-table spaced_table autosized_table columned_table responsive-table">
 	<thead>
 		<tr>
 			<th>{!AVATAR}</th>

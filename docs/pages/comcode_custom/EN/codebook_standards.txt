@@ -1870,7 +1870,7 @@ Guidance for tables...
 | If you are showing tabular data -- e.g. a map table or a columned table, it's always correct to use a table -- if it can have sensible [tt]th[/tt] tags, it's a proper table.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
-[color="red"]Use the [tt]results_table[/tt] CSS class on most tables[/color]
+[color="red"]Use the [tt]results-table[/tt] CSS class on most tables[/color]
 | Consistent UI
 | Composr development +
 | Manually

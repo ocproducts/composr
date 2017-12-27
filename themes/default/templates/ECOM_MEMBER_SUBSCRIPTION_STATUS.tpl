@@ -5,7 +5,7 @@
 	</h2>
 
 	<div class="toggleable-tray js-tray-content" style="display: block" aria-expanded="true">
-		<div class="wide_table_wrap"><table class="columned_table wide_table results_table autosized_table responsive-table" itemprop="significantLinks">
+		<div class="wide-table-wrap"><table class="columned_table wide-table results-table autosized_table responsive-table" itemprop="significantLinks">
 			<thead>
 				<tr>
 					<th>

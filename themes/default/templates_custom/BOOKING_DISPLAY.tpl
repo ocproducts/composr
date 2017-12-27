@@ -3,7 +3,7 @@
 {+START,LOOP,DETAILS}
 	<h3>{BOOKABLE_TITLE*}</h3>
 
-	<div class="wide_table_wrap"><table class="wide_table results_table"><tbody>
+	<div class="wide-table-wrap"><table class="wide-table results-table"><tbody>
 		<tr>
 			<th>{!QUANTITY}</th>
 			<td>{QUANTITY*}</td>
@@ -39,7 +39,7 @@
 
 <h2>{!DETAILS}</h2>
 
-<div class="wide_table_wrap"><table class="wide_table results_table"><tbody>
+<div class="wide-table-wrap"><table class="wide-table results-table"><tbody>
 	<tr>
 		<th>{!_TOTAL_PRICE}</th>
 		<td>{PRICE*}</td>

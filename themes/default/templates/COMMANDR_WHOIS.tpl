@@ -1,4 +1,4 @@
-<div class="wide_table_wrap"><table class="map_table autosized_table wide_table results_table">
+<div class="wide-table-wrap"><table class="map_table autosized_table wide-table results-table">
 	<tbody>
 		<tr>
 			<th>{!USERNAME}</th>
@@ -16,7 +16,7 @@
 				{+END}
 				{+START,IF_NON_EMPTY,{IP}{IP_LIST}}
 					<ul>
-						<li class="whois_ip">{IP*}</li>
+						<li class="whois-ip">{IP*}</li>
 						{IP_LIST}
 					</ul>
 				{+END}

@@ -2,7 +2,7 @@
 {+START,LOOP,{NUM_COLUMNS}\,{$GET,num_mobile_columns}}
 	{$SET,num_columns,{_loop_var}}
 	<div class="{$?,{$EQ,{$GET,num_columns},{$GET,num_mobile_columns}},block_mobile,block_desktop}">
-		<div class="wide_table_wrap"><table class="columned_table autosized_table results_table wide_table">
+		<div class="wide-table-wrap"><table class="columned_table autosized_table results-table wide-table">
 			<thead>
 				{$SET,i,0}
 				<tr>

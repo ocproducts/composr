@@ -3,7 +3,7 @@
 <div data-tpl="ecomAdminOrdersScreen">
 	{TITLE}
 
-	<div class="wide_table_wrap">
+	<div class="wide-table-wrap">
 		{RESULTS_TABLE}
 
 		{+START,IF_NON_EMPTY,{PAGINATION}}

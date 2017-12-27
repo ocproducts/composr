@@ -60,25 +60,25 @@
 .command-output, .past-command td {
 	color: {$GET,commandr_text};
 }
-.command-output, .past-command .results_table td {
+.command-output, .past-command .results-table td {
 	color: {$GET,slightly_seeded_text}; /* Undoes the above td rule as needed */
 	background-color: {$GET,main_background};
 }
 
-.commandr_dir {
+.commandr-dir {
 	color: {$GET,commandr_directory_listing};
 	font-weight: bold;
 }
 
-.commandr_file {
+.commandr-file {
 	color: {$GET,commandr_file_listing};
 }
 
-.commandr_ls_associated_details {
+.commandr-ls-associated-details {
 	float: right;
 	margin-left: 2em;
 }
 
-.whois_ip {
+.whois-ip {
 	font-weight: bolder;
 }

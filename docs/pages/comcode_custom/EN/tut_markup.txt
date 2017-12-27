@@ -9,7 +9,7 @@ This tutorial is an introduction to the main standard web technologies that Comp
 Composr is built on top of standard web/Internet protocols, languages and [abbr="Application Programming Interfaces"]APIs[/abbr]. The main ones are as follows...
 
 [semihtml]
-<table class="columned_table results_table autosized_table">
+<table class="columned_table results-table autosized_table">
 	<thead>
 		<tr>
 			<th>Protocol</th>
@@ -231,7 +231,7 @@ Composr is built on top of standard web/Internet protocols, languages and [abbr=
 Composr itself provides the following protocols and languages...
 
 [semihtml]
-<table class="columned_table results_table autosized_table">
+<table class="columned_table results-table autosized_table">
 	<thead>
 		<tr>
 			<th>Protocol</th>
@@ -372,7 +372,7 @@ Up until now, we've only been working with theoretical and fictional XHTML tags 
 Now, some HTML elements...
 
 [html]
-<table class="columned_table results_table wide_table autosized_table">
+<table class="columned_table results-table wide-table autosized_table">
 	<thead>
 		<tr>
 			<th>
@@ -699,7 +699,7 @@ Now, some HTML elements...
 Although the above table doesn't list all of the XHTML elements (it lists approximately half of them), the others are used so rarely it's easier to look them up when required, than learn them first. This table also does not list all the attributes of all the elements. However, it lists the important ones, and the following table lists all the attributes that can be used with any XHTML element; the standard attributes.
 
 [html]
-	<table class="columned_table results_table wide_table">
+	<table class="columned_table results-table wide-table">
 		<thead>
 			<tr>
 				<th>
@@ -903,7 +903,7 @@ Now that the basic selectors have been covered, we move on to properties and pro
 Some commonly used properties are listed below...
 
 [html]
-<table class="columned_table results_table wide_table autosized_table">
+<table class="columned_table results-table wide-table autosized_table">
 	<thead>
 		<tr>
 			<th>
@@ -1135,7 +1135,7 @@ JavaScript is most powerful when applied to the DOM -- the Document Object Model
 Another feature of JavaScript is its event model. You can specify JavaScript functions or code to be called when, for example, a link is clicked. You do this either via the event attributes in an XHTML document, or through event listening functions in JavaScript.
 
 [html]
-<table class="columned_table results_table wide_table autosized_table">
+<table class="columned_table results-table wide-table autosized_table">
 	<thead>
 		<tr>
 			<th>

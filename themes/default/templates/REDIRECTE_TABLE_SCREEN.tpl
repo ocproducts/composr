@@ -14,7 +14,7 @@
 
 	<h2>{!EXISTING_REDIRECTS}</h2>
 
-	<div class="wide_table_wrap"><table class="columned_table wide_table redirect_table results_table responsive-table">
+	<div class="wide-table-wrap"><table class="columned_table wide-table redirect_table results-table responsive-table">
 		<colgroup>
 			<col class="redirect_table_input_column" />
 			<col class="redirect_table_input_column" />
@@ -52,7 +52,7 @@
 
 	<h2>{!NEW_REDIRECT}</h2>
 
-	<div class="wide_table_wrap"><table class="columned_table wide_table redirect_table results_table responsive-table">
+	<div class="wide-table-wrap"><table class="columned_table wide-table redirect_table results-table responsive-table">
 		<colgroup>
 			<col class="redirect_table_input_column" />
 			<col class="redirect_table_input_column" />

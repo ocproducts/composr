@@ -16,7 +16,7 @@
 				<form action="{DELETE_URL*}" method="post" title="{!QUIZ}: {!DELETE}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 				{+END}
-				<div class="wide_table_wrap"><table class="columned_table wide_table results_table autosized_table responsive-table">
+				<div class="wide-table-wrap"><table class="columned_table wide-table results-table autosized_table responsive-table">
 					<thead>
 						<tr>
 							<th>

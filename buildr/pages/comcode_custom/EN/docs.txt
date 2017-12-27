@@ -85,7 +85,7 @@ this is a room locked on all sides [b]and[/b] the surrounding rooms locked on th
 If you click on the 'realms' link, you will be brought to a page that displays the following information for all of the current realms.
 
 [html]
-<table class="columned_table results_table wide_table autosized_table">
+<table class="columned_table results-table wide-table autosized_table">
 	<thead>
 		<tr>
 			<th>Object</th>
@@ -163,7 +163,7 @@ When/if this happens, [b]it is important[/b] that you send a reply [b]to him and
 It is possible to format your message or room or realm text using Comcode. To make it easier, we'll show you some examples as well as explaining how to use it. Remember to always close your format code with a / . Of course, you can combine multiple commands... just remember that any command you open, you need to close.
 
 [html]
-<table class="map_table results_table wide_table autosized_table"><tbody>
+<table class="map_table results-table wide-table autosized_table"><tbody>
 	<tr>
 		<th>BOLD:</th>
 		<td>[b]your text[/b]</td>
@@ -185,7 +185,7 @@ It is possible to format your message or room or realm text using Comcode. To ma
 [title="4"]Font sizes and colours[/title]
 
 [html]
-<table class="map_table results_table wide_table autosized_table"><tbody>
+<table class="map_table results-table wide-table autosized_table"><tbody>
 	<tr>
 		<th>COLOR:</th>
 		<td>[font color="color"]your text[/font] will have the text appear as the colour provided.</td>

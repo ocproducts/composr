@@ -241,7 +241,7 @@ function do_access($given_password)
     global $SITE_INFO;
 
     echo '
-        <table class="results_table">
+        <table class="results-table">
     ';
 
     // Display UI to set all settings

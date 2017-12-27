@@ -272,7 +272,7 @@ function placeholder_form_with_field($field_name)
  */
 function placeholder_table()
 {
-    $text = '<table class="results_table" width="100%"><tbody><tr><th>(Cell 1)</th><td>(Cell 2)</td></tr><tr><td>(Cell 3)</td><td>(Cell 4)</td></tr></tbody></table>';
+    $text = '<table class="results-table" width="100%"><tbody><tr><th>(Cell 1)</th><td>(Cell 2)</td></tr><tr><td>(Cell 3)</td><td>(Cell 4)</td></tr></tbody></table>';
     if (function_exists('ocp_mark_as_escaped')) {
         ocp_mark_as_escaped($text);
     }

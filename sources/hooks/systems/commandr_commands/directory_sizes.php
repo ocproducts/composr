@@ -47,7 +47,7 @@ class Hook_commandr_command_directory_sizes
             require_code('files');
 
             $out = '';
-            $out .= '<table class="results_table"><thead><tr><th>' . do_lang('NAME') . '</th><th>' . do_lang('SIZE') . '</th></tr></thead>';
+            $out .= '<table class="results-table"><thead><tr><th>' . do_lang('NAME') . '</th><th>' . do_lang('SIZE') . '</th></tr></thead>';
             foreach ($sizes as $key => $val) {
                 $out .= '<tr><td>' . escape_html(preg_replace('#^' . preg_quote(get_table_prefix(), '#') . '#', '', $key)) . '</td><td>' . escape_html(clean_file_size($val)) . '</td></tr>';
             }

@@ -1,7 +1,7 @@
 {TITLE}
 
 {+START,IF_NON_EMPTY,{SERVICES}}
-	<div class="wide_table_wrap"><table class="columned_table wide_table results_table autosized_table zebra">
+	<div class="wide-table-wrap"><table class="columned_table wide-table results-table autosized_table zebra">
 		<thead>
 			<tr>
 				<th>

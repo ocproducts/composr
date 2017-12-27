@@ -530,7 +530,7 @@ function ecv($lang, $escaped, $type, $name, $param)
                                     return $matches[0];
                                 }
 
-                                if ((preg_match('#\s+border=["\']?[1-9]#i', $attributes) != 0) || (preg_match('#\s+style="[^"]*border:\s*[1-9]#i', $attributes) != 0) || (strpos($attributes, 'results_table') !== false)) {
+                                if ((preg_match('#\s+border=["\']?[1-9]#i', $attributes) != 0) || (preg_match('#\s+style="[^"]*border:\s*[1-9]#i', $attributes) != 0) || (strpos($attributes, 'results-table') !== false)) {
                                     $is_in_remaining_table = true;
                                     if (preg_match('#\s+class=["\']#i', $attributes) == 0) {
                                         $attributes .= ' class="responsive-table"';

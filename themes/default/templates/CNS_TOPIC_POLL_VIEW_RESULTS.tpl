@@ -3,8 +3,8 @@
 <div class="cns-topic-poll-form">
 	<h3>{+START,FRACTIONAL_EDITABLE,{QUESTION},question,_SEARCH:topics:_edit_poll:{ID}}{QUESTION*}{+END}</h3>
 
-	<div class="wide_table_wrap">
-		<table class="spread_table autosized_table cns-topic-poll wide_table">
+	<div class="wide-table-wrap">
+		<table class="spread_table autosized_table cns-topic-poll wide-table">
 			<tbody>
 				{ANSWERS}
 			</tbody>

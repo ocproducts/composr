@@ -69,7 +69,7 @@ class Hook_commandr_command_db_table_sizes
             }
 
             asort($sizes);
-            $out .= '<table class="results_table"><thead><tr><th>' . do_lang('NAME') . '</th><th>' . do_lang('SIZE') . '</th></tr></thead>';
+            $out .= '<table class="results-table"><thead><tr><th>' . do_lang('NAME') . '</th><th>' . do_lang('SIZE') . '</th></tr></thead>';
             $out .= '<tbody>';
             foreach ($sizes as $key => $val) {
                 $out .= '<tr><td>' . escape_html(preg_replace('#^' . preg_quote(get_table_prefix(), '#') . '#', '', $key)) . '</td><td>' . escape_html(clean_file_size($val)) . '</td></tr>';
@@ -87,7 +87,7 @@ class Hook_commandr_command_db_table_sizes
                         $num_rows = $db->query_select_value($p, 'COUNT(*)');
                         if ($num_rows > 0) {
                             $row = $db->query_select($p, array('*'), array(), '', 1, mt_rand(0, $num_rows - 1));
-                            $out .= '<table class="results_table"><tbody>';
+                            $out .= '<table class="results-table"><tbody>';
                             $val = mixed();
                             foreach ($row[0] as $key => $val) {
                                 if (!is_string($val)) {

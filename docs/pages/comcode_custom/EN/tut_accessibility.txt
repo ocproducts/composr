@@ -47,7 +47,7 @@ This section will detail Composr compliance with the guidelines, with any releva
 [title="3"]Priority 1 checkpoints[/title]
 
 [html]
-<table class="columned_table results_table wide_table autosized_table">
+<table class="columned_table results-table wide-table autosized_table">
 	<thead>
 		<tr>
 			<th colspan="2">
@@ -314,7 +314,7 @@ This section will detail Composr compliance with the guidelines, with any releva
 [title="3"]Priority 2 checkpoints[/title]
 
 [html]
-<table class="columned_table results_table wide_table autosized_table">
+<table class="columned_table results-table wide-table autosized_table">
 	<thead>
 		<tr>
 			<th colspan="2">
@@ -720,7 +720,7 @@ This section will detail Composr compliance with the guidelines, with any releva
 [title="3"]Priority 3 checkpoints[/title]
 
 [html]
-<table class="columned_table results_table wide_table autosized_table">
+<table class="columned_table results-table wide-table autosized_table">
 	<thead>
 		<tr>
 			<th colspan="2">
@@ -1070,7 +1070,7 @@ For example:
 
 This is an example of a table that has not been marked up in an accessible fashion:
 [code="HTML"]
-<table class="results_table">
+<table class="results-table">
    <tr>
       <td>Name</td>
       <td>Ronald</td>
@@ -1091,7 +1091,7 @@ If properly marked-up, the user would get an understand with greater ease. While
 
 A properly marked-up version, using Composr conventions, would look as follows:
 [code="HTML"]
-<table class="map_table results_table">
+<table class="map_table results-table">
     <tr>
         <th>Name</th>
         <td>Ronald</td>

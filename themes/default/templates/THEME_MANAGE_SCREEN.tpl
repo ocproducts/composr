@@ -12,8 +12,8 @@
 
 	<h2>{!EXISTING_THEMES}</h2>
 
-	<div class="autosized_table theme_manage_table wide_table_wrap">
-		<table class="columned_table wide_table">
+	<div class="autosized_table theme_manage_table wide-table-wrap">
+		<table class="columned_table wide-table">
 			<thead>
 				<tr>
 					<th>{!THEME}</th>

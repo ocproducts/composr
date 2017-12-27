@@ -49,7 +49,7 @@
 		{+END}
 		{+START,IF,{$NOT,{THREADED}}}
 			{+START,IF_NON_EMPTY,{POSTS}}
-				<div class="wide_table_wrap"><div class="wide_table cns-topic autosized_table">
+				<div class="wide-table-wrap"><div class="wide-table cns-topic autosized_table">
 					{POSTS}
 				</div></div>
 			{+END}

@@ -9,7 +9,7 @@
 
 	<div>
 		{+START,IF_NON_EMPTY,{$TRIM,{TREE}}}
-			<div class="wide_table"><table class="columned_table wide_table results_table notifications_form">
+			<div class="wide-table"><table class="columned_table wide-table results-table notifications_form">
 				<colgroup>
 					<col class="notifications_field_name_column" />
 					{+START,LOOP,NOTIFICATION_TYPES_TITLES}

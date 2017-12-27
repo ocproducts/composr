@@ -63,8 +63,8 @@
 			{+START,LOOP,CATEGORIES}
 				<h2>{CATEGORY_TITLE*}</h2>
 
-				<div class="wide_table_wrap">
-					<table class="wide_table results_table columned_table spaced_table responsive-table">
+				<div class="wide-table-wrap">
+					<table class="wide-table results-table columned_table spaced_table responsive-table">
 						<thead>
 							<tr>
 								<th>{!ITEM}</th>

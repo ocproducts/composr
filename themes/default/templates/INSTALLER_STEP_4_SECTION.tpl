@@ -13,7 +13,7 @@
 				</p>
 			{+END}
 
-			<div class="wide_table_wrap"><table class="map_table form_table wide_table">
+			<div class="wide-table-wrap"><table class="map_table form_table wide-table">
 				<colgroup>
 					<col class="installer_left_column" />
 					<col class="installer_right_column" />

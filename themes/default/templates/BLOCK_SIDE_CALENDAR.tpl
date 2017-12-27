@@ -1,5 +1,5 @@
 <div class="side-calendar-wrap">
-	<div class="wide_table_wrap_internal_borders"><table class="spread_table autosized_table wide_table side-calendar calendar-year-month-table">
+	<div class="wide-table-wrap-internal-borders"><table class="spread_table autosized_table wide-table side-calendar calendar-year-month-table">
 		<colgroup>
 			<col class="calendar-weekly-column" />
 			<col class="calendar-weekly-column" />

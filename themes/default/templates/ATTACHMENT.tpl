@@ -1,6 +1,6 @@
 {+START,IF,{$NAND,{TRUE_ATTACHMENT_UI},{$BROWSER_MATCHES,simplified_attachments_ui}}}
-	<div class="wide_table_wrap" data-view="Attachment" data-view-params="{+START,PARAMS_JSON,I,POSTING_FIELD_NAME,FILTER,SYNDICATION_JSON,NO_QUOTA}{_*}{+END}">
-		<table class="map_table form_table wide_table">
+	<div class="wide-table-wrap" data-view="Attachment" data-view-params="{+START,PARAMS_JSON,I,POSTING_FIELD_NAME,FILTER,SYNDICATION_JSON,NO_QUOTA}{_*}{+END}">
+		<table class="map_table form_table wide-table">
 			{+START,IF,{$DESKTOP}}
 				<colgroup>
 					<col class="attachments_field_name_column column_desktop" />

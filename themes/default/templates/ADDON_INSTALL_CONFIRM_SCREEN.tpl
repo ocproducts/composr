@@ -24,7 +24,7 @@
 
 	<h2>{!DETAILS}</h2>
 
-	<div class="wide_table_wrap"><table class="map_table results_table wide_table autosized_table responsive-table">
+	<div class="wide-table-wrap"><table class="map_table results-table wide-table autosized_table responsive-table">
 		<tbody>
 			<tr>
 				<th>{!NAME}</th>

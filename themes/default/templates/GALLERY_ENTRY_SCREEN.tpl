@@ -11,7 +11,7 @@
 
 	{+START,SET,boxes}
 		<div class="gallery_entry_details right">
-			<table class="columned_table map_table results_table" role="note">
+			<table class="columned_table map_table results-table" role="note">
 				{+START,IF,{$DESKTOP}}
 					<colgroup>
 						<col class="gallery_entry_field_name_column" />

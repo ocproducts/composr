@@ -1,6 +1,6 @@
 {+START,IF_NON_EMPTY,{$USER_FB_CONNECT,{MEMBER_ID}}}
-	<div class="wide_table_wrap">
-		<table class="map_table wide_table cns_profile_fields">
+	<div class="wide-table-wrap">
+		<table class="map_table wide-table cns_profile_fields">
 			{+START,IF,{$DESKTOP}}
 				<colgroup>
 					<col class="cns-profile-about-field-name-column" />

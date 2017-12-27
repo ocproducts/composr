@@ -337,7 +337,7 @@
             tooltipEl = document.createElement('div');
             tooltipEl.role = 'tooltip';
             tooltipEl.style.display = 'none';
-            var rtPos = tooltip.indexOf('results_table');
+            var rtPos = tooltip.indexOf('results-table');
             tooltipEl.className = 'tooltip ' + ((rtPos === -1 || rtPos > 100) ? 'tooltip_ownlayout' : 'tooltip_nolayout') + ' boxless-space' + (haveLinks ? ' have_links' : '');
             if (el.className.substr(0, 3) === 'tt_') {
                 tooltipEl.className += ' ' + el.className;

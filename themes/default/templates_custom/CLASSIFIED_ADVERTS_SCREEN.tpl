@@ -2,7 +2,7 @@
 
 <p>{!CLASSIFIEDS_MY_ADVERTS_TEXT}</p>
 
-<table class="columned_table wide_table results_table autosized_table spaced_table responsive-table">
+<table class="columned_table wide-table results-table autosized_table spaced_table responsive-table">
 	<thead>
 		<tr>
 			<th>{!TITLE}</th>

@@ -3,7 +3,7 @@
 {+END}
 
 {+START,IF_NON_EMPTY,{BANNERS}}
-	<div class="wide_table_wrap"><table class="columned_table wide_table results_table spaced_table autosized_table responsive-table">
+	<div class="wide-table-wrap"><table class="columned_table wide-table results-table spaced_table autosized_table responsive-table">
 		<thead>
 			<tr>
 				<th>

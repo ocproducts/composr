@@ -3,7 +3,7 @@
 
 	{+START,SET,TOOLTIP}
 		{+START,IF_NON_EMPTY,{$TRIM,{FIELDS_GRID}}}
-			<table class="map_table results_table">
+			<table class="map_table results-table">
 				<tbody>
 					{FIELDS_GRID}
 				</tbody>

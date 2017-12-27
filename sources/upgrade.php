@@ -160,7 +160,7 @@ function upgrade_script()
 
     <h3>{$l_upgrade_steps}</h3>
 
-    <div class=\"wide_table_wrap\"><table class=\"columned_table autosized_table results_table wide_table spaced_table\">
+    <div class=\"wide-table-wrap\"><table class=\"columned_table autosized_table results-table wide-table spaced_table\">
         <thead>
             <tr>
                     <th>{$l_step}</th>

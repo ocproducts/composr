@@ -2,7 +2,7 @@
 	{$?,{$MATCH_KEY_MATCH,_SEARCH:admin_notifications},{!NOTIFICATIONS_DEFINE_LOCKDOWN},{!NOTIFICATIONS_INTRO}}
 </p>
 
-<div class="wide_table_wrap"><table class="columned_table wide_table results_table notifications_form responsive-table responsive-table-bolded-first-column">
+<div class="wide-table-wrap"><table class="columned_table wide-table results-table notifications_form responsive-table responsive-table-bolded-first-column">
 	<colgroup>
 		<col class="notifications_field_name_column" />
 		{+START,IF_PASSED_AND_TRUE,SHOW_PRIVILEGES}

@@ -12,8 +12,8 @@
 	</h3>
 
 	<div class="toggleable-tray js-tray-content" id="c_{GROUPING_ID*}"{+START,IF,{$NEQ,{DISPLAY},block}} style="display: {DISPLAY*}"{+END}>
-		<div class="wide_table_wrap">
-			<table class="columned_table wide_table cns-forum-grouping" itemprop="significantLinks">
+		<div class="wide-table-wrap">
+			<table class="columned_table wide-table cns-forum-grouping" itemprop="significantLinks">
 				{+START,IF,{$DESKTOP}}
 					<colgroup>
 						<col class="cns-forum-grouping-column1 column_desktop" />

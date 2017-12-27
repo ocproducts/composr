@@ -42,7 +42,7 @@
 			{+END}
 			<div class="comments_posting_form_outer {+START,IF_PASSED,EXPAND_TYPE} toggleable-tray js-tray-content{+END}"{+START,IF_PASSED,EXPAND_TYPE} aria-expanded="false"{+END} id="comments_posting_form_outer" style="display: {DISPLAY*}">
 				<div class="comments_posting_form_inner">
-					<div class="wide_table_wrap"><table class="map_table wide_table">
+					<div class="wide-table-wrap"><table class="map_table wide-table">
 						{+START,IF,{$DESKTOP}}
 							<colgroup>
 								<col class="comments_field_name_column" />

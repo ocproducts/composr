@@ -109,7 +109,7 @@ CMSs are becoming more sophisticated and all-encompassing, with support for wide
 [title="2"]Overview of the advantages/disadvantages of different types of website[/title]
 
 [html]
-<table class="wide_table autosized_table results_table autosized_table"><tbody>
+<table class="wide-table autosized_table results-table autosized_table"><tbody>
 	<tr>
 		<th colspan="2">
 			Site of Pages

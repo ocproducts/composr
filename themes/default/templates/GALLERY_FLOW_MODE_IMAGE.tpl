@@ -14,7 +14,7 @@
 			<section class="box box___gallery_flow_mode_image"><div class="box-inner">
 				<h3>{!DETAILS}</h3>
 
-				<table class="map_table results_table">
+				<table class="map_table results-table">
 					{+START,IF,{$DESKTOP}}
 						<colgroup>
 							<col class="gallery_entry_field_name_column" />

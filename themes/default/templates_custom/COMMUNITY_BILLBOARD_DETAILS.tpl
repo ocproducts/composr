@@ -1,7 +1,7 @@
 <div class="box box___community_billboard_details"><div class="box-inner">
 	<h2>{!DETAILS}</h2>
 
-	<div class="wide_table_wrap"><table class="map_table wide_table results_table">
+	<div class="wide-table-wrap"><table class="map_table wide-table results-table">
 		{+START,IF,{$DESKTOP}}
 			<colgroup>
 				<col class="field_name_column" />

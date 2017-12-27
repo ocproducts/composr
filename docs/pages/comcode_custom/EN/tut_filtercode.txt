@@ -40,7 +40,7 @@ GET/POST parameters are the technical name for how parameters are passed to web 
 [/box]
 [/surround]
 [html]
-<table class="columned_table results_table autosized_table">
+<table class="columned_table results-table autosized_table">
 	<thead>
 		<tr>
 			<th>Symbol</th>

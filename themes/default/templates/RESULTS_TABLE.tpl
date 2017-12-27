@@ -9,7 +9,7 @@
 {+START,IF_NON_EMPTY,{FIELDS}}
 	{$PARAGRAPH,{MESSAGE}}
 
-	<div class="wide_table_wrap"><table class="columned_table results_table wide_table{+START,IF_EMPTY,{WIDTHS}} autosized_table{+END} responsive-table" itemprop="significantLinks">
+	<div class="wide-table-wrap"><table class="columned_table results-table wide-table{+START,IF_EMPTY,{WIDTHS}} autosized_table{+END} responsive-table" itemprop="significantLinks">
 		{+START,IF,{$DESKTOP}}{+START,IF,{$EQ,{$LANG},EN}}{+START,IF_NON_EMPTY,{WIDTHS}}
 			<colgroup>
 				{+START,LOOP,WIDTHS}
@@ -30,7 +30,7 @@
 
 	{+START,SET,RESULTS_TABLE_PAGINATION}
 		{+START,IF_NON_EMPTY,{SORT}{PAGINATION}}
-			<div class="box results_table_under"><div class="box-inner float-surrounder">
+			<div class="box results-table-under"><div class="box-inner float-surrounder">
 				{+START,IF_NON_EMPTY,{SORT}}
 					<div class="results-table-sorter">
 						{SORT}

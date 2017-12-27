@@ -28,7 +28,7 @@
 	white-space: nowrap;
 }
 
-body table.results_table tbody tr.unclosed_ticket td {
+body table.results-table tbody tr.unclosed_ticket td {
 	background-color: {$GET,yellow_highlight_background} !important;
 }
 

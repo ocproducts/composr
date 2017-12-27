@@ -11,7 +11,7 @@
 <form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
-	<div class="wide_table_wrap really_long_table_wrap"><table class="columned_table results_table wide_table autosized_table responsive-table">
+	<div class="wide-table-wrap really_long_table_wrap"><table class="columned_table results-table wide-table autosized_table responsive-table">
 		<thead>
 			<tr>
 				<th>

@@ -1,10 +1,8 @@
-'use strict';
-
-window.previousCommands || (window.previousCommands = []);
-(window.currentCommand !== undefined) ||  (window.currentCommand = null);
-
 (function ($cms, $util, $dom) {
     'use strict';
+
+    window.previousCommands || (window.previousCommands = []);
+    window.currentCommand || (window.currentCommand = null);
 
     $cms.templates.commandrMain = function commandrMain(params, container) {
         $dom.on(container, 'submit', '.js-submit-commandr-form-submission', function (e, form) {
@@ -177,7 +175,7 @@ window.previousCommands || (window.previousCommands = []);
         // Deal with the response: add the result to the command-line
         var method = ajaxResult.querySelector('command').textContent;
         var stdcommand = ajaxResult.querySelector('stdcommand').textContent;
-        var stdhtml = ajaxResult.querySelector('stdhtml').firstElementChild;
+        var stdhtmlEl = ajaxResult.querySelector('stdhtml').firstElementChild;
         var stdout = ajaxResult.querySelector('stdout').textContent;
         var stderr = ajaxResult.querySelector('stderr').textContent;
 
@@ -195,10 +193,10 @@ window.previousCommands || (window.previousCommands = []);
             pastCommand.appendChild(stdoutTextP);
         }
 
-        if (stdhtml.childNodes) {
+        if (stdhtmlEl.childNodes) {
             var childNode, newChild, clonedNode;
-            for (var i = 0; i < stdhtml.childNodes.length; i++) {
-                childNode = stdhtml.childNodes[i];
+            for (var i = 0; i < stdhtmlEl.childNodes.length; i++) {
+                childNode = stdhtmlEl.childNodes[i];
 
                 newChild = childNode;
                 try {
@@ -210,7 +208,7 @@ window.previousCommands || (window.previousCommands = []);
             }
         }
 
-        if (stdcommand != '') {
+        if (stdcommand !== '') {
             // JavaScript commands; eval() them.
             eval(stdcommand);
 
@@ -221,24 +219,25 @@ window.previousCommands || (window.previousCommands = []);
             pastCommand.appendChild(stdcommandTextP);
         }
 
-        if ((stdcommand == '') && (!stdhtml.childNodes) && (stdout == '')) {
+        var stderrText, stderrTextP;
+        if ((stdcommand === '') && (!stdhtmlEl.childNodes) && (stdout === '')) {
             // Exit with an error.
-            if (stderr != '') {
-                var stderrText = document.createTextNode('{!commandr:PROBLEM_ACCESSING_RESPONSE;^}\n' + stderr);
+            if (stderr !== '') {
+                stderrText = document.createTextNode('{!commandr:PROBLEM_ACCESSING_RESPONSE;^}\n' + stderr);
             } else {
-                var stderrText = document.createTextNode('{!commandr:TERMINAL_PROBLEM_ACCESSING_RESPONSE;^}');
+                stderrText = document.createTextNode('{!commandr:TERMINAL_PROBLEM_ACCESSING_RESPONSE;^}');
             }
-            var stderrTextP = document.createElement('p');
-            stderrTextP.setAttribute('class', 'error_output');
+            stderrTextP = document.createElement('p');
+            stderrTextP.className = 'error_output';
             stderrTextP.appendChild(stderrText);
             pastCommand.appendChild(stderrTextP);
 
             return false;
         }
-        else if (stderr != '') {
-            var stderrText = document.createTextNode('{!commandr:ERROR_NON_TERMINAL;^}\n' + stderr);
-            var stderrTextP = document.createElement('p');
-            stderrTextP.setAttribute('class', 'error_output');
+        else if (stderr !== '') {
+            stderrText = document.createTextNode('{!commandr:ERROR_NON_TERMINAL;^}\n' + stderr);
+            stderrTextP = document.createElement('p');
+            stderrTextP.className = 'error_output';
             stderrTextP.appendChild(stderrText);
             pastCommand.appendChild(stderrTextP);
         }

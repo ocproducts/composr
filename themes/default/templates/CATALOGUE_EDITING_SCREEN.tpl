@@ -9,7 +9,7 @@
 		<div>
 			{HIDDEN}
 
-			<div class="wide_table_wrap"><table class="map_table form_table wide_table scrollable_inside">
+			<div class="wide-table-wrap"><table class="map_table form_table wide-table scrollable_inside">
 				{+START,IF,{$DESKTOP}}
 					<colgroup>
 						<col class="field_name_column" />

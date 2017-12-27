@@ -1,5 +1,5 @@
 <div class="cns-post-box">
-	<div class="wide_table_wrap"><div class="wide_table cns-topic">
+	<div class="wide-table-wrap"><div class="wide-table cns-topic">
 			{POST}
 	</div></div>
 

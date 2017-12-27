@@ -109,8 +109,8 @@
 		{+START,IF,{$OR,{$AND,{VIEW_PROFILES},{$IS_NON_EMPTY,{CUSTOM_FIELDS}}},{$IS_NON_EMPTY,{$TRIM,{SIGNATURE}}}}}
 			<h2>{!ABOUT}</h2>
 
-			<div class="wide_table_wrap">
-				<table class="map_table wide_table cns_profile_fields cns-profile-about-section responsive_blocked_table">
+			<div class="wide-table-wrap">
+				<table class="map_table wide-table cns_profile_fields cns-profile-about-section responsive_blocked_table">
 					{+START,IF,{$DESKTOP}}
 						<colgroup>
 							<col class="cns-profile-about-field-name-column" />
@@ -173,8 +173,8 @@
 				{+START,LOOP,CUSTOM_FIELDS_SECTIONS}
 					<h2>{_loop_key*}</h2>
 
-					<div class="wide_table_wrap">
-						<table class="map_table wide_table cns_profile_fields cns-profile-about-section responsive_blocked_table">
+					<div class="wide-table-wrap">
+						<table class="map_table wide-table cns_profile_fields cns-profile-about-section responsive_blocked_table">
 							{+START,IF,{$DESKTOP}}
 								<colgroup>
 									<col class="cns-profile-about-field-name-column" />
@@ -226,8 +226,8 @@
 
 			<meta class="fn given-name" itemprop="name" content="{$DISPLAYED_USERNAME*,{USERNAME}}" />
 
-			<div class="wide_table_wrap">
-				<table class="map_table wide_table cns_profile_details cns-profile-about-section responsive_blocked_table">
+			<div class="wide-table-wrap">
+				<table class="map_table wide-table cns_profile_details cns-profile-about-section responsive_blocked_table">
 					{+START,IF,{$DESKTOP}}
 						<colgroup>
 							<col class="cns-profile-about-field-name-column" />
@@ -322,8 +322,8 @@
 			<div class="stats_overwrap">
 				<h2>{!TRACKING}</h2>
 
-				<div class="wide_table_wrap">
-					<table class="map_table wide_table cns_profile_tracking cns-profile-about-section responsive_blocked_table">
+				<div class="wide-table-wrap">
+					<table class="map_table wide-table cns_profile_tracking cns-profile-about-section responsive_blocked_table">
 						{+START,IF,{$DESKTOP}}
 							<colgroup>
 								<col class="cns-profile-about-field-name-column" />

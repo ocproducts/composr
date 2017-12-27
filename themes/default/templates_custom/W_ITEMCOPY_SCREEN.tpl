@@ -12,7 +12,7 @@
 <form method="post" enctype="multipart/form-data" action="{$PAGE_LINK*,_SELF:_SELF:uploading=1}" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
-	<div class="wide_table_wrap"><table class="map_table autosized_table results_table wide_table responsive_blocked_table"><tbody>
+	<div class="wide-table-wrap"><table class="map_table autosized_table results-table wide-table responsive_blocked_table"><tbody>
 		{+START,IF_PASSED,ITEMS}
 			<tr>
 				<th>{!NAME}</th>

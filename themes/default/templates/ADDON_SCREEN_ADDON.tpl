@@ -74,7 +74,7 @@
 			{$GET,FILE_LIST}
 		{+END}
 	</td>
-	<td class="results_table_field addon-actions">
+	<td class="results-table-field addon-actions">
 		{ACTIONS}
 
 		<label class="accessibility_hidden" for="install_{NAME*}">{!INSTALL} {NAME*}</label>

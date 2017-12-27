@@ -127,9 +127,9 @@
 	font-weight: bold;
 }
 
-.results_table[summary*="{!buildr:W_MOVEMENT_TABLE}"]>tbody>tr:first-child>*:first-child {
+.results-table[summary*="{!buildr:W_MOVEMENT_TABLE}"]>tbody>tr:first-child>*:first-child {
 	border-top-left-radius: 0px;
 }
-.results_table[summary*="{!buildr:W_MOVEMENT_TABLE}"]>tbody>tr:first-child>*:last-child {
+.results-table[summary*="{!buildr:W_MOVEMENT_TABLE}"]>tbody>tr:first-child>*:last-child {
 	border-top-right-radius: 0px;
 }
