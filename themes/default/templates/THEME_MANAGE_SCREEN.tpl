@@ -24,7 +24,7 @@
 			<tbody>
 				{$SET,done_one_theme,0}
 				{+START,LOOP,THEMES}
-					<tr class="{+START,IF,{$GET,done_one_theme}}thick_border{+END}{+START,IF,{IS_MAIN_THEME}} active_item{+END}">
+					<tr class="{+START,IF,{$GET,done_one_theme}}thick_border{+END}{+START,IF,{IS_MAIN_THEME}} active-item{+END}">
 						<td role="note" class="theme_details">
 							{+START,IF,{$DESKTOP}}
 								<div class="block_desktop">
@@ -62,7 +62,7 @@
 							<p><img alt="" src="{$IMG*,icons/24x24/tabs/preview}" srcset="{$IMG*,icons/48x48/tabs/preview} 2x" /> <a href="{SCREEN_PREVIEW_URL*}">{!_SCREEN_PREVIEWS}</a></p>
 						</td>
 
-						<td class="do_theme_items">
+						<td class="do-theme-items">
 							<div>
 								<div><a rel="edit" title="{!EDIT_THEME}: {NAME*}" href="{EDIT_URL*}"><img alt="" src="{$IMG*,icons/48x48/menu/_generic_admin/edit_this}" /></a></div>
 								<div><a title="{!EDIT_THEME}: {NAME*}" href="{EDIT_URL*}">{$?,{$IS_EMPTY,{THEME_USAGE}},{!_EDIT_THEME},{!SETTINGS}}</a></div>
@@ -127,7 +127,7 @@
 	{+START,IF,{$GT,{ZONES},6}}
 		<h2>{!ZONES}</h2>
 
-		<p class="lonely_label">{!THEMES_AND_ZONES}</p>
+		<p class="lonely-label">{!THEMES_AND_ZONES}</p>
 		<ul>
 			{+START,LOOP,ZONES}
 				<li>{1*} <span class="associated-link"><a title="edit: {!EDIT_ZONE}: {1*}" data-cms-confirm-click="{!SWITCH_MODULE_WARNING*}" href="{$PAGE_LINK*,_SEARCH:admin_zones:_edit:{0}:redirect={$SELF_URL&}}">{!EDIT}</a></span></li>

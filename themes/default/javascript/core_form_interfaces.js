@@ -328,7 +328,7 @@
                 return;
             }
 
-            var _ind = $dom.$('#password_strength_' + input.id);
+            var _ind = $dom.$('#password-strength-' + input.id);
             if (!_ind) {
                 return;
             }
@@ -616,7 +616,7 @@
     $cms.templates.formScreenInputTick = function (params, el) {
         if (params.name === 'validated') {
             $dom.on(el, 'click', function () {
-                el.previousElementSibling.className = 'validated_checkbox' + (el.checked ? ' checked' : '');
+                el.previousElementSibling.className = 'validated-checkbox' + (el.checked ? ' checked' : '');
             });
         }
 
@@ -672,7 +672,7 @@
         select2Options = {
             dropdownAutoWidth: true,
             formatResult: (params.images === undefined) ? formatSelectSimple : formatSelectImage,
-            containerCssClass: 'wide_field'
+            containerCssClass: 'wide-field'
         };
 
         if (window.jQuery && (window.jQuery.fn.select2 != null) && (selectEl.options.length > 20)/*only for long lists*/ && (!$dom.html(selectEl.options[1]).match(/^\d+$/)/*not for lists of numbers*/)) {
@@ -1502,7 +1502,7 @@
 
     // Hide a 'tray' of trs in a form
     function toggleSubordinateFields(pic, helpId) {
-        var fieldInput = $dom.parent(pic, '.form_table_field_spacer'),
+        var fieldInput = $dom.parent(pic, '.form-table-field-spacer'),
             next = fieldInput.nextElementSibling,
             newDisplayState, newDisplayState2;
 
@@ -1512,7 +1512,7 @@
 
         while (next.classList.contains('field_input')) { // Sometimes divs or whatever may have errornously been put in a table by a programmer, skip past them
             next = next.nextElementSibling;
-            if (!next || next.classList.contains('form_table_field_spacer')) { // End of section, so no need to keep going
+            if (!next || next.classList.contains('form-table-field-spacer')) { // End of section, so no need to keep going
                 next = null;
                 break;
             }
@@ -1538,7 +1538,7 @@
             fieldInput = fieldInput.nextElementSibling;
 
             /* Start of next section? */
-            if (fieldInput.classList.contains('form_table_field_spacer')) {
+            if (fieldInput.classList.contains('form-table-field-spacer')) {
                 break; // End of section
             }
 

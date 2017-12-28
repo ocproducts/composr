@@ -2,7 +2,7 @@
 	<div>
 		<div>
 			<p class="accessibility_hidden"><label for="netlink_url">{!JUMP}</label></p>
-			<select data-change-submit-form="" id="netlink_url" name="url" class="wide_field">
+			<select data-change-submit-form="" id="netlink_url" name="url" class="wide-field">
 				{CONTENT}
 			</select>
 		</div>

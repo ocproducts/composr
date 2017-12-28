@@ -1,4 +1,4 @@
-<form title="{!MAKE_PAYMENT}" class="ecommerce_button" action="{FORM_URL*}" method="post" autocomplete="off">
+<form title="{!MAKE_PAYMENT}" class="ecommerce-button" action="{FORM_URL*}" method="post" autocomplete="off">
 	<input type="hidden" name="x_fp_sequence" value="{SEQUENCE*}" />
 	<input type="hidden" name="x_fp_timestamp" value="{TIMESTAMP*}" />
 	<input type="hidden" name="x_fp_hash" value="{FINGERPRINT*}" />
@@ -24,7 +24,7 @@
 
 	<input type="hidden" name="x_recurring_billing" value="TRUE" />
 
-	<div class="purchase_button">
-		<input id="purchase_button" data-disable-on-click="1" class="button_screen menu__rich_content__ecommerce__purchase" type="submit" value="{!MAKE_PAYMENT}" alt="Authorize.net - Simple Checkout" />
+	<div class="purchase-button">
+		<input id="purchase-button" data-disable-on-click="1" class="button_screen menu--rich-content--ecommerce--purchase" type="submit" value="{!MAKE_PAYMENT}" alt="Authorize.net - Simple Checkout" />
 	</div>
 </form>

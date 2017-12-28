@@ -81,7 +81,7 @@
 						<label class="accessibility_hidden" for="give_amount">{!AMOUNT}</label>
 						<input maxlength="8" data-cms-invalid-pattern="[^\-\d{$BACKSLASH}{$DECIMAL_POINT*}]" size="7" id="give_amount" class="input_integer_required" placeholder="{!AMOUNT}" type="text" name="amount" />
 
-						<input id="give_points_submit" class="button_micro buttons--points" type="submit" value="{!PROCEED_SHORT}" />
+						<input id="give_points_submit" class="button-micro buttons--points" type="submit" value="{!PROCEED_SHORT}" />
 					</p>
 				</div>
 

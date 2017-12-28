@@ -88,7 +88,7 @@
 
             //if (list_contents.childNodes.length==0) return;
             var list = document.createElement(isDataList ? 'datalist' : 'select');
-            list.className = 'people_list';
+            list.className = 'people-list';
             list.setAttribute('id', 'ajax_list');
             if (isDataList) {
                 currentListForEl.setAttribute('list', 'ajax_list');

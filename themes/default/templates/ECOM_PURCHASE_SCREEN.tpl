@@ -10,12 +10,12 @@
 		{+START,IF_PASSED_AND_TRUE,GET}{$HIDDENS_FOR_GET_FORM,{URL}}{+END}
 	{+END}
 
-	<div class="purchase_screen_contents">
+	<div class="purchase-screen-contents">
 		{CONTENT}
 	</div>
 
 	{+START,IF_NON_EMPTY,{URL}}
-		<p class="purchase_button">
+		<p class="purchase-button">
 			<input id="proceed_button" class="button_screen {ICON*} js-click-do-form-submit" accesskey="u" type="button" value="{SUBMIT_NAME*}" />
 		</p>
 	</form>

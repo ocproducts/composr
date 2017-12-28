@@ -6,24 +6,24 @@
 /* General form-related styles */
 
 /*{+START,CSS_MODE,mobile}*/
-	.form_table, .form_table>tbody, .form_table>thead, .form_table>tbody>tr, .form_table>thead>tr, .form_table>tr, .form_table>tbody>tr>th, .form_table>thead>tr>th, .form_table>tr>th, .form_table>tbody>tr>td, .form_table>thead>tr>td, .form_table>tr>td {
+	.form-table, .form-table>tbody, .form-table>thead, .form-table>tbody>tr, .form-table>thead>tr, .form-table>tr, .form-table>tbody>tr>th, .form-table>thead>tr>th, .form-table>tr>th, .form-table>tbody>tr>td, .form-table>thead>tr>td, .form-table>tr>td {
 		display: block;
 		width: auto;
 		overflow: hidden;
 	}
 
-	.form_table {
+	.form-table {
 		border-bottom: 0 !important;
 	}
 
-	.form_table>tbody>tr>th, .form_table>thead>tr>th, .form_table>tr>th, .form_table>tbody>tr>td, .form_table>thead>tr>td, .form_table>tr>td {
+	.form-table>tbody>tr>th, .form-table>thead>tr>th, .form-table>tr>th, .form-table>tbody>tr>td, .form-table>thead>tr>td, .form-table>tr>td {
 		border-top: 0;
 		border-left: 0;
 		border-right: 0;
 	}
 
-	.form_table>tbody>tr>th label:after, .form_table>thead>tr>th label:after, .form_table>tr>th label:after,
-	.form_table>tbody>tr>th .faux_label:after, .form_table>thead>tr>th .faux_label:after, .form_table>tr>th .faux_label:after {
+	.form-table>tbody>tr>th label:after, .form-table>thead>tr>th label:after, .form-table>tr>th label:after,
+	.form-table>tbody>tr>th .faux-label:after, .form-table>thead>tr>th .faux-label:after, .form-table>tr>th .faux-label:after {
 		content: ":";
 	}
 /*{+END}*/
@@ -35,12 +35,12 @@
 /*{+END}*/
 
 /*{+START,CSS_MODE,desktop}*/
-	.required_field_warning_wrap {
+	.required-field-warning-wrap {
 		text-align: center;
 	}
 /*{+END}*/
 
-.required_field_warning {
+.required-field-warning {
 	border: 1px solid {$GET,standard_border};
 	overflow: hidden;
 	padding: 0.5em;
@@ -54,35 +54,35 @@
 	{$BETA_CSS_PROPERTY,user-select: none;} {$,To stop accidental touching on mobile form filling in}
 }
 /*{+START,CSS_MODE,desktop}*/
-	.required_field_warning {
+	.required-field-warning {
 		display: inline-block;
 	}
 /*{+END}*/
 
-.required_star {
+.required-star {
 	opacity: 0.4;
 	color: {$GET,red_highlight_text};
 	{$BETA_CSS_PROPERTY,user-select: none;} {$,To stop accidental touching when touching inputs}
 }
 
-.comcode_supported {
+.comcode-supported {
 	font-size: 0.85em;
 }
 
-div.comcode_supported {
+div.comcode-supported {
 	margin-top: 0.25em;
 	float: right;
 }
 
-.input_erroneous {
+.input-erroneous {
 	background-color: {$GET,red_highlight_background} !important;
 }
 
-.input_erroneous.container_for_wysiwyg {
+.input-erroneous.container-for-wysiwyg {
 	border-radius: 6px; /* WYSISWYG is curved so this stops it creating an ugly clash */
 }
 
-.input_error_here {
+.input-error-here {
 	font-size: 0.9em;
 	display: block;
 	padding: 1em 1em 1em 35px;
@@ -92,56 +92,56 @@ div.comcode_supported {
 	margin-top: 0.5em;
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.input_error_here {
+	.input-error-here {
 		background-image: url('{$IMG;,icons/48x48/status/notice}');
 		background-size: 24px 24px;
 	}
 }
 
 /* This is used to fix a problem on screen-readers (we don't want a paragraph used) */
-span.form_field_name {
+span.form-field-name {
 	/*display: inline-block;	Actually, this breaks vertical centring, so let it be inline*/
 }
 
 /* Overrides .toggleable-tray-button */
-.form_table .toggleable-tray-button {
+.form-table .toggleable-tray-button {
 	color: {$GET,heading_text} !important;
 	font-weight: normal !important;
 }
-.form_table .toggleable-tray-button .help_icon {
+.form-table .toggleable-tray-button .help-icon {
 	float: none;
 	vertical-align: middle;
 }
 
 /* Layout of the form table */
 
-table.form_table { /* Some people think tables for forms are bad semantics. You can change it if you like, but we consider tables the optimal semantics (field name column, field input column, each field being a row). It's a conscious decision. Also all modern browsers allow complete styling control to change how tables are displayed, so there is no visual constraint here. */
+table.form-table { /* Some people think tables for forms are bad semantics. You can change it if you like, but we consider tables the optimal semantics (field name column, field input column, each field being a row). It's a conscious decision. Also all modern browsers allow complete styling control to change how tables are displayed, so there is no visual constraint here. */
 	border-collapse: collapse;
 	border: 1px solid {$GET,pale_border};
 	margin: 1em 0;
 }
 
-.toggleable-tray>.wide-table-wrap:first-child>.form_table {
+.toggleable-tray>.wide-table-wrap:first-child>.form-table {
 	margin-top: 0;
 }
 
 /*
 Curved borders would be cool, but it does not work well with the carefully defined internal cell borders which we have
-.form_table>tbody>tr:first-child>:first-child {
+.form-table>tbody>tr:first-child>:first-child {
 	border-top-left-radius: 15px;
 }
-.form_table>tbody>tr:first-child>:last-child {
+.form-table>tbody>tr:first-child>:last-child {
 	border-top-right-radius: 15px;
 }
-.form_table>tbody>tr:last-child>:first-child {
+.form-table>tbody>tr:last-child>:first-child {
 	border-bottom-left-radius: 15px;
 }
-.form_table>tbody>tr:last-child>:last-child {
+.form-table>tbody>tr:last-child>:last-child {
 	border-bottom-right-radius: 15px;
 }
 */
 
-.form_table_field_name {
+.form-table-field-name {
 	word-wrap: break-word;
 	text-align: left;
 	color: {$GET,slightly_seeded_text};
@@ -149,38 +149,38 @@ Curved borders would be cool, but it does not work well with the carefully defin
 }
 
 /*{+START,CSS_MODE,mobile}*/
-	th.form_table_field_name {
+	th.form-table-field-name {
 		border-bottom: 0 !important;
 	}
-	td.form_table_field_input {
+	td.form-table-field-input {
 		border-top: 0 !important;
 
-		/* No separate gradient, continue on from the end of the form_table_field_name gradient */
+		/* No separate gradient, continue on from the end of the form-table-field-name gradient */
 		background-image: none !important;
 		background-color: {$GET,area_2_background} !important;
 	}
 
-	.form_table_field_name .help_icon {
+	.form-table-field-name .help-icon {
 		float: right;
 	}
 /*{+END}*/
 
-.form_table_field_name h3 {
+.form-table-field-name h3 {
 	border: 0;
 	margin: 0;
 }
 
-.form_table_description_above_cell {
+.form-table-description-above-cell {
 	text-align: left !important;
 }
-.form_table_description_above_cell .field_name {
+.form-table-description-above-cell .field_name {
 	float: left;
 	margin-top: 4px;
 }
 
-.form_table_field_name, .form_table_field_input, .form_table_huge_field,
-th.form_table_field_name, /* Extra specificity to take precedence over th.de_th */
-.form_table_field_spacer>th, .form_table_field_spacer>td, .form_table_description_above_cell, .form_table_description_under_cell
+.form-table-field-name, .form-table-field-input, .form-table-huge-field,
+th.form-table-field-name, /* Extra specificity to take precedence over th.de_th */
+.form-table-field-spacer>th, .form-table-field-spacer>td, .form-table-description-above-cell, .form-table-description-under-cell
 {
 	border: 1px solid {$GET,pale_border};
 	color: {$GET,slightly_seeded_text} !important;
@@ -188,65 +188,65 @@ th.form_table_field_name, /* Extra specificity to take precedence over th.de_th 
 	background-color: {$GET,area_background} !important; /* !important is so has priority over .de_th */
 	background-image: linear-gradient(to bottom, {$GET,area_background}, {$GET,area_2_background});
 }
-.form_table_field_input>div:first-child>p:first-child {
+.form-table-field-input>div:first-child>p:first-child {
 	margin-top: 0;
 }
-.form_table_field_input input {
+.form-table-field-input input {
 	margin-top: 0;
 }
 
-.form_table_field_name a, .form_table_field_input a, .form_table_huge_field a,
-th.form_table_field_name a, /* Extra specificity to take precedence over th.de_th */
-.form_table_field_spacer>th a, .form_table_field_spacer>td a, .form_table_description_above_cell a, .form_table_description_under_cell a
+.form-table-field-name a, .form-table-field-input a, .form-table-huge-field a,
+th.form-table-field-name a, /* Extra specificity to take precedence over th.de_th */
+.form-table-field-spacer>th a, .form-table-field-spacer>td a, .form-table-description-above-cell a, .form-table-description-under-cell a
 {
 	color: {$GET,a.link} !important;
 }
 
-.form_table_field_input select, .form_table_field_input input, .form_table_field_input img {
+.form-table-field-input select, .form-table-field-input input, .form-table-field-input img {
 	vertical-align: middle;
 }
 /*{+START,CSS_MODE,desktop}*/
-	.form_table_field_input .wide_field {
+	.form-table-field-input .wide-field {
 		width: 26em;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.form_table_field_input .wide_field {
+	.form-table-field-input .wide-field {
 		width: 100%;
 	}
 /*{+END}*/
-.form_table_field_input .wide_field {
+.form-table-field-input .wide-field {
 	max-width: 100%;
 	box-sizing: border-box;
 }
 
 /* Tone it all down for forms inside tabs */
-.tab_surround tbody th, .tab_surround tbody td, .tab_surround .form_table .required {
+.tab-surround tbody th, .tab-surround tbody td, .tab-surround .form-table .required {
 	background: none !important;
 	color: inherit !important;
 }
 
-.form_table_field_spacer>th, .form_table_field_spacer>td, .form_table_description_above_cell {
+.form-table-field-spacer>th, .form-table-field-spacer>td, .form-table-description-above-cell {
 	border-bottom: 0;
 }
 
-.form_table_huge_field {
+.form-table-huge-field {
 	border-top: 0;
 }
 
-.form_table_huge_field_description_is_under {
+.form-table-huge-field-description-is-under {
 	border-top: 1px solid {$GET,pale_border};
 	border-bottom: 0 !important;
 }
 
-.form_table .required {
+.form-table .required {
 	/*	Style rather extreme, but re-enable if you wish
 	background-color: {$GET,required_background} !important;
 	background-image: linear-gradient(to bottom, {$GET,required_2_background}, {$GET,required_background}) !important;
 	*/
 }
 
-.form_table .filledin .required {
+.form-table .filledin .required {
 	/*	Style rather extreme, but re-enable if you wish
 	background-color: {$GET,area_background} !important;
 	background-image: linear-gradient(to bottom, {$GET,area_background}, {$GET,area_2_background}) !important;
@@ -255,7 +255,7 @@ th.form_table_field_name a, /* Extra specificity to take precedence over th.de_t
 
 /* Field sets */
 
-.innocuous_fieldset .preview {
+.innocuous-fieldset .preview {
 	float: right;
 	text-align: right;
 	width: 120px;
@@ -263,7 +263,7 @@ th.form_table_field_name a, /* Extra specificity to take precedence over th.de_t
 	margin-top: 10px;
 	margin-right: 10px;
 }
-.innocuous_fieldset .preview img {
+.innocuous-fieldset .preview img {
 	border: 1px solid {$GET,pale_border};
 	max-width: 100%;
 	max-height: 100%;
@@ -271,31 +271,31 @@ th.form_table_field_name a, /* Extra specificity to take precedence over th.de_t
 
 /* Particular input types */
 
-.form_table .form_table_field_input select {
+.form-table .form-table-field-input select {
 	width: auto;
 }
 
-.upload_field_msg {
+.upload-field-msg {
 	margin-top: 0;
 	margin-bottom: 0.5em;
 	display: inline-block;
 }
 
-.people_list {
+.people-list {
 	background-color: {$GET,area_background};
 	color: {$GET,slightly_seeded_text};
 	width: auto;
 	border: 1px solid {$GET,pale_border};
 }
 
-.password_strength {
+.password-strength {
 	float: right;
 	width: 100px;
 	border: 1px solid {$GET,standard_border};
 	display: none;
 }
 
-.password_strength_inner {
+.password-strength-inner {
 	height: 1em;
 	width: 0;
 }
@@ -320,7 +320,7 @@ th.form_table_field_name a, /* Extra specificity to take precedence over th.de_t
 	vertical-align: middle;
 }
 
-.upload_field {
+.upload-field {
 	max-width: 31em; /* Upload field HTML is complex, we need to force size down so that the help icon can align correctly */
 }
 
@@ -330,48 +330,48 @@ th.form_table_field_name a, /* Extra specificity to take precedence over th.de_t
 	}
 /*{+END}*/
 
-.upload_field_image_preview {
+.upload-field-image-preview {
 	float: right;
 	max-width: 4em;
 	max-height: 4em;
 }
 
-.radio_description {
+.radio-description {
 	margin-top: -1.3em !important;
 	margin-bottom: 1em !important;
 }
 
-.syndication_options {
+.syndication-options {
 	overflow: hidden;
 	white-space: nowrap;
 }
 
-/* Special validated checkbox; use of span.validated_checkbox is due to http://stackoverflow.com/questions/6949148/css-after-not-adding-content-to-certain-elements */
-span.validated_checkbox, span.validated_checkbox+input[name="validated"].input_tick {
+/* Special validated checkbox; use of span.validated-checkbox is due to http://stackoverflow.com/questions/6949148/css-after-not-adding-content-to-certain-elements */
+span.validated-checkbox, span.validated-checkbox+input[name="validated"].input_tick {
 	width: {$ADD,5,{$IMG_WIDTH%,{$IMG,1x/editor/off}}}px;
 	height: {$IMG_HEIGHT%,{$IMG,1x/editor/off}}px;
 	display: inline-block;
 	cursor: pointer;
 }
-span.validated_checkbox {
+span.validated-checkbox {
 	content: "";
 	background: url('{$IMG;,1x/editor/off}') no-repeat;
 	position: absolute;
 }
-span.validated_checkbox.checked {
+span.validated-checkbox.checked {
 	background-image: url('{$IMG;,1x/editor/on}') !important;
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	span.validated_checkbox {
+	span.validated-checkbox {
 		background-image: url('{$IMG;,2x/editor/off}');
 		background-size: {$IMG_WIDTH%,{$IMG,1x/editor/off}}px {$IMG_HEIGHT%,{$IMG,1x/editor/off}}px;
 	}
-	span.validated_checkbox.checked {
+	span.validated-checkbox.checked {
 		background-image: url('{$IMG;,2x/editor/on}') !important;
 		background-size: {$IMG_WIDTH%,{$IMG,1x/editor/on}}px {$IMG_HEIGHT%,{$IMG,1x/editor/on}}px;
 	}
 }
-span.validated_checkbox+input[name="validated"].input_tick {
+span.validated-checkbox+input[name="validated"].input_tick {
 	padding-right: 0.5em;
 	z-index: 100;
 	position: relative;
@@ -383,51 +383,51 @@ span.validated_checkbox+input[name="validated"].input_tick {
 	vertical-align: middle;
 }
 
-.various_ticks {
+.various-ticks {
 	margin: -0.5em 0 -0.5em -0.5em;
 	white-space: nowrap;
 }
 
-.syndication_options span {
+.syndication-options span {
 	white-space: nowrap;
 	border-right: 1px solid {$GET,pale_border};
 	font-size: 0.9em;
 	padding-right: 0.5em;
 	margin-right: 0.3em;
 }
-.syndication_options span:last-child {
+.syndication-options span:last-child {
 	border-right: 0;
 }
 
-.various_ticks .input_individual_tick, .various_ticks .input_other_tick {
+.various-ticks .input-individual-tick, .various-ticks .input-other-tick {
 	padding: 1em 1em 1em 0.5em; /* Designed to make it fill whole box, i.e. equalise against the th's (to the left) height */
 	float: left;
 	font-size: 0.9em;
 	vertical-align: middle;
 }
 
-.various_ticks .input_individual_tick {
+.various-ticks .input-individual-tick {
 }
 
-.various_ticks .input_other_tick {
+.various-ticks .input-other-tick {
 	clear: both;
 }
 
-.various_ticks .input_individual_tick input {
+.various-ticks .input-individual-tick input {
 	margin-bottom: 0;
 }
 
-.radio_list_pictures {
+.radio-list-pictures {
 	{$BETA_CSS_PROPERTY,display: flex;}
 	{$BETA_CSS_PROPERTY,flex-wrap: wrap;}
 	margin: -0.5em 0 0 -0.5em;
 }
-.radio_list_pictures.linear {
+.radio-list-pictures.linear {
 	display: block;
 	margin: 0;
 }
 
-.radio_list_picture {
+.radio-list-picture {
 	margin: 0.5em 0 0 0.5em;
 	font-size: 0.8em;
 	text-align: center;
@@ -436,38 +436,38 @@ span.validated_checkbox+input[name="validated"].input_tick {
 	/* Number based around topic emoticons emoticons */
 	min-width: 40px;
 }
-.radio_list_picture.linear {
+.radio-list-picture.linear {
 	margin: 1em;
 	border: 1px solid {$GET,standard_border};
 	opacity: 1.0;
 }
 
-.radio_list_picture label {
+.radio-list-picture label {
 	cursor: pointer;
 	display: block;
 }
 
-.radio_list_picture img {
+.radio-list-picture img {
 	max-width: 100px;
 }
 
-.radio_list_picture label.js_widget {
+.radio-list-picture label.js_widget {
 	visibility: hidden;
 	width: 0;
 	height: 0;
 	font-size: 0;
 }
-.page-running-admin-themes .radio_list_picture label.js_widget, .page-running-admin-zones .radio_list_picture label.js_widget {
+.page-running-admin-themes .radio-list-picture label.js_widget, .page-running-admin-zones .radio-list-picture label.js_widget {
 	visibility: visible;
 	width: auto;
 	height: auto;
 	font-size: inherit;
 }
 
-.radio_list_picture {
+.radio-list-picture {
 	opacity: 0.5;
 }
-.radio_list_picture:hover, .radio_list_picture.selected {
+.radio-list-picture:hover, .radio-list-picture.selected {
 	opacity: 1.0;
 }
 
@@ -478,7 +478,7 @@ span.validated_checkbox+input[name="validated"].input_tick {
 
 /* Form colour chooser */
 
-.form_table .css_colour_chooser_name {
+.form-table .css_colour_chooser_name {
 	width: 190px;
 }
 
@@ -698,7 +698,7 @@ span.validated_checkbox+input[name="validated"].input_tick {
 	width: 3.8em;
 }
 
-.permissions_matrix_wrap .form_table_field_input, .privileges td {
+.permissions_matrix_wrap .form-table-field-input, .privileges td {
 	text-align: center;
 	vertical-align: middle;
 }
@@ -752,23 +752,23 @@ span.validated_checkbox+input[name="validated"].input_tick {
 
 /* Spruce up defaults for form fields */
 
-.form_table input[type="text"], .form_table input[type="email"], .form_table input[type="password"], .form_table textarea,
-.form_table_field_input select, .form_table_field_input textarea {
+.form-table input[type="text"], .form-table input[type="email"], .form-table input[type="password"], .form-table textarea,
+.form-table-field-input select, .form-table-field-input textarea {
 	font-size: 1.12em;
 }
 
-.form_table input[type="text"], .form_table input[type="email"], .form_table input[type="password"], .form_table textarea {
+.form-table input[type="text"], .form-table input[type="email"], .form-table input[type="password"], .form-table textarea {
 	border-radius: 4px;
 	border: 1px solid {$GET,standard_border};
 	padding: 0.2em;
 }
 
-.form_table input[type="number"] {
+.form-table input[type="number"] {
 	width: 6em;
 }
 
 /*{+START,CSS_MODE,mobile}*/
-	.form_table input[type="file"] {
+	.form-table input[type="file"] {
 		max-width: 6em;
 	}
 /*{+END}*/
@@ -884,15 +884,15 @@ span.validated_checkbox+input[name="validated"].input_tick {
 
 /* Change some Composr styles to look more appropriate within a WYSIWYG editor */
 
-#wysiwyg_editor #screen_title {
+#wysiwyg-editor #screen_title {
 	display: block !important;
 }
 
-#wysiwyg_editor th, #wysiwyg_editor td {
+#wysiwyg-editor th, #wysiwyg-editor td {
 	border: 1px dotted {$GET,native_ui_foreground};
 }
 
-#wysiwyg_editor .comcode_fake_table > div, #wysiwyg_editor .fp_col_block {
+#wysiwyg-editor .comcode_fake_table > div, #wysiwyg-editor .fp_col_block {
 	outline: 1px dotted;
 	margin: 1px 0;
 }
@@ -903,17 +903,17 @@ comcode-{$REPLACE,\,,\,comcode-,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}\,
 	background-color: {$GET,native_ui_active_background};
 }
 
-#wysiwyg_editor kbd.cms_keep, #wysiwyg_editor kbd.cms_keep_block {
+#wysiwyg-editor kbd.cms_keep, #wysiwyg-editor kbd.cms_keep_block {
 	background-color: {$GET,native_ui_active_background};
 }
 
-#wysiwyg_editor kbd.cms_keep_block {
+#wysiwyg-editor kbd.cms_keep_block {
 	display: block;
 	border: 1px dotted gray;
 	padding: 2px;
 }
 
-#wysiwyg_editor input.cms_keep_ui_controlled, #wysiwyg_editor input.cms_keep_ui_controlled:focus {
+#wysiwyg-editor input.cms_keep_ui_controlled, #wysiwyg-editor input.cms_keep_ui_controlled:focus {
 	border: 1px dashed gray;
 	text-align: center;
 	color: {$GET,native_ui_foreground};
@@ -922,16 +922,16 @@ comcode-{$REPLACE,\,,\,comcode-,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}\,
 	padding: 1px 25px 1px 2px;
 }
 /* Separately specified, as the weird selector breaks whole compound selector on some browsers */
-#wysiwyg_editor input.cms_keep_ui_controlled::selection {
+#wysiwyg-editor input.cms_keep_ui_controlled::selection {
 	color: {$GET,native_ui_foreground};
 	background-color: {$GET,native_ui_active_background};
 }
-#wysiwyg_editor input.cms_keep_ui_controlled::-moz-selection {
+#wysiwyg-editor input.cms_keep_ui_controlled::-moz-selection {
 	color: {$GET,native_ui_foreground};
 	background-color: {$GET,native_ui_active_background};
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	#wysiwyg_editor input.cms_keep_ui_controlled {
+	#wysiwyg-editor input.cms_keep_ui_controlled {
 		background-image: url('{$IMG;,icons/32x32/editor/comcode}');
 	}
 }
@@ -954,6 +954,6 @@ comcode-{$REPLACE,\,,\,comcode-,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}\,
 
 /* Other styles */
 
-body#wysiwyg_editor {
+body#wysiwyg-editor {
 	min-height: 140px;
 }

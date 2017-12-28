@@ -13,7 +13,7 @@
 		<div class="form_text">{$PARAGRAPH,{TEXT}}</div>
 	{+END}
 
-	{+START,IF,{$IN_STR,{FIELDS},required_star}}
+	{+START,IF,{$IN_STR,{FIELDS},required-star}}
 		{+START,INCLUDE,FORM_SCREEN_ARE_REQUIRED}{+END}
 	{+END}
 
@@ -31,7 +31,7 @@
 	{+END}
 
 		{+START,IF_PASSED,SKIPPABLE}
-			<div class="skip_step_button_wrap{+START,IF,{$IN_STR,{FIELDS},required_star}} skip_step_button_wrap_with_req_note{+END}">
+			<div class="skip_step_button_wrap{+START,IF,{$IN_STR,{FIELDS},required-star}} skip_step_button_wrap_with_req_note{+END}">
 				<div>
 					<input type="hidden" id="{SKIPPABLE*}" name="{SKIPPABLE*}" value="0" />
 					<input data-disable-on-click="1" tabindex="151" class="button_screen_item buttons--skip js-btn-skip-step" type="submit" value="{!SKIP}" />
@@ -43,7 +43,7 @@
 			{HIDDEN}
 
 			{+START,IF_NON_EMPTY,{FIELDS}}
-				<div class="wide-table-wrap"><table class="map_table form_table wide-table scrollable_inside">
+				<div class="wide-table-wrap"><table class="map_table form-table wide-table scrollable_inside">
 					{+START,IF,{$DESKTOP}}
 						<colgroup>
 							<col class="field_name_column" />

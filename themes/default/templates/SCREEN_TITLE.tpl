@@ -9,7 +9,7 @@
 		{+START,IF_NON_EMPTY,{AWARDS}}
 			{+START,SET,AWARDS_TEXT}
 				<h2>{!AWARD_WINNER}</h2>
-				<p class="lonely_label">{!AWARDS_WON,{AWARDS}}</p>
+				<p class="lonely-label">{!AWARDS_WON,{AWARDS}}</p>
 				<ul>
 					{+START,LOOP,AWARDS}
 						<li>

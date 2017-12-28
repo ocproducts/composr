@@ -3,7 +3,7 @@
 <form title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
-	<p class="lonely_label">
+	<p class="lonely-label">
 		{!DELURK_CONFIRM}
 	</p>
 	<ul>

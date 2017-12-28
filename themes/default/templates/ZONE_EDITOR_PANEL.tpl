@@ -65,18 +65,18 @@
 	{+END}
 
 	<div id="info_{ID*}" style="{+START,IF_NON_PASSED,PREVIEW}display: block{+END}{+START,IF_PASSED,PREVIEW}display: none{+END}" aria-labeledby="info_tab_{ID*}" role="tabpanel">
-		<p class="lonely_label">
+		<p class="lonely-label">
 			<span class="field-name">{!PAGE_TYPE}:</span>
 		</p>
 		<p>{TYPE*}</p>
 
-		<p class="lonely_label">
+		<p class="lonely-label">
 			<span class="field-name">{!NAME}:</span>
 		</p>
 		<p><kbd>{ID*}</kbd></p>
 
 		{+START,IF_NON_EMPTY,{EDIT_URL}}
-			<p class="lonely_label">
+			<p class="lonely-label">
 				<span class="field-name">{!ACTIONS}:</span>
 			</p>
 			<ul class="actions-list">
@@ -90,7 +90,7 @@
 				<form title="{ID*}: {!DRAWS_FROM}" action="index.php" method="post" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<p class="lonely_label">
+					<p class="lonely-label">
 						<label for="redirect_{ID*}" class="field-name">{!DRAWS_FROM}:</label>
 					</p>
 					{+START,IF_NON_EMPTY,{ZONES}}
@@ -112,7 +112,7 @@
 			<form title="{ID*}: {!SETTINGS}" id="middle_fields" action="index.php" autocomplete="off">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
-				<div class="wide-table-wrap"><table class="map_table form_table wide-table">
+				<div class="wide-table-wrap"><table class="map_table form-table wide-table">
 					{+START,IF,{$DESKTOP}}
 						<colgroup>
 							<col class="field_name_column" />

@@ -1,4 +1,4 @@
-<div class="invoice_box">
+<div class="invoice-box">
 	<table class="layout_table">
 		<tbody>
 			<tr class="top">

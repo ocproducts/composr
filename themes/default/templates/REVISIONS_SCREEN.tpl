@@ -16,7 +16,7 @@
 				{$REQUIRE_JAVASCRIPT,jquery}
 				{$REQUIRE_JAVASCRIPT,select2}
 				<div class="revisions_filter_item">
-					<label class="lonely_label" for="resource_types">{!TYPE}:</label>
+					<label class="lonely-label" for="resource_types">{!TYPE}:</label>
 					<select multiple="multiple" name="resource_types" id="resource_types" data-cms-select2="{dropdownAutoWidth: true}">
 						{+START,LOOP,RESOURCE_TYPES}
 							<option value="{_loop_key*}"{+START,IF_IN_ARRAY,{_loop_key},{$_GET*,resource_types}} selected="selected"{+END}>{_loop_var*}</option>
@@ -26,17 +26,17 @@
 
 				{$REQUIRE_JAVASCRIPT,ajax_people_lists}
 				<div class="revisions_filter_item">
-					<label class="lonely_label" for="username">{!USERNAME}:</label>
+					<label class="lonely-label" for="username">{!USERNAME}:</label>
 					<input class="js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" name="username" id="username" value="{$_GET*,username}" />
 				</div>
 
 				<div class="revisions_filter_item">
-					<label class="lonely_label" for="resource_id">{!IDENTIFIER} <span class="associated-details">({!ADVANCED})</span>:</label>
+					<label class="lonely-label" for="resource_id">{!IDENTIFIER} <span class="associated-details">({!ADVANCED})</span>:</label>
 					<input type="text" name="resource_id" id="resource_id" value="{$_GET*,resource_id}" />
 				</div>
 
 				<div class="revisions_filter_item">
-					<label class="lonely_label" for="category_id">{!CATEGORY} <span class="associated-details">({!ADVANCED})</span>:</label>
+					<label class="lonely-label" for="category_id">{!CATEGORY} <span class="associated-details">({!ADVANCED})</span>:</label>
 					<input type="text" name="category_id" id="category_id" value="{$_GET*,category_id}" />
 				</div>
 

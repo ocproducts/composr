@@ -6,7 +6,7 @@
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div>
-		<p class="lonely_label"><label for="given_password">{!PASSWORD}:</label></p>
+		<p class="lonely-label"><label for="given_password">{!PASSWORD}:</label></p>
 		<input id="given_password" type="password" name="given_password" />
 	</div>
 

@@ -104,7 +104,7 @@
 
 								<label class="accessibility_hidden" for="friend_username">{!USERNAME}: </label>
 								<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="18" maxlength="80" class="js-keyup-input-update-ajax-member-list" type="text" placeholder="{!USERNAME}" id="friend_username" name="friend_username" />
-								<input class="button_micro menu___generic_admin__add_one" type="submit" value="{!ADD}" />
+								<input class="button-micro menu___generic_admin__add_one" type="submit" value="{!ADD}" />
 							</form>
 						{+END}
 

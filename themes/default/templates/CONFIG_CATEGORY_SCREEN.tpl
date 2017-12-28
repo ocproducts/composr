@@ -29,7 +29,7 @@
 
 				<h3>{GROUP_TITLE*}</h3>
 
-				<div class="wide-table-wrap"><table class="map_table form_table wide-table">
+				<div class="wide-table-wrap"><table class="map_table form-table wide-table">
 					{+START,IF,{$DESKTOP}}
 						<colgroup>
 							<col class="field_name_column" />
@@ -39,7 +39,7 @@
 
 					<tbody>
 						{+START,IF_NON_EMPTY,{GROUP_DESCRIPTION}}
-							<tr class="form_table_field_spacer">
+							<tr class="form-table-field-spacer">
 								<th colspan="2" class="table_heading_cell">
 									{GROUP_DESCRIPTION*}
 								</th>

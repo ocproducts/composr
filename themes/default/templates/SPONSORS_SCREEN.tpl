@@ -1,6 +1,6 @@
 {TITLE}
 
-<p {+START,IF_NON_EMPTY,{PATREONS}} class="lonely_label"{+END}>{!PROJECT_SPONSORS_LABEL}</p>
+<p {+START,IF_NON_EMPTY,{PATREONS}} class="lonely-label"{+END}>{!PROJECT_SPONSORS_LABEL}</p>
 {+START,IF_NON_EMPTY,{PATREONS}}
 	<ul>
 		{+START,LOOP,PATREONS}

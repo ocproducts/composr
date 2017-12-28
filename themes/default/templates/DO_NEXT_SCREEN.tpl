@@ -16,7 +16,7 @@
 
 	{INTRO}
 
-	<p class="do_next_page_question">
+	<p class="do-next-page-question">
 		{QUESTION*}
 	</p>
 

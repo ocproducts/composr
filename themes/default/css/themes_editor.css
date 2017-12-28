@@ -189,26 +189,26 @@
 
 /* Logo Wizard */
 
-.theme_image__background_theme_image .radio_list_picture {
+.theme_image__background_theme_image .radio-list-picture {
 	box-sizing: border-box;
 }
 /*{+START,CSS_MODE,desktop}*/
-	.theme_image__background_theme_image .radio_list_picture {
+	.theme_image__background_theme_image .radio-list-picture {
 		max-width: 50%;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.theme_image__background_theme_image .radio_list_picture {
+	.theme_image__background_theme_image .radio-list-picture {
 		max-width: 100%;
 		padding: 0;
 		margin: 0;
 	}
 
-	.theme_image__background_theme_image .radio_list_picture .selectable_theme_image {
+	.theme_image__background_theme_image .radio-list-picture .selectable_theme_image {
 		padding: 0;
 	}
 /*{+END}*/
-.theme_image__logo_theme_image .radio_list_picture img, .theme_image__background_theme_image .radio_list_picture img {
+.theme_image__logo_theme_image .radio-list-picture img, .theme_image__background_theme_image .radio-list-picture img {
 	max-width: 100%;
 	height: auto;
 }

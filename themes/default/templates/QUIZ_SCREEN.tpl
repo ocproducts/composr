@@ -26,7 +26,7 @@
 
 	{$SET,no_required_stars,{ALL_REQUIRED}}
 	{+START,IF,{$NOT,{ALL_REQUIRED}}}
-		{+START,IF,{$IN_STR,{FIELDS},required_star}}
+		{+START,IF,{$IN_STR,{FIELDS},required-star}}
 			{+START,INCLUDE,FORM_SCREEN_ARE_REQUIRED}{+END}
 		{+END}
 	{+END}
@@ -35,7 +35,7 @@
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div>
-			<div class="wide-table-wrap"><table class="map_table form_table wide-table">
+			<div class="wide-table-wrap"><table class="map_table form-table wide-table">
 				{+START,IF,{$DESKTOP}}
 					<colgroup>
 						<col class="quiz_field_name_column" />

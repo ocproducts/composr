@@ -7,7 +7,7 @@
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div>
-			<div class="wide-table-wrap"><table class="map_table form_table wide-table">
+			<div class="wide-table-wrap"><table class="map_table form-table wide-table">
 				{+START,IF,{$DESKTOP}}
 					<colgroup>
 						<col class="field_name_column" />

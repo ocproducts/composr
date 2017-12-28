@@ -10,7 +10,7 @@
 		<span id="participant_online__{CHATROOM_ID*}__{ID*}"><em>{ONLINE*}</em></span>
 	</div>
 	<div class="associated-details">
-		<p class="lonely_label">{!ACTIONS}:</p>
+		<p class="lonely-label">{!ACTIONS}:</p>
 		<nav>
 			<ul class="actions_list_super_compact">
 				<li id="friend__{ID*}">

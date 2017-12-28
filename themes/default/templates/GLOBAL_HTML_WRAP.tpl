@@ -168,7 +168,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 							<div class="inline">
 								<div class="accessibility_hidden"><label for="su">{!SU}</label></div>
 								<input title="{!SU_2}" class="js-global-input-su-keypress-enter-submit-form" accesskey="w" size="10" type="text"{+START,IF_NON_EMPTY,{$_GET,keep_su}} placeholder="{$USERNAME*}"{+END} value="{+START,IF_NON_EMPTY,{$_GET,keep_su}}{$USERNAME*}{+END}" id="su" name="keep_su" />
-								<input data-disable-on-click="1" class="button_micro menu__site_meta__user_actions__login" type="submit" value="{!SU}" />
+								<input data-disable-on-click="1" class="button-micro menu__site_meta__user_actions__login" type="submit" value="{!SU}" />
 							</div>
 						</form>
 					{+END}
@@ -180,7 +180,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 							<div class="inline">
 								<p class="accessibility_hidden"><label for="special_page_type">{!SCREEN_DEV_TOOLS}</label></p>
 								<select id="special_page_type" name="special_page_type">{$STAFF_ACTIONS}</select>
-								<input class="button_micro buttons--proceed" type="submit" value="{!PROCEED_SHORT}" />
+								<input class="button-micro buttons--proceed" type="submit" value="{!PROCEED_SHORT}" />
 							</div>
 						</form>
 					{+END}{+END}{+END}

@@ -46,11 +46,11 @@
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		{+START,IF_PASSED,FIELDS}
-			<div class="wide-table-wrap"><table class="map_table form_table wide-table">
+			<div class="wide-table-wrap"><table class="map_table form-table wide-table">
 				{+START,IF,{$NOT,{$MOBILE}}}
 					<colgroup>
-						<col class="purchase_field_name_column" />
-						<col class="purchase_field_input_column" />
+						<col class="purchase-field-name-column" />
+						<col class="purchase-field-input-column" />
 					</colgroup>
 				{+END}
 
@@ -60,7 +60,7 @@
 			</table></div>
 		{+END}
 
-		<p class="purchase_button">
+		<p class="purchase-button">
 			<input id="proceed_button" class="button_screen buttons--proceed js-click-do-cart-form-submit" accesskey="u" type="button" value="{!CHECKOUT}" />
 		</p>
 	</form>

@@ -26,7 +26,7 @@
 		<input type="image" src="{$IMG*,results/sortablefield_desc}" id="down_{I*}" alt="{!MOVE_DOWN}" data-click-pd="1" class="horiz-field-sep js-click-btn-move-down-handle-ordering">
 		<input type="image" src="{$IMG*,results/sortablefield_asc}" id="up_{I*}" alt="{!MOVE_UP}" data-click-pd="1" class="js-click-btn-move-up-handle-ordering">
 
-		<input class="menu___generic_admin__delete button_micro horiz-field-sep js-click-delete-menu-branch" value="{!DELETE}" type="button" id="del_{I*}" name="del_{I*}" />
+		<input class="menu___generic_admin__delete button-micro horiz-field-sep js-click-delete-menu-branch" value="{!DELETE}" type="button" id="del_{I*}" name="del_{I*}" />
 	</div>
 
 	<div class="menu_editor_branch_indent" id="branch_{I*}_follow_1" style="{DISPLAY*}">

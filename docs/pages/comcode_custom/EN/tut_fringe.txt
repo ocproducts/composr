@@ -74,7 +74,7 @@ Unlike a word processor, whatever is being edited is going to end up inserted in
 
 The default Composr theme defines a font in the [tt]global.css[/tt] as follows:
 [code="CSS"]
-body, .email_body, textarea, input, td, th {
+body, .email-body, textarea, input, td, th {
 	/* 'Open Sans' is a Google font, and only will be enabled if uncommented in HTML_HEAD.tpl -- so normally it is Segoe UI (Windows, newer version of Tahoma) or Tahoma that is active (available on Windows and Mac since Leopard) or a similar humanist sans-serif font */
 	font-family: 'Open Sans', 'Segoe UI', Tahoma, Verdana, Arial, Helvetica, sans-serif;
 }

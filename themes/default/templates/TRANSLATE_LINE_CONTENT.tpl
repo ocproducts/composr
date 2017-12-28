@@ -12,14 +12,14 @@
 	<td class="translate_line_second">
 		<div class="accessibility_hidden"><label for="old__trans_{NAME*}">{!OLD} {NAME*}</label></div>
 		<div>
-			<textarea readonly="readonly" class="translate_original_text wide_field" cols="60" rows="{$ADD*,{$DIV,{$LENGTH,{OLD}},80},1}" id="old__trans_{NAME*}" name="old__{NAME*}">{OLD*}</textarea>
+			<textarea readonly="readonly" class="translate_original_text wide-field" cols="60" rows="{$ADD*,{$DIV,{$LENGTH,{OLD}},80},1}" id="old__trans_{NAME*}" name="old__{NAME*}">{OLD*}</textarea>
 		</div>
 
 		<div class="arrow_ruler"><img alt="" src="{$IMG*,arrow_ruler_small}" /></div>
 
 		<div class="accessibility_hidden"><label for="trans_{ID*}">{NAME*}</label></div>
 		<div>
-			<textarea class="wide_field translate_field" cols="60" rows="{$ADD*,{$DIV,{$LENGTH,{CURRENT}},80},1}" id="trans_{ID*}" name="trans_{ID*}">{CURRENT*}</textarea>
+			<textarea class="wide-field translate_field" cols="60" rows="{$ADD*,{$DIV,{$LENGTH,{CURRENT}},80},1}" id="trans_{ID*}" name="trans_{ID*}">{CURRENT*}</textarea>
 		</div>
 	</td>
 	{+START,IF_NON_EMPTY,{ACTIONS}}

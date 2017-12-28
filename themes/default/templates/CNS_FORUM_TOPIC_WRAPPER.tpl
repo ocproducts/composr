@@ -93,7 +93,7 @@
 						<select class="dropdown-actions" name="type" id="fma_type">
 							<option value="browse">-</option>
 							{MODERATOR_ACTIONS}
-						</select><input class="button_micro buttons--proceed js-click-btn-add-form-marked-posts" type="submit" value="{!PROCEED}" />
+						</select><input class="button-micro buttons--proceed js-click-btn-add-form-marked-posts" type="submit" value="{!PROCEED}" />
 					</div>
 				</form>
 
@@ -110,7 +110,7 @@
 								<option value="50"{$?,{$EQ,{MAX},50}, selected="selected",}>50</option>
 								<option value="100"{$?,{$EQ,{MAX},100}, selected="selected",}>100</option>
 								<option value="300"{$?,{$EQ,{MAX},300}, selected="selected",}>300</option>
-							</select><input class="button_micro buttons--proceed js-click-btn-add-form-marked-posts" type="submit" value="{!PROCEED}" />
+							</select><input class="button-micro buttons--proceed js-click-btn-add-form-marked-posts" type="submit" value="{!PROCEED}" />
 						</div>
 					</form>
 

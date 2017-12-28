@@ -7,9 +7,9 @@
 <title>{TITLE*}</title>
 {CSS}
 </head>
-<body style="font-size: 12px" class="email_body">
-	<div style="font-size: 12px" class="email_body">
-		<p class="email_logo">
+<body style="font-size: 12px" class="email-body">
+	<div style="font-size: 12px" class="email-body">
+		<p class="email-logo">
 			<a href="{$BASE_URL*}"><img src="{$IMG*,logo/standalone_logo}" title="{$SITE_NAME*}" alt="{$SITE_NAME*}" /></a>
 		</p>
 
@@ -23,12 +23,12 @@
 
 		<hr class="spaced_rule" />
 
-		<div class="email_footer">
-			<div class="email_copyright">
+		<div class="email-footer">
+			<div class="email-copyright">
 				{$COPYRIGHT`}
 			</div>
 
-			<div class="email_url">
+			<div class="email-url">
 				{$PREG_REPLACE*,^.*://,,{$BASE_URL}}
 			</div>
 		</div>

@@ -215,7 +215,7 @@ html, body {
 	{$BETA_CSS_PROPERTY,text-size-adjust: none;}
 }
 
-body, .email_body, textarea, input, td, th {
+body, .email-body, textarea, input, td, th {
 	/* 'Open Sans' is a Google font, and only will be enabled if uncommented in HTML_HEAD.tpl -- so normally it is Segoe UI (Windows, newer version of Tahoma) or Tahoma that is active (available on Windows and Mac since Leopard) or a similar humanist sans-serif font */
 	font-family: 'Open Sans', 'Segoe UI', Tahoma, Verdana, Arial, Helvetica, sans-serif;
 }
@@ -391,7 +391,7 @@ iframe {
 	unicode-bidi: bidi-override;
 	direction: ltr;
 }*/
-#wysiwyg_editor input[type="text"], #wysiwyg_editor textarea {
+#wysiwyg-editor input[type="text"], #wysiwyg-editor textarea {
 	unicode-bidi: normal;
 	direction: ltr;
 }
@@ -401,7 +401,7 @@ iframe {
 		max-width: 100px;
 		white-space: nowrap !important;
 	}
-	select[size]/* Not a drop-down */, .form_table_field_input select {
+	select[size]/* Not a drop-down */, .form-table-field-input select {
 		max-width: 100%;
 	}
 
@@ -411,7 +411,7 @@ iframe {
 	}
 
 	/* On mobiles we want maximum fluidity */
-	table, table.do_next_section {
+	table, table.do-next-section {
 		table-layout: auto !important;
 
 		/* Allows wrapping */
@@ -525,7 +525,7 @@ input.input_username::-webkit-calendar-picker-indicator {
 =========================
 */
 
-/* Consider .website_body as 'body': it is just we cannot put our styles directly on body because sometimes this gets used in things we should not mess with such as the WYSIWYG editors frame (which is #wysiwyg_editor) and e-mails */
+/* Consider .website_body as 'body': it is just we cannot put our styles directly on body because sometimes this gets used in things we should not mess with such as the WYSIWYG editors frame (which is #wysiwyg-editor) and e-mails */
 body.website_body {
 	padding: 0 !important;
 	margin: 0;
@@ -572,10 +572,10 @@ body.website_body.frame {
 	/*{+END}*/
 /*{+END}*/
 
-body.website_body, #wysiwyg_editor {
+body.website_body, #wysiwyg-editor {
 	font-size: 13px;
 }
-#wysiwyg_editor {
+#wysiwyg-editor {
 	margin: 0;
 	color: {$GET,slightly_seeded_text};
 	background-color: {$GET,main_background};
@@ -761,7 +761,7 @@ header h1 {
 	position: relative;
 	left: -0.8em; /* So is flush to borders, undoes page padding */
 }
-#wysiwyg_editor .hero_section {
+#wysiwyg-editor .hero_section {
 	left: 0;
 }
 .hero_section h1 {
@@ -1405,23 +1405,23 @@ body input.button_hyperlink, body input.button_hyperlink:hover {
 	cursor: pointer;
 }
 
-.help_icon {
+.help-icon {
 	cursor: pointer;
 }
 /*{+START,CSS_MODE,desktop}*/
-	.help_icon {
+	.help-icon {
 		margin-left: 0.5em;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.help_icon {
+	.help-icon {
 		display: block;
 		margin-top: 0.5em;
 	}
-	.lonely_label + span + .help_icon {
+	.lonely-label + span + .help-icon {
 		margin-left: 0.5em;
 	}
-	input[type="checkbox"] + input[type="hidden"] + .help_icon {
+	input[type="checkbox"] + input[type="hidden"] + .help-icon {
 		display: inline;
 		margin-top: 0;
 	}
@@ -1552,12 +1552,12 @@ div.red_alert, p.red_alert {
 }
 
 /* Used when a label is the only thing in front of a textarea/list */
-.lonely_label  {
+.lonely-label  {
 	margin-bottom: 0.2em !important;
 	display: block !important;
 	font-size: 1.1em !important;
 }
-.lonely_label+ul, .lonely_label+ol, .lonely_label+p {
+.lonely-label+ul, .lonely-label+ol, .lonely-label+p {
 	margin-top: 0.2em;
 }
 
@@ -1692,7 +1692,7 @@ td>.comcode_quote:first-child, .fake_table_cell>.comcode_quote:first-child, .fak
 .boxless-space .box>.box-inner, .boxless-space .box>.toggleable-tray {
 	margin: 0;
 }
-.email_body .box .box-inner { /* Outlook.com does not support margins or complex use of the sibling selector */
+.email-body .box .box-inner { /* Outlook.com does not support margins or complex use of the sibling selector */
 	margin: 0;
 	padding: 5px; /* not em so that header may be positioned properly */
 }
@@ -2394,10 +2394,10 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 		border-bottom: 0;
 	}
 
-	.responsive-table .form_table_field_spacer {
+	.responsive-table .form-table-field-spacer {
 		border: 0 !important;
 	}
-	.responsive-table .form_table_field_spacer .table_heading_cell {
+	.responsive-table .form-table-field-spacer .table_heading_cell {
 		border: 0 !important;
 		padding: 0 !important;
 	}
@@ -3722,7 +3722,7 @@ ul.buttons-group, ul.associated-links-block-group {
 /*{+END}*/
 
 /*{+START,CSS_MODE,desktop}*/
-	.quite_wide_field {
+	.quite-wide-field {
 		width: 88%;
 	}
 /*{+END}*/
@@ -3741,14 +3741,14 @@ ul.buttons-group, ul.associated-links-block-group {
 =========================
 */
 
-.wide_field {
+.wide-field {
 	width: 100%;
 	box-sizing: border-box;
 	margin-left: 0 !important;
 	margin-right: 0 !important;
 }
 
-.fields_set_contents .wide_field {
+.fields_set_contents .wide-field {
 	max-width: 500px;
 }
 .multi_field + .multi_field {
@@ -3774,7 +3774,7 @@ input.magic_image_edit_link {
 	background-image: none !important;
 }
 
-.button_micro, .button_screen, .button_screen_item, .hero_section .hero_button a, body .hero_section .hero_button>a.user_link {
+.button-micro, .button_screen, .button_screen_item, .hero_section .hero_button a, body .hero_section .hero_button>a.user_link {
 	display: inline-block;
 	box-sizing: border-box;
 	border: 1px solid {$GET,dark_border};
@@ -3793,7 +3793,7 @@ input.magic_image_edit_link {
 	vertical-align: middle;
 	cursor: pointer;
 }
-div>.button_micro:first-child, div>.button_screen:first-child, div>.button_screen_item:first-child, .hero_section .hero_button a:first-child {
+div>.button-micro:first-child, div>.button_screen:first-child, div>.button_screen_item:first-child, .hero_section .hero_button a:first-child {
 	margin-left: 2px; /* enough for the shadow */
 }
 
@@ -3823,23 +3823,23 @@ div>.button_micro:first-child, div>.button_screen:first-child, div>.button_scree
 		margin: 0.25em 0.1em !important;
 	}
 /*{+END}*/
-.button_micro {
+.button-micro {
 	padding: 4px 6px;
 	font-size: 12px;
 	margin: 1px 0.2em 0 0.4em; /* Push it up a bit due to confined space */
 	text-shadow: 1px 1px 1px {$GET,dark_shadow};
 }
 /*{+START,CSS_MODE,mobile}*/
-	.button_micro {
+	.button-micro {
 		line-height: 0.9em;
 	}
 /*{+END}*/
-div .button_micro {
+div .button-micro {
 	background-image: none !important; /* Too loud for such a small space */
 	border-radius: 1px;
 }
 
-.button_screen, .button_screen_item, .button_micro, .toggleable-tray-button img {
+.button_screen, .button_screen_item, .button-micro, .toggleable-tray-button img {
 	opacity: 0.85;
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 	display: inline-block;
@@ -3849,12 +3849,12 @@ div .button_micro {
 	opacity: 0.85 !important;
 	cursor: not-allowed;
 }
-.button_micro:hover, .button_screen:hover, .button_screen_item:hover,
-.button_screen:hover, .button_screen_item:hover, .button_micro:hover, .toggleable-tray-button:hover img,
-body.touch-enabled .button_screen, body.touch-enabled .button_screen_item, body.touch-enabled .button_micro, body.touch-enabled .toggleable-tray-button img {
+.button-micro:hover, .button_screen:hover, .button_screen_item:hover,
+.button_screen:hover, .button_screen_item:hover, .button-micro:hover, .toggleable-tray-button:hover img,
+body.touch-enabled .button_screen, body.touch-enabled .button_screen_item, body.touch-enabled .button-micro, body.touch-enabled .toggleable-tray-button img {
 	opacity: 1.0;
 }
-.button_micro:disabled, .button_screen:disabled, .button_screen_item:disabled {
+.button-micro:disabled, .button_screen:disabled, .button_screen_item:disabled {
 	opacity: 0.4 !important;
 	cursor: default;
 }
@@ -3878,14 +3878,14 @@ div.proceed_button_left_2 {
 	text-align: right;
 }
 
-.innocuous_fieldset {
+.innocuous-fieldset {
 	border: 0;
 	padding: 0;
 	margin: 0 0 1em 0;
 	min-width: 0; /* Works around webkit bug, where it breaks max-width:100% inside because the size calculation has been inverted by the default "min-width: -webkit-min-content;" rule  */
 }
 
-.box-inner>.innocuous_fieldset {
+.box-inner>.innocuous-fieldset {
 	margin: 0;
 }
 
@@ -4335,7 +4335,7 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 =========================
 */
 
-.tab_surround {
+.tab-surround {
 	border-left: 1px solid;
 	border-right: 1px solid;
 	border-bottom: 1px solid;
@@ -4346,7 +4346,7 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 	background-image: linear-gradient(to bottom, {$GET,main_2_background}, {$GET,main_background});
 }
 
-.tab_surround>div>.box:first-child {
+.tab-surround>div>.box:first-child {
 	margin-top: 0;
 }
 
@@ -4414,7 +4414,7 @@ a.tab>span {
 }
 
 /*{+START,CSS_MODE,mobile}*/
-	.tab_surround .tab {
+	.tab-surround .tab {
 		min-width: 99px; /* Allows 3 per row, neat alignment (for nested tabs) */
 	}
 /*{+END}*/
@@ -4480,7 +4480,7 @@ div[role="tabpanel"]>:last-child {
 /* Sub-tabs */
 
 /* Tighten up subtab display */
-.tab_surround .tab_surround {
+.tab-surround .tab-surround {
 	background-image: none;
 	background-color: {$GET,main_background};
 	overflow: hidden; /* To stop margin collapsing bleeding backgrounds */
@@ -4490,13 +4490,13 @@ div[role="tabpanel"]>:last-child {
 	margin-top: 0.5em;
 }
 
-.tab_surround .tab {
+.tab-surround .tab {
 	padding-top: 5px !important;
 	height: 21px;
 	font-size: 0.9em;
 }
 
-.tab_surround .tab img {
+.tab-surround .tab img {
 	width: 17px;
 }
 
@@ -4580,7 +4580,7 @@ div:hover>.edit_menu_link_inline, div:hover>.edit_page_link_inline {
 
 /* .comcode_quote is used where the [quote] tag is parsed. */
 /* .comcode_code is used where the [code] tag is parsed. */
-.email_body .comcode_quote, .email_body .comcode_code {
+.email-body .comcode_quote, .email-body .comcode_code {
 	margin: 1em 0;
 }
 .comcode_quote, .comcode_code {
@@ -5192,7 +5192,7 @@ a[title="{!VIRTUAL_ROOT}"]:hover {
 =========================
 */
 
-.overlay [role="toolbar"], .overlay .emoticon_chooser, .overlay .posting_rules, .overlay .required_field_warning {
+.overlay [role="toolbar"], .overlay .emoticon_chooser, .overlay .posting_rules, .overlay .required-field-warning {
 	display: none;
 }
 
@@ -5264,7 +5264,7 @@ span:not(:empty)+#lightbox_position_in_set:before, span:not(:empty)+#lightbox_fu
 =========================
 */
 
-.email_logo img {
+.email-logo img {
 	max-width: 100%;
 	height: auto;
 }

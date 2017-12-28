@@ -12,7 +12,7 @@
 			{HIDDEN}
 
 			{+START,IF_NON_EMPTY,{FIELDS}}
-				<div class="wide-table-wrap"><table class="map_table form_table wide-table scrollable_inside">
+				<div class="wide-table-wrap"><table class="map_table form-table wide-table scrollable_inside">
 					{+START,IF,{$DESKTOP}}
 						<colgroup>
 							<col class="field_name_column" />

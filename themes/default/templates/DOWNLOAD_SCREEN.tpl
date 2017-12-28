@@ -10,11 +10,11 @@
 	{WARNING_DETAILS}
 
 	<div class="float-surrounder">
-		<div class="download_metadata">
-			<div class="download_now_wrapper">
+		<div class="download-metadata">
+			<div class="download-now-wrapper">
 				<div class="box box___download_screen" data-toggleable-tray="{}">
 					{+START,IF_PASSED,LICENCE_HYPERLINK}
-					<p class="download_licence">
+					<p class="download-licence">
 						{!D_BEFORE_PROCEED_AGREE,{LICENCE_HYPERLINK}}
 					</p>
 
@@ -28,25 +28,25 @@
 					{+START,IF_NON_PASSED,LICENCE_HYPERLINK}
 					<div class="box-inner">
 					{+END}
-						<div class="download_now" itemprop="significantLinks">
+						<div class="download-now" itemprop="significantLinks">
 							{+START,IF,{MAY_DOWNLOAD}}
 								<p class="download_link associated-link suggested_link"><a {+START,IF,{$NOT,{$INLINE_STATS}}} data-click-ga-track="{ category: '{!DOWNLOAD;^*}', action: '{ORIGINAL_FILENAME;^*}' }"{+END} rel="nofollow" href="{DOWNLOAD_URL*}"><strong>{!DOWNLOAD_NOW}</strong></a></p>
 							{+END}
 							{+START,IF,{$NOT,{MAY_DOWNLOAD}}}
 								<p>{!NO_DOWNLOAD_ACCESS}</p>
 							{+END}
-							<p class="download_filesize">({FILE_SIZE*})</p>
+							<p class="download-filesize">({FILE_SIZE*})</p>
 						</div>
 					</div>
 				</div>
 			</div>
 
-			<div class="download_stats_wrapper">
-				<div class="wide-table-wrap"><table class="map_table download_stats results-table wide-table" role="note">
+			<div class="download-stats-wrapper">
+				<div class="wide-table-wrap"><table class="map_table download-stats results-table wide-table" role="note">
 					{+START,IF,{$DESKTOP}}
 						<colgroup>
-							<col class="download_field_name_column" />
-							<col class="download_field_value_column" />
+							<col class="download-field-name-column" />
+							<col class="download-field-value-column" />
 						</colgroup>
 					{+END}
 
@@ -125,7 +125,7 @@
 			{+END}
 		</div>
 
-		<div class="download_description" itemprop="description">
+		<div class="download-description" itemprop="description">
 			{+START,IF_NON_EMPTY,{DESCRIPTION}}
 				{$PARAGRAPH,{DESCRIPTION}}
 			{+END}
@@ -162,7 +162,7 @@
 				{IMAGES_DETAILS}
 			</div>
 
-			{$,<p class="download_start_slideshow"><span class="associated-link"><a target="_blank" title="\{!galleries:_SLIDESHOW\}: \{!LINK_NEW_WINDOW\}" href="\{$PAGE_LINK*,_SEARCH:galleries:image:\{$GET*,FIRST_IMAGE_ID\}:slideshow=1:wide_high=1\}">\{!galleries:_SLIDESHOW\}</a></span></p>}
+			{$,<p class="download-start-slideshow"><span class="associated-link"><a target="_blank" title="\{!galleries:_SLIDESHOW\}: \{!LINK_NEW_WINDOW\}" href="\{$PAGE_LINK*,_SEARCH:galleries:image:\{$GET*,FIRST_IMAGE_ID\}:slideshow=1:wide_high=1\}">\{!galleries:_SLIDESHOW\}</a></span></p>}
 		</div></div>
 	{+END}
 

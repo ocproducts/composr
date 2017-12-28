@@ -3,7 +3,7 @@
 {WARNINGS}
 
 {+START,IF_NON_EMPTY,{FILES}}
-	<p class="lonely_label">{!WARNING_UNINSTALL}</p>
+	<p class="lonely-label">{!WARNING_UNINSTALL}</p>
 	<ul>
 		{FILES}
 	</ul>

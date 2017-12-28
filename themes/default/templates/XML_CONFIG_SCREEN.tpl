@@ -8,7 +8,7 @@
 
 		<div>
 			<label for="xml" class="accessibility_hidden">XML</label>
-			<textarea name="xml" id="xml" cols="30" rows="30" class="wide_field">{XML*}</textarea>
+			<textarea name="xml" id="xml" cols="30" rows="30" class="wide-field">{XML*}</textarea>
 		</div>
 
 		<p class="proceed_button">

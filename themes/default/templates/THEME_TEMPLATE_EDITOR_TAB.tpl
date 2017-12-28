@@ -397,7 +397,7 @@
 			<div class="css_editor_lhs_column">
 				<div class="css_editor_selectors" id="selectors_{FILE_ID*}" style="display: none"{$,Only becomes visible if it has an anchor page}>
 					<div id="selectors_inner_{FILE_ID*}">
-						<p class="lonely_label">{!SELECTORS_PARENT_PAGE}:</p>
+						<p class="lonely-label">{!SELECTORS_PARENT_PAGE}:</p>
 					</div>
 
 					<section class="box"><div class="box-inner">
@@ -462,7 +462,7 @@
 
 	<label class="accessibility_hidden" for="e_{FILE_ID*}">{!TEMPLATE}</label>
 	<div>
-		<textarea id="e_{FILE_ID*}" name="e_{FILE_ID*}" cols="70" rows="22" class="wide_field js-ta-tpl-editor textarea_scroll">{CONTENTS*}</textarea>
+		<textarea id="e_{FILE_ID*}" name="e_{FILE_ID*}" cols="70" rows="22" class="wide-field js-ta-tpl-editor textarea_scroll">{CONTENTS*}</textarea>
 	</div>
 </div>
 

@@ -73,7 +73,7 @@
             theElement = theElement.parentElement;
         }
 
-        theElement.classList.toggle('input_erroneous', (errorMsg !== ''));
+        theElement.classList.toggle('input-erroneous', (errorMsg !== ''));
 
         function getErrorMsgElement(id) {
             var errorMsgElement = document.getElementById('error_' + id);
@@ -741,7 +741,7 @@
                     $cms.form.setFieldError(field, '{!DISABLED_FORM_FIELD;^}');
                 }
             }
-            field.classList.remove('input_erroneous');
+            field.classList.remove('input-erroneous');
         } else if (!radioButton) {
             $cms.form.setFieldError(field, '');
         }
@@ -770,7 +770,7 @@
                 requiredD = $dom.$('#form_table_field_input__' + fieldName);
 
             if (requiredA) {
-                requiredA.className = 'form_table_field_name';
+                requiredA.className = 'form-table-field-name';
 
                 if (isRequired) {
                     requiredA.classList.add('required');
@@ -786,7 +786,7 @@
             }
 
             if (requiredD) {
-                requiredD.className = 'form_table_field_input';
+                requiredD.className = 'form-table-field-input';
             }
         }
 

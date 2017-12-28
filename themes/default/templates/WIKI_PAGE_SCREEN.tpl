@@ -36,7 +36,7 @@
 		{+END}
 		{+START,IF_NON_EMPTY,{CHILDREN}}
 			<div class="wiki_page_children">
-				<p class="lonely_label">{!CHILD_PAGES}:</p>
+				<p class="lonely-label">{!CHILD_PAGES}:</p>
 				<ul itemprop="significantLinks" class="spaced_list">
 					{+START,LOOP,CHILDREN}
 						<li>

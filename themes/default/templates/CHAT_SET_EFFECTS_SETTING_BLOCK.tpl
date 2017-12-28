@@ -9,7 +9,7 @@
 	{+END}{+END}
 
 	<div class="toggleable-tray js-tray-content"{+START,IF_PASSED,MEMBER_ID} id="user_{MEMBER_ID*}"{+END}{+START,IF,{$NOT,{HAS_SOME}}} style="display: none"{+END} aria-expanded="false">
-		<div class="wide-table-wrap"><table class="map_table form_table wide-table scrollable_inside">
+		<div class="wide-table-wrap"><table class="map_table form-table wide-table scrollable_inside">
 			{+START,IF,{$DESKTOP}}
 				<colgroup>
 					<col class="field_name_column" />
@@ -19,18 +19,18 @@
 
 			<tbody>
 				{+START,LOOP,EFFECTS}
-					<tr class="form_table_field_spacer">
+					<tr class="form-table-field-spacer">
 						<th colspan="2" class="table_heading_cell">
 							<span class="faux_h2">{EFFECT_TITLE*}</span>
 						</th>
 					</tr>
 
 					<tr class="field_input">
-						<th id="form_table_field_name__select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" class="form_table_field_name">
-							<label for="select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}"><span class="form_field_name field-name">{!BROWSE}</span></label>
+						<th id="form_table_field_name__select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" class="form-table-field-name">
+							<label for="select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}"><span class="form-field-name field-name">{!BROWSE}</span></label>
 						</th>
 
-						<td id="form_table_field_input__select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" class="form_table_field_input">
+						<td id="form_table_field_input__select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" class="form-table-field-input">
 							<select name="select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" id="select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}">
 								{+START,IF_PASSED,USERNAME}
 									<option {+START,IF,{$EQ,-1,{VALUE}}} selected="selected"{+END} value="-1">{$STRIP_TAGS,{!_UNSET}}</option>
@@ -49,12 +49,12 @@
 					</tr>
 
 					<tr class="field_input">
-						<th id="form_table_field_name__upload_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" class="form_table_field_name">
-							<span class="form_field_name field-name">{!ALT_FIELD,{!UPLOAD}}</span>
+						<th id="form_table_field_name__upload_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" class="form-table-field-name">
+							<span class="form-field-name field-name">{!ALT_FIELD,{!UPLOAD}}</span>
 						</th>
 
-						<td id="form_table_field_input__upload_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" class="form_table_field_input">
-							<div class="upload_field">
+						<td id="form_table_field_input__upload_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" class="form-table-field-input">
+							<div class="upload-field">
 								<label class="accessibility_hidden" for="upload_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}">{!ALT_FIELD,{!UPLOAD}}</label>
 								<input name="upload_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" id="upload_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" type="file" />
 

@@ -893,7 +893,7 @@ abstract class Standard_crud_module
             }
 
             require_code('fields');
-            append_form_custom_fields($this->content_type, null, $fields, $hidden, null, true, strpos($fields->evaluate(), 'form_table_field_spacer') !== false);
+            append_form_custom_fields($this->content_type, null, $fields, $hidden, null, true, strpos($fields->evaluate(), 'form-table-field-spacer') !== false);
         }
 
         // Awards?
@@ -1421,7 +1421,7 @@ abstract class Standard_crud_module
             }
 
             require_code('fields');
-            append_form_custom_fields($this->content_type, $id, $fields, $hidden, null, true, strpos($fields->evaluate(), 'form_table_field_spacer') !== false);
+            append_form_custom_fields($this->content_type, $id, $fields, $hidden, null, true, strpos($fields->evaluate(), 'form-table-field-spacer') !== false);
         }
 
         // Awards?

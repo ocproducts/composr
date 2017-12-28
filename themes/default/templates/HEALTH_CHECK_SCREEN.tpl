@@ -4,7 +4,7 @@
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div>
-		<label for="sections_to_run" class="lonely_label">{!SECTIONS}:</label>
+		<label for="sections_to_run" class="lonely-label">{!SECTIONS}:</label>
 		<select name="sections_to_run[]" id="sections_to_run" multiple="multiple" size="10">
 			{SECTIONS}
 		</select>

@@ -11,29 +11,29 @@
 {+END}
 
 {+START,IF_PASSED,FIELDS}
-	<div class="local_payment_merchant_details_wrap"><div class="local_payment_merchant_details"><div>
-		<div class="local_payment_transact_info">
+	<div class="local-payment-merchant-details-wrap"><div class="local-payment-merchant-details"><div>
+		<div class="local-payment-transact-info">
 			<p>{!TRANSACT_INFO}</p>
 		</div>
 
 		{+START,IF_NON_EMPTY,{PAYMENT_PROCESSOR_LINKS}}
-			<div class="payment_processor_links">
+			<div class="payment-processor-links">
 				{PAYMENT_PROCESSOR_LINKS}
 			</div>
 		{+END}
 
 		{+START,IF_NON_EMPTY,{LOGOS}}
-			<div class="local_payment_verified_account_logo">
+			<div class="local-payment-verified-account-logo">
 				{LOGOS}
 			</div>
 		{+END}
 	</div></div></div>
 
-	<div class="wide-table-wrap"><table class="map_table form_table wide-table">
+	<div class="wide-table-wrap"><table class="map_table form-table wide-table">
 		{+START,IF,{$DESKTOP}}
 			<colgroup>
-				<col class="purchase_field_name_column" />
-				<col class="purchase_field_input_column" />
+				<col class="purchase-field-name-column" />
+				<col class="purchase-field-input-column" />
 			</colgroup>
 		{+END}
 

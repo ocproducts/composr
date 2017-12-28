@@ -7,8 +7,8 @@
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div>
-			<p class="lonely_label"><label for="edit_content{$GET%,rndx}">{!EDIT}:</label></p>
-			<div><textarea class="wide_field textarea_scroll" cols="60" rows="10" id="edit_content{$GET%,rndx}" name="edit_content">{FILE_CONTENTS*}</textarea></div>
+			<p class="lonely-label"><label for="edit_content{$GET%,rndx}">{!EDIT}:</label></p>
+			<div><textarea class="wide-field textarea_scroll" cols="60" rows="10" id="edit_content{$GET%,rndx}" name="edit_content">{FILE_CONTENTS*}</textarea></div>
 
 			<p>
 				<input class="button_screen_item buttons--proceed" type="submit" value="{!PROCEED}" />

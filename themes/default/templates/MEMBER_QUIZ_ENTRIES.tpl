@@ -118,7 +118,7 @@
 
 				{$,If more than one category of quiz entered then show summaries}
 				{+START,IF,{$OR,{$GET,want_sections},{$NEQ,{CATEGORIES},1}}}
-					<p class="lonely_label">
+					<p class="lonely-label">
 						{!RESULT_OVERVIEW}:
 					</p>
 

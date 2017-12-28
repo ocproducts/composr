@@ -3,11 +3,11 @@
  Copyright (c) ocProducts, 2004-2017
 */
 
-.hit_counter {
+.hit-counter {
 	font-family: 'Courier New', 'Courier', monospace;
 	font-size: 1.5em;
 }
 
-.hit_counter, .hit_counter div {
+.hit-counter, .hit-counter div {
 	display: inline-block;
 }

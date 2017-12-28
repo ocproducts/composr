@@ -29,22 +29,22 @@
 
 			{$,Mass-set}
 			<tr>
-				<td class="form_table_field_name">
+				<td class="form-table-field-name">
 					<span class="inline_mobile"><em>{!MASS_PERMISSION_SETTING}</em></span>
 				</td>
 
-				<td class="form_table_field_input">
-					<input class="button_micro js-click-permissions-toggle" type="button" value="+/-" title="{!MASS_PERMISSION_SETTING}" />
+				<td class="form-table-field-input">
+					<input class="button-micro js-click-permissions-toggle" type="button" value="+/-" title="{!MASS_PERMISSION_SETTING}" />
 				</td>
 
 				{+START,LOOP,OVERRIDES}
-					<td class="form_table_field_input">
-						<input class="button_micro js-click-permissions-toggle" type="button" value="+/-" title="{!MASS_PERMISSION_SETTING}" />
+					<td class="form-table-field-input">
+						<input class="button-micro js-click-permissions-toggle" type="button" value="+/-" title="{!MASS_PERMISSION_SETTING}" />
 					</td>
 				{+END}
 
 				{+START,IF,{$IS_NON_EMPTY,{OVERRIDES}}}
-					<td class="form_table_field_input">
+					<td class="form-table-field-input">
 					</td>
 				{+END}
 			</tr>

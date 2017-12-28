@@ -21,14 +21,14 @@
 
 			<label for="order_filter">
 				<span class="invisible_ref_point"></span>
-				<input maxlength="255" type="text" id="order_filter" name="search" value="{SEARCH_VAL*}" /><input data-disable-on-click="1" class="button_micro buttons--search" type="submit" value="{!SEARCH}" /> ({!SEARCH_ORDERS})
+				<input maxlength="255" type="text" id="order_filter" name="search" value="{SEARCH_VAL*}" /><input data-disable-on-click="1" class="button-micro buttons--search" type="submit" value="{!SEARCH}" /> ({!SEARCH_ORDERS})
 			</label>
 		</div>
 	</form>
 
 	<h2 class="force_margin">{!MORE} / {!ADVANCED}</h2>
 
-	<p class="lonely_label">
+	<p class="lonely-label">
 		{!ACTIONS}:
 	</p>
 	<nav>

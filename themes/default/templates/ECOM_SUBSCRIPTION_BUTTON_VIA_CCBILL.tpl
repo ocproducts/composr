@@ -1,4 +1,4 @@
-<form title="{!MAKE_PAYMENT}" class="ecommerce_button" action="{FORM_URL*}" method="post" autocomplete="off">
+<form title="{!MAKE_PAYMENT}" class="ecommerce-button" action="{FORM_URL*}" method="post" autocomplete="off">
 	<input type="hidden" name="clientAccnum" value="{ACCOUNT_NUM*}" /> {$,An integer value representing the 6-digit client account number.}
 	<input type="hidden" name="clientSubacc" value="{SUBACCOUNT_NUM*}" /> {$,An integer value representing the 4-digit client subaccount number.}
 	<input type="hidden" name="formName" value="{FORM_NAME*}" /> {$,The name of the form.}
@@ -24,7 +24,7 @@
 	<input type="hidden" name="formRecurringPeriod" value="{FORM_PERIOD*}" /> {$,An integer representing the number of days between each rebill.}
 	<input type="hidden" name="formRebills" value="99" /> {$,An integer representing the total times the subscription will rebill. Passing a value of 99 will cause the subscription to rebill indefinitely}
 
-	<div class="purchase_button">
-		<input id="purchase_button" data-disable-on-click="1" class="button_screen menu__rich_content__ecommerce__purchase" type="submit" value="{!MAKE_PAYMENT}" />
+	<div class="purchase-button">
+		<input id="purchase-button" data-disable-on-click="1" class="button_screen menu--rich-content--ecommerce--purchase" type="submit" value="{!MAKE_PAYMENT}" />
 	</div>
 </form>

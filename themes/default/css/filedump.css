@@ -4,7 +4,7 @@
 */
 
 /*{+START,CSS_MODE,mobile}*/
-	.filedump_screen .tab {
+	.filedump-screen .tab {
 		min-width: 70px;
 	}
 
@@ -17,34 +17,34 @@
 /*{+END}*/
 
 /*{+START,CSS_MODE,mobile}*/
-	.filedump_filter {
+	.filedump-filter {
 		line-height: 1.8em;
 	}
 
-	.filedump_filter .type_filter_filedump, .filedump_filter .sort_filedump {
+	.filedump-filter .type-filter-filedump, .filedump-filter .sort-filedump {
 		padding-left: 0 !important;
 	}
 /*{+END}*/
 
-.filedump_filter .type_filter_filedump select, .filedump_filter .jump_to_filedump select, .filedump_filter .sort_filedump select {
+.filedump-filter .type-filter-filedump select, .filedump-filter .jump-to-filedump select, .filedump-filter .sort-filedump select {
 	max-width: 8em;
 }
 
-.filedump_filter .button_micro {
+.filedump-filter .button-micro {
 	margin-left: 1em !important;
 }
 
-.filedump_thumbnails {
+.filedump-thumbnails {
 	{$BETA_CSS_PROPERTY,display: flex;}
 	{$BETA_CSS_PROPERTY,flex-wrap: wrap;}
 	margin: -0.5em 0 0 -0.5em;
 }
 
-.filedump_thumbnails .box {
+.filedump-thumbnails .box {
 	margin: 0.5em 0 0 0.5em;
 }
 
-.filedump_thumbnails .box .box-inner {
+.filedump-thumbnails .box .box-inner {
 	width: {$CONFIG_OPTION,thumb_width}px;
 	height: {$CONFIG_OPTION,thumb_width}px;
 	text-align: center;
@@ -54,12 +54,12 @@
 }
 
 /*
-.filedump_thumbnails .box .box-inner:hover .meta {
+.filedump-thumbnails .box .box-inner:hover .meta {
 	opacity: 0.3;
 }
 */
 
-.filedump_embed, .filedump_select {
+.filedump-embed, .filedump-select {
 	position: absolute;
 	top: 0;
 	margin: 0.3em !important;
@@ -70,24 +70,24 @@
 	z-index: 10;
 }
 
-.filedump_embed {
+.filedump-embed {
 	left: 0;
 }
 
-.filedump_select {
+.filedump-select {
 	right: 0;
 }
 
-.filedump_thumbnails .box .box-inner p {
+.filedump-thumbnails .box .box-inner p {
 	margin: 0;
 }
 
-.filedump_thumbnails .box .box-inner p img {
+.filedump-thumbnails .box .box-inner p img {
 	display: inline-block;
 	vertical-align: top;
 }
 
-.filedump_thumbnails .box .box-inner .meta {
+.filedump-thumbnails .box .box-inner .meta {
 	position: absolute;
 	left: 0;
 	bottom: 0.5em;
@@ -101,25 +101,25 @@
 
 /* Embed screen */
 
-.filedump_generated {
+.filedump-generated {
 	overflow: hidden;
 }
 
-.filedump_generated_comcode {
+.filedump-generated-comcode {
 }
 
-.filedump_generated_preview {
+.filedump-generated-preview {
 	margin-left: 1em;
 	float: right;
 	word-wrap: break-word;
 	max-width: 560px;
 }
 
-.filedump_image_sizes label {
+.filedump-image-sizes label {
 	min-width: 13em;
 	display: inline-block;
 }
 
-.filedump_image_sizes input {
+.filedump-image-sizes input {
 	width: calc(100% - 5em);
 }

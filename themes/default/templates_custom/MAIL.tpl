@@ -5,7 +5,7 @@
 <title>{TITLE*}</title>
 {CSS}
 </head>
-<body style="font-size: 12px" class="email_body">
+<body style="font-size: 12px" class="email-body">
 	<div style="font-size: 12px">
 		{CONTENT}
 	</div>

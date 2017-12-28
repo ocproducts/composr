@@ -8,7 +8,7 @@
 <div data-tpl="filedumpScreen" data-tpl-params="{+START,PARAMS_JSON,file_link}{_*}{+END}">
 	{TITLE}
 
-	<div class="filedump_screen">
+	<div class="filedump-screen">
 		<div class="float-surrounder"><div class="tabs" role="tablist">
 			<a aria-controls="g_thumbnails" role="tab" href="#!" id="t_thumbnails" class="tab tab_active tab_first js-click-select-tab-g" data-tp-tab="thumbnails"><span>{!VIEW_THUMBNAILS}</span></a>
 
@@ -22,7 +22,7 @@
 				<a aria-controls="g_upload" role="tab" href="#!" id="t_upload" class="tab tab_last js-click-select-tab-g" data-tp-tab="upload"><span>{!UPLOAD}</span></a>
 			{+END}
 		</div></div>
-		<div class="tab_surround">
+		<div class="tab-surround">
 			<div aria-labeledby="t_thumbnails" role="tabpanel" id="g_thumbnails" style="display: block">
 				<a id="tab__thumbnails"></a>
 
@@ -35,15 +35,15 @@
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					{+START,IF_NON_EMPTY,{THUMBNAILS}}
-						<div class="float-surrounder filedump_thumbnails">
+						<div class="float-surrounder filedump-thumbnails">
 							{+START,LOOP,THUMBNAILS}
 								<div class="box"><div class="box-inner">
 									{+START,IF,{CHOOSABLE}}
-										<span class="filedump_select">{ACTIONS}</span>
+										<span class="filedump-select">{ACTIONS}</span>
 									{+END}
 
 									{+START,IF_PASSED,EMBED_URL}
-										<p class="filedump_embed"><a id="embed_link_{FILENAME|*}" href="{EMBED_URL*}" data-open-as-overlay='{"width": 950, "height": 680}' class="link_exempt">{!_FILEDUMP_EMBED}</a></p>
+										<p class="filedump-embed"><a id="embed_link_{FILENAME|*}" href="{EMBED_URL*}" data-open-as-overlay='{"width": 950, "height": 680}' class="link_exempt">{!_FILEDUMP_EMBED}</a></p>
 									{+END}
 
 									<p><a {+START,IF,{IS_IMAGE}} rel="lightbox"{+END} href="{URL*}">{THUMBNAIL}</a></p>

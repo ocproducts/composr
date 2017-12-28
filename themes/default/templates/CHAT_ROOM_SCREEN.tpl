@@ -34,7 +34,7 @@
 					<form title="{SUBMIT_VALUE*}" action="{MESSAGES_PHP*}?action=post&amp;room_id={CHATROOM_ID*}" method="post" class="inline" autocomplete="off">
 						{$INSERT_SPAMMER_BLACKHOLE}
 
-						<input type="button" class="button_micro buttons--send js-click-post-chat-message" value="{SUBMIT_VALUE*}" />
+						<input type="button" class="button-micro buttons--send js-click-post-chat-message" value="{SUBMIT_VALUE*}" />
 					</form>
 					{+START,IF,{$DESKTOP}}
 						<span class="inline_desktop">
@@ -123,7 +123,7 @@
 			</div>
 
 			<div class="chat-room-actions">
-				<p class="lonely_label">{!ACTIONS}:</p>
+				<p class="lonely-label">{!ACTIONS}:</p>
 				<nav>
 					<ul class="actions-list">
 						{+START,LOOP,LINKS}

@@ -385,7 +385,7 @@ class Module_admin_ecommerce_logs
         return do_template('FORM_SCREEN', array(
             '_GUID' => '990d955cb14b6681685ec9e1d1448d9d',
             'TITLE' => $this->title,
-            'SUBMIT_ICON' => 'menu__rich_content__ecommerce__purchase',
+            'SUBMIT_ICON' => 'menu--rich-content--ecommerce--purchase',
             'SUBMIT_NAME' => $submit_name,
             'FIELDS' => $fields,
             'TEXT' => $text,

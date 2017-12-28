@@ -128,7 +128,7 @@
 	vertical-align: top;
 }
 
-.quiz_form .radio_list, .quiz_form .various_ticks, .quiz_result_question, .quiz_result_given_answer, .quiz_result_answer {
+.quiz_form .radio_list, .quiz_form .various-ticks, .quiz_result_question, .quiz_result_given_answer, .quiz_result_answer {
 	font-weight: bold;
 }
 

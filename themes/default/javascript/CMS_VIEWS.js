@@ -595,7 +595,7 @@
                         'id': 'overlay_prompt',
                         'type': this.inputType,
                         'size': '40',
-                        'className': 'wide_field',
+                        'className': 'wide-field',
                         'value': (this.defaultValue === null) ? '' : this.defaultValue
                     });
                     var inputWrap = $dom.create('div');
@@ -1440,7 +1440,7 @@
                     ml.type = 'button';
                     ml.id = 'editimg_' + target.id;
                     ml.value = '{!themes:EDIT_THEME_IMAGE;^}';
-                    ml.className = 'magic_image_edit_link button_micro';
+                    ml.className = 'magic_image_edit_link button-micro';
                     ml.style.position = 'absolute';
                     ml.style.left = $dom.findPosX(target) + 'px';
                     ml.style.top = $dom.findPosY(target) + 'px';

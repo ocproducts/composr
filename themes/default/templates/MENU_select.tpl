@@ -5,7 +5,7 @@
 	<form title="{!MENU} ({!FORM_AUTO_SUBMITS})" method="get" action="#!" autocomplete="off">
 		<div>
 			<div class="accessibility_hidden"><label for="menu_select_{MENU|}">{!MENU}</label></div>
-			<select id="menu_select_{MENU|}" name="menu_select_{MENU|}" class="wide_field js-change-redirect-to-value">
+			<select id="menu_select_{MENU|}" name="menu_select_{MENU|}" class="wide-field js-change-redirect-to-value">
 				{CONTENT}
 			</select>
 		</div>

@@ -5,11 +5,11 @@
 	{+END}
 
 	{+START,IF_PASSED,FIELDS}
-		<div class="wide-table-wrap"><table class="map_table form_table wide-table">
+		<div class="wide-table-wrap"><table class="map_table form-table wide-table">
 			{+START,IF,{$DESKTOP}}
 				<colgroup>
-					<col class="purchase_field_name_column" />
-					<col class="purchase_field_input_column" />
+					<col class="purchase-field-name-column" />
+					<col class="purchase-field-input-column" />
 				</colgroup>
 			{+END}
 

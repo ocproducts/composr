@@ -1,1 +1,1 @@
-<div class="required_field_warning_wrap"><div class="required_field_warning"><span>{!REQUIRED}</span> <span class="required_star">*</span></div></div>
+<div class="required-field-warning-wrap"><div class="required-field-warning"><span>{!REQUIRED}</span> <span class="required-star">*</span></div></div>

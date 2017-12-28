@@ -1,7 +1,7 @@
 <div class="float-surrounder">
 	{+START,IF,{$ADDON_INSTALLED,search}}
 		{$SET,search_url,{$SELF_URL}}
-		<form class="filedump_filter" role="search" title="{!SEARCH}" data-disable-buttons-on-submit="{}" action="{$URL_FOR_GET_FORM*,{$GET,search_url},search,type_filter,sort,place,recurse,file}#tab__{TAB%}" method="get" autocomplete="off">
+		<form class="filedump-filter" role="search" title="{!SEARCH}" data-disable-buttons-on-submit="{}" action="{$URL_FOR_GET_FORM*,{$GET,search_url},search,type_filter,sort,place,recurse,file}#tab__{TAB%}" method="get" autocomplete="off">
 			{$HIDDENS_FOR_GET_FORM,{$GET,search_url},search,type_filter,sort,place,recurse,file}
 
 			<p class="left">
@@ -15,9 +15,9 @@
 
 				<br class="block_mobile" />
 
-				<label class="type_filter_filedump horiz-field-sep" for="type_filter_filedump_{I*}">
+				<label class="type-filter-filedump horiz-field-sep" for="type-filter-filedump-{I*}">
 					{!SHOW}
-					<select id="type_filter_filedump_{I*}" name="type_filter">
+					<select id="type-filter-filedump-{I*}" name="type_filter">
 						<option {+START,IF,{$EQ,{TYPE_FILTER},}} selected="selected"{+END} value="">{!ALL}</option>
 						<option {+START,IF,{$EQ,{TYPE_FILTER},images}} selected="selected"{+END} value="images">{!IMAGES}</option>
 						<option {+START,IF,{$EQ,{TYPE_FILTER},videos}} selected="selected"{+END} value="videos">{!VIDEOS}</option>
@@ -26,9 +26,9 @@
 					</select>
 				</label>
 
-				<label class="jump_to_filedump horiz-field-sep" for="jump_to_filedump_{I*}">
+				<label class="jump-to-filedump horiz-field-sep" for="jump-to-filedump-{I*}">
 					{!JUMP_TO_FOLDER}
-					<select id="jump_to_filedump_{I*}" name="place">
+					<select id="jump-to-filedump-{I*}" name="place">
 						{+START,IF_NON_EMPTY,{FILTERED_DIRECTORIES_MISSES}}
 							<optgroup label="{!FILEDUMP_FOLDER_MATCHING}">
 						{+END}
@@ -50,9 +50,9 @@
 
 				<br class="block_mobile" />
 
-				<label class="sort_filedump horiz-field-sep" for="sort_filedump_{I*}">
+				<label class="sort-filedump horiz-field-sep" for="sort-filedump-{I*}">
 					{!SORT_BY}
-					<select id="sort_filedump_{I*}" name="sort">
+					<select id="sort-filedump-{I*}" name="sort">
 						<option {+START,IF,{$EQ,{SORT},time ASC}} selected="selected"{+END} value="time ASC">{!DATE_TIME},{!_ASCENDING}</option>
 						<option {+START,IF,{$EQ,{SORT},time DESC}} selected="selected"{+END} value="time DESC">{!DATE_TIME},{!_DESCENDING}</option>
 						<option {+START,IF,{$EQ,{SORT},name ASC}} selected="selected"{+END} value="name ASC">{!FILENAME},{!_ASCENDING}</option>
@@ -62,7 +62,7 @@
 					</select>
 				</label>
 
-				<input class="button_micro buttons--filter" type="submit" value="{!FILTER}" />
+				<input class="button-micro buttons--filter" type="submit" value="{!FILTER}" />
 			</p>
 		</form>
 	{+END}

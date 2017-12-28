@@ -1,8 +1,8 @@
 {$REQUIRE_JAVASCRIPT,core_form_interfaces}
 
 <tr id="access_{GROUP_ID*}_privilege_container" class="{$CYCLE,permissions_zebra,zebra_0,zebra_1}" data-view="FormScreenInputPermission" data-view-params="{+START,PARAMS_JSON,ALL_GLOBAL,GROUP_ID}{_*}{+END}">
-	<th class="form_table_field_name">
-		<p class="form_field_name field_name">{GROUP_NAME*}</p>
+	<th class="form-table-field-name">
+		<p class="form-field-name field_name">{GROUP_NAME*}</p>
 		{+START,IF,{$OR,{FORCE_PRESETS},{$IS_NON_EMPTY,{OVERRIDES}}}}
 			<label for="access_{GROUP_ID*}_presets">
 				<span class="accessibility_hidden">{!PINTERFACE_PRESETS} ({GROUP_NAME*})</span>
@@ -26,7 +26,7 @@
 		{+END}
 	</th>
 
-	<td class="form_table_field_input">
+	<td class="form-table-field-input">
 		<div class="accessibility_hidden"><label for="access_{GROUP_ID*}">{PINTERFACE_VIEW*} ({GROUP_NAME*})</label></div>
 
 		<input tabindex="{TABINDEX*}" class="input_tick" type="checkbox" id="access_{GROUP_ID*}" name="access_{GROUP_ID*}" title="{PINTERFACE_VIEW*}" value="1"{+START,IF,{VIEW_ACCESS}} checked="checked"{+END} />
@@ -35,8 +35,8 @@
 	{OVERRIDES}
 
 	{+START,IF,{$OR,{FORCE_PRESETS},{$IS_NON_EMPTY,{OVERRIDES}}}}
-		<td class="form_table_field_input">
-			<button class="buttons--copy button_screen_item button_micro_tall js-click-perm-repeating" type="button" id="copy_button_access_{GROUP_ID*}">{!REPEAT_PERMISSION}</button>
+		<td class="form-table-field-input">
+			<button class="buttons--copy button_screen_item button-micro-tall js-click-perm-repeating" type="button" id="copy_button_access_{GROUP_ID*}">{!REPEAT_PERMISSION}</button>
 		</td>
 	{+END}
 </tr>

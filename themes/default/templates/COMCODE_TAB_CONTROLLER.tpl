@@ -2,7 +2,7 @@
 
 <div class="xhtml_substr_no_break">
 	<div class="float-surrounder"><div role="tablist" class="tabs">{HEADS}</div></div>
-	<div class="tab_surround">
+	<div class="tab-surround">
 		{CONTENT}
 	</div>
 </div>

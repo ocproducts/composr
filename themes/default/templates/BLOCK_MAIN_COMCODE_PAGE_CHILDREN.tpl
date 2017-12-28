@@ -1,6 +1,6 @@
 {+START,IF_ARRAY_NON_EMPTY,CHILDREN}
 	<div class="box box___block_main_comcode_page_children" data-tpl="blockMainComcodePageChildren"><div class="box-inner">
-		<p class="lonely_label">{!CHILD_PAGES}:</p>
+		<p class="lonely-label">{!CHILD_PAGES}:</p>
 		<ul class="spaced_list">
 			{+START,LOOP,CHILDREN}
 				<li>

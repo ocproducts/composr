@@ -122,7 +122,7 @@
         
         if (typeCode.toUpperCase().startsWith('CART_ORDER_')) {
             // Automatic link clicking of purchase button for cart orders (because button was already pressed on cart screen)
-            $dom.trigger('#purchase_button', 'click');
+            $dom.trigger('#purchase-button', 'click');
         }
     };
 }(window.$cms, window.$util, window.$dom));

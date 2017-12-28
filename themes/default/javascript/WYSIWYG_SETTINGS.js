@@ -48,7 +48,7 @@ var editorSettings = {
     /*{+START,IF,{$NEQ,{$CKEDITOR_PATH},data_custom/ckeditor}}*/
     customConfig: '',
     /*{+END}*/
-    bodyId: 'wysiwyg_editor',
+    bodyId: 'wysiwyg-editor',
     baseHref: $util.url().toString(),
     linkShowAdvancedTab: !$cms.configOption('eager_wysiwyg'),
     imageShowAdvancedTab: !$cms.configOption('eager_wysiwyg'),

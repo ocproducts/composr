@@ -78,10 +78,10 @@
 
 									<td>
 										<div>
-											<input id="email" name="email" value="{$MEMBER_EMAIL*}" type="text" tabindex="2" maxlength="255" class="wide_field{+START,IF,{$NOT,{EMAIL_OPTIONAL}}} input_text_required{+END}" />
+											<input id="email" name="email" value="{$MEMBER_EMAIL*}" type="text" tabindex="2" maxlength="255" class="wide-field{+START,IF,{$NOT,{EMAIL_OPTIONAL}}} input_text_required{+END}" />
 										</div>
 
-										<div id="error_email" style="display: none" class="input_error_here"></div>
+										<div id="error_email" style="display: none" class="input-error-here"></div>
 									</td>
 								</tr>
 							{+END}
@@ -95,10 +95,10 @@
 
 									<td>
 										<div>
-											<input id="title" name="title" value="{DEFAULT_TITLE*}" type="text" tabindex="3" maxlength="255" class="wide_field" />
+											<input id="title" name="title" value="{DEFAULT_TITLE*}" type="text" tabindex="3" maxlength="255" class="wide-field" />
 										</div>
 
-										<div id="error_title" style="display: none" class="input_error_here"></div>
+										<div id="error_title" style="display: none" class="input-error-here"></div>
 									</td>
 								</tr>
 							{+END}
@@ -168,11 +168,11 @@
 
 								<td>
 									<div>
-										<textarea name="post" id="post" data-textarea-auto-height="" tabindex="6" accesskey="x" class="{$?,{TRUE_ATTACHMENT_UI},true_attachment_ui,faux_attachment_ui} wide_field js-focus-textarea-post" cols="42" rows="{$?,{$IS_NON_EMPTY,{$GET,COMMENT_POSTING_ROWS}},{$GET,COMMENT_POSTING_ROWS},11}">{POST_WARNING*}{+START,IF_PASSED,DEFAULT_POST}{DEFAULT_POST*}{+END}</textarea>
+										<textarea name="post" id="post" data-textarea-auto-height="" tabindex="6" accesskey="x" class="{$?,{TRUE_ATTACHMENT_UI},true_attachment_ui,faux_attachment_ui} wide-field js-focus-textarea-post" cols="42" rows="{$?,{$IS_NON_EMPTY,{$GET,COMMENT_POSTING_ROWS}},{$GET,COMMENT_POSTING_ROWS},11}">{POST_WARNING*}{+START,IF_PASSED,DEFAULT_POST}{DEFAULT_POST*}{+END}</textarea>
 										<input type="hidden" name="comcode__post" value="1" />
 									</div>
 
-									<div id="error_post" style="display: none" class="input_error_here"></div>
+									<div id="error_post" style="display: none" class="input-error-here"></div>
 
 									{+START,IF_PASSED,ATTACHMENTS}
 										<div class="attachments">

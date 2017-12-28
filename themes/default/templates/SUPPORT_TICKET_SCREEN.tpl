@@ -21,7 +21,7 @@
 			</div>
 		{+END}
 
-		<p class="lonely_label">{!_ASSIGNED_TO}</p>
+		<p class="lonely-label">{!_ASSIGNED_TO}</p>
 		<ul class="spaced_list">
 			{+START,IF_NON_EMPTY,{ASSIGNED}}
 				{+START,LOOP,ASSIGNED}
@@ -32,7 +32,7 @@
 							<form title="{!_ASSIGNED_TO}" action="{$PAGE_LINK*,_SEARCH:tickets:unassign:ticket_id={ID}:member_id={_loop_key}}" method="post" class="inline vertical_alignment" autocomplete="off">
 								{$INSERT_SPAMMER_BLACKHOLE}
 
-								<input class="button_micro menu___generic_admin__delete" type="submit" value="{!REMOVE}" />
+								<input class="button-micro menu___generic_admin__delete" type="submit" value="{!REMOVE}" />
 							</form>
 						{+END}
 					</li>
@@ -51,7 +51,7 @@
 
 						<label for="assign_username" class="accessibility_hidden">{!USERNAME}</label>
 						<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" class="input_username js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" id="assign_username" name="username" value="{$USERNAME*}" />
-						<input class="button_micro buttons--proceed" type="submit" value="{!ASSIGN_TO}" />
+						<input class="button-micro buttons--proceed" type="submit" value="{!ASSIGN_TO}" />
 					</form>
 				</li>
 			{+END}
@@ -66,13 +66,13 @@
 						<span class="field-name"><label for="ticket_type_id">{!TICKET_TYPE}:</label></span>
 					</th>
 					<td>
-						<select id="ticket_type_id" name="ticket_type_id" class="input_list_required wide_field">
+						<select id="ticket_type_id" name="ticket_type_id" class="input_list_required wide-field">
 							<option value="">---</option>
 							{+START,LOOP,TYPES}
 								<option value="{TICKET_TYPE_ID*}"{+START,IF,{SELECTED}} selected="selected"{+END}>{NAME*}</option>{$,You can also use {LEAD_TIME} to get the ticket type's lead time}
 							{+END}
 						</select>
-						<div id="error_ticket_type_id" style="display: none" class="input_error_here"></div>
+						<div id="error_ticket_type_id" style="display: none" class="input-error-here"></div>
 					</td>
 				</tr>
 			{+END}

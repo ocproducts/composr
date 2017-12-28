@@ -570,7 +570,7 @@ function upgrade_script()
                     echo '<kbd>diff -rcw old/sources/hooks/systems/addon_registry new/sources/hooks/systems/addon_registry | sed -e "s/Only in new\/sources\/hooks\/systems\/addon_registry: \(.*\)\.php/\1/" -e \'tx\' -e \'d\' -e \':x\'</kbd>';
                     echo '</p>';
                     echo '<form action="upgrader.php?type=_addon_remove" method="post">';
-                    echo '<p><label for="addons">Addons to remove:</label><br /><textarea name="addons" id="addons" class="wide_field" rows="10"></textarea>';
+                    echo '<p><label for="addons">Addons to remove:</label><br /><textarea name="addons" id="addons" class="wide-field" rows="10"></textarea>';
                     echo '<input class="menu___generic_admin__delete button_screen" type="submit" value="Remove addon files" />';
                     echo post_fields_relay();
                     echo '</form>';

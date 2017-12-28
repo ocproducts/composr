@@ -6,7 +6,7 @@
 {$SET,id,{$RAND}}
 {$SET,init_drag_drop,0}
 
-<tr class="form_table_field_spacer" id="field-{$GET*,id}-label">
+<tr class="form-table-field-spacer" id="field-{$GET*,id}-label">
 	{+START,SET,posting_field}
 		{+START,IF_PASSED,POST_COMMENT}
 			{+START,IF_NON_EMPTY,{POST_COMMENT}}
@@ -20,7 +20,7 @@
 				<label class="accessibility_hidden" for="{NAME*}">{!TEXT}</label>
 			</span>
 
-			<span id="required_readable_marker__{$?,{$IS_EMPTY,{NAME*}},{$RAND},{NAME*}}" style="display: {$?,{REQUIRED*},inline,none}"><span class="required_star">*</span> <span class="accessibility_hidden">{!REQUIRED}</span></span>
+			<span id="required_readable_marker__{$?,{$IS_EMPTY,{NAME*}},{$RAND},{NAME*}}" style="display: {$?,{REQUIRED*},inline,none}"><span class="required-star">*</span> <span class="accessibility_hidden">{!REQUIRED}</span></span>
 		{+END}
 
 		{+START,INCLUDE,FORM_SCREEN_FIELD_DESCRIPTION}{+END}
@@ -29,7 +29,7 @@
 		{HIDDEN_FIELDS}
 
 		{+START,IF,{$OR,{$IN_STR,{CLASS},wysiwyg},{$AND,{$MATCH_KEY_MATCH,_WILD:cms_comcode_pages},{$SHOW_DOCS}}}}
-			<div class="comcode_supported posting_form_main_comcode_button">
+			<div class="comcode-supported posting_form_main_comcode_button">
 				<ul class="horizontal-links horiz-field-sep associated-links-block-group">
 					{+START,IF,{$SHOW_DOCS}}{+START,IF_PASSED,COMCODE_URL}
 						{+START,IF,{$NOT,{$MATCH_KEY_MATCH,_WILD:cms_comcode_pages}}}
@@ -55,7 +55,7 @@
 	{+END}
 </tr>
 <tr class="field_input" id="field-{$GET*,id}-input">
-	<td class="{+START,IF,{REQUIRED}} required{+END} form_table_huge_field" colspan="2">
+	<td class="{+START,IF,{REQUIRED}} required{+END} form-table-huge-field" colspan="2">
 		{+START,IF_PASSED,DEFAULT_PARSED}
 			<textarea cols="1" rows="1" style="display: none" readonly="readonly" disabled="disabled" name="{NAME*}_parsed">{DEFAULT_PARSED*}</textarea>
 		{+END}
@@ -70,8 +70,8 @@
 				</div>
 			</div>
 
-			<div id="container_for_{NAME*}" class="container_for_wysiwyg">
-				<textarea data-textarea-auto-height="" accesskey="x" class="{CLASS*}{+START,IF,{REQUIRED}} posting_required{+END} wide_field posting_field_textarea" tabindex="{TABINDEX_PF*}" id="{NAME*}" name="{NAME*}" cols="70" rows="17">{POST*}</textarea>
+			<div id="container_for_{NAME*}" class="container-for-wysiwyg">
+				<textarea data-textarea-auto-height="" accesskey="x" class="{CLASS*}{+START,IF,{REQUIRED}} posting_required{+END} wide-field posting_field_textarea" tabindex="{TABINDEX_PF*}" id="{NAME*}" name="{NAME*}" cols="70" rows="17">{POST*}</textarea>
 
 				{+START,IF_PASSED,WORD_COUNTER}
 					{$SET,word_count_id,{$RAND}}
@@ -123,7 +123,7 @@
 
 {+START,IF,{$AND,{$NOT,{$BROWSER_MATCHES,simplified_attachments_ui}},{$IS_NON_EMPTY,{ATTACHMENTS}}}}
 	{$SET,init_drag_drop,1}
-	<tr class="form_table_field_spacer" id="field-{$GET*,id}-attachments-ui">
+	<tr class="form-table-field-spacer" id="field-{$GET*,id}-attachments-ui">
 		<th colspan="2" class="table_heading_cell">
 			<a class="toggleable-tray-button js-click-pf-toggle-subord-fields" id="fes_attachments" href="#!"><img alt="{!EXPAND}: {!ATTACHMENTS}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" /></a>
 
@@ -131,7 +131,7 @@
 				{!ATTACHMENTS}
 
 				{+START,IF,{$DESKTOP}}
-					<img class="help_icon inline_desktop" data-cms-rich-tooltip title="{$STRIP_TAGS,{!ATTACHMENT_HELP}}" alt="{!HELP}" src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" />
+					<img class="help-icon inline_desktop" data-cms-rich-tooltip title="{$STRIP_TAGS,{!ATTACHMENT_HELP}}" alt="{!HELP}" src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" />
 				{+END}
 			</span>
 
@@ -143,7 +143,7 @@
 		</th>
 	</tr>
 	<tr style="display: none" class="field_input" id="field-{$GET*,id}-attachments-ui-input">
-		<td class="form_table_huge_field" colspan="2">
+		<td class="form-table-huge-field" colspan="2">
 			{ATTACHMENTS}
 			<input type="hidden" name="posting_ref_id" value="{$RAND%}" />
 		</td>

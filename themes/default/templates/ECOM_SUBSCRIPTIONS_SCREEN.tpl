@@ -82,7 +82,7 @@
 						</td>
 					{+END}
 
-					<td class="subscriptions_cancel_button">
+					<td class="subscriptions-cancel-button">
 						{+START,IF_PASSED,CANCEL_BUTTON}
 							{CANCEL_BUTTON}
 						{+END}

@@ -3,7 +3,7 @@
 {WARNINGS}
 
 {+START,IF_NON_EMPTY,{INSTALL_FILES}}
-	<p class="lonely_label">{!ADDON_FILES}:</p>
+	<p class="lonely-label">{!ADDON_FILES}:</p>
 	<ul>
 		{INSTALL_FILES}
 	</ul>

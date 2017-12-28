@@ -4,7 +4,7 @@
 	</p>
 
 	<div><div class="install_log_table">
-		<p class="lonely_label">{!INSTALL_LOG}:</p>
+		<p class="lonely-label">{!INSTALL_LOG}:</p>
 		<nav>
 			<ul class="actions-list">
 				{LOG}

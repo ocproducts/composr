@@ -18,7 +18,7 @@
 		{+END}
 		{+START,INCLUDE,FORM_SCREEN_FIELD_DESCRIPTION}{+END}
 
-		<div id="error_{NAME*}" style="display: none" class="input_error_here"></div>
+		<div id="error_{NAME*}" style="display: none" class="input-error-here"></div>
 
 		<input type="hidden" id="required_posted__{NAME*}" name="require__{NAME*}" value="{$?,{REQUIRED*},1,0}" />
 	</div>

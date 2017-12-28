@@ -13,7 +13,7 @@
 					<a rel="nofollow" class="horiz-field-sep js-click-open-chat-emoticons-popup" href="#!" title="{!EMOTICONS_POPUP} {!LINK_NEW_WINDOW}"><img alt="{!EMOTICONS_POPUP}" src="{$IMG*,icons/16x16/editor/insert_emoticons}" srcset="{$IMG*,icons/32x32/editor/insert_emoticons} 2x" /></a>
 				{+END}
 
-				<input class="button_micro buttons--send js-click-chatroom-chat-post" type="button" value="{!MAKE_POST_SHORT}" />
+				<input class="button-micro buttons--send js-click-chatroom-chat-post" type="button" value="{!MAKE_POST_SHORT}" />
 			</div>
 		{+END}
 
@@ -28,7 +28,7 @@
 				<em class="loading">{!LOADING}</em>
 			</div>
 			<div class="im-close-button">
-				<input id="close_button_{CHATROOM_ID*}" class="button_micro buttons--clear js-click-close-chat-conversation" type="button" value="{!END_CHAT}" />
+				<input id="close_button_{CHATROOM_ID*}" class="button-micro buttons--clear js-click-close-chat-conversation" type="button" value="{!END_CHAT}" />
 			</div>
 		</div>
 

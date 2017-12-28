@@ -1,6 +1,6 @@
 {TITLE}
 
-<p class="lonely_label">
+<p class="lonely-label">
 	{!WEBSTANDARDS_ERRORS_HERE}
 </p>
 

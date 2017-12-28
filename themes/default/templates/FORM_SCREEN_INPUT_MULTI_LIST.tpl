@@ -1,13 +1,13 @@
 {$REQUIRE_JAVASCRIPT,core_form_interfaces}
 
 <div data-tpl="formScreenInputMultiList">
-	<select multiple="multiple" size="{SIZE*}" tabindex="{TABINDEX*}" class="input_list wide_field" id="{NAME*}" name="{NAME*}[]"{+START,IF,{$EQ,{SIZE},5}} data-cms-select2="{dropdownAutoWidth: true, containerCssClass: 'wide_field'}"{+END}>
+	<select multiple="multiple" size="{SIZE*}" tabindex="{TABINDEX*}" class="input_list wide-field" id="{NAME*}" name="{NAME*}[]"{+START,IF,{$EQ,{SIZE},5}} data-cms-select2="{dropdownAutoWidth: true, containerCssClass: 'wide-field'}"{+END}>
 		{CONTENT}
 	</select>
 
 	{+START,IF_PASSED,CUSTOM_NAME}
-		<div class="various_ticks float-surrounder">
-			<div class="input_other_tick">
+		<div class="various-ticks float-surrounder">
+			<div class="input-other-tick">
 				{+START,IF,{CUSTOM_ACCEPT_MULTIPLE}}
 					{+START,LOOP,CUSTOM_VALUE}
 						<div><div>

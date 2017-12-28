@@ -54,7 +54,7 @@
 				{$HIDDENS_FOR_GET_FORM,{URL}}
 				<input type="hidden" name="all_defaults" value="0" />
 
-				<div class="wide-table-wrap"><table class="map_table form_table wide-table">
+				<div class="wide-table-wrap"><table class="map_table form-table wide-table">
 					{+START,IF,{$DESKTOP}}
 						<colgroup>
 							<col class="field_name_column" />
@@ -65,11 +65,11 @@
 
 					<tbody>
 						<tr>
-							<th class="form_table_field_name">{!SEARCH_FOR}</th>
-							<td class="form_table_field_input" colspan="2">
+							<th class="form-table-field-name">{!SEARCH_FOR}</th>
+							<td class="form-table-field-input" colspan="2">
 								<div class="accessibility_hidden"><label for="search_content">{!SEARCH_FOR}</label></div>
 								<div>
-									<input maxlength="255"{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" class="search_content wide_field js-keyup-update-ajax-search-list js-keypress-enter-submit-primary-form" type="search" size="{$?,{$MOBILE},30,48}" id="search_content" name="content" value="{+START,IF_PASSED,CONTENT}{CONTENT*}{+END}" />
+									<input maxlength="255"{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" class="search_content wide-field js-keyup-update-ajax-search-list js-keypress-enter-submit-primary-form" type="search" size="{$?,{$MOBILE},30,48}" id="search_content" name="content" value="{+START,IF_PASSED,CONTENT}{CONTENT*}{+END}" />
 								</div>
 
 								{+START,IF,{HAS_TEMPLATE_SEARCH}}
@@ -78,8 +78,8 @@
 							</td>
 						</tr>
 						<tr>
-							<th class="form_table_field_name">{!OPTIONS}</th>
-							<td class="form_table_field_input" colspan="2">
+							<th class="form-table-field-name">{!OPTIONS}</th>
+							<td class="form-table-field-input" colspan="2">
 								{+START,IF,{$CONFIG_OPTION,enable_boolean_search}}
 									{+START,IF,{HAS_FULLTEXT_SEARCH}}
 									<input type="checkbox" id="boolean_search"{+START,IF,{BOOLEAN_SEARCH}} checked="checked"{+END} name="boolean_search" value="1" class="js-checkbox-click-toggle-boolean-options js-click-trigger-resize" /> <label for="boolean_search">{!BOOLEAN_SEARCH}</label>
@@ -100,19 +100,19 @@
 							</td>
 						</tr>
 						<tr>
-							<th class="form_table_field_name">{USER_LABEL*}</th>
-							<td class="form_table_field_input" colspan="2">
+							<th class="form-table-field-name">{USER_LABEL*}</th>
+							<td class="form-table-field-input" colspan="2">
 								<div class="accessibility_hidden"><label for="search_author">{USER_LABEL*}</label></div>
 								<div>
 									<span class="invisible_ref_point"></span>
-									<input autocomplete="off" maxlength="80" class="wide_field js-keyup-update-author-list" type="text" value="{AUTHOR*}" id="search_author" name="author"{+START,IF,{$MOBILE}} autocorrect="off"{+END} />
+									<input autocomplete="off" maxlength="80" class="wide-field js-keyup-update-author-list" type="text" value="{AUTHOR*}" id="search_author" name="author"{+START,IF,{$MOBILE}} autocorrect="off"{+END} />
 								</div>
 							</td>
 						</tr>
 						{+START,IF_PASSED,DAYS_LABEL}
 							<tr>
-								<th class="form_table_field_name">{DAYS_LABEL*}</th>
-								<td class="form_table_field_input" colspan="2">
+								<th class="form-table-field-name">{DAYS_LABEL*}</th>
+								<td class="form-table-field-input" colspan="2">
 									<div class="accessibility_hidden"><label for="search_days">{DAYS_LABEL*}</label></div>
 									<select id="search_days" name="days">
 										<option selected="selected" value="-1">{!NA}</option>
@@ -131,8 +131,8 @@
 						{+END}
 						{+START,IF_PASSED,DATE_RANGE_LABEL}
 							<tr>
-								<th class="form_table_field_name">{DATE_RANGE_LABEL*}</th>
-								<td class="form_table_field_input" colspan="2">
+								<th class="form-table-field-name">{DATE_RANGE_LABEL*}</th>
+								<td class="form-table-field-input" colspan="2">
 									<div class="accessibility_hidden"><label for="cutoff_from">{DATE_RANGE_LABEL*} {!FROM}</label></div>
 									{+START,INCLUDE,FORM_SCREEN_INPUT_DATE}
 										NAME=cutoff_from
@@ -169,8 +169,8 @@
 							</tr>
 						{+END}
 						<tr>
-							<th class="form_table_field_name">{!SORT}</th>
-							<td class="form_table_field_input" colspan="2">
+							<th class="form-table-field-name">{!SORT}</th>
+							<td class="form-table-field-input" colspan="2">
 								<div class="accessibility_hidden"><label for="search_direction">{!DIRECTION}</label></div>
 								<div class="accessibility_hidden"><label for="search_sort">{!SORT_BY}</label></div>
 								<select id="search_sort" name="sort">

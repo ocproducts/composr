@@ -207,7 +207,7 @@
                                 newCell.id = 'privilege_header_' + privilege;
                                 $dom.html(newCell, '<img class="gd_text" data-gd-text="1" src="' + $cms.filter.html($util.url('data/gd_text.php?color=' + window.columnColor + '&text=' + encodeURIComponent(privilegeTitle) + $cms.keep())) + '" title="' + $cms.filter.html(privilegeTitle) + '" alt="' + $cms.filter.html(privilegeTitle) + '" />');
 
-                                rows[rows.length - 1].appendChild(document.createElement('td')).className = 'form_table_field_input privilege_footer'; // Footer cell
+                                rows[rows.length - 1].appendChild(document.createElement('td')).className = 'form-table-field-input privilege_footer'; // Footer cell
 
                                 numPrivilegeTotal++;
 
@@ -217,7 +217,7 @@
                             // Manually build up cell
                             row = document.getElementById('access_' + group + '_privilege_container');
                             newCell = row.insertBefore(document.createElement('td'), row.cells[row.cells.length - 1]);
-                            newCell.className = 'form_table_field_input privilege_cell';
+                            newCell.className = 'form-table-field-input privilege_cell';
                             newCell.id = 'privilege_cell_' + group + '_' + privilege;
                             if (document.getElementById('access_' + group).name !== '_ignore') {
                                 $dom.html(newCell, '<div class="accessibility_hidden"><label for="access_' + group + '_privilege_' + privilege + '">{!permissions:OVERRIDE;^}</label></div><select title="' + $cms.filter.html(privilegeTitle) + '" id="access_' + group + '_privilege_' + privilege + '" name="access_' + group + '_privilege_' + privilege + '"><option selected="selected" value="-1">/</option><option value="0">{!permissions:NO_COMPACT;^}</option><option value="1">{!permissions:YES_COMPACT;^}</option></select>');

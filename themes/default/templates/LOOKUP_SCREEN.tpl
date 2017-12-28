@@ -95,7 +95,7 @@
 	<form title="{!PRIMARY_PAGE_FORM}" action="{$SELF_URL*}" method="post" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
-		<p class="lonely_label">
+		<p class="lonely-label">
 			{!IP_LIST}
 		</p>
 		<ul>

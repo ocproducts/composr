@@ -1,4 +1,4 @@
-<form title="{!MAKE_PAYMENT}" class="ecommerce_button" action="{FORM_URL*}" method="post" autocomplete="off">
+<form title="{!MAKE_PAYMENT}" class="ecommerce-button" action="{FORM_URL*}" method="post" autocomplete="off">
 	<input type="hidden" name="cmd" value="_xclick" />
 	<input type="hidden" name="charset" value="{!charset}" />
 	<input type="hidden" name="business" value="{PAYMENT_ADDRESS*}" />
@@ -22,7 +22,7 @@
 		{+END}
 	{+END}
 
-	<div class="purchase_button">
+	<div class="purchase-button">
 		<input style="border: 0px" type="image" src="https://www.paypal.com/en_US/i/btn/x-click-but23.gif" name="submit" alt="Make payments with PayPal - it's fast, free and secure!" />
 	</div>
 </form>

@@ -2,8 +2,8 @@
 
 <div data-tpl="formScreenInputPassword" data-tpl-params="{+START,PARAMS_JSON,VALUE,NAME}{_*}{+END}">
 	{+START,IF,{$MATCH_KEY_MATCH,:join}}
-		<div style="display: none" id="password_strength_{NAME*}" class="password_strength js-mouseover-activate-password-strength-tooltip">
-			<div class="password_strength_inner"></div>
+		<div style="display: none" id="password-strength-{NAME*}" class="password-strength js-mouseover-activate-password-strength-tooltip">
+			<div class="password-strength-inner"></div>
 		</div>
 	{+END}
 

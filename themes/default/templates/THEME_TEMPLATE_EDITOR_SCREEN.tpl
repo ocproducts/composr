@@ -43,7 +43,7 @@
 					<div class="float-surrounder">
 						<div class="tabs spaced_out_tabs" role="tablist" id="template_editor_tab_headers"></div>
 					</div>
-					<div class="tab_surround" id="template_editor_tab_bodies"></div>
+					<div class="tab-surround" id="template_editor_tab_bodies"></div>
 				</div>
 			</div>
 		</div>

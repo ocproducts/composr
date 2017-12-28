@@ -1,4 +1,4 @@
-<form title="{!MAKE_PAYMENT}" class="ecommerce_button" action="{FORM_URL*}" method="post" autocomplete="off">
+<form title="{!MAKE_PAYMENT}" class="ecommerce-button" action="{FORM_URL*}" method="post" autocomplete="off">
 	<input type="hidden" name="cmd" value="_xclick-subscriptions" />
 	<input type="hidden" name="charset" value="{!charset}" />
 	<input type="hidden" name="business" value="{PAYMENT_ADDRESS*}" />
@@ -26,7 +26,7 @@
 	<input type="hidden" name="src" value="1" />
 	<input type="hidden" name="sra" value="1" />
 
-	<div class="purchase_button">
-		<input id="purchase_button" data-disable-on-click="1" style="border: 0px" type="image" src="https://www.paypal.com/en_US/i/btn/x-click-but23.gif" name="submit" alt="Make payments with PayPal - it's fast, free and secure!" title="{!MAKE_PAYMENT}" />
+	<div class="purchase-button">
+		<input id="purchase-button" data-disable-on-click="1" style="border: 0px" type="image" src="https://www.paypal.com/en_US/i/btn/x-click-but23.gif" name="submit" alt="Make payments with PayPal - it's fast, free and secure!" title="{!MAKE_PAYMENT}" />
 	</div>
 </form>

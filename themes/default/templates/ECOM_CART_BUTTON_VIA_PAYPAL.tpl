@@ -1,4 +1,4 @@
-<form title="{!MAKE_PAYMENT}" class="ecommerce_button" action="{FORM_URL*}" method="post" autocomplete="off">
+<form title="{!MAKE_PAYMENT}" class="ecommerce-button" action="{FORM_URL*}" method="post" autocomplete="off">
 	<input type="hidden" name="cmd" value="_cart" />
 	<input type="hidden" name="charset" value="{!charset}" />
 	<input type="hidden" name="business" value="{PAYMENT_ADDRESS*}" />
@@ -42,7 +42,7 @@
 		{+END}
 	{+END}
 
-	<p class="purchase_button">
-		<input id="purchase_button" data-disable-on-click="1" class="button_screen buttons--cart-checkout" type="submit" name="submit" value="{!MAKE_PAYMENT}" />
+	<p class="purchase-button">
+		<input id="purchase-button" data-disable-on-click="1" class="button_screen buttons--cart-checkout" type="submit" name="submit" value="{!MAKE_PAYMENT}" />
 	</p>
 </form>

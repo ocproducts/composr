@@ -2,7 +2,7 @@
 
 {RESULTS_TABLE}
 
-<p class="lonely_label">{!ACTIONS}:</p>
+<p class="lonely-label">{!ACTIONS}:</p>
 <nav>
 	<ul class="actions-list">
 		<li class="actions_list_strong">

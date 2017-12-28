@@ -5,109 +5,109 @@
 
 /* Download boxes */
 
-.download_box_pic {
+.download-box-pic {
 	float: right;
 	padding-left: 1em;
 }
 
 /*{+START,CSS_MODE,desktop}*/
-	.download_box_description.pic {
+	.download-box-description.pic {
 		margin-right: 180px;
 	}
 /*{+END}*/
 
-.download_box_pic img {
+.download-box-pic img {
 	width: 150px;
 }
 
 /* Download screen */
 
-.download_field_name_column {
+.download-field-name-column {
 	width: 45%;
 }
-.download_field_value_column {
+.download-field-value-column {
 	width: 55%;
 }
 /*{+START,CSS_MODE,mobile}*/
-	.download_field_name_column, .download_field_value_column {
+	.download-field-name-column, .download-field-value-column {
 		width: auto;
 	}
 /*{+END}*/
 
 /*{+START,CSS_MODE,desktop}*/
-	.download_description {
+	.download-description {
 		margin-right: 18em;
 	}
 /*{+END}*/
 
-.download_start_slideshow {
+.download-start-slideshow {
 	text-align: center;
 }
 
-.download_gallery_image {
+.download-gallery-image {
 	display: inline-block;
 	margin: 0 1em 0 0;
 	vertical-align: top;
 }
 
-.download_gallery_image img {
+.download-gallery-image img {
 	width: 150px;
 }
 
 /* Floated Right */
 
 /*{+START,CSS_MODE,desktop}*/
-	.download_metadata {
+	.download-metadata {
 		float: right;
 		width: 17em;
 	}
 /*{+END}*/
 
 /*{+START,CSS_MODE,mobile}*/
-	.download_metadata .right {
+	.download-metadata .right {
 		float: none;
 	}
 /*{+END}*/
 
-.download_metadata .ratings, .download_metadata .trackbacks {
+.download-metadata .ratings, .download-metadata .trackbacks {
 	width: 100%;
 	margin-top: 1em;
 }
 
-.download_metadata .ratings br {
+.download-metadata .ratings br {
 	display: none;
 }
 
-.download_now {
+.download-now {
 	padding-left: 24px;
 	background: url('{$IMG_INLINE;,icons/24x24/menu/rich_content/downloads}') no-repeat;
 	text-align: center;
 	min-height: 50px;
 }
 
-.download_now h4 {
+.download-now h4 {
 	font-size: 1.15em;
 }
 
-.download_licence {
+.download-licence {
 	margin: 0.5em;
 }
 
-.download_filesize {
+.download-filesize {
 	font-size: 0.9em;
 	margin-bottom: 0;
 }
 
-.download_stats_wrapper {
+.download-stats-wrapper {
 	margin-top: 1em;
 }
 /*{+START,CSS_MODE,mobile}*/
-	.download_stats_wrapper {
+	.download-stats-wrapper {
 		margin-bottom: 1em;
 	}
 /*{+END}*/
 
-.download_stats th, .download_stats td {
+.download-stats th, .download-stats td {
 	background-color: {$GET,area_background};
 	font-size: 0.85em;
 	padding: 0.5em;

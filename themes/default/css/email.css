@@ -3,7 +3,7 @@
  Copyright (c) ocProducts, 2004-2017
 */
 
-.email_body {
+.email-body {
 	font-size: 13px;
 
 	background: {$GET,area_5_background};
@@ -11,33 +11,33 @@
 	border: 1px solid {$GET,pale_border};
 }
 
-.email_logo {
+.email-logo {
 	margin: 0 0 1.5em 0;
 }
 
-.email_body .box {
+.email-body .box {
 	color: {$GET,slightly_seeded_text};
 	line-height: 1.6em;
 	padding: 0.8em 2em;
 }
 
-.email_body .box  h2 {
+.email-body .box  h2 {
 	border-bottom: 0;
 }
 
-.email_body hr {
+.email-body hr {
 	border-bottom: 4px solid {$GET,hr};
 }
 
-.email_footer {
+.email-footer {
 	overflow: hidden;
 	font-weight: 500;
 }
 
-.email_footer .email_copyright {
+.email-footer .email-copyright {
 	float: left;
 }
 
-.email_footer .email_url {
+.email-footer .email-url {
 	float: right;
 }

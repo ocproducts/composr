@@ -13,9 +13,9 @@
 	{+END}
 
 	{+START,IF,{$NOT,{SIMPLE_STYLE}}}
-		<div class="various_ticks float-surrounder">
+		<div class="various-ticks float-surrounder">
 			{+START,LOOP,OUT}
-				<div class="input_individual_tick">
+				<div class="input-individual-tick">
 					<label for="i_{NAME*}"><input title="{DESCRIPTION*}" tabindex="{TABINDEX*}" class="input_tick"{+START,IF,{CHECKED}} checked="checked"{+END} type="checkbox" id="i_{NAME*}" name="{NAME*}" value="1"{+START,IF,{DISABLED}} disabled="disabled"{+END} /> {PRETTY_NAME*}</label>
 					<input type="hidden" name="label_for__{NAME*}" value="{$STRIP_TAGS,{PRETTY_NAME*}}" />
 					<input name="tick_on_form__{NAME*}" value="0" type="hidden" />
@@ -34,7 +34,7 @@
 	{+END}
 
 	{+START,IF_PASSED,CUSTOM_NAME}
-		<div class="input_other_tick">
+		<div class="input-other-tick">
 			{+START,IF,{CUSTOM_ACCEPT_MULTIPLE}}
 				{+START,LOOP,CUSTOM_VALUE}
 					<div><div>

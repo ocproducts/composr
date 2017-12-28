@@ -30,7 +30,7 @@
 			{PRETTY_NAME}
 		</p>
 		{+START,SET,FILE_LIST_PRE}
-			<p class="lonely_label">{!FILES}:</p>
+			<p class="lonely-label">{!FILES}:</p>
 		{+END}
 		{+START,SET,FILE_LIST}
 			<ul>

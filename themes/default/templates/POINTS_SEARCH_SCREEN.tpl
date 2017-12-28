@@ -1,6 +1,6 @@
 {TITLE}
 
-<p class="lonely_label">{!RESULTS}:</p>
+<p class="lonely-label">{!RESULTS}:</p>
 <ul>
 	{RESULTS}
 </ul>

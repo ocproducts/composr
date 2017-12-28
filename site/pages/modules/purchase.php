@@ -1205,7 +1205,7 @@ class Module_purchase
             $next_purchase_step = get_next_purchase_step($product_object, $type_code, 'pay');
             $finish_url = build_url(array('page' => '_SELF', 'type' => $next_purchase_step, 'type_code' => $type_code), '_SELF', array('include_message' => null), true);
             $submit_name = do_lang_tempcode('MAKE_PAYMENT');
-            $icon = 'menu__rich_content__ecommerce__purchase';
+            $icon = 'menu--rich-content--ecommerce--purchase';
 
         } else { // Pass through to the gateway's HTTP server
             if ($confirmation_box === null) {

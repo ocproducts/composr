@@ -1,4 +1,4 @@
-<form title="{!MAKE_PAYMENT}" class="ecommerce_button" action="{FORM_URL*}" method="post" autocomplete="off">
+<form title="{!MAKE_PAYMENT}" class="ecommerce-button" action="{FORM_URL*}" method="post" autocomplete="off">
 	<input type="hidden" name="instId" value="{USERNAME*}" />
 	<input type="hidden" name="MC_callback" value="{$REPLACE,https://,,{$REPLACE,http://,,{$FIND_SCRIPT*,ecommerce}?from=worldpay&amp;type_code={TYPE_CODE*}}}" />
 	<input type="hidden" name="cartId" value="{TRANS_EXPECTING_ID*}" />
@@ -29,7 +29,7 @@
 	<input type="hidden" name="intervalUnit" value="{LENGTH_UNITS_2*}" />
 	<input type="hidden" name="option" value="0" />
 
-	<div class="purchase_button">
-		<input id="purchase_button" data-disable-on-click="1" class="button_screen menu__adminzone__audit__ecommerce__subscriptions" type="submit" value="{!MAKE_PAYMENT}" />
+	<div class="purchase-button">
+		<input id="purchase-button" data-disable-on-click="1" class="button_screen menu--adminzone--audit--ecommerce--subscriptions" type="submit" value="{!MAKE_PAYMENT}" />
 	</div>
 </form>

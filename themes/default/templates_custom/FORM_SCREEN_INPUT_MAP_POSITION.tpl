@@ -13,5 +13,5 @@
 		<input class="js-change-set-place-marker {+START,IF,{REQUIRED}}hidden_required{+END}" type="number" step="any" id="{NAME*}_longitude" name="longitude" value="{LONGITUDE*}" />
 	</label>
 
-	<input class="button_micro buttons--search js-click-geolocate-user-for-map-field" data-click-pd type="button" value="{!FIND_ME}" />
+	<input class="button-micro buttons--search js-click-geolocate-user-for-map-field" data-click-pd type="button" value="{!FIND_ME}" />
 </div>

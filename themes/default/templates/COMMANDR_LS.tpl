@@ -1,7 +1,7 @@
 {$REQUIRE_JAVASCRIPT,commandr}
 
 <div data-tpl="commandrLs">
-	<p class="lonely_label">{DIRECTORY*}:</p>
+	<p class="lonely-label">{DIRECTORY*}:</p>
 
 	{$,We do separate lists for accessibility reasons}
 

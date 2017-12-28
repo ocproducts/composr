@@ -5,7 +5,7 @@
 	
 	<div class="actions-list installer_main_min">
 		<div class="install_log_table">
-			<p class="lonely_label">{!INSTALL_LOG}:</p>
+			<p class="lonely-label">{!INSTALL_LOG}:</p>
 			<ul>
 				{LOG}
 			</ul>

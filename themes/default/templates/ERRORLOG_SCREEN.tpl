@@ -9,5 +9,5 @@
 
 	<p>{!FULL_PERMISSION_LIST_SEE_FILE}</p>
 
-	<div class="permissions_failed">{PERMISSION*}</div>
+	<div class="permissions-failed">{PERMISSION*}</div>
 {+END}

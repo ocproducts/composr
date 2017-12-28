@@ -3,116 +3,116 @@
  Copyright (c) ocProducts, 2004-2017
 */
 
-.purchase_button {
+.purchase-button {
 	text-align: center;
 }
 
-.agreement_box {
+.agreement-box {
 	max-height: 25em;
 	border: 1px solid {$GET,pale_border};
 	padding: 0.5em;
 	overflow: auto;
 }
-.agreement_box .lonely_label {
+.agreement-box .lonely-label {
 	font-weight: bold;
 	margin-top: 0;
 }
-.purchase_terms {
+.purchase-terms {
 	font-family: Courier, monospace;
 	white-space: pre-wrap !important;
 	margin: 1em 0;
 }
 
-.purchase_screen_contents {
+.purchase-screen-contents {
 }
 
-.subscriptions_cancel_button {
+.subscriptions-cancel-button {
 	text-align: right;
 }
 
-.purchase_field_name_column {
+.purchase-field-name-column {
 	width: 16em;
 }
-.purchase_field_input_column {
+.purchase-field-input-column {
 	width: 100%;
 }
 /*{+START,CSS_MODE,mobile}*/
-	.purchase_field_name_column, .purchase_field_input_column {
+	.purchase-field-name-column, .purchase-field-input-column {
 		width: auto;
 	}
 /*{+END}*/
 
-.local_payment_merchant_details_wrap {
+.local-payment-merchant-details-wrap {
 	border: 1px dashed {$GET,point_of_interest_border};
 	background-color: {$GET,point_of_interest_background};
 }
 
-.local_payment_merchant_details {
+.local-payment-merchant-details {
 	display: table;
 	width: 100%;
 }
 
-.local_payment_merchant_details>div {
+.local-payment-merchant-details>div {
 	display: table-row;
 }
 
-.local_payment_transact_info, .payment_processor_links, .local_payment_verified_account_logo {
+.local-payment-transact-info, .payment-processor-links, .local-payment-verified-account-logo {
 	display: table-cell;
 	vertical-align: middle;
 	padding: 0.5em;
 }
 
-.local_payment_transact_info {
+.local-payment-transact-info {
 }
 
-.payment_processor_links {
+.payment-processor-links {
 	background: url('{$IMG;,ecommerce/checkmark}') no-repeat left center;
 	padding-left: 24px;
 }
 
-.local_payment_verified_account_logo {
+.local-payment-verified-account-logo {
 }
 
-.local_payment_merchant_details p {
+.local-payment-merchant-details p {
 	margin: 0;
 }
 
-.local_payment_merchant_details_wrap + .ecommerce_button, .local_payment_merchant_details + .ecommerce_button {
+.local-payment-merchant-details-wrap + .ecommerce-button, .local-payment-merchant-details + .ecommerce-button {
 	margin-top: 1em;
 }
 
-.local_payment_merchant_details_wrap {
+.local-payment-merchant-details-wrap {
 	border: 1px dashed {$GET,point_of_interest_border};
 	background-color: {$GET,point_of_interest_background};
 }
 
-.local_payment_merchant_details {
+.local-payment-merchant-details {
 	display: table;
 	width: 100%;
 }
 
-.local_payment_merchant_details>div {
+.local-payment-merchant-details>div {
 	display: table-row;
 }
 
-.local_payment_transact_info, .payment_processor_links, .local_payment_verified_account_logo {
+.local-payment-transact-info, .payment-processor-links, .local-payment-verified-account-logo {
 	display: table-cell;
 	vertical-align: middle;
 	padding: 0.5em;
 }
 
-.local_payment_transact_info {
+.local-payment-transact-info {
 }
 
-.payment_processor_links {
+.payment-processor-links {
 	background: url('{$IMG;,ecommerce/checkmark}') no-repeat left center;
 	padding-left: 24px;
 }
 
-.local_payment_verified_account_logo {
+.local-payment-verified-account-logo {
 }
 
-.local_payment_merchant_details_wrap + .ecommerce_button, .local_payment_merchant_details + .ecommerce_button {
+.local-payment-merchant-details-wrap + .ecommerce-button, .local-payment-merchant-details + .ecommerce-button {
 	margin-top: 1em;
 }
 
@@ -124,7 +124,7 @@
 
 /* Based on https://github.com/NextStepWebs/simple-html-invoice-template */
 
-.invoice_box {
+.invoice-box {
 	max-width: 800px;
 	margin: auto;
 	padding: 30px;
@@ -136,41 +136,41 @@
 	color: {$GET,slightly_seeded_gray_text};
 }
 
-.invoice_box table {
+.invoice-box table {
 	width: 100%;
 	line-height: inherit;
 	text-align: left;
 }
 
-.invoice_box table td {
+.invoice-box table td {
 	padding: 5px;
 	vertical-align: top;
 }
 
-.invoice_box table tr td: nth-child(2) {
+.invoice-box table tr td: nth-child(2) {
 	text-align: right;
 }
 
-.invoice_box table tr.top table td {
+.invoice-box table tr.top table td {
 	padding-bottom: 20px;
 }
 
-.invoice_box table tr.top td.title {
+.invoice-box table tr.top td.title {
 	font-size: 45px;
 	line-height: 45px;
 	color: {$GET,area_text};
 }
 
-.invoice_box table tr.top td.title img {
+.invoice-box table tr.top td.title img {
 	width: 100%;
 	max-width: 300px;
 }
 
-.invoice_box table tr.information table td {
+.invoice-box table tr.information table td {
 	padding-bottom: 40px;
 }
 
-.invoice_box table thead tr th {
+.invoice-box table thead tr th {
 	background: {$GET,area_background};
 	border-bottom: 1px solid {$GET,area_2_background};
 	font-weight: bold;
@@ -178,27 +178,27 @@
 	text-align: left;
 }
 
-.invoice_box table tr.item td {
+.invoice-box table tr.item td {
 	border-bottom: 1px solid {$GET,area_background};
 }
 
-.invoice_box table tr.item:last-child td {
+.invoice-box table tr.item:last-child td {
 	border-bottom: none;
 }
 
-.invoice_box table tr.total td.total {
+.invoice-box table tr.total td.total {
 	border-top: 2px solid {$GET,area_background};
 	font-weight: bold;
 }
 
 /*{+START,CSS_MODE,mobile}*/
-	.invoice_box table tr.top table td {
+	.invoice-box table tr.top table td {
 		width: 100%;
 		display: block;
 		text-align: center;
 	}
 
-	.invoice_box table tr.information table td {
+	.invoice-box table tr.information table td {
 		width: 100%;
 		display: block;
 		text-align: center;
@@ -211,18 +211,18 @@
 =========================
 */
 
-.menu__adminzone__audit__ecommerce__subscriptions {
+.menu--adminzone--audit--ecommerce--subscriptions {
 	background-image: url('{$IMG,icons/24x24/menu/adminzone/audit/ecommerce/subscriptions}') !important;
 }
-.menu__rich_content__ecommerce__purchase {
+.menu--rich-content--ecommerce--purchase {
 	background-image: url('{$IMG,icons/24x24/menu/rich_content/ecommerce/purchase}') !important;
 }
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.menu__adminzone__audit__ecommerce__subscriptions {
+	.menu--adminzone--audit--ecommerce--subscriptions {
 		background-image: url('{$IMG,icons/48x48/menu/adminzone/audit/ecommerce/subscriptions}') !important;
 	}
-	.menu__rich_content__ecommerce__purchase {
+	.menu--rich-content--ecommerce--purchase {
 		background-image: url('{$IMG,icons/48x48/menu/rich_content/ecommerce/purchase}') !important;
 	}
 }

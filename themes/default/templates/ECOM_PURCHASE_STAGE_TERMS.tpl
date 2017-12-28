@@ -7,10 +7,10 @@
 
 	<p>{!AGREEMENT_PROCESS}</p>
 
-	<div class="agreement_box">
-		<p class="lonely_label">{!AGREEMENT}:</p>
+	<div class="agreement-box">
+		<p class="lonely-label">{!AGREEMENT}:</p>
 
-		<div class="purchase_terms">{TERMS*}</div>
+		<div class="purchase-terms">{TERMS*}</div>
 	</div>
 
 	<p>

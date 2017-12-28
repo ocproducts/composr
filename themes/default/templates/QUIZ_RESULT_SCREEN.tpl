@@ -7,7 +7,7 @@
 {+START,INCLUDE,QUIZ_RESULTS}{+END}
 
 {+START,IF,{$NEQ,{_TYPE},SURVEY}}
-	<p class="lonely_label">
+	<p class="lonely-label">
 		{!QUIZ_RESULTS}:
 	</p>
 

@@ -9,7 +9,7 @@
 {+END}
 
 {+START,IF_NON_EMPTY,{SHARED_MESSAGES}}
-	<p class="lonely_label">{!NOTICES}:</p>
+	<p class="lonely-label">{!NOTICES}:</p>
 	<ul>
 		{+START,LOOP,SHARED_MESSAGES}
 			<li>{_loop_var}</li>

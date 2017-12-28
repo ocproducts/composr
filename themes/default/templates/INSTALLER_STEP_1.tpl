@@ -10,7 +10,7 @@
 			{WARNINGS}
 		{+END}
 
-		<div class="wide-table-wrap"><table class="map_table form_table wide-table">
+		<div class="wide-table-wrap"><table class="map_table form-table wide-table">
 			<colgroup>
 				<col class="installer_left_column" />
 				<col class="installer_right_column" />
@@ -18,8 +18,8 @@
 
 			<tbody>
 				<tr>
-					<th class="form_table_field_name">{!PLEASE_CHOOSE_LANG} (&dagger;)</th>
-					<td class="form_table_field_input">
+					<th class="form-table-field-name">{!PLEASE_CHOOSE_LANG} (&dagger;)</th>
+					<td class="form-table-field-input">
 						<div class="accessibility_hidden"><label for="default_lang">{!PLEASE_CHOOSE_LANG}</label></div>
 						<select id="default_lang" name="default_lang">
 							{LANGUAGES}

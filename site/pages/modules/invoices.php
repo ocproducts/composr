@@ -291,7 +291,7 @@ class Module_invoices
             'URL' => $post_url,
             'TEXT' => $text,
             'HIDDEN' => $hidden,
-            'SUBMIT_ICON' => 'menu__rich_content__ecommerce__purchase',
+            'SUBMIT_ICON' => 'menu--rich-content--ecommerce--purchase',
             'SUBMIT_NAME' => do_lang_tempcode('MAKE_PAYMENT'),
         ));
     }

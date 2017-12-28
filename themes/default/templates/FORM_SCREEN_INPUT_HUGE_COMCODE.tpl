@@ -7,25 +7,25 @@
 
 <tr>
 	{$SET,randomised_id,{$?,{$IS_EMPTY,{NAME*}},{$RAND},{NAME*}}}
-	<th id="form_table_field_name__{$GET,randomised_id}" colspan="2" class="form_table_description_above_cell{+START,IF,{REQUIRED}} required{+END}">
+	<th id="form_table_field_name__{$GET,randomised_id}" colspan="2" class="form-table-description-above-cell{+START,IF,{REQUIRED}} required{+END}">
 		<input type="hidden" name="label_for__{NAME*}" value="{$STRIP_TAGS,{PRETTY_NAME*}}" />
 
 		{COMCODE}
 
-		<p class="field-name lonely_label">
+		<p class="field-name lonely-label">
 			<label for="{NAME*}">{PRETTY_NAME*}<span class="inline_desktop">:</span></label>
 		</p>
 
-		<span id="required_readable_marker__{$?,{$IS_EMPTY,{NAME*}},{$RAND},{NAME*}}" style="display: {$?,{REQUIRED*},inline,none}"><span class="required_star">*</span> <span class="accessibility_hidden">{!REQUIRED}</span></span>
+		<span id="required_readable_marker__{$?,{$IS_EMPTY,{NAME*}},{$RAND},{NAME*}}" style="display: {$?,{REQUIRED*},inline,none}"><span class="required-star">*</span> <span class="accessibility_hidden">{!REQUIRED}</span></span>
 
 		{+START,INCLUDE,FORM_SCREEN_FIELD_DESCRIPTION}LEFT=1{+END}
 	</th>
 </tr>
 
 <tr class="field_input">
-	<td id="form_table_field_input__{$GET,randomised_id}" colspan="2" class="form_table_huge_field{+START,IF,{REQUIRED}} required{+END}">
-		<div id="container_for_{NAME*}" class="container_for_wysiwyg">
-			<textarea data-textarea-auto-height="" tabindex="{TABINDEX*}" class="input_text{_REQUIRED} wide_field{+START,IF,{SCROLLS}} textarea_scroll{+END}" cols="70" rows="{ROWS*}" id="{NAME*}" name="{NAME*}">{DEFAULT*}</textarea>
+	<td id="form_table_field_input__{$GET,randomised_id}" colspan="2" class="form-table-huge-field{+START,IF,{REQUIRED}} required{+END}">
+		<div id="container_for_{NAME*}" class="container-for-wysiwyg">
+			<textarea data-textarea-auto-height="" tabindex="{TABINDEX*}" class="input_text{_REQUIRED} wide-field{+START,IF,{SCROLLS}} textarea_scroll{+END}" cols="70" rows="{ROWS*}" id="{NAME*}" name="{NAME*}">{DEFAULT*}</textarea>
 
 			{+START,IF_PASSED,DEFAULT_PARSED}
 				<textarea aria-hidden="true" cols="1" rows="1" style="display: none" readonly="readonly" disabled="disabled" name="{NAME*}_parsed">{DEFAULT_PARSED*}</textarea>

@@ -3,16 +3,16 @@
  Copyright (c) ocProducts, 2004-2017
 */
 
-.do_next_page_question {
+.do-next-page-question {
 	font-size: 1em;
 }
 /*{+START,CSS_MODE,desktop}*/
-	.do_next_page_question {
+	.do-next-page-question {
 		margin-bottom: 3em;
 	}
 /*{+END}*/
 
-.do_next_section_wrap {
+.do-next-section-wrap {
 	margin: 2em auto;
 	text-align: center;
 	border: 1px dotted {$GET,standard_border};
@@ -22,29 +22,29 @@
 	box-shadow: 0px 0px 20px {$GET,standard_border};
 }
 /*{+START,CSS_MODE,desktop}*/
-	.do_next_section_wrap {
+	.do-next-section-wrap {
 		width: 606px;
 	}
 /*{+END}*/
 
-.do_next_section_wrap h2 {
+.do-next-section-wrap h2 {
 	margin-top: 0;
 }
 
-.do_next_section {
+.do-next-section {
 	{$BETA_CSS_PROPERTY,display: flex;}
 	{$BETA_CSS_PROPERTY,flex-wrap: wrap;}
 	border-left: 1px dotted {$GET,standard_border};
 	border-top: 1px dotted {$GET,standard_border};
 }
 
-.do_next_item {
+.do-next-item {
 	background-color: {$GET,area_background};
 	min-height: 8.5em;
 	border-right: 1px dotted {$GET,standard_border};
 	border-bottom: 1px dotted {$GET,standard_border};
 }
-.do_next_item, .do_theme_items>div {
+.do-next-item, .do-theme-items>div {
 	padding: 0.75em;
 	text-align: center;
 	font-size: 0.9em;
@@ -52,25 +52,25 @@
 	box-sizing: border-box;
 }
 
-.active_item td, td.active_item {
+.active-item td, td.active-item {
 	background-color: {$GET,area_2_background} !important;
 }
-.active_item td.do_theme_items>div, td.active_item.do_theme_items>div {
+.active-item td.do-theme-items>div, td.active-item.do-theme-items>div {
 	background-color: {$GET,area_4_background} !important;
 }
 
-.do_next_item:hover, .do_theme_items>div:hover, .active_item td.do_theme_items>div:hover, td.active_item.do_theme_items>div:hover {
+.do-next-item:hover, .do-theme-items>div:hover, .active-item td.do-theme-items>div:hover, td.active-item.do-theme-items>div:hover {
 	background-color: {$GET,area_hover_background} !important;
 	cursor: pointer;
 }
-.do_theme_items>div:hover {
+.do-theme-items>div:hover {
 	outline: 1px dotted {$GET,standard_border};
 }
 
-.do_next_item_icon {
+.do-next-item-icon {
 	padding-bottom: 0.5em;
 }
 
-.do_next_item a, .do_theme_items a {
+.do-next-item a, .do-theme-items a {
 	text-decoration: none;
 }

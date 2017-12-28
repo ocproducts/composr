@@ -10,7 +10,7 @@
 
 		<h2><label for="tempcode">Tempcode</label></h2>
 		<div>
-			<textarea id="tempcode" name="tempcode" cols="70" rows="17" class="wide_field textarea_scroll"></textarea>
+			<textarea id="tempcode" name="tempcode" cols="70" rows="17" class="wide-field textarea_scroll"></textarea>
 		</div>
 
 		<h2>{!PARAMETERS}</h2>
