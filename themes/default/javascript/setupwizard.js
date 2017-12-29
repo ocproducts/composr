@@ -25,7 +25,7 @@
 
     $cms.functions.adminSetupWizardStep7 = function () {
         document.getElementById('rules').addEventListener('change', function () {
-            var items = ['preview_box_balanced', 'preview_box_liberal', 'preview_box_corporate'];
+            var items = ['preview-box-balanced', 'preview-box-liberal', 'preview-box-corporate'];
             for (var i = 0; i < items.length; i++) {
                 document.getElementById(items[i]).style.display = (this.selectedIndex !== i) ? 'none' : 'block';
             }

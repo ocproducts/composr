@@ -1,1 +1,1 @@
-<col class="permission_column" />
+<col class="permission-column" />

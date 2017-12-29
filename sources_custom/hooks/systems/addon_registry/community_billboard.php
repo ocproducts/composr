@@ -225,7 +225,7 @@ class Hook_addon_registry_community_billboard
         $name = placeholder_random_id();
         $input = do_lorem_template('FORM_SCREEN_INPUT_LIST', array(
             'TABINDEX' => '5',
-            'REQUIRED' => '_required',
+            'REQUIRED' => '-required',
             'NAME' => $name,
             'CONTENT' => $out,
             'INLINE_LIST' => true,

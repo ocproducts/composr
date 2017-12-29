@@ -3,32 +3,32 @@
 		<table class="map_table results-table">
 			{+START,IF,{$DESKTOP}}
 				<colgroup>
-					<col class="gallery_entry_field_name_column" />
+					<col class="gallery-entry-field-name-column" />
 					<col class="gallery_entry_field_value_column" />
 				</colgroup>
 			{+END}
 
 			<tbody>
 				<tr>
-					<th class="de_th metadata_title">{!ADDED}</th>
+					<th class="de-th metadata_title">{!ADDED}</th>
 					<td>{$DATE_TIME*,{ADD_DATE_RAW}}</td>
 				</tr>
 
 				<tr>
-					<th class="de_th metadata_title">{!BY}</th>
+					<th class="de-th metadata_title">{!BY}</th>
 					<td><a rel="author" href="{$MEMBER_PROFILE_URL*,{SUBMITTER}}">{$USERNAME*,{SUBMITTER},1}</a></td>
 				</tr>
 
 				{+START,IF_NON_EMPTY,{EDIT_DATE_RAW}}
 					<tr>
-						<th class="de_th metadata_title">{!EDITED}</th>
+						<th class="de-th metadata_title">{!EDITED}</th>
 						<td>{$DATE_TIME*,{EDIT_DATE_RAW}}</td>
 					</tr>
 				{+END}
 
 				{+START,IF,{$INLINE_STATS}}
 					<tr>
-						<th class="de_th metadata_title">{!COUNT_VIEWS}</th>
+						<th class="de-th metadata_title">{!COUNT_VIEWS}</th>
 						<td>{VIEWS*}</td>
 					</tr>
 				{+END}
@@ -36,7 +36,7 @@
 				{$SET,rating,{$RATING,videos,{ID},1,{SUBMITTER}}}
 				{+START,IF_NON_EMPTY,{$TRIM,{$GET,rating}}}
 					<tr>
-						<th class="de_th metadata_title">{!RATING}</th>
+						<th class="de-th metadata_title">{!RATING}</th>
 						<td>{$GET,rating}</td>
 					</tr>
 				{+END}

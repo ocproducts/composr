@@ -797,14 +797,14 @@ function up_do_header()
 END;
     @print(file_get_contents(css_enforce('global', 'default')));
     echo <<<END
-            .screen_title { text-decoration: underline; display: block; background: url('themes/default/images/icons/48x48/menu/adminzone/tools/upgrade.png') top left no-repeat; min-height: 42px; padding: 10px 0 0 60px; }
+            .screen-title { text-decoration: underline; display: block; background: url('themes/default/images/icons/48x48/menu/adminzone/tools/upgrade.png') top left no-repeat; min-height: 42px; padding: 10px 0 0 60px; }
             a[target="_blank"], a[onclick$="window.open"] { padding-right: 0; }
         /*]]>*/</style>
 
         <meta name="robots" content="noindex, nofollow" />
     </head>
     <body class="website_body"><div class="global_middle">
-        <h1 class="screen_title">{$upgrader_title}</h1>
+        <h1 class="screen-title">{$upgrader_title}</h1>
         <p>{$upgrader_intro}</p><hr class="spaced_rule" />
 END;
 }

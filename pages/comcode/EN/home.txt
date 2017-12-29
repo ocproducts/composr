@@ -19,12 +19,12 @@
 
 [block failsafe="1"]main_leader_board[/block]
 
-[surround="fp_col_blocks_wrap pale_box"]
-	[surround="fp_col_block left"]
+[surround="fp-col-blocks-wrap pale_box"]
+	[surround="fp-col-block left"]
 		[block failsafe="1"]main_content[/block]
 	[/surround]
 
-	[surround="fp_col_block right"]
+	[surround="fp-col-block right"]
 		[block failsafe="1"]main_poll[/block]
 	[/surround]
 [/surround]

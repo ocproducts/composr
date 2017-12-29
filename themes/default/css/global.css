@@ -348,22 +348,22 @@ thead>tr>th, .boxless-space .box>table>thead>tr>th, .pte_set_box .box>table>thea
 .box thead>tr>th a {
 	color: inherit;
 }
-/* .de_th makes a th look like a td, yet allows us to use correct markup */
-td, th.de_th {
+/* .de-th makes a th look like a td, yet allows us to use correct markup */
+td, th.de-th {
 	color: {$GET,slightly_seeded_text};
 	font-weight: normal;
 	text-align: left;
 	font-weight: normal;
 	border: 0;
 }
-table[border="1"] td, table[border="1"] th.de_th { /* To make WYSIWYG easier */
+table[border="1"] td, table[border="1"] th.de-th { /* To make WYSIWYG easier */
 	border: 1px solid;
 }
-th.de_th {
+th.de-th {
 	background-color: transparent;
 	background-image: none;
 }
-th.de_th a, th.de_th a:hover, th.de_th a:visited {
+th.de-th a, th.de-th a:hover, th.de-th a:visited {
 	color: {$GET,slightly_seeded_text};
 }
 
@@ -418,7 +418,7 @@ iframe {
 		overflow-x: visible !important;
 		overflow-y: visible !important;
 	}
-	.field_name_column, .field_name_column_shorter, .field_input_column, .field_input_column, .field_sup_column, .results-table col {
+	.field-name-column, .field-name-column-shorter, .field-input-column, .field-input-column, .field_sup_column, .results-table col {
 		width: auto !important;
 	}
 	* {
@@ -515,7 +515,7 @@ comcode-{$REPLACE,\,,::selection \,comcode-,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__X
 }
 
 /* Stop Chrome breaking our datalist display with an arrow */
-input.input_username::-webkit-calendar-picker-indicator {
+input.input-username::-webkit-calendar-picker-indicator {
   display: none;
 }
 
@@ -737,16 +737,16 @@ header h1 {
 }
 
 /* This is applied to the screen title, which is specially included on each screen; in the case of Comcode pages it is the first level 1 title. The screen title is by default an h1, but we define the styles separately so we can style this special title independently (there are lots of cool things we could do to it) */
-.screen_title {
+.screen-title {
 	margin-top: 0.35em;
 	margin-bottom: 0.8em;
 	min-width: 300px;
 	padding-bottom: 6px; /* For better alignment with breadcrumbs to the right */
 }
-.screen_title img {
+.screen-title img {
 	vertical-align: middle;
 }
-.screen_title li span {
+.screen-title li span {
 	display: block;
 }
 
@@ -1668,7 +1668,7 @@ td>.comcode_quote:first-child, .fake_table_cell>.comcode_quote:first-child, .fak
 	margin: 0 !important;
 }
 /* Don't do margins for boxes at the end of frames */
-/*#standalone_html_wrap>div>.box:first-child {	Actually we want this, due to how .fp_col_block has been written
+/*#standalone_html_wrap>div>.box:first-child {	Actually we want this, due to how .fp-col-block has been written
 	margin-top: 0;
 }*/
 #standalone_html_wrap>div>.box:last-child {
@@ -1766,7 +1766,7 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 .boxless-space>.box:last-child {
 	margin-bottom: 0; /* No margin on the last box */
 }
-.boxless-space .fp_col_blocks_wrap .box {
+.boxless-space .fp-col-blocks-wrap .box {
 	margin: 0.5em 0; /* Half-sized margins for the fake-columns on front pages, as the overflow blocks margin collapsing */
 }
 .boxless-space .box>.box-inner {
@@ -1810,11 +1810,11 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 
 /* ... Dividers within boxless area... */
 .boxless-space .box_wrapper + .box,
-.boxless-space .box_wrapper + .fp_col_blocks_wrap,
+.boxless-space .box_wrapper + .fp-col-blocks-wrap,
 .boxless-space .box + .box,
-.boxless-space .box + .fp_col_blocks_wrap,
-.boxless-space .fp_col_blocks_wrap + .box_wrapper,
-.boxless-space .fp_col_blocks_wrap + .box {
+.boxless-space .box + .fp-col-blocks-wrap,
+.boxless-space .fp-col-blocks-wrap + .box_wrapper,
+.boxless-space .fp-col-blocks-wrap + .box {
 	border-top: 2px solid {$GET,standard_border} !important;
 	margin-top: 1.5em;
 	padding-top: 0.5em;
@@ -1840,7 +1840,7 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 	margin: 0 auto 2em auto;
 	border-top: 2px dotted {$GET,pale_border} !important;
 }
-.boxless-space .box + .fp_col_blocks_wrap {
+.boxless-space .box + .fp-col-blocks-wrap {
 	padding-top: 0;
 }
 
@@ -1917,43 +1917,43 @@ h3 .toggleable-tray-button img {
 
 /* Used in the Setup Wizard constructed block layouts in the front page */
 
-.fp_col_blocks_wrap {
+.fp-col-blocks-wrap {
 	overflow: hidden;
 }
 
-.fp_col_block {
+.fp-col-block {
 	box-sizing: border-box;
 }
 /*{+START,CSS_MODE,desktop}*/
-	.fp_col_block {
+	.fp-col-block {
 		width: 50%;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.fp_col_block {
+	.fp-col-block {
 		margin: 1em 0;
 		max-width: 100%;
 	}
 /*{+END}*/
 
-.fp_col_block .pagination {
+.fp-col-block .pagination {
 	float: none;
 }
-.fp_col_block form + span {
+.fp-col-block form + span {
 	margin-left: 0;
 }
 
-.fp_col_block .box {
+.fp-col-block .box {
 	margin-bottom: 0; /* margin-top from boxes below will work instead. This is needed as the "overflow: hidden" stops margin collapsing between the block contents and outside it */
 }
 
-.fp_col_block.left {
+.fp-col-block.left {
 	padding-right: 0.5em;
 }
-.fp_col_block.right {
+.fp-col-block.right {
 	padding-left: 0.5em;
 }
-.fp_col_block.left:last-child {
+.fp-col-block.left:last-child {
 	padding-right: 0; /* Undo padding if actually there is nothing to the right of this */
 }
 
@@ -2340,15 +2340,15 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	border-top-width: 4px !important;
 }
 
-.field_name_column {
+.field-name-column {
 	width: 14em;
 }
 
-.field_name_column_shorter {
+.field-name-column-shorter {
 	width: 11em;
 }
 
-.field_input_column, .field_value_column {
+.field-input-column, .field_value_column {
 	width: 100%;
 }
 
@@ -2383,7 +2383,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 		border-left: 1px solid {$GET,standard_border};
 		border-radius: 0 !important;
 	}
-	.responsive-table>tbody>tr>th .field_name, .responsive-table>tbody>tr>td .field_name, .responsive-table>tr>th .field_name, .responsive-table>tr>td .field_name {
+	.responsive-table>tbody>tr>th .field-name, .responsive-table>tbody>tr>td .field-name, .responsive-table>tr>th .field-name, .responsive-table>tr>td .field-name {
 		font-weight: normal;
 		font-style: italic;
 	}
@@ -2441,7 +2441,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	border-radius: 10px;
 	color: {$GET,area_text} !important;
 }
-.tooltip_ownlayout, .tooltip_nolayout th.de_th, .tooltip_nolayout td {
+.tooltip_ownlayout, .tooltip_nolayout th.de-th, .tooltip_nolayout td {
 	background-color: {$GET,area_faded_background};
 	background-image: linear-gradient(to bottom, {$GET,area_faded_background}, {$GET,area_background});
 }
@@ -3084,14 +3084,14 @@ div .post-buttons>*, div .buttons-group-faded>* {
 	opacity: 0.7;
 }
 
-.comments_field_name_column {
+.comments-field-name-column {
 	width: 13em;
 }
-.comments_field_input_column {
+.comments-field-input-column {
 	width: 100%;
 }
 /*{+START,CSS_MODE,mobile}*/
-	.comments_field_name_column, .comments_field_input_column {
+	.comments-field-name-column, .comments-field-input-column {
 		width: auto;
 	}
 /*{+END}*/
@@ -3404,7 +3404,7 @@ dl.meta_details_list>dt, dl.meta_details_list>dd {
 .staff_actions .box-inner {
 	padding-right: 25px;
 }
-.staff_actions .field_name.standard_field_name {
+.staff_actions .field-name.standard-field-name {
 	display: none;
 }
 .staff_actions ul.horizontal-links {
@@ -3656,7 +3656,7 @@ ul.buttons-group, ul.associated-links-block-group {
 =========================
 */
 
-.field_input_non_filled {
+.field-input-non-filled {
 	color: {$GET,unfilled_input_text} !important;
 }
 
@@ -3673,7 +3673,7 @@ ul.buttons-group, ul.associated-links-block-group {
 	color: {$GET,unfilled_input_text} !important;
 }
 
-.field_input_filled {
+.field-input-filled {
 	color: {$GET,native_ui_foreground};
 }
 
@@ -3748,7 +3748,7 @@ ul.buttons-group, ul.associated-links-block-group {
 	margin-right: 0 !important;
 }
 
-.fields_set_contents .wide-field {
+.fields-set-contents .wide-field {
 	max-width: 500px;
 }
 .multi_field + .multi_field {
@@ -5192,7 +5192,7 @@ a[title="{!VIRTUAL_ROOT}"]:hover {
 =========================
 */
 
-.overlay [role="toolbar"], .overlay .emoticon_chooser, .overlay .posting_rules, .overlay .required-field-warning {
+.overlay [role="toolbar"], .overlay .emoticon-chooser, .overlay .posting_rules, .overlay .required-field-warning {
 	display: none;
 }
 

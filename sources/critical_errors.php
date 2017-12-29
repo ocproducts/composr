@@ -236,7 +236,7 @@ END;
             $css = ((preg_replace('#/\*\s*\*/\s*#', '', str_replace('url(\'\')', 'none', str_replace('url("")', 'none', preg_replace('#\{\$[^\}]*\}#', '', preg_replace('#\{\$\?,\{\$MOBILE\},([^,]+),([^,]+)\}#', '$2', $file_contents)))))));
             echo htmlentities($css);
             echo <<<END
-        .screen_title { text-decoration: underline; display: block; min-height: 42px; padding: 3px 0 0 0; }
+        .screen-title { text-decoration: underline; display: block; min-height: 42px; padding: 3px 0 0 0; }
         .button_screen { padding: 0.5em 0.3em !important; }
         a[target="_blank"], a[onclick$="window.open"] { padding-right: 0; }
     ]]></style>
@@ -244,7 +244,7 @@ END;
 <body><div class="global_middle">
 END;
         }
-        echo '<h1 class="screen_title">Critical error &ndash; bailing out</h1>' . "\n" . '<div class="red_alert" role="error">' . $error . '</div>' . "\n";
+        echo '<h1 class="screen-title">Critical error &ndash; bailing out</h1>' . "\n" . '<div class="red_alert" role="error">' . $error . '</div>' . "\n";
         flush();
         if (($in_upgrader) && (strpos($error, 'Allowed memory') === false)) {
             require_code('upgrade');

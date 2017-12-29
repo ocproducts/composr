@@ -643,7 +643,7 @@ function form_input_line($pretty_name, $description, $name, $default, $required,
 
     $tabindex = get_form_field_tabindex($tabindex);
 
-    $_required = ($required) ? '_required' : '';
+    $_required = ($required) ? '-required' : '';
     $maxlength = get_field_restrict_property('maxlength', $name);
     if (($maxlength === null) && ($_maxlength !== null)) {
         $maxlength = strval($_maxlength);
@@ -685,7 +685,7 @@ function form_input_url($pretty_name, $description, $name, $default, $required, 
 
     $tabindex = get_form_field_tabindex($tabindex);
 
-    $_required = ($required) ? '_required' : '';
+    $_required = ($required) ? '-required' : '';
     $input = do_template('FORM_SCREEN_INPUT_URL', array('_GUID' => '12789c9af25cbc971e86bfcc0ad322d5', 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'DEFAULT' => $default));
     return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex);
 }
@@ -715,7 +715,7 @@ function form_input_username($pretty_name, $description, $name, $default, $requi
 
     $tabindex = get_form_field_tabindex($tabindex);
 
-    $_required = ($required) ? '_required' : '';
+    $_required = ($required) ? '-required' : '';
     $input = do_template('FORM_SCREEN_INPUT_USERNAME', array(
         '_GUID' => '591b5fe23f0cc0a4975a52d52aa5701e',
         'TABINDEX' => strval($tabindex),
@@ -769,7 +769,7 @@ function form_input_author($pretty_name, $description, $name, $default, $require
     ));
     $_description->attach($extra);
 
-    $_required = ($required) ? '_required' : '';
+    $_required = ($required) ? '-required' : '';
     $input = do_template('FORM_SCREEN_INPUT_AUTHOR', array('_GUID' => '2662a51e494120078b4022915593e28a', 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'DEFAULT' => $default));
     return _form_input($name, $pretty_name, $_description, $input, $required, false, $tabindex);
 }
@@ -796,7 +796,7 @@ function form_input_email($pretty_name, $description, $name, $default, $required
 
     $tabindex = get_form_field_tabindex($tabindex);
 
-    $_required = ($required) ? '_required' : '';
+    $_required = ($required) ? '-required' : '';
     $input = do_template('FORM_SCREEN_INPUT_EMAIL', array('_GUID' => '2ff1d9e21894710b8f09598fd92049c7', 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'DEFAULT' => $default));
     return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex);
 }
@@ -827,7 +827,7 @@ function form_input_colour($pretty_name, $description, $name, $default, $require
 
     $tabindex = get_form_field_tabindex($tabindex);
 
-    $_required = ($required) ? '_required' : '';
+    $_required = ($required) ? '-required' : '';
     return do_template('FORM_SCREEN_INPUT_COLOUR', array(
         '_GUID' => '9a1a8061cebd717ea98522984d9465af',
         'RAW_FIELD' => false,
@@ -897,7 +897,7 @@ function form_input_line_comcode($pretty_name, $description, $name, $default, $r
 
     $tabindex = get_form_field_tabindex($tabindex);
 
-    $_required = ($required) ? '_required' : '';
+    $_required = ($required) ? '-required' : '';
     $input = do_template('FORM_SCREEN_INPUT_LINE', array(
         '_GUID' => 'b47034df1d68c1465d045fca822071a1',
         'MAXLENGTH' => get_field_restrict_property('maxlength', $name),
@@ -1008,12 +1008,12 @@ function form_input_text_multi($pretty_name, $description, $name, $default_array
     $input = new Tempcode();
     $i = 0;
     foreach ($default_array as $default) {
-        $_required = ($i < $num_required) ? '_required' : '';
+        $_required = ($i < $num_required) ? '-required' : '';
         $input->attach(do_template('FORM_SCREEN_INPUT_TEXT_MULTI', array('_GUID' => '0d9e3c073d09d1ce3725f47813375c28', 'PRETTY_NAME' => $pretty_name, 'TABINDEX' => strval($tabindex), 'NAME_STUB' => $name, 'I' => strval($i), 'REQUIRED' => $_required, 'DEFAULT' => $default, 'MAXLENGTH' => ($maxlength === null) ? null : strval($maxlength))));
         $i++;
     }
     for (; $i < $num_required; $i++) {
-        $input->attach(do_template('FORM_SCREEN_INPUT_TEXT_MULTI', array('_GUID' => '2e816a71ef5a9ac9e1aac4bd1c13b5bd', 'PRETTY_NAME' => $pretty_name, 'TABINDEX' => strval($tabindex), 'NAME_STUB' => $name, 'I' => strval($i), 'REQUIRED' => '_required', 'DEFAULT' => '', 'MAXLENGTH' => ($maxlength === null) ? null : strval($maxlength))));
+        $input->attach(do_template('FORM_SCREEN_INPUT_TEXT_MULTI', array('_GUID' => '2e816a71ef5a9ac9e1aac4bd1c13b5bd', 'PRETTY_NAME' => $pretty_name, 'TABINDEX' => strval($tabindex), 'NAME_STUB' => $name, 'I' => strval($i), 'REQUIRED' => '-required', 'DEFAULT' => '', 'MAXLENGTH' => ($maxlength === null) ? null : strval($maxlength))));
     }
     return _form_input($name, $pretty_name, $description, $input, $num_required > 0, false, $tabindex, false, true);
 }
@@ -1055,7 +1055,7 @@ function form_input_username_multi($pretty_name, $description, $name, $default_a
         }
         $default = filter_form_field_default($name, $default);
 
-        $_required = ($i < $num_required) ? '_required' : '';
+        $_required = ($i < $num_required) ? '-required' : '';
         $input->attach(do_template('FORM_SCREEN_INPUT_USERNAME_MULTI', array('_GUID' => 'f2adcb1464b13e339a0336db6d5228cb', 'PRETTY_NAME' => $pretty_name, 'TABINDEX' => strval($tabindex), 'NEEDS_MATCH' => $needs_match, 'NAME_STUB' => $name, 'I' => strval($i), 'REQUIRED' => $_required, 'DEFAULT' => $default)));
         $i++;
     }
@@ -1065,7 +1065,7 @@ function form_input_username_multi($pretty_name, $description, $name, $default_a
         $_num_required = $i + 1;
     }
     for (; $i < $_num_required; $i++) {
-        $_required = ($i < $num_required) ? '_required' : '';
+        $_required = ($i < $num_required) ? '-required' : '';
 
         $input->attach(do_template('FORM_SCREEN_INPUT_USERNAME_MULTI', array('_GUID' => '4bc8a187ee5fac91275f66f78478a3c6', 'PRETTY_NAME' => $pretty_name, 'TABINDEX' => strval($tabindex), 'NEEDS_MATCH' => $needs_match, 'NAME_STUB' => $name, 'I' => strval($i), 'REQUIRED' => $_required, 'DEFAULT' => '')));
     }
@@ -1096,7 +1096,7 @@ function form_input_text($pretty_name, $description, $name, $default, $required,
 
     check_suhosin_request_size(strlen($default));
 
-    $_required = ($required) ? '_required' : '';
+    $_required = ($required) ? '-required' : '';
 
     $input = do_template('FORM_SCREEN_INPUT_TEXT', array(
         '_GUID' => '01626015c6ae36b1027e35e66a8b5d0b',
@@ -1138,7 +1138,7 @@ function form_input_text_comcode($pretty_name, $description, $name, $default, $r
 
     $tabindex = get_form_field_tabindex($tabindex);
 
-    $_required = ($required) ? '_required' : '';
+    $_required = ($required) ? '-required' : '';
     $default_parsed = new Tempcode();
 
     $default = filter_form_field_default($name, $default);
@@ -1205,7 +1205,7 @@ function form_input_huge_comcode($pretty_name, $description, $name, $default, $r
 
     check_suhosin_request_size(strlen($default));
 
-    $_required = ($required) ? '_required' : '';
+    $_required = ($required) ? '-required' : '';
     $default_parsed = new Tempcode();
 
     attach_wysiwyg();
@@ -1268,7 +1268,7 @@ function form_input_huge($pretty_name, $description, $name, $default, $required,
 
     check_suhosin_request_size(strlen($default));
 
-    $_required = ($required) ? '_required' : '';
+    $_required = ($required) ? '-required' : '';
     $default_parsed = new Tempcode();
 
     return do_template('FORM_SCREEN_INPUT_HUGE', array(
@@ -1547,7 +1547,7 @@ function form_input_upload($pretty_name, $description, $name, $required, $defaul
 
     $tabindex = get_form_field_tabindex($tabindex);
 
-    $_required = ($required) ? '_required' : '';
+    $_required = ($required) ? '-required' : '';
     $is_image = false;
     $existing_url = '';
     if ($default !== null) {
@@ -1602,7 +1602,7 @@ function form_input_upload_multi($pretty_name, $description, $name, $required, $
 
     $tabindex = get_form_field_tabindex($tabindex);
 
-    $_required = ($required) ? '_required' : '';
+    $_required = ($required) ? '-required' : '';
     $is_image = false;
     $existing_url = '';
     if (($default !== null) && (count($default) > 0)) {
@@ -1653,7 +1653,7 @@ function form_input_list($pretty_name, $description, $name, $content, $tabindex 
     require_javascript('jquery');
     require_javascript('select2');
 
-    $_required = ($required) ? '_required' : '';
+    $_required = ($required) ? '-required' : '';
     $input = do_template('FORM_SCREEN_INPUT_LIST', array(
         '_GUID' => '112dd79a8e0069aa21615594aec1e509',
         'TABINDEX' => strval($tabindex),
@@ -1688,7 +1688,7 @@ function form_input_huge_list($pretty_name, $description, $name, $content, $tabi
     require_javascript('jquery');
     require_javascript('select2');
 
-    $_required = ($required) ? '_required' : '';
+    $_required = ($required) ? '-required' : '';
 
     return do_template('FORM_SCREEN_INPUT_HUGE_LIST', array(
         '_GUID' => 'b29dbbaf09bb5c36410e22feafa2f968',
@@ -1754,7 +1754,7 @@ function form_input_combo($pretty_name, $description, $name, $default, $options,
 {
     $tabindex = get_form_field_tabindex($tabindex);
 
-    $_required = ($required) ? '_required' : '';
+    $_required = ($required) ? '-required' : '';
     $input = do_template('FORM_SCREEN_INPUT_COMBO', array(
         '_GUID' => '4f4595c0b0dfcf09b004481e317d02a8',
         'TABINDEX' => strval($tabindex),
@@ -1826,7 +1826,7 @@ function form_input_tree_list($pretty_name, $description, $name, $root_id, $hook
         }
     }
 
-    $_required = ($required) ? '_required' : '';
+    $_required = ($required) ? '-required' : '';
     $input = do_template('FORM_SCREEN_INPUT_TREE_LIST', array(
         '_GUID' => '21e9644eeac24356f38459ebe37f693a',
         'MULTI_SELECT' => $multi_select,
@@ -2353,7 +2353,7 @@ function form_input_integer($pretty_name, $description, $name, $default, $requir
 
     $required = filter_form_field_required($name, $required);
 
-    $_required = ($required) ? '_required' : '';
+    $_required = ($required) ? '-required' : '';
     $input = do_template('FORM_SCREEN_INPUT_INTEGER', array(
         '_GUID' => 'da09e21f329f300f71dd4dd518cb6242',
         'TABINDEX' => strval($tabindex),
@@ -2387,7 +2387,7 @@ function form_input_dimensions($pretty_name, $description, $name_width, $name_he
     $_default_height = filter_form_field_default($name_height, ($default_height === null) ? '' : strval($default_height));
     $default_height = ($_default_height == '') ? null : intval($_default_height);
 
-    $_required = ($required) ? '_required' : '';
+    $_required = ($required) ? '-required' : '';
     $input = do_template('FORM_SCREEN_INPUT_DIMENSIONS', array(
         '_GUID' => 'd8ccbe6813e4d1a0c41a25adb87d5c35',
         'TABINDEX' => strval($tabindex),
@@ -2420,7 +2420,7 @@ function form_input_float($pretty_name, $description, $name, $default, $required
 
     $required = filter_form_field_required($name, $required);
 
-    $_required = ($required) ? '_required' : '';
+    $_required = ($required) ? '-required' : '';
     $input = do_template('FORM_SCREEN_INPUT_FLOAT', array(
         '_GUID' => '6db802ae840bfe7e87881f95c79133c4',
         'TABINDEX' => strval($tabindex),

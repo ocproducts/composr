@@ -6,7 +6,7 @@
 
 <div class="upload-field inline_block" data-require-javascript="core_form_interfaces" data-view="FromScreenInputUpload" data-view-params="{+START,PARAMS_JSON,NAME,PLUPLOAD,FILTER,SYNDICATION_JSON}{_*}{+END}">
 	<div class="vertical_alignment inline_block">
-		<input tabindex="{TABINDEX*}" class="input_upload{REQUIRED*}" type="file" id="{NAME*}" name="{NAME*}" />
+		<input tabindex="{TABINDEX*}" class="input-upload{REQUIRED*}" type="file" id="{NAME*}" name="{NAME*}" />
 		{+START,IF,{EDIT}}
 			<p class="upload-field-msg inline_block">
 				<input type="checkbox" id="i_{NAME*}_unlink" name="{NAME*}_unlink" value="1" />

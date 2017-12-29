@@ -531,7 +531,7 @@
             return;
         }
 
-        var comcodes = editor.document.$.body.querySelectorAll('.cms_keep_ui_controlled');
+        var comcodes = editor.document.$.body.querySelectorAll('.cms-keep-ui-controlled');
 
         arrVal(comcodes).forEach(function (comcode) {
             if (comcode.onmouseout) {

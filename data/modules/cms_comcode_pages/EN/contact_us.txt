@@ -1,14 +1,14 @@
 [semihtml]
 [title]Contact Us[/title]
 
-[surround="fp_col_blocks_wrap"]
-	[surround="fp_col_block left"]
+[surround="fp-col-blocks-wrap"]
+	[surround="fp-col-block left"]
 		[title="2"]<img alt="" class="vertical_alignment" src="{$IMG*,icons/24x24/contact_methods/telephone}" srcset="{$IMG*,icons/48x48/contact_methods/telephone} 2x" /> <span class="vertical_alignment">Phone</span>[/title]
 
 		<a class="non_link" href="tel:+4412345678910">(+44) 1234 5678910</a>
 	[/surround]
 
-	[surround="fp_col_block right link_exempt_wrap"]
+	[surround="fp-col-block right link_exempt_wrap"]
 		[title="2"]<img alt="" class="vertical_alignment" src="{$IMG*,icons/24x24/contact_methods/email}" srcset="{$IMG*,icons/48x48/contact_methods/email} 2x" /> <span class="vertical_alignment">E-mail</span>[/title]
 
 		[email]{$STAFF_ADDRESS}[/email]

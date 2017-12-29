@@ -24,14 +24,14 @@
 	counter-reset: quiz_num;
 }
 
-.quiz_field_name_column {
+.quiz-field-name-column {
 	width: 28em;
 }
-.quiz_field_input_column {
+.quiz-field-input-column {
 	width: 100%;
 }
 /*{+START,CSS_MODE,mobile}*/
-	.quiz_field_name_column, .quiz_field_input_column {
+	.quiz-field-name-column, .quiz-field-input-column {
 		width: auto;
 	}
 /*{+END}*/
@@ -108,19 +108,19 @@
 	background: url('{$IMG;,cns_emoticons/party}') top right no-repeat;
 }
 
-.quiz_form tr.filledin.field_input th, .quiz_form tr.filledin.field_input td {
+.quiz_form tr.filledin.field-input th, .quiz_form tr.filledin.field-input td {
 	opacity: 0.4;
 }
 
-/*.quiz_form tr.field_input th, .quiz_form tr.field_input td {   Annoying assumption about mouse use
+/*.quiz_form tr.field-input th, .quiz_form tr.field-input td {   Annoying assumption about mouse use
 	opacity: 0.5;
 }*/
 
-.quiz_form tr.field_input:hover th, .quiz_form tr.field_input:hover td, body.touch-enabled .quiz_form tr.field_input th, body.touch-enabled .quiz_form tr.field_input td {
+.quiz_form tr.field-input:hover th, .quiz_form tr.field-input:hover td, body.touch-enabled .quiz_form tr.field-input th, body.touch-enabled .quiz_form tr.field-input td {
 	opacity: 1.0 !important;
 }
 
-.quiz_form td .input_radio {
+.quiz_form td .input-radio {
 	display: inline-block;
 }
 
@@ -132,7 +132,7 @@
 	font-weight: bold;
 }
 
-.quiz_form tr.field_input div {
+.quiz_form tr.field-input div {
 	margin-right: 35px;
 	display: block;
 }

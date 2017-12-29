@@ -686,7 +686,7 @@ function form_input_tax_code($set_title, $description, $set_name, $default, $req
     $default = filter_form_field_default($set_name, $default);
 
     $required = filter_form_field_required($set_name, $required);
-    $_required = ($required) ? '_required' : '';
+    $_required = ($required) ? '-required' : '';
 
     $fields = new Tempcode();
     $field_set = alternate_fields_set__start($set_name);

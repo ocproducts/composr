@@ -29,7 +29,7 @@
 		{HIDDEN_FIELDS}
 
 		{+START,IF,{$OR,{$IN_STR,{CLASS},wysiwyg},{$AND,{$MATCH_KEY_MATCH,_WILD:cms_comcode_pages},{$SHOW_DOCS}}}}
-			<div class="comcode-supported posting_form_main_comcode_button">
+			<div class="comcode-supported posting-form-main-comcode-button">
 				<ul class="horizontal-links horiz-field-sep associated-links-block-group">
 					{+START,IF,{$SHOW_DOCS}}{+START,IF_PASSED,COMCODE_URL}
 						{+START,IF,{$NOT,{$MATCH_KEY_MATCH,_WILD:cms_comcode_pages}}}
@@ -54,14 +54,14 @@
 		</th>
 	{+END}
 </tr>
-<tr class="field_input" id="field-{$GET*,id}-input">
+<tr class="field-input" id="field-{$GET*,id}-input">
 	<td class="{+START,IF,{REQUIRED}} required{+END} form-table-huge-field" colspan="2">
 		{+START,IF_PASSED,DEFAULT_PARSED}
 			<textarea cols="1" rows="1" style="display: none" readonly="readonly" disabled="disabled" name="{NAME*}_parsed">{DEFAULT_PARSED*}</textarea>
 		{+END}
 
 		<div class="float-surrounder">
-			<div role="toolbar" class="float-surrounder post_options_wrap">
+			<div role="toolbar" class="float-surrounder post-options-wrap">
 				<div id="post_special_options2" style="display: none">
 					{COMCODE_EDITOR_SMALL}
 				</div>
@@ -75,7 +75,7 @@
 
 				{+START,IF_PASSED,WORD_COUNTER}
 					{$SET,word_count_id,{$RAND}}
-					<div class="word_count" id="word_count_{$GET*,word_count_id}"></div>
+					<div class="word-count" id="word_count_{$GET*,word_count_id}"></div>
 				{+END}
 			</div>
 		</div>
@@ -83,7 +83,7 @@
 		{+START,IF_NON_EMPTY,{$TRIM,{EMOTICON_CHOOSER}}}
 			{+START,IF,{$NOT,{$MATCH_KEY_MATCH,_WILD:cms_news}}}
 				{+START,IF,{$DESKTOP}}{+START,IF,{$OR,{$CONFIG_OPTION,is_on_emoticon_choosers},{$CNS}}}
-					<div {+START,IF,{$CONFIG_OPTION,is_on_emoticon_choosers}} class="emoticon_chooser box block_desktop"{+END}>
+					<div {+START,IF,{$CONFIG_OPTION,is_on_emoticon_choosers}} class="emoticon-chooser box block_desktop"{+END}>
 						{+START,IF,{$CNS}}
 							<span class="right horiz-field-sep associated-link"><a rel="nofollow" target="_blank" class="js-link-click-open-site-emoticon-chooser-window" href="{$FIND_SCRIPT*,emoticons}?field_name={NAME*}{$KEEP*,0,1}" data-click-pd="1" title="{!EMOTICONS_POPUP} {!LINK_NEW_WINDOW}">{$?,{$CONFIG_OPTION,is_on_emoticon_choosers},{!VIEW_ARCHIVE},{!EMOTICONS_POPUP}}</a></span>
 						{+END}
@@ -142,7 +142,7 @@
 			{+END}
 		</th>
 	</tr>
-	<tr style="display: none" class="field_input" id="field-{$GET*,id}-attachments-ui-input">
+	<tr style="display: none" class="field-input" id="field-{$GET*,id}-attachments-ui-input">
 		<td class="form-table-huge-field" colspan="2">
 			{ATTACHMENTS}
 			<input type="hidden" name="posting_ref_id" value="{$RAND%}" />

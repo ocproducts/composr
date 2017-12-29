@@ -4,7 +4,7 @@
 
 <div class="wide-table-wrap"><table class="columned_table wide-table results-table notifications_form responsive-table responsive-table-bolded-first-column">
 	<colgroup>
-		<col class="notifications_field_name_column" />
+		<col class="notifications-field-name-column" />
 		{+START,IF_PASSED_AND_TRUE,SHOW_PRIVILEGES}
 			<col class="notifications_privileges_column" />
 		{+END}
@@ -47,7 +47,7 @@
 
 			{+START,LOOP,NOTIFICATION_CODES}
 				<tr class="notification_code {$CYCLE*,zebra,zebra_0,zebra_1}">
-					<th class="de_th">{NOTIFICATION_LABEL*}</th>
+					<th class="de-th">{NOTIFICATION_LABEL*}</th>
 
 					{+START,IF_PASSED,PRIVILEGED}
 						<td>{$?,{PRIVILEGED},{!YES},{!NO}}</td>

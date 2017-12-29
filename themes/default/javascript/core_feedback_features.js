@@ -105,8 +105,8 @@
                 textarea.value = '';
             }
 
-            textarea.classList.remove('field_input_non_filled');
-            textarea.classList.add('field_input_filled');
+            textarea.classList.remove('field-input-non-filled');
+            textarea.classList.add('field-input-filled');
         },
 
         openEmoticonChooserWindow: function () {
@@ -560,7 +560,7 @@
         if (isThreaded) {
             post.value = $util.format('{!QUOTED_REPLY_MESSAGE;^}', [replyingToUsername, replyingToPostPlain]);
             post.stripOnFocus = post.value;
-            post.classList.add('field_input_non_filled');
+            post.classList.add('field-input-non-filled');
         } else {
             if ((post.stripOnFocus !== undefined) && (post.value == post.stripOnFocus)) {
                 post.value = '';

@@ -47,7 +47,7 @@ Knowing how to program, I now have written my code, with my modified files saved
             </colgroup>
 
             <tr>
-               <th class="de_th cns-column1 cns_stats_usersonline_1">
+               <th class="de-th cns-column1 cns_stats_usersonline_1">
                   <span class="field-name">{!USERS_ONLINE}:</span><br />
                   <span class="associated-link">[ <a href="{USERS_ONLINE_URL*}">{!DETAILS}</a> ]</span>
                </th>
@@ -62,7 +62,7 @@ Knowing how to program, I now have written my code, with my modified files saved
                </td>
             </tr>
             <tr>
-               <th class="de_th cns-column1 cns-stats-main-1">
+               <th class="de-th cns-column1 cns-stats-main-1">
                   {!FORUM_STATISTICS}:
                </th>
                <td class="cns-stats-main-2">

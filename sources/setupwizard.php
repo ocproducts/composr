@@ -147,9 +147,9 @@ function _get_zone_pages($installprofileblocks, $block_options, $collapse_zones,
             }
             if ($val == 'YES_CELL') {
                 if ($cell_count % 2 == 0) {
-                    $cells .= '[surround="fp_col_blocks_wrap"]';
+                    $cells .= '[surround="fp-col-blocks-wrap"]';
                 }
-                $cells .= "\t" . '[surround="fp_col_block ' . (($cell_count % 2 == 0) ? 'left' : 'right') . '"]' . "\n\t\t" . $block_comcode . "\n\t" . '[/surround]' . "\n";
+                $cells .= "\t" . '[surround="fp-col-block ' . (($cell_count % 2 == 0) ? 'left' : 'right') . '"]' . "\n\t\t" . $block_comcode . "\n\t" . '[/surround]' . "\n";
                 if ($cell_count % 2 == 1) {
                     $cells .= "[/surround]\n\n";
                 }

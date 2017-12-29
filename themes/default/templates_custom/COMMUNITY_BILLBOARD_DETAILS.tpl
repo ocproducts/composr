@@ -4,7 +4,7 @@
 	<div class="wide-table-wrap"><table class="map_table wide-table results-table">
 		{+START,IF,{$DESKTOP}}
 			<colgroup>
-				<col class="field_name_column" />
+				<col class="field-name-column" />
 				<col class="field_value_column" />
 			</colgroup>
 		{+END}

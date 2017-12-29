@@ -399,13 +399,13 @@ class Hook_addon_registry_installer
     {
         if ($hidden) {
             $input = do_lorem_template('INSTALLER_INPUT_PASSWORD', array(
-                'REQUIRED' => $required,
+                'REQUIRED' => ($required) ? '-required' : '',
                 'NAME' => $name,
                 'VALUE' => $value,
             ));
         } else {
             $input = do_lorem_template('INSTALLER_INPUT_LINE', array(
-                'REQUIRED' => $required,
+                'REQUIRED' => ($required) ? '-required' : '',
                 'NAME' => $name,
                 'VALUE' => $value,
             ));

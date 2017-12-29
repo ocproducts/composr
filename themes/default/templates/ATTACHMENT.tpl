@@ -3,8 +3,8 @@
 		<table class="map_table form-table wide-table">
 			{+START,IF,{$DESKTOP}}
 				<colgroup>
-					<col class="attachments_field_name_column column_desktop" />
-					<col class="attachments_field_input_column" />
+					<col class="attachments-field-name-column column_desktop" />
+					<col class="attachments-field-input-column" />
 				</colgroup>
 			{+END}
 

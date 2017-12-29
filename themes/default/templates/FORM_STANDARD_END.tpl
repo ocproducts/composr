@@ -13,7 +13,7 @@
 <div data-require-javascript="core_form_interfaces" data-view="FormStandardEnd" data-view-params="{+START,PARAMS_JSON,preview_url,force_previews,JS_FUNCTION_CALLS,JAVASCRIPT,SECONDARY_FORM,SUPPORT_AUTOSAVE,FORM_NAME,SEPARATE_PREVIEW,BACK_URL,CANCEL_URL,ANALYTIC_EVENT_CATEGORY}{_*}{+END}">
 	{+START,IF_PASSED_AND_TRUE,PREVIEW}{+START,IF,{$CONFIG_OPTION,enable_previews}}
 		{+START,IF_NON_PASSED_OR_FALSE,SKIP_WEBSTANDARDS}{+START,IF,{$OR,{$CONFIG_OPTION,enable_markup_webstandards},{$CONFIG_OPTION,enable_spell_check},{$AND,{$HAS_PRIVILEGE,perform_keyword_check},{$CONFIG_OPTION,enable_keyword_density_check}}}}
-			<div class="preview_checking_box">
+			<div class="preview-checking-box">
 				<section class="box box___form_standard_end"><div class="box-inner">
 					<h3>{!PERFORM_CHECKS_ON_PREVIEW}</h3>
 

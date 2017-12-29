@@ -11,7 +11,7 @@
 		{+START,IF_NON_EMPTY,{$TRIM,{TREE}}}
 			<div class="wide-table"><table class="columned_table wide-table results-table notifications_form">
 				<colgroup>
-					<col class="notifications_field_name_column" />
+					<col class="notifications-field-name-column" />
 					{+START,LOOP,NOTIFICATION_TYPES_TITLES}
 						<col class="notifications_tick_column" />
 					{+END}

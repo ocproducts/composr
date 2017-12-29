@@ -282,12 +282,12 @@ div.cns-table-footer>div>div {
 	text-align: center;
 }
 
-.cns-post-emphasis, div.cns-post-emphasis.cns-forum-box-left { /* Extra selector clause to give precedence over th.de_th and .cns-forum-box-left */
+.cns-post-emphasis, div.cns-post-emphasis.cns-forum-box-left { /* Extra selector clause to give precedence over th.de-th and .cns-forum-box-left */
 	background-color: {$GET,emphasis_background} !important;
 	color: {$GET,emphasis_text};
 }
 
-.cns-post-personal, div.cns-post-personal.cns-forum-box-left { /* Extra selector clause to give precedence over th.de_th and .cns-forum-box-left */
+.cns-post-personal, div.cns-post-personal.cns-forum-box-left { /* Extra selector clause to give precedence over th.de-th and .cns-forum-box-left */
 	background-color: {$GET,cns_personal_post_background} !important;
 	color: {$GET,cns_personal_post_text};
 }

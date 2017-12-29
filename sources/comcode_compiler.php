@@ -231,7 +231,7 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
                 $comcode_title = do_lang('comcode:COMCODE_EDITABLE_TAG', escape_html($tag));
             }
             $raw_comcode = $raw_comcode_start . $_embed_inner . $raw_comcode_end;
-            return '<input class="cms_keep_ui_controlled" size="45" title="' . escape_html($raw_comcode) . '" type="button" value="' . $comcode_title . '" />';
+            return '<input class="cms-keep-ui-controlled" size="45" title="' . escape_html($raw_comcode) . '" type="button" value="' . $comcode_title . '" />';
 
         case WYSIWYG_COMCODE__XML_BLOCK:
         case WYSIWYG_COMCODE__XML_INLINE:
@@ -288,7 +288,7 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
                 $_embed = nl2br(escape_html($embed->evaluate()));
             }
             $out = '';
-            $out .= '<kbd title="' . escape_html($tag) . '" class="cms_keep_block">';
+            $out .= '<kbd title="' . escape_html($tag) . '" class="cms-keep-block">';
             $out .= escape_html($raw_comcode_start) . $_embed . escape_html($raw_comcode_end);
             $out .= '</kbd>';
             return $out;
@@ -422,7 +422,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
         '<font( color="[^"<>]*")?( face="[^"<>]*")?( size="[^"<>]*")?' . '>',
         '</font>',
         '<!--',
-        '<h1( class="screen_title")?( id="screen_title")?' . '>',
+        '<h1( class="screen-title")?( id="screen-title")?' . '>',
         '</h1>',
         '<h2>',
         '</h2>',

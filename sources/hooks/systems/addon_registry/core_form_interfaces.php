@@ -1344,7 +1344,7 @@ class Hook_addon_registry_core_form_interfaces
                 'TABINDEX' => placeholder_number(),
                 'NAME_STUB' => placeholder_random_id(),
                 'I' => strval($k),
-                'REQUIRED' => '_required',
+                'REQUIRED' => '-required',
                 'DEFAULT' => '',
             )));
         }

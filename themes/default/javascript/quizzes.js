@@ -54,7 +54,7 @@
             iterateCountdown(0); // Because quiz_timer_minutes_and_seconds needs setting correctly
         }
 
-        var e = $dom.$$(form, '.field_input');
+        var e = $dom.$$(form, '.field-input');
         for (var i = 0; i < e.length; i++) {
             $cms.form.setUpChangeMonitor(e[i]);
         }

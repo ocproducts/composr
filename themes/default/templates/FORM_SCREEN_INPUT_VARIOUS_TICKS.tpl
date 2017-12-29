@@ -13,7 +13,7 @@
 				<div class="various-ticks float-surrounder">
 				{+START,LOOP,OUT}
 					<div class="input-individual-tick">
-						<label for="i_{NAME*}"><input title="{DESCRIPTION*}" tabindex="{TABINDEX*}" class="input_tick"{+START,IF,{CHECKED}} checked="checked"{+END} type="checkbox" id="i_{NAME*}" name="{NAME*}" value="1" /> {PRETTY_NAME*}</label>
+						<label for="i_{NAME*}"><input title="{DESCRIPTION*}" tabindex="{TABINDEX*}" class="input-tick"{+START,IF,{CHECKED}} checked="checked"{+END} type="checkbox" id="i_{NAME*}" name="{NAME*}" value="1" /> {PRETTY_NAME*}</label>
 						<input type="hidden" name="label_for__{NAME*}" value="{$STRIP_TAGS,{PRETTY_NAME*}}" />
 						<input name="tick_on_form__{NAME*}" value="0" type="hidden" />
 					</div>
@@ -23,7 +23,7 @@
 			{+START,IF,{SIMPLE_STYLE}}
 				{+START,LOOP,OUT}
 					<p>
-						<label for="i_{NAME*}"><input title="{DESCRIPTION*}" tabindex="{TABINDEX*}" class="input_tick"{+START,IF,{CHECKED}} checked="checked"{+END} type="checkbox" id="i_{NAME*}" name="{NAME*}" value="1" /> {PRETTY_NAME*}</label>
+						<label for="i_{NAME*}"><input title="{DESCRIPTION*}" tabindex="{TABINDEX*}" class="input-tick"{+START,IF,{CHECKED}} checked="checked"{+END} type="checkbox" id="i_{NAME*}" name="{NAME*}" value="1" /> {PRETTY_NAME*}</label>
 						<input type="hidden" name="label_for__{NAME*}" value="{$STRIP_TAGS,{PRETTY_NAME*}}" />
 						<input name="tick_on_form__{NAME*}" value="0" type="hidden" />
 					</p>
@@ -45,7 +45,7 @@
 
 					{+START,IF,{$NOT,{CUSTOM_ACCEPT_MULTIPLE}}}
 						<div><div>
-							<input value="1" class="input_tick js-click-checkbox-toggle-value-field" id="{CUSTOM_NAME*}" name="{CUSTOM_NAME*}" type="checkbox" />
+							<input value="1" class="input-tick js-click-checkbox-toggle-value-field" id="{CUSTOM_NAME*}" name="{CUSTOM_NAME*}" type="checkbox" />
 							<label for="{CUSTOM_NAME*}">{!OTHER}</label> <label for="{CUSTOM_NAME*}_value"><span class="associated-details">({!fields:PLEASE_STATE})</span></label>
 							<input id="{CUSTOM_NAME*}_value" name="{CUSTOM_NAME*}_value" value="{+START,IF_PASSED,CUSTOM_VALUE}{CUSTOM_VALUE*}{+END}" class="js-change-input-toggle-value-checkbox" size="15" type="text" />
 						</div></div>

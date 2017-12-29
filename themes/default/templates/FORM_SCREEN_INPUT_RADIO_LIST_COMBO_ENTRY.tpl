@@ -1,6 +1,6 @@
 <p data-tpl="formScreenInputRadioListComboEntry" data-tpl-params="{+START,PARAMS_JSON,NAME}{_*}{+END}">
 	<label for="j_{NAME|*}_other">
-		<input tabindex="{TABINDEX*}" class="input_radio js-change-toggle-other-custom-input" type="radio" id="j_{NAME|*}_other" name="{NAME*}"{+START,IF_NON_EMPTY,{VALUE}} checked="checked"{+END} />
+		<input tabindex="{TABINDEX*}" class="input-radio js-change-toggle-other-custom-input" type="radio" id="j_{NAME|*}_other" name="{NAME*}"{+START,IF_NON_EMPTY,{VALUE}} checked="checked"{+END} />
 		{!OTHER}
 	</label>
 	<br />

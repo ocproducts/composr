@@ -2,7 +2,7 @@
 	<a id="title__{ID*}"></a>
 {+END}
 
-<h1 class="screen_title"{+START,IF,{$NOT,{$GET,name_set_elsewhere}}} itemprop="name"{+END}>
+<h1 class="screen-title"{+START,IF,{$NOT,{$GET,name_set_elsewhere}}} itemprop="name"{+END}>
 	{TITLE}
 
 	{+START,IF_PASSED,AWARDS}

@@ -2740,7 +2740,7 @@ function make_option($nice_name, $description, $name, $value, $hidden = false, $
         $value = '';
     }
 
-    $_required = ($required ? '_required' : '');
+    $_required = ($required ? '-required' : '');
 
     if ($hidden) {
         $input1 = do_template('INSTALLER_INPUT_PASSWORD', array('_GUID' => '373b85cea71837a30d146df387dc2a42', 'REQUIRED' => $_required, 'NAME' => $name, 'VALUE' => $value));

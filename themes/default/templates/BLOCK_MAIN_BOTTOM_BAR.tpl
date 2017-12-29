@@ -12,7 +12,7 @@
 		<tbody>
 			{+START,IF_NON_EMPTY,{USERS_ONLINE}}
 				<tr>
-					<th class="de_th cns-stats-usersonline-1">
+					<th class="de-th cns-stats-usersonline-1">
 						<p class="field-name">{!USERS_ONLINE}:</p>
 						{+START,IF_NON_EMPTY,{USERS_ONLINE_URL}}<p class="associated-link associated-links-block-group"><a href="{USERS_ONLINE_URL*}" title="{!USERS_ONLINE}" rel="nofollow">{!DETAILS}</a></p>{+END}
 					</th>
@@ -37,7 +37,7 @@
 			{+END}
 
 			<tr>
-				<th class="de_th cns-stats-main-1">
+				<th class="de-th cns-stats-main-1">
 					<span class="field-name">{!FORUM_STATISTICS}:</span>
 				</th>
 

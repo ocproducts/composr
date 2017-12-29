@@ -440,7 +440,7 @@
         var deleteElement = $dom.$('#delete');
         
         // Skip checks if 'delete' checkbox is checked
-        if (!forPreview && (deleteElement != null) && (((deleteElement.classList[0] === 'input_radio') && (deleteElement.value !== '0')) || (deleteElement.classList[0] === 'input_tick')) && (deleteElement.checked)) {
+        if (!forPreview && (deleteElement != null) && (((deleteElement.classList[0] === 'input-radio') && (deleteElement.value !== '0')) || (deleteElement.classList[0] === 'input-tick')) && (deleteElement.checked)) {
             return Promise.resolve(true);
         }
         
@@ -659,19 +659,19 @@
                 // Shim for HTML5 regexp patterns
                 if (theElement.getAttribute('pattern') && (myValue !== '') && (!myValue.match(new RegExp(theElement.getAttribute('pattern'))))) {
                     errorMsg = $util.format('{!javascript:PATTERN_NOT_MATCHED;^}', [myValue]);
-                } else if ((theElement.classList.contains('input_username') || theElement.classList.contains('input_username_required')) && (myValue !== '') && (myValue !== '****')) {
+                } else if ((theElement.classList.contains('input-username') || theElement.classList.contains('input-username-required')) && (myValue !== '') && (myValue !== '****')) {
                     validatePromise = $cms.form.doAjaxFieldTest('{$FIND_SCRIPT_NOHTTP;,username_exists}?username=' + encodeURIComponent(myValue)).then(function (exists) {
                         if (!exists) {
                             errorMsg = $util.format('{!javascript:NOT_USERNAME;^}', [myValue]);
                         }
                     });
-                } else if ((theElement.classList.contains('input_email') || theElement.classList.contains('input_email_required')) && (myValue !== '') && (!myValue.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/))) {
+                } else if ((theElement.classList.contains('input-email') || theElement.classList.contains('input-email-required')) && (myValue !== '') && (!myValue.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/))) {
                     errorMsg = $util.format('{!javascript:NOT_A_EMAIL;^}', [myValue]);
-                } else if ((theElement.classList.contains('input_codename') || theElement.classList.contains('input_codename_required')) && (myValue !== '') && (!myValue.match(/^[a-zA-Z0-9\-\._]*$/))) {
+                } else if ((theElement.classList.contains('input-codename') || theElement.classList.contains('input-codename-required')) && (myValue !== '') && (!myValue.match(/^[a-zA-Z0-9\-\._]*$/))) {
                     errorMsg = $util.format('{!javascript:NOT_CODENAME;^}', [myValue]);
-                } else if ((theElement.classList.contains('input_integer') || theElement.classList.contains('input_integer_required')) && (myValue !== '') && (parseInt(myValue, 10) !== Number(myValue))) {
+                } else if ((theElement.classList.contains('input-integer') || theElement.classList.contains('input-integer-required')) && (myValue !== '') && (parseInt(myValue, 10) !== Number(myValue))) {
                     errorMsg = $util.format('{!javascript:NOT_INTEGER;^}', [myValue]);
-                } else if ((theElement.classList.contains('input_float') || theElement.classList.contains('input_float_required')) && (myValue !== '') && (parseFloat(myValue) !== Number(myValue))) {
+                } else if ((theElement.classList.contains('input-float') || theElement.classList.contains('input-float-required')) && (myValue !== '') && (parseFloat(myValue) !== Number(myValue))) {
                     errorMsg = $util.format('{!javascript:NOT_FLOAT;^}', [myValue]);
                 }
             }

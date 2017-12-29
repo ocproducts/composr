@@ -173,19 +173,19 @@ Curved borders would be cool, but it does not work well with the carefully defin
 .form-table-description-above-cell {
 	text-align: left !important;
 }
-.form-table-description-above-cell .field_name {
+.form-table-description-above-cell .field-name {
 	float: left;
 	margin-top: 4px;
 }
 
 .form-table-field-name, .form-table-field-input, .form-table-huge-field,
-th.form-table-field-name, /* Extra specificity to take precedence over th.de_th */
+th.form-table-field-name, /* Extra specificity to take precedence over th.de-th */
 .form-table-field-spacer>th, .form-table-field-spacer>td, .form-table-description-above-cell, .form-table-description-under-cell
 {
 	border: 1px solid {$GET,pale_border};
 	color: {$GET,slightly_seeded_text} !important;
 	padding: 0.5em 0.75em;
-	background-color: {$GET,area_background} !important; /* !important is so has priority over .de_th */
+	background-color: {$GET,area_background} !important; /* !important is so has priority over .de-th */
 	background-image: linear-gradient(to bottom, {$GET,area_background}, {$GET,area_2_background});
 }
 .form-table-field-input>div:first-child>p:first-child {
@@ -196,7 +196,7 @@ th.form-table-field-name, /* Extra specificity to take precedence over th.de_th 
 }
 
 .form-table-field-name a, .form-table-field-input a, .form-table-huge-field a,
-th.form-table-field-name a, /* Extra specificity to take precedence over th.de_th */
+th.form-table-field-name a, /* Extra specificity to take precedence over th.de-th */
 .form-table-field-spacer>th a, .form-table-field-spacer>td a, .form-table-description-above-cell a, .form-table-description-under-cell a
 {
 	color: {$GET,a.link} !important;
@@ -300,23 +300,23 @@ th.form-table-field-name a, /* Extra specificity to take precedence over th.de_t
 	width: 0;
 }
 
-.input_colour, .input_list, .input_line, .input_integer,
-.input_author, .input_username, .input_email, .input_codename,
-.input_tick, .input_float, .input_text, .input_upload, .input_radio {
+.input-colour, .input-list, .input-line, .input-integer,
+.input-author, .input-username, .input-email, .input-codename,
+.input-tick, .input-float, .input-text, .input-upload, .input-radio {
 }
 
-.input_colour_required, .input_list_required, .input_line_required, .input_integer_required,
-.input_author_required, .input_username_required, .input_email_required, .input_codename_required,
-.input_tick_required, .input_float_required, .input_text_required, .input_upload_required {
+.input-colour-required, .input-list-required, .input-line-required, .input-integer-required,
+.input-author-required, .input-username-required, .input-email-required, .input-codename-required,
+.input-tick-required, .input-float-required, .input-text-required, .input-upload-required {
 }
 
-.input_dimensions {
+.input-dimensions {
 	display: inline-block;
 }
-.input_dimensions input {
+.input-dimensions input {
 	width: 4em !important;
 }
-.input_dimensions, .input_dimensions * {
+.input-dimensions, .input-dimensions * {
 	vertical-align: middle;
 }
 
@@ -325,7 +325,7 @@ th.form-table-field-name a, /* Extra specificity to take precedence over th.de_t
 }
 
 /*{+START,CSS_MODE,mobile}*/
-	.input_upload, .input_upload_required {
+	.input-upload, .input-upload-required {
 		max-width: 240px;
 	}
 /*{+END}*/
@@ -347,7 +347,7 @@ th.form-table-field-name a, /* Extra specificity to take precedence over th.de_t
 }
 
 /* Special validated checkbox; use of span.validated-checkbox is due to http://stackoverflow.com/questions/6949148/css-after-not-adding-content-to-certain-elements */
-span.validated-checkbox, span.validated-checkbox+input[name="validated"].input_tick {
+span.validated-checkbox, span.validated-checkbox+input[name="validated"].input-tick {
 	width: {$ADD,5,{$IMG_WIDTH%,{$IMG,1x/editor/off}}}px;
 	height: {$IMG_HEIGHT%,{$IMG,1x/editor/off}}px;
 	display: inline-block;
@@ -371,7 +371,7 @@ span.validated-checkbox.checked {
 		background-size: {$IMG_WIDTH%,{$IMG,1x/editor/on}}px {$IMG_HEIGHT%,{$IMG,1x/editor/on}}px;
 	}
 }
-span.validated-checkbox+input[name="validated"].input_tick {
+span.validated-checkbox+input[name="validated"].input-tick {
 	padding-right: 0.5em;
 	z-index: 100;
 	position: relative;
@@ -451,13 +451,13 @@ span.validated-checkbox+input[name="validated"].input_tick {
 	max-width: 100px;
 }
 
-.radio-list-picture label.js_widget {
+.radio-list-picture label.js-widget {
 	visibility: hidden;
 	width: 0;
 	height: 0;
 	font-size: 0;
 }
-.page-running-admin-themes .radio-list-picture label.js_widget, .page-running-admin-zones .radio-list-picture label.js_widget {
+.page-running-admin-themes .radio-list-picture label.js-widget, .page-running-admin-zones .radio-list-picture label.js-widget {
 	visibility: visible;
 	width: auto;
 	height: auto;
@@ -471,70 +471,70 @@ span.validated-checkbox+input[name="validated"].input_tick {
 	opacity: 1.0;
 }
 
-.selectable_theme_image {
+.selectable-theme-image {
 	padding: 0.3em;
 	margin: 1px;
 }
 
 /* Form colour chooser */
 
-.form-table .css_colour_chooser_name {
+.form-table .css-colour-chooser-name {
 	width: 190px;
 }
 
-.css_colour_strip {
+.css-colour-strip {
 	float: left;
 	width: 4px;
 	height: 15px;
 }
 
-.css_colour_chooser {
+.css-colour-chooser {
 	height: 50px;
 	margin: 0 auto;
 }
 
-.field_input .css_colour_chooser {
+.field-input .css-colour-chooser {
 	width: auto;
 	height: auto;
 	margin: 0;
 }
 
-.css_colour_chooser_name {
+.css-colour-chooser-name {
 	font-weight: bold;
 	float: left;
 }
 
-.css_colour_chooser_name input {
+.css-colour-chooser-name input {
 	color: {$GET,unfilled_input_text};
 	margin-top: 0.5em;
 	display: block;
 }
 
-.css_colour_chooser_from {
+.css-colour-chooser-from {
 	float: left;
 	margin: 0 0 0 10px;
 }
 
-.field_input .css_colour_chooser_from {
+.field-input .css-colour-chooser-from {
 	display: none;
 }
 
-.css_colour_chooser_to {
+.css-colour-chooser-to {
 	float: right;
 	margin-left: 0;
 }
 
-.css_colour_chooser_fixed {
+.css-colour-chooser-fixed {
 	width: 366px;
 	float: left;
 	margin-top: 3px; /* As the selection bars overflow a bit */
 }
 
-.field_input .css_colour_chooser_fixed {
+.field-input .css-colour-chooser-fixed {
 	width: 306px;
 }
 
-.css_colour_chooser_from, .css_colour_chooser_to {
+.css-colour-chooser-from, .css-colour-chooser-to {
 	padding-top: 7px;
 	height: 38px;
 	font-size: 0.9em;
@@ -545,80 +545,80 @@ span.validated-checkbox+input[name="validated"].input_tick {
 	cursor: default;
 }
 
-.css_colour_chooser_colour {
+.css-colour-chooser-colour {
 	height: 45px;
 	width: 256px;
 	display: inline;
 }
 
-.css_colour_chooser_colour>div {
+.css-colour-chooser-colour>div {
 	overflow: hidden;
 }
 
-.css_colour_chooser_context {
+.css-colour-chooser-context {
 	padding-top: 50px;
 	font-style: italic;
 }
 
 /* Previews */
 
-.form_screen_iframe {
+.form-screen-iframe {
 	width: 100%;
 	height: 0; /* Will be dynamically adjusted */
 }
 
-.preview_box {
+.preview-box {
 	margin: 1em 0;
 }
 
 /*{+START,CSS_MODE,mobile}*/
-	.mobile.preview_box {
+	.mobile.preview-box {
 		padding: 209px 36px 159px 34px;
 		width: 314px;
 		height: 360px;
 		background: url('{$IMG;,iphone}') no-repeat;
 		cursor: crosshair;
 	}
-	.mobile .preview_box_inner {
+	.mobile .preview-box-inner {
 		overflow: hidden;
 		width: 320px;
 		height: 355px;
 	}
 /*{+END}*/
 
-.preview_checking_box {
+.preview-checking-box {
 	width: 34em;
 	margin: 1em auto 3em auto;
 }
 
 /* Posting forms */
 
-.word_count {
+.word-count {
 	float: right;
 	font-size: 0.8em;
 	padding: 4px;
 }
 
 /*{+START,CSS_MODE,mobile}*/
-	.post_options_wrap {
+	.post-options-wrap {
 		display: none;
 	}
 /*{+END}*/
 
-.posting_form_main_comcode_button {
+.posting-form-main-comcode-button {
 	float: right;
 	margin-top: 1em;
 }
 
-.posting_form_insert_buttons {
+.posting-form-insert-buttons {
 	background-color: {$GET,area_background};
 }
 
-.posting_form_wrap_buttons {
+.posting-form-wrap-buttons {
 	background-color: {$GET,point_of_interest_background};
 }
 
-.posting_form_wrap_buttons, .posting_form_insert_buttons {
+.posting-form-wrap-buttons, .posting-form-insert-buttons {
 	float: right;
 	border: 1px solid {$GET,standard_border};
 	padding: 0.5em;
@@ -626,46 +626,46 @@ span.validated-checkbox+input[name="validated"].input_tick {
 	margin-left: 0.5em;
 }
 
-.posting_form_insert_buttons span, .posting_form_insert_buttons img, .posting_form_wrap_buttons img, .posting_form_insert_buttons input, .posting_form_wrap_buttons input, .posting_form_wrap_buttons select {
+.posting-form-insert-buttons span, .posting-form-insert-buttons img, .posting-form-wrap-buttons img, .posting-form-insert-buttons input, .posting-form-wrap-buttons input, .posting-form-wrap-buttons select {
 	vertical-align: middle;
 }
 
-.posting_form_insert_buttons .divider {
+.posting-form-insert-buttons .divider {
 	margin-left: 0.2em;
 	border-left: 1px solid {$GET,standard_border};
 	padding-left: 0.4em;
 }
 
-.emoticon_chooser {
+.emoticon-chooser {
 	padding: 0.5em;
 	margin-top: 0.5em !important;
 }
 
-.emoticon_chooser a {
+.emoticon-chooser a {
 	text-decoration: none; /* Tone minor link down a bit */
 }
-.emoticon_chooser a:hover {
+.emoticon-chooser a:hover {
 	text-decoration: underline;
 }
 
-.attachments_field_name_column {
+.attachments-field-name-column {
 	width: 18em;
 }
-.box .attachments_field_name_column {
+.box .attachments-field-name-column {
 	width: 14em;
 }
-.attachments_field_input_column {
+.attachments-field-input-column {
 	width: 100%;
 }
 /*{+START,CSS_MODE,mobile}*/
-	.attachments_field_name_column, .box .attachments_field_name_column, .attachments_field_input_column {
+	.attachments-field-name-column, .box .attachments-field-name-column, .attachments-field-input-column {
 		width: auto;
 	}
 /*{+END}*/
 
 /* Permissions */
 
-.permissions_matrix_wrap {
+.permissions-matrix-wrap {
 	width: 100%;
 	overflow-x: auto;
 	outline: 0;
@@ -676,77 +676,77 @@ span.validated-checkbox+input[name="validated"].input_tick {
 	box-sizing: border-box;
 }
 
-.permissions_matrix_wrap select {
+.permissions-matrix-wrap select {
 	max-width: 11em;
 	white-space: nowrap;
 	font-size: 0.8em !important;
 }
 
-.permissions_matrix_wrap .group_header, .permissions_matrix_wrap .view_header, .permissions_matrix_wrap .privilege_header {
+.permissions-matrix-wrap .group-header, .permissions-matrix-wrap .view-header, .permissions-matrix-wrap .privilege-header {
 	vertical-align: bottom;
 }
 
-.permission_field_name_column {
+.permission-field-name-column {
 	width: 24em;
 }
 
-.permission_column {
+.permission-column {
 	width: 2.5em;
 }
 
-.permission_copy_column {
+.permission-copy-column {
 	width: 3.8em;
 }
 
-.permissions_matrix_wrap .form-table-field-input, .privileges td {
+.permissions-matrix-wrap .form-table-field-input, .privileges td {
 	text-align: center;
 	vertical-align: middle;
 }
 
 /* Special supra-context stuff for forms */
 
-.form_group {
+.form-group {
 	margin-bottom: 1.5em;
 }
 
-.skip_step_button_wrap {
+.skip-step-button-wrap {
 	overflow: hidden;
 }
 
-.skip_step_button_wrap div {
+.skip-step-button-wrap div {
 	float: right;
 }
 
-.skip_step_button_wrap_with_req_note {
+.skip-step-button-wrap-with-req-note {
 	margin: -52px 0 0 0;
 }
 
 /*{+START,CSS_MODE,desktop}*/
-	.form_set_indent {
+	.form-set-indent {
 		margin-left: 2em;
 	}
 /*{+END}*/
 
-.fields_set_item {
+.fields-set-item {
 	background: {$GET,main_background};
 	padding: 0.75em 0.5em;
 	border-radius: 5px;
 	border: 1px solid {$GET,pale_border};
 }
 
-.fields_set_item + .fields_set_item {
+.fields-set-item + .fields-set-item {
 	margin-top: 1em;
 }
 
-.fields_set_radio {
+.fields-set-radio {
 	margin-bottom: 0.5em;
 }
 
-.fields_set_contents {
+.fields-set-contents {
 	overflow: hidden;
 }
 
-.fields_set_contents .associated-details {
+.fields-set-contents .associated-details {
 	margin-top: 0.2em;
 }
 
@@ -773,7 +773,7 @@ span.validated-checkbox+input[name="validated"].input_tick {
 	}
 /*{+END}*/
 
-.box___revisions_wrap {
+.box---revisions-wrap {
 	margin-top: 3em;
 }
 
@@ -884,7 +884,7 @@ span.validated-checkbox+input[name="validated"].input_tick {
 
 /* Change some Composr styles to look more appropriate within a WYSIWYG editor */
 
-#wysiwyg-editor #screen_title {
+#wysiwyg-editor #screen-title {
 	display: block !important;
 }
 
@@ -892,7 +892,7 @@ span.validated-checkbox+input[name="validated"].input_tick {
 	border: 1px dotted {$GET,native_ui_foreground};
 }
 
-#wysiwyg-editor .comcode_fake_table > div, #wysiwyg-editor .fp_col_block {
+#wysiwyg-editor .comcode-fake-table > div, #wysiwyg-editor .fp-col-block {
 	outline: 1px dotted;
 	margin: 1px 0;
 }
@@ -903,17 +903,17 @@ comcode-{$REPLACE,\,,\,comcode-,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}\,
 	background-color: {$GET,native_ui_active_background};
 }
 
-#wysiwyg-editor kbd.cms_keep, #wysiwyg-editor kbd.cms_keep_block {
+#wysiwyg-editor kbd.cms_keep, #wysiwyg-editor kbd.cms-keep-block {
 	background-color: {$GET,native_ui_active_background};
 }
 
-#wysiwyg-editor kbd.cms_keep_block {
+#wysiwyg-editor kbd.cms-keep-block {
 	display: block;
 	border: 1px dotted gray;
 	padding: 2px;
 }
 
-#wysiwyg-editor input.cms_keep_ui_controlled, #wysiwyg-editor input.cms_keep_ui_controlled:focus {
+#wysiwyg-editor input.cms-keep-ui-controlled, #wysiwyg-editor input.cms-keep-ui-controlled:focus {
 	border: 1px dashed gray;
 	text-align: center;
 	color: {$GET,native_ui_foreground};
@@ -922,16 +922,16 @@ comcode-{$REPLACE,\,,\,comcode-,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}\,
 	padding: 1px 25px 1px 2px;
 }
 /* Separately specified, as the weird selector breaks whole compound selector on some browsers */
-#wysiwyg-editor input.cms_keep_ui_controlled::selection {
+#wysiwyg-editor input.cms-keep-ui-controlled::selection {
 	color: {$GET,native_ui_foreground};
 	background-color: {$GET,native_ui_active_background};
 }
-#wysiwyg-editor input.cms_keep_ui_controlled::-moz-selection {
+#wysiwyg-editor input.cms-keep-ui-controlled::-moz-selection {
 	color: {$GET,native_ui_foreground};
 	background-color: {$GET,native_ui_active_background};
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	#wysiwyg-editor input.cms_keep_ui_controlled {
+	#wysiwyg-editor input.cms-keep-ui-controlled {
 		background-image: url('{$IMG;,icons/32x32/editor/comcode}');
 	}
 }

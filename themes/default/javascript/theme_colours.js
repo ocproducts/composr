@@ -41,19 +41,19 @@
         var _color = (color === '' || color === '#') ? '#000000' : ('#' + color.substr(1));
 
         var t = '';
-        t = t + '<div class="css_colour_chooser">';
-        t = t + '	<div class="css_colour_chooser_name">';
+        t = t + '<div class="css-colour-chooser">';
+        t = t + '	<div class="css-colour-chooser-name">';
         t = t + '		<label class="field-name" for="' + name + '"> ' + label + '</label><br />';
         t = t + '       <input ' + className + 'alt="{!COLOUR;^}" type="color" value="' + _color + '" id="' + name + '" name="' + name + '" size="6" class="js-change-update-chooser" />';
         t = t + '	</div>';
-        t = t + '	<div class="css_colour_chooser_fixed">';
-        t = t + '	<div class="css_colour_chooser_from" style="background-color: ' + ((color === '') ? '#000' : color) + '" id="cc_source_' + name + '">';
+        t = t + '	<div class="css-colour-chooser-fixed">';
+        t = t + '	<div class="css-colour-chooser-from" style="background-color: ' + ((color === '') ? '#000' : color) + '" id="cc_source_' + name + '">';
         t = t + "		{!themes:FROM_COLOUR^#}";
         t = t + '	</div>';
-        t = t + '	<div class="css_colour_chooser_to" style="background-color: ' + ((color === '') ? '#000' : color) + '" id="cc_target_' + name + '">';
+        t = t + '	<div class="css-colour-chooser-to" style="background-color: ' + ((color === '') ? '#000' : color) + '" id="cc_target_' + name + '">';
         t = t + "		{!themes:TO_COLOUR^#}";
         t = t + '	</div>';
-        t = t + '	<div class="css_colour_chooser_colour">';
+        t = t + '	<div class="css-colour-chooser-colour">';
         t = t + '		<div id="cc_0_' + name + '"></div>';
         t = t + '		<div id="cc_1_' + name + '"></div>';
         t = t + '		<div id="cc_2_' + name + '"></div>';
@@ -62,7 +62,7 @@
         t = t + '</div>';
 
         if (context !== '') {
-            t = t + '<div class="css_colour_chooser_context">' + context + '</div>';
+            t = t + '<div class="css-colour-chooser-context">' + context + '</div>';
         }
 
         if (p.id === 'colours_go_here') {
@@ -161,7 +161,7 @@
                     if (selected) {
                         style += 'outline: 3px solid gray; position: relative;';
                     }
-                    innert = innert + '<div class="css_colour_strip js-click-do-color-change" style="' + style + '" id="' + tid + '"></div>';
+                    innert = innert + '<div class="css-colour-strip js-click-do-color-change" style="' + style + '" id="' + tid + '"></div>';
                 }
                 $dom.html(c[d], innert);
                 $dom.on(c[d].querySelector('.js-click-do-color-change'), 'click', function (e) {

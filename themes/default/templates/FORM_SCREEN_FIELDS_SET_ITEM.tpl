@@ -1,7 +1,7 @@
 {$REQUIRE_JAVASCRIPT,core_form_interfaces}
 
-<div class="fields_set_item" data-tpl="formScreenFieldsSetItem" data-tpl-params="{+START,PARAMS_JSON,NAME}{_*}{+END}">
-	<div class="fields_set_radio">
+<div class="fields-set-item" data-tpl="formScreenFieldsSetItem" data-tpl-params="{+START,PARAMS_JSON,NAME}{_*}{+END}">
+	<div class="fields-set-radio">
 		<label class="accessibility_hidden" for="choose_{NAME*}">{!USE}: {PRETTY_NAME*}</label>
 		<input type="radio" name="{SET_NAME*}" id="choose_{NAME*}" value="{NAME*}" />
 
@@ -10,7 +10,7 @@
 		{COMCODE}
 	</div>
 
-	<div class="mini_indent fields_set_contents vertical_alignment">
+	<div class="mini_indent fields-set-contents vertical_alignment">
 		{INPUT}
 
 		{+START,IF_NON_EMPTY,{DESCRIPTION}}

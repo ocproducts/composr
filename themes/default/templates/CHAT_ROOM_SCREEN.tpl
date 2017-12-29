@@ -19,7 +19,7 @@
 
 						<div style="display: inline;">
 							<p class="accessibility_hidden"><label for="post">{!MESSAGE}</label></p>
-							<textarea style="font-family: '{FONT_NAME_DEFAULT;*}'" class="input_text_required js-keypress-enter-post-chat" data-textarea-auto-height="" id="post" name="message" cols="37" rows="1"></textarea>
+							<textarea style="font-family: '{FONT_NAME_DEFAULT;*}'" class="input-text-required js-keypress-enter-post-chat" data-textarea-auto-height="" id="post" name="message" cols="37" rows="1"></textarea>
 							<input type="hidden" name="font" id="font" value="{FONT_NAME_DEFAULT*}" />
 							<input type="hidden" name="colour" id="colour" value="{TEXT_COLOUR_DEFAULT*}" />
 						</div>
@@ -95,7 +95,7 @@
 							<label for="text_colour">{!CHAT_OPTIONS_COLOUR_NAME}:</label>
 						</p>
 						<p>
-							<input size="10" maxlength="7" class="input_line_required js-change-input-text-color" type="color" id="text_colour" name="text_colour" value="{+START,IF,{$NEQ,{TEXT_COLOUR_DEFAULT},inherit}}#{TEXT_COLOUR_DEFAULT*}{+END}" />
+							<input size="10" maxlength="7" class="input-line-required js-change-input-text-color" type="color" id="text_colour" name="text_colour" value="{+START,IF,{$NEQ,{TEXT_COLOUR_DEFAULT},inherit}}#{TEXT_COLOUR_DEFAULT*}{+END}" />
 						</p>
 					</div>
 

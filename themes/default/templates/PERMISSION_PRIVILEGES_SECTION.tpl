@@ -2,9 +2,9 @@
 
 <div class="wide-table-wrap"><table class="form-table columned_table wide-table privileges responsive-table responsive-table-bolded-first-column">
 	<colgroup>
-		<col class="permission_field_name_column" />
+		<col class="permission-field-name-column" />
 		{COLS}
-		<col class="permission_copy_column" />
+		<col class="permission-copy-column" />
 	</colgroup>
 
 	<thead>

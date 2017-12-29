@@ -16,14 +16,14 @@
 	width: 100%;
 }
 
-.gallery_entry_field_name_column {
+.gallery-entry-field-name-column {
 	width: 8.5em;
 }
 .gallery_entry_field_value_column {
 	width: 16em;
 }
 /*{+START,CSS_MODE,mobile}*/
-	.gallery_entry_field_name_column, .gallery_entry_field_value_column {
+	.gallery-entry-field-name-column, .gallery_entry_field_value_column {
 		width: auto;
 	}
 /*{+END}*/

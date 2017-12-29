@@ -1564,7 +1564,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             }
 
             if ($semiparse_mode) {
-                $temp_tpl = make_string_tempcode('<h' . strval($level) . (($level == 1) ? ' class="screen_title"' : '') . '>' . $embed->evaluate() . '</h' . strval($level) . '>');
+                $temp_tpl = make_string_tempcode('<h' . strval($level) . (($level == 1) ? ' class="screen-title"' : '') . '>' . $embed->evaluate() . '</h' . strval($level) . '>');
                 break;
             }
             $tpl_map = array(

@@ -19,7 +19,7 @@
 		{+START,IF_PASSED_AND_TRUE,GET}{$HIDDENS_FOR_GET_FORM,{URL}}{+END}
 
 		{+START,IF_PASSED,SKIPPABLE}
-			<div class="skip_step_button_wrap">
+			<div class="skip-step-button-wrap">
 				<input type="hidden" id="{SKIPPABLE*}" name="{SKIPPABLE*}" value="0" />
 				<div>
 					<input data-disable-on-click="1" tabindex="151" class="button_screen_item buttons--skip js-click-btn-skip-step" type="submit" value="{!SKIP}" />
@@ -34,8 +34,8 @@
 				{+START,IF_NON_PASSED,NO_SIZING}
 					{+START,IF,{$DESKTOP}}
 						<colgroup>
-							<col class="field_name_column" />
-							<col class="field_input_column" />
+							<col class="field-name-column" />
+							<col class="field-input-column" />
 						</colgroup>
 					{+END}
 				{+END}

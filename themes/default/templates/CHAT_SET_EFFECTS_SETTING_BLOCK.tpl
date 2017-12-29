@@ -12,8 +12,8 @@
 		<div class="wide-table-wrap"><table class="map_table form-table wide-table scrollable_inside">
 			{+START,IF,{$DESKTOP}}
 				<colgroup>
-					<col class="field_name_column" />
-					<col class="field_input_column" />
+					<col class="field-name-column" />
+					<col class="field-input-column" />
 				</colgroup>
 			{+END}
 
@@ -25,7 +25,7 @@
 						</th>
 					</tr>
 
-					<tr class="field_input">
+					<tr class="field-input">
 						<th id="form_table_field_name__select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" class="form-table-field-name">
 							<label for="select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}"><span class="form-field-name field-name">{!BROWSE}</span></label>
 						</th>
@@ -48,7 +48,7 @@
 						</td>
 					</tr>
 
-					<tr class="field_input">
+					<tr class="field-input">
 						<th id="form_table_field_name__upload_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" class="form-table-field-name">
 							<span class="form-field-name field-name">{!ALT_FIELD,{!UPLOAD}}</span>
 						</th>

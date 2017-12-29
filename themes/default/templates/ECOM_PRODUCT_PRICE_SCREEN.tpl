@@ -24,7 +24,7 @@
 		{!THESE_PRODUCTS_DEFINED}
 	</p>
 
-	<div class="form_set_indent">
+	<div class="form-set-indent">
 		{EDIT_FORM}
 	</div>
 {+END}
@@ -37,7 +37,7 @@
 
 	<p>{!ADD_ONE_AT_A_TIME}</p>
 
-	<div class="form_set_indent">
+	<div class="form-set-indent">
 		{ADD_FORMS}
 	</div>
 {+END}

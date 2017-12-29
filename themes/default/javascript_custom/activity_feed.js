@@ -43,16 +43,16 @@
         textareaFocus: function (e, textarea) {
             if (textarea.value.trim() === '{!activities:TYPE_HERE;^}') {
                 textarea.value = '';
-                textarea.classList.add('field_input_filled');
-                textarea.classList.remove('field_input_non_filled');
+                textarea.classList.add('field-input-filled');
+                textarea.classList.remove('field-input-non-filled');
             }
             textarea.classList.remove('fade_input');
         },
         textareaBlur: function (e, textarea) {
             if (textarea.value.trim() === '') {
                 textarea.value = '{!activities:TYPE_HERE;^}';
-                textarea.classList.remove('field_input_filled');
-                textarea.classList.add('field_input_non_filled');
+                textarea.classList.remove('field-input-filled');
+                textarea.classList.add('field-input-non-filled');
             }
 
             textarea.classList.add('fade_input');
@@ -138,8 +138,8 @@
                                     $dom.height(textareaParentEl, $dom.height(textareaParentEl));
 
                                     view.textarea.value = '{!activities:TYPE_HERE;^}';
-                                    view.textarea.classList.remove('field_input_filled');
-                                    view.textarea.classList.add('field_input_non_filled');
+                                    view.textarea.classList.remove('field-input-filled');
+                                    view.textarea.classList.add('field-input-non-filled');
 
                                     $dom.fadeIn(view.textarea, 1200).then(function () {
                                         $dom.height(textareaParentEl, '');

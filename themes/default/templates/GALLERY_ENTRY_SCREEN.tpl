@@ -14,7 +14,7 @@
 			<table class="columned_table map_table results-table" role="note">
 				{+START,IF,{$DESKTOP}}
 					<colgroup>
-						<col class="gallery_entry_field_name_column" />
+						<col class="gallery-entry-field-name-column" />
 						<col class="gallery_entry_field_value_column" />
 					</colgroup>
 				{+END}
@@ -29,14 +29,14 @@
 
 				<tbody>
 					<tr>
-						<th class="de_th metadata_title">{!ADDED}</th>
+						<th class="de-th metadata_title">{!ADDED}</th>
 						<td>
 							<time datetime="{$FROM_TIMESTAMP*,Y-m-d\TH:i:s\Z,{ADD_DATE_RAW}}" itemprop="datePublished">{ADD_DATE*}</time>
 						</td>
 					</tr>
 
 					<tr>
-						<th class="de_th metadata_title">{!BY}</th>
+						<th class="de-th metadata_title">{!BY}</th>
 						<td>
 							<a rel="author" href="{$MEMBER_PROFILE_URL*,{SUBMITTER}}" itemprop="author">{$USERNAME*,{SUBMITTER},1}</a>
 
@@ -48,7 +48,7 @@
 						{$SET,rating,{$RATING,{MEDIA_TYPE},{ID},{SUBMITTER},,,RATING_INLINE_DYNAMIC}}
 						{+START,IF_NON_EMPTY,{$TRIM,{$GET,rating}}}
 							<tr>
-								<th class="de_th metadata_title">{!RATING}</th>
+								<th class="de-th metadata_title">{!RATING}</th>
 								<td>{$GET,rating}</td>
 							</tr>
 						{+END}
@@ -56,14 +56,14 @@
 
 					{+START,IF_NON_EMPTY,{EDIT_DATE}}
 						<tr>
-							<th class="de_th metadata_title">{!EDITED}</th>
+							<th class="de-th metadata_title">{!EDITED}</th>
 							<td>{EDIT_DATE*}</td>
 						</tr>
 					{+END}
 
 					{+START,IF,{$INLINE_STATS}}
 						<tr>
-							<th class="de_th metadata_title">{!COUNT_VIEWS}</th>
+							<th class="de-th metadata_title">{!COUNT_VIEWS}</th>
 							<td>{VIEWS*}</td>
 						</tr>
 					{+END}

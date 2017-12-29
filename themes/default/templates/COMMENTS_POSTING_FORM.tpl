@@ -45,8 +45,8 @@
 					<div class="wide-table-wrap"><table class="map_table wide-table">
 						{+START,IF,{$DESKTOP}}
 							<colgroup>
-								<col class="comments_field_name_column" />
-								<col class="comments_field_input_column" />
+								<col class="comments-field-name-column" />
+								<col class="comments-field-input-column" />
 							</colgroup>
 						{+END}
 
@@ -55,7 +55,7 @@
 
 							{+START,IF,{$GET,GET_NAME}}
 								<tr>
-									<th class="de_th vertical_alignment">
+									<th class="de-th vertical_alignment">
 										<label for="poster_name_if_guest">{!YOUR_NAME}:</label>
 										{$,Never optional; may not be requested if logged in as we already know}
 									</th>
@@ -71,14 +71,14 @@
 
 							{+START,IF,{GET_EMAIL}}
 								<tr>
-									<th class="de_th vertical_alignment">
+									<th class="de-th vertical_alignment">
 										<label for="email">{!YOUR_EMAIL_ADDRESS}:</label>
 										{+START,IF,{EMAIL_OPTIONAL}}<br /><span class="associated-details">({!OPTIONAL})</span>{+END}
 									</th>
 
 									<td>
 										<div>
-											<input id="email" name="email" value="{$MEMBER_EMAIL*}" type="text" tabindex="2" maxlength="255" class="wide-field{+START,IF,{$NOT,{EMAIL_OPTIONAL}}} input_text_required{+END}" />
+											<input id="email" name="email" value="{$MEMBER_EMAIL*}" type="text" tabindex="2" maxlength="255" class="wide-field{+START,IF,{$NOT,{EMAIL_OPTIONAL}}} input-text-required{+END}" />
 										</div>
 
 										<div id="error_email" style="display: none" class="input-error-here"></div>
@@ -88,7 +88,7 @@
 
 							{+START,IF,{GET_TITLE}}
 								<tr>
-									<th class="de_th vertical_alignment">
+									<th class="de-th vertical_alignment">
 										<label for="title">{!SUBJECT}:</label>
 										{+START,IF,{TITLE_OPTIONAL}}<br /><span class="associated-details">({!OPTIONAL})</span>{+END}
 									</th>
@@ -106,7 +106,7 @@
 							{+START,IF_PASSED,REVIEW_RATING_CRITERIA}{+START,IF_PASSED,TYPE}{+START,IF_PASSED,ID}
 								{+START,LOOP,REVIEW_RATING_CRITERIA}
 									<tr class="js-container-review-rating">
-										<th class="de_th vertical_alignment">
+										<th class="de-th vertical_alignment">
 											{+START,IF_EMPTY,{REVIEW_TITLE}}{!RATING}:{+END}{+START,IF_NON_EMPTY,{REVIEW_TITLE}}{REVIEW_TITLE*}:{+END}
 										</th>
 
@@ -123,7 +123,7 @@
 							{+END}{+END}{+END}
 
 							<tr>
-								<th class="de_th">
+								<th class="de-th">
 									{$SET,needs_msg_label,{$OR,{$GET,GET_NAME},{GET_EMAIL},{GET_TITLE}}}
 									{+START,IF,{$GET,needs_msg_label}}
 										<div class="vertical_alignment">

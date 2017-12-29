@@ -17,7 +17,7 @@
 	</div>
 {+END}
 {+START,IF,{$NOT,{RAW_FIELD}}}
-	<tr class="field_input" data-tpl="formScreenInputColour" data-tpl-params="{+START,PARAMS_JSON,RAW_FIELD,NAME,DEFAULT,TABINDEX,PRETTY_NAME,_REQUIRED}{_*}{+END}">
+	<tr class="field-input" data-tpl="formScreenInputColour" data-tpl-params="{+START,PARAMS_JSON,RAW_FIELD,NAME,DEFAULT,TABINDEX,PRETTY_NAME,_REQUIRED}{_*}{+END}">
 		<td colspan="2" class="form-table-huge-field-description-is-under form-table-huge-field{+START,IF,{REQUIRED}} required{+END}">
 			<div id="colours_go_here_{NAME*}">
 				<div aria-busy="true" class="spaced">

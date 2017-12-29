@@ -85,7 +85,7 @@ function code_editor_do_header($type, $target = '_top')
 ';
     @print(preg_replace('#/\*\s*\*/\s*#', '', str_replace('url(\'\')', 'none', str_replace('url("")', 'none', preg_replace('#\{\$[^\}]*\}#', '', preg_replace('#\{\$\?,\{\$MOBILE\},([^,]+),([^,]+)\}#', '$2', file_get_contents($GLOBALS['FILE_BASE'] . '/themes/default/css/global.css')))))));
     echo '
-        .screen_title { text-decoration: underline; display: block; background: url(\'themes/default/images/icons/48x48/menu/_generic_admin/tool.png\') top left no-repeat; min-height: 42px; padding: 10px 0 0 60px; }
+        .screen-title { text-decoration: underline; display: block; background: url(\'themes/default/images/icons/48x48/menu/_generic_admin/tool.png\') top left no-repeat; min-height: 42px; padding: 10px 0 0 60px; }
         .button_screen { padding: 0.5em 0.3em !important; }
         a[target="_blank"], a[onclick$="window.open"] { padding-right: 0; }
     </style>';
@@ -178,7 +178,7 @@ function code_editor_do_login()
         $ftp_folder = $SITE_INFO['ftp_folder'];
     }
     echo <<<END
-    <h1 class="screen_title">Composr Code Editor</h1>
+    <h1 class="screen-title">Composr Code Editor</h1>
 END;
     if (@$_POST['given_password']) {
         echo '<p><strong>Invalid password</strong></p>';
@@ -257,7 +257,7 @@ function do_get_path($given_password)
     // Just to test a connection if one was requested
     $test = open_up_ftp_connection();
     if (is_string($test)) {
-        echo '<h1 class="screen_title">An FTP error occurred</h1>';
+        echo '<h1 class="screen-title">An FTP error occurred</h1>';
         echo '<p>' . code_editor_escape_html($test) . '</p>';
         return;
     }
@@ -274,7 +274,7 @@ function do_get_path($given_password)
 END;
     }
     echo <<<END
-    <h1 class="screen_title">Composr Code Editor</h1>
+    <h1 class="screen-title">Composr Code Editor</h1>
     <p>
         New File: <input type="text" name="path_new" />
     </p>
@@ -391,7 +391,7 @@ function do_page($given_password, $path)
         $line = (array_key_exists('line', $_POST) ? intval($_POST['line']) : (array_key_exists('line', $_POST) ? intval($_POST['line']) : 0));
         $_path = code_editor_escape_html($path);
         echo <<<END
-<h1 class="screen_title">Composr <a onclick="window.back(); return false;" href="code_editor.php">Code Editor</a>: Editing {$_path}</h1>
+<h1 class="screen-title">Composr <a onclick="window.back(); return false;" href="code_editor.php">Code Editor</a>: Editing {$_path}</h1>
 <input type="hidden" name="path" value="{$_path}" />
 END;
         foreach ($_POST as $key => $val) {

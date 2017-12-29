@@ -29,7 +29,7 @@ foreach ($map as $key => $val) {
     $key = strtolower($key);
     if (($key != 'equation') && ($key != 'block') && ($key != 'message') && ($key != 'cache')) {
         echo '<p>
-            <input class="input_integer_required right" size="6" type="text" id="' . escape_html($key) . '" name="' . escape_html($key) . '" value="" />
+            <input class="input-integer-required right" size="6" type="text" id="' . escape_html($key) . '" name="' . escape_html($key) . '" value="" />
             <label class="field_title" for="' . escape_html($key) . '">' . escape_html($val) . '</label>
         </p>';
     }

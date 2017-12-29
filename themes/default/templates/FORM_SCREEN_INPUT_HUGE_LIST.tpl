@@ -16,13 +16,13 @@
 	</th>
 </tr>
 
-<tr class="field_input" data-tpl="formScreenInputHugeList_input" data-tpl-params="{+START,PARAMS_JSON,INLINE_LIST,randomised_id}{_*}{+END}">
+<tr class="field-input" data-tpl="formScreenInputHugeList_input" data-tpl-params="{+START,PARAMS_JSON,INLINE_LIST,randomised_id}{_*}{+END}">
 	<td id="form_table_field_input__{$GET,randomised_id}" colspan="2" class="form-table-huge-field{+START,IF,{REQUIRED}} required{+END}">
 		{+START,IF,{INLINE_LIST}}
-		<select size="{+START,IF_PASSED,SIZE}{SIZE*}{+END}{+START,IF_NON_PASSED,SIZE}15{+END}" tabindex="{TABINDEX*}" class="input_list{REQUIRED*} wide-field" id="{NAME*}" name="{NAME*}">
+		<select size="{+START,IF_PASSED,SIZE}{SIZE*}{+END}{+START,IF_NON_PASSED,SIZE}15{+END}" tabindex="{TABINDEX*}" class="input-list{REQUIRED*} wide-field" id="{NAME*}" name="{NAME*}">
 		{+END}
 		{+START,IF,{$NOT,{INLINE_LIST}}}
-		<select tabindex="{TABINDEX*}" class="input_list" id="{NAME*}" name="{NAME*}" data-cms-select2="{ dropdownAutoWidth: true, containerCssClass: 'wide-field'}">
+		<select tabindex="{TABINDEX*}" class="input-list" id="{NAME*}" name="{NAME*}" data-cms-select2="{ dropdownAutoWidth: true, containerCssClass: 'wide-field'}">
 		{+END}
 		{CONTENT}
 		</select>

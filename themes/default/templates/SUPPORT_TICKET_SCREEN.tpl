@@ -50,7 +50,7 @@
 						{$INSERT_SPAMMER_BLACKHOLE}
 
 						<label for="assign_username" class="accessibility_hidden">{!USERNAME}</label>
-						<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" class="input_username js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" id="assign_username" name="username" value="{$USERNAME*}" />
+						<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" class="input-username js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" id="assign_username" name="username" value="{$USERNAME*}" />
 						<input class="button-micro buttons--proceed" type="submit" value="{!ASSIGN_TO}" />
 					</form>
 				</li>
@@ -62,11 +62,11 @@
 		{+START,SET,EXTRA_COMMENTS_FIELDS_1}
 			{+START,IF,{NEW}}
 				<tr>
-					<th class="de_th">
+					<th class="de-th">
 						<span class="field-name"><label for="ticket_type_id">{!TICKET_TYPE}:</label></span>
 					</th>
 					<td>
-						<select id="ticket_type_id" name="ticket_type_id" class="input_list_required wide-field">
+						<select id="ticket_type_id" name="ticket_type_id" class="input-list-required wide-field">
 							<option value="">---</option>
 							{+START,LOOP,TYPES}
 								<option value="{TICKET_TYPE_ID*}"{+START,IF,{SELECTED}} selected="selected"{+END}>{NAME*}</option>{$,You can also use {LEAD_TIME} to get the ticket type's lead time}
@@ -79,7 +79,7 @@
 
 			{+START,IF_NON_EMPTY,{POST_TEMPLATES}}
 				<tr>
-					<th class="de_th">
+					<th class="de-th">
 						<span class="field-name"><label for="post_template">{!cns_post_templates:POST_TEMPLATE}:</label></span>
 					</th>
 					<td>
@@ -124,7 +124,7 @@
 	{+START,SET,EXTRA_COMMENTS_FIELDS_2}
 		{+START,IF,{STAFF_ONLY}}
 			<tr>
-				<th class="de_th">
+				<th class="de-th">
 					<span class="field-name">{!TICKET_STAFF_ONLY}:</span>
 				</th>
 				<td class="one_line">
@@ -135,7 +135,7 @@
 
 		{+START,IF,{$NOT,{CLOSED}}}{+START,IF,{$NOT,{NEW}}}{+START,IF,{$CNS}}
 			<tr>
-				<th class="de_th">
+				<th class="de-th">
 					<span class="field-name">{!CLOSE_TICKET}:</span>
 				</th>
 				<td class="one_line">

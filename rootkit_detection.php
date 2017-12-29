@@ -279,7 +279,7 @@ function rd_do_header()
 END;
     @print(preg_replace('#/\*\s*\*/\s*#', '', str_replace('url(\'\')', 'none', str_replace('url("")', 'none', preg_replace('#\{\$[^\}]*\}#', '', preg_replace('#\{\$\?,\{\$MOBILE\},([^,]+),([^,]+)\}#', '$2', file_get_contents($GLOBALS['FILE_BASE'] . '/themes/default/css/global.css')))))));
     echo <<<END
-            .screen_title { text-decoration: underline; display: block; background: url('themes/default/images/icons/48x48/menu/_generic_admin/tool.png') top left no-repeat; min-height: 42px; padding: 10px 0 0 60px; }
+            .screen-title { text-decoration: underline; display: block; background: url('themes/default/images/icons/48x48/menu/_generic_admin/tool.png') top left no-repeat; min-height: 42px; padding: 10px 0 0 60px; }
             .button_screen { padding: 0.5em 0.3em !important; }
             a[target="_blank"], a[onclick$="window.open"] { padding-right: 0; }
         /*]]>*/</style>
@@ -287,7 +287,7 @@ END;
         <meta name="robots" content="noindex, nofollow" />
     </head>
     <body class="website_body" style="margin: 1em"><div class="global_middle">
-        <h1 class="screen_title">Composr rootkit detector</h1>
+        <h1 class="screen-title">Composr rootkit detector</h1>
         <form title="Proceed" action="rootkit_detection.php?type=go" method="post">
 END;
 }

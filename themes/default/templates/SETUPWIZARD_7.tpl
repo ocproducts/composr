@@ -7,13 +7,13 @@
 			<h2>{!PREVIEW}</h2>
 
 			<div id="rules_set">
-				<div id="preview_box_balanced" style="display: block">
+				<div id="preview-box-balanced" style="display: block">
 					{BALANCED}
 				</div>
-				<div id="preview_box_corporate" style="display: none">
+				<div id="preview-box-corporate" style="display: none">
 					{CORPORATE}
 				</div>
-				<div id="preview_box_liberal" style="display: none">
+				<div id="preview-box-liberal" style="display: none">
 					{LIBERAL}
 				</div>
 			</div>

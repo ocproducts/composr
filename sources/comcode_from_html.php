@@ -353,12 +353,12 @@ function remove_wysiwyg_comcode_markup(&$semihtml)
         // Our button editing for embedded tags
         do {
             $semihtml_before = $semihtml;
-            $semihtml = preg_replace_callback('#<input [^>]*class="cms_keep_ui_controlled" [^>]*title="([^"]*)" [^>]*type="button" [^>]*value="[^"]*"[^>]*/?' . '>#siU', '_debuttonise', $semihtml);
+            $semihtml = preg_replace_callback('#<input [^>]*class="cms-keep-ui-controlled" [^>]*title="([^"]*)" [^>]*type="button" [^>]*value="[^"]*"[^>]*/?' . '>#siU', '_debuttonise', $semihtml);
         } while ($semihtml != $semihtml_before);
     }
 
     // Our Comcode tag start/end markers
-    $array_html_preg_replace[] = array('#^<kbd class="(cms_keep|cms_keep_block)"[^>]*>(.*)</kbd>$#siU', "\${2}");
+    $array_html_preg_replace[] = array('#^<kbd class="(cms_keep|cms-keep-block)"[^>]*>(.*)</kbd>$#siU', "\${2}");
     $semihtml = array_html_preg_replace('kbd', $array_html_preg_replace, $semihtml);
 
     // Our wrapper tags
@@ -388,12 +388,12 @@ function convert_html_headers_to_titles($semihtml)
 {
     if (stripos($semihtml, '<h') !== false) {
         $array_html_preg_replace = array();
-        $array_html_preg_replace[] = array('#^\s*<h1 id="screen_title"[^<>]*>\s*<span class="inner">(.*)</span>\s*</h1>\s*$#siU', '[title="1"]${1}[/title]' . "\n");
-        $array_html_preg_replace[] = array('#^\s*<h1 class="screen_title"[^<>]*>\s*<span class="inner">(.*)</span>\s*</h1>\s*$#siU', '[title="1"]${1}[/title]' . "\n");
-        $array_html_preg_replace[] = array('#^\s*<h1 id="screen_title" class="screen_title">\s*<span class="inner">(.*)</span>\s*</h1>\s*$#siU', '[title="1"]${1}[/title]' . "\n");
-        $array_html_preg_replace[] = array('#^\s*<h1 id="screen_title"[^<>]*>(.*)</h1>\s*$#siU', '[title="1"]${1}[/title]' . "\n");
-        $array_html_preg_replace[] = array('#^\s*<h1 class="screen_title"[^<>]*>(.*)</h1>\s*$#siU', '[title="1"]${1}[/title]' . "\n");
-        $array_html_preg_replace[] = array('#^\s*<h1 id="screen_title" class="screen_title"[^<>]*>(.*)</h1>\s*$#siU', '[title="1"]${1}[/title]' . "\n");
+        $array_html_preg_replace[] = array('#^\s*<h1 id="screen-title"[^<>]*>\s*<span class="inner">(.*)</span>\s*</h1>\s*$#siU', '[title="1"]${1}[/title]' . "\n");
+        $array_html_preg_replace[] = array('#^\s*<h1 class="screen-title"[^<>]*>\s*<span class="inner">(.*)</span>\s*</h1>\s*$#siU', '[title="1"]${1}[/title]' . "\n");
+        $array_html_preg_replace[] = array('#^\s*<h1 id="screen-title" class="screen-title">\s*<span class="inner">(.*)</span>\s*</h1>\s*$#siU', '[title="1"]${1}[/title]' . "\n");
+        $array_html_preg_replace[] = array('#^\s*<h1 id="screen-title"[^<>]*>(.*)</h1>\s*$#siU', '[title="1"]${1}[/title]' . "\n");
+        $array_html_preg_replace[] = array('#^\s*<h1 class="screen-title"[^<>]*>(.*)</h1>\s*$#siU', '[title="1"]${1}[/title]' . "\n");
+        $array_html_preg_replace[] = array('#^\s*<h1 id="screen-title" class="screen-title"[^<>]*>(.*)</h1>\s*$#siU', '[title="1"]${1}[/title]' . "\n");
         $array_html_preg_replace[] = array('#^\s*<h1>(.*)</h1>\s*$#siU', '[title="1"]${1}[/title]' . "\n");
         $semihtml = array_html_preg_replace('h1', $array_html_preg_replace, $semihtml);
         $semihtml = preg_replace('#^\s*<h1[^>]+>(.*)</h1>\s*#siU', '[title="1"]${1}[/title]' . "\n", $semihtml);

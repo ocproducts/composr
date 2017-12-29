@@ -70,8 +70,8 @@
 					<div class="wide-table-wrap"><table class="map_table form-table wide-table">
 						{+START,IF,{$DESKTOP}}
 							<colgroup>
-								<col class="field_name_column" />
-								<col class="field_input_column" />
+								<col class="field-name-column" />
+								<col class="field-input-column" />
 							</colgroup>
 						{+END}
 

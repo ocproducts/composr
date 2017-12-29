@@ -83,7 +83,7 @@
 						<tbody>
 							{+START,LOOP,BOOKABLES}
 								<tr>
-									<th class="de_th vertical_alignment">
+									<th class="de-th vertical_alignment">
 										<strong>{BOOKABLE_TITLE*}</strong>
 									</th>
 

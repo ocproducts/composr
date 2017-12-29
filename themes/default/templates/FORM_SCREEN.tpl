@@ -31,7 +31,7 @@
 	{+END}
 
 		{+START,IF_PASSED,SKIPPABLE}
-			<div class="skip_step_button_wrap{+START,IF,{$IN_STR,{FIELDS},required-star}} skip_step_button_wrap_with_req_note{+END}">
+			<div class="skip-step-button-wrap{+START,IF,{$IN_STR,{FIELDS},required-star}} skip-step-button-wrap-with-req-note{+END}">
 				<div>
 					<input type="hidden" id="{SKIPPABLE*}" name="{SKIPPABLE*}" value="0" />
 					<input data-disable-on-click="1" tabindex="151" class="button_screen_item buttons--skip js-btn-skip-step" type="submit" value="{!SKIP}" />
@@ -46,8 +46,8 @@
 				<div class="wide-table-wrap"><table class="map_table form-table wide-table scrollable_inside">
 					{+START,IF,{$DESKTOP}}
 						<colgroup>
-							<col class="field_name_column" />
-							<col class="field_input_column" />
+							<col class="field-name-column" />
+							<col class="field-input-column" />
 						</colgroup>
 					{+END}
 
@@ -75,6 +75,6 @@
 			<img alt="" src="{$IMG*,arrow_ruler}" />
 		</div>
 
-		<iframe {$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} class="form_screen_iframe" title="{!EDIT}" name="iframe_under" id="iframe_under" src="{$BASE_URL*}/uploads/index.html">{!EDIT}</iframe>
+		<iframe {$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} class="form-screen-iframe" title="{!EDIT}" name="iframe_under" id="iframe_under" src="{$BASE_URL*}/uploads/index.html">{!EDIT}</iframe>
 	{+END}
 </div>

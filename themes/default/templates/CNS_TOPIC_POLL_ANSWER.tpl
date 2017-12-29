@@ -1,5 +1,5 @@
 <tr>
-	<th class="de_th cns-topic-poll-result cns-column1">{+START,FRACTIONAL_EDITABLE,{ANSWER},answer_{I},_SEARCH:topics:_edit_poll:{ID}}{ANSWER*}{+END}</th>
+	<th class="de-th cns-topic-poll-result cns-column1">{+START,FRACTIONAL_EDITABLE,{ANSWER},answer_{I},_SEARCH:topics:_edit_poll:{ID}}{ANSWER*}{+END}</th>
 	<td class="cns-topic-poll-result-column2 cns-column2">
 		<div class="accessibility_hidden"><label for="vote_{I*}">{ANSWER*}</label></div>
 		<input {+START,IF,{$NOT,{REAL_BUTTON}}} disabled="disabled"{+END} value="1" type="checkbox" id="vote_{I*}" name="vote_{I*}" />

@@ -15,7 +15,7 @@
 				<colgroup>
 					<col class="match_key_name_column" />
 					{COLS}
-					<col class="permission_copy_column" />
+					<col class="permission-copy-column" />
 				</colgroup>
 
 				<thead>

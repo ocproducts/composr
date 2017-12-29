@@ -12,7 +12,7 @@
 			{+END}
 		</div>
 		<div class="accessibility_hidden"><label for="captcha">{!captcha:AUDIO_CAPTCHA_HELP}</label></div>
-		<input {+START,IF_PASSED,TABINDEX} tabindex="{TABINDEX*}"{+END} maxlength="6" size="8" class="input_text_required" type="text" id="captcha" name="captcha" />
+		<input {+START,IF_PASSED,TABINDEX} tabindex="{TABINDEX*}"{+END} maxlength="6" size="8" class="input-text-required" type="text" id="captcha" name="captcha" />
 	{+END}
 
 	<div data-tpl="formScreenInputCaptcha" data-tpl-params="{+START,PARAMS_JSON,CAPTCHA}{_*}{+END}">

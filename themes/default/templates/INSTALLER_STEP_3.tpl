@@ -13,13 +13,13 @@
 		<table class="columned_table installer_forums">
 			<tbody>
 				<tr>
-					<th class="de_th">
+					<th class="de-th">
 						<div class="left">
 							{!FORUM_SOFTWARE}
 						</div>
 					</th>
 
-					<th class="de_th">
+					<th class="de-th">
 						<div class="right">
 							{!FORUM_VERSION}
 						</div>

@@ -1,5 +1,5 @@
 <tr>
-	<th class="de_th form-table-field-name">
+	<th class="de-th form-table-field-name">
 		<span class="field-name">{NICE_NAME*}</span>
 		{+START,IF_NON_EMPTY,{DESCRIPTION}}
 			<div class="associated-details">{DESCRIPTION}</div>

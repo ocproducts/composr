@@ -126,7 +126,7 @@
 
 								{+START,IF,{$NOR,{$GET,is_point_field},{$GET,is_messenger_field}}}
 									<tr id="cpf_{NAME|*}" class="cpf_{FIELD_ID|*}">
-										<th class="de_th">
+										<th class="de-th">
 											{NAME*}:
 										</th>
 
@@ -154,7 +154,7 @@
 
 						{+START,IF,{$IS_NON_EMPTY,{$TRIM,{SIGNATURE}}}}
 							<tr>
-								<th class="de_th">
+								<th class="de-th">
 									{!SIGNATURE}:
 								</th>
 
@@ -185,7 +185,7 @@
 							<tbody>
 								{+START,LOOP,CUSTOM_FIELDS_SECTION}
 									<tr id="cpf_{NAME|*}">
-										<th class="de_th">
+										<th class="de-th">
 											{NAME*}:
 										</th>
 
@@ -238,19 +238,19 @@
 					<tbody>
 						{+START,IF_NON_EMPTY,{$CONFIG_OPTION,display_name_generator}}
 							<tr>
-								<th class="de_th">{!USERNAME}:</th>
+								<th class="de-th">{!USERNAME}:</th>
 								<td>{USERNAME*}</td>
 							</tr>
 						{+END}
 
 						<tr>
-							<th class="de_th">{!ONLINE_NOW}:</th>
+							<th class="de-th">{!ONLINE_NOW}:</th>
 							<td>{ONLINE_NOW*} <span class="associated-details">({$DATE_TIME*,{LAST_VISIT_TIME_RAW}})</span></td>
 						</tr>
 
 						{+START,IF_NON_EMPTY,{JOIN_DATE}}
 							<tr>
-								<th class="de_th">{!JOIN_DATE}:</th>
+								<th class="de-th">{!JOIN_DATE}:</th>
 								<td>
 									<time datetime="{$FROM_TIMESTAMP*,Y-m-d\TH:i:s\Z,{JOIN_DATE_RAW}}" itemprop="datePublished">{JOIN_DATE*}</time>
 								</td>
@@ -259,45 +259,45 @@
 
 						{+START,IF_PASSED,ON_PROBATION}
 							<tr>
-								<th class="de_th">{!ON_PROBATION_UNTIL}:</th>
+								<th class="de-th">{!ON_PROBATION_UNTIL}:</th>
 								<td>{$DATE_TIME*,{ON_PROBATION}}</td>
 							</tr>
 						{+END}
 
 						<tr>
-							<th class="de_th">{!TIME_FOR_THEM}:</th>
+							<th class="de-th">{!TIME_FOR_THEM}:</th>
 							<td>{TIME_FOR_THEM*}</td>
 						</tr>
 
 						<tr>
-							<th class="de_th">{!TIMEZONE}:</th>
+							<th class="de-th">{!TIMEZONE}:</th>
 							<td>{USERS_TIMEZONE*}</td>
 						</tr>
 
 						{+START,IF_NON_EMPTY,{BANNED}}
 							<tr>
-								<th class="de_th">{!BANNED}:</th>
+								<th class="de-th">{!BANNED}:</th>
 								<td>{BANNED*}</td>
 							</tr>
 						{+END}
 
 						{+START,IF_NON_EMPTY,{DOB}}
 							<tr>
-								<th class="de_th">{DOB_LABEL*}:</th>
+								<th class="de-th">{DOB_LABEL*}:</th>
 								<td><span class="bday">{DOB*}</span></td>
 							</tr>
 						{+END}
 
 						{+START,IF,{$HAS_PRIVILEGE,member_maintenance}}{+START,IF_NON_EMPTY,{EMAIL_ADDRESS}}
 							<tr>
-								<th class="de_th">{!EMAIL_ADDRESS}:</th>
+								<th class="de-th">{!EMAIL_ADDRESS}:</th>
 								<td><a class="email" href="mailto:{EMAIL_ADDRESS*}">{EMAIL_ADDRESS*}</a></td>
 							</tr>
 						{+END}{+END}
 
 						{+START,LOOP,EXTRA_INFO_DETAILS}
 							<tr>
-								<th class="de_th">{_loop_key*}:</th>
+								<th class="de-th">{_loop_key*}:</th>
 								<td><span>{_loop_var*}</span></td>
 							</tr>
 						{+END}
@@ -334,21 +334,21 @@
 						<tbody>
 							{+START,IF,{$ADDON_INSTALLED,cns_forum}}
 								<tr>
-									<th class="de_th">{!COUNT_POSTS}:</th>
+									<th class="de-th">{!COUNT_POSTS}:</th>
 									<td>{COUNT_POSTS*}</td>
 								</tr>
 							{+END}
 
 							{+START,IF_NON_EMPTY,{MOST_ACTIVE_FORUM}}
 								<tr>
-									<th class="de_th">{!MOST_ACTIVE_FORUM}:</th>
+									<th class="de-th">{!MOST_ACTIVE_FORUM}:</th>
 									<td>{MOST_ACTIVE_FORUM*}</td>
 								</tr>
 							{+END}
 
 							{+START,IF_PASSED,SUBMIT_DAYS_AGO}
 								<tr>
-									<th class="de_th">{!LAST_SUBMIT_TIME}:</th>
+									<th class="de-th">{!LAST_SUBMIT_TIME}:</th>
 									<td>{!DAYS_AGO,{SUBMIT_DAYS_AGO}}</td>
 								</tr>
 							{+END}
@@ -356,7 +356,7 @@
 							{+START,IF,{$ADDON_INSTALLED,securitylogging}}
 							{+START,IF_PASSED,IP_ADDRESS}{+START,IF_NON_EMPTY,{IP_ADDRESS}}
 									<tr>
-										<th class="de_th">{!IP_ADDRESS}:</th>
+										<th class="de-th">{!IP_ADDRESS}:</th>
 										<td>
 											{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,admin_lookup}}
 												<a href="{$PAGE_LINK*,_SEARCH:admin_lookup:param={IP_ADDRESS&}}">{$TRUNCATE_SPREAD,{IP_ADDRESS*},40,1,1}</a>
@@ -371,21 +371,21 @@
 
 							{+START,IF_PASSED,USER_AGENT}
 								<tr>
-									<th class="de_th"><abbr title="{!USER_AGENT}">{$PREG_REPLACE*, \([^\(\)]*\),,{!USER_AGENT}}</abbr>:</th>
+									<th class="de-th"><abbr title="{!USER_AGENT}">{$PREG_REPLACE*, \([^\(\)]*\),,{!USER_AGENT}}</abbr>:</th>
 									<td><abbr title="{USER_AGENT*}">{$PREG_REPLACE*, \([^\(\)]*\),,{$PREG_REPLACE,\.\d+,,{$REPLACE,({OPERATING_SYSTEM}),,{USER_AGENT}}}}</abbr></td>
 								</tr>
 							{+END}
 
 							{+START,IF_PASSED,OPERATING_SYSTEM}
 								<tr>
-									<th class="de_th">{!USER_OS}:</th>
+									<th class="de-th">{!USER_OS}:</th>
 									<td>{OPERATING_SYSTEM*}</td>
 								</tr>
 							{+END}
 
 							{+START,LOOP,EXTRA_TRACKING_DETAILS}
 								<tr>
-									<th class="de_th">{_loop_key*}:</th>
+									<th class="de-th">{_loop_key*}:</th>
 									<td><span>{_loop_var*}</span></td>
 								</tr>
 							{+END}

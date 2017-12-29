@@ -1,19 +1,19 @@
 {$REQUIRE_JAVASCRIPT,core_form_interfaces}
 
-<div class="permissions_matrix_wrap" id="enter_the_matrix" data-tpl="formScreenInputPermissionMatrix" data-tpl-params="{+START,PARAMS_JSON,SERVER_ID}{_*}{+END}">
+<div class="permissions-matrix-wrap" id="enter_the_matrix" data-tpl="formScreenInputPermissionMatrix" data-tpl-params="{+START,PARAMS_JSON,SERVER_ID}{_*}{+END}">
 	<table class="columned_table autosized_table results-table responsive-table">
 		<thead>
 			<tr>
-				<th class="group_header">
+				<th class="group-header">
 					<span class="heading_group">{!USERGROUP}</span> <span class="heading_presets"><span class="inline_mobile"> &amp; </span>{!PINTERFACE_PRESETS}</span>
 				</th>
 
-				<th class="view_header">
+				<th class="view-header">
 					<img class="gd_text" data-gd-text="1" src="{$BASE_URL*}/data/gd_text.php?trans_color={COLOR*}&amp;text={$ESCAPE,{!PINTERFACE_VIEW},UL_ESCAPED}{$KEEP*}" title="{!PINTERFACE_VIEW}" alt="{!PINTERFACE_VIEW}" />
 				</th>
 
 				{+START,LOOP,OVERRIDES}
-					<th class="privilege_header">
+					<th class="privilege-header">
 						<img class="gd_text" data-gd-text="1" src="{$BASE_URL*}/data/gd_text.php?trans_color={COLOR*}&amp;text={$ESCAPE,{TITLE},UL_ESCAPED}{$KEEP*}" title="{TITLE*}" alt="{TITLE*}" />
 					</th>
 				{+END}

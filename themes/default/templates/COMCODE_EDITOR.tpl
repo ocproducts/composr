@@ -1,7 +1,7 @@
 {$REQUIRE_JAVASCRIPT,core_form_interfaces}
 
 <div data-tpl="comcodeEditor" data-tpl-params="{+START,PARAMS_JSON,POSTING_FIELD}{_*}{+END}">
-	<div class="posting_form_insert_buttons">
+	<div class="posting-form-insert-buttons">
 		<span>{!ADD}:</span>
 		{BUTTONS}
 	</div>
@@ -11,7 +11,7 @@
 		<p class="accessibility_hidden"><label for="f_size">{!SIZE}</label></p>
 		<p class="accessibility_hidden"><label for="f_colour">{!COLOUR}</label></p>
 
-		<div class="posting_form_wrap_buttons">
+		<div class="posting-form-wrap-buttons">
 			{MICRO_BUTTONS}
 
 			<select id="f_face" name="f_face">

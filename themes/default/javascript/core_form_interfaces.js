@@ -433,8 +433,8 @@
             fallbackList = $dom.$('#' + name + '_fallback_list');
 
         if (window.HTMLDataListElement === undefined) {
-            comboInput.classList.remove('input_line_required');
-            comboInput.classList.add('input_line');
+            comboInput.classList.remove('input-line-required');
+            comboInput.classList.add('input-line');
         }
 
         if (fallbackList) {
@@ -515,7 +515,7 @@
     $cms.templates.formScreenInputColour = function (params) {
         var label = params.rawField ? ' ' : params.prettyName;
 
-        window.$themeColours.makeColourChooser(params.name, params.default, '', params.tabindex, label, 'input_colour' + params._required);
+        window.$themeColours.makeColourChooser(params.name, params.default, '', params.tabindex, label, 'input-colour' + params._required);
         window.$themeColours.doColorChooser();
     };
 
@@ -735,7 +735,7 @@
         $dom.on(img, 'click', clickFunc);
         $dom.on(el, 'click', clickFunc);
 
-        label.className = 'js_widget';
+        label.className = 'js-widget';
 
         $dom.on(input, 'click', function () {
             if (this.disabled) {
@@ -1100,7 +1100,7 @@
                 nextNum = thisNum + 1;
                 thisField = document.getElementById(thisId);
                 nextField = document.createElement('input');
-                nextField.className = 'input_upload';
+                nextField.className = 'input-upload';
                 nextField.setAttribute('id', 'multi_' + nextNum);
                 nextField.addEventListener('change', function (event) {
                     if (!$dom.keyPressed(event, 'Tab')) {
@@ -1510,7 +1510,7 @@
             return;
         }
 
-        while (next.classList.contains('field_input')) { // Sometimes divs or whatever may have errornously been put in a table by a programmer, skip past them
+        while (next.classList.contains('field-input')) { // Sometimes divs or whatever may have errornously been put in a table by a programmer, skip past them
             next = next.nextElementSibling;
             if (!next || next.classList.contains('form-table-field-spacer')) { // End of section, so no need to keep going
                 next = null;

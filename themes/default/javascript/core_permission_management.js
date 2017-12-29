@@ -145,7 +145,7 @@
                         cells.push(tds[k]);
                     }
                     for (k = 0; k < cells.length; k++) {
-                        if ((cells[k].className.match(/(^|\s)privilege_header($|\s)/)) || (cells[k].className.match(/(^|\s)privilege_footer($|\s)/)) || (cells[k].className.match(/(^|\s)privilege_cell($|\s)/))) {
+                        if ((cells[k].className.match(/(^|\s)privilege-header($|\s)/)) || (cells[k].className.match(/(^|\s)privilege_footer($|\s)/)) || (cells[k].className.match(/(^|\s)privilege_cell($|\s)/))) {
                             cells[k].parentNode.removeChild(cells[k]);
                         }
                     }
@@ -203,7 +203,7 @@
                             if (!doneHeader) {
                                 row = rows[0];
                                 newCell = row.insertBefore(document.createElement('th'), row.cells[row.cells.length]);
-                                newCell.className = 'privilege_header';
+                                newCell.className = 'privilege-header';
                                 newCell.id = 'privilege_header_' + privilege;
                                 $dom.html(newCell, '<img class="gd_text" data-gd-text="1" src="' + $cms.filter.html($util.url('data/gd_text.php?color=' + window.columnColor + '&text=' + encodeURIComponent(privilegeTitle) + $cms.keep())) + '" title="' + $cms.filter.html(privilegeTitle) + '" alt="' + $cms.filter.html(privilegeTitle) + '" />');
 
