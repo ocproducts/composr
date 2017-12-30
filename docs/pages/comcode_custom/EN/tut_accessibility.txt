@@ -47,7 +47,7 @@ This section will detail Composr compliance with the guidelines, with any releva
 [title="3"]Priority 1 checkpoints[/title]
 
 [html]
-<table class="columned_table results-table wide-table autosized_table">
+<table class="columned_table results-table wide-table autosized-table">
 	<thead>
 		<tr>
 			<th colspan="2">
@@ -314,7 +314,7 @@ This section will detail Composr compliance with the guidelines, with any releva
 [title="3"]Priority 2 checkpoints[/title]
 
 [html]
-<table class="columned_table results-table wide-table autosized_table">
+<table class="columned_table results-table wide-table autosized-table">
 	<thead>
 		<tr>
 			<th colspan="2">
@@ -720,7 +720,7 @@ This section will detail Composr compliance with the guidelines, with any releva
 [title="3"]Priority 3 checkpoints[/title]
 
 [html]
-<table class="columned_table results-table wide-table autosized_table">
+<table class="columned_table results-table wide-table autosized-table">
 	<thead>
 		<tr>
 			<th colspan="2">

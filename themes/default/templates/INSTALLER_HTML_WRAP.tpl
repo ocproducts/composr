@@ -17,7 +17,7 @@
 		{+START,INCLUDE,HTML_HEAD_POLYFILLS}{+END}
 	</head>
 
-	<body id="installer_body" class="website_body" data-tpl="installerHtmlWrap" data-tpl-params="{+START,PARAMS_JSON,DEFAULT_FORUM}{_*}{+END}">
+	<body id="installer_body" class="website-body" data-tpl="installerHtmlWrap" data-tpl-params="{+START,PARAMS_JSON,DEFAULT_FORUM}{_*}{+END}">
 		<div class="installer_main">
 			<img alt="Composr" src="{LOGO_URL*}" width="550" height="115" />
 		</div>

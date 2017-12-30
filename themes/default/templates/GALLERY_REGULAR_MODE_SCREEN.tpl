@@ -11,7 +11,7 @@
 	{+START,IF_NON_EMPTY,{$GET,bound_catalogue_entry}}{$CATALOGUE_ENTRY_ALL_FIELD_VALUES,{$GET,bound_catalogue_entry}}{+END}
 
 	{+START,IF_NON_EMPTY,{CHILDREN}}
-		<div class="box box___gallery_regular_mode_screen"><div class="box-inner compacted_subbox_stream">
+		<div class="box box___gallery_regular_mode_screen"><div class="box-inner compacted-subbox-stream">
 			<h2>{$?,{$EQ,{CAT},root},{!CATEGORIES},{!SUBCATEGORIES_HERE}}</h2>
 
 			<div>
@@ -23,7 +23,7 @@
 	{+START,IF_NON_EMPTY,{ENTRIES}}
 		{ENTRIES}
 
-		<div class="box category_sorter inline_block"><div class="box-inner">
+		<div class="box category_sorter inline-block"><div class="box-inner">
 			{$SET,show_sort_button,1}
 			{SORTING}
 		</div></div>

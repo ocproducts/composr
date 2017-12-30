@@ -244,7 +244,7 @@ END;
 <body><div class="global_middle">
 END;
         }
-        echo '<h1 class="screen-title">Critical error &ndash; bailing out</h1>' . "\n" . '<div class="red_alert" role="error">' . $error . '</div>' . "\n";
+        echo '<h1 class="screen-title">Critical error &ndash; bailing out</h1>' . "\n" . '<div class="red-alert" role="error">' . $error . '</div>' . "\n";
         flush();
         if (($in_upgrader) && (strpos($error, 'Allowed memory') === false)) {
             require_code('upgrade');

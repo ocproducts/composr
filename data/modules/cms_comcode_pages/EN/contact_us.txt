@@ -5,7 +5,7 @@
 	[surround="fp-col-block left"]
 		[title="2"]<img alt="" class="vertical_alignment" src="{$IMG*,icons/24x24/contact_methods/telephone}" srcset="{$IMG*,icons/48x48/contact_methods/telephone} 2x" /> <span class="vertical_alignment">Phone</span>[/title]
 
-		<a class="non_link" href="tel:+4412345678910">(+44) 1234 5678910</a>
+		<a class="non-link" href="tel:+4412345678910">(+44) 1234 5678910</a>
 	[/surround]
 
 	[surround="fp-col-block right link_exempt_wrap"]

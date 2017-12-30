@@ -2,7 +2,7 @@
 
 <div data-tpl="authorPopup">
 	{+START,IF_NON_EMPTY,{AUTHORS}}
-		<ul class="compact_list">
+		<ul class="compact-list">
 			{+START,LOOP,AUTHORS}
 				<li>
 					<a href="#!" rel="nofollow" class="{$?,{DEFINED},author-defined,author-undefined} js-click-set-author-and-close" data-tp-field-name="{FIELD_NAME*}" data-tp-author="{AUTHOR*}">{AUTHOR*}</a>

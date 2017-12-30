@@ -64,7 +64,7 @@
 				<h2>{CATEGORY_TITLE*}</h2>
 
 				<div class="wide-table-wrap">
-					<table class="wide-table results-table columned_table spaced_table responsive-table">
+					<table class="wide-table results-table columned_table spaced-table responsive-table">
 						<thead>
 							<tr>
 								<th>{!ITEM}</th>

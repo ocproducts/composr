@@ -143,7 +143,7 @@ You can delete a banner from the bottom of its edit form.
 [code="HTML"]
    {$SET,BANNER,{$BANNER}} {$,This is to avoid evaluating the banner parameter twice}
    {+START,IF_NON_EMPTY,{$GET,BANNER}}
-      <div class="global_banner" style="text-align: right">{$GET,BANNER}</div>
+      <div class="global-banner" style="text-align: right">{$GET,BANNER}</div>
    {+END}
 [/code]
 
@@ -157,7 +157,7 @@ to:
 [/code]
 Where [tt]example[/tt] is changed for whatever type string you've used for the banner set you want to show.
 
-[*] Change the [tt]global_banner[/tt] CSS class used in the code snippet to a new CSS class of your own choosing (or just pull it out if you don't require any special styling around your banner).
+[*] Change the [tt]global-banner[/tt] CSS class used in the code snippet to a new CSS class of your own choosing (or just pull it out if you don't require any special styling around your banner).
 
 [*] Place the code in any template you like (or multiple ones). Obviously you'll need to write it in in such a way as for it to fit well into the layout. This is a standard CSS/XHTML themeing issue.
 [/list]

@@ -39,7 +39,7 @@
 			</div>
 
 			{+START,IF,{HAS_DEVICE_PREVIEW_MODES}}
-				<hr class="spaced_rule" />
+				<hr class="spaced-rule" />
 
 				<form target="_self" action="{$SELF_URL*,0,0,keep_mobile={$MOBILE}}" method="post" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}

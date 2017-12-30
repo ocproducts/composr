@@ -31,7 +31,7 @@ $fields = new Tempcode();
 
 asort($group_points);
 
-echo '<div class="wide-table-wrap"><table class="results-table wide-table spaced_table"><thead></thead><tbody><tr><th>Usergroup</th><th>One-off point bonus</th><th>Monthly points</th><th>' . escape_html($username) . ' in this group?</th></tr>';
+echo '<div class="wide-table-wrap"><table class="results-table wide-table spaced-table"><thead></thead><tbody><tr><th>Usergroup</th><th>One-off point bonus</th><th>Monthly points</th><th>' . escape_html($username) . ' in this group?</th></tr>';
 
 $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true, true);
 

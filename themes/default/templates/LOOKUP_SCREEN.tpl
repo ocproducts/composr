@@ -2,7 +2,7 @@
 
 <h2>{!DETAILS}</h2>
 
-<div class="wide-table-wrap"><table class="map_table results-table wide-table spaced_table responsive_blocked_table">
+<div class="wide-table-wrap"><table class="map_table results-table wide-table spaced-table responsive-blocked-table">
 	<colgroup>
 		<col class="field-name-column" />
 		<col class="field_value_column" />
@@ -20,7 +20,7 @@
 				<td>
 					#<strong>{ID*}</strong>
 
-					<div class="mini_indent">
+					<div class="mini-indent">
 						<div><em>{!MEMBER_BANNED}, {$LCASE,{MEMBER_BANNED*}}</em>{+START,IF_PASSED,MEMBER_BAN_LINK} {MEMBER_BAN_LINK}{+END}</div>
 						<div><em>{!SUBMITTER_BANNED}, {$LCASE,{SUBMITTER_BANNED*}}</em>{+START,IF_PASSED,SUBMITTER_BAN_LINK} {SUBMITTER_BAN_LINK}{+END}</div>
 					</div>
@@ -34,7 +34,7 @@
 				<td>
 					<strong>{IP*}</strong>
 
-					<div class="mini_indent">
+					<div class="mini-indent">
 						<div><em>{!BANNED}, {$LCASE,{IP_BANNED*}}</em>{+START,IF_PASSED,IP_BAN_LINK} {IP_BAN_LINK}{+END}</div>
 
 						{+START,IF_NON_EMPTY,{$CONFIG_OPTION,stopforumspam_api_key}{$CONFIG_OPTION,tornevall_api_username}}

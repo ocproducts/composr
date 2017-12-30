@@ -1637,7 +1637,7 @@ class Module_admin_stats
         $query = 'SELECT id,date_and_time FROM ' . get_table_prefix() . 'stats WHERE (' . $where . ')' . $ip_filter . ' AND date_and_time>' . strval(time() - ($total * 60 * 60)) . ' AND date_and_time<=' . strval(time()) . ' ORDER BY ' . $sortable . ' ' . $sort_order;
         $rows = $GLOBALS['SITE_DB']->query($query, 10000/*reasonable limit*/);
         if ((count($rows) < 1) || (count($rows) == 10000)) {
-            $list = paragraph(do_lang_tempcode('TOO_MUCH_DATA'), '', 'red_alert');
+            $list = paragraph(do_lang_tempcode('TOO_MUCH_DATA'), '', 'red-alert');
             $graph = new Tempcode();
             return array($graph, $list);
         }

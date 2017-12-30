@@ -373,7 +373,7 @@ class EmToPx extends CSSCleanup
         }
 
         if (!$this->selector_corresponds('body', $selector, array('html'), true)) {
-            $chain[] = 'body.website_body'; // Assumption of our default theme that we use ".website_body"
+            $chain[] = 'body.website-body'; // Assumption of our default theme that we use ".website-body"
         }
 
         $parts = explode(',', $selector);

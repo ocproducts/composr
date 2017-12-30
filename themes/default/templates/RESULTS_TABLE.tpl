@@ -9,7 +9,7 @@
 {+START,IF_NON_EMPTY,{FIELDS}}
 	{$PARAGRAPH,{MESSAGE}}
 
-	<div class="wide-table-wrap"><table class="columned_table results-table wide-table{+START,IF_EMPTY,{WIDTHS}} autosized_table{+END} responsive-table" itemprop="significantLinks">
+	<div class="wide-table-wrap"><table class="columned_table results-table wide-table{+START,IF_EMPTY,{WIDTHS}} autosized-table{+END} responsive-table" itemprop="significantLinks">
 		{+START,IF,{$DESKTOP}}{+START,IF,{$EQ,{$LANG},EN}}{+START,IF_NON_EMPTY,{WIDTHS}}
 			<colgroup>
 				{+START,LOOP,WIDTHS}

@@ -11,7 +11,7 @@
 
 	{+START,IF_NON_EMPTY,{LAST_POST_BY_USERNAME}}
 		<div class="topic-list-meta">
-			{!LAST_POST_BY_SIMPLE,<a class="topic-list-by" href="{LAST_POST_BY_POSTER_URL*}">{$DISPLAYED_USERNAME*,{LAST_POST_BY_USERNAME}}</a>} @ <span class="must_show_together">{DATE*}</span>
+			{!LAST_POST_BY_SIMPLE,<a class="topic-list-by" href="{LAST_POST_BY_POSTER_URL*}">{$DISPLAYED_USERNAME*,{LAST_POST_BY_USERNAME}}</a>} @ <span class="must-show-together">{DATE*}</span>
 		</div>
 	{+END}
 </div>

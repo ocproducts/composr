@@ -588,7 +588,7 @@
             timein = Number(params.timein);
 
         $dom.on(container, 'click', '.js-click-dismiss-overlay', function () {
-            var bi = document.getElementById('main_website_inner');
+            var bi = document.getElementById('main-website-inner');
             if (bi) {
                 bi.style.opacity = 1;
             }
@@ -611,7 +611,7 @@
                 element.parentNode.removeChild(element);
                 document.body.appendChild(element);
 
-                bi = document.getElementById('main_website_inner');
+                bi = document.getElementById('main-website-inner');
 
                 if (bi) {
                     bi.style.opacity = 0.4;
@@ -1143,7 +1143,7 @@
             inside = inside.replace(/\d+/g, '!!!');
 
             if (total === 0) {
-                countdown.classList.add('red_alert');
+                countdown.classList.add('red-alert');
             }
 
             for (i = 0; i < us.length; i++) {

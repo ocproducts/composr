@@ -68,7 +68,7 @@ class Block_main_countdown
         } else {
             $target = @strtotime($_target);
             if ($target === false) {
-                return paragraph(do_lang_tempcode('OUT_OF_BOUNDS_TIME'), '', 'red_alert');
+                return paragraph(do_lang_tempcode('OUT_OF_BOUNDS_TIME'), '', 'red-alert');
             }
         }
 

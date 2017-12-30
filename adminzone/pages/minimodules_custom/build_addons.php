@@ -122,8 +122,8 @@ foreach ($addons as $name => $place) {
 
     if ($old_time !== $new_time) {
         if ($old_time === false) {
-            echo '<p>New addon with description:</p><div class="whitespace_visible">' . escape_html(generate_addon_description($addon_info)) . '</div>';
-            
+            echo '<p>New addon with description:</p><div class="whitespace-visible">' . escape_html(generate_addon_description($addon_info)) . '</div>';
+
         } else {
             echo nl2br(escape_html(update_addon_descriptions($file, $name, generate_addon_description($addon_info))));
         }

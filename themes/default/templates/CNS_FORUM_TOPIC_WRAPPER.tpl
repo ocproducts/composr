@@ -5,17 +5,17 @@
 		{+START,IF,{$DESKTOP}}
 			<colgroup>
 				{+START,IF,{$CONFIG_OPTION,is_on_topic_emoticons}}
-					<col class="cns-forum-topic-wrapper-column-column1 column_desktop" />
+					<col class="cns-forum-topic-wrapper-column-column1 column-desktop" />
 				{+END}
 				<col class="cns-forum-topic-wrapper-column-column2" />
-				<col class="cns-forum-topic-wrapper-column-column3 column_desktop" />
-				<col class="cns-forum-topic-wrapper-column-column4 column_desktop" />
-				<col class="cns-forum-topic-wrapper-column-column5 column_desktop" />
+				<col class="cns-forum-topic-wrapper-column-column3 column-desktop" />
+				<col class="cns-forum-topic-wrapper-column-column4 column-desktop" />
+				<col class="cns-forum-topic-wrapper-column-column5 column-desktop" />
 				{+START,IF,{$OR,{$EQ,{$LANG},EN},{$LT,{$LENGTH,{!COUNT_POSTS}{!COUNT_VIEWS}},12}}}
 					<col class="cns-forum-topic-wrapper-column-column6{$?,{$MATCH_KEY_MATCH,_WILD:members},_shorter}" />
 				{+END}
 				{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}{+START,IF,{$NOT,{$_GET,overlay}}}
-					<col class="cns-forum-topic-wrapper-column-column7 column_desktop" />
+					<col class="cns-forum-topic-wrapper-column-column7 column-desktop" />
 				{+END}{+END}
 			</colgroup>
 		{+END}
@@ -24,15 +24,15 @@
 			<tr>
 				{+START,IF,{$DESKTOP}}
 					{+START,IF,{$CONFIG_OPTION,is_on_topic_emoticons}}
-						<th class="cns-forum-box-left column_desktop"></th>
+						<th class="cns-forum-box-left column-desktop"></th>
 					{+END}
 				{+END}
 				<th>{!TITLE}</th>
 				{+START,IF,{$DESKTOP}}
-					<th class="column_desktop">{!STARTER}{STARTER_TITLE*}</th>
-					<th class="column_desktop">{!COUNT_POSTS}</th>
+					<th class="column-desktop">{!STARTER}{STARTER_TITLE*}</th>
+					<th class="column-desktop">{!COUNT_POSTS}</th>
 					{+START,IF,{$OR,{$EQ,{$LANG},EN},{$LT,{$LENGTH,{!COUNT_POSTS}{!COUNT_VIEWS}},12}}}
-						<th class="cell_desktop">{!COUNT_VIEWS}</th>
+						<th class="cell-desktop">{!COUNT_VIEWS}</th>
 					{+END}
 				{+END}
 				<th {+START,IF_EMPTY,{MODERATOR_ACTIONS}} class="cns-forum-box-right"{+END}>{!LAST_POST}</th>
@@ -52,21 +52,21 @@
 			<tr class="cns-table-footer">
 				{+START,IF,{$DESKTOP}}
 					{+START,IF,{$CONFIG_OPTION,is_on_topic_emoticons}}
-						<td class="cns-column1 cns-forum-box-bleft cell_desktop"></td>
+						<td class="cns-column1 cns-forum-box-bleft cell-desktop"></td>
 					{+END}
 				{+END}
 				<td class="cns-column1{+START,IF,{$MOBILE}} cns_forum_box_bleft{+END}"></td>
 				<td class="cns-column1"></td>
 				{+START,IF,{$DESKTOP}}
-					<td class="cns-column1 cell_desktop"></td>
+					<td class="cns-column1 cell-desktop"></td>
 					{+START,IF,{$OR,{$EQ,{$LANG},EN},{$LT,{$LENGTH,{!COUNT_POSTS}{!COUNT_VIEWS}},12}}}
-						<td class="cns-column1 cell_desktop"></td>
+						<td class="cns-column1 cell-desktop"></td>
 					{+END}
 				{+END}
 				<td class="cns-column1{+START,IF,{$OR,{$MOBILE},{$IS_EMPTY,{MODERATOR_ACTIONS}}}} cns-forum-box-bright{+END}"></td>
 				{+START,IF,{$DESKTOP}}
 					{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}{+START,IF,{$NOT,{$_GET,overlay}}}
-						<td class="cns-column1 cns-forum-box-bright cell_desktop"></td>
+						<td class="cns-column1 cns-forum-box-bright cell-desktop"></td>
 					{+END}{+END}
 				{+END}
 			</tr>
@@ -82,7 +82,7 @@
 {+START,IF,{$NOT,{$WIDE_HIGH}}}
 	{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}
 		{+START,IF,{$DESKTOP}}
-			<div class="box cns-topic-actions block_desktop"><div class="box-inner">
+			<div class="box cns-topic-actions block-desktop"><div class="box-inner">
 				<span class="field-name">
 					<label for="fma_type">{!TOPIC_ACTIONS}: </label>
 				</span>

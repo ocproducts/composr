@@ -8,15 +8,15 @@
 		<div class="webstandards_checker_off">
 			{+START,LOOP,NEWS}
 				<div class="box box___block_side_forum_news_summary"><div class="box-inner">
-					<p class="tiny_paragraph">
+					<p class="tiny-paragraph">
 						<a title="{$STRIP_TAGS,{NEWS_TITLE}}" href="{FULL_URL*}">{$TRUNCATE_LEFT,{NEWS_TITLE},30,0,1}</a>
 					</p>
 
 					<div role="note">
-						<ul class="compact_list tiny_paragraph associated-details">
+						<ul class="compact-list tiny-paragraph associated-details">
 							<li>{!BY_SIMPLE,{$DISPLAYED_USERNAME*,{FIRSTUSERNAME}}}</li>
 							<li>{!_COMMENTS,{$SUBTRACT,{REPLIES},1}}</li>
-							<li><span class="must_show_together">{!LAST_POST}:</span> <span class="must_show_together">{DATE*}</span></li>
+							<li><span class="must-show-together">{!LAST_POST}:</span> <span class="must-show-together">{DATE*}</span></li>
 						</ul>
 					</div>
 				</div></div>

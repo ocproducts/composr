@@ -1,5 +1,5 @@
 <td class="calendar-year-month">
-	<div class="block_mobile">
+	<div class="block-mobile">
 		<h2><a href="{MONTH_URL*}">{MONTH_NAME*}</a></h2>
 	</div>
 

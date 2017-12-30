@@ -6,7 +6,7 @@
 			<span class="closed_ticket">{!CLOSED}</span>
 		{+END}
 
-		<p class="block_desktop"><span class="field-name">{!COUNT_POSTS}:</span> {NUM_POSTS*}</p>
+		<p class="block-desktop"><span class="field-name">{!COUNT_POSTS}:</span> {NUM_POSTS*}</p>
 
 		{+START,IF_NON_EMPTY,{EXTRA_DETAILS}}
 			<br />
@@ -19,7 +19,7 @@
 	</td>
 
 	{+START,IF,{$DESKTOP}}
-		<td class="ticket_num_posts cell_desktop">
+		<td class="ticket_num_posts cell-desktop">
 			{NUM_POSTS*}
 		</td>
 	{+END}

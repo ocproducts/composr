@@ -135,11 +135,11 @@
 									{+START,IF_NON_EMPTY,{FIRST_POST}{RULES_TEXT}}
 										<ul class="associated-links-block-group">
 											{+START,IF_NON_EMPTY,{FIRST_POST}}
-												<li><a class="non_link" title="{!cns:FIRST_POST} {!LINK_NEW_WINDOW}" target="_blank" href="{FIRST_POST_URL*}" data-blur-deactivate-tooltip="" data-focus-activate-tooltip="['{FIRST_POST*~;^}','320px',null,null,false,true]" data-mouseover-activate-tooltip="['{FIRST_POST*~;^}','320px',null,null,false,true]">{!cns:FIRST_POST}</a></li>
+												<li><a class="non-link" title="{!cns:FIRST_POST} {!LINK_NEW_WINDOW}" target="_blank" href="{FIRST_POST_URL*}" data-blur-deactivate-tooltip="" data-focus-activate-tooltip="['{FIRST_POST*~;^}','320px',null,null,false,true]" data-mouseover-activate-tooltip="['{FIRST_POST*~;^}','320px',null,null,false,true]">{!cns:FIRST_POST}</a></li>
 											{+END}
 
 											{+START,IF_NON_EMPTY,{RULES_TEXT}}
-												<li><a class="non_link" href="{$PAGE_LINK*,:rules}" data-blur-deactivate-tooltip="" data-focus-activate-tooltip="['{$TRUNCATE_LEFT,{RULES_TEXT*~;^},1000,0,1}','320px',null,null,false,true]" data-mouseover-activate-tooltip="['{$TRUNCATE_LEFT,{RULES_TEXT*~;^},1000,0,1}','320px',null,null,false,true]">{+START,IF,{$DESKTOP}}<span class="inline_desktop">{!HOVER_MOUSE_IMPORTANT}</span>{+END}<span class="inline_mobile">{!TAP_MOUSE_IMPORTANT}</span></a></li>
+												<li><a class="non-link" href="{$PAGE_LINK*,:rules}" data-blur-deactivate-tooltip="" data-focus-activate-tooltip="['{$TRUNCATE_LEFT,{RULES_TEXT*~;^},1000,0,1}','320px',null,null,false,true]" data-mouseover-activate-tooltip="['{$TRUNCATE_LEFT,{RULES_TEXT*~;^},1000,0,1}','320px',null,null,false,true]">{+START,IF,{$DESKTOP}}<span class="inline-desktop">{!HOVER_MOUSE_IMPORTANT}</span>{+END}<span class="inline-mobile">{!TAP_MOUSE_IMPORTANT}</span></a></li>
 											{+END}
 										</ul>
 									{+END}
@@ -153,7 +153,7 @@
 
 									{+START,IF,{$DESKTOP}}
 										{+START,IF_NON_EMPTY,{EMOTICONS}}
-											<div class="comments_posting_form_emoticons block_desktop">
+											<div class="comments_posting_form_emoticons block-desktop">
 												<div class="box box___comments_posting_form"><div class="box-inner">
 													{EMOTICONS}
 
@@ -208,7 +208,7 @@
 							{+END}
 
 							{+START,IF_PASSED,MORE_URL}
-								<button tabindex="6" accesskey="y" class="buttons--new-post-full {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item} js-btn-full-editor" type="button">{+START,IF,{$DESKTOP}}<span class="inline_desktop">{!FULL_EDITOR}</span>{+END}<span class="inline_mobile">{!MORE}</span></button>
+								<button tabindex="6" accesskey="y" class="buttons--new-post-full {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item} js-btn-full-editor" type="button">{+START,IF,{$DESKTOP}}<span class="inline-desktop">{!FULL_EDITOR}</span>{+END}<span class="inline-mobile">{!MORE}</span></button>
 							{+END}
 
 							{+START,IF_PASSED,ATTACHMENTS}
@@ -219,7 +219,7 @@
 
 							{+START,SET,button_title}{+START,IF_PASSED,SUBMIT_NAME}{SUBMIT_NAME*}{+END}{+START,IF_NON_PASSED,SUBMIT_NAME}{+START,IF_NON_EMPTY,{TITLE}}{TITLE*}{+END}{+START,IF_EMPTY,{TITLE}}{!SEND}{+END}{+END}{+END}
 							{+START,SET,button_icon}{+START,IF_PASSED,SUBMIT_ICON}{SUBMIT_ICON*}{+END}{+START,IF_NON_PASSED,SUBMIT_ICON}{+START,IF_NON_PASSED,MORE_URL}buttons--new-comment{+END}{+START,IF_PASSED,MORE_URL}buttons--new-reply{+END}{+END}{+END}
-							<button tabindex="8" accesskey="u" id="submit_button" class="{$GET,button_icon} {$?,{$GET,has_preview_button},near_preview_button,not_near_preview_button} {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item} js-btn-submit-comments" type="button">{+START,IF,{$DESKTOP}}<span class="inline_desktop">{$GET,button_title}</span>{+END}<span class="inline_mobile">{$REPLACE,{!cns:REPLY},{!_REPLY},{$GET,button_title}}</span></button>
+							<button tabindex="8" accesskey="u" id="submit_button" class="{$GET,button_icon} {$?,{$GET,has_preview_button},near_preview_button,not_near_preview_button} {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item} js-btn-submit-comments" type="button">{+START,IF,{$DESKTOP}}<span class="inline-desktop">{$GET,button_title}</span>{+END}<span class="inline-mobile">{$REPLACE,{!cns:REPLY},{!_REPLY},{$GET,button_title}}</span></button>
 						</div>
 					</div>
 				</div>

@@ -1,3 +1,3 @@
-<div class="{FLOAT*} float_separation">
+<div class="{FLOAT*} float-separation">
 	{CONTENT}
 </div>

@@ -97,7 +97,7 @@ function ce_do_header()
 
     echo '
 </head>
-<body class="website_body" style="margin: 1em"><div class="global_middle">
+<body class="website-body" style="margin: 1em"><div class="global_middle">
     <h1 class="screen-title">Composr Installation Options editor</h1>
     <p>This is an editor accessible to administrators of the website only. It is kept as simple as possible, to allow fixing of configuration problems when Composr is not in a workable state. It is provided in English only, and only modifies the configuration file, not the database.</p>
     <form action="config_editor.php" method="post">

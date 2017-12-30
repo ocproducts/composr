@@ -8,14 +8,14 @@
 		<h3>{!CONTENT_IS_OF_TYPE,{!MEMBER},{$DISPLAYED_USERNAME*,{USERNAME}}}</h3>
 	{+END}
 
-	<div class="inline_lined_up">
+	<div class="inline-lined-up">
 		{+START,IF,{$DESKTOP}}
 			{+START,IF_NON_EMPTY,{AVATAR_URL}}
-				<img class="cns-member-box-avatar inline_desktop" src="{$ENSURE_PROTOCOL_SUITABILITY*,{AVATAR_URL}}" alt="{!SPECIFIC_AVATAR,{USERNAME*}}" title="{!SPECIFIC_AVATAR,{USERNAME*}}" />
+				<img class="cns-member-box-avatar inline-desktop" src="{$ENSURE_PROTOCOL_SUITABILITY*,{AVATAR_URL}}" alt="{!SPECIFIC_AVATAR,{USERNAME*}}" title="{!SPECIFIC_AVATAR,{USERNAME*}}" />
 			{+END}
 		{+END}
 
-		<div>{$,div will be set as inline block}<table class="map_table tooltip_fields autosized_table">
+		<div>{$,div will be set as inline block}<table class="map_table tooltip_fields autosized-table">
 			<tbody>
 				<tr><th class="de-th">{!USERNAME}:</th><td><a href="{$MEMBER_PROFILE_URL*,{MEMBER_ID}}">{USERNAME*}</a></td></tr>
 				<tr><th class="de-th">{!cns:SPECIFIC_FORUM_POSTS}:</th><td>{POSTS*}</td></tr>

@@ -6,7 +6,7 @@
 	{+END}
 
 	{+START,IF_NON_EMPTY,{IMAGE_URL}}
-		<div class="left float_separation"><a href="{URL*}"><img alt="" src="{$THUMBNAIL*,{IMAGE_URL},{WIDTH}}" /></a></div>
+		<div class="left float-separation"><a href="{URL*}"><img alt="" src="{$THUMBNAIL*,{IMAGE_URL},{WIDTH}}" /></a></div>
 	{+END}
 
 	{+START,IF_NON_EMPTY,{DESCRIPTION}}

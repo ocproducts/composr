@@ -9,7 +9,7 @@
 	{+END}{+END}
 
 	<div class="toggleable-tray js-tray-content"{+START,IF_PASSED,MEMBER_ID} id="user_{MEMBER_ID*}"{+END}{+START,IF,{$NOT,{HAS_SOME}}} style="display: none"{+END} aria-expanded="false">
-		<div class="wide-table-wrap"><table class="map_table form-table wide-table scrollable_inside">
+		<div class="wide-table-wrap"><table class="map_table form-table wide-table scrollable-inside">
 			{+START,IF,{$DESKTOP}}
 				<colgroup>
 					<col class="field-name-column" />
@@ -21,7 +21,7 @@
 				{+START,LOOP,EFFECTS}
 					<tr class="form-table-field-spacer">
 						<th colspan="2" class="table_heading_cell">
-							<span class="faux_h2">{EFFECT_TITLE*}</span>
+							<span class="faux-h2">{EFFECT_TITLE*}</span>
 						</th>
 					</tr>
 

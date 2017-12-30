@@ -132,7 +132,7 @@ function upgrade_script()
 <p>{$l_choices}</p>
 
 <div style=\"margin: 0 50px\">
-    <h2>{$l_maintenance}&hellip;</h2><ul class=\"compact_list\">
+    <h2>{$l_maintenance}&hellip;</h2><ul class=\"compact-list\">
         <li>{$l_clear_caches}</li>";
                     if (!is_suexec_like()) {
                         echo "
@@ -160,7 +160,7 @@ function upgrade_script()
 
     <h3>{$l_upgrade_steps}</h3>
 
-    <div class=\"wide-table-wrap\"><table class=\"columned_table autosized_table results-table wide-table spaced_table\">
+    <div class=\"wide-table-wrap\"><table class=\"columned_table autosized-table results-table wide-table spaced-table\">
         <thead>
             <tr>
                     <th>{$l_step}</th>
@@ -183,7 +183,7 @@ function upgrade_script()
 
     <p>&dagger; {$l_customisations}</p>
 
-    <h2 style=\"margin-top: 2em\">{$l_error_correction}&hellip;</h2><ul class=\"compact_list\">
+    <h2 style=\"margin-top: 2em\">{$l_error_correction}&hellip;</h2><ul class=\"compact-list\">
         <li style=\"padding: 0.5em\">{$l_safe_mode}</li>
         <li style=\"padding: 0.5em\">{$l_addon_management}</li>
         <li style=\"padding: 0.5em\">{$l_remove_addon_files}</li>
@@ -597,7 +597,7 @@ function upgrade_script()
             }
 
             if ($show_more_link) {
-                echo '<hr class="spaced_rule" /><div>' . fu_link('upgrader.php?type=browse', do_lang('MORE_OPTIONS')) . '</div>';
+                echo '<hr class="spaced-rule" /><div>' . fu_link('upgrader.php?type=browse', do_lang('MORE_OPTIONS')) . '</div>';
             }
         } else {
             up_do_header();
@@ -742,7 +742,7 @@ function up_do_login($message = null)
     if ((is_suexec_like()) || ((!function_exists('ftp_ssl_connect')) && (!function_exists('ftp_connect')))) {
     } else {
         echo "
-        <hr class=\"spaced_rule\" />
+        <hr class=\"spaced-rule\" />
         {$l_ftp_info}
         <table>
             <tbody>
@@ -752,7 +752,7 @@ function up_do_login($message = null)
                     <tr><th>{$l_ftp_password}:</th><td><input size=\"50\" type=\"password\" name=\"ftp_password\" /></td></tr>
             </tbody>
         </table>
-        <hr class=\"spaced_rule\" />
+        <hr class=\"spaced-rule\" />
         ";
     }
 
@@ -764,7 +764,7 @@ function up_do_login($message = null)
     ";
 
     echo "
-    <hr class=\"spaced_rule\" />
+    <hr class=\"spaced-rule\" />
     <div style=\"font-size: 0.8em\">
     <h2>{$l_login_forgot_password_q}</h2>
     <p>{$l_login_info_pass_forget}</p>
@@ -803,9 +803,9 @@ END;
 
         <meta name="robots" content="noindex, nofollow" />
     </head>
-    <body class="website_body"><div class="global_middle">
+    <body class="website-body"><div class="global_middle">
         <h1 class="screen-title">{$upgrader_title}</h1>
-        <p>{$upgrader_intro}</p><hr class="spaced_rule" />
+        <p>{$upgrader_intro}</p><hr class="spaced-rule" />
 END;
 }
 

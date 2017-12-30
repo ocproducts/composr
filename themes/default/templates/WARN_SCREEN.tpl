@@ -26,7 +26,7 @@
 		{+END}
 	{+END}
 	{+START,IF,{$EQ,{TEXT},{!MISSING_RESOURCE}}}
-		<p class="red_alert" role="error">{!MISSING_RESOURCE}</p>
+		<p class="red-alert" role="error">{!MISSING_RESOURCE}</p>
 
 		<h2>{!SITEMAP}</h2>
 

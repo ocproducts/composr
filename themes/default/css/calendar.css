@@ -36,7 +36,7 @@ abbr.dtstart, abbr.dtend {
 		display: block;
 	}
 
-	.calendar-year-wrap>tbody>tr>.fake_th {
+	.calendar-year-wrap>tbody>tr>.fake-th {
 		display: none;
 	}
 

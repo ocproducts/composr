@@ -197,7 +197,7 @@ END;
 
         <meta name="robots" content="noindex, nofollow" />
     </head>
-    <body class="website_body"><div class="global_middle">
+    <body class="website-body"><div class="global_middle">
 END;
 }
 

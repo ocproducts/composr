@@ -1,5 +1,5 @@
 {+START,IF,{$EQ,{TITLE},{!GLOBAL_NAVIGATION}}}
-<hr class="spaced_rule" />
+<hr class="spaced-rule" />
 {+END}
 
 <nav class="do-next-section-wrap">

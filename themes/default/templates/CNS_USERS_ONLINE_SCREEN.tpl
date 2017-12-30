@@ -1,6 +1,6 @@
 {TITLE}
 
-<div class="wide-table-wrap"><table class="columned_table autosized_table wide-table results-table responsive-table">
+<div class="wide-table-wrap"><table class="columned_table autosized-table wide-table results-table responsive-table">
 	<thead>
 		<tr>
 			<th>
@@ -11,7 +11,7 @@
 			</th>
 			{+START,IF,{$DESKTOP}}
 				{+START,IF,{$HAS_PRIVILEGE,show_user_browsing}}
-					<th class="cell_desktop">
+					<th class="cell-desktop">
 						{!LOCATION}
 					</th>
 				{+END}
@@ -53,14 +53,14 @@
 					{!MINUTES_AGO,{TIME*}}
 
 					{+START,IF,{$HAS_PRIVILEGE,show_user_browsing}}
-						<p class="associated-details block_mobile">
+						<p class="associated-details block-mobile">
 							{$GET,location}
 						</p>
 					{+END}
 				</td>
 				{+START,IF,{$DESKTOP}}
 					{+START,IF,{$HAS_PRIVILEGE,show_user_browsing}}
-						<td class="cell_desktop">
+						<td class="cell-desktop">
 							{$GET,location}
 						</td>
 					{+END}

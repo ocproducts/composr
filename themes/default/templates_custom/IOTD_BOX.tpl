@@ -13,14 +13,14 @@
 		{+END}
 
 		{+START,IF_NON_EMPTY,{THUMB_URL}}
-			<div class="right float_separation">
+			<div class="right float-separation">
 				{+START,IF_NON_EMPTY,{VIEW_URL}}<a title="{I_TITLE*}" href="{VIEW_URL*}">{+END}<img alt="{!THUMBNAIL}" src="{THUMB_URL*}" />{+START,IF_NON_EMPTY,{VIEW_URL}}</a>{+END}
 			</div>
 		{+END}
 
 		{+START,IF_PASSED,USERNAME}{+START,IF_NON_EMPTY,{USERNAME}}
-			<div class="meta_details" role="note">
-				<ul class="meta_details_list">
+			<div class="meta-details" role="note">
+				<ul class="meta-details-list">
 					<li>{!SUBMITTED_BY,<a href="{$MEMBER_PROFILE_URL*,{SUBMITTER}}">{$DISPLAYED_USERNAME*,{USERNAME}}</a>}</li>
 				</ul>
 			</div>

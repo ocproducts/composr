@@ -114,7 +114,7 @@
                 if (!xml.firstElementChild) {
                     var isCategoryPage = (window.location.pathname.split('/').pop() || '').includes('category');
                     var error = document.createTextNode((!this.name.includes('category') && !isCategoryPage) ? '{!NO_ENTRIES;^}' : '{!NO_CATEGORIES;^}');
-                    html.className = 'red_alert';
+                    html.className = 'red-alert';
                     html.appendChild(error);
                     return;
                 }
@@ -391,7 +391,7 @@
                     nodeSelf.draggable = true;
                     nodeSelf.ondragstart = function () {
                         $cms.ui.clearOutTooltips();
-                        nodeSelf.classList.add('being_dragged');
+                        nodeSelf.classList.add('being-dragged');
                         window.isDoingADrag = true;
                     };
                     nodeSelf.ondrag = function (event) {
@@ -410,7 +410,7 @@
                     nodeSelf.ondragend = function () {
                         window.isDoingADrag = false;
 
-                        nodeSelf.classList.remove('being_dragged');
+                        nodeSelf.classList.remove('being-dragged');
 
                         if (nodeSelf.lastHit != null) {
                             nodeSelf.lastHit.parentNode.parentNode.style.border = '0px';

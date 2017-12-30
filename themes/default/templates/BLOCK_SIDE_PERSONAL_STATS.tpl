@@ -6,7 +6,7 @@
 	{+END}
 
 	{+START,IF_NON_EMPTY,{DETAILS}}
-		<ul class="compact_list">
+		<ul class="compact-list">
 			{DETAILS}
 		</ul>
 	{+END}

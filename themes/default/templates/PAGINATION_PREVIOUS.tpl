@@ -1,1 +1,1 @@
-<span>&laquo;{+START,IF,{$DESKTOP}}<span class="inline_desktop">&nbsp;{!PREVIOUS}</span>{+END}</span>
+<span>&laquo;{+START,IF,{$DESKTOP}}<span class="inline-desktop">&nbsp;{!PREVIOUS}</span>{+END}</span>

@@ -32,7 +32,7 @@
 			<p class="lonely-label">
 				{!FILEDUMP_IMAGE_URLS}:
 			</p>
-			<ul class="compact_list image_sizes">
+			<ul class="compact-list image_sizes">
 				{+START,LOOP,IMAGE_SIZES}
 					<li>
 						<label for="img_size_{SIZE_WIDTH*}">{LABEL*}</label>

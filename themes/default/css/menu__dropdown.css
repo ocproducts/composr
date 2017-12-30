@@ -186,7 +186,7 @@ For example:
 .dropdown-menu .toplevel.current .toplevel_link span, .dropdown-menu .toplevel .toplevel_link:hover span {
 	text-decoration: underline;
 }
-.dropdown-menu .toplevel .toplevel_link.non_link:hover span {
+.dropdown-menu .toplevel .toplevel_link.non-link:hover span {
 	text-decoration: none;
 }
 

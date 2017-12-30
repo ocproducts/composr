@@ -1,7 +1,7 @@
 {TITLE}
 
-<div class="meta_details" role="note">
-	<ul class="meta_details_list">
+<div class="meta-details" role="note">
+	<ul class="meta-details-list">
 		<li>
 			{!BY_SIMPLE,<a rel="author" href="{$MEMBER_PROFILE_URL*,{SUBMITTER}}" itemprop="author">{$USERNAME*,{SUBMITTER},1}}</a>
 			{+START,INCLUDE,MEMBER_TOOLTIP}{+END}

@@ -5,35 +5,35 @@
 
 /* Both flow mode and viewing entries */
 
-.gallery_entry_details {
+.gallery-entry-details {
 	margin-bottom: 1em;
 }
 
-.gallery_member_details {
+.gallery-member-details {
 	min-width: 24em;
 }
-.gallery_entry_details table {
+.gallery-entry-details table {
 	width: 100%;
 }
 
 .gallery-entry-field-name-column {
 	width: 8.5em;
 }
-.gallery_entry_field_value_column {
+.gallery-entry-field-value-column {
 	width: 16em;
 }
 /*{+START,CSS_MODE,mobile}*/
-	.gallery-entry-field-name-column, .gallery_entry_field_value_column {
+	.gallery-entry-field-name-column, .gallery-entry-field-value-column {
 		width: auto;
 	}
 /*{+END}*/
 
-.delete_cross_button, .delete_cross_button div {
+.delete-cross-button, .delete-cross-button div {
 	display: inline;
 }
-.delete_cross_button input,
-.gallery_regular_thumb .mass_select_marker,
-.flow_mode_thumb .mass_select_marker {
+.delete-cross-button input,
+.gallery-regular-thumb .mass-select-marker,
+.flow-mode-thumb .mass-select-marker {
 	position: absolute;
 	right: 2px;
 	top: 2px;
@@ -41,51 +41,51 @@
 	opacity: 0.0;
 	transition: opacity 0.2s linear !important;
 }
-.gallery_regular_thumb .mass_select_marker,
-.flow_mode_thumb .mass_select_marker {
+.gallery-regular-thumb .mass-select-marker,
+.flow-mode-thumb .mass-select-marker {
 	right: 7px !important;
 }
-.gallery_regular_thumb .mass_select_marker input,
-.flow_mode_thumb .mass_select_marker input {
+.gallery-regular-thumb .mass-select-marker input,
+.flow-mode-thumb .mass-select-marker input {
 	float: none !important;
 	margin: 0 0 0 0 !important;
 }
-.gallery_regular_thumb,
-.flow_mode_thumb {
+.gallery-regular-thumb,
+.flow-mode-thumb {
 	position: relative;
 }
-.gallery_regular_thumb:hover .delete_cross_button input,
-.flow_mode_thumb:hover .delete_cross_button input,
-.gallery_regular_thumb:hover .mass_select_marker,
-.flow_mode_thumb:hover .mass_select_marker {
+.gallery-regular-thumb:hover .delete-cross-button input,
+.flow-mode-thumb:hover .delete-cross-button input,
+.gallery-regular-thumb:hover .mass-select-marker,
+.flow-mode-thumb:hover .mass-select-marker {
 	opacity: 0.5;
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
-.gallery_regular_thumb .delete_cross_button input:hover,
-.flow_mode_thumb .delete_cross_button input:hover,
-.gallery_regular_thumb .mass_select_marker:hover,
-.flow_mode_thumb .mass_select_marker:hover {
+.gallery-regular-thumb .delete-cross-button input:hover,
+.flow-mode-thumb .delete-cross-button input:hover,
+.gallery-regular-thumb .mass-select-marker:hover,
+.flow-mode-thumb .mass-select-marker:hover {
 	opacity: 1.0;
 }
 
 /* Non flow-mode only */
 
-.gallery_grid_cell_wrap {
+.gallery-grid-cell-wrap {
 	{$BETA_CSS_PROPERTY,display: flex;}
 	{$BETA_CSS_PROPERTY,flex-wrap: wrap;}
 	margin: -0.5em 0 0 -0.5em;
 }
 
-.gallery_grid_cell {
+.gallery-grid-cell {
 	margin: 0.5em 0 0 0.5em;
 }
 /*{+START,CSS_MODE,desktop}*/
-	.gallery_grid_cell {
+	.gallery-grid-cell {
 		width: calc(25% - 0.5em);
 	}
 /*{+END}*/
 
-.gallery_regular_thumb {
+.gallery-regular-thumb {
 	font-size: 0.85em;
 	border: 1px solid {$GET,standard_border};
 	background-color: {$GET,area_background};
@@ -101,113 +101,113 @@
 	vertical-align: bottom; /* Removes gap under this centered inline image, by moving it to baseline */
 }
 
-.gallery_media_title_cropped * {
+.gallery-media-title-cropped * {
 	vertical-align: middle;
 }
-.gallery_media_title_cropped>span {
+.gallery-media-title-cropped>span {
 	white-space: nowrap;
 	{$BETA_CSS_PROPERTY,text-overflow: ellipsis;}
 	overflow: hidden;
 }
 
-.gallery_regular_thumb p, .gallery_regular_thumb .grating {
+.gallery-regular-thumb p, .gallery-regular-thumb .grating {
 	margin: 0.5em;
 	min-height: 1.5em;
 }
 
-.gallery_regular_thumb .grating {
+.gallery-regular-thumb .grating {
 	float: right;
 }
 
-.gallery_tooltip {
+.gallery-tooltip {
 	font-size: 0.85em;
 }
 
-.gallery_tooltip h3 {
+.gallery-tooltip h3 {
 	margin-bottom: 0.85em;
 }
 
 /* Flow-mode only */
 
-.flow_mode_details .gallery_entry_details .box {
+.flow-mode-details .gallery-entry-details .box {
 	margin-top: 0 !important;
 	margin-bottom: 0 !important;
 }
-.flow_mode_details .gallery_entry_details .box.staff_actions {
+.flow-mode-details .gallery-entry-details .box.staff-actions {
 	margin-top: 1em !important;
 }
 
-.flow_mode_thumb {
+.flow-mode-thumb {
 	opacity: 0.7;
 	display: inline-block;
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
 /*{+START,CSS_MODE,mobile}*/
-	.flow_mode_thumb {
+	.flow-mode-thumb {
 		margin: 0.5em;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,desktop}*/
-	.flow_mode_thumb {
+	.flow-mode-thumb {
 		margin: 0 1em;
 	}
 /*{+END}*/
-.flow_mode_thumb:hover, body.touch-enabled .flow_mode_thumb {
+.flow-mode-thumb:hover, body.touch-enabled .flow-mode-thumb {
 	opacity: 1.0;
 	transition: opacity 0.2s linear !important;
 }
-.flow_mode_thumb .img-thumb {
+.flow-mode-thumb .img-thumb {
 	opacity: 1.0;
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
 
-.flow_mode_thumb img {
+.flow-mode-thumb img {
 	max-width: 150px; /* Smaller, for carousel */
 }
 
 /* Viewing entries */
 
-.gallery_entry_screen {
+.gallery-entry-screen {
 	width: 100%;
 	min-height: 100%;
 }
 
-.slideshow_speed {
+.slideshow-speed {
 	position: absolute;
 	right: 2px;
 	top: 0;
 }
 
-.slideshow_speed input {
+.slideshow-speed input {
 	width: 3em;
 }
 
-.media_box .box {
+.media-box .box {
 	margin-top: 0;
 }
 
-.media_box embed, .media_box object {
+.media-box embed, .media-box object {
 	max-width: 100%;
 }
 
 /*{+START,CSS_MODE,desktop}*/
-	.media_box .gallery_entry_details {
+	.media-box .gallery-entry-details {
 		margin-left: 1em;
 		max-width: 18em;
 	}
 
-	.media_box .gallery_entry_details table {
+	.media-box .gallery-entry-details table {
 		margin-top: 0;
 	}
 /*{+END}*/
 
 /* side_galleries block */
 
-.side_galleries_block p {
+.side-galleries-block p {
 	margin-top: 0.5em;
 }
 
-.side_galleries_block_exp {
+.side-galleries-block-exp {
 	overflow: hidden;
 	display: block;
 	text-align: left;
@@ -216,12 +216,12 @@
 	color: {$GET,slightly_seeded_text};
 }
 
-.side_galleries_block ul.compact_list {
+.side-galleries-block ul.compact-list {
 	margin: 0;
 	padding: 0;
 }
 
-.side_galleries_block ul.compact_list li {
+.side-galleries-block ul.compact-list li {
 	margin: 0 0 0 22px;
 	padding: 0;
 }
@@ -236,32 +236,32 @@
 	max-width: 18em;
 }
 
-.gallery_tease_pic {
+.gallery-tease-pic {
 	margin: 0 auto;
 	box-shadow: 3px 3px 10px {$GET,point_of_interest_border};
 }
 /*{+START,CSS_MODE,desktop}*/
-	.gallery_tease_pic {
+	.gallery-tease-pic {
 		width: 40em;
 	}
 /*{+END}*/
 
-.gallery_tease_pic_pic {
+.gallery-tease-pic-pic {
 	float: right;
 	margin-left: 0.5em;
 	text-align: right;
 }
 
-.gallery_tease_pic>.box {
+.gallery-tease-pic>.box {
 	border-bottom-right-radius: 0;
 }
 
-#tease_scrolling_text {
+#tease-scrolling-text {
 	width: 23em;
 }
 
 /* Make sure it fits okay on the side panel */
-.global-side-panel .gallery_tease_pic {
+.global-side-panel .gallery-tease-pic {
 	width: auto;
 }
 .global-side-panel .gallery-tease-pic-wrap h2, .global-side-panel .gallery-tease-pic-wrap h3 {
@@ -274,7 +274,7 @@
 
 /* Miscellaneous media handling */
 
-.gallery_pdf {
+.gallery-pdf {
 	width: 100%;
 	height: 600px;
 }

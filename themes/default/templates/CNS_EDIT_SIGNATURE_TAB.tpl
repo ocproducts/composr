@@ -8,7 +8,7 @@
 	</div></div>
 {+END}
 
-<div class="box cns-sig-requirements"><div class="box-inner help_jumpout">
+<div class="box cns-sig-requirements"><div class="box-inner help-jumpout">
 	<p>
 		{!_MAX_SIG_LENGTH_COMCODE,{SIZE*}}
 	</p>

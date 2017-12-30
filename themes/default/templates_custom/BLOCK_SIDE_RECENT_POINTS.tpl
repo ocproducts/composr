@@ -4,7 +4,7 @@
 
 {+START,IF_NON_EMPTY,{GIFTS}}
 	<div class="wide-table-wrap">
-		<table class="columned_table results-table wide-table autosized_table">
+		<table class="columned_table results-table wide-table autosized-table">
 			<thead>
 				<tr>
 					<th>To</th>

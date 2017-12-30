@@ -649,7 +649,7 @@
             // Put together
             if (this.buttonContainerEl.firstElementChild) {
                 if (this.type === 'iframe') {
-                    this.containerEl.appendChild($dom.create('hr', {'className': 'spaced_rule'}));
+                    this.containerEl.appendChild($dom.create('hr', {'className': 'spaced-rule'}));
                 }
                 this.containerEl.appendChild(this.buttonContainerEl);
             }
@@ -922,14 +922,14 @@
             //iframe.scrolling = (_this.scrollbars === false) ? 'no' : 'auto';  Actually, not wanting this now
 
             // Remove fixed width
-            mainWebsiteInner = iDoc.getElementById('main_website_inner');
+            mainWebsiteInner = iDoc.getElementById('main-website-inner');
 
             if (mainWebsiteInner) {
                 mainWebsiteInner.id = '';
             }
 
-            // Remove main_website marker
-            mainWebsite = iDoc.getElementById('main_website');
+            // Remove main-website marker
+            mainWebsite = iDoc.getElementById('main-website');
             if (mainWebsite) {
                 mainWebsite.id = '';
             }
@@ -1344,7 +1344,7 @@
                 }
 
                 // Show the animation
-                var bi = $dom.$id('main_website_inner');
+                var bi = $dom.$id('main-website-inner');
                 if (bi) {
                     bi.classList.add('site_unloading');
                     $dom.fadeTo(bi, null, 0.2);
@@ -2151,7 +2151,7 @@
         var fullWidth = (window.scrollX === 0) ? $dom.getWindowWidth() : window.document.body.scrollWidth;
 
         if ($cms.configOption('fixed_width') && !outsideFixedWidth) {
-            var mainWebsiteInner = document.getElementById('main_website_inner');
+            var mainWebsiteInner = document.getElementById('main-website-inner');
             if (mainWebsiteInner) {
                 fullWidth = mainWebsiteInner.offsetWidth;
             }

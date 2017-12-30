@@ -6,7 +6,7 @@
 				<a class="toggleable-tray-button js-click-toggle-subord-fields js-keypress-toggle-subord-fields" id="fes{TITLE|}" href="#!"><img class="vertical_alignment right" alt="{!CONTRACT}: {TITLE*}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract}" /></a>
 			{+END}
 
-			<span class="faux_h2 {+START,IF_NON_PASSED_OR_FALSE,FORCE_OPEN} toggleable-tray-button js-click-toggle-subord-fields js-keypress-toggle-subord-fields{+END}">{TITLE*}</span>
+			<span class="faux-h2 {+START,IF_NON_PASSED_OR_FALSE,FORCE_OPEN} toggleable-tray-button js-click-toggle-subord-fields js-keypress-toggle-subord-fields{+END}">{TITLE*}</span>
 
 			{+START,IF,{$EQ,{TITLE},{!ADDRESS}}}
 				<input class="button-micro buttons--search js-click-geolocate-address-fields" type="button" value="{!locations:FIND_ME}" />

@@ -2,18 +2,18 @@
 	{+START,IF,{$DESKTOP}}
 		<colgroup>
 			<col class="gallery-entry-field-name-column" />
-			<col class="gallery_entry_field_value_column" />
+			<col class="gallery-entry-field-value-column" />
 		</colgroup>
 	{+END}
 
 	<tbody>
 		<tr>
-			<th class="de-th metadata_title">{!RESOLUTION}</th>
-			<td class="de-th metadata_title">{WIDTH*} &times; {HEIGHT*}</td>
+			<th class="de-th metadata-title">{!RESOLUTION}</th>
+			<td class="de-th metadata-title">{WIDTH*} &times; {HEIGHT*}</td>
 		</tr>
 		<tr>
-			<th class="de-th metadata_title">{!VIDEO_LENGTH}</th>
-			<td class="de-th metadata_title">{$TIME_PERIOD*,{LENGTH}}</td>
+			<th class="de-th metadata-title">{!VIDEO_LENGTH}</th>
+			<td class="de-th metadata-title">{$TIME_PERIOD*,{LENGTH}}</td>
 		</tr>
 	</tbody>
 </table></div>

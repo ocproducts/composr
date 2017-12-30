@@ -1,8 +1,8 @@
 <div itemscope="itemscope" itemtype="http://schema.org/ImageObject">
 	{TITLE}
 
-	<div class="meta_details" role="note">
-		<ul class="meta_details_list">
+	<div class="meta-details" role="note">
+		<ul class="meta-details-list">
 			<li>
 				{!BY_SIMPLE,<a rel="author" href="{$MEMBER_PROFILE_URL*,{SUBMITTER}}" itemprop="author">{$USERNAME*,{SUBMITTER},1}}</a>
 				{+START,INCLUDE,MEMBER_TOOLTIP}{+END}
@@ -12,7 +12,7 @@
 		</ul>
 	</div>
 
-	<p class="media_box">
+	<p class="media-box">
 		<img class="scale_down" alt="{!IMAGE}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" itemprop="contentURL" />
 	</p>
 

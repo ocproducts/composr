@@ -264,17 +264,17 @@ input[type="text"]:disabled, input[type="password"]:disabled, input[type="color"
 	color: gray;
 }
 
-a, .button_hyperlink {
+a, .button-hyperlink {
 	color: {$GET,a.link};
 }
 a:visited {
 	color: {$GET,a.visited};
 }
-a:hover, .button_hyperlink:hover {
+a:hover, .button-hyperlink:hover {
 	color: {$GET,a.hover};
 }
 
-h1, h2, h3, .faux_h2 {
+h1, h2, h3, .faux-h2 {
 	font-weight: normal;
 	color: {$GET,heading_text};
 	border-bottom: 1px solid {$GET,pale_border};
@@ -283,7 +283,7 @@ h1 {
 	font-size: 1.6em;
 	margin-top: 0.27em; /* Consistency with boxes (so gap between header and content is consistent), but rationalised against higher em font size */
 }
-h2, .faux_h2 {
+h2, .faux-h2 {
 	font-size: 1.3em;
 }
 h3 {
@@ -299,7 +299,7 @@ h4 {
 	font-weight: bold;
 }
 /* An iframe screen */
-.opens_below h1 {
+.opens-below h1 {
 	display: none;
 }
 
@@ -313,24 +313,24 @@ th>p:first-child, td>p:first-child, th>h2:first-child, td>h3:first-child {
 th>p:last-child, td>p:last-child {
 	margin-bottom: 0;
 }
-th, .fake_th {
+th, .fake-th {
 	background-color: {$GET,box_title_background};
 	color: {$GET,box_title_text};
 	font-weight: bold;
 	text-align: center;
 }
-[aria-sort="ascending"].table_header_sorted, [aria-sort="descending"].table_header_sorted {
+[aria-sort="ascending"].table-header-sorted, [aria-sort="descending"].table-header-sorted {
 	font-style: italic;
 }
-.table_header_sorting {
+.table-header-sorting {
 	float: right;
 }
-.columned_table[itemprop="significantLinks"] tbody tr th, .columned_table[itemprop="significantLinks"] tbody tr .fake_th { /* itemprop is for precedence */
+.columned_table[itemprop="significantLinks"] tbody tr th, .columned_table[itemprop="significantLinks"] tbody tr .fake-th { /* itemprop is for precedence */
 	background-color: {$GET,box_title_background_2} !important;
 	color: {$GET,box_title_text} !important;
 	text-align: left;
 }
-th a, th a:hover, th a:visited, .fake_th a, .fake_th a:hover, .fake_th a:visited {
+th a, th a:hover, th a:visited, .fake-th a, .fake-th a:hover, .fake-th a:visited {
 	color: {$GET,box_title_text};
 }
 thead>tr>th, .boxless-space .box>table>thead>tr>th, .pte_set_box .box>table>thead>tr>th {
@@ -338,7 +338,7 @@ thead>tr>th, .boxless-space .box>table>thead>tr>th, .pte_set_box .box>table>thea
 	color: {$GET,box_title_text};
 	background-repeat: repeat-x;
 }
-.light_table th, .light_table .fake_th, .light_table thead>tr>th, .light_table .boxless-space .box>table>thead>tr>th, .light_table .pte_set_box .box>table>thead>tr>th {
+.light-table th, .light-table .fake-th, .light-table thead>tr>th, .light-table .boxless-space .box>table>thead>tr>th, .light-table .pte_set_box .box>table>thead>tr>th {
 	background-color: {$GET,area_6_background};
 }
 .box>table>thead>tr>th {
@@ -426,39 +426,39 @@ iframe {
 		word-wrap: break-word !important;
 	}
 
-	.inline_desktop {
+	.inline-desktop {
 		display: none !important;
 	}
-	.inline_mobile {
+	.inline-mobile {
 		display: inline !important;
 	}
 
-	.inlineblock_desktop {
+	.inlineblock-desktop {
 		display: none !important;
 	}
-	.inlineblock_mobile {
+	.inlineblock-mobile {
 		display: inline-block !important;
 	}
 
-	.block_desktop {
+	.block-desktop {
 		display: none !important;
 	}
-	.block_mobile {
+	.block-mobile {
 		display: block !important;
 	}
 
-	.column_desktop {
+	.column-desktop {
 		visibility: collapse !important;
 		display: none !important;
 	}
-	.column_mobile {
+	.column-mobile {
 		visibility: visible !important;
 	}
 
-	.cell_desktop {
+	.cell-desktop {
 		display: none !important;
 	}
-	.cell_mobile {
+	.cell-mobile {
 		display: table-cell !important;
 	}
 
@@ -469,45 +469,45 @@ iframe {
 /*{+END}*/
 
 /*{+START,CSS_MODE,desktop}*/
-	.inline_desktop {
+	.inline-desktop {
 		display: inline !important;
 	}
-	.inline_mobile {
+	.inline-mobile {
 		display: none !important;
 	}
 
-	.inlineblock_desktop {
+	.inlineblock-desktop {
 		display: inline-block !important;
 	}
-	.inlineblock_mobile {
+	.inlineblock-mobile {
 		display: none !important;
 	}
 
-	.block_desktop {
+	.block-desktop {
 		display: block !important;
 	}
-	.block_mobile {
+	.block-mobile {
 		display: none !important;
 	}
 
-	.column_desktop {
+	.column-desktop {
 		visibility: visible !important;
 	}
-	.column_mobile {
+	.column-mobile {
 		visibility: collapse !important;
 		display: none !important;
 	}
 
-	.cell_desktop {
+	.cell-desktop {
 		display: table-cell !important;
 	}
-	.cell_mobile {
+	.cell-mobile {
 		display: none !important;
 	}
 /*{+END}*/
 
 /* Cool effect to change how text selection looks; not valid CSS, but is safe */
-.website_body ::selection {
+.website-body ::selection {
 	background: {$GET,yellow_highlight_background};
 }
 comcode-{$REPLACE,\,,::selection \,comcode-,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}\,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_INLINE}}}, tempcode ::selection {
@@ -525,27 +525,27 @@ input.input-username::-webkit-calendar-picker-indicator {
 =========================
 */
 
-/* Consider .website_body as 'body': it is just we cannot put our styles directly on body because sometimes this gets used in things we should not mess with such as the WYSIWYG editors frame (which is #wysiwyg-editor) and e-mails */
-body.website_body {
+/* Consider .website-body as 'body': it is just we cannot put our styles directly on body because sometimes this gets used in things we should not mess with such as the WYSIWYG editors frame (which is #wysiwyg-editor) and e-mails */
+body.website-body {
 	padding: 0 !important;
 	margin: 0;
 	color: {$GET,slightly_seeded_text};
 	background-color: {$GET,main_background};
 }
-body.website_body.frame {
+body.website-body.frame {
 	background: transparent; /* Don't assume too much for a frame, it may be nested inside a box for example */
 }
 
 /*{+START,IF,{$AND,{$THEME_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
 	/*{+START,CSS_MODE,desktop}*/
-		html>body#main_website { /* #main_website targets only the main site screen, avoiding frames etc */
+		html>body#main-website { /* #main-website targets only the main site screen, avoiding frames etc */
 			/* Want to change the tiled background?
 				Try this Google search to get image ideas http://www.google.co.uk/search?tbm=isch&q=tile+background
 				Find how to edit the referenced "outer_background" theme image by doing an Admin Zone search for "outer_background"
 			*/
 			background: url('{$IMG_INLINE;,outer_background}');
 		}
-		#main_website #main_website_inner {
+		#main-website #main-website-inner {
 			width: 980px;
 			position: relative;
 			margin: 15px auto 15px auto;
@@ -553,26 +553,26 @@ body.website_body.frame {
 			box-shadow: 0 0 20px {$GET,standard_border};
 		}
 		/*{+START,IF,{$NAND,{$THEME_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
-			#main_website #main_website_inner {
+			#main-website #main-website-inner {
 				margin: 15px;
 			}
 		/*{+END}*/
 	/*{+END}*/
 
 	/*{+START,CSS_MODE,tablet_fixed_viewport}*/
-		#main_website #main_website_inner {
+		#main-website #main-website-inner {
 			margin: 0 0 0 0.5em;
 			border: 0;
 			box-shadow: none;
 		}
 
-		.global_banner {
+		.global-banner {
 			top: 0 !important;
 		}
 	/*{+END}*/
 /*{+END}*/
 
-body.website_body, #wysiwyg-editor {
+body.website-body, #wysiwyg-editor {
 	font-size: 13px;
 }
 #wysiwyg-editor {
@@ -582,28 +582,28 @@ body.website_body, #wysiwyg-editor {
 	{$BETA_CSS_PROPERTY,user-select: text !important;}
 }
 
-body#main_website {
+body#main-website {
 	margin: 0;
 }
 
 /*{+START,IF,{$THEME_OPTION,fixed_width}}*/
 	/* To stop it scaling down if we are applying "width=device-width" and forcing a page to displaying non-mobile */
 	/*{+START,CSS_MODE,desktop}*/
-		body#main_website {
+		body#main-website {
 			min-width: 1000px;
 		}
 	/*{+END}*/
 /*{+END}*/
 
-body#main_website #main_website_inner .global_middle_outer {
+body#main-website #main-website-inner .global_middle_outer {
 	min-height: 450px;
 }
 
-/* If not #main_website, it'll be one of these (the names correspond to the templates used) */
-body#basic_html_wrap {
+/* If not #main-website, it'll be one of these (the names correspond to the templates used) */
+body#basic-html-wrap {
 	margin: 0;
 }
-body#standalone_html_wrap {
+body#standalone-html-wrap {
 	margin: 0;
 }
 
@@ -629,7 +629,7 @@ header h1 {
 	}
 /*{+END}*/
 
-.global_banner {
+.global-banner {
 	text-align: center;
 	background: url('{$IMG;,banner_frame}') center top no-repeat;
 	position: relative;
@@ -640,7 +640,7 @@ header h1 {
 	padding-bottom: 3px;
 }
 
-.global_banner + .logo_outer {
+.global-banner + .logo_outer {
 	margin-top: 0;
 }
 
@@ -842,7 +842,7 @@ h1 + .title_tagline {
 	margin-top: -1.2em;
 }
 
-body#main_website #main_website_inner, html>body div.global_middle_faux {
+body#main-website #main-website-inner, html>body div.global_middle_faux {
 	background-color: {$GET,main_background};
 
 	/* Want to set a tiled background?
@@ -853,7 +853,7 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 	/*background: url('{$IMG_INLINE;,inner_background}');*/
 }
 
-.main_website_faux {
+.main-website-faux {
 	background-color: {$GET,fixed_width_background} !important;
 }
 
@@ -1048,11 +1048,11 @@ footer {
 	}
 /*{+END}*/
 
-footer .button_hyperlink, footer a, footer a:visited, footer .horizontal-links {
+footer .button-hyperlink, footer a, footer a:visited, footer .horizontal-links {
 	color: {$GET,footer_text};
 }
 
-footer a:hover, footer .button_hyperlink:hover {
+footer a:hover, footer .button-hyperlink:hover {
 	color: {$GET,footer_tinting};
 }
 
@@ -1202,11 +1202,11 @@ footer .global_minilinks .footer_links {
 	}
 /*{+END}*/
 
-footer .global_minilinks a, footer .global_minilinks .button_hyperlink {
+footer .global_minilinks a, footer .global_minilinks .button-hyperlink {
 	white-space: nowrap !important; /* So works on mobiles */
 	text-decoration: none;
 }
-footer .global_minilinks a:hover, footer .global_minilinks .button_hyperlink:hover {
+footer .global_minilinks a:hover, footer .global_minilinks .button-hyperlink:hover {
 	text-decoration: underline;
 }
 
@@ -1319,29 +1319,29 @@ div.edited {
 }
 
 
-/* Makes an item of media (e.g. an image) get framed nicely. NB: We do not use this for galleries (which are more elaborate), although that has similar styling with .gallery_grid_cell */
-.media_box {
+/* Makes an item of media (e.g. an image) get framed nicely. NB: We do not use this for galleries (which are more elaborate), although that has similar styling with .gallery-grid-cell */
+.media-box {
 	text-align: center;
 }
 /*{+START,CSS_MODE,desktop}*/
-	.media_box {
+	.media-box {
 		margin: 1.5em 0;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.media_box {
+	.media-box {
 		margin: 1em 0;
 	}
 /*{+END}*/
-.media_box a {
+.media-box a {
 	outline: 0;
 }
-.media_box>a>img, .media_box>img {
+.media-box>a>img, .media-box>img {
 	border: 1px solid {$GET,standard_border};
 	box-sizing: border-box;
 	box-shadow: 3px 3px 10px {$GET,standard_border};
 }
-.media_box>a>img:not([width]):not([height]), .media_box>img:not([width]):not([height]) {
+.media-box>a>img:not([width]):not([height]), .media-box>img:not([width]):not([height]) {
 	max-width: 100%;
 	height: auto;
 }
@@ -1382,7 +1382,7 @@ a.fancy_user_link:hover {
 }
 
 /* A button styled to look like a link */
-body input.button_hyperlink, body input.button_hyperlink:hover {
+body input.button-hyperlink, body input.button-hyperlink:hover {
 	border-style: none !important;
 	background-color: transparent !important;
 	background-image: none !important;
@@ -1399,7 +1399,7 @@ body input.button_hyperlink, body input.button_hyperlink:hover {
 }
 
 /* Used to make a button look more like an icon - i.e. undoes button-face styling */
-.button_icon {
+.button-icon {
 	background: none;
 	border: none;
 	cursor: pointer;
@@ -1428,9 +1428,9 @@ body input.button_hyperlink, body input.button_hyperlink:hover {
 /*{+END}*/
 
 /* Makes a link tag (a) look like it's not anything special (we use these tags as tab points sometimes) */
-.non_link,
-.non_link:visited,
-.non_link:hover {
+.non-link,
+.non-link:visited,
+.non-link:hover {
 	color: inherit !important;
 	text-decoration: none !important;
 	cursor: inherit !important;
@@ -1438,78 +1438,78 @@ body input.button_hyperlink, body input.button_hyperlink:hover {
 }
 
 /* Used e.g. for "paginating" through the calendar (i.e. infinite pagination left/right) */
-.trinav_wrap {
+.trinav-wrap {
 	overflow: hidden;
 	background-image: linear-gradient(to bottom\, {$GET,main_2_background}\, {$GET,main_background});
 	border-radius: 20px;
 	color: {$GET,heading_text};
 }
 /*{+START,CSS_MODE,desktop}*/
-	.trinav_wrap {
+	.trinav-wrap {
 		margin-bottom: 2em;
 	}
 /*{+END}*/
-.trinav_wrap.nograd {
+.trinav-wrap.nograd {
 	background-image: none;
 }
-.trinav_left, .trinav_mid, .trinav_right {
+.trinav-left, .trinav-mid, .trinav-right {
 	margin: 1em 0 2em 0;
 }
-.trinav_left {
+.trinav-left {
 	float: left;
 	text-align: left;
 }
 /*{+START,CSS_MODE,desktop}*/
-	.trinav_left {
+	.trinav-left {
 		margin-left: 2em;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.trinav_left {
+	.trinav-left {
 		width: 110px;
 		margin-left: 0.5em;
 	}
 /*{+END}*/
-.trinav_mid { /* Used for putting a button in the middle of the left/right pagination, for example */
+.trinav-mid { /* Used for putting a button in the middle of the left/right pagination, for example */
 	text-align: center;
 }
 /*{+START,CSS_MODE,desktop}*/
-	.trinav_mid.text {
+	.trinav-mid.text {
 		padding-top: 6px;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.trinav_mid.text {
+	.trinav-mid.text {
 		padding-top: 1px;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.trinav_mid.text>span:before {
+	.trinav-mid.text>span:before {
 		content: "(";
 	}
-	.trinav_mid.text>span:after {
+	.trinav-mid.text>span:after {
 		content: ")";
 	}
 /*{+END}*/
-.trinav_right {
+.trinav-right {
 	float: right;
 	text-align: right;
 }
 /*{+START,CSS_MODE,desktop}*/
-	.trinav_right {
+	.trinav-right {
 		margin-left: 1em;
 		margin-right: 2em;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.trinav_right {
+	.trinav-right {
 		width: 110px;
 		margin-right: 0.5em;
 	}
 /*{+END}*/
 
 /* An inline avatar */
-.embedded_mini_avatar {
+.embedded-mini-avatar {
 	width: 0.9em;
 	height: 0.9em;
 	vertical-align: bottom;
@@ -1518,30 +1518,30 @@ body input.button_hyperlink, body input.button_hyperlink:hover {
 }
 
 /* Error/status messages */
-span.red_alert, a.red_alert, strong.red_alert, em.red_alert {
+span.red-alert, a.red-alert, strong.red-alert, em.red-alert {
 	color: {$GET,red_highlight_text};
 	font-weight: bold;
 }
-div.red_alert, p.red_alert, .inline_wip_message {
+div.red-alert, p.red-alert, .inline-wip-message {
 	border-radius: 5px;
 	padding: 1em 1em 1em 40px;
 }
-div.red_alert, p.red_alert {
+div.red-alert, p.red-alert {
 	border: 1px solid {$GET,light_error_border};
 	background: url('{$IMG;,icons/24x24/status/notice}') 0.6em 0.75em no-repeat {$GET,light_error_background};
 	overflow: hidden;
 }
-.inline_wip_message {
+.inline-wip-message {
 	border: 1px solid {$GET,dark_border};
 	background: url('{$IMG;,icons/24x24/status/notice}') 0.6em 0.75em no-repeat {$GET,area_background};
 	color: {$GET,slightly_seeded_text};
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	div.red_alert, p.red_alert {
+	div.red-alert, p.red-alert {
 		background-image: url('{$IMG;,icons/48x48/status/notice}');
 		background-size: 24px 24px;
 	}
-	.inline_wip_message {
+	.inline-wip-message {
 		background-image: url('{$IMG;,icons/48x48/status/notice}');
 		background-size: 24px 24px;
 	}
@@ -1562,10 +1562,10 @@ div.red_alert, p.red_alert {
 }
 
 /* Used for a little 'X comments' box, but with the comments bit showing as an HTML tooltip */
-.comment_count:empty {
+.comment-count:empty {
 	display: none;
 }
-.comment_count {
+.comment-count {
 	display: inline-block;
 	white-space: nowrap;
 	border: 1px dotted {$GET,dark_border};
@@ -1575,21 +1575,21 @@ div.red_alert, p.red_alert {
 	font-size: 0.9em;
 	position: relative;
 }
-.associated-links-block-group>li .comment_count {
+.associated-links-block-group>li .comment-count {
 	top: 2px;
 }
-.comment_count:hover {
+.comment-count:hover {
 	border-right-color: transparent;
 }
-.comment_count strong {
+.comment-count strong {
 	background-color: {$GET,main_background} !important;
 }
-.comment_count span {
+.comment-count span {
 	display: none;
 	padding-right: 2px;
 	background-color: {$GET,main_background} !important;
 }
-.comment_count:hover span {
+.comment-count:hover span {
 	display: inline-block;
 	position: absolute;
 	padding-left: 0.3em;
@@ -1603,21 +1603,21 @@ div.red_alert, p.red_alert {
 	border-left: 0;
 }
 
-th.metadata_title {
+th.metadata-title {
 	font-weight: bold !important;
 }
 
-.help_jumpout {
+.help-jumpout {
 	padding: 0.5em 0;
 	padding-left: 50px;
 	background: url('{$IMG;,help_jumpout}') no-repeat left center;
 }
 
-.help_jumpout p {
+.help-jumpout p {
 	margin: 0;
 }
 
-.being_dragged {
+.being-dragged {
 	font-style: italic;
 }
 
@@ -1664,14 +1664,14 @@ td>.comcode_quote:first-child, .fake_table_cell>.comcode_quote:first-child, .fak
 	margin: 0;
 }
 /* Accordion boxes don't have margins */
-.box___standardbox_accordion {
+.box---standardbox-accordion {
 	margin: 0 !important;
 }
 /* Don't do margins for boxes at the end of frames */
-/*#standalone_html_wrap>div>.box:first-child {	Actually we want this, due to how .fp-col-block has been written
+/*#standalone-html-wrap>div>.box:first-child {	Actually we want this, due to how .fp-col-block has been written
 	margin-top: 0;
 }*/
-#standalone_html_wrap>div>.box:last-child {
+#standalone-html-wrap>div>.box:last-child {
 	margin-bottom: 0;
 }
 
@@ -1697,7 +1697,7 @@ td>.comcode_quote:first-child, .fake_table_cell>.comcode_quote:first-child, .fak
 	padding: 5px; /* not em so that header may be positioned properly */
 }
 
-.box-inner>h1, .box-inner>h2, .box-inner>h3, .box-inner>h4, .box-inner>h5, .box-inner>h6, .toggleable-tray-title, #standalone_html_wrap .box .box .box-inner>h2, #standalone_html_wrap .box .box .box-inner>h3 {
+.box-inner>h1, .box-inner>h2, .box-inner>h3, .box-inner>h4, .box-inner>h5, .box-inner>h6, .toggleable-tray-title, #standalone-html-wrap .box .box .box-inner>h2, #standalone-html-wrap .box .box .box-inner>h3 {
 	border-top-left-radius: 3px;
 	border-top-right-radius: 3px;
 	background-image: linear-gradient(to bottom, {$GET,lgrad}, {$GET,dgrad});
@@ -1803,7 +1803,7 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 }
 .global-side-panel .boxless-space .box>.box-inner>h1, .global-side-panel .boxless-space .box>.box-inner>h2, .global-side-panel .boxless-space .box>.box-inner>h3, .global-side-panel .boxless-space .box>.box-inner>h4, .global-side-panel .boxless-space .box>.box-inner>h5, .global-side-panel .boxless-space .box>.box-inner>h6 {
 }
-.boxless-space .buttons-group, .boxless-space .associated-links-block-group, .boxless-space .media_box, .boxless-space .proceed_button {
+.boxless-space .buttons-group, .boxless-space .associated-links-block-group, .boxless-space .media-box, .boxless-space .proceed_button {
 	text-align: left;
 	width: auto;
 }
@@ -1846,13 +1846,13 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 
 /* Boxes under boxes shouldn't have the title style - would be ugly */
 
-.box .box .box-inner>h1, .box .box .box-inner>h2, .box .box .box-inner>h3, .box .box .box-inner>h4, .box .box .box-inner>h5, .box .box .box-inner>h6, .box .box .toggleable-tray-title, #standalone_html_wrap .box .box .box .box-inner>h2, #standalone_html_wrap .box .box .box .box-inner>h3 {
+.box .box .box-inner>h1, .box .box .box-inner>h2, .box .box .box-inner>h3, .box .box .box-inner>h4, .box .box .box-inner>h5, .box .box .box-inner>h6, .box .box .toggleable-tray-title, #standalone-html-wrap .box .box .box .box-inner>h2, #standalone-html-wrap .box .box .box .box-inner>h3 {
 	background: none;
 	color: inherit;
 	padding-left: 0;
 	font-size: 1.1em;
-} /* This rule is not applied to boxes under the top level box in the preview (#standalone_html_wrap) as those should show verbatim */
-.box .box .box-inner>h1 a, .box .box .box-inner>h2 a, .box .box .box-inner>h3 a, .box .box .box-inner>h4 a, .box .box .box-inner>h5 a, .box .box .box-inner>h6 a, .box .box .toggleable-tray-title a, #standalone_html_wrap .box .box .box .box-inner>h2 a, #standalone_html_wrap .box .box .box .box-inner>h3 a {
+} /* This rule is not applied to boxes under the top level box in the preview (#standalone-html-wrap) as those should show verbatim */
+.box .box .box-inner>h1 a, .box .box .box-inner>h2 a, .box .box .box-inner>h3 a, .box .box .box-inner>h4 a, .box .box .box-inner>h5 a, .box .box .box-inner>h6 a, .box .box .toggleable-tray-title a, #standalone-html-wrap .box .box .box .box-inner>h2 a, #standalone-html-wrap .box .box .box .box-inner>h3 a {
 	color: {$GET,a.hover};
 }
 
@@ -1959,7 +1959,7 @@ h3 .toggleable-tray-button img {
 
 /* Box/title-attached meta details */
 
-.meta_details {
+.meta-details {
 	font-size: 0.9em;
 	color: {$GET,area_text};
 	border-bottom: 1px dotted {$GET,pale_border};
@@ -1969,32 +1969,32 @@ h3 .toggleable-tray-button img {
 	margin-bottom: 1em;
 }
 /*{+START,CSS_MODE,desktop}*/
-	.meta_details {
+	.meta-details {
 		width: 25em;
 	}
 /*{+END}*/
-.boxless-space .meta_details {
+.boxless-space .meta-details {
 	padding-left: 0;
 	margin-top: -0.5em !important;
 }
 
-.compacted_subbox_stream h3+.meta_details, .compacted_subbox_stream .newscat_img+.meta_details {
+.compacted-subbox-stream h3+.meta-details, .compacted-subbox-stream .newscat_img+.meta-details {
 	border-bottom: 0;
 	margin-bottom: 0.5em;
 }
-.box-inner>h3+.meta_details {
+.box-inner>h3+.meta-details {
 	margin-top: 0;
 }
 
-.meta_details a, .meta_details a:visited {
+.meta-details a, .meta-details a:visited {
 	text-decoration: none;
 	color: {$GET,area_link};
 }
-.meta_details a:hover {
+.meta-details a:hover {
 	color: {$GET,a.hover};
 }
 
-.global-side-panel .meta_details {
+.global-side-panel .meta-details {
 	border-bottom: 0;
 	padding-left: 0;
 	padding-top: 0.5em;
@@ -2014,11 +2014,11 @@ h3 .toggleable-tray-button img {
 
 /* Boxes with arrows on the top */
 
-.box.box_arrow {
+.box.box-arrow {
 	overflow: visible;
 	margin-top: 4px; /* 2 +2px gap */
 }
-.box.box_arrow>span {
+.box.box-arrow>span {
 	background: url('{$IMG;,1x/box_arrow}') no-repeat;
 	margin-top: -7px;
 	display: inline-block;
@@ -2029,7 +2029,7 @@ h3 .toggleable-tray-button img {
 	right: 13px;
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.box.box_arrow>span {
+	.box.box-arrow>span {
 		background-image: url('{$IMG;,2x/box_arrow}');
 		background-size: 13px 7px;
 	}
@@ -2043,54 +2043,54 @@ h3 .toggleable-tray-button img {
 
 /* These are short hand for defining very common layout patterns. They are quasi-semantic in that they tie into Composr's visual language. */
 
-.not_too_tall {
+.not-too-tall {
 	max-height: 30em;
 	overflow: auto;
 }
 
-.horizontal_scrolling {
+.horizontal-scrolling {
 	overflow: auto;
 	padding-right: 1px; /* For non-aligning table borders */
 }
 
-.tiny_paragraph {
+.tiny-paragraph {
 	margin: 0.3em 0;
 }
 
-.whitespace_visible {
+.whitespace-visible {
 	overflow: auto;
 	outline: 0;
 	white-space: pre-wrap !important;
 }
-.whitespace_visible.code {
+.whitespace-visible.code {
 	font-family: 'Courier New', 'Courier', monospace;
 }
 
-.standard_indent {
+.standard-indent {
 	padding-left: 4em;
 }
 
 /*{+START,CSS_MODE,desktop}*/
-	.mini_indent {
+	.mini-indent {
 		padding-left: 2em;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.mini_indent {
+	.mini-indent {
 		padding-left: 0.75em;
 	}
 /*{+END}*/
 
-hr.spaced_rule {
+hr.spaced-rule {
 	margin: 2em 0;
 }
 
 /* Used to indicate something showing underneath, in conjunction with an arrow image */
-.arrow_ruler {
+.arrow-ruler {
 	text-align: center;
 }
 
-.inline_block {
+.inline-block {
 	text-align: left;
 	display: inline-block;
 }
@@ -2101,26 +2101,26 @@ hr.spaced_rule {
 .left {
 	float: left;
 }
-.left.float_separation {
+.left.float-separation {
 	margin-right: 1em;
 }
 .right {
 	float: right;
 }
-.right.float_separation, .inline.spaced {
+.right.float-separation, .inline.spaced {
 	margin-left: 1em;
 }
 /*{+START,CSS_MODE,mobile}*/
 	.left.responsive {
 		float: none;
 	}
-	.left.responsive.float_separation {
+	.left.responsive.float-separation {
 		margin-right: 0;
 	}
 	.right.responsive {
 		float: none;
 	}
-	.right.responsive.float_separation {
+	.right.responsive.float-separation {
 		margin-left: 0;
 	}
 	.responsive>.box {
@@ -2128,17 +2128,17 @@ hr.spaced_rule {
 	}
 /*{+END}*/
 
-.inline_lined_up {
+.inline-lined-up {
 	white-space: nowrap;
 }
 
-.inline_lined_up>* {
+.inline-lined-up>* {
 	white-space: normal;
 	display: inline-block;
 }
 
 /* Something being shown for previewing, on its own so needs focus */
-.lonely_preview {
+.lonely-preview {
 	text-align: center;
 }
 
@@ -2157,7 +2157,7 @@ ul.horizontal-links.horiz-field-sep {
 }
 
 /* Used e.g. on links that should not get split between lines */
-.must_show_together, .must_show_together * {
+.must-show-together, .must-show-together * {
 	white-space: nowrap !important;
 }
 
@@ -2167,16 +2167,16 @@ ul.horizontal-links.horiz-field-sep {
 =========================
 */
 
-.table_cell_nowrap {
+.table-cell-nowrap {
 	white-space: nowrap;
 	display: inline-block;
 }
 
-.autosized_table {
+.autosized-table {
 	table-layout: auto !important;
 }
 
-table.scrollable_inside {
+table.scrollable-inside {
 	table-layout: fixed; /* For permission setting stuff that can scroll off */
 }
 
@@ -2196,15 +2196,15 @@ table.scrollable_inside {
 /*{+START,CSS_MODE,mobile}*/
 	/* Deconstructs map table to blocks, for easy layout fit */
 
-	.map_table.responsive_blocked_table, .map_table.responsive_blocked_table tbody, .map_table.responsive_blocked_table tfoot, .map_table.responsive_blocked_table tr, .map_table.responsive_blocked_table th, .map_table.responsive_blocked_table td {
+	.map_table.responsive-blocked-table, .map_table.responsive-blocked-table tbody, .map_table.responsive-blocked-table tfoot, .map_table.responsive-blocked-table tr, .map_table.responsive-blocked-table th, .map_table.responsive-blocked-table td {
 		display: block;
 	}
 
-	.results-table.responsive_blocked_table tr {
+	.results-table.responsive-blocked-table tr {
 		margin-bottom: 0.5em;
 	}
 
-	.results-table.responsive_blocked_table th, .results-table.responsive_blocked_table td {
+	.results-table.responsive-blocked-table th, .results-table.responsive-blocked-table td {
 		border-radius: 0 !important;
 		border-left: 1px solid {$GET,standard_border} !important;
 		border-right: 1px solid {$GET,standard_border} !important;
@@ -2213,20 +2213,20 @@ table.scrollable_inside {
 		text-align: left !important;
 	}
 
-	.map_table.responsive_blocked_table th:first-child, .map_table.responsive_blocked_table td:first-child {
+	.map_table.responsive-blocked-table th:first-child, .map_table.responsive-blocked-table td:first-child {
 		border-top: 1px solid {$GET,standard_border} !important;
 	}
 
-	.map_table.responsive_blocked_table th:last-child, .map_table.responsive_blocked_table td:last-child {
+	.map_table.responsive-blocked-table th:last-child, .map_table.responsive-blocked-table td:last-child {
 		border-bottom: 1px solid {$GET,standard_border} !important;
 	}
 /*{+END}*/
 
-.spaced_table th, .spaced_table td {
+.spaced-table th, .spaced-table td {
 	padding: 0.7em;
 }
 /*{+START,CSS_MODE,mobile}*/
-	.spaced_table td {
+	.spaced-table td {
 		overflow-x: auto;
 	}
 /*{+END}*/
@@ -2455,7 +2455,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 .tooltip .shunted_button {
 	display: none;
 }
-.tooltip .whitespace_visible {
+.tooltip .whitespace-visible {
 	max-height: 5em;
 	overflow: auto;
 }
@@ -2535,7 +2535,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	margin: 1em 0;
 }
 
-.compacted_subbox_stream .pagination_spacing {
+.compacted-subbox-stream .pagination_spacing {
 	margin-left: 1em;
 }
 
@@ -2656,14 +2656,14 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	padding: 0 3px;
 }
 
-.compacted_subbox_stream.box-inner {
+.compacted-subbox-stream.box-inner {
 	margin-left: 0 !important;
 	margin-right: 0 !important;
 }
-.compacted_subbox_stream>.raw_ajax_grow_spot>h3 {
+.compacted-subbox-stream>.raw_ajax_grow_spot>h3 {
 	margin: 1em 5px;
 }
-.compacted_subbox_stream .box {
+.compacted-subbox-stream .box {
 	border-top: 1px dotted {$GET,standard_border} !important;
 	border-left: 0;
 	border-right: 0;
@@ -2674,28 +2674,28 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	padding: 0.7em 0;
 	background: none;
 }
-.compacted_subbox_stream .box:first-child, .compacted_subbox_stream h3 + .box {
+.compacted-subbox-stream .box:first-child, .compacted-subbox-stream h3 + .box {
 	border-top: 0 !important;
 	margin-top: 0 !important;
 	padding-top: 0 !important;
 }
-.compacted_subbox_stream .box a img {
+.compacted-subbox-stream .box a img {
 	max-width: 150px;
 }
-.compacted_subbox_stream .box+.compacted_subbox_stream .box {
+.compacted-subbox-stream .box+.compacted-subbox-stream .box {
 	border-top: 1px solid {$GET,standard_border};
 }
-.compacted_subbox_stream .box a {
+.compacted-subbox-stream .box a {
 	font-size: 1.1em;
 }
-.compacted_subbox_stream .box .associated-details {
+.compacted-subbox-stream .box .associated-details {
 	margin-bottom: 0;
 }
-.compacted_subbox_stream.less_compact .box {
+.compacted-subbox-stream.less_compact .box {
 	padding-top: 1.5em !important;
 	margin: 2em 0;
 }
-.compacted_subbox_stream.less_compact .box-inner>h3 {
+.compacted-subbox-stream.less_compact .box-inner>h3 {
 	font-size: 1.3em;
 	margin-bottom: 1em;
 }
@@ -3222,37 +3222,37 @@ div .post-buttons>*, div .buttons-group-faded>* {
 =========================
 */
 
-ul.compact_list, .global-side-panel ul, ol.compact_list {
+ul.compact-list, .global-side-panel ul, ol.compact-list {
 	margin: 0;
 	padding: 0;
 	text-align: left; /* In case cascading from somewhere */
 }
-ul.compact_list>li, .global-side-panel ul>li, ol.compact_list>li {
+ul.compact-list>li, .global-side-panel ul>li, ol.compact-list>li {
 	margin: 0 0 0 17px;
 	padding: 0;
 }
-.compact_list>li>p {
+.compact-list>li>p {
 	margin-top: 0;
 }
 
-dl.compact_list {
+dl.compact-list {
 	margin: 0.4em 0;
 	overflow: hidden;
 }
-dl.compact_list>dt {
+dl.compact-list>dt {
 	display: list-item;
 	list-style-type: circle;
 	float: left;
 	margin: 0 0.5em 0 8px;
 	clear: both;
 }
-.global-side-panel .box dl.compact_list>dt {
+.global-side-panel .box dl.compact-list>dt {
 	margin-left: 0;
 }
-dl.compact_list>dt:after {
+dl.compact-list>dt:after {
 	content: ":";
 }
-dl.compact_list>dd {
+dl.compact-list>dd {
 	margin: 0;
 }
 
@@ -3317,39 +3317,39 @@ li.actions_list_strong {
 A note about display of metadata...
 
 It may be displayed using:
- - meta_details_list (usually used on full screen views of content)
+ - meta-details-list (usually used on full screen views of content)
  - horizontal-meta-details (usually used on blocks where the meta details are important to encourage a click through)
  - a table (usually used where the content defines its own metadata beyond what all Composr content has, such as a length or resolution)
  - a tooltip (good for tucking it away, although it's not touch friendly so should only be used if non-important)
 But it should always have role="note" on it (ARIA)
 */
 
-ul.meta_details_list {
+ul.meta-details-list {
 	display: block;
 	list-style-type: none;
 	padding: 0;
 	margin: 0;
 }
 
-ul.meta_details_list>li {
+ul.meta-details-list>li {
 	padding: 0;
 	margin: 0.2em 0;
 }
 
-dl.meta_details_list>dt {
+dl.meta-details-list>dt {
 	float: left;
 	clear: left;
 	padding-right: 0.4em !important;
 }
-dl.meta_details_list>dt, dl.meta_details_list>dd {
+dl.meta-details-list>dt, dl.meta-details-list>dd {
 	margin: 0;
 	padding: 0.2em 0;
 }
 
-.meta_details>ul.meta_details_list>li {
+.meta-details>ul.meta-details-list>li {
 	margin: 0.5em 0;
 }
-.meta_details>dl.meta_details_list {
+.meta-details>dl.meta-details-list {
 	margin-bottom: 0;
 	overflow: hidden;
 }
@@ -3360,7 +3360,7 @@ dl.meta_details_list>dt, dl.meta_details_list>dd {
 =========================
 */
 
-.quick_self_edit_link {
+.quick-self-edit-link {
 	font-size: 0.8em;
 	text-align: center;
 	border: 1px solid {$GET,pale_border};
@@ -3371,17 +3371,17 @@ dl.meta_details_list>dt, dl.meta_details_list>dd {
 	margin-top: 3em;
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
-.quick_self_edit_link img, .quick_self_edit_link span {
+.quick-self-edit-link img, .quick-self-edit-link span {
 	vertical-align: middle;
 }
-.quick_self_edit_link:hover {
+.quick-self-edit-link:hover {
 	opacity: 1.0;
 }
-#panel_top .quick_self_edit_link {
+#panel_top .quick-self-edit-link {
 	display: none;
 }
 
-.staff_actions {
+.staff-actions {
 	margin-top: 2em;
 	font-size: 0.95em;
 	opacity: 0.4;
@@ -3393,26 +3393,26 @@ dl.meta_details_list>dt, dl.meta_details_list>dd {
 	min-height: 26px;
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.staff_actions {
+	.staff-actions {
 		background-image: url('{$IMG_INLINE;,icons/48x48/tabs/settings}');
 		background-size: 24px 24px;
 	}
 }
-.staff_actions:hover, body.touch-enabled .staff_actions {
+.staff-actions:hover, body.touch-enabled .staff-actions {
 	opacity: 1.0;
 }
-.staff_actions .box-inner {
+.staff-actions .box-inner {
 	padding-right: 25px;
 }
-.staff_actions .field-name.standard-field-name {
+.staff-actions .field-name.standard-field-name {
 	display: none;
 }
-.staff_actions ul.horizontal-links {
+.staff-actions ul.horizontal-links {
 	width: auto;
 	font-size: 1em;
 	display: block !important;
 }
-.global_middle .staff_actions li {
+.global_middle .staff-actions li {
 	white-space: nowrap !important;
 }
 
@@ -3889,7 +3889,7 @@ div.proceed_button_left_2 {
 	margin: 0;
 }
 
-.mass_select_marker {
+.mass-select-marker {
 	padding: 0.2em;
 	float: right;
 	border: 1px solid {$GET,standard_border};
@@ -4810,7 +4810,7 @@ body div.comcode_table_of_contents>div.box-inner>ol>li {
 .comcode_member_link img {
 	cursor: inherit;
 }
-.comcode_member_link .embedded_mini_avatar {
+.comcode_member_link .embedded-mini-avatar {
 	vertical-align: middle;
 }
 .comcode_member_link a {
@@ -5280,7 +5280,7 @@ span:not(:empty)+#lightbox_position_in_set:before, span:not(:empty)+#lightbox_fu
 		background: none;
 	}
 
-	#main_website_inner {
+	#main-website-inner {
 		width: auto !important;
 		margin: 0 !important;
 		background: none !important;
@@ -5308,13 +5308,13 @@ span:not(:empty)+#lightbox_position_in_set:before, span:not(:empty)+#lightbox_fu
 	.associated-links-block-group,
 	.screen_actions_outer,
 	.adminzone_search,
-	.global_banner,
+	.global-banner,
 	header,
 	footer,
 	.global-side-panel,
 	.toggleable-tray-button,
 	.post-buttons,
-	.quick_self_edit_link, .staff_actions,
+	.quick-self-edit-link, .staff-actions,
 	.comments_form,
 	.ratings, .trackbacks {
 		display: none !important;

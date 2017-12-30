@@ -16,10 +16,10 @@
 			<table class="columned_table wide-table cns-forum-grouping" itemprop="significantLinks">
 				{+START,IF,{$DESKTOP}}
 					<colgroup>
-						<col class="cns-forum-grouping-column1 column_desktop" />
+						<col class="cns-forum-grouping-column1 column-desktop" />
 						<col class="cns-forum-grouping-column2" />
-						<col class="cns-forum-grouping-column3 column_desktop" />
-						<col class="cns-forum-grouping-column4 column_desktop" />
+						<col class="cns-forum-grouping-column3 column-desktop" />
+						<col class="cns-forum-grouping-column4 column-desktop" />
 						<col class="cns-forum-grouping-column5" />
 					</colgroup>
 				{+END}
@@ -27,16 +27,16 @@
 				<thead>
 					<tr>
 						{+START,IF,{$DESKTOP}}
-							<th class="ocf_forum_box_left cell_desktop"></th>
+							<th class="ocf_forum_box_left cell-desktop"></th>
 						{+END}
 						<th {+START,IF,{$MOBILE}} class="cns-forum-box-left"{+END}>
 							{!FORUM_NAME}
 						</th>
 						{+START,IF,{$DESKTOP}}
-							<th class="cns-forum-grouping-centered-header cell_desktop">
+							<th class="cns-forum-grouping-centered-header cell-desktop">
 								{!COUNT_TOPICS}
 							</th>
-							<th class="cns-forum-grouping-centered-header cell_desktop">
+							<th class="cns-forum-grouping-centered-header cell-desktop">
 								{!COUNT_POSTS}
 							</th>
 						{+END}
@@ -56,8 +56,8 @@
 				{+END}
 				<div class="cns-column1{+START,IF,{$MOBILE}} cns-forum-box-bleft{+END}"></div>
 				{+START,IF,{$DESKTOP}}
-					<div class="cns-column1 block_desktop"></div>
-					<div class="cns-column1 block_desktop"></div>
+					<div class="cns-column1 block-desktop"></div>
+					<div class="cns-column1 block-desktop"></div>
 				{+END}
 				<div class="cns-column1 cns-forum-box-bright"></div>
 			</div></div></div>

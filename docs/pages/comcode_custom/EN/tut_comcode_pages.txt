@@ -23,7 +23,7 @@ Comcode pages may be selected for editing either:
 
 The default Comcode pages are...
 [html]
-<table class="columned_table results-table autosized_table">
+<table class="columned_table results-table autosized-table">
 	<thead>
 		<tr>
 			<th>Zone</th>

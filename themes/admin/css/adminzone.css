@@ -5,7 +5,7 @@
 
 /* Style overrides (NB: it is reasonable to assume global.css ran before this, so precedence here is automatic) */
 
-html>body#main_website {
+html>body#main-website {
 	background: #f0f3f7 !important;
 }
 
@@ -42,13 +42,13 @@ header {
 	}
 /*{+END}*/
 
-#main_website #main_website_inner {
+#main-website #main-website-inner {
 	border: 0;
 	box-shadow: none;
 	margin-top: 0;
 }
 
-body#main_website #main_website_inner, html>body div.global_middle_faux {
+body#main-website #main-website-inner, html>body div.global_middle_faux {
 	background-color: transparent;
 }
 
@@ -95,7 +95,7 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 	padding-right: 2em;
 }
 
-.page-running-login #main_website_inner {
+.page-running-login #main-website-inner {
 	background-image: none !important;
 }
 

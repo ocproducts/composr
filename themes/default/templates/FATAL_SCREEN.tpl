@@ -30,7 +30,7 @@
 
 	{+START,IF,{$NOR,{$_GET,keep_fatalistic},{$EQ,{$PAGE},admin_config}}}
 		{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,admin_config}}
-			<hr class="spaced_rule" />
+			<hr class="spaced-rule" />
 
 			<ul class="actions-list">
 				<li><a href="{$PAGE_LINK*,adminzone:admin_config:category:SITE#group_ERROR_HANDLING}">{!CHANGE_ERROR_HANDLING_SETTINGS}</a></li>

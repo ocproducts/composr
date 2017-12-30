@@ -86,7 +86,7 @@
                 cmdLine.style.opacity = 0.0;
                 $dom.fadeTo(cmdLine, null, 0.9);
 
-                bi = document.getElementById('main_website_inner');
+                bi = document.getElementById('main-website-inner');
                 if (bi) {
                     bi.style.opacity = 1.0;
                     $dom.fadeTo(bi, null, 0.3);
@@ -101,7 +101,7 @@
                 }
 
                 $dom.hide(commandrBox);
-                bi = document.getElementById('main_website_inner');
+                bi = document.getElementById('main-website-inner');
                 if (bi) {
                     $dom.fadeIn(bi);
                 }

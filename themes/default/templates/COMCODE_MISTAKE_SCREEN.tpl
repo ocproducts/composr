@@ -5,7 +5,7 @@
 <div class="box box___comcode_mistake_screen"><div class="box-inner">
 	<h2>{!COMCODE_ERROR_TITLE}</h2>
 
-	<p class="red_alert" role="error">
+	<p class="red-alert" role="error">
 		{!COMCODE_ERROR,<a href="#errorat" target="_self">{MESSAGE}</a>,{LINE*}}
 	</p>
 
@@ -23,7 +23,7 @@
 
 			<h2>{!ORIGINAL_COMCODE}</h2>
 
-			<div class="wide-table-wrap"><table class="map_table wide-table results-table autosized_table">
+			<div class="wide-table-wrap"><table class="map_table wide-table results-table autosized-table">
 				<tbody>
 					{LINES}
 				</tbody>

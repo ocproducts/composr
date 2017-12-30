@@ -13,7 +13,7 @@ You can leave us private feedback here. We don't normally reply directly to feed
 [/semihtml]{+START,IF,{$ADDON_INSTALLED,ecommerce}}{| wide floats
 | [title="2"]Mailing address[/title]
 
-[semihtml]<div class="whitespace_visible">{$BUSINESS_ADDRESS}</div>[/semihtml]
+[semihtml]<div class="whitespace-visible">{$BUSINESS_ADDRESS}</div>[/semihtml]
 | [title="2"]Phone[/title]
 
 {$CONFIG_OPTION,pd_number}

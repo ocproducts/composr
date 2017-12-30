@@ -18,7 +18,7 @@
 	<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" autocomplete="off" data-submit-pd="1" class="js-form-submit-modsecurity-workaround">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
-		<div class="wide-table-wrap really_long_table_wrap"><table class="autosized_table columned_table results-table wide-table responsive-table">
+		<div class="wide-table-wrap really_long_table_wrap"><table class="autosized-table columned_table results-table wide-table responsive-table">
 			<thead>
 				<tr>
 					<th class="translate_line_first">

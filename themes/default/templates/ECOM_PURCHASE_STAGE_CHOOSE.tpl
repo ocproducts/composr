@@ -21,7 +21,7 @@
 
 						<div class="float-surrounder">
 							{+START,IF_NON_EMPTY,{IMAGE_URL}}
-								<img src="{$THUMBNAIL,{IMAGE_URL*},48x48}" alt="" class="right float_separation" />
+								<img src="{$THUMBNAIL,{IMAGE_URL*},48x48}" alt="" class="right float-separation" />
 							{+END}
 
 							{+START,IF_NON_EMPTY,{DESCRIPTION}}

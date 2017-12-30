@@ -41,7 +41,7 @@
 						{_loop_key*}
 					</th>
 					<td>
-						<div class="whitespace_visible">{+START,IF_PASSED,_loop_var}{_loop_var*}{+END}{+START,IF_NON_PASSED,_loop_var}?{+END}</div>
+						<div class="whitespace-visible">{+START,IF_PASSED,_loop_var}{_loop_var*}{+END}{+START,IF_NON_PASSED,_loop_var}?{+END}</div>
 					</td>
 				</tr>
 			{+END}

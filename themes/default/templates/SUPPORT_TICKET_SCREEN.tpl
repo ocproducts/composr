@@ -154,7 +154,7 @@
 			{COMMENT_FORM}
 		</form>
 
-		<hr class="spaced_rule" />
+		<hr class="spaced-rule" />
 	{+END}
 
 	<div class="buttons-group buttons-group-faded">
@@ -213,7 +213,7 @@
 		<p class="nothing_here">{!NONE}</p>
 	{+END}
 	{+START,IF_NON_EMPTY,{OTHER_TICKETS}}
-		<div class="wide-table-wrap"><table class="columned_table results-table wide-table support_tickets autosized_table responsive-table">
+		<div class="wide-table-wrap"><table class="columned_table results-table wide-table support_tickets autosized-table responsive-table">
 			<thead>
 				<tr>
 					<th>
@@ -223,7 +223,7 @@
 						{!TICKET_TYPE}
 					</th>
 					{+START,IF,{$DESKTOP}}
-						<th class="cell_desktop">
+						<th class="cell-desktop">
 							{!COUNT_POSTS}
 						</th>
 					{+END}

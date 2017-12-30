@@ -37,7 +37,7 @@
 						<input type="button" class="button-micro buttons--send js-click-post-chat-message" value="{SUBMIT_VALUE*}" />
 					</form>
 					{+START,IF,{$DESKTOP}}
-						<span class="inline_desktop">
+						<span class="inline-desktop">
 							{MICRO_BUTTONS}
 							{+START,IF,{$CNS}}
 								<a rel="nofollow" class="horiz-field-sep js-click-open-emoticon-chooser-window" tabindex="6" href="#!" title="{!EMOTICONS_POPUP}"><img alt="" src="{$IMG*,icons/16x16/editor/insert_emoticons}" srcset="{$IMG*,icons/32x32/editor/insert_emoticons} 2x" /></a>

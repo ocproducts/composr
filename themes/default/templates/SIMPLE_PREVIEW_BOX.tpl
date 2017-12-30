@@ -12,7 +12,7 @@
 	{+END}{+END}
 
 	{+START,IF_PASSED,REP_IMAGE}
-		<div class="right float_separation"><a href="{URL*}">{REP_IMAGE}</a></div>
+		<div class="right float-separation"><a href="{URL*}">{REP_IMAGE}</a></div>
 	{+END}
 
 	{+START,IF_NON_EMPTY,{SUMMARY}}

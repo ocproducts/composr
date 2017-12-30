@@ -12,7 +12,7 @@
 		<title>Backup restorer</title>
 	</head>
 
-	<body id="installer_body" class="website_body">
+	<body id="installer_body" class="website-body">
 		<div class="installer_main">
 			<img alt="Composr" src="{$BASE_URL*}/themes/default/images/EN/logo/standalone_logo.png" />
 		</div>

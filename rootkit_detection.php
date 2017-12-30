@@ -286,7 +286,7 @@ END;
 
         <meta name="robots" content="noindex, nofollow" />
     </head>
-    <body class="website_body" style="margin: 1em"><div class="global_middle">
+    <body class="website-body" style="margin: 1em"><div class="global_middle">
         <h1 class="screen-title">Composr rootkit detector</h1>
         <form title="Proceed" action="rootkit_detection.php?type=go" method="post">
 END;

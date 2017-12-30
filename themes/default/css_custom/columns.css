@@ -1,16 +1,16 @@
-.website_body .column_wrapper, .website_body .column_wrapper_2 {
+.website-body .column_wrapper, .website-body .column_wrapper_2 {
 	visibility: hidden;
 	width: 950px;
 	overflow: hidden;
 	/*overflow-x: scroll; If you want this the visibility: hidden must be removed*/
 }
 
-.website_body .column_wrapper .column {
+.website-body .column_wrapper .column {
 	width: 283px;
 	visibility: visible;
 }
 
-.website_body .column_wrapper_2 .column {
+.website-body .column_wrapper_2 .column {
 	width: 420px;
 	visibility: visible;
 }

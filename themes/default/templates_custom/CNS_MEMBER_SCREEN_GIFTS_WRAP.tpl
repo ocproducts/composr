@@ -11,7 +11,7 @@
 			<div class="box box___cns_member_screen_gifts_wrap"><div class="box-inner">
 				<div class="float-surrounder">
 					{+START,IF_NON_EMPTY,{IMAGE_URL}}
-						<img src="{$THUMBNAIL*,{IMAGE_URL},50}" class="left float_separation" />
+						<img src="{$THUMBNAIL*,{IMAGE_URL},50}" class="left float-separation" />
 					{+END}
 
 					{GIFT_EXPLANATION}

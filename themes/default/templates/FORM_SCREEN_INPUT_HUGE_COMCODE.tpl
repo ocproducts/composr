@@ -13,7 +13,7 @@
 		{COMCODE}
 
 		<p class="field-name lonely-label">
-			<label for="{NAME*}">{PRETTY_NAME*}<span class="inline_desktop">:</span></label>
+			<label for="{NAME*}">{PRETTY_NAME*}<span class="inline-desktop">:</span></label>
 		</p>
 
 		<span id="required_readable_marker__{$?,{$IS_EMPTY,{NAME*}},{$RAND},{NAME*}}" style="display: {$?,{REQUIRED*},inline,none}"><span class="required-star">*</span> <span class="accessibility_hidden">{!REQUIRED}</span></span>

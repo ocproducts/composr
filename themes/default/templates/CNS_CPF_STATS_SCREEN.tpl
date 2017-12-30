@@ -1,6 +1,6 @@
 {TITLE}
 
-<div class="wide-table-wrap"><table class="columned_table autosized_table wide-table results-table spaced_table">
+<div class="wide-table-wrap"><table class="columned_table autosized-table wide-table results-table spaced-table">
 	<thead>
 		<tr>
 			<th>{!CHOICE}</th>

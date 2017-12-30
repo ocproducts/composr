@@ -3,7 +3,7 @@
 <p>{!SUBSCRIPTIONS_SCREEN}</p>
 
 {+START,IF_NON_EMPTY,{SUBSCRIPTIONS}}
-	<div class="wide-table-wrap"><table class="columned_table wide-table results-table autosized_table responsive-table" itemprop="significantLinks">
+	<div class="wide-table-wrap"><table class="columned_table wide-table results-table autosized-table responsive-table" itemprop="significantLinks">
 		<thead>
 			<tr>
 				<th>
@@ -23,11 +23,11 @@
 				</th>
 
 				{+START,IF,{$DESKTOP}}
-					<th class="cell_desktop">
+					<th class="cell-desktop">
 						{!PAYMENT_GATEWAY}
 					</th>
 
-					<th class="cell_desktop">
+					<th class="cell-desktop">
 						{!RENEWAL_STATUS}
 					</th>
 				{+END}
@@ -49,10 +49,10 @@
 							{ITEM_NAME*}
 						{+END}
 
-						<p class="assocated_details block_mobile">
+						<p class="assocated_details block-mobile">
 							<span class="field-name">{!PAYMENT_GATEWAY}:</span> {PAYMENT_GATEWAY*}
 						</p>
-						<p class="assocated_details block_mobile">
+						<p class="assocated_details block-mobile">
 							<span class="field-name">{!STATUS}:</span> {STATE*}
 						</p>
 					</th>
@@ -73,11 +73,11 @@
 					</td>
 
 					{+START,IF,{$DESKTOP}}
-						<td class="cell_desktop">
+						<td class="cell-desktop">
 							{PAYMENT_GATEWAY*}
 						</td>
 
-						<td class="cell_desktop">
+						<td class="cell-desktop">
 							{STATE*}
 						</td>
 					{+END}

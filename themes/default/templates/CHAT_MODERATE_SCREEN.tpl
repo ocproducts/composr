@@ -16,7 +16,7 @@
 	{+END}
 
 	{+START,IF_NON_EMPTY,{LINKS}}
-		<hr class="spaced_rule" />
+		<hr class="spaced-rule" />
 
 		<p class="lonely-label">{!ACTIONS}:</p>
 		<nav>

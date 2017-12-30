@@ -9,7 +9,7 @@
 	<div class="box box___addon_install_confirm_screen"><div class="box-inner">
 		<h2>{!ADDON_FILES}</h2>
 
-		<div class="not_too_tall">
+		<div class="not-too-tall">
 			<ul class="tick_list">
 				{FILES}
 			</ul>
@@ -24,7 +24,7 @@
 
 	<h2>{!DETAILS}</h2>
 
-	<div class="wide-table-wrap"><table class="map_table results-table wide-table autosized_table responsive-table">
+	<div class="wide-table-wrap"><table class="map_table results-table wide-table autosized-table responsive-table">
 		<tbody>
 			<tr>
 				<th>{!NAME}</th>
@@ -41,7 +41,7 @@
 			{+START,IF_NON_EMPTY,{COPYRIGHT_ATTRIBUTION}}
 				<tr>
 					<th>{!COPYRIGHT_ATTRIBUTION}</th>
-					<td><div class="whitespace_visible">{COPYRIGHT_ATTRIBUTION*}</div></td>
+					<td><div class="whitespace-visible">{COPYRIGHT_ATTRIBUTION*}</div></td>
 				</tr>
 			{+END}
 			<tr>

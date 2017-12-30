@@ -37,7 +37,7 @@
 </form>
 
 {+START,IF_NON_EMPTY,{MESSAGE}}
-	<hr class="spaced_rule" />
+	<hr class="spaced-rule" />
 
 	<section class="box"><div class="box-inner">
 		<p>{MESSAGE*}</p>

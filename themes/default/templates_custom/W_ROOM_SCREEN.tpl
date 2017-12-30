@@ -12,7 +12,7 @@
 <form method="post" enctype="multipart/form-data" action="{$PAGE_LINK*,_SELF:_SELF:uploading=1}" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
-	<div class="wide-table-wrap"><table class="map_table autosized_table results-table wide-table responsive_blocked_table"><tbody>
+	<div class="wide-table-wrap"><table class="map_table autosized-table results-table wide-table responsive-blocked-table"><tbody>
 		<tr>
 			<th>{!NAME}</th>
 			<td><label class="accessibility_hidden" for="name">{!NAME}</label><input type="text" size="20" name="name" id="name" value="{NAME*}" /></td>

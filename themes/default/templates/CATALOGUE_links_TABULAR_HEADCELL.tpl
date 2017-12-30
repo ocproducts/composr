@@ -1,7 +1,7 @@
 <th>
 	{$PREG_REPLACE,^.*: ,,{FIELD*}}
 
-	<span class="table_header_sorting">
+	<span class="table-header-sorting">
 		{+START,IF,{$NEQ,{$PAGE},search}}
 			{+START,IF_NON_EMPTY,{SORT_URL_ASC}}<a href="{SORT_URL_ASC*}"><img src="{$IMG*,results/{$?,{SORT_ASC_SELECTED},sortablefield_asc,sortablefield_asc_nonselected}}" title="{!SORT_BY} {FIELD*}, {!ASCENDING}" alt="{!SORT_BY} {FIELD*}, {!ASCENDING}" /></a>{+END}
 		{+END}

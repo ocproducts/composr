@@ -4,7 +4,7 @@
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			{+START,IF,{$DESKTOP}}
-				<div class="inline_desktop">
+				<div class="inline-desktop">
 					<div class="accessibility_hidden"><label for="s_login_username">{$LOGIN_LABEL}</label></div>
 					<input maxlength="80" size="10" accesskey="l" type="text" placeholder="{!USERNAME}" id="s_login_username" name="login_username" />
 					<div class="accessibility_hidden"><label for="s_password">{!PASSWORD}</label></div>
@@ -21,7 +21,7 @@
 
 			<ul class="horizontal-links">
 				{+START,IF_NON_EMPTY,{JOIN_URL}}<li><img alt="" src="{$IMG*,icons/24x24/menu/site_meta/user_actions/join}" srcset="{$IMG*,icons/48x48/menu/site_meta/user_actions/join} 2x" /> <a href="{JOIN_URL*}">{!_JOIN}</a></li>{+END}
-				<li><img alt="" src="{$IMG*,icons/24x24/menu/site_meta/user_actions/login}" srcset="{$IMG*,icons/48x48/menu/site_meta/user_actions/login} 2x" /> <a data-open-as-overlay="{}" rel="nofollow" href="{FULL_LOGIN_URL*}" title="{!MORE}: {!_LOGIN}">{+START,IF,{$DESKTOP}}<span class="inline_desktop">{!OPTIONS}</span>{+END}<span class="inline_mobile">{!_LOGIN}</span></a></li>
+				<li><img alt="" src="{$IMG*,icons/24x24/menu/site_meta/user_actions/login}" srcset="{$IMG*,icons/48x48/menu/site_meta/user_actions/login} 2x" /> <a data-open-as-overlay="{}" rel="nofollow" href="{FULL_LOGIN_URL*}" title="{!MORE}: {!_LOGIN}">{+START,IF,{$DESKTOP}}<span class="inline-desktop">{!OPTIONS}</span>{+END}<span class="inline-mobile">{!_LOGIN}</span></a></li>
 			</ul>
 		</form>
 	</div>

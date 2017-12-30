@@ -13,7 +13,7 @@
 			{+END}
 			{+START,IF_NON_EMPTY,{COPYRIGHT_ATTRIBUTION}}
 				<span class="field-name">{!COPYRIGHT_ATTRIBUTION}:</span>
-				<div class="whitespace_visible">{COPYRIGHT_ATTRIBUTION*}</div>
+				<div class="whitespace-visible">{COPYRIGHT_ATTRIBUTION*}</div>
 			{+END}
 			{+START,IF_NON_EMPTY,{LICENCE}}
 				<p>
@@ -40,7 +40,7 @@
 			</ul>
 		{+END}
 		{+START,IF,{$DESKTOP}}
-			<div class="block_desktop">
+			<div class="block-desktop">
 				<p {+START,IF,{$DESKTOP}} class="js-mouseover-activate-tooltip" data-vw-tooltip="{$GET*,FILE_LIST}"{+END}>
 					{+START,IF_PASSED,FILENAME}
 						{FILENAME*}
@@ -52,7 +52,7 @@
 			</div>
 		{+END}
 		{+START,IF_PASSED,FILENAME}
-			<div class="block_mobile">
+			<div class="block-mobile">
 				{FILENAME*}
 			</div>
 		{+END}
@@ -66,10 +66,10 @@
 	<td class="status-{COLOUR*}">
 		{STATUS*}
 	</td>
-	<td class="column_mobile">
+	<td class="column-mobile">
 		{$GET,description}
 	</td>
-	<td class="column_mobile">
+	<td class="column-mobile">
 		{+START,IF,{$EQ,{TYPE},install}}
 			{$GET,FILE_LIST}
 		{+END}

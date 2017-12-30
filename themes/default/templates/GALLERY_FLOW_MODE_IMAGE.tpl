@@ -1,5 +1,5 @@
 <div itemscope="itemscope" itemtype="http://schema.org/ImageObject">
-	<div class="media_box">
+	<div class="media-box">
 		<img src="{THUMB_URL*}" alt="{!IMAGE}" itemprop="contentURL" />
 	</div>
 
@@ -10,7 +10,7 @@
 	{+END}
 
 	<div class="float-surrounder lined_up_boxes">
-		<div class="gallery_entry_details right">
+		<div class="gallery-entry-details right">
 			<section class="box box___gallery_flow_mode_image"><div class="box-inner">
 				<h3>{!DETAILS}</h3>
 
@@ -18,14 +18,14 @@
 					{+START,IF,{$DESKTOP}}
 						<colgroup>
 							<col class="gallery-entry-field-name-column" />
-							<col class="gallery_entry_field_value_column" />
+							<col class="gallery-entry-field-value-column" />
 						</colgroup>
 					{+END}
 
 					<tbody>
 						{+START,IF_NON_EMPTY,{_TITLE}}
 							<tr>
-								<th class="de-th metadata_title">{!TITLE}</th>
+								<th class="de-th metadata-title">{!TITLE}</th>
 								<td>
 									{+START,FRACTIONAL_EDITABLE,{_TITLE},title,_SEARCH:cms_galleries:__edit:{ID},1,1,{$HAS_EDIT_PERMISSION,mid,{SUBMITTER},{$MEMBER},cms_galleries,galleries,{CAT}}}{_TITLE*}{+END}
 								</td>
@@ -33,14 +33,14 @@
 						{+END}
 
 						<tr>
-							<th class="de-th metadata_title">{!ADDED}</th>
+							<th class="de-th metadata-title">{!ADDED}</th>
 							<td>
 								<time datetime="{$FROM_TIMESTAMP*,Y-m-d\TH:i:s\Z,{ADD_DATE_RAW}}" itemprop="datePublished">{$DATE_TIME*,{ADD_DATE_RAW}}</time>
 							</td>
 						</tr>
 
 						<tr>
-							<th class="de-th metadata_title">{!BY}</th>
+							<th class="de-th metadata-title">{!BY}</th>
 							<td>
 								<a rel="author" href="{$MEMBER_PROFILE_URL*,{SUBMITTER}}" itemprop="author">{$USERNAME*,{SUBMITTER},1}</a>
 
@@ -50,14 +50,14 @@
 
 						{+START,IF_NON_EMPTY,{EDIT_DATE_RAW}}
 							<tr>
-								<th class="de-th metadata_title">{!EDITED}</th>
+								<th class="de-th metadata-title">{!EDITED}</th>
 								<td>{$DATE_TIME*,{EDIT_DATE_RAW}}</td>
 							</tr>
 						{+END}
 
 						{+START,IF,{$INLINE_STATS}}
 							<tr>
-								<th class="de-th metadata_title">{!COUNT_VIEWS}</th>
+								<th class="de-th metadata-title">{!COUNT_VIEWS}</th>
 								<td>{VIEWS*}</td>
 							</tr>
 						{+END}

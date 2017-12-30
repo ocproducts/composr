@@ -124,7 +124,7 @@
 
             document.getElementById('gallery_nav').addEventListener('click', function (event) {
                 if (event.altKey || event.metaKey) {
-                    var b = document.getElementById('gallery_entry_screen');
+                    var b = document.getElementById('gallery-entry-screen');
                     if (b.webkitRequestFullScreen !== undefined) {
                         b.webkitRequestFullScreen(window.Element.ALLOW_KEYBOARD_INPUT);
                     }
@@ -255,7 +255,7 @@
         }
 
         if (window.slideshowCurrentPosition !== (window.slideshowTotalSlides - 1)) {
-            document.getElementById('gallery_entry_screen').style.cursor = 'progress';
+            document.getElementById('gallery-entry-screen').style.cursor = 'progress';
         }
     }
 
@@ -298,7 +298,7 @@
             clearInterval(window.slideshowTimer);
         }
         window.slideshowTimer = null;
-        document.getElementById('gallery_entry_screen').style.cursor = '';
+        document.getElementById('gallery-entry-screen').style.cursor = '';
     };
 
     function slideshowBackward() {
@@ -331,7 +331,7 @@
         }
 
         if (window.slideshowCurrentPosition === slide) { // Ah, it's where we are, so save that in
-            window.slideshowSlides[slide] = $dom.html(document.getElementById('gallery_entry_screen'));
+            window.slideshowSlides[slide] = $dom.html(document.getElementById('gallery-entry-screen'));
             return;
         }
 
@@ -360,7 +360,7 @@
     }
 
     function _slideshowReadInSlide(xhr, slide) {
-        window.slideshowSlides[slide] = xhr.responseText.replace(/(.|\n)*<div class="gallery_entry_screen"[^<>]*>/i, '').replace(/<!--DO_NOT_REMOVE_THIS_COMMENT-->\s*<\/div>(.|\n)*/i, ''); // FUDGE
+        window.slideshowSlides[slide] = xhr.responseText.replace(/(.|\n)*<div class="gallery-entry-screen"[^<>]*>/i, '').replace(/<!--DO_NOT_REMOVE_THIS_COMMENT-->\s*<\/div>(.|\n)*/i, ''); // FUDGE
     }
 
     function slideshowShowSlide(slide) {
@@ -380,7 +380,7 @@
                 } // else probably a video
 
                 var cleanedSlideHtml = window.slideshowSlides[slide].replace(/<!DOCTYPE [^>]*>/i, ''); // FUDGE
-                $dom.html(document.getElementById('gallery_entry_screen'), cleanedSlideHtml);
+                $dom.html(document.getElementById('gallery-entry-screen'), cleanedSlideHtml);
 
                 fadeElements = document.body.querySelectorAll('.scale_down');
                 if ((fadeElements[0] !== undefined) && (fadeElementsOld[0] !== undefined)) {
@@ -412,7 +412,7 @@
             if (window.slideshowCurrentPosition != window.slideshowTotalSlides - 1) {
                 slideshowEnsureLoaded(slide + 1);
             } else {
-                document.getElementById('gallery_entry_screen').style.cursor = '';
+                document.getElementById('gallery-entry-screen').style.cursor = '';
             }
         });
     }

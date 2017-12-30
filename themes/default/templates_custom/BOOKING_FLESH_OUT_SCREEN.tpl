@@ -65,7 +65,7 @@
 		</div>
 
 		{+START,IF_NON_EMPTY,{$TRIM,{$GET,fleshed}}}
-			<hr class="spaced_rule" />
+			<hr class="spaced-rule" />
 		{+END}
 
 		<div class="box box___booking_flesh_out_screen"><div class="box-inner">

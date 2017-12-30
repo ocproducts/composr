@@ -10,7 +10,7 @@
 		{COMCODE}
 	</div>
 
-	<div class="mini_indent fields-set-contents vertical_alignment">
+	<div class="mini-indent fields-set-contents vertical_alignment">
 		{INPUT}
 
 		{+START,IF_NON_EMPTY,{DESCRIPTION}}

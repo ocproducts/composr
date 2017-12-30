@@ -29,7 +29,7 @@ The field names must match field names in the content type's main database table
 You are allowed to specify that comparisons may work on multiple fields, by separating field names with pipe ([tt]|[/tt]) symbols. This is particular useful for a search filter, to make the typed string look across multiple fields.
 
 We support the following comparison types...
-[surround="right float_separation"]
+[surround="right float-separation"]
 
 [box="Security note" width="25em"]
 For security reasons, some fields are not available to Filtercode, such as password fields
@@ -40,7 +40,7 @@ GET/POST parameters are the technical name for how parameters are passed to web 
 [/box]
 [/surround]
 [html]
-<table class="columned_table results-table autosized_table">
+<table class="columned_table results-table autosized-table">
 	<thead>
 		<tr>
 			<th>Symbol</th>

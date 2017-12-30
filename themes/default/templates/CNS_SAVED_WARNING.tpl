@@ -10,7 +10,7 @@
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<div class="inline">
-						<input class="button_hyperlink" type="submit" value="{!LOAD} {$STRIP_TAGS,{TITLE|}}" />
+						<input class="button-hyperlink" type="submit" value="{!LOAD} {$STRIP_TAGS,{TITLE|}}" />
 					</div>
 				</form>
 			</li>

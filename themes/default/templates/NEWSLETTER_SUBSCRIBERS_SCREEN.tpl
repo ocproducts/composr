@@ -2,7 +2,7 @@
 
 {+START,LOOP,SUBSCRIBERS}
 	{+START,IF_NON_EMPTY,{SUB}}
-		<div class="wide-table-wrap"><table class="columned_table results-table wide-table autosized_table responsive-table">
+		<div class="wide-table-wrap"><table class="columned_table results-table wide-table autosized-table responsive-table">
 			<thead>
 				<tr>
 					<th>{!EMAIL_ADDRESS}</th>

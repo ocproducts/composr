@@ -1,3 +1,3 @@
-<p class="inline_wip_message" role="alert">
+<p class="inline-wip-message" role="alert">
 	{MESSAGE}
 </p>

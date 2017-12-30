@@ -22,8 +22,8 @@
 
 				<a class="left spaced" href="{URL*}"><img src="{ICON*}" alt="" /></a>
 
-				<div class="meta_details" role="note" style="width: auto">
-					<dl class="meta_details_list">
+				<div class="meta-details" role="note" style="width: auto">
+					<dl class="meta-details-list">
 						{+START,IF_NON_EMPTY,{AUTHOR}}
 							<dt class="field-name">{!BY}:</dt> <dd>{AUTHOR*}</dd>
 						{+END}

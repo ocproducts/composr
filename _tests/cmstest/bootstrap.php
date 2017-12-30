@@ -96,7 +96,7 @@ END;
             a[target="_blank"], a[onclick$="window.open"] { padding-right: 0; }
         </style>
     </head>
-    <body class="website_body"><div class="global_middle">
+    <body class="website-body"><div class="global_middle">
         <h1 class="screen-title">{$title}</h1>
 END;
     if (@ob_end_flush() !== false) {

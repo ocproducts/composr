@@ -283,7 +283,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 [title="3"]General[/title]
 
 [html]
-<table class="columned_table results-table wide-table autosized_table">
+<table class="columned_table results-table wide-table autosized-table">
 	<thead>
 		<tr>
 			<th>Symbol name / example</th>
@@ -343,7 +343,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 [title="3"]Format conversion and obfuscation[/title]
 
 [html]
-<table class="columned_table results-table wide-table autosized_table">
+<table class="columned_table results-table wide-table autosized-table">
 	<thead>
 		<tr>
 			<th>Symbol name / example</th>
@@ -423,7 +423,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 [title="3"]Users, Members, and Usergroups[/title]
 
 [html]
-<table class="columned_table results-table wide-table autosized_table">
+<table class="columned_table results-table wide-table autosized-table">
 	<thead>
 		<tr>
 			<th>Symbol name / example</th>
@@ -518,7 +518,7 @@ Permission checks are useful if you want to show screen contents in a way that s
 These are advanced symbols, and mirror Composr's internal API. The parameters are not discussed here, but you may find them from looking at the code.
 
 [html]
-<table class="columned_table results-table wide-table autosized_table">
+<table class="columned_table results-table wide-table autosized-table">
 	<thead>
 		<tr>
 			<th>Symbol name / example</th>
@@ -574,7 +574,7 @@ These are advanced symbols, and mirror Composr's internal API. The parameters ar
 [title="3"]Internationalisation[/title]
 
 [html]
-<table class="columned_table results-table wide-table autosized_table">
+<table class="columned_table results-table wide-table autosized-table">
 	<thead>
 		<tr>
 			<th>Symbol name / example</th>
@@ -638,7 +638,7 @@ These are advanced symbols, and mirror Composr's internal API. The parameters ar
 [title="4"]Date and time[/title]
 
 [html]
-<table class="columned_table results-table wide-table autosized_table">
+<table class="columned_table results-table wide-table autosized-table">
 	<thead>
 		<tr>
 			<th>Symbol name / example</th>
@@ -686,7 +686,7 @@ These are advanced symbols, and mirror Composr's internal API. The parameters ar
 [title="3"]Environmental/context querying[/title]
 
 [html]
-<table class="columned_table results-table wide-table autosized_table">
+<table class="columned_table results-table wide-table autosized-table">
 	<thead>
 		<tr>
 			<th>Symbol name / example</th>
@@ -906,7 +906,7 @@ These are advanced symbols, and mirror Composr's internal API. The parameters ar
 [title="3"]Placement[/title]
 
 [html]
-<table class="columned_table results-table wide-table autosized_table">
+<table class="columned_table results-table wide-table autosized-table">
 	<thead>
 		<tr>
 			<th>Symbol name / example</th>
@@ -938,7 +938,7 @@ These are advanced symbols, and mirror Composr's internal API. The parameters ar
 [title="3"]URLs, Zones, Pages, Scripts[/title]
 
 [html]
-<table class="columned_table results-table wide-table autosized_table">
+<table class="columned_table results-table wide-table autosized-table">
 	<thead>
 		<tr>
 			<th>Symbol name / example</th>
@@ -1042,7 +1042,7 @@ These are advanced symbols, and mirror Composr's internal API. The parameters ar
 [title="3"]Images[/title]
 
 [html]
-<table class="columned_table results-table wide-table autosized_table">
+<table class="columned_table results-table wide-table autosized-table">
 	<thead>
 		<tr>
 			<th>Symbol name / example</th>
@@ -1119,7 +1119,7 @@ where:
 [title="3"]Composr configuration/status querying[/title]
 
 [html]
-<table class="columned_table results-table wide-table autosized_table">
+<table class="columned_table results-table wide-table autosized-table">
 	<thead>
 		<tr>
 			<th>Symbol name / example</th>
@@ -1275,7 +1275,7 @@ where:
 [title="3"]The Feedback system[/title]
 
 [html]
-<table class="columned_table results-table wide-table autosized_table">
+<table class="columned_table results-table wide-table autosized-table">
 	<thead>
 		<tr>
 			<th>Symbol name / example</th>
@@ -1311,7 +1311,7 @@ where:
 [title="3"]ID conversion[/title]
 
 [html]
-<table class="columned_table results-table wide-table autosized_table">
+<table class="columned_table results-table wide-table autosized-table">
 	<thead>
 		<tr>
 			<th>Symbol name / example</th>
@@ -1359,7 +1359,7 @@ where:
 [title="3"]Specific/advanced Composr interfacing (non-configuration, non-environment)[/title]
 
 [html]
-<table class="columned_table results-table wide-table autosized_table">
+<table class="columned_table results-table wide-table autosized-table">
 	<thead>
 		<tr>
 			<th>Symbol name / example</th>
@@ -1442,7 +1442,7 @@ Note that all logic symbols return Tempcode boolean values (except [tt]?[/tt]). 
 Understanding of these symbols requires an understanding of basic boolean operations but they are fairly intuitive (e.g. 'AND' will return true if all its parameters are true).
 
 [html]
-<table class="columned_table results-table wide-table autosized_table">
+<table class="columned_table results-table wide-table autosized-table">
 	<thead>
 		<tr>
 			<th>Symbol name / example</th>
@@ -1516,7 +1516,7 @@ Understanding of these symbols requires an understanding of basic boolean operat
 [title="3"]Arithmetic[/title]
 
 [html]
-<table class="columned_table results-table wide-table autosized_table">
+<table class="columned_table results-table wide-table autosized-table">
 	<thead>
 		<tr>
 			<th>Symbol name / example</th>
@@ -1580,7 +1580,7 @@ Understanding of these symbols requires an understanding of basic boolean operat
 [title="3"]String manipulation[/title]
 
 [html]
-<table class="columned_table results-table wide-table autosized_table">
+<table class="columned_table results-table wide-table autosized-table">
 	<thead>
 		<tr>
 			<th>Symbol name / example</th>
@@ -1718,7 +1718,7 @@ Understanding of these symbols requires an understanding of basic boolean operat
 You can store and retrieve values in Tempcode variables. These work across templates, and also work in any-order due to the Composr Tempcode pre-processor (i.e. something can be [tt]SET[/tt] after the [tt]GET[/tt] for it).
 
 [html]
-<table class="columned_table results-table wide-table autosized_table">
+<table class="columned_table results-table wide-table autosized-table">
 	<thead>
 		<tr>
 			<th>Symbol name / example</th>
@@ -1766,7 +1766,7 @@ You can store and retrieve values in Tempcode variables. These work across templ
 [title="3"]Catalogues[/title]
 
 [html]
-<table class="columned_table results-table wide-table autosized_table">
+<table class="columned_table results-table wide-table autosized-table">
 	<thead>
 		<tr>
 			<th>Symbol name / example</th>
@@ -1804,7 +1804,7 @@ You can store and retrieve values in Tempcode variables. These work across templ
 Note that you cannot use directives for symbol parameters because directives control code flow rather than inline calculations. The way Tempcode logic is internally structured cannot parse/hold it. You can almost always use the <kbd>?</kbd> symbol to guide inline calculations instead.
 
 [html]
-<table class="columned_table results-table wide-table autosized_table">
+<table class="columned_table results-table wide-table autosized-table">
 	<thead>
 		<tr>
 			<th>Directive name</th>

@@ -26,7 +26,7 @@
 	{+END}
 
 	{+START,IF,{$AND,{$NOT,{BLOG}},{$IS_NON_EMPTY,IMG}}}{+START,IF,{$DESKTOP}}
-		<div class="newscat_img newscat_img_author block_desktop">
+		<div class="newscat_img newscat_img_author block-desktop">
 			{+START,IF_NON_EMPTY,{CATEGORY}}
 				<img src="{$ENSURE_PROTOCOL_SUITABILITY*,{IMG}}" alt="" />
 			{+END}
@@ -34,7 +34,7 @@
 	{+END}{+END}
 
 	{+START,IF,{$NAND,{$NOT,{BLOG}},{$IS_NON_EMPTY,{IMG}}}}{+START,IF,{$DESKTOP}}
-		<div class="newscat_img newscat_img_member block_desktop">
+		<div class="newscat_img newscat_img_member block-desktop">
 			{+START,IF_NON_EMPTY,{$AVATAR,{SUBMITTER}}}
 				<img src="{$ENSURE_PROTOCOL_SUITABILITY*,{$AVATAR,{SUBMITTER}}}" title="{!AVATAR}" alt="{!AVATAR}" />
 			{+END}
@@ -45,8 +45,8 @@
 		</div>
 	{+END}{+END}
 
-	<div class="meta_details" role="note">
-		<ul class="meta_details_list">
+	<div class="meta-details" role="note">
+		<ul class="meta-details-list">
 			<li>{!POSTED_TIME_SIMPLE,{DATE*}}</li>
 			{+START,SET,author_details}
 				{+START,IF,{$IS_NON_EMPTY,{AUTHOR_URL}}}
@@ -84,6 +84,6 @@
 	{+END}
 
 	<ul class="horizontal-links associated-links-block-group">
-		<li><a title="{!READ_MORE}: #{ID*}" href="{FULL_URL*}">{!READ_MORE}</a>{+START,IF,{$NOT,{$MATCH_KEY_MATCH,forum:topicview,forum:forumview}}} {+START,IF_PASSED_AND_TRUE,COMMENT_COUNT} <span class="comment_count">{$COMMENT_COUNT,news,{ID}}</span>{+END}{+END}</li>
+		<li><a title="{!READ_MORE}: #{ID*}" href="{FULL_URL*}">{!READ_MORE}</a>{+START,IF,{$NOT,{$MATCH_KEY_MATCH,forum:topicview,forum:forumview}}} {+START,IF_PASSED_AND_TRUE,COMMENT_COUNT} <span class="comment-count">{$COMMENT_COUNT,news,{ID}}</span>{+END}{+END}</li>
 	</ul>
 </div></div>

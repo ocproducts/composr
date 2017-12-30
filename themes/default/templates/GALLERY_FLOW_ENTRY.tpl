@@ -1,4 +1,4 @@
-<div class="flow_mode_thumb">
+<div class="flow-mode-thumb">
 	{+START,IF,{$HAS_DELETE_PERMISSION,mid,{SUBMITTER},{$MEMBER},cms_galleries}}
 		{+START,INCLUDE,MASS_SELECT_MARKER}
 			TYPE={TYPE}

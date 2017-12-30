@@ -42,7 +42,7 @@ To place the code in a template edit the template and paste in the code. To repl
 {+START,IF,{$DESKTOP}}
 	{$SET,BANNER,{$BANNER}} {$,This is to avoid evaluating the banner twice}
 	{+START,IF_NON_EMPTY,{$GET,BANNER}}
-		<div class="global_banner">{$GET,BANNER}</div>
+		<div class="global-banner">{$GET,BANNER}</div>
 	{+END}
 {+END}
 [/code]

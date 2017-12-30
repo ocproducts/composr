@@ -949,7 +949,7 @@
         for (var i = 0; i < pre.length; i++) {
             pre[i].parentNode.removeChild(pre[i]);
         }
-        var bi = $dom.$id('main_website_inner');
+        var bi = $dom.$id('main-website-inner');
         if (bi) {
             bi.classList.remove('site_unloading');
         }
@@ -1018,7 +1018,7 @@
     $cms.getMainCmsWindow = function getMainCmsWindow(anyLargeOk) {
         anyLargeOk = !!anyLargeOk;
 
-        if ($dom.$('#main_website')) {
+        if ($dom.$('#main-website')) {
             return window;
         }
 

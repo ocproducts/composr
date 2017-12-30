@@ -1,1 +1,1 @@
-<p class="whitespace_visible">{CONTENT*}</p>
+<p class="whitespace-visible">{CONTENT*}</p>

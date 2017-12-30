@@ -4,7 +4,7 @@
 	{!QUERIES_WITHOUT_CACHE}
 </p>
 
-<div class="wide-table-wrap-framed"><table class="columned_table wide-table results-table autosized_table">
+<div class="wide-table-wrap-framed"><table class="columned_table wide-table results-table autosized-table">
 	<thead>
 		<tr>
 			<th>

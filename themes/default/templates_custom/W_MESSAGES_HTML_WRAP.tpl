@@ -8,7 +8,7 @@
 		<meta http-equiv="Refresh" content="30; URL={$FIND_SCRIPT*,wmessages}{$KEEP*,1}" />
 	</head>
 
-	<body class="website_body" style="background: transparent" id="basic_html_wrap" itemscope="itemscope" itemtype="http://schema.org/WebPage">
+	<body class="website-body" style="background: transparent" id="basic-html-wrap" itemscope="itemscope" itemtype="http://schema.org/WebPage">
 		{MESSAGES}
 	</body>
 </html>

@@ -11,22 +11,22 @@
 	</div>
 
 	<div class="float-surrounder force_margin">
-		<div class="left float_separation">
+		<div class="left float-separation">
 			<label for="fails">{!SHOW_FAILS}:</label>
 			<input type="checkbox" name="fails" id="fails" value="1" checked="checked" disabled="disabled" />
 		</div>
 
-		<div class="left float_separation">
+		<div class="left float-separation">
 			<label for="passes">{!SHOW_PASSES}:</label>
 			<input type="checkbox" name="passes" id="passes" value="1"{+START,IF,{PASSES}} checked="checked"{+END} />
 		</div>
 
-		<div class="left float_separation">
+		<div class="left float-separation">
 			<label for="skips">{!SHOW_SKIPS}:</label>
 			<input type="checkbox" name="skips" id="skips" value="1"{+START,IF,{SKIPS}} checked="checked"{+END} />
 		</div>
 
-		<div class="left float_separation">
+		<div class="left float-separation">
 			<label for="manual_checks">{!SHOW_MANUAL_CHECKS}:</label>
 			<input type="checkbox" name="manual_checks" id="manual_checks" value="1"{+START,IF,{MANUAL_CHECKS}} checked="checked"{+END} />
 		</div>

@@ -16,7 +16,7 @@
 	</form>
 
 	{+START,IF,{$NEQ,{$ZONE},adminzone}}
-		<hr class="spaced_rule" />
+		<hr class="spaced-rule" />
 
 		<h2>{!NOTIFICATION_SOUND}</h2>
 

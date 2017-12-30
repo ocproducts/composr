@@ -41,15 +41,15 @@
 	margin-bottom: 0.5em;
 }
 
-.global_button_ref_point ul.compact_list {
+.global_button_ref_point ul.compact-list {
 	font-size: 0.95em;
 }
 
-.global_button_ref_point ul.compact_list li {
+.global_button_ref_point ul.compact-list li {
 	padding: 0.1em 0;
 }
 
-.global_button_ref_point ul.compact_list li .field-name {
+.global_button_ref_point ul.compact-list li .field-name {
 	font-weight: normal;
 }
 

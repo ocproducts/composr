@@ -6,7 +6,7 @@
 		{+START,IF,{$NEQ,{_GUID},carousel}}
 			{$SET,ajax_block_main_gallery_embed_wrapper,ajax_block_main_gallery_embed_wrapper_{$RAND%}}
 			<div id="{$GET*,ajax_block_main_gallery_embed_wrapper}">
-				<div class="gallery_grid_cell_wrap raw_ajax_grow_spot">
+				<div class="gallery-grid-cell-wrap raw_ajax_grow_spot">
 					{ENTRIES}
 				</div>
 

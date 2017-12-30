@@ -92,7 +92,7 @@
 		<input accesskey="u" data-disable-on-click="1" class="button_screen buttons--save" type="submit" value="{!SAVE}" />
 	</p>
 
-	<hr class="spaced_rule" />
+	<hr class="spaced-rule" />
 
 	<div class="box box___redirecte_table_screen"><div class="box-inner">
 		<h2>{!NOTES}</h2>

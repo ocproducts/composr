@@ -49,7 +49,7 @@
 		{+END}
 		{+START,IF,{$NOT,{THREADED}}}
 			{+START,IF_NON_EMPTY,{POSTS}}
-				<div class="wide-table-wrap"><div class="wide-table cns-topic autosized_table">
+				<div class="wide-table-wrap"><div class="wide-table cns-topic autosized-table">
 					{POSTS}
 				</div></div>
 			{+END}
@@ -77,8 +77,8 @@
 		{+END}
 
 		{+START,IF,{$OR,{$IS_NON_EMPTY,{MODERATOR_ACTIONS}},{$IS_NON_EMPTY,{MARKED_POST_ACTIONS}},{THREADED}}}
-			<div class="box cns-topic-control-functions{+START,IF,{$NOR,{$IS_NON_EMPTY,{MARKED_POST_ACTIONS}},{THREADED}}} block_desktop{+END}"><div class="box-inner">
-				{+START,IF,{$DESKTOP}}<span class="field-name inline_desktop">{!CONTROL_FUNCTIONS}:</span>{+END}
+			<div class="box cns-topic-control-functions{+START,IF,{$NOR,{$IS_NON_EMPTY,{MARKED_POST_ACTIONS}},{THREADED}}} block-desktop{+END}"><div class="box-inner">
+				{+START,IF,{$DESKTOP}}<span class="field-name inline-desktop">{!CONTROL_FUNCTIONS}:</span>{+END}
 
 				{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}
 					<form title="{!TOPIC_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get" class="inline horiz-field-sep-rightward" autocomplete="off">
@@ -96,7 +96,7 @@
 
 				{+START,IF,{$DESKTOP}}
 					{+START,IF_NON_EMPTY,{MARKED_POST_ACTIONS}}
-						<form title="{!MARKED_POST_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get" class="inline horiz-field-sep-rightward block_desktop js-form-marked-post-actions" autocomplete="off">
+						<form title="{!MARKED_POST_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get" class="inline horiz-field-sep-rightward block-desktop js-form-marked-post-actions" autocomplete="off">
 							{$HIDDENS_FOR_GET_FORM,{ACTION_URL}}
 
 							<div class="inline">

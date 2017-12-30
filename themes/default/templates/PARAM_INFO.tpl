@@ -1,5 +1,5 @@
 <div class="wide-table-wrap">
-	<table class="columned_table wide-table results-table autosized_table">
+	<table class="columned_table wide-table results-table autosized-table">
 		<thead>
 			<tr>
 				<th>{!NAME}</th>
@@ -15,7 +15,7 @@
 					</th>
 					<td>
 						{+START,IF_PASSED,_loop_var} {$,Is not NULL}
-							<div class="whitespace_visible">{$PREG_REPLACE,\s*$,,{$PREG_REPLACE,^\s*,,{_loop_var*}}}</div>
+							<div class="whitespace-visible">{$PREG_REPLACE,\s*$,,{$PREG_REPLACE,^\s*,,{_loop_var*}}}</div>
 						{+END}
 					</td>
 				</tr>

@@ -6,8 +6,8 @@
 		<h3>{$GET,content_box_title}</h3>
 	{+END}
 
-	<div class="meta_details" role="note">
-		<dl class="meta_details_list">
+	<div class="meta-details" role="note">
+		<dl class="meta-details-list">
 			{+START,IF_NON_EMPTY,{TIMEOUT}}
 				<dt class="field-name">{!TIMEOUT}:</dt> <dd>{TIMEOUT*}</dd>
 			{+END}

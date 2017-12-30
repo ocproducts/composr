@@ -42,7 +42,7 @@ class Hook_commandr_command_db_table_sizes
                 warn_exit(do_lang_tempcode('NOT_SUPPORTED_ON_DB'));
             }
 
-            $out = '<div class="box box___commandr_box inline_block"><div class="box-inner"><div class="website_body">'; // XHTMLXHTML
+            $out = '<div class="box box___commandr_box inline-block"><div class="box-inner"><div class="website-body">'; // XHTMLXHTML
 
             $db = $GLOBALS['SITE_DB'];
             require_code('files');

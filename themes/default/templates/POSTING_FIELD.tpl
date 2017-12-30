@@ -10,7 +10,7 @@
 	{+START,SET,posting_field}
 		{+START,IF_PASSED,POST_COMMENT}
 			{+START,IF_NON_EMPTY,{POST_COMMENT}}
-				<p class="faux_h2"><label for="{NAME*}">{POST_COMMENT*}</label></p>
+				<p class="faux-h2"><label for="{NAME*}">{POST_COMMENT*}</label></p>
 
 				<input type="hidden" name="label_for__{NAME*}" value="{$STRIP_TAGS,{POST_COMMENT*}}" />
 			{+END}
@@ -83,7 +83,7 @@
 		{+START,IF_NON_EMPTY,{$TRIM,{EMOTICON_CHOOSER}}}
 			{+START,IF,{$NOT,{$MATCH_KEY_MATCH,_WILD:cms_news}}}
 				{+START,IF,{$DESKTOP}}{+START,IF,{$OR,{$CONFIG_OPTION,is_on_emoticon_choosers},{$CNS}}}
-					<div {+START,IF,{$CONFIG_OPTION,is_on_emoticon_choosers}} class="emoticon-chooser box block_desktop"{+END}>
+					<div {+START,IF,{$CONFIG_OPTION,is_on_emoticon_choosers}} class="emoticon-chooser box block-desktop"{+END}>
 						{+START,IF,{$CNS}}
 							<span class="right horiz-field-sep associated-link"><a rel="nofollow" target="_blank" class="js-link-click-open-site-emoticon-chooser-window" href="{$FIND_SCRIPT*,emoticons}?field_name={NAME*}{$KEEP*,0,1}" data-click-pd="1" title="{!EMOTICONS_POPUP} {!LINK_NEW_WINDOW}">{$?,{$CONFIG_OPTION,is_on_emoticon_choosers},{!VIEW_ARCHIVE},{!EMOTICONS_POPUP}}</a></span>
 						{+END}
@@ -127,11 +127,11 @@
 		<th colspan="2" class="table_heading_cell">
 			<a class="toggleable-tray-button js-click-pf-toggle-subord-fields" id="fes_attachments" href="#!"><img alt="{!EXPAND}: {!ATTACHMENTS}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" /></a>
 
-			<span class="faux_h2 toggleable-tray-button js-click-pf-toggle-subord-fields">
+			<span class="faux-h2 toggleable-tray-button js-click-pf-toggle-subord-fields">
 				{!ATTACHMENTS}
 
 				{+START,IF,{$DESKTOP}}
-					<img class="help-icon inline_desktop" data-cms-rich-tooltip title="{$STRIP_TAGS,{!ATTACHMENT_HELP}}" alt="{!HELP}" src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" />
+					<img class="help-icon inline-desktop" data-cms-rich-tooltip title="{$STRIP_TAGS,{!ATTACHMENT_HELP}}" alt="{!HELP}" src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" />
 				{+END}
 			</span>
 

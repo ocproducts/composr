@@ -12,7 +12,7 @@
 			{!LDAP_SYNC_GROUPS_ADD}
 		</p>
 
-		<div class="standard_indent">
+		<div class="standard-indent">
 			{GROUPS_ADD}
 			{+START,IF_EMPTY,{GROUPS_ADD}}
 				<p class="nothing_here">{!NONE}</p>
@@ -25,7 +25,7 @@
 			{!LDAP_SYNC_GROUPS_DELETE}
 		</p>
 
-		<div class="standard_indent">
+		<div class="standard-indent">
 			{GROUPS_DELETE}
 			{+START,IF_EMPTY,{GROUPS_DELETE}}
 				<p class="nothing_here">{!NONE}</p>
@@ -38,7 +38,7 @@
 			{!LDAP_SYNC_MEMBERS_DELETE}
 		</p>
 
-		<div class="standard_indent">
+		<div class="standard-indent">
 			{MEMBERS_DELETE}
 			{+START,IF_EMPTY,{MEMBERS_DELETE}}
 				<p class="nothing_here">{!NONE}</p>

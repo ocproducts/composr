@@ -1,5 +1,5 @@
-<hr class="spaced_rule" />
+<hr class="spaced-rule" />
 
-<p class="red_alert" role="alert">
+<p class="red-alert" role="alert">
 	{!REVISION_UNDO_DESCRIPTION}
 </p>

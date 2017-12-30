@@ -3,7 +3,7 @@
 		<table class="map_table form-table wide-table">
 			{+START,IF,{$DESKTOP}}
 				<colgroup>
-					<col class="attachments-field-name-column column_desktop" />
+					<col class="attachments-field-name-column column-desktop" />
 					<col class="attachments-field-input-column" />
 				</colgroup>
 			{+END}
@@ -11,7 +11,7 @@
 			<tbody>
 				<tr>
 					{+START,IF,{$DESKTOP}}
-						<th class="form-table-field-name vertical_alignment cell_desktop">
+						<th class="form-table-field-name vertical_alignment cell-desktop">
 							{!ATTACHMENT,{I*}}
 
 							{+START,IF,{TRUE_ATTACHMENT_UI}}

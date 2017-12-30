@@ -11,7 +11,7 @@
 		{!QUIZ_RESULTS}:
 	</p>
 
-	<dl class="compact_list">
+	<dl class="compact-list">
 		<dt>{!MARKS}</dt>
 		<dd>{MARKS_RANGE*} / {OUT_OF*}</dd>
 

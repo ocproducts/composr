@@ -2,7 +2,7 @@
 
 <tr data-require-javascript="cns_forum" data-tpl="cnsForumInGrouping" data-tpl-params="{+START,PARAMS_JSON,FORUM_RULES_URL,INTRO_QUESTION_URL}{_*}{+END}">
 	{+START,IF,{$DESKTOP}}
-		<td class="cns-forum-new-post-indicator cns-column1 cell_desktop">
+		<td class="cns-forum-new-post-indicator cns-column1 cell-desktop">
 			<img width="32" height="32" title="{LANG_NEW_POST_OR_NOT*}" alt="{LANG_NEW_POST_OR_NOT*}" src="{$IMG*,cns_general/{NEW_POST_OR_NOT*}}" />
 		</td>
 	{+END}
@@ -31,7 +31,7 @@
 			</div>
 		{+END}
 
-		<div role="note" class="block_mobile">
+		<div role="note" class="block-mobile">
 			<ul class="horizontal-meta-details associated-details">
 				<li><span class="field-name">{!COUNT_TOPICS}:</span> {$PREG_REPLACE,\,\d\d\d$,k,{NUM_TOPICS*}}</li>
 				<li><span class="field-name">{!COUNT_POSTS}:</span> {$PREG_REPLACE,\,\d\d\d$,k,{NUM_POSTS*}}</li>
@@ -39,10 +39,10 @@
 		</div>
 	</td>
 	{+START,IF,{$DESKTOP}}
-		<td class="cns-forum-num-topics cns-column4 cell_desktop">
+		<td class="cns-forum-num-topics cns-column4 cell-desktop">
 			{$PREG_REPLACE,\,\d\d\d$,k,{NUM_TOPICS*}}
 		</td>
-		<td class="cns-forum-num-posts cns-column5 cell_desktop">
+		<td class="cns-forum-num-posts cns-column5 cell-desktop">
 			{$PREG_REPLACE,\,\d\d\d$,k,{NUM_POSTS*}}
 		</td>
 	{+END}

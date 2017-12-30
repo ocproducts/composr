@@ -26,7 +26,7 @@
 		</div>
 	</div>
 
-	<hr class="spaced_rule" />
+	<hr class="spaced-rule" />
 
 	<form title="{!SAVE}" action="{URL*}" method="post" target="_self" autocomplete="off" class="js-form-ze-save zone_editor_form">
 		{$INSERT_SPAMMER_BLACKHOLE}

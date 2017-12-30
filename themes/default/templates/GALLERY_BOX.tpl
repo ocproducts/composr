@@ -13,7 +13,7 @@
 	{+END}
 
 	{+START,IF_NON_EMPTY,{THUMB}}
-		<div class="right float_separation">
+		<div class="right float-separation">
 			<a href="{URL*}">{$TRIM,{THUMB}}</a>
 		</div>
 	{+END}

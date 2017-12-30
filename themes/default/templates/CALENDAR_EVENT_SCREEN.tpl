@@ -1,8 +1,8 @@
 <div class="vcalendar vevent" itemscope="itemscope" itemtype="http://schema.org/Event">
 	{TITLE}
 
-	<div class="meta_details" role="note">
-		<ul class="meta_details_list">
+	<div class="meta-details" role="note">
+		<ul class="meta-details-list">
 			<li>
 				{!BY_SIMPLE,<a rel="author" href="{$MEMBER_PROFILE_URL*,{SUBMITTER}}" itemprop="author">{$USERNAME*,{SUBMITTER},1}}</a>
 				{+START,INCLUDE,MEMBER_TOOLTIP}{+END}
@@ -86,7 +86,7 @@
 		</div>
 
 		<div class="event-left">
-			<div class="wide-table-wrap"><table class="map_table wide-table results-table autosized_table" role="note">
+			<div class="wide-table-wrap"><table class="map_table wide-table results-table autosized-table" role="note">
 				<tbody>
 					{+START,IF_NON_EMPTY,{TIME}}
 						<tr>

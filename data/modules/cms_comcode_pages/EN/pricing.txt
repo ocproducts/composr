@@ -1,6 +1,6 @@
 [title]Pricing[/title]
 
-[surround="light_table"]
+[surround="light-table"]
 {| wide
 
 !

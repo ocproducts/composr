@@ -179,14 +179,14 @@ class Block_main_multi_content
         $include_breadcrumbs = (isset($map['include_breadcrumbs']) ? $map['include_breadcrumbs'] : '0') == '1';
 
         if ((!file_exists(get_file_base() . '/sources/hooks/systems/content_meta_aware/' . filter_naughty_harsh($content_type, true) . '.php')) && (!file_exists(get_file_base() . '/sources_custom/hooks/systems/content_meta_aware/' . filter_naughty_harsh($content_type, true) . '.php'))) {
-            return paragraph(do_lang_tempcode('NO_SUCH_CONTENT_TYPE', escape_html($content_type)), '', 'red_alert');
+            return paragraph(do_lang_tempcode('NO_SUCH_CONTENT_TYPE', escape_html($content_type)), '', 'red-alert');
         }
 
         require_code('content');
         $object = get_content_object($content_type);
         $info = $object->info($zone, ($select_b == '') ? null : $select_b);
         if ($info === null) {
-            return paragraph(do_lang_tempcode('IMPOSSIBLE_TYPE_USED'), '', 'red_alert');
+            return paragraph(do_lang_tempcode('IMPOSSIBLE_TYPE_USED'), '', 'red-alert');
         }
 
         $submit_url = $info['add_url'];

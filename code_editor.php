@@ -97,7 +97,7 @@ function code_editor_do_header($type, $target = '_top')
         ';
     echo '
 </head>
-<body class="website_body" style="margin: 1em"><div class="global_middle">
+<body class="website-body" style="margin: 1em"><div class="global_middle">
 <form target="' . $target . '" action="code_editor.php?type=' . $type . '" method="post">
 ';
 }

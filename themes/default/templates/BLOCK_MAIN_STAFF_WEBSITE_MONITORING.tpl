@@ -12,7 +12,7 @@
 		</h3>
 
 		<div class="toggleable-tray js-tray-content">
-			<div class="wide-table-wrap" id="website_monitoring_list_{$GET%,RAND_WEBSITE_MONITORING}"><table class="columned_table results-table wide-table autosized_table responsive-table">
+			<div class="wide-table-wrap" id="website_monitoring_list_{$GET%,RAND_WEBSITE_MONITORING}"><table class="columned_table results-table wide-table autosized-table responsive-table">
 				<thead>
 					<tr>
 						<th>{!config:SITE_NAME}</th>

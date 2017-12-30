@@ -14,7 +14,7 @@
 					{+START,IF_NON_EMPTY,{_loop_var}}
 						<h2>{_loop_key*}</h2>
 
-						<div class="not_too_tall">
+						<div class="not-too-tall">
 							{_loop_var}
 						</div>
 					{+END}
@@ -49,7 +49,7 @@
 	{+END}
 
 	{+START,IF_PASSED,CATALOGUE}
-		<hr class="spaced_rule" />
+		<hr class="spaced-rule" />
 
 		{+START,SET,catalogue}{CATALOGUE}{+END}
 

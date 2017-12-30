@@ -41,7 +41,7 @@
 		{+START,LOOP,NOTIFICATION_SECTIONS}
 			<tr class="form-table-field-spacer">
 				<th class="responsive-table-no-prefix table_heading_cell" colspan="{+START,IF_PASSED_AND_TRUE,SHOW_PRIVILEGES}{$ADD*,{NOTIFICATION_TYPES_TITLES},3}{+END}{+START,IF_NON_PASSED_OR_FALSE,SHOW_PRIVILEGES}{$ADD*,{NOTIFICATION_TYPES_TITLES},2}{+END}">
-					<span class="faux_h2">{NOTIFICATION_SECTION*}</span>
+					<span class="faux-h2">{NOTIFICATION_SECTION*}</span>
 				</th>
 			</tr>
 
@@ -58,7 +58,7 @@
 					{+START,IF,{ADVANCED_COLUMN}}
 						{+START,SET,advanced_link}
 							{+START,IF,{SUPPORTS_CATEGORIES}}
-								<span class="associated-link"><a data-open-as-overlay="{'target': '_self'}" href="{$PAGE_LINK*,_SEARCH:notifications:advanced:notification_code={NOTIFICATION_CODE}{$?,{$NEQ,{MEMBER_ID},{$MEMBER}},:keep_su={$USERNAME&,{MEMBER_ID}}}}">{+START,IF,{$DESKTOP}}<span class="inline_desktop">{!ADVANCED}</span>{+END}<span class="inline_mobile">{!MORE}</span></a></span>
+								<span class="associated-link"><a data-open-as-overlay="{'target': '_self'}" href="{$PAGE_LINK*,_SEARCH:notifications:advanced:notification_code={NOTIFICATION_CODE}{$?,{$NEQ,{MEMBER_ID},{$MEMBER}},:keep_su={$USERNAME&,{MEMBER_ID}}}}">{+START,IF,{$DESKTOP}}<span class="inline-desktop">{!ADVANCED}</span>{+END}<span class="inline-mobile">{!MORE}</span></a></span>
 							{+END}
 						{+END}
 					{+END}

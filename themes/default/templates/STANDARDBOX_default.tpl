@@ -32,8 +32,8 @@
 		{+END}{+END}
 
 		{+START,IF_NON_EMPTY,{META}}
-			<div class="meta_details" role="note">
-				<dl class="meta_details_list">
+			<div class="meta-details" role="note">
+				<dl class="meta-details-list">
 					{+START,LOOP,META}
 						<dt class="field-name">{KEY}:</dt> <dd>{VALUE}</dd>
 					{+END}

@@ -37,21 +37,21 @@
 	</div>
 </div>
 
-<div class="trinav_wrap nograd">
-	<div class="trinav_left">
+<div class="trinav-wrap nograd">
+	<div class="trinav-left">
 		<a class="button_screen buttons--previous" href="{PREVIOUS_URL*}" rel="{+START,IF,{PREVIOUS_NO_FOLLOW}}nofollow {+END}prev" accesskey="j"><span>{!PREVIOUS}</span></a>
 	</div>
-	<div class="trinav_right">
+	<div class="trinav-right">
 		<a class="button_screen buttons--next" href="{NEXT_URL*}" rel="{+START,IF,{NEXT_NO_FOLLOW}}nofollow {+END}next" accesskey="k"><span>{!NEXT}</span></a>
 	</div>
-	<div class="trinav_mid block_desktop">
+	<div class="trinav-mid block-desktop">
 		{+START,IF_NON_EMPTY,{ADD_URL}}
 			<a class="button_screen menu___generic_admin__add_one" rel="add" href="{ADD_URL*}"><span>{!ADD_CALENDAR_EVENT}</span></a>
 		{+END}
 	</div>
 </div>
 
-<div class="horizontal_scrolling">
+<div class="horizontal-scrolling">
 	{MAIN}
 </div>
 

@@ -1,6 +1,6 @@
 <!-- CC-error -->
 
-<p class="red_alert" role="error">
+<p class="red-alert" role="error">
 	{!CCP_ERROR,{LINE*},{MESSAGE*}}
 </p>
 

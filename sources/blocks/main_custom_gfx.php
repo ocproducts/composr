@@ -56,7 +56,7 @@ class Block_main_custom_gfx
         $type_id = empty($map['param']) ? 'rollover_button' : $map['param'];
 
         if ((!file_exists(get_file_base() . '/sources/hooks/blocks/main_custom_gfx/' . filter_naughty_harsh($type_id) . '.php')) && (!file_exists(get_file_base() . '/sources_custom/hooks/blocks/main_custom_gfx/' . filter_naughty_harsh($type_id) . '.php'))) {
-            return paragraph(do_lang_tempcode('NO_SUCH_RENDERER', escape_html($type_id)), '', 'red_alert');
+            return paragraph(do_lang_tempcode('NO_SUCH_RENDERER', escape_html($type_id)), '', 'red-alert');
         }
 
         require_code('hooks/blocks/main_custom_gfx/' . filter_naughty_harsh($type_id, true), true);
@@ -101,7 +101,7 @@ class Block_main_custom_gfx
             $file_contents = file_get_contents(((strpos($img_path, '/default/images/') !== false) ? get_file_base() : get_custom_file_base()) . '/' . $img_path);
             $img = @imagecreatefromstring($file_contents);
             if ($img === false) {
-                return paragraph(do_lang_tempcode('CORRUPT_FILE', escape_html($img_path)), '', 'red_alert');
+                return paragraph(do_lang_tempcode('CORRUPT_FILE', escape_html($img_path)), '', 'red-alert');
             }
 
             imagealphablending($img, true);

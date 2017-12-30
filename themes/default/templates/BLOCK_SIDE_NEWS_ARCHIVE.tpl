@@ -8,7 +8,7 @@
 	<div class="box-inner">
 		<h3>{TITLE*}</h3>
 
-		<ul class="compact_list">
+		<ul class="compact-list">
 			{+START,LOOP,YEARS}
 				{$SET,is_current_year,{$EQ,{YEAR},{$GET,news_archive_year}}}
 
@@ -19,7 +19,7 @@
 						<span class="js-tray-onclick-toggle-accordion"><strong>{YEAR}</strong></span>:
 
 						<div class="toggleable-tray accordion_trayitem_body js-tray-accordion-item-body"{+START,IF,{$NOT,{$GET,is_current_year}}} style="display: none" aria-expanded="false"{+END}>
-							<ul class="compact_list associated-details">
+							<ul class="compact-list associated-details">
 								{+START,LOOP,TIMES}
 									<li>
 										<a href="{URL*}">{MONTH_STRING}</a>

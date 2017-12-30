@@ -12,11 +12,11 @@
 {+START,IF_NON_EMPTY,{$GET,bound_catalogue_entry}}
 	{$CATALOGUE_ENTRY_ALL_FIELD_VALUES,{$GET,bound_catalogue_entry}}
 
-	<hr class="spaced_rule" />
+	<hr class="spaced-rule" />
 {+END}
 
 {+START,IF_NON_EMPTY,{SUBCATEGORIES}}
-	<div class="box box___catalogue_category_screen"><div class="box-inner compacted_subbox_stream">
+	<div class="box box___catalogue_category_screen"><div class="box-inner compacted-subbox-stream">
 		<h2>{!SUBCATEGORIES_HERE}</h2>
 
 		<div>
@@ -62,7 +62,7 @@
 
 {$,Display top/recent entries. By default it is only shown on the A-Z screen, which has a blank ID}
 {+START,IF_NON_EMPTY,{SUBCATEGORIES}}{+START,IF,{$EQ,{ID},}}
-	<hr class="spaced_rule" />
+	<hr class="spaced-rule" />
 
 	<div class="boxless-space">
 		{+START,BOX}{$BLOCK,block=main_multi_content,param=catalogue_entry,filter={$?,{$IS_NON_EMPTY,{ID}},{ID}*},no_links=1,efficient=0,give_context=0,include_breadcrumbs=1,render_if_empty=1,max=10,mode=recent,title={!RECENT,10,{!ENTRIES}}}{+END}

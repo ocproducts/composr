@@ -1,6 +1,6 @@
 <section id="tray_{!MEMBER|}" data-toggleable-tray="{ save: true }" class="box cns-information-bar-outer">
 	<h2 class="toggleable-tray-title js-tray-header">
-		<a class="toggleable-tray-button js-tray-onclick-toggle-tray inline_desktop" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!MEMBER}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" /></a>
+		<a class="toggleable-tray-button js-tray-onclick-toggle-tray inline-desktop" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!MEMBER}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" /></a>
 		<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!MEMBER_INFORMATION,{$USERNAME*,{$MEMBER},1}}{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,search}} / {!SEARCH}{+END}</a>
 	</h2>
 
@@ -15,12 +15,12 @@
 			<div style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px" class="cns-member-column cns-member-column-b">
 				<p class="cns-member-column-title">{!WELCOME_BACK,<a href="{PROFILE_URL*}">{$DISPLAYED_USERNAME*,{USERNAME}}</a>}</p>
 				{+START,IF,{$NOT,{$IS_HTTPAUTH_LOGIN}}}
-					<div class="inline_desktop">
-						<form class="inline associated-link" title="{!LOGOUT}" method="post" action="{LOGOUT_URL*}" autocomplete="off"><input class="button_hyperlink" type="submit" value="{!LOGOUT}" /></form>
+					<div class="inline-desktop">
+						<form class="inline associated-link" title="{!LOGOUT}" method="post" action="{LOGOUT_URL*}" autocomplete="off"><input class="button-hyperlink" type="submit" value="{!LOGOUT}" /></form>
 					</div>
 				{+END}
 
-				<dl class="meta_details_list">
+				<dl class="meta-details-list">
 					{+START,IF,{$ADDON_INSTALLED,points}}
 						<dt class="field-name"><abbr title="{!LIFETIME_POINTS,{$NUMBER_FORMAT*,{$AVAILABLE_POINTS}}}">{!POINTS}</abbr>:</dt> <dd><a {+START,IF_PASSED,NUM_POINTS_ADVANCE} title="{!GROUP_ADVANCE,{NUM_POINTS_ADVANCE*}}"{+END} href="{$PAGE_LINK*,site:points:member:{$MEMBER}}">{NUM_POINTS*}</a></dd>
 					{+END}
@@ -35,7 +35,7 @@
 				{+END}{+END}
 
 				<div class="cns-member-column-last-visit">{!LAST_VISIT,{LAST_VISIT_DATE*}}
-					<ul class="meta_details_list">
+					<ul class="meta-details-list">
 						<li>{!NEW_TOPICS,{NEW_TOPICS*}}</li>
 						<li>{!NEW_POSTS,{NEW_POSTS*}}</li>
 					</ul>

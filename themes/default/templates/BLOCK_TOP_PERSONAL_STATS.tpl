@@ -1,6 +1,6 @@
 <div data-tpl="blockTopPersonalStats">
 	<div class="global_button_ref_point" id="top_personal_stats_rel" style="display: none">
-		<div class="box box_arrow box__block_top_personal_stats"><span></span><div class="box-inner"><div>
+		<div class="box box-arrow box__block_top_personal_stats"><span></span><div class="box-inner"><div>
 			{+START,IF_NON_EMPTY,{AVATAR_URL}}
 				<div class="personal_stats_avatar"><img src="{$ENSURE_PROTOCOL_SUITABILITY*,{AVATAR_URL}}" title="{!AVATAR}" alt="{!AVATAR}" /></div>
 			{+END}
@@ -8,7 +8,7 @@
 			<h3>{$DISPLAYED_USERNAME*,{USERNAME}}</h3>
 
 			{+START,IF_NON_EMPTY,{DETAILS}}
-				<ul class="compact_list">
+				<ul class="compact-list">
 					{DETAILS}
 				</ul>
 			{+END}

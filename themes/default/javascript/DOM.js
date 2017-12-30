@@ -1877,7 +1877,7 @@
             return;
         }
 
-        doc.body.classList.add('website_body', 'main_website_faux');
+        doc.body.classList.add('website-body', 'main-website-faux');
 
         $dom.html(doc.body, '<div aria-busy="true" class="spaced"><div class="ajax_loading"><img id="loading_image" class="vertical_alignment" src="' + $util.srl('{$IMG*;,loading}') + '" alt="{!LOADING;^}" /> <span class="vertical_alignment">{!LOADING;^}<\/span><\/div><\/div>');
 

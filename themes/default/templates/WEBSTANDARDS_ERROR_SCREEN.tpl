@@ -26,5 +26,5 @@
 	<h2>{!CODE}</h2>
 
 	<div class="webstandards_div">
-		<table class="map_table autosized_table webstandards_table">
+		<table class="map_table autosized-table webstandards_table">
 			<tbody>

@@ -26,7 +26,7 @@
 {+END}
 
 {+START,IF_NON_EMPTY,{$TRIM,{$GET,staff_actions}}}
-	<div class="box staff_actions{+START,IF_PASSED,1_ICON} with_images{+END}"><aside class="box-inner">
+	<div class="box staff-actions{+START,IF_PASSED,1_ICON} with_images{+END}"><aside class="box-inner">
 		<span class="field-name {+START,IF_NON_PASSED,STAFF_ACTIONS_TITLE} standard-field-name{+END}">
 			{+START,IF_PASSED,STAFF_ACTIONS_TITLE}{STAFF_ACTIONS_TITLE*}:{+END}
 			{+START,IF_NON_PASSED,STAFF_ACTIONS_TITLE}{!CONTROL_FUNCTIONS}:{+END}

@@ -3,7 +3,7 @@
 {+END}
 
 {+START,IF,{$NEQ,{_GUID},carousel}}
-	<div class="gallery_grid_cell">
+	<div class="gallery-grid-cell">
 		{ENTRY}
 	</div>
 {+END}

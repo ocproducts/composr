@@ -13,7 +13,7 @@
 					<input {+START,IF,{$NEQ,{$_GET,recurse},0}} checked="checked"{+END} type="checkbox" name="recurse" id="recurse_filedump_{I*}" value="1" />
 				</label>
 
-				<br class="block_mobile" />
+				<br class="block-mobile" />
 
 				<label class="type-filter-filedump horiz-field-sep" for="type-filter-filedump-{I*}">
 					{!SHOW}
@@ -48,7 +48,7 @@
 					</select>
 				</label>
 
-				<br class="block_mobile" />
+				<br class="block-mobile" />
 
 				<label class="sort-filedump horiz-field-sep" for="sort-filedump-{I*}">
 					{!SORT_BY}

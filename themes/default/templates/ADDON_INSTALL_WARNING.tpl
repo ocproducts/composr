@@ -1,1 +1,1 @@
-<p class="red_alert" role="alert">{WARNING*}</p>
+<p class="red-alert" role="alert">{WARNING*}</p>

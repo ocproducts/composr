@@ -299,7 +299,7 @@ You need to fill these fields:
  - If you are adding a theme image that potentially [i]could be used by any theme[/i]: you [b]should[/b] tick (check) this. For example, an image used on one of your menus (you can add such images by adding them with image codes that start [tt]icons/[/tt]).
 [/list]
 
-[surround="right float_separation"]
+[surround="right float-separation"]
 [media width="150" description="The add theme image form" float="right"]data_custom/images/docs/tut_themes/add_image_2.png[/media]
 [media width="150" description="Finding the \"add theme image\" button" float="right"]data_custom/images/docs/tut_themes/add_image_1.png[/media]
 [/surround]
@@ -314,7 +314,7 @@ For this example we'll use [url="this background"]http://www.wpclipart.com/textu
 [*] Submit the form via the "Add theme image" button.
 [*] To apply the uploaded image to your website theme, you have to edit the CSS file.
 Go to Admin Zone > Style > Themes > Edit templates (against your own theme).
-[*] [html]<div style="clear: right"></div>[/html][surround="right float_separation"]
+[*] [html]<div style="clear: right"></div>[/html][surround="right float-separation"]
 [media width="150" description="Our change in action" float="right"]data_custom/images/docs/tut_themes/add_image_5.png[/media]
 [media width="150" description="Edited CSS" float="right"]data_custom/images/docs/tut_themes/add_image_4.png[/media]
 [media width="150" description="Searching the CSS" float="right"]data_custom/images/docs/tut_themes/add_image_3.png[/media]

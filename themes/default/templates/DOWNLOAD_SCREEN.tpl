@@ -2,7 +2,7 @@
 	{TITLE}
 
 	{+START,IF_NON_EMPTY,{OUTMODE_URL}}
-		<p class="red_alert">
+		<p class="red-alert">
 			<a href="{OUTMODE_URL*}">{!OUTMODED}</a>
 		</p>
 	{+END}
@@ -52,7 +52,7 @@
 
 					<tbody>
 						<tr>
-							<th class="de-th metadata_title">{!ADDED}</th>
+							<th class="de-th metadata-title">{!ADDED}</th>
 							<td>
 								<time datetime="{$FROM_TIMESTAMP*,Y-m-d\TH:i:s\Z,{DATE_RAW}}" itemprop="datePublished">{DATE*}</time>
 							</td>
@@ -60,7 +60,7 @@
 
 						<tr>
 							{+START,IF_NON_EMPTY,{AUTHOR_URL}}
-								<th class="de-th metadata_title">{!BY}</th>
+								<th class="de-th metadata-title">{!BY}</th>
 								<td>
 									<a rel="author" href="{AUTHOR_URL*}" title="{!AUTHOR}: {AUTHOR*}">{AUTHOR*}</a>
 									{+START,INCLUDE,MEMBER_TOOLTIP}SUBMITTER={$AUTHOR_MEMBER,{AUTHOR}}{+END}
@@ -68,7 +68,7 @@
 							{+END}
 
 							{+START,IF_EMPTY,{AUTHOR_URL}}{+START,IF_NON_EMPTY,{$USERNAME,{SUBMITTER},1}}
-								<th class="de-th metadata_title">{!BY}</th>
+								<th class="de-th metadata-title">{!BY}</th>
 								<td>
 									<a rel="author" href="{$MEMBER_PROFILE_URL*,{SUBMITTER}}">{$USERNAME*,{SUBMITTER},1}</a>
 									{+START,INCLUDE,MEMBER_TOOLTIP}{+END}
@@ -78,7 +78,7 @@
 
 						{+START,IF_NON_EMPTY,{EDIT_DATE}}
 							<tr>
-								<th class="de-th metadata_title">{!EDITED}</th>
+								<th class="de-th metadata-title">{!EDITED}</th>
 								<td>
 									<time datetime="{$FROM_TIMESTAMP*,Y-m-d\TH:i:s\Z,{EDIT_DATE_RAW}}">{EDIT_DATE*}</time>
 								</td>
@@ -87,13 +87,13 @@
 
 						{+START,IF,{$INLINE_STATS}}
 							<tr>
-								<th class="de-th metadata_title">{!COUNT_VIEWS}</th>
+								<th class="de-th metadata-title">{!COUNT_VIEWS}</th>
 								<td>{VIEWS*}</td>
 							</tr>
 						{+END}
 
 						<tr>
-							<th class="de-th metadata_title">{!COUNT_DOWNLOADS}</th>
+							<th class="de-th metadata-title">{!COUNT_DOWNLOADS}</th>
 							<td>
 								<meta itemprop="interactionCount" content="UserDownloads:{$PREG_REPLACE*,[^\d],,{NUM_DOWNLOADS}}"/>
 								{NUM_DOWNLOADS*}

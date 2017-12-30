@@ -12,7 +12,7 @@ This short tutorial aims simply to clarify what all these terms to relate to, an
 [title="2"]The terms[/title]
 
 [html]
-<table class="columned_table results-table wide-table autosized_table">
+<table class="columned_table results-table wide-table autosized-table">
 	<thead>
 		<tr>
 			<th>Term</th>

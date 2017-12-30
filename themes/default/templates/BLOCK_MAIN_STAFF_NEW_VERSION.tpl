@@ -10,7 +10,7 @@
 			{VERSION_TABLE}
 
 			{+START,IF,{HAS_UPDATED_ADDONS}}
-				<p class="red_alert">
+				<p class="red-alert">
 					{!addons:SOME_ADDONS_UPDATED,{$PAGE_LINK*,_SEARCH:admin_addons}}
 				</p>
 			{+END}

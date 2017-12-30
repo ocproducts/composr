@@ -2,7 +2,7 @@
 
 <p>{!CLASSIFIEDS_MY_ADVERTS_TEXT}</p>
 
-<table class="columned_table wide-table results-table autosized_table spaced_table responsive-table">
+<table class="columned_table wide-table results-table autosized-table spaced-table responsive-table">
 	<thead>
 		<tr>
 			<th>{!TITLE}</th>
@@ -46,12 +46,12 @@
 			<tr class="{$GET,cycle}">
 				<td class="responsive-table-no-prefix" colspan="5">
 					{+START,LOOP,TRANSACTION_DETAILS}
-						<p class="mini_indent">
+						<p class="mini-indent">
 							<span class="right">{T_STATUS*} ({$?,{$IS_EMPTY,{T_PAYMENT_GATEWAY}},{!ecommerce:MANUAL_TRANSACTION},{T_PAYMENT_GATEWAY*}})</span>
 							<strong>{$DATE_TIME*,{T_TIME},0}</strong>, {T_ITEM_TITLE*} @ {T_AMOUNT*} {T_CURRENCY*}
 						</p>
 						{+START,IF_NON_EMPTY,{T_PENDING_REASON}{T_REASON}{T_MEMO}}
-							<p class="standard_indent">
+							<p class="standard-indent">
 								<span class="field-name">{!DETAILS}:</span> {T_PENDING_REASON*}{T_REASON*}{T_MEMO*}
 							</p>
 						{+END}

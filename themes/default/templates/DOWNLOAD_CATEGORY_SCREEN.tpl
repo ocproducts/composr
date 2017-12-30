@@ -12,7 +12,7 @@
 {+START,IF_NON_EMPTY,{$GET,bound_catalogue_entry}}{$CATALOGUE_ENTRY_ALL_FIELD_VALUES,{$GET,bound_catalogue_entry}}{+END}
 
 {+START,IF_NON_EMPTY,{SUBCATEGORIES}}
-	<div class="box box___download_category_screen"><div class="box-inner compacted_subbox_stream">
+	<div class="box box___download_category_screen"><div class="box-inner compacted-subbox-stream">
 		<h2>{$?,{$EQ,{ID},1},{!CATEGORIES},{!SUBCATEGORIES_HERE}}</h2>
 
 		<div>
@@ -32,7 +32,7 @@
 	{+END}
 </div>
 
-<div class="box category_sorter inline_block"><div class="box-inner">
+<div class="box category_sorter inline-block"><div class="box-inner">
 	{$SET,show_sort_button,1}
 	{SORTING}
 </div></div>
@@ -61,7 +61,7 @@
 {+START,IF,{$THEME_OPTION,show_screen_actions}}{$BLOCK,failsafe=1,block=main_screen_actions,title={$METADATA,title}}{+END}
 
 {+START,IF_NON_EMPTY,{SUBCATEGORIES}}{+START,IF,{$EQ,{ID},1}}
-	<hr class="spaced_rule" />
+	<hr class="spaced-rule" />
 
 	<div class="boxless-space">
 		{+START,BOX}{$BLOCK,block=main_multi_content,param=download,filter={ID}*,no_links=1,efficient=0,give_context=0,include_breadcrumbs=1,render_if_empty=1,max=10,mode=recent,title={!RECENT,10,{!SECTION_DOWNLOADS}}}{+END}

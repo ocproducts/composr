@@ -371,14 +371,14 @@ Uncommenting this makes text input areas work in left-to-right. You can choose t
 
 In the past we have tried to make our default theme support right-to-left nicely, but it's a high maintenance burden for the developers and unfortunately there are many cases where we could not elegantly do it because we are setting things on a pixel-way instead of a left/right-way. For example, you may see list bullets displaying on the wrong side of a list element. It is caused by CSS like:
 [code="CSS"]
-ul.compact_list li {
+ul.compact-list li {
 	margin: 0 0 0 17px;
 	padding: 0;
 }
 [/code]
 which would need changing to:
 [code="CSS"]
-ul.compact_list li {
+ul.compact-list li {
 	margin: 0 17px 0 0;
 	padding: 0;
 }

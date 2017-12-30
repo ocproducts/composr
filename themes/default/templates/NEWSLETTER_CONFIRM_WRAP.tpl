@@ -8,7 +8,7 @@
 	<div class="box box___newsletter_confirm_wrap"><div class="box-inner">
 		<h2>{SUBJECT*} &ndash; {!TEXT_VERSION}</h2>
 
-		<div class="whitespace_visible">{TEXT_PREVIEW*}</div>
+		<div class="whitespace-visible">{TEXT_PREVIEW*}</div>
 	</div></div>
 {+END}
 
@@ -17,7 +17,7 @@
 		<div class="box box___newsletter_confirm_wrap"><div class="box-inner">
 			<h2>{!SPAM_SCORE,{SPAM_SCORE*}}</h2>
 
-			<div class="whitespace_visible">{SPAM_REPORT*}</div>
+			<div class="whitespace-visible">{SPAM_REPORT*}</div>
 		</div></div>
 	{+END}
 {+END}

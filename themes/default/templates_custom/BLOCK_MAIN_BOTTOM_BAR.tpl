@@ -42,7 +42,7 @@
 				</th>
 
 				<td class="cns-stats-main-2">
-					<ul class="meta_details_list">
+					<ul class="meta-details-list">
 						<li>{!FORUM_NUM_TOPICS,{NUM_TOPICS*}}, {!FORUM_NUM_POSTS,{NUM_POSTS*}}, {!FORUM_NUM_MEMBERS,{NUM_MEMBERS*}}</li>
 						<li>{!NEWEST_MEMBER,<a href="{NEWEST_MEMBER_PROFILE_URL*}">{$DISPLAYED_USERNAME*,{NEWEST_MEMBER_USERNAME}}</a>}</li>
 					</ul>

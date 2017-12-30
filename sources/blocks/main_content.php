@@ -93,14 +93,14 @@ class Block_main_content
         $include_breadcrumbs = (isset($map['include_breadcrumbs']) ? $map['include_breadcrumbs'] : '0') == '1';
 
         if ((!file_exists(get_file_base() . '/sources/hooks/systems/content_meta_aware/' . filter_naughty_harsh($content_type, true) . '.php')) && (!file_exists(get_file_base() . '/sources_custom/hooks/systems/content_meta_aware/' . filter_naughty_harsh($content_type, true) . '.php'))) {
-            return paragraph(do_lang_tempcode('NO_SUCH_CONTENT_TYPE', escape_html($content_type)), '', 'red_alert');
+            return paragraph(do_lang_tempcode('NO_SUCH_CONTENT_TYPE', escape_html($content_type)), '', 'red-alert');
         }
 
         require_code('content');
         $object = get_content_object($content_type);
         $info = $object->info();
         if ($info === null) {
-            return paragraph(do_lang_tempcode('IMPOSSIBLE_TYPE_USED'), '', 'red_alert');
+            return paragraph(do_lang_tempcode('IMPOSSIBLE_TYPE_USED'), '', 'red-alert');
         }
         if ($title === null) {
             if ($content_id === null) {
@@ -299,7 +299,7 @@ class Block_main_content
         }
 
         if ($award_content_row === null) {
-            return paragraph(do_lang_tempcode('MISSING_RESOURCE', escape_html($content_type)), '', 'red_alert');
+            return paragraph(do_lang_tempcode('MISSING_RESOURCE', escape_html($content_type)), '', 'red-alert');
         }
 
         $submit_url = str_replace('%21', $content_id, $submit_url);

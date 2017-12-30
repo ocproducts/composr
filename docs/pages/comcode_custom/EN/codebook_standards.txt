@@ -1185,7 +1185,7 @@ When showing errors use inform / error messaging APIs / conventions, correctly. 
 | Consistent UI, usability
 | Composr development +
 | Manually
-| Use one of the standard CSS classes, such as [tt]nothing_here[/tt] or [tt]red_alert[/tt] or [tt]inline_wip_message[/tt] to mark the error using standard Composr styles. Generally this logic will be performed deep within templates or when a block has to terminate with a clean error.
+| Use one of the standard CSS classes, such as [tt]nothing_here[/tt] or [tt]red-alert[/tt] or [tt]inline-wip-message[/tt] to mark the error using standard Composr styles. Generally this logic will be performed deep within templates or when a block has to terminate with a clean error.
 |}
 
 Specific guidance for input forms...

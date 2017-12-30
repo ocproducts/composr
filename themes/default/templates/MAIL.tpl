@@ -21,7 +21,7 @@
 			</div>
 		</div></div>
 
-		<hr class="spaced_rule" />
+		<hr class="spaced-rule" />
 
 		<div class="email-footer">
 			<div class="email-copyright">

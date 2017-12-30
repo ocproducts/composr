@@ -23,8 +23,8 @@
 	<script type="text/html" id="image-fader-{$GET,RAND_FADER_NEWS}-news-item-{_loop_key}-html" {$CSP_NONCE_HTML}>
 		<h3><a href="{URL*`}">{TITLE`}</a></h3>
 	
-		<div class="meta_details" role="note">
-			<ul class="meta_details_list">
+		<div class="meta-details" role="note">
+			<ul class="meta-details-list">
 				<li>{!POSTED_TIME_SIMPLE,{DATE*`}}</li>
 				{+START,SET,author_details}
 					{+START,IF,{$IS_NON_EMPTY,{AUTHOR_URL}}}

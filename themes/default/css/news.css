@@ -3,13 +3,13 @@
  Copyright (c) ocProducts, 2004-2017
 */
 
-.box___block_side_news_archive .box-inner>.compact_list, .box___block_side_news_archive .box-inner>.compact_list>li {
+.box___block_side_news_archive .box-inner>.compact-list, .box___block_side_news_archive .box-inner>.compact-list>li {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
 }
 
-.box___block_side_news_archive .box-inner>.compact_list>li {
+.box___block_side_news_archive .box-inner>.compact-list>li {
 	padding-top: 0.2em;
 	padding-bottom: 0.2em;
 }
@@ -23,11 +23,11 @@
 	padding-right: 0.5em !important;
 }
 
-.box___block_side_news_archive .box-inner>.compact_list>li ul {
+.box___block_side_news_archive .box-inner>.compact-list>li ul {
 	margin-left: 0.5em;
 }
 
-.compacted_subbox_stream .box.box___news_brief {
+.compacted-subbox-stream .box.box___news_brief {
 	border-top: 0 !important;
 	margin: 0;
 }

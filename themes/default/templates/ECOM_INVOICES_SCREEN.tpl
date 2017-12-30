@@ -1,6 +1,6 @@
 {TITLE}
 
-<div class="wide-table-wrap"><table class="columned_table wide-table results-table autosized_table responsive-table" itemprop="significantLinks">
+<div class="wide-table-wrap"><table class="columned_table wide-table results-table autosized-table responsive-table" itemprop="significantLinks">
 	<thead>
 		<tr>
 			<th>{!NAME}</th>
@@ -22,7 +22,7 @@
 				<td>
 					<strong>{INVOICE_TITLE*}</strong>
 
-					<p class="assocated_details block_mobile">
+					<p class="assocated_details block-mobile">
 						<span class="field-name">{!STATUS}:</span> {STATE*}
 					</p>
 				</td>
@@ -36,7 +36,7 @@
 					{DATE*}
 				</td>
 				{+START,IF,{$DESKTOP}}
-					<td class="cell_desktop">
+					<td class="cell-desktop">
 						{STATE*}
 					</td>
 				{+END}

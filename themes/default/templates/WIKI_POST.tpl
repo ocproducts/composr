@@ -52,7 +52,7 @@
 					{+END}
 
 					{+START,IF,{STAFF_ACCESS}}
-						<div id="cell_mark_{ID*}" class="cns-off mass_select_marker wiki_mass_select_marker">
+						<div id="cell_mark_{ID*}" class="cns-off mass-select-marker wiki-mass-select-marker">
 							<form class="webstandards_checker_off" title="{!MARKER}: {ID*}" method="post" action="index.php" id="form_mark_{ID*}" autocomplete="off">
 								<div>
 									{+START,IF,{$NOT,{$IS_GUEST}}}<label for="mark_{ID*}">{!MARKER}<span class="accessibility_hidden"> #{ID*}</span>:</label>{+END}{$,Guests don't see this so search engines don't; hopefully people with screen-readers are logged in}

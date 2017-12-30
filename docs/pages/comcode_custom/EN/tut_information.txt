@@ -34,7 +34,7 @@ Downloads may be used to release information indirectly, essentially via storing
 [title="2"]Comparison table[/title]
 
 [html]
-<table class="columned_table results-table wide-table autosized_table">
+<table class="columned_table results-table wide-table autosized-table">
 	<thead>
 		<tr>
 			<th>

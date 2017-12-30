@@ -24,7 +24,7 @@
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div class="not-too-tall-addons">
-			<div class="wide-table-wrap"><table class="columned_table wide-table results-table autosized_table zebra responsive-table">
+			<div class="wide-table-wrap"><table class="columned_table wide-table results-table autosized-table zebra responsive-table">
 				<thead>
 					<tr>
 						<th>
@@ -39,10 +39,10 @@
 						<th>
 							{!STATUS}
 						</th>
-						<th class="column_mobile">
+						<th class="column-mobile">
 							{!DESCRIPTION}
 						</th>
-						<th class="column_mobile">
+						<th class="column-mobile">
 							{!FILES}
 						</th>
 						<th>

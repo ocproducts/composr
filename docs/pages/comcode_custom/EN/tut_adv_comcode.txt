@@ -17,7 +17,7 @@ There's essentially a 5-tier distinction you should keep in mind:
 
 The following privileges impact Comcode permissions (referencing the tiers above)...
 [semihtml]
-<table class="columned_table results-table autosized_table">
+<table class="columned_table results-table autosized-table">
 	<thead>
 		<tr>
 			<th>Privilege</th>
@@ -127,7 +127,7 @@ In the Replacement text you can either put your parameters in lower-case like [t
 
 [title="3"]Sophisticated example[/title]
 
-[surround="right float_separation"]
+[surround="right float-separation"]
 [media width="150" description="Our tag in the WYSIWYG editor"]data_custom/images/docs/tut_adv_comcode/cct_example_2.png[/media]
 [media width="150" description="Display our tag"]data_custom/images/docs/tut_adv_comcode/cct_example_3.png[/media]
 [/surround]
@@ -184,7 +184,7 @@ If you want to know how it looks, just look at the code as displayed throughout 
 
 [title="2"]Comcode Menus (advanced)[/title]
 
-[surround="right float_separation"]
+[surround="right float-separation"]
 [media width="150" description="The syntax sample in action"]data_custom/images/docs/tut_adv_comcode/comcode_menu.png[/media]
 [box="Tip" width="160"]
 You can put a '~' symbol (tilde, commonly known as "that wiggly/twiddly symbol") before a URL if you want it to open in a new window.

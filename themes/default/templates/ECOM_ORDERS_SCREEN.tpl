@@ -1,6 +1,6 @@
 {TITLE}
 
-<div class="wide-table-wrap"><table class="columned_table wide-table results-table autosized_table responsive-table" itemprop="significantLinks">
+<div class="wide-table-wrap"><table class="columned_table wide-table results-table autosized-table responsive-table" itemprop="significantLinks">
 	<thead>
 		<tr>
 			<th>{!ECOM_ORDER}</th>
@@ -9,7 +9,7 @@
 			<th>{!SHIPPING_COST}</th>
 			<th>{!ORDERED_DATE}</th>
 			{+START,IF,{$DESKTOP}}
-				<th class="cell_desktop">{!STATUS}</th>
+				<th class="cell-desktop">{!STATUS}</th>
 			{+END}
 			<th>{!TRANSACTION}</th>
 		</tr>
@@ -28,7 +28,7 @@
 						<strong>{ORDER_TITLE*}</strong>
 					{+END}
 
-					<p class="assocated_details block_mobile">
+					<p class="assocated_details block-mobile">
 						<span class="field-name">{!STATUS}:</span> {STATUS*}
 					</p>
 				</td>
@@ -45,7 +45,7 @@
 					{DATE*}
 				</td>
 				{+START,IF,{$DESKTOP}}
-					<td class="cell_desktop">
+					<td class="cell-desktop">
 						{STATUS*}
 					</td>
 				{+END}

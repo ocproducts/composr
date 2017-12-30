@@ -29,7 +29,7 @@
 								{+START,IF,{HAS_UP_ROOM}}
 									<div>
 										&uarr;<br />
-										<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="up" /><input class="button_hyperlink" type="submit" value="{UP_ROOM*}" /></form>
+										<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="up" /><input class="button-hyperlink" type="submit" value="{UP_ROOM*}" /></form>
 									</div>
 								{+END}
 								{+START,IF,{$NOT,{HAS_UP_ROOM}}}
@@ -48,7 +48,7 @@
 						<td>
 							{+START,IF,{HAS_LEFT_ROOM}}
 								<div style="text-align: right">
-									&larr;&nbsp;<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="left" /><input class="button_hyperlink" type="submit" value="{LEFT_ROOM*}" /></form>
+									&larr;&nbsp;<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="left" /><input class="button-hyperlink" type="submit" value="{LEFT_ROOM*}" /></form>
 								</div>
 							{+END}
 							{+START,IF,{$NOT,{HAS_LEFT_ROOM}}}
@@ -63,7 +63,7 @@
 						<td>
 							{+START,IF,{HAS_RIGHT_ROOM}}
 								<div style="text-align: left">
-									&nbsp;<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="right" /><input class="button_hyperlink" type="submit" value="{RIGHT_ROOM*}" /></form>&nbsp;&rarr;
+									&nbsp;<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="right" /><input class="button-hyperlink" type="submit" value="{RIGHT_ROOM*}" /></form>&nbsp;&rarr;
 								</div>
 							{+END}
 							{+START,IF,{$NOT,{HAS_RIGHT_ROOM}}}
@@ -81,7 +81,7 @@
 							<div style="text-align: center">
 								{+START,IF,{HAS_DOWN_ROOM}}
 									<div>
-										<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="down" /><input class="button_hyperlink" type="submit" value="{DOWN_ROOM*}" /></form><br />
+										<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="down" /><input class="button-hyperlink" type="submit" value="{DOWN_ROOM*}" /></form><br />
 										<div class="buildr_arrow">
 											&darr;
 										</div>
@@ -147,7 +147,7 @@
 				<h4>{!W_MEMBERS_IN_ROOM}</h4>
 
 				<div class="wide-table-wrap">
-					<table class="columned_table wide-table results-table autosized_table responsive-table">
+					<table class="columned_table wide-table results-table autosized-table responsive-table">
 						<thead>
 							<tr>
 								<th>
@@ -255,7 +255,7 @@
 				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<table class="columned_table results-table wide-table autosized_table">
+					<table class="columned_table results-table wide-table autosized-table">
 						<colgroup>
 							<col style="width: 20%" />
 							<col style="width: 20%" />

@@ -1,7 +1,7 @@
 {TITLE}
 
-<div class="meta_details" role="note">
-	<ul class="meta_details_list">
+<div class="meta-details" role="note">
+	<ul class="meta-details-list">
 		<li>{!SENT_SIMPLE,<time datetime="{$FROM_TIMESTAMP*,Y-m-d\TH:i:s\Z,{_TIME}}" itemprop="datePublished">{DATE*}</time>}</li>
 		{+START,IF_PASSED,FROM_USERNAME}
 			<li>

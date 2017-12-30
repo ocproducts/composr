@@ -10,7 +10,7 @@
 	<div class="template_editing_toolbar" data-toggleable-tray="{ accordion: true }">
 		<h3 class="js-tray-header">
 			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{!CSS_EDITING_TOOLS}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" /></a>
-			<a class="non_link js-tray-onclick-toggle-tray" href="#!">{!CSS_EDITING_TOOLS}</a>
+			<a class="non-link js-tray-onclick-toggle-tray" href="#!">{!CSS_EDITING_TOOLS}</a>
 		</h3>
 		<div class="toggleable-tray js-tray-content" style="display: none" id="c_{FILE_ID*}" aria-expanded="false">
 			<div class="css_editor_rhs_column"><section class="box"><div class="box-inner">
@@ -427,7 +427,7 @@
 									<a href="#!" class="js-a-editarea-search" data-ea-search="&#10;.logo_outer {">{!CHANGE_HEADER_IMAGE}</a>
 								</li>
 								<li>
-									<a href="#!" class="js-a-editarea-search" data-search="#main_website #main_website_inner {">{!CHANGE_FIXED_WIDTH}</a>
+									<a href="#!" class="js-a-editarea-search" data-search="#main-website #main-website-inner {">{!CHANGE_FIXED_WIDTH}</a>
 								</li>
 							{+END}
 						</ul>
@@ -442,7 +442,7 @@
 	<div class="template_editing_toolbar" data-toggleable-tray="{}">
 		<h3 class="js-tray-header">
 			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{!SYMBOLS_AND_DIRECTIVES}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" /></a>
-			<a class="non_link js-tray-onclick-toggle-tray" href="#!">{!SYMBOLS_AND_DIRECTIVES}</a>
+			<a class="non-link js-tray-onclick-toggle-tray" href="#!">{!SYMBOLS_AND_DIRECTIVES}</a>
 		</h3>
 		<div class="toggleable-tray js-tray-content" style="display: none" id="b_{FILE_ID*}" aria-expanded="false">
 			{PARAMETERS}
@@ -494,10 +494,10 @@
 	<div class="guids" data-toggleable-tray="{}">
 		<h3 class="js-tray-header">
 			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{!TEMPLATE_GUIDS}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" /></a>
-			<a class="non_link js-tray-onclick-toggle-tray" href="#!">{!TEMPLATE_GUIDS}</a>
+			<a class="non-link js-tray-onclick-toggle-tray" href="#!">{!TEMPLATE_GUIDS}</a>
 		</h3>
 		<div class="toggleable-tray js-tray-content" style="display: none" aria-expanded="false">
-			<div class="wide-table-wrap"><table class="columned_table autosized_table revision_box results-table wide-table">
+			<div class="wide-table-wrap"><table class="columned_table autosized-table revision_box results-table wide-table">
 				<thead>
 					<tr>
 						<th>{!FILENAME}</th>
@@ -536,7 +536,7 @@
 	<div class="related" data-toggleable-tray="{}">
 		<h3 class="js-tray-header">
 			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{!RELATED_TEMPLATES}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" /></a>
-			<a class="non_link js-tray-onclick-toggle-tray" href="#!">{!RELATED_TEMPLATES}</a>
+			<a class="non-link js-tray-onclick-toggle-tray" href="#!">{!RELATED_TEMPLATES}</a>
 		</h3>
 		<div class="toggleable-tray js-tray-content" style="display: none" aria-expanded="false">
 			<ul>

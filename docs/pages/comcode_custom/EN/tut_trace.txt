@@ -8,7 +8,7 @@ This tutorial focuses on IP addresses. A member-focused view is taken in the [pa
 
 [title="2"]Tracing users (how IP addressing work)[/title]
 
-[surround="right float_separation"]
+[surround="right float-separation"]
 [box="Find your IP address" width="25em"]
 Computers often have more than one [concept]IP address[/concept] (one for each 'network interface', such as a network card or modem).
 

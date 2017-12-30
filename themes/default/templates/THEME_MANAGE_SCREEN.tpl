@@ -12,7 +12,7 @@
 
 	<h2>{!EXISTING_THEMES}</h2>
 
-	<div class="autosized_table theme_manage_table wide-table-wrap">
+	<div class="autosized-table theme_manage_table wide-table-wrap">
 		<table class="columned_table wide-table">
 			<thead>
 				<tr>
@@ -27,7 +27,7 @@
 					<tr class="{+START,IF,{$GET,done_one_theme}}thick_border{+END}{+START,IF,{IS_MAIN_THEME}} active-item{+END}">
 						<td role="note" class="theme_details">
 							{+START,IF,{$DESKTOP}}
-								<div class="block_desktop">
+								<div class="block-desktop">
 									{+START,SET,TOOLTIP}
 										<kbd>{NAME*}</kbd>, {!BY_SIMPLE,<em>{AUTHOR`}</em>}
 										{+START,IF,{$NEQ,{DATE},{!NA_EM}}}
@@ -38,7 +38,7 @@
 									<strong class="comcode_concept_inline" data-mouseover-activate-tooltip="['{$GET;^*,TOOLTIP}', 'auto']">{TITLE*}</strong>
 								</div>
 							{+END}
-							<div class="block_mobile">
+							<div class="block-mobile">
 								<p><strong>{TITLE*}</strong></p>
 								<p><kbd>{NAME*}</kbd></p>
 								<p>{!BY_SIMPLE,<em>{AUTHOR`}</em>}</p>
@@ -118,7 +118,7 @@
 
 	<h2>{!THEME_EXPORT}</h2>
 
-	<div class="box box___theme_manage_screen"><div class="box-inner help_jumpout">
+	<div class="box box___theme_manage_screen"><div class="box-inner help-jumpout">
 		<p>
 			{!IMPORT_EXPORT_THEME_HELP,{$PAGE_LINK*,adminzone:admin_addons:addon_import}}
 		</p>

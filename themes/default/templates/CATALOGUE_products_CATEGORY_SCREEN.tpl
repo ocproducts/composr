@@ -14,7 +14,7 @@
 {+START,IF_NON_EMPTY,{$GET,bound_catalogue_entry}}{$CATALOGUE_ENTRY_ALL_FIELD_VALUES,{$GET,bound_catalogue_entry}}{+END}
 
 {+START,IF_NON_EMPTY,{SUBCATEGORIES}}
-	<div class="box box___catalogue_category_screen"><div class="box-inner compacted_subbox_stream">
+	<div class="box box___catalogue_category_screen"><div class="box-inner compacted-subbox-stream">
 		<h2>{!SUBCATEGORIES_HERE}</h2>
 
 		<div>

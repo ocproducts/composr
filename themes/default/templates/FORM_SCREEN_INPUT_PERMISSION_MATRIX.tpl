@@ -1,11 +1,11 @@
 {$REQUIRE_JAVASCRIPT,core_form_interfaces}
 
 <div class="permissions-matrix-wrap" id="enter_the_matrix" data-tpl="formScreenInputPermissionMatrix" data-tpl-params="{+START,PARAMS_JSON,SERVER_ID}{_*}{+END}">
-	<table class="columned_table autosized_table results-table responsive-table">
+	<table class="columned_table autosized-table results-table responsive-table">
 		<thead>
 			<tr>
 				<th class="group-header">
-					<span class="heading_group">{!USERGROUP}</span> <span class="heading_presets"><span class="inline_mobile"> &amp; </span>{!PINTERFACE_PRESETS}</span>
+					<span class="heading_group">{!USERGROUP}</span> <span class="heading_presets"><span class="inline-mobile"> &amp; </span>{!PINTERFACE_PRESETS}</span>
 				</th>
 
 				<th class="view-header">
@@ -30,7 +30,7 @@
 			{$,Mass-set}
 			<tr>
 				<td class="form-table-field-name">
-					<span class="inline_mobile"><em>{!MASS_PERMISSION_SETTING}</em></span>
+					<span class="inline-mobile"><em>{!MASS_PERMISSION_SETTING}</em></span>
 				</td>
 
 				<td class="form-table-field-input">

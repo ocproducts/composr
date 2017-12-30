@@ -10,7 +10,7 @@
 		<input data-disable-on-click="1" class="button_screen_item buttons--proceed" type="submit" value="{!PROCEED}" />
 	</form>
 
-	<hr class="spaced_rule" />
+	<hr class="spaced-rule" />
 
 	{+START,LOOP,ATTACHMENTS}
 		{TPL}
@@ -28,7 +28,7 @@
 			{+END}
 		</div>
 
-		<hr class="spaced_rule" />
+		<hr class="spaced-rule" />
 	{+END}
 	{+START,IF_EMPTY,{ATTACHMENTS}}
 		<p class="nothing_here">

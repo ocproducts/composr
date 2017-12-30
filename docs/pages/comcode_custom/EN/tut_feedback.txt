@@ -66,7 +66,7 @@ If the [tt]tickets[/tt] addon is installed, Composr includes a contact block, [t
 
 [title="3"]Catalogues contact form[/title]
 
-[surround="right float_separation"]
+[surround="right float-separation"]
 [media width="170" description="Viewing the [tt]main_contact_catalogues[/tt] block"]data_custom/images/docs/tut_feedback/catalogue_block_3.png[/media]
 [media width="170" description="The [tt]main_contact_catalogues[/tt] block form"]data_custom/images/docs/tut_feedback/catalogue_block_2.png[/media]
 [media width="170" description="Choosing the [tt]main_contact_catalogues[/tt] block from the block construction assistant"]data_custom/images/docs/tut_feedback/catalogue_block_1.png[/media]

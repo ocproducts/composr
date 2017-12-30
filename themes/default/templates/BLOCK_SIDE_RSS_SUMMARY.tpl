@@ -1,10 +1,10 @@
 <div class="box box___block_side_rss_summary"><div class="box-inner">
 	{+START,IF,{$NOT,{TICKER}}}
-		<p class="tiny_paragraph">
+		<p class="tiny-paragraph">
 			<a title="{$REPLACE,",&quot;,{$STRIP_TAGS,{NEWS_TITLE}}} {!LINK_NEW_WINDOW}" rel="external" target="_blank" href="{FULL_URL*}">{$TRUNCATE_LEFT,{NEWS_TITLE},30,0,1}</a>
 		</p>
 
-		<p class="tiny_paragraph associated-details">
+		<p class="tiny-paragraph associated-details">
 			{DATE*}
 		</p>
 	{+END}

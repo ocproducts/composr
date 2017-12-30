@@ -43,7 +43,7 @@
 			{HIDDEN}
 
 			{+START,IF_NON_EMPTY,{FIELDS}}
-				<div class="wide-table-wrap"><table class="map_table form-table wide-table scrollable_inside">
+				<div class="wide-table-wrap"><table class="map_table form-table wide-table scrollable-inside">
 					{+START,IF,{$DESKTOP}}
 						<colgroup>
 							<col class="field-name-column" />
@@ -64,7 +64,7 @@
 	{+START,IF_PASSED,IFRAME_URL}
 		<a id="edit_space"></a>
 
-		<div class="arrow_ruler">
+		<div class="arrow-ruler">
 			<form action="#!" method="post" autocomplete="off">
 				<div class="associated-link">
 					<input type="checkbox" name="will_open_new" id="will_open_new" class="js-checkbox-will-open-new" />

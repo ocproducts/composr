@@ -1,4 +1,4 @@
-<hr class="spaced_rule" />
+<hr class="spaced-rule" />
 
 <div class="float-surrounder">
 	<div class="left">
