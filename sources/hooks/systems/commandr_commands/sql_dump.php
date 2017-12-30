@@ -58,6 +58,7 @@ class Hook_commandr_command_sql_dump
             // Generate dump
             require_code('database_relations');
             $out_file = fopen($out_file_path, 'wb');
+            fwrite($out_file, chr(hexdec('EF')) . chr(hexdec('BB')) . chr(hexdec('BF')));
             get_sql_dump($out_file, true, false, null, $only, null, $intended_db_type);
             fclose($out_file);
 

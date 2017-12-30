@@ -160,7 +160,7 @@ class Database_Static_sqlserver_odbc extends Database_super_sqlserver
 
             $res2 = odbc_exec($db, 'SELECT MAX(IDENTITYCOL) FROM ' . $table_name);
             odbc_fetch_row($res2);
-            return odbc_result($res2, 1);
+            return intval(odbc_result($res2, 1));
         }
 
         return null;

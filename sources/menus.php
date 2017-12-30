@@ -340,7 +340,7 @@ function _build_stored_menu_branch($item, $items)
         'extra_meta' => array(
             'description' => get_translated_tempcode('menu_items', $item, 'i_caption_long'),
             'image' => ($item['i_theme_img_code'] == '') ? null : find_theme_image($item['i_theme_img_code']),
-            'image_2x' => ($item['i_theme_img_code'] == '') ? null : str_replace('/1x/', '/2x/', find_theme_image($item['i_theme_img_code'])),
+            'image_2x' => ($item['i_theme_img_code'] == '') ? null : str_replace(array('/1x/', '/24x24/'), array('/2x/', '/48x48/'), find_theme_image($item['i_theme_img_code'])),
         ),
         'has_possible_children' => true,
         'children' => array(),
@@ -487,6 +487,7 @@ function _render_menu($menu, $source_member, $type, $as_admin = false, $apply_hi
         'CONTENT' => $content,
         'MENU' => $codename,
         'JAVASCRIPT_HIGHLIGHTING' => !$apply_highlighting,
+        'NUM_BRANCHES' => strval($num),
     ), null, false, 'MENU_tree');
 }
 
@@ -613,6 +614,9 @@ function _render_menu_branch($branch, $codename, $source_member, $level, $type, 
                         }
                     }
                     $pv = get_param_string($k, ($k == 'page') ? $dp : null, true);
+                    if ($k == 'page') {
+                        $pv = str_replace('-', '_', $pv);
+                    }
                     if (($pv !== $v) && (($k != 'page') || ($REDIRECTED_TO_CACHE === null) || (($REDIRECTED_TO_CACHE !== null) && (($v !== $REDIRECTED_TO_CACHE['r_to_page']) || ($zone_name != $REDIRECTED_TO_CACHE['r_to_zone'])))) && (($k != 'type') || ($v != 'browse') || ($pv !== null)) && (($v != $dp) || ($k != 'page') || (get_page_name() != '')) && (substr($k, 0, 5) != 'keep_')) {
                         $current_page = false;
                         break;

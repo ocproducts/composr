@@ -43,6 +43,9 @@ class MobiquoServerPOST extends MobiquoServer
         if (isset($_POST['method_name'])) {
             return $_POST['method_name'];
         }
+        if (isset($_GET['method_name'])) {
+            return $_GET['method_name'];
+        }
 
         header('Content-type: text/plain');
         exit('No method is provided');

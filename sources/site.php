@@ -1846,9 +1846,9 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
 
     if ((!$is_panel) && ($title_to_use !== null) && (!$being_included)) {
         global $PT_PAIR_CACHE_CP;
-        $PT_PAIR_CACHE_CP[$codename]['cc_page_title'] = ($title_to_use === null) ? do_lang_tempcode('NA_EM') : make_string_tempcode(escape_html($title_to_use));
+        $PT_PAIR_CACHE_CP[$codename]['cc_page_title'] = ($title_to_use === null) ? do_lang_tempcode('NA_EM') : protect_from_escaping(escape_html($title_to_use));
         $PT_PAIR_CACHE_CP[$codename]['p_parent_page'] = $comcode_page_row['p_parent_page'];
-        $comcode_breadcrumbs = comcode_breadcrumbs($codename, $zone, get_param_string('keep_page_root', ''), ($comcode_page_row['p_parent_page'] == '') || !has_privilege(get_member(), 'open_virtual_roots'));
+        $comcode_breadcrumbs = comcode_breadcrumbs($codename, $zone, get_param_string('keep_page_root', ''), ($comcode_page_row['p_parent_page'] == '') || !has_privilege(get_member(), 'open_virtual_roots') || get_value('disable_virtual_roots') === '1');
         breadcrumb_set_parents($comcode_breadcrumbs);
 
         set_extra_request_metadata(array(
@@ -1958,7 +1958,7 @@ function comcode_breadcrumbs($the_page, $the_zone, $root = '', $no_link_for_me_s
         if ($no_link_for_me_sir) {
             return array();
         }
-        return array(array($page_link, is_object($title) ? $title : make_string_tempcode(escape_html($title))));
+        return array(array($page_link, is_object($title) ? $title : protect_from_escaping(escape_html($title))));
     }
 
     // Cut off broken recursion
@@ -1969,10 +1969,10 @@ function comcode_breadcrumbs($the_page, $the_zone, $root = '', $no_link_for_me_s
     // Our point in the chain
     $segments = array();
     if (!$no_link_for_me_sir) {
-        $segments[] = array($page_link, is_object($title) ? $title : make_string_tempcode(escape_html($title)), ($jumps == 0) ? do_lang('VIRTUAL_ROOT') : '');
+        $segments[] = array($page_link, is_object($title) ? $title : protect_from_escaping(escape_html($title)), ($jumps == 0) ? do_lang('VIRTUAL_ROOT') : '');
     } else {
         if (!(((is_string($title)) && ($title == '')) || ((is_object($title)) && ($title->is_empty())))) {
-            $segments[] = array('', is_object($title) ? $title : make_string_tempcode(escape_html($title)));
+            $segments[] = array('', is_object($title) ? $title : protect_from_escaping(escape_html($title)));
         }
     }
 

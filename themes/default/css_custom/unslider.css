@@ -86,7 +86,7 @@
 	-ms-user-select: none;
 	user-select: none;
 
-	z-index: 1000;
+	z-index: 10;
 }
 .unslider .dots li {
 	list-style-type: none;

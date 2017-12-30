@@ -15,9 +15,9 @@
 		</script>
 		<gcse:searchbox-only resultsUrl="{$PAGE_LINK*,_SELF:{PAGE_NAME}}"></gcse:searchbox-only>
 
-		<script src="https://www.google.com/jsapi" type="text/javascript"></script>
+		<script src="https://www.google.com/jsapi"></script>
 
-		<script type="text/javascript">// <![CDATA[
+		<script>// <![CDATA[
 			add_event_listener_abstract(window,'load',function () {
 				if (document.getElementById('cse')) // On results page
 				{
