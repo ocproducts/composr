@@ -1943,6 +1943,8 @@ Capital city:
 
 Based on the value of "Country", a different value would be shown. We have coded cases for the UK and Ireland, and anything else would default to "Unknown".
 
+Be wary that you can't have multi-line strings for the case sections. This includes not having multi-lines within any of the Tempcode parameters/expressions.
+
 Mode #1 is substring matching:
 [code="Tempcode"]
 Healthiness:

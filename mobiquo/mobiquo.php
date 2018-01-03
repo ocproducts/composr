@@ -60,7 +60,7 @@ switch ($content_type) {
         $MOBIQUO_SERVER = new MobiquoServerXMLRPC();
         break;
     default:
-        if (isset($_POST['method_name'])) {
+        if (isset($_POST['method_name']) || isset($_GET['method_name'])) {
             require(dirname(__FILE__) . '/lib/mobiquo_post.php');
             $MOBIQUO_SERVER = new MobiquoServerPOST();
         } else {

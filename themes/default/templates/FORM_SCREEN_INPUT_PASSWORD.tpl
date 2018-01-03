@@ -8,7 +8,7 @@
 	<input{+START,IF,{$EQ,{NAME},edit_password}} autocomplete="off"{+START,IF,{$MOBILE}} autocorrect="off"{+END}{+END} onchange="if (typeof window.password_strength!='undefined') password_strength(this);" size="27" maxlength="255" tabindex="{TABINDEX*}" class="input_password{REQUIRED*}" type="password" id="{NAME*}" name="{NAME*}" value="{VALUE*}" />
 
 	{+START,IF,{$AND,{$EQ,{VALUE},},{$EQ,{NAME},edit_password}}}
-		<script type="text/javascript">// <![CDATA[
+		<script>// <![CDATA[
 			// Work around annoying Firefox bug. It ignores autocomplete="off" if a password was already saved somehow
 			add_event_listener_abstract(window,'load',function () {
 				window.setTimeout(function() {

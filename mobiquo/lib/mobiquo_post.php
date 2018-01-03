@@ -43,6 +43,9 @@ class MobiquoServerPOST extends MobiquoServer
         if (isset($_POST['method_name'])) {
             return $_POST['method_name'];
         }
+        if (isset($_GET['method_name'])) {
+            return $_GET['method_name'];
+        }
 
         header('Content-type: text/plain');
         exit('No method is provided');
@@ -58,6 +61,8 @@ class MobiquoServerPOST extends MobiquoServer
         if (is_null($this->output_server)) {
             header('Content-type: text/plain');
         }
+
+        convert_data_encodings(true);
 
         $get = get_magic_quotes_gpc() ? array_map('stripslashes', $_GET) : $_GET;
         unset($get['method_name']);

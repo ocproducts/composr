@@ -197,6 +197,7 @@ tt, kbd, samp {
 abbr {
 	border-bottom: 1px dotted; /* For Safari, which does not have it by default */
 	text-decoration: none;
+	cursor: help;
 }
 
 /* Give all browsers a 'q' tag with smart quotes */
@@ -3338,8 +3339,6 @@ input.magic_image_edit_link {
 	background-repeat: no-repeat;
 	background-position: 96% 3px; /*fallback*/
 	background-position: right 7px top 3px;
-	background-image: url('{$IMG_INLINE;,gradient}');
-	/*{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,lgrad}\, {$GET,dgrad});} If you want a CSS gradient instead of the above image, do something like this*/
 	color: {$GET,box_title_text} !important;
 	text-decoration: none !important;
 	-webkit-appearance: none;
