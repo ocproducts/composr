@@ -99,6 +99,11 @@ class Database_Static_mysql extends Database_super_mysql
         }
         if (function_exists('mysql_set_charset')) {
             @mysql_set_charset($SITE_INFO['database_charset'], $db);
+            if ((!$test) && ($SITE_INFO['database_charset'] == 'utf8mb4')) {
+                // Conflict between compiled-in MySQL client library and what the server supports
+                $test = @mysql_set_charset('utf8', $db);
+                @mysql_query( 'SET NAMES "' . addslashes('utf8mb4') . '"', $db);
+            }
         } else {
             @mysql_query('SET NAMES "' . addslashes($SITE_INFO['database_charset']) . '"', $db);
         }
