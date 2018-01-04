@@ -2234,9 +2234,11 @@ function ecv_CPF_VALUE($lang, $escaped, $param)
 
         if (is_numeric($param[0])) {
             require_code('cns_members');
-            $fields = cns_get_custom_fields_member(isset($param[1]) ? intval($param[1]) : get_member());
-            if (array_key_exists(intval($param[0]), $fields)) {
-                $_value = $fields[intval($param[0])];
+            $custom_fields = cns_get_all_custom_fields_match_member(isset($param[1]) ? intval($param[1]) : get_member());
+            foreach ($custom_fields as $custom_field) {
+                if ($custom_field['FIELD_ID'] == $param[0]) {
+                    $_value = $custom_field['RAW'];
+                }
             }
         } elseif ((substr($param[0], 0, 2) == 'm_') && (stripos($param[0], 'hash') === false) && (stripos($param[0], 'salt') === false)) {
             $_value = $GLOBALS['FORUM_DRIVER']->get_member_row_field(isset($param[1]) ? intval($param[1]) : get_member(), $param[0]);
@@ -2247,9 +2249,12 @@ function ecv_CPF_VALUE($lang, $escaped, $param)
                 require_code('cns_members');
                 $cpf_id = find_cpf_field_id($param[0]);
                 if (!is_null($cpf_id)) {
-                    $fields = cns_get_custom_fields_member(isset($param[1]) ? intval($param[1]) : get_member());
-                    if (array_key_exists($cpf_id, $fields)) {
-                        $_value = $fields[$cpf_id];
+                    require_code('cns_members');
+                    $custom_fields = cns_get_all_custom_fields_match_member(isset($param[1]) ? intval($param[1]) : get_member());
+                    foreach ($custom_fields as $custom_field) {
+                        if ($custom_field['FIELD_ID'] == strval($cpf_id)) {
+                            $_value = $custom_field['RAW'];
+                        }
                     }
                 }
             }
@@ -4818,7 +4823,7 @@ function ecv_LENGTH($lang, $escaped, $param)
 function ecv_COPYRIGHT($lang, $escaped, $param)
 {
     $value = get_option('copyright');
-    if (strpos($CURRENT_YEAR, '$') !== false) {
+    if (strpos($value, '$') !== false) {
         $value = str_replace('$CURRENT_YEAR=', '', $value); // Update-on-posting, does nothing dynamically
         $value = str_replace('$CURRENT_YEAR', date('Y'), $value); // Always updated
     }

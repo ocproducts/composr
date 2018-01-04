@@ -238,7 +238,7 @@ function get_user_currency()
         if (!is_null($cpf_id)) {
             require_code('cns_members_action2');
             $_fields = cns_get_custom_field_mappings($member_id);
-            $result = strval($_fields['field_' . strval($cpf_id)]);
+            $result = $_fields['field_' . strval($cpf_id)];
             $user_currency = !is_null($result) ? $result : null;
             $return_default = is_null($user_currency);
             if ($return_default === false) {

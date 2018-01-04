@@ -109,7 +109,7 @@ class Hook_profiles_tabs_edit_privacy
 
         // UI fields
 
-        $member_cpfs = cns_get_custom_fields_member($member_id_of);
+        $custom_fields = cns_get_custom_fields_member($member_id_of);
 
         require_javascript('multi');
 
@@ -120,7 +120,10 @@ class Hook_profiles_tabs_edit_privacy
         $tmp_groups = $GLOBALS['CNS_DRIVER']->get_usergroup_list(true);
 
         $cpf_ids = array();
-        foreach ($member_cpfs as $cpf_id => $cpf) {
+        foreach ($custom_fields as $custom_field) {
+            $cpf_id = intval($custom_field['FIELD_ID']);
+            $cpf = $custom_field['RAW'];
+
             // Look up the details for this field
             $cpf_data = $GLOBALS['FORUM_DB']->query_select('f_custom_fields', array('*'), array('id' => $cpf_id), '', 1);
             if (!array_key_exists(0, $cpf_data)) {
@@ -131,10 +134,10 @@ class Hook_profiles_tabs_edit_privacy
             }
 
             $cpf_title = get_translated_text($cpf_data[0]['cf_name'], $GLOBALS['FORUM_DB']);
-            if ((preg_replace('#^((\s)|(<br\s*/?' . '>)|(&nbsp;))*#', '', $cpf_title) === '') && (count($member_cpfs) > 15)) {
+            if ((preg_replace('#^((\s)|(<br\s*/?' . '>)|(&nbsp;))*#', '', $cpf_title) === '') && (count($custom_fields) > 15)) {
                 continue; // If there are lots of CPFs, and this one seems to have a blank name, skip it (likely corrupt data)
             }
-            if ((preg_replace('#^((\s)|(<br\s*/?' . '>)|(&nbsp;))*#', '', $cpf) === '') && (count($member_cpfs) > 15)) {
+            if ((preg_replace('#^((\s)|(<br\s*/?' . '>)|(&nbsp;))*#', '', $cpf) === '') && (count($custom_fields) > 15)) {
                 continue; // If there are lots of CPFs, and this one seems to have a blank value, skip it
             }
 
