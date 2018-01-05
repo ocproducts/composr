@@ -40,13 +40,14 @@ function export_menu_csv($file_path = null)
         $file_path = get_custom_file_base() . '/uploads/website_specific/cms_menu_items.csv';
     }
 
-    if (!multi_lang_content()) {
-        $sql = 'SELECT m.id, i_menu, i_order, i_parent, i_url, i_check_permissions, i_expanded, i_new_window, i_page_only, i_theme_img_code, i_caption, i_caption_long, i_include_sitemap FROM ' . get_table_prefix() . 'menu_items m';
-    } else {
-        $sql = 'SELECT m.id, i_menu, i_order, i_parent, i_url, i_check_permissions, i_expanded, i_new_window, i_page_only, i_theme_img_code, t1.text_original AS i_caption, t2.text_original AS i_caption_long, i_include_sitemap FROM ' . get_table_prefix() . 'menu_items m JOIN ' . get_table_prefix() . 'translate t1 ON t1.id=m.i_caption JOIN ' . get_table_prefix() . 'translate t2 ON t2.id=m.i_caption_long';
-    }
+    $sql = 'SELECT m.id, i_menu, i_order, i_parent, i_url, i_check_permissions, i_expanded, i_new_window, i_page_only, i_theme_img_code, i_caption, i_caption_long, i_include_sitemap FROM ' . get_table_prefix() . 'menu_items m';
 
     $data = $GLOBALS['SITE_DB']->query($sql, null, null, false, true);
+
+    foreach ($data as &$d) {
+        $d['i_caption'] = get_translated_content($d['i_caption']);
+        $d['i_caption_long'] = get_translated_content($d['i_caption_long']);
+    }
 
     require_code('files');
     require_code('files2');
