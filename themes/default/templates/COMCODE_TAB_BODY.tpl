@@ -9,6 +9,11 @@
 					'{$FACILITATE_AJAX_BLOCK_CALL;,block=main_include_module\,param={PAGE_LINK},raw=.*}',
 					'',
 					document.getElementById('g_{TITLE|/}')
+					false,
+					null,
+					false,
+					null,
+					true
 				);
 			}
 		//]]></script>

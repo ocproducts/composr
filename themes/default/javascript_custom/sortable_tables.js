@@ -896,29 +896,34 @@ var SortableTable = (function(){
     if (tables!=null) {
       for (var i=0,L=tables.length; i<L; i++) {
         var t = table.resolve(tables[i]);
-        tdata = table.tabledata[t.id];
-        if (val=classValue(t,table.StripeClassNamePrefix)) {
-          tdata.stripeclass=val;
-        }
-        // Do auto-filter if necessary
-        if (hasClass(t,table.AutoFilterClassName)) {
-          table.autofilter(t);
-        }
-        // Do auto-page if necessary
-        if (val = classValue(t,table.AutoPageSizePrefix)) {
-          table.autopage(t,{'pagesize':+val});
-        }
-        // Do auto-sort if necessary
-        if ((val = classValue(t,table.AutoSortColumnPrefix)) || (hasClass(t,table.AutoSortClassName))) {
-          table.autosort(t,{'col':(val==null)?null:+val});
-        }
-        // Do auto-stripe if necessary
-        if (tdata.stripeclass && hasClass(t,table.AutoStripeClassName)) {
-          table.stripe(t);
-        }
+        table.prepareTableElement(tables[i]);
       }
     }
   };
+
+  table.prepareTableElement = function(tableElement) {
+    var t = table.resolve(tableElement);
+    tdata = table.tabledata[t.id];
+    if (val=classValue(t,table.StripeClassNamePrefix)) {
+      tdata.stripeclass=val;
+    }
+    // Do auto-filter if necessary
+    if (hasClass(t,table.AutoFilterClassName)) {
+      table.autofilter(t);
+    }
+    // Do auto-page if necessary
+    if (val = classValue(t,table.AutoPageSizePrefix)) {
+      table.autopage(t,{'pagesize':+val});
+    }
+    // Do auto-sort if necessary
+    if ((val = classValue(t,table.AutoSortColumnPrefix)) || (hasClass(t,table.AutoSortClassName))) {
+      table.autosort(t,{'col':(val==null)?null:+val});
+    }
+    // Do auto-stripe if necessary
+    if (tdata.stripeclass && hasClass(t,table.AutoStripeClassName)) {
+      table.stripe(t);
+    }
+  }
 
   /**
    * Add sorting functionality to a table header cell
