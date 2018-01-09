@@ -130,3 +130,4 @@ google_search_console,The Google Search Console API.,ocProducts,,Not regularly T
 moz,Moz API.,ocProducts,,Not regularly Tested.,No,
 google_analytics,Google Analytics integration.,ocProducts,,Not regularly Tested.,No,
 cors,Cross-Origin Resource Sharing (CORS),ocProducts,,Not regularly Tested.,No,
+inline_editing,Inline Editing,ocProducts,,Not regularly Tested, and themes are not typically expected to support it out-of-the-box.,No,
