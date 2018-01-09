@@ -1,7 +1,7 @@
 {TITLE}
 
 {+START,IF_NON_EMPTY,{SERVICES}}
-	<div class="wide-table-wrap"><table class="columned_table wide-table results-table autosized-table zebra">
+	<div class="wide-table-wrap"><table class="columned-table wide-table results-table autosized-table zebra">
 		<thead>
 			<tr>
 				<th>
@@ -46,5 +46,5 @@
 {+END}
 
 {+START,IF_EMPTY,{SERVICES}}
-	<p class="nothing_here">{!NO_ENTRIES}</p>
+	<p class="nothing-here">{!NO_ENTRIES}</p>
 {+END}

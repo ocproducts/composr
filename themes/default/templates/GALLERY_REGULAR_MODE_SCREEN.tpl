@@ -30,7 +30,7 @@
 	{+END}
 
 	{+START,IF_EMPTY,{ENTRIES}{CHILDREN}}
-		<p class="nothing_here">
+		<p class="nothing-here">
 			{!NO_ENTRIES}
 		</p>
 	{+END}
@@ -76,7 +76,7 @@
 		{+END}
 	{+END}
 
-	<div class="float-surrounder lined_up_boxes">
+	<div class="float-surrounder lined-up-boxes">
 		{+START,IF_NON_EMPTY,{MEMBER_DETAILS}}
 			<div class="right">
 				<div class="box box___gallery_regular_mode_screen"><div class="box-inner">

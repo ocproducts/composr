@@ -13,7 +13,7 @@
 		{HIDDEN}
 
 		{+START,IF_PASSED,NAME}{+START,IF_PASSED,LABEL}
-			<label class="accessibility_hidden" for="{NAME*}">{!LABEL}</label>
+			<label class="accessibility-hidden" for="{NAME*}">{!LABEL}</label>
 		{+END}{+END}
 
 		{FIELD}

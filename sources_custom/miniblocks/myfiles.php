@@ -25,10 +25,10 @@ $baseurl = get_custom_base_url() . '/uploads/filedump/' . rawurlencode($GLOBALS[
 $files = file_exists($basedir) ? get_directory_contents($basedir) : array();
 
 if (count($files) == 0) {
-    echo '<p class="nothing_here">No files have been uploaded for you yet.</p>';
+    echo '<p class="nothing-here">No files have been uploaded for you yet.</p>';
 } else {
     sort($files);
-    echo '<div class="wide-table-wrap"><table class="wide-table columned_table results-table autosized-table">';
+    echo '<div class="wide-table-wrap"><table class="wide-table columned-table results-table autosized-table">';
     echo '<thead><tr><th>Filename</th><th>Description</th><th>File size</th></tr></thead>';
     echo '<tbody>';
     foreach ($files as $file) {

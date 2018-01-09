@@ -1,4 +1,4 @@
-<div class="wide-table-wrap"><table class="columned_table results-table wide-table">
+<div class="wide-table-wrap"><table class="columned-table results-table wide-table">
 	{+START,IF,{$DESKTOP}}
 		<colgroup>
 			<col class="gallery-entry-field-name-column" />

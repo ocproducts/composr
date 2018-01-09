@@ -1,7 +1,7 @@
 <section class="box box___block_main_rss"><div class="box-inner compacted-subbox-stream">
 	<h3>{$?,{$IS_NON_EMPTY,{TITLE}},{!NEWS_FROM}: {TITLE`}}</h3>
 
-	<div class="webstandards_checker_off">
+	<div class="webstandards-checker-off">
 		{+START,IF_NON_EMPTY,{AUTHOR}}
 			<p>{AUTHOR`}</p>
 		{+END}

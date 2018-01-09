@@ -16,17 +16,17 @@
 
 		<p class="lonely-label"><label for="bans">{!BANNED_ADDRESSES}:</label></p>
 		<div>
-			<textarea cols="30" rows="14" class="wide-field textarea_scroll" id="bans" name="bans">{BANS*}</textarea>
+			<textarea cols="30" rows="14" class="wide-field textarea-scroll" id="bans" name="bans">{BANS*}</textarea>
 		</div>
 
 		<p class="lonely-label"><label for="locked_bans">{!EXTERNALLY_BANNED_ADDRESSES}:</label></p>
 		<div>
-			<textarea readonly="readonly" cols="30" rows="14" class="wide-field textarea_scroll" id="locked_bans" name="locked_bans">{LOCKED_BANS*}</textarea>
+			<textarea readonly="readonly" cols="30" rows="14" class="wide-field textarea-scroll" id="locked_bans" name="locked_bans">{LOCKED_BANS*}</textarea>
 		</div>
 
 		<p class="lonely-label"><label for="unbannable">{!UNBANNABLE_IP_ADDRESSES}:</label></p>
 		<div>
-			<textarea cols="30" rows="14" class="wide-field textarea_scroll" id="unbannable" name="unbannable">{UNBANNABLE*}</textarea>
+			<textarea cols="30" rows="14" class="wide-field textarea-scroll" id="unbannable" name="unbannable">{UNBANNABLE*}</textarea>
 		</div>
 
 		<p class="proceed_button">

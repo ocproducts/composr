@@ -11,7 +11,7 @@
 		<form target="_self" class="right" role="search" title="{!FRIENDS}, {!SEARCH}" action="{$URL_FOR_GET_FORM*,{$SELF_URL}}#tab__friends" method="get" autocomplete="off">
 			{$HIDDENS_FOR_GET_FORM,{$SELF_URL}}
 
-			<label class="accessibility_hidden" for="friends_search">{!SEARCH}</label>
+			<label class="accessibility-hidden" for="friends_search">{!SEARCH}</label>
 			<input autocomplete="off" maxlength="255" class="js-input-friends-search" type="search" id="friends_search" name="friends_search" value="{$_GET*,friends_search}" />
 			<input class="button-micro buttons--filter" type="submit" value="{!FILTER}" />
 		</form>
@@ -34,7 +34,7 @@
 			{+END}
 		{+END}
 		{+START,IF_EMPTY,{FRIENDS_FORWARD}}
-			<p class="nothing_here">{!_NO_FRIEND_ENTRIES}</p>
+			<p class="nothing-here">{!_NO_FRIEND_ENTRIES}</p>
 		{+END}
 
 		{+START,IF_NON_EMPTY,{PAGINATION}}

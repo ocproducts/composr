@@ -27,7 +27,7 @@
 {FORUM_GROUPINGS}
 
 {+START,IF_EMPTY,{TOPIC_WRAPPER}{FORUM_GROUPINGS}}
-	<p class="nothing_here">
+	<p class="nothing-here">
 		{!NO_ENTRIES,topic}
 	</p>
 {+END}
@@ -72,7 +72,7 @@
 	{+START,IF_PASSED,ID}
 		<div class="non-accessibility-redundancy">
 			<nav class="breadcrumbs" itemprop="breadcrumb">
-				<img class="breadcrumbs_img" src="{$IMG*,1x/breadcrumbs}" srcset="{$IMG*,2x/breadcrumbs} 2x" alt="&gt; " title="{!YOU_ARE_HERE}" />
+				<img class="breadcrumbs-img" src="{$IMG*,1x/breadcrumbs}" srcset="{$IMG*,2x/breadcrumbs} 2x" alt="&gt; " title="{!YOU_ARE_HERE}" />
 				{BREADCRUMBS}
 			</nav>
 		</div>

@@ -43,7 +43,7 @@
 									{+END}
 
 									{+START,IF_PASSED,EMBED_URL}
-										<p class="filedump-embed"><a id="embed_link_{FILENAME|*}" href="{EMBED_URL*}" data-open-as-overlay='{"width": 950, "height": 680}' class="link_exempt">{!_FILEDUMP_EMBED}</a></p>
+										<p class="filedump-embed"><a id="embed_link_{FILENAME|*}" href="{EMBED_URL*}" data-open-as-overlay='{"width": 950, "height": 680}' class="link-exempt">{!_FILEDUMP_EMBED}</a></p>
 									{+END}
 
 									<p><a {+START,IF,{IS_IMAGE}} rel="lightbox"{+END} href="{URL*}">{THUMBNAIL}</a></p>
@@ -57,7 +57,7 @@
 						</div>
 					{+END}
 					{+START,IF_EMPTY,{THUMBNAILS}}
-						<p class="nothing_here">{!NO_ENTRIES}</p>
+						<p class="nothing-here">{!NO_ENTRIES}</p>
 					{+END}
 
 					{+START,INCLUDE,FILEDUMP_FOOTER}I=1{+END}
@@ -91,7 +91,7 @@
 						{LISTING}
 					{+END}
 					{+START,IF_EMPTY,{LISTING}}
-						<p class="nothing_here">{!NO_ENTRIES}</p>
+						<p class="nothing-here">{!NO_ENTRIES}</p>
 					{+END}
 
 					{+START,INCLUDE,FILEDUMP_FOOTER}I=2{+END}

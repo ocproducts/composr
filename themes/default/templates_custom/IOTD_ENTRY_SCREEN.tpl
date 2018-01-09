@@ -13,7 +13,7 @@
 	</div>
 
 	<p class="media-box">
-		<img class="scale_down" alt="{!IMAGE}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" itemprop="contentURL" />
+		<img class="scale-down" alt="{!IMAGE}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" itemprop="contentURL" />
 	</p>
 
 	{+START,IF_NON_EMPTY,{CAPTION}}
@@ -22,7 +22,7 @@
 		</div>
 	{+END}
 
-	<div class="float-surrounder lined_up_boxes">
+	<div class="float-surrounder lined-up-boxes">
 		{+START,IF_NON_EMPTY,{TRACKBACK_DETAILS}}
 			<div class="trackbacks right">
 				{TRACKBACK_DETAILS}

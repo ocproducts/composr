@@ -325,7 +325,8 @@ th, .fake-th {
 .table-header-sorting {
 	float: right;
 }
-.columned_table[itemprop="significantLinks"] tbody tr th, .columned_table[itemprop="significantLinks"] tbody tr .fake-th { /* itemprop is for precedence */
+.columned-table[itemprop="significantLinks"] tbody tr th, 
+.columned-table[itemprop="significantLinks"] tbody tr .fake-th { /* itemprop is for precedence */
 	background-color: {$GET,box_title_background_2} !important;
 	color: {$GET,box_title_text} !important;
 	text-align: left;
@@ -333,12 +334,12 @@ th, .fake-th {
 th a, th a:hover, th a:visited, .fake-th a, .fake-th a:hover, .fake-th a:visited {
 	color: {$GET,box_title_text};
 }
-thead>tr>th, .boxless-space .box>table>thead>tr>th, .pte_set_box .box>table>thead>tr>th {
+thead>tr>th, .boxless-space .box>table>thead>tr>th, .pte-set-box .box>table>thead>tr>th {
 	background-color: {$GET,box_title_background};
 	color: {$GET,box_title_text};
 	background-repeat: repeat-x;
 }
-.light-table th, .light-table .fake-th, .light-table thead>tr>th, .light-table .boxless-space .box>table>thead>tr>th, .light-table .pte_set_box .box>table>thead>tr>th {
+.light-table th, .light-table .fake-th, .light-table thead>tr>th, .light-table .boxless-space .box>table>thead>tr>th, .light-table .pte-set-box .box>table>thead>tr>th {
 	background-color: {$GET,area_6_background};
 }
 .box>table>thead>tr>th {
@@ -595,7 +596,7 @@ body#main-website {
 	/*{+END}*/
 /*{+END}*/
 
-body#main-website #main-website-inner .global_middle_outer {
+body#main-website #main-website-inner .global-middle-outer {
 	min-height: 450px;
 }
 
@@ -640,40 +641,40 @@ header h1 {
 	padding-bottom: 3px;
 }
 
-.global-banner + .logo_outer {
+.global-banner + .logo-outer {
 	margin-top: 0;
 }
 
-.text_banner {
+.text-banner {
 	width: 13.5em;
 	font-family: 'Arial', sans-serif;
 	background-color: {$GET,native_ui_background};
 }
-.text_banner a {
+.text-banner a {
 	font-size: 1.3em;
 	display: block;
 }
 
-.text_banner_l_text {
+.text-banner-l-text {
 	color: {$GET,adwords_style_text};
 	font-size: 0.9em;
 }
 
-.logo_outer {
+.logo-outer {
 	display: block;
 	margin: 0;
 	overflow: hidden;
 }
-.logo_outer a, .logo_outer img {
+.logo-outer a, .logo-outer img {
 	display: block;
 }
-.logo_outer .logo {
+.logo-outer .logo {
 	width: 100%;
 	height: auto;
 	padding: 0; /* Only needed because some external CSS may mess with the common name of ".logo" */
 }
 
-.global_navigation {
+.global-navigation {
 	border-top: 1px solid {$GET,standard_border};
 	border-bottom: 1px solid {$GET,standard_border};
 	background-color: {$GET,lgrad};
@@ -682,57 +683,57 @@ header h1 {
 	min-height: 3.4em;
 }
 /*{+START,CSS_MODE,mobile}*/
-	.global_navigation {
+	.global-navigation {
 		position: relative;
 	}
 /*{+END}*/
 
-.global_navigation_inner {
+.global-navigation-inner {
 	overflow: hidden;
 }
 /*{+START,CSS_MODE,mobile}*/
-	.global_navigation_inner {
+	.global-navigation-inner {
 		margin-left: 8em !important; /* Space for the menu button, which is position:absolute */
 	}
 /*{+END}*/
 
-.global_navigation .top_buttons, .global_navigation .top_form {
+.global-navigation .top-buttons, .global-navigation .top-form {
 	padding: 0.5em 0;
 	margin-right: 1em;
 	float: right;
 }
 
-.global_navigation .top_buttons {
+.global-navigation .top-buttons {
 	margin-top: 1px; /* To force it align correctly with the form in a different block (which is taller) */
 }
 /*{+START,CSS_MODE,desktop}*/
-	.global_navigation .top_buttons {
+	.global-navigation .top-buttons {
 		margin-left: 1.5em;
 	}
 /*{+END}*/
 
-.global_navigation .top_buttons>div {
+.global-navigation .top-buttons>div {
 	display: inline-block;
 }
 
-.global_navigation .top_form.top_search {
+.global-navigation .top-form.top_search {
 	margin-top: 3px; /* To force it align correctly with the form in a different block (which is taller) */
 }
-.global_navigation .top_form * {
+.global-navigation .top-form * {
 	vertical-align: middle;
 }
 
-.global_navigation .top_login .horizontal-links {
+.global-navigation .top_login .horizontal-links {
 	margin-left: 0.5em;
 	width: auto;
 	padding-top: 2px; /* To force it align correctly with the form in a different block (which is taller) */
 }
 
-.global_navigation .top_login .horizontal-links a {
+.global-navigation .top_login .horizontal-links a {
 	color: inherit;
 	text-decoration: none;
 }
-.global_navigation .top_login .horizontal-links a:hover {
+.global-navigation .top_login .horizontal-links a:hover {
 	text-decoration: underline;
 }
 
@@ -750,8 +751,8 @@ header h1 {
 	display: block;
 }
 
-/* .hero_section is specially designed to wrap around a title and some text, to give a 'hero' introduction for the front page of a site (standard marketing technique) */
-.hero_section {
+/* .hero-section is specially designed to wrap around a title and some text, to give a 'hero' introduction for the front page of a site (standard marketing technique) */
+.hero-section {
 	background-image: linear-gradient(to bottom right, {$GET,main_background}, {$GET,main_2_background});
 	font-size: 1.25em;
 	color: {$GET,slightly_seeded_text};
@@ -761,20 +762,20 @@ header h1 {
 	position: relative;
 	left: -0.8em; /* So is flush to borders, undoes page padding */
 }
-#wysiwyg-editor .hero_section {
+#wysiwyg-editor .hero-section {
 	left: 0;
 }
-.hero_section h1 {
+.hero-section h1 {
 	font-size: 2.6em;
 	margin-bottom: 0.1em;
 	text-decoration: none;
 	border-bottom: none;
 	color: inherit;
 }
-.hero_section * {
+.hero-section * {
 	margin-top: 0;
 }
-.hero_section .hero_button a:visited, .hero_section .hero_button a:link, .hero_section .hero_button a:active, .hero_section .hero_button a:hover, .hero_section .hero_button a.user_link:link, .hero_section .hero_button a.user_link:active, .hero_section .hero_button a.user_link:hover {
+.hero-section .hero_button a:visited, .hero-section .hero_button a:link, .hero-section .hero_button a:active, .hero-section .hero_button a:hover, .hero-section .hero_button a.user-link:link, .hero-section .hero_button a.user-link:active, .hero-section .hero_button a.user-link:hover {
 	text-decoration: none;
 	padding: 0.5em !important;
 	background-image: none !important; /* Will be overridden below if linear-gradient supported by browser */
@@ -784,11 +785,11 @@ header h1 {
 	font-size: 0.9em;
 }
 
-.global_breadcrumbs {
+.global-breadcrumbs {
 	padding: 7px 0 7px 0;
 }
 /*{+START,CSS_MODE,desktop}*/
-	.global_breadcrumbs {
+	.global-breadcrumbs {
 		/*{+START,IF,{$AND,{$THEME_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
 			text-align: right; /* Goes on own line in fixed width mode, due to lack of space */
 		/*{+END}*/
@@ -798,11 +799,11 @@ header h1 {
 		margin-left: 0.5em;
 	}
 /*{+END}*/
-.global_breadcrumbs abbr, .global_breadcrumbs a, .global_breadcrumbs span {
+.global-breadcrumbs abbr, .global-breadcrumbs a, .global-breadcrumbs span {
 	white-space: nowrap !important;
 }
 /*{+START,CSS_MODE,mobile}*/
-	.global_breadcrumbs {
+	.global-breadcrumbs {
 		margin-bottom: 1em;
 	}
 /*{+END}*/
@@ -815,34 +816,34 @@ header h1 {
 	font-weight: bold;
 }
 
-.breadcrumbs .sep:after, .associated_breadcrumbs .sep:after {
+.breadcrumbs .sep:after, .associated-breadcrumbs .sep:after {
 	content: " \00A0\00BB " !important;
 	display: inline-block;
 	font-size: 0.9em;
 	opacity: 0.5;
 }
-.breadcrumbs .sep:last-child:after, .associated_breadcrumbs .sep:last-child:after {
+.breadcrumbs .sep:last-child:after, .associated-breadcrumbs .sep:last-child:after {
 	content: "" !important;
 }
 
-.breadcrumbs_img {
+.breadcrumbs-img {
 	margin-right: 4px;
 }
 
-.breadcrumbs_img, .breadcrumbs span .breadcrumbs_img a {
+.breadcrumbs-img, .breadcrumbs span .breadcrumbs-img a {
 	vertical-align: middle;
 }
 
-.title_tagline {
+.title-tagline {
 	font-size: 0.95em;
 	padding-bottom: 2em;
 	color: {$GET,area_key_text};
 }
-h1 + .title_tagline {
+h1 + .title-tagline {
 	margin-top: -1.2em;
 }
 
-body#main-website #main-website-inner, html>body div.global_middle_faux {
+body#main-website #main-website-inner, html>body div.global-middle-faux {
 	background-color: {$GET,main_background};
 
 	/* Want to set a tiled background?
@@ -869,19 +870,19 @@ body#main-website #main-website-inner, html>body div.global_middle_faux {
 	}
 /*{+END}*/
 
-.zone-running-docs .comcode_page {
+.zone-running-docs .comcode-page {
 	line-height: 1.35em;
 }
-.zone-running-docs .comcode_page img:not([width]):not([height]) {
+.zone-running-docs .comcode-page img:not([width]):not([height]) {
 	max-width: 100%;
 	height: auto;
 }
 
-.global_middle_outer {
+.global-middle-outer {
 	margin-top: 0.8em;
 }
 
-.global_middle img {
+.global-middle img {
 	max-width: 100%;
 	height: auto;
 }
@@ -900,16 +901,16 @@ body#main-website #main-website-inner, html>body div.global_middle_faux {
 	color: {$GET,slightly_seeded_gray_text};
 }
 
-.global_middle_faux>.global-side-panel {
+.global-middle-faux>.global-side-panel {
 	width: auto;
 }
 
 /*{+START,CSS_MODE,desktop}*/
-	.global_middle_outer {
+	.global-middle-outer {
 		{$BETA_CSS_PROPERTY,display: flex;}
 	}
 
-	.global_middle {
+	.global-middle {
 		/* Add some spacing. This will be overwritten to 1.5em in rules below if we have panels */
 		padding-left: 1em;
 		padding-right: 1em;
@@ -919,12 +920,12 @@ body#main-website #main-website-inner, html>body div.global_middle_faux {
 		{$BETA_CSS_PROPERTY,flex-grow: 1;}
 	}
 
-	#panel_left {
+	#panel-left {
 		{$BETA_CSS_PROPERTY,order: 0;}
 		margin-left: 1em;
 	}
 
-	#panel_right {
+	#panel-right {
 		{$BETA_CSS_PROPERTY,order: 2;}
 		margin-right: 1em;
 	}
@@ -939,7 +940,7 @@ body#main-website #main-website-inner, html>body div.global_middle_faux {
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.global_middle {
+	.global-middle {
 		padding-left: 2px;
 		padding-right: 2px;
 		{$BETA_CSS_PROPERTY,text-size-adjust: none;}
@@ -960,13 +961,13 @@ body#main-website #main-website-inner, html>body div.global_middle_faux {
 		{$BETA_CSS_PROPERTY,user-select: none;} {$,To stop accidental touching when dismissing}
 	}
 
-	#panel_left {
+	#panel-left {
 		float: left;
 		padding-left: 2px;
 		padding-right: 1px;
 		box-sizing: border-box;
 	}
-	#panel_right {
+	#panel-right {
 		float: left;
 		padding-right: 2px;
 		padding-left: 1px;
@@ -990,43 +991,43 @@ body#main-website #main-website-inner, html>body div.global_middle_faux {
 /*{+END}*/
 
 /*{+START,CSS_MODE,desktop}*/
-	.global_messages {
+	.global-messages {
 		margin: 0 1em;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.global_messages {
+	.global-messages {
 		margin: 0 2px;
 	}
 /*{+END}*/
-.global_middle_faux .global_messages {
+.global-middle-faux .global-messages {
 	margin: 0; /* Probably inside a frame, hence already indented outside said frame */
 }
 
-.global_message {
+.global-message {
 	min-height: 21px;
 	margin-top: 0.75em;
 	margin-bottom: 1em;
 }
 
-.global_message span, .global_message img {
+.global-message span, .global-message img {
 	vertical-align: middle;
 }
-.global_message strong {
+.global-message strong {
 	text-shadow: 1px 0px 0px {$GET,message_highlighted_part};
 	font-weight: normal;
 }
-.global_message img {
+.global-message img {
 	margin-right: 0.5em;
 	float: left;
 }
-.global_message>span, .global_message>p {
+.global-message>span, .global-message>p {
 	margin-left: 22px;
 	padding-left: 0.5em;
 	padding-top: 3px;
 	display: block;
 }
-.global_message>p {
+.global-message>p {
 	margin-top: 0.6em;
 	margin-bottom: 0.6em;
 }
@@ -1057,115 +1058,115 @@ footer a:hover, footer .button-hyperlink:hover {
 }
 
 /*{+START,CSS_MODE,mobile}*/
-	footer .global_footer_left, footer .global_footer_right {
+	footer .global-footer-left, footer .global-footer-right {
 		padding-left: 0.5em;
 		padding-right: 0.5em;
 	}
 /*{+END}*/
 
 /*{+START,CSS_MODE,desktop}*/
-	footer .global_footer_left {
+	footer .global-footer-left {
 		float: left;
 	}
 /*{+END}*/
 
-footer .footer_button_loading {
+footer .footer-button-loading {
 	opacity: 0.4;
 }
 
-footer .global_footer_left .horizontal_buttons {
+footer .global-footer-left .horizontal-buttons {
 	width: auto;
 	white-space: nowrap;
 	margin-top: 0;
 	font-size: 0; /* Fixes wrapping problem */
 }
 /*{+START,CSS_MODE,mobile}*/
-	footer .global_footer_left .horizontal_buttons {
+	footer .global-footer-left .horizontal-buttons {
 		float: left;
 	}
 /*{+END}*/
 
 /*{+START,CSS_MODE,mobile}*/
-	footer .global_footer_left .su_form {
+	footer .global-footer-left .su-form {
 		float: right;
 	}
 /*{+END}*/
 
-footer .global_footer_left .horizontal_buttons>li:first-child {
+footer .global-footer-left .horizontal-buttons>li:first-child {
 	padding-left: 0 !important;
 }
-footer .global_footer_left .horizontal_buttons>li {
+footer .global-footer-left .horizontal-buttons>li {
 	padding-left: 8px !important;
 }
 
-footer .su_form *, footer .special_page_type_form * {
+footer .su-form *, footer .special-page-type-form * {
 	vertical-align: middle;
 }
 
-footer .su_form input[type="text"] {
+footer .su-form input[type="text"] {
 	border: 0;
 }
 
-footer .special_page_type_form select, footer .special_page_type_form select option.label {
+footer .special-page-type-form select, footer .special-page-type-form select option.label {
 	color: {$GET,unfilled_input_text};
 }
 
-footer .special_page_type_form select option {
+footer .special-page-type-form select option {
 	color: {$GET,native_ui_foreground};
 }
 
 /*{+START,CSS_MODE,desktop}*/
-	footer .global_footer_left .horizontal_buttons, footer .su_form, footer .special_page_type_form {
+	footer .global-footer-left .horizontal-buttons, footer .su-form, footer .special-page-type-form {
 		float: left;
 		padding-right: 14px;
 	}
 /*{+END}*/
-footer .global_footer_left .horizontal_buttons {
+footer .global-footer-left .horizontal-buttons {
 	margin-top: 5px;
 }
-footer .su_form, footer .special_page_type_form {
+footer .su-form, footer .special-page-type-form {
 	margin-top: 6px;
 }
 
-footer .global_footer_left img {
+footer .global-footer-left img {
 	vertical-align: middle;
 }
 
-footer .global_footer_left #special_page_type {
+footer .global-footer-left #special-page-type {
 	width: 8em;
 }
 
-footer .global_footer_right {
+footer .global-footer-right {
 }
 
-footer .invisible_ref_point {
+footer .invisible-ref-point {
 	position: absolute;
 	width: 0;
 }
 
 /*{+START,CSS_MODE,desktop}*/
-	footer .global_copyright {
+	footer .global-copyright {
 		text-align: center;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	footer .global_copyright {
+	footer .global-copyright {
 		margin: 0.5em 0;
 	}
 /*{+END}*/
 
-footer .global_minilinks {
+footer .global-minilinks {
 	padding-bottom: 0.3em;
 	font-size: 0.9em;
 	margin-right: 3em; /* Make tidy gap away from the font sizer */
 }
 /*{+START,CSS_MODE,desktop}*/
-	footer .global_minilinks {
+	footer .global-minilinks {
 		text-align: center;
 	}
 /*{+END}*/
 
-footer .global_minilinks .footer_links {
+footer .global-minilinks .footer-links {
 	width: auto;
 	font-size: 1.1em;
 	margin: 0;
@@ -1174,25 +1175,25 @@ footer .global_minilinks .footer_links {
 }
 
 /*{+START,CSS_MODE,desktop}*/
-	.footer_links>li:before {
+	.footer-links>li:before {
 		vertical-align: -20%;
 		padding: 0 0.5em 0 0.1em;
 		content: "\00b7" !important; /* a &middot; */
 	}
-	.footer_links li:first-child:before {
+	.footer-links li:first-child:before {
 		/* Undoes the middot/comma separator */
 		content: "" !important;
 		padding-left: 0 !important;
 		padding-right: 0 !important;
 	}
-	.footer_links>li {
+	.footer-links>li {
 		display: inline;
 		margin: 0;
 		padding: 0;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	footer .global_minilinks .footer_links li {
+	footer .global-minilinks .footer-links li {
 		min-width: 7em;
 		margin-right: 1em;
 		display: inline-block;
@@ -1202,11 +1203,11 @@ footer .global_minilinks .footer_links {
 	}
 /*{+END}*/
 
-footer .global_minilinks a, footer .global_minilinks .button-hyperlink {
+footer .global-minilinks a, footer .global-minilinks .button-hyperlink {
 	white-space: nowrap !important; /* So works on mobiles */
 	text-decoration: none;
 }
-footer .global_minilinks a:hover, footer .global_minilinks .button-hyperlink:hover {
+footer .global-minilinks a:hover, footer .global-minilinks .button-hyperlink:hover {
 	text-decoration: underline;
 }
 
@@ -1216,18 +1217,18 @@ footer .global_minilinks a:hover, footer .global_minilinks .button-hyperlink:hov
 =========================
 */
 
-.webstandards_checker_off { /* Membership of this class is used as a tag to turn off the webstandards checker */
+.webstandards-checker-off { /* Membership of this class is used as a tag to turn off the webstandards checker */
 	display: inline-block; /* To stop it breaking text-align: center */
 	width: 100%;
 }
 
-.textarea_scroll { /* Turns off word-wrapping for a textarea: this has to be done using JavaScript so that the invalid 'wrap' property isn't written into the XHTML */
+.textarea-scroll { /* Turns off word-wrapping for a textarea: this has to be done using JavaScript so that the invalid 'wrap' property isn't written into the XHTML */
 }
 
-.leave_native_tooltip { /* No automatic tooltips on this element */
+.leave-native-tooltip { /* No automatic tooltips on this element */
 }
 
-body .accessibility_hidden { /* Contents should be made visible (or interpreted) for accessibly representation but hidden for normal visual display */
+body .accessibility-hidden { /* Contents should be made visible (or interpreted) for accessibly representation but hidden for normal visual display */
 	/* Shift it out of the viewport */
 	position: absolute;
 	top: -256000px;
@@ -1263,7 +1264,7 @@ body .accessibility_hidden { /* Contents should be made visible (or interpreted)
 }
 
 /* Commonly used to indicate there is no content to display */
-.nothing_here, .more_here {
+.nothing-here, .more-here {
 	font-size: 13px !important; /* px not em due to careful background positioning */
 	padding-left: 15px;
 	margin: 1.5em;
@@ -1273,7 +1274,7 @@ body .accessibility_hidden { /* Contents should be made visible (or interpreted)
 	background-repeat: no-repeat;
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.nothing_here, .more_here {
+	.nothing-here, .more-here {
 		background-image: url('{$IMG_INLINE;,2x/cannot_show}');
 		background-size: 9px 6px;
 	}
@@ -1299,12 +1300,12 @@ div.edited {
 }
 
 /* Usage guide: Use on the immediate surrounding element, and make sure that there is no loose text inside (put that in a span) */
-.vertical_alignment, .vertical_alignment>* {
+.vertical-alignment, .vertical-alignment>* {
 	vertical-align: middle !important;
 }
 
 /* Used to align inline images to the top of the rendering context */
-.top_vertical_alignment, .top_vertical_alignment * {
+.top-vertical-alignment, .top-vertical-alignment * {
 	vertical-align: top;
 }
 
@@ -1314,7 +1315,7 @@ div.edited {
 }
 
 /* Used to align next to a floated button(s) */
-.vertical_alignment_buttons {
+.vertical-alignment-buttons {
 	line-height: 1.9em;
 }
 
@@ -1346,22 +1347,22 @@ div.edited {
 	height: auto;
 }
 
-.scale_down { /* Membership of this class is used as a tag to turn on image scale-to-fit */
+.scale-down { /* Membership of this class is used as a tag to turn on image scale-to-fit */
 	max-width: 100%;
 	box-sizing: border-box;
 }
-.scale_down:not([width]):not([height]) {
+.scale-down:not([width]):not([height]) {
 	max-width: 100%;
 	height: auto;
 }
 
 /* Used in a few places to make member links stand out */
-a.fancy_user_link em {
+a.fancy-user-link em {
 	text-shadow: 2px 2px 2px {$GET,point_of_interest_border};
 	padding: 4px 0;
 	letter-spacing: 1px;
 }
-a.fancy_user_link, a.fancy_user_link:visited, a.fancy_user_link:hover {
+a.fancy-user-link, a.fancy-user-link:visited, a.fancy-user-link:hover {
 	font-size: 1em;
 	font-weight: bold;
 	border: 1px dashed {$GET,point_of_interest_border};
@@ -1373,10 +1374,10 @@ a.fancy_user_link, a.fancy_user_link:visited, a.fancy_user_link:hover {
 	text-decoration: none;
 	padding: 2px 2px !important;
 }
-.post_poster a.fancy_user_link, .post_poster a.fancy_user_link:visited, .post_poster a.fancy_user_link:hover {
+.post-poster a.fancy-user-link, .post-poster a.fancy-user-link:visited, .post-poster a.fancy-user-link:hover {
 	display: inline-block;
 }
-a.fancy_user_link:hover {
+a.fancy-user-link:hover {
 	border-color: {$GET,dark_border};
 	background-color: {$GET,area_faded_background};
 }
@@ -1658,9 +1659,9 @@ th.metadata-title {
 
 	overflow: hidden;
 }
-td>.box:first-child, .fake_table_cell>.box:first-child, .fake_table_cell>div:first-child>.box:first-child, .fake_table_cell>div:first-child>div:first-child>.box:first-child, .left .box:first-child:last-child, .right .box:first-child:last-child,
-td>.comcode_code:first-child, .fake_table_cell>.comcode_code:first-child, .fake_table_cell>div:first-child>.comcode_code:first-child, .fake_table_cell>div:first-child>div:first-child>.comcode_code:first-child, .left .comcode_code, .right .comcode_code,
-td>.comcode_quote:first-child, .fake_table_cell>.comcode_quote:first-child, .fake_table_cell>div:first-child>.comcode_quote:first-child, .fake_table_cell>div:first-child>div:first-child>.comcode_quote:first-child, .left .comcode_quote, .right .comcode_quote {
+td>.box:first-child, .fake-table-cell>.box:first-child, .fake-table-cell>div:first-child>.box:first-child, .fake-table-cell>div:first-child>div:first-child>.box:first-child, .left .box:first-child:last-child, .right .box:first-child:last-child,
+td>.comcode-code:first-child, .fake-table-cell>.comcode-code:first-child, .fake-table-cell>div:first-child>.comcode-code:first-child, .fake-table-cell>div:first-child>div:first-child>.comcode-code:first-child, .left .comcode-code, .right .comcode-code,
+td>.comcode-quote:first-child, .fake-table-cell>.comcode-quote:first-child, .fake-table-cell>div:first-child>.comcode-quote:first-child, .fake-table-cell>div:first-child>div:first-child>.comcode-quote:first-child, .left .comcode-quote, .right .comcode-quote {
 	margin: 0;
 }
 /* Accordion boxes don't have margins */
@@ -1742,11 +1743,11 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 	color: inherit;
 }
 
-/* If we want a box to stand out less, give it 'pale_box' */
-.pale_box.box, .pale_box .box {
+/* If we want a box to stand out less, give it 'pale-box' */
+.pale-box.box, .pale-box .box {
 	border: 1px solid {$GET,pale_border} !important;
 }
-.pale_box.box h2, .pale_box .box h2, .pale_box.box h3, .pale_box .box h3 {
+.pale-box.box h2, .pale-box .box h2, .pale-box.box h3, .pale-box .box h3 {
 	background-color: {$GET,point_of_interest_background} !important;
 	background-image: none;
 	color: {$GET,area_key_text} !important;
@@ -1825,7 +1826,7 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 .global-side-panel .boxless-space .box .box + .box {
 	padding-top: 0;
 }
-.global_middle .boxless-space .box .box + .box:before {
+.global-middle .boxless-space .box .box + .box:before {
 	content: "";
 	width: 60%;
 	display: block;
@@ -1895,7 +1896,7 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 h3 .toggleable-tray-button img {
 	width: 18px;
 }
-.ttb_left_spaced, .ttb_left_spaced div {
+.ttb-left-spaced, .ttb-left-spaced div {
 	margin-top: 0.3em;
 }
 .toggleable-tray-button.ttb_left img {
@@ -2196,7 +2197,7 @@ table.scrollable-inside {
 /*{+START,CSS_MODE,mobile}*/
 	/* Deconstructs map table to blocks, for easy layout fit */
 
-	.map_table.responsive-blocked-table, .map_table.responsive-blocked-table tbody, .map_table.responsive-blocked-table tfoot, .map_table.responsive-blocked-table tr, .map_table.responsive-blocked-table th, .map_table.responsive-blocked-table td {
+	.map-table.responsive-blocked-table, .map-table.responsive-blocked-table tbody, .map-table.responsive-blocked-table tfoot, .map-table.responsive-blocked-table tr, .map-table.responsive-blocked-table th, .map-table.responsive-blocked-table td {
 		display: block;
 	}
 
@@ -2213,11 +2214,11 @@ table.scrollable-inside {
 		text-align: left !important;
 	}
 
-	.map_table.responsive-blocked-table th:first-child, .map_table.responsive-blocked-table td:first-child {
+	.map-table.responsive-blocked-table th:first-child, .map-table.responsive-blocked-table td:first-child {
 		border-top: 1px solid {$GET,standard_border} !important;
 	}
 
-	.map_table.responsive-blocked-table th:last-child, .map_table.responsive-blocked-table td:last-child {
+	.map-table.responsive-blocked-table th:last-child, .map-table.responsive-blocked-table td:last-child {
 		border-bottom: 1px solid {$GET,standard_border} !important;
 	}
 /*{+END}*/
@@ -2252,7 +2253,7 @@ table.scrollable-inside {
 	border-spacing: 0;
 	margin: 1em 0;
 }
-.lined_up_boxes .results-table {
+.lined-up-boxes .results-table {
 	margin-top: 0;
 }
 .wide-table-wrap>.results-table {
@@ -2268,10 +2269,10 @@ table.scrollable-inside {
 .results-table>thead:first-child>tr:first-child *:last-child, .results-table>thead:nth-child(2)/*after colspan*/>tr:first-child *:last-child, .results-table>tbody>tr:first-child>*:last-child {
 	border-top-right-radius: 5px;
 }
-.results-table.columned_table>tbody>tr:first-child>*:first-child {
+.results-table.columned-table>tbody>tr:first-child>*:first-child {
 	border-top-left-radius: 0px;
 }
-.results-table.columned_table>tbody>tr:first-child>*:last-child {
+.results-table.columned-table>tbody>tr:first-child>*:last-child {
 	border-top-right-radius: 0px;
 }
 .results-table>tbody:last-child>tr:last-child>*:first-child, .results-table>tbody>tr.last>*:first-child {
@@ -2326,13 +2327,13 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	border-top: 0;
 }
 
-.table_heading_cell {
+.table-heading-cell {
 	padding: 1em 0.5em !important;
 	text-align: left !important;
 	background-color: {$GET,area_background} !important; /*  !important so precedence over th.dh */
 	font-weight: normal;
 }
-.table_heading_cell h2 {
+.table-heading-cell h2 {
 	margin: 0;
 }
 
@@ -2397,7 +2398,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	.responsive-table .form-table-field-spacer {
 		border: 0 !important;
 	}
-	.responsive-table .form-table-field-spacer .table_heading_cell {
+	.responsive-table .form-table-field-spacer .table-heading-cell {
 		border: 0 !important;
 		padding: 0 !important;
 	}
@@ -2422,7 +2423,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 =========================
 */
 
-.question_ui_buttons {
+.question-ui-buttons {
 	text-align: center;
 	margin-top: 15px;
 }
@@ -2863,22 +2864,22 @@ div.ajax_loading, p.ajax_loading {
 */
 
 /*{+START,CSS_MODE,desktop}*/
-	.lined_up_boxes .right {
+	.lined-up-boxes .right {
 		margin-left: 1em;
 	}
 
-	.lined_up_boxes .left {
+	.lined-up-boxes .left {
 		margin-right: 1em;
 	}
 /*{+END}*/
 
 /*{+START,CSS_MODE,mobile}*/
-	.lined_up_boxes .right {
+	.lined-up-boxes .right {
 		width: 100%;
 		float: none;
 	}
 
-	.lined_up_boxes .left {
+	.lined-up-boxes .left {
 		width: 100%;
 		float: none;
 	}
@@ -2895,29 +2896,29 @@ div.ajax_loading, p.ajax_loading {
 	}
 /*{+END}*/
 
-.RATING_BOX .rating_inner {
+.rating-box .rating-inner {
 	text-align: center;
 }
 
-.RATING_INLINE, .RATING_INLINE div, .RATING_INLINE form {
+.rating-inline, .rating-inline div, .rating-inline form {
 	display: inline;
 }
-.RATING_INLINE .rating_outer {
+.rating-inline .rating_outer {
 	padding-left: 2em;
 }
-.RATING_INLINE .rating_outer:first-child {
+.rating-inline .rating_outer:first-child {
 	padding-left: 0;
 }
 
-.RATING_INLINE .ajax_loading {
+.rating-inline .ajax_loading {
 	padding: 0;
 }
 
-.post_action_link .RATING_INLINE {
+.post-action-link .rating-inline {
 	padding-left: 2em;
 }
 
-.rating_inner img {
+.rating-inner img {
 	cursor: pointer;
 }
 
@@ -3003,7 +3004,7 @@ div.ajax_loading, p.ajax_loading {
 	font-size: 0.9em;
 }
 
-.post .post_poster {
+.post .post-poster {
 	font-weight: bold;
 }
 
@@ -3011,7 +3012,7 @@ div.ajax_loading, p.ajax_loading {
 	margin-left: 0.5em;
 }
 
-.post .post_action_link {
+.post .post-action-link {
 }
 
 .post .post_thread_children {
@@ -3256,19 +3257,19 @@ dl.compact-list>dd {
 	margin: 0;
 }
 
-ul.spaced_list, .spaced_list ul, ol.spaced_list, .spaced_list ol, .zone-running-docs .comcode_page ul:not([class]), .zone-running-docs .comcode_page ol:not([class]) {
+ul.spaced-list, .spaced-list ul, ol.spaced-list, .spaced-list ol, .zone-running-docs .comcode-page ul:not([class]), .zone-running-docs .comcode-page ol:not([class]) {
 	margin: 0;
 	padding: 0 !important;
 }
-ul.spaced_list, .spaced_list ul, .zone-running-docs .comcode_page ul:not([class]) {
+ul.spaced-list, .spaced-list ul, .zone-running-docs .comcode-page ul:not([class]) {
 	list-style-type: square;
 }
-.spaced_list li, .zone-running-docs .comcode_page ul:not([class])>li, .zone-running-docs .comcode_page ol:not([class])>li {
+.spaced-list li, .zone-running-docs .comcode-page ul:not([class])>li, .zone-running-docs .comcode-page ol:not([class])>li {
 	margin: 0.5em 0 0.5em 30px !important;
 	padding: 0;
 }
 
-ul.tick_list, ul.tick_list li {
+ul.tick-list, ul.tick-list li {
 	margin: 0;
 	padding: 0;
 	list-style-type: none;
@@ -3282,19 +3283,19 @@ ul.actions-list>li, .attachment ul.actions-list>li /*for higher precedence for a
 	padding: 2px 0 2px 18px !important;
 	margin: 0 !important;
 }
-ul.actions_list_compact>li, ul.actions_list_super_compact>li {
+ul.actions-list-compact>li, ul.actions-list-super-compact>li {
 	padding: 0 0 0 18px;
 }
-ul.actions-list>li, ul.actions_list_compact>li, ul.actions_list_super_compact>li {
+ul.actions-list>li, ul.actions-list-compact>li, ul.actions-list-super-compact>li {
 	background: url('{$IMG_INLINE;,icons/14x14/action_link}') left 4px no-repeat;
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	ul.actions-list>li, ul.actions_list_compact>li, ul.actions_list_super_compact>li {
+	ul.actions-list>li, ul.actions-list-compact>li, ul.actions-list-super-compact>li {
 		background-image: url('{$IMG_INLINE;,icons/28x28/action_link}');
 		background-size: 14px 14px;
 	}
 }
-ul.actions-list>li, ul.actions_list_compact>li, ul.actions_list_super_compact>li {
+ul.actions-list>li, ul.actions-list-compact>li, ul.actions-list-super-compact>li {
 	margin: 0;
 	list-style-type: none;
 	list-style-image: none;
@@ -3304,12 +3305,12 @@ ul.actions-list h4 {
 	line-height: 2em;
 }
 
-ul.actions_list_compact, ul.actions_list_super_compact {
+ul.actions-list-compact, ul.actions-list-super-compact {
 	padding: 0;
 	margin: 0;
 }
 
-li.actions_list_strong {
+li.actions-list-strong {
 	font-weight: bold;
 }
 
@@ -3412,7 +3413,7 @@ dl.meta-details-list>dt, dl.meta-details-list>dd {
 	font-size: 1em;
 	display: block !important;
 }
-.global_middle .staff-actions li {
+.global-middle .staff-actions li {
 	white-space: nowrap !important;
 }
 
@@ -3440,7 +3441,7 @@ div.associated-details {
 	margin: 1em 0;
 }
 
-.associated_breadcrumbs {
+.associated-breadcrumbs {
 	font-size: 0.85em;
 	color: {$GET,a.link};
 }
@@ -3450,7 +3451,7 @@ a.associated-link / form.associated-link / span.associated-link - a single assoc
 p.associated-link / div.associated-link - a single associated link displayed in a block, with CSS-generated brackets around
 ul.associated-links-block-group - a group of associated links displayed in a block, each link on its own line with its own CSS-generated brackets around
 ul.horizontal-links / ul.horizontal-links-comma - a group of associated links displayed in a block, the links on the same line with a CSS-generated separation character; often used to represent block actions; often used in conjunction with associated-links-block-group to get the CSS-generated brackets
-.horizontal-meta-details / .horizontal_buttons / .horizontal_ticker - Additional horizontal list types for things other than links
+.horizontal-meta-details / .horizontal-buttons / .horizontal_ticker - Additional horizontal list types for things other than links
 .buttons-group - used for a button set, like horizontal-links but for centred buttons
 
 There is 'actions-list' too (defined elsewhere). These are for links that are given more focus as key navigation mechanisms in a task-based UI.
@@ -3536,10 +3537,10 @@ ul.associated-links-block-group.horizontal-links>li:before,
 .horizontal-meta-details li:before {
 	vertical-align: middle;
 }
-.horizontal_buttons li {
+.horizontal-buttons li {
 	padding-left: 3px !important;
 }
-.horizontal_buttons li:first-child {
+.horizontal-buttons li:first-child {
 	/* Undoes the li padding defined above */
 	padding-left: 0 !important;
 }
@@ -3548,7 +3549,7 @@ ul.associated-links-block-group.horizontal-links>li:before,
 }
 .horizontal-meta-details li:first-child:before,
 .horizontal-links li:first-child:before,
-.horizontal_buttons li:first-child:before,
+.horizontal-buttons li:first-child:before,
 .horizontal_ticker li:first-child:before,
 .horizontal-links-comma li:first-child:before {
 	/* Undoes the middot/comma separator */
@@ -3556,12 +3557,12 @@ ul.associated-links-block-group.horizontal-links>li:before,
 	padding-left: 0 !important;
 	padding-right: 0 !important;
 }
-ul.associated-link, ul.horizontal-meta-details, ul.horizontal-links, ul.horizontal-links-comma, ul.horizontal_buttons, .horizontal_ticker {
+ul.associated-link, ul.horizontal-meta-details, ul.horizontal-links, ul.horizontal-links-comma, ul.horizontal-buttons, .horizontal_ticker {
 	list-style: none;
 	margin: 0;
 	padding: 0;
 }
-.horizontal_buttons {
+.horizontal-buttons {
 	list-style: none;
 }
 ul.horizontal-links-comma {
@@ -3571,12 +3572,12 @@ ul.horizontal-links-comma {
 ul.associated-link {
 	display: block;
 }
-ul.horizontal-meta-details, ul.horizontal-links, ul.horizontal-links-comma, ul.horizontal_buttons, .horizontal_ticker {
+ul.horizontal-meta-details, ul.horizontal-links, ul.horizontal-links-comma, ul.horizontal-buttons, .horizontal_ticker {
 	/* As these go across horizontally, we need to do this to allow centering to work for the group */
 	display: inline-block !important;
 	width: 100%;
 }
-ul.associated-link>li, .horizontal-meta-details>li, .horizontal-links>li, ul.horizontal-links-comma>li, .horizontal_buttons>li, .horizontal_ticker>li {
+ul.associated-link>li, .horizontal-meta-details>li, .horizontal-links>li, ul.horizontal-links-comma>li, .horizontal-buttons>li, .horizontal_ticker>li {
 	display: inline;
 	margin: 0;
 	padding: 0;
@@ -3774,7 +3775,7 @@ input.magic_image_edit_link {
 	background-image: none !important;
 }
 
-.button-micro, .button_screen, .button_screen_item, .hero_section .hero_button a, body .hero_section .hero_button>a.user_link {
+.button-micro, .button_screen, .button_screen_item, .hero-section .hero_button a, body .hero-section .hero_button>a.user-link {
 	display: inline-block;
 	box-sizing: border-box;
 	border: 1px solid {$GET,dark_border};
@@ -3793,7 +3794,7 @@ input.magic_image_edit_link {
 	vertical-align: middle;
 	cursor: pointer;
 }
-div>.button-micro:first-child, div>.button_screen:first-child, div>.button_screen_item:first-child, .hero_section .hero_button a:first-child {
+div>.button-micro:first-child, div>.button_screen:first-child, div>.button_screen_item:first-child, .hero-section .hero_button a:first-child {
 	margin-left: 2px; /* enough for the shadow */
 }
 
@@ -4574,16 +4575,16 @@ div:hover>.edit_menu_link_inline, div:hover>.edit_page_link_inline {
 	width: 90%;
 }
 
-.comcode_code_wrap {
+.comcode-code-wrap {
 	overflow-x: auto;
 }
 
-/* .comcode_quote is used where the [quote] tag is parsed. */
-/* .comcode_code is used where the [code] tag is parsed. */
-.email-body .comcode_quote, .email-body .comcode_code {
+/* .comcode-quote is used where the [quote] tag is parsed. */
+/* .comcode-code is used where the [code] tag is parsed. */
+.email-body .comcode-quote, .email-body .comcode-code {
 	margin: 1em 0;
 }
-.comcode_quote, .comcode_code {
+.comcode-quote, .comcode-code {
 	margin: 1em;
 
 	/* Takes off default from email clients */
@@ -4594,18 +4595,18 @@ div:hover>.edit_menu_link_inline, div:hover>.edit_page_link_inline {
 	outline: 0;
 	overflow: auto;
 }
-td>.comcode_code_wrap>.comcode_quote, td>.comcode_code_wrap>.comcode_code {
+td>.comcode-code-wrap>.comcode-quote, td>.comcode-code-wrap>.comcode-code {
 	margin: 0;
 }
 
-.comcode_quote>h4, .comcode_code>h4 {
+.comcode-quote>h4, .comcode-code>h4 {
 	border: 1px solid {$GET,code_border};
 	padding: 4px;
 	margin: 0;
 	background: {$GET,code_title_background} url('{$IMG;,quote_gradient}') repeat-y;
 }
 
-.comcode_quote_inner, .comcode_code_inner {
+.comcode-quote-inner, .comcode-code-inner {
 	border: 1px solid {$GET,code_border};
 	display: block;
 	padding: 5px;
@@ -4615,11 +4616,11 @@ td>.comcode_code_wrap>.comcode_quote, td>.comcode_code_wrap>.comcode_code {
 	overflow: hidden;
 }
 
-.comcode_quote_inner_titled {
+.comcode-quote-inner-titled {
 	border-top: 0;
 }
 
-.comcode_code_inner {
+.comcode-code-inner {
 	font-family: 'Courier New', 'Courier', monospace;
 	font-size: 1.1em;
 	border-top: 0;
@@ -4628,84 +4629,84 @@ td>.comcode_code_wrap>.comcode_quote, td>.comcode_code_wrap>.comcode_code {
 }
 
 /* Allow pre tags to work when mixed in, as people do this when pasting */
-pre .comcode_code_wrap {
+pre .comcode-code-wrap {
 	white-space: normal;
 }
-pre .comcode_code_inner {
+pre .comcode-code-inner {
 	white-space: pre;
 }
 
-.comcode_code_scroll {
+.comcode-code-scroll {
 	max-height: 300px;
 }
 
-.comcode_highlight {
+.comcode-highlight {
 	font-weight: bold;
 	color: {$GET,red_highlight_text};
 	background-color: {$GET,yellow_highlight_background};
 }
 
-.wiki_link, .comcode_concept {
+.wiki-link, .comcode-concept {
 	color: {$GET,area_key_text};
 	font-size: 0.85em;
 }
 
-.comcode_concept a {
+.comcode-concept a {
 	background-image: url('{$IMG;,1x/arrow_box}') !important;
 }
-.comcode_concept a:hover {
+.comcode-concept a:hover {
 	background-image: url('{$IMG;,1x/arrow_box_hover}') !important;
 }
 
-.wiki_link a {
+.wiki-link a {
 	background-image: url('{$IMG;,icons/14x14/wiki_link}') !important;
 }
-.wiki_link a:hover {
+.wiki-link a:hover {
 	background-image: url('{$IMG;,icons/14x14/wiki_link_hover}') !important;
 }
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.comcode_concept a {
+	.comcode-concept a {
 		background-image: url('{$IMG;,2x/arrow_box}') !important;
 		background-size: 12px 13px;
 	}
-	.comcode_concept a:hover {
+	.comcode-concept a:hover {
 		background-image: url('{$IMG;,2x/arrow_box_hover}') !important;
 	}
 
-	.wiki_link a {
+	.wiki-link a {
 		background-image: url('{$IMG;,icons/28x28/wiki_link}') !important;
 		background-size: 14px 14px;
 	}
-	.wiki_link a:hover {
+	.wiki-link a:hover {
 		background-image: url('{$IMG;,icons/28x28/wiki_link_hover}') !important;
 	}
 }
 
-.comcode_concept a, .wiki_link a {
+.comcode-concept a, .wiki-link a {
 	padding-right: 17px !important;
 	background-repeat: no-repeat !important;
 	background-position: 100% 30% !important;
 }
-.comcode_concept a:hover, .wiki_link a:hover {
+.comcode-concept a:hover, .wiki-link a:hover {
 	padding-right: 17px !important;
 	background-repeat: no-repeat !important;
 	background-position: 100% 30% !important;
 }
 
-.comcode_concept_inline, a.comcode_concept_inline, a.comcode_concept_inline:visited, a.comcode_concept_inline:hover {
+.comcode-concept-inline, a.comcode-concept-inline, a.comcode-concept-inline:visited, a.comcode-concept-inline:hover {
 	border-bottom: 1px dashed {$GET,divider_line};
 	display: inline-block;
 	margin-bottom: 0.3em; /* To make sure bottom border can't be flush with something */
 }
 
-.comcode_concepts {
+.comcode-concepts {
 	font-size: 0.85em;
 	width: 80%;
 	margin: 0 auto;
 }
 
-.comcode_concepts_title {
+.comcode-concepts-title {
 	background-image: url('{$IMG;,checklist/checklist1}');
 	background-repeat: no-repeat;
 	background-position: 1px 0;
@@ -4714,63 +4715,63 @@ pre .comcode_code_inner {
 	margin: 0;
 }
 
-.comcode_concepts_content {
+.comcode-concepts-content {
 	padding-bottom: 0.85em;
 }
 
-.comcode_table_of_contents {
+.comcode-table-of-contents {
 	display: inline-block;
 	white-space: nowrap;
 	font-size: 0.9em;
 }
 
-.search_result .comcode_table_of_contents {
+.search-result .comcode-table-of-contents {
 	display: none;
 }
 
-body div.comcode_table_of_contents>div.box-inner>ol {
+body div.comcode-table-of-contents>div.box-inner>ol {
 	padding: 0 !important;
 	margin: 0 !important;
 	margin-left: 20px !important;
 }
-body div.comcode_table_of_contents>div.box-inner>ol>li {
+body div.comcode-table-of-contents>div.box-inner>ol>li {
 	margin: 0.2em 0 !important;
 	padding: 0 !important;
 }
 
-.comcode_table_of_contents a {
+.comcode-table-of-contents a {
 	margin: 0;
 }
 
-.comcode_table_of_contents_title {
+.comcode-table-of-contents-title {
 	text-align: center;
 	color: {$GET,area_key_text};
 	margin: 0.5em;
 	font-weight: bold;
 }
 
-.comcode_italic {
+.comcode-italic {
 	font-style: italic;
 }
 
-.comcode_bold {
+.comcode-bold {
 	font-weight: bold;
 }
 
-.comcode_underline {
+.comcode-underline {
 	text-decoration: underline;
 }
 
-.comcode_strike {
+.comcode-strike {
 	text-decoration: line-through;
 }
 
-.comcode_section_controller {
+.comcode-section-controller {
 	padding-top: 10px;
 	margin-bottom: 20px;
 }
 
-.ticker_wrap {
+.ticker-wrap {
 	display: inline-block;
 }
 .ticker {
@@ -4790,15 +4791,15 @@ body div.comcode_table_of_contents>div.box-inner>ol>li {
 	font-size: 1.2em;
 }
 
-.shocker_left {
+.shocker-left {
 	float: left;
 	font-weight: bold;
 }
 
-.shocker_right {
+.shocker-right {
 }
 
-.comcode_member_link {
+.comcode-member-link {
 	border: 1px solid {$GET,standard_border};
 	border-radius: 5px;
 	display: inline-block;
@@ -4807,13 +4808,13 @@ body div.comcode_table_of_contents>div.box-inner>ol>li {
 	line-height: 1em;
 	margin: 1px; /* Needed to stop border getting cropped off */
 }
-.comcode_member_link img {
+.comcode-member-link img {
 	cursor: inherit;
 }
-.comcode_member_link .embedded-mini-avatar {
+.comcode-member-link .embedded-mini-avatar {
 	vertical-align: middle;
 }
-.comcode_member_link a {
+.comcode-member-link a {
 	vertical-align: middle;
 	color: {$GET,area_text};
 	text-decoration: none;
@@ -4862,7 +4863,7 @@ figure {
 	margin: 1em;
 }
 /* Make inline images look a little nicer, including with Wordpress imports (but native too) */
-.alignleft, .alignright, .aligncenter, .alignnone, .media_set img.attachment_img, a[rel="lightbox"] img.attachment_img, .attachment_img img {
+.alignleft, .alignright, .aligncenter, .alignnone, .media-set img.attachment-img, a[rel="lightbox"] img.attachment-img, .attachment-img img {
 	border: 2px solid {$GET,pale_border};
 }
 .alignleft img, .alignright img, .aligncenter img, .alignnone img {
@@ -4873,10 +4874,10 @@ a[rel="lightbox"] {
 	text-decoration: none; /* Stops "_" showing when we use white-space */
 }
 
-.attachment img, .attachment_img {
+.attachment img, .attachment-img {
 	vertical-align: middle;
 }
-.attachment img:not([width]):not([height]), .attachment_img:not([width]):not([height]) {
+.attachment img:not([width]):not([height]), .attachment-img:not([width]):not([height]) {
 	max-width: 100%;
 	height: auto;
 }
@@ -4889,30 +4890,30 @@ a[rel="lightbox"] {
 	display: inline-block;
 }
 
-.attachment_details {
+.attachment-details {
 	margin-top: 0.2em;
 }
 
-.attachment_details .actions_list_strong {
+.attachment-details .actions-list-strong {
 	background-position: left 4px;
 }
 
-.attachment_left {
+.attachment-left {
 	float: left;
 	margin: 0 1.5em 0.5em 0;
 }
 
-.attachment_right {
+.attachment-right {
 	float: right;
 	margin: 0 0 0.5em 1.5em;
 }
 
-.attachment_left .attachment, .attachment_right .attachment {
+.attachment-left .attachment, .attachment-right .attachment {
 	width: 200px;
 	white-space: normal;
 }
 
-.media_set {
+.media-set {
 	margin: 1em 0;
 	{$BETA_CSS_PROPERTY,display: flex;}
 	{$BETA_CSS_PROPERTY,flex-wrap: wrap;}
@@ -4921,49 +4922,49 @@ a[rel="lightbox"] {
 	border-radius: 5px;
 }
 
-.media_set * {
+.media-set * {
 	vertical-align: top;
 }
 
-.media_set br {
+.media-set br {
 	display: none;
 }
 
-.media_set a {
+.media-set a {
 	margin: 0.5em;
 	min-width: {$DIV,{$CONFIG_OPTION,thumb_width},2}px;
 	text-align: center;
 }
 
-.media_set img {
+.media-set img {
 	width: {$DIV,{$CONFIG_OPTION,thumb_width},2}px;
 	height: auto;
 }
 
-.fake_table_cell {
+.fake-table-cell {
 	display: inline-block;
 }
 /*{+START,CSS_MODE,mobile}*/
-	.fake_table_cell {
+	.fake-table-cell {
 		display: block !important;
 		padding: 0 !important;
 		width: auto !important;
 		float: none !important;
 	}
-	.fake_table_cell + .fake_table_cell {
+	.fake-table-cell + .fake-table-cell {
 		margin: 1em 0;
 	}
 /*{+END}*/
 
-/* Wrap video code with <div class="responsive_video">...</div> if you want it responsive; jwplayer is doing this by default using its own JS though */
-.responsive_video video {
+/* Wrap video code with <div class="responsive-video">...</div> if you want it responsive; jwplayer is doing this by default using its own JS though */
+.responsive-video video {
 	max-width: 100%;
 	height: auto;
 }
 
 /* We normally expect a standard-sized YouTube embed, but for mobile we will lock the size to the browser window */
 /*{+START,CSS_MODE,mobile}*/
-	.youtube_player {
+	.youtube-player {
 		overflow: hidden;
 		width: 100%;
 		position: relative;
@@ -4971,7 +4972,7 @@ a[rel="lightbox"] {
 		padding-top: 25px;
 		height: 0;
 	}
-	.youtube_player iframe {
+	.youtube-player iframe {
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -4991,7 +4992,7 @@ a[rel="lightbox"] {
 	50% { background-color: #91bd09; box-shadow: 0 0 18px #91bd09;/*{$,hardcoded_ok}*/ }
 	to { background-color: #749a02; box-shadow: 0 0 9px #333333;/*{$,hardcoded_ok}*/ }
 }
-.glowing_node {
+.glowing-node {
 	animation-name: greenPulse;
 	animation-duration: 2s;
 	animation-iteration-count: infinite;
@@ -5007,11 +5008,11 @@ a[rel="lightbox"] {
 
 /*{+START,IF,{$THEME_OPTION,filetype_icons}}*/
 	/* Higher than media links for lower CSS precedence */
-	a[target="_blank"].user_link { /* Detected external links have styling */
+	a[target="_blank"].user-link { /* Detected external links have styling */
 		background: url('{$IMG;,icons/16x16/filetypes/external_link}') no-repeat right top;
 		padding-right: 10px;
 	}
-	body div a.external_link { /* Explicitly marked external links must show the styling with precedence */
+	body div a.external-link { /* Explicitly marked external links must show the styling with precedence */
 		background: url('{$IMG;,icons/16x16/filetypes/external_link}') no-repeat right top !important;
 		padding-right: 10px !important;
 	}
@@ -5021,81 +5022,81 @@ a[rel="lightbox"] {
 		padding: 0 22px 5px 0 !important;
 	}
 
-	a[href$=".pdf"].user_link, a[href$=".ps"].user_link, body div a.pdf_link {
+	a[href$=".pdf"].user-link, a[href$=".ps"].user-link, body div a.pdf-link {
 		background: url('{$IMG;,icons/16x16/filetypes/page_pdf}') no-repeat right top;
 		padding: 0 22px 5px 0;
 	}
 
-	a[href$=".doc"].user_link, a[href$=".docx"].user_link, a[href$=".rtf"].user_link, body div a.doc_link {
+	a[href$=".doc"].user-link, a[href$=".docx"].user-link, a[href$=".rtf"].user-link, body div a.doc-link {
 		background: url('{$IMG;,icons/16x16/filetypes/page_doc}') no-repeat right top;
 		padding: 0 22px 5px 0;
 	}
 
-	a[href$=".xls"].user_link, a[href$=".xlsx"].user_link, body div a.xls_link {
+	a[href$=".xls"].user-link, a[href$=".xlsx"].user-link, body div a.xls-link {
 		background: url('{$IMG;,icons/16x16/filetypes/page_xls}') no-repeat right top;
 		padding: 0 22px 5px 0;
 	}
 
-	a[href$=".ppt"].user_link, a[href$=".pptx"].user_link, body div a.ppt_link {
+	a[href$=".ppt"].user-link, a[href$=".pptx"].user-link, body div a.ppt-link {
 		background: url('{$IMG;,icons/16x16/filetypes/page_ppt}') no-repeat right top;
 		padding: 0 22px 5px 0;
 	}
 
-	a[href$=".log"].user_link, a[href$=".txt"].user_link, body div a.txt_link {
+	a[href$=".log"].user-link, a[href$=".txt"].user-link, body div a.txt-link {
 		background: url('{$IMG;,icons/16x16/filetypes/page_txt}') no-repeat right top;
 		padding: 0 22px 5px 0;
 	}
 
-	a[href$=".odt"].user_link, body div a.odt_link {
+	a[href$=".odt"].user-link, body div a.odt-link {
 		background: url('{$IMG;,icons/16x16/filetypes/page_odt}') no-repeat right top;
 		padding: 0 22px 5px 0;
 	}
 
-	a[href$=".odp"].user_link, body div a.odp_link {
+	a[href$=".odp"].user-link, body div a.odp-link {
 		background: url('{$IMG;,icons/16x16/filetypes/page_odt}') no-repeat right top;
 		padding: 0 22px 5px 0;
 	}
 
-	a[href$=".ods"].user_link, body div a.ods_link {
+	a[href$=".ods"].user-link, body div a.ods-link {
 		background: url('{$IMG;,icons/16x16/filetypes/page_ods}') no-repeat right top;
 		padding: 0 22px 5px 0;
 	}
 
-	a[href$=".rss"].user_link, body div a.feed_link {
+	a[href$=".rss"].user-link, body div a.feed-link {
 		background: url('{$IMG;,icons/16x16/filetypes/feed}') no-repeat right top;
 		padding: 0 22px 5px 0;
 	}
 
-	a[href$=".torrent"].user_link, body div a.torrent_link {
+	a[href$=".torrent"].user-link, body div a.torrent-link {
 		background: url('{$IMG;,icons/16x16/filetypes/page_torrent}') no-repeat right top;
 		padding: 0 22px 5px 0;
 	}
 
-	a[href$=".zip"].user_link, a[href$=".gz"].user_link, a[href$=".bz2"].user_link, a[href$=".tar"].user_link, a[href$=".rar"].user_link, body div a.archive_link {
+	a[href$=".zip"].user-link, a[href$=".gz"].user-link, a[href$=".bz2"].user-link, a[href$=".tar"].user-link, a[href$=".rar"].user-link, body div a.archive-link {
 		background: url('{$IMG;,icons/16x16/filetypes/page_archive}') no-repeat right top;
 		padding: 0 22px 5px 0;
 	}
 
-	a[href$=".asf"].user_link, a[href$=".ra"].user_link, a[href$=".wma"].user_link, a[href$=".wav"].user_link, a[href$=".mp3"].user_link, a[href$=".ogg"].user_link, a[href$=".mid"].user_link, a[href$=".mov"].user_link, a[href$=".qt"].user_link, a[href$=".wmv"].user_link, a[href$=".ram"].user_link, a[href$=".rm"].user_link, a[href$=".avi"].user_link, a[href$=".mpg"].user_link, a[href$=".mpe"].user_link, a[href$=".mpeg"].user_link, a[href$=".mp4"].user_link, a[href$=".webm"].user_link, body div a.media_link {
+	a[href$=".asf"].user-link, a[href$=".ra"].user-link, a[href$=".wma"].user-link, a[href$=".wav"].user-link, a[href$=".mp3"].user-link, a[href$=".ogg"].user-link, a[href$=".mid"].user-link, a[href$=".mov"].user-link, a[href$=".qt"].user-link, a[href$=".wmv"].user-link, a[href$=".ram"].user-link, a[href$=".rm"].user-link, a[href$=".avi"].user-link, a[href$=".mpg"].user-link, a[href$=".mpe"].user-link, a[href$=".mpeg"].user-link, a[href$=".mp4"].user-link, a[href$=".webm"].user-link, body div a.media-link {
 		background: url('{$IMG;,icons/16x16/filetypes/page_media}') no-repeat right top;
 		padding: 0 22px 5px 0;
 	}
 
-	body a.link_exempt, body .link_exempt_wrap a, body a[href*=".php"]:not(.force_filetype_icon).user_link, a[rel="lightbox"] { /* Turn off the "new window" icon for URLs containing ".php" because usually in Composr these are used for system pages that don't warrant these icons */
+	body a.link-exempt, body .link-exempt-wrap a, body a[href*=".php"]:not(.force-filetype-icon).user-link, a[rel="lightbox"] { /* Turn off the "new window" icon for URLs containing ".php" because usually in Composr these are used for system pages that don't warrant these icons */
 		background-image: none !important;
 		padding: 0px !important;
 	}
 
-	body a.link_exempt2 {
+	body a.link-exempt2 {
 		background-image: none !important;
 	}
 
 	@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-		a[target="_blank"].user_link { /* Detected external links have styling */
+		a[target="_blank"].user-link { /* Detected external links have styling */
 			background-image: url('{$IMG;,icons/32x32/filetypes/external_link}');
 			background-size: 7px 8px;
 		}
-		body div a.external_link { /* Explicitly marked external links must show the styling with precedence */
+		body div a.external-link { /* Explicitly marked external links must show the styling with precedence */
 			background-image: url('{$IMG;,icons/32x32/filetypes/external_link}');
 			background-size: 7px 8px;
 		}
@@ -5105,62 +5106,62 @@ a[rel="lightbox"] {
 			background-size: 16px 16px;
 		}
 
-		a[href$=".pdf"].user_link, a[href$=".ps"].user_link, body div a.pdf_link {
+		a[href$=".pdf"].user-link, a[href$=".ps"].user-link, body div a.pdf-link {
 			background-image: url('{$IMG;,icons/32x32/filetypes/page_pdf}');
 			background-size: 16px 16px;
 		}
 
-		a[href$=".doc"].user_link, a[href$=".docx"].user_link, a[href$=".rtf"].user_link, body div a.doc_link {
+		a[href$=".doc"].user-link, a[href$=".docx"].user-link, a[href$=".rtf"].user-link, body div a.doc-link {
 			background-image: url('{$IMG;,icons/32x32/filetypes/page_doc}');
 			background-size: 16px 16px;
 		}
 
-		a[href$=".xls"].user_link, a[href$=".xlsx"].user_link, body div a.xls_link {
+		a[href$=".xls"].user-link, a[href$=".xlsx"].user-link, body div a.xls-link {
 			background-image: url('{$IMG;,icons/32x32/filetypes/page_xls}');
 			background-size: 16px 16px;
 		}
 
-		a[href$=".ppt"].user_link, a[href$=".pptx"].user_link, body div a.ppt_link {
+		a[href$=".ppt"].user-link, a[href$=".pptx"].user-link, body div a.ppt-link {
 			background-image: url('{$IMG;,icons/32x32/filetypes/page_ppt}');
 			background-size: 16px 16px;
 		}
 
-		a[href$=".log"].user_link, a[href$=".txt"].user_link, body div a.txt_link {
+		a[href$=".log"].user-link, a[href$=".txt"].user-link, body div a.txt-link {
 			background-image: url('{$IMG;,icons/32x32/filetypes/page_txt}');
 			background-size: 16px 16px;
 		}
 
-		a[href$=".odt"].user_link, body div a.odt_link {
+		a[href$=".odt"].user-link, body div a.odt-link {
 			background-image: url('{$IMG;,icons/32x32/filetypes/page_odt}');
 			background-size: 16px 16px;
 		}
 
-		a[href$=".odp"].user_link, body div a.odp_link {
+		a[href$=".odp"].user-link, body div a.odp-link {
 			background-image: url('{$IMG;,icons/32x32/filetypes/page_odt}');
 			background-size: 16px 16px;
 		}
 
-		a[href$=".ods"].user_link, body div a.ods_link {
+		a[href$=".ods"].user-link, body div a.ods-link {
 			background-image: url('{$IMG;,icons/32x32/filetypes/page_ods}');
 			background-size: 16px 16px;
 		}
 
-		a[href$=".rss"].user_link, body div a.feed_link {
+		a[href$=".rss"].user-link, body div a.feed-link {
 			background-image: url('{$IMG;,icons/32x32/filetypes/feed}');
 			background-size: 16px 16px;
 		}
 
-		a[href$=".torrent"].user_link, body div a.torrent_link {
+		a[href$=".torrent"].user-link, body div a.torrent-link {
 			background-image: url('{$IMG;,icons/32x32/filetypes/page_torrent}');
 			background-size: 16px 16px;
 		}
 
-		a[href$=".zip"].user_link, a[href$=".gz"].user_link, a[href$=".bz2"].user_link, a[href$=".tar"].user_link, a[href$=".rar"].user_link, body div a.archive_link {
+		a[href$=".zip"].user-link, a[href$=".gz"].user-link, a[href$=".bz2"].user-link, a[href$=".tar"].user-link, a[href$=".rar"].user-link, body div a.archive-link {
 			background-image: url('{$IMG;,icons/32x32/filetypes/page_archive}');
 			background-size: 16px 16px;
 		}
 
-		a[href$=".asf"].user_link, a[href$=".ra"].user_link, a[href$=".wma"].user_link, a[href$=".wav"].user_link, a[href$=".mp3"].user_link, a[href$=".ogg"].user_link, a[href$=".mid"].user_link, a[href$=".mov"].user_link, a[href$=".qt"].user_link, a[href$=".wmv"].user_link, a[href$=".ram"].user_link, a[href$=".rm"].user_link, a[href$=".avi"].user_link, a[href$=".mpg"].user_link, a[href$=".mpe"].user_link, a[href$=".mpeg"].user_link, a[href$=".mp4"].user_link, a[href$=".webm"].user_link, body div a.media_link {
+		a[href$=".asf"].user-link, a[href$=".ra"].user-link, a[href$=".wma"].user-link, a[href$=".wav"].user-link, a[href$=".mp3"].user-link, a[href$=".ogg"].user-link, a[href$=".mid"].user-link, a[href$=".mov"].user-link, a[href$=".qt"].user-link, a[href$=".wmv"].user-link, a[href$=".ram"].user-link, a[href$=".rm"].user-link, a[href$=".avi"].user-link, a[href$=".mpg"].user-link, a[href$=".mpe"].user-link, a[href$=".mpeg"].user-link, a[href$=".mp4"].user-link, a[href$=".webm"].user-link, body div a.media-link {
 			background-image: url('{$IMG;,icons/32x32/filetypes/page_media}');
 			background-size: 16px 16px;
 		}
@@ -5168,14 +5169,14 @@ a[rel="lightbox"] {
 /*{+END}*/
 
 /*{+START,IF,{$ADDON_INSTALLED,recommend}}*/
-	.print_icon {
+	.print-icon {
 		background: url('{$IMG;,icons/24x24/links/print}') no-repeat left top !important;
 		padding: 0 0 5px 32px !important;
 		display: inline-block;
 	}
 
 	@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-		.print_icon {
+		.print-icon {
 			background-image: url('{$IMG;,icons/48x48/links/print}');
 			background-size: 24px 24px;
 		}
@@ -5192,7 +5193,7 @@ a[title="{!VIRTUAL_ROOT}"]:hover {
 =========================
 */
 
-.overlay [role="toolbar"], .overlay .emoticon-chooser, .overlay .posting_rules, .overlay .required-field-warning {
+.overlay [role="toolbar"], .overlay .emoticon-chooser, .overlay .posting-rules, .overlay .required-field-warning {
 	display: none;
 }
 
@@ -5202,56 +5203,56 @@ a[title="{!VIRTUAL_ROOT}"]:hover {
 	word-wrap: break-word;
 }
 
-.overlay_close_button {
+.overlay-close-button {
 	position: absolute;
 	cursor: pointer;
 }
 /*{+START,CSS_MODE,mobile}*/
-	.overlay_close_button {
+	.overlay-close-button {
 		top: 0;
 		right: 0;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,desktop}*/
-	.overlay_close_button {
+	.overlay-close-button {
 		top: -16px;
 		right: -16px;
 	}
 /*{+END}*/
 
-.overlay img.lightbox_image {
+.overlay img.lightbox-image {
 	display: block;
 }
 
-.overlay .previous_button, .overlay .next_button {
+.overlay .previous-button, .overlay .next-button {
 	position: absolute;
 	cursor: pointer;
 	top: calc(50% - {$DIV,74,2}px);
 	max-width: 20%;
 }
 
-.overlay .previous_button, .overlay .next_button {
+.overlay .previous-button, .overlay .next-button {
 	opacity: 0;
 	transition-property : opacity;
 	transition-duration : 0.5s;
 }
-.overlay .previous_button:hover, .overlay .next_button:hover, .overlay.mousemove .previous_button, .overlay.mousemove .next_button, body.touch-enabled .overlay.mousemove .previous_button, body.touch-enabled .overlay.mousemove .next_button {
+.overlay .previous-button:hover, .overlay .next-button:hover, .overlay.mousemove .previous-button, .overlay.mousemove .next-button, body.touch-enabled .overlay.mousemove .previous-button, body.touch-enabled .overlay.mousemove .next-button {
 	opacity: 1.0 !important;
 }
 
-.overlay .previous_button {
+.overlay .previous-button {
 	left: 1.5em;
 }
 
-.overlay .next_button {
+.overlay .next-button {
 	right: 1.5em;
 }
 
-#lightbox_meta {
+#lightbox-meta {
 	margin: 0.5em 0;
 }
 
-span:not(:empty)+#lightbox_position_in_set:before, span:not(:empty)+#lightbox_full_link:before {
+span:not(:empty)+#lightbox-position-in-set:before, span:not(:empty)+#lightbox-full-link:before {
 	margin-left: 0.25em;
 	content: "\00b7" !important;
 	padding-right: 0.5em;
@@ -5296,18 +5297,18 @@ span:not(:empty)+#lightbox_position_in_set:before, span:not(:empty)+#lightbox_fu
 		overflow-y: visible !important;
 	}
 
-	.global_middle {
+	.global-middle {
 		margin: 0 !important;
 		padding: 0 !important;
 		background: none !important;
 	}
 
 	.non-accessibility-redundancy,
-	.menu_type__top,
+	.menu-type--top,
 	.buttons-group,
 	.associated-links-block-group,
-	.screen_actions_outer,
-	.adminzone_search,
+	.screen-actions-outer,
+	.adminzone-search,
 	.global-banner,
 	header,
 	footer,
@@ -5315,12 +5316,12 @@ span:not(:empty)+#lightbox_position_in_set:before, span:not(:empty)+#lightbox_fu
 	.toggleable-tray-button,
 	.post-buttons,
 	.quick-self-edit-link, .staff-actions,
-	.comments_form,
+	.comments-form,
 	.ratings, .trackbacks {
 		display: none !important;
 	}
 
-	.global_navigation {
+	.global-navigation {
 		visibility: hidden;
 	}
 }

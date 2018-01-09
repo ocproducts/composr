@@ -75,7 +75,7 @@
 				{COMMENTS}
 
 				{+START,IF_EMPTY,{$TRIM,{COMMENTS}}}
-					<p class="nothing_here">{!NO_COMMENTS}</p>
+					<p class="nothing-here">{!NO_COMMENTS}</p>
 				{+END}
 			</div>
 

@@ -205,14 +205,14 @@
             }
 
             // If you only want a single image-based thumbnail
-            if (containsVideo) { // Remove this 'if' (so it always runs) if you do not want the grid-style layout (plus remove the media_set class from the outer div
+            if (containsVideo) { // Remove this 'if' (so it always runs) if you do not want the grid-style layout (plus remove the media-set class from the outer div
                 var width = params.width ? 'style="width: ' + Number(params.width) + 'px"' : '',
                     imgWidthHeight = setImgWidthHeight ? ' width="' + Number(params.width) + '" height="' + Number(params.height) + '"' : '',
                     mediaSetHtml = /** @lang HTML */'' +
                         '<figure class="attachment" ' + width + '>' +
                         '   <figcaption>' + $util.format('{!comcode:MEDIA_SET;^}', [imgs.length]) + '</figcaption>' +
                         '   <div>' +
-                        '        <div class="attachment_details">' +
+                        '        <div class="attachment-details">' +
                         '            <a class="js-click-open-images-into-lightbox" target="_blank" title="' + $cms.filter.html($util.format('{!comcode:MEDIA_SET^;}', [imgs.length])) + ' {!LINK_NEW_WINDOW^/}" href="#!">' +
                         '                <img ' + imgWidthHeight + ' src="' + $cms.filter.html(imgsThumbs[0]) + '">' +
                         '            </a>' +
@@ -232,7 +232,7 @@
                 modal.positionInSet = start;
 
                 var previousButton = document.createElement('img');
-                previousButton.className = 'previous_button';
+                previousButton.className = 'previous-button';
                 previousButton.src = $util.srl('{$IMG;,mediaset_previous}');
                 previousButton.addEventListener('click', clickPreviousButton);
                 function clickPreviousButton(e) {
@@ -248,7 +248,7 @@
                 modal.el.firstElementChild.appendChild(previousButton);
 
                 var nextButton = document.createElement('img');
-                nextButton.className = 'next_button';
+                nextButton.className = 'next-button';
                 nextButton.src = $util.srl('{$IMG;,mediaset_next}');
                 nextButton.addEventListener('click', clickNextButton);
                 function clickNextButton(e) {
@@ -270,8 +270,8 @@
                     setTimeout(function () { // Defer execution until the HTML was parsed
                         if (isVideo) {
                             var video = document.createElement('video');
-                            video.id = 'lightbox_image';
-                            video.className = 'lightbox_image';
+                            video.id = 'lightbox-image';
+                            video.className = 'lightbox-image';
                             video.controls = 'controls';
                             video.autoplay = 'autoplay';
                             $dom.html(video, imgs[position][0]);
@@ -280,8 +280,8 @@
                             });
                         } else {
                             var img = modal.topWindow.document.createElement('img');
-                            img.className = 'lightbox_image';
-                            img.id = 'lightbox_image';
+                            img.className = 'lightbox-image';
+                            img.id = 'lightbox-image';
                             img.src = '{$IMG_INLINE;,loading}';
                             setTimeout(function () { // Defer execution until after loading is set
                                 img.addEventListener('load', function () {
@@ -291,8 +291,8 @@
                             }, 0);
                         }
 
-                        var lightboxDescription = modal.topWindow.$dom.$id('lightbox_description'),
-                            lightboxPositionInSetX = modal.topWindow.$dom.$id('lightbox_position_in_set_x');
+                        var lightboxDescription = modal.topWindow.$dom.$id('lightbox-description'),
+                            lightboxPositionInSetX = modal.topWindow.$dom.$id('lightbox-position-in-set-x');
 
                         if (lightboxDescription) {
                             $dom.html(lightboxDescription, imgs[position][1]);

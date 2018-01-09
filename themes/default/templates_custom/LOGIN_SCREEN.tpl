@@ -31,7 +31,7 @@
 				{PASSION}
 
 				<div class="float-surrounder">
-					<table class="map_table autosized-table login_page_form">
+					<table class="map-table autosized-table login_page_form">
 						<tbody>
 							<tr>
 								<th class="de-th"><label for="login_username">{$LOGIN_LABEL}:</label></th>

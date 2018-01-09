@@ -40,7 +40,7 @@
 
 			{+START,IF_NON_EMPTY,{$TRIM,{FIELDS}}}
 				<div class="wide-table-wrap">
-					<table id="product-attribute-specs-table" class="map_table catalogue-fields-table wide-table results-table">
+					<table id="product-attribute-specs-table" class="map-table catalogue-fields-table wide-table results-table">
 						{+START,IF,{$DESKTOP}}
 							<colgroup>
 								<col class="catalogue-fieldmap-field-name-column" />

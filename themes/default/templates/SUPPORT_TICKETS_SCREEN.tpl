@@ -8,7 +8,7 @@
 	{+END}
 
 	{+START,IF,{$NOT,{$IS_GUEST}}}
-		<div class="box box___support_tickets_screen"><div class="box-inner vertical_alignment">
+		<div class="box box___support_tickets_screen"><div class="box-inner vertical-alignment">
 			<form title="{!FILTER}" class="float-surrounder js-form-submit-scroll-to-top" id="ticket_type_form" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}" method="get" autocomplete="off">
 				{$HIDDENS_FOR_GET_FORM,{$SELF_URL,0,1},ticket_type_id,open}
 
@@ -36,10 +36,10 @@
 		</div></div>
 
 		{+START,IF_EMPTY,{LINKS}}
-			{$?,{$HAS_PRIVILEGE,support_operator},<p class="nothing_here">{!NO_ENTRIES}</p>,{$PARAGRAPH,{!SUPPORT_NO_TICKETS}}}
+			{$?,{$HAS_PRIVILEGE,support_operator},<p class="nothing-here">{!NO_ENTRIES}</p>,{$PARAGRAPH,{!SUPPORT_NO_TICKETS}}}
 		{+END}
 		{+START,IF_NON_EMPTY,{LINKS}}
-			<div class="wide-table-wrap"><table class="columned_table results-table wide-table support_tickets autosized-table responsive-table">
+			<div class="wide-table-wrap"><table class="columned-table results-table wide-table support_tickets autosized-table responsive-table">
 				<thead>
 					<tr>
 						<th>

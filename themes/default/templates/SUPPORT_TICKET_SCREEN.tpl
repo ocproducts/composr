@@ -22,14 +22,14 @@
 		{+END}
 
 		<p class="lonely-label">{!_ASSIGNED_TO}</p>
-		<ul class="spaced_list">
+		<ul class="spaced-list">
 			{+START,IF_NON_EMPTY,{ASSIGNED}}
 				{+START,LOOP,ASSIGNED}
 					<li>
 						<span>{_loop_var*}</span>
 
 						{+START,IF,{$HAS_PRIVILEGE,support_operator}}
-							<form title="{!_ASSIGNED_TO}" action="{$PAGE_LINK*,_SEARCH:tickets:unassign:ticket_id={ID}:member_id={_loop_key}}" method="post" class="inline vertical_alignment" autocomplete="off">
+							<form title="{!_ASSIGNED_TO}" action="{$PAGE_LINK*,_SEARCH:tickets:unassign:ticket_id={ID}:member_id={_loop_key}}" method="post" class="inline vertical-alignment" autocomplete="off">
 								{$INSERT_SPAMMER_BLACKHOLE}
 
 								<input class="button-micro menu___generic_admin__delete" type="submit" value="{!REMOVE}" />
@@ -46,10 +46,10 @@
 			{+START,IF,{$HAS_PRIVILEGE,support_operator}}
 				{$REQUIRE_JAVASCRIPT,ajax_people_lists}
 				<li>
-					<form title="{!ASSIGN_TO}" action="{$PAGE_LINK*,_SEARCH:tickets:assign:ticket_id={ID}}" method="post" class="inline vertical_alignment" autocomplete="off">
+					<form title="{!ASSIGN_TO}" action="{$PAGE_LINK*,_SEARCH:tickets:assign:ticket_id={ID}}" method="post" class="inline vertical-alignment" autocomplete="off">
 						{$INSERT_SPAMMER_BLACKHOLE}
 
-						<label for="assign_username" class="accessibility_hidden">{!USERNAME}</label>
+						<label for="assign_username" class="accessibility-hidden">{!USERNAME}</label>
 						<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" class="input-username js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" id="assign_username" name="username" value="{$USERNAME*}" />
 						<input class="button-micro buttons--proceed" type="submit" value="{!ASSIGN_TO}" />
 					</form>
@@ -148,7 +148,7 @@
 	{$SET,COMMENT_POSTING_ROWS,20}
 
 	{+START,IF_NON_EMPTY,{COMMENT_FORM}}
-		<form title="{!PRIMARY_PAGE_FORM}" id="comments_form" class="js-submit-check-post-and-ticket-type-id-fields" action="{URL*}" method="post" enctype="multipart/form-data" itemscope="itemscope" itemtype="http://schema.org/ContactPage" autocomplete="off">
+		<form title="{!PRIMARY_PAGE_FORM}" id="comments-form" class="js-submit-check-post-and-ticket-type-id-fields" action="{URL*}" method="post" enctype="multipart/form-data" itemscope="itemscope" itemtype="http://schema.org/ContactPage" autocomplete="off">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			{COMMENT_FORM}
@@ -210,10 +210,10 @@
 	<h2>{!OTHER_TICKETS_BY_MEMBER,{$DISPLAYED_USERNAME*,{USERNAME}}}</h2>
 
 	{+START,IF_EMPTY,{OTHER_TICKETS}}
-		<p class="nothing_here">{!NONE}</p>
+		<p class="nothing-here">{!NONE}</p>
 	{+END}
 	{+START,IF_NON_EMPTY,{OTHER_TICKETS}}
-		<div class="wide-table-wrap"><table class="columned_table results-table wide-table support_tickets autosized-table responsive-table">
+		<div class="wide-table-wrap"><table class="columned-table results-table wide-table support_tickets autosized-table responsive-table">
 			<thead>
 				<tr>
 					<th>

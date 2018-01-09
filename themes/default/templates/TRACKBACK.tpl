@@ -7,7 +7,7 @@
 
 	{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,_SEARCH:admin_trackbacks}}
 		<fieldset class="innocuous-fieldset">
-			<legend class="accessibility_hidden">{!ACTION}</legend>
+			<legend class="accessibility-hidden">{!ACTION}</legend>
 
 			<label for="trackback_{ID*}_0"><input checked="checked" type="radio" id="trackback_{ID*}_0" name="trackback_{ID*}" value="0" /> {!LEAVE_TRACKBACK}</label>
 			<label for="trackback_{ID*}_1"><input type="radio" id="trackback_{ID*}_1" name="trackback_{ID*}" value="1" /> {!DELETE_TRACKBACK}</label>

@@ -8,7 +8,7 @@
 	<div class="float-surrounder" data-tpl="formScreenInputColour" data-tpl-params="{+START,PARAMS_JSON,RAW_FIELD,NAME,DEFAULT,TABINDEX,PRETTY_NAME,_REQUIRED}{_*}{+END}">
 		<div id="colours_go_here_{NAME*}">
 			<div aria-busy="true" class="spaced">
-				<div class="ajax_loading vertical_alignment">
+				<div class="ajax_loading vertical-alignment">
 					<img src="{$IMG*,loading}" title="{!LOADING}" alt="{!LOADING}" />
 					<span>{!LOADING}</span>
 				</div>
@@ -21,7 +21,7 @@
 		<td colspan="2" class="form-table-huge-field-description-is-under form-table-huge-field{+START,IF,{REQUIRED}} required{+END}">
 			<div id="colours_go_here_{NAME*}">
 				<div aria-busy="true" class="spaced">
-					<div class="ajax_loading vertical_alignment">
+					<div class="ajax_loading vertical-alignment">
 						<img src="{$IMG*,loading}" title="{!LOADING}" alt="{!LOADING}" />
 						<span>{!LOADING}</span>
 					</div>

@@ -12,7 +12,7 @@
 		</h3>
 
 		<div class="toggleable-tray js-tray-content">
-			<div class="wide-table-wrap" id="website_monitoring_list_{$GET%,RAND_WEBSITE_MONITORING}"><table class="columned_table results-table wide-table autosized-table responsive-table">
+			<div class="wide-table-wrap" id="website_monitoring_list_{$GET%,RAND_WEBSITE_MONITORING}"><table class="columned-table results-table wide-table autosized-table responsive-table">
 				<thead>
 					<tr>
 						<th>{!config:SITE_NAME}</th>
@@ -41,7 +41,7 @@
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				<div>
-					<label for="website_monitoring_list_edit" class="accessibility_hidden">{!EDIT}</label>
+					<label for="website_monitoring_list_edit" class="accessibility-hidden">{!EDIT}</label>
 					<textarea class="wide-field" id="website_monitoring_list_edit" name="website_monitoring_list_edit" rows="10" cols="90">{+START,LOOP,SITES_BEING_WATCHED}{_loop_key*}={_loop_var*}&#10;&#10;{+END}</textarea>
 				</div>
 

@@ -282,7 +282,7 @@
         var urlStem = params.urlStem,
             wrapper = $dom.$id('comments_wrapper');
 
-        replaceCommentsFormWithAjax(params.options, params.hash, 'comments_form', 'comments_wrapper');
+        replaceCommentsFormWithAjax(params.options, params.hash, 'comments-form', 'comments_wrapper');
 
         if (wrapper) {
             $dom.internaliseAjaxBlockWrapperLinks(urlStem, wrapper, ['^start_comments$', '^max_comments$'], {});
@@ -479,15 +479,15 @@
                     replaceSpot = replaceSpot.parentNode;
 
                     if (replaceSpot && replaceSpot.className) {
-                        if (replaceSpot.classList.contains('RATING_BOX')) {
+                        if (replaceSpot.classList.contains('rating-box')) {
                             template = 'RATING_BOX';
                             break;
                         }
-                        if (replaceSpot.classList.contains('RATING_INLINE_STATIC')) {
+                        if (replaceSpot.classList.contains('rating-inline-static')) {
                             template = 'RATING_INLINE_STATIC';
                             break;
                         }
-                        if (replaceSpot.classList.contains('RATING_INLINE_DYNAMIC')) {
+                        if (replaceSpot.classList.contains('rating-inline-dynamic')) {
                             template = 'RATING_INLINE_DYNAMIC';
                             break;
                         }
@@ -529,7 +529,7 @@
         isExplicitQuote = !!isExplicitQuote;
 
         var el = this,
-            form = $dom.$('form#comments_form');
+            form = $dom.$('form#comments-form');
 
         var parentIdField;
         if (form.elements['parent_id'] === undefined) {

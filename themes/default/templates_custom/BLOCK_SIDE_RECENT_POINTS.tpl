@@ -1,10 +1,10 @@
 {+START,IF_EMPTY,{GIFTS}}
-	<p class="nothing_here">{!NONE}</p>
+	<p class="nothing-here">{!NONE}</p>
 {+END}
 
 {+START,IF_NON_EMPTY,{GIFTS}}
 	<div class="wide-table-wrap">
-		<table class="columned_table results-table wide-table autosized-table">
+		<table class="columned-table results-table wide-table autosized-table">
 			<thead>
 				<tr>
 					<th>To</th>

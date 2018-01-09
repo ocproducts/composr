@@ -21,7 +21,7 @@
 					<div class="box box___calendar_event_screen_subscribed"><div class="box-inner">
 						<h2>{!SUBSCRIBED_REMINDERS}</h2>
 
-						<div class="accessibility_hidden">{!FOLLOWING_SUBSCRIBED}</div>
+						<div class="accessibility-hidden">{!FOLLOWING_SUBSCRIBED}</div>
 						<ul class="nl">
 							{+START,LOOP,SUBSCRIBED}
 								<li class="attendee"><a class="value" href="{MEMBER_URL*}" itemprop="attendees">{USERNAME*}</a></li>
@@ -86,7 +86,7 @@
 		</div>
 
 		<div class="event-left">
-			<div class="wide-table-wrap"><table class="map_table wide-table results-table autosized-table" role="note">
+			<div class="wide-table-wrap"><table class="map-table wide-table results-table autosized-table" role="note">
 				<tbody>
 					{+START,IF_NON_EMPTY,{TIME}}
 						<tr>

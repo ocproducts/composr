@@ -54,7 +54,7 @@
 	{$SET,support_mass_select,}
 
 	{+START,IF_EMPTY,{ENTRIES}{CURRENT_ENTRY}{CHILDREN}}
-		<p class="nothing_here">
+		<p class="nothing-here">
 			{!NO_ENTRIES}
 		</p>
 	{+END}
@@ -66,7 +66,7 @@
 		RIGHT=1
 	{+END}
 
-	<div class="float-surrounder lined_up_boxes flow-mode-details">
+	<div class="float-surrounder lined-up-boxes flow-mode-details">
 		{+START,IF_NON_EMPTY,{MEMBER_DETAILS}}
 			<div class="right">
 				<div class="box box___gallery_flow_mode_screen__member"><div class="box-inner">

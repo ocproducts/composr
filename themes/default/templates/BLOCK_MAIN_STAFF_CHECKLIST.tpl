@@ -32,14 +32,14 @@
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			<div class="right">
-				<label class="accessibility_hidden" for="recur-interval">{!TASK_LENGTH}</label>
-				<label class="accessibility_hidden" for="recur_every">{!TASK_LENGTH_UNITS}</label>
+				<label class="accessibility-hidden" for="recur-interval">{!TASK_LENGTH}</label>
+				<label class="accessibility-hidden" for="recur_every">{!TASK_LENGTH_UNITS}</label>
 				{!RECUR_EVERY,<input maxlength="8" type="number" id="recur-interval" name="recur_interval" size="3" />,<select id="recur_every" name="recur_every"><option value="mins">{!dates:DPLU_MINUTES}</option><option value="hours">{!dates:DPLU_HOURS}</option><option value="days">{!dates:DPLU_DAYS}</option><option value="months">{!dates:DPLU_MONTHS}</option></select>}
 				<input class="button-micro menu___generic_admin__add_one" type="submit" name="save" title="{!ADD} ({!CUSTOM_TASKS})" value="{!ADD}" />
 			</div>
 			<div>
-				<a data-open-as-overlay="{}" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img class="vertical_alignment" alt="{!COMCODE_MESSAGE,Comcode}" src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" /></a>
-				<label class="accessibility_hidden" for="new_task">{!DESCRIPTION}</label>
+				<a data-open-as-overlay="{}" class="link-exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img class="vertical-alignment" alt="{!COMCODE_MESSAGE,Comcode}" src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" /></a>
+				<label class="accessibility-hidden" for="new_task">{!DESCRIPTION}</label>
 				<input maxlength="255" type="text" id="new_task" name="new_task" size="32" />
 			</div>
 		</form>

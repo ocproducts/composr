@@ -184,7 +184,7 @@ function display_version_upgrade_path($higher_version)
         $upgrade_script .= '?news_id=' . strval($higher_version['news_id']) . '&from_version=' . urlencode($version_dotted);
     }
     ?>
-    <p class="version vertical_alignment">
+    <p class="version vertical-alignment">
         <!-- Version number -->
         <span class="version-number"> <?= escape_html($higher_version['version_pretty']) ?></span>
         <!-- Output upgrader link -->

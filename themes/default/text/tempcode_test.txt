@@ -29,7 +29,7 @@
 -->
 <h2>Environmental variables</h2>
 
-<table class="map_table"><tbody>
+<table class="map-table"><tbody>
 	<tr>
 		<th>$MOBILE</th>
 		<td>{$MOBILE}</td>
@@ -42,7 +42,7 @@
 
 <h2>Computational variables</h2>
 
-<table class="map_table"><tbody>
+<table class="map-table"><tbody>
 	<tr>
 		<th>$CYCLE,my_cycle,1,2</th>
 		<td>{$CYCLE,my_cycle,1,2}</td>
@@ -91,7 +91,7 @@
 
 <h2>Array variables</h2>
 
-<table class="map_table"><tbody>
+<table class="map-table"><tbody>
 	<tr>
 		<th>+COUNT,SIMPLE_ARRAY</th>
 		<td>{+COUNT,SIMPLE_ARRAY}</td>
@@ -108,7 +108,7 @@
 
 <h2>String variables</h2>
 
-<table class="map_table"><tbody>
+<table class="map-table"><tbody>
 	<tr>
 		<th>$WCASE,I am a Mushroom</th>
 		<td>{$WCASE,I am a Mushroom}</td>
@@ -161,7 +161,7 @@
 
 <h2>Arithmetical variables</h2>
 
-<table class="map_table"><tbody>
+<table class="map-table"><tbody>
 	<tr>
 		<th>$MULT,2,3</th>
 		<td>{$MULT,2,3}</td>
@@ -206,7 +206,7 @@
 
 <h2>Logical variables</h2>
 
-<table class="map_table"><tbody>
+<table class="map-table"><tbody>
 	<tr>
 		<th>$NOT,1</th>
 		<td>{$NOT,1}</td>
@@ -263,7 +263,7 @@
 
 <h2>Variable variables</h2>
 
-<table class="map_table"><tbody>
+<table class="map-table"><tbody>
 	<tr>
 		<th>$ISSET,test</th>
 		<td>{$ISSET,test}</td>

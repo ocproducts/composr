@@ -11,7 +11,7 @@
 				{!PAGE_MATCH_KEY_ACCESS_TEXT}
 			</p>
 
-			<div class="wide-table-wrap"><table class="columned_table wide-table results-table privileges responsive-table">
+			<div class="wide-table-wrap"><table class="columned-table wide-table results-table privileges responsive-table">
 				<colgroup>
 					<col class="match_key_name_column" />
 					{COLS}
@@ -36,7 +36,7 @@
 				{!PAGE_MATCH_KEY_MESSAGES_TEXT}
 			</p>
 
-			<div class="wide-table-wrap"><table class="columned_table wide-table results-table responsive-table">
+			<div class="wide-table-wrap"><table class="columned-table wide-table results-table responsive-table">
 				<colgroup>
 					<col class="match_key_name_column" />
 					<col class="permission_match_key_message_column" />
@@ -49,7 +49,7 @@
 					</th>
 					<th>
 						{!MATCH_KEY_MESSAGE_FIELD}
-						<a data-open-as-overlay="{}" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,:userguide_comcode}"><img src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical_alignment" alt="{!COMCODE_MESSAGE,Comcode}" /></a>
+						<a data-open-as-overlay="{}" class="link-exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,:userguide_comcode}"><img src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical-alignment" alt="{!COMCODE_MESSAGE,Comcode}" /></a>
 					</th>
 				</tr>
 				</thead>

@@ -9,7 +9,7 @@
 	{+END}{+END}
 
 	<div class="toggleable-tray js-tray-content"{+START,IF_PASSED,MEMBER_ID} id="user_{MEMBER_ID*}"{+END}{+START,IF,{$NOT,{HAS_SOME}}} style="display: none"{+END} aria-expanded="false">
-		<div class="wide-table-wrap"><table class="map_table form-table wide-table scrollable-inside">
+		<div class="wide-table-wrap"><table class="map-table form-table wide-table scrollable-inside">
 			{+START,IF,{$DESKTOP}}
 				<colgroup>
 					<col class="field-name-column" />
@@ -20,7 +20,7 @@
 			<tbody>
 				{+START,LOOP,EFFECTS}
 					<tr class="form-table-field-spacer">
-						<th colspan="2" class="table_heading_cell">
+						<th colspan="2" class="table-heading-cell">
 							<span class="faux-h2">{EFFECT_TITLE*}</span>
 						</th>
 					</tr>
@@ -55,7 +55,7 @@
 
 						<td id="form_table_field_input__upload_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" class="form-table-field-input">
 							<div class="upload-field">
-								<label class="accessibility_hidden" for="upload_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}">{!ALT_FIELD,{!UPLOAD}}</label>
+								<label class="accessibility-hidden" for="upload_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}">{!ALT_FIELD,{!UPLOAD}}</label>
 								<input name="upload_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" id="upload_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" type="file" />
 
 								<input type="hidden" name="clear_button_upload_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" id="clear_button_upload_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" />

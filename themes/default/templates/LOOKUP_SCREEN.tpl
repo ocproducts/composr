@@ -2,7 +2,7 @@
 
 <h2>{!DETAILS}</h2>
 
-<div class="wide-table-wrap"><table class="map_table results-table wide-table spaced-table responsive-blocked-table">
+<div class="wide-table-wrap"><table class="map-table results-table wide-table spaced-table responsive-blocked-table">
 	<colgroup>
 		<col class="field-name-column" />
 		<col class="field_value_column" />
@@ -106,7 +106,7 @@
 	</form>
 {+END}
 {+START,IF_EMPTY,{IP_LIST}}
-	<p class="nothing_here">
+	<p class="nothing-here">
 		{!NONE}
 	</p>
 {+END}

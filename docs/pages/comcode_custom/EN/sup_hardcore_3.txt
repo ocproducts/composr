@@ -27,7 +27,7 @@ Knowing how to program, I now have written my code, with my modified files saved
 
 [box="CNS_USER_MEMBER.tpl"]
 [code="HTML"]
-{+START,IF_PASSED,AT}<a {+START,IF_PASSED,COLOUR}style="color: {COLOUR}" {+END}title="{AT#}" href="{PROFILE_URL*}">{USERNAME*}</a>{+END}{+START,IF_NON_PASSED,AT}<a {+START,IF_PASSED,COLOUR}style="color: {COLOUR}" {+END}title="{!MEMBER}" href="{PROFILE_URL*}">{USERNAME*}</a>{+END}<span class="accessibility_hidden">, </span>
+{+START,IF_PASSED,AT}<a {+START,IF_PASSED,COLOUR}style="color: {COLOUR}" {+END}title="{AT#}" href="{PROFILE_URL*}">{USERNAME*}</a>{+END}{+START,IF_NON_PASSED,AT}<a {+START,IF_PASSED,COLOUR}style="color: {COLOUR}" {+END}title="{!MEMBER}" href="{PROFILE_URL*}">{USERNAME*}</a>{+END}<span class="accessibility-hidden">, </span>
 [/code]
 [/box]
 
@@ -40,7 +40,7 @@ Knowing how to program, I now have written my code, with my modified files saved
       <h4>{!_STATISTICS}</h4>
 
       <div class="cns_stats_1">
-         <table cellpadding="0" cellspacing="0" class="map_table cns_stats_2">
+         <table cellpadding="0" cellspacing="0" class="map-table cns_stats_2">
             <colgroup span="2">
                <col class="cns-bottom-bar-left-column" />
                <col class="cns-bottom-bar-right-column" />

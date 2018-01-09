@@ -2,7 +2,7 @@
 
 <div class="fields-set-item" data-tpl="formScreenFieldsSetItem" data-tpl-params="{+START,PARAMS_JSON,NAME}{_*}{+END}">
 	<div class="fields-set-radio">
-		<label class="accessibility_hidden" for="choose_{NAME*}">{!USE}: {PRETTY_NAME*}</label>
+		<label class="accessibility-hidden" for="choose_{NAME*}">{!USE}: {PRETTY_NAME*}</label>
 		<input type="radio" name="{SET_NAME*}" id="choose_{NAME*}" value="{NAME*}" />
 
 		<label for="{NAME*}">{PRETTY_NAME*}</label>
@@ -10,7 +10,7 @@
 		{COMCODE}
 	</div>
 
-	<div class="mini-indent fields-set-contents vertical_alignment">
+	<div class="mini-indent fields-set-contents vertical-alignment">
 		{INPUT}
 
 		{+START,IF_NON_EMPTY,{DESCRIPTION}}

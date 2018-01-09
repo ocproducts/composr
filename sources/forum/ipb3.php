@@ -1011,8 +1011,8 @@ class Forum_driver_ipb3 extends Forum_driver_base
                 }
                 $post = preg_replace('#public/style_emoticons/<\#EMO_DIR\#>(.+?)\'#is', $emoticons_set_dir . '\\1\'', $post);
 
-                $post = str_replace("class='quotetop'", "class='comcode_quote'", $post);
-                $post = str_replace("class='quotemain'", "class='comcode_quote_inner'", $post);
+                $post = str_replace("class='quotetop'", "class='comcode-quote'", $post);
+                $post = str_replace("class='quotemain'", "class='comcode-quote-inner'", $post);
 
                 // Attachments
                 $attachments = $this->db->query_select('attachments', array('attach_member_id', 'attach_id', 'attach_file', 'attach_location', 'attach_thumb_location', 'attach_is_image', 'attach_filesize', 'attach_hits'), array('attach_post_key' => $fp_rows[0]['post_key']/*, 'attach_approved' => true Gone in IPB3? */));

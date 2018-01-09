@@ -23,7 +23,7 @@
 	<meta itemprop="thumbnailURL" content="{THUMB_URL*}" />
 	<meta itemprop="embedURL" content="{URL*}" />
 
-	<div class="webstandards_checker_off" id="{$GET%,player_id}"></div>
+	<div class="webstandards-checker-off" id="{$GET%,player_id}"></div>
 
 	{+START,IF_NON_EMPTY,{DESCRIPTION}}
 		<figcaption class="associated-details">

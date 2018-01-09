@@ -43,7 +43,7 @@ if (isset($map['param'])) {
     } else {
         $group_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => $map['param']));
         if ($group_id === null) {
-            $ret = paragraph(do_lang_tempcode('MISSING_RESOURCE'), '', 'nothing_here');
+            $ret = paragraph(do_lang_tempcode('MISSING_RESOURCE'), '', 'nothing-here');
             $ret->evaluate_echo();
             return;
         }

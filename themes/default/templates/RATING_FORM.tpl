@@ -12,7 +12,7 @@
 					{+START,IF_NON_EMPTY,{TITLE}}<strong>{TITLE*}:</strong>{+END}
 				</div>
 
-				<div class="rating_inner">
+				<div class="rating-inner">
 					{$,Like/dislike}
 					{+START,IF,{LIKES}}
 						<img id="rating_bar_1__{$GET,identifier}" alt="" src="{$IMG*,1x/dislike}" srcset="{$IMG*,2x/dislike} 2x" /><img id="rating_bar_10__{$GET,identifier}" alt="" src="{$IMG*,1x/like}" srcset="{$IMG*,2x/like} 2x" />

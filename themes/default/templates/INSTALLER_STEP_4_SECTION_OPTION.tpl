@@ -7,7 +7,7 @@
 	</th>
 
 	<td class="form-table-field-input">
-		<div class="accessibility_hidden"><label for="{NAME*}">{NICE_NAME*}</label></div>
+		<div class="accessibility-hidden"><label for="{NAME*}">{NICE_NAME*}</label></div>
 		<div>
 			{INPUT}
 		</div>

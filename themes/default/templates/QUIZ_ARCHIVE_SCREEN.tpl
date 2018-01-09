@@ -1,7 +1,7 @@
 {TITLE}
 
 {+START,IF_EMPTY,{CONTENT_TESTS}{CONTENT_COMPETITIONS}{CONTENT_SURVEYS}}
-	<p class="nothing_here">
+	<p class="nothing-here">
 		{!NO_ENTRIES}
 	</p>
 {+END}

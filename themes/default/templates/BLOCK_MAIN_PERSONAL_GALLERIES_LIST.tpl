@@ -9,7 +9,7 @@
 			</div></div>
 		{+END}
 		{+START,IF_EMPTY,{GALLERIES}}
-			<p class="nothing_here">{!NO_CATEGORIES,gallery}</p>
+			<p class="nothing-here">{!NO_CATEGORIES,gallery}</p>
 		{+END}
 
 		{+START,IF_NON_EMPTY,{PAGINATION}}

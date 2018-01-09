@@ -102,7 +102,7 @@ class Block_main_google_map_users
 
             $latitude_cpf_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => 'cms_latitude'));
             $longitude_cpf_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => 'cms_longitude'));
-            //return paragraph('The maps block has not been installed correctly, the CPFs are missing.', '', 'nothing_here');
+            //return paragraph('The maps block has not been installed correctly, the CPFs are missing.', '', 'nothing-here');
         }
 
         // Data query
@@ -136,7 +136,7 @@ class Block_main_google_map_users
 
         if (count($members_to_show) == 0) { // If there's nothing to show
             if ($geolocate_user == '0') { // Exit, but only if we can't geolocate users via the block (i.e. self-healing)
-                return paragraph(do_lang_tempcode('NO_ENTRIES', 'member'), '', 'nothing_here');
+                return paragraph(do_lang_tempcode('NO_ENTRIES', 'member'), '', 'nothing-here');
             }
         }
 

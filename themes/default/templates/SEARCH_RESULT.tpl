@@ -1,5 +1,5 @@
 {+START,IF_PASSED,CONTENT}
-	<div class="search_result">
+	<div class="search-result">
 		{+START,SET,commented_out}
 			{+START,IF_PASSED,TYPE}
 				{+START,IF_PASSED,ID}

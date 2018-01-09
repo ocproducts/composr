@@ -7,7 +7,7 @@
 	{LANGUAGES}
 {+END}
 {+START,IF_EMPTY,{LANGUAGES}}
-	<p class="nothing_here">{!NONE_EM}</p>
+	<p class="nothing-here">{!NONE_EM}</p>
 {+END}
 
 <h2>{!EXPORT_THEME}</h2>
@@ -17,7 +17,7 @@
 	{THEMES}
 {+END}
 {+START,IF_EMPTY,{THEMES}}
-	<p class="nothing_here">{!NONE_EM}</p>
+	<p class="nothing-here">{!NONE_EM}</p>
 {+END}
 
 <h2>{!EXPORT_FILES}</h2>
@@ -36,5 +36,5 @@
 	</form>
 {+END}
 {+START,IF_EMPTY,{FILES}}
-	<p class="nothing_here">{!NONE_EM}</p>
+	<p class="nothing-here">{!NONE_EM}</p>
 {+END}

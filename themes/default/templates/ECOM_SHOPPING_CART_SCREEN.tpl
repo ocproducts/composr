@@ -46,7 +46,7 @@
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		{+START,IF_PASSED,FIELDS}
-			<div class="wide-table-wrap"><table class="map_table form-table wide-table">
+			<div class="wide-table-wrap"><table class="map-table form-table wide-table">
 				{+START,IF,{$NOT,{$MOBILE}}}
 					<colgroup>
 						<col class="purchase-field-name-column" />

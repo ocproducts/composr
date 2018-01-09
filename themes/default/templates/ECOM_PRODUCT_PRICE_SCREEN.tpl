@@ -29,7 +29,7 @@
 	</div>
 {+END}
 {+START,IF_EMPTY,{EDIT_FORM}}
-	<p class="nothing_here">{!NO_EXTENDABLE_PRODUCTS_ENABLED}</p>
+	<p class="nothing-here">{!NO_EXTENDABLE_PRODUCTS_ENABLED}</p>
 {+END}
 
 {+START,IF_NON_EMPTY,{ADD_FORMS}}

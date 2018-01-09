@@ -22,7 +22,7 @@
 		<div>
 			{HIDDEN}
 
-			<div class="wide-table-wrap"><table class="map_table form-table wide-table">
+			<div class="wide-table-wrap"><table class="map-table form-table wide-table">
 				{+START,IF,{$DESKTOP}}
 					<colgroup>
 						<col class="field-name-column" />

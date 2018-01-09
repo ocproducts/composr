@@ -1,7 +1,7 @@
 <section class="box box___block_main_forum_news"><div class="box-inner">
 	{+START,IF_NON_EMPTY,{TITLE}}<h2>{TITLE}</h2>{+END}
 
-	<div class="webstandards_checker_off">
+	<div class="webstandards-checker-off">
 		{CONTENT}
 	</div>
 

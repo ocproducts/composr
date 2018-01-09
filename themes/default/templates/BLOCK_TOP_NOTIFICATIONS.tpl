@@ -6,7 +6,7 @@
 		<div class="box box-arrow box__block_top_notifications_web"><span></span><div class="box-inner">
 			<div id="web_notifications_spot" role="log">
 				{+START,IF_EMPTY,{NOTIFICATIONS}}
-					<p class="nothing_here">{!notifications:NO_NOTIFICATIONS}</p>
+					<p class="nothing-here">{!notifications:NO_NOTIFICATIONS}</p>
 				{+END}
 				{+START,IF_NON_EMPTY,{NOTIFICATIONS}}
 					{NOTIFICATIONS}
@@ -29,7 +29,7 @@
 			<div class="box box-arrow box__block_top_notifications_pts"><span></span><div class="box-inner">
 				<div id="pts_spot" role="log">
 					{+START,IF_EMPTY,{PTS}}
-						<p class="nothing_here">{!cns:NO_INBOX}</p>
+						<p class="nothing-here">{!cns:NO_INBOX}</p>
 					{+END}
 					{+START,IF_NON_EMPTY,{PTS}}
 						{PTS}

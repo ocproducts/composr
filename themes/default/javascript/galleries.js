@@ -370,7 +370,7 @@
             if (window.slideshowCurrentPosition !== slide) { // If not already here
                 var slideshowFrom = document.getElementById('slideshow_from');
 
-                var fadeElementsOld = document.body.querySelectorAll('.scale_down'),
+                var fadeElementsOld = document.body.querySelectorAll('.scale-down'),
                     fadeElementOld;
                 if (fadeElementsOld[0] !== undefined) {
                     fadeElementOld = fadeElementsOld[0];
@@ -382,7 +382,7 @@
                 var cleanedSlideHtml = window.slideshowSlides[slide].replace(/<!DOCTYPE [^>]*>/i, ''); // FUDGE
                 $dom.html(document.getElementById('gallery-entry-screen'), cleanedSlideHtml);
 
-                fadeElements = document.body.querySelectorAll('.scale_down');
+                fadeElements = document.body.querySelectorAll('.scale-down');
                 if ((fadeElements[0] !== undefined) && (fadeElementsOld[0] !== undefined)) {
                     var fadeElement = fadeElements[0];
                     fadeElement.parentNode.insertBefore(fadeElementOld, fadeElement);
@@ -401,7 +401,7 @@
                 window.slideshowCurrentPosition = slide;
             }
 
-            fadeElements = document.body.querySelectorAll('.scale_down');
+            fadeElements = document.body.querySelectorAll('.scale-down');
             if (fadeElements[0] !== undefined) { // Is image
                 startSlideshowTimer();
                 resetSlideshowCountdown();

@@ -5,7 +5,7 @@
 		{$HIDDENS_FOR_GET_FORM,{$SELF_URL},seconds_back}
 
 		<p>
-			<label for="seconds_back" class="accessibility_hidden">{!FILTER}</label>
+			<label for="seconds_back" class="accessibility-hidden">{!FILTER}</label>
 			<select name="seconds_back" id="seconds_back" class="js-select-change-form-submit">
 				<option value="">{!POSTS_SINCE_LAST_VISIT}</option>
 				{+START,LOOP,5\,10\,30}

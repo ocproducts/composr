@@ -42,7 +42,7 @@
 			{+END}
 
 			{+START,IF,{$NOT,{$GET,listing}}}
-				<li class="nothing_here">
+				<li class="nothing-here">
 					{!NONE}
 				</li>
 			{+END}

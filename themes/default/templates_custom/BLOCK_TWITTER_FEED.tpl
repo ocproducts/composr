@@ -47,13 +47,13 @@
 					</tr>
 				</table>
 			{+END}
-			<div class="webstandards_checker_off">
+			<div class="webstandards-checker-off">
 				{CONTENT`}
 			</div>
 		{+END}
 
 		{+START,IF,{$OR,{$EQ,{STYLE},2},{$EQ,{STYLE},3}}}
-			<div class="webstandards_checker_off">
+			<div class="webstandards-checker-off">
 				{CONTENT`}
 			</div>
 		{+END}
@@ -61,7 +61,7 @@
 	{+END}
 
 	{+START,IF_NON_EMPTY,{TWITTER_ERROR}}
-		<div class="webstandards_checker_off">
+		<div class="webstandards-checker-off">
 			{+START,IF,{$IS_STAFF}}
 				<b>Twitter Name:</b> <a href='http://www.twitter.com/{USER_SCREEN_NAME&*}' target='_blank'>{USER_SCREEN_NAME*}</a><br />
 				<b>Error:</b> {TWITTER_ERROR`}<br />

@@ -3,10 +3,10 @@
  Copyright (c) ocProducts, 2004-2017
 */
 
-.menu_type__select ul {
+.menu-type--select ul {
 	margin: 0.25em 0 0 0 !important;
 }
 
-.menu_type__select li {
+.menu-type--select li {
 	padding: 0.4em 0.5em !important;
 }

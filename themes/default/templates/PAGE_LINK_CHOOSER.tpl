@@ -5,7 +5,7 @@
 		{$INSERT_SPAMMER_BLACKHOLE}
 	{+END}
 		<div>
-			<div class="accessibility_hidden"><label for="{NAME*}">{!ENTRY}</label></div>
+			<div class="accessibility-hidden"><label for="{NAME*}">{!ENTRY}</label></div>
 			<input class="js-input-page-link-chooser" style="display: none" type="text" id="{NAME*}" name="{NAME*}" value="{VALUE*}" />
 			<div id="tree_list__root_{NAME*}">
 				<!-- List put in here -->

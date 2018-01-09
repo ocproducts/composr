@@ -18,7 +18,7 @@
 						{$INSERT_SPAMMER_BLACKHOLE}
 
 						<div style="display: inline;">
-							<p class="accessibility_hidden"><label for="post">{!MESSAGE}</label></p>
+							<p class="accessibility-hidden"><label for="post">{!MESSAGE}</label></p>
 							<textarea style="font-family: '{FONT_NAME_DEFAULT;*}'" class="input-text-required js-keypress-enter-post-chat" data-textarea-auto-height="" id="post" name="message" cols="37" rows="1"></textarea>
 							<input type="hidden" name="font" id="font" value="{FONT_NAME_DEFAULT*}" />
 							<input type="hidden" name="colour" id="colour" value="{TEXT_COLOUR_DEFAULT*}" />
@@ -53,10 +53,10 @@
 				{+START,IF_NON_EMPTY,{COMCODE_HELP}{CHATCODE_HELP}}
 					<ul class="horizontal-links horiz-field-sep associated-links-block-group">
 						{+START,IF_NON_EMPTY,{COMCODE_HELP}}
-							<li><a data-open-as-overlay="{}" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{COMCODE_HELP*}"><img src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical_alignment" alt="{!COMCODE_MESSAGE,Comcode}" /></a></li>
+							<li><a data-open-as-overlay="{}" class="link-exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{COMCODE_HELP*}"><img src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical-alignment" alt="{!COMCODE_MESSAGE,Comcode}" /></a></li>
 						{+END}
 						{+START,IF_NON_EMPTY,{CHATCODE_HELP}}
-							<li><a data-open-as-overlay="{}" class="link_exempt" title="{$STRIP_TAGS,{!CHATCODE_HELP}} {!LINK_NEW_WINDOW}" target="_blank" href="{CHATCODE_HELP*}">{!CHATCODE_HELP}</a></li>
+							<li><a data-open-as-overlay="{}" class="link-exempt" title="{$STRIP_TAGS,{!CHATCODE_HELP}} {!LINK_NEW_WINDOW}" target="_blank" href="{CHATCODE_HELP*}">{!CHATCODE_HELP}</a></li>
 						{+END}
 					</ul>
 				{+END}

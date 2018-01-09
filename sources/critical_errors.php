@@ -241,7 +241,7 @@ END;
         a[target="_blank"], a[onclick$="window.open"] { padding-right: 0; }
     ]]></style>
 </head>
-<body><div class="global_middle">
+<body><div class="global-middle">
 END;
         }
         echo '<h1 class="screen-title">Critical error &ndash; bailing out</h1>' . "\n" . '<div class="red-alert" role="error">' . $error . '</div>' . "\n";

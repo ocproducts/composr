@@ -2,7 +2,7 @@
 
 {+START,LOOP,SUBSCRIBERS}
 	{+START,IF_NON_EMPTY,{SUB}}
-		<div class="wide-table-wrap"><table class="columned_table results-table wide-table autosized-table responsive-table">
+		<div class="wide-table-wrap"><table class="columned-table results-table wide-table autosized-table responsive-table">
 			<thead>
 				<tr>
 					<th>{!EMAIL_ADDRESS}</th>
@@ -27,7 +27,7 @@
 		{+END}
 	{+END}
 	{+START,IF_EMPTY,{SUB}}
-		<p class="nothing_here">
+		<p class="nothing-here">
 			{!NONE}
 		</p>
 	{+END}
@@ -36,7 +36,7 @@
 {+START,IF_NON_EMPTY,{DOMAINS}}
 	<h2>{!DOMAIN_STATISTICS,{$NUMBER_FORMAT*,{DOMAINS}},{$NUMBER_FORMAT*,{DOMAINS}}}</h2>
 
-	<div class="wide-table-wrap"><table class="columned_table wide-table results-table">
+	<div class="wide-table-wrap"><table class="columned-table wide-table results-table">
 		<thead>
 			<tr>
 				<th>{!DOMAIN}</th>

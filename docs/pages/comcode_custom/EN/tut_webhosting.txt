@@ -58,7 +58,7 @@ You can even buy hosting with TODO and have Composr automatically installed for 
 A bit of advice if you choose to not use our recommended host and go purely on a price comparison:
 Most companies competing on price may appear to be good if you compare features/limits but fail in the most important area -- quality of service. Composr is progressive software, and the price squeezed service we have seen from cheap webhosts are only suitable for those with very basic needs.
 
-[semihtml]<a class="link_exempt" href="TODO" target="_blank" title="Composr hosting (this link will open in a new window)"><img src="{$IMG*,468.60.composr}" alt="" /></a>[/semihtml]
+[semihtml]<a class="link-exempt" href="TODO" target="_blank" title="Composr hosting (this link will open in a new window)"><img src="{$IMG*,468.60.composr}" alt="" /></a>[/semihtml]
 [/staff_note]
 [title="2"]Requirements and recommendations[/title]
 

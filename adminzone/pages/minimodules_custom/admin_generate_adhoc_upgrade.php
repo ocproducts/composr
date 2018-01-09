@@ -202,7 +202,7 @@ if ($type == 'auto_probe') {
                 echo '</ul>';
             } else {
                 echo '
-                            <p class="nothing_here">
+                            <p class="nothing-here">
                                         None
                             </p>
                 ';

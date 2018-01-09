@@ -135,7 +135,7 @@
                     return; // Nothing interatively edited
                 }
 
-                $dom.html(element, '<div aria-busy="true" class="ajax_loading vertical_alignment"><img src="' + $util.srl('{$IMG;,loading}') + '" /> <span>{!LOADING;^}</span></div>');
+                $dom.html(element, '<div aria-busy="true" class="ajax_loading vertical-alignment"><img src="' + $util.srl('{$IMG;,loading}') + '" /> <span>{!LOADING;^}</span></div>');
 
                 var loadingPreviewOf = id;
 

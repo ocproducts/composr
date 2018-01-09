@@ -6,8 +6,8 @@
 	{+END}
 
 	{+START,IF_PASSED_AND_TRUE,HAS_RANGE}
-		<label for="sd_{NAME*}_from">{DISPLAY*}<span class="accessibility_hidden">, {!FROM}</span>:</label>
-		<label for="sd_{NAME*}_to" class="accessibility_hidden">>{DISPLAY*}, {!TO}:</label>
+		<label for="sd_{NAME*}_from">{DISPLAY*}<span class="accessibility-hidden">, {!FROM}</span>:</label>
+		<label for="sd_{NAME*}_to" class="accessibility-hidden">>{DISPLAY*}, {!TO}:</label>
 
 		<input size="5" maxlength="255" class="search-option-value" data-cms-invalid-pattern="[^\-\d{$BACKSLASH}{$DECIMAL_POINT*}]" step="any" type="number" id="sd_{NAME*}_from" name="{NAME*}_from" value="{$PREG_REPLACE*,;.*$,,{SPECIAL}}" />
 

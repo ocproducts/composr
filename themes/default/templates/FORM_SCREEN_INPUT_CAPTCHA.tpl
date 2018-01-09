@@ -11,7 +11,7 @@
 				<img id="captcha_readable" title="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" alt="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" src="{$FIND_SCRIPT*,captcha}?cache_break={$RAND&*}{$KEEP*,0,1}" />
 			{+END}
 		</div>
-		<div class="accessibility_hidden"><label for="captcha">{!captcha:AUDIO_CAPTCHA_HELP}</label></div>
+		<div class="accessibility-hidden"><label for="captcha">{!captcha:AUDIO_CAPTCHA_HELP}</label></div>
 		<input {+START,IF_PASSED,TABINDEX} tabindex="{TABINDEX*}"{+END} maxlength="6" size="8" class="input-text-required" type="text" id="captcha" name="captcha" />
 	{+END}
 

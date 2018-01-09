@@ -68,7 +68,7 @@ class Tempcode_test_set extends cms_test_case
 -->
 <h2>Environmental variables</h2>
 
-<table class="map_table"><tbody>
+<table class="map-table"><tbody>
 	<tr>
 		<th>$MOBILE</th>
 		<td>0</td>
@@ -81,7 +81,7 @@ class Tempcode_test_set extends cms_test_case
 
 <h2>Computational variables</h2>
 
-<table class="map_table"><tbody>
+<table class="map-table"><tbody>
 	<tr>
 		<th>$CYCLE,my_cycle,1,2</th>
 		<td>1</td>
@@ -130,7 +130,7 @@ class Tempcode_test_set extends cms_test_case
 
 <h2>Array variables</h2>
 
-<table class="map_table"><tbody>
+<table class="map-table"><tbody>
 	<tr>
 		<th>+COUNT,SIMPLE_ARRAY</th>
 		<td>3</td>
@@ -147,7 +147,7 @@ class Tempcode_test_set extends cms_test_case
 
 <h2>String variables</h2>
 
-<table class="map_table"><tbody>
+<table class="map-table"><tbody>
 	<tr>
 		<th>$WCASE,I am a Mushroom</th>
 		<td>I Am A Mushroom</td>
@@ -200,7 +200,7 @@ class Tempcode_test_set extends cms_test_case
 
 <h2>Arithmetical variables</h2>
 
-<table class="map_table"><tbody>
+<table class="map-table"><tbody>
 	<tr>
 		<th>$MULT,2,3</th>
 		<td>6</td>
@@ -245,7 +245,7 @@ class Tempcode_test_set extends cms_test_case
 
 <h2>Logical variables</h2>
 
-<table class="map_table"><tbody>
+<table class="map-table"><tbody>
 	<tr>
 		<th>$NOT,1</th>
 		<td>0</td>
@@ -302,7 +302,7 @@ class Tempcode_test_set extends cms_test_case
 
 <h2>Variable variables</h2>
 
-<table class="map_table"><tbody>
+<table class="map-table"><tbody>
 	<tr>
 		<th>$ISSET,test</th>
 		<td>0</td>

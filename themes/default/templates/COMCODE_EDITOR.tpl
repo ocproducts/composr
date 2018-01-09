@@ -7,9 +7,9 @@
 	</div>
 
 	{+START,IF_NON_EMPTY,{MICRO_BUTTONS}}
-		<p class="accessibility_hidden"><label for="f_face">{!FONT}</label></p>
-		<p class="accessibility_hidden"><label for="f_size">{!SIZE}</label></p>
-		<p class="accessibility_hidden"><label for="f_colour">{!COLOUR}</label></p>
+		<p class="accessibility-hidden"><label for="f_face">{!FONT}</label></p>
+		<p class="accessibility-hidden"><label for="f_size">{!SIZE}</label></p>
+		<p class="accessibility-hidden"><label for="f_colour">{!COLOUR}</label></p>
 
 		<div class="posting-form-wrap-buttons">
 			{MICRO_BUTTONS}

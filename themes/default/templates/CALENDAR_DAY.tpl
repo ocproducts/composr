@@ -1,4 +1,4 @@
-<table class="map_table calendar-day-table autosized-table">
+<table class="map-table calendar-day-table autosized-table">
 	<tbody>
 		{HOURS}
 	</tbody>

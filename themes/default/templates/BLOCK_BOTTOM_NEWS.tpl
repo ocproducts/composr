@@ -12,5 +12,5 @@
 		</ol>
 	{+END}
 
-	<div class="ticker_wrap" role="marquee" id="ticktickticker_news{$GET%,bottom_news_id}"></div>
+	<div class="ticker-wrap" role="marquee" id="ticktickticker_news{$GET%,bottom_news_id}"></div>
 </div>

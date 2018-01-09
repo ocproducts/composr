@@ -9,7 +9,7 @@
 		<div>
 			{+START,IF,{$EQ,{INPUT_FIELDS},1}}
 				<div>
-					<label class="accessibility_hidden" for="main_search_content">{!SEARCH}</label>
+					<label class="accessibility-hidden" for="main_search_content">{!SEARCH}</label>
 					<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" class="wide-field js-keyup-update-ajax-search-list-with-type" type="search" id="main_search_content" name="content" />
 				</div>
 			{+END}

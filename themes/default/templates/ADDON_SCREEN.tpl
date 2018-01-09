@@ -6,7 +6,7 @@
 	{+START,IF_NON_EMPTY,{UPDATED_ADDONS}}
 		{$,Link repeated here and below because it is important}
 		<nav>
-			<ul class="actions-list spaced_list">
+			<ul class="actions-list spaced-list">
 				<li>
 					<a href="{$PAGE_LINK*,_SELF:_SELF:addon_import:to_import={UPDATED_ADDONS}}"><strong>{!IMPORT_UPDATED_ADDONS}</strong></a>
 				</li>
@@ -24,7 +24,7 @@
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div class="not-too-tall-addons">
-			<div class="wide-table-wrap"><table class="columned_table wide-table results-table autosized-table zebra responsive-table">
+			<div class="wide-table-wrap"><table class="columned-table wide-table results-table autosized-table zebra responsive-table">
 				<thead>
 					<tr>
 						<th>
@@ -65,7 +65,7 @@
 	<h2>{!ACTIONS}</h2>
 
 	<nav>
-		<ul class="actions-list spaced_list">
+		<ul class="actions-list spaced-list">
 			{+START,IF_NON_EMPTY,{UPDATED_ADDONS}}
 				<li>
 					<a href="{$PAGE_LINK*,_SELF:_SELF:addon_import:to_import={UPDATED_ADDONS}}">{!IMPORT_UPDATED_ADDONS}</a>

@@ -33,7 +33,7 @@
 	background-color: {$GET,area_5_background};
 }
 
-.menu_type__mobile {
+.menu-type--mobile {
 	position: absolute;
 	left: 0;
 	top: 3.4em;
@@ -42,42 +42,42 @@
 	box-shadow: 0px 20px 25px 0px {$GET,dark_border};
 }
 
-.menu_type__mobile>ul {
+.menu-type--mobile>ul {
 	border-bottom: 1px solid {$GET,standard_border};
 }
 
-.menu_type__mobile ul {
+.menu-type--mobile ul {
 	background-color: {$GET,area_5_background};
 }
 
-.menu_type__mobile li {
+.menu-type--mobile li {
 	border-top: 1px solid {$GET,standard_border};
 	background: url('{$IMG;,icons/24x24/buttons/proceed}') transparent no-repeat top 1em right 1em;
 	color: {$GET,BW};
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.menu_type__mobile li {
+	.menu-type--mobile li {
 		background-image: url('{$IMG;,icons/48x48/buttons/proceed}');
 		background-size: 24px 24px;
 	}
 }
 
-.menu_type__mobile li.current, .menu_type__mobile li:hover {
+.menu-type--mobile li.current, .menu-type--mobile li:hover {
 	background-color: {$GET,area_hover_2_background};
 }
 
-.menu_type__mobile li a {
+.menu-type--mobile li a {
 	padding: 1em !important;
 	display: block;
 	color: inherit;
 	text-decoration: none;
 }
 
-.menu_type__mobile li img {
+.menu-type--mobile li img {
 	padding-right: 0.5em;
 }
 
-.menu_type__mobile ul ul li {
+.menu-type--mobile ul ul li {
 	padding-left: 2em;
 	border-left: 1px solid {$GET,standard_border};
 }

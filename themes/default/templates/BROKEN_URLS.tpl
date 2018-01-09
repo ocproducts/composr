@@ -1,5 +1,5 @@
 {+START,IF_NON_EMPTY,{URLS}}
-	<div class="wide-table-wrap"><table class="columned_table wide-table results-table autosized-table zebra">
+	<div class="wide-table-wrap"><table class="columned-table wide-table results-table autosized-table zebra">
 		<thead>
 			<tr>
 				<th>
@@ -99,5 +99,5 @@
 {+END}
 
 {+START,IF_EMPTY,{URLS}}
-	<p class="nothing_here">{!NO_RESULTS}</p>
+	<p class="nothing-here">{!NO_RESULTS}</p>
 {+END}

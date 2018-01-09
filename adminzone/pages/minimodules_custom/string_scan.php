@@ -32,28 +32,28 @@ foreach (array_keys($langs) as $lang) {
 }
 echo '</ul>';
 
-echo '<p>These are known admin language strings:</p><ul class="spaced_list">';
+echo '<p>These are known admin language strings:</p><ul class="spaced-list">';
 foreach ($just_lang_strings_admin as $str) {
     $has = isset($all_strings_in_lang[$str]);
     echo '<li><abbr title="' . escape_html(do_lang($str)) . '">' . escape_html($str) . '</abbr> (from ' . $strings_files[$str] . ') ' . ($has ? '<span style="color: green">&#x2713;</span>' : '<span style="color: red">&#x2717;</span>') . '</li>';
 }
 echo '</ul>';
 
-echo '<p>These are known non-admin language strings:</p><ul class="spaced_list">';
+echo '<p>These are known non-admin language strings:</p><ul class="spaced-list">';
 foreach ($just_lang_strings_non_admin as $str) {
     $has = isset($all_strings_in_lang[$str]);
     echo '<li><abbr title="' . escape_html(do_lang($str)) . '">' . escape_html($str) . '</abbr> (from ' . $strings_files[$str] . ') ' . ($has ? '<span style="color: green">&#x2713;</span>' : '<span style="color: red">&#x2717;</span>') . '</li>';
 }
 echo '</ul>';
 
-echo '<p>These are shared language strings:</p><ul class="spaced_list">';
+echo '<p>These are shared language strings:</p><ul class="spaced-list">';
 foreach ($lang_strings_shared as $str) {
     $has = isset($all_strings_in_lang[$str]);
     echo '<li><abbr title="' . escape_html(do_lang($str)) . '">' . escape_html($str) . '</abbr> (from ' . $strings_files[$str] . ') ' . ($has ? '<span style="color: green">&#x2713;</span>' : '<span style="color: red">&#x2717;</span>') . '</li>';
 }
 echo '</ul>';
 
-echo '<p>These are strings of unknown status:</p><ul class="spaced_list">';
+echo '<p>These are strings of unknown status:</p><ul class="spaced-list">';
 foreach ($lang_strings_unknown as $str) {
     $has = isset($all_strings_in_lang[$str]);
     echo '<li><abbr title="' . escape_html(do_lang($str)) . '">' . escape_html($str) . '</abbr> (from ' . $strings_files[$str] . ') ' . ($has ? '<span style="color: green">&#x2713;</span>' : '<span style="color: red">&#x2717;</span>') . '</li>';

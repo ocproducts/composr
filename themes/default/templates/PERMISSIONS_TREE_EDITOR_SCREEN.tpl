@@ -8,9 +8,9 @@
 			<div class="box box___permissions_tree_editor_screen"><div class="box-inner">
 				<h2>{!PERMISSIONS_TREE_EDITOR_HOW_WORK}</h2>
 
-				<p class="vertical_alignment">{!PERMISSIONS_TREE_EDITOR_ABOUT_BARRIERS,<img src="{$IMG*,led_on}" alt="" />}</p>
+				<p class="vertical-alignment">{!PERMISSIONS_TREE_EDITOR_ABOUT_BARRIERS,<img src="{$IMG*,led_on}" alt="" />}</p>
 
-				<p class="vertical_alignment">{!PERMISSIONS_TREE_EDITOR_ABOUT_GROUP,<img src="{$IMG*,permlevels/3}" alt="" />}</p>
+				<p class="vertical-alignment">{!PERMISSIONS_TREE_EDITOR_ABOUT_GROUP,<img src="{$IMG*,permlevels/3}" alt="" />}</p>
 
 				<p class="pte_tips">{!PERMISSIONS_TREE_EDITOR_ABOUT_MULTI_SELECT}</p>
 
@@ -38,7 +38,7 @@
 					</div>
 
 					<form title="{!PRIMARY_PAGE_FORM}" action="index.php" method="post" autocomplete="off">
-						<div class="accessibility_hidden"><label for="tree_list">{!ENTRY}</label></div>
+						<div class="accessibility-hidden"><label for="tree_list">{!ENTRY}</label></div>
 						<input class="js-change-update-perm-box" style="display: none" type="text" id="tree_list" name="tree_list" value="{$_GET*,id}" />
 					</form>
 					<div id="tree_list__root_tree_list" class="tree_list__root_tree_list pt_editor">
@@ -49,7 +49,7 @@
 		</div>
 	</div>
 
-	<div class="pte_set_box">
+	<div class="pte-set-box">
 		<div class="box box___permissions_tree_editor_screen"><div class="box-inner">
 			<h2>{!PERMISSIONS_TREE_EDITOR_PERMISSIONS_FOR_SELECTION}</h2>
 

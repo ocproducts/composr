@@ -1,4 +1,4 @@
-<div class="{$,{RET},global_middle,}">
+<div class="{$,{RET},global-middle,}">
 	{TITLE}
 
 	{+START,IF_NON_EMPTY,{RETURN_URL}}
@@ -14,5 +14,5 @@
 	{+END}
 
 	<div class="webstandards_div">
-		<table class="map_table autosized-table webstandards_table">
+		<table class="map-table autosized-table webstandards_table">
 			<tbody>

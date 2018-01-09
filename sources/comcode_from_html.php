@@ -717,7 +717,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
     $array_html_preg_replace[] = array('#^<span style="\s*?font-family:\s*?([^";]+);\s*?font-size:\s*?([^";]+);?"([^>]*)>(.*)</span>$#siU', '[font param="${1}" size="${2}"]${4}[/font]');
     $array_html_preg_replace[] = array('#^<span style="\s*?font-size:\s*?([0-9\.]+\w\w);?\s*?"([^>]*)>(.*)</span>$#siU', '[font size="${1}"]${3}[/font]');
     $array_html_preg_replace[] = array('#^<span style="\s*?font-family:\s*?([^";]+);?\s*?"([^>]*)>(.*)</span>$#siU', '[font param="${1}"]${3}[/font]');
-    $complex_equivs = array('<span class="comcode_highlight">(.*)</span>' => 'highlight', '<span class="comcode_bold">(.*)</span>' => 'b', '<span class="comcode_italic">(.*)</span>' => 'i', '<span class="comcode_underline">(.*)</span>' => 'u');
+    $complex_equivs = array('<span class="comcode-highlight">(.*)</span>' => 'highlight', '<span class="comcode-bold">(.*)</span>' => 'b', '<span class="comcode-italic">(.*)</span>' => 'i', '<span class="comcode-underline">(.*)</span>' => 'u');
     foreach ($complex_equivs as $from => $to) {
         $array_html_preg_replace[] = array('#^' . $from . '$#siU', '[' . $to . ']${1}[/' . $to . ']');
     }
@@ -819,8 +819,8 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
         $array_html_preg_replace[] = array('#^<li>(.*)</li>$#siU', '[*]${1}[/*]' . "\n");
         $semihtml = array_html_preg_replace('li', $array_html_preg_replace, $semihtml);
     }
-    $semihtml = str_replace('<strong class="comcode_bold">', '<strong>', $semihtml);
-    $semihtml = str_replace('<em class="comcode_italic">', '<em>', $semihtml);
+    $semihtml = str_replace('<strong class="comcode-bold">', '<strong>', $semihtml);
+    $semihtml = str_replace('<em class="comcode-italic">', '<em>', $semihtml);
     $equivs = array('blockquote' => 'indent', 'code' => 'code', 'tt' => 'tt', 'sub' => 'sub', 'sup' => 'sup', 'center' => 'center', '!abbr' => 'abbr', '!acronym' => 'acronym', 'address' => 'address', 'dfn' => 'dfn', 'cite' => 'cite', 'strong' => 'b', 'b' => 'b', 'em' => 'i', 'i' => 'i', 'u' => 'u', 'strike' => 's', 'del' => 'del', 'ins' => 'ins');
     foreach ($equivs as $from => $to) {
         if (stripos($semihtml, '<' . $from) !== false) {

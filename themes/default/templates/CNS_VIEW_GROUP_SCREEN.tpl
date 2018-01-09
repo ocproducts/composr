@@ -25,7 +25,7 @@
 	{+END}
 
 	{+START,IF_EMPTY,{PRIMARY_MEMBERS}{SECONDARY_MEMBERS}{PROSPECTIVE_MEMBERS}}
-		<p class="nothing_here">{!NO_MEMBERS}</p>
+		<p class="nothing-here">{!NO_MEMBERS}</p>
 	{+END}
 
 	{+START,IF_NON_EMPTY,{ADD_URL}}

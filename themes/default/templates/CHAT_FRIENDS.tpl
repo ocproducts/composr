@@ -1,7 +1,7 @@
 {$REQUIRE_JAVASCRIPT,chat}
 {+START,IF_NON_EMPTY,{FRIENDS}}
 	<div class="wide-table-wrap" data-tpl="chatFriends" data-tpl-params="{+START,PARAMS_JSON,FRIENDS}{_*}{+END}">
-		<table class="columned_table results-table wide-table autosized-table">
+		<table class="columned-table results-table wide-table autosized-table">
 		<colgroup>
 			<col class="chat-friends-column" />
 
@@ -71,7 +71,7 @@
 
 					{+START,IF,{$NOT,{SIMPLER}}}
 						<td>
-							<label class="accessibility_hidden" for="select_{MEMBER_ID*}">{!CHOOSE}</label>
+							<label class="accessibility-hidden" for="select_{MEMBER_ID*}">{!CHOOSE}</label>
 							<input type="checkbox" id="select_{MEMBER_ID*}" value="1" name="select_{MEMBER_ID*}" />
 						</td>
 					{+END}
@@ -83,9 +83,9 @@
 
 {+START,IF_EMPTY,{FRIENDS}}
 	{+START,IF_EMPTY,{FRIENDS_ONLINE}{FRIENDS_OFFLINE}}
-		<p class="nothing_here">{!NO_FRIEND_ENTRIES}</p>
+		<p class="nothing-here">{!NO_FRIEND_ENTRIES}</p>
 	{+END}
 	{+START,IF_NON_EMPTY,{FRIENDS_ONLINE}{FRIENDS_OFFLINE}}
-		<p class="nothing_here">{!NOBODY_ONLINE}</p>
+		<p class="nothing-here">{!NOBODY_ONLINE}</p>
 	{+END}
 {+END}

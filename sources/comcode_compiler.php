@@ -434,7 +434,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
         '</h5>',
         '<h6>',
         '</h6>',
-        '<img( alt="[^"<>]*")?( border="[^"<>]*")?( class="vertical_alignment")? src="[^"<>]*"( style="vertical-align: (top|middle|bottom|baseline)")?( title="[^"<>]*")?\s*/?' . '>',
+        '<img( alt="[^"<>]*")?( border="[^"<>]*")?( class="vertical-alignment")? src="[^"<>]*"( style="vertical-align: (top|middle|bottom|baseline)")?( title="[^"<>]*")?\s*/?' . '>',
         '<a( class="[^"<>]*")? href="[^"<>]*"( rel="[^"<>]*")?( target="[^"<>]*")?( title="[^"<>]*")?' . '>',
         '</a>',
         '<span>',

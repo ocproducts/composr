@@ -11,7 +11,7 @@
 
 	{+START,SET,boxes}
 		<div class="gallery-entry-details right">
-			<table class="columned_table map_table results-table" role="note">
+			<table class="columned-table map-table results-table" role="note">
 				{+START,IF,{$DESKTOP}}
 					<colgroup>
 						<col class="gallery-entry-field-name-column" />
@@ -80,7 +80,7 @@
 
 			{+START,IF,{$ADDON_INSTALLED,recommend}}{+START,IF,{$CONFIG_OPTION,enable_ecards}}
 				{+START,IF_NON_PASSED,VIDEO}
-					<p class="associated-link vertical_alignment"><img src="{$IMG*,icons/16x16/filetypes/email_link}" srcset="{$IMG*,icons/16x16/filetypes/email_link} 2x" alt="" /> <a href="{$PAGE_LINK*,:recommend:browse:subject={!ECARD_FOR_YOU_SUBJECT}:page_title={!SEND_AS_ECARD}:s_message={!ECARD_FOR_YOU,{$SELF_URL},{URL*},{$SITE_NAME}}:ecard=1}">{!SEND_AS_ECARD}</a></p>
+					<p class="associated-link vertical-alignment"><img src="{$IMG*,icons/16x16/filetypes/email_link}" srcset="{$IMG*,icons/16x16/filetypes/email_link} 2x" alt="" /> <a href="{$PAGE_LINK*,:recommend:browse:subject={!ECARD_FOR_YOU_SUBJECT}:page_title={!SEND_AS_ECARD}:s_message={!ECARD_FOR_YOU,{$SELF_URL},{URL*},{$SITE_NAME}}:ecard=1}">{!SEND_AS_ECARD}</a></p>
 				{+END}
 			{+END}{+END}
 		</div>
@@ -104,7 +104,7 @@
 
 	<div class="media-box">
 		{+START,IF_NON_PASSED,VIDEO}
-			<img class="scale_down" alt="{!IMAGE}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" itemprop="contentURL" />
+			<img class="scale-down" alt="{!IMAGE}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" itemprop="contentURL" />
 		{+END}
 		{+START,IF_PASSED,VIDEO}
 			{+START,IF,{$GT,{$METADATA,video:width},500}}
@@ -114,7 +114,7 @@
 			{$,If the video is not large, we will put the boxes right alongside it}
 			{+START,IF,{$NOT,{$GT,{$METADATA,video:width},500}}}
 				<div class="float-surrounder">
-					<div class="lined_up_boxes">
+					<div class="lined-up-boxes">
 						{$GET,boxes}
 					</div>
 
@@ -150,7 +150,7 @@
 		{+END}
 
 		{+START,IF,{$OR,{$NEQ,{MEDIA_TYPE},video},{$GT,{$METADATA,video:width},500}}}
-			<div class="float-surrounder lined_up_boxes">
+			<div class="float-surrounder lined-up-boxes">
 				{$GET,boxes}
 			</div>
 		{+END}

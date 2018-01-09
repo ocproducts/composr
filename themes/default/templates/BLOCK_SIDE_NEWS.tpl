@@ -2,7 +2,7 @@
 	{+START,IF_NON_EMPTY,{TITLE}}<h3>{TITLE}</h3>{+END}
 
 	{+START,IF_EMPTY,{CONTENT}}
-		<p class="nothing_here">{$?,{BLOG},{!BLOG_NO_NEWS},{!NO_NEWS}}</p>
+		<p class="nothing-here">{$?,{BLOG},{!BLOG_NO_NEWS},{!NO_NEWS}}</p>
 	{+END}
 	{+START,IF_NON_EMPTY,{CONTENT}}
 		{CONTENT}

@@ -160,7 +160,7 @@ function upgrade_script()
 
     <h3>{$l_upgrade_steps}</h3>
 
-    <div class=\"wide-table-wrap\"><table class=\"columned_table autosized-table results-table wide-table spaced-table\">
+    <div class=\"wide-table-wrap\"><table class=\"columned-table autosized-table results-table wide-table spaced-table\">
         <thead>
             <tr>
                     <th>{$l_step}</th>
@@ -803,7 +803,7 @@ END;
 
         <meta name="robots" content="noindex, nofollow" />
     </head>
-    <body class="website-body"><div class="global_middle">
+    <body class="website-body"><div class="global-middle">
         <h1 class="screen-title">{$upgrader_title}</h1>
         <p>{$upgrader_intro}</p><hr class="spaced-rule" />
 END;

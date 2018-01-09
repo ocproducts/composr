@@ -1,6 +1,6 @@
 [semihtml]
 {+START,IF,{$NOT,{$CONFIG_OPTION,collapse_user_zones}}}
-[surround="hero_section"]
+[surround="hero-section"]
 	[title]Welcome to {$SITE_NAME*}[/title]
 
 	[block failsafe="1"]main_greeting[/block]
@@ -19,7 +19,7 @@
 
 [block failsafe="1"]main_leader_board[/block]
 
-[surround="fp-col-blocks-wrap pale_box"]
+[surround="fp-col-blocks-wrap pale-box"]
 	[surround="fp-col-block left"]
 		[block failsafe="1"]main_content[/block]
 	[/surround]

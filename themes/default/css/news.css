@@ -32,7 +32,7 @@
 	margin: 0;
 }
 
-.global_middle .boxless-space .box .box.box___news_brief + .box.box___news_brief:before {
+.global-middle .boxless-space .box .box.box___news_brief + .box.box___news_brief:before {
 	border-top: 0 !important;
 	padding-top: 0 !important;
 }
@@ -91,11 +91,11 @@
 }
 
 /*{+START,CSS_MODE,mobile}*/
-	.news_entry_screen .lined_up_boxes {
+	.news_entry_screen .lined-up-boxes {
 		overflow: visible;
 	}
 
-	.news_entry_screen .lined_up_boxes>*{
+	.news_entry_screen .lined-up-boxes>*{
 		float: none;
 		margin-top: 1em;
 	}

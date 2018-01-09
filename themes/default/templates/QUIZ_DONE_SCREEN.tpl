@@ -14,7 +14,7 @@
 
 {+START,IF,{$NOT,{REVEAL_ANSWERS}}}
 	{+START,IF_NON_EMPTY,{CORRECTIONS}{AFFIRMATIONS}}
-		<ul class="spaced_list">
+		<ul class="spaced-list">
 			{CORRECTIONS}{AFFIRMATIONS}
 		</ul>
 	{+END}

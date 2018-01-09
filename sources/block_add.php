@@ -251,7 +251,7 @@ function block_helper_script()
         foreach ($param_classes as $param_class => $parameters) {
             if (count($parameters) == 0) {
                 if ($param_class == 'normal') {
-                    $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'e50ed41cc58bc234ccd314127583a1f2', 'SECTION_HIDDEN' => false, 'TITLE' => do_lang_tempcode('PARAMETERS'), 'HELP' => protect_from_escaping(paragraph(do_lang_tempcode('BLOCK_HELPER_NO_PARAMETERS'), '', 'nothing_here')))));
+                    $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'e50ed41cc58bc234ccd314127583a1f2', 'SECTION_HIDDEN' => false, 'TITLE' => do_lang_tempcode('PARAMETERS'), 'HELP' => protect_from_escaping(paragraph(do_lang_tempcode('BLOCK_HELPER_NO_PARAMETERS'), '', 'nothing-here')))));
                 }
 
                 continue;

@@ -3,7 +3,7 @@
 		<h3>{TITLE*}</h3>
 	{+END}
 
-	<p class="nothing_here">{MESSAGE*}</p>
+	<p class="nothing-here">{MESSAGE*}</p>
 
 	{+START,IF_PASSED,SUBMIT_URL}{+START,IF_NON_EMPTY,{SUBMIT_URL}}
 		<ul class="horizontal-links associated-links-block-group">

@@ -17,7 +17,7 @@ There's essentially a 5-tier distinction you should keep in mind:
 
 The following privileges impact Comcode permissions (referencing the tiers above)...
 [semihtml]
-<table class="columned_table results-table autosized-table">
+<table class="columned-table results-table autosized-table">
 	<thead>
 		<tr>
 			<th>Privilege</th>

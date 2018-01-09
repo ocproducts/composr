@@ -7,7 +7,7 @@
 		<hr />
 		{+START,IF_NON_EMPTY,{COMMANDS}}{COMMANDS}{+END}
 	</div>
-	<div class="webstandards_checker_off">
+	<div class="webstandards-checker-off">
 		<form title="{!PRIMARY_PAGE_FORM}" autocomplete="off" action="{SUBMIT_URL*}" method="post" id="commandr_form" data-submit-pd="1" class="js-submit-commandr-form-submission" autocomplete="off">
 			{$INSERT_SPAMMER_BLACKHOLE}
 

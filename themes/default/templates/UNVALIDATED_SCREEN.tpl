@@ -13,5 +13,5 @@
 {+END}
 
 {+START,IF_EMPTY,{SECTIONS}}
-	<p class="nothing_here">{!NO_ENTRIES}</p>
+	<p class="nothing-here">{!NO_ENTRIES}</p>
 {+END}

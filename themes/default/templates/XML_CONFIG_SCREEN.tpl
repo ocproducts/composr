@@ -7,7 +7,7 @@
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div>
-			<label for="xml" class="accessibility_hidden">XML</label>
+			<label for="xml" class="accessibility-hidden">XML</label>
 			<textarea name="xml" id="xml" cols="30" rows="30" class="wide-field">{XML*}</textarea>
 		</div>
 

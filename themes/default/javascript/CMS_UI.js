@@ -1001,11 +1001,11 @@
         // Set up overlay for Lightbox
         var lightboxCode = /** @lang HTML */'' +
             '<div style="text-align: center">' +
-            '    <p class="ajax_loading" id="lightbox_image"><img src="' + $util.srl('{$IMG*;,loading}') + '" /></p>' +
-            '    <p id="lightbox_meta" style="display: none" class="associated-link associated-links-block-group">' +
-            '         <span id="lightbox_description">' + description + '</span>' +
-            ((n == null) ? '' : ('<span id="lightbox_position_in_set"><span id="lightbox_position_in_set_x">' + x + '</span> / <span id="lightbox_position_in_set_n">' + n + '</span></span>')) +
-            (isVideo ? '' : ('<span id="lightbox_full_link"><a href="' + $cms.filter.html(initialImgUrl) + '" target="_blank" title="{$STRIP_TAGS;^,{!SEE_FULL_IMAGE}} {!LINK_NEW_WINDOW;^}">{!SEE_FULL_IMAGE;^}</a></span>')) +
+            '    <p class="ajax_loading" id="lightbox-image"><img src="' + $util.srl('{$IMG*;,loading}') + '" /></p>' +
+            '    <p id="lightbox-meta" style="display: none" class="associated-link associated-links-block-group">' +
+            '         <span id="lightbox-description">' + description + '</span>' +
+            ((n == null) ? '' : ('<span id="lightbox-position-in-set"><span id="lightbox-position-in-set-x">' + x + '</span> / <span id="lightbox-position-in-set-n">' + n + '</span></span>')) +
+            (isVideo ? '' : ('<span id="lightbox-full-link"><a href="' + $cms.filter.html(initialImgUrl) + '" target="_blank" title="{$STRIP_TAGS;^,{!SEE_FULL_IMAGE}} {!LINK_NEW_WINDOW;^}">{!SEE_FULL_IMAGE;^}</a></span>')) +
             '    </p>' +
             '</div>';
 
@@ -1023,8 +1023,8 @@
         setTimeout(function () { // Defer execution until the HTML was parsed
             if (isVideo) {
                 var video = document.createElement('video');
-                video.id = 'lightbox_image';
-                video.className = 'lightbox_image';
+                video.id = 'lightbox-image';
+                video.className = 'lightbox-image';
                 video.controls = 'controls';
                 video.autoplay = 'autoplay';
                 $dom.html(video, initialImgUrl);
@@ -1033,8 +1033,8 @@
                 });
             } else {
                 var img = modal.topWindow.document.createElement('img');
-                img.className = 'lightbox_image';
-                img.id = 'lightbox_image';
+                img.className = 'lightbox-image';
+                img.id = 'lightbox-image';
                 img.onload = function () {
                     $cms.ui.resizeLightboxDimensionsImg(modal, img, hasFullButton, false);
                 };
@@ -1062,11 +1062,11 @@
             width = realWidth,
             realHeight = isVideo ? img.videoHeight : img.height,
             height = realHeight,
-            lightboxImage = modal.topWindow.$dom.$id('lightbox_image'),
-            lightboxMeta = modal.topWindow.$dom.$id('lightbox_meta'),
-            lightboxDescription = modal.topWindow.$dom.$id('lightbox_description'),
-            lightboxPositionInSet = modal.topWindow.$dom.$id('lightbox_position_in_set'),
-            lightboxFullLink = modal.topWindow.$dom.$id('lightbox_full_link'),
+            lightboxImage = modal.topWindow.$dom.$id('lightbox-image'),
+            lightboxMeta = modal.topWindow.$dom.$id('lightbox-meta'),
+            lightboxDescription = modal.topWindow.$dom.$id('lightbox-description'),
+            lightboxPositionInSet = modal.topWindow.$dom.$id('lightbox-position-in-set'),
+            lightboxFullLink = modal.topWindow.$dom.$id('lightbox-full-link'),
             sup = lightboxImage.parentNode;
         sup.removeChild(lightboxImage);
         if (sup.firstChild) {

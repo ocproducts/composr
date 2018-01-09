@@ -22,7 +22,7 @@
 		{!VIEWING_POINTS_PROFILE_OF,<a href="{PROFILE_URL*}">{$DISPLAYED_USERNAME*,{USERNAME}}</a>}
 	</p>
 
-	<table class="columned_table autosized-table points_summary_table">
+	<table class="columned-table autosized-table points_summary_table">
 		<thead>
 			<tr>
 				<th>{!ACTIVITY}</th>
@@ -112,7 +112,7 @@
 	</div>
 {+END}
 {+START,IF_EMPTY,{TO}}
-	<p class="nothing_here">{!NONE}</p>
+	<p class="nothing-here">{!NONE}</p>
 {+END}
 
 {+START,IF_NON_EMPTY,{GIVE}}

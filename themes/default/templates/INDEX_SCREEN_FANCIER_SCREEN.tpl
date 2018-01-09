@@ -20,7 +20,7 @@
 					{+END}
 				{+END}
 				{+START,IF_EMPTY,{CONTENT}}
-					<p class="nothing_here">
+					<p class="nothing-here">
 						{!NONE}
 					</p>
 				{+END}
@@ -31,7 +31,7 @@
 		</div>
 	{+END}
 	{+START,IF_EMPTY,{CONTENT}}
-		<p class="nothing_here">
+		<p class="nothing-here">
 			{!NO_ENTRIES}
 		</p>
 	{+END}

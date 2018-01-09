@@ -5,7 +5,7 @@
 		{CONTENT}
 	{+END}
 	{+START,IF_EMPTY,{CONTENT}}
-		<p class="nothing_here">{!NO_INBOX}</p>
+		<p class="nothing-here">{!NO_INBOX}</p>
 	{+END}
 
 	{+START,IF_NON_EMPTY,{SEND_URL}{VIEW_URL}}

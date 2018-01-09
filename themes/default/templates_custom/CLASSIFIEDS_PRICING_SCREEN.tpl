@@ -8,7 +8,7 @@
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div>
-		<div class="wide-table-wrap"><table class="wide-table results-table autosized-table columned_table responsive-table">
+		<div class="wide-table-wrap"><table class="wide-table results-table autosized-table columned-table responsive-table">
 			<thead>
 				<tr>
 					<th>{!CATALOGUE}</th>
@@ -22,7 +22,7 @@
 				{+START,LOOP,PRICES}
 					<tr>
 						<td>
-							<label for="catalogue_{ID*}" class="accessibility_hidden">{!CATALOGUE}</label>
+							<label for="catalogue_{ID*}" class="accessibility-hidden">{!CATALOGUE}</label>
 							<select name="catalogue_{ID*}" id="catalogue_{ID*}">
 								<option value="">&mdash;</option>
 								{+START,LOOP,CATALOGUES}
@@ -31,15 +31,15 @@
 							</select>
 						</td>
 						<td>
-							<label for="days_{ID*}" class="accessibility_hidden">{!DAYS}</label>
+							<label for="days_{ID*}" class="accessibility-hidden">{!DAYS}</label>
 							<input maxlength="5" name="days_{ID*}" id="days_{ID*}" value="{PRICE_DAYS*}" class="input-integer" type="number" data-cms-invalid-pattern="[^\-\d{$BACKSLASH}{$DECIMAL_POINT*}]" />
 						</td>
 						<td>
-							<label for="label_{ID*}" class="accessibility_hidden">{!TITLE}</label>
+							<label for="label_{ID*}" class="accessibility-hidden">{!TITLE}</label>
 							<input maxlength="255" name="label_{ID*}" id="label_{ID*}" value="{PRICE_LABEL*}" class="input-line" size="30" type="text" />
 						</td>
 						<td>
-							<label for="price_{ID*}" class="accessibility_hidden">{!PRICE}</label>
+							<label for="price_{ID*}" class="accessibility-hidden">{!PRICE}</label>
 							<input maxlength="10" name="price_{ID*}" id="price_{ID*}" value="{PRICE_PRICE*}" class="input-float" step="0.01" type="number" data-cms-invalid-pattern="[^\-\d{$BACKSLASH}{$DECIMAL_POINT*}]" />
 						</td>
 					</tr>

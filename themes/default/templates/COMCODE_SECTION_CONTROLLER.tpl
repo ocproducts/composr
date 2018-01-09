@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,core_rich_media}
 
-<div class="pagination comcode_section_controller" data-view="ComcodeSectionController" data-view-params="{+START,PARAMS_JSON,PASS_ID,SECTIONS}{_*}{+END}">
+<div class="pagination comcode-section-controller" data-view="ComcodeSectionController" data-view-params="{+START,PARAMS_JSON,PASS_ID,SECTIONS}{_*}{+END}">
 	<a id="{PASS_ID|*}_has_previous_yes" href="#!" class="light first-child js-click-flip-page" data-vw-flip-to="-1">&laquo;&nbsp;{!PREVIOUS}</a>
 
 	<span id="{PASS_ID|*}_has_previous_no" style="display: none" class="light first-child">&laquo;&nbsp;{!PREVIOUS}</span>

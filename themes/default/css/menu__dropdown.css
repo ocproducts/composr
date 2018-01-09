@@ -14,11 +14,11 @@ For example:
 
 
 /* For a Comcode page we probably don't want to fit it alongside other stuff, so wrap the floats */
-.comcode_page .dropdown-menu {
+.comcode-page .dropdown-menu {
 	overflow: hidden;
 }
 
-.global_navigation .dropdown-menu {
+.global-navigation .dropdown-menu {
 	float: left;
 }
 

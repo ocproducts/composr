@@ -15,7 +15,7 @@
 	<form title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
-		<div class="wide-table-wrap"><table class="columned_table results-table wide-table autosized-table">
+		<div class="wide-table-wrap"><table class="columned-table results-table wide-table autosized-table">
 			<thead>
 				<tr>
 					<th>
@@ -33,12 +33,12 @@
 				{+START,LOOP,TIMEOUTS}
 					<tr>
 						<td>
-							<label class="accessibility_hidden" for="gmt_username_{_loop_key*}">{!USERNAME}</label>
+							<label class="accessibility-hidden" for="gmt_username_{_loop_key*}">{!USERNAME}</label>
 							<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="20" maxlength="255" class="input-username-required js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" id="gmt_username_{_loop_key*}" name="gmt_username_{_loop_key*}" value="{USERNAME*}" />
 						</td>
 
 						<td>
-							<label class="accessibility_hidden" for="gmt_group_id_{_loop_key*}">{!USERGROUP}</label>
+							<label class="accessibility-hidden" for="gmt_group_id_{_loop_key*}">{!USERGROUP}</label>
 							<input name="gmt_old_group_id_{_loop_key*}" value="{GROUP_ID*}" type="hidden" />
 							<select id="gmt_group_id_{_loop_key*}" name="gmt_group_id_{_loop_key*}">
 								{+START,LOOP,GROUPS}
@@ -55,12 +55,12 @@
 
 				<tr>
 					<td>
-						<label class="accessibility_hidden" for="gmt_username_new">{!USERNAME}</label>
+						<label class="accessibility-hidden" for="gmt_username_new">{!USERNAME}</label>
 						<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="20" maxlength="255" class="input-username-required js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" id="gmt_username_new" name="gmt_username_new" />
 					</td>
 
 					<td>
-						<label class="accessibility_hidden" for="gmt_group_id_new">{!USERGROUP}</label>
+						<label class="accessibility-hidden" for="gmt_group_id_new">{!USERGROUP}</label>
 						<select id="gmt_group_id_new" name="gmt_group_id_new">
 							<option value="">---</option>
 							{+START,LOOP,GROUPS}

@@ -45,7 +45,7 @@
 	background-repeat: no-repeat;
 }
 
-.unslider>ul>li>div.comcode_page, .unslider>ul>li div.feature_background_image, .unslider>ul>li div.feature_image, .unslider>ul>li div.feature_video {
+.unslider>ul>li>div.comcode-page, .unslider>ul>li div.feature_background_image, .unslider>ul>li div.feature_image, .unslider>ul>li div.feature_video {
 	height: 100%;
 }
 

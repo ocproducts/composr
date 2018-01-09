@@ -4,17 +4,17 @@
 */
 
 /*{+START,CSS_MODE,desktop}*/
-	#ze_panels_wrap {
+	#ze-panels-wrap {
 		min-height: 520px;
 	}
 
-	#p_panel_left {
+	#p-panel-left {
 		left: 0;
 		border-right: 3px solid {$GET,tab_border};
 		z-index: 10;
 	}
 
-	#p_panel_right {
+	#p-panel-right {
 		right: 0;
 		border-left: 3px solid {$GET,tab_border};
 		z-index: 10;
@@ -34,20 +34,21 @@
 	min-width: 3.4em;
 }
 
-#info_panel_left, #info_panel_right, #edit_panel_left, #edit_panel_right, #view_panel_left, #view_panel_right, #settings_panel_left, #settings_panel_right {
+/* Used in ZONE_EDITOR_PANEL.tpl */
+#info-panel-left, #info-panel-right, #edit-panel-left, #edit-panel-right, #view-panel-left, #view-panel-right, #settings-panel-left, #settings-panel-right {
 	padding: 0 1em;
 }
-#view_panel_left {
+#view-panel-left {
 	padding: 1em;
 }
 
-.ze_panel {
+.ze-panel {
 	overflow-x: hidden;
 	overflow-y: auto;
 	outline: 0;
 }
 /*{+START,CSS_MODE,desktop}*/
-	.ze_panel {
+	.ze-panel {
 		width: 19em;
 		position: absolute;
 		height: 520px;
@@ -55,7 +56,7 @@
 		background-color: {$GET,area_background};
 	}
 
-	.ze_panel_expanded {
+	.ze-panel-expanded {
 		width: 45em;
 	}
 
@@ -63,12 +64,12 @@
 		margin: 0 19em;
 	}
 
-	#p_panel_right .tab {
+	#p-panel-right .tab {
 		float: right;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.ze_panel {
+	.ze-panel {
 		width: auto !important;
 	}
 /*{+END}*/

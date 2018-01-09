@@ -4,13 +4,13 @@
 	</th>
 
 	<td class="form-table-field-input">
-		<div class="accessibility_hidden"><label for="access_{GROUP_ID*}">{PINTERFACE_VIEW*} ({GROUP_NAME*})</label></div>
+		<div class="accessibility-hidden"><label for="access_{GROUP_ID*}">{PINTERFACE_VIEW*} ({GROUP_NAME*})</label></div>
 		<input id="access_{GROUP_ID*}" title="{PINTERFACE_VIEW*} ({!ADMIN})" name="_ignore" type="checkbox" checked="checked" disabled="disabled" class="no_tooltip" />
 	</td>
 
 	{+START,LOOP,OVERRIDES}
 		<td class="form-table-field-input">
-			<div class="accessibility_hidden"><label for="access_{GROUP_ID*}_{_loop_key*}">{!NA}</label></div>
+			<div class="accessibility-hidden"><label for="access_{GROUP_ID*}_{_loop_key*}">{!NA}</label></div>
 			<input name="_ignore" type="checkbox" id="access_{GROUP_ID*}_{_loop_key*}" checked="checked" disabled="disabled" />
 		</td>
 	{+END}

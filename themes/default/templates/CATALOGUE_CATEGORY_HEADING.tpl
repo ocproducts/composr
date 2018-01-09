@@ -4,5 +4,5 @@
 	{ENTRIES}
 {+END}
 {+START,IF_EMPTY,{ENTRIES*}}
-	<p class="nothing_here">{!NO_ENTRIES,catalogue_entry}</p>
+	<p class="nothing-here">{!NO_ENTRIES,catalogue_entry}</p>
 {+END}

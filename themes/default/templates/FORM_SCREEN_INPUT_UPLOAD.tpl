@@ -5,7 +5,7 @@
 {+END}
 
 <div class="upload-field inline-block" data-require-javascript="core_form_interfaces" data-view="FromScreenInputUpload" data-view-params="{+START,PARAMS_JSON,NAME,PLUPLOAD,FILTER,SYNDICATION_JSON}{_*}{+END}">
-	<div class="vertical_alignment inline-block">
+	<div class="vertical-alignment inline-block">
 		<input tabindex="{TABINDEX*}" class="input-upload{REQUIRED*}" type="file" id="{NAME*}" name="{NAME*}" />
 		{+START,IF,{EDIT}}
 			<p class="upload-field-msg inline-block">

@@ -5,7 +5,7 @@
 		<p class="form-field-name field-name">{GROUP_NAME*}</p>
 		{+START,IF,{$OR,{FORCE_PRESETS},{$IS_NON_EMPTY,{OVERRIDES}}}}
 			<label for="access_{GROUP_ID*}_presets">
-				<span class="accessibility_hidden">{!PINTERFACE_PRESETS} ({GROUP_NAME*})</span>
+				<span class="accessibility-hidden">{!PINTERFACE_PRESETS} ({GROUP_NAME*})</span>
 
 				<select tabindex="{TABINDEX*}" id="access_{GROUP_ID*}_presets" name="access_{GROUP_ID*}_presets" class="js-click-copy-perm-presets js-change-copy-perm-presets">
 					{+START,IF,{ALL_GLOBAL}}
@@ -27,7 +27,7 @@
 	</th>
 
 	<td class="form-table-field-input">
-		<div class="accessibility_hidden"><label for="access_{GROUP_ID*}">{PINTERFACE_VIEW*} ({GROUP_NAME*})</label></div>
+		<div class="accessibility-hidden"><label for="access_{GROUP_ID*}">{PINTERFACE_VIEW*} ({GROUP_NAME*})</label></div>
 
 		<input tabindex="{TABINDEX*}" class="input-tick" type="checkbox" id="access_{GROUP_ID*}" name="access_{GROUP_ID*}" title="{PINTERFACE_VIEW*}" value="1"{+START,IF,{VIEW_ACCESS}} checked="checked"{+END} />
 	</td>
