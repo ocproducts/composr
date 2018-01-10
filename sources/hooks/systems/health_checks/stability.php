@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2017
+ Copyright (c) ocProducts, 2004-2018
 
  See text/EN/licence.txt for full licencing information.
 
@@ -60,6 +60,11 @@ class Hook_health_check_stability extends Hook_Health_Check
         }
 
         if (!$manual_checks) {
+            return;
+        }
+
+        $path = get_custom_file_base() . '/data_custom/errorlog.php';
+        if (strlen($path) < 25) {
             return;
         }
 

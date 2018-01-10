@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2017
+ Copyright (c) ocProducts, 2004-2018
 
  See text/EN/licence.txt for full licencing information.
 
@@ -271,7 +271,7 @@ class css_file_test_set extends cms_test_case
         $prefix_exceptions = array(
             'zone-running-',
             'page-running-',
-            'menu__',
+            'menu-',
             'buttons--',
             'box___block_no_entries_',
             'cns-gcol-',
@@ -380,6 +380,7 @@ class css_file_test_set extends cms_test_case
             'divider',
             'doc-link',
             'e',
+            'has-children',
             'faded_tooltip_img',
             'feature_background_image',
             'feature_image',

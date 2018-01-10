@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2017
+ Copyright (c) ocProducts, 2004-2018
 
  See text/EN/licence.txt for full licencing information.
 
@@ -83,6 +83,10 @@ class Hook_health_check_integrity extends Hook_Health_Check
     public function testDatabaseIntegrity($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
         if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+
+        if (strpos(get_db_type(), 'mysql') === false) {
             return;
         }
 

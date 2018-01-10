@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2017
+ Copyright (c) ocProducts, 2004-2018
 
  See text/EN/licence.txt for full licencing information.
 
@@ -238,7 +238,7 @@ function get_user_currency()
         if ($cpf_id !== null) {
             require_code('cns_members_action2');
             $_fields = cns_get_custom_field_mappings($member_id);
-            $result = strval($_fields['field_' . strval($cpf_id)]);
+            $result = $_fields['field_' . strval($cpf_id)];
             $user_currency = ($result !== null) ? $result : null;
             $return_default = ($user_currency === null);
             if ($return_default === false) {

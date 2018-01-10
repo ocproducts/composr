@@ -941,6 +941,8 @@ class xmlrpc_server
 		$GLOBALS['_xh']['method']=false; // so we can check later if we got a methodname or not
 		$GLOBALS['_xh']['rt']='';
 
+		$GLOBALS['xmlrpc_inputencoding'] = $req_encoding;
+
 		// decompose incoming XML into request structure
 		if ($req_encoding!='')
 		{

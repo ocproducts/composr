@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2017
+ Copyright (c) ocProducts, 2004-2018
 
  See text/EN/licence.txt for full licencing information.
 
@@ -289,7 +289,7 @@ class Module_wiki
             seo_meta_load_for('wiki_page', strval($id), $title_to_use_2);
 
             // Build up navigation tree
-            $breadcrumbs = wiki_breadcrumbs($chain, $current_title, has_privilege(get_member(), 'open_virtual_roots'), true, true);
+            $breadcrumbs = wiki_breadcrumbs($chain, $current_title, has_privilege(get_member(), 'open_virtual_roots') && (get_value('disable_virtual_roots') !== '1'), true, true);
 
             $where_map = array('page_id' => $id);
             if ((!has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated'))) {

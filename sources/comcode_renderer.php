@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2017
+ Copyright (c) ocProducts, 2004-2018
 
  See text/EN/licence.txt for full licencing information.
 
@@ -438,7 +438,7 @@ function comcode_parse_error($preparse_mode, $_message, $pos, $comcode, $check_o
     $hidden = build_keep_post_fields(array($name));
     require_code('form_templates');
     $fields = form_input_huge_comcode(do_lang_tempcode('FIXED_COMCODE'), do_lang_tempcode('COMCODE_REPLACEMENT'), $name, $comcode, true, null, 20, null, null, false, true);
-    $post_url = get_self_url();
+    $post_url = get_self_url(false, false, array('_corrected_comcode' => '1'));
     $form = do_template('FORM', array(
         '_GUID' => '207bad1252add775029b34ba36e02856',
         'URL' => $post_url,

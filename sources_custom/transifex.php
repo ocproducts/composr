@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2017
+ Copyright (c) ocProducts, 2004-2018
 
  See text/EN/licence.txt for full licencing information.
 
@@ -292,7 +292,7 @@ function _push_cms_file_to_transifex($path, $resource_path, $project_slug, $prio
     $c = file_get_contents($full_path);
 
     // Upload
-    $test = _transifex('/project/' . $project_slug . '/resource/' . $resource_path . '/', 'GET');
+    $test = _transifex('/project/' . $project_slug . '/resource/' . $resource_path . '/', 'GET', null, false);
     $categories = array($category);
     if ($LANGUAGE_FILES_ADDON[$path] != $category) {
         // Addon name
@@ -613,7 +613,7 @@ Translations may also be downloaded directly from Transifex.";
 {$open} /*
 
  Composr
- Copyright (c) ocProducts, 2004-2017
+ Copyright (c) ocProducts, 2004-2018
 
  See text/EN/licence.txt for full licencing information.
 
@@ -801,7 +801,7 @@ function _pull_cms_file_from_transifex($project_slug, $tar_file, $lang, $path, $
         return;
     }
 
-    $test = _transifex('/project/' . $project_slug . '/resource/' . $resource_path . '/translation/' . convert_lang_code_to_transifex($lang) . '/', 'GET', null, true);
+    $test = _transifex('/project/' . $project_slug . '/resource/' . $resource_path . '/translation/' . convert_lang_code_to_transifex($lang) . '/', 'GET', null, false);
     if ($test[1] == '200') {
         $data = json_decode($test[0], true);
         $c = $data['content'];
@@ -834,8 +834,8 @@ function _pull_ini_file_from_transifex($project_slug, $tar_file, $lang, $_f, &$f
         return;
     }
 
-    $test_a = _transifex('/project/' . $project_slug . '/resource/' . $_f . '/translation/' . convert_lang_code_to_transifex($lang) . '/', 'GET', null, true);
-    $test_b = _transifex('/project/' . $project_slug . '/resource/' . $_f . '__administrative/translation/' . convert_lang_code_to_transifex($lang) . '/', 'GET', null, true);
+    $test_a = _transifex('/project/' . $project_slug . '/resource/' . $_f . '/translation/' . convert_lang_code_to_transifex($lang) . '/', 'GET', null, false);
+    $test_b = _transifex('/project/' . $project_slug . '/resource/' . $_f . '__administrative/translation/' . convert_lang_code_to_transifex($lang) . '/', 'GET', null, false);
     if ($test_a[1] == '200' || $test_b[1] == '200') {
         if ($test_a[1] == '200') {
             $data_a = json_decode($test_a[0], true);

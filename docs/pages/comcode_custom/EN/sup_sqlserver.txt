@@ -28,6 +28,8 @@ You will need to manually create your database in SQL Server, using SQL Manageme
 
 If using SQL Server Express, you need to [url="enable Network connections"]https://technet.microsoft.com/en-us/library/ms165718(v=sql.105).aspx[/url]. Also make sure TCP/IP is enabled on any network interface you're connecting on, in the same area of configuration, "IP Addresses tab". Also set the "IPAll" port to "1433" in here.
 
+You will also need to configure your Firewall. If you disable the Windows Firewall it may block by default. Specifically enable incoming traffic on port 1433.
+
 If you are using Mac or Linux for your web server you will need to use ODBC, as the PHP [tt]sqlsrv[/tt] extension is Windows only. Set up for ODBC is a bit complicated, so we will cover it below.
 
 [title="3"]ODBC[/title]
@@ -59,29 +61,35 @@ Create a mapping in the ODBC part of control panel:
 
 For Linux or MacOS, we suggest using unixODBC with FreeTDS (avoid iODBC and Microsoft's own drivers, they are a bit more esoteric). PHP will need to be compiled with unixODBC support.
 
-Make sure the unixODBC and FreeTDS packages are installed via your package manager, or manually compiled and installed. Homebrew works on Mac.
+Make sure the unixODBC and FreeTDS packages are installed via your package manager, or manually compiled and installed. Homebrew works on Mac, but make sure you install FreeTDS like [tt]brew install freetds --with-unixodbc[/tt].
 
-You will need to use the [tt]odbcinst[/tt] command to create a DSN.
+UnixODBC needs to be connected to FreeTDS by configuring a FreeTDS driver. Create a file named tds.driver.template with a few lines describing the driver:
+[code="INI"]
+[FreeTDS] 
+Description = v0.63 with protocol v8.0 
+Driver = /usr/local/freetds/lib/libtdsodbc.so
+[/code]
+Obviously use the correct path to the [tt].so[/tt] file.
+Then run [tt]odbcinst -i -d -f tds.driver.template[/tt]
 
-Create a file named tds.driver.template with a few lines describing the driver:
-[code="Text"]
+You will need to use the [tt]odbcinst[/tt] command to create a DSN. Create a file named tds.template with a few lines describing the DSN:
+[code="INI"]
 [cms]
-Driver=FreeTDS
-Trace=No
-Server=192.168.0.22
-Port=1433
-Database=cms
-TDS_Version=7.2
-ClientCharset=UTF-8
+Driver = FreeTDS
+Trace = No
+Server = 192.168.0.22
+Port = 1433
+Database = cms
+TDS_Version = 7.2
+ClientCharset = UTF-8
 [/code]
 Obviously replace [tt]192.168.0.22[/tt] with your actual database server, and replace [tt]cms[/tt] (both times) with your chosen database name.
 Version 7.2 is the minimum protocol version supported (consistent with Microsoft SQL Server 2005).
-
-Then run [tt]odbcinst -i -d -f tds.driver.template[/tt]
+Then run [tt]odbcinst -i -d -f tds.template[/tt]
 
 Full documentation is included in the [url="unixODBC manual"]http://www.unixodbc.org/doc/FreeTDS2.html[/url].
 
-If you need to edit the template configuration later, you'll find it's just in an [tt]odbc.ini[/tt] file, e.g. [tt]/usr/local/etc/odbc.ini[/tt].
+If you need to edit the template configuration later, you'll find it's just in an [tt]odbc.ini[/tt] file, e.g. [tt]/usr/local/etc/odbc.ini[/tt]. The driver configuration is in [tt]odbcinst.ini[/tt].
 
 [title="4"]PHP[/title]
 
@@ -102,7 +110,52 @@ Migrate via this process:[list="1"]
 sql_dump sqlserver
 [/code]
 (yes, you can be running MySQL and export a SQL Server SQL dump!)
-[*] Edit the [tt].sql[/tt] file. The [tt]cached_comcode_pages[/tt] and [tt]translate[/tt] structure is a little different
+[*] Edit the [tt].sql[/tt] file so the [tt]cached_comcode_pages[/tt] is a little different, like (with the corrected table prefix):
+[code="SQL"]
+CREATE TABLE cms_cached_comcode_pages (
+	id int IDENTITY(1,1) NOT NULL,
+	the_zone nvarchar(80) NOT NULL,
+	the_page nvarchar(80) NOT NULL,
+	the_theme nvarchar(80) NOT NULL,
+	string_index nvarchar(max) NOT NULL,
+	cc_page_title nvarchar(max) NOT NULL,
+	string_index__text_parsed nvarchar(max) NOT NULL,
+	string_index__source_user int NOT NULL,
+	PRIMARY KEY (id ASC)
+);
+[/code]
+[*] Edit the [tt].sql[/tt] file so the [tt]translate[/tt] table is a little different, like (with the corrected table prefix):
+[code="SQL"]
+[*] Edit the [tt].sql[/tt] file so the [tt]cached_comcode_pages[/tt] table is a little different, like (with the corrected table prefix):
+[code="SQL"]
+CREATE TABLE cms_translate (
+	id int NOT NULL,
+	language nvarchar(5) NOT NULL,
+	importance_level smallint NOT NULL,
+	text_original nvarchar(max) NOT NULL,
+	text_parsed nvarchar(max) NOT NULL,
+	broken smallint NOT NULL,
+	source_user int NOT NULL,
+	_id int IDENTITY(1,1) NOT NULL,
+	PRIMARY KEY (_id ASC)
+);
+[/code]
+[*] Edit the [tt].sql[/tt] file to make this substitution:
+[code="SQL"]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE name='unique__cms_cached_comcode_pages' AND object_id=OBJECT_ID('cms_cached_comcode_pages')) CREATE UNIQUE INDEX unique__cms_cached_comcode_pages ON cms_cached_comcode_pages(the_page,the_theme,the_zone);
+[/code]
+-->
+[code="SQL"]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE name='unique__cms_cached_comcode_pages' AND object_id=OBJECT_ID('cms_cached_comcode_pages')) CREATE UNIQUE INDEX unique__cms_cached_comcode_pages ON cms_cached_comcode_pages(id);
+[/code]
+[*] Edit the [tt].sql[/tt] file to make this substitution:
+[code="SQL"]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE name='unique__cms_translate' AND object_id=OBJECT_ID('cms_translate')) CREATE UNIQUE INDEX unique__cms_translate ON cms_translate(id,language);
+[/code]
+-->
+[code="SQL"]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE name='unique__cms_translate' AND object_id=OBJECT_ID('cms_translate')) CREATE UNIQUE INDEX unique__cms_translate ON cms_translate(_id);
+[/code]
 [*] Copy the [tt].sql[/tt] file generated to a machine you can run SQL Management Studio from, if this is different from your website machine
 [*] Open a command prompt
 [*] Run this command:[code="BAT"]

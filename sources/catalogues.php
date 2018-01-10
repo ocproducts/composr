@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2017
+ Copyright (c) ocProducts, 2004-2018
 
  See text/EN/licence.txt for full licencing information.
 
@@ -705,7 +705,7 @@ function get_catalogue_entries($catalogue_name, $category_id, $max, $start, $sel
         } elseif (($order_by == 'compound_rating') || ($order_by == 'average_rating') || ($order_by == 'fixed_random')) {
             $ob = object_factory('Hook_content_meta_aware_catalogue_entry');
             $info = $ob->info();
-            $bits = _catalogues_filtercode($GLOBALS['SITE_DB'], $info, $catalogue_name, $extra_join, $extra_select, $order_by, '', array(), 'r');
+            $bits = _catalogues_filtercode($GLOBALS['SITE_DB'], $info, $catalogue_name, $extra_join, $extra_select, $order_by, '', array(), 'r'); // Used to get JOIN for ordering
             if ($bits !== null) {
                 list($virtual_order_by,) = $bits;
             } else {
@@ -715,7 +715,7 @@ function get_catalogue_entries($catalogue_name, $category_id, $max, $start, $sel
             $ob = object_factory('Hook_content_meta_aware_catalogue_entry');
             $info = $ob->info();
             $order_by_field_id = $fields[intval($order_by)]['id'];
-            $bits = _catalogues_filtercode($GLOBALS['SITE_DB'], $info, $catalogue_name, $extra_join, $extra_select, 'field_' . $order_by_field_id, '', array(), 'r');
+            $bits = _catalogues_filtercode($GLOBALS['SITE_DB'], $info, $catalogue_name, $extra_join, $extra_select, 'field_' . $order_by_field_id, '', array(), 'r'); // Used to get JOIN for ordering
             if ($bits !== null) {
                 list($new_key,) = $bits;
                 if ((strpos($new_key, '.text_original') !== false) && (multi_lang_content())) {

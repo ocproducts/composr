@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2017
+ Copyright (c) ocProducts, 2004-2018
 
  See text/EN/licence.txt for full licencing information.
 
@@ -141,7 +141,6 @@ $directory = $STATIC_EXPORT_TAR['directory'];
 $langs = find_all_langs();
 $done_non_spec = array();
 foreach ($directory as $entry) {
-
     $dir_name = preg_replace('#^[A-Z][A-Z]/#', '', dirname($entry['path']));
     if ($dir_name == '.') {
         $dir_name = '';
@@ -165,7 +164,6 @@ foreach ($directory as $entry) {
 $data .= "\n";
 $data .= "\n";
 if (count($langs) != 1) {
-
     // Recognise when language explicitly called
     foreach (array_keys($langs) as $lang) {
         $data .= 'RewriteRule ' . $lang . ' - [L]' . "\n"; // This stops it looping; [L] ends an iteration for a directory level but doesn't stop inter-level recursions

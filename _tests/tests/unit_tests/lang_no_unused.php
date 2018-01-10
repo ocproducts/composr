@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2017
+ Copyright (c) ocProducts, 2004-2018
 
  See text/EN/licence.txt for full licencing information.
 
@@ -208,10 +208,11 @@ class lang_no_unused_test_set extends cms_test_case
 
         $dh = opendir(get_file_base() . '/lang/EN/');
         while (($file = readdir($dh)) !== false) {
-            if (substr($file, -4) != '.ini') {
+            if ($file[0] == '.') {
                 continue;
             }
-            if ($file[0] == '.') {
+
+            if (substr($file, -4) != '.ini') {
                 continue;
             }
 
@@ -227,7 +228,7 @@ class lang_no_unused_test_set extends cms_test_case
                     continue;
                 }
 
-                $contains = (strpos($all_code, '{!' . $key) !== false) || (strpos($all_code, ':' . $key) !== false) || (strpos($all_code, "'" . $key . "'") !== false) || (strpos($all_code, ':' . $key . "'") !== false);
+                $contains = (preg_match('#(\{!' . preg_quote($key, '#') . '|:' . preg_quote($key, '#') . '|\'' . preg_quote($key, '#') . '\')#', $all_code) != 0);
                 $this->assertTrue($contains, $key . ': cannot find usage of language string (' . str_replace('%', '', $val) . ')');
             }
         }

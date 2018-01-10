@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2017
+ Copyright (c) ocProducts, 2004-2018
 
  See text/EN/licence.txt for full licencing information.
 
@@ -419,7 +419,10 @@ abstract class Hook_Health_Check
     {
         $domains = array();
 
-        $domains[''] = parse_url(get_base_url(), PHP_URL_HOST);
+        $host = parse_url(get_base_url(), PHP_URL_HOST);
+        if (preg_match('#[A-Z]#i', $host) != 0) {
+            $domains[''] = $host;
+        }
 
         global $SITE_INFO;
         $zl = strlen('ZONE_MAPPING_');

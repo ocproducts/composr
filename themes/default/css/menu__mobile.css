@@ -1,6 +1,6 @@
 /*
  {$BRAND_NAME`}
- Copyright (c) ocProducts, 2004-2017
+ Copyright (c) ocProducts, 2004-2018
 */
 
 .mobile_menu_button {
@@ -11,6 +11,7 @@
 }
 .mobile_menu_button:hover {
 	color: {$GET,WB};
+	text-decoration: none;
 }
 .mobile_menu_button:hover span {
 	text-decoration: underline;
@@ -48,6 +49,7 @@
 
 .menu-type--mobile ul {
 	background-color: {$GET,area_5_background};
+	padding-bottom: 0;
 }
 
 .menu-type--mobile li {

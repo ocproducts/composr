@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2017
+ Copyright (c) ocProducts, 2004-2018
 
  See text/EN/licence.txt for full licencing information.
 
@@ -199,7 +199,7 @@ function warnings_script()
     $content = new Tempcode();
     $rows = $GLOBALS['FORUM_DB']->query_select('f_saved_warnings', array('*'), array(), 'ORDER BY s_title');
     $keep = symbol_tempcode('KEEP');
-    $url = find_script('warnings') . '?type=delete' . $keep->evaluate();
+    $url = find_script('warnings_browse') . '?type=delete' . $keep->evaluate();
     foreach ($rows as $myrow) {
         $delete_link = hyperlink($url, do_lang_tempcode('DELETE'), false, false, '', null, form_input_hidden('title', $myrow['s_title']));
         $content->attach(do_template('CNS_SAVED_WARNING', array(

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2017
+ Copyright (c) ocProducts, 2004-2018
 
  See text/EN/licence.txt for full licencing information.
 
@@ -765,7 +765,7 @@ class Module_admin_customers
             if ($cpf_id !== null) {
                 require_code('cns_members_action2');
                 $_fields = cns_get_custom_field_mappings($member_id);
-                $num_credits = intval($_fields['field_' . strval($cpf_id)]);
+                $num_credits = $_fields['field_' . strval($cpf_id)];
             }
 
             $text = paragraph(do_lang_tempcode('CUSTOMER_CURRENTLY_HAS', escape_html(number_format($num_credits))));

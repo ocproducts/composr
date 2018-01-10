@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2017
+ Copyright (c) ocProducts, 2004-2018
 
  See text/EN/licence.txt for full licencing information.
 
@@ -332,7 +332,7 @@ class Module_galleries
 
             // Breadcrumbs
             $breadcrumbs = gallery_breadcrumbs($cat, $root, true, get_module_zone('galleries'), true);
-            if ((has_privilege(get_member(), 'open_virtual_roots')) && ($cat != $root)) {
+            if ((has_privilege(get_member(), 'open_virtual_roots')) && (get_value('disable_virtual_roots') !== '1') && ($cat != $root)) {
                 $page_link = build_page_link(array('page' => '_SELF', 'type' => 'browse', 'id' => $cat, 'keep_gallery_root' => $cat), '_SELF');
                 $breadcrumbs[] = array($page_link, $fullname, do_lang_tempcode('VIRTUAL_ROOT'));
             } else {

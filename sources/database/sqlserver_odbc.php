@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2017
+ Copyright (c) ocProducts, 2004-2018
 
  See text/EN/licence.txt for full licencing information.
 
@@ -148,7 +148,7 @@ class Database_Static_sqlserver_odbc extends Database_super_sqlserver
 
             $res2 = odbc_exec($connection, 'SELECT MAX(IDENTITYCOL) FROM ' . $table_name);
             odbc_fetch_row($res2);
-            return odbc_result($res2, 1);
+            return intval(odbc_result($res2, 1));
         }
 
         return null;

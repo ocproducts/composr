@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2017
+ Copyright (c) ocProducts, 2004-2018
 
  See text/EN/licence.txt for full licencing information.
 
@@ -99,10 +99,11 @@ class Database_Static_mysql extends Database_super_mysql
         }
 
         global $SITE_INFO;
-        if (function_exists('mysql_set_charset')) {
-            @mysql_set_charset($SITE_INFO['database_charset'], $db_link);
-        } else {
-            @mysql_query('SET NAMES "' . addslashes($SITE_INFO['database_charset']) . '"', $db_link);
+        $test = @mysql_set_charset($SITE_INFO['database_charset'], $db_link);
+        if ((!$test) && ($SITE_INFO['database_charset'] == 'utf8mb4')) {
+            // Conflict between compiled-in MySQL client library and what the server supports
+            $test = @mysql_set_charset('utf8', $db_link);
+            @mysql_query( 'SET NAMES "' . addslashes('utf8mb4') . '"', $db_link);
         }
 
         return array($db_link, $db_name);

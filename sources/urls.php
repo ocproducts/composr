@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2017
+ Copyright (c) ocProducts, 2004-2018
 
  See text/EN/licence.txt for full licencing information.
 
@@ -276,7 +276,7 @@ function skippable_keep($key, $val)
         return true;
     }
 
-    return ((($key === 'keep_session') && (isset($_COOKIE['has_cookies']))) || (($key === 'keep_has_js') && ($val === '1'))) && ((isset($_COOKIE['js_on'])) || (get_option('detect_javascript') === '0'));
+    return ((($key === 'keep_session') && (($val == '') || (isset($_COOKIE['has_cookies'])))) || (($key === 'keep_has_js') && ($val === '1'))) && ((isset($_COOKIE['js_on'])) || (get_option('detect_javascript') === '0'));
 }
 
 /**

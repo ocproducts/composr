@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2017
+ Copyright (c) ocProducts, 2004-2018
 
  See text/EN/licence.txt for full licencing information.
 
@@ -33,6 +33,20 @@ class Block_main_sortable_table
         $info['version'] = 1;
         $info['locked'] = false;
         $info['parameters'] = array('param', 'default_sort_column', 'max', 'labels', 'labels_tooltip', 'columns_display', 'columns_tooltip', 'guid', 'transform', 'stylings');
+        return $info;
+    }
+
+    /**
+     * Find caching details for the block.
+     *
+     * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
+     */
+    public function caching_environment()
+    {
+        $info = array();
+        $info['cache_on'] = '$map';
+        $info['special_cache_flags'] = CACHE_AGAINST_DEFAULT;
+        $info['ttl'] = 60 * 60 * 24 * 365 * 5;
         return $info;
     }
 

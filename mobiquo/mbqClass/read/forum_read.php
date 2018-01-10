@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2017
+ Copyright (c) ocProducts, 2004-2018
 
  See text/EN/licence.txt for full licencing information.
 
@@ -45,7 +45,7 @@ class CMSForumRead
             $all_groupings = list_to_map('id', $GLOBALS['FORUM_DB']->query_select('f_forum_groupings', array('*')));
         }
 
-        if (($forum_id == db_get_first_id()) && (!$full_tree)) {
+        if (($forum_id == -2) && (!$full_tree)) {
             $_children = array(); // Announcements virtual forum
         } else {
             $_children = $this->get_forum($forum_id, $order_sub_alpha);
@@ -83,7 +83,7 @@ class CMSForumRead
                 $is_subscribed = notifications_enabled('cns_topic', 'forum:' . strval(db_get_first_id()));
 
                 $arr = array(
-                    'forum_id' => mobiquo_val(strval(db_get_first_id()), 'string'),
+                    'forum_id' => mobiquo_val('-2', 'string'),
                     'forum_name' => mobiquo_val(do_lang('TAPATALK_ROOT_FORUM_NAME'), 'base64'),
                     'parent_id' => mobiquo_val($pseudo_parent, 'string'),
                     'logo_url' => mobiquo_val('', 'string'),

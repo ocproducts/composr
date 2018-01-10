@@ -478,7 +478,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$CPF_VALUE,Some Custom Field}</td>
-			<td>Find the value of a custom profile field (pass in the ID number of a custom profile field, which can be found from the URL of where you to edit it -- or pass in the human-readable name of the field -- or pass in a field name from the <kbd>f_members</kbd> table; if you pass a name it can also interpret translated/Comcode text fields properly). If you pass a second parameter, it will specify the member ID to use (if not passed, it will default to the current member). Note that Tempcode is not context-sensitive apart from the parameters passed into a template. The current member is whoever is logged in; if you are editing a template displaying a member's details (e.g. <kbd>CNS_MEMBER_PROFILE_SCREEN</kbd>) then you will need to explicitly specify the member ID in the second parameter using the member ID passed into that template (typically <kbd>{MEMBER_ID}</kbd>).</td>
+			<td>Find the raw (unrendered) value of a custom profile field (pass in the ID number of a custom profile field, which can be found from the URL of where you to edit it -- or pass in the human-readable name of the field -- or pass in a field name from the <kbd>f_members</kbd> table). If you pass a second parameter, it will specify the member ID to use (if not passed, it will default to the current member). Note that Tempcode is not context-sensitive apart from the parameters passed into a template. The current member is whoever is logged in; if you are editing a template displaying a member's details (e.g. <kbd>CNS_MEMBER_PROFILE_SCREEN</kbd>) then you will need to explicitly specify the member ID in the second parameter using the member ID passed into that template (typically <kbd>{MEMBER_ID}</kbd>).</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$MEMBER_DATA,example,3}</td>
@@ -1378,7 +1378,7 @@ where:
 		</tr>
 		<tr style="background: #FFDDDD">
 			<td>{$SUPPORTS_FRACTIONAL_EDITABLE,cms:cms_example,1}</td>
-			<td>Whether some content has permissions to be editable inline, via the <kbd>FRACTIONAL_EDITABLE</kbd> directive. The '1' is if an access check passed (if omitted, does an Admin Zone access check instead).</td>
+			<td>Whether some content has permissions to be editable inline, via the <kbd>FRACTIONAL_EDITABLE</kbd> directive. Described in the [page="_SEARCH:sup_inline_editing"]Inline editing in Composr[/page] tutorial.</td>
 		</tr>
 		<tr style="background: #FFDDDD">
 			<td>{$DISPLAY_CONCEPT,concept_name}</td>
@@ -1900,7 +1900,7 @@ Note that you cannot use directives for symbol parameters because directives con
 		</tr>
 		<tr style="background: #FFDDDD">
 			<td>FRACTIONAL_EDITABLE,The [i]Title[/i],title,cms:cms_example,1,1,1</td>
-			<td>Used to make a string of some content editable inline (usually, the title). The first '1' means to support Comcode. The second '1' means include visible editing links (as opposed to needing a magic keypress). The third '1' is if an access check passed (if omitted, does an Admin Zone access check instead). The inner content of the directive is the displayed title (e.g. parsed Comcode, or at least HTML-escaped) &ndash; it is what would be there anyway if there was no directive.</td>
+			<td>Used to make a string of some content editable inline. Described in the [page="_SEARCH:sup_inline_editing"]Inline editing in Composr[/page] tutorial.</td>
 		</tr>
 		<tr style="background: #FFDDDD">
 			<td>IN_ARRAY</td>
@@ -2052,6 +2052,8 @@ Capital city:
 [/code]
 
 Based on the value of "Country", a different value would be shown. We have coded cases for the UK and Ireland, and anything else would default to "Unknown".
+
+Be wary that you can't have multi-line strings for the case sections. This includes not having multi-lines within any of the Tempcode parameters/expressions.
 
 Mode #1 is substring matching:
 [code="Tempcode"]

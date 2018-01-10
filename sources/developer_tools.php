@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2017
+ Copyright (c) ocProducts, 2004-2018
 
  See text/EN/licence.txt for full licencing information.
 
@@ -80,7 +80,7 @@ function semi_dev_mode_startup()
                 }
             }
             foreach ($_MODIFIED_FILES as $file) {
-                if ((substr($file, 0, strlen(get_file_base())) == get_file_base()) && (is_file($file)) && (strpos($file, 'log') === false) && (strpos($file, 'tmp') === false) && (strpos($file, 'temp') === false) && (strpos($file, 'cache') === false) && (strpos($file, 'backup') === false) && (strpos($file, 'incoming') === false)) {
+                if ((substr($file, 0, strlen(get_file_base())) == get_file_base()) && (is_file($file)) && (strpos($file, 'log') === false) && (strpos($file, 'tmp') === false) && (strpos($file, 'temp') === false) && (strpos($file, 'cache') === false) && (strpos($file, 'backup') === false) && (strpos($file, 'builds') === false) && (strpos($file, 'incoming') === false)) {
                     if ((strpos($file, '_config.php') === false) && (strpos($file, 'failover_rewritemap') === false) && (basename($file) != 'rate_limiter.php')) {
                         @exit(escape_html('File not change-synched: ' . $file));
                     }

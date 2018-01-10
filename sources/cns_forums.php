@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2017
+ Copyright (c) ocProducts, 2004-2018
 
  See text/EN/licence.txt for full licencing information.
 
@@ -321,7 +321,7 @@ function cns_forum_breadcrumbs($end_point_forum, $this_name = null, $parent_foru
 
     $segments = array();
 
-    if (((!$start) || (has_privilege(get_member(), 'open_virtual_roots'))) && (is_integer($end_point_forum))) {
+    if (((!$start) || ((has_privilege(get_member(), 'open_virtual_roots'))) && (get_value('disable_virtual_roots') !== '1') && (is_integer($end_point_forum)))) {
         $map = array('page' => 'forumview');
         if ($end_point_forum != db_get_first_id()) {
             $map['id'] = $end_point_forum;

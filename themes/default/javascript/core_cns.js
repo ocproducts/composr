@@ -30,7 +30,11 @@
 
                     $cms.loadSnippet('profile_tab&tab=' + tabCode + '&member_id=' + self.memberId + window.location.search.replace('?', '&')).then(function (result) {
                         $dom.html('#g_' + tabCode, result);
-                        $cms.ui.findUrlTab();
+
+                        // Give DOM some time to load, and protect against errors
+                        window.setTimeout(function() {
+                            $cms.ui.findUrlTab();
+                        }, 0);
                     });
                 };
             }

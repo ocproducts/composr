@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2017
+ Copyright (c) ocProducts, 2004-2018
 
  See text/EN/licence.txt for full licencing information.
 
@@ -80,9 +80,13 @@ class Hook_snippet_block
         $out = new Tempcode();
         $_eval = do_block($map['block'], $map);
         $eval = $_eval->evaluate();
-        $out->attach(symbol_tempcode('CSS_TEMPCODE'));
+        if (get_param_integer('no_web_resources', 0) == 0) {
+            $out->attach(symbol_tempcode('CSS_TEMPCODE'));
+        }
         $out->attach($eval);
-        $out->attach(symbol_tempcode('JS_TEMPCODE'));
+        if (get_param_integer('no_web_resources', 0) == 0) {
+            $out->attach(symbol_tempcode('JS_TEMPCODE'));
+        }
         return $out;
     }
 }

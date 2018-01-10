@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2017
+ Copyright (c) ocProducts, 2004-2018
 
  See text/EN/licence.txt for full licencing information.
 
@@ -35,7 +35,7 @@ class _installer_test_set extends cms_test_case
         $_GET['skip_mszip'] = '0';
 
         if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(300);
+            @set_time_limit(0);
         }
 
         require_code('version2');

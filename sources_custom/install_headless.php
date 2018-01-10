@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2017
+ Copyright (c) ocProducts, 2004-2018
 
  See text/EN/licence.txt for full licencing information.
 
@@ -13,7 +13,7 @@
  * @package    meta_toolkit
  */
 
-function do_install_to($database, $username, $password, $table_prefix, $safe_mode, $forum_driver = 'cns', $board_path = null, $forum_base_url = null, $database_forums = null, $username_forums = null, $password_forums = null, $extra_settings = null, $do_index_test = true, $db_type = null)
+function do_install_to($database, $username, $password, $table_prefix, $safe_mode, $forum_driver = 'cns', $board_path = null, $forum_base_url = null, $database_forums = null, $username_forums = null, $password_forums = null, $extra_settings = array(), $do_index_test = true, $db_type = null)
 {
     rename(get_file_base() . '/_config.php', get_file_base() . '/_config.php.bak');
 
@@ -56,10 +56,6 @@ function _do_install_to($database, $username, $password, $table_prefix, $safe_mo
     }
     if ($password_forums === null) {
         $password_forums = $password;
-    }
-    if ($extra_settings === null) {
-        $extra_settings = array(
-        );
     }
 
     $settings = $extra_settings + array(

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2017
+ Copyright (c) ocProducts, 2004-2018
 
  See text/EN/licence.txt for full licencing information.
 
@@ -69,7 +69,7 @@ class Hook_content_meta_aware_group
             'view_page_link_pattern' => '_SEARCH:groups:view:_WILD',
             'edit_page_link_pattern' => 'adminzone:admin_cns_groups:_edit:_WILD',
             'view_category_page_link_pattern' => null,
-            'add_url' => has_actual_page_access(get_member(), 'admin_cns_groups') ? '_SEARCH:admin_cns_groups:add' : (addon_installed('cns_clubs') ? '_SEARCH:cms_cns_groups:add' : null),
+            'add_url' => (function_exists('has_actual_page_access') && has_actual_page_access(get_member(), 'admin_cns_groups')) ? '_SEARCH:admin_cns_groups:add' : (addon_installed('cns_clubs') ? '_SEARCH:cms_cns_groups:add' : null),
             'archive_url' => (($zone !== null) ? $zone : get_module_zone('groups')) . ':groups',
 
             'support_url_monikers' => true,

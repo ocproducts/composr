@@ -1,6 +1,6 @@
 /*
  {$BRAND_NAME`}
- Copyright (c) ocProducts, 2004-2017
+ Copyright (c) ocProducts, 2004-2018
 */
 
 /*
@@ -228,6 +228,7 @@ tt, kbd, samp {
 abbr {
 	border-bottom: 1px dotted; /* For Safari, which does not have it by default */
 	text-decoration: none;
+	cursor: help;
 }
 
 /* Give all browsers a 'q' tag with smart quotes */
@@ -3787,7 +3788,6 @@ input.magic-image-edit-link {
 	background-repeat: no-repeat;
 	background-position: 96% 3px; /*fallback*/
 	background-position: right 7px top 3px;
-	background-image: linear-gradient(to bottom, {$GET,lgrad}, {$GET,dgrad});
 	color: {$GET,box_title_text} !important;
 	text-decoration: none !important;
 	{$BETA_CSS_PROPERTY,appearance: none;}
@@ -4471,10 +4471,10 @@ a.tab>span {
 		padding-right: 2px;
 	}
 /*{+END}*/
-div[role="tabpanel"]>:first-child {
+div[role="tabpanel"]>div:first-child, div[role="tabpanel"]>style:first-child+div {
 	margin-top: 1em;
 }
-div[role="tabpanel"]>:last-child {
+div[role="tabpanel"]>div:last-child {
 	margin-bottom: 1em;
 }
 

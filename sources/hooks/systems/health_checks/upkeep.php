@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2017
+ Copyright (c) ocProducts, 2004-2018
 
  See text/EN/licence.txt for full licencing information.
 
@@ -136,7 +136,7 @@ class Hook_health_check_upkeep extends Hook_Health_Check
             return;
         }
 
-        $current_year = intval(date('Y'));
+        $current_year = intval(date('Y', tz_time(time(), get_server_timezone())));
 
         $year = null;
         $matches = array();

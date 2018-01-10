@@ -81,7 +81,7 @@
 
 	{$BETA_CSS_PROPERTY,user-select: none;}
 
-	z-index: 1000;
+	z-index: 10;
 }
 .unslider .dots li {
 	list-style-type: none;
