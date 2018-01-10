@@ -1,7 +1,7 @@
 ptrad<?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2017
+ Copyright (c) ocProducts, 2004-2018
 
  See text/EN/licence.txt for full licencing information.
 

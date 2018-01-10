@@ -423,7 +423,7 @@ Options 3 or 4 are the most likely you will want to use.
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2017
+ Copyright (c) ocProducts, 2004-2018
 
  See text/EN/licence.txt for full licencing information.
 
@@ -531,7 +531,7 @@ For a further level of professionalism you may choose to deploy using your git r
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2017
+ Copyright (c) ocProducts, 2004-2018
 
  See text/EN/licence.txt for full licencing information.
 
