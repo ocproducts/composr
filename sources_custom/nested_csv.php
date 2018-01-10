@@ -246,7 +246,10 @@ function get_members_csv_data_values($member_id)
 
     $csv_structure = get_nested_csv_structure();
     foreach ($csv_structure['cpf_fields'] as $cpf_field) {
-        $out[$cpf_field['csv_heading']] = trim($member_row['field_' . strval($cpf_field['id'])]);
+        $cpf_value = $member_row['field_' . strval($cpf_field['id'])];
+        if (is_string($cpf_value)) {
+            $out[$cpf_field['csv_heading']] = trim($cpf_value);
+        }
     }
 
     return $out;

@@ -211,7 +211,7 @@ $GLOBALS['xmlrpc_defencoding']='UTF-8';
 // The encoding used internally by PHP.
 // String values received as xml will be converted to this, and php strings will be converted to xml
 // as if having been coded with this
-$GLOBALS['xmlrpc_internalencoding']='ISO-8859-1';
+$GLOBALS['xmlrpc_internalencoding']=get_charset();
 
 $GLOBALS['xmlrpcName']='XML-RPC for PHP';
 $GLOBALS['xmlrpcVersion']='2.2.1';
@@ -641,6 +641,12 @@ function xmlrpc_ee($parser,$name,$rebuild_xmlrpcvals=true)
 				{
 					/// @todo check for failure of base64 decoding / catch warnings
 					$GLOBALS['_xh']['value']=base64_decode($GLOBALS['_xh']['ac']);
+
+					if (isset($GLOBALS['xmlrpc_inputencoding']))
+					{
+						require_code('character_sets');
+						$GLOBALS['_xh']['value'] = convert_to_internal_encoding($GLOBALS['_xh']['value'], $GLOBALS['xmlrpc_inputencoding'], get_charset());
+					}
 				}
 				elseif ($name=='BOOLEAN')
 				{
@@ -3824,6 +3830,10 @@ function guess_encoding($httpheader='',$xmlchunk='',$encoding_prefs=NULL)
 		if ($enc=='ASCII')
 		{
 			$enc='US-'.$enc;
+		}
+		if ($enc=='US-ASCII')
+		{
+			$enc = 'UTF-8'; // Guesses incorrectly for Tapatalk
 		}
 		return $enc;
 	}

@@ -199,7 +199,7 @@ class Hook_health_check_performance extends Hook_Health_Check
             'page' => $this->get_page_url(),
             'css' => get_base_url() . '/themes/default/templates_cached/EN/' . $css_basename,
             'js' => get_base_url() . '/themes/default/templates_cached/EN/' . $javascript_basename,
-            'png' => get_base_url() . '/themes/default/images/button1.png',
+            'png' => get_base_url() . '/themes/default/images/no_image.png',
         );
 
         foreach ($urls as $type => $url) {

@@ -13,7 +13,14 @@
             options.balanceheight = false;
         }
 
-        window.jQuery('#' + params.sliderId).unslider(options);
+        var sliders = window.jQuery('#' + params.sliderId);
+        sliders.unslider(options);
+
+        sliders.on('swipeleft', function(e) {
+            unslider.prev();
+        }).on('swiperight', function(e) {
+            unslider.next();
+        });
 	};
 }(window.$cms));
 

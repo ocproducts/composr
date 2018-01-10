@@ -458,6 +458,14 @@ function init__global2()
     // Pre-load used blocks in bulk
     preload_block_internal_caching();
 
+    // Make sure POST fields readable
+    global $MODSECURITY_WORKAROUND_ENABLED;
+    $MODSECURITY_WORKAROUND_ENABLED = false;
+    if (get_param_integer('_corrected_comcode', 0) == 1) {
+        require_code('input_filter_2');
+        modsecurity_workaround_enable();
+    }
+
     // Okay, we've loaded everything critical. Don't need to tell Composr to be paranoid now.
     $BOOTSTRAPPING = false;
 

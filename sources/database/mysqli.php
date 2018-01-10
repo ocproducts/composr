@@ -104,9 +104,11 @@ class Database_Static_mysqli extends Database_super_mysql
         }
 
         global $SITE_INFO;
-        if (function_exists('mysqli_set_charset')) {
-            @mysqli_set_charset($db_link, $SITE_INFO['database_charset']);
-        } else {
+        $test = @mysqli_set_charset($db_link, $SITE_INFO['database_charset']);
+        if ((!$test) && ($SITE_INFO['database_charset'] == 'utf8mb4')) {
+            // Conflict between compiled-in MySQL client library and what the server supports
+            $test = @mysqli_set_charset($db_link, 'utf8');
+            @mysqli_query($db_link, 'SET NAMES "' . addslashes('utf8mb4') . '"');
         }
 
         return array($db_link, $db_name);

@@ -76,7 +76,11 @@ class MobiquoServerJSON extends MobiquoServer
             }
         }
 
+        require_code('character_sets');
+        $data = convert_to_internal_encoding($data, 'utf-8');
+
         $get = $_GET;
+
         unset($get['method_name']);
 
         $params = @array_merge(array_values(json_decode($data, true)), $get);

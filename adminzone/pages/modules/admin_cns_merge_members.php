@@ -225,10 +225,10 @@ class Module_admin_cns_merge_members
         require_code('cns_members_action2');
 
         // Merge in CPFs
-        $fields = cns_get_custom_fields_member($from_id);
-        foreach ($fields as $key => $val) {
-            if ($val != '') {
-                cns_set_custom_field($to_id, $key, is_integer($val) ? strval($val) : $val);
+        $custom_fields = cns_get_all_custom_fields_match_member($from_id);
+        foreach ($custom_fields as $details) {
+            if ($details['RAW'] != '') {
+                cns_set_custom_field($to_id, intval($details['FIELD_ID']), $details['RAW']);
             }
         }
 

@@ -44,7 +44,12 @@ class Hook_page_groupings_catalogues
 
         $ret = array();
         if (has_privilege($member_id, 'submit_cat_highrange_content', 'cms_catalogues')) {
-            $ret[] = array('cms', 'menu/rich_content/catalogues/catalogues', array('cms_catalogues', array('type' => 'browse'), get_module_zone('cms_catalogues')), do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('catalogues:CATALOGUES'), make_string_tempcode(escape_html(integer_format($GLOBALS['SITE_DB']->query_select_value('catalogues', 'COUNT(*)', array(), '', true))))), 'catalogues:DOC_CATALOGUES');
+            $where = '';
+            if (!addon_installed('ecommerce')) {
+                $where .= 'WHERE ' . db_string_not_equal_to('c_name', 'products');
+            }
+            $cnt = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'COUNT(*)', array(), $where, true);
+            $ret[] = array('cms', 'menu/rich_content/catalogues/catalogues', array('cms_catalogues', array('type' => 'browse'), get_module_zone('cms_catalogues')), do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('catalogues:CATALOGUES'), make_string_tempcode(escape_html(integer_format($cnt)))), 'catalogues:DOC_CATALOGUES');
         }
         if ($exhaustive) {
             $catalogues = $GLOBALS['SITE_DB']->query_select('catalogues', array('*'), array(), 'ORDER BY c_add_date', 50, 0, true);

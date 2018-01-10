@@ -49,21 +49,20 @@
 
         var button = document.createElement('input');
         button.type = 'button';
-        button.className = 'button-micro buttons--proceed';
+        button.className = 'button-micro buttons--calculate';
         button.value = '{!backups:CALCULATE_SIZE;^}';
+        submitButton.parentNode.insertBefore(button, submitButton);
         button.addEventListener('click', function () {
             var progressTicker = document.createElement('img');
             progressTicker.setAttribute('src', $util.srl('{$IMG;,loading}'));
             progressTicker.style.verticalAlign = 'middle';
-            progressTicker.style.marginLeft = '20px';
-            button.parentNode.appendChild(progressTicker);
+            progressTicker.style.marginRight = '20px';
+            button.parentNode.insertBefore(progressTicker);
 
             $cms.loadSnippet('backup_size&max_size=' + encodeURIComponent(maxSizeField.value), null, true).then(function (size) {
                 $cms.ui.alert($util.format('{!backups:CALCULATED_SIZE;^}', [size]));
                 button.parentNode.removeChild(progressTicker);
             });
         });
-
-        maxSizeField.parentNode.insertBefore(button, maxSizeField.nextSibling.nextSibling);
     };
 }(window.$cms, window.$util, window.$dom));

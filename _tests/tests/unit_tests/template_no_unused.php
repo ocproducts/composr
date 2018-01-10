@@ -225,7 +225,7 @@ class template_no_unused_test_set extends cms_test_case
         $dh = @opendir($dir);
         if ($dh !== false) {
             while (($file = readdir($dh)) !== false) {
-                if (($file[0] != '.') && (!should_ignore_file((($dir_stub == '') ? '' : ($dir_stub . '/')) . $file, IGNORE_BUNDLED_VOLATILE))) {
+                if (($file[0] != '.') && (($file == 'install.php') || (!should_ignore_file((($dir_stub == '') ? '' : ($dir_stub . '/')) . $file, IGNORE_BUNDLED_VOLATILE)))) {
                     if (is_file($dir . '/' . $file)) {
                         if (substr($file, -strlen($ext) - 1, strlen($ext) + 1) == '.' . $ext) {
                             $files[] = $dir . '/' . $file;

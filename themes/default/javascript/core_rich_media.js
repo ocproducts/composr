@@ -680,7 +680,7 @@
 
         if (params.blockCallUrl) {
             window['load_tab__' + title] = function () {
-                $cms.callBlock(params.blockCallUrl, '', document.getElementById('g_' + title));
+                $cms.callBlock(params.blockCallUrl, '', document.getElementById('g_' + title), false, null, false, null, true);
             };
         }
     };

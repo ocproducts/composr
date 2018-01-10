@@ -77,9 +77,9 @@ function _page_link_to_static($node)
             $save_target_path = (count($langs) == 1) ? $target_path : ($lang . '/' . $target_path);
 
             $directory = $STATIC_EXPORT_TAR['directory'];
-            foreach ($directory as $entry) { // Make sure it does not exist, due to some kind of dynamic parameter being folded out
+            foreach ($directory as $entry) { // Make sure it does not exist, due to some kind of dynamic parameter being folded out, or complexities within sitemap callback API
                 if ($entry['path'] == $save_target_path) {
-                    continue;
+                    continue 2;
                 }
             }
 

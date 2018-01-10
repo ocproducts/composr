@@ -718,6 +718,7 @@ INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('hackattack', 'ip', 'I
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('hackattack', 'reason', 'ID_TEXT');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('hackattack', 'reason_param_a', 'SHORT_TEXT');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('hackattack', 'reason_param_b', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('hackattack', 'percentage_score', 'INTEGER');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('stats', 'id', '*AUTO');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('stats', 'the_page', 'SHORT_TEXT');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('stats', 'ip', 'IP');
@@ -731,6 +732,7 @@ INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('stats', 'browser', 'S
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('stats', 'milliseconds', 'INTEGER');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('stats', 'operating_system', 'SHORT_TEXT');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('stats', 'access_denied_counter', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('stats', 'title', 'SHORT_TEXT');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('usersonline_track', 'date_and_time', '*TIME');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('usersonline_track', 'peak', 'INTEGER');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ip_country', 'id', '*AUTO');
@@ -754,56 +756,29 @@ INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('sms_log', 'id', '*AUT
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('sms_log', 's_member_id', 'MEMBER');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('sms_log', 's_time', 'TIME');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('sms_log', 's_trigger_ip', 'IP');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('authors', 'description', 'LONG_TRANS__COMCODE');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('authors', 'author', '*ID_TEXT');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('authors', 'url', 'URLPATH');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('authors', 'member_id', '?MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('authors', 'description', 'LONG_TRANS__COMCODE');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('authors', 'skills', 'LONG_TRANS__COMCODE');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'name', '*ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'expiry_date', '?TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'submitter', 'MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'img_url', 'URLPATH');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'the_type', 'SHORT_INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'b_title_text', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'caption', 'SHORT_TRANS__COMCODE');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'b_direct_code', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'campaign_remaining', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'site_url', 'URLPATH');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'hits_from', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'views_from', 'INTEGER');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'hits_to', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'views_to', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'importance_modulus', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'notes', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'views_from', 'INTEGER');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'validated', 'BINARY');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'add_date', 'TIME');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'edit_date', '?TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'b_type', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banner_types', 'id', '*ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banner_types', 't_is_textual', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banner_types', 't_image_width', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banner_types', 't_image_height', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banner_types', 't_max_file_size', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banner_types', 't_comcode_inline', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banner_clicks', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banner_clicks', 'c_date_and_time', 'TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banner_clicks', 'c_member_id', 'MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banner_clicks', 'c_ip_address', 'IP');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banner_clicks', 'c_source', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banner_clicks', 'c_banner_id', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners_types', 'name', '*ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners_types', 'b_type', '*ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_events', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_events', 'e_submitter', 'MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_events', 'e_member_calendar', '?MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_events', 'e_views', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_events', 'e_title', 'SHORT_TRANS__COMCODE');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_events', 'e_content', 'LONG_TRANS__COMCODE');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_events', 'e_add_date', 'TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_events', 'e_edit_date', '?TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_events', 'e_recurrence', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_events', 'e_recurrences', '?SHORT_INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_events', 'e_seg_recurrences', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'views_to', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'site_url', 'URLPATH');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'importance_modulus', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'hits_from', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'notes', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'campaign_remaining', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'caption', 'SHORT_TRANS__COMCODE');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'b_direct_code', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'b_title_text', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'name', '*ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'the_type', 'SHORT_INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'expiry_date', '?TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'submitter', 'MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'img_url', 'URLPATH');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_events', 'e_start_year', 'INTEGER');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_events', 'e_start_month', 'SHORT_INTEGER');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_events', 'e_start_day', 'SHORT_INTEGER');
@@ -826,54 +801,27 @@ INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_events', 'no
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_events', 'e_type', 'AUTO_LINK');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_events', 'validated', 'BINARY');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_types', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_types', 't_title', 'SHORT_TRANS__COMCODE');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_types', 't_logo', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_types', 't_external_feed', 'URLPATH');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_reminders', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_reminders', 'e_id', 'AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_reminders', 'n_member_id', 'MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_reminders', 'n_seconds_before', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_interests', 'i_member_id', '*MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_interests', 't_type', '*AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_jobs', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_jobs', 'j_time', 'TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_jobs', 'j_reminder_id', '?AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_jobs', 'j_member_id', '?MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_jobs', 'j_event_id', 'AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogues', 'c_name', '*ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogues', 'c_title', 'SHORT_TRANS');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogues', 'c_description', 'LONG_TRANS__COMCODE');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogues', 'c_display_type', 'SHORT_INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogues', 'c_is_tree', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogues', 'c_notes', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogues', 'c_add_date', 'TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogues', 'c_submit_points', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogues', 'c_ecommerce', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogues', 'c_default_review_freq', '?INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogues', 'c_send_view_reports', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_categories', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_categories', 'c_name', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_categories', 'cc_title', 'SHORT_TRANS');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_categories', 'cc_description', 'LONG_TRANS__COMCODE');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_categories', 'rep_image', 'URLPATH');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_categories', 'cc_notes', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_categories', 'cc_add_date', 'TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_categories', 'cc_parent_id', '?AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_categories', 'cc_move_target', '?AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_categories', 'cc_move_days_lower', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_categories', 'cc_move_days_higher', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_categories', 'cc_order', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_fields', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_fields', 'c_name', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_fields', 'cf_name', 'SHORT_TRANS');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_fields', 'cf_description', 'LONG_TRANS');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_fields', 'cf_type', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_fields', 'cf_order', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_fields', 'cf_defines_order', 'SHORT_INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_fields', 'cf_visible', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_fields', 'cf_searchable', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_fields', 'cf_default', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_fields', 'cf_required', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_events', 'e_seg_recurrences', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_events', 'e_recurrences', '?SHORT_INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_events', 'e_edit_date', '?TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_events', 'e_recurrence', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_events', 'e_add_date', 'TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_events', 'e_content', 'LONG_TRANS__COMCODE');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_events', 'e_title', 'SHORT_TRANS__COMCODE');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_events', 'e_views', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_events', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_events', 'e_submitter', 'MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_events', 'e_member_calendar', '?MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_short_trans', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_long_trans', 'cv_value', 'LONG_TRANS__COMCODE');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_short_trans', 'cf_id', 'AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_long', 'cv_value', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_long', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_long', 'cf_id', 'AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_long', 'ce_id', 'AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_long_trans', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_long_trans', 'cf_id', 'AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_long_trans', 'ce_id', 'AUTO_LINK');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_fields', 'cf_put_in_category', 'BINARY');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_fields', 'cf_put_in_search', 'BINARY');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_fields', 'cf_options', 'SHORT_TEXT');
@@ -891,38 +839,51 @@ INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_entries', '
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_entries', 'allow_comments', 'SHORT_INTEGER');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_entries', 'allow_trackbacks', 'BINARY');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_entries', 'ce_last_moved', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_long_trans', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_long_trans', 'cf_id', 'AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_long_trans', 'ce_id', 'AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_long_trans', 'cv_value', 'LONG_TRANS__COMCODE');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_long', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_long', 'cf_id', 'AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_long', 'ce_id', 'AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_long', 'cv_value', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_short_trans', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_short_trans', 'cf_id', 'AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_short_trans', 'ce_id', 'AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_short_trans', 'cv_value', 'SHORT_TRANS__COMCODE');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_short', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_short', 'cf_id', 'AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_short', 'ce_id', 'AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_short', 'cv_value', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_entry_linkage', 'catalogue_entry_id', '*AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_entry_linkage', 'content_type', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_entry_linkage', 'content_id', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_cat_treecache', 'cc_id', '*AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_cat_treecache', 'cc_ancestor_id', '*AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_childcountcache', 'cc_id', '*AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_childcountcache', 'c_num_rec_children', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_childcountcache', 'c_num_rec_entries', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_float', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_float', 'cf_id', 'AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_float', 'ce_id', 'AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_float', 'cv_value', '?REAL');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_integer', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_integer', 'cf_id', 'AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_integer', 'ce_id', 'AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_integer', 'cv_value', '?INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_fields', 'cf_order', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_fields', 'cf_defines_order', 'SHORT_INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_fields', 'cf_visible', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_fields', 'cf_searchable', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_fields', 'cf_default', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_fields', 'cf_required', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_fields', 'c_name', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_fields', 'cf_name', 'SHORT_TRANS');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_fields', 'cf_description', 'LONG_TRANS');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_fields', 'cf_type', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_categories', 'cc_move_days_higher', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_categories', 'cc_order', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_fields', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_categories', 'rep_image', 'URLPATH');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_categories', 'cc_notes', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_categories', 'cc_add_date', 'TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_categories', 'cc_parent_id', '?AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_categories', 'cc_move_target', '?AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_categories', 'cc_move_days_lower', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_categories', 'cc_title', 'SHORT_TRANS');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_categories', 'cc_description', 'LONG_TRANS__COMCODE');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_categories', 'c_name', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_categories', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogues', 'c_default_review_freq', '?INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogues', 'c_send_view_reports', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogues', 'c_ecommerce', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogues', 'c_submit_points', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogues', 'c_name', '*ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogues', 'c_title', 'SHORT_TRANS');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogues', 'c_description', 'LONG_TRANS__COMCODE');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogues', 'c_display_type', 'SHORT_INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogues', 'c_is_tree', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogues', 'c_notes', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogues', 'c_add_date', 'TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_blocking', 'date_and_time', 'TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_blocking', 'member_blocker', '*MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_friends', 'member_liked', '*MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_friends', 'member_likes', '*MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_blocking', 'member_blocked', '*MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_25', '?INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_messages', 'text_colour', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_messages', 'font_name', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_messages', 'member_id', 'MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_messages', 'date_and_time', 'TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_messages', 'the_message', 'LONG_TRANS__COMCODE');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_rooms', 'id', '*AUTO');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_rooms', 'room_name', 'SHORT_TEXT');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_rooms', 'room_owner', '?INTEGER');
@@ -937,35 +898,18 @@ INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_messages', 'id',
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_messages', 'system_message', 'BINARY');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_messages', 'ip_address', 'IP');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_messages', 'room_id', 'AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_messages', 'member_id', 'MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_messages', 'date_and_time', 'TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_messages', 'the_message', 'LONG_TRANS__COMCODE');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_messages', 'text_colour', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_messages', 'font_name', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_10', '?INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_blocking', 'member_blocker', '*MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_blocking', 'member_blocked', '*MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_blocking', 'date_and_time', 'TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_friends', 'member_likes', '*MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_friends', 'member_liked', '*MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_friends', 'date_and_time', 'TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_events', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_events', 'e_type_code', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_events', 'e_member_id', 'MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_events', 'e_room_id', '?AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_events', 'e_date_and_time', 'TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_active', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_active', 'member_id', 'MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_active', 'room_id', '?AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_active', 'date_and_time', 'TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_sound_effects', 's_member', '*MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_sound_effects', 's_effect_id', '*ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_sound_effects', 's_url', 'URLPATH');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_categories', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_categories', 'category', 'SHORT_TRANS');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_categories', 'parent_id', '?AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_categories', 'add_date', 'TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_categories', 'notes', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'submitter', 'MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'download_cost', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'download_submitter_gets_points', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'download_views', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'notes', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'allow_trackbacks', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'edit_date', '?TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'validated', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'default_pic', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'file_size', '?INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'allow_rating', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'allow_comments', 'SHORT_INTEGER');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_categories', 'description', 'LONG_TRANS__COMCODE');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_categories', 'rep_image', 'URLPATH');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'id', '*AUTO');
@@ -978,57 +922,16 @@ INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'num_downloads', 'INTEGER');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'out_mode_id', '?AUTO_LINK');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'add_date', 'TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'edit_date', '?TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'validated', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'default_pic', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'file_size', '?INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'allow_rating', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'allow_comments', 'SHORT_INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'allow_trackbacks', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'notes', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'download_views', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'download_cost', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'download_submitter_gets_points', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'submitter', 'MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'original_filename', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'rep_image', 'URLPATH');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'download_licence', '?AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'download_data_mash', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'url_redirect', 'URLPATH');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_logging', 'id', '*AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_logging', 'member_id', '*MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_logging', 'ip', 'IP');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_logging', 'date_and_time', 'TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_licences', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_licences', 'l_title', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_licences', 'l_text', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'name', '*ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'description', 'LONG_TRANS__COMCODE');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'fullname', 'SHORT_TRANS__COMCODE');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'add_date', 'TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'rep_image', 'URLPATH');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'parent_id', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'watermark_top_left', 'URLPATH');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'watermark_top_right', 'URLPATH');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'watermark_bottom_left', 'URLPATH');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'watermark_bottom_right', 'URLPATH');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'accept_images', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'accept_videos', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'allow_rating', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'allow_comments', 'SHORT_INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'notes', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'is_member_synched', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'flow_mode_interface', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'gallery_views', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'g_owner', '?AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('images', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('images', 'cat', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('images', 'url', 'URLPATH');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('images', 'thumb_url', 'URLPATH');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('images', 'description', 'LONG_TRANS__COMCODE');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('images', 'allow_rating', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('images', 'allow_comments', 'SHORT_INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('images', 'allow_trackbacks', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_categories', 'notes', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_categories', 'parent_id', '?AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_categories', 'add_date', 'TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_categories', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_categories', 'category', 'SHORT_TRANS');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('videos', 'allow_rating', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('videos', 'allow_comments', 'SHORT_INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('videos', 'allow_trackbacks', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('videos', 'description', 'LONG_TRANS__COMCODE');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('videos', 'thumb_url', 'URLPATH');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('images', 'notes', 'LONG_TEXT');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('images', 'submitter', 'MEMBER');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('images', 'validated', 'BINARY');
@@ -1039,73 +942,88 @@ INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('images', 'title', 'SH
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('videos', 'id', '*AUTO');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('videos', 'cat', 'ID_TEXT');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('videos', 'url', 'URLPATH');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('videos', 'thumb_url', 'URLPATH');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('videos', 'description', 'LONG_TRANS__COMCODE');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('videos', 'allow_rating', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('videos', 'allow_comments', 'SHORT_INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('videos', 'allow_trackbacks', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('videos', 'notes', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('videos', 'submitter', 'MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('videos', 'validated', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('videos', 'add_date', 'TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('videos', 'edit_date', '?TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('videos', 'video_views', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('videos', 'video_width', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('videos', 'video_height', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('videos', 'video_length', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('videos', 'title', 'SHORT_TRANS');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('video_transcoding', 't_id', '*ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('video_transcoding', 't_local_id', '?AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('video_transcoding', 't_local_id_field', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('video_transcoding', 't_error', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('video_transcoding', 't_url', 'URLPATH');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('video_transcoding', 't_table', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('video_transcoding', 't_url_field', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('video_transcoding', 't_orig_filename_field', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('video_transcoding', 't_width_field', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('video_transcoding', 't_height_field', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('video_transcoding', 't_output_filename', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('invoices', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('invoices', 'i_type_code', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('invoices', 'i_member_id', 'MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('invoices', 'i_state', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('invoices', 'i_amount', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('invoices', 'i_special', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('invoices', 'i_time', 'TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('invoices', 'i_note', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news', 'date_and_time', 'TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news', 'title', 'SHORT_TRANS__COMCODE');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news', 'news', 'LONG_TRANS__COMCODE');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news', 'news_article', 'LONG_TRANS__COMCODE');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news', 'allow_rating', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news', 'allow_comments', 'SHORT_INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news', 'allow_trackbacks', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('images', 'allow_comments', 'SHORT_INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'g_owner', '?AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('images', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('images', 'cat', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('images', 'url', 'URLPATH');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('images', 'thumb_url', 'URLPATH');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('images', 'description', 'LONG_TRANS__COMCODE');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('images', 'allow_trackbacks', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('images', 'allow_rating', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'flow_mode_interface', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'accept_videos', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'allow_rating', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'allow_comments', 'SHORT_INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'notes', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'is_member_synched', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'accept_images', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'gallery_views', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'watermark_bottom_right', 'URLPATH');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'watermark_bottom_left', 'URLPATH');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'watermark_top_right', 'URLPATH');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'parent_id', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'watermark_top_left', 'URLPATH');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'rep_image', 'URLPATH');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'add_date', 'TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'name', '*ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'description', 'LONG_TRANS__COMCODE');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('galleries', 'fullname', 'SHORT_TRANS__COMCODE');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_invoices', 'i_currency', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_invoices', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_invoices', 'i_type_code', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_invoices', 'i_member_id', 'MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_invoices', 'i_state', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_invoices', 'i_amount', 'REAL');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_invoices', 'i_tax_code', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_invoices', 'i_tax_derivation', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_invoices', 'i_tax', 'REAL');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_invoices', 'i_tax_tracking', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news_categories', 'notes', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news', 'news_category', 'AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news_categories', 'nc_owner', '?MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news_categories', 'nc_img', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news', 'news_image', 'URLPATH');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news', 'news_views', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news', 'edit_date', '?TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news_categories', 'nc_title', 'SHORT_TRANS');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news_categories', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news', 'validated', 'BINARY');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news', 'notes', 'LONG_TEXT');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news', 'author', 'ID_TEXT');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news', 'submitter', 'MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news', 'validated', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news', 'edit_date', '?TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news', 'news_category', 'AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news', 'news_views', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news', 'news_image', 'URLPATH');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news_categories', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news_categories', 'nc_title', 'SHORT_TRANS');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news_categories', 'nc_owner', '?MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news_categories', 'nc_img', 'URLPATH');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news_categories', 'notes', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news_rss_cloud', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news_rss_cloud', 'rem_procedure', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news_rss_cloud', 'rem_port', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news_rss_cloud', 'rem_path', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news_rss_cloud', 'rem_protocol', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news_rss_cloud', 'rem_ip', 'IP');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news_rss_cloud', 'watching_channel', 'URLPATH');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news_rss_cloud', 'register_time', 'TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news_category_entries', 'news_entry', '*AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news_category_entries', 'news_entry_category', '*AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_subscribers', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_subscribers', 'email', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news', 'allow_trackbacks', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news', 'allow_rating', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news', 'allow_comments', 'SHORT_INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news', 'news_article', 'LONG_TRANS__COMCODE');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news', 'title', 'SHORT_TRANS__COMCODE');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news', 'news', 'LONG_TRANS__COMCODE');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news', 'date_and_time', 'TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_periodic', 'np_lang', 'LANGUAGE_NAME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_periodic', 'np_message', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_periodic', 'np_subject', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_drip_send', 'd_message_binding', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_drip_send', 'd_to_email', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_drip_send', 'd_to_name', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_periodic', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_drip_send', 'd_message_id', 'AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_subscribe', 'newsletter_id', '*AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_subscribe', 'email', '*SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_drip_send', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_drip_send', 'd_inject_time', 'TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_archive', 'html_only', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletters', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletters', 'title', 'SHORT_TRANS');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletters', 'description', 'LONG_TRANS');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_archive', 'priority', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_archive', 'template', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_archive', 'newsletter', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_archive', 'language', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_archive', 'from_email', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_archive', 'from_name', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_archive', 'subject', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_archive', 'date_and_time', 'INTEGER');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_subscribers', 'join_time', 'TIME');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_subscribers', 'code_confirm', 'INTEGER');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_subscribers', 'the_password', 'SHORT_TEXT');
@@ -1114,162 +1032,118 @@ INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_subscriber
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_subscribers', 'n_forename', 'SHORT_TEXT');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_subscribers', 'n_surname', 'SHORT_TEXT');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_archive', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_archive', 'date_and_time', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_archive', 'subject', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_archive', 'newsletter', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_archive', 'language', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_archive', 'from_email', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_archive', 'from_name', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_archive', 'priority', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_archive', 'template', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_archive', 'html_only', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletters', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletters', 'title', 'SHORT_TRANS');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletters', 'description', 'LONG_TRANS');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_subscribe', 'newsletter_id', '*AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_subscribe', 'email', '*SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_drip_send', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_drip_send', 'd_inject_time', 'TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_drip_send', 'd_message_id', 'AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_drip_send', 'd_message_binding', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_drip_send', 'd_to_email', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_drip_send', 'd_to_name', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_periodic', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_periodic', 'np_message', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_periodic', 'np_subject', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_periodic', 'np_lang', 'LANGUAGE_NAME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_periodic', 'np_send_details', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_periodic', 'np_html_only', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_periodic', 'np_from_email', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_periodic', 'np_from_name', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_periodic', 'np_priority', 'SHORT_INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_periodic', 'np_csv_data', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_periodic', 'np_frequency', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_periodic', 'np_day', 'SHORT_INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_periodic', 'np_in_full', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_periodic', 'np_template', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_periodic', 'np_last_sent', 'TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chargelog', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chargelog', 'member_id', 'MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chargelog', 'amount', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chargelog', 'reason', 'SHORT_TRANS__COMCODE');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chargelog', 'date_and_time', 'TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_subscribers', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_subscribers', 'email', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('gifts', 'anonymous', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('gifts', 'reason', 'SHORT_TRANS__COMCODE');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('gifts', 'gift_from', 'MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('gifts', 'gift_to', 'MEMBER');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('gifts', 'id', '*AUTO');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('gifts', 'date_and_time', 'TIME');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('gifts', 'amount', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('gifts', 'gift_from', 'MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('gifts', 'gift_to', 'MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('gifts', 'reason', 'SHORT_TRANS__COMCODE');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('gifts', 'anonymous', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_11', '?INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_12', '?INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_13', '?INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_14', '?INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chargelog', 'date_and_time', 'TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chargelog', 'reason', 'SHORT_TRANS__COMCODE');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chargelog', 'amount', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chargelog', 'member_id', 'MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chargelog', 'id', '*AUTO');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_15', '?INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('prices', 'name', '*ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('prices', 'price', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('sales', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('sales', 'date_and_time', 'TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('sales', 'memberid', 'MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('sales', 'purchasetype', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('sales', 'details', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('sales', 'details2', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('pstore_customs', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('pstore_customs', 'c_title', 'SHORT_TRANS');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('pstore_customs', 'c_description', 'LONG_TRANS__COMCODE');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('pstore_customs', 'c_mail_subject', 'SHORT_TRANS');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('pstore_customs', 'c_mail_body', 'LONG_TRANS');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('pstore_customs', 'c_enabled', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('pstore_customs', 'c_cost', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('pstore_customs', 'c_one_per_member', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('pstore_permissions', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('pstore_permissions', 'p_title', 'SHORT_TRANS');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('pstore_permissions', 'p_description', 'LONG_TRANS__COMCODE');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('pstore_permissions', 'p_mail_subject', 'SHORT_TRANS');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('pstore_permissions', 'p_mail_body', 'LONG_TRANS');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('pstore_permissions', 'p_enabled', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('pstore_permissions', 'p_cost', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('pstore_permissions', 'p_hours', '?INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('pstore_permissions', 'p_type', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('pstore_permissions', 'p_privilege', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('pstore_permissions', 'p_zone', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('pstore_permissions', 'p_page', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('pstore_permissions', 'p_module', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('pstore_permissions', 'p_category', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'question', 'SHORT_TRANS__COMCODE');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'option1', 'SHORT_TRANS__COMCODE');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'option2', 'SHORT_TRANS__COMCODE');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'allow_comments', 'SHORT_INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'option9', '?SHORT_TRANS__COMCODE');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'votes9', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'votes8', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'votes7', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'votes6', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'votes5', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'votes4', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'votes3', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'votes1', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'votes2', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'option8', '?SHORT_TRANS__COMCODE');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'option7', '?SHORT_TRANS__COMCODE');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'option6', '?SHORT_TRANS__COMCODE');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'option3', '?SHORT_TRANS__COMCODE');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'option4', '?SHORT_TRANS__COMCODE');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'option5', '?SHORT_TRANS__COMCODE');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'option6', '?SHORT_TRANS__COMCODE');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'option7', '?SHORT_TRANS__COMCODE');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'option8', '?SHORT_TRANS__COMCODE');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'option9', '?SHORT_TRANS__COMCODE');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'option10', '?SHORT_TRANS__COMCODE');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'votes1', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'votes2', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'votes3', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'votes4', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'votes5', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'votes6', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'votes7', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'votes8', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'votes9', 'INTEGER');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'votes10', 'INTEGER');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'allow_rating', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'allow_comments', 'SHORT_INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'allow_trackbacks', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'notes', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'num_options', 'SHORT_INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'is_current', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'date_and_time', '?TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'submitter', 'MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'add_time', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'poll_views', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'edit_date', '?TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_16', '?INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll_votes', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll_votes', 'v_poll_id', 'AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll_votes', 'v_voter_id', '?MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll_votes', 'v_voter_ip', 'IP');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll_votes', 'v_vote_for', '?SHORT_INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('trans_expecting', 'id', '*ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('trans_expecting', 'e_type_code', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('trans_expecting', 'e_purchase_id', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('trans_expecting', 'e_item_name', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('trans_expecting', 'e_member_id', 'MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('trans_expecting', 'e_amount', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('trans_expecting', 'e_currency', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('trans_expecting', 'e_ip_address', 'IP');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('trans_expecting', 'e_session_id', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('trans_expecting', 'e_time', 'TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('trans_expecting', 'e_length', '?INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('trans_expecting', 'e_length_units', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_17', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_18', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_19', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_20', '?INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_21', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_22', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_23', '?INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('transactions', 'id', '*ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('transactions', 't_type_code', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('transactions', 't_purchase_id', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('transactions', 't_status', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('transactions', 't_reason', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('transactions', 't_amount', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('transactions', 't_currency', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('transactions', 't_parent_txn_id', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('transactions', 't_time', '*TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('transactions', 't_pending_reason', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('transactions', 't_memo', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('transactions', 't_payment_gateway', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_member_last_visit', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_member_last_visit', 'v_time', 'TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_member_last_visit', 'v_member_id', 'MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_member_last_visit', 'v_quiz_id', 'AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'option10', '?SHORT_TRANS__COMCODE');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'question', 'SHORT_TRANS__COMCODE');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'option2', 'SHORT_TRANS__COMCODE');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'option1', 'SHORT_TRANS__COMCODE');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_trans_addresses', 'a_country', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_trans_addresses', 'a_email', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_trans_addresses', 'a_phone', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_prods_prices', 'name', '*ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_prods_prices', 'price', '?REAL');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_prods_prices', 'tax_code', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_prods_prices', 'price_points', '?INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_sales', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_sales', 'date_and_time', 'TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_sales', 'member_id', 'MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_sales', 'details', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_sales', 'details2', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_sales', 'txn_id', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_prods_custom', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_prods_custom', 'c_title', 'SHORT_TRANS');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_prods_custom', 'c_description', 'LONG_TRANS__COMCODE');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_trans_addresses', 'a_post_code', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_trans_addresses', 'a_state', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_trans_addresses', 'a_county', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_trans_addresses', 'a_city', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_trans_addresses', 'a_street_address', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_transactions', 'id', '*ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_transactions', 't_type_code', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_transactions', 't_purchase_id', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_transactions', 't_status', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_transactions', 't_reason', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_transactions', 't_amount', 'REAL');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_transactions', 't_tax_derivation', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_transactions', 't_tax', 'REAL');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_transactions', 't_tax_tracking', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_transactions', 't_currency', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_transactions', 't_parent_txn_id', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_transactions', 't_time', '*TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_transactions', 't_pending_reason', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_transactions', 't_memo', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_transactions', 't_payment_gateway', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_transactions', 't_invoicing_breakdown', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_transactions', 't_member_id', 'MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_transactions', 't_session_id', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_sales_expecting', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_sales_expecting', 'e_details', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_sales_expecting', 'e_time', 'TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_trans_addresses', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_trans_addresses', 'a_trans_expecting_id', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_trans_addresses', 'a_txn_id', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_trans_addresses', 'a_firstname', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_trans_addresses', 'a_lastname', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_37', '?INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_32', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_33', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_34', '?INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_35', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_36', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_trans_expecting', 'e_ip_address', 'IP');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_trans_expecting', 'e_time', 'TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_trans_expecting', 'e_length', '?INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_trans_expecting', 'e_length_units', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_trans_expecting', 'e_memo', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_trans_expecting', 'e_invoicing_breakdown', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_31', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_trans_expecting', 'e_price_points', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_trans_expecting', 'e_member_id', 'MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_trans_expecting', 'e_session_id', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_trans_expecting', 'e_price', 'REAL');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_trans_expecting', 'e_tax_derivation', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_trans_expecting', 'e_tax', 'REAL');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_trans_expecting', 'e_tax_tracking', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_trans_expecting', 'e_currency', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_trans_expecting', 'e_item_name', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_trans_expecting', 'id', '*ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_trans_expecting', 'e_type_code', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_trans_expecting', 'e_purchase_id', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_question_answers', 'id', '*AUTO');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quizzes', 'id', '*AUTO');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quizzes', 'q_timeout', '?INTEGER');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quizzes', 'q_name', 'SHORT_TRANS');
@@ -1299,116 +1173,79 @@ INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_questions', 'q_q
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_questions', 'q_order', 'INTEGER');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_questions', 'q_required', 'BINARY');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_questions', 'q_marked', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_question_answers', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_member_last_visit', 'v_quiz_id', 'AUTO_LINK');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_question_answers', 'q_question', 'AUTO_LINK');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_question_answers', 'q_answer_text', 'SHORT_TRANS__COMCODE');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_question_answers', 'q_is_correct', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_question_answers', 'q_order', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_question_answers', 'q_explanation', 'LONG_TRANS');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_winner', 'q_quiz', '*AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_winner', 'q_entry', '*AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_winner', 'q_winner_level', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_entries', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_entries', 'q_time', 'TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_entries', 'q_member', 'MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_entries', 'q_quiz', 'AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_entries', 'q_results', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_entry_answer', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_entry_answer', 'q_entry', 'AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_entry_answer', 'q_question', 'AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_entry_answer', 'q_answer', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_member_last_visit', 'v_member_id', 'MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_member_last_visit', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_member_last_visit', 'v_time', 'TIME');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('reported_content', 'r_session_id', '*ID_TEXT');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('reported_content', 'r_content_type', '*ID_TEXT');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('reported_content', 'r_content_id', '*ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('reported_content', 'r_counts', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('searches_logged', 's_auxillary', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('searches_logged', 's_primary', 'SHORT_TEXT');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('searches_logged', 'id', '*AUTO');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('searches_logged', 's_member_id', 'MEMBER');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('searches_logged', 's_time', 'TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('searches_logged', 's_primary', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('searches_logged', 's_auxillary', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('searches_logged', 's_num_results', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_details', 'p_type_code', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_details', 'p_purchase_id', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_details', 'p_order_id', '?AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_details', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_orders', 'purchase_through', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_orders', 'txn_id', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_orders', 'total_shipping_tax', 'REAL');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_orders', 'total_product_weight', 'REAL');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_orders', 'total_product_length', 'REAL');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_orders', 'total_product_width', 'REAL');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_orders', 'total_product_height', 'REAL');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_orders', 'order_currency', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_orders', 'order_status', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_orders', 'notes', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_cart', 'quantity', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_orders', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_orders', 'session_id', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_orders', 'member_id', 'MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_orders', 'add_date', 'TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_orders', 'total_price', 'REAL');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_orders', 'total_tax_derivation', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_orders', 'total_tax', 'REAL');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_orders', 'total_tax_tracking', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_orders', 'total_shipping_cost', 'REAL');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_cart', 'purchase_id', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_cart', 'type_code', 'ID_TEXT');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_cart', 'id', '*AUTO');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_cart', 'session_id', 'ID_TEXT');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_cart', 'ordered_by', 'MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_cart', 'product_id', 'AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_cart', 'product_name', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_cart', 'product_code', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_cart', 'quantity', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_cart', 'price_pre_tax', 'REAL');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_cart', 'price', 'REAL');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_cart', 'product_description', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_cart', 'product_type', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_cart', 'product_weight', 'REAL');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_cart', 'is_deleted', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order', 'c_member', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order', 'session_id', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order', 'add_date', 'TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order', 'tot_price', 'REAL');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order', 'order_status', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order', 'notes', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order', 'transaction_id', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order', 'purchase_through', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order', 'tax_opted_out', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_details', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_details', 'order_id', '?AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_details', 'p_id', '?AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_details', 'p_name', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_details', 'p_code', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_details', 'p_type', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_details', 'p_quantity', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_details', 'p_price', 'REAL');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_details', 'included_tax', 'REAL');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_details', 'dispatch_status', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_logging', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_logging', 'e_member_id', '*MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_logging', 'session_id', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_logging', 'ip', 'IP');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_logging', 'last_action', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_logging', 'date_and_time', 'TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_addresses', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_addresses', 'a_order_id', '?AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_addresses', 'a_firstname', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_addresses', 'a_lastname', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_addresses', 'a_street_address', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_addresses', 'a_city', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_addresses', 'a_county', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_addresses', 'a_state', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_addresses', 'a_post_code', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_addresses', 'a_country', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_addresses', 'a_email', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_addresses', 'a_phone', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('subscriptions', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('subscriptions', 's_type_code', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('subscriptions', 's_member_id', 'MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('subscriptions', 's_state', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('subscriptions', 's_amount', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('subscriptions', 's_purchase_id', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('subscriptions', 's_time', 'TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('subscriptions', 's_auto_fund_source', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('subscriptions', 's_auto_fund_key', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('subscriptions', 's_payment_gateway', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('subscriptions', 's_length', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('subscriptions', 's_length_units', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 's_mail_start', 'LONG_TRANS');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_subscriptions', 's_length', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_subscriptions', 's_length_units', 'SHORT_TEXT');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 'id', '*AUTO');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 's_title', 'SHORT_TRANS');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 's_description', 'LONG_TRANS__COMCODE');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 's_cost', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 's_price', 'REAL');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 's_tax_code', 'ID_TEXT');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 's_length', 'INTEGER');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 's_length_units', 'SHORT_TEXT');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 's_auto_recur', 'BINARY');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 's_group_id', 'GROUP');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 's_enabled', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 's_mail_start', 'LONG_TRANS');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 's_mail_end', 'LONG_TRANS');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 's_mail_uhoh', 'LONG_TRANS');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 's_uses_primary', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_sub_mails', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_sub_mails', 'm_usergroup_sub_id', 'AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_sub_mails', 'm_ref_point', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_sub_mails', 'm_ref_point_offset', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_sub_mails', 'm_subject', 'SHORT_TRANS');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_sub_mails', 'm_body', 'LONG_TRANS');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_subscriptions', 's_payment_gateway', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_subscriptions', 's_tax_derivation', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_subscriptions', 's_tax', 'REAL');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_subscriptions', 's_tax_tracking', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_subscriptions', 's_time', 'TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_subscriptions', 's_auto_fund_source', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_subscriptions', 's_auto_fund_key', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_subscriptions', 's_purchase_id', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_subscriptions', 's_currency', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_subscriptions', 's_tax_code', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_subscriptions', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_subscriptions', 's_type_code', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_subscriptions', 's_member_id', 'MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_subscriptions', 's_state', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_subscriptions', 's_amount', 'REAL');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ticket_types', 'ticket_type_name', 'SHORT_TRANS');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ticket_types', 'id', '*AUTO');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ticket_known_emailers', 'email_address', '*SHORT_TEXT');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ticket_known_emailers', 'member_id', 'MEMBER');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ticket_extra_access', 'ticket_id', '*SHORT_TEXT');
@@ -1417,36 +1254,25 @@ INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('tickets', 'ticket_id'
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('tickets', 'topic_id', 'AUTO_LINK');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('tickets', 'forum_id', 'AUTO_LINK');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('tickets', 'ticket_type', 'AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ticket_types', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ticket_types', 'ticket_type_name', 'SHORT_TRANS');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ticket_types', 'guest_emails_mandatory', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ticket_types', 'search_faq', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ticket_types', 'cache_lead_time', '?TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_children', 'parent_id', '*AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_children', 'child_id', '*AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_children', 'the_order', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_children', 'title', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_pages', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_pages', 'title', 'SHORT_TRANS');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_pages', 'notes', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_pages', 'description', 'LONG_TRANS__COMCODE');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_posts', 'page_id', 'AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_posts', 'the_message', 'LONG_TRANS__COMCODE');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_posts', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_pages', 'submitter', 'MEMBER');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_pages', 'add_date', 'TIME');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_pages', 'edit_date', '?TIME');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_pages', 'wiki_views', 'INTEGER');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_pages', 'hide_posts', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_pages', 'submitter', 'MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_posts', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_posts', 'page_id', 'AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_posts', 'the_message', 'LONG_TRANS__COMCODE');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_posts', 'date_and_time', 'TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_posts', 'validated', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_posts', 'wiki_views', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_posts', 'member_id', 'MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_posts', 'edit_date', '?TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_24', '?INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_pages', 'description', 'LONG_TRANS__COMCODE');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_pages', 'notes', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_pages', 'title', 'SHORT_TRANS');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_pages', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_children', 'title', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_children', 'child_id', '*AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_children', 'the_order', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_children', 'parent_id', '*AUTO_LINK');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('filedump', 'id', '*AUTO');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('filedump', 'name', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('filedump', 'path', 'URLPATH');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('filedump', 'path', 'SHORT_TEXT');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('filedump', 'description', 'SHORT_TRANS');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('filedump', 'the_member', 'MEMBER');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('leader_board', 'lb_member', '*MEMBER');
@@ -1479,24 +1305,238 @@ INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_tips_dismissed'
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_website_monitoring', 'id', '*AUTO');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_website_monitoring', 'site_url', 'URLPATH');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_website_monitoring', 'site_name', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('authors', 'skills', 'LONG_TRANS__COMCODE');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners', 'b_type', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banner_types', 'id', '*ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banner_types', 't_is_textual', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banner_types', 't_image_width', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banner_types', 't_image_height', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banner_types', 't_max_file_size', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banner_types', 't_comcode_inline', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banner_clicks', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banner_clicks', 'c_date_and_time', 'TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banner_clicks', 'c_member_id', 'MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banner_clicks', 'c_ip_address', 'IP');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banner_clicks', 'c_source', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banner_clicks', 'c_banner_id', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners_types', 'name', '*ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('banners_types', 'b_type', '*ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_types', 't_title', 'SHORT_TRANS__COMCODE');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_types', 't_logo', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_types', 't_external_feed', 'URLPATH');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_reminders', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_reminders', 'e_id', 'AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_reminders', 'n_member_id', 'MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_reminders', 'n_seconds_before', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_interests', 'i_member_id', '*MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_interests', 't_type', '*AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_jobs', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_jobs', 'j_time', 'TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_jobs', 'j_reminder_id', '?AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_jobs', 'j_member_id', '?MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('calendar_jobs', 'j_event_id', 'AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_short_trans', 'ce_id', 'AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_short_trans', 'cv_value', 'SHORT_TRANS__COMCODE');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_short', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_short', 'cf_id', 'AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_short', 'ce_id', 'AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_short', 'cv_value', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_entry_linkage', 'catalogue_entry_id', '*AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_entry_linkage', 'content_type', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_entry_linkage', 'content_id', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_cat_treecache', 'cc_id', '*AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_cat_treecache', 'cc_ancestor_id', '*AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_childcountcache', 'cc_id', '*AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_childcountcache', 'c_num_rec_children', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_childcountcache', 'c_num_rec_entries', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_float', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_float', 'cf_id', 'AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_float', 'ce_id', 'AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_float', 'cv_value', '?REAL');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_integer', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_integer', 'cf_id', 'AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_integer', 'ce_id', 'AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('catalogue_efv_integer', 'cv_value', '?INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_friends', 'date_and_time', 'TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_events', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_events', 'e_type_code', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_events', 'e_member_id', 'MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_events', 'e_room_id', '?AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_events', 'e_date_and_time', 'TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_active', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_active', 'member_id', 'MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_active', 'room_id', '?AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_active', 'date_and_time', 'TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_sound_effects', 's_member', '*MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_sound_effects', 's_effect_id', '*ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chat_sound_effects', 's_url', 'URLPATH');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'original_filename', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'rep_image', 'URLPATH');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'download_licence', '?AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'download_data_mash', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_downloads', 'url_redirect', 'URLPATH');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_logging', 'id', '*AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_logging', 'member_id', '*MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_logging', 'ip', 'IP');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_logging', 'date_and_time', 'TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_licences', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_licences', 'l_title', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('download_licences', 'l_text', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('videos', 'notes', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('videos', 'submitter', 'MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('videos', 'validated', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('videos', 'add_date', 'TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('videos', 'edit_date', '?TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('videos', 'video_views', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('videos', 'video_width', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('videos', 'video_height', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('videos', 'video_length', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('videos', 'title', 'SHORT_TRANS');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('video_transcoding', 't_id', '*ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('video_transcoding', 't_local_id', '?AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('video_transcoding', 't_local_id_field', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('video_transcoding', 't_error', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('video_transcoding', 't_url', 'URLPATH');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('video_transcoding', 't_table', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('video_transcoding', 't_url_field', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('video_transcoding', 't_orig_filename_field', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('video_transcoding', 't_width_field', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('video_transcoding', 't_height_field', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('video_transcoding', 't_output_filename', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_invoices', 'i_special', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_invoices', 'i_time', 'TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_invoices', 'i_note', 'LONG_TEXT');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('failedlogins', 'id', '*AUTO');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('failedlogins', 'failed_account', 'ID_TEXT');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('failedlogins', 'date_and_time', 'TIME');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('failedlogins', 'ip', 'IP');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_25', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_26', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_27', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_28', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_29', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_30', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_31', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_32', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_33', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_34', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_35', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_36', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_37', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_38', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news_rss_cloud', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news_rss_cloud', 'rem_procedure', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news_rss_cloud', 'rem_port', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news_rss_cloud', 'rem_path', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news_rss_cloud', 'rem_protocol', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news_rss_cloud', 'rem_ip', 'IP');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news_rss_cloud', 'watching_channel', 'URLPATH');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news_rss_cloud', 'register_time', 'TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news_category_entries', 'news_entry', '*AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('news_category_entries', 'news_entry_category', '*AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_periodic', 'np_send_details', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_periodic', 'np_html_only', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_periodic', 'np_from_email', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_periodic', 'np_from_name', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_periodic', 'np_priority', 'SHORT_INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_periodic', 'np_csv_data', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_periodic', 'np_frequency', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_periodic', 'np_day', 'SHORT_INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_periodic', 'np_in_full', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_periodic', 'np_template', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_periodic', 'np_last_sent', 'TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_26', '?INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_27', '?INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_28', '?INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_29', '?INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'allow_trackbacks', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'notes', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'num_options', 'SHORT_INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'is_current', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'date_and_time', '?TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'submitter', 'MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'add_time', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'poll_views', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'edit_date', '?TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_30', '?INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll_votes', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll_votes', 'v_poll_id', 'AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll_votes', 'v_voter_id', '?MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll_votes', 'v_voter_ip', 'IP');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll_votes', 'v_vote_for', '?SHORT_INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_prods_custom', 'c_mail_subject', 'SHORT_TRANS');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_prods_custom', 'c_mail_body', 'LONG_TRANS');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_prods_custom', 'c_enabled', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_prods_custom', 'c_price', '?REAL');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_prods_custom', 'c_tax_code', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_prods_custom', 'c_shipping_cost', 'REAL');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_prods_custom', 'c_price_points', '?INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_prods_custom', 'c_one_per_member', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_prods_permissions', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_prods_permissions', 'p_title', 'SHORT_TRANS');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_prods_permissions', 'p_description', 'LONG_TRANS__COMCODE');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_prods_permissions', 'p_mail_subject', 'SHORT_TRANS');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_prods_permissions', 'p_mail_body', 'LONG_TRANS');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_prods_permissions', 'p_enabled', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_prods_permissions', 'p_price', '?REAL');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_prods_permissions', 'p_tax_code', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_prods_permissions', 'p_price_points', '?INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_prods_permissions', 'p_hours', '?INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_prods_permissions', 'p_type', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_prods_permissions', 'p_privilege', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_prods_permissions', 'p_zone', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_prods_permissions', 'p_page', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_prods_permissions', 'p_module', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ecom_prods_permissions', 'p_category', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_question_answers', 'q_is_correct', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_question_answers', 'q_order', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_question_answers', 'q_explanation', 'LONG_TRANS');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_winner', 'q_quiz', '*AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_winner', 'q_entry', '*AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_winner', 'q_winner_level', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_entries', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_entries', 'q_time', 'TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_entries', 'q_member', 'MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_entries', 'q_quiz', 'AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_entries', 'q_results', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_entry_answer', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_entry_answer', 'q_entry', 'AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_entry_answer', 'q_question', 'AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_entry_answer', 'q_answer', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('reported_content', 'r_counts', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('searches_logged', 's_num_results', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_details', 'p_name', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_details', 'p_sku', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_details', 'p_quantity', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_details', 'p_price', 'REAL');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_details', 'p_tax_code', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_details', 'p_tax', 'REAL');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_details', 'p_dispatch_status', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_logging', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_logging', 'l_member_id', '*MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_logging', 'l_session_id', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_logging', 'l_ip', 'IP');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_logging', 'l_last_action', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_logging', 'l_date_and_time', 'TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 's_mail_end', 'LONG_TRANS');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 's_mail_uhoh', 'LONG_TRANS');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 's_uses_primary', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_sub_mails', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_sub_mails', 'm_usergroup_sub_id', 'AUTO_LINK');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_sub_mails', 'm_ref_point', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_sub_mails', 'm_ref_point_offset', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_sub_mails', 'm_subject', 'SHORT_TRANS');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_sub_mails', 'm_body', 'LONG_TRANS');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ticket_types', 'guest_emails_mandatory', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ticket_types', 'search_faq', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ticket_types', 'cache_lead_time', '?TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_posts', 'date_and_time', 'TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_posts', 'validated', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_posts', 'wiki_views', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_posts', 'member_id', 'MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_posts', 'edit_date', '?TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_38', '?INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_39', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_40', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_41', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_42', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_43', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_44', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_45', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_46', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_47', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_48', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_49', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_50', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_51', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_52', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_53', 'SHORT_TEXT');
 
 ALTER TABLE cms11_db_meta ADD INDEX findtransfields (m_type);
 
@@ -1520,6 +1560,7 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('alternative
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('alternative_ids', 'resource_moniker_uniq', 'resource_moniker,resource_resource_fs_hook');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('attachments', 'attachmentlimitcheck', 'a_add_time');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('attachments', 'ownedattachments', 'a_member_id');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('attachment_refs', 'attachmentreferences', 'r_referer_type,r_referer_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('authors', '#description', 'description');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('authors', '#skills', 'skills');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('authors', 'findmemberlink', 'member_id');
@@ -1537,11 +1578,13 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('banners', '
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('banners', 'topsites', 'hits_from,hits_to');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('banner_clicks', 'clicker_ip', 'c_ip_address');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('banner_clicks', 'c_banner_id', 'c_banner_id');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('banner_clicks', 'member_id', 'c_member_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('banner_types', 'hottext', 't_comcode_inline');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('cache', 'cached_ford', 'date_and_time');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('cache', 'cached_fore', 'cached_for');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('cache', 'cached_forf', 'cached_for,identifier,the_theme,lang,staff_status,the_member,is_bot');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('cache', 'cached_forh', 'the_theme');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('cache', 'the_member', 'the_member');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('cached_comcode_pages', '#cc_page_title', 'cc_page_title');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('cached_comcode_pages', '#page_search__combined', 'cc_page_title,string_index');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('cached_comcode_pages', '#string_index', 'string_index');
@@ -1558,8 +1601,11 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('calendar_ev
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('calendar_events', 'e_views', 'e_views');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('calendar_events', 'ftjoin_econtent', 'e_content');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('calendar_events', 'ftjoin_etitle', 'e_title');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('calendar_events', 'member_calendar', 'e_member_calendar');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('calendar_events', 'validated', 'validated');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('calendar_jobs', 'applicablejobs', 'j_time');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('calendar_jobs', 'member_id', 'j_member_id');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('calendar_reminders', 'member_id', 'n_member_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('calendar_types', '#t_title', 't_title');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('captchas', 'si_time', 'si_time');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogues', '#c_description', 'c_description');
@@ -1611,11 +1657,13 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogue_e
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogue_fields', '#cf_description', 'cf_description');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogue_fields', '#cf_name', 'cf_name');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('chargelog', '#reason', 'reason');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('chargelog', 'member_id', 'member_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('chat_active', 'active_ordering', 'date_and_time');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('chat_active', 'member_select', 'member_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('chat_active', 'room_select', 'room_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('chat_events', 'event_ordering', 'e_date_and_time');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('chat_messages', '#the_message', 'the_message');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('chat_messages', 'member_id', 'member_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('chat_messages', 'ordering', 'date_and_time');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('chat_messages', 'room_id', 'room_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('chat_rooms', '#c_welcome', 'c_welcome');
@@ -1644,6 +1692,7 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('digestives_
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('digestives_tin', 'd_frequency', 'd_frequency');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('digestives_tin', 'd_read', 'd_read');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('digestives_tin', 'd_to_member_id', 'd_to_member_id');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('digestives_tin', 'from_member_id', 'd_from_member_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('digestives_tin', 'unread', 'd_to_member_id,d_read');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('download_categories', '#category', 'category');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('download_categories', '#description', 'description');
@@ -1669,6 +1718,21 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('download_do
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('download_downloads', 'recent_downloads', 'add_date');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('download_downloads', 'top_downloads', 'num_downloads');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('download_logging', 'calculate_bandwidth', 'date_and_time');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('ecom_invoices', 'i_member_id', 'i_member_id');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('ecom_prods_custom', '#c_description', 'c_description');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('ecom_prods_custom', '#c_mail_body', 'c_mail_body');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('ecom_prods_custom', '#c_mail_subject', 'c_mail_subject');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('ecom_prods_custom', '#c_title', 'c_title');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('ecom_prods_permissions', '#p_description', 'p_description');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('ecom_prods_permissions', '#p_mail_body', 'p_mail_body');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('ecom_prods_permissions', '#p_mail_subject', 'p_mail_subject');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('ecom_prods_permissions', '#p_title', 'p_title');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('ecom_sales', 'member_id', 'member_id');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('ecom_subscriptions', 's_member_id', 's_member_id');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('ecom_transactions', 't_time', 't_time');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('ecom_transactions', 't_type_code', 't_type_code');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('ecom_trans_addresses', 'trans_expecting_id', 'a_trans_expecting_id');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('ecom_trans_addresses', 'txn_id', 'a_txn_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('edit_pings', 'edit_pings_on', 'the_page,the_type,the_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('email_bounces', 'b_email_address', 'b_email_address');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('email_bounces', 'b_time', 'b_time');
@@ -1719,56 +1783,59 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_members',
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#field_1', 'field_1');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#field_2', 'field_2');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#field_4', 'field_4');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_17', 'field_17');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_18', 'field_18');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_19', 'field_19');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_21', 'field_21');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_22', 'field_22');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_25', 'field_25');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_26', 'field_26');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_27', 'field_27');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_28', 'field_28');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_29', 'field_29');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_3', 'field_3');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_30', 'field_30');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_31', 'field_31');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_32', 'field_32');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_33', 'field_33');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_34', 'field_34');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_35', 'field_35');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_36', 'field_36');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_37', 'field_37');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_38', 'field_38');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_39', 'field_39');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_40', 'field_40');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_41', 'field_41');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_42', 'field_42');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_43', 'field_43');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_44', 'field_44');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_45', 'field_45');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_46', 'field_46');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_47', 'field_47');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_48', 'field_48');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_49', 'field_49');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_5', 'field_5');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_50', 'field_50');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_51', 'field_51');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_52', 'field_52');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_53', 'field_53');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_6', 'field_6');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_7', 'field_7');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_8', 'field_8');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf1', 'field_1');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf10', 'field_10');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf11', 'field_11');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf12', 'field_12');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf13', 'field_13');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf14', 'field_14');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf15', 'field_15');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf16', 'field_16');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf2', 'field_2');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf20', 'field_20');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf23', 'field_23');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf24', 'field_24');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf25', 'field_25');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf26', 'field_26');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf27', 'field_27');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf28', 'field_28');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf29', 'field_29');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf3', 'field_3');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf31', 'field_31');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf32', 'field_32');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf33', 'field_33');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf30', 'field_30');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf34', 'field_34');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf36', 'field_36');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf37', 'field_37');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf38', 'field_38');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf4', 'field_4');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf40', 'field_40');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf41', 'field_41');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf42', 'field_42');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf43', 'field_43');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf44', 'field_44');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf46', 'field_46');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf47', 'field_47');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf48', 'field_48');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf49', 'field_49');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf5', 'field_5');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf50', 'field_50');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf51', 'field_51');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf52', 'field_52');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf53', 'field_53');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf6', 'field_6');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf7', 'field_7');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf8', 'field_8');
@@ -1852,7 +1919,9 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('images', 'i
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('images', 'i_validated', 'validated');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('images', 'xis', 'submitter');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('link_tracker', 'c_url', 'c_url');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('link_tracker', 'member_id', 'c_member_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('logged_mail_messages', 'combo', 'm_date_and_time,m_queued');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('logged_mail_messages', 'm_as', 'm_as');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('logged_mail_messages', 'queued', 'm_queued');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('logged_mail_messages', 'recentmessages', 'm_date_and_time');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('match_key_messages', '#k_message', 'k_message');
@@ -1887,6 +1956,7 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('news', 'nva
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('newsletters', '#description', 'description');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('newsletters', '#title', 'title');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('newsletter_subscribers', 'code_confirm', 'code_confirm');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('newsletter_subscribers', 'email', 'email');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('newsletter_subscribers', 'welcomemails', 'join_time');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('news_categories', '#nc_title', 'nc_title');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('news_categories', 'ncs', 'nc_owner');
@@ -1894,6 +1964,7 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('news_catego
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('notifications_enabled', 'l_code_category', 'l_code_category');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('notifications_enabled', 'l_member_id', 'l_member_id,l_notification_code');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('notifications_enabled', 'l_notification_code', 'l_notification_code');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('notifications_enabled', 'who_has', 'l_notification_code,l_code_category(10),l_setting');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('poll', '#option1', 'option1');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('poll', '#option10', 'option10');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('poll', '#option2', 'option2');
@@ -1921,14 +1992,6 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('poll_votes'
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('poll_votes', 'v_voter_ip', 'v_voter_ip');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('poll_votes', 'v_vote_for', 'v_vote_for');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('post_tokens', 'generation_time', 'generation_time');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('pstore_customs', '#c_description', 'c_description');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('pstore_customs', '#c_mail_body', 'c_mail_body');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('pstore_customs', '#c_mail_subject', 'c_mail_subject');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('pstore_customs', '#c_title', 'c_title');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('pstore_permissions', '#p_description', 'p_description');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('pstore_permissions', '#p_mail_body', 'p_mail_body');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('pstore_permissions', '#p_mail_subject', 'p_mail_subject');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('pstore_permissions', '#p_title', 'p_title');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('quizzes', '#quiz_search__combined', 'q_start_text,q_name');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('quizzes', '#q_end_text', 'q_end_text');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('quizzes', '#q_end_text_fail', 'q_end_text_fail');
@@ -1936,12 +1999,15 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('quizzes', '
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('quizzes', '#q_start_text', 'q_start_text');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('quizzes', 'ftjoin_qstarttext', 'q_start_text');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('quizzes', 'q_validated', 'q_validated');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('quiz_entries', 'q_member', 'q_member');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('quiz_member_last_visit', 'member_id', 'v_member_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('quiz_questions', '#q_question_extra_text', 'q_question_extra_text');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('quiz_questions', '#q_question_text', 'q_question_text');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('quiz_question_answers', '#q_answer_text', 'q_answer_text');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('quiz_question_answers', '#q_explanation', 'q_explanation');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('rating', 'alt_key', 'rating_for_type,rating_for_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('rating', 'rating_for_id', 'rating_for_id');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('rating', 'rating_member', 'rating_member');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('reported_content', 'reported_already', 'r_content_type,r_content_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('review_supplement', 'rating_for_id', 'r_rating_for_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('revisions', 'actionlog_link', 'r_actionlog_id');
@@ -1949,6 +2015,7 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('revisions',
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('revisions', 'lookup_by_id', 'r_resource_type,r_resource_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('revisions', 'moderatorlog_link', 'r_moderatorlog_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('searches_logged', '#past_search_ft', 's_primary');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('searches_logged', 'member_id', 's_member_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('searches_logged', 'past_search', 's_primary');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('seo_meta', '#meta_description', 'meta_description');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('seo_meta', 'alt_key', 'meta_for_type,meta_for_id');
@@ -1960,16 +2027,15 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('sessions', 
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('sessions', 'member_id', 'member_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('sessions', 'userat', 'the_zone,the_page,the_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('shopping_cart', 'ordered_by', 'ordered_by');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('shopping_cart', 'product_id', 'product_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('shopping_cart', 'session_id', 'session_id');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('shopping_logging', 'calculate_bandwidth', 'date_and_time');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('shopping_order', 'finddispatchable', 'order_status');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('shopping_order', 'soadd_date', 'add_date');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('shopping_order', 'soc_member', 'c_member');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('shopping_order', 'sosession_id', 'session_id');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('shopping_order_addresses', 'order_id', 'a_order_id');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('shopping_order_details', 'order_id', 'order_id');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('shopping_order_details', 'p_id', 'p_id');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('shopping_cart', 'type_code', 'type_code');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('shopping_logging', 'cart_log', 'l_date_and_time');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('shopping_orders', 'finddispatchable', 'order_status');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('shopping_orders', 'soadd_date', 'add_date');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('shopping_orders', 'somember_id', 'member_id');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('shopping_orders', 'sosession_id', 'session_id');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('shopping_order_details', 'order_id', 'p_order_id');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('shopping_order_details', 'type_code', 'p_type_code');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('sitemap_cache', 'is_deleted', 'is_deleted');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('sitemap_cache', 'last_updated', 'last_updated');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('sitemap_cache', 'set_number', 'set_number,last_updated');
@@ -1987,6 +2053,7 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('stats', 'pa
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('stats', 'referer', 'referer');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('theme_images', 'theme', 'theme,lang');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('theme_screen_tree', 'page_link', 'page_link');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('ticket_known_emailers', 'member_id', 'member_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('ticket_types', '#ticket_type_name', 'ticket_type_name');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('trackbacks', 'trackback_for_id', 'trackback_for_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('trackbacks', 'trackback_for_type', 'trackback_for_type');
@@ -2024,6 +2091,7 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('wiki_pages'
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('wiki_posts', '#the_message', 'the_message');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('wiki_posts', 'cdate_and_time', 'date_and_time');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('wiki_posts', 'ftjoin_spm', 'the_message');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('wiki_posts', 'member_id', 'member_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('wiki_posts', 'posts_on_page', 'page_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('wiki_posts', 'spos', 'member_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('wiki_posts', 'svalidated', 'validated');
@@ -2070,24 +2138,26 @@ ALTER TABLE cms11_digestives_tin ADD INDEX d_read (d_read);
 
 ALTER TABLE cms11_digestives_tin ADD INDEX d_to_member_id (d_to_member_id);
 
+ALTER TABLE cms11_digestives_tin ADD INDEX from_member_id (d_from_member_id);
+
 ALTER TABLE cms11_digestives_tin ADD INDEX unread (d_to_member_id,d_read);
 
 DROP TABLE IF EXISTS cms_download_categories;
 
 CREATE TABLE cms_download_categories (
-    id integer unsigned auto_increment NOT NULL,
-    category longtext NOT NULL,
-    parent_id integer NULL,
-    add_date integer unsigned NOT NULL,
-    notes longtext NOT NULL,
     description longtext NOT NULL,
     rep_image varchar(255) BINARY NOT NULL,
+    notes longtext NOT NULL,
+    parent_id integer NULL,
+    add_date integer unsigned NOT NULL,
+    id integer unsigned auto_increment NOT NULL,
+    category longtext NOT NULL,
     description__text_parsed longtext NOT NULL,
     description__source_user integer DEFAULT 1 NOT NULL,
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_download_categories (id, category, parent_id, add_date, notes, description, rep_image, description__text_parsed, description__source_user) VALUES (1, 'Downloads home', NULL, 1497806165, '', '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5946b553bb35c0.64838654_21\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5946b553bb35c0.64838654_21\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5946b553bb35c0.64838654_21\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_download_categories (id, category, parent_id, add_date, notes, description, rep_image, description__text_parsed, description__source_user) VALUES (1, 'Downloads home', NULL, 1515549957, '', '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5a5575022b9862.65093006_21\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5a5575022b9862.65093006_21\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5a5575022b9862.65093006_21\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 ALTER TABLE cms11_download_categories ADD FULLTEXT category (category);
 
@@ -2104,6 +2174,18 @@ ALTER TABLE cms11_download_categories ADD INDEX ftjoin_dcdescrip (description(25
 DROP TABLE IF EXISTS cms_download_downloads;
 
 CREATE TABLE cms_download_downloads (
+    submitter integer NOT NULL,
+    download_cost integer NOT NULL,
+    download_submitter_gets_points tinyint(1) NOT NULL,
+    download_views integer NOT NULL,
+    notes longtext NOT NULL,
+    allow_trackbacks tinyint(1) NOT NULL,
+    edit_date integer unsigned NULL,
+    validated tinyint(1) NOT NULL,
+    default_pic integer NOT NULL,
+    file_size integer NULL,
+    allow_rating tinyint(1) NOT NULL,
+    allow_comments tinyint NOT NULL,
     id integer unsigned auto_increment NOT NULL,
     category_id integer NOT NULL,
     name longtext NOT NULL,
@@ -2114,18 +2196,6 @@ CREATE TABLE cms_download_downloads (
     num_downloads integer NOT NULL,
     out_mode_id integer NULL,
     add_date integer unsigned NOT NULL,
-    edit_date integer unsigned NULL,
-    validated tinyint(1) NOT NULL,
-    default_pic integer NOT NULL,
-    file_size integer NULL,
-    allow_rating tinyint(1) NOT NULL,
-    allow_comments tinyint NOT NULL,
-    allow_trackbacks tinyint(1) NOT NULL,
-    notes longtext NOT NULL,
-    download_views integer NOT NULL,
-    download_cost integer NOT NULL,
-    download_submitter_gets_points tinyint(1) NOT NULL,
-    submitter integer NOT NULL,
     original_filename varchar(255) NOT NULL,
     rep_image varchar(255) BINARY NOT NULL,
     download_licence integer NULL,
@@ -2193,6 +2263,219 @@ CREATE TABLE cms_download_logging (
 
 ALTER TABLE cms11_download_logging ADD INDEX calculate_bandwidth (date_and_time);
 
+DROP TABLE IF EXISTS cms_ecom_invoices;
+
+CREATE TABLE cms_ecom_invoices (
+    i_currency varchar(80) NOT NULL,
+    id integer unsigned auto_increment NOT NULL,
+    i_type_code varchar(80) NOT NULL,
+    i_member_id integer NOT NULL,
+    i_state varchar(80) NOT NULL,
+    i_amount real NOT NULL,
+    i_tax_code varchar(80) NOT NULL,
+    i_tax_derivation longtext NOT NULL,
+    i_tax real NOT NULL,
+    i_tax_tracking longtext NOT NULL,
+    i_special varchar(255) NOT NULL,
+    i_time integer unsigned NOT NULL,
+    i_note longtext NOT NULL,
+    PRIMARY KEY (id)
+) CHARACTER SET=utf8mb4 engine=MyISAM;
+
+ALTER TABLE cms11_ecom_invoices ADD INDEX i_member_id (i_member_id);
+
+DROP TABLE IF EXISTS cms_ecom_prods_custom;
+
+CREATE TABLE cms_ecom_prods_custom (
+    id integer unsigned auto_increment NOT NULL,
+    c_title longtext NOT NULL,
+    c_description longtext NOT NULL,
+    c_mail_subject longtext NOT NULL,
+    c_mail_body longtext NOT NULL,
+    c_enabled tinyint(1) NOT NULL,
+    c_price real NULL,
+    c_tax_code varchar(80) NOT NULL,
+    c_shipping_cost real NOT NULL,
+    c_price_points integer NULL,
+    c_one_per_member tinyint(1) NOT NULL,
+    c_description__text_parsed longtext NOT NULL,
+    c_description__source_user integer DEFAULT 1 NOT NULL,
+    PRIMARY KEY (id)
+) CHARACTER SET=utf8mb4 engine=MyISAM;
+
+ALTER TABLE cms11_ecom_prods_custom ADD FULLTEXT c_description (c_description);
+
+ALTER TABLE cms11_ecom_prods_custom ADD FULLTEXT c_mail_body (c_mail_body);
+
+ALTER TABLE cms11_ecom_prods_custom ADD FULLTEXT c_mail_subject (c_mail_subject);
+
+ALTER TABLE cms11_ecom_prods_custom ADD FULLTEXT c_title (c_title);
+
+DROP TABLE IF EXISTS cms_ecom_prods_permissions;
+
+CREATE TABLE cms_ecom_prods_permissions (
+    id integer unsigned auto_increment NOT NULL,
+    p_title longtext NOT NULL,
+    p_description longtext NOT NULL,
+    p_mail_subject longtext NOT NULL,
+    p_mail_body longtext NOT NULL,
+    p_enabled tinyint(1) NOT NULL,
+    p_price real NULL,
+    p_tax_code varchar(80) NOT NULL,
+    p_price_points integer NULL,
+    p_hours integer NULL,
+    p_type varchar(80) NOT NULL,
+    p_privilege varchar(80) NOT NULL,
+    p_zone varchar(80) NOT NULL,
+    p_page varchar(80) NOT NULL,
+    p_module varchar(80) NOT NULL,
+    p_category varchar(80) NOT NULL,
+    p_description__text_parsed longtext NOT NULL,
+    p_description__source_user integer DEFAULT 1 NOT NULL,
+    PRIMARY KEY (id)
+) CHARACTER SET=utf8mb4 engine=MyISAM;
+
+ALTER TABLE cms11_ecom_prods_permissions ADD FULLTEXT p_description (p_description);
+
+ALTER TABLE cms11_ecom_prods_permissions ADD FULLTEXT p_mail_body (p_mail_body);
+
+ALTER TABLE cms11_ecom_prods_permissions ADD FULLTEXT p_mail_subject (p_mail_subject);
+
+ALTER TABLE cms11_ecom_prods_permissions ADD FULLTEXT p_title (p_title);
+
+DROP TABLE IF EXISTS cms_ecom_prods_prices;
+
+CREATE TABLE cms_ecom_prods_prices (
+    name varchar(80) NOT NULL,
+    price real NULL,
+    tax_code varchar(80) NOT NULL,
+    price_points integer NULL,
+    PRIMARY KEY (name)
+) CHARACTER SET=utf8mb4 engine=MyISAM;
+
+DROP TABLE IF EXISTS cms_ecom_sales;
+
+CREATE TABLE cms_ecom_sales (
+    id integer unsigned auto_increment NOT NULL,
+    date_and_time integer unsigned NOT NULL,
+    member_id integer NOT NULL,
+    details varchar(255) NOT NULL,
+    details2 varchar(255) NOT NULL,
+    txn_id varchar(80) NOT NULL,
+    PRIMARY KEY (id)
+) CHARACTER SET=utf8mb4 engine=MyISAM;
+
+ALTER TABLE cms11_ecom_sales ADD INDEX member_id (member_id);
+
+DROP TABLE IF EXISTS cms_ecom_sales_expecting;
+
+CREATE TABLE cms_ecom_sales_expecting (
+    id integer unsigned auto_increment NOT NULL,
+    e_details longtext NOT NULL,
+    e_time integer unsigned NOT NULL,
+    PRIMARY KEY (id)
+) CHARACTER SET=utf8mb4 engine=MyISAM;
+
+DROP TABLE IF EXISTS cms_ecom_subscriptions;
+
+CREATE TABLE cms_ecom_subscriptions (
+    s_length integer NOT NULL,
+    s_length_units varchar(255) NOT NULL,
+    s_payment_gateway varchar(80) NOT NULL,
+    s_tax_derivation longtext NOT NULL,
+    s_tax real NOT NULL,
+    s_tax_tracking longtext NOT NULL,
+    s_time integer unsigned NOT NULL,
+    s_auto_fund_source varchar(80) NOT NULL,
+    s_auto_fund_key varchar(255) NOT NULL,
+    s_purchase_id varchar(80) NOT NULL,
+    s_currency varchar(80) NOT NULL,
+    s_tax_code varchar(80) NOT NULL,
+    id integer unsigned auto_increment NOT NULL,
+    s_type_code varchar(80) NOT NULL,
+    s_member_id integer NOT NULL,
+    s_state varchar(80) NOT NULL,
+    s_amount real NOT NULL,
+    PRIMARY KEY (id)
+) CHARACTER SET=utf8mb4 engine=MyISAM;
+
+ALTER TABLE cms11_ecom_subscriptions ADD INDEX s_member_id (s_member_id);
+
+DROP TABLE IF EXISTS cms_ecom_trans_addresses;
+
+CREATE TABLE cms_ecom_trans_addresses (
+    a_country varchar(255) NOT NULL,
+    a_email varchar(255) NOT NULL,
+    a_phone varchar(255) NOT NULL,
+    a_post_code varchar(255) NOT NULL,
+    a_state varchar(255) NOT NULL,
+    a_county varchar(255) NOT NULL,
+    a_city varchar(255) NOT NULL,
+    a_street_address longtext NOT NULL,
+    id integer unsigned auto_increment NOT NULL,
+    a_trans_expecting_id varchar(80) NOT NULL,
+    a_txn_id varchar(80) NOT NULL,
+    a_firstname varchar(255) NOT NULL,
+    a_lastname varchar(255) NOT NULL,
+    PRIMARY KEY (id)
+) CHARACTER SET=utf8mb4 engine=MyISAM;
+
+ALTER TABLE cms11_ecom_trans_addresses ADD INDEX trans_expecting_id (a_trans_expecting_id);
+
+ALTER TABLE cms11_ecom_trans_addresses ADD INDEX txn_id (a_txn_id);
+
+DROP TABLE IF EXISTS cms_ecom_trans_expecting;
+
+CREATE TABLE cms_ecom_trans_expecting (
+    e_ip_address varchar(40) NOT NULL,
+    e_time integer unsigned NOT NULL,
+    e_length integer NULL,
+    e_length_units varchar(80) NOT NULL,
+    e_memo longtext NOT NULL,
+    e_invoicing_breakdown longtext NOT NULL,
+    e_price_points integer NOT NULL,
+    e_member_id integer NOT NULL,
+    e_session_id varchar(80) NOT NULL,
+    e_price real NOT NULL,
+    e_tax_derivation longtext NOT NULL,
+    e_tax real NOT NULL,
+    e_tax_tracking longtext NOT NULL,
+    e_currency varchar(80) NOT NULL,
+    e_item_name varchar(255) NOT NULL,
+    id varchar(80) NOT NULL,
+    e_type_code varchar(80) NOT NULL,
+    e_purchase_id varchar(80) NOT NULL,
+    PRIMARY KEY (id)
+) CHARACTER SET=utf8mb4 engine=MyISAM;
+
+DROP TABLE IF EXISTS cms_ecom_transactions;
+
+CREATE TABLE cms_ecom_transactions (
+    id varchar(80) NOT NULL,
+    t_type_code varchar(80) NOT NULL,
+    t_purchase_id varchar(80) NOT NULL,
+    t_status varchar(255) NOT NULL,
+    t_reason varchar(255) NOT NULL,
+    t_amount real NOT NULL,
+    t_tax_derivation longtext NOT NULL,
+    t_tax real NOT NULL,
+    t_tax_tracking longtext NOT NULL,
+    t_currency varchar(80) NOT NULL,
+    t_parent_txn_id varchar(80) NOT NULL,
+    t_time integer unsigned NOT NULL,
+    t_pending_reason varchar(255) NOT NULL,
+    t_memo longtext NOT NULL,
+    t_payment_gateway varchar(80) NOT NULL,
+    t_invoicing_breakdown longtext NOT NULL,
+    t_member_id integer NOT NULL,
+    t_session_id varchar(80) NOT NULL,
+    PRIMARY KEY (id, t_time)
+) CHARACTER SET=utf8mb4 engine=MyISAM;
+
+ALTER TABLE cms11_ecom_transactions ADD INDEX t_time (t_time);
+
+ALTER TABLE cms11_ecom_transactions ADD INDEX t_type_code (t_type_code);
+
 DROP TABLE IF EXISTS cms_edit_pings;
 
 CREATE TABLE cms_edit_pings (
@@ -2249,40 +2532,41 @@ INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_defa
 INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (2, 0, 'Interests', 'A summary of your interests.', '', 1, 1, 1, 'long_trans', 0, 1, 1, 1, '', 0, 0, '');
 INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (3, 0, 'Occupation', 'Your occupation.', '', 1, 1, 1, 'short_text', 0, 0, 0, 2, '', 0, 0, '');
 INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (4, 0, 'Staff notes', 'Notes on this member, only viewable by staff.', '', 0, 0, 0, 'long_trans', 0, 0, 0, 3, '', 0, 0, '');
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (5, 0, 'Skype ID', 'Your Skype ID.', '', 1, 1, 1, 'short_text', 0, 0, 0, 4, '', 0, 0, '');
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (6, 0, 'Facebook profile', 'A link to your Facebook profile.', '', 1, 1, 1, 'short_text', 0, 0, 0, 5, '', 0, 0, '');
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (7, 0, 'Google+ profile', 'A link to your Google+ profile.', '', 1, 1, 1, 'short_text', 0, 0, 0, 6, '', 0, 0, '');
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (8, 0, 'Twitter account', 'Your Twitter name (for example, \'charlie12345\').', '', 1, 1, 1, 'short_text', 0, 0, 0, 7, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (5, 0, 'Skype ID', 'Your Skype ID.', '', 1, 1, 1, 'codename', 0, 0, 0, 4, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (6, 0, 'Facebook profile', 'A link to your Facebook profile.', '', 1, 1, 1, 'url', 0, 0, 0, 5, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (7, 0, 'Google+ profile', 'A link to your Google+ profile.', '', 1, 1, 1, 'url', 0, 0, 0, 6, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (8, 0, 'Twitter account', 'Your Twitter name (for example, \'charlie12345\').', '', 1, 1, 1, 'codename', 0, 0, 0, 7, '', 0, 0, '');
 INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (9, 1, 'cms_smart_topic_notification', '', '0', 0, 0, 1, 'tick', 1, 0, 0, 8, '', 0, 0, '');
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (10, 1, 'cms_points_gained_chat', '', '0', 0, 0, 0, 'integer', 0, 0, 0, 9, '', 0, 0, '');
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (11, 1, 'cms_points_used', '', '0', 0, 0, 0, 'integer', 0, 0, 0, 10, '', 0, 0, '');
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (12, 1, 'cms_gift_points_used', '', '0', 0, 0, 0, 'integer', 0, 0, 0, 11, '', 0, 0, '');
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (13, 1, 'cms_points_gained_given', '', '0', 0, 0, 0, 'integer', 0, 0, 0, 12, '', 0, 0, '');
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (14, 1, 'cms_points_gained_rating', '', '0', 0, 0, 0, 'integer', 0, 0, 0, 13, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (25, 1, 'cms_points_gained_chat', '', '0', 0, 0, 0, 'integer', 0, 0, 0, 24, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (28, 1, 'cms_points_gained_given', '', '0', 0, 0, 0, 'integer', 0, 0, 0, 27, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (27, 1, 'cms_gift_points_used', '', '0', 0, 0, 0, 'integer', 0, 0, 0, 26, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (26, 1, 'cms_points_used', '', '0', 0, 0, 0, 'integer', 0, 0, 0, 25, '', 0, 0, '');
 INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (15, 1, 'cms_points_gained_visiting', '', '0', 0, 0, 0, 'integer', 0, 0, 0, 14, '', 0, 0, '');
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (16, 1, 'cms_points_gained_voting', '', '0', 0, 0, 0, 'integer', 0, 0, 0, 15, '', 0, 0, '');
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (17, 0, 'cms_currency', '', '|AED|AFA|ALL|AMD|ANG|AOK|AON|ARA|ARP|ARS|AUD|AWG|AZM|BAM|BBD|BDT|BGL|BHD|BIF|BMD|BND|BOB|BOP|BRC|BRL|BRR|BSD|BTN|BWP|BYR|BZD|CAD|CDZ|CHF|CLF|CLP|CNY|COP|CRC|CSD|CUP|CVE|CYP|CZK|DJF|DKK|DOP|DZD|EEK|EGP|ERN|ETB|EUR|FJD|FKP|GBP|GEL|GHC|GIP|GMD|GNS|GQE|GTQ|GWP|GYD|HKD|HNL|HRD|HRK|HTG|HUF|IDR|ILS|INR|IQD|IRR|ISK|JMD|JOD|JPY|KES|KGS|KHR|KMF|KPW|KRW|KWD|KYD|KZT|LAK|LBP|LKR|LRD|LSL|LSM|LTL|LVL|LYD|MAD|MDL|MGF|MKD|MLF|MMK|MNT|MOP|MRO|MTL|MUR|MVR|MWK|MXN|MYR|MZM|NAD|NGN|NIC|NOK|NPR|NZD|OMR|PAB|PEI|PEN|PGK|PHP|PKR|PLN|PYG|QAR|ROL|RUB|RWF|SAR|SBD|SCR|SDD|SDP|SEK|SGD|SHP|SIT|SKK|SLL|SOS|SRG|STD|SUR|SVC|SYP|SZL|THB|TJR|TMM|TND|TOP|TPE|TRL|TTD|TWD|TZS|UAH|UAK|UGS|USD|UYU|UZS|VEB|VND|VUV|WST|XAF|XCD|XOF|XPF|YDD|YER|ZAL|ZAR|ZMK|ZWD', 0, 0, 1, 'list', 0, 0, 0, 16, '', 0, 0, '');
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (18, 0, 'cms_payment_cardholder_name', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 17, '', 1, 0, '');
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (19, 0, 'cms_payment_card_type', '', 'American Express|Delta|Diners Card|JCB|Master Card|Solo|Switch|Visa', 0, 0, 1, 'list', 0, 0, 0, 18, '', 1, 0, '');
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (20, 0, 'cms_payment_card_number', '', '', 0, 0, 1, 'integer', 0, 0, 0, 19, '', 1, 0, '');
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (21, 0, 'cms_payment_card_start_date', '', 'mm/yy', 0, 0, 1, 'year_month', 0, 0, 0, 20, '', 1, 0, '');
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (22, 0, 'cms_payment_card_expiry_date', '', 'mm/yy', 0, 0, 1, 'year_month', 0, 0, 0, 21, '', 1, 0, '');
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (23, 0, 'cms_payment_card_issue_number', '', '', 0, 0, 1, 'integer', 0, 0, 0, 22, '', 1, 0, '');
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (24, 1, 'cms_points_gained_wiki', '', '0', 0, 0, 0, 'integer', 0, 0, 0, 23, '', 0, 0, '');
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (25, 0, 'cms_billing_street_address', '', '', 0, 0, 1, 'long_text', 0, 0, 0, 24, '', 0, 0, '');
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (26, 0, 'cms_billing_city', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 25, '', 0, 0, '');
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (27, 0, 'cms_billing_county', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 26, '', 0, 0, '');
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (28, 0, 'cms_billing_state', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 27, '', 0, 0, '');
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (29, 0, 'cms_billing_post_code', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 28, '', 0, 0, '');
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (30, 0, 'cms_street_address', '', '', 0, 0, 1, 'long_text', 0, 0, 0, 29, '', 0, 0, '');
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (31, 0, 'cms_city', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 30, '', 0, 0, '');
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (32, 0, 'cms_county', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 31, '', 0, 0, '');
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (33, 0, 'cms_state', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 32, '', 0, 0, '');
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (34, 0, 'cms_post_code', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 33, '', 0, 0, '');
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (35, 0, 'cms_country', '', '|AF=Afghanistan|AL=Albania|DZ=Algeria|AS=American Samoa|AD=Andorra|AO=Angola|AI=Anguilla|AQ=Antarctica|AG=Antigua and Barbuda|AR=Argentina|AM=Armenia|AW=Aruba|AU=Australia|AT=Austria|AZ=Azerbaijan|BS=Bahamas|BH=Bahrain|BD=Bangladesh|BB=Barbados|BY=Belarus|BE=Belgium|BZ=Belize|BJ=Benin|BM=Bermuda|BT=Bhutan|BO=Bolivia|BA=Bosnia and Herzegovina|BW=Botswana|BV=Bouvet Island|BR=Brazil|IO=British Indian Ocean Territory|VG=British Virgin Islands|BN=Brunei|BG=Bulgaria|BF=Burkina Faso|BI=Burundi|KH=Cambodia|CM=Cameroon|CA=Canada|CV=Cape Verde|KY=Cayman Islands|CF=Central African Republic|TD=Chad|CL=Chile|CN=China|CX=Christmas Island|CC=Cocos [Keeling] Islands|CO=Colombia|KM=Comoros|CG=Congo|CD=Congo (Dem. Rep.)|CK=Cook Islands|CR=Costa Rica|HR=Croatia|CU=Cuba|CY=Cyprus|CZ=Czech Republic|DK=Denmark|DJ=Djibouti|DM=Dominica|DO=Dominican Republic|DD=East Germany|TL=East Timor|EC=Ecuador|EG=Egypt|SV=El Salvador|GQ=Equatorial Guinea|ER=Eritrea|EE=Estonia|ET=Ethiopia|FK=Falkland Islands|FO=Faroe Islands|FJ=Fiji Islands|FI=Finland|FR=France|GF=French Guiana|PF=French Polynesia|TF=French Southern Territories|GA=Gabon|GM=Gambia|GE=Georgia|DE=Germany|GH=Ghana|GI=Gibraltar|GR=Greece|GL=Greenland|GD=Grenada|GP=Guadeloupe|GU=Guam|GT=Guatemala|GG=Guernsey and Alderney|GN=Guinea|GW=Guinea-Bissau|GY=Guyana|HT=Haiti|HM=Heard Island and McDonald Islands|HN=Honduras|HK=Hong Kong SAR China|HU=Hungary|IS=Iceland|IN=India|ID=Indonesia|IR=Iran|IQ=Iraq|IE=Ireland|IM=Isle of Man|IL=Israel|IT=Italy|CI=Ivory Coast|JM=Jamaica|JP=Japan|JE=Jersey|JO=Jordan|KZ=Kazakhstan|KE=Kenya|KI=Kiribati|KP=Korea (North)|KR=Korea (South)|XK=Kosovo|KW=Kuwait|KG=Kyrgyzstan|LA=Laos|LV=Latvia|LB=Lebanon|LS=Lesotho|LR=Liberia|LY=Libya|LI=Liechtenstein|LT=Lithuania|LU=Luxembourg|MO=Macau SAR China|MK=Macedonia|MG=Madagascar|MW=Malawi|MY=Malaysia|MV=Maldives|ML=Mali|MT=Malta|MH=Marshall Islands|MQ=Martinique|MR=Mauritania|MU=Mauritius|YT=Mayotte|FX=Metropolitan France|MX=Mexico|FM=Micronesia|MD=Moldova|MC=Monaco|MN=Mongolia|ME=Montenegro|MS=Montserrat|MA=Morocco|MZ=Mozambique|MM=Myanmar|NA=Namibia|NR=Nauru|NP=Nepal|NL=Netherlands|AN=Netherlands Antilles|NT=Neutral Zone|NC=New Caledonia|NZ=New Zealand|NI=Nicaragua|NE=Niger|NG=Nigeria|NU=Niue|NF=Norfolk Island|MP=Northern Mariana Islands|NO=Norway|OM=Oman|PK=Pakistan|PW=Palau|PS=Palestine|PA=Panama|PG=Papua New Guinea|PY=Paraguay|YD=People\'s Democratic Republic of Yemen|PE=Peru|PH=Philippines|PN=Pitcairn Islands|PL=Poland|PT=Portugal|PR=Puerto Rico|QA=Qatar|RO=Romania|RU=Russia|RW=Rwanda|RE=Réunion|BL=Saint Barthélemy|SH=Saint Helena|KN=Saint Kitts and Nevis|LC=Saint Lucia|MF=Saint Martin|PM=Saint Pierre and Miquelon|VC=Saint Vincent and The Grenadines|WS=Samoa|SM=San Marino|SA=Saudi Arabia|SN=Senegal|RS=Serbia|CS=Serbia and Montenegro|SC=Seychelles|SL=Sierra Leone|SG=Singapore|SK=Slovakia|SI=Slovenia|SB=Solomon Islands|SO=Somalia|ZA=South Africa|GS=South Georgia and the South Sandwich Islands|ES=Spain|LK=Sri Lanka|SD=Sudan|SR=Suriname|SJ=Svalbard and Jan Mayen|SZ=Swaziland|SE=Sweden|CH=Switzerland|SY=Syria|ST=São Tomé and Príncipe|TW=Taiwan|TJ=Tajikistan|TZ=Tanzania|TH=Thailand|TG=Togo|TK=Tokelau|TO=Tonga|TT=Trinidad and Tobago|TN=Tunisia|TR=Turkey|TM=Turkmenistan|TC=Turks and Caicos Islands|TV=Tuvalu|UG=Uganda|UA=Ukraine|SU=Union of Soviet Socialist Republics|AE=United Arab Emirates|GB=United Kingdom|UM=United States Minor Outlying Islands|US=United States of America|UY=Uruguay|UZ=Uzbekistan|VU=Vanuatu|VA=Vatican City|VE=Venezuela|VN=Vietnam|VI=Virgin Islands of the United States|WF=Wallis and Futuna|EH=Western Sahara|YE=Yemen|ZM=Zambia|ZW=Zimbabwe|AX=Åland Islands', 0, 0, 1, 'list', 0, 0, 0, 34, '', 0, 0, '');
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (36, 0, 'cms_firstname', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 35, '', 0, 0, '');
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (37, 0, 'cms_lastname', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 36, '', 0, 0, '');
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (38, 0, 'cms_mobile_phone_number', 'This should be the mobile phone number in international format, devoid of any national or international outgoing access codes. For instance, a typical UK (44) number might be nationally known as \'01234 123456\', but internationally and without outgoing access codes would be \'441234123456\'.', '', 0, 0, 1, 'short_text', 0, 0, 0, 37, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (30, 1, 'cms_points_gained_voting', '', '0', 0, 0, 0, 'integer', 0, 0, 0, 29, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (35, 0, 'cms_payment_card_start_date', '', 'mm/yy', 0, 0, 1, 'year_month', 0, 0, 0, 34, '', 1, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (34, 0, 'cms_payment_card_number', '', '', 0, 0, 1, 'integer', 0, 0, 0, 33, '', 1, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (33, 0, 'cms_payment_card_type', '', 'American Express|Delta|Diners Card|JCB|Master Card|Solo|Switch|Visa', 0, 0, 1, 'list', 0, 0, 0, 32, '', 1, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (32, 0, 'cms_payment_cardholder_name', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 31, '', 1, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (31, 0, 'cms_currency', '', 'CURRENCY', 0, 0, 1, 'list', 0, 0, 0, 30, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (38, 1, 'cms_points_gained_wiki', '', '0', 0, 0, 0, 'integer', 0, 0, 0, 37, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (29, 1, 'cms_points_gained_rating', '', '0', 0, 0, 0, 'integer', 0, 0, 0, 28, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (36, 0, 'cms_payment_card_expiry_date', '', 'mm/yy', 0, 0, 1, 'year_month', 0, 0, 0, 35, '', 1, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (37, 0, 'cms_payment_card_issue_number', '', '', 0, 0, 1, 'integer', 0, 0, 0, 36, '', 1, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (39, 0, 'cms_billing_street_address', '', '', 0, 0, 1, 'long_text', 0, 0, 0, 38, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (40, 0, 'cms_billing_city', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 39, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (41, 0, 'cms_billing_county', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 40, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (42, 0, 'cms_billing_state', '', '', 0, 0, 1, 'state', 0, 0, 0, 41, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (43, 0, 'cms_billing_post_code', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 42, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (44, 0, 'cms_billing_country', '', '', 0, 0, 1, 'country', 0, 0, 0, 43, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (45, 0, 'cms_street_address', '', '', 0, 0, 1, 'long_text', 0, 0, 0, 44, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (46, 0, 'cms_city', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 45, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (47, 0, 'cms_county', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 46, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (48, 0, 'cms_state', '', '', 0, 0, 1, 'state', 0, 0, 0, 47, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (49, 0, 'cms_post_code', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 48, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (50, 0, 'cms_country', '', '', 0, 0, 1, 'country', 0, 0, 0, 49, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (51, 0, 'cms_firstname', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 50, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (52, 0, 'cms_lastname', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 51, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (53, 0, 'cms_mobile_phone_number', 'This should be the mobile phone number in international format, devoid of any national or international outgoing access codes. For instance, a typical UK (44) number might be nationally known as \'01234 123456\', but internationally and without outgoing access codes would be \'441234123456\'.', '', 0, 0, 1, 'short_text', 0, 0, 0, 52, '', 0, 0, '');
 
 ALTER TABLE cms11_f_custom_fields ADD FULLTEXT cf_description (cf_description);
 
@@ -2423,12 +2707,12 @@ CREATE TABLE cms_f_forums (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (1, 'Forum home', '', NULL, NULL, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5946b54a6a99c9.37634556_1\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:39:\\\"string_attach_5946b54a6a99c9.37634556_1\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5946b54a6a99c9.37634556_1\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5946b54a6a99c9.37634556_2\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:39:\\\"string_attach_5946b54a6a99c9.37634556_2\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5946b54a6a99c9.37634556_2\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
-INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (2, 'General chat', '', 1, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5946b54a6a99c9.37634556_3\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:39:\\\"string_attach_5946b54a6a99c9.37634556_3\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5946b54a6a99c9.37634556_3\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5946b54a6a99c9.37634556_4\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:39:\\\"string_attach_5946b54a6a99c9.37634556_4\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5946b54a6a99c9.37634556_4\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
-INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (3, 'Trash', '', 2, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5946b54a6a99c9.37634556_5\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:39:\\\"string_attach_5946b54a6a99c9.37634556_5\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5946b54a6a99c9.37634556_5\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5946b54a6a99c9.37634556_6\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:39:\\\"string_attach_5946b54a6a99c9.37634556_6\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5946b54a6a99c9.37634556_6\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
-INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (4, 'Website comment topics', '', 1, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 1, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5946b54a6a99c9.37634556_7\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:39:\\\"string_attach_5946b54a6a99c9.37634556_7\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5946b54a6a99c9.37634556_7\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5946b54a6a99c9.37634556_8\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:39:\\\"string_attach_5946b54a6a99c9.37634556_8\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5946b54a6a99c9.37634556_8\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
-INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (5, 'Website support tickets', '', 2, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5946b54a6a99c9.37634556_9\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:39:\\\"string_attach_5946b54a6a99c9.37634556_9\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5946b54a6a99c9.37634556_9\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5946b54a6a99c9.37634556_10\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5946b54a6a99c9.37634556_10\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5946b54a6a99c9.37634556_10\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
-INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (6, 'Staff', '', 2, 1, 1, 0, 1, '', '', 1, 1, 1, 'Welcome to the forums', 1497806154, 'System', 1, 6, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5946b54a6a99c9.37634556_11\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5946b54a6a99c9.37634556_11\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5946b54a6a99c9.37634556_11\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5946b54a6a99c9.37634556_12\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5946b54a6a99c9.37634556_12\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5946b54a6a99c9.37634556_12\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (1, 'Forum home', '', NULL, NULL, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5a5574e1c3a348.10274577_1\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:39:\\\"string_attach_5a5574e1c3a348.10274577_1\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5a5574e1c3a348.10274577_1\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5a5574e1c3a348.10274577_2\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:39:\\\"string_attach_5a5574e1c3a348.10274577_2\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5a5574e1c3a348.10274577_2\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (2, 'General chat', '', 1, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5a5574e1c3a348.10274577_3\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:39:\\\"string_attach_5a5574e1c3a348.10274577_3\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5a5574e1c3a348.10274577_3\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5a5574e1c3a348.10274577_4\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:39:\\\"string_attach_5a5574e1c3a348.10274577_4\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5a5574e1c3a348.10274577_4\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (3, 'Trash', '', 2, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5a5574e1c3a348.10274577_5\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:39:\\\"string_attach_5a5574e1c3a348.10274577_5\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5a5574e1c3a348.10274577_5\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5a5574e1c3a348.10274577_6\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:39:\\\"string_attach_5a5574e1c3a348.10274577_6\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5a5574e1c3a348.10274577_6\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (4, 'Website comment topics', '', 1, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 1, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5a5574e1c3a348.10274577_7\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:39:\\\"string_attach_5a5574e1c3a348.10274577_7\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5a5574e1c3a348.10274577_7\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5a5574e1c3a348.10274577_8\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:39:\\\"string_attach_5a5574e1c3a348.10274577_8\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5a5574e1c3a348.10274577_8\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (5, 'Website support tickets', '', 2, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5a5574e1c3a348.10274577_9\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:39:\\\"string_attach_5a5574e1c3a348.10274577_9\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5a5574e1c3a348.10274577_9\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5a5574e1c3a348.10274577_10\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5a5574e1c3a348.10274577_10\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5a5574e1c3a348.10274577_10\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (6, 'Staff', '', 2, 1, 1, 0, 1, '', '', 1, 1, 1, 'Welcome to the forums', 1515549922, 'System', 1, 6, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5a5574e1c3a348.10274577_11\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5a5574e1c3a348.10274577_11\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5a5574e1c3a348.10274577_11\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5a5574e1c3a348.10274577_12\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5a5574e1c3a348.10274577_12\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5a5574e1c3a348.10274577_12\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 ALTER TABLE cms11_f_forums ADD FULLTEXT f_description (f_description);
 
@@ -2585,35 +2869,36 @@ CREATE TABLE cms_f_member_custom_fields (
     field_7 varchar(255) NOT NULL,
     field_8 varchar(255) NOT NULL,
     field_9 integer NULL,
-    field_10 integer NULL,
-    field_11 integer NULL,
-    field_12 integer NULL,
-    field_13 integer NULL,
-    field_14 integer NULL,
+    field_25 integer NULL,
     field_15 integer NULL,
-    field_16 integer NULL,
-    field_17 longtext NOT NULL,
-    field_18 longtext NOT NULL,
-    field_19 longtext NOT NULL,
-    field_20 integer NULL,
-    field_21 longtext NOT NULL,
-    field_22 longtext NOT NULL,
-    field_23 integer NULL,
-    field_24 integer NULL,
-    field_25 longtext NOT NULL,
-    field_26 varchar(255) NOT NULL,
-    field_27 varchar(255) NOT NULL,
-    field_28 varchar(255) NOT NULL,
-    field_29 varchar(255) NOT NULL,
-    field_30 longtext NOT NULL,
-    field_31 varchar(255) NOT NULL,
-    field_32 varchar(255) NOT NULL,
-    field_33 varchar(255) NOT NULL,
-    field_34 varchar(255) NOT NULL,
+    field_37 integer NULL,
+    field_32 longtext NOT NULL,
+    field_33 longtext NOT NULL,
+    field_34 integer NULL,
     field_35 longtext NOT NULL,
-    field_36 varchar(255) NOT NULL,
-    field_37 varchar(255) NOT NULL,
-    field_38 varchar(255) NOT NULL,
+    field_36 longtext NOT NULL,
+    field_31 longtext NOT NULL,
+    field_26 integer NULL,
+    field_27 integer NULL,
+    field_28 integer NULL,
+    field_29 integer NULL,
+    field_30 integer NULL,
+    field_38 integer NULL,
+    field_39 longtext NOT NULL,
+    field_40 varchar(255) NOT NULL,
+    field_41 varchar(255) NOT NULL,
+    field_42 varchar(255) NOT NULL,
+    field_43 varchar(255) NOT NULL,
+    field_44 varchar(255) NOT NULL,
+    field_45 longtext NOT NULL,
+    field_46 varchar(255) NOT NULL,
+    field_47 varchar(255) NOT NULL,
+    field_48 varchar(255) NOT NULL,
+    field_49 varchar(255) NOT NULL,
+    field_50 varchar(255) NOT NULL,
+    field_51 varchar(255) NOT NULL,
+    field_52 varchar(255) NOT NULL,
+    field_53 varchar(255) NOT NULL,
     field_1__text_parsed longtext NOT NULL,
     field_1__source_user integer DEFAULT 1 NOT NULL,
     field_2__text_parsed longtext NOT NULL,
@@ -2623,9 +2908,9 @@ CREATE TABLE cms_f_member_custom_fields (
     PRIMARY KEY (mf_member_id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_1__text_parsed, field_1__source_user, field_2, field_2__text_parsed, field_2__source_user, field_3, field_4, field_4__text_parsed, field_4__source_user, field_5, field_6, field_7, field_8, field_9, field_10, field_11, field_12, field_13, field_14, field_15, field_16, field_17, field_18, field_19, field_20, field_21, field_22, field_23, field_24, field_25, field_26, field_27, field_28, field_29, field_30, field_31, field_32, field_33, field_34, field_35, field_36, field_37, field_38) VALUES (1, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5946b54a6a99c9.37634556_15\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5946b54a6a99c9.37634556_15\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5946b54a6a99c9.37634556_15\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5946b54a6a99c9.37634556_16\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5946b54a6a99c9.37634556_16\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5946b54a6a99c9.37634556_16\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5946b54a6a99c9.37634556_17\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5946b54a6a99c9.37634556_17\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5946b54a6a99c9.37634556_17\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', '', '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', '', NULL, '', '', NULL, 0, '', '', '', '', '', '', '', '', '', '', '', '', '', '');
-INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_1__text_parsed, field_1__source_user, field_2, field_2__text_parsed, field_2__source_user, field_3, field_4, field_4__text_parsed, field_4__source_user, field_5, field_6, field_7, field_8, field_9, field_10, field_11, field_12, field_13, field_14, field_15, field_16, field_17, field_18, field_19, field_20, field_21, field_22, field_23, field_24, field_25, field_26, field_27, field_28, field_29, field_30, field_31, field_32, field_33, field_34, field_35, field_36, field_37, field_38) VALUES (2, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5946b54a6a99c9.37634556_20\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5946b54a6a99c9.37634556_20\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5946b54a6a99c9.37634556_20\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5946b54a6a99c9.37634556_21\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5946b54a6a99c9.37634556_21\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5946b54a6a99c9.37634556_21\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5946b54a6a99c9.37634556_22\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5946b54a6a99c9.37634556_22\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5946b54a6a99c9.37634556_22\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', '', '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', '', NULL, '', '', NULL, 0, '', '', '', '', '', '', '', '', '', '', '', '', '', '');
-INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_1__text_parsed, field_1__source_user, field_2, field_2__text_parsed, field_2__source_user, field_3, field_4, field_4__text_parsed, field_4__source_user, field_5, field_6, field_7, field_8, field_9, field_10, field_11, field_12, field_13, field_14, field_15, field_16, field_17, field_18, field_19, field_20, field_21, field_22, field_23, field_24, field_25, field_26, field_27, field_28, field_29, field_30, field_31, field_32, field_33, field_34, field_35, field_36, field_37, field_38) VALUES (3, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5946b54a6a99c9.37634556_25\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5946b54a6a99c9.37634556_25\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5946b54a6a99c9.37634556_25\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5946b54a6a99c9.37634556_26\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5946b54a6a99c9.37634556_26\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5946b54a6a99c9.37634556_26\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5946b54a6a99c9.37634556_27\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5946b54a6a99c9.37634556_27\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5946b54a6a99c9.37634556_27\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', '', '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', '', NULL, '', '', NULL, 0, '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_1__text_parsed, field_1__source_user, field_2, field_2__text_parsed, field_2__source_user, field_3, field_4, field_4__text_parsed, field_4__source_user, field_5, field_6, field_7, field_8, field_9, field_15, field_25, field_26, field_27, field_28, field_29, field_30, field_31, field_32, field_33, field_34, field_35, field_36, field_37, field_38, field_39, field_40, field_41, field_42, field_43, field_44, field_45, field_46, field_47, field_48, field_49, field_50, field_51, field_52, field_53) VALUES (1, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5a5574e1c3a348.10274577_15\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5a5574e1c3a348.10274577_15\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5a5574e1c3a348.10274577_15\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5a5574e1c3a348.10274577_16\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5a5574e1c3a348.10274577_16\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5a5574e1c3a348.10274577_16\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5a5574e1c3a348.10274577_17\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5a5574e1c3a348.10274577_17\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5a5574e1c3a348.10274577_17\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', '', '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', '', NULL, '', '', NULL, 0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_1__text_parsed, field_1__source_user, field_2, field_2__text_parsed, field_2__source_user, field_3, field_4, field_4__text_parsed, field_4__source_user, field_5, field_6, field_7, field_8, field_9, field_15, field_25, field_26, field_27, field_28, field_29, field_30, field_31, field_32, field_33, field_34, field_35, field_36, field_37, field_38, field_39, field_40, field_41, field_42, field_43, field_44, field_45, field_46, field_47, field_48, field_49, field_50, field_51, field_52, field_53) VALUES (2, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5a5574e1c3a348.10274577_20\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5a5574e1c3a348.10274577_20\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5a5574e1c3a348.10274577_20\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5a5574e1c3a348.10274577_21\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5a5574e1c3a348.10274577_21\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5a5574e1c3a348.10274577_21\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5a5574e1c3a348.10274577_22\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5a5574e1c3a348.10274577_22\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5a5574e1c3a348.10274577_22\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', '', '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', '', NULL, '', '', NULL, 0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_1__text_parsed, field_1__source_user, field_2, field_2__text_parsed, field_2__source_user, field_3, field_4, field_4__text_parsed, field_4__source_user, field_5, field_6, field_7, field_8, field_9, field_15, field_25, field_26, field_27, field_28, field_29, field_30, field_31, field_32, field_33, field_34, field_35, field_36, field_37, field_38, field_39, field_40, field_41, field_42, field_43, field_44, field_45, field_46, field_47, field_48, field_49, field_50, field_51, field_52, field_53) VALUES (3, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5a5574e1c3a348.10274577_25\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5a5574e1c3a348.10274577_25\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5a5574e1c3a348.10274577_25\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5a5574e1c3a348.10274577_26\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5a5574e1c3a348.10274577_26\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5a5574e1c3a348.10274577_26\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5a5574e1c3a348.10274577_27\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5a5574e1c3a348.10274577_27\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5a5574e1c3a348.10274577_27\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', '', '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', '', NULL, '', '', NULL, 0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
 
 ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT field_1 (field_1);
 
@@ -2633,29 +2918,7 @@ ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT field_2 (field_2);
 
 ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT field_4 (field_4);
 
-ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_17 (field_17);
-
-ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_18 (field_18);
-
-ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_19 (field_19);
-
-ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_21 (field_21);
-
-ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_22 (field_22);
-
-ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_25 (field_25);
-
-ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_26 (field_26);
-
-ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_27 (field_27);
-
-ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_28 (field_28);
-
-ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_29 (field_29);
-
 ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_3 (field_3);
-
-ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_30 (field_30);
 
 ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_31 (field_31);
 
@@ -2663,17 +2926,41 @@ ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_32 (field_32);
 
 ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_33 (field_33);
 
-ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_34 (field_34);
-
 ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_35 (field_35);
 
 ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_36 (field_36);
 
-ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_37 (field_37);
+ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_39 (field_39);
 
-ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_38 (field_38);
+ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_40 (field_40);
+
+ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_41 (field_41);
+
+ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_42 (field_42);
+
+ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_43 (field_43);
+
+ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_44 (field_44);
+
+ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_45 (field_45);
+
+ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_46 (field_46);
+
+ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_47 (field_47);
+
+ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_48 (field_48);
+
+ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_49 (field_49);
 
 ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_5 (field_5);
+
+ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_50 (field_50);
+
+ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_51 (field_51);
+
+ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_52 (field_52);
+
+ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_53 (field_53);
 
 ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_6 (field_6);
 
@@ -2683,55 +2970,59 @@ ALTER TABLE cms11_f_member_custom_fields ADD FULLTEXT mcf_ft_8 (field_8);
 
 ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf1 (field_1(250));
 
-ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf10 (field_10);
-
-ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf11 (field_11);
-
-ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf12 (field_12);
-
-ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf13 (field_13);
-
-ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf14 (field_14);
-
-ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf15 (field_15);
-
-ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf16 (field_16);
+ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf15 (field_15(250));
 
 ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf2 (field_2(250));
 
-ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf20 (field_20);
+ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf25 (field_25);
 
-ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf23 (field_23);
+ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf26 (field_26);
 
-ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf24 (field_24);
+ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf27 (field_27);
 
-ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf26 (field_26(250));
+ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf28 (field_28);
 
-ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf27 (field_27(250));
-
-ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf28 (field_28(250));
-
-ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf29 (field_29(250));
+ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf29 (field_29);
 
 ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf3 (field_3(250));
 
-ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf31 (field_31(250));
+ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf30 (field_30);
 
-ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf32 (field_32(250));
+ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf34 (field_34);
 
-ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf33 (field_33(250));
+ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf37 (field_37);
 
-ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf34 (field_34(250));
-
-ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf36 (field_36(250));
-
-ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf37 (field_37(250));
-
-ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf38 (field_38(250));
+ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf38 (field_38);
 
 ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf4 (field_4(250));
 
+ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf40 (field_40(250));
+
+ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf41 (field_41(250));
+
+ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf42 (field_42);
+
+ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf43 (field_43(250));
+
+ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf44 (field_44(250));
+
+ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf46 (field_46);
+
+ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf47 (field_47(250));
+
+ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf48 (field_48(250));
+
+ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf49 (field_49(250));
+
 ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf5 (field_5(250));
+
+ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf50 (field_50(250));
+
+ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf51 (field_51(250));
+
+ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf52 (field_52(250));
+
+ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf53 (field_53(250));
 
 ALTER TABLE cms11_f_member_custom_fields ADD INDEX mcf6 (field_6(250));
 
@@ -2800,9 +3091,9 @@ CREATE TABLE cms_f_members (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_f_members (id, m_username, m_pass_hash_salted, m_pass_salt, m_theme, m_avatar_url, m_validated, m_validated_email_confirm_code, m_cache_num_posts, m_cache_warnings, m_join_time, m_timezone_offset, m_primary_group, m_last_visit_time, m_last_submit_time, m_signature, m_is_perm_banned, m_preview_posts, m_dob_day, m_dob_month, m_dob_year, m_reveal_age, m_email_address, m_title, m_photo_url, m_photo_thumb_url, m_views_signatures, m_auto_monitor_contrib_content, m_language, m_ip_address, m_allow_emails, m_allow_emails_from_staff, m_highlighted_name, m_pt_allow, m_pt_rules_text, m_max_email_attach_size_mb, m_password_change_code, m_password_compat_scheme, m_on_probation_until, m_profile_views, m_total_sessions, m_auto_mark_read, m_signature__text_parsed, m_signature__source_user, m_pt_rules_text__text_parsed, m_pt_rules_text__source_user) VALUES (1, 'Guest', '', '', '', '', 1, '', 0, 0, 1497806154, 'UTC', 1, 1497806154, 1497806154, '', 0, 1, NULL, NULL, NULL, 1, '', '', '', '', 1, 0, '', '127.0.0.1', 1, 1, 0, '*', '', 5, '', 'plain', NULL, 0, 0, 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5946b54a6a99c9.37634556_13\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5946b54a6a99c9.37634556_13\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5946b54a6a99c9.37634556_13\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5946b54a6a99c9.37634556_14\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5946b54a6a99c9.37634556_14\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5946b54a6a99c9.37634556_14\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
-INSERT INTO cms_f_members (id, m_username, m_pass_hash_salted, m_pass_salt, m_theme, m_avatar_url, m_validated, m_validated_email_confirm_code, m_cache_num_posts, m_cache_warnings, m_join_time, m_timezone_offset, m_primary_group, m_last_visit_time, m_last_submit_time, m_signature, m_is_perm_banned, m_preview_posts, m_dob_day, m_dob_month, m_dob_year, m_reveal_age, m_email_address, m_title, m_photo_url, m_photo_thumb_url, m_views_signatures, m_auto_monitor_contrib_content, m_language, m_ip_address, m_allow_emails, m_allow_emails_from_staff, m_highlighted_name, m_pt_allow, m_pt_rules_text, m_max_email_attach_size_mb, m_password_change_code, m_password_compat_scheme, m_on_probation_until, m_profile_views, m_total_sessions, m_auto_mark_read, m_signature__text_parsed, m_signature__source_user, m_pt_rules_text__text_parsed, m_pt_rules_text__source_user) VALUES (2, 'admin', '', '', '', 'themes/default/images/cns_default_avatars/default_set/cool_flare.png', 1, '', 0, 0, 1497806154, 'UTC', 2, 1497806154, 1497806154, '', 0, 0, NULL, NULL, NULL, 1, '', '', '', '', 1, 1, '', '127.0.0.1', 1, 1, 0, '*', '', 5, '', 'plain', NULL, 0, 0, 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5946b54a6a99c9.37634556_18\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5946b54a6a99c9.37634556_18\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5946b54a6a99c9.37634556_18\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5946b54a6a99c9.37634556_19\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5946b54a6a99c9.37634556_19\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5946b54a6a99c9.37634556_19\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
-INSERT INTO cms_f_members (id, m_username, m_pass_hash_salted, m_pass_salt, m_theme, m_avatar_url, m_validated, m_validated_email_confirm_code, m_cache_num_posts, m_cache_warnings, m_join_time, m_timezone_offset, m_primary_group, m_last_visit_time, m_last_submit_time, m_signature, m_is_perm_banned, m_preview_posts, m_dob_day, m_dob_month, m_dob_year, m_reveal_age, m_email_address, m_title, m_photo_url, m_photo_thumb_url, m_views_signatures, m_auto_monitor_contrib_content, m_language, m_ip_address, m_allow_emails, m_allow_emails_from_staff, m_highlighted_name, m_pt_allow, m_pt_rules_text, m_max_email_attach_size_mb, m_password_change_code, m_password_compat_scheme, m_on_probation_until, m_profile_views, m_total_sessions, m_auto_mark_read, m_signature__text_parsed, m_signature__source_user, m_pt_rules_text__text_parsed, m_pt_rules_text__source_user) VALUES (3, 'test', '', '', '', '', 1, '', 0, 0, 1497806154, 'UTC', 8, 1497806154, 1497806154, '', 0, 0, NULL, NULL, NULL, 1, '', '', '', '', 1, 0, '', '127.0.0.1', 1, 1, 0, '*', '', 5, '', 'plain', NULL, 0, 0, 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5946b54a6a99c9.37634556_23\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5946b54a6a99c9.37634556_23\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5946b54a6a99c9.37634556_23\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5946b54a6a99c9.37634556_24\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5946b54a6a99c9.37634556_24\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5946b54a6a99c9.37634556_24\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_f_members (id, m_username, m_pass_hash_salted, m_pass_salt, m_theme, m_avatar_url, m_validated, m_validated_email_confirm_code, m_cache_num_posts, m_cache_warnings, m_join_time, m_timezone_offset, m_primary_group, m_last_visit_time, m_last_submit_time, m_signature, m_is_perm_banned, m_preview_posts, m_dob_day, m_dob_month, m_dob_year, m_reveal_age, m_email_address, m_title, m_photo_url, m_photo_thumb_url, m_views_signatures, m_auto_monitor_contrib_content, m_language, m_ip_address, m_allow_emails, m_allow_emails_from_staff, m_highlighted_name, m_pt_allow, m_pt_rules_text, m_max_email_attach_size_mb, m_password_change_code, m_password_compat_scheme, m_on_probation_until, m_profile_views, m_total_sessions, m_auto_mark_read, m_signature__text_parsed, m_signature__source_user, m_pt_rules_text__text_parsed, m_pt_rules_text__source_user) VALUES (1, 'Guest', '', '', '', '', 1, '', 0, 0, 1515549922, 'UTC', 1, 1515549922, 1515549922, '', 0, 1, NULL, NULL, NULL, 1, '', '', '', '', 1, 0, '', '127.0.0.1', 1, 1, 0, '*', '', 5, '', 'plain', NULL, 0, 0, 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5a5574e1c3a348.10274577_13\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5a5574e1c3a348.10274577_13\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5a5574e1c3a348.10274577_13\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5a5574e1c3a348.10274577_14\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5a5574e1c3a348.10274577_14\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5a5574e1c3a348.10274577_14\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_f_members (id, m_username, m_pass_hash_salted, m_pass_salt, m_theme, m_avatar_url, m_validated, m_validated_email_confirm_code, m_cache_num_posts, m_cache_warnings, m_join_time, m_timezone_offset, m_primary_group, m_last_visit_time, m_last_submit_time, m_signature, m_is_perm_banned, m_preview_posts, m_dob_day, m_dob_month, m_dob_year, m_reveal_age, m_email_address, m_title, m_photo_url, m_photo_thumb_url, m_views_signatures, m_auto_monitor_contrib_content, m_language, m_ip_address, m_allow_emails, m_allow_emails_from_staff, m_highlighted_name, m_pt_allow, m_pt_rules_text, m_max_email_attach_size_mb, m_password_change_code, m_password_compat_scheme, m_on_probation_until, m_profile_views, m_total_sessions, m_auto_mark_read, m_signature__text_parsed, m_signature__source_user, m_pt_rules_text__text_parsed, m_pt_rules_text__source_user) VALUES (2, 'admin', '', '', '', 'themes/default/images/cns_default_avatars/default_set/cool_flare.png', 1, '', 0, 0, 1515549922, 'UTC', 2, 1515549922, 1515549922, '', 0, 0, NULL, NULL, NULL, 1, '', '', '', '', 1, 1, '', '127.0.0.1', 1, 1, 0, '*', '', 5, '', 'plain', NULL, 0, 0, 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5a5574e1c3a348.10274577_18\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5a5574e1c3a348.10274577_18\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5a5574e1c3a348.10274577_18\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5a5574e1c3a348.10274577_19\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5a5574e1c3a348.10274577_19\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5a5574e1c3a348.10274577_19\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_f_members (id, m_username, m_pass_hash_salted, m_pass_salt, m_theme, m_avatar_url, m_validated, m_validated_email_confirm_code, m_cache_num_posts, m_cache_warnings, m_join_time, m_timezone_offset, m_primary_group, m_last_visit_time, m_last_submit_time, m_signature, m_is_perm_banned, m_preview_posts, m_dob_day, m_dob_month, m_dob_year, m_reveal_age, m_email_address, m_title, m_photo_url, m_photo_thumb_url, m_views_signatures, m_auto_monitor_contrib_content, m_language, m_ip_address, m_allow_emails, m_allow_emails_from_staff, m_highlighted_name, m_pt_allow, m_pt_rules_text, m_max_email_attach_size_mb, m_password_change_code, m_password_compat_scheme, m_on_probation_until, m_profile_views, m_total_sessions, m_auto_mark_read, m_signature__text_parsed, m_signature__source_user, m_pt_rules_text__text_parsed, m_pt_rules_text__source_user) VALUES (3, 'test', '', '', '', '', 1, '', 0, 0, 1515549922, 'UTC', 8, 1515549922, 1515549922, '', 0, 0, NULL, NULL, NULL, 1, '', '', '', '', 1, 0, '', '127.0.0.1', 1, 1, 0, '*', '', 5, '', 'plain', NULL, 0, 0, 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5a5574e1c3a348.10274577_23\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5a5574e1c3a348.10274577_23\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5a5574e1c3a348.10274577_23\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5a5574e1c3a348.10274577_24\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;b:0;i:4;a:1:{s:40:\\\"string_attach_5a5574e1c3a348.10274577_24\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5a5574e1c3a348.10274577_24\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 ALTER TABLE cms11_f_members ADD FULLTEXT m_pt_rules_text (m_pt_rules_text);
 

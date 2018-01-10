@@ -36,7 +36,7 @@ For example:
 }
 
 .dropdown-menu a.toplevel_link,
-.dropdown-menu a.nlevel_link {
+.dropdown-menu a.nlevel-link {
 	display: block;
 	outline: 0;
 	text-decoration: none;
@@ -110,7 +110,7 @@ For example:
 }
 
 .dropdown-menu a.toplevel_link,
-.dropdown-menu a.nlevel_link {
+.dropdown-menu a.nlevel-link {
 	padding: 1.2em 3em 1.2em 1em;
 	background: url('{$IMG;,icons/24x24/buttons/proceed}') transparent no-repeat top 1em right 1em;
 }
@@ -118,9 +118,9 @@ For example:
 .dropdown-menu li.toplevel:hover,
 .dropdown-menu li.nlevel:hover,
 .dropdown-menu a.toplevel_link:hover,
-.dropdown-menu a.nlevel_link:hover,
+.dropdown-menu a.nlevel-link:hover,
 .dropdown-menu li.current > a.toplevel_link,
-.dropdown-menu li.current > a.nlevel_link {
+.dropdown-menu li.current > a.nlevel-link {
 	background-color: {$GET,area_hover_2_background};
 }
 
@@ -137,7 +137,7 @@ For example:
 }
 
 .dropdown-menu a.toplevel_link,
-.dropdown-menu a.nlevel_link {
+.dropdown-menu a.nlevel-link {
 	padding: 0.3em 0.4em !important;
 }
 
@@ -163,7 +163,7 @@ For example:
 	padding: 0.4em 0.5em;
 }
 
-.dropdown-menu .has_children>a.toplevel_link:after {
+.dropdown-menu .has-children>a.toplevel_link:after {
 	content: "\025BC"; /* Downward arrow */
 	vertical-align: middle;
 	padding-left: 0.5em;
@@ -172,7 +172,7 @@ For example:
 	margin-top: 4px;
 }
 
-.dropdown-menu li.nlevel.has_children > a.nlevel_link::after {
+.dropdown-menu li.nlevel.has-children > a.nlevel-link::after {
 	display: inline-block;
 	vertical-align: middle;
 	content: '→'; /* Right arrow */
