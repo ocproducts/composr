@@ -50,7 +50,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 	<div id="main-website-inner">
 		{$,By default the top panel contains the admin menu, community menu, member bar, etc}
 		{+START,IF_NON_EMPTY,{$TRIM,{$LOAD_PANEL,top}}}
-			<div id="panel_top">
+			<div id="panel-top">
 				{$LOAD_PANEL,top}
 			</div>
 		{+END}
@@ -102,7 +102,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 		</div>
 
 		{+START,IF_NON_EMPTY,{$TRIM,{$LOAD_PANEL,bottom}}}
-			<div id="panel_bottom" role="complementary">
+			<div id="panel-bottom" role="complementary">
 				{$LOAD_PANEL,bottom}
 			</div>
 		{+END}

@@ -406,7 +406,7 @@
                 var branchId = 'sitemap_menu_branch_' + $util.random(),
                     li = $dom.create('li', {
                         id: branchId,
-                        className: (node.current ? 'current' : 'non_current') + ' ' + (node.img ? 'has_img' : 'has_no_img'),
+                        className: (node.current ? 'current' : 'non_current') + ' ' + (node.img ? 'has-img' : 'has_no_img'),
                         dataset: {
                             toggleableTray: '{}'
                         }

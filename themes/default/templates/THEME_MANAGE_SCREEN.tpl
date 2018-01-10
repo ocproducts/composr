@@ -24,7 +24,7 @@
 			<tbody>
 				{$SET,done_one_theme,0}
 				{+START,LOOP,THEMES}
-					<tr class="{+START,IF,{$GET,done_one_theme}}thick_border{+END}{+START,IF,{IS_MAIN_THEME}} active-item{+END}">
+					<tr class="{+START,IF,{$GET,done_one_theme}}thick-border{+END}{+START,IF,{IS_MAIN_THEME}} active-item{+END}">
 						<td role="note" class="theme_details">
 							{+START,IF,{$DESKTOP}}
 								<div class="block-desktop">

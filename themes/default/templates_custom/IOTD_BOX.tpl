@@ -34,10 +34,10 @@
 
 		{+START,IF_PASSED,CHOOSE_URL}{+START,IF_PASSED,EDIT_URL}{+START,IF_PASSED,IS_CURRENT}
 			<div style="margin-right: {$CONFIG_OPTION,thumb_width}px" class="buttons-group">
-				{+START,IF,{$NOT,{IS_CURRENT}}}<form title="{!CHOOSE} {!IOTD} #{ID*}" class="inline" action="{CHOOSE_URL*}" method="post" autocomplete="off"><input type="hidden" name="id" value="{ID*}" /><input class="button_screen_item buttons--choose" type="submit" value="{!CHOOSE}" title="{!CHOOSE} {!IOTD} #{ID*}" /></form>{+END}
-				<a class="button_screen_item buttons--edit" rel="edit" href="{EDIT_URL*}"><span>{!EDIT}: {!IOTD} #{ID*}</span></a>
+				{+START,IF,{$NOT,{IS_CURRENT}}}<form title="{!CHOOSE} {!IOTD} #{ID*}" class="inline" action="{CHOOSE_URL*}" method="post" autocomplete="off"><input type="hidden" name="id" value="{ID*}" /><input class="button-screen-item buttons--choose" type="submit" value="{!CHOOSE}" title="{!CHOOSE} {!IOTD} #{ID*}" /></form>{+END}
+				<a class="button-screen-item buttons--edit" rel="edit" href="{EDIT_URL*}"><span>{!EDIT}: {!IOTD} #{ID*}</span></a>
 				<form class="inline js-submit-confirm-iotd-deletion" title="{!DELETE} {!IOTD} #{ID*}" action="{DELETE_URL*}" method="post" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="id" value="{ID*}" />
-					<input class="button_screen_item menu___generic_admin__delete" type="submit" value="{!DELETE}" title="{!DELETE} {!IOTD} #{ID*}" />
+					<input class="button-screen-item menu___generic_admin__delete" type="submit" value="{!DELETE}" title="{!DELETE} {!IOTD} #{ID*}" />
 				</form>
 			</div>
 		{+END}{+END}{+END}

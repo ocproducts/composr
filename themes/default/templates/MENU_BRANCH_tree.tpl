@@ -3,7 +3,7 @@
 
 {$SET,RAND,{$RAND}}
 
-<li class="{$?,{CURRENT},current,non_current} {$?,{$IS_EMPTY,{IMG}},has_no_img,has_img}">
+<li class="{$?,{CURRENT},current,non_current} {$?,{$IS_EMPTY,{IMG}},has_no_img,has-img}">
 	{+START,IF_NON_EMPTY,{IMG}}<img alt="" src="{IMG*}" srcset="{IMG_2X*} 2x" />{+END}
 	{+START,IF,{$NOT,{$GET,HAS_CHILDREN}}}
 		<a {+START,INCLUDE,MENU_LINK_PROPERTIES}{+END}>{CAPTION}</a>

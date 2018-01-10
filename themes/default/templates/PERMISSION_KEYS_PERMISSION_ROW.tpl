@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,core_permission_management}
 
-<tr class="{$CYCLE,zebra,zebra_0,zebra_1}" data-tpl="permissionKeysPermissionRow">
+<tr class="{$CYCLE,zebra,zebra-0,zebra-1}" data-tpl="permissionKeysPermissionRow">
 	<td>
 		<label class="accessibility-hidden" for="key_{UID*}">{!MATCH_KEY}</label>
 		<div>

@@ -21,7 +21,7 @@
 
 		<tbody>
 			{+START,LOOP,SERVICES}
-				<tr class="zebra_{$CYCLE*,oauth_rows,0,1}">
+				<tr class="zebra-{$CYCLE*,oauth_rows,0,1}">
 					<td>
 						{LABEL*}
 					</td>

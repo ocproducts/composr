@@ -23,6 +23,6 @@
 	{+END}
 
 	<div class="purchase-button">
-		<input data-disable-on-click="1" class="button_screen menu--rich-content--ecommerce--purchase" type="submit" value="{!MAKE_PAYMENT}" />
+		<input data-disable-on-click="1" class="button-screen menu--rich-content--ecommerce--purchase" type="submit" value="{!MAKE_PAYMENT}" />
 	</div>
 </form>

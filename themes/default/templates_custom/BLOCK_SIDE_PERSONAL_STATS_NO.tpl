@@ -30,12 +30,12 @@
 				{+END}
 
 				<p class="proceed_button">
-					<input class="button_screen_item menu__site_meta__user_actions__login" type="submit" value="{!_LOGIN}" />
+					<input class="button-screen-item menu__site_meta__user_actions__login" type="submit" value="{!_LOGIN}" />
 				</p>
 			</div>
 		</form>
 
-		<ul class="horizontal-links associated-links-block-group force_margin">
+		<ul class="horizontal-links associated-links-block-group force-margin">
 			{+START,IF_NON_EMPTY,{JOIN_URL}}<li><a href="{JOIN_URL*}">{!_JOIN}</a></li>{+END}
 			<li><a data-open-as-overlay="{}" rel="nofollow" href="{FULL_LOGIN_URL*}" title="{!MORE}: {!_LOGIN}">{!MORE}</a></li>
 		</ul>

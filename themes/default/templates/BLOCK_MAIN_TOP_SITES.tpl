@@ -20,7 +20,7 @@
 
 		<tbody>
 			{+START,LOOP,BANNERS}
-				<tr {+START,IF,{$LT,{_loop_key},5}} class="highlighted_table_cell"{+END}>
+				<tr {+START,IF,{$LT,{_loop_key},5}} class="highlighted-table-cell"{+END}>
 					<td>
 						{+START,IF,{$LT,{_loop_key},20}}{BANNER}{+END}
 
@@ -48,5 +48,5 @@
 {+END}
 
 {+START,IF_NON_EMPTY,{SUBMIT_URL}}
-	<p class="proceed_button"><a class="button_screen menu___generic_admin__add_one" href="{SUBMIT_URL*}"><span>{!ADD_BANNER}</span></a></p>
+	<p class="proceed_button"><a class="button-screen menu___generic_admin__add_one" href="{SUBMIT_URL*}"><span>{!ADD_BANNER}</span></a></p>
 {+END}

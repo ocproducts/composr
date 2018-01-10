@@ -1,4 +1,4 @@
-<div class="force_normal_margin block-side-friends boxless-space"><div class="box"><div class="box-inner">
+<div class="force-normal-margin block-side-friends boxless-space"><div class="box"><div class="box-inner">
 	<h3>{!_INSTANT_MESSAGING}</h3>
 
 	{FRIENDS}

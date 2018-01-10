@@ -11,7 +11,7 @@
 			<div><textarea class="wide-field textarea-scroll" cols="60" rows="10" id="edit_content{$GET%,rndx}" name="edit_content">{FILE_CONTENTS*}</textarea></div>
 
 			<p>
-				<input class="button_screen_item buttons--proceed" type="submit" value="{!PROCEED}" />
+				<input class="button-screen-item buttons--proceed" type="submit" value="{!PROCEED}" />
 			</p>
 		</div>
 	</form>

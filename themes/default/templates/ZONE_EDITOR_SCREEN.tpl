@@ -35,7 +35,7 @@
 		</div>
 
 		<p class="proceed_button vertical-alignment">
-			<input class="button_screen buttons--save js-btn-fetch-and-submit" type="button" value="{!SAVE}" /> <span class="associated-details">{!ZE_CLICK_TO_EDIT}</span>
+			<input class="button-screen buttons--save js-btn-fetch-and-submit" type="button" value="{!SAVE}" /> <span class="associated-details">{!ZE_CLICK_TO_EDIT}</span>
 		</p>
 	</form>
 

@@ -1,6 +1,6 @@
 {+START,IF,{$NOR,{$GET,login_screen},{$MATCH_KEY_MATCH,_WILD:login}}}
 	<div data-tpl="blockTopLogin" class="inline">
-		<form title="{!_LOGIN}" action="{LOGIN_URL*}" method="post" class="inline top_login js-form-top-login" autocomplete="on">
+		<form title="{!_LOGIN}" action="{LOGIN_URL*}" method="post" class="inline top-login js-form-top-login" autocomplete="on">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			{+START,IF,{$DESKTOP}}
@@ -15,7 +15,7 @@
 						<input title="{!REMEMBER_ME}"{+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END} class="{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}}js-click-confirm-remember-me{+END}" type="checkbox" value="1" id="s_remember" name="remember" />
 					{+END}
 
-					<input class="button_screen_item menu__site_meta__user_actions__login" type="submit" value="{!_LOGIN}" />
+					<input class="button-screen-item menu__site_meta__user_actions__login" type="submit" value="{!_LOGIN}" />
 				</div>
 			{+END}
 

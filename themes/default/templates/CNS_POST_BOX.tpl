@@ -9,8 +9,8 @@
 		</p></nav>
 
 		{+START,IF_PASSED,URL}
-			<p class="shunted_button">
-				<a class="button_screen_item buttons--more" href="{URL*}" title="{!FORUM_POST} #{ID*}"><span>{!VIEW}</span></a>
+			<p class="shunted-button">
+				<a class="button-screen-item buttons--more" href="{URL*}" title="{!FORUM_POST} #{ID*}"><span>{!VIEW}</span></a>
 			</p>
 		{+END}
 	{+END}

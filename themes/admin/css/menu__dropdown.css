@@ -28,7 +28,7 @@ For example:
 	color: inherit;
 }
 
-.dropdown-menu .nlevel .has_img > a > img {
+.dropdown-menu .nlevel .has-img > a > img {
 	width: 20px;
 }
 
@@ -244,7 +244,7 @@ For example:
 .dropdown-menu .nlevel .current a {
 	background: transparent url('{$IMG;,1x/menus/menu_bullet_current}') no-repeat 5px 6px !important;
 }
-body .dropdown-menu .nlevel .has_img>a, body .dropdown-menu .nlevel.current.has_img>a {
+body .dropdown-menu .nlevel .has-img>a, body .dropdown-menu .nlevel.current.has-img>a {
 	background: none !important;
 }
 

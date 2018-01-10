@@ -921,7 +921,7 @@
                 stuckNav.realHeight = stuckNavHeight;
                 var posY = $dom.findPosY(stuckNav.parentNode, true),
                     footerHeight = document.querySelector('footer') ? document.querySelector('footer').offsetHeight : 0,
-                    panelBottom = $dom.$('#panel_bottom');
+                    panelBottom = $dom.$('#panel-bottom');
 
                 if (panelBottom) {
                     footerHeight += panelBottom.offsetHeight;

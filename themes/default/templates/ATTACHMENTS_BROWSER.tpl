@@ -7,7 +7,7 @@
 			{LIST}
 		</select></label>
 
-		<input data-disable-on-click="1" class="button_screen_item buttons--proceed" type="submit" value="{!PROCEED}" />
+		<input data-disable-on-click="1" class="button-screen-item buttons--proceed" type="submit" value="{!PROCEED}" />
 	</form>
 
 	<hr class="spaced-rule" />
@@ -16,14 +16,14 @@
 		{TPL}
 
 		<div class="buttons-group">
-			<a class="button_screen_item buttons--choose js-click-do-attachment-and-close" href="#!"><span>{!CHOOSE}</span></a>
+			<a class="button-screen-item buttons--choose js-click-do-attachment-and-close" href="#!"><span>{!CHOOSE}</span></a>
 
 			{+START,IF,{MAY_DELETE}}
 				<form title="{!DELETE}" class="inline" method="post" action="{DELETE_URL*}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<input type="hidden" name="delete_{ID*}" value="1" />
-					<input data-cms-confirm-click="{!ARE_YOU_SURE_DELETE*}" type="submit" class="button_screen_item menu___generic_admin__delete" value="{!DELETE}" />
+					<input data-cms-confirm-click="{!ARE_YOU_SURE_DELETE*}" type="submit" class="button-screen-item menu___generic_admin__delete" value="{!DELETE}" />
 				</form>
 			{+END}
 		</div>

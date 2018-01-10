@@ -19,8 +19,8 @@
 
 	<div class="buttons-group">
 		{+START,IF_PASSED,ADD_TO_CART}
-			<a class="button_screen_item buttons--cart-add" href="{ADD_TO_CART*}" title="{!ADD_TO_CART}"><span>{!BUY}</span></a>
+			<a class="button-screen-item buttons--cart-add" href="{ADD_TO_CART*}" title="{!ADD_TO_CART}"><span>{!BUY}</span></a>
 		{+END}
-		<a class="button_screen_item buttons--more" href="{VIEW_URL*}" title="{!VIEW_PRODUCT}"><span>{!VIEW}</span></a>
+		<a class="button-screen-item buttons--more" href="{VIEW_URL*}" title="{!VIEW_PRODUCT}"><span>{!VIEW}</span></a>
 	</div>
 </div></section>

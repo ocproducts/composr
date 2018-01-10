@@ -29,27 +29,27 @@
 	vertical-align: middle;
 }
 
-.global_button_ref_point .personal_stats_avatar {
+.global-button-ref-point .personal_stats_avatar {
 	float: right;
 }
-.global_button_ref_point .personal_stats_avatar img {
+.global-button-ref-point .personal_stats_avatar img {
 	max-width: 60px;
 }
 
-.global_button_ref_point .personal_stats_avatar + h3 {
+.global-button-ref-point .personal_stats_avatar + h3 {
 	margin-right: 100px;
 	margin-bottom: 0.5em;
 }
 
-.global_button_ref_point ul.compact-list {
+.global-button-ref-point ul.compact-list {
 	font-size: 0.95em;
 }
 
-.global_button_ref_point ul.compact-list li {
+.global-button-ref-point ul.compact-list li {
 	padding: 0.1em 0;
 }
 
-.global_button_ref_point ul.compact-list li .field-name {
+.global-button-ref-point ul.compact-list li .field-name {
 	font-weight: normal;
 }
 

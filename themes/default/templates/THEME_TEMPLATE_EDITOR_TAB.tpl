@@ -469,16 +469,16 @@
 {$,Buttons}
 
 <div class="float-surrounder buttons-group">
-	<input data-disable-on-click="1" class="button_screen buttons--save js-btn-save-content" type="submit" value="{!SAVE}" />
+	<input data-disable-on-click="1" class="button-screen buttons--save js-btn-save-content" type="submit" value="{!SAVE}" />
 
 	{+START,SET,preview_buttons}
 		{+START,IF_PASSED,LIVE_PREVIEW_URL}
 			<!-- Preview in live rendering -->
-			<input class="button_screen tabs__preview js-btn-live-preview" type="submit" value="{!LIVE_PREVIEW}" />
+			<input class="button-screen tabs__preview js-btn-live-preview" type="submit" value="{!LIVE_PREVIEW}" />
 		{+END}
 		{+START,IF_PASSED,SCREEN_PREVIEW_URL}
 			<!-- Preview in screen preview (Lorem ipsum) -->
-			<input class="button_screen tabs__preview js-btn-screen-preview" type="submit" value="{!LOREM_PREVIEW}" />
+			<input class="button-screen tabs__preview js-btn-screen-preview" type="submit" value="{!LOREM_PREVIEW}" />
 		{+END}
 	{+END}
 	{+START,IF_NON_EMPTY,{$TRIM,{$GET,preview_buttons}}}
@@ -507,7 +507,7 @@
 				</thead>
 				<tbody>
 					{+START,LOOP,GUIDS}
-						<tr class="{$CYCLE,results_table_zebra,zebra_0,zebra_1}">
+						<tr class="{$CYCLE,results_table_zebra,zebra-0,zebra-1}">
 							<td>
 								<kbd>{GUID_FILENAME*}</kbd>
 							</td>
@@ -566,7 +566,7 @@
 			<label for="css_equation">{!CSS_EQUATION_HELPER}</label>
 			<input name="css_equation" id="css_equation_{FILE_ID*}" type="text" value="100% seed" />
 
-			<input class="button_screen_item buttons--calculate js-btn-equation-helper" type="submit" value="{!CALCULATE}" />
+			<input class="button-screen-item buttons--calculate js-btn-equation-helper" type="submit" value="{!CALCULATE}" />
 
 			&rarr;
 

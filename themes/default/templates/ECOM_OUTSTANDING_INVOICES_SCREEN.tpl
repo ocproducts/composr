@@ -14,9 +14,9 @@
 
 	<tbody>
 		{+START,LOOP,INVOICES}
-			{$SET,cycle,{$CYCLE,results_table_zebra,zebra_0,zebra_1}}
+			{$SET,cycle,{$CYCLE,results_table_zebra,zebra-0,zebra-1}}
 
-			<tr class="{$GET,cycle} thick_border">
+			<tr class="{$GET,cycle} thick-border">
 				<td>
 					{INVOICE_TITLE*}
 				</td>

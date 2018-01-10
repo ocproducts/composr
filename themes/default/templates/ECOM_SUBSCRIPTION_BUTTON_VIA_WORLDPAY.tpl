@@ -30,6 +30,6 @@
 	<input type="hidden" name="option" value="0" />
 
 	<div class="purchase-button">
-		<input id="purchase-button" data-disable-on-click="1" class="button_screen menu--adminzone--audit--ecommerce--subscriptions" type="submit" value="{!MAKE_PAYMENT}" />
+		<input id="purchase-button" data-disable-on-click="1" class="button-screen menu--adminzone--audit--ecommerce--subscriptions" type="submit" value="{!MAKE_PAYMENT}" />
 	</div>
 </form>

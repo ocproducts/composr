@@ -237,7 +237,7 @@
             submitButton.disabled = !deleteCheckbox.checked;
 
             setInterval(function () {
-                submitButton.disabled = !deleteCheckbox.checked && tab.classList.contains('tab_active');
+                submitButton.disabled = !deleteCheckbox.checked && tab.classList.contains('tab-active');
             }, 100);
         };
     };
@@ -383,7 +383,7 @@
         // Cancel button
         var button = document.createElement('input');
         button.type = 'button';
-        button.className = 'buttons--cancel button_screen_item';
+        button.className = 'buttons--cancel button-screen-item';
         button.value = '{!INPUTSYSTEM_CANCEL;^}';
         // Remove the form when it's cancelled
         button.addEventListener('click', function () {
@@ -395,7 +395,7 @@
         // Submit button
         button = document.createElement('input');
         button.type = 'submit';
-        button.className = 'buttons--proceed button_screen_item';
+        button.className = 'buttons--proceed button-screen-item';
         button.value = '{!encryption:DECRYPT;^}';
         // Hide the form upon submission
         button.addEventListener('click', function () {

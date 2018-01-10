@@ -19,14 +19,14 @@
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	{+START,IF_NON_EMPTY,{ANSWER}}
-		<div class="cns-intro-question-answer-box"><label for="answer">{!ANSWER}</label>: <input maxlength="255" id="answer" type="text" name="answer" /> <input accesskey="u" data-disable-on-click="1" class="button_screen buttons--proceed" type="submit" value="{!PROCEED}" /></div>
+		<div class="cns-intro-question-answer-box"><label for="answer">{!ANSWER}</label>: <input maxlength="255" id="answer" type="text" name="answer" /> <input accesskey="u" data-disable-on-click="1" class="button-screen buttons--proceed" type="submit" value="{!PROCEED}" /></div>
 	{+END}
 	{+START,IF_EMPTY,{ANSWER}}
 		<div>
 			<input type="hidden" name="answer" value="" />
 
 			<p class="proceed_button">
-				<input accesskey="u" data-disable-on-click="1" class="button_screen buttons--proceed" type="submit" value="{!PROCEED}" />
+				<input accesskey="u" data-disable-on-click="1" class="button-screen buttons--proceed" type="submit" value="{!PROCEED}" />
 			</p>
 		</div>
 	{+END}

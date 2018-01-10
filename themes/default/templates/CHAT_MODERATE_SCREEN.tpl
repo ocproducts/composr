@@ -10,7 +10,7 @@
 	{+START,IF_PASSED,URL}
 		<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" autocomplete="off">
 			<p class="proceed_button">
-				<input class="button_screen menu___generic_admin__delete js-click-btn-delete-marked-posts" type="submit" value="{!DELETE}" />
+				<input class="button-screen menu___generic_admin__delete js-click-btn-delete-marked-posts" type="submit" value="{!DELETE}" />
 			</p>
 		</form>
 	{+END}

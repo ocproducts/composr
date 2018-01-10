@@ -13,7 +13,7 @@
 		{+END}
 	</div>
 
-	<h2 class="force_margin">{!SEARCH}</h2>
+	<h2 class="force-margin">{!SEARCH}</h2>
 
 	<form title="{!SEARCH}" target="_self" method="get" action="{SEARCH_URL*}" class="js-submit-scroll-to-top" autocomplete="off">
 		<div>
@@ -26,7 +26,7 @@
 		</div>
 	</form>
 
-	<h2 class="force_margin">{!MORE} / {!ADVANCED}</h2>
+	<h2 class="force-margin">{!MORE} / {!ADVANCED}</h2>
 
 	<p class="lonely-label">
 		{!ACTIONS}:

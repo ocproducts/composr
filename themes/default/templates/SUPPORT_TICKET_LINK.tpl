@@ -1,4 +1,4 @@
-<tr class="{$CYCLE,results_table_zebra,zebra_0,zebra_1}{+START,IF,{$AND,{$EQ,{LAST_POSTER_ID},{FIRST_POSTER_ID}},{$HAS_PRIVILEGE,support_operator},{$NOT,{CLOSED}}}} unclosed_ticket{+END}">
+<tr class="{$CYCLE,results_table_zebra,zebra-0,zebra-1}{+START,IF,{$AND,{$EQ,{LAST_POSTER_ID},{FIRST_POSTER_ID}},{$HAS_PRIVILEGE,support_operator},{$NOT,{CLOSED}}}} unclosed_ticket{+END}">
 	<td>
 		<a class="ticket_title" href="{URL*}">{+START,IF_EMPTY,{TITLE}}{!SUPPORT_TICKET}{+END}{TITLE*}</a>
 
@@ -63,7 +63,7 @@
 			<form title="{!MERGE_SUPPORT_TICKETS}" action="{$PAGE_LINK*,_SEARCH:tickets:merge:from={$GET,ticket_merge_into}:to={ID}}" method="post" autocomplete="off">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
-				<input class="button_screen_item menu___generic_admin__merge" type="submit" title="{!MERGE_SUPPORT_TICKETS}" value="{!_MERGE}" />
+				<input class="button-screen-item menu___generic_admin__merge" type="submit" title="{!MERGE_SUPPORT_TICKETS}" value="{!_MERGE}" />
 			</form>
 		</td>
 	{+END}{+END}

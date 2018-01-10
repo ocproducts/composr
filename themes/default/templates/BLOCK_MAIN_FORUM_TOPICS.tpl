@@ -28,7 +28,7 @@
 		{+END}
 
 		{+START,IF_NON_EMPTY,{SUBMIT_URL}}
-			<ul class="horizontal-links associated-links-block-group force_margin">
+			<ul class="horizontal-links associated-links-block-group force-margin">
 				<li><a href="{SUBMIT_URL*}">{!ADD_TOPIC}</a></li>
 			</ul>
 		{+END}

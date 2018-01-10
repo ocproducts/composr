@@ -24,7 +24,7 @@
 				{$STRIP_TAGS,{$TRUNCATE_LEFT,{$GET,PAGE},400,0,1},<div><p><em><i><b><strong><br>}
 
 				<p>
-					<a class="button_screen_item buttons--more" href="{$PAGE_LINK*,{ZONE}:{PAGE}}"><span>{!VIEW}</span></a>
+					<a class="button-screen-item buttons--more" href="{$PAGE_LINK*,{ZONE}:{PAGE}}"><span>{!VIEW}</span></a>
 				</p>
 			</div></div>
 		{+END}

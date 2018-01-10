@@ -39,7 +39,7 @@
 					<div>
 						<label for="vga_username">{!USERNAME}: </label>
 						<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="80" class="js-input-add-member-username" alt="{!USERNAME}" type="text" id="vga_username" name="username" />
-						<input class="button_screen_item menu___generic_admin__add_one" type="submit" value="{!ADD}" />
+						<input class="button-screen-item menu___generic_admin__add_one" type="submit" value="{!ADD}" />
 					</div>
 				</form>
 			</div></div>
@@ -48,7 +48,7 @@
 
 	{+START,IF_NON_EMPTY,{APPLY_URL}}
 		<nav>
-			<ul class="force_margin actions-list">
+			<ul class="force-margin actions-list">
 				<li><a href="{APPLY_URL*}">{APPLY_TEXT*}</a></li>
 			</ul>
 		</nav>

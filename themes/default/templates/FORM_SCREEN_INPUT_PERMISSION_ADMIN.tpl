@@ -1,4 +1,4 @@
-<tr id="access_{GROUP_ID*}_privilege_container" class="{$CYCLE,permissions_zebra,zebra_0,zebra_1}">
+<tr id="access_{GROUP_ID*}_privilege_container" class="{$CYCLE,permissions_zebra,zebra-0,zebra-1}">
 	<th class="form-table-field-name">
 		<p class="form-field-name field-name">{GROUP_NAME*}</p>
 	</th>

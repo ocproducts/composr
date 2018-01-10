@@ -34,7 +34,7 @@
 	font-size: 1.5em;
 }
 
-.menu-type--sitemap ul .has_img>span>img {
+.menu-type--sitemap ul .has-img>span>img {
 	width: 24px;
 }
 
@@ -54,7 +54,7 @@
 	font-size: 0.9em;
 }
 
-.menu-type--sitemap ul ul .has_img>span>img {
+.menu-type--sitemap ul ul .has-img>span>img {
 	width: 20px;
 }
 
@@ -74,7 +74,7 @@
 	font-size: 0.9em;
 }
 
-.menu-type--sitemap ul ul ul .has_img>span>img {
+.menu-type--sitemap ul ul ul .has-img>span>img {
 	width: 17px;
 }
 

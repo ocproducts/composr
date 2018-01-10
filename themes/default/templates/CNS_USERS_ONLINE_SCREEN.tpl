@@ -45,7 +45,7 @@
 				{+END}
 			{+END}
 
-			<tr class="{$CYCLE,results_table_zebra,zebra_0,zebra_1}">
+			<tr class="{$CYCLE,results_table_zebra,zebra-0,zebra-1}">
 				<td>
 					{MEMBER}
 				</td>

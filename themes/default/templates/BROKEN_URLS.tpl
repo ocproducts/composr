@@ -28,7 +28,7 @@
 
 		<tbody>
 			{+START,LOOP,URLS}
-				<tr class="zebra_{$CYCLE*,urls,0,1}">
+				<tr class="zebra-{$CYCLE*,urls,0,1}">
 					<td>
 						<a href="{FULL_URL*}">{FULL_URL*}</a>
 					</td>

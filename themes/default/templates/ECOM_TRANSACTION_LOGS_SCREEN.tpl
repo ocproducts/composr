@@ -14,7 +14,7 @@
 	</div>
 </form>
 
-<h2 class="force_margin">{!MORE} / {!ADVANCED}</h2>
+<h2 class="force-margin">{!MORE} / {!ADVANCED}</h2>
 
 <p class="lonely-label">
 	{!ACTIONS}:

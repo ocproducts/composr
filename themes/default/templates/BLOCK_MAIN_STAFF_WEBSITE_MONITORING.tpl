@@ -46,7 +46,7 @@
 				</div>
 
 				<div class="buttons-group">
-					<input data-disable-on-click="1" class="button_screen_item buttons--save {+START,IF,{$HAS_PRIVILEGE,comcode_dangerous}}js-click-headless-submit{+END}" type="submit" value="{!SAVE}" />
+					<input data-disable-on-click="1" class="button-screen-item buttons--save {+START,IF,{$HAS_PRIVILEGE,comcode_dangerous}}js-click-headless-submit{+END}" type="submit" value="{!SAVE}" />
 				</div>
 			</form>
 

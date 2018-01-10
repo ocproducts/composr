@@ -9,7 +9,7 @@
 
 	<p>{!USE_CHAT_RULES,{$PAGE_LINK*,:rules},{$PAGE_LINK*,:privacy}}</p>
 
-	<div class="box box---chat-lobby-screen-rooms box_prominent"><div class="box-inner">
+	<div class="box box---chat-lobby-screen-rooms box-prominent"><div class="box-inner">
 		<h2>{!CHATROOMS_LOBBY_TITLE}</h2>
 
 		<div class="float-surrounder">
@@ -60,7 +60,7 @@
 
 	{+START,IF,{$NOT,{$IS_GUEST}}}
 		<div class="chat-im-convos-wrap">
-			<div class="box box___chat_lobby_screen_im box_prominent"><div class="box-inner">
+			<div class="box box---chat-lobby-screen-im box-prominent"><div class="box-inner">
 				<h2>{!INSTANT_MESSAGING}</h2>
 
 				<div class="float-surrounder chat_im_convos_inner">
@@ -86,11 +86,11 @@
 
 								<div class="friend-actions">
 									{+START,IF,{CAN_IM}}
-										<input class="button_screen_item menu___generic_admin__add_to_category js-click-btn-im-invite-ticked-people" disabled="disabled" id="invite_ongoing_im_button" type="button" value="{!INVITE_CURRENT_IM}" />
-										<input class="button_screen_item menu--social--chat--chat js-click-btn-im-start-ticked-people" type="button" value="{!START_IM}" />
+										<input class="button-screen-item menu___generic_admin__add_to_category js-click-btn-im-invite-ticked-people" disabled="disabled" id="invite_ongoing_im_button" type="button" value="{!INVITE_CURRENT_IM}" />
+										<input class="button-screen-item menu--social--chat--chat js-click-btn-im-start-ticked-people" type="button" value="{!START_IM}" />
 									{+END}
 									{+START,IF_NON_EMPTY,{URL_REMOVE_FRIENDS}}
-										<input data-click-pd="1" class="button_screen_item menu___generic_admin__delete js-click-btn-dump-friends-confirm" type="submit" value="{!DUMP_FRIENDS}" />
+										<input data-click-pd="1" class="button-screen-item menu___generic_admin__delete js-click-btn-dump-friends-confirm" type="submit" value="{!DUMP_FRIENDS}" />
 									{+END}
 								</div>
 							</form>

@@ -419,7 +419,7 @@ iframe {
 		overflow-x: visible !important;
 		overflow-y: visible !important;
 	}
-	.field-name-column, .field-name-column-shorter, .field-input-column, .field-input-column, .field_sup_column, .results-table col {
+	.field-name-column, .field-name-column-shorter, .field-input-column, .field-input-column, .field-sup-column, .results-table col {
 		width: auto !important;
 	}
 	* {
@@ -608,10 +608,10 @@ body#standalone-html-wrap {
 	margin: 0;
 }
 
-body.popup_spacer {
+body.popup-spacer {
 	padding: 1em !important;
 }
-body.popup_spacer h2 {
+body.popup-spacer h2 {
 	margin-top: 0;
 }
 
@@ -723,17 +723,17 @@ header h1 {
 	vertical-align: middle;
 }
 
-.global-navigation .top_login .horizontal-links {
+.global-navigation .top-login .horizontal-links {
 	margin-left: 0.5em;
 	width: auto;
 	padding-top: 2px; /* To force it align correctly with the form in a different block (which is taller) */
 }
 
-.global-navigation .top_login .horizontal-links a {
+.global-navigation .top-login .horizontal-links a {
 	color: inherit;
 	text-decoration: none;
 }
-.global-navigation .top_login .horizontal-links a:hover {
+.global-navigation .top-login .horizontal-links a:hover {
 	text-decoration: underline;
 }
 
@@ -775,7 +775,7 @@ header h1 {
 .hero-section * {
 	margin-top: 0;
 }
-.hero-section .hero_button a:visited, .hero-section .hero_button a:link, .hero-section .hero_button a:active, .hero-section .hero_button a:hover, .hero-section .hero_button a.user-link:link, .hero-section .hero_button a.user-link:active, .hero-section .hero_button a.user-link:hover {
+.hero-section .hero-button a:visited, .hero-section .hero-button a:link, .hero-section .hero-button a:active, .hero-section .hero-button a:hover, .hero-section .hero-button a.user-link:link, .hero-section .hero-button a.user-link:active, .hero-section .hero-button a.user-link:hover {
 	text-decoration: none;
 	padding: 0.5em !important;
 	background-image: none !important; /* Will be overridden below if linear-gradient supported by browser */
@@ -860,12 +860,12 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 
 /* Should not be flush with site borders (but the menu above it will be, so don't do the whole panel */
 /*{+START,CSS_MODE,desktop}*/
-	#panel_top .cns-member-bar-etc {
+	#panel-top .cns-member-bar-etc {
 		margin: 0 1em;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	#panel_top .cns-member-bar-etc {
+	#panel-top .cns-member-bar-etc {
 		margin: 0 2px;
 	}
 /*{+END}*/
@@ -935,7 +935,7 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 		width: 13em;
 	}
 
-	#panel_bottom {
+	#panel-bottom {
 		margin: 0 1em;
 	}
 /*{+END}*/
@@ -981,11 +981,11 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 	.global-side-panel {
 		width: 100% !important;
 	}
-	.global-side-panel.with_both_panels {
+	.global-side-panel.with-both-panels {
 		width: 50%;
 	}
 
-	#panel_bottom {
+	#panel-bottom {
 		margin: 0 2px;
 	}
 /*{+END}*/
@@ -1715,13 +1715,13 @@ td>.comcode-quote:first-child, .fake-table-cell>.comcode-quote:first-child, .fak
 	padding: 0.4em 0.8em 0.4em 0.3em;
 	width: 100%;
 }
-.box-inner>h2>.right .button_screen {
+.box-inner>h2>.right .button-screen {
 	vertical-align: top;
 }
-.box.box_prominent>.box-inner {
+.box.box-prominent>.box-inner {
 	margin: 0;
 }
-.box.box_prominent>.box-inner>h2 {
+.box.box-prominent>.box-inner>h2 {
 	padding: 0.8em;
 	margin: 0;
 	text-align: left;
@@ -2240,7 +2240,7 @@ table.scrollable-inside {
 	border: 0;
 }
 
-.highlighted_table_cell {
+.highlighted-table-cell {
 	background-color: {$GET,area_current_background};
 }
 
@@ -2305,25 +2305,25 @@ table.scrollable-inside {
 	border-bottom: 1px solid {$GET,standard_border};
 }
 
-table>*>.zebra_0>th, table>*>.zebra_0>td, div.zebra_0, table.zebra>tbody>tr:nth-child(even)>th, table.zebra>tbody>tr:nth-child(even)>td {
+table>*>.zebra-0>th, table>*>.zebra-0>td, div.zebra-0, table.zebra>tbody>tr:nth-child(even)>th, table.zebra>tbody>tr:nth-child(even)>td {
 	background-color: {$GET,area_zebra_background} !important;
 	color: {$GET,slightly_seeded_text};
 }
-table>*>.zebra_1>th, table>*>.zebra_1>td, div.zebra_1, table.zebra>tbody>tr:nth-child(odd)>th, table.zebra>tbody>tr:nth-child(even)>td {
+table>*>.zebra-1>th, table>*>.zebra-1>td, div.zebra-1, table.zebra>tbody>tr:nth-child(odd)>th, table.zebra>tbody>tr:nth-child(even)>td {
 	background-color: {$GET,area_background} !important;
 	color: {$GET,slightly_seeded_text};
 }
-div.zebra_0, div.zebra_1 {
+div.zebra-0, div.zebra-1 {
 	border: 1px solid {$GET,standard_border};
 	padding: 0.5em;
 }
-div.zebra_0 p, div.zebra_1 p {
+div.zebra-0 p, div.zebra-1 p {
 	margin-top: 0;
 }
-div.zebra_0 p:last-child, div.zebra_1 p:last-child {
+div.zebra-0 p:last-child, div.zebra-1 p:last-child {
 	margin-bottom: 0;
 }
-div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
+div.zebra-0+div.zebra-1, div.zebra-1+div.zebra-0 {
 	border-top: 0;
 }
 
@@ -2337,7 +2337,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	margin: 0;
 }
 
-.thick_border th, .thick_border td {
+.thick-border th, .thick-border td {
 	border-top-width: 4px !important;
 }
 
@@ -2353,7 +2353,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	width: 100%;
 }
 
-.field_sup_column {
+.field-sup-column {
 	width: 10em;
 }
 
@@ -2435,14 +2435,14 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	word-wrap: break-word;
 	min-width: 6em;
 }
-.tooltip_ownlayout {
+.tooltip-ownlayout {
 	padding: 0.5em;
 	border: 1px solid {$GET,point_of_interest_border};
 	box-shadow: 3px 3px 10px {$GET,point_of_interest_border};
 	border-radius: 10px;
 	color: {$GET,area_text} !important;
 }
-.tooltip_ownlayout, .tooltip_nolayout th.de-th, .tooltip_nolayout td {
+.tooltip-ownlayout, .tooltip-nolayout th.de-th, .tooltip-nolayout td {
 	background-color: {$GET,area_faded_background};
 	background-image: linear-gradient(to bottom, {$GET,area_faded_background}, {$GET,area_background});
 }
@@ -2453,7 +2453,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	max-width: 100%;
 	max-height: 200px;
 }
-.tooltip .shunted_button {
+.tooltip .shunted-button {
 	display: none;
 }
 .tooltip .whitespace-visible {
@@ -3378,7 +3378,7 @@ dl.meta-details-list>dt, dl.meta-details-list>dd {
 .quick-self-edit-link:hover {
 	opacity: 1.0;
 }
-#panel_top .quick-self-edit-link {
+#panel-top .quick-self-edit-link {
 	display: none;
 }
 
@@ -3421,7 +3421,7 @@ dl.meta-details-list>dt, dl.meta-details-list>dd {
 	font-weight: normal; /* Undo what may be set on a surrounding element */
 }
 
-.associated_minor_button_action, .associated-details {
+.associated-minor-button-action, .associated-details {
 	font-size: 0.9em;
 }
 
@@ -3429,11 +3429,11 @@ dl.meta-details-list>dt, dl.meta-details-list>dd {
 	font-size: 0.8em;
 }
 
-.global-side-panel .associated_minor_button_action, .global-side-panel .associated-details, .associated-link {
+.global-side-panel .associated-minor-button-action, .global-side-panel .associated-details, .associated-link {
 	font-size: 0.95em;
 }
 
-.associated_minor_button_overlayed {
+.associated-minor-button-overlayed {
 	position: absolute;
 }
 
@@ -3620,13 +3620,13 @@ ul.horizontal-links li img, ul.associated-link li img, ul.horizontal-links a, ul
 ul.buttons-group, ul.associated-links-block-group {
 	margin: 0; /* Margin will go on li elements if its a list */
 }
-.force_normal_margin {
+.force-normal-margin {
 	margin-top: 1em !important;
 }
-.force_margin {
+.force-margin {
 	margin-top: 1.5em !important;
 }
-.global-side-panel .force_margin {
+.global-side-panel .force-margin {
 	margin-top: 1em !important;
 }
 
@@ -3634,16 +3634,16 @@ ul.buttons-group, ul.associated-links-block-group {
 	font-weight: bold;
 }
 
-.alt_field:before {
+.alt-field:before {
 	content: "\00bb"; /* raquo */
 	padding-left: 1em;
 	padding-right: 0.2em;
 }
-.related_field {
+.related-field {
 	font-style: italic;
 	font-weight: normal;
 }
-.related_field:before {
+.related-field:before {
 	font-style: normal;
 	content: "\203a"; /* rsaquo */
 	padding-bottom: 5px;
@@ -3678,26 +3678,26 @@ ul.buttons-group, ul.associated-links-block-group {
 	color: {$GET,native_ui_foreground};
 }
 
-.locked_input_field {
+.locked-input-field {
 	color: {$GET,locked_input_field};
 }
 
-.native_ui_foreground {
+.native-ui-foreground {
 	color: {$GET,native_ui_foreground};
 }
 
-.native_ui_selected {
+.native-ui-selected {
 	color: {$GET,native_ui_selected_foreground};
 	background-color: {$GET,native_ui_selected_background};
 }
 
-.simple_neat_checkbox {
+.simple-neat-checkbox {
 	overflow: hidden;
 }
-.simple_neat_checkbox input {
+.simple-neat-checkbox input {
 	float: left;
 }
-.simple_neat_checkbox span {
+.simple-neat-checkbox span {
 	float: right;
 	padding-left: 2em;
 	margin-top: -1.5em;
@@ -3706,7 +3706,7 @@ ul.buttons-group, ul.associated-links-block-group {
 }
 
 /*{+START,IF_EMPTY,{$CONFIG_OPTION,recaptcha_site_key,1}}*/
-	.captcha_frame {
+	.captcha-frame {
 		width: 100px;
 		height: 42px;
 	}
@@ -3728,10 +3728,10 @@ ul.buttons-group, ul.associated-links-block-group {
 	}
 /*{+END}*/
 
-.box___confirm_screen {
+.box---confirm-screen {
 	margin-bottom: 2em;
 }
-.box___confirm_screen img:not([width]):not([height]) {
+.box---confirm-screen img:not([width]):not([height]) {
 	max-width: 100%;
 	height: auto;
 }
@@ -3752,7 +3752,7 @@ ul.buttons-group, ul.associated-links-block-group {
 .fields-set-contents .wide-field {
 	max-width: 500px;
 }
-.multi_field + .multi_field {
+.multi-field + .multi-field {
 	margin: 0.25em 0;
 }
 
@@ -3763,7 +3763,7 @@ ul.buttons-group, ul.associated-links-block-group {
 */
 
 /* This is used to overlay special out-of-flow edit buttons, for staff only */
-input.magic_image_edit_link {
+input.magic-image-edit-link {
 	font-size: 13px;
 	border: 1px solid {$GET,light_error_border} !important;
 	background-color: {$GET,light_error_background} !important;
@@ -3771,11 +3771,11 @@ input.magic_image_edit_link {
 	text-shadow: 0 0 0;
 }
 
-.button_screen_item_tall {
+.button-screen-item-tall {
 	background-image: none !important;
 }
 
-.button-micro, .button_screen, .button_screen_item, .hero-section .hero_button a, body .hero-section .hero_button>a.user-link {
+.button-micro, .button-screen, .button-screen-item, .hero-section .hero-button a, body .hero-section .hero-button>a.user-link {
 	display: inline-block;
 	box-sizing: border-box;
 	border: 1px solid {$GET,dark_border};
@@ -3794,7 +3794,7 @@ input.magic_image_edit_link {
 	vertical-align: middle;
 	cursor: pointer;
 }
-div>.button-micro:first-child, div>.button_screen:first-child, div>.button_screen_item:first-child, .hero-section .hero_button a:first-child {
+div>.button-micro:first-child, div>.button-screen:first-child, div>.button-screen-item:first-child, .hero-section .hero-button a:first-child {
 	margin-left: 2px; /* enough for the shadow */
 }
 
@@ -3802,25 +3802,25 @@ div>.button-micro:first-child, div>.button_screen:first-child, div>.button_scree
 	opacity: 0.5 !important;
 }
 
-.button_screen {
+.button-screen {
 	background-size: 24px 24px;
 	padding: 6px 39px 7px 7px;
 	border-width: 2px;
 	font-size: 13px;
 	min-width: 8em;
 }
-.buttons--previous.button_screen, 
-.buttons--previous-none.button_screen {
+.buttons--previous.button-screen, 
+.buttons--previous-none.button-screen {
 	padding: 6px 7px 7px 39px !important;
 	background-position: 7px 3px !important;
 }
-.button_screen_item {
+.button-screen-item {
 	padding: 3px 30px 4px 5px;
 	background-size: 18px 18px;
 	font-size: 13px;
 }
 /*{+START,CSS_MODE,mobile}*/
-	.button_screen_item {
+	.button-screen-item {
 		margin: 0.25em 0.1em !important;
 	}
 /*{+END}*/
@@ -3840,7 +3840,7 @@ div .button-micro {
 	border-radius: 1px;
 }
 
-.button_screen, .button_screen_item, .button-micro, .toggleable-tray-button img {
+.button-screen, .button-screen-item, .button-micro, .toggleable-tray-button img {
 	opacity: 0.85;
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 	display: inline-block;
@@ -3850,12 +3850,12 @@ div .button-micro {
 	opacity: 0.85 !important;
 	cursor: not-allowed;
 }
-.button-micro:hover, .button_screen:hover, .button_screen_item:hover,
-.button_screen:hover, .button_screen_item:hover, .button-micro:hover, .toggleable-tray-button:hover img,
-body.touch-enabled .button_screen, body.touch-enabled .button_screen_item, body.touch-enabled .button-micro, body.touch-enabled .toggleable-tray-button img {
+.button-micro:hover, .button-screen:hover, .button-screen-item:hover,
+.button-screen:hover, .button-screen-item:hover, .button-micro:hover, .toggleable-tray-button:hover img,
+body.touch-enabled .button-screen, body.touch-enabled .button-screen-item, body.touch-enabled .button-micro, body.touch-enabled .toggleable-tray-button img {
 	opacity: 1.0;
 }
-.button-micro:disabled, .button_screen:disabled, .button_screen_item:disabled {
+.button-micro:disabled, .button-screen:disabled, .button-screen-item:disabled {
 	opacity: 0.4 !important;
 	cursor: default;
 }
@@ -3874,7 +3874,7 @@ div.proceed_button_left_2 {
 	margin-left: -2em;
 }
 
-.shunted_button {
+.shunted-button {
 	clear: right;
 	text-align: right;
 }
@@ -3898,17 +3898,17 @@ div.proceed_button_left_2 {
 	margin-top: 1px; /* To get it past a possible overflow:hidden (may be a browser bug) */
 }
 
-.global_button_ref_point {
+.global-button-ref-point {
 	position: absolute;
 	min-width: 22em;
 	font-size: 13px; /* Puts it back, as was set to zero elsewhere */
 	z-index: 2000;
 }
-.global_button_ref_point .box {
+.global-button-ref-point .box {
 	box-shadow: 3px 3px 10px {$GET,standard_border};
 }
 
-.global_button_ref_point .associated-links-block-group, .notification+.notification {
+.global-button-ref-point .associated-links-block-group, .notification+.notification {
 	margin-top: 0.5em;
 	border-top: 1px solid {$GET,pale_border};
 	padding-top: 0.5em;
@@ -3917,7 +3917,7 @@ div.proceed_button_left_2 {
 
 /*
 NB: Form buttons are wrapped in either:
- - .shunted_button
+ - .shunted-button
  - .proceed_button
  - .mini_proceed_button
  - .buttons-group (defined elsewhere, in "Associations/Summaries")
@@ -4314,17 +4314,17 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 =========================
 */
 
-.dynamic_iframe {
+.dynamic-iframe {
 	width: 100%;
 	height: 900px; /* This is dynamically resized; 900px is referenced from global.js so don't change it */
 }
 
-.expandable_iframe {
+.expandable-iframe {
 	width: 100%;
 	height: 150px; /* Referenced also in global.js */
 }
 
-.hidden_save_frame, .hidden_preview_frame {
+.hidden-save-frame, .hidden-preview-frame {
 	width: 100%;
 	height: 0;
 	float: left; /* Stops it breaking up margin collapsing */
@@ -4364,7 +4364,7 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 	}
 /*{+END}*/
 
-.spaced_out_tabs.tabs {
+.spaced-out-tabs.tabs {
 	overflow: hidden;
 	height: auto;
 }
@@ -4403,7 +4403,7 @@ a.tab, a.tab:visited, a.tab:hover {
 	}
 /*{+END}*/
 
-.spaced_out_tabs .tab {
+.spaced-out-tabs .tab {
 	margin-right: 1px;
 }
 
@@ -4425,7 +4425,7 @@ a.tab>span {
 	display: inline-block;
 }
 
-.tab.tab_active {
+.tab.tab-active {
 	text-shadow: 1px 0 1px {$GET,standard_border};
 	opacity: 1.0 !important;
 }
@@ -4443,11 +4443,11 @@ a.tab>span {
 	width: 20px;
 }
 
-.tab_first, a.tab:first-child {
+.tab-first, a.tab:first-child {
 }
 
 /*{+START,CSS_MODE,desktop}*/
-	.tab_last, a.tab:last-child, .spaced_out_tabs .tab {
+	.tab-last, a.tab:last-child, .spaced-out-tabs .tab {
 		border-right: 1px solid;
 		border-color: {$GET,tab_border};
 	}
@@ -4521,32 +4521,32 @@ ul.nl, .nl ul {
 	list-style-image: none;
 }
 
-.has_img>a {
+.has-img>a {
 	/*
 	background: none !important;
 	padding-left: 0 !important;*/
 	vertical-align: middle;
 }
 
-.has_img img {
+.has-img img {
 	vertical-align: middle;
 }
 
 /* We hide the inline edit menu links for design reasons, they fade in on top of stuff when hovering the menu */
-.edit_menu_link_inline, .edit_page_link_inline {
+.edit-menu-link-inline, .edit-page-link-inline {
 	opacity: 0 !important;
 	transition: opacity 0.5s linear;
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
-div:hover>.edit_menu_link_inline, div:hover>.edit_page_link_inline {
+div:hover>.edit-menu-link-inline, div:hover>.edit-page-link-inline {
 	opacity: 1.0 !important;
 }
-.edit_menu_link_inline {
+.edit-menu-link-inline {
 	position: absolute;
 	float: left;
 	margin-left: 0.25em;
 }
-.edit_page_link_inline {
+.edit-page-link-inline {
 	position: absolute;
 	right: 1px;
 	z-index: 10000;
@@ -4559,16 +4559,16 @@ div:hover>.edit_menu_link_inline, div:hover>.edit_page_link_inline {
 =========================
 */
 
-.comcode_snapback {
+.comcode-snapback {
 	text-align: right;
 	font-size: 0.75em;
 }
 
-.comcode_overlay_main {
+.comcode-overlay-main {
 	margin-bottom: 3em;
 }
 
-.comcode_overlay_dismiss {
+.comcode-overlay-dismiss {
 	text-align: center;
 	position: absolute;
 	bottom: 0;

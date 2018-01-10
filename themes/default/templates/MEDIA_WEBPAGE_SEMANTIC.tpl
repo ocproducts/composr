@@ -15,7 +15,7 @@
 		</div>
 	{+END}
 
-	<p class="shunted_button">
-		<a class="button_screen_item buttons--more" href="{URL*}"><span>{!VIEW}</span></a>
+	<p class="shunted-button">
+		<a class="button-screen-item buttons--more" href="{URL*}"><span>{!VIEW}</span></a>
 	</p>
 </div></section>

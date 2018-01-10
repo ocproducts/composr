@@ -24,9 +24,9 @@
 		</p>
 	{+END}
 
-	<div class="shunted_button">
+	<div class="shunted-button">
 		<form title="{!START} {!QUIZ}: {NAME*}" method="post" action="{URL*}" autocomplete="off">
-			<input class="button_screen_item buttons--more" type="submit" value="{!START}" />
+			<input class="button-screen-item buttons--more" type="submit" value="{!START}" />
 		</form>
 	</div>
 

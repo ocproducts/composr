@@ -9,7 +9,7 @@
 		</tbody>
 	</table></div>
 
-	<ul class="horizontal-links associated-links-block-group force_margin">
+	<ul class="horizontal-links associated-links-block-group force-margin">
 		<li><a rel="archives" href="{URL*}" title="{!MORE}: {!POINT_LEADER_BOARD}">{!ARCHIVES}</a></li>
 	</ul>
 </div></section>

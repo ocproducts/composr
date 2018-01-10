@@ -139,7 +139,7 @@
 						<option value="0">
 							{!W_EVERYONE}
 						</option>
-					</select> <input class="button_screen_item buttons--send" type="submit" value="{!SEND_MESSAGE}" /></div>
+					</select> <input class="button-screen-item buttons--send" type="submit" value="{!SEND_MESSAGE}" /></div>
 				</form>
 			</div>
 
@@ -298,7 +298,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="drop" />
-									<input class="button_screen_item buttons--proceed" type="submit" value="{!PROCEED}" />
+									<input class="button-screen-item buttons--proceed" type="submit" value="{!PROCEED}" />
 								</td>
 							</tr>
 
@@ -317,7 +317,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="give" />
-									<input class="button_screen_item buttons--proceed" type="submit" value="{!PROCEED}" />
+									<input class="button-screen-item buttons--proceed" type="submit" value="{!PROCEED}" />
 								</td>
 							</tr>
 
@@ -336,7 +336,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="btype" value="pickpocket" />
-									<input class="button_screen_item buttons--proceed" type="submit" value="{!PROCEED}" />
+									<input class="button-screen-item buttons--proceed" type="submit" value="{!PROCEED}" />
 								</td>
 							</tr>
 
@@ -355,7 +355,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="use" />
-									<input class="button_screen_item buttons--proceed" type="submit" value="{!PROCEED}" />
+									<input class="button-screen-item buttons--proceed" type="submit" value="{!PROCEED}" />
 								</td>
 							</tr>
 
@@ -374,7 +374,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="btype" value="delete-message-by-person" />
-									<input class="button_screen_item buttons--proceed" type="submit" value="{!PROCEED}" />
+									<input class="button-screen-item buttons--proceed" type="submit" value="{!PROCEED}" />
 								</td>
 							</tr>
 						{+END}
@@ -394,7 +394,7 @@
 							</td>
 							<td>
 								<input type="hidden" name="type" value="findperson" />
-								<input class="button_screen_item buttons--proceed" type="submit" value="{!PROCEED}" />
+								<input class="button-screen-item buttons--proceed" type="submit" value="{!PROCEED}" />
 							</td>
 						</tr>
 
@@ -414,7 +414,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="teleport-person" />
-									<input class="button_screen_item buttons--proceed" type="submit" value="{!PROCEED}" />
+									<input class="button-screen-item buttons--proceed" type="submit" value="{!PROCEED}" />
 								</td>
 							</tr>
 
@@ -433,7 +433,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="imprison-person" />
-									<input class="button_screen_item buttons--proceed" type="submit" value="{!PROCEED}" />
+									<input class="button-screen-item buttons--proceed" type="submit" value="{!PROCEED}" />
 								</td>
 							</tr>
 
@@ -452,7 +452,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="hurt-person" />
-									<input class="button_screen_item buttons--proceed" type="submit" value="{!PROCEED}" />
+									<input class="button-screen-item buttons--proceed" type="submit" value="{!PROCEED}" />
 								</td>
 							</tr>
 
@@ -471,7 +471,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="dehurt-person" />
-									<input class="button_screen_item buttons--proceed" type="submit" value="{!PROCEED}" />
+									<input class="button-screen-item buttons--proceed" type="submit" value="{!PROCEED}" />
 								</td>
 							</tr>
 
@@ -490,7 +490,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="ban-person" />
-									<input class="button_screen_item buttons--proceed" type="submit" value="{!PROCEED}" />
+									<input class="button-screen-item buttons--proceed" type="submit" value="{!PROCEED}" />
 								</td>
 							</tr>
 
@@ -509,7 +509,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="unban-person" />
-									<input class="button_screen_item buttons--proceed" type="submit" value="{!PROCEED}" />
+									<input class="button-screen-item buttons--proceed" type="submit" value="{!PROCEED}" />
 								</td>
 							</tr>
 
@@ -528,7 +528,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="take-from-person" />
-									<input class="button_screen_item buttons--proceed" type="submit" value="{!PROCEED}" />
+									<input class="button-screen-item buttons--proceed" type="submit" value="{!PROCEED}" />
 								</td>
 							</tr>
 						{+END}
@@ -580,15 +580,15 @@
 						{$INSERT_SPAMMER_BLACKHOLE}
 
 						<label for="item">{!W_ITEMS}</label>: {ITEMS_OWNED} <input type="hidden" name="type" value="edititem" />
-						<input class="js-click-set-type-edititem button_screen_item buttons--edit" type="submit" value="{!W_EDIT_ITEM}" />
-						<input class="js-click-set-type-confirm button_screen_item menu___generic_admin__delete" type="submit" value="{!W_DELETE_ITEM}" />
+						<input class="js-click-set-type-edititem button-screen-item buttons--edit" type="submit" value="{!W_EDIT_ITEM}" />
+						<input class="js-click-set-type-confirm button-screen-item menu___generic_admin__delete" type="submit" value="{!W_DELETE_ITEM}" />
 					</div></form>
 
 					{+START,IF,{IS_STAFF}}
 						<form method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off"><div>
 							{$INSERT_SPAMMER_BLACKHOLE}
 
-							<label for="item">{!FROM}</label>: {ITEMS_OWNED} <label for="item2">{!TO}</label>: {ITEMS_OWNED_2} <input type="hidden" name="type" value="mergeitems" /> <input class="button_screen_item menu___generic_admin__merge" type="submit" value="{!W_MERGE_ITEMS}" />
+							<label for="item">{!FROM}</label>: {ITEMS_OWNED} <label for="item2">{!TO}</label>: {ITEMS_OWNED_2} <input type="hidden" name="type" value="mergeitems" /> <input class="button-screen-item menu___generic_admin__merge" type="submit" value="{!W_MERGE_ITEMS}" />
 						</div></form>
 					{+END}
 				{+END}

@@ -104,7 +104,7 @@
 								<td colspan="5"></td>
 
 								<td>
-									<input class="button_screen_item menu___generic_admin__delete" type="submit" value="{!DELETE}" />
+									<input class="button-screen-item menu___generic_admin__delete" type="submit" value="{!DELETE}" />
 								</td>
 							</tr>
 						</tfoot>

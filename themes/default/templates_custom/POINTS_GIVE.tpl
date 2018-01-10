@@ -43,7 +43,7 @@
 
 				<label class="points_anon" for="give_anonymous">{!TICK_ANON}: <input type="checkbox" id="give_anonymous" name="anonymous" value="1" /></label>
 
-				<input id="give_points_submit" class="button_screen_item buttons--points" type="submit" value="{!GIVE_POINTS}" />
+				<input id="give_points_submit" class="button-screen-item buttons--points" type="submit" value="{!GIVE_POINTS}" />
 			</p>
 		</form>
 	{+END}

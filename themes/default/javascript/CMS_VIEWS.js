@@ -552,7 +552,7 @@
                         button = $dom.create('button', {
                             'type': 'button',
                             'html': this.yesButton,
-                            'className': 'buttons--proceed button_screen_item js-onclick-do-option-yes'
+                            'className': 'buttons--proceed button-screen-item js-onclick-do-option-yes'
                         });
 
                         this.buttonContainerEl.appendChild(button);
@@ -577,14 +577,14 @@
                     button = $dom.create('button', {
                         'type': 'button',
                         'html': this.yesButton,
-                        'className': 'buttons--yes button_screen_item js-onclick-do-option-yes',
+                        'className': 'buttons--yes button-screen-item js-onclick-do-option-yes',
                         'style': 'font-weight: bold;'
                     });
                     this.buttonContainerEl.appendChild(button);
                     button = $dom.create('button', {
                         'type': 'button',
                         'html': this.noButton,
-                        'className': 'buttons--no button_screen_item js-onclick-do-option-no'
+                        'className': 'buttons--no button-screen-item js-onclick-do-option-no'
                     });
                     this.buttonContainerEl.appendChild(button);
                     break;
@@ -606,7 +606,7 @@
                         button = $dom.create('button', {
                             'type': 'button',
                             'html': this.yesButton,
-                            'className': 'buttons--yes button_screen_item js-onclick-do-option-yes',
+                            'className': 'buttons--yes button-screen-item js-onclick-do-option-yes',
                             'css': {
                                 'font-weight': 'bold'
                             }
@@ -633,7 +633,7 @@
                     button = $dom.create('button', {
                         'type': 'button',
                         'html': this.cancelButton,
-                        'className': 'button_screen_item buttons--cancel ' + (this.cancel ? 'js-onclick-do-option-cancel' : 'js-onclick-do-option-finished')
+                        'className': 'button-screen-item buttons--cancel ' + (this.cancel ? 'js-onclick-do-option-cancel' : 'js-onclick-do-option-finished')
                     });
                     this.buttonContainerEl.appendChild(button);
                 } else {
@@ -935,7 +935,7 @@
             }
 
             // Remove popup spacing
-            popupSpacer = iDoc.getElementById('popup_spacer');
+            popupSpacer = iDoc.getElementById('popup-spacer');
             if (popupSpacer) {
                 popupSpacer.id = '';
             }
@@ -1409,7 +1409,7 @@
              */
             function handleImageMouseOver(event) {
                 var target = event.target;
-                if (target.previousElementSibling && (target.previousElementSibling.classList.contains('magic_image_edit_link'))) {
+                if (target.previousElementSibling && (target.previousElementSibling.classList.contains('magic-image-edit-link'))) {
                     return;
                 }
                 if (target.offsetWidth < 130) {
@@ -1427,7 +1427,7 @@
 
                 if ($cms.configOption('enable_theme_img_buttons')) {
                     // Remove other edit links
-                    var old = document.querySelectorAll('.magic_image_edit_link');
+                    var old = document.querySelectorAll('.magic-image-edit-link');
                     for (var i = old.length - 1; i >= 0; i--) {
                         old[i].parentNode.removeChild(old[i]);
                     }
@@ -1440,7 +1440,7 @@
                     ml.type = 'button';
                     ml.id = 'editimg_' + target.id;
                     ml.value = '{!themes:EDIT_THEME_IMAGE;^}';
-                    ml.className = 'magic_image_edit_link button-micro';
+                    ml.className = 'magic-image-edit-link button-micro';
                     ml.style.position = 'absolute';
                     ml.style.left = $dom.findPosX(target) + 'px';
                     ml.style.top = $dom.findPosY(target) + 'px';
@@ -1466,7 +1466,7 @@
                 var target = event.target;
 
                 if ($cms.configOption('enable_theme_img_buttons')) {
-                    if (target.previousElementSibling && (target.previousElementSibling.classList.contains('magic_image_edit_link'))) {
+                    if (target.previousElementSibling && (target.previousElementSibling.classList.contains('magic-image-edit-link'))) {
                         if ((target.moLink !== undefined) && (target.moLink)) {// Clear timed display of new edit button
                             clearTimeout(target.moLink);
                             target.moLink = null;
@@ -1479,7 +1479,7 @@
 
                         target.moLink = setTimeout(function () {
                             if ((target.editWindow === undefined) || (!target.editWindow) || (target.editWindow.closed)) {
-                                if (target.previousElementSibling && (target.previousElementSibling.classList.contains('magic_image_edit_link'))) {
+                                if (target.previousElementSibling && (target.previousElementSibling.classList.contains('magic-image-edit-link'))) {
                                     target.parentNode.removeChild(target.previousElementSibling);
                                 }
                             }

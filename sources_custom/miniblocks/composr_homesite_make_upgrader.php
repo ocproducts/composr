@@ -47,7 +47,7 @@ if (!function_exists('mu_ui')) {
     </p>
     <p>(example above is for upgrading from 10.0.0 beta1)</p>
     <p>
-        <input class="buttons--proceed button_screen_item" id="make_upgrader_button" type="submit" value="Generate" />
+        <input class="buttons--proceed button-screen-item" id="make_upgrader_button" type="submit" value="Generate" />
     </p>
 </form>
 END;

@@ -12,11 +12,11 @@
 			<div class="buttons-group cart_update_buttons" itemprop="significantLinks">
 				{$,Put first, so it associates with the enter key}
 				{+START,IF_NON_EMPTY,{TYPE_CODES}}
-					<input id="cart_update_button" class="buttons--cart-update button_screen button_faded js-click-btn-cart-update" type="submit" name="update" title="{!UPDATE_CART}" value="{!_UPDATE_CART}" />
+					<input id="cart_update_button" class="buttons--cart-update button-screen button_faded js-click-btn-cart-update" type="submit" name="update" title="{!UPDATE_CART}" value="{!_UPDATE_CART}" />
 				{+END}
 
 				{+START,IF_NON_EMPTY,{EMPTY_CART_URL*}}
-					<input class="button_screen_item buttons--cart-empty js-click-btn-cart-empty" type="submit" value="{!EMPTY_CART}" />
+					<input class="button-screen-item buttons--cart-empty js-click-btn-cart-empty" type="submit" value="{!EMPTY_CART}" />
 				{+END}
 			</div>
 
@@ -24,7 +24,7 @@
 				<input type="hidden" name="type_codes" id="type_codes" value="{TYPE_CODES*}" />
 
 				{+START,IF_NON_EMPTY,{CONTINUE_SHOPPING_URL}}
-					<a class="button_screen_item menu__rich_content__catalogues__products" href="{CONTINUE_SHOPPING_URL*}"><span>{!CONTINUE_SHOPPING}</span></a>
+					<a class="button-screen-item menu__rich_content__catalogues__products" href="{CONTINUE_SHOPPING_URL*}"><span>{!CONTINUE_SHOPPING}</span></a>
 				{+END}
 			</div>
 		</div>
@@ -61,7 +61,7 @@
 		{+END}
 
 		<p class="purchase-button">
-			<input id="proceed_button" class="button_screen buttons--proceed js-click-do-cart-form-submit" accesskey="u" type="button" value="{!CHECKOUT}" />
+			<input id="proceed_button" class="button-screen buttons--proceed js-click-do-cart-form-submit" accesskey="u" type="button" value="{!CHECKOUT}" />
 		</p>
 	</form>
 </div>

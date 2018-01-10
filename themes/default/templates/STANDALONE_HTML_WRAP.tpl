@@ -6,7 +6,7 @@
 		{+START,INCLUDE,HTML_HEAD}{+END}
 	</head>
 
-	<body class="{+START,IF_PASSED_AND_TRUE,FRAME}frame {+END}{+START,IF_PASSED_AND_TRUE,POPUP}popup_spacer {+END}{+START,IF_PASSED_AND_TRUE,OPENS_BELOW}opens-below {+END}website-body global-middle-faux{+START,IF_PASSED,CSS} {CSS*}{+END}" id="standalone-html-wrap" itemscope="itemscope" itemtype="http://schema.org/WebPage">
+	<body class="{+START,IF_PASSED_AND_TRUE,FRAME}frame {+END}{+START,IF_PASSED_AND_TRUE,POPUP}popup-spacer {+END}{+START,IF_PASSED_AND_TRUE,OPENS_BELOW}opens-below {+END}website-body global-middle-faux{+START,IF_PASSED,CSS} {CSS*}{+END}" id="standalone-html-wrap" itemscope="itemscope" itemtype="http://schema.org/WebPage">
 		{+START,IF_NON_PASSED_OR_FALSE,POPUP}
 			{+START,IF_NON_EMPTY,{$MESSAGES_TOP}}
 				<div class="global-messages">

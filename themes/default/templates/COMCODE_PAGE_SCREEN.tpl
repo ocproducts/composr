@@ -43,7 +43,7 @@
 
 				{+START,IF,{$EQ,{NAME},panel_top,panel_bottom}}
 					<div>
-						<a class="edit_page_link_inline" href="{EDIT_URL*}"><img width="17" height="17" title="{!EDIT_PAGE}: {NAME*}" alt="{!EDIT_PAGE}: {NAME*}" src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" /></a>
+						<a class="edit-page-link-inline" href="{EDIT_URL*}"><img width="17" height="17" title="{!EDIT_PAGE}: {NAME*}" alt="{!EDIT_PAGE}: {NAME*}" src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" /></a>
 					</div>
 				{+END}
 			{+END}

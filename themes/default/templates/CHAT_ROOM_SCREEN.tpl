@@ -81,7 +81,7 @@
 	<form title="{$STRIP_TAGS,{!CHAT_OPTIONS_DESCRIPTION}}" class="below-main-chat-window js-form-submit-check-chat-options" method="post" action="{OPTIONS_URL*}" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
-		<div class="box box___chat_screen_options box_prominent"><div class="box-inner">
+		<div class="box box---chat-screen-options box-prominent"><div class="box-inner">
 			<h2>{!OPTIONS}</h2>
 
 			<div class="chat-room-options">
@@ -118,7 +118,7 @@
 				</p>
 
 				<p>
-					<input class="button_screen_item buttons--save" data-cms-confirm-click="{!SAVE_COMPUTER_USING_COOKIE*}" type="submit" value="{$STRIP_TAGS,{!CHAT_CHANGE_OPTIONS}}" />
+					<input class="button-screen-item buttons--save" data-cms-confirm-click="{!SAVE_COMPUTER_USING_COOKIE*}" type="submit" value="{$STRIP_TAGS,{!CHAT_CHANGE_OPTIONS}}" />
 				</p>
 			</div>
 
@@ -137,7 +137,7 @@
 		</div></div>
 	</form>
 
-	<div class="force_margin">
+	<div class="force-margin">
 		{+START,INCLUDE,NOTIFICATION_BUTTONS}
 			NOTIFICATIONS_TYPE=member_entered_chatroom
 			NOTIFICATIONS_ID={CHATROOM_ID}

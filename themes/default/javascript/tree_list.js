@@ -209,7 +209,7 @@
                 nodeSelf = document.createElement('div');
                 nodeSelf.className = 'tree_list_node';
                 nodeSelfWrap.appendChild(nodeSelf);
-                colour = (node.getAttribute('selectable') === 'true' || that.allNodesSelectable) ? 'native_ui_foreground' : 'locked_input_field';
+                colour = (node.getAttribute('selectable') === 'true' || that.allNodesSelectable) ? 'native-ui-foreground' : 'locked-input-field';
                 selectable = (node.getAttribute('selectable') === 'true' || that.allNodesSelectable);
                 
                 if (node.localName === 'category') {
@@ -667,7 +667,7 @@
             if (!target) {
                 return;
             }
-            target.classList.toggle('native_ui_selected', !!selected);
+            target.classList.toggle('native-ui-selected', !!selected);
             target.style.cursor = 'pointer';
         }
     });

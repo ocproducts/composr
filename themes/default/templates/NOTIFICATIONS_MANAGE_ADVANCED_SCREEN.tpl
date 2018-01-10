@@ -34,7 +34,7 @@
 			</table></div>
 
 			<p class="proceed_button">
-				<input type="submit" class="button_screen buttons--save" value="{!SAVE}" />
+				<input type="submit" class="button-screen buttons--save" value="{!SAVE}" />
 			</p>
 		{+END}
 

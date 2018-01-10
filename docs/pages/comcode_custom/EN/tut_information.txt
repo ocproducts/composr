@@ -61,7 +61,7 @@ Downloads may be used to release information indirectly, essentially via storing
 	</thead>
 
 	<tbody>
-		<tr class="zebra_0">
+		<tr class="zebra-0">
 			<td>
 				<p>User submittable</p>
 			</td>
@@ -84,7 +84,7 @@ Downloads may be used to release information indirectly, essentially via storing
 				<p>Yes</p>
 			</td>
 		</tr>
-		<tr class="zebra_1">
+		<tr class="zebra-1">
 			<td>
 				<p>Supports validation</p>
 			</td>
@@ -107,7 +107,7 @@ Downloads may be used to release information indirectly, essentially via storing
 				<p>Yes</p>
 			</td>
 		</tr>
-		<tr class="zebra_0">
+		<tr class="zebra-0">
 			<td>
 				<p>Quick to add (to)</p>
 			</td>
@@ -130,7 +130,7 @@ Downloads may be used to release information indirectly, essentially via storing
 				<p>Yes</p>
 			</td>
 		</tr>
-		<tr class="zebra_1">
+		<tr class="zebra-1">
 			<td>
 				<p>Automatically indexed</p>
 			</td>
@@ -153,7 +153,7 @@ Downloads may be used to release information indirectly, essentially via storing
 				<p>Yes</p>
 			</td>
 		</tr>
-		<tr class="zebra_0">
+		<tr class="zebra-0">
 			<td>
 				<p>Clean</p>
 			</td>
@@ -177,7 +177,7 @@ Downloads may be used to release information indirectly, essentially via storing
 				provided there.</p>
 			</td>
 		</tr>
-		<tr class="zebra_1">
+		<tr class="zebra-1">
 			<td>
 				<p>Regularly browsed</p>
 			</td>
@@ -200,7 +200,7 @@ Downloads may be used to release information indirectly, essentially via storing
 				<p>No</p>
 			</td>
 		</tr>
-		<tr class="zebra_0">
+		<tr class="zebra-0">
 			<td>
 				<p>Structured data</p>
 			</td>
@@ -224,7 +224,7 @@ Downloads may be used to release information indirectly, essentially via storing
 				download.</p>
 			</td>
 		</tr>
-		<tr class="zebra_1">
+		<tr class="zebra-1">
 			<td>
 				<p>Transitory</p>
 			</td>
@@ -247,7 +247,7 @@ Downloads may be used to release information indirectly, essentially via storing
 				<p>No</p>
 			</td>
 		</tr>
-		<tr class="zebra_0">
+		<tr class="zebra-0">
 			<td>
 				<p>Easy to re-organise</p>
 			</td>

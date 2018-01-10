@@ -10,7 +10,7 @@
 		</select>
 	</div>
 
-	<div class="float-surrounder force_margin">
+	<div class="float-surrounder force-margin">
 		<div class="left float-separation">
 			<label for="fails">{!SHOW_FAILS}:</label>
 			<input type="checkbox" name="fails" id="fails" value="1" checked="checked" disabled="disabled" />
@@ -33,7 +33,7 @@
 	</div>
 
 	<p class="proceed_button">
-		<input class="button_screen buttons--proceed" type="submit" value="{!HEALTH_CHECK}" />
+		<input class="button-screen buttons--proceed" type="submit" value="{!HEALTH_CHECK}" />
 	</p>
 </form>
 

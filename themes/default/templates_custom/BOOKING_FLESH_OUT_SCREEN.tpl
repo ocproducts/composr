@@ -73,7 +73,7 @@
 		</div></div>
 
 		<p class="proceed_button">
-			<input class="button_screen buttons--proceed" type="submit" value="{$?,{$IS_GUEST},{!PROCEED},{!BOOK}}" />
+			<input class="button-screen buttons--proceed" type="submit" value="{$?,{$IS_GUEST},{!PROCEED},{!BOOK}}" />
 		</p>
 	</form>
 

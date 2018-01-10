@@ -16,9 +16,9 @@
 		<input type="hidden" name="name" value="{NAME*}" />
 
 		<p>
-			<input class="button_screen buttons--back" type="button" data-cms-btn-go-back="1" value="{!GO_BACK}" />
+			<input class="button-screen buttons--back" type="button" data-cms-btn-go-back="1" value="{!GO_BACK}" />
 
-			<input class="button_screen menu___generic_admin__delete" type="submit" value="{!PROCEED}" />
+			<input class="button-screen menu___generic_admin__delete" type="submit" value="{!PROCEED}" />
 		</p>
 	</form>
 </div>

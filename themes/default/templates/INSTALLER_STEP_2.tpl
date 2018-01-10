@@ -22,6 +22,6 @@
 	</div>
 
 	<p class="proceed_button">
-		<input class="button_screen buttons--yes" data-disable-on-click="1" type="submit" value="{!I_AGREE}" />
+		<input class="button-screen buttons--yes" data-disable-on-click="1" type="submit" value="{!I_AGREE}" />
 	</p>
 </form>

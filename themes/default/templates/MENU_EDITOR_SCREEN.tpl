@@ -37,7 +37,7 @@
 				</div>
 
 				<p class="proceed_button">
-					<input accesskey="u" class="button_screen buttons--save js-click-check-menu" type="submit" value="{!SAVE}" />
+					<input accesskey="u" class="button-screen buttons--save js-click-check-menu" type="submit" value="{!SAVE}" />
 				</p>
 			</div>
 
@@ -101,7 +101,7 @@
 						<input type="hidden" name="confirm" value="1" />
 						<input type="hidden" name="delete_confirm" value="1" />
 
-						<input class="button_screen_item menu___generic_admin__delete" type="submit" value="{!DELETE}" data-cms-confirm-click="{!CONFIRM_DELETE*,{MENU_NAME}}" />
+						<input class="button-screen-item menu___generic_admin__delete" type="submit" value="{!DELETE}" data-cms-confirm-click="{!CONFIRM_DELETE*,{MENU_NAME}}" />
 					</p>
 				</form>
 			</div>

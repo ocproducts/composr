@@ -119,9 +119,9 @@
                         if (tabs[i] === tab) {
                             $dom.fadeIn(element);
 
-                            elementh.classList.add('tab_active');
+                            elementh.classList.add('tab-active');
                         } else {
-                            elementh.classList.remove('tab_active');
+                            elementh.classList.remove('tab-active');
                         }
                     }
                 }

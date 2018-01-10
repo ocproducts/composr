@@ -78,6 +78,6 @@
 	{+END}
 
 	<p class="proceed_button">
-		<input class="button_screen buttons--proceed" type="submit" value="{!PROCEED}" />
+		<input class="button-screen buttons--proceed" type="submit" value="{!PROCEED}" />
 	</p>
 </form>

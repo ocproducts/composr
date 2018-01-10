@@ -35,7 +35,7 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 	float: none;
 }
 
-.modern_tab_headers>div.tab_active {
+.modern_tab_headers>div.tab-active {
 	background: {$GET,WB};
 	color: {$GET,seed};
 }
@@ -133,12 +133,12 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 	border-bottom: 0;
 }
 
-.modern_subtab_headers>div.tab_active, .modern_subtab_headers>div:hover {
+.modern_subtab_headers>div.tab-active, .modern_subtab_headers>div:hover {
 	background: url('{$IMG;,1x/tabs/modern_subtab_active}') no-repeat right center;
 }
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.modern_subtab_headers>div.tab_active {
+	.modern_subtab_headers>div.tab-active {
 		background-image: url('{$IMG;,2x/tabs/modern_subtab_active}') !important;
 		background-size: 8px 16px;
 	}

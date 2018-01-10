@@ -59,7 +59,7 @@
 						<colgroup>
 							<col class="field-name-column" />
 							<col class="field-input-column" />
-							<col class="field_sup_column" />
+							<col class="field-sup-column" />
 						</colgroup>
 					{+END}
 
@@ -195,7 +195,7 @@
 				</table></div>
 
 				<p class="proceed_button">
-					<input data-disable-on-click="1" accesskey="u" class="button_screen buttons--search" type="submit" value="{!SEARCH_TITLE}" />
+					<input data-disable-on-click="1" accesskey="u" class="button-screen buttons--search" type="submit" value="{!SEARCH_TITLE}" />
 				</p>
 			</form>
 		</div>

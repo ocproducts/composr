@@ -10,16 +10,16 @@
 
 	<div class="filedump-screen">
 		<div class="float-surrounder"><div class="tabs" role="tablist">
-			<a aria-controls="g_thumbnails" role="tab" href="#!" id="t_thumbnails" class="tab tab_active tab_first js-click-select-tab-g" data-tp-tab="thumbnails"><span>{!VIEW_THUMBNAILS}</span></a>
+			<a aria-controls="g_thumbnails" role="tab" href="#!" id="t_thumbnails" class="tab tab-active tab-first js-click-select-tab-g" data-tp-tab="thumbnails"><span>{!VIEW_THUMBNAILS}</span></a>
 
-			<a aria-controls="g_listing" role="tab" href="#!" id="t_listing" class="tab{+START,IF_EMPTY,{CREATE_FOLDER_FORM}{UPLOAD_FORM}} tab_last{+END} js-click-select-tab-g" data-tp-tab="listing"><span>{!VIEW_LISTING}</span></a>
+			<a aria-controls="g_listing" role="tab" href="#!" id="t_listing" class="tab{+START,IF_EMPTY,{CREATE_FOLDER_FORM}{UPLOAD_FORM}} tab-last{+END} js-click-select-tab-g" data-tp-tab="listing"><span>{!VIEW_LISTING}</span></a>
 
 			{+START,IF_NON_EMPTY,{CREATE_FOLDER_FORM}}
-				<a aria-controls="g_create_folder" role="tab" href="#!" id="t_create_folder" class="tab{+START,IF_EMPTY,{UPLOAD_FORM}} tab_last{+END} js-click-select-tab-g" data-tp-tab="create_folder"><span>{!FILEDUMP_CREATE_FOLDER}</span></a>
+				<a aria-controls="g_create_folder" role="tab" href="#!" id="t_create_folder" class="tab{+START,IF_EMPTY,{UPLOAD_FORM}} tab-last{+END} js-click-select-tab-g" data-tp-tab="create_folder"><span>{!FILEDUMP_CREATE_FOLDER}</span></a>
 			{+END}
 
 			{+START,IF_NON_EMPTY,{UPLOAD_FORM}}
-				<a aria-controls="g_upload" role="tab" href="#!" id="t_upload" class="tab tab_last js-click-select-tab-g" data-tp-tab="upload"><span>{!UPLOAD}</span></a>
+				<a aria-controls="g_upload" role="tab" href="#!" id="t_upload" class="tab tab-last js-click-select-tab-g" data-tp-tab="upload"><span>{!UPLOAD}</span></a>
 			{+END}
 		</div></div>
 		<div class="tab-surround">
@@ -70,7 +70,7 @@
 				{+END}
 
 				{+START,IF_NON_EMPTY,{PAGINATION_THUMBNAILS}}
-					<div class="float-surrounder force_margin">
+					<div class="float-surrounder force-margin">
 						{PAGINATION_THUMBNAILS}
 					</div>
 				{+END}
@@ -104,7 +104,7 @@
 				{+END}
 
 				{+START,IF_NON_EMPTY,{PAGINATION_LISTING}}
-					<div class="float-surrounder force_margin">
+					<div class="float-surrounder force-margin">
 						{PAGINATION_LISTING}
 					</div>
 				{+END}

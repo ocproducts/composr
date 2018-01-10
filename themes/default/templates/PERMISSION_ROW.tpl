@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,core_permission_management}
 
-<tr class="{$CYCLE,zebra,zebra_0,zebra_1}" data-tpl="permissionRow">
+<tr class="{$CYCLE,zebra,zebra-0,zebra-1}" data-tpl="permissionRow">
 	<th>
 		{PERMISSION*}
 		{+START,IF_PASSED,DESCRIPTION}

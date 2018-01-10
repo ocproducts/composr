@@ -207,7 +207,7 @@ function display_version_upgrade_path($higher_version)
     <!-- Noscript version -->
     <noscript>
         <form style="display: inline" action="../<?= escape_html($upgrade_script) ?>" target="_blank" method="post">
-            <input class="menu-adminzone-tools-upgrade button_screen_item" type="submit" title="Upgrade to <?= escape_html($higher_version['version_pretty']) ?>" value="Launch upgrader" />
+            <input class="menu-adminzone-tools-upgrade button-screen-item" type="submit" title="Upgrade to <?= escape_html($higher_version['version_pretty']) ?>" value="Launch upgrader" />
         </form>
     </noscript>
     <?php

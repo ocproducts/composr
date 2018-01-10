@@ -239,7 +239,7 @@
                     } else {
                         var image = document.getElementById('captcha_image');
                         if (!image) {
-                            image = document.getElementById('captcha_frame');
+                            image = document.getElementById('captcha-frame');
                         }
                         image.src += '&'; // Force it to reload latest captcha
                         submitBtn.disabled = false;

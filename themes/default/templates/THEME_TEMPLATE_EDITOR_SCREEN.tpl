@@ -33,7 +33,7 @@
 						<!-- List put in here -->
 					</div>
 
-					<p><input data-disable-on-click="1" data-click-pd="1" class="button_screen_item menu___generic_admin__add_one js-click-btn-add-template" type="submit" title="{!ADD_TEMPLATE_HELP}" value="{!ADD_TEMPLATE}" /></p>
+					<p><input data-disable-on-click="1" data-click-pd="1" class="button-screen-item menu___generic_admin__add_one js-click-btn-add-template" type="submit" title="{!ADD_TEMPLATE_HELP}" value="{!ADD_TEMPLATE}" /></p>
 				</div>
 			</div>
 
@@ -41,7 +41,7 @@
 			<div class="template_editor_tabs">
 				<div class="float-surrounder">
 					<div class="float-surrounder">
-						<div class="tabs spaced_out_tabs" role="tablist" id="template_editor_tab_headers"></div>
+						<div class="tabs spaced-out-tabs" role="tablist" id="template_editor_tab_headers"></div>
 					</div>
 					<div class="tab-surround" id="template_editor_tab_bodies"></div>
 				</div>

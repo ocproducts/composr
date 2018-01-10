@@ -16,9 +16,9 @@
 
 	<tbody>
 		{+START,LOOP,INVOICES}
-			{$SET,cycle,{$CYCLE,results_table_zebra,zebra_0,zebra_1}}
+			{$SET,cycle,{$CYCLE,results_table_zebra,zebra-0,zebra-1}}
 
-			<tr class="{$GET,cycle} thick_border">
+			<tr class="{$GET,cycle} thick-border">
 				<td>
 					<strong>{INVOICE_TITLE*}</strong>
 
@@ -46,7 +46,7 @@
 					{+END}
 					{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,admin_invoices}}
 						<ul class="horizontal-links horiz-field-sep">
-							<li><a class="button_screen_item menu___generic_admin__delete" href="{$PAGE_LINK*,adminzone:admin_invoices:delete:{INVOICE_ID}}"><span>{!DELETE}: #{INVOICE_ID}</span></a></li>
+							<li><a class="button-screen-item menu___generic_admin__delete" href="{$PAGE_LINK*,adminzone:admin_invoices:delete:{INVOICE_ID}}"><span>{!DELETE}: #{INVOICE_ID}</span></a></li>
 							{+START,IF,{FULFILLABLE}}
 								<li><a title="{!MARK_AS_FULFILLED}: #{INVOICE_ID}" href="{$PAGE_LINK*,adminzone:admin_invoices:fulfill:{INVOICE_ID}}">{!FULFILL}</a></li>
 							{+END}

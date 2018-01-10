@@ -16,9 +16,9 @@
 	</thead>
 	<tbody>
 		{+START,LOOP,GIVEN_ANSWERS_ARR}
-			{$SET,cycle,{$CYCLE,results_table_zebra,zebra_0,zebra_1}}
+			{$SET,cycle,{$CYCLE,results_table_zebra,zebra-0,zebra-1}}
 
-			<tr class="{$GET,cycle} thick_border">
+			<tr class="{$GET,cycle} thick-border">
 				<td class="quiz_answer_status">
 					{+START,IF_PASSED,WAS_CORRECT}
 						{+START,IF,{WAS_CORRECT}}

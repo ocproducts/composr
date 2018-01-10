@@ -34,6 +34,6 @@
 	{+END}{+END}
 
 	<div class="buttons-group proceed_button_left">
-		<a class="button_screen_item buttons--more" href="{URL*}"><span>{!VIEW}</span></a>
+		<a class="button-screen-item buttons--more" href="{URL*}"><span>{!VIEW}</span></a>
 	</div>
 </div></div>

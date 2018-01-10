@@ -240,7 +240,7 @@ function upgrade_script()
                         echo '<p><label for="upload">' . do_lang('ALT_FIELD', do_lang('UPLOAD')) . '</label> <input type="file" id="upload" name="upload" /></p>';
                         echo '<script ' . csp_nonce_html() . '>var url=document.getElementById(\'url\'); url.addEventListener(\'change\', function() { document.getElementById(\'upload\').disabled=url.value!=\'\'; });</script>';
                     }
-                    echo '<p><input class="buttons--proceed button_screen" type="submit" value="' . do_lang('PROCEED') . '" /></p>';
+                    echo '<p><input class="buttons--proceed button-screen" type="submit" value="' . do_lang('PROCEED') . '" /></p>';
                     echo '</form>';
                     $show_more_link = false;
                     break;
@@ -571,7 +571,7 @@ function upgrade_script()
                     echo '</p>';
                     echo '<form action="upgrader.php?type=_addon_remove" method="post">';
                     echo '<p><label for="addons">Addons to remove:</label><br /><textarea name="addons" id="addons" class="wide-field" rows="10"></textarea>';
-                    echo '<input class="menu___generic_admin__delete button_screen" type="submit" value="Remove addon files" />';
+                    echo '<input class="menu___generic_admin__delete button-screen" type="submit" value="Remove addon files" />';
                     echo post_fields_relay();
                     echo '</form>';
                     break;
@@ -650,7 +650,7 @@ function fu_link($url, $text, $disabled = false, $js = '')
 
     $ret = '<form title="' . escape_html($text) . '" style="display: inline" action="' . escape_html($url) . '" method="post">';
     $ret .= $hidden;
-    $ret .= '<input ' . (empty($js) ? '' : 'onclick="return window.confirm(\'' . addslashes($js) . '\');" ') . 'accesskey="c" ' . ($disabled ? 'disabled="disabled"' : '') . ' class="' . $class . ' button_screen_item" type="submit" value="' . escape_html($text) . '" />';
+    $ret .= '<input ' . (empty($js) ? '' : 'onclick="return window.confirm(\'' . addslashes($js) . '\');" ') . 'accesskey="c" ' . ($disabled ? 'disabled="disabled"' : '') . ' class="' . $class . ' button-screen-item" type="submit" value="' . escape_html($text) . '" />';
     $ret .= '</form>';
     return $ret;
 }
@@ -758,7 +758,7 @@ function up_do_login($message = null)
 
     echo "
     <p>
-        <input class=\"menu__site_meta__user_actions__login button_screen\" type=\"submit\" value=\"{$l_login}\" />
+        <input class=\"menu__site_meta__user_actions__login button-screen\" type=\"submit\" value=\"{$l_login}\" />
     </p>
     </form>
     ";
@@ -1330,7 +1330,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
                 $ret_str .= do_lang('WARNING_FILE_ADDON', $addon);
             }
             $ret_str .= '<p class="associated-details"><a href="#!" onclick="var checkmarks=this.parentNode.parentNode.getElementsByTagName(\'input\'); for (var i=0;i&lt;checkmarks.length;i++) { checkmarks[i].checked=true; } return false;">' . do_lang('FU_CHECK_ALL') . '</a></p>';
-            $ret_str .= '<input class="buttons--proceed button_screen" accesskey="c" type="submit" value="' . do_lang('FU_AUTO_HANDLE') . '" />';
+            $ret_str .= '<input class="buttons--proceed button-screen" accesskey="c" type="submit" value="' . do_lang('FU_AUTO_HANDLE') . '" />';
             $ret_str .= '</div>';
 
             $found_something = true;

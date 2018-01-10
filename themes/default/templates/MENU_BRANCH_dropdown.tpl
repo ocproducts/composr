@@ -17,7 +17,7 @@
 	{+END}
 
 	{+START,IF,{$NOT,{TOP_LEVEL}}}
-		<li class="dropdown-menu-item nlevel {$?,{CURRENT},current,non_current} has_img {$?,{$GET,HAS_CHILDREN},has_children js-mousemove-pop-up-menu}" data-vw-rand="{$GET*,RAND}">
+		<li class="dropdown-menu-item nlevel {$?,{CURRENT},current,non_current} has-img {$?,{$GET,HAS_CHILDREN},has_children js-mousemove-pop-up-menu}" data-vw-rand="{$GET*,RAND}">
 			{+START,IF_NON_EMPTY,{URL}}
 			<a {+START,INCLUDE,MENU_LINK_PROPERTIES}{+END} class="dropdown-menu-item-a nlevel_link {$?,{$GET,HAS_CHILDREN},js-click-toggle-sub-menu drawer}" {$?,{$GET,HAS_CHILDREN},data-vw-sub-menu-id="{MENU|*}_dexpand_{$GET*,RAND}"}>{+START,IF_NON_EMPTY,{$GET,img}}<img class="dropdown-menu-item-img" alt="" src="{$GET*,img}" srcset="{$GET*,img_2x} 2x" />{+END}<span class="dropdown-menu-item-caption">{CAPTION}</span></a>
 			{+END}

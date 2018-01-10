@@ -29,7 +29,7 @@
 					</div>
 
 					<div class="inline spaced filter_button">
-						<input data-disable-on-click="1" class="button_screen_item buttons--filter" type="submit" value="{!FILTER}" />
+						<input data-disable-on-click="1" class="button-screen-item buttons--filter" type="submit" value="{!FILTER}" />
 					</div>
 				</div>
 			</form>
@@ -72,6 +72,6 @@
 	{+END}
 
 	<p class="buttons-group">
-		<a class="button_screen buttons--add-ticket" rel="add" href="{ADD_TICKET_URL*}"><span>{!ADD_TICKET}</span></a>
+		<a class="button-screen buttons--add-ticket" rel="add" href="{ADD_TICKET_URL*}"><span>{!ADD_TICKET}</span></a>
 	</p>
 </div>

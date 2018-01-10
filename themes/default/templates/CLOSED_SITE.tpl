@@ -13,9 +13,9 @@
 			{+START,IF,{$IS_GUEST}}
 				<p>
 					{+START,IF_NON_EMPTY,{JOIN_URL}}
-						{$,Re-enable if you want to allow people to easily join when the site is closed (or just give them the URL) <a class="button_screen menu__site_meta__user_actions__join" href="\{JOIN_URL*\}"><span>\{!JOIN\}</span></a>}
+						{$,Re-enable if you want to allow people to easily join when the site is closed (or just give them the URL) <a class="button-screen menu__site_meta__user_actions__join" href="\{JOIN_URL*\}"><span>\{!JOIN\}</span></a>}
 					{+END}
-					<a class="button_screen menu__site_meta__user_actions__login" data-open-as-overlay="{}" rel="nofollow" href="{LOGIN_URL*}"><span>{!_LOGIN}</span></a>
+					<a class="button-screen menu__site_meta__user_actions__login" data-open-as-overlay="{}" rel="nofollow" href="{LOGIN_URL*}"><span>{!_LOGIN}</span></a>
 				</p>
 			{+END}
 		</div></div>

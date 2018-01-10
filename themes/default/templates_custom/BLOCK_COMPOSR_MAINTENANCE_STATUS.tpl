@@ -8,7 +8,7 @@
 	</thead>
 	<tbody>
 		{+START,LOOP,ROWS}
-			<tr class="{$CYCLE,results_table_zebra,zebra_0,zebra_1}">
+			<tr class="{$CYCLE,results_table_zebra,zebra-0,zebra-1}">
 				{+START,LOOP,DATA}
 					{+START,IF,{$EQ,{_loop_key},0}}
 						<th>

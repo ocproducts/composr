@@ -2591,7 +2591,7 @@
         if (andSubframes) {
             iframes = document.querySelectorAll('iframe');
             for (i = 0; i < iframes.length; i++) {
-                if ((iframes[i].name !== '') && ((iframes[i].classList.contains('expandable_iframe')) || (iframes[i].classList.contains('dynamic_iframe')))) {
+                if ((iframes[i].name !== '') && ((iframes[i].classList.contains('expandable-iframe')) || (iframes[i].classList.contains('dynamic-iframe')))) {
                     $dom.resizeFrame(iframes[i].name);
                 }
             }

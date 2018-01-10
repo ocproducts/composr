@@ -834,7 +834,7 @@
             // Set content from revision
             var url = templateEditorLoadingUrl(file, revisionId);
             $cms.loadSnippet(url).then(function (html) {
-                document.getElementById('t_' + fileId).className = 'tab tab_active';
+                document.getElementById('t_' + fileId).className = 'tab tab-active';
 
                 templateEditorTabLoadedContent(html, file);
             });
@@ -1075,7 +1075,7 @@
             function templateEditorRemoveTab(fileId) {
                 var header = document.getElementById('t_' + fileId);
                 if (header) {
-                    var isActive = (header.classList.contains('tab_active'));
+                    var isActive = (header.classList.contains('tab-active'));
 
                     header.parentNode.removeChild(header);
                     var body = document.getElementById('g_' + fileId);
@@ -1165,7 +1165,7 @@
 
     function templateEditorShowTab(fileId) {
         setTimeout(function () {
-            if (!document.getElementById('t_' + fileId) || !document.getElementById('t_' + fileId).classList.contains('tab_active')) {
+            if (!document.getElementById('t_' + fileId) || !document.getElementById('t_' + fileId).classList.contains('tab-active')) {
                 // No longer visible
                 return;
             }

@@ -9,7 +9,7 @@
 		</div>
 
 		<p class="proceed_button">
-			<input class="button_screen buttons--proceed" type="submit" value="{!INSTALL} Composr" />
+			<input class="button-screen buttons--proceed" type="submit" value="{!INSTALL} Composr" />
 		</p>
 	</div>
 </form>

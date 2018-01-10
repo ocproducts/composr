@@ -7,7 +7,7 @@
 				<form title="{!ADD_TO_CART}" method="post" action="{ACTION_URL*}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<input class="button_screen_item buttons--cart-add"{+START,IF,{OUT_OF_STOCK}} data-click-alert="{!OUT_OF_STOCK*}" data-click-pd="1"{+END} type="submit" value="{!ADD_TO_CART}" />
+					<input class="button-screen-item buttons--cart-add"{+START,IF,{OUT_OF_STOCK}} data-click-alert="{!OUT_OF_STOCK*}" data-click-pd="1"{+END} type="submit" value="{!ADD_TO_CART}" />
 					<input type="hidden" id="quantity" name="quantity" value="1" />
 					<input type="hidden" name="type_code" value="{TYPE_CODE*}" />
 				</form>
@@ -21,7 +21,7 @@
 					<form title="{!BUY_NOW}" method="post" enctype="multipart/form-data" action="{PURCHASE_ACTION_URL*}" autocomplete="off">
 						{$INSERT_SPAMMER_BLACKHOLE}
 
-						<input class="button_screen_item buttons--cart-checkout" type="submit" value="{!BUY_NOW}" />
+						<input class="button-screen-item buttons--cart-checkout" type="submit" value="{!BUY_NOW}" />
 					</form>
 				</div>
 			{+END}

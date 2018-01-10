@@ -37,7 +37,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 					<div class="global-navigation-inner">
 						{$,Login form for guests}
 						{+START,IF,{$IS_GUEST}}{+START,IF,{$CONFIG_OPTION,block_top_login}}
-							<div class="top-form top_login">
+							<div class="top-form top-login">
 								{$BLOCK,block=top_login}
 							</div>
 						{+END}{+END}
@@ -63,7 +63,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 
 		{$,By default the top panel contains the admin menu, community menu, member bar, etc}
 		{+START,IF_NON_EMPTY,{$TRIM,{$LOAD_PANEL,top}}}
-			<div id="panel_top">
+			<div id="panel-top">
 				{$LOAD_PANEL,top}
 			</div>
 		{+END}
@@ -95,20 +95,20 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 			</article>
 
 			{+START,IF,{$GET,has_left_panel}}
-				<div id="panel-left" class="global-side-panel{+START,IF,{$GET,has_right_panel}} with_both_panels{+END}" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
+				<div id="panel-left" class="global-side-panel{+START,IF,{$GET,has_right_panel}} with-both-panels{+END}" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
 					<div class="stuck_nav" data-stuck-nav>{$LOAD_PANEL,left}</div>
 				</div>
 			{+END}
 
 			{+START,IF,{$GET,has_right_panel}}
-				<div id="panel-right" class="global-side-panel{+START,IF,{$GET,has_left_panel}} with_both_panels{+END}" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
+				<div id="panel-right" class="global-side-panel{+START,IF,{$GET,has_left_panel}} with-both-panels{+END}" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
 					<div class="stuck_nav" data-stuck-nav>{$LOAD_PANEL,right}</div>
 				</div>
 			{+END}
 		</div>
 
 		{+START,IF_NON_EMPTY,{$TRIM,{$LOAD_PANEL,bottom}}}
-			<div id="panel_bottom" role="complementary">
+			<div id="panel-bottom" role="complementary">
 				{$LOAD_PANEL,bottom}
 			</div>
 		{+END}

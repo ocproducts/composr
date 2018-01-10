@@ -26,7 +26,7 @@
 		{+END}
 
 		<p class="proceed_button">
-			<input accesskey="p" class="button_screen tabs__preview js-click-btn-tempcode-tester-do-preview" type="submit" value="{!PREVIEW}" />
+			<input accesskey="p" class="button-screen tabs__preview js-click-btn-tempcode-tester-do-preview" type="submit" value="{!PREVIEW}" />
 		</p>
 	</form>
 

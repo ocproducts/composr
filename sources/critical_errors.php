@@ -237,7 +237,7 @@ END;
             echo htmlentities($css);
             echo <<<END
         .screen-title { text-decoration: underline; display: block; min-height: 42px; padding: 3px 0 0 0; }
-        .button_screen { padding: 0.5em 0.3em !important; }
+        .button-screen { padding: 0.5em 0.3em !important; }
         a[target="_blank"], a[onclick$="window.open"] { padding-right: 0; }
     ]]></style>
 </head>

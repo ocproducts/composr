@@ -2,7 +2,7 @@
 {$REQUIRE_CSS,notifications}
 
 <div data-tpl="blockTopNotifications" data-tpl-params="{+START,PARAMS_JSON,MAX}{_*}{+END}">
-	<div class="global_button_ref_point" id="web_notifications_rel" style="display: none">
+	<div class="global-button-ref-point" id="web_notifications_rel" style="display: none">
 		<div class="box box-arrow box__block_top_notifications_web"><span></span><div class="box-inner">
 			<div id="web_notifications_spot" role="log">
 				{+START,IF_EMPTY,{NOTIFICATIONS}}
@@ -25,7 +25,7 @@
 	<a title="{!notifications:NOTIFICATIONS}" id="web_notifications_button" class="count_{NUM_UNREAD_WEB_NOTIFICATIONS%} js-click-toggle-web-notifications" href="{$PAGE_LINK*,_SEARCH:notifications:browse}"><span aria-label="{!COUNT_TOTAL} {!notifications:NOTIFICATIONS}">{NUM_UNREAD_WEB_NOTIFICATIONS*}</span></a>
 
 	{+START,IF,{$NOT,{$CONFIG_OPTION,pt_notifications_as_web}}}{+START,IF,{$CNS}}
-		<div class="global_button_ref_point" id="pts_rel" style="display: none">
+		<div class="global-button-ref-point" id="pts_rel" style="display: none">
 			<div class="box box-arrow box__block_top_notifications_pts"><span></span><div class="box-inner">
 				<div id="pts_spot" role="log">
 					{+START,IF_EMPTY,{PTS}}

@@ -38,7 +38,7 @@
 
 			{+START,IF_PASSED,SUBMIT_NAME}
 				<p class="proceed_button" id="selection_submit">
-					<input class="{SUBMIT_ICON*} button_screen" type="submit" value="{SUBMIT_NAME*}" />
+					<input class="{SUBMIT_ICON*} button-screen" type="submit" value="{SUBMIT_NAME*}" />
 				</p>
 			{+END}
 		</form>
@@ -55,7 +55,7 @@
 	{$SET,DEFER_RESULTS_TABLE_PAGINATION,0}
 
 	{+START,IF_PASSED,EXTRA}
-		{+START,IF_PASSED,SUB_TITLE}<h2 class="force_margin">{SUB_TITLE*}</h2>{+END}
+		{+START,IF_PASSED,SUB_TITLE}<h2 class="force-margin">{SUB_TITLE*}</h2>{+END}
 
 		{EXTRA}
 	{+END}

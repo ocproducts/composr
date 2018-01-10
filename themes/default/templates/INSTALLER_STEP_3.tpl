@@ -108,6 +108,6 @@
 	</div>
 
 	<p class="proceed_button">
-		<input class="button_screen buttons--proceed" data-disable-on-click="1" type="submit" value="{!PROCEED}" />
+		<input class="button-screen buttons--proceed" data-disable-on-click="1" type="submit" value="{!PROCEED}" />
 	</p>
 </form>

@@ -39,14 +39,14 @@
 
 <div class="trinav-wrap nograd">
 	<div class="trinav-left">
-		<a class="button_screen buttons--previous" href="{PREVIOUS_URL*}" rel="{+START,IF,{PREVIOUS_NO_FOLLOW}}nofollow {+END}prev" accesskey="j"><span>{!PREVIOUS}</span></a>
+		<a class="button-screen buttons--previous" href="{PREVIOUS_URL*}" rel="{+START,IF,{PREVIOUS_NO_FOLLOW}}nofollow {+END}prev" accesskey="j"><span>{!PREVIOUS}</span></a>
 	</div>
 	<div class="trinav-right">
-		<a class="button_screen buttons--next" href="{NEXT_URL*}" rel="{+START,IF,{NEXT_NO_FOLLOW}}nofollow {+END}next" accesskey="k"><span>{!NEXT}</span></a>
+		<a class="button-screen buttons--next" href="{NEXT_URL*}" rel="{+START,IF,{NEXT_NO_FOLLOW}}nofollow {+END}next" accesskey="k"><span>{!NEXT}</span></a>
 	</div>
 	<div class="trinav-mid block-desktop">
 		{+START,IF_NON_EMPTY,{ADD_URL}}
-			<a class="button_screen menu___generic_admin__add_one" rel="add" href="{ADD_URL*}"><span>{!ADD_CALENDAR_EVENT}</span></a>
+			<a class="button-screen menu___generic_admin__add_one" rel="add" href="{ADD_URL*}"><span>{!ADD_CALENDAR_EVENT}</span></a>
 		{+END}
 	</div>
 </div>
@@ -57,7 +57,7 @@
 
 {+START,IF_NON_EMPTY,{ADD_URL}}
 	<p class="buttons-group">
-		<a class="button_screen menu___generic_admin__add_one" rel="add" href="{ADD_URL*}"><span>{!ADD_CALENDAR_EVENT}</span></a>
+		<a class="button-screen menu___generic_admin__add_one" rel="add" href="{ADD_URL*}"><span>{!ADD_CALENDAR_EVENT}</span></a>
 	</p>
 {+END}
 
@@ -81,7 +81,7 @@
 						</div>
 
 						<p class="proceed_button">
-							<input data-disable-on-click="1" class="button_screen buttons--choose" type="submit" value="{!INTERESTS}" />
+							<input data-disable-on-click="1" class="button-screen buttons--choose" type="submit" value="{!INTERESTS}" />
 						</p>
 					</form>
 				</div></section></div>
@@ -100,7 +100,7 @@
 						</div>
 
 						<p class="proceed_button">
-							<input data-disable-on-click="1" class="button_screen buttons--filter" type="submit" value="{!FILTER}" />
+							<input data-disable-on-click="1" class="button-screen buttons--filter" type="submit" value="{!FILTER}" />
 						</p>
 					</form>
 				</div></section></div>

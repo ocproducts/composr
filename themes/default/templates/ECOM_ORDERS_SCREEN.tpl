@@ -17,9 +17,9 @@
 
 	<tbody>
 		{+START,LOOP,ORDERS}
-			{$SET,cycle,{$CYCLE,results_table_zebra,zebra_0,zebra_1}}
+			{$SET,cycle,{$CYCLE,results_table_zebra,zebra-0,zebra-1}}
 
-			<tr class="{$GET,cycle}{+START,IF,{$NEQ,{_loop_key},0}} thick_border{+END}">
+			<tr class="{$GET,cycle}{+START,IF,{$NEQ,{_loop_key},0}} thick-border{+END}">
 				<td>
 					{+START,IF_NON_EMPTY,{ORDER_DET_URL}}
 						<strong><a href="{ORDER_DET_URL*}">{ORDER_TITLE*}</a></strong>

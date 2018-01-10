@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,redirects_editor}
 
-<tr class="{$CYCLE,results_table_zebra,zebra_0,zebra_1}" data-tpl="redirectETableRedirect">
+<tr class="{$CYCLE,results_table_zebra,zebra-0,zebra-1}" data-tpl="redirectETableRedirect">
 	<td>
 		<div class="accessibility-hidden"><label for="from_zone_{I*}">{!REDIRECT_FROM_ZONE}</label></div>
 		{+START,IF_NON_EMPTY,{FROM_ZONES}}

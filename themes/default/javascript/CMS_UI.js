@@ -210,7 +210,7 @@
 
             element = $dom.$id('t_' + tabs[i]);
             if (element) {
-                element.classList.toggle('tab_active', tabs[i] === tab);
+                element.classList.toggle('tab-active', tabs[i] === tab);
             }
         }
 
@@ -338,7 +338,7 @@
             tooltipEl.role = 'tooltip';
             tooltipEl.style.display = 'none';
             var rtPos = tooltip.indexOf('results-table');
-            tooltipEl.className = 'tooltip ' + ((rtPos === -1 || rtPos > 100) ? 'tooltip_ownlayout' : 'tooltip_nolayout') + ' boxless-space' + (haveLinks ? ' have_links' : '');
+            tooltipEl.className = 'tooltip ' + ((rtPos === -1 || rtPos > 100) ? 'tooltip-ownlayout' : 'tooltip-nolayout') + ' boxless-space' + (haveLinks ? ' have_links' : '');
             if (el.className.substr(0, 3) === 'tt_') {
                 tooltipEl.className += ' ' + el.className;
             }

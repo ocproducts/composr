@@ -18,7 +18,7 @@
 		<div class="{$?,{$MOBILE},modern_tabs,modern_subtabs}">
 			<div class="{$?,{$MOBILE},modern_tab_headers,modern_subtab_headers}">
 				{+START,LOOP,TABS}
-					<div id="t_edit__{$LCASE,{TAB_CODE|*}}"{+START,IF,{TAB_FIRST}} class="tab_active tab_first{+END}{+START,IF,{TAB_LAST}} tab_last{+END}">
+					<div id="t_edit__{$LCASE,{TAB_CODE|*}}"{+START,IF,{TAB_FIRST}} class="tab-active tab-first{+END}{+START,IF,{TAB_LAST}} tab-last{+END}">
 						<a class="js-click-select-edit-tab" data-tp-tab-code="{TAB_CODE*}" aria-controls="g_edit__{$LCASE,{TAB_CODE|*}}" role="tab" href="#!">{+START,IF_NON_EMPTY,{TAB_ICON}}<img alt="" src="{$IMG*,icons/24x24/{TAB_ICON}}" srcset="{$IMG*,icons/48x48/{TAB_ICON}} 2x" /> {+END}<span>{TAB_TITLE*}</span></a>
 					</div>
 				{+END}
