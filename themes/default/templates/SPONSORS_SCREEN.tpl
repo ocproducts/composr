@@ -9,5 +9,5 @@
 	</ul>
 {+END}
 {+START,IF_EMPTY,{PATREONS}}
-	<p class="nothing_here">{!NO_ENTRIES}</p>
+	<p class="nothing-here">{!NO_ENTRIES}</p>
 {+END}

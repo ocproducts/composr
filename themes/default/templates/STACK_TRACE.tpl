@@ -3,7 +3,7 @@
 </p>
 
 {+START,LOOP,TRACE}
-	<div class="wide-table-wrap"><table class="map_table wide-table results-table">
+	<div class="wide-table-wrap"><table class="map-table wide-table results-table">
 		<colgroup>
 			<col class="field-name-column" />
 			<col class="field_value_column" />
@@ -28,7 +28,7 @@
 {+START,IF_NON_EMPTY,{POST}}
 	<h2>{!PARAMETERS}</h2>
 
-	<div class="wide-table-wrap"><table class="map_table wide-table results-table">
+	<div class="wide-table-wrap"><table class="map-table wide-table results-table">
 		<colgroup>
 			<col class="field-name-column" />
 			<col class="field_value_column" />

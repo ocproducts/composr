@@ -23,10 +23,10 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 	{+START,IF,{$SHOW_HEADER}}
 		<header itemscope="itemscope" itemtype="http://schema.org/WPHeader">
 			{$,The main logo}
-			<h1 class="accessibility_hidden"><a class="logo_outer" target="_self" href="{$PAGE_LINK*,:}" rel="home"><img class="logo" src="{$LOGO_URL*}" title="{!HOME}" alt="{$SITE_NAME*}" /></a></h1>
+			<h1 class="accessibility-hidden"><a class="logo-outer" target="_self" href="{$PAGE_LINK*,:}" rel="home"><img class="logo" src="{$LOGO_URL*}" title="{!HOME}" alt="{$SITE_NAME*}" /></a></h1>
 
 			{$,This allows screen-reader users (e.g. blind users) to jump past the panels etc to the main content}
-			<a accesskey="s" class="accessibility_hidden" href="#maincontent">{!SKIP_NAVIGATION}</a>
+			<a accesskey="s" class="accessibility-hidden" href="#maincontent">{!SKIP_NAVIGATION}</a>
 
 			<div class="admin_navigation">
 				{+START,IF,{$HAS_ZONE_ACCESS,adminzone}}
@@ -39,7 +39,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 				{$BLOCK-,block=menu,param={$GET,admin_menu_string},type=dropdown}
 
 				{+START,IF,{$MOBILE}}
-					<div class="admin_navigation_inner">
+					<div class="admin-navigation-inner">
 						<span>{$?,{$EQ,{$ZONE},adminzone},{!ADMIN_ZONE},{!CMS}}</span>
 					</div>
 				{+END}
@@ -56,17 +56,17 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 		{+END}
 
 		{$,Composr may show little messages for you as it runs relating to what you are doing or the state the site is in}
-		<div class="global_messages" id="global_messages">
+		<div class="global-messages" id="global-messages">
 			{$MESSAGES_TOP}
 		</div>
 
 		{$,The main panels and content; float-surrounder contains the layout into a rendering box so that the footer etc can sit underneath}
-		<div class="global_middle_outer float-surrounder">
-			<article class="global_middle" role="main">
+		<div class="global-middle-outer float-surrounder">
+			<article class="global-middle" role="main">
 				{$,Breadcrumbs}
 				{+START,IF,{$IN_STR,{$BREADCRUMBS},<a }}{+START,IF,{$SHOW_HEADER}}
-					<nav class="global_breadcrumbs breadcrumbs" itemprop="breadcrumb" id="global_breadcrumbs">
-						<img width="20" height="20" class="breadcrumbs_img" src="{$IMG*,1x/breadcrumbs}" srcset="{$IMG*,2x/breadcrumbs} 2x" title="{!YOU_ARE_HERE}" alt="{!YOU_ARE_HERE}" />
+					<nav class="global-breadcrumbs breadcrumbs" itemprop="breadcrumb" id="global-breadcrumbs">
+						<img width="20" height="20" class="breadcrumbs-img" src="{$IMG*,1x/breadcrumbs}" srcset="{$IMG*,2x/breadcrumbs} 2x" title="{!YOU_ARE_HERE}" alt="{!YOU_ARE_HERE}" />
 						{$BREADCRUMBS}
 					</nav>
 				{+END}{+END}
@@ -79,7 +79,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 			</article>
 
 			{+START,IF_NON_EMPTY,{$TRIM,{$LOAD_PANEL,left}}}
-				<div id="panel_left" class="global-side-panel" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
+				<div id="panel-left" class="global-side-panel" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
 					<div class="stuck_nav" data-stuck-nav>{$LOAD_PANEL,left}</div>
 				</div>
 			{+END}
@@ -88,7 +88,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 			{$SET,HELPER_PANEL_TUTORIAL,{$?,{$HAS_PRIVILEGE,see_software_docs},{$HELPER_PANEL_TUTORIAL}}}
 			{$SET,helper_panel,{$OR,{$IS_NON_EMPTY,{$GET,HELPER_PANEL_TUTORIAL}},{$IS_NON_EMPTY,{$HELPER_PANEL_TEXT}}}}
 			{+START,IF,{$OR,{$GET,helper_panel},{$IS_NON_EMPTY,{$TRIM,{$LOAD_PANEL,right}}}}}
-				<div id="panel_right" class="global-side-panel{+START,IF_EMPTY,{$TRIM,{$LOAD_PANEL,right}}} helper_panel {$?,{$HIDE_HELP_PANEL},helper_panel_hidden,helper_panel_visible}{+END}" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
+				<div id="panel-right" class="global-side-panel{+START,IF_EMPTY,{$TRIM,{$LOAD_PANEL,right}}} helper_panel {$?,{$HIDE_HELP_PANEL},helper_panel_hidden,helper_panel_visible}{+END}" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
 					{+START,IF_NON_EMPTY,{$TRIM,{$LOAD_PANEL,right}}}
 						<div class="stuck_nav" data-stuck-nav>{$LOAD_PANEL,right}</div>
 					{+END}
@@ -108,7 +108,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 		{+END}
 
 		{+START,IF_NON_EMPTY,{$MESSAGES_BOTTOM}}
-			<div class="global_messages">
+			<div class="global-messages">
 				{$MESSAGES_BOTTOM}
 			</div>
 		{+END}
@@ -119,7 +119,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 
 		{$,Late messages happen if something went wrong during outputting everything (i.e. too late in the process to show the error in the normal place)}
 		{+START,IF_NON_EMPTY,{$LATE_MESSAGES}}
-			<div class="global_messages" id="global_messages_2">
+			<div class="global-messages" id="global-messages-2">
 				{$LATE_MESSAGES}
 			</div>
 		{+END}
@@ -129,7 +129,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 	{+START,IF,{$SHOW_FOOTER}}
 		<footer class="float-surrounder" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
 			<div class="footer_inner">
-				<div class="global_footer_left block-desktop">
+				<div class="global-footer-left block-desktop">
 					{+START,SET,FOOTER_BUTTONS}
 						{+START,IF,{$CONFIG_OPTION,bottom_show_top_button}}
 							<li><a rel="back_to_top" accesskey="g" href="#!"><img width="24" height="24" title="{!BACK_TO_TOP}" alt="{!BACK_TO_TOP}" src="{$IMG*,icons/24x24/tool_buttons/top}" srcset="{$IMG*,icons/48x48/tool_buttons/top} 2x" /></a></li>
@@ -147,31 +147,31 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 						{+END}
 					{+END}
 					{+START,IF_NON_EMPTY,{$TRIM,{$GET,FOOTER_BUTTONS}}}{+START,IF,{$DESKTOP}}
-						<ul class="horizontal_buttons">
+						<ul class="horizontal-buttons">
 							{$GET,FOOTER_BUTTONS}
 						</ul>
 					{+END}{+END}
 
 					{+START,IF,{$DESKTOP}}{+START,IF_NON_EMPTY,{$STAFF_ACTIONS}}{+START,IF,{$CONFIG_OPTION,show_staff_page_actions}}
-						<form title="{!SCREEN_DEV_TOOLS} {!LINK_NEW_WINDOW}" class="inline special_page_type_form js-global-submit-staff-actions-select" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}" method="get" target="_blank" autocomplete="off">
+						<form title="{!SCREEN_DEV_TOOLS} {!LINK_NEW_WINDOW}" class="inline special-page-type-form js-global-submit-staff-actions-select" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}" method="get" target="_blank" autocomplete="off">
 							{$HIDDENS_FOR_GET_FORM,{$SELF_URL,0,1,0,cache_blocks=0,cache_comcode_pages=0,keep_minify=0,special_page_type=<null>,keep_template_magic_markers=<null>}}
 
 							<div class="inline">
-								<p class="accessibility_hidden"><label for="special_page_type">{!SCREEN_DEV_TOOLS}</label></p>
-								<select id="special_page_type" name="special_page_type">{$STAFF_ACTIONS}</select>
+								<p class="accessibility-hidden"><label for="special-page-type">{!SCREEN_DEV_TOOLS}</label></p>
+								<select id="special-page-type" name="special_page_type">{$STAFF_ACTIONS}</select>
 								<input class="button-micro buttons--proceed" type="submit" value="{!PROCEED_SHORT}" />
 							</div>
 						</form>
 					{+END}{+END}{+END}
 				</div>
 
-				<div class="global_footer_right">
-					<div class="global_copyright">
+				<div class="global-footer-right">
+					<div class="global-copyright">
 						{$,Uncomment to show user's time {$DATE} {$TIME}}
 					</div>
 
-					<nav class="global_minilinks">
-						<ul class="footer_links">
+					<nav class="global-minilinks">
+						<ul class="footer-links">
 							<li><a href="{$PAGE_LINK*,:}">{!HOME}</a></li>
 							{+START,IF,{$CONFIG_OPTION,bottom_show_sitemap_button}}
 								<li><a accesskey="3" rel="site_map" href="{$PAGE_LINK*,_SEARCH:sitemap}">{!SITEMAP}</a></li>
@@ -209,10 +209,10 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 								<li class="inlineblock-mobile"><a rel="back_to_top" accesskey="g" href="#">{!_BACK_TO_TOP}</a></li>
 							{+END}
 							{+START,IF_NON_EMPTY,{$HONEYPOT_LINK}}
-								<li class="accessibility_hidden">{$HONEYPOT_LINK}</li>
+								<li class="accessibility-hidden">{$HONEYPOT_LINK}</li>
 							{+END}
-							<li class="accessibility_hidden"><a accesskey="1" href="{$PAGE_LINK*,:}">{$SITE_NAME*}</a></li>
-							<li class="accessibility_hidden"><a accesskey="0" href="{$PAGE_LINK*,:keymap}">{!KEYBOARD_MAP}</a></li>
+							<li class="accessibility-hidden"><a accesskey="1" href="{$PAGE_LINK*,:}">{$SITE_NAME*}</a></li>
+							<li class="accessibility-hidden"><a accesskey="0" href="{$PAGE_LINK*,:keymap}">{!KEYBOARD_MAP}</a></li>
 						</ul>
 					</nav>
 				</div>

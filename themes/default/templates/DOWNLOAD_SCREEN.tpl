@@ -42,7 +42,7 @@
 			</div>
 
 			<div class="download-stats-wrapper">
-				<div class="wide-table-wrap"><table class="map_table download-stats results-table wide-table" role="note">
+				<div class="wide-table-wrap"><table class="map-table download-stats results-table wide-table" role="note">
 					{+START,IF,{$DESKTOP}}
 						<colgroup>
 							<col class="download-field-name-column" />

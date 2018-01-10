@@ -11,7 +11,7 @@
 <form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
-	<div class="wide-table-wrap really_long_table_wrap"><table class="columned_table results-table wide-table autosized-table responsive-table">
+	<div class="wide-table-wrap really_long_table_wrap"><table class="columned-table results-table wide-table autosized-table responsive-table">
 		<thead>
 			<tr>
 				<th>
@@ -40,7 +40,7 @@
 	</p>
 
 	{+START,IF,{TOO_MANY}}
-		<p class="more_here">{!TRANSLATE_TOO_MANY,{TOTAL*},{MAX*}}</p>
+		<p class="more-here">{!TRANSLATE_TOO_MANY,{TOTAL*},{MAX*}}</p>
 	{+END}
 </form>
 

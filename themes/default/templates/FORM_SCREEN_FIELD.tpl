@@ -18,7 +18,7 @@
 		</span>
 
 		{+START,IF,{$NOT,{$GET,no_required_stars}}}
-			<span id="required_readable_marker__{$GET,randomised_id}" style="display: {$?,{REQUIRED},inline,none}"><span class="required-star">*</span> <span class="accessibility_hidden">{!REQUIRED}</span></span>
+			<span id="required_readable_marker__{$GET,randomised_id}" style="display: {$?,{REQUIRED},inline,none}"><span class="required-star">*</span> <span class="accessibility-hidden">{!REQUIRED}</span></span>
 		{+END}
 
 		{+START,IF_PASSED,DESCRIPTION_SIDE}{+START,IF_NON_EMPTY,{DESCRIPTION_SIDE}}

@@ -11,6 +11,6 @@
 
 {+START,IF,{$EQ,{TYPE},datetime}}
 	{$SET,time_value,{$PAD_LEFT,{HOUR},2,0}:{$PAD_LEFT,{MINUTE},2,0}}
-	<label class="accessibility_hidden" for="{NAME*}_time">{!TIME}</label>
+	<label class="accessibility-hidden" for="{NAME*}_time">{!TIME}</label>
 	<input name="{NAME*}_time" id="{NAME*}_time" type="time" size="5"{+START,IF_PASSED,TABINDEX} tabindex="{TABINDEX*}"{+END} value="{+START,IF_NON_EMPTY,{HOUR}}{$GET*,time_value}{+END}" class="input_time{$?,{REQUIRED},_required}" />
 {+END}

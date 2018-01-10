@@ -14491,7 +14491,7 @@
         $dom.append(
             rep.parentNode,
             '<div id="mainDiv_' + name + '" style="display: inline-block;">' +
-            '<div id="subDiv_' + name + '" class="vertical_alignment">' +
+            '<div id="subDiv_' + name + '" class="vertical-alignment">' +
             // This input field shows the file name(s) of the uploading/uploaded file to the user
             '<input type="text" id="txtFileName_' + name + '" name="txtFileName_' + name + '" class="upload_response_field" size="24" disabled value="">' +
             '<input type="button" id="uploadButton_' + name + '" class="buttons--upload button-micro" value="{!BROWSE;^*}">' +

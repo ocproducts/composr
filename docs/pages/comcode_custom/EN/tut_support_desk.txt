@@ -51,7 +51,7 @@ Staff will see all open support tickets when they visit the support ticket page,
 [title="3"]Approach to support functions[/title]
 
 [html]
-<table class="columned_table results-table autosized-table">
+<table class="columned-table results-table autosized-table">
 	<thead>
 		<tr>
 			<th>Support&nbsp;feature</th>
@@ -150,7 +150,7 @@ The Discussion Forum (our own Conversr, at least) is designed to be an extremely
 [title="3"]Approach to support functions[/title]
 
 [html]
-<table class="columned_table results-table autosized-table">
+<table class="columned-table results-table autosized-table">
 	<thead>
 		<tr>
 			<th>Support&nbsp;feature</th>
@@ -228,7 +228,7 @@ For more information on this, see the [page="_SEARCH:tut_feedback"]Feedback and 
 [title="3"]Approach to support functions[/title]
 
 [html]
-<table class="columned_table results-table autosized-table">
+<table class="columned-table results-table autosized-table">
 	<thead>
 		<tr>
 			<th>Support&nbsp;feature</th>

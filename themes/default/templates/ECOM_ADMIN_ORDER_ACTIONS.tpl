@@ -4,7 +4,7 @@
 	<form title="{!ACTION}: {ORDER_TITLE*}" method="post" action="{ORDER_ACTUALISE_URL*}" data-submit-pd="1" class="js-submit-confirm-admin-order-actions" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
-		<label class="accessibility_hidden" for="action">{!ACTION}</label>
+		<label class="accessibility-hidden" for="action">{!ACTION}</label>
 
 		<select name="action" id="action" class="orders_actions_dropdown js-select-change-action-submit-form">
 			<option value="">{!CHOOSE}&hellip;</option>

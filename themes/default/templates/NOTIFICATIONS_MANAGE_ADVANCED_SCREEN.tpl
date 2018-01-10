@@ -9,7 +9,7 @@
 
 	<div>
 		{+START,IF_NON_EMPTY,{$TRIM,{TREE}}}
-			<div class="wide-table"><table class="columned_table wide-table results-table notifications_form">
+			<div class="wide-table"><table class="columned-table wide-table results-table notifications_form">
 				<colgroup>
 					<col class="notifications-field-name-column" />
 					{+START,LOOP,NOTIFICATION_TYPES_TITLES}
@@ -39,7 +39,7 @@
 		{+END}
 
 		{+START,IF_EMPTY,{$TRIM,{TREE}}}
-			<p class="nothing_here">
+			<p class="nothing-here">
 				{!NO_CATEGORIES}
 			</p>
 		{+END}

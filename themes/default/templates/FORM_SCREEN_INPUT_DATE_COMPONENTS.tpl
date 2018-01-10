@@ -1,6 +1,6 @@
 {+START,IF,{WANT_YEAR}}
-	<span class="vertical_alignment">
-		<label for="{NAME*}_year" class="accessibility_hidden">{PRETTY_NAME*} {!YEAR}</label>
+	<span class="vertical-alignment">
+		<label for="{NAME*}_year" class="accessibility-hidden">{PRETTY_NAME*} {!YEAR}</label>
 		<select id="{NAME*}_year" name="{NAME*}_year"{+START,IF_PASSED,TABINDEX} tabindex="{TABINDEX*}"{+END} class="input_date{$?,{REQUIRED},_required}">
 			{+START,IF,{$NOT,{REQUIRED}}}
 				<option value="">{!NA_EM}</option>
@@ -16,8 +16,8 @@
 {+END}
 
 {+START,IF,{WANT_MONTH}}
-	<span class="vertical_alignment">
-		<label for="{NAME*}_month" class="accessibility_hidden">{PRETTY_NAME*} {!MONTH}</label>
+	<span class="vertical-alignment">
+		<label for="{NAME*}_month" class="accessibility-hidden">{PRETTY_NAME*} {!MONTH}</label>
 		<select id="{NAME*}_month" name="{NAME*}_month"{+START,IF_PASSED,TABINDEX} tabindex="{TABINDEX*}"{+END} class="input_date{$?,{REQUIRED},_required}">
 			{+START,IF,{$NOT,{REQUIRED}}}
 				<option value="">{!NA_EM}</option>
@@ -31,8 +31,8 @@
 {+END}
 
 {+START,IF,{WANT_DAY}}
-	<span class="vertical_alignment">
-		<label for="{NAME*}_day" class="accessibility_hidden">{PRETTY_NAME*} {!DAY}</label>
+	<span class="vertical-alignment">
+		<label for="{NAME*}_day" class="accessibility-hidden">{PRETTY_NAME*} {!DAY}</label>
 		<select id="{NAME*}_day" name="{NAME*}_day"{+START,IF_PASSED,TABINDEX} tabindex="{TABINDEX*}"{+END} class="input_date{$?,{REQUIRED},_required}">
 			{+START,IF,{$NOT,{REQUIRED}}}
 				<option value="">{!NA_EM}</option>

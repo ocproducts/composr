@@ -15,7 +15,7 @@
     function loadCommandr() {
         if (!document.getElementById('commandr_img_loader')) {
             var img = document.getElementById('commandr_img');
-            img.className = 'footer_button_loading';
+            img.className = 'footer-button-loading';
             var tmpEl = document.createElement('img');
             tmpEl.id = 'commandr_img_loader';
             tmpEl.src = $util.srl('{$IMG;,loading}');

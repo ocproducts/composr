@@ -1,4 +1,4 @@
-<div class="global_middle" data-view="AttachmentsBrowser" data-view-params="{+START,PARAMS_JSON,FIELD_NAME,ID,DESCRIPTION}{_*}{+END}">
+<div class="global-middle" data-view="AttachmentsBrowser" data-view-params="{+START,PARAMS_JSON,FIELD_NAME,ID,DESCRIPTION}{_*}{+END}">
 	<form title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
@@ -31,7 +31,7 @@
 		<hr class="spaced-rule" />
 	{+END}
 	{+START,IF_EMPTY,{ATTACHMENTS}}
-		<p class="nothing_here">
+		<p class="nothing-here">
 			{!NO_ENTRIES}
 		</p>
 	{+END}

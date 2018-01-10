@@ -640,7 +640,7 @@
                     button = $dom.create('img', {
                         'src': $util.srl('{$IMG;,button_lightbox_close}'),
                         'alt': this.cancelButton,
-                        'className': 'overlay_close_button ' + (this.cancel ? 'js-onclick-do-option-cancel' : 'js-onclick-do-option-finished')
+                        'className': 'overlay-close-button ' + (this.cancel ? 'js-onclick-do-option-cancel' : 'js-onclick-do-option-finished')
                     });
                     this.containerEl.appendChild(button);
                 }
@@ -1061,12 +1061,12 @@
 
         $dom.registerMouseListener();
 
-        if ($dom.$('#global_messages_2')) {
-            var m1 = $dom.$('#global_messages');
+        if ($dom.$('#global-messages-2')) {
+            var m1 = $dom.$('#global-messages');
             if (!m1) {
                 return;
             }
-            var m2 = $dom.$('#global_messages_2');
+            var m2 = $dom.$('#global-messages-2');
             $dom.append(m1, $dom.html(m2));
             m2.parentNode.removeChild(m2);
         }
@@ -1195,7 +1195,7 @@
             var html = /** @lang HTML */'' +
                 '<div class="software_chat">' +
                 '   <h2>{!CMS_COMMUNITY_HELP}</h2>' +
-                '   <ul class="spaced_list">' + SOFTWARE_CHAT_EXTRA + '</ul>' +
+                '   <ul class="spaced-list">' + SOFTWARE_CHAT_EXTRA + '</ul>' +
                 '   <p class="associated-link associated-links-block-group">' +
                 '       <a title="{!SOFTWARE_CHAT_STANDALONE} {!LINK_NEW_WINDOW;^}" target="_blank" href="' + $cms.filter.html(url) + '">{!SOFTWARE_CHAT_STANDALONE}</a>' +
                 '       <a href="#!" class="js-global-click-load-software-chat">{!HIDE}</a>' +
@@ -1588,7 +1588,7 @@
         },
         toggleHelperPanel: function () {
             var show = $dom.notDisplayed(this.contentsEl),
-                panelRight = $dom.$('#panel_right'),
+                panelRight = $dom.$('#panel-right'),
                 helperPanelContents = $dom.$('#helper_panel_contents'),
                 helperPanelToggle = $dom.$('#helper_panel_toggle');
 
@@ -1596,7 +1596,6 @@
                 panelRight.classList.remove('helper_panel_hidden');
                 panelRight.classList.add('helper_panel_visible');
                 helperPanelContents.setAttribute('aria-expanded', 'true');
-                helperPanelContents.style.display = 'block';
                 $dom.fadeIn(helperPanelContents);
 
                 if ($cms.readCookie('hide_helper_panel') === '1') {
@@ -2042,7 +2041,7 @@
             if (currentUrl === url) {
                 return 0;
             }
-            var globalBreadcrumbs = document.getElementById('global_breadcrumbs');
+            var globalBreadcrumbs = document.getElementById('global-breadcrumbs');
 
             if (globalBreadcrumbs) {
                 var links = globalBreadcrumbs.querySelectorAll('a');

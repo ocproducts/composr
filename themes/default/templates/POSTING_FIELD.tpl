@@ -17,10 +17,10 @@
 		{+END}
 		{+START,IF_NON_PASSED,POST_COMMENT}
 			<span class="field-name">
-				<label class="accessibility_hidden" for="{NAME*}">{!TEXT}</label>
+				<label class="accessibility-hidden" for="{NAME*}">{!TEXT}</label>
 			</span>
 
-			<span id="required_readable_marker__{$?,{$IS_EMPTY,{NAME*}},{$RAND},{NAME*}}" style="display: {$?,{REQUIRED*},inline,none}"><span class="required-star">*</span> <span class="accessibility_hidden">{!REQUIRED}</span></span>
+			<span id="required_readable_marker__{$?,{$IS_EMPTY,{NAME*}},{$RAND},{NAME*}}" style="display: {$?,{REQUIRED*},inline,none}"><span class="required-star">*</span> <span class="accessibility-hidden">{!REQUIRED}</span></span>
 		{+END}
 
 		{+START,INCLUDE,FORM_SCREEN_FIELD_DESCRIPTION}{+END}
@@ -33,13 +33,13 @@
 				<ul class="horizontal-links horiz-field-sep associated-links-block-group">
 					{+START,IF,{$SHOW_DOCS}}{+START,IF_PASSED,COMCODE_URL}
 						{+START,IF,{$NOT,{$MATCH_KEY_MATCH,_WILD:cms_comcode_pages}}}
-							<li><a data-open-as-overlay="{}" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{COMCODE_URL*}"><img src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical_alignment" alt="{!COMCODE_MESSAGE,Comcode}" /></a></li>
+							<li><a data-open-as-overlay="{}" class="link-exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{COMCODE_URL*}"><img src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical-alignment" alt="{!COMCODE_MESSAGE,Comcode}" /></a></li>
 						{+END}
 						{+START,IF,{$MATCH_KEY_MATCH,_WILD:cms_comcode_pages}}
-							<li><a class="link_exempt" title="{!FULL_COMCODE_TUTORIAL} {!LINK_NEW_WINDOW}" target="_blank" href="{$TUTORIAL_URL*,tut_comcode}">{!FULL_COMCODE_TUTORIAL}</a></li>
-							<li><a class="link_exempt" title="{!FULL_BLOCK_TUTORIAL} {!LINK_NEW_WINDOW}" target="_blank" href="{$TUTORIAL_URL*,tut_adv_comcode_pages}">{!FULL_BLOCK_TUTORIAL}</a></li>
+							<li><a class="link-exempt" title="{!FULL_COMCODE_TUTORIAL} {!LINK_NEW_WINDOW}" target="_blank" href="{$TUTORIAL_URL*,tut_comcode}">{!FULL_COMCODE_TUTORIAL}</a></li>
+							<li><a class="link-exempt" title="{!FULL_BLOCK_TUTORIAL} {!LINK_NEW_WINDOW}" target="_blank" href="{$TUTORIAL_URL*,tut_adv_comcode_pages}">{!FULL_BLOCK_TUTORIAL}</a></li>
 						{+END}
-						<li><a rel="nofollow" class="link_exempt js-link-click-open-field-emoticon-chooser-window" title="{!EMOTICONS_POPUP} {!LINK_NEW_WINDOW}" target="_blank" href="{$FIND_SCRIPT*,emoticons}?field_name={NAME*}{$KEEP*,0,1}" data-click-pd="1"><img src="{$IMG*,icons/16x16/editor/insert_emoticons}" srcset="{$IMG*,icons/32x32/editor/insert_emoticons} 2x" alt="{!EMOTICONS_POPUP}" class="vertical_alignment" /></a></li>
+						<li><a rel="nofollow" class="link-exempt js-link-click-open-field-emoticon-chooser-window" title="{!EMOTICONS_POPUP} {!LINK_NEW_WINDOW}" target="_blank" href="{$FIND_SCRIPT*,emoticons}?field_name={NAME*}{$KEEP*,0,1}" data-click-pd="1"><img src="{$IMG*,icons/16x16/editor/insert_emoticons}" srcset="{$IMG*,icons/32x32/editor/insert_emoticons} 2x" alt="{!EMOTICONS_POPUP}" class="vertical-alignment" /></a></li>
 					{+END}{+END}
 					{+START,IF,{$IN_STR,{CLASS},wysiwyg}}
 						<li><a id="toggle_wysiwyg_{NAME*}" href="#!" class="js-click-toggle-wysiwyg"><abbr title="{!TOGGLE_WYSIWYG_2}"><img src="{$IMG*,icons/16x16/editor/wysiwyg_on}" srcset="{$IMG*,icons/32x32/editor/wysiwyg_on} 2x" alt="{!comcode:ENABLE_WYSIWYG}" title="{!comcode:ENABLE_WYSIWYG}" /></abbr></a></li>
@@ -49,7 +49,7 @@
 		{+END}
 	{+END}
 	{+START,IF_NON_EMPTY,{$TRIM,{$GET,posting_field}}}
-		<th colspan="2" class="table_heading_cell{+START,IF,{REQUIRED}} required{+END}">
+		<th colspan="2" class="table-heading-cell{+START,IF,{REQUIRED}} required{+END}">
 			{$GET,posting_field}
 		</th>
 	{+END}
@@ -98,13 +98,13 @@
 
 		{+START,IF,{$NOT,{$MATCH_KEY_MATCH,cms}}}
 			{+START,IF_PASSED,POST_COMMENT}
-				<p class="posting_rules">{!USE_WEBSITE_RULES,{$PAGE_LINK*,:rules},{$PAGE_LINK*,:privacy}}</p>
+				<p class="posting-rules">{!USE_WEBSITE_RULES,{$PAGE_LINK*,:rules},{$PAGE_LINK*,:privacy}}</p>
 			{+END}
 		{+END}
 
 		{+START,IF,{$MATCH_KEY_MATCH,cms}}
 			{+START,IF,{$VALUE_OPTION,download_associated_media}}
-				<p class="vertical_alignment">
+				<p class="vertical-alignment">
 					<label for="{NAME*}_download_associated_media">{!comcode:DOWNLOAD_ASSOCIATED_MEDIA}</label>
 					<input title="{!comcode:DESCRIPTION_DOWNLOAD_ASSOCIATED_MEDIA}" checked="checked" type="checkbox" name="{NAME*}_download_associated_media" id="{NAME*}_download_associated_media" value="1" />
 				</p>
@@ -124,7 +124,7 @@
 {+START,IF,{$AND,{$NOT,{$BROWSER_MATCHES,simplified_attachments_ui}},{$IS_NON_EMPTY,{ATTACHMENTS}}}}
 	{$SET,init_drag_drop,1}
 	<tr class="form-table-field-spacer" id="field-{$GET*,id}-attachments-ui">
-		<th colspan="2" class="table_heading_cell">
+		<th colspan="2" class="table-heading-cell">
 			<a class="toggleable-tray-button js-click-pf-toggle-subord-fields" id="fes_attachments" href="#!"><img alt="{!EXPAND}: {!ATTACHMENTS}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" /></a>
 
 			<span class="faux-h2 toggleable-tray-button js-click-pf-toggle-subord-fields">

@@ -93,7 +93,7 @@ while (($f = readdir($dh)) !== false) {
 // Output it all...
 
 $out = '
-<div class="wide-table-wrap"><table class="wide-table columned_table results-table autosized-table">
+<div class="wide-table-wrap"><table class="wide-table columned-table results-table autosized-table">
     <thead>
         <tr>
             <th>Addon</th>

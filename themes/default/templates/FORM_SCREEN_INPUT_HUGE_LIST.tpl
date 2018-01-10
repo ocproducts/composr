@@ -9,7 +9,7 @@
 		</p>
 
 		{+START,IF,{REQUIRED}}
-			<span id="required_readable_marker__{$?,{$IS_EMPTY,{NAME*}},{$RAND},{NAME*}}" class="inline"><span class="required-star">*</span> <span class="accessibility_hidden">{!REQUIRED}</span></span>
+			<span id="required_readable_marker__{$?,{$IS_EMPTY,{NAME*}},{$RAND},{NAME*}}" class="inline"><span class="required-star">*</span> <span class="accessibility-hidden">{!REQUIRED}</span></span>
 		{+END}
 
 		{+START,INCLUDE,FORM_SCREEN_FIELD_DESCRIPTION}{+END}

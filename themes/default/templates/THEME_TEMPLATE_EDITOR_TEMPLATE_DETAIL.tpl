@@ -1,4 +1,4 @@
-<div class="wide-table-wrap"><table class="map_table wide-table results-table spaced-table autosized-table">
+<div class="wide-table-wrap"><table class="map-table wide-table results-table spaced-table autosized-table">
 	<tbody>
 		<tr>
 			<th>{!PATH}</th>

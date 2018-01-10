@@ -8,12 +8,12 @@
     $cms.templates = {};
 
     $cms.templates.globalHtmlWrap = function () {
-        if (document.getElementById('global_messages_2')) {
-            var m1 = document.getElementById('global_messages');
+        if (document.getElementById('global-messages-2')) {
+            var m1 = document.getElementById('global-messages');
             if (!m1) {
                 return;
             }
-            var m2 = document.getElementById('global_messages_2');
+            var m2 = document.getElementById('global-messages-2');
             $dom.append(m1, $dom.html(m2));
             m2.parentNode.removeChild(m2);
         }

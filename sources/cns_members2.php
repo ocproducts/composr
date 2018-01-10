@@ -125,7 +125,7 @@ function render_member_box($member_id, $preview = false, $show_avatar = true, $e
     $member_info = cns_read_in_member_profile($member_id, $need, false, $preview);
 
     if ($member_info === null) {
-        return paragraph(do_lang_tempcode('MISSING_RESOURCE'), 'nothing_here');
+        return paragraph(do_lang_tempcode('MISSING_RESOURCE'), 'nothing-here');
     }
 
     $custom_fields = new Tempcode();

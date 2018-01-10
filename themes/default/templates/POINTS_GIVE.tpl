@@ -15,10 +15,10 @@
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			<div>
-				<label class="accessibility_hidden" for="give_amount">{!AMOUNT}</label>
+				<label class="accessibility-hidden" for="give_amount">{!AMOUNT}</label>
 				<input maxlength="8" data-cms-invalid-pattern="[^\-\d{$BACKSLASH}{$DECIMAL_POINT*}]" size="7" id="give_amount" class="input-integer-required" placeholder="{!AMOUNT}" type="text" name="amount" />
 
-				<label class="accessibility_hidden" for="give_reason">{!REASON}</label>
+				<label class="accessibility-hidden" for="give_reason">{!REASON}</label>
 				<input maxlength="255" size="26" id="give_reason" class="input-line-required" placeholder="{!REASON}" type="text" name="reason" />
 
 				<label class="points_anon" for="give_anonymous">{!TICK_ANON}: <input type="checkbox" id="give_anonymous" name="anonymous" value="1" /></label>
@@ -45,10 +45,10 @@
 
 			<div>
 				<div class="points_give_shared_options">
-					<label class="accessibility_hidden" for="give_amount">{!AMOUNT}</label>
+					<label class="accessibility-hidden" for="give_amount">{!AMOUNT}</label>
 					<input maxlength="10" data-cms-invalid-pattern="[^\-\d{$BACKSLASH}{$DECIMAL_POINT*}]" size="7" id="give_amount" class="input-integer-required" placeholder="{!AMOUNT}" type="text" name="amount" />
 
-					<label class="accessibility_hidden" for="give_reason">{!REASON}</label>
+					<label class="accessibility-hidden" for="give_reason">{!REASON}</label>
 					<input maxlength="255" size="18" id="give_reason" class="input-line-required" placeholder="{!REASON}" type="text" name="reason" />
 
 					<input id="give_points_submit" class="button_screen_item buttons--points" type="submit" value="{!PROCEED_SHORT}" />

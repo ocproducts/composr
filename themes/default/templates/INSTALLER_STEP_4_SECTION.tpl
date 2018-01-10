@@ -3,7 +3,7 @@
 <div class="installer_section">
 	<div class="box box___installer_step_4_section"><div class="box-inner">
 		<fieldset class="innocuous-fieldset">
-			<legend class="accessibility_hidden">{TITLE}</legend>
+			<legend class="accessibility-hidden">{TITLE}</legend>
 
 			<h2>{TITLE}</h2>
 
@@ -13,7 +13,7 @@
 				</p>
 			{+END}
 
-			<div class="wide-table-wrap"><table class="map_table form-table wide-table">
+			<div class="wide-table-wrap"><table class="map-table form-table wide-table">
 				<colgroup>
 					<col class="installer_left_column" />
 					<col class="installer_right_column" />

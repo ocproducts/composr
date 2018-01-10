@@ -4,10 +4,10 @@
 */
 
 /*{+START,CSS_MODE,desktop}*/
-	.helper_panel_visible ~ .global_middle {
+	.helper_panel_visible ~ .global-middle {
 		margin-right: 265px !important;
 	}
-	.helper_panel_hidden ~ .global_middle {
+	.helper_panel_hidden ~ .global-middle {
 		margin-right: 16px !important;
 	}
 /*{+END}*/

@@ -13,8 +13,8 @@
 	{+END}
 
 	{+START,IF_PASSED_AND_TRUE,HAS_RANGE}
-		<label for="{NAME*}_from">{DISPLAY*}<span class="accessibility_hidden">, {!FROM}</span>:</label>
-		<label for="{NAME*}_to" class="accessibility_hidden">>{DISPLAY*}, {!TO}:</label>
+		<label for="{NAME*}_from">{DISPLAY*}<span class="accessibility-hidden">, {!FROM}</span>:</label>
+		<label for="{NAME*}_to" class="accessibility-hidden">>{DISPLAY*}, {!TO}:</label>
 
 		{+START,INCLUDE,FORM_SCREEN_INPUT_TIME}
 			NAME={NAME}_from

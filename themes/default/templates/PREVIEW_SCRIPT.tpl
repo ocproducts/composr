@@ -29,7 +29,7 @@
 		</div></div>
 	{+END}
 	{+START,IF_EMPTY,{WEBSTANDARDS}}
-		<section class="box box___preview_script global_middle_faux"><div class="box-inner">
+		<section class="box box___preview_script global-middle-faux"><div class="box-inner">
 			<h2>{!PREVIEW}</h2>
 
 			<div class="preview-box{+START,IF,{$AND,{$NOT,{$MOBILE,1}},{$MOBILE}}} mobile{+END}">

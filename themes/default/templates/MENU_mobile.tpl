@@ -6,7 +6,7 @@
 	<div data-view="MobileMenu" data-view-params="{+START,PARAMS_JSON,MENU,JAVASCRIPT_HIGHLIGHTING,menu_id}{_*}{+END}">
 		<a href="{$PAGE_LINK*,:sitemap}" class="mobile_menu_button js-click-toggle-content"><img src="{$IMG*,mobile_menu}" alt="{!MENU}" /> <span>{!MENU}</span></a>
 
-		<nav class="menu_type__mobile js-el-menu-content" style="display: none" aria-expanded="false">
+		<nav class="menu-type--mobile js-el-menu-content" style="display: none" aria-expanded="false">
 			<div class="mobile_search">
 				{$BLOCK,block=top_search,failsafe=1,block_id=mobile}
 			</div>

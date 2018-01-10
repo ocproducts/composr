@@ -15,7 +15,7 @@ header {
 }
 
 /*{+START,CSS_MODE,desktop}*/
-	.admin_navigation_inner {
+	.admin-navigation-inner {
 		display: none;
 	}
 /*{+END}*/
@@ -30,12 +30,12 @@ header {
 		position: relative;
 	}
 
-	.admin_navigation_inner {
+	.admin-navigation-inner {
 		overflow: hidden;
 		margin-left: 8em !important; /* Space for the menu button, which is position:absolute */
 	}
 
-	.admin_navigation_inner span {
+	.admin-navigation-inner span {
 		float: right;
 		margin: 0.75em;
 		font-size: 1.2em;
@@ -48,50 +48,50 @@ header {
 	margin-top: 0;
 }
 
-body#main-website #main-website-inner, html>body div.global_middle_faux {
+body#main-website #main-website-inner, html>body div.global-middle-faux {
 	background-color: transparent;
 }
 
-.global_messages {
+.global-messages {
 	margin: 0;
 }
 /*{+START,CSS_MODE,mobile}*/
-	.global_messages {
+	.global-messages {
 		padding-left: 2px;
 		padding-right: 2px;
 	}
 /*{+END}*/
 
-.global_messages .box___message {
+.global-messages .box___message {
 	background-image: none !important;
 	background-color: #FFF !important;
 	border-color: #bdcde6 !important;
 }
 
-.box___message .global_message {
+.box___message .global-message {
 	margin-top: 0;
 	margin-bottom: 0.75em;
 }
 
-.box___message .global_message>span, .box___message .global_message>p {
+.box___message .global-message>span, .box___message .global-message>p {
 	padding-top: 0;
 }
 
 /*{+START,IF,{$THEME_OPTION,fixed_width}}*/
-	.global_breadcrumbs {
+	.global-breadcrumbs {
 		padding: 4px 0 7px 0;
 	}
 /*{+END}*/
 
-#panel_left {
+#panel-left {
 	margin-left: 0;
 }
 
-#panel_right {
+#panel-right {
 	margin-right: 0;
 }
 
-#panel_right ~ .global_middle {
+#panel-right ~ .global-middle {
 	padding-right: 2em;
 }
 
@@ -99,7 +99,7 @@ body#main-website #main-website-inner, html>body div.global_middle_faux {
 	background-image: none !important;
 }
 
-footer .global_minilinks {
+footer .global-minilinks {
 	padding-top: 0.6em;
 }
 
@@ -118,17 +118,17 @@ footer .global_minilinks {
 	border-bottom-left-radius: 10px;
 }
 
-.adminzone_search {
+.adminzone-search {
 	padding: 0.7em 1em;
 	white-space: nowrap;
 }
 
-.adminzone_search input {
+.adminzone-search input {
 	vertical-align: middle;
 }
 
 /*{+START,CSS_MODE,mobile}*/
-	.adminzone_search .buttons--menu--pages--help {
+	.adminzone-search .buttons--menu--pages--help {
 		display: none !important;
 	}
 /*{+END}*/

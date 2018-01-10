@@ -43,7 +43,7 @@ foreach ($all_rows as $d_row) {
 }
 
 if ($subdownloads->is_empty()) {
-    $content = paragraph(do_lang('NO_ENTRIES'), '', 'nothing_here');
+    $content = paragraph(do_lang('NO_ENTRIES'), '', 'nothing-here');
 } else {
     $carousel_id = strval(mt_rand(0, mt_getrandmax()));
 

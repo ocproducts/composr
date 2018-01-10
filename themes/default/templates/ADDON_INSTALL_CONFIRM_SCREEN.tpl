@@ -10,7 +10,7 @@
 		<h2>{!ADDON_FILES}</h2>
 
 		<div class="not-too-tall">
-			<ul class="tick_list">
+			<ul class="tick-list">
 				{FILES}
 			</ul>
 		</div>
@@ -24,7 +24,7 @@
 
 	<h2>{!DETAILS}</h2>
 
-	<div class="wide-table-wrap"><table class="map_table results-table wide-table autosized-table responsive-table">
+	<div class="wide-table-wrap"><table class="map-table results-table wide-table autosized-table responsive-table">
 		<tbody>
 			<tr>
 				<th>{!NAME}</th>

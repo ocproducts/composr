@@ -3,41 +3,41 @@
  Copyright (c) ocProducts, 2004-2018
 */
 
-.pe_wiki_page_description {
+.pe-wiki-page-description {
 	margin-bottom: 1.5em;
 }
 
-.wiki_post_below {
+.wiki-post-below {
 	padding-top: 0.5em;
 }
 
-.wiki_page_children {
+.wiki-page-children {
 	margin-bottom: 1.5em;
 }
 
-.wiki_screen .wiki_link {
+.wiki-screen .wiki-link {
 	font-size: 1em !important;
 }
 
-.wiki_screen .wiki_link a {
+.wiki-screen .wiki-link a {
 	background: none !important;
 	padding: 0 !important;
 }
 
 /* Posts */
 
-.wiki_topic_poster_name {
+.wiki-topic-poster-name {
 	float: left;
 	margin-left: 0.5em;
 	padding-right: 0.5em;
 	border-right: 1px solid {$GET,standard_border};
 }
 
-.wiki_rating_inside {
+.wiki-rating-inside {
 	padding-left: 3em;
 }
 
-.wiki_topic_post_area {
+.wiki-topic-post-area {
 	background-color: {$GET,area_5_background} !important;
 	padding: 1em !important;
 }
@@ -47,7 +47,7 @@
 	border: 0 !important;
 }
 
-.wiki_post_buttons {
+.wiki-post-buttons {
 	padding: 0.5em !important;
 }
 

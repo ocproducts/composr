@@ -194,7 +194,7 @@ echo '</div>';
 // ============
 
 if (count($versions_interested_in) < 2) {
-    echo '<p class="nothing_here">You must select at least two versions.</p>';
+    echo '<p class="nothing-here">You must select at least two versions.</p>';
     return;
 }
 
@@ -242,7 +242,7 @@ foreach (array_keys($releases) as $version) {
                     $out_for_jump .= '</div>';
                 } elseif (count($files_to_show) == 1) {
                     $out_for_jump .= '<h3>' . escape_html($f) . '</h3>';
-                    $out_for_jump .= '<p class="nothing_here">No changes</p>';
+                    $out_for_jump .= '<p class="nothing-here">No changes</p>';
                 }
             }
         }
@@ -259,7 +259,7 @@ foreach (array_keys($releases) as $version) {
 }
 
 if ($out == '') {
-    $out = '<p class="nothing_here">Nothing to show</p>';
+    $out = '<p class="nothing-here">Nothing to show</p>';
 }
 
 echo $out;

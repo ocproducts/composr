@@ -18,7 +18,7 @@
 	{HIDDEN}
 
 	<p>{!SELECT_TO_IMPORT}</p>
-	<div class="wide-table-wrap"><table class="map_table form-table wide-table import_actions">
+	<div class="wide-table-wrap"><table class="map-table form-table wide-table import_actions">
 		{+START,IF,{$DESKTOP}}
 			<colgroup>
 				<col class="field-name-column" />

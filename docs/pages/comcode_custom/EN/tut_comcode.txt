@@ -282,7 +282,7 @@ and blank line
 
 There are some short-cuts for use to use...
 [semihtml]
-<table class="columned_table results-table autosized-table">
+<table class="columned-table results-table autosized-table">
 	<thead>
 		<tr>
 			<th>Shortcut</th>

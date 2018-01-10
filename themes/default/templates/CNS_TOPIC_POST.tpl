@@ -4,7 +4,7 @@
 <div class="cns-topic-post" data-tpl="cnsTopicPost" data-tpl-params="{+START,PARAMS_JSON,ID}{_*}{+END}">
 	<div class="cns-topic-section cns-topic-header">
 		<div class="cns-forum-box-left{+START,IF_NON_EMPTY,{CLASS}} {CLASS*}{+END}">
-			<h2 class="accessibility_hidden">
+			<h2 class="accessibility-hidden">
 				{!FORUM_POST}
 			</h2>
 
@@ -24,7 +24,7 @@
 			{+START,IF_NON_EMPTY,{POSTER}}
 				{+START,IF_PASSED,RATING}
 					<div class="cns-post-details-rating">
-						<div class="accessibility_hidden">{!RATING}:</div>
+						<div class="accessibility-hidden">{!RATING}:</div>
 						{RATING}
 					</div>
 				{+END}
@@ -72,11 +72,11 @@
 				{+START,IF,{$DESKTOP}}
 					{+START,IF_NON_EMPTY,{ID}}{+START,IF_NON_PASSED_OR_FALSE,PREVIEWING}
 						<div id="cell_mark_{ID*}" class="cns-off mass-select-marker block-desktop">
-							<form class="webstandards_checker_off" title="{!FORUM_POST} {!MARKER} #{ID*}" method="post" action="index.php" id="form_mark_{ID*}" autocomplete="off">
+							<form class="webstandards-checker-off" title="{!FORUM_POST} {!MARKER} #{ID*}" method="post" action="index.php" id="form_mark_{ID*}" autocomplete="off">
 								{$INSERT_SPAMMER_BLACKHOLE}
 
 								<div>
-									{+START,IF,{$NOT,{$IS_GUEST}}}<div class="accessibility_hidden"><label for="mark_{ID*}">{!FORUM_POST} {!MARKER} #{ID*}</label></div>{+END}{$,Guests don't see this so search engines don't; hopefully people with screen-readers are logged in}
+									{+START,IF,{$NOT,{$IS_GUEST}}}<div class="accessibility-hidden"><label for="mark_{ID*}">{!FORUM_POST} {!MARKER} #{ID*}</label></div>{+END}{$,Guests don't see this so search engines don't; hopefully people with screen-readers are logged in}
 									<input {+START,IF,{$NOT,{$IS_GUEST}}} title="{!FORUM_POST} {!MARKER} #{ID*}"{+END} value="1" type="checkbox" id="mark_{ID*}" name="mark_{ID*}" class="js-click-checkbox-set-cell-mark-class" />
 								</div>
 							</form>

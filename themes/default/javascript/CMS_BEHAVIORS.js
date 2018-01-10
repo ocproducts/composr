@@ -926,7 +926,7 @@
                 if (panelBottom) {
                     footerHeight += panelBottom.offsetHeight;
                 }
-                panelBottom = $dom.$('#global_messages_2');
+                panelBottom = $dom.$('#global-messages-2');
                 if (panelBottom) {
                     footerHeight += panelBottom.offsetHeight;
                 }
@@ -988,7 +988,7 @@
     function convertTooltip(el) {
         var title = el.title;
 
-        if (!title || $cms.browserMatches('touch_enabled') || el.classList.contains('leave_native_tooltip')) {
+        if (!title || $cms.browserMatches('touch_enabled') || el.classList.contains('leave-native-tooltip')) {
             return;
         }
 

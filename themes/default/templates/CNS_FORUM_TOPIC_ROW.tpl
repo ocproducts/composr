@@ -3,7 +3,7 @@
 		{+START,IF,{$CONFIG_OPTION,is_on_topic_emoticons}}
 			<td class="cns-forum-topic-row-emoticon cns-column1 cell-desktop">
 				{+START,IF_NON_EMPTY,{EMOTICON}}
-					<img class="vertical_alignment" alt="{EMOTICON*}" src="{$IMG*,{EMOTICON},1}" />
+					<img class="vertical-alignment" alt="{EMOTICON*}" src="{$IMG*,{EMOTICON},1}" />
 				{+END}
 			</td>
 		{+END}
@@ -17,15 +17,15 @@
 				<div class="cns-forum-topic-title-bits">
 					<span class="cns-forum-topic-title-bits-left">
 						{+START,LOOP,TOPIC_ROW_LINKS}
-							<a rel="nofollow" href="{URL*}"><img class="vertical_alignment" src="{$IMG*,icons/14x14/cns_topic_modifiers/{IMG}}" srcset="{$IMG*,icons/28x28/cns_topic_modifiers/{IMG}} 2x" title="{$STRIP_TAGS,{ALT}}" alt="{$STRIP_TAGS,{ALT}}" /></a>
+							<a rel="nofollow" href="{URL*}"><img class="vertical-alignment" src="{$IMG*,icons/14x14/cns_topic_modifiers/{IMG}}" srcset="{$IMG*,icons/28x28/cns_topic_modifiers/{IMG}} 2x" title="{$STRIP_TAGS,{ALT}}" alt="{$STRIP_TAGS,{ALT}}" /></a>
 						{+END}
 
 						{+START,LOOP,TOPIC_ROW_MODIFIERS}
-							<img class="vertical_alignment" src="{$IMG*,icons/14x14/cns_topic_modifiers/{IMG}}" srcset="{$IMG*,icons/28x28/cns_topic_modifiers/{IMG}} 2x" title="{ALT*}" alt="{ALT*}" />
+							<img class="vertical-alignment" src="{$IMG*,icons/14x14/cns_topic_modifiers/{IMG}}" srcset="{$IMG*,icons/28x28/cns_topic_modifiers/{IMG}} 2x" title="{ALT*}" alt="{ALT*}" />
 						{+END}
 					</span>
 
-					<a class="vertical_alignment {+START,IF_NON_EMPTY,{TOPIC_ROW_MODIFIERS}{TOPIC_ROW_LINKS}} cns-forum-topic-indent{+END}" href="{URL*}" title="{$ALTERNATOR_TRUNCATED,{TITLE},60,{!TOPIC_STARTED_DATE_TIME,{HOVER;~}},,1}">{+START,IF,{UNREAD}}<span class="cns-unread-topic-title">{+END}{$TRUNCATE_LEFT,{TITLE},46,1}{+START,IF,{UNREAD}}</span>{+END}</a>
+					<a class="vertical-alignment {+START,IF_NON_EMPTY,{TOPIC_ROW_MODIFIERS}{TOPIC_ROW_LINKS}} cns-forum-topic-indent{+END}" href="{URL*}" title="{$ALTERNATOR_TRUNCATED,{TITLE},60,{!TOPIC_STARTED_DATE_TIME,{HOVER;~}},,1}">{+START,IF,{UNREAD}}<span class="cns-unread-topic-title">{+END}{$TRUNCATE_LEFT,{TITLE},46,1}{+START,IF,{UNREAD}}</span>{+END}</a>
 
 					{PAGES}
 
@@ -41,7 +41,7 @@
 
 		<div class="cell-mobile">
 			<div class="cns-forum-topic-title-bits">
-				<a class="vertical_alignment {+START,IF_NON_EMPTY,{TOPIC_ROW_MODIFIERS}{TOPIC_ROW_LINKS}} cns-forum-topic-indent{+END}" href="{URL*}" title="{$ALTERNATOR_TRUNCATED,{TITLE},60,{!TOPIC_STARTED_DATE_TIME,{HOVER;~}},,1}">{+START,IF,{UNREAD}}<span class="cns-unread-topic-title">{+END}{$TRUNCATE_LEFT,{TITLE},46,1}{+START,IF,{UNREAD}}</span>{+END}</a>
+				<a class="vertical-alignment {+START,IF_NON_EMPTY,{TOPIC_ROW_MODIFIERS}{TOPIC_ROW_LINKS}} cns-forum-topic-indent{+END}" href="{URL*}" title="{$ALTERNATOR_TRUNCATED,{TITLE},60,{!TOPIC_STARTED_DATE_TIME,{HOVER;~}},,1}">{+START,IF,{UNREAD}}<span class="cns-unread-topic-title">{+END}{$TRUNCATE_LEFT,{TITLE},46,1}{+START,IF,{UNREAD}}</span>{+END}</a>
 
 				{PAGES}
 
@@ -63,11 +63,11 @@
 
 			<div class="cns-forum-topic-title-bits-left">
 				{+START,LOOP,TOPIC_ROW_LINKS}
-					<a rel="nofollow" href="{URL*}"><img class="vertical_alignment" src="{$IMG*,icons/14x14/cns_topic_modifiers/{IMG}}" srcset="{$IMG*,icons/28x28/cns_topic_modifiers/{IMG}} 2x" title="{$STRIP_TAGS,{ALT}}" alt="{$STRIP_TAGS,{ALT}}" /></a>
+					<a rel="nofollow" href="{URL*}"><img class="vertical-alignment" src="{$IMG*,icons/14x14/cns_topic_modifiers/{IMG}}" srcset="{$IMG*,icons/28x28/cns_topic_modifiers/{IMG}} 2x" title="{$STRIP_TAGS,{ALT}}" alt="{$STRIP_TAGS,{ALT}}" /></a>
 				{+END}
 
 				{+START,LOOP,TOPIC_ROW_MODIFIERS}
-					<img class="vertical_alignment" src="{$IMG*,icons/14x14/cns_topic_modifiers/{IMG}}" srcset="{$IMG*,icons/28x28/cns_topic_modifiers/{IMG}} 2x" title="{ALT*}" alt="{ALT*}" />
+					<img class="vertical-alignment" src="{$IMG*,icons/14x14/cns_topic_modifiers/{IMG}}" srcset="{$IMG*,icons/28x28/cns_topic_modifiers/{IMG}} 2x" title="{ALT*}" alt="{ALT*}" />
 				{+END}
 			</div>
 		</div>

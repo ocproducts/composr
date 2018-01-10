@@ -1,7 +1,7 @@
 {+START,IF_ARRAY_NON_EMPTY,CHILDREN}
-	<div class="box box___block_main_comcode_page_children" data-tpl="blockMainComcodePageChildren"><div class="box-inner">
+	<div class="box box---block-main-comcode-page-children" data-tpl="blockMainComcodePageChildren"><div class="box-inner">
 		<p class="lonely-label">{!CHILD_PAGES}:</p>
-		<ul class="spaced_list">
+		<ul class="spaced-list">
 			{+START,LOOP,CHILDREN}
 				<li>
 					<a href="{$PAGE_LINK*,{ZONE}:{PAGE}}">{TITLE*}</a>

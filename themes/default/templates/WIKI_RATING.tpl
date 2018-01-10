@@ -16,5 +16,5 @@
 	{+END}
 
 	<span class="associated-details"><em>{!VOTES,{OVERALL_NUM_RATINGS*}}</em></span>
-	<span class="wiki_rating_inside">{RATING_FORM}</span>
+	<span class="wiki-rating-inside">{RATING_FORM}</span>
 </div>

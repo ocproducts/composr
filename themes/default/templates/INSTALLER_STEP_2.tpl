@@ -10,7 +10,7 @@
 
 	<div class="float-surrounder">
 		<div id="install_newsletter">
-			<p class="accessibility_hidden"><label for="email">{!EMAIL_ADDRESS}</label></p>
+			<p class="accessibility-hidden"><label for="email">{!EMAIL_ADDRESS}</label></p>
 			<div>
 				<input maxlength="255" class="wide-field" id="email" name="email" type="text" alt="{!EMAIL_ADDRESS}" placeholder="{!EMAIL_ADDRESS_FOR_NEWSLETTER}" size="25" />
 			</div>

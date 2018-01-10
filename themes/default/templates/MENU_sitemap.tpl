@@ -4,7 +4,7 @@
 {$SET,js_menu,{$NOT,{$BROWSER_MATCHES,bot}}}
 
 {+START,IF,{$NOT,{$GET,js_menu}}}
-	<nav class="menu_type__sitemap">
+	<nav class="menu-type--sitemap">
 		<ul itemprop="significantLinks">
 			{CONTENT}
 		</ul>
@@ -14,9 +14,9 @@
 {+START,IF,{$GET,js_menu}}
 	{$SET,menu_sitemap_id,menu_sitemap_{$RAND}}
 
-	<nav id="{$GET*,menu_sitemap_id}" class="menu_type__sitemap" data-tpl="menuSitemap" data-tpl-params="{+START,PARAMS_JSON,menu_sitemap_id}{_*}{+END}" data-tp-menu-content="{$TRIM*,{CONTENT}}">
+	<nav id="{$GET*,menu_sitemap_id}" class="menu-type--sitemap" data-tpl="menuSitemap" data-tpl-params="{+START,PARAMS_JSON,menu_sitemap_id}{_*}{+END}" data-tp-menu-content="{$TRIM*,{CONTENT}}">
 		<div aria-busy="true" class="spaced">
-			<div class="ajax_loading vertical_alignment">
+			<div class="ajax_loading vertical-alignment">
 				<img src="{$IMG*,loading}" title="{!LOADING}" alt="{!LOADING}" />
 				<span>{!LOADING}</span>
 			</div>

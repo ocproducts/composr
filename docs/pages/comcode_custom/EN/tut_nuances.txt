@@ -83,7 +83,7 @@ This example is for phpBB 3's default skin.
 
 If will help a lot with the integration if you add this to Composr's [tt]global.css[/tt]...
 [code="CSS"]
-.global_middle #wrap {
+.global-middle #wrap {
 	float: left;
 	width: 100%;
 	font-size: 7pt;

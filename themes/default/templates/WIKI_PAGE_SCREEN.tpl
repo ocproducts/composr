@@ -7,11 +7,11 @@
 
 	{$REQUIRE_CSS,cns}
 
-	<div class="wiki_screen">
+	<div class="wiki-screen">
 		{+START,IF_NON_EMPTY,{DESCRIPTION}}
 			{+START,IF,{$NOT,{HIDE_POSTS}}}
-				<div class="pe_wiki_page_description" itemprop="description">
-					<div class="box box___wiki_page_screen"><div class="box-inner">
+				<div class="pe-wiki-page-description" itemprop="description">
+					<div class="box box---wiki-page-screen"><div class="box-inner">
 						<div>{$,To disassociated headers}
 							{DESCRIPTION}
 						</div>
@@ -21,7 +21,7 @@
 				</div>
 			{+END}
 			{+START,IF,{HIDE_POSTS}}
-				<div class="pe_wiki_page_description">
+				<div class="pe-wiki-page-description">
 					{DESCRIPTION}
 				</div>
 
@@ -32,12 +32,12 @@
 		{+END}
 
 		{+START,IF_EMPTY,{CHILDREN}}
-			<p class="nothing_here">{!NO_CHILDREN}</p>
+			<p class="nothing-here">{!NO_CHILDREN}</p>
 		{+END}
 		{+START,IF_NON_EMPTY,{CHILDREN}}
-			<div class="wiki_page_children">
+			<div class="wiki-page-children">
 				<p class="lonely-label">{!CHILD_PAGES}:</p>
-				<ul itemprop="significantLinks" class="spaced_list">
+				<ul itemprop="significantLinks" class="spaced-list">
 					{+START,LOOP,CHILDREN}
 						<li>
 							<a title="{CHILD*}: {!WIKI_PAGES}" href="{URL*}">{CHILD*}</a>
@@ -69,10 +69,10 @@
 			{+END}
 
 			{+START,IF_EMPTY,{POSTS}}
-				<p class="nothing_here">{!NO_POSTS}</p>
+				<p class="nothing-here">{!NO_POSTS}</p>
 			{+END}
 			{+START,IF_NON_EMPTY,{POSTS}}
-				<div class="wide-table-wrap"><div class="map_table results-table wide-table cns-topic wiki_table">
+				<div class="wide-table-wrap"><div class="map-table results-table wide-table cns-topic wiki_table">
 					<div>
 						{POSTS}
 					</div>

@@ -353,7 +353,7 @@ class Module_admin_cns_forums extends Standard_crud_module
                 for ($_i = 0; $_i < $num_forum_groupings; $_i++) {
                     $orderings .= '<option ' . (($_i == $forum_grouping_position) ? 'selected="selected"' : '') . '>' . strval($_i + 1) . '</option>';
                 }
-                $orderings = '<label for="forum_grouping_order_' . strval($id) . '_' . strval($forum_grouping_id) . '">' . do_lang('ORDER') . ' <span class="accessibility_hidden"> (' . (array_key_exists($forum_grouping_id, $C_TITLE) ? escape_html($C_TITLE[$forum_grouping_id]) : '') . ')</span> <select id="forum_grouping_order_' . strval($id) . '_' . strval($forum_grouping_id) . '" name="forum_grouping_order_' . strval($id) . '_' . strval($forum_grouping_id) . '">' . $orderings . '</select></label>'; // XHTMLXHTML
+                $orderings = '<label for="forum_grouping_order_' . strval($id) . '_' . strval($forum_grouping_id) . '">' . do_lang('ORDER') . ' <span class="accessibility-hidden"> (' . (array_key_exists($forum_grouping_id, $C_TITLE) ? escape_html($C_TITLE[$forum_grouping_id]) : '') . ')</span> <select id="forum_grouping_order_' . strval($id) . '_' . strval($forum_grouping_id) . '" name="forum_grouping_order_' . strval($id) . '_' . strval($forum_grouping_id) . '">' . $orderings . '</select></label>'; // XHTMLXHTML
             }
 
             $forums->attach($this->get_forum_tree($subforum['id'], $subforum['f_name'], $all_forums, $position_in_cat, $sub_num_in_forum_grouping, $subforum['f_order_sub_alpha'], $order_sub_alpha, $huge));
@@ -379,7 +379,7 @@ class Module_admin_cns_forums extends Standard_crud_module
             for ($i = 0; $i < $sub_num_in_parent_forum_grouping; $i++) {
                 $orderings .= '<option ' . (($i == $position) ? 'selected="selected"' : '') . '>' . strval($i + 1) . '</option>';
             }
-            $orderings = '<label for="order_' . strval($id) . '">' . do_lang('ORDER') . ' <span class="accessibility_hidden"> (' . escape_html($forum) . ')</span> <select id="order_' . strval($id) . '" name="order_' . strval($id) . '">' . $orderings . '</select></label>'; // XHTMLXHTML
+            $orderings = '<label for="order_' . strval($id) . '">' . do_lang('ORDER') . ' <span class="accessibility-hidden"> (' . escape_html($forum) . ')</span> <select id="order_' . strval($id) . '" name="order_' . strval($id) . '">' . $orderings . '</select></label>'; // XHTMLXHTML
         }
 
         if ($GLOBALS['XSS_DETECT']) {

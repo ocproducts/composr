@@ -1,1 +1,1 @@
-<mark class="comcode_highlight">{CONTENT}</mark>
+<mark class="comcode-highlight">{CONTENT}</mark>

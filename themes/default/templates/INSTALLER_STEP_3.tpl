@@ -10,7 +10,7 @@
 			{!FORUM_CHOICE}
 		</p>
 
-		<table class="columned_table installer_forums">
+		<table class="columned-table installer_forums">
 			<tbody>
 				<tr>
 					<th class="de-th">
@@ -46,7 +46,7 @@
 		{+START,IF,{$NOT,{$GOOGLE_APPENGINE}}}
 			<div id="forum_path" style="display: none">
 				<p>{!FORUM_PATH_TEXT}</p>
-				<div class="wide-table-wrap"><table class="map_table form-table wide-table">
+				<div class="wide-table-wrap"><table class="map-table form-table wide-table">
 					<colgroup>
 						<col class="installer_input_left_column" />
 						<col class="installer_input_right_column" />
@@ -56,7 +56,7 @@
 						<tr>
 							<th class="form-table-field-name">{!FORUM_PATH}</th>
 							<td class="form-table-field-input">
-								<div class="accessibility_hidden"><label for="board_path">{!_FORUM_PATH}</label></div>
+								<div class="accessibility-hidden"><label for="board_path">{!_FORUM_PATH}</label></div>
 								<div><input class="wide-field" type="text" size="60" id="board_path" name="board_path" value="{FORUM_PATH_DEFAULT*}" /></div>
 							</td>
 						</tr>
@@ -71,7 +71,7 @@
 				</p>
 
 				<div id="{!ADVANCED_DATABASE_SETUP|*}" style="display: none">
-					<div class="wide-table-wrap"><table class="map_table form-table wide-table">
+					<div class="wide-table-wrap"><table class="map-table form-table wide-table">
 						<colgroup>
 							<col class="installer_left_column" />
 							<col class="installer_right_column" />

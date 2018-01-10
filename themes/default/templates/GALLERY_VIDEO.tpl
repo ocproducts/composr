@@ -1,6 +1,6 @@
 {+START,SET,TOOLTIP}
 	<div class="gallery-tooltip">
-		<table class="map_table results-table">
+		<table class="map-table results-table">
 			{+START,IF,{$DESKTOP}}
 				<colgroup>
 					<col class="gallery-entry-field-name-column" />

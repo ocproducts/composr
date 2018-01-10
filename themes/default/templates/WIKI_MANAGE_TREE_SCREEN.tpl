@@ -9,7 +9,7 @@
 	<h2>{!HELP}</h2>
 
 	{+START,SET,advanced_help}
-		<div class="ttb_left_spaced" data-toggleable-tray="{}">
+		<div class="ttb-left-spaced" data-toggleable-tray="{}">
 			<div class="js-tray-header">
 				<a class="toggleable-tray-button ttb_left js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!ADVANCED}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" /></a>
 				<a class="toggleable-tray-button ttb_light js-tray-onclick-toggle-tray" href="#!">{!WIKI_MANAGE_TREE_TEXT_ADVANCED_LABEL}</a>:

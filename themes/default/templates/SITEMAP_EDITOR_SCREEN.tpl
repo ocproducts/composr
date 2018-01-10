@@ -26,7 +26,7 @@
 			<div class="box box___sitemap_editor_screen"><div class="box-inner">
 				<h2>{!SITEMAP}</h2>
 
-				<div class="accessibility_hidden"><label for="tree_list">{!ENTRY}</label></div>
+				<div class="accessibility-hidden"><label for="tree_list">{!ENTRY}</label></div>
 				<form title="{!PRIMARY_PAGE_FORM}" action="index.php" method="post" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 

@@ -56,7 +56,7 @@
 		{+END}
 	{+END}
 
-	<div class="float-surrounder lined_up_boxes">
+	<div class="float-surrounder lined-up-boxes">
 		{+START,IF_NON_EMPTY,{TRACKBACK_DETAILS}}
 			<div class="trackbacks right">
 				{TRACKBACK_DETAILS}

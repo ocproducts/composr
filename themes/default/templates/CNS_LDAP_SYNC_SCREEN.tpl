@@ -15,7 +15,7 @@
 		<div class="standard-indent">
 			{GROUPS_ADD}
 			{+START,IF_EMPTY,{GROUPS_ADD}}
-				<p class="nothing_here">{!NONE}</p>
+				<p class="nothing-here">{!NONE}</p>
 			{+END}
 		</div>
 	</div>
@@ -28,7 +28,7 @@
 		<div class="standard-indent">
 			{GROUPS_DELETE}
 			{+START,IF_EMPTY,{GROUPS_DELETE}}
-				<p class="nothing_here">{!NONE}</p>
+				<p class="nothing-here">{!NONE}</p>
 			{+END}
 		</div>
 	</div>
@@ -41,7 +41,7 @@
 		<div class="standard-indent">
 			{MEMBERS_DELETE}
 			{+START,IF_EMPTY,{MEMBERS_DELETE}}
-				<p class="nothing_here">{!NONE}</p>
+				<p class="nothing-here">{!NONE}</p>
 			{+END}
 		</div>
 	</div>

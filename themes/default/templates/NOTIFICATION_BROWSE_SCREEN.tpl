@@ -6,7 +6,7 @@
 	{NOTIFICATIONS}
 {+END}
 {+START,IF_EMPTY,{NOTIFICATIONS}}
-	<p class="nothing_here">
+	<p class="nothing-here">
 		{!NO_ENTRIES}
 	</p>
 {+END}

@@ -5,7 +5,7 @@
 			{$HIDDENS_FOR_GET_FORM,{$GET,search_url},search,type_filter,sort,place,recurse,file}
 
 			<p class="left">
-				<label class="accessibility_hidden" for="search_filedump_{I*}">{!SEARCH}</label>
+				<label class="accessibility-hidden" for="search_filedump_{I*}">{!SEARCH}</label>
 				<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" size="22" type="search" id="search_filedump_{I*}" name="search" placeholder="{!SEARCH*}" />
 
 				<label class="recurse horiz-field-sep" for="recurse_filedump_{I*}">

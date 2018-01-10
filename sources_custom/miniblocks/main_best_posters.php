@@ -1,5 +1,5 @@
 <div class="wide-table-wrap">
-    <table class="columned_table results-table wide-table">
+    <table class="columned-table results-table wide-table">
         <thead>
         <tr>
             <th>Avatar</th>

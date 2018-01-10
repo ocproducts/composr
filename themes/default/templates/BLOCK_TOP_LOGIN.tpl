@@ -5,13 +5,13 @@
 
 			{+START,IF,{$DESKTOP}}
 				<div class="inline-desktop">
-					<div class="accessibility_hidden"><label for="s_login_username">{$LOGIN_LABEL}</label></div>
+					<div class="accessibility-hidden"><label for="s_login_username">{$LOGIN_LABEL}</label></div>
 					<input maxlength="80" size="10" accesskey="l" type="text" placeholder="{!USERNAME}" id="s_login_username" name="login_username" />
-					<div class="accessibility_hidden"><label for="s_password">{!PASSWORD}</label></div>
+					<div class="accessibility-hidden"><label for="s_password">{!PASSWORD}</label></div>
 					<input maxlength="255" size="10" type="password" placeholder="{!PASSWORD}" name="password" id="s_password" />
 
 					{+START,IF,{$CONFIG_OPTION,password_cookies}}
-						<label class="accessibility_hidden" for="s_remember">{!REMEMBER_ME}</label>
+						<label class="accessibility-hidden" for="s_remember">{!REMEMBER_ME}</label>
 						<input title="{!REMEMBER_ME}"{+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END} class="{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}}js-click-confirm-remember-me{+END}" type="checkbox" value="1" id="s_remember" name="remember" />
 					{+END}
 

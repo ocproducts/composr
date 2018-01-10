@@ -14,8 +14,8 @@
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<div>
-						<div class="accessibility_hidden"><label for="member_bar_login_username">{$LOGIN_LABEL}</label></div>
-						<div class="accessibility_hidden"><label for="member_bar_s_password">{!PASSWORD}</label></div>
+						<div class="accessibility-hidden"><label for="member_bar_login_username">{$LOGIN_LABEL}</label></div>
+						<div class="accessibility-hidden"><label for="member_bar_s_password">{!PASSWORD}</label></div>
 						<input size="15" type="text" placeholder="{!USERNAME}" id="member_bar_login_username" name="login_username" />
 						<input size="15" type="password" placeholder="{!PASSWORD}" name="password" id="member_bar_s_password" />
 						{+START,IF,{$CONFIG_OPTION,password_cookies}}

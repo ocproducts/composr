@@ -1124,7 +1124,7 @@
 
         if (numTabs === 0) {
             $dom.html(headers, '<a href="#!" id="t_default" class="tab"><span>&mdash;</span></a>');
-            $dom.html(bodies, '<div id="g_default"><p class="nothing_here">{!NA}</p></div>');
+            $dom.html(bodies, '<div id="g_default"><p class="nothing-here">{!NA}</p></div>');
         }
     }
 
@@ -1207,9 +1207,9 @@
                         var template = node.getAttribute('data-template');
                         var dataMatch = (template && template.includes(' ' + templatePath + ' '));
                         if (dataMatch) {
-                            node.classList.add('glowing_node');
+                            node.classList.add('glowing-node');
                         } else {
-                            node.classList.remove('glowing_node');
+                            node.classList.remove('glowing-node');
                         }
                     }
 

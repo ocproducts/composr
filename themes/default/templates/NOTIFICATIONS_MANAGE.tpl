@@ -2,7 +2,7 @@
 	{$?,{$MATCH_KEY_MATCH,_SEARCH:admin_notifications},{!NOTIFICATIONS_DEFINE_LOCKDOWN},{!NOTIFICATIONS_INTRO}}
 </p>
 
-<div class="wide-table-wrap"><table class="columned_table wide-table results-table notifications_form responsive-table responsive-table-bolded-first-column">
+<div class="wide-table-wrap"><table class="columned-table wide-table results-table notifications_form responsive-table responsive-table-bolded-first-column">
 	<colgroup>
 		<col class="notifications-field-name-column" />
 		{+START,IF_PASSED_AND_TRUE,SHOW_PRIVILEGES}
@@ -40,7 +40,7 @@
 	<tbody>
 		{+START,LOOP,NOTIFICATION_SECTIONS}
 			<tr class="form-table-field-spacer">
-				<th class="responsive-table-no-prefix table_heading_cell" colspan="{+START,IF_PASSED_AND_TRUE,SHOW_PRIVILEGES}{$ADD*,{NOTIFICATION_TYPES_TITLES},3}{+END}{+START,IF_NON_PASSED_OR_FALSE,SHOW_PRIVILEGES}{$ADD*,{NOTIFICATION_TYPES_TITLES},2}{+END}">
+				<th class="responsive-table-no-prefix table-heading-cell" colspan="{+START,IF_PASSED_AND_TRUE,SHOW_PRIVILEGES}{$ADD*,{NOTIFICATION_TYPES_TITLES},3}{+END}{+START,IF_NON_PASSED_OR_FALSE,SHOW_PRIVILEGES}{$ADD*,{NOTIFICATION_TYPES_TITLES},2}{+END}">
 					<span class="faux-h2">{NOTIFICATION_SECTION*}</span>
 				</th>
 			</tr>

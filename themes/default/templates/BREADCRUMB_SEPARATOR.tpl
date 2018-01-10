@@ -1,1 +1,1 @@
-<span class="sep"><span class="accessibility_hidden"> &rarr;</span></span> 
+<span class="sep"><span class="accessibility-hidden"> &rarr;</span></span> 

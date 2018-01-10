@@ -3,7 +3,7 @@
 
 <div data-tpl="formScreenInputVariousTicks" data-tpl-params="{+START,PARAMS_JSON,CUSTOM_ACCEPT_MULTIPLE,CUSTOM_NAME}{_*}{+END}" data-toggleable-tray="{}">
 	{+START,IF_PASSED,EXPANDED}
-		<h4 class="comcode_quote_h4 js-tray-header">
+		<h4 class="comcode-quote-h4 js-tray-header">
 			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}/{!CONTRACT}" src="{$IMG*,1x/trays/{$?,{EXPANDED},contract,expand}}" /></a>
 
 			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{SECTION_TITLE*}</a>

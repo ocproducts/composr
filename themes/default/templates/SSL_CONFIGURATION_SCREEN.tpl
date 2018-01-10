@@ -9,7 +9,7 @@
 
 	<div class="float-surrounder">
 		{+START,LOOP,ENTRIES}
-			<div class="float-surrounder vertical_alignment">
+			<div class="float-surrounder vertical-alignment">
 				<label for="ssl_{ZONE*}__{PAGE*}">
 					<input type="checkbox" value="1" id="ssl_{ZONE*}__{PAGE*}" name="ssl_{ZONE*}__{PAGE*}"{+START,IF,{TICKED}} checked="checked"{+END} />
 					<kbd>{ZONE*}:{PAGE*}</kbd>

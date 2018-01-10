@@ -1,11 +1,11 @@
 {+START,IF,{$NOR,{IS_PANEL},{BEING_INCLUDED}}}
 	{+START,IF_EMPTY,{$TRIM,{CONTENT}}}
-		<p class="nothing_here">{!NO_PAGE_OUTPUT}</p>
+		<p class="nothing-here">{!NO_PAGE_OUTPUT}</p>
 	{+END}
 {+END}
 
 {+START,IF,{$OR,{$NOT,{IS_PANEL}},{$IS_NON_EMPTY,{$TRIM,{CONTENT}}}}}
-	<div class="comcode_page">
+	<div class="comcode-page">
 		{WARNING_DETAILS}
 
 		{$TRIM,{CONTENT}}
@@ -36,7 +36,7 @@
 			{+START,IF,{$AND,{IS_PANEL},{$THEME_OPTION,enable_edit_page_panel_buttons}}}
 				{+START,IF,{$EQ,{NAME},panel_left,panel_right}}
 					<p class="quick-self-edit-link associated-link">
-						<a data-open-as-overlay="{}" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="{!COMCODE_MESSAGE,Comcode}" width="16" height="16" src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" /></a>
+						<a data-open-as-overlay="{}" class="link-exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="{!COMCODE_MESSAGE,Comcode}" width="16" height="16" src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" /></a>
 						<a href="{EDIT_URL*}" title="{$?,{$HAS_ZONE_ACCESS,adminzone},{!EDIT_ZONE_EDITOR},{!EDIT_PAGE}}: {NAME*} ({!IN,&quot;{$?,{$IS_EMPTY,{$ZONE}},{!_WELCOME},{$ZONE*}}&quot;})"><span>{$?,{$HAS_ZONE_ACCESS,adminzone},{!EDIT_ZONE_EDITOR},{!EDIT_PAGE}}</span></a>
 					</p>
 				{+END}

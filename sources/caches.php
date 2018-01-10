@@ -805,7 +805,7 @@ function _get_cache_entries($dets, $special_cache_flags = null)
                 if ($caching_via_cron) {
                     require_code('caches2');
                     request_via_cron($codename, $map, $special_cache_flags, $tempcode);
-                    $ret = paragraph(do_lang_tempcode('CACHE_NOT_READY_YET'), '', 'nothing_here');
+                    $ret = paragraph(do_lang_tempcode('CACHE_NOT_READY_YET'), '', 'nothing-here');
                 } else {
                     $ret = null;
                 }
@@ -827,7 +827,7 @@ function _get_cache_entries($dets, $special_cache_flags = null)
                 if ($caching_via_cron) {
                     require_code('caches2');
                     request_via_cron($codename, $map, $special_cache_flags, $tempcode);
-                    $ret = paragraph(do_lang_tempcode('CACHE_NOT_READY_YET'), '', 'nothing_here');
+                    $ret = paragraph(do_lang_tempcode('CACHE_NOT_READY_YET'), '', 'nothing-here');
                 } else {
                     $ret = null;
                 }

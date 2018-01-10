@@ -20,7 +20,7 @@ i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_
 $title = get_screen_title('Theme repair tools', false);
 $title->evaluate_echo();
 
-echo '<p>Pick a theme&hellip;</p><ul class="spaced_list">';
+echo '<p>Pick a theme&hellip;</p><ul class="spaced-list">';
 
 push_query_limiting(false);
 

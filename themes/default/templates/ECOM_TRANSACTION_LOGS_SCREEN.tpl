@@ -21,7 +21,7 @@
 </p>
 <nav>
 	<ul class="actions-list">
-		<li class="actions_list_strong">
+		<li class="actions-list-strong">
 			<a href="{$PAGE_LINK*,_SELF:_SELF:export_transactions}">{!EXPORT_TRANSACTIONS}</a>
 		</li>
 	</ul>

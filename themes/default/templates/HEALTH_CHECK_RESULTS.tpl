@@ -1,14 +1,14 @@
 {+START,IF_EMPTY,{CATEGORIES}}
-	<p class="nothing_here">{!NO_HEALTH_ISSUES_FOUND}</p>
+	<p class="nothing-here">{!NO_HEALTH_ISSUES_FOUND}</p>
 {+END}
 
 {+START,IF_NON_EMPTY,{CATEGORIES}}
-	<p><img class="activate_rich_semantic_tooltip help-icon vertical_alignment" alt="" src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" /> {!HELP_THRESHOLDS}</p>
+	<p><img class="activate_rich_semantic_tooltip help-icon vertical-alignment" alt="" src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" /> {!HELP_THRESHOLDS}</p>
 
 	{+START,LOOP,CATEGORIES}
 		<h2>{_loop_key*}</h2>
 
-		<table class="wide-table results-table columned_table">
+		<table class="wide-table results-table columned-table">
 			<colgroup>
 				<col />
 				<col style="width: 8em" />

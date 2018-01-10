@@ -13,7 +13,7 @@
 			{+END}
 		{+END}
 
-		<div class="webstandards_checker_off">
+		<div class="webstandards-checker-off">
 			<embed id="{$GET*,player_id}" name="{$GET*,player_id}" type="audio/x-pn-realaudio"
 				src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}"
 				autostart="false"

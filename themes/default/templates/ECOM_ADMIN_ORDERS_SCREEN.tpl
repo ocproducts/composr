@@ -20,7 +20,7 @@
 			{HIDDEN}
 
 			<label for="order_filter">
-				<span class="invisible_ref_point"></span>
+				<span class="invisible-ref-point"></span>
 				<input maxlength="255" type="text" id="order_filter" name="search" value="{SEARCH_VAL*}" /><input data-disable-on-click="1" class="button-micro buttons--search" type="submit" value="{!SEARCH}" /> ({!SEARCH_ORDERS})
 			</label>
 		</div>
@@ -33,7 +33,7 @@
 	</p>
 	<nav>
 		<ul class="actions-list">
-			<li class="actions_list_strong">
+			<li class="actions-list-strong">
 				<a href="{$PAGE_LINK*,_SELF:_SELF:order_export}">{!EXPORT_ORDER_LIST}</a>
 			</li>
 		</ul>

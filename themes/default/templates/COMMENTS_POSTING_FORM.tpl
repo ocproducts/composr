@@ -9,7 +9,7 @@
 
 <div data-view="CommentsPostingForm" data-view-params="{+START,PARAMS_JSON,MORE_URL,GET_EMAIL,GET_NAME,GET_TITLE,EMAIL_OPTIONAL,TITLE_OPTIONAL,WYSIWYG,CAPTCHA,ANALYTIC_EVENT_CATEGORY}{_*}{+END}">
 	{+START,IF_NON_EMPTY,{COMMENT_URL}}
-	<form role="form" title="{TITLE*}" class="comments_form js-form-comments" id="comments_form" action="{COMMENT_URL*}{+START,IF_NON_EMPTY,{$GET,current_anchor}}#{$GET,current_anchor}{+END}{+START,IF_EMPTY,{$GET,current_anchor}}{+START,IF_PASSED_AND_TRUE,COMMENTS}#last_comment{+END}{+END}" method="post" enctype="multipart/form-data" autocomplete="off">
+	<form role="form" title="{TITLE*}" class="comments-form js-form-comments" id="comments-form" action="{COMMENT_URL*}{+START,IF_NON_EMPTY,{$GET,current_anchor}}#{$GET,current_anchor}{+END}{+START,IF_EMPTY,{$GET,current_anchor}}{+START,IF_PASSED_AND_TRUE,COMMENTS}#last_comment{+END}{+END}" method="post" enctype="multipart/form-data" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 		<input type="hidden" name="_comment_form_post" value="1" />
 	{+END}
@@ -42,7 +42,7 @@
 			{+END}
 			<div class="comments_posting_form_outer {+START,IF_PASSED,EXPAND_TYPE} toggleable-tray js-tray-content{+END}"{+START,IF_PASSED,EXPAND_TYPE} aria-expanded="false"{+END} id="comments_posting_form_outer" style="display: {DISPLAY*}">
 				<div class="comments_posting_form_inner">
-					<div class="wide-table-wrap"><table class="map_table wide-table">
+					<div class="wide-table-wrap"><table class="map-table wide-table">
 						{+START,IF,{$DESKTOP}}
 							<colgroup>
 								<col class="comments-field-name-column" />
@@ -55,7 +55,7 @@
 
 							{+START,IF,{$GET,GET_NAME}}
 								<tr>
-									<th class="de-th vertical_alignment">
+									<th class="de-th vertical-alignment">
 										<label for="poster_name_if_guest">{!YOUR_NAME}:</label>
 										{$,Never optional; may not be requested if logged in as we already know}
 									</th>
@@ -71,7 +71,7 @@
 
 							{+START,IF,{GET_EMAIL}}
 								<tr>
-									<th class="de-th vertical_alignment">
+									<th class="de-th vertical-alignment">
 										<label for="email">{!YOUR_EMAIL_ADDRESS}:</label>
 										{+START,IF,{EMAIL_OPTIONAL}}<br /><span class="associated-details">({!OPTIONAL})</span>{+END}
 									</th>
@@ -88,7 +88,7 @@
 
 							{+START,IF,{GET_TITLE}}
 								<tr>
-									<th class="de-th vertical_alignment">
+									<th class="de-th vertical-alignment">
 										<label for="title">{!SUBJECT}:</label>
 										{+START,IF,{TITLE_OPTIONAL}}<br /><span class="associated-details">({!OPTIONAL})</span>{+END}
 									</th>
@@ -106,7 +106,7 @@
 							{+START,IF_PASSED,REVIEW_RATING_CRITERIA}{+START,IF_PASSED,TYPE}{+START,IF_PASSED,ID}
 								{+START,LOOP,REVIEW_RATING_CRITERIA}
 									<tr class="js-container-review-rating">
-										<th class="de-th vertical_alignment">
+										<th class="de-th vertical-alignment">
 											{+START,IF_EMPTY,{REVIEW_TITLE}}{!RATING}:{+END}{+START,IF_NON_EMPTY,{REVIEW_TITLE}}{REVIEW_TITLE*}:{+END}
 										</th>
 
@@ -126,8 +126,8 @@
 								<th class="de-th">
 									{$SET,needs_msg_label,{$OR,{$GET,GET_NAME},{GET_EMAIL},{GET_TITLE}}}
 									{+START,IF,{$GET,needs_msg_label}}
-										<div class="vertical_alignment">
-											<a data-open-as-overlay="{}" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="{!COMCODE_MESSAGE,Comcode}" src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" /></a>
+										<div class="vertical-alignment">
+											<a data-open-as-overlay="{}" class="link-exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="{!COMCODE_MESSAGE,Comcode}" src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" /></a>
 											<label for="post">{!POST_COMMENT}:</label>
 										</div>
 									{+END}
@@ -146,8 +146,8 @@
 
 									{+START,IF,{$NOT,{$GET,needs_msg_label}}}
 										<div>
-											<a data-open-as-overlay="{}" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="{!COMCODE_MESSAGE,Comcode}" src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical_alignment" /></a>
-											<label for="post" class="vertical_alignment">{!POST_COMMENT}:</label>
+											<a data-open-as-overlay="{}" class="link-exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="{!COMCODE_MESSAGE,Comcode}" src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical-alignment" /></a>
+											<label for="post" class="vertical-alignment">{!POST_COMMENT}:</label>
 										</div>
 									{+END}
 

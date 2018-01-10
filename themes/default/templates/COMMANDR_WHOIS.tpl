@@ -1,4 +1,4 @@
-<div class="wide-table-wrap"><table class="map_table autosized-table wide-table results-table">
+<div class="wide-table-wrap"><table class="map-table autosized-table wide-table results-table">
 	<tbody>
 		<tr>
 			<th>{!USERNAME}</th>

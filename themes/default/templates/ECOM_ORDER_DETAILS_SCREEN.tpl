@@ -5,7 +5,7 @@
 {+END}
 
 <div class="wide-table-wrap">
-	<table class="map_table results-table wide-table autosized-table">
+	<table class="map-table results-table wide-table autosized-table">
 		<tbody>
 			<tr>
 				<th>{!ORDER_NUMBER}</th>

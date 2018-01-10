@@ -11,10 +11,10 @@
 
 		<div class="toggleable-tray js-tray-content">
 			{+START,IF_EMPTY,{CONTENT}}
-				<p class="nothing_here">{!NO_NEWS}</p>
+				<p class="nothing-here">{!NO_NEWS}</p>
 			{+END}
 			{+START,IF_NON_EMPTY,{CONTENT}}
-				<div class="webstandards_checker_off">
+				<div class="webstandards-checker-off">
 					{CONTENT}
 				</div>
 			{+END}
@@ -29,10 +29,10 @@
 		{+START,IF_NON_EMPTY,{TITLE}}<h3>{TITLE`}</h3>{+END}
 
 		{+START,IF_EMPTY,{CONTENT}}
-			<p class="nothing_here">{!NO_NEWS}</p>
+			<p class="nothing-here">{!NO_NEWS}</p>
 		{+END}
 		{+START,IF_NON_EMPTY,{CONTENT}}
-			<div class="webstandards_checker_off wide_ticker" id="news_scroller{$GET%,side_news_id}" data-cms-news-scroller="1">
+			<div class="webstandards-checker-off wide_ticker" id="news_scroller{$GET%,side_news_id}" data-cms-news-scroller="1">
 				{CONTENT}
 			</div>
 		{+END}

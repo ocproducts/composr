@@ -220,7 +220,7 @@
                             newCell.className = 'form-table-field-input privilege_cell';
                             newCell.id = 'privilege_cell_' + group + '_' + privilege;
                             if (document.getElementById('access_' + group).name !== '_ignore') {
-                                $dom.html(newCell, '<div class="accessibility_hidden"><label for="access_' + group + '_privilege_' + privilege + '">{!permissions:OVERRIDE;^}</label></div><select title="' + $cms.filter.html(privilegeTitle) + '" id="access_' + group + '_privilege_' + privilege + '" name="access_' + group + '_privilege_' + privilege + '"><option selected="selected" value="-1">/</option><option value="0">{!permissions:NO_COMPACT;^}</option><option value="1">{!permissions:YES_COMPACT;^}</option></select>');
+                                $dom.html(newCell, '<div class="accessibility-hidden"><label for="access_' + group + '_privilege_' + privilege + '">{!permissions:OVERRIDE;^}</label></div><select title="' + $cms.filter.html(privilegeTitle) + '" id="access_' + group + '_privilege_' + privilege + '" name="access_' + group + '_privilege_' + privilege + '"><option selected="selected" value="-1">/</option><option value="0">{!permissions:NO_COMPACT;^}</option><option value="1">{!permissions:YES_COMPACT;^}</option></select>');
                                 $dom.on(newCell, 'mouseover', '.js-mouseover-show-permission-setting', function (e, select) {
                                     if (select.value === '-1') {
                                         $corePermissionManagement.showPermissionSetting(select, e);
@@ -556,7 +556,7 @@
         var temp = permissionsImgFunc1b(node, id);
         var url = temp[0];
         var title = temp[1];
-        return '<img class="vertical_alignment perm_icon" src="' + url + '" alt="' + title + '" title="' + title + '" />&nbsp;';
+        return '<img class="vertical-alignment perm_icon" src="' + url + '" alt="' + title + '" title="' + title + '" />&nbsp;';
 
 
         function permissionsImgFunc1b(node, id) {
@@ -600,7 +600,7 @@
         var temp = permissionsImgFunc2b(node, id);
         var url = temp[0];
         var title = temp[1];
-        return '<img class="vertical_alignment" src="' + url + '" alt="' + title + '" title="' + title + '" />';
+        return '<img class="vertical-alignment" src="' + url + '" alt="' + title + '" title="' + title + '" />';
 
         function permissionsImgFunc2b(node, id) {
             if (id === undefined) {

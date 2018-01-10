@@ -11,7 +11,7 @@
 	<form class="js-form-submit-newsletter-check-email-field" title="{!NEWSLETTER}" action="{URL*}" method="post" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
-		<p class="accessibility_hidden"><label for="baddress">{!EMAIL_ADDRESS}</label></p>
+		<p class="accessibility-hidden"><label for="baddress">{!EMAIL_ADDRESS}</label></p>
 
 		<div>
 			<input class="wide-field" id="baddress" name="address{NID*}" placeholder="{!EMAIL_ADDRESS}" />

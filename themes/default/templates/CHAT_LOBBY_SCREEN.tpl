@@ -52,7 +52,7 @@
 					<p class="chat-multi-tab">{!OPEN_CHATROOMS_IN_TABS}</p>
 				{+END}
 				{+START,IF_EMPTY,{CHATROOMS}}
-					<p class="nothing_here">{!NO_CATEGORIES,chat}</p>
+					<p class="nothing-here">{!NO_CATEGORIES,chat}</p>
 				{+END}
 			</div>
 		</div>
@@ -67,7 +67,7 @@
 					<div class="chat-lobby-convos">
 						<div class="chat-lobby-convos-tabs" id="chat-lobby-convos-tabs" style="display: none"></div>
 						<div class="chat-lobby-convos-areas" id="chat-lobby-convos-areas">
-							<p class="nothing_here">
+							<p class="nothing-here">
 								{!NO_IM_CONVERSATIONS}
 							</p>
 						</div>
@@ -102,7 +102,7 @@
 							<form class="js-form-submit-add-friend" data-submit-pd="1" title="{!ADD}: {!FRIEND_LIST}" method="post" action="{URL_ADD_FRIEND*}" autocomplete="off">
 								{$INSERT_SPAMMER_BLACKHOLE}
 
-								<label class="accessibility_hidden" for="friend_username">{!USERNAME}: </label>
+								<label class="accessibility-hidden" for="friend_username">{!USERNAME}: </label>
 								<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="18" maxlength="80" class="js-keyup-input-update-ajax-member-list" type="text" placeholder="{!USERNAME}" id="friend_username" name="friend_username" />
 								<input class="button-micro menu___generic_admin__add_one" type="submit" value="{!ADD}" />
 							</form>

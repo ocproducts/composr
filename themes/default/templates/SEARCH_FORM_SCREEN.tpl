@@ -5,7 +5,7 @@
 
 	{+START,IF_PASSED,RESULTS}
 		{+START,IF_EMPTY,{RESULTS}}
-			<p class="nothing_here">{!NO_RESULTS_SEARCH}</p>
+			<p class="nothing-here">{!NO_RESULTS_SEARCH}</p>
 		{+END}
 		{+START,IF_NON_EMPTY,{RESULTS}}
 			<h2>{$?,{$IS_EMPTY,{SEARCH_TERM}},{!SEARCH_RESULTS_ARE_UNNAMED,{NUM_RESULTS*}{$?,{$EQ,{NUM_RESULTS},{$NUMBER_FORMAT,{$MAXIMUM_RESULT_COUNT_POINT}}},+}},{!SEARCH_RESULTS_ARE,{NUM_RESULTS*}{$?,{$EQ,{NUM_RESULTS},{$NUMBER_FORMAT,{$MAXIMUM_RESULT_COUNT_POINT}}},+},{SEARCH_TERM*}}}</h2>
@@ -54,7 +54,7 @@
 				{$HIDDENS_FOR_GET_FORM,{URL}}
 				<input type="hidden" name="all_defaults" value="0" />
 
-				<div class="wide-table-wrap"><table class="map_table form-table wide-table">
+				<div class="wide-table-wrap"><table class="map-table form-table wide-table">
 					{+START,IF,{$DESKTOP}}
 						<colgroup>
 							<col class="field-name-column" />
@@ -67,7 +67,7 @@
 						<tr>
 							<th class="form-table-field-name">{!SEARCH_FOR}</th>
 							<td class="form-table-field-input" colspan="2">
-								<div class="accessibility_hidden"><label for="search_content">{!SEARCH_FOR}</label></div>
+								<div class="accessibility-hidden"><label for="search_content">{!SEARCH_FOR}</label></div>
 								<div>
 									<input maxlength="255"{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" class="search_content wide-field js-keyup-update-ajax-search-list js-keypress-enter-submit-primary-form" type="search" size="{$?,{$MOBILE},30,48}" id="search_content" name="content" value="{+START,IF_PASSED,CONTENT}{CONTENT*}{+END}" />
 								</div>
@@ -102,9 +102,9 @@
 						<tr>
 							<th class="form-table-field-name">{USER_LABEL*}</th>
 							<td class="form-table-field-input" colspan="2">
-								<div class="accessibility_hidden"><label for="search_author">{USER_LABEL*}</label></div>
+								<div class="accessibility-hidden"><label for="search_author">{USER_LABEL*}</label></div>
 								<div>
-									<span class="invisible_ref_point"></span>
+									<span class="invisible-ref-point"></span>
 									<input autocomplete="off" maxlength="80" class="wide-field js-keyup-update-author-list" type="text" value="{AUTHOR*}" id="search_author" name="author"{+START,IF,{$MOBILE}} autocorrect="off"{+END} />
 								</div>
 							</td>
@@ -113,7 +113,7 @@
 							<tr>
 								<th class="form-table-field-name">{DAYS_LABEL*}</th>
 								<td class="form-table-field-input" colspan="2">
-									<div class="accessibility_hidden"><label for="search_days">{DAYS_LABEL*}</label></div>
+									<div class="accessibility-hidden"><label for="search_days">{DAYS_LABEL*}</label></div>
 									<select id="search_days" name="days">
 										<option selected="selected" value="-1">{!NA}</option>
 										<option {+START,IF,{$EQ,{DAYS},2}} selected="selected"{+END} value="2">{!SUBMIT_AGE_DAYS,2}</option>
@@ -133,7 +133,7 @@
 							<tr>
 								<th class="form-table-field-name">{DATE_RANGE_LABEL*}</th>
 								<td class="form-table-field-input" colspan="2">
-									<div class="accessibility_hidden"><label for="cutoff_from">{DATE_RANGE_LABEL*} {!FROM}</label></div>
+									<div class="accessibility-hidden"><label for="cutoff_from">{DATE_RANGE_LABEL*} {!FROM}</label></div>
 									{+START,INCLUDE,FORM_SCREEN_INPUT_DATE}
 										NAME=cutoff_from
 										TYPE=date
@@ -149,7 +149,7 @@
 										MAX_DATE_MONTH=
 										MAX_DATE_YEAR=
 									{+END}
-									<div class="accessibility_hidden"><label for="cutoff_to">{DATE_RANGE_LABEL*} {!TO}</label></div>
+									<div class="accessibility-hidden"><label for="cutoff_to">{DATE_RANGE_LABEL*} {!TO}</label></div>
 									{+START,INCLUDE,FORM_SCREEN_INPUT_DATE}
 										NAME=cutoff_to
 										TYPE=date
@@ -171,8 +171,8 @@
 						<tr>
 							<th class="form-table-field-name">{!SORT}</th>
 							<td class="form-table-field-input" colspan="2">
-								<div class="accessibility_hidden"><label for="search_direction">{!DIRECTION}</label></div>
-								<div class="accessibility_hidden"><label for="search_sort">{!SORT_BY}</label></div>
+								<div class="accessibility-hidden"><label for="search_direction">{!DIRECTION}</label></div>
+								<div class="accessibility-hidden"><label for="search_sort">{!SORT_BY}</label></div>
 								<select id="search_sort" name="sort">
 									<option {+START,IF,{$EQ,{SORT},relevance}} selected="selected"{+END} value="relevance">{!RELEVANCE_SORT}</option>
 									<option {+START,IF,{$EQ,{SORT},add_date}} selected="selected"{+END} value="add_date">{!DATE}</option>

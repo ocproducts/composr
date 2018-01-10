@@ -1,6 +1,6 @@
 {+START,IF,{$NOT,{$WIDE_HIGH}}}
 	{+START,IF_NON_EMPTY,{$MESSAGES_TOP}}
-		<div class="global_messages">
+		<div class="global-messages">
 			{$MESSAGES_TOP}
 		</div>
 	{+END}
@@ -46,7 +46,7 @@
 						{+END}
 
 						{+START,IF,{$NOT,{TAB_SINGLE_FIELD}}}
-							<div class="wide-table-wrap"><table class="map_table form-table wide-table">
+							<div class="wide-table-wrap"><table class="map-table form-table wide-table">
 								{+START,IF,{$DESKTOP}}
 									<colgroup>
 										<col class="field-name-column-shorter" />

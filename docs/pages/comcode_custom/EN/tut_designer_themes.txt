@@ -78,7 +78,7 @@ This is what will happen with the elements of your static design (roughly):
 [*] You will also want to make sure the 'Block cache' is disabled in the configuration (Admin Zone > Setup > Configuration > Performance options > Caches). This will allow you to make block template changes without having to worry about emptying the block cache each time. It is advisable to leave the other caches as they are; Composr is smart enough to detect if files have been changed in most cases.
 [/list]
 
-[semihtml][b]This section is accompanied by a <a class="user_link force_filetype_icon" target="_blank" href="https://youtu.be/1ZvECzgtcEM">video</a>.[/b][/semihtml]
+[semihtml][b]This section is accompanied by a <a class="user-link force-filetype-icon" target="_blank" href="https://youtu.be/1ZvECzgtcEM">video</a>.[/b][/semihtml]
 
 [title="3"]Images and CSS[/title]
 
@@ -90,7 +90,7 @@ CSS loads images with a base URL within the [tt]themes/<yourthemename>/templates
 [*] You need to change the image references in your CSS. If you had something like [tt]images/example.jpg[/tt] it would need to be changed to [tt]{$IMG,<yoursitename>/example}[/tt]. You should not add the [tt].jpg[/tt]/[tt].png[/tt]/[tt].gif[/tt] on the end. This will make it find [tt]themes/<yourthemename>/images_custom/<yoursitename>/example.jpg[/tt] (or [tt]example.png[/tt] or [tt]example.gif[/tt]).
 [/list]
 
-[semihtml][b]This section is accompanied by a <a class="user_link force_filetype_icon" target="_blank" href="https://youtu.be/Osrcpl4wnk4">video</a>.[/b][/semihtml]
+[semihtml][b]This section is accompanied by a <a class="user-link force-filetype-icon" target="_blank" href="https://youtu.be/Osrcpl4wnk4">video</a>.[/b][/semihtml]
 
 [title="3"]Global layout of XHTML[/title]
 
@@ -110,7 +110,7 @@ CSS loads images with a base URL within the [tt]themes/<yourthemename>/templates
 [*] Similarly, you may find you made assumptions in your CSS. For example, you may have set quite specific styles for default elements because you only use them in a specific way on your design (e.g. making all [tt]strong[/tt] tags really large). Your Composr theme will need to not make too many assumptions like this, remember a lot of your CSS will be running on screens you haven't given individual design attention to because they will be running a lot of default XHTML from Composr. Adjust your CSS so it targets your style rules with the necessary specificity.
 [/list]
 
-[semihtml][b]This section is accompanied by a <a class="user_link force_filetype_icon" target="_blank" href="https://youtu.be/qQOoz_6QPCA">video</a>.[/b][/semihtml]
+[semihtml][b]This section is accompanied by a <a class="user-link force-filetype-icon" target="_blank" href="https://youtu.be/qQOoz_6QPCA">video</a>.[/b][/semihtml]
 
 [title="3"]Laying out your panel/page structure[/title]
 
@@ -144,7 +144,7 @@ Place the blocks as appropriate onto your:
 [/list]
 [/list]
 
-[semihtml][b]This section is accompanied by a <a class="user_link force_filetype_icon" target="_blank" href="https://youtu.be/XA7tMzZY330">video</a>.[/b][/semihtml]
+[semihtml][b]This section is accompanied by a <a class="user-link force-filetype-icon" target="_blank" href="https://youtu.be/XA7tMzZY330">video</a>.[/b][/semihtml]
 
 [title="3"]Lots of XHTML template editing[/title]
 
@@ -160,7 +160,7 @@ There are a small number of cases where (for performance reasons) Composr does n
 [*] There's a big risk that the final webmaster may come along and ruin any custom XHTML you have written via editing using the WYSIWYG editor. You can disable the WYSIWYG editor for a Comcode page by pasting this special comment into the end of the page:[code="Tempcode"]{$,page hint: no_wysiwyg}{$,page hint: no_smart_conversion}[/code]
 [/list]
 
-[semihtml][b]This section is accompanied by a <a class="user_link force_filetype_icon" target="_blank" href="https://youtu.be/bClwMQ9f08c">video</a>.[/b][/semihtml]
+[semihtml][b]This section is accompanied by a <a class="user-link force-filetype-icon" target="_blank" href="https://youtu.be/bClwMQ9f08c">video</a>.[/b][/semihtml]
 [/surround]
 
 [title="3"]JavaScript[/title]
@@ -340,7 +340,7 @@ Obviously the pages you reference must exist to show. To create them...
 2) Type in the new page-link beneath the list of existing pages. For example, for these examples (assuming we are working in the welcome zone) we would type [tt]:otherpagename[/tt].
 3) You will then be in the page editor and can define the page contents there.
 
-[semihtml][b]This section is accompanied by a <a class="user_link force_filetype_icon" target="_blank" href="https://youtu.be/8A_bOH_Swkw">video</a>.[/b][/semihtml]
+[semihtml][b]This section is accompanied by a <a class="user-link force-filetype-icon" target="_blank" href="https://youtu.be/8A_bOH_Swkw">video</a>.[/b][/semihtml]
 
 [title="3"]Logo wizard[/title]
 
@@ -425,7 +425,7 @@ If you're not sure what parameters are available to use in a template you can ad
 [/code]
 And this will show a full print out of all the parameters available to you. Often it's hard to read this if you don't have a lot of space in your design at the time of you putting this in, but you can copy and paste it out to a word processor to keep it for reference. For example you may want the URL or the parameter for an [tt]<img>[/tt] tag and these can both be found in this way.
 
-[semihtml][b]This section is accompanied by a <a class="user_link force_filetype_icon" target="_blank" href="https://youtu.be/3EUO5PMAIG8">video</a>.[/b][/semihtml]
+[semihtml][b]This section is accompanied by a <a class="user-link force-filetype-icon" target="_blank" href="https://youtu.be/3EUO5PMAIG8">video</a>.[/b][/semihtml]
 
 [title="3"]Login boxes[/title]
 
@@ -456,7 +456,7 @@ Sometimes a design will have what looks like a panel but actually only appears o
 
 It's easier to put it all in a panel like this and say that panel should only show on one page than trying to make the rest of the front page be a weird shape.
 
-[semihtml][b]This section is accompanied by a <a class="user_link force_filetype_icon" target="_blank" href="https://youtu.be/x2Q5xz7CXvA">video</a>.[/b][/semihtml]
+[semihtml][b]This section is accompanied by a <a class="user-link force-filetype-icon" target="_blank" href="https://youtu.be/x2Q5xz7CXvA">video</a>.[/b][/semihtml]
 
 [title="3"]Internationalisation[/title]
 
@@ -498,7 +498,7 @@ This is the default [tt]BLOCK_SIDE_NEWS.tpl[/tt]...
 	<h3>{TITLE}</h3>
 
 	{+START,IF_EMPTY,{CONTENT}}
-		<p class="nothing_here">{$?,{BLOG},{!BLOG_NO_NEWS},{!NO_NEWS}}</p>
+		<p class="nothing-here">{$?,{BLOG},{!BLOG_NO_NEWS},{!NO_NEWS}}</p>
 	{+END}
 	{+START,IF_NON_EMPTY,{CONTENT}}
 		{CONTENT}
@@ -567,7 +567,7 @@ Often we will use it in templates even when it is not needed if we also have a [
 [*]
 
 [code="HTML"]
-<p class="nothing_here">...</p>
+<p class="nothing-here">...</p>
 [/code]
 
 This just is some static HTML.

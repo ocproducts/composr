@@ -25,7 +25,7 @@
 </h1>
 
 {+START,IF_PASSED,SUB}
-	<div class="title_tagline">
+	<div class="title-tagline">
 		{SUB}
 	</div>
 {+END}

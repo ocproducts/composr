@@ -49,7 +49,7 @@ To configure the payment gateway settings go to Admin Zone > Setup > Configurati
 The option requirements for PayPal are as follows:
 
 [html]
-<table class="map_table results-table wide-table autosized-table"><tbody>
+<table class="map-table results-table wide-table autosized-table"><tbody>
 	<tr>
 		<th>
 			Payment gateway

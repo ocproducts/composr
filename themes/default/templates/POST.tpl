@@ -19,7 +19,7 @@
 				{+START,IF_NON_EMPTY,{TITLE}}{+START,IF,{$NEQ,{TITLE},{$GET,topic_title}}}<h3 class="post_title" itemprop="name">{TITLE*}</h3>{+END}{+END}
 
 				<div class="post_subline">
-					{+START,IF_NON_EMPTY,{POSTER_URL}}{!BY_SIMPLE,<a class="post_poster" href="{POSTER_URL*}">{$DISPLAYED_USERNAME*,{POSTER_NAME}}</a>} {+START,INCLUDE,MEMBER_TOOLTIP}SUBMITTER={POSTER_ID}{+END}{+END}
+					{+START,IF_NON_EMPTY,{POSTER_URL}}{!BY_SIMPLE,<a class="post-poster" href="{POSTER_URL*}">{$DISPLAYED_USERNAME*,{POSTER_NAME}}</a>} {+START,INCLUDE,MEMBER_TOOLTIP}SUBMITTER={POSTER_ID}{+END}{+END}
 					{+START,IF_EMPTY,{POSTER_URL}}{!BY_SIMPLE,{POSTER_NAME*}},{+END}
 
 					<span class="post_time">
@@ -27,11 +27,11 @@
 					</span>
 
 					{+START,IF_NON_EMPTY,{EMPHASIS}}
-						<span class="post_action_link">({EMPHASIS})</span>
+						<span class="post-action-link">({EMPHASIS})</span>
 					{+END}
 
 					{+START,IF_NON_EMPTY,{UNVALIDATED}}
-						<span class="post_action_link">({UNVALIDATED})</span>
+						<span class="post-action-link">({UNVALIDATED})</span>
 					{+END}
 
 					{+START,LOOP,INDIVIDUAL_REVIEW_RATINGS}
@@ -50,24 +50,24 @@
 								<span itemprop="reviewRating" itemscope="itemscope" itemtype="http://schema.org/Rating"><meta itemprop="ratingValue" content="{REVIEW_RATING*}" /></span>
 							{+END}
 
-							<span class="post_action_link">
+							<span class="post-action-link">
 								({$GET,REVIEWS})
 							</span>
 						{+END}
 					{+END}
 
 					{+START,IF_PASSED,RATING}
-						<span class="post_action_link">{RATING}</span>
+						<span class="post-action-link">{RATING}</span>
 					{+END}
 
 					{+START,IF,{$DESKTOP}}
 						{+START,IF_NON_EMPTY,{ID}}{+START,IF_NON_PASSED_OR_FALSE,PREVIEWING}{+START,IF,{$MATCH_KEY_MATCH,_SEARCH:topicview}}
-							<div id="cell_mark_{ID*}" class="cns-off post_action_link inline-block mobile_inline">
-								<form class="webstandards_checker_off" title="{!MARKER} #{ID*}" method="post" action="index.php" id="form_mark_{ID*}" autocomplete="off">
+							<div id="cell_mark_{ID*}" class="cns-off post-action-link inline-block mobile_inline">
+								<form class="webstandards-checker-off" title="{!MARKER} #{ID*}" method="post" action="index.php" id="form_mark_{ID*}" autocomplete="off">
 									{$INSERT_SPAMMER_BLACKHOLE}
 
 									<div>
-										{+START,IF,{$NOT,{$IS_GUEST}}}<div class="accessibility_hidden"><label for="mark_{ID*}">{!MARKER} #{ID*}</label></div>{+END}{$,Guests don't see this so search engines don't; hopefully people with screen-readers are logged in}
+										{+START,IF,{$NOT,{$IS_GUEST}}}<div class="accessibility-hidden"><label for="mark_{ID*}">{!MARKER} #{ID*}</label></div>{+END}{$,Guests don't see this so search engines don't; hopefully people with screen-readers are logged in}
 										<input {+START,IF,{$NOT,{$IS_GUEST}}} title="{!MARKER} #{ID*}"{+END} value="1" type="checkbox" id="mark_{ID*}" name="mark_{ID*}" />
 									</div>
 								</form>

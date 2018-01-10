@@ -33,7 +33,7 @@
 					{!AUTHOR_FUNCTIONS,{AUTHOR*}}&hellip;
 				</p>
 				<nav>
-					<ul class="actions_list_compact" itemprop="significantLinks">
+					<ul class="actions-list-compact" itemprop="significantLinks">
 						{URL_DETAILS}
 						{FORUM_DETAILS}
 						{POINT_DETAILS}
@@ -56,7 +56,7 @@
 				</p>
 				{DOWNLOADS_RELEASED}
 				{+START,IF_EMPTY,{DOWNLOADS_RELEASED}}
-					<p class="nothing_here">{!NO_DOWNLOADS_FOUND}</p>
+					<p class="nothing-here">{!NO_DOWNLOADS_FOUND}</p>
 				{+END}
 			</div>
 		</div>
@@ -70,7 +70,7 @@
 				</p>
 				{NEWS_RELEASED}
 				{+START,IF_EMPTY,{NEWS_RELEASED}}
-					<p class="nothing_here">{!NONE}</p>
+					<p class="nothing-here">{!NONE}</p>
 				{+END}
 			</div>
 		</div>

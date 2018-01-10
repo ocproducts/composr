@@ -30,7 +30,7 @@
 		</div>
 
 		<div class="status_box_outer">
-			<label class="accessibility_hidden" for="activity_status">{!TYPE_HERE}</label>
+			<label class="accessibility-hidden" for="activity_status">{!TYPE_HERE}</label>
 			<textarea class="status_box fade_input field-input-non-filled js-textarea-activity-status" name="status" id="activity_status" rows="2">{!TYPE_HERE}</textarea>
 		</div>
 	</form>

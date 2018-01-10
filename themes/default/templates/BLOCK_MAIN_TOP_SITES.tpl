@@ -1,9 +1,9 @@
 {+START,IF_EMPTY,{BANNERS}}
-	<p class="nothing_here">{!NO_ENTRIES,banner}</p>
+	<p class="nothing-here">{!NO_ENTRIES,banner}</p>
 {+END}
 
 {+START,IF_NON_EMPTY,{BANNERS}}
-	<div class="wide-table-wrap"><table class="columned_table wide-table results-table spaced-table autosized-table responsive-table">
+	<div class="wide-table-wrap"><table class="columned-table wide-table results-table spaced-table autosized-table responsive-table">
 		<thead>
 			<tr>
 				<th>

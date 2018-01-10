@@ -6,7 +6,7 @@
 
 		{+START,SET,posting_box}
 			<div class="im-post-bits">
-				<label class="accessibility_hidden" for="post_{CHATROOM_ID*}">{!MESSAGE}</label>
+				<label class="accessibility-hidden" for="post_{CHATROOM_ID*}">{!MESSAGE}</label>
 				<textarea class="input_required im-post-field js-keypress-eat-enter js-keyup-textarea-chat-post" id="post_{CHATROOM_ID*}" name="post_{CHATROOM_ID*}" cols="30" rows="1"></textarea>
 
 				{+START,IF,{$CNS}}

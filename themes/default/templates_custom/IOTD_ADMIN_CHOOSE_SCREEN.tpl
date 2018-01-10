@@ -8,14 +8,14 @@
 
 {CURRENT_IOTD}
 {+START,IF_EMPTY,{CURRENT_IOTD}}
-	<p class="nothing_here">{!NO_IOTD}</p>
+	<p class="nothing-here">{!NO_IOTD}</p>
 {+END}
 
 <h2>{!UNUSED_IOTDS}</h2>
 
 {UNUSED_IOTD}
 {+START,IF_EMPTY,{UNUSED_IOTD}}
-	<p class="nothing_here">{!NONE}</p>
+	<p class="nothing-here">{!NONE}</p>
 {+END}
 
 <a id="used"></a>
@@ -24,7 +24,7 @@
 {+START,IF,{SHOWING_OLD}}
 	{USED_IOTD}
 	{+START,IF_EMPTY,{USED_IOTD}}
-		<p class="nothing_here">{!NONE}</p>
+		<p class="nothing-here">{!NONE}</p>
 	{+END}
 {+END}
 

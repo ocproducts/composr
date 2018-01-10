@@ -9,5 +9,5 @@
 {+END}
 
 {+START,IF_EMPTY,{LI}}
-	<p class="nothing_here">{!NONE}</p>
+	<p class="nothing-here">{!NONE}</p>
 {+END}

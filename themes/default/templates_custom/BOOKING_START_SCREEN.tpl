@@ -1,7 +1,7 @@
 {TITLE}
 
 {+START,IF_EMPTY,{CATEGORIES}}
-	<p class="nothing_here">{!NO_CATEGORIES}</p>
+	<p class="nothing-here">{!NO_CATEGORIES}</p>
 {+END}
 
 {+START,IF_NON_EMPTY,{CATEGORIES}}
@@ -64,7 +64,7 @@
 				<h2>{CATEGORY_TITLE*}</h2>
 
 				<div class="wide-table-wrap">
-					<table class="wide-table results-table columned_table spaced-table responsive-table">
+					<table class="wide-table results-table columned-table spaced-table responsive-table">
 						<thead>
 							<tr>
 								<th>{!ITEM}</th>
@@ -83,12 +83,12 @@
 						<tbody>
 							{+START,LOOP,BOOKABLES}
 								<tr>
-									<th class="de-th vertical_alignment">
+									<th class="de-th vertical-alignment">
 										<strong>{BOOKABLE_TITLE*}</strong>
 									</th>
 
-									<td class="vertical_alignment">
-										<label class="accessibility_hidden" for="bookable_{BOOKABLE_ID*}_quantity">{!QUANTITY}, {BOOKABLE_TITLE*}</label>
+									<td class="vertical-alignment">
+										<label class="accessibility-hidden" for="bookable_{BOOKABLE_ID*}_quantity">{!QUANTITY}, {BOOKABLE_TITLE*}</label>
 										<select name="bookable_{BOOKABLE_ID*}_quantity" id="bookable_{BOOKABLE_ID*}_quantity">
 											{$SET,quantity,0}
 											{+START,WHILE,{$LT,{$GET,quantity},{$ADD,{BOOKABLE_QUANTITY_AVAILABLE},1}}}
@@ -99,7 +99,7 @@
 									</td>
 
 									{+START,IF,{HAS_MIXED_DATE_TYPES}}
-										<td class="vertical_alignment">
+										<td class="vertical-alignment">
 											{+START,INCLUDE,BOOK_DATE_CHOOSE}
 												NAME=bookable_{BOOKABLE_ID}_date_from
 												CURRENT_DAY={BOOKABLE_DATE_FROM_DAY}
@@ -114,7 +114,7 @@
 											{+END}
 										</td>
 
-										<td class="vertical_alignment">
+										<td class="vertical-alignment">
 											{+START,IF,{BOOKABLE_SELECT_DATE_RANGE}}
 												{+START,INCLUDE,BOOK_DATE_CHOOSE}
 													NAME=bookable_{BOOKABLE_ID}_date_to
@@ -133,7 +133,7 @@
 									{+END}
 
 									{+START,IF,{HAS_DETAILS}}
-										<td class="vertical_alignment">
+										<td class="vertical-alignment">
 											{BOOKABLE_DESCRIPTION}
 
 											{+START,IF_NON_EMPTY,{BOOKABLE_MESSAGES}}
@@ -146,7 +146,7 @@
 										</td>
 									{+END}
 
-									<td class="vertical_alignment">
+									<td class="vertical-alignment">
 										{$CURRENCY,{BOOKABLE_PRICE},{CURRENCY},{$?,{$CONFIG_OPTION,currency_auto},{$CURRENCY_USER},{$CURRENCY}}}
 										<span class="associated-details">{!BOOKING_PER}</span>
 									</td>

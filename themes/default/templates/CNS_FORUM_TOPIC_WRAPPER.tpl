@@ -1,7 +1,7 @@
 {$REQUIRE_JAVASCRIPT,core_form_interfaces}
 {$REQUIRE_JAVASCRIPT,cns_forum}
 <div data-view="CnsForumTopicWrapper">
-	<div class="wide-table-wrap"><table class="columned_table wide-table cns-topic-list">
+	<div class="wide-table-wrap"><table class="columned-table wide-table cns-topic-list">
 		{+START,IF,{$DESKTOP}}
 			<colgroup>
 				{+START,IF,{$CONFIG_OPTION,is_on_topic_emoticons}}

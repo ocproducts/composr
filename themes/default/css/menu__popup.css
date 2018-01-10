@@ -3,109 +3,109 @@
  Copyright (c) ocProducts, 2004-2018
 */
 
-.menu_type__popup {
+.menu-type--popup {
 	min-width: 15em;
 	max-width: 30em; /* Really this is just to make the screen preview work! Normally a panel would constrain the width. */
 }
-.box .menu_type__popup {
+.box .menu-type--popup {
 	min-width: 0;
 }
 
-.menu_type__popup ul {
+.menu-type--popup ul {
 	line-height: 1.4em;
 	border-top: 1px solid {$GET,standard_border};
 	border-left: 1px solid {$GET,standard_border};
 	border-right: 1px solid {$GET,standard_border};
 }
 
-.menu_type__popup ul ul {
+.menu-type--popup ul ul {
 	margin-top: -1px;
 }
 
-.menu_type__popup li {
+.menu-type--popup li {
 	padding: 0.4em 0.5em;
 }
 
-.menu_type__popup .nlevel li {
+.menu-type--popup .nlevel li {
 	white-space: nowrap;
 }
 
-.menu_type__popup .menu_spacer, .menu_type__popup li {
+.menu-type--popup .menu_spacer, .menu-type--popup li {
 	background-color: {$GET,area_background} !important;
 	border-bottom: 1px solid {$GET,standard_border};
 }
 
-.menu_type__popup li.current {
+.menu-type--popup li.current {
 	background-color: {$GET,area_highlight_left_complement_background} !important;
 	font-weight: bold;
 }
 
-.menu_type__popup li:hover {
+.menu-type--popup li:hover {
 	background-color: {$GET,area_highlight_right_complement_background} !important;
 	transition: color,background-color 0.5s linear;
 }
 
-.menu_type__popup ul li a { /* ul li added to ensure precedence over ".nl li" selector, whilst not forcing us to use up our only !important */
+.menu-type--popup ul li a { /* ul li added to ensure precedence over ".nl li" selector, whilst not forcing us to use up our only !important */
 	padding-left: 14px;
 	display: inline-block; /* This says that we want to encourage greedy space consumption rather than wrapping */
 }
 
-.menu_type__popup li a, .menu_type__popup li a:visited {
+.menu-type--popup li a, .menu-type--popup li a:visited {
 	color: {$GET,a.link};
 }
-.menu_type__popup li a:hover {
+.menu-type--popup li a:hover {
 	color: {$GET,a.hover} !important;
 }
 
-.menu_type__popup .has_img>img {
+.menu-type--popup .has_img>img {
 	width: 20px;
 }
 
-.menu_type__popup a {
+.menu-type--popup a {
 	background-size: 6px 6px;
 }
 
-.menu_type__popup .current a {
+.menu-type--popup .current a {
 	background: transparent url('{$IMG;,1x/menus/menu_bullet_current}') no-repeat 5px 6px !important;
 }
-.menu_type__popup .has_img.current>a {
+.menu-type--popup .has_img.current>a {
 	background: none !important;
 }
 
-.menu_type__popup .non_current a {
+.menu-type--popup .non_current a {
 	background: transparent url('{$IMG;,1x/menus/menu_bullet}') no-repeat 5px 6px;
 }
 
-.menu_type__popup .non_current a:hover {
+.menu-type--popup .non_current a:hover {
 	background: transparent url('{$IMG;,1x/menus/menu_bullet_hover}') no-repeat 5px 6px;
 }
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.menu_type__popup .current a {
+	.menu-type--popup .current a {
 		background-image: url('{$IMG;,2x/menus/menu_bullet_current}');
 		background-size: 5px 6px;
 	}
 
-	.menu_type__popup .non_current a {
+	.menu-type--popup .non_current a {
 		background-image: url('{$IMG;,2x/menus/menu_bullet}');
 		background-size: 5px 6px;
 	}
 
-	.menu_type__popup .non_current a:hover {
+	.menu-type--popup .non_current a:hover {
 		background-image: url('{$IMG;,2x/menus/menu_bullet_hover}');
 		background-size: 5px 6px;
 	}
 }
 
-.menu_type__popup a, .menu_type__popup a:visited {
+.menu-type--popup a, .menu-type--popup a:visited {
 	text-decoration: none;
 }
 
-.menu_type__popup a:hover {
+.menu-type--popup a:hover {
 	text-decoration: underline;
 	cursor: pointer;
 }
 
-.menu_type__popup img {
+.menu-type--popup img {
 	width: 20px;
 }

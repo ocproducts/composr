@@ -695,7 +695,7 @@
 
             for (var imageName in imageSources) {
                 if (opt.id === imageName) {
-                    return '<span class="vertical_alignment inline-lined-up"><img style="width: 24px;" src="' + imageSources[imageName] + '" \/> ' + $cms.filter.html(opt.text) + '</span>';
+                    return '<span class="vertical-alignment inline-lined-up"><img style="width: 24px;" src="' + imageSources[imageName] + '" \/> ' + $cms.filter.html(opt.text) + '</span>';
                 }
             }
 

@@ -135,7 +135,7 @@
                         var content = xhr.responseXML && xhr.responseXML.querySelector('result').textContent;
 
                         if (content) {
-                            infoWindow.setContent('<div class="global_middle_faux float-surrounder">' + content + '<\/div>');
+                            infoWindow.setContent('<div class="global-middle-faux float-surrounder">' + content + '<\/div>');
                             infoWindow.open(map, argMarker);
                         }
                     });

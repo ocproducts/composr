@@ -104,7 +104,7 @@ class Block_side_shoutbox
                 $room_id = $GLOBALS['SITE_DB']->query_select_value_if_there('chat_rooms', 'MIN(id)', array('is_im' => 0));
             }
             if ($room_id === null) {
-                return paragraph(do_lang_tempcode('NONE_EM'), '', 'nothing_here');
+                return paragraph(do_lang_tempcode('NONE_EM'), '', 'nothing-here');
             }
         }
 

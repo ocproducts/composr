@@ -1,1 +1,1 @@
-<span class="comcode_strike">{CONTENT}</span>
+<span class="comcode-strike">{CONTENT}</span>

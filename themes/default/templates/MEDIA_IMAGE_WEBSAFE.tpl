@@ -15,7 +15,7 @@
 				</div>
 			{+END}
 
-			<div class="attachment_details">
+			<div class="attachment-details">
 				{+START,IF,{THUMB}}<a
 					{+START,IF,{$NOT,{$INLINE_STATS}}} data-click-ga-track="{ category: '{!IMAGE;^*}', action: '{FILENAME;^*}' }"{+END}
 					target="_blank"
@@ -77,7 +77,7 @@
 			alt="{DESCRIPTION*}"
 		{+END}
 
-		class="attachment_img"
+		class="attachment-img"
 		src="{$ENSURE_PROTOCOL_SUITABILITY*,{THUMB_URL}}"
 		{+START,IF,{$NEQ,{THUMB_URL},{URL}}}{+START,IF_PASSED,URL_SAFE}{+START,IF_NON_EMPTY,{WIDTH}}srcset="{$THUMBNAIL*,{URL_SAFE},{$MULT,{WIDTH},2}} 2x"{+END}{+END}{+END}
 	/>{+START,IF,{THUMB}}</a>{+END}{+START,IF_PASSED,CLICK_URL}{+START,IF,{$NOT,{THUMB}}}</a>{+END}{+END}

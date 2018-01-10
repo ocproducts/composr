@@ -12,7 +12,7 @@
 	<div class="associated-details">
 		<p class="lonely-label">{!ACTIONS}:</p>
 		<nav>
-			<ul class="actions_list_super_compact">
+			<ul class="actions-list-super-compact">
 				<li id="friend__{ID*}">
 					<a class="js-click-hide-self" target="_blank" title="{!MAKE_FRIEND} {!LINK_NEW_WINDOW}" href="{MAKE_FRIEND_URL*}">{!MAKE_FRIEND}</a>
 				</li>

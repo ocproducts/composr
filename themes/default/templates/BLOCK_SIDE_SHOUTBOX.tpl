@@ -12,7 +12,7 @@
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			<div>
-				<p class="accessibility_hidden"><label for="shoutbox-message">{!MESSAGE}</label></p>
+				<p class="accessibility-hidden"><label for="shoutbox-message">{!MESSAGE}</label></p>
 				<p><input autocomplete="off" type="text" id="shoutbox-message" name="shoutbox_message" alt="{!MESSAGE}" class="wide-field" /></p>
 			</div>
 

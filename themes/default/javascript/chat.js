@@ -1441,7 +1441,7 @@
     function deinvolveIm(roomId, logs, isPopup) { // is_popup means that we show a progress indicator over it, then kill the window after deinvolvement
         if (isPopup && document.body) {
             document.body.classList.add('site_unloading');
-            $dom.html(document.body, '<div class="spaced"><div aria-busy="true" class="ajax_loading vertical_alignment"><img src="' + $util.srl('{$IMG*;,loading}') + '" alt="{!LOADING;^}" /> <span>{!LOADING;^}<\/span><\/div><\/div>');
+            $dom.html(document.body, '<div class="spaced"><div aria-busy="true" class="ajax_loading vertical-alignment"><img src="' + $util.srl('{$IMG*;,loading}') + '" alt="{!LOADING;^}" /> <span>{!LOADING;^}<\/span><\/div><\/div>');
         }
 
         var element, participants = null;

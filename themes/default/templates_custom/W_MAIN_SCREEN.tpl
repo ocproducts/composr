@@ -7,11 +7,11 @@
 		<h2>&ldquo;{REALM_NAME*}&rdquo;, &lsquo;{ROOM_NAME*}&rsquo;, <kbd>{REALM*}:{X*}:{Y*}</kbd></h2>
 
 		<div class="buildr_navigation">
-			<p class="accessibility_hidden">
+			<p class="accessibility-hidden">
 				{!W_MOVEMENT_TABLE}
 			</p>
 
-			<table class="results-table columned_table">
+			<table class="results-table columned-table">
 				<thead>
 					<tr>
 						<th colspan="3" style="text-align: center">
@@ -147,7 +147,7 @@
 				<h4>{!W_MEMBERS_IN_ROOM}</h4>
 
 				<div class="wide-table-wrap">
-					<table class="columned_table wide-table results-table autosized-table responsive-table">
+					<table class="columned-table wide-table results-table autosized-table responsive-table">
 						<thead>
 							<tr>
 								<th>
@@ -172,7 +172,7 @@
 				{+START,IF_NON_EMPTY,{ITEMS}}
 					<h4>{!W_ITEMS_IN_ROOM}</h4>
 
-					<table class="columned_table buildr_centered_contents wide-table results-table responsive-table">
+					<table class="columned-table buildr_centered_contents wide-table results-table responsive-table">
 						<thead>
 							<tr>
 								<th>
@@ -190,7 +190,7 @@
 				{+START,IF_NON_EMPTY,{ITEMS_SALE}}
 					<br />
 
-					<table class="columned_table buildr_centered_contents wide-table results-table responsive-table">
+					<table class="columned-table buildr_centered_contents wide-table results-table responsive-table">
 						<thead>
 							<tr>
 								<th colspan="3" class="buildr_posttop">
@@ -255,7 +255,7 @@
 				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<table class="columned_table results-table wide-table autosized-table">
+					<table class="columned-table results-table wide-table autosized-table">
 						<colgroup>
 							<col style="width: 20%" />
 							<col style="width: 20%" />

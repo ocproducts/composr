@@ -2,10 +2,10 @@
 	{+START,IF_NON_EMPTY,{TITLE}}<h3>{TITLE}</h3>{+END}
 
 	{+START,IF_EMPTY,{NEWS}}
-		<p class="nothing_here">{!NO_NEWS}</p>
+		<p class="nothing-here">{!NO_NEWS}</p>
 	{+END}
 	{+START,IF_NON_EMPTY,{NEWS}}
-		<div class="webstandards_checker_off">
+		<div class="webstandards-checker-off">
 			{+START,LOOP,NEWS}
 				<div class="box box___block_side_forum_news_summary"><div class="box-inner">
 					<p class="tiny-paragraph">

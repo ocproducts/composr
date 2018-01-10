@@ -22,7 +22,7 @@
 						<a class="toggleable-tray-button js-tray-onclick-toggle-accordion" href="#!">Background Properties</a>
 					</h4>
 					<div class="toggleable-tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
-						<table class="columned_table results-table" cellspacing="0" cellpadding="0" border="1" width="100%">
+						<table class="columned-table results-table" cellspacing="0" cellpadding="0" border="1" width="100%">
 							<tbody><tr>
 								<th width="28%" align="left">Property</th>
 								<th width="67%" align="left">Description</th>
@@ -63,7 +63,7 @@
 						<a class="toggleable-tray-button js-tray-onclick-toggle-accordion" href="#!">Border Properties</a>
 					</h4>
 					<div class="toggleable-tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
-						<table class="columned_table results-table" cellspacing="0" cellpadding="0" border="1" width="100%">
+						<table class="columned-table results-table" cellspacing="0" cellpadding="0" border="1" width="100%">
 							<tbody><tr>
 								<th width="28%" align="left">Property</th>
 								<th width="67%" align="left">Description</th>
@@ -119,7 +119,7 @@
 						<a class="toggleable-tray-button js-tray-onclick-toggle-accordion" href="#!">Dimension Properties</a>
 					</h4>
 					<div class="toggleable-tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
-						<table class="columned_table results-table" cellspacing="0" cellpadding="0" border="1" width="100%">
+						<table class="columned-table results-table" cellspacing="0" cellpadding="0" border="1" width="100%">
 							<tbody><tr>
 								<th width="28%" align="left">Property</th>
 								<th width="67%" align="left">Description</th>
@@ -165,7 +165,7 @@
 						<a class="toggleable-tray-button js-tray-onclick-toggle-accordion" href="#!">List Properties</a>
 					</h4>
 					<div class="toggleable-tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
-						<table class="columned_table results-table" cellspacing="0" cellpadding="0" border="1" width="100%">
+						<table class="columned-table results-table" cellspacing="0" cellpadding="0" border="1" width="100%">
 							<tbody><tr>
 								<th width="28%" align="left">Property</th>
 								<th width="67%" align="left">Description</th>
@@ -191,7 +191,7 @@
 						<a class="toggleable-tray-button js-tray-onclick-toggle-accordion">Margin/Padding Properties</a>
 					</h4>
 					<div class="toggleable-tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
-						<table class="columned_table results-table" cellspacing="0" cellpadding="0" border="1" width="100%">
+						<table class="columned-table results-table" cellspacing="0" cellpadding="0" border="1" width="100%">
 							<tbody><tr>
 								<th width="28%" align="left">Property</th>
 								<th width="67%" align="left">Description</th>
@@ -257,7 +257,7 @@
 						<a class="toggleable-tray-button js-tray-onclick-toggle-accordion" href="#!">Positioning Properties</a>
 					</h4>
 					<div class="toggleable-tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
-						<table class="columned_table results-table" cellspacing="0" cellpadding="0" border="1" width="100%">
+						<table class="columned-table results-table" cellspacing="0" cellpadding="0" border="1" width="100%">
 							<tbody><tr>
 								<th width="28%" align="left">Property</th>
 								<th width="67%" align="left">Description</th>
@@ -328,7 +328,7 @@
 						<a class="toggleable-tray-button js-tray-onclick-toggle-accordion" href="#!">Text/Font Properties</a>
 					</h4>
 					<div class="toggleable-tray accordion_trayitem_body js-tray-accordion-item-body" style="display: none" aria-expanded="false">
-						<table class="columned_table results-table" cellspacing="0" cellpadding="0" border="1" width="100%">
+						<table class="columned-table results-table" cellspacing="0" cellpadding="0" border="1" width="100%">
 							<tbody><tr>
 								<th width="28%" align="left">Property</th>
 								<th width="67%" align="left">Description</th>
@@ -424,7 +424,7 @@
 									<a href="#!" class="js-a-editarea-search" data-ea-search="outer_background">{!CHANGE_OUTER_BACKGROUND}</a>
 								</li>
 								<li>
-									<a href="#!" class="js-a-editarea-search" data-ea-search="&#10;.logo_outer {">{!CHANGE_HEADER_IMAGE}</a>
+									<a href="#!" class="js-a-editarea-search" data-ea-search="&#10;.logo-outer {">{!CHANGE_HEADER_IMAGE}</a>
 								</li>
 								<li>
 									<a href="#!" class="js-a-editarea-search" data-search="#main-website #main-website-inner {">{!CHANGE_FIXED_WIDTH}</a>
@@ -460,9 +460,9 @@
 <div id="e_{FILE_ID*}_wrap" class="main_editor">
 	{$,Main editor}
 
-	<label class="accessibility_hidden" for="e_{FILE_ID*}">{!TEMPLATE}</label>
+	<label class="accessibility-hidden" for="e_{FILE_ID*}">{!TEMPLATE}</label>
 	<div>
-		<textarea id="e_{FILE_ID*}" name="e_{FILE_ID*}" cols="70" rows="22" class="wide-field js-ta-tpl-editor textarea_scroll">{CONTENTS*}</textarea>
+		<textarea id="e_{FILE_ID*}" name="e_{FILE_ID*}" cols="70" rows="22" class="wide-field js-ta-tpl-editor textarea-scroll">{CONTENTS*}</textarea>
 	</div>
 </div>
 
@@ -497,7 +497,7 @@
 			<a class="non-link js-tray-onclick-toggle-tray" href="#!">{!TEMPLATE_GUIDS}</a>
 		</h3>
 		<div class="toggleable-tray js-tray-content" style="display: none" aria-expanded="false">
-			<div class="wide-table-wrap"><table class="columned_table autosized-table revision_box results-table wide-table">
+			<div class="wide-table-wrap"><table class="columned-table autosized-table revision_box results-table wide-table">
 				<thead>
 					<tr>
 						<th>{!FILENAME}</th>
@@ -562,7 +562,7 @@
 
 		<p>{!DESCRIP_CSS_EQUATION_HELPER}</p>
 
-		<p class="vertical_alignment">
+		<p class="vertical-alignment">
 			<label for="css_equation">{!CSS_EQUATION_HELPER}</label>
 			<input name="css_equation" id="css_equation_{FILE_ID*}" type="text" value="100% seed" />
 
@@ -570,7 +570,7 @@
 
 			&rarr;
 
-			<label class="accessibility_hidden" for="css_result">{!RESULT}</label>
+			<label class="accessibility-hidden" for="css_result">{!RESULT}</label>
 			<output><input readonly="readonly" name="css_result" id="css_result_{FILE_ID*}" type="text" value="({!RESULT})" /></output>
 		</p>
 	</div></section>

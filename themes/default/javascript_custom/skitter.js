@@ -191,8 +191,8 @@
     theme: null, 
 
     // Structure (internal)
-    structure:    '<a href="#" class="prev_button">prev</a>'
-                + '<a href="#" class="next_button">next</a>'
+    structure:    '<a href="#" class="prev-button">prev</a>'
+                + '<a href="#" class="next-button">next</a>'
                 + '<span class="info_slide"></span>'
                 + '<div class="container_skitter">'
                   + '<div class="image">'
@@ -325,8 +325,8 @@
       
       this.skitter_box.find('.info_slide').hide();
       this.skitter_box.find('.label_skitter').hide();
-      this.skitter_box.find('.prev_button').hide();
-      this.skitter_box.find('.next_button').hide();
+      this.skitter_box.find('.prev-button').hide();
+      this.skitter_box.find('.next-button').hide();
             
       this.skitter_box.find('.container_skitter').width(this.settings.width_skitter);
       this.skitter_box.find('.container_skitter').height(this.settings.height_skitter);
@@ -516,7 +516,7 @@
       
       if (this.settings.images_links.length > 1) 
       {
-        this.skitter_box.find('.prev_button').click(function() {
+        this.skitter_box.find('.prev-button').click(function() {
           if (self.settings.is_animating == false) {
             
             self.settings.image_i -= 2;
@@ -533,13 +533,13 @@
           return false;
         });
         
-        this.skitter_box.find('.next_button').click(function() {
+        this.skitter_box.find('.next-button').click(function() {
           self.jumpToImage(self.settings.image_i);
           return false;
         });
         
-        self.skitter_box.find('.next_button, .prev_button').bind('mouseover', self.settings.mouseOverButton);
-        self.skitter_box.find('.next_button, .prev_button').bind('mouseleave', self.settings.mouseOutButton);
+        self.skitter_box.find('.next-button, .prev-button').bind('mouseover', self.settings.mouseOverButton);
+        self.skitter_box.find('.next-button, .prev-button').bind('mouseleave', self.settings.mouseOutButton);
         
         this.skitter_box.find('.image_number').click(function(){
           if ($(this).attr('class') != 'image_number image_number_select') {
@@ -644,7 +644,7 @@
             self.start();
           }
         }).error(function () {
-          self.skitter_box.find('.skitter-spinner, .image_number, .next_button, .prev_button').remove();
+          self.skitter_box.find('.skitter-spinner, .image_number, .next-button, .prev-button').remove();
           self.skitter_box.html('<p style="color:white;background:black;">Error loading images. One or more images were not found.</p>');
         }).attr('src', src);
       }
@@ -662,8 +662,8 @@
       if (this.settings.dots) this.skitter_box.find('.info_slide_dots').fadeIn(500);
       if (this.settings.label) this.skitter_box.find('.label_skitter').show();
       if (this.settings.navigation) {
-        this.skitter_box.find('.prev_button').fadeIn(500);
-        this.skitter_box.find('.next_button').fadeIn(500);
+        this.skitter_box.find('.prev-button').fadeIn(500);
+        this.skitter_box.find('.next-button').fadeIn(500);
       }
       
       if (self.settings.auto_play) {
@@ -695,7 +695,7 @@
       };
 
       self.skitter_box.mouseover(mouseOverInit);
-      self.skitter_box.find('.next_button').mouseover(mouseOverInit);
+      self.skitter_box.find('.next-button').mouseover(mouseOverInit);
       
       if (self.settings.images_links.length > 1 && !init_pause) {
         if (self.settings.auto_play) {
@@ -703,7 +703,7 @@
         }
       } 
       else {
-        self.skitter_box.find('.skitter-spinner, .image_number, .next_button, .prev_button').remove();
+        self.skitter_box.find('.skitter-spinner, .image_number, .next-button, .prev-button').remove();
       }
       
       if ($.isFunction(self.settings.onLoad)) self.settings.onLoad(self);
@@ -2736,7 +2736,7 @@
           
           if (self.settings.navigation) {
             self.skitter_box
-              .find('.prev_button, .next_button')
+              .find('.prev-button, .next-button')
               .show()
               .css({opacity:0})
               .animate({opacity: opacity_elements}, interval_in_elements);
@@ -2786,7 +2786,7 @@
           
           if (self.settings.navigation) {
             self.skitter_box
-              .find('.prev_button, .next_button')
+              .find('.prev-button, .next-button')
               .queue("fx", [])
               .show()
               .css({opacity: opacity_elements})
@@ -2845,8 +2845,8 @@
     // Hide tools
     hideTools: function() {
       this.skitter_box.find('.info_slide').fadeTo(0, 0);
-      this.skitter_box.find('.prev_button').fadeTo(0, 0);
-      this.skitter_box.find('.next_button').fadeTo(0, 0);
+      this.skitter_box.find('.prev-button').fadeTo(0, 0);
+      this.skitter_box.find('.next-button').fadeTo(0, 0);
       this.skitter_box.find('.focus_button').fadeTo(0, 0);
       this.skitter_box.find('.play_pause_button').fadeTo(0, 0);
     }, 
@@ -3109,11 +3109,11 @@
       $(window).keydown(function(e) {
         // Next
         if (e.keyCode == 39 || e.keyCode == 40) {
-          self.skitter_box.find('.next_button').trigger('click');
+          self.skitter_box.find('.next-button').trigger('click');
         }
         // Prev
         else if (e.keyCode == 37 || e.keyCode == 38) {
-          self.skitter_box.find('.prev_button').trigger('click');
+          self.skitter_box.find('.prev-button').trigger('click');
         }
       });
     },
@@ -3360,9 +3360,9 @@
 
         this.skitter_box.on('touchend', function(e) {
           if (last_position_x < last_position_x_move) {
-            self.skitter_box.find('.prev_button').trigger('click');
+            self.skitter_box.find('.prev-button').trigger('click');
           } else {
-            self.skitter_box.find('.next_button').trigger('click');
+            self.skitter_box.find('.next-button').trigger('click');
           }
         });
       }
@@ -3386,14 +3386,14 @@
      * Next (public api)
      */
     next: function() {
-      this.skitter_box.find('.next_button').trigger('click');
+      this.skitter_box.find('.next-button').trigger('click');
     },
 
     /**
      * Prev (public api)
      */
     prev: function() {
-      this.skitter_box.find('.prev_button').trigger('click');
+      this.skitter_box.find('.prev-button').trigger('click');
     }
   });
   

@@ -3,13 +3,13 @@
 
 	<div>{$,So that the titles don't have box titling CSS}
 		{+START,IF_EMPTY,{DAYS}}
-			<p class="nothing_here">{!NO_ENTRIES,event}</p>
+			<p class="nothing-here">{!NO_ENTRIES,event}</p>
 		{+END}
 		{+START,LOOP,DAYS}
 			<h4 class="event-listing-day">{TIME*}</h4>
 
 			<div class="wide-table-wrap">
-				<table class="map_table results-table wide-table events-listing-table autosized-table">
+				<table class="map-table results-table wide-table events-listing-table autosized-table">
 					<colgroup>
 						<col class="event-listing-col-1" />
 						<col class="event-listing-col-2" />

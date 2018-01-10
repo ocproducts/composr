@@ -1,6 +1,6 @@
 <h2>{FIELD*}</h2>
 
-<div class="wide-table-wrap"><table class="columned_table autosized-table results-table wide-table">
+<div class="wide-table-wrap"><table class="columned-table autosized-table results-table wide-table">
 	<thead>
 		<tr>
 			<th>{!WORD}</th>

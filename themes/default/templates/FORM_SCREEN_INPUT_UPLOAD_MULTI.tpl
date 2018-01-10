@@ -1,6 +1,6 @@
 <div class="upload-field inline-block multi_field" data-tpl="formScreenInputUploadMulti" data-tpl-params="{+START,PARAMS_JSON,SYNDICATION_JSON,PLUPLOAD,NAME_STUB,I,FILTER}{_*}{+END}">
-	<div class="accessibility_hidden"><label for="{NAME_STUB*}_{I*}">{!UPLOAD}</label></div>
-	<div class="vertical_alignment inline-block">
+	<div class="accessibility-hidden"><label for="{NAME_STUB*}_{I*}">{!UPLOAD}</label></div>
+	<div class="vertical-alignment inline-block">
 		<input tabindex="{TABINDEX*}" class="input-upload{REQUIRED*} js-input-change-ensure-next-field-upload" type="file" id="{NAME_STUB*}_{I*}" name="{NAME_STUB*}_{I*}" />
 
 		<input type="hidden" name="label_for_{NAME_STUB*}_{I*}" value="{!UPLOAD}" />

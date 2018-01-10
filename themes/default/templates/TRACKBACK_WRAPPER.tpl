@@ -22,7 +22,7 @@
 		{+END}
 	{+END}
 	{+START,IF_EMPTY,{TRACKBACKS}}
-		<p class="nothing_here">{!NO_TRACKBACKS}</p>
+		<p class="nothing-here">{!NO_TRACKBACKS}</p>
 	{+END}
 
 	<ul class="associated-links-block-group horizontal-links">

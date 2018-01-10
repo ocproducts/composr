@@ -68,7 +68,7 @@ class comcode_test_set extends cms_test_case
 
     public function testComcode()
     {
-        $expectations = array(" - foo  " => "<ul><li>foo</li></ul>", " - foo\n - bar" => "<ul><li>foo</li><li>bar</li></ul>", " - foo - bar" => " - foo - bar", "" => " ", " -foo" => "-foo", "-foo" => "-foo", "--foo" => "&ndash;foo", "[b]bar[/b]" => "<strongclass=\"comcode_bold\">bar</strong>");
+        $expectations = array(" - foo  " => "<ul><li>foo</li></ul>", " - foo\n - bar" => "<ul><li>foo</li><li>bar</li></ul>", " - foo - bar" => " - foo - bar", "" => " ", " -foo" => "-foo", "-foo" => "-foo", "--foo" => "&ndash;foo", "[b]bar[/b]" => "<strong class=\"comcode-bold\">bar</strong>");
 
         foreach ($expectations as $comcode => $html) {
             $actual = comcode_to_tempcode($comcode);
@@ -106,7 +106,7 @@ class comcode_test_set extends cms_test_case
 
             if ($expected) {
                 $this->assertTrue(count($MEMBER_MENTIONS_IN_COMCODE) == 1, 'Expected to see a mention for: "' . $test . '"');
-            } else 
+            } else
             {
                 $this->assertTrue(count($MEMBER_MENTIONS_IN_COMCODE) == 0, 'Expected to NOT see a mention for: "' . $test . '"');
             }

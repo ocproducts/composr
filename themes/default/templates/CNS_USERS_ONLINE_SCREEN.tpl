@@ -1,6 +1,6 @@
 {TITLE}
 
-<div class="wide-table-wrap"><table class="columned_table autosized-table wide-table results-table responsive-table">
+<div class="wide-table-wrap"><table class="columned-table autosized-table wide-table results-table responsive-table">
 	<thead>
 		<tr>
 			<th>

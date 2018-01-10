@@ -31,46 +31,46 @@
 	border-bottom: 0;
 }
 
-.menu_type__embossed {
+.menu-type--embossed {
 	overflow: hidden;
 	border-left: 1px solid {$GET,standard_border};
 	border-right: 1px solid {$GET,standard_border};
 	border-bottom: 1px solid {$GET,standard_border};
 }
 
-.menu_type__embossed, .menu_type__embossed li {
+.menu-type--embossed, .menu-type--embossed li {
 	background-color: {$GET,area_background};
 }
 
-.menu_type__embossed li {
+.menu-type--embossed li {
 	border-top: 1px solid {$GET,standard_border};
 }
 
-.menu_type__embossed li.current {
+.menu-type--embossed li.current {
 	background-color: {$GET,area_highlight_left_complement_background} !important;
 	font-weight: bold;
 }
 
-.menu_type__embossed li:hover {
+.menu-type--embossed li:hover {
 	background-color: {$GET,area_highlight_right_complement_background} !important;
 	transition: color,background-color 0.5s linear;
 }
 
-.menu_type__embossed a {
+.menu-type--embossed a {
 	display: block;
 	padding: 0.4em 0.5em;
 	outline: 0;
 }
 
-.menu_type__embossed a, .menu_type__embossed a:visited, .menu_type__embossed a:hover {
+.menu-type--embossed a, .menu-type--embossed a:visited, .menu-type--embossed a:hover {
 	text-decoration: none;
 }
 
-.menu_type__embossed img, .menu_type__embossed span {
+.menu-type--embossed img, .menu-type--embossed span {
 	vertical-align: middle;
 }
 
-.menu_type__embossed img {
+.menu-type--embossed img {
 	margin-right: 0.5em;
 	width: 20px;
 }

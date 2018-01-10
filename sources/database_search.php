@@ -639,7 +639,7 @@ function generate_text_summary($_temp_summary, $words_searched)
                 $last_lt = strrpos(substr($_temp_summary, 0, $content_bit_pos), '<');
 
                 if (($last_gt === false) || ($last_gt > $last_lt)) {
-                    $extra_pre = '<span class="comcode_highlight">';
+                    $extra_pre = '<span class="comcode-highlight">';
                     $extra_post = '</span>';
                     $_temp_summary = substr($_temp_summary, 0, $content_bit_pos) .
                                      $extra_pre .

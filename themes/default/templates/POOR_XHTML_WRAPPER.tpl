@@ -1,3 +1,3 @@
-<div class="webstandards_checker_off">
+<div class="webstandards-checker-off">
 	{CONTENT`}
 </div>

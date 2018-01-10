@@ -1,6 +1,6 @@
 [title]Privacy policy[/title]
 
-[surround="spaced_list"]
+[surround="spaced-list"]
 This website:
  - stores temporary cookies that are removed when you close the browser window, such as a user session identifier;{+START,IF,{$CONFIG_OPTION,remember_me_by_default}} also cookies are used for the "remember me" feature;{+END}{+START,IF,{$CONFIG_OPTION,detect_javascript}} also cookies are used to detect if JavaScript is enabled;{+END}{+START,IF,{$CONFIG_OPTION,is_on_timezone_detection}} also cookies are used to detect your time-zone;{+END}{+START,IF_NON_EMPTY,{$CONFIG_OPTION,google_analytics}} uses Google Analytics for analysing visitor trends and tracking the effectiveness of our advertisements;{+END}{+START,IF_NON_EMPTY,{$CONFIG_OPTION,recaptcha_site_key}} uses Google reCAPTCHA for reducing spam (by asking Google to analyse visitors);{+END}
  - stores cookies (yes/no) for remembering what things have been turned off/closed;

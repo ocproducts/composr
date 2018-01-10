@@ -51,7 +51,7 @@
 	</div>
 {+END}
 {+START,IF,{$NOT,{$GET,has_products}}}
-	<p class="nothing_here">
+	<p class="nothing-here">
 		{!NO_CATEGORIES}
 	</p>
 {+END}

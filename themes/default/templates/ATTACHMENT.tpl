@@ -1,6 +1,6 @@
 {+START,IF,{$NAND,{TRUE_ATTACHMENT_UI},{$BROWSER_MATCHES,simplified_attachments_ui}}}
 	<div class="wide-table-wrap" data-view="Attachment" data-view-params="{+START,PARAMS_JSON,I,POSTING_FIELD_NAME,FILTER,SYNDICATION_JSON,NO_QUOTA}{_*}{+END}">
-		<table class="map_table form-table wide-table">
+		<table class="map-table form-table wide-table">
 			{+START,IF,{$DESKTOP}}
 				<colgroup>
 					<col class="attachments-field-name-column column-desktop" />
@@ -11,7 +11,7 @@
 			<tbody>
 				<tr>
 					{+START,IF,{$DESKTOP}}
-						<th class="form-table-field-name vertical_alignment cell-desktop">
+						<th class="form-table-field-name vertical-alignment cell-desktop">
 							{!ATTACHMENT,{I*}}
 
 							{+START,IF,{TRUE_ATTACHMENT_UI}}
@@ -21,9 +21,9 @@
 					{+END}
 					<td class="form-table-field-input">
 						<div class="upload-field">
-							<div class="accessibility_hidden"><label for="file{I*}">{!UPLOAD}</label></div>
+							<div class="accessibility-hidden"><label for="file{I*}">{!UPLOAD}</label></div>
 
-							<span class="vertical_alignment">
+							<span class="vertical-alignment">
 								<input size="15" type="file" id="file{I*}" name="file{I*}" class="js-inp-file-change-set-attachment" />
 							</span>
 

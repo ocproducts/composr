@@ -7,7 +7,7 @@
 		{+END}
 
 		{+START,IF,{$NOT,{ADVANCED_ONLY}}}
-			<div class="accessibility_hidden"><label for="search_{NAME*}">{LANG*}</label></div>
+			<div class="accessibility-hidden"><label for="search_{NAME*}">{LANG*}</label></div>
 			<input type="checkbox" id="search_{NAME*}"{+START,IF,{CHECKED}} checked="checked"{+END} name="search_{NAME*}" value="1" />
 		{+END}
 	</td>
