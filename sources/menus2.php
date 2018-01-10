@@ -45,8 +45,8 @@ function export_menu_csv($file_path = null)
     $data = $GLOBALS['SITE_DB']->query($sql, null, null, false, true);
 
     foreach ($data as &$d) {
-        $d['i_caption'] = get_translated_content($d['i_caption']);
-        $d['i_caption_long'] = get_translated_content($d['i_caption_long']);
+        $d['i_caption'] = get_translated_text($d['i_caption']);
+        $d['i_caption_long'] = get_translated_text($d['i_caption_long']);
     }
 
     require_code('files');

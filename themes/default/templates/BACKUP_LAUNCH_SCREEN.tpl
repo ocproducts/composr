@@ -34,7 +34,7 @@
 			button.parentNode.insertBefore(progress_ticker,button);
 			window.setTimeout(function() {
 				window.fauxmodal_alert('{!CALCULATED_SIZE;}'.replace('\{1\}',load_snippet('backup_size&max_size='+window.encodeURIComponent(max_size_field.value))));
-				proceed_button.parentNode.removeChild(progress_ticker);
+				button.parentNode.removeChild(progress_ticker);
 			},0);
 		};
 	});

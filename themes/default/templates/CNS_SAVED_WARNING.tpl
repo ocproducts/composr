@@ -9,7 +9,7 @@
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<div class="inline">
-						<input class="button_hyperlink" type="submit" value="{!LOAD} {TITLE*}" onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{$ESCAPE;^,<h2>{EXPLANATION*}</h2>{MESSAGE_HTML}}','700px');" />
+						<input class="button_hyperlink" type="submit" value="{!LOAD} {TITLE*}" onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{$ESCAPE;^*,<h2>{EXPLANATION*}</h2>{MESSAGE_HTML},NULL_ESCAPED}','700px');" />
 					</div>
 				</form>
 			</li>

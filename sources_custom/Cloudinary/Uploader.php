@@ -1,7 +1,7 @@
 <?php
 namespace Cloudinary {
 
-    class Error extends \Exception {};  
+    class Error extends \Exception {};
 
     class Uploader {
         public static function build_upload_params(&$options)
@@ -79,7 +79,7 @@ namespace Cloudinary {
                 $dest = fopen($temp_file_name, 'w');
                 stream_copy_to_stream($src, $dest, $chunk_size);
                 fclose($dest);
-                if (phpversion() >= "5.3.0") {
+                if (version_compare(PHP_VERSION, '5.3.0') >= 0) {
                     clearstatcache(TRUE, $temp_file_name);
                 } else {
                     clearstatcache();
@@ -88,12 +88,12 @@ namespace Cloudinary {
                 $temp_file_size = filesize($temp_file_name);
                 $range = "bytes ". $current_loc . "-" . ($current_loc + $temp_file_size - 1) . "/" . $file_size;
                 try {
-                    $upload = Uploader::upload_large_part($temp_file_name, array_merge($options, 
+                    $upload = Uploader::upload_large_part($temp_file_name, array_merge($options,
                                 array("public_id"=>$public_id, "content_range"=>$range)));
                 } catch(\Exception $e) {
                     unlink($temp_file_name);
                     fclose($src);
-                    throw $e;                    
+                    throw $e;
                 }
                 $upload_id = \Cloudinary::option_get($upload, "upload_id");
                 $public_id = \Cloudinary::option_get($upload, "public_id");
@@ -103,7 +103,7 @@ namespace Cloudinary {
             fclose($src);
             return $upload;
         }
-    
+
 
         // Upload large raw files. Note that public_id should include an extension for best results.
         public static function upload_large_part($file, $options=array())
@@ -134,7 +134,7 @@ namespace Cloudinary {
             );
             return Uploader::call_api("rename", $params, $options);
         }
-        
+
         public static function explicit($public_id, $options = array())
         {
             $params = array(
@@ -246,7 +246,7 @@ namespace Cloudinary {
             $api_url = \Cloudinary::cloudinary_api_url($action, $options);
 
             # Serialize params
-            $api_url .= "?" . preg_replace("/%5B\d+%5D/", "%5B%5D", http_build_query($params)); 
+            $api_url .= "?" . preg_replace("/%5B\d+%5D/", "%5B%5D", http_build_query($params));
 
             $ch = curl_init($api_url);
 
@@ -277,7 +277,7 @@ namespace Cloudinary {
             if ($range != NULL){
                 curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Range: '.$range));
             }
-            
+
             $response = curl_exec($ch);
             $curl_error = NULL;
             if(curl_errno($ch))
@@ -330,6 +330,6 @@ namespace Cloudinary {
                 $join_pair = function($key, $value) { return $key . ": " . $value; };
                 return implode("\n", array_map($join_pair, array_keys($headers), array_values($headers)));
             }
-        }  
+        }
     }
 }

@@ -666,7 +666,7 @@ function _default_conv_func($db, $info, $catalogue_name, &$extra_join, &$extra_s
     if ($filter_key == 'meta_keywords') {
         $seo_type_code = isset($info['seo_type_code']) ? $info['seo_type_code'] : '!!!ERROR!!!';
         if (multi_lang_content()) {
-            $clause = '(' . db_function('GROUP_CONCAT', array('text_original', $db->get_table_prefix() . 'seo_meta_keywords kw JOIN ' . $db->get_table_prefix() . 'translate kwt ON kwt.id=kw.meta_keyword AND dt.' . db_string_equal_to('dt.language', user_lang()) .' WHERE kw.meta_for_id=' . db_cast($table_join_code . '.' . $first_id_field, 'CHAR') . ' AND ' . db_string_equal_to('kw.meta_for_type', $seo_type_code))) . ')';
+            $clause = '(' . db_function('GROUP_CONCAT', array('text_original', $db->get_table_prefix() . 'seo_meta_keywords kw JOIN ' . $db->get_table_prefix() . 'translate kwt ON kwt.id=kw.meta_keyword AND dt.' . db_string_equal_to('dt.language', user_lang()) . ' WHERE kw.meta_for_id=' . db_cast($table_join_code . '.' . $first_id_field, 'CHAR') . ' AND ' . db_string_equal_to('kw.meta_for_type', $seo_type_code))) . ')';
         } else {
             $clause = '(' . db_function('GROUP_CONCAT', array('meta_keyword', $db->get_table_prefix() . 'seo_meta_keywords kw WHERE kw.meta_for_id=' . db_cast($table_join_code . '.' . $first_id_field, 'CHAR') . ' AND ' . db_string_equal_to('kw.meta_for_type', $seo_type_code))) . ')';
         }
