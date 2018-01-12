@@ -492,6 +492,12 @@ function db_function($function, $args = null)
                 fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
             }
             switch (get_db_type()) {
+                case 'mysql':
+                case 'mysqli':
+                case 'mysql_dbx':
+                    $function = 'CHAR_LENGTH';
+                    break;
+
                 case 'sqlserver':
                 case 'sqlserver_odbc':
                 case 'access':
