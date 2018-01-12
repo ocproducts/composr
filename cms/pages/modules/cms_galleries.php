@@ -784,7 +784,7 @@ class Module_cms_galleries extends Standard_crud_module
         sync_file($place_thumb);
 
         // Store on server
-        if (rename($in, $place) === false) {
+        if (@rename($in, $place) === false) {
             intelligent_write_error($place);
         }
         fix_permissions($place);

@@ -281,8 +281,8 @@ function get_fields_hook($type)
     if ((!/*common ones we know have hooks*/in_array($type, array('author', 'codename', 'color', 'content_link', 'date', 'email', 'float', 'guid', 'integer', 'just_date', 'just_time', 'list', 'long_text', 'long_trans', 'page_link', 'password', 'picture', 'video', 'posting_field', 'reference', 'short_text', 'short_trans', 'theme_image', 'tick', 'upload', 'url', 'member'))) && (!is_file(get_file_base() . '/sources/' . $path . '.php')) && (!is_file(get_file_base() . '/sources_custom/' . $path . '.php'))) {
         $hooks = find_all_hooks('systems', 'fields');
         foreach (array_keys($hooks) as $hook) {
-            $path = 'hooks/systems/fields/' . filter_naughty_harsh($hook);
-            require_code($path);
+            $_path = 'hooks/systems/fields/' . filter_naughty_harsh($hook);
+            require_code($_path);
             $ob = object_factory('Hook_fields_' . filter_naughty_harsh($hook, true));
             if (is_null($ob)) {
                 return get_fields_hook('short_text');
@@ -296,7 +296,10 @@ function get_fields_hook($type)
         }
     }
     require_code($path);
-    $ob = object_factory('Hook_fields_' . filter_naughty_harsh($type, true));
+    $ob = object_factory('Hook_fields_' . filter_naughty_harsh($type, true), true);
+    if ($ob === null) {
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+    }
     $fields_hook_cache[$type] = $ob;
     return $ob;
 }
