@@ -34,6 +34,9 @@ class Hook_symbol_CPF_LIST
         $value = '';
 
         if (isset($param[0])) {
+            $delimiter = isset($param[1]) ? $param[1] : ',';
+            $include_label_syntax = isset($param[2]) ? ($param[2] === '1') : true;
+
             static $cache = array();
             if (isset($cache[$param[0]])) {
                 return $cache[$param[0]];
@@ -62,7 +65,7 @@ class Hook_symbol_CPF_LIST
                     }
 
                     if ($value != '') {
-                        $value .= ',';
+                        $value .= $delimiter;
                     }
                     $value .= strval($m['id']) . '=' . $m['text'];
                 }
@@ -82,9 +85,12 @@ class Hook_symbol_CPF_LIST
                                     continue;
                                 }
                                 if ($value != '') {
-                                    $value .= ',';
+                                    $value .= $delimiter;
                                 }
-                                $value .= $k . '=' . $k;
+                                if ($include_label_syntax) {
+                                    $value .= $k . '=';
+                                }
+                                $value .= $k;
                             }
                             break;
 
