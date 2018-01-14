@@ -98,17 +98,23 @@ Example for list editing:
 {$SET,edit_type,a|b|c}
 {+START,FRACTIONAL_EDITABLE,Some Option,option,cms:cms_example:_edit:12,0,1,1}Some &amp; Option{+END}
 [/code]
+Or you can fetch the list values automatically:
+[code="Tempcode"]
+{$SET,edit_type,{$CPF_LIST,Option Name,|,0}}
+{+START,FRACTIONAL_EDITABLE,Some Option,option,cms:cms_example:_edit:12,0,1,1}Some &amp; Option{+END}
+[/code]
 
 [title="2"]Example for member profile editing[/title]
 
 Imagine you want to deploy a CPF on a custom comcode page, and want to let a member edit their own CPF from that page.
 This Tempcode would make it possible:
 [code="Tempcode"]
-{+START,FRACTIONAL_EDITABLE,{$CPF_VALUE,About me,{$MEMBER}},field_1,_SEARCH:members:view:{$MEMBER}:only_tab=edit:only_subtab=settings,1,1,1}{$COMCODE,{$CPF_VALUE,About me,{$MEMBER}}}{+END}
+{+START,FRACTIONAL_EDITABLE,{$CPF_VALUE,About me,{$MEMBER}},field_1,_SEARCH:members:view:{$MEMBER},1,1,1}{$COMCODE,{$CPF_VALUE,About me,{$MEMBER}}}{+END}
 [/code]
+(where [tt]field_1[/tt] represents CPF with ID #1)
 
 The [tt]CPF_VALUE[/tt] symbol is being used to get a raw CPF value. Therefore to get the rendered field value we have to map it through the [tt]COMCODE[/tt] symbol.
-The editing page-link is a bit complex, as there's no separate actualiser screen for member profile editing, it's built into the tab display code (which itself usually works via AJAX, unless it is pre-directed to a tab using [tt]only_tab[/tt].
+The editing page-link is under the view screen, as there's no separate actualiser screen for member profile editing, it's built into the tab display code.
 
 [title="2"]PHP[/title]
 

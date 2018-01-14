@@ -1354,7 +1354,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
                             continue;
                         }
 
-                        if (($only_titles) && ($field !== current($raw_fields)) && ($field !== $fields_keys[0]) && (!isset($fields_keys[1]) || $fields_keys[0] !== '!' || $field !== $fields_keys[1])) {
+                        if (($only_titles) && ($field !== current($raw_fields)) && (!isset($fields_keys[0]) || $field !== $fields_keys[0]) && (!isset($fields_keys[1]) || $fields_keys[0] !== '!' || $field !== $fields_keys[1])) {
                             break;
                         }
 
