@@ -1261,7 +1261,7 @@ function get_translated_text($entry, $connection = null, $lang = null, $force = 
             return null;
         }
 
-        $result = $connection->query_select('translate', array('*'), array('id' => $entry, 'language' => get_site_default_lang())), '', 1);
+        $result = $connection->query_select('translate', array('*'), array('id' => $entry, 'language' => get_site_default_lang()), '', 1);
         if (!isset($result[0])) {
             $result = $connection->query_select('translate', array('*'), array('id' => $entry), '', 1);
         }
