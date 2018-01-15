@@ -2177,9 +2177,28 @@ ul.horizontal-links.horiz-field-sep {
 .autosized-table {
 	table-layout: auto !important;
 }
+.autosized-table.forceful, .autosized-table.forceful th, .autosized-table.forceful td {
+	/* Undo some HTML-sourced styles if .forceful is set */
+	width: auto !important;
+}
+.autosized-table.forceful.wide-table {
+	width: 100% !important;
+}
 
 table.scrollable-inside {
 	table-layout: fixed; /* For permission setting stuff that can scroll off */
+}
+.results-table.forceful>*>tr>th, .results-table.forceful>*>tr>td {
+	/* Undo HTML-sourced style if .forceful is set */
+	border-bottom: 0;
+}
+.results-table.forceful:not(.responsive-table)>*>tr>th:not(:first-child), .results-table.forceful:not(.responsive-table)>*>tr>td:not(:first-child) {
+	/* Undo HTML-sourced style if .forceful is set */
+	border-left: 0;
+}
+.results-table.forceful th>p:first-child:last-child, .results-table.forceful td>p:first-child:last-child {
+	/* Some word processors may carry through p tags inside cells */
+	display: inline;
 }
 
 .wide-table-wrap {

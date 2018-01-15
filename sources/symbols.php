@@ -530,15 +530,18 @@ function ecv($lang, $escaped, $type, $name, $param)
                                     return $matches[0];
                                 }
 
+                                // Real table with borders --> responsive table
                                 if ((preg_match('#\s+border=["\']?[1-9]#i', $attributes) != 0) || (preg_match('#\s+style="[^"]*border:\s*[1-9]#i', $attributes) != 0) || (strpos($attributes, 'results-table') !== false)) {
                                     $is_in_remaining_table = true;
                                     if (preg_match('#\s+class=["\']#i', $attributes) == 0) {
-                                        $attributes .= ' class="responsive-table"';
+                                        $attributes .= ' class="responsive-table forceful"';
                                     } else {
-                                        $attributes = preg_replace('#\s+class=["\']#i', '$0responsive-table ', $attributes);
+                                        $attributes = preg_replace('#\s+class=["\']#i', '$0responsive-table forceful ', $attributes);
                                     }
                                     return '<table' . $attributes . '>';
                                 }
+
+                                // Converting to divs...
 
                                 $is_in_remaining_table = false;
                             }
