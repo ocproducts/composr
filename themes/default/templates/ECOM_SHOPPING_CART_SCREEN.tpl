@@ -61,7 +61,7 @@
 		{+END}
 
 		<p class="purchase-button">
-			<input id="proceed_button" class="button-screen buttons--proceed js-click-do-cart-form-submit" accesskey="u" type="button" value="{!CHECKOUT}" />
+			<input id="proceed-button" class="button-screen buttons--proceed js-click-do-cart-form-submit" accesskey="u" type="button" value="{!CHECKOUT}" />
 		</p>
 	</form>
 </div>

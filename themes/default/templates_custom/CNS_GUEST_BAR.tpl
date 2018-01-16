@@ -22,7 +22,7 @@
 							<label for="remember">{!REMEMBER_ME}:</label>
 							<input class="{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}}js-click-confirm-remember-me{+END}"{+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END} type="checkbox" value="1" id="remember" name="remember" />
 						{+END}
-						<input class="button-screen-item menu__site_meta__user_actions__login" type="submit" value="{!_LOGIN}" />
+						<input class="button-screen-item menu--site-meta--user-actions--login" type="submit" value="{!_LOGIN}" />
 
 						{+START,IF_EMPTY,{$FB_CONNECT_UID}}
 							{+START,IF_NON_EMPTY,{$CONFIG_OPTION,facebook_appid}}{+START,IF,{$CONFIG_OPTION,facebook_allow_signups}}

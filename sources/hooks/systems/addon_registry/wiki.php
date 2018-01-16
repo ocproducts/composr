@@ -337,7 +337,7 @@ class Hook_addon_registry_wiki
             'EXTRA' => '',
             'POST_COMMENT' => lorem_phrase(),
             'EMOTICON_CHOOSER' => lorem_phrase(),
-            'SUBMIT_ICON' => 'menu___generic_admin__add_one',
+            'SUBMIT_ICON' => 'menu---generic-admin--add-one',
             'SUBMIT_NAME' => lorem_word(),
             'HIDDEN_FIELDS' => '',
             'URL' => placeholder_url(),

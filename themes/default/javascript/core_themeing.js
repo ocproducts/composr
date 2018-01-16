@@ -1034,7 +1034,7 @@
         body.id = 'g_' + fileId;
         body.style.display = 'none';
         var loadingImage = document.createElement('img');
-        loadingImage.className = 'ajax_loading';
+        loadingImage.className = 'ajax-loading';
         loadingImage.src = $util.srl('{$IMG;,loading}');
         loadingImage.style.height = '12px';
         body.appendChild(loadingImage);

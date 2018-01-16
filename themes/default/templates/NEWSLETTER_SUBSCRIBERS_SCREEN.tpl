@@ -21,7 +21,7 @@
 		</table></div>
 
 		{+START,IF_NON_EMPTY,{PAGINATION}}
-			<div class="float-surrounder pagination_spacing">
+			<div class="float-surrounder pagination-spacing">
 				{PAGINATION}
 			</div>
 		{+END}

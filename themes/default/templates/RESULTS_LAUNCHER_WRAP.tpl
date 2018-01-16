@@ -1,3 +1,3 @@
-<div class="results_launcher">
+<div class="results-launcher">
 	{PART}
 </div>

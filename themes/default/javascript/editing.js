@@ -383,7 +383,7 @@
             // Fiddly procedure to find our colour
             var testDiv = document.createElement('div');
             document.body.appendChild(testDiv);
-            testDiv.className = 'wysiwyg_toolbar_color_finder';
+            testDiv.className = 'wysiwyg-toolbar-color-finder';
             var matches,
                 wysiwygColor = window.getComputedStyle(testDiv).getPropertyValue('color');  // NB: Used by WYSIWYG_SETTINGS.js
             testDiv.parentNode.removeChild(testDiv);

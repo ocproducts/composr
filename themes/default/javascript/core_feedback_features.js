@@ -75,8 +75,8 @@
                 var barRating = +reviewBar.dataset.vwRating || 0,
                     shouldHighlight = barRating <= rating; // Whether to highlight this bar
 
-                reviewBar.classList.toggle('rating_star_highlight', shouldHighlight);
-                reviewBar.classList.toggle('rating_star', !shouldHighlight);
+                reviewBar.classList.toggle('rating-star-highlight', shouldHighlight);
+                reviewBar.classList.toggle('rating-star', !shouldHighlight);
             });
         },
 
@@ -452,7 +452,7 @@
             if (!bit) {
                 return;
             }
-            bit.className = (likes ? (rating === number) : (rating >= number)) ? 'rating_star_highlight' : 'rating_star';
+            bit.className = (likes ? (rating === number) : (rating >= number)) ? 'rating-star-highlight' : 'rating-star';
 
             if (!initialisationPhase) {
                 return;
@@ -498,7 +498,7 @@
                 // Show loading animation
                 $dom.html(_replaceSpot, '');
                 var loadingImage = document.createElement('img');
-                loadingImage.className = 'ajax_loading';
+                loadingImage.className = 'ajax-loading';
                 loadingImage.src = $util.srl('{$IMG;,loading}');
                 loadingImage.style.height = '12px';
                 _replaceSpot.appendChild(loadingImage);

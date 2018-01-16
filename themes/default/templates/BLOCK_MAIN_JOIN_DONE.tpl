@@ -18,7 +18,7 @@
 						{$INSERT_SPAMMER_BLACKHOLE}
 						<input type="hidden" name="_send_document" value="1" />
 
-						<p class="proceed_button">
+						<p class="proceed-button">
 							<input class="button-screen-item buttons--send" type="submit" value="{!DOWNLOAD_WHITEPAPER}" />
 						</p>
 					</form>

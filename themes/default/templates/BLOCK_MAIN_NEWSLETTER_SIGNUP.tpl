@@ -17,7 +17,7 @@
 			<input class="wide-field" id="baddress" name="address{NID*}" placeholder="{!EMAIL_ADDRESS}" />
 		</div>
 
-		<p class="proceed_button">
+		<p class="proceed-button">
 			<input class="button-screen-item menu__site_meta__newsletters" type="submit" value="{!SUBSCRIBE}" />
 		</p>
 	</form>

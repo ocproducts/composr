@@ -422,7 +422,7 @@ class Module_cms_authors
             'FIELDS' => $fields,
             'GET' => true,
             'URL' => $post_url,
-            'SUBMIT_ICON' => 'menu___generic_admin__edit_this',
+            'SUBMIT_ICON' => 'menu---generic-admin--edit-this',
             'SUBMIT_NAME' => $submit_name,
             'SUPPORT_AUTOSAVE' => true,
         ));
@@ -441,7 +441,7 @@ class Module_cms_authors
                 'TEXT' => '',
                 'FIELDS' => $fields,
                 'URL' => $post_url,
-                'SUBMIT_ICON' => 'menu___generic_admin__merge',
+                'SUBMIT_ICON' => 'menu---generic-admin--merge',
                 'SUBMIT_NAME' => $submit_name,
             ));
         } else {

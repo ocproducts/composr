@@ -1,4 +1,4 @@
-<section class="box box___trackback_wrapper"><div class="box-inner">
+<section class="box box---trackback-wrapper"><div class="box-inner">
 	<h3>{!TRACKBACKS}</h3>
 
 	<!--
@@ -15,8 +15,8 @@
 		{+END}
 		{TRACKBACKS}
 		{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,_SEARCH:admin_trackbacks}}
-			<p class="proceed_button">
-				<input data-disable-on-click="1" class="button-screen menu___generic_admin__delete" type="submit" value="{!MANAGE_TRACKBACKS}" />
+			<p class="proceed-button">
+				<input data-disable-on-click="1" class="button-screen menu---generic-admin--delete" type="submit" value="{!MANAGE_TRACKBACKS}" />
 			</p>
 		</form>
 		{+END}

@@ -476,7 +476,7 @@
             }
 
             this.buttonContainerEl = $dom.create('p', {
-                'className': 'proceed_button js-modal-button-container'
+                'className': 'proceed-button js-modal-button-container'
             });
 
             var self = this;
@@ -1346,7 +1346,7 @@
                 // Show the animation
                 var bi = $dom.$id('main-website-inner');
                 if (bi) {
-                    bi.classList.add('site_unloading');
+                    bi.classList.add('site-unloading');
                     $dom.fadeTo(bi, null, 0.2);
                 }
                 var div = document.createElement('div');
@@ -1356,7 +1356,7 @@
                 div.style.position = 'fixed';
                 div.style.zIndex = 10000;
                 div.style.textAlign = 'center';
-                $dom.html(div, '<div aria-busy="true" class="loading_box box"><h2>{!LOADING;^}</h2><img id="loading_image" alt="" src="{$IMG_INLINE*;,loading}" /></div>');
+                $dom.html(div, '<div aria-busy="true" class="loading-box box"><h2>{!LOADING;^}</h2><img id="loading_image" alt="" src="{$IMG_INLINE*;,loading}" /></div>');
                 setTimeout(function () {
                     // Stupid workaround for Google Chrome not loading an image on unload even if in cache
                     if ($dom.$('#loading_image')) {

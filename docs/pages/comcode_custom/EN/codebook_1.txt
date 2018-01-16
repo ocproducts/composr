@@ -654,10 +654,10 @@ we need to put in the label.
 </p>
 
 <!--
-Our submission button. We use the existing 'proceed_button' CSS class
+Our submission button. We use the existing 'proceed-button' CSS class
 as we try to standardise styles in Composr, for consistency.
 -->
-<p class="proceed_button">
+<p class="proceed-button">
 <input type="submit" value="Submit form" />
 </p>
 </form>

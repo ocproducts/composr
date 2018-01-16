@@ -794,7 +794,7 @@ class Module_cms_news extends Standard_crud_module
             'TEXT' => do_lang_tempcode('IMPORT_NEWS_TEXT'),
             'HIDDEN' => $hidden,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'menu___generic_admin__import',
+            'SUBMIT_ICON' => 'menu---generic-admin--import',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));

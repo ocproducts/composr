@@ -139,7 +139,7 @@ class Module_admin_unvalidated
                     'SKIP_REQUIRED' => true,
                     'GET' => true,
                     'HIDDEN' => '',
-                    'SUBMIT_ICON' => 'menu___generic_admin__edit_this',
+                    'SUBMIT_ICON' => 'menu---generic-admin--edit-this',
                     'SUBMIT_NAME' => do_lang_tempcode('EDIT'),
                     'FIELDS' => $fields,
                     'URL' => $post_url,

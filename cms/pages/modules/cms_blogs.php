@@ -660,7 +660,7 @@ class Module_cms_blogs extends Standard_crud_module
             'TEXT' => '',
             'HIDDEN' => $hidden,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'menu___generic_admin__import',
+            'SUBMIT_ICON' => 'menu---generic-admin--import',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $xml_post_url,
         ));
@@ -702,7 +702,7 @@ class Module_cms_blogs extends Standard_crud_module
             'TEXT' => '',
             'HIDDEN' => $hidden,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'menu___generic_admin__import',
+            'SUBMIT_ICON' => 'menu---generic-admin--import',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $db_post_url,
         ));

@@ -59,7 +59,7 @@
 				</tbody>
 			</table></div>
 
-			<p class="proceed_button">
+			<p class="proceed-button">
 				<input accesskey="u" data-disable-on-click="1" class="button-screen buttons--save js-btn-hover-toggle-disable-size-change" type="submit" value="{!SAVE}" />
 			</p>
 		</div>

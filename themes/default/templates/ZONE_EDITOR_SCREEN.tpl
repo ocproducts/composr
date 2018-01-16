@@ -34,7 +34,7 @@
 		<div id="edit_field_store" style="display: none">
 		</div>
 
-		<p class="proceed_button vertical-alignment">
+		<p class="proceed-button vertical-alignment">
 			<input class="button-screen buttons--save js-btn-fetch-and-submit" type="button" value="{!SAVE}" /> <span class="associated-details">{!ZE_CLICK_TO_EDIT}</span>
 		</p>
 	</form>

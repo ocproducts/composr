@@ -25,7 +25,7 @@
 
 		{HIDDEN}
 
-		<p class="proceed_button">
+		<p class="proceed-button">
 			<input class="button-screen buttons--back" type="button" data-cms-btn-go-back="1" value="{!GO_BACK}" />
 
 			<input data-disable-on-click="1" class="button-screen buttons--proceed" type="submit" value="{!PROCEED}" />

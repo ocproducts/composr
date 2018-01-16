@@ -53,7 +53,7 @@
 		{+END}
 
 		{$SET,ajax_block_main_multi_content_wrapper,ajax_block_main_multi_content_wrapper_{$RAND%}}
-		<div id="{$GET*,ajax_block_main_multi_content_wrapper}" class="box_wrapper">
+		<div id="{$GET*,ajax_block_main_multi_content_wrapper}" class="box-wrapper">
 			<div class="float-surrounder cguid_{_GUID|*} raw_ajax_grow_spot">
 				{+START,IF_NON_EMPTY,{CONTENT}}
 					{+START,LOOP,CONTENT}
@@ -68,7 +68,7 @@
 
 			{+START,IF_PASSED,PAGINATION}
 				{+START,IF_NON_EMPTY,{PAGINATION}}
-					<div class="pagination_spacing float-surrounder ajax_block_wrapper_links">
+					<div class="pagination-spacing float-surrounder ajax_block_wrapper_links">
 						{PAGINATION}
 					</div>
 

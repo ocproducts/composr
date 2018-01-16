@@ -581,14 +581,14 @@
 
 						<label for="item">{!W_ITEMS}</label>: {ITEMS_OWNED} <input type="hidden" name="type" value="edititem" />
 						<input class="js-click-set-type-edititem button-screen-item buttons--edit" type="submit" value="{!W_EDIT_ITEM}" />
-						<input class="js-click-set-type-confirm button-screen-item menu___generic_admin__delete" type="submit" value="{!W_DELETE_ITEM}" />
+						<input class="js-click-set-type-confirm button-screen-item menu---generic-admin--delete" type="submit" value="{!W_DELETE_ITEM}" />
 					</div></form>
 
 					{+START,IF,{IS_STAFF}}
 						<form method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off"><div>
 							{$INSERT_SPAMMER_BLACKHOLE}
 
-							<label for="item">{!FROM}</label>: {ITEMS_OWNED} <label for="item2">{!TO}</label>: {ITEMS_OWNED_2} <input type="hidden" name="type" value="mergeitems" /> <input class="button-screen-item menu___generic_admin__merge" type="submit" value="{!W_MERGE_ITEMS}" />
+							<label for="item">{!FROM}</label>: {ITEMS_OWNED} <label for="item2">{!TO}</label>: {ITEMS_OWNED_2} <input type="hidden" name="type" value="mergeitems" /> <input class="button-screen-item menu---generic-admin--merge" type="submit" value="{!W_MERGE_ITEMS}" />
 						</div></form>
 					{+END}
 				{+END}

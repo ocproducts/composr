@@ -1001,7 +1001,7 @@
         // Set up overlay for Lightbox
         var lightboxCode = /** @lang HTML */'' +
             '<div style="text-align: center">' +
-            '    <p class="ajax_loading" id="lightbox-image"><img src="' + $util.srl('{$IMG*;,loading}') + '" /></p>' +
+            '    <p class="ajax-loading" id="lightbox-image"><img src="' + $util.srl('{$IMG*;,loading}') + '" /></p>' +
             '    <p id="lightbox-meta" style="display: none" class="associated-link associated-links-block-group">' +
             '         <span id="lightbox-description">' + description + '</span>' +
             ((n == null) ? '' : ('<span id="lightbox-position-in-set"><span id="lightbox-position-in-set-x">' + x + '</span> / <span id="lightbox-position-in-set-n">' + n + '</span></span>')) +

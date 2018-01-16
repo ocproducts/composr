@@ -303,7 +303,7 @@ class Module_admin_chat extends Standard_crud_module
             'HIDDEN' => '',
             'TITLE' => $this->title,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'menu___generic_admin__delete',
+            'SUBMIT_ICON' => 'menu---generic-admin--delete',
             'SUBMIT_NAME' => $posting_name,
             'URL' => $posting_url,
             'TEXT' => $text,

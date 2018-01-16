@@ -12,7 +12,7 @@
 
 {+START,SET,BUTTONS}
 	{+START,IF_NON_EMPTY,{ADD_URL}}
-		<a class="button-screen menu___generic_admin__add_one" rel="add" href="{ADD_URL*}"><span>{!ADD_NEW_PAGE}</span></a>
+		<a class="button-screen menu---generic-admin--add-one" rel="add" href="{ADD_URL*}"><span>{!ADD_NEW_PAGE}</span></a>
 	{+END}
 
 	{+START,IF_PASSED,ADD_REDIRECT_URL}

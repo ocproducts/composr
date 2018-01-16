@@ -2687,7 +2687,7 @@ END;
                 'TEXT' => $text,
                 'URL' => $post_url,
                 'FIELDS' => $fields,
-                'SUBMIT_ICON' => 'menu___generic_admin__delete',
+                'SUBMIT_ICON' => 'menu---generic-admin--delete',
                 'SUBMIT_NAME' => $submit_name,
             ));
         }
@@ -2936,7 +2936,7 @@ END;
             'TITLE' => $title,
             'FIELDS' => $fields,
             'TEXT' => '',
-            'SUBMIT_ICON' => 'menu___generic_admin__add_to_category',
+            'SUBMIT_ICON' => 'menu---generic-admin--add-to-category',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
             'JS_FUNCTION_CALLS' => $js_function_calls,
@@ -3411,7 +3411,7 @@ END;
             'TITLE' => $title,
             'FIELDS' => $fields,
             'TEXT' => do_lang_tempcode('EDITING_TOPIC_NOT_POST'),
-            'SUBMIT_ICON' => 'menu___generic_admin__edit_this',
+            'SUBMIT_ICON' => 'menu---generic-admin--edit-this',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));
@@ -3503,7 +3503,7 @@ END;
             'TITLE' => $title,
             'FIELDS' => $fields,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'menu___generic_admin__delete',
+            'SUBMIT_ICON' => 'menu---generic-admin--delete',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));
@@ -3646,7 +3646,7 @@ END;
             'TITLE' => $title,
             'FIELDS' => $fields,
             'TEXT' => '',
-            'SUBMIT_ICON' => 'menu___generic_admin__edit_this',
+            'SUBMIT_ICON' => 'menu---generic-admin--edit-this',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));

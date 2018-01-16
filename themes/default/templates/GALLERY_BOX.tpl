@@ -33,7 +33,7 @@
 		</p></nav>
 	{+END}{+END}
 
-	<div class="buttons-group proceed_button_left">
+	<div class="buttons-group proceed-button-left">
 		<a class="button-screen-item buttons--more" href="{URL*}"><span>{!VIEW}</span></a>
 	</div>
 </div></div>

@@ -571,7 +571,7 @@ function upgrade_script()
                     echo '</p>';
                     echo '<form action="upgrader.php?type=_addon_remove" method="post">';
                     echo '<p><label for="addons">Addons to remove:</label><br /><textarea name="addons" id="addons" class="wide-field" rows="10"></textarea>';
-                    echo '<input class="menu___generic_admin__delete button-screen" type="submit" value="Remove addon files" />';
+                    echo '<input class="menu---generic-admin--delete button-screen" type="submit" value="Remove addon files" />';
                     echo post_fields_relay();
                     echo '</form>';
                     break;
@@ -758,7 +758,7 @@ function up_do_login($message = null)
 
     echo "
     <p>
-        <input class=\"menu__site_meta__user_actions__login button-screen\" type=\"submit\" value=\"{$l_login}\" />
+        <input class=\"menu--site-meta--user-actions--login button-screen\" type=\"submit\" value=\"{$l_login}\" />
     </p>
     </form>
     ";

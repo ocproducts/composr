@@ -23,7 +23,7 @@
 
 						<input type="hidden" name="type" value="new_pt" />
 
-						<p class="proceed_button">
+						<p class="proceed-button">
 							<input class="button-screen buttons--new-topic" type="submit" data-disable-on-click="1" value="{!QUOTE_TO_PT}" />
 						</p>
 					</div>
@@ -44,7 +44,7 @@
 
 					<input type="hidden" name="type" value="new_post" />
 
-					<p class="proceed_button">
+					<p class="proceed-button">
 						<input class="button-screen buttons--new-post-full" type="submit" data-disable-on-click="1" value="{!IN_TOPIC_PP}" />
 					</p>
 				</div>

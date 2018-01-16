@@ -100,7 +100,7 @@
 
     $cms.templates.purchaseWizardStageTerms = function purchaseWizardStageTerms(params, container) {
         $dom.on(container, 'click', '.js-checkbox-click-toggle-proceed-btn', function (e, checkbox) {
-            $dom.$('#proceed_button').disabled = !checkbox.checked;
+            $dom.$('#proceed-button').disabled = !checkbox.checked;
         });
 
         $dom.on(container, 'click', '.js-click-btn-i-disagree', function (e, btn) {

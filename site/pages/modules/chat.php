@@ -747,7 +747,7 @@ class Module_chat
             'HIDDEN' => $hidden,
             'TITLE' => $this->title,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'menu___generic_admin__add_one',
+            'SUBMIT_ICON' => 'menu---generic-admin--add-one',
             'SUBMIT_NAME' => $posting_name,
             'URL' => $posting_url,
             'TEXT' => $text,

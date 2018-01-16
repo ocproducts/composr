@@ -238,7 +238,7 @@ class Module_admin_quiz
             'TEXT' => do_lang_tempcode('EXPORT_QUIZ_TEXT'),
             'HIDDEN' => '',
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'menu___generic_admin__export',
+            'SUBMIT_ICON' => 'menu---generic-admin--export',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
             'POST' => true,

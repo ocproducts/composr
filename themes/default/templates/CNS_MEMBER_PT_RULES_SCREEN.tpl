@@ -11,7 +11,7 @@
 <form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
-	<p class="proceed_button">
+	<p class="proceed-button">
 		<input accesskey="u" data-disable-on-click="1" class="button-screen buttons--proceed" type="submit" value="{!PROCEED}" />
 	</p>
 </form>

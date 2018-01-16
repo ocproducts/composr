@@ -282,7 +282,7 @@ echo '
             Only run this on projects you trust - as _config.php will be executed so as to connect to the project\'s database.
         </p>
 
-        <p class="proceed_button">
+        <p class="proceed-button">
             <input class="buttons--proceed button-screen" type="submit" value="Auto-probe" />
         </p>
     </form>
@@ -322,7 +322,7 @@ foreach (array_merge(array_keys($addons['bundled']), array_keys($addons['non_bun
 }
 
 echo '
-        <p class="proceed_button">
+        <p class="proceed-button">
             <input class="buttons--proceed button-screen" type="submit" value="Generate" />
         </p>
     </form>

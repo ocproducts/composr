@@ -31,7 +31,7 @@
 		<div>
 			{FIELDS}
 
-			<p class="proceed_button">
+			<p class="proceed-button">
 				{+START,IF_NON_PASSED,BACK_URL}
 					<input class="button-screen buttons--back" type="button" data-cms-btn-go-back="1" value="{!GO_BACK}" />
 				{+END}

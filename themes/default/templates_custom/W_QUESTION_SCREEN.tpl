@@ -13,7 +13,7 @@
 		<label for="param">{QUESTION*}: <input type="text" id="param" name="param" /></label>
 	</p>
 
-	<p class="proceed_button">
+	<p class="proceed-button">
 		<input class="button-screen buttons--proceed" type="submit" value="{!PROCEED}" />
 	</p>
 </form>

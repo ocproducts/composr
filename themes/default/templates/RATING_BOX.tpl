@@ -23,7 +23,7 @@
 		{$,We do not show errors for likes as it is too informal to go into details}
 		{+START,IF,{$NOT,{LIKES}}}
 			{+START,IF_NON_EMPTY,{ERROR}}
-				<div class="rating_error">
+				<div class="rating-error">
 					{ERROR}
 				</div>
 			{+END}

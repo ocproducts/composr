@@ -11,7 +11,7 @@
 			<textarea name="xml" id="xml" cols="30" rows="30" class="wide-field">{XML*}</textarea>
 		</div>
 
-		<p class="proceed_button">
+		<p class="proceed-button">
 			<input class="button-screen buttons--save" id="submit_button" accesskey="u" type="submit" value="{!SAVE}" />
 		</p>
 	</form>

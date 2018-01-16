@@ -48,5 +48,5 @@
 {+END}
 
 {+START,IF_NON_EMPTY,{SUBMIT_URL}}
-	<p class="proceed_button"><a class="button-screen menu___generic_admin__add_one" href="{SUBMIT_URL*}"><span>{!ADD_BANNER}</span></a></p>
+	<p class="proceed-button"><a class="button-screen menu---generic-admin--add-one" href="{SUBMIT_URL*}"><span>{!ADD_BANNER}</span></a></p>
 {+END}

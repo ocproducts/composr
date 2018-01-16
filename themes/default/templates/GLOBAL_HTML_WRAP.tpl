@@ -168,7 +168,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 							<div class="inline">
 								<div class="accessibility-hidden"><label for="su">{!SU}</label></div>
 								<input title="{!SU_2}" class="js-global-input-su-keypress-enter-submit-form" accesskey="w" size="10" type="text"{+START,IF_NON_EMPTY,{$_GET,keep_su}} placeholder="{$USERNAME*}"{+END} value="{+START,IF_NON_EMPTY,{$_GET,keep_su}}{$USERNAME*}{+END}" id="su" name="keep_su" />
-								<input data-disable-on-click="1" class="button-micro menu__site_meta__user_actions__login" type="submit" value="{!SU}" />
+								<input data-disable-on-click="1" class="button-micro menu--site-meta--user-actions--login" type="submit" value="{!SU}" />
 							</div>
 						</form>
 					{+END}

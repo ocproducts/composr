@@ -657,7 +657,7 @@ class Module_admin_themes
             'URL' => $post_url,
             'FIELDS' => $fields,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'menu___generic_admin__add_one',
+            'SUBMIT_ICON' => 'menu---generic-admin--add-one',
             'SUBMIT_NAME' => $submit_name,
             'SUPPORT_AUTOSAVE' => true,
         ));
@@ -721,7 +721,7 @@ class Module_admin_themes
             'TEXT' => do_lang_tempcode('DESCRIPTION_EDIT_THEME', $date),
             'URL' => $post_url,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'menu___generic_admin__edit_this',
+            'SUBMIT_ICON' => 'menu---generic-admin--edit-this',
             'SUBMIT_NAME' => $submit_name,
             'SUPPORT_AUTOSAVE' => true,
         ));
@@ -1064,7 +1064,7 @@ class Module_admin_themes
             'URL' => $post_url,
             'FIELDS' => $fields,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'menu___generic_admin__add_one',
+            'SUBMIT_ICON' => 'menu---generic-admin--add-one',
             'SUBMIT_NAME' => $submit_name,
         ));
     }
@@ -1191,7 +1191,7 @@ class Module_admin_themes
             'URL' => $post_url,
             'FIELDS' => $fields,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'menu___generic_admin__edit_this',
+            'SUBMIT_ICON' => 'menu---generic-admin--edit-this',
             'SUBMIT_NAME' => $submit_name,
         ));
     }

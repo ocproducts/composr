@@ -245,7 +245,7 @@ Make a copy of the template file [tt]CATALOGUE_DEFAULT_ENTRY_SCREEN.tpl[/tt] and
 
 Search for the following code and remove it from the file:
 [code="HTML"]
-<div class="content_screen_comments">
+<div class="content-screen-comments">
 	{COMMENT_DETAILS}
 </div>
 [/code]

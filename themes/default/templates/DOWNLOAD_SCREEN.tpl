@@ -190,7 +190,7 @@
 		{+END}
 	{+END}
 
-	<div class="content_screen_comments">
+	<div class="content-screen-comments">
 		{COMMENT_DETAILS}
 	</div>
 </div>

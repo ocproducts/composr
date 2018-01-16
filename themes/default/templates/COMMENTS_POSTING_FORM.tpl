@@ -41,7 +41,7 @@
 				</h3>
 			{+END}
 			<div class="comments_posting_form_outer {+START,IF_PASSED,EXPAND_TYPE} toggleable-tray js-tray-content{+END}"{+START,IF_PASSED,EXPAND_TYPE} aria-expanded="false"{+END} id="comments_posting_form_outer" style="display: {DISPLAY*}">
-				<div class="comments_posting_form_inner">
+				<div class="comments-posting-form-inner">
 					<div class="wide-table-wrap"><table class="map-table wide-table">
 						{+START,IF,{$DESKTOP}}
 							<colgroup>
@@ -111,11 +111,11 @@
 										</th>
 
 										<td>
-											<img id="review_bar_1__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating_star js-img-review-bar" data-vw-rating="2" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" />
-											<img id="review_bar_2__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating_star js-img-review-bar" data-vw-rating="4" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" />
-											<img id="review_bar_3__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating_star js-img-review-bar" data-vw-rating="6" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" />
-											<img id="review_bar_4__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating_star js-img-review-bar" data-vw-rating="8" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" />
-											<img id="review_bar_5__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating_star js-img-review-bar" data-vw-rating="10" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" />
+											<img id="review_bar_1__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="2" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" />
+											<img id="review_bar_2__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="4" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" />
+											<img id="review_bar_3__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="6" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" />
+											<img id="review_bar_4__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="8" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" />
+											<img id="review_bar_5__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="10" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" />
 											<input id="review_rating__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="js-inp-review-rating" type="hidden" name="review_rating__{REVIEW_TITLE|*}" value="" />
 										</td>
 									</tr>
@@ -153,7 +153,7 @@
 
 									{+START,IF,{$DESKTOP}}
 										{+START,IF_NON_EMPTY,{EMOTICONS}}
-											<div class="comments_posting_form_emoticons block-desktop">
+											<div class="comments-posting-form-emoticons block-desktop">
 												<div class="box box___comments_posting_form"><div class="box-inner">
 													{EMOTICONS}
 
@@ -190,7 +190,7 @@
 						</tbody>
 					</table></div>
 
-					<div class="comments_posting_form_end">
+					<div class="comments-posting-form-end">
 						{+START,IF_PASSED_AND_TRUE,USE_CAPTCHA}
 							{+START,INCLUDE,COMMENTS_POSTING_FORM_CAPTCHA}
 								TABINDEX=7
@@ -200,10 +200,10 @@
 						{$SET,has_preview_button,{$AND,{$DESKTOP},{$JS_ON},{$CONFIG_OPTION,enable_previews},{$NOT,{$VALUE_OPTION,xhtml_strict}}}}
 						{+START,IF_PASSED,SKIP_PREVIEW}{$SET,has_preview_button,0}{+END}
 
-						<div class="proceed_button buttons-group {$?,{$GET,has_preview_button},contains_preview_button,contains_no_preview_button}">
+						<div class="proceed-button buttons-group {$?,{$GET,has_preview_button},contains-preview-button,contains-no-preview-button}">
 							{+START,IF,{$DESKTOP}}
 								{+START,IF,{$GET,has_preview_button}}
-									<input id="preview_button" accesskey="p" tabindex="250" class="tabs__preview js-click-do-form-preview {$?,{$IS_EMPTY,{COMMENT_URL}},button-screen,button-screen-item} desktop_inline" type="button" value="{!PREVIEW}" />
+									<input id="preview_button" accesskey="p" tabindex="250" class="tabs--preview js-click-do-form-preview {$?,{$IS_EMPTY,{COMMENT_URL}},button-screen,button-screen-item} desktop_inline" type="button" value="{!PREVIEW}" />
 								{+END}
 							{+END}
 
@@ -219,7 +219,7 @@
 
 							{+START,SET,button_title}{+START,IF_PASSED,SUBMIT_NAME}{SUBMIT_NAME*}{+END}{+START,IF_NON_PASSED,SUBMIT_NAME}{+START,IF_NON_EMPTY,{TITLE}}{TITLE*}{+END}{+START,IF_EMPTY,{TITLE}}{!SEND}{+END}{+END}{+END}
 							{+START,SET,button_icon}{+START,IF_PASSED,SUBMIT_ICON}{SUBMIT_ICON*}{+END}{+START,IF_NON_PASSED,SUBMIT_ICON}{+START,IF_NON_PASSED,MORE_URL}buttons--new-comment{+END}{+START,IF_PASSED,MORE_URL}buttons--new-reply{+END}{+END}{+END}
-							<button tabindex="8" accesskey="u" id="submit_button" class="{$GET,button_icon} {$?,{$GET,has_preview_button},near_preview_button,not_near_preview_button} {$?,{$IS_EMPTY,{COMMENT_URL}},button-screen,button-screen-item} js-btn-submit-comments" type="button">{+START,IF,{$DESKTOP}}<span class="inline-desktop">{$GET,button_title}</span>{+END}<span class="inline-mobile">{$REPLACE,{!cns:REPLY},{!_REPLY},{$GET,button_title}}</span></button>
+							<button tabindex="8" accesskey="u" id="submit_button" class="{$GET,button_icon} {$?,{$GET,has_preview_button},near-preview-button,not-near-preview-button} {$?,{$IS_EMPTY,{COMMENT_URL}},button-screen,button-screen-item} js-btn-submit-comments" type="button">{+START,IF,{$DESKTOP}}<span class="inline-desktop">{$GET,button_title}</span>{+END}<span class="inline-mobile">{$REPLACE,{!cns:REPLY},{!_REPLY},{$GET,button_title}}</span></button>
 						</div>
 					</div>
 				</div>

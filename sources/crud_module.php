@@ -938,7 +938,7 @@ abstract class Standard_crud_module
 
         url_default_parameters__disable();
 
-        $submit_icon = ($this->type_code == 'category') ? 'menu___generic_admin__add_one_category' : 'menu___generic_admin__add_one';
+        $submit_icon = ($this->type_code == 'category') ? 'menu---generic-admin--add-one-category' : 'menu---generic-admin--add-one';
 
         $cancel_url = build_url(array('page' => '_SELF', 'clear_autosave' => 1), '_SELF');
         if (get_param_string('type', 'add') == 'add_catalogue') {
@@ -1317,7 +1317,7 @@ abstract class Standard_crud_module
             'TEXT' => $text,
             'URL' => $post_url,
             'FIELDS' => $fields->evaluate()/*FUDGE*/,
-            'SUBMIT_ICON' => 'menu___generic_admin__edit_this',
+            'SUBMIT_ICON' => 'menu---generic-admin--edit-this',
             'SUBMIT_NAME' => $submit_name,
             'SKIP_WEBSTANDARDS' => true,
             'EXTRA_BUTTONS' => $extra_buttons,
@@ -1554,7 +1554,7 @@ abstract class Standard_crud_module
 
         list($warning_details, $ping_url) = handle_conflict_resolution();
 
-        $submit_icon = ($this->type_code == 'category') ? 'menu___generic_admin__edit_one_category' : 'menu___generic_admin__edit_one';
+        $submit_icon = ($this->type_code == 'category') ? 'menu---generic-admin--edit-one-category' : 'menu---generic-admin--edit-one';
 
         $cancel_url = build_url(array('page' => '_SELF', 'clear_autosave' => 1), '_SELF');
         if ($this->posting_form_title !== null) {

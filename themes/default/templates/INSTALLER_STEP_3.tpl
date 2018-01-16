@@ -107,7 +107,7 @@
 		</p>
 	</div>
 
-	<p class="proceed_button">
+	<p class="proceed-button">
 		<input class="button-screen buttons--proceed" data-disable-on-click="1" type="submit" value="{!PROCEED}" />
 	</p>
 </form>

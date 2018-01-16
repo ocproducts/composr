@@ -29,7 +29,7 @@
 			<textarea cols="30" rows="14" class="wide-field textarea-scroll" id="unbannable" name="unbannable">{UNBANNABLE*}</textarea>
 		</div>
 
-		<p class="proceed_button">
+		<p class="proceed-button">
 			<input accesskey="u" data-disable-on-click="1" class="button-screen buttons--save" type="submit" value="{!SAVE}" />
 		</p>
 	</form>

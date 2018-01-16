@@ -605,7 +605,7 @@ class Module_filedump
                 'TEXT' => $text,
                 'FIELDS' => $fields,
                 'SUBMIT_NAME' => $submit_name,
-                'SUBMIT_ICON' => 'menu___generic_admin__add_one',
+                'SUBMIT_ICON' => 'menu---generic-admin--add-one',
                 'URL' => $post_url,
             ));
         } else {
@@ -633,7 +633,7 @@ class Module_filedump
                 'TEXT' => '',
                 'FIELDS' => $fields,
                 'SUBMIT_NAME' => $submit_name,
-                'SUBMIT_ICON' => 'menu___generic_admin__add_one_category',
+                'SUBMIT_ICON' => 'menu---generic-admin--add-one-category',
                 'URL' => $post_url,
             ));
         } else {

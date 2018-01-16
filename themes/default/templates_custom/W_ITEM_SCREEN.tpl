@@ -91,7 +91,7 @@
 		<input type="hidden" name="item" value="{ITEM*}" />
 	{+END}
 
-	<p class="proceed_button">
+	<p class="proceed-button">
 		<input class="button-screen buttons--proceed" type="submit" value="{!PROCEED}" />
 	</p>
 </form>

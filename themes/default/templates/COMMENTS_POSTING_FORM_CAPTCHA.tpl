@@ -1,7 +1,7 @@
 {+START,IF_EMPTY,{$CONFIG_OPTION,recaptcha_site_key}}
 	{+START,SET,CAPTCHA}
 		{+START,IF_PASSED_AND_TRUE,USE_CAPTCHA}
-			<div class="comments_captcha">
+			<div class="comments-captcha">
 				<div class="box box___comments_posting_form__captcha"><div class="box-inner">
 					{+START,IF,{$CONFIG_OPTION,audio_captcha}}
 						<p>{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}<label for="captcha">{+END}{!DESCRIPTION_CAPTCHA_2,<a class="js-click-play-self-audio-link" title="{!captcha:AUDIO_VERSION}" href="{$FIND_SCRIPT*,captcha,1}?mode=audio&amp;cache_break={$RAND}{$KEEP*,0,1}">{!captcha:AUDIO_VERSION}</a>}{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}</label>{+END}</p>

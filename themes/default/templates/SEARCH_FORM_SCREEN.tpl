@@ -15,7 +15,7 @@
 			</div>
 
 			{+START,IF_NON_EMPTY,{PAGINATION}}
-				<div class="float-surrounder pagination_spacing">
+				<div class="float-surrounder pagination-spacing">
 					{PAGINATION}
 				</div>
 			{+END}
@@ -194,7 +194,7 @@
 					</tbody>
 				</table></div>
 
-				<p class="proceed_button">
+				<p class="proceed-button">
 					<input data-disable-on-click="1" accesskey="u" class="button-screen buttons--search" type="submit" value="{!SEARCH_TITLE}" />
 				</p>
 			</form>

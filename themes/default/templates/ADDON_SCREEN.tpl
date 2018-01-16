@@ -57,7 +57,7 @@
 			</table></div>
 		</div>
 
-		<p class="proceed_button">
+		<p class="proceed-button">
 			<input data-disable-on-click="1" class="button-screen buttons--proceed" type="submit" value="{!INSTALL_AND_UNINSTALL}" />
 		</p>
 	</form>

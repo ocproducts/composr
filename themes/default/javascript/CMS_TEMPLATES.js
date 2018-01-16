@@ -31,7 +31,7 @@
             return;
         }
 
-        var button = document.getElementById('proceed_button'),
+        var button = document.getElementById('proceed-button'),
             timer;
 
         button.countdown = 6;

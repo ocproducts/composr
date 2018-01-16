@@ -258,7 +258,7 @@ class Module_admin_revisions
                 'URL' => $delete_url,
                 'FULL_TITLE' => do_lang_tempcode('DELETE_REVISION'),
                 'TITLE' => do_lang_tempcode('DELETE'),
-                'IMG' => 'menu___generic_admin__delete',
+                'IMG' => 'menu---generic-admin--delete',
             ));
             $_revision[] = $delete;
         }

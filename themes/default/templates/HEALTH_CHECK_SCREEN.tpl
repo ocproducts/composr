@@ -32,7 +32,7 @@
 		</div>
 	</div>
 
-	<p class="proceed_button">
+	<p class="proceed-button">
 		<input class="button-screen buttons--proceed" type="submit" value="{!HEALTH_CHECK}" />
 	</p>
 </form>

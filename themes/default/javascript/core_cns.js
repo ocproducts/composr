@@ -280,7 +280,7 @@
 
     $cms.templates.cnsJoinStep1Screen = function cnsJoinStep1Screen(params, container) {
         $dom.on(container, 'click', '.js-chb-click-toggle-proceed-btn', function (e, checkbox) {
-            document.getElementById('proceed_button').disabled = !checkbox.checked;
+            document.getElementById('proceed-button').disabled = !checkbox.checked;
         });
 
         $dom.on(container, 'click', '.js-click-set-top-location', function (e, target) {
@@ -381,7 +381,7 @@
         form.appendChild(input);
 
         var proceedDiv = document.createElement('div');
-        proceedDiv.className = 'proceed_button';
+        proceedDiv.className = 'proceed-button';
         proceedDiv.style.marginTop = '1em';
 
         // Cancel button

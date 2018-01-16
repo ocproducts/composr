@@ -13,7 +13,7 @@
 		{+START,IF_PASSED,HIDDEN}{HIDDEN}{+END}
 
 		<div>
-			<div class="proceed_button">
+			<div class="proceed-button">
 				<input class="button-screen buttons--proceed js-click-btn-disable-self" accesskey="u" type="submit" value="{!PROCEED}" />
 			</div>
 		</div>

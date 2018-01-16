@@ -740,7 +740,7 @@
 
 
         var loadingWrapper = targetDiv;
-        if (!loadingWrapper.id.includes('carousel_') && !$dom.html(loadingWrapper).includes('ajax_loading_block') && showLoadingAnimation) {
+        if (!loadingWrapper.id.includes('carousel_') && !$dom.html(loadingWrapper).includes('ajax-loading-block') && showLoadingAnimation) {
             document.body.style.cursor = 'wait';
         }
 
@@ -758,7 +758,7 @@
             _blockDataCache[ajaxUrl] = newHtml;
 
             // Remove loading animation if there is one
-            var ajaxLoading = targetDiv.querySelector('.ajax_loading_block');
+            var ajaxLoading = targetDiv.querySelector('.ajax-loading-block');
             if (ajaxLoading) {
                 $dom.remove(ajaxLoading.parentNode);
             }
@@ -951,7 +951,7 @@
         }
         var bi = $dom.$id('main-website-inner');
         if (bi) {
-            bi.classList.remove('site_unloading');
+            bi.classList.remove('site-unloading');
         }
     };
 

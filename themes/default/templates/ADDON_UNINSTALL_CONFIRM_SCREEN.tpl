@@ -18,7 +18,7 @@
 		<p>
 			<input class="button-screen buttons--back" type="button" data-cms-btn-go-back="1" value="{!GO_BACK}" />
 
-			<input class="button-screen menu___generic_admin__delete" type="submit" value="{!PROCEED}" />
+			<input class="button-screen menu---generic-admin--delete" type="submit" value="{!PROCEED}" />
 		</p>
 	</form>
 </div>

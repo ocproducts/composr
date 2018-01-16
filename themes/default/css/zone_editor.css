@@ -85,7 +85,7 @@
 }
 
 /*{+START,CSS_MODE,mobile}*/
-	.zone_editor_form .proceed_button>span {
+	.zone_editor_form .proceed-button>span {
 		display: block;
 		margin: 1em 0;
 	}

@@ -46,7 +46,7 @@
         this.allNodesSelectable = Boolean(params.allNodesSelectable);
         this.useServerId = Boolean(params.useServerId);
 
-        $dom.html(this.el, '<div class="ajax_loading vertical-alignment"><img src="' + $util.srl('{$IMG*;^,loading}') + '" alt="" /> <span>{!LOADING;^}</span></div>');
+        $dom.html(this.el, '<div class="ajax-loading vertical-alignment"><img src="' + $util.srl('{$IMG*;^,loading}') + '" alt="" /> <span>{!LOADING;^}</span></div>');
 
         // Initial rendering
         var url = $util.url(this.ajaxUrl), 

@@ -32,7 +32,7 @@
 				{+END}
 			{+END}
 
-			<p class="proceed_button">
+			<p class="proceed-button">
 				<input class="button-screen-item buttons--search" type="submit" value="{!SEARCH}" />
 			</p>
 

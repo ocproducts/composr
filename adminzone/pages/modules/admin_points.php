@@ -157,7 +157,7 @@ class Module_admin_points
             'TEXT' => '',
             'HIDDEN' => '',
             'URL' => get_self_url(false, false, array(), false, true),
-            'SUBMIT_ICON' => 'menu___generic_admin__export',
+            'SUBMIT_ICON' => 'menu---generic-admin--export',
             'SUBMIT_NAME' => do_lang_tempcode('EXPORT'),
         ));
     }

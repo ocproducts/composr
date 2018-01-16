@@ -9,7 +9,7 @@
 		<div>
 			{INTERFACE}
 
-			<p class="proceed_button">
+			<p class="proceed-button">
 				<input type="submit" class="button-screen buttons--save" value="{!SAVE}" />
 			</p>
 		</div>

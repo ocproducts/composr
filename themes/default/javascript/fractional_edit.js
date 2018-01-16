@@ -21,12 +21,12 @@
                 if (e.type === 'mouseover') {
                     window.oldStatus = window.status;
                     window.status = '{!SPECIAL_CLICK_TO_EDIT;}';
-                    el.classList.add('fractional_edit');
-                    el.classList.remove('fractional_edit_nonover');
+                    el.classList.add('fractional-edit');
+                    el.classList.remove('fractional-edit-nonover');
                 } else {
                     window.status = window.oldStatus;
-                    el.classList.remove('fractional_edit');
-                    el.classList.add('fractional_edit_nonover');
+                    el.classList.remove('fractional-edit');
+                    el.classList.add('fractional-edit-nonover');
                 }
             });
         } else {

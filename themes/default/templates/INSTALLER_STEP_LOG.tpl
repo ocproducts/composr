@@ -16,8 +16,8 @@
 		<div>
 			{HIDDEN}
 	
-			<p class="proceed_button">
-				<input id="proceed_button" class="button-screen buttons--proceed" type="submit" value="{!PROCEED}" />
+			<p class="proceed-button">
+				<input id="proceed-button" class="button-screen buttons--proceed" type="submit" value="{!PROCEED}" />
 			</p>
 		</div>
 	</form>

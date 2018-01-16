@@ -2,13 +2,13 @@
 	{TITLE}
 
 	{+START,IF_NON_EMPTY,{PRE}}
-		<div class="index_screen_fancier_screen_pre" itemprop="description">
+		<div class="index-screen-fancier-screen-pre" itemprop="description">
 			{PRE}
 		</div>
 	{+END}
 
 	{+START,IF_NON_EMPTY,{CONTENT}}
-		<div class="index_screen_fancier_screen_entries float-surrounder" itemprop="significantLinks">
+		<div class="index-screen-fancier-screen-entries float-surrounder" itemprop="significantLinks">
 			{+START,IF_PASSED_AND_TRUE,ARRAY}
 				{+START,LOOP,CONTENT}
 					{+START,IF_NON_EMPTY,{_loop_var}}
@@ -37,7 +37,7 @@
 	{+END}
 
 	{+START,IF_NON_EMPTY,{POST}}
-		<div class="index_screen_fancier_screen_post">
+		<div class="index-screen-fancier-screen-post">
 			{POST}
 		</div>
 	{+END}

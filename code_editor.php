@@ -199,7 +199,7 @@ END;
         <tr><th>FTP Password</th><td><input size="50" type="password" name="ftp_password" /></td></tr>
     </table>
     <p>
-        <input class="button-screen menu__site_meta__user_actions__login" type="submit" value="Log in" />
+        <input class="button-screen menu--site-meta--user-actions--login" type="submit" value="Log in" />
     </p>
     <hr />
     <ul class="actions-list" role="navigation">
@@ -281,7 +281,7 @@ END;
     <p>
         OR, existing file: <select name="path">{$paths}</select>
     </p>
-    <p class="proceed_button">
+    <p class="proceed-button">
         <input class="button-screen buttons--save" type="submit" value="Edit file" />
     </p>
 END;
@@ -430,7 +430,7 @@ END;
 END;
         }
         echo <<<END
-<p class="proceed_button">
+<p class="proceed-button">
 <input type="submit" value="Edit" />
 </p>
 <iframe name="results" src="" style="display: none"></iframe>

@@ -16,7 +16,7 @@
 		</div>
 	</div></div>
 
-	<p class="proceed_button">
+	<p class="proceed-button">
 		<input class="button-screen buttons--back" data-cms-btn-go-back="1" type="button" value="{!GO_BACK}" />
 
 		<input data-disable-on-click="1" class="button-screen buttons--proceed" type="submit" value="{!PROCEED}" />

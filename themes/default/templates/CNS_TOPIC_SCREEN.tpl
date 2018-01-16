@@ -33,7 +33,7 @@
 		{+START,IF,{$CONFIG_OPTION,enable_forum_dupe_buttons}}
 			{+START,IF_NON_EMPTY,{PAGINATION}}
 				<div class="non-accessibility-redundancy">
-					<div class="pagination_spacing float-surrounder">
+					<div class="pagination-spacing float-surrounder">
 						{$REPLACE, id="blp_, id="blp2_,{$REPLACE, for="blp_, for="blp2_,{$REPLACE, id="r_, id="r2_,{$REPLACE, for="r_, for="r2_,{PAGINATION}}}}}
 					</div>
 				</div>
@@ -133,7 +133,7 @@
 		{+END}
 
 		{+START,IF_NON_EMPTY,{PAGINATION}}
-			<div class="float-surrounder pagination_spacing">
+			<div class="float-surrounder pagination-spacing">
 				{PAGINATION}
 			</div>
 		{+END}

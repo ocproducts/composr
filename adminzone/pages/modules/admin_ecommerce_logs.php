@@ -769,7 +769,7 @@ class Module_admin_ecommerce_logs
         return do_template('FORM_SCREEN', array(
             'SKIP_WEBSTANDARDS' => true,
             'TITLE' => $this->title,
-            'SUBMIT_ICON' => 'menu___generic_admin__export',
+            'SUBMIT_ICON' => 'menu---generic-admin--export',
             'SUBMIT_NAME' => do_lang_tempcode('EXPORT_TRANSACTIONS'),
             'TEXT' => paragraph(do_lang_tempcode('EXPORT_TRANSACTIONS_TEXT')),
             'URL' => build_url(array('page' => '_SELF', 'type' => '_export_transactions'), '_SELF'),

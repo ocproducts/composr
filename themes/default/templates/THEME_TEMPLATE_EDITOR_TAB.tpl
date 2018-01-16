@@ -474,11 +474,11 @@
 	{+START,SET,preview_buttons}
 		{+START,IF_PASSED,LIVE_PREVIEW_URL}
 			<!-- Preview in live rendering -->
-			<input class="button-screen tabs__preview js-btn-live-preview" type="submit" value="{!LIVE_PREVIEW}" />
+			<input class="button-screen tabs--preview js-btn-live-preview" type="submit" value="{!LIVE_PREVIEW}" />
 		{+END}
 		{+START,IF_PASSED,SCREEN_PREVIEW_URL}
 			<!-- Preview in screen preview (Lorem ipsum) -->
-			<input class="button-screen tabs__preview js-btn-screen-preview" type="submit" value="{!LOREM_PREVIEW}" />
+			<input class="button-screen tabs--preview js-btn-screen-preview" type="submit" value="{!LOREM_PREVIEW}" />
 		{+END}
 	{+END}
 	{+START,IF_NON_EMPTY,{$TRIM,{$GET,preview_buttons}}}

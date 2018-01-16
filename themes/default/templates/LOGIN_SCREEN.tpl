@@ -58,8 +58,8 @@
 					{+END}
 				</div>
 
-				<p class="proceed_button">
-					<input class="button-screen menu__site_meta__user_actions__login" type="submit" value="{!_LOGIN}" />
+				<p class="proceed-button">
+					<input class="button-screen menu--site-meta--user-actions--login" type="submit" value="{!_LOGIN}" />
 				</p>
 			</div>
 		</form>

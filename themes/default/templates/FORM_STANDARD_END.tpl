@@ -40,7 +40,7 @@
 		{+END}{+END}
 	{+END}{+END}
 
-	<p class="proceed_button{+START,IF_PASSED,SUBMIT_BUTTON_CLASS} {SUBMIT_BUTTON_CLASS*}{+END}">
+	<p class="proceed-button{+START,IF_PASSED,SUBMIT_BUTTON_CLASS} {SUBMIT_BUTTON_CLASS*}{+END}">
 		{+START,IF_PASSED_AND_TRUE,BACK}
 			<input class="button-screen buttons--back" type="button" data-cms-btn-go-back="1" value="{!GO_BACK}" />
 		{+END}
@@ -53,7 +53,7 @@
 			<input class="button-screen buttons--cancel js-click-do-form-cancel" type="button" value="{!INPUTSYSTEM_CANCEL}" />
 		{+END}
 		{+START,IF_PASSED_AND_TRUE,PREVIEW}{+START,IF,{$CONFIG_OPTION,enable_previews}}
-			<input class="button-screen tabs__preview js-click-do-form-preview" id="preview_button" accesskey="p" tabindex="{+START,IF_PASSED,TABINDEX}{TABINDEX}{+END}{+START,IF_NON_PASSED,TABINDEX}250{+END}" type="button" value="{!PREVIEW}" />
+			<input class="button-screen tabs--preview js-click-do-form-preview" id="preview_button" accesskey="p" tabindex="{+START,IF_PASSED,TABINDEX}{TABINDEX}{+END}{+START,IF_NON_PASSED,TABINDEX}250{+END}" type="button" value="{!PREVIEW}" />
 		{+END}{+END}
 		<input class="{SUBMIT_ICON*} button-screen js-click-do-form-submit"{+START,IF_NON_PASSED_OR_FALSE,SECONDARY_FORM} id="submit_button" accesskey="u"{+END} tabindex="{+START,IF_PASSED,TABINDEX}{TABINDEX}{+END}{+START,IF_NON_PASSED,TABINDEX}250{+END}" type="button" value="{SUBMIT_NAME*}" />
 	</p>

@@ -140,7 +140,7 @@ function ce_do_login()
     echo '
         <label for="given_password">Master Password: <input type="password" name="given_password" id="given_password" /></label>
 
-        <p><input class="button-screen menu__site_meta__user_actions__login" type="submit" value="Log in" /></p>
+        <p><input class="button-screen menu--site-meta--user-actions--login" type="submit" value="Log in" /></p>
     ';
 }
 
@@ -318,7 +318,7 @@ function do_access($given_password)
     }
 
     echo '
-        <p class="proceed_button" style="text-align: center">
+        <p class="proceed-button" style="text-align: center">
             <input class="button-screen buttons--save" type="submit" value="Save" onclick="return checkPasswords(this.form);" />
         </p>
 

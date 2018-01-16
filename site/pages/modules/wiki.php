@@ -832,7 +832,7 @@ class Module_wiki
 
         require_code('form_templates');
 
-        $posting_form = get_posting_form(do_lang('MERGE_WIKI_POSTS'), 'menu___generic_admin__merge', $merged, $merge_url, new Tempcode(), new Tempcode());
+        $posting_form = get_posting_form(do_lang('MERGE_WIKI_POSTS'), 'menu---generic-admin--merge', $merged, $merge_url, new Tempcode(), new Tempcode());
 
         return do_template('POSTING_SCREEN', array(
             '_GUID' => '4372327fb689ef70a9ac5d275dd454f1',
@@ -1125,7 +1125,7 @@ class Module_wiki
 
         $js_function_calls = ((function_exists('captcha_ajax_check_function')) && (captcha_ajax_check_function() != '')) ? array(captcha_ajax_check_function()) : array();
 
-        $posting_form = get_posting_form($submit_name, ($mode == 'edit') ? 'menu___generic_admin__edit_this' : 'menu___generic_admin__add_one', $message, $post_url, $hidden_fields, new Tempcode(), null, '', $specialisation, $parsed, $js_function_calls);
+        $posting_form = get_posting_form($submit_name, ($mode == 'edit') ? 'menu---generic-admin--edit-this' : 'menu---generic-admin--add-one', $message, $post_url, $hidden_fields, new Tempcode(), null, '', $specialisation, $parsed, $js_function_calls);
 
         if ($mode == 'post') {
             url_default_parameters__disable();

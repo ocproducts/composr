@@ -156,7 +156,7 @@ class Module_admin_tickets
                 'TEXT' => '',
                 'FIELDS' => $fields,
                 'URL' => $edit_url,
-                'SUBMIT_ICON' => 'menu___generic_admin__edit_this_category',
+                'SUBMIT_ICON' => 'menu---generic-admin--edit-this-category',
                 'SUBMIT_NAME' => $submit_name,
             ));
         } else {
@@ -195,7 +195,7 @@ class Module_admin_tickets
             'HIDDEN' => '',
             'TEXT' => '',
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'menu___generic_admin__add_one_category',
+            'SUBMIT_ICON' => 'menu---generic-admin--add-one-category',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
             'SUPPORT_AUTOSAVE' => true,
@@ -268,7 +268,7 @@ class Module_admin_tickets
             'HIDDEN' => '',
             'TEXT' => '',
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'menu___generic_admin__edit_this',
+            'SUBMIT_ICON' => 'menu---generic-admin--edit-this',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
             'SUPPORT_AUTOSAVE' => true,

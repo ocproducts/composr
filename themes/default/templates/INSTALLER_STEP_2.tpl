@@ -21,7 +21,7 @@
 		<p>{!EMAIL_NEWSLETTER}</p>
 	</div>
 
-	<p class="proceed_button">
+	<p class="proceed-button">
 		<input class="button-screen buttons--yes" data-disable-on-click="1" type="submit" value="{!I_AGREE}" />
 	</p>
 </form>

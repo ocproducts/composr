@@ -428,7 +428,7 @@ class Hook_addon_registry_galleries
         $input = do_lorem_template('FORM_SCREEN_INPUT_LIST', array('TABINDEX' => placeholder_id(), 'REQUIRED' => '-required', 'NAME' => 'files', 'CONTENT' => $orphaned_content, 'INLINE_LIST' => true, 'SIZE' => '9'));
         $fields->attach(do_lorem_template('FORM_SCREEN_FIELD', array('REQUIRED' => true, 'SKIP_LABEL' => false, 'NAME' => 'files', 'PRETTY_NAME' => lorem_phrase(), 'DESCRIPTION' => lorem_paragraph_html(), 'DESCRIPTION_SIDE' => '', 'INPUT' => $input, 'COMCODE' => new Tempcode())));
 
-        $form = do_lorem_template('FORM', array('TABINDEX' => placeholder_number(), 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__import', 'SUBMIT_NAME' => lorem_word(), 'URL' => placeholder_url(), 'TEXT' => lorem_phrase(), 'HIDDEN' => '', 'BATCH_IMPORT_ARCHIVE_CONTENTS' => lorem_phrase()));
+        $form = do_lorem_template('FORM', array('TABINDEX' => placeholder_number(), 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu---generic-admin--import', 'SUBMIT_NAME' => lorem_word(), 'URL' => placeholder_url(), 'TEXT' => lorem_phrase(), 'HIDDEN' => '', 'BATCH_IMPORT_ARCHIVE_CONTENTS' => lorem_phrase()));
 
         return array(
             lorem_globalise(do_lorem_template('GALLERY_IMPORT_SCREEN', array(

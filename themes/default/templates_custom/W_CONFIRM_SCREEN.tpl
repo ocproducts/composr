@@ -10,7 +10,7 @@
 	<input type="hidden" name="member" value="{MEMBER*}" />
 	<input type="hidden" name="param" value="{PARAM*}" />
 
-	<p class="proceed_button">
+	<p class="proceed-button">
 		<input class="button-screen buttons--proceed" type="submit" value="{!PROCEED}" />
 	</p>
 </form>

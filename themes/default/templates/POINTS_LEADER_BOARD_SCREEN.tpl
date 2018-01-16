@@ -8,7 +8,7 @@
 
 {+START,IF_PASSED,PAGINATION}
 	{+START,IF_NON_EMPTY,{PAGINATION}}
-		<div class="pagination_spacing float-surrounder">
+		<div class="pagination-spacing float-surrounder">
 			{PAGINATION}
 		</div>
 	{+END}

@@ -1369,7 +1369,7 @@ class Hook_addon_registry_core_cns
                 'TITLE' => lorem_title(),
                 'URL' => placeholder_url(),
                 'FIELDS' => placeholder_fields(),
-                'SUBMIT_ICON' => 'menu__site_meta__user_actions__join',
+                'SUBMIT_ICON' => 'menu--site-meta--user-actions--join',
                 'SUBMIT_NAME' => lorem_word(),
                 'TEXT' => lorem_sentence_html(),
                 'USERNAME_CHECK_SCRIPT' => placeholder_url(),

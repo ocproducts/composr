@@ -254,7 +254,7 @@
             var id = ob.id.substring(4, ob.id.length);
 
             if (((window.showModalDialog !== undefined) || $cms.configOption('js_overlays')) || (ob.form.elements['branch_type_' + id] !== 'page')) {
-                var choices = { 'buttons--cancel': '{!INPUTSYSTEM_CANCEL;^}', 'menu___generic_admin__delete': '{!DELETE;^}', 'buttons--move': '{!menus:MOVETO_MENU;^}' };
+                var choices = { 'buttons--cancel': '{!INPUTSYSTEM_CANCEL;^}', 'menu---generic-admin--delete': '{!DELETE;^}', 'buttons--move': '{!menus:MOVETO_MENU;^}' };
                 $cms.ui.generateQuestionUi(
                     '{!menus:CONFIRM_DELETE_LINK_NICE;^,xxxx}'.replace('xxxx', document.getElementById('caption_' + id).value),
                     choices,

@@ -36,7 +36,7 @@
 					</div>
 				</div>
 
-				<p class="proceed_button">
+				<p class="proceed-button">
 					<input accesskey="u" class="button-screen buttons--save js-click-check-menu" type="submit" value="{!SAVE}" />
 				</p>
 			</div>
@@ -97,11 +97,11 @@
 				<form title="{!DELETE}" action="{DELETE_URL*}" method="post" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<p class="proceed_button">
+					<p class="proceed-button">
 						<input type="hidden" name="confirm" value="1" />
 						<input type="hidden" name="delete_confirm" value="1" />
 
-						<input class="button-screen-item menu___generic_admin__delete" type="submit" value="{!DELETE}" data-cms-confirm-click="{!CONFIRM_DELETE*,{MENU_NAME}}" />
+						<input class="button-screen-item menu---generic-admin--delete" type="submit" value="{!DELETE}" data-cms-confirm-click="{!CONFIRM_DELETE*,{MENU_NAME}}" />
 					</p>
 				</form>
 			</div>

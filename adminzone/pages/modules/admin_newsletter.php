@@ -339,7 +339,7 @@ class Module_admin_newsletter extends Standard_crud_module
                 'TITLE' => $this->title,
                 'TEXT' => '',
                 'FIELDS' => $fields,
-                'SUBMIT_ICON' => 'menu___generic_admin__import',
+                'SUBMIT_ICON' => 'menu---generic-admin--import',
                 'SUBMIT_NAME' => $submit_name,
                 'URL' => $post_url,
             ));
@@ -1257,7 +1257,7 @@ class Module_admin_newsletter extends Standard_crud_module
             'TEXT' => (($periodic_action == 'make' || $periodic_action == 'replace') ? do_lang_tempcode('PERIODIC_NO_EDIT') : do_lang_tempcode('NEWSLETTER_SEND_TEXT')),
             'HIDDEN' => $hidden,
             'FIELDS' => $fields->evaluate()/*FUDGE*/,
-            'SUBMIT_ICON' => 'tabs__preview',
+            'SUBMIT_ICON' => 'tabs--preview',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
             'SUPPORT_AUTOSAVE' => true,
@@ -1546,7 +1546,7 @@ class Module_admin_newsletter extends Standard_crud_module
             'TITLE' => $this->title,
             'TEXT' => '',
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'menu___generic_admin__view_archive',
+            'SUBMIT_ICON' => 'menu---generic-admin--view-archive',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));
@@ -1620,7 +1620,7 @@ class Module_admin_newsletter extends Standard_crud_module
             $dequeue_url = build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $id), '_SELF');
             $hidden = new Tempcode();
             $hidden->attach(form_input_hidden('flush_queue', '1'));
-            $buttons->attach(do_template('BUTTON_SCREEN', array('IMMEDIATE' => true, 'URL' => $dequeue_url, 'TITLE' => do_lang_tempcode('EMPTY_QUEUE'), 'IMG' => 'menu___generic_admin__delete', 'HIDDEN' => $hidden)));
+            $buttons->attach(do_template('BUTTON_SCREEN', array('IMMEDIATE' => true, 'URL' => $dequeue_url, 'TITLE' => do_lang_tempcode('EMPTY_QUEUE'), 'IMG' => 'menu---generic-admin--delete', 'HIDDEN' => $hidden)));
         }
 
         $copy_url = build_url(array('page' => '_SELF', 'type' => 'new'), '_SELF');

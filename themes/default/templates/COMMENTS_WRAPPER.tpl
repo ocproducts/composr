@@ -15,7 +15,7 @@
 		{+END}
 
 		{+START,IF,{$NEQ,{$GET,rating_loop},0}}
-			<span class="reviews_average horiz-field-sep">({!AVERAGED})</span>
+			<span class="reviews-average horiz-field-sep">({!AVERAGED})</span>
 		{+END}
 
 		{+START,IF,{$EQ,{$GET,rating_loop},0}}
@@ -25,10 +25,10 @@
 
 	<div class="boxless-space">
 		<div class="box box___comments_wrapper"><div class="box-inner">
-			<h2 class="comments_header">{$?,{$IS_NON_EMPTY,{REVIEW_RATING_CRITERIA}},{$GET,REVIEWS_TITLE},{!COMMENTS}}</h2>
+			<h2 class="comments-header">{$?,{$IS_NON_EMPTY,{REVIEW_RATING_CRITERIA}},{$GET,REVIEWS_TITLE},{!COMMENTS}}</h2>
 
 			<div class="float-surrounder">
-				<div class="comments_notification_buttons">
+				<div class="comments-notification-buttons">
 					{+START,INCLUDE,NOTIFICATION_BUTTONS}
 						NOTIFICATIONS_TYPE=comment_posted
 						NOTIFICATIONS_ID={TYPE}_{ID}
@@ -38,7 +38,7 @@
 					{+END}
 				</div>
 
-				<div class="comments_sorting_box">
+				<div class="comments-sorting-box">
 					<form title="{!SORT}" class="inline" action="{$SELF_URL*}" method="post" autocomplete="off">
 						{$INSERT_SPAMMER_BLACKHOLE}
 
@@ -69,7 +69,7 @@
 				{+END}
 			{+END}
 
-			<div class="comment_wrapper">
+			<div class="comment-wrapper">
 				<meta itemprop="interactionCount" content="UserComments:{$METADATA*,numcomments}" />
 
 				{COMMENTS}

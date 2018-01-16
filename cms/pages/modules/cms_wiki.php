@@ -306,7 +306,7 @@ class Module_cms_wiki
             $fields2->attach(get_award_fields('wiki_page'));
         }
 
-        $posting_form = get_posting_form(do_lang('WIKI_ADD_PAGE'), 'menu___generic_admin__add_one_category', '', $add_url, $hidden, $fields, null, '', $fields2);
+        $posting_form = get_posting_form(do_lang('WIKI_ADD_PAGE'), 'menu---generic-admin--add-one-category', '', $add_url, $hidden, $fields, null, '', $fields2);
 
         url_default_parameters__disable();
 
@@ -452,7 +452,7 @@ class Module_cms_wiki
             $revisions = new Tempcode();
         }
 
-        $posting_form = get_posting_form(do_lang('SAVE'), 'menu___generic_admin__edit_this_category', $description, $edit_url, new Tempcode(), $fields, do_lang_tempcode('PAGE_TEXT'), '', $fields2, $_description, array(), null, false);
+        $posting_form = get_posting_form(do_lang('SAVE'), 'menu---generic-admin--edit-this-category', $description, $edit_url, new Tempcode(), $fields, do_lang_tempcode('PAGE_TEXT'), '', $fields2, $_description, array(), null, false);
 
         list($warning_details, $ping_url) = handle_conflict_resolution();
 

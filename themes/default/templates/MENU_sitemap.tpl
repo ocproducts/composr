@@ -16,7 +16,7 @@
 
 	<nav id="{$GET*,menu_sitemap_id}" class="menu-type--sitemap" data-tpl="menuSitemap" data-tpl-params="{+START,PARAMS_JSON,menu_sitemap_id}{_*}{+END}" data-tp-menu-content="{$TRIM*,{CONTENT}}">
 		<div aria-busy="true" class="spaced">
-			<div class="ajax_loading vertical-alignment">
+			<div class="ajax-loading vertical-alignment">
 				<img src="{$IMG*,loading}" title="{!LOADING}" alt="{!LOADING}" />
 				<span>{!LOADING}</span>
 			</div>

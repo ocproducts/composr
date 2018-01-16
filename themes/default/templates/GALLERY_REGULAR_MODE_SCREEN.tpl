@@ -23,7 +23,7 @@
 	{+START,IF_NON_EMPTY,{ENTRIES}}
 		{ENTRIES}
 
-		<div class="box category_sorter inline-block"><div class="box-inner">
+		<div class="box category-sorter inline-block"><div class="box-inner">
 			{$SET,show_sort_button,1}
 			{SORTING}
 		</div></div>
@@ -95,7 +95,7 @@
 	</div>
 
 	{+START,IF_NON_EMPTY,{ENTRIES}}
-		<div class="content_screen_comments">
+		<div class="content-screen-comments">
 			{COMMENT_DETAILS}
 		</div>
 	{+END}

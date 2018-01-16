@@ -11,18 +11,18 @@
 {+END}
 
 {+START,IF,{$NOT,{IS_SPACER_POST}}}
-	<div class="box box___post{+START,IF,{$OR,{IS_UNREAD},{HIGHLIGHT}}} highlighted_post{+END}"><div class="box-inner">
+	<div class="box box___post{+START,IF,{$OR,{IS_UNREAD},{HIGHLIGHT}}} highlighted-post{+END}"><div class="box-inner">
 		<div id="post_wrap_{ID*}" class="post time_{TIME_RAW*}" itemprop="reviews" itemscope="itemscope" itemtype="http://schema.org/Review">
 			{+START,IF_NON_EMPTY,{ID}}<a id="post_{ID*}"></a>{+END}
 
 			<div class="float-surrounder">
-				{+START,IF_NON_EMPTY,{TITLE}}{+START,IF,{$NEQ,{TITLE},{$GET,topic_title}}}<h3 class="post_title" itemprop="name">{TITLE*}</h3>{+END}{+END}
+				{+START,IF_NON_EMPTY,{TITLE}}{+START,IF,{$NEQ,{TITLE},{$GET,topic_title}}}<h3 class="post-title" itemprop="name">{TITLE*}</h3>{+END}{+END}
 
-				<div class="post_subline">
+				<div class="post-subline">
 					{+START,IF_NON_EMPTY,{POSTER_URL}}{!BY_SIMPLE,<a class="post-poster" href="{POSTER_URL*}">{$DISPLAYED_USERNAME*,{POSTER_NAME}}</a>} {+START,INCLUDE,MEMBER_TOOLTIP}SUBMITTER={POSTER_ID}{+END}{+END}
 					{+START,IF_EMPTY,{POSTER_URL}}{!BY_SIMPLE,{POSTER_NAME*}},{+END}
 
-					<span class="post_time">
+					<span class="post-time">
 						{!POSTED_TIME_SIMPLE_LOWER,<time datetime="{$FROM_TIMESTAMP*,Y-m-d\TH:i:s\Z,{TIME_RAW}}" itemprop="datePublished">{TIME*}</time>}
 					</span>
 
@@ -90,7 +90,7 @@
 			{+END}
 
 			{+START,IF_PASSED,CHILDREN}
-				<div id="post_children_{ID*}" class="post_thread_children">
+				<div id="post_children_{ID*}" class="post-thread-children">
 					{CHILDREN}
 				</div>
 			{+END}

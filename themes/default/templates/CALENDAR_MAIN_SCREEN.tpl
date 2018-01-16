@@ -46,7 +46,7 @@
 	</div>
 	<div class="trinav-mid block-desktop">
 		{+START,IF_NON_EMPTY,{ADD_URL}}
-			<a class="button-screen menu___generic_admin__add_one" rel="add" href="{ADD_URL*}"><span>{!ADD_CALENDAR_EVENT}</span></a>
+			<a class="button-screen menu---generic-admin--add-one" rel="add" href="{ADD_URL*}"><span>{!ADD_CALENDAR_EVENT}</span></a>
 		{+END}
 	</div>
 </div>
@@ -57,7 +57,7 @@
 
 {+START,IF_NON_EMPTY,{ADD_URL}}
 	<p class="buttons-group">
-		<a class="button-screen menu___generic_admin__add_one" rel="add" href="{ADD_URL*}"><span>{!ADD_CALENDAR_EVENT}</span></a>
+		<a class="button-screen menu---generic-admin--add-one" rel="add" href="{ADD_URL*}"><span>{!ADD_CALENDAR_EVENT}</span></a>
 	</p>
 {+END}
 
@@ -80,7 +80,7 @@
 							{EVENT_TYPES_1}
 						</div>
 
-						<p class="proceed_button">
+						<p class="proceed-button">
 							<input data-disable-on-click="1" class="button-screen buttons--choose" type="submit" value="{!INTERESTS}" />
 						</p>
 					</form>
@@ -99,7 +99,7 @@
 							{EVENT_TYPES_2}
 						</div>
 
-						<p class="proceed_button">
+						<p class="proceed-button">
 							<input data-disable-on-click="1" class="button-screen buttons--filter" type="submit" value="{!FILTER}" />
 						</p>
 					</form>

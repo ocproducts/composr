@@ -449,7 +449,7 @@ class Module_admin_aggregate_types extends Standard_crud_module
             'URL' => $url,
             'FIELDS' => $fields,
             'TEXT' => do_lang_tempcode('SELECT_AGGREGATE_TYPES_FOR_SYNC'),
-            'SUBMIT_ICON' => 'menu___generic_admin__sync',
+            'SUBMIT_ICON' => 'menu---generic-admin--sync',
             'SUBMIT_NAME' => $submit_name,
         ));
     }

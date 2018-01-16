@@ -1151,7 +1151,7 @@ class Module_cms_calendar extends Standard_crud_module
             'TEXT' => do_lang_tempcode('IMPORT_ICAL_TEXT'),
             'HIDDEN' => $hidden,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'menu___generic_admin__import',
+            'SUBMIT_ICON' => 'menu---generic-admin--import',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));
@@ -1209,7 +1209,7 @@ class Module_cms_calendar extends Standard_crud_module
             'TEXT' => do_lang_tempcode('EXPORT_ICAL_TEXT'),
             'HIDDEN' => '',
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'menu___generic_admin__export',
+            'SUBMIT_ICON' => 'menu---generic-admin--export',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
             'GET' => true,

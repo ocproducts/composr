@@ -25,8 +25,8 @@
 			</div>
 		{+END}
 
-		<p class="proceed_button">
-			<input accesskey="p" class="button-screen tabs__preview js-click-btn-tempcode-tester-do-preview" type="submit" value="{!PREVIEW}" />
+		<p class="proceed-button">
+			<input accesskey="p" class="button-screen tabs--preview js-click-btn-tempcode-tester-do-preview" type="submit" value="{!PREVIEW}" />
 		</p>
 	</form>
 

@@ -32,7 +32,7 @@
 	{+END}
 </div>
 
-<div class="box category_sorter inline-block"><div class="box-inner">
+<div class="box category-sorter inline-block"><div class="box-inner">
 	{$SET,show_sort_button,1}
 	{SORTING}
 </div></div>

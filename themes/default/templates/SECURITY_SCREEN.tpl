@@ -19,8 +19,8 @@
 		<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" autocomplete="off">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
-			<p class="proceed_button">
-				<input class="button-screen menu___generic_admin__delete js-click-btn-delete-add-form-marked-posts" type="submit" value="{!DELETE}" />
+			<p class="proceed-button">
+				<input class="button-screen menu---generic-admin--delete js-click-btn-delete-add-form-marked-posts" type="submit" value="{!DELETE}" />
 			</p>
 		</form>
 	{+END}

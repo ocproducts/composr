@@ -10,8 +10,8 @@
 
 		{TRACKBACKS}
 
-		<p class="proceed_button">
-			<input data-disable-on-click="1" class="button-screen menu___generic_admin__delete" type="submit" value="{!DELETE}" />
+		<p class="proceed-button">
+			<input data-disable-on-click="1" class="button-screen menu---generic-admin--delete" type="submit" value="{!DELETE}" />
 		</p>
 	</form>
 {+END}

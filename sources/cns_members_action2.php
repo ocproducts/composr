@@ -195,7 +195,7 @@ function cns_member_external_linker_ask($username, $type, $email_address = '', $
         'TITLE' => $title,
         'FIELDS' => $fields,
         'TEXT' => $text,
-        'SUBMIT_ICON' => 'menu__site_meta__user_actions__join',
+        'SUBMIT_ICON' => 'menu--site-meta--user-actions--join',
         'SUBMIT_NAME' => $submit_name,
         'URL' => $url,
     ));

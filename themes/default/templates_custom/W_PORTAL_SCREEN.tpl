@@ -69,7 +69,7 @@
 		{+END}{+END}{+END}
 	</tbody></table></div>
 
-	<p class="proceed_button">
+	<p class="proceed-button">
 		<input class="button-screen buttons--proceed" type="submit" value="{!PROCEED}" />
 	</p>
 </form>

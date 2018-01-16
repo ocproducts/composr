@@ -642,7 +642,7 @@ class Module_topicview
                 }
             } else {
                 $invite_url = build_url(array('page' => 'topics', 'type' => 'invite_member', 'id' => $id), get_module_zone('topics'));
-                $button_array[] = array('immediate' => false, 'title' => do_lang_tempcode('_INVITE_MEMBER_TO_PT'), 'url' => $invite_url, 'img' => 'menu___generic_admin__add_to_category');
+                $button_array[] = array('immediate' => false, 'title' => do_lang_tempcode('_INVITE_MEMBER_TO_PT'), 'url' => $invite_url, 'img' => 'menu---generic-admin--add-to-category');
             }
         }
         $buttons = cns_button_screen_wrap($button_array);
