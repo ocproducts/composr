@@ -1,15 +1,15 @@
-.confluence_left {
+.confluence-left {
 	float: left;
 	width: 200px;
 	margin-bottom: 20px;
 	margin-right: 20px;
 }
 
-.confluence_main {
+.confluence-main {
 }
 
 @media all and (max-width: 768px) {
-	.confluence_left {
+	.confluence-left {
 		display: none;
 	}
 }

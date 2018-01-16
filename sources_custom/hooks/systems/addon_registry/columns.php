@@ -88,7 +88,7 @@ class Hook_addon_registry_columns
      */
     public function get_description()
     {
-        return 'Automatically columnise Comcode. Allows wrapping of HTML with a div with a [tt].column_wrapper[/tt] CSS class, to have it automatically put in columns.
+        return 'Automatically columnise Comcode. Allows wrapping of HTML with a div with a [tt].column-wrapper[/tt] CSS class, to have it automatically put in columns.
 
 You need to add this code into your [tt]HTML_HEAD.tpl[/tt]:
 [code]<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>

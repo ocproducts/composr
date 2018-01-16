@@ -61,7 +61,7 @@ It is a good idea to use an editor/IDE with support for the [tt].editorconfig[/t
 
 [title="2"]Standards[/title]
 
-{$SET,cs_count,1}[surround="coding_standards_tables"]
+{$SET,cs_count,1}[surround="coding-standards-tables"]
 [title="3"]General programming[/title]
 
 [title="4"]Good programming practices[/title]

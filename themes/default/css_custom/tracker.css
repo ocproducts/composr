@@ -49,62 +49,62 @@
 
 /* Block frame */
 
-.block_main_mantis_tracker {
+.block-main-mantis-tracker {
 	padding: 0;
 	margin: 0;
 }
 
 /* Block contents */
 
-.tracker_issues {
+.tracker-issues {
 	overflow: hidden;
 }
 
-.tracker_issue_a {
+.tracker-issue-a {
 	float: left;
 	width: 13em;
 	text-align: center;
 	border: 1px solid #AAA;
 }
 
-.tracker_issue_votes {
+.tracker-issue-votes {
 	font-size: 1.3em;
 }
 
-.tracker_issue_not_voted {
+.tracker-issue-not-voted {
 }
 
-.tracker_issue_voted {
+.tracker-issue-voted {
 	border: 1px dotted blue;
 }
 
-.tracker_issue_voting_status a {
+.tracker-issue-voting-status a {
 	text-decoration: none;
 }
 
-.tracker_issue_voting_status a * {
+.tracker-issue-voting-status a * {
 	vertical-align: middle;
 }
 
-.tracker_issue_progress {
+.tracker-issue-progress {
 	font-size: 0.9em;
 }
 
-.tracker_issue_b {
+.tracker-issue-b {
 	margin-left: 14em;
 }
 
-.tracker_issue_description {
+.tracker-issue-description {
 	min-height: 7.5em
 }
 
-.tracker_issue_poster {
+.tracker-issue-poster {
 	float: right;
 	margin-bottom: 0;
 	color: #777
 }
 
-.tracker_issue_link {
+.tracker-issue-link {
 	float: left;
 	padding-bottom: 0.5em;
 	margin-bottom: 0;

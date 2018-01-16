@@ -8,7 +8,7 @@
 
 	<div class="toggleable-tray js-tray-content" style="display: none" aria-expanded="false">
 		{+START,LOOP,GIFTS}
-			<div class="box box___cns_member_screen_gifts_wrap"><div class="box-inner">
+			<div class="box box---cns-member-screen-gifts-wrap"><div class="box-inner">
 				<div class="float-surrounder">
 					{+START,IF_NON_EMPTY,{IMAGE_URL}}
 						<img src="{$THUMBNAIL*,{IMAGE_URL},50}" class="left float-separation" />

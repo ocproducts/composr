@@ -4,37 +4,37 @@
 */
 
 /*{+START,CSS_MODE,desktop}*/
-	.buildr_navigation {
+	.buildr-navigation {
 		float: left;
 		width: 400px;
 	}
 /*{+END}*/
 
-.buildr_navigation .head {
+.buildr-navigation .head {
 	text-align: center;
 }
 
-.buildr_navigation tbody>tr:first-child>td {
+.buildr-navigation tbody>tr:first-child>td {
 	border-radius: 0 !important;
 }
 
-.buildr_navigation table {
+.buildr-navigation table {
 	direction: ltr;
 }
 /*{+START,CSS_MODE,desktop}*/
-	.buildr_navigation table {
+	.buildr-navigation table {
 		margin-left: 1em;
 		margin-right: 1em;
 		width: 360px;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.buildr_navigation table {
+	.buildr-navigation table {
 		width: 100%;
 	}
 /*{+END}*/
 
-.buildr_navigation td {
+.buildr-navigation td {
 	width: 90px;
 	height: 40px;
 	text-align: center;
@@ -42,47 +42,47 @@
 }
 
 /*{+START,CSS_MODE,desktop}*/
-	.buildr_room_info {
+	.buildr-room-info {
 		margin-left: 400px;
 	}
 
-	.buildr_room_chat {
+	.buildr-room-chat {
 		float: right;
 		width: 500px;
 		margin-top: 0;
 	}
 /*{+END}*/
 
-.buildr_room_chat iframe {
+.buildr-room-chat iframe {
 	width: 100%;
 	height: 100px;
 }
 
 /*{+START,CSS_MODE,desktop}*/
-	.buildr_in_room {
+	.buildr-in-room {
 		margin-right: 510px;
 	}
 /*{+END}*/
 
-.buildr_inventory {
+.buildr-inventory {
 	margin-top: 20px;
 }
 
 /*{+START,CSS_MODE,desktop}*/
-	.buildr_icon {
+	.buildr-icon {
 		float: left;
 	}
 
-	.buildr_icons_wrap .buildr_icon {
+	.buildr-icons-wrap .buildr-icon {
 		width: 14%;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.buildr_icons_wrap {
+	.buildr-icons-wrap {
 		text-align: center;
 	}
 
-	.buildr_icons_wrap .buildr_icon {
+	.buildr-icons-wrap .buildr-icon {
 		margin-left: 0.5em;
 		margin-bottom: 0.5em;
 		display: inline-block;
@@ -90,40 +90,40 @@
 	}
 /*{+END}*/
 
-.buildr_centered_contents {
+.buildr-centered-contents {
 	text-align: center;
 }
 
-.buildr_avatar {
+.buildr-avatar {
 	margin-bottom: 1em;
 	float: right;
 }
 
-.buildr_avatar img {
+.buildr-avatar img {
 	max-width: 100px;
 }
 
-.buildr_arrow {
+.buildr-arrow {
 	font-size: 0.7em;
 	letter-spacing: 0;
 }
 
-.buildr_fadedttext {
+.buildr-fadedttext {
 	color: #C0CFDA;
 }
 
-.buildr_fadedtext {
+.buildr-fadedtext {
 	color: #809FB5;
 }
 
-.buildr_posttop, .buildr_posttop th {
+.buildr-posttop, .buildr-posttop th {
 	background-color: #628AB9;
 	color: #DDD;
 	font-weight: bold;
 	text-align: center;
 }
 
-.buildr_self_member {
+.buildr-self-member {
 	font-weight: bold;
 }
 

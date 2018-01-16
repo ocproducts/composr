@@ -253,9 +253,9 @@ function output_room_screen($member_id)
             $aux = do_lang_tempcode('W_IS_TROLL');
         }
         if ($id == $member_id) {
-            $style = 'buildr_self_member';
+            $style = 'buildr-self-member';
         } else {
-            $style = 'buildr_other_member';
+            $style = 'buildr-other-member';
         }
 
         if ($id < 0) {

@@ -3,13 +3,13 @@
  Copyright (c) ocProducts, 2004-2018
 */
 
-.box___cns_member_screen_gifts_wrap:nth-child(odd) {
+.box---cns-member-screen-gifts-wrap:nth-child(odd) {
 	margin-bottom: 0;
 	width: 49%;
 	float: left;
 }
 
-.box___cns_member_screen_gifts_wrap:nth-child(even) {
+.box---cns-member-screen-gifts-wrap:nth-child(even) {
 	margin-bottom: 0;
 	width: 49%;
 	float: right;

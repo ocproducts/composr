@@ -1,5 +1,5 @@
 [semihtml]
-<div class="feature_background_image" style="background-image: url('{$IMG;*,unslider_backgrounds/shop}');">
+<div class="feature-background-image" style="background-image: url('{$IMG;*,unslider_backgrounds/shop}');">
 	[title="2"]Images and Videos look great.[/title]
 
 	Media will automatically fill a slide. Tune CSS as desired.

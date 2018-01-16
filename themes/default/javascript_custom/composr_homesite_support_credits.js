@@ -3,8 +3,8 @@
 
     $cms.templates.mantisTracker = function mantisTracker(params, container) {
         $dom.on(container, 'click', '.js-click-add-voted-class', function (e, el) {
-            el.classList.remove('tracker_issue_not_voted');
-            el.classList.add('tracker_issue_voted');
+            el.classList.remove('tracker-issue-not-voted');
+            el.classList.add('tracker-issue-voted');
         });
     };
 

@@ -2,7 +2,7 @@
 
 <div class="float-surrounder">
 	{+START,IF_NON_EMPTY,{AVATAR}}
-		<div class="buildr_avatar">
+		<div class="buildr-avatar">
 			<img alt="{!AVATAR}" src="{AVATAR*}" />
 			{+START,IF_NON_EMPTY,{PHOTO}}
 				[<a title="{!W_PHOTO} {!LINK_NEW_WINDOW}" target="_blank" href="{PHOTO*}">{!W_PHOTO}</a>]
@@ -16,7 +16,7 @@
 </div>
 
 {+START,IF_NON_EMPTY,{INVENTORY}}
-	<div class="wide-table-wrap"><table class="columned-table wide-table buildr_inventory results-table buildr_centered_contents autosized-table responsive-table">
+	<div class="wide-table-wrap"><table class="columned-table wide-table buildr-inventory results-table buildr-centered-contents autosized-table responsive-table">
 		<thead>
 			<tr>
 				<th>{!W_PICTURE}</th>

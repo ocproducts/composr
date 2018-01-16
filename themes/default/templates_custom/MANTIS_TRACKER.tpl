@@ -7,29 +7,29 @@
 {+END}
 
 {+START,IF_NON_EMPTY,{ISSUES}}
-	<div class="tracker_issues" data-require-javascript="composr_homesite_support_credits" data-tpl="mantisTracker">
+	<div class="tracker-issues" data-require-javascript="composr_homesite_support_credits" data-tpl="mantisTracker">
 		{+START,LOOP,ISSUES}
 			<div class="box"><div class="box-inner">
 				<h3>{CATEGORY*}: {SUMMARY*}</h3>
 
-				<div class="tracker_issue_a">
-					<p class="tracker_issue_votes">
+				<div class="tracker-issue-a">
+					<p class="tracker-issue-votes">
 						<strong>{!FEATURES_VOTES_lc,{VOTES*}}</strong>
 					</p>
 
 					{+START,IF,{VOTED}}
-						<p class="js-click-add-voted-class tracker_issue_voting_status tracker_issue_not_voted">
+						<p class="js-click-add-voted-class tracker-issue-voting-status tracker-issue-not-voted">
 							<a target="_blank" href="{UNVOTE_URL*}"><img src="{$IMG*,tracker/minus}" /> <span>{!FEATURES_UNVOTE}</span></a>
 						</p>
 					{+END}
 
 					{+START,IF,{$NOT,{VOTED}}}
-						<p class="tracker_issue_voting_status tracker_issue_voted">
+						<p class="tracker-issue-voting-status tracker-issue-voted">
 							<a target="_blank" href="{VOTE_URL*}"><img src="{$IMG*,tracker/plus}" /> <span>{!FEATURES_VOTE}</span></a>
 						</p>
 					{+END}
 
-					<p class="tracker_issue_progress">
+					<p class="tracker-issue-progress">
 						{!FEATURES_RAISED_PERCENT_OF,{PERCENTAGE*},{CREDITS*}}
 
 						{+START,IF_PASSED,COST}
@@ -39,16 +39,16 @@
 					</p>
 				</div>
 
-				<div class="tracker_issue_b">
-					<p class="tracker_issue_description">
+				<div class="tracker-issue-b">
+					<p class="tracker-issue-description">
 						{$TRUNCATE_LEFT,{DESCRIPTION},310,1,1}
 					</p>
 
-					<p class="associated-details tracker_issue_poster">
+					<p class="associated-details tracker-issue-poster">
 						{!FEATURES_SUGGESTED_BY,{MEMBER_LINK},{DATE*}}
 					</p>
 
-					<p class="associated-link_to_small tracker_issue_link">
+					<p class="associated-link-to-small tracker-issue-link">
 						&raquo; <a href="{FULL_URL*}">{!FEATURES_FULL_DETAILS}</a> ({!FEATURES_COMMENTS_lc,{NUM_COMMENTS*}})
 					</p>
 				</div>

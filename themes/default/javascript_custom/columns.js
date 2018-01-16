@@ -2,8 +2,8 @@
 //  But with fixes and better flexibility, and pure CSS-based activation
 
 $dom.load.then(function () {
-    jQuery('.column_wrapper').columnize({columns: 3});
-    jQuery('.column_wrapper_2').columnize({columns: 2});
+    jQuery('.column-wrapper').columnize({columns: 3});
+    jQuery('.column-wrapper-2').columnize({columns: 2});
 });
 
 // version 1.5.0

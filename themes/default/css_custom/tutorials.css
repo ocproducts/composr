@@ -3,26 +3,26 @@
  Copyright (c) ocProducts, 2004-2018
 */
 
-.coding_standards_tables table {
+.coding-standards-tables table {
 	table-layout: fixed;
 	width: 100%;
 }
 
-.coding_standards_tables th:nth-child(1), .coding_standards_tables td:nth-child(1) {
+.coding-standards-tables th:nth-child(1), .coding-standards-tables td:nth-child(1) {
 	width: 16em;
 }
 
-.coding_standards_tables th:nth-child(2), .coding_standards_tables td:nth-child(2) {
+.coding-standards-tables th:nth-child(2), .coding-standards-tables td:nth-child(2) {
 	width: 12em;
 }
 
-.coding_standards_tables th:nth-child(3), .coding_standards_tables td:nth-child(3) {
+.coding-standards-tables th:nth-child(3), .coding-standards-tables td:nth-child(3) {
 	width: 10em;
 }
 
-.coding_standards_tables th:nth-child(4), .coding_standards_tables td:nth-child(4) {
+.coding-standards-tables th:nth-child(4), .coding-standards-tables td:nth-child(4) {
 	width: 10em;
 }
 
-.coding_standards_tables th:nth-child(5), .coding_standards_tables td:nth-child(5) {
+.coding-standards-tables th:nth-child(5), .coding-standards-tables td:nth-child(5) {
 }
