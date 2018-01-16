@@ -18,7 +18,7 @@
 		</div>
 
 		<p class="proceed-button">
-			<input class="button-screen-item menu__site_meta__newsletters" type="submit" value="{!SUBSCRIBE}" />
+			<input class="button-screen-item menu--site-meta--newsletters" type="submit" value="{!SUBSCRIBE}" />
 		</p>
 	</form>
 </div></section>

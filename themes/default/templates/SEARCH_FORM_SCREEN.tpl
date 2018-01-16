@@ -50,7 +50,7 @@
 				{+END}
 			{+END}
 
-			<form title="{!PRIMARY_PAGE_FORM}" action="{$URL_FOR_GET_FORM*,{URL}}" target="_self" method="get" class="main_search_form js-form-primary-form" autocomplete="off">
+			<form title="{!PRIMARY_PAGE_FORM}" action="{$URL_FOR_GET_FORM*,{URL}}" target="_self" method="get" class="main-search-form js-form-primary-form" autocomplete="off">
 				{$HIDDENS_FOR_GET_FORM,{URL}}
 				<input type="hidden" name="all_defaults" value="0" />
 
@@ -67,9 +67,9 @@
 						<tr>
 							<th class="form-table-field-name">{!SEARCH_FOR}</th>
 							<td class="form-table-field-input" colspan="2">
-								<div class="accessibility-hidden"><label for="search_content">{!SEARCH_FOR}</label></div>
+								<div class="accessibility-hidden"><label for="search-content">{!SEARCH_FOR}</label></div>
 								<div>
-									<input maxlength="255"{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" class="search_content wide-field js-keyup-update-ajax-search-list js-keypress-enter-submit-primary-form" type="search" size="{$?,{$MOBILE},30,48}" id="search_content" name="content" value="{+START,IF_PASSED,CONTENT}{CONTENT*}{+END}" />
+									<input maxlength="255"{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" class="search-content wide-field js-keyup-update-ajax-search-list js-keypress-enter-submit-primary-form" type="search" size="{$?,{$MOBILE},30,48}" id="search-content" name="content" value="{+START,IF_PASSED,CONTENT}{CONTENT*}{+END}" />
 								</div>
 
 								{+START,IF,{HAS_TEMPLATE_SEARCH}}
@@ -83,7 +83,7 @@
 								{+START,IF,{$CONFIG_OPTION,enable_boolean_search}}
 									{+START,IF,{HAS_FULLTEXT_SEARCH}}
 									<input type="checkbox" id="boolean_search"{+START,IF,{BOOLEAN_SEARCH}} checked="checked"{+END} name="boolean_search" value="1" class="js-checkbox-click-toggle-boolean-options js-click-trigger-resize" /> <label for="boolean_search">{!BOOLEAN_SEARCH}</label>
-									<div style="display: none" class="boolean_options js-el-boolean-options" id="boolean_options">
+									<div style="display: none" class="boolean-options js-el-boolean-options" id="boolean-options">
 									{+END}
 										{+START,IF,{$NOT,{HAS_FULLTEXT_SEARCH}}}
 											<p>
@@ -171,9 +171,9 @@
 						<tr>
 							<th class="form-table-field-name">{!SORT}</th>
 							<td class="form-table-field-input" colspan="2">
-								<div class="accessibility-hidden"><label for="search_direction">{!DIRECTION}</label></div>
-								<div class="accessibility-hidden"><label for="search_sort">{!SORT_BY}</label></div>
-								<select id="search_sort" name="sort">
+								<div class="accessibility-hidden"><label for="search-direction">{!DIRECTION}</label></div>
+								<div class="accessibility-hidden"><label for="search-sort">{!SORT_BY}</label></div>
+								<select id="search-sort" name="sort">
 									<option {+START,IF,{$EQ,{SORT},relevance}} selected="selected"{+END} value="relevance">{!RELEVANCE_SORT}</option>
 									<option {+START,IF,{$EQ,{SORT},add_date}} selected="selected"{+END} value="add_date">{!DATE}</option>
 									<option {+START,IF,{$EQ,{SORT},title}} selected="selected"{+END} value="title">{!TITLE}</option>
@@ -183,7 +183,7 @@
 										<option {+START,IF,{$EQ,{SORT},{_loop_key*}}} selected="selected"{+END} value="{_loop_key*}">{_loop_var*}</option>
 									{+END}
 								</select>
-								<select id="search_direction" name="direction">
+								<select id="search-direction" name="direction">
 									<option {+START,IF,{$EQ,{DIRECTION},ASC}} selected="selected"{+END} value="ASC">{!ASCENDING}</option>
 									<option {+START,IF,{$EQ,{DIRECTION},DESC}} selected="selected"{+END} value="DESC">{!DESCENDING}</option>
 								</select>

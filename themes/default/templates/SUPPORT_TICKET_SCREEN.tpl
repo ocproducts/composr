@@ -10,13 +10,13 @@
 	{+END}
 
 	{+START,IF,{NEW}}
-		<div class="ticket_page_text">
+		<div class="ticket-page-text">
 			{TICKET_PAGE_TEXT}
 		</div>
 	{+END}
 	{+START,IF,{$NOT,{NEW}}}
 		{+START,IF_NON_EMPTY,{$GET,ticket_page_existing_text}}
-			<div class="ticket_page_text">
+			<div class="ticket-page-text">
 				{$GET,ticket_page_existing_text}
 			</div>
 		{+END}
@@ -170,7 +170,7 @@
 		{+START,IF_PASSED,SET_TICKET_EXTRA_ACCESS_URL}
 			{+START,INCLUDE,BUTTON_SCREEN}
 				TITLE={!_SET_TICKET_EXTRA_ACCESS}
-				IMG=menu__adminzone__security__permissions__privileges
+				IMG=menu--adminzone--security--permissions--privileges
 				URL={SET_TICKET_EXTRA_ACCESS_URL}
 				IMMEDIATE=0
 			{+END}
@@ -213,7 +213,7 @@
 		<p class="nothing-here">{!NONE}</p>
 	{+END}
 	{+START,IF_NON_EMPTY,{OTHER_TICKETS}}
-		<div class="wide-table-wrap"><table class="columned-table results-table wide-table support_tickets autosized-table responsive-table">
+		<div class="wide-table-wrap"><table class="columned-table results-table wide-table support-tickets autosized-table responsive-table">
 			<thead>
 				<tr>
 					<th>

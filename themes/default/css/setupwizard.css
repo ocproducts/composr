@@ -3,14 +3,14 @@
  Copyright (c) ocProducts, 2004-2018
 */
 
-.box___setupwizard>.box-inner>h2 {
+.box---setupwizard>.box-inner>h2 {
 	text-align: left;
 	padding-left: 0.75em;
 	padding-top: 0.75em;
 	padding-bottom: 0.75em;
 }
 
-.progress_indicator {
+.progress-indicator {
 	float: right;
 	margin-top: 0.7em;
 }

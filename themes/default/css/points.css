@@ -3,11 +3,11 @@
  Copyright (c) ocProducts, 2004-2018
 */
 
-.box___points_profile {
+.box---points-profile {
 	background-image: none !important;
 }
 
-.points_give_box_header {
+.points-give-box-header {
 	margin-top: 0;
 	font-size: 0.85em;
 	padding-bottom: 0.5em;
@@ -15,7 +15,7 @@
 	border-bottom: 1px solid {$GET,pale_border};
 }
 
-.points_give_box_header span {
+.points-give-box-header span {
 	color: {$GET,heading_text};
 	font-size: 1.1em;
 	display: inline-block;
@@ -25,138 +25,138 @@
 	margin-right: 0.5em;
 }
 
-.points_anon {
+.points-anon {
 	margin-left: 2em;
 }
 
-.points_give_choice_line .points_anon {
+.points-give-choice-line .points-anon {
 	margin-left: 0;
 }
 
-.points_anon *, .points_give_choices input {
+.points-anon *, .points-give-choices input {
 	vertical-align: middle;
 	margin: 0;
 }
 
 /*{+START,CSS_MODE,desktop}*/
-	.points_earned {
+	.points-earned {
 		margin-right: 15em;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.points_earned {
+	.points-earned {
 		margin-right: 5.1em;
 	}
 /*{+END}*/
 
-.points_give_choices {
+.points-give-choices {
 	font-size: 0.9em;
 	padding-right: 1em;
 }
 /*{+START,CSS_MODE,desktop}*/
-	.points_give_choices {
+	.points-give-choices {
 		border-right: 1px solid {$GET,pale_border};
 		margin-right: 27em;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.points_give_choices {
+	.points-give-choices {
 		margin-right: 1em;
 	}
 /*{+END}*/
 
-.points_give_choices .sub_option {
+.points-give-choices .sub-option {
 	font-size: 0.9em;
 	white-space: nowrap;
 }
 
-.points_give_shared_options {
+.points-give-shared-options {
 	float: right;
 }
 /*{+START,CSS_MODE,mobile}*/
-	.points_give_shared_options {
+	.points-give-shared-options {
 		width: 21.9em;
 		margin: 4em 0em 1em 0em;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,desktop}*/
-	.points_give_shared_options {
+	.points-give-shared-options {
 		width: 23em;
 		margin-top: 1em;
 	}
 /*{+END}*/
 
-.points_boxes {
+.points-boxes {
 	float: right;
 }
 
-.points_box {
+.points-box {
 	width: 14em;
 	margin: 0 0 2em 1em;
 	text-align: center;
 }
 
-.points_box .intro {
+.points-box .intro {
 	font-weight: bold;
 }
 
-.points_box .figure {
+.points-box .figure {
 	font-size: 1.8em;
 }
 
-table.points_summary_table {
+table.points-summary-table {
 	border-collapse: collapse;
 }
 /*{+START,CSS_MODE,mobile}*/
-	table.points_summary_table {
+	table.points-summary-table {
 		margin-left: 2em;
 		width: 100%;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,desktop}*/
-	table.points_summary_table {
+	table.points-summary-table {
 		margin-left: 0;
 	}
 /*{+END}*/
 
-table.points_summary_table thead {
+table.points-summary-table thead {
 	display: none;
 }
 
-table.points_summary_table td {
+table.points-summary-table td {
 	padding: 0.5em 0.8em;
 }
 
-table.points_summary_table .equation {
+table.points-summary-table .equation {
 	border-left: 1px solid {$GET,standard_border};
 }
 
-table.points_summary_table .answer {
+table.points-summary-table .answer {
 	font-weight: bold;
 	padding-left: 0;
 }
 
 /* Leaderboard */
 
-.box___points_leader_board_week {
+.box---points-leader-board-week {
 	width: 30em; /* Stop the wide table within being too big */
 }
 
-.box___points_leader_board_week .leader_board_table th {
+.box---points-leader-board-week .leader-board-table th {
 	width: 10em;
 }
 
-.leader_board_table th, .leader_board_table td {
+.leader-board-table th, .leader-board-table td {
 	vertical-align: middle;
 	text-align: left;
 }
 /*{+START,CSS_MODE,mobile}*/
-.global-side-panel .leader_board_table th, .global-side-panel .leader_board_table td {
+.global-side-panel .leader-board-table th, .global-side-panel .leader-board-table td {
 		width: 50%;
 	}
 /*{+END}*/
 
-.leader_board_rank {
+.leader-board-rank {
 	display: none;
 }
 
@@ -176,12 +176,12 @@ table.points_summary_table .answer {
 	}
 }
 
-.menu__social__points {
+.menu--social--points {
 	background-image: url('{$IMG,icons/24x24/menu/social/points}') !important;
 }
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.menu__social__points {
+	.menu--social--points {
 		background-image: url('{$IMG,icons/48x48/menu/social/points}') !important;
 	}
 }

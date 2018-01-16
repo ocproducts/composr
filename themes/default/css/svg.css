@@ -3,45 +3,45 @@
  Copyright (c) ocProducts, 2004-2018
 */
 
-.pie_chart, .bar_chart, .key_box, .axis_marker, .axis_line {
+.pie-chart, .bar-chart, .key-box, .axis-marker, .axis-line {
 	stroke: black;
 	stroke-width: 1;
 }
 
-.axis_background_line {
+.axis-background-line {
 	stroke: gray;
 	stroke-width: 1;
 }
 
-.average_line {
+.average-line {
 	stroke: red;
 	stroke-width: 1;
 }
 
-.scatter_graph_marker {
+.scatter-graph-marker {
 	stroke: green;
 	stroke-width: 1;
 }
 
-.scatter_graph {
+.scatter-graph {
 	fill: none;
 	stroke: black;
 	stroke-width: 1;
 }
 
-.bar_chart_text, .scatter_graph_text {
+.bar-chart-text, .scatter-graph-text {
 	font-size: 12px;
 	fill: black;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 }
 
-.key_text, .axis_marker_text{
+.key-text, .axis-marker-text{
 	font-size: 10px;
 	fill: black;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 }
 
-.axis_text {
+.axis-text {
 	fill: red;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 10px;

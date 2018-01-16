@@ -289,7 +289,7 @@
                     }
                 }
             } else {
-                $dom.html(matrix.querySelector('tr').cells[0], '<span class="heading_group">{!USERGROUP;^}</span> <span class="heading_presets">{!permissions:PINTERFACE_PRESETS;^}</span>');
+                $dom.html(matrix.querySelector('tr').cells[0], '<span class="heading-group">{!USERGROUP;^}</span> <span class="heading-presets">{!permissions:PINTERFACE_PRESETS;^}</span>');
                 for (k = 0; k < knownGroups.length; k++) {
                     document.getElementById('access_' + knownGroups[k] + '_presets').style.display = 'block';
                     button = document.getElementById('access_' + knownGroups[k] + '_privilege_container').querySelector('button');

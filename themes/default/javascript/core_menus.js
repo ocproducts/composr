@@ -90,7 +90,7 @@
                     img.srcset = '{$IMG;*,2x/arrow_box_hover}' + ' 2x';
                 }
             } else {
-                menuEditorWrapEl.classList.add('non_docked');
+                menuEditorWrapEl.classList.add('non-docked');
                 menuEditorWrapEl.classList.remove('docked');
                 img.src = '{$IMG;*,1x/arrow_box}';
                 if (img.srcset !== undefined) {
@@ -141,16 +141,16 @@
         });
 
         function makeFieldSelected(el) {
-            if (el.classList.contains('menu_editor_selected_field')) {
+            if (el.classList.contains('menu-editor-selected-field')) {
                 return;
             }
 
-            el.classList.add('menu_editor_selected_field');
+            el.classList.add('menu-editor-selected-field');
 
             var changed = false;
             for (var i = 0; i < el.form.elements.length; i++) {
-                if ((el.form.elements[i].classList.contains('menu_editor_selected_field')) && (el.form.elements[i] !== el)) {
-                    el.form.elements[i].classList.remove('menu_editor_selected_field');
+                if ((el.form.elements[i].classList.contains('menu-editor-selected-field')) && (el.form.elements[i] !== el)) {
+                    el.form.elements[i].classList.remove('menu-editor-selected-field');
                     changed = true;
                 }
             }
@@ -356,7 +356,7 @@
                 menuEditorBranchTypeChange(newId);
             }
 
-            $dom.slideUp('#mini_form_hider');
+            $dom.slideUp('#mini-form-hider');
         });
     };
     
@@ -406,7 +406,7 @@
                 var branchId = 'sitemap_menu_branch_' + $util.random(),
                     li = $dom.create('li', {
                         id: branchId,
-                        className: (node.current ? 'current' : 'non_current') + ' ' + (node.img ? 'has-img' : 'has_no_img'),
+                        className: (node.current ? 'current' : 'non-current') + ' ' + (node.img ? 'has-img' : 'has_no_img'),
                         dataset: {
                             toggleableTray: '{}'
                         }
@@ -577,7 +577,7 @@
             window.jQuery(form.elements['include_sitemap']).trigger('change');
         }
 
-        var mfh = $dom.$('#mini_form_hider');
+        var mfh = $dom.$('#mini-form-hider');
         $dom.slideDown(mfh);
         if (changed) {
             $dom.fadeIn(form.elements.url);

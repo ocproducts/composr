@@ -4,7 +4,7 @@
 	<p>{!PERMISSIONS_TREE_EDITOR_ABOUT_PRIVILEGE,{$PAGE_LINK*,adminzone:admin_permissions:specific}}</p>
 
 	<div class="float-surrounder">
-		<div class="pte_help_box">
+		<div class="pte-help-box">
 			<div class="box box___permissions_tree_editor_screen"><div class="box-inner">
 				<h2>{!PERMISSIONS_TREE_EDITOR_HOW_WORK}</h2>
 
@@ -12,11 +12,11 @@
 
 				<p class="vertical-alignment">{!PERMISSIONS_TREE_EDITOR_ABOUT_GROUP,<img src="{$IMG*,permlevels/3}" alt="" />}</p>
 
-				<p class="pte_tips">{!PERMISSIONS_TREE_EDITOR_ABOUT_MULTI_SELECT}</p>
+				<p class="pte-tips">{!PERMISSIONS_TREE_EDITOR_ABOUT_MULTI_SELECT}</p>
 
-				<p class="pte_tips">{!PERMISSIONS_TREE_EDITOR_ABOUT_HOVER_FOR_PERMISSIONS}</p>
+				<p class="pte-tips">{!PERMISSIONS_TREE_EDITOR_ABOUT_HOVER_FOR_PERMISSIONS}</p>
 
-				<p class="pte_tips">{!PERMISSIONS_TREE_EDITOR_INHERIT}</p>
+				<p class="pte-tips">{!PERMISSIONS_TREE_EDITOR_INHERIT}</p>
 			</div></div>
 		</div>
 
@@ -24,8 +24,8 @@
 			<div class="box box___permissions_tree_editor_screen"><div class="box-inner">
 				<h2>{!SITEMAP}</h2>
 
-				<div class="pte_tree">
-					<div class="pte_icon_box">
+				<div class="pte-tree">
+					<div class="pte-icon-box">
 						<div class="box box___permissions_tree_editor_screen"><div class="box-inner">
 							<form title="{!CHOOSE} {!USERGROUP}" action="index.php" method="post" autocomplete="off">
 								<img alt="" src="{$IMG*,pte_view_help}" /><strong><label for="group">{!PERMISSIONS_TREE_EDITOR_ICON_LABEL}:</label></strong>
@@ -41,7 +41,7 @@
 						<div class="accessibility-hidden"><label for="tree_list">{!ENTRY}</label></div>
 						<input class="js-change-update-perm-box" style="display: none" type="text" id="tree_list" name="tree_list" value="{$_GET*,id}" />
 					</form>
-					<div id="tree-list--root-tree-list" class="tree-list--root-tree-list pt_editor">
+					<div id="tree-list--root-tree-list" class="tree-list--root-tree-list pt-editor">
 						<!-- List put in here -->
 					</div>
 				</div>

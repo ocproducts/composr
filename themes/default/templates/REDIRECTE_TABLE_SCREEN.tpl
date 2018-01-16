@@ -14,14 +14,14 @@
 
 	<h2>{!EXISTING_REDIRECTS}</h2>
 
-	<div class="wide-table-wrap"><table class="columned-table wide-table redirect_table results-table responsive-table">
+	<div class="wide-table-wrap"><table class="columned-table wide-table redirect-table results-table responsive-table">
 		<colgroup>
-			<col class="redirect_table_input_column" />
-			<col class="redirect_table_input_column" />
-			<col class="redirect_table_input_column" />
-			<col class="redirect_table_input_column" />
-			<col class="redirect_table_sup_column" />
-			<col class="redirect_table_sup_column" />
+			<col class="redirect-table-input-column" />
+			<col class="redirect-table-input-column" />
+			<col class="redirect-table-input-column" />
+			<col class="redirect-table-input-column" />
+			<col class="redirect-table-sup-column" />
+			<col class="redirect-table-sup-column" />
 		</colgroup>
 
 		<thead>
@@ -52,14 +52,14 @@
 
 	<h2>{!NEW_REDIRECT}</h2>
 
-	<div class="wide-table-wrap"><table class="columned-table wide-table redirect_table results-table responsive-table">
+	<div class="wide-table-wrap"><table class="columned-table wide-table redirect-table results-table responsive-table">
 		<colgroup>
-			<col class="redirect_table_input_column" />
-			<col class="redirect_table_input_column" />
-			<col class="redirect_table_input_column" />
-			<col class="redirect_table_input_column" />
-			<col class="redirect_table_sup_column" />
-			<col class="redirect_table_sup_column" />
+			<col class="redirect-table-input-column" />
+			<col class="redirect-table-input-column" />
+			<col class="redirect-table-input-column" />
+			<col class="redirect-table-input-column" />
+			<col class="redirect-table-sup-column" />
+			<col class="redirect-table-sup-column" />
 		</colgroup>
 
 		<thead>

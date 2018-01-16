@@ -546,7 +546,7 @@
         window.lastReplyTo = el;
         parentIdField.value = isThreaded ? id : '';
 
-        el.classList.add('activated_quote_button');
+        el.classList.add('activated-quote-button');
 
         var post = form.elements.post;
 

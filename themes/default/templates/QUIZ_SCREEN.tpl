@@ -19,8 +19,8 @@
 	{+START,IF_NON_EMPTY,{$GET,bound_catalogue_entry}}{$CATALOGUE_ENTRY_ALL_FIELD_VALUES,{$GET,bound_catalogue_entry}}{+END}
 
 	{+START,IF_NON_EMPTY,{TIMEOUT}}
-		<p class="quiz_timer">
-			{!TIME_REMAINING,<strong><span id="quiz_timer" style="display: none">{TIMEOUT*}</span><span id="quiz_timer_minutes_and_seconds"></span></strong>}
+		<p class="quiz-timer">
+			{!TIME_REMAINING,<strong><span id="quiz-timer" style="display: none">{TIMEOUT*}</span><span id="quiz-timer-minutes-and-seconds"></span></strong>}
 		</p>
 	{+END}
 
@@ -31,7 +31,7 @@
 		{+END}
 	{+END}
 
-	<form title="{!SAVE}" id="quiz_form" class="quiz_form js-quiz-form js-submit-check-form" method="post" action="{URL*}" autocomplete="off">
+	<form title="{!SAVE}" id="quiz-form" class="quiz-form js-quiz-form js-submit-check-form" method="post" action="{URL*}" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div>

@@ -3,39 +3,39 @@
  Copyright (c) ocProducts, 2004-2018
 */
 
-.poll_answer {
+.poll-answer {
 	margin: 0.5em 0;
 }
 
-.poll_answer img {
+.poll-answer img {
 	vertical-align: text-bottom;
 }
 
-.poll_form {
+.poll-form {
 	text-align: left;
 }
 
-.poll_details {
+.poll-details {
 	margin-bottom: 2em;
 }
 
 /* Fiddling to make the 'no entries' poll block have a decent and matching height */
 /* Currently commented out as IOTDs are not a bundled addon, and the default layout isn't really needing this - could be useful for some layouts still though */
 
-.fp-col-block .box___block_main_content, /* This is a fudge to make the content block balance this height, if the content block and poll shown at same time. You are likely want to change the blocks referenced here or the sizing, depending on your requirements */
-.fp-col-block .box___block_no_entries_image_space_of_space_the_space_day,
-.fp-col-block .box___poll_box,
-.fp-col-block .box___block_no_entries_poll {
+.fp-col-block .box---block-main-content, /* This is a fudge to make the content block balance this height, if the content block and poll shown at same time. You are likely want to change the blocks referenced here or the sizing, depending on your requirements */
+.fp-col-block .box---block-no-entries-image-space-of-space-the-space-day,
+.fp-col-block .box---poll-box,
+.fp-col-block .box---block-no-entries-poll {
 	/*min-height: 335px;*/
 }
-.fp-col-block  .box___block_no_entries_image_space_of_space_the_space_day h3,
-.fp-col-block  .box___block_no_entries_poll h3 {
+.fp-col-block  .box---block-no-entries-image-space-of-space-the-space-day h3,
+.fp-col-block  .box---block-no-entries-poll h3 {
 	/*margin-bottom: 8em;*/
 }
 
-.boxless-space .fp-col-block .box___block_main_content,
-.boxless-space .box___block_no_entries_image_of_the_day,
-.boxless-space .fp-col-block .box___poll_box,
-.boxless-space .fp-col-block .box___block_no_entries_poll {
+.boxless-space .fp-col-block .box---block-main-content,
+.boxless-space .box---block-no-entries-image-of-the-day,
+.boxless-space .fp-col-block .box---poll-box,
+.boxless-space .fp-col-block .box---block-no-entries-poll {
 	/*min-height: 0; boxless spaces don't need a min height */
 }

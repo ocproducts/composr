@@ -20,20 +20,20 @@
 	vertical-align: middle;
 }
 
-.permission_header_cell {
+.permission-header-cell {
 	vertical-align: middle;
 }
 
-.match_key_name_column {
+.match-key-name-column {
 	width: 15em;
 }
 
-.heading_group {
+.heading-group {
 	display: block;
 	text-align: right;
 }
 
-.heading_presets {
+.heading-presets {
 	margin-top: 0.5em;
 	display: block;
 	text-align: left;

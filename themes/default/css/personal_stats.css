@@ -3,40 +3,40 @@
  Copyright (c) ocProducts, 2004-2018
 */
 
-.login_block_cookies {
+.login-block-cookies {
 	text-align: right;
 }
 
-.personal_stats_avatar {
+.personal-stats-avatar {
 	text-align: center;
 	margin-bottom: 1em;
 }
 
-.personal_stats_avatar img {
+.personal-stats-avatar img {
 	max-width: 100px;
 }
 
 /* Top block */
 
-#top_personal_stats_button {
+#top-personal-stats-button {
 	width: 30px;
 	height: 23px;
 	display: inline-block;
 }
-.top-buttons #top_personal_stats_button img {
+.top-buttons #top-personal-stats-button img {
 	padding: 0 5px; /* This is needed for spacing, but also to ensure a consistent width compared to the notification/inbox buttons */
 	width: 20px;
 	vertical-align: middle;
 }
 
-.global-button-ref-point .personal_stats_avatar {
+.global-button-ref-point .personal-stats-avatar {
 	float: right;
 }
-.global-button-ref-point .personal_stats_avatar img {
+.global-button-ref-point .personal-stats-avatar img {
 	max-width: 60px;
 }
 
-.global-button-ref-point .personal_stats_avatar + h3 {
+.global-button-ref-point .personal-stats-avatar + h3 {
 	margin-right: 100px;
 	margin-bottom: 0.5em;
 }
@@ -55,6 +55,6 @@
 
 /* Side block */
 
-.login_block_username {
+.login-block-username {
 	margin-bottom: 1px;
 }

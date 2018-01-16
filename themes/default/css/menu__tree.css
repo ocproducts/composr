@@ -24,11 +24,11 @@
 	background-size: 6px 6px;
 }
 
-.menu-type--tree .non_current a {
+.menu-type--tree .non-current a {
 	background: transparent url('{$IMG;,1x/menus/menu_bullet}') no-repeat 5px 6px;
 }
 
-.menu-type--tree .non_current a:hover {
+.menu-type--tree .non-current a:hover {
 	background: transparent url('{$IMG;,1x/menus/menu_bullet_hover}') no-repeat 5px 6px;
 }
 
@@ -45,12 +45,12 @@
 }
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.menu-type--tree .non_current a {
+	.menu-type--tree .non-current a {
 		background-image: url('{$IMG;,2x/menus/menu_bullet}');
 		background-size: 5px 6px;
 	}
 
-	.menu-type--tree .non_current a:hover {
+	.menu-type--tree .non-current a:hover {
 		background-image: url('{$IMG;,2x/menus/menu_bullet_hover}');
 		background-size: 5px 6px;
 	}

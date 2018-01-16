@@ -7,13 +7,13 @@
 {$,Toolbarish}
 
 {+START,IF,{INCLUDE_CSS_EDITING}}
-	<div class="template_editing_toolbar" data-toggleable-tray="{ accordion: true }">
+	<div class="template-editing-toolbar" data-toggleable-tray="{ accordion: true }">
 		<h3 class="js-tray-header">
 			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{!CSS_EDITING_TOOLS}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" /></a>
 			<a class="non-link js-tray-onclick-toggle-tray" href="#!">{!CSS_EDITING_TOOLS}</a>
 		</h3>
 		<div class="toggleable-tray js-tray-content" style="display: none" id="c_{FILE_ID*}" aria-expanded="false">
-			<div class="css_editor_rhs_column"><section class="box"><div class="box-inner">
+			<div class="css-editor-rhs-column"><section class="box"><div class="box-inner">
 				<h3>{!COMMON_CSS_PROPERTIES}:</h3>
 
 				<div class="accordion_trayitem js-tray-accordion-item">
@@ -394,8 +394,8 @@
 				</div>
 			</div></section></div>
 
-			<div class="css_editor_lhs_column">
-				<div class="css_editor_selectors" id="selectors_{FILE_ID*}" style="display: none"{$,Only becomes visible if it has an anchor page}>
+			<div class="css-editor-lhs-column">
+				<div class="css-editor-selectors" id="selectors_{FILE_ID*}" style="display: none"{$,Only becomes visible if it has an anchor page}>
 					<div id="selectors_inner_{FILE_ID*}">
 						<p class="lonely-label">{!SELECTORS_PARENT_PAGE}:</p>
 					</div>
@@ -439,7 +439,7 @@
 {+END}
 
 {+START,IF,{INCLUDE_TEMPCODE_EDITING}}
-	<div class="template_editing_toolbar" data-toggleable-tray="{}">
+	<div class="template-editing-toolbar" data-toggleable-tray="{}">
 		<h3 class="js-tray-header">
 			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{!SYMBOLS_AND_DIRECTIVES}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" /></a>
 			<a class="non-link js-tray-onclick-toggle-tray" href="#!">{!SYMBOLS_AND_DIRECTIVES}</a>
@@ -457,7 +457,7 @@
 	</div>
 {+END}
 
-<div id="e_{FILE_ID*}_wrap" class="main_editor">
+<div id="e_{FILE_ID*}_wrap" class="main-editor">
 	{$,Main editor}
 
 	<label class="accessibility-hidden" for="e_{FILE_ID*}">{!TEMPLATE}</label>

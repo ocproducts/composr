@@ -3,17 +3,17 @@
  Copyright (c) ocProducts, 2004-2018
 */
 
-.svg_graph {
+.svg-graph {
 	border: 1px solid {$GET,pale_border};
 	padding: 2px;
 }
 
-.svg_graph object {
+.svg-graph object {
 	width: 100%;
 	height: 430px;
 }
 
-.svg_graph_text {
+.svg-graph-text {
 	width: 100%;
 	font-style: italic;
 }

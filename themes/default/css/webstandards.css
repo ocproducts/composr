@@ -9,12 +9,12 @@
 =========================
 */
 
-.webstandards_div {
+.webstandards-div {
 	margin-top: 1em;
 	overflow: auto
 }
 
-.webstandards_error {
+.webstandards-error {
 	font-weight: bold;
 	font-style: italic;
 	color: {$GET,red_highlight_text};
@@ -24,15 +24,15 @@
 	color: {$GET,red_highlight_text};
 }
 
-.webstandards_error_line {
+.webstandards-error-line {
 	font-style: italic;
 	color: {$GET,red_highlight_text};
 }
 
-.webstandards_tag {
+.webstandards-tag {
 	font-weight: bold;
 }
 
-.webstandards_attribute {
+.webstandards-attribute {
 	font-style: italic;
 }

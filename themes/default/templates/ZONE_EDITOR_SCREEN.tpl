@@ -21,14 +21,14 @@
 			{RIGHT_EDITOR}
 		</div>
 
-		<div class="ze_middle">
+		<div class="ze-middle">
 			{MIDDLE_EDITOR}
 		</div>
 	</div>
 
 	<hr class="spaced-rule" />
 
-	<form title="{!SAVE}" action="{URL*}" method="post" target="_self" autocomplete="off" class="js-form-ze-save zone_editor_form">
+	<form title="{!SAVE}" action="{URL*}" method="post" target="_self" autocomplete="off" class="js-form-ze-save zone-editor-form">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div id="edit_field_store" style="display: none">

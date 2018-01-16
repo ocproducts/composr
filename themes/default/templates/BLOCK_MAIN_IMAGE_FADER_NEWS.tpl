@@ -1,13 +1,13 @@
 {$REQUIRE_JAVASCRIPT,news}
 
 {$SET,RAND_FADER_NEWS,{$RAND}}
-<section class="box box___block_main_image_fader_news" data-tpl="blockMainImageFaderNews" data-tpl-params="{+START,PARAMS_JSON,RAND_FADER_NEWS,NEWS,MILL}{_*}{+END}">
+<section class="box box---block-main-image-fader-news" data-tpl="blockMainImageFaderNews" data-tpl-params="{+START,PARAMS_JSON,RAND_FADER_NEWS,NEWS,MILL}{_*}{+END}">
 	<div class="box-inner">
 		{+START,IF_NON_EMPTY,{TITLE}}
 			<h2>{TITLE}</h2>
 		{+END}
 
-		<div class="image_fader_news_pic">
+		<div class="image-fader-news-pic">
 			<div class="img-thumb-wrap">
 				<a id="image_fader_news_url_{$GET%,RAND_FADER_NEWS}" href="#!"><img id="image_fader_news_{$GET,RAND_FADER_NEWS}" src="{$IMG*,blank}" alt="" /></a>
 			</div>

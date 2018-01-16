@@ -61,13 +61,13 @@
     };
 
     function iterateCountdown(dif) {
-        var st = document.getElementById('quiz_timer');
+        var st = document.getElementById('quiz-timer');
         var newValue = parseInt($dom.html(st)) + dif;
         if (newValue >= 0) {
             $dom.html(st, newValue);
         }
 
-        var st2 = document.getElementById('quiz_timer_minutes_and_seconds');
+        var st2 = document.getElementById('quiz-timer-minutes-and-seconds');
         if (st2) {
             if (newValue >= 0) {
                 var v = '';

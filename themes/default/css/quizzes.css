@@ -5,7 +5,7 @@
 
 /* Form */
 
-.quiz_timer {
+.quiz-timer {
 	position: fixed;
 	left: 0.5em;
 	bottom: 0;
@@ -16,11 +16,11 @@
 	border-radius: 5px;
 }
 
-.quiz_form {
+.quiz-form {
 	position: relative;
 }
 
-.quiz_form table {
+.quiz-form table {
 	counter-reset: quiz_num;
 }
 
@@ -36,16 +36,16 @@
 	}
 /*{+END}*/
 
-.quiz_form th {
+.quiz-form th {
 	padding: 0.5em 2em 0.5em 4em;
 }
 
-.quiz_form td {
+.quiz-form td {
 	padding: 0.5em 2em 0.5em 1.5em;
 	vertical-align: middle;
 }
 
-.quiz_form th>span.field-name {
+.quiz-form th>span.field-name {
 	position: relative;
 	display: inline-block;
 	padding-left: 60px;
@@ -54,7 +54,7 @@
 	min-height: 2.5em;
 }
 
-.quiz_form th:before {
+.quiz-form th:before {
 	content: counter(quiz_num);
 	counter-increment: quiz_num;
 	z-index: 5;
@@ -65,11 +65,11 @@
 	line-height: 0.8em;
 }
 
-.quiz_form .filledin th:before {
+.quiz-form .filledin th:before {
 	font-size: 1.5em;
 }
 
-.quiz_form .filledin td:before {
+.quiz-form .filledin td:before {
 	float: right;
 	width: 30px;
 	height: 30px;
@@ -80,81 +80,81 @@
 	background: url('{$IMG;,cns_emoticons/thumbs}') top right no-repeat;
 }
 
-.quiz_form .filledin:nth-child(7n+1) td:before {
+.quiz-form .filledin:nth-child(7n+1) td:before {
 	background: url('{$IMG;,cns_emoticons/thumbs}') top right no-repeat;
 }
 
-.quiz_form .filledin:nth-child(7n+2) td:before {
+.quiz-form .filledin:nth-child(7n+2) td:before {
 	background: url('{$IMG;,cns_emoticons/hippie}') top right no-repeat;
 }
 
-.quiz_form .filledin:nth-child(7n+3) td:before {
+.quiz-form .filledin:nth-child(7n+3) td:before {
 	background: url('{$IMG;,cns_emoticons/guitar}') top right no-repeat;
 }
 
-.quiz_form .filledin:nth-child(7n+4) td:before {
+.quiz-form .filledin:nth-child(7n+4) td:before {
 	background: url('{$IMG;,cns_emoticons/cool}') top right no-repeat;
 }
 
-.quiz_form .filledin:nth-child(7n+5) td:before {
+.quiz-form .filledin:nth-child(7n+5) td:before {
 	background: url('{$IMG;,cns_emoticons/glee}') top right no-repeat;
 }
 
-.quiz_form .filledin:nth-child(7n+6) td:before {
+.quiz-form .filledin:nth-child(7n+6) td:before {
 	background: url('{$IMG;,cns_emoticons/nod}') top right no-repeat;
 }
 
-.quiz_form .filledin:nth-child(7n+7) td:before {
+.quiz-form .filledin:nth-child(7n+7) td:before {
 	background: url('{$IMG;,cns_emoticons/party}') top right no-repeat;
 }
 
-.quiz_form tr.filledin.field-input th, .quiz_form tr.filledin.field-input td {
+.quiz-form tr.filledin.field-input th, .quiz-form tr.filledin.field-input td {
 	opacity: 0.4;
 }
 
-/*.quiz_form tr.field-input th, .quiz_form tr.field-input td {   Annoying assumption about mouse use
+/*.quiz-form tr.field-input th, .quiz-form tr.field-input td {   Annoying assumption about mouse use
 	opacity: 0.5;
 }*/
 
-.quiz_form tr.field-input:hover th, .quiz_form tr.field-input:hover td, body.touch-enabled .quiz_form tr.field-input th, body.touch-enabled .quiz_form tr.field-input td {
+.quiz-form tr.field-input:hover th, .quiz-form tr.field-input:hover td, body.touch-enabled .quiz-form tr.field-input th, body.touch-enabled .quiz-form tr.field-input td {
 	opacity: 1.0 !important;
 }
 
-.quiz_form td .input-radio {
+.quiz-form td .input-radio {
 	display: inline-block;
 }
 
-.quiz_form td label {
+.quiz-form td label {
 	vertical-align: top;
 }
 
-.quiz_form .radio_list, .quiz_form .various-ticks, .quiz_result_question, .quiz_result_given_answer, .quiz_result_answer {
+.quiz-form .radio-list, .quiz-form .various-ticks, .quiz-result-question, .quiz-result-given-answer, .quiz-result-answer {
 	font-weight: bold;
 }
 
-.quiz_form tr.field-input div {
+.quiz-form tr.field-input div {
 	margin-right: 35px;
 	display: block;
 }
 
 /* Results */
 
-.quiz_done_results_col_was_correct {
+.quiz-done-results-col-was-correct {
 	width: 24px;
 }
 
-.quiz_done_results_col_question {
+.quiz-done-results-col-question {
 	width: 40%;
 }
 
-.quiz_done_results_col_given_answer {
+.quiz-done-results-col-given-answer {
 	width: 30%;
 }
 
-.quiz_done_results_col_correct_answer {
+.quiz-done-results-col-correct-answer {
 	width: 30%;
 }
 
-.quiz_answer_status {
+.quiz-answer-status {
 	text-align: center;
 }

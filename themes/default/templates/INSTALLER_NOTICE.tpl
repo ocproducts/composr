@@ -1,3 +1,3 @@
-<p class="installer_notice">
+<p class="installer-notice">
 	{MESSAGE}
 </p>

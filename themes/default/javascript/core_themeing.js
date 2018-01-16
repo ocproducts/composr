@@ -102,7 +102,7 @@
 
                 var fileId = fileToFileId(file);
                 var ob = document.getElementById('t_' + fileId);
-                ob.classList.remove('file_changed');
+                ob.classList.remove('file-changed');
                 ob.classList.add('file_nonchanged');
             }
         },
@@ -739,7 +739,7 @@
             }
         }, 1000);
 
-        window.jQuery && window.jQuery.fn.resizable && window.jQuery('.template_editor_file_selector').resizable();
+        window.jQuery && window.jQuery.fn.resizable && window.jQuery('.template-editor-file-selector').resizable();
 
         templateEditorAssignUnloadEvent();
 
@@ -803,7 +803,7 @@
 
         function templateEditorAssignUnloadEvent() {
             window.addEventListener('beforeunload', function (event) {
-                if (document.querySelector('.file_changed')) {
+                if (document.querySelector('.file-changed')) {
                     $cms.undoStaffUnloadAction();
                     window.unloaded = false;
 
@@ -1159,7 +1159,7 @@
             var fileId = fileToFileId(file);
             var ob = document.getElementById('t_' + fileId);
             ob.classList.remove('file_nonchanged');
-            ob.classList.add('file_changed');
+            ob.classList.add('file-changed');
         }
     }
 

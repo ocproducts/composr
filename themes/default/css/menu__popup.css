@@ -30,7 +30,7 @@
 	white-space: nowrap;
 }
 
-.menu-type--popup .menu_spacer, .menu-type--popup li {
+.menu-type--popup .menu-spacer, .menu-type--popup li {
 	background-color: {$GET,area_background} !important;
 	border-bottom: 1px solid {$GET,standard_border};
 }
@@ -72,11 +72,11 @@
 	background: none !important;
 }
 
-.menu-type--popup .non_current a {
+.menu-type--popup .non-current a {
 	background: transparent url('{$IMG;,1x/menus/menu_bullet}') no-repeat 5px 6px;
 }
 
-.menu-type--popup .non_current a:hover {
+.menu-type--popup .non-current a:hover {
 	background: transparent url('{$IMG;,1x/menus/menu_bullet_hover}') no-repeat 5px 6px;
 }
 
@@ -86,12 +86,12 @@
 		background-size: 5px 6px;
 	}
 
-	.menu-type--popup .non_current a {
+	.menu-type--popup .non-current a {
 		background-image: url('{$IMG;,2x/menus/menu_bullet}');
 		background-size: 5px 6px;
 	}
 
-	.menu-type--popup .non_current a:hover {
+	.menu-type--popup .non-current a:hover {
 		background-image: url('{$IMG;,2x/menus/menu_bullet_hover}');
 		background-size: 5px 6px;
 	}

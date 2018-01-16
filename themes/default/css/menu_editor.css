@@ -3,34 +3,34 @@
  Copyright (c) ocProducts, 2004-2018
 */
 
-.menu_editor_page {
+.menu-editor-page {
 	{$BETA_CSS_PROPERTY,user-select: none;}
 }
 
 /*{+START,CSS_MODE,desktop}*/
-	.menu_editor_page.non_docked {
+	.menu-editor-page.non-docked {
 		min-height: 400px;
 	}
 
-	.menu_editor_page.docked {
+	.menu-editor-page.docked {
 		overflow-y: auto;
 		max-height: 380px;
 		margin-right: 1em;
 		padding-right: 0.5em;
 	}
 
-	.menu_editor_page::-webkit-scrollbar {
+	.menu-editor-page::-webkit-scrollbar {
 		width: 0.5em;
 	}
-	.menu_editor_page::-webkit-scrollbar-track {
+	.menu-editor-page::-webkit-scrollbar-track {
 		box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 	}
-	.menu_editor_page::-webkit-scrollbar-thumb {
+	.menu-editor-page::-webkit-scrollbar-thumb {
 		background-color: darkgrey;
 		outline: 1px solid slategrey;
 	}
 
-	.menu_editor_page.docked #mini_form_hider {
+	.menu-editor-page.docked #mini-form-hider {
 		margin-top: 1em;
 		border-top: 3px dotted {$GET,divider_line} !important;
 		position: fixed;
@@ -43,32 +43,32 @@
 		box-sizing: border-box;
 	}
 
-	.docked .menu_edit_main {
+	.docked .menu-edit-main {
 		padding-bottom: 2em;
 	}
 
-	.dock_button {
+	.dock-button {
 		float: right;
 		margin-right: 0.5em;
 		padding: 0.5em;
 		cursor: pointer;
 	}
 
-	.menu_editor_lh_side {
+	.menu-editor-lh-side {
 		margin-right: 470px;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.dock_button {
+	.dock-button {
 		display: none;
 	}
 /*{+END}*/
 
-.menu_editor_lh_side .field-name-column {
+.menu-editor-lh-side .field-name-column {
 	width: 11em;
 }
 
-.menu_editor_lh_side select {
+.menu-editor-lh-side select {
 	max-width: 100%;
 }
 
@@ -79,12 +79,12 @@
 	}
 /*{+END}*/
 
-.menu_editor_rh_side {
+.menu-editor-rh-side {
 	font-size: 0.9em;
 	line-height: 1.5em;
 }
 /*{+START,CSS_MODE,desktop}*/
-	.menu_editor_rh_side {
+	.menu-editor-rh-side {
 		float: right;
 		margin-left: 20px;
 		width: 450px;
@@ -97,41 +97,41 @@ Branch layout
 =============
 */
 
-.menu_editor_root {
+.menu-editor-root {
 	margin-right: 1px;
 }
 
-.menu_editor_branch_wrap {
-	margin-right: -1px; /* To make nested rhs borders align; this is why menu_editor_root has 1px extra margin */
+.menu-editor-branch-wrap {
+	margin-right: -1px; /* To make nested rhs borders align; this is why menu-editor-root has 1px extra margin */
 }
 
- .menu_editor_branch {
+ .menu-editor-branch {
 	border: 1px solid {$GET,standard_border};
 	margin-top: -1px;
 	background: {$GET,area_3_background};
 }
 
-.menu_editor_branch_inner {
+.menu-editor-branch-inner {
 	padding: 0.5em;
 }
 
-.menu_editor_branch * {
+.menu-editor-branch * {
 	vertical-align: middle;
 }
 
-.menu_editor_branch_indent {
+.menu-editor-branch-indent {
 	padding-left: 1em;
 }
 
-.menu_editor_branch_indent>div {
+.menu-editor-branch-indent>div {
 	margin-top: 1em;
 }
 
 /* Undoes main actions-list style */
-.menu_editor_branch_wrap .actions-list {
+.menu-editor-branch-wrap .actions-list {
 	margin: 0.5em 0;
 }
-.menu_editor_branch_wrap .actions-list li {
+.menu-editor-branch-wrap .actions-list li {
 	background: none;
 	padding-left: 0 !important;
 	margin-left: 0 !important;
@@ -143,26 +143,26 @@ Branch layout (inner)
 =====================
 */
 
-.menu_editor_selected_field {
+.menu-editor-selected-field {
 	background-color: {$GET,native_ui_active_background};
 }
 
-.menu_editor_branch input[type="text"] {
+.menu-editor-branch input[type="text"] {
 	background: url('{$IMG;,icons/14x14/action_small}') right center no-repeat white;
 	background-size: 20px 20px;
 	cursor: pointer;
 	width: 14em;
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.menu_editor_branch input[type="text"] {
+	.menu-editor-branch input[type="text"] {
 		background-image: url('{$IMG;,icons/28x28/action_small}');
 	}
 }
 
-.menu_editor_branch input[type="text"]:focus {
+.menu-editor-branch input[type="text"]:focus {
 	cursor: text !important;
 }
 
-.menu_editor_branch .menu---generic-admin--delete {
+.menu-editor-branch .menu---generic-admin--delete {
 	float: right;
 }

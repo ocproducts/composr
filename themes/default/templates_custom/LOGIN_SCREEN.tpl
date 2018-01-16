@@ -5,7 +5,7 @@
 
 	{$SET,login_screen,1}
 
-	<div class="login_page">
+	<div class="login-page">
 		{+START,IF_NON_EMPTY,{$CONFIG_OPTION,facebook_appid}}{+START,IF,{$CONFIG_OPTION,facebook_allow_signups}}
 			{+START,IF_EMPTY,{$FB_CONNECT_UID}}
 				<h2>{!facebook:LOGIN_FACEBOOK_HEADER}</h2>
@@ -31,7 +31,7 @@
 				{PASSION}
 
 				<div class="float-surrounder">
-					<table class="map-table autosized-table login_page_form">
+					<table class="map-table autosized-table login-page-form">
 						<tbody>
 							<tr>
 								<th class="de-th"><label for="login_username">{$LOGIN_LABEL}:</label></th>
@@ -49,7 +49,7 @@
 					</table>
 
 					{+START,IF,{$CONFIG_OPTION,password_cookies}}
-						<div class="login_page_options">
+						<div class="login-page-options">
 							<p>
 								<label for="remember">
 									<input class="{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}}js-click-confirm-remember-me{+END}" id="remember" type="checkbox" value="1" name="remember"{+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END} />
@@ -78,7 +78,7 @@
 		</form>
 
 		{+START,IF_NON_EMPTY,{EXTRA}}
-			<p class="login_note">
+			<p class="login-note">
 				{EXTRA}
 			</p>
 		{+END}

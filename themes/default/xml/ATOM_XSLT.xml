@@ -18,7 +18,7 @@
 				<div id="cometestme" style="display: none;">
 					<xsl:text disable-output-escaping="yes">&amp;amp;</xsl:text>
 				</div>
-				<div class="rss_main">
+				<div class="rss-main">
 					<xsl:element name="img">
 						<xsl:attribute name="src"><xsl:value-of select="/atom:feed/atom:logo" /></xsl:attribute>
 						<xsl:attribute name="alt"><xsl:value-of select="/atom:feed/atom:subtitle" /></xsl:attribute>
@@ -26,13 +26,13 @@
 					</xsl:element>
 				</div>
 
-				<div class="rss_main_inner">
+				<div class="rss-main-inner">
 					<div class="box box___atom_xslt"><div class="box-inner"><div>
 						<h1><span name="decodeable"><xsl:value-of disable-output-escaping="yes" select="/atom:feed/atom:title" /></span></h1>
 
-						<p id="xslt_introduction">{!RSS_XSLT_INTRODUCTION}</p>
+						<p id="xslt-introduction">{!RSS_XSLT_INTRODUCTION}</p>
 						<xsl:apply-templates select="atom:feed" />
-						<p class="rss_copyright"><span name="decodeable"><xsl:value-of select="/atom:feed/atom:rights" disable-output-escaping="yes" /></span></p>
+						<p class="rss-copyright"><span name="decodeable"><xsl:value-of select="/atom:feed/atom:rights" disable-output-escaping="yes" /></span></p>
 					</div></div></div>
 				</div>
 			</body>

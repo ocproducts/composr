@@ -6,7 +6,7 @@
 	</td>
 </tr>
 <tr>
-	<th class="webstandards_error_line">
+	<th class="webstandards-error-line">
 		{NUMBER}
 	</th>
 	<td>

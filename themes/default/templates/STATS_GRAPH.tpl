@@ -1,8 +1,8 @@
 <div class="float-surrounder">
-	<div class="svg_graph">
+	<div class="svg-graph">
 		<object type="image/svg+xml" data="{GRAPH*}">
 			{!GRAPH}
 		</object>
-		<p class="svg_graph_text">{TEXT*}</p>
+		<p class="svg-graph-text">{TEXT*}</p>
 	</div>
 </div>

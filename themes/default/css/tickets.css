@@ -3,57 +3,57 @@
  Copyright (c) ocProducts, 2004-2018
 */
 
-.ticket_filters label {
+.ticket-filters label {
 	min-width: 10em;
 	display: inline-block;
 }
 
-.ticket_filters .ticket_type_filter, .ticket_filters .open_ticket_filter, .ticket_filters .filter_button {
+.ticket-filters .ticket-type-filter, .ticket-filters .open-ticket-filter, .ticket-filters .filter-button {
 	margin-left: 0;
 	display: block;
 }
 
-.support_tickets th {
+.support-tickets th {
 	text-align: left !important;
 }
 
-.support_tickets th, .support_tickets td {
+.support-tickets th, .support-tickets td {
 	padding: 1em;
 }
 
-.closed_ticket {
+.closed-ticket {
 	font-style: italic;
 	float: right;
 	padding-left: 3em;
 	white-space: nowrap;
 }
 
-body table.results-table tbody tr.unclosed_ticket td {
+body table.results-table tbody tr.unclosed-ticket td {
 	background-color: {$GET,yellow_highlight_background} !important;
 }
 
-.ticket_title {
+.ticket-title {
 	font-weight: bold;
 }
 
-.ticket_type {
+.ticket-type {
 }
 
-.ticket_num_posts {
+.ticket-num-posts {
 }
 
-.ticket_first_poster {
+.ticket-first-poster {
 }
 
-.ticket_last_poster {
+.ticket-last-poster {
 }
 
-.ticket_age {
+.ticket-age {
 }
 
 /* Viewing a ticket */
 
-.ticket_page_text {
+.ticket-page-text {
 	margin-bottom: 2em;
 }
 
@@ -69,7 +69,7 @@ body table.results-table tbody tr.unclosed_ticket td {
 .buttons--new-reply-staff-only {
 	background-image: url('{$IMG,icons/24x24/buttons/new_reply_staff_only}') !important;
 }
-.menu__adminzone__security__permissions__privileges {
+.menu--adminzone--security--permissions--privileges {
 	background-image: url('{$IMG,icons/24x24/menu/adminzone/security/permissions/privileges}') !important;
 }
 
@@ -80,7 +80,7 @@ body table.results-table tbody tr.unclosed_ticket td {
 	.buttons--new-reply-staff-only {
 		background-image: url('{$IMG,icons/48x48/buttons/new_reply_staff_only}') !important;
 	}
-	.menu__adminzone__security__permissions__privileges {
+	.menu--adminzone--security--permissions--privileges {
 		background-image: url('{$IMG,icons/48x48/menu/adminzone/security/permissions/privileges}') !important;
 	}
 }

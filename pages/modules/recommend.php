@@ -600,7 +600,7 @@ class Module_recommend
             'HIDDEN' => $hidden,
             'FIELDS' => $fields,
             'URL' => $post_url,
-            'SUBMIT_ICON' => 'menu__site_meta__recommend',
+            'SUBMIT_ICON' => 'menu--site-meta--recommend',
             'SUBMIT_NAME' => $submit_name,
             'TEXT' => $text,
         ));

@@ -35,7 +35,7 @@ For example:
 	/*{+END}*/
 }
 
-.dropdown-menu a.toplevel_link,
+.dropdown-menu a.toplevel-link,
 .dropdown-menu a.nlevel-link {
 	display: block;
 	outline: 0;
@@ -109,7 +109,7 @@ For example:
 	background-color: {$GET,area_5_background};
 }
 
-.dropdown-menu a.toplevel_link,
+.dropdown-menu a.toplevel-link,
 .dropdown-menu a.nlevel-link {
 	padding: 1.2em 3em 1.2em 1em;
 	background: url('{$IMG;,icons/24x24/buttons/proceed}') transparent no-repeat top 1em right 1em;
@@ -117,9 +117,9 @@ For example:
 
 .dropdown-menu li.toplevel:hover,
 .dropdown-menu li.nlevel:hover,
-.dropdown-menu a.toplevel_link:hover,
+.dropdown-menu a.toplevel-link:hover,
 .dropdown-menu a.nlevel-link:hover,
-.dropdown-menu li.current > a.toplevel_link,
+.dropdown-menu li.current > a.toplevel-link,
 .dropdown-menu li.current > a.nlevel-link {
 	background-color: {$GET,area_hover_2_background};
 }
@@ -136,7 +136,7 @@ For example:
 	padding: 0.5em 0.25em;
 }
 
-.dropdown-menu a.toplevel_link,
+.dropdown-menu a.toplevel-link,
 .dropdown-menu a.nlevel-link {
 	padding: 0.3em 0.4em !important;
 }
@@ -152,18 +152,18 @@ For example:
 	left: -1px; /* In place of margin-right */
 }
 
-.dropdown-menu li.toplevel.menu_spacer {
+.dropdown-menu li.toplevel.menu-spacer {
 	height: 2.5em;
 	width: 1em;
 	padding: 0.5em;
 	float: left;
 }
 
-.dropdown-menu a.toplevel_link {
+.dropdown-menu a.toplevel-link {
 	padding: 0.4em 0.5em;
 }
 
-.dropdown-menu .has-children>a.toplevel_link:after {
+.dropdown-menu .has-children>a.toplevel-link:after {
 	content: "\025BC"; /* Downward arrow */
 	vertical-align: middle;
 	padding-left: 0.5em;
@@ -179,18 +179,18 @@ For example:
 	margin-left: 0.3em;
 }
 
-.dropdown-menu .toplevel_link a, .dropdown-menu .toplevel_link a:visited, .dropdown-menu .toplevel_link a:hover {
+.dropdown-menu .toplevel-link a, .dropdown-menu .toplevel-link a:visited, .dropdown-menu .toplevel-link a:hover {
 	text-decoration: none;
 }
 
-.dropdown-menu .toplevel.current .toplevel_link span, .dropdown-menu .toplevel .toplevel_link:hover span {
+.dropdown-menu .toplevel.current .toplevel-link span, .dropdown-menu .toplevel .toplevel-link:hover span {
 	text-decoration: underline;
 }
-.dropdown-menu .toplevel .toplevel_link.non-link:hover span {
+.dropdown-menu .toplevel .toplevel-link.non-link:hover span {
 	text-decoration: none;
 }
 
-.dropdown-menu .toplevel_link img {
+.dropdown-menu .toplevel-link img {
 	max-width: 20px;
 }
 
@@ -215,14 +215,14 @@ For example:
 	background-color: {$GET,dropdown_menu_text};
 }
 
-.dropdown-menu .nlevel li, .dropdown-menu .nlevel .menu_spacer {
+.dropdown-menu .nlevel li, .dropdown-menu .nlevel .menu-spacer {
 	background-color: {$GET,dropdown_menu_background};
 	font-weight: normal;
 	border-bottom: 1px solid {$GET,standard_border};
 	min-height: 20px;
 }
 
-.dropdown-menu .nlevel .menu_spacer {
+.dropdown-menu .nlevel .menu-spacer {
 	display: block;
 	padding-right: 0;
 }
@@ -251,11 +251,11 @@ body .dropdown-menu .nlevel .has-img>a, body .dropdown-menu .nlevel.current.has-
 	background: none !important;
 }
 
-.dropdown-menu .nlevel .non_current a {
+.dropdown-menu .nlevel .non-current a {
 	background: transparent url('{$IMG;,1x/menus/menu_bullet}') no-repeat 5px 6px;
 }
 
-.dropdown-menu .nlevel .non_current a:hover {
+.dropdown-menu .nlevel .non-current a:hover {
 	background: transparent url('{$IMG;,1x/menus/menu_bullet_hover}') no-repeat 5px 6px;
 }
 
@@ -264,11 +264,11 @@ body .dropdown-menu .nlevel .has-img>a, body .dropdown-menu .nlevel.current.has-
 		background: transparent url('{$IMG;,2x/menus/menu_bullet_current}') no-repeat 5px 6px !important;
 	}
 
-	.dropdown-menu .nlevel .non_current a {
+	.dropdown-menu .nlevel .non-current a {
 		background: transparent url('{$IMG;,2x/menus/menu_bullet}') no-repeat 5px 6px;
 	}
 
-	.dropdown-menu .nlevel .non_current a:hover {
+	.dropdown-menu .nlevel .non-current a:hover {
 		background: transparent url('{$IMG;,2x/menus/menu_bullet_hover}') no-repeat 5px 6px;
 	}
 }

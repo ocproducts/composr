@@ -2,17 +2,17 @@
 	{$?,{$MATCH_KEY_MATCH,_SEARCH:admin_notifications},{!NOTIFICATIONS_DEFINE_LOCKDOWN},{!NOTIFICATIONS_INTRO}}
 </p>
 
-<div class="wide-table-wrap"><table class="columned-table wide-table results-table notifications_form responsive-table responsive-table-bolded-first-column">
+<div class="wide-table-wrap"><table class="columned-table wide-table results-table notifications-form responsive-table responsive-table-bolded-first-column">
 	<colgroup>
 		<col class="notifications-field-name-column" />
 		{+START,IF_PASSED_AND_TRUE,SHOW_PRIVILEGES}
-			<col class="notifications_privileges_column" />
+			<col class="notifications-privileges-column" />
 		{+END}
 		{+START,LOOP,NOTIFICATION_TYPES_TITLES}
-			<col class="notifications_tick_column" />
+			<col class="notifications-tick-column" />
 		{+END}
 		{+START,IF,{ADVANCED_COLUMN}}
-			<col class="notifications_advanced_column" />
+			<col class="notifications-advanced-column" />
 		{+END}
 	</colgroup>
 
@@ -46,7 +46,7 @@
 			</tr>
 
 			{+START,LOOP,NOTIFICATION_CODES}
-				<tr class="notification_code {$CYCLE*,zebra,zebra-0,zebra-1}">
+				<tr class="notification-code {$CYCLE*,zebra,zebra-0,zebra-1}">
 					<th class="de-th">{NOTIFICATION_LABEL*}</th>
 
 					{+START,IF_PASSED,PRIVILEGED}

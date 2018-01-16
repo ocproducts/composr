@@ -2,8 +2,8 @@
 
 {$REQUIRE_CSS,messages}
 
-<div class="site_special_message">
-	<div class="site_special_message_inner">
+<div class="site-special-message">
+	<div class="site-special-message-inner">
 		<form title="{!PROCEED}" action="{URL*}" id="redir_form" method="post" autocomplete="off">
 			{$INSERT_SPAMMER_BLACKHOLE}
 

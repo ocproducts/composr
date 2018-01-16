@@ -8,7 +8,7 @@
 }
 
 /*{+START,CSS_MODE,desktop}*/
-	.login_page {
+	.login-page {
 		background: url('{$IMG;,background_image}') no-repeat 20px 44px;
 		text-align: center;
 		width: 80%;
@@ -18,91 +18,91 @@
 	}
 /*{+END}*/
 
-.login_page input[type="text"], .login_page input[type="password"] {
+.login-page input[type="text"], .login-page input[type="password"] {
 	background: rgba(255,255,255,0.5);
 }
 
-.login_page .box {
+.login-page .box {
 	margin-top: 0;
 }
 
 /*{+START,CSS_MODE,mobile}*/
-	.login_page_form, .login_page_form>tbody, .login_page_form>thead, .login_page_form>tbody>tr, .login_page_form>thead>tr, .login_page_form>tr, .login_page_form>tbody>tr>th, .login_page_form>thead>tr>th, .login_page_form>tr>th, .login_page_form>tbody>tr>td, .login_page_form>thead>tr>td, .login_page_form>tr>td {
+	.login-page-form, .login-page-form>tbody, .login-page-form>thead, .login-page-form>tbody>tr, .login-page-form>thead>tr, .login-page-form>tr, .login-page-form>tbody>tr>th, .login-page-form>thead>tr>th, .login-page-form>tr>th, .login-page-form>tbody>tr>td, .login-page-form>thead>tr>td, .login-page-form>tr>td {
 		display: block;
 		width: auto;
 		overflow: hidden;
 		text-align: left;
 	}
 
-	.login_page_form label {
+	.login-page-form label {
 		display: inline-block;
 	}
 
-	.login_page_form label .must-show-together {
+	.login-page-form label .must-show-together {
 		white-space: normal !important;
 	}
 /*{+END}*/
 
-table.login_page_form {
+table.login-page-form {
 	margin-top: 1em;
 }
 /*{+START,CSS_MODE,desktop}*/
-	table.login_page_form {
+	table.login-page-form {
 		width: 45%;
 		float: left;
 		padding-right: 1em;
 	}
 /*{+END}*/
 
-.login_page_form th {
+.login-page-form th {
 	text-align: right;
 	padding-right: 6px;
 	font-weight: bold !important;
 	vertical-align: middle !important;
 }
 
-.login_page_form td {
+.login-page-form td {
 	text-align: left;
 	vertical-align: middle !important;
 }
 
-.login_page_options {
+.login-page-options {
 	text-align: left;
 	margin-top: 0.5em;
 }
 /*{+START,CSS_MODE,desktop}*/
-	.login_page_options {
+	.login-page-options {
 		width: 278px; /* On Firefox Windows it needs more space than Chrome Windows which needs more space than Chrome Mac */
 		float: left;
 	}
 /*{+END}*/
 
-.login_page_options label {
+.login-page-options label {
 	display: block;
 }
 
-.login_page_options .associated-details {
+.login-page-options .associated-details {
 	display: inline-block;
 }
 /*{+START,CSS_MODE,desktop}*/
-	.login_page_options .associated-details {
+	.login-page-options .associated-details {
 		padding-left: 2em;
 	}
 /*{+END}*/
 
-.login_note {
+.login-note {
 	font-size: 0.85em;
 	opacity: 0.9;
 }
 /*{+START,CSS_MODE,mobile}*/
-	.login_note a {
+	.login-note a {
 		padding-right: 0.5em;
 	}
-	.login_note br {
+	.login-note br {
 		display: none;
 	}
 /*{+END}*/
 
-.login_note a {
+.login-note a {
 	font-size: 1.1em;
 }

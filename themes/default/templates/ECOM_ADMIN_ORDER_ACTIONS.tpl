@@ -6,7 +6,7 @@
 
 		<label class="accessibility-hidden" for="action">{!ACTION}</label>
 
-		<select name="action" id="action" class="orders_actions_dropdown js-select-change-action-submit-form">
+		<select name="action" id="action" class="orders-actions-dropdown js-select-change-action-submit-form">
 			<option value="">{!CHOOSE}&hellip;</option>
 
 			<option value="add_note">{!ADD_NOTE}</option>

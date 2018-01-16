@@ -70,9 +70,9 @@ function init__svg()
 function _draw_segment($colour, $angle, $radius, $start_x, $start_y, $end_x, $end_y)
 {
     if ($angle == 360) {
-        return '<circle cx="' . float_to_raw_string(X_PADDING + floatval($radius)) . '" cy="' . float_to_raw_string(Y_PADDING + floatval($radius)) . '" r="' . float_to_raw_string(floatval($radius)) . '" style="fill: #' . ($colour) . ';" class="pie_chart" />' . "\n";
+        return '<circle cx="' . float_to_raw_string(X_PADDING + floatval($radius)) . '" cy="' . float_to_raw_string(Y_PADDING + floatval($radius)) . '" r="' . float_to_raw_string(floatval($radius)) . '" style="fill: #' . ($colour) . ';" class="pie-chart" />' . "\n";
     } else {
-        return '<path d="M' . float_to_raw_string(X_PADDING + floatval($radius)) . ',' . float_to_raw_string(Y_PADDING + floatval($radius)) . ' L' . float_to_raw_string(X_PADDING + floatval($start_x)) . ',' . float_to_raw_string(Y_PADDING + floatval($start_y)) . ' A' . float_to_raw_string(floatval($radius)) . ',' . float_to_raw_string(floatval($radius)) . ' 0 ' . strval(($angle > 180) ? 1 : 0) . ',1,' . float_to_raw_string(X_PADDING + floatval($end_x)) . ',' . float_to_raw_string(Y_PADDING + floatval($end_y)) . ' Z" style="fill: #' . ($colour) . ';" class="pie_chart" />' . "\n";
+        return '<path d="M' . float_to_raw_string(X_PADDING + floatval($radius)) . ',' . float_to_raw_string(Y_PADDING + floatval($radius)) . ' L' . float_to_raw_string(X_PADDING + floatval($start_x)) . ',' . float_to_raw_string(Y_PADDING + floatval($start_y)) . ' A' . float_to_raw_string(floatval($radius)) . ',' . float_to_raw_string(floatval($radius)) . ' 0 ' . strval(($angle > 180) ? 1 : 0) . ',1,' . float_to_raw_string(X_PADDING + floatval($end_x)) . ',' . float_to_raw_string(Y_PADDING + floatval($end_y)) . ' Z" style="fill: #' . ($colour) . ';" class="pie-chart" />' . "\n";
     }
 }
 
@@ -114,8 +114,8 @@ function _draw_key($data, $start_colour, $start_x, $start_y, $units = '')
             $key = do_lang('UNKNOWN');
         }
 
-        $output .= '<rect x="' . float_to_raw_string(floatval($start_x)) . '" y="' . float_to_raw_string(floatval($start_y) + floatval($i) * (BOX_SPACING + BOX_SIZE)) . '" width="' . float_to_raw_string(BOX_SIZE) . '" height="' . float_to_raw_string(BOX_SIZE) . '" style="fill: #' . ($colour) . ';" class="key_box" />' . "\n";
-        $output .= '<text x="' . float_to_raw_string(floatval($start_x) + BOX_SPACING + BOX_SIZE) . '" y="' . float_to_raw_string(floatval($start_y) + floatval($i) * (BOX_SPACING + BOX_SIZE) + BOX_SIZE) . '" class="key_text">' . escape_html($key) . ' (' . escape_html($value . $units) . ')</text>' . "\n";
+        $output .= '<rect x="' . float_to_raw_string(floatval($start_x)) . '" y="' . float_to_raw_string(floatval($start_y) + floatval($i) * (BOX_SPACING + BOX_SIZE)) . '" width="' . float_to_raw_string(BOX_SIZE) . '" height="' . float_to_raw_string(BOX_SIZE) . '" style="fill: #' . ($colour) . ';" class="key-box" />' . "\n";
+        $output .= '<text x="' . float_to_raw_string(floatval($start_x) + BOX_SPACING + BOX_SIZE) . '" y="' . float_to_raw_string(floatval($start_y) + floatval($i) * (BOX_SPACING + BOX_SIZE) + BOX_SIZE) . '" class="key-text">' . escape_html($key) . ' (' . escape_html($value . $units) . ')</text>' . "\n";
 
         $colour = _get_next_colour($colour);
         $i++;
@@ -221,25 +221,25 @@ function _draw_axes($max_y, $y_scale, $x_label = 'X axis', $y_label = 'Y axis')
     // Draw Y-axis markers, labels, and background lines
     for ($i = 1; $i < intval(ceil($max_y)) + 1; $i++) {
         if (abs($i * $y_scale - $prev_i * $y_scale) >= MIN_Y_MARKER_DISTANCE) {
-            $output .= '<text x="' . float_to_raw_string(Y_LABEL_WIDTH) . '" y="' . float_to_raw_string(PLOT_HEIGHT - ($i * $y_scale) + PLOT_HEIGHT_BIAS) . '" class="axis_marker_text">' . integer_format($i) . '</text>' . "\n";
-            $output .= '<line x1="' . float_to_raw_string(Y_LABEL_WIDTH + (Y_AXIS_WIDTH / 2)) . '" y1="' . float_to_raw_string(PLOT_HEIGHT - ($i * $y_scale) + PLOT_HEIGHT_BIAS) . '" x2="' . float_to_raw_string(Y_LABEL_WIDTH + Y_AXIS_WIDTH) . '" y2="' . float_to_raw_string(PLOT_HEIGHT - ($i * $y_scale) + PLOT_HEIGHT_BIAS) . '" class="axis_marker" />' . "\n";
-            $output .= '<line x1="' . float_to_raw_string(Y_LABEL_WIDTH + Y_AXIS_WIDTH) . '" y1="' . float_to_raw_string(PLOT_HEIGHT - ($i * $y_scale) + PLOT_HEIGHT_BIAS) . '" x2="' . float_to_raw_string(SVG_WIDTH) . '" y2="' . float_to_raw_string(PLOT_HEIGHT - ($i * $y_scale) + PLOT_HEIGHT_BIAS) . '" class="axis_background_line" />' . "\n";
+            $output .= '<text x="' . float_to_raw_string(Y_LABEL_WIDTH) . '" y="' . float_to_raw_string(PLOT_HEIGHT - ($i * $y_scale) + PLOT_HEIGHT_BIAS) . '" class="axis-marker-text">' . integer_format($i) . '</text>' . "\n";
+            $output .= '<line x1="' . float_to_raw_string(Y_LABEL_WIDTH + (Y_AXIS_WIDTH / 2)) . '" y1="' . float_to_raw_string(PLOT_HEIGHT - ($i * $y_scale) + PLOT_HEIGHT_BIAS) . '" x2="' . float_to_raw_string(Y_LABEL_WIDTH + Y_AXIS_WIDTH) . '" y2="' . float_to_raw_string(PLOT_HEIGHT - ($i * $y_scale) + PLOT_HEIGHT_BIAS) . '" class="axis-marker" />' . "\n";
+            $output .= '<line x1="' . float_to_raw_string(Y_LABEL_WIDTH + Y_AXIS_WIDTH) . '" y1="' . float_to_raw_string(PLOT_HEIGHT - ($i * $y_scale) + PLOT_HEIGHT_BIAS) . '" x2="' . float_to_raw_string(SVG_WIDTH) . '" y2="' . float_to_raw_string(PLOT_HEIGHT - ($i * $y_scale) + PLOT_HEIGHT_BIAS) . '" class="axis-background-line" />' . "\n";
             $prev_i = $i;
         }
     }
-    $output .= '<text x="' . float_to_raw_string(Y_LABEL_WIDTH) . '" y="' . float_to_raw_string(PLOT_HEIGHT + PLOT_HEIGHT_BIAS) . '" class="axis_marker_text">0</text>' . "\n";
+    $output .= '<text x="' . float_to_raw_string(Y_LABEL_WIDTH) . '" y="' . float_to_raw_string(PLOT_HEIGHT + PLOT_HEIGHT_BIAS) . '" class="axis-marker-text">0</text>' . "\n";
 
     // X axis
-    $output .= '<line x1="' . float_to_raw_string(Y_LABEL_WIDTH) . '" y1="' . float_to_raw_string(PLOT_HEIGHT + PLOT_HEIGHT_BIAS) . '" x2="' . float_to_raw_string(SVG_WIDTH) . '" y2="' . float_to_raw_string(PLOT_HEIGHT + PLOT_HEIGHT_BIAS) . '" class="axis_line" />' . "\n";
+    $output .= '<line x1="' . float_to_raw_string(Y_LABEL_WIDTH) . '" y1="' . float_to_raw_string(PLOT_HEIGHT + PLOT_HEIGHT_BIAS) . '" x2="' . float_to_raw_string(SVG_WIDTH) . '" y2="' . float_to_raw_string(PLOT_HEIGHT + PLOT_HEIGHT_BIAS) . '" class="axis-line" />' . "\n";
 
     // X axis label
-    $output .= '<text x="' . float_to_raw_string(Y_LABEL_WIDTH + Y_AXIS_WIDTH + X_PADDING) . '" y="' . float_to_raw_string(PLOT_HEIGHT + X_AXIS_HEIGHT + PLOT_HEIGHT_BIAS) . '" class="axis_text">' . escape_html($x_label) . '</text>' . "\n";
+    $output .= '<text x="' . float_to_raw_string(Y_LABEL_WIDTH + Y_AXIS_WIDTH + X_PADDING) . '" y="' . float_to_raw_string(PLOT_HEIGHT + X_AXIS_HEIGHT + PLOT_HEIGHT_BIAS) . '" class="axis-text">' . escape_html($x_label) . '</text>' . "\n";
 
     // Y axis
-    $output .= '<line x1="' . float_to_raw_string(Y_LABEL_WIDTH + Y_AXIS_WIDTH) . '" y1="' . float_to_raw_string(0.0) . '" x2="' . float_to_raw_string(Y_LABEL_WIDTH + Y_AXIS_WIDTH) . '" y2="' . float_to_raw_string(PLOT_HEIGHT + X_AXIS_HEIGHT + PLOT_HEIGHT_BIAS) . '" class="axis_line" />' . "\n";
+    $output .= '<line x1="' . float_to_raw_string(Y_LABEL_WIDTH + Y_AXIS_WIDTH) . '" y1="' . float_to_raw_string(0.0) . '" x2="' . float_to_raw_string(Y_LABEL_WIDTH + Y_AXIS_WIDTH) . '" y2="' . float_to_raw_string(PLOT_HEIGHT + X_AXIS_HEIGHT + PLOT_HEIGHT_BIAS) . '" class="axis-line" />' . "\n";
 
     // Y axis label
-    $output .= '<text transform="translate(' . float_to_raw_string(Y_LABEL_WIDTH) . ',' . float_to_raw_string(PLOT_HEIGHT + PLOT_HEIGHT_BIAS) . ') rotate(270)" class="axis_text">' . escape_html($y_label) . '</text>' . "\n";
+    $output .= '<text transform="translate(' . float_to_raw_string(Y_LABEL_WIDTH) . ',' . float_to_raw_string(PLOT_HEIGHT + PLOT_HEIGHT_BIAS) . ') rotate(270)" class="axis-text">' . escape_html($y_label) . '</text>' . "\n";
 
     return $output;
 }
@@ -257,7 +257,7 @@ function _draw_average($average, $y_scale)
 {
     if ($average > 0.0) {
         // Draw an average line
-        return '<line x1="' . float_to_raw_string(Y_LABEL_WIDTH + Y_AXIS_WIDTH) . '" y1="' . float_to_raw_string(PLOT_HEIGHT - $average * $y_scale + PLOT_HEIGHT_BIAS) . '" x2="' . float_to_raw_string(SVG_WIDTH) . '" y2="' . float_to_raw_string(PLOT_HEIGHT - $average * $y_scale + PLOT_HEIGHT_BIAS) . '" class="average_line" />' . "\n";
+        return '<line x1="' . float_to_raw_string(Y_LABEL_WIDTH + Y_AXIS_WIDTH) . '" y1="' . float_to_raw_string(PLOT_HEIGHT - $average * $y_scale + PLOT_HEIGHT_BIAS) . '" x2="' . float_to_raw_string(SVG_WIDTH) . '" y2="' . float_to_raw_string(PLOT_HEIGHT - $average * $y_scale + PLOT_HEIGHT_BIAS) . '" class="average-line" />' . "\n";
     }
     return '';
 }
@@ -323,8 +323,8 @@ function create_bar_chart($data, $x_label = 'X axis', $y_label = 'Y axis', $x_un
         // Bar and label
         $x_raw = float_to_raw_string($x);
         $y_raw = float_to_raw_string($y);
-        $plot .= '<rect id="' . $x_raw . $y_raw . '_bar" x="' . $x_raw . '" y="' . $y_raw . '" width="' . float_to_raw_string(BAR_WIDTH) . '" height="' . float_to_raw_string($height) . '" style="fill: #' . ($colour) . ';" class="bar_chart" />' . "\n";
-        $labels .= '<text style="fill: ' . (($height == 0.0) ? 'black' : 'white') . '; font-weight: normal" id="' . $x_raw . $y_raw . '" transform="translate(' . float_to_raw_string($x + TEXT_HEIGHT - 3) . ',' . float_to_raw_string(PLOT_HEIGHT + PLOT_HEIGHT_BIAS - TEXT_HEIGHT) . ') rotate(270)" class="bar_chart_text">' . escape_html($key) . '</text>
+        $plot .= '<rect id="' . $x_raw . $y_raw . '_bar" x="' . $x_raw . '" y="' . $y_raw . '" width="' . float_to_raw_string(BAR_WIDTH) . '" height="' . float_to_raw_string($height) . '" style="fill: #' . ($colour) . ';" class="bar-chart" />' . "\n";
+        $labels .= '<text style="fill: ' . (($height == 0.0) ? 'black' : 'white') . '; font-weight: normal" id="' . $x_raw . $y_raw . '" transform="translate(' . float_to_raw_string($x + TEXT_HEIGHT - 3) . ',' . float_to_raw_string(PLOT_HEIGHT + PLOT_HEIGHT_BIAS - TEXT_HEIGHT) . ') rotate(270)" class="bar-chart-text">' . escape_html($key) . '</text>
         <script>
         <![CDATA[
             (function() {
@@ -443,12 +443,12 @@ function create_scatter_graph($data, $x_label = 'X Axis', $y_label = 'Y Axis', $
             $path_data .= $x_raw . ',' . $y_raw;
 
             // The cross
-            $plot .= '<line x1="' . float_to_raw_string($x - CROSS_SIZE / 2.0) . '" y1="' . float_to_raw_string($y - CROSS_SIZE / 2.0) . '" x2="' . float_to_raw_string($x + CROSS_SIZE / 2.0) . '" y2="' . float_to_raw_string($y + CROSS_SIZE / 2.0) . '" class="scatter_graph_marker" />' . "\n";
-            $plot .= '<line x1="' . float_to_raw_string($x + CROSS_SIZE / 2.0) . '" y1="' . float_to_raw_string($y - CROSS_SIZE / 2.0) . '" x2="' . float_to_raw_string($x - CROSS_SIZE / 2.0) . '" y2="' . float_to_raw_string($y + CROSS_SIZE / 2.0) . '" class="scatter_graph_marker" />' . "\n";
+            $plot .= '<line x1="' . float_to_raw_string($x - CROSS_SIZE / 2.0) . '" y1="' . float_to_raw_string($y - CROSS_SIZE / 2.0) . '" x2="' . float_to_raw_string($x + CROSS_SIZE / 2.0) . '" y2="' . float_to_raw_string($y + CROSS_SIZE / 2.0) . '" class="scatter-graph-marker" />' . "\n";
+            $plot .= '<line x1="' . float_to_raw_string($x + CROSS_SIZE / 2.0) . '" y1="' . float_to_raw_string($y - CROSS_SIZE / 2.0) . '" x2="' . float_to_raw_string($x - CROSS_SIZE / 2.0) . '" y2="' . float_to_raw_string($y + CROSS_SIZE / 2.0) . '" class="scatter-graph-marker" />' . "\n";
 
             // The label
             if (($first) || (abs($x - $prev_x) > MIN_X_MARKER_DISTANCE)) {
-                $labels .= '<text id="' . $x_raw . $y_raw . '" transform="translate(' . float_to_raw_string($x + TEXT_HEIGHT / 2) . ',' . float_to_raw_string(PLOT_HEIGHT + X_AXIS_HEIGHT + PLOT_HEIGHT_BIAS) . ') rotate(270)" class="scatter_graph_text">' . escape_html($value['key']) . '</text>
+                $labels .= '<text id="' . $x_raw . $y_raw . '" transform="translate(' . float_to_raw_string($x + TEXT_HEIGHT / 2) . ',' . float_to_raw_string(PLOT_HEIGHT + X_AXIS_HEIGHT + PLOT_HEIGHT_BIAS) . ') rotate(270)" class="scatter-graph-text">' . escape_html($value['key']) . '</text>
                     <script>
                     <![CDATA[
                         (function () {
@@ -468,7 +468,7 @@ function create_scatter_graph($data, $x_label = 'X Axis', $y_label = 'Y Axis', $
         $first = false;
     }
 
-    $plot .= '<polyline points="' . $path_data . '" class="scatter_graph" />' . "\n";
+    $plot .= '<polyline points="' . $path_data . '" class="scatter-graph" />' . "\n";
 
     $output .= _draw_axes($max_y, $y_scale, $x_label, $y_label);
     $output .= _draw_average($average, $y_scale);

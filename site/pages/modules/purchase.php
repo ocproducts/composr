@@ -1134,7 +1134,7 @@ class Module_purchase
                     $confirmation_box = do_lang_tempcode('BUYING_FOR_POINTS_CONFIRMATION', escape_html($item_name), escape_html(integer_format($points_for_discount)));
 
                     require_css('points');
-                    $icon = 'menu__social__points';
+                    $icon = 'menu--social--points';
                 } else {
                     $confirmation_box = do_lang_tempcode('BUYING_FOR_FREE_CONFIRMATION', escape_html($item_name));
 

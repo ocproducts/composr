@@ -5,7 +5,7 @@
 		<img class="right spaced" src="{$ENSURE_PROTOCOL_SUITABILITY*,{FROM_AVATAR_URL}}" title="{FROM_USERNAME*}" alt="{FROM_USERNAME*}" />
 	{+END}
 
-	<p class="notification_subject">
+	<p class="notification-subject">
 		{+START,IF_PASSED,URL}
 			<a href="{URL*}">{SUBJECT*}</a>
 		{+END}
@@ -15,7 +15,7 @@
 		{+END}
 	</p>
 
-	<ul class="notification_meta horizontal-meta-details">
+	<ul class="notification-meta horizontal-meta-details">
 		<li>{DATE*}</li>
 		<li>({$?,{HAS_READ},{!notifications:HAS_READ},{!notifications:HAS_NOT_READ}})</li>
 	</ul>

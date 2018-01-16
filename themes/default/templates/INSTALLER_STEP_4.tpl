@@ -2,7 +2,7 @@
 	{HIDDEN}
 
 	<div>
-		<div class="installer_main_min">
+		<div class="installer-main-min">
 			{MESSAGE}
 
 			{SECTIONS}

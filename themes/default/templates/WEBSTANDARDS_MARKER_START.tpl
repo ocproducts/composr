@@ -1,1 +1,1 @@
-<span class="webstandards_error">
+<span class="webstandards-error">

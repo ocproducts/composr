@@ -12,8 +12,8 @@
 	{TITLE}
 
 	<div class="float-surrounder">
-		<div class="sitemap_right">
-			<div class="box box___sitemap_editor_screen"><div class="box-inner">
+		<div class="sitemap-right">
+			<div class="box box---sitemap-editor-screen"><div class="box-inner">
 				<h2>{!SELECTION_DETAILS}</h2>
 
 				<div id="details_target">
@@ -22,8 +22,8 @@
 			</div></div>
 		</div>
 
-		<div class="sitemap_left">
-			<div class="box box___sitemap_editor_screen"><div class="box-inner">
+		<div class="sitemap-left">
+			<div class="box box---sitemap-editor-screen"><div class="box-inner">
 				<h2>{!SITEMAP}</h2>
 
 				<div class="accessibility-hidden"><label for="tree_list">{!ENTRY}</label></div>
@@ -31,7 +31,7 @@
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<input style="display: none" type="text" id="tree_list" name="tree_list" value="{$_GET*,id}" class="js-change-update-details-box" />
-					<div id="tree-list--root-tree-list" class="sitemap_editor">
+					<div id="tree-list--root-tree-list" class="sitemap-editor">
 						<!-- List put in here -->
 					</div>
 				</form>

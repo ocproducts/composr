@@ -13,6 +13,6 @@
 		</ul>
 	{+END}
 
-	<div class="webstandards_div">
+	<div class="webstandards-div">
 		<table class="map-table autosized-table webstandards_table">
 			<tbody>

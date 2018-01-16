@@ -1,8 +1,8 @@
 <form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" autocomplete="off">
 	{HIDDEN}
 
-	<div class="installer_main_min">
-		<p id="install_welcome">
+	<div class="installer-main-min">
+		<p id="install-welcome">
 			<strong>Welcome! &middot; Bienvenue! &middot; Willkommen! &middot; Bienvenidos! &middot; Welkom! &middot; Swaagatam! &middot; Irashaimasu! &middot; Huan yin! &middot; Dobro pozhalovat'! &middot; Witaj!</strong>
 		</p>
 
@@ -12,8 +12,8 @@
 
 		<div class="wide-table-wrap"><table class="map-table form-table wide-table">
 			<colgroup>
-				<col class="installer_left_column" />
-				<col class="installer_right_column" />
+				<col class="installer-left-column" />
+				<col class="installer-right-column" />
 			</colgroup>
 
 			<tbody>

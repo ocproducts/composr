@@ -50,7 +50,7 @@
 
             setInterval($coreNotifications.pollForNotifications, window.NOTIFICATION_POLL_FREQUENCY * 1000);
 
-            var webNotificationsButton = document.getElementById('web_notifications_button');
+            var webNotificationsButton = document.getElementById('web-notifications-button');
             if (webNotificationsButton) {
                 webNotificationsButton.addEventListener('click', explicitNotificationsEnableRequest);
             }
@@ -254,7 +254,7 @@
         spot = document.getElementById('web_notifications_spot');
         if (spot) {
             display = responseXml.getElementsByTagName('display_web_notifications');
-            button = document.getElementById('web_notifications_button');
+            button = document.getElementById('web-notifications-button');
             if (display[0]) {
                 unread = responseXml.getElementsByTagName('unread_web_notifications');
                 $dom.html(spot, $dom.html(display[0]));
@@ -266,7 +266,7 @@
         spot = document.getElementById('pts_spot');
         if (spot) {
             display = responseXml.getElementsByTagName('display_pts');
-            button = document.getElementById('pts_button');
+            button = document.getElementById('pts-button');
             if (display[0]) {
                 unread = responseXml.getElementsByTagName('unread_pts');
                 $dom.html(spot, $dom.html(display[0]));

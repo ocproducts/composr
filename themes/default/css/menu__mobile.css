@@ -3,32 +3,32 @@
  Copyright (c) ocProducts, 2004-2018
 */
 
-.mobile_menu_button {
+.mobile-menu-button {
 	text-decoration: none;
 	color: {$GET,WB} !important;
 	position: absolute;
 	padding: 0.75em;
 }
-.mobile_menu_button:hover {
+.mobile-menu-button:hover {
 	color: {$GET,WB};
 	text-decoration: none;
 }
-.mobile_menu_button:hover span {
+.mobile-menu-button:hover span {
 	text-decoration: underline;
 }
 
-.mobile_menu_button * {
+.mobile-menu-button * {
 	vertical-align: middle;
 }
 
-.mobile_menu_button:after {
+.mobile-menu-button::after {
 	padding-left: 0.25em;
 	content: "\25bc"; /* Downward triangle arrow */
 	vertical-align: middle;
 	font-size: 0.85em;
 }
 
-.mobile_search {
+.mobile-search {
 	text-align: center;
 	padding: 1em 0;
 	background-color: {$GET,area_5_background};

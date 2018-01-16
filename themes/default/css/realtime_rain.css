@@ -20,10 +20,10 @@
 .page-running-admin-realtime-rain .breadcrumbs {
 	margin-bottom: 1em;
 }
-.page-running-admin-realtime-rain #real_time_surround {
+.page-running-admin-realtime-rain #real-time-surround {
 	border: 1px dotted {$GET,bubblescape_background};
 }
-#real_time_surround {
+#real-time-surround {
 	position: relative;
 	height: 555px;
 	background: {$GET,bubblescape};
@@ -31,35 +31,35 @@
 	width: 100%;
 	opacity: 0.95;
 }
-#real_time {
+#real-time {
 	height: 100%;
 	width: 100%;
 	overflow: hidden;
 	position: relative;
 }
 
-#loading_icon {
+#loading-icon {
 	padding-top: 250px;
 }
 
-#news_ticker {
+#news-ticker {
 	z-index: 100;
 	height: auto;
 	overflow: hidden;
 	min-height: 116px;
 }
 /*{+START,CSS_MODE,desktop}*/
-	#news_ticker {
+	#news-ticker {
 		position: absolute;
 		width: 446px;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	#news_ticker {
+	#news-ticker {
 		width: 100%;
 	}
 /*{+END}*/
-#news_ticker h1 {
+#news-ticker h1 {
 	color: {$GET,bubble_text};
 	font-weight: bold;
 	float: left;
@@ -70,37 +70,37 @@
 	border: 0;
 }
 /*{+START,CSS_MODE,desktop}*/
-	#news_ticker h1 {
+	#news-ticker h1 {
 		width: 416px;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	#news_ticker h1 {
+	#news-ticker h1 {
 		width: 100%;
 		box-sizing: border-box;
 		background-size: 100% 100%;
 	}
 /*{+END}*/
-#news_ticker .news_inside {
+#news-ticker .news-inside {
 	background: url('{$IMG;,realtime_rain/news-bg}') repeat-y center top;
 	overflow: hidden;
 	margin: 0 auto;
 	padding: 0;
 }
 /*{+START,CSS_MODE,desktop}*/
-	#news_ticker .news_inside {
+	#news-ticker .news-inside {
 		float: left;
 		width: 446px;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	#news_ticker .news_inside {
+	#news-ticker .news-inside {
 		width: 100%;
 		background-position: left top;
 		background-size: 100% 100%;
 	}
 /*{+END}*/
-#news_ticker .news_content {
+#news-ticker .news-content {
 	overflow: hidden;
 	height: auto;
 	color: {$GET,bubble_text};
@@ -108,45 +108,45 @@
 	padding: 0 20px;
 }
 /*{+START,CSS_MODE,desktop}*/
-	#news_ticker .news_content {
+	#news-ticker .news-content {
 		width: 401px;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	#news_ticker .news_content {
+	#news-ticker .news-content {
 		width: 100%;
 	}
 /*{+END}*/
-#news_ticker .news_content p {
+#news-ticker .news-content p {
 	font-size: 0.95em;
 }
-#news_ticker .news_footer {
+#news-ticker .news-footer {
 	background: url('{$IMG;,realtime_rain/news-bot}') no-repeat;
 	height: 21px;
 	float: left;
 }
 /*{+START,CSS_MODE,desktop}*/
-	#news_ticker .news_footer {
+	#news-ticker .news-footer {
 		width: 446px;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	#news_ticker .news_footer {
+	#news-ticker .news-footer {
 		width: 100%;
 		background-size: 100% 100%;
 	}
 /*{+END}*/
 
-#news_ticker, #time_line:hover {
+#news-ticker, #time-line:hover {
 	opacity: 0.5;
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
 
-#news_ticker:hover, #time_line {
+#news-ticker:hover, #time-line {
 	opacity: 1.0;
 }
 
-#timer_outer {
+#timer-outer {
 	width: 100%;
 	padding: 10px 0;
 	position: absolute;
@@ -154,12 +154,12 @@
 	z-index: 100;
 }
 /*{+START,CSS_MODE,desktop}*/
-	#timer_inner {
+	#timer-inner {
 		width: 962px;
 		margin: 0 auto;
 	}
 /*{+END}*/
-	#real_time_indicator {
+	#real-time-indicator {
 	background: url('{$IMG;,realtime_rain/realtime-bubble}') no-repeat 0 0;
 	overflow: hidden;
 	font-size: 0.75em;
@@ -191,66 +191,66 @@
 		background-size: 100% 100%;
 	}
 /*{+END}*/
-#pause_but {
+#pause-but {
 	float: left;
 	margin-right: 50px;
 }
-#pre_but {
+#pre-but {
 	float: left;
 	padding: 5px 5px 0 0;
 }
-#time_line {
+#time-line {
 	float: left;
 	padding: 4px 0 0 0;
 }
-#time_line img {
+#time-line img {
 	display: block;
 	margin-top: 7px;
 }
 /*{+START,CSS_MODE,mobile}*/
-	#time_line img {
+	#time-line img {
 		width: 200px;
 	}
 /*{+END}*/
-#next_but {
+#next-but {
 	float: left;
 	padding: 5px 0 0 5px;
 }
-#pause_but, #pre_but, #next_but, #time_line {
+#pause-but, #pre-but, #next-but, #time-line {
 	cursor: pointer;
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
 
-#next_but, #pre_but, #pause_but, #timer_inner:hover {
+#next-but, #pre-but, #pause-but, #timer-inner:hover {
 	opacity: 1.0;
 }
 
-#next_but:hover, #pre_but:hover, #pause_but:hover, #pause_but.paused, #timer_inner {
+#next-but:hover, #pre-but:hover, #pause-but:hover, #pause-but.paused, #timer-inner {
 	opacity: 0.7;
 }
 
-.attitude_ecommerce_positive {
+.attitude-ecommerce-positive {
 	background: url('{$IMG;,realtime_rain/sun-effect}') no-repeat 0 0;
 	width: 246px;
 	height: 246px;
 	padding: 22px;
 	margin: -22px;
 }
-.attitude_join_positive, .attitude_Lorem_positive {
+.attitude-join-positive, .attitude-Lorem-positive {
 	background: url('{$IMG;,realtime_rain/halo-effect}') no-repeat 0 0;
 	width: 246px;
 	height: 246px;
 	padding: 20px;
 	margin: -20px;
 }
-.attitude_security_negative {
+.attitude-security-negative {
 	background: url('{$IMG;,realtime_rain/horns-effect}') no-repeat 0 0;
 	width: 246px;
 	height: 246px;
 	padding: 12px;
 	margin: -12px;
 }
-.attitude_point_charges_negative {
+.attitude-point-charges-negative {
 	background: url('{$IMG;,realtime_rain/shadow-effect}') no-repeat 0 0;
 	width: 246px;
 	height: 246px;
@@ -258,7 +258,7 @@
 	margin: -17px;
 }
 
-.activated_quote_button {
+.activated-quote-button {
 	opacity: 0.4;
 }
 
@@ -269,11 +269,11 @@
 	position: relative;
 	margin: 10px;
 }
-.bubble .avatar_icon {
+.bubble .avatar-icon {
 	width: 59px;
 	height: 59px;
 }
-.bubble .avatar_icon img {
+.bubble .avatar-icon img {
 	padding: 19px 17px;
 	max-width: 25px;
 	max-height: 25px;
@@ -286,18 +286,18 @@
 	font-size: 1.15em;
 	border-bottom: 0;
 }
-.bubble .email_icon {
+.bubble .email-icon {
 	height: 39px;
 	float: right;
 	text-align: right;
 	padding: 14px 35px 0 0;
 	font-size: 0.75em;
 }
-.bubble .email_icon a {
+.bubble .email-icon a {
 	color: {$GET,bubble_link_inverted};
 	text-decoration: none;
 }
-.bubble .email_icon a:hover {
+.bubble .email-icon a:hover {
 	color: {$GET,bubble_hover_link_inverted};
 	text-decoration: none;
 }
@@ -319,111 +319,111 @@
 	text-decoration: none;
 }
 
-.bubble_post {
+.bubble-post {
 	background: url('{$IMG;,realtime_rain/post-bubble}') no-repeat;
 }
-.bubble_post .avatar_icon {
+.bubble-post .avatar-icon {
 	background: url('{$IMG;,realtime_rain/post-avatar}') no-repeat;
 }
 
-.bubble_news {
+.bubble-news {
 	background: url('{$IMG;,realtime_rain/post-bubble}') no-repeat;
 }
-.bubble_news .avatar_icon {
+.bubble-news .avatar-icon {
 	background: url('{$IMG;,realtime_rain/post-avatar}') no-repeat;
 }
 
-.bubble_recommend {
+.bubble-recommend {
 	background: url('{$IMG;,realtime_rain/post-bubble}') no-repeat;
 }
-.bubble_recommend .avatar_icon {
+.bubble-recommend .avatar-icon {
 	background: url('{$IMG;,realtime_rain/post-avatar}') no-repeat;
 }
 
-.bubble_polls {
+.bubble-polls {
 	background: url('{$IMG;,realtime_rain/post-bubble}') no-repeat;
 }
-.bubble_polls .avatar_icon {
+.bubble-polls .avatar-icon {
 	background: url('{$IMG;,realtime_rain/post-avatar}') no-repeat;
 }
 
-.bubble_ecommerce {
+.bubble-ecommerce {
 	background: url('{$IMG;,realtime_rain/ecommerce-bubble}') no-repeat;
 }
-.bubble_ecommerce .avatar_icon {
+.bubble-ecommerce .avatar-icon {
 	background: url('{$IMG;,realtime_rain/ecommerce-avatar}') no-repeat;
 }
 
-.bubble_actionlog {
+.bubble-actionlog {
 	background: url('{$IMG;,realtime_rain/actionlog-bubble}') no-repeat;
 }
-.bubble_actionlog .avatar_icon {
+.bubble-actionlog .avatar-icon {
 	background: url('{$IMG;,realtime_rain/actionlog-avatar}') no-repeat;
 }
 
-.bubble_security {
+.bubble-security {
 	background: url('{$IMG;,realtime_rain/security-bubble}') no-repeat;
 }
-.bubble_security .avatar_icon {
+.bubble-security .avatar-icon {
 	background: url('{$IMG;,realtime_rain/security-avatar}') no-repeat;
 }
 
-.bubble_chat {
+.bubble-chat {
 	background: url('{$IMG;,realtime_rain/chat-bubble}') no-repeat;
 }
-.bubble_chat .avatar_icon {
+.bubble-chat .avatar-icon {
 	background: url('{$IMG;,realtime_rain/chat-avatar}') no-repeat;
 }
 
-.bubble_stats {
+.bubble-stats {
 	background: url('{$IMG;,realtime_rain/stats-bubble}') no-repeat;
 }
-.bubble_stats .avatar_icon {
+.bubble-stats .avatar-icon {
 	background: url('{$IMG;,realtime_rain/stats-avatar}') no-repeat;
 }
 
-.bubble_join, .bubble_Lorem {
+.bubble-join, .bubble-lorem {
 	background: url('{$IMG;,realtime_rain/join-bubble}') no-repeat;
 }
-.bubble_join .avatar_icon, .bubble_Lorem .avatar_icon {
+.bubble-join .avatar-icon, .bubble-lorem .avatar-icon {
 	background: url('{$IMG;,realtime_rain/join-avatar}') no-repeat;
 }
 
-.bubble_calendar {
+.bubble-calendar {
 	background: url('{$IMG;,realtime_rain/calendar-bubble}') no-repeat;
 }
-.bubble_calendar .avatar_icon {
+.bubble-calendar .avatar-icon {
 	background: url('{$IMG;,realtime_rain/calendar-avatar}') no-repeat;
 }
 
-.bubble_search {
+.bubble-search {
 	background: url('{$IMG;,realtime_rain/search-bubble}') no-repeat;
 }
-.bubble_search .avatar_icon {
+.bubble-search .avatar-icon {
 	background: url('{$IMG;,realtime_rain/search-avatar}') no-repeat;
 }
 
-.bubble_point_charges {
+.bubble-point-charges {
 	background: url('{$IMG;,realtime_rain/point_charges-bubble}') no-repeat;
 }
-.bubble_point_charges .avatar_icon {
+.bubble-point-charges .avatar-icon {
 	background: url('{$IMG;,realtime_rain/point_charges-avatar}') no-repeat;
 }
 
-.bubble_banners {
+.bubble-banners {
 	background: url('{$IMG;,realtime_rain/banners-bubble}') no-repeat;
 }
-.bubble_banners .avatar_icon {
+.bubble-banners .avatar-icon {
 	background: url('{$IMG;,realtime_rain/banners-avatar}') no-repeat;
 }
 
-.bubble_point_gifts {
+.bubble-point-gifts {
 	background: url('{$IMG;,realtime_rain/point_gifts-bubble}') no-repeat;
 }
-.bubble_point_gifts .avatar_icon {
+.bubble-point-gifts .avatar-icon {
 	background: url('{$IMG;,realtime_rain/point_gifts-avatar}') no-repeat;
 }
 
-.bubble_wrap {
+.bubble-wrap {
 	opacity: 0.9;
 }

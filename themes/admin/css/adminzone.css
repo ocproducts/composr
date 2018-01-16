@@ -20,7 +20,7 @@ header {
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.admin_navigation {
+	.admin-navigation {
 		border-top: 1px solid {$GET,standard_border};
 		border-bottom: 1px solid {$GET,standard_border};
 		background-color: {$GET,lgrad};
@@ -62,18 +62,18 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 	}
 /*{+END}*/
 
-.global-messages .box___message {
+.global-messages .box---message {
 	background-image: none !important;
 	background-color: #FFF !important;
 	border-color: #bdcde6 !important;
 }
 
-.box___message .global-message {
+.box---message .global-message {
 	margin-top: 0;
 	margin-bottom: 0.75em;
 }
 
-.box___message .global-message>span, .box___message .global-message>p {
+.box---message .global-message>span, .box---message .global-message>p {
 	padding-top: 0;
 }
 
@@ -113,7 +113,7 @@ footer .global-minilinks {
 
 /* Admin Zone styles */
 
-.menu_help_section {
+.menu-help-section {
 	max-width: none !important;
 	border-bottom-left-radius: 10px;
 }
@@ -139,23 +139,23 @@ footer .global-minilinks {
 =========================
 */
 
-.revisions_filter_item {
+.revisions-filter-item {
 	margin: 0 5% 0.5em 0;
 	float: left;
 	min-height: 4em;
 }
 /*{+START,CSS_MODE,desktop}*/
-	.revisions_filter_item {
+	.revisions-filter-item {
 		width: 15%;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.revisions_filter_item {
+	.revisions-filter-item {
 		width: 40%;
 	}
 /*{+END}*/
 
-.revisions_filter_item_button {
+.revisions-filter-item-button {
 	margin: 0.75em 0.5em 0 0;
 	float: right;
 }

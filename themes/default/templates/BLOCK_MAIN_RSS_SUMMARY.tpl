@@ -1,10 +1,10 @@
-<div class="float-surrounder rss_summary">
+<div class="float-surrounder rss-summary">
 	<h3><a href="{FULL_URL_RAW*}">{$TRUNCATE_LEFT,{NEWS_TITLE`},70,1,1}</a></h3>
 
 	{+START,IF_EMPTY,{CATEGORY_IMG}}
 		{+START,IF_NON_EMPTY,{AUTHOR}}
 			<div class="newscat-img newscat-img-author">
-				<div class="news_by">{AUTHOR}</div>
+				<div class="news-by">{AUTHOR}</div>
 			</div>
 		{+END}
 	{+END}
@@ -25,7 +25,7 @@
 	{+END}
 
 	{+START,IF_NON_EMPTY,{NEWS}}
-		{+START,IF,{$NOT,{$IN_STR,{NEWS},<p>}}}<p class="news_summary_p">{+END}{NEWS}{+START,IF,{$NOT,{$IN_STR,{NEWS},<p>}}}</p>{+END}
+		{+START,IF,{$NOT,{$IN_STR,{NEWS},<p>}}}<p class="news-summary-p">{+END}{NEWS}{+START,IF,{$NOT,{$IN_STR,{NEWS},<p>}}}</p>{+END}
 	{+END}
 
 	{+START,COMMENT}

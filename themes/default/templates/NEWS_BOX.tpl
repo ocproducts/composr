@@ -71,7 +71,7 @@
 
 	<div>
 		{+START,IF_NON_EMPTY,{NEWS}}
-			{+START,IF,{$AND,{$NOT,{$IN_STR,{NEWS},<p><div>}},{$NOT,{$IN_STR,{NEWS},<h}}}}<p class="news_summary_p">{+END}
+			{+START,IF,{$AND,{$NOT,{$IN_STR,{NEWS},<p><div>}},{$NOT,{$IN_STR,{NEWS},<h}}}}<p class="news-summary-p">{+END}
 			{+START,IF,{TRUNCATE}}{$TRUNCATE_LEFT,{NEWS},400,0,1,0,0.4}{+END}
 			{$SET,large_news_posts,{$NOT,{TRUNCATE}}}
 			{+START,IF,{$NOT,{TRUNCATE}}}{NEWS}{+END}

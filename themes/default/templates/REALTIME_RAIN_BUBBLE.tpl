@@ -3,16 +3,16 @@
 <div class="webstandards-checker-off" data-tpl="realtimeRainBubble" data-tpl-params="{+START,PARAMS_JSON,TICKER_TEXT,RELATIVE_TIMESTAMP,GROUP_ID,SPECIAL_ICON,MULTIPLICITY}{_*}{+END}">
 	{$SET,RAND_ID,bubble_id_{$RAND}}
 
-	<div id="{$GET,RAND_ID}" class="bubble_wrap attitude_{TYPE%}{$?,{IS_POSITIVE},_positive,}{$?,{IS_NEGATIVE},_negative,}">
-		<div id="{$GET,RAND_ID}_main" class="bubble bubble_{TYPE%}">
+	<div id="{$GET,RAND_ID}" class="bubble-wrap attitude-{$REPLACE%,_,-,{TYPE}}{$?,{IS_POSITIVE},-positive,}{$?,{IS_NEGATIVE},-negative,}">
+		<div id="{$GET,RAND_ID}_main" class="bubble bubble-{$LCASE%,{$REPLACE,_,-,{TYPE}}}">
 			<div class="float-surrounder">
-				<div class="email_icon">
+				<div class="email-icon">
 					{+START,IF_PASSED,SPECIAL_ICON}
 						<img src="{$IMG*,realtime_rain/{SPECIAL_ICON}}" alt="{SPECIAL_TOOLTIP*}" title="{SPECIAL_TOOLTIP*}" />
 					{+END}
 				</div>
 
-				<div class="avatar_icon">
+				<div class="avatar-icon">
 					{+START,IF_NON_EMPTY,{IMAGE}}
 						<img src="{$ENSURE_PROTOCOL_SUITABILITY*,{IMAGE}}" alt="" />
 					{+END}

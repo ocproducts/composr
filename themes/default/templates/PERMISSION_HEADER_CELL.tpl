@@ -1,4 +1,4 @@
-<th class="permission_header_cell">
+<th class="permission-header-cell">
 	{+START,IF,{$EQ,{GROUP},+/-}}
 		{GROUP*}
 	{+END}

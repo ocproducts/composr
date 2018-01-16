@@ -5,18 +5,18 @@
 
 /* Activities feed */
 
-#activities_feed .nothing-here {
+#activities-feed .nothing-here {
 	margin: 0;
 }
 
-.activities_holder {
+.activities-holder {
 	padding-left: 0;
 	margin-left: 0;
 	display: block;
 	list-style: none;
 }
 
-.activities_box {
+.activities-box {
 	overflow: hidden;
 	height: auto;
 	list-style: none;
@@ -28,24 +28,24 @@
 	vertical-align: top;
 }
 
-.activities_avatar_box {
+.activities-avatar-box {
 	width: 40px;
 	float: left;
 	margin-right: 1em;
 }
 
-.activities_line {
+.activities-line {
 	margin-top: 0;
 	font-size: 0.95em;
 }
 
-form.activities_remove {
+form.activities-remove {
 	float: right;
 	overflow: hidden;
 	width: 22px;
 }
 
-form.activities_remove .remove_cross {
+form.activities-remove .remove-cross {
 	width: 14px;
 	height: 14px;
 	background: url('{$IMG;,stop12}') transparent no-repeat;
@@ -55,16 +55,16 @@ form.activities_remove .remove_cross {
 	padding: 0;
 }
 
-form.activities_remove .remove_cross:hover {
+form.activities-remove .remove-cross:hover {
 	background: url('{$IMG;,stop12_hover}') transparent no-repeat;
 	cursor: pointer;
 }
 
-form.activities_remove input.remove_cross::-moz-focus-inner {
+form.activities-remove input.remove-cross::-moz-focus-inner {
 	border: 0;
 }
 
-.activities_content {
+.activities-content {
 	width: auto;
 	float: none;
 	padding: 0.5em 0.5em 0.5em 45px;
@@ -72,7 +72,7 @@ form.activities_remove input.remove_cross::-moz-focus-inner {
 	word-wrap: break-word;
 }
 
-.activities_line .activity_name {
+.activities-line .activity-name {
 	float: left;
 	padding-right: 2em;
 	margin-top: 10px;
@@ -80,37 +80,37 @@ form.activities_remove input.remove_cross::-moz-focus-inner {
 	font-weight: bold;
 }
 
-.activities_line .activity_name a, .activities_line .activity_name a[href*=".php"] {
+.activities-line .activity-name a, .activities-line .activity-name a[href*=".php"] {
 	text-decoration: none;
 }
 
-.activities_line .activity_time {
+.activities-line .activity-time {
 	float: right;
 	font-size: 0.80em;
 	opacity: 0.8;
 }
 
-.activities_line .activity_name, .activities_line .activity_time {
+.activities-line .activity-name, .activities-line .activity-time {
 	margin: 5px 1em 0 0;
 	text-decoration: none;
 }
 
-.activities_content__remove_success {
+.activities-content--remove-success {
 	color: {$GET,green_highlight_text};
 }
 
-.activities_content__remove_failure {
+.activities-content--remove-failure {
 	color: {$GET,red_highlight_text};
 }
 
 /* Status posting */
 
-.status_box_outer {
+.status-box-outer {
 	margin: 0 1em 0 0;
 	margin-right: 14em;
 }
 
-.status_box {
+.status-box {
 	width: 100%;
 	overflow: auto;
 	height: 2.3em;
@@ -118,14 +118,14 @@ form.activities_remove input.remove_cross::-moz-focus-inner {
 	box-sizing: content-box;
 }
 
-.status_controls {
+.status-controls {
 	float: right;
 	text-align: right;
 	width: 14em;
 	margin-top: -2px;
 }
 
-#activities_update_notify {
+#activities-update-notify {
 	white-space: normal;
 	font-size: 0.85em;
 	margin: 0.25em 0 0 0;

@@ -9,147 +9,147 @@ This is a simple and clean equivalent to the main traditional-UI tabs implementa
 It makes more assumptions than the traditional tabs, like all the tabs will fit on one row.
 */
 
-.modern_tabs {
+.modern-tabs {
 	border: 1px solid {$GET,dark_border};
 	background: {$GET,WB};
 }
 
-.modern_tab_headers {
+.modern-tab-headers {
 	overflow: hidden;
 	background: {$GET,box_title_background};
 }
 
-.modern_tab_headers>div {
+.modern-tab-headers>div {
 	color: {$GET,WB};
 	float: left;
 	overflow: hidden;
 }
 
 /*{+START,CSS_MODE,mobile}*/
-	.modern_tab_headers>div {
+	.modern-tab-headers>div {
 		width: 50%;
 	}
 /*{+END}*/
 
-.modern_tab_headers>div:last-child {
+.modern-tab-headers>div:last-child {
 	float: none;
 }
 
-.modern_tab_headers>div.tab-active {
+.modern-tab-headers>div.tab-active {
 	background: {$GET,WB};
 	color: {$GET,seed};
 }
 
-.modern_tab_headers>div * {
+.modern-tab-headers>div * {
 	vertical-align: middle;
 }
 
-.modern_tab_headers>div>a {
+.modern-tab-headers>div>a {
 	display: inline-block;
 	padding: 1em;
 	cursor: pointer;
 }
 /*{+START,CSS_MODE,desktop}*/
-	.modern_tab_headers>div>a {
+	.modern-tab-headers>div>a {
 		border-right: 1px solid {$GET,WB};
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.modern_tab_headers>div>a {
+	.modern-tab-headers>div>a {
 		display: block;
 	}
 /*{+END}*/
 
-.modern_tab_headers>div:last-child>a {
+.modern-tab-headers>div:last-child>a {
 	border-right: 0;
 }
 
 /*{+START,CSS_MODE,desktop}*/
 	/*
 	Enable instead of the below selector if you would rather icon goes above label for short widths. In this case you also need to get equal header widths via  style="width: { $DIV_FLOAT*,100,{ TABS}}%" on the header div.
-	.modern_tab_headers>div>a>span {
+	.modern-tab-headers>div>a>span {
 		min-width: 5em; / * To force uniform wrapping if not enough space * /
 		padding: 0.3em 0; / * Will only take effect if wrapped * /
 	}*/
 
-	.modern_tab_headers>div>a>span {
+	.modern-tab-headers>div>a>span {
 		min-width: 47px; /* Space things out - you may want to adjust this based on however many tabs you have */
 		display: inline-block;
 		padding-left: 3px;
 	}
 /*{+END}*/
 
-.modern_tab_headers>div>a, .modern_tab_headers>div>a:visited, .modern_tab_headers>div>a:active, .modern_tab_headers>div>a:hover {
+.modern-tab-headers>div>a, .modern-tab-headers>div>a:visited, .modern-tab-headers>div>a:active, .modern-tab-headers>div>a:hover {
 	text-decoration: none;
 	color: inherit;
 }
 
-.modern_tab_bodies {
+.modern-tab-bodies {
 	overflow: hidden;
 }
 /*{+START,CSS_MODE,desktop}*/
-	.modern_tab_bodies {
+	.modern-tab-bodies {
 		padding: 1em 0.5em;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.modern_tab_bodies {
+	.modern-tab-bodies {
 		padding: 3px;
 	}
 /*{+END}*/
 
-.modern_tab_bodies>div {
+.modern-tab-bodies>div {
 }
 
 /* Sub tabs, nested */
 
-.modern_tabs .modern_tabs .modern_tab_headers {
+.modern-tabs .modern-tabs .modern-tab-headers {
 	overflow: hidden;
 	background: {$GET,box_title_background_2};
 }
 
-.modern_tabs .modern_tabs .modern_tab_headers>div>a {
+.modern-tabs .modern-tabs .modern-tab-headers>div>a {
 	padding: 0.5em;
 }
 
 /* Sub tabs, which look entirely different as they go down in an lhs column */
 
-.modern_subtabs {
+.modern-subtabs {
 	border: 0;
 	background: {$GET,area_background} url('{$IMG;,tabs/modern_subtab_header_column}') repeat-y;
 	overflow: hidden;
 }
 
-.modern_subtab_headers {
+.modern-subtab-headers {
 	overflow: hidden;
 	float: left;
 	width: 158px; /* 150px+8px, 150px matches the background size in the tabs/modern_subtab_header_column theme image */
 }
 
-.modern_subtab_headers>div {
+.modern-subtab-headers>div {
 	color: {$GET,WB};
 }
-.modern_subtab_headers>div:last-child {
+.modern-subtab-headers>div:last-child {
 	border-bottom: 0;
 }
 
-.modern_subtab_headers>div.tab-active, .modern_subtab_headers>div:hover {
+.modern-subtab-headers>div.tab-active, .modern-subtab-headers>div:hover {
 	background: url('{$IMG;,1x/tabs/modern_subtab_active}') no-repeat right center;
 }
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.modern_subtab_headers>div.tab-active {
+	.modern-subtab-headers>div.tab-active {
 		background-image: url('{$IMG;,2x/tabs/modern_subtab_active}') !important;
 		background-size: 8px 16px;
 	}
 }
 
-.modern_subtab_headers>div * {
+.modern-subtab-headers>div * {
 	vertical-align: middle;
 	display: inline-block;
 }
 
-.modern_subtab_headers>div>a {
+.modern-subtab-headers>div>a {
 	padding: 1em 0 1em 30px;
 	margin-right: 8px; /* For modern_subtab_active to overlay into */
 	border-bottom: 1px solid {$GET,standard_border};
@@ -159,25 +159,25 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 }
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.modern_subtab_headers>div>a {
+	.modern-subtab-headers>div>a {
 		background-image: url('{$IMG;,2x/tabs/modern_subtab_chevron}') !important;
 		background-size: 9px 9px;
 	}
 }
 
-.modern_subtab_headers>div>a, .modern_subtab_headers>div>a:visited, .modern_subtab_headers>div>a:active, .modern_subtab_headers>div>a:hover {
+.modern-subtab-headers>div>a, .modern-subtab-headers>div>a:visited, .modern-subtab-headers>div>a:active, .modern-subtab-headers>div>a:hover {
 	text-decoration: none;
 	color: inherit;
 }
 
-.modern_subtab_headers>div>a img {
+.modern-subtab-headers>div>a img {
 	display: none; /* No images shown for sub-tabs */
 }
 
-.modern_subtab_bodies {
+.modern-subtab-bodies {
 	overflow: hidden;
 	padding: 1.5em 1em 1.5em 0em;
 }
 
-.modern_subtab_bodies>div {
+.modern-subtab-bodies>div {
 }

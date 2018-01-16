@@ -12,7 +12,7 @@
 
 	<h2>{!EXISTING_THEMES}</h2>
 
-	<div class="autosized-table theme_manage_table wide-table-wrap">
+	<div class="autosized-table theme-manage-table wide-table-wrap">
 		<table class="columned-table wide-table">
 			<thead>
 				<tr>
@@ -25,7 +25,7 @@
 				{$SET,done_one_theme,0}
 				{+START,LOOP,THEMES}
 					<tr class="{+START,IF,{$GET,done_one_theme}}thick-border{+END}{+START,IF,{IS_MAIN_THEME}} active-item{+END}">
-						<td role="note" class="theme_details">
+						<td role="note" class="theme-details">
 							{+START,IF,{$DESKTOP}}
 								<div class="block-desktop">
 									{+START,SET,TOOLTIP}
@@ -54,7 +54,7 @@
 							</dl>
 						</td>
 
-						<td class="manage_theme_export">
+						<td class="manage-theme-export">
 							{+START,IF,{$NEQ,{NAME},default}}
 								<p><img alt="" src="{$IMG*,icons/24x24/menu/_generic_admin/export}" srcset="{$IMG*,icons/48x48/menu/_generic_admin/export} 2x" /> <a data-cms-confirm-click="{!SWITCH_MODULE_WARNING*}" href="{$PAGE_LINK*,adminzone:admin_addons:_addon_export:exp=theme:theme={NAME}}">{!addons:EXPORT_THEME}</a></p>
 							{+END}
@@ -81,7 +81,7 @@
 					</tr>
 
 					<tr>
-						<td colspan="3" class="manage_theme_theme_usage">
+						<td colspan="3" class="manage-theme-theme-usage">
 							{+START,IF_NON_EMPTY,{THEME_USAGE}}{THEME_USAGE*}{+END}
 							{+START,IF,{$EQ,{NAME},default}}
 								<p>{!DEFAULT_THEME_INHERITANCE}</p>
@@ -94,7 +94,7 @@
 			</tbody>
 		</table>
 
-		<div class="theme_manage_footnote">
+		<div class="theme-manage-footnote">
 			{+START,IF,{$AND,{$HAS_FORUM,1},{HAS_FREE_CHOICES}}}
 				<p><sup>*</sup> {!MEMBERS_MAY_ALTER_THEME}</p>
 			{+END}

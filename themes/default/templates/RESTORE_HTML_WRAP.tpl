@@ -12,12 +12,12 @@
 		<title>Backup restorer</title>
 	</head>
 
-	<body id="installer_body" class="website-body">
-		<div class="installer_main">
+	<body id="installer-body" class="website-body">
+		<div class="installer-main">
 			<img alt="Composr" src="{$BASE_URL*}/themes/default/images/EN/logo/standalone_logo.png" />
 		</div>
 
-		<div class="installer_main_inner">
+		<div class="installer-main-inner">
 			<div class="box box___restore_html_wrap"><div class="box-inner">
 				{+START,IF_NON_PASSED_OR_FALSE,ERROR}
 					<h1>Restoring the website</h1>

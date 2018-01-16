@@ -21,7 +21,7 @@
 		<div class="wide-table-wrap really_long_table_wrap"><table class="autosized-table columned-table results-table wide-table responsive-table">
 			<thead>
 				<tr>
-					<th class="translate_line_first">
+					<th class="translate-line-first">
 						{!NAME}/{!DESCRIPTION}
 					</th>
 					<th>

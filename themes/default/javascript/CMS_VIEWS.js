@@ -1589,12 +1589,12 @@
         toggleHelperPanel: function () {
             var show = $dom.notDisplayed(this.contentsEl),
                 panelRight = $dom.$('#panel-right'),
-                helperPanelContents = $dom.$('#helper_panel_contents'),
-                helperPanelToggle = $dom.$('#helper_panel_toggle');
+                helperPanelContents = $dom.$('#helper-panel-contents'),
+                helperPanelToggle = $dom.$('#helper-panel-toggle');
 
             if (show) {
-                panelRight.classList.remove('helper_panel_hidden');
-                panelRight.classList.add('helper_panel_visible');
+                panelRight.classList.remove('helper-panel-hidden');
+                panelRight.classList.add('helper-panel-visible');
                 helperPanelContents.setAttribute('aria-expanded', 'true');
                 $dom.fadeIn(helperPanelContents);
 
@@ -1619,8 +1619,8 @@
             }
 
             function _hideHelperPanel(panelRight, helperPanelContents, helperPanelToggle) {
-                panelRight.classList.remove('helper_panel_visible');
-                panelRight.classList.add('helper_panel_hidden');
+                panelRight.classList.remove('helper-panel-visible');
+                panelRight.classList.add('helper-panel-hidden');
                 helperPanelContents.setAttribute('aria-expanded', 'false');
                 helperPanelContents.style.display = 'none';
                 $cms.setCookie('hide_helper_panel', '1', 100);
@@ -1777,7 +1777,7 @@
                 target.timer = setTimeout(function () {
                     popupMenu(menu + '_dexpand_' + rand, 'below', menu + '_d', true);
                     try {
-                        document.getElementById('search_content').focus();
+                        document.getElementById('search-content').focus();
                     } catch (ignore) {}
                 }, 200);
             }
@@ -1987,7 +1987,7 @@
                 }
             }
         } else {
-            var menuItems = menuElement.querySelectorAll('.non_current'), a;
+            var menuItems = menuElement.querySelectorAll('.non-current'), a;
             for (i = 0; i < menuItems.length; i++) {
                 a = null;
                 for (var j = 0; j < menuItems[i].children.length; j++) {
@@ -2020,7 +2020,7 @@
                     if (Number(possibilities[i].score) !== minScore) {
                         break;
                     }
-                    possibilities[i].element.classList.remove('non_current');
+                    possibilities[i].element.classList.remove('non-current');
                     possibilities[i].element.classList.add('current');
                 }
             }

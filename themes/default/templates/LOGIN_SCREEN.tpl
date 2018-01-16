@@ -4,7 +4,7 @@
 
 	{$SET,login_screen,1}
 
-	<div class="login_page">
+	<div class="login-page">
 		{+START,IF,{$HAS_FORUM,1}}
 			<div class="box box___login_screen"><div class="box-inner">
 				{!LOGIN_TEXT,<a href="{JOIN_URL*}"><strong>{!JOIN_HERE}</strong></a>}
@@ -18,7 +18,7 @@
 				{PASSION}
 
 				<div class="float-surrounder">
-					<table class="map-table autosized-table login_page_form">
+					<table class="map-table autosized-table login-page-form">
 						<tbody>
 							<tr>
 								<th class="de-th"><label for="login_username">{$LOGIN_LABEL}:</label></th>
@@ -36,7 +36,7 @@
 					</table>
 
 					{+START,IF,{$CONFIG_OPTION,password_cookies}}
-						<div class="login_page_options">
+						<div class="login-page-options">
 							<p>
 								<label for="remember">
 									<input id="remember" type="checkbox" value="1" name="remember"{+START,IF,{$OR,{$EQ,{$_POST,remember},1},{$CONFIG_OPTION,remember_me_by_default}}} checked="checked"{+END} class="{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}}js-click-checkbox-remember-me-confirm{+END}" />
@@ -65,7 +65,7 @@
 		</form>
 
 		{+START,IF_NON_EMPTY,{EXTRA}}
-			<p class="login_note">
+			<p class="login-note">
 				{EXTRA}
 			</p>
 		{+END}

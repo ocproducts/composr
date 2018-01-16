@@ -8,8 +8,8 @@
 
 		{RESULTS_TABLE}
 
-		<div class="cart_buttons">
-			<div class="buttons-group cart_update_buttons" itemprop="significantLinks">
+		<div class="cart-buttons">
+			<div class="buttons-group cart-update-buttons" itemprop="significantLinks">
 				{$,Put first, so it associates with the enter key}
 				{+START,IF_NON_EMPTY,{TYPE_CODES}}
 					<input id="cart_update_button" class="buttons--cart-update button-screen button-faded js-click-btn-cart-update" type="submit" name="update" title="{!UPDATE_CART}" value="{!_UPDATE_CART}" />
@@ -20,23 +20,23 @@
 				{+END}
 			</div>
 
-			<div class="buttons-group cart_continue_button" itemprop="significantLinks">
+			<div class="buttons-group cart-continue-button" itemprop="significantLinks">
 				<input type="hidden" name="type_codes" id="type_codes" value="{TYPE_CODES*}" />
 
 				{+START,IF_NON_EMPTY,{CONTINUE_SHOPPING_URL}}
-					<a class="button-screen-item menu__rich_content__catalogues__products" href="{CONTINUE_SHOPPING_URL*}"><span>{!CONTINUE_SHOPPING}</span></a>
+					<a class="button-screen-item menu--rich-content--catalogues--products" href="{CONTINUE_SHOPPING_URL*}"><span>{!CONTINUE_SHOPPING}</span></a>
 				{+END}
 			</div>
 		</div>
 	</form>
 
 	{+START,IF_NON_EMPTY,{TYPE_CODES}}
-		<div class="cart_payment_line">
+		<div class="cart-payment-line">
 			{!SHIPPING}:
 			<span class="tax">{$CURRENCY,{$ADD,{TOTAL_SHIPPING_COST},{TOTAL_SHIPPING_TAX}},{CURRENCY},{$?,{$CONFIG_OPTION,currency_auto},{$CURRENCY_USER},{$CURRENCY}}}</span>
 		</div>
 
-		<div class="cart_payment_summary">
+		<div class="cart-payment-summary">
 			{!GRAND_TOTAL}:
 			<span class="price">{$CURRENCY,{GRAND_TOTAL},{CURRENCY},{$?,{$CONFIG_OPTION,currency_auto},{$CURRENCY_USER},{$CURRENCY}}}</span>
 		</div>

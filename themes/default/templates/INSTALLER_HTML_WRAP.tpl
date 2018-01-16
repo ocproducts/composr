@@ -17,12 +17,12 @@
 		{+START,INCLUDE,HTML_HEAD_POLYFILLS}{+END}
 	</head>
 
-	<body id="installer_body" class="website-body" data-tpl="installerHtmlWrap" data-tpl-params="{+START,PARAMS_JSON,DEFAULT_FORUM}{_*}{+END}">
-		<div class="installer_main">
+	<body id="installer-body" class="website-body" data-tpl="installerHtmlWrap" data-tpl-params="{+START,PARAMS_JSON,DEFAULT_FORUM}{_*}{+END}">
+		<div class="installer-main">
 			<img alt="Composr" src="{LOGO_URL*}" width="550" height="115" />
 		</div>
 
-		<div class="installer_main_inner">
+		<div class="installer-main-inner">
 			<div class="box box___installer_html_wrap">
 				<div class="box-inner">
 					<h1>{!INSTALLER,Composr}: {!INSTALLER_STEP,{STEP},10}</h1>
@@ -36,7 +36,7 @@
 			</div>
 		</div>
 
-		<div class="installer_version">
+		<div class="installer-version">
 			<p>
 				{!VERSION_NUM,{VERSION}}
 				<br />

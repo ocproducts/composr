@@ -4,49 +4,49 @@
 */
 
 /*{+START,CSS_MODE,desktop}*/
-	.helper_panel_visible ~ .global-middle {
+	.helper-panel-visible ~ .global-middle {
 		margin-right: 265px !important;
 	}
-	.helper_panel_hidden ~ .global-middle {
+	.helper-panel-hidden ~ .global-middle {
 		margin-right: 16px !important;
 	}
 /*{+END}*/
 
-.global_helper_panel {
+.global-helper-panel {
 	position: relative;
 }
 /*{+START,CSS_MODE,desktop}*/
-	.global_helper_panel {
+	.global-helper-panel {
 		padding: 1em;
 		min-height: 450px;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.global_helper_panel {
+	.global-helper-panel {
 		padding: 0 1em;
 		clear: both;
 	}
 /*{+END}*/
 
-.helper_panel_visible {
+.helper-panel-visible {
 	transition: width 0.2s linear !important;
 }
 /*{+START,CSS_MODE,desktop}*/
-	.helper_panel_visible {
+	.helper-panel-visible {
 		width: 265px;
 	}
-	.helper_panel_hidden {
+	.helper-panel-hidden {
 		width: 30px !important;
 	}
 
-	.page-running-admin-phpinfo .helper_panel {
+	.page-running-admin-phpinfo .helper-panel {
 		position: absolute;
 		right: 0;
 		margin-top: 3em;
 	}
 /*{+END}*/
 
-.global_helper_panel_wrap {
+.global-helper-panel-wrap {
 	border: 1px solid {$GET,pale_border};
 	background-color: {$GET,area_3_background};
 	overflow: hidden;
@@ -57,60 +57,60 @@
 	border-bottom-left-radius: 15px;
 }
 /*{+START,CSS_MODE,mobile}*/
-	.global_helper_panel_wrap {
+	.global-helper-panel-wrap {
 		border-top-right-radius: 15px;
 		border-bottom-right-radius: 15px;
 		margin-top: 3em;
 	}
 /*{+END}*/
 
-#helper_panel_toggle {
+#helper-panel-toggle {
 	outline: 0;
 	float: right;
 	text-align: right;
 }
 /*{+START,CSS_MODE,desktop}*/
-	#helper_panel_toggle {
+	#helper-panel-toggle {
 		margin: 12px 6px;
 	}
 
-	#helper_panel_toggle img {
+	#helper-panel-toggle img {
 		vertical-align: middle;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	#helper_panel_toggle {
+	#helper-panel-toggle {
 		margin: 15px 6px;
 		width: 40px;
 		height: 20px;
 		background-position: 20px 0 !important;
 	}
-	#helper_panel_toggle img {
+	#helper-panel-toggle img {
 		display: none;
 	}
-	.helper_panel_hidden #helper_panel_toggle {
+	.helper-panel-hidden #helper-panel-toggle {
 		background: url('{$IMG;,1x/trays/expand}') no-repeat;
 	}
-	.helper_panel_visible #helper_panel_toggle {
+	.helper-panel-visible #helper-panel-toggle {
 		background: url('{$IMG;,1x/trays/contract}') no-repeat;
 	}
 /*{+END}*/
 
 /*{+START,CSS_MODE,mobile}*/
-	.global_helper_panel_wrap h2 {
+	.global-helper-panel-wrap h2 {
 		border: 0 !important;
 		padding: 0 !important;
 	}
 /*{+END}*/
 
-.global-side-panel .global_helper_panel .box {
+.global-side-panel .global-helper-panel .box {
 	font-size: 1em;
 }
 
-.global_helper_panel_text {
+.global-helper-panel-text {
 	z-index: 4;
 	position: relative;
 }
 
-.global_helper_panel_text_over {
+.global-helper-panel-text-over {
 }

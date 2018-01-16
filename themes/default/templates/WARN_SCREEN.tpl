@@ -9,15 +9,15 @@
 				{TEXT*}
 			</div></div>
 
-			<div class="ssm_warn expanded_advice">
+			<div class="ssm-warn expanded-advice">
 				<h2>Expanded advice</h2>
 
 				{WEBSERVICE_RESULT}
 			</div>
 		{+END}
 		{+START,IF_NON_PASSED,WEBSERVICE_RESULT}
-			<div class="site_special_message ssm_warn" role="alert">
-				<div class="site_special_message_inner">
+			<div class="site-special-message ssm-warn" role="alert">
+				<div class="site-special-message-inner">
 					<div class="box box___warn_screen"><div class="box-inner">
 						{TEXT*}
 					</div></div>

@@ -2,8 +2,8 @@
 
 <p>{!INTRO_GENERATE_PAGE_SITEMAP}</p>
 
-<div class="generate_page_sitemap_screen">
-	<div class="page_structure_wrap">
+<div class="generate-page-sitemap-screen">
+	<div class="page-structure-wrap">
 		{PAGE_STRUCTURE}
 	</div>
 

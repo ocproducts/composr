@@ -1,5 +1,5 @@
-<div class="long_warning">
-	<p class="installer_warning">
+<div class="long-warning">
+	<p class="installer-warning">
 		{MESSAGE}
 	</p>
 	<ul>

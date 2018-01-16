@@ -1,7 +1,7 @@
 {$REQUIRE_JAVASCRIPT,core_menus}
 
-<div class="menu_editor_branch" id="branch_wrap_{I*}" data-tpl="menuEditorBranchWrap" data-tpl-params="{+START,PARAMS_JSON,CLICKABLE_SECTIONS,BRANCH_TYPE,I}{_*}{+END}">
-	<div class="menu_editor_branch_inner" id="branch_{I*}">
+<div class="menu-editor-branch" id="branch_wrap_{I*}" data-tpl="menuEditorBranchWrap" data-tpl-params="{+START,PARAMS_JSON,CLICKABLE_SECTIONS,BRANCH_TYPE,I}{_*}{+END}">
+	<div class="menu-editor-branch-inner" id="branch_{I*}">
 		<label id="label_caption_{I*}" for="caption_{I*}">{!CAPTION}: </label>
 		<input maxlength="255" class="js-focus-make-caption-field-selected js-dblclick-scroll-to-heading"type="text" value="{CAPTION*}" id="caption_{I*}" name="caption_{I*}" />
 
@@ -29,8 +29,8 @@
 		<input class="menu---generic-admin--delete button-micro horiz-field-sep js-click-delete-menu-branch" value="{!DELETE}" type="button" id="del_{I*}" name="del_{I*}" />
 	</div>
 
-	<div class="menu_editor_branch_indent" id="branch_{I*}_follow_1" style="{DISPLAY*}">
+	<div class="menu-editor-branch-indent" id="branch_{I*}_follow_1" style="{DISPLAY*}">
 		{BRANCH}
 	</div>
-	<div class="menu_editor_branch_indent" id="branch_{I*}_follow_2" style="{DISPLAY*}"></div>
+	<div class="menu-editor-branch-indent" id="branch_{I*}_follow_2" style="{DISPLAY*}"></div>
 </div>

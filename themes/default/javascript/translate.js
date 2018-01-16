@@ -22,7 +22,7 @@
 
             var element = document.getElementById('rexp_' + id);
             if (element.style.display !== 'none') {
-                $dom.html('#exp_' + id, '<iframe src="{$BASE_URL_NOHTTP*;}/data/empty.html" id="iframe_' + id + '" name="iframe_' + id + '" class="translate_iframe">{!IGNORE^}</iframe>');
+                $dom.html('#exp_' + id, '<iframe src="{$BASE_URL_NOHTTP*;}/data/empty.html" id="iframe_' + id + '" name="iframe_' + id + '" class="translate-iframe">{!IGNORE^}</iframe>');
                 var form = document.getElementById('hack_form');
                 form.setAttribute('target', 'iframe_' + id);
                 var inputText = document.getElementById('hack_input');

@@ -1,1 +1,1 @@
-<span class="webstandards_attribute">
+<span class="webstandards-attribute">

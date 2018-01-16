@@ -15,7 +15,7 @@
 				{$REQUIRE_CSS,widget_select2}
 				{$REQUIRE_JAVASCRIPT,jquery}
 				{$REQUIRE_JAVASCRIPT,select2}
-				<div class="revisions_filter_item">
+				<div class="revisions-filter-item">
 					<label class="lonely-label" for="resource_types">{!TYPE}:</label>
 					<select multiple="multiple" name="resource_types" id="resource_types" data-cms-select2="{dropdownAutoWidth: true}">
 						{+START,LOOP,RESOURCE_TYPES}
@@ -25,22 +25,22 @@
 				</div>
 
 				{$REQUIRE_JAVASCRIPT,ajax_people_lists}
-				<div class="revisions_filter_item">
+				<div class="revisions-filter-item">
 					<label class="lonely-label" for="username">{!USERNAME}:</label>
 					<input class="js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" name="username" id="username" value="{$_GET*,username}" />
 				</div>
 
-				<div class="revisions_filter_item">
+				<div class="revisions-filter-item">
 					<label class="lonely-label" for="resource_id">{!IDENTIFIER} <span class="associated-details">({!ADVANCED})</span>:</label>
 					<input type="text" name="resource_id" id="resource_id" value="{$_GET*,resource_id}" />
 				</div>
 
-				<div class="revisions_filter_item">
+				<div class="revisions-filter-item">
 					<label class="lonely-label" for="category_id">{!CATEGORY} <span class="associated-details">({!ADVANCED})</span>:</label>
 					<input type="text" name="category_id" id="category_id" value="{$_GET*,category_id}" />
 				</div>
 
-				<div class="revisions_filter_item_button">
+				<div class="revisions-filter-item-button">
 					<input data-disable-on-click="1" accesskey="u" class="button-screen-item buttons--filter" type="submit" value="{!FILTER}" />
 				</div>
 			</form>

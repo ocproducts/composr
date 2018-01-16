@@ -8,15 +8,15 @@
 	<!-- Member: #{MEMBER_ID%} -->
 
 	{+START,IF,{$GT,{TABS},1}}
-		<div class="modern_tabs">
-			<div class="modern_tab_headers" role="tablist">
+		<div class="modern-tabs">
+			<div class="modern-tab-headers" role="tablist">
 				{+START,LOOP,TABS}
 					<div id="t_{TAB_CODE*}"{+START,IF,{TAB_FIRST}} class="tab-active"{+END}>
 						<a aria-controls="g_{TAB_CODE*}" role="tab" href="#!" class="js-click-select-tab-g" data-vw-tab="{TAB_CODE*}">{+START,IF_NON_EMPTY,{TAB_ICON}}<img alt="" src="{$IMG*,icons/24x24/{TAB_ICON}}" srcset="{$IMG*,icons/48x48/{TAB_ICON}} 2x" /> {+END}<span>{TAB_TITLE*}</span></a>
 					</div>
 				{+END}
 			</div>
-			<div class="modern_tab_bodies">
+			<div class="modern-tab-bodies">
 				{+START,LOOP,TABS}
 					<div aria-labeledby="t_{TAB_CODE*}" role="tabpanel" id="g_{TAB_CODE*}" style="display: {$?,{TAB_FIRST},block,none}">
 						<a id="tab__{TAB_CODE*}"></a>

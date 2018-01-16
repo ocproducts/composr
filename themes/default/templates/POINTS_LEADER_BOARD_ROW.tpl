@@ -6,7 +6,7 @@
 		<a href="{POINTS_URL*}" title="{!POINTS}: {USERNAME*}">{POINTS*}</a>
 	</td>
 	{+START,IF,{HAS_RANK_IMAGES}}
-		<td class="leader_board_rank">
+		<td class="leader-board-rank">
 			{$CNS_RANK_IMAGE,{ID}}
 		</td>
 	{+END}

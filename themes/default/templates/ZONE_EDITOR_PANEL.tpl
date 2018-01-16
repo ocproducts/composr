@@ -7,7 +7,7 @@
 
 	{$,Tab buttons}
 	<div class="float-surrounder">
-		<div class="ze_tabs tabs" role="tablist">
+		<div class="ze-tabs tabs" role="tablist">
 			{+START,IF_PASSED,PREVIEW}
 				<a aria-controls="view-{$GET,IDH}" role="tab" title="{!PREVIEW}: {ID*}" href="#!" id="view_tab_{ID*}" class="tab tab-first tab_selected js-click-select-tab" data-js-tab="view"><img alt="" src="{$IMG*,icons/24x24/tabs/preview}" srcset="{$IMG*,icons/48x48/tabs/preview} 2x" /> <span>{!PREVIEW}</span></a>
 			{+END}
@@ -55,7 +55,7 @@
 		</div>
 				{+END}
 				<div>
-					<textarea rows="50" cols="20" class="{$?,{IS_PANEL},ze_textarea,ze_textarea_middle} {CLASS*} js-ta-ze-comcode textarea-scroll" id="edit_{ID*}_textarea" name="{ID*}">{COMCODE*}</textarea>
+					<textarea rows="50" cols="20" class="{$?,{IS_PANEL},ze-textarea,ze-textarea-middle} {CLASS*} js-ta-ze-comcode textarea-scroll" id="edit_{ID*}_textarea" name="{ID*}">{COMCODE*}</textarea>
 
 					{+START,IF_PASSED,DEFAULT_PARSED}
 						<textarea cols="1" rows="1" style="display: none" readonly="readonly" disabled="disabled" name="edit_{ID*}_textarea_parsed">{DEFAULT_PARSED*}</textarea>

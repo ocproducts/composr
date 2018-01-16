@@ -88,7 +88,7 @@
     $realtimeRain.load = function load() {
         var img = $dom.$('#realtime_rain_img');
 
-        var e = $dom.$('#real_time_surround');
+        var e = $dom.$('#real-time-surround');
         if (e) { // Clicked twice - so now we close it
             bubblesTidyUp();
             if (window.bubbleTimer1) {
@@ -130,7 +130,7 @@
 
         $cms.loadSnippet('realtime_rain_load').then(function (html) {
             $dom.html(x, html);
-            e = document.getElementById('real_time_surround');
+            e = document.getElementById('real-time-surround');
             e.style.position = 'absolute';
             e.style.zIndex = 100;
             e.style.left = 0;
@@ -145,11 +145,11 @@
 
     // Called to start the animation
     function startRealtimeRain() {
-        var newsTicker = document.getElementById('news_ticker');
+        var newsTicker = document.getElementById('news-ticker');
         newsTicker.style.top = '20px';
         newsTicker.style.left = ($dom.getWindowWidth() / 2 - newsTicker.offsetWidth / 2) + 'px';
 
-        document.getElementById('loading_icon').style.display = 'block';
+        document.getElementById('loading-icon').style.display = 'block';
 
         window.currentTime = timeNow() - 10;
         window.timeWindow = 10;
@@ -186,7 +186,7 @@
     function receivedEvents(responseXml) {
         var ajaxResult = responseXml && responseXml.querySelector('result');
 
-        document.getElementById('loading_icon').style.display = 'none';
+        document.getElementById('loading-icon').style.display = 'none';
 
         var bubbles = document.getElementById('bubbles_go_here');
 
@@ -259,7 +259,7 @@
 
                     var num = clonedMessage.iconMultiplicity,
                         mainIcon = clonedMessage.querySelector('.email-icon'),
-                        iconSpot = $dom.$('#real_time_surround');
+                        iconSpot = $dom.$('#real-time-surround');
 
                     if ($dom.findPosY(iconSpot, true) > 0) {
                         iconSpot = iconSpot.parentNode;
@@ -339,7 +339,7 @@
     function timelineClick(prospective) {
         prospective = !!prospective;
 
-        var pos = window.currentMouseX - $dom.findPosX(document.getElementById('time_line_image'), true);
+        var pos = window.currentMouseX - $dom.findPosX(document.getElementById('time-line-image'), true);
         var timelineLength = 808;
         var minTime = window.minTime;
         var maxTime = timeNow();
@@ -347,9 +347,9 @@
         if (!prospective) {
             window.currentTime = time;
             bubblesTidyUp();
-            $dom.html('#real_time_date', '{!SET;^}');
-            $dom.html('#real_time_time', '');
-            document.getElementById('loading_icon').style.display = 'block';
+            $dom.html('#real-time-date', '{!SET;^}');
+            $dom.html('#real-time-time', '');
+            document.getElementById('loading-icon').style.display = 'block';
         } else {
             setTimeLinePosition(time);
         }
@@ -360,7 +360,7 @@
         if (!bubblesGoHere) {
             return;
         }
-        var bubbles = document.getElementById('real_time_surround').parentNode.querySelectorAll('.bubble_wrap');
+        var bubbles = document.getElementById('real-time-surround').parentNode.querySelectorAll('.bubble-wrap');
         for (var i = 0; i < bubbles.length; i++) {
             if (bubbles[i].timer) {
                 clearInterval(bubbles[i].timer);
@@ -370,7 +370,7 @@
         $dom.html(bubblesGoHere, '');
         window.bubbleGroups = [];
         window.totalLines = 0;
-        var icons = document.getElementById('real_time_surround').parentNode.querySelectorAll('.email_icon');
+        var icons = document.getElementById('real-time-surround').parentNode.querySelectorAll('.email-icon');
         for (var i = 0; i < icons.length; i++) {
             if (icons[i].animationTimer) {
                 clearInterval(icons[i].animationTimer);
@@ -383,7 +383,7 @@
     function setTimeLinePosition(time) {
         time = Math.round(time);
 
-        var marker = document.getElementById('real_time_indicator'),
+        var marker = document.getElementById('real-time-indicator'),
             timelineLength = 808,
             minTime = window.minTime,
             maxTime = timeNow(),
@@ -394,8 +394,8 @@
 
         var dateObject = new Date();
         dateObject.setTime(time * 1000);
-        var realtimedate = document.getElementById('real_time_date');
-        var realtimetime = document.getElementById('real_time_time');
+        var realtimedate = document.getElementById('real-time-date');
+        var realtimetime = document.getElementById('real-time-time');
         if (!realtimedate) {
             return;
         }

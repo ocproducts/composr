@@ -2,8 +2,8 @@
 
 {$REQUIRE_CSS,messages}
 
-<div class="closed_site_special_message">
-	<div class="closed_site_special_message_inner">
+<div class="closed-site-special-message">
+	<div class="closed-site-special-message-inner">
 		<div class="box box___closed_site"><div class="box-inner">
 			<h2>{$SITE_NAME*}</h2>
 

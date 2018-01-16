@@ -2,14 +2,14 @@
 
 <div data-require-javascript="activity_feed" data-tpl="activity" data-tpl-params="{+START,PARAMS_JSON,LIID}{_*}{+END}">
 	{+START,IF,{ALLOW_REMOVE}}
-		<form id="feed_remove_{LIID*}" class="activities_remove js-submit-confirm-update-remove" action="{$PAGE_LINK*,:}" method="post" autocomplete="off">
+		<form id="feed_remove_{LIID*}" class="activities-remove js-submit-confirm-update-remove" action="{$PAGE_LINK*,:}" method="post" autocomplete="off">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
-			<input class="remove_cross" type="submit" value="{!REMOVE}" />
+			<input class="remove-cross" type="submit" value="{!REMOVE}" />
 		</form>
 	{+END}
 
-	<div class="activities_avatar_box">
+	<div class="activities-avatar-box">
 		{+START,IF_NON_EMPTY,{ADDON_ICON}}
 			<img src="{$THUMBNAIL*,{ADDON_ICON},36x36,,,,pad,both,#FFFFFF00}" />
 		{+END}
@@ -27,20 +27,20 @@
 		{+END}
 	</div>
 
-	<div class="activities_line">
-		<div class="activity_time right">
+	<div class="activities-line">
+		<div class="activity-time right">
 			{$MAKE_RELATIVE_DATE*,{TIMESTAMP},1} {!AGO}
 		</div>
 
 		{+START,SET,commented_out}
 			{+START,IF_PASSED,USERNAME}
-				<div class="activity_name left">
+				<div class="activity-name left">
 					<a href="{MEMBER_URL*}">{$DISPLAYED_USERNAME*,{USERNAME}}</a>
 				</div>
 			{+END}
 		{+END}
 
-		<div class="activities_content">
+		<div class="activities-content">
 			{$,The main message}
 			{+START,IF,{$EQ,{LANG_STRING},RAW_DUMP}}
 				{+START,IF,{$EQ,{MODE},all}}

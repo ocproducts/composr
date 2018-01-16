@@ -1,1 +1,1 @@
-<span class="webstandards_tag">
+<span class="webstandards-tag">

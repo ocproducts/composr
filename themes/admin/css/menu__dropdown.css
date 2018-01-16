@@ -20,7 +20,7 @@ For example:
 	box-sizing: border-box;
 }
 
-.dropdown-menu a.toplevel_link,
+.dropdown-menu a.toplevel-link,
 .dropdown-menu a.nlevel-link {
 	display: block;
 	outline: 0;
@@ -94,7 +94,7 @@ For example:
 	background-color: {$GET,area_5_background};
 }
 
-.dropdown-menu a.toplevel_link,
+.dropdown-menu a.toplevel-link,
 .dropdown-menu a.nlevel-link {
 	padding: 1.2em 3em 1.2em 1em;
 	background: url('{$IMG;,icons/24x24/buttons/proceed}') transparent no-repeat top 1em right 1em;
@@ -102,9 +102,9 @@ For example:
 
 .dropdown-menu li.toplevel:hover,
 .dropdown-menu li.nlevel:hover,
-.dropdown-menu a.toplevel_link:hover,
+.dropdown-menu a.toplevel-link:hover,
 .dropdown-menu a.nlevel-link:hover,
-.dropdown-menu li.current > a.toplevel_link,
+.dropdown-menu li.current > a.toplevel-link,
 .dropdown-menu li.current > a.nlevel-link {
 	background-color: {$GET,area_hover_2_background};
 }
@@ -127,7 +127,7 @@ For example:
 	background-image: linear-gradient(to bottom, #ffffff, #cbdbeb);
 }
 
-.dropdown-menu a.toplevel_link,
+.dropdown-menu a.toplevel-link,
 .dropdown-menu a.nlevel-link {
 	padding: 0.3em 0.4em !important;
 }
@@ -144,14 +144,14 @@ For example:
 	width: auto;
 }
 
-.dropdown-menu li.toplevel.menu_spacer {
+.dropdown-menu li.toplevel.menu-spacer {
 	height: 1.15em;
 	width: 4em;
 	padding: 0.5em;
 	float: left;
 }
 
-.dropdown-menu a.toplevel_link {
+.dropdown-menu a.toplevel-link {
 	padding: 0.4em 0.5em;
 	text-align: center;
 	color: {$GET,area_text};
@@ -159,7 +159,7 @@ For example:
 	margin: 0 auto;
 }
 
-.dropdown-menu a.toplevel_link span {
+.dropdown-menu a.toplevel-link span {
 	display: block;
 }
 
@@ -170,13 +170,13 @@ For example:
 	margin-left: 0.3em;
 }
 
-.dropdown-menu .toplevel_link a, 
-.dropdown-menu .toplevel_link a:visited,
-.dropdown-menu .toplevel_link a:hover {
+.dropdown-menu .toplevel-link a, 
+.dropdown-menu .toplevel-link a:visited,
+.dropdown-menu .toplevel-link a:hover {
 	text-decoration: none;
 }
 
-.dropdown-menu .toplevel_link img {
+.dropdown-menu .toplevel-link img {
 	margin-right: 0;
 	margin-bottom: 0.75em;
 }
@@ -204,7 +204,7 @@ For example:
 
 .dropdown-menu .nlevel li, 
 .dropdown-menu div.nlevel, 
-.dropdown-menu .nlevel .menu_spacer {
+.dropdown-menu .nlevel .menu-spacer {
 	background-color: {$GET,dropdown_menu_background};
 	background-image: linear-gradient(to bottom, #cbdaed, #d8e4f0);
 	font-weight: normal;
@@ -215,7 +215,7 @@ For example:
 	white-space: normal;
 }
 
-.dropdown-menu .nlevel .menu_spacer {
+.dropdown-menu .nlevel .menu-spacer {
 	display: block;
 	padding-right: 0;
 }
@@ -248,11 +248,11 @@ body .dropdown-menu .nlevel .has-img>a, body .dropdown-menu .nlevel.current.has-
 	background: none !important;
 }
 
-.dropdown-menu .nlevel .non_current a {
+.dropdown-menu .nlevel .non-current a {
 	background: transparent url('{$IMG;,1x/menus/menu_bullet}') no-repeat 5px 6px;
 }
 
-.dropdown-menu .nlevel .non_current a:hover {
+.dropdown-menu .nlevel .non-current a:hover {
 	background: transparent url('{$IMG;,1x/menus/menu_bullet_hover}') no-repeat 5px 6px;
 }
 
@@ -261,11 +261,11 @@ body .dropdown-menu .nlevel .has-img>a, body .dropdown-menu .nlevel.current.has-
 		background-image: url('{$IMG;,2x/menus/menu_bullet_current}');
 	}
 
-	.dropdown-menu .nlevel .non_current a {
+	.dropdown-menu .nlevel .non-current a {
 		background-image: url('{$IMG;,2x/menus/menu_bullet}');
 	}
 
-	.dropdown-menu .nlevel .non_current a:hover {
+	.dropdown-menu .nlevel .non-current a:hover {
 		background-image: url('{$IMG;,2x/menus/menu_bullet_hover}');
 	}
 }

@@ -1,5 +1,5 @@
 {$REQUIRE_JAVASCRIPT,polls}
-<section class="box box___poll_box" data-view="PollBox"><div class="box-inner">
+<section class="box box---poll-box" data-view="PollBox"><div class="box-inner">
 	{+START,SET,content_box_title}
 		{+START,IF,{GIVE_CONTEXT}}
 			{!CONTENT_IS_OF_TYPE,{!POLL},{QUESTION}}
@@ -14,7 +14,7 @@
 	{+END}
 
 	<a id="poll_jump" rel="dovote"></a>
-	<form title="{!VOTE}" target="_self" action="{VOTE_URL*}" method="post" class="poll_form" autocomplete="off">
+	<form title="{!VOTE}" target="_self" action="{VOTE_URL*}" method="post" class="poll-form" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div>

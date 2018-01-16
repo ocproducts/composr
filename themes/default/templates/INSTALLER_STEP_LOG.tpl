@@ -3,8 +3,8 @@
 		{!INSTALL_LOG_BELOW,{CURRENT_STEP*}}:
 	</p>
 	
-	<div class="actions-list installer_main_min">
-		<div class="install_log_table">
+	<div class="actions-list installer-main-min">
+		<div class="install-log-table">
 			<p class="lonely-label">{!INSTALL_LOG}:</p>
 			<ul>
 				{LOG}

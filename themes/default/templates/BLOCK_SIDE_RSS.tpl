@@ -32,7 +32,7 @@
 			<p class="nothing-here">{!NO_NEWS}</p>
 		{+END}
 		{+START,IF_NON_EMPTY,{CONTENT}}
-			<div class="webstandards-checker-off wide_ticker" id="news_scroller{$GET%,side_news_id}" data-cms-news-scroller="1">
+			<div class="webstandards-checker-off wide-ticker" id="news_scroller{$GET%,side_news_id}" data-cms-news-scroller="1">
 				{CONTENT}
 			</div>
 		{+END}

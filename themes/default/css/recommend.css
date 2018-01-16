@@ -9,12 +9,12 @@
 =========================
 */
 
-.menu__site_meta__recommend {
+.menu--site-meta--recommend {
 	background-image: url('{$IMG,icons/24x24/menu/site_meta/recommend}') !important;
 }
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.menu__site_meta__recommend {
+	.menu--site-meta--recommend {
 		background-image: url('{$IMG,icons/48x48/menu/site_meta/recommend}') !important;
 	}
 }

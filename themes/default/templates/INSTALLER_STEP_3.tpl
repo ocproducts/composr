@@ -1,7 +1,7 @@
 <form title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}" autocomplete="off" data-tpl="installerStep3">
 	{HIDDEN}
 
-	<div class="installer_main_min">
+	<div class="installer-main-min">
 		<p>
 			{!WELCOME_A,<a title="{!WELCOME_B} {!LINK_NEW_WINDOW}" rel="external" href="{$TUTORIAL_URL*,tut_install}" target="_blank">{!WELCOME_B}</a>}
 		</p>
@@ -10,7 +10,7 @@
 			{!FORUM_CHOICE}
 		</p>
 
-		<table class="columned-table installer_forums">
+		<table class="columned-table installer-forums">
 			<tbody>
 				<tr>
 					<th class="de-th">
@@ -26,11 +26,11 @@
 					</th>
 				</tr>
 				<tr>
-					<td class="installer_forum_list">
+					<td class="installer-forum-list">
 						{FORUMS}
 					</td>
 
-					<td class="installer_forum_version">
+					<td class="installer-forum-version">
 						<div id="versions">
 							{VERSION}
 						</div>
@@ -48,8 +48,8 @@
 				<p>{!FORUM_PATH_TEXT}</p>
 				<div class="wide-table-wrap"><table class="map-table form-table wide-table">
 					<colgroup>
-						<col class="installer_input_left_column" />
-						<col class="installer_input_right_column" />
+						<col class="installer-input-left-column" />
+						<col class="installer-input-right-column" />
 					</colgroup>
 
 					<tbody>
@@ -73,8 +73,8 @@
 				<div id="{!ADVANCED_DATABASE_SETUP|*}" style="display: none">
 					<div class="wide-table-wrap"><table class="map-table form-table wide-table">
 						<colgroup>
-							<col class="installer_left_column" />
-							<col class="installer_right_column" />
+							<col class="installer-left-column" />
+							<col class="installer-right-column" />
 						</colgroup>
 
 						<tbody>
@@ -82,7 +82,7 @@
 								<th class="form-table-field-name">{!USE_MULTI_DB} <div class="associated-details">{!REQUIRES_MORE_INFO}</div></th>
 								<td class="form-table-field-input">
 									<label for="yes"><input type="radio" name="use_multi_db" value="1" id="yes" />{!YES}</label>
-									<label class="radio_horiz_spacer" for="no"><input type="radio" name="use_multi_db" value="0" id="no" checked="checked" />{!NO}</label>
+									<label class="radio-horiz-spacer" for="no"><input type="radio" name="use_multi_db" value="0" id="no" checked="checked" />{!NO}</label>
 								</td>
 							</tr>
 
@@ -90,7 +90,7 @@
 								<th class="form-table-field-name">{!USE_MSN} <div class="associated-details">{!REQUIRES_MORE_INFO}</div></th>
 								<td class="form-table-field-input">
 									<label for="yes2"><input type="radio" name="use_msn" value="1" id="yes2" />{!YES}</label>
-									<label class="radio_horiz_spacer" for="no2"><input type="radio" name="use_msn" value="0" id="no2" checked="checked" />{!NO}</label>
+									<label class="radio-horiz-spacer" for="no2"><input type="radio" name="use_msn" value="0" id="no2" checked="checked" />{!NO}</label>
 								</td>
 							</tr>
 						</tbody>

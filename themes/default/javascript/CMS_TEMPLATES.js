@@ -27,7 +27,7 @@
 
     $cms.templates.installerStepLog = function installerStepLog() {
         /* Code to auto-submit the form after 5 seconds, but only if there were no errors */
-        if (document.querySelector('.installer_warning')) {
+        if (document.querySelector('.installer-warning')) {
             return;
         }
 
@@ -696,8 +696,8 @@
                     $dom.html(helpEl, $dom.html(docEl));
                     $dom.fadeIn(helpEl);
 
-                    helpEl.classList.remove('global_helper_panel_text');
-                    helpEl.classList.add('global_helper_panel_text_over');
+                    helpEl.classList.remove('global-helper-panel-text');
+                    helpEl.classList.add('global-helper-panel-text-over');
                 }
             });
 
@@ -706,8 +706,8 @@
                     $dom.html(helpEl, window.origHelperText);
                     $dom.fadeIn(helpEl);
 
-                    helpEl.classList.remove('global_helper_panel_text_over');
-                    helpEl.classList.add('global_helper_panel_text');
+                    helpEl.classList.remove('global-helper-panel-text-over');
+                    helpEl.classList.add('global-helper-panel-text');
                 }
             });
         }
@@ -866,8 +866,8 @@
     };
 
     $cms.templates.indexScreenFancierScreen = function indexScreenFancierScreen(params) {
-        if (document.getElementById('search_content')) {
-            document.getElementById('search_content').value = strVal(params.rawSearchString);
+        if (document.getElementById('search-content')) {
+            document.getElementById('search-content').value = strVal(params.rawSearchString);
         }
     };
 

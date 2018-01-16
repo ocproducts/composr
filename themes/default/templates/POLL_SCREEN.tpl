@@ -11,7 +11,7 @@
 	</ul>
 </div>
 
-<div class="poll_details">
+<div class="poll-details">
 	{POLL_DETAILS}
 </div>
 

@@ -123,7 +123,7 @@
                             view.notificationEl.className = 'update_success';
                             view.notificationEl.textContent = feedbackEl.textContent;
 
-                            if ($dom.$('#activities_feed')) { // The update box won't necessarily have a displayed feed to update
+                            if ($dom.$('#activities-feed')) { // The update box won't necessarily have a displayed feed to update
                                 sUpdateGetData();
                             }
 
@@ -198,7 +198,7 @@
                 // then we should allow old content to "fall off" the bottom of the feed.
                 window.activitiesFeedGrow = !!params.grow;
                 window.activitiesFeedMax = params.max;
-                if (document.getElementById('activities_feed')) {
+                if (document.getElementById('activities-feed')) {
                     setInterval(sUpdateGetData, params.refreshTime * 1000);
                 }
             }
@@ -221,7 +221,7 @@
 
                         // Now grab whatever updates are available
                         var url = $util.url('data_custom/activities_updater.php' + $cms.keep(true)).toString(),
-                            listElements = jQuery('li', '#activities_feed'),
+                            listElements = jQuery('li', '#activities-feed'),
                             lastId = ((listElements.attr('id') == null) ? '-1' : listElements.attr('id').replace(/^activity_/, '')),
                             postVal = 'last_id=' + lastId + '&mode=' + window.activitiesMode;
 
@@ -264,17 +264,17 @@
             var succeeded = false;
             if (stat === 'success') {
                 if (jQuery('success', data).text() === '1') {
-                    var listElements = jQuery('li', '#activities_feed'); // Querying from current browser DOM
+                    var listElements = jQuery('li', '#activities-feed'); // Querying from current browser DOM
                     var listItems = jQuery('listitem', data); // Querying from XML definition o new data
 
                     listElements.removeAttr('toFade');
 
                     // Add in new items
-                    var topOfList = document.getElementById('activities_holder').firstChild;
+                    var topOfList = document.getElementById('activities-holder').firstChild;
                     jQuery.each(listItems, function () {
                         var thisLi = document.createElement('li');
                         thisLi.id = 'activity_' + jQuery(this).attr('id');
-                        thisLi.className = 'activities_box box';
+                        thisLi.className = 'activities-box box';
                         thisLi.setAttribute('toFade', 'yes');
                         topOfList.parentNode.insertBefore(thisLi, topOfList);
                         $dom.html(thisLi, window.Base64.decode(jQuery(this).text()));
@@ -283,7 +283,7 @@
                     var noMessages = document.getElementById('activity_-1');
                     if (noMessages) noMessages.style.display = 'none';
 
-                    listElements = jQuery('li', '#activities_feed'); // Refresh, so as to include the new activity nodes
+                    listElements = jQuery('li', '#activities-feed'); // Refresh, so as to include the new activity nodes
 
                     if ((!window.activitiesFeedGrow) && (listElements.length > window.activitiesFeedMax)) {// Remove anything passed the grow length
                         for (var i = window.activitiesFeedMax; i < listElements.length; i++) {
@@ -292,7 +292,7 @@
                     }
 
                     jQuery('#activities_general_notify').text('');
-                    jQuery('li[toFade="yes"]', '#activities_feed').hide().fadeIn(1200);
+                    jQuery('li[toFade="yes"]', '#activities-feed').hide().fadeIn(1200);
                     succeeded = true;
                 } else {
                     if (jQuery('success', data).text() === '2') {
@@ -346,19 +346,19 @@
         if (stat === 'success') {
             if (jQuery('success', data).text() === '1') {
                 statusId = '#activity_' + jQuery('status_id', data).text();
-                jQuery('.activities_content', statusId, '#activities_feed').text(jQuery('feedback', data).text()).addClass('activities_content__remove_success').hide().fadeIn(animationSpeed, function () {
-                    jQuery(statusId, '#activities_feed').fadeOut(animationSpeed, function () {
-                        jQuery(statusId, '#activities_feed').remove();
+                jQuery('.activities-content', statusId, '#activities-feed').text(jQuery('feedback', data).text()).addClass('activities-content--remove-success').hide().fadeIn(animationSpeed, function () {
+                    jQuery(statusId, '#activities-feed').fadeOut(animationSpeed, function () {
+                        jQuery(statusId, '#activities-feed').remove();
                     });
                 });
             } else {
                 switch (jQuery('err', data).text()) {
                     case 'perms':
                         statusId = '#activity_' + jQuery('status_id', data).text();
-                        var backupUpText = jQuery('activities_content', statusId, '#activities_feed').text();
-                        jQuery('.activities_content', statusId, '#activities_feed').text(jQuery('feedback', data).text()).addClass('activities_content__remove_failure').hide().fadeIn(animationSpeed, function () {
-                            jQuery('.activities_content', statusId, '#activities_feed').fadeOut(animationSpeed, function () {
-                                jQuery('.activities_content', statusId, '#activities_feed').text(backupUpText).removeClass('activities_content__remove_failure').fadeIn(animationSpeed);
+                        var backupUpText = jQuery('.activities-content', statusId, '#activities-feed').text();
+                        jQuery('.activities-content', statusId, '#activities-feed').text(jQuery('feedback', data).text()).addClass('activities-content--remove-failure').hide().fadeIn(animationSpeed, function () {
+                            jQuery('.activities-content', statusId, '#activities-feed').fadeOut(animationSpeed, function () {
+                                jQuery('.activities-content', statusId, '#activities-feed').text(backupUpText).removeClass('activities-content--remove-failure').fadeIn(animationSpeed);
                             });
                         });
                         break;

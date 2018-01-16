@@ -41,7 +41,7 @@
 	{+START,IF,{$ADDON_INSTALLED,search}}
 		<h2>{!SEARCH}</h2>
 
-		<div class="constrain_search_block">
+		<div class="constrain-search-block">
 			{$BLOCK,block=main_search,failsafe=1}
 		</div>
 	{+END}

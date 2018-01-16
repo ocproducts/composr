@@ -21,16 +21,16 @@
 	}
 /*{+END}*/
 
-.ze_tabs {
+.ze-tabs {
 	background-color: {$GET,native_ui_background};
 }
 /*{+START,CSS_MODE,mobile}*/
-	.ze_tabs {
+	.ze-tabs {
 		display: inline-block;
 	}
 /*{+END}*/
 
-.ze_tabs .tab {
+.ze-tabs .tab {
 	min-width: 3.4em;
 }
 
@@ -60,7 +60,7 @@
 		width: 45em;
 	}
 
-	.ze_middle {
+	.ze-middle {
 		margin: 0 19em;
 	}
 
@@ -74,18 +74,18 @@
 	}
 /*{+END}*/
 
-.ze_textarea {
+.ze-textarea {
 	width: 100%;
 	height: 320px;
 }
 
-.ze_textarea_middle {
+.ze-textarea-middle {
 	width: 100%;
 	height: 320px;
 }
 
 /*{+START,CSS_MODE,mobile}*/
-	.zone_editor_form .proceed-button>span {
+	.zone-editor-form .proceed-button>span {
 		display: block;
 		margin: 1em 0;
 	}

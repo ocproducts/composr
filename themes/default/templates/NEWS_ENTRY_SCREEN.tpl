@@ -1,4 +1,4 @@
-<div class="news_entry_screen" itemscope="itemscope" itemtype="http://schema.org/{$?,{BLOG},BlogPosting,NewsArticle}">
+<div class="news-entry-screen" itemscope="itemscope" itemtype="http://schema.org/{$?,{BLOG},BlogPosting,NewsArticle}">
 	{TITLE}
 
 	{+START,IF_PASSED,WARNING_DETAILS}
@@ -68,7 +68,7 @@
 			</div>
 		{+END}
 
-		<aside class="box box___news_entry_screen"><nav class="box-inner">
+		<aside class="box box---news-entry-screen"><nav class="box-inner">
 			<p class="lonely-label">
 				{$?,{BLOG},{!BLOG_NEWS_UNDER_THESE},{!NEWS_UNDER_THESE}}
 			</p>

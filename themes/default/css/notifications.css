@@ -5,7 +5,7 @@
 
 /* Web UI */
 
-#web_notifications_button, #pts_button {
+#web-notifications-button, #pts-button {
 	color: {$GET,heading_text};
 	display: inline-block;
 	position: relative;
@@ -18,31 +18,31 @@
 	background-repeat: no-repeat;
 	outline: 0;
 }
-#web_notifications_button {
+#web-notifications-button {
 	background-image: url('{$IMG;,icons/24x24/tool_buttons/notifications}');
 	background-position: 2px 2px;
 }
-#pts_button {
+#pts-button {
 	background-image: url('{$IMG;,icons/24x24/tool_buttons/inbox}');
 	background-position: 3px 3px;
 }
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	#web_notifications_button {
+	#web-notifications-button {
 		background-image: url('{$IMG;,icons/48x48/tool_buttons/notifications}');
 		background-size: 24px 24px;
 	}
-	#pts_button {
+	#pts-button {
 		background-image: url('{$IMG;,icons/48x48/tool_buttons/inbox}');
 		background-size: 24px 24px;
 	}
 }
 
-#web_notifications_button span, #pts_button span {
+#web-notifications-button span, #pts-button span {
 	visibility: hidden;
 }
 
-.count_0 {
+.count-0 {
 	opacity: 0.5;
 }
 
@@ -51,12 +51,12 @@
 	overflow: hidden;
 }
 
-.notification_subject {
+.notification-subject {
 	font-weight: bold;
 	margin: 0;
 }
 
-.notification_subject * {
+.notification-subject * {
 	white-space: inherit !important;
 }
 
@@ -64,17 +64,17 @@
 	width: 40px;
 }
 
-.notification_meta, .topic-list-meta {
+.notification-meta, .topic-list-meta {
 	margin-top: 0.8em !important;
 	width: auto !important;
 	font-size: 0.9em;
 }
 
-.notification_meta {
+.notification-meta {
 	font-size: 0.85em;
 }
 
-.notification_has_read {
+.notification-has-read {
 	opacity: 0.8;
 }
 
@@ -84,41 +84,41 @@
 	width: 100%;
 }
 
-.notifications_privileges_column {
+.notifications-privileges-column {
 	width: 10em;
 }
 
-.notifications_tick_column {
+.notifications-tick-column {
 	width: 4em;
 }
 
-.notifications_advanced_column {
+.notifications-advanced-column {
 	width: 10em;
 }
 
-.notifications_form .form-table-field-spacer>th {
+.notifications-form .form-table-field-spacer>th {
 	border-top: 1px solid {$GET,standard_border};
 }
 
-.notifications_form h2 {
+.notifications-form h2 {
 	text-align: left;
 	text-decoration: none;
 	border: 0;
 }
 
-.notifications_form td {
+.notifications-form td {
 	text-align: center;
 	vertical-align: middle;
 }
 
-.notifications_form td label {
+.notifications-form td label {
 	display: none;
 }
 
-.notifications_form td div {
+.notifications-form td div {
 	display: inline;
 }
 
-.notification_code th {
+.notification-code th {
 	text-align: left !important;
 }

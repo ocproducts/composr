@@ -9,13 +9,13 @@
 			<div>
 				<div>
 					<div class="accessibility-hidden"><label for="ps_login_username">{$LOGIN_LABEL}</label></div>
-					<input maxlength="80" class="wide-field login_block_username" type="text" placeholder="{!USERNAME}" id="ps_login_username" name="login_username" />
+					<input maxlength="80" class="wide-field login-block-username" type="text" placeholder="{!USERNAME}" id="ps_login_username" name="login_username" />
 					<div class="accessibility-hidden"><label for="ps_password">{!PASSWORD}</label></div>
 					<input maxlength="255" class="wide-field" type="password" placeholder="{!PASSWORD}" name="password" id="ps_password" />
 				</div>
 
 				{+START,IF,{$CONFIG_OPTION,password_cookies}}
-					<div class="login_block_cookies">
+					<div class="login-block-cookies">
 						<div class="float-surrounder">
 							<label for="ps_remember">{!REMEMBER_ME}</label>
 							<input class="{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}} js-click-confirm-remember-me{+END}"{+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END} type="checkbox" value="1" id="ps_remember" name="remember" />

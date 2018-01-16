@@ -5,7 +5,7 @@
 		<thead>
 			<tr>
 				<th class="group-header">
-					<span class="heading_group">{!USERGROUP}</span> <span class="heading_presets"><span class="inline-mobile"> &amp; </span>{!PINTERFACE_PRESETS}</span>
+					<span class="heading-group">{!USERGROUP}</span> <span class="heading-presets"><span class="inline-mobile"> &amp; </span>{!PINTERFACE_PRESETS}</span>
 				</th>
 
 				<th class="view-header">

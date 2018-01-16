@@ -1,9 +1,9 @@
 <div class="wide-table-wrap"><table class="columned-table results-table wide-table autosized-table responsive-table">
 	<colgroup>
-		<col class="quiz_done_results_col_was_correct" />
-		<col class="quiz_done_results_col_question" />
-		<col class="quiz_done_results_col_given_answer" />
-		<col class="quiz_done_results_col_correct_answer" />
+		<col class="quiz-done-results-col-was-correct" />
+		<col class="quiz-done-results-col-question" />
+		<col class="quiz-done-results-col-given-answer" />
+		<col class="quiz-done-results-col-correct-answer" />
 	</colgroup>
 
 	<thead>
@@ -19,7 +19,7 @@
 			{$SET,cycle,{$CYCLE,results_table_zebra,zebra-0,zebra-1}}
 
 			<tr class="{$GET,cycle} thick-border">
-				<td class="quiz_answer_status">
+				<td class="quiz-answer-status">
 					{+START,IF_PASSED,WAS_CORRECT}
 						{+START,IF,{WAS_CORRECT}}
 							<span class="multilist-mark yes">&#10004;</span>
@@ -33,15 +33,15 @@
 					{+END}
 				</td>
 
-				<td class="quiz_result_question">
+				<td class="quiz-result-question">
 					{$COMCODE,{QUESTION}}
 				</td>
 
-				<td class="quiz_result_given_answer">
+				<td class="quiz-result-given-answer">
 					{$COMCODE,{GIVEN_ANSWER},1}
 				</td>
 
-				<td class="quiz_result_answer">
+				<td class="quiz-result-answer">
 					{+START,IF_NON_EMPTY,{CORRECT_ANSWER}}
 						{$COMCODE,{CORRECT_ANSWER}}
 					{+END}

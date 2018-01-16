@@ -3,27 +3,27 @@
  Copyright (c) ocProducts, 2004-2018
 */
 
-.translate_field {
+.translate-field {
 	color: {$GET,native_ui_foreground} !important;
 }
 
-td.translate_line_first {
+td.translate-line-first {
 	padding: 0.5em;
 }
 
-.translate_line_second {
+.translate-line-second {
 	padding: 0.5em 0.5em 2em 0.5em;
 }
 
-.translate_line_second textarea {
+.translate-line-second textarea {
 	border-style: dotted;
 }
 
-.translate_original_text {
+.translate-original-text {
 	color: {$GET,unfilled_input_text};
 }
 
-.translate_iframe {
+.translate-iframe {
 	height: 130px;
 	width: 100%;
 }

@@ -6,7 +6,7 @@
 {+START,IF_NON_EMPTY,{FIELDS}}
 	{MESSAGE}
 	<div class="wide-table-wrap">
-		<table class="columned-table cart_table results-table responsive-table">
+		<table class="columned-table cart-table results-table responsive-table">
 			{+START,IF,{$DESKTOP}}{+START,IF,{$EQ,{$LANG},EN}}{+START,IF_NON_EMPTY,{WIDTHS}}
 				<colgroup>
 					{+START,LOOP,WIDTHS}

@@ -1037,7 +1037,7 @@ class Module_tickets
             'HIDDEN' => '',
             'TEXT' => $text,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'menu__adminzone__security__permissions__privileges',
+            'SUBMIT_ICON' => 'menu--adminzone--security--permissions--privileges',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));

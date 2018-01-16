@@ -26,7 +26,7 @@
 
 		<div class="float-surrounder">
 			{$,Tree list}
-			<div class="template_editor_file_selector">
+			<div class="template-editor-file-selector">
 				<div class="inner">
 					<input type="hidden" id="theme_files" name="theme_files" value="{+START,IF_PASSED,DEFAULT_THEME_FILES_LOCATION}{DEFAULT_THEME_FILES_LOCATION*}{+END}" class="js-change-template-editor-add-tab-wrap" />
 					<div id="tree_list__root_theme_files">
@@ -38,7 +38,7 @@
 			</div>
 
 			{$,Tabs}
-			<div class="template_editor_tabs">
+			<div class="template-editor-tabs">
 				<div class="float-surrounder">
 					<div class="float-surrounder">
 						<div class="tabs spaced-out-tabs" role="tablist" id="template_editor_tab_headers"></div>

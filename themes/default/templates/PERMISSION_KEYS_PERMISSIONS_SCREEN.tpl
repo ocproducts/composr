@@ -13,14 +13,14 @@
 
 			<div class="wide-table-wrap"><table class="columned-table wide-table results-table privileges responsive-table">
 				<colgroup>
-					<col class="match_key_name_column" />
+					<col class="match-key-name-column" />
 					{COLS}
 					<col class="permission-copy-column" />
 				</colgroup>
 
 				<thead>
 				<tr>
-					<th class="permission_header_cell">{!MATCH_KEY}</th>
+					<th class="permission-header-cell">{!MATCH_KEY}</th>
 					{HEADER_CELLS}
 				</tr>
 				</thead>
@@ -38,7 +38,7 @@
 
 			<div class="wide-table-wrap"><table class="columned-table wide-table results-table responsive-table">
 				<colgroup>
-					<col class="match_key_name_column" />
+					<col class="match-key-name-column" />
 					<col class="permission_match_key_message_column" />
 				</colgroup>
 

@@ -1,1 +1,1 @@
-<li role="separator" class="menu_spacer"></li>
+<li role="separator" class="menu-spacer"></li>

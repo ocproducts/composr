@@ -1,4 +1,4 @@
-<div class="box box___news_brief"><div class="box-inner">
+<div class="box box---news-brief"><div class="box-inner">
 	<span class="right float-separation">{DATE*}</span>
 
 	<span><a href="{FULL_URL*}">{NEWS_TITLE}</a></span>

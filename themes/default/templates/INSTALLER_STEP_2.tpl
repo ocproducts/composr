@@ -1,7 +1,7 @@
-<form title="{!TERMS}" class="installer_cms_licence" action="install.php" method="post" autocomplete="off">
-	<div class="installer_terms_title"><label for="licence">{!TERMS}</label></div>
+<form title="{!TERMS}" class="installer-cms-licence" action="install.php" method="post" autocomplete="off">
+	<div class="installer-terms-title"><label for="licence">{!TERMS}</label></div>
 	<div>
-		<textarea readonly="readonly" class="mono_textbox wide-field" id="licence" name="licence" cols="90" rows="17">{LICENCE*}</textarea>
+		<textarea readonly="readonly" class="mono-textbox wide-field" id="licence" name="licence" cols="90" rows="17">{LICENCE*}</textarea>
 	</div>
 </form>
 
@@ -9,7 +9,7 @@
 	{HIDDEN}
 
 	<div class="float-surrounder">
-		<div id="install_newsletter">
+		<div id="install-newsletter">
 			<p class="accessibility-hidden"><label for="email">{!EMAIL_ADDRESS}</label></p>
 			<div>
 				<input maxlength="255" class="wide-field" id="email" name="email" type="text" alt="{!EMAIL_ADDRESS}" placeholder="{!EMAIL_ADDRESS_FOR_NEWSLETTER}" size="25" />

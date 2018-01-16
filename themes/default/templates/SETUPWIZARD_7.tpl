@@ -2,7 +2,7 @@
 
 <div data-require-javascript="setupwizard" data-tpl="setupWizard7">
 	{FORM}
-	<div class="box box___setupwizard_7_screen">
+	<div class="box box---setupwizard-7-screen">
 		<div class="box-inner">
 			<h2>{!PREVIEW}</h2>
 

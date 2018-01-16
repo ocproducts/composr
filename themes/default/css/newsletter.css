@@ -3,7 +3,7 @@
  Copyright (c) ocProducts, 2004-2018
 */
 
-.box___newsletter_confirm_wrap, textarea#chosen_categories {
+.box---newsletter-confirm-wrap, textarea#chosen_categories {/*'#chosen_categories' is hard-coded in PHP and thus can't be hyphenated*/
 	font-family: courier, monospace;
 }
 
@@ -13,12 +13,12 @@
 =========================
 */
 
-.menu__site_meta__newsletters {
+.menu--site-meta--newsletters {
 	background-image: url('{$IMG,icons/24x24/menu/site_meta/newsletters}') !important;
 }
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.menu__site_meta__newsletters {
+	.menu--site-meta--newsletters {
 		background-image: url('{$IMG,icons/48x48/menu/site_meta/newsletters}') !important;
 	}
 }

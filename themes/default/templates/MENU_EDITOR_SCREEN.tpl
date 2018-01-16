@@ -8,7 +8,7 @@
 		{WARNING_DETAILS}
 	{+END}
 
-	<div class="menu_editor_page{+START,IF,{$GT,{TOTAL_ITEMS},10}} docked{+END} js-el-menu-editor-wrap" id="menu_editor_wrap">
+	<div class="menu-editor-page{+START,IF,{$GT,{TOTAL_ITEMS},10}} docked{+END} js-el-menu-editor-wrap" id="menu_editor_wrap">
 		<form title="" action="{URL*}" method="post" autocomplete="off">
 			<!-- In separate form due to mod_security -->
 			<textarea aria-hidden="true" cols="30" rows="3" style="display: none" name="template" id="template">{CHILD_BRANCH_TEMPLATE*}</textarea>
@@ -17,8 +17,8 @@
 		<form title="{!PRIMARY_PAGE_FORM}" id="edit_form" action="{URL*}" method="post" autocomplete="off" class="js-submit-modsecurity-workaround" data-submit-pd="1">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
-			<div class="float-surrounder menu_edit_main">
-				<div class="menu_editor_rh_side">
+			<div class="float-surrounder menu-edit-main">
+				<div class="menu-editor-rh-side">
 					<h2>{!HELP}</h2>
 
 					<p>{!BRANCHES_DESCRIPTION,{$PAGE_LINK*,_SEARCH:admin_sitemap:browse}}</p>
@@ -26,12 +26,12 @@
 					<p>{!ENTRY_POINTS_DESCRIPTION}</p>
 				</div>
 
-				<div class="menu_editor_lh_side">
+				<div class="menu-editor-lh-side">
 					<h2>{!BRANCHES}</h2>
 
 					<input type="hidden" name="highest_order" id="highest_order" value="{HIGHEST_ORDER*}" />
 
-					<div class="menu_editor_root">
+					<div class="menu-editor-root">
 						{ROOT_BRANCH}
 					</div>
 				</div>
@@ -41,9 +41,9 @@
 				</p>
 			</div>
 
-			<div id="mini_form_hider" style="display: none" class="float-surrounder">
-				<div class="menu_editor_rh_side">
-					<img class="dock_button js-img-click-toggle-docked-field-editing" alt="" title="{!TOGGLE_DOCKED_FIELD_EDITING}" src="{$IMG*,1x/arrow_box_hover}" srcset="{$IMG*,2x/arrow_box_hover} 2x" />
+			<div id="mini-form-hider" style="display: none" class="float-surrounder">
+				<div class="menu-editor-rh-side">
+					<img class="dock-button js-img-click-toggle-docked-field-editing" alt="" title="{!TOGGLE_DOCKED_FIELD_EDITING}" src="{$IMG*,1x/arrow_box_hover}" srcset="{$IMG*,2x/arrow_box_hover} 2x" />
 
 					<h2>{!CHOOSE_ENTRY_POINT}</h2>
 
@@ -64,7 +64,7 @@
 					</nav>
 				</div>
 
-				<div class="menu_editor_lh_side">
+				<div class="menu-editor-lh-side">
 					<h2>{!EDIT_SELECTED_FIELD}</h2>
 
 					<div class="wide-table-wrap"><table class="map-table form-table wide-table">
