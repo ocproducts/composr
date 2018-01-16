@@ -33,7 +33,7 @@
 			<h2>{!PREVIEW}</h2>
 
 			<div class="preview-box{+START,IF,{$AND,{$NOT,{$MOBILE,1}},{$MOBILE}}} mobile{+END}">
-				<div id="preview-box-inner" class="preview_box_inner {+START,IF,{HAS_DEVICE_PREVIEW_MODES}}{+START,IF,{$AND,{$NOT,{$MOBILE,1}},{$MOBILE}}}js-preview-box-scroll{+END}{+END}">
+				<div id="preview-box-inner" class="preview-box-inner {+START,IF,{HAS_DEVICE_PREVIEW_MODES}}{+START,IF,{$AND,{$NOT,{$MOBILE,1}},{$MOBILE}}}js-preview-box-scroll{+END}{+END}">
 					{$TRIM,{OUTPUT}}
 				</div>
 			</div>

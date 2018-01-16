@@ -13,7 +13,7 @@
 			</div>
 		</div>
 
-		<div class="image_fader_news_html" id="image_fader_news_html_{$GET%,RAND_FADER_NEWS}">
+		<div class="image-fader-news-html" id="image-fader-news-html-{$GET%,RAND_FADER_NEWS}">
 			<span aria-busy="true"><img alt="" src="{$IMG*,loading}" /></span>
 		</div>
 	</div>

@@ -7,7 +7,7 @@
 	
 	{$SET,username,{$USERNAME,{$MEMBER},1}}
 
-	<div id="map_canvas" data-require-javascript="user_mappr" data-tpl="blockMainGoogleMapUsers" data-tpl-params="{+START,PARAMS_JSON,username,DATA,USERNAME_PREFIX,G_DEFAULT_ICON,LATITUDE,LONGITUDE,ZOOM,CLUSTER,CENTER,GEOLOCATE_USER,SET_COORD_URL,REGION}{_*}{+END}" style="width: {WIDTH}; height: {HEIGHT}"></div>
+	<div id="map-canvas" data-tpl="blockMainGoogleMapUsers" data-tpl-params="{+START,PARAMS_JSON,username,DATA,USERNAME_PREFIX,G_DEFAULT_ICON,LATITUDE,LONGITUDE,ZOOM,CLUSTER,CENTER,GEOLOCATE_USER,SET_COORD_URL,REGION}{_*}{+END}" style="width: {WIDTH}; height: {HEIGHT}"></div>
 
 {+START,IF_NON_EMPTY,{TITLE}}
 </div></section>

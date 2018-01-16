@@ -234,7 +234,7 @@
 .chat-message>div:hover, body.touch-enabled .chat-message>div {
 	opacity: 1;
 }
-.chat_operator_staff a, .chat_operator_staff a:visited, .chat_operator_staff a:hover {
+.chat-operator-staff a, .chat-operator-staff a:visited, .chat-operator-staff a:hover {
 	color: {$GET,red_highlight_text};
 }
 .chat-message-by {

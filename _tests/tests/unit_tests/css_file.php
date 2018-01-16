@@ -347,7 +347,7 @@ class css_file_test_set extends cms_test_case
             'chat-lobby-convos-tab-uptodate',
             'chat-message',
             'chat-message-old',
-            'chat_operator_staff',
+            'chat-operator-staff',
             'chat-options',
             'checked',
             'cms_keep',

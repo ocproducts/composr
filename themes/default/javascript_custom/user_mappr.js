@@ -34,7 +34,7 @@
         function googleMapUsersInitialize() {
             var bounds = new google.maps.LatLngBounds();
             var center = new google.maps.LatLng((latitude !== '' ? latitude : 0.0), (longitude !== '' ? longitude : 0.0));
-            var map = new google.maps.Map(document.getElementById('map_canvas'), {
+            var map = new google.maps.Map(document.getElementById('map-canvas'), {
                 zoom: zoom,
                 center: center,
                 mapTypeId: google.maps.MapTypeId.ROADMAP,

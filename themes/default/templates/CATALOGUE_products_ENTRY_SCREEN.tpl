@@ -8,7 +8,7 @@
 	<div class="cart-info">
 		{$SET,rating,{$RATING,catalogues__{CATALOGUE},{ID},{SUBMITTER},,,RATING_INLINE_DYNAMIC}}
 		{+START,IF_NON_EMPTY,{$TRIM,{$GET,rating}}}
-			<div class="rating_part">
+			<div class="rating-part">
 				<span class="field-name">{!RATING}:</span> {$GET,rating}
 			</div>
 		{+END}

@@ -3,7 +3,7 @@
  Copyright (c) ocProducts, 2004-2018
 */
 
-.box---newsletter-confirm-wrap, textarea#chosen_categories {/*'#chosen_categories' is hard-coded in PHP and thus can't be hyphenated*/
+.box---newsletter-confirm-wrap, textarea#chosen_categories {/*'#chosen_categories' is hard-coded in PHP and thus can't be hyphenised*/
 	font-family: courier, monospace;
 }
 

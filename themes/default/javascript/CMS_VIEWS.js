@@ -267,7 +267,7 @@
 
                 if ((accordionItem === toggledAccordionItem) || $dom.isDisplayed(body)) {
                     expanded = $cms.ui.toggleableTray(body);
-                    accordionItem.classList.toggle('accordion_trayitem-active', expanded);
+                    accordionItem.classList.toggle('accordion-trayitem-active', expanded);
                     accordionItem.classList.toggle('is-expanded', expanded);
                     accordionItem.classList.toggle('is-collapsed', !expanded);
                 }

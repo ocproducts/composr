@@ -45,7 +45,7 @@
         // Variables we will need
         var fpAnimationImg = $dom.$('#image_fader_news_' + rand),
             fpAnimationUrl = $dom.$('#image_fader_news_url_' + rand),
-            fpAnimationHtml = $dom.$('#image_fader_news_html_' + rand);
+            fpAnimationHtml = $dom.$('#image-fader-news-html-' + rand);
         // Create fader
         var fpAnimationNewsImg = document.createElement('img');
 
