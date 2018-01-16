@@ -1,12 +1,11 @@
 .website_body .column_wrapper, .website_body .column_wrapper_2 {
 	visibility: hidden;
-	width: 950px;
 	overflow: hidden;
 	/*overflow-x: scroll; If you want this the visibility: hidden must be removed*/
 }
 
 .website_body .column_wrapper .column {
-	width: 283px;
+	width: 230px;
 	visibility: visible;
 }
 
@@ -16,7 +15,7 @@
 }
 
 .column {
-	margin: 0 25px;
+	margin: 0 15px;
 	color: #535353;
 	font-size: 0.95em;
 	text-align: justify;
