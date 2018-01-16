@@ -5,7 +5,7 @@
 <div class="wide-table-wrap"><table class="map-table results-table wide-table spaced-table responsive-blocked-table">
 	<colgroup>
 		<col class="field-name-column" />
-		<col class="field_value_column" />
+		<col class="field-value-column" />
 	</colgroup>
 
 	<tbody>

@@ -7,7 +7,7 @@
 		<div class="float-surrounder">
 			<div id="activities_feed">
 				<div id="activities_general_notify"></div>
-				<ul class="float-surrounder activities_holder raw_ajax_grow_spot" id="activities_holder">
+				<ul class="float-surrounder activities_holder raw-ajax-grow-spot" id="activities_holder">
 					{+START,IF_EMPTY,{CONTENT}}
 						<li id="activity_-1"><p class="nothing-here">{!NO_ACTIVITIES}</p></li>
 					{+END}

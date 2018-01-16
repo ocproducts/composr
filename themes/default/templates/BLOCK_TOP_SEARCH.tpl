@@ -4,8 +4,8 @@
 	{$HIDDENS_FOR_GET_FORM,{URL}}
 
 	<div class="inline">
-		<label class="accessibility-hidden" for="top_search_content_{BLOCK_ID%}">{!SEARCH}</label>
-		<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="{$?,{!takes_lots_of_space},10,20}" maxlength="255" class="js-input-keyup-update-ajax-search-list" type="search" id="top_search_content_{BLOCK_ID%}" name="content" /><input class="button-micro buttons--search" type="submit" value="{!SEARCH}" />
+		<label class="accessibility-hidden" for="top-search-content-{BLOCK_ID%}">{!SEARCH}</label>
+		<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="{$?,{!takes_lots_of_space},10,20}" maxlength="255" class="js-input-keyup-update-ajax-search-list" type="search" id="top-search-content-{BLOCK_ID%}" name="content" /><input class="button-micro buttons--search" type="submit" value="{!SEARCH}" />
 
 		{+START,LOOP,LIMIT_TO}
 			<input type="hidden" name="{_loop_var*}" value="1" />

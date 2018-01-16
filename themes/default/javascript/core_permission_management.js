@@ -39,7 +39,7 @@
 
         updateGroupDisplayer: function (e, select) {
             $dom.html(document.getElementById('group_name'), $cms.filter.html(window.usergroupTitles[select.options[select.selectedIndex].value]));
-            var tree = document.getElementById('tree_list__root_tree_list');
+            var tree = document.getElementById('tree-list--root-tree-list');
             $dom.empty(tree);
             window.sitemap.renderTree(window.sitemap.treeListData, tree);
         },

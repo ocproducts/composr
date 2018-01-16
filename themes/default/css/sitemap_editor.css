@@ -3,7 +3,7 @@
  Copyright (c) ocProducts, 2004-2018
 */
 
-.tree_list__root_tree_list {
+.tree-list--root-tree-list {
 	overflow: auto;
 }
 
@@ -11,7 +11,7 @@
 	box-sizing: border-box;
 }
 /*{+START,CSS_MODE,desktop}*/
-	.tree_list__root_tree_list {
+	.tree-list--root-tree-list {
 		height: 358px;
 	}
 /*{+END}*/
@@ -43,7 +43,7 @@
 =========================
 */
 
-.pt_editor .ajax_tree_cat_icon {
+.pt_editor .ajax-tree-cat-icon {
 	display: none;
 }
 

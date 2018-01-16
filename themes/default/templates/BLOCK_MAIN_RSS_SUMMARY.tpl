@@ -3,13 +3,13 @@
 
 	{+START,IF_EMPTY,{CATEGORY_IMG}}
 		{+START,IF_NON_EMPTY,{AUTHOR}}
-			<div class="newscat_img newscat_img_author">
+			<div class="newscat-img newscat-img-author">
 				<div class="news_by">{AUTHOR}</div>
 			</div>
 		{+END}
 	{+END}
 	{+START,IF_NON_EMPTY,{CATEGORY_IMG}}
-		<div class="newscat_img newscat_img_author">
+		<div class="newscat-img newscat-img-author">
 			<img src="{$ENSURE_PROTOCOL_SUITABILITY*,{CATEGORY_IMG}}" title="{CATEGORY`}" alt="{CATEGORY`}" />
 			{CATEGORY`}
 		</div>

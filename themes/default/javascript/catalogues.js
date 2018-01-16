@@ -84,7 +84,7 @@
 
     $cms.functions.moduleCmsCataloguesRunStartAddCatalogue = function moduleCmsCataloguesRunStartAddCatalogue() {
         var form = document.getElementById('new_field_0_name').form,
-            submitBtn = document.getElementById('submit_button'),
+            submitBtn = document.getElementById('submit-button'),
             validValue;
         
         form.addEventListener('submit', function submitCheck(e) {

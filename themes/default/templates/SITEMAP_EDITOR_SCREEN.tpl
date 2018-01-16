@@ -31,7 +31,7 @@
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<input style="display: none" type="text" id="tree_list" name="tree_list" value="{$_GET*,id}" class="js-change-update-details-box" />
-					<div id="tree_list__root_tree_list" class="sitemap_editor">
+					<div id="tree-list--root-tree-list" class="sitemap_editor">
 						<!-- List put in here -->
 					</div>
 				</form>

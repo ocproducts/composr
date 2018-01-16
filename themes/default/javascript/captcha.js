@@ -60,7 +60,7 @@
     $cms.functions.captchaCaptchaAjaxCheck = function captchaCaptchaAjaxCheck() {
         var form = document.getElementById('main_form'),
             captchaEl = form.elements['captcha'],
-            submitBtn = document.getElementById('submit_button');
+            submitBtn = document.getElementById('submit-button');
 
         if (!form) {
             form = document.getElementById('posting_form');

@@ -1,1 +1,1 @@
-<span class="results_page_num">{P*}</span>
+<span class="results-page-num">{P*}</span>

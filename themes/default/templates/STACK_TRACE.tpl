@@ -6,7 +6,7 @@
 	<div class="wide-table-wrap"><table class="map-table wide-table results-table">
 		<colgroup>
 			<col class="field-name-column" />
-			<col class="field_value_column" />
+			<col class="field-value-column" />
 		</colgroup>
 
 		<tbody>
@@ -31,7 +31,7 @@
 	<div class="wide-table-wrap"><table class="map-table wide-table results-table">
 		<colgroup>
 			<col class="field-name-column" />
-			<col class="field_value_column" />
+			<col class="field-value-column" />
 		</colgroup>
 
 		<tbody>

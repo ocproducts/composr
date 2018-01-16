@@ -5,7 +5,7 @@
 		{+START,LOOP,ALL_RATING_CRITERIA}
 			{$SET,identifier,{CONTENT_TYPE*}__{TYPE*}__{ID*}}
 
-			<div class="rating_outer">
+			<div class="rating-outer">
 				<div class="rating_type_title">
 					<a id="rating__{$GET,identifier}_jump" rel="dorating"></a>
 

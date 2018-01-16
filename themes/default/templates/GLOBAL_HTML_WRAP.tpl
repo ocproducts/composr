@@ -44,7 +44,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 
 						{$,Search box for logged in users [could show to guests, except space is lacking]}
 						{+START,IF,{$AND,{$ADDON_INSTALLED,search},{$DESKTOP},{$NOT,{$IS_GUEST}}}}{+START,IF,{$CONFIG_OPTION,block_top_search,1}}
-							<div class="top-form top_search block-desktop">
+							<div class="top-form top-search block-desktop">
 								{$BLOCK,block=top_search,block_id=desktop,failsafe=1,limit_to={$?,{$MATCH_KEY_MATCH,forum:_WILD},cns_posts,all_defaults}}
 							</div>
 						{+END}{+END}
@@ -96,13 +96,13 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 
 			{+START,IF,{$GET,has_left_panel}}
 				<div id="panel-left" class="global-side-panel{+START,IF,{$GET,has_right_panel}} with-both-panels{+END}" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
-					<div class="stuck_nav" data-stuck-nav>{$LOAD_PANEL,left}</div>
+					<div class="stuck-nav" data-stuck-nav>{$LOAD_PANEL,left}</div>
 				</div>
 			{+END}
 
 			{+START,IF,{$GET,has_right_panel}}
 				<div id="panel-right" class="global-side-panel{+START,IF,{$GET,has_left_panel}} with-both-panels{+END}" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
-					<div class="stuck_nav" data-stuck-nav>{$LOAD_PANEL,right}</div>
+					<div class="stuck-nav" data-stuck-nav>{$LOAD_PANEL,right}</div>
 				</div>
 			{+END}
 		</div>
@@ -151,7 +151,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 							{+END}{+END}{+END}{+END}
 							<li><a href="{$PAGE_LINK*,adminzone:,,,,keep_theme}"><img width="24" height="24" title="{!ADMIN_ZONE}" alt="{!ADMIN_ZONE}" src="{$IMG*,icons/24x24/menu/adminzone/adminzone}" srcset="{$IMG*,icons/48x48/menu/adminzone/adminzone} 2x" /></a></li>
 							{+START,IF,{$DESKTOP}}{+START,IF,{$EQ,{$BRAND_NAME},Composr}}
-								<li><a id="software_chat_button" accesskey="-" href="#!" class="js-global-click-load-software-chat"><img width="24" height="24" id="software_chat_img" title="{!SOFTWARE_CHAT}" alt="{!SOFTWARE_CHAT}" src="{$IMG*,icons/24x24/tool_buttons/software_chat}" srcset="{$IMG*,icons/48x48/tool_buttons/software_chat} 2x" /></a></li>
+								<li><a id="software-chat-button" accesskey="-" href="#!" class="js-global-click-load-software-chat"><img width="24" height="24" id="software-chat-img" title="{!SOFTWARE_CHAT}" alt="{!SOFTWARE_CHAT}" src="{$IMG*,icons/24x24/tool_buttons/software_chat}" srcset="{$IMG*,icons/48x48/tool_buttons/software_chat} 2x" /></a></li>
 							{+END}{+END}
 						{+END}
 					{+END}

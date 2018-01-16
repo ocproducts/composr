@@ -125,13 +125,13 @@
 
     $cms.templates.ecomShoppingItemQuantityField = function ecomShoppingItemQuantityField(params, container) {
         $dom.on(container, 'keypress', '.js-keypress-unfade-cart-update-button', function () {
-            document.getElementById('cart_update_button').classList.remove('button_faded');
+            document.getElementById('cart_update_button').classList.remove('button-faded');
         });
     };
 
     $cms.templates.ecomShoppingItemRemoveField = function ecomShoppingItemRemoveField(params, container) {
         $dom.on(container, 'click', '.js-click-unfade-cart-update-button', function () {
-            document.getElementById('cart_update_button').classList.remove('button_faded');
+            document.getElementById('cart_update_button').classList.remove('button-faded');
         });
     };
 

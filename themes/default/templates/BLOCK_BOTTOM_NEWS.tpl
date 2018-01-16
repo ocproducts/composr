@@ -5,7 +5,7 @@
 
 <div data-tpl="blockBottomNews" data-tpl-params="{+START,PARAMS_JSON,bottom_news_id,news_ticker_text}{_*}{+END}">
 	{+START,SET,news_ticker_text}
-		<ol class="horizontal_ticker">
+		<ol class="horizontal-ticker">
 			{+START,LOOP,POSTS}
 				<li><a title="{$STRIP_TAGS,{NEWS_TITLE}}: {DATE*}" class="nvn" href="{FULL_URL*}">{NEWS_TITLE}</a></li>
 			{+END}

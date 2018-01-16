@@ -41,7 +41,7 @@
 						<div class="accessibility-hidden"><label for="tree_list">{!ENTRY}</label></div>
 						<input class="js-change-update-perm-box" style="display: none" type="text" id="tree_list" name="tree_list" value="{$_GET*,id}" />
 					</form>
-					<div id="tree_list__root_tree_list" class="tree_list__root_tree_list pt_editor">
+					<div id="tree-list--root-tree-list" class="tree-list--root-tree-list pt_editor">
 						<!-- List put in here -->
 					</div>
 				</div>

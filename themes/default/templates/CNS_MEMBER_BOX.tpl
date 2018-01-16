@@ -15,7 +15,7 @@
 			{+END}
 		{+END}
 
-		<div>{$,div will be set as inline block}<table class="map-table tooltip_fields autosized-table">
+		<div>{$,div will be set as inline block}<table class="map-table tooltip-fields autosized-table">
 			<tbody>
 				<tr><th class="de-th">{!USERNAME}:</th><td><a href="{$MEMBER_PROFILE_URL*,{MEMBER_ID}}">{USERNAME*}</a></td></tr>
 				<tr><th class="de-th">{!cns:SPECIFIC_FORUM_POSTS}:</th><td>{POSTS*}</td></tr>

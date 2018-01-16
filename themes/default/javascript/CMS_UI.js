@@ -338,7 +338,7 @@
             tooltipEl.role = 'tooltip';
             tooltipEl.style.display = 'none';
             var rtPos = tooltip.indexOf('results-table');
-            tooltipEl.className = 'tooltip ' + ((rtPos === -1 || rtPos > 100) ? 'tooltip-ownlayout' : 'tooltip-nolayout') + ' boxless-space' + (haveLinks ? ' have_links' : '');
+            tooltipEl.className = 'tooltip ' + ((rtPos === -1 || rtPos > 100) ? 'tooltip-ownlayout' : 'tooltip-nolayout') + ' boxless-space' + (haveLinks ? ' have-links' : '');
             if (el.className.substr(0, 3) === 'tt_') {
                 tooltipEl.className += ' ' + el.className;
             }
@@ -374,12 +374,12 @@
         if (pic) {
             var img = win.document.createElement('img');
             img.src = pic;
-            img.className = 'tooltip_img';
+            img.className = 'tooltip-img';
             if (lightsOff) {
-                img.classList.add('faded_tooltip_img');
+                img.classList.add('faded-tooltip-img');
             }
             tooltipEl.appendChild(img);
-            tooltipEl.classList.add('tooltip_with_img');
+            tooltipEl.classList.add('tooltip-with-img');
         }
 
         var eventCopy = { // Needs to be copied as it will get erased on IE after this function ends

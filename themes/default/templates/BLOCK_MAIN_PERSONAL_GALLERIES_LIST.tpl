@@ -3,7 +3,7 @@
 	<div id="{$GET*,ajax_block_main_personal_galleries_list_wrapper}">
 		{+START,IF_NON_EMPTY,{GALLERIES}}
 			<div class="box box___block_main_personal_galleries_list"><div class="box-inner compacted-subbox-stream">
-				<div class="raw_ajax_grow_spot">
+				<div class="raw-ajax-grow-spot">
 					{GALLERIES}
 				</div>
 			</div></div>

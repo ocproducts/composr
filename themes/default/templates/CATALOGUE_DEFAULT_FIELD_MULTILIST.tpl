@@ -3,10 +3,10 @@
 		{+START,LOOP,ALL}<p>
 			{+START,IF,{SHOW_UNSET_VALUES}}
 				{+START,IF,{HAS}}
-					<span class="multilist_mark yes">&#10003;</span> {$,Checkmark entity}
+					<span class="multilist-mark yes">&#10003;</span> {$,Checkmark entity}
 				{+END}
 				{+START,IF,{$NOT,{HAS}}}
-					<span class="multilist_mark no">&#10007;</span> {$,Cross entity}
+					<span class="multilist-mark no">&#10007;</span> {$,Cross entity}
 				{+END}
 			{+END}
 

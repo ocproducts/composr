@@ -73,7 +73,7 @@
 }
 
 /*{+START,CSS_MODE,desktop}*/
-	.docked #tree_list__root_tree_list {
+	.docked #tree-list--root-tree-list {
 		overflow-y: scroll;
 		max-height: 200px;
 	}

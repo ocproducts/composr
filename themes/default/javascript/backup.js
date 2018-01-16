@@ -36,7 +36,7 @@
     };
 
     $cms.templates.backupLaunchScreen = function backupLaunchScreen() {
-        var submitButton = $dom.$('#submit_button'),
+        var submitButton = $dom.$('#submit-button'),
             maxSizeField = $dom.$('#max_size');
 
         if (!submitButton || !maxSizeField) {

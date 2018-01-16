@@ -1193,7 +1193,7 @@
 
             var SOFTWARE_CHAT_EXTRA = $util.format('{!SOFTWARE_CHAT_EXTRA;^}', [$cms.filter.html(window.location.href.replace($cms.getBaseUrl(), 'http://baseurl'))]);
             var html = /** @lang HTML */'' +
-                '<div class="software_chat">' +
+                '<div class="software-chat">' +
                 '   <h2>{!CMS_COMMUNITY_HELP}</h2>' +
                 '   <ul class="spaced-list">' + SOFTWARE_CHAT_EXTRA + '</ul>' +
                 '   <p class="associated-link associated-links-block-group">' +
@@ -1201,20 +1201,20 @@
                 '       <a href="#!" class="js-global-click-load-software-chat">{!HIDE}</a>' +
                 '   </p>' +
                 '</div>' +
-                '<iframe class="software_chat_iframe" style="border: 0" src="' + $cms.filter.html(url) + '"></iframe>';
+                '<iframe class="software-chat-iframe" style="border: 0" src="' + $cms.filter.html(url) + '"></iframe>';
 
-            var box = $dom.$('#software_chat_box'), img;
+            var box = $dom.$('#software-chat-box'), img;
             if (box) {
                 box.parentNode.removeChild(box);
 
-                img = $dom.$('#software_chat_img');
+                img = $dom.$('#software-chat-img');
                 img.style.opacity = 1;
             } else {
                 var width = 950,
                     height = 550;
 
                 box = $dom.create('div', {
-                    id: 'software_chat_box',
+                    id: 'software-chat-box',
                     css: {
                         width: width + 'px',
                         height: height + 'px',
@@ -1234,7 +1234,7 @@
 
                 $dom.smoothScroll(0);
 
-                img = $dom.$('#software_chat_img');
+                img = $dom.$('#software-chat-img');
                 img.style.opacity = 0.5;
             }
         },

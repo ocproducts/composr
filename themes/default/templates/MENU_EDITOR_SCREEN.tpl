@@ -49,7 +49,7 @@
 
 					<div class="accessibility-hidden"><label for="tree_list">{!ENTRY}</label></div>
 					<input class="js-input-change-update-selection" style="display: none" type="text" id="tree_list" name="tree_list" />
-					<div id="tree_list__root_tree_list">
+					<div id="tree-list--root-tree-list">
 						<!-- List put in here -->
 					</div>
 

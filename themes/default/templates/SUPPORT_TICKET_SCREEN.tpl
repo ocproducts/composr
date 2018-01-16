@@ -127,7 +127,7 @@
 				<th class="de-th">
 					<span class="field-name">{!TICKET_STAFF_ONLY}:</span>
 				</th>
-				<td class="one_line">
+				<td class="one-line">
 					<label for="staff_only"><input type="checkbox" id="staff_only" name="staff_only" value="1" /> {!TICKET_STAFF_ONLY_DESCRIPTION}</label>
 				</td>
 			</tr>
@@ -138,7 +138,7 @@
 				<th class="de-th">
 					<span class="field-name">{!CLOSE_TICKET}:</span>
 				</th>
-				<td class="one_line">
+				<td class="one-line">
 					<label for="close"><input type="checkbox" id="close" name="close" value="1" /> {!DESCRIPTION_CLOSE_TICKET}</label>
 				</td>
 			</tr>

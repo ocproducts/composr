@@ -5,7 +5,7 @@
 		{+START,IF,{$DESKTOP}}
 			<colgroup>
 				<col class="field-name-column" />
-				<col class="field_value_column" />
+				<col class="field-value-column" />
 			</colgroup>
 		{+END}
 

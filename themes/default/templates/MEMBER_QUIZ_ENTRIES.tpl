@@ -75,11 +75,11 @@
 								<td>
 									{+START,IF_PASSED,PASSED}
 										{+START,IF,{PASSED}}
-											<span class="multilist_mark yes">{!PASSED}</span>
+											<span class="multilist-mark yes">{!PASSED}</span>
 										{+END}
 
 										{+START,IF,{$NOT,{PASSED}}}
-											<span class="multilist_mark no">{!FAILED}</span>
+											<span class="multilist-mark no">{!FAILED}</span>
 										{+END}
 									{+END}
 

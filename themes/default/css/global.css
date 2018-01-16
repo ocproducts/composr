@@ -717,7 +717,7 @@ header h1 {
 	display: inline-block;
 }
 
-.global-navigation .top-form.top_search {
+.global-navigation .top-form.top-search {
 	margin-top: 3px; /* To force it align correctly with the form in a different block (which is taller) */
 }
 .global-navigation .top-form * {
@@ -975,7 +975,7 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 		box-sizing: border-box;
 	}
 
-	.global-side-panel .stuck_nav { /* overrides possibility from the inline style the stuck_nav JS puts there */
+	.global-side-panel .stuck-nav { /* overrides possibility from the inline style the stuck-nav JS puts there */
 		position: static !important;
 		width: 100% !important;
 	}
@@ -1311,7 +1311,7 @@ div.edited {
 }
 
 /* Used to align a back to top image beside screen item buttons */
-.back_to_top_by_buttons {
+.back-to-top-by-buttons {
 	padding-top: 4px;
 }
 
@@ -1980,7 +1980,7 @@ h3 .toggleable-tray-button img {
 	margin-top: -0.5em !important;
 }
 
-.compacted-subbox-stream h3+.meta-details, .compacted-subbox-stream .newscat_img+.meta-details {
+.compacted-subbox-stream h3+.meta-details, .compacted-subbox-stream .newscat-img+.meta-details {
 	border-bottom: 0;
 	margin-bottom: 0.5em;
 }
@@ -2369,7 +2369,7 @@ div.zebra-0+div.zebra-1, div.zebra-1+div.zebra-0 {
 	width: 11em;
 }
 
-.field-input-column, .field_value_column {
+.field-input-column, .field-value-column {
 	width: 100%;
 }
 
@@ -2483,7 +2483,7 @@ div.zebra-0+div.zebra-1, div.zebra-1+div.zebra-0 {
 .tooltip .associated-link {
 	display: none;
 }
-.tooltip_img {
+.tooltip-img {
 	position: absolute;
 	right: 3px;
 	top: 3px;
@@ -2495,32 +2495,32 @@ div.zebra-0+div.zebra-1, div.zebra-1+div.zebra-0 {
 	text-decoration: none !important;
 	color: inherit !important;
 }
-.tooltip.have_links a, .tooltip.have_links a:visited, .tooltip.have_links a:hover {
+.tooltip.have-links a, .tooltip.have-links a:visited, .tooltip.have-links a:hover {
 	color: {$GET,a.link} !important;
 	text-decoration: underline !important;
 }
-.tooltip .tooltip_fields {
+.tooltip .tooltip-fields {
 	font-size: 0.85em;
 	display: inline-block;
 	border-spacing: 0;
 }
-.tooltip .tooltip_fields table {
+.tooltip .tooltip-fields table {
 	border-collapse: collapse;
 }
-.tooltip .tooltip_fields th {
+.tooltip .tooltip-fields th {
 	border-right: 1px solid {$GET,dark_border};
 	font-weight: bold !important;
 	padding-right: 1em;
 	white-space: nowrap;
 }
-.tooltip .tooltip_fields td {
+.tooltip .tooltip-fields td {
 	padding-left: 1em;
 	min-width: 18em;
 }
-.tooltip_with_img {
+.tooltip-with-img {
 	padding-right: 30px;
 }
-.faded_tooltip_img {
+.faded-tooltip-img {
 	opacity: 0.2;
 }
 
@@ -2592,7 +2592,7 @@ div.zebra-0+div.zebra-1, div.zebra-1+div.zebra-0 {
 	background-color: {$GET,area_hover_2_background} !important;
 }
 
-.pagination_load_more {
+.pagination-load-more {
 	border-top: 1px solid {$GET,standard_border};
 	text-align: center;
 	font-size: 1.6em;
@@ -2600,7 +2600,7 @@ div.zebra-0+div.zebra-1, div.zebra-1+div.zebra-0 {
 	clear: both;
 }
 
-.alphabetical_jumper {
+.alphabetical-jumper {
 	float: none !important;
 	margin-left: -2px !important;
 	margin-bottom: 10px !important;
@@ -2608,19 +2608,19 @@ div.zebra-0+div.zebra-1, div.zebra-1+div.zebra-0 {
 	padding: 3px;
 }
 
-.alphabetical_jumper.pagination a, .alphabetical_jumper.pagination a:hover {
+.alphabetical-jumper.pagination a, .alphabetical-jumper.pagination a:hover {
 	padding: 0.5em 1em !important;
 }
 
-.results_continue, .results_page_num {
+.results-continue, .results-page-num {
 	border-left: 0;
 }
 
-.results_page_num {
+.results-page-num {
 	font-weight: bold;
 }
 
-.pagination_pages {
+.pagination-pages {
 	display: inline;
 }
 
@@ -2681,7 +2681,7 @@ div.zebra-0+div.zebra-1, div.zebra-1+div.zebra-0 {
 	margin-left: 0 !important;
 	margin-right: 0 !important;
 }
-.compacted-subbox-stream>.raw_ajax_grow_spot>h3 {
+.compacted-subbox-stream>.raw-ajax-grow-spot>h3 {
 	margin: 1em 5px;
 }
 .compacted-subbox-stream .box {
@@ -2712,11 +2712,11 @@ div.zebra-0+div.zebra-1, div.zebra-1+div.zebra-0 {
 .compacted-subbox-stream .box .associated-details {
 	margin-bottom: 0;
 }
-.compacted-subbox-stream.less_compact .box {
+.compacted-subbox-stream.less-compact .box {
 	padding-top: 1.5em !important;
 	margin: 2em 0;
 }
-.compacted-subbox-stream.less_compact .box-inner>h3 {
+.compacted-subbox-stream.less-compact .box-inner>h3 {
 	font-size: 1.3em;
 	margin-bottom: 1em;
 }
@@ -2805,60 +2805,60 @@ div.ajax-loading, p.ajax-loading {
 	text-align: center;
 }
 
-.ajax_tree_list {
+.ajax-tree-list {
 	{$BETA_CSS_PROPERTY,user-select: none;}
 }
 
-.ajax_tree_expand_icon {
+.ajax-tree-expand-icon {
 	width: 11px;
 	height: 11px;
 }
 
-.ajax_tree_cat_icon {
+.ajax-tree-cat-icon {
 	width: 14px;
 	height: 14px;
 	display: none;
 }
 
-.ajax_tree_magic_button {
+.ajax-tree-magic-button {
 	background-color: {$GET,native_ui_background};
 	color: {$GET,native_ui_foreground};
 	cursor: pointer;
 }
 
-.tree_list__root_tree_list {
+.tree-list--root-tree-list {
 	padding-bottom: 0.5em;
 }
-.tree_list_highlighted *, .tree_list_nonhighlighted * {
+.tree-list-highlighted *, .tree-list-nonhighlighted * {
 	vertical-align: middle;
 	white-space: nowrap;
 }
-.tree_list_highlighted a, .tree_list_nonhighlighted a {
+.tree-list-highlighted a, .tree-list-nonhighlighted a {
 	background-color: {$GET,native_ui_background};
 	color: {$GET,native_ui_foreground};
 }
-.tree_list_highlighted a {
+.tree-list-highlighted a {
 	font-weight: bold;
 }
-.tree_list_nonhighlighted a {
+.tree-list-nonhighlighted a {
 }
 
-.tree_list_node {
+.tree-list-node {
 	display: inline-block;
 }
 /*{+START,CSS_MODE,mobile}*/
-	.tree_list_node, .tree_list_nonhighlighted, .tree_list_highlighted {
+	.tree-list-node, .tree-list-nonhighlighted, .tree-list-highlighted {
 		margin: 1em 0;
 	}
 /*{+END}*/
 
-.software_chat {
+.software-chat {
 	margin: 20px;
 	font-size: 0.9em;
 	float: right;
 	width: 260px;
 }
-.software_chat_iframe {
+.software-chat-iframe {
 	overflow: hidden;
 	width: 650px;
 	height: 90%;
@@ -2866,14 +2866,14 @@ div.ajax-loading, p.ajax-loading {
 
 /* Specific field types */
 
-.multilist_mark {
+.multilist-mark {
 	width: 1em;
 	display: inline-block;
 }
-.multilist_mark.yes {
+.multilist-mark.yes {
 	color: {$GET,green_highlight_text};
 }
-.multilist_mark.no {
+.multilist-mark.no {
 	color: {$GET,red_highlight_text};
 }
 
@@ -2923,10 +2923,10 @@ div.ajax-loading, p.ajax-loading {
 .rating-inline, .rating-inline div, .rating-inline form {
 	display: inline;
 }
-.rating-inline .rating_outer {
+.rating-inline .rating-outer {
 	padding-left: 2em;
 }
-.rating-inline .rating_outer:first-child {
+.rating-inline .rating-outer:first-child {
 	padding-left: 0;
 }
 
@@ -3128,12 +3128,12 @@ div .post-buttons>*, div .buttons-group-faded>* {
 /*{+END}*/
 
 /*{+START,CSS_MODE,desktop}*/
-	.comments-posting-form-inner th, .comments-posting-form-inner td.one_line {
+	.comments-posting-form-inner th, .comments-posting-form-inner td.one-line {
 		padding: 0.5em 1.5em 0.5em 0.5em;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.comments-posting-form-inner th, .comments-posting-form-inner td.one_line {
+	.comments-posting-form-inner th, .comments-posting-form-inner td.one-line {
 		padding: 0.5em 1em 0.5em 0;
 	}
 /*{+END}*/
@@ -3214,7 +3214,7 @@ div .post-buttons>*, div .buttons-group-faded>* {
 .comments-posting-form-end .proceed-button.contains-preview-button, .comments-captcha {
 	margin-left: 14.5em !important;
 }
-.comments-posting-form-end #submit_button.near-preview-button {
+.comments-posting-form-end #submit-button.near-preview-button {
 	float: right;
 	margin-right: 1em !important;
 }
@@ -3471,7 +3471,7 @@ a.associated-link / form.associated-link / span.associated-link - a single assoc
 p.associated-link / div.associated-link - a single associated link displayed in a block, with CSS-generated brackets around
 ul.associated-links-block-group - a group of associated links displayed in a block, each link on its own line with its own CSS-generated brackets around
 ul.horizontal-links / ul.horizontal-links-comma - a group of associated links displayed in a block, the links on the same line with a CSS-generated separation character; often used to represent block actions; often used in conjunction with associated-links-block-group to get the CSS-generated brackets
-.horizontal-meta-details / .horizontal-buttons / .horizontal_ticker - Additional horizontal list types for things other than links
+.horizontal-meta-details / .horizontal-buttons / .horizontal-ticker - Additional horizontal list types for things other than links
 .buttons-group - used for a button set, like horizontal-links but for centred buttons
 
 There is 'actions-list' too (defined elsewhere). These are for links that are given more focus as key navigation mechanisms in a task-based UI.
@@ -3524,14 +3524,14 @@ ul.associated-links-block-group>li:after, span.associated-link:after, a.associat
 ul.associated-links-block-group.horizontal-links>li:before,
 .horizontal-meta-details li:before,
 .horizontal-links>li:before,
-.horizontal_ticker li:before {
+.horizontal-ticker li:before {
 	vertical-align: -20%;
 }
 /*{+START,CSS_MODE,desktop}*/
 	ul.associated-links-block-group.horizontal-links>li:before,
 	.horizontal-meta-details li:before,
 	.horizontal-links>li:before,
-	.horizontal_ticker li:before {
+	.horizontal-ticker li:before {
 		padding: 0 0.5em 0 0.1em;
 		content: "\00b7" !important; /* a &middot; */
 	}
@@ -3540,16 +3540,16 @@ ul.associated-links-block-group.horizontal-links>li:before,
 	ul.associated-links-block-group.horizontal-links>li:before,
 	.horizontal-meta-details li:before,
 	.horizontal-links>li:before,
-	.horizontal_ticker li:before {
+	.horizontal-ticker li:before {
 		padding: 0 0.2em 0 0;
 		margin-left: -0.2em;
 		content: "|" !important;
 		font-size: 0.8em;
 	}
-	.with_images ul.associated-links-block-group.horizontal-links>li:before,
-	.with_images .horizontal-meta-details li:before,
-	.with_images .horizontal-links>li:before,
-	.with_images .horizontal_ticker li:before {
+	.with-images ul.associated-links-block-group.horizontal-links>li:before,
+	.with-images .horizontal-meta-details li:before,
+	.with-images .horizontal-links>li:before,
+	.with-images .horizontal-ticker li:before {
 		margin-left: 0.5em;
 		content: "" !important;
 	}
@@ -3570,14 +3570,14 @@ ul.associated-links-block-group.horizontal-links>li:before,
 .horizontal-meta-details li:first-child:before,
 .horizontal-links li:first-child:before,
 .horizontal-buttons li:first-child:before,
-.horizontal_ticker li:first-child:before,
+.horizontal-ticker li:first-child:before,
 .horizontal-links-comma li:first-child:before {
 	/* Undoes the middot/comma separator */
 	content: "" !important;
 	padding-left: 0 !important;
 	padding-right: 0 !important;
 }
-ul.associated-link, ul.horizontal-meta-details, ul.horizontal-links, ul.horizontal-links-comma, ul.horizontal-buttons, .horizontal_ticker {
+ul.associated-link, ul.horizontal-meta-details, ul.horizontal-links, ul.horizontal-links-comma, ul.horizontal-buttons, .horizontal-ticker {
 	list-style: none;
 	margin: 0;
 	padding: 0;
@@ -3592,12 +3592,12 @@ ul.horizontal-links-comma {
 ul.associated-link {
 	display: block;
 }
-ul.horizontal-meta-details, ul.horizontal-links, ul.horizontal-links-comma, ul.horizontal-buttons, .horizontal_ticker {
+ul.horizontal-meta-details, ul.horizontal-links, ul.horizontal-links-comma, ul.horizontal-buttons, .horizontal-ticker {
 	/* As these go across horizontally, we need to do this to allow centering to work for the group */
 	display: inline-block !important;
 	width: 100%;
 }
-ul.associated-link>li, .horizontal-meta-details>li, .horizontal-links>li, ul.horizontal-links-comma>li, .horizontal-buttons>li, .horizontal_ticker>li {
+ul.associated-link>li, .horizontal-meta-details>li, .horizontal-links>li, ul.horizontal-links-comma>li, .horizontal-buttons>li, .horizontal-ticker>li {
 	display: inline;
 	margin: 0;
 	padding: 0;
@@ -3817,7 +3817,7 @@ div>.button-micro:first-child, div>.button-screen:first-child, div>.button-scree
 	margin-left: 2px; /* enough for the shadow */
 }
 
-.button_faded {
+.button-faded {
 	opacity: 0.5 !important;
 }
 

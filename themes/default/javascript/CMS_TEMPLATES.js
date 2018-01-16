@@ -447,7 +447,7 @@
             var id = $dom.$('#id'),
                 ids = (id.value === '') ? [] : id.value.split(/,/);
 
-            $dom.$('#submit_button').disabled = (ids.length !== 1);
+            $dom.$('#submit-button').disabled = (ids.length !== 1);
             $dom.$('#mass_select_button').disabled = (ids.length === 0);
         }
     };

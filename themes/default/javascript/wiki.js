@@ -26,7 +26,7 @@
 
         $dom.on(container, 'click', '.js-click-show-wiki-merge-button', function (e, checkbox) {
             var wikiMergeButton = $dom.$('#wiki_merge_button');
-            wikiMergeButton.classList.remove('button_faded');
+            wikiMergeButton.classList.remove('button-faded');
             $dom.show(wikiMergeButton);
         });
     };

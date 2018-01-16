@@ -1,1 +1,1 @@
-<span class="results_continue">(&hellip;)</span>
+<span class="results-continue">(&hellip;)</span>

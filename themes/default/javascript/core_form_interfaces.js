@@ -54,7 +54,7 @@
         this.cancelUrl = strVal(params.cancelUrl);
         this.analyticEventCategory = params.analyticEventCategory;
         this.form = $dom.closest(this.el, 'form');
-        this.btnSubmit = this.$('#submit_button');
+        this.btnSubmit = this.$('#submit-button');
 
         window.formPreviewUrl = strVal(params.previewUrl);
         window.separatePreview = Boolean(params.separatePreview);
@@ -124,7 +124,7 @@
 
         fixFormEnterKey: function () {
             var form = this.form,
-                submitBtn = document.getElementById('submit_button'),
+                submitBtn = document.getElementById('submit-button'),
                 inputs = form.getElementsByTagName('input'),
                 type, types = ['text', 'password', 'color', 'email', 'number', 'range', 'search',  'tel', 'url'];
 

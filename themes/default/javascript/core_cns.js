@@ -157,7 +157,7 @@
 
     $cms.functions.moduleAdminCnsGroupsRunStart = function moduleAdminCnsGroupsRunStart() {
         var form = document.getElementById('main_form'),
-            submitBtn = document.getElementById('submit_button'),
+            submitBtn = document.getElementById('submit-button'),
             validValue;
         
         form.addEventListener('submit', function submitCheck(e) {
@@ -183,7 +183,7 @@
 
     $cms.functions.moduleAdminCnsEmoticons = function moduleAdminCnsEmoticons() {
         var form = document.getElementById('main_form'),
-            submitBtn = document.getElementById('submit_button'),
+            submitBtn = document.getElementById('submit-button'),
             validValue;
         
         form.addEventListener('submit', function submitCheck(e) {
@@ -234,7 +234,7 @@
         var suffix = $cms.filter.id('{!cns:DELETE_MEMBER;^}').toLowerCase();
 
         window['load_tab__edit__' + suffix] = function () {
-            var submitButton = document.getElementById('submit_button'),
+            var submitButton = document.getElementById('submit-button'),
                 deleteCheckbox = document.getElementById('delete'),
                 tab = document.getElementById('t_edit__' + suffix);
 
@@ -248,7 +248,7 @@
 
     $cms.functions.hookProfilesTabsEditSettingsRenderTab = function hookProfilesTabsEditSettingsRenderTab() {
         var form = document.getElementById('email_address').form,
-            submitBtn = document.getElementById('submit_button'),
+            submitBtn = document.getElementById('submit-button'),
             validValue;
         
         form.addEventListener('submit', function submitCheck(e) {
@@ -420,7 +420,7 @@
 
     function joinForm(params) {
         var form = document.getElementById('username').form,
-            submitBtn = document.getElementById('submit_button');
+            submitBtn = document.getElementById('submit-button');
 
         form.elements['username'].onchange = function () {
             if (form.elements['intro_title']) {

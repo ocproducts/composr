@@ -27,7 +27,7 @@
 				<div class="move-left js-btn-car-move" data-move-amount="-30"></div>
 				<div class="move-right js-btn-car-move" data-move-amount="+30"></div>
 
-				<div class="main raw_ajax_grow_spot">
+				<div class="main raw-ajax-grow-spot">
 				</div>
 			</div>
 
@@ -54,7 +54,7 @@
 
 		{$SET,ajax_block_main_multi_content_wrapper,ajax_block_main_multi_content_wrapper_{$RAND%}}
 		<div id="{$GET*,ajax_block_main_multi_content_wrapper}" class="box-wrapper">
-			<div class="float-surrounder cguid_{_GUID|*} raw_ajax_grow_spot">
+			<div class="float-surrounder cguid_{_GUID|*} raw-ajax-grow-spot">
 				{+START,IF_NON_EMPTY,{CONTENT}}
 					{+START,LOOP,CONTENT}
 						{_loop_var}

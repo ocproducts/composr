@@ -5,7 +5,7 @@
 	{+END}
 
 	<input style="display: none" type="text" class="input-line{REQUIRED*} hidden_but_needed js-input-change-update-mirror" id="{NAME*}" name="{NAME*}" value="{DEFAULT*}" />
-	<div class="ajax_tree_list" id="tree_list__root_{NAME*}" role="tree">
+	<div class="ajax-tree-list" id="tree_list__root_{NAME*}" role="tree">
 		<!-- List put in here -->
 	</div>
 

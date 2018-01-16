@@ -1,7 +1,7 @@
 {+START,IF,{$NEQ,{$COMMA_LIST_GET,{BLOCK_PARAMS},raw},1}}
 	{$SET,ajax_block_main_news_wrapper,ajax_block_main_news_wrapper_{$RAND%}}
 	<div id="{$GET*,ajax_block_main_news_wrapper}" class="box-wrapper">
-		<section class="box box___block_main_news"><div class="box-inner compacted-subbox-stream{+START,IF,{$GET,large_news_posts}} less_compact{+END}">
+		<section class="box box___block_main_news"><div class="box-inner compacted-subbox-stream{+START,IF,{$GET,large_news_posts}} less-compact{+END}">
 			{+START,IF,{$NOT,{BLOG}}}{+START,IF_NON_EMPTY,{TITLE}}
 				<h2>{TITLE}</h2>
 			{+END}{+END}
@@ -10,7 +10,7 @@
 				<p class="nothing-here">{!NO_ENTRIES,news}</p>
 			{+END}
 
-			<div class="raw_ajax_grow_spot">
+			<div class="raw-ajax-grow-spot">
 				{CONTENT}
 
 				{+START,IF_NON_EMPTY,{BRIEF}}

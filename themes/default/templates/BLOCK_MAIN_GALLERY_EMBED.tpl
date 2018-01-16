@@ -6,7 +6,7 @@
 		{+START,IF,{$NEQ,{_GUID},carousel}}
 			{$SET,ajax_block_main_gallery_embed_wrapper,ajax_block_main_gallery_embed_wrapper_{$RAND%}}
 			<div id="{$GET*,ajax_block_main_gallery_embed_wrapper}">
-				<div class="gallery-grid-cell-wrap raw_ajax_grow_spot">
+				<div class="gallery-grid-cell-wrap raw-ajax-grow-spot">
 					{ENTRIES}
 				</div>
 
@@ -31,7 +31,7 @@
 				<div class="move-left js-btn-car-move " data-move-amount="-47"></div>
 				<div class="move-right js-btn-car-move js-click-carousel-prepare-load-more" data-move-amount="+47"></div>
 
-				<div class="main raw_ajax_grow_spot" id="carousel_{$GET*,carousel_id}_container"></div>
+				<div class="main raw-ajax-grow-spot" id="carousel_{$GET*,carousel_id}_container"></div>
 			</div>
 
 			<div class="carousel-temp" id="carousel_ns_{$GET*,carousel_id}">

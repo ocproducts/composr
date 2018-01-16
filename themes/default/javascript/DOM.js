@@ -2668,15 +2668,15 @@
                 }
 
                 // Add AJAX load more link before where the last pagination control was
-                // Remove old pagination_load_more's
-                paginationLoadMore = wrapper.querySelector('.pagination_load_more');
+                // Remove old pagination-load-more's
+                paginationLoadMore = wrapper.querySelector('.pagination-load-more');
                 if (paginationLoadMore) {
                     paginationLoadMore.parentNode.removeChild(paginationLoadMore);
                 }
 
                 // Add in new one
                 var loadMoreLink = document.createElement('div');
-                loadMoreLink.className = 'pagination_load_more';
+                loadMoreLink.className = 'pagination-load-more';
                 var loadMoreLinkA = document.createElement('a');
                 $dom.html(loadMoreLinkA, '{!LOAD_MORE;^}');
                 loadMoreLinkA.href = '#!';
@@ -2722,8 +2722,8 @@
             }
         }
         if (!foundRel) { // Ah, no more scrolling possible
-            // Remove old pagination_load_more's
-            paginationLoadMore = wrapper.querySelector('.pagination_load_more');
+            // Remove old pagination-load-more's
+            paginationLoadMore = wrapper.querySelector('.pagination-load-more');
             if (paginationLoadMore) {
                 paginationLoadMore.parentNode.removeChild(paginationLoadMore);
             }

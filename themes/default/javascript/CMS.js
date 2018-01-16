@@ -783,7 +783,7 @@
         }
 
         function showBlockHtml(newHtml, targetDiv, append, inner) {
-            var rawAjaxGrowSpot = targetDiv.querySelector('.raw_ajax_grow_spot');
+            var rawAjaxGrowSpot = targetDiv.querySelector('.raw-ajax-grow-spot');
             if ((rawAjaxGrowSpot != null) && append) {  // If we actually are embedding new results a bit deeper
                 targetDiv = rawAjaxGrowSpot;
             }

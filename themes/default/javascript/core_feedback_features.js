@@ -372,7 +372,7 @@
                 return true;
             }
 
-            var submitButton = $dom.$id('submit_button');
+            var submitButton = $dom.$id('submit-button');
             if (submitButton) {
                 $cms.ui.disableButton(submitButton);
             }

@@ -99,7 +99,7 @@
 						{$INSERT_SPAMMER_BLACKHOLE}
 
 						<div class="inline">
-							<input id="wiki_merge_button" style="display: none" class="menu---generic-admin--merge button-screen button_faded js-click-btn-add-form-marked-posts" type="submit" value="{!_MERGE_WIKI_POSTS}" />
+							<input id="wiki_merge_button" style="display: none" class="menu---generic-admin--merge button-screen button-faded js-click-btn-add-form-marked-posts" type="submit" value="{!_MERGE_WIKI_POSTS}" />
 						</div>
 					</form>
 				{+END}

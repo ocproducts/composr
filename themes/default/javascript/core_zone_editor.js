@@ -206,7 +206,7 @@
 
     $cms.functions.moduleAdminZonesAddZone = function moduleAdminZonesAddZone() {
         var form = document.getElementById('main_form'),
-            submitBtn = document.getElementById('submit_button'),
+            submitBtn = document.getElementById('submit-button'),
             validValue;
         
         form.addEventListener('submit', function submitCheck(e) {

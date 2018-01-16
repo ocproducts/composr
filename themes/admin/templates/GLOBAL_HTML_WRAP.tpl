@@ -80,7 +80,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 
 			{+START,IF_NON_EMPTY,{$TRIM,{$LOAD_PANEL,left}}}
 				<div id="panel-left" class="global-side-panel" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
-					<div class="stuck_nav" data-stuck-nav>{$LOAD_PANEL,left}</div>
+					<div class="stuck-nav" data-stuck-nav>{$LOAD_PANEL,left}</div>
 				</div>
 			{+END}
 
@@ -90,7 +90,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 			{+START,IF,{$OR,{$GET,helper_panel},{$IS_NON_EMPTY,{$TRIM,{$LOAD_PANEL,right}}}}}
 				<div id="panel-right" class="global-side-panel{+START,IF_EMPTY,{$TRIM,{$LOAD_PANEL,right}}} helper_panel {$?,{$HIDE_HELP_PANEL},helper_panel_hidden,helper_panel_visible}{+END}" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
 					{+START,IF_NON_EMPTY,{$TRIM,{$LOAD_PANEL,right}}}
-						<div class="stuck_nav" data-stuck-nav>{$LOAD_PANEL,right}</div>
+						<div class="stuck-nav" data-stuck-nav>{$LOAD_PANEL,right}</div>
 					{+END}
 
 					{+START,IF_EMPTY,{$TRIM,{$LOAD_PANEL,right}}}
@@ -142,7 +142,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 								<li><a id="commandr_button" accesskey="o"{+START,IF,{$DESKTOP}} data-btn-load-commandr="{}" {+END} href="{$PAGE_LINK*,adminzone:admin_commandr}"><img width="24" height="24" id="commandr_img" title="{!commandr:COMMANDR_DESCRIPTIVE_TITLE}" alt="{!commandr:COMMANDR_DESCRIPTIVE_TITLE}" src="{$IMG*,icons/24x24/tool_buttons/commandr_on}" srcset="{$IMG*,icons/48x48/tool_buttons/commandr_on} 2x" /></a></li>
 							{+END}{+END}{+END}{+END}
 							{+START,IF,{$DESKTOP}}{+START,IF,{$EQ,{$BRAND_NAME},Composr}}
-								<li><a id="software_chat_button" accesskey="-" href="#!" class="js-global-click-load-software-chat"><img width="24" height="24" id="software_chat_img" title="{!SOFTWARE_CHAT}" alt="{!SOFTWARE_CHAT}" src="{$IMG*,icons/24x24/tool_buttons/software_chat}" srcset="{$IMG*,icons/48x48/tool_buttons/software_chat} 2x" /></a></li>
+								<li><a id="software-chat-button" accesskey="-" href="#!" class="js-global-click-load-software-chat"><img width="24" height="24" id="software-chat-img" title="{!SOFTWARE_CHAT}" alt="{!SOFTWARE_CHAT}" src="{$IMG*,icons/24x24/tool_buttons/software_chat}" srcset="{$IMG*,icons/48x48/tool_buttons/software_chat} 2x" /></a></li>
 							{+END}{+END}
 						{+END}
 					{+END}

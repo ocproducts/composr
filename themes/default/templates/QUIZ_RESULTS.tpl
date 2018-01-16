@@ -22,10 +22,10 @@
 				<td class="quiz_answer_status">
 					{+START,IF_PASSED,WAS_CORRECT}
 						{+START,IF,{WAS_CORRECT}}
-							<span class="multilist_mark yes">&#10004;</span>
+							<span class="multilist-mark yes">&#10004;</span>
 						{+END}
 						{+START,IF,{$NOT,{WAS_CORRECT}}}
-							<span class="multilist_mark no">&#10005;</span>
+							<span class="multilist-mark no">&#10005;</span>
 						{+END}
 					{+END}
 					{+START,IF_NON_PASSED,WAS_CORRECT}

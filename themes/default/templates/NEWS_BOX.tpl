@@ -26,7 +26,7 @@
 	{+END}
 
 	{+START,IF,{$AND,{$NOT,{BLOG}},{$IS_NON_EMPTY,IMG}}}{+START,IF,{$DESKTOP}}
-		<div class="newscat_img newscat_img_author block-desktop">
+		<div class="newscat-img newscat-img-author block-desktop">
 			{+START,IF_NON_EMPTY,{CATEGORY}}
 				<img src="{$ENSURE_PROTOCOL_SUITABILITY*,{IMG}}" alt="" />
 			{+END}
@@ -34,7 +34,7 @@
 	{+END}{+END}
 
 	{+START,IF,{$NAND,{$NOT,{BLOG}},{$IS_NON_EMPTY,{IMG}}}}{+START,IF,{$DESKTOP}}
-		<div class="newscat_img newscat_img_member block-desktop">
+		<div class="newscat-img newscat-img-member block-desktop">
 			{+START,IF_NON_EMPTY,{$AVATAR,{SUBMITTER}}}
 				<img src="{$ENSURE_PROTOCOL_SUITABILITY*,{$AVATAR,{SUBMITTER}}}" title="{!AVATAR}" alt="{!AVATAR}" />
 			{+END}

@@ -19,7 +19,7 @@
 		{+END}
 
 		{+START,IF_NON_EMPTY,{ENTRIES}}
-			<div class="float-surrounder display-type-{DISPLAY_TYPE*} raw_ajax_grow_spot">
+			<div class="float-surrounder display-type-{DISPLAY_TYPE*} raw-ajax-grow-spot">
 				{ENTRIES}
 			</div>
 		{+END}
