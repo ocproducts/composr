@@ -118,7 +118,7 @@ function syndicate_spammer_report($ip_addr, $username, $email, $reason, $trigger
             $url .= '&evidence=' . urlencode(convert_to_internal_encoding($reason, get_charset(), 'utf-8'));
         }
         $result = http_download_file($url, null, $trigger_error);
-        if (($trigger_error) && ($result != '')) {
+        if (($trigger_error) && ($result != '') && (strpos($result, 'data submitted successfull') !== false)) {
             attach_message($result . ' [ ' . $url . ' ]', 'warn');
         }
 
