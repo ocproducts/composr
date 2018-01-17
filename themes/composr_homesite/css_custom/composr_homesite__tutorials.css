@@ -23,7 +23,6 @@
 }
 .tut-row .right .tbox { overflow:hidden; border:#667ea4 solid 1px; margin-bottom:30px; }
 .tut-row .right .tbox h2 { margin:0; background:#667ea4; padding:7px 10px; color:#fff; font-size:14px; position:relative }
-.tut-row .right .tbox h2 img { position:absolute; top:5px; right:7px; }
 .tut-row .right .tbox .content { overflow:hidden; background:#e4e4e4; position:relative; }
 .tut-row .right .tbox .content .lf {
 	{+START,IF,{$MOBILE}}

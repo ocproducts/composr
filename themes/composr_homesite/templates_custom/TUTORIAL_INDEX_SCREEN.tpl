@@ -27,7 +27,7 @@
 					<h2>
 						{TITLE*}
 
-						<a href="{URL*}"><img alt="Go to tutorial" height="20" src="{$IMG*,composr_homesite/tutorials/next}" width="20" /></a>
+						<span style="float: right">{RATING_TPL}</span>
 					</h2>
 
 					<div class="content">
