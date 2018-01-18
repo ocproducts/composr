@@ -766,7 +766,7 @@ function opensearch_script()
         case 'suggest':
             require_code('search');
 
-            header('Content-type: text/plain; charset=' . get_charset());
+            header('Content-type: application/x-suggestions+json; charset=' . get_charset());
             $request = get_param_string('request', false, true);
 
             $suggestions = find_search_suggestions($request);
