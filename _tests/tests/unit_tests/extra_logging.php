@@ -155,4 +155,36 @@ class extra_logging_test_set extends cms_test_case
         $size_after = filesize($path);
         $this->assertTrue($size_after > $size_before);
     }
+
+    public function testErrorLog()
+    {
+        $path = get_file_base() . '/data_custom/permissioncheckslog.php';
+        cms_file_put_contents_safe($path, '');
+
+        clearstatcache();
+        $size_before = filesize($path);
+        $url = build_url(array('page' => ''), '');
+        $data = http_download_file($url);
+        clearstatcache();
+        $size_after = filesize($path);
+        $this->assertTrue($size_after > $size_before);
+
+        unlink($path);
+    }
+
+    public function testQueryLog()
+    {
+        $path = get_file_base() . '/data_custom/queries.log';
+        cms_file_put_contents_safe($path, '');
+
+        clearstatcache();
+        $size_before = filesize($path);
+        $url = build_url(array('page' => ''), '');
+        $data = http_download_file($url);
+        clearstatcache();
+        $size_after = filesize($path);
+        $this->assertTrue($size_after > $size_before);
+
+        unlink($path);
+    }
 }
