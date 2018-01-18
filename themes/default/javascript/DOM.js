@@ -2815,7 +2815,7 @@
             scrollToTop = false;
         }
 
-        var linkWrappers = blockElement.querySelectorAll('.ajax_block_wrapper_links');
+        var linkWrappers = blockElement.querySelectorAll('.ajax-block-wrapper-links');
         if (linkWrappers.length === 0) {
             linkWrappers = [blockElement];
         }

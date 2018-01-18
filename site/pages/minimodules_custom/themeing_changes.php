@@ -136,7 +136,7 @@ foreach ($special_file_types as $label => $_search) {
 
     echo '<div style="width: 14em; float: left;' . (($i % 4 == 0) ? '' : ' margin-left: 0.5em;') . '">';
     echo '<label style="padding-bottom: 3px; display: block" for="file_selector_' . strval($i) . '">' . $label . ':</label>';
-    echo '<select name="file_selector_' . strval($i) . '[]" class="file_selector" size="8" multiple="multiple" style="width: 100%" data-cms-select2="{ dropdownAutoWidth: true }">';
+    echo '<select name="file_selector_' . strval($i) . '[]" class="file-selector" size="8" multiple="multiple" style="width: 100%" data-cms-select2="{ dropdownAutoWidth: true }">';
 
     foreach ($files as $file) {
         // Filter out excess
@@ -177,7 +177,7 @@ echo '<div style="width: 14em; float: left;' . (($i % 4 == 0) ? '' : ' margin-le
 echo '<label style="padding-bottom: 3px; display: block" for="releases">';
 echo '<abbr title="The selected releases will be compared. You can select as many as you want and diffs will be shown across each jump.">Compare points</abbr>:';
 echo '</label>';
-echo '<select name="releases[]" class="file_selector" size="8" multiple="multiple" style="width: 100%" data-cms-select2="{ dropdownAutoWidth: true }">';
+echo '<select name="releases[]" class="file-selector" size="8" multiple="multiple" style="width: 100%" data-cms-select2="{ dropdownAutoWidth: true }">';
 foreach (array_reverse($releases) as $version => $release_details) {
     $selected = in_array($version, $versions_interested_in);
 

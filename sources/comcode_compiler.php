@@ -300,7 +300,7 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
                 $_embed = nl2br(escape_html($embed->evaluate()));
             }
             $out = '';
-            $out .= '&#8203;<kbd title="' . escape_html($tag) . '" class="cms_keep">';
+            $out .= '&#8203;<kbd title="' . escape_html($tag) . '" class="cms-keep">';
             $out .= escape_html($raw_comcode_start) . $_embed . escape_html($raw_comcode_end);
             $out .= '</kbd>&#8203;';
             return $out;

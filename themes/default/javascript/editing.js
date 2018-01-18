@@ -100,7 +100,7 @@
 
                 if (allEmpty) {
                     disableWysiwyg(forms, so, so2, true);
-                } else if ((window.wysiwygOriginalComcode[id] === undefined) || (window.wysiwygOriginalComcode[id].indexOf('&#8203;') !== -1) || (window.wysiwygOriginalComcode[id].indexOf('cms_keep') !== -1)) {
+                } else if ((window.wysiwygOriginalComcode[id] === undefined) || (window.wysiwygOriginalComcode[id].indexOf('&#8203;') !== -1) || (window.wysiwygOriginalComcode[id].indexOf('cms-keep') !== -1)) {
                     disableWysiwyg(forms, so, so2, false);
                 } else {
                     $cms.ui.generateQuestionUi(

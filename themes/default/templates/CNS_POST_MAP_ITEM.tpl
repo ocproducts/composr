@@ -11,7 +11,7 @@
 		{+END}
 	{+END}
 
-	<a href="{URL*}" class="{$?,{IS_UNREAD},cns-post-map-item-unread,cns_post_map_item_read}">#{POST_NUMBER*} &ndash; {!POST_MAP_RE,{TITLE*}}</a>
+	<a href="{URL*}" class="{$?,{IS_UNREAD},cns-post-map-item-unread,cns-post-map-item-read}">#{POST_NUMBER*} &ndash; {!POST_MAP_RE,{TITLE*}}</a>
 
 	{+START,IF,{POSTER_IS_GUEST}}
 		{!BY_SIMPLE_LOWER,<span>{POSTER_NAME*}</span>},

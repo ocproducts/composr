@@ -1,4 +1,4 @@
-<section class="box box___quiz_box"><div class="box-inner">
+<section class="box box---quiz-box"><div class="box-inner">
 	{+START,SET,content_box_title}
 		{+START,IF,{GIVE_CONTEXT}}
 			{!CONTENT_IS_OF_TYPE,{TYPE*},{NAME*}}

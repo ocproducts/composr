@@ -12,7 +12,7 @@
 				<col class="cns-forum-topic-wrapper-column-column4 column-desktop" />
 				<col class="cns-forum-topic-wrapper-column-column5 column-desktop" />
 				{+START,IF,{$OR,{$EQ,{$LANG},EN},{$LT,{$LENGTH,{!COUNT_POSTS}{!COUNT_VIEWS}},12}}}
-					<col class="cns-forum-topic-wrapper-column-column6{$?,{$MATCH_KEY_MATCH,_WILD:members},_shorter}" />
+					<col class="cns-forum-topic-wrapper-column-column6{$?,{$MATCH_KEY_MATCH,_WILD:members},-shorter}" />
 				{+END}
 				{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}{+START,IF,{$NOT,{$_GET,overlay}}}
 					<col class="cns-forum-topic-wrapper-column-column7 column-desktop" />
@@ -55,7 +55,7 @@
 						<td class="cns-column1 cns-forum-box-bleft cell-desktop"></td>
 					{+END}
 				{+END}
-				<td class="cns-column1{+START,IF,{$MOBILE}} cns_forum_box_bleft{+END}"></td>
+				<td class="cns-column1{+START,IF,{$MOBILE}} cns-forum-box-bleft{+END}"></td>
 				<td class="cns-column1"></td>
 				{+START,IF,{$DESKTOP}}
 					<td class="cns-column1 cell-desktop"></td>
@@ -74,7 +74,7 @@
 	</table></div>
 
 {+START,IF_NON_EMPTY,{PAGINATION}}
-	<div class="float-surrounder pagination-spacing ajax_block_wrapper_links">
+	<div class="float-surrounder pagination-spacing ajax-block-wrapper-links">
 		{PAGINATION}
 	</div>
 {+END}

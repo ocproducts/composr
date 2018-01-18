@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,facebook_support}
 {+START,IF,{$NOR,{$GET,login_screen},{$MATCH_KEY_MATCH,_WILD:login}}}
-	<section class="box box___block_side_personal_stats_no" data-require-javascript="facebook_support" data-tpl="blockSidePersonalStatsNo"><div class="box-inner">
+	<section class="box box---block-side-personal-stats-no" data-tpl="blockSidePersonalStatsNo"><div class="box-inner">
 		{+START,IF_NON_EMPTY,{TITLE}}<h3>{TITLE}</h3>{+END}
 
 		<form title="{!_LOGIN}" class="js-submit-check-username-for-blankness" action="{LOGIN_URL*}" method="post" autocomplete="on">

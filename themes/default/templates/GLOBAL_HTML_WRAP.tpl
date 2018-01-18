@@ -78,7 +78,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 			{$SET,has_left_panel,{$IS_NON_EMPTY,{$TRIM,{$LOAD_PANEL,left}}}}
 			{$SET,has_right_panel,{$IS_NON_EMPTY,{$TRIM,{$LOAD_PANEL,right}}}}
 
-			<article class="global-middle {$?,{$GET,has_left_panel},has_left_panel,has_no_left_panel} {$?,{$GET,has_right_panel},has_right_panel,has_no_right_panel}" role="main">
+			<article class="global-middle {$?,{$GET,has_left_panel},has-left-panel,has-no-left-panel} {$?,{$GET,has_right_panel},has-right-panel,has-no-right-panel}" role="main">
 				{$,Breadcrumbs}
 				{+START,IF,{$IN_STR,{$BREADCRUMBS},<a }}{+START,IF,{$SHOW_HEADER}}
 					<nav class="global-breadcrumbs breadcrumbs" itemprop="breadcrumb" id="global-breadcrumbs">

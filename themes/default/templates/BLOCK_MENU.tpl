@@ -1,5 +1,5 @@
 {+START,IF_NON_EMPTY,{CONTENT}}
-	<section class="box box___block_menu_{TYPE*}"><div class="box-inner">
+	<section class="box box---block-menu-{TYPE*}"><div class="box-inner">
 		<h3>{TITLE}</h3>
 
 		{CONTENT}

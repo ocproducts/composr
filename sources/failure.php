@@ -1135,7 +1135,7 @@ function may_see_stack_traces()
 function die_html_trace($message)
 {
     $_trace = debug_backtrace();
-    $trace = '<div class="box guid_{_GUID}"><div class="box-inner"><h2>Stack trace&hellip;</h2>';
+    $trace = '<div class="box guid-{_GUID}"><div class="box-inner"><h2>Stack trace&hellip;</h2>';
     foreach ($_trace as $i => $stage) {
         if ($i > 20) {
             break;

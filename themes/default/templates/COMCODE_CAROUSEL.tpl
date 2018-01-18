@@ -3,7 +3,7 @@
 
 {$SET,carousel_id,{$RAND}}
 
-<div class="xhtml_substr_no_break">
+<div class="xhtml-substr-no-break">
 	<div id="carousel_{$GET*,carousel_id}" class="carousel" style="display: none" data-view="Carousel" data-view-params="{+START,PARAMS_JSON,carousel_id}{_*}{+END}">
 		<div class="move-left js-btn-car-move" data-move-amount="-{SCROLL_AMOUNT%}"></div>
 		<div class="move-right js-btn-car-move" data-move-amount="+{SCROLL_AMOUNT%}"></div>

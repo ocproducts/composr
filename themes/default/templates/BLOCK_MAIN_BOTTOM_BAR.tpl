@@ -18,10 +18,10 @@
 					</th>
 
 					<td class="cns-stats-usersonline-2">
-						<p class="users-online cns_group_colours">{USERS_ONLINE}</p>
+						<p class="users-online cns-group-colours">{USERS_ONLINE}</p>
 
 						{+START,IF_NON_EMPTY,{GROUPS}}
-							<div class="usergroups cns_group_colours">
+							<div class="usergroups cns-group-colours">
 								<p>
 									<span class="field-name">{!USERGROUPS}:&nbsp;</span>
 								</p>

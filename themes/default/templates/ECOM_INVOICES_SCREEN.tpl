@@ -22,7 +22,7 @@
 				<td>
 					<strong>{INVOICE_TITLE*}</strong>
 
-					<p class="assocated_details block-mobile">
+					<p class="assocated-details block-mobile">
 						<span class="field-name">{!STATUS}:</span> {STATE*}
 					</p>
 				</td>

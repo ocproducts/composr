@@ -1,4 +1,4 @@
-<section class="box box___catalogue_products_grid_entry_wrap"><div class="box-inner">
+<section class="box box---catalogue-products-grid-entry-wrap"><div class="box-inner">
 	<h3><span class="name">{FIELD_0}</span></h3>
 
 	{+START,IF_NON_EMPTY,{FIELD_7_THUMB}}

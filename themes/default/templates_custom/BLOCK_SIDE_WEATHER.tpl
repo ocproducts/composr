@@ -1,4 +1,4 @@
-<section class="box box___block_side_weather"><div class="box-inner">
+<section class="box box---block-side-weather"><div class="box-inner">
 	<h3>{!WEATHER_REPORT}</h3>
 
 	{+START,IF_NON_EMPTY,{IMAGE}}

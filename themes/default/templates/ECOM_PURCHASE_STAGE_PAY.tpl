@@ -4,7 +4,7 @@
 	{$,You may want to put in some JavaScript to auto-click the payment button, at least for some TYPE_CODE values, as this step is usually over-complex; we do for CART_ORDER_* by default}
 
 	{+START,IF_PASSED,CONFIRMATION_BOX}
-		<div class="box box___ecom_purchase_stage_pay"><div class="box-inner">
+		<div class="box box---ecom-purchase-stage-pay"><div class="box-inner">
 			{CONFIRMATION_BOX}
 		</div></div>
 	{+END}

@@ -1,4 +1,4 @@
-<section class="box box___block_side_language"><div class="box-inner">
+<section class="box box---block-side-language"><div class="box-inner">
 	<h3>{!LANGUAGE}</h3>
 
 	<form title="{!LANGUAGE} ({!FORM_AUTO_SUBMITS})" method="get" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}" autocomplete="off">

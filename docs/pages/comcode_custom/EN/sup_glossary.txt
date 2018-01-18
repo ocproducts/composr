@@ -5,7 +5,7 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 Here are the top 100 buzzwords that will help you understand what web designers are talking about.
 
 [html]
-<table class="columned-table results-table very_spaced_table">
+<table class="columned-table results-table very-spaced-table">
 	<thead>
 		<tr>
 			<th>Term</th>

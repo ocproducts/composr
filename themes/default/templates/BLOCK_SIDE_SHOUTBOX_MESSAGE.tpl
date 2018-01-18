@@ -1,4 +1,4 @@
-<div class="box box___block_side_news_summary"><div class="box-inner">
+<div class="box box---block-side-news-summary"><div class="box-inner">
 	<p class="tiny-paragraph associated-details">
 		{!BY_SIMPLE,{MEMBER}}
 	</p>

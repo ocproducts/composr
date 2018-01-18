@@ -414,7 +414,7 @@
 
             $dom.load.then(function () {
                 var aub = document.getElementById('js-attachment-upload-button');
-                if (aub && (aub.classList.contains('for_field_' + postingFieldName))) {
+                if (aub && (aub.classList.contains('for-field-' + postingFieldName))) {
                     // Attach Plupload with #js-attachment-upload-button as browse button
                     window.rebuildAttachmentButtonForNext(postingFieldName, 'js-attachment-upload-button');
                 }

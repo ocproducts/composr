@@ -16,7 +16,7 @@
 	{+END}
 </form>
 
-<div class="box box___edit_forum_screen"><div class="box-inner help-jumpout">
+<div class="box box---edit-forum-screen"><div class="box-inner help-jumpout">
 	<p>
 		{!CHOOSE_FORUM_EDIT_2}
 	</p>

@@ -68,7 +68,7 @@
 			<hr class="spaced-rule" />
 		{+END}
 
-		<div class="box box___booking_flesh_out_screen"><div class="box-inner">
+		<div class="box box---booking-flesh-out-screen"><div class="box-inner">
 			<strong>{!PRICE_AUTO_CALC}:</strong> {$CURRENCY_SYMBOL,{CURRENCY}} <span id="price">{PRICE*}</span>
 		</div></div>
 

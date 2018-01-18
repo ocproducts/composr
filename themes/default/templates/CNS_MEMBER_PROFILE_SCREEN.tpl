@@ -2,7 +2,7 @@
 {$REQUIRE_CSS,modern_tabs}
 {$SET,name_set_elsewhere,1}
 
-<div class="vcard member_profile_screen" itemscope="itemscope" itemtype="http://schema.org/ProfilePage" data-view="CnsMemberProfileScreen" data-view-params="{+START,PARAMS_JSON,TABS,TAB_CODE,TAB_CONTENT,MEMBER_ID}{_*}{+END}">
+<div class="vcard member-profile-screen" itemscope="itemscope" itemtype="http://schema.org/ProfilePage" data-view="CnsMemberProfileScreen" data-view-params="{+START,PARAMS_JSON,TABS,TAB_CODE,TAB_CONTENT,MEMBER_ID}{_*}{+END}">
 	{TITLE}
 
 	<!-- Member: #{MEMBER_ID%} -->

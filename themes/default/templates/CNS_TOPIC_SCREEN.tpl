@@ -56,7 +56,7 @@
 		{+END}
 
 		{+START,IF_NON_EMPTY,{ID}}
-			<div class="box box___cns_topic_screen"><div class="box-inner">
+			<div class="box box---cns-topic-screen"><div class="box-inner">
 				{+START,IF_NON_EMPTY,{MEMBERS_VIEWING}}
 					{+START,IF,{$NEQ,{NUM_MEMBERS},0}}
 						{!MEMBERS_VIEWING,{NUM_GUESTS*},{NUM_MEMBERS*},{MEMBERS_VIEWING}}

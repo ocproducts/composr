@@ -1,5 +1,5 @@
 {$,
-<section class="box box___block_main_facebook_comments"><div class="box-inner">
+<section class="box box---block-main-facebook-comments"><div class="box-inner">
 	<h3>{!COMMENTS}</h3>
 }
 

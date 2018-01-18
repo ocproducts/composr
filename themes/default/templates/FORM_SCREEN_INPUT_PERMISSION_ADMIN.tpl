@@ -5,7 +5,7 @@
 
 	<td class="form-table-field-input">
 		<div class="accessibility-hidden"><label for="access_{GROUP_ID*}">{PINTERFACE_VIEW*} ({GROUP_NAME*})</label></div>
-		<input id="access_{GROUP_ID*}" title="{PINTERFACE_VIEW*} ({!ADMIN})" name="_ignore" type="checkbox" checked="checked" disabled="disabled" class="no_tooltip" />
+		<input id="access_{GROUP_ID*}" title="{PINTERFACE_VIEW*} ({!ADMIN})" name="_ignore" type="checkbox" checked="checked" disabled="disabled" class="no-tooltip" />
 	</td>
 
 	{+START,LOOP,OVERRIDES}

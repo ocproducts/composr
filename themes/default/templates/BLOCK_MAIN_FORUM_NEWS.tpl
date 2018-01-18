@@ -1,4 +1,4 @@
-<section class="box box___block_main_forum_news"><div class="box-inner">
+<section class="box box---block-main-forum-news"><div class="box-inner">
 	{+START,IF_NON_EMPTY,{TITLE}}<h2>{TITLE}</h2>{+END}
 
 	<div class="webstandards-checker-off">

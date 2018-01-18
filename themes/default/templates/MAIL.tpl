@@ -13,7 +13,7 @@
 			<a href="{$BASE_URL*}"><img src="{$IMG*,logo/standalone_logo}" title="{$SITE_NAME*}" alt="{$SITE_NAME*}" /></a>
 		</p>
 
-		<div class="box box___mail"><div class="box-inner">
+		<div class="box box---mail"><div class="box-inner">
 			<div>
 				<h2>{TITLE*}</h2>
 

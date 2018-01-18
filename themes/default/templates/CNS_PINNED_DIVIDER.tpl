@@ -1,3 +1,3 @@
 <tr>
-	<td colspan="7" class="cns_tr_end"></td>
+	<td colspan="7" class="cns-tr-end"></td>
 </tr>

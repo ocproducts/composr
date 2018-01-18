@@ -4,7 +4,7 @@
 	</div>
 	<div class="lined-up-boxes">
 		<div class="gallery-entry-details right">
-			<section class="box box___gallery_flow_mode_video"><div class="box-inner">
+			<section class="box box---gallery-flow-mode-video"><div class="box-inner">
 				<h3>{!DETAILS}</h3>
 
 				<table class="map-table results-table">

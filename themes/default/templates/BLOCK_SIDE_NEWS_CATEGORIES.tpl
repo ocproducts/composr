@@ -1,4 +1,4 @@
-<section class="box box___block_side_news_categories"><div class="box-inner">
+<section class="box box---block-side-news-categories"><div class="box-inner">
 	<h3>{!JUST_NEWS_CATEGORIES}</h3>
 
 	<ul class="compact-list">

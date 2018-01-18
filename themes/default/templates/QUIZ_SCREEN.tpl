@@ -8,7 +8,7 @@
 	{$REQUIRE_CSS,quizzes}
 
 	{+START,IF_NON_EMPTY,{START_TEXT}}
-		<div class="box box___quiz_screen"><div class="box-inner">
+		<div class="box box---quiz-screen"><div class="box-inner">
 			<div itemprop="description">
 				{$PARAGRAPH,{START_TEXT}}
 			</div>

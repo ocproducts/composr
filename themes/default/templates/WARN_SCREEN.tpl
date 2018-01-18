@@ -5,7 +5,7 @@
 
 	{+START,IF,{$NEQ,{TEXT},{!MISSING_RESOURCE}}}
 		{+START,IF_PASSED,WEBSERVICE_RESULT}
-			<div class="box box___warn_screen"><div class="box-inner">
+			<div class="box box---warn-screen"><div class="box-inner">
 				{TEXT*}
 			</div></div>
 
@@ -18,7 +18,7 @@
 		{+START,IF_NON_PASSED,WEBSERVICE_RESULT}
 			<div class="site-special-message ssm-warn" role="alert">
 				<div class="site-special-message-inner">
-					<div class="box box___warn_screen"><div class="box-inner">
+					<div class="box box---warn-screen"><div class="box-inner">
 						{TEXT*}
 					</div></div>
 				</div>
@@ -42,7 +42,7 @@
 	{+END}
 
 	{+START,IF,{PROVIDE_BACK}}{+START,IF,{$NOT,{$RUNNING_SCRIPT,preview}}}
-		<p class="back_button">
+		<p class="back-button">
 			<a href="#!" data-cms-btn-go-back="1"><img title="{!NEXT_ITEM_BACK}" alt="{!NEXT_ITEM_BACK}" src="{$IMG*,icons/48x48/menu/_generic_admin/back}" /></a>
 		</p>
 	{+END}{+END}

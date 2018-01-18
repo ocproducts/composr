@@ -49,10 +49,10 @@
 							{ITEM_NAME*}
 						{+END}
 
-						<p class="assocated_details block-mobile">
+						<p class="assocated-details block-mobile">
 							<span class="field-name">{!PAYMENT_GATEWAY}:</span> {PAYMENT_GATEWAY*}
 						</p>
-						<p class="assocated_details block-mobile">
+						<p class="assocated-details block-mobile">
 							<span class="field-name">{!STATUS}:</span> {STATE*}
 						</p>
 					</th>

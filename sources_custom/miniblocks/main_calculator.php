@@ -23,14 +23,14 @@ $message = $map['message'];
 $equation = $map['equation'];
 $equation = str_replace('math.', 'Math.', strtolower($equation)); // Name fields come out lower case, so equation needs to be
 ?>
-<form data-require-javascript="calculatr" data-tpl="miniblockMainCalculator" data-tp-message="<?= escape_html($message) ?>" data-tp-equation="<?= escape_html($equation) ?>" action="#!" method="post">
+<form data-tpl="miniblockMainCalculator" data-tp-message="<?= escape_html($message) ?>" data-tp-equation="<?= escape_html($equation) ?>" action="#!" method="post">
 <?php
 foreach ($map as $key => $val) {
     $key = strtolower($key);
     if (($key != 'equation') && ($key != 'block') && ($key != 'message') && ($key != 'cache')) {
         echo '<p>
             <input class="input-integer-required right" size="6" type="text" id="' . escape_html($key) . '" name="' . escape_html($key) . '" value="" />
-            <label class="field_title" for="' . escape_html($key) . '">' . escape_html($val) . '</label>
+            <label class="field-title" for="' . escape_html($key) . '">' . escape_html($val) . '</label>
         </p>';
     }
 }

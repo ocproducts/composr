@@ -1,4 +1,4 @@
-<section class="box box___simple_preview_box"><div class="box-inner">
+<section class="box box---simple-preview-box"><div class="box-inner">
 	{+START,IF_NON_EMPTY,{TITLE}}
 		<h3>
 			{TITLE`}

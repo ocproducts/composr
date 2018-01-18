@@ -1,4 +1,4 @@
-<section class="box box___gallery_image_box"><div class="box-inner">
+<section class="box box---gallery-image-box"><div class="box-inner">
 	{+START,IF_NON_EMPTY,{TITLE}}
 		{+START,SET,content_box_title}
 			{+START,IF,{GIVE_CONTEXT}}

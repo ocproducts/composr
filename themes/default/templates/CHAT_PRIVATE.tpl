@@ -2,8 +2,8 @@
 	<p>{MESSAGE}</p>
 {+END}
 {+START,IF,{$NOT,{SYSTEM_MESSAGE}}}
-	<div class="box box___chat_private"><div class="box-inner">
+	<div class="box box---chat-private"><div class="box-inner">
 		<div><span class="chat-message-by">{MEMBER*}</span></div>
-		<p class="chat_private_message">{MESSAGE}</p>
+		<p class="chat-private-message">{MESSAGE}</p>
 	</div></div>
 {+END}

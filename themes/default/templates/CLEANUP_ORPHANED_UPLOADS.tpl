@@ -1,5 +1,5 @@
 {+START,IF_ARRAY_NON_EMPTY,FOUND}
-	<section class="box box___cleanup_orphaned_uploads"><div class="box-inner">
+	<section class="box box---cleanup-orphaned-uploads"><div class="box-inner">
 		<h3>{!ORPHANED_UPLOADS}</h3>
 
 		{+START,LOOP,FOUND}

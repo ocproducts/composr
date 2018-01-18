@@ -283,7 +283,7 @@ function xhtml_substr($html, $from, $length = null, $literal_pos = false, $ellip
     $_html_buildup = '';
     $html_buildup = array(); // A stack of HTML tags we need from before we start our portion, to move us into the right tag context. None tags are thrown out.
 
-    $has_xhtml_substr_no_break_somewhere = (strpos($html, 'xhtml_substr_no_break') !== false); // Optimisation so as to run faster in most cases (only run extended check when needed)
+    $has_xhtml_substr_no_break_somewhere = (strpos($html, 'xhtml-substr-no-break') !== false); // Optimisation so as to run faster in most cases (only run extended check when needed)
 
     // Reset the character counter and pass through (part of) the entire text
     $c = 0; // The virtual length so far in the scan
@@ -328,7 +328,7 @@ function xhtml_substr($html, $from, $length = null, $literal_pos = false, $ellip
                         if (($current_tag != 'br') && ($current_tag != 'img') && ($current_tag != 'hr')) { // A little sanity checking, for HTML used as XHTML
                             $tag_stack[] = $current_tag;
                             $matches = array();
-                            $unbreakable_tag_stack[] = (($current_tag == 'figure') || ($current_tag == 'div') && ($has_xhtml_substr_no_break_somewhere) && (preg_match('#\sclass="[^"<>]*xhtml_substr_no_break[^"<>]*"[^<>]*$#', substr($html, 0, $i)) != 0));
+                            $unbreakable_tag_stack[] = (($current_tag == 'figure') || ($current_tag == 'div') && ($has_xhtml_substr_no_break_somewhere) && (preg_match('#\sclass="[^"<>]*xhtml-substr-no-break[^"<>]*"[^<>]*$#', substr($html, 0, $i)) != 0));
                         }
                     }
                 } elseif ($in_tag_type == 'CLOSE') {

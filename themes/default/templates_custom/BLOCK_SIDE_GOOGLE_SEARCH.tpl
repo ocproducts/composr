@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,google_search}
 {$REQUIRE_CSS,google_search}
-<section class="box box___block_side_google_search" data-tpl="blockSideGoogleSearch" data-tpl-params="{+START,PARAMS_JSON,ID}{_*}{+END}">
+<section class="box box---block-side-google-search" data-tpl="blockSideGoogleSearch" data-tpl-params="{+START,PARAMS_JSON,ID}{_*}{+END}">
 	<div class="box-inner">
 	{+START,IF_NON_EMPTY,{TITLE}}<h3>{TITLE*}</h3>{+END}
 

@@ -1,5 +1,5 @@
 <div class="invoice-box">
-	<table class="layout_table">
+	<table class="layout-table">
 		<tbody>
 			<tr class="top">
 				<td class="title">
@@ -17,7 +17,7 @@
 		</tbody>
 	</table>
 
-	<table class="layout_table">
+	<table class="layout-table">
 		<tbody>
 			<tr class="information">
 				<td>

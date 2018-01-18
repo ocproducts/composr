@@ -35,19 +35,19 @@ Knowing how to program, I now have written my code, with my modified files saved
 [code="HTML"]
 <br />
 
-<div class="box guid_{_GUID}">
+<div class="box guid-{_GUID}">
    <div class="box-inner">
       <h4>{!_STATISTICS}</h4>
 
-      <div class="cns_stats_1">
-         <table cellpadding="0" cellspacing="0" class="map-table cns_stats_2">
+      <div class="cns-stats-1">
+         <table cellpadding="0" cellspacing="0" class="map-table cns-stats-2">
             <colgroup span="2">
                <col class="cns-bottom-bar-left-column" />
                <col class="cns-bottom-bar-right-column" />
             </colgroup>
 
             <tr>
-               <th class="de-th cns-column1 cns_stats_usersonline_1">
+               <th class="de-th cns-column1 cns-stats-usersonline-1">
                   <span class="field-name">{!USERS_ONLINE}:</span><br />
                   <span class="associated-link">[ <a href="{USERS_ONLINE_URL*}">{!DETAILS}</a> ]</span>
                </th>

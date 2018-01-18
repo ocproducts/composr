@@ -188,7 +188,7 @@ function display_version_upgrade_path($higher_version)
         <!-- Version number -->
         <span class="version-number"> <?= escape_html($higher_version['version_pretty']) ?></span>
         <!-- Output upgrader link -->
-        <span class="version_button" id="link_pos_<?= strval($i) ?>"></span>
+        <span class="version-button" id="link_pos_<?= strval($i) ?>"></span>
         <script>
             (function() {
                 var span = document.getElementById('link_pos_<?= strval($i) ?>');
@@ -201,7 +201,7 @@ function display_version_upgrade_path($higher_version)
         <span class="version-news-link">[ <a onclick="window.open(this.href,null,'status=yes,toolbar=no,location=no,menubar=no,resizable=yes,scrollbars=yes,width=976,height=600'); return false;" target="_blank" title="<?= escape_html($higher_version['version_pretty']) ?> news post (this link will open in a new window)" href="<?= escape_html($upgrade_url) ?>">view news post</a> ]</span>
         <!-- Details -->
         <span class="version-details">(<?= escape_html($higher_version['version_pretty']) ?>, released <?= display_time_period(time() - $higher_version['add_date']) ?> ago)</span>
-        <span class="version_note"><?= $note ?></span>
+        <span class="version-note"><?= $note ?></span>
         <img class="version-help-icon" onmouseout="$cms.ui.deactivateTooltip(this);" onmousemove="$cms.ui.repositionTooltip(this,event);" onmouseover="if (this.parentNode.title != null) { this.parentNode.title = ''; } $cms.ui.activateTooltip(this, event, <?= escape_html(json_encode($tooltip->evaluate())) ?>, '600px', null, null, false, true);" alt="Help" src="<?= escape_html(find_theme_image('icons/16x16/help')) ?>" />
     </p>
     <!-- Noscript version -->

@@ -2,7 +2,7 @@
 
 <div class="float-surrounder">
 	<div class="themewizard-info-box">
-		<div class="box box___themewizard_2_screen"><div class="box-inner">
+		<div class="box box---themewizard-2-screen"><div class="box-inner">
 			<h2>{!SEED_COLOUR}</h2>
 
 			<div>#<span class="themewizard-info-box-label">{SEED*}</span></div>
@@ -17,7 +17,7 @@
 </div>
 
 <div class="themewizard-preview-wrap">
-	<div class="box box___themewizard_2_screen"><div class="box-inner">
+	<div class="box box---themewizard-2-screen"><div class="box-inner">
 		<h2>{!PREVIEW}</h2>
 
 		<iframe {$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} title="{!PREVIEW}" class="themewizard-preview" src="{$PAGE_LINK*,::keep_theme_seed={SEED#}:keep_theme_dark={DARK#}:keep_theme_source={SOURCE_THEME#}:keep_theme={SOURCE_THEME#}:keep_theme_algorithm={ALGORITHM#}:wide=1:keep_theme=default}">{!PREVIEW}</iframe>

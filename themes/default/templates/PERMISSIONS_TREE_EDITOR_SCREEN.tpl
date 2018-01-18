@@ -5,7 +5,7 @@
 
 	<div class="float-surrounder">
 		<div class="pte-help-box">
-			<div class="box box___permissions_tree_editor_screen"><div class="box-inner">
+			<div class="box box---permissions-tree-editor-screen"><div class="box-inner">
 				<h2>{!PERMISSIONS_TREE_EDITOR_HOW_WORK}</h2>
 
 				<p class="vertical-alignment">{!PERMISSIONS_TREE_EDITOR_ABOUT_BARRIERS,<img src="{$IMG*,led_on}" alt="" />}</p>
@@ -21,12 +21,12 @@
 		</div>
 
 		<div>
-			<div class="box box___permissions_tree_editor_screen"><div class="box-inner">
+			<div class="box box---permissions-tree-editor-screen"><div class="box-inner">
 				<h2>{!SITEMAP}</h2>
 
 				<div class="pte-tree">
 					<div class="pte-icon-box">
-						<div class="box box___permissions_tree_editor_screen"><div class="box-inner">
+						<div class="box box---permissions-tree-editor-screen"><div class="box-inner">
 							<form title="{!CHOOSE} {!USERGROUP}" action="index.php" method="post" autocomplete="off">
 								<img alt="" src="{$IMG*,pte_view_help}" /><strong><label for="group">{!PERMISSIONS_TREE_EDITOR_ICON_LABEL}:</label></strong>
 								<select id="group" name="group" class="js-click-update-group js-change-update-group">
@@ -50,7 +50,7 @@
 	</div>
 
 	<div class="pte-set-box">
-		<div class="box box___permissions_tree_editor_screen"><div class="box-inner">
+		<div class="box box---permissions-tree-editor-screen"><div class="box-inner">
 			<h2>{!PERMISSIONS_TREE_EDITOR_PERMISSIONS_FOR_SELECTION}</h2>
 
 			<p>

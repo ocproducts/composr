@@ -1,4 +1,4 @@
-<section class="box box___main_content cguid_{_GUID|*}"><div class="box-inner">
+<section class="box box---main-content cguid-{_GUID|*}"><div class="box-inner">
 	{+START,NO_PREPROCESSING}
 		{$SET,content_box_title,}
 		{$SET,skip_content_box_title,1}

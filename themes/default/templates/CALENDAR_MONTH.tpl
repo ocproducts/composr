@@ -1,4 +1,4 @@
-<table class="spread_table calendar-month">
+<table class="spread-table calendar-month">
 	<colgroup>
 		<col class="calendar-month-column-heading" />
 		<col class="calendar-month-column-day" />

@@ -17,7 +17,7 @@ If you are going to place the banners in the [tt]panel_left[/tt] or [tt]panel_ri
 
 Once you have set up your adverts Google will provide you with the necessary code to place on your site to make the ads appear. It will look something like this:
 [code="HTML"]
-<div class="adsense_banner" style="text-align: right">
+<div class="adsense-banner" style="text-align: right">
 <script type="text/javascript"><!--
 google_ad_client = &ldquo;ca-pub-xxxxxxxx";
 /* test */
@@ -32,7 +32,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </div>
 [/code]
 
-The div class [tt]adsense_banner[/tt] I have added myself as this will allow me to add CSS styles to the [tt]global.css[/tt] to help position the ads where I want them.
+The div class [tt]adsense-banner[/tt] I have added myself as this will allow me to add CSS styles to the [tt]global.css[/tt] to help position the ads where I want them.
 
 To place the code on a page edit the page to put it on and paste it in between Comcode [tt][html]...[/html][/tt] tags (or within the WYSIWYG editor's source view).
 

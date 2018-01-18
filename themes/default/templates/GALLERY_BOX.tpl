@@ -1,4 +1,4 @@
-<div class="box box___gallery_box"><div class="box-inner">
+<div class="box box---gallery-box"><div class="box-inner">
 	{+START,SET,content_box_title}
 		{+START,IF,{GIVE_CONTEXT}}
 			{!CONTENT_IS_OF_TYPE,{!GALLERY},{TITLE*}}

@@ -1,8 +1,8 @@
 {$REQUIRE_JAVASCRIPT,core_adminzone_dashboard}
 {$SET,RAND_WEBSITE_MONITORING,{$RAND}}
 
-<div class="form_ajax_target" data-view="BlockMainStaffWebsiteMonitoring" data-view-params="{+START,PARAMS_JSON,RAND_WEBSITE_MONITORING}{_*}{+END}">
-	<section id="tray_{!SITE_WATCHLIST|}" data-toggleable-tray="{ save: true }" class="box box___block_main_staff_website_monitoring">
+<div class="form-ajax-target" data-view="BlockMainStaffWebsiteMonitoring" data-view-params="{+START,PARAMS_JSON,RAND_WEBSITE_MONITORING}{_*}{+END}">
+	<section id="tray_{!SITE_WATCHLIST|}" data-toggleable-tray="{ save: true }" class="box box---block-main-staff-website-monitoring">
 		<h3 class="toggleable-tray-title js-tray-header">
 			<a title="{!EDIT}: {!SITE_WATCHLIST}" class="top-left-toggleicon js-click-staff-block-flip" href="#!">{!EDIT}</a>
 
@@ -30,8 +30,8 @@
 							<td>{GOOGLE_RANKING*}/10</td>
 							<td>{ALEXA_RANKING`}</td>
 							<td>{ALEXA_TRAFFIC`}</td>
-							<td><a class="suggested_link" href="http://web.archive.org/web/*/{URL*}">{!VIEW}</a></td>
-							<td><a class="suggested_link" href="{URL*}">{!VIEW}</a></td>
+							<td><a class="suggested-link" href="http://web.archive.org/web/*/{URL*}">{!VIEW}</a></td>
+							<td><a class="suggested-link" href="{URL*}">{!VIEW}</a></td>
 						</tr>
 					{+END}
 				</tbody>

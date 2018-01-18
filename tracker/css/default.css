@@ -17,14 +17,14 @@ hr {
 	margin: 50px 0 0 0;
 }
 
-.menu_divider {
+.menu-divider {
    margin-left: 20px;
    white-space: nowrap;
    color: #333;
    font-weight: bold;
 }
 
-.menu_section {
+.menu-section {
    display: inline-block;
 }
 
@@ -69,10 +69,10 @@ span.small 			{ font-size: 8pt; font-weight: normal; }
 span.pagetitle		{ font-size: 12pt; font-weight: bold; text-align: center }
 span.bracket-link	{ white-space: nowrap; }
 
-span.dependency_dated		{ color: brown; }
-span.dependency_met			{ color: green; }
-span.dependency_unmet		{ color: red; }
-span.dependency_upgrade		{ color: orange; }
+span.dependency-dated		{ color: brown; }
+span.dependency-met			{ color: green; }
+span.dependency-unmet		{ color: red; }
+span.dependency-upgrade		{ color: orange; }
 
 table				{ }
 table.hide			{ width: 100%; border: solid 0px #ffffff; }

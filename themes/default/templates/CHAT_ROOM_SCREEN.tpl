@@ -74,7 +74,7 @@
 		{$GET,posting_box}
 	{+END}
 
-	<div class="box box___chat_screen_chatters"><p class="box-inner">
+	<div class="box box---chat-screen-chatters"><p class="box-inner">
 		{!USERS_IN_CHATROOM} <span id="chat_members_update">{CHATTERS}</span>
 	</p></div>
 

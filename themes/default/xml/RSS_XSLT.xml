@@ -30,7 +30,7 @@
 				</div>
 
 				<div class="rss-main-inner">
-					<div class="box box___rss_xslt"><div class="box-inner"><div>
+					<div class="box box---rss-xslt"><div class="box-inner"><div>
 						<h1><span name="decodeable"><xsl:value-of disable-output-escaping="yes" select="/rss/channel/title" /></span></h1>
 
 						<p id="xslt-introduction">{!RSS_XSLT_INTRODUCTION}</p>

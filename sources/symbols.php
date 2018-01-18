@@ -657,7 +657,7 @@ function ecv($lang, $escaped, $type, $name, $param)
 
                 if (is_mobile()) {
                     // Allow targeted CSS
-                    $value = '<div class="make_mobile">' . $value . '</div>';
+                    $value = '<div class="make-mobile">' . $value . '</div>';
                 }
 
                 if (is_mobile()) {
@@ -1752,14 +1752,14 @@ function symbol_truncator($param, $type, $tooltip_if_truncated = null)
             case 'left':
                 $temp = (($is_html || $grammar_completeness_tolerance != 0.0) ? xhtml_substr($html, 0, max($amount - 3, 1), $literal_pos, false, $grammar_completeness_tolerance) : escape_html(cms_mb_substr($not_html, 0, max($amount - 3, 1))));
                 if ($temp != $html && in_array(substr($temp, -1), array('.', '?', '!'))) {
-                    $temp .= '<br class="ellipsis_break" />'; // so the "..." does not go right after the sentence terminator
+                    $temp .= '<br class="ellipsis-break" />'; // so the "..." does not go right after the sentence terminator
                 }
                 $truncated = ($temp == $html) ? $temp : str_replace(array('</p>&hellip;', '</div>&hellip;'), array('&hellip;</p>', '&hellip;</div>'), (cms_trim($temp, true) . '&hellip;'));
                 break;
             case 'expand':
                 $temp = (($is_html || $grammar_completeness_tolerance != 0.0) ? xhtml_substr($html, 0, max($amount - 3, 1), $literal_pos, false, $grammar_completeness_tolerance) : escape_html(cms_mb_substr($not_html, 0, max($amount - 3, 1))));
                 if ($temp != $html && in_array(substr($temp, -1), array('.', '?', '!'))) {
-                    $temp .= '<br class="ellipsis_break" />'; // so the "..." does not go right after the sentence terminator
+                    $temp .= '<br class="ellipsis-break" />'; // so the "..." does not go right after the sentence terminator
                 }
                 $_truncated = do_template('COMCODE_HIDE', array('_GUID' => '3ead7fdb5b510930f54310e3c32147c2', 'TEXT' => protect_from_escaping($temp), 'CONTENT' => protect_from_escaping($html)));
                 $truncated = $_truncated->evaluate();

@@ -12,7 +12,7 @@
 			<form title="{!SEARCH}" action="{$URL_FOR_GET_FORM*,{$SELF_URL}}" target="_self" method="get" autocomplete="off">
 				{$HIDDENS_FOR_GET_FORM,{$SELF_URL},{BLOCK_ID}_start,{BLOCK_ID}_max,{BLOCK_ID}_sort,{BLOCK_ID}_filter_*}
 
-				<div class="search_fields float-surrounder">
+				<div class="search-fields float-surrounder">
 					<div class="search-button">
 						<input data-disable-on-click="1" accesskey="u" class="button-screen-item buttons--filter" type="submit" value="{!FILTER}{+START,IF_NON_EMPTY,{FILTERS_ROW_B}} &#9745;{+END}" />
 					</div>
@@ -27,7 +27,7 @@
 				</div>
 
 				{+START,IF_NON_EMPTY,{FILTERS_ROW_B}}
-					<div class="search_fields float-surrounder">
+					<div class="search-fields float-surrounder">
 						<div class="search-button">
 							<input data-cms-href="{$PAGE_LINK*,_SELF:_SELF}" class="button-screen-item buttons--clear" type="button" value="{$,{!RESET_FILTER} }&#9746;" />
 						</div>
@@ -94,7 +94,7 @@
 			{+END}
 
 			{+START,IF,{$EQ,{DISPLAY_MODE},media}}
-				<div {+START,IF_NON_EMPTY,{ITEM_WIDTH}} style="width: {ITEM_WIDTH*}"{+END} class="image_fader_item">
+				<div {+START,IF_NON_EMPTY,{ITEM_WIDTH}} style="width: {ITEM_WIDTH*}"{+END} class="image-fader-item">
 					{+START,NO_PREPROCESSING}
 						<div class="box"><div class="box-inner">
 							<h3>{GALLERY_TITLE*}</h3>

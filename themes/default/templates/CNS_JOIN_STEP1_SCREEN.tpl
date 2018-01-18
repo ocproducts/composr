@@ -9,7 +9,7 @@
 		{!DESCRIPTION_I_AGREE_RULES}
 	</p>
 
-	<div class="box box___cns_join_step1_screen"><div class="box-inner">
+	<div class="box box---cns-join-step1-screen"><div class="box-inner">
 		<div class="cns-join-rules">
 			{RULES}
 		</div>

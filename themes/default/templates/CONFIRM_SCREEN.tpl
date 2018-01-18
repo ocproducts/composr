@@ -42,7 +42,7 @@
 	</form>
 
 	{+START,IF_PASSED,BACK_URL}
-		<form class="back_button" title="{!NEXT_ITEM_BACK}" action="{BACK_URL*}" method="post" autocomplete="off">
+		<form class="back-button" title="{!NEXT_ITEM_BACK}" action="{BACK_URL*}" method="post" autocomplete="off">
 			<div>
 				{FIELDS}
 				<button class="button-icon" type="submit"><img title="{!NEXT_ITEM_BACK}" alt="{!NEXT_ITEM_BACK}" src="{$IMG*,icons/48x48/menu/_generic_admin/back}" /></button>

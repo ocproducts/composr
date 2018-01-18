@@ -46,7 +46,7 @@
                 textarea.classList.add('field-input-filled');
                 textarea.classList.remove('field-input-non-filled');
             }
-            textarea.classList.remove('fade_input');
+            textarea.classList.remove('fade-input');
         },
         textareaBlur: function (e, textarea) {
             if (textarea.value.trim() === '') {
@@ -55,7 +55,7 @@
                 textarea.classList.add('field-input-non-filled');
             }
 
-            textarea.classList.add('fade_input');
+            textarea.classList.add('fade-input');
         },
         textareaKeyup: function (e, textarea) {
             if (!$cms.isMobile()) {

@@ -557,7 +557,7 @@
 {$,CSS equation helper}
 
 {+START,IF,{INCLUDE_CSS_EDITING}}
-	<section class="box box__css_equation_helper"><div class="box-inner">
+	<section class="box box--css-equation-helper"><div class="box-inner">
 		<h2>{!CSS_EQUATION_HELPER}</h2>
 
 		<p>{!DESCRIP_CSS_EQUATION_HELPER}</p>

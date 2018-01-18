@@ -28,7 +28,7 @@
 						<strong>{ORDER_TITLE*}</strong>
 					{+END}
 
-					<p class="assocated_details block-mobile">
+					<p class="assocated-details block-mobile">
 						<span class="field-name">{!STATUS}:</span> {STATUS*}
 					</p>
 				</td>

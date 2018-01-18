@@ -3,7 +3,7 @@
 		<h2><a href="{MONTH_URL*}">{MONTH_NAME*}</a></h2>
 	</div>
 
-	<table class="spread_table calendar-year-month-table">
+	<table class="spread-table calendar-year-month-table">
 		<colgroup>
 			<col class="calendar-weekly-column" />
 			<col class="calendar-weekly-column" />

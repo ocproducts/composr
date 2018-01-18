@@ -13,7 +13,7 @@
 		{$SET,just_done_title,{$GET,next_title}}
 	{+END}
 
-	<tr class="field_{FIELDID*} fieldid_{_FIELDID*}">
+	<tr class="field-{FIELDID*} fieldid-{_FIELDID*}">
 		<th>{$PREG_REPLACE,^.*: ,,{FIELD*}}</th>
 		<td>{VALUE}</td>
 	</tr>

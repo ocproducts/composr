@@ -28,7 +28,7 @@
 			<input type="hidden" name="title" value="" />
 		{+END}
 
-		<div class="box box___comments_posting_form"{+START,IF_PASSED,EXPAND_TYPE} data-toggleable-tray="{}"{+END}>
+		<div class="box box---comments-posting-form"{+START,IF_PASSED,EXPAND_TYPE} data-toggleable-tray="{}"{+END}>
 			{+START,IF_NON_EMPTY,{TITLE}}
 				<h3 class="toggleable-tray-title js-tray-header">
 					{+START,IF_NON_PASSED,EXPAND_TYPE}
@@ -40,7 +40,7 @@
 					{+END}
 				</h3>
 			{+END}
-			<div class="comments_posting_form_outer {+START,IF_PASSED,EXPAND_TYPE} toggleable-tray js-tray-content{+END}"{+START,IF_PASSED,EXPAND_TYPE} aria-expanded="false"{+END} id="comments_posting_form_outer" style="display: {DISPLAY*}">
+			<div class="comments-posting-form-outer {+START,IF_PASSED,EXPAND_TYPE} toggleable-tray js-tray-content{+END}"{+START,IF_PASSED,EXPAND_TYPE} aria-expanded="false"{+END} id="comments_posting_form_outer" style="display: {DISPLAY*}">
 				<div class="comments-posting-form-inner">
 					<div class="wide-table-wrap"><table class="map-table wide-table">
 						{+START,IF,{$DESKTOP}}
@@ -154,7 +154,7 @@
 									{+START,IF,{$DESKTOP}}
 										{+START,IF_NON_EMPTY,{EMOTICONS}}
 											<div class="comments-posting-form-emoticons block-desktop">
-												<div class="box box___comments_posting_form"><div class="box-inner">
+												<div class="box box---comments-posting-form"><div class="box-inner">
 													{EMOTICONS}
 
 													{+START,IF,{$CNS}}
@@ -168,7 +168,7 @@
 
 								<td>
 									<div>
-										<textarea name="post" id="post" data-textarea-auto-height="" tabindex="6" accesskey="x" class="{$?,{TRUE_ATTACHMENT_UI},true_attachment_ui,faux_attachment_ui} wide-field js-focus-textarea-post" cols="42" rows="{$?,{$IS_NON_EMPTY,{$GET,COMMENT_POSTING_ROWS}},{$GET,COMMENT_POSTING_ROWS},11}">{POST_WARNING*}{+START,IF_PASSED,DEFAULT_POST}{DEFAULT_POST*}{+END}</textarea>
+										<textarea name="post" id="post" data-textarea-auto-height="" tabindex="6" accesskey="x" class="{$?,{TRUE_ATTACHMENT_UI},true-attachment-ui,faux-attachment-ui} wide-field js-focus-textarea-post" cols="42" rows="{$?,{$IS_NON_EMPTY,{$GET,COMMENT_POSTING_ROWS}},{$GET,COMMENT_POSTING_ROWS},11}">{POST_WARNING*}{+START,IF_PASSED,DEFAULT_POST}{DEFAULT_POST*}{+END}</textarea>
 										<input type="hidden" name="comcode__post" value="1" />
 									</div>
 
@@ -203,7 +203,7 @@
 						<div class="proceed-button buttons-group {$?,{$GET,has_preview_button},contains-preview-button,contains-no-preview-button}">
 							{+START,IF,{$DESKTOP}}
 								{+START,IF,{$GET,has_preview_button}}
-									<input id="preview_button" accesskey="p" tabindex="250" class="tabs--preview js-click-do-form-preview {$?,{$IS_EMPTY,{COMMENT_URL}},button-screen,button-screen-item} desktop_inline" type="button" value="{!PREVIEW}" />
+									<input id="preview_button" accesskey="p" tabindex="250" class="tabs--preview js-click-do-form-preview {$?,{$IS_EMPTY,{COMMENT_URL}},button-screen,button-screen-item} desktop-inline" type="button" value="{!PREVIEW}" />
 								{+END}
 							{+END}
 
@@ -213,7 +213,7 @@
 
 							{+START,IF_PASSED,ATTACHMENTS}
 								{+START,IF,{$AND,{TRUE_ATTACHMENT_UI},{$BROWSER_MATCHES,simplified_attachments_ui}}}
-									<input tabindex="7" id="js-attachment-upload-button" class="for_field_post buttons--thumbnail {$?,{$IS_EMPTY,{COMMENT_URL}},button-screen,button-screen-item}" type="button" value="{!comcode:ADD_IMAGES}" />
+									<input tabindex="7" id="js-attachment-upload-button" class="for-field-post buttons--thumbnail {$?,{$IS_EMPTY,{COMMENT_URL}},button-screen,button-screen-item}" type="button" value="{!comcode:ADD_IMAGES}" />
 								{+END}
 							{+END}
 

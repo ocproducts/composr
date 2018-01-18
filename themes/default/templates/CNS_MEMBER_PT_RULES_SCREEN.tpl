@@ -4,7 +4,7 @@
 	{!PT_RULES_PAGE_INTRO,{$DISPLAYED_USERNAME*,{USERNAME}}}
 </p>
 
-<div class="box box___cns_member_pt_rules_screen"><div class="box-inner">
+<div class="box box---cns-member-pt-rules-screen"><div class="box-inner">
 	{RULES}
 </div></div>
 

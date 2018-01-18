@@ -1,4 +1,4 @@
-<section class="box box___block_main_quotes"><div class="box-inner">
+<section class="box box---block-main-quotes"><div class="box-inner">
 	{+START,IF_NON_EMPTY,{TITLE}}<h3>{TITLE*}</h3>{+END}
 
 	<blockquote class="quotes-block">

@@ -7,7 +7,7 @@
 		<form title="{!PROCEED}" action="{URL*}" id="redir_form" method="post" autocomplete="off">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
-			<div class="box box___login_redirect_screen"><div class="box-inner">
+			<div class="box box---login-redirect-screen"><div class="box-inner">
 				{TEXT}
 
 				<p>

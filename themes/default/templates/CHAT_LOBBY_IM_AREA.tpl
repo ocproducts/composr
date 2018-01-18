@@ -7,7 +7,7 @@
 		{+START,SET,posting_box}
 			<div class="im-post-bits">
 				<label class="accessibility-hidden" for="post_{CHATROOM_ID*}">{!MESSAGE}</label>
-				<textarea class="input_required im-post-field js-keypress-eat-enter js-keyup-textarea-chat-post" id="post_{CHATROOM_ID*}" name="post_{CHATROOM_ID*}" cols="30" rows="1"></textarea>
+				<textarea class="input-required im-post-field js-keypress-eat-enter js-keyup-textarea-chat-post" id="post_{CHATROOM_ID*}" name="post_{CHATROOM_ID*}" cols="30" rows="1"></textarea>
 
 				{+START,IF,{$CNS}}
 					<a rel="nofollow" class="horiz-field-sep js-click-open-chat-emoticons-popup" href="#!" title="{!EMOTICONS_POPUP} {!LINK_NEW_WINDOW}"><img alt="{!EMOTICONS_POPUP}" src="{$IMG*,icons/16x16/editor/insert_emoticons}" srcset="{$IMG*,icons/32x32/editor/insert_emoticons} 2x" /></a>

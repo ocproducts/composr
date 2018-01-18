@@ -1,7 +1,7 @@
 {$,Template is used for local payments only; may be embedded into shopping cart as well as serving in the purchasing module}
 
 {+START,IF_PASSED,CONFIRMATION_BOX}
-	<div class="box box___ecom_purchase_stage_transact"><div class="box-inner">
+	<div class="box box---ecom-purchase-stage-transact"><div class="box-inner">
 		{CONFIRMATION_BOX}
 	</div></div>
 {+END}
