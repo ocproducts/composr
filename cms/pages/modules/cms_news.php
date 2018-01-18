@@ -155,6 +155,9 @@ class Module_cms_news extends Standard_crud_module
     {
         $this->posting_form_title = do_lang_tempcode('NEWS_ARTICLE');
 
+        require_code('input_filter_2');
+        modsecurity_workaround_enable();
+
         require_code('news2');
         require_css('news');
 
