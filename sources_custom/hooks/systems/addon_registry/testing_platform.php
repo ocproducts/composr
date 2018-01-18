@@ -366,6 +366,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/feeds_and_podcasts.php',
             '_tests/tests/unit_tests/config_lang_strings.php',
             '_tests/tests/unit_tests/_cqc__function_sigs.php',
+            '_tests/tests/unit_tests/download_indexing.php',
             '_tests/tests/unit_tests/cqc_adminzone.php',
             '_tests/tests/unit_tests/cqc_blocks.php',
             '_tests/tests/unit_tests/cqc_cms.php',
