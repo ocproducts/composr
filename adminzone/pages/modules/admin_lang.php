@@ -107,17 +107,22 @@ class Module_admin_lang
                 set_helper_panel_text(comcode_lang_string('DOC_FIND_LANG_STRING_TIP'));
             }
 
-            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('CHOOSE'))));
-            breadcrumb_set_self(do_lang_tempcode('TRANSLATE_CODE'));
-
             $lang = filter_naughty_harsh(get_param_string('lang', ''));
             if ($lang == '') {
+                breadcrumb_set_self(do_lang_tempcode('TRANSLATE_CODE'));
+
                 $this->title = get_screen_title('TRANSLATE_CODE');
             } else {
                 $search = get_param_string('search', '', true);
                 if ($search != '') {
+                    breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('TRANSLATE_CODE'))));
+                    breadcrumb_set_self(do_lang_tempcode('RESULTS'));
+
                     $this->title = get_screen_title('TRANSLATE_CODE');
                 } else {
+                    breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('TRANSLATE_CODE'))));
+                    breadcrumb_set_self(do_lang_tempcode('FILE'));
+
                     $lang_file = get_param_string('lang_file');
                     $this->title = get_screen_title('_TRANSLATE_CODE', true, array(escape_html($lang_file), escape_html(lookup_language_full_name($lang))));
                 }
