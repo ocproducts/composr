@@ -92,7 +92,7 @@ browser_android_chrome,Mobile Chrome (Android & iOS) support,ocProducts,ocProduc
 browser_microsoft,IE/Microsoft Edge support,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,
 browser_blink,Chrome/Opera/Blink support,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,
 social_links,Basic social media / instant messenger linkage,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,
-extra_logging,Permission/eCommerce/profile logging features,ocProducts,,Not regularly tested.,No,
+extra_logging,Permission/eCommerce/profile logging features,ocProducts,,Not regularly tested.,No,Partly tested by extra_logging automated test.
 fields_xml,Field filter feature,ocProducts,,Not regularly tested.,No,filter_xml automated test.
 context,Magic click / context menu features,ocProducts,,Not regularly tested.,No,
 php,Maintain with new versions of PHP,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,
