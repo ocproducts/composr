@@ -36,11 +36,11 @@
 	background: transparent url('{$IMG;,1x/menus/menu_bullet_current}') no-repeat 5px 6px;
 }
 
-.menu-type--tree .has_no_img>.drawer {
+.menu-type--tree .has-no-img>.drawer {
 	background: url('{$IMG;,1x/menus/menu_bullet_expand}') no-repeat 0 5px !important;
 }
 
-.menu-type--tree .has_no_img>.drawer:hover {
+.menu-type--tree .has-no-img>.drawer:hover {
 	background: url('{$IMG;,1x/menus/menu_bullet_expand_hover}') no-repeat 0 5px !important;
 }
 
@@ -60,12 +60,12 @@
 		background-size: 5px 6px;
 	}
 
-	.menu-type--tree .has_no_img>.drawer {
+	.menu-type--tree .has-no-img>.drawer {
 		background-image: url('{$IMG;,2x/menus/menu_bullet_expand}');
 		background-size: 5px 3px;
 	}
 
-	.menu-type--tree .has_no_img>.drawer:hover {
+	.menu-type--tree .has-no-img>.drawer:hover {
 		background-image: url('{$IMG;,2x/menus/menu_bullet_expand_hover}');
 		background-size: 5px 3px;
 	}

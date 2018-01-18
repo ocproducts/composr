@@ -23,7 +23,7 @@
 		</div>
 
 		<div class="installer-main-inner">
-			<div class="box box___installer_html_wrap">
+			<div class="box box---installer-html-wrap">
 				<div class="box-inner">
 					<h1>{!INSTALLER,Composr}: {!INSTALLER_STEP,{STEP},10}</h1>
 	

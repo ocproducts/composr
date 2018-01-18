@@ -67,7 +67,7 @@ class Hook_main_custom_gfx_rollover_button
         $comb_id = 'rollover_' . uniqid('', false);
 
         require_javascript('custom_comcode');
-        $ret = '<img data-js-function-calls="[[\'gfxRolloverButton\', \'' . $comb_id . '\', \'' . escape_html(php_addslashes($url_2))  . '\']]" id="' . $comb_id . '" class="gfx_text_overlay" alt="' . str_replace("\n", ' ', escape_html($map['data'])) . '" src="' . escape_html($url_1) . '" />';
+        $ret = '<img data-js-function-calls="[[\'gfxRolloverButton\', \'' . $comb_id . '\', \'' . escape_html(php_addslashes($url_2))  . '\']]" id="' . $comb_id . '" class="gfx-text-overlay" alt="' . str_replace("\n", ' ', escape_html($map['data'])) . '" src="' . escape_html($url_1) . '" />';
 
         if (function_exists('ocp_mark_as_escaped')) {
             ocp_mark_as_escaped($ret);

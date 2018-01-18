@@ -567,7 +567,7 @@
                 alerted = false;
             
             // No checking for hidden elements
-            if (((theElement.type === 'hidden') || (((theElement.style.display === 'none') || (theElement.parentNode.style.display === 'none') || (theElement.parentNode.parentNode.style.display === 'none') || (theElement.parentNode.parentNode.parentNode.style.display === 'none')) && (!$cms.form.isWysiwygField(theElement)))) && !theElement.classList.contains('hidden_but_needed')) {
+            if (((theElement.type === 'hidden') || (((theElement.style.display === 'none') || (theElement.parentNode.style.display === 'none') || (theElement.parentNode.parentNode.style.display === 'none') || (theElement.parentNode.parentNode.parentNode.style.display === 'none')) && (!$cms.form.isWysiwygField(theElement)))) && !theElement.classList.contains('hidden-but-needed')) {
                 return resolveCheckFieldPromise(null);
             }
             // No checking for disabled elements either
@@ -875,7 +875,7 @@
 
         for (var i = 0; i < elements.length; i++) {
             el = elements[i];
-            if (((el.type === 'hidden') || ((el.style.display === 'none') && !$cms.form.isWysiwygField(el))) && !el.classList.contains('hidden_but_needed')) {
+            if (((el.type === 'hidden') || ((el.style.display === 'none') && !$cms.form.isWysiwygField(el))) && !el.classList.contains('hidden-but-needed')) {
                 continue;
             }
             value = $cms.form.cleverFindValue(el.form, el);

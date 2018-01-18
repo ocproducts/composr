@@ -111,7 +111,7 @@
 
 {$, Commented out... bloat
 {+START,IF,{$ADDON_INSTALLED,syndication_blocks}}
-	<div class="box box___calendar_main_screen_feeds_to_overlay" data-toggleable-tray="{}">
+	<div class="box box---calendar-main-screen-feeds-to-overlay" data-toggleable-tray="{}">
 		<h2 class="toggleable-tray-title js-tray-header">
 			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!FEEDS_TO_OVERLAY}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" /></a>
 			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!FEEDS_TO_OVERLAY}</a>

@@ -1,4 +1,4 @@
-<section class="box box___main_awards cguid_{_GUID|*}"><div class="box-inner">
+<section class="box box---main-awards cguid-{_GUID|*}"><div class="box-inner">
 	{+START,NO_PREPROCESSING}
 		{$SET,content_box_title,}
 		{$SET,skip_content_box_title,1}
@@ -14,7 +14,7 @@
 	{$PREG_REPLACE,^\s*<section class="box [^"]+"><div class="box-inner">,,{$PREG_REPLACE,</div></section>\s*$,,{$GET,eval_content}}}
 
 	{+START,IF_NON_EMPTY,{AWARDEE_USERNAME}}
-		<p class="additional_details">
+		<p class="additional-details">
 			{!AWARDED_TO,<a href="{AWARDEE_PROFILE_URL*}">{$DISPLAYED_USERNAME*,{AWARDEE_USERNAME}}</a>}
 		</p>
 	{+END}

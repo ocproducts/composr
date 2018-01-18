@@ -8,7 +8,7 @@
 	<div class="cart-info">
 		{$SET,rating,{$RATING,catalogues__{CATALOGUE},{ID},{SUBMITTER},,,RATING_INLINE_DYNAMIC}}
 		{+START,IF_NON_EMPTY,{$TRIM,{$GET,rating}}}
-			<div class="rating_part">
+			<div class="rating-part">
 				<span class="field-name">{!RATING}:</span> {$GET,rating}
 			</div>
 		{+END}
@@ -16,7 +16,7 @@
 		{$CART_LINK}
 	</div>
 
-	<div class="box box___catalogue_products_entry_screen"><div class="box-inner">
+	<div class="box box---catalogue-products-entry-screen"><div class="box-inner">
 		<div class="hproduct"{$?,{$MATCH_KEY_MATCH,_WILD:_WILD:browse}, itemscope="itemscope" itemtype="http://schema.org/Offer"}>
 			<div class="float-surrounder">
 				{+START,IF_NON_EMPTY,{FIELD_7_THUMB}}

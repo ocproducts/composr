@@ -122,7 +122,7 @@ Here is an example blob of HTML+Tempcode to demonstrate the functionality:
 <form action="{$BASE_URL*}/data/form_to_email.php" method="post" onsubmit="return $cms.form.checkForm(this,false);">
     <p>
         <label for="subject">Subject:</label>
-        <input class="input_required" type="text" name="subject" value="" />
+        <input class="input-required" type="text" name="subject" value="" />
     </p>
 
     <p>

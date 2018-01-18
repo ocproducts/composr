@@ -36,7 +36,7 @@ class comcode_wysiwyg_test_set extends cms_test_case
         // Not semihtml...
 
         //$in = "a\nb";
-        //$out = "&#8203;<kbd title=\"require_css\" class=\"cms_keep\">[require_css]a<br />\nb[/require_css]</kbd>&#8203;";
+        //$out = "&#8203;<kbd title=\"require_css\" class=\"cms-keep\">[require_css]a<br />\nb[/require_css]</kbd>&#8203;";
 
         //$got = add_wysiwyg_comcode_markup('require_css', array(), make_string_tempcode($in), /*$semihtml*/false);
         //$this->assertTrue($out == $got);
@@ -44,7 +44,7 @@ class comcode_wysiwyg_test_set extends cms_test_case
         // semihtml...
 
         $in = "a<br />\nb";
-        $out = "&#8203;<kbd title=\"require_css\" class=\"cms_keep\">[require_css]a<br />\nb[/require_css]</kbd>&#8203;";
+        $out = "&#8203;<kbd title=\"require_css\" class=\"cms-keep\">[require_css]a<br />\nb[/require_css]</kbd>&#8203;";
 
         $got = add_wysiwyg_comcode_markup('require_css', array(), make_string_tempcode($in), /*$semihtml*/true);
         $this->assertTrue($out == $got);

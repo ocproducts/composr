@@ -176,7 +176,7 @@ if (!function_exists('critical_error')) {
             )
         ) {
             $_trace = debug_backtrace();
-            $extra = '<div class="box guid_{_GUID}"><div class="box-inner"><h2>Stack trace&hellip;</h2>';
+            $extra = '<div class="box guid-{_GUID}"><div class="box-inner"><h2>Stack trace&hellip;</h2>';
             foreach ($_trace as $stage) {
                 $traces = '';
                 foreach ($stage as $key => $value) {
@@ -248,7 +248,7 @@ END;
         flush();
         if (($in_upgrader) && (strpos($error, 'Allowed memory') === false)) {
             require_code('upgrade');
-            echo '<div class="box guid_{_GUID}"><div class="box-inner"><h2>Integrity check</h2><p><strong>If you think this problem could be due to corruption caused by a failed upgrade (e.g. time-out during extraction), check the following integrity check&hellip;</strong></p>', run_integrity_check(true), '</div></div><br />';
+            echo '<div class="box guid-{_GUID}"><div class="box-inner"><h2>Integrity check</h2><p><strong>If you think this problem could be due to corruption caused by a failed upgrade (e.g. time-out during extraction), check the following integrity check&hellip;</strong></p>', run_integrity_check(true), '</div></div><br />';
         }
         flush();
         echo $extra, "\n";

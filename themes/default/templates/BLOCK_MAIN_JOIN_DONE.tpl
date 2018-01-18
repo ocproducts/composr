@@ -1,5 +1,5 @@
 {$REQUIRE_JAVASCRIPT,core_cns}
-<section data-tpl="blockMainJoinDone" class="box box___block_main_join_done"><div class="box-inner">
+<section data-tpl="blockMainJoinDone" class="box box---block-main-join-done"><div class="box-inner">
 	<h3>{!_JOIN}</h3>
 
 	{+START,IF_PASSED,MESSAGE}

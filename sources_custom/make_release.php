@@ -590,7 +590,7 @@ function do_build_archive_output($file, $new_output)
 
     $builds_path = get_builds_path();
     return '
-        <div class="zip_surround">
+        <div class="zip-surround">
         <h2>Compiling archive file "<a href="' . escape_html($file) . '" title="Download the file.">' . escape_html($builds_path . $version_dotted . '/' . $file) . '</a>"</h2>
         <p>' . nl2br(trim(escape_html($new_output))) . '</p>
         </div>';

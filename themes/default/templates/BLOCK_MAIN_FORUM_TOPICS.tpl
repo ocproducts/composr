@@ -1,4 +1,4 @@
-<section id="tray_{TITLE|}" data-toggleable-tray="{ save: true }" class="box box___block_main_forum_topics">
+<section id="tray_{TITLE|}" data-toggleable-tray="{ save: true }" class="box box---block-main-forum-topics">
 	<h3 class="toggleable-tray-title js-tray-header">
 		<a class="toggleable-tray-button" data-click-tray-toggle="#tray_{TITLE|}" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{TITLE}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" /></a>
 
@@ -9,7 +9,7 @@
 
 	<div class="toggleable-tray js-tray-content">
 		{+START,LOOP,TOPICS}
-			<div class="box box___block_main_forum_topics_topic"><div class="box-inner">
+			<div class="box box---block-main-forum-topics-topic"><div class="box-inner">
 				<p class="tiny-paragraph">
 					<a title="{$STRIP_TAGS,{TITLE}}" href="{TOPIC_URL*}">{$TRUNCATE_LEFT,{TITLE},30,0,1}</a>
 				</p>

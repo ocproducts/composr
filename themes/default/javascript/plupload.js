@@ -14493,9 +14493,9 @@
             '<div id="mainDiv_' + name + '" style="display: inline-block;">' +
             '<div id="subDiv_' + name + '" class="vertical-alignment">' +
             // This input field shows the file name(s) of the uploading/uploaded file to the user
-            '<input type="text" id="txtFileName_' + name + '" name="txtFileName_' + name + '" class="upload_response_field" size="24" disabled value="">' +
+            '<input type="text" id="txtFileName_' + name + '" name="txtFileName_' + name + '" class="upload-response-field" size="24" disabled value="">' +
             '<input type="button" id="uploadButton_' + name + '" class="buttons--upload button-micro" value="{!BROWSE;^*}">' +
-            '<input type="button" id="fsClear_' + name + '" class="buttons--clear button-micro clear_button" alt="{!CLEAR;^*}" value="{!CLEAR;^*}">' +
+            '<input type="button" id="fsClear_' + name + '" class="buttons--clear button-micro clear-button" alt="{!CLEAR;^*}" value="{!CLEAR;^*}">' +
             '</div>' +
             '<div id="fsUploadProgress_' + name + '" class="progressBars"></div>' +
             // This hidden input field holds the server-side upload_id after upload is finished
@@ -14760,7 +14760,7 @@
             fileNameField.name = 'txtFileName_file' + window.extraAttachmentBase;
             fileNameField.id = fileNameField.name;
             fileNameField.value = file.name.replace('C:\\fakepath\\', '');
-            fileNameField.className = 'upload_response_field';
+            fileNameField.className = 'upload-response-field';
             document.getElementById('container_for_' + fieldName).appendChild(fileNameField);
 
             // Progress bar

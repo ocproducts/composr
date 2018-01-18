@@ -24,7 +24,7 @@
 		[/surround]
 	[/surround]
 
-	<div class="box box___block_main_multi_content"><div class="box-inner">
+	<div class="box box---block-main-multi-content"><div class="box-inner">
 		[block="catalogue_entry" failsafe="1" title="Recent entries"]main_multi_content[/block]
 	</div></div>
 

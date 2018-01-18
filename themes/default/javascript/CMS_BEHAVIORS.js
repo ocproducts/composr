@@ -73,7 +73,7 @@
                     }
 
                     // Convert <a> title attributes into composr tooltips
-                    if (!anchor.classList.contains('no_tooltip')) {
+                    if (!anchor.classList.contains('no-tooltip')) {
                         convertTooltip(anchor);
                     }
                 }
@@ -109,7 +109,7 @@
                     elements = elements.concat(form.querySelectorAll('input[type="image"]')); // JS DOM does not include input[type="image"] ones in form.elements
 
                     for (j = 0; j < elements.length; j++) {
-                        if ((elements[j].title !== undefined) && (elements[j]['original-title'] === undefined/*check tipsy not used*/) && !elements[j].classList.contains('no_tooltip')) {
+                        if ((elements[j].title !== undefined) && (elements[j]['original-title'] === undefined/*check tipsy not used*/) && !elements[j].classList.contains('no-tooltip')) {
                             convertTooltip(elements[j]);
                         }
                     }

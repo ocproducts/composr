@@ -43,7 +43,7 @@
 								{ITEM_NAME*}
 							{+END}
 
-							<p class="assocated_details block-mobile">
+							<p class="assocated-details block-mobile">
 								<span class="field-name">{!PAYMENT_GATEWAY}:</span> {PAYMENT_GATEWAY*}
 							</p>
 						</th>
@@ -70,6 +70,6 @@
 			</tbody>
 		</table></div>
 
-		<p class="associated-link suggested_link"><a title="{!MODULE_TRANS_NAME_subscriptions}" href="{$PAGE_LINK*,_SEARCH:subscriptions:browse:{MEMBER_ID}}">{!MORE}</a></p>
+		<p class="associated-link suggested-link"><a title="{!MODULE_TRANS_NAME_subscriptions}" href="{$PAGE_LINK*,_SEARCH:subscriptions:browse:{MEMBER_ID}}">{!MORE}</a></p>
 	</div>
 </div>

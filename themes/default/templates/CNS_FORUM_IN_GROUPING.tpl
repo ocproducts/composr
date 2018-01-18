@@ -10,13 +10,13 @@
 		<a class="field-name" href="{FORUM_URL*}">{FORUM_NAME*}</a>
 
 		{+START,IF_NON_EMPTY,{EDIT_URL}}
-			<a class="horiz-field-sep associated-link suggested_link" rel="edit" href="{EDIT_URL*}" title="{!EDIT}: {FORUM_NAME*}">{!EDIT}</a>
+			<a class="horiz-field-sep associated-link suggested-link" rel="edit" href="{EDIT_URL*}" title="{!EDIT}: {FORUM_NAME*}">{!EDIT}</a>
 		{+END}
 		{+START,IF_NON_EMPTY,{FORUM_RULES_URL}}
-			<a class="horiz-field-sep associated-link suggested_link js-click-open-forum-rules-popup" target="_blank" data-click-pd="1" href="{FORUM_RULES_URL*}" title="{!FORUM_RULES}: {FORUM_NAME*} {!LINK_NEW_WINDOW}">{!FORUM_RULES}</a>
+			<a class="horiz-field-sep associated-link suggested-link js-click-open-forum-rules-popup" target="_blank" data-click-pd="1" href="{FORUM_RULES_URL*}" title="{!FORUM_RULES}: {FORUM_NAME*} {!LINK_NEW_WINDOW}">{!FORUM_RULES}</a>
 		{+END}
 		{+START,IF_NON_EMPTY,{INTRO_QUESTION_URL}}
-			<a class="horiz-field-sep associated-link suggested_link js-click-open-intro-question-popup" target="_blank" data-click-pd="1" href="{INTRO_QUESTION_URL*}" title="{!INTRO_QUESTION}: {FORUM_NAME*} {!LINK_NEW_WINDOW}">{!INTRO_QUESTION}</a>
+			<a class="horiz-field-sep associated-link suggested-link js-click-open-intro-question-popup" target="_blank" data-click-pd="1" href="{INTRO_QUESTION_URL*}" title="{!INTRO_QUESTION}: {FORUM_NAME*} {!LINK_NEW_WINDOW}">{!INTRO_QUESTION}</a>
 		{+END}
 
 		{+START,IF_NON_EMPTY,{DESCRIPTION}}

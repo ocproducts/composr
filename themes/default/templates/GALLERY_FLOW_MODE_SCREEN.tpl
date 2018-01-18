@@ -19,7 +19,7 @@
 	{$SET,support_mass_select,cms_galleries}
 
 	{+START,IF_NON_EMPTY,{ENTRIES}}
-		<div class="box box___gallery_flow_mode_screen__other"><div class="box-inner">
+		<div class="box box---gallery-flow-mode-screen--other"><div class="box-inner">
 			<h2>{!OTHER_IMAGES_IN_GALLERY}</h2>
 
 			{$REQUIRE_JAVASCRIPT,core_rich_media}
@@ -69,7 +69,7 @@
 	<div class="float-surrounder lined-up-boxes flow-mode-details">
 		{+START,IF_NON_EMPTY,{MEMBER_DETAILS}}
 			<div class="right">
-				<div class="box box___gallery_flow_mode_screen__member"><div class="box-inner">
+				<div class="box box---gallery-flow-mode-screen--member"><div class="box-inner">
 					<h2>{_TITLE*}</h2>
 
 					{MEMBER_DETAILS}

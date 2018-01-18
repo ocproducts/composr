@@ -1,6 +1,6 @@
 {TITLE}
 
-<p class="quiz_result_headline">
+<p class="quiz-result-headline">
 	{!QUIZ_WAS_ENTERED_AS_FOLLOWS,{USERNAME*},{MEMBER_URL*},{DATE*},{QUIZ_NAME*},{TYPE*}}
 </p>
 

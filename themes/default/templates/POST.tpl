@@ -1,6 +1,6 @@
 {+START,IF,{IS_SPACER_POST}}
 	{+START,IF,{$NOT,{$IN_STR,{POST},<div}}}
-		<div class="box box___post"><div class="box-inner">
+		<div class="box box---post"><div class="box-inner">
 			{POST}
 		</div></div>
 	{+END}
@@ -11,8 +11,8 @@
 {+END}
 
 {+START,IF,{$NOT,{IS_SPACER_POST}}}
-	<div class="box box___post{+START,IF,{$OR,{IS_UNREAD},{HIGHLIGHT}}} highlighted-post{+END}"><div class="box-inner">
-		<div id="post_wrap_{ID*}" class="post time_{TIME_RAW*}" itemprop="reviews" itemscope="itemscope" itemtype="http://schema.org/Review">
+	<div class="box box---post{+START,IF,{$OR,{IS_UNREAD},{HIGHLIGHT}}} highlighted-post{+END}"><div class="box-inner">
+		<div id="post_wrap_{ID*}" class="post time-{TIME_RAW*}" itemprop="reviews" itemscope="itemscope" itemtype="http://schema.org/Review">
 			{+START,IF_NON_EMPTY,{ID}}<a id="post_{ID*}"></a>{+END}
 
 			<div class="float-surrounder">
@@ -38,7 +38,7 @@
 						{+START,IF_PASSED,REVIEW_RATING}
 							{+START,SET,REVIEWS}
 								{+START,IF_NON_EMPTY,{REVIEW_TITLE}}
-									<span class="field_title">{REVIEW_TITLE*}:</span>
+									<span class="field-title">{REVIEW_TITLE*}:</span>
 								{+END}
 
 								{$SET,rating_loop,0}
@@ -62,7 +62,7 @@
 
 					{+START,IF,{$DESKTOP}}
 						{+START,IF_NON_EMPTY,{ID}}{+START,IF_NON_PASSED_OR_FALSE,PREVIEWING}{+START,IF,{$MATCH_KEY_MATCH,_SEARCH:topicview}}
-							<div id="cell_mark_{ID*}" class="cns-off post-action-link inline-block mobile_inline">
+							<div id="cell_mark_{ID*}" class="cns-off post-action-link inline-block mobile-inline">
 								<form class="webstandards-checker-off" title="{!MARKER} #{ID*}" method="post" action="index.php" id="form_mark_{ID*}" autocomplete="off">
 									{$INSERT_SPAMMER_BLACKHOLE}
 

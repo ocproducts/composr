@@ -1,4 +1,4 @@
-<div class="box box___download_box"><div class="box-inner">
+<div class="box box---download-box"><div class="box-inner">
 	{+START,SET,content_box_title}
 		{+START,IF,{GIVE_CONTEXT}}
 			{!CONTENT_IS_OF_TYPE,{!DOWNLOAD},{NAME*}}
@@ -32,7 +32,7 @@
 		</dl>
 	</div>
 
-	<div class="hide_if_in_panel">
+	<div class="hide-if-in-panel">
 		{+START,IF_NON_EMPTY,{IMGCODE}}
 			<div class="download-box-pic"><a href="{URL*}">{IMGCODE}</a></div>
 		{+END}

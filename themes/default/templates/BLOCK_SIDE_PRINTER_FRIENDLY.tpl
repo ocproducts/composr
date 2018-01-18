@@ -1,4 +1,4 @@
-<div class="box box___block_side_printer_friendly"><div class="box-inner">
+<div class="box box---block-side-printer-friendly"><div class="box-inner">
 	{+START,IF,{$_GET,wide_print}}
 		<span class="print-icon">{!IN_PRINT_MODE}</span>
 	{+END}

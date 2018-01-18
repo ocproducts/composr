@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,search}
 
-<section class="box box___block_main_search" data-view="BlockMainSearch" data-view-params="{+START,PARAMS_JSON,SEARCH_TYPE}{_*}{+END}"><div class="box-inner">
+<section class="box box---block-main-search" data-view="BlockMainSearch" data-view-params="{+START,PARAMS_JSON,SEARCH_TYPE}{_*}{+END}"><div class="box-inner">
 	<h3>{TITLE*}</h3>
 
 	<form role="search" title="{TITLE*}" class="js-form-submit-main-search" action="{$URL_FOR_GET_FORM*,{URL}}" method="get" autocomplete="off">

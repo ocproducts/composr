@@ -71,7 +71,7 @@
 			</div>
 
 			<div id="container_for_{NAME*}" class="container-for-wysiwyg">
-				<textarea data-textarea-auto-height="" accesskey="x" class="{CLASS*}{+START,IF,{REQUIRED}} posting_required{+END} wide-field posting_field_textarea" tabindex="{TABINDEX_PF*}" id="{NAME*}" name="{NAME*}" cols="70" rows="17">{POST*}</textarea>
+				<textarea data-textarea-auto-height="" accesskey="x" class="{CLASS*}{+START,IF,{REQUIRED}} posting-required{+END} wide-field posting-field-textarea" tabindex="{TABINDEX_PF*}" id="{NAME*}" name="{NAME*}" cols="70" rows="17">{POST*}</textarea>
 
 				{+START,IF_PASSED,WORD_COUNTER}
 					{$SET,word_count_id,{$RAND}}
@@ -117,7 +117,7 @@
 			<input type="hidden" name="posting_ref_id" value="{$RAND%}" />
 		{+END}
 
-		<div class="tpl_placeholder" style="display: none;" data-tpl="postingField" data-tpl-params="{+START,PARAMS_JSON,id,NAME,CLASS,WORD_COUNTER,word_count_id,init_drag_drop}{_*}{+END}"></div>
+		<div class="tpl-placeholder" style="display: none;" data-tpl="postingField" data-tpl-params="{+START,PARAMS_JSON,id,NAME,CLASS,WORD_COUNTER,word_count_id,init_drag_drop}{_*}{+END}"></div>
 	</td>
 </tr>
 

@@ -39,7 +39,7 @@
 			<div class="wide-table-wrap"><table class="columned-table wide-table results-table responsive-table">
 				<colgroup>
 					<col class="match-key-name-column" />
-					<col class="permission_match_key_message_column" />
+					<col class="permission-match-key-message-column" />
 				</colgroup>
 
 				<thead>

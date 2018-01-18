@@ -11,7 +11,7 @@
 
 	<div class="float-surrounder lined-up-boxes">
 		<div class="gallery-entry-details right">
-			<section class="box box___gallery_flow_mode_image"><div class="box-inner">
+			<section class="box box---gallery-flow-mode-image"><div class="box-inner">
 				<h3>{!DETAILS}</h3>
 
 				<table class="map-table results-table">

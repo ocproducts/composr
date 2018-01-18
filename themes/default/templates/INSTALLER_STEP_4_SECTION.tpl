@@ -1,7 +1,7 @@
 {HIDDEN}
 
 <div class="installer-section">
-	<div class="box box___installer_step_4_section"><div class="box-inner">
+	<div class="box box---installer-step-4-section"><div class="box-inner">
 		<fieldset class="innocuous-fieldset">
 			<legend class="accessibility-hidden">{TITLE}</legend>
 

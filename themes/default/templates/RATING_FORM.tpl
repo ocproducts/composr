@@ -6,7 +6,7 @@
 			{$SET,identifier,{CONTENT_TYPE*}__{TYPE*}__{ID*}}
 
 			<div class="rating-outer">
-				<div class="rating_type_title">
+				<div class="rating-type-title">
 					<a id="rating__{$GET,identifier}_jump" rel="dorating"></a>
 
 					{+START,IF_NON_EMPTY,{TITLE}}<strong>{TITLE*}:</strong>{+END}

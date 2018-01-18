@@ -12,7 +12,7 @@
 	<div class="float-surrounder">
 		<div class="download-metadata">
 			<div class="download-now-wrapper">
-				<div class="box box___download_screen" data-toggleable-tray="{}">
+				<div class="box box---download-screen" data-toggleable-tray="{}">
 					{+START,IF_PASSED,LICENCE_HYPERLINK}
 					<p class="download-licence">
 						{!D_BEFORE_PROCEED_AGREE,{LICENCE_HYPERLINK}}
@@ -30,7 +30,7 @@
 					{+END}
 						<div class="download-now" itemprop="significantLinks">
 							{+START,IF,{MAY_DOWNLOAD}}
-								<p class="download_link associated-link suggested_link"><a {+START,IF,{$NOT,{$INLINE_STATS}}} data-click-ga-track="{ category: '{!DOWNLOAD;^*}', action: '{ORIGINAL_FILENAME;^*}' }"{+END} rel="nofollow" href="{DOWNLOAD_URL*}"><strong>{!DOWNLOAD_NOW}</strong></a></p>
+								<p class="download-link associated-link suggested-link"><a {+START,IF,{$NOT,{$INLINE_STATS}}} data-click-ga-track="{ category: '{!DOWNLOAD;^*}', action: '{ORIGINAL_FILENAME;^*}' }"{+END} rel="nofollow" href="{DOWNLOAD_URL*}"><strong>{!DOWNLOAD_NOW}</strong></a></p>
 							{+END}
 							{+START,IF,{$NOT,{MAY_DOWNLOAD}}}
 								<p>{!NO_DOWNLOAD_ACCESS}</p>
@@ -142,7 +142,7 @@
 	</div>
 
 	{+START,IF_NON_EMPTY,{IMAGES_DETAILS}}
-		<div class="box box___download_screen"><div class="box-inner">
+		<div class="box box---download-screen"><div class="box-inner">
 			<h2>{!IMAGES}</h2>
 
 			{$REQUIRE_JAVASCRIPT,core_rich_media}

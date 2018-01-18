@@ -1,4 +1,4 @@
-<section class="box box___block_main_join"><div class="box-inner">
+<section class="box box---block-main-join"><div class="box-inner">
 	<h3>{!_JOIN}</h3>
 
 	{FORM}

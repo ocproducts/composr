@@ -1,4 +1,4 @@
-<tr class="search_form_screen_domain">
+<tr class="search-form-screen-domain">
 	<th class="results-table-name search-for-search-domain">{LANG*}</th>
 
 	<td class="form-table-field-input search-for-search-domain-checkbox" colspan="2">

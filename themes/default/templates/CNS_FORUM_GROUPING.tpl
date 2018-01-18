@@ -27,7 +27,7 @@
 				<thead>
 					<tr>
 						{+START,IF,{$DESKTOP}}
-							<th class="ocf_forum_box_left cell-desktop"></th>
+							<th class="ocf-forum-box-left cell-desktop"></th>
 						{+END}
 						<th {+START,IF,{$MOBILE}} class="cns-forum-box-left"{+END}>
 							{!FORUM_NAME}

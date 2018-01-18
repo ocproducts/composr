@@ -110,7 +110,7 @@
 			<h2>{!ABOUT}</h2>
 
 			<div class="wide-table-wrap">
-				<table class="map-table wide-table cns_profile_fields cns-profile-about-section responsive-blocked-table">
+				<table class="map-table wide-table cns-profile-fields cns-profile-about-section responsive-blocked-table">
 					{+START,IF,{$DESKTOP}}
 						<colgroup>
 							<col class="cns-profile-about-field-name-column" />
@@ -125,7 +125,7 @@
 								{$SET,is_messenger_field,{$EQ,{NAME},{!cns_special_cpf:DEFAULT_CPF_im_skype_NAME},{!cns_special_cpf:DEFAULT_CPF_im_jabber_NAME},{!cns_special_cpf:DEFAULT_CPF_sn_twitter_NAME},{!cns_special_cpf:DEFAULT_CPF_sn_facebook_NAME},{!cns_special_cpf:DEFAULT_CPF_sn_google_NAME}}}
 
 								{+START,IF,{$NOR,{$GET,is_point_field},{$GET,is_messenger_field}}}
-									<tr id="cpf_{NAME|*}" class="cpf_{FIELD_ID|*}">
+									<tr id="cpf_{NAME|*}" class="cpf-{$REPLACE,_,-,{FIELD_ID|*}}">
 										<th class="de-th">
 											{NAME*}:
 										</th>
@@ -174,7 +174,7 @@
 					<h2>{_loop_key*}</h2>
 
 					<div class="wide-table-wrap">
-						<table class="map-table wide-table cns_profile_fields cns-profile-about-section responsive-blocked-table">
+						<table class="map-table wide-table cns-profile-fields cns-profile-about-section responsive-blocked-table">
 							{+START,IF,{$DESKTOP}}
 								<colgroup>
 									<col class="cns-profile-about-field-name-column" />
@@ -227,7 +227,7 @@
 			<meta class="fn given-name" itemprop="name" content="{$DISPLAYED_USERNAME*,{USERNAME}}" />
 
 			<div class="wide-table-wrap">
-				<table class="map-table wide-table cns_profile_details cns-profile-about-section responsive-blocked-table">
+				<table class="map-table wide-table cns-profile-details cns-profile-about-section responsive-blocked-table">
 					{+START,IF,{$DESKTOP}}
 						<colgroup>
 							<col class="cns-profile-about-field-name-column" />
@@ -319,11 +319,11 @@
 		{+END}
 
 		{+START,IF,{VIEW_PROFILES}}
-			<div class="stats_overwrap">
+			<div class="stats-overwrap">
 				<h2>{!TRACKING}</h2>
 
 				<div class="wide-table-wrap">
-					<table class="map-table wide-table cns_profile_tracking cns-profile-about-section responsive-blocked-table">
+					<table class="map-table wide-table cns-profile-tracking cns-profile-about-section responsive-blocked-table">
 						{+START,IF,{$DESKTOP}}
 							<colgroup>
 								<col class="cns-profile-about-field-name-column" />

@@ -6,7 +6,7 @@
 <form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
-	<div class="box box___addon_install_confirm_screen"><div class="box-inner">
+	<div class="box box---addon-install-confirm-screen"><div class="box-inner">
 		<h2>{!ADDON_FILES}</h2>
 
 		<div class="not-too-tall">

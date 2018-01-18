@@ -63,7 +63,7 @@
 			<div class="box box---chat-lobby-screen-im box-prominent"><div class="box-inner">
 				<h2>{!INSTANT_MESSAGING}</h2>
 
-				<div class="float-surrounder chat_im_convos_inner">
+				<div class="float-surrounder chat-im-convos-inner">
 					<div class="chat-lobby-convos">
 						<div class="chat-lobby-convos-tabs" id="chat-lobby-convos-tabs" style="display: none"></div>
 						<div class="chat-lobby-convos-areas" id="chat-lobby-convos-areas">
@@ -108,7 +108,7 @@
 							</form>
 						{+END}
 
-						<h3 class="chat_lobby_options_header">{!OPTIONS}</h3>
+						<h3 class="chat-lobby-options-header">{!OPTIONS}</h3>
 
 						{CHAT_SOUND}
 

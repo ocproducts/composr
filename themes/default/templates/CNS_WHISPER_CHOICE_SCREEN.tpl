@@ -12,7 +12,7 @@
 <div class="float-surrounder">
 	{+START,IF,{$HAS_PRIVILEGE,use_pt}}
 		<div class="cns-whisper-choose-box right">
-			<div class="box box___cns_whisper_choice_screen"><div class="box-inner">
+			<div class="box box---cns-whisper-choice-screen"><div class="box-inner">
 				<h2>{!PRIVATE_TOPIC}</h2>
 
 				<form title="{!PRIVATE_TOPIC}" action="{$URL_FOR_GET_FORM*,{URL}}" method="get" autocomplete="off">
@@ -33,7 +33,7 @@
 	{+END}
 
 	<div class="cns-whisper-choose-box">
-		<div class="box box___cns_whisper_choice_screen"><div class="box-inner">
+		<div class="box box---cns-whisper-choice-screen"><div class="box-inner">
 			<h2>{!PERSONAL_POST}</h2>
 
 			<form title="{!PERSONAL_POST}" action="{$URL_FOR_GET_FORM*,{URL}}" method="get" autocomplete="off">
@@ -53,6 +53,6 @@
 	</div>
 </div>
 
-<p class="back_button">
+<p class="back-button">
 	<a href="#!" data-cms-btn-go-back="1"><img title="{!NEXT_ITEM_BACK}" alt="{!NEXT_ITEM_BACK}" src="{$IMG*,icons/48x48/menu/_generic_admin/back}" /></a>
 </p>

@@ -1,4 +1,4 @@
-<section class="box box___block_side_calendar_listing"><div class="box-inner">
+<section class="box box---block-side-calendar-listing"><div class="box-inner">
 	<h3>{TITLE*}</h3>
 
 	<div>{$,So that the titles don't have box titling CSS}

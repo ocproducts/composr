@@ -1,14 +1,14 @@
 {$REQUIRE_JAVASCRIPT,core_rich_media}
 {$SET,RAND_ID_OVERLAY,overlay_{$RAND}}
-<div role="dialog" class="comcode_overlay box" id="{$GET,RAND_ID_OVERLAY}" data-tpl="comcodeOverlay" data-tpl-params="{+START,PARAMS_JSON,ID,RAND_ID_OVERLAY,TIMEOUT,TIMEIN}{_*}{+END}"
+<div role="dialog" class="comcode-overlay box" id="{$GET,RAND_ID_OVERLAY}" data-tpl="comcodeOverlay" data-tpl-params="{+START,PARAMS_JSON,ID,RAND_ID_OVERLAY,TIMEOUT,TIMEIN}{_*}{+END}"
 	style="display: none; position: absolute; left: {X*}px; top: {Y*}px; width: {WIDTH*}px; height: {HEIGHT*}px">
-	<div class="comcode_overlay_inner box-inner">
+	<div class="comcode-overlay-inner box-inner">
 		<div class="comcode-overlay-main">
 			{EMBED}
 		</div>
 
 		<div class="comcode-overlay-dismiss">
-			<p class="associated-link suggested_link">
+			<p class="associated-link suggested-link">
 				<a href="#!" class="js-click-dismiss-overlay">{!DISMISS}</a>
 			</p>
 		</div>

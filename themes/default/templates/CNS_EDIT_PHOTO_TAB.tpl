@@ -8,7 +8,7 @@
 		{+END}
 	</div>
 
-	<div class="cns_avatar_page_text">
+	<div class="cns-avatar-page-text">
 		<p>{!PHOTO_CHANGE,{$DISPLAYED_USERNAME*,{USERNAME}}}</p>
 
 		{TEXT}

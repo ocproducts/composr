@@ -47,7 +47,7 @@
 				</p>
 				{+START,IF_NON_EMPTY,{COMCODE_EDITOR}}
 					<div>
-						<div class="post_special_options">
+						<div class="post-special-options">
 							<div class="float-surrounder" role="toolbar">
 								{COMCODE_EDITOR}
 							</div>

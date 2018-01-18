@@ -3,7 +3,7 @@
 <div data-require-javascript="buildr" data-tpl="wMainScreen">
 	{TITLE}
 
-	<section class="box box___realm_main"><div class="box-inner">
+	<section class="box box---realm-main"><div class="box-inner">
 		<h2>&ldquo;{REALM_NAME*}&rdquo;, &lsquo;{ROOM_NAME*}&rsquo;, <kbd>{REALM*}:{X*}:{Y*}</kbd></h2>
 
 		<div class="buildr-navigation">
@@ -123,7 +123,7 @@
 
 	<br />
 
-	<section class="box box___room_info"><div class="box-inner">
+	<section class="box box---room-info"><div class="box-inner">
 		<h3>{!W_ROOM_INFORMATION}</h3>
 
 		<div class="float-surrounder">
@@ -245,7 +245,7 @@
 			</div>
 		</div></section>
 
-		<div class="box box___w_main_screen" data-toggleable-tray="{}">
+		<div class="box box---w-main-screen" data-toggleable-tray="{}">
 			<h2 class="toggleable-tray-title js-tray-header">
 				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!W_ENVIRONMENT_ACTIONS}</a>
 				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" /></a>
@@ -538,7 +538,7 @@
 		</div>
 
 		{+START,IF,{MAY_DO_STUFF}}
-			<div class="box box___w_main_screen" data-toggleable-tray="{}">
+			<div class="box box---w-main-screen" data-toggleable-tray="{}">
 				<h2 class="toggleable-tray-title js-tray-header">
 					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!W_ENVIRONMENT_ADDITIONS}</a>
 					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" /></a>
@@ -568,7 +568,7 @@
 			</div>
 		{+END}
 
-		<div class="box box___w_main_screen" data-toggleable-tray="{}">
+		<div class="box box---w-main-screen" data-toggleable-tray="{}">
 			<h2 class="toggleable-tray-title js-tray-header">
 				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!W_ENVIRONMENT_MODIFICATIONS}</a>
 				<a class="js-click-set-hidemod-cookie toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" /></a>

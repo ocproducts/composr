@@ -48,7 +48,7 @@ function _img_tag_fixup($matches)
     }
     $params = str_replace('alt="', 'param="', $params);
     $params = preg_replace('#style="[^"]*vertical-align: ([^;"]+)(;[^"]*)?;?"#i', 'align="${1}"', $params);
-    $params = str_replace(' class="c_img"', '', $params);
+    $params = str_replace(' class="c-img"', '', $params);
     $extraneous = array('border', 'height', 'hspace', 'ismap', 'longdesc', 'usemap', 'vspace', 'width', 'id', 'class', 'title', 'style', 'lang');
     foreach ($extraneous as $ex) {
         $params = preg_replace('# ' . $ex . '="[^"]*"#', '', $params);
@@ -358,7 +358,7 @@ function remove_wysiwyg_comcode_markup(&$semihtml)
     }
 
     // Our Comcode tag start/end markers
-    $array_html_preg_replace[] = array('#^<kbd class="(cms_keep|cms-keep-block)"[^>]*>(.*)</kbd>$#siU', "\${2}");
+    $array_html_preg_replace[] = array('#^<kbd class="(cms-keep|cms-keep-block)"[^>]*>(.*)</kbd>$#siU', "\${2}");
     $semihtml = array_html_preg_replace('kbd', $array_html_preg_replace, $semihtml);
 
     // Our wrapper tags

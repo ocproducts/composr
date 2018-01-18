@@ -3,7 +3,7 @@
 
 	{FRIENDS}
 
-	{$,<div class="box box___block_side_friends"><div class="box-inner">
+	{$,<div class="box box---block-side-friends"><div class="box-inner">
 		<ul class="actions-list">
 			<li><a href="{$PAGE_LINK*,_SEARCH:popup_blockers}" data-open-as-overlay="\{\}">{!ENABLE_POPUPS}</a></li>
 		</ul>

@@ -11,7 +11,7 @@
 	{+START,IF_NON_EMPTY,{$GET,bound_catalogue_entry}}{$CATALOGUE_ENTRY_ALL_FIELD_VALUES,{$GET,bound_catalogue_entry}}{+END}
 
 	{+START,IF_NON_EMPTY,{CHILDREN}}
-		<div class="box box___gallery_regular_mode_screen"><div class="box-inner compacted-subbox-stream">
+		<div class="box box---gallery-regular-mode-screen"><div class="box-inner compacted-subbox-stream">
 			<h2>{$?,{$EQ,{CAT},root},{!CATEGORIES},{!SUBCATEGORIES_HERE}}</h2>
 
 			<div>
@@ -79,7 +79,7 @@
 	<div class="float-surrounder lined-up-boxes">
 		{+START,IF_NON_EMPTY,{MEMBER_DETAILS}}
 			<div class="right">
-				<div class="box box___gallery_regular_mode_screen"><div class="box-inner">
+				<div class="box box---gallery-regular-mode-screen"><div class="box-inner">
 					<h2>{_TITLE*}</h2>
 
 					{MEMBER_DETAILS}

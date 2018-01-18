@@ -1,4 +1,4 @@
-<section id="tray_{!VERSION_ABOUT|,{VERSION}}" data-toggleable-tray="{ save: true }" class="box box___block_main_staff_new_version">
+<section id="tray_{!VERSION_ABOUT|,{VERSION}}" data-toggleable-tray="{ save: true }" class="box box---block-main-staff-new-version">
 	<h3 class="toggleable-tray-title js-tray-header">
 		<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!VERSION_ABOUT,{VERSION*}}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" /></a>
 

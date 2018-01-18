@@ -212,7 +212,7 @@ class xhtml_substr_test_set extends cms_test_case
 
     public function testNoBreak()
     {
-        $before = '<div class="xhtml_substr_no_break">Blah blah blah</div>';
+        $before = '<div class="xhtml-substr-no-break">Blah blah blah</div>';
         $after = xhtml_substr($before, 0, 5, false, false, 0.0);
 
         $expected = $before;

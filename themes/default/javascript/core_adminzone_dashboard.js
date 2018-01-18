@@ -324,7 +324,7 @@
                         var xhtml = result.textContent,
                             elementReplace = form;
 
-                        while (elementReplace.className !== 'form_ajax_target') {
+                        while (elementReplace.className !== 'form-ajax-target') {
                             elementReplace = elementReplace.parentNode;
                             if (!elementReplace) {
                                 // Oh dear, target not found

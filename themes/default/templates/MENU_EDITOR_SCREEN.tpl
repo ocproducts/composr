@@ -85,7 +85,7 @@
 			<input type="hidden" name="confirm" value="1" />
 		</form>
 
-		<div class="box box___menu_editor_screen" data-toggleable-tray="{}">
+		<div class="box box---menu-editor-screen" data-toggleable-tray="{}">
 			<h2 class="toggleable-tray-title">
 				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!DELETE_MENU}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" /></a>
 				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!DELETE_MENU}</a>

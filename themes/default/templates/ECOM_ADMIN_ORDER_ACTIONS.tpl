@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,shopping}
 
-<div class="vertical_align" data-tpl="ecomAdminOrderActions">
+<div class="vertical-align" data-tpl="ecomAdminOrderActions">
 	<form title="{!ACTION}: {ORDER_TITLE*}" method="post" action="{ORDER_ACTUALISE_URL*}" data-submit-pd="1" class="js-submit-confirm-admin-order-actions" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 

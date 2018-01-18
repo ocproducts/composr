@@ -1,3 +1,3 @@
-<div class="calendar_{CLASS*}">
+<div class="calendar-{CLASS*}">
 	{TEXT}
 </div>

@@ -4,7 +4,7 @@
 
 <div class="closed-site-special-message">
 	<div class="closed-site-special-message-inner">
-		<div class="box box___closed_site"><div class="box-inner">
+		<div class="box box---closed-site"><div class="box-inner">
 			<h2>{$SITE_NAME*}</h2>
 
 			<p>

@@ -2,7 +2,7 @@
 	{TITLE}
 
 	{+START,IF_NON_EMPTY,{DESCRIPTION}}
-		<div class="box box___author_screen__description">
+		<div class="box box---author-screen--description">
 			<div class="box-inner">
 				<h2>{!AUTHOR_ABOUT}</h2>
 
@@ -14,7 +14,7 @@
 	{+END}
 
 	{+START,IF_NON_EMPTY,{SKILLS}}
-		<div class="box box___author_screen_skills">
+		<div class="box box---author-screen-skills">
 			<div class="box-inner">
 				<h2>{!SKILLS}</h2>
 
@@ -27,7 +27,7 @@
 	{+START,IF_NON_EMPTY,{$GET,bound_catalogue_entry}}{$CATALOGUE_ENTRY_ALL_FIELD_VALUES,{$GET,bound_catalogue_entry}}{+END}
 
 	{+START,IF_NON_EMPTY,{URL_DETAILS}{FORUM_DETAILS}{POINT_DETAILS}}
-		<div class="box box___author_screen__functions">
+		<div class="box box---author-screen--functions">
 			<div class="box-inner">
 				<p>
 					{!AUTHOR_FUNCTIONS,{AUTHOR*}}&hellip;
@@ -49,7 +49,7 @@
 	{+END}
 
 	{+START,IF,{$ADDON_INSTALLED,downloads}}
-		<div class="box box___author_screen__downloads">
+		<div class="box box---author-screen--downloads">
 			<div class="box-inner">
 				<p>
 					{!DOWNLOADS_RELEASED}&hellip;
@@ -63,7 +63,7 @@
 	{+END}
 
 	{+START,IF,{$ADDON_INSTALLED,news}}
-		<div class="box box___author_screen__news">
+		<div class="box box---author-screen--news">
 			<div class="box-inner">
 				<p>
 					{!NEWS_RELEASED}&hellip;

@@ -2,7 +2,7 @@
 <div class="box"><div class="box-inner">
 {+END}
 {+START,IF,{$NOT,{GIVE_CONTEXT}}}
-<div class="cns_member_box">
+<div class="cns-member-box">
 {+END}
 	{+START,IF,{GIVE_CONTEXT}}
 		<h3>{!CONTENT_IS_OF_TYPE,{!MEMBER},{$DISPLAYED_USERNAME*,{USERNAME}}}</h3>

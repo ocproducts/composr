@@ -3,8 +3,8 @@
 
 {$SET,RAND_STAFF_LINKS,{$RAND}}
 
-<div class="form_ajax_target" data-view="BlockMainStaffLinks" data-view-params="{+START,PARAMS_JSON,RAND_STAFF_LINKS,BLOCK_NAME,MAP}{_*}{+END}">
-	<section id="tray_{!EXTERNAL_LINKS|}" data-toggleable-tray="{ save: true }" class="box box___block_main_staff_links">
+<div class="form-ajax-target" data-view="BlockMainStaffLinks" data-view-params="{+START,PARAMS_JSON,RAND_STAFF_LINKS,BLOCK_NAME,MAP}{_*}{+END}">
+	<section id="tray_{!EXTERNAL_LINKS|}" data-toggleable-tray="{ save: true }" class="box box---block-main-staff-links">
 		<h3 class="toggleable-tray-title js-tray-header">
 			<a title="{!EDIT}: {!EXTERNAL_LINKS}" href="#!" class="top-left-toggleicon js-click-staff-block-flip">{!EDIT}</a>
 

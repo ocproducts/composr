@@ -4,14 +4,14 @@
 
 <div class="site-special-message ssm-inform" role="alert">
 	<div class="site-special-message-inner">
-		<div class="box box___inform_screen"><div class="box-inner">
+		<div class="box box---inform-screen"><div class="box-inner">
 			{TEXT*}
 		</div></div>
 	</div>
 </div>
 
 {+START,IF_PASSED,BACK_URL}
-<form class="back_button" title="{!NEXT_ITEM_BACK}" action="{BACK_URL*}" method="post" autocomplete="off">
+<form class="back-button" title="{!NEXT_ITEM_BACK}" action="{BACK_URL*}" method="post" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div>

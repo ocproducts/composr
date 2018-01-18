@@ -4,7 +4,7 @@
 	{$REQUIRE_JAVASCRIPT,calendar}
 	<div data-tpl="calendarEventType">
 		<div class="float-surrounder zebra-{$CYCLE%,zebedee,0,1} js-click-toggle-checkbox-event-type">
-			<div class="event_interested left">
+			<div class="event-interested left">
 				<label for="{S*}int_{TYPE_ID*}">{TYPE*}:</label>
 			</div>
 			<div class="right">

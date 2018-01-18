@@ -2,7 +2,7 @@
 	{TITLE}
 
 	{+START,IF_NON_EMPTY,{RETURN_URL}}
-		<p class="back_button">
+		<p class="back-button">
 			<a href="{RETURN_URL*}"><img title="{MSG}" alt="{MSG}" src="{$IMG*,icons/48x48/menu/_generic_admin/back}" /></a>
 		</p>
 	{+END}
@@ -14,5 +14,5 @@
 	{+END}
 
 	<div class="webstandards-div">
-		<table class="map-table autosized-table webstandards_table">
+		<table class="map-table autosized-table webstandards-table">
 			<tbody>

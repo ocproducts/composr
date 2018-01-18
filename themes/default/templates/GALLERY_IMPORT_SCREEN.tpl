@@ -10,7 +10,7 @@
 	{FORM}
 
 	{+START,IF_NON_EMPTY,{FORM2}}
-		<div class="orphaned_content">
+		<div class="orphaned-content">
 			<h2>{!ORPHANED_IMAGES}</h2>
 
 			{FORM2}

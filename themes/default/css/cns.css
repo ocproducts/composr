@@ -465,7 +465,7 @@ div.cns-table-footer>div>div {
 	max-width: 100%;
 	height: auto;
 }
-.cns-topic-post-area #map_canvas img { /*some exceptions may need defining for the above*/
+.cns-topic-post-area #map-canvas img { /*some exceptions may need defining for the above*/
 	max-width: none;
 }
 

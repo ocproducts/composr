@@ -842,14 +842,14 @@ function print_menu() {
 			$t_menu_options_account[] = '<a href="' . helper_mantis_url( 'logout_page.php">' ) . lang_get( 'logout_link' ) . '</a>';
 		}
 
-		echo ' <div class="menu_section"><span class="menu_divider">'.lang_get('issues').':</span> '.implode( $t_menu_options_issues, ' | ' ).'</div>';
-		echo ' <div class="menu_section"><span class="menu_divider">'.lang_get('analysis').':</span> '.implode( $t_menu_options_analysis, ' | ' ).'</div>';
+		echo ' <div class="menu-section"><span class="menu-divider">'.lang_get('issues').':</span> '.implode( $t_menu_options_issues, ' | ' ).'</div>';
+		echo ' <div class="menu-section"><span class="menu-divider">'.lang_get('analysis').':</span> '.implode( $t_menu_options_analysis, ' | ' ).'</div>';
 		if (count($t_menu_options_admin)!=0)
-				echo ' <div class="menu_section"><span class="menu_divider">'.lang_get('administration').':</span> '.implode( $t_menu_options_admin, ' | ' ).'</div>';
+				echo ' <div class="menu-section"><span class="menu-divider">'.lang_get('administration').':</span> '.implode( $t_menu_options_admin, ' | ' ).'</div>';
 		if (count($t_menu_options_account)!=0)
-				echo ' <div class="menu_section"><span class="menu_divider">'.lang_get('account').':</span> '.implode( $t_menu_options_account, ' | ' ).'</div>';
+				echo ' <div class="menu-section"><span class="menu-divider">'.lang_get('account').':</span> '.implode( $t_menu_options_account, ' | ' ).'</div>';
 
-		echo ' <div class="menu_section"><span class="menu_divider">'.lang_get('scm_acronym').':</span> '.$cms_sc_sourcecode_link .'</div>';
+		echo ' <div class="menu-section"><span class="menu-divider">'.lang_get('scm_acronym').':</span> '.$cms_sc_sourcecode_link .'</div>';
 
 		echo '</td>';
 		echo '<td class="menu right nowrap">';

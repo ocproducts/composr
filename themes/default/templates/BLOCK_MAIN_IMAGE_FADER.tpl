@@ -3,7 +3,7 @@
 {$SET,RAND_FADER_IMAGE,{$RAND}}
 
 {+START,IF,{$EQ,{BLOCK_ID},small_version}}
-	<div class="box box___block_main_image_fader" data-view="BlockMainImageFader" data-view-params="{+START,PARAMS_JSON,RAND_FADER_IMAGE,MILL,TITLES,HTML,IMAGES}{_*}{+END}" data-keep-fix="{TITLES}{HTML}{IMAGES}{MILL}">
+	<div class="box box---block-main-image-fader" data-view="BlockMainImageFader" data-view-params="{+START,PARAMS_JSON,RAND_FADER_IMAGE,MILL,TITLES,HTML,IMAGES}{_*}{+END}" data-keep-fix="{TITLES}{HTML}{IMAGES}{MILL}">
 		<div class="box-inner">
 			<h2>{!MEDIA}</h2>
 

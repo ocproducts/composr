@@ -27,7 +27,7 @@
 				</div>
 
 				<div class="rss-main-inner">
-					<div class="box box___atom_xslt"><div class="box-inner"><div>
+					<div class="box box---atom-xslt"><div class="box-inner"><div>
 						<h1><span name="decodeable"><xsl:value-of disable-output-escaping="yes" select="/atom:feed/atom:title" /></span></h1>
 
 						<p id="xslt-introduction">{!RSS_XSLT_INTRODUCTION}</p>

@@ -4,7 +4,7 @@
 
 {+START,IF,{$NEQ,{MAX},1}}
 	{+START,IF_NON_EMPTY,{ASSEMBLE}}
-		<div class="banner_wave_block">
+		<div class="banner-wave-block">
 			{ASSEMBLE}
 		</div>
 	{+END}

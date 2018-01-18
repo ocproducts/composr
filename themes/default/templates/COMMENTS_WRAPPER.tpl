@@ -1,6 +1,6 @@
 <div id="comments_wrapper" class="comments-wrapper" role="complementary" data-tpl="commentsWrapper" data-tpl-params="{+START,PARAMS_JSON,SERIALIZED_OPTIONS,HASH}{_*}{+END}">
 	{+START,SET,REVIEWS_TITLE}
-		<span class="field_title">{!_REVIEWS,{$METADATA*,numcomments}}:</span>
+		<span class="field-title">{!_REVIEWS,{$METADATA*,numcomments}}:</span>
 
 		{$SET,rating_loop,0}
 		{+START,LOOP,REVIEW_RATING_CRITERIA}
@@ -24,7 +24,7 @@
 	{+END}
 
 	<div class="boxless-space">
-		<div class="box box___comments_wrapper"><div class="box-inner">
+		<div class="box box---comments-wrapper"><div class="box-inner">
 			<h2 class="comments-header">{$?,{$IS_NON_EMPTY,{REVIEW_RATING_CRITERIA}},{$GET,REVIEWS_TITLE},{!COMMENTS}}</h2>
 
 			<div class="float-surrounder">

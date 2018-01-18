@@ -51,7 +51,7 @@ foreach( $t_plugins as $t_basename => $t_plugin ) {
 	}
 }
 
-if ( 0 < count( $t_plugins_installed ) ) { 
+if ( 0 < count( $t_plugins_installed ) ) {
 ?>
 <br/>
 <form action="manage_plugin_update.php" method="post">
@@ -117,14 +117,14 @@ foreach ( $t_plugins_installed as $t_basename => $t_plugin ) {
 			$t_dependency = plugin_dependency( $t_plugin, $t_version );
 			if ( 1 == $t_dependency ) {
 				if ( is_blank( $t_upgrade ) ) {
-					$t_depends[] = '<span class="small dependency_met">'.string_display_line( $t_plugins[$t_plugin]->name.' '.$t_version ).'</span>';
+					$t_depends[] = '<span class="small dependency-met">'.string_display_line( $t_plugins[$t_plugin]->name.' '.$t_version ).'</span>';
 				} else {
-					$t_depends[] = '<span class="small dependency_upgrade">'.string_display_line( $t_plugins[$t_plugin]->name.' '.$t_version ).'</span>';
+					$t_depends[] = '<span class="small dependency-upgrade">'.string_display_line( $t_plugins[$t_plugin]->name.' '.$t_version ).'</span>';
 				}
 			} else if ( -1 == $t_dependency ) {
-				$t_depends[] = '<span class="small dependency_dated">'.string_display_line( $t_plugins[$t_plugin]->name.' '.$t_version ).'</span>';
+				$t_depends[] = '<span class="small dependency-dated">'.string_display_line( $t_plugins[$t_plugin]->name.' '.$t_version ).'</span>';
 			} else {
-				$t_depends[] = '<span class="small dependency_unmet">'.string_display_line( $t_plugin.' '.$t_version ).'</span>';
+				$t_depends[] = '<span class="small dependency-unmet">'.string_display_line( $t_plugin.' '.$t_version ).'</span>';
 			}
 		}
 	}
@@ -132,7 +132,7 @@ foreach ( $t_plugins_installed as $t_basename => $t_plugin ) {
 	if ( 0 < count( $t_depends ) ) {
 		$t_depends = implode( $t_depends, '<br/>' );
 	} else {
-		$t_depends = '<span class="small dependency_met">' . lang_get( 'plugin_no_depends' ) . '</span>';
+		$t_depends = '<span class="small dependency-met">' . lang_get( 'plugin_no_depends' ) . '</span>';
 	}
 
 	echo '<tr ',helper_alternate_class(),'>';
@@ -159,10 +159,10 @@ foreach ( $t_plugins_installed as $t_basename => $t_plugin ) {
 
 </table>
 </form>
-<?php 
+<?php
 }
 
-if ( 0 < count( $t_plugins_available ) ) { 
+if ( 0 < count( $t_plugins_available ) ) {
 ?>
 <br/>
 <table class="width100" cellspacing="1">
@@ -215,13 +215,13 @@ foreach ( $t_plugins_available as $t_basename => $t_plugin ) {
 		foreach( $t_requires as $t_plugin => $t_version ) {
 			$t_dependency = plugin_dependency( $t_plugin, $t_version );
 			if ( 1 == $t_dependency ) {
-				$t_depends[] = '<span class="small dependency_met">'.string_display_line( $t_plugins[$t_plugin]->name.' '.$t_version ).'</span>';
+				$t_depends[] = '<span class="small dependency-met">'.string_display_line( $t_plugins[$t_plugin]->name.' '.$t_version ).'</span>';
 			} else if ( -1 == $t_dependency ) {
 				$t_ready = false;
-				$t_depends[] = '<span class="small dependency_dated">'.string_display_line( $t_plugins[$t_plugin]->name.' '.$t_version ).'</span>';
+				$t_depends[] = '<span class="small dependency-dated">'.string_display_line( $t_plugins[$t_plugin]->name.' '.$t_version ).'</span>';
 			} else {
 				$t_ready = false;
-				$t_depends[] = '<span class="small dependency_unmet">'.string_display_line( $t_plugin.' '.$t_version ).'</span>';
+				$t_depends[] = '<span class="small dependency-unmet">'.string_display_line( $t_plugin.' '.$t_version ).'</span>';
 			}
 		}
 	}
@@ -229,7 +229,7 @@ foreach ( $t_plugins_available as $t_basename => $t_plugin ) {
 	if ( 0 < count( $t_depends ) ) {
 		$t_depends = implode( $t_depends, '<br/>' );
 	} else {
-		$t_depends = '<span class="small dependency_met">' . lang_get( 'plugin_no_depends' ) . '</span>';
+		$t_depends = '<span class="small dependency-met">' . lang_get( 'plugin_no_depends' ) . '</span>';
 	}
 
 	echo '<tr ',helper_alternate_class(),'>';
@@ -245,10 +245,10 @@ foreach ( $t_plugins_available as $t_basename => $t_plugin ) {
 <?php } ?>
 
 <br/><?php echo lang_get( 'plugin_key' ) ?>:
-<span class='dependency_met'><?php echo lang_get( 'plugin_key_met' ) ?></span>,
-<span class='dependency_unmet'><?php echo lang_get( 'plugin_key_unmet' ) ?></span>,
-<span class='dependency_dated'><?php echo lang_get( 'plugin_key_dated' ) ?></span>,
-<span class='dependency_upgrade'><?php echo lang_get( 'plugin_key_upgrade' ) ?></span>.
+<span class='dependency-met'><?php echo lang_get( 'plugin_key_met' ) ?></span>,
+<span class='dependency-unmet'><?php echo lang_get( 'plugin_key_unmet' ) ?></span>,
+<span class='dependency-dated'><?php echo lang_get( 'plugin_key_dated' ) ?></span>,
+<span class='dependency-upgrade'><?php echo lang_get( 'plugin_key_upgrade' ) ?></span>.
 
 <?php
 html_page_bottom();

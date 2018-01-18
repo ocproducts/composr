@@ -903,7 +903,7 @@ comcode-{$REPLACE,\,,\,comcode-,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}\,
 	background-color: {$GET,native_ui_active_background};
 }
 
-#wysiwyg-editor kbd.cms_keep, #wysiwyg-editor kbd.cms-keep-block {
+#wysiwyg-editor kbd.cms-keep, #wysiwyg-editor kbd.cms-keep-block {
 	background-color: {$GET,native_ui_active_background};
 }
 

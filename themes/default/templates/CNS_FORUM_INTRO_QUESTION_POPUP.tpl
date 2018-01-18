@@ -1,4 +1,4 @@
-<div class="box box___cns_forum_intro_question_popup"><div class="box-inner">
+<div class="box box---cns-forum-intro-question-popup"><div class="box-inner">
 	{QUESTION}
 </div></div>
 

@@ -12,7 +12,7 @@
 {+START,IF_NON_EMPTY,{$GET,bound_catalogue_entry}}{$CATALOGUE_ENTRY_ALL_FIELD_VALUES,{$GET,bound_catalogue_entry}}{+END}
 
 {+START,IF_NON_EMPTY,{SUBCATEGORIES}}
-	<div class="box box___download_category_screen"><div class="box-inner compacted-subbox-stream">
+	<div class="box box---download-category-screen"><div class="box-inner compacted-subbox-stream">
 		<h2>{$?,{$EQ,{ID},1},{!CATEGORIES},{!SUBCATEGORIES_HERE}}</h2>
 
 		<div>

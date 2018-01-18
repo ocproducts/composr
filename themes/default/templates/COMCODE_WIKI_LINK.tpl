@@ -1,1 +1,1 @@
-<span class="wiki_link"><a href="{URL*}">{TEXT*}</a></span>
+<span class="wiki-link"><a href="{URL*}">{TEXT*}</a></span>
