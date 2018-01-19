@@ -461,7 +461,7 @@ There are a number of approaches you can take if you want to serve media from th
 
 You can have randomised content delivery networks used for your theme images and CSS files.
 
-Change the {$IS_MAINTAINED,cdn_theme_image,Content Delivery Network option} to something like:
+Change the Content Delivery Network option to something like:
 [code="Text"]
 example1.example.com,example2.example.com
 [/code]
