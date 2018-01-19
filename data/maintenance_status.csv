@@ -20,7 +20,6 @@ platform_phalanger,Phalanger platform support,,,Not regularly tested due to need
 platform_chmod,Non-suEXEC platform support,ocProducts,,"Not regularly tested. Likely to be very un-friendly to the admin, so should be discouraged.",No,
 platform_iis,IIS,ocProducts,,Not regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No,
 platform_litespeed,LiteSpeed,ocProducts,,Not regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No,
-cdn_theme_image,CDNs for theme images,,,Not regularly tested. Liable to break due to cross-cutting complexity.,No,
 import_cms_merge,"""Composr site merger"" importer",ocProducts,,"Not regularly tested. WebDAV is the preferred merge mechanism, and site merging is not a substitute for upgrading.",No,
 import_html_site,HTML website importer,,,Not regularly tested and has the potential for instability.,No,
 import_ipb2,Invision Board  importer,,,"Needs ongoing maintenance, and liable to be ineffective as people need plugin data importing too.",No,
@@ -35,7 +34,7 @@ google_translate,Google Translate integration,,,Not regularly tested. Could pote
 ldap,LDAP,,,Not regularly tested due to the complexity of having multiple working LDAP test environments.,No,
 httpauth,HTTP authentication,,,Not regularly tested.,No,
 cpf_encryption,CPF encryption,ocProducts,,Not regularly tested.,No,
-itunes,iTunes podcasts,,,Not regularly tested.,No,Partially tested by feeds_and_podcasts automated test.
+itunes,iTunes podcasts,,,Not regularly tested in iTunes.,No,Partially tested by feeds_and_podcasts automated test.
 theme_rtl,Right-to-left support in default theme,,,Too burdensome to routinely maintain and test.,No,
 theme_print,Custom print layout support in default theme,ocProducts,,Not regularly tested.,No,
 standard_opensearch,OpenSearch compliance,ocProducts,,Not regularly tested.,No,
@@ -72,7 +71,7 @@ rootkit_detector,Rootkit detector,ocProducts,,Not regularly tested. Not compatib
 failover_mode,Failover Mode,ocProducts,,Not regularly tested.,No,
 rate_limit,Rate Limiting,ocProducts,,Not regularly tested.,No,
 youtube,YouTube media,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,
-sitemap_submit,XML Sitemap auto-submit,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,sitemap_submit automated test.
+sitemap_submit,XML Sitemap auto-submit,ocProducts,,Could potentially break due to third-party changes.,No,sitemap_submit automated test.
 external_urls,"Recommended links on staff dashboard, and accuracy of external URLs in general",ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,Broken links automated test.
 platform_modsecurity,ModSecurity,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,Fake ModSecurity implemented in dev-mode.
 platform_suhosin,Suhosin,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,
@@ -92,8 +91,7 @@ browser_android_chrome,Mobile Chrome (Android & iOS) support,ocProducts,ocProduc
 browser_microsoft,IE/Microsoft Edge support,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,
 browser_blink,Chrome/Opera/Blink support,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,
 social_links,Basic social media / instant messenger linkage,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,
-extra_logging,Permission/eCommerce/profile logging features,ocProducts,,Not regularly tested.,No,Partly tested by extra_logging automated test.
-fields_xml,Field filter feature,ocProducts,,Not regularly tested.,No,filter_xml automated test.
+extra_logging,Permission/eCommerce/profile logging features,ocProducts,ocProducts,Not fully manually tested.,No,Partly tested by extra_logging automated test.
 context,Magic click / context menu features,ocProducts,,Not regularly tested.,No,
 php,Maintain with new versions of PHP,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,
 mysql,Maintain with new versions of MySQL,ocProducts,,Could potentially break due to third-party changes.,No,
@@ -112,8 +110,8 @@ country_codes,ISO countries (internal list),ocProducts,,Could potentially break 
 currency,Currency conversion,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,
 stop_forum_spam,Stop Forum Spam integration,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,
 newsletter_spam_check,Postmark spam-check integration,ocProducts,,Could potentially break due to third-party changes.,No,
-geocoding_google,Google Geocoding,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,geocoding automated test.
-reverse_geocoding_google,Google Geocoding (reverse),ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,geocoding automated test.
+geocoding_google,Google Geocoding,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,geocoding automated test.
+reverse_geocoding_google,Google Geocoding (reverse),ocProducts,ocProducts,Could potentially break due to third-party changes.,No,geocoding automated test.
 ip_geocoding,IP address geocoding (internal list),ocProducts,ocProducts,Could potentially break due to third-party changes.,No,Part of release process / geocoding automated test.
 ssl_trust_internal,SSL certificate trust chains (internal list),ocProducts,,Could potentially break due to third-party changes.,No,Part of release process.
 taxcloud,TaxCloud integration for US sales tax,ocProducts,,Could potentially break due to third-party changes.,No,Unit test.

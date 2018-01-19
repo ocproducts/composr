@@ -43,8 +43,6 @@ class Hook_config_cdn
             'public' => false,
 
             'addon' => 'core_configuration',
-
-            'maintenance_code' => 'cdn_theme_image',
         );
     }
 
