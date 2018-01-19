@@ -48,7 +48,7 @@
 
 /* =Navigation
 -------------------------------------------------------------- */
-.box_skitter .prev-button {
+.box_skitter .prev_button {
 	position: absolute;
 	top: 50%;
 	left: 35px;
@@ -61,7 +61,7 @@
 	transition: all 0.2s;
 }
 
-.box_skitter .next-button {
+.box_skitter .next_button {
 	position: absolute;
 	top: 50%;
 	right: 35px;
@@ -74,7 +74,7 @@
 	transition: all 0.2s;
 }
 
-.box_skitter .prev-button:hover, .box_skitter .next-button:hover {
+.box_skitter .prev_button:hover, .box_skitter .next_button:hover {
 	opacity: 0.5 !important;
 }
 
@@ -356,22 +356,22 @@
 
 /* =Default theme
 -------------------------------------------------------------- */
-.box_skitter .focus_button, 
-.box_skitter .next-button, 
-.box_skitter .prev-button, 
-.box_skitter .play_pause_button 
+.box_skitter .focus_button,
+.box_skitter .next_button,
+.box_skitter .prev_button,
+.box_skitter .play_pause_button
 {
 	display: block;
 	background: url('{$IMG;,skitter/sprite-default}') no-repeat;
 }
 
-.box_skitter .next-button {
+.box_skitter .next_button {
 	background-position: -0px -42px;
 	width: 42px;
 	height: 42px;
 }
 
-.box_skitter .prev-button {
+.box_skitter .prev_button {
 	background-position: -42px -42px;
 	width: 42px;
 	height: 42px;
@@ -397,23 +397,23 @@
 
 /* =Minimalist theme
 -------------------------------------------------------------- */
-.skitter-minimalist .prev-button, 
-.skitter-minimalist .next-button, 
-.skitter-minimalist .play_pause_button, 
-.skitter-minimalist .focus_button 
+.skitter-minimalist .prev_button,
+.skitter-minimalist .next_button,
+.skitter-minimalist .play_pause_button,
+.skitter-minimalist .focus_button
 {
 	display: block;
 	background: url('{$IMG;,skitter/sprite-minimalist}') no-repeat !important;
 }
 
-.skitter-minimalist .prev-button {
+.skitter-minimalist .prev_button {
 	background-position: -0px -0px !important;
 	width: 24px !important;
 	height: 28px !important;
 	left: -45px !important;
 }
 
-.skitter-minimalist .next-button {
+.skitter-minimalist .next_button {
 	background-position: -0px -28px !important;
 	width: 24px !important;
 	height: 28px !important;
@@ -465,30 +465,30 @@
 
 /* =Round theme
 -------------------------------------------------------------- */
-.skitter-round .prev-button, 
-.skitter-round .next-button, 
-.skitter-round .play_pause_button, 
-.skitter-round .focus_button 
+.skitter-round .prev_button,
+.skitter-round .next_button,
+.skitter-round .play_pause_button,
+.skitter-round .focus_button
 {
 	display: block;
 	background: url('{$IMG;,skitter/sprite-round}') no-repeat;
 }
 
-.skitter-round .prev-button {
+.skitter-round .prev_button {
 	background-position: -0px -0px;
 	width: 23px;
 	height: 47px;
 	left: -23px;
 }
 
-.skitter-round .next-button {
+.skitter-round .next_button {
 	background-position: -23px -0px;
 	width: 23px;
 	height: 47px;
 	right: -23px;
 }
 
-.skitter-round .next-button:hover, .skitter-round .prev-button:hover {
+.skitter-round .next_button:hover, .skitter-round .prev_button:hover {
 	opacity: 1;
 }
 
@@ -558,22 +558,22 @@
 
 /* =Clean theme
 -------------------------------------------------------------- */
-.skitter-clean .prev-button, 
-.skitter-clean .next-button, 
-.skitter-clean .play_pause_button, 
-.skitter-clean .focus_button 
+.skitter-clean .prev_button,
+.skitter-clean .next_button,
+.skitter-clean .play_pause_button,
+.skitter-clean .focus_button
 {
 	display: block;
 	background: url('{$IMG;,skitter/sprite-clean}') no-repeat;
 }
 
-.skitter-clean .prev-button {
+.skitter-clean .prev_button {
 	background-position: 0px 0px;
 	width: 47px;
 	height: 46px;
 }
 
-.skitter-clean .next-button {
+.skitter-clean .next_button {
 	background-position: 0px -46px;
 	width: 47px;
 	height: 46px;
@@ -648,10 +648,10 @@
 /* =Square theme
 -------------------------------------------------------------- */
 
-.skitter-square .play_pause_button, 
-.skitter-square .next-button, 
-.skitter-square .focus_button, 
-.skitter-square .prev-button 
+.skitter-square .play_pause_button,
+.skitter-square .next_button,
+.skitter-square .focus_button,
+.skitter-square .prev_button
 {
 	display: block;
 	background: url('{$IMG;,skitter/sprite-square}') no-repeat;
@@ -685,7 +685,7 @@
 	margin-top:0;
 }
 
-.skitter-square .next-button {
+.skitter-square .next_button {
 	background-position: -0px -55px;
 	width: 55px;
 	height: 55px;
@@ -695,7 +695,7 @@
 	right: 10px;
 }
 
-.skitter-square .prev-button {
+.skitter-square .prev_button {
 	background-position: -0px -110px;
 	width: 55px;
 	height: 55px;
