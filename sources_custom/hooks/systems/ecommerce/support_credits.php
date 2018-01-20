@@ -151,7 +151,7 @@ class Hook_ecommerce_support_credits
         $member_id = get_member();
 
         // Allow admins to specify the member who should receive the credits with the field in get_needed_fields
-        if (has_actual_page_access(get_member(), 'admin_ecommerce', get_module_zone('admin_ecommerce')) && get_page_name() == 'admin_ecommerce') {
+        if (has_actual_page_access(get_member(), 'admin_ecommerce_logs', get_module_zone('admin_ecommerce_logs')) && get_page_name() == 'admin_ecommerce_logs') {
             $id = post_param_integer('member_id', null);
             if (!is_null($id)) {
                 $manual = 1;

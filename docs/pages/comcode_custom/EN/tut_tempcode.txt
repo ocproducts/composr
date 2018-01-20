@@ -1285,12 +1285,12 @@ These are advanced symbols, and mirror Composr's internal API. The parameters ar
 			<td>Whether some content has permissions to be editable inline, via the <kbd>FRACTIONAL_EDITABLE</kbd> directive. Described in the [page="_SEARCH:sup_inline_editing"]Inline editing in Composr[/page] tutorial.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
-			<td>{$GROUP_ID,3}</td>
-			<td>Find a member's primary usergroup</td>
+			<td>{$GROUP_ID,0,3}</td>
+			<td>Find a member's nth usergroup (counting from zero), starting with the primary usergroup (first parameter is n, second parameter is member ID which defaults to the current member)</td>
 		</tr>
 		<tr style="background: #DDFFDD">
-			<td>{$GROUP_NAME,4}</td>
-			<td>Find the name of a members nth usergroup</td>
+			<td>{$GROUP_NAME,0,3}</td>
+			<td>Find the name of a members nth usergroup (counting from zero), starting with the primary usergroup (first parameter is n, second parameter is member ID which defaults to the current member)</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$URL_FOR_GET_FORM,someurl}</td>
