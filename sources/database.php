@@ -881,6 +881,11 @@ class DatabaseDriver
                     fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
                 }
                 switch (get_db_type()) {
+                    case 'mysql':
+                    case 'mysqli':
+                        $function = 'CHAR_LENGTH';
+                        break;
+
                     case 'sqlserver':
                     case 'sqlserver_odbc':
                         $function = 'LEN';
@@ -1495,7 +1500,7 @@ class DatabaseConnector
 
         if ($DEV_MODE) {
             if (peek_db_scope_check()) {
-                if ((!multi_lang_content()) && (strpos($query, $this->get_table_prefix() . 'translate') !== false) && (strpos($query, 'DROP INDEX') === false) && (strpos($query, 'ALTER TABLE') === false) && (strpos($query, 'CREATE TABLE') === false) && (trim($query) != 'SELECT * FROM cms_translate WHERE 1=1')) {
+                if ((!multi_lang_content()) && (strpos($query, $this->get_table_prefix() . 'translate') !== false) && (strpos($query, 'DROP TABLE') === false) && (strpos($query, 'DROP INDEX') === false) && (strpos($query, 'ALTER TABLE') === false) && (strpos($query, 'CREATE TABLE') === false) && (trim($query) != 'SELECT * FROM cms_translate WHERE 1=1')) {
                     fatal_exit('Assumption of multi-lang-content being on, and it\'s not');
                 }
 

@@ -27,6 +27,11 @@ Tags correspond also to icons, if one matches. Earliest match.
 
 */
 
+function init__tutorials()
+{
+    define('TUTORIAL_VIRTUAL_FIELD_page_name', 't_page_name');
+}
+
 function list_tutorial_tags($skip_addons_and_specials = false)
 {
     $tags = array();
@@ -157,7 +162,7 @@ function list_tutorials()
         $tutorials[] = get_tutorial_metadata(strval($e['id']), $e, $tags);
     }
 
-    $internal = list_to_map('t_page_name', $GLOBALS['SITE_DB']->query_select('tutorials_internal t', array('t.*', tutorial_sql_rating('t.t_page_name'), tutorial_sql_rating_recent('t.t_page_name'), tutorial_sql_likes('t.t_page_name'), tutorial_sql_likes_recent('t.t_page_name'))));
+    $internal = list_to_map('t_page_name', $GLOBALS['SITE_DB']->query_select('tutorials_internal t', array('t.*', tutorial_sql_rating(TUTORIAL_VIRTUAL_FIELD_page_name), tutorial_sql_rating_recent(TUTORIAL_VIRTUAL_FIELD_page_name), tutorial_sql_likes(TUTORIAL_VIRTUAL_FIELD_page_name), tutorial_sql_likes_recent(TUTORIAL_VIRTUAL_FIELD_page_name))));
     $dh = opendir(get_custom_file_base() . '/docs/pages/comcode_custom/EN');
     while (($f = readdir($dh)) !== false) {
         if (substr($f, -4) == '.txt' && $f != 'panel_top.txt') {
@@ -202,6 +207,8 @@ function templatify_tutorial($metadata, $simple = false)
         'ICON' => $metadata['icon'],
     );
     if (!$simple) {
+        require_code('feedback');
+
         $tutorial += array(
             'SUMMARY' => $metadata['summary'],
             'TAGS' => $tags,
@@ -211,6 +218,7 @@ function templatify_tutorial($metadata, $simple = false)
             'AUTHOR' => $metadata['author'],
             'ADD_DATE' => get_timezoned_date($metadata['add_date'], false),
             'EDIT_DATE' => get_timezoned_date($metadata['edit_date'], false),
+            'RATING_TPL' => display_rating($metadata['url'], $metadata['title'], 'tutorial', $metadata['name'], 'RATING_INLINE_DYNAMIC'),
         );
     }
 
@@ -267,7 +275,7 @@ function get_tutorial_metadata($tutorial_name, $db_row = null, $tags = null)
         // From git
 
         if ($db_row === null) {
-            $db_rows = $GLOBALS['SITE_DB']->query_select('tutorials_internal t', array('t.*', tutorial_sql_rating('t.t_page_name'), tutorial_sql_rating_recent('t.t_page_name'), tutorial_sql_likes('t.t_page_name'), tutorial_sql_likes_recent('t.t_page_name')), array('t_page_name' => $tutorial_name), '', 1);
+            $db_rows = $GLOBALS['SITE_DB']->query_select('tutorials_internal t', array('t.*', tutorial_sql_rating(TUTORIAL_VIRTUAL_FIELD_page_name), tutorial_sql_rating_recent(TUTORIAL_VIRTUAL_FIELD_page_name), tutorial_sql_likes(TUTORIAL_VIRTUAL_FIELD_page_name), tutorial_sql_likes_recent(TUTORIAL_VIRTUAL_FIELD_page_name)), array('t_page_name' => $tutorial_name), '', 1);
             if (isset($db_rows[0])) {
                 $db_row = $db_rows[0];
             } else {

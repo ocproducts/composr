@@ -38,7 +38,7 @@ class Hook_config_spam_check_exclusions
             'explanation' => 'CONFIG_OPTION_spam_check_exclusions',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 10,
+            'order_in_category_group' => 11,
             'required' => false,
 
             'public' => false,

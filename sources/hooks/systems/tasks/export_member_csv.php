@@ -29,7 +29,7 @@ class Hook_task_export_member_csv
      * @param  boolean $filter_by_allow Only provide members that have "Receive newsletters and other site updates" set
      * @param  string $extension File extension to use
      * @param  string $preset Preset to use
-     * @param  array $fields_to_use List of fields to use (empty: all)
+     * @param  array $fields_to_use List of fields to use (empty: none)
      * @param  array $usergroups List of usergroups to use (empty: all)
      * @param  string $order_by Field to order by
      * @return ?array A tuple of at least 2: Return mime-type, content (either Tempcode, or a string, or a filename and file-path pair to a temporary file), map of HTTP headers if transferring immediately, map of ini_set commands if transferring immediately (null: show standard success message)
@@ -195,7 +195,7 @@ class Hook_task_export_member_csv
 
             require_code('files2');
             $filename .= '.' . $extension;
-            make_csv($data, $filename);
+            make_csv($data, $filename, false, false, $outfile_path);
         }
 
         return array($mime_type, array($filename, $outfile_path), $headers, $ini_set);
@@ -272,7 +272,7 @@ class Hook_task_export_member_csv
             } else {
                 $parts = explode('/', $f);
                 $wider = '';
-                foreach ($parts as $part) {
+                foreach ($parts as $i => $part) {
                     switch (substr($part, 0, 1)) {
                         case '*': // language string
                             $at = get_translated_text($m[substr($part, 1)], $GLOBALS['FORUM_DB']);
@@ -320,7 +320,7 @@ class Hook_task_export_member_csv
                             $at = $m[$part];
                             break;
                     }
-                    if ($wider != '') {
+                    if ($i != 0) {
                         if ($f == 'm_pass_hash_salted/m_pass_salt/m_password_compat_scheme') {
                             $wider .= ' / ';
                         } else {

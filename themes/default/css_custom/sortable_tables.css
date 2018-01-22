@@ -20,24 +20,24 @@
 /* Sorting */
 .sortable-table th.table-sortable span {
 	cursor: pointer;
-	background-image: url('{$IMG;,sortable-tables/sortable}');
+	background-image: url('{$IMG;,sortable_tables/sortable}');
 	background-position: center left;
 	background-repeat: no-repeat;
 	min-height: 16px;
 	padding-left: 16px;
 }
 .sortable-table th.table-sorted-asc span {
-	background-image: url('{$IMG;,sortable-tables/sorted_up}');
+	background-image: url('{$IMG;,sortable_tables/sorted_up}');
 	background-position: center left;
 	background-repeat: no-repeat;
 }
 .sortable-table th.table-sorted-desc span {
-	background-image: url('{$IMG;,sortable-tables/sorted_down}');
+	background-image: url('{$IMG;,sortable_tables/sorted_down}');
 	background-position: center left;
 	background-repeat: no-repeat;
 }
 .sortable-table th.table-filtered span {
-	background-image: url('{$IMG;,sortable-tables/filter}');
+	background-image: url('{$IMG;,sortable_tables/filter}');
 	background-position: center left;
 	background-repeat: no-repeat;
 }

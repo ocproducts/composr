@@ -38,6 +38,11 @@ class url_management_test_set extends cms_test_case
 
     public function testCycle()
     {
+        global $CAN_TRY_URL_SCHEMES_CACHE, $URL_REMAPPINGS;
+        $CAN_TRY_URL_SCHEMES_CACHE = null;
+        $URL_REMAPPINGS = null;
+        set_option('url_scheme', 'PLAIN');
+
         $test_zone = 'adminzone';
         $test_attributes = array('page' => DEFAULT_ZONE_PAGE_NAME, 'type' => 'bar', 'x' => 'y');
         $test_hash = 'fish';
@@ -53,5 +58,41 @@ class url_management_test_set extends cms_test_case
         $this->assertTrue($zone == $test_zone);
         $this->assertTrue($attributes == $test_attributes);
         $this->assertTrue($hash == $test_hash);
+    }
+
+    public function testUrlScheme()
+    {
+        global $CAN_TRY_URL_SCHEMES_CACHE, $URL_REMAPPINGS, $SITE_INFO;
+
+        $CAN_TRY_URL_SCHEMES_CACHE = null;
+        $URL_REMAPPINGS = null;
+        set_option('url_scheme', 'RAW');
+        $url = build_url(array('page' => 'a'), '');
+        $this->assertTrue(strpos($url->evaluate(), '.php') !== false);
+
+        $CAN_TRY_URL_SCHEMES_CACHE = null;
+        $URL_REMAPPINGS = null;
+        set_option('url_scheme', 'PG');
+        $url = build_url(array('page' => 'b'), '');
+        $this->assertTrue(strpos($url->evaluate(), '/pg/') !== false);
+
+        $CAN_TRY_URL_SCHEMES_CACHE = null;
+        $URL_REMAPPINGS = null;
+        set_option('url_scheme', 'HTM');
+        $url = build_url(array('page' => 'c'), '');
+        $this->assertTrue(strpos($url->evaluate(), '.htm') !== false);
+
+        $CAN_TRY_URL_SCHEMES_CACHE = null;
+        $URL_REMAPPINGS = null;
+        set_option('url_scheme', 'SIMPLE');
+        $url = build_url(array('page' => 'd'), '');
+        $this->assertTrue(strpos($url->evaluate(), '.') === false);
+
+        $SITE_INFO['block_url_schemes'] = '1';
+        $CAN_TRY_URL_SCHEMES_CACHE = null;
+        $URL_REMAPPINGS = null;
+        set_option('url_scheme', 'HTM');
+        $url = build_url(array('page' => 'e'), '');
+        $this->assertTrue(strpos($url->evaluate(), '.php') !== false);
     }
 }

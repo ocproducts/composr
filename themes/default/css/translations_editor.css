@@ -22,8 +22,3 @@ td.translate-line-first {
 .translate-original-text {
 	color: {$GET,unfilled_input_text};
 }
-
-.translate-iframe {
-	height: 130px;
-	width: 100%;
-}

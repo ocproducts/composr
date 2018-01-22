@@ -699,29 +699,57 @@ function seo_meta_set_for_explicit($type, $id, $keywords, $description)
         return;
     }
 
-    seo_meta_erase_storage($type, $id, false);
-
-    $description = str_replace("\n", ' ', $description);
-
     $map_general = array(
         'meta_for_type' => $type,
         'meta_for_id' => $id,
     );
 
-    $map = $map_general;
-    $map += insert_lang('meta_description', $description, 2);
-    $GLOBALS['SITE_DB']->query_insert('seo_meta', $map);
+    // Description...
 
+    $description = str_replace("\n", ' ', $description);
+
+    $rows = $GLOBALS['SITE_DB']->query_select('seo_meta', array('meta_description'), $map_general, '', 1);
+    if (array_key_exists(0, $rows)) {
+        $map = array();
+        $map += lang_remap('meta_description', $rows[0]['meta_description'], $description);
+        $GLOBALS['SITE_DB']->query_update('seo_meta', $map, $map_general, '', 1);
+    } else {
+        $map = $map_general;
+        $map += insert_lang('meta_description', $description, 2);
+        $GLOBALS['SITE_DB']->query_insert('seo_meta', $map);
+    }
+
+    // Keywords...
+
+    $_keywords = array();
     foreach (array_unique(explode(',', $keywords)) as $keyword) {
         if (trim($keyword) == '') {
             continue;
         }
-
-        $map = $map_general;
-        $map += insert_lang('meta_keyword', $keyword, 2);
-        $GLOBALS['SITE_DB']->query_insert('seo_meta_keywords', $map);
+        $_keywords[] = $keyword;
     }
 
+    $rows = $GLOBALS['SITE_DB']->query_select('seo_meta_keywords', array('*'), $map_general);
+    foreach ($rows as $i => $row) {
+        if ($i < count($_keywords)) {
+            $map = array();
+            $map += lang_remap('meta_keyword', $row['meta_keyword'], $_keywords[$i]);
+            $GLOBALS['SITE_DB']->query_update('seo_meta_keywords', $map, array('id' => $row['id']), '', 1);
+        } else {
+            delete_lang($row['meta_keyword']);
+            $GLOBALS['SITE_DB']->query_delete('seo_meta_keywords', array('id' => $row['id']));
+        }
+    }
+
+    foreach ($_keywords as $i => $keyword) {
+        if ($i >= count($rows)) {
+            $map = $map_general;
+            $map += insert_lang('meta_keyword', $keyword, 2);
+            $GLOBALS['SITE_DB']->query_insert('seo_meta_keywords', $map);
+        }
+    }
+
+    // Clear caching...
     seo_meta_clear_caching($type, $id);
 }
 

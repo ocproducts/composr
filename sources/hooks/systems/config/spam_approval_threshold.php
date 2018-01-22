@@ -38,7 +38,7 @@ class Hook_config_spam_approval_threshold
             'explanation' => 'CONFIG_OPTION_spam_approval_threshold',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 6,
+            'order_in_category_group' => 7,
             'required' => true,
 
             'public' => false,

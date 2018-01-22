@@ -32,7 +32,7 @@ class downloads_category_test_set extends cms_test_case
         $this->assertTrue('test' == $GLOBALS['SITE_DB']->query_select_value('download_categories', 'notes', array('id' => $this->dwn_cat_id)));
     }
 
-    public function testEditDownloads_category()
+    public function testEditDownloadsCategory()
     {
         edit_download_category($this->dwn_cat_id, 'test', 1, 'test', 'edit_test', '', '', '');
 

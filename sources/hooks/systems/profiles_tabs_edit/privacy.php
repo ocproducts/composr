@@ -109,7 +109,7 @@ class Hook_profiles_tabs_edit_privacy
 
         // UI fields
 
-        $custom_fields = cns_get_custom_fields_member($member_id_of);
+        $custom_fields = cns_get_all_custom_fields_match_member($member_id_of);
 
         $fields = new Tempcode();
         require_code('form_templates');

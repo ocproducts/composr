@@ -1267,9 +1267,9 @@ body .accessibility-hidden { /* Contents should be made visible (or interpreted)
 /* Commonly used to indicate there is no content to display */
 .nothing-here, .more-here {
 	font-size: 13px !important; /* px not em due to careful background positioning */
-	padding-left: 15px;
+	padding-left: 15px !important;
 	margin: 1.5em;
-	margin-left: 10px;
+	margin-left: 10px !important;
 	background-image: url('{$IMG_INLINE;,1x/cannot_show}');
 	background-position: left 5px;
 	background-repeat: no-repeat;
@@ -5243,27 +5243,27 @@ a[title="{!VIRTUAL_ROOT}"]:hover {
 	display: block;
 }
 
-.overlay .previous-button, .overlay .next-button {
+.overlay .previous_button, .overlay .next_button {
 	position: absolute;
 	cursor: pointer;
 	top: calc(50% - {$DIV,74,2}px);
 	max-width: 20%;
 }
 
-.overlay .previous-button, .overlay .next-button {
+.overlay .previous_button, .overlay .next_button {
 	opacity: 0;
 	transition-property : opacity;
 	transition-duration : 0.5s;
 }
-.overlay .previous-button:hover, .overlay .next-button:hover, .overlay.mousemove .previous-button, .overlay.mousemove .next-button, body.touch-enabled .overlay.mousemove .previous-button, body.touch-enabled .overlay.mousemove .next-button {
+.overlay .previous_button:hover, .overlay .next_button:hover, .overlay.mousemove .previous_button, .overlay.mousemove .next_button, body.touch-enabled .overlay.mousemove .previous_button, body.touch-enabled .overlay.mousemove .next_button {
 	opacity: 1.0 !important;
 }
 
-.overlay .previous-button {
+.overlay .previous_button {
 	left: 1.5em;
 }
 
-.overlay .next-button {
+.overlay .next_button {
 	right: 1.5em;
 }
 

@@ -31,7 +31,7 @@
             });
         } else {
             $dom.on(el, 'click', function (e) {
-                fractionalEdit(e, el.previousElementSibling.previousElementSibling, url, editText, editParamName);
+                fractionalEdit(e, el.previousElementSibling.previousElementSibling, url, editText, editParamName, null, null, editType);
             });
         }
     };
@@ -81,7 +81,11 @@
         switch (type) {
             case 'line':
                 input = document.createElement('input');
-                input.setAttribute('maxlength', '255');
+                if (raw_text.length > 255) {
+                    input.setAttribute('size', '30');
+                } else {
+                    input.setAttribute('maxlength', '255');
+                }
                 input.value = populatedValue;
                 break;
             case 'textarea':
@@ -103,7 +107,9 @@
         }
         input.style.position = 'absolute';
         input.style.left = $cms.isMobile() ? '0px' : (x + 'px');
-        input.style.width = $cms.isMobile() ? ($dom.getWindowWidth() + 'px') : (width + 'px');
+        if (raw_text.length <= 255) {
+            input.style.width = $cms.isMobile() ? ($dom.getWindowWidth() + 'px') : (width + 'px');
+        }
         input.style.top = (y + 8) + 'px';
         input.style.margin = 0;
 

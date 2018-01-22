@@ -47,6 +47,7 @@ class Hook_health_check_install_env extends Hook_Health_Check
         $this->process_checks_section('testForInjectedAdScripts', 'Injected Ad Scripts', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testModSecurity', 'ModSecurity', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testDiskSpaceInstallation', 'Disk Space (Installation)', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testUnicode', 'Database Unicode settings', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
 
         return array($this->category_label, $this->results);
     }
@@ -346,5 +347,26 @@ class Hook_health_check_install_env extends Hook_Health_Check
         } else {
             $this->stateCheckSkipped('PHP disk_free_space function not available');
         }
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     */
+    public function testUnicode($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    {
+        if (!isset($GLOBALS['SITE_DB'])) {
+            return;
+        }
+
+        $cnt = $GLOBALS['SITE_DB']->query_value_if_there('SELECT ' . db_function('LENGTH', array('\'' . db_escape_string(chr(hexdec('C2')) . chr(hexdec('A3'))) . '\'')));
+        $this->assertTrue($cnt == 1, 'Database connection is not encoding Unicode properly (non-latin characters, utf8)');
+
+        $cnt = $GLOBALS['SITE_DB']->query_value_if_there('SELECT ' . db_function('LENGTH', array('\'' . db_escape_string(chr(hexdec('F0')) . chr(hexdec('9F')) . chr(hexdec('98')) . chr(hexdec('8E'))) . '\'')));
+        $this->assertTrue($cnt == 1, 'Database connection is not encoding Unicode properly (emojis, utf8mb4)');
     }
 }

@@ -62,14 +62,14 @@ class Block_main_tutorial_rating
 
         $self_url = get_self_url();
         $self_title = $page_name;
-        $id = 'tutorial_' . $page_name;
+        $id = $page_name;
         $test_changed = post_param_string('rating_' . $id, '');
         if ($test_changed != '') {
             delete_cache_entry('main_rating');
         }
-        actualise_rating(true, 'block_main_rating', $id, $self_url, $self_title);
+        actualise_rating(true, 'tutorial', $id, $self_url, $self_title);
 
-        $rating = display_rating($self_url, $self_title, 'block_main_rating', $id, 'RATING_INLINE_DYNAMIC');
+        $rating = display_rating($self_url, $self_title, 'tutorial', $id, 'RATING_INLINE_DYNAMIC');
 
         return do_template('BLOCK_MAIN_TUTORIAL_RATING', array(
             '_GUID' => 'f68915b7d913e4736b558d0ccd59634a',

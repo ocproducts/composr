@@ -1262,7 +1262,7 @@ function get_translated_text($entry, $db = null, $lang = null, $force = false)
             return null;
         }
 
-        $result = $db->query_select('translate', array('*'), array('id' => $entry), '', 1);
+        $result = $db->query_select('translate', array('*'), array('id' => $entry, 'language' => get_site_default_lang()), '', 1);
         if (!isset($result[0])) {
             $result = $db->query_select('translate', array('*'), array('id' => $entry), '', 1);
         }

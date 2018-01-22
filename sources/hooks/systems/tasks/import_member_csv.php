@@ -213,7 +213,7 @@ class Hook_task_import_member_csv
 
             // Set up member row
             if ((array_key_exists('Password', $line)) && ($line['Password'] != '')) {
-                $parts = explode(' / ', $line['Password'], 3);
+                $parts = preg_split('#\s*/\s*#', $line['Password'], 3);
                 $password = $parts[0];
                 $salt = array_key_exists(1, $parts) ? $parts[1] : null;
                 $password_compatibility_scheme = array_key_exists(2, $parts) ? $parts[2] : null;
@@ -275,8 +275,8 @@ class Hook_task_import_member_csv
 
             $avatar_url = array_key_exists('Avatar', $line) ? $line['Avatar'] : null;
             if ($avatar_url !== null) {
-                if (substr($avatar_url, 0, strlen(get_custom_base_url())) == get_custom_base_url()) {
-                    $avatar_url = substr($avatar_url, strlen(get_custom_base_url()));
+                if (substr($avatar_url, 0, strlen(get_custom_base_url())) == get_custom_base_url() . '/') {
+                    $avatar_url = substr($avatar_url, strlen(get_custom_base_url() . '/'));
                 }
             }
             $signature = array_key_exists('Signature', $line) ? $line['Signature'] : '';

@@ -146,6 +146,9 @@ function warn_exit_wordfilter($name, $message)
         throw new CMSException($message);
     }
 
+    require_code('global3');
+    set_http_status_code(400);
+
     // Output our error / correction form
     cms_ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
     $hidden = build_keep_post_fields(array($name));

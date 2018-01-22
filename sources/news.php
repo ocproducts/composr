@@ -164,7 +164,7 @@ function render_news_category_box($row, $zone = '_SEARCH', $give_context = true,
     require_lang('news');
 
     // URL
-    $map = array('page' => 'news', 'type' => 'browse', 'id' => $row['id']);
+    $map = array('page' => ($zone == '_SELF' && running_script('index')) ? get_page_name() : 'news', 'type' => 'browse', 'id' => $row['id']);
     if ($attach_to_url_filter) {
         if (get_param_string('type', 'browse') == 'cat_select') {
             $map['blog'] = '0';

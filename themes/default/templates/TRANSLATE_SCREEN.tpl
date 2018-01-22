@@ -43,11 +43,4 @@
 			<input accesskey="u" data-disable-on-click="1" class="button-screen buttons--save" type="submit" value="{!SAVE}" />
 		</p>
 	</form>
-
-	<form title="" id="hack_form" action="http://translate.google.com/translate_t" method="post" autocomplete="off">
-		<div>
-			<input type="hidden" id="hack_input" name="text" value="" />
-			<input type="hidden" name="langpair" value="en|{GOOGLE*}" />
-		</div>
-	</form>
 </div>

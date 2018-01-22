@@ -17,22 +17,6 @@
             langFrom = 'EN';
         }
 
-        if (apiKey === '') {
-            $cms.ui.toggleableTray($dom.$('#rexp_' + id));
-
-            var element = document.getElementById('rexp_' + id);
-            if (element.style.display !== 'none') {
-                $dom.html('#exp_' + id, '<iframe src="{$BASE_URL_NOHTTP*;}/data/empty.html" id="iframe_' + id + '" name="iframe_' + id + '" class="translate-iframe">{!IGNORE^}</iframe>');
-                var form = document.getElementById('hack_form');
-                form.setAttribute('target', 'iframe_' + id);
-                var inputText = document.getElementById('hack_input');
-                inputText.value = old;
-                $dom.submit(form);
-            }
-            
-            return;
-        } 
-        
         var callbackName = 'googleTranslateCallback' + $util.random();
 
         window[callbackName] = function (response) {

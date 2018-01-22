@@ -62,7 +62,7 @@ The menu editing screen is split into three main sections:
 2) a form for editing a branch in the tree structure (invisible, until one of the branches is selected)
 3) a Sitemap tool to find 'entry points' for insertion into the selected branch's URL field
 
-Menus are a tree structure made up of branches, where each branch may be a simple link and/or be a container for more child branches. For a branch with children that branch can be set to be initially expanded or contracted.
+Menus are a tree structure made up of branches, where each branch may be a simple link and/or be a container for more child branches. For a branch with children that branch can be set to be initially expanded or contracted. Note that the expand/contract setting may not do anything; some menu types don't use it, and if you enter a Link then it probably would be displayed auto-expanded anyway (due to clickability on the parent being used to open that link, not expand).
 
 The 'add branch' tool, used in conjunction with the branch-type drop-down list (shown for each branch) allows the full structure to be developed. When you change a branch so it can have children (contracted or expanded branch), you will see that suddenly you may create sub-branches for it.
 

@@ -26,6 +26,54 @@ class comcode_test_set extends cms_test_case
         require_code('comcode_from_html');
     }
 
+    public function testEmoticons()
+    {
+        $actual = comcode_to_tempcode(':)');
+        $this->assertTrue(strpos($actual->evaluate(), '<img') !== false);
+    }
+
+    public function testRules()
+    {
+        $actual = comcode_to_tempcode('-----');
+        $this->assertTrue(strpos($actual->evaluate(), '<hr />') !== false);
+    }
+
+    public function testLinks()
+    {
+        $actual = comcode_to_tempcode('http://example.com');
+        $this->assertTrue(strpos($actual->evaluate(), '<a') !== false);
+    }
+
+    public function testMemberLinks()
+    {
+        $actual = comcode_to_tempcode('{{admin}}');
+        $this->assertTrue(strpos($actual->evaluate(), '<a') !== false);
+    }
+
+    public function testWiki()
+    {
+        $actual = comcode_to_tempcode('[[Home]]');
+        $this->assertTrue(strpos($actual->evaluate(), '<a') !== false);
+    }
+
+    public function testShortcode()
+    {
+        $actual = comcode_to_tempcode('-|-');
+        $this->assertTrue(strpos($actual->evaluate(), '&dagger;') !== false);
+    }
+
+    public function testTable()
+    {
+        $actual = comcode_to_tempcode('{|
+! a
+! b
+|-
+| a
+| b
+|}');
+        $this->assertTrue(strpos($actual->evaluate(), '<table') !== false);
+    }
+
     public function testCodeTags()
     {
         $expects_no_parse = array(

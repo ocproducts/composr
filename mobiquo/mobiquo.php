@@ -36,12 +36,13 @@ include(COMMON_CLASS_PATH_INCLUDE . '/pm_functions.php');
 
 require(__DIR__ . '/lib/mobiquo.php');
 
+initialise_composr();
+
 // This is needed here, due to the $xmlrpc* globals being needed in server_define, regardless of protocol
 require(__DIR__ . '/lib/xmlrpc.php');
 require(__DIR__ . '/lib/xmlrpcs.php');
 
 initialise_mobiquo();
-initialise_composr();
 
 include(COMMON_CLASS_PATH_INCLUDE . '/server_define.php');
 

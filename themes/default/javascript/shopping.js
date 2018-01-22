@@ -70,9 +70,11 @@
         function confirmEmpty(message, actionUrl, form) {
             $cms.ui.confirm(
                 message,
-                function () {
-                    form.action = actionUrl;
-                    $dom.submit(form);
+                function (result) {
+                    if (result) {
+                        form.action = actionUrl;
+                        $dom.submit(form);
+                    }
                 }
             );
             return false;

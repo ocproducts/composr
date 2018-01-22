@@ -38,7 +38,7 @@ class Hook_config_spam_block_lists
             'explanation' => 'CONFIG_OPTION_spam_block_lists',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 4,
+            'order_in_category_group' => 5,
             'required' => false,
 
             'public' => false,
