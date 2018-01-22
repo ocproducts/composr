@@ -35,8 +35,8 @@ class tasks_test_set extends cms_test_case
         $ob_import = new Hook_task_import_member_csv();
         $ob_import->run('', false, $tmp_path);
 
-        require_code('hooks/systems/tasks/download_member_csv');
-        $ob_export = new Hook_task_download_member_csv();
+        require_code('hooks/systems/tasks/export_member_csv');
+        $ob_export = new Hook_task_export_member_csv();
         $results = $ob_export->run(false, '.csv', '', array('ID', 'Username'), array(), 'ID');
         $this->assertTrue(strpos(cms_file_get_contents_safe($results[1][1]), 'TestingABC') !== false);
 
