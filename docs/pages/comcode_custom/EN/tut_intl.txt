@@ -17,10 +17,10 @@ Composr has great support for [concept]internationalisation[/concept], including
 [title="2"]Time-zones[/title]
 
 In Composr, time-zones can be adjusted in two ways:
-1) adjusting the site time-zone (this is a site configuration option). This sets the default, and typically will be where your organisation is mainly centred around.
+1) adjusting the "Timezone" configuration option. This sets the default, and typically will be where your organisation is mainly centred around.
 2) adjusting member time-zones in their account settings ([concept]Conversr[/concept] only). This lets individual members set their own time-zones.
 
-You can also have guest time-zones auto-detected (a configuration option). This is a good idea if your visitors are geographically-distributed.
+You can also have guest time-zones auto-detected using the "Guest time-zone detection" configuration option (Admin Zone > Setup > Configuration > Site options > Internationalisation). This is a good idea if your visitors are geographically-distributed.
 
 [title="2"]Translations[/title]
 

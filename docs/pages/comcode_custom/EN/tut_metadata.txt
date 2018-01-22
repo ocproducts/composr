@@ -57,7 +57,7 @@ In your HTML this metadata looks similar to:
 <meta name="keywords" content="example,keywords,go,here" />
 [/code]
 
-If you don't like the presence of the metadata options then you can disable the "Enable SEO fields" option.
+If you don't like the presence of the metadata options then you can disable the "Enable SEO fields" configuration option.
 
 [title="2"]Open Graph[/title]
 

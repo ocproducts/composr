@@ -18,9 +18,9 @@
  */
 class tutorial_nav_paths_test_set extends cms_test_case
 {
-    public function testInvalidPaths()
+    public function setUp()
     {
-        $config_hooks = find_all_hook_obs('systems', 'config', 'Hook_config_');
+        parent::setUp();
 
         set_option('yeehaw', '0');
 
@@ -30,6 +30,48 @@ class tutorial_nav_paths_test_set extends cms_test_case
         erase_cached_language();
 
         require_all_lang();
+    }
+
+    public function testConfigOptionNames()
+    {
+        $config_hooks = find_all_hook_obs('systems', 'config', 'Hook_config_');
+        $config_options = array();
+        foreach ($config_hooks as $file => $ob) {
+            $details = $ob->get_details();
+            $config_options[do_lang($details['human_name'])] = 'Admin Zone > Setup > Configuration > ' . do_lang('CONFIG_CATEGORY_' . $details['category']) . ' > ' . do_lang($details['group']);
+        }
+        $config_options['Timezone'] = 'Admin Zone > Setup > Configuration > Site options > Internationalisation';
+
+        $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
+        $dh = opendir($path);
+        while (($f = readdir($dh)) !== false) {
+            if (substr($f, -4) == '.txt') {
+                $c = file_get_contents($path . '/' . $f);
+
+                $matches = array();
+                $num_matches = preg_match_all('#"([^"]*)" configuration option[^s]#', $c, $matches);
+                for ($i = 0; $i < $num_matches; $i++) {
+                    $option = trim($matches[1][$i], '\\');
+                    $this->assertTrue(isset($config_options[$option]), 'Missing configuration option, ' . $option . ' in ' . $f);
+                }
+
+                $matches = array();
+                $num_matches = preg_match_all('#"([^"]*)" configuration option \((Admin Zone > Setup > Configuration > [^\)]*)\)#', $c, $matches);
+                for ($i = 0; $i < $num_matches; $i++) {
+                    $option = trim($matches[1][$i], '\\');
+                    if (isset($config_options[$option])) {
+                        $config_path = $matches[2][$i];
+                        $this->assertTrue($config_options[$option] == $config_path, 'Wrong config option path for ' . $option . ' in ' . $f . '; got  ' .$config_path . ' expected ' . $config_options[$option]);
+                    }
+                }
+            }
+        }
+        closedir($dh);
+    }
+
+    public function testInvalidPaths()
+    {
+        $config_hooks = find_all_hook_obs('systems', 'config', 'Hook_config_');
 
         $paths_found = array();
 

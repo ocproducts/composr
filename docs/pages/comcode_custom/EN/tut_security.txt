@@ -20,7 +20,7 @@ Passwords:
  - Visual representation of password quality
  - Password complexity rules
  - Password expiry and prevention of re-use
- - Password hashing with configurable ratchet (even if hackers steal the database they won't have actual passwords; controlled via "Cryptographic ratchet" option)
+ - Password hashing with configurable ratchet (even if hackers steal the database they won't have actual passwords; controlled via "Cryptographic ratchet" configuration option)
  - Configurable cryptographic complexity ratchet to protect against brute-force techniques to convert hashes back into passwords
  - Temporary passwords, so that staff may set up accounts without needing to know the final password that will be used
 
@@ -233,7 +233,7 @@ The following types of alert are defined:
  - [tt]PHP_DOWNLOAD_INNOCENT[/tt], Somehow a PHP file got referenced in the download system. This should have been filtered by 'TRY_TO_DOWNLOAD_SCRIPT', but was not. This is a serious security breach if it happens
  - [tt]BRUTEFORCE_LOGIN_HACK[/tt], Someone gave incorrect login details 30 times over a 15 minute period (brute-force attack)
 
-After a number ("Hack-attack ban threshold" option) of hack-attack attempts an IP address will be banned, if the "Enable auto-banning" option is enabled.
+After a number ("Hack-attack ban threshold" configuration option) of hack-attack attempts an IP address will be banned, if the "Enable auto-banning" configuration option (Admin Zone > Setup > Configuration > Security options > General) is enabled.
 Similarly and more specifically there are a number of options specifically attached to the brute force login detection for automatic bans.
 
 [title="4"]The "TRY_TO_DOWNLOAD_SCRIPT" error in detail[/title]
@@ -293,7 +293,7 @@ In summary, we have defense across a number of layers, and code without making p
 
 We provide a detailed implementation of CSP 2 in Composr. This is optional, however, because to maintain it it requires a higher degree of discipline when designing your website.
 
-CSP is built on the back of the "Trusted partner sites" options. These options restrict to mitigate the following possible attack vectors...
+CSP is built on the back of the "Trusted partner sites" configuration options. These options restrict to mitigate the following possible attack vectors...
 {|
 ! Inbound or Outbound
 ! Vector/trust
@@ -405,10 +405,10 @@ There is no clear risk.
 |}
 * Nonces are configurable in HTML/templates via placing [tt]{$CSP_NONCE_HTML}[/tt] in the opening tag. An XSS hacker has no way to know the nonce, so can't inject script/style requiring it. At the current time nonces are only supported in CSP by script and CSS files, but the W3C is discussing changes this.
 
-Note that the "Trusted parter site" options automatically include "www." if not specified.
-The "Allowed frame ancestors"/"Allowed frame descendants" options allow wildcarding to allow any request (and do by default due to the low risk and commonality of frame use).
+Note that the "Trusted parter sites" configuration options automatically include "www." if not specified.
+The "Allowed iframe ancestors" configuration option and "Allowed iframe descendants" configuration option allow wildcarding to allow any request (and do by default due to the low risk and commonality of frame use).
 
-There are many settings related to CSP in the Composr security options, including:
+There are many settings related to CSP in the Composr security options (Admin Zone > Setup > Configuration > Security options), including:
  - Enabling/disabling
  - Relaxing some of the deeper restrictions
  - Defining pages that don't run with CSP
@@ -670,7 +670,7 @@ Deny from all
 [/code]
 You should test these rules are working correctly after applying them.
 
-If the "Auto-maintained maintenance script IP-barrier" config option is enabled and the "Enquire on new IPs" option is set on a Conversr usergroup(s) then the [tt].htaccess[/tt] file will automatically be updated to include all confirmed IP addresses with access. This option is not always available as it requires write access to the [tt].htaccess[/tt] file and also the Apache web server. If the option is enabled then you should not manually add the above rules to the [tt].htaccess[/tt] file or try to adjust the automatically maintained code. Additionally only enable "Enquire on new IPs" for usergroups you trust.
+If the "Auto-maintained maintenance script IP-barrier" configuration option (Admin Zone > Setup > Configuration > Security options > General) is enabled and the "Enquire on new IPs" option is set on a Conversr usergroup(s) then the [tt].htaccess[/tt] file will automatically be updated to include all confirmed IP addresses with access. This option is not always available as it requires write access to the [tt].htaccess[/tt] file and also the Apache web server. If the option is enabled then you should not manually add the above rules to the [tt].htaccess[/tt] file or try to adjust the automatically maintained code. Additionally only enable "Enquire on new IPs" for usergroups you trust.
 
 [title="3"]Denial Of Service prevention[/title]
 

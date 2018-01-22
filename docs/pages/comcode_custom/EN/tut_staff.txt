@@ -58,7 +58,7 @@ Larger enterprises may require a more sophisticated workflow system. Composr has
 
 [title="3"]Reviews[/title]
 
-You can set the "Comcode page review frequency" option so that Comcode pages are automatically flagged for regular review, to make sure they stay updated.
+You can set the "Comcode page review frequency" configuration option (Admin Zone > Setup > Configuration > Administrative options > Periodic content reviews) so that Comcode pages are automatically flagged for regular review, to make sure they stay updated.
 
 Notifications will be sent out automatically, or you can browse content needing reviewing from:
 Admin Zone > Audit > Periodic content reviews

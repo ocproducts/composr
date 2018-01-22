@@ -371,7 +371,7 @@ If coding a system to create a Composr login automatically (i.e. without needing
 
 [title="2"]Creating new forms in HTML but not PHP[/title]
 
-You may need to tune the "Pages without security tokens" option if you are setting up pages with custom forms but not going through the full Composr forms API.
+You may need to tune the "Pages without security tokens" configuration option (Admin Zone > Setup > Configuration > Security options > Advanced) if you are setting up pages with custom forms but not going through the full Composr forms API.
 
 [title="2"]General integration for external systems to access Composr[/title]
 

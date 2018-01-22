@@ -100,7 +100,7 @@ The template editor is very powerful. Features include:
   - By template type
   - By addon
   - By co-occurrence (i.e. find templates that tend to come together with another particular template)
-  - By screen (templates used on particular screens -- which only lists screens if you've either enabled the "Grow template meta-tree" option and browsed to that screen, or previously opened the template editor directly from that screen)
+  - By screen (templates used on particular screens -- which only lists screens if you've either enabled the "Grow template meta-tree" configuration option (Admin Zone > Setup > Configuration > Performance options > Data gathering) and browsed to that screen, or previously opened the template editor directly from that screen)
  - See key details about any file in the selection tree[media width="150" description="Editing an HTML template in the template editor" float="right"]data_custom/images/docs/tut_themes/themes_edit_templates.png[/media]
  - Tools for helping to code HTML templates:
   - Insert parameters used within the template

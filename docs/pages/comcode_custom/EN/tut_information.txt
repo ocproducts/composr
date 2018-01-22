@@ -316,7 +316,7 @@ For a discussion on how our CMS approach works, see the [page="site:antifeatures
 
 [title="2"]The narrow-in option[/title]
 
-Normally when browsing through categories you're opening up a category and seeing what's in it. If the "Narrow-in when browsing" config option is enabled then going deeper into categories works as a filter.
+Normally when browsing through categories you're opening up a category and seeing what's in it. If the "Narrow-in when browsing" configuration option (Admin Zone > Setup > Configuration > Gallery options > Browsing galleries) is enabled then going deeper into categories works as a filter.
 
 E.g. if you have files X and Y categories as follows:
 root > a > File X

@@ -39,7 +39,7 @@ Additionally, most platforms will allow native notification display:
 
 This option works to automatically set up a member to receive notifications on content they have interacted with. This happens at the point of them making an interaction -- it automatically sets up a monitor. It is not retroactive.
 
-Members have this set automatically if the global "Auto-monitor posted content" option is enabled.
+Members have this set automatically if the global "Auto-monitor posted content" configuration option (Admin Zone > Setup > Configuration > Messages > Notifications) is enabled.
 
 [title="2"]Smart Topic notification[/title]
 
@@ -58,7 +58,7 @@ Note that it will only CC a notification e-mail to this address once, not once p
 
 [title="2"]Limits[/title]
 
-If the number of categories for a notification type exceeds the value of the "Safety listing limit" config option then a full selection tree will not be provided under the advanced notification settings.
+If the number of categories for a notification type exceeds the value of the "Safety listing limit" configuration option (Admin Zone > Setup > Configuration > Feature options > Advanced) then a full selection tree will not be provided under the advanced notification settings.
 For example, if you have a large number of download categories, the Download notification type will not show a full download category tree.
 Instead, only the IDs of notification categories that the user has already monitored will show. New notifications may be set via clicking Monitor buttons when browsing through content in the normal fashion.
 

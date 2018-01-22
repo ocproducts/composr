@@ -6,7 +6,7 @@ In Composr, the front page is your home page e.g. [tt]http://yourbaseurl/index.p
 
 It's an area for new members to sign up or existing members to sign in.
 
-That is, as long as the "single public zone" option hasn't been enabled. If that option is enabled, there is no separation between welcome and site zones, so it's direct into the full website.
+That is, as long as the "Single public zone" configuration option (Admin Zone > Setup > Configuration > Site options > Structure) hasn't been enabled. If that option is enabled, there is no separation between welcome and site zones, so it's direct into the full website.
 
 This page can be left as it is or can be edited but to create some of our own content, but first need to understand what the existing content is.
 

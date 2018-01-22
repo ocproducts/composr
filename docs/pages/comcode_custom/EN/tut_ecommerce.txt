@@ -543,12 +543,12 @@ To use the TaxCloud system:
 3) Set up required details on the TaxCloud Profile/Websites/Contacts/Locations tabs; you will need your filing details such as your Federal Tax ID (EIN)
 4) Set up your payment information in the TaxCloud Payment Information tabs
 5) Consider adding the "Sales Tax Policy" text to your Composr rules page
-6) Fill in the TaxCloud API key configuration option on your Composr site
-7) Fill in the TaxCloud API ID configuration option on your Composr site
-8) Set the Business country configuration option on your Composr site to US
-9) Set the Business state configuration option on your Composr site to the state you operate your business from (make sure you enter a 2-character state code in upper-case, not the full written state name)
-10) You may ignore the "Tax countries" and "Tax states" Composr configuration options
-11) Set the Currency configuration option on your Composr site to USD
+6) Fill in the "TaxCloud API key" configuration option (Admin Zone > Setup > Configuration > eCommerce options > Tax) on your Composr site
+7) Fill in the "TaxCloud API ID" configuration option on your Composr site
+8) Set the "Business country" configuration option on your Composr site to US
+9) Set the "Business state" configuration option on your Composr site to the state you operate your business from (make sure you enter a 2-character state code in upper-case, not the full written state name)
+10) You may ignore the "Tax countries" configuration option and "Tax states" configuration option
+11) Set the "Currency" configuration option on your Composr site to USD
 12) Configure tax configuration options, and shopping catalogue items, to use the appropriate TIC code(s)
 Note that TaxCloud will automatically debit the tax from you and do tax forms for you in many cases -- and in any case will keep records of all the itemised sales taxes due.
 
@@ -569,7 +569,7 @@ Known limitations at this time which could be worked around with custom code...
 
 The EU system for calculating digital product taxes charges the tax rate of the buyer's country, not yours, and is then paid to the government in the buyer's country.
 It only applies to certain digital sales, not shipped products. To use digital product tax:
-1) You may ignore the "Tax countries" and "Tax states" configuration options unless you sell other products that have other tax codes
+1) You may ignore the "Tax countries" configuration option and "Tax states" configuration option unless you sell other products that have other tax codes
 2) Configure tax configuration options, and shopping catalogue items, to use the "EU digital goods tax" tax code
 
 [title="4"]Other users[/title]
@@ -787,7 +787,7 @@ We have summarised the PCI compliance rules below in a way streamlined toward Co
 | No
 |-
 ! Disable inactive accounts
-| Inactive accounts must be disabled after 90 days using the Composr "Password expiry days" option.
+| Inactive accounts must be disabled after 90 days using the Composr "Password expiry days" configuration option.
 | No
 | Yes
 |-
@@ -837,7 +837,7 @@ We have summarised the PCI compliance rules below in a way streamlined toward Co
 | Yes
 |-
 ! Avoid storing card data
-| Only enable the "Store credit card numbers" option if it is important to your business.
+| Only enable the "Store credit card numbers" configuration option (Admin Zone > Setup > Configuration > eCommerce options > General) if it is important to your business.
 | No
 | Yes
 |-

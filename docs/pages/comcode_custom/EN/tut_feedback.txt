@@ -178,7 +178,7 @@ with the e-mail Subject and From lines set appropriately.
 
 [title="4"]Anti-spam security[/title]
 
-We don't use CAPTCHA here to keep things simple. But you can see we did include the spammer blackhole (enabled by default, "Blackhole detection" option), which will typically trick bots into getting themselves blocked.
+We don't use CAPTCHA here to keep things simple. But you can see we did include the spammer blackhole (enabled by default, "Blackhole detection" configuration option), which will typically trick bots into getting themselves blocked.
 CAPTCHA can be supported. To do so you have to:
 1) pass a hidden [tt]_security[/tt] field with value [tt]1[/tt]
 2) copy and paste the CAPTCHA code from [tt]COMMENTS_POSTING_FORM.tpl[/tt]
@@ -213,7 +213,7 @@ Polls are limited to 10 answers. If you need a more complicated polling mechanis
 
 [title="2"]Staff notes[/title]
 
-Content usually has a "Staff notes" field, which can be used to put notes intended only for people to see upon-edit. This can be enabled/disabled via the "Enable staff notes" option.
+Content usually has a "Staff notes" field, which can be used to put notes intended only for people to see upon-edit. This can be enabled/disabled via the "Enable staff notes" configuration option.
 
 [concepts
  1_key="Feedback"   1_value="The common title given to Composr systems for feedback that are available across different forms of content"

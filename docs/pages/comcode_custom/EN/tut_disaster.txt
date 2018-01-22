@@ -133,7 +133,7 @@ The above requires for to be logged in at admin, which you may not be or be able
 [title="2"]Disabling URL Schemes[/title]
 
 URL Schemes are subject to your webhost supporting rewrites and not doing any strange redirects or filter rules. It is possible you could enable them, and then find they don't work and that you can't get back at the configuration to disable them. We try and detect them working before we allow the option to be changed, but the detection may not be perfect. Or, they may work, then your host may change something, causing them to stop working.
-You can use the [tt]http://yourbaseurl/config_editor.php[/tt] script in order to turn them off, overriding the main configuration setting. Load up the [tt]http://yourbaseurl/config_editor.php[/tt] script, login, look for the "Whether to block the URL Scheme (mod_rewrite)" option, tick (check) the option, and then save the configuration.
+You can use the [tt]http://yourbaseurl/config_editor.php[/tt] script in order to turn them off, overriding the main configuration setting. Load up the [tt]http://yourbaseurl/config_editor.php[/tt] script, login, look for the "Whether to block the URL Scheme (mod_rewrite)" installation option, tick (check) the option, and then save the configuration.
 
 [title="2"]Closing the site[/title]
 

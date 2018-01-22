@@ -109,7 +109,7 @@ Alternatively you can reference it in your [tt]robots.txt[/tt] file, as shown in
 
 The Composr URL moniker feature will put keywords into the URLs instead of ID numbers, which is great for SEO but also makes the URLs more comprehensible to humans.
 
-The URL monikers option can be enabled/disabled via the "URL monikers enabled" option.
+The URL monikers option can be enabled/disabled via the "URL monikers enabled" configuration option.
 
 One small disadvantage of URL Monikers, is it makes it a bit harder to find out ID numbers, as you can't just look in URLs. However, you can still find them on edit links, or if you look in the HTML source you will often see:
 [code="HTML"]

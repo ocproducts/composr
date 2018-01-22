@@ -73,7 +73,7 @@ Composr is not designed to "cache everything as it will be displayed" because th
  - The [tt]main_news[/tt] and [tt]main_forum_news[/tt] blocks have an [tt]optimise[/tt] parameter which will simplify down the Comcode of anything displayed such as it will be stored statically. This usually will have no impact, but may increase performance if a lot of Comcode tags were used. It does have an impact if dynamic elements are used within posts, such as Comcode that check's a user's usergroup or displays the current date/time.
  - Avoid making very long Comcode pages if they are just going to be static for all users. Ideally for usability pages should not be very long, but there are cases where you may choose for them to be (e.g. large glossaries). You can put [tt]{$,page hint: no_smart_conversion}[/tt] into a Comcode page to prevent the WYSIWYG editor converting it to Comcode and otherwise use the Comcode [tt]html[/tt] tag to include pure HTML content.
  - If you get a lot of 404 errors, it is best to make a [b]static 404 page[/b] instead of using Composr's which can be relatively intensive. You activate a custom 404 page by putting a reference to it in the [tt].htaccess[/tt] file (Apache only; our [tt]recommended.htaccess[/tt] file does this for Composr's).
- - If you are optimising your server infrastructure to be able to handle large numbers of users don't forget to change the value of the "Maximum users" config option to something much higher!
+ - If you are optimising your server infrastructure to be able to handle large numbers of users don't forget to change the value of the "Maximum users" configuration option (Admin Zone > Setup > Configuration > Site options > Closed site) to something much higher!
  - Even though Composr supports various database vendors it is optimised for MySQL. You should also run the latest stable version so that you benefit from all their performance optimisations.
  - Even though Composr supports various third party forums it is optimised for Conversr.
  - Servers may have incorrectly firewalled DNS resolution, in which case the Composr "Spammer checking level" setting must be set to "Never" to avoid a 28 second timeout happening on each anti-spammer check.
@@ -83,7 +83,7 @@ Composr is not designed to "cache everything as it will be displayed" because th
  - Disabling URL monikers can help with performance; however this will also impact SEO if you think your URL paths are key to that.
  - [b]Block unwanted bots[/b] you see in your logs using [tt]robots.txt[/tt], and set a [tt]Crawl-delay[/tt] value in there.
  - Automatically kill slow searches (see "Auto-kill slow searches" in the [page="_SEARCH:tut_search"]Search[/page] tutorial).
- - Enable the "Gzipped output" option. Unless you're using Cloudflare's optimisation features, in which case disable it so Cloudflare can do that instead.
+ - Enable the "Gzipped output" configuration option. Unless you're using Cloudflare's optimisation features, in which case disable it so Cloudflare can do that instead.
  - Sometimes you may be flooded with random traffic. For example, the chinese "great firewall" has been observed to randomly reroute traffic to avoid it reaching certain sites. If this happens, you may want to use a [tt].htaccess[/tt] file (Apache only) to spot undesired request patterns and terminate those requests.
  - Don't allow thousands of posts in forum topics, as navigating within becomes very inefficient for the database.
  - Make sure PHP was not compiled with [tt]--disable-ctype[/tt].
@@ -244,7 +244,7 @@ Composr won't hard-code image dimensions into templates, but some may use the [t
 [title="2"]E-mails[/title]
 
 Sending e-mails can be an intensive task because Composr has to work out what CSS to include for each e-mail, put templating together, and connect through and send to the e-mail server.
-[b]Turning on the "E-mail queue" option[/b] will avoid this happening immediately during user actions, deferring it. It will make forum posting, for example, faster.
+[b]Turning on the "E-mail queue" configuration option[/b] will avoid this happening immediately during user actions, deferring it. It will make forum posting, for example, faster.
 
 [title="2"]Server[/title]
 
@@ -503,7 +503,7 @@ to:
 [code="Tempcode"]
 {$PREG_REPLACE,^{$CUSTOM_BASE_URL}/uploads/attachments/,http://whateverYourAmazonBaseURLIS/uploads/attachments/,{URL}}
 [/code]
-You'll need to disable the Composr "Reveal usage figures" option, as the usage figures can't be maintained with requests not routing through Composr.
+You'll need to disable the Composr "Reveal usage figures" configuration option, as the usage figures can't be maintained with requests not routing through Composr.
 
 Alternatively, you could do a similar thing using rewrite rules in [tt].htaccess[/tt] (Apache only), but this would add additional latency.
 

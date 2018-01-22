@@ -31,9 +31,9 @@ This cannot be done directly using page permissions because both actions go thro
 
 [list="1"]
 [*] Make sure the [tt]match_key_permissions[/tt] addon is installed.
-[*] If the "Single public zone" option is on then:
+[*] If the "Single public zone" configuration option (Admin Zone > Setup > Configuration > Site options > Structure) is on then:
  - Set to block all groups on [tt]:members:browse[/tt]
-If the "Single public zone" option is [i]not[/i] on then:
+If the "Single public zone" configuration option (Admin Zone > Setup > Configuration > Site options > Structure) is [i]not[/i] on then:
  - Set to block all groups on [tt]site:members:browse[/tt]
 [/list]
 [/surround]

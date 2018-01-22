@@ -49,7 +49,7 @@ The default Comcode pages are...
 		<tr>
 			<td>Site</td>
 			<td><kbd>start</td>
-			<td>This is the default front-page of the Site zone. It only exists if you do not have the "Single public zone" option enabled. If "Single public zone" is not enabled then this page is usually used for logged-in users only.</td>
+			<td>This is the default front-page of the Site zone. It only exists if you do not have the "Single public zone" configuration option (Admin Zone > Setup > Configuration > Site options > Structure) enabled. If "Single public zone" is not enabled then this page is usually used for logged-in users only.</td>
 			<td>100%</td>
 		</tr>
 		<tr>

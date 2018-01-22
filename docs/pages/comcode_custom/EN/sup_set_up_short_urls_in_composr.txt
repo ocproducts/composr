@@ -14,7 +14,7 @@ The first thing you need to do is log in to your website FTP and locate the opti
 [*] Scroll down the SEO section
 [/list]
 
-The "URL scheme" option contains a number of different possibilities, including...
+The "URL Scheme" configuration option contains a number of different possibilities, including...
  - "Use /pg/ to identify CMS pages" produces URLs like [tt]http://yourbaseurl/ZONEA/pg/start[/tt].
  - "Use .htm to identify CMS pages" produces URLs like [tt]http://yourbaseurl/ZONEA/start.htm[/tt].
 

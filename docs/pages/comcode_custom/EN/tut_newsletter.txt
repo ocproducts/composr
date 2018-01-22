@@ -90,7 +90,7 @@ When composing your newsletter you will be given a choice to send it out at a sc
 [box="Be wary of WYSIWYG" width="25em" float="right"]
 You can use the WYSIWYG editor for making newsletters if you wish, but it is not advisable if "Support plain-text e-mails" is enabled, because plain-text readers will get some really ugly plain-text from it. If you make the newsletter using manual Comcode, the plain-text readers will see the Comcode, which is intrinsically easy to read.
 [/box]
-If the "Support plain-text e-mails" option is enabled (it's not by default) then newsletters are sent out in a dual format: both text and HTML. Most users will be able to read the HTML variant, as this is now by far the standard for common e-mail messages; however if they have this disabled, or an unusual e-mail client that cannot read HTML mails, then they will see the plain text version, which is your original Comcode.
+If the "Support plain-text e-mails" configuration option (Admin Zone > Setup > Configuration > Messages > Newsletter) is enabled (it's not by default) then newsletters are sent out in a dual format: both text and HTML. Most users will be able to read the HTML variant, as this is now by far the standard for common e-mail messages; however if they have this disabled, or an unusual e-mail client that cannot read HTML mails, then they will see the plain text version, which is your original Comcode.
 
 [title="3"]Basic templating[/title]
 
@@ -120,7 +120,7 @@ If you want new template options here you must manually create new templates wit
 Admin Zone > Tools > Newsletter > Manage automatic issues
 You will find you can add (and edit/delete) automatic issues from here.
 [*] This will take you to a new screen to define some basic parameters. You can choose whether this will be a periodic automatic issue or just a one-off automatic issue. Configure as appropriate. Periodic automatic issues require the [page="_SEARCH:tut_configuration"]Cron bridge scheduler[/page] to be configured. Click "Next" when done.
-[*] You will be taken to a form that lets you pick what content to include. This consists of a number of lines referencing content and categories, and you must re-arrange/delete lines as appropriate. For each content type supported, it shows only if there are less than 300 items that would be covered (configurable via the "What's New cut-off point" option). If there are 300 or more, then it considers the content type too common to include and no items are shown. Click "Next" when done.
+[*] You will be taken to a form that lets you pick what content to include. This consists of a number of lines referencing content and categories, and you must re-arrange/delete lines as appropriate. For each content type supported, it shows only if there are less than 300 items that would be covered (configurable via the "What's New cut-off point" configuration option). If there are 300 or more, then it considers the content type too common to include and no items are shown. Click "Next" when done.
 [*] If you are sending a one-off then in the next step you get the opportunity to edit the newsletter before it is sent, to add additional information or otherwise customise existing information to make your newsletter is appropriate. For periodic automatic issues you can't do this, for obvious reasons. From now on the process is like sending a normal new issue -- you get to choose who to target to, see a preview, and confirm.
 [/list]
 

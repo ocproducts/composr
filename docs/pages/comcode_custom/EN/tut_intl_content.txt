@@ -9,7 +9,7 @@ You may want to consult with a programmer to enable the functionality.
 
 Composr's multi-language support is available when all the following conditions are met:
 1) you have more than one language installed
-2) you have the [concept]Conversr[/concept] "Enable regionalisation" option enabled
+2) you have the [concept]Conversr[/concept] "Multiple languages" configuration option (Admin Zone > Setup > Configuration > Site options > Internationalisation) enabled
 3) you either installed initially with multi-language support on, or you have run the Commandr command to enable it
 
 [title="2"]Pros and Cons[/title]

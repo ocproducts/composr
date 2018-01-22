@@ -10,7 +10,7 @@ When you install Composr there is a menu already there in the header. This menu 
 
 If you try and edit the default menu then Composr will offer to copy everything through to an editable menu, which you may then fully customise. Composr will never add anything to your editable menu for you as it can't deduce your intention for your site's navigation. There are, however, features to help you locate page-links to add, and also to auto-include subtrees of the Sitemap into your menu (see "Menu auto-generation / chaining").
 
-If you want to revert back to the default menu then you need to go to Admin Zone > Setup > Configuration > Theme options, and change the "Header-menu call string" option back to the default. The default will be shown if you click to view the description for that configuration option. Copy and paste it exactly.
+If you want to revert back to the default menu then you need to change the "Header-menu call string" configuration option (Admin Zone > Setup > Configuration > Theme options > Header blocks) back to the default. The default will be shown if you click to view the description for that configuration option. Copy and paste it exactly.
 
 [title="2"]Template sets / menu types[/title]
 

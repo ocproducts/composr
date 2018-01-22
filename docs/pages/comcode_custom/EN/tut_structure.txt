@@ -136,8 +136,8 @@ A default Composr install contains the following panel pages:
  - [tt]:panel_right[/tt]
  - [tt]:panel_top[/tt]
  - [tt]:panel_bottom[/tt]
- - [tt]site:panel_left[/tt] (only applicable if the "Single public zone" configuration option is off)
- - [tt]site:panel_right[/tt] (only applicable if the "Single public zone" configuration option is off)
+ - [tt]site:panel_left[/tt]; only applicable if the "Single public zone" configuration option (Admin Zone > Setup > Configuration > Site options > Structure) is off
+ - [tt]site:panel_right[/tt]; only applicable if the "Single public zone" configuration option (Admin Zone > Setup > Configuration > Site options > Structure) is off
  - [tt]forum:panel_right[/tt]
 
 All zones are set up to share [tt]:panel_top[/tt] and [tt]:panel_bottom[/tt], due to some default transparent redirects set up under Admin Zone > Structure > Redirects.

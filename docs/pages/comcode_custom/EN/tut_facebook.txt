@@ -98,10 +98,10 @@ Installing the addon to Composr will override some key templates to [tt]themes/d
 [title="3"]Step 3) Configuration[/title]
 
 [surround]
-[media width="150" description="Composr configuration options" float="right"]data_custom/images/docs/tut_facebook/facebook_config.png[/media]
+[media width="150" description="Configuration options" float="right"]data_custom/images/docs/tut_facebook/facebook_config.png[/media]
 1) Go to Admin Zone > Setup > Configuration > Composr API options > Facebook syndication / login.
-2) Configure the "Facebook app ID" and "Facebook app secret" options. You noted down the values earlier.
-3) Also configure the "Facebook page ID" option. This is a useful helper tool: http://findmyfbid.com/.
+2) Configure the "Facebook app ID" configuration option and "Facebook app secret" configuration option. You noted down the values earlier.
+3) Also configure the "Facebook page ID" configuration option. This is a useful helper tool: http://findmyfbid.com/.
 
 Make sure your site is not closed (you can change the settings in Admin Zone > Setup > Configuration > Site options > Closed site). Facebook integration cannot work if Facebook is denied from connecting back to your website.
 [/surround]
@@ -379,11 +379,11 @@ Personal syndication requires the non-bundled Activity Feed addon to be installe
 
 If "Activity Feed" is installed then members have a choice whether to automatically syndicate all their activities.
 The member's set this choice (i.e. enable/disable syndication) via their activity feed settings (on the activity tab of their account).
-Whether member's logged in with Facebook automatically syndicate or not is determined via the "Automatically enable syndication" configuration option.
+Whether member's logged in with Facebook automatically syndicate or not is determined via the "Automatically enable syndication for members" configuration option.
 Personal syndication works for member's not logged in with Facebook as well, but it needs a separate authorisation on their activity feed settings -- and will then turn the account into a Facebook account also.
 
 Typically the syndication goes to the user's Facebook account, but it can go the site's Facebook page if the following conditions are all met:
-1) the "Option to syndicate to a Facebook page" option is set
+1) the "Option to syndicate to a Facebook page" configuration option (Admin Zone > Setup > Configuration > Composr API options > Facebook syndication / login) is set
 2) the Facebook page's access is opened up to public write access
 3) The member chose to do this in their activity feed settings (on their activity tab)
 

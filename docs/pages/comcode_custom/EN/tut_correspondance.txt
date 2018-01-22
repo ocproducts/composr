@@ -92,8 +92,8 @@ There is also a "contact member" addon. This allows you to e-mail a member, with
 
 [title="2"]Opt-out[/title]
 
-If the "Allow members to opt-out of e-mails" option is enabled then members may choose to not let members contacting them.
-If the "Allow members to opt-out of staff e-mails" option is enabled then members can also choose to not let staff contact them via the newsletter functionality.
+If the "Allow members to opt-out of e-mails from users" configuration option (Admin Zone > Setup > Configuration > User/usergroup options > Members) is enabled then members may choose to not let members contacting them.
+If the "Allow members to opt-out of e-mails from staff" configuration option (Admin Zone > Setup > Configuration > User/usergroup options > Members) is enabled then members can also choose to not let staff contact them via the newsletter functionality.
 
 [concepts
  1_key="Private Topics"   1_value="Topics visible only to selected conversants, available only from each conversant's \"Private Topics\" virtual forum."

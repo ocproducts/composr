@@ -467,7 +467,7 @@ If you want to place a block, use the 'Add block' button you see while editing C
 
 [title="3"]Can I embed my third-party forum between the CMS menus?[/title]
 
-Yes. You need to enable the 'Show forum within website' option from the Admin Zone (Admin Zone > Setup > Configuration > Site options, Advanced options group), and change the forum link on your menus to point to [tt]index.php?page=forums[/tt].
+Yes. You need to enable the 'Show forum within website' option from the Admin Zone (Admin Zone > Setup > Configuration > Site options > Advanced), and change the forum link on your menus to point to [tt]index.php?page=forums[/tt].
 
 [title="3"]Can I share login between the CMS and my forum if I am using a forum driver?[/title]
 

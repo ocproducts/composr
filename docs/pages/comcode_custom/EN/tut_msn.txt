@@ -17,7 +17,7 @@ At the time of writing this note (2016), a more normal approach to sharing membe
 
 If you are using the Composr forum system (Conversr) as your forum, then it is possible to run Conversr from each site, without members even knowing (from a feature and visual point of view) that a multi-site-network is in action. All you need to do to achieve this is to:
 1) set the forum-base URL to that of the central Composr site
-2) enable the "Show forum within website" option shown in the screen-shot (available under site configuration)
+2) enable the "Show forum within website" configuration option (Admin Zone > Setup > Configuration > Site options > Advanced) shown in the screen-shot
 3) enable the [tt]on_msn[/tt] installation option
 Note that if you do this, and you decide to move a site you are connecting to the M.S.N. with, then URLs may be broken for things such as photos, avatars and attachments -- as these get uploaded locally and are stored on the forum using full URLs. In other words, they are not stored on the central site if they got uploaded from a member site, thus the other sites get a dependency on the member site's URL Scheme.
 

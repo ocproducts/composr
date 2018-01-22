@@ -6,9 +6,9 @@ One thing every website has to contend with eventually will be stopping spammers
 
 [title="2"]CAPTCHA options in Composr[/title]
 
-One of the key components in stopping spammers is to make use of the CAPTCHA settings built-in to Composr. In most cases the Composr CAPTCHA which is made from CSS and is difficult for bots to break through should be turned on by default. To check or to turn this option on you can find the options in Admin Zone > Setup > Configuration > Security options, the CAPTCHA options group.
+One of the key components in stopping spammers is to make use of the CAPTCHA settings built-in to Composr. In most cases the Composr CAPTCHA which is made from CSS and is difficult for bots to break through should be turned on by default. To check or to turn this option on you can find the options in Admin Zone > Setup > Configuration > Security options > CAPTCHA.
 
-To make sure the CAPTCHA is turned on you can find the "Use CAPTCHA" option in the first section on this page.
+To make sure the CAPTCHA is turned on you can find the "Use CAPTCHA" configuration option in the first section on this page.
 
 If the option is not enabled you should enable it now to make the CAPTCHA images made using CSS and harder to crack.
 
