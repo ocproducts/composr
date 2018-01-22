@@ -1,6 +1,8 @@
 Codename,Title,Bug-fix sponsor,Current active sponsor,Notes,Non-bundled addon,Testing automation
 multi_lang_content,Content translations,ocProducts,,Not regularly tested. Liable to break due to cross-cutting complexity.,No,Randomised mode at dev install.
 character_sets,Character sets,,,Not regularly tested.,No,
+db_connection_pooling_with_replication,Configuration of multiple database servers (with only one taking write queries),ocProducts,,Not regularly tested,No
+readonly_db,Stability when the database is read-only (if a webhost has locked out write access due to quota issues),ocProducts,,Not regularly tested,No
 forum_ipb,Invision Board forum driver,,,Not regularly tested. Already out-dated. Needs ongoing maintenance.,No,
 forum_mybb,MyBB forum driver,,,Not regularly tested. Already out-dated. Needs ongoing maintenance.,No,
 forum_none,No forums or members forum driver,,,Not regularly tested. Liable to break due to cross-cutting complexity.,No,
@@ -22,7 +24,7 @@ platform_iis,IIS,ocProducts,,Not regularly tested due to needing a testing platf
 platform_litespeed,LiteSpeed,ocProducts,,Not regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No,
 import_cms_merge,"""Composr site merger"" importer",ocProducts,,"Not regularly tested. WebDAV is the preferred merge mechanism, and site merging is not a substitute for upgrading.",No,
 import_html_site,HTML website importer,,,Not regularly tested and has the potential for instability.,No,
-import_ipb2,Invision Board  importer,,,"Needs ongoing maintenance, and liable to be ineffective as people need plugin data importing too.",No,
+import_ipb2,Invision Board importer,,,"Needs ongoing maintenance, and liable to be ineffective as people need plugin data importing too.",No,
 import_mybb,myBB importer,,,"Needs ongoing maintenance, and liable to be ineffective as people need plugin data importing too.",No,
 import_phpbb3,phpBB importer,,,"Needs ongoing maintenance, and liable to be ineffective as people need plugin data importing too.",No,
 import_smf2,Simple Machine Forum importer,,,"Needs ongoing maintenance, and liable to be ineffective as people need plugin data importing too.",No,
