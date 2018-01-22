@@ -110,7 +110,7 @@ class Hook_fields_list
         if (is_object($ev)) {
             return $ev;
         }
-        return escape_html($ev);
+        return comcode_to_tempcode($ev, null, true);
     }
 
     // ======================
@@ -182,7 +182,7 @@ class Hook_fields_list
 
         return $list;
     }
- 
+
     /**
      * Get form inputter.
      *

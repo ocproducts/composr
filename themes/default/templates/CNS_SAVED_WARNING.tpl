@@ -5,11 +5,11 @@
 	<nav>
 		<ul class="actions_list">
 			<li>
-				<form title="{!LOAD} {$STRIP_TAGS,{TITLE|}}" action="#" method="post" class="inline" id="saved_use__{TITLE|}" autocomplete="off">
+				<form title="{!LOAD} {TITLE*}" action="#" method="post" class="inline" id="saved_use__{TITLE|}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<div class="inline">
-						<input class="button_hyperlink" type="submit" value="{!LOAD} {$STRIP_TAGS,{TITLE|}}" />
+						<input class="button_hyperlink" type="submit" value="{!LOAD} {TITLE*}" onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{$ESCAPE;^*,<h2>{EXPLANATION*}</h2>{MESSAGE_HTML},NULL_ESCAPED}','700px');" />
 					</div>
 				</form>
 			</li>

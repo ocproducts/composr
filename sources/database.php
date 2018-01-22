@@ -492,6 +492,12 @@ function db_function($function, $args = null)
                 fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
             }
             switch (get_db_type()) {
+                case 'mysql':
+                case 'mysqli':
+                case 'mysql_dbx':
+                    $function = 'CHAR_LENGTH';
+                    break;
+
                 case 'sqlserver':
                 case 'sqlserver_odbc':
                 case 'access':
@@ -1525,7 +1531,7 @@ class DatabaseConnector
 
         if ($DEV_MODE) {
             if (!$GLOBALS['NO_DB_SCOPE_CHECK']) {
-                if ((!multi_lang_content()) && (strpos($query, $this->get_table_prefix() . 'translate') !== false) && (strpos($query, 'DROP INDEX') === false) && (strpos($query, 'ALTER TABLE') === false) && (strpos($query, 'CREATE TABLE') === false)) {
+                if ((!multi_lang_content()) && (strpos($query, $this->get_table_prefix() . 'translate') !== false) && (strpos($query, 'DROP TABLE') === false) && (strpos($query, 'DROP INDEX') === false) && (strpos($query, 'ALTER TABLE') === false) && (strpos($query, 'CREATE TABLE') === false)) {
                     fatal_exit('Assumption of multi-lang-content being on, and it\'s not');
                 }
 

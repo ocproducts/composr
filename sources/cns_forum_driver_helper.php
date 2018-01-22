@@ -282,7 +282,7 @@ function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows,
             $query .= ' WHERE (' . $id_list . ')' . $topic_filter_sup;
             $query_simplified = $query;
 
-            if ((db_has_subqueries($this_ref->connection)) && (get_option('is_on_strong_forum_tie') == '1')) {// So topics with no validated posts, or only spacer posts, are not drawn out only to then be filtered layer (meaning we don't get enough result). Done after $max_rows calculated as that would be slow with this clause
+            if ((db_has_subqueries($this_ref->connection->connection_read)) && (get_option('is_on_strong_forum_tie') == '1')) {// So topics with no validated posts, or only spacer posts, are not drawn out only to then be filtered layer (meaning we don't get enough result). Done after $max_rows calculated as that would be slow with this clause
                 $query .= ' AND (t_cache_first_member_id>' . strval(db_get_first_id()) . ' OR t_cache_num_posts>1 OR EXISTS(' . $post_query_sql . '))';
             }
         } else {
@@ -308,7 +308,7 @@ function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows,
                 $query .= $query_more;
                 $query_simplified .= $query_more;
 
-                if ((db_has_subqueries($this_ref->connection)) && (get_option('is_on_strong_forum_tie') == '1')) {// So topics with no validated posts, or only spacer posts, are not drawn out only to then be filtered layer (meaning we don't get enough result). Done after $max_rows calculated as that would be slow with this clause
+                if ((db_has_subqueries($this_ref->connection->connection_read)) && (get_option('is_on_strong_forum_tie') == '1')) {// So topics with no validated posts, or only spacer posts, are not drawn out only to then be filtered layer (meaning we don't get enough result). Done after $max_rows calculated as that would be slow with this clause
                     $query .= ' AND (t_cache_first_member_id>' . strval(db_get_first_id()) . ' OR t_cache_num_posts>1 OR EXISTS(' . $post_query_sql . '))';
                 }
             }
@@ -332,7 +332,7 @@ function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows,
             $query .= $query_more;
             $query_simplified .= $query_more;
 
-            if ((db_has_subqueries($this_ref->connection)) && (get_option('is_on_strong_forum_tie') == '1')) {// So topics with no validated posts, or only spacer posts, are not drawn out only to then be filtered layer (meaning we don't get enough result). Done after $max_rows calculated as that would be slow with this clause
+            if ((db_has_subqueries($this_ref->connection->connection_read)) && (get_option('is_on_strong_forum_tie') == '1')) {// So topics with no validated posts, or only spacer posts, are not drawn out only to then be filtered layer (meaning we don't get enough result). Done after $max_rows calculated as that would be slow with this clause
                 $query .= ' AND (t_cache_first_member_id>' . strval(db_get_first_id()) . ' OR t_cache_num_posts>1 OR EXISTS(' . $post_query_sql . '))';
             }
         }

@@ -1112,9 +1112,9 @@ body .accessibility_hidden { /* Contents should be made visible (or interpreted)
 /* Commonly used to indicate there is no content to display */
 .nothing_here, .more_here {
 	font-size: 13px !important; /* px not em due to careful background positioning */
-	padding-{!en_left}: 15px;
+	padding-{!en_left}: 15px !important;
 	margin: 1.5em;
-	margin-{!en_left}: 10px;
+	margin-{!en_left}: 10px !important;
 	background-image: url('{$IMG_INLINE;,1x/cannot_show}');
 	background-position: {!en_left} 5px;
 	background-repeat: no-repeat;
@@ -4007,10 +4007,10 @@ div[role="tabpanel"] {
 		padding-right: 1em;
 	/*{+END}*/
 }
-div[role="tabpanel"]>:first-child {
+div[role="tabpanel"]>div:first-child, div[role="tabpanel"]>style:first-child+div {
 	margin-top: 1em;
 }
-div[role="tabpanel"]>:last-child {
+div[role="tabpanel"]>div:last-child {
 	margin-bottom: 1em;
 }
 

@@ -24,6 +24,8 @@
 
 				<div class="meta_details" role="note" style="width: auto">
 					<dl class="meta_details_list">
+						<dt class="field_name">{!RATING}:</dt> <dd>{RATING_TPL}</dd>
+
 						{+START,IF_NON_EMPTY,{AUTHOR}}
 							<dt class="field_name">{!BY}:</dt> <dd>{AUTHOR*}</dd>
 						{+END}

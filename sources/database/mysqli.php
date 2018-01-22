@@ -103,7 +103,12 @@ class Database_Static_mysqli extends Database_super_mysql
             $SITE_INFO['database_charset'] = (get_charset() == 'utf-8') ? 'utf8mb4' : 'latin1';
         }
         if (function_exists('mysqli_set_charset')) {
-            @mysqli_set_charset($db, $SITE_INFO['database_charset']);
+            $test = @mysqli_set_charset($db, $SITE_INFO['database_charset']);
+            if ((!$test) && ($SITE_INFO['database_charset'] == 'utf8mb4')) {
+                // Conflict between compiled-in MySQL client library and what the server supports
+                $test = @mysqli_set_charset($db, 'utf8');
+                @mysqli_query($db, 'SET NAMES "' . addslashes('utf8mb4') . '"');
+            }
         } else {
             @mysqli_query($db, 'SET NAMES "' . addslashes($SITE_INFO['database_charset']) . '"');
         }
@@ -111,7 +116,7 @@ class Database_Static_mysqli extends Database_super_mysql
         @mysqli_query($db, 'SET sql_big_selects=1');
         @mysqli_query($db, 'SET max_allowed_packet=104857600');
         if ((get_forum_type() == 'cns') && (!$GLOBALS['IN_MINIKERNEL_VERSION'])) {
-            @mysqli_query($db, 'SET sql_mode=STRICT_ALL_TABLES');
+            @mysqli_query($db, 'SET sql_mode=\'STRICT_ALL_TABLES\'');
         } else {
             @mysqli_query($db, 'SET sql_mode=\'MYSQL40\''); // We may be in some legacy context, such as backup restoration, upgrader, or another forum driver
         }

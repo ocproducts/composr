@@ -82,7 +82,7 @@ class Hook_profiles_tabs_edit_profile
 
         $title = do_lang_tempcode('PROFILE');
 
-        $custom_fields = cns_get_custom_fields_member($member_id_of);
+        $custom_fields = cns_get_all_custom_fields_match_member($member_id_of);
 
         require_code('cns_members_action2');
         list($fields, $hidden) = cns_get_member_fields_profile(false, $member_id_of, null, $custom_fields);

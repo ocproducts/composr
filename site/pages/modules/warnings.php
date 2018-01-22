@@ -786,6 +786,7 @@ class Module_warnings extends Standard_crud_module
                     $banned_ip = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_ip_address');
                     require_code('failure');
                     add_ip_ban($banned_ip);
+                    log_it('IP_BANNED', $banned_ip);
                 }
             }
         }

@@ -64,7 +64,7 @@ For Linux or MacOS, we suggest using unixODBC with FreeTDS (avoid iODBC and Micr
 Make sure the unixODBC and FreeTDS packages are installed via your package manager, or manually compiled and installed. Homebrew works on Mac, but make sure you install FreeTDS like [tt]brew install freetds --with-unixodbc[/tt].
 
 UnixODBC needs to be connected to FreeTDS by configuring a FreeTDS driver. Create a file named tds.driver.template with a few lines describing the driver:
-[code="Ini"]
+[code="INI"]
 [FreeTDS] 
 Description = v0.63 with protocol v8.0 
 Driver = /usr/local/freetds/lib/libtdsodbc.so
@@ -73,7 +73,7 @@ Obviously use the correct path to the [tt].so[/tt] file.
 Then run [tt]odbcinst -i -d -f tds.driver.template[/tt]
 
 You will need to use the [tt]odbcinst[/tt] command to create a DSN. Create a file named tds.template with a few lines describing the DSN:
-[code="Ini"]
+[code="INI"]
 [cms]
 Driver = FreeTDS
 Trace = No

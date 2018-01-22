@@ -76,13 +76,13 @@ function cms_file_put_contents_safe($path, $contents, $flags = 4, $retry_depth =
         // If the directory is missing
         if (!is_dir(dirname($path))) {
             require_code('files2');
-            if ((($flags & FILE_WRITE_FAILURE_SOFT) != 0) || (($flags & FILE_WRITE_FAILURE_HARD) != 0)) {
-                make_missing_directory(dirname($path));
-            } else {
+            if (($flags & FILE_WRITE_FAILURE_SILENT) != 0) {
                 $test = @make_missing_directory(dirname($path));
                 if ($test === false) {
                     return false;
                 }
+            } else {
+                make_missing_directory(dirname($path));
             }
         }
     }
@@ -150,7 +150,7 @@ function cms_file_put_contents_safe($path, $contents, $flags = 4, $retry_depth =
     }
 
     // Find file size
-    if (phpversion() >= '5.3.0') {
+    if (version_compare(PHP_VERSION, '5.3.0') >= 0) {
         clearstatcache(true, $path);
     } else {
         clearstatcache();
