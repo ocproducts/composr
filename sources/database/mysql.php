@@ -98,7 +98,7 @@ class Database_Static_mysql extends Database_super_mysql
             $SITE_INFO['database_charset'] = (get_charset() == 'utf-8') ? 'utf8mb4' : 'latin1';
         }
         if (function_exists('mysql_set_charset')) {
-            @mysql_set_charset($SITE_INFO['database_charset'], $db);
+            $test = @mysql_set_charset($SITE_INFO['database_charset'], $db);
             if ((!$test) && ($SITE_INFO['database_charset'] == 'utf8mb4')) {
                 // Conflict between compiled-in MySQL client library and what the server supports
                 $test = @mysql_set_charset('utf8', $db);

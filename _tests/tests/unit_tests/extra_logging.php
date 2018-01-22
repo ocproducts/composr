@@ -156,7 +156,7 @@ class extra_logging_test_set extends cms_test_case
         $this->assertTrue($size_after > $size_before);
     }
 
-    public function testErrorLog()
+    public function testPermissionChecksLog()
     {
         $path = get_file_base() . '/data_custom/permissioncheckslog.php';
         cms_file_put_contents_safe($path, '');

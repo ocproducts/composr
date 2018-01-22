@@ -428,7 +428,7 @@ class Module_admin_lang
         // Make our translation page
         require_code('form_templates');
         $lines = '';
-        $google_translate_api_key = get_value('google_translate_api_key');
+        $google_translate_api_key = get_option('google_translate_api_key');
         if (empty($google_translate_api_key)) {
             $google = '';
         } else {
