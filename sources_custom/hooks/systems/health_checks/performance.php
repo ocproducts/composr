@@ -355,6 +355,7 @@ class Hook_health_check_performance extends Hook_Health_Check
         }
 
         if ($manual_checks) {
+            global $SITE_INFO;
             if (!isset($SITE_INFO['self_learning_cache']) || $SITE_INFO['self_learning_cache'] == '0') {
                 $this->state_check_manual('Consider enabling self-learning cache');
             }
