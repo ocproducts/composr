@@ -86,7 +86,7 @@ Once created, the private chatroom will be visible in the chatrooms list for all
 
 [title="3"]Room pruning in more detail[/title]
 
-Rooms are only pruned if they are inactive longer than the "Private room deletion time" option and have an owner or a private list of allowed usernames (i.e. are a private room). Rooms created through the Admin Zone do by default not have those properties (i.e. are not private rooms), while rooms created through the public site do (i.e. are private rooms).
+Rooms are only pruned if they are inactive longer than the "Private chatroom deletion time" option and have an owner or a private list of allowed usernames (i.e. are a private room). Rooms created through the Admin Zone do by default not have those properties (i.e. are not private rooms), while rooms created through the public site do (i.e. are private rooms).
 
 Set the "Private chatroom deletion time" option (at Admin Zone > Setup > Configuration > Feature options > Chat system) to "0" if you wish to disable room pruning entirely.
 

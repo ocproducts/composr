@@ -180,7 +180,6 @@ If banners won't show check:
 5) Your banner has hits assigned, is a permanent banner, or is a default banner and there aren't non-default banners obscuring it.
 6) That the banner type your banner is in is displayed (by default only the default 'Default' banners are displayed, in the [tt]GLOBAL_HTML_WRAP.tpl[/tt] template). See "Having multiple banner sets".
 7) The banner type has permissions for the viewer's usergroup.
-8) The "Community advert chance" configuration option is not set to zero.
 
 [title="2"]Banner waves[/title]
 
