@@ -107,17 +107,22 @@ class Module_admin_lang
                 set_helper_panel_text(comcode_lang_string('DOC_FIND_LANG_STRING_TIP'));
             }
 
-            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('CHOOSE'))));
-            breadcrumb_set_self(do_lang_tempcode('TRANSLATE_CODE'));
-
             $lang = filter_naughty_harsh(get_param_string('lang', ''));
             if ($lang == '') {
+                breadcrumb_set_self(do_lang_tempcode('TRANSLATE_CODE'));
+
                 $this->title = get_screen_title('TRANSLATE_CODE');
             } else {
                 $search = get_param_string('search', '', true);
                 if ($search != '') {
+                    breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('TRANSLATE_CODE'))));
+                    breadcrumb_set_self(do_lang_tempcode('RESULTS'));
+
                     $this->title = get_screen_title('TRANSLATE_CODE');
                 } else {
+                    breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('TRANSLATE_CODE'))));
+                    breadcrumb_set_self(do_lang_tempcode('FILE'));
+
                     $lang_file = get_param_string('lang_file');
                     $this->title = get_screen_title('_TRANSLATE_CODE', true, array(escape_html($lang_file), escape_html(lookup_language_full_name($lang))));
                 }
@@ -385,6 +390,8 @@ class Module_admin_lang
             warn_exit(do_lang_tempcode('MULTILANG_OFF_CONTENT'));
         }
 
+        $GLOBALS['NO_QUERY_LIMIT'] = true;
+
         $max = get_param_integer('max', 100);
         $start = get_param_integer('start', 0);
 
@@ -421,7 +428,12 @@ class Module_admin_lang
         // Make our translation page
         require_code('form_templates');
         $lines = '';
-        $google = $this->get_google_code($lang);
+        $google_translate_api_key = get_option('google_translate_api_key');
+        if (empty($google_translate_api_key)) {
+            $google = '';
+        } else {
+            $google = $this->get_google_code($lang);
+        }
         $actions = make_string_tempcode('&nbsp;');
         $last_level = null;
         $too_many = (count($to_translate) == $max);
@@ -459,7 +471,7 @@ class Module_admin_lang
 
             check_suhosin_request_quantity(2, strlen('trans_' . $name));
 
-            $line = do_template('TRANSLATE_LINE_CONTENT', array('_GUID' => '87a0f5298ce9532839f3206cd0e06051', 'NAME' => $name, 'ID' => strval($id), 'OLD' => $old, 'CURRENT' => $current, 'ACTIONS' => $actions, 'PRIORITY' => $priority, 'LAST' => !isset($to_translate[$i + 1])));
+            $line = do_template('TRANSLATE_LINE_CONTENT', array('_GUID' => '87a0f5298ce9532839f3206cd0e06051', 'NAME' => $name, 'ID' => strval($id), 'OLD' => $old, 'CURRENT' => $current, 'ACTIONS' => $actions, 'GOOGLE' => $google, 'PRIORITY' => $priority, 'LAST' => !isset($to_translate[$i + 1])));
             $lines .= $line->evaluate(); /*XHTMLXHTML*/
 
             $last_level = $it['importance_level'];

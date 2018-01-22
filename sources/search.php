@@ -27,7 +27,7 @@ function init__search()
 {
     if (!defined('MINIMUM_AUTOCOMPLETE_LENGTH')) {
         define('MINIMUM_AUTOCOMPLETE_LENGTH', intval(get_option('minimum_autocomplete_length')));
-        define('MINIMUM_AUTOCOMPLETE_PAST_SEARCH', intval(get_option('minimum_autocomplete_past_search')));
+        define('MINIMUM_AUTOCOMPLETE_PAST_SEARCH', 0);
         define('MAXIMUM_AUTOCOMPLETE_SUGGESTIONS', intval(get_option('maximum_autocomplete_suggestions')));
     }
 }
@@ -358,7 +358,7 @@ function find_search_suggestions($request, $search_type = '')
     if (has_privilege(get_member(), 'autocomplete_past_search')) {
         $q = 'SELECT s_primary AS search FROM ' . get_table_prefix() . 'searches_logged WHERE ';
         if ((db_has_full_text($GLOBALS['SITE_DB']->connection_read)) && (method_exists($GLOBALS['SITE_DB']->static_ob, 'db_has_full_text_boolean')) && ($GLOBALS['SITE_DB']->static_ob->db_has_full_text_boolean()) && (!is_under_radar($request))) {
-            $q .= preg_replace('#\?#', 's_primary', db_full_text_assemble($request, false));
+            $q .= preg_replace('#\?#', 's_primary', db_full_text_assemble($request, true));
         } else {
             $q .= 's_primary LIKE \'' . db_encode_like($request . '%') . '\'';
         }

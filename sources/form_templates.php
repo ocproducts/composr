@@ -45,9 +45,6 @@ function init__form_templates()
     global $DOING_ALTERNATE_FIELDS_SET;
     $DOING_ALTERNATE_FIELDS_SET = mixed();
 
-    global $MODSECURITY_WORKAROUND_ENABLED;
-    $MODSECURITY_WORKAROUND_ENABLED = false;
-
     require_css('forms');
 
     if (function_exists('get_member')) {

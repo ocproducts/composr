@@ -198,6 +198,17 @@ function init__global2()
         }
         //safe_ini_set('ocproducts.type_strictness', '1');  Disabled due to incompatibility with ocP PHP7. v11 will turn back on.
         //safe_ini_set('ocproducts.xss_detect', '1');  Disabled due to incompatibility with ocP PHP7. v11 will turn back on.
+        array_splice($_POST, 500, count($_POST) - 500, array()); // Simulate max_input_vars
+        foreach ($_POST as $val) {
+            if (is_string($val)) {
+                if (strpos($val, '<script') !== false) {
+                    warn_exit('ModSecurity dev-mode check failed, raw <script> tag POSTed');
+                }
+                if (strpos($val, '/bin') !== false) {
+                    warn_exit('ModSecurity dev-mode check failed, raw path POSTed');
+                }
+            }
+        }
     }
     if ($DEV_MODE || $SEMI_DEV_MODE) {
         require_code('developer_tools');
@@ -420,6 +431,14 @@ function init__global2()
 
     // Pre-load used blocks in bulk
     preload_block_internal_caching();
+
+    // Make sure POST fields readable
+    global $MODSECURITY_WORKAROUND_ENABLED;
+    $MODSECURITY_WORKAROUND_ENABLED = false;
+    if (get_param_integer('_corrected_comcode', 0) == 1) {
+        require_code('input_filter_2');
+        modsecurity_workaround_enable();
+    }
 
     // Okay, we've loaded everything critical. Don't need to tell Composr to be paranoid now.
     $BOOTSTRAPPING = false;

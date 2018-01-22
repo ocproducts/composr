@@ -304,18 +304,19 @@ class Hook_commandr_fs_members
             }
 
             require_code('cns_members');
-            $fields = cns_get_custom_fields_member($GLOBALS['FORUM_DRIVER']->get_member_from_username($meta_dir[0]));
-
             require_code('cns_members_action');
             require_code('cns_members_action2');
 
-            $field_id = $this->get_field_id_for($file_name);
+            $cpf_id = $this->get_field_id_for($file_name);
 
-            if (array_key_exists($field_id, $fields)) {
-                return $fields[$field_id];
-            } else {
-                return false;
+            $custom_fields = cns_get_all_custom_fields_match_member($GLOBALS['FORUM_DRIVER']->get_member_from_username($meta_dir[0]));
+            foreach ($custom_fields as $custom_field) {
+                if ($custom_field['FIELD_ID'] == strval($cpf_id)) {
+                    return $custom_field['RAW'];
+                }
             }
+
+            return false;
         } elseif (count($meta_dir) == 2) {
             if ($meta_dir[1] != 'groups') {
                 return false;

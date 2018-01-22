@@ -359,6 +359,7 @@ class Hook_addon_registry_core_menus
         $menu = do_lorem_template('MENU_mobile', array(
             'CONTENT' => $content,
             'MENU' => lorem_word_2(),
+            'NUM_BRANCHES' => strval(3),
         ));
 
         $menu->attach(do_lorem_template('MENU_STAFF_LINK', array('TYPE' => 'mobile', 'EDIT_URL' => placeholder_url(), 'NAME' => lorem_phrase())));
@@ -444,6 +445,7 @@ class Hook_addon_registry_core_menus
         $menu = do_lorem_template('MENU_tree', array(
             'CONTENT' => $content,
             'MENU' => lorem_word_2(),
+            'NUM_BRANCHES' => strval(3),
         ));
 
         $menu->attach(do_lorem_template('MENU_STAFF_LINK', array('TYPE' => 'tree', 'EDIT_URL' => placeholder_url(), 'NAME' => lorem_phrase())));
@@ -529,6 +531,7 @@ class Hook_addon_registry_core_menus
         $menu = do_lorem_template('MENU_dropdown', array(
             'CONTENT' => $content,
             'MENU' => lorem_word_2(),
+            'NUM_BRANCHES' => strval(3),
         ));
 
         $menu->attach(do_lorem_template('MENU_STAFF_LINK', array('TYPE' => 'dropdown', 'EDIT_URL' => placeholder_url(), 'NAME' => lorem_phrase())));
@@ -606,6 +609,7 @@ class Hook_addon_registry_core_menus
         $menu = do_lorem_template('MENU_embossed', array(
             'CONTENT' => $content,
             'MENU' => lorem_word_2(),
+            'NUM_BRANCHES' => strval(3),
         ));
 
         $menu->attach(do_lorem_template('MENU_STAFF_LINK', array('TYPE' => 'embossed', 'EDIT_URL' => placeholder_url(), 'NAME' => lorem_phrase())));
@@ -691,6 +695,7 @@ class Hook_addon_registry_core_menus
         $menu = do_lorem_template('MENU_popup', array(
             'CONTENT' => $content,
             'MENU' => lorem_word_2(),
+            'NUM_BRANCHES' => strval(3),
         ));
 
         $menu->attach(do_lorem_template('MENU_STAFF_LINK', array('TYPE' => 'popup', 'EDIT_URL' => placeholder_url(), 'NAME' => lorem_phrase())));
@@ -776,6 +781,7 @@ class Hook_addon_registry_core_menus
         $menu = do_lorem_template('MENU_select', array(
             'CONTENT' => $content,
             'MENU' => lorem_word_2(),
+            'NUM_BRANCHES' => strval(3),
         ));
 
         $menu->attach(do_lorem_template('MENU_STAFF_LINK', array('TYPE' => 'select', 'EDIT_URL' => placeholder_url(), 'NAME' => lorem_phrase())));
@@ -863,6 +869,7 @@ class Hook_addon_registry_core_menus
         $menu = do_lorem_template('MENU_sitemap', array(
             'CONTENT' => $content,
             'MENU' => lorem_word_2(),
+            'NUM_BRANCHES' => strval(3),
         ));
 
         $menu->attach(do_lorem_template('MENU_STAFF_LINK', array('TYPE' => 'sitemap', 'EDIT_URL' => placeholder_url(), 'NAME' => lorem_phrase())));

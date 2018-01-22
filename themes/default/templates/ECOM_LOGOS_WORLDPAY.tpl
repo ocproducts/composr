@@ -1,4 +1,4 @@
-<script type="text/javascript" src="https://secure.worldpay.com/wcc/logo?instId={INST_ID*}"></script>
+<script src="https://secure.worldpay.com/wcc/logo?instId={INST_ID*}"></script>
 
 <!--
 

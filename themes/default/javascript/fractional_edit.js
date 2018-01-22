@@ -6,8 +6,6 @@ function fractional_edit(event,object,url,raw_text,edit_param_name,was_double_cl
 	if (typeof control_button=='undefined') control_button=null;
 	if (typeof type=='undefined') type='line';
 
-	if (raw_text.length>255) return null; // Cannot process this
-
 	if ((magic_keypress(event)) || (was_double_click) || (object!=event.target))
 	{
 		cancel_bubbling(event);
@@ -43,7 +41,13 @@ function fractional_edit(event,object,url,raw_text,edit_param_name,was_double_cl
 		{
 			case 'line':
 				input=document.createElement('input');
-				input.setAttribute('maxlength','255');
+				if (raw_text.length>255)
+				{
+					input.setAttribute('size','30');
+				} else
+				{
+					input.setAttribute('maxlength','255');
+				}
 				input.value=populated_value;
 				break;
 			case 'textarea':
@@ -71,7 +75,7 @@ function fractional_edit(event,object,url,raw_text,edit_param_name,was_double_cl
 		/*{+END}*/
 		/*{+START,IF,{$NOT,{$MOBILE}}}*/
 			input.style.left=(x)+'px';
-			input.style.width=width+'px';
+			if (raw_text.length<=255) input.style.width=width+'px';
 		/*{+END}*/
 		input.style.top=(y+8)+'px';
 		input.style.margin=0;

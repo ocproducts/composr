@@ -748,17 +748,10 @@ function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $gr
         $ob = get_fields_hook($custom_field['cf_type']);
         list(, , $storage_type) = $ob->get_field_value_row_bits($custom_field);
 
-        $existing_field = (!is_null($custom_fields)) && (array_key_exists($custom_field['id'], $custom_fields));
+        $existing_field = (!is_null($custom_fields)) && (array_key_exists($custom_field['trans_name'], $custom_fields));
         if ($existing_field) {
-            $value = mixed();
-            $value = $custom_fields[$custom_field['id']];
-            if (strpos($storage_type, '_trans') !== false) {
-                $value = ((is_null($value)) || ($value === '0')) ? '' : get_translated_text($value, $GLOBALS['FORUM_DB']);
-            } elseif (is_float($value)) {
-                $value = float_to_raw_string($value, 30, true);
-            } elseif (is_integer($value)) {
-                $value = strval($value);
-            }
+            $value = $custom_fields[$custom_field['trans_name']]['RAW'];
+
             if (($custom_field['cf_encrypted'] == 1) && (is_encryption_enabled())) {
                 $value = remove_magic_encryption_marker($value);
             }

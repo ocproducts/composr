@@ -981,26 +981,20 @@ class Forum_driver_cns extends Forum_driver_base
             $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
             if (!is_null($member_id)) {
                 require_code('cns_members');
-                $fields = cns_get_custom_field_mappings($member_id);
+                $custom_fields = cns_get_all_custom_fields_match_member($member_id);
 
                 $username_bak = $username;
 
                 $username = $generator;
 
                 $matches = array();
-                $num_matches = preg_match_all('#\{(\!?)(\d+)\}#', $generator, $matches);
+                $num_matches = preg_match_all('#\{(\d+)\}#', $generator, $matches);
                 for ($i = 0; $i < $num_matches; $i++) {
-                    $field_key = 'field_' . $matches[2][$i];
-                    if (isset($fields[$field_key])) {
-                        $cpf_value = $fields[$field_key];
-                        if (!is_string($cpf_value)) {
-                            if ($matches[1][$i] == '!') {
-                                $cpf_value = get_translated_text($cpf_value, $GLOBALS['FORUM_DB']);
-                            } else {
-                                $cpf_value = strval($cpf_value);
-                            }
+                    $field_id = $matches[1][$i];
+                    foreach ($custom_fields as $custom_field) {
+                        if ($custom_field['FIELD_ID'] == $field_id) {
+                            $username = str_replace($matches[0][$i], $custom_field['RAW'], $username);
                         }
-                        $username = str_replace($matches[0][$i], $cpf_value, $username);
                     }
                 }
 

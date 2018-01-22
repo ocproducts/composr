@@ -230,7 +230,7 @@ class Module_groups
             $sql .= '(g_hidden=0 OR g.id IN (' . implode(',', array_map('strval', $members_groups)) . ')) AND ';
         }
         $sql .= '(g_promotion_target IS NOT NULL';
-        if (db_has_subqueries($GLOBALS['FORUM_DB'])) {
+        if (db_has_subqueries($GLOBALS['FORUM_DB']->connection_read)) {
             $sql .= ' OR EXISTS(SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups h WHERE h.g_promotion_target=g.id)';
         }
         foreach ($staff_groups as $g_id) {
@@ -411,7 +411,7 @@ class Module_groups
             $sql .= '(g_hidden=0 OR g.id IN (' . implode(',', array_map('strval', $members_groups)) . ')) AND ';
         }
         $sql .= '(g_promotion_target IS NULL';
-        if (db_has_subqueries($GLOBALS['FORUM_DB'])) {
+        if (db_has_subqueries($GLOBALS['FORUM_DB']->connection_read)) {
             $sql .= ' AND NOT EXISTS(SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups h WHERE h.g_promotion_target=g.id)';
         }
         foreach ($staff_groups as $g_id) {

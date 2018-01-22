@@ -1,6 +1,6 @@
 {+START,IF_PASSED,PRIORITY}
 	<tr>
-		<td colspan="3">
+		<td colspan="{$?,{$IS_EMPTY,{GOOGLE}},2,3}">
 			<h2>{PRIORITY*}</h2>
 		</td>
 	</tr>
@@ -22,12 +22,16 @@
 			<textarea class="wide_field translate_field" cols="60" rows="{$ADD*,{$DIV,{$LENGTH,{CURRENT}},80},1}" id="trans_{ID*}" name="trans_{ID*}">{CURRENT*}</textarea>
 		</div>
 	</td>
-	<td>
-		{ACTIONS}
-	</td>
+	{+START,IF_NON_EMPTY,{GOOGLE}}
+		<td>
+			{ACTIONS}
+		</td>
+	{+END}
 </tr>
-<tr id="rexp_trans_{ID*}" style="display: none">
-	<td colspan="{$?,{$IS_EMPTY,{ACTIONS}},3,4}">
-		<div id="exp_trans_{ID*}"></div>
-	</td>
-</tr>
+{+START,IF_NON_EMPTY,{GOOGLE}}
+	<tr id="rexp_trans_{ID*}" style="display: none">
+		<td colspan="{$?,{$IS_EMPTY,{ACTIONS}},3,4}">
+			<div id="exp_trans_{ID*}"></div>
+		</td>
+	</tr>
+{+END}

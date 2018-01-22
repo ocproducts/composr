@@ -56,7 +56,7 @@ function require_javascript($javascript)
         $SMART_CACHE->append('JAVASCRIPTS', $javascript);
     }
 
-    if ($GLOBALS['JS_OUTPUT_STARTED']) {
+    if ((isset($GLOBALS['JS_OUTPUT_STARTED'])) && ($GLOBALS['JS_OUTPUT_STARTED'])) {
         $JAVASCRIPT_BOTTOM[$javascript] = true;
     }
 }
