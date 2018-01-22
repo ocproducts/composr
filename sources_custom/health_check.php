@@ -409,14 +409,17 @@ abstract class Hook_Health_Check
     /**
      * Get the website domain names.
      *
-     * @param boolean Whether to strip www from domain names 
+     * @param boolean Whether to strip www from domain names
      * @return array Domain names
      */
     protected function get_domains($remap_www = true)
     {
         $domains = array();
 
-        $domains[''] = parse_url(get_base_url(), PHP_URL_HOST);
+        $host = parse_url(get_base_url(), PHP_URL_HOST);
+        if (preg_match('#[A-Z]#i', $host) != 0) {
+            $domains[''] = $host;
+        }
 
         global $SITE_INFO;
         $zl = strlen('ZONE_MAPPING_');

@@ -145,6 +145,15 @@ class Module_admin_cns_members
             breadcrumb_set_self(do_lang_tempcode('DONE'));
         }
 
+        if ($type == 'download_csv') {
+            breadcrumb_set_parents(array(array('_SEARCH:admin_cns_members:browse', do_lang_tempcode('MEMBERS'))));
+        }
+
+        if ($type == '_download_csv') {
+            breadcrumb_set_parents(array(array('_SEARCH:admin_cns_members:browse', do_lang_tempcode('MEMBERS')), array('_SEARCH:admin_cns_members:download_csv', do_lang_tempcode('DOWNLOAD_MEMBER_CSV'))));
+            breadcrumb_set_self(do_lang_tempcode('DONE'));
+        }
+
         if ($type == 'step1' || $type == 'step2') {
             $this->title = get_screen_title('ADD_MEMBER');
         }
@@ -728,7 +737,7 @@ class Module_admin_cns_members
         $order_by = post_param_string('order_by');
 
         require_code('tasks');
-        return call_user_func_array__long_task(do_lang('DOWNLOAD_MEMBER_CSV'), $this->title, 'export_member_csv', array($filter_by_allow == 1, $extension, $preset, $fields_to_use, $usergroups, $order_by, $order_by));
+        return call_user_func_array__long_task(do_lang('DOWNLOAD_MEMBER_CSV'), $this->title, 'export_member_csv', array($filter_by_allow == 1, $extension, $preset, $fields_to_use, $usergroups, $order_by));
     }
 
     /**

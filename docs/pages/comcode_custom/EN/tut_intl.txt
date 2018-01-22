@@ -492,6 +492,27 @@ The solution to '1' is to upload [tt]Courier New Bold Italic.ttf[/tt] from your 
 
 The solution to '2' is to upload [tt]Verdana.ttf[/tt] from your computer as [tt]data_custom/fonts/Vera.ttf[/tt]. This works for the Verdana font only, which is the default used during the Setup Wizard; if you are using the Logo Wizard manually then you may just want to upload all your fonts to [tt]data_custom/fonts[/tt] and pick one of those you uploaded.
 
+[title="3"]CSS[/title]
+
+The default CSS will have provisions to cope with translations. For example, we only have fixed layout for tables on English as we can't trust name lengths on other languages to not overrun:
+[code="CSS"]
+.wide_table {
+	width: 100%;
+	/*{+START,IF,{$EQ,{$LANG},EN}}*/
+		table-layout: fixed;
+	/*{+END}*/
+}
+[/code]
+If you like you can just change it to:
+[code="CSS"]
+.wide_table {
+	width: 100%;
+	table-layout: fixed;
+}
+[/code]
+and make sure your language strings don't overrun.
+{$,TODO: Fix wide_table in v11}
+
 [title="2"]Exporting language packs[/title]
 
 [surround]

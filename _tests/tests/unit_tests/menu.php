@@ -31,7 +31,7 @@ class menu_test_set extends cms_test_case
         $this->assertTrue('Test' == $GLOBALS['SITE_DB']->query_select_value('menu_items', 'i_menu', array('id' => $this->menu_id)));
     }
 
-    public function testEditmenu()
+    public function testEditMenu()
     {
         edit_menu_item($this->menu_id, 'Service', 2, null, 'Serv', 'http://www.google.com', 0, 'catalogues', 1, 0, 'tested', '', 0);
 

@@ -61,6 +61,8 @@ Level 2 (establishing):
  - {!tips:TIP_2q,{$PAGE_LINK*,:contact:free,0,1},Composr,{$PAGE_LINK*,site:professional_support,0,1},{$PAGE_LINK*,forum:,0,1},{$PAGE_LINK*,docs:,0,1},{$REPLACE*,abcdef.htm,,{$PAGE_LINK,docs:abcdef,0,1}}}
  - {!tips:TIP_2r,{$PAGE_LINK*,:contact:free,0,1},Composr,{$PAGE_LINK*,site:professional_support,0,1},{$PAGE_LINK*,forum:,0,1},{$PAGE_LINK*,docs:,0,1},{$REPLACE*,abcdef.htm,,{$PAGE_LINK,docs:abcdef,0,1}}}
  - {!tips:TIP_2s,{$PAGE_LINK*,:contact:free,0,1},Composr,{$PAGE_LINK*,site:professional_support,0,1},{$PAGE_LINK*,forum:,0,1},{$PAGE_LINK*,docs:,0,1},{$REPLACE*,abcdef.htm,,{$PAGE_LINK,docs:abcdef,0,1}}}
+ - {!tips:TIP_2t,{$PAGE_LINK*,:contact:free,0,1},Composr,{$PAGE_LINK*,site:professional_support,0,1},{$PAGE_LINK*,forum:,0,1},{$PAGE_LINK*,docs:,0,1},{$REPLACE*,abcdef.htm,,{$PAGE_LINK,docs:abcdef,0,1}}}
+ - {!tips:TIP_2u,{$PAGE_LINK*,:contact:free,0,1},Composr,{$PAGE_LINK*,site:professional_support,0,1},{$PAGE_LINK*,forum:,0,1},{$PAGE_LINK*,docs:,0,1},{$REPLACE*,abcdef.htm,,{$PAGE_LINK,docs:abcdef,0,1}}}
 
 Level 3 (established):
  - {!tips:TIP_3a,{$PAGE_LINK*,:contact:free,0,1},Composr,{$PAGE_LINK*,site:professional_support,0,1},{$PAGE_LINK*,forum:,0,1},{$PAGE_LINK*,docs:,0,1},{$REPLACE*,abcdef.htm,,{$PAGE_LINK,docs:abcdef,0,1}}}
@@ -78,8 +80,6 @@ Level 3 (established):
  - {!tips:TIP_3m,{$PAGE_LINK*,:contact:free,0,1},Composr,{$PAGE_LINK*,site:professional_support,0,1},{$PAGE_LINK*,forum:,0,1},{$PAGE_LINK*,docs:,0,1},{$REPLACE*,abcdef.htm,,{$PAGE_LINK,docs:abcdef,0,1}}}
  - {!tips:TIP_3n,{$PAGE_LINK*,:contact:free,0,1},Composr,{$PAGE_LINK*,site:professional_support,0,1},{$PAGE_LINK*,forum:,0,1},{$PAGE_LINK*,docs:,0,1},{$REPLACE*,abcdef.htm,,{$PAGE_LINK,docs:abcdef,0,1}}}
  - {!tips:TIP_3o,{$PAGE_LINK*,:contact:free,0,1},Composr,{$PAGE_LINK*,site:professional_support,0,1},{$PAGE_LINK*,forum:,0,1},{$PAGE_LINK*,docs:,0,1},{$REPLACE*,abcdef.htm,,{$PAGE_LINK,docs:abcdef,0,1}}}
- - {!tips:TIP_3p,{$PAGE_LINK*,:contact:free,0,1},Composr,{$PAGE_LINK*,site:professional_support,0,1},{$PAGE_LINK*,forum:,0,1},{$PAGE_LINK*,docs:,0,1},{$REPLACE*,abcdef.htm,,{$PAGE_LINK,docs:abcdef,0,1}}}
- - {!tips:TIP_3q,{$PAGE_LINK*,:contact:free,0,1},Composr,{$PAGE_LINK*,site:professional_support,0,1},{$PAGE_LINK*,forum:,0,1},{$PAGE_LINK*,docs:,0,1},{$REPLACE*,abcdef.htm,,{$PAGE_LINK,docs:abcdef,0,1}}}
 
 Level 4 (expert):
  - {!tips:TIP_4a,{$PAGE_LINK*,:contact:free,0,1},Composr,{$PAGE_LINK*,site:professional_support,0,1},{$PAGE_LINK*,forum:,0,1},{$PAGE_LINK*,docs:,0,1},{$REPLACE*,abcdef.htm,,{$PAGE_LINK,docs:abcdef,0,1}}}

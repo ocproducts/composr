@@ -21,7 +21,7 @@ function script_load_stuff_staff()
 				if (!elements[j].onclick)
 				{
 					elements[j].src=document.images[i].src;
-					add_event_listener_abstract(elements[j],'click',handle_image_click,false);
+					add_event_listener_abstract(elements[j],'click',handle_image_click,false,true);
 				}
 			}
 		}
@@ -29,7 +29,7 @@ function script_load_stuff_staff()
 		{
 			add_event_listener_abstract(document.images[i],'mouseover',handle_image_mouse_over,false);
 			add_event_listener_abstract(document.images[i],'mouseout',handle_image_mouse_out,false);
-			add_event_listener_abstract(document.images[i],'click',handle_image_click,false);
+			add_event_listener_abstract(document.images[i],'click',handle_image_click,false,true);
 		}
 	}
 	var inputs=document.getElementsByTagName('input');
@@ -39,7 +39,7 @@ function script_load_stuff_staff()
 		{
 			add_event_listener_abstract(inputs[i],'mouseover',handle_image_mouse_over,false);
 			add_event_listener_abstract(inputs[i],'mouseout',handle_image_mouse_out,false);
-			add_event_listener_abstract(inputs[i],'click',handle_image_click,false);
+			add_event_listener_abstract(inputs[i],'click',handle_image_click,false,true);
 		}
 	}
 	var all_e=document.getElementsByTagName('*');
@@ -51,7 +51,7 @@ function script_load_stuff_staff()
 		{
 			add_event_listener_abstract(all_e[i],'mouseover',handle_image_mouse_over,false);
 			add_event_listener_abstract(all_e[i],'mouseout',handle_image_mouse_out,false);
-			add_event_listener_abstract(all_e[i],'click',handle_image_click,false);
+			add_event_listener_abstract(all_e[i],'click',handle_image_click,false,false);
 		}
 	}
 
@@ -363,7 +363,7 @@ function handle_image_mouse_over(event)
 
 		// Add edit button
 		var ml=document.createElement('input');
-		ml.onclick=function(event) { handle_image_click(event,target,true); };
+		ml.onclick=function(event) { handle_image_click(event,target,true,true); };
 		ml.type='button';
 		ml.id='editimg_'+target.id;
 		ml.value='{!themes:EDIT_THEME_IMAGE;^}';
@@ -418,7 +418,7 @@ function handle_image_mouse_out(event)
 	window.status=window.old_status_img;
 }
 
-function handle_image_click(event,ob,force)
+function handle_image_click(event,ob,force,error_if_not_theme_image)
 {
 	if (typeof event=='undefined') event=window.event;
 	if ((typeof ob=='undefined') || (!ob)) var ob=this;
@@ -426,14 +426,16 @@ function handle_image_click(event,ob,force)
 	var src=ob.origsrc?ob.origsrc:((typeof ob.src=='undefined')?abstract_get_computed_style(ob,'background-image').replace(/.*url\(['"]?(.*)['"]?\).*/,'$1'):ob.src);
 	if ((src) && ((force) || (magic_keypress(event))))
 	{
-		// Bubbling needs to be stopped because shift+click will open a new window on some lower event handler (in firefox anyway)
-		cancel_bubbling(event);
-
-		if (typeof event.preventDefault!='undefined') event.preventDefault();
-
 		if (src.indexOf('{$BASE_URL_NOHTTP;}/themes/')!=-1)
+		{
+			// Bubbling needs to be stopped because shift+click will open a new window on some lower event handler (in firefox anyway)
+			cancel_bubbling(event);
+
+			if (typeof event.preventDefault!='undefined') event.preventDefault();
+
 			ob.edit_window=window.open('{$BASE_URL;,0}/adminzone/index.php?page=admin_themes&type=edit_image&lang='+window.encodeURIComponent(window.cms_lang)+'&theme='+window.encodeURIComponent(window.cms_theme)+'&url='+window.encodeURIComponent(src.replace('{$BASE_URL;,0}/',''))+keep_stub(),'edit_theme_image_'+ob.id);
-		else window.fauxmodal_alert('{!NOT_THEME_IMAGE;^}');
+		}
+		else if (error_if_not_theme_image) window.fauxmodal_alert('{!NOT_THEME_IMAGE;^}');
 
 		return false;
 	}

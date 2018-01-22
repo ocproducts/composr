@@ -55,13 +55,27 @@ class auth_test_set extends cms_test_case
         $this->assertTrue(is_null($member_id));
     }
 
-    public function testAccessDoesFail()
+    public function testZoneAccessDoesFail()
     {
+        $this->assertTrue(has_zone_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), ''));
         $this->assertTrue(!has_zone_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'adminzone'));
+    }
+
+    public function testPageAccessDoesFail()
+    {
+        $this->assertTrue(has_page_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'feedback', ''));
+        $this->assertTrue(!has_page_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'admin_commandr', 'adminzone'));
+    }
+
+    public function testCategoryAccessDoesFail()
+    {
+        $this->assertTrue(has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', '1'));
+        $this->assertTrue(!has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', '6'));
     }
 
     public function testPrivilegeDoesFail()
     {
+        $this->assertTrue(has_privilege($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'submit_lowrange_content'));
         $this->assertTrue(!has_privilege($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'bypass_validation_highrange_content'));
     }
 

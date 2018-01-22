@@ -1855,6 +1855,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CMD_SQL_DUMP_HELP
         CMD_SQL_DUMP_HELP_PARAM_0
         CMD_SQL_DUMP_HELP_PARAM_1
+        CMD_SQL_DUMP_HELP_PARAM_2
         SQL_DUMP_SAVED_TO
         CMD_PASSWD_HELP
         CMD_PASSWD_HELP_PARAM_0
@@ -6632,6 +6633,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         TIP_2q
         TIP_2r
         TIP_2s
+        TIP_2t
+        TIP_2u
         TIP_3a
         TIP_3b
         TIP_3c
@@ -6647,8 +6650,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         TIP_3m
         TIP_3n
         TIP_3o
-        TIP_3p
-        TIP_3q
         TIP_4a
         TIP_4b
         TIP_4c

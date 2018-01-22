@@ -130,7 +130,7 @@ function find_filedump_links($focus = '')
                 } else {
                     $query .= ' AND ' . $_field_name . ' LIKE \'' . db_encode_like('%uploads/filedump' . $_focus . '%') . '\'';
                 }
-                if (substr($table, 0, 2) == 'f_') {
+                if ((substr($table, 0, 2) == 'f_') && ($GLOBALS['FORUM_DB'] !== null)) {
                     $db = $GLOBALS['FORUM_DB'];
                 } else {
                     $db = $GLOBALS['SITE_DB'];

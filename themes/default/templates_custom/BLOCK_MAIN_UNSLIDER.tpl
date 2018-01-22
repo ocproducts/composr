@@ -15,12 +15,18 @@
 
 <script>// <![CDATA[
 	add_event_listener_abstract(window,'load',function() {
-		$('#{SLIDER_ID;/}').unslider({
+		var sliders=$('#{SLIDER_ID;/}');
+		sliders.unslider({
 			fluid: {$?,{FLUID},true,false},
 			dots: {$?,{BUTTONS},true,false},
 			delay: {$?,{$IS_EMPTY,{DELAY}},false,{DELAY%}},
 			{+START,IF_NON_EMPTY,{HEIGHT}}balanceheight: false,{+END}
 			speed: {SPEED%}
+		});
+		sliders.on('swipeleft', function(e) {
+		    unslider.prev();
+		}).on('swiperight', function(e) {
+		    unslider.next();
 		});
 	});
 //]]></script>

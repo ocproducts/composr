@@ -39,6 +39,7 @@ class Hook_health_check_performance extends Hook_Health_Check
         $this->process_checks_section('testCookies', 'Cookies', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testHTTPOptimisation', 'HTTP optimisation', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testPageSpeed', 'Page speed (slow)', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testSetup', 'Setup', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
 
         return array($this->category_label, $this->results);
     }
@@ -221,7 +222,7 @@ class Hook_health_check_performance extends Hook_Health_Check
             'page' => $this->get_page_url(),
             'css' => get_base_url() . '/themes/default/templates_cached/EN/' . $css_basename,
             'js' => get_base_url() . '/themes/default/templates_cached/EN/' . $javascript_basename,
-            'png' => get_base_url() . '/themes/default/images/button1.png',
+            'png' => get_base_url() . '/themes/default/images/no_image.png',
         );
 
         foreach ($urls as $type => $url) {
@@ -325,6 +326,46 @@ class Hook_health_check_performance extends Hook_Health_Check
             foreach ($results as $result) {
                 $time = floatval($result['milliseconds']) / 1000.0;
                 $this->assert_true($time < $threshold, 'Slow page generation speed for [tt]' . $result['the_page'] . '[/tt] page @ ' . float_format($time) . ' seconds)');
+            }
+        }
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     */
+    public function testSetup($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+
+        $options = array(
+            'is_on_template_cache',
+            'is_on_lang_cache',
+            'is_on_comcode_page_cache',
+            'is_on_block_cache',
+        );
+        foreach ($options as $option) {
+            $this->assert_true(get_option($option) == '1', 'Cache option should be enabled, ' . $option);
+        }
+
+        if ($manual_checks) {
+            global $SITE_INFO;
+            if (!isset($SITE_INFO['self_learning_cache']) || $SITE_INFO['self_learning_cache'] == '0') {
+                $this->state_check_manual('Consider enabling self-learning cache');
+            }
+
+            if ($GLOBALS['PERSISTENT_CACHE'] === null) {
+                $this->state_check_manual('Consider persistent caching');
+            }
+
+            if (support_smart_decaching()) {
+                $this->state_check_manual('Consider disabling smart decaching');
             }
         }
     }

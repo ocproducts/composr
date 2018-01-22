@@ -80,6 +80,10 @@ class Hook_health_check_integrity extends Hook_Health_Check
             return;
         }
 
+        if (strpos(get_db_type(), 'mysql') === false) {
+            return;
+        }
+
         if (!$manual_checks) {
             $this->state_check_skipped('Will not check automatically due to possibility of intentional modifications');
             return;

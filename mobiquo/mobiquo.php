@@ -37,12 +37,13 @@ include(COMMON_CLASS_PATH_INCLUDE . '/pm_functions.php');
 
 require(dirname(__FILE__) . '/lib/mobiquo.php');
 
+initialise_composr();
+
 // This is needed here, due to the $xmlrpc* globals being needed in server_define, regardless of protocol
 require(dirname(__FILE__) . '/lib/xmlrpc.php');
 require(dirname(__FILE__) . '/lib/xmlrpcs.php');
 
 initialise_mobiquo();
-initialise_composr();
 
 include(COMMON_CLASS_PATH_INCLUDE . '/server_define.php');
 
@@ -60,7 +61,7 @@ switch ($content_type) {
         $MOBIQUO_SERVER = new MobiquoServerXMLRPC();
         break;
     default:
-        if (isset($_POST['method_name'])) {
+        if (isset($_POST['method_name']) || isset($_GET['method_name'])) {
             require(dirname(__FILE__) . '/lib/mobiquo_post.php');
             $MOBIQUO_SERVER = new MobiquoServerPOST();
         } else {

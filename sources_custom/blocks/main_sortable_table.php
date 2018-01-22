@@ -37,6 +37,20 @@ class Block_main_sortable_table
     }
 
     /**
+     * Find caching details for the block.
+     *
+     * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
+     */
+    public function caching_environment()
+    {
+        $info = array();
+        $info['cache_on'] = '$map';
+        $info['special_cache_flags'] = CACHE_AGAINST_DEFAULT;
+        $info['ttl'] = 60 * 60 * 24 * 365 * 5;
+        return $info;
+    }
+
+    /**
      * Execute the block.
      *
      * @param  array $map A map of parameters.

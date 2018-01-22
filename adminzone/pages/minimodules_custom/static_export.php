@@ -145,7 +145,6 @@ $directory = $STATIC_EXPORT_TAR['directory'];
 $langs = find_all_langs();
 $done_non_spec = array();
 foreach ($directory as $entry) {
-
     $dir_name = preg_replace('#^[A-Z][A-Z]/#', '', dirname($entry['path']));
     if ($dir_name == '.') {
         $dir_name = '';
@@ -173,7 +172,6 @@ foreach ($directory as $entry) {
 $data .= "\n";
 $data .= "\n";
 if (count($langs) != 1) {
-
     // Recognise when language explicitly called
     foreach (array_keys($langs) as $lang) {
         if (($lang != fallback_lang()) && (count(get_directory_contents(get_custom_file_base() . '/lang_custom/' . $lang, '', true, false, true)) < 5)) {

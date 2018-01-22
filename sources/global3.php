@@ -2859,7 +2859,7 @@ function seo_meta_get_for($type, $id)
 
     $cache = array('', '');
 
-    $rows = $GLOBALS['SITE_DB']->query_select('seo_meta_keywords', array('meta_keyword'), $where);
+    $rows = $GLOBALS['SITE_DB']->query_select('seo_meta_keywords', array('meta_keyword'), $where, 'ORDER BY id');
     foreach ($rows as $row) {
         if ($cache[0] != '') {
             $cache[0] .= ',';

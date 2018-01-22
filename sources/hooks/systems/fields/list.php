@@ -108,7 +108,7 @@ class Hook_fields_list extends ListFieldHook
         if (is_object($ev)) {
             return $ev;
         }
-        return escape_html($ev);
+        return comcode_to_tempcode($ev, null, true);
     }
 
     // ======================

@@ -355,10 +355,10 @@ function cns_get_all_custom_fields_match_member($member_id, $public_view = null,
             }
 
             $custom_fields[$field_to_show['trans_name']] = array(
-                'RAW' => $member_value_raw,
+                'RAW' => $member_value_raw, // Always a string or NULL
                 'RENDERED' => $rendered_value,
                 'FIELD_ID' => strval($field_to_show['id']),
-                'EDITABILITY' => $editability,
+                'EDITABILITY' => $editability, // 1 for Comcode, 0 otherwise
                 'TYPE' => $field_to_show['cf_type'],
                 'EDIT_TYPE' => $edit_type,
             );
@@ -369,7 +369,7 @@ function cns_get_all_custom_fields_match_member($member_id, $public_view = null,
 }
 
 /**
- * Get the ID for a CPF if we only know the title. Warning: Only use this with custom code, never core code! It assumes a single language and that fields aren't renamed.
+ * Get the ID for any CPF if we only know the title. Warning: Only use this with custom code, never core code! It assumes a single language and that fields aren't renamed.
  *
  * @param  SHORT_TEXT $title The title.
  * @return ?AUTO_LINK The ID (null: could not find).
@@ -392,7 +392,7 @@ function find_cpf_field_id($title)
 }
 
 /**
- * Get the ID for a CPF if we only know the title. Warning: Only use this with custom code, never core code! It assumes a single language and that fields aren't renamed.
+ * Get the ID for a special CPF if we only know the title. Warning: Only use this with custom code, never core code! It assumes a single language and that fields aren't renamed.
  *
  * @param  SHORT_TEXT $title The title.
  * @return ?AUTO_LINK The ID (null: could not find).
@@ -415,10 +415,13 @@ function find_cms_cpf_field_id($title)
 }
 
 /**
- * Returns a list of all field values for user. Doesn't take translation into account. Doesn't take anything permissive into account.
+ * Returns a mapping of all raw field values for user.
+ * Doesn't take account of translation, anything permissive, or data conversion. Therefore only use if you are sure of the data you're getting.
+ * Automatically (re)creates missing data.
+ * Use cns_get_all_custom_fields_match_member if you want something smarter (but more intensive); that function is a wrapper around this function.
  *
  * @param  MEMBER $member_id The member.
- * @return array The mapping, field_<id> to value.
+ * @return array The mapping, field_<id> to value. The value is the raw data type used in the database.
  */
 function cns_get_custom_field_mappings($member_id)
 {
@@ -465,24 +468,6 @@ function cns_get_custom_field_mappings($member_id)
         $MEMBER_CACHE_FIELD_MAPPINGS[$member_id] = $query[0];
     }
     return $MEMBER_CACHE_FIELD_MAPPINGS[$member_id];
-}
-
-/**
- * Returns a mapping between field number and field value. Doesn't take translation into account. Doesn't take anything permissive into account.
- *
- * @param  MEMBER $member_id The member.
- * @return array The mapping.
- */
-function cns_get_custom_fields_member($member_id)
-{
-    $row = cns_get_custom_field_mappings($member_id);
-    $result = array();
-    foreach ($row as $column => $val) {
-        if (preg_match('#^field\_\d+$#', $column) != 0) {
-            $result[intval(substr($column, 6))] = $val;
-        }
-    }
-    return $result;
 }
 
 /**

@@ -24,7 +24,7 @@ class Module_cms_tutorials extends Standard_crud_module
     public $special_edit_frontend = true;
     public $archive_entry_point = '_SEARCH:tutorials';
     public $user_facing = true;
-    public $send_validation_request = true;
+    public $check_validation = false;
     public $permissions_require = 'low';
     public $menu_label = 'TUTORIALS';
     public $select_name = 'TUTORIALS';
