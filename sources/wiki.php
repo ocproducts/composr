@@ -444,7 +444,7 @@ function wiki_add_page($title, $description, $notes, $hide_posts, $member = null
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_add('SEARCH:wiki:browse:' . strval($page_id), null, $edit_date, ($page_id == db_get_first_id()) ? SITEMAP_IMPORTANCE_HIGH : SITEMAP_IMPORTANCE_MEDIUM, 'weekly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'wiki', strval($page_id)));
+    notify_sitemap_node_add('_SEARCH:wiki:browse:' . strval($page_id), null, $edit_date, ($page_id == db_get_first_id()) ? SITEMAP_IMPORTANCE_HIGH : SITEMAP_IMPORTANCE_MEDIUM, 'weekly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'wiki', strval($page_id)));
 
     return $page_id;
 }

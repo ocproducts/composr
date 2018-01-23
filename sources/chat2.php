@@ -347,7 +347,7 @@ function add_chatroom($welcome, $room_name, $room_owner, $allow2, $allow2_groups
 
     if ($is_im == 0) {
         require_code('sitemap_xml');
-        notify_sitemap_node_add('SEARCH:chat:room:' . strval($id), time(), null, SITEMAP_IMPORTANCE_MEDIUM, 'never', ($allow2 == '') && ($allow2_groups == ''));
+        notify_sitemap_node_add('_SEARCH:chat:room:' . strval($id), time(), null, SITEMAP_IMPORTANCE_MEDIUM, 'never', ($allow2 == '') && ($allow2_groups == ''));
     }
 
     return $id;

@@ -396,7 +396,7 @@ function add_quiz($name, $timeout, $start_text, $end_text, $end_text_fail, $note
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_add('SEARCH:quiz:do:' . strval($id), $add_time, null, SITEMAP_IMPORTANCE_MEDIUM, 'monthly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'quiz', strval($id)));
+    notify_sitemap_node_add('_SEARCH:quiz:do:' . strval($id), $add_time, null, SITEMAP_IMPORTANCE_MEDIUM, 'monthly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'quiz', strval($id)));
 
     return $id;
 }

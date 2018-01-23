@@ -72,7 +72,7 @@ function add_iotd($url, $title, $caption, $thumb_url, $current, $allow_rating, $
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_add('SEARCH:iotds:view:' . strval($id), null, $edit_date, SITEMAP_IMPORTANCE_LOW, 'never', false);
+    notify_sitemap_node_add('_SEARCH:iotds:view:' . strval($id), null, $edit_date, SITEMAP_IMPORTANCE_LOW, 'never', false);
 
     return $id;
 }
