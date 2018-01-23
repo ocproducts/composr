@@ -202,7 +202,11 @@ END;
     if (function_exists('set_time_limit')) {
         @set_time_limit(0);
     }
-    $files = rd_do_dir('');
+    if ((!isset($settings['do_files'])) || ($settings['do_files'] == '1')) {
+        $files = rd_do_dir('');
+    } else {
+        $files = array();
+    }
     foreach ($files as $file) {
         if (preg_match('#^data_custom/errorlog\.php$#', $file) != 0) {
             continue;
