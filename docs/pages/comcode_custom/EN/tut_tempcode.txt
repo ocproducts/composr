@@ -1269,14 +1269,6 @@ These are advanced symbols, and mirror Composr's internal API. The parameters ar
 			<td>Find the number of comments made for a resource (first parameter is the resource type code, second parameter is the resource ID)</td>
 		</tr>
 		<tr style="background: #DDFFDD">
-			<td>{$IMAGE_WIDTH,http://example.com/pic.png}</td>
-			<td>Find the width of an image</td>
-		</tr>
-		<tr style="background: #DDFFDD">
-			<td>{$IMAGE_HEIGHT,http://example.com/pic.png}</td>
-			<td>Find the height of the image</td>
-		</tr>
-		<tr style="background: #DDFFDD">
 			<td>{$THUMBNAIL,http://example.com/pic.png,40x60,galleries}</td>
 			<td>Generate a thumbnail URL from another image URL</td>
 		</tr>
@@ -1313,7 +1305,7 @@ These are advanced symbols, and mirror Composr's internal API. The parameters ar
 			<td>Find the resource GUID from the resource ID</td>
 		</tr>
 		<tr style="background: #DDFFDD">
-			<td>{$FIND_COMMANDRFS_FILENAME_VIA_ID,&lt;resource-type&gt;,&lt;resource-id&gt;}</td>
+			<td>{$FIND_COMMANDR_FS_FILENAME_VIA_ID,&lt;resource-type&gt;,&lt;resource-id&gt;}</td>
 			<td>Find the Commandr-fs (repository) filename from the resource ID. There is an optional third parameter, which may be set to 1 if you want the resource sub-path to also be included. Sub-paths are relative to the repository-fs path for the resource-type.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
@@ -1329,7 +1321,7 @@ These are advanced symbols, and mirror Composr's internal API. The parameters ar
 			<td>Find the resource ID from the resource GUID. It is assumed you as the programmer already know the resource-type.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
-			<td>{$FIND_ID_VIA_COMMANDRFS_FILENAME,&lt;resource-type&gt;,&lt;filename&gt;}</td>
+			<td>{$FIND_ID_VIA_COMMANDR_FS_FILENAME,&lt;resource-type&gt;,&lt;filename&gt;}</td>
 			<td>Find the resource ID from the Commandr-fs (repository) filename</td>
 		</tr>
 	    <tr style="background: #FFDDDD">
@@ -1337,7 +1329,7 @@ These are advanced symbols, and mirror Composr's internal API. The parameters ar
 	    	<td>Displays a link to a concept, if it has been saved already from a concept table.</td>
 	    </tr>
 	    <tr style="background: #FFDDDD">
-	    	<td>{$SELF_TUTORIAL_LINK,tutorial_id,page-link}</td>
+	    	<td>{$SET_TUTORIAL_LINK,tutorial_id,page-link}</td>
 	    	<td>Creates a tutorial link for the given tutorial_id to the given page-link. Needs doing in Tempcode because the Comcode parser doesn't know the target page for Comcode being parsed.</td>
 	    </tr>
 		<tr style="background: #DDFFDD">

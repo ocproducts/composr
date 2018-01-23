@@ -112,11 +112,6 @@ class Hook_media_rendering_oembed extends Media_renderer_with_fallback
         }
 
         // Work out the full endpoint URL to call
-        $format_in_path = (strpos($endpoint, '{format}') !== false);
-        $preferred_format = 'json';
-        if ($format_in_path) {
-            $endpoint = str_replace('{format}', $preferred_format, $endpoint);
-        }
         if (strpos($endpoint, '?') === false) {
             $endpoint .= '?url=' . urlencode($url);
         } else {
@@ -130,7 +125,11 @@ class Hook_media_rendering_oembed extends Media_renderer_with_fallback
         if ((!array_key_exists('height', $attributes)) || ($attributes['height'] != '')) {
             $endpoint .= '&maxheight=' . urlencode(array_key_exists('height', $attributes) ? $attributes['height'] : get_option('oembed_max_size'));
         }
-        if (!$format_in_path) {
+        $format_in_path = (strpos($endpoint, '{format}') !== false);
+        $preferred_format = 'json';
+        if ($format_in_path) {
+            $endpoint = str_replace('{format}', $preferred_format, $endpoint);
+        } else {
             if (strpos($endpoint, '&format=') === false) {
                 $endpoint .= '&format=' . urlencode($preferred_format);
             }
