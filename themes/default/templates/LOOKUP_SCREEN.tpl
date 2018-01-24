@@ -77,10 +77,9 @@
 					<!-- If you like new windows, add this... title="{!LINK_NEW_WINDOW}" target="_blank"  -->
 					<nav>
 						<ul class="actions_list">
-							<li><a rel="external" href="http://whatismyipaddress.com/ip/{IP*}">Reverse-DNS/WHOIS</a></li>
-							<li><a rel="external" href="http://network-tools.com/default.asp?prog=ping&amp;Netnic=whois.arin.net&amp;host={IP*}">Ping</a></li>
-							<li><a rel="external" href="http://network-tools.com/default.asp?prog=trace&amp;Netnic=whois.arin.net&amp;host={IP*}">Tracert</a></li>
-							<li><a rel="external" href="http://www.infosniper.net/index.php?ip_address={IP*}">Geo-Lookup</a></li>
+							<li><a rel="external" href="http://whatismyipaddress.com/ip/{IP*}">Reverse-DNS/WHOIS/Geo-Lookup</a></li>
+							<li><a rel="external" href="https://ping.eu/ping/?host={IP*}">Ping</a></li>
+							<li><a rel="external" href="https://ping.eu/traceroute/?host={IP*}">Tracert</a></li>
 						</ul>
 					</nav>
 				</td>

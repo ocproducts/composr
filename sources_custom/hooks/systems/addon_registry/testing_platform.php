@@ -469,6 +469,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/user.php',
             '_tests/tests/unit_tests/config_options_in_templates.php',
             '_tests/tests/unit_tests/hyperlink_targets.php',
+            '_tests/tests/unit_tests/special_links.php',
             '_tests/tests/unit_tests/file_naming.php',
             '_tests/tests/unit_tests/allow_php_in_templates.php',
             '_tests/tests/unit_tests/closed_file.php',

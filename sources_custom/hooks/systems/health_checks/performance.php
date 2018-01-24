@@ -64,7 +64,7 @@ class Hook_health_check_performance extends Hook_Health_Check
 
         // TODO: Document in maintenance spreadsheet for v11 that we have these links here
 
-        $this->state_check_manual('Check for [url="speed issues"]https://developers.google.com/speed/pagespeed/insights[/url] (take warnings with a pinch of salt, not every suggestion is appropriate)');
+        $this->state_check_manual('Check for [url="speed issues"]https://developers.google.com/speed/pagespeed/insights/[/url] (take warnings with a pinch of salt, not every suggestion is appropriate)');
     }
 
     /**
