@@ -78,7 +78,7 @@ theme_retina,Retina/Hi-DPI support,ocProducts,,Not regularly tested. Liable to b
 theme_mobile_mode,Mobile mode support,ocProducts,ocProducts,Needs to be separately tested. Liable to break due to cross-cutting complexity.,No,
 seo_tracking,Alexa and Google position tracking,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,
 ssl,Per-page SSL support,ocProducts,,Needs to be separately tested. Liable to break due to cross-cutting complexity.,No,
-detect_bot,Bot detection,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,
+detect_bot,Bot detection,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,Partly tested by bot_detection unit test.
 detect_mobile,Mobile user agent detection,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,
 standard_opengraph,OpenGraph,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,
 browser_firefox,Firefox support,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,
