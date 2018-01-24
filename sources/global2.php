@@ -252,7 +252,7 @@ function init__global2()
     // Most critical things
     require_code('global3'); // A lot of support code is present in this
     require_code('web_resources');
-    if (!running_script('webdav')) {
+    if ((!running_script('webdav')) && (!running_script('endpoint'))) {
         $http_method = cms_srv('REQUEST_METHOD');
         if ($http_method != 'GET' && $http_method != 'POST' && $http_method != 'HEAD' && $http_method != '') {
             header('HTTP/1.0 405 Method Not Allowed');
