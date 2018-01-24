@@ -102,7 +102,7 @@ google_maps,"Google maps (DataMappr, UserMappr)",ocProducts,,Could potentially b
 firephp,FirePHP logging,ocProducts,,Not regularly tested.,No,
 twitter,Twitter syndication,ocProducts,,Could potentially break due to third-party changes.,Yes,
 webdav,WebDav access for The Repository,ocProducts,,Could potentially break due to third-party changes.,Yes,
-rest,REST API from Composr Mobile SDK,ocProducts,,Not regularly tested.,Yes,
+rest,REST API from Composr Mobile SDK,ocProducts,,Not regularly tested.,Yes,Partly tested by rest automated test.
 currency_codes,ISO currencies (internal list),ocProducts,,Could potentially break due to political changes.,No,
 country_codes,ISO countries (internal list),ocProducts,,Could potentially break due to political changes.,No,
 currency,Currency conversion,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,
