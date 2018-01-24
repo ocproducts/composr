@@ -88,7 +88,7 @@ class Hook_addon_registry_analysr
     {
         return 'Some extra stats for the side stats block.
 
-The new stats include: Google PageRank, Alexa rank, Back links and Speed results. To use this addon install the addon then add a Side Statistics block as normal
+The new stats include: Alexa rank, Back links and Speed results. To use this addon install the addon then add a Side Statistics block as normal
 
 [code="Comcode"][block]side_stats[/block][/code]';
     }

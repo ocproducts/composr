@@ -169,7 +169,7 @@ Here are the top 100 buzzwords that will help you understand what web designers 
 		</tr>
 		<tr>
 			<td>FTP</td>
-			<td>File Transfer Protocol, a way of uploading files to a server, or downloading them from a server.</td>
+			<td>File Transfer Protocol, a way of uploading files to a server, or downloading them from a server. SFTP is the secure version.</td>
 		</tr>
 		<tr>
 			<td>GIF</td>
@@ -273,7 +273,7 @@ Here are the top 100 buzzwords that will help you understand what web designers 
 		</tr>
 		<tr>
 			<td>PageRank</td>
-			<td>One of the ways Google ranks web pages: by how many other pages link through to it and the importance of those pages.</td>
+			<td>One of the ways Google ranks web pages: by how many other pages link through to it and the importance of those pages. Google no long makes PageRank data public.</td>
 		</tr>
 		<tr>
 			<td>Pay-Per-Click (PPC)</td>
@@ -354,6 +354,10 @@ Here are the top 100 buzzwords that will help you understand what web designers 
 		<tr>
 			<td>Staging server</td>
 			<td>A separate copy of your website may be installed on a staging server, for you to prepare changes in advance, and experiment, without impacting your live website.</td>
+		</tr>
+		<tr>
+			<td>SVG</td>
+			<td>A computer file format for images. SVG files are a 'vector' format, meaning they have infinite resolution. Vectors work by defining shapes rather than specifying a pixel grid.</td>
 		</tr>
 		<tr>
 			<td>Twitter</td>

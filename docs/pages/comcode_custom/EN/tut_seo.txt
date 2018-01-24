@@ -17,7 +17,7 @@ It is worth noting at this point, that it is my view that search engine ranking 
 [title="2"]How web crawlers work[/title]
 
 Search engines work via one of four techniques (or a combination):
-1) manually maintained directories (e.g. Google uses the OpenDmoz directory)
+1) manually maintained directories (this is now mostly a thing of the past, e.g. OpenDmoz was shut down)
 2) accessing databases (e.g. Google uses Wikipedia)
 3) web crawling (e.g. Google has one of the best web crawlers)
 4) aggregation/taking of data from other search engines (e.g. Yahoo used to use Google)
@@ -42,7 +42,7 @@ There are a number of techniques that will improve your site's search engine sta
  - Likewise, use good hyperlink titles[media width="150" description="SEO options for Composr content" float="right"]data_custom/images/docs/tut_seo/seo_content.png[/media]
  - Get keywords into your own URLs (the choice of domain name, the URL path, and the URL filename). Composr's "URL Monikers" feature will help here
  - Get your site linked to by as many quality sites as possible: the more popular the sites, the better (don't get linked to on "link farms" though). This is not just good for the obvious reason of getting hits from those sites, but will also make search engines think your site is popular (in particular, the google PageRank algorithm basically bases website popularity on the number of links it gets)
- - Add your site to directories, including large directories of any kind of website, and small specialist directories relevant to your website
+ - Add your site to directories or ranker sites, including large directories of any kind of website, and small specialist directories relevant to your website
  - Make sure your XML Sitemap is being generated (you will need the CRON bridge scheduler working for this), and submit the sitemap to Google. This is described in more detail in the next section
  - Submit your site to additional search engines (Google, Yahoo, Microsoft and Ask are automatic via the XML Sitemap); note that when you submit a site to a search engine, you are only giving it optional information, as they are designed to find websites regardless of whether they are submitted or not. You might want to pay for a service that submits to multiple search engines for you, but be wary of this: search engines may mark these submissions as spam if your submission does not match that search engines submission policy (many of which in fact exclude submission from such bulk services). Note that some search engines require payment for listing
  - Don't waste your time submitting to obscure search engines
@@ -51,6 +51,7 @@ There are a number of techniques that will improve your site's search engine sta
  - Use the URL Schemes feature, as search engines will then see pages opened up with different parameters (to access different content) as separate. This means they are more likely to consider them separately
  - Use dedicated "landing pages" that you can link to from other websites. A landing page is just a normal page that you intend to point people to. For example, you might make an article landing page that is linked to from a directory of articles. The purpose is to give search engines something extra and real to index without distracting your primary visitor flow
  - Set aside time for regular testing; test the right pages show up when doing searches, and the wrong ones don't
+ - Make sure your site has a presence on social media (e.g. Facebook and Twitter)
 
 There are many rogues and companies out there that will promise unachievable things when it comes to getting high search engine rankings: a site that a user would not want to visit and respect, is not going to be able to abuse search engine ranking schemes easily. Our best advice for this is that you should focus on quality, not cheating the system: quality is easier, and cheating will usually end up working against you.
 
