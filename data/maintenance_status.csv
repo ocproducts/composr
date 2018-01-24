@@ -70,7 +70,6 @@ transifex,Transifex integration,ocProducts,ocProducts,Could potentially break du
 caches_filesystem,Persistent cache via filesystem,ocProducts,,Not regularly tested. Liable to break due to cross-cutting complexity.,No,
 rootkit_detector,Rootkit detector,ocProducts,,Not compatible with all systems. Intended for developers.,No,Partly tested by rootkit_detection automated test.
 failover_mode,Failover Mode,ocProducts,,Not regularly tested.,No,
-rate_limit,Rate Limiting,ocProducts,,Not regularly tested.,No,
 youtube,YouTube media,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,
 sitemap_submit,XML Sitemap auto-submit,ocProducts,,Could potentially break due to third-party changes.,No,sitemap_submit automated test.
 external_urls,"Recommended links on staff dashboard, and accuracy of external URLs in general",ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,Broken links automated test.
