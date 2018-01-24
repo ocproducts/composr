@@ -41,7 +41,7 @@ theme_rtl,Right-to-left support in default theme,,,Too burdensome to routinely m
 theme_print,Custom print layout support in default theme,ocProducts,,Not regularly tested.,No,
 standard_opensearch,OpenSearch compliance,ocProducts,,Not regularly tested.,No,
 standard_schema_org,schema.org compliance,ocProducts,,Not regularly tested across all appropriate templates.,No,
-standard_microformats,Microformats compliance,ocProducts,,Not regularly tested across all appropriate templates.,No,
+standard_microformats,Microformats compliance,ocProducts,,Not regularly tested across all appropriate templates.,No,Partly tested by microformats automated test.
 standard_accessibility,Manual compliance checks for ATAG and WCAG,ocProducts,,"Active manual checks such as checking contrast, or having active testing sessions, would be a significant cost.",No,Automated web standards tests.
 standard_nojs,Support users without JavaScript,,,"Web browsers are starting to make JavaScript mandatory, and almost all modern websites require it. We now assume JavaScript will always be enabled.",No,
 standard_nocookies,Support users without cookies,ocProducts,,"If a user has disabled even session cookies, they may not be able to log in. This is extremely rare. If a user has disabled other cookies some individual settings may not be remembered.",No,
