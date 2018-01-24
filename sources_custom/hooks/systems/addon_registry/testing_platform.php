@@ -474,6 +474,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/file_naming.php',
             '_tests/tests/unit_tests/allow_php_in_templates.php',
             '_tests/tests/unit_tests/closed_file.php',
+            '_tests/tests/unit_tests/bot_detection.php',
             '_tests/tests/unit_tests/form_to_email.php',
             '_tests/tests/unit_tests/filtering.php',
             '_tests/tests/unit_tests/comcode_pages.php',
