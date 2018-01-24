@@ -36,4 +36,14 @@ class antispam_test_set extends cms_test_case
         list($result) = _check_stopforumspam('127.0.0.1');
         $this->assertTrue($result != ANTISPAM_RESPONSE_ERROR);
     }
+
+    public function testTornevallSubmit()
+    {
+        $this->assertTrue(is_string(http_download_file('https://dnsbl.tornevall.org/soap/soapsubmit.php'))); // Very rough, at least tells us URL still exists
+    }
+
+    public function testStopForumSpamSubmit()
+    {
+        $this->assertTrue(is_string(http_download_file('http://www.stopforumspam.com/add.php'))); // Very rough, at least tells us URL still exists
+    }
 }
