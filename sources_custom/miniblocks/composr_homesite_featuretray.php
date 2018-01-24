@@ -128,7 +128,7 @@ $feature_tree = array(
                 array('Search boxes to integrate into your website'),
                 null, // divider
                 array('Logging/stats'),
-                (!is_maintained('standard_opensearch')) ? false : array('OpenSearch support', 'Allow users to search from inside their web browser'),
+                array('OpenSearch support', 'Allow users to search from inside their web browser'),
                 array('Results sorting, and filtering by author and date'),
                 array('Search within downloads', 'Including support for looking inside archives'),
             ),
