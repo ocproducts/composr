@@ -16,9 +16,32 @@
 /**
  * Composr test case class (unit testing).
  */
-class bot_detection_test_set extends cms_test_case
+class ua_detection_test_set extends cms_test_case
 {
     public function testBotDetection()
+    {
+        $url = build_url(array('page' => 'forumview'), 'forum');
+
+        require_code('cns_topics');
+        require_code('cns_posts');
+        require_code('cns_forums');
+        require_code('cns_posts_action');
+        require_code('cns_posts_action2');
+        require_code('cns_posts_action3');
+        require_code('cns_topics_action');
+        require_code('cns_topics_action2');
+
+        $topic_id = cns_make_topic(db_get_first_id(), 'Test');
+        cns_make_post($topic_id, 'welcome', 'welcome to the posts', 0, false, null, 0, null, null, null, null, null, null, null, true, true, null, true, '', 0, null, false, false, false);
+
+        $data = http_download_file($url->evaluate(), null, false, false, 'Googlebot');
+        $this->assertTrue(strpos($data, 'findpost') === false);
+
+        $data = http_download_file($url->evaluate(), null, false, false);
+        $this->assertTrue(strpos($data, 'findpost') !== false);
+    }
+
+    public function testMobileDetection()
     {
         $url = build_url(array('page' => ''), '');
 
