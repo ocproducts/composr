@@ -32,6 +32,7 @@ This code is not in failure.php due to the dynamic class declaration, triggering
  * @param  EMAIL $email Email address to report
  * @param  string $reason The reason for the report (blank: none)
  * @param  boolean $trigger_error Whether to emit a Composr error, on error. Should not be 'true' for automatic spammer reports, as the spammer should not see the submission process in action!
+ * @return boolean Whether it was successful
  */
 function syndicate_spammer_report($ip_addr, $username, $email, $reason, $trigger_error = false)
 {
@@ -131,4 +132,6 @@ function syndicate_spammer_report($ip_addr, $username, $email, $reason, $trigger
     if (($trigger_error) && (!$did_something)) {
         attach_message(do_lang('SPAM_REPORT_NO_EMAIL_OR_USERNAME'), 'warn');
     }
+
+    return $did_something;
 }
