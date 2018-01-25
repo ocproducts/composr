@@ -25,6 +25,64 @@ class tasks_test_set extends cms_test_case
         require_code('files');
     }
 
+    public function testCalendarICal()
+    {
+        require_code('calendar2');
+
+        // Add complex event with start and recurrence
+        $complex_event_id = add_calendar_event(8, 'daily', 3, 0, 'complex event', '', 3, 2010, 1, 10, 'day_of_month', 10, 15, 2010, 1, 10, 'day_of_month', 11, 15, null, 1, null, 1, 1, 1, 1, '', null, 0, null, null, null);
+
+        // Add event with start only
+        $simple_event_id = add_calendar_event(8, 'none', null, 0, 'simple event', '', 3, 2010, 1, 10, 'day_of_month', 10, 15, null, null, null, 'day_of_month', null, null, null, 1, null, 1, 1, 1, 1, '', null, 0, null, null, null);
+
+        $last_rows_before = $GLOBALS['SITE_DB']->query_select('calendar_events', array('*'), array(), 'ORDER BY id DESC', 2);
+        $this->cleanEventRowsForComparison($last_rows_before);
+
+        require_code('calendar_ical');
+        ob_start();
+        output_ical(false);
+        $ical = ob_get_contents();
+        ob_end_clean();
+
+        $temp_path = cms_tempnam();
+        file_put_contents($temp_path, $ical);
+
+        $post_params = array(
+            'snip' => $ical,
+        );
+        $result = http_download_file('http://severinghaus.org/projects/icv/', null, true, false, 'Composr', $post_params);
+
+        $this->assertTrue(strpos($result, 'Congratulations; your calendar validated!') !== false);
+
+        delete_calendar_event($complex_event_id);
+        delete_calendar_event($simple_event_id);
+
+        $num_events_before = $GLOBALS['SITE_DB']->query_select_value('calendar_events', 'COUNT(*)');
+
+        ical_import($temp_path);
+
+        $num_events_after = $GLOBALS['SITE_DB']->query_select_value('calendar_events', 'COUNT(*)');
+        $this->assertTrue($num_events_after > $num_events_before);
+
+        $last_rows_after = $GLOBALS['SITE_DB']->query_select('calendar_events', array('*'), array(), 'ORDER BY id DESC', 2);
+        $this->cleanEventRowsForComparison($last_rows_after);
+
+        $this->assertTrue($last_rows_before == $last_rows_after);
+
+        unlink($temp_path);
+    }
+
+    protected function cleanEventRowsForComparison(&$rows)
+    {
+        foreach ($rows as &$row) {
+            unset($row['id']);
+            unset($row['e_add_date']);
+            $row['e_title'] = get_translated_text($row['e_title']);
+            $row['e_content'] = get_translated_text($row['e_content']);
+        }
+    }
+
+    /*TODO
     public function testMemberCSV()
     {
         $tmp_path = cms_tempnam();
@@ -41,5 +99,5 @@ class tasks_test_set extends cms_test_case
         $this->assertTrue(strpos(cms_file_get_contents_safe($results[1][1]), 'TestingABC') !== false);
 
         $ob_import->run('', false, $results[1][1]);
-    }
+    }*/
 }
