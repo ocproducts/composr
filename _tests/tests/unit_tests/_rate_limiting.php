@@ -16,7 +16,7 @@
 /**
  * Composr test case class (unit testing).
  */
-class rate_limiting_test_set extends cms_test_case
+class _rate_limiting_test_set extends cms_test_case
 {
     public function testRateLimitingWorks()
     {

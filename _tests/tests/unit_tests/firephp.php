@@ -18,7 +18,7 @@
  */
 class firephp_test_set extends cms_test_case
 {
-    function testFirePHP()
+    public function testFirePHP()
     {
         $this->establish_admin_session();
 

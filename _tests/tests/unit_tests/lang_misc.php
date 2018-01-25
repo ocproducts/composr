@@ -24,7 +24,7 @@ class lang_misc_test_set extends cms_test_case
     {
         $dir = get_file_base() . '/lang_custom/EX';
         $path = $dir . '/global.ini';
-        @mkdir($dir);
+        @mkdir($dir, 0777);
         file_put_contents($path, "[strings]\nSETTINGS=Foo");
 
         // Overridden

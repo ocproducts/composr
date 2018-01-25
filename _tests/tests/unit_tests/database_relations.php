@@ -85,7 +85,7 @@ class database_relations_test_set extends cms_test_case
             if ($from !== null) {
                 list($from_table, $from_field) = explode('.', $from, 2);
 
-                if (substr($from_table, 0, 2) =='f_') {
+                if (substr($from_table, 0, 2) == 'f_') {
                     $db = $GLOBALS['FORUM_DB'];
                 } else {
                     $db = $GLOBALS['SITE_DB'];
@@ -97,7 +97,7 @@ class database_relations_test_set extends cms_test_case
             if ($to !== null) {
                 list($to_table, $to_field) = explode('.', $to, 2);
 
-                if (substr($to_table, 0, 2) =='f_') {
+                if (substr($to_table, 0, 2) == 'f_') {
                     $db = $GLOBALS['FORUM_DB'];
                 } else {
                     $db = $GLOBALS['SITE_DB'];

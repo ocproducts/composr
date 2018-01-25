@@ -147,7 +147,7 @@ class specsettings_documented_test_set extends cms_test_case
         foreach ($found as $key) {
             $config .= '$SITE_INFO[\'' . $key . '\'] = \'\';' . "\n";
         }
-        $config .= '?>';
+        $config .= '?' . '>';
         $old_config = file_get_contents(get_file_base() . '/_config.php');
         $config .= $old_config;
         file_put_contents(get_file_base() . '/_config.php', $config);
