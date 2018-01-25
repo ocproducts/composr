@@ -25,6 +25,43 @@ class tasks_test_set extends cms_test_case
         require_code('files');
     }
 
+    public function testNewsletterCSV()
+    {
+        $tmp_path = cms_tempnam();
+
+        cms_file_put_contents_safe($tmp_path, "Email,Name\ntest@example.com,Test");
+
+        require_code('hooks/systems/tasks/import_newsletter_subscribers');
+        $ob_import = new Hook_task_import_newsletter_subscribers();
+        $ob_import->run(fallback_lang(), db_get_first_id(), 1, $tmp_path); // TODO: Remove '1' in v11
+
+        $this->establish_admin_session();
+        $url = build_url(array('page' => 'admin_newsletter', 'type' => 'subscribers', 'id' => db_get_first_id(), 'lang' => fallback_lang(), 'csv' => 1), 'adminzone');
+        $data = http_download_file($url, null, true, false, 'Composr', null, array(get_session_cookie() => get_session_id()));
+        $this->assertTrue(strpos($data, 'test@example.com') !== false);
+
+        file_put_contents($tmp_path, $data);
+        $ob_import->run(fallback_lang(), db_get_first_id(), 1, $tmp_path); // TODO: Remove '1' in v11
+    }
+
+    public function testCatalogueCSV()
+    {
+        $tmp_path = cms_tempnam();
+
+        cms_file_put_contents_safe($tmp_path, "Title,URL,Description\nTestingABC,http://example.com,Test");
+
+        require_code('hooks/systems/tasks/import_catalogue');
+        $ob_import = new Hook_task_import_catalogue();
+        $ob_import->run('links', 'Title', 'add', 'leave', 'skip', '', '', '', 1, 1, 1, $tmp_path);
+
+        require_code('hooks/systems/tasks/export_catalogue');
+        $ob_export = new Hook_task_export_catalogue();
+        $results = $ob_export->run('links');
+        $this->assertTrue(strpos(cms_file_get_contents_safe($results[1][1]), 'TestingABC') !== false);
+
+        $ob_import->run('links', 'Title', 'add', 'leave', 'skip', '', '', '', 1, 1, 1, $results[1][1]);
+    }
+
     public function testCalendarICal()
     {
         require_code('calendar2');
@@ -82,7 +119,6 @@ class tasks_test_set extends cms_test_case
         }
     }
 
-    /*TODO
     public function testMemberCSV()
     {
         $tmp_path = cms_tempnam();
@@ -99,5 +135,5 @@ class tasks_test_set extends cms_test_case
         $this->assertTrue(strpos(cms_file_get_contents_safe($results[1][1]), 'TestingABC') !== false);
 
         $ob_import->run('', false, $results[1][1]);
-    }*/
+    }
 }
