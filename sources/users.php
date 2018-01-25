@@ -472,7 +472,7 @@ function enforce_sessioned_url($url)
  * Find what sessions are expired and delete them, and recover an existing one for $member if there is one.
  *
  * @param  ?MEMBER $member User to get a current session for (null: do not try, which guarantees a return result of null also)
- * @return ?AUTO_LINK The session ID we rebound to (null: did not rebind)
+ * @return ?ID_TEXT The session ID we rebound to (null: did not rebind)
  */
 function delete_expired_sessions_or_recover($member = null)
 {
