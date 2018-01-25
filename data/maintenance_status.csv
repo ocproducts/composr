@@ -10,7 +10,7 @@ forum_phpbb,phpBB forum driver,,,Not regularly tested. Already out-dated. Needs 
 forum_smf,Simple Machine Forum forum driver,,,Not regularly tested. Already out-dated. Needs ongoing maintenance.,No,
 forum_vb,vBulletin forum driver,,,Not regularly tested. Already out-dated. Needs ongoing maintenance.,No,
 forum_wbb,Burning Board forum driver,,,Not regularly tested. Already out-dated. Needs ongoing maintenance.,No,
-msn,Multi-site-networks,,,Not regularly tested. Liable to break due to cross-cutting complexity.,No,Basic. An automated test and run-time driver use detection.
+msn,Multi-site-networks,,,Not regularly tested. Liable to break due to cross-cutting complexity.,No,Basic. msns automated test and run-time driver use detection.
 demonstratr,Shared-installs,ocProducts,,Not regularly tested. Liable to break due to cross-cutting complexity.,No,Manual. Rebuilt when new major releases come out.
 database_ibm,IBM DB2 database driver,,,Not regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No,
 database_oracle,Oracle database driver,,,Not regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No,
@@ -24,11 +24,11 @@ platform_iis,IIS,ocProducts,,Not regularly tested due to needing a testing platf
 platform_litespeed,LiteSpeed,ocProducts,,Not regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No,
 import_cms_merge,"""Composr site merger"" importer",ocProducts,,"Not regularly tested. WebDAV is the preferred merge mechanism, and site merging is not a substitute for upgrading.",No,
 import_html_site,HTML website importer,,,Not regularly tested and has the potential for instability.,No,
-import_ipb2,Invision Board importer,,,"Needs ongoing maintenance, and liable to be ineffective as people need plugin data importing too.",No,
+import_ipb,Invision Board importer,,,"Needs ongoing maintenance, and liable to be ineffective as people need plugin data importing too.",No,
 import_mybb,myBB importer,,,"Needs ongoing maintenance, and liable to be ineffective as people need plugin data importing too.",No,
-import_phpbb3,phpBB importer,,,"Needs ongoing maintenance, and liable to be ineffective as people need plugin data importing too.",No,
-import_smf2,Simple Machine Forum importer,,,"Needs ongoing maintenance, and liable to be ineffective as people need plugin data importing too.",No,
-import_vb3,vBulletin importer,,,"Needs ongoing maintenance, and liable to be ineffective as people need plugin data importing too.",No,
+import_phpbb,phpBB importer,,,"Needs ongoing maintenance, and liable to be ineffective as people need plugin data importing too.",No,
+import_smf,Simple Machine Forum importer,,,"Needs ongoing maintenance, and liable to be ineffective as people need plugin data importing too.",No,
+import_vb,vBulletin importer,,,"Needs ongoing maintenance, and liable to be ineffective as people need plugin data importing too.",No,
 import_wordpress,Wordpress importer,,,"Needs ongoing maintenance, and liable to be ineffective as people need plugin data importing too.",No,
 forum_in_portal,"""Show forum within website"" option",,,Not regularly tested and has the potential for instability.,No,
 sms,SMS notifications,,,Not regularly tested. Could potentially break due to third-party changes.,No,
@@ -67,10 +67,9 @@ install_aps,APS installer,ocProducts,,We maintain builds via an automated proces
 transifex,Transifex integration,ocProducts,ocProducts,Could potentially break due to third-party changes.,Yes,Manual. Part of release process.
 caches_filesystem,Persistent cache via filesystem,ocProducts,,Not regularly tested. Liable to break due to cross-cutting complexity.,No,
 rootkit_detector,Rootkit detector,ocProducts,,Not compatible with all systems. Intended for developers.,No,Partly tested by rootkit_detection automated test.
-failover_mode,Failover Mode,ocProducts,,Not regularly tested.,No,
 youtube,YouTube media,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,
 sitemap_submit,XML Sitemap auto-submit,ocProducts,,Could potentially break due to third-party changes.,No,sitemap_submit automated test.
-external_urls,"Recommended links on staff dashboard, and accuracy of external URLs in general",ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,Broken links automated test.
+external_urls,"Recommended links on staff dashboard, and accuracy of external URLs in general",ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,_broken_links automated test.
 platform_modsecurity,ModSecurity,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,Fake ModSecurity implemented in dev-mode.
 platform_suhosin,Suhosin,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,
 textmate,Textmate integration,ocProducts,,Needs to be separately tested. Needs a testing platform.,No,
@@ -99,10 +98,8 @@ options_dev,Development options in config_editor.php,ocProducts,,Not regularly t
 facebook,Facebook login integration and syndication,ocProducts,ocProducts,Could potentially break due to third-party changes.,Yes,
 tapatalk,Tapatalk,ocProducts,,Could potentially break due to third-party changes.,Yes,
 google_maps,"Google maps (DataMappr, UserMappr)",ocProducts,,Could potentially break due to third-party changes.,Yes,
-firephp,FirePHP logging,ocProducts,,Not regularly tested.,No,
 twitter,Twitter syndication,ocProducts,,Could potentially break due to third-party changes.,Yes,
 webdav,WebDav access for The Repository,ocProducts,,Could potentially break due to third-party changes.,Yes,
-rest,REST API from Composr Mobile SDK,ocProducts,,Not regularly tested.,Yes,Partly tested by rest automated test.
 currency_codes,ISO currencies (internal list),ocProducts,,Could potentially break due to political changes.,No,
 country_codes,ISO countries (internal list),ocProducts,,Could potentially break due to political changes.,No,
 currency,Currency conversion,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,

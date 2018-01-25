@@ -11,7 +11,7 @@ The administration module resides in Admin Zone > Audit > Site statistics.
 
 Be aware that hits coming from the web server itself will be filtered from the stats, so if you are running a web server on your own computer you may not see any results if nobody else has used your website yet.
 
-[title="3"]Installing {$IS_MAINTAINED,geocode_internal,geo-location data}[/title]
+[title="3"]Installing {$IS_MAINTAINED,ip_geocoding,geo-location data}[/title]
 
 [surround]
 [media width="150" description="The message shown when installing geolocation data" float="right"]data_custom/images/docs/tut_statistics/statistics_installing_geolocation_data.png[/media]

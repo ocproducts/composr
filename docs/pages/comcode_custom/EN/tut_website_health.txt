@@ -149,7 +149,7 @@ The Composr ecosystem also has:
 PHP-Info can be reached from:
 Admin Zone > Tools > PHP-Info / Server Checks
 
-[title="2"]{$IS_MAINTAINED,failover_mode,Failover mode}[/title]
+[title="2"]Failover mode[/title]
 
 You may configure a special failover mode via the [tt]config_editor[/tt] script. This mode serves cached versions of page if your server seems to be failing. It is not a perfect system because:
 1) it serves hits as guests

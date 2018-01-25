@@ -116,7 +116,7 @@ $feature_tree = array(
                 array('Targeted advertising', 'Show different banners to different usergroups'),
                 array('Track banner performance'),
                 array('Use the banner system to display whole sets of sponsor logos'),
-                (!is_maintained('geocode_internal')) ? false : array('Geotargetting'),
+                (!is_maintained('ip_geocoding')) ? false : array('Geotargetting'),
             ),
         ),
         'search' => array(
@@ -285,7 +285,7 @@ $feature_tree = array(
                 array('Priority flagging'),
                 array('Programmers can even use the calendar to schedule website cronjobs'),
                 array('<abbr title="Really Simple Syndication">RSS</abbr> and Atom support', 'Export support, but also support for overlaying news feeds onto the calendar'),
-                (!is_maintained('geocode_internal')) ? false : array('Geotargetting'),
+                (!is_maintained('ip_geocoding')) ? false : array('Geotargetting'),
             ),
         ),
         'news' => array(
@@ -300,7 +300,7 @@ $feature_tree = array(
                 array('Multiple news categories, and filtering'),
                 array('Multiple ways to integrate news into your website'),
                 array('Import from RSS feeds <a target="_blank" class="link-exempt no-print" title="(Opens in new window) Example of News" href="http://shareddemo.composr.info/cms/index.php?page=cms_news"><img class="inline-image-3" alt="" src="{$IMG*,help_small}" /></a>'),
-                (!is_maintained('geocode_internal')) ? false : array('Geotargetting'),
+                (!is_maintained('ip_geocoding')) ? false : array('Geotargetting'),
             ),
         ),
         'quizzes' => array(
@@ -327,7 +327,7 @@ $feature_tree = array(
                 array('Automatic thumbnail generation'),
                 array('Mass upload', 'Including metadata support'),
                 array('Optional watermarking', 'To guard against thieving swines ;)'),
-                (!is_maintained('geocode_internal')) ? false : array('Geotargetting'),
+                (!is_maintained('ip_geocoding')) ? false : array('Geotargetting'),
                 array('Adjustments', 'Automatic size and orientation adjustments'),
             ),
         ),

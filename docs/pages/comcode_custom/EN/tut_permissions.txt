@@ -159,7 +159,7 @@ Please note that when using 'SU':
 
 [title="2"]Debugging permission problems[/title]
 
-[title="3"]{$IS_MAINTAINED,firephp,FirePHP}[/title]
+[title="3"]FirePHP[/title]
 
 [media width="150" description="FirePHP in action" float="right"]data_custom/images/docs/tut_permissions/firephp.png[/media]
 Composr has a special feature to help you diagnose problems with your permission settings.
