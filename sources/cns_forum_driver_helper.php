@@ -555,7 +555,7 @@ function _helper_get_emoticon_chooser($this_ref, $field_name)
 
     $do_caching = has_caching_for('block');
 
-    $em = mixed();
+    $em = null;
     if ($do_caching) {
         $cache_identifier = serialize($use_special);
         $em = get_cache_entry('_emoticon_chooser', $cache_identifier, CACHE_AGAINST_NOTHING_SPECIAL, 10000);

@@ -192,7 +192,7 @@ function user_sync__inbound($since = null)
 
                 // Try and find a match
                 $cpfs = cns_get_all_custom_fields_match();
-                $cpf_id = mixed();
+                $cpf_id = null;
                 if (is_numeric($key)) {
                     $cpf_id = intval($key);
                 }
@@ -573,7 +573,7 @@ function user_sync__outbound($member_id)
             $sql .= $db_field_delim . $uf . $db_field_delim;
         }
         $sql .= ') VALUES (';
-        $val = mixed();
+        $val = null;
         foreach (array_values($insert_map) as $i => $_val) {
             if ($i != 0) {
                 $sql .= ',';

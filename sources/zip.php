@@ -98,7 +98,7 @@ function crc32_file($filename)
  */
 function create_zip_file($file_array, $stream = false, $get_offsets = false, $outfile_path = null)
 {
-    $outfile = mixed();
+    $outfile = null;
     if ($outfile_path !== null) {
         $stream = false;
         $outfile = fopen($outfile_path, 'wb');

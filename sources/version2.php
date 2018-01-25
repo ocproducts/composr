@@ -146,9 +146,9 @@ function get_version_dotted__from_anything($any_format)
 function get_version_components__from_dotted($dotted)
 {
     // Now split it up version number
-    $qualifier = mixed();
-    $qualifier_number = mixed();
-    $basis_dotted_number = mixed();
+    $qualifier = null;
+    $qualifier_number = null;
+    $basis_dotted_number = null;
     foreach (array('RC', 'beta', 'alpha') as $type) {
         if (strpos($dotted, '.' . $type) !== false) {
             $qualifier = $type;

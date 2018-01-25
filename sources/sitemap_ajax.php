@@ -293,7 +293,7 @@ function _get_view_access_for_node($admin_groups, $groups, $node)
         $id = '';
     }
 
-    $access = mixed();
+    $access = null;
     switch ($node['content_type']) {
         case 'root':
         case 'zone':
@@ -348,7 +348,7 @@ function _get_privileges_for_node($admin_groups, $groups, $node)
 
     $is_root = (($node['page_link'] == ((get_option('collapse_user_zones') == '0') ? ':' : '')));
 
-    $privilege_access = mixed();
+    $privilege_access = null;
     switch ($node['content_type']) {
         case 'root':
         case 'zone':
@@ -501,7 +501,7 @@ function sitemap_script_saving()
             $type = 'zone';
         }
 
-        $overridable_privileges = mixed();
+        $overridable_privileges = null;
         switch ($type) {
             case '':
             case 'zone':

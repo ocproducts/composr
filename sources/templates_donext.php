@@ -142,7 +142,7 @@ function do_next_manager($title, $text, $main = array(), $main_title = null, $ur
     $entry_passed_2 = array();
     foreach ($entry_passed as $option) {
         $x = null;
-        $auto_add = mixed();
+        $auto_add = null;
         switch ($option) {
             case 'menu/_generic_admin/add_one':
                 $x = $url_add_one;
@@ -198,7 +198,7 @@ function do_next_manager($title, $text, $main = array(), $main_title = null, $ur
     $category_passed_2 = array();
     foreach ($category_passed as $option) {
         $x = null;
-        $auto_add = mixed();
+        $auto_add = null;
         switch ($option) {
             case 'menu/_generic_admin/add_one_category':
                 $x = $url_add_one_category;
@@ -269,7 +269,7 @@ function do_next_manager($title, $text, $main = array(), $main_title = null, $ur
 
     if ($text->evaluate() == do_lang('SUCCESS')) {
         attach_message($text, 'inform');
-        $text = mixed();
+        $text = null;
     }
 
     if ($title === null) {

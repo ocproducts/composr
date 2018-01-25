@@ -245,7 +245,7 @@ function cns_get_all_custom_fields_match_member($member_id, $public_view = null,
     $fields_to_show = cns_get_all_custom_fields_match($GLOBALS['FORUM_DRIVER']->get_members_groups($member_id), $public_view, $owner_view, $owner_set, $required, $show_in_posts, $show_in_post_previews, $special_start, $show_on_join_form);
     $custom_fields = array();
     $member_mappings = cns_get_custom_field_mappings($member_id);
-    $member_value = mixed(); // Initialise type to mixed
+    $member_value = null; // Initialise type to mixed
     $all_cpf_permissions = ((get_member() == $member_id) || $GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) ? /*no restricts if you are the member or a super-admin*/array() : list_to_map('field_id', $GLOBALS['FORUM_DB']->query_select('f_member_cpf_perms', array('*'), array('member_id' => $member_id)));
 
     require_code('fields');
@@ -352,7 +352,7 @@ function cns_get_all_custom_fields_match_member($member_id, $public_view = null,
         if ($display_cpf) {
             $rendered_value = $ob->render_field_value($field_to_show, $member_value, $i, null, 'f_member_custom_fields', $member_id, 'mf_member_id', null, 'field_' . strval($field_to_show['id']), $member_id);
 
-            $editability = mixed(); // If stays as null, not editable
+            $editability = null; // If stays as null, not editable
             if (isset($editable_with_comcode[$field_to_show['cf_type']])) {
                 $editability = true; // Editable: Supports Comcode
             } elseif (isset($editable_without_comcode[$field_to_show['cf_type']])) {
@@ -445,7 +445,7 @@ function cns_get_custom_field_mappings($member_id)
 
         $query = $GLOBALS['FORUM_DB']->query_select('f_member_custom_fields', array('*'), $row, '', 1);
         if (!isset($query[0])) { // Repair
-            $value = mixed();
+            $value = null;
             $row = array();
 
             $all_fields_regardless = $GLOBALS['FORUM_DB']->query_select('f_custom_fields', array('id', 'cf_type', 'cf_required', 'cf_default'));

@@ -149,7 +149,7 @@ $max_rows = $GLOBALS['SITE_DB']->query_value_if_there($query_count);
 
 $issues = array();
 foreach ($_issues as $issue) {
-    $cost = ($issue['hours'] == 0 || ($issue['hours'] === null)) ? mixed() : ($issue['hours'] * $s_credit_value * $credits_per_hour);
+    $cost = ($issue['hours'] == 0 || ($issue['hours'] === null)) ? null : ($issue['hours'] * $s_credit_value * $credits_per_hour);
     $_cost = ($cost === null) ? do_lang('FEATURES_UNKNOWN_lc') : (static_evaluate_tempcode(comcode_to_tempcode('[currency="' . $s_currency . '"]' . float_to_raw_string($cost) . '[/currency]')));
     $money_raised = $issue['money_raised'];
     $_money_raised = static_evaluate_tempcode(comcode_to_tempcode('[currency="' . $s_currency . '"]' . float_to_raw_string($money_raised) . '[/currency]'));

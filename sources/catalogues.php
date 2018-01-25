@@ -96,7 +96,7 @@ function render_catalogue_entry_box($row, $zone = '_SEARCH', $give_context = tru
     $tpl_set = $catalogue_name;
     $display = get_catalogue_entry_map($row, $catalogue, 'SEARCH', $tpl_set, $root, null, null, false, true);
 
-    $breadcrumbs = mixed();
+    $breadcrumbs = null;
     if ($include_breadcrumbs) {
         $_breadcrumbs = catalogue_category_breadcrumbs($row['cc_id'], ($root === null) ? get_param_integer('keep_catalogue_' . $catalogue['c_name'] . '_root', null) : $root, false);
         $breadcrumbs = breadcrumb_segments_to_tempcode($_breadcrumbs);
@@ -150,14 +150,14 @@ function render_catalogue_category_box($row, $zone = '_SEARCH', $give_context = 
     $content = get_translated_tempcode('catalogue_categories', $just_category_row, 'cc_description');
 
     // Breadcrumbs
-    $breadcrumbs = mixed();
+    $breadcrumbs = null;
     if ($include_breadcrumbs) {
         $breadcrumbs = breadcrumb_segments_to_tempcode(catalogue_category_breadcrumbs($row['id'], ($root === null) ? get_param_integer('keep_catalogue_' . $row['c_name'] . '_root', null) : $root, $attach_to_url_filter));
     }
 
     // Image
-    $rep_image = mixed();
-    $_rep_image = mixed();
+    $rep_image = null;
+    $_rep_image = null;
     if ($row['rep_image'] != '') {
         $_rep_image = $row['rep_image'];
         if (url_is_local($_rep_image)) {
@@ -296,7 +296,7 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
         require_code('filtercode');
         $filtercode = parse_filtercode($filter);
     } else {
-        $filtercode = mixed();
+        $filtercode = null;
     }
 
     // How to display
@@ -313,7 +313,7 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
     $fields = get_catalogue_fields($catalogue_name);
 
     // Find $order_by/$direction which are semantically quite different to $order_by_high_level
-    $order_by = mixed();
+    $order_by = null;
     $direction = 'ASC';
     if ($do_sorting) {
         inform_non_canonical_parameter($ordering_param);
@@ -686,7 +686,7 @@ function get_catalogue_entries($catalogue_name, $category_id, $max, $start, $sel
     require_code('fields');
     $fields = get_catalogue_fields($catalogue_name);
 
-    $num_entries = mixed();
+    $num_entries = null;
 
     if ($order_by == 'rating') { // LEGACY
         $order_by = 'average_rating';
@@ -1112,7 +1112,7 @@ function get_catalogue_entry_field_values($catalogue_name, $entry_id, $only_fiel
     }
 
     // Work out an ID filter for what fields to show
-    $only_field_ids = mixed();
+    $only_field_ids = null;
     if (get_value('catalogue_limit_cat_field_load__' . $catalogue_name) === '1') {
         $only_field_ids = array();
         foreach ($fields as $i => $field) {

@@ -418,14 +418,14 @@ class Module_search
 
         $has_fulltext_search = $GLOBALS['SITE_DB']->has_full_text();
 
-        $days = mixed();
+        $days = null;
 
-        $cutoff_from_day = mixed();
-        $cutoff_from_month = mixed();
-        $cutoff_from_year = mixed();
-        $cutoff_to_day = mixed();
-        $cutoff_to_month = mixed();
-        $cutoff_to_year = mixed();
+        $cutoff_from_day = null;
+        $cutoff_from_month = null;
+        $cutoff_from_year = null;
+        $cutoff_to_day = null;
+        $cutoff_to_month = null;
+        $cutoff_to_year = null;
 
         if (get_option('search_with_date_range') == '1') {
             $cutoff_from = post_param_date('cutoff_from', true);

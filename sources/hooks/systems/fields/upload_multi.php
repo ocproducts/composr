@@ -141,7 +141,7 @@ class Hook_fields_upload_multi
      */
     public function get_field_inputter($_cf_name, $_cf_description, $field, $actual_value, $new)
     {
-        $default = ($actual_value == '') ? mixed() : explode("\n", $actual_value);
+        $default = ($actual_value == '') ? null : explode("\n", $actual_value);
         if ($default !== null) {
             foreach ($default as $i => $_actual_value) {
                 if (strpos($_actual_value, '::') !== false) {

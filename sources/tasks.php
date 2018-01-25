@@ -92,7 +92,7 @@ function execute_task_background($task_row)
             $subject = do_lang('TASK_COMPLETED_SUBJECT', $task_row['t_title']);
             $message = do_notification_lang('TASK_COMPLETED_BODY_SIMPLE');
         } else {
-            $content_result = mixed();
+            $content_result = null;
 
             list($mime_type, $content_result) = $result;
 

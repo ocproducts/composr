@@ -451,7 +451,7 @@ class Module_admin_setupwizard
                 $addon_list_override_to_off_by_default = $profile_addons[2];
             }
         } else {
-            $addon_list_on_by_default = mixed();
+            $addon_list_on_by_default = null;
             $addon_list_advanced_on_by_default = array();
         }
 
@@ -1067,7 +1067,7 @@ class Module_admin_setupwizard
 
         if ($installprofile != '') {
             // Run any specific code for the profile
-            $object = mixed();
+            $object = null;
             if ((is_file(get_file_base() . '/sources/hooks/modules/admin_setupwizard_installprofiles/' . $installprofile . '.php')) || (is_file(get_file_base() . '/sources_custom/hooks/modules/admin_setupwizard_installprofiles/' . $installprofile . '.php'))) {
                 require_code('hooks/modules/admin_setupwizard_installprofiles/' . filter_naughty_harsh($installprofile));
                 $object = object_factory('Hook_admin_setupwizard_installprofiles_' . filter_naughty_harsh($installprofile), true);
@@ -1397,7 +1397,7 @@ class Module_admin_setupwizard
             cms_file_put_contents_safe($full_path, $rf, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
         }
 
-        $block_options = mixed();
+        $block_options = null;
         if (($installprofile != '') && ($object !== null)) {
             $block_options = $object->block_options();
         }

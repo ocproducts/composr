@@ -31,7 +31,7 @@ function inline_language_editing($codename, $lang)
     global $LANGS_REQUESTED, $LANGUAGE_STRINGS_CACHE;
 
     // Find loaded file with smallest levenstein distance to current page
-    $best = mixed();
+    $best = null;
     $best_for = null;
     foreach (array_keys($LANGS_REQUESTED) as $possible) {
         $dist = levenshtein(get_page_name(), $possible);

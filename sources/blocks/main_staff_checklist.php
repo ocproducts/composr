@@ -224,7 +224,7 @@ function staff_checklist_time_ago_and_due($seconds_ago, $recur_hours = null)
 {
     if ($recur_hours === null) { // None recurring
         $seconds_to_go = $seconds_ago; // Actually, if only one parameter given, meaning is different
-        $seconds_ago = mixed();
+        $seconds_ago = null;
         if ($seconds_to_go === null) {
             return array(do_lang_tempcode('DUE_NOT'), 1000000);
         }

@@ -68,7 +68,7 @@ function render_attachment($tag, $attributes, $attachment_row, $pass_id, $source
     if (url_is_local($url_safe)) {
         $url_safe = get_custom_base_url() . '/' . $url_safe;
     }
-    $url = mixed();
+    $url = null;
     $is_dat = (substr($url_safe, -4) == '.dat');
     if ($tag == 'attachment' || $is_dat) {
         $url = new Tempcode();

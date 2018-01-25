@@ -153,14 +153,14 @@ class Hook_task_import_rss
             // Now import, whatever this is
             if ($is_news) {
                 // Work out categories
-                $owner_category_id = mixed();
+                $owner_category_id = null;
                 $cat_ids = array();
                 foreach ($cats_to_process as $j => $cat) {
                     if ($cat == 'Uncategorized') {
                         continue; // Skip blank category creation
                     }
 
-                    $cat_id = mixed();
+                    $cat_id = null;
                     foreach ($NEWS_CATS as $_cat => $news_cat) {
                         if (get_translated_text($news_cat['nc_title']) == $cat) {
                             $cat_id = $_cat;
@@ -300,14 +300,14 @@ class Hook_task_import_rss
                 seo_meta_set_for_explicit('comcode_page', $zone . ':' . $file, implode(',', $cats_to_process), '');
 
                 // Track import IDs etc
-                $parent_page = mixed();
+                $parent_page = null;
                 if (isset($item['extra']['HTTP://WORDPRESS.ORG/EXPORT/1.2/:POST_PARENT'])) {
                     $parent_page = intval($item['extra']['HTTP://WORDPRESS.ORG/EXPORT/1.2/:POST_PARENT']);
                     if ($parent_page == 0) {
                         $parent_page = null;
                     }
                 }
-                $page_id = mixed();
+                $page_id = null;
                 if (isset($item['extra']['HTTP://WORDPRESS.ORG/EXPORT/1.2/:POST_ID'])) {
                     $page_id = intval($item['extra']['HTTP://WORDPRESS.ORG/EXPORT/1.2/:POST_ID']);
                 }
@@ -395,7 +395,7 @@ class Hook_task_import_rss
                         require_code('feedback');
                         $forum = (find_overridden_comment_forum('news') === null) ? get_option('comments_forum_name') : find_overridden_comment_forum('news');
 
-                        $comment_parent_id = mixed();
+                        $comment_parent_id = null;
                         if ((get_forum_type() == 'cns') && ($comment_parent !== null) && (isset($comment_mapping[$comment_parent]))) {
                             $comment_parent_id = $comment_mapping[$comment_parent];
                         }
@@ -456,7 +456,7 @@ class Hook_task_import_rss
             require_code('files');
             cms_file_put_contents_safe($item['path'], $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
             if ($item['parent_page'] !== null) {
-                $parent_page = mixed();
+                $parent_page = null;
                 foreach ($imported_pages as $item2) {
                     if ($item2['id'] == $item['parent_page']) {
                         $parent_page = $item2['page'];

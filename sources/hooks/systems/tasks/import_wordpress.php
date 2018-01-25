@@ -54,8 +54,6 @@ class Hook_task_import_wordpress
             $def_grp_id = get_first_default_group();
         }
 
-        $cat_id = array();
-
         $NEWS_CATS = $GLOBALS['SITE_DB']->query_select('news_categories', array('*'), array('nc_owner' => null));
         $NEWS_CATS = list_to_map('id', $NEWS_CATS);
 
@@ -134,7 +132,7 @@ class Hook_task_import_wordpress
                         }
 
                         // Work out categories
-                        $owner_category_id = mixed();
+                        $owner_category_id = null;
                         $cat_ids = array();
                         if (array_key_exists('category', $post)) {
                             $i = 0;
@@ -143,7 +141,7 @@ class Hook_task_import_wordpress
                                     continue;
                                 }    // Skip blank category creation
 
-                                $cat_id = mixed();
+                                $cat_id = null;
                                 foreach ($NEWS_CATS as $id => $existing_cat) {
                                     if (get_translated_text($existing_cat['nc_title']) == $category) {
                                         $cat_id = $id;
@@ -324,7 +322,7 @@ class Hook_task_import_wordpress
                                 require_code('feedback');
                                 $forum = (find_overridden_comment_forum('news') === null) ? get_option('comments_forum_name') : find_overridden_comment_forum('news');
 
-                                $comment_parent_id = mixed();
+                                $comment_parent_id = null;
                                 if ((get_forum_type() == 'cns') && ($comment['comment_parent'] !== null) && (isset($comment_mapping[$comment['comment_parent']]))) {
                                     $comment_parent_id = $comment_mapping[$comment['comment_parent']];
                                 }
@@ -413,7 +411,7 @@ class Hook_task_import_wordpress
             _news_import_grab_images_and_fix_links($download_images == 1, $contents, $imported_news);
             cms_file_put_contents_safe($item['path'], $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
             if ($item['parent_page'] !== null) {
-                $parent_page = mixed();
+                $parent_page = null;
                 foreach ($imported_pages as $item2) {
                     if ($item2['id'] == $item['parent_page']) {
                         $parent_page = $item2['page'];

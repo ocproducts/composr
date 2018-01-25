@@ -209,7 +209,7 @@ function get_web_notifications($max = null, $start = 0)
 
         $_message = get_translated_tempcode('digestives_tin', $row, 'd_message');
 
-        $url = mixed();
+        $url = null;
         switch ($row['d_notification_code']) {
             case 'cns_topic':
                 if (is_numeric($row['d_code_category'])) { // Straight forward topic notification

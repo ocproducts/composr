@@ -861,7 +861,7 @@ class Module_calendar
             foreach ($streams as $stream) {
                 $down = '1';
                 $priority = 'free_time';
-                $entry = mixed();
+                $entry = null;
 
                 if (!array_key_exists($i, $stream)) {
                     $class = 'free_time_hourly';
@@ -1701,7 +1701,7 @@ class Module_calendar
         require_code('users2');
         if ((has_actual_page_access(get_modal_user(), 'calendar')) && (has_category_access(get_modal_user(), 'calendar', strval($event['e_type']))) && ($privacy_ok)) {
             list(, $from) = find_event_start_timestamp($event);
-            $to = mixed();
+            $to = null;
             if (($event['e_end_year'] !== null) && ($event['e_end_month'] !== null) && ($event['e_end_day'] !== null)) {
                 list(, $to) = find_event_end_timestamp($event);
             }

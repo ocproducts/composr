@@ -102,7 +102,6 @@ class Module_admin_customers
         require_code('cns_members_action');
         require_code('cns_members_action2');
         require_code('mantis');
-        $cur_id = null;
         $cur_id = get_credits_profile_field_id('cms_currency');
         if ($cur_id !== null) {
             $GLOBALS['SITE_DB']->query_update('f_custom_fields', array('cf_owner_view' => 1, 'cf_owner_set' => 1), array('id' => $cur_id), '', 1);

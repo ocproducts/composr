@@ -232,7 +232,7 @@ function get_user_currency()
     $return_default = false;
     $safe_currency = 'USD';
     $the_id = intval(get_member());
-    $member_id = is_guest($the_id) ? mixed() : $the_id;
+    $member_id = is_guest($the_id) ? null : $the_id;
     if ($member_id !== null) {
         $cpf_id = get_credits_profile_field_id('cms_currency');
         if ($cpf_id !== null) {

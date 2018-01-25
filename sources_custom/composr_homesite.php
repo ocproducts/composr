@@ -700,8 +700,8 @@ function find_server_load($server)
 function choose_available_server()
 {
     $servers = find_all_servers();
-    $lowest_load = mixed();
-    $lowest_for = mixed();
+    $lowest_load = null;
+    $lowest_for = null;
     foreach ($servers as $server) {
         $server_load = find_server_load($server);
         if ($server_load === null) {

@@ -38,7 +38,7 @@ class Hook_login_provider_external_db
             // Existing Composr user?
             $username_field = get_value('external_db_login__username_field', null, true);
             $email_address_field = get_value('external_db_login__email_address_field', null, true);
-            $member_id = mixed();
+            $member_id = null;
             if (get_option('one_per_email_address') != '0') {
                 $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($record[$email_address_field]);
             }

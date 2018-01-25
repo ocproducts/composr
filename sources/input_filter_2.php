@@ -68,8 +68,8 @@ function rescue_shortened_post_request()
         return;
     }
 
-    $setting_value = mixed();
-    $setting_name = mixed();
+    $setting_value = null;
+    $setting_name = null;
     foreach (array('max_input_vars', 'suhosin.post.max_vars', 'suhosin.request.max_vars') as $setting) {
         if ((@is_numeric(ini_get($setting))) && (intval(ini_get($setting)) > 10)) {
             $this_setting_value = intval(ini_get($setting));

@@ -468,7 +468,7 @@ function restore_output_state($just_tempcode = false, $merge_current = false, $k
 function globalise($middle, $message = null, $type = '', $include_header_and_footer = false, $show_border = false)
 {
     if (!$include_header_and_footer) { // FUDGE
-        $old = mixed();
+        $old = null;
         if (isset($_GET['wide_high'])) {
             $old = $_GET['wide_high'];
         }
@@ -3611,7 +3611,7 @@ function get_login_url()
     }
     $login_url = build_url($url_map, get_module_zone('login'));
 
-    $join_url = mixed();
+    $join_url = null;
     switch (get_forum_type()) {
         case 'cns':
             $join_url = build_url(array('page' => 'join', '_lead_source_description' => $_lead_source_description, 'redirect' => protect_url_parameter($_this_url)), get_module_zone('join'));

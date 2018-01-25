@@ -60,7 +60,7 @@ class Hook_sitemap_root extends Hook_sitemap_base
      */
     public function get_virtual_nodes($page_link, $callback = null, $valid_node_types = null, $child_cutoff = null, $max_recurse_depth = null, $recurse_level = 0, $options = 0, $zone = '_SEARCH', $meta_gather = 0, $return_anyway = false)
     {
-        $nodes = ($callback === null || $return_anyway) ? array() : mixed();
+        $nodes = ($callback === null || $return_anyway) ? array() : null;
 
         $node = $this->get_node(':', $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level, $options, $zone, $meta_gather);
         if (($callback === null || $return_anyway) && ($node !== null)) {

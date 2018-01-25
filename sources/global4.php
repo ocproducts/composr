@@ -498,7 +498,7 @@ function _log_it($type, $a = null, $b = null)
     }
 
     // Add to log
-    $log_id = mixed();
+    $log_id = null;
     global $ADMIN_LOGGING_ON;
     if ($ADMIN_LOGGING_ON) {
         $ip = get_ip_address();

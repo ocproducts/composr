@@ -211,7 +211,7 @@ class Hook_import_html_site
                     } else {
                         $last_pos = strlen($reference_file) - 1;
                     }
-                    $best_av_ratios = mixed();
+                    $best_av_ratios = null;
                     $ratios = array();
                     while ($last_pos !== false) {
                         //@print('!' . (strlen($reference_file) - $last_pos) . ' ' . $lv . ' ' . $ratio . '<br />' . "\n");flush();if (@$dd++ == 180) @exit('fini'); // Useful for debugging
@@ -264,7 +264,7 @@ class Hook_import_html_site
                     $best_by_pos = array_keys($ratios);
                     $best_ratios[] = array($best_by_pos[0], $ratios[$best_by_pos[0]], $reference_file);
                 }
-                $best = mixed();
+                $best = null;
                 $best_pos = null;
                 $best_reference_file = null;
                 foreach ($best_ratios as $bits) {
@@ -591,7 +591,7 @@ class Hook_import_html_site
      */
     public function levenshtein_strip_search($to_strip, $subject, $backwards, $i)
     {
-        $best = mixed();
+        $best = null;
         $best_at = $i;
 
         // Find all tag start/end positions (comparison reference points), loading them into the search list, ordered by position

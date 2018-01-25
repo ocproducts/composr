@@ -44,7 +44,7 @@ class Hook_commandr_command_continue_import
             set_database_index_maintenance(true);
             set_mass_import_mode();
 
-            $where = mixed();
+            $where = null;
             if (array_key_exists(1, $parameters)) {
                 $where = array('imp_session' => $parameters[1]);
             }

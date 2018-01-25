@@ -297,7 +297,7 @@ function render_gallery_box($myrow, $root = 'root', $show_member_stats_if_approp
     }
 
     // Breadcrumbs
-    $breadcrumbs = mixed();
+    $breadcrumbs = null;
     if ($include_breadcrumbs) {
         $breadcrumbs = breadcrumb_segments_to_tempcode(gallery_breadcrumbs($myrow['name'], ($root === null) ? get_param_string('keep_gallery_root', 'root') : $root, $attach_to_url_filter));
     }
@@ -673,7 +673,7 @@ function get_gallery_tree($gallery = 'root', $breadcrumbs = '', $gallery_info = 
         $sub = true;
     }
 
-    $can_submit = mixed();
+    $can_submit = null;
 
     // Children of this category
     $child_breadcrumbs = ($breadcrumbs == '') ? '' : ($breadcrumbs . ' > ');

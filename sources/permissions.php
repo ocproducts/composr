@@ -1081,7 +1081,7 @@ function has_some_edit_comcode_page_permission($scope, $zone = null, $member_id 
         return false;
     }
 
-    $cats = mixed();
+    $cats = null;
     if ($zone !== null) {
         $cats = array('zone_page', $zone);
     }
@@ -1158,7 +1158,7 @@ function has_edit_comcode_page_permission($zone, $page, $owner = null, $member_i
     $is_owner = (($owner == $member_id) && (!is_guest($member_id)));
     $privilege = $is_owner ? 'edit_own_highrange_content' : 'edit_highrange_content';
 
-    $cats = mixed();
+    $cats = null;
     if ($zone !== null) {
         $cats = array('zone_page', $zone);
     }

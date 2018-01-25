@@ -329,7 +329,7 @@ class CMSUserRead
         $custom_fields_list = array();
 
         if (has_privilege(get_member(), 'view_profiles')) {
-            $value = mixed();
+            $value = null;
             require_code('encryption');
             foreach ($member_info['custom_fields'] as $name => $_value) {
                 $value = $_value['RAW'];

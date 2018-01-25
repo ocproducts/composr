@@ -72,7 +72,7 @@ class Hook_sitemap_confluence extends Hook_sitemap_content
      */
     public function get_virtual_nodes($page_link, $callback = null, $valid_node_types = null, $child_cutoff = null, $max_recurse_depth = null, $recurse_level = 0, $options = 0, $zone = '_SEARCH', $meta_gather = 0, $return_anyway = false)
     {
-        $nodes = ($callback === null || $return_anyway) ? array() : mixed();
+        $nodes = ($callback === null || $return_anyway) ? array() : null;
 
         if (($valid_node_types !== null) && (!in_array($this->content_type, $valid_node_types))) {
             return $nodes;
@@ -89,7 +89,7 @@ class Hook_sitemap_confluence extends Hook_sitemap_content
         $mappings = confluence_get_mappings();
 
         foreach ($mappings as $mapping) {
-            if ($mapping['parent_id'] == null) {
+            if ($mapping['parent_id'] === null) {
                 $child_page_link = $zone . ':' . $page . ':' . urlencode($mapping['slug']);
                 $node = $this->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level, $options, $zone, $meta_gather);
                 if (($callback === null || $return_anyway) && ($node !== null)) {

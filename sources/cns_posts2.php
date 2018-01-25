@@ -148,7 +148,7 @@ function render_post_box($row, $use_post_title = false, $give_context = true, $i
     $last_edited_raw = ($row['p_last_edit_time'] === null) ? '' : strval($row['p_last_edit_time']);
 
     // Breadcrumbs
-    $breadcrumbs = mixed();
+    $breadcrumbs = null;
     if ($include_breadcrumbs) {
         $breadcrumbs = breadcrumb_segments_to_tempcode(cns_forum_breadcrumbs($row['p_cache_forum_id'], null, null, false, ($root === null) ? get_param_integer('keep_forum_root', null) : $root));
     }

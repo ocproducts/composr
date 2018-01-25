@@ -86,7 +86,6 @@ function send_validation_request($type, $table, $non_integer_id, $id, $url, $mem
         }
     }
 
-    $title = mixed();
     $title = '';
     if (($good !== null) && (!is_array($good['db_identifier']))) {
         $db = array_key_exists('db', $good) ? $good['db'] : $GLOBALS['SITE_DB'];

@@ -186,7 +186,7 @@ function _get_quoted_substrings($string, $recurse = false)
 function _trim_quoted_substrings($string)
 {
     $found_start = false;
-    $ignore = mixed();
+    $ignore = null;
     $len = strlen($string);
     for ($i = 0; $i < $len; $i++) {
         if (!$found_start && ($string[$i] == '\'')) { // We've found a string

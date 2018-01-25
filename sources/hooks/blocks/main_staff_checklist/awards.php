@@ -51,7 +51,7 @@ class Hook_checklist_awards
             if ($details !== null) {
                 $date = $GLOBALS['SITE_DB']->query_select_value_if_there('award_archive', 'date_and_time', array('a_type_id' => $award['id']), 'ORDER BY date_and_time DESC');
 
-                $seconds_ago = mixed();
+                $seconds_ago = null;
                 $limit_hours = $award['a_update_time_hours'];
                 if ($date !== null) {
                     $seconds_ago = time() - $date;

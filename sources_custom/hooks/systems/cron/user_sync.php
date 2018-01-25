@@ -25,7 +25,7 @@ class Hook_cron_user_sync
     {
         if (get_value('user_sync_enabled') === '1') {
             $_last_time = get_value('last_cron_user_sync', null, true);
-            $last_time = ($_last_time === null) ? mixed() : intval($_last_time);
+            $last_time = ($_last_time === null) ? null : intval($_last_time);
             if ($last_time !== null) {
                 if ((time() - $last_time) < 60 * 60 * 24) {
                     return;

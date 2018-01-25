@@ -150,8 +150,8 @@ class Hook_video_syndication_youtube
         $add_date = strtotime(@strval($p->published[0]));
         $edit_date = isset($p->updated[0]) ? strtotime(@strval($p->updated[0])) : $add_date;
 
-        $allow_rating = mixed();
-        $allow_comments = mixed();
+        $allow_rating = null;
+        $allow_comments = null;
         $validated = true;
         foreach ($p->xpath('//yt:accessControl') as $a) {
             if (@strval($a['action']) == 'rate') {
@@ -164,8 +164,8 @@ class Hook_video_syndication_youtube
                 $validated = (@strval($a['permission']) == 'allowed');
             }
         }
-        $bound_to_local_id = mixed();
-        $category = mixed();
+        $bound_to_local_id = null;
+        $category = null;
 
         $_keywords = $p->xpath('//media:group/media:keywords');
         $keywords = explode(', ', @strval($_keywords[0]));
@@ -436,7 +436,7 @@ class Hook_video_syndication_youtube
 
         $endpoint = 'https://accounts.google.com/o/oauth2';
         $auth_url = $endpoint . '/token';
-        $this->_access_token = refresh_oauth2_token('youtube', $auth_url, $client_id, $client_secret, $refresh_token, $endpoint);
+        $this->_access_token = refresh_oauth2_token('youtube');
 
         return ($this->_access_token !== null);
     }
@@ -465,7 +465,7 @@ class Hook_video_syndication_youtube
             $extra_headers['X-GData-Key'] = 'key=' . $youtube_developer_key;
         }
 
-        $files = mixed();
+        $files = null;
         if ($file_to_upload !== null) {
             require_code('mime_types');
             $mime_type = get_mime_type(get_file_extension($file_to_upload), false);

@@ -100,11 +100,11 @@ function find_member_subscriptions($member_id, $usergroup_subscriptions_only = f
                     continue;
                 }
 
-                $usergroup_subscription_id = mixed();
-                $usergroup_subscription_title = mixed();
-                $usergroup_subscription_description = mixed();
-                $usergroup_id = mixed();
-                $usergroup_name = mixed();
+                $usergroup_subscription_id = null;
+                $usergroup_subscription_title = null;
+                $usergroup_subscription_description = null;
+                $usergroup_id = null;
+                $usergroup_name = null;
 
                 $type_code = $sub['s_type_code'];
                 list(, $product_object) = find_product_details($type_code);

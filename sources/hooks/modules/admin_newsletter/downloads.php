@@ -86,7 +86,7 @@ class Hook_whatsnew_downloads
             $name = get_translated_text($row['name'], null, $lang);
             $description = get_translated_text($row['description'], null, $lang);
             $member_id = (is_guest($row['submitter'])) ? null : strval($row['submitter']);
-            $thumb_url = mixed();
+            $thumb_url = null;
             if (addon_installed('galleries')) {
                 $thumbnail = $GLOBALS['SITE_DB']->query_select_value_if_there('images', 'thumb_url', array('cat' => 'download_' . strval($row['id'])), 'ORDER BY add_date ASC');
                 if ($thumbnail !== null) {
@@ -95,7 +95,7 @@ class Hook_whatsnew_downloads
                             $thumbnail = get_custom_base_url() . '/' . $thumbnail;
                         }
                     } else {
-                        $thumbnail = mixed();
+                        $thumbnail = null;
                     }
                 }
             }

@@ -43,7 +43,7 @@ class Hook_checklist_backup
 
         $date = intval(get_value('last_backup'));
 
-        $seconds_ago = mixed();
+        $seconds_ago = null;
         if ($date != 0) {
             $seconds_ago = time() - $date;
             $status = (intval($seconds_ago) > $limit_hours * 60 * 60) ? 0 : 1;

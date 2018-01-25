@@ -226,7 +226,7 @@ function generate_resource_fs_moniker($resource_type, $resource_id, $label = nul
             return $ret;
         }
     } else {
-        $no_exists_check_for = mixed();
+        $no_exists_check_for = null;
         require_code('global4');
         $guid = ($new_guid === null) ? generate_guid() : $new_guid;
     }
@@ -240,7 +240,7 @@ function generate_resource_fs_moniker($resource_type, $resource_id, $label = nul
     if (is_numeric($moniker)) {
         $moniker .= '_1';
     }
-    $test = mixed();
+    $test = null;
     do {
         if ($no_exists_check_for !== null) {
             if ($moniker == $no_exists_check_for) { // This one is okay, we know it is safe, and no need to change it

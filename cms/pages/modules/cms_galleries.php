@@ -281,7 +281,7 @@ class Module_cms_galleries extends Standard_crud_module
         $condition = 'only_member_galleries_of_id';
         $member_id = get_param_integer('member_id', null);
         if ($member_id === null) {
-            $condition = mixed();
+            $condition = null;
         }
 
         $cat = get_param_string('cat', '');
@@ -814,7 +814,7 @@ class Module_cms_galleries extends Standard_crud_module
         $owner = get_member_id_from_gallery_name($cat);
         if (!array_key_exists(0, $gallery)) {
             if ($tolerate_non_exist) {
-                $limit = mixed();
+                $limit = null;
                 if ((!has_privilege(get_member(), 'no_personal_gallery_limit')) && ($owner == get_member())) {
                     $limit = has_privilege(get_member(), 'high_personal_gallery_limit') ? intval(get_option('max_personal_gallery_images_high')) : intval(get_option('max_personal_gallery_images_low'));
                 }
@@ -1050,7 +1050,7 @@ class Module_cms_galleries extends Standard_crud_module
         $cat = $myrow['cat'];
         $validated = $myrow['validated'];
 
-        $delete_fields = mixed();
+        $delete_fields = null;
         if (get_option('cleanup_files') == '0') {
             if (has_delete_permission('mid', get_member(), $myrow['submitter'], 'cms_galleries', array('galleries', $cat))) {
                 if (has_actual_page_access(get_member(), 'admin_cleanup')) {
@@ -1335,7 +1335,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
         $owner = get_member_id_from_gallery_name($cat);
         if (!array_key_exists(0, $gallery)) {
             if ($tolerate_non_exist) {
-                $limit = mixed();
+                $limit = null;
                 if ((!has_privilege(get_member(), 'no_personal_gallery_limit')) && ($owner == get_member())) {
                     $limit = has_privilege(get_member(), 'high_personal_gallery_limit') ? intval(get_option('max_personal_gallery_videos_high')) : intval(get_option('max_personal_gallery_videos_low'));
                 }
@@ -1401,7 +1401,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
                     $_video_length = null;
                 }
 
-                $filename = mixed();
+                $filename = null;
 
                 // Try get_video_details
                 if (!isset($_video_width)) {
@@ -1669,7 +1669,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
         $cat = $myrow['cat'];
         $validated = $myrow['validated'];
 
-        $delete_fields = mixed();
+        $delete_fields = null;
         if (get_option('cleanup_files') == '0') {
             if (has_delete_permission('mid', get_member(), $myrow['submitter'], 'cms_galleries', array('galleries', $cat))) {
                 if (has_actual_page_access(get_member(), 'admin_cleanup')) {

@@ -179,7 +179,7 @@ class Hook_ecommerce_usergroup
      */
     public function get_needed_fields($type_code, $from_admin = false)
     {
-        $fields = mixed();
+        $fields = null;
 
         if ($from_admin) {
             $fields = new Tempcode();

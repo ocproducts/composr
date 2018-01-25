@@ -43,7 +43,7 @@ function init__form_templates()
     require_code('input_filter');
 
     global $DOING_ALTERNATE_FIELDS_SET;
-    $DOING_ALTERNATE_FIELDS_SET = mixed();
+    $DOING_ALTERNATE_FIELDS_SET = null;
 
     require_css('forms');
 
@@ -268,7 +268,7 @@ function get_attachments($posting_field_name, $true_attachment_ui = true)
             return array(new Tempcode(), new Tempcode());
         }
     } else {
-        $filter = mixed();
+        $filter = null;
     }
     $attach_size_field = form_input_hidden('MAX_FILE_SIZE', strval($max_attach_size));
 
@@ -2179,11 +2179,11 @@ function _form_input_date($name, $required, $null_default, $do_time, $default_ti
 {
     $tabindex = get_form_field_tabindex($tabindex);
 
-    $default_minute = mixed();
-    $default_hour = mixed();
-    $default_month = mixed();
-    $default_day = mixed();
-    $default_year = mixed();
+    $default_minute = null;
+    $default_hour = null;
+    $default_month = null;
+    $default_day = null;
+    $default_year = null;
 
     $required = filter_form_field_required($name, $required);
 
@@ -2234,7 +2234,7 @@ function _form_input_date($name, $required, $null_default, $do_time, $default_ti
         $year_start = $default_year;
     }
 
-    $year_end = mixed();
+    $year_end = null;
     if (($total_years_to_show !== null) && ($year_start !== null)) {
         if ($total_years_to_show >= 0) {
             $year_end = $year_start + $total_years_to_show;

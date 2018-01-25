@@ -106,7 +106,7 @@ class Block_main_google_map
         $data = array();
 
         // Info about our catalogue
-        $catalogue_row = mixed();
+        $catalogue_row = null;
         if ($catalogue_name != '') {
             $catalogue_row = load_catalogue_row($catalogue_name, true);
             if ($catalogue_row === null) {

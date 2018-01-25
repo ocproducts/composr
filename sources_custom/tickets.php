@@ -45,7 +45,7 @@ function get_composr_support_timings($open, $member_id, $ticket_type_name, $last
     if (has_privilege($member_id, 'support_operator')) {
         $d->attach(div(make_string_tempcode('The last reply was by staff.')));
     } else {
-        $timestamp_to_answer_by = mixed();
+        $timestamp_to_answer_by = null;
         switch ($ticket_type_name) {
             // Very rough. Ignores weekends (okay, as means over-delivering) and in-day times
             case 'Back-burner priority':

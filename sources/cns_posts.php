@@ -259,8 +259,8 @@ function cns_may_delete_post_by($post_id, $post_time = null, $resource_owner, $f
  */
 function cns_display_spacer_post($linked_type, $linked_id)
 {
-    $new_description = mixed();
-    $new_post = mixed();
+    $new_description = null;
+    $new_post = null;
 
     require_code('content');
     $linked_type = convert_composr_type_codes('feedback_type_code', $linked_type, 'content_type');

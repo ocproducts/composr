@@ -136,13 +136,9 @@ class Block_main_sortable_table
         $stylings = empty($map['stylings']) ? array() : array_map('trim', explode(',', $map['stylings']));
 
         if (empty($map['transform'])) {
-            $transform = '';
+            $transform = array();
         } else {
-            if (strpos($map['transform'], ',') === false) {
-                $transform = trim($map['transform']);
-            } else {
-                $transform = array_map('trim', explode(',', $map['transform']));
-            }
+            $transform = array_map('trim', explode(',', $map['transform']));
         }
 
         $guid = empty($map['guid']) ? '' : $map['guid'];
@@ -174,7 +170,7 @@ class Block_main_sortable_table
             $i = 0;
             safe_ini_set('auto_detect_line_endings', '1');
             $myfile = fopen($path, 'rt');
-            $full_header_row = mixed();
+            $full_header_row = null;
             while (($row = fgetcsv($myfile, 8192)) !== false) {
                 // Fix any bad unicode
                 if (get_charset() == 'utf-8') {
@@ -235,7 +231,7 @@ class Block_main_sortable_table
                 }
 
                 foreach ($row as $j => $val) {
-                    foreach (is_array($transform) ? $transform : array($transform) as $_transform) {
+                    foreach ($transform as $_transform) {
                         switch ($_transform) {
                             case 'ucwords':
                                 $val = cms_mb_ucwords($val);
@@ -446,7 +442,7 @@ class Block_main_sortable_table
      */
     public function determine_field_type($_rows, $j)
     {
-        $sortable_type = mixed();
+        $sortable_type = null;
         foreach ($_rows as $row) {
             if ($row[$j] != '') {
                 if ((is_numeric($row[$j])) && (strpos($row[$j], '.') === false)) {

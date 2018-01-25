@@ -83,7 +83,7 @@ function give_award($award_id, $content_id, $time = null)
         if ($module == '') {
             $module = $content_id;
         }
-        $category_id = mixed();
+        $category_id = null;
         if (isset($info['category_field'])) {
             if (is_array($info['category_field'])) {
                 $category_id = $content[$info['category_field'][1]];
@@ -160,7 +160,7 @@ function get_award_fields($content_type, $id = null)
                 }
 
                 if (!$has_award) {
-                    $current_content_title = mixed();
+                    $current_content_title = null;
                     if ($test !== null) {
                         require_code('content');
                         list($current_content_title) = content_get_details($_content_type, $test);

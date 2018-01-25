@@ -676,7 +676,7 @@ function _find_member_statistical_notification_type($to_member_id, $notification
         return $cache[$to_member_id];
     }
 
-    $setting = mixed();
+    $setting = null;
 
     $notifications_enabled = $GLOBALS['SITE_DB']->query_select('notifications_enabled', array('l_setting'), array('l_member_id' => $to_member_id, 'l_code_category' => ''), '', 100/*within reason*/);
 

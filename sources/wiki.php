@@ -50,12 +50,12 @@ function render_wiki_post_box($row, $zone = '_SEARCH', $give_context = true, $in
     $url = build_url($map, $zone);
     $url->attach('#post_' . strval($row['id']));
 
-    $breadcrumbs = mixed();
+    $breadcrumbs = null;
     if ($include_breadcrumbs) {
         $breadcrumbs = breadcrumb_segments_to_tempcode(wiki_breadcrumbs(wiki_derive_chain($row['page_id'], $root), null, true));
     }
 
-    $title = mixed();
+    $title = null;
     if ($give_context) {
         $title = do_lang_tempcode('WIKI_POST');
     }
@@ -103,7 +103,7 @@ function render_wiki_page_box($row, $zone = '_SEARCH', $give_context = true, $in
     $_title = escape_html(get_translated_text($row['title']));
     $title = $give_context ? do_lang('CONTENT_IS_OF_TYPE', do_lang('_WIKI_PAGE'), $_title) : $_title;
 
-    $breadcrumbs = mixed();
+    $breadcrumbs = null;
     if ($include_breadcrumbs) {
         $chain = wiki_derive_chain($row['id'], $root);
         $chain = preg_replace('#/[^/]+#', '', $chain);
@@ -730,7 +730,7 @@ function wiki_derive_chain($id, $root = null)
 
         if (!array_key_exists($page_id, $parent_details)) {
             $parent_rows = $GLOBALS['SITE_DB']->query_select('wiki_children', array('parent_id', 'title'), array('child_id' => $page_id), '', 1);
-            $new_page_id = mixed();
+            $new_page_id = null;
             if (!array_key_exists(0, $parent_rows)) {
                 break; // Orphaned, so we can't find a chain
             }

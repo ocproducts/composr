@@ -362,7 +362,7 @@ class Module_topicview
                     list($poster_online, $post_avatar, $rank_images, $poster_details, $poster, $signature) = $poster_details_cache[$_postdetails['poster']][$_postdetails['poster_username']];
                 } else {
                     // User online status
-                    $poster_online = mixed();
+                    $poster_online = null;
                     if ((get_option('is_on_show_online') == '1') && (!is_guest($_postdetails['poster']))) {
                         require_code('users2');
                         $poster_online = $_postdetails['online'];
@@ -508,8 +508,8 @@ class Module_topicview
                 $posts->attach($rendered_post);
             }
 
-            $serialized_options = mixed();
-            $hash = mixed();
+            $serialized_options = null;
+            $hash = null;
         } else { // Threaded
             $posts = $this->posts;
             $serialized_options = $this->serialized_options;
@@ -955,8 +955,8 @@ class Module_topicview
         }
         require_code('users2');
         if ($id === null) {
-            $num_guests = mixed();
-            $num_members = mixed();
+            $num_guests = null;
+            $num_members = null;
             $members_viewing = new Tempcode();
         } else {
             list($num_guests, $num_members, $members_viewing) = get_members_viewing_wrap('topicview', '', strval($id), true); // This does a member_tracking_update to the topic internally

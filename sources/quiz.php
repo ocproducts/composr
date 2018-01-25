@@ -246,11 +246,11 @@ function score_quiz($entry_id, $quiz_id = null, $quiz = null, $questions = null,
             $given_answer = $_given_answers[$question['id']][0];
 
             $correct_answer = new Tempcode();
-            $correct_explanation = mixed();
+            $correct_explanation = null;
             if (count($question['answers']) == 0) {
                 $potential_extra_marks++;
                 $unknowns[] = array($question_text, $given_answer);
-                $was_correct = mixed();
+                $was_correct = null;
             } else {
                 $was_correct = false;
                 foreach ($question['answers'] as $a) {
@@ -450,7 +450,7 @@ function score_quiz($entry_id, $quiz_id = null, $quiz = null, $questions = null,
     }
     // NB: We don't have a list of what was correct because it's not interesting, only corrections/unknowns/everything.
 
-    $passed = mixed();
+    $passed = null;
     if ($minimum_percentage >= $quiz['q_percentage']) {
         $passed = true;
     } elseif ($maximum_percentage < $quiz['q_percentage']) {

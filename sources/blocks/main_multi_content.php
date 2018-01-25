@@ -219,8 +219,8 @@ class Block_main_multi_content
                 $category_type_select = $info['category_type'];
             }
         } else {
-            $category_type_access = mixed();
-            $category_type_select = mixed();
+            $category_type_access = null;
+            $category_type_select = null;
         }
 
         // Actually for categories we check access on category ID
@@ -341,7 +341,7 @@ class Block_main_multi_content
         if (addon_installed('content_privacy')) {
             require_code('content_privacy');
             $as_guest = array_key_exists('as_guest', $map) ? ($map['as_guest'] == '1') : false;
-            $viewing_member_id = $as_guest ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : mixed();
+            $viewing_member_id = $as_guest ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : null;
             list($privacy_join, $privacy_where) = get_privacy_where_clause($content_type, 'r', $viewing_member_id);
             $query .= $privacy_join;
             $where .= $privacy_where;
@@ -678,7 +678,7 @@ class Block_main_multi_content
         }
 
         // Pagination
-        $pagination = mixed();
+        $pagination = null;
         if ($do_pagination) {
             require_code('templates_pagination');
             $pagination = pagination(do_lang_tempcode($info['content_type_label']), $start, $block_id . '_start', $max, $block_id . '_max', $max_rows);

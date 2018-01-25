@@ -746,7 +746,7 @@ class Database_Static_xml extends DatabaseDriver
             $must_contain = array();
 
             foreach ($where_expr_compressed_b as $key => $val) {
-                $new_val = mixed();
+                $new_val = null;
                 if (is_string($val)) {
                     $new_val = $val;
                 } elseif (is_integer($val)) {
@@ -1068,7 +1068,7 @@ class Database_Static_xml extends DatabaseDriver
             global $INT_TYPES;
             $record = array();
             foreach ($_record as $key => $val) {
-                $new_val = mixed();
+                $new_val = null;
                 if ((!array_key_exists($key, $schema)) && (!$include_unused_fields)) {
                     continue; // Been deleted
                 }
@@ -3295,7 +3295,7 @@ class Database_Static_xml extends DatabaseDriver
 
             switch ($s_term[0]) {
                 case 'MAX':
-                    $max = mixed();
+                    $max = null;
                     foreach ($set as $set_item) {
                         $val = $this->_execute_expression($s_term[1], $set_item, $query, $db, $fail_ok);
                         if (($max === null) || ($val > $max)) {
@@ -3306,7 +3306,7 @@ class Database_Static_xml extends DatabaseDriver
                     break;
 
                 case 'MIN':
-                    $min = mixed();
+                    $min = null;
                     foreach ($set as $set_item) {
                         $val = $this->_execute_expression($s_term[1], $set_item, $query, $db, $fail_ok);
                         if (($min === null) || ($val < $min)) {

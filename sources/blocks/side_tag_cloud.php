@@ -73,7 +73,7 @@ class Block_side_tag_cloud
 
         $tags = array();
         $largest_num = 0;
-        $smallest_num = mixed();
+        $smallest_num = null;
 
         $search_limiter = array('all_defaults' => '1');
 

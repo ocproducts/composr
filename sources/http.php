@@ -41,7 +41,7 @@ function init__http()
  */
 function cache_and_carry($func, $args, $timeout = null)
 {
-    $ret = mixed();
+    $ret = null;
 
     $path = get_custom_file_base() . '/caches/http/' . md5(serialize($args)) . '.dat';
     if (is_file($path) && (($timeout === null) || (filemtime($path) > time() - $timeout * 60))) {
@@ -417,8 +417,8 @@ abstract class HttpDownloader
 
         $this->raw_payload = ''; // Note that this will contain HTTP headers (it is appended directly after headers with no \r\n between -- so it contains \r\n\r\n itself when the content body is going to start)
         $this->sent_http_post_content = false;
-        $this->put = mixed();
-        $this->put_path = mixed();
+        $this->put = null;
+        $this->put_path = null;
         $this->put_no_delete = false;
         if (($this->post_params !== null) || ($this->raw_post) || ($this->files != array())) {
             if ($this->post_params === null) {
@@ -1314,7 +1314,7 @@ class HttpDownloaderSockets extends HttpDownloader
             $data_started = false;
             $input = '';
             $input_len = 0;
-            $first_fail_time = mixed();
+            $first_fail_time = null;
             $chunked = false;
             $buffer_unprocessed = '';
             while (($chunked) || (!@feof($mysock))) { // @'d because socket might have died. If so fread will will return false and hence we'll break
@@ -1726,7 +1726,7 @@ class HttpDownloaderFileWrapper extends HttpDownloader
 
             $context = stream_context_create($opts);
 
-            $php_errormsg = mixed();
+            $php_errormsg = null;
             if (($this->byte_limit === null) && ($this->write_to_file === null)) {
                 if ($this->trigger_error) {
                     push_suppress_error_death(true); // Errors will be attached instead. We don't rely on only $php_errormsg because stream errors don't go into that fully.

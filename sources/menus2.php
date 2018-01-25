@@ -467,7 +467,7 @@ function _copy_from_sitemap_to_new_menu($target_menu, $node, &$order, $parent = 
 {
     if (isset($node['children'])) {
         foreach ($node['children'] as $child) {
-            $theme_image_code = mixed();
+            $theme_image_code = null;
             if ($child['extra_meta']['image'] !== null) {
                 $_theme_image_code = $child['extra_meta']['image'];
                 if (substr($_theme_image_code, 0, strlen(get_custom_base_url() . '/')) == get_custom_base_url() . '/') {

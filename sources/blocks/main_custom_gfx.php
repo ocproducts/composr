@@ -130,7 +130,7 @@ class Block_main_custom_gfx
                 $pos_x--;
 
                 if (strpos($text, '&#') === false) {
-                    $previous = mixed();
+                    $previous = null;
                     $nxpos = 0;
                     for ($i = 0; $i < strlen($line); $i++) { // render character by character, for reliability
                         if ($previous !== null) { // check for existing previous character

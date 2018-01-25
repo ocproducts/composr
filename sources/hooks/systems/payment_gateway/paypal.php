@@ -468,7 +468,7 @@ class Hook_payment_gateway_paypal
             require_code('files');
             $pure_post = empty($GLOBALS['PURE_POST']) ? $_POST : $GLOBALS['PURE_POST'];
             $x = 0;
-            $res = mixed();
+            $res = null;
             do { // Try up to 3 times
                 $url = 'https://' . (ecommerce_test_mode() ? 'www.sandbox.paypal.com' : 'www.paypal.com') . '/cgi-bin/webscr';
                 $res = http_get_contents($url, array('trigger_error' => false, 'post_params' => $pure_post + array('cmd' => '_notify-validate')));

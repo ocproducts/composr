@@ -519,7 +519,7 @@ class Module_recommend
                             require_code('type_sanitisation');
 
                             // Find e-mail
-                            $email_field_index = mixed();
+                            $email_field_index = null;
                             foreach ($possible_email_fields as $field) {
                                 foreach ($csv_header_line_fields as $i => $header_field) {
                                     if (strtolower($header_field) == strtolower($field)) {
@@ -540,7 +540,7 @@ class Module_recommend
 
                             if ($success_read) {
                                 // Find name
-                                $name_field_index = mixed();
+                                $name_field_index = null;
                                 foreach ($possible_name_fields as $field) {
                                     foreach ($csv_header_line_fields as $i => $header_field) {
                                         if ((strtolower($header_field) == strtolower($field)) && ($i != $email_field_index)) {

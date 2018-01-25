@@ -656,7 +656,7 @@ function prepare_post_for_tapatalk($post, $return_html = false)
         $has_poll = true;
     }
 
-    $whisper_username = mixed();
+    $whisper_username = null;
     if ($post['p_intended_solely_for'] !== null) {
         $whisper_username = $GLOBALS['FORUM_DRIVER']->get_username($post['p_intended_solely_for']);
     }

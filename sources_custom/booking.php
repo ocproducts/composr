@@ -59,7 +59,7 @@ function booking_price_ajax_script()
  */
 function check_booking_dates_available(&$request, $ignore_bookings)
 {
-    $success = mixed();
+    $success = null;
     foreach ($request as $i => $part) {
         foreach (days_in_range($part['start_day'], $part['start_month'], $part['start_year'], $part['end_day'], $part['end_month'], $part['end_year']) as $_date) {
             list($day, $month, $year) = $_date;
@@ -221,7 +221,7 @@ function add_booking($request, $member_id)
 
         // Now insert into DB. Technically each day gets its own booking
         for ($i = 0; $i < $req['quantity']; $i++) {
-            $code = mixed();
+            $code = null;
 
             foreach ($days as $j => $_date) {
                 list($day, $month, $year) = $_date;

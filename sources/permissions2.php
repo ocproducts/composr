@@ -216,10 +216,10 @@ function get_category_permissions_for_environment($module, $category, $page = nu
         $page = get_page_name();
     }
     if ($category == '-1') {
-        $category = mixed();
+        $category = null;
     }
     if ($category == '') {
-        $category = mixed();
+        $category = null;
     }
 
     $server_id = get_module_zone($page, 'modules', null, 'php', true, false) . ':' . $page; // $category is not of interest to us because we use this to find our inheritance settings

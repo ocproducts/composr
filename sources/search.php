@@ -119,7 +119,7 @@ abstract class FieldsSearchHook
         $table = '';
         $trans_fields = array('!' => '!');
         $nontrans_fields = array();
-        $title_field = mixed();
+        $title_field = null;
         require_code('fields');
         foreach ($fields as $i => $field) {
             $ob = get_fields_hook($field['cf_type']);

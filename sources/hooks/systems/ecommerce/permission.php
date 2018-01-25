@@ -409,7 +409,7 @@ class Hook_ecommerce_permission
      */
     public function get_needed_fields($type_code, $from_admin = false)
     {
-        $fields = mixed();
+        $fields = null;
         ecommerce_attach_memo_field_if_needed($fields);
 
         return array(null, null, null);

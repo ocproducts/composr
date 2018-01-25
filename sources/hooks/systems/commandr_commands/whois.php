@@ -51,9 +51,9 @@ class Hook_commandr_command_whois
             $sort_order = (array_key_exists('o', $options)) ? $options['o'] : 'DESC';
             $sort_order = (array_key_exists('order', $options)) ? $options['order'] : 'DESC';
 
-            $name = mixed();
-            $id = mixed();
-            $ip = mixed();
+            $name = null;
+            $id = null;
+            $ip = null;
             $rows = lookup_member_page($parameters[0], $name, $id, $ip);
             if ($name === null) {
                 $name = do_lang('UNKNOWN');

@@ -399,7 +399,7 @@ function inform_about_addon_install($file, $also_uninstalling = array(), $also_i
         $data = (strtolower(substr($entry['path'], -4, 4)) == '.tpl') ? tar_get_file($tar, $entry['path'], true) : null;
 
         // check valid path
-        $php_errormsg = mixed();
+        $php_errormsg = null;
         @file_exists(get_file_base() . '/' . $entry['path']); //@d due to possible bad file paths
         if ((isset($php_errormsg)) && (strpos($php_errormsg, 'be a valid path') !== false)) {
             warn_exit(do_lang_tempcode('CORRUPT_TAR'));
@@ -891,7 +891,7 @@ function find_updated_addons()
 {
     static $updated_addons = null; // Cache
     if ($updated_addons === null) {
-        $updated_addons = mixed();
+        $updated_addons = null;
     }
     if ($updated_addons !== null) {
         return $updated_addons;
@@ -954,7 +954,7 @@ function find_updated_addons()
 function find_addon_effective_mtime($addon_name)
 {
     $files_rows = array_unique(collapse_1d_complexity('filename', $GLOBALS['SITE_DB']->query_select('addons_files', array('filename'), array('addon_name' => $addon_name))));
-    $mtime = mixed();
+    $mtime = null;
     foreach ($files_rows as $filename) {
         if (@file_exists(get_file_base() . '/' . $filename)) { //@d due to possible bad file paths
             $_mtime = filemtime(get_file_base() . '/' . $filename);

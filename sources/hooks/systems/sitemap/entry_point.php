@@ -107,7 +107,7 @@ class Hook_sitemap_entry_point extends Hook_sitemap_base
         if ($type == '') {
             $type = 'browse';
         }
-        $id = mixed();
+        $id = null;
         if ($matches[5] != '') {
             $_id = substr($matches[5], 1);
             if (strpos($_id, '=') === false) {
@@ -173,7 +173,7 @@ class Hook_sitemap_entry_point extends Hook_sitemap_base
             }
         }
 
-        $icon = mixed();
+        $icon = null;
         $_title = $entry_point[0];
         $icon = $entry_point[1];
         if ($_title === null) {

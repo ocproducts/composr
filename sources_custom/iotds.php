@@ -37,9 +37,9 @@ function render_iotd_box($myrow, $zone = '_SEARCH', $include_manage_links = fals
         $delete_url = build_url(array('page' => 'cms_iotds', 'type' => '_delete'), get_module_zone('cms_iotds'));
         $edit_url = build_url(array('page' => 'cms_iotds', 'type' => '_edit', 'id' => $myrow['id']), get_module_zone('cms_iotds'));
     } else {
-        $choose_url = mixed();
-        $delete_url = mixed();
-        $edit_url = mixed();
+        $choose_url = null;
+        $delete_url = null;
+        $edit_url = null;
     }
 
     $just_iotd_row = db_map_restrict($myrow, array('id', 'i_title', 'caption'));

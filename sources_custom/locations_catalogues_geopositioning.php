@@ -132,8 +132,8 @@ function find_nearest_location($latitude, $longitude, $latitude_field_id = null,
         return find_nearest_location($latitude, $longitude, $latitude_field_id, $longitude_field_id, $error_tolerance * GEO_SEARCH_EXPANSION_FACTOR);
     }
 
-    $best = mixed();
-    $best_at = mixed();
+    $best = null;
+    $best_at = null;
     foreach ($locations as $l) {
         $dist = latlong_distance_miles($l['l_latitude'], $l['l_longitude'], $latitude, $longitude);
 

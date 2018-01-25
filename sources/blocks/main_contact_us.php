@@ -161,7 +161,7 @@ class Block_main_contact_us
             $use_captcha = false;
         }
 
-        $default_post = mixed();
+        $default_post = null;
         $redirect = get_param_string('redirect', '', INPUT_FILTER_GET_COMPLEX);
         if ($redirect != '') {
             $default_post = do_lang('COMMENTS_DEFAULT_POST', $redirect);

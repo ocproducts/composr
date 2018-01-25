@@ -150,7 +150,7 @@ class CMS_Topic
 
             $forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name($forum_name);
 
-            $topic_info = mixed();
+            $topic_info = null;
             if (get_forum_type() == 'cns') {
                 $_topic_info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('*'), array('id' => $topic_id), '', 1);
                 if (array_key_exists(0, $_topic_info)) {
@@ -187,7 +187,6 @@ class CMS_Topic
             if ((get_forum_type() == 'cns') && ($allow_reviews)) {
                 foreach ($this->reviews_rating_criteria as $review_title) {
                     $_rating = $GLOBALS['SITE_DB']->query_select_value('review_supplement', 'AVG(r_rating)', array('r_rating_type' => $review_title, 'r_topic_id' => $topic_id));
-                    $rating = mixed();
                     $rating = ($_rating === null) ? null : @intval(round($_rating));
                     $reviews_rating_criteria[] = array('REVIEW_TITLE' => $review_title, 'REVIEW_RATING' => make_string_tempcode(($rating === null) ? '' : float_format($rating)));
                     if ($rating !== null) {
@@ -277,7 +276,7 @@ class CMS_Topic
 
             $forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name($forum_name);
 
-            $topic_info = mixed();
+            $topic_info = null;
             if (get_forum_type() == 'cns') {
                 $_topic_info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('*'), array('id' => $topic_id), '', 1);
                 if (!array_key_exists(0, $_topic_info)) {
@@ -537,7 +536,7 @@ class CMS_Topic
 
         $ret = $this->_render_post_tree($num_to_show_limit, $tree, $may_reply, $highlight_by_member, $all_individual_review_ratings, $forum_id, $topic_info);
 
-        $other_ids = mixed();
+        $other_ids = null;
         if ($this->is_threaded) {
             $other_ids = array();
             foreach ($tree[1] as $u) {
@@ -551,8 +550,8 @@ class CMS_Topic
             require_code('crypt');
             $hash = ratchet_hash($serialized_options, get_site_salt());
         } else {
-            $serialized_options = mixed();
-            $hash = mixed();
+            $serialized_options = null;
+            $hash = null;
         }
 
         return array($ret, $serialized_options, $hash);
@@ -785,7 +784,7 @@ class CMS_Topic
             $last_edited = new Tempcode();
             $last_edited_raw = '';
             $unvalidated = new Tempcode();
-            $poster = mixed();
+            $poster = null;
             $poster_details = new Tempcode();
             $is_spacer_post = false;
             if (get_forum_type() == 'cns') {
@@ -896,7 +895,7 @@ class CMS_Topic
             }
 
             // Child posts
-            $children = mixed(); // null
+            $children = null; // null
             $other_ids = array();
             if (array_key_exists('children', $post)) {
                 foreach ($post['children'][1] as $u) {

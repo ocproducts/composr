@@ -156,7 +156,7 @@ If you really need to mix types within a single variable, it's recommended that 
  */
 function mixed()
 {
-   return NULL;
+   return null;
 }
 
 Relationship with Composr

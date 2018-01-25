@@ -294,7 +294,7 @@ function parse_aggregate_xml($display_errors = false)
                         $resource_subpath = array_key_exists('subpath', $at_row_attributes) ? $at_row_attributes['subpath'] : '';
                         $resource_label = array_key_exists('label', $at_row_attributes) ? $at_row_attributes['label'] : null;
                         $resource_template_subpath = array_key_exists('template_subpath', $at_row_attributes) ? $at_row_attributes['template_subpath'] : '';
-                        $resource_template_label = array_key_exists('template_label', $at_row_attributes) ? $at_row_attributes['template_label'] : mixed();
+                        $resource_template_label = array_key_exists('template_label', $at_row_attributes) ? $at_row_attributes['template_label'] : null;
                         $resource_properties = array();
                         $resource_access = array();
                         $resource_privilege_presets = array();
@@ -419,7 +419,7 @@ function parse_aggregate_xml($display_errors = false)
  */
 function resync_all_aggregate_type_instances($type = null)
 {
-    $where = mixed();
+    $where = null;
     if ($type !== null) {
         $where['aggregate_type'] = $type;
     }

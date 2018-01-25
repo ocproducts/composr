@@ -143,9 +143,9 @@ class Module_admin_lookup
                 $test[1] = 'DESC';
             }
             list($sortable, $sort_order) = $test;
-            $name = mixed();
-            $id = mixed();
-            $ip = mixed();
+            $name = null;
+            $id = null;
+            $ip = null;
             $rows = lookup_member_page($param, $name, $id, $ip);
             if ($name === null) {
                 $name = do_lang('UNKNOWN');

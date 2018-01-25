@@ -273,8 +273,8 @@ class Hook_import_mybb
             $avatar_max_width = intval($avatar_dimensions[0]);
             $avatar_max_height = intval($avatar_dimensions[1]);
         } else {
-            $avatar_max_width = mixed();
-            $avatar_max_height = mixed();
+            $avatar_max_width = null;
+            $avatar_max_height = null;
         }
 
         $rows = $db->query_select('usergroups', array('*'), array(), 'ORDER BY gid');

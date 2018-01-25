@@ -88,7 +88,7 @@ class CMSPmWrite
             $member_ids[] = $to_member;
         }
 
-        $first_new_post_id = mixed();
+        $first_new_post_id = null;
 
         $message = add_attachments_from_comcode($message, array());
 

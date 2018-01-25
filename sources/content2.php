@@ -194,7 +194,7 @@ function metadata_get_fields($content_type, $content_id, $allow_no_owner = false
         $info = $ob->info();
 
         require_code('content');
-        $content_row = mixed();
+        $content_row = null;
         if ($content_id !== null) {
             list(, , , $content_row) = content_get_details($content_type, $content_id);
         }
@@ -230,7 +230,7 @@ function metadata_get_fields($content_type, $content_id, $allow_no_owner = false
         }
 
         if (($info['support_url_monikers']) && (!in_array('url_moniker', $fields_to_skip))) {
-            $url_moniker = mixed();
+            $url_moniker = null;
             if ($content_id !== null) {
                 if ($content_type == 'comcode_page') {
                     list($zone, $_content_id) = explode(':', $content_id);
@@ -317,7 +317,7 @@ function actual_metadata_get_fields($content_type, $content_id, $fields_to_skip 
     $ob = get_content_object($content_type);
     $info = $ob->info();
 
-    $views = mixed();
+    $views = null;
     $views_field = in_array('views', $fields_to_skip) ? null : $info['views_field'];
     if ($views_field !== null) {
         $views = post_param_integer('meta_views', null);
@@ -330,7 +330,7 @@ function actual_metadata_get_fields($content_type, $content_id, $fields_to_skip 
         }
     }
 
-    $submitter = mixed();
+    $submitter = null;
     $submitter_field = in_array('submitter', $fields_to_skip) ? null : $info['submitter_field'];
     if ($submitter_field !== null) {
         $_submitter = post_param_string('meta_submitter', '');
@@ -354,7 +354,7 @@ function actual_metadata_get_fields($content_type, $content_id, $fields_to_skip 
         }
     }
 
-    $add_time = mixed();
+    $add_time = null;
     $add_time_field = in_array('add_time', $fields_to_skip) ? null : $info['add_time_field'];
     if ($add_time_field !== null) {
         $add_time = post_param_date('meta_add_time');
@@ -369,7 +369,7 @@ function actual_metadata_get_fields($content_type, $content_id, $fields_to_skip 
         }
     }
 
-    $edit_time = mixed();
+    $edit_time = null;
     $edit_time_field = in_array('edit_time', $fields_to_skip) ? null : $info['edit_time_field'];
     if ($edit_time_field !== null) {
         $edit_time = post_param_date('meta_edit_time');
@@ -413,7 +413,7 @@ function set_url_moniker($content_type, $content_id, $fields_to_skip = array(), 
     $ob = get_content_object($content_type);
     $info = $ob->info();
 
-    $url_moniker = mixed();
+    $url_moniker = null;
     if (($info['support_url_monikers']) && (!in_array('url_moniker', $fields_to_skip))) {
         $url_moniker = post_param_string('meta_url_moniker', '');
         if ($url_moniker == '') {
@@ -785,7 +785,7 @@ function _seo_meta_find_data($keyword_sources, $description = '')
 
     $this_word = '';
 
-    $source = mixed();
+    $source = null;
     foreach ($keyword_sources as $source) { // Look in all our sources
         $must_use = false;
         if (is_array($source)) {

@@ -117,7 +117,7 @@ class Hook_sitemap_zone extends Hook_sitemap_base
             $path = get_file_base() . (($zone == '') ? '' : '/') . $zone . '/index.php';
         }
 
-        $icon = mixed();
+        $icon = null;
         switch ($zone) {
             case '':
             case 'site':

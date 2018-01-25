@@ -414,7 +414,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
 
             // Fake a quoted post? (kind of a nice 'tidy up' feature if a forum's threading has been turned off, leaving things for flat display)
             if (($_postdetails['p_parent_id'] !== null) && (strpos($_postdetails['message_comcode'], '[quote') === false)) {
-                $p = mixed(); // null
+                $p = null; // null
                 if (array_key_exists($_postdetails['p_parent_id'], $_postdetailss)) { // Ah, we're already loading it on this page
                     $p = $_postdetailss[$_postdetails['p_parent_id']];
 
@@ -455,7 +455,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
                     require_code('feedback');
                     $ticket_id = extract_topic_identifier($out['description']);
                     $ticket_type_id = $GLOBALS['SITE_DB']->query_select_value_if_there('tickets', 'ticket_type', array('ticket_id' => $ticket_id));
-                    $ticket_type_name = mixed();
+                    $ticket_type_name = null;
                     if ($ticket_type_id !== null) {
                         $ticket_type_name = $GLOBALS['SITE_DB']->query_select_value_if_there('ticket_types', 'ticket_type_name', array('id' => $ticket_id));
                     }

@@ -178,7 +178,7 @@ function generate_whatsnew_comcode($chosen_categories, $in_full, $lang, $cutoff_
     $_hooks = find_all_hook_obs('modules', 'admin_newsletter', 'Hook_whatsnew_');
     foreach ($_hooks as $hook => $object) {
         $found_one_match = false;
-        $last_find_id = mixed();
+        $last_find_id = null;
         $last_cat_id = null;
         $filter = '';
         foreach ($catarr as $find_id => $line) {
@@ -625,7 +625,7 @@ function newsletter_variable_substitution($message, $subject, $forename, $surnam
         }
     }
 
-    $member_id = mixed();
+    $member_id = null;
     if (substr($sendid, 0, 1) == 'm') {
         $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($name);
         $name = $GLOBALS['FORUM_DRIVER']->get_displayname($name);

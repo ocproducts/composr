@@ -304,7 +304,7 @@ function show_memory_points()
     $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
 
     global $MEMORY_PROFILING_POINTS;
-    $before = mixed();
+    $before = null;
     foreach ($MEMORY_PROFILING_POINTS as $point) {
         list($memory, $name) = $point;
         echo 'Memory at ' . $name . ' is' . "\t" . integer_format($memory) . ' (growth of ' . (($before === null) ? 'N/A' : integer_format($memory - $before)) . ')' . "\n";

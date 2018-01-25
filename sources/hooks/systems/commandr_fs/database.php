@@ -43,7 +43,7 @@ class Hook_commandr_fs_database
             foreach ($tables as $table) {
                 $table_name = $table['m_table'];
 
-                $modification_time = mixed();
+                $modification_time = null;
                 if (substr(get_db_type(), 0, 5) == 'mysql') {
                     $_modification_time = $GLOBALS['SITE_DB']->query_value_if_there('SELECT UPDATE_TIME FROM information_schema.tables WHERE TABLE_SCHEMA=\'' . db_escape_string(get_db_site()) . '\' AND TABLE_NAME=\'' . db_escape_string(get_table_prefix() . $table_name) . '\'', false, true);
                     $modification_time = strtotime($_modification_time);

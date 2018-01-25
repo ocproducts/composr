@@ -192,7 +192,7 @@ class Mail_dispatcher_php extends Mail_dispatcher_base
                 $signed_headers = str_replace("\r\n", $this->line_term, $signature->get_signed_headers($to_line, $subject_wrapped, str_replace($this->line_term, "\r\n", $sending_message), str_replace($this->line_term, "\r\n", $headers)));
             }
 
-            $php_errormsg = mixed();
+            $php_errormsg = null;
             $_worked = mail($to_line, $subject_wrapped, $sending_message, $signed_headers . $headers, $additional);
             if ((!$worked) && (isset($php_errormsg))) {
                 $error = $php_errormsg;
@@ -1191,7 +1191,7 @@ abstract class Mail_dispatcher_base
 
             $file_contents = @file_get_contents($file_path_stub);
         } else {
-            $file_contents = mixed();
+            $file_contents = null;
             $matches = array();
             require_code('attachments');
             if ((preg_match('#^' . preg_quote(find_script('attachment'), '#') . '\?id=(\d+)&amp;thumb=(0|1)#', $img, $matches) != 0) && (strpos($img, 'forum_db=1') === false)) {

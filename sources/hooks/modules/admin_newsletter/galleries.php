@@ -114,7 +114,7 @@ class Hook_whatsnew_galleries
                     $thumbnail = get_custom_base_url() . '/' . $thumbnail;
                 }
             } else {
-                $thumbnail = mixed();
+                $thumbnail = null;
             }
             $new->attach(do_template('NEWSLETTER_WHATSNEW_RESOURCE_FCOMCODE', array('_GUID' => 'dfe5850aa67c0cd00ff7d465248b87a5', 'MEMBER_ID' => $member_id, 'URL' => $url, 'NAME' => $name, 'DESCRIPTION' => $description, 'THUMBNAIL' => $thumbnail, 'CONTENT_TYPE' => 'video', 'CONTENT_ID' => strval($id)), null, false, null, '.txt', 'text'));
 

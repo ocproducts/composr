@@ -945,7 +945,7 @@ class Hook_import_phpbb3
 
         $matches = array();
         $count = preg_match_all('#\[attachment=(\d+)(:.*)?\].*\[\/attachment(:.*)?\]#Us', $post, $matches);
-        $to = mixed();
+        $to = null;
         for ($i = 0; $i < $count; $i++) {
             if ($post_id !== null) {
                 $from = $matches[1][$i];

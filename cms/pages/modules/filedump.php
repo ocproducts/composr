@@ -418,8 +418,8 @@ class Module_filedump
 
                 $choosable = (($db_row !== null) && ($db_row['the_member'] == get_member())) || (has_privilege(get_member(), 'delete_anything_filedump'));
 
-                $width = mixed();
-                $height = mixed();
+                $width = null;
+                $height = null;
                 if (is_image($_full, IMAGE_CRITERIA_WEBSAFE, true)) {
                     $dims = cms_getimagesize($_full);
                     if ($dims !== false) {
@@ -444,7 +444,7 @@ class Module_filedump
 
                     $image_url = find_theme_image('icons/48x48/menu/_generic_admin/view_this_category');
 
-                    $embed_url = mixed();
+                    $embed_url = null;
                 } else { // File
                     $url = get_custom_base_url() . '/uploads/filedump' . str_replace('%2F', '/', rawurlencode($_place . $filename));
 
@@ -794,8 +794,8 @@ class Module_filedump
         $url = get_custom_base_url() . '/uploads/filedump' . str_replace('%2F', '/', rawurlencode($place . $file));
         $path = get_custom_file_base() . '/uploads/filedump' . $place . $file;
 
-        $generated = mixed();
-        $rendered = mixed();
+        $generated = null;
+        $rendered = null;
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $generated = '[media';
             $param = post_param_string('description', '');
@@ -929,7 +929,7 @@ class Module_filedump
             'TARGET' => '_self',
         ));
 
-        $image_sizes = mixed();
+        $image_sizes = null;
         if (is_image($file, IMAGE_CRITERIA_GD_READ | IMAGE_CRITERIA_WEBSAFE, true)) {
             $size = cms_getimagesize($path);
             if ($size !== false) {

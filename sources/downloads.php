@@ -251,7 +251,7 @@ function render_download_category_box($row, $zone = '_SEARCH', $give_context = t
     $_title = get_translated_text($row['category']);
     $title = $give_context ? do_lang('CONTENT_IS_OF_TYPE', do_lang('DOWNLOAD_CATEGORY'), $_title) : $_title;
 
-    $breadcrumbs = mixed();
+    $breadcrumbs = null;
     if ($include_breadcrumbs) {
         $breadcrumbs = breadcrumb_segments_to_tempcode(download_breadcrumbs($row['parent_id'], ($root === null) ? get_param_integer('keep_download_root', null) : $root, false, $zone, $attach_to_url_filter));
     }
@@ -267,8 +267,8 @@ function render_download_category_box($row, $zone = '_SEARCH', $give_context = t
 
     // Image
     $img = $row['rep_image'];
-    $rep_image = mixed();
-    $_rep_image = mixed();
+    $rep_image = null;
+    $_rep_image = null;
     if ($img != '') {
         require_code('images');
         $_rep_image = $img;

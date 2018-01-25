@@ -124,7 +124,6 @@ class Block_main_gallery_embed
 
         // Day filtering
         $_days = array_key_exists('days', $map) ? $map['days'] : '';
-        $days = mixed();
         $days = ($_days == '') ? null : intval($_days);
         if ($days !== null) {
             $where_sup .= ' AND add_date>=' . strval(time() - $days * 60 * 60 * 24);
@@ -169,7 +168,7 @@ class Block_main_gallery_embed
         if (addon_installed('content_privacy')) {
             require_code('content_privacy');
             $as_guest = array_key_exists('as_guest', $map) ? ($map['as_guest'] == '1') : false;
-            $viewing_member_id = $as_guest ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : mixed();
+            $viewing_member_id = $as_guest ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : null;
             list($privacy_join_image, $privacy_where_image) = get_privacy_where_clause('image', 'r', $viewing_member_id);
             list($privacy_join_video, $privacy_where_video) = get_privacy_where_clause('video', 'r', $viewing_member_id);
             $extra_join_image .= $privacy_join_image;
@@ -351,7 +350,7 @@ class Block_main_gallery_embed
         if ($entries->is_empty_shell()) {
             if ((!isset($map['render_if_empty'])) || ($map['render_if_empty'] == '0')) {
                 $submit_url = new Tempcode();
-                $add_name = mixed();
+                $add_name = null;
                 if ((has_actual_page_access(null, 'cms_galleries', null, null)) && (has_submit_permission('mid', get_member(), get_ip_address(), 'cms_galleries', array('galleries', $cat_raw))) && (can_submit_to_gallery($cat_raw))) {
                     if ($GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'accept_images', array('name' => $cat_raw)) !== null) {
                         $submit_url = build_url(array('page' => 'cms_galleries', 'type' => 'add', 'cat' => $cat_raw, 'redirect' => protect_url_parameter(SELF_REDIRECT_RIP)), get_module_zone('cms_galleries'));

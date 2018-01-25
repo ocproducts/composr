@@ -212,7 +212,7 @@ function _form_to_email($extra_boring_fields = array(), $subject = null, $subjec
 
     // Find to details if enabled...
 
-    $to_name = mixed();
+    $to_name = null;
     if (($to_email === null) && (get_value('allow_member_mail_relay') !== null)) {
         $to = post_param_integer('to_members_email', null);
         if ($to !== null) {

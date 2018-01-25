@@ -600,10 +600,10 @@ function recalculate_bounding_long_lat($category)
         $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => '_catalogue_category'), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
     }
 
-    $min_latitude = mixed();
-    $max_latitude = mixed();
-    $min_longitude = mixed();
-    $max_longitude = mixed();
+    $min_latitude = null;
+    $max_latitude = null;
+    $min_longitude = null;
+    $max_longitude = null;
 
     $subcategories = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id'), array('cc_parent_id' => $category));
     require_code('fields');

@@ -88,7 +88,7 @@ class Hook_commandr_command_db_table_sizes
                         if ($num_rows > 0) {
                             $row = $db->query_select($p, array('*'), array(), '', 1, mt_rand(0, $num_rows - 1));
                             $out .= '<table class="results-table"><tbody>';
-                            $val = mixed();
+                            $val = null;
                             foreach ($row[0] as $key => $val) {
                                 if (!is_string($val)) {
                                     $val = strval($val);

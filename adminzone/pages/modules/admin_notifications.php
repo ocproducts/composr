@@ -116,7 +116,7 @@ class Module_admin_notifications
 
         $lockdown = collapse_2d_complexity('l_notification_code', 'l_setting', $GLOBALS['SITE_DB']->query_select('notification_lockdown', array('*')));
 
-        $current_setting = mixed();
+        $current_setting = null;
 
         $notification_sections = array();
         $hooks = find_all_hook_obs('systems', 'notifications', 'Hook_notification_');

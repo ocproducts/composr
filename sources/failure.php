@@ -538,9 +538,9 @@ function _generic_exit($text, $template, $support_match_key_messages = false, $l
             $trace = new Tempcode();
         }
     } else {
-        $webservice_result = mixed();
-        $may_see_trace = mixed();
-        $trace = mixed();
+        $webservice_result = null;
+        $may_see_trace = null;
+        $trace = null;
     }
 
     $middle = do_template($template, array(

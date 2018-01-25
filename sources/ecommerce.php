@@ -246,9 +246,9 @@ function get_needed_fields($type_code, $force_extended = false)
 {
     list($details, $product_object) = find_product_details($type_code);
 
-    $fields = mixed();
-    $text = mixed();
-    $js_function_calls = mixed();
+    $fields = null;
+    $text = null;
+    $js_function_calls = null;
 
     if (method_exists($product_object, 'get_needed_fields')) {
         list($fields, $text, $js_function_calls) = $product_object->get_needed_fields($type_code);
@@ -677,7 +677,7 @@ function find_product_details($search)
             $hook_products_cache[$hook] = $_products;
         }
 
-        $type_code = mixed();
+        $type_code = null;
         foreach ($_products as $type_code => $details) {
             if (is_integer($type_code)) {
                 $type_code = strval($type_code);

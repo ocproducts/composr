@@ -140,9 +140,9 @@ function check_rbls($page_level = false, $user_ip = null)
     }
 
     // Handle the return data for the different RBLs
-    $is_blocked = mixed();
-    $blocked_by = mixed();
-    $confidence_level = mixed();
+    $is_blocked = null;
+    $blocked_by = null;
+    $confidence_level = null;
     $rbl_list = explode(',', get_option('spam_block_lists'));
     foreach ($rbl_list as $rbl) {
         list($_is_potential_blocked, $_confidence_level) = check_rbl($rbl, $user_ip, $confidence_level !== null, $page_level);
@@ -455,7 +455,7 @@ function _check_stopforumspam($user_ip, $username = null, $email = null)
 {
     // http://www.stopforumspam.com/usage
 
-    $confidence_level = mixed();
+    $confidence_level = null;
     $status = ANTISPAM_RESPONSE_UNLISTED;
 
     if (strpos($user_ip, ':') !== false) { // No ipv6 support

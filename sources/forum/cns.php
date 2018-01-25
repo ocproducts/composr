@@ -66,7 +66,7 @@ class Forum_driver_cns extends Forum_driver_base
          * @global object $CNS_DRIVER
          */
         global $CNS_DRIVER;
-        $CNS_DRIVER = mixed();
+        $CNS_DRIVER = null;
         $GLOBALS['CNS_DRIVER'] = &$this; // Done like this to workaround that PHP can't put a reference in a global'd variable
 
         if ((addon_installed('ldap')) && (function_exists('ldap_connect')) && (get_option('ldap_is_enabled', true) == '1')) {
@@ -703,7 +703,7 @@ class Forum_driver_cns extends Forum_driver_base
             $result = intval($forum_name);
         } else {
             $_result = $this->db->query_select('f_forums', array('id', 'f_is_threaded'), array('f_name' => $forum_name), '', 1);
-            $result = mixed();
+            $result = null;
             if (array_key_exists(0, $_result)) {
                 $result = $_result[0]['id'];
             }
@@ -1455,7 +1455,7 @@ class Forum_driver_cns extends Forum_driver_base
         }
         $query = 'SELECT ' . $select . ' FROM ' . $this->db->get_table_prefix() . 'f_groups g' . $where . $sup;
         static $rows_cache = array();
-        $rows = mixed();
+        $rows = null;
         if (!$too_many) {
             $rows = persistent_cache_get('GROUPS' . ($only_permissive ? '_PO' : ''));
         }

@@ -283,7 +283,7 @@ function get_rating_simple_array($content_url, $content_title, $content_type, $c
             return $rating_details_cache[$content_type][$content_id][$form_tpl];
         }
 
-        $liked_by = mixed();
+        $liked_by = null;
 
         // Work out structure first
         global $RATINGS_STRUCTURE;
@@ -525,7 +525,7 @@ function actualise_specific_rating($rating, $page_name, $member_id, $content_typ
         return;
     }
     $already_rated = already_rated(array($rating_for_type), $content_id);
-    $past_rating = mixed();
+    $past_rating = null;
     if ($rating !== null) {
         if ($already_rated) {
             $past_rating = $GLOBALS['SITE_DB']->query_select_value_if_there('rating', 'rating', array('rating_for_type' => $rating_for_type, 'rating_for_id' => $content_id, 'rating_member' => $member_id, 'rating_ip' => get_ip_address()));

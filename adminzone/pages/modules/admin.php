@@ -293,7 +293,7 @@ class Module_admin
         }
         send_http_output_ping();
 
-        $n = mixed();
+        $n = null;
 
         $default_theme = $GLOBALS['FORUM_DRIVER']->get_theme('');
 

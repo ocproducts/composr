@@ -63,9 +63,9 @@ class Hook_preview_iotd
         $url = url_is_local($url) ? (get_custom_base_url() . '/' . $url) : $url;
         $thumb = do_image_thumb($thumb_url, '');
 
-        $choose_url = mixed();
-        $delete_url = mixed();
-        $edit_url = mixed();
+        $choose_url = null;
+        $delete_url = null;
+        $edit_url = null;
 
         $title = comcode_to_tempcode(post_param_string('title', ''));
         $caption = comcode_to_tempcode(post_param_string('caption', ''));
@@ -74,7 +74,7 @@ class Hook_preview_iotd
         $submitter = get_member();
         $username = $GLOBALS['FORUM_DRIVER']->get_username($submitter);
 
-        $view_url = mixed();
+        $view_url = null;
 
         $preview = do_template('IOTD_BOX', array(
             '_GUID' => 'a6479902d2cd7b4119be7159147e0a0b',

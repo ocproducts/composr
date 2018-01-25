@@ -253,7 +253,7 @@ class Hook_addon_registry_core_primary_layout
      */
     public function tpl_preview__screen_title()
     {
-        $awards = mixed();
+        $awards = null;
         if (addon_installed('awards')) {
             require_lang('awards');
             $awards = array(

@@ -885,7 +885,7 @@ function load_user_stuff()
          *
          * @global object $FORUM_DB
          */
-        $FORUM_DB = mixed();
+        $FORUM_DB = null;
         $GLOBALS['FORUM_DB'] = &$FORUM_DRIVER->db; // Done like this to workaround that PHP can't put a reference in a global'd variable
     }
 }

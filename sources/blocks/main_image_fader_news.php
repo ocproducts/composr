@@ -109,7 +109,7 @@ class Block_main_image_fader_news
         if (addon_installed('content_privacy')) {
             require_code('content_privacy');
             $as_guest = array_key_exists('as_guest', $map) ? ($map['as_guest'] == '1') : false;
-            $viewing_member_id = $as_guest ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : mixed();
+            $viewing_member_id = $as_guest ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : null;
             list($privacy_join, $privacy_where) = get_privacy_where_clause('news', 'r', $viewing_member_id);
             $join .= $privacy_join;
             $q_filter .= $privacy_where;
@@ -180,7 +180,7 @@ class Block_main_image_fader_news
         }
 
         if (count($news) == 0) {
-            $submit_url = mixed();
+            $submit_url = null;
             if ((has_actual_page_access(null, ($blogs === 1) ? 'cms_blogs' : 'cms_news', null, null)) && (has_submit_permission('mid', get_member(), get_ip_address(), ($blogs === 1) ? 'cms_blogs' : 'cms_news', array('news', $cat)))) {
                 $submit_url = build_url(array('page' => ($blogs === 1) ? 'cms_blogs' : 'cms_news', 'type' => 'add', 'cat' => $cat, 'redirect' => protect_url_parameter(SELF_REDIRECT_RIP)), get_module_zone(($blogs === 1) ? 'cms_blogs' : 'cms_news'));
             }

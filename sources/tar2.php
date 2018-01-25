@@ -64,7 +64,7 @@ function convert_zip_to_tar($in_path, $out_path = null)
 
         $temp_path = cms_tempnam();
         $temp_file = @fopen($temp_path, 'wb') or intelligent_write_error($temp_path);
-        $more = mixed();
+        $more = null;
         do {
             $more = zip_entry_read($entry);
             if (fwrite($temp_file, $more) < strlen($more)) {

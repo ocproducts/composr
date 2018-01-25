@@ -964,7 +964,7 @@ class Module_admin_newsletter extends Standard_crud_module
         // language strings.
         $periodic_action_raw = post_param_string('periodic_choice', '');
         $periodic_subject = '';
-        $defaults = mixed();
+        $defaults = null;
         switch (preg_replace('#_\d+$#', '', $periodic_action_raw)) {
             case 'remove_existing':
                 // Remove whatever is already set. We don't need any changes for
@@ -1102,7 +1102,7 @@ class Module_admin_newsletter extends Standard_crud_module
 
         // Where to send to
         $csv_data = post_param_string('csv_data', null);
-        $send_to_help = mixed();
+        $send_to_help = null;
         if ($csv_data === null) { // Maybe discern it from passed parameters from search module
             $_csv_data = array();
             $_csv_data[] = array(do_lang('EMAIL_ADDRESS'), do_lang('NAME'), do_lang('NEWSLETTER_SEND_ID'));

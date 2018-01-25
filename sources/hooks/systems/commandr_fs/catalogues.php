@@ -237,7 +237,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
         if (strpos($path, '/') === false) {
             list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path, 'catalogue');
 
-            $parent_id = mixed();
+            $parent_id = null;
             $catalogue_name = $category;
         } else {
             list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path, 'catalogue_category');
@@ -315,11 +315,11 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
 
                     $_field_title = $field_data['field_title'];
                     $_description = $field_data['description'];
-                    $field_title = mixed();
+                    $field_title = null;
                     foreach ($_field_title as $lang => $val) {
                         $field_title = insert_lang('cf_name', $val, 2, null, false, $field_title, $lang);
                     }
-                    $description = mixed();
+                    $description = null;
                     foreach ($_description as $lang => $val) {
                         $description = insert_lang('cf_description', $val, 2, null, false, $description, $lang);
                     }

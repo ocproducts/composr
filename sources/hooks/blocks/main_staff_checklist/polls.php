@@ -44,7 +44,7 @@ class Hook_checklist_polls
 
         $limit_hours = intval(get_option('poll_update_time'));
 
-        $seconds_ago = mixed();
+        $seconds_ago = null;
         if ($date !== null) {
             $status = ($seconds_ago > $limit_hours * 60 * 60) ? 0 : 1;
         } else {

@@ -44,7 +44,7 @@ class Hook_startup_composr_homesite__for_outdated_version
         if (get_page_name() == 'downloads') {
             $type = get_param_string('type', 'browse');
             $id = get_param_integer('id', db_get_first_id());
-            $cat_id = mixed();
+            $cat_id = null;
             if ($type == 'browse') {
                 $cat_id = $id;
             }
@@ -56,7 +56,7 @@ class Hook_startup_composr_homesite__for_outdated_version
 
                 $in_bad_cat = false;
                 $latest_number = get_latest_version_basis_number();
-                $addons_viewed_for_number = mixed();
+                $addons_viewed_for_number = null;
 
                 while ($cat_id !== null && $latest_number !== null) {
                     $cat_details = $GLOBALS['SITE_DB']->query_select('download_categories', array('category', 'parent_id'), array('id' => $cat_id), '', 1);
@@ -74,8 +74,8 @@ class Hook_startup_composr_homesite__for_outdated_version
 
                         if ((preg_match('#^Version ([\d\.]+)$#', $cat, $matches) != 0) && (get_translated_text($GLOBALS['SITE_DB']->query_select_value('download_categories', 'category', array('id' => $cat_detail['parent_id']))) == 'Addons')) {
                             $addons_viewed_for_dotted = get_version_dotted__from_anything($matches[1]);
-                            list($_addons_viewed_for_number) = get_version_components__from_dotted($addons_viewed_for_dotted);
-                            $addons_viewed_for_number = floatval($_addons_viewed_for_number);
+                            list(, , , , $_addons_viewed_for_number) = get_version_components__from_dotted($addons_viewed_for_dotted);
+                            $addons_viewed_for_number = intval($_addons_viewed_for_number);
                             if ($latest_number > $addons_viewed_for_number) {
                                 $in_bad_cat = true;
                                 break;

@@ -66,7 +66,7 @@ $STATIC_EXPORT_WARNINGS = array();
 if (get_forum_type() != 'none') {
     $STATIC_EXPORT_WARNINGS[] = 'Not on \'none\' forum driver, you may possibly still have some bundled login links etc to remove';
 }
-$tar_path = mixed();
+$tar_path = null;
 if (get_param_integer('dir', 0) == 0) {
     $tar_path = null;
 } else {

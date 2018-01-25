@@ -789,7 +789,7 @@ class Module_admin_addons
 
         $file = filter_naughty(post_param_string('file'));
 
-        $theme = mixed();
+        $theme = null;
 
         $files = array();
         foreach (array_keys($_POST) as $key) {

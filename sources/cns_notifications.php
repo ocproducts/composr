@@ -171,7 +171,7 @@ function generate_notifications($member_id)
 
     $do_caching = has_caching_for('block');
 
-    $notifications = mixed();
+    $notifications = null;
     if ($do_caching) {
         $cache_identifier = serialize(array());
         $_notifications = get_cache_entry('_new_pp', $cache_identifier, CACHE_AGAINST_MEMBER, 10000);

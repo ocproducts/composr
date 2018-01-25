@@ -1110,7 +1110,7 @@ function do_block($codename, $map = array(), $ttl = null)
 
     $DO_NOT_CACHE_THIS = ($map['cache'] === '0');
 
-    $object = mixed();
+    $object = null;
     if (has_caching_for('block')) {
         // See if the block may be cached (else cannot, or is yet unknown)
         if ($map['cache'] === '0') {

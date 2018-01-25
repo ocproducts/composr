@@ -714,7 +714,7 @@ function _build_url($vars, $zone_name = '', $skip = array(), $keep_all = false, 
  */
 function _handle_array_var_append($key, $val, &$vars)
 {
-    $val2 = mixed();
+    $val2 = null;
 
     foreach ($val as $key2 => $val2) {
         if (!is_string($key2)) {

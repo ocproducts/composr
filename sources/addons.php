@@ -115,7 +115,7 @@ function read_addon_info($addon, $get_dependencies_on_this = false, $row = null,
         if ($_hook_bits[9] !== null) {
             $default_icon = is_array($_hook_bits[9]) ? call_user_func_array($_hook_bits[9][0], $_hook_bits[9][1]) : @eval($_hook_bits[9]);
         } else {
-            $default_icon = mixed();
+            $default_icon = null;
         }
 
         $addon_info = array(

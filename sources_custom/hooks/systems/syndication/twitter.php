@@ -131,7 +131,7 @@ class Hook_syndication_twitter
         // Shorten message for Twitter purposes
         $chopped_message = strip_html($message->evaluate());
         $max_length = 255;
-        $shortened_link = mixed();
+        $shortened_link = null;
         if ($link != '') {
             $shortened_link = http_get_contents('http://is.gd/api.php?longurl=' . urlencode($link));
             $max_length -= strlen($shortened_link) + 1;

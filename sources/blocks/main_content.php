@@ -152,8 +152,8 @@ class Block_main_content
                     $category_type_select = $info['category_type'];
                 }
             } else {
-                $category_type_access = mixed();
-                $category_type_select = mixed();
+                $category_type_access = null;
+                $category_type_select = null;
             }
 
             $where = '1=1';
@@ -162,7 +162,7 @@ class Block_main_content
                 if (addon_installed('content_privacy')) {
                     require_code('content_privacy');
                     $as_guest = array_key_exists('as_guest', $map) ? ($map['as_guest'] == '1') : false;
-                    $viewing_member_id = $as_guest ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : mixed();
+                    $viewing_member_id = $as_guest ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : null;
                     list($privacy_join, $privacy_where) = get_privacy_where_clause($content_type, 'r', $viewing_member_id);
                     $query .= $privacy_join;
                     $where .= $privacy_where;
@@ -317,7 +317,7 @@ class Block_main_content
             $archive_url = new Tempcode();
         }
 
-        $raw_date = ($info['date_field'] == '') ? mixed() : $award_content_row[$info['date_field']];
+        $raw_date = ($info['date_field'] == '') ? null : $award_content_row[$info['date_field']];
         return do_template('BLOCK_MAIN_CONTENT', array(
             '_GUID' => ($guid != '') ? $guid : 'fce1eace6008d650afc0283a7be9ec30',
             'BLOCK_ID' => $block_id,

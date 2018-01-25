@@ -588,10 +588,10 @@ class Module_cms_calendar extends Standard_crud_module
             if ($_member_calendar != '') {
                 $member_calendar = $GLOBALS['FORUM_DRIVER']->get_member_from_username($_member_calendar);
             } else {
-                $member_calendar = mixed();
+                $member_calendar = null;
             }
         } else {
-            $member_calendar = mixed();
+            $member_calendar = null;
         }
         if ((!has_privilege(get_member(), 'add_public_events')) && ($member_calendar === null)) {
             warn_exit(do_lang_tempcode('MEMBER_NO_EXIST'));

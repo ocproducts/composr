@@ -117,8 +117,8 @@ class Hook_sitemap_comcode_page extends Hook_sitemap_page
             $test_icon = find_theme_image('icons/24x24/menu/site_meta/' . $page, true);
             $test_icon_2x = find_theme_image('icons/48x48/menu/site_meta/' . $page, true);
             if ($test_icon == '') {
-                $test_icon = mixed();
-                $test_icon_2x = mixed();
+                $test_icon = null;
+                $test_icon_2x = null;
             }
         }
 

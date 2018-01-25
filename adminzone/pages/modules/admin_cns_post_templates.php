@@ -170,7 +170,7 @@ class Module_admin_cns_post_templates extends Standard_crud_module
             require_code('tickets');
             $ticket_forum_id = get_ticket_forum_id();
         } else {
-            $ticket_forum_id = mixed();
+            $ticket_forum_id = null;
         }
         require_code('cns_general_action2');
         $fields->attach(cns_get_forum_multi_code_field(($ticket_forum_id === null) ? '' : ('+' . strval($ticket_forum_id))));

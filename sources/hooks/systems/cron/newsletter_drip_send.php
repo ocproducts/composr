@@ -40,8 +40,8 @@ class Hook_cron_newsletter_drip_send
         $to_send = $GLOBALS['SITE_DB']->query_select('newsletter_drip_send', array('*'), array(), 'ORDER BY id DESC', $mails_per_send); // From disk-end, for maximum performance (truncating files to mark done is quicker?)
         if (count($to_send) != 0) {
             // These variables are for optimisation, we detect if we can avoid work on the loop iterations via looking at what happened on the first
-            $needs_substitutions = mixed();
-            $needs_tempcode = mixed();
+            $needs_substitutions = null;
+            $needs_tempcode = null;
 
             // Quick cleanup for maximum performance
             $id_list = '';

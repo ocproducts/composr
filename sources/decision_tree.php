@@ -159,7 +159,6 @@ class DecisionTree
 
         // Handle a jump?
         if ($submit) {
-            $redirect_to = mixed();
             $redirect_to = $this->process_input($tree_position);
             if (is_object($redirect_to) || looks_like_url($redirect_to)) {
                 $url = $redirect_to;
@@ -251,7 +250,7 @@ class DecisionTree
         }
 
         if (empty($details['previous'])) {
-            $back_url = mixed();
+            $back_url = null;
         } else {
             $back_url = $this->build_url($details['previous']);
         }

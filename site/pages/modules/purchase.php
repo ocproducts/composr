@@ -1114,7 +1114,7 @@ class Module_purchase
             $length_units = '';
         }
 
-        $text = mixed();
+        $text = null;
 
         if (get_param_integer('include_message', 0) == 1) {
             // Request to show message on the payment screen (we would have been hot-linked straight to here)

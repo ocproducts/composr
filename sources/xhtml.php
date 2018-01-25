@@ -573,7 +573,7 @@ function _smart_grammar_says_futile($nieve_end_pos, $grammar_completeness_tolera
     }
 
     // Find length of paragraph
-    $best_pos = mixed();
+    $best_pos = null;
     foreach ($look_out as $l) {
         $pos = strpos($html, '<' . $l, $real_offset + 1);
         if ($pos !== false) {
@@ -619,7 +619,7 @@ function _smart_grammar_says_continue($nieve_end_pos, $grammar_completeness_tole
         'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'blockquote', 'pre', 'br', 'hr', 'fieldset', 'iframe', 'table',
         'tbody', 'td', 'tfoot', 'th', 'thead', 'tr', 'dd', 'dt', 'dl', 'li', 'ol', 'ul',
     );
-    $best_pos = mixed();
+    $best_pos = null;
     foreach ($look_out as $l) {
         $pos = strpos($html, '<' . $l, $real_offset);
         if ($pos !== false) {

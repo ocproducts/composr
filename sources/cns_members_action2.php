@@ -746,7 +746,7 @@ function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $gr
             }
         }
 
-        $result = mixed();
+        $result = null;
 
         $_description = escape_html(get_translated_text($custom_field['cf_description'], $GLOBALS['FORUM_DB']));
         $field_cat = '';

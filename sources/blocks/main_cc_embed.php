@@ -83,7 +83,7 @@ class Block_main_cc_embed
         require_css('catalogues');
 
         // Selectcode
-        $select = mixed();
+        $select = null;
         if (($map !== null) && (array_key_exists('select', $map)) && ($map['select'] != '')) {
             require_code('selectcode');
             $select = selectcode_to_sqlfragment($map['select'], 'r.id', 'catalogue_categories', 'cc_parent_id', 'cc_id', 'id');
@@ -104,7 +104,7 @@ class Block_main_cc_embed
 
         $sort = get_param_string($block_id . '_order', array_key_exists('sort', $map) ? $map['sort'] : '');
         if ($sort == '') {
-            $sort = mixed();
+            $sort = null;
         }
         $max = get_param_integer($block_id . '_max', array_key_exists('max', $map) ? intval($map['max']) : 30);
         $start = get_param_integer($block_id . '_start', array_key_exists('start', $map) ? intval($map['start']) : 0);
@@ -114,7 +114,7 @@ class Block_main_cc_embed
         // Display type?
         $tpl_set = array_key_exists('template_set', $map) ? $map['template_set'] : $catalogue_name;
         $_display_type = ((array_key_exists('display_type', $map)) && ($map['display_type'] != '')) ? $map['display_type'] : null;
-        $display_type = mixed();
+        $display_type = null;
         if ($_display_type !== null) {
             if (is_numeric($_display_type)) {
                 $display_type = intval($_display_type);
@@ -140,7 +140,7 @@ class Block_main_cc_embed
 
         // Get entries
         $as_guest = array_key_exists('as_guest', $map) ? ($map['as_guest'] == '1') : false;
-        $viewing_member_id = $as_guest ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : mixed();
+        $viewing_member_id = $as_guest ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : null;
         list($entry_buildup, $sorting, , $max_rows) = render_catalogue_category_entry_buildup(($select === null) ? $category_id : null, $catalogue_name, $catalogue, 'CATEGORY', $tpl_set, $max, $start, $select, $root, $display_type, true, null, $filter, $sort, $block_id . '_order', $viewing_member_id);
 
         // Sorting and pagination

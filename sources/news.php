@@ -193,8 +193,8 @@ function render_news_category_box($row, $zone = '_SEARCH', $give_context = true,
             $img = $_img;
         }
     }
-    $rep_image = mixed();
-    $_rep_image = mixed();
+    $rep_image = null;
+    $_rep_image = null;
     if ($img != '') {
         require_code('images');
         $_rep_image = $img;

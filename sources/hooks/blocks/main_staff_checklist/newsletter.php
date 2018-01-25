@@ -43,7 +43,7 @@ class Hook_checklist_newsletter
 
         $date = get_value('newsletter_send_time');
 
-        $seconds_ago = mixed();
+        $seconds_ago = null;
         if ($date !== null) {
             $seconds_ago = time() - intval($date);
             $status = ($seconds_ago > $limit_hours * 60 * 60) ? 0 : 1;

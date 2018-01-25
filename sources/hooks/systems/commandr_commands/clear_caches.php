@@ -38,7 +38,7 @@ class Hook_commandr_command_clear_caches
         } else {
             require_code('caches3');
 
-            $_caches = mixed();
+            $_caches = null;
             if (array_key_exists(0, $parameters)) {
                 $_caches = array();
                 $caches = explode(',', $parameters[0]);

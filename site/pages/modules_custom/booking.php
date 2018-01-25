@@ -268,7 +268,7 @@ class Module_booking
         $has_details = false;
 
         $min_min_date = time();
-        $max_max_date = mixed();
+        $max_max_date = null;
 
         $date_from = time();
         $date_to = time();
@@ -276,7 +276,6 @@ class Module_booking
         $categories = array();
         foreach ($bookables as $bookable) {
             $active_from = mktime(0, 0, 0, $bookable['active_from_month'], $bookable['active_from_day'], $bookable['active_from_year']);
-            $active_to = mixed();
             $active_to = ($bookable['active_to_year'] === null) ? null : mktime(0, 0, 0, $bookable['active_to_month'], $bookable['active_to_day'], $bookable['active_to_year']);
             $min_date = $active_from;
             $max_date = $active_to;
@@ -319,7 +318,6 @@ class Module_booking
             );
             foreach ($blacked as $black) {
                 $black_from = mktime(0, 0, 0, $black['blacked_from_month'], $black['blacked_from_day'], $black['blacked_from_year']);
-                $black_to = mixed();
                 $black_to = ($black['blacked_to_year'] === null) ? null : mktime(0, 0, 0, $black['blacked_to_month'], $black['blacked_to_day'], $black['blacked_to_year']);
                 if (($black_from > time()) && ($black_to < SHOW_WARNINGS_UNTIL)) {
                     $messages[] = do_lang_tempcode(

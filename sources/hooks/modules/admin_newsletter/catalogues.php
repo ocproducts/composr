@@ -129,7 +129,7 @@ class Hook_whatsnew_catalogues
             }
 
             // Work out thumbnail
-            $thumbnail = mixed();
+            $thumbnail = null;
             foreach ($fields as $field) {
                 if ($field['cf_type'] == 'picture') {
                     $thumbnail = $GLOBALS['SITE_DB']->query_select_value('catalogue_efv_short', 'cv_value', array('ce_id' => $row['id'], 'cf_id' => $field['id']));
@@ -138,7 +138,7 @@ class Hook_whatsnew_catalogues
                             $thumbnail = get_custom_base_url() . '/' . $thumbnail;
                         }
                     } else {
-                        $thumbnail = mixed();
+                        $thumbnail = null;
                     }
                 }
             }

@@ -478,7 +478,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
     $attribute_map = array();
     $tag_output = new Tempcode();
     $continuation = '';
-    $close = mixed();
+    $close = null;
 
     // HTML tag levels (for tracking how we can compose our WYSIWYG view)
     $html_element_stack = array();
@@ -685,8 +685,8 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
 
                         if (!$comcode_dangerous_html) {
                             // Special filtering required
-                            $close = strpos($comcode, '>', $pos - 1);
-                            $portion = substr($comcode, $pos - 1, $close - $pos + 2);
+                            $close_pos = strpos($comcode, '>', $pos - 1);
+                            $portion = substr($comcode, $pos - 1, $close_pos - $pos + 2);
                             $seq_ok = false;
                             foreach ($allowed_html_seqs as $allowed_html_seq) {
                                 if (preg_match('#^' . $allowed_html_seq . '$#', $portion) != 0) {
@@ -705,8 +705,8 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                     }
                                 }
 
-                                if ($close !== false) {
-                                    $pos = $close + 1;
+                                if ($close_pos !== false) {
+                                    $pos = $close_pos + 1;
                                 }
                                 continue;
                             }
@@ -1192,7 +1192,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                                 $username_sql .= ' OR ' . db_string_equal_to('m_username', $username_part);
                                             }
 
-                                            $this_member_id = mixed();
+                                            $this_member_id = null;
                                             $results = $GLOBALS['FORUM_DB']->query('SELECT id,m_username FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE ' . $username_sql . ' ORDER BY ' . db_function('LENGTH', array('m_username')) . ' DESC', 1);
                                             if (isset($results[0])) {
                                                 $this_member_id = $results[0]['id'];
@@ -1638,7 +1638,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                     }
 
                                     // Find a media renderer for this link
-                                    $embed_output = mixed();
+                                    $embed_output = null;
                                     if ($list_indent > 0) {
                                         $embed_output = _do_tags_comcode('url', array(), make_string_tempcode($auto_link), $comcode_dangerous, $pass_id, $pos, $source_member, $as_admin, $db, $comcode, $structure_sweep, $semiparse_mode, $highlight_bits, null, false, false, $html_errors);
                                     } else {

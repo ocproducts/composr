@@ -95,8 +95,8 @@ function create_session($member_id, $session_confirmed = 0, $invisible = false, 
         $invisible = false;
     }
 
-    $new_session = mixed();
-    $prior_session_row = mixed();
+    $new_session = null;
+    $prior_session_row = null;
     $restored_session = delete_expired_sessions_or_recover($member_id);
     if ($restored_session === null) { // We're force to make a new one
         // Generate random session

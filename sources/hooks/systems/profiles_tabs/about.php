@@ -189,7 +189,7 @@ class Hook_profiles_tabs_about
         $custom_fields = array();
         $custom_fields_sections = array();
         require_code('encryption');
-        $value = mixed();
+        $value = null;
         $fields_map = array();
         foreach ($member_info['custom_fields'] as $name => $_value) {
             $value = $_value['RAW'];

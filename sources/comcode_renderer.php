@@ -859,12 +859,12 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
             $post_id = intval($embed->evaluate());
 
-            $_date = mixed();
+            $_date = null;
             if (get_forum_type() == 'cns') {
                 $_date = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_time', array('id' => $post_id));
             }
 
-            $s_title = mixed();
+            $s_title = null;
             if ($attributes['param'] == '') {
                 if (get_forum_type() == 'cns') {
                     $_s_title = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_title', array('id' => $post_id));
@@ -2104,8 +2104,8 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
             global $COMCODE_ATTACHMENTS;
 
-            $attachment_row = mixed();
-            $original_filename = mixed();
+            $attachment_row = null;
+            $original_filename = null;
             $id = $embed->evaluate();
 
             // Check against quota. We work all this out before we do any downloads, to make sure orphaned files aren't dumped on the file system (possible hack method)
@@ -2406,7 +2406,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
  */
 function do_code_box($type, $embed, $numbers = true, $in_semihtml = false, $is_all_semihtml = false)
 {
-    $_embed = mixed();
+    $_embed = null;
     $title = do_lang_tempcode('CODE');
     if (file_exists(get_file_base() . '/sources_custom/geshi/' . filter_naughty(($type == 'HTML') ? 'html5' : strtolower($type)) . '.php')) {
         $evaluated = $embed->evaluate();

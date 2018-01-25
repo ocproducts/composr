@@ -97,7 +97,7 @@ class xss_test_set extends cms_test_case
 
     public function testXSSDetectorOnAndWorking()
     {
-        $php_errormsg = mixed();
+        $php_errormsg = null;
         $this->found_error = null;
         $temp = set_error_handler(array($this, '_temp_handler'));
 
@@ -119,7 +119,7 @@ class xss_test_set extends cms_test_case
 
     public function testXSSDetectorOnAndWorkingComplex1()
     {
-        $php_errormsg = mixed();
+        $php_errormsg = null;
         $this->found_error = null;
         $temp = set_error_handler(array($this, '_temp_handler'));
 
@@ -142,7 +142,7 @@ class xss_test_set extends cms_test_case
 
     public function testXSSDetectorOnAndWorkingComplex2()
     {
-        $php_errormsg = mixed();
+        $php_errormsg = null;
         $this->found_error = null;
         $temp = set_error_handler(array($this, '_temp_handler'));
 
@@ -166,7 +166,7 @@ class xss_test_set extends cms_test_case
 
     public function testXSSDetectorOnAndWorkingComplex3()
     {
-        $php_errormsg = mixed();
+        $php_errormsg = null;
         $this->found_error = null;
         $temp = set_error_handler(array($this, '_temp_handler'));
 

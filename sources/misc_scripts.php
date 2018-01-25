@@ -148,7 +148,7 @@ function gd_text_script()
         require_code('character_sets');
         $text = convert_to_html_encoding(convert_to_internal_encoding($text, strtolower(get_param_string('charset', get_charset())), get_charset()));
         if (strpos($text, '&#') === false) {
-            $previous = mixed();
+            $previous = null;
             $nxpos = 0;
             for ($i = 0; $i < strlen($text); $i++) {
                 if ($previous !== null) { // check for existing previous character
@@ -286,7 +286,7 @@ function cron_bridge_script($caller)
     $limit_hook = get_param_string('limit_hook', '');
 
     $_log_file = get_custom_file_base() . '/data_custom/cron.log';
-    $log_file = mixed();
+    $log_file = null;
     if (is_file($_log_file)) {
         $log_file = fopen($_log_file, 'ab');
 

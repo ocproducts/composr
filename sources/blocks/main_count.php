@@ -79,7 +79,7 @@ class Block_main_count
 
         // Hit counter?
         $hit_count = array_key_exists('hit_count', $map) ? intval($map['hit_count']) : 1;
-        $update = mixed();
+        $update = null;
         if ($hit_count == 1) {
             //update_stat($name, 1); Actually, use AJAX
             $update = $name;

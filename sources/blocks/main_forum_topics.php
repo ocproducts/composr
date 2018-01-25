@@ -170,7 +170,7 @@ class Block_main_forum_topics
                     $seen[$topic['id']] = 1;
 
                     $topic_url = $GLOBALS['FORUM_DRIVER']->topic_url($topic['id'], $forum_name, true);
-                    $topic_url_unread = mixed();
+                    $topic_url_unread = null;
                     if (get_forum_type() == 'cns') {
                         $topic_url_unread = build_url(array('page' => 'topicview', 'type' => 'first_unread', 'id' => $topic['id']), get_module_zone('topicview'), array(), false, false, false, 'first_unread');
                     }

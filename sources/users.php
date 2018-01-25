@@ -165,7 +165,7 @@ function get_member($quick_only = false)
     }
 
     // Try via restricted_manually_enabled_backdoor that someone with full server access can place
-    $backdoor_ip_address = mixed(); // Enable to a real IP address to force login from FTP access (if lost admin password)
+    $backdoor_ip_address = null; // Enable to a real IP address to force login from FTP access (if lost admin password)
     if (!empty($SITE_INFO['backdoor_ip'])) {
         $backdoor_ip_address = normalise_ip_address($SITE_INFO['backdoor_ip']);
     }
@@ -455,7 +455,7 @@ function enforce_sessioned_url($url)
  * Find what sessions are expired and delete them, and recover an existing one for $member_id if there is one.
  *
  * @param  ?MEMBER $member_id User to get a current session for (null: do not try, which guarantees a return result of null also)
- * @return ?AUTO_LINK The session ID we rebound to (null: did not rebind)
+ * @return ?ID_TEXT The session ID we rebound to (null: did not rebind)
  */
 function delete_expired_sessions_or_recover($member_id = null)
 {
@@ -473,7 +473,7 @@ function delete_expired_sessions_or_recover($member_id = null)
     // Look through sessions
     $dirty_session_cache = false;
     global $SESSION_CACHE;
-    $_session = mixed();
+    $_session = null;
     foreach ($SESSION_CACHE as $_session => $row) {
         if (is_integer($_session)) {
             $_session = strval($_session);

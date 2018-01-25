@@ -1779,7 +1779,7 @@ function build_search_results_interface($results, $start, $max, $direction, $gen
         }
 
         $content_type = convert_composr_type_codes('search_hook', $result['type'], 'content_type');
-        $id = mixed();
+        $id = null;
         if ($content_type != '') {
             require_code('content');
             $cma_ob = get_content_object($content_type);

@@ -337,7 +337,7 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
         }
     }
 
-    $value = mixed();
+    $value = null;
 
     // Store custom fields
     $row = array();
@@ -514,7 +514,7 @@ function cns_make_boiler_custom_field($type)
  */
 function get_cpf_storage_for($type, $encrypted = 0, $__default = '')
 {
-    $default = mixed();
+    $default = null;
 
     require_code('fields');
     $ob = get_fields_hook($type);

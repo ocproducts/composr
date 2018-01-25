@@ -41,7 +41,7 @@ class Hook_checklist_community_billboard
         if ($rows === null) {
             return array();
         }
-        $seconds_due_in = mixed();
+        $seconds_due_in = null;
         if (array_key_exists(0, $rows)) {
             $activation_time = $rows[0]['activation_time'];
             $days = $rows[0]['days'];

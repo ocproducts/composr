@@ -490,7 +490,7 @@ function parse_translated_text($table, &$row, $field_name, $db, $lang, $force, $
 
     $entry = $row[$field_name];
 
-    $result = mixed();
+    $result = null;
     if (multi_lang_content()) {
         $_result = $db->query_select('translate', array('text_original', 'source_user'), array('id' => $entry, 'language' => $lang), '', 1);
         if (array_key_exists(0, $_result)) {

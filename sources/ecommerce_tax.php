@@ -342,7 +342,7 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
         } else {
             // Simple, with some guards...
 
-            $php_errormsg = mixed();
+            $php_errormsg = null;
             $tax_country_regexp = get_option('tax_country_regexp');
             if (!empty($tax_country_regexp)) {
                 $check = @preg_match('#' . $tax_country_regexp . '#', $country);

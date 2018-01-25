@@ -35,7 +35,7 @@ function reprocess_url($url, $operation_base_url)
         $url_base = substr($url, 0, $trail_end);
     }
 
-    $val = mixed();
+    $val = null;
 
     // Cookie relaying from client through to server
     $url_bits = @parse_url($url) or warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_NO_SERVER', escape_html($url)), false, true);

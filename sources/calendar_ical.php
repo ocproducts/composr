@@ -175,7 +175,7 @@ function output_ical()
             $start_day_of_month = find_concrete_day_of_month($event['e_start_year'], $event['e_start_month'], $event['e_start_day'], $event['e_start_monthly_spec_type'], ($event['e_start_hour'] === null) ? find_timezone_start_hour_in_utc($event['e_timezone'], $event['e_start_year'], $event['e_start_month'], $event['e_start_day'], $event['e_start_monthly_spec_type']) : $event['e_start_hour'], ($event['e_start_minute'] === null) ? find_timezone_start_minute_in_utc($event['e_timezone'], $event['e_start_year'], $event['e_start_month'], $event['e_start_day'], $event['e_start_monthly_spec_type']) : $event['e_start_minute'], $event['e_timezone'], $event['e_do_timezone_conv'] == 1);
             $time = mktime(($event['e_start_hour'] === null) ? 12 : $event['e_start_hour'], ($event['e_start_minute'] === null) ? 0 : $event['e_start_minute'], 0, $event['e_start_month'], $start_day_of_month, $event['e_start_year']);
             if (($event['e_end_year'] === null) || ($event['e_end_month'] === null) || ($event['e_end_day'] === null)) {
-                $time2 = mixed();
+                $time2 = null;
             } else {
                 $end_day_of_month = find_concrete_day_of_month($event['e_end_year'], $event['e_end_month'], $event['e_end_day'], $event['e_end_monthly_spec_type'], ($event['e_end_hour'] === null) ? find_timezone_end_hour_in_utc($event['e_timezone'], $event['e_end_year'], $event['e_end_month'], $event['e_end_day'], $event['e_end_monthly_spec_type']) : $event['e_end_hour'], ($event['e_end_minute'] === null) ? find_timezone_end_minute_in_utc($event['e_timezone'], $event['e_end_year'], $event['e_end_month'], $event['e_end_day'], $event['e_end_monthly_spec_type']) : $event['e_end_minute'], $event['e_timezone'], $event['e_do_timezone_conv'] == 1);
                 $time2 = mktime(($event['e_end_hour'] === null) ? 12 : $event['e_end_hour'], ($event['e_end_minute'] === null) ? 0 : $event['e_end_minute'], 0, $event['e_end_month'], $end_day_of_month, $event['e_end_year']);
@@ -428,7 +428,7 @@ function get_event_data_ical($calendar_nodes)
     $matches = array();
     $start_monthly_spec_type = 'day_of_month';
     $end_monthly_spec_type = $start_monthly_spec_type;
-    $start_monthly_spec_type_day = mixed();
+    $start_monthly_spec_type_day = null;
 
     $rec_array = array('FREQ', 'BYDAY', 'INTERVAL', 'COUNT');
     $rec_by_day = array('MO', 'TU', 'WE', 'TH', 'FR', 'SA', 'SU');
@@ -577,8 +577,8 @@ function get_event_data_ical($calendar_nodes)
         $end_year = intval(date('Y', $end));
         $end_month = intval(date('m', $end));
         $end_day = intval(date('d', $end));
-        $end_hour = mixed();
-        $end_minute = mixed();
+        $end_hour = null;
+        $end_minute = null;
         $end_hour = $all_day ? null : intval(date('H', $end));
         $end_minute = $all_day ? null : intval(date('i', $end));
 

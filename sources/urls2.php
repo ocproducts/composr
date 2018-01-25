@@ -741,7 +741,7 @@ function _choose_moniker($page, $type, $id, $moniker_src, $no_exists_check_for =
     if (is_numeric($moniker)) {
         $moniker .= '-1';
     }
-    $test = mixed();
+    $test = null;
     do {
         if ($no_exists_check_for !== null) {
             if ($moniker == preg_replace('#^.*/#', '', $no_exists_check_for)) {

@@ -62,7 +62,7 @@ class Block_main_content_filtering
             $filter = array_key_exists('param', $map) ? $map['param'] : '';
         }
 
-        $content_type = mixed();
+        $content_type = null;
         if ((array_key_exists('content_type', $map)) && ($map['content_type'] != '')) {
             $content_type = $map['content_type'];
 

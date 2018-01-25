@@ -243,7 +243,7 @@ class Hook_import_cms_merge
         //return false;
         global $SITE_INFO;
         $backup_site_info = $SITE_INFO;
-        $SITE_INFO = mixed();
+        $SITE_INFO = null;
         @include($file_base . '/_config.php');
         $sites_site_info = $SITE_INFO;
         $SITE_INFO = $backup_site_info;
@@ -2025,7 +2025,7 @@ class Hook_import_cms_merge
                     $member_calendar = $GLOBALS['FORUM_DRIVER']->get_guest_id();
                 }
             } else {
-                $member_calendar = mixed();
+                $member_calendar = null;
             }
 
             $type = import_id_remap_get('event_type', strval($row['e_type']), true);
@@ -2430,7 +2430,7 @@ class Hook_import_cms_merge
 
         $rows = $db->query_select('catalogue_categories', array('*'), array(), 'ORDER BY id');
         $this->_fix_comcode_ownership($rows);
-        $id = mixed();
+        $id = null;
         foreach ($rows as $row) {
             if (import_check_if_imported('catalogue_category', strval($row['id']))) {
                 continue;

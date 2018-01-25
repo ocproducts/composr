@@ -1294,7 +1294,7 @@ abstract class Standard_crud_module
         $submit_name = do_lang_tempcode('EDIT');
 
         $keep = symbol_tempcode('KEEP');
-        $iframe_url = mixed();
+        $iframe_url = null;
         if (!$this->special_edit_frontend) {
             $iframe_url = find_script('iframe') . '?zone=' . urlencode(get_zone_name()) . '&opens_below=1';
             foreach ($map as $key => $val) {
@@ -1303,7 +1303,7 @@ abstract class Standard_crud_module
             $iframe_url .= $keep->evaluate();
         }
 
-        $extra_buttons = mixed();
+        $extra_buttons = null;
         if ($this->supports_mass_delete) {
             $extra_buttons = do_template('MASS_SELECT_FORM_BUTTONS', array('_GUID' => '21121b5a5f8beafefbd09d3e23265986', 'TYPE' => $this->content_type));
         }
@@ -1334,7 +1334,7 @@ abstract class Standard_crud_module
     {
         $submit_name = do_lang_tempcode('SAVE');
 
-        $id = mixed(); // Define type as mixed
+        $id = null; // Define type as mixed
         $id = $this->non_integer_id ? get_param_string('id', false, INPUT_FILTER_GET_COMPLEX) : strval(get_param_integer('id'));
 
         $map = array('page' => '_SELF', 'type' => $this->get_screen_type_for('__edit', $this->type_code), 'id' => $id);
@@ -1602,7 +1602,7 @@ abstract class Standard_crud_module
      */
     public function __edit()
     {
-        $id = mixed(); // Define type as mixed
+        $id = null; // Define type as mixed
         $id = $this->non_integer_id ? get_param_string('id', false, INPUT_FILTER_GET_COMPLEX) : strval(get_param_integer('id'));
 
         if (($this->second_stage_preview) && (get_param_integer('preview', 0) == 1)) {

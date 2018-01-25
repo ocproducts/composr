@@ -144,7 +144,7 @@ class Hook_task_export_member_csv
         }
 
         // Output records
-        $at = mixed();
+        $at = null;
         $limit = get_param_integer('max', 200); // Set 'max' if you don't want all records
         $start = 0;
         do {
@@ -245,7 +245,7 @@ class Hook_task_export_member_csv
             }
         }
 
-        $at = mixed();
+        $at = null;
         $out = array();
         $i = 0;
         foreach ($headings as $written_heading => $f) {

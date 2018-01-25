@@ -2310,7 +2310,7 @@ abstract class Resource_fs_base
 
         // Find where we're at
         $cat_id = '';
-        $cat_resource_type = mixed();
+        $cat_resource_type = null;
         if (count($meta_dir) != 0) {
             if ($this->folder_resource_type === null) {
                 return false; // Should not be possible
@@ -2366,7 +2366,7 @@ abstract class Resource_fs_base
                 $str_id = extract_content_str_id_from_data($folder, $folder_info);
                 $filename = $this->folder_convert_id_to_filename($resource_type, $str_id);
 
-                $filetime = mixed();
+                $filetime = null;
                 if (method_exists($this, '_get_folder_edit_date')) {
                     $filetime = $this->_get_folder_edit_date($folder, end($meta_dir));
                 }
@@ -2421,7 +2421,7 @@ abstract class Resource_fs_base
                 $str_id = extract_content_str_id_from_data($file, $file_info);
                 $filename = $this->file_convert_id_to_filename($resource_type, $str_id);
 
-                $filetime = mixed();
+                $filetime = null;
                 if (method_exists($this, '_get_file_edit_date')) {
                     $filetime = $this->_get_file_edit_date($file, end($meta_dir));
                 }
@@ -2451,7 +2451,7 @@ abstract class Resource_fs_base
             $folder_info = $this->_get_cma_info($cat_resource_type);
             $folder = content_get_row($cat_id, $folder_info);
 
-            $filetime = mixed();
+            $filetime = null;
             if (method_exists($this, '_get_file_edit_date')) {
                 $filetime = $this->_get_folder_edit_date($folder, end($meta_dir));
             }

@@ -1063,7 +1063,7 @@ class Module_cms_catalogues extends Standard_crud_module
 
         // Grab the CSV file
         require_code('uploads');
-        $csv_name = mixed();
+        $csv_name = null;
         if (((is_plupload(true)) && (array_key_exists('file_anytype', $_FILES))) || ((array_key_exists('file_anytype', $_FILES)) && (is_uploaded_file($_FILES['file_anytype']['tmp_name'])))) {
             $csv_name = $_FILES['file_anytype']['tmp_name'];
         }

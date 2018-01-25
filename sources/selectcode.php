@@ -146,7 +146,7 @@ function selectcode_to_sqlfragment($filter, $field_name, $parent_spec__table_nam
     $out_or = '';
     $out_and = '';
 
-    $cached_mappings = mixed();
+    $cached_mappings = null;
 
     $tokens = explode(',', $filter);
     $matches = array();
@@ -273,7 +273,7 @@ function _selectcode_to_generic($filter, $field_name, $table_name, $ids_and_pare
     $out_accept = array();
     $out_avoid = array();
 
-    $cached_mappings = mixed();
+    $cached_mappings = null;
 
     if (($ids_and_parents === null) && ($ids_and_parents_callback === null)) {
         $has_no_parents = ($category_field_name === null);

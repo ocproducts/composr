@@ -642,7 +642,7 @@ function get_sql_dump($out_file, $include_drops = false, $output_statuses = fals
 
                     $_value = (!is_array($value)) ? array($value) : $value;
 
-                    $v = mixed();
+                    $v = null;
                     foreach ($_value as $i => $v) {
                         if (!array_key_exists($i, $all_values)) {
                             $all_values[$i] = '';

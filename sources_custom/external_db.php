@@ -161,9 +161,9 @@ function external_db_user_add($record)
     $email_address = $record[$email_address_field];
 
     $dob_day_field = get_value('external_db_login__dob_day_field', null, true);
-    $dob_day = mixed();
-    $dob_month = mixed();
-    $dob_year = mixed();
+    $dob_day = null;
+    $dob_month = null;
+    $dob_year = null;
     if (!empty($dob_day_field)) {
         $dob_month_field = get_value('external_db_login__dob_month_field', null, true);
         $dob_year_field = get_value('external_db_login__dob_year_field', null, true);

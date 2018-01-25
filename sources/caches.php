@@ -170,7 +170,7 @@ class Self_learning_cache
     {
         static $is_on = null;
         if ($is_on === null) {
-            $is_on = mixed(); // For CQC
+            $is_on = null; // For CQC
         }
         if ($is_on !== null) {
             return $is_on;
@@ -815,7 +815,7 @@ function _get_cache_entries($dets, $special_cache_flags = null)
                 continue;
             }
         } else {
-            $cache_row = mixed();
+            $cache_row = null;
             foreach ($cache_rows as $_cache_row) {
                 if ($_cache_row['cached_for'] == $codename && $_cache_row['identifier'] == $md5_cache_identifier) {
                     $cache_row = $_cache_row;

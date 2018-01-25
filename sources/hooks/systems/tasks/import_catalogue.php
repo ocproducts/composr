@@ -253,7 +253,7 @@ class Hook_task_import_catalogue
 
         // See if we can match to existing record, via $key_field
         $method = 'add';
-        $has_match = mixed();
+        $has_match = null;
         if ($key_field != '') {
             if ($key_field == 'ID') {
                 if ($key != '') {

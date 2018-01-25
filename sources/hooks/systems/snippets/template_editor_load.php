@@ -104,7 +104,7 @@ class Hook_snippet_template_editor_load
                 if (addon_installed('actionlog')) {
                     require_code('revisions_engine_files');
                     $revision_engine = new RevisionEngineFiles();
-                    $revision_loaded = mixed();
+                    $revision_loaded = null;
                     $revisions = $revision_engine->ui_revision_undoer(
                         dirname($custom_path_short),
                         $clean_file,
@@ -164,7 +164,7 @@ class Hook_snippet_template_editor_load
                 if (addon_installed('actionlog')) {
                     require_code('revisions_engine_files');
                     $revision_engine = new RevisionEngineFiles();
-                    $revision_loaded = mixed();
+                    $revision_loaded = null;
                     $revisions = $revision_engine->ui_revision_undoer(
                         dirname($custom_path_short),
                         $page,

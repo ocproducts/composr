@@ -237,8 +237,8 @@ function handle_active_logout()
 function _enforce_temporary_passwords($member_id)
 {
     if ((get_forum_type() == 'cns') && (running_script('index')) && ($member_id != db_get_first_id()) && (!$GLOBALS['IS_ACTUALLY_ADMIN']) && ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_password_compat_scheme') == 'temporary') && (get_page_name() != 'lost_password') && ((get_page_name() != 'members') || (get_param_string('type', 'browse') != 'view'))) {
-        $force_change_message = mixed();
-        $redirect_url = mixed();
+        $force_change_message = null;
+        $redirect_url = null;
 
         $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
 

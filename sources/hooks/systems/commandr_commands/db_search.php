@@ -69,7 +69,7 @@ class Hook_commandr_command_db_search
                     $out .= '<h2>' . escape_html($field['m_table']) . '</h2>';
 
                     $out .= '<table class="results-table">';
-                    $val = mixed();
+                    $val = null;
                     foreach ($of as $key => $val) {
                         if (!is_string($val)) {
                             $val = strval($val);

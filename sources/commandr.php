@@ -1094,7 +1094,7 @@ class Virtual_shell
     {
         // Convert an array to an HTML format
         $output = array();
-        $key = mixed();
+        $key = null;
         foreach ($array as $key => $value) {
             if (is_array($value)) {
                 $value = protect_from_escaping($this->_array_to_html($value));

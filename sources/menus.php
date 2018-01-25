@@ -164,8 +164,8 @@ function _build_sitemap_menu($menu)
         $max_recurse_depth = null;
         $options = SITEMAP_GEN_CHECK_PERMS;
         $include = 'children';
-        $title = mixed();
-        $icon = mixed();
+        $title = null;
+        $icon = null;
 
         // Parse options
         if ($menu != '') {
@@ -630,7 +630,6 @@ function _render_menu_branch($branch, $codename, $source_member, $level, $type, 
         $_url = $branch['url'];
         $url = new Tempcode();
         if ($_url !== null) {
-            $sym_pos = mixed();
             $sym_pos = strpos($_url, '{$');
             if ($sym_pos !== false) { // Specially encoded $ symbols
                 require_code('tempcode_compiler');

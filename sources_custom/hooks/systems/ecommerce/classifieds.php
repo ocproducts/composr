@@ -56,7 +56,7 @@ class Hook_ecommerce_classifieds
             return array();
         }
 
-        $prices = $GLOBALS['SITE_DB']->query_select('ecom_classifieds_prices', array('*'), null, 'ORDER BY c_price');
+        $prices = $GLOBALS['SITE_DB']->query_select('ecom_classifieds_prices', array('*'), array(), 'ORDER BY c_price');
 
         $products = array();
         foreach ($prices as $price) {
@@ -129,7 +129,7 @@ class Hook_ecommerce_classifieds
      */
     public function get_needed_fields($type_code, $from_admin = false)
     {
-        $fields = mixed();
+        $fields = null;
 
         if ($from_admin) {
             require_lang('classifieds');
@@ -138,7 +138,7 @@ class Hook_ecommerce_classifieds
             $fields = new Tempcode();
 
             $list = new Tempcode();
-            $rows = $GLOBALS['SITE_DB']->query_select('catalogue_entries e JOIN ' . get_table_prefix() . 'ecom_classifieds_prices c ON c.c_catalogue_name=e.c_name', array('e.*'), null, 'GROUP BY e.id ORDER BY ce_add_date DESC');
+            $rows = $GLOBALS['SITE_DB']->query_select('catalogue_entries e JOIN ' . get_table_prefix() . 'ecom_classifieds_prices c ON c.c_catalogue_name=e.c_name', array('e.*'), array(), 'GROUP BY e.id ORDER BY ce_add_date DESC');
             foreach ($rows as $row) {
                 $data_map = get_catalogue_entry_map($row, null, 'CATEGORY', 'DEFAULT', null, null, array(0));
                 $ad_title = $data_map['FIELD_0'];

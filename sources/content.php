@@ -52,7 +52,7 @@ function may_view_content_behind($member_id, $content_type, $content_id, $type_h
         $module = $content_id;
     }
 
-    $category_id = mixed();
+    $category_id = null;
     $content_type = convert_composr_type_codes($type_has, $content_type, 'content_type');
     if ($content_type != '') {
         $content_type_ob = get_content_object($content_type);
@@ -283,8 +283,8 @@ function content_get_details($content_type, $content_id, $resource_fs_style = fa
         $submitter_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
     }
 
-    $content_url = mixed();
-    $content_url_email_safe = mixed();
+    $content_url = null;
+    $content_url_email_safe = null;
     if ($cma_info['view_page_link_pattern'] !== null) {
         list($zone, $url_bits, $hash) = page_link_decode(str_replace('_WILD', $content_id, $cma_info['view_page_link_pattern']));
         $content_url = build_url($url_bits, $zone, array(), false, false, false, $hash);

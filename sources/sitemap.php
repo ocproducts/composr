@@ -173,7 +173,7 @@ function find_sitemap_object($page_link)
 
         $is_virtual = false;
     } else {
-        $hook = mixed();
+        $hook = null;
         $matches = array();
         $hooks = find_all_hook_obs('systems', 'sitemap', 'Hook_sitemap_');
         foreach ($hooks as $_hook => $ob) {
@@ -359,7 +359,7 @@ abstract class Hook_sitemap_base
      */
     public function get_virtual_nodes($page_link, $callback = null, $valid_node_types = null, $child_cutoff = null, $max_recurse_depth = null, $recurse_level = 0, $options = 0, $zone = '_SEARCH', $meta_gather = 0, $return_anyway = false)
     {
-        $nodes = ($callback === null || $return_anyway) ? array() : mixed();
+        $nodes = ($callback === null || $return_anyway) ? array() : null;
 
         return $nodes;
     }

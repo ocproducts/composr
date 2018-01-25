@@ -71,7 +71,7 @@ function bookables_ical_script()
         echo "URL:" . ical_escape($url) . "\n";
 
         $time = mktime(0, 0, 0, $event['active_from_month'], $event['active_from_day'], $event['active_from_year']);
-        $time2 = mixed();
+        $time2 = null;
         if ($event['cycle_type'] != 'none') {
             $parts = explode(' ', $event['cycle_type']);
             if (count($parts) == 1) {

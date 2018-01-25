@@ -106,7 +106,7 @@ class Block_main_image_fader
         if (addon_installed('content_privacy')) {
             require_code('content_privacy');
             $as_guest = array_key_exists('as_guest', $map) ? ($map['as_guest'] == '1') : false;
-            $viewing_member_id = $as_guest ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : mixed();
+            $viewing_member_id = $as_guest ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : null;
             list($privacy_join_video, $privacy_where_video) = get_privacy_where_clause('video', 'r', $viewing_member_id);
             list($privacy_join_image, $privacy_where_image) = get_privacy_where_clause('image', 'r', $viewing_member_id);
             $extra_join_image .= $privacy_join_image;
@@ -171,7 +171,7 @@ class Block_main_image_fader
         }
 
         if (count($images) == 0) {
-            $submit_url = mixed();
+            $submit_url = null;
             if ((has_actual_page_access(null, 'cms_galleries', null, null)) && (has_submit_permission('mid', get_member(), get_ip_address(), 'cms_galleries', array('galleries', $cat))) && (can_submit_to_gallery($cat))) {
                 $submit_url = build_url(array('page' => 'cms_galleries', 'type' => 'add', 'cat' => $cat, 'redirect' => protect_url_parameter(SELF_REDIRECT_RIP)), get_module_zone('cms_galleries'));
             }

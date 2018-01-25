@@ -145,7 +145,7 @@ class Block_main_news
         if (addon_installed('content_privacy')) {
             require_code('content_privacy');
             $as_guest = array_key_exists('as_guest', $map) ? ($map['as_guest'] == '1') : false;
-            $viewing_member_id = $as_guest ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : mixed();
+            $viewing_member_id = $as_guest ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : null;
             list($privacy_join, $privacy_where) = get_privacy_where_clause('news', 'r', $viewing_member_id);
             $join .= $privacy_join;
             $q_filter .= $privacy_where;
@@ -446,7 +446,7 @@ class Block_main_news
         }
 
         // Pagination
-        $pagination = mixed();
+        $pagination = null;
         if ($do_pagination) {
             require_code('templates_pagination');
             $pagination = pagination(do_lang_tempcode('NEWS'), $start, $block_id . '_start', $fallback_full + $fallback_archive, $block_id . '_max', $max_rows);

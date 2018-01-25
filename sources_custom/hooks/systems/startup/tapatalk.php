@@ -34,8 +34,8 @@ class Hook_startup_tapatalk
             process_url_monikers(get_page_name());
 
             $page_type = 'other';
-            $start = mixed();
-            $max = mixed();
+            $start = null;
+            $max = null;
             $extra = '';
             switch (get_page_name()) {
                 case 'topicview':

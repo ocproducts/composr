@@ -47,7 +47,7 @@ class Hook_snippet_comments
         $posts = array_map('intval', explode(',', get_param_string('ids', false, INPUT_FILTER_GET_COMPLEX)));
 
         $_parent_id = get_param_string('id', '');
-        $parent_id = ($_parent_id == '') ? mixed() : intval($_parent_id);
+        $parent_id = ($_parent_id == '') ? null : intval($_parent_id);
 
         require_code('topics');
         $renderer = new CMS_Topic();

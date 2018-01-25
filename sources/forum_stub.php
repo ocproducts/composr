@@ -80,8 +80,6 @@ class Forum_driver_base
      */
     public function member_profile_url($id, $tempcode_okay = false)
     {
-        $url = mixed();
-
         $url = $this->_member_profile_url($id, $tempcode_okay);
         if (($tempcode_okay) && (!is_object($url))) {
             $url = make_string_tempcode($url);

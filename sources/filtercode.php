@@ -66,7 +66,7 @@ function read_filtercode_parameter_from_env($field_name, $field_type = null)
  */
 function form_for_filtercode($filter, $labels = array(), $content_type = null, $types = array())
 {
-    $table = mixed();
+    $table = null;
     $db = $GLOBALS['SITE_DB'];
     $info = array();
     if ($content_type !== null) {
@@ -84,7 +84,7 @@ function form_for_filtercode($filter, $labels = array(), $content_type = null, $
 
     require_lang('filtercode');
 
-    $catalogue_name = mixed();
+    $catalogue_name = null;
     if (preg_match('#^\w+$#', $filter) != 0) {
         $catalogue_name = $filter;
         $filter = '';
@@ -214,7 +214,7 @@ function form_for_filtercode($filter, $labels = array(), $content_type = null, $
         if (preg_match('#^<([^<>]+)>$#', $filter_val, $matches) != 0) {
             $field_name = filter_naughty_harsh($matches[1], true);
 
-            $extra = mixed();
+            $extra = null;
 
             if (array_key_exists($field_name, $types)) {
                 $field_type = $types[$field_name];

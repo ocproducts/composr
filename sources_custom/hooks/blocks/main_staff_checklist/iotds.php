@@ -43,7 +43,7 @@ class Hook_checklist_iotds
 
         $limit_hours = intval(get_option('iotd_update_time'));
 
-        $seconds_ago = mixed();
+        $seconds_ago = null;
         if ($date !== null) {
             $seconds_ago = time() - $date;
             $status = ($seconds_ago > $limit_hours * 60 * 60) ? 0 : 1;

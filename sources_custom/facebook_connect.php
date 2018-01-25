@@ -27,7 +27,7 @@ function init__facebook_connect()
     require_code('facebook/facebook');
 
     global $FACEBOOK_CONNECT;
-    $FACEBOOK_CONNECT = mixed();
+    $FACEBOOK_CONNECT = null;
     $appid = get_option('facebook_appid');
     $appsecret = get_option('facebook_secret_code');
     $FACEBOOK_CONNECT = new Facebook(array('appId' => $appid, 'secret' => $appsecret));
@@ -85,18 +85,18 @@ function handle_facebook_connection_login($current_logged_in_member)
     if ($photo_url != '') {
         $photo_url = 'https://graph.facebook.com/' . strval($facebook_uid) . '/picture?type=large'; // In case URL changes
     }
-    $avatar_url = ($photo_url == '') ? mixed() : $photo_url;
+    $avatar_url = ($photo_url == '') ? null : $photo_url;
     $photo_thumb_url = '';
     if ($photo_url != '') {
         $photo_thumb_url = $photo_url;
     }
     $email_address = array_key_exists('email', $details) ? $details['email'] : '';
-    $timezone = mixed();
+    $timezone = null;
     if (isset($details['timezone'])) {
         require_code('temporal');
         $timezone = convert_timezone_offset_to_formal_timezone($details['timezone']);
     }
-    $language = mixed();
+    $language = null;
     if (isset($details['locale'])) {
         $language = strtoupper($details['locale']);
     }
@@ -109,9 +109,9 @@ function handle_facebook_connection_login($current_logged_in_member)
         }
     }
     $dob = array_key_exists('birthday', $details) ? $details['birthday'] : '';
-    $dob_day = mixed();
-    $dob_month = mixed();
-    $dob_year = mixed();
+    $dob_day = null;
+    $dob_month = null;
+    $dob_year = null;
     if ($dob != '') {
         $_dob = explode('/', $dob);
         if (count($_dob) == 3) {

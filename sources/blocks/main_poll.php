@@ -65,7 +65,7 @@ class Block_main_poll
         }
 
         // Lookup poll row
-        $poll_id = mixed();
+        $poll_id = null;
         if (array_key_exists('param', $map)) {
             $poll_id = intval($map['param']);
         }

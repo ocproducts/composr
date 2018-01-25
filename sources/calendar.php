@@ -298,8 +298,8 @@ function find_periods_recurrence($timezone, $do_timezone_conv, $start_year, $sta
             }
             break;
     }
-    $_b = mixed();
-    $b = mixed();
+    $_b = null;
+    $b = null;
 
     $all_day = false;
 
@@ -1726,7 +1726,7 @@ function get_calendar_event_first_date($timezone, $do_timezone_conv, $start_year
     } else {
         $_from = cal_get_start_utctime_for_event($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $do_timezone_conv == 1);
         $from = cal_utctime_to_usertime($_from, $timezone, false);
-        $to = mixed();
+        $to = null;
         if ($end_year !== null && $end_month !== null && $end_day !== null) {
             $_to = cal_get_end_utctime_for_event($timezone, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $do_timezone_conv == 1);
             $to = cal_utctime_to_usertime($_to, $timezone, false);

@@ -266,7 +266,7 @@ function find_template_tree_nice($metadata, &$collected_templates)
             $collected_templates[$file] = true;
 
             // Find GUID
-            $guid = mixed();
+            $guid = null;
             foreach ($children as $child) {
                 if ($child['type'] == TEMPLATE_TREE_NODE__TEMPLATE_GUID) {
                     $guid = $child['identifier'];

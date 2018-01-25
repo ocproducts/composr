@@ -48,7 +48,7 @@ function render_topic_box($row, $zone = '_SEARCH', $give_context = true, $includ
     $_title = $row['t_cache_first_title'];
     $title = $give_context ? do_lang('CONTENT_IS_OF_TYPE', do_lang('FORUM_TOPIC'), $_title) : $_title;
 
-    $breadcrumbs = mixed();
+    $breadcrumbs = null;
     if ($include_breadcrumbs) {
         require_code('cns_forums');
         $breadcrumbs = breadcrumb_segments_to_tempcode(cns_forum_breadcrumbs($row['t_forum_id'], null, null, false, ($root === null) ? get_param_integer('keep_forum_root', null) : $root));

@@ -1089,7 +1089,7 @@ function check_xhtml($out, $well_formed_only = false, $is_fragment = false, $web
 
     global $WEBSTANDARDS_CHECKER_OFF, $WELL_FORMED_ONLY, $WEBSTANDARDS_JAVASCRIPT, $WEBSTANDARDS_CSS, $WEBSTANDARDS_WCAG, $WEBSTANDARDS_COMPAT, $WEBSTANDARDS_EXT_FILES, $WEBSTANDARDS_MANUAL, $WEBSTANDARDS_CSP, $UNDER_XMLNS;
     if (function_exists('mixed')) {
-        $WEBSTANDARDS_CHECKER_OFF = mixed();
+        $WEBSTANDARDS_CHECKER_OFF = null;
     }
     $WEBSTANDARDS_CHECKER_OFF = null;
     $WELL_FORMED_ONLY = $well_formed_only;

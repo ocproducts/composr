@@ -58,7 +58,7 @@ function content_review_get_fields($content_type, $content_id = null, $catalogue
                 $review_freq = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_default_review_freq', array('c_name' => $catalogue_name));
                 if ($review_freq !== null) {
                     if ($review_freq <= 0) {
-                        $review_freq = mixed();
+                        $review_freq = null;
                     }
                 }
                 if (is_integer($review_freq)) {
@@ -67,15 +67,15 @@ function content_review_get_fields($content_type, $content_id = null, $catalogue
             } elseif ($content_type == 'comcode_page') {
                 $review_freq = intval(get_option('comcode_page_default_review_freq'));
                 if ($review_freq <= 0) {
-                    $review_freq = mixed();
+                    $review_freq = null;
                 }
                 if (is_integer($review_freq)) {
                     $review_freq = $review_freq * 60 * 60 * 24;
                 }
             } else {
-                $review_freq = mixed();
+                $review_freq = null;
             }
-            $next_review_time = mixed();
+            $next_review_time = null;
             $auto_action = 'leave';
             $display_review_status = 0;
         }
@@ -91,21 +91,21 @@ function content_review_get_fields($content_type, $content_id = null, $catalogue
         $set_title = do_lang_tempcode('REVIEW_FREQ');
         $field_set = alternate_fields_set__start($set_name);
 
-        $review_freq_days = mixed();
-        $review_freq_months = mixed();
-        $review_freq_years = mixed();
+        $review_freq_days = null;
+        $review_freq_months = null;
+        $review_freq_years = null;
         if ($review_freq !== null) {
             if ($review_freq % (60 * 60 * 24 * 365) == 0) {
-                $review_freq_years = $review_freq / (60 * 60 * 24 * 365);
+                $review_freq_years = intval(round(floatval($review_freq) / (60.0 * 60.0 * 24.0 * 365.0)));
             } elseif ($review_freq % (60 * 60 * 24 * 31) == 0) {
-                $review_freq_months = $review_freq / (60 * 60 * 24 * 31);
+                $review_freq_months = intval(round(floatval($review_freq) / (60.0 * 60.0 * 24.0 * 31)));
             } elseif ($review_freq % (60 * 60 * 24) == 0) {
-                $review_freq_days = $review_freq / (60 * 60 * 24);
+                $review_freq_days = intval(round(floatval($review_freq) / (60.0 * 60.0 * 24.0)));
             } else {
                 // :S
                 $review_freq_days = intval(round(floatval($review_freq) / (60.0 * 60.0 * 24.0)));
                 if ($review_freq_days == 0) {
-                    $review_freq_days = mixed();
+                    $review_freq_days = null;
                 }
             }
         }
@@ -175,7 +175,7 @@ function content_review_set($content_type, $content_id, $old_content_id = null)
     }
 
     if (cron_installed()) {
-        $review_freq = mixed();
+        $review_freq = null;
         $review_freq_days = post_param_integer('review_freq_days', null);
         $review_freq_months = post_param_integer('review_freq_months', null);
         $review_freq_years = post_param_integer('review_freq_years', null);
@@ -211,7 +211,7 @@ function content_review_set($content_type, $content_id, $old_content_id = null)
 function schedule_content_review($content_type, $content_id, $review_freq, $next_review_time = null, $auto_action = 'leave', $display_review_status = 0)
 {
     if ($review_freq === 0) {
-        $review_freq = mixed();
+        $review_freq = null;
     }
 
     // Tidy up, if conflicting entry in database

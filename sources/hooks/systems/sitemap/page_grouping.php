@@ -72,9 +72,9 @@ class Hook_sitemap_page_grouping extends Hook_sitemap_base
         preg_match('#^([^:]*):([^:]*):([^:]*)#', $page_link, $matches);
         $page_grouping = $matches[3];
 
-        $icon = mixed();
+        $icon = null;
         $lang_string = strtoupper($page_grouping);
-        $description = mixed();
+        $description = null;
 
         // Locate all pages in page groupings, and the icon for this page grouping
         $pages_found = array();

@@ -55,7 +55,7 @@ function activities_addon_syndicate_described_activity($a_language_string_code =
         'a_is_public' => $a_is_public,
     );
 
-    $stored_id = mixed();
+    $stored_id = null;
 
     // Check if this has been posted previously (within the last 10 minutes) to
     // stop spamming but allow generalised repeat status messages.

@@ -549,7 +549,6 @@ function breadcrumbs_get_default_stub($link_to_self_entrypoint = true)
         $label = ($BREADCRUMB_SET_SELF === null) ? $DISPLAYED_TITLE : $BREADCRUMB_SET_SELF;
         if ($label !== null) {
             $label_eval = is_object($label) ? $label->evaluate() : $label;
-            $last_breadcrumb_label_eval = mixed();
             $last_breadcrumb_label_eval = (count($BREADCRUMB_SET_PARENTS) == 0) ? '' : $BREADCRUMB_SET_PARENTS[count($BREADCRUMB_SET_PARENTS) - 1][1];
             if (is_object($last_breadcrumb_label_eval)) {
                 $last_breadcrumb_label_eval = $last_breadcrumb_label_eval->evaluate();
@@ -1874,7 +1873,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
         $new_comcode_page_row['p_add_date'] = filectime($file_base . '/' . $string);
         list($html, $comcode_page_row, $title_to_use, $raw_comcode) = _load_comcode_page_cache_off($string, $zone, $codename, $file_base, $new_comcode_page_row, $being_included);
     }
-    $filtered_title_to_use = mixed();
+    $filtered_title_to_use = null;
     if ((!$is_panel) && (!$being_included)) {
         if (($title_to_use !== null) && ($title_to_use != '')) {
             get_screen_title($title_to_use, false); // Little hack - this will force DISPLAYED_TITLE to get set.

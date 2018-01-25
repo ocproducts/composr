@@ -171,7 +171,7 @@ function results_field_title($values, $sortables = array(), $order_param = 'sort
 {
     $cells = new Tempcode();
     foreach ($values as $value) {
-        $found = mixed();
+        $found = null;
         foreach ($sortables as $key => $sortable) {
             $_value = is_object($value) ? $value->evaluate() : $value;
             if (((is_string($sortable)) && ($sortable == $_value)) || ((is_object($sortable)) && ($sortable->evaluate() == $_value))) {

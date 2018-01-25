@@ -62,7 +62,7 @@ class Hook_upon_query_add_mentor
 
             require_lang('mentorr');
 
-            $mentor_usergroup_id = mixed();
+            $mentor_usergroup_id = null;
             $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list();
             foreach ($groups as $group_id => $group) {
                 if ($group == $mentor_usergroup) {

@@ -48,7 +48,7 @@ function render_forum_box($row, $zone = '_SEARCH', $give_context = true, $includ
 
     $title = $give_context ? do_lang('CONTENT_IS_OF_TYPE', do_lang('FORUM'), $row['f_name']) : $row['f_name'];
 
-    $breadcrumbs = mixed();
+    $breadcrumbs = null;
     if ($include_breadcrumbs) {
         $breadcrumbs = breadcrumb_segments_to_tempcode(cns_forum_breadcrumbs($row['id'], null, null, true, ($root === null) ? get_param_integer('keep_forum_root', null) : $root));
     }

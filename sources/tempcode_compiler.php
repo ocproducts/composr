@@ -242,7 +242,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
     }
 
     if ($parameters !== null) {
-        $parameter = mixed();
+        $parameter = null;
         foreach ($parameters as $key => $parameter) {
             if (is_bool($parameter)) {
                 $parameters[$key] = $parameter ? '1' : '0';
@@ -1259,7 +1259,7 @@ function template_to_tempcode($text, $symbol_pos = 0, $inside_directive = false,
         $lang = user_lang();
     }
 
-    $parameters_used = mixed();
+    $parameters_used = null;
     if ($parameters !== null) {
         $parameters_used = array();
     }

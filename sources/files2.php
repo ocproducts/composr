@@ -287,7 +287,7 @@ function make_csv($data, $filename = 'data.csv', $headers = true, $output_and_ex
         }
     }
 
-    $outfile = mixed();
+    $outfile = null;
     if ($outfile_path !== null) {
         $outfile = fopen($outfile_path, 'w+b');
         flock($outfile, LOCK_EX);
@@ -596,7 +596,7 @@ function get_max_file_size($source_member = null, $db = null, $consider_php_limi
         $c = 0;
     }
 
-    $d = mixed();
+    $d = null;
     if (($source_member !== null) && (!has_privilege(get_member(), 'exceed_filesize_limit'))) { // We'll be considering quota also
         if (get_forum_type() == 'cns') {
             require_code('cns_groups');

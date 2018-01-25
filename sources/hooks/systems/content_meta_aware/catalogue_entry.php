@@ -143,8 +143,8 @@ class Hook_content_meta_aware_catalogue_entry
  */
 function generate_catalogue_entry_title($url_parts, $resource_fs_style = false)
 {
-    $catalogue_name = mixed();
-    $fields = mixed();
+    $catalogue_name = null;
+    $fields = null;
 
     $unique_key_num = 0;
     if ($resource_fs_style) {
@@ -179,7 +179,7 @@ function generate_catalogue_entry_title($url_parts, $resource_fs_style = false)
  */
 function generate_catalogue_thumb_field($url_parts)
 {
-    $unique_key_num = mixed();
+    $unique_key_num = null;
 
     $catalogue_name = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'c_name', array('id' => intval($url_parts['id'])));
     $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));

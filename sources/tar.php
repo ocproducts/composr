@@ -29,7 +29,7 @@
 function tar_open($path, $mode)
 {
     if ($path === null) {
-        $myfile = mixed();
+        $myfile = null;
         $exists = false;
     } else {
         $exists = file_exists($path) && (strpos($mode, 'c+') !== false);
@@ -84,7 +84,7 @@ function tar_get_directory(&$resource, $tolerate_errors = false)
     fseek($myfile, 0, SEEK_SET);
     $resource['already_at_end'] = false;
     $directory = array();
-    $next_name = mixed();
+    $next_name = null;
 
     $chr_0 = chr(0);
 

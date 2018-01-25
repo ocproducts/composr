@@ -272,7 +272,7 @@ function actual_add_catalogue_field($c_name, $name, $description = '', $type = '
     do {
         $entries = collapse_1d_complexity('id', $GLOBALS['SITE_DB']->query_select('catalogue_entries', array('id'), array('c_name' => $c_name), '', 300, $start));
         foreach ($entries as $entry) {
-            $default = mixed();
+            $default = null;
 
             list($raw_type, $default, $_type) = $ob->get_field_value_row_bits($map + array('id' => $cf_id), $required == 1, $default);
 
@@ -994,7 +994,7 @@ function actual_add_catalogue_entry($category_id, $validated, $notes, $allow_rat
     if ($id !== null) {
         $imap['id'] = $id;
     }
-    $val = mixed();
+    $val = null;
     foreach ($map as $field_id => $val) {
         $type = $fields[$field_id];
 

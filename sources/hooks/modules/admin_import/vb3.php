@@ -238,7 +238,6 @@ class Hook_import_vb3
                 $row_group_leader = -$row['userid']; // This will be fixed when we import members
             }
 
-            $row_promotion_target = null;
             $row_promotion_target = $row['joinusergroupid']; // This will be fixed when all the usergroups are added
 
             $is_super_admin = (($row['adminpermissions'] & 2) != 0) ? 1 : 0;
