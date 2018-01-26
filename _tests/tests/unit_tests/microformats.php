@@ -52,7 +52,7 @@ class microformats_test_set extends cms_test_case
 
     public function testHCard()
     {
-        $tpl = render_screen_preview('AUTHOR_SCREEN.tpl', 'core_cns', 'tpl_preview__cns_member_profile_screen');
+        $tpl = render_screen_preview('CNS_MEMBER_PROFILE_SCREEN.tpl', 'core_cns', 'tpl_preview__cns_member_profile_screen');
         $result = $this->do_validation($tpl->evaluate());
         $this->assertTrue($result['items'][0]['type'][0] == 'h-card');
         $this->assertTrue(!empty($result['items'][0]['properties']['name']));
@@ -65,7 +65,7 @@ class microformats_test_set extends cms_test_case
     {
         $url = 'https://waterpigs.co.uk/php-mf2/';
         $post_params = array('html' => $data, 'convertClassic' => '1');
-        $result = http_get_contents($url, array('post_params' => $post_params, 'raw_content_type' => 'application/json'));
+        $result = http_get_contents($url, array('post_params' => $post_params, 'accept' => 'application/json'));
         $_result = json_decode($result, true);
         return $_result;
     }

@@ -273,7 +273,7 @@ class SimpleTestCase {
             trigger_error('Can only make assertions within test methods');
         }
         $this->_reporter->paintError(
-                "Unexpected PHP error [$message] severity [$severity] in [$file line $line]");
+                "Unexpected PHP error [$message] severity [" . strval($severity) . "] in [$file line " . strval($line) . "]");
     }
 
     /**

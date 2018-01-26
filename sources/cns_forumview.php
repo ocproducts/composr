@@ -579,12 +579,14 @@ function cns_get_topic_array($topic_row, $member_id, $hot_topic_definition, $inv
     $num_posts = $topic_row['t_cache_num_posts'];
     $start_time = $topic_row['t_cache_first_time'];
     $end_time = $topic_row['t_cache_last_time'];
-    $days = floatval($end_time - $start_time) / 60.0 / 60.0 / 24.0;
-    if ($days == 0.0) {
-        $days = 1.0;
-    }
-    if (($num_posts >= 8) && (intval(round(floatval($num_posts) / $days)) >= $hot_topic_definition)) {
-        $topic['modifiers'][] = 'hot';
+    if (($start_time !== null) && ($end_time !== null)) {
+        $days = floatval($end_time - $start_time) / 60.0 / 60.0 / 24.0;
+        if ($days == 0.0) {
+            $days = 1.0;
+        }
+        if (($num_posts >= 8) && (intval(round(floatval($num_posts) / $days)) >= $hot_topic_definition)) {
+            $topic['modifiers'][] = 'hot';
+        }
     }
 
     return $topic;

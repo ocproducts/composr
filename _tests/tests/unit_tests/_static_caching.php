@@ -52,15 +52,15 @@ class _static_caching_test_set extends cms_test_case
         $url = build_url(array('page' => ''), '');
         $url2 = build_url(array('page' => 'xxx-does-not-exist' . uniqid('', true)), '');
 
-        $result = http_get_contents($url->evaluate(), array('trigger_error' => false)); // Prime cache
-        $this->assertTrue($result !== null, 'Failed to prime cache');
-
         $test_url = get_base_url() . '/does-not-exist.abc';
 
         $config_file_path = get_file_base() . '/_config.php';
         $config_file = file_get_contents($config_file_path);
         file_put_contents($config_file_path, $config_file . "\n\n\$SITE_INFO['fast_spider_cache'] = '1';\n\$SITE_INFO['any_guest_cached_too'] = '1';\n\$SITE_INFO['failover_mode'] = 'auto_off';\n\$SITE_INFO['failover_check_urls'] = '" . $test_url . "';\n\$SITE_INFO['failover_cache_miss_message'] = 'FAILOVER_CACHE_MISS';\n\$SITE_INFO['failover_email_contact'] = 'test@example.com';");
         fix_permissions($config_file_path);
+
+        $result = http_get_contents($url->evaluate(), array('trigger_error' => false)); // Prime cache
+        $this->assertTrue($result !== null, 'Failed to prime cache');
 
         $detect_url = find_script('failover_script');
         $result = http_get_contents($detect_url, array('trigger_error' => false)); // Should trigger failover, due to broken URL
@@ -69,10 +69,10 @@ class _static_caching_test_set extends cms_test_case
         clearstatcache();
         $this->assertTrue(strpos(file_get_contents(get_file_base() . '/_config.php'), "\$SITE_INFO['failover_mode'] = 'auto_on';") !== false, 'Failover should have activated but did not');
 
-        $result = http_get_contents($url->evaluate(), array('trigger_error' => false)); // Should be failed over, but cached
+        $result = http_get_contents($url->evaluate(), array('ignore_http_status' => true, 'trigger_error' => false)); // Should be failed over, but cached
         $this->assertTrue(strpos($result, '</body>') !== false, 'Failover should have been able to use static cache but did not');
 
-        $result = http_get_contents($url2->evaluate(), array('trigger_error' => false)); // Should be failed over, but cached
+        $result = http_get_contents($url2->evaluate(), array('ignore_http_status' => true, 'trigger_error' => false)); // Should be failed over, but cached
         $this->assertTrue(strpos($result, 'FAILOVER_CACHE_MISS') !== false, 'Failover cache miss message not found');
 
         file_put_contents($config_file_path, $config_file);

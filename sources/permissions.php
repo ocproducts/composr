@@ -662,10 +662,10 @@ function check_privilege($privilege, $cats = null, $member_id = null, $page_name
  * @param  MEMBER $member_id The member being checked whether to have the privilege
  * @param  ID_TEXT $privilege The ID code for the privilege being checked for
  * @param  ?ID_TEXT $page The ID code for the page being checked (null: current page)
- * @param  ID_TEXT $permission_module The ID code for the permission module being checked for
+ * @param  ID_TEXT $module The ID code for the permission module being checked for
  * @return boolean Whether the member has the privilege
  */
-function has_some_cat_privilege($member_id, $privilege, $page, $permission_module)
+function has_some_cat_privilege($member_id, $privilege, $page, $module)
 {
     $page_wide_test = has_privilege($member_id, $privilege, $page); // To make sure privileges are cached, and test if page-wide or site-wide exists
     if ($page_wide_test) {
@@ -673,8 +673,8 @@ function has_some_cat_privilege($member_id, $privilege, $page, $permission_modul
     }
 
     global $PRIVILEGE_CACHE;
-    if ((array_key_exists($member_id, $PRIVILEGE_CACHE)) && (array_key_exists($privilege, $PRIVILEGE_CACHE[$member_id])) && (array_key_exists('', $PRIVILEGE_CACHE[$member_id][$privilege])) && (array_key_exists($permission_module, $PRIVILEGE_CACHE[$member_id][$privilege]['']))) {
-        foreach ($PRIVILEGE_CACHE[$member_id][$privilege][''][$permission_module] as $_privilege) {
+    if ((array_key_exists($member_id, $PRIVILEGE_CACHE)) && (array_key_exists($privilege, $PRIVILEGE_CACHE[$member_id])) && (array_key_exists('', $PRIVILEGE_CACHE[$member_id][$privilege])) && (array_key_exists($module, $PRIVILEGE_CACHE[$member_id][$privilege]['']))) {
+        foreach ($PRIVILEGE_CACHE[$member_id][$privilege][''][$module] as $_privilege) {
             if ($_privilege == 1) {
                 return true;
             }
