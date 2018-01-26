@@ -48,7 +48,7 @@ class http_obscure_cases_test_set extends cms_test_case
         $found = false;
         foreach ($response->headers as $line) {
             $matches = array();
-            if (preg_match("#^" . $header . ": .*#i", $line, $matches) != 0) {
+            if (preg_match("#^" . $header . ": .*#i", $line) != 0) {
                 $found = true;
             }
         }

@@ -1,7 +1,11 @@
 <?php /*
 
  Composr
+<<<<<<< HEAD
  Copyright (c) ocProducts, 2004-2018
+=======
+ Copyright (c) ocProducts, 2004-2018
+>>>>>>> master
 
  See text/EN/licence.txt for full licencing information.
 
@@ -18,6 +22,13 @@
  */
 class antispam_test_set extends cms_test_case
 {
+    public function setUp()
+    {
+        parent::setUp();
+
+        require_code('antispam');
+    }
+
     public function testHeuristics()
     {
         $_POST['foo_alien_code'] = '[link]http://example.com[/link] <a href="http://example.com">foo</a>';
@@ -44,5 +55,27 @@ class antispam_test_set extends cms_test_case
         } else {
             $this->assertTrue(strpos($scoring, 'guest') === false);
         }
+    }
+
+    public function testRBL()
+    {
+        list($result) = check_rbl('rbl.efnetrbl.org', '127.0.0.1');
+        $this->assertTrue($result != ANTISPAM_RESPONSE_ERROR);
+    }
+
+    public function testStopForumSpam()
+    {
+        list($result) = _check_stopforumspam('127.0.0.1');
+        $this->assertTrue($result != ANTISPAM_RESPONSE_ERROR);
+    }
+
+    public function testTornevallSubmit()
+    {
+        $this->assertTrue(is_string(http_get_contents('https://dnsbl.tornevall.org/soap/soapsubmit.php'))); // Very rough, at least tells us URL still exists
+    }
+
+    public function testStopForumSpamSubmit()
+    {
+        $this->assertTrue(is_string(http_get_contents('http://www.stopforumspam.com/add.php'))); // Very rough, at least tells us URL still exists
     }
 }

@@ -717,12 +717,12 @@ if ($rate_limiting) {
         $time = time();
 
         if (!(((!empty($_SERVER['SERVER_ADDR'])) && ($ip == $_SERVER['SERVER_ADDR'])) || ((!empty($_SERVER['LOCAL_ADDR'])) && ($ip == $_SERVER['LOCAL_ADDR'])))) {
+            global $RATE_LIMITING_DATA;
+            $RATE_LIMITING_DATA = array();
+
             // Read in state
             $rate_limiter_path = dirname(__DIR__) . '/data_custom/rate_limiter.php';
             if (is_file($rate_limiter_path)) {
-                global $RATE_LIMITING_DATA;
-                $RATE_LIMITING_DATA = array();
-
                 $fp = fopen($rate_limiter_path, 'rb');
                 flock($fp, LOCK_SH);
                 include($rate_limiter_path);

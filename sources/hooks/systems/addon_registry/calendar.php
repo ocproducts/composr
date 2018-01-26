@@ -368,19 +368,35 @@ class Hook_addon_registry_calendar
      */
     public function tpl_preview__block_side_calendar_listing()
     {
+        $days = array(
+            array(
+                'EVENTS' => array(
+                    array(
+                        'TITLE' => lorem_word(),
+                        'VIEW_URL' => placeholder_url(),
+                        'ICON' => 'calendar/' . placeholder_img_code('calendar'),
+                        'T_TITLE' => lorem_word(),
+                        'DESCRIPTION' => lorem_paragraph_html(),
+
+                        'FROM_DAY' => get_timezoned_date(123456789),
+                        'TIME' => get_timezoned_date(123456789),
+                        'TIME_RAW' => strval(123456789),
+                        'TIME_VCAL' => strval(123456789),
+
+                        'TO_DAY' => get_timezoned_date(123456789 + 60 * 60 * 24),
+                        'TO_TIME' =>get_timezoned_date(123456789 + 60 * 60 * 24),
+                        'TO_TIME_RAW' => strval(123456789 + 60 * 60 * 24),
+                        'TO_TIME_VCAL' => strval(123456789 + 60 * 60 * 24),
+                    ),
+                ),
+            ),
+        );
+
         return array(
             lorem_globalise(do_lorem_template('BLOCK_SIDE_CALENDAR_LISTING', array(
                 'BLOCK_ID' => lorem_word(),
-                'DAYS' => placeholder_array(),
-                'EVENTS' => placeholder_array(),
+                'DAYS' => $days,
                 'CALENDAR_URL' => placeholder_url(),
-                'TITLE' => lorem_word(),
-                'TIME' => placeholder_date(),
-                'VIEW_URL' => placeholder_url(),
-                'ICON' => 'calendar/' . placeholder_img_code('calendar'),
-                'T_TITLE' => lorem_word(),
-                'DESCRIPTION' => lorem_paragraph_html(),
-                'TIME_VCAL' => placeholder_number(),
             )), null, '', true)
         );
     }
@@ -768,6 +784,8 @@ class Hook_addon_registry_calendar
 
         return array(
             lorem_globalise(do_lorem_template('CALENDAR_EVENT_SCREEN', array(
+                'TITLE' => get_screen_title('CALENDAR_EVENT_VCAL', true, array(lorem_phrase())),
+
                 'ID' => placeholder_id(),
                 'TAGS' => lorem_word_html(),
                 'WARNING_DETAILS' => '',
@@ -777,19 +795,14 @@ class Hook_addon_registry_calendar
                 'EDIT_DATE_RAW' => placeholder_date_raw(),
                 'VIEWS' => lorem_phrase(),
                 'LOGO' => 'calendar/' . placeholder_img_code('calendar'),
-                'DAY' => placeholder_date(),
                 'RECURRENCE' => placeholder_number(),
                 'IS_PUBLIC' => lorem_phrase(),
                 'PRIORITY' => lorem_phrase(),
                 'PRIORITY_LANG' => lorem_phrase(),
                 'TYPE' => lorem_phrase(),
-                'TIME' => placeholder_date(),
-                'TIME_RAW' => placeholder_date_raw(),
-                'TIME_VCAL' => placeholder_date_raw(),
                 'EDIT_URL' => placeholder_url(),
                 'SUBSCRIPTIONS' => $subscriptions,
                 'SUBSCRIBE_URL' => placeholder_url(),
-                'TITLE' => lorem_title(),
                 'BACK_URL' => placeholder_url(),
                 'CONTENT' => lorem_phrase(),
                 'SUBSCRIBED' => $subscribed,
@@ -797,6 +810,16 @@ class Hook_addon_registry_calendar
                 'TRACKBACK_DETAILS' => lorem_sentence_html(),
                 'VALIDATED' => true,
                 'COMMENT_DETAILS' => $comment_details,
+
+                'DAY' => get_timezoned_date(123456789),
+                'TIME' => get_timezoned_date(123456789),
+                'TIME_RAW' => strval(123456789),
+                'TIME_VCAL' => strval(123456789),
+
+                'TO_DAY' => get_timezoned_date(123456789 + 60 * 60 * 24),
+                'TO_TIME' =>get_timezoned_date(123456789 + 60 * 60 * 24),
+                'TO_TIME_RAW' => strval(123456789 + 60 * 60 * 24),
+                'TO_TIME_VCAL' => strval(123456789 + 60 * 60 * 24),
             )), null, '', true)
         );
     }

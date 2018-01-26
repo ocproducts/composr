@@ -290,7 +290,7 @@ function init__global2()
     // Most critical things
     require_code('global3'); // A lot of support code is present in this
     require_code('web_resources');
-    if (!running_script('webdav')) {
+    if ((!running_script('webdav')) && (!running_script('endpoint'))) {
         $http_method = $_SERVER['REQUEST_METHOD'];
         if ($http_method != 'GET' && $http_method != 'POST' && $http_method != 'HEAD' && $http_method != '') {
             header('HTTP/1.0 405 Method Not Allowed');
@@ -443,7 +443,7 @@ function init__global2()
 
     if ((!$MICRO_AJAX_BOOTUP) && (!$MICRO_BOOTUP)) {
         // Clear caching if needed
-        $changed_base_url = (get_value('last_base_url', null, true) !== get_base_url(false));
+        $changed_base_url = (get_value('last_base_url', null, true) !== get_base_url(false)) && (get_value('no_base_check') !== '1');
         if ((running_script('index')) && ((is_browser_decaching()) || ($changed_base_url))) {
             require_code('caches3');
             auto_decache($changed_base_url);

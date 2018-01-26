@@ -193,7 +193,7 @@ function actual_add_catalogue($name, $title, $description, $display_type, $is_tr
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_add('SEARCH:catalogues:index:' . $name, $add_time, null, SITEMAP_IMPORTANCE_MEDIUM, 'weekly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'catalogues_catalogue', $name));
+    notify_sitemap_node_add('_SEARCH:catalogues:index:' . $name, $add_time, null, SITEMAP_IMPORTANCE_MEDIUM, 'weekly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'catalogues_catalogue', $name));
 
     return $name;
 }

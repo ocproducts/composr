@@ -193,7 +193,13 @@ function dload_script()
     $size = filesize($_full);
     if ($got_before === null) {
         $bandwidth = $GLOBALS['SITE_DB']->query_value_if_there('SELECT SUM(file_size) AS answer FROM ' . get_table_prefix() . 'download_logging l LEFT JOIN ' . get_table_prefix() . 'download_downloads d ON l.id=d.id WHERE date_and_time>' . strval(time() - 24 * 60 * 60 * 32) . ' AND date_and_time<=' . strval(time()));
-        if ((($bandwidth + floatval($size)) > (floatval(get_option('maximum_download')) * 1024 * 1024 * 1024)) && (!has_privilege(get_member(), 'bypass_bandwidth_restriction'))) {
+        if ($bandwidth === null) {
+            $bandwidth = 0.0;
+        }
+        if (!is_float($bandwidth)) {
+            $bandwidth = floatval($bandwidth);
+        }
+        if ((($bandwidth + floatval($size)) > floatval(get_option('maximum_download')) * 1024.0 * 1024.0 * 1024.0) && (!has_privilege(get_member(), 'bypass_bandwidth_restriction'))) {
             warn_exit(do_lang_tempcode('TOO_MUCH_DOWNLOAD'));
         }
 
@@ -346,7 +352,7 @@ function add_download_category($category, $parent_id, $description, $notes = '',
     dispatch_member_mention_notifications('download_category', strval($id));
 
     require_code('sitemap_xml');
-    notify_sitemap_node_add('SEARCH:downloads:browse:' . strval($id), $add_time, null, SITEMAP_IMPORTANCE_MEDIUM, 'weekly', may_enter_download_category($GLOBALS['FORUM_DRIVER']->get_guest_id(), $id));
+    notify_sitemap_node_add('_SEARCH:downloads:browse:' . strval($id), $add_time, null, SITEMAP_IMPORTANCE_MEDIUM, 'weekly', may_enter_download_category($GLOBALS['FORUM_DRIVER']->get_guest_id(), $id));
 
     return $id;
 }
@@ -494,7 +500,7 @@ function create_data_mash($url, $data = null, $extension = null, $direct_path = 
         return '';
     }
 
-    if (ini_get('memory_usage') == '8M') {
+    if (ini_get('memory_usage') === '8M') {
         return ''; // Some cowardice... don't want to tempt fate
     }
 
@@ -977,7 +983,7 @@ function add_download($category_id, $name, $url, $description, $author, $additio
     dispatch_member_mention_notifications('download', strval($id), $submitter);
 
     require_code('sitemap_xml');
-    notify_sitemap_node_add('SEARCH:downloads:entry:' . strval($id), $add_date, $edit_date, SITEMAP_IMPORTANCE_HIGH, 'monthly', may_enter_download_category($GLOBALS['FORUM_DRIVER']->get_guest_id(), $category_id));
+    notify_sitemap_node_add('_SEARCH:downloads:entry:' . strval($id), $add_date, $edit_date, SITEMAP_IMPORTANCE_HIGH, 'monthly', may_enter_download_category($GLOBALS['FORUM_DRIVER']->get_guest_id(), $category_id));
 
     return $id;
 }

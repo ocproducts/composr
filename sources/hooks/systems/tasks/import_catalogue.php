@@ -27,20 +27,23 @@ class Hook_task_import_catalogue
      * Run the task hook.
      *
      * @param  ID_TEXT $catalogue_name The name of the catalogue that was used
-     * @param  string $key_field The title of the key field
+     * @param  string $key_field The title of the key field (blank: none)
      * @param  ID_TEXT $new_handling New handling method
+     * @set skip add
      * @param  ID_TEXT $delete_handling Delete handling method
+     * @set delete leave
      * @param  ID_TEXT $update_handling Update handling method
-     * @param  ID_TEXT $meta_keywords_field Meta keywords field
-     * @param  ID_TEXT $meta_description_field Meta description field
-     * @param  ID_TEXT $notes_field Notes field
+     * @set overwrite freshen skip delete
+     * @param  ID_TEXT $meta_keywords_field Meta keywords field (blank: none)
+     * @param  ID_TEXT $meta_description_field Meta description field (blank: none)
+     * @param  ID_TEXT $notes_field Notes field (blank: none)
      * @param  boolean $allow_rating Whether rating is allowed for this resource
      * @param  boolean $allow_comments Whether comments are allowed for this resource
      * @param  boolean $allow_trackbacks Whether trackbacks are allowed for this resource
-     * @param  PATH $csv_name The CSV file being imported
+     * @param  PATH $csv_path The CSV file being imported
      * @return ?array A tuple of at least 2: Return mime-type, content (either Tempcode, or a string, or a filename and file-path pair to a temporary file), map of HTTP headers if transferring immediately, map of ini_set commands if transferring immediately (null: show standard success message)
      */
-    public function run($catalogue_name, $key_field, $new_handling, $delete_handling, $update_handling, $meta_keywords_field, $meta_description_field, $notes_field, $allow_rating, $allow_comments, $allow_trackbacks, $csv_name)
+    public function run($catalogue_name, $key_field, $new_handling, $delete_handling, $update_handling, $meta_keywords_field, $meta_description_field, $notes_field, $allow_rating, $allow_comments, $allow_trackbacks, $csv_path)
     {
         require_code('catalogues2');
         require_lang('catalogues');
@@ -64,7 +67,7 @@ class Hook_task_import_catalogue
 
         // Open CSV file
         safe_ini_set('auto_detect_line_endings', '1');
-        $handle = fopen($csv_name, 'rb');
+        $handle = fopen($csv_path, 'rb');
 
         // Read column names
         $del = ',';
@@ -80,7 +83,7 @@ class Hook_task_import_catalogue
         if (($key_field != '') && ($key_field != 'ID')) {
             if (!array_key_exists($key_field, $csv_field_titles)) {
                 fclose($handle);
-                @unlink($csv_name);
+                @unlink($csv_path);
                 return array(null, do_lang_tempcode('CATALOGUES_IMPORT_MISSING_KEY_FIELD'));
             }
             $found_key = false;
@@ -92,7 +95,7 @@ class Hook_task_import_catalogue
             }
             if (!$found_key) {
                 fclose($handle);
-                @unlink($csv_name);
+                @unlink($csv_path);
                 return array(null, do_lang_tempcode('CATALOGUES_IMPORT_MISSING_KEY_FIELD'));
             }
         }
@@ -101,17 +104,17 @@ class Hook_task_import_catalogue
 
         if (($meta_keywords_field != '') && (!array_key_exists($meta_keywords_field, $csv_field_titles))) {
             fclose($handle);
-            @unlink($csv_name);
+            @unlink($csv_path);
             return array(null, do_lang_tempcode('CATALOGUES_IMPORT_MISSING_META_KEYWORDS_FIELD'));
         }
         if (($meta_description_field != '') && (!array_key_exists($meta_description_field, $csv_field_titles))) {
             fclose($handle);
-            @unlink($csv_name);
+            @unlink($csv_path);
             return array(null, do_lang_tempcode('CATALOGUES_IMPORT_MISSING_META_DESCRIPTION_FIELD'));
         }
         if (($notes_field != '') && (!array_key_exists($notes_field, $csv_field_titles))) {
             fclose($handle);
-            @unlink($csv_name);
+            @unlink($csv_path);
             return array(null, do_lang_tempcode('CATALOGUES_IMPORT_MISSING_NOTES_FIELD'));
         }
 
@@ -124,7 +127,7 @@ class Hook_task_import_catalogue
             $test = $this->import_csv_lines($catalogue_name, $data, $root_cat, $fields, $categories, $csv_field_titles, $key_field, $new_handling, $delete_handling, $update_handling, $matched_ids, $notes_field, $meta_keywords_field, $meta_description_field, $allow_rating, $allow_comments, $allow_trackbacks);
             if ($test !== null) {
                 fclose($handle);
-                @unlink($csv_name);
+                @unlink($csv_path);
                 return $test;
             }
         }
@@ -143,7 +146,7 @@ class Hook_task_import_catalogue
         pop_lax_comcode();
 
         fclose($handle);
-        @unlink($csv_name);
+        @unlink($csv_path);
         return null;
     }
 

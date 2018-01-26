@@ -209,6 +209,10 @@ class Database_Static_mysql extends Database_super_mysql
                 $name = $names[$j];
                 $type = $types[$j];
 
+                if (substr($type, 0, 3) == 'int') {
+                    $type = 'int';
+                }
+
                 switch ($type) {
                     case 'int':
                         if (($v === null) || ($v === '')) { // Roadsend returns empty string instead of null

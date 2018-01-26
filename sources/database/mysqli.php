@@ -204,7 +204,14 @@ class Database_Static_mysqli extends Database_super_mysql
             foreach ($row as $v) {
                 $name = $names[$j];
                 $type = $types[$j];
-                if (($type === 'int') || ($type === 'integer') || ($type === 'decimal') || ($type === 'real') || ($type === 1) || ($type === 3) || ($type === 8)) {
+
+                if (is_string($type)) {
+                    if (substr($type, 0, 3) == 'int') {
+                        $type = 'int';
+                    }
+                }
+
+                if (($type === 'int') || ($type === 'decimal') || ($type === 'real') || ($type === 1) || ($type === 3) || ($type === 8)) {
                     if ((($v === null)) || ($v === '')) { // Roadsend returns empty string instead of null
                         $newrow[$name] = null;
                     } else {

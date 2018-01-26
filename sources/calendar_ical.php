@@ -35,13 +35,17 @@ function ical_escape($in)
 
 /**
  * Outputs the logged-in member's calendar view to ical.
+ *
+ * @param  boolean $headers_and_exit Whether to output headers and exit (if this is false it will still echo out, but you can capture with an output buffer)
  */
-function output_ical()
+function output_ical($headers_and_exit = true)
 {
     safe_ini_set('ocproducts.xss_detect', '0');
 
-    header('Content-Type: text/calendar');
-    header('Content-Disposition: inline; filename="export.ics"');
+    if ($headers_and_exit) {
+        header('Content-Type: text/calendar');
+        header('Content-Disposition: inline; filename="export.ics"');
+    }
 
     if ($_SERVER['REQUEST_METHOD'] == 'HEAD') {
         return;
@@ -82,24 +86,24 @@ function output_ical()
     }
     $where .= '(e_member_calendar=' . strval(get_member()) . ' OR e_submitter=' . strval(get_member()) . ' OR e_member_calendar IS NULL)'; // sanity filter
 
-    echo "BEGIN:VCALENDAR\n";
-    echo "VERSION:2.0\n";
-    echo "PRODID:-//ocProducts/Composr//NONSGML v1.0//EN\n";
-    echo "CALSCALE:GREGORIAN\n";
+    echo "BEGIN:VCALENDAR\r\n";
+    echo "VERSION:2.0\r\n";
+    echo "PRODID:-//ocProducts/Composr//NONSGML v1.0//EN\r\n";
+    echo "CALSCALE:GREGORIAN\r\n";
     $categories = array();
     $_categories = $GLOBALS['SITE_DB']->query_select('calendar_types', array('*'));
     foreach ($_categories as $category) {
         $categories[$category['id']] = get_translated_text($category['t_title']);
     }
     if (($filter === null) || (!array_key_exists($filter, $categories))) {
-        echo "X-WR-CALNAME:" . ical_escape(get_site_name()) . "\n";
+        echo "X-WR-CALNAME:" . ical_escape(get_site_name()) . "\r\n";
     } else {
-        echo "X-WR-CALNAME:" . ical_escape(get_site_name() . ": " . $categories[$filter]) . "\n";
+        echo "X-WR-CALNAME:" . ical_escape(get_site_name() . ": " . $categories[$filter]) . "\r\n";
     }
 
     $start = 0;
     do {
-        $events = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'calendar_events r' . $privacy_join . ' WHERE ' . $where . ' ORDER BY e_add_date DESC', 1000, $start);
+        $events = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'calendar_events r' . $privacy_join . ' WHERE ' . $where . ' ORDER BY id ASC', 1000, $start);
         foreach ($events as $event) {
             if (!has_category_access(get_member(), 'calendar', strval($event['e_type']))) {
                 continue;
@@ -113,15 +117,15 @@ function output_ical()
                 }
             }
 
-            echo "BEGIN:VEVENT\n";
+            echo "BEGIN:VEVENT\r\n";
 
-            echo "DTSTAMP:" . date('Ymd', $event['e_add_date']) . "T" . date('His', $event['e_add_date']) . "\n";
-            echo "CREATED:" . date('Ymd', $event['e_add_date']) . "T" . date('His', $event['e_add_date']) . "\n";
+            echo "DTSTAMP:" . date('Ymd', $event['e_add_date']) . "T" . date('His', $event['e_add_date']) . "Z\r\n";
+            echo "CREATED:" . date('Ymd', $event['e_add_date']) . "T" . date('His', $event['e_add_date']) . "Z\r\n";
             if ($event['e_edit_date'] !== null) {
-                echo "LAST-MODIFIED:" . date('Ymd', $event['e_add_date']) . "T" . date('His', $event['e_edit_date']) . "\n";
+                echo "LAST-MODIFIED:" . date('Ymd', $event['e_add_date']) . "T" . date('His', $event['e_edit_date']) . "Z\r\n";
             }
 
-            echo "SUMMARY:" . ical_escape(get_translated_text($event['e_title'])) . "\n";
+            echo "SUMMARY:" . ical_escape(get_translated_text($event['e_title'])) . "\r\n";
             $description = get_translated_text($event['e_content']);
             $matches = array();
             $num_matches = preg_match_all('#\[attachment[^\]]*\](\d+)\[/attachment\]#', $description, $matches);
@@ -131,10 +135,12 @@ function output_ical()
                 if (array_key_exists(0, $attachments)) {
                     $attachment = $attachments[0];
                     require_code('mime_types');
-                    echo "ATTACH;FMTTYPE=" . ical_escape(get_mime_type($attachment['a_original_filename'], has_privilege($event['e_submitter'], 'comcode_dangerous'))) . ":" . ical_escape(find_script('attachments') . '?id=' . strval($attachment['id'])) . "\n";
+                    echo "ATTACH;FMTTYPE=" . ical_escape(get_mime_type($attachment['a_original_filename'], has_privilege($event['e_submitter'], 'comcode_dangerous'))) . ":" . ical_escape(find_script('attachments') . '?id=' . strval($attachment['id'])) . "\r\n";
                 }
             }
-            echo "DESCRIPTION:" . ical_escape(strip_comcode($description)) . "\n";
+            echo "DESCRIPTION:" . ical_escape(strip_comcode($description)) . "\r\n";
+
+            echo "PRIORITY:" . strval($event['e_priority']) . "\r\n";
 
             if (!is_guest($event['e_submitter'])) {
                 echo "ORGANIZER;CN=" . ical_escape($GLOBALS['FORUM_DRIVER']->get_username($event['e_submitter'], true)) . ";DIR=" . ical_escape($GLOBALS['FORUM_DRIVER']->member_profile_url($event['e_submitter'], false));
@@ -142,15 +148,15 @@ function output_ical()
                 if ($addr != '') {
                     echo ":MAILTO:" . ical_escape($addr);
                 }
-                echo "\n";
+                echo "\r\n";
             }
-            echo "CATEGORIES:" . ical_escape($categories[$event['e_type']]) . "\n";
-            echo "CLASS:" . ($public ? 'PUBLIC' : 'PRIVATE') . "\n";
-            echo "STATUS:" . (($event['validated'] == 1) ? 'CONFIRMED' : 'TENTATIVE') . "\n";
-            echo "UID:" . ical_escape(strval($event['id']) . '@' . get_base_url()) . "\n";
+            echo "CATEGORIES:" . ical_escape($categories[$event['e_type']]) . "\r\n";
+            echo "CLASS:" . ($public ? 'PUBLIC' : 'PRIVATE') . "\r\n";
+            echo "STATUS:" . (($event['validated'] == 1) ? 'CONFIRMED' : 'TENTATIVE') . "\r\n";
+            echo "UID:" . ical_escape(strval($event['id']) . '@' . get_base_url()) . "\r\n";
             $_url = build_url(array('page' => 'calendar', 'type' => 'view', 'id' => $event['id']), get_module_zone('calendar'), array(), false, false, true);
             $url = $_url->evaluate();
-            echo "URL:" . ical_escape($url) . "\n";
+            echo "URL:" . $url . "\r\n";
 
             require_code('feedback');
             $forum = find_overridden_comment_forum('calendar', strval($event['e_type']));
@@ -166,7 +172,7 @@ function output_ical()
                         if ($comment['title'] != '') {
                             $comment['message'] = $comment['title'] . ': ' . $comment['message'];
                         }
-                        echo "COMMENT:" . ical_escape(strip_comcode(is_object($comment['message']) ? $comment['message'] : $comment['message']) . ' - ' . $GLOBALS['FORUM_DRIVER']->get_username($comment['member'], true) . ' (' . get_timezoned_date_time($comment['date']) . ')') . "\n";
+                        echo "COMMENT:" . ical_escape(strip_comcode(is_object($comment['message']) ? $comment['message'] : $comment['message']) . ' - ' . $GLOBALS['FORUM_DRIVER']->get_username($comment['member'], true) . ' (' . get_timezoned_date_time($comment['date']) . ')') . "\r\n";
                     }
                 }
                 $start += 1000;
@@ -219,9 +225,9 @@ function output_ical()
                         }
                     }
                     if ($parts[1][$i] != '0') {
-                        echo "DTSTART;TZ=" . $event['e_timezone'] . ":" . date('Ymd', $time) . (($event['e_start_hour'] === null) ? "" : ("T" . date('His', $time))) . "\n";
+                        echo "DTSTART;TZID=" . $event['e_timezone'] . ":" . date('Ymd', $time) . (($event['e_start_hour'] === null) ? "" : ("T" . date('His', $time))) . "\r\n";
                         if ($time2 !== null) {
-                            echo "DTEND:" . date('Ymd', $time2) . "T" . (($event['e_end_hour'] === null) ? "" : ("T" . date('His', $time2))) . "\n";
+                            echo "DTEND:" . date('Ymd', $time2) . "T" . (($event['e_end_hour'] === null) ? "" : ("T" . date('His', $time2))) . "\r\n";
                         }
                         $recurrence_code = 'FREQ=' . strtoupper($parts[0]); // MONTHLY etc
                         echo "RRULE:" . $recurrence_code;
@@ -267,13 +273,13 @@ function output_ical()
                                     break;
                             }
                         }
-                        echo "\n";
+                        echo "\r\n";
                     }
                 }
             } else {
-                echo "DTSTART:" . date('Ymd', $time) . "T" . date('His', $time) . "\n";
+                echo "DTSTART;TZID=" . $event['e_timezone'] . ":" . date('Ymd', $time) . "T" . date('His', $time) . "\r\n";
                 if ($time2 !== null) {
-                    echo "DTEND:" . date('Ymd', $time2) . (($event['e_start_hour'] === null) ? "" : "T" . date('His', $time2)) . "\n";
+                    echo "DTEND:" . date('Ymd', $time2) . (($event['e_start_hour'] === null) ? "" : "T" . date('His', $time2)) . "\r\n";
                 }
             }
 
@@ -290,48 +296,51 @@ function output_ical()
                     if ($addr != '') {
                         echo ":MAILTO:" . ical_escape($addr);
                     }
-                    echo "\n";
+                    echo "\r\n";
                 } else {
-                    echo "BEGIN:VALARM\n";
-                    echo "X-WR-ALARMUID:alarm" . ical_escape(strval($event['id']) . '@' . get_base_url()) . "\n";
-                    echo "ACTION:AUDIO\n";
-                    echo "TRIGGER:-PT" . strval($attendee['n_seconds_before']) . "S\n";
-                    echo "ATTACH;VALUE=URI:Basso\n";
-                    echo "END:VALARM\n";
+                    echo "BEGIN:VALARM\r\n";
+                    echo "X-WR-ALARMUID:alarm" . ical_escape(strval($event['id']) . '@' . get_base_url()) . "\r\n";
+                    echo "ACTION:AUDIO\r\n";
+                    echo "TRIGGER:-PT" . strval($attendee['n_seconds_before']) . "S\r\n";
+                    echo "ATTACH;VALUE=URI:Basso\r\n";
+                    echo "END:VALARM\r\n";
                 }
             }
 
-            echo "END:VEVENT\n";
+            echo "END:VEVENT\r\n";
         }
 
         $start += 1000;
     } while (array_key_exists(0, $events));
 
-    echo "END:VCALENDAR\n";
-    exit();
+    echo "END:VCALENDAR\r\n";
+
+    if ($headers_and_exit) {
+        exit();
+    }
 }
 
 /**
  * Import ical events to members's event calendar.
  *
- * @param  PATH $file_name File path
+ * @param  PATH $file_path File path
  */
-function ical_import($file_name)
+function ical_import($file_path)
 {
-    $data = unixify_line_format(file_get_contents($file_name));
+    $data = unixify_line_format(file_get_contents($file_path));
 
-    $exploded = explode('BEGIN:VCALENDAR', $data);
-    $whole = end($exploded);
-
-    $events = explode('BEGIN:VEVENT', $whole);
-
-    $calendar_nodes = array();
-
+    $calendars = explode('BEGIN:VCALENDAR', $data);
+    $calendar = end($calendars);
+    $events = explode('BEGIN:VEVENT', $calendar);
     foreach ($events as $key => $items) {
+        if ($key == 0) {
+            continue; // This is before the first event block
+        }
+
+        // Pre-processing of notes
         $items = preg_replace('#(.+)\n +(.*)\r?\n#', '${1}${2}' . "\n", $items); // Merge split lines
-
+        $event_nodes = array();
         $nodes = explode("\n", $items);
-
         foreach ($nodes as $_child) {
             if (strpos($_child, ':') === false) {
                 continue;
@@ -354,35 +363,37 @@ function ical_import($file_name)
 
             $matches = array();
             if (preg_match('#;TZID=(.*)#', $child[0], $matches)) {
-                $calendar_nodes[$key]['TZID'] = $matches[1];
+                $event_nodes['TZID'] = $matches[1];
             }
             $child[0] = preg_replace('#;.*#', '', $child[0]);
 
             if (array_key_exists(1, $child) && $child[0] !== 'PRODID' && $child[0] !== 'VERSION' && $child[0] !== 'END') {
-                $calendar_nodes[$key][$child[0]] = trim($child[1]);
+                $event_nodes[$child[0]] = trim($child[1]);
             }
         }
 
-        if ($key != 0) {
-            list(, $type_id, $type, $recurrence, $recurrences, $seg_recurrences, $title, $content, $priority, $is_public, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $timezone, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes) = get_event_data_ical($calendar_nodes[$key]);
+        // Process node data into event properties
+        list(, $type_id, $type, $recurrence, $recurrences, $seg_recurrences, $title, $content, $priority, $is_public, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $timezone, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes) = get_event_data_ical($event_nodes);
 
-            if ($type_id === null) {
-                require_code('calendar2');
-                $type_id = add_event_type(ucfirst($type), 'calendar/general');
-            }
+        // Add missing event types
+        if ($type_id === null) {
+            require_code('calendar2');
+            $type_id = add_event_type(ucfirst($type), 'calendar/general');
+        }
 
-            $id = add_calendar_event($type_id, $recurrence, $recurrences, $seg_recurrences, $title, $content, $priority, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $timezone, 1, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes);
+        // Add event
+        $id = add_calendar_event($type_id, $recurrence, $recurrences, $seg_recurrences, $title, $content, $priority, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $timezone, 1, null, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes);
 
-            if ($is_public == 0) {
-                if (addon_installed('content_privacy')) {
-                    $GLOBALS['SITE_DB']->query_insert('content_privacy', array(
-                        'content_type' => 'event',
-                        'content_id' => strval($id),
-                        'guest_view' => 0,
-                        'member_view' => 0,
-                        'friend_view' => 0,
-                    ));
-                }
+        // Set privacy
+        if ($is_public == 0) {
+            if (addon_installed('content_privacy')) {
+                $GLOBALS['SITE_DB']->query_insert('content_privacy', array(
+                    'content_type' => 'event',
+                    'content_id' => strval($id),
+                    'guest_view' => 0,
+                    'member_view' => 0,
+                    'friend_view' => 0,
+                ));
             }
         }
     }
@@ -391,10 +402,10 @@ function ical_import($file_name)
 /**
  * Get array of an events from node of an imported ical file.
  *
- * @param  array $calendar_nodes Array of given event details
+ * @param  array $event_nodes Array of given event details
  * @return array Returns array of event details for mapping
  */
-function get_event_data_ical($calendar_nodes)
+function get_event_data_ical($event_nodes)
 {
     $url = '';
     $type = null; //default value
@@ -416,10 +427,6 @@ function get_event_data_ical($calendar_nodes)
     $end_hour = null;
     $end_minute = null;
     $timezone = 'UTC';
-    $validated = null;
-    $allow_rating = null;
-    $allow_comments = null;
-    $allow_trackbacks = null;
     $notes = '';
     $validated = 1;
     $allow_rating = 1;
@@ -433,17 +440,17 @@ function get_event_data_ical($calendar_nodes)
     $rec_array = array('FREQ', 'BYDAY', 'INTERVAL', 'COUNT');
     $rec_by_day = array('MO', 'TU', 'WE', 'TH', 'FR', 'SA', 'SU');
 
-    //if (array_key_exists('LOCATION', $calendar_nodes))
-    //    $geo_position = $calendar_nodes['LOCATION'];      We don't support these in Composr, at least not yet
+    //if (array_key_exists('LOCATION', $event_nodes))
+    //    $geo_position = $event_nodes['LOCATION'];      We don't support these in Composr, at least not yet
 
-    if ((array_key_exists('CLASS', $calendar_nodes)) && ($calendar_nodes['CLASS'] == 'PRIVATE')) {
+    if ((array_key_exists('CLASS', $event_nodes)) && ($event_nodes['CLASS'] == 'PRIVATE')) {
         $is_public = 0;
     }
 
-    if (array_key_exists('RRULE', $calendar_nodes)) {
+    if (array_key_exists('RRULE', $event_nodes)) {
         $byday = '';
         foreach ($rec_array as $value) {
-            if (preg_match('/^((.)*(' . $value . '=))([^;]+)/i', $calendar_nodes['RRULE'], $matches) != 0) {
+            if (preg_match('/^((.)*(' . $value . '=))([^;]+)/i', $event_nodes['RRULE'], $matches) != 0) {
                 switch ($value) {
                     case 'BYDAY':
                         $matches2 = array();
@@ -502,8 +509,8 @@ function get_event_data_ical($calendar_nodes)
         }
     }
 
-    if (array_key_exists('CATEGORIES', $calendar_nodes)) {
-        $type = strtolower($calendar_nodes['CATEGORIES']);
+    if (array_key_exists('CATEGORIES', $event_nodes)) {
+        $type = strtolower($event_nodes['CATEGORIES']);
     }
 
     // Check existency of category
@@ -518,36 +525,36 @@ function get_event_data_ical($calendar_nodes)
         }
     }
 
-    if (array_key_exists('SUMMARY', $calendar_nodes)) {
-        $title = $calendar_nodes['SUMMARY'];
-        $content = $calendar_nodes['SUMMARY'];
+    if (array_key_exists('SUMMARY', $event_nodes)) {
+        $title = $event_nodes['SUMMARY'];
+        $content = $event_nodes['SUMMARY'];
     }
-    if (array_key_exists('DESCRIPTION', $calendar_nodes)) {
-        $content = str_replace('\n', "\n", $calendar_nodes['DESCRIPTION']);
-    }
-
-    if (array_key_exists('PRIORITY', $calendar_nodes)) {
-        $priority = $calendar_nodes['PRIORITY'];
+    if (array_key_exists('DESCRIPTION', $event_nodes)) {
+        $content = str_replace('\n', "\n", $event_nodes['DESCRIPTION']);
     }
 
-    if (array_key_exists('TZID', $calendar_nodes)) {
-        $timezone = $calendar_nodes['TZID'];
+    if (array_key_exists('PRIORITY', $event_nodes)) {
+        $priority = $event_nodes['PRIORITY'];
     }
 
-    if (array_key_exists('URL', $calendar_nodes)) {
-        $url = $calendar_nodes['URL'];
+    if (array_key_exists('TZID', $event_nodes)) {
+        $timezone = $event_nodes['TZID'];
+    }
+
+    if (array_key_exists('URL', $event_nodes)) {
+        $url = $event_nodes['URL'];
     }
 
     $all_day = true;
 
-    if (array_key_exists('DTSTART', $calendar_nodes)) {
-        if (strlen($calendar_nodes['DTSTART']) == 8) {
-            $calendar_nodes['DTSTART'] .= ' 00:00';
+    if (array_key_exists('DTSTART', $event_nodes)) {
+        if (strlen($event_nodes['DTSTART']) == 8) {
+            $event_nodes['DTSTART'] .= ' 00:00';
         }
-        if (substr($calendar_nodes['DTSTART'], -6) != ' 00:00') {
+        if (substr($event_nodes['DTSTART'], -6) != ' 00:00') {
             $all_day = false;
         }
-        $start = strtotime($calendar_nodes['DTSTART']);
+        $start = strtotime($event_nodes['DTSTART']);
         $start_year = intval(date('Y', $start));
         $start_month = intval(date('m', $start));
         $start_day = intval(date('d', $start));
@@ -566,14 +573,14 @@ function get_event_data_ical($calendar_nodes)
         }
     }
 
-    if (array_key_exists('DTEND', $calendar_nodes)) {
-        if (strlen($calendar_nodes['DTEND']) == 8) {
-            $calendar_nodes['DTEND'] .= ' 00:00';
+    if (array_key_exists('DTEND', $event_nodes)) {
+        if (strlen($event_nodes['DTEND']) == 8) {
+            $event_nodes['DTEND'] .= ' 00:00';
         }
-        if (substr($calendar_nodes['DTEND'], -6) != ' 00:00') {
+        if (substr($event_nodes['DTEND'], -6) != ' 00:00') {
             $all_day = false;
         }
-        $end = strtotime($calendar_nodes['DTEND']);
+        $end = strtotime($event_nodes['DTEND']);
         $end_year = intval(date('Y', $end));
         $end_month = intval(date('m', $end));
         $end_day = intval(date('d', $end));
@@ -586,12 +593,12 @@ function get_event_data_ical($calendar_nodes)
             $timestamp = mktime(0, 0, 0, $end_month, $end_day, $end_year);
             $amount_forward = tz_time($timestamp, $timezone) - $timestamp;
             $timestamp = $timestamp - $amount_forward;
-            list($end_year, $end_month, $end_day) = array_map('intval', explode('-', date('Y-m-d', $timestamp - 1)));
+            list($end_year, $end_month, $end_day) = array_map('intval', explode('-', date('Y-m-d', $timestamp)));
         } else {
             $timestamp = mktime($end_hour, $end_minute, 0, $end_month, $end_day, $end_year);
             $amount_forward = tz_time($timestamp, $timezone) - $timestamp;
             $timestamp = $timestamp - $amount_forward;
-            list($end_year, $end_month, $end_day, $end_hour, $end_minute) = array_map('intval', explode('-', date('Y-m-d-H-i-s', $timestamp - 1)));
+            list($end_year, $end_month, $end_day, $end_hour, $end_minute) = array_map('intval', explode('-', date('Y-m-d-H-i-s', $timestamp)));
         }
     }
 

@@ -99,8 +99,6 @@ class basic_code_formatting_test_set extends cms_test_case
 
     public function testCorrectLineTerminationAndLineFormat()
     {
-        return; // TODO
-
         if (php_function_allowed('set_time_limit')) {
             @set_time_limit(0);
         }

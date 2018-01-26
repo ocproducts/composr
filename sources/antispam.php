@@ -183,7 +183,7 @@ function check_rbl($rbl, $user_ip, $we_have_a_result_already = false, $page_leve
         return array(ANTISPAM_RESPONSE_UNLISTED, null);
     }
 
-    // Blocking based on opm.tornevall.org settings (used by default because stopforumspam syndicates to this and ask us to check this first, for performance)
+    // Blocking based on dnsbl.tornevall.org settings (used by default because stopforumspam syndicates to this and ask us to check this first, for performance)
     // http://dnsbl.tornevall.org/?do=usage
     if (strpos($rbl, 'tornevall.org') !== false) {
         $block = array(

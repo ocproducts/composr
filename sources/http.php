@@ -470,7 +470,7 @@ abstract class HttpDownloader
 
                 $this->divider = uniqid('', true);
                 $raw_payload2 = '';
-                if (($this->put === null) || (count($this->post_params) != 0) || (count($this->files) != 1)) {
+                if (($this->put === null) || (count($this->post_params) != 0) || (count($this->files) != 0)) {
                     $this->raw_payload .= 'Content-Type: multipart/form-data; boundary="--cms' . $this->divider . '"; charset=' . get_charset() . "\r\n";
                 }
                 foreach ($this->post_params as $key => $val) {
@@ -541,7 +541,7 @@ abstract class HttpDownloader
                     $this->raw_payload .= 'Content-Length: ' . strval(strlen($raw_payload2)) . "\r\n";
                 }
                 $this->raw_payload .= "\r\n" . $raw_payload2;
-                if (!$this->add_files_manually) {
+                if ($this->add_files_manually) {
                     $this->raw_payload = $raw_payload2; // Other settings will be passed via cURL itself
                 }
             }
@@ -1079,6 +1079,7 @@ class HttpDownloaderCurl extends HttpDownloader
                 break;
 
             case '400':
+            case '429':
             case '500':
                 if (!$this->ignore_http_status) {
                     if ($this->trigger_error) {
@@ -1501,9 +1502,10 @@ class HttpDownloaderSockets extends HttpDownloader
                                         }
 
                                         @fclose($mysock);
-                                    }
 
-                                    return null;
+                                        return null;
+                                    }
+                                    break;
 
                                 case '404':
                                     if (!$this->ignore_http_status) {
@@ -1514,11 +1516,13 @@ class HttpDownloaderSockets extends HttpDownloader
                                         }
 
                                         @fclose($mysock);
-                                    }
 
-                                    return null;
+                                        return null;
+                                    }
+                                    break;
 
                                 case '400':
+                                case '429':
                                 case '500':
                                     if (!$this->ignore_http_status) {
                                         if ($this->trigger_error) {
@@ -1528,9 +1532,10 @@ class HttpDownloaderSockets extends HttpDownloader
                                         }
 
                                         @fclose($mysock);
-                                    }
 
-                                    return null;
+                                        return null;
+                                    }
+                                    break;
 
                                 case '405':
                                     if ($this->byte_limit == 0 && !$this->no_redirect && empty($this->post_params)) { // Try again as non-HEAD request if we just did a HEAD request that got "Method not allowed"
@@ -1556,11 +1561,12 @@ class HttpDownloaderSockets extends HttpDownloader
                                         } else {
                                             $this->message_b = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNKNOWN', escape_html($url), escape_html($this->message));
                                         }
+
+                                        @fclose($mysock);
+
+                                        return null;
                                     }
-
-                                    @fclose($mysock);
-
-                                    return null;
+                                    break;
                             }
                         }
 

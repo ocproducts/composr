@@ -68,7 +68,7 @@ class Hook_health_check_performance extends Hook_Health_Check
 
         // external_health_check (on maintenance sheet)
 
-        $this->stateCheckManual('Check for [url="speed issues"]https://developers.google.com/speed/pagespeed/insights[/url] (take warnings with a pinch of salt, not every suggestion is appropriate)');
+        $this->stateCheckManual('Check for [url="speed issues"]https://developers.google.com/speed/pagespeed/insights/[/url] (take warnings with a pinch of salt, not every suggestion is appropriate)');
     }
 
     /**

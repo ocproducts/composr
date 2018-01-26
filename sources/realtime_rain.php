@@ -155,7 +155,7 @@ function rain_get_special_icons($ip_address, $timestamp, $user_agent = null, $ne
     $icon = null;
     $tooltip = '';
     $multiplicity = 1;
-    $bot = get_bot_type();
+    $bot = get_bot_type($user_agent);
     if ($bot !== null) {
         $icon = 'searchengine-icon';
         $tooltip = do_lang('RTEV_BOT');

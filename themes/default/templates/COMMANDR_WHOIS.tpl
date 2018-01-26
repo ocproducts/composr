@@ -26,10 +26,9 @@
 			<th>{!ACTIONS}</th>
 			<td>
 				<ul class="actions-list">
-					<li><a href="http://www.samspade.org/t/ipwhois?a={IP*}">Reverse-DNS/WHOIS</a></li>
-					<li><a href="http://network-tools.com/default.asp?prog=ping&amp;Netnic=whois.arin.net&amp;host={IP*}">Ping</a></li>
-					<li><a href="http://network-tools.com/default.asp?prog=trace&amp;Netnic=whois.arin.net&amp;host={IP*}">Tracert</a></li>
-					<li><a href="http://netgeo.caida.org/perl/netgeo.cgi?target={IP*}">Geo-Lookup</a></li>
+					<li><a href="http://whatismyipaddress.com/ip/{IP*}">Reverse-DNS/WHOIS/Geo-Lookup</a></li>
+					<li><a href="https://ping.eu/ping/?host={IP*}">Ping</a></li>
+					<li><a href="https://ping.eu/traceroute/?host={IP*}">Tracert</a></li>
 				</ul>
 			</td>
 		</tr>

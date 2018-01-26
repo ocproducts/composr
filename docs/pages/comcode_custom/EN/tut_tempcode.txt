@@ -497,11 +497,11 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 			<td>Get the total points in the specified member's account; some of these will probably have been spent already</td>
 		</tr>
 		<tr style="background: #DDFFDD">
-			<td>{$GROUP_ID,3}</td>
+			<td>{$GROUP_ID,0,3}</td>
 			<td>Find a member's nth usergroup (counting from zero), starting with the primary usergroup (first parameter is n, second parameter is member ID which defaults to the current member)</td>
 		</tr>
 		<tr style="background: #DDFFDD">
-			<td>{$GROUP_NAME,4}</td>
+			<td>{$GROUP_NAME,0,3}</td>
 			<td>Find the name of a members nth usergroup (counting from zero), starting with the primary usergroup (first parameter is n, second parameter is member ID which defaults to the current member)</td>
 		</tr>
 		<tr style="background: #DDFFDD">
@@ -1333,7 +1333,7 @@ where:
 			<td>Find the resource GUID from the resource ID</td>
 		</tr>
 		<tr style="background: #FFDDDD">
-			<td>{$FIND_COMMANDRFS_FILENAME_VIA_ID,&lt;resource-type&gt;,&lt;resource-id&gt;}</td>
+			<td>{$FIND_COMMANDR_FS_FILENAME_VIA_ID,&lt;resource-type&gt;,&lt;resource-id&gt;}</td>
 			<td>Find the Commandr-fs (repository) filename from the resource ID. There is an optional third parameter, which may be set to 1 if you want the resource sub-path to also be included. Sub-paths are relative to the repository-fs path for the resource-type.</td>
 		</tr>
 		<tr style="background: #FFDDDD">
@@ -1349,7 +1349,7 @@ where:
 			<td>Find the resource ID from the resource GUID. It is assumed you as the programmer already know the resource-type.</td>
 		</tr>
 		<tr style="background: #FFDDDD">
-			<td>{$FIND_ID_VIA_COMMANDRFS_FILENAME,&lt;resource-type&gt;,&lt;filename&gt;}</td>
+			<td>{$FIND_ID_VIA_COMMANDR_FS_FILENAME,&lt;resource-type&gt;,&lt;filename&gt;}</td>
 			<td>Find the resource ID from the Commandr-fs (repository) filename</td>
 		</tr>
 	</tbody>
@@ -1385,7 +1385,7 @@ where:
 			<td>Displays a link to a concept, if it has been saved already from a concept table.</td>
 		</tr>
 		<tr style="background: #FFDDDD">
-			<td>{$SELF_TUTORIAL_LINK,tutorial_id,page-link}</td>
+			<td>{$SET_TUTORIAL_LINK,tutorial_id,page-link}</td>
 			<td>Creates a tutorial link for the given tutorial_id to the given page-link. Needs doing in Tempcode because the Comcode parser doesn't know the target page for Comcode being parsed.</td>
 		</tr>
 		<tr style="background: #FFDDDD">

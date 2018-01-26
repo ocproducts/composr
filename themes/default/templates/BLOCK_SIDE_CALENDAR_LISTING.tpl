@@ -29,8 +29,8 @@
 									<time class="dtstart" datetime="{TIME_VCAL*}" itemprop="startDate">{$?,{$EQ,{TIME},{!ALL_DAY_EVENT}},{TIME_VCAL*},{TIME*}}</time>
 								</td>
 
-								<td class="summary"{+START,IF,{$EQ,{TIME},{!ALL_DAY_EVENT}}} colspan="2"{+END}>
-									<a href="{VIEW_URL*}" class="url" itemprop="name">{TITLE*}</a>
+								<td{+START,IF,{$EQ,{TIME},{!ALL_DAY_EVENT}}} colspan="2"{+END}>
+									<a href="{VIEW_URL*}" class="url" itemprop="name"><span class="summary">{TITLE*}</span></a>
 									{+START,IF_PASSED,TO_DAY}
 										<span {+START,IF,{$EQ,{FROM_DAY},{TO_DAY}}} style="display: none"{+END}>
 											<span class="associated-details">({!EVENT_ENDS_ON,<time class="dtend" datetime="{TO_TIME_VCAL*}" itemprop="endDate">{TO_DAY*}</time>})</span>

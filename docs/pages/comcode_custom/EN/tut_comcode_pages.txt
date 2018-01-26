@@ -79,7 +79,7 @@ The default Comcode pages are...
 		<tr>
 			<td>Welcome</td>
 			<td><kbd>404</kbd></td>
-			<td>Shown when requested content cannot be found.</td>
+			<td>Shown when requested content cannot be found. We have default [tt].htaccess[/tt] rules pointing broken links to here. This isn't called by Composr when something has found internally to be missing. A missing page in Composr will use the [tt]MISSING_SCREEN.tpl[/tt] template. A missing resource (e.g. category, entry, ...) will use [tt]WARN_SCREEN.tpl[/tt] (as it's just another typoe of warning).</td>
 			<td>5%</td>
 		</tr>
 		<tr>

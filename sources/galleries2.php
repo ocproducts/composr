@@ -500,7 +500,7 @@ function add_image($title, $cat, $description, $url, $thumb_url, $validated, $al
     dispatch_member_mention_notifications('image', strval($id), $submitter);
 
     require_code('sitemap_xml');
-    notify_sitemap_node_add('SEARCH:galleries:image:' . strval($id), $add_date, $edit_date, SITEMAP_IMPORTANCE_LOW, 'yearly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'galleries', $cat));
+    notify_sitemap_node_add('_SEARCH:galleries:image:' . strval($id), $add_date, $edit_date, SITEMAP_IMPORTANCE_LOW, 'yearly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'galleries', $cat));
 
     return $id;
 }
@@ -973,7 +973,7 @@ function add_video($title, $cat, $description, $url, $thumb_url, $validated, $al
     dispatch_member_mention_notifications('video', strval($id), $submitter);
 
     require_code('sitemap_xml');
-    notify_sitemap_node_add('SEARCH:galleries:video:' . strval($id), $add_date, $edit_date, SITEMAP_IMPORTANCE_HIGH, 'yearly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'galleries', $cat));
+    notify_sitemap_node_add('_SEARCH:galleries:video:' . strval($id), $add_date, $edit_date, SITEMAP_IMPORTANCE_HIGH, 'yearly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'galleries', $cat));
 
     return $id;
 }
@@ -1395,7 +1395,7 @@ function add_gallery($name, $fullname, $description, $notes, $parent_id, $accept
     dispatch_member_mention_notifications('gallery', $name, $g_owner);
 
     require_code('sitemap_xml');
-    notify_sitemap_node_add('SEARCH:galleries:browse:' . $name, $add_date, null, SITEMAP_IMPORTANCE_MEDIUM, 'monthly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'galleries', $name));
+    notify_sitemap_node_add('_SEARCH:galleries:browse:' . $name, $add_date, null, SITEMAP_IMPORTANCE_MEDIUM, 'monthly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'galleries', $name));
 
     return $name;
 }

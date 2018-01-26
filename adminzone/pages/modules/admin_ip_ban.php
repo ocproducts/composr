@@ -451,7 +451,7 @@ class Module_admin_ip_ban
 
         require_code('failure');
         require_code('failure_spammers');
-        syndicate_spammer_report(
+        $success = syndicate_spammer_report(
             $ip,
             is_guest($member_id) ? '' : $GLOBALS['FORUM_DRIVER']->get_username($member_id),
             $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id),
@@ -464,9 +464,9 @@ class Module_admin_ip_ban
         $_url = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
         if ($_url != '') {
             $url = make_string_tempcode($_url);
-            return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
+            return redirect_screen($this->title, $url, do_lang_tempcode($success ? 'SUCCESS' : 'CANCELLED'));
         }
-        return inform_screen($this->title, do_lang_tempcode('SUCCESS'));
+        return inform_screen($this->title, do_lang_tempcode($success ? 'SUCCESS' : 'CANCELLED'));
     }
 
     /**

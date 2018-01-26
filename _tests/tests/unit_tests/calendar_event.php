@@ -514,13 +514,13 @@ class calendar_event_test_set extends cms_test_case
 
     public function testAddCalendarEvent()
     {
-        $this->event_id = add_calendar_event(8, '1', null, 0, 'test_event', '', 3, 2010, 1, 10, 'day_of_month', 10, 15, null, null, null, 'day_of_month', null, null, null, 1, null, 1, 1, 1, 1, '', null, 0, null, null, null);
+        $this->event_id = add_calendar_event(8, 'none', null, 0, 'test_event', '', 3, 2010, 1, 10, 'day_of_month', 10, 15, null, null, null, 'day_of_month', null, null, null, 1, null, 1, 1, 1, 1, '', null, 0, null, null, null);
         $this->assertTrue('test_event' == get_translated_text($GLOBALS['SITE_DB']->query_select_value('calendar_events', 'e_title', array('id' => $this->event_id))));
     }
 
     public function testEditCalendarEvent()
     {
-        edit_calendar_event($this->event_id, 8, '2', null, 0, 'test_event1', '', 3, 2010, 1, 10, 'day_of_month', 10, 15, null, null, null, 'day_of_month', null, null, get_users_timezone(), 1, null, '', '', 1, 1, 1, 1, '');
+        edit_calendar_event($this->event_id, 8, 'none', null, 0, 'test_event1', '', 3, 2010, 1, 10, 'day_of_month', 10, 15, null, null, null, 'day_of_month', null, null, get_users_timezone(), 1, null, '', '', 1, 1, 1, 1, '');
         $this->assertTrue('test_event1' == get_translated_text($GLOBALS['SITE_DB']->query_select_value('calendar_events', 'e_title', array('id' => $this->event_id))));
     }
 

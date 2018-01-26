@@ -1063,21 +1063,21 @@ class Module_cms_catalogues extends Standard_crud_module
 
         // Grab the CSV file
         require_code('uploads');
-        $csv_name = null;
+        $csv_path = null;
         if (((is_plupload(true)) && (array_key_exists('file_anytype', $_FILES))) || ((array_key_exists('file_anytype', $_FILES)) && (is_uploaded_file($_FILES['file_anytype']['tmp_name'])))) {
-            $csv_name = $_FILES['file_anytype']['tmp_name'];
+            $csv_path = $_FILES['file_anytype']['tmp_name'];
         }
-        if ($csv_name === null) {
+        if ($csv_path === null) {
             warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN'));
         }
 
         // Fix up the CSV file to have unix style line endings
-        $fixed_contents = unixify_line_format(file_get_contents($csv_name));
+        $fixed_contents = unixify_line_format(file_get_contents($csv_path));
         require_code('files');
-        cms_file_put_contents_safe($csv_name, $fixed_contents, FILE_WRITE_FAILURE_SILENT);
+        cms_file_put_contents_safe($csv_path, $fixed_contents, FILE_WRITE_FAILURE_SILENT);
 
         require_code('tasks');
-        return call_user_func_array__long_task(do_lang('CATALOGUE_IMPORT'), $this->title, 'import_catalogue', array($catalogue_name, $key_field, $new_handling, $delete_handling, $update_handling, $meta_keywords_field, $meta_description_field, $notes_field, $allow_rating, $allow_comments, $allow_trackbacks, $csv_name));
+        return call_user_func_array__long_task(do_lang('CATALOGUE_IMPORT'), $this->title, 'import_catalogue', array($catalogue_name, $key_field, $new_handling, $delete_handling, $update_handling, $meta_keywords_field, $meta_description_field, $notes_field, $allow_rating, $allow_comments, $allow_trackbacks, $csv_path));
     }
 
     /**

@@ -989,7 +989,7 @@ class Hook_addon_registry_core_cns
             'PRIMARY_GROUP_ID' => placeholder_id(),
             'PHOTO_URL' => placeholder_image_url(),
             'PHOTO_THUMB_URL' => placeholder_image_url(),
-            'EMAIL_ADDRESS' => lorem_word(),
+            'EMAIL_ADDRESS' => lorem_word() . '@example.com',
             'AVATAR_URL' => placeholder_avatar(),
             'SIGNATURE' => lorem_phrase(),
             'JOIN_DATE' => placeholder_date(),
@@ -1074,7 +1074,7 @@ class Hook_addon_registry_core_cns
 
         return array(
             lorem_globalise(do_lorem_template('CNS_MEMBER_PROFILE_SCREEN', array(
-                'TITLE' => lorem_title(),
+                'TITLE' => get_screen_title('MEMBER_ACCOUNT', true, array(lorem_phrase(), lorem_phrase())),
                 'MEMBER_ID' => placeholder_id(),
                 'TABS' => $tabs,
             )), null, '', true)
