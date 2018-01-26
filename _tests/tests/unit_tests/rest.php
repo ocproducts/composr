@@ -24,14 +24,14 @@ class rest_test_set extends cms_test_case
     {
         $this->establish_admin_session();
 
-        $this->path = 'var/news/general/Hello.cms';
+        $this->path = '/var/news/general/Hello.cms';
 
         parent::setUp();
     }
 
     public function testCreate()
     {
-        $url = get_base_url() . '/data/endpoint.php/content/commandr_fs/' . $this->path;
+        $url = get_base_url() . '/data/endpoint.php/content/commandr_fs' . $this->path;
         $post_params = array(json_encode(array('summary' => 'test')));
         $cookies = array(get_session_cookie() => get_session_id());
         $raw_post = true;
@@ -44,7 +44,7 @@ class rest_test_set extends cms_test_case
 
     public function testUpdate()
     {
-        $url = get_base_url() . '/data/endpoint.php/content/commandr_fs/' . $this->path;
+        $url = get_base_url() . '/data/endpoint.php/content/commandr_fs' . $this->path;
         $post_params = array(json_encode(array('summary' => 'test')));
         $cookies = array(get_session_cookie() => get_session_id());
         $raw_post = true;
@@ -57,7 +57,7 @@ class rest_test_set extends cms_test_case
 
     public function testDelete()
     {
-        $url = get_base_url() . '/data/endpoint.php/content/commandr_fs/' . $this->path;
+        $url = get_base_url() . '/data/endpoint.php/content/commandr_fs' . $this->path;
         $post_params = array(json_encode(array('summary' => 'test')));
         $cookies = array(get_session_cookie() => get_session_id());
         $raw_post = true;
