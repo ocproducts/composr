@@ -17,7 +17,7 @@
 					<tr>
 						<th>{!config:SITE_NAME}</th>
 						<th>Alexa Rank</th>
-						<th>Alexa Traffic</th>
+						<th>Alexa Links</th>
 						<th>archive.org</th>
 						<th>{!LINKS}</th>
 					</tr>
@@ -27,7 +27,7 @@
 						<tr>
 							<td>{SITE_NAME*}</td>
 							<td>{ALEXA_RANKING`}</td>
-							<td>{ALEXA_TRAFFIC`}</td>
+							<td><a href="http://www.google.co.uk/search?as_lq={URL&*}">{ALEXA_LINKS`}</a></td>
 							<td><a class="suggested-link" href="http://web.archive.org/web/*/{URL*}">{!VIEW}</a></td>
 							<td><a class="suggested-link" href="{URL*}">{!VIEW}</a></td>
 						</tr>

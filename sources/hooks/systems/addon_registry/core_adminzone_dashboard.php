@@ -186,7 +186,7 @@ class Hook_addon_registry_core_adminzone_dashboard
             $data[] = array(
                 'SITE_NAME' => lorem_phrase(),
                 'ALEXA_RANKING' => placeholder_number(),
-                'ALEXA_TRAFFIC' => placeholder_number(),
+                'ALEXA_LINKS' => placeholder_number(),
                 'URL' => placeholder_url(),
             );
         }

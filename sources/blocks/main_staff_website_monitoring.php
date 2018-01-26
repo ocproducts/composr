@@ -88,44 +88,6 @@ class Block_main_staff_website_monitoring
     }
 
     /**
-     * Function to find Alexa details of the site.
-     *
-     * @param  string $url The URL of the site which you want to find out information on.)
-     * @return array Returns a triple array with the rank, the amount of links, and the speed of the site
-     */
-    public function getAlexaRank($url)
-    {
-        require_code('files');
-        $p = array();
-        $result = http_get_contents('http://data.alexa.com/data?cli=10&dat=s&url=' . urlencode($url), array('trigger_error' => false, 'timeout' => 1.0));
-        if (preg_match('#<POPULARITY [^<>]*TEXT="([0-9]+){1,}"#si', $result, $p) != 0) {
-            $rank = integer_format(intval($p[1]));
-        } else {
-            $rank = do_lang('NA');
-        }
-        if (preg_match('#<LINKSIN [^<>]*NUM="([0-9]+){1,}"#si', $result, $p) != 0) {
-            $links = integer_format(intval($p[1]));
-        } else {
-            $links = '0';
-        }
-        if (preg_match('#<SPEED [^<>]*PCT="([0-9]+){1,}"#si', $result, $p) != 0) {
-            $speed = 'Top ' . integer_format(100 - intval($p[1])) . '%';
-        } else {
-            $speed = '?';
-        }
-
-        // we would like, but cannot get (without an API key)...
-        /*
-            time on site
-            reach (as a percentage)
-            page views
-            audience (i.e. what country views the site most)
-         */
-
-        return array($rank, $links, $speed);
-    }
-
-    /**
      * Execute the block.
      *
      * @param  array $map A map of parameters
@@ -134,6 +96,7 @@ class Block_main_staff_website_monitoring
     public function run($map)
     {
         require_lang('staff_checklist');
+        require_code('stats');
 
         $block_id = get_block_id($map);
 
@@ -174,15 +137,21 @@ class Block_main_staff_website_monitoring
         $sites_being_watched = array();
         $grid_data = array();
         foreach ($rows as $r) {
-            $alex = $this->getAlexaRank(($r['site_url']));
+            list($rank, $links) = get_alexa_rank(($r['site_url']));
+
+            if ($rank == '') {
+                $rank = do_lang('NA');
+            }
+            if ($links == '') {
+                $links = '?';
+            }
+
             $sites_being_watched[$r['site_url']] = $r['site_name'];
-            $alexa_ranking = $alex[0];
-            $alexa_traffic = $alex[1];
 
             $grid_data[] = array(
                 'URL' => $r['site_url'],
-                'ALEXA_RANKING' => $alexa_ranking,
-                'ALEXA_TRAFFIC' => $alexa_traffic,
+                'ALEXA_RANKING' => $rank,
+                'ALEXA_LINKS' => $links,
                 'SITE_NAME' => $r['site_name'],
             );
         }

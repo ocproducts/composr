@@ -24,11 +24,6 @@ class special_links_test_set extends cms_test_case
         $this->assertTrue(strpos(http_get_contents('https://isbndb.com/search/books/978-0241968987', array('trigger_error' => false)), 'No Place to Hide') !== false, 'External link not working, fix test and use within Composr (separate)');
     }
 
-    public function testChicklets()
-    {
-        $this->assertTrue(is_string(http_get_contents('http://add.my.yahoo.com/content?url=' . urlencode('http://example.com'), array('trigger_error' => false))), 'External link not working, fix test and use within Composr (separate)');
-    }
-
     public function testLookupLinks()
     {
         $this->assertTrue(strpos(http_get_contents('http://whatismyipaddress.com/ip/12.34.56.78', array('trigger_error' => false)), 'AT&T Services') !== false, 'External link not working, fix test and use within Composr (separate) [LOOKUP_SCREEN.tpl, COMMANDR_WHOIS.tpl]');
@@ -60,5 +55,10 @@ class special_links_test_set extends cms_test_case
                 $this->assertTrue($result->download_url == $url, 'External link (' . $url . ') redirecting elsewhere, fix test and use within Composr (separate)');
             }
         }
+    }
+
+    public function testMiscLinks()
+    {
+        $this->assertTrue(is_string(http_get_contents('http://www.google.co.uk/search?as_lq=' . urlencode('http://example.com/'), array('trigger_error' => false))), 'Google backreferences link broken');
     }
 }

@@ -20,5 +20,11 @@ class seo_tracking_test_set extends cms_test_case
 {
     public function testAlexa()
     {
+        require_code('stats');
+
+        $alexa = get_alexa_rank('http://yahoo.com');
+        list($rank, $links) = $alexa;
+        $this->assertTrue($rank != '');
+        //$this->assertTrue($links != ''); Alexa seem not to provide anymore
     }
 }
