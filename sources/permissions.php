@@ -611,11 +611,11 @@ function filter_group_permissivity($groups)
  * Only allow members here that are either the give member, admins, or have a privilege. All other members come up to an error message wall.
  *
  * @param  MEMBER $member_id The member who typically (i.e. when it's not an administrative override) we want the current member to be.
- * @param  ?ID_TEXT $permission The override permission the current member must have (null: no general override).
- * @param  ?ID_TEXT $permission2 An alternative permission to the 'assume_any_member' permission (null: no override).
+ * @param  ?ID_TEXT $privilege The override privilege the current member must have (null: no general override).
+ * @param  ?ID_TEXT $privilege2 An alternative privilege to the 'assume_any_member' privilege (null: no override).
  * @param  ?MEMBER $member_viewing The member who is doing the viewing (null: current member).
  */
-function enforce_personal_access($member_id, $permission = null, $permission2 = null, $member_viewing = null)
+function enforce_personal_access($member_id, $privilege = null, $privilege2 = null, $member_viewing = null)
 {
     if (is_null($member_viewing)) {
         $member_viewing = get_member();
@@ -624,26 +624,26 @@ function enforce_personal_access($member_id, $permission = null, $permission2 = 
     if (is_guest($member_id)) {
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
-    if ((!has_privilege($member_viewing, 'assume_any_member')) && ((is_null($permission2)) || (!has_privilege($member_viewing, $permission2)))) {
-        if (($member_id != $member_viewing) || ((!is_null($permission)) && (!has_privilege($member_viewing, $permission)))) {
-            if (!is_null($permission)) {
-                access_denied('PRIVILEGE', $permission);
+    if ((!has_privilege($member_viewing, 'assume_any_member')) && ((is_null($privilege2)) || (!has_privilege($member_viewing, $privilege2)))) {
+        if (($member_id != $member_viewing) || ((!is_null($privilege)) && (!has_privilege($member_viewing, $privilege)))) {
+            if (!is_null($privilege)) {
+                access_denied('PRIVILEGE', $privilege);
             } else {
-                access_denied('PRIVILEGE', is_null($permission2) ? 'assume_any_member' : $permission2);
+                access_denied('PRIVILEGE', is_null($privilege2) ? 'assume_any_member' : $privilege2);
             }
         }
     }
 }
 
 /**
- * Require presence of a permission for the current member; otherwise exit.
+ * Require presence of a privilege for the current member; otherwise exit.
  *
- * @param  ID_TEXT $permission The permission to require
+ * @param  ID_TEXT $privilege The privilege to require
  * @param  ?array $cats A list of cat details to require access to (c-type-1,c-id-1,c-type-2,c-d-2,...) (null: N/A)
  * @param  ?MEMBER $member_id Member to check for (null: current user)
  * @param  ?ID_TEXT $page_name Page name to check for (null: current page)
  */
-function check_privilege($permission, $cats = null, $member_id = null, $page_name = null)
+function check_privilege($privilege, $cats = null, $member_id = null, $page_name = null)
 {
     if (is_null($page_name)) {
         $page_name = get_page_name();
@@ -651,31 +651,31 @@ function check_privilege($permission, $cats = null, $member_id = null, $page_nam
     if (is_null($member_id)) {
         $member_id = get_member();
     }
-    if (!has_privilege($member_id, $permission, $page_name, $cats)) {
-        access_denied('PRIVILEGE', $permission);
+    if (!has_privilege($member_id, $privilege, $page_name, $cats)) {
+        access_denied('PRIVILEGE', $privilege);
     }
 }
 
 /**
- * Find if a member has a specified permission in any category
+ * Find if a member has a specified privilege in any category
  *
- * @param  MEMBER $member The member being checked whether to have the permission
- * @param  ID_TEXT $permission The ID code for the permission being checked for
+ * @param  MEMBER $member The member being checked whether to have the privilege
+ * @param  ID_TEXT $privilege The ID code for the privilege being checked for
  * @param  ?ID_TEXT $page The ID code for the page being checked (null: current page)
- * @param  ID_TEXT $permission_module The ID code for the permission module being checked for
- * @return boolean Whether the member has the permission
+ * @param  ID_TEXT $module The ID code for the permission module being checked for
+ * @return boolean Whether the member has the privilege
  */
-function has_some_cat_privilege($member, $permission, $page, $permission_module)
+function has_some_cat_privilege($member, $privilege, $page, $module)
 {
-    $page_wide_test = has_privilege($member, $permission, $page); // To make sure permissions are cached, and test if page-wide or site-wide exists
+    $page_wide_test = has_privilege($member, $privilege, $page); // To make sure privileges are cached, and test if page-wide or site-wide exists
     if ($page_wide_test) {
         return true;
     }
 
     global $PRIVILEGE_CACHE;
-    if ((array_key_exists($member, $PRIVILEGE_CACHE)) && (array_key_exists($permission, $PRIVILEGE_CACHE[$member])) && (array_key_exists('', $PRIVILEGE_CACHE[$member][$permission])) && (array_key_exists($permission_module, $PRIVILEGE_CACHE[$member][$permission]['']))) {
-        foreach ($PRIVILEGE_CACHE[$member][$permission][''][$permission_module] as $_permission) {
-            if ($_permission == 1) {
+    if ((array_key_exists($member, $PRIVILEGE_CACHE)) && (array_key_exists($privilege, $PRIVILEGE_CACHE[$member])) && (array_key_exists('', $PRIVILEGE_CACHE[$member][$privilege])) && (array_key_exists($module, $PRIVILEGE_CACHE[$member][$privilege]['']))) {
+        foreach ($PRIVILEGE_CACHE[$member][$privilege][''][$module] as $_privilege) {
+            if ($_privilege == 1) {
                 return true;
             }
         }
@@ -685,15 +685,15 @@ function has_some_cat_privilege($member, $permission, $page, $permission_module)
 }
 
 /**
- * Find if a member has a specified permission
+ * Find if a member has a specified privilege
  *
- * @param  MEMBER $member The member being checked whether to have the permission
- * @param  ID_TEXT $permission The ID code for the permission being checked for
+ * @param  MEMBER $member The member being checked whether to have the privilege
+ * @param  ID_TEXT $privilege The ID code for the privilege being checked for
  * @param  ?ID_TEXT $page The ID code for the page being checked (null: current page)
  * @param  ?mixed $cats A list of cat details to require access to (c-type-1,c-id-1,c-type-2,c-d-2,...), or a string of the cat type if you will accept overrides in any matching cat (null: N/A)
- * @return boolean Whether the member has the permission
+ * @return boolean Whether the member has the privilege
  */
-function has_privilege($member, $permission, $page = null, $cats = null)
+function has_privilege($member, $privilege, $page = null, $cats = null)
 {
     if (running_script('upgrader')) {
         return true;
@@ -707,7 +707,7 @@ function has_privilege($member, $permission, $page = null, $cats = null)
     }
 
     global $SPAM_REMOVE_VALIDATION;
-    if (($SPAM_REMOVE_VALIDATION) && ($member == get_member()) && (($permission == 'bypass_validation_highrange_content') || ($permission == 'bypass_validation_midrange_content') || ($permission == 'bypass_validation_lowrange_content'))) {
+    if (($SPAM_REMOVE_VALIDATION) && ($member == get_member()) && (($privilege == 'bypass_validation_highrange_content') || ($privilege == 'bypass_validation_midrange_content') || ($privilege == 'bypass_validation_lowrange_content'))) {
         return false;
     }
 
@@ -726,18 +726,18 @@ function has_privilege($member, $permission, $page = null, $cats = null)
                     if (is_null($cats[$i * 2])) {
                         continue;
                     }
-                    if (isset($PRIVILEGE_CACHE[$member][$permission][''][$cats[$i * 2 + 0]][$cats[$i * 2 + 1]])) {
-                        $result = $PRIVILEGE_CACHE[$member][$permission][''][$cats[$i * 2 + 0]][$cats[$i * 2 + 1]] == 1;
+                    if (isset($PRIVILEGE_CACHE[$member][$privilege][''][$cats[$i * 2 + 0]][$cats[$i * 2 + 1]])) {
+                        $result = $PRIVILEGE_CACHE[$member][$privilege][''][$cats[$i * 2 + 0]][$cats[$i * 2 + 1]] == 1;
                         if (!$result) { // Negative overrides take precedence over positive ones; got to be careful of that!
-                            handle_permission_check_logging($member, 'has_privilege', array_merge(array($permission, $page), is_null($cats) ? array() : $cats), $result);
+                            handle_permission_check_logging($member, 'has_privilege', array_merge(array($privilege, $page), is_null($cats) ? array() : $cats), $result);
                             return $result;
                         }
                         $okay = true;
                     }
                 }
             } else { // Any overrides for cats allowed
-                if (isset($PRIVILEGE_CACHE[$member][$permission][''])) {
-                    foreach ($PRIVILEGE_CACHE[$member][$permission][''] as $result) {
+                if (isset($PRIVILEGE_CACHE[$member][$privilege][''])) {
+                    foreach ($PRIVILEGE_CACHE[$member][$privilege][''] as $result) {
                         if ($result) {
                             $okay = true;
                             break;
@@ -747,20 +747,20 @@ function has_privilege($member, $permission, $page = null, $cats = null)
             }
             if ($okay) {
                 $result = $okay;
-                handle_permission_check_logging($member, 'has_privilege', array_merge(array($permission, $page), is_null($cats) ? array() : (is_array($cats) ? $cats : array($cats))), $result);
+                handle_permission_check_logging($member, 'has_privilege', array_merge(array($privilege, $page), is_null($cats) ? array() : (is_array($cats) ? $cats : array($cats))), $result);
                 return $result;
             }
         }
         if ($page != '') {
-            if (isset($PRIVILEGE_CACHE[$member][$permission][$page][''][''])) {
-                $result = $PRIVILEGE_CACHE[$member][$permission][$page][''][''] == 1;
-                handle_permission_check_logging($member, 'has_privilege', array_merge(array($permission, $page), is_null($cats) ? array() : (is_array($cats) ? $cats : array($cats))), $result);
+            if (isset($PRIVILEGE_CACHE[$member][$privilege][$page][''][''])) {
+                $result = $PRIVILEGE_CACHE[$member][$privilege][$page][''][''] == 1;
+                handle_permission_check_logging($member, 'has_privilege', array_merge(array($privilege, $page), is_null($cats) ? array() : (is_array($cats) ? $cats : array($cats))), $result);
                 return $result;
             }
         }
-        if (isset($PRIVILEGE_CACHE[$member][$permission][''][''][''])) {
-            $result = $PRIVILEGE_CACHE[$member][$permission][''][''][''] == 1;
-            handle_permission_check_logging($member, 'has_privilege', array_merge(array($permission, $page), is_null($cats) ? array() : (is_array($cats) ? $cats : array($cats))), $result);
+        if (isset($PRIVILEGE_CACHE[$member][$privilege][''][''][''])) {
+            $result = $PRIVILEGE_CACHE[$member][$privilege][''][''][''] == 1;
+            handle_permission_check_logging($member, 'has_privilege', array_merge(array($privilege, $page), is_null($cats) ? array() : (is_array($cats) ? $cats : array($cats))), $result);
             return $result;
         }
     }
@@ -771,7 +771,7 @@ function has_privilege($member, $permission, $page = null, $cats = null)
     static $run_once = false;
     $where = ' AND (1=0';
     if ((isset($SMART_CACHE)) && (!$run_once)) {
-        $SMART_CACHE->append('privileges_needed', $permission, true);
+        $SMART_CACHE->append('privileges_needed', $privilege, true);
         $all_privileges_needed = $SMART_CACHE->get('privileges_needed');
         if ($all_privileges_needed === null) {
             $all_privileges_needed = array();
@@ -779,7 +779,7 @@ function has_privilege($member, $permission, $page = null, $cats = null)
     } else {
         $all_privileges_needed = array();
     }
-    $all_privileges_needed[$permission] = true;
+    $all_privileges_needed[$privilege] = true;
     foreach ($all_privileges_needed as $privilege_needed => $_) {
         if (is_integer($privilege_needed)) {
             $privilege_needed = strval($privilege_needed);
@@ -816,7 +816,7 @@ function has_privilege($member, $permission, $page = null, $cats = null)
         }
     }
 
-    return has_privilege($member, $permission, $page, $cats);
+    return has_privilege($member, $privilege, $page, $cats);
 }
 
 /**

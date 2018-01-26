@@ -367,20 +367,23 @@ class Hook_addon_registry_calendar
     {
         $days = array(
             array(
+                'DATE' => get_timezoned_date(123456789),
+                'TIMESTAMP' => strval(123456789),
+
                 'EVENTS' => array(
                     array(
-                        'TITLE' => lorem_word(),
+                        'T_TITLE' => lorem_word(),
+                        'E_TITLE' => lorem_word(),
                         'VIEW_URL' => placeholder_url(),
                         'ICON' => 'calendar/activity',
-                        'T_TITLE' => lorem_word(),
                         'DESCRIPTION' => lorem_paragraph_html(),
 
-                        'FROM_DAY' => get_timezoned_date(123456789),
-                        'TIME' => get_timezoned_date(123456789),
-                        'TIME_RAW' => strval(123456789),
-                        'TIME_VCAL' => strval(123456789),
+                        'TIME_WRITTEN' => get_timezoned_date(123456789),
 
-                        'TO_DAY' => get_timezoned_date(123456789 + 60 * 60 * 24),
+                        'FROM_TIME' => get_timezoned_date(123456789),
+                        'FROM_TIME_RAW' => strval(123456789),
+                        'FROM_TIME_VCAL' => strval(123456789),
+
                         'TO_TIME' =>get_timezoned_date(123456789 + 60 * 60 * 24),
                         'TO_TIME_RAW' => strval(123456789 + 60 * 60 * 24),
                         'TO_TIME_VCAL' => strval(123456789 + 60 * 60 * 24),
@@ -391,6 +394,7 @@ class Hook_addon_registry_calendar
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_SIDE_CALENDAR_LISTING', array(
+                'TITLE' => lorem_word(),
                 'DAYS' => $days,
                 'CALENDAR_URL' => placeholder_url(),
             )), null, '', true)

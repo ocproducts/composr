@@ -6,7 +6,7 @@
 			<p class="nothing_here">{!NO_ENTRIES,event}</p>
 		{+END}
 		{+START,LOOP,DAYS}
-			<h4 class="event_listing_day">{TIME*}</h4>
+			<h4 class="event_listing_day">{DATE*}</h4>
 
 			<div class="wide_table_wrap">
 				<table class="map_table results_table wide_table events_listing_table autosized_table">
@@ -25,15 +25,15 @@
 									{+END}{+END}
 								</th>
 
-								<td{+START,IF,{$EQ,{TIME},{!ALL_DAY_EVENT}}} style="display: none"{+END}>
-									<time class="dtstart" datetime="{TIME_VCAL*}" itemprop="startDate">{$?,{$EQ,{TIME},{!ALL_DAY_EVENT}},{TIME_VCAL*},{TIME*}}</time>
+								<td{+START,IF,{$EQ,{TIME_WRITTEN},{!ALL_DAY_EVENT}}} style="display: none"{+END}>
+									<time class="dtstart" datetime="{FROM_TIME_VCAL*}" itemprop="startDate">{$?,{$EQ,{FROM_TIME},{!ALL_DAY_EVENT}},{FROM_TIME_VCAL*},{FROM_TIME*}}</time>
 								</td>
 
-								<td{+START,IF,{$EQ,{TIME},{!ALL_DAY_EVENT}}} colspan="2"{+END}>
-									<a href="{VIEW_URL*}" class="url" itemprop="name"><span class="summary">{TITLE*}</span></a>
-									{+START,IF_PASSED,TO_DAY}
-										<span{+START,IF,{$EQ,{FROM_DAY},{TO_DAY}}} style="display: none"{+END}>
-											<span class="associated_details">({!EVENT_ENDS_ON,<time class="dtend" datetime="{TO_TIME_VCAL*}" itemprop="endDate">{TO_DAY*}</time>})</span>
+								<td{+START,IF,{$EQ,{FROM_TIME},{!ALL_DAY_EVENT}}} colspan="2"{+END}>
+									<a href="{VIEW_URL*}" class="url" itemprop="name"><span class="summary">{E_TITLE*}</span></a>
+									{+START,IF_PASSED,TO_TIME}
+										<span{+START,IF,{$EQ,{FROM_TIME},{TO_TIME}}} style="display: none"{+END}>
+											<span class="associated_details">({!EVENT_ENDS_ON,<time class="dtend" datetime="{TO_TIME_VCAL*}" itemprop="endDate">{TO_TIME*}</time>})</span>
 										</span>
 									{+END}
 								</td>
