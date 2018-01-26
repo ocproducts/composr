@@ -25,6 +25,11 @@ class currency_test_set extends cms_test_case
         require_code('currency');
     }
 
+    public function testCountryToCurrency()
+    {
+        $this->assertTrue(country_to_currency('GB') == 'GBP');
+    }
+
     public function testTypesOk()
     {
         $test_a = currency_convert(10.00, 'USD', 'GBP');
