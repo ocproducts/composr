@@ -44,7 +44,7 @@ class Hook_config_google_geocode_api_key
 
             'addon' => 'core_configuration',
 
-            'maintenance_code' => 'google_geocoding',
+            'maintenance_code' => 'geocoding_google',
         );
     }
 

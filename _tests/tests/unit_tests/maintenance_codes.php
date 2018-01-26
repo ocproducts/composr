@@ -18,7 +18,7 @@
  */
 class maintenance_codes_test_set extends cms_test_case
 {
-    public function testReferences()
+    public function testMaintenanceCodeReferences()
     {
         $myfile = fopen(get_custom_file_base() . '/data/maintenance_status.csv', 'rb');
 
@@ -41,8 +41,18 @@ class maintenance_codes_test_set extends cms_test_case
                 $num_matches = preg_match_all('#is_maintained\(\'([^\']*)\'\)#', $_c, $matches);
                 for ($i = 0; $i < $num_matches; $i++) {
                     $codename = $matches[1][$i];
-                    $this->assertTrue(isset($codenames[$codename]), 'Could not find PHP-referenced addon in PHP code, ' . $codename);
+                    $this->assertTrue(isset($codenames[$codename]), 'Broken maintenance code referenced in PHP code, ' . $codename);
                 }
+            }
+        }
+
+        // Test config options
+        $config_hooks = find_all_hook_obs('systems', 'config', 'Hook_config_');
+        foreach ($config_hooks as $file => $ob) {
+            $details = $ob->get_details();
+            if (isset($details['maintenance_code'])) {
+                $codename = $details['maintenance_code'];
+                $this->assertTrue(isset($codenames[$codename]), 'Broken maintenance code referenced in config option, ' . $codename);
             }
         }
 
