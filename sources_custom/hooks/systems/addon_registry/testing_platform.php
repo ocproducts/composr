@@ -334,6 +334,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/api_classes_documented.php',
             '_tests/tests/unit_tests/lang_ini_size.php',
             '_tests/tests/unit_tests/ip_addresses.php',
+            '_tests/tests/unit_tests/seo_tracking.php',
             '_tests/tests/unit_tests/adminzone_search.php',
             '_tests/tests/unit_tests/ecommerce_tax.php',
             '_tests/tests/unit_tests/ecommerce_shipping.php',
