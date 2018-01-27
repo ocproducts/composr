@@ -208,7 +208,7 @@ class Hook_ecommerce_custom
                 $image_url = '';
             }
 
-            $shipping_cost = $row['c_shipping_cost'];
+            $shipping_cost = floatval($row['c_shipping_cost']);
 
             $products['CUSTOM_' . strval($row['id'])] = automatic_discount_calculation(array(
                 'item_name' => $row['_title'],
@@ -218,7 +218,7 @@ class Hook_ecommerce_custom
                 'type' => PRODUCT_PURCHASE,
                 'type_special_details' => array(),
 
-                'price' => $row['c_price'],
+                'price' => floatval($row['c_price']),
                 'currency' => get_option('currency'),
                 'price_points' => addon_installed('points') ? $row['c_price_points'] : null,
                 'discount_points__num_points' => null,

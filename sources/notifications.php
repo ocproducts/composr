@@ -316,7 +316,7 @@ class Notification_dispatcher
 
             $ticket_id = ticket_generate_new_id($ticket_member_id, $this->code_category);
 
-            $ticket_type_id = $GLOBALS['SITE_DB']->query_select_value_if_there('ticket_types t', 't.id', array($GLOBALS['SITE_DB']->translate_field_ref('ticket_type_name') => $ticket_type_name));
+            $ticket_type_id = $GLOBALS['SITE_DB']->query_select_value_if_there('ticket_types', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('ticket_type_name') => $ticket_type_name));
             if ($ticket_type_id === null) {
                 $map = array(
                     'guest_emails_mandatory' => 0,

@@ -66,7 +66,7 @@ class Hook_ecommerce_bank
         $products = array();
 
         foreach (array(10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000) as $amount) {
-            $products['BANK_' . $amount] = array(
+            $products['BANK_' . strval($amount)] = array(
                 'item_name' => do_lang('BANK', integer_format($amount)),
                 'item_description' => new Tempcode(),
                 'item_image_url' => '',

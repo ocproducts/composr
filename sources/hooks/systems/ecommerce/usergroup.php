@@ -64,7 +64,7 @@ class Hook_ecommerce_usergroup
 
             $image_url = '';
             if (get_forum_type() == 'cns') {
-                $image_url = $db->query_select_value_if_there('f_groups', 'g_rank_image', array('id' => $sub['id']));
+                $image_url = $db->query_select_value_if_there('f_groups', 'g_rank_image', array('id' => $sub['s_group_id']));
                 if ($image_url === null) {
                     continue; // Missing
                 }
@@ -85,7 +85,7 @@ class Hook_ecommerce_usergroup
                 'type' => ($sub['s_auto_recur'] == 1) ? PRODUCT_SUBSCRIPTION : PRODUCT_PURCHASE, // Technically a non-recurring usergroup subscription is NOT a subscription (i.e. conflicting semantics here...)
                 'type_special_details' => array('length' => $sub['s_length'], 'length_units' => $sub['s_length_units']),
 
-                'price' => $sub['s_price'],
+                'price' => floatval($sub['s_price']),
                 'currency' => get_option('currency'),
                 'price_points' => null,
                 'discount_points__num_points' => null,
@@ -320,7 +320,13 @@ class Hook_ecommerce_usergroup
                     } else {
                         cns_add_member_to_group($member_id, $new_group);
                     }
+
+                    global $GROUP_MEMBERS_CACHE;
+                    $GROUP_MEMBERS_CACHE = array();
                 }
+
+                global $USERS_GROUPS_CACHE;
+                $USERS_GROUPS_CACHE = array();
 
                 $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_delete('f_group_member_timeouts', array('member_id' => $member_id, 'group_id' => $new_group));
             }

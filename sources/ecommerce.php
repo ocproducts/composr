@@ -1064,7 +1064,7 @@ function get_default_ecommerce_fields($member_id = null, &$shipping_email = '', 
     $shipping_country = post_param_string('shipping_country', $shipping_country);
     $cardholder_name = post_param_string('cardholder_name', $cardholder_name);
     $card_type = post_param_string('card_type', $card_type);
-    $_card_number = post_param_string('card_number', ($card_number === null) ? '' : $card_number);
+    $_card_number = post_param_string('card_number', ($card_number === null) ? '' : strval($card_number));
     $card_number = ($_card_number == '') ? null : str_replace(array('-', ' '), array('', ''), $_card_number);
     $card_start_date_year = post_param_integer('card_start_date_year', $card_start_date_year);
     $card_start_date_month = post_param_integer('card_start_date_month', $card_start_date_month);
@@ -1340,7 +1340,7 @@ function do_local_transaction($payment_gateway, $payment_gateway_object)
  *
  * @param  boolean $silent_fail Return null on failure rather than showing any error message. Used when not sure a valid & finalised transaction is in the POST environment, but you want to try just in case (e.g. on a redirect back from the gateway).
  * @param  boolean $send_notifications Whether to send notifications. Set to false if this is not the primary payment handling (e.g. a POST redirect rather than the real IPN).
- * @return ID_TEXT The ID of the purchase-type (meaning depends on item_name)
+ * @return ?ID_TEXT The ID of the purchase-type (meaning depends on item_name) (null: unknown)
  */
 function handle_ipn_transaction_script($silent_fail = false, $send_notifications = true)
 {
@@ -1361,7 +1361,11 @@ function handle_ipn_transaction_script($silent_fail = false, $send_notifications
 
     ob_start();
 
-    list($trans_expecting_id, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $tax, $currency, $parent_txn_id, $pending_reason, $memo, $period, $member_id) = $payment_gateway_object->handle_ipn_transaction($silent_fail);
+    $result = $payment_gateway_object->handle_ipn_transaction($silent_fail);
+    if ($result === null) {
+        return null;
+    }
+    list($trans_expecting_id, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $tax, $currency, $parent_txn_id, $pending_reason, $memo, $period, $member_id) = $result;
 
     list($type_code, $member_id) = handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $tax, $currency, true, $parent_txn_id, $pending_reason, $memo, $period, $member_id, $payment_gateway, $silent_fail, $send_notifications);
 

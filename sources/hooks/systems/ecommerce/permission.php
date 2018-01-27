@@ -317,7 +317,7 @@ class Hook_ecommerce_permission
                 'type' => PRODUCT_PURCHASE,
                 'type_special_details' => array(),
 
-                'price' => $row['p_price'],
+                'price' => floatval($row['p_price']),
                 'currency' => get_option('currency'),
                 'price_points' => addon_installed('points') ? $row['p_price_points'] : null,
                 'discount_points__num_points' => null,
