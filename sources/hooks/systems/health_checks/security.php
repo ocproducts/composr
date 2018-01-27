@@ -112,7 +112,7 @@ class Hook_health_check_security extends Hook_Health_Check
         );
 
         for ($i = 0; $i < 3; $i++) { // Try a few times in case of some temporary network issue or Google issue
-            $http_result = cms_http_request($url, array('trigger_error' => false, 'post_params' => array(json_encode($data)), 'timeout' => 200.0, 'raw_content_type' => 'application/json'));
+            $http_result = cms_http_request($url, array('trigger_error' => false, 'post_params' => array(json_encode($data)), 'timeout' => 200.0, 'raw_post' => true, 'raw_content_type' => 'application/json'));
 
             if ($http_result->data !== null) {
                 break;

@@ -21,6 +21,31 @@
 /*EXTRA FUNCTIONS: imap\_.+|proc\_.+|stream_set_blocking|stream_get_contents|stream_set_timeout*/
 
 /**
+ * Spam check an email.
+ *
+ * @param  string $mime_email The email
+ * @return array A pair: The spam report, and the spam score
+ */
+function email_spam_check($mime_email)
+{
+    $spam_report = null;
+    $spam_score = null;
+
+    $_spam_test = http_get_contents('http://spamcheck.postmarkapp.com/filter', array('trigger_error' => false, 'raw_post' => true, 'post_params' => array(json_encode(array('email' => $mime_email, 'options' => 'long'))), 'raw_content_type' => 'application/json'));
+    if ($_spam_test != '') {
+        $spam_test = @json_decode($_spam_test, true);
+        if ($spam_test !== null && isset($spam_test['success']) && isset($spam_test['report']) && isset($spam_test['score'])) {
+            if ($spam_test['success']) {
+                $spam_report = $spam_test['report'];
+                $spam_score = $spam_test['score'];
+            }
+        }
+    }
+
+    return array($spam_report, $spam_score);
+}
+
+/**
  * Get an IMAP/POP3 connection string.
  *
  * @param  string $server The server hostname

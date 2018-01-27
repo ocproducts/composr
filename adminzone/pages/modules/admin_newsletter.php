@@ -1352,19 +1352,9 @@ class Module_admin_newsletter extends Standard_crud_module
         );
 
         // Spam check, if possible
-        $spam_report = null;
-        $spam_score = null;
         if ($mail_dispatcher->mime_data !== null) {
-            $_spam_test = http_get_contents('http://spamcheck.postmarkapp.com/filter', array('trigger_error' => false, 'post_params' => array(json_encode(array('email' => $mail_dispatcher->mime_data, 'options' => 'long'))), 'raw_content_type' => 'application/json'));
-            if ($_spam_test != '') {
-                $spam_test = @json_decode($_spam_test, true);
-                if ($spam_test !== null && isset($spam_test['success']) && isset($spam_test['report']) && isset($spam_test['score'])) {
-                    if ($spam_test['success']) {
-                        $spam_report = $spam_test['report'];
-                        $spam_score = $spam_test['score'];
-                    }
-                }
-            }
+            require_code('mail2');
+            list($spam_report, $spam_score) = email_spam_check($mail_dispatcher->mime_data);
         }
 
         // Inline preview

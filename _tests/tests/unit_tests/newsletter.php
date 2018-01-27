@@ -38,6 +38,36 @@ class newsletter_test_set extends cms_test_case
         $this->assertTrue('Thanks' == get_translated_text($GLOBALS['SITE_DB']->query_select_value('newsletters', 'title', array('id' => $this->news_id))));
     }
 
+    public function testSpamCheck()
+    {
+        $mime_email = 'From: John Doe <example@example.com>
+MIME-Version: 1.0
+Content-Type: multipart/mixed;
+        boundary="XXXXboundary text"
+
+This is a multipart message in MIME format.
+
+--XXXXboundary text 
+Content-Type: text/plain
+
+this is the body text
+
+--XXXXboundary text 
+Content-Type: text/plain;
+Content-Disposition: attachment;
+        filename="test.txt"
+
+this is the attachment text
+
+--XXXXboundary text--';
+
+        require_code('mail2');
+        list($spam_report, $spam_score) = email_spam_check($mime_email);
+
+        $this->assertTrue($spam_report !== null);
+        $this->assertTrue($spam_score !== null);
+    }
+
     public function tearDown()
     {
         delete_newsletter($this->news_id);
