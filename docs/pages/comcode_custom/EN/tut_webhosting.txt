@@ -49,17 +49,6 @@ Webhosts generally fit into 3 categories:
 
 Keep making sure you have your own backups so that you are able to always make a swift move if it becomes necessary.
 
-[staff_note][title="2"]Recommended webhost[/title]
-
-We recommend Arvixe for Composr hosting. Arvixe have worked with the Composr developers to ensure the hosting is perfectly tuned for Composr, and the Composr developers intend to make sure this remains the case across Composr versions. Arvixe is an established company, a friend to Open Source software, and provides good value and great quality servers. We maintain a good working relationship with the management of the company.
-
-You can even buy hosting with Arvixe and have Composr automatically installed for you from the get go: [url="Arvixe Composr hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].
-
-A bit of advice if you choose to not use our recommended host and go purely on a price comparison:
-Most companies competing on price may appear to be good if you compare features/limits but fail in the most important area -- quality of service. Composr is progressive software, and the price squeezed service we have seen from cheap webhosts are only suitable for those with very basic needs.
-
-[semihtml]<a class="link_exempt" href="http://arvixe.evyy.net/c/302199/279421/3370" target="_blank" title="Composr hosting (this link will open in a new window)"><img src="{$IMG*,468.60.composr}" alt="" /></a>[/semihtml]
-[/staff_note]
 [title="2"]Requirements and recommendations[/title]
 
 When choosing a webhost, you need to make sure that they meet all the requirements of Composr. Composr is intentionally designed to have very low requirements, but like when making virtually any choice in life, there are various different kinds of product that companies may try and sell.

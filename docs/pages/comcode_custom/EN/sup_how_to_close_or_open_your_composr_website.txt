@@ -22,6 +22,4 @@ The third section is a message you can display when the site is closed. This is 
 
 The fourth and fifth section deal with setting limits on your website and closing the site if they are exceeded. Option 4 will limit access to the site if you reach the user limit. By default this is set to 400 users. You can change this to whatever setting you like but if you are using shared hosting you may want to tweak this to ensure your site performs adequately under a heavy traffic load.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
-
 {$SET,tutorial_tags,Maintenance,novice}{$SET,tutorial_add_date,Apr 2013}{$SET,tutorial_summary,You'll want to use the closed site feature if your site is new and you want to keep it temporarily closed, or you want to close your site while performing maintenance. This tutorial explains how it works.}[block]main_tutorial_rating[/block]

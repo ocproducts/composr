@@ -158,7 +158,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'SU and the if_in_group tag',
-                'url' => 'https://www.youtube.com/watch?v=VKlWTgKbQ0w',
+                'url' => 'https://www.youtube.com/watch?v=J6OGys3s6v8',
                 'author' => 'Allen Ellis (ocProducts)',
                 'difficulty_level' => 'novice',
                 'summary' => 'How to switch users under your admin login, and how to customise page contents based on usergroup membership.',
@@ -220,7 +220,7 @@ class Module_tutorials
             // Books
             array(
                 'title' => 'The 22 Immutable Laws Of Branding',
-                'url' => 'http://www.amazon.co.uk/gp/product/1861976054/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1861976054&linkCode=as2&tag=ocportal-21&linkId=UYNVBEDIBTERUFIR',
+                'url' => 'https://www.amazon.co.uk/gp/product/1861976054/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1861976054&linkCode=as2&tag=ocportal-21&linkId=UYNVBEDIBTERUFIR',
                 'author' => 'Al Ries, Laura Ries',
                 'difficulty_level' => 'novice',
                 'summary' => 'Everyone knows that building your product or service into a bona fide brand is the only way to stand out in today\'s insanely crowded marketplace. The only question is how do you do it?',
@@ -230,7 +230,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'The 22 Immutable Laws of Marketing',
-                'url' => 'http://www.amazon.co.uk/gp/product/B00118WX46/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=B00118WX46&linkCode=as2&tag=ocportal-21&linkId=2QUVBUQ6WAQ3H3KU',
+                'url' => 'https://www.amazon.co.uk/gp/product/B00118WX46/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=B00118WX46&linkCode=as2&tag=ocportal-21&linkId=2QUVBUQ6WAQ3H3KU',
                 'author' => 'Al Ries, Jack Trout',
                 'difficulty_level' => 'novice',
                 'summary' => 'Rules for certain successes in the world of marketing. Combining a wide-ranging historical overview with a keen eye for the future, the authors bring to light 22 superlative tools and innovative techniques for the international marketplace.',
@@ -240,7 +240,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'About Face 3: The Essentials of Interaction Design',
-                'url' => 'http://www.amazon.co.uk/gp/product/0470084111/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=0470084111&linkCode=as2&tag=ocportal-21&linkId=3X2DR2DIVMIDYDOH',
+                'url' => 'https://www.amazon.co.uk/gp/product/0470084111/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=0470084111&linkCode=as2&tag=ocportal-21&linkId=3X2DR2DIVMIDYDOH',
                 'author' => 'Alan Cooper',
                 'difficulty_level' => 'expert',
                 'summary' => 'Effective and practical tools you need to design great desktop applications, Web 2.0 sites, and mobile devices.',
@@ -250,7 +250,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'After Image: Mind-Altering Marketing',
-                'url' => 'http://www.amazon.co.uk/gp/product/1861976402/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1861976402&linkCode=as2&tag=ocportal-21&linkId=JZS3OYMCYB2IGYCP',
+                'url' => 'https://www.amazon.co.uk/gp/product/1861976402/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1861976402&linkCode=as2&tag=ocportal-21&linkId=JZS3OYMCYB2IGYCP',
                 'author' => 'John Grant',
                 'difficulty_level' => 'novice',
                 'summary' => 'This pioneering book draws from the latest findings in business theory, cognitive neuroscience and social research, to provide a new direction and system for marketing.',
@@ -260,7 +260,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'The Brand Innovation Manifesto - How to Build Brands, Redefine Markets and Defy Conventions',
-                'url' => 'http://www.amazon.co.uk/gp/product/B000QEOWF4/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=B000QEOWF4&linkCode=as2&tag=ocportal-21&linkId=H47YY5C6UVK3OT2X',
+                'url' => 'https://www.amazon.co.uk/gp/product/B000QEOWF4/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=B000QEOWF4&linkCode=as2&tag=ocportal-21&linkId=H47YY5C6UVK3OT2X',
                 'author' => 'John Grant',
                 'difficulty_level' => 'novice',
                 'summary' => 'The days of the image brands are over, and \'new marketing\' has gone mainstream. The world\'s biggest companies are pursuing a post-advertising strategy, moving away from advertising and investing in leading edge alternatives.',
@@ -270,7 +270,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'Business Adventures: Twelve Classic Tales from the World of Wall Street',
-                'url' => 'http://www.amazon.co.uk/gp/product/1473610389/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1473610389&linkCode=as2&tag=ocportal-21&linkId=NJ4YFVCGYQJBBR5E',
+                'url' => 'https://www.amazon.co.uk/gp/product/1473610389/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1473610389&linkCode=as2&tag=ocportal-21&linkId=NJ4YFVCGYQJBBR5E',
                 'author' => 'John Brooks',
                 'difficulty_level' => 'novice',
                 'summary' => 'What do the $350 million Ford Motor Company disaster known as the Edsel, the fast and incredible rise of Xerox, and the unbelievable scandals at General Electric and Texas Gulf Sulphur have in common? Each is an example of how an iconic company was defined by a particular moment of fame or notoriety.',
@@ -280,7 +280,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'Communicating Design: Developing Web Site Documentation for Design and Planning',
-                'url' => 'http://www.amazon.co.uk/gp/product/B0045U9W4G/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=B0045U9W4G&linkCode=as2&tag=ocportal-21&linkId=SM33YMGY2AUHREH2',
+                'url' => 'https://www.amazon.co.uk/gp/product/B0045U9W4G/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=B0045U9W4G&linkCode=as2&tag=ocportal-21&linkId=SM33YMGY2AUHREH2',
                 'author' => 'Dan M. Brown',
                 'difficulty_level' => 'expert',
                 'summary' => 'Successful web design teams depend on clear communication between developers and their clients -- and among members of the development team. Wireframes, site maps, flow charts, and other design diagrams establish a common language so designers and project teams can capture ideas, track progress, and keep their stakeholders informed.',
@@ -290,7 +290,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'Crossing the Chasm: Marketing and Selling Disruptive Products to Mainstream Customers',
-                'url' => 'http://www.amazon.co.uk/gp/product/0062292986/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=0062292986&linkCode=as2&tag=ocportal-21&linkId=CMGULMOB4NTNE4UA',
+                'url' => 'https://www.amazon.co.uk/gp/product/0062292986/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=0062292986&linkCode=as2&tag=ocportal-21&linkId=CMGULMOB4NTNE4UA',
                 'author' => 'Geoffrey A. Moore',
                 'difficulty_level' => 'novice',
                 'summary' => 'The bible for bringing cutting-edge products to larger markets. Geoffrey A. Moore shows that in the Technology Adoption Life Cycle-which begins with innovators and moves to early adopters. early majority. late majority. and laggards-there is a vast chasm between the early adopters and the early majority',
@@ -300,7 +300,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'CSS3: The Missing Manual',
-                'url' => 'http://www.amazon.co.uk/gp/product/1491918055/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1491918055&linkCode=as2&tag=ocportal-21',
+                'url' => 'https://www.amazon.co.uk/gp/product/1491918055/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1491918055&linkCode=as2&tag=ocportal-21',
                 'author' => 'David Sawyer McFarland',
                 'difficulty_level' => 'regular',
                 'summary' => 'CSS3 lets you create professional-looking websites, but learning its finer points can be tricky -- even for seasoned web developers. This Missing Manual shows you how to take your HTML and CSS skills to the next level, with valuable tips, tricks, and step-by-step instructions.',
@@ -310,7 +310,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'The Design of Everyday Things',
-                'url' => 'http://www.amazon.co.uk/gp/product/0262525674/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=0262525674&linkCode=as2&tag=ocportal-21&linkId=A5UNMPCK6NTCEHGS',
+                'url' => 'https://www.amazon.co.uk/gp/product/0262525674/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=0262525674&linkCode=as2&tag=ocportal-21&linkId=A5UNMPCK6NTCEHGS',
                 'author' => 'Donald A. Norman',
                 'difficulty_level' => 'novice',
                 'summary' => 'Even the smartest among us can feel inept as we try to figure out the shower control in a hotel or attempt to navigate an unfamiliar television set or stove. When The Design of Everyday Things was published in 1988, cognitive scientist Don Norman provocatively proposed that the fault lies not in ourselves, but in design that ignores the needs and psychology of people.',
@@ -320,7 +320,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'The Design of Sites: Patterns for Creating Winning Websites',
-                'url' => 'http://www.amazon.co.uk/gp/product/0131345559/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=0131345559&linkCode=as2&tag=ocportal-21&linkId=SGLZEXDQNYPVN4GZ',
+                'url' => 'https://www.amazon.co.uk/gp/product/0131345559/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=0131345559&linkCode=as2&tag=ocportal-21&linkId=SGLZEXDQNYPVN4GZ',
                 'author' => 'Douglas K. van Duyne',
                 'difficulty_level' => 'regular',
                 'summary' => 'The definitive reference for the principles, patterns, methodologies, and best practices underlying exceptional Web design. If you are involved in the creation of dynamic Web sites, this book will give you all the necessary tools and techniques to create effortless end-user Web experiences, improve customer satisfaction, and achieve a balanced approach to Web design.',
@@ -330,7 +330,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'Designed for Use: Create Usable Interfaces for Applications and the Web',
-                'url' => 'http://www.amazon.co.uk/gp/product/B00FAXNM5M/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=B00FAXNM5M&linkCode=as2&tag=ocportal-21&linkId=U6LCMOS5H7D4T3GW',
+                'url' => 'https://www.amazon.co.uk/gp/product/1680501607/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1680501607&linkCode=as2&tag=ocportal-21&linkId=U6LCMOS5H7D4T3GW',
                 'author' => 'Lukas Mathis',
                 'difficulty_level' => 'regular',
                 'summary' => 'Explanations of how to make usability the cornerstone of every point in your design process, walking you through the necessary steps to plan the design for an application or website, test it, and get usage data after the design is complete. He shows you how to focus your design process on the most important thing: helping people get things done, easily and efficiently.',
@@ -340,7 +340,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'Differentiate or Die: Survival in Our Era of Killer Competition',
-                'url' => 'http://www.amazon.co.uk/gp/product/0470223391/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=0470223391&linkCode=as2&tag=ocportal-21&linkId=SS2PC3POAQLNO6O7',
+                'url' => 'https://www.amazon.co.uk/gp/product/0470223391/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=0470223391&linkCode=as2&tag=ocportal-21&linkId=SS2PC3POAQLNO6O7',
                 'author' => 'Jack Trout',
                 'difficulty_level' => 'novice',
                 'summary' => 'Differentiate or Die shows you how to differentiate your products, services, and business in order to dominate the competition. Veteran marketing guru Jack Trout uses real-world examples and his own unique insight to show you how to bind customers to your products for long-term success and loyalty.',
@@ -350,7 +350,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'Don\'t Make Me Think: A Common Sense Approach to Web Usability',
-                'url' => 'http://www.amazon.co.uk/gp/product/0321965515/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=0321965515&linkCode=as2&tag=ocportal-21&linkId=ADNLKEXVUR4JY3PQ',
+                'url' => 'https://www.amazon.co.uk/gp/product/0321965515/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=0321965515&linkCode=as2&tag=ocportal-21&linkId=ADNLKEXVUR4JY3PQ',
                 'author' => 'Steve Krug',
                 'difficulty_level' => 'novice',
                 'summary' => 'Since Don\'t Make Me Think was first published in 2000, hundreds of thousands of Web designers and developers have relied on usability guru Steve Krug\'s guide to help them understand the principles of intuitive navigation and information design. Witty, commonsensical, and eminently practical, it\'s one of the best-loved and most recommended books on the subject.',
@@ -360,7 +360,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'Emotional Design: Why We Love (or Hate) Everyday Things',
-                'url' => 'http://www.amazon.co.uk/gp/product/B005GKIYD4/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=B005GKIYD4&linkCode=as2&tag=ocportal-21&linkId=I6GCGTKQ62IQABAX',
+                'url' => 'https://www.amazon.co.uk/gp/product/0465051367/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=0465051367&linkCode=as2&tag=ocportal-21&linkId=I6GCGTKQ62IQABAX',
                 'author' => 'Donald A. Norman',
                 'difficulty_level' => 'novice',
                 'summary' => 'Did you ever wonder why cheap wine tastes better in fancy glasses? Why sales of Macintosh computers soared when Apple introduced the colorful iMac? New research on emotion and cognition has shown that attractive things really do work better, as Donald Norman amply demonstrates in this fascinating book.',
@@ -370,7 +370,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'Founders at Work: Stories of Startups\' Early Days',
-                'url' => 'http://www.amazon.co.uk/gp/product/1430210788/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1430210788&linkCode=as2&tag=ocportal-21&linkId=FTWOWC2ABEMCAUG4',
+                'url' => 'https://www.amazon.co.uk/gp/product/1430210788/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1430210788&linkCode=as2&tag=ocportal-21&linkId=FTWOWC2ABEMCAUG4',
                 'author' => 'Jessica Livingston',
                 'difficulty_level' => 'novice',
                 'summary' => 'Founders at Work: Stories of Startups\' Early Days is a collection of interviews with founders of famous technology companies about what happened in the very earliest days. These people are celebrities now. What was it like when they were just a couple friends with an idea?',
@@ -380,7 +380,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'Graphic Design School: The Principles and Practices of Graphic Design',
-                'url' => 'http://www.amazon.co.uk/gp/product/0500285268/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=0500285268&linkCode=as2&tag=ocportal-21&linkId=KANZGUT3NPV4NGRK',
+                'url' => 'https://www.amazon.co.uk/gp/product/0500285268/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=0500285268&linkCode=as2&tag=ocportal-21&linkId=KANZGUT3NPV4NGRK',
                 'author' => 'David Dabner',
                 'difficulty_level' => 'novice',
                 'summary' => 'Packed with practical guidance and beautifully illustrated throughout, Graphic Design School provides a solid foundation for the design student as well as offering a back-to-basics tool for more advanced designers in search of solutions to graphic problems.',
@@ -390,7 +390,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'HTML & CSS: Design and Build Web Sites',
-                'url' => 'http://www.amazon.co.uk/gp/product/1118008189/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1118008189&linkCode=as2&tag=ocportal-21&linkId=7LKAKZALMFMFERIM',
+                'url' => 'https://www.amazon.co.uk/gp/product/1118008189/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1118008189&linkCode=as2&tag=ocportal-21&linkId=7LKAKZALMFMFERIM',
                 'author' => 'Jon Duckett',
                 'difficulty_level' => 'regular',
                 'summary' => 'A full-color introduction to the basics of HTML and CSS.',
@@ -400,7 +400,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'HTML5: The Missing Manual',
-                'url' => 'http://www.amazon.co.uk/gp/product/1449363261/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1449363261&linkCode=as2&tag=ocportal-21&linkId=VOOKS2AQ2C72NCJT',
+                'url' => 'https://www.amazon.co.uk/gp/product/1449363261/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1449363261&linkCode=as2&tag=ocportal-21&linkId=VOOKS2AQ2C72NCJT',
                 'author' => 'Matthew MacDonald',
                 'difficulty_level' => 'regular',
                 'summary' => 'HTML5 is more than a markup language -- it\'s a collection of several independent web standards. Fortunately, this expanded guide covers everything you need in one convenient place.',
@@ -410,7 +410,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'JavaScript & jQuery',
-                'url' => 'http://www.amazon.co.uk/gp/product/1449399029/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1449399029&linkCode=as2&tag=ocportal-21&linkId=TVOGSEXJPJ4566WO',
+                'url' => 'https://www.amazon.co.uk/gp/product/1449399029/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1449399029&linkCode=as2&tag=ocportal-21&linkId=TVOGSEXJPJ4566WO',
                 'author' => 'David Sawyer McFarland',
                 'difficulty_level' => 'expert',
                 'summary' => 'JavaScript lets you supercharge your web pages with animation, interactivity, and visual effects, but learning the language isn\'t easy. This fully updated and expanded guide takes you step-by-step through JavaScript basics, then shows you how to save time and effort with jQuery.',
@@ -420,7 +420,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'JavaScript: The Definitive Guide',
-                'url' => 'http://www.amazon.co.uk/gp/product/0596805527/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=0596805527&linkCode=as2&tag=ocportal-21&linkId=QPOU6OLWQFCKA2GR',
+                'url' => 'https://www.amazon.co.uk/gp/product/0596805527/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=0596805527&linkCode=as2&tag=ocportal-21&linkId=QPOU6OLWQFCKA2GR',
                 'author' => 'David Flanagan',
                 'difficulty_level' => 'expert',
                 'summary' => 'A programmer\'s guide and comprehensive reference to the core language and to the client-side JavaScript APIs defined by web browsers.',
@@ -430,7 +430,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'The Laws of Simplicity (Simplicity: Design, Technology, Business, Life)',
-                'url' => 'http://www.amazon.co.uk/gp/product/0262134721/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=0262134721&linkCode=as2&tag=ocportal-21&linkId=V5IMBI2TVYEXEVCP',
+                'url' => 'https://www.amazon.co.uk/gp/product/0262134721/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=0262134721&linkCode=as2&tag=ocportal-21&linkId=V5IMBI2TVYEXEVCP',
                 'author' => 'John Maeda',
                 'difficulty_level' => 'novice',
                 'summary' => 'Finally, we are learning that simplicity equals sanity. But sometimes we find ourselves caught up in the simplicity paradox: we want something that\'s simple and easy to use, but also does all the complex things we might ever want it to do.',
@@ -440,7 +440,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'The New Marketing Manifesto: The 12 Rules for Building Successful Brands in the 21st Century',
-                'url' => 'http://www.amazon.co.uk/gp/product/1587990245/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1587990245&linkCode=as2&tag=ocportal-21&linkId=YWKVHKTBWY6M4Z3N',
+                'url' => 'https://www.amazon.co.uk/gp/product/1587990245/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1587990245&linkCode=as2&tag=ocportal-21&linkId=YWKVHKTBWY6M4Z3N',
                 'author' => 'John Grant',
                 'difficulty_level' => 'novice',
                 'summary' => 'Marketing is a vital function of modern business. It plays a key role in the future success of every company - large and small. But the social world around us is changing rapidly. People\'s wants, needs and beliefs no longer conform to the rigid and predictable \'types\' of yesterday that enabled easy targeting.',
@@ -450,7 +450,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'Ogilvy on Advertising',
-                'url' => 'http://www.amazon.co.uk/gp/product/1853756156/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1853756156&linkCode=as2&tag=ocportal-21&linkId=Z3ENOYYNMQJRETDM',
+                'url' => 'https://www.amazon.co.uk/gp/product/1853756156/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1853756156&linkCode=as2&tag=ocportal-21&linkId=Z3ENOYYNMQJRETDM',
                 'author' => 'David Ogilvy',
                 'difficulty_level' => 'novice',
                 'summary' => 'This is the definitive guide to advertising from the most influential and successful adman of all time - David Ogilvy - who founded an agency which is now an international giant.',
@@ -460,7 +460,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'PHP & MySQL: The Missing Manual',
-                'url' => 'http://www.amazon.co.uk/gp/product/1449325572/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1449325572&linkCode=as2&tag=ocportal-21&linkId=NWIM4TFQSEDUYYUV',
+                'url' => 'https://www.amazon.co.uk/gp/product/1449325572/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1449325572&linkCode=as2&tag=ocportal-21&linkId=NWIM4TFQSEDUYYUV',
                 'author' => 'Brett McLaughlin',
                 'difficulty_level' => 'expert',
                 'summary' => 'If you can build websites with CSS and JavaScript, this book takes you to the next level -- creating dynamic, database-driven websites with PHP and MySQL.',
@@ -470,7 +470,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'Positioning: The Battle for Your Mind',
-                'url' => 'http://www.amazon.co.uk/gp/product/0071373586/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=0071373586&linkCode=as2&tag=ocportal-21&linkId=YNTM3KPP5RRHCZX5',
+                'url' => 'https://www.amazon.co.uk/gp/product/0071373586/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=0071373586&linkCode=as2&tag=ocportal-21&linkId=YNTM3KPP5RRHCZX5',
                 'author' => 'Al Ries',
                 'difficulty_level' => 'novice',
                 'summary' => 'The first book to deal with the problems of communicating to a skeptical, media-blitzed public,Positioning describes a revolutionary approach to creating a "position" in a prospective customer\'s mind-one that reflects a company\'s own strengths and weaknesses as well as those of its competitors.',
@@ -480,7 +480,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'Rules For Revolutionaries: The Capitalist Manifesto for Creating and Marketing New Products',
-                'url' => 'http://www.amazon.co.uk/gp/product/088730995X/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=088730995X&linkCode=as2&tag=ocportal-21&linkId=AYLIO3WNB5NMONPW',
+                'url' => 'https://www.amazon.co.uk/gp/product/088730995X/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=088730995X&linkCode=as2&tag=ocportal-21&linkId=AYLIO3WNB5NMONPW',
                 'author' => 'Guy Kawasaki',
                 'difficulty_level' => 'novice',
                 'summary' => 'Guy Kawasaki, CEO of garage.com and former chief evangelist of Apple Computer, Inc., presents his manifesto for world-changing innovation, using his battle-tested lessons to help revolutionaries become visionaries.',
@@ -490,7 +490,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'The E-Myth Revisited: Why Most Small Businesses Don\'t Work and What to Do About It',
-                'url' => 'http://www.amazon.co.uk/gp/product/0887307280/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=0887307280&linkCode=as2&tag=ocportal-21&linkId=JH5H3VUXOG3UFCOB',
+                'url' => 'https://www.amazon.co.uk/gp/product/0887307280/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=0887307280&linkCode=as2&tag=ocportal-21&linkId=JH5H3VUXOG3UFCOB',
                 'author' => 'Michael E. Gerber',
                 'difficulty_level' => 'novice',
                 'summary' => 'E-Myth \\ \'e-,\'mith\\ n 1: the entrepreneurial myth: the myth that most people who start small businesses are entrepreneurs 2: the fatal assumption that an individual who understands the technical work of a business can successfully run a business that does that technical work',
@@ -500,7 +500,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'Universal Principles of Design',
-                'url' => 'http://www.amazon.co.uk/gp/product/1592535879/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1592535879&linkCode=as2&tag=ocportal-21&linkId=NZ7MPXZWEEKOAGOS',
+                'url' => 'https://www.amazon.co.uk/gp/product/1592535879/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1592535879&linkCode=as2&tag=ocportal-21&linkId=NZ7MPXZWEEKOAGOS',
                 'author' => 'William Lidwell',
                 'difficulty_level' => 'regular',
                 'summary' => '115 Ways to Enhance Usability, Influence Perception, Increase Appeal, Make Better Design Decisions and Teach Through Design. The first comprehensive, cross-disciplinary encyclopedia of design.',
@@ -510,7 +510,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'Venture Deals: Be Smarter Than Your Lawyer and Venture Capitalist',
-                'url' => 'http://www.amazon.co.uk/gp/product/1118443616/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1118443616&linkCode=as2&tag=ocportal-21&linkId=7CQVE2VZEJIWQ643',
+                'url' => 'https://www.amazon.co.uk/gp/product/1118443616/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1118443616&linkCode=as2&tag=ocportal-21&linkId=7CQVE2VZEJIWQ643',
                 'author' => 'Brad Feld, Jason Mendelson',
                 'difficulty_level' => 'regular',
                 'summary' => 'As each new generation of entrepreneurs emerges, there is a renewed interest in how venture capital deals come together.',
@@ -520,7 +520,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'Small Business Start-Up Workbook: A Step-by-step Guide to Starting the Business You\'ve Dreamed of',
-                'url' => 'http://www.amazon.co.uk/gp/product/1845280385/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1845280385&linkCode=as2&tag=ocportal-21&linkId=KW4ONRLRZPK3PMHO',
+                'url' => 'https://www.amazon.co.uk/gp/product/1845280385/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1845280385&linkCode=as2&tag=ocportal-21&linkId=KW4ONRLRZPK3PMHO',
                 'author' => 'Cheryl D. Rickman',
                 'difficulty_level' => 'novice',
                 'summary' => 'A modern approach to self-employment and business start-up. Packed with real-life case studies and practical exercises, checklists and worksheets, it provides a step-by-step guide to researching and formulating your business ideas, planning the right marketing strategies, and managing a team that will drive your vision forward with you.',
@@ -530,7 +530,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'How to Win Friends and Influence People',
-                'url' => 'http://www.amazon.co.uk/gp/product/0091906814/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=0091906814&linkCode=as2&tag=ocportal-21&linkId=H6MT4SCD2LS2MUFN',
+                'url' => 'https://www.amazon.co.uk/gp/product/0091906814/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=0091906814&linkCode=as2&tag=ocportal-21&linkId=H6MT4SCD2LS2MUFN',
                 'author' => 'Dale Carnegie',
                 'difficulty_level' => 'novice',
                 'summary' => 'Millions of people around the world have improved their lives based on the teachings of Dale Carnegie. In How to Win Friends and Influence People, he offers practical advice and techniques. His advice has stood the test of time and will teach you how to persuade people to follow your way of thinking, enable you to win new clients and customers and become a better speaker.',

@@ -41,6 +41,4 @@ To place the Twitter feed block:
 [*] You can now preview, and if you are happy, save the block and save the page and your block should appear on your selected page.
 [/list]
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
-
 {$SET,tutorial_tags,Social,Third Party Integration,Addon,novice}{$SET,tutorial_add_date,Oct 2013}{$SET,tutorial_summary,This tutorial covers various ways Twitter can be integrated into your Composr website.}[block]main_tutorial_rating[/block]

@@ -1219,7 +1219,7 @@ It should also be stressed as a last point that [b]JavaScript is not secure[/b];
  - http://webplatform.org
  - http://w3.org
  - http://caniuse.com/
- - https://status.modern.ie/
+ - https://developer.microsoft.com/en-us/microsoft-edge/platform/status/
  - http://webdesign.about.com/
  - https://www.udemy.com/how-to-become-a-web-developer-from-scratch
  - https://teamtreehouse.com/

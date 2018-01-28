@@ -118,7 +118,7 @@ More information about suEXEC is provided in the [page="_SEARCH:tut_webhosting"]
 
 [title="3"]Is suEXEC really safe?[/title]
 
-You may find claims that [url="suEXEC is a security concern"]http://forum.odin.com/threads/suexec-serious-security-concerns.257429/[/url].
+You may find claims that [url="suEXEC is a security concern"]https://talk.plesk.com/threads/suexec-serious-security-concerns.257429/[/url].
 The fact that suEXEC is now extremely common-place, without disaster having unfolded, disputes this quite well.
 
 However, here's my more serious rebuttal...

@@ -430,7 +430,7 @@ Here is a good workflow for writing high-quality code for Composr:
 
 Here are some general tips:
  - It's sometimes a good idea to program algorithms in complete isolation. Separate the complexities of integration from the complexities of implementation. This also leads to better quality code because you will have been forced to abstract the problem already.
- - If working with other remote developers, [url="Cloud9 IDE"]https://c9.io/[/url] is absolutely excellent. You can watch each other code and see the results of running your code.It is very useful for teaching programming technique, team debugging, and pair programming.
+ - If working with other remote developers, [url="Cloud9 IDE"]https://aws.amazon.com/cloud9/[/url] is absolutely excellent. You can watch each other code and see the results of running your code.It is very useful for teaching programming technique, team debugging, and pair programming.
 
 [title="3"]Writing unit tests[/title]
 

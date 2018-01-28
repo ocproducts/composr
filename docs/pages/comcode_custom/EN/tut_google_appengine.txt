@@ -50,13 +50,13 @@ In a sense it is a mute comparison, because shared hosting cannot scale and henc
 
 From a cost-origin point of view, shared hosting pricing benefits from its relative simplicity (no high R&D costs, relatively unskilled support personnel) and the relatively low usage the average customer has (hence subsidisation is happening) -- while cloud hosting benefits from its low-service nature and economies of scale. Both the shared hosting and cloud hosting markets are extremely competitive.
 
-You should obviously keep track of your costs. And, obviously the Composr developers cannot put any guarantee on how much things might cost. Be advised: even if there is a bug that uses run-away resources, the Composr developers cannot be held liable for those costs. Google have [url="options to put a ceiling on resource usage"]https://developers.google.com/appengine/docs/quotas[/url], blocking requests that go above this.
+You should obviously keep track of your costs. And, obviously the Composr developers cannot put any guarantee on how much things might cost. Be advised: even if there is a bug that uses run-away resources, the Composr developers cannot be held liable for those costs. Google have [url="options to put a ceiling on resource usage"]https://cloud.google.com/appengine/quotas[/url], blocking requests that go above this.
 
 [title="2"]Basic set up[/title]
 
 You will need to have a local development machine, in addition to your live application. Your initial site setup will be done locally, and then you will deploy it live. This "development to live" process will be your core workflow.
 
-You will need to install the [url="GAE PHP SDK"]https://developers.google.com/appengine/docs/php/gettingstarted/installing[/url] on your local development machine. You must do this before Composr installation.
+You will need to install the [url="GAE PHP SDK"]https://cloud.google.com/appengine/docs/standard/php/download[/url] on your local development machine. You must do this before Composr installation.
 
 You will also need to install MySQL, as this doesn't come with the SDK. MySQL is equivalent to Google Cloud SQL (used by the live application).
 
@@ -207,12 +207,12 @@ In given code samples replace [tt]<application>[/tt] with the name of your appli
 
 You may want to copy your initial custom files to live. If you have no relevant custom files (which is possible), there is no need to. To copy your files you will need to either:
 [list="a"]
-[*] [url="use gsutil"]https://developers.google.com/storage/docs/gsutil_install[/url] with the files in [tt]data_custom/modules/google_appengine[/tt] (that is your custom filesystem for Cloud Storage, which Composr has kept separated from your application files).
+[*] [url="use gsutil"]https://cloud.google.com/storage/docs/gsutil_install[/url] with the files in [tt]data_custom/modules/google_appengine[/tt] (that is your custom filesystem for Cloud Storage, which Composr has kept separated from your application files).
 [*] Alternatively, you can include your custom files as a part of the application. You do this by merging the [tt]data_custom/modules/google_appengine[/tt] folder back down into your main Composr folder. Note though that this does not work for the [tt]uploads[/tt] directory, as uploads are always considered custom and Composr will not search the application directory when locating them.
 [/list]
 
 If you are going to use [tt]gsutil[/tt], this is the process...
-1) [url="Download and install gsutil"]https://developers.google.com/storage/docs/gsutil_install[/url]
+1) [url="Download and install gsutil"]https://cloud.google.com/storage/docs/gsutil_install[/url]
 2) ...make sure you have followed the "How to Set Up Credentials to Access Protected Data" part of the above instructions
 3) Open a command prompt in your project directory
 4) Type [tt]cd data_custom/modules/google_appengine[/tt]
@@ -225,7 +225,7 @@ Now consider your plans for world domination while your files upload (or, read a
 (in the below instructions obviously substitute [tt]<application>[/tt] for the real name of the application)
 
 To copy your initial database to live, you need to follow a rather complex procedure of exporting, copying to live Google Cloud Storage, then importing from live Google Cloud Storage...
-1) [url="Download and install gsutil"]https://developers.google.com/storage/docs/gsutil_install[/url] (if you didn't already do it for "Storage", above)
+1) [url="Download and install gsutil"]https://cloud.google.com/storage/docs/gsutil_install[/url] (if you didn't already do it for "Storage", above)
 2) ...make sure you have followed the "How to Set Up Credentials to Access Protected Data" part of the above instructions
 3) Open a command prompt in your project directory
 4) Take an SQL dump of your local MySQL database. Typically you will do this with:[code="Bash"]mysqldump --databases <application> -uroot > dump.sql[/code]Note that I found I had to use "--databases" to force a [tt]USE <application>;[/tt] command, which the import seems to need.
@@ -254,7 +254,7 @@ To view the live project, go to [tt]http://<application>.appspot.com[/tt] in you
 
 [title="4"]Developers[/title]
 
-Developers may be interested in GAE's [url="Push-to-deploy"]https://developers.google.com/appengine/docs/push-to-deploy[/url] system.
+Developers may be interested in GAE's [url="Push-to-deploy"]https://cloud.google.com/appengine/docs/standard/python/getting-started/deploying-the-application[/url] system.
 
 [title="3"]Notes and considerations[/title]
 
@@ -317,10 +317,10 @@ Go through this process:
 
 [title="3"]Domain name[/title]
 
-Initially you will be set up on an [tt]appspot.com[/tt] subdomain. You [url="may use your own domain"]https://developers.google.com/appengine/docs/domain[/url]. Composr is set up to automatically detect your base URL from the access URL, so you do not need to worry about any configuration within Composr. Make sure though that you stop using the [tt]appspot.com[/tt] URL fully after switching to your custom domain name.
+Initially you will be set up on an [tt]appspot.com[/tt] subdomain. You [url="may use your own domain"]https://cloud.google.com/appengine/docs/standard/python/mapping-custom-domains[/url]. Composr is set up to automatically detect your base URL from the access URL, so you do not need to worry about any configuration within Composr. Make sure though that you stop using the [tt]appspot.com[/tt] URL fully after switching to your custom domain name.
 
-If using SSL with your own custom domain, Composr's default configuration in [tt]_config.php[/tt] will assume that you want to serve uploaded data via that domain. To do that you need to setup [tt]storage.<domainname>[/tt] as per [url="Google's documentation on setting a CNAME record"]https://developers.google.com/storage/docs/reference-uris[/url].
-Of course you would also need to set up [url="your own SSL certificate"]https://developers.google.com/appengine/docs/ssl[/url].
+If using SSL with your own custom domain, Composr's default configuration in [tt]_config.php[/tt] will assume that you want to serve uploaded data via that domain. To do that you need to setup [tt]storage.<domainname>[/tt] as per [url="Google's documentation on setting a CNAME record"]https://cloud.google.com/storage/docs/request-endpoints[/url].
+Of course you would also need to set up [url="your own SSL certificate"]https://cloud.google.com/appengine/docs/standard/python/securing-custom-domains-with-ssl[/url].
 
 [title="3"]Error pages[/title]
 

@@ -32,6 +32,4 @@ Workflows should now be installed but will need to be configured. To do this you
 
 On the next screen you can set which of your usergroups can authorise each of the different levels which you have created. You will probably want to make sure your admins group can authorise all of the levels. You can create as many different levels as you require.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
-
 {$SET,tutorial_tags,Collaboration,Content,novice}{$SET,tutorial_add_date,Nov 2013}{$SET,tutorial_summary,For larger enterprises and companies the ability to have multiple levels of sign off for website content can be important. This is covered by the workflows addon (which out-of-the-box supports only galleries, but is extendible.}[block]main_tutorial_rating[/block]

@@ -26,6 +26,4 @@ What you want to appear goes here
 {+END}
 [/code]
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
-
 {$SET,tutorial_tags,Content,Security,novice}{$SET,tutorial_add_date,Feb 2014}{$SET,tutorial_summary,We give an example of showing different content to different usergroups.}[block]main_tutorial_rating[/block]

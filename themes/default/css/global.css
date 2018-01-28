@@ -850,11 +850,6 @@ body.popup_spacer h2 {
 		margin-{!en_right}: 13em;
 		padding-{!en_right}: 3.5em;
 	}
-	/*{+START,IF,{$CONFIG_OPTION,collapse_user_zones}}*/
-		.zone_running_ #panel_right:first-child ~ .global_middle { /* If no left panel on welcome zone, lets give some extra space */
-			margin-{!en_right}: 16em;
-		}
-	/*{+END}*/
 /*{+END}*/
 
 .global_side_panel h2 {

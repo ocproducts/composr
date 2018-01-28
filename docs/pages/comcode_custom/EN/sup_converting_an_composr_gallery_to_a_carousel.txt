@@ -20,6 +20,4 @@ Then you need to expand the advanced block parameters, and set the GUID value. I
 
 That's it! This feature works because the default [tt]BLOCK_MAIN_GALLERY_EMBED.tpl[/tt] template is coded to have a carousel display option via this GUID. In general GUID values allow templates to render differently in different situations, because the templates can look at the values and adjust themselves accordingly. Usually this only happens when you the themer explicitly codes this in, but this block is a rare case where we have a different layout style out-of-the-box.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
-
 {$SET,tutorial_tags,Galleries,Content,novice}{$SET,tutorial_add_date,Mar 2014}{$SET,tutorial_summary,A task which I do on most sites I build with Composr is to convert the existing gallery block display so it displays as a carousel. This tutorial shows how.}[block]main_tutorial_rating[/block]

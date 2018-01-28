@@ -30,6 +30,4 @@ You can set a scheduled time when you want the backup to take place. This will o
 
 If you have set a scheduled time you can automatically tell Composr to complete backups for you. Again this will depend on how busy your site is. You might want to run one full backup and set it to run once a month and also have incremental backups running every few days so nothing is lost.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
-
 {$SET,tutorial_tags,Maintenance,backup,Installation,novice}{$SET,tutorial_add_date,Sep 2014}{$SET,tutorial_summary,A task which you should not overlook is backing up your Composr website. Should anything happen to your website without a backup, it can result in a loss of a huge amount of data.}[block]main_tutorial_rating[/block]

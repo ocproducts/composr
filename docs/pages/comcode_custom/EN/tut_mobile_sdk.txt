@@ -2146,7 +2146,7 @@ The toolkit will help you mirror some Composr website resources into a mobile ap
 
 This tool will generate iOS/Android string resources.
 
-It is approximate. For example, it does not handle the data types and pluralisation that [url="Android can support"]http://developer.android.com/guide/topics/resources/string-resource.html[/url] or data types that [url="iOS can support"]https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html[/url].
+It is approximate. For example, it does not handle the data types and pluralisation that [url="Android can support"]https://developer.android.com/guide/topics/resources/string-resource.html[/url] or data types that [url="iOS can support"]https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html[/url].
 
 [list="1"]
 [*] Open a command prompt to the Composr installation directory.

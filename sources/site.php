@@ -162,7 +162,10 @@ function init__site()
             foreach ($_comcode_pages_needed as $_comcode_page_needed => $_) {
                 $comcode_pages_needed[] = unserialize($_comcode_page_needed);
             }
-            _load_comcodes_page_from_cache($comcode_pages_needed);
+
+            if (count($comcode_pages_needed) < 20) {
+                _load_comcodes_page_from_cache($comcode_pages_needed);
+            }
         }
     }
 }

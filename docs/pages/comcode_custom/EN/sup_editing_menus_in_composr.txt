@@ -37,6 +37,4 @@ Choose the Branch type. If the top level is set as an Expanded or Contracted bra
 If you want to edit the menu once it is set as the main navigation you can either go through the Admin Zone or when you are logged in as an admin you can hover over the menu and an edit link will appear to the right side of the menu which will look like this:
 [media description="The link to edit a menu" thumb="0"]data_custom/images/docs/sup_editing_menus_in_composr/9a1be81076fbaada971ead4643d63239.png[/media]
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
-
 {$SET,tutorial_tags,Structure and navigation,novice}{$SET,tutorial_add_date,Jul 2014}{$SET,tutorial_summary,Your primary site menu is how most site visitors will find their way around your website and as such it's important you are able to edit it.}[block]main_tutorial_rating[/block]

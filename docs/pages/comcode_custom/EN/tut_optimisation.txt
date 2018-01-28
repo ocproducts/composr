@@ -548,11 +548,11 @@ Google's mod_pagespeed adds some nice micro optimisations. Composr doesn't do th
 mod_pagespeed is not supplied with Apache, but can be installed on most Linux servers. However you would need server access or for the webhost to do this for you.
 
 Interesting optimisations include:
- - https://developers.google.com/speed/docs/mod_pagespeed/filter-trim-urls (this breaks modularity -- but that is fine for primary output streams)
- - https://developers.google.com/speed/docs/mod_pagespeed/filter-quote-remove and https://developers.google.com/speed/docs/mod_pagespeed/filter-attribute-elide (Composr is XHTML-compliant, this breaks that -- but that is fine for primary output streams)
- - https://developers.google.com/speed/docs/mod_pagespeed/filter-whitespace-collapse (this will save some bytes, although not nearly as many as you think if you already have gzip encoding on)
- - https://developers.google.com/speed/docs/mod_pagespeed/filter-image-optimize (mod_pagespeed may do a better job that your manual optimisation, and its support of WebP is very interesting)
- - https://developers.google.com/speed/docs/mod_pagespeed/filter-js-defer (this will improve performance initial rendering time, but at the expensive of delaying interaction time -- this may be a fairly good idea for very non-interactive sites, but a terrible idea for very-interactive sites -- use with great care)
+ - https://www.modpagespeed.com/doc/filter-trim-urls (this breaks modularity -- but that is fine for primary output streams)
+ - https://www.modpagespeed.com/doc/filter-quote-remove and https://www.modpagespeed.com/doc/filter-attribute-elide (Composr is XHTML-compliant, this breaks that -- but that is fine for primary output streams)
+ - https://www.modpagespeed.com/doc/filter-whitespace-collapse (this will save some bytes, although not nearly as many as you think if you already have gzip encoding on)
+ - https://www.modpagespeed.com/doc/filter-image-optimize (mod_pagespeed may do a better job that your manual optimisation, and its support of WebP is very interesting)
+ - https://www.modpagespeed.com/doc/filter-js-defer (this will improve performance initial rendering time, but at the expensive of delaying interaction time -- this may be a fairly good idea for very non-interactive sites, but a terrible idea for very-interactive sites -- use with great care)
 
 The work on HTTP/2 is also interesting (previously Google SPDY), and SDCH is [i]extremely interesting[/i]. At this time of writing it is too early to really think about these, but they should provide automatic optimisations to Composr.
 
