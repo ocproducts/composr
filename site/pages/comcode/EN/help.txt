@@ -1,8 +1,8 @@
-[title="1" sub="{$SITE_NAME} help"]Help[/title]
+[title="1" sub="{$SITE_NAME*} help"]Help[/title]
 
 {+START,IF,{$HAS_FORUM,1}}[title="2"]{$?,{$IS_GUEST},Logging-in,Your login}[/title]
 
-{$?,{$IS_GUEST},{$COMCODE,You need to [page=":login"]log in[/page] to {$SITE_NAME} in order to},With your login you} get full access to our features, to interact with other members, to manage your profile, and to be able to manage{+START,IF,{$ADDON_INSTALLED,points}} (and get points for){+END} the content you submit.
+{$?,{$IS_GUEST},{$COMCODE,You need to [page=":login"]log in[/page] to {$SITE_NAME*} in order to},With your login you} get full access to our features, to interact with other members, to manage your profile, and to be able to manage{+START,IF,{$ADDON_INSTALLED,points}} (and get points for){+END} the content you submit.
 
 {+START,IF,{$ADDON_INSTALLED,points}}[title="2"]Points[/title]
 

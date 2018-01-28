@@ -66,7 +66,7 @@
 
 				<ul class="horizontal_links associated_links_block_group">
 					{+START,IF,{$ADDON_INSTALLED,recommend}}
-						<li><img src="{$IMG*,icons/16x16/filetypes/email_link}" srcset="{$IMG*,icons/16x16/filetypes/email_link} 2x" alt="" /> <a href="{$PAGE_LINK*,:recommend:browse:subject={!ECARD_FOR_YOU_SUBJECT}:page_title={!SEND_AS_ECARD}:s_message={!ECARD_FOR_YOU,{$SELF_URL},{FULL_URL*},{$SITE_NAME}}}">{!SEND_AS_ECARD}</a></li>
+						<li><img src="{$IMG*,icons/16x16/filetypes/email_link}" srcset="{$IMG*,icons/16x16/filetypes/email_link} 2x" alt="" /> <a href="{$PAGE_LINK*,:recommend:browse:subject={!ECARD_FOR_YOU_SUBJECT}:page_title={!SEND_AS_ECARD}:s_message={!ECARD_FOR_YOU,{$SELF_URL},{FULL_URL},{$SITE_NAME}}}">{!SEND_AS_ECARD}</a></li>
 					{+END}
 					<li><img src="{$IMG*,icons/24x24/feedback/comment}" srcset="{$IMG*,icons/48x48/feedback/comment} 2x" alt="" /> <a href="{VIEW_URL*}">{$COMMENT_COUNT,images,{ID}}</a></li>
 				</ul>
