@@ -218,7 +218,7 @@ $config_options = $GLOBALS['SITE_DB']->query_select('config', array('*'));
 require_code('config2');
 foreach ($config_options as $option) {
     $name = $option['c_name'];
-    if (in_array($name, array('site_name', 'description', 'site_scope', 'copyright', 'staff_address', 'keywords', 'google_analytics', 'fixed_width', 'site_closed', 'closed', 'stats_store_time', 'show_content_tagging', 'show_content_tagging_inline', 'show_screen_actions', 'collapse_user_zones'))) {
+    if (in_array($name, array('site_name', 'description', 'site_scope', 'copyright', 'staff_address', 'keywords', 'google_analytics', 'fixed_width', 'site_closed', 'closed', 'stats_store_time', 'show_content_tagging', 'show_content_tagging_inline', 'show_screen_actions', 'single_public_zone'))) {
         continue; // These are set separately
     }
     $value = get_option($name);

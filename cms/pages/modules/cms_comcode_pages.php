@@ -283,7 +283,7 @@ class Module_cms_comcode_pages
         $fields = new Tempcode();
         $add_new_permission = has_add_comcode_page_permission();
         if ($add_new_permission) {
-            if (get_option('collapse_user_zones') == '1') {
+            if (get_option('single_public_zone') == '1') {
                 $sample_page_name = ':example_new_page';
             } else {
                 $sample_page_name = 'site:example_new_page';

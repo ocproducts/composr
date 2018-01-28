@@ -346,7 +346,7 @@ function init__global2()
     }
     require_code('zones'); // Zone is needed because zones are where all Composr pages reside
 
-    if ((get_option('collapse_user_zones') == '1') && ($RELATIVE_PATH == 'site')) {
+    if ((get_option('single_public_zone') == '1') && ($RELATIVE_PATH == 'site')) {
         get_base_url();/*force calculation first*/
         $RELATIVE_PATH = '';
     }

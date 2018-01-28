@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_collapse_user_zones
+class Hook_config_single_public_zone
 {
     /**
      * Gets the details relating to the config option.
@@ -31,11 +31,11 @@ class Hook_config_collapse_user_zones
     public function get_details()
     {
         return array(
-            'human_name' => 'COLLAPSE_USER_ZONES',
+            'human_name' => 'SINGLE_PUBLIC_ZONE',
             'type' => 'tick',
             'category' => 'SITE',
             'group' => 'STRUCTURE',
-            'explanation' => 'CONFIG_OPTION_collapse_user_zones',
+            'explanation' => 'CONFIG_OPTION_single_public_zone',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'required' => true,

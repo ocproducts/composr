@@ -699,7 +699,7 @@ function install_addon($file, $files = null, $do_files = true, $do_db = true)
     // Install new modules
     if ($do_db) {
         $zones = array_unique(array_merge(find_all_zones(), $zones));
-        if (get_option('collapse_user_zones') == '1') {
+        if (get_option('single_public_zone') == '1') {
             $zones[] = 'site';
         }
         foreach ($zones as $zone) {
@@ -1117,7 +1117,7 @@ function uninstall_addon($addon, $clear_caches = true)
                         $menu_sql .= db_string_equal_to('i_url', $zone . ':' . $module);
                         $menu_sql .= ' OR ';
                         $menu_sql .= 'i_url LIKE \'' . db_encode_like($zone . ':' . $module . ':%') . '\'';
-                        if (($zone == 'site') && (get_option('collapse_user_zones') == '1')) {
+                        if (($zone == 'site') && (get_option('single_public_zone') == '1')) {
                             $zone = '';
                             $menu_sql .= ' OR ';
                             $menu_sql .= db_string_equal_to('i_url', $zone . ':' . $module);

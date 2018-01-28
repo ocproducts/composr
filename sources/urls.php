@@ -1021,7 +1021,7 @@ function page_link_decode($page_link)
         } else {
             $zone = '';
         }
-    } elseif (($zone === 'site') && (get_option('collapse_user_zones') === '1')) {
+    } elseif (($zone === 'site') && (get_option('single_public_zone') === '1')) {
         $zone = '';
     } elseif ($zone === '_SELF') {
         $zone = get_zone_name();
@@ -1251,7 +1251,7 @@ function find_id_moniker($url_parts, $zone)
         if (@is_file(get_file_base() . '/' . $zone . '/pages/modules/' . $page . '.php')) { // Wasteful of resources
             return null;
         }
-        if (($zone == '') && (get_option('collapse_user_zones') == '1')) {
+        if (($zone == '') && (get_option('single_public_zone') == '1')) {
             if (@is_file(get_file_base() . '/site/pages/modules/' . $page . '.php')) { // Wasteful of resources
                 return null;
             }

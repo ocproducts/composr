@@ -1,5 +1,5 @@
 [semihtml]
-{+START,IF,{$NOT,{$CONFIG_OPTION,collapse_user_zones}}}
+{+START,IF,{$NOT,{$CONFIG_OPTION,single_public_zone}}}
 [surround="hero-section"]
 	[title]Welcome to {$SITE_NAME*}[/title]
 
@@ -10,7 +10,7 @@
 [block failsafe="1"]main_image_fader_news[/block]
 {+END}
 
-{+START,IF,{$CONFIG_OPTION,collapse_user_zones}}
+{+START,IF,{$CONFIG_OPTION,single_public_zone}}
 [title]{$SITE_NAME*}[/title]
 
 [block="3" failsafe="1"]main_greeting[/block]

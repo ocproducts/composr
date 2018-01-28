@@ -79,7 +79,7 @@ function load_breadcrumb_substitutions($segments)
                         $does_match = match_key_match($substitution_match_key, false);
                     } else {
                         if (($substitution_match_key[0][0] == 'site') && ($segment_zone == '') || ($substitution_match_key[0][0] == '') && ($segment_zone == 'site')) {
-                            // Special handling, we don't want single public zone option (collapse_user_zones) to be too "smart" and apply a rule intended for when that option is off
+                            // Special handling, we don't want single public zone option (single_public_zone) to be too "smart" and apply a rule intended for when that option is off
                             continue;
                         }
 
@@ -231,7 +231,7 @@ class Breadcrumb_substitution_loader
 
         switch ($tag) {
             case 'substitution':
-                if (isset($tag_attributes['skip_if_single_public_zone']) && $tag_attributes['skip_if_single_public_zone'] == 'true' && get_option('collapse_user_zones') == '1') {
+                if (isset($tag_attributes['skip_if_single_public_zone']) && $tag_attributes['skip_if_single_public_zone'] == 'true' && get_option('single_public_zone') == '1') {
                     break;
                 }
 

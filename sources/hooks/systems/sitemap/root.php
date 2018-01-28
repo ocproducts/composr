@@ -31,7 +31,7 @@ class Hook_sitemap_root extends Hook_sitemap_base
      */
     public function handles_page_link($page_link)
     {
-        if (get_option('collapse_user_zones') == '0') {
+        if (get_option('single_public_zone') == '0') {
             if ($page_link == '' || $page_link == ':') {
                 return SITEMAP_NODE_HANDLED; // Imaginery node
             }
@@ -120,7 +120,7 @@ class Hook_sitemap_root extends Hook_sitemap_base
             'sitemap_refreshfreq' => 'daily',
         );
 
-        if (get_option('collapse_user_zones') == '0') {
+        if (get_option('single_public_zone') == '0') {
             $struct['title'] = do_lang_tempcode('_WELCOME');
             $struct['page_link'] = ':';
             $struct['type'] = 'zone';
@@ -159,7 +159,7 @@ class Hook_sitemap_root extends Hook_sitemap_base
             $first_zones = find_all_zones(false, true, false, 0, SITEMAP_MAX_ROWS_PER_LOOP);
             foreach ($first_zones as $_zone) {
                 list($zone) = $_zone;
-                if ($zone == ((get_option('collapse_user_zones') == '0') ? 'site' : '')) {
+                if ($zone == ((get_option('single_public_zone') == '0') ? 'site' : '')) {
                     $child_page_link = $zone . ':';
                     $child_node = $zone_sitemap_ob->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $zone, $meta_gather, $_zone);
                     if ($child_node !== null) {

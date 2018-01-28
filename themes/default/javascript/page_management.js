@@ -68,7 +68,7 @@
                 case 'minimodule':
                 case 'minimodule_custom':
                     path = pageLinkBits[0] + ((pageLinkBits[0] === '') ? '' : '/') + 'pages/' + type + '/' + pageLinkBits[1] + '.php';
-                    if ($ADDON_INSTALLED_code_editor && !$cms.configOption('collapse_user_zones')) {
+                    if ($ADDON_INSTALLED_code_editor && !$cms.configOption('single_public_zone')) {
                         actionBuildup += actionsTplItem.replace(/\[1\]/, '{!EDIT;^}').replace(/\[2\]/, '{$BASE_URL;,0}/code_editor.php?path=' + encodeURIComponent(path));
                     }
                     switch (type) {

@@ -25,7 +25,7 @@
             var form = $dom.$id('edit_form');
 
             $cms.ui.prompt(
-                $cms.configOption('collapse_user_zones') ? '{!javascript:ENTER_ZONE_SPZ;^}' : '{!javascript:ENTER_ZONE;^}', '', null, '{!menus:SPECIFYING_NEW_PAGE;^}'
+                $cms.configOption('single_public_zone') ? '{!javascript:ENTER_ZONE_SPZ;^}' : '{!javascript:ENTER_ZONE;^}', '', null, '{!menus:SPECIFYING_NEW_PAGE;^}'
             ).then(function (zone) {
                 if (zone != null) {
                     $cms.ui.prompt(

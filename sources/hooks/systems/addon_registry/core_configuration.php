@@ -175,7 +175,7 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/config/block_top_login.php',
             'sources/hooks/systems/config/block_top_personal_stats.php',
             'sources/hooks/systems/config/fixed_width.php',
-            'sources/hooks/systems/config/collapse_user_zones.php',
+            'sources/hooks/systems/config/single_public_zone.php',
             'sources/hooks/systems/config/url_monikers_enabled.php',
             'sources/hooks/systems/config/tasks_background.php',
             'sources/hooks/systems/config/moniker_transliteration.php',

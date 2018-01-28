@@ -165,7 +165,7 @@ function _sitemap_node_to_xml($admin_groups, $groups, $node, $permissions_needed
 
     $selectable = ((!$permissions_needed) || (count($node['permissions']) != 0)) && ($node['page_link'] != '');
 
-    $is_root = (($node['page_link'] == ((get_option('collapse_user_zones') == '0') ? ':' : '')));
+    $is_root = (($node['page_link'] == ((get_option('single_public_zone') == '0') ? ':' : '')));
 
     $type = $node['content_type'];
     if ($type == 'root') {
@@ -346,7 +346,7 @@ function _get_privileges_for_node($admin_groups, $groups, $node)
         $id = '';
     }
 
-    $is_root = (($node['page_link'] == ((get_option('collapse_user_zones') == '0') ? ':' : '')));
+    $is_root = (($node['page_link'] == ((get_option('single_public_zone') == '0') ? ':' : '')));
 
     $privilege_access = null;
     switch ($node['content_type']) {
@@ -488,7 +488,7 @@ function sitemap_script_saving()
     // Read it all in
     foreach ($map as $i => $page_link) // For everything we're setting at once
     {
-        $is_root = (($page_link == ((get_option('collapse_user_zones') == '0') ? ':' : '')));
+        $is_root = (($page_link == ((get_option('single_public_zone') == '0') ? ':' : '')));
 
         // Decode page link
         $matches = array();

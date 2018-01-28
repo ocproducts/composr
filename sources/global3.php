@@ -1621,7 +1621,7 @@ function match_key_match($match_keys, $support_post = false, $current_params = n
         if ((!isset($parts[1])) || ($parts[1] == '_WILD') || (($parts[1] == '_WILD_NOT_START') && ($current_page_name != get_zone_default_page($parts[0])))) {
             $parts[1] = $current_page_name;
         }
-        if (($parts[0] == 'site') && (get_option('collapse_user_zones') == '1')) {
+        if (($parts[0] == 'site') && (get_option('single_public_zone') == '1')) {
             $parts[0] = '';
         }
         $zone_matches = (($parts[0] == $current_zone_name) || ((strpos($parts[0], '*') !== false) && (simulated_wildcard_match($current_zone_name, $parts[0], true))));

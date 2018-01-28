@@ -1377,7 +1377,7 @@ class Module_admin_setupwizard
             }
         }
 
-        $collapse_zones = post_param_integer('collapse_user_zones', 0) == 1;
+        $collapse_zones = post_param_integer('single_public_zone', 0) == 1;
 
         // Install test content
         if (post_param_integer('install_test_content', 0) == 1) {

@@ -43,7 +43,7 @@ class Hook_sitemap_zone extends Hook_sitemap_base
      */
     public function handles_page_link($page_link)
     {
-        if (get_option('collapse_user_zones') == '0') {
+        if (get_option('single_public_zone') == '0') {
             if ($page_link == ':') {
                 return SITEMAP_NODE_NOT_HANDLED;
             }
@@ -97,7 +97,7 @@ class Hook_sitemap_zone extends Hook_sitemap_base
         $zone = $matches[1]; // overrides $zone which we must replace
 
         $no_self_pages = false;
-        if ($zone == 'site' && get_option('collapse_user_zones') == '1') {
+        if ($zone == 'site' && get_option('single_public_zone') == '1') {
             $zone = '';
             $no_self_pages = true;
         }
@@ -244,7 +244,7 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                     break;
 
                 case '':
-                    if (get_option('collapse_user_zones') == '0') {
+                    if (get_option('single_public_zone') == '0') {
                         $applicable_page_groupings = array();
                         break;
                     } // else flow on...

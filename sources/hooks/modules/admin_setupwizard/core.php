@@ -35,7 +35,7 @@ class Hook_sw_core
         $settings['show_content_tagging'] = (get_theme_option('show_content_tagging', null, post_param_string('source_theme', 'default')) == '1') ? '1' : '0';
         $settings['show_content_tagging_inline'] = (get_theme_option('show_content_tagging_inline', null, post_param_string('source_theme', 'default')) == '1') ? '1' : '0';
         $settings['show_screen_actions'] = (get_theme_option('show_screen_actions', null, post_param_string('source_theme', 'default')) == '1') ? '1' : '0';
-        $settings['collapse_user_zones'] = (get_option('collapse_user_zones') == '1') ? '1' : '0';
+        $settings['single_public_zone'] = (get_option('single_public_zone') == '1') ? '1' : '0';
 
         $guest_groups = $GLOBALS['FORUM_DRIVER']->get_members_groups($GLOBALS['FORUM_DRIVER']->get_guest_id());
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('group_zone_access', 'zone_name', array('zone_name' => 'site', 'group_id' => $guest_groups[0]));
@@ -75,10 +75,10 @@ class Hook_sw_core
 
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '1f8970c551c886532158e16596f9c9b8', 'TITLE' => do_lang_tempcode('menus:STRUCTURE'), 'HELP' => do_lang_tempcode('SETUPWIZARD_5x_DESCRIBE'))));
 
-        if (get_theme_option('setupwizard__lock_collapse_user_zones', null, post_param_string('source_theme', 'default')) == '1') {
-            $fields->attach(form_input_tick(do_lang_tempcode('COLLAPSE_USER_ZONES'), do_lang_tempcode('CONFIG_OPTION_collapse_user_zones'), 'collapse_user_zones', $field_defaults['collapse_user_zones'] == '1'));
+        if (get_theme_option('setupwizard__lock_single_public_zone', null, post_param_string('source_theme', 'default')) == '1') {
+            $fields->attach(form_input_tick(do_lang_tempcode('SINGLE_PUBLIC_ZONE'), do_lang_tempcode('CONFIG_OPTION_single_public_zone'), 'single_public_zone', $field_defaults['single_public_zone'] == '1'));
         } else {
-            $hidden->attach(form_input_hidden('collapse_user_zones', get_option('collapse_user_zones')));
+            $hidden->attach(form_input_hidden('single_public_zone', get_option('single_public_zone')));
         }
         $fields->attach(form_input_tick(do_lang_tempcode('GUEST_ZONE_ACCESS'), do_lang_tempcode('DESCRIPTION_GUEST_ZONE_ACCESS'), 'guest_zone_access', $field_defaults['guest_zone_access'] == '1'));
 
@@ -95,8 +95,8 @@ class Hook_sw_core
         set_option('show_screen_actions', post_param_string('show_screen_actions', '0'));
 
         // Zone structure
-        $collapse_zones = post_param_integer('collapse_user_zones', 0) == 1;
-        set_option('collapse_user_zones', $collapse_zones ? '1' : '0');
+        $collapse_zones = post_param_integer('single_public_zone', 0) == 1;
+        set_option('single_public_zone', $collapse_zones ? '1' : '0');
         $guest_groups = $GLOBALS['FORUM_DRIVER']->get_members_groups($GLOBALS['FORUM_DRIVER']->get_guest_id());
         if (post_param_integer('guest_zone_access', 0) == 1) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('group_zone_access', 'zone_name', array('zone_name' => 'site', 'group_id' => $guest_groups[0]));

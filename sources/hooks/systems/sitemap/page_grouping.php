@@ -120,7 +120,7 @@ class Hook_sitemap_page_grouping extends Hook_sitemap_base
                 case 'site_meta':
                 case 'social':
                 default:
-                    $zone = (get_option('collapse_user_zones') == '1') ? '' : 'site';
+                    $zone = (get_option('single_public_zone') == '1') ? '' : 'site';
                     break;
             }
         }

@@ -43,7 +43,7 @@ class Hook_preview_setupwizard_blocks
     {
         require_code('setupwizard');
 
-        $collapse_zones = post_param_integer('collapse_user_zones', 0) == 1;
+        $collapse_zones = post_param_integer('single_public_zone', 0) == 1;
 
         $installprofile = post_param_string('installprofile', '');
         if ($installprofile != '') {

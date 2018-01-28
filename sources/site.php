@@ -1201,7 +1201,7 @@ function request_page($codename, $required, $zone = null, $page_type = null, $be
         $zone = get_zone_name();
     }
 
-    if (($zone == 'site') && (get_option('collapse_user_zones') == '1')) {
+    if (($zone == 'site') && (get_option('single_public_zone') == '1')) {
         $zone = ''; // Might have been explicitly said in Tempcode, for example
     }
 

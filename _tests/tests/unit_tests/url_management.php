@@ -20,8 +20,8 @@ class url_management_test_set extends cms_test_case
 {
     public function testUrlToPageLink()
     {
-        $zone_pathed = (get_option('collapse_user_zones') == '1') ? '' : 'site/';
-        $zone = (get_option('collapse_user_zones') == '1') ? '' : 'site';
+        $zone_pathed = (get_option('single_public_zone') == '1') ? '' : 'site/';
+        $zone = (get_option('single_public_zone') == '1') ? '' : 'site';
 
         $test = url_to_page_link(get_base_url() . '/' . $zone_pathed . 'pg/downloads/browse/test?foo=bar');
         $this->assertTrue($test == $zone . ':downloads:browse:test:foo=bar', 'Got wrong page-link for decode on PG scheme (' . $test . '), ' . $test);

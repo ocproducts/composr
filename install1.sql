@@ -3336,7 +3336,7 @@ INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (3147, 'core_conf
 INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (3148, 'core_configuration', 'sources/hooks/systems/config/block_top_login.php');
 INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (3149, 'core_configuration', 'sources/hooks/systems/config/block_top_personal_stats.php');
 INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (3150, 'core_configuration', 'sources/hooks/systems/config/fixed_width.php');
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (3151, 'core_configuration', 'sources/hooks/systems/config/collapse_user_zones.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (3151, 'core_configuration', 'sources/hooks/systems/config/single_public_zone.php');
 INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (3152, 'core_configuration', 'sources/hooks/systems/config/url_monikers_enabled.php');
 INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (3153, 'core_configuration', 'sources/hooks/systems/config/tasks_background.php');
 INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (3154, 'core_configuration', 'sources/hooks/systems/config/moniker_transliteration.php');

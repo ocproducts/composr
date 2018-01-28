@@ -2182,7 +2182,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CMS_ZONE
         CNS_CONVERTED_INFO
         CODE_EDITOR
-        COLLAPSE_USER_ZONES
+        SINGLE_PUBLIC_ZONE
         COLUMNS
         COMCODE
         COMCODE_CACHE
@@ -2787,7 +2787,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_club_forum_parent_forum
         CONFIG_OPTION_club_forum_parent_forum_grouping
         CONFIG_OPTION_cms_show_personal_last_visit
-        CONFIG_OPTION_collapse_user_zones
+        CONFIG_OPTION_single_public_zone
         CONFIG_OPTION_comcode_page_default_review_freq
         CONFIG_OPTION_comment_text
         CONFIG_OPTION_comment_topic_subject

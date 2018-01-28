@@ -8,7 +8,7 @@
     };
 
     $cms.functions.adminSetupWizardStep5 = function () {
-        var cuz = document.getElementById('collapse_user_zones');
+        var cuz = document.getElementById('single_public_zone');
         if (cuz) {
             cuz.addEventListener('change', cuzFunc);
             cuzFunc();

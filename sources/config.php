@@ -231,8 +231,8 @@ function get_theme_option($name, $default = null, $theme = null, $missing_ok = f
             case 'setupwizard__lock_show_screen_actions':
                 $default = '0'; // If 1 defers to show_screen_actions
                 break;
-            case 'setupwizard__lock_collapse_user_zones':
-                $default = '0'; // If 1 defers to collapse_user_zones
+            case 'setupwizard__lock_single_public_zone':
+                $default = '0'; // If 1 defers to single_public_zone
                 break;
 
             // Theme Wizard ones

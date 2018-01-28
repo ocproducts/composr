@@ -432,7 +432,7 @@ function sitemap_do_next_manager($title, $page, $zone, $completion_text)
  */
 function create_selection_list_zones($sel = null, $no_go = array(), $reorder = null, $updated_since = null)
 {
-    if (($sel === 'site') && (get_option('collapse_user_zones') == '1')) {
+    if (($sel === 'site') && (get_option('single_public_zone') == '1')) {
         $sel = '';
     }
 

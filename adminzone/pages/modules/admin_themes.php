@@ -417,7 +417,7 @@ class Module_admin_themes
                         $is_main_theme = true;
                     }
 
-                    if ((get_option('collapse_user_zones') == '1') && ($zone['zone_name'] == 'site')) {
+                    if ((get_option('single_public_zone') == '1') && ($zone['zone_name'] == 'site')) {
                         continue;
                     }
 
@@ -553,7 +553,7 @@ class Module_admin_themes
                 'setupwizard__lock_show_content_tagging',
                 'setupwizard__lock_show_content_tagging_inline',
                 'setupwizard__lock_show_screen_actions',
-                'setupwizard__lock_collapse_user_zones',
+                'setupwizard__lock_single_public_zone',
             );
             require_lang('config');
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('THEME_SETTING_SECTION', do_lang_tempcode('SETUPWIZARD')))));

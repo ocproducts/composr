@@ -48,9 +48,9 @@ function init__zones()
                 'topicview' => 'forum',
                 'topics' => 'forum',
                 'vforums' => 'forum',
-                'points' => (get_option('collapse_user_zones') == '1') ? '' : 'site',
-                'members' => (get_option('collapse_user_zones') == '1') ? '' : 'site',
-                'catalogues' => (get_option('collapse_user_zones') == '1') ? '' : 'site',
+                'points' => (get_option('single_public_zone') == '1') ? '' : 'site',
+                'members' => (get_option('single_public_zone') == '1') ? '' : 'site',
+                'catalogues' => (get_option('single_public_zone') == '1') ? '' : 'site',
                 'join' => '',
                 'login' => '',
                 'recommend' => '',
@@ -252,7 +252,7 @@ function zone_black_magic_filterer($path, $relative = false)
 {
     static $no_collapse_zones = null;
     if ($no_collapse_zones === null) {
-        $no_collapse_zones = (get_option('collapse_user_zones') !== '1');
+        $no_collapse_zones = (get_option('single_public_zone') !== '1');
     }
     if ($no_collapse_zones) {
         return $path;
@@ -464,7 +464,7 @@ function get_module_zone($module_name, $type = 'modules', $dir2 = null, $ftype =
     if ($zone !== '') {
         $first_zones[] = '';
     }
-    if (($zone !== 'site') && (get_option('collapse_user_zones') !== '1')/* && (is_file(get_file_base().'/site/index.php'))*/) {
+    if (($zone !== 'site') && (get_option('single_public_zone') !== '1')/* && (is_file(get_file_base().'/site/index.php'))*/) {
         $first_zones[] = 'site';
     }
     foreach ($first_zones as $zone) {
@@ -827,7 +827,7 @@ function load_module_page($string, $codename, &$out = null)
  */
 function find_all_zones($search = false, $get_titles = false, $force_all = false, $start = 0, $max = 50)
 {
-    $collapse_user_zones = (get_option('collapse_user_zones') == '1');
+    $single_public_zone = (get_option('single_public_zone') == '1');
 
     if ($search) {
         $out = array('');
@@ -835,7 +835,7 @@ function find_all_zones($search = false, $get_titles = false, $force_all = false
         $dh = opendir(get_file_base());
         while (($file = readdir($dh)) !== false) {
             if (($file != '.') && ($file != '..') && (is_dir($file)) && (is_readable(get_file_base() . '/' . $file)) && (is_file(get_file_base() . '/' . $file . '/index.php')) && (is_dir(get_file_base() . '/' . $file . '/pages/modules'))) {
-                if (($collapse_user_zones) && ($file == 'site')) {
+                if (($single_public_zone) && ($file == 'site')) {
                     continue;
                 }
 
@@ -885,7 +885,7 @@ function find_all_zones($search = false, $get_titles = false, $force_all = false
     $zones_titled = array();
     $zones = array();
     foreach ($rows as $zone) {
-        if (($collapse_user_zones) && ($zone['zone_name'] == 'site')) {
+        if (($single_public_zone) && ($zone['zone_name'] == 'site')) {
             continue;
         }
 
