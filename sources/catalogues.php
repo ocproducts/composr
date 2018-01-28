@@ -920,7 +920,7 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
 
         // Value to show
         $ev = $field['effective_value'];
-        $dereference_ev = is_object($field['effective_value']) ? $field['effective_value']->evaluate() : $field['effective_value'];
+        $evaluated_ev = is_object($field['effective_value']) ? $field['effective_value']->evaluate() : $field['effective_value'];
         $ob = get_fields_hook($field['cf_type']);
         list(, , $storage_type) = $ob->get_field_value_row_bits($field);
         if (($i == 0) && ($catalogue['c_display_type'] == C_DT_TITLELIST)) {
@@ -931,9 +931,9 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
 
         // Special case for access to raw thumbnail
         if ($field['cf_type'] == 'picture') {
-            if (($ev !== null) && ($dereference_ev != '')) {
+            if (($ev !== null) && ($evaluated_ev != '')) {
                 require_code('images');
-                $map['FIELD_' . $str_i . '_THUMB'] = do_image_thumb($dereference_ev, ($i == 0) ? new Tempcode() : (is_object($map['FIELD_0']) ? $map['FIELD_0'] : protect_from_escaping(escape_html($map['FIELD_0']))), false, false);
+                $map['FIELD_' . $str_i . '_THUMB'] = do_image_thumb($evaluated_ev, ($i == 0) ? new Tempcode() : (is_object($map['FIELD_0']) ? $map['FIELD_0'] : protect_from_escaping(escape_html($map['FIELD_0']))), false, false);
             } else {
                 $map['FIELD_' . $str_i . '_THUMB'] = new Tempcode();
             }
