@@ -2960,6 +2960,8 @@ function titleify($boring)
 
     $acronyms = array(
         'CMS',
+        'CPF',
+        'CSV',
         'CNS',
         'URL',
         'ID',
