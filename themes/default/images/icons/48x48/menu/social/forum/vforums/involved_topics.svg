@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+]>
+<svg version="1.1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="48px" height="48px" viewBox="-2.76 -2.452 48 48" enable-background="new -2.76 -2.452 48 48"
+	 xml:space="preserve">
+<defs>
+</defs>
+<rect x="10.443" y="9.425" fill="#52CAF5" width="21.083" height="2.556"/>
+<rect x="10.443" y="15.354" fill="#52CAF5" width="21.083" height="2.557"/>
+<rect x="10.443" y="21.284" fill="#52CAF5" width="10.901" height="2.555"/>
+<rect x="21.204" y="9.425" fill="#3588A6" width="10.322" height="2.556"/>
+<rect x="21.204" y="15.354" fill="#3588A6" width="10.322" height="2.557"/>
+<rect x="21.204" y="21.284" fill="#3588A6" width="5.335" height="2.555"/>
+<path fill="#52CAF5" d="M36.105,4.489c0.002,0.059,0.014,0.112,0.014,0.17v19.993c0,1.511-0.992,2.733-2.212,2.733H21.812
+	l-6.696,8.025l-1.36-7.928L10.762,31.3l2.443,11.242l10.794-11.778h13.09c1.514,0,2.738-1.514,2.738-3.386V1.271
+	c0-0.452-0.075-0.878-0.202-1.271L36.105,4.489z"/>
+<path fill="#52CAF5" d="M13.806,27.721H5.92c-1.218,0-2.209-1.223-2.209-2.732V4.996c0-0.059,0.011-0.114,0.011-0.17l-3.521-4.49
+	C0.076,0.729,0,1.156,0,1.607v26.108c0,1.871,1.226,3.383,2.742,3.383h11.064V27.721z"/>
+<path fill="#3588A6" d="M39.625,0l-3.52,4.489c0.002,0.059,0.014,0.112,0.014,0.17v19.993c0,1.511-0.992,2.733-2.212,2.733H21.812
+	l-0.608,0.729v5.698l2.795-3.049h13.09c1.514,0,2.738-1.514,2.738-3.386V1.271C39.827,0.819,39.752,0.393,39.625,0z"/>
+<polygon fill="#F79523" points="0.202,0 39.625,0 36.119,4.659 3.723,4.826 "/>
+<polygon fill="#C8691C" points="21.125,0 39.625,0 36.119,4.659 21.125,4.826 "/>
+<polygon fill="#F79523" points="7.847,4.542 10.443,7.816 13.289,4.542 "/>
+<circle fill="#C8691C" cx="34.849" cy="25.63" r="7.826"/>
+<polygon fill="#F1F2F2" points="29.826,25.673 33.234,29.422 40.191,22.48 39.224,21.512 33.274,27.464 30.854,24.788 "/>
+</svg>

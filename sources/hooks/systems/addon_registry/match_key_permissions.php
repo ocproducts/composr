@@ -87,7 +87,7 @@ class Hook_addon_registry_match_key_permissions
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/security/permissions/match_keys.png';
+        return 'themes/default/images/icons/48x48/menu/adminzone/security/permissions/match_keys.svg';
     }
 
     /**
@@ -98,8 +98,7 @@ class Hook_addon_registry_match_key_permissions
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/24x24/menu/adminzone/security/permissions/match_keys.png',
-            'themes/default/images/icons/48x48/menu/adminzone/security/permissions/match_keys.png',
+            'themes/default/images/icons/48x48/menu/adminzone/security/permissions/match_keys.svg',
             'sources/hooks/systems/commandr_fs_extended_config/match_key_messages.php',
             'sources/hooks/systems/addon_registry/match_key_permissions.php',
         );

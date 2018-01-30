@@ -90,7 +90,7 @@ class Hook_addon_registry_shopping
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/rich_content/ecommerce/shopping_cart.png';
+        return 'themes/default/images/icons/48x48/menu/rich_content/ecommerce/shopping_cart.svg';
     }
 
     /**
@@ -101,24 +101,13 @@ class Hook_addon_registry_shopping
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/24x24/menu/adminzone/audit/ecommerce/orders.png',
-            'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/orders.png',
-            'themes/default/images/icons/24x24/menu/rich_content/ecommerce/orders.png',
-            'themes/default/images/icons/48x48/menu/rich_content/ecommerce/orders.png',
-            'themes/default/images/icons/24x24/menu/adminzone/audit/ecommerce/undispatched_orders.png',
-            'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/undispatched_orders.png',
-            'themes/default/images/icons/24x24/menu/rich_content/ecommerce/shopping_cart.png',
-            'themes/default/images/icons/48x48/menu/rich_content/ecommerce/shopping_cart.png',
-            'themes/default/images/icons/24x24/buttons/cart_add.png',
-            'themes/default/images/icons/24x24/buttons/cart_checkout.png',
-            'themes/default/images/icons/24x24/buttons/cart_empty.png',
-            'themes/default/images/icons/24x24/buttons/cart_update.png',
-            'themes/default/images/icons/24x24/buttons/cart_view.png',
-            'themes/default/images/icons/48x48/buttons/cart_add.png',
-            'themes/default/images/icons/48x48/buttons/cart_checkout.png',
-            'themes/default/images/icons/48x48/buttons/cart_empty.png',
-            'themes/default/images/icons/48x48/buttons/cart_update.png',
-            'themes/default/images/icons/48x48/buttons/cart_view.png',
+            'themes/default/images/icons/48x48/menu/rich_content/ecommerce/orders.svg',
+            'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/undispatched_orders.svg',
+            'themes/default/images/icons/48x48/menu/rich_content/ecommerce/shopping_cart.svg',
+            'themes/default/images/icons/48x48/buttons/cart_add.svg',
+            'themes/default/images/icons/48x48/buttons/cart_checkout.svg',
+            'themes/default/images/icons/48x48/buttons/cart_empty.svg',
+            'themes/default/images/icons/48x48/buttons/cart_update.svg',
             'sources/hooks/systems/notifications/order_dispatched.php',
             'sources/hooks/systems/notifications/new_order.php',
             'sources/hooks/systems/notifications/low_stock.php',

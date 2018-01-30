@@ -14,7 +14,7 @@
 		</div>
 
 		<div class="image-fader-news-html" id="image-fader-news-html-{$GET%,RAND_FADER_NEWS}">
-			<span aria-busy="true"><img alt="" src="{$IMG*,loading}" /></span>
+			<span aria-busy="true"><img alt="" width="20" height="20" src="{$IMG*,loading}" /></span>
 		</div>
 	</div>
 </section>

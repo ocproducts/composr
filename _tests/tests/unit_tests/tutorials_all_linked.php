@@ -83,8 +83,8 @@ class tutorials_all_linked_test_set extends cms_test_case
 
         $dh = opendir(get_custom_file_base() . '/themes/default/images_custom/tutorial_icons');
         while (($f = readdir($dh)) !== false) {
-            if (substr($f, -4) == '.png') {
-                $icon = basename($f, '.png');
+            if (substr($f, -4) == '.svg') {
+                $icon = basename($f, '.svg');
                 if (!in_array($icon, array('css', 'javascript', 'php', 'video' /*Very generic ones we aren't using yet*/))) {
                     $this->assertTrue(in_array(find_theme_image('tutorial_icons/' . $icon), $icons_used), $icon . ' icon is not used');
                 }
@@ -125,7 +125,7 @@ class tutorials_all_linked_test_set extends cms_test_case
     {
         $tags = list_tutorial_tags(true);
         foreach ($tags as $tag) {
-            $this->assertTrue(find_theme_image('tutorial_icons/' . _find_tutorial_image_for_tag($tag), true) != '', 'Tag ' . $tag . ' has no defined image');
+            $this->assertTrue(find_theme_image(_find_tutorial_image_for_tag($tag), true) != '', 'Tag ' . $tag . ' has no defined image');
         }
     }
 

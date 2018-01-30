@@ -2,11 +2,11 @@
     'use strict';
 
     var MESSAGE_CHECK_INTERVAL = window.MESSAGE_CHECK_INTERVAL = Math.max(3000, parseInt('{$CONFIG_OPTION,chat_message_check_interval}'));
-    
+
     var sbChatCheckTimerId = null,
         sbChatRoomId = null,
         sbLastMessageId = null;
-    
+
     $cms.templates.blockSideShoutbox = function blockSideShoutbox(params, container) {
         var chatRoomId = strVal(params.chatroomId),
             lastMessageId = strVal(params.lastMessageId);
@@ -19,11 +19,11 @@
             setTimeout(function () {
                 sbChatCheck(chatRoomId, lastMessageId, -1);
             }, 2000);
-            
+
             if (!$cms.form.checkFieldForBlankness(el.form.elements['shoutbox_message'])) {
                 e.preventDefault();
             }
-            
+
             $cms.ui.disableButton(el);
         });
 
@@ -35,7 +35,7 @@
             $cms.ui.disableButton(el);
         });
     };
-    
+
     function sbChatCheck(roomId, lastMessageId, lastEventId) {
         sbChatRoomId = Number(roomId);
         sbLastMessageId = Number(lastMessageId);
@@ -95,7 +95,7 @@
 
     function doShake() {
         var seconds = 1, amount = 30;
-        
+
         var overflowBefore = document.body.style.overflow;
         document.body.style.overflow = 'hidden';
 
@@ -140,7 +140,7 @@
             };
         }
     }
-    
+
     function showGhost(htmlMessage) {
         var div = document.createElement('div');
         div.style.position = 'absolute';

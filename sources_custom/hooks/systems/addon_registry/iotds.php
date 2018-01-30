@@ -125,7 +125,7 @@ class Hook_addon_registry_iotds
      */
     public function get_default_icon()
     {
-        return 'themes/default/images_custom/icons/48x48/menu/rich_content/iotds.png';
+        return 'themes/default/images_custom/icons/48x48/menu/rich_content/iotds.svg';
     }
 
     /**
@@ -136,8 +136,7 @@ class Hook_addon_registry_iotds
     public function get_file_list()
     {
         return array(
-            'themes/default/images_custom/icons/24x24/menu/rich_content/iotds.png',
-            'themes/default/images_custom/icons/48x48/menu/rich_content/iotds.png',
+            'themes/default/images_custom/icons/48x48/menu/rich_content/iotds.svg',
             'sources_custom/iotds2.php',
             'sources_custom/hooks/systems/notifications/iotd_chosen.php',
             'sources_custom/hooks/systems/config/iotd_update_time.php',

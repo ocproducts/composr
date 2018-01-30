@@ -34,7 +34,7 @@
 		<div class="float-surrounder">
 			{+START,IF,{$NOT,{GIVE_CONTEXT}}}
 				<p class="left">
-					<a rel="back_to_top" target="_self" href="#!"><img class="back-to-top-by-buttons" title="{!BACK_TO_TOP}" alt="{!BACK_TO_TOP}" src="{$IMG*,icons/24x24/tool_buttons/top}" srcset="{$IMG*,icons/48x48/tool_buttons/top} 2x" /></a>
+					<a rel="back_to_top" target="_self" href="#!"><img class="back-to-top-by-buttons" title="{!BACK_TO_TOP}" alt="{!BACK_TO_TOP}" width="24" height="24" src="{$IMG*,icons/48x48/tool_buttons/top}" /></a>
 				</p>
 			{+END}
 

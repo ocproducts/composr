@@ -99,7 +99,6 @@ class Hook_sitemap_root extends Hook_sitemap_base
             'extra_meta' => array(
                 'description' => null,
                 'image' => null,
-                'image_2x' => null,
                 'add_date' => (($meta_gather & SITEMAP_GATHER_TIMES) != 0) ? website_creation_time() : null,
                 'edit_date' => null,
                 'submitter' => null,
@@ -125,8 +124,7 @@ class Hook_sitemap_root extends Hook_sitemap_base
             $struct['page_link'] = ':';
             $struct['type'] = 'zone';
             if (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) {
-                $struct['extra_meta']['image'] = find_theme_image('icons/24x24/menu/welcome');
-                $struct['extra_meta']['image_2x'] = find_theme_image('icons/48x48/menu/welcome');
+                $struct['extra_meta']['image'] = find_theme_image('icons/48x48/menu/welcome');
             }
 
             if (($options & SITEMAP_GEN_LABEL_CONTENT_TYPES) != 0) {

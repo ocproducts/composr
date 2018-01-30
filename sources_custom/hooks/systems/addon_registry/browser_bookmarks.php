@@ -127,7 +127,7 @@ Ever wished it was quicker to navigate around your site? If you\'re anything lik
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/tool_buttons/sitemap.png';
+        return 'themes/default/images/icons/48x48/tool_buttons/sitemap.svg';
     }
 
     /**

@@ -73,7 +73,7 @@ class Module_admin_ecommerce_logs
             $ret['_SEARCH:admin_invoices:browse'] = array('INVOICES', 'menu/adminzone/audit/ecommerce/invoices');
             if (addon_installed('shopping')) {
                 require_lang('shopping');
-                $ret['_SEARCH:admin_shopping:browse'] = array('ORDERS', 'menu/adminzone/audit/ecommerce/orders');
+                $ret['_SEARCH:admin_shopping:browse'] = array('ORDERS', 'menu/rich_content/ecommerce/orders');
             }
         }
 
@@ -247,7 +247,7 @@ class Module_admin_ecommerce_logs
                 array('menu/adminzone/audit/ecommerce/cash_flow', array('_SELF', array('type' => 'cash_flow'), '_SELF'), do_lang('CASH_FLOW')),
                 array('menu/adminzone/audit/ecommerce/profit_loss', array('_SELF', array('type' => 'profit_loss'), '_SELF'), do_lang('PROFIT_LOSS')),
                 array('menu/adminzone/audit/ecommerce/subscriptions', array('_SELF', array('type' => 'view_manual_subscriptions'), '_SELF'), do_lang('MANUAL_SUBSCRIPTIONS')),
-                addon_installed('shopping') ? array('menu/adminzone/audit/ecommerce/orders', array('admin_shopping', array('type' => 'browse'), get_module_zone('admin_shopping')), do_lang('shopping:ORDERS')) : null,
+                addon_installed('shopping') ? array('menu/rich_content/ecommerce/orders', array('admin_shopping', array('type' => 'browse'), get_module_zone('admin_shopping')), do_lang('shopping:ORDERS')) : null,
                 array('menu/adminzone/audit/ecommerce/invoices', array('admin_invoices', array('type' => 'browse'), get_module_zone('admin_invoices')), do_lang('INVOICES')),
             ),
             do_lang('ECOMMERCE')

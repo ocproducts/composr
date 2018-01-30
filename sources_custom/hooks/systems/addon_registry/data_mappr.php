@@ -147,7 +147,7 @@ When you add the block you see various block parameters to be filled in includin
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.png';
+        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.svg';
     }
 
     /**
@@ -165,7 +165,7 @@ When you add the block you see various block parameters to be filled in includin
             'sources_custom/hooks/systems/fields/float.php',
             'sources_custom/hooks/systems/config/google_map_key.php',
             'themes/default/templates_custom/FORM_SCREEN_INPUT_MAP_POSITION.tpl',
-            'themes/default/images_custom/star_highlight.png',
+            'themes/default/images_custom/star_highlight.svg',
             'sources_custom/catalogues2.php',
             'sources_custom/hooks/systems/upon_query/google_maps.php',
             'themes/default/javascript_custom/data_mappr.js',

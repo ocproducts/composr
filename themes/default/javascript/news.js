@@ -36,7 +36,7 @@
             });
         }
     };
-    
+
     $cms.templates.blockMainImageFaderNews = function blockMainImageFaderNews(params, container) {
         var rand = strVal(params.randFaderNews),
             news = arrVal(params.news),
@@ -51,13 +51,13 @@
 
         fpAnimationNewsImg.style.position = 'absolute';
         fpAnimationNewsImg.src = $util.srl('{$IMG;,blank}');
-        
+
         fpAnimationImg.parentElement.insertBefore(fpAnimationNewsImg, fpAnimationImg);
         fpAnimationImg.parentElement.style.position = 'relative';
         fpAnimationImg.parentElement.style.display = 'block';
 
         var data = [], i;
-        
+
         for (i = 0; i < news.length; i++) {
             data.push({
                 html: $dom.html('script#image-fader-' + rand + '-news-item-' + i + '-html'),
@@ -71,10 +71,10 @@
         // Cycling function
         var cycleTimerId = null,
             cycleIndex = 0;
-        
+
         function doCycle(diff) {
             diff = Number(diff) || 0;
-            
+
             //  Cycle
             cycleIndex = cycleIndex + diff;
             if (cycleIndex < 0) {
@@ -83,7 +83,7 @@
             if (cycleIndex >= data.length) {
                 cycleIndex = 0;
             }
-            
+
             // Simple data copy
             $dom.hide(fpAnimationHtml);
             $dom.html(fpAnimationHtml, data[cycleIndex].html);
@@ -99,14 +99,14 @@
                 fpAnimationNewsImg.style.left = ((fpAnimationNewsImg.parentNode.offsetHeight - fpAnimationNewsImg.offsetWidth) / 2) + 'px';
                 fpAnimationNewsImg.style.top = ((fpAnimationNewsImg.parentNode.offsetHeight - fpAnimationNewsImg.offsetHeight) / 2) + 'px';
             }, 0);
-            
+
             $dom.$('#pause_button_' + rand).classList.remove('button_depressed');
 
             // Set up timer for next time
             if (cycleTimerId) {
                 clearTimeout(cycleTimerId);
             }
-            
+
             if (milliseconds && (news.length > 1)) {
                 cycleTimerId = setTimeout(function () {
                     doCycle(1);

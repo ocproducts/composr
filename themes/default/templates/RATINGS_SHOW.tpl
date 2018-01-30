@@ -5,7 +5,7 @@
 				{$,Visually show}
 				{$SET,rating_loop,0}
 				{+START,SET,rating_stars}{$ROUND,{$DIV_FLOAT,{RATING},2}}{+END}
-				{+START,WHILE,{$LT,{$GET,rating_loop},{$GET,rating_stars}}}<img src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" {$?,{$EQ,{$GET,rating_loop},0},alt="{$GET*,rating_stars}/5" title="{$GET*,rating_stars}/5",alt=""} />{$INC,rating_loop}{+END}
+				{+START,WHILE,{$LT,{$GET,rating_loop},{$GET,rating_stars}}}<img width="14" height="14" src="{$IMG*,icons/28x28/rating}" {$?,{$EQ,{$GET,rating_loop},0},alt="{$GET*,rating_stars}/5" title="{$GET*,rating_stars}/5",alt=""} />{$INC,rating_loop}{+END}
 			</span>
 
 			<span>{RATING_TIME_FORMATTED*},</span>

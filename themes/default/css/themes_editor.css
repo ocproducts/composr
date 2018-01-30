@@ -253,17 +253,8 @@
 */
 
 .buttons--simple {
-	background-image: url('{$IMG,icons/24x24/buttons/simple}') !important;
+	background-image: url('{$IMG,icons/48x48/buttons/simple}') !important;
 }
 .buttons--advanced {
-	background-image: url('{$IMG,icons/24x24/buttons/advanced}') !important;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.buttons--simple {
-		background-image: url('{$IMG,icons/48x48/buttons/simple}') !important;
-	}
-	.buttons--advanced {
-		background-image: url('{$IMG,icons/48x48/buttons/advanced}') !important;
-	}
+	background-image: url('{$IMG,icons/48x48/buttons/advanced}') !important;
 }

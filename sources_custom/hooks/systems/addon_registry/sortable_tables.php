@@ -127,7 +127,7 @@ We will automatically detect what columns can be filtered, how to sort each colu
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.png';
+        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.svg';
     }
 
     /**
@@ -146,11 +146,11 @@ We will automatically detect what columns can be filtered, how to sort each colu
             'themes/default/css_custom/sortable_tables.css',
             'sources_custom/blocks/main_sortable_table.php',
             'uploads/website_specific/example.csv',
-            'themes/default/images_custom/sortable_tables/filter.gif',
+            'themes/default/images_custom/sortable_tables/filter.svg',
             'themes/default/images_custom/sortable_tables/index.html',
-            'themes/default/images_custom/sortable_tables/sortable.gif',
-            'themes/default/images_custom/sortable_tables/sorted_down.gif',
-            'themes/default/images_custom/sortable_tables/sorted_up.gif',
+            'themes/default/images_custom/sortable_tables/sortable.svg',
+            'themes/default/images_custom/sortable_tables/sorted_down.svg',
+            'themes/default/images_custom/sortable_tables/sorted_up.svg',
         );
     }
 }

@@ -126,7 +126,7 @@ The normal Composr block construction assistant will help you set up the block o
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.png';
+        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.svg';
     }
 
     /**

@@ -20,7 +20,7 @@
 			<div class="box"><div class="box-inner">
 				<h3>{TITLE*}</h3>
 
-				<a class="left spaced" href="{URL*}"><img src="{ICON*}" alt="" /></a>
+				<a class="left spaced" href="{URL*}"><img width="100" height="100" src="{ICON*}" alt="" /></a>
 
 				<div class="meta-details" role="note" style="width: auto">
 					<dl class="meta-details-list">

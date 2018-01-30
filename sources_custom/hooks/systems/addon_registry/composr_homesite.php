@@ -138,7 +138,7 @@ This addon does not contain the compo.sr install code and the overall site and t
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/_generic_admin/tool.png';
+        return 'themes/default/images/icons/48x48/menu/_generic_admin/tool.svg';
     }
 
     /**
@@ -150,6 +150,24 @@ This addon does not contain the compo.sr install code and the overall site and t
     {
         return array(
             'sources_custom/hooks/systems/addon_registry/composr_homesite.php',
+            'themes/default/images_custom/role_icons/agency.svg',
+            'themes/default/images_custom/role_icons/business_person.svg',
+            'themes/default/images_custom/role_icons/consultant.svg',
+            'themes/default/images_custom/role_icons/content_writer.svg',
+            'themes/default/images_custom/role_icons/designer.svg',
+            'themes/default/images_custom/role_icons/developer.svg',
+            'themes/default/images_custom/role_icons/friend.svg',
+            'themes/default/images_custom/role_icons/project_manager.svg',
+            'themes/default/images_custom/role_icons/sales_person.svg',
+            'themes/default/images_custom/role_icons/trainer.svg',
+            'themes/default/images_custom/role_icons/webmaster.svg',
+            'themes/default/images_custom/website_icons/compare.svg',
+            'themes/default/images_custom/website_icons/idea.svg',
+            'themes/default/images_custom/website_icons/promote.svg',
+            'themes/default/images_custom/website_icons/report_usability.svg',
+            'themes/default/images_custom/website_icons/theme_upgrade.svg',
+            'themes/default/images_custom/website_icons/translations_rough.svg',
+            'themes/default/images_custom/website_icons/index.html',
             'adminzone/pages/modules_custom/admin_cmsusers.php',
             'adminzone/pages/minimodules_custom/_make_release.php',
             'sources_custom/hooks/systems/page_groupings/composr_homesite.php',
@@ -176,7 +194,7 @@ This addon does not contain the compo.sr install code and the overall site and t
             'uploads/website_specific/compo.sr/errorservice.csv',
             'sources_custom/miniblocks/composr_homesite_featuretray.php',
             'sources_custom/miniblocks/composr_homesite_download.php',
-            'themes/default/images_custom/help_small.gif',
+            'themes/default/images_custom/help_small.svg',
             'sources_custom/miniblocks/composr_homesite_make_upgrader.php',
             'themes/default/templates_custom/CMS_DOWNLOAD_RELEASES.tpl',
             'themes/default/templates_custom/CMS_DOWNLOAD_BLOCK.tpl',

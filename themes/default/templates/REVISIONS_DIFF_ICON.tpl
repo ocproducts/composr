@@ -6,7 +6,7 @@
 
 {+START,IF,{$DESKTOP}}
 	<span class="inline-desktop">
-		<img data-tpl="revisionsDiffIcon" class="button-icon" data-mouseover-activate-tooltip="['{$GET;^*,tooltip}','500px',null,'auto',true,true]" src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" alt="{!DIFF}" />
+		<img data-tpl="revisionsDiffIcon" class="button-icon" data-mouseover-activate-tooltip="['{$GET;^*,tooltip}','500px',null,'auto',true,true]" width="24" height="24" src="{$IMG*,icons/32x32/help}" alt="{!DIFF}" />
 	</span>
 {+END}
 <div class="block-mobile">

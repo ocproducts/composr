@@ -49,7 +49,7 @@
 					</th>
 					<th>
 						{!MATCH_KEY_MESSAGE_FIELD}
-						<a data-open-as-overlay="{}" class="link-exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,:userguide_comcode}"><img src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical-alignment" alt="{!COMCODE_MESSAGE,Comcode}" /></a>
+						<a data-open-as-overlay="{}" class="link-exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,:userguide_comcode}"><img width="16" height="16" src="{$IMG*,icons/32x32/editor/comcode}" class="vertical-alignment" alt="{!COMCODE_MESSAGE,Comcode}" /></a>
 					</th>
 				</tr>
 				</thead>

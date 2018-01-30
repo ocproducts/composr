@@ -27,7 +27,7 @@
 				</div>
 
 				<div class="right">
-					<a class="toggleable-tray-button js-btn-toggle-chat-comcode-panel" href="#!"><img id="e_chat-comcode-panel" src="{$IMG*,1x/trays/expand}" alt="{!CHAT_TOGGLE_COMCODE_BOX}" title="{!CHAT_TOGGLE_COMCODE_BOX}" /></a>
+					<a class="toggleable-tray-button js-btn-toggle-chat-comcode-panel" href="#!"><img id="e_chat-comcode-panel" width="20" height="20" src="{$IMG*,1x/trays/expand}" alt="{!CHAT_TOGGLE_COMCODE_BOX}" title="{!CHAT_TOGGLE_COMCODE_BOX}" /></a>
 				</div>
 
 				<div class="left">
@@ -40,7 +40,7 @@
 						<span class="inline-desktop">
 							{MICRO_BUTTONS}
 							{+START,IF,{$CNS}}
-								<a rel="nofollow" class="horiz-field-sep js-click-open-emoticon-chooser-window" tabindex="6" href="#!" title="{!EMOTICONS_POPUP}"><img alt="" src="{$IMG*,icons/16x16/editor/insert_emoticons}" srcset="{$IMG*,icons/32x32/editor/insert_emoticons} 2x" /></a>
+								<a rel="nofollow" class="horiz-field-sep js-click-open-emoticon-chooser-window" tabindex="6" href="#!" title="{!EMOTICONS_POPUP}"><img alt="" width="16" height="16" src="{$IMG*,icons/32x32/editor/insert_emoticons}" /></a>
 							{+END}
 						</span>
 					{+END}
@@ -53,7 +53,7 @@
 				{+START,IF_NON_EMPTY,{COMCODE_HELP}{CHATCODE_HELP}}
 					<ul class="horizontal-links horiz-field-sep associated-links-block-group">
 						{+START,IF_NON_EMPTY,{COMCODE_HELP}}
-							<li><a data-open-as-overlay="{}" class="link-exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{COMCODE_HELP*}"><img src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical-alignment" alt="{!COMCODE_MESSAGE,Comcode}" /></a></li>
+							<li><a data-open-as-overlay="{}" class="link-exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{COMCODE_HELP*}"><img width="16" height="16" src="{$IMG*,icons/32x32/editor/comcode}" class="vertical-alignment" alt="{!COMCODE_MESSAGE,Comcode}" /></a></li>
 						{+END}
 						{+START,IF_NON_EMPTY,{CHATCODE_HELP}}
 							<li><a data-open-as-overlay="{}" class="link-exempt" title="{$STRIP_TAGS,{!CHATCODE_HELP}} {!LINK_NEW_WINDOW}" target="_blank" href="{CHATCODE_HELP*}">{!CHATCODE_HELP}</a></li>

@@ -11,13 +11,13 @@
             });
         }
     };
-    
+
     function loadRealtimeRain() {
         if (window.$realtimeRain != null) {
             window.$realtimeRain.load();
             return;
         }
-    
+
         if (document.getElementById('realtime_rain_img_loader')) {
             setTimeout(loadRealtimeRain, 200);
             return;
@@ -27,6 +27,8 @@
         img.className = 'footer-button-loading';
         var tmpEl = document.createElement('img');
         tmpEl.src = $util.srl('{$IMG;,loading}');
+        tmpEl.width = '20';
+        tmpEl.height = '20';
         tmpEl.style.position = 'absolute';
         tmpEl.style.left = ($dom.findPosX(img) + 2) + 'px';
         tmpEl.style.top = ($dom.findPosY(img) + 1) + 'px';

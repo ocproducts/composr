@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+]>
+<svg version="1.1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="29px" height="17px" viewBox="-0.983 -3.287 29 17" enable-background="new -0.983 -3.287 29 17"
+	 xml:space="preserve">
+<defs>
+</defs>
+<path fill="#F79523" d="M27.432,8.031c0,1.105-0.899,2.006-2.005,2.006H2.007C0.899,10.037,0,9.137,0,8.031V2.007
+	C0,0.899,0.899,0,2.007,0h23.42c1.105,0,2.005,0.899,2.005,2.007V8.031z"/>
+<path fill="#C8691C" d="M25.427,0h-12.74l7.353,10.037h5.388c1.105,0,2.005-0.9,2.005-2.006V2.007C27.432,0.899,26.533,0,25.427,0z"
+	/>
+<path fill="#52CAF5" d="M6.78,6.834c0,0.803-1.012,1.453-2.259,1.453H3.956c-1.248,0-2.261-0.65-2.261-1.453V3.202
+	c0-0.802,1.013-1.453,2.261-1.453h0.565c1.248,0,2.259,0.65,2.259,1.453V6.834z"/>
+<path fill="#52CAF5" d="M16.224,6.834c0,0.803-1.012,1.453-2.259,1.453H13.4c-1.249,0-2.261-0.65-2.261-1.453V3.202
+	c0-0.802,1.013-1.453,2.261-1.453h0.565c1.248,0,2.259,0.65,2.259,1.453V6.834z"/>
+<path fill="#3588A6" d="M13.965,1.75c1.248,0,2.259,0.65,2.259,1.453v1.64L13.965,1.75z"/>
+<path fill="#3588A6" d="M25.668,6.834c0,0.803-1.012,1.453-2.26,1.453h-0.566c-1.247,0-2.26-0.65-2.26-1.453V3.202
+	c0-0.802,1.013-1.453,2.26-1.453h0.566c1.248,0,2.26,0.65,2.26,1.453V6.834z"/>
+<rect x="3.86" y="0.647" transform="matrix(0.7517 -0.6595 0.6595 0.7517 -2.3339 4.1002)" display="none" fill="#52CAF5" width="0.837" height="9.005"/>
+<rect x="14.03" y="0.647" transform="matrix(0.7522 -0.6589 0.6589 0.7522 0.187 10.7967)" display="none" fill="#52CAF5" width="0.837" height="9.004"/>
+<rect x="22.748" y="0.647" transform="matrix(0.7522 -0.6589 0.6589 0.7522 2.3471 16.5408)" display="none" fill="#3588A6" width="0.837" height="9.005"/>
+</svg>

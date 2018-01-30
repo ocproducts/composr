@@ -128,7 +128,7 @@ The insulted member has to try and make the right reply, if they succeed then th
      */
     public function get_default_icon()
     {
-        return 'themes/default/images_custom/icons/48x48/menu/insults.png';
+        return 'themes/default/images_custom/icons/48x48/menu/insults.svg';
     }
 
     /**
@@ -139,8 +139,7 @@ The insulted member has to try and make the right reply, if they succeed then th
     public function get_file_list()
     {
         return array(
-            'themes/default/images_custom/icons/24x24/menu/insults.png',
-            'themes/default/images_custom/icons/48x48/menu/insults.png',
+            'themes/default/images_custom/icons/48x48/menu/insults.svg',
             'sources_custom/hooks/systems/addon_registry/bantr.php',
             'adminzone/pages/comcode_custom/EN/insults.txt',
             'lang_custom/EN/insults.ini',

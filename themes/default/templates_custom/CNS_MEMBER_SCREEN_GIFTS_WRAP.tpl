@@ -1,6 +1,6 @@
 <div data-toggleable-tray="{}">
 	<h2 class="js-tray-header">
-		<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!GIFTR_TITLE}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" /></a>
+		<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!GIFTR_TITLE}" title="{!EXPAND}" width="20" height="20" src="{$IMG*,1x/trays/expand}" /></a>
 		<span class="js-tray-onclick-toggle-tray">{!GIFTR_TITLE}</span>
 	</h2>
 
@@ -11,7 +11,7 @@
 			<div class="box box---cns-member-screen-gifts-wrap"><div class="box-inner">
 				<div class="float-surrounder">
 					{+START,IF_NON_EMPTY,{IMAGE_URL}}
-						<img src="{$THUMBNAIL*,{IMAGE_URL},50}" class="left float-separation" />
+						<img width="50" src="{$THUMBNAIL*,{IMAGE_URL},50}" class="left float-separation" />
 					{+END}
 
 					{GIFT_EXPLANATION}

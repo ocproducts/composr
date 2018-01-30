@@ -54,7 +54,9 @@
         submitButton.parentNode.insertBefore(button, submitButton);
         button.addEventListener('click', function () {
             var progressTicker = document.createElement('img');
-            progressTicker.setAttribute('src', $util.srl('{$IMG;,loading}'));
+            progressTicker.src = $util.srl('{$IMG;,loading}');
+            progressTicker.width = '20';
+            progressTicker.height = '20';
             progressTicker.style.verticalAlign = 'middle';
             progressTicker.style.marginRight = '20px';
             button.parentNode.insertBefore(progressTicker);

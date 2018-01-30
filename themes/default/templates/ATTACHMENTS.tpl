@@ -8,7 +8,7 @@
 		</div>
 
 		<div id="attachment_progress_bars">
-			<div id="fsUploadProgress" class="progressBars"></div>
+			<div id="fsUploadProgress" class="progress-bars"></div>
 		</div>
 	{+END}
 

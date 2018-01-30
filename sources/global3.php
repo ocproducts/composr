@@ -3508,7 +3508,7 @@ function is_control_field($field_name, $include_email_metafields = false, $inclu
         'require__',
 
         // Relating to uploads/attachments
-        'hidFileID_',
+        'hid_file_id_',
         'hidFileName_',
 
         // Relating to preview

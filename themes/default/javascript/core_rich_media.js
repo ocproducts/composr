@@ -77,6 +77,8 @@
             left.style.position = 'absolute';
             left.style.left = '43px';
             left.style.top = '0';
+            left.width = '28';
+            left.height = '252';
             mainEl.parentNode.appendChild(left);
 
             var right = document.createElement('img');
@@ -84,6 +86,8 @@
             right.style.position = 'absolute';
             right.style.right = '43px';
             right.style.top = '0';
+            right.width = '28';
+            right.height = '252';
             mainEl.parentNode.appendChild(right);
         },
 
@@ -234,6 +238,8 @@
                 var previousButton = document.createElement('img');
                 previousButton.className = 'previous-button';
                 previousButton.src = $util.srl('{$IMG;,mediaset_previous}');
+                previousButton.width = '74';
+                previousButton.height = '74';
                 previousButton.addEventListener('click', clickPreviousButton);
                 function clickPreviousButton(e) {
                     var newPosition = modal.positionInSet - 1;
@@ -250,6 +256,8 @@
                 var nextButton = document.createElement('img');
                 nextButton.className = 'next-button';
                 nextButton.src = $util.srl('{$IMG;,mediaset_next}');
+                nextButton.width = '74';
+                nextButton.height = '74';
                 nextButton.addEventListener('click', clickNextButton);
                 function clickNextButton(e) {
                     var newPosition = modal.positionInSet + 1;
@@ -283,6 +291,8 @@
                             img.className = 'lightbox-image';
                             img.id = 'lightbox-image';
                             img.src = '{$IMG_INLINE;,loading}';
+                            img.width = '20';
+                            img.height = '20';
                             setTimeout(function () { // Defer execution until after loading is set
                                 img.addEventListener('load', function () {
                                     $cms.ui.resizeLightboxDimensionsImg(modal, img, true, isVideo);
@@ -404,9 +414,9 @@
     $cms.templates.attachments = function attachments(params, container) {
         window.maxAttachments = Number(params.maxAttachments) || 0;
         window.numAttachments = Number(params.numAttachments) || 0;
-        
+
         var postingFieldName = strVal(params.postingFieldName);
-        
+
         if ($cms.browserMatches('simplified_attachments_ui')) {
             window.attachmentTemplate = strVal(params.attachmentTemplate);
             window.numAttachments = 1;
@@ -425,8 +435,8 @@
                 $cms.ui.open($cms.maintainThemeInLink(link.href), 'site_attachment_chooser', 'width=550,height=600,status=no,resizable=yes,scrollbars=yes');
             });
         }
-        
-        
+
+
         var lastAttachmentBrowseButton;
 
         /**
@@ -436,7 +446,7 @@
          */
         function rebuildAttachmentButtonForNext(_postingFieldName, attachmentBrowseButton) {
             console.log('rebuildAttachmentButtonForNext()', '_postingFieldName:', _postingFieldName, 'attachmentBrowseButton:', attachmentBrowseButton);
-            
+
             if (_postingFieldName !== postingFieldName) {
                 return;
             }
@@ -444,7 +454,7 @@
             if (attachmentBrowseButton === undefined) {
                 attachmentBrowseButton = lastAttachmentBrowseButton; // Use what was used last time
             }
-            
+
             lastAttachmentBrowseButton = attachmentBrowseButton;
 
             $cms.requireJavascript('plupload').then(function () {
@@ -486,11 +496,11 @@
 
         $dom.on(btn, 'click', function () {
             var mainWindow = btn.ownerDocument.defaultView;
-            
+
             if ($cms.browserMatches('simplified_attachments_ui') && isPostingField && ((b === 'thumb') || (b === 'img'))) {
                 return;
             }
-            
+
             mainWindow['doInput' + $util.ucFirst($util.camelCase(b))](fieldName);
         });
     };
@@ -543,7 +553,7 @@
             shockerTick(id, time, params.maxColor, params.minColor);
         }, time);
     };
-    
+
     $cms.views.ComcodeSectionController = ComcodeSectionController;
     /**
      * @memberof $cms.views
@@ -552,7 +562,7 @@
      */
     function ComcodeSectionController(params) {
         ComcodeSectionController.base(this, 'constructor', arguments);
-        
+
         this.passId = $cms.filter.id(params.passId);
         this.sections = params.sections.map($cms.filter.id);
 
@@ -565,7 +575,7 @@
                 'click .js-click-flip-page': 'doFlipPage'
             };
         },
-        
+
         doFlipPage: function doFlipPage(e, clicked) {
             var flipTo = clicked.dataset.vwFlipTo;
 
@@ -616,7 +626,7 @@
                 if (bi) {
                     bi.style.opacity = 0.4;
                 }
-                
+
                 $dom.fadeIn(element);
 
 
@@ -634,7 +644,7 @@
             }, timein + 100);
         }
     };
-    
+
     $cms.views.ComcodeBigTabsController = ComcodeBigTabsController;
     /**
      * @memberof $cms.views
@@ -643,18 +653,18 @@
      */
     function ComcodeBigTabsController(params) {
         ComcodeBigTabsController.base(this, 'constructor', arguments);
-        
+
         var passId = this.passId = $cms.filter.id(params.passId),
             id = this.id = passId + '_' + params.bigTabSets,
             sections = this.sections = params.tabs.map($cms.filter.id),
             switchTime = this.switchTime = params.switchTime;
-        
+
         /* Precache images */
         new Image().src = $util.srl('{$IMG;,big_tabs_controller_button}');
         new Image().src = $util.srl('{$IMG;,big_tabs_controller_button_active}');
         new Image().src = $util.srl('{$IMG;,big_tabs_controller_button_top_active}');
         new Image().src = $util.srl('{$IMG;,big_tabs_controller_button_top}');
-        
+
         if (switchTime !== undefined) {
             flipPage(0, id, sections, switchTime);
         }
@@ -669,11 +679,11 @@
 
         doFlipPage: function doFlipPage(e, clicked) {
             var flipTo = clicked.dataset.vwFlipTo;
-            
+
             flipPage(flipTo, this.id, this.sections, this.switchTime);
         }
     });
-    
+
 
     $cms.templates.comcodeTabBody = function (params) {
         var title = $cms.filter.id(params.title);
@@ -722,7 +732,7 @@
     $cms.templates.mediaYoutube = function (params, element) {
         // Tie into callback event to see when finished, for our slideshows
         // API: https://developers.google.com/youtube/iframe_api_reference
-        
+
         if (promiseYouTubeIframeAPIReady == null) {
             promiseYouTubeIframeAPIReady = new Promise(function (resolve) {
                 if ((window.YT != null) && (window.YT.Player != null)) {
@@ -736,7 +746,7 @@
                 }
             });   
         }
-        
+
         promiseYouTubeIframeAPIReady.then(function () {
             var slideshowMode = document.getElementById('next_slide'),
                 player = new window.YT.Player(element.id, {
@@ -823,7 +833,7 @@
                     try {
                         player.Play();
                     } catch (e) {}
-                    
+
                     try {
                         player.controls.play();
                     } catch (e) {}
@@ -931,7 +941,7 @@
 
         window.jwplayer(params.playerId).setup(playerOptions);
     };
-    
+
     $cms.functions.comcodeAddTryForSpecialComcodeTagSpecificContentsUi = function () {
         // If we select an image we want to have good defaults for an image, but only if the defaults weren't already changed
         document.getElementById('tag_contents__b').onchange = function () {
@@ -984,7 +994,7 @@
     var _flipPageTimeouts = {};
     function flipPage(to, id, sections, switchTime) {
         var i, currentPos = 0, section;
-        
+
         if (_flipPageTimeouts[id]) {
             clearTimeout(_flipPageTimeouts[id]);
             delete _flipPageTimeouts[id];
@@ -992,7 +1002,7 @@
 
         if ($util.isNumeric(to)) {
             to = Number(to);
-            
+
             for (i = 0; i < sections.length; i++) {
                 section = document.getElementById(id + '_section_' + sections[i]);
                 if (section) {
@@ -1081,7 +1091,7 @@
                 }
             }
         }
-        
+
         if (switchTime) {
             _flipPageTimeouts[id] = setTimeout(function () {
                 var nextPage = 0, i, el;

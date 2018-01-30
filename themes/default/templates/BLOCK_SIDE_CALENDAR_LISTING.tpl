@@ -21,7 +21,7 @@
 							<tr class="vevent" itemscope="itemscope" itemtype="http://schema.org/Event">
 								<th>
 									{+START,IF_PASSED,ICON}{+START,IF_PASSED,T_TITLE}
-										<img src="{$IMG*,{ICON}}" title="{T_TITLE*}" alt="{T_TITLE*}" />
+										<img width="24" height="24" src="{$IMG*,{ICON}}" title="{T_TITLE*}" alt="{T_TITLE*}" />
 									{+END}{+END}
 								</th>
 

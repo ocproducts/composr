@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+]>
+<svg version="1.1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="28px" height="28px" viewBox="-7.482 -2.591 28 28" enable-background="new -7.482 -2.591 28 28"
+	 xml:space="preserve">
+<defs>
+</defs>
+<polygon fill="#414042" points="3.268,14.212 0.564,22.817 5.55,15.418 "/>
+<ellipse transform="matrix(0.8952 0.4456 -0.4456 0.8952 6.436 -0.9333)" fill="#52CAF5" cx="5.203" cy="13.219" rx="5.569" ry="3.326"/>
+<path fill="#3588A6" d="M8.713,14.835c0,0-1.722,1.402-4.248,0.081c-3.196-1.674-2.669-3.524-2.669-3.524l4.567-9.177l6.917,3.442
+	L8.713,14.835z"/>
+<ellipse transform="matrix(0.8953 0.4455 -0.4455 0.8953 2.7828 -3.964)" fill="#52CAF5" cx="9.823" cy="3.937" rx="5.569" ry="3.414"/>
+<ellipse transform="matrix(0.8952 0.4456 -0.4456 0.8952 2.621 -4.0994)" fill="#84D5F7" cx="10.028" cy="3.524" rx="4.116" ry="2.523"/>
+</svg>

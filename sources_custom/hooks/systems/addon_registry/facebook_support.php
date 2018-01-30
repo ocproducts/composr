@@ -142,7 +142,7 @@ For a demo, see this video tutorial: https://www.youtube.com/watch?v=HUZ_O5io0F0
      */
     public function get_default_icon()
     {
-        return 'themes/default/images_custom/icons/48x48/menu/facebook.png';
+        return 'themes/default/images/icons/48x48/links/facebook.svg';
     }
 
     /**
@@ -153,8 +153,6 @@ For a demo, see this video tutorial: https://www.youtube.com/watch?v=HUZ_O5io0F0
     public function get_file_list()
     {
         return array(
-            'themes/default/images_custom/icons/24x24/menu/facebook.png',
-            'themes/default/images_custom/icons/48x48/menu/facebook.png',
             'sources_custom/hooks/systems/addon_registry/facebook_support.php',
             'sources_custom/hooks/systems/startup/facebook.php',
             'sources_custom/facebook/index.html',

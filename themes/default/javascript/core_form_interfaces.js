@@ -2,7 +2,7 @@
     'use strict';
 
     var $coreFormInterfaces = window.$coreFormInterfaces = {};
-    
+
     // Templates:
     // POSTING_FORM.tpl
     // - POSTING_FIELD.tpl
@@ -304,7 +304,7 @@
             }
         }
     });
-    
+
     $cms.templates.formScreenInputPassword = function (params, container) {
         var value = strVal(params.value),
             name = strVal(params.name);
@@ -384,12 +384,12 @@
             }
         });
     };
-    
+
     $cms.templates.formScreen = function (params, container) {
         if (params.jsFunctionCalls != null) {
             $cms.executeJsFunctionCalls(params.jsFunctionCalls);
         }
-        
+
         tryToSimplifyIframeForm();
 
         if (params.iframeUrl) {
@@ -685,12 +685,12 @@
             }
             return '<span title="' + $cms.filter.html(opt.element[0].title) + '">' + $cms.filter.html(opt.text) + '</span>';
         }
-        
+
         function formatSelectImage(opt) {
             if (!opt.id) {
                 return opt.text; // optgroup
             }
-            
+
             var imageSources = JSON.parse(strVal(params.imageSources, '{}'));
 
             for (var imageName in imageSources) {
@@ -730,7 +730,7 @@
                 $dom.submit(form);
             }
         }
-        
+
         $dom.on(img, 'keypress', clickFunc);
         $dom.on(img, 'click', clickFunc);
         $dom.on(el, 'click', clickFunc);
@@ -788,7 +788,7 @@
         $dom.on(container, 'click', function () {
             $dom.triggerResize();
         });
-        
+
         if (inner) {
             $dom.on(inner, $cms.browserMatches('gecko')/*LEGACY*/ ? 'DOMMouseScroll' : 'mousewheel', function (event) {
                 inner.scrollTop -= event.wheelDelta ? event.wheelDelta : event.detail;
@@ -886,7 +886,7 @@
         // Remove attachment uploads
         var inputs = post.form.elements, uploadButton,
             i, doneOne = false;
-        
+
         for (i = 0; i < inputs.length; i++) {
             if (((inputs[i].type === 'file') || ((inputs[i].type === 'text') && (inputs[i].disabled))) && (inputs[i].value !== '') && (inputs[i].name.match(/file\d+/))) {
                 if ($dom.data(inputs[i]).pluploadObject != null) {
@@ -902,7 +902,7 @@
                         }
                         doneOne = true;
                     }
-                    
+
                     uploadButton = mainWindow.document.getElementById('uploadButton_' + inputs[i].name);
                     if (uploadButton) {
                         uploadButton.disabled = true;
@@ -913,8 +913,8 @@
                         inputs[i].value = '';
                     } catch (e) {}
                 }
-                if (inputs[i].form.elements['hidFileID_' + inputs[i].name] !== undefined) {
-                    inputs[i].form.elements['hidFileID_' + inputs[i].name].value = '';
+                if (inputs[i].form.elements['hid_file_id_' + inputs[i].name] !== undefined) {
+                    inputs[i].form.elements['hid_file_id_' + inputs[i].name].value = '';
                 }
             }
         }
@@ -923,12 +923,12 @@
     $cms.templates.blockHelperDone = function (params) {
         var targetWin = window.opener ? window.opener : window.parent,
             element = targetWin.document.getElementById(params.fieldName);
-        
+
         if (!element) {
             targetWin = targetWin.frames['iframe_page'];
             element = targetWin.document.getElementById(params.fieldName);
         }
-        
+
         var block = strVal(params.block),
             tagContents = strVal(params.tagContents),
             comcode = strVal(params.comcode),
@@ -936,18 +936,18 @@
             isWysiwyg = targetWin.$cms.form.isWysiwygField(element),
             loadingSpace = document.getElementById('loading_space'),
             attachedEventAction = false;
-        
+
         window.returnValue = comcode;
 
         if ((block === 'attachment_safe') && /^new_\d+$/.test(tagContents)) {
             // WYSIWYG-editable attachments must be synched
             var field = 'file' + tagContents.substr(4),
                 uploadEl = targetWin.document.getElementById(field);
-            
+
             if (!uploadEl) {
-                uploadEl = targetWin.document.getElementById('hidFileID_' + field);
+                uploadEl = targetWin.document.getElementById('hid_file_id_' + field);
             }
-            
+
             if (($dom.data(uploadEl).pluploadObject != null) && isWysiwyg) {
                 var ob = $dom.data(uploadEl).pluploadObject;
                 if (Number(ob.state) === Number(targetWin.plupload.STARTED)) {
@@ -987,7 +987,7 @@
         function dispatchBlockHelper() {
             var saveToId = strVal(params.saveToId),
                 toDelete = Boolean(params.delete);
-            
+
             if (saveToId !== '') {
                 var ob = targetWin.wysiwygEditors[element.id].document.$.getElementById(saveToId);
 
@@ -1004,7 +1004,7 @@
                 shutdownOverlay();
                 return;
             }
-            
+
             var message = '';
             if (comcode.includes('[attachment') && comcode.includes('[attachment_safe') && !isWysiwyg) {
                 message = '{!comcode:ADDED_COMCODE_ONLY_SAFE_ATTACHMENT;^}';
@@ -1013,10 +1013,10 @@
             // We define as a temporary global method so we can clone out the tag if needed (e.g. for multiple attachment selections)
             targetWin.insertComcodeTag = function insertComcodeTag(repFrom, repTo, ret, callback) {
                 ret = Boolean(ret);
-                
+
                 var newComcodeSemihtml = comcodeSemihtml,
                     newComcode = comcode;
-                
+
                 if (repFrom != null) {
                     for (var i = 0; i < repFrom.length; i++) {
                         newComcodeSemihtml = newComcodeSemihtml.replace(repFrom[i], repTo[i]);
@@ -1035,7 +1035,7 @@
                 if (!element.value.includes(comcodeSemihtml) || !comcode.includes('[attachment')) { // Don't allow attachments to add twice
                     promise = targetWin.$editing.insertTextbox(element, newComcode, true, newComcodeSemihtml);
                 }
-                
+
                 promise.then(function () {
                     if (callback != null) {
                         callback();
@@ -1101,13 +1101,13 @@
                 thisField = document.getElementById(thisId);
                 nextField = document.createElement('input');
                 nextField.className = 'input-upload';
-                nextField.setAttribute('id', 'multi_' + nextNum);
+                nextField.id = 'multi_' + nextNum;
                 nextField.addEventListener('change', function (event) {
                     if (!$dom.keyPressed(event, 'Tab')) {
                         ensureNextFieldUpload(this);
                     }
                 });
-                nextField.setAttribute('type', 'file');
+                nextField.type = 'file';
                 nextField.name = nameStub + nextNum;
                 thisField.parentNode.appendChild(nextField);
             }
@@ -1216,7 +1216,7 @@
         // Uncomment if you want to force jQuery-UI inputs even when there is native browser input support
         //window.jQuery('#' + params.name).inputTime({});
     };
-    
+
     /**
      * Marking things (to avoid illegally nested forms)
      * @memberof $cms.form
@@ -1275,7 +1275,7 @@
     $cms.form.isModSecurityWorkaroundEnabled = function isModSecurityWorkaroundEnabled() {
         return '{$VALUE_OPTION;,disable_modsecurity_workaround}' !== '1';
     };
-    
+
     /**
      * @memberof $cms.form
      * @param form
@@ -1343,7 +1343,7 @@
             },
             out = '',
             character;
-        
+
         for (var i = 0; i < data.length; i++) {
             character = data[i];
             if (remapper[character] !== undefined) {
@@ -1352,7 +1352,7 @@
                 out += character;
             }
         }
-        
+
         return out;
     }
 
@@ -1390,7 +1390,7 @@
             formCatSelector = document.getElementById('main_form'),
             elements, i, element,
             count = 0, found, foundButton;
-        
+
         if (!formCatSelector) {
             return;
         }
@@ -1409,15 +1409,15 @@
 
         if ((count === 1) && (found.localName === 'select')) {
             $dom.on(found, 'change', foundChangeHandler);
-            
-            if ((found.getAttribute('size') > 1) || (found.multiple)) {
+
+            if ((found.size > 1) || (found.multiple)) {
                 $dom.on(found, 'click', foundChangeHandler);
             }
             if (iframe) {
                 foundButton.style.display = 'none';
             }
         }
-        
+
         function foundChangeHandler() {
             if (iframe) {
                 if (iframe.contentDocument && (iframe.contentDocument.getElementsByTagName('form').length !== 0)) {
@@ -1482,7 +1482,7 @@
                                     parsed[j + 1] = '';
                                 }
 
-                                fieldName = labels[i].getAttribute('for');
+                                fieldName = labels[i].for;
                                 field = document.getElementById(fieldName);
                                 if (field.localName === 'select') {
                                     field.value = parsed[j + 1];
@@ -1531,6 +1531,8 @@
             newDisplayState = 'none';
             newDisplayState2 = 'none';
         }
+        pic.width = '20';
+        pic.height = '20';
 
         // Hide everything until we hit end of section
         var count = 0;
@@ -1550,11 +1552,11 @@
                 count++;
             }
         }
-        
+
         if (helpId === undefined) {
             helpId = pic.parentNode.id + '_help';
         }
-        
+
         var help = document.getElementById(helpId);
 
         while (help !== null) {
@@ -1600,7 +1602,7 @@
             return;
         }
         $dom.changeChecked(jEl, true);
-        
+
         imgOb.parentNode.classList.add('selected');
         imgOb.style.outline = '1px dotted';
     }
@@ -1613,13 +1615,13 @@
     function standardAlternateFieldsWithin(setName, somethingRequired, defaultSet) {
         setName = strVal(setName);
         somethingRequired = Boolean(somethingRequired);
-        
-        
+
+
         var form = $dom.closest('#set_wrapper_' + setName, 'form');
-        
+
         var fields = form.elements[setName],
             fieldNames = [];
-        
+
         for (var i = 0; i < fields.length; i++) {
             if (fields[i][0] === undefined) {
                 if (fields[i].id.startsWith('choose_')) {
@@ -1726,7 +1728,7 @@
 
             function _standardAlternateFieldsGetObject(fieldName) {
                 fieldName = strVal(fieldName);
-                
+
                 // Maybe it's an N/A so no actual field
                 if (fieldName === '') {
                     return null;
@@ -1807,7 +1809,7 @@
 
                 return null;
             }
-            
+
             function __standardAlternateFieldCreateListeners(field, refreshFunction) {
                 var radioButton = document.getElementById('choose_' + (field ? field.name : '').replace(/\[\]$/, ''));
                 if (!radioButton) {
@@ -1827,7 +1829,7 @@
             }
         }
     }
-    
+
     // ===========
     // Multi-field
     // ===========
@@ -1870,18 +1872,18 @@
                 nextField = document.createElement('textarea');
             } else {
                 nextField = document.createElement('input');
-                nextField.setAttribute('size', thisField.getAttribute('size'));
+                nextField.size = thisField.size;
             }
             nextField.className = thisField.className.replace(/\_required/g, '');
             if (thisField.form.elements['label_for__' + nameStub + '0']) {
                 var nextLabel = document.createElement('input');
-                nextLabel.setAttribute('type', 'hidden');
+                nextLabel.type = 'hidden';
                 nextLabel.value = thisField.form.elements['label_for__' + nameStub + '0'].value + ' (' + (nextNum + 1) + ')';
                 nextLabel.name = 'label_for__' + nameStub + nextNum;
                 nextFieldWrap.appendChild(nextLabel);
             }
-            nextField.setAttribute('tabindex', thisField.getAttribute('tabindex'));
-            nextField.setAttribute('id', nameStub + nextNum);
+            nextField.tabIndex = thisField.tabIndex;
+            nextField.id = nameStub + nextNum;
             if (thisField.onfocus) {
                 nextField.onfocus = thisField.onfocus;
             }

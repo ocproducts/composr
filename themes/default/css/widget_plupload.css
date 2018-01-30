@@ -18,7 +18,7 @@ div.fieldset span.legend {
 	color: #73b304;
 }
 
-div.progressBars {
+div.progress-bars {
 	margin: 1em 0.5em;
 	display: none;
 	border-color: #D9E4FF;
@@ -27,11 +27,11 @@ div.progressBars {
 
 /* Progressbar styles */
 
-.progressWrapper {
+.progress-wrapper {
 	overflow: hidden;
 }
 
-.progressContainer {
+.progress-container {
 	margin: 5px;
 	padding: 4px;
 	border: solid 1px #E8E8E8;
@@ -66,7 +66,7 @@ div.progressBars {
 	background-color: #F0F5FF;
 }
 
-.progressName {
+.progress-name {
 	font-size: 8pt;
 	font-weight: 700;
 	height: 14px;
@@ -75,13 +75,13 @@ div.progressBars {
 	overflow: hidden;
 }
 
-.progressName, .progressBarStatus {
+.progress-name, .progress-bar-status {
 	color: #555;
 }
 
-.progressBarInProgress,
-.progressBarComplete,
-.progressBarError {
+.progress-bar-in-progress,
+.progress-bar-complete,
+.progress-bar-error {
 	font-size: 0;
 	width: 0%;
 	height: 2px;
@@ -89,36 +89,37 @@ div.progressBars {
 	margin-top: 2px;
 }
 
-.progressBarComplete {
+.progress-bar-complete {
 	width: 100%;
 	background-color: green;
 	visibility: hidden;
 }
 
-.progressBarError {
+.progress-bar-error {
 	width: 100%;
 	background-color: red;
 	visibility: hidden;
 }
 
-.progressBarStatus {
+.progress-bar-status {
 	margin-top: 2px;
 	font-size: 7pt;
 	text-align: left;
 	white-space: nowrap;
 }
 
-a.progressCancel {
+a.progress-cancel {
 	font-size: 0;
 	display: block;
 	height: 14px;
 	width: 14px;
 	background-image: url('{$IMG;,uploader/cancelbutton}');
+	background-size: 14px 14px;
 	opacity: 0.8;
 	background-repeat: no-repeat;
 	float: right;
 }
 
-a.progressCancel:hover {
+a.progress-cancel:hover {
 	opacity: 1.0;
 }

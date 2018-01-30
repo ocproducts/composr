@@ -1,8 +1,8 @@
 (function ($cms, $util, $dom) {
     'use strict';
-    
+
     var $galleries = window.$galleries = {};
-    
+
     if (window.slideshowTimer === undefined) {
         window.slideshowTimer = null;
         window.slideshowSlides = {};
@@ -26,7 +26,7 @@
         this.fpAnimationFaderEl = $dom.create('img', { className: 'img-thumb', src: $util.srl('{$IMG;,blank}'), css: { position: 'absolute' }});
         this.teaseTitleEl = document.getElementById('image_fader_title_' + id);
         this.teaseScrollingTextEl =  document.getElementById('image_fader_scrolling_text_' + id);
-        
+
         this.fpAnimationEl.parentNode.insertBefore(this.fpAnimationFaderEl, this.fpAnimationEl);
         this.fpAnimationEl.parentNode.style.position = 'relative';
         this.fpAnimationEl.parentNode.style.display = 'block';
@@ -64,7 +64,7 @@
         initializeImage: function (data, value, index, milliseconds, total) {
             var periodInMsecs = 50,
                 increment = 3;
-            
+
             if (periodInMsecs * 100 / increment > milliseconds) {
                 periodInMsecs = milliseconds * increment / 100;
                 periodInMsecs *= 0.9; // A little give

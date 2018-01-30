@@ -138,7 +138,7 @@ The blocks provided are [tt]main_activities[/tt] and the status entry box is cal
      */
     public function get_default_icon()
     {
-        return 'themes/default/images_custom/icons/48x48/tabs/member_account/activity.png';
+        return 'themes/default/images_custom/icons/48x48/tabs/member_account/activity.svg';
     }
 
     /**
@@ -149,8 +149,7 @@ The blocks provided are [tt]main_activities[/tt] and the status entry box is cal
     public function get_file_list()
     {
         return array(
-            'themes/default/images_custom/icons/24x24/tabs/member_account/activity.png',
-            'themes/default/images_custom/icons/48x48/tabs/member_account/activity.png',
+            'themes/default/images_custom/icons/48x48/tabs/member_account/activity.svg',
             'sources_custom/hooks/systems/addon_registry/activity_feed.php',
             'sources_custom/hooks/systems/notifications/activity.php',
             'sources_custom/hooks/systems/rss/activities.php',
@@ -169,8 +168,8 @@ The blocks provided are [tt]main_activities[/tt] and the status entry box is cal
             'themes/default/templates_custom/BLOCK_MAIN_ACTIVITIES_XML.tpl',
             'themes/default/templates_custom/ACTIVITY.tpl',
             'themes/default/templates_custom/CNS_MEMBER_PROFILE_ACTIVITIES.tpl',
-            'themes/default/images_custom/stop12.png',
-            'themes/default/images_custom/stop12_hover.png',
+            'themes/default/images_custom/stop12.svg',
+            'themes/default/images_custom/stop12_hover.svg',
             'themes/default/css_custom/activities.css',
             'sources_custom/hooks/systems/profiles_tabs/activities.php',
             'sources_custom/hooks/systems/profiles_tabs/posts.php',

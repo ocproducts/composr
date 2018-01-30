@@ -9,14 +9,14 @@
 	<div class="float-surrounder">
 		<div class="ze-tabs tabs" role="tablist">
 			{+START,IF_PASSED,PREVIEW}
-				<a aria-controls="view-{$GET,IDH}" role="tab" title="{!PREVIEW}: {ID*}" href="#!" id="view_tab_{ID*}" class="tab tab-first tab_selected js-click-select-tab" data-js-tab="view"><img alt="" src="{$IMG*,icons/24x24/tabs/preview}" srcset="{$IMG*,icons/48x48/tabs/preview} 2x" /> <span>{!PREVIEW}</span></a>
+				<a aria-controls="view-{$GET,IDH}" role="tab" title="{!PREVIEW}: {ID*}" href="#!" id="view_tab_{ID*}" class="tab tab-first tab_selected js-click-select-tab" data-js-tab="view"><img alt="" width="24" height="24" src="{$IMG*,icons/48x48/tabs/preview}" /> <span>{!PREVIEW}</span></a>
 			{+END}
 			{+START,IF_PASSED,COMCODE}
-				<a aria-controls="edit-{$GET,IDH}" role="tab" title="{!EDIT}: {ID*}" href="#!" id="edit_tab_{ID*}" class="tab{+START,IF_NON_PASSED,PREVIEW} tab-first{+END} js-click-select-tab" data-js-tab="edit"><img alt="" src="{$IMG*,icons/24x24/tabs/edit}" srcset="{$IMG*,icons/48x48/tabs/edit} 2x" /> <span>{!EDIT}</span></a>
+				<a aria-controls="edit-{$GET,IDH}" role="tab" title="{!EDIT}: {ID*}" href="#!" id="edit_tab_{ID*}" class="tab{+START,IF_NON_PASSED,PREVIEW} tab-first{+END} js-click-select-tab" data-js-tab="edit"><img alt="" width="24" height="24" src="{$IMG*,icons/48x48/tabs/edit}" /> <span>{!EDIT}</span></a>
 			{+END}
-			<a aria-controls="info-{$GET,IDH}" role="tab" title="{!DETAILS}: {ID*}" href="#!" id="info_tab_{ID*}" class="tab{+START,IF_NON_PASSED,SETTINGS} tab-last{+END}{+START,IF_NON_PASSED,PREVIEW}{+START,IF_NON_PASSED,COMCODE} tab-first{+END}{+END} js-click-select-tab" data-js-tab="info"><img alt="" src="{$IMG*,icons/24x24/menu/_generic_spare/page}" srcset="{$IMG*,icons/48x48/menu/_generic_spare/page} 2x" /> <span>{!DETAILS}</span></a>
+			<a aria-controls="info-{$GET,IDH}" role="tab" title="{!DETAILS}: {ID*}" href="#!" id="info_tab_{ID*}" class="tab{+START,IF_NON_PASSED,SETTINGS} tab-last{+END}{+START,IF_NON_PASSED,PREVIEW}{+START,IF_NON_PASSED,COMCODE} tab-first{+END}{+END} js-click-select-tab" data-js-tab="info"><img alt="" width="24" height="24" src="{$IMG*,icons/48x48/menu/_generic_spare/page}" /> <span>{!DETAILS}</span></a>
 			{+START,IF_PASSED,SETTINGS}
-				<a aria-controls="settings-{$GET,IDH}" role="tab" title="{!SETTINGS}: {ID*}" href="#!" id="settings_tab_{ID*}" class="tab tab-last js-click-select-tab" data-js-tab="settings"><img alt="" src="{$IMG*,icons/24x24/tabs/settings}" srcset="{$IMG*,icons/48x48/tabs/settings} 2x" /> <span>{!SETTINGS}</span></a>
+				<a aria-controls="settings-{$GET,IDH}" role="tab" title="{!SETTINGS}: {ID*}" href="#!" id="settings_tab_{ID*}" class="tab tab-last js-click-select-tab" data-js-tab="settings"><img alt="" width="24" height="24" src="{$IMG*,icons/48x48/tabs/settings}" /> <span>{!SETTINGS}</span></a>
 			{+END}
 		</div>
 	</div>
@@ -40,9 +40,9 @@
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				<p>
-					<label for="edit_{ID*}_textarea">{!COMCODE}:</label> <a data-open-as-overlay="{}" class="link-exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="{!COMCODE_MESSAGE,Comcode}" src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical-alignment" /></a>
+					<label for="edit_{ID*}_textarea">{!COMCODE}:</label> <a data-open-as-overlay="{}" class="link-exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="{!COMCODE_MESSAGE,Comcode}" width="16" height="16" src="{$IMG*,icons/32x32/editor/comcode}" class="vertical-alignment" /></a>
 					{+START,IF,{$IN_STR,{CLASS},wysiwyg}}
-						<span class="horiz-field-sep associated-link"><a id="toggle_wysiwyg_edit_{ID*}_textarea" href="#!" class="js-a-toggle-wysiwyg"><abbr title="{!TOGGLE_WYSIWYG_2}"><img src="{$IMG*,icons/16x16/editor/wysiwyg_on}" srcset="{$IMG*,icons/32x32/editor/wysiwyg_on} 2x" alt="{!comcode:ENABLE_WYSIWYG}" title="{!comcode:ENABLE_WYSIWYG}" class="vertical-alignment" /></abbr></a></span>
+						<span class="horiz-field-sep associated-link"><a id="toggle_wysiwyg_edit_{ID*}_textarea" href="#!" class="js-a-toggle-wysiwyg"><abbr title="{!TOGGLE_WYSIWYG_2}"><img width="16" height="16" src="{$IMG*,icons/32x32/editor/wysiwyg_on}" alt="{!comcode:ENABLE_WYSIWYG}" title="{!comcode:ENABLE_WYSIWYG}" class="vertical-alignment" /></abbr></a></span>
 					{+END}
 				</p>
 				{+START,IF_NON_EMPTY,{COMCODE_EDITOR}}

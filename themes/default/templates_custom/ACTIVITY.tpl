@@ -11,18 +11,18 @@
 
 	<div class="activities-avatar-box">
 		{+START,IF_NON_EMPTY,{ADDON_ICON}}
-			<img src="{$THUMBNAIL*,{ADDON_ICON},36x36,,,,pad,both,#FFFFFF00}" />
+			<img width="36" height="36" src="{$THUMBNAIL*,{ADDON_ICON},36x36,,,,pad,both,#FFFFFF00}" />
 		{+END}
 		{+START,IF_EMPTY,{ADDON_ICON}}
-			<img src="{$THUMBNAIL*,{$IMG,icons/48x48/menu/_generic_admin/{$?,{IS_PUBLIC},edit_this,edit_one}},36x36,,,,pad,both,#FFFFFF00}" />
+			<img width="36" height="36" src="{$THUMBNAIL*,{$IMG,icons/48x48/menu/_generic_admin/{$?,{IS_PUBLIC},edit_this,edit_one}},36x36,,,,pad,both,#FFFFFF00}" />
 		{+END}
 
 		{+START,SET,commented_out}
 			{+START,IF_EMPTY,{AVATAR}}{+START,IF_NON_EMPTY,{$IMG,cns_default_avatars/default,0,,1}}
-				<img src="{$THUMBNAIL*,{$IMG,cns_default_avatars/default,0,,1},36x36,,,,pad,both,#FFFFFF00}" />
+				<img width="36" height="36" src="{$THUMBNAIL*,{$IMG,cns_default_avatars/default,0,,1},36x36,,,,pad,both,#FFFFFF00}" />
 			{+END}{+END}
 			{+START,IF_NON_EMPTY,{AVATAR}}
-				<img src="{$THUMBNAIL*,{AVATAR},36x36,,,,pad,both,#FFFFFF00}" />
+				<img width="36" height="36" src="{$THUMBNAIL*,{AVATAR},36x36,,,,pad,both,#FFFFFF00}" />
 			{+END}
 		{+END}
 	</div>

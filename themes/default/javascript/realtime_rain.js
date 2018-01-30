@@ -1,6 +1,6 @@
 (function ($cms, $util, $dom) {
     'use strict';
-    
+
     var $realtimeRain = window.$realtimeRain = {};
 
     $cms.templates.realtimeRainOverlay = function (params, container) {
@@ -105,18 +105,12 @@
                 e.parentNode.parentNode.removeChild(e.parentNode);
             }
 
-            img.src = $util.srl('{$IMG;,icons/24x24/tool_buttons/realtime_rain_on}');
-            if (img.srcset !== undefined) {
-                img.srcset = $util.srl('{$IMG;,icons/48x48/tool_buttons/realtime_rain_on}') + ' 2x';
-            }
+            img.src = $util.srl('{$IMG;,icons/48x48/tool_buttons/realtime_rain_on}');
 
             return false;
         }
 
-        img.src = $util.srl('{$IMG;,icons/24x24/tool_buttons/realtime_rain_off}');
-        if (img.srcset !== undefined) {
-            img.srcset = $util.srl('{$IMG;,icons/48x48/tool_buttons/realtime_rain_off}') + ' 2x';
-        }
+        img.src = $util.srl('{$IMG;,icons/48x48/tool_buttons/realtime_rain_off}');
 
         var tmpElement = document.getElementById('realtime_rain_img_loader');
         if (tmpElement) {

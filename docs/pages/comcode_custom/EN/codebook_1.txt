@@ -971,8 +971,7 @@ In Composr content types are implemented via a lot of different files. The best 
  - [tt]sources_custom/hooks/systems/trackback/iotds.php[/tt] -- This hook determines whether a specific IOTD has trackbacks enabled (this is used by the trackback-reception script, to check to see whether it has access to save the trackback).
  - [tt]sources_custom/iotds.php[/tt] -- This file defines the API functions relating to IOTDs. For any IOTD API functions to be used in code the [tt]require_code('iotds');[/tt] command would need to be run in the code first (often in a module's [tt]run[/tt] function).
  - [tt]themes/default/css_custom/iotds.css[/tt] -- This file defines the CSS for IOTDs. For any IOTD CSS styles to be used in a template the [tt]require_css('iotds');[/tt] command would need to be run at some point in the PHP code that loaded up the templates (often in a module's [tt]run[/tt] function).
- - [tt]themes/default/images_custom/icons/24x24/menu/cms/iotds.png[/tt] -- This is an icon for the menus.
- - [tt]themes/default/images_custom/icons/48x48/menu/cms/iotds.png[/tt] -- This is a larger version of the icon, for retina screens, or for display at a larger size.
+ - [tt]themes/default/images_custom/icons/48x48/menu/rich_content/iotds.svg[/tt] -- This is an icon for the menus.
  - [tt]themes/default/templates_cached/EN/iotds.css[/tt] -- This is a cached CSS file, and is what the HTML will actually reference. It is generated when Composr automatically parses the Tempcode in the main iotds.css file.
  - [tt]uploads/iotds_addon[/tt] -- This is where IOTD images are placed. It is referenced by the [tt]get_url[/tt] function call, when uploads are saved in the [tt]cms_iotds[/tt] module.
  - [tt]uploads/iotds_thumbs_addon[/tt] -- As above, but for thumbnails.

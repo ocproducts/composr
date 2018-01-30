@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+]>
+<svg version="1.1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="100px" height="100px" viewBox="-20.435 -6.333 100 100" enable-background="new -20.435 -6.333 100 100"
+	 xml:space="preserve">
+<defs>
+</defs>
+<rect x="14.432" y="34.702" fill="#52CAF5" width="33.221" height="3.863"/>
+<rect x="14.432" y="43.665" fill="#52CAF5" width="33.221" height="3.864"/>
+<rect x="14.432" y="52.628" fill="#52CAF5" width="17.726" height="3.861"/>
+<rect x="32.048" y="34.702" fill="#3588A6" width="15.604" height="3.863"/>
+<rect x="14.432" y="25.625" fill="#52CAF5" width="33.221" height="3.863"/>
+<rect x="32.048" y="25.625" fill="#3588A6" width="15.604" height="3.863"/>
+<rect x="14.432" y="13.056" fill="#F79523" width="33.221" height="6.036"/>
+<rect x="32.048" y="13.056" fill="#C8691C" width="15.604" height="6.036"/>
+<rect x="32.048" y="43.665" fill="#3588A6" width="15.604" height="3.864"/>
+<rect x="32.048" y="52.628" fill="#3588A6" width="8.067" height="3.861"/>
+<path fill="#52CAF5" d="M54.574,5.785c0.003,0.088,0.021,0.169,0.021,0.258v54.975c0,2.284-0.498,4.133-2.344,4.133H32.97
+	L22.848,77.279l-2.055-11.98l-4.525,5.771l3.691,16.992l16.315-17.802h19.787c2.286,0,4.139-2.289,4.139-5.118V1.922
+	c0-0.683-0.114-1.328-0.306-1.922L54.574,5.785z"/>
+<path fill="#52CAF5" d="M20.867,65.658H7.949c-1.842,0-2.339-1.849-2.339-4.13V6.552c0-0.09,0.017-0.173,0.017-0.257L0.305,0.509
+	C0.115,1.103,0,1.747,0,2.429v63.22c0,2.827,1.853,5.114,4.145,5.114h16.723V65.658z"/>
+<path fill="#3588A6" d="M59.894,0l-5.32,5.785c0.003,0.088,0.021,0.169,0.021,0.258v54.975c0,2.284-0.498,4.133-2.344,4.133H32.97
+	l-0.922,1.101v8.613l4.226-4.605h19.787c2.286,0,4.139-2.289,4.139-5.118V1.922C60.2,1.239,60.085,0.594,59.894,0z"/>
+<polygon fill="#52CAF5" points="0.331,0.513 59.894,0 54.594,6.043 5.626,6.295 "/>
+<polygon fill="#3588A6" points="31.952,0.249 59.894,0 54.594,6.043 31.92,6.209 "/>
+</svg>

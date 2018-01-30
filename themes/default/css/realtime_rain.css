@@ -67,6 +67,7 @@
 	padding: 11px 15px;
 	margin: 0;
 	background: url('{$IMG;,realtime_rain/news-header}') no-repeat 0 0;
+	background-size: 446px 42px;
 	border: 0;
 }
 /*{+START,CSS_MODE,desktop}*/
@@ -83,6 +84,7 @@
 /*{+END}*/
 #news-ticker .news-inside {
 	background: url('{$IMG;,realtime_rain/news-bg}') repeat-y center top;
+	background-size: 446px 1px;
 	overflow: hidden;
 	margin: 0 auto;
 	padding: 0;
@@ -122,6 +124,7 @@
 }
 #news-ticker .news-footer {
 	background: url('{$IMG;,realtime_rain/news-bot}') no-repeat;
+	background-size: 446px 21px;
 	height: 21px;
 	float: left;
 }
@@ -161,6 +164,7 @@
 /*{+END}*/
 	#real-time-indicator {
 	background: url('{$IMG;,realtime_rain/realtime-bubble}') no-repeat 0 0;
+	background-size: 94px 51px;
 	overflow: hidden;
 	font-size: 0.75em;
 	width: 80px;
@@ -175,6 +179,7 @@
 #timer {
 	height: 38px;
 	background: url('{$IMG;,realtime_rain/timer-bg}') no-repeat;
+	background-size: 952px 46px;
 	margin-top: 5px;
 }
 /*{+START,CSS_MODE,desktop}*/
@@ -231,6 +236,7 @@
 
 .attitude-ecommerce-positive {
 	background: url('{$IMG;,realtime_rain/sun-effect}') no-repeat 0 0;
+	background-size: 246px 246px;
 	width: 246px;
 	height: 246px;
 	padding: 22px;
@@ -238,6 +244,7 @@
 }
 .attitude-join-positive, .attitude-Lorem-positive {
 	background: url('{$IMG;,realtime_rain/halo-effect}') no-repeat 0 0;
+	background-size: 246px 246px;
 	width: 246px;
 	height: 246px;
 	padding: 20px;
@@ -245,6 +252,7 @@
 }
 .attitude-security-negative {
 	background: url('{$IMG;,realtime_rain/horns-effect}') no-repeat 0 0;
+	background-size: 246px 246px;
 	width: 246px;
 	height: 246px;
 	padding: 12px;
@@ -252,6 +260,7 @@
 }
 .attitude-point-charges-negative {
 	background: url('{$IMG;,realtime_rain/shadow-effect}') no-repeat 0 0;
+	background-size: 246px 246px;
 	width: 246px;
 	height: 246px;
 	padding: 17px;
@@ -268,10 +277,12 @@
 	padding: 20px 0 0 20px;
 	position: relative;
 	margin: 10px;
+	background-size: 181px 181px;
 }
 .bubble .avatar-icon {
-	width: 59px;
-	height: 59px;
+	width: 60px;
+	height: 60px;
+	background-size: 60px 60px;
 }
 .bubble .avatar-icon img {
 	padding: 19px 17px;
@@ -292,6 +303,7 @@
 	text-align: right;
 	padding: 14px 35px 0 0;
 	font-size: 0.75em;
+	background-size: 36px 36px;
 }
 .bubble .email-icon a {
 	color: {$GET,bubble_link_inverted};

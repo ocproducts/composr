@@ -89,7 +89,7 @@ class Hook_addon_registry_downloads
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/rich_content/downloads.png';
+        return 'themes/default/images/icons/48x48/menu/rich_content/downloads.svg';
     }
 
     /**
@@ -100,13 +100,9 @@ class Hook_addon_registry_downloads
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/24x24/menu/rich_content/downloads.png',
-            'themes/default/images/icons/48x48/menu/rich_content/downloads.png',
-            'themes/default/images/icons/24x24/menu/cms/downloads/add_one_licence.png',
-            'themes/default/images/icons/24x24/menu/cms/downloads/edit_one_licence.png',
-            'themes/default/images/icons/48x48/menu/cms/downloads/add_one_licence.png',
-            'themes/default/images/icons/48x48/menu/cms/downloads/edit_one_licence.png',
-            'themes/default/images/icons/24x24/menu/cms/downloads/index.html',
+            'themes/default/images/icons/48x48/menu/rich_content/downloads.svg',
+            'themes/default/images/icons/48x48/menu/cms/downloads/add_one_licence.svg',
+            'themes/default/images/icons/48x48/menu/cms/downloads/edit_one_licence.svg',
             'themes/default/images/icons/48x48/menu/cms/downloads/index.html',
             'sources/hooks/systems/resource_meta_aware/download_licence.php',
             'sources/hooks/systems/commandr_fs/download_licences.php',

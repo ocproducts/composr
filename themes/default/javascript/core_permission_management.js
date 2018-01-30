@@ -1,6 +1,6 @@
 (function ($cms, $util, $dom) {
     'use strict';
-    
+
     var $corePermissionManagement = window.$corePermissionManagement = {};
 
     $corePermissionManagement.showPermissionSetting = showPermissionSetting;
@@ -61,12 +61,12 @@
 
     $cms.templates.permissionKeysMessageRow = function permissionKeysMessageRow(params, container) {
         $dom.on(container, 'focus', '.js-focus-textarea-expand', function (e, textarea) {
-            textarea.setAttribute('rows', '10');
+            textarea.rows = '10';
         });
 
         $dom.on(container, 'blur', '.js-blur-textarea-contract', function (e, textarea) {
             if (!textarea.form.disableSizeChange) {
-                textarea.setAttribute('rows', '2');
+                textarea.rows = '2';
             }
         });
     };
@@ -339,7 +339,7 @@
             knownGroups = [], serverid, 
             setRequest = '', 
             setRequestB, newValue;
-        
+
         for (i = 0; i < values.length; i++) {
             node = window.sitemap.getElementByIdHack(values[i]);
             serverid = node.getAttribute('serverid');
@@ -414,7 +414,7 @@
 
         $cms.ui.alert('{!permissions:PERMISSIONS_TREE_EDITOR_SAVED;^}');
     }
-    
+
     function showPermissionSetting(ob, event) {
         if (ob.disabled) { // already showing default in disabled dropdown
             return;
@@ -556,7 +556,7 @@
         var temp = permissionsImgFunc1b(node, id);
         var url = temp[0];
         var title = temp[1];
-        return '<img class="vertical-alignment perm-icon" src="' + url + '" alt="' + title + '" title="' + title + '" />&nbsp;';
+        return '<img class="vertical-alignment perm-icon" width="29" height="17" src="' + url + '" alt="' + title + '" title="' + title + '" />&nbsp;';
 
 
         function permissionsImgFunc1b(node, id) {

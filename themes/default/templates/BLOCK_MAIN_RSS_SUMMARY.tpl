@@ -10,7 +10,7 @@
 	{+END}
 	{+START,IF_NON_EMPTY,{CATEGORY_IMG}}
 		<div class="newscat-img newscat-img-author">
-			<img src="{$ENSURE_PROTOCOL_SUITABILITY*,{CATEGORY_IMG}}" title="{CATEGORY`}" alt="{CATEGORY`}" />
+			<img width="100" height="100" src="{$ENSURE_PROTOCOL_SUITABILITY*,{CATEGORY_IMG}}" title="{CATEGORY`}" alt="{CATEGORY`}" />
 			{CATEGORY`}
 		</div>
 	{+END}

@@ -152,7 +152,7 @@ class Module_cms_tutorials extends Standard_crud_module
                     $tags = array($tag);
                 }
                 if ($icon == '') {
-                    $icon = 'tutorial_icons/' . strtolower($tag);
+                    $icon = _find_tutorial_image_for_tag($tag);
                 }
             }
         }

@@ -1,5 +1,5 @@
 (function ($cms, $util, $dom) {
-    
+
     'use strict';
     // Constants
     window.MESSAGE_CHECK_INTERVAL = Math.max(3000, parseInt('{$CONFIG_OPTION,chat_message_check_interval}'));
@@ -30,7 +30,7 @@
     function ChatRoomScreen(params) {
         ChatRoomScreen.base(this, 'constructor', arguments);
         this.chatroomId = strVal(params.chatroomId);
-        
+
         // Used by this.checkChatOptions()
         this.chatOptionsFormLastValid = null;
 
@@ -69,13 +69,13 @@
                 e.preventDefault();
                 return;
             }
-            
+
             if (this.chatOptionsFormLastValid && (this.chatOptionsFormLastValid.getTime() === $cms.form.lastChangeTime(form).getTime())) {
                 return;
             }
-            
+
             e.preventDefault();
-            
+
             var that = this;
             $cms.form.checkForm(form, false).then(function (valid) {
                 if (valid) {
@@ -298,7 +298,7 @@
                                 chatCheck(false, window.lastMessageId, window.lastEventId);
                                 window.alreadyAutonomous = false;
                             }
-                            
+
                             window.opener.console.log('Reattaching chat window to re-navigated master window.');
                         }
                     }
@@ -372,11 +372,11 @@
         window.topWindow = window;
         window.lobbyLink = params.lobbyLink;
         window.participants = '';
-        
+
         if (!window.loadFromRoomId) { // Only if not in chat lobby or chatroom, so as to avoid conflicts
             beginImChatting();
         }
-        
+
         function beginImChatting() {
             window.loadFromRoomId = -1;
             if ((window.chatCheck)) {
@@ -389,7 +389,7 @@
 
     $cms.templates.chatSetEffectsSettingBlock = function (params, container) {
         var effects = params.effects || {};
-        
+
         for (var effectName in effects) {
             var effect = effects[effectName];
 
@@ -415,7 +415,7 @@
             }
         });
     };
-    
+
     function playSoundUrl(url) { // Used for testing different sounds
         var baseUrl = (!url.includes('data_custom/') && !url.includes('uploads/')) ? $cms.getBaseUrlNohttp() : $cms.getCustomBaseUrlNohttp();
         var soundObject = window.soundManager.createSound({url: baseUrl + '/' + url});
@@ -1070,7 +1070,7 @@
                 }
                 newParticipantInner = newParticipantInner.replace(/\_\_online\_\_/g, away ? '{!chat:INACTIVE;^}' : '{!chat:ACTIVE;^}');
                 $dom.html(newParticipant, newParticipantInner);
-                newParticipant.setAttribute('id', 'participant__' + roomId + '__' + memberId);
+                newParticipant.id = 'participant__' + roomId + '__' + memberId;
                 var element = doc.getElementById('participants__' + roomId);
                 if (element) {// If we've actually got the HTML for the room setup
                     var pList = $dom.html(element).toLowerCase();
@@ -1127,7 +1127,7 @@
                 newDiv = document.createElement('div');
                 newDiv.className = 'chat-lobby-convos-tab-uptodate' + ((count === 0) ? ' chat-lobby-convos-tab-first' : '');
                 $dom.html(newDiv, $cms.filter.html(roomName));
-                newDiv.setAttribute('id', 'tab_' + roomId);
+                newDiv.id = 'tab_' + roomId;
                 newDiv.participants = participants;
                 $dom.on(newDiv, 'click', function () {
                     chatSelectTab(newDiv);
@@ -1262,7 +1262,9 @@
         links.className = 'actions-list';
 
         var imgClose = document.createElement('img');
-        imgClose.src = $util.srl('{$IMG;,icons/14x14/delete}');
+        imgClose.src = $util.srl('{$IMG;,icons/28x28/delete}');
+        imgClose.width = '14';
+        imgClose.height = '14';
         imgClose.className = 'im-popup-close-button blend';
         $dom.on(imgClose, 'click', closePopup);
         div.appendChild(imgClose);
@@ -1270,7 +1272,7 @@
         // Avatar
         if (avatarUrl) {
             var img1 = document.createElement('img');
-            img1.setAttribute('src', avatarUrl);
+            img1.src = avatarUrl;
             img1.className = 'im-popup-avatar';
             div.appendChild(img1);
         }
@@ -1441,7 +1443,7 @@
     function deinvolveIm(roomId, logs, isPopup) { // is_popup means that we show a progress indicator over it, then kill the window after deinvolvement
         if (isPopup && document.body) {
             document.body.classList.add('site-unloading');
-            $dom.html(document.body, '<div class="spaced"><div aria-busy="true" class="ajax-loading vertical-alignment"><img src="' + $util.srl('{$IMG*;,loading}') + '" alt="{!LOADING;^}" /> <span>{!LOADING;^}<\/span><\/div><\/div>');
+            $dom.html(document.body, '<div class="spaced"><div aria-busy="true" class="ajax-loading vertical-alignment"><img width="20" height="20" src="' + $util.srl('{$IMG*;,loading}') + '" alt="{!LOADING;^}" /> <span>{!LOADING;^}<\/span><\/div><\/div>');
         }
 
         var element, participants = null;

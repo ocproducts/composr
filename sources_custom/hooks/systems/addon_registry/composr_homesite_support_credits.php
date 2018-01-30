@@ -132,7 +132,7 @@ class Hook_addon_registry_composr_homesite_support_credits
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.png';
+        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.svg';
     }
 
     /**
@@ -168,16 +168,16 @@ class Hook_addon_registry_composr_homesite_support_credits
             'sources_custom/tickets.php',
             'text_custom/EN/support_credits_terms.txt',
             'themes/default/css_custom/tracker.css',
-            'themes/default/images_custom/tracker/credit.png',
-            'themes/default/images_custom/tracker/easy.png',
-            'themes/default/images_custom/tracker/hard.png',
-            'themes/default/images_custom/tracker/minus.png',
-            'themes/default/images_custom/tracker/my.png',
-            'themes/default/images_custom/tracker/plus.png',
-            'themes/default/images_custom/tracker/popular.png',
-            'themes/default/images_custom/tracker/recent.gif',
-            'themes/default/images_custom/tracker/sponsored.gif',
-            'themes/default/images_custom/tracker/tutorials.png',
+            'themes/default/images_custom/tracker/credit.svg',
+            'themes/default/images_custom/tracker/easy.svg',
+            'themes/default/images_custom/tracker/hard.svg',
+            'themes/default/images_custom/tracker/minus.svg',
+            'themes/default/images_custom/tracker/my.svg',
+            'themes/default/images_custom/tracker/plus.svg',
+            'themes/default/images_custom/tracker/popular.svg',
+            'themes/default/images_custom/tracker/recent.svg',
+            'themes/default/images_custom/tracker/sponsored.svg',
+            'themes/default/images_custom/tracker/tutorials.svg',
             'themes/default/templates_custom/BLOCK_CREDIT_EXPS_INNER.tpl',
             'themes/default/templates_custom/BLOCK_MAIN_MANTIS_TRACKER.tpl',
             'themes/default/templates_custom/MANTIS_TRACKER.tpl',

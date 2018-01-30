@@ -14,7 +14,7 @@
 
 	<body id="installer-body" class="website-body">
 		<div class="installer-main">
-			<img alt="Composr" src="{$BASE_URL*}/themes/default/images/EN/logo/standalone_logo.png" />
+			<img alt="Composr" width="550" height="115" src="{$BASE_URL*}/themes/default/images/EN/logo/standalone_logo.png" />
 		</div>
 
 		<div class="installer-main-inner">

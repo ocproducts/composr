@@ -88,7 +88,7 @@ class Hook_addon_registry_galleries
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/rich_content/galleries.png';
+        return 'themes/default/images/icons/48x48/menu/rich_content/galleries.svg';
     }
 
     /**
@@ -99,20 +99,13 @@ class Hook_addon_registry_galleries
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/24x24/menu/rich_content/galleries.png',
-            'themes/default/images/icons/48x48/menu/rich_content/galleries.png',
-            'themes/default/images/icons/24x24/menu/cms/galleries/add_one_image.png',
-            'themes/default/images/icons/24x24/menu/cms/galleries/add_one_video.png',
-            'themes/default/images/icons/24x24/menu/cms/galleries/edit_one_image.png',
-            'themes/default/images/icons/24x24/menu/cms/galleries/edit_one_video.png',
-            'themes/default/images/icons/48x48/menu/cms/galleries/add_one_image.png',
-            'themes/default/images/icons/48x48/menu/cms/galleries/add_one_video.png',
-            'themes/default/images/icons/48x48/menu/cms/galleries/edit_one_image.png',
-            'themes/default/images/icons/48x48/menu/cms/galleries/edit_one_video.png',
-            'themes/default/images/icons/24x24/menu/cms/galleries/index.html',
+            'themes/default/images/icons/48x48/menu/rich_content/galleries.svg',
+            'themes/default/images/icons/48x48/menu/cms/galleries/add_one_image.svg',
+            'themes/default/images/icons/48x48/menu/cms/galleries/add_one_video.svg',
+            'themes/default/images/icons/48x48/menu/cms/galleries/edit_one_image.svg',
+            'themes/default/images/icons/48x48/menu/cms/galleries/edit_one_video.svg',
             'themes/default/images/icons/48x48/menu/cms/galleries/index.html',
-            'themes/default/images/icons/24x24/buttons/slideshow.png',
-            'themes/default/images/icons/48x48/buttons/slideshow.png',
+            'themes/default/images/icons/48x48/buttons/slideshow.svg',
             'sources/hooks/systems/config/ffmpeg_path.php',
             'sources/hooks/systems/notifications/gallery_entry.php',
             'sources/hooks/systems/snippets/exists_gallery.php',

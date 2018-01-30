@@ -2261,11 +2261,11 @@ Use comment encapsulation
 | Bundled images should be referred to via the theme image system, not by direct URL.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
-[color="red"]Usually use PNG (or SVG) files[/color]
+[color="red"]Usually use SVG (or PNG) files[/color]
 | Performance
 | Composr development +
 | Manually
-| Use PNG images in most cases, GIF when animation is needed, or JPEG if there is zero chance of the image needing any transparency and never likely to be edited again (i.e. only use it at a post-development optimisation stage) and it compresses better as JPEG. SVG when you are using vector images.
+| Use SVG images in most cases, PNG images in rarer cases (e.g. avatars and emoticons), GIF when animation is needed (with a APNG versions too), or JPEG if there is zero chance of the image needing any transparency and never likely to be edited again (i.e. only use it at a post-development optimisation stage) and it compresses better as JPEG.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 Compress PNG images and strip gamma
@@ -2286,7 +2286,7 @@ Compress PNG images and strip gamma
 | Performance
 | Composr development +
 | Manually
-| Wherever appropriate supply both normal and hi-dpi ("retina") images. Do this using the HTML [tt]srcset[/tt] attribute.
+| Wherever appropriate use [tt].svg[/tt] images. If raster images must be used then supply both normal and hi-dpi ("retina") images. Do this using the HTML [tt]srcset[/tt] attribute.
 |}
 
 [title="3"]Miscellany[/title]

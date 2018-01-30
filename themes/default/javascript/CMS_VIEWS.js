@@ -6,7 +6,7 @@
      * @namespace $cms.views
      */
     $cms.views = {};
-    
+
     // List of view options that can be set as properties.
     var viewOptionsList = { el: 1, id: 1, attributes: 1, className: 1, tagName: 1, events: 1 };
 
@@ -207,7 +207,7 @@
             }
         }
     });
-    
+
     $cms.views.ToggleableTray = ToggleableTray;
     /**
      * @memberof $cms.views
@@ -224,10 +224,10 @@
             id = $dom.id(this.el, 'tray-');
             this.cookie = id.startsWith('tray') ? id : 'tray-' + id;
         }
-        
+
         if (!params.accordion) {
             this.contentEl = this.$('.js-tray-content');
-            
+
             if (this.cookie) {
                 this.handleTrayCookie();
             }
@@ -249,7 +249,7 @@
 
             this.el.classList.toggle('is-expanded', expanded);
             this.el.classList.toggle('is-collapsed', !expanded);
-            
+
             if (this.cookie) {
                 $cms.setCookie(this.cookie, expanded ? 'open' : 'closed');
             }
@@ -638,6 +638,8 @@
                     this.buttonContainerEl.appendChild(button);
                 } else {
                     button = $dom.create('img', {
+                        'width': '38',
+                        'height': '38',
                         'src': $util.srl('{$IMG;,button_lightbox_close}'),
                         'alt': this.cancelButton,
                         'className': 'overlay-close-button ' + (this.cancel ? 'js-onclick-do-option-cancel' : 'js-onclick-do-option-finished')
@@ -1098,6 +1100,8 @@
         // Dynamic images need preloading
         var preloader = new Image();
         preloader.src = $util.srl('{$IMG;,loading}');
+        preloader.width = '20';
+        preloader.height = '20';
 
         // Tell the server we have JavaScript, so do not degrade things for reasons of compatibility - plus also set other things the server would like to know
         if ($cms.configOption('detect_javascript')) {
@@ -1149,7 +1153,7 @@
                 'keypress .js-global-input-su-keypress-enter-submit-form': 'inputSuKeypress'
             };
         },
-        
+
         // Detecting of JavaScript support
         detectJavascript: function () {
             var url = window.location.href,
@@ -1268,7 +1272,7 @@
                 var test = window.open('', windowName, windowOptions);
 
                 if (test) {
-                    form.setAttribute('target', test.name);
+                    form.target = test.name;
                 }
             }
         },
@@ -1356,7 +1360,7 @@
                 div.style.position = 'fixed';
                 div.style.zIndex = 10000;
                 div.style.textAlign = 'center';
-                $dom.html(div, '<div aria-busy="true" class="loading-box box"><h2>{!LOADING;^}</h2><img id="loading_image" alt="" src="{$IMG_INLINE*;,loading}" /></div>');
+                $dom.html(div, '<div aria-busy="true" class="loading-box box"><h2>{!LOADING;^}</h2><img id="loading_image" alt="" width="20" height="20" src="{$IMG_INLINE*;,loading}" /></div>');
                 setTimeout(function () {
                     // Stupid workaround for Google Chrome not loading an image on unload even if in cache
                     if ($dom.$('#loading_image')) {
@@ -1602,10 +1606,7 @@
                     $cms.setCookie('hide_helper_panel', '0', 100);
                 }
 
-                helperPanelToggle.firstElementChild.src = $util.srl('{$IMG;,icons/14x14/helper_panel_hide}');
-                if (helperPanelToggle.firstElementChild.srcset !== undefined) {
-                    helperPanelToggle.firstElementChild.srcset = $util.srl('{$IMG;,icons/28x28/helper_panel_hide}') + ' 2x';
-                }
+                helperPanelToggle.firstElementChild.src = $util.srl('{$IMG;,icons/28x28/helper_panel_hide}');
             } else {
                 if ($cms.readCookie('hide_helper_panel') === '') {
                     $cms.ui.confirm('{!CLOSING_HELP_PANEL_CONFIRM;^}', function (answer) {
@@ -1624,11 +1625,7 @@
                 helperPanelContents.setAttribute('aria-expanded', 'false');
                 helperPanelContents.style.display = 'none';
                 $cms.setCookie('hide_helper_panel', '1', 100);
-                helperPanelToggle.firstElementChild.src = $util.srl('{$IMG;,icons/14x14/helper_panel_show}');
-
-                if (helperPanelToggle.firstElementChild.srcset !== undefined) {
-                    helperPanelToggle.firstElementChild.srcset = $util.srl('{$IMG;,icons/28x28/helper_panel_show}') + ' 2x';
-                }
+                helperPanelToggle.firstElementChild.src = $util.srl('{$IMG;,icons/28x28/helper_panel_show}');
             }
         }
     });
@@ -1666,9 +1663,9 @@
      */
     function DropdownMenu(params) {
         DropdownMenu.base(this, 'constructor', arguments);
-        
+
         this.menuContentEl = this.$('.js-el-menu-content');
-        
+
         var isMobile = $cms.isCssMode('mobile'),
             that = this;
         $dom.on(window, 'resize orientationchange', $util.debounce(function () {
@@ -1686,7 +1683,7 @@
                 'click .js-click-toggle-menu-content': 'toggleMenuContent',
                 'click .js-click-toggle-sub-menu': 'togleSubMenu'
             };
-            
+
             var desktopEvents = {
                 'mousemove .js-mousemove-timer-pop-up-menu': 'timerPopUpMenu',
                 'mouseout .js-mouseout-clear-pop-up-timer': 'clearPopUpTimer',
@@ -1699,12 +1696,12 @@
                 'mousemove .js-mousemove-admin-timer-pop-up-menu': 'adminTimerPopUpMenu',
                 'mouseout .js-mouseout-admin-clear-pop-up-timer': 'adminClearPopUpTimer'
             };
-            
+
             return $cms.isCssMode('mobile') ? mobileEvents : desktopEvents;
         },
-        
+
         /* Mobile methods */
-        
+
         toggleMenuContent: function (e) {
             e.preventDefault();
             $dom.toggle(this.menuContentEl);
@@ -1715,7 +1712,7 @@
             e.preventDefault();
             $dom.toggle('#' + subMenuId);
         },
-        
+
         /* Desktop methods */
 
         timerPopUpMenu: function (e, target) {
@@ -1901,12 +1898,12 @@
             var subId = link.dataset.vwSubMenuId,
                 subEl = this.$('#' + subId),
                 href;
-            
+
             if ($dom.notDisplayed(subEl)) {
                 e.preventDefault();
                 $dom.show(subEl);
             } else {
-                href = link.getAttribute('href');
+                href = link.type;
                 // Second click goes to it
                 if (href && !href.startsWith('#')) {
                     return;
@@ -1999,7 +1996,7 @@
                     continue;
                 }
 
-                url = (a.getAttribute('href') === '') ? '' : a.href;
+                url = (a.type === '') ? '' : a.href;
                 isSelected = menuItemIsSelected(url);
                 if (isSelected !== null) {
                     possibilities.push({
@@ -2055,12 +2052,12 @@
             return null;
         }
     }
-    
+
     var menuHoldTime = 500,
         activeMenu,
         cleanMenusTimeout,
         lastActiveMenu;
-    
+
     function setMenuHoldTime(milliseconds) {
         menuHoldTime = milliseconds;
     }
@@ -2071,7 +2068,7 @@
             lastActiveMenu = menu;
         }
     }
-    
+
     function getActiveMenu() {
         return activeMenu;
     }
@@ -2108,7 +2105,7 @@
         if ($dom.isDisplayed(popupEl)) {
             return;
         }
-        
+
         setActiveMenu(popupId);
         lastActiveMenu = menu;
         cleanMenus();
@@ -2202,7 +2199,7 @@
         var tags = menuEl.querySelectorAll('ul.nlevel, div.nlevel'),
             activeMenuEl = (getActiveMenu() != null) ? document.getElementById(getActiveMenu()) : null,
             hideable;
-        
+
         for (var i = tags.length - 1; i >= 0; i--) {
             hideable = activeMenuEl ? !tags[i].contains(activeMenuEl) : true;
             if (hideable) {

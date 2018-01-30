@@ -52,7 +52,7 @@ class Module_admin_oauth
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
         return array(
-            'browse' => array('_OAUTH_TITLE', 'menu/adminzone/setup/config/config'), // TODO new icon needed #2966
+            'browse' => array('_OAUTH_TITLE', 'menu/adminzone/setup/oauth'),
         );
     }
 

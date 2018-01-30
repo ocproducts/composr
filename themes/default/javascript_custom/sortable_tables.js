@@ -979,7 +979,7 @@ var SortableTable = (function(){
                 try {
                     scrollTo(0,$dom.findPosY(document.getElementById(t.id)));
                 } catch (e) {}
-    
+
                 return false;
             };
         }

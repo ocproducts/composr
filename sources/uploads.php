@@ -158,7 +158,7 @@ function is_plupload($fake_prepopulation = false)
             $key = strval($key);
         }
 
-        if ((preg_match('#^hidFileID_#i', $key) != 0) && ($value != '-1')) {
+        if ((preg_match('#^hid_file_id_#i', $key) != 0) && ($value != '-1')) {
             // Get the incoming uploads appropiate database table row
             if (substr($value, -4) == '.dat') { // By .dat name
                 $filename = post_param_string(str_replace('hidFileID', 'hidFileName', $key), '');
@@ -189,7 +189,7 @@ function is_plupload($fake_prepopulation = false)
                                 if (!$done_fake_prepopulation) {
                                     $new_key = $key;
                                     $matches = array();
-                                    if (preg_match('#^hidFileID_(.*)(\d+)$#', $key, $matches) != 0) {
+                                    if (preg_match('#^hid_file_id_(.*)(\d+)$#', $key, $matches) != 0) {
                                         $new_key = $matches[1] . strval(intval($matches[2]) + $rolling_offset);
                                     } else {
                                         $new_key = substr($key, 10);
@@ -200,7 +200,7 @@ function is_plupload($fake_prepopulation = false)
                                         'tmp_name' => get_custom_file_base() . '/' . $incoming_uploads_row[0]['i_save_url'],
                                         'size' => filesize(get_custom_file_base() . '/' . $incoming_uploads_row[0]['i_save_url']),
                                     );
-                                    $_POST['hidFileID_' . $new_key] = strval($incoming_uploads_id);
+                                    $_POST['hid_file_id_' . $new_key] = strval($incoming_uploads_id);
 
                                     $rolling_offset++;
                                 }
@@ -286,7 +286,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
         }
 
         // Check if it is an incoming upload
-        $row_id_file = 'hidFileID_' . $_attach_name;
+        $row_id_file = 'hid_file_id_' . $_attach_name;
         $row_id_file_value = post_param_string($row_id_file, null);
         if ($row_id_file_value == '-1') {
             $row_id_file_value = null;

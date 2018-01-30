@@ -88,7 +88,7 @@ class Hook_addon_registry_custom_comcode
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/setup/custom_comcode.png';
+        return 'themes/default/images/icons/48x48/menu/adminzone/setup/custom_comcode.svg';
     }
 
     /**
@@ -99,8 +99,7 @@ class Hook_addon_registry_custom_comcode
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/24x24/menu/adminzone/setup/custom_comcode.png',
-            'themes/default/images/icons/48x48/menu/adminzone/setup/custom_comcode.png',
+            'themes/default/images/icons/48x48/menu/adminzone/setup/custom_comcode.svg',
             'sources/hooks/systems/resource_meta_aware/custom_comcode_tag.php',
             'sources/custom_comcode.php',
             'sources/hooks/systems/snippets/exists_tag.php',

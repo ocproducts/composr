@@ -59,7 +59,7 @@
 
         function updateForm(event) {
             var s = (form.elements['recurrence'][0].checked);
-            
+
             if (form.elements['recurrence_pattern']) {
                 form.elements['recurrence_pattern'].disabled = s;
             }
@@ -95,7 +95,7 @@
                 }
                 url += '&do_timezone_conv=' + (doTimezoneConv.checked ? '1' : '0');
                 url += '&all_day_event=' + (allDayEvent.checked ? '1' : '0');
-                
+
                 $cms.loadSnippet(url).then(function (newData) {
                     var tr = $dom.closest(form.elements['monthly_spec_type'][0], 'tr');
                     $dom.html(tr, newData.replace(/<tr [^>]*>/, '').replace(/<\/tr>/, ''));
@@ -121,7 +121,7 @@
                 endTime.disabled = s;
             }
         }
-        
+
         function updateMonthlyRecurrence() {
             var monthlyRecurrence = form.elements['recurrence'][3].checked;
             for (var i = 0; i < form.elements['monthly_spec_type'].length; i++) {

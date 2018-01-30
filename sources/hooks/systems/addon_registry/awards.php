@@ -87,7 +87,7 @@ class Hook_addon_registry_awards
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/setup/awards.png';
+        return 'themes/default/images/icons/48x48/menu/adminzone/setup/awards.svg';
     }
 
     /**
@@ -98,8 +98,7 @@ class Hook_addon_registry_awards
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/24x24/menu/adminzone/setup/awards.png',
-            'themes/default/images/icons/48x48/menu/adminzone/setup/awards.png',
+            'themes/default/images/icons/48x48/menu/adminzone/setup/awards.svg',
             'sources/hooks/systems/addon_registry/awards.php',
             'sources/hooks/systems/resource_meta_aware/award_type.php',
             'themes/default/templates/AWARDED_CONTENT.tpl',
@@ -112,7 +111,7 @@ class Hook_addon_registry_awards
             'lang/EN/awards.ini',
             'sources/hooks/blocks/main_staff_checklist/awards.php',
             'themes/default/css/awards.css',
-            'themes/default/images/awarded.png',
+            'themes/default/images/awarded.svg',
             'sources/hooks/modules/admin_import_types/awards.php',
             'sources/hooks/systems/block_ui_renderers/awards.php',
             'sources/hooks/systems/commandr_fs/award_types.php',

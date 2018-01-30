@@ -1978,6 +1978,9 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
             $align = array_key_exists('align', $attributes) ? $attributes['align'] : '';
 
+            $width = array_key_exists('width', $attributes) ? intval(str_replace('px', '', $attributes['width'])) : null;
+            $height = array_key_exists('height', $attributes) ? intval(str_replace('px', '', $attributes['height'])) : null;
+
             $caption = comcode_to_tempcode($attributes['param'], $source_member, $as_admin, null, $db, COMCODE_NORMAL, $highlight_bits, $on_behalf_of_member);
 
             if (array_key_exists('title', $attributes)) {
@@ -1997,7 +2000,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
             $refresh_time = array_key_exists('refresh_time', $attributes) ? strval(intval($attributes['refresh_time'])) : '0';
 
-            $temp_tpl->attach(do_template('COMCODE_IMG', array('_GUID' => '70166d8dbb0aff064b99c0dd30ed77a8', 'REFRESH_TIME' => $refresh_time, 'ROLLOVER' => $rollover, 'ALIGN' => $align, 'URL' => $url_full, 'TOOLTIP' => $tooltip, 'CAPTION' => $caption)));
+            $temp_tpl->attach(do_template('COMCODE_IMG', array('_GUID' => '70166d8dbb0aff064b99c0dd30ed77a8', 'WIDTH' => ($width === null) ? null : strval($width), 'HEIGHT' => ($height === null) ? null : strval($height), 'REFRESH_TIME' => $refresh_time, 'ROLLOVER' => $rollover, 'ALIGN' => $align, 'URL' => $url_full, 'TOOLTIP' => $tooltip, 'CAPTION' => $caption)));
 
             if (array_key_exists('float', $attributes)) {
                 $temp_tpl = do_template('FLOATER', array('_GUID' => '918162250c80e10212efd9a051545b9b', 'FLOAT' => $attributes['float'], 'CONTENT' => $temp_tpl));

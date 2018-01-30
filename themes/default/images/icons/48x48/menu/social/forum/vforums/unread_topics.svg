@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+]>
+<svg version="1.1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="48px" height="48px" viewBox="-3.581 -3.645 48 48" enable-background="new -3.581 -3.645 48 48"
+	 xml:space="preserve">
+<defs>
+</defs>
+<rect x="9.994" y="9.02" fill="#52CAF5" width="20.175" height="2.445"/>
+<rect x="9.994" y="14.693" fill="#52CAF5" width="20.175" height="2.446"/>
+<rect x="9.994" y="20.368" fill="#52CAF5" width="10.432" height="2.446"/>
+<rect x="20.292" y="9.02" fill="#3588A6" width="9.878" height="2.445"/>
+<rect x="20.292" y="14.693" fill="#3588A6" width="9.878" height="2.446"/>
+<rect x="20.292" y="20.368" fill="#3588A6" width="5.106" height="2.446"/>
+<path fill="#52CAF5" d="M34.55,4.296c0.004,0.056,0.016,0.106,0.016,0.163v19.132c0,1.446-0.949,2.616-2.117,2.616H20.874
+	l-6.407,7.679l-1.301-7.587l-2.866,3.654l2.337,10.758l10.33-11.271h12.527c1.447,0,2.621-1.449,2.621-3.241V1.217
+	c0-0.433-0.074-0.841-0.195-1.217L34.55,4.296z"/>
+<path fill="#52CAF5" d="M13.212,26.528H5.666c-1.166,0-2.114-1.171-2.114-2.615V4.78c0-0.057,0.011-0.108,0.011-0.162l-3.37-4.297
+	C0.073,0.697,0,1.106,0,1.538v24.984c0,1.79,1.173,3.237,2.624,3.237h10.588V26.528z"/>
+<path fill="#3588A6" d="M37.919,0L34.55,4.296c0.004,0.056,0.016,0.106,0.016,0.163v19.132c0,1.446-0.949,2.616-2.117,2.616H20.874
+	l-0.582,0.697v5.453l2.675-2.917h12.527c1.447,0,2.621-1.449,2.621-3.241V1.217C38.115,0.784,38.041,0.376,37.919,0z"/>
+<polygon fill="#52CAF5" points="0.21,0.325 37.919,0 34.566,4.459 3.563,4.618 "/>
+<polygon fill="#3588A6" points="20.229,0.157 37.919,0 34.566,4.459 20.21,4.563 "/>
+<circle fill="#C8691C" cx="33.35" cy="24.527" r="7.489"/>
+<path fill="#FFFFFF" stroke="#FFFFFF" stroke-width="0.5" stroke-miterlimit="10" d="M33.388,26.022c0,0-2.838-6.751-0.076-6.827
+	C36.074,19.118,33.388,26.022,33.388,26.022z"/>
+<circle fill="#FFFFFF" stroke="#FFFFFF" stroke-width="0.5" stroke-miterlimit="10" cx="33.332" cy="28.478" r="1.207"/>
+</svg>

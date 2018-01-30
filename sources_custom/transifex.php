@@ -732,7 +732,7 @@ class Hook_addon_registry_language_{$lang}
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/style/language/language.png';
+        return 'themes/default/images/icons/48x48/menu/adminzone/style/language/language.svg';
     }
 
     /**

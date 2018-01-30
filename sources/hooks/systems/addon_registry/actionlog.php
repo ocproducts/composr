@@ -88,7 +88,7 @@ class Hook_addon_registry_actionlog
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/audit/actionlog.png';
+        return 'themes/default/images/icons/48x48/menu/adminzone/audit/actionlog.svg';
     }
 
     /**
@@ -99,8 +99,7 @@ class Hook_addon_registry_actionlog
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/24x24/menu/adminzone/audit/actionlog.png',
-            'themes/default/images/icons/48x48/menu/adminzone/audit/actionlog.png',
+            'themes/default/images/icons/48x48/menu/adminzone/audit/actionlog.svg',
             'sources/hooks/systems/notifications/actionlog.php',
             'sources/hooks/systems/realtime_rain/actionlog.php',
             'sources/hooks/systems/addon_registry/actionlog.php',
@@ -114,10 +113,8 @@ class Hook_addon_registry_actionlog
             'sources/revisions_engine_files.php',
             'sources/revisions_engine_database.php',
             'adminzone/pages/modules/admin_revisions.php',
-            'themes/default/images/icons/24x24/buttons/revisions.png',
-            'themes/default/images/icons/48x48/buttons/revisions.png',
-            'themes/default/images/icons/24x24/buttons/undo.png',
-            'themes/default/images/icons/48x48/buttons/undo.png',
+            'themes/default/images/icons/48x48/buttons/revisions.svg',
+            'themes/default/images/icons/48x48/buttons/undo.svg',
             'themes/default/templates/REVISIONS_SCREEN.tpl',
             'themes/default/templates/REVISIONS_WRAP.tpl',
             'themes/default/templates/REVISIONS_DIFF_ICON.tpl',

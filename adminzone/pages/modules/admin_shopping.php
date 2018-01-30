@@ -56,8 +56,8 @@ class Module_admin_shopping
         }
 
         $ret = array(
-            'browse' => array('ORDERS', 'menu/adminzone/audit/ecommerce/orders'),
-            'show_orders' => array('SHOW_ORDERS', 'menu/adminzone/audit/ecommerce/orders'),
+            'browse' => array('ORDERS', 'menu/rich_content/ecommerce/orders'),
+            'show_orders' => array('SHOW_ORDERS', 'menu/rich_content/ecommerce/orders'),
         );
 
         if ($support_crosslinks) {
@@ -223,7 +223,7 @@ class Module_admin_shopping
             get_screen_title('ORDERS'),
             comcode_lang_string('DOC_ECOMMERCE'),
             array(
-                array('menu/adminzone/audit/ecommerce/orders', array('_SELF', array('type' => 'show_orders'), '_SELF'), do_lang('SHOW_ORDERS')),
+                array('menu/rich_content/ecommerce/orders', array('_SELF', array('type' => 'show_orders'), '_SELF'), do_lang('SHOW_ORDERS')),
                 array('menu/adminzone/audit/ecommerce/undispatched_orders', array('_SELF', array('type' => 'show_orders', 'filter' => 'undispatched'), '_SELF'), do_lang('SHOW_UNDISPATCHED_ORDERS')),
             ),
             do_lang('ORDERS')

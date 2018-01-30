@@ -52,53 +52,27 @@
 }
 
 .screen-actions .print {
-	background-image: url('{$IMG_INLINE;,icons/24x24/links/print}');
+	background-image: url('{$IMG_INLINE;,icons/48x48/links/print}');
 }
 
 .screen-actions .recommend {
-	background-image: url('{$IMG_INLINE;,icons/24x24/menu/site_meta/recommend}');
+	background-image: url('{$IMG_INLINE;,icons/48x48/menu/site_meta/recommend}');
 }
 
 .screen-actions .facebook {
-	background-image: url('{$IMG_INLINE;,icons/24x24/links/facebook}');
+	background-image: url('{$IMG_INLINE;,icons/48x48/links/facebook}');
 }
 
 .screen-actions .twitter {
-	background-image: url('{$IMG_INLINE;,icons/24x24/links/twitter}');
+	background-image: url('{$IMG_INLINE;,icons/48x48/links/twitter}');
 }
 
 .screen-actions .stumbleupon {
-	background-image: url('{$IMG_INLINE;,icons/24x24/links/stumbleupon}');
+	background-image: url('{$IMG_INLINE;,icons/48x48/links/stumbleupon}');
 }
 
 .screen-actions .digg {
-	background-image: url('{$IMG_INLINE;,icons/24x24/links/digg}');
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.screen-actions .print {
-		background-image: url('{$IMG;,icons/48x48/links/print}');
-	}
-
-	.screen-actions .recommend {
-		background-image: url('{$IMG;,icons/48x48/menu/site_meta/recommend}');
-	}
-
-	.screen-actions .facebook {
-		background-image: url('{$IMG;,icons/48x48/links/facebook}');
-	}
-
-	.screen-actions .twitter {
-		background-image: url('{$IMG;,icons/48x48/links/twitter}');
-	}
-
-	.screen-actions .stumbleupon {
-		background-image: url('{$IMG;,icons/48x48/links/stumbleupon}');
-	}
-
-	.screen-actions .digg {
-		background-image: url('{$IMG;,icons/48x48/links/digg}');
-	}
+	background-image: url('{$IMG_INLINE;,icons/48x48/links/digg}');
 }
 
 .screen-actions .google-plusone {

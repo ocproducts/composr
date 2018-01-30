@@ -87,7 +87,7 @@ class Hook_addon_registry_stats
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/statistics.png';
+        return 'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/statistics.svg';
     }
 
     /**
@@ -98,25 +98,15 @@ class Hook_addon_registry_stats
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/24x24/menu/adminzone/audit/statistics/statistics.png',
-            'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/statistics.png',
-            'themes/default/images/icons/24x24/menu/adminzone/audit/statistics/clear_stats.png',
-            'themes/default/images/icons/24x24/menu/adminzone/audit/statistics/geolocate.png',
-            'themes/default/images/icons/24x24/menu/adminzone/audit/statistics/load_times.png',
-            'themes/default/images/icons/24x24/menu/adminzone/audit/statistics/page_views.png',
-            'themes/default/images/icons/24x24/menu/adminzone/audit/statistics/submits.png',
-            'themes/default/images/icons/24x24/menu/adminzone/audit/statistics/top_keywords.png',
-            'themes/default/images/icons/24x24/menu/adminzone/audit/statistics/top_referrers.png',
-            'themes/default/images/icons/24x24/menu/adminzone/audit/statistics/users_online.png',
-            'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/clear_stats.png',
-            'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/geolocate.png',
-            'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/load_times.png',
-            'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/page_views.png',
-            'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/submits.png',
-            'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/top_keywords.png',
-            'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/top_referrers.png',
-            'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/users_online.png',
-            'themes/default/images/icons/24x24/menu/adminzone/audit/statistics/index.html',
+            'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/statistics.svg',
+            'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/clear_stats.svg',
+            'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/geolocate.svg',
+            'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/load_times.svg',
+            'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/page_views.svg',
+            'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/submits.svg',
+            'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/top_keywords.svg',
+            'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/top_referrers.svg',
+            'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/users_online.svg',
             'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/index.html',
             'sources/hooks/modules/admin_setupwizard/stats.php',
             'sources/hooks/systems/config/stats_store_time.php',

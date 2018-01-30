@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+]>
+<svg version="1.1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="48px" height="48px" viewBox="-6.863 -6.148 48 48" enable-background="new -6.863 -6.148 48 48"
+	 xml:space="preserve">
+<defs>
+</defs>
+<path fill="#3588A6" d="M14.931,37.618c-0.039,0.009-7.999,0-10.465,0C1.998,37.618,0,35.619,0,33.153v-9.568
+	c0-2.467,0.998-4.466,3.466-4.466h7c2.466,0,4.465,1.999,4.465,4.466V37.618z"/>
+<path fill="#84D5F7" d="M4.48,37.608c2.467,0,4.786,0.05,4.466-4.428L8.932,19.128h-0.93l0.014,13.016
+	C8.188,36.497,4.48,37.608,4.48,37.608"/>
+<path fill="#F79523" d="M8.931,0v33.153c0,1.986-1.306,3.886-3.101,4.465h20.627c0,0,4.021,0.525,5.699-1.752
+	c1.627-2.209,1.5-5,1.5-5V0H8.931z"/>
+<rect x="11.109" y="2.913" fill="#FCB51E" width="20.348" height="7.441"/>
+<rect x="11.471" y="13.852" fill="#C8691C" width="8.666" height="1.5"/>
+<rect x="11.471" y="17.852" fill="#C8691C" width="8.666" height="1.5"/>
+<rect x="11.471" y="21.852" fill="#C8691C" width="8.666" height="1.5"/>
+<rect x="11.471" y="25.852" fill="#C8691C" width="8.666" height="1.5"/>
+<rect x="22.471" y="13.852" fill="#C8691C" width="8.666" height="1.5"/>
+<rect x="22.471" y="17.852" fill="#C8691C" width="8.666" height="1.5"/>
+<rect x="22.471" y="21.852" fill="#C8691C" width="8.666" height="1.5"/>
+<rect x="22.471" y="25.852" fill="#C8691C" width="8.666" height="1.5"/>
+<rect x="23.359" y="31.505" transform="matrix(0.7071 -0.7071 0.7071 0.7071 -14.8136 28.5112)" fill="#3588A6" width="7.3" height="1.264"/>
+<rect x="23.36" y="31.505" transform="matrix(-0.7071 -0.7071 0.7071 -0.7071 23.385 73.9608)" fill="#3588A6" width="7.3" height="1.264"/>
+<polygon fill="#3588A6" points="12.934,34.321 12.934,31.969 14.667,33.701 17.764,28.748 17.764,31.101 14.667,35.931 "/>
+</svg>

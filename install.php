@@ -2644,22 +2644,22 @@ function handle_self_referencing_embedment()
 
             case 'contract':
                 header('Content-type: image/png');
-                if (!file_exists(get_file_base() . '/themes/default/images/1x/trays/contract.png')) {
-                    $out = file_array_get('themes/default/images/1x/trays/contract.png');
+                if (!file_exists(get_file_base() . '/themes/default/images/1x/trays/contract.svg')) {
+                    $out = file_array_get('themes/default/images/1x/trays/contract.svg');
                     echo $out;
                 } else {
-                    print(file_get_contents(get_file_base() . '/themes/default/images/1x/trays/contract.png'));
+                    print(file_get_contents(get_file_base() . '/themes/default/images/1x/trays/contract.svg'));
                     exit();
                 }
                 exit();
 
             case 'expand':
                 header('Content-type: image/png');
-                if (!file_exists(get_file_base() . '/themes/default/images/1x/trays/expand.png')) {
-                    $out = file_array_get('themes/default/images/1x/trays/expand.png');
+                if (!file_exists(get_file_base() . '/themes/default/images/1x/trays/expand.svg')) {
+                    $out = file_array_get('themes/default/images/1x/trays/expand.svg');
                     echo $out;
                 } else {
-                    print(file_get_contents(get_file_base() . '/themes/default/images/1x/trays/expand.png'));
+                    print(file_get_contents(get_file_base() . '/themes/default/images/1x/trays/expand.svg'));
                     exit();
                 }
                 exit();

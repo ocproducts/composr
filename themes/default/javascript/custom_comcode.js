@@ -7,7 +7,7 @@
 
     $cms.functions.moduleAdminCustomComcode = function moduleAdminCustomComcode() {
         var tag = document.getElementById('tag');
-        
+
         var updateFunc = function () {
             var e = document.getElementById('example');
             e.value = '[' + tag.value;
@@ -43,14 +43,14 @@
         var form = document.getElementById('main_form'),
             submitBtn = document.getElementById('submit-button'),
             validValue;
-        
+
         form.addEventListener('submit', function submitCheck(e) {
             var value = form.elements['tag'].value;
-            
+
             if (value === validValue) {
                 return;
             }
-            
+
             submitBtn.disabled = true;
             var url = '{$FIND_SCRIPT_NOHTTP;^,snippet}?snippet=exists_tag&name=' + encodeURIComponent(form.elements['tag'].value);
             e.preventDefault();

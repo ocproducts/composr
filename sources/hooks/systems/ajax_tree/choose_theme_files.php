@@ -128,7 +128,7 @@ class Hook_ajax_tree_choose_theme_files
                                 ></category>';
                             }
                         } else {
-                            list($img_url, $img_url_2, $template_file_shortened) = $this->get_template_file_icons($template_file);
+                            list($img_url, $template_file_shortened) = $this->get_template_file_icons($template_file);
 
                             $out .= '
                             <entry
@@ -138,7 +138,6 @@ class Hook_ajax_tree_choose_theme_files
                                 selectable="true"
                                 description_html="' . xmlentities($description_html->evaluate()) . '"
                                 img_url="' . xmlentities($img_url) . '"
-                                img_url_2="' . xmlentities($img_url_2) . '"
                             ></entry>';
                         }
                     }
@@ -191,7 +190,7 @@ class Hook_ajax_tree_choose_theme_files
 
                             $description_html = $this->get_template_details_table($theme, $template, $template_file_path, $action_log_times);
 
-                            list($img_url, $img_url_2, $template_file_shortened) = $this->get_template_file_icons($template);
+                            list($img_url, $template_file_shortened) = $this->get_template_file_icons($template);
 
                             $out .= '
                             <entry
@@ -201,7 +200,6 @@ class Hook_ajax_tree_choose_theme_files
                                 selectable="true"
                                 description_html="' . xmlentities($description_html->evaluate()) . '"
                                 img_url="' . xmlentities($img_url) . '"
-                                img_url_2="' . xmlentities($img_url_2) . '"
                             ></entry>';
                         }
                     }
@@ -221,7 +219,7 @@ class Hook_ajax_tree_choose_theme_files
 
                             $description_html = $this->get_template_details_table($theme, $rel, $template_file_path, $action_log_times);
 
-                            list($img_url, $img_url_2, $template_file_shortened) = $this->get_template_file_icons($rel);
+                            list($img_url, $template_file_shortened) = $this->get_template_file_icons($rel);
 
                             $out .= '
                             <entry
@@ -231,7 +229,6 @@ class Hook_ajax_tree_choose_theme_files
                                 selectable="true"
                                 description_html="' . xmlentities($description_html->evaluate()) . '"
                                 img_url="' . xmlentities($img_url) . '"
-                                img_url_2="' . xmlentities($img_url_2) . '"
                             ></entry>';
                         }
                     }
@@ -261,7 +258,7 @@ class Hook_ajax_tree_choose_theme_files
 
                             $description_html = $this->get_comcode_page_details_table($page, $zone, $path, $action_log_times);
 
-                            list($img_url, $img_url_2) = $this->get_template_file_icons($page . '.txt');
+                            list($img_url) = $this->get_template_file_icons($page . '.txt');
 
                             $out .= '
                             <entry
@@ -271,7 +268,6 @@ class Hook_ajax_tree_choose_theme_files
                                 selectable="true"
                                 description_html="' . xmlentities($description_html->evaluate()) . '"
                                 img_url="' . xmlentities($img_url) . '"
-                                img_url_2="' . xmlentities($img_url_2) . '"
                             ></entry>';
                         }
                     }
@@ -470,14 +466,13 @@ class Hook_ajax_tree_choose_theme_files
 
         $tag_type = $has_children ? 'category' : 'entry';
 
-        list($img_url, $img_url_2, $template_file_shortened) = $this->get_template_file_icons($file);
+        list($img_url, $template_file_shortened) = $this->get_template_file_icons($file);
 
         if ($img_url === null) {
             $image_xml = '';
         } else {
             $image_xml = '
                 img_url="' . xmlentities($img_url) . '"
-                img_url_2="' . xmlentities($img_url_2) . '"
             ';
         }
 
@@ -498,7 +493,7 @@ class Hook_ajax_tree_choose_theme_files
      * Find icon and labelling details for a node.
      *
      * @param  ID_TEXT $file File
-     * @return array A triple: icon, retina icon, label
+     * @return array A triple: icon, label
      */
     private function get_template_file_icons($file)
     {
@@ -509,24 +504,21 @@ class Hook_ajax_tree_choose_theme_files
             case 'css':
             case 'js':
             case 'xml':
-                $img_url = find_theme_image('icons/16x16/filetypes/' . $ext);
-                $img_url_2 = find_theme_image('icons/32x32/filetypes/' . $ext);
+                $img_url = find_theme_image('icons/32x32/filetypes/' . $ext);
                 break;
 
             case 'txt':
-                $img_url = find_theme_image('icons/16x16/filetypes/page_' . $ext);
-                $img_url_2 = find_theme_image('icons/32x32/filetypes/page_' . $ext);
+                $img_url = find_theme_image('icons/32x32/filetypes/page_' . $ext);
                 break;
 
             default:
                 $img_url = null;
-                $img_url_2 = null;
                 break;
         }
 
         $template_file_shortened = basename($file, '.' . $ext);
 
-        return array($img_url, $img_url_2, $template_file_shortened);
+        return array($img_url, $template_file_shortened);
     }
 
     /**

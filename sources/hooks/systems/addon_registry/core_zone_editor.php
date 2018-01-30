@@ -88,7 +88,7 @@ class Hook_addon_registry_core_zone_editor
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/structure/zones/zone_editor.png';
+        return 'themes/default/images/icons/48x48/menu/adminzone/structure/zones/zone_editor.svg';
     }
 
     /**
@@ -99,8 +99,7 @@ class Hook_addon_registry_core_zone_editor
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/24x24/menu/adminzone/structure/zones/zone_editor.png',
-            'themes/default/images/icons/48x48/menu/adminzone/structure/zones/zone_editor.png',
+            'themes/default/images/icons/48x48/menu/adminzone/structure/zones/zone_editor.svg',
             'sources/hooks/systems/resource_meta_aware/zone.php',
             'themes/default/css/zone_editor.css',
             'sources/hooks/systems/snippets/exists_zone.php',

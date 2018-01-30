@@ -88,7 +88,7 @@ class Hook_addon_registry_cns_warnings
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/tabs/member_account/warnings.png';
+        return 'themes/default/images/icons/48x48/tabs/member_account/warnings.svg';
     }
 
     /**
@@ -99,12 +99,9 @@ class Hook_addon_registry_cns_warnings
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/24x24/tabs/member_account/warnings.png',
-            'themes/default/images/icons/48x48/tabs/member_account/warnings.png',
-            'themes/default/images/icons/24x24/links/warning_add.png',
-            'themes/default/images/icons/48x48/links/warning_add.png',
-            'themes/default/images/icons/24x24/buttons/warn.png',
-            'themes/default/images/icons/48x48/buttons/warn.png',
+            'themes/default/images/icons/48x48/tabs/member_account/warnings.svg',
+            'themes/default/images/icons/48x48/links/warning_add.svg',
+            'themes/default/images/icons/48x48/buttons/warn.svg',
             'sources/hooks/systems/addon_registry/cns_warnings.php',
             'site/pages/modules/warnings.php',
             'themes/default/templates/CNS_SAVED_WARNING.tpl',

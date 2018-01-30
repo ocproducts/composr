@@ -39,10 +39,10 @@
             }
         }
     });
-    
+
     $cms.functions.moduleTopicsPostJavascript = function moduleTopicsPostJavascript(size, stub) {
         stub = strVal(stub);
-        
+
         var form = document.getElementById('post').form;
         form.addEventListener('submit', function () {
             var post = form.elements['post'],
@@ -97,7 +97,7 @@
         function pollFormElementsChangeListener() {
             var disableAll = (existing.selectedIndex !== 0);
             for (var i = 0; i < form.elements.length; i++) {
-                if ((form.elements[i] !== existing) && (form.elements[i].id !== 'perform_keywordcheck') && ((form.elements[i].getAttribute('type') === 'checkbox') || (form.elements[i].getAttribute('type') === 'text'))) {
+                if ((form.elements[i] !== existing) && (form.elements[i].id !== 'perform_keywordcheck') && ((form.elements[i].type === 'checkbox') || (form.elements[i].type === 'text'))) {
                     $cms.form.setRequired(form.elements[i].name, (!disableAll) && ((form.elements[i].id === 'question') || (form.elements[i].id === 'answer_0')));
                     $cms.form.setLocked(form.elements[i], disableAll);
                 }

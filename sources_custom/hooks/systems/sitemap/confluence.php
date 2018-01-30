@@ -157,7 +157,6 @@ class Hook_sitemap_confluence extends Hook_sitemap_content
             'extra_meta' => array(
                 'description' => null,
                 'image' => null,
-                'image_2x' => null,
                 'add_date' => null,
                 'edit_date' => null,
                 'submitter' => null,

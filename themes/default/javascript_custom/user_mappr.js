@@ -115,9 +115,9 @@
             };
 
             /*{$,Reenable if you have put appropriate images in place
-             var usergroup_icon=new GIcon(G_DEFAULT_ICON);
-             usergroup_icon.image='{$BASE_URL;/}/themes/default/images_custom/map_icons/usergroup_'+data_point[3]+'.png';
-             marker_options.icon=usergroup_icon;
+             var usergroup_icon = new GIcon(G_DEFAULT_ICON);
+             usergroup_icon.image = '{$BASE_URL;/}/themes/default/images_custom/icons/map/usergroup_' + data_point[3]+'.png';
+             marker_options.icon = usergroup_icon;
              }*/
 
             var marker = new google.maps.Marker(markerOptions);

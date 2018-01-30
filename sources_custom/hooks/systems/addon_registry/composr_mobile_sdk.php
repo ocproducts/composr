@@ -127,7 +127,7 @@ The documentation for this addon is covered in a dedicated tutorial (' . get_bra
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/_generic_admin/tool.png';
+        return 'themes/default/images/icons/48x48/menu/_generic_admin/tool.svg';
     }
     /**
      * Uninstall the addon.

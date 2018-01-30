@@ -30,6 +30,6 @@ class Hook_admin_themewizard_cns_forum
      */
     public function run()
     {
-        return array(array('cns_general/no_new_posts_redirect', 'cns_general/new_posts_redirect', 'cns_general/no_new_posts', 'cns_general/new_posts', 'icons/14x14/cns_topic_modifiers/involved', 'icons/28x28/cns_topic_modifiers/involved',), array('pageitem/warn',));
+        return array(array('cns_general/no_new_posts_redirect', 'cns_general/new_posts_redirect', 'cns_general/no_new_posts', 'cns_general/new_posts', 'icons/28x28/cns_topic_modifiers/involved',), array('pageitem/warn',));
     }
 }

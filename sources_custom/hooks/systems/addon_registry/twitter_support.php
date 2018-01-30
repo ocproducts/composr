@@ -136,7 +136,7 @@ Once configured then syndication will be an option when adding news posts or cal
      */
     public function get_default_icon()
     {
-        return 'themes/default/images_custom/icons/48x48/menu/twitter.png';
+        return 'themes/default/images/icons/48x48/links/twitter.svg';
     }
 
     /**
@@ -147,8 +147,6 @@ Once configured then syndication will be an option when adding news posts or cal
     public function get_file_list()
     {
         return array(
-            'themes/default/images_custom/icons/24x24/menu/twitter.png',
-            'themes/default/images_custom/icons/48x48/menu/twitter.png',
             'sources_custom/hooks/systems/addon_registry/twitter_support.php',
             'sources_custom/twitter.php',
             'adminzone/pages/minimodules_custom/twitter_oauth.php',

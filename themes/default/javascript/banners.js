@@ -33,15 +33,15 @@
     $cms.functions.moduleCmsBannersRunStartAdd = function moduleCmsBannersRunStartAdd() {
         var form = document.getElementById('main_form'),
             submitBtn = document.getElementById('submit-button');
-        
+
         var validValue;
         form.addEventListener('submit', function submitCheck(e) {
             var value = form.elements['name'].value;
-            
+
             if (value === validValue) {
                 return;
             }
-            
+
             submitBtn.disabled = true;
             var url = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=exists_banner&name=' + encodeURIComponent(value);
             e.preventDefault();
@@ -60,14 +60,14 @@
         var form = document.getElementById('main_form'),
             submitBtn = document.getElementById('submit-button'),
             validValue;
-        
+
         form.addEventListener('submit', function submitCheck(e) {
             var value = form.elements['new_id'].value;
-            
+
             if (value === validValue) {
                 return;
             }
-            
+
             submitBtn.disabled = true;
             var url = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=exists_banner_type&name=' + encodeURIComponent(form.elements['new_id'].value);
             e.preventDefault();

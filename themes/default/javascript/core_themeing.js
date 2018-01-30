@@ -443,7 +443,7 @@
                         result.push(result2[j]);
                     }
                 } catch (e) {}
-                
+
                 for (var i = 0; i < opener.frames.length; i++) {
                     if (opener.frames[i]) // If test needed for some browsers, as window.frames can get out-of-date
                     {
@@ -521,7 +521,7 @@
         var form = document.getElementById('main_form'),
             submitBtn = document.getElementById('submit-button'),
             validValue;
-        
+
         form.addEventListener('submit', function submitCheck(e) {
             var value = form.elements['theme'].value,
                 url = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=exists_theme&name=' + encodeURIComponent(value);
@@ -529,7 +529,7 @@
             if (value === validValue) {
                 return;
             }
-            
+
             submitBtn.disabled = true;
             e.preventDefault();
             $cms.form.doAjaxFieldTest(url).then(function (valid) {
@@ -691,7 +691,7 @@
                                 if (v != null) {
                                     params = params + ',' + v;
                                 }
-                                
+
                                 callback(box, name, value, params);
                             },
                             '{!themes:INSERT_PARAMETER;^}'
@@ -960,7 +960,7 @@
         var header = document.createElement('a');
         header.setAttribute('aria-controls', 'g_' + fileId);
         header.setAttribute('role', 'tab');
-        header.setAttribute('href', '#');
+        header.href = '#';
         header.id = 't_' + fileId;
         header.className = 'tab file_nonchanged';
         header.addEventListener('click', function (event) {
@@ -975,40 +975,35 @@
         }
         var iconImg = document.createElement('img');
         if (ext === 'tpl') {
-            iconImg.src = $util.srl('{$IMG;,icons/16x16/filetypes/tpl}');
-            iconImg.setAttribute('srcset', $util.srl('{$IMG;,icons/32x32/filetypes/tpl}'));
+            iconImg.src = $util.srl('{$IMG;,icons/32x32/filetypes/tpl}');
         }
         if (ext === 'css') {
-            iconImg.src = $util.srl('{$IMG;,icons/16x16/filetypes/css}');
-            iconImg.setAttribute('srcset', $util.srl('{$IMG;,icons/32x32/filetypes/css}'));
+            iconImg.src = $util.srl('{$IMG;,icons/32x32/filetypes/css}');
         }
         if (ext === 'js') {
-            iconImg.src = $util.srl('{$IMG;,icons/16x16/filetypes/js}');
-            iconImg.setAttribute('srcset', $util.srl('{$IMG;,icons/32x32/filetypes/js}'));
+            iconImg.src = $util.srl('{$IMG;,icons/32x32/filetypes/js}');
         }
         if (ext === 'xml') {
-            iconImg.src = $util.srl('{$IMG;,icons/16x16/filetypes/xml}');
-            iconImg.setAttribute('srcset', $util.srl('{$IMG;,icons/32x32/filetypes/xml}'));
+            iconImg.src = $util.srl('{$IMG;,icons/32x32/filetypes/xml}');
         }
         if (ext === 'txt' || ext === '') {
-            iconImg.src = $util.srl('{$IMG;,icons/16x16/filetypes/page_txt}');
-            iconImg.setAttribute('srcset', $util.srl('{$IMG;,icons/32x32/filetypes/page_txt}'));
+            iconImg.src = $util.srl('{$IMG;,icons/32x32/filetypes/page_txt}');
         }
-        iconImg.style.width = '16px';
+        iconImg.width = '16';
+        iconImg.height = '16';
         header.appendChild(iconImg);
         header.appendChild(document.createTextNode(' '));
         var span = document.createElement('span');
         span.textContent = tabTitle;
         header.appendChild(span);
         var closeButton = document.createElement('img');
-        closeButton.src = $util.srl('{$IMG;,icons/16x16/close}');
-        if (closeButton.srcset !== undefined) {
-            closeButton.srcset = $util.srl('{$IMG;,icons/32x32/close}') + ' 2x';
-        }
+        closeButton.src = $util.srl('{$IMG;,icons/32x32/close}');
+        closeButton.width = '32';
+        closeButton.height = '32';
         closeButton.alt = '{!CLOSE;^}';
         closeButton.style.paddingLeft = '5px';
-        closeButton.style.width = '16px';
-        closeButton.style.height = '16px';
+        closeButton.width = '16';
+        closeButton.height = '16';
         closeButton.style.verticalAlign = 'middle';
         closeButton.addEventListener('click', function (event) {
             event.preventDefault();
@@ -1036,7 +1031,8 @@
         var loadingImage = document.createElement('img');
         loadingImage.className = 'ajax-loading';
         loadingImage.src = $util.srl('{$IMG;,loading}');
-        loadingImage.style.height = '12px';
+        loadingImage.width = '12';
+        loadingImage.height = '12';
         body.appendChild(loadingImage);
         bodies.appendChild(body);
 
@@ -1230,5 +1226,5 @@
     function fileToFileId(file) {
         return file.replace(/\//, '__').replace(/:/, '__').replace(/\./, '__');
     }
-    
+
 }(window.$cms, window.$util, window.$dom));

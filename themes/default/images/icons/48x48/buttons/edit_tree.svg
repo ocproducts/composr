@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+]>
+<svg version="1.1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="48px" height="48px" viewBox="-2.262 -4.564 48 48" enable-background="new -2.262 -4.564 48 48"
+	 xml:space="preserve">
+<defs>
+</defs>
+<rect x="21.014" y="16.382" fill="#C8691C" width="1.76" height="4.67"/>
+<rect x="6.038" y="19.836" fill="#C8691C" width="31.507" height="1.758"/>
+<rect x="6.038" y="20.011" fill="#C8691C" width="1.757" height="7.163"/>
+<rect x="35.786" y="20.011" fill="#C8691C" width="1.759" height="7.163"/>
+<path fill="#F89624" d="M11.534,16.445h19.705V0.519H11.534V16.445z M29.54,14.522H13.396V2.276H29.54V14.522z"/>
+<path fill="#F89624" d="M0,37.711h13.506V26.795H0V37.711z M11.704,35.911H1.913v-7.428h9.791V35.911z"/>
+<path fill="#F89624" d="M29.931,37.711h13.506V26.795H29.931V37.711z M41.634,35.911h-9.791v-7.428h9.791V35.911z"/>
+<rect x="8.689" y="15.181" transform="matrix(0.6428 -0.766 0.766 0.6428 -5.7352 26.9329)" fill="#52CAF5" width="34.646" height="8.87"/>
+<rect x="36.283" y="0.186" transform="matrix(0.6424 -0.7663 0.7663 0.6424 10.2582 31.2288)" fill="#6D6E71" width="4.623" height="8.871"/>
+<polygon fill="#FCB51E" points="18.315,35.689 13.05,37.783 10.232,35.42 11.52,29.987 "/>
+<polygon points="12.837,37.68 9.563,39.009 10.368,35.61 "/>
+<rect x="34.519" y="1.007" transform="matrix(-0.6433 0.7656 -0.7656 -0.6433 62.9308 -23.0321)" fill="#A7A9AC" width="4.624" height="4.272"/>
+<polygon fill="#58595B" points="11.556,36.605 10.368,35.61 9.574,38.965 "/>
+<polygon fill="#FFD65A" points="11.583,36.554 14.791,32.732 11.52,29.987 10.232,35.42 "/>
+<rect x="6.925" y="16.001" transform="matrix(-0.6428 0.7661 -0.7661 -0.6428 53.7312 11.2169)" fill="#84D5F7" width="34.65" height="4.271"/>
+</svg>

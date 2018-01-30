@@ -1053,7 +1053,7 @@
                     }
                     e = $dom.createEvent('clickout', { originalEvent: e });
                 }
-                
+
                 var result = (delegator || fn).call(el, e, el);
                 if (result === false) {
                     e.stopPropagation();
@@ -1128,7 +1128,7 @@
             callback = selector;
             selector = undefined;
         }
-        
+
         if (callback === false) {
             callback = function () { return false; };
         }
@@ -1143,7 +1143,7 @@
         if (selector) {
             delegator = function (e) {
                 var clicked, matches, match;
-                
+
                 if (e.type === 'clickout') { 
                     // Our custom 'clickout' event needs some special handling and may be fired on multiple matches
                     clicked = e.originalEvent.target;
@@ -1879,7 +1879,7 @@
 
         doc.body.classList.add('website-body', 'main-website-faux');
 
-        $dom.html(doc.body, '<div aria-busy="true" class="spaced"><div class="ajax-loading"><img id="loading_image" class="vertical-alignment" src="' + $util.srl('{$IMG*;,loading}') + '" alt="{!LOADING;^}" /> <span class="vertical-alignment">{!LOADING;^}<\/span><\/div><\/div>');
+        $dom.html(doc.body, '<div aria-busy="true" class="spaced"><div class="ajax-loading"><img id="loading_image" class="vertical-alignment" width="20" height="20" src="' + $util.srl('{$IMG*;,loading}') + '" alt="{!LOADING;^}" /> <span class="vertical-alignment">{!LOADING;^}<\/span><\/div><\/div>');
 
         // Stupid workaround for Google Chrome not loading an image on unload even if in cache
         setTimeout(function () {

@@ -72,7 +72,7 @@
 				</div>
 			</form>
 
-			<img alt="" src="{$IMG*,arrow_ruler}" />
+			<img alt="" width="45" src="{$IMG*,arrow_ruler}" />
 		</div>
 
 		<iframe {$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} class="form-screen-iframe" title="{!EDIT}" name="iframe_under" id="iframe_under" src="{$BASE_URL*}/uploads/index.html">{!EDIT}</iframe>

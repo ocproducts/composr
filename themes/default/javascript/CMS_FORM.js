@@ -6,7 +6,7 @@
      * @namespace $cms.form
      */
     $cms.form = {};
-    
+
     /**
      * Calls up a URL to check something, giving any 'feedback' as an error (or if just 'false' then returning false with no message)
      * @memberof $cms.form

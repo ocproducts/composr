@@ -248,12 +248,10 @@ function _build_sitemap_menu($menu)
         }
 
         if ($icon !== null) {
-            if (find_theme_image('icons/24x24/' . $icon, true) == '' && find_theme_image('icons/32x32/' . $icon, true) != '') {
+            if (find_theme_image('icons/48x48/' . $icon, true) == '' && find_theme_image('icons/32x32/' . $icon, true) != '') {
                 $node['extra_meta']['image'] = find_theme_image('icons/32x32/' . $icon);
-                $node['extra_meta']['image_2x'] = '';
             } else {
-                $node['extra_meta']['image'] = find_theme_image('icons/24x24/' . $icon);
-                $node['extra_meta']['image_2x'] = find_theme_image('icons/48x48/' . $icon);
+                $node['extra_meta']['image'] = find_theme_image('icons/48x48/' . $icon);
             }
         }
 
@@ -293,7 +291,6 @@ function _get_menu_root_wrapper()
         'extra_meta' => array(
             'description' => null,
             'image' => null,
-            'image_2x' => null,
         ),
         'has_possible_children' => true,
         'children' => array(),
@@ -337,7 +334,6 @@ function _build_stored_menu_branch($item, $items)
         'extra_meta' => array(
             'description' => get_translated_tempcode('menu_items', $item, 'i_caption_long'),
             'image' => ($item['i_theme_img_code'] == '') ? null : find_theme_image($item['i_theme_img_code']),
-            'image_2x' => ($item['i_theme_img_code'] == '') ? null : str_replace(array('/1x/', '/24x24/'), array('/2x/', '/48x48/'), find_theme_image($item['i_theme_img_code'])),
         ),
         'has_possible_children' => true,
         'children' => array(),
@@ -703,14 +699,12 @@ function _render_menu_branch($branch, $codename, $source_member, $level, $type, 
 
     // Image
     $img = isset($branch['extra_meta']['image']) ? $branch['extra_meta']['image'] : '';
-    $img_2x = empty($branch['extra_meta']['image_2x']) ? $img : $branch['extra_meta']['image_2x'];
 
     // Render!
     $rendered_branch = array(
         // Basic properties
         'CAPTION' => $caption,
         'IMG' => $img,
-        'IMG_2X' => $img_2x,
 
         // Link properties
         'URL' => $url,

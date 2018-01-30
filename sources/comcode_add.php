@@ -1,4 +1,4 @@
-<?php /*
+i<?php /*
 
  Composr
  Copyright (c) ocProducts, 2004-2018
@@ -90,7 +90,7 @@ function _get_details_comcode_tags()
         'if_in_group' => array('param', 'type'),
         'flash' => array('param'),
         'media' => array('description', 'thumb_url', 'width', 'height', 'framed', 'wysiwyg_editable', 'type', 'thumb', 'length', 'filename', 'mime_type', 'filesize', 'click_url', 'float'),
-        'img' => array('align', 'float', 'param', 'title', 'rollover', 'refresh_time'),
+        'img' => array('align', 'float', 'param', 'title', 'rollover', 'refresh_time', 'width', 'height'),
         'thumb' => array('align', 'param', 'caption', 'float'),
         'media_set' => array('width', 'height'),
         'url' => array('param', 'title', 'target', 'rel'),

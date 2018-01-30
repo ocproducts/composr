@@ -30,7 +30,7 @@ class Hook_ecommerce_classifieds
         return array(
             'category_name' => do_lang('CLASSIFIEDS'),
             'category_description' => do_lang_tempcode('CLASSIFIED_ADVERT_BUY_DESCRIPTION'),
-            'category_image_url' => find_theme_image('icons/48x48/menu/rich_content/catalogues/classifieds'),
+            'category_image_url' => find_theme_image('icons/48x48/menu/classifieds'),
         );
     }
 

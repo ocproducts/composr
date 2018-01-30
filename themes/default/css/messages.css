@@ -33,7 +33,8 @@
 /*{+END}*/
 
 .ssm-warn {
-	background: url('{$IMG;,messageicons/warn_large}') right 20px no-repeat;
+	background: url('{$IMG;,icons/48x48/status/warn}') right 20px no-repeat;
+	background-size: 24px 24px;
 }
 
 /*{+START,CSS_MODE,desktop}*/
@@ -48,7 +49,8 @@
 /*{+END}*/
 
 .ssm-inform {
-	background: url('{$IMG;,messageicons/inform_large}') right 20px no-repeat;
+	background: url('{$IMG;,icons/48x48/status/inform}') right 20px no-repeat;
+	background-size: 24px 24px;
 }
 
 .page-running-contact .ssm-inform {

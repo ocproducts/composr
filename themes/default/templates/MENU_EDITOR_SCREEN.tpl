@@ -43,7 +43,7 @@
 
 			<div id="mini-form-hider" style="display: none" class="float-surrounder">
 				<div class="menu-editor-rh-side">
-					<img class="dock-button js-img-click-toggle-docked-field-editing" alt="" title="{!TOGGLE_DOCKED_FIELD_EDITING}" src="{$IMG*,1x/arrow_box_hover}" srcset="{$IMG*,2x/arrow_box_hover} 2x" />
+					<img class="dock-button js-img-click-toggle-docked-field-editing" alt="" title="{!TOGGLE_DOCKED_FIELD_EDITING}" width="13" height="13" src="{$IMG*,1x/arrow_box_hover}" />
 
 					<h2>{!CHOOSE_ENTRY_POINT}</h2>
 
@@ -87,7 +87,7 @@
 
 		<div class="box box---menu-editor-screen" data-toggleable-tray="{}">
 			<h2 class="toggleable-tray-title">
-				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!DELETE_MENU}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" /></a>
+				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!DELETE_MENU}" title="{!EXPAND}" width="24" height="24" src="{$IMG*,1x/trays/expand2}" /></a>
 				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!DELETE_MENU}</a>
 			</h2>
 

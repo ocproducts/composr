@@ -14,11 +14,5 @@
 */
 
 .menu--site-meta--newsletters {
-	background-image: url('{$IMG,icons/24x24/menu/site_meta/newsletters}') !important;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.menu--site-meta--newsletters {
-		background-image: url('{$IMG,icons/48x48/menu/site_meta/newsletters}') !important;
-	}
+	background-image: url('{$IMG,icons/48x48/menu/site_meta/newsletters}') !important;
 }

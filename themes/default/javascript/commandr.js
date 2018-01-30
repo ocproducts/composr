@@ -51,7 +51,7 @@
 
     $cms.templates.commandrCommands = function commandrCommands(params, container) {
         var commandInput = $dom.$('#commandr-command');
-        
+
         $dom.on(container, 'click', '.js-click-enter-command', function (e, target) {
             var command = strVal(target.dataset.tpCommand);
             commandInput.value = command;
@@ -151,14 +151,14 @@
         var pastCommandPrompt = document.createElement('p');
         var pastCommand = document.createElement('div');
 
-        newCommand.setAttribute('class', 'command float-surrounder');
-        pastCommandPrompt.setAttribute('class', 'past-command-prompt');
-        pastCommand.setAttribute('class', 'past-command');
+        newCommand.className = 'command float-surrounder';
+        pastCommandPrompt.className = 'past-command-prompt';
+        pastCommand.className = 'past-command';
 
         if (!ajaxResult) {
             var stderrText = document.createTextNode('{!commandr:ERROR_NON_TERMINAL;^}\n{!INTERNAL_ERROR;^}');
             var stderrTextP = document.createElement('p');
-            stderrTextP.setAttribute('class', 'error_output');
+            stderrTextP.className = 'error_output';
             stderrTextP.appendChild(stderrText);
             pastCommand.appendChild(stderrTextP);
 
@@ -188,7 +188,7 @@
             // Text-only. Any HTML should've been escaped server-side. Escaping it over here with the DOM getting in the way is too complex.
             var stdoutText = document.createTextNode(stdout);
             var stdoutTextP = document.createElement('p');
-            stdoutTextP.setAttribute('class', 'text-output');
+            stdoutTextP.className = 'text-output';
             stdoutTextP.appendChild(stdoutText);
             pastCommand.appendChild(stdoutTextP);
         }
@@ -214,7 +214,7 @@
 
             var stdcommandText = document.createTextNode('{!commandr:JAVASCRIPT_EXECUTED;^}');
             var stdcommandTextP = document.createElement('p');
-            stdcommandTextP.setAttribute('class', 'command-output');
+            stdcommandTextP.className = 'command-output';
             stdcommandTextP.appendChild(stdcommandText);
             pastCommand.appendChild(stdcommandTextP);
         }

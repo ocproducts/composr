@@ -89,7 +89,7 @@ class Hook_addon_registry_securitylogging
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/audit/security_log.png';
+        return 'themes/default/images/icons/48x48/menu/adminzone/audit/security_log.svg';
     }
 
     /**
@@ -100,12 +100,9 @@ class Hook_addon_registry_securitylogging
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/24x24/menu/adminzone/audit/security_log.png',
-            'themes/default/images/icons/48x48/menu/adminzone/audit/security_log.png',
-            'themes/default/images/icons/24x24/menu/adminzone/tools/users/investigate_user.png',
-            'themes/default/images/icons/48x48/menu/adminzone/tools/users/investigate_user.png',
-            'themes/default/images/icons/24x24/menu/adminzone/security/ip_ban.png',
-            'themes/default/images/icons/48x48/menu/adminzone/security/ip_ban.png',
+            'themes/default/images/icons/48x48/menu/adminzone/audit/security_log.svg',
+            'themes/default/images/icons/48x48/menu/adminzone/tools/users/investigate_user.svg',
+            'themes/default/images/icons/48x48/menu/adminzone/security/ip_ban.svg',
             'sources/hooks/systems/realtime_rain/security.php',
             'sources/hooks/systems/addon_registry/securitylogging.php',
             'themes/default/templates/SECURITY_SCREEN.tpl',

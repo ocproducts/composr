@@ -19,7 +19,7 @@
 					{+END}
 				</ul>
 			{+END}
-			<a href="{$PAGE_LINK*,_SEARCH:awards}"><img data-mouseover-activate-tooltip="['{$GET;^*,AWARDS_TEXT}','auto',null,null,false,true]" title="" alt="{!AWARD_WINNER}" src="{$IMG*,awarded}" /></a>
+			<a href="{$PAGE_LINK*,_SEARCH:awards}"><img data-mouseover-activate-tooltip="['{$GET;^*,AWARDS_TEXT}','auto',null,null,false,true]" title="" alt="{!AWARD_WINNER}" width="20" src="{$IMG*,awarded}" /></a>
 		{+END}
 	{+END}
 </h1>

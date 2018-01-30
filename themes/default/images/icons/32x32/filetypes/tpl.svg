@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+]>
+<svg version="1.1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="48px" height="48px" viewBox="-7.664 -3.453 48 48" enable-background="new -7.664 -3.453 48 48"
+	 xml:space="preserve">
+<defs>
+</defs>
+<path fill="#E6E7E8" d="M32.672,38.668c0,2.008-1.262,2.426-2.82,2.426H2.819C1.263,41.094,0,40.676,0,38.668V3.64
+	C0,1.628,1.263,0,2.819,0h27.032c1.559,0,2.82,1.628,2.82,3.64V38.668z"/>
+<path fill="#D1D3D4" d="M29.852,0H2.819C1.263,0,0,1.628,0,3.64v2.907l29.536,34.547h0.315c1.559,0,2.82-0.418,2.82-2.426
+	L32.659,2.522C32.659,0.511,31.41,0,29.852,0z"/>
+<path fill="#A7A9AC" d="M32.672,6.321V2.426C32.672,0.415,31.41,0,29.852,0H2.819C1.263,0,0,0.415,0,2.426v3.895H32.672z"/>
+<path fill="#FFFFFF" d="M20.631,3.159c0,0.766-0.552,1.385-1.224,1.385H3.321c-0.675,0-1.224-0.619-1.224-1.385l0,0
+	c0-0.762,0.549-1.381,1.224-1.381h16.086C20.079,1.778,20.631,2.397,20.631,3.159L20.631,3.159z"/>
+<path fill="#FFFFFF" d="M30.528,3.066c0,0.539-0.438,0.974-0.977,0.974c-0.533,0-0.972-0.436-0.972-0.974s0.438-0.974,0.972-0.974
+	C30.091,2.093,30.528,2.528,30.528,3.066z"/>
+<rect x="1.574" y="8.354" fill="#52CAF5" width="29.698" height="11.74"/>
+<rect x="1.574" y="21.901" fill="#52CAF5" width="9.79" height="14.451"/>
+<rect x="12.938" y="22.125" fill="#52CAF5" width="18.16" height="6.773"/>
+<rect x="12.938" y="30.764" fill="#52CAF5" width="18.16" height="5.418"/>
+<rect x="1.574" y="21.901" fill="#52CAF5" width="9.79" height="14.451"/>
+<polygon fill="#3588A6" points="20.702,30.764 25.338,36.182 31.099,36.182 31.099,30.764 "/>
+<polygon fill="#3588A6" points="13.32,22.125 19.116,28.899 31.099,28.899 31.099,22.125 "/>
+<polygon fill="#3588A6" points="1.574,8.354 1.574,8.388 11.584,20.095 31.272,20.095 31.272,8.354 "/>
+</svg>

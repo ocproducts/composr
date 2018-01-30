@@ -87,7 +87,7 @@ class Hook_addon_registry_calendar
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/rich_content/calendar.png';
+        return 'themes/default/images/icons/48x48/menu/rich_content/calendar.svg';
     }
 
     /**
@@ -98,8 +98,7 @@ class Hook_addon_registry_calendar
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/24x24/menu/rich_content/calendar.png',
-            'themes/default/images/icons/48x48/menu/rich_content/calendar.png',
+            'themes/default/images/icons/48x48/menu/rich_content/calendar.svg',
             'sources/hooks/systems/snippets/calendar_recurrence_suggest.php',
             'sources/hooks/systems/notifications/calendar_reminder.php',
             'sources/hooks/systems/notifications/calendar_event.php',
@@ -168,25 +167,25 @@ class Hook_addon_registry_calendar
             'sources/hooks/systems/preview/calendar.php',
             'sources/hooks/systems/rss/calendar.php',
             'themes/default/css/calendar.css',
-            'themes/default/images/calendar/activity.png',
-            'themes/default/images/calendar/anniversary.png',
-            'themes/default/images/calendar/appointment.png',
-            'themes/default/images/calendar/birthday.png',
-            'themes/default/images/calendar/commitment.png',
-            'themes/default/images/calendar/duty.png',
-            'themes/default/images/calendar/festival.png',
-            'themes/default/images/calendar/general.png',
-            'themes/default/images/calendar/public_holiday.png',
-            'themes/default/images/calendar/vacation.png',
+            'themes/default/images/calendar/activity.svg',
+            'themes/default/images/calendar/anniversary.svg',
+            'themes/default/images/calendar/appointment.svg',
+            'themes/default/images/calendar/birthday.svg',
+            'themes/default/images/calendar/commitment.svg',
+            'themes/default/images/calendar/duty.svg',
+            'themes/default/images/calendar/festival.svg',
+            'themes/default/images/calendar/general.svg',
+            'themes/default/images/calendar/public_holiday.svg',
+            'themes/default/images/calendar/vacation.svg',
             'themes/default/images/calendar/index.html',
-            'themes/default/images/calendar/priority_1.png',
-            'themes/default/images/calendar/priority_2.png',
-            'themes/default/images/calendar/priority_3.png',
-            'themes/default/images/calendar/priority_4.png',
-            'themes/default/images/calendar/priority_5.png',
-            'themes/default/images/calendar/priority_na.png',
-            'themes/default/images/calendar/rss.png',
-            'themes/default/images/calendar/system_command.png',
+            'themes/default/images/calendar/priority_1.svg',
+            'themes/default/images/calendar/priority_2.svg',
+            'themes/default/images/calendar/priority_3.svg',
+            'themes/default/images/calendar/priority_4.svg',
+            'themes/default/images/calendar/priority_5.svg',
+            'themes/default/images/calendar/priority_na.svg',
+            'themes/default/images/calendar/rss.svg',
+            'themes/default/images/calendar/system_command.svg',
             'sources/hooks/systems/notifications/member_calendar_changes.php',
             'sources/hooks/systems/commandr_fs_extended_member/calendar_interests.php',
             'sources/hooks/systems/config/search_calendar.php',

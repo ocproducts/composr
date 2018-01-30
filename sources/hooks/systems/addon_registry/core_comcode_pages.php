@@ -89,7 +89,7 @@ class Hook_addon_registry_core_comcode_pages
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/cms/comcode_page_edit.png';
+        return 'themes/default/images/icons/48x48/menu/cms/comcode_page_edit.svg';
     }
 
     /**
@@ -100,8 +100,7 @@ class Hook_addon_registry_core_comcode_pages
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/24x24/menu/cms/comcode_page_edit.png',
-            'themes/default/images/icons/48x48/menu/cms/comcode_page_edit.png',
+            'themes/default/images/icons/48x48/menu/cms/comcode_page_edit.svg',
             'sources/hooks/systems/config/points_COMCODE_PAGE_ADD.php',
             'sources/hooks/systems/addon_registry/core_comcode_pages.php',
             'themes/default/templates/COMCODE_PAGE_EDIT_ACTIONS.tpl',
@@ -143,36 +142,21 @@ class Hook_addon_registry_core_comcode_pages
             'data/modules/cms_comcode_pages/EN/rules_corporate.txt',
             'data/modules/cms_comcode_pages/EN/rules_liberal.txt',
             'themes/default/images/under_construction_animated.gif',
-            'themes/default/images/icons/24x24/menu/pages/guestbook.png',
-            'themes/default/images/icons/48x48/menu/pages/guestbook.png',
-            'themes/default/images/icons/24x24/menu/pages/advertise.png',
-            'themes/default/images/icons/24x24/menu/pages/donate.png',
-            'themes/default/images/icons/48x48/menu/pages/donate.png',
-            'themes/default/images/icons/48x48/menu/pages/advertise.png',
-            'themes/default/images/icons/24x24/contact_methods/address.png',
-            'themes/default/images/icons/24x24/contact_methods/email.png',
-            'themes/default/images/icons/24x24/contact_methods/index.html',
-            'themes/default/images/icons/24x24/contact_methods/telephone.png',
-            'themes/default/images/icons/48x48/contact_methods/address.png',
-            'themes/default/images/icons/48x48/contact_methods/email.png',
+            'themes/default/images/icons/48x48/menu/pages/guestbook.svg',
+            'themes/default/images/icons/48x48/menu/pages/donate.svg',
+            'themes/default/images/icons/48x48/menu/pages/advertise.svg',
+            'themes/default/images/icons/48x48/contact_methods/address.svg',
+            'themes/default/images/icons/48x48/contact_methods/email.svg',
             'themes/default/images/icons/48x48/contact_methods/index.html',
-            'themes/default/images/icons/48x48/contact_methods/telephone.png',
-            'themes/default/images/icons/24x24/links/google_plus.png',
-            'themes/default/images/icons/24x24/links/skype.png',
-            'themes/default/images/icons/24x24/links/xmpp.png',
-            'themes/default/images/icons/48x48/links/google_plus.png',
-            'themes/default/images/icons/48x48/links/skype.png',
-            'themes/default/images/icons/48x48/links/xmpp.png',
-            'themes/default/images/icons/24x24/tiers/bronze.png',
-            'themes/default/images/icons/24x24/tiers/gold.png',
-            'themes/default/images/icons/24x24/tiers/index.html',
-            'themes/default/images/icons/24x24/tiers/platinum.png',
-            'themes/default/images/icons/24x24/tiers/silver.png',
-            'themes/default/images/icons/48x48/tiers/bronze.png',
-            'themes/default/images/icons/48x48/tiers/gold.png',
+            'themes/default/images/icons/48x48/contact_methods/telephone.svg',
+            'themes/default/images/icons/48x48/links/google_plus.svg',
+            'themes/default/images/icons/48x48/links/skype.svg',
+            'themes/default/images/icons/48x48/links/xmpp.svg',
+            'themes/default/images/icons/48x48/tiers/bronze.svg',
+            'themes/default/images/icons/48x48/tiers/gold.svg',
             'themes/default/images/icons/48x48/tiers/index.html',
-            'themes/default/images/icons/48x48/tiers/platinum.png',
-            'themes/default/images/icons/48x48/tiers/silver.png',
+            'themes/default/images/icons/48x48/tiers/platinum.svg',
+            'themes/default/images/icons/48x48/tiers/silver.svg',
             'sources/hooks/systems/config/search_comcode_pages.php',
         );
     }

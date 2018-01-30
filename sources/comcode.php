@@ -203,7 +203,7 @@ function comcode_to_tempcode($comcode, $source_member = null, $as_admin = false,
             $key = strval($key);
         }
 
-        if (preg_match('#^hidFileID_#i', $key) != 0) {
+        if (preg_match('#^hid_file_id_#i', $key) != 0) {
             $attachments = true;
         }
     }

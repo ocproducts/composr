@@ -1,6 +1,6 @@
 (function ($cms, $util, $dom) {
     'use strict';
-    
+
     $dom.ready.then(function () {
         var addressFields = ['street_address', 'city', 'county', 'state', 'post_code', 'country'];
         for (var i = 0; i < addressFields.length; i++) {
@@ -62,15 +62,15 @@
                 if ((lengthUnits === 'd') && ((length < 1) || (length > 90))) {
                     _length.value = (length < 1) ? 1 : 90;
                 }
-                
+
                 if ((lengthUnits === 'w') && ((length < 1) || (length > 52))) {
                     _length.value = (length < 1) ? 1 : 52;
                 }
-                
+
                 if ((lengthUnits === 'm') && ((length < 1) || (length > 24))) {
                     _length.value = (length < 1) ? 1 : 24;
                 }
-                
+
                 if ((lengthUnits === 'y') && ((length < 1) || (length > 5))) {
                     _length.value = (length < 1) ? 1 : 5;
                 }
@@ -81,7 +81,7 @@
             }
         }
     };
-    
+
     $cms.functions.ecommerceEmailGetNeededFieldsPop3 = function () {
         var form = document.getElementById('pass1').form;
         $dom.on(form, 'submit', function (e) {
@@ -91,7 +91,7 @@
             }
         });
     };
-    
+
     $cms.templates.ecomPurchaseStageDetails = function ecomPurchaseStageDetails(params) {
         if (params.jsFunctionCalls != null) {
             $cms.executeJsFunctionCalls(params.jsFunctionCalls);
@@ -105,7 +105,7 @@
 
         $dom.on(container, 'click', '.js-click-btn-i-disagree', function (e, btn) {
             var newLocation = strVal(btn.dataset.tpLocation);
-            
+
             if (newLocation) {
                 window.location = newLocation;
             }
@@ -116,10 +116,10 @@
         window.ANS_customer_id = strVal(params.customerId);
         $cms.requireJavascript('https://verify.authorize.net/anetseal/seal.js');
     };
-    
+
     $cms.templates.ecomPurchaseStagePay = function ecomPurchaseStagePay(params) {
         var typeCode = strVal(params.typeCode);
-        
+
         if (typeCode.toUpperCase().startsWith('CART_ORDER_')) {
             // Automatic link clicking of purchase button for cart orders (because button was already pressed on cart screen)
             $dom.trigger('#purchase-button', 'click');

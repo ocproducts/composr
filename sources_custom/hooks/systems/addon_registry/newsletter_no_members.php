@@ -123,7 +123,7 @@ class Hook_addon_registry_newsletter_no_members
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.png';
+        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.svg';
     }
 
     /**

@@ -117,6 +117,7 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 .modern-subtabs {
 	border: 0;
 	background: {$GET,area_background} url('{$IMG;,tabs/modern_subtab_header_column}') repeat-y;
+	background-size: 150px 1px;
 	overflow: hidden;
 }
 
@@ -135,13 +136,7 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 
 .modern-subtab-headers>div.tab-active, .modern-subtab-headers>div:hover {
 	background: url('{$IMG;,1x/tabs/modern_subtab_active}') no-repeat right center;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.modern-subtab-headers>div.tab-active {
-		background-image: url('{$IMG;,2x/tabs/modern_subtab_active}') !important;
-		background-size: 8px 16px;
-	}
+	background-size: 8px 16px;
 }
 
 .modern-subtab-headers>div * {
@@ -156,13 +151,7 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 	display: block;
 	cursor: pointer;
 	background: url('{$IMG;,1x/tabs/modern_subtab_chevron}') no-repeat 10px center;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.modern-subtab-headers>div>a {
-		background-image: url('{$IMG;,2x/tabs/modern_subtab_chevron}') !important;
-		background-size: 9px 9px;
-	}
+	background-size: 9px 9px;
 }
 
 .modern-subtab-headers>div>a, .modern-subtab-headers>div>a:visited, .modern-subtab-headers>div>a:active, .modern-subtab-headers>div>a:hover {

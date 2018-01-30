@@ -4,7 +4,7 @@
 {+START,IF_NON_EMPTY,{CONTENT}}
 	{$SET,menu_id,r_{MENU|}_mobile_d}
 	<div data-view="MobileMenu" data-view-params="{+START,PARAMS_JSON,MENU,JAVASCRIPT_HIGHLIGHTING,menu_id}{_*}{+END}">
-		<a href="{$PAGE_LINK*,:sitemap}" class="mobile-menu-button js-click-toggle-content"><img src="{$IMG*,mobile_menu}" alt="{!MENU}" /> <span>{!MENU}</span></a>
+		<a href="{$PAGE_LINK*,:sitemap}" class="mobile-menu-button js-click-toggle-content"><img width="24" height="24" src="{$IMG*,mobile_menu}" alt="{!MENU}" /> <span>{!MENU}</span></a>
 
 		<nav class="menu-type--mobile js-el-menu-content" style="display: none" aria-expanded="false">
 			<div class="mobile-search">

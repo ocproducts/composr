@@ -1,8 +1,8 @@
 (function ($cms, $util, $dom) {
     'use strict';
-    
+
     var $pulse = window.$pulse = {};
-    
+
     $pulse.processWave = function processWave(el) {
         if (!el) {
             return;

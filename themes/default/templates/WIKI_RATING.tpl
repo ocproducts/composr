@@ -6,7 +6,7 @@
 			{+END}
 			{$SET,rating_loop,0}
 			{+START,WHILE,{$LT,{$GET,rating_loop},{$ROUND,{$DIV_FLOAT,{RATING},2}}}}
-				<img src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" alt="{$ROUND,{$DIV_FLOAT,{RATING},2}}" />
+				<img width="14" height="14" src="{$IMG*,icons/28x28/rating}" alt="{$ROUND,{$DIV_FLOAT,{RATING},2}}" />
 				{$INC,rating_loop}
 			{+END}
 		{+END}

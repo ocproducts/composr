@@ -3,19 +3,19 @@
 
 [surround="fp-col-blocks-wrap"]
 	[surround="fp-col-block left"]
-		[title="2"]<img alt="" class="vertical-alignment" src="{$IMG*,icons/24x24/contact_methods/telephone}" srcset="{$IMG*,icons/48x48/contact_methods/telephone} 2x" /> <span class="vertical-alignment">Phone</span>[/title]
+		[title="2"]<img alt="" class="vertical-alignment" width="24" height="24" src="{$IMG*,icons/48x48/contact_methods/telephone}" /> <span class="vertical-alignment">Phone</span>[/title]
 
 		<a class="non-link" href="tel:+4412345678910">(+44) 1234 5678910</a>
 	[/surround]
 
 	[surround="fp-col-block right link-exempt-wrap"]
-		[title="2"]<img alt="" class="vertical-alignment" src="{$IMG*,icons/24x24/contact_methods/email}" srcset="{$IMG*,icons/48x48/contact_methods/email} 2x" /> <span class="vertical-alignment">E-mail</span>[/title]
+		[title="2"]<img alt="" class="vertical-alignment" width="24" height="24" src="{$IMG*,icons/48x48/contact_methods/email}" /> <span class="vertical-alignment">E-mail</span>[/title]
 
 		[email]{$STAFF_ADDRESS}[/email]
 	[/surround]
 [/surround]
 
-[title="2"]<img alt="" class="vertical-alignment" src="{$IMG*,icons/24x24/contact_methods/address}" srcset="{$IMG*,icons/48x48/contact_methods/address} 2x" /> <span class="vertical-alignment">Address</span>[/title]
+[title="2"]<img alt="" class="vertical-alignment" width="24" height="24" src="{$IMG*,icons/48x48/contact_methods/address}" /> <span class="vertical-alignment">Address</span>[/title]
 
 [address]
 The British Museum<br />

@@ -3,7 +3,7 @@
 
     $cms.functions.moduleWarningsGetFormFields = function moduleWarningsGetFormFields() {
         document.getElementById('message').disabled = true;
-        
+
         if (document.getElementById('add_private_topic')) {
             document.getElementById('add_private_topic').addEventListener('click', function () {
                 document.getElementById('message').disabled = !document.getElementById('add_private_topic').checked;
@@ -29,7 +29,7 @@
                 }
 
             });
-            
+
             return false;
         });
 

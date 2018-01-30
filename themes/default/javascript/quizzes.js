@@ -1,6 +1,6 @@
 (function ($cms, $util, $dom) {
     'use strict';
-    
+
     $cms.functions.moduleCmsQuiz = function moduleCmsQuiz() {
         document.getElementById('type').addEventListener('change', hideFunc);
         hideFunc();

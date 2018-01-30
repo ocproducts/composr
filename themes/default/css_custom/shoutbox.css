@@ -10,11 +10,5 @@
 */
 
 .menu---generic-spare--8 {
-	background-image: url('{$IMG,icons/24x24/menu/_generic_spare/8}') !important;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.menu---generic-spare--8 {
-		background-image: url('{$IMG,icons/48x48/menu/_generic_spare/8}') !important;
-	}
+	background-image: url('{$IMG,icons/48x48/menu/_generic_spare/8}') !important;
 }

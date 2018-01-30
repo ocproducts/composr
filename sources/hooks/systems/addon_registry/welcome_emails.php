@@ -87,7 +87,7 @@ class Hook_addon_registry_welcome_emails
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/setup/welcome_emails.png';
+        return 'themes/default/images/icons/48x48/menu/adminzone/setup/welcome_emails.svg';
     }
 
     /**
@@ -98,8 +98,7 @@ class Hook_addon_registry_welcome_emails
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/24x24/menu/adminzone/setup/welcome_emails.png',
-            'themes/default/images/icons/48x48/menu/adminzone/setup/welcome_emails.png',
+            'themes/default/images/icons/48x48/menu/adminzone/setup/welcome_emails.svg',
             'sources/hooks/systems/addon_registry/welcome_emails.php',
             'adminzone/pages/modules/admin_cns_welcome_emails.php',
             'lang/EN/cns_welcome_emails.ini',

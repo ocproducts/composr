@@ -1,13 +1,13 @@
 (function ($cms) {
     'use strict';
-    
+
     // Assume that our activity feed needs updating to start with
     if (window.latestActivity === undefined) {
         window.latestActivity = 0;
         window.sAjaxUpdateLocking = 0;
         window.activitiesFeedGrow = true;
     }
-    
+
     /*
      This provides the JavaScript necessary for the "status" part of activities
      */
@@ -166,7 +166,7 @@
             }
         }
     });
-    
+
     $cms.templates.cnsMemberProfileActivities = function cnsMemberProfileActivities(params, container) {
         var syndications = params.syndications,
             syndication;
@@ -204,7 +204,7 @@
             }
         }
     };
-    
+
     function sUpdateGetData() {
         // Lock feed updates by setting sAjaxUpdateLocking to 1
         if ((++window.sAjaxUpdateLocking) > 1) {

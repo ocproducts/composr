@@ -617,8 +617,7 @@ abstract class Hook_sitemap_base
             if ($icon !== null) {
                 if (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) {
                     if (!isset($struct['extra_meta']['image'])) {
-                        $struct['extra_meta']['image'] = ($icon === null) ? null : find_theme_image('icons/24x24/' . $icon);
-                        $struct['extra_meta']['image_2x'] = ($icon === null) ? null : find_theme_image('icons/48x48/' . $icon);
+                        $struct['extra_meta']['image'] = ($icon === null) ? null : find_theme_image('icons/48x48/' . $icon);
                     }
                 }
             }
@@ -787,7 +786,6 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
             'extra_meta' => array(
                 'description' => null,
                 'image' => null,
-                'image_2x' => null,
                 'add_date' => null,
                 'edit_date' => null,
                 'submitter' => null,

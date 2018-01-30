@@ -89,7 +89,7 @@ class Hook_addon_registry_cns_multi_moderations
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/structure/forum/multi_moderations.png';
+        return 'themes/default/images/icons/48x48/menu/adminzone/structure/forum/multi_moderations.svg';
     }
 
     /**
@@ -100,8 +100,7 @@ class Hook_addon_registry_cns_multi_moderations
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/24x24/menu/adminzone/structure/forum/multi_moderations.png',
-            'themes/default/images/icons/48x48/menu/adminzone/structure/forum/multi_moderations.png',
+            'themes/default/images/icons/48x48/menu/adminzone/structure/forum/multi_moderations.svg',
             'sources/hooks/systems/resource_meta_aware/multi_moderation.php',
             'sources/hooks/systems/commandr_fs/multi_moderations.php',
             'sources/hooks/systems/addon_registry/cns_multi_moderations.php',

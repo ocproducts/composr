@@ -88,7 +88,7 @@ class Hook_addon_registry_core_permission_management
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/security/permissions/privileges.png';
+        return 'themes/default/images/icons/48x48/menu/adminzone/security/permissions/privileges.svg';
     }
 
     /**
@@ -99,12 +99,9 @@ class Hook_addon_registry_core_permission_management
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/24x24/menu/adminzone/security/permissions/index.html',
             'themes/default/images/icons/48x48/menu/adminzone/security/permissions/index.html',
-            'themes/default/images/icons/24x24/menu/adminzone/security/permissions/privileges.png',
-            'themes/default/images/icons/48x48/menu/adminzone/security/permissions/privileges.png',
-            'themes/default/images/icons/24x24/menu/adminzone/security/permissions/permission_tree_editor.png',
-            'themes/default/images/icons/48x48/menu/adminzone/security/permissions/permission_tree_editor.png',
+            'themes/default/images/icons/48x48/menu/adminzone/security/permissions/privileges.svg',
+            'themes/default/images/icons/48x48/menu/adminzone/security/permissions/permission_tree_editor.svg',
             'themes/default/css/permissions_editor.css',
             'themes/default/templates/PERMISSION_COLUMN_SIZER.tpl',
             'sources/hooks/systems/addon_registry/core_permission_management.php',
@@ -119,13 +116,13 @@ class Hook_addon_registry_core_permission_management
             'themes/default/templates/PERMISSIONS_TREE_EDITOR_SCREEN.tpl',
             'themes/default/templates/PERMISSION_KEYS_MESSAGE_ROW.tpl',
             'adminzone/pages/modules/admin_permissions.php',
-            'themes/default/images/permlevels/0.png',
-            'themes/default/images/permlevels/1.png',
-            'themes/default/images/permlevels/2.png',
-            'themes/default/images/permlevels/3.png',
+            'themes/default/images/permlevels/0.svg',
+            'themes/default/images/permlevels/1.svg',
+            'themes/default/images/permlevels/2.svg',
+            'themes/default/images/permlevels/3.svg',
             'themes/default/images/permlevels/index.html',
-            'themes/default/images/permlevels/inherit.png',
-            'themes/default/images/pte_view_help.png',
+            'themes/default/images/permlevels/inherit.svg',
+            'themes/default/images/pte_view_help.svg',
             'themes/default/javascript/core_permission_management.js',
         );
     }

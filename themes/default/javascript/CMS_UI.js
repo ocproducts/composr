@@ -4,7 +4,7 @@
      * @namespace $cms.ui
      */
     $cms.ui = {};
-    
+
     /**
      * Toggle a ToggleableTray
      * @memberof $cms.ui
@@ -12,14 +12,10 @@
      */
     $cms.ui.toggleableTray = function toggleableTray(el, animate) {
         var $IMG_expand = '{$IMG;,1x/trays/expand}',
-            $IMG_expand_2x = '{$IMG;,2x/trays/expand}',
             $IMG_expand2 = '{$IMG;,1x/trays/expand2}',
-            $IMG_expand2_2x = '{$IMG;,2x/trays/expand2}',
             $IMG_contract = '{$IMG;,1x/trays/contract}',
-            $IMG_contract_2x = '{$IMG;,2x/trays/contract}',
-            $IMG_contract2 = '{$IMG;,1x/trays/contract2}',
-            $IMG_contract2_2x = '{$IMG;,2x/trays/contract2}';
-        
+        $IMG_contract2 = '{$IMG;,1x/trays/contract2}';
+
         el = $dom.elArg(el);
         animate = $cms.configOption('enable_animations') ? boolVal(animate, true) : false;
 
@@ -44,17 +40,17 @@
                 $dom.hide(el);
             }
         }
-        
+
         if (iconImg) {
             if (expanding) {
-                setTrayThemeImage('expand', 'contract', $IMG_expand, $IMG_contract, $IMG_contract_2x, $IMG_contract2, $IMG_contract2_2x);
+                setTrayThemeImage('expand', 'contract', $IMG_expand, $IMG_contract, $IMG_contract2);
                 iconImg.alt = iconImg.alt.replace('{!EXPAND;^}', '{!CONTRACT;^}');
                 iconImg.title = '{!CONTRACT;^}';
                 if (iconImg.cmsTooltipTitle !== undefined) {
                     iconImg.cmsTooltipTitle = '{!CONTRACT;^}';
                 }
             } else {
-                setTrayThemeImage('contract', 'expand', $IMG_contract, $IMG_expand, $IMG_expand_2x, $IMG_expand2, $IMG_expand2_2x);
+                setTrayThemeImage('contract', 'expand', $IMG_contract, $IMG_expand, $IMG_expand2;
                 iconImg.alt = iconImg.alt.replace('{!CONTRACT;^}', '{!EXPAND;^}');
                 iconImg.title = '{!EXPAND;^}';
                 if (iconImg.cmsTooltipTitle !== undefined) {
@@ -64,32 +60,24 @@
         }
 
         $dom.triggerResize(true);
-        
+
         return expanding;
 
         // Execution ends here
-        function setTrayThemeImage(beforeThemeImg, afterThemeImg, before1Url, after1Url, after1Url2x, after2Url, after2Url2x) {
+        function setTrayThemeImage(beforeThemeImg, afterThemeImg, before1Url, after1Url, after2Url) {
             var is1 = $util.srl(iconImg.src) === $util.srl(before1Url);
 
             if (is1) {
                 if (isThemeWizard) {
                     iconImg.src = iconImg.src.replace(beforeThemeImg, afterThemeImg);
-                    if (iconImg.srcset !== undefined) {
-                        iconImg.srcset = iconImg.srcset.replace(beforeThemeImg, afterThemeImg);
-                    }
                 } else {
                     iconImg.src = $util.srl(after1Url);
-                    iconImg.srcset = $util.srl(after1Url2x) + ' 2x';
                 }
             } else {
                 if (isThemeWizard) {
                     iconImg.src = iconImg.src.replace(beforeThemeImg + '2', afterThemeImg + '2');
-                    if (iconImg.srcset !== undefined) {
-                        iconImg.srcset = iconImg.srcset.replace(beforeThemeImg + '2', afterThemeImg + '2');
-                    }
                 } else {
                     iconImg.src = $util.srl(after2Url);
-                    iconImg.srcset = $util.srl(after2Url2x) + ' 2x';
                 }
             }
         }
@@ -313,7 +301,7 @@
                 }
             });
         }
-        
+
         el.isOver = true;
         el.deactivatedAt = null;
         el.tooltipOn = false;
@@ -322,7 +310,7 @@
 
         var children = el.querySelectorAll('img');
         for (var i = 0; i < children.length; i++) {
-            children[i].setAttribute('title', '');
+            children[i].title = '';
         }
 
         var tooltipEl;
@@ -374,6 +362,8 @@
         if (pic) {
             var img = win.document.createElement('img');
             img.src = pic;
+            img.width = '24';
+            img.height = '24';
             img.className = 'tooltip-img';
             if (lightsOff) {
                 img.classList.add('faded-tooltip-img');
@@ -435,11 +425,11 @@
 
         if (!starting) { // Real JS mousemove event, so we assume not a screen-reader and have to remove natural tooltip
             if (el.getAttribute('title')) {
-                el.setAttribute('title', '');
+                el.title = '';
             }
 
             if ((el.parentElement.localName === 'a') && (el.parentElement.getAttribute('title')) && ((el.localName === 'abbr') || (el.parentElement.getAttribute('title').includes('{!LINK_NEW_WINDOW;^}')))) {
-                el.parentElement.setAttribute('title', '');  // Do not want second tooltips that are not useful
+                el.parentElement.title = '';  // Do not want second tooltips that are not useful
             }
         }
 
@@ -1083,7 +1073,7 @@
 
         function dimsFunc() {
             var maxWidth, maxHeight, showLightboxFullLink;
-            
+
             lightboxDescription.style.display = (lightboxDescription.firstChild) ? 'inline' : 'none';
             if (lightboxFullLink) {
                 showLightboxFullLink = Boolean(!isVideo && hasFullButton && ((realWidth > maxWidth) || (realHeight > maxHeight)));
@@ -1094,7 +1084,7 @@
 
             // Might need to rescale using some maths, if natural size is too big
             var maxDims = _getMaxLightboxImgDims(modal, hasFullButton);
-            
+
             maxWidth = maxDims[0];
             maxHeight = maxDims[1];
 

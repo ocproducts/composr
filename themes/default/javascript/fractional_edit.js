@@ -1,6 +1,6 @@
 (function ($cms, $util, $dom) {
     'use strict';
-    
+
     $cms.templates.fractionalEdit = function fractionalEdit(params, el) {
         var explicitEditingLinks = !!params.explicitEditingLinks,
             url = strVal(params.url),
@@ -82,9 +82,9 @@
             case 'line':
                 input = document.createElement('input');
                 if (raw_text.length > 255) {
-                    input.setAttribute('size', '30');
+                    input.size = '30';
                 } else {
-                    input.setAttribute('maxlength', '255');
+                    input.maxlength = '255';
                 }
                 input.value = populatedValue;
                 break;

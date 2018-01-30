@@ -2,7 +2,7 @@
     'use strict';
 
     var $IMG_checklist_checklist1 = '{$IMG;,checklist/checklist1}',
-        $IMG_checklist_not_completed = '{$IMG;,checklist/not_completed}',
+        $IMG_checklist_checklist0 = '{$IMG;,checklist/checklist0}',
         $IMG_checklist_cross = '{$IMG;,checklist/cross}',
         $IMG_checklist_cross2 = '{$IMG;,checklist/cross2}',
         $IMG_checklist_toggleicon2 = '{$IMG;,checklist/toggleicon2}';
@@ -50,14 +50,14 @@
                 return;
             }
 
-            if (data.vwTaskDone === 'not_completed') {
+            if (data.vwTaskDone === 'checklist0') {
                 $cms.loadSnippet('checklist_task_manage', 'type=mark_done&id=' + id);
                 this.imgChecklistStatus.src = $IMG_checklist_checklist1;
                 data.vwTaskDone = 'checklist1';
             } else {
                 $cms.loadSnippet('checklist_task_manage', 'type=mark_undone&id=' + id);
-                this.imgChecklistStatus.src = $IMG_checklist_not_completed;
-                data.vwTaskDone = 'not_completed';
+                this.imgChecklistStatus.src = $IMG_checklist_checklist0;
+                data.vwTaskDone = 'checklist0';
             }
         },
 
@@ -194,12 +194,12 @@
         },
 
         textareaExpand: function (e, textarea){
-            textarea.setAttribute('rows', '23');
+            textarea.rows = '23';
         },
 
         textareaContract: function (e, textarea){
             if (!this.formEl.disableSizeChange) {
-                textarea.setAttribute('rows', '10');
+                textarea.rows = '10';
             }
         },
 
@@ -234,6 +234,7 @@
         function setTaskHiding(hideEnable) {
             hideEnable = !!hideEnable;
 
+            // Precaching
             new Image().src = $IMG_checklist_cross2;
             new Image().src = $IMG_checklist_toggleicon2;
 
@@ -242,7 +243,7 @@
             for (i = 0; i < checklistRows.length; i++) {
                 rowImgs = checklistRows[i].querySelectorAll('img');
                 if (hideEnable) {
-                    src = rowImgs[rowImgs.length - 1].getAttribute('src');
+                    src = rowImgs[rowImgs.length - 1].src;
                     if (rowImgs[rowImgs.length - 1].origsrc) {
                         src = rowImgs[rowImgs.length - 1].origsrc;
                     }
@@ -293,7 +294,7 @@
 
             if (changeToggleIcon && (!e.relatedTarget || !changeToggleIcon.contains(e.relatedTarget))) {
                 var imgToggleIcon = $dom.$(container, '.js-img-toggle-icon');
-                imgToggleIcon.setAttribute('src', (e.type === 'mouseover') ? $IMG_checklist_toggleicon2 : $IMG_checklist_toggleicon);
+                imgToggleIcon.src = (e.type === 'mouseover') ? $IMG_checklist_toggleicon2 : $IMG_checklist_toggleicon;
             }
         });
     };

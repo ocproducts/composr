@@ -60,10 +60,10 @@
                 hasBaseEl = Boolean(document.querySelector('base'));
 
             anchors.forEach(function (anchor) {
-                var href = strVal(anchor.getAttribute('href'));
+                var href = strVal(anchor.href);
                 // So we can change base tag especially when on debug mode
                 if (hasBaseEl && href.startsWith('#') && (href !== '#!')) {
-                    anchor.setAttribute('href', window.location.href.replace(/#.*$/, '') + href);
+                    anchor.href = window.location.href.replace(/#.*$/, '') + href;
                 }
 
                 if ($cms.configOption('js_overlays')) {
@@ -319,11 +319,11 @@
     $cms.behaviors.confirmClick = {
         attach: function (context) {
             var els = $util.once($dom.$$$(context, '[data-cms-confirm-click]'), 'behavior.confirmClick');
-            
+
             els.forEach(function (el) {
                 var uid = $util.uid(el),
                     message = strVal(el.dataset.cmsConfirmClick);
-                
+
                 $dom.on(el, 'click', function (e) {
                     if (_confirmedClick === uid) {
                         // Confirmed, let it through
@@ -340,13 +340,13 @@
             });
         }
     };
-    
+
     // Implementation for form[data-submit-modsecurity-workaround]
     // mod_security workaround
     $cms.behaviors.submitModSecurityWorkaround = {
         attach: function (context) {
             var forms = $util.once($dom.$$$(context, 'form[data-submit-modsecurity-workaround]'), 'behavior.submitModSecurityWorkaround');
-            
+
             forms.forEach(function (form) {
                 $dom.on(form, 'submit', function (e) {
                     if ($cms.form.isModSecurityWorkaroundEnabled()) {
@@ -363,7 +363,7 @@
     $cms.behaviors.disableButtonsOnFormSubmit = {
         attach: function (context) {
             var forms = $util.once($dom.$$$(context, 'form[data-disable-buttons-on-submit]'), 'behavior.disableButtonsOnFormSubmit');
-            
+
             forms.forEach(function (form) {
                 $dom.on(form, 'submit', function () {
                     $cms.ui.disableFormButtons(form);
@@ -528,7 +528,7 @@
     $cms.behaviors.clickToggleTray = {
         attach: function (context) {
             var els = $util.once($dom.$$$(context, '[data-click-tray-toggle]'), 'behavior.clickToggleTray');
-            
+
             els.forEach(function (el) {
                 $dom.on(el, 'click', function () {
                     var trayId = strVal(el.dataset.clickTrayToggle),
@@ -546,35 +546,35 @@
             });
         }
     };
-    
+
     // Implementation for [data-textarea-auto-height]
     $cms.behaviors.textareaAutoHeight = {
         attach: function (context) {
             if ($cms.isMobile()) {
                 return;
             }
-            
+
             var textareas = $util.once($dom.$$$(context, '[data-textarea-auto-height]'), 'behavior.textareaAutoHeight');
             textareas.forEach(function (textarea) {
                 $cms.manageScrollHeight(textarea);
-                
+
                 $dom.on(textarea, 'click input change keyup keydown', function manageScrollHeight() {
                     $cms.manageScrollHeight(textarea);
                 });
             });
         }
     };
-    
+
     var _invalidPatternCache = {};
     // Implementation for [data-cms-invalid-pattern="<REGEX FOR DISALLOWED CHARACTERS>"]
     // Prevents input of matching characters
     $cms.behaviors.cmsInvalidPattern = {
         attach: function (context) {
             var inputs = $util.once($dom.$$$(context, '[data-cms-invalid-pattern]'), 'behavior.cmsInvalidPattern');
-            
+
             inputs.forEach(function (input) {
                 var pattern = input.dataset.cmsInvalidPattern, regex;
-                
+
                 regex = _invalidPatternCache[pattern] || (_invalidPatternCache[pattern] = new RegExp(pattern, 'g'));
 
                 $dom.on(input, 'input keydown keypress', function (e) {
@@ -598,7 +598,7 @@
     $cms.behaviors.changeSubmitForm = {
         attach: function (context) {
             var inputs = $util.once($dom.$$$(context, '[data-change-submit-form]'), 'behavior.changeSubmitForm');
-            
+
             inputs.forEach(function (input) {
                 $dom.on(input, 'change', function () {
                     if (input.form != null) {
@@ -608,13 +608,13 @@
             });
         }
     };
-    
+
     // Implementation for [data-cms-btn-go-back]
     // Go back in browser history
     $cms.behaviors.btnGoBack = {
         attach: function (context) {
             var btns = $util.once($dom.$$$(context, '[data-cms-btn-go-back]'), 'behavior.btnGoBack');
-            
+
             btns.forEach(function (btn) {
                 $dom.on(btn, 'click', function () {
                     window.history.back();
@@ -627,7 +627,7 @@
     $cms.behaviors.clickGaTrack = {
         attach: function (context) {
             var els = $util.once($dom.$$$(context, '[data-click-ga-track]'), 'behavior.clickGaTrack');
-            
+
             els.forEach(function (el) {
                 $dom.on(el, 'click', function (e) {
                     var options = objVal($dom.data(el, 'clickGaTrack'));
@@ -656,7 +656,7 @@
     $cms.behaviors.onclickDoInput = {
         attach: function (context) {
             var els = $util.once($dom.$$$(context, '[data-click-do-input]'), 'behavior.onclickDoInput');
-            
+
             els.forEach(function (el) {
                 $dom.on(el, 'click', function () {
                     var args = arrVal($dom.data(el, 'clickDoInput')),
@@ -679,7 +679,7 @@
     $cms.behaviors.onclickToggleCheckboxes = {
         attach: function (context) {
             var els = $util.once($dom.$$$(context, '[data-click-toggle-checked]'), 'behavior.onclickToggleCheckboxes');
-            
+
             els.forEach(function (el) {
                 $dom.on(el, 'click', function () {
                     var selector = strVal(el.dataset.clickToggleChecked),
@@ -698,10 +698,10 @@
     $cms.behaviors.cmsRichTooltip = {
         attach: function (context) {
             var els = $util.once($dom.$$$(context, '[data-cms-rich-tooltip]'), 'behavior.cmsRichTooltip');
-            
+
             els.forEach(function (el) {
                 var options = objVal($dom.data(el, 'cmsRichTooltip'));
-                
+
                 $dom.on(el, 'click mouseover keypress', function (e) {
                     if (el.ttitle === undefined) {
                         el.ttitle = (el.attributes['data-title'] ? el.getAttribute('data-title') : el.title);
@@ -730,7 +730,7 @@
     $cms.behaviors.disableOnClick = {
         attach: function (context) {
             var els = $util.once($dom.$$$(context, '[data-disable-on-click]'), 'behavior.disableOnClick');
-            
+
             els.forEach(function (el) {
                 $dom.on(el, 'click', function () {
                     $cms.ui.disableButton(el);
@@ -743,7 +743,7 @@
     $cms.behaviors.onmouseoverActivateTooltip = {
         attach: function (context) {
             var els = $util.once($dom.$$$(context, '[data-mouseover-activate-tooltip]'), 'behavior.onmouseoverActivateTooltip');
-            
+
             els.forEach(function (el) {
                 $dom.on(el, 'mouseover', function (e) {
                     var args = arrVal($dom.data(el, 'mouseoverActivateTooltip'));
@@ -782,12 +782,12 @@
             });
         }
     };
-    
+
     // Implementation for [data-blur-deactivate-tooltip]
     $cms.behaviors.onblurDeactivateTooltip = {
         attach: function (context) {
             var els = $util.once($dom.$$$(context, '[data-blur-deactivate-tooltip]'), 'behavior.onblurDeactivateTooltip');
-            
+
             els.forEach(function (el) {
                 $dom.on(el, 'blur', function () {
                     $cms.ui.deactivateTooltip(el);
@@ -800,7 +800,7 @@
     $cms.behaviors.onclickForwardTo = {
         attach: function (context) {
             var els = $util.once($dom.$$$(context, '[data-click-forward]'), 'behavior.onclickForwardTo');
-            
+
             els.forEach(function (el) {
                 $dom.on(el, 'click', function (e) {
                     var options = objVal($dom.data(el, 'clickForward'), {}, 'child'),
@@ -830,13 +830,13 @@
             if (!$cms.configOption('js_overlays')) {
                 return;
             }
-            
+
             var els = $util.once($dom.$$$(context, '[data-open-as-overlay]'), 'behavior.onclickOpenOverlay');
-            
+
             els.forEach(function (el) {
                 $dom.on(el, 'click', function (e) {
                     var options, url = (el.href === undefined) ? el.action : el.href;
-                    
+
                     if ($util.url(url).hostname !== window.location.hostname) {
                         return; // Cannot overlay, different domain
                     }
@@ -861,7 +861,7 @@
             }
 
             var els = $util.once($dom.$$$(context, 'a[rel*="lightbox"]'), 'behavior.onclickOpenLightbox');
-            
+
             els.forEach(function (el) {
                 $dom.on(el, 'click', function (e) {
                     e.preventDefault();
@@ -886,7 +886,7 @@
     $cms.behaviors.cmsHref = {
         attach: function (context) {
             var els = $util.once($dom.$$$(context, '[data-cms-href]'), 'behavior.cmsHref');
-            
+
             els.forEach(function (el) {
                 $dom.on(el, 'click', function (e) {
                     var anchorClicked = Boolean($dom.closest(e.target, 'a', el));
@@ -984,7 +984,7 @@
 
         $cms.ui.open(newUrl, null, 'width=' + width + ';height=' + options.height, options.target);
     }
-    
+
     function convertTooltip(el) {
         var title = el.title;
 

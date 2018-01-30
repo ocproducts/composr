@@ -112,7 +112,8 @@ For example:
 .dropdown-menu a.toplevel-link,
 .dropdown-menu a.nlevel-link {
 	padding: 1.2em 3em 1.2em 1em;
-	background: url('{$IMG;,icons/24x24/buttons/proceed}') transparent no-repeat top 1em right 1em;
+	background: url('{$IMG;,icons/48x48/buttons/proceed}') transparent no-repeat top 1em right 1em;
+	background-size: 24px 24px;
 }
 
 .dropdown-menu li.toplevel:hover,
@@ -258,18 +259,3 @@ body .dropdown-menu .nlevel .has-img>a, body .dropdown-menu .nlevel.current.has-
 .dropdown-menu .nlevel .non-current a:hover {
 	background: transparent url('{$IMG;,1x/menus/menu_bullet_hover}') no-repeat 5px 6px;
 }
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.dropdown-menu .nlevel .current a {
-		background: transparent url('{$IMG;,2x/menus/menu_bullet_current}') no-repeat 5px 6px !important;
-	}
-
-	.dropdown-menu .nlevel .non-current a {
-		background: transparent url('{$IMG;,2x/menus/menu_bullet}') no-repeat 5px 6px;
-	}
-
-	.dropdown-menu .nlevel .non-current a:hover {
-		background: transparent url('{$IMG;,2x/menus/menu_bullet_hover}') no-repeat 5px 6px;
-	}
-}
-/*{+END}*/

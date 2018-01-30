@@ -46,7 +46,7 @@
 					{+END}
 
 					<ul class="horizontal-links associated-links-block-group">
-						<li><img alt="" src="{$IMG*,icons/24x24/buttons/enable_notifications}" srcset="{$IMG*,icons/48x48/buttons/enable_notifications} 2x" /> <a href="{SUBSCRIBE_URL*}">{!SUBSCRIBE_EVENT}</a></li>
+						<li><img alt="" width="24" height="24" src="{$IMG*,icons/48x48/buttons/enable_notifications}" /> <a href="{SUBSCRIBE_URL*}">{!SUBSCRIBE_EVENT}</a></li>
 					</ul>
 				</div></div>
 			</div>
@@ -58,7 +58,7 @@
 
 				<div class="float-surrounder">
 					{+START,IF_NON_EMPTY,{LOGO}}
-						<img class="event-type-image" src="{$IMG*,{LOGO}}" alt="{TYPE*}" title="{TYPE*}" />
+						<img class="event-type-image" width="24" height="24" src="{$IMG*,{LOGO}}" alt="{TYPE*}" title="{TYPE*}" />
 					{+END}
 					{+START,IF_NON_EMPTY,{CONTENT}}
 						<div class="description" itemprop="description">{CONTENT}</div>
@@ -189,7 +189,7 @@
 
 	{+START,IF_NON_EMPTY,{EDIT_DATE_RAW}}
 		<div class="edited" role="note">
-			<img alt="" src="{$IMG*,1x/edited}" srcset="{$IMG*,2x/edited} 2x" /> {!EDITED}
+			<img alt="" width="10" src="{$IMG*,1x/edited}" /> {!EDITED}
 			<time datetime="{$FROM_TIMESTAMP*,Y-m-d\TH:i:s\Z,{EDIT_DATE_RAW}}">{$DATE*,,,,{EDIT_DATE_RAW}}</time>
 		</div>
 	{+END}

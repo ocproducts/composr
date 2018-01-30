@@ -71,7 +71,7 @@ function find_addon_category_download_category($category_name, $parent_id = null
                 // ---
 
                 case 'Addons':
-                    $theme_image = 'tutorial_icons/addon';
+                    $theme_image = 'icons/48x48/menu/adminzone/structure/addons';
                     break;
 
                 // ---
@@ -92,27 +92,27 @@ function find_addon_category_download_category($category_name, $parent_id = null
                     break;
 
                 case 'Graphical':
-                    $theme_image = 'tutorial_icons/galleries';
+                    $theme_image = 'icons/48x48/menu/rich_content/galleries';
                     $has_submit_access = true;
                     break;
 
                 case 'Information Display':
-                    $theme_image = 'tutorial_icons/configuration';
+                    $theme_image = 'icons/48x48/menu/adminzone/setup/config/config';
                     $has_submit_access = true;
                     break;
 
                 case 'New Features':
-                    $theme_image = 'tutorial_icons/upgrading';
+                    $theme_image = 'icons/48x48/menu/adminzone/tools/upgrade';
                     $has_submit_access = true;
                     break;
 
                 case 'Themes':
-                    $theme_image = 'tutorial_icons/design_and_themeing';
+                    $theme_image = 'icons/32x32/menu/adminzone/style';
                     $has_submit_access = true;
                     break;
 
                 case 'Professional Themes':
-                    $theme_image = 'tutorial_icons/ecommerce';
+                    $theme_image = 'icons/48x48/menu/adminzone/audit/ecommerce/ecommerce';
                     $has_submit_access = true;
                     break;
 
@@ -132,7 +132,8 @@ function find_addon_category_download_category($category_name, $parent_id = null
                     break;
 
                 default:
-                    $theme_image = 'tutorial_icons/' . strtolower(str_replace(' ', '_', $category_name));
+                    require_code('tutorials');
+                    $theme_image = _find_tutorial_image_for_tag($category_name));
                     $has_submit_access = true;
                     break;
             }

@@ -88,7 +88,7 @@ class Hook_addon_registry_authors
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/rich_content/authors.png';
+        return 'themes/default/images/icons/48x48/menu/rich_content/authors.svg';
     }
 
     /**
@@ -99,10 +99,8 @@ class Hook_addon_registry_authors
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/24x24/menu/cms/author_set_own_profile.png',
-            'themes/default/images/icons/48x48/menu/cms/author_set_own_profile.png',
-            'themes/default/images/icons/24x24/menu/rich_content/authors.png',
-            'themes/default/images/icons/48x48/menu/rich_content/authors.png',
+            'themes/default/images/icons/48x48/menu/cms/author_set_own_profile.svg',
+            'themes/default/images/icons/48x48/menu/rich_content/authors.svg',
             'themes/default/css/authors.css',
             'sources/hooks/systems/attachments/author.php',
             'sources/hooks/systems/meta/authors.php',

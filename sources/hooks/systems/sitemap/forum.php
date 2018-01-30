@@ -186,8 +186,7 @@ class Hook_sitemap_forum extends Hook_sitemap_content
         ) + $partial_struct;
 
         $struct['extra_meta'] = array(
-            'image' => (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) ? find_theme_image('icons/24x24/menu/social/forum/forums') : null,
-            'image_2x' => (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) ? find_theme_image('icons/48x48/menu/social/forum/forums') : null,
+            'image' => (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) ? find_theme_image('icons/48x48/menu/social/forum/forums') : null,
         ) + $struct['extra_meta'];
 
 

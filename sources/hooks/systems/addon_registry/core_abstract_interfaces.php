@@ -87,7 +87,7 @@ class Hook_addon_registry_core_abstract_interfaces
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.png';
+        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.svg';
     }
 
     /**
@@ -98,12 +98,9 @@ class Hook_addon_registry_core_abstract_interfaces
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/24x24/status/inform.png',
-            'themes/default/images/icons/48x48/status/inform.png',
-            'themes/default/images/icons/24x24/status/notice.png',
-            'themes/default/images/icons/48x48/status/notice.png',
-            'themes/default/images/icons/24x24/status/warn.png',
-            'themes/default/images/icons/48x48/status/warn.png',
+            'themes/default/images/icons/48x48/status/inform.svg',
+            'themes/default/images/icons/48x48/status/notice.svg',
+            'themes/default/images/icons/48x48/status/warn.svg',
             'sources/hooks/systems/addon_registry/core_abstract_interfaces.php',
             'themes/default/templates/QUESTION_UI_BUTTONS.tpl',
             'themes/default/templates/PAGINATION_SCREEN.tpl',
@@ -184,9 +181,9 @@ class Hook_addon_registry_core_abstract_interfaces
             'sources/templates_map_table.php',
             'sources/templates_donext.php',
             'themes/default/images/progress_indicator/index.html',
-            'themes/default/images/progress_indicator/stage_future.png',
-            'themes/default/images/progress_indicator/stage_past.png',
-            'themes/default/images/progress_indicator/stage_present.png',
+            'themes/default/images/progress_indicator/stage_future.svg',
+            'themes/default/images/progress_indicator/stage_past.svg',
+            'themes/default/images/progress_indicator/stage_present.svg',
         );
     }
 

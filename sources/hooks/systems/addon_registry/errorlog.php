@@ -87,7 +87,7 @@ class Hook_addon_registry_errorlog
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/audit/errorlog.png';
+        return 'themes/default/images/icons/48x48/menu/adminzone/audit/errorlog.svg';
     }
 
     /**
@@ -98,8 +98,7 @@ class Hook_addon_registry_errorlog
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/24x24/menu/adminzone/audit/errorlog.png',
-            'themes/default/images/icons/48x48/menu/adminzone/audit/errorlog.png',
+            'themes/default/images/icons/48x48/menu/adminzone/audit/errorlog.svg',
             'themes/default/css/errorlog.css',
             'sources/hooks/systems/addon_registry/errorlog.php',
             'lang/EN/errorlog.ini',

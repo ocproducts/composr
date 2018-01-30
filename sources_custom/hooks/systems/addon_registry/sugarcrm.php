@@ -144,7 +144,7 @@ CRM software supported:
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/_generic_admin/sync.png';
+        return 'themes/default/images/icons/48x48/menu/_generic_admin/sync.svg';
     }
 
     /**

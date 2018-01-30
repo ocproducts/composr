@@ -127,7 +127,7 @@ Note that this addon only affects galleries at the moment, and it requires the "
      */
     public function get_default_icon()
     {
-        return 'themes/default/images_custom/icons/48x48/menu/workflows.png';
+        return 'themes/default/images_custom/icons/48x48/menu/workflows.svg';
     }
 
     /**
@@ -138,8 +138,7 @@ Note that this addon only affects galleries at the moment, and it requires the "
     public function get_file_list()
     {
         return array(
-            'themes/default/images_custom/icons/24x24/menu/workflows.png',
-            'themes/default/images_custom/icons/48x48/menu/workflows.png',
+            'themes/default/images_custom/icons/48x48/menu/workflows.svg',
             'sources_custom/hooks/systems/addon_registry/workflows.php',
             'sources_custom/hooks/systems/notifications/workflow_step.php',
             'lang_custom/EN/workflows.ini',

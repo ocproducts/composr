@@ -124,7 +124,7 @@ class Hook_addon_registry_community_billboard
      */
     public function get_default_icon()
     {
-        return 'themes/default/images_custom/icons/48x48/menu/adminzone/audit/community_billboard.png';
+        return 'themes/default/images_custom/icons/48x48/menu/adminzone/audit/community_billboard.svg';
     }
 
     /**
@@ -135,8 +135,7 @@ class Hook_addon_registry_community_billboard
     public function get_file_list()
     {
         return array(
-            'themes/default/images_custom/icons/24x24/menu/adminzone/audit/community_billboard.png',
-            'themes/default/images_custom/icons/48x48/menu/adminzone/audit/community_billboard.png',
+            'themes/default/images_custom/icons/48x48/menu/adminzone/audit/community_billboard.svg',
             'themes/default/templates_custom/COMMUNITY_BILLBOARD_DETAILS.tpl',
             'themes/default/templates_custom/COMMUNITY_BILLBOARD_STORE_LIST_LINE.tpl',
             'themes/default/templates_custom/ECOM_PRODUCT_COMMUNITY_BILLBOARD.tpl',

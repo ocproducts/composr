@@ -116,24 +116,24 @@
         clickBtnSubmit: function (e, button) {
             var form = button.form;
 
-            form.setAttribute('target', '_self');
+            form.target = '_self';
 
             // if (form.oldAction !== undefined) {
-            //     form.setAttribute('action', form.oldAction);
+            //     form.action = form.oldAction;
             // }
             //
             // if ($dom.trigger(form, 'submit') !== false) {
             //     $cms.ui.disableButton(button);
             //     form.submit();
             // }
-            
+
             $cms.form.doFormSubmit(form);
         },
 
         doPostingFormPreview: function (e, btn) {
             var form = btn.form,
                 url = $cms.maintainThemeInLink($cms.getPreviewUrl() + $cms.keep());
-            
+
             $cms.form.doFormPreview(form, url);
         },
 
@@ -202,11 +202,11 @@
             }
 
             // Reset form target
-            form.setAttribute('target', '_top');
+            form.target = '_top';
             if (form.oldAction !== undefined) {
-                form.oldAction = form.getAttribute('action');
+                form.oldAction = form.action;
             }
-            form.setAttribute('action', moreUrl);
+            form.action = moreUrl;
 
             // Handle threaded strip-on-focus
             if ((form.elements['post'].stripOnFocus !== undefined) && (form.elements['post'].value === form.elements['post'].stripOnFocus)) {
@@ -221,14 +221,14 @@
             var form = this.form,
                 submitBtn = form.elements['submit_button'],
                 validValue;
-            
+
             form.addEventListener('submit', function submitCheck(e) {
                 var value = form.elements['captcha'].value;
-                
+
                 if (value === validValue) {
                     return;
                 }
-                
+
                 submitBtn.disabled = true;
                 var url = '{$FIND_SCRIPT;,snippet}?snippet=captcha_wrong&name=' + encodeURIComponent(value);
                 e.preventDefault();
@@ -305,7 +305,7 @@
             infiniteScrollingCommentsWrapper();
         }
     };
-    
+
     $cms.templates.postChildLoadLink = function (params, container) {
         var ids = params.implodedIds,
             id = params.id;
@@ -349,10 +349,10 @@
         if (!commentsForm) {
             return;
         }
-        
+
         $dom.on(commentsForm, 'submit', function commentsAjaxListener(event) {
             var ret;
-            
+
             if (event.detail && (event.detail.triggeredByDoFormPreview || event.detail.triggeredByCommentsAjaxListener )) {
                 return true;
             }
@@ -361,7 +361,7 @@
             event.preventDefault();
 
             ret = $dom.trigger(commentsForm, 'submit', { detail: { triggeredByCommentsAjaxListener: true } });
-            
+
             if (ret === false) {
                 return false;
             }
@@ -380,7 +380,7 @@
             // Note what posts are shown now
             var knownPosts = commentsWrapper.querySelectorAll('.post'),
                 knownTimes = [];
-            
+
             for (var i = 0; i < knownPosts.length; i++) {
                 knownTimes.push(knownPosts[i].className.replace(/^post /, ''));
             }
@@ -389,7 +389,7 @@
             var post = 'options=' + encodeURIComponent(options) + '&hash=' + encodeURIComponent(hash),
                 postElement = commentsForm.elements['post'],
                 postValue = postElement.value;
-            
+
             if (postElement.defaultSubstringToStrip !== undefined) {// Strip off prefix if unchanged
                 if (postValue.substring(0, postElement.defaultSubstringToStrip.length) === postElement.defaultSubstringToStrip) {
                     postValue = postValue.substring(postElement.defaultSubstringToStrip.length, postValue.length);
@@ -500,6 +500,8 @@
                 var loadingImage = document.createElement('img');
                 loadingImage.className = 'ajax-loading';
                 loadingImage.src = $util.srl('{$IMG;,loading}');
+                loadingImage.width = '20';
+                loadingImage.height = '20';
                 loadingImage.style.height = '12px';
                 _replaceSpot.appendChild(loadingImage);
 
@@ -514,7 +516,7 @@
             });
         });
     }
-    
+
     /**
      * Reply to a topic using AJAX
      * @param isThreaded

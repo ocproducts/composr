@@ -87,7 +87,7 @@ class Hook_addon_registry_core_notifications
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/tool_buttons/notifications2.png';
+        return 'themes/default/images/icons/48x48/tool_buttons/notifications2.svg';
     }
 
     /**
@@ -98,16 +98,11 @@ class Hook_addon_registry_core_notifications
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/24x24/tool_buttons/notifications.png',
-            'themes/default/images/icons/48x48/tool_buttons/notifications.png',
-            'themes/default/images/icons/24x24/tool_buttons/notifications2.png',
-            'themes/default/images/icons/48x48/tool_buttons/notifications2.png',
-            'themes/default/images/icons/24x24/menu/adminzone/setup/notifications.png',
-            'themes/default/images/icons/48x48/menu/adminzone/setup/notifications.png',
-            'themes/default/images/icons/24x24/buttons/disable_notifications.png',
-            'themes/default/images/icons/24x24/buttons/enable_notifications.png',
-            'themes/default/images/icons/48x48/buttons/disable_notifications.png',
-            'themes/default/images/icons/48x48/buttons/enable_notifications.png',
+            'themes/default/images/icons/48x48/tool_buttons/notifications.svg',
+            'themes/default/images/icons/48x48/tool_buttons/notifications2.svg',
+            'themes/default/images/icons/48x48/menu/adminzone/setup/notifications.svg',
+            'themes/default/images/icons/48x48/buttons/disable_notifications.svg',
+            'themes/default/images/icons/48x48/buttons/enable_notifications.svg',
             'sources/hooks/systems/addon_registry/core_notifications.php',
             'sources/hooks/systems/commandr_fs_extended_config/notification_lockdown.php',
             'sources/notifications.php',

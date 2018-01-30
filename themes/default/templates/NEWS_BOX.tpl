@@ -28,7 +28,7 @@
 	{+START,IF,{$AND,{$NOT,{BLOG}},{$IS_NON_EMPTY,IMG}}}{+START,IF,{$DESKTOP}}
 		<div class="newscat-img newscat-img-author block-desktop">
 			{+START,IF_NON_EMPTY,{CATEGORY}}
-				<img src="{$ENSURE_PROTOCOL_SUITABILITY*,{IMG}}" alt="" />
+				<img width="100" height="100" src="{$ENSURE_PROTOCOL_SUITABILITY*,{IMG}}" alt="" />
 			{+END}
 		</div>
 	{+END}{+END}

@@ -1298,7 +1298,7 @@ class Module_chat
                     continue;
                 }
 
-                if ((post_param_string('select_' . $effect . $suffix) == '-1') && (post_param_string('hidFileID_upload_' . $effect . $suffix, null) === null) && (isset($_FILES['upload_' . $effect . $suffix])) && (!is_uploaded_file($_FILES['upload_' . $effect . $suffix]['tmp_name']))) { // Handle special case of '-1'
+                if ((post_param_string('select_' . $effect . $suffix) == '-1') && (post_param_string('hid_file_id_upload_' . $effect . $suffix, null) === null) && (isset($_FILES['upload_' . $effect . $suffix])) && (!is_uploaded_file($_FILES['upload_' . $effect . $suffix]['tmp_name']))) { // Handle special case of '-1'
                     $url = '-1';
                 } else {
                     $url_bits = get_url('select_' . $effect . $suffix, 'upload_' . $effect . $suffix, 'uploads/personal_sound_effects', 0, CMS_UPLOAD_AUDIO);

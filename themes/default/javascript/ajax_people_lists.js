@@ -77,7 +77,7 @@
 
         function updateAjaxNemberListResponse(responseXml) {
             var listContents = responseXml && responseXml.querySelector('result');
-            
+
             if (!listContents || !currentListForEl) {
                 return;
             }
@@ -89,14 +89,14 @@
             //if (list_contents.childNodes.length==0) return;
             var list = document.createElement(isDataList ? 'datalist' : 'select');
             list.className = 'people-list';
-            list.setAttribute('id', 'ajax_list');
+            list.id = 'ajax_list';
             if (isDataList) {
                 currentListForEl.setAttribute('list', 'ajax_list');
             } else {
                 if (listContents.childNodes.length == 1) { // We need to make sure it is not a dropdown. Normally we'd use size (multiple isn't correct, but we'll try this for 1 as it may be more stable on some browsers with no side effects)
-                    list.setAttribute('multiple', 'multiple');
+                    list.multiple = true;
                 } else {
-                    list.setAttribute('size', listContents.childNodes.length + 1);
+                    list.size = listContents.childNodes.length + 1;
                 }
                 list.style.position = 'absolute';
                 list.style.left = ($dom.findPosX(currentListForEl)) + 'px';
@@ -109,7 +109,7 @@
             }
 
             var i, item, displaytext;
-            
+
             for (i = 0; i < listContents.children.length; i++) {
                 item = document.createElement('option');
                 item.value = listContents.children[i].getAttribute('value');
@@ -131,7 +131,7 @@
             if (isDataList) {
                 return;
             }
-            
+
             $dom.fadeIn(list);
 
             var currentListForCopy = currentListForEl;

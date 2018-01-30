@@ -3,12 +3,12 @@
 
     $cms.templates.pointsGive = function pointsGive(params, container) {
         var givePointsFormLastValid;
-        
+
         $dom.on(container, 'submit', '.js-submit-check-form', function (e, form) {
             if (givePointsFormLastValid && (givePointsFormLastValid.getTime() === $cms.form.lastChangeTime(form).getTime())) {
                 return;
             }
-            
+
             e.preventDefault();
 
             $cms.form.checkForm(form, false).then(function (valid) {

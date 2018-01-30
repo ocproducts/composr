@@ -17,11 +17,11 @@
 				<div class="cns-forum-topic-title-bits">
 					<span class="cns-forum-topic-title-bits-left">
 						{+START,LOOP,TOPIC_ROW_LINKS}
-							<a rel="nofollow" href="{URL*}"><img class="vertical-alignment" src="{$IMG*,icons/14x14/cns_topic_modifiers/{IMG}}" srcset="{$IMG*,icons/28x28/cns_topic_modifiers/{IMG}} 2x" title="{$STRIP_TAGS,{ALT}}" alt="{$STRIP_TAGS,{ALT}}" /></a>
+							<a rel="nofollow" href="{URL*}"><img class="vertical-alignment" width="14" height="14" src="{$IMG*,icons/28x28/cns_topic_modifiers/{IMG}}" title="{$STRIP_TAGS,{ALT}}" alt="{$STRIP_TAGS,{ALT}}" /></a>
 						{+END}
 
 						{+START,LOOP,TOPIC_ROW_MODIFIERS}
-							<img class="vertical-alignment" src="{$IMG*,icons/14x14/cns_topic_modifiers/{IMG}}" srcset="{$IMG*,icons/28x28/cns_topic_modifiers/{IMG}} 2x" title="{ALT*}" alt="{ALT*}" />
+							<img class="vertical-alignment" width="14" height="14" src="{$IMG*,icons/28x28/cns_topic_modifiers/{IMG}}" title="{ALT*}" alt="{ALT*}" />
 						{+END}
 					</span>
 
@@ -63,11 +63,11 @@
 
 			<div class="cns-forum-topic-title-bits-left">
 				{+START,LOOP,TOPIC_ROW_LINKS}
-					<a rel="nofollow" href="{URL*}"><img class="vertical-alignment" src="{$IMG*,icons/14x14/cns_topic_modifiers/{IMG}}" srcset="{$IMG*,icons/28x28/cns_topic_modifiers/{IMG}} 2x" title="{$STRIP_TAGS,{ALT}}" alt="{$STRIP_TAGS,{ALT}}" /></a>
+					<a rel="nofollow" href="{URL*}"><img class="vertical-alignment" width="14" height="14" src="{$IMG*,icons/28x28/cns_topic_modifiers/{IMG}}" title="{$STRIP_TAGS,{ALT}}" alt="{$STRIP_TAGS,{ALT}}" /></a>
 				{+END}
 
 				{+START,LOOP,TOPIC_ROW_MODIFIERS}
-					<img class="vertical-alignment" src="{$IMG*,icons/14x14/cns_topic_modifiers/{IMG}}" srcset="{$IMG*,icons/28x28/cns_topic_modifiers/{IMG}} 2x" title="{ALT*}" alt="{ALT*}" />
+					<img class="vertical-alignment" width="14" height="14" src="{$IMG*,icons/28x28/cns_topic_modifiers/{IMG}}" title="{ALT*}" alt="{ALT*}" />
 				{+END}
 			</div>
 		</div>

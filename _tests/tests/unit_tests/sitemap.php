@@ -180,7 +180,6 @@ class sitemap_test_set extends cms_test_case
         $props_meta = array(
             'description',
             'image',
-            'image_2x',
             'add_date',
             'edit_date',
             'submitter',

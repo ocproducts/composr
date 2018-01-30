@@ -52,11 +52,11 @@
             var el = $dom.$('#url_' + window.currentSelection),
                 urlEl,
                 captionEl;
-            
+
             if (!el) {
                 return;
             }
-            
+
             el.value = input.value;
 
             urlEl = $dom.$('#edit_form').elements['url'];
@@ -86,16 +86,10 @@
                 menuEditorWrapEl.classList.add('docked');
                 menuEditorWrapEl.classList.remove('docked');
                 img.src = '{$IMG;*,1x/arrow_box_hover}';
-                if (img.srcset !== undefined) {
-                    img.srcset = '{$IMG;*,2x/arrow_box_hover}' + ' 2x';
-                }
             } else {
                 menuEditorWrapEl.classList.add('non-docked');
                 menuEditorWrapEl.classList.remove('docked');
                 img.src = '{$IMG;*,1x/arrow_box}';
-                if (img.srcset !== undefined) {
-                    img.srcset = '{$IMG;*,2x/arrow_box}' + ' 2x';
-                }
             }
         }
     };
@@ -275,14 +269,14 @@
                             null
                         );
                     }
-                    
+
                     // Halt here unless we're moving an item
                     return $util.promiseHalt();
                 }).then(function (answer) {
                     if (answer.toLowerCase() === '{!INPUTSYSTEM_CANCEL;^}'.toLowerCase()) {
                         return;
                     }
-                    
+
                     var post = '', name, value;
                     for (var i = 0; i < ob.form.elements.length; i++) {
                         name = ob.form.elements[i].name;
@@ -329,7 +323,7 @@
                 template2 = template.replace(/replace\_me\_with\_random/gi, newId),
                 highestOrderElement = $dom.$id('highest_order'),
                 newOrder = highestOrderElement.value + 1;
-            
+
             highestOrderElement.value++;
             template2 = template2.replace(/replace\_me\_with\_order/gi, newOrder);
             template2 = template2.replace(/replace\_me\_with\_parent/gi, parentId);
@@ -338,7 +332,7 @@
             var form = $dom.$id('edit_form'),
                 _elementsBak = form.elements, 
                 elementsBak = [], i;
-            
+
             for (i = 0; i < _elementsBak.length; i++) {
                 elementsBak.push([_elementsBak[i].name, _elementsBak[i].value]);
             }
@@ -359,12 +353,12 @@
             $dom.slideUp('#mini-form-hider');
         });
     };
-    
+
     function menuEditorBranchTypeChange(id) {
         var disabled = (document.getElementById('branch_type_' + id).value !== 'page'),
             sub = $dom.$id('branch_' + id + '_follow_1'),
             sub2 = $dom.$id('branch_' + id + '_follow_2');
-        
+
         if (sub) {
             $dom.toggle(sub, disabled);
         }
@@ -416,7 +410,7 @@
                 $dom.append(li, span);
 
                 if (node.img) {
-                    $dom.append(span, $dom.create('img', { src: node.img, srcset: node.img_2x + ' 2x' }));
+                    $dom.append(span, $dom.create('img', { src: node.img }));
                     $dom.append(span, document.createTextNode(' '));
                 }
 
@@ -457,6 +451,8 @@
                         expandImg.src = $util.srl('{$IMG;^,1x/trays/expand}');
                         $dom.hide(ul);
                     }
+                    expandImg.width = '20';
+                    expandImg.height = '20';
 
                     $dom.append(expand, expandImg);
                     $dom.append(span, expand);

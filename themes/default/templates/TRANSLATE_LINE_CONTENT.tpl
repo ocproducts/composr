@@ -15,7 +15,7 @@
 			<textarea readonly="readonly" class="translate-original-text wide-field" cols="60" rows="{$ADD*,{$DIV,{$LENGTH,{OLD}},80},1}" id="old__trans_{NAME*}" name="old__{NAME*}">{OLD*}</textarea>
 		</div>
 
-		<div class="arrow-ruler"><img alt="" src="{$IMG*,arrow_ruler_small}" /></div>
+		<div class="arrow-ruler"><img alt="" width="36" src="{$IMG*,arrow_ruler}" /></div>
 
 		<div class="accessibility-hidden"><label for="trans_{ID*}">{NAME*}</label></div>
 		<div>

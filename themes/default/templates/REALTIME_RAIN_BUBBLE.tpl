@@ -8,7 +8,7 @@
 			<div class="float-surrounder">
 				<div class="email-icon">
 					{+START,IF_PASSED,SPECIAL_ICON}
-						<img src="{$IMG*,realtime_rain/{SPECIAL_ICON}}" alt="{SPECIAL_TOOLTIP*}" title="{SPECIAL_TOOLTIP*}" />
+						<img width="36" height="36" src="{$IMG*,realtime_rain/{SPECIAL_ICON}}" alt="{SPECIAL_TOOLTIP*}" title="{SPECIAL_TOOLTIP*}" />
 					{+END}
 				</div>
 

@@ -1,6 +1,6 @@
 (function ($cms, $util, $dom) {
     'use strict';
-    
+
     var $coreCns = window.$coreCns = {};
 
     $cms.views.CnsMemberProfileScreen = CnsMemberProfileScreen;
@@ -82,7 +82,7 @@
             }
         }
     });
-    
+
     $cms.templates.blockMainJoinDone = function blockMainJoinDone(params, container) {
         $dom.on(container, 'submit', '.js-submit-ga-track-dl-whitepaper', function (e, form) {
             $cms.gaTrack(null, '{!cns:DOWNLOAD_WHITEPAPER;}', null, function () {
@@ -159,14 +159,14 @@
         var form = document.getElementById('main_form'),
             submitBtn = document.getElementById('submit-button'),
             validValue;
-        
+
         form.addEventListener('submit', function submitCheck(e) {
             var value = form.elements['name'].value;
-            
+
             if (value === validValue) {
                 return;
             }
-            
+
             submitBtn.disabled = true;
             var url = '{$FIND_SCRIPT_NOHTTP;^,snippet}?snippet=exists_usergroup&name=' + encodeURIComponent(value);
             e.preventDefault();
@@ -185,14 +185,14 @@
         var form = document.getElementById('main_form'),
             submitBtn = document.getElementById('submit-button'),
             validValue;
-        
+
         form.addEventListener('submit', function submitCheck(e) {
             var value = form.elements['code'].value;
-            
+
             if (value === validValue) {
                 return;
             }
-            
+
             submitBtn.disabled = true;
             var url = '{$FIND_SCRIPT_NOHTTP;^,snippet}?snippet=exists_emoticon&name=' + encodeURIComponent(value);
             e.preventDefault();
@@ -250,12 +250,12 @@
         var form = document.getElementById('email_address').form,
             submitBtn = document.getElementById('submit-button'),
             validValue;
-        
+
         form.addEventListener('submit', function submitCheck(e) {
             if (form.elements['edit_password'] == null) {
                 return;
             }
-            
+
             if ((form.elements['password_confirm']) && (form.elements['password_confirm'].value !== form.elements['edit_password'].value)) {
                 submitBtn.disabled = false;
                 $cms.ui.alert('{!PASSWORD_MISMATCH;^}');
@@ -328,7 +328,7 @@
             }
         });
     };
-    
+
     $coreCns.decryptData = function decryptData() {
         if (document.getElementById('decryption_overlay')) {
             return;
@@ -360,7 +360,7 @@
         container.appendChild(form);
 
         var label = document.createElement('label');
-        label.setAttribute('for', 'decrypt');
+        label.for = 'decrypt';
         label.appendChild(document.createTextNode('{!encryption:DECRYPT_LABEL;^}'));
         form.appendChild(label);
 
@@ -429,7 +429,7 @@
         };
 
         var validValues;
-        
+
         form.addEventListener('submit', function submitCheck(e) {
             if ((form.elements['confirm'] !== undefined) && (form.elements['confirm'].type === 'checkbox') && (!form.elements['confirm'].checked)) {
                 $cms.ui.alert('{!cns:DESCRIPTION_I_AGREE_RULES;^}');
@@ -450,7 +450,7 @@
 
             values.push(form.elements['username'].value);
             values.push(form.elements['password'].value);
-            
+
             if (params.invitesEnabled) {
                 values.push(form.elements['email_address'].value);
             }

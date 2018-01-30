@@ -1,6 +1,6 @@
 (function ($cms, $util, $dom) {
     'use strict';
-    
+
     /**
      * Addons will add template related methods under this namespace
      * @namespace $cms.templates
@@ -144,7 +144,7 @@
 
         function doForumChoose(el, versions) {
             $dom.html('#versions', versions);
-            
+
             var show = false;
             if ((el.id !== 'none') && (el.id !== 'cns')) {
                 show = true;
@@ -153,7 +153,7 @@
                     $dom.html(label, el.nextElementSibling.textContent);
                 }
             }
-            
+
             $dom.toggle('#forum_database_info', show);
             if ($dom.$('#forum_path')) {
                 $dom.toggle('#forum_path', show);
@@ -350,7 +350,7 @@
         });
 
         $dom.on(container, 'click', '.js-click-action-add-to-twitter', function (e, link) {
-            link.setAttribute('href', 'https://twitter.com/share?count=horizontal&counturl=' + easySelfUrl + '&original_referer=' + easySelfUrl + '&text=' + encodeURIComponent(document.title) + '&url=' + easySelfUrl);
+            link.href = 'https://twitter.com/share?count=horizontal&counturl=' + easySelfUrl + '&original_referer=' + easySelfUrl + '&text=' + encodeURIComponent(document.title) + '&url=' + easySelfUrl;
 
             $cms.gaTrack(null,'social__twitter');
         });

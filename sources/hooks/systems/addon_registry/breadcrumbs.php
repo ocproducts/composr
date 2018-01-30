@@ -88,7 +88,7 @@ class Hook_addon_registry_breadcrumbs
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/structure/breadcrumbs.png';
+        return 'themes/default/images/icons/48x48/menu/adminzone/structure/breadcrumbs.svg';
     }
 
     /**
@@ -99,8 +99,7 @@ class Hook_addon_registry_breadcrumbs
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/24x24/menu/adminzone/structure/breadcrumbs.png',
-            'themes/default/images/icons/48x48/menu/adminzone/structure/breadcrumbs.png',
+            'themes/default/images/icons/48x48/menu/adminzone/structure/breadcrumbs.svg',
             'sources/hooks/systems/addon_registry/breadcrumbs.php',
             'data/xml_config/breadcrumbs.xml',
             'sources/breadcrumbs.php',

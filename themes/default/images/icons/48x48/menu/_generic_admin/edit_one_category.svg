@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+]>
+<svg version="1.1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="48px" height="48px" viewBox="-2.922 -2.685 48 48" enable-background="new -2.922 -2.685 48 48"
+	 xml:space="preserve">
+<defs>
+</defs>
+<path fill="#C8691C" d="M42.091,37.027c0,1.516-1.228,2.745-2.745,2.745H4.553c-1.516,0-2.747-1.229-2.747-2.745V15.052
+	c0-1.518,1.23-2.747,2.747-2.747h34.793c1.518,0,2.745,1.229,2.745,2.747V37.027z"/>
+<path fill="#F79523" d="M13.733,22.395c-1.516,0-2.747-1.229-2.747-2.747v-5.493h-8.24C1.23,14.155,0,15.383,0,16.901v21.975
+	c0,1.516,1.23,2.745,2.747,2.745h36.624c1.516,0,2.746-1.229,2.746-2.745V22.395H13.733z"/>
+<rect x="1.422" y="16.082" transform="matrix(0.6428 -0.766 0.766 0.6428 -9.1138 21.1908)" fill="#52CAF5" width="33.487" height="8.572"/>
+<rect x="28.092" y="1.588" transform="matrix(0.6427 -0.7661 0.7661 0.6427 6.3356 25.3332)" fill="#6D6E71" width="4.469" height="8.574"/>
+<polygon fill="#FCB51E" points="10.725,35.901 5.636,37.925 2.913,35.641 4.159,30.391 "/>
+<polygon points="5.431,37.824 2.267,39.109 3.045,35.823 "/>
+<rect x="26.388" y="2.382" transform="matrix(-0.6429 0.7659 -0.7659 -0.6429 50.4286 -14.6179)" fill="#A7A9AC" width="4.467" height="4.127"/>
+<polygon fill="#58595B" points="4.193,36.786 3.045,35.823 2.277,39.069 "/>
+<polygon fill="#FFD65A" points="4.22,36.737 7.32,33.043 4.159,30.391 2.913,35.641 "/>
+<rect x="-0.283" y="16.873" transform="matrix(-0.6428 0.766 -0.766 -0.6428 41.5497 18.4983)" fill="#84D5F7" width="33.489" height="4.128"/>
+<g>
+	<path fill="#FFFFFF" d="M28.477,1.408l6.568,5.511l-24.32,29.042l-8.479,3.121l1.849-8.673L28.477,1.408 M28.354,0l-0.643,0.765
+		L3.33,29.766l-0.16,0.191L3.117,30.2l-1.849,8.673L0.89,40.646l1.701-0.626l8.479-3.121l0.25-0.092l0.171-0.205l24.32-29.042
+		l0.642-0.766l-0.766-0.642L29.12,0.642L28.354,0L28.354,0z"/>
+</g>
+</svg>

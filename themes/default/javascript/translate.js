@@ -10,7 +10,7 @@
         old = strVal(old);
         langFrom = strVal(langFrom);
         langTo = strVal(langTo);
-        
+
         var apiKey = '{$VALUE_OPTION;,google_translate_api_key}';
 
         if (langFrom === langTo) {

@@ -21,6 +21,7 @@
 .sortable-table th.table-sortable span {
 	cursor: pointer;
 	background-image: url('{$IMG;,sortable_tables/sortable}');
+	background-size: 11px 16px;
 	background-position: center left;
 	background-repeat: no-repeat;
 	min-height: 16px;
@@ -28,16 +29,19 @@
 }
 .sortable-table th.table-sorted-asc span {
 	background-image: url('{$IMG;,sortable_tables/sorted_up}');
+	background-size: 11px 16px;
 	background-position: center left;
 	background-repeat: no-repeat;
 }
 .sortable-table th.table-sorted-desc span {
 	background-image: url('{$IMG;,sortable_tables/sorted_down}');
+	background-size: 11px 16px;
 	background-position: center left;
 	background-repeat: no-repeat;
 }
 .sortable-table th.table-filtered span {
 	background-image: url('{$IMG;,sortable_tables/filter}');
+	background-size: 14px 11px;
 	background-position: center left;
 	background-repeat: no-repeat;
 }

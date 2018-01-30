@@ -9,7 +9,7 @@
 		<div id="colours_go_here_{NAME*}">
 			<div aria-busy="true" class="spaced">
 				<div class="ajax-loading vertical-alignment">
-					<img src="{$IMG*,loading}" title="{!LOADING}" alt="{!LOADING}" />
+					<img width="20" height="20" src="{$IMG*,loading}" title="{!LOADING}" alt="{!LOADING}" />
 					<span>{!LOADING}</span>
 				</div>
 			</div>
@@ -22,7 +22,7 @@
 			<div id="colours_go_here_{NAME*}">
 				<div aria-busy="true" class="spaced">
 					<div class="ajax-loading vertical-alignment">
-						<img src="{$IMG*,loading}" title="{!LOADING}" alt="{!LOADING}" />
+						<img width="20" height="20" src="{$IMG*,loading}" title="{!LOADING}" alt="{!LOADING}" />
 						<span>{!LOADING}</span>
 					</div>
 				</div>

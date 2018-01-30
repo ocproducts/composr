@@ -40,9 +40,9 @@
             var i, store;
             for (i = 0; i < form.elements.length; i++) {
                 store = document.createElement('input');
-                store.setAttribute('type', 'hidden');
+                store.type = 'hidden';
                 store.name = form.elements[i].name;
-                if (form.elements[i].getAttribute('type') === 'checkbox') {
+                if (form.elements[i].type === 'checkbox') {
                     store.value = form.elements[i].checked ? '1' : '0';
                 } else {
                     store.value = form.elements[i].value;
@@ -135,7 +135,7 @@
                     return; // Nothing interatively edited
                 }
 
-                $dom.html(element, '<div aria-busy="true" class="ajax-loading vertical-alignment"><img src="' + $util.srl('{$IMG;,loading}') + '" /> <span>{!LOADING;^}</span></div>');
+                $dom.html(element, '<div aria-busy="true" class="ajax-loading vertical-alignment"><img width="20" height="20" src="' + $util.srl('{$IMG;,loading}') + '" /> <span>{!LOADING;^}</span></div>');
 
                 var loadingPreviewOf = id;
 
@@ -150,7 +150,7 @@
 
                 function reloadedPreview(responseXml) {
                     var ajaxResult = responseXml && responseXml.querySelector('result');
-                    
+
                     if (!loadingPreviewOf) {
                         return;
                     }
@@ -208,18 +208,18 @@
         var form = document.getElementById('main_form'),
             submitBtn = document.getElementById('submit-button'),
             validValue;
-        
+
         form.addEventListener('submit', function submitCheck(e) {
             var value = form.elements['zone'].value;
-            
+
             if (value === validValue) {
                 return;
             }
-            
+
             submitBtn.disabled = true;
             var url = '{$FIND_SCRIPT_NOHTTP;^,snippet}?snippet=exists_zone&name=' + encodeURIComponent(value);
             e.preventDefault();
-            
+
             $cms.form.doAjaxFieldTest(url).then(function (valid) {
                 if (valid) {
                     validValue = value;

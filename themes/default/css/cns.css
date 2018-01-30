@@ -889,112 +889,55 @@ hr.cns-sig-barrier {
 */
 
 .buttons--forum {
-	background-image: url('{$IMG,icons/24x24/buttons/forum}') !important;
+	background-image: url('{$IMG,icons/48x48/buttons/forum}') !important;
 }
 .buttons--mark-read-forum {
-	background-image: url('{$IMG,icons/24x24/buttons/mark_read}') !important;
+	background-image: url('{$IMG,icons/48x48/buttons/mark_read}') !important;
 }
 .buttons--mark-read-topic {
-	background-image: url('{$IMG,icons/24x24/buttons/mark_read}') !important;
+	background-image: url('{$IMG,icons/48x48/buttons/mark_read}') !important;
 }
 .buttons--mark-unread-forum {
-	background-image: url('{$IMG,icons/24x24/buttons/mark_unread}') !important;
+	background-image: url('{$IMG,icons/48x48/buttons/mark_unread}') !important;
 }
 .buttons--mark-unread-topic {
-	background-image: url('{$IMG,icons/24x24/buttons/mark_unread}') !important;
+	background-image: url('{$IMG,icons/48x48/buttons/mark_unread}') !important;
 }
 .buttons--new-post-full {
-	background-image: url('{$IMG,icons/24x24/buttons/new_post_full}') !important;
+	background-image: url('{$IMG,icons/48x48/buttons/new_post_full}') !important;
 }
 /*{+START,IF,{$ADDON_INSTALLED,cns_forum}}*/
 	.buttons--new-topic {
-		background-image: url('{$IMG,icons/24x24/buttons/new_topic}') !important;
+		background-image: url('{$IMG,icons/48x48/buttons/new_topic}') !important;
 	}
 /*{+END}*/
 .buttons--new-quote {
-	background-image: url('{$IMG,icons/24x24/buttons/new_quote}') !important;
+	background-image: url('{$IMG,icons/48x48/buttons/new_quote}') !important;
 }
 .buttons--whisper {
-	background-image: url('{$IMG,icons/24x24/buttons/whisper}') !important;
+	background-image: url('{$IMG,icons/48x48/buttons/whisper}') !important;
 }
 /*{+START,IF,{$ADDON_INSTALLED,cns_multi_moderations}}*/
 	.menu--adminzone--structure--forum--multi-moderations {
-		background-image: url('{$IMG,icons/24x24/menu/adminzone/structure/forum/multi_moderations}') !important;
+		background-image: url('{$IMG,icons/48x48/menu/adminzone/structure/forum/multi_moderations}') !important;
 	}
 /*{+END}*/
 .menu--site-meta--user-actions--lost-password {
-	background-image: url('{$IMG,icons/24x24/menu/site_meta/user_actions/lost_password}') !important;
+	background-image: url('{$IMG,icons/48x48/menu/site_meta/user_actions/lost_password}') !important;
 }
 /*{+START,IF,{$ADDON_INSTALLED,cns_warnings}}*/
 	.tabs--member-account--warnings {
-		background-image: url('{$IMG,icons/24x24/tabs/member_account/warnings}') !important;
+		background-image: url('{$IMG,icons/48x48/tabs/member_account/warnings}') !important;
 	}
 	.buttons--warn {
-		background-image: url('{$IMG,icons/24x24/buttons/warn}') !important;
+		background-image: url('{$IMG,icons/48x48/buttons/warn}') !important;
 	}
 /*{+END}*/
 .buttons--linear {
-	background-image: url('{$IMG,icons/24x24/buttons/linear}') !important;
+	background-image: url('{$IMG,icons/48x48/buttons/linear}') !important;
 }
 .buttons--threaded {
-	background-image: url('{$IMG,icons/24x24/buttons/threaded}') !important;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.buttons--forum {
-		background-image: url('{$IMG,icons/48x48/buttons/forum}') !important;
-	}
-	.buttons--revisions {
-		background-image: url('{$IMG,icons/48x48/buttons/revisions}') !important;
-	}
-	.buttons--mark-read-forum {
-		background-image: url('{$IMG,icons/48x48/buttons/mark_read}') !important;
-	}
-	.buttons--mark-read-topic {
-		background-image: url('{$IMG,icons/48x48/buttons/mark_read}') !important;
-	}
-	.buttons--mark-unread-forum {
-		background-image: url('{$IMG,icons/48x48/buttons/mark_unread}') !important;
-	}
-	.buttons--mark-unread-topic {
-		background-image: url('{$IMG,icons/48x48/buttons/mark_unread}') !important;
-	}
-	.buttons--new-post-full {
-		background-image: url('{$IMG,icons/48x48/buttons/new_post_full}') !important;
-	}
-	/*{+START,IF,{$ADDON_INSTALLED,cns_forum}}*/
-		.buttons--new-topic {
-			background-image: url('{$IMG,icons/48x48/buttons/new_topic}') !important;
-		}
-	/*{+END}*/
-	.buttons--new-quote {
-		background-image: url('{$IMG,icons/48x48/buttons/new_quote}') !important;
-	}
-	.buttons--whisper {
-		background-image: url('{$IMG,icons/48x48/buttons/whisper}') !important;
-	}
-	/*{+START,IF,{$ADDON_INSTALLED,cns_multi_moderations}}*/
-		.menu--adminzone--structure--forum--multi-moderations {
-			background-image: url('{$IMG,icons/48x48/menu/adminzone/structure/forum/multi_moderations}') !important;
-		}
-	/*{+END}*/
-	.menu--site-meta--user-actions--lost-password {
-		background-image: url('{$IMG,icons/48x48/menu/site_meta/user_actions/lost_password}') !important;
-	}
-	/*{+START,IF,{$ADDON_INSTALLED,cns_warnings}}*/
-		.tabs--member-account--warnings {
-			background-image: url('{$IMG,icons/48x48/tabs/member_account/warnings}') !important;
-		}
-		.buttons--warn {
-			background-image: url('{$IMG,icons/48x48/buttons/warn}') !important;
-		}
-	/*{+END}*/
-	.buttons--linear {
-		background-image: url('{$IMG,icons/48x48/buttons/linear}') !important;
-	}
-	.buttons--threaded {
-		background-image: url('{$IMG,icons/48x48/buttons/threaded}') !important;
-	}
+	background-image: url('{$IMG,icons/48x48/buttons/threaded}') !important;
 }
 
 /*{+START,CSS_MODE,mobile}*/

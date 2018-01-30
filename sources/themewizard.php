@@ -753,8 +753,6 @@ function calculate_theme($seed, $source_theme, $algorithm, $show = 'colours', $d
                         $img = generate_recoloured_image($path, '#072A66', $colours['dark_border'], '#C7D5EC', $colours['comcode_quote_left'], '#8CA7D2', $colours['comcode_quote_right'], 'horizontal');
                     } elseif ($show == '1x/tabs/modern_subtab_active') {
                         $img = generate_recoloured_image($path, '#FFFFFF', $colours['WB'], '#7F9AC5', $colours['box_title_background_2']);
-                    } elseif ($show == '2x/tabs/modern_subtab_active') {
-                        $img = generate_recoloured_image($path, '#FFFFFF', $colours['WB'], '#7F9AC5', $colours['box_title_background_2']);
                     } elseif ($show == 'tabs/modern_subtab_header_column') {
                         $img = generate_recoloured_image($path, '#FFFFFF', $colours['WB'], '#7F9AC5', $colours['box_title_background_2']);
                     } elseif ($show == 'menu_bullet') {
@@ -767,9 +765,9 @@ function calculate_theme($seed, $source_theme, $algorithm, $show = 'colours', $d
                         $img = generate_recoloured_image($path, '#B5B5B5', $colours['tab_border'], '#F4F4F4', $colours['area_5_background']);
                     } elseif (substr($show, 0, 10) == 'checklist/') {
                         $img = generate_recoloured_image($path, '#335082', $colours['special_borderer'], '#091C3D', $colours['special_middle']);
-                    } elseif ($show == '1x/arrow_box' || $show == '2x/arrow_box') {
+                    } elseif ($show == '1x/arrow_box') {
                         $img = generate_recoloured_image($path, '#12467A', $colours['a.link'], '#0A223D', $colours['a.link__dark']);
-                    } elseif ($show == '1x/arrow_box_hover' || $show == '2x/arrow_box_hover') {
+                    } elseif ($show == '1x/arrow_box_hover') {
                         $img = generate_recoloured_image($path, '#12467A', $colours['a.hover'], '#0A223D', $colours['a.hover__dark']);
                     } elseif (in_array($show, array('cns_general/no_new_posts_redirect', 'cns_general/new_posts_redirect'))) {
                         $img = generate_recoloured_image($path, '#FFFFFF', '#FFFFFF', '#549B8C', $colours['cnsredirectindicator']);

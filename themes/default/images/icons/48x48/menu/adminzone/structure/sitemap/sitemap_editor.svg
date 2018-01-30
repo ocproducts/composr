@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+]>
+<svg version="1.1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="48px" height="48px" viewBox="-2.14 -5.589 48 48" enable-background="new -2.14 -5.589 48 48"
+	 xml:space="preserve">
+<defs>
+</defs>
+<path fill="#3588A6" d="M0,11.049h13.076V0.479H0V11.049z M11.224,9.414h-9.48V2.113h9.48V9.414z"/>
+<path fill="#3588A6" d="M15.474,36.319h13.076V25.748H15.474V36.319z M26.805,34.685h-9.479v-7.191h9.479V34.685z"/>
+<path fill="#3588A6" d="M30.729,36.319h13.075V25.748H30.729V36.319z M42.06,34.685h-9.479v-7.191h9.479V34.685z"/>
+<path fill="#3588A6" d="M0.327,36.319h13.076V25.748H0.327V36.319z M11.55,34.685H2.071v-7.191h9.479V34.685z"/>
+<rect x="21.248" y="5.008" fill="#C86B28" width="1.743" height="17.805"/>
+<rect x="5.993" y="17.473" fill="#C86B28" width="32.037" height="1.743"/>
+<rect x="13.185" y="4.619" fill="#C86B28" width="9.806" height="1.745"/>
+<rect x="5.993" y="17.582" fill="#C86B28" width="1.743" height="8.151"/>
+<rect x="36.288" y="17.582" fill="#C86B28" width="1.742" height="8.151"/>
+<rect x="4.955" y="14.948" transform="matrix(0.6428 -0.766 0.766 0.6428 -6.9335 23.7623)" fill="#52CAF5" width="34.115" height="8.735"/>
+<rect x="32.126" y="0.183" transform="matrix(0.6424 -0.7663 0.7663 0.6424 8.8136 27.9909)" fill="#6D6E71" width="4.551" height="8.736"/>
+<polygon fill="#FCB51E" points="14.435,35.142 9.249,37.203 6.475,34.877 7.743,29.526 "/>
+<polygon points="9.04,37.103 5.816,38.411 6.609,35.063 "/>
+<rect x="30.39" y="0.992" transform="matrix(-0.6432 0.7657 -0.7657 -0.6432 56.0465 -19.9267)" fill="#A7A9AC" width="4.552" height="4.206"/>
+<polygon fill="#58595B" points="7.778,36.044 6.609,35.063 5.827,38.368 "/>
+<polygon fill="#FFD65A" points="7.805,35.994 10.964,32.23 7.743,29.526 6.475,34.877 "/>
+<rect x="3.22" y="15.756" transform="matrix(-0.6428 0.7661 -0.7661 -0.6428 46.993 13.8026)" fill="#84D5F7" width="34.117" height="4.205"/>
+</svg>

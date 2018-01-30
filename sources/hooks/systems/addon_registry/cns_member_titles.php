@@ -87,7 +87,7 @@ class Hook_addon_registry_cns_member_titles
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/tabs/member_account/edit/title.png';
+        return 'themes/default/images/icons/48x48/tabs/member_account/edit/title.svg';
     }
 
     /**
@@ -98,8 +98,7 @@ class Hook_addon_registry_cns_member_titles
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/24x24/tabs/member_account/edit/title.png',
-            'themes/default/images/icons/48x48/tabs/member_account/edit/title.png',
+            'themes/default/images/icons/48x48/tabs/member_account/edit/title.svg',
             'sources/hooks/systems/addon_registry/cns_member_titles.php',
             'sources/hooks/systems/profiles_tabs_edit/title.php',
             'sources/hooks/systems/config/max_member_title_length.php',

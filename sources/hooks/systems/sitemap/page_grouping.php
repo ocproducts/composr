@@ -148,8 +148,7 @@ class Hook_sitemap_page_grouping extends Hook_sitemap_base
             'url' => null,
             'extra_meta' => array(
                 'description' => $description,
-                'image' => ($icon === null) ? null : find_theme_image('icons/24x24/' . $icon),
-                'image_2x' => ($icon === null) ? null : find_theme_image('icons/48x48/' . $icon),
+                'image' => ($icon === null) ? null : find_theme_image('icons/48x48/' . $icon),
                 'add_date' => null,
                 'edit_date' => null,
                 'submitter' => null,
@@ -222,8 +221,7 @@ class Hook_sitemap_page_grouping extends Hook_sitemap_base
                             'url' => $link[2],
                             'extra_meta' => array(
                                 'description' => $child_description,
-                                'image' => ($icon === null) ? null : find_theme_image('icons/24x24/' . $icon),
-                                'image_2x' => ($icon === null) ? null : find_theme_image('icons/48x48/' . $icon),
+                                'image' => ($icon === null) ? null : find_theme_image('icons/48x48/' . $icon),
                                 'add_date' => null,
                                 'edit_date' => null,
                                 'submitter' => null,

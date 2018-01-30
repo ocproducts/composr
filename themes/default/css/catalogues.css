@@ -164,17 +164,8 @@
 */
 
 .menu--cms--catalogues--add-one-catalogue {
-	background-image: url('{$IMG,icons/24x24/menu/cms/catalogues/add_one_catalogue}') !important;
+	background-image: url('{$IMG,icons/48x48/menu/cms/catalogues/add_one_catalogue}') !important;
 }
 .menu--cms--catalogues--edit-this-catalogue {
-	background-image: url('{$IMG,icons/24x24/menu/cms/catalogues/edit_this_catalogue}') !important;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.menu--cms--catalogues--add-one-catalogue {
-		background-image: url('{$IMG,icons/48x48/menu/cms/catalogues/add_one_catalogue}') !important;
-	}
-	.menu--cms--catalogues--edit-this-catalogue {
-		background-image: url('{$IMG,icons/48x48/menu/cms/catalogues/edit_this_catalogue}') !important;
-	}
+	background-image: url('{$IMG,icons/48x48/menu/cms/catalogues/edit_this_catalogue}') !important;
 }

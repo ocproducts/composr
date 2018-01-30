@@ -87,7 +87,7 @@ class Hook_addon_registry_points
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/social/points.png';
+        return 'themes/default/images/icons/48x48/menu/social/points.svg';
     }
 
     /**
@@ -98,14 +98,10 @@ class Hook_addon_registry_points
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/24x24/menu/social/points.png',
-            'themes/default/images/icons/48x48/menu/social/points.png',
-            'themes/default/images/icons/24x24/menu/adminzone/audit/points_log.png',
-            'themes/default/images/icons/24x24/menu/social/leader_board.png',
-            'themes/default/images/icons/48x48/menu/adminzone/audit/points_log.png',
-            'themes/default/images/icons/48x48/menu/social/leader_board.png',
-            'themes/default/images/icons/24x24/buttons/points.png',
-            'themes/default/images/icons/48x48/buttons/points.png',
+            'themes/default/images/icons/48x48/menu/social/points.svg',
+            'themes/default/images/icons/48x48/menu/adminzone/audit/points_log.svg',
+            'themes/default/images/icons/48x48/menu/social/leader_board.svg',
+            'themes/default/images/icons/48x48/buttons/points.svg',
             'themes/default/templates/POINTS_PROFILE.tpl',
             'sources/hooks/systems/notifications/received_points.php',
             'sources/hooks/systems/notifications/receive_points_staff.php',

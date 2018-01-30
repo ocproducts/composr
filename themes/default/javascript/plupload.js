@@ -14210,7 +14210,7 @@
 
 (function ($cms) {
     'use strict';
-    
+
     var $plupload = window.$plupload = {};
 
     $plupload.preinitFileInput = preinitFileInput;
@@ -14231,7 +14231,7 @@
 
         window.moxie.core.utils.Mime.addMimeType('image/vnd.microsoft.icon,ico');
     }
-    
+
     /**
      * @param pageType
      * @param name
@@ -14254,7 +14254,7 @@
         var multi = (pageType.includes('_multi') && (numFiles > 1)),
             element = document.getElementById(name), 
             currentNum;
-        
+
         if (element.determinedAttachmentProperties === undefined) {
             currentNum = name.replace('file', '');
             window.$posting.setAttachment(postingFieldName, currentNum, fileName, multi, $dom.data(element).pluploadObject.settings);
@@ -14270,7 +14270,7 @@
     // Listener to the 'FilesAdded' Plupload event
     function onUploadDialogCompleted(plObj, files) {
         console.log('onUploadDialogCompleted()', 'plObj:', plObj, 'files:', files);
-        
+
         var name = plObj.settings.txtName,
             fileNameField = document.getElementById(plObj.settings.txtFileName),
             fileIdField = document.getElementById(plObj.settings.hidFileID);
@@ -14313,30 +14313,30 @@
     function fireFakeUploadFieldChange(name, value) {
         console.log('fireFakeUploadFieldChange()', 'name:', name, 'value:', value);
         value = strVal(value);
-        
+
         var placeholderField = document.getElementById(name),
             plObj = $dom.data(placeholderField).pluploadObject;
-        
+
         $dom.changeValue(placeholderField, value);
-        
+
         if ((plObj == null) || (plObj.settings == null)) {
             return;
         }
 
         var fileIdField = document.getElementById(plObj.settings.hidFileID),
             fileNameField = document.getElementById(plObj.settings.txtFileName);
-        
+
         if ((value === '1') && (fileIdField.value === '-1') && (fileNameField.value !== '')) {
             plObj.start();
 
             // plupload does not support cancelling mid-way (plObj.stop won't do that unfortunately)
             // Actually the clear button DOES work during upload, but not visibly. So we can still call it's onclick with success. It's just the upload, and plupload object, and UI, will continue until it's finished uploading.
             // When upload finishes/fails, we put these back on.
-            var clearButton = document.getElementById('fsClear_' + plObj.settings.txtName);
+            var clearButton = document.getElementById('fs-clear-' + plObj.settings.txtName);
             if (clearButton) {
                 clearButton.style.display = 'none';
             }
-            var uploadButton = document.getElementById('uploadButton_' + plObj.settings.txtName);
+            var uploadButton = document.getElementById('upload-button-' + plObj.settings.txtName);
             if (uploadButton) {
                 uploadButton.disabled = true;
             }
@@ -14370,17 +14370,17 @@
         var form = document.getElementById(plObj.settings.hidFileID).form,
             allUploadsComplete = $cms.form.areUploadsComplete(form);
 
-        var clearButton = document.getElementById('fsClear_' + plObj.settings.txtName);
+        var clearButton = document.getElementById('fs-clear-' + plObj.settings.txtName);
         if (clearButton) {
             clearButton.style.display = 'inline';
         }
-        var uploadButton = document.getElementById('uploadButton_' + plObj.settings.txtName);
+        var uploadButton = document.getElementById('upload-button-' + plObj.settings.txtName);
         if (uploadButton) {
             uploadButton.disabled = false;
         }
 
         var dataResponse = strVal(data.response);
-        
+
         if (dataResponse === '') { // NOT success, happens in plupload when clicking away from document (i.e. implicit cancel)
             return;
         }
@@ -14434,12 +14434,12 @@
         if (file) {
             fireFakeUploadFieldChange(plObj.settings.txtName, '');
         }
-        
-        var clearButton = document.getElementById('fsClear_' + plObj.settings.txtName);
+
+        var clearButton = document.getElementById('fs-clear-' + plObj.settings.txtName);
         if (clearButton) {
             $dom.show(clearButton);
         }
-        var uploadButton = document.getElementById('uploadButton_' + plObj.settings.txtName);
+        var uploadButton = document.getElementById('upload-button-' + plObj.settings.txtName);
         if (uploadButton) {
             uploadButton.disabled = false;
         }
@@ -14457,7 +14457,7 @@
             }
         }
     }
-    
+
     /**
      * $plupload.preinitFileInput() is for normal Composr forms, shows dedicated input elements
      * @param pageType
@@ -14490,30 +14490,30 @@
 
         $dom.append(
             rep.parentNode,
-            '<div id="mainDiv_' + name + '" style="display: inline-block;">' +
-            '<div id="subDiv_' + name + '" class="vertical-alignment">' +
+            '<div id="main-div-' + name + '" style="display: inline-block;">' +
+            '<div id="sub-div-' + name + '" class="vertical-alignment">' +
             // This input field shows the file name(s) of the uploading/uploaded file to the user
-            '<input type="text" id="txtFileName_' + name + '" name="txtFileName_' + name + '" class="upload-response-field" size="24" disabled value="">' +
-            '<input type="button" id="uploadButton_' + name + '" class="buttons--upload button-micro" value="{!BROWSE;^*}">' +
-            '<input type="button" id="fsClear_' + name + '" class="buttons--clear button-micro clear-button" alt="{!CLEAR;^*}" value="{!CLEAR;^*}">' +
+            '<input type="text" id="txt_filename_' + name + '" name="txt_filename_' + name + '" class="upload-response-field" size="24" disabled value="">' +
+            '<input type="button" id="upload-button-' + name + '" class="buttons--upload button-micro" value="{!BROWSE;^*}">' +
+            '<input type="button" id="fs-clear-' + name + '" class="buttons--clear button-micro clear-button" alt="{!CLEAR;^*}" value="{!CLEAR;^*}">' +
             '</div>' +
-            '<div id="fsUploadProgress_' + name + '" class="progressBars"></div>' +
+            '<div id="fs-upload-progress-' + name + '" class="progress-bars"></div>' +
             // This hidden input field holds the server-side upload_id after upload is finished
-            '<input type="hidden" id="hidFileID_' + name + '" name="hidFileID_' + name + '" value="-1">' +
+            '<input type="hidden" id="hid_file_id_' + name + '" name="hid_file_id_' + name + '" value="-1">' +
             // Placeholder Plupload input field (placeholderField below)
             '<input type="text" id="' + name + '" name="' + name + '" style="display: none;" disabled>' +
             '</div>'
         );
-        
+
         var placeholderField = document.getElementById(name);
         placeholderField.oldElement = rep;
 
         var settings = getUploaderSettings(name, pageType, postingFieldName, filter);
-        settings.progress_target = 'fsUploadProgress_' + name;
+        settings.progress_target = 'fs-upload-progress-' + name;
         settings.required = rep.classList.contains('required');
-        settings.browse_button = 'uploadButton_' + name;
-        settings.drop_element = 'txtFileName_' + name;
-        settings.container = 'mainDiv_' + name;
+        settings.browse_button = 'upload-button-' + name;
+        settings.drop_element = 'txt_filename_' + name;
+        settings.container = 'main-div-' + name;
 
         var plObj = getUploaderObject(settings);
 
@@ -14525,8 +14525,8 @@
             clearButton.style.display = 'none';
         }
 
-        $dom.on('#fsClear_' + name, 'click', function () {
-            var filenameField = document.getElementById('txtFileName_' + name);
+        $dom.on('#fs-clear-' + name, 'click', function () {
+            var filenameField = document.getElementById('txt_filename_' + name);
             filenameField.value = '';
             if ((rep.form.elements[postingFieldName] != null) && name.includes('file')) {
                 clearAttachmentComcode(name.replace(/^file/, ''), rep.form.elements[postingFieldName]);
@@ -14552,21 +14552,21 @@
         name = strVal(name);
         filter = strVal(filter) || '{$CONFIG_OPTION;^,valid_types}';
         filter += ',' + filter.toUpperCase();
-        
+
         var mainDiv = document.getElementById('js-attachment-store');
 
         if (!document.getElementById(name)) {
             $dom.append(mainDiv, '<input type="text" id="' + name + '" name="' + name + '" style="display: none;" disabled>');
         }
 
-        if (!document.getElementById('txtFileName_' + name)) {
+        if (!document.getElementById('txt_filename_' + name)) {
             // This input field stores the file name(s) of the uploading/uploaded file to the user
-            $dom.append(mainDiv, '<input type="hidden" id="txtFileName_' + name + '" name="txtFileName_' + name + '" value="">');
+            $dom.append(mainDiv, '<input type="hidden" id="txt_filename_' + name + '" name="txt_filename_' + name + '" value="">');
         }
-        
-        if (!document.getElementById('hidFileID_' + name)) {
+
+        if (!document.getElementById('hid_file_id_' + name)) {
             // This hidden input field holds the server-side 'upload_id' after upload is finished
-            $dom.append(mainDiv, '<input type="hidden" id="hidFileID_' + name + '" name="hidFileID_' + name + '" value="-1">');
+            $dom.append(mainDiv, '<input type="hidden" id="hid_file_id_' + name + '" name="hid_file_id_' + name + '" value="-1">');
         }
 
         var placeholderField = document.getElementById(name);
@@ -14620,9 +14620,9 @@
             // Used to fire change events on and hold reference to .pluploadObject
             txtName: name,
             // This input field shows the file name of the uploading/uploaded file to the user
-            txtFileName: 'txtFileName_' + name,
+            txtFileName: 'txt_filename_' + name,
             // This hidden input field holds the server-side upload_id after upload is finished
-            hidFileID: 'hidFileID_' + name,
+            hidFileID: 'hid_file_id_' + name,
             page_type: pageType,
             posting_field_name: postingFieldName,
             simplifiedAttachments: false,
@@ -14695,7 +14695,7 @@
         if (!files) {
             return;
         }
-        
+
         files = arrVal(files);
 
         var count = files.length;
@@ -14749,7 +14749,7 @@
             // HTML hidden fields
             var fileIdField = document.createElement('input');
             fileIdField.type = 'hidden';
-            fileIdField.name = 'hidFileID_file' + window.extraAttachmentBase;
+            fileIdField.name = 'hid_file_id_file' + window.extraAttachmentBase;
             fileIdField.id = fileIdField.name;
             fileIdField.value = '-1';
 
@@ -14757,7 +14757,7 @@
             document.getElementById('container_for_' + fieldName).appendChild(fileIdField);
             var fileNameField = document.createElement('input');
             fileNameField.type = 'hidden';
-            fileNameField.name = 'txtFileName_file' + window.extraAttachmentBase;
+            fileNameField.name = 'txt_filename_file' + window.extraAttachmentBase;
             fileNameField.id = fileNameField.name;
             fileNameField.value = file.name.replace('C:\\fakepath\\', '');
             fileNameField.className = 'upload-response-field';
@@ -14807,7 +14807,7 @@
                             progress.setStatus('{!javascript:PLUPLOAD_COMPLETE^;}');
 
                             var decodedData = JSON.parse(request.responseText);
-                            document.getElementById('hidFileID_file' + attachmentBase).value = decodedData['upload_id'];
+                            document.getElementById('hid_file_id_file' + attachmentBase).value = decodedData['upload_id'];
 
                             if ($cms.form.isWysiwygField(element)) {
                                 window.$posting.showPreviewImagesForAttachmentComcodes(element);
@@ -14831,7 +14831,7 @@
         window.$editing.setTextbox(postField, newContents, newContents);
         document.getElementById('file' + index).value = '';
     }
-    
+
     /*
      fileprogress.js
 
@@ -14859,29 +14859,29 @@
         if (!this.fileProgressWrapper) {
             $dom.append(
                 targetEl,
-                '<div id="' + this.fileProgressID + '" class="progressWrapper">' +
-                '<div class="progressContainer" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">' +
-                '<a class="progressCancel" href="#!" style="visibility: hidden"> </a>' +
-                '<div class="progressName">' + (file && (file.name != null) ? file.name : '') + '</div>' +
-                '<div class="progressBarStatus">&nbsp;</div>' +
-                '<div class="progressBarInProgress"></div>' +
+                '<div id="' + this.fileProgressID + '" class="progress-wrapper">' +
+                '<div class="progress-container" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">' +
+                '<a class="progress-cancel" href="#!" style="visibility: hidden"> </a>' +
+                '<div class="progress-name">' + (file && (file.name != null) ? file.name : '') + '</div>' +
+                '<div class="progress-bar-status">&nbsp;</div>' +
+                '<div class="progress-bar-in-progress"></div>' +
                 '</div>' +
                 '</div>'
             );
 
             this.fileProgressWrapper = document.getElementById(this.fileProgressID);
-            this.fileProgressElement = this.fileProgressWrapper.querySelector('.progressContainer');
+            this.fileProgressElement = this.fileProgressWrapper.querySelector('.progress-container');
 
             targetEl.style.display = 'block';
 
             this.fileProgressElement.completed = false;
         } else {
-            this.fileProgressElement = this.fileProgressWrapper.querySelector('.progressContainer');
+            this.fileProgressElement = this.fileProgressWrapper.querySelector('.progress-container');
 
             this.appear();
 
             if (file && (file.name != null)) {
-                $dom.html(this.fileProgressElement.querySelector('.progressName'), file.name);
+                $dom.html(this.fileProgressElement.querySelector('.progress-name'), file.name);
             }
         }
 
@@ -14894,7 +14894,7 @@
         setProgress: function (percentage) {
             this.fileProgressElement.classList.remove('blue', 'red');
             this.fileProgressElement.classList.add('green');
-            this.fileProgressElement.children[3].className = 'progressBarInProgress';
+            this.fileProgressElement.children[3].className = 'progress-bar-in-progress';
             this.fileProgressElement.children[3].style.width = percentage + '%';
             this.fileProgressElement.setAttribute('aria-valuenow', percentage);
         },
@@ -14902,7 +14902,7 @@
             this.appear();
             this.fileProgressElement.classList.remove('green', 'red');
             this.fileProgressElement.classList.add('blue');
-            this.fileProgressElement.children[3].className = 'progressBarComplete';
+            this.fileProgressElement.children[3].className = 'progress-bar-complete';
             this.fileProgressElement.children[3].style.width = '';
             this.fileProgressElement.setAttribute('aria-valuenow', '100');
             this.completed = true;
@@ -14912,7 +14912,7 @@
             this.appear();
             this.fileProgressElement.classList.remove('green', 'blue');
             this.fileProgressElement.classList.add('red');
-            this.fileProgressElement.children[3].className = 'progressBarError';
+            this.fileProgressElement.children[3].className = 'progress-bar-error';
             this.fileProgressElement.children[3].style.width = '';
             this.fileProgressElement.setAttribute('aria-valuenow', '0');
 
@@ -14924,7 +14924,7 @@
         setCancelled: function () {
             this.appear();
             this.fileProgressElement.classList.remove('green', 'blue', 'red');
-            this.fileProgressElement.children[3].className = 'progressBarError';
+            this.fileProgressElement.children[3].className = 'progress-bar-error';
             this.fileProgressElement.children[3].style.width = '';
             this.fileProgressElement.setAttribute('aria-valuenow', '0');
 

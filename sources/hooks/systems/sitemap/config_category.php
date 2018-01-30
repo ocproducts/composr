@@ -151,8 +151,7 @@ class Hook_sitemap_config_category extends Hook_sitemap_base
             'url' => null,
             'extra_meta' => array(
                 'description' => null,
-                'image' => (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) ? find_theme_image('icons/24x24/menu/adminzone/setup/config/config') : null,
-                'image_2x' => (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) ? find_theme_image('icons/48x48/menu/adminzone/setup/config/config') : null,
+                'image' => (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) ? find_theme_image('icons/48x48/menu/adminzone/setup/config/config') : null,
                 'add_date' => null,
                 'edit_date' => null,
                 'submitter' => null,

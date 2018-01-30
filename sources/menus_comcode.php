@@ -61,7 +61,6 @@ function build_comcode_menu($comcode, $menu, $source_member, $type)
                     'extra_meta' => array(
                         'description' => null,
                         'image' => null,
-                        'image_2x' => null,
                     ),
                     'has_possible_children' => true,
                     'children' => array(),
@@ -149,7 +148,6 @@ function build_comcode_menu($comcode, $menu, $source_member, $type)
                 'extra_meta' => array(
                     'description' => null,
                     'image' => null,
-                    'image_2x' => null,
                 ),
                 'has_possible_children' => true,
                 'children' => array(),
@@ -177,7 +175,6 @@ function build_comcode_menu($comcode, $menu, $source_member, $type)
                 'extra_meta' => array(
                     'description' => null,
                     'image' => null,
-                    'image_2x' => null,
                 ),
                 'has_possible_children' => true,
                 'children' => array(),

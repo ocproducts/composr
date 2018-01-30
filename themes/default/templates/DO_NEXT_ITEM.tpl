@@ -5,7 +5,7 @@
 	{+START,IF_NON_EMPTY,{DOC}}<div id="doc_{$GET,rand_do_next_item}" style="display: none">{DOC}</div>{+END}
 
 	<div class="do-next-item-icon">
-		<a href="{URL*}" class="js-click-confirm-warning"{+START,IF_PASSED,TARGET} target="{TARGET*}"{+END}><img alt="{$STRIP_TAGS*,{DESCRIPTION}}" src="{$IMG*,icons/48x48/{PICTURE*}}" /></a>
+		<a href="{URL*}" class="js-click-confirm-warning"{+START,IF_PASSED,TARGET} target="{TARGET*}"{+END}><img alt="{$STRIP_TAGS*,{DESCRIPTION}}" width="48" height="48" src="{$IMG*,icons/48x48/{PICTURE*}}" /></a>
 	</div>
 
 	<div class="do-next-item-label">

@@ -35,7 +35,7 @@
 						{TITLE*}
 					{+END}
 					{+START,IF_PASSED,EXPAND_TYPE}
-						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{$?,{$EQ,{EXPAND_TYPE},contract},{!CONTRACT},{!EXPAND}}" title="{$?,{$EQ,{EXPAND_TYPE},contract},{!CONTRACT},{!EXPAND}}" src="{$IMG*,1x/trays/{EXPAND_TYPE}2}" /></a>
+						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{$?,{$EQ,{EXPAND_TYPE},contract},{!CONTRACT},{!EXPAND}}" title="{$?,{$EQ,{EXPAND_TYPE},contract},{!CONTRACT},{!EXPAND}}" width="24" height="24" src="{$IMG*,1x/trays/{EXPAND_TYPE}2}" /></a>
 						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{TITLE*}</a>
 					{+END}
 				</h3>
@@ -111,11 +111,11 @@
 										</th>
 
 										<td>
-											<img id="review_bar_1__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="2" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" />
-											<img id="review_bar_2__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="4" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" />
-											<img id="review_bar_3__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="6" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" />
-											<img id="review_bar_4__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="8" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" />
-											<img id="review_bar_5__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="10" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" />
+											<img id="review_bar_1__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="2" alt="" width="14" height="14" src="{$IMG*,icons/28x28/rating}" />
+											<img id="review_bar_2__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="4" alt="" width="14" height="14" src="{$IMG*,icons/28x28/rating}" />
+											<img id="review_bar_3__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="6" alt="" width="14" height="14" src="{$IMG*,icons/28x28/rating}" />
+											<img id="review_bar_4__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="8" alt="" width="14" height="14" src="{$IMG*,icons/28x28/rating}" />
+											<img id="review_bar_5__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="10" alt="" width="14" height="14" src="{$IMG*,icons/28x28/rating}" />
 											<input id="review_rating__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="js-inp-review-rating" type="hidden" name="review_rating__{REVIEW_TITLE|*}" value="" />
 										</td>
 									</tr>
@@ -127,7 +127,7 @@
 									{$SET,needs_msg_label,{$OR,{$GET,GET_NAME},{GET_EMAIL},{GET_TITLE}}}
 									{+START,IF,{$GET,needs_msg_label}}
 										<div class="vertical-alignment">
-											<a data-open-as-overlay="{}" class="link-exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="{!COMCODE_MESSAGE,Comcode}" src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" /></a>
+											<a data-open-as-overlay="{}" class="link-exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="{!COMCODE_MESSAGE,Comcode}" width="16" height="16" src="{$IMG*,icons/32x32/editor/comcode}" /></a>
 											<label for="post">{!POST_COMMENT}:</label>
 										</div>
 									{+END}
@@ -146,7 +146,7 @@
 
 									{+START,IF,{$NOT,{$GET,needs_msg_label}}}
 										<div>
-											<a data-open-as-overlay="{}" class="link-exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="{!COMCODE_MESSAGE,Comcode}" src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical-alignment" /></a>
+											<a data-open-as-overlay="{}" class="link-exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="{!COMCODE_MESSAGE,Comcode}" width="16" height="16" src="{$IMG*,icons/32x32/editor/comcode}" class="vertical-alignment" /></a>
 											<label for="post" class="vertical-alignment">{!POST_COMMENT}:</label>
 										</div>
 									{+END}

@@ -91,7 +91,7 @@ class Hook_addon_registry_news
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/rich_content/news.png';
+        return 'themes/default/images/icons/48x48/menu/rich_content/news.svg';
     }
 
     /**
@@ -102,10 +102,8 @@ class Hook_addon_registry_news
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/24x24/menu/rich_content/news.png',
-            'themes/default/images/icons/24x24/tabs/member_account/blog.png',
-            'themes/default/images/icons/48x48/menu/rich_content/news.png',
-            'themes/default/images/icons/48x48/tabs/member_account/blog.png',
+            'themes/default/images/icons/48x48/menu/rich_content/news.svg',
+            'themes/default/images/icons/48x48/tabs/member_account/blog.svg',
             'sources/hooks/systems/notifications/news_entry.php',
             'sources/hooks/modules/admin_setupwizard_installprofiles/blog.php',
             'sources/hooks/systems/realtime_rain/news.php',
@@ -136,13 +134,13 @@ class Hook_addon_registry_news
             'themes/default/templates/BLOCK_SIDE_NEWS_CATEGORIES.tpl',
             'themes/default/templates/NEWS_WORDPRESS_IMPORT_SCREEN.tpl',
             'themes/default/images/newscats/index.html',
-            'themes/default/images/newscats/art.jpg',
-            'themes/default/images/newscats/business.jpg',
-            'themes/default/images/newscats/community.jpg',
-            'themes/default/images/newscats/difficulties.jpg',
-            'themes/default/images/newscats/entertainment.jpg',
-            'themes/default/images/newscats/general.jpg',
-            'themes/default/images/newscats/technology.jpg',
+            'themes/default/images/newscats/art.svg',
+            'themes/default/images/newscats/business.svg',
+            'themes/default/images/newscats/community.svg',
+            'themes/default/images/newscats/difficulties.svg',
+            'themes/default/images/newscats/entertainment.svg',
+            'themes/default/images/newscats/general.svg',
+            'themes/default/images/newscats/technology.svg',
             'sources/hooks/systems/config/separate_blogs.php',
             'cms/pages/modules/cms_news.php',
             'cms/pages/modules/cms_blogs.php',

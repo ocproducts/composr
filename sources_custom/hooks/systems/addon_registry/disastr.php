@@ -128,7 +128,7 @@ To configure the diseases go to Admin Zone > Setup > Manage Diseases.';
      */
     public function get_default_icon()
     {
-        return 'themes/default/images_custom/icons/48x48/menu/disastr_log.png';
+        return 'themes/default/images_custom/icons/48x48/menu/disastr_log.svg';
     }
 
     /**
@@ -139,8 +139,7 @@ To configure the diseases go to Admin Zone > Setup > Manage Diseases.';
     public function get_file_list()
     {
         return array(
-            'themes/default/images_custom/icons/24x24/menu/disastr_log.png',
-            'themes/default/images_custom/icons/48x48/menu/disastr_log.png',
+            'themes/default/images_custom/icons/48x48/menu/disastr_log.svg',
             'sources_custom/hooks/systems/addon_registry/disastr.php',
             'sources_custom/hooks/systems/notifications/got_disease.php',
             'adminzone/pages/modules_custom/admin_disastr.php',

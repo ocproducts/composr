@@ -1,6 +1,6 @@
 (function ($cms, $util, $dom) {
     'use strict';
-    
+
     var $coreNotifications = window.$coreNotifications = {};
 
     /*
@@ -201,7 +201,7 @@
             }
         });
     };
-    
+
     $coreNotifications.pollForNotifications = function pollForNotifications(forcedUpdate, delay) {
         forcedUpdate = !!forcedUpdate;
         delay = !!delay;
@@ -394,7 +394,7 @@
         } else {
             el.style.display = 'none';
         }
-        
+
         el.style.opacity = 0; // Render, but invisibly, until we've positioned it
 
         return false;
@@ -422,7 +422,7 @@
  */
 (function () {
     'use strict';
-    
+
     if (!$cms.configOption('notification_desktop_alerts')) {
         return;
     }

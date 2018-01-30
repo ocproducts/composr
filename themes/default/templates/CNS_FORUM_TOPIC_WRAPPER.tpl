@@ -39,7 +39,7 @@
 				{+START,IF,{$DESKTOP}}
 					{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}{+START,IF,{$NOT,{$_GET,overlay}}}
 						<th class="cns-forum-box-right">
-							<a href="#!" class="js-click-mark-all-topics"><img src="{$IMG*,icons/14x14/cns_topic_modifiers/unvalidated}" srcset="{$IMG*,icons/28x28/cns_topic_modifiers/unvalidated} 2x" alt="{!TOGGLE_SELECTION}" title="{!TOGGLE_SELECTION}" /></a>
+							<a href="#!" class="js-click-mark-all-topics"><img width="14" height="14" src="{$IMG*,icons/28x28/cns_topic_modifiers/unvalidated}" alt="{!TOGGLE_SELECTION}" title="{!TOGGLE_SELECTION}" /></a>
 						</th>
 					{+END}{+END}{+END}
 				{+END}

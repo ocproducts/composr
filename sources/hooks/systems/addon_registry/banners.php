@@ -87,7 +87,7 @@ class Hook_addon_registry_banners
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/cms/banners.png';
+        return 'themes/default/images/icons/48x48/menu/cms/banners.svg';
     }
 
     /**
@@ -98,8 +98,7 @@ class Hook_addon_registry_banners
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/24x24/menu/cms/banners.png',
-            'themes/default/images/icons/48x48/menu/cms/banners.png',
+            'themes/default/images/icons/48x48/menu/cms/banners.svg',
             'sources/hooks/systems/config/enable_edit_banner_buttons.php',
             'themes/default/css/banners.css',
             'sources/hooks/systems/snippets/exists_banner.php',

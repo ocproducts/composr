@@ -92,7 +92,7 @@ function testset_do_header($title)
 END;
     @print(file_get_contents(css_enforce('global', 'default')));
     echo <<<END
-            .screen-title { text-decoration: underline; display: block; background: url('../themes/default/images/icons/48x48/menu/_generic_admin/tool.png') top left no-repeat; min-height: 42px; padding: 10px 0 0 60px; }
+            .screen-title { text-decoration: underline; display: block; background: url('../themes/default/images/icons/48x48/menu/_generic_admin/tool.svg') top left no-repeat; min-height: 42px; padding: 10px 0 0 60px; }
             a[target="_blank"], a[onclick$="window.open"] { padding-right: 0; }
         </style>
     </head>

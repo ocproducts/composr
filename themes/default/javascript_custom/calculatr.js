@@ -4,8 +4,8 @@
     $cms.templates.miniblockMainCalculator = function miniblockMainCalculator(params, container) {
         var message = strVal(container.dataset.tpMessage),
             equation = strVal(container.dataset.tpEquation);
-        
-        
+
+
         $dom.on(container, 'click', '.js-btn-click-calculate-sum', function () {
             var form = this.form;
             $cms.form.checkForm(this.form, false).then(function (valid) {

@@ -6,7 +6,7 @@
 		{+START,IF_PASSED,DESCRIPTION}
 			{+START,IF,{$DESKTOP}}
 				<span class="inline-desktop">
-					<img class="button-icon" src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" data-mouseover-activate-tooltip="['{DESCRIPTION;^*}','auto']" alt="{!HELP}" />
+					<img class="button-icon" width="24" height="24" src="{$IMG*,icons/32x32/help}" data-mouseover-activate-tooltip="['{DESCRIPTION;^*}','auto']" alt="{!HELP}" />
 				</span>
 			{+END}
 

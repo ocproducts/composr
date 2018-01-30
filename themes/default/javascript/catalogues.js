@@ -86,14 +86,14 @@
         var form = document.getElementById('new_field_0_name').form,
             submitBtn = document.getElementById('submit-button'),
             validValue;
-        
+
         form.addEventListener('submit', function submitCheck(e) {
             var value = form.elements['name'].value;
 
             if (value === validValue) {
                 return;
             }
-            
+
             submitBtn.disabled = true;
             var url = '{$FIND_SCRIPT_NOHTTP;^,snippet}?snippet=exists_catalogue&name=' + encodeURIComponent(value);
             e.preventDefault();

@@ -87,7 +87,7 @@ class Hook_addon_registry_core_addon_management
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/structure/addons.png';
+        return 'themes/default/images/icons/48x48/menu/adminzone/structure/addons.svg';
     }
 
     /**
@@ -98,10 +98,8 @@ class Hook_addon_registry_core_addon_management
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/24x24/menu/adminzone/structure/addons.png',
-            'themes/default/images/icons/48x48/menu/adminzone/structure/addons.png',
-            'themes/default/images/icons/24x24/menu/_generic_admin/component.png',
-            'themes/default/images/icons/48x48/menu/_generic_admin/component.png',
+            'themes/default/images/icons/48x48/menu/adminzone/structure/addons.svg',
+            'themes/default/images/icons/48x48/menu/_generic_admin/component.svg',
             'themes/default/css/addons_editor.css',
             'sources/hooks/systems/addon_registry/core_addon_management.php',
             'sources/addons.php',
@@ -128,12 +126,9 @@ class Hook_addon_registry_core_addon_management
             'imports/addons/index.html',
             'lang/EN/addons.ini',
             'sources/hooks/systems/ajax_tree/choose_composr_homesite_addon.php',
-            'themes/default/images/icons/14x14/install.png',
-            'themes/default/images/icons/14x14/reinstall.png',
-            'themes/default/images/icons/14x14/upgrade.png',
-            'themes/default/images/icons/28x28/install.png',
-            'themes/default/images/icons/28x28/reinstall.png',
-            'themes/default/images/icons/28x28/upgrade.png',
+            'themes/default/images/icons/28x28/install.svg',
+            'themes/default/images/icons/28x28/reinstall.svg',
+            'themes/default/images/icons/28x28/upgrade.svg',
             'themes/default/javascript/core_addon_management.js',
         );
     }

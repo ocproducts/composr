@@ -21,18 +21,18 @@
     window.doInputB = doInputB;
     window.doInputI = doInputI;
     window.doInputFont = doInputFont;
-    
+
     // ===========
     // ATTACHMENTS
     // ===========
-    
+
     /**
      * @param startNum
      * @param postingFieldName
      */
     function addAttachment(startNum, postingFieldName) {
         console.log('addAttachment()', 'startNum:', startNum, 'postingFieldName:', postingFieldName);
-        
+
         var addTo = document.getElementById('js-attachment-store');
 
         window.numAttachments++;
@@ -130,7 +130,7 @@
             }
 
             /*{+START,INCLUDE,ATTACHMENT_UI_DEFAULTS,.js,javascript}{+END}*/
-            
+
             if (!showOverlay) {
                 var comcode = '[' + tag;
                 for (var key in defaults) {
@@ -146,7 +146,7 @@
                 }
 
                 if (multi) {
-                    var splitFileNames = document.getElementById('txtFileName_file' + window.numAttachments).value.split(/:/);
+                    var splitFileNames = document.getElementById('txt_filename_file' + window.numAttachments).value.split(/:/);
                     splitFileNames.forEach(function (fileName, i) {
                         promiseCalls.push(function () {
                             if (i > 0) {
@@ -223,7 +223,7 @@
 
                     if (multi) { // Add in additional Comcode buttons for the other files selected at the same time
                         var comcodeSemihtml = '', comcode = '',
-                            splitFilename = document.getElementById('txtFileName_file' + window.numAttachments).value.split(/:/);
+                            splitFilename = document.getElementById('txt_filename_file' + window.numAttachments).value.split(/:/);
 
                         for (var i = 1; i < splitFilename.length; i++) {
                             window.numAttachments++;
@@ -273,15 +273,15 @@
             if (!form.elements[i].disabled && (form.elements[i].name !== undefined) && (form.elements[i].name !== '')) {
                 var name = form.elements[i].name,
                     value = $cms.form.cleverFindValue(form, form.elements[i]);
-                
+
                 if ((name === 'title') && (value === '')) {  // Fudge, title must be filled in on many forms
                     value = 'x';
                 }
-                
+
                 if (post !== '') {
                     post += '&';
                 }
-                
+
                 post += name + '=' + encodeURIComponent(value);
             }
         }
@@ -592,7 +592,7 @@
     function doInputUrl(fieldName, va) {
         $cms.ui.prompt('{!javascript:ENTER_URL;^}', va, null, '{!comcode:INPUT_COMCODE_url;^}').then(function (url) {
             url = strVal(url);
-            
+
             if (!url.includes('://')) {
                 $cms.ui.alert('{!javascript:NOT_A_URL;^}').then(function () {
                     doInputUrl(fieldName, url);
@@ -629,10 +629,10 @@
                     _doInputPage(fieldName, result, vc);
                 });
             });
-            
+
             return;
         } 
-        
+
         $cms.ui.prompt('{!javascript:ENTER_ZONE;^}', '', null, '{!comcode:INPUT_COMCODE_page;^}').then(function (va) {
             if (va !== null) {
                 $cms.ui.prompt('{!javascript:ENTER_PAGE;^}', '').then(function (vb) {

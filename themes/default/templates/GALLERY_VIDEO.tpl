@@ -48,7 +48,7 @@
 {+END}
 
 {+START,IF,{$EQ,{_GUID},carousel}}
-	<a data-mouseover-activate-tooltip="['{$GET;^*,TOOLTIP}','auto',null,null,false,true]" href="{VIEW_URL*}"><img src="{$THUMBNAIL*,{THUMB_URL},140x140,website_specific,vid{ID}.jpg,,height}" /></a>
+	<a data-mouseover-activate-tooltip="['{$GET;^*,TOOLTIP}','auto',null,null,false,true]" href="{VIEW_URL*}"><img height="140" src="{$THUMBNAIL*,{THUMB_URL},140x140,website_specific,vid{ID}.jpg,,height}" /></a>
 {+END}
 
 {+START,IF,{$NEQ,{_GUID},carousel}}

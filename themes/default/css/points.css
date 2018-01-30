@@ -167,21 +167,9 @@ table.points-summary-table .answer {
 */
 
 .buttons--points {
-	background-image: url('{$IMG,icons/24x24/buttons/points}') !important;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.buttons--points {
-		background-image: url('{$IMG,icons/48x48/buttons/points}') !important;
-	}
+	background-image: url('{$IMG,icons/48x48/buttons/points}') !important;
 }
 
 .menu--social--points {
-	background-image: url('{$IMG,icons/24x24/menu/social/points}') !important;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.menu--social--points {
-		background-image: url('{$IMG,icons/48x48/menu/social/points}') !important;
-	}
+	background-image: url('{$IMG,icons/48x48/menu/social/points}') !important;
 }

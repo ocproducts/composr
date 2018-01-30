@@ -37,7 +37,7 @@
      */
     function TreeList(params) {
         TreeList.base(this, 'constructor', arguments);
-        
+
         this.name = strVal(params.name);
         this.ajaxUrl = strVal(params.ajaxUrl);
         this.options = strVal(params.options);
@@ -46,7 +46,7 @@
         this.allNodesSelectable = Boolean(params.allNodesSelectable);
         this.useServerId = Boolean(params.useServerId);
 
-        $dom.html(this.el, '<div class="ajax-loading vertical-alignment"><img src="' + $util.srl('{$IMG*;^,loading}') + '" alt="" /> <span>{!LOADING;^}</span></div>');
+        $dom.html(this.el, '<div class="ajax-loading vertical-alignment"><img width="20" height="20" src="' + $util.srl('{$IMG*;^,loading}') + '" alt="" /> <span>{!LOADING;^}</span></div>');
 
         // Initial rendering
         var url = $util.url(this.ajaxUrl), 
@@ -56,7 +56,7 @@
         }
         url += '&options=' + this.options;
         url += '&default=' + encodeURIComponent($dom.$id(this.name).value);
-        
+
         $cms.doAjaxRequest(url).then(function (xhr) {
             that.response(xhr);
         });
@@ -94,7 +94,7 @@
             var ajaxResult = xhr.responseXML && xhr.responseXML.querySelector('result');
 
             expandingId = strVal(expandingId);
-            
+
             if (!ajaxResult) {
                 return;
             }
@@ -211,7 +211,7 @@
                 nodeSelfWrap.appendChild(nodeSelf);
                 colour = (node.getAttribute('selectable') === 'true' || that.allNodesSelectable) ? 'native-ui-foreground' : 'locked-input-field';
                 selectable = (node.getAttribute('selectable') === 'true' || that.allNodesSelectable);
-                
+
                 if (node.localName === 'category') {
                     // Render self
                     nodeSelf.className = (node.getAttribute('highlighted') === 'true') ? 'tree-list-highlighted' : 'tree-list-nonhighlighted';
@@ -231,22 +231,20 @@
                         }
                         descriptionInUse = escapedTitle + ': {!TREE_LIST_SELECT*;^}' + description + ((node.getAttribute('serverid') == '') ? (' (' + $cms.filter.html(node.getAttribute('serverid')) + ')') : '');
                     }
-                    var imgUrl = $util.srl('{$IMG;,1x/treefield/category}'),
-                        imgUrl2 = $util.srl('{$IMG;,2x/treefield/category}');
+                    var imgUrl = $util.srl('{$IMG;,1x/treefield/category}');
                     if (node.getAttribute('img_url')) {
                         imgUrl = node.getAttribute('img_url');
-                        imgUrl2 = node.getAttribute('img_url_2');
                     }
                     $dom.html(nodeSelf, /** @lang HTML */'' +
                         '<div>' +
-                        '    <input class="ajax-tree-expand-icon"' + (that.tabindex ? (' tabindex="' + that.tabindex + '"') : '') + ' type="image" alt="' + ((!initiallyExpanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + ': ' + escapedTitle + '" title="' + ((!initiallyExpanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + '" id="' + that.name + 'texp_c_' + node.getAttribute('id') + '" src="' + $util.srl(!initiallyExpanded ? '{$IMG*;,1x/treefield/expand}' : '{$IMG*;,1x/treefield/collapse}') + '" srcset="' + $util.srl(!initiallyExpanded ? '{$IMG*;,2x/treefield/expand}' : '{$IMG*;,2x/treefield/collapse}') + ' 2x" />' +
-                        '    <img class="ajax-tree-cat-icon" alt="{!CATEGORY;^}" src="' + $cms.filter.html(imgUrl) + '" srcset="' + $cms.filter.html(imgUrl2) + ' 2x" />' +
+                        '    <input class="ajax-tree-expand-icon"' + (that.tabindex ? (' tabindex="' + that.tabindex + '"') : '') + ' type="image" alt="' + ((!initiallyExpanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + ': ' + escapedTitle + '" title="' + ((!initiallyExpanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + '" id="' + that.name + 'texp_c_' + node.getAttribute('id') + '" src="' + $util.srl(!initiallyExpanded ? '{$IMG*;,1x/treefield/expand}' : '{$IMG*;,1x/treefield/collapse}') + '" />' +
+                        '    <img class="ajax-tree-cat-icon" alt="{!CATEGORY;^}" width="14" height="14" src="' + $cms.filter.html(imgUrl) + '" />' +
                         '    <label id="' + that.name + 'tsel_c_' + node.getAttribute('id') + '" for="' + that.name + 'tsel_r_' + node.getAttribute('id') + '" data-mouseover-activate-tooltip="[\'' + (node.getAttribute('description_html') ? '' : $cms.filter.html(descriptionInUse)) + '\', \'auto\']" class="ajax-tree-magic-button ' + colour + '">\ <input ' + (that.tabindex ? ('tabindex="' + that.tabindex + '" ') : '') + 'id="' + that.name + 'tsel_r_' + node.getAttribute('id') + '" style="position: absolute; left: -10000px" type="radio" name="_' + that.name + '" value="1" title="' + descriptionInUse + '" />' + escapedTitle + '</label>' +
                         '    <span id="' + that.name + 'extra_' + node.getAttribute('id') + '">' + extra + '</span>' +
                         '</div>');
                     var expandButton = nodeSelf.querySelector('input');
                     expandButton.oncontextmenu = function () { return false; };
-                    
+
                     $dom.on(expandButton, 'click', function (e) {
                         e.preventDefault();
 
@@ -256,12 +254,12 @@
 
                         that.handleTreeClick(e, false, expandButton);
                     });
-                    
+
                     label = nodeSelf.querySelector('label');
                     expandButton.onkeypress = label.onkeypress = label.firstElementChild.onkeypress = function (event) {
                         if (((event.keyCode ? event.keyCode : event.charCode) === 13) || ['+', '-', '='].includes(String.fromCharCode(event.keyCode ? event.keyCode : event.charCode))) {
                             event.preventDefault();
-                            
+
                             if ($dom.$('#choose_' + that.name)) {
                                 $dom.$('#choose_' + that.name).click();
                             }
@@ -311,7 +309,7 @@
                                 }
                                 element.selectedTitle += node.getAttribute('title');
                             }
-                            
+
                             $dom.changeValue(element, newVal);
                             //element.value = newVal;
                         }
@@ -348,16 +346,14 @@
 
                     // Render self
                     initiallyExpanded = false;
-                    var imgUrl = $util.srl('{$IMG;,1x/treefield/entry}'),
-                        imgUrl2 = $util.srl('{$IMG;,2x/treefield/entry}');
+                    var imgUrl = $util.srl('{$IMG;,1x/treefield/entry}');
                     if (node.getAttribute('img_url')) {
                         imgUrl = node.getAttribute('img_url');
-                        imgUrl2 = node.getAttribute('img_url_2');
                     }
-                    $dom.html(nodeSelf, '<div><img alt="{!ENTRY;^}" src="' + $cms.filter.html(imgUrl) + '" srcset="' + $cms.filter.html(imgUrl2) + ' 2x" style="width: 14px; height: 14px" /> ' +
+                    $dom.html(nodeSelf, '<div><img alt="{!ENTRY;^}" width="14" height="14" src="' + $cms.filter.html(imgUrl) + '" /> ' +
                         '<label id="' + that.name + 'tsel_e_' + node.getAttribute('id') + '" class="ajax-tree-magic-button ' + colour + '" for="' + that.name + 'tsel_s_' + node.getAttribute('id') + '" data-mouseover-activate-tooltip="[\'' + (node.getAttribute('description_html') ? '' : (descriptionInUse.replace(/\n/g, '').replace(/'/g, '\\\''))) + '\', \'800px\']">' +
                         '<input' + (that.tabindex ? (' tabindex="' + that.tabindex + '"') : '') + ' id="' + that.name + 'tsel_s_' + node.getAttribute('id') + '" style="position: absolute; left: -10000px" type="radio" name="_' + that.name + '" value="1" />' + escapedTitle + '</label>' + extra + '</div>');
-                    
+
                     label = nodeSelf.querySelector('label');
                     label.firstElementChild.addEventListener('focus', function () {
                         label.style.outline = '1px dotted';
@@ -436,7 +432,7 @@
                                 if (xmlNode.getAttribute('draggable') === 'page') {
                                     dragPage(xmlNode.getAttribute('serverid'), targetXmlNode.getAttribute('serverid'));
                                 }
-                                
+
                                 fixupNodePositions(that.name);
                             }
                         }
@@ -466,7 +462,7 @@
                 var newZone = to.replace(/:/, ''),
                     bits = from.split(/:/),
                     moveUrl = '{$PAGE_LINK;,_SELF:_SELF:_move:zone=[1]:destination_zone=[3]:page__[2]=1}';
-                
+
                 if (bits.length === 1) {// Workaround IE bug
                     bits.push(bits[0]);
                     bits[0] = '';
@@ -508,7 +504,7 @@
                         $dom.empty(htmlNode);
                         that.response(xhr, clickedId);
                     });
-                    $dom.html(htmlNode, '<div aria-busy="true" class="vertical-alignment"><img src="' + $util.srl('{$IMG*;,loading}') + '" alt="" /> <span>{!LOADING;^}</span></div>');
+                    $dom.html(htmlNode, '<div aria-busy="true" class="vertical-alignment"><img width="20" height="20" src="' + $util.srl('{$IMG*;,loading}') + '" alt="" /> <span>{!LOADING;^}</span></div>');
                     var container = $dom.$id('tree_list__root_' + that.name);
                     if (automated && container && (container.style.overflowY === 'auto')) {
                         setTimeout(function () {
@@ -516,11 +512,10 @@
                         }, 0);
                     }
                 }
-                
+
                 $dom.fadeIn(htmlNode);
 
                 expandBtn.src = $util.srl('{$IMG;,1x/treefield/collapse}');
-                expandBtn.srcset = $util.srl('{$IMG;,2x/treefield/collapse}') + ' 2x';
                 expandBtn.title = expandBtn.title.replace('{!EXPAND;^}', '{!CONTRACT;^}');
                 expandBtn.alt = expandBtn.alt.replace('{!EXPAND;^}', '{!CONTRACT;^}');
             } else {
@@ -529,7 +524,6 @@
                 htmlNode.style.display = 'none';
 
                 expandBtn.src = $util.srl('{$IMG;,1x/treefield/expand}');
-                expandBtn.srcset = $util.srl('{$IMG;,2x/treefield/expand}') + ' 2x';
                 expandBtn.title = expandBtn.title.replace('{!CONTRACT;^}', '{!EXPAND;^}');
                 expandBtn.alt = expandBtn.alt.replace('{!CONTRACT;^}', '{!EXPAND;^}');
             }
@@ -547,11 +541,11 @@
             assumeCtrl = !!assumeCtrl;
 
             var element = $dom.$id(this.name);
-            
+
             if (element.disabled) {
                 return;
             }
-            
+
             var i, selectedBefore = (element.value === '') ? [] : (this.multiSelection ? element.value.split(',') : [element.value]);
 
             event.preventDefault();
@@ -561,7 +555,7 @@
                 var allLabels = $dom.$id('tree_list__root_' + this.name).getElementsByTagName('label'),
                     posLast = -1,
                     posUs = -1;
-                
+
                 if (this.lastClicked == null) {
                     this.lastClicked = allLabels[0];
                 }
@@ -607,7 +601,7 @@
 
                 return;
             }
-            
+
             var type = target.getAttribute('id').charAt(5 + this.name.length);
             if (type === 'r') {
                 type = 'c';
@@ -642,11 +636,11 @@
                         this.makeElementLookSelected($dom.$id(this.name + 'tsel_' + type + '_' + realSelectedId), true);
                     } 
                 } 
-                 
+
                 for (i = 0; i < selectedAfter.length; i++) {
                     this.makeElementLookSelected($dom.$id(this.name + 'tsel_' + type + '_' + selectedAfter[i]), true);
                 } 
-                
+
                 var newVal = selectedAfter.join(',');
                 element.selectedTitle = (selectedAfter.length === 1) ? xmlNode.getAttribute('title') : newVal;
                 element.selectedEditlink = xmlNode.getAttribute('edit');
@@ -671,7 +665,7 @@
             target.style.cursor = 'pointer';
         }
     });
-    
+
 
     function attributesFullFixup(xml) {
         var node, i, id = xml.getAttribute('id');
@@ -694,7 +688,7 @@
     function fixupNodePositions(name) {
         var html = $dom.$id('tree_list__root_' + name),
             toFix = html.getElementsByTagName('div'), i;
-        
+
         for (i = 0; i < toFix.length; i++) {
             if (toFix[i].style.position === 'absolute') {
                 fixUpNodePosition(toFix[i]);

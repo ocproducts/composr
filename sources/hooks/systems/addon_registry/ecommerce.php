@@ -88,7 +88,7 @@ class Hook_addon_registry_ecommerce
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/ecommerce.png';
+        return 'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/ecommerce.svg';
     }
 
     /**
@@ -99,28 +99,16 @@ class Hook_addon_registry_ecommerce
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/24x24/menu/adminzone/audit/ecommerce/ecommerce.png',
-            'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/ecommerce.png',
-            'themes/default/images/icons/24x24/menu/adminzone/audit/ecommerce/subscriptions.png',
-            'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/subscriptions.png',
-            'themes/default/images/icons/24x24/menu/rich_content/ecommerce/purchase.png',
-            'themes/default/images/icons/48x48/menu/rich_content/ecommerce/purchase.png',
-            'themes/default/images/icons/24x24/menu/adminzone/audit/ecommerce/cash_flow.png',
-            'themes/default/images/icons/24x24/menu/adminzone/audit/ecommerce/invoices.png',
-            'themes/default/images/icons/24x24/menu/adminzone/audit/ecommerce/profit_loss.png',
-            'themes/default/images/icons/24x24/menu/adminzone/audit/ecommerce/transactions.png',
-            'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/cash_flow.png',
-            'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/invoices.png',
-            'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/profit_loss.png',
-            'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/transactions.png',
-            'themes/default/images/icons/24x24/menu/adminzone/audit/ecommerce/create_invoice.png',
-            'themes/default/images/icons/24x24/menu/adminzone/audit/ecommerce/outstanding_invoices.png',
-            'themes/default/images/icons/24x24/menu/adminzone/audit/ecommerce/unfulfilled_invoices.png',
-            'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/create_invoice.png',
-            'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/outstanding_invoices.png',
-            'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/unfulfilled_invoices.png',
-            'themes/default/images/icons/24x24/menu/adminzone/audit/ecommerce/index.html',
-            'themes/default/images/icons/24x24/menu/rich_content/ecommerce/index.html',
+            'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/ecommerce.svg',
+            'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/subscriptions.svg',
+            'themes/default/images/icons/48x48/menu/rich_content/ecommerce/purchase.svg',
+            'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/cash_flow.svg',
+            'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/invoices.svg',
+            'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/profit_loss.svg',
+            'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/transactions.svg',
+            'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/create_invoice.svg',
+            'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/outstanding_invoices.svg',
+            'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/unfulfilled_invoices.svg',
             'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/index.html',
             'themes/default/images/icons/48x48/menu/rich_content/ecommerce/index.html',
             'sources/hooks/systems/resource_meta_aware/usergroup_subscription.php',
@@ -176,7 +164,7 @@ class Hook_addon_registry_ecommerce
             'themes/default/templates/CNS_MEMBER_PROFILE_ECOMMERCE_LOGS.tpl',
             'themes/default/templates/CURRENCY.tpl',
             'sources/hooks/systems/fields/tax_code.php',
-            'themes/default/images/ecommerce/checkmark.png',
+            'themes/default/images/ecommerce/checkmark.svg',
             'themes/default/images/ecommerce/index.html',
             'sources/hooks/systems/cron/manual_subscription_notification.php',
             'sources/hooks/systems/cron/subscription_mails.php',
@@ -244,10 +232,8 @@ class Hook_addon_registry_ecommerce
             'sources/hooks/systems/cron/credit_card_cleanup.php',
             'sources/hooks/systems/tasks/export_ecom_transactions.php',
             'sources/hooks/systems/config/currency_auto.php',
-            'themes/default/images/icons/24x24/menu/adminzone/setup/ecommerce_products.png',
-            'themes/default/images/icons/48x48/menu/adminzone/setup/ecommerce_products.png',
-            'themes/default/images/icons/24x24/menu/adminzone/audit/ecommerce/sales_log.png',
-            'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/sales_log.png',
+            'themes/default/images/icons/48x48/menu/adminzone/setup/ecommerce_products.svg',
+            'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/sales_log.svg',
             'sources/hooks/systems/notifications/ecom_product_request_custom.php',
             'sources/hooks/systems/notifications/ecom_product_request_forwarding.php',
             'sources/hooks/systems/notifications/ecom_product_request_pop3.php',

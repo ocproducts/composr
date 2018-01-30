@@ -148,7 +148,6 @@ class Hook_sitemap_privilege_category extends Hook_sitemap_base
             'extra_meta' => array(
                 'description' => null,
                 'image' => null,
-                'image_2x' => null,
                 'add_date' => null,
                 'edit_date' => null,
                 'submitter' => null,

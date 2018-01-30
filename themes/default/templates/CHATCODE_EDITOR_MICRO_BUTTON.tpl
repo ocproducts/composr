@@ -1,3 +1,3 @@
 {$REQUIRE_JAVASCRIPT,chat}
 
-<input data-click-do-input="['{B;}', 'post']" type="image" data-click-pd="1" title="{TITLE*}" alt="{TITLE*}" src="{$IMG*,chatcodeeditor/{B}}" />
+<input data-click-do-input="['{B;}', 'post']" type="image" data-click-pd="1" title="{TITLE*}" alt="{TITLE*}" height="20" src="{$IMG*,chatcodeeditor/{B}}" />

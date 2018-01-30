@@ -87,7 +87,7 @@ class Hook_addon_registry_recommend
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/site_meta/recommend.png';
+        return 'themes/default/images/icons/48x48/menu/site_meta/recommend.svg';
     }
 
     /**
@@ -98,14 +98,10 @@ class Hook_addon_registry_recommend
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/24x24/menu/site_meta/recommend.png',
-            'themes/default/images/icons/48x48/menu/site_meta/recommend.png',
-            'themes/default/images/icons/24x24/links/digg.png',
-            'themes/default/images/icons/24x24/links/stumbleupon.png',
-            'themes/default/images/icons/24x24/links/favorites.png',
-            'themes/default/images/icons/48x48/links/digg.png',
-            'themes/default/images/icons/48x48/links/stumbleupon.png',
-            'themes/default/images/icons/48x48/links/favorites.png',
+            'themes/default/images/icons/48x48/menu/site_meta/recommend.svg',
+            'themes/default/images/icons/48x48/links/digg.svg',
+            'themes/default/images/icons/48x48/links/stumbleupon.svg',
+            'themes/default/images/icons/48x48/links/favorites.svg',
             'sources/hooks/systems/config/points_RECOMMEND_SITE.php',
             'sources/hooks/systems/realtime_rain/recommend.php',
             'sources/hooks/systems/addon_registry/recommend.php',

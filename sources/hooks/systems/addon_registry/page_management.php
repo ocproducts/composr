@@ -89,7 +89,7 @@ class Hook_addon_registry_page_management
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/structure/sitemap/sitemap_editor.png';
+        return 'themes/default/images/icons/48x48/menu/adminzone/structure/sitemap/sitemap_editor.svg';
     }
 
     /**
@@ -100,8 +100,7 @@ class Hook_addon_registry_page_management
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/24x24/menu/adminzone/structure/sitemap/sitemap_editor.png',
-            'themes/default/images/icons/48x48/menu/adminzone/structure/sitemap/sitemap_editor.png',
+            'themes/default/images/icons/48x48/menu/adminzone/structure/sitemap/sitemap_editor.svg',
             'sources/hooks/systems/addon_registry/page_management.php',
             'themes/default/templates/WEBSTANDARDS_CHECK_SCREEN.tpl',
             'themes/default/templates/WEBSTANDARDS_CHECK_ERROR.tpl',

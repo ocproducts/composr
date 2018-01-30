@@ -136,7 +136,7 @@ When creating new gifts please only use images which are free to use, we suggest
      */
     public function get_default_icon()
     {
-        return 'themes/default/images_custom/icons/48x48/menu/giftr.png';
+        return 'themes/default/images_custom/icons/48x48/menu/giftr.svg';
     }
 
     /**
@@ -147,8 +147,7 @@ When creating new gifts please only use images which are free to use, we suggest
     public function get_file_list()
     {
         return array(
-            'themes/default/images_custom/icons/24x24/menu/giftr.png',
-            'themes/default/images_custom/icons/48x48/menu/giftr.png',
+            'themes/default/images_custom/icons/48x48/menu/giftr.svg',
             'sources_custom/hooks/systems/addon_registry/giftr.php',
             'sources_custom/hooks/systems/notifications/gift.php',
             'adminzone/pages/modules_custom/admin_giftr.php',

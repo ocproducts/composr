@@ -19,23 +19,14 @@
 	outline: 0;
 }
 #web-notifications-button {
-	background-image: url('{$IMG;,icons/24x24/tool_buttons/notifications}');
+	background-image: url('{$IMG;,icons/48x48/tool_buttons/notifications}');
 	background-position: 2px 2px;
+	background-size: 24px 24px;
 }
 #pts-button {
-	background-image: url('{$IMG;,icons/24x24/tool_buttons/inbox}');
+	background-image: url('{$IMG;,icons/48x48/tool_buttons/inbox}');
 	background-position: 3px 3px;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	#web-notifications-button {
-		background-image: url('{$IMG;,icons/48x48/tool_buttons/notifications}');
-		background-size: 24px 24px;
-	}
-	#pts-button {
-		background-image: url('{$IMG;,icons/48x48/tool_buttons/inbox}');
-		background-size: 24px 24px;
-	}
+	background-size: 24px 24px;
 }
 
 #web-notifications-button span, #pts-button span {

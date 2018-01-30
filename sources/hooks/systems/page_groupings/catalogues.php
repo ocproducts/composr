@@ -64,7 +64,7 @@ class Hook_page_groupings_catalogues
 
                     if (($row['c_ecommerce'] == 0) || (addon_installed('shopping'))) {
                         $menu_icon = 'menu/rich_content/catalogues/' . $row['c_name'];
-                        if (find_theme_image('icons/24x24/' . $menu_icon, true) == '') {
+                        if (find_theme_image('icons/48x48/' . $menu_icon, true) == '') {
                             $menu_icon = 'menu/rich_content/catalogues/catalogues';
                         }
 

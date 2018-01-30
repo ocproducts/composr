@@ -89,7 +89,7 @@ class Hook_addon_registry_catalogues
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/rich_content/catalogues/catalogues.png';
+        return 'themes/default/images/icons/48x48/menu/rich_content/catalogues/catalogues.svg';
     }
 
     /**
@@ -100,30 +100,17 @@ class Hook_addon_registry_catalogues
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/24x24/menu/rich_content/catalogues/catalogues.png',
-            'themes/default/images/icons/48x48/menu/rich_content/catalogues/catalogues.png',
-            'themes/default/images/icons/24x24/menu/cms/catalogues/add_one_catalogue.png',
-            'themes/default/images/icons/24x24/menu/cms/catalogues/edit_one_catalogue.png',
-            'themes/default/images/icons/48x48/menu/cms/catalogues/add_one_catalogue.png',
-            'themes/default/images/icons/48x48/menu/cms/catalogues/edit_one_catalogue.png',
-            'themes/default/images/icons/48x48/menu/cms/catalogues/edit_this_catalogue.png',
+            'themes/default/images/icons/48x48/menu/rich_content/catalogues/catalogues.svg',
+            'themes/default/images/icons/48x48/menu/cms/catalogues/add_one_catalogue.svg',
+            'themes/default/images/icons/48x48/menu/cms/catalogues/edit_one_catalogue.svg',
+            'themes/default/images/icons/48x48/menu/cms/catalogues/edit_this_catalogue.svg',
             'themes/default/images/icons/48x48/menu/cms/catalogues/index.html',
-            'themes/default/images/icons/24x24/menu/cms/catalogues/edit_this_catalogue.png',
-            'themes/default/images/icons/24x24/menu/cms/catalogues/index.html',
-            'themes/default/images/icons/24x24/menu/rich_content/catalogues/classifieds.png',
-            'themes/default/images/icons/24x24/menu/rich_content/catalogues/contacts.png',
-            'themes/default/images/icons/24x24/menu/rich_content/catalogues/faqs.png',
-            'themes/default/images/icons/24x24/menu/rich_content/catalogues/index.html',
-            'themes/default/images/icons/24x24/menu/rich_content/catalogues/links.png',
-            'themes/default/images/icons/24x24/menu/rich_content/catalogues/products.png',
-            'themes/default/images/icons/24x24/menu/rich_content/catalogues/projects.png',
-            'themes/default/images/icons/48x48/menu/rich_content/catalogues/classifieds.png',
-            'themes/default/images/icons/48x48/menu/rich_content/catalogues/contacts.png',
-            'themes/default/images/icons/48x48/menu/rich_content/catalogues/faqs.png',
+            'themes/default/images/icons/48x48/menu/rich_content/catalogues/contacts.svg',
+            'themes/default/images/icons/48x48/menu/rich_content/catalogues/faqs.svg',
             'themes/default/images/icons/48x48/menu/rich_content/catalogues/index.html',
-            'themes/default/images/icons/48x48/menu/rich_content/catalogues/links.png',
-            'themes/default/images/icons/48x48/menu/rich_content/catalogues/products.png',
-            'themes/default/images/icons/48x48/menu/rich_content/catalogues/projects.png',
+            'themes/default/images/icons/48x48/menu/rich_content/catalogues/links.svg',
+            'themes/default/images/icons/48x48/menu/rich_content/catalogues/products.svg',
+            'themes/default/images/icons/48x48/menu/rich_content/catalogues/projects.svg',
             'sources/hooks/systems/snippets/exists_catalogue.php',
             'sources/hooks/systems/module_permissions/catalogues_catalogue.php',
             'sources/hooks/systems/module_permissions/catalogues_category.php',

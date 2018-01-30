@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+]>
+<svg version="1.1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="48px" height="48px" viewBox="-3.978 -2.559 48 48" enable-background="new -3.978 -2.559 48 48"
+	 xml:space="preserve">
+<defs>
+</defs>
+<path fill="#C8691C" d="M40.022,38.515c0,1.441-1.168,2.61-2.611,2.61H4.329c-1.441,0-2.611-1.169-2.611-2.61V17.622
+	c0-1.443,1.17-2.612,2.611-2.612h33.082c1.443,0,2.611,1.169,2.611,2.612V38.515z"/>
+<path fill="#F79523" d="M13.058,24.603c-1.442,0-2.612-1.169-2.612-2.611v-5.223H2.611C1.169,16.768,0,17.937,0,19.38v20.894
+	c0,1.441,1.169,2.609,2.611,2.609h34.821c1.441,0,2.611-1.168,2.611-2.609V24.603H13.058z"/>
+<rect x="3.455" y="15.165" transform="matrix(0.6428 -0.766 0.766 0.6428 -7.5953 22.9032)" fill="#52CAF5" width="34.61" height="8.861"/>
+<rect x="31.02" y="0.186" transform="matrix(0.6427 -0.7661 0.7661 0.6427 8.3709 27.183)" fill="#6D6E71" width="4.619" height="8.862"/>
+<polygon fill="#FCB51E" points="13.071,35.651 7.812,37.743 4.996,35.381 6.284,29.955 "/>
+<polygon points="7.599,37.638 4.329,38.966 5.133,35.571 "/>
+<rect x="29.259" y="1.007" transform="matrix(-0.6429 0.7659 -0.7659 -0.6429 54.2691 -19.0194)" fill="#A7A9AC" width="4.617" height="4.267"/>
+<polygon fill="#58595B" points="6.319,36.566 5.133,35.571 4.339,38.926 "/>
+<polygon fill="#FFD65A" points="6.348,36.516 9.551,32.695 6.284,29.955 4.996,35.381 "/>
+<rect x="1.695" y="15.983" transform="matrix(-0.6428 0.766 -0.766 -0.6428 45.0913 15.2071)" fill="#84D5F7" width="34.611" height="4.266"/>
+<polygon fill="#58595B" points="21.375,32.257 21.717,25.919 18.071,26.145 17.953,36.129 27.846,34.788 27.622,31.141 "/>
+<rect x="18.376" y="25.547" transform="matrix(0.6624 -0.7492 0.7492 0.6624 -12.0222 28.5526)" fill="#58595B" width="14.584" height="4.135"/>
+<polygon points="21.375,32.257 17.953,36.129 27.846,34.788 27.622,31.141 "/>
+<polygon points="32.047,23.521 22.387,34.446 20.715,32.969 30.588,22.231 "/>
+</svg>

@@ -87,15 +87,10 @@ div.comcode-supported {
 	display: block;
 	padding: 1em 1em 1em 35px;
 	border: 1px solid {$GET,light_error_border};
-	background: url('{$IMG;,icons/24x24/status/notice}') 0.6em 0.75em no-repeat {$GET,light_error_background};
+	background: url('{$IMG;,icons/48x48/status/notice}') 0.6em 0.75em no-repeat {$GET,light_error_background};
+	background-size: 24px 24px;
 	border-radius: 5px;
 	margin-top: 0.5em;
-}
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.input-error-here {
-		background-image: url('{$IMG;,icons/48x48/status/notice}');
-		background-size: 24px 24px;
-	}
 }
 
 /* This is used to fix a problem on screen-readers (we don't want a paragraph used) */
@@ -348,28 +343,19 @@ th.form-table-field-name a, /* Extra specificity to take precedence over th.de-t
 
 /* Special validated checkbox; use of span.validated-checkbox is due to http://stackoverflow.com/questions/6949148/css-after-not-adding-content-to-certain-elements */
 span.validated-checkbox, span.validated-checkbox+input[name="validated"].input-tick {
-	width: {$ADD,5,{$IMG_WIDTH%,{$IMG,1x/editor/off}}}px;
-	height: {$IMG_HEIGHT%,{$IMG,1x/editor/off}}px;
+	width: 91px;
+	height: 32px;
 	display: inline-block;
 	cursor: pointer;
 }
 span.validated-checkbox {
 	content: "";
 	background: url('{$IMG;,1x/editor/off}') no-repeat;
+	background-size: 86px 32px;
 	position: absolute;
 }
 span.validated-checkbox.checked {
 	background-image: url('{$IMG;,1x/editor/on}') !important;
-}
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	span.validated-checkbox {
-		background-image: url('{$IMG;,2x/editor/off}');
-		background-size: {$IMG_WIDTH%,{$IMG,1x/editor/off}}px {$IMG_HEIGHT%,{$IMG,1x/editor/off}}px;
-	}
-	span.validated-checkbox.checked {
-		background-image: url('{$IMG;,2x/editor/on}') !important;
-		background-size: {$IMG_WIDTH%,{$IMG,1x/editor/on}}px {$IMG_HEIGHT%,{$IMG,1x/editor/on}}px;
-	}
 }
 span.validated-checkbox+input[name="validated"].input-tick {
 	padding-right: 0.5em;
@@ -577,6 +563,7 @@ span.validated-checkbox+input[name="validated"].input-tick {
 		width: 314px;
 		height: 360px;
 		background: url('{$IMG;,iphone}') no-repeat;
+    	background-size: 381px 724px;
 		cursor: crosshair;
 	}
 	.mobile .preview-box-inner {
@@ -917,7 +904,7 @@ comcode-{$REPLACE,\,,\,comcode-,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}\,
 	border: 1px dashed gray;
 	text-align: center;
 	color: {$GET,native_ui_foreground};
-	background: {$GET,native_ui_active_background} url('{$IMG;,icons/16x16/editor/comcode}') right 2px no-repeat;
+	background: {$GET,native_ui_active_background} url('{$IMG;,icons/32x32/editor/comcode}') right 2px no-repeat;
 	background-size: 16px 16px;
 	padding: 1px 25px 1px 2px;
 }
@@ -929,11 +916,6 @@ comcode-{$REPLACE,\,,\,comcode-,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}\,
 #wysiwyg-editor input.cms-keep-ui-controlled::-moz-selection {
 	color: {$GET,native_ui_foreground};
 	background-color: {$GET,native_ui_active_background};
-}
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	#wysiwyg-editor input.cms-keep-ui-controlled {
-		background-image: url('{$IMG;,icons/32x32/editor/comcode}');
-	}
 }
 
 /*{+START,CSS_MODE,mobile}*/

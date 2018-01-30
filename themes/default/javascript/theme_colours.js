@@ -1,10 +1,10 @@
 (function ($cms, $util, $dom) {
     'use strict';
-    
+
     // ==============
     // COLOUR CHOOSER
     // ==============
-    
+
     var $themeColours = window.$themeColours = {};
 
     window.namesToNumbers || (window.namesToNumbers = {});

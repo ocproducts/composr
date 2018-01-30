@@ -8,7 +8,7 @@
      * @returns {boolean}
      */
     $cms.inMinikernelVersion = $util.constant(document.documentElement.classList.contains('in-minikernel-version'));
-    
+
     var symbols = (!$cms.inMinikernelVersion() ? JSON.parse(document.getElementById('composr-symbol-data').content) : {});
     /**
      * @memberof $cms
@@ -212,7 +212,7 @@
      * @returns {string}
      */
     $cms.getCspNonce = $util.constant(strVal(symbols.CSP_NONCE));
-    
+
     var configOptionsJson = JSON.parse('{$PUBLIC_CONFIG_OPTIONS_JSON;}');
     /**
      * WARNING: This is a very limited subset of the $CONFIG_OPTION tempcode symbol
@@ -263,7 +263,7 @@
      * @namespace $cms.functions
      */
     $cms.functions = {};
-    
+
     var mobileModeMql = window.matchMedia('(max-width: 982px)'),
         desktopModeMql = window.matchMedia('(min-width: 983px)');
     /**
@@ -272,14 +272,14 @@
      */
     $cms.isCssMode = function (modeName) {
         modeName = strVal(modeName);
-        
+
         switch (modeName) {
             case 'mobile':
                 return mobileModeMql.matches;
             case 'desktop':
                 return desktopModeMql.matches;
         }
-        
+
         return false;
     };
 
@@ -593,7 +593,7 @@
 
         return decodeURIComponent(cookies.substring(startIdx + cookieName.length + 1, endIdx));
     };
-    
+
     /**
      * @return {string[]}
      */
@@ -811,7 +811,7 @@
 
         var title = $dom.html(document.querySelector('title')).replace(/ \u2013 .*/, ''),
             canonical = document.querySelector('link[rel="canonical"]'),
-            url = canonical ? canonical.getAttribute('href') : window.location.href,
+            url = canonical ? canonical.href : window.location.href,
             url2 = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=' + snippetHook + '&url=' + encodeURIComponent($cms.protectURLParameter(url)) + '&title=' + encodeURIComponent(title) + $cms.keep();
 
         return new Promise(function (resolve) {
@@ -1085,15 +1085,15 @@
         $dom.on(img, 'click mouseout', deactivate);
 
         function activate() {
-            img.oldSrc = img.getAttribute('src');
+            img.oldSrc = img.src;
             if (img.origsrc !== undefined) {
                 img.oldSrc = img.origsrc;
             }
-            img.setAttribute('src', rollover);
+            img.src = rollover;
         }
 
         function deactivate() {
-            img.setAttribute('src', img.oldSrc);
+            img.src = img.oldSrc;
         }
     };
 

@@ -16,7 +16,7 @@
     $editing.insertTextboxWrapping = insertTextboxWrapping;
     $editing.getSelectedText = getSelectedText;
     $editing.showUploadSyndicationOptions = showUploadSyndicationOptions;
-    
+
     // ===========
     // HTML EDITOR
     // ===========
@@ -191,7 +191,7 @@
                 textarea.style.visibility = 'visible';
                 textarea.disabled = false;
                 textarea.readOnly = false;
-                
+
                 window.rebuildAttachmentButtonForNext(id, 'js-attachment-upload-button');
 
                 // Unload editor
@@ -235,7 +235,7 @@
 
             function postWysiwygDisable(textarea) {
                 if (document.getElementById('toggle_wysiwyg_' + textarea.id)) {
-                    $dom.html('#toggle_wysiwyg_' + textarea.id, '<img src="{$IMG*;^,icons/16x16/editor/wysiwyg_on}" srcset="{$IMG;^,icons/16x16/editor/wysiwyg_on} 2x" alt="{!comcode:ENABLE_WYSIWYG;^}" title="{!comcode:ENABLE_WYSIWYG;^}" class="vertical-alignment" />');
+                    $dom.html('#toggle_wysiwyg_' + textarea.id, '<img width="16" height="16" src="{$IMG*;^,icons/32x32/editor/wysiwyg_on}" alt="{!comcode:ENABLE_WYSIWYG;^}" title="{!comcode:ENABLE_WYSIWYG;^}" class="vertical-alignment" />');
                 }
 
                 try {  // Unload editor 
@@ -288,7 +288,7 @@
             var httpReferer = document.createElement('input');
             httpReferer.name = 'http_referer';
             httpReferer.value = window.location.href;
-            httpReferer.setAttribute('type', 'hidden');
+            httpReferer.type = 'hidden';
             postingForm.appendChild(httpReferer);
         }
 
@@ -327,7 +327,7 @@
                     indicator = document.getElementById(id + '__is_wysiwyg');
                 } else {
                     indicator = document.createElement('input');
-                    indicator.setAttribute('type', 'hidden');
+                    indicator.type = 'hidden';
                     indicator.id = textarea.id + '__is_wysiwyg';
                     indicator.name = textarea.name + '__is_wysiwyg';
                     postingForm.appendChild(indicator);
@@ -335,7 +335,7 @@
                 indicator.value = '1';
 
                 if (document.getElementById('toggle_wysiwyg_' + id)) {
-                    $dom.html(document.getElementById('toggle_wysiwyg_' + id), '<img src="{$IMG*;^,icons/16x16/editor/wysiwyg_off}" srcset="{$IMG;^,icons/32x32/editor/wysiwyg_off} 2x" alt="{!comcode:DISABLE_WYSIWYG;^}" title="{!comcode:DISABLE_WYSIWYG;^}" class="vertical-alignment" />');
+                    $dom.html(document.getElementById('toggle_wysiwyg_' + id), '<img width="16" height="16" src="{$IMG*;^,icons/32x32/editor/wysiwyg_off}" alt="{!comcode:DISABLE_WYSIWYG;^}" title="{!comcode:DISABLE_WYSIWYG;^}" class="vertical-alignment" />');
                 }
 
                 window.wysiwygOriginalComcode[id] = textarea.value;
@@ -377,7 +377,7 @@
             var linkedSheets = document.querySelectorAll('link[rel="stylesheet"]');
 
             for (var counter = 0; counter < linkedSheets.length; counter++) {
-                pageStylesheets.push(linkedSheets[counter].getAttribute('href'));
+                pageStylesheets.push(linkedSheets[counter].href);
             }
 
             // Fiddly procedure to find our colour
@@ -415,7 +415,7 @@
                 wysiwygColor += (parseInt(matches[3]) + 4) + matches[4];
                 wysiwygColor += (parseInt(matches[5]) + 4) + matches[6];
             }
-            
+
             var editorSettings = {};
             /*{+START,INCLUDE,WYSIWYG_SETTINGS,.js,javascript}{+END}*/
 
@@ -525,7 +525,7 @@
         }
     }
 
-    
+
     function findTagsInEditor(editor, element) {
         if (!editor.document || !editor.document.$ || !editor.document.$.querySelector('body')) {
             return;
@@ -672,7 +672,7 @@
             };
         });
     }
-    
+
     // ============
     // BOTH EDITORS
     // ============
@@ -690,7 +690,7 @@
         } else {
             element = document.getElementById(fieldName);
         }
-        
+
         if (!element) {
             $util.fatal('$editing.doEmoticon(): Element not found "#' + fieldName + '"');
             return;
@@ -816,7 +816,7 @@
 
         function insertTextboxWysiwyg(element, text, isPlainInsert, html) {
             console.log('insertTextboxWysiwyg():', 'element:', element, 'text:', text, 'isPlainInsert:', isPlainInsert, 'html:', html);
-            
+
             return new Promise(function (resolvePromise) {
                 var editor = window.wysiwygEditors[element.id],
                     insert = '';
@@ -827,12 +827,12 @@
                     _insertTextboxWysiwyg(element, editor, insert);
                     return resolvePromise();
                 } 
-                
+
                 var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&lax_comcode=1' + $cms.keep());
                 if ($cms.getPageName() === 'topics') {
                     url += '&forum_db=1';
                 }
-                
+
                 var data = encodeURIComponent(text.replace(new RegExp(String.fromCharCode(8203), 'g'), ''));
 
                 $cms.doAjaxRequest(url, null, 'data=' + data).then(function (xhr) {

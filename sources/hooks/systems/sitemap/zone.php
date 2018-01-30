@@ -150,8 +150,7 @@ class Hook_sitemap_zone extends Hook_sitemap_base
             'url' => null,
             'extra_meta' => array(
                 'description' => null,
-                'image' => ($icon === null) ? null : find_theme_image('icons/24x24/' . $icon),
-                'image_2x' => ($icon === null) ? null : find_theme_image('icons/48x48/' . $icon),
+                'image' => ($icon === null) ? null : find_theme_image('icons/48x48/' . $icon),
                 'add_date' => (($meta_gather & SITEMAP_GATHER_TIMES) != 0 && file_exists($path)) ? filectime($path) : null,
                 'edit_date' => (($meta_gather & SITEMAP_GATHER_TIMES) != 0 && file_exists($path)) ? filemtime($path) : null,
                 'submitter' => null,
@@ -205,9 +204,9 @@ class Hook_sitemap_zone extends Hook_sitemap_base
 
             if ($child_node !== null) {
                 //$struct['title']=$child_node['title'];
-                foreach (array('description', 'image', 'image_2x', 'submitter', 'views', 'meta_keywords', 'meta_description', 'validated') as $key) {
+                foreach (array('description', 'image', 'submitter', 'views', 'meta_keywords', 'meta_description', 'validated') as $key) {
                     if ($child_node['extra_meta'][$key] !== null) {
-                        if (($struct['extra_meta'][$key] === null) || (!in_array($key, array('image', 'image_2x')))) {
+                        if (($struct['extra_meta'][$key] === null) || (!in_array($key, array('image')))) {
                             $struct['extra_meta'][$key] = $child_node['extra_meta'][$key];
                         }
                     }

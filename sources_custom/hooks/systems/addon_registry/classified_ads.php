@@ -148,7 +148,7 @@ This addon does not itself handle the transaction to purchase what is being adve
      */
     public function get_default_icon()
     {
-        return 'themes/default/images_custom/icons/48x48/menu/classifieds.png';
+        return 'themes/default/images_custom/icons/48x48/menu/classifieds.svg';
     }
 
     /**
@@ -159,8 +159,7 @@ This addon does not itself handle the transaction to purchase what is being adve
     public function get_file_list()
     {
         return array(
-            'themes/default/images_custom/icons/24x24/menu/classifieds.png',
-            'themes/default/images_custom/icons/48x48/menu/classifieds.png',
+            'themes/default/images_custom/icons/48x48/menu/classifieds.svg',
             'sources_custom/hooks/systems/addon_registry/classified_ads.php',
             'adminzone/pages/minimodules_custom/admin_classifieds.php',
             'lang_custom/EN/classifieds.ini',

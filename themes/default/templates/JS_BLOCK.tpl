@@ -4,7 +4,7 @@
 	<div id="{$GET%,js_block_id}">
 		<div aria-busy="true" class="spaced">
 			<div class="ajax-loading vertical-alignment">
-				<img src="{$IMG*,loading}" width="{$IMG_WIDTH*,{$IMG,loading}}" height="{$IMG_HEIGHT*,{$IMG,loading}}" title="{!LOADING}" alt="{!LOADING}" />
+				<img width="20" height="20" src="{$IMG*,loading}" title="{!LOADING}" alt="{!LOADING}" />
 				<span>{!LOADING}</span>
 			</div>
 		</div>

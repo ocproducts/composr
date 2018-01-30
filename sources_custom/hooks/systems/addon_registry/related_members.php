@@ -126,7 +126,7 @@ The particular CPF used is defined by the [tt]RELATED_CPF[/tt] language string (
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/buttons/more.png';
+        return 'themes/default/images/icons/48x48/buttons/more.svg';
     }
 
     /**
