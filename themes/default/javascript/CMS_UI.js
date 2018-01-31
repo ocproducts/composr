@@ -50,7 +50,7 @@
                     iconImg.cmsTooltipTitle = '{!CONTRACT;^}';
                 }
             } else {
-                setTrayThemeImage('contract', 'expand', $IMG_contract, $IMG_expand, $IMG_expand2;
+                setTrayThemeImage('contract', 'expand', $IMG_contract, $IMG_expand, $IMG_expand2);
                 iconImg.alt = iconImg.alt.replace('{!CONTRACT;^}', '{!EXPAND;^}');
                 iconImg.title = '{!EXPAND;^}';
                 if (iconImg.cmsTooltipTitle !== undefined) {

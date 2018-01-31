@@ -67,7 +67,6 @@ class file_naming_test_set extends cms_test_case
 
         $ignore_substrings = array(
             '/-logo.png',
-            '/icons/checklist/checklist-.png',
         );
 
         $files = get_directory_contents(get_file_base());

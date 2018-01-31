@@ -237,7 +237,7 @@
 
                 var previousButton = document.createElement('img');
                 previousButton.className = 'previous-button';
-                previousButton.src = $util.srl('{$IMG;,media_set_previous}');
+                previousButton.src = $util.srl('{$IMG;,icons/media_set/previous}');
                 previousButton.width = '74';
                 previousButton.height = '74';
                 previousButton.addEventListener('click', clickPreviousButton);

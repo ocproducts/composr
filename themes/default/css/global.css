@@ -4487,7 +4487,7 @@ pre .comcode-code-inner {
 }
 
 .comcode-concepts-title {
-	background-image: url('{$IMG;,icons/checklist/checklist1}');
+	background-image: url('{$IMG;,icons/checklist/checklist_done}');
 	background-size: 12px 12px;
 	background-repeat: no-repeat;
 	background-position: 1px 0;

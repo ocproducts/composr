@@ -2643,7 +2643,7 @@ function handle_self_referencing_embedment()
                 exit();
 
             case 'contract':
-                header('Content-type: image/png');
+                header('Content-type: image/svg+xml');
                 if (!file_exists(get_file_base() . '/themes/default/images/icons/trays/contract.svg')) {
                     $out = file_array_get('themes/default/images/icons/trays/contract.svg');
                     echo $out;
@@ -2654,7 +2654,7 @@ function handle_self_referencing_embedment()
                 exit();
 
             case 'expand':
-                header('Content-type: image/png');
+                header('Content-type: image/svg+xml');
                 if (!file_exists(get_file_base() . '/themes/default/images/icons/trays/expand.svg')) {
                     $out = file_array_get('themes/default/images/icons/trays/expand.svg');
                     echo $out;
@@ -2677,7 +2677,7 @@ function handle_self_referencing_embedment()
                     } else {
                         $file = file_get_contents(get_file_base() . '/themes/default/css/' . $css_file . '.css');
                     }
-                    $file = preg_replace('#\{\$IMG;?,([^,\}\']+)\}#', 'install.php?type=themes/default/images/${1}.png', $file);
+                    $file = preg_replace('#\{\$IMG;?,([^,\}\']+)\}#', 'install.php?type=themes/default/images/${1}.svg', $file);
 
                     require_code('tempcode_compiler');
                     $css = template_to_tempcode($file, 0, false, '');
@@ -2694,7 +2694,7 @@ function handle_self_referencing_embedment()
                     } else {
                         $file = file_get_contents(get_file_base() . '/themes/default/css/install.css');
                     }
-                    $file = preg_replace('#\{\$IMG,([^,\}\']+)\}#', 'themes/default/images/${1}.png', $file);
+                    $file = preg_replace('#\{\$IMG,([^,\}\']+)\}#', 'themes/default/images/${1}.svg', $file);
 
                     require_code('tempcode_compiler');
                     $css = template_to_tempcode($file, 0, false, '');
@@ -2707,7 +2707,7 @@ function handle_self_referencing_embedment()
         }
 
         if (substr($type, 0, 15) == 'themes/default/') {
-            header('Content-type: image/png');
+            header('Content-type: image/svg+xml');
             if (!file_exists(get_file_base() . '/' . $type)) {
                 $out = file_array_get(filter_naughty($type));
                 echo $out;

@@ -496,13 +496,13 @@ function ecv($lang, $escaped, $type, $name, $param)
                         $to = $matches[2];
                         $media_rule = '';
                         if ($from != '0') {
-                            $media_rule .= '(min-width: ' . $from . 'px)';
+                            $media_rule .= '(min-device-width: ' . $from . 'px)';
                         }
                         if ($to != 'infinity') {
                             if ($media_rule != '') {
                                 $media_rule .= ' and ';
                             }
-                            $media_rule .= '(max-width: ' . $to . 'px)';
+                            $media_rule .= '(max-device-width: ' . $to . 'px)';
                         }
                         $value = '@media ' . $media_rule . ' { ' . $param[1] . '}';
                     }
@@ -937,6 +937,12 @@ function ecv_IMG($lang, $escaped, $param)
             $value = find_theme_image($param[0], ((isset($param[3])) && ($param[3] === '1')), false, (isset($param[2]) && $param[2] !== '') ? $param[2] : null, null, ((isset($param[1])) && ($param[1] === '1')) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB']);
         } else {
             $value = 'themes/default/images/' . $param[0] . '.png';
+            if (!is_file(get_file_base() . '/' . $value)) {
+                $value = 'themes/default/images/' . $param[0] . '.gif';
+            }
+            if (!is_file(get_file_base() . '/' . $value)) {
+                $value = 'themes/default/images/' . $param[0] . '.svg';
+            }
         }
     }
 
@@ -968,11 +974,17 @@ function ecv_IMG_INLINE($lang, $escaped, $param)
             $value = find_theme_image($param[0], true, true, empty($param[2]) ? null : $param[2], null, ((isset($param[1])) && ($param[1] == '1')) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB']);
         } else {
             $value = 'themes/default/images/' . $param[0] . '.png';
+            if (!is_file(get_file_base() . '/' . $value)) {
+                $value = 'themes/default/images/' . $param[0] . '.gif';
+            }
+            if (!is_file(get_file_base() . '/' . $value)) {
+                $value = 'themes/default/images/' . $param[0] . '.svg';
+            }
         }
         if ($value != '') {
             $file_path = ((substr($value, 0, 22) == 'themes/default/images/') ? get_file_base() : get_custom_file_base()) . '/' . $value;
             require_code('mime_types');
-            $value = 'data:' . get_mime_type(get_file_extension($file_path), false) . ';base64,' . base64_encode(file_get_contents($file_path));
+            $value = 'data:' . get_mime_type(get_file_extension($file_path), true) . ';base64,' . base64_encode(file_get_contents($file_path));
         } else {
             return ecv_IMG($lang, $escaped, $param);
         }

@@ -5489,6 +5489,10 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         META_DESCRIPTION
         MINIMALISTIC_SITE
         MINIMODULE
+        COMCODE_TAG_img_PARAM_height
+        COMCODE_TAG_img_PARAM_height_TITLE
+        COMCODE_TAG_img_PARAM_width
+        COMCODE_TAG_img_PARAM_width_TITLE
         MINIMUM_AUTOCOMPLETE_LENGTH
         MINIMUM_AUTOCOMPLETE_PAST_SEARCH
         MINIMUM_GAMBLE_AMOUNT

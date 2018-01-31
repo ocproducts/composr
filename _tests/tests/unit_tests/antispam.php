@@ -1,11 +1,7 @@
 <?php /*
 
  Composr
-<<<<<<< HEAD
  Copyright (c) ocProducts, 2004-2018
-=======
- Copyright (c) ocProducts, 2004-2018
->>>>>>> master
 
  See text/EN/licence.txt for full licencing information.
 

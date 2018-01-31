@@ -136,10 +136,6 @@ Here are the top 100 buzzwords that will help you understand what web designers 
 			<td>A name that identifies a web server (or, in a cloud environment, a service in general). Domain names, such as ocportal.com, are easier for humans to work with than IP addresses, and are often dictated-by branding, or dictate branding.</td>
 		</tr>
 		<tr>
-			<td>Dublin Core</td>
-			<td>A metadata standard for identifying things such as the authorship of a particular web page. Dublin Core is a good way to provide additional data within web pages.</td>
-		</tr>
-		<tr>
 			<td>Facebook App</td>
 			<td>A web application designed to run on top of the Facebook website. It can interact with Facebook user accounts, but provide its own functionality. Many Facebook Apps are games (such as Farmville).</td>
 		</tr>
@@ -320,10 +316,6 @@ Here are the top 100 buzzwords that will help you understand what web designers 
 			<td>A way for a website to provide a news feed, so that users may view the news in a separate newsreader, or so that other websites can syndicate your news.</td>
 		</tr>
 		<tr>
-			<td>Schema.org</td>
-			<td>A metadata/markup scheme for embedding additional data inside a web page so that search engines (and other machine tools) can better understand it. For example, it allows you to tell a search engine that a page contains reviews for a product, and identify the particular reviewers.</td>
-		</tr>
-		<tr>
 			<td>Search Engine</td>
 			<td>A tool that trawls through the web, finding web pages and indexing their contents, so that you can then find pages by searching for key words. Google is a search engine.</td>
 		</tr>
@@ -334,6 +326,10 @@ Here are the top 100 buzzwords that will help you understand what web designers 
 		<tr>
 			<td>Server</td>
 			<td>A computer permanently switched on and connected to the Internet from which services, such as websites, can be delivered from.</td>
+		</tr>
+		<tr>
+			<td>Slider</td>
+			<td>A navigation mechanism where large images (typically) automatically rotate using animation effects.</td>
 		</tr>
 		<tr>
 			<td>Social media</td>

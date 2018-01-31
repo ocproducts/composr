@@ -26,6 +26,6 @@
 			<content type="html">{NEWS}</content>
 		{+END}
 		{+START,IF_PASSED,ENCLOSURE_URL}{+START,IF_PASSED,ENCLOSURE_LENGTH}{+START,IF_PASSED,ENCLOSURE_TYPE}
-			<link length="{ENCLOSURE_LENGTH*}" type="{ENCLOSURE_TYPE*}" rel="enclosure">{ENCLOSURE_URL*}</link>
+			<link length="{ENCLOSURE_LENGTH*}" href="{ENCLOSURE_URL*}" type="{ENCLOSURE_TYPE*}" rel="enclosure" />
 		{+END}{+END}{+END}
 	</entry>

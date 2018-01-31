@@ -69,7 +69,7 @@ class Hook_snippet_checklist_task_manage
                     'ADD_DATE' => display_time_period(time()),
                     'RECUR_INTERVAL' => ($recur_interval == 0) ? '' : integer_format($recur_interval),
                     'RECUR_EVERY' => post_param_string('recur_every'),
-                    'TASK_DONE' => 'checklist0',
+                    'TASK_DONE' => 'checklist_todo',
                     'ID' => strval($id),
                 ));
 

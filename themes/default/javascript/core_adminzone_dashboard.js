@@ -1,8 +1,8 @@
 (function ($cms, $util, $dom) {
     'use strict';
 
-    var $IMG_checklist_checklist1 = '{$IMG;,icons/checklist/checklist1}',
-        $IMG_checklist_checklist0 = '{$IMG;,icons/checklist/checklist0}';
+    var $IMG_checklist_checklist_done = '{$IMG;,icons/checklist/checklist_done}',
+        $IMG_checklist_checklist_todo = '{$IMG;,icons/checklist/checklist_todo}';
 
     var $SCRIPT_comcode_convert = '{$FIND_SCRIPT_NOHTTP;,comcode_convert}';
 
@@ -38,14 +38,14 @@
                 return;
             }
 
-            if (data.vwTaskDone === 'checklist0') {
+            if (data.vwTaskDone === 'checklist_todo') {
                 $cms.loadSnippet('checklist_task_manage', 'type=mark_done&id=' + id);
-                this.imgChecklistStatus.src = $IMG_checklist_checklist1;
-                data.vwTaskDone = 'checklist1';
+                this.imgChecklistStatus.src = $IMG_checklist_checklist_done;
+                data.vwTaskDone = 'checklist_done';
             } else {
                 $cms.loadSnippet('checklist_task_manage', 'type=mark_undone&id=' + id);
-                this.imgChecklistStatus.src = $IMG_checklist_checklist0;
-                data.vwTaskDone = 'checklist0';
+                this.imgChecklistStatus.src = $IMG_checklist_checklist_todo;
+                data.vwTaskDone = 'checklist_todo';
             }
         },
 
@@ -231,7 +231,7 @@
                     if (rowImgs[rowImgs.length - 1].origsrc) {
                         src = rowImgs[rowImgs.length - 1].origsrc;
                     }
-                    if (src && src.includes('checklist1')) {
+                    if (src && src.includes('checklist_done')) {
                         $dom.hide(checklistRows[i]);
                         checklistRows[i].classList.add('task-hidden');
                     } else {

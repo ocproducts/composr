@@ -57,205 +57,205 @@ For example:
 }
 
 /*{+START,CSS_MODE,mobile}*/
-.dropdown-menu-toggle-btn {
-	text-decoration: none;
-	color: {$GET,WB} !important;
-	position: absolute;
-	padding: 0.75em;
-}
+	.dropdown-menu-toggle-btn {
+		text-decoration: none;
+		color: {$GET,WB} !important;
+		position: absolute;
+		padding: 0.75em;
+	}
 
-.dropdown-menu-toggle-btn:hover {
-	color: {$GET,WB};
-}
+	.dropdown-menu-toggle-btn:hover {
+		color: {$GET,WB};
+	}
 
-.dropdown-menu-toggle-btn:hover span {
-	text-decoration: underline;
-}
+	.dropdown-menu-toggle-btn:hover span {
+		text-decoration: underline;
+	}
 
-.dropdown-menu-toggle-btn * {
-	vertical-align: middle;
-}
+	.dropdown-menu-toggle-btn * {
+		vertical-align: middle;
+	}
 
-.dropdown-menu-toggle-btn::after {
-	padding-left: 0.25em;
-	content: "\25bc"; /* Downward triangle arrow */
-	vertical-align: middle;
-	font-size: 0.85em;
-}
+	.dropdown-menu-toggle-btn::after {
+		padding-left: 0.25em;
+		content: "\25bc"; /* Downward triangle arrow */
+		vertical-align: middle;
+		font-size: 0.85em;
+	}
 
-.dropdown-menu-content {
-	display: none;
-	position: absolute;
-	top: 100%;
-	width: 100%;
-	left: 0;
-	z-index: 1000;
-	background-color: {$GET,area_5_background};
-	box-shadow: 0px 20px 25px 0px {$GET,dark_border};
-}
+	.dropdown-menu-content {
+		display: none;
+		position: absolute;
+		top: 100%;
+		width: 100%;
+		left: 0;
+		z-index: 1000;
+		background-color: {$GET,area_5_background};
+		box-shadow: 0px 20px 25px 0px {$GET,dark_border};
+	}
 
-.dropdown-menu li {
-	border-top: 1px solid {$GET,standard_border};
-	border-left: 1px solid {$GET,standard_border};
-	color: {$GET,BW};
-}
+	.dropdown-menu li {
+		border-top: 1px solid {$GET,standard_border};
+		border-left: 1px solid {$GET,standard_border};
+		color: {$GET,BW};
+	}
 
-.dropdown-menu li.nlevel {
-	margin-left: 2em;
-}
+	.dropdown-menu li.nlevel {
+		margin-left: 2em;
+	}
 
-.dropdown-menu li.toplevel,
-.dropdown-menu li.nlevel {
-	background-color: {$GET,area_5_background};
-}
+	.dropdown-menu li.toplevel,
+	.dropdown-menu li.nlevel {
+		background-color: {$GET,area_5_background};
+	}
 
-.dropdown-menu a.toplevel-link,
-.dropdown-menu a.nlevel-link {
-	padding: 1.2em 3em 1.2em 1em;
-	background: url('{$IMG;,icons/buttons/proceed}') transparent no-repeat top 1em right 1em;
-	background-size: 24px 24px;
-}
+	.dropdown-menu a.toplevel-link,
+	.dropdown-menu a.nlevel-link {
+		padding: 1.2em 3em 1.2em 1em;
+		background: url('{$IMG;,icons/buttons/proceed}') transparent no-repeat top 1em right 1em;
+		background-size: 24px 24px;
+	}
 
-.dropdown-menu li.toplevel:hover,
-.dropdown-menu li.nlevel:hover,
-.dropdown-menu a.toplevel-link:hover,
-.dropdown-menu a.nlevel-link:hover,
-.dropdown-menu li.current > a.toplevel-link,
-.dropdown-menu li.current > a.nlevel-link {
-	background-color: {$GET,area_hover_2_background};
-}
-
+	.dropdown-menu li.toplevel:hover,
+	.dropdown-menu li.nlevel:hover,
+	.dropdown-menu a.toplevel-link:hover,
+	.dropdown-menu a.nlevel-link:hover,
+	.dropdown-menu li.current > a.toplevel-link,
+	.dropdown-menu li.current > a.nlevel-link {
+		background-color: {$GET,area_hover_2_background};
+	}
 /*{+END}*/
 
 /*{+START,CSS_MODE,desktop}*/
-.dropdown-menu-toggle-btn {
-	display: none;
-}
+	.dropdown-menu-toggle-btn {
+		display: none;
+	}
 
-.dropdown-menu li.toplevel {
-	float: left;
-	padding: 0.5em 0.25em;
-}
+	.dropdown-menu li.toplevel {
+		float: left;
+		padding: 0.5em 0.25em;
+	}
 
-.dropdown-menu a.toplevel-link,
-.dropdown-menu a.nlevel-link {
-	padding: 0.3em 0.4em !important;
-}
+	.dropdown-menu a.toplevel-link,
+	.dropdown-menu a.nlevel-link {
+		padding: 0.3em 0.4em !important;
+	}
 
-.dropdown-menu li.toplevel.first {
-	border-left: 0;
-}
+	.dropdown-menu li.toplevel.first {
+		border-left: 0;
+	}
 
-.dropdown-menu li.toplevel.last {
-	overflow: hidden; /* so it is shunted against its left-hand neighbours without overlapping */
-	margin-right: 0 !important; /* as would cause wrapping with the overflow hidden */
-	position: relative;
-	left: -1px; /* In place of margin-right */
-}
+	.dropdown-menu li.toplevel.last {
+		overflow: hidden; /* so it is shunted against its left-hand neighbours without overlapping */
+		margin-right: 0 !important; /* as would cause wrapping with the overflow hidden */
+		position: relative;
+		left: -1px; /* In place of margin-right */
+	}
 
-.dropdown-menu li.toplevel.menu-spacer {
-	height: 2.5em;
-	width: 1em;
-	padding: 0.5em;
-	float: left;
-}
+	.dropdown-menu li.toplevel.menu-spacer {
+		height: 2.5em;
+		width: 1em;
+		padding: 0.5em;
+		float: left;
+	}
 
-.dropdown-menu a.toplevel-link {
-	padding: 0.4em 0.5em;
-}
+	.dropdown-menu a.toplevel-link {
+		padding: 0.4em 0.5em;
+	}
 
-.dropdown-menu .has-children>a.toplevel-link:after {
-	content: "\025BC"; /* Downward arrow */
-	vertical-align: middle;
-	padding-left: 0.5em;
-	font-size: 0.8em;
-	display: inline-block;
-	margin-top: 4px;
-}
+	.dropdown-menu .has-children>a.toplevel-link:after {
+		content: "\025BC"; /* Downward arrow */
+		vertical-align: middle;
+		padding-left: 0.5em;
+		font-size: 0.8em;
+		display: inline-block;
+		margin-top: 4px;
+	}
 
-.dropdown-menu li.nlevel.has-children > a.nlevel-link::after {
-	display: inline-block;
-	vertical-align: middle;
-	content: '→'; /* Right arrow */
-	margin-left: 0.3em;
-}
+	.dropdown-menu li.nlevel.has-children > a.nlevel-link::after {
+		display: inline-block;
+		vertical-align: middle;
+		content: '→'; /* Right arrow */
+		margin-left: 0.3em;
+	}
 
-.dropdown-menu .toplevel-link a, .dropdown-menu .toplevel-link a:visited, .dropdown-menu .toplevel-link a:hover {
-	text-decoration: none;
-}
+	.dropdown-menu .toplevel-link a, .dropdown-menu .toplevel-link a:visited, .dropdown-menu .toplevel-link a:hover {
+		text-decoration: none;
+	}
 
-.dropdown-menu .toplevel.current .toplevel-link span, .dropdown-menu .toplevel .toplevel-link:hover span {
-	text-decoration: underline;
-}
-.dropdown-menu .toplevel .toplevel-link.non-link:hover span {
-	text-decoration: none;
-}
+	.dropdown-menu .toplevel.current .toplevel-link span, .dropdown-menu .toplevel .toplevel-link:hover span {
+		text-decoration: underline;
+	}
+	.dropdown-menu .toplevel .toplevel-link.non-link:hover span {
+		text-decoration: none;
+	}
 
-.dropdown-menu .toplevel-link img {
-	max-width: 20px;
-}
+	.dropdown-menu .toplevel-link img {
+		max-width: 20px;
+	}
 
-.dropdown-menu ul.nlevel {
-	box-shadow: 3px 3px 10px {$GET,standard_border};
-	line-height: 1.4em;
-	border-top: 1px solid {$GET,standard_border};
-	border-left: 1px solid {$GET,standard_border};
-	border-right: 1px solid {$GET,standard_border};
-}
+	.dropdown-menu ul.nlevel {
+		box-shadow: 3px 3px 10px {$GET,standard_border};
+		line-height: 1.4em;
+		border-top: 1px solid {$GET,standard_border};
+		border-left: 1px solid {$GET,standard_border};
+		border-right: 1px solid {$GET,standard_border};
+	}
 
-.dropdown-menu ul.nlevel ul.nlevel {
-	margin-top: -1px; /* To compensate for border size */
-}
+	.dropdown-menu ul.nlevel ul.nlevel {
+		margin-top: -1px; /* To compensate for border size */
+	}
 
-.dropdown-menu .nlevel li {
-	white-space: nowrap;
-	overflow: hidden; /* Needed as images are set to float */
-}
+	.dropdown-menu .nlevel li {
+		white-space: nowrap;
+		overflow: hidden; /* Needed as images are set to float */
+	}
 
-.dropdown-menu .nlevel li:hover, .dropdown-menu .nlevel li.current {
-	background-color: {$GET,dropdown_menu_text};
-}
+	.dropdown-menu .nlevel li:hover, .dropdown-menu .nlevel li.current {
+		background-color: {$GET,dropdown_menu_text};
+	}
 
-.dropdown-menu .nlevel li, .dropdown-menu .nlevel .menu-spacer {
-	background-color: {$GET,dropdown_menu_background};
-	font-weight: normal;
-	border-bottom: 1px solid {$GET,standard_border};
-	min-height: 20px;
-}
+	.dropdown-menu .nlevel li, .dropdown-menu .nlevel .menu-spacer {
+		background-color: {$GET,dropdown_menu_background};
+		font-weight: normal;
+		border-bottom: 1px solid {$GET,standard_border};
+		min-height: 20px;
+	}
 
-.dropdown-menu .nlevel .menu-spacer {
-	display: block;
-	padding-right: 0;
-}
+	.dropdown-menu .nlevel .menu-spacer {
+		display: block;
+		padding-right: 0;
+	}
 
-.dropdown-menu ul.nlevel li a { /* ul li added to ensure precedence over ".nl li" selector, whilst not forcing us to use up our only !important */
-	padding-left: 14px;
-	background-size: 6px 6px;
-}
+	.dropdown-menu ul.nlevel li a { /* ul li added to ensure precedence over ".nl li" selector, whilst not forcing us to use up our only !important */
+		padding-left: 14px;
+		background-size: 6px 6px;
+	}
 
-.dropdown-menu .nlevel a, .dropdown-menu .nlevel a:visited {
-	text-decoration: none;
-}
+	.dropdown-menu .nlevel a, .dropdown-menu .nlevel a:visited {
+		text-decoration: none;
+	}
 
-.dropdown-menu .nlevel a:hover {
-	text-decoration: underline;
-}
+	.dropdown-menu .nlevel a:hover {
+		text-decoration: underline;
+	}
 
-.dropdown-menu .nlevel, .dropdown-menu .nlevel a, .dropdown-menu .nlevel a:visited, .dropdown-menu .nlevel a:hover {
-	color: {$GET,slightly_seeded_text} !important;
-}
+	.dropdown-menu .nlevel, .dropdown-menu .nlevel a, .dropdown-menu .nlevel a:visited, .dropdown-menu .nlevel a:hover {
+		color: {$GET,slightly_seeded_text} !important;
+	}
 
-.dropdown-menu .nlevel .current a {
-	background: transparent url('{$IMG;,icons/menus/menu_bullet_current}') no-repeat 5px 5px !important;
-}
-body .dropdown-menu .nlevel .has-img>a, body .dropdown-menu .nlevel.current.has-img>a {
-	background: none !important;
-}
+	.dropdown-menu .nlevel .current a {
+		background: transparent url('{$IMG;,icons/menus/menu_bullet_current}') no-repeat 5px 5px !important;
+	}
+	body .dropdown-menu .nlevel .has-img>a, body .dropdown-menu .nlevel.current.has-img>a {
+		background: none !important;
+	}
 
-.dropdown-menu .nlevel .non-current a {
-	background: transparent url('{$IMG;,icons/menus/menu_bullet}') no-repeat 5px 5px;
-}
+	.dropdown-menu .nlevel .non-current a {
+		background: transparent url('{$IMG;,icons/menus/menu_bullet}') no-repeat 5px 5px;
+	}
 
-.dropdown-menu .nlevel .non-current a:hover {
-	background: transparent url('{$IMG;,icons/menus/menu_bullet_hover}') no-repeat 5px 5px;
-}
+	.dropdown-menu .nlevel .non-current a:hover {
+		background: transparent url('{$IMG;,icons/menus/menu_bullet_hover}') no-repeat 5px 5px;
+	}
+/*{+END}*/

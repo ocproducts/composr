@@ -156,7 +156,7 @@ class Block_main_staff_checklist
                 'ADD_DATE' => display_time_period($r['add_date']),
                 'RECUR_INTERVAL' => ($r['recur_interval'] == 0) ? '' : integer_format($r['recur_interval']),
                 'RECUR_EVERY' => $recur_every,
-                'TASK_DONE' => (($r['task_is_done'] !== null) && (($r['recur_interval'] == 0) || (($r['recur_every'] != 'mins') || (time() < $r['task_is_done'] + 60 * $r['recur_interval'])) && (($r['recur_every'] != 'hours') || (time() < $r['task_is_done'] + 60 * 60 * $r['recur_interval'])) && (($r['recur_every'] != 'days') || (time() < $r['task_is_done'] + 24 * 60 * 60 * $r['recur_interval'])) && (($r['recur_every'] != 'months') || (time() < $r['task_is_done'] + 31 * 24 * 60 * 60 * $r['recur_interval'])))) ? 'checklist1' : 'checklist0',
+                'TASK_DONE' => (($r['task_is_done'] !== null) && (($r['recur_interval'] == 0) || (($r['recur_every'] != 'mins') || (time() < $r['task_is_done'] + 60 * $r['recur_interval'])) && (($r['recur_every'] != 'hours') || (time() < $r['task_is_done'] + 60 * 60 * $r['recur_interval'])) && (($r['recur_every'] != 'days') || (time() < $r['task_is_done'] + 24 * 60 * 60 * $r['recur_interval'])) && (($r['recur_every'] != 'months') || (time() < $r['task_is_done'] + 31 * 24 * 60 * 60 * $r['recur_interval'])))) ? 'checklist_done' : 'checklist_todo',
                 'ID' => strval($r['id']),
                 'ADD_TIME' => do_lang_tempcode('DAYS_AGO', escape_html(integer_format(intval(round(floatval(time() - $r['add_date']) / 60.0 / 60.0 / 24.0))))),
             )));

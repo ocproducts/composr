@@ -112,9 +112,9 @@ class Hook_addon_registry_core_adminzone_dashboard
             'lang/EN/staff_checklist.ini',
             'sources/hooks/systems/cron/staff_checklist_notify.php',
             'sources/hooks/systems/notifications/staff_checklist.php',
-            'themes/default/images/icons/checklist/checklist-.svg',
-            'themes/default/images/icons/checklist/checklist0.svg',
-            'themes/default/images/icons/checklist/checklist1.svg',
+            'themes/default/images/icons/checklist/checklist_na.svg',
+            'themes/default/images/icons/checklist/checklist_todo.svg',
+            'themes/default/images/icons/checklist/checklist_done.svg',
             'themes/default/images/icons/checklist/toggle.svg',
             'themes/default/images/icons/checklist/index.html',
             'lang/EN/tips.ini',
@@ -321,7 +321,7 @@ class Hook_addon_registry_core_adminzone_dashboard
         $custom_task = new Tempcode();
         foreach (placeholder_array() as $k => $v) {
             $custom_task->attach(do_lorem_template('BLOCK_MAIN_STAFF_CHECKLIST_CUSTOM_TASK', array(
-                'TASK_DONE' => 'checklist0',
+                'TASK_DONE' => 'checklist_todo',
                 'ADD_TIME' => placeholder_date(),
                 'RECUR_INTERVAL' => '',
                 'ID' => placeholder_id(),
