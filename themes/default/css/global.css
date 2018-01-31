@@ -4065,7 +4065,7 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 .admin--add-to-category {
 	background-image: url('{$IMG,icons/admin/add_to_category}') !important;
 }
-.admin--delete33 {
+.admin--delete3 {
 	background-image: url('{$IMG,icons/admin/delete3}') !important;
 }
 .admin--edit {

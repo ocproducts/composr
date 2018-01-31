@@ -505,6 +505,7 @@ class Module_admin_setupwizard
         }
         $addon_list_advanced_on_by_default = array_merge($addon_list_advanced_on_by_default, array(
             'actionlog',
+            'all_icons',
             'awards',
             'breadcrumbs',
             'captcha',

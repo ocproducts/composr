@@ -49,7 +49,7 @@ class catalogues_test_set extends cms_test_case
         $this->cms_catalogues_alt->add();
     }
 
-    public function testAddCatalogueActulizer()
+    public function testAddCatalogueActualiser()
     {
         $_POST = array(
             'new_field_0_visible' => '1',

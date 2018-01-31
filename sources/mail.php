@@ -65,11 +65,6 @@ function dispatch_mail($subject_line, $message_raw, $to_emails = null, $to_names
 {
     $dispatcher = null;
 
-    // @TODO: SALMAN REMOVE
-    $log_data = "SUBJECT LINE: \"{$subject_line}\"\nMESSAGE RAW: \"{$message_raw}\"\n\n===================================================================================\n\n";
-    file_put_contents(get_custom_file_base() . '/data_custom/salman-email.log', $log_data, FILE_APPEND);
-    // @TODO: SALMAN REMOVE
-
     if (class_exists('Mail_dispatcher_override')) {
         $dispatcher = new Mail_dispatcher_override($advanced_parameters);
         if (!$dispatcher->is_dispatcher_available($advanced_parameters)) {

@@ -232,6 +232,26 @@ class Module_calendar
             delete_privilege('view_personal_events');
         }
 
+        if (($upgrade_from !== null) && ($upgrade_from < 8)) { // LEGACY
+            $icons = array(
+                'activity',
+                'anniversary',
+                'appointment',
+                'birthday',
+                'commitment',
+                'duty',
+                'festival',
+                'general',
+                'public_holiday',
+                'rss',
+                'system_command',
+                'vacation',
+            );
+            foreach ($icons as $icon) {
+                $GLOBALS['SITE_DB']->query_update('calendar_types', array('t_logo' => 'icons/calendar/' . $icon), array('t_logo' => 'calendar/' . $icon));
+            }
+        }
+
         if (($upgrade_from === null) || ($upgrade_from < 9)) {
             $GLOBALS['SITE_DB']->create_index('calendar_events', 'member_calendar', array('e_member_calendar'));
             $GLOBALS['SITE_DB']->create_index('calendar_jobs', 'member_id', array('j_member_id'));

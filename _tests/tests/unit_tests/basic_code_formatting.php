@@ -117,6 +117,7 @@ class basic_code_formatting_test_set extends cms_test_case
             'tpl',
             'txt',
             'xml',
+            'svg',
         ));
 
         foreach ($this->contents as $path) {
@@ -142,6 +143,10 @@ class basic_code_formatting_test_set extends cms_test_case
                 $c = file_get_contents($path);
 
                 $this->assertTrue(strpos($c, "\r") === false, 'Windows text format detected for ' . $path);
+
+                if ($ext == 'svg') {
+                    continue;
+                }
 
                 $term_breaks = strlen($c) - strlen(rtrim($c, "\n"));
 

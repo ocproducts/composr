@@ -5709,7 +5709,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         NEW_THEME
         NEW_USERGROUP
         NEXT_ITEM_add_image_to_this
-        NEXT_ITEM_add_one
+        NEXT_ITEM_add
         NEXT_ITEM_add_one_catalogue
         NEXT_ITEM_add_one_category
         NEXT_ITEM_add_one_image
@@ -5717,7 +5717,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         NEXT_ITEM_add_to_catalogue
         NEXT_ITEM_add_video_to_this
         NEXT_ITEM_adminzone
-        NEXT_ITEM_edit_one
+        NEXT_ITEM_edit
         NEXT_ITEM_edit_one_catalogue
         NEXT_ITEM_edit_one_category
         NEXT_ITEM_edit_one_image

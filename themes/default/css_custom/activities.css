@@ -62,7 +62,7 @@ form.activities-remove .remove-button:hover {
 	cursor: pointer;
 }
 
-form.activities-remove input.button-cross::-moz-focus-inner {
+form.activities-remove input.remove-button::-moz-focus-inner {
 	border: 0;
 }
 

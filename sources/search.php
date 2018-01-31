@@ -360,7 +360,7 @@ function find_search_suggestions($request, $search_type = '')
         } else {
             $q .= 's_primary LIKE \'' . db_encode_like($request . '%') . '\'';
         }
-        $q .= ' AND s_primary NOT LIKE \'' . db_encode_like('%<%') . '\'';
+        $q .= ' AND s_primary NOT LIKE \'' . db_encode_like('%<' . '%') . '\'';
         $q .= ' AND ' . db_string_not_equal_to('s_primary', '');
         $q .= ' GROUP BY s_primary HAVING COUNT(*)>' . strval(MINIMUM_AUTOCOMPLETE_PAST_SEARCH);
         $q .= ' ORDER BY COUNT(*) DESC';

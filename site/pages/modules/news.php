@@ -155,6 +155,19 @@ class Module_news
 
         if (($upgrade_from !== null) && ($upgrade_from < 8)) { // LEGACY
             $GLOBALS['SITE_DB']->alter_table_field('news_categories', 'nc_img', 'SHORT_TEXT');
+
+            $icons = array(
+                'art',
+                'business',
+                'community',
+                'difficulties',
+                'entertainment',
+                'general',
+                'technology',
+            );
+            foreach ($icons as $icon) {
+                $GLOBALS['SITE_DB']->query_update('news_categories', array('nc_img' => 'icons/news/' . $icon), array('nc_img' => 'newscats/' . $icon));
+            }
         }
     }
 

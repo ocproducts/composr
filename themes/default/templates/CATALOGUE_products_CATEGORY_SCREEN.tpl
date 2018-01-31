@@ -40,7 +40,7 @@
 
 {+START,INCLUDE,STAFF_ACTIONS}
 	1_URL={ADD_ENTRY_URL*}
-	1_TITLE={!do_next:NEXT_ITEM_add_one}
+	1_TITLE={!do_next:NEXT_ITEM_add}
 	1_REL=add
 	1_ICON=admin/add
 	2_URL={ADD_CAT_URL*}

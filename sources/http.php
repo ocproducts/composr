@@ -41,7 +41,7 @@ function init__http()
  */
 function cache_and_carry($func, $args, $timeout = null)
 {
-    $ret = null;
+    $ret = mixed();
 
     $path = get_custom_file_base() . '/caches/http/' . md5(serialize($args)) . '.dat';
     if (is_file($path) && (($timeout === null) || (filemtime($path) > time() - $timeout * 60))) {

@@ -273,6 +273,7 @@ class css_file_test_set extends cms_test_case
             'page-running-',
             'menu-',
             'buttons--',
+            'admin--',
             'box---block-no-entries-',
             'cns-gcol-',
             'calendar-priority-',
@@ -288,6 +289,7 @@ class css_file_test_set extends cms_test_case
         }
 
         $exceptions = array(
+            'help',
             'forceful',
             'contains-preview-button',
             'near-preview-button',
