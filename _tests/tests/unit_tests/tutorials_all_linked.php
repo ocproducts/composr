@@ -66,33 +66,6 @@ class tutorials_all_linked_test_set extends cms_test_case
         }
     }
 
-    public function testIconLinkage()
-    {
-        $icons_used = array();
-        foreach ($this->tutorials as $tutorial_name => $tutorial) {
-            $icons_used[] = $tutorial['icon'];
-        }
-
-        /*
-        This isn't going to pass. We don't have that many icons.
-        $_icons_used = array_count_values($icons_used);
-        foreach ($_icons_used as $icon => $count) {
-            $this->assertTrue($count <= 3, basename($icon, '.png') . ' tag icon used too much (' . integer_format($count) . ' times), try a more specific tag at the front of the tag list');
-        }
-        */
-
-        $dh = opendir(get_custom_file_base() . '/themes/default/images_custom/tutorial_icons');
-        while (($f = readdir($dh)) !== false) {
-            if (substr($f, -4) == '.svg') {
-                $icon = basename($f, '.svg');
-                if (!in_array($icon, array('css', 'javascript', 'php', 'video' /*Very generic ones we aren't using yet*/))) {
-                    $this->assertTrue(in_array(find_theme_image('tutorial_icons/' . $icon), $icons_used), $icon . ' icon is not used');
-                }
-            }
-        }
-        closedir($dh);
-    }
-
     public function testNotSelfLinking()
     {
         $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';

@@ -87,7 +87,7 @@ class Hook_addon_registry_core_menus
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/structure/menus.svg';
+        return 'themes/default/images/icons/menu/adminzone/structure/menus.svg';
     }
 
     /**
@@ -98,14 +98,14 @@ class Hook_addon_registry_core_menus
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/adminzone/structure/menus.svg',
+            'themes/default/images/icons/menu/adminzone/structure/menus.svg',
             'sources/hooks/systems/resource_meta_aware/menu.php',
             'sources/hooks/systems/resource_meta_aware/menu_item.php',
             'sources/hooks/systems/commandr_fs/menus.php',
             'themes/default/css/menu_editor.css',
             'sources/hooks/systems/addon_registry/core_menus.php',
             'themes/admin/templates/MENU_mobile.tpl',
-            'themes/default/images/mobile_menu.svg',
+            'themes/default/images/icons/menus/mobile_menu.svg',
             'themes/default/css/menu__mobile.css',
             'themes/default/css/menu__sitemap.css',
             'themes/default/css/menu__dropdown.css',
@@ -145,13 +145,13 @@ class Hook_addon_registry_core_menus
             'themes/default/templates/MENU_LINK_PROPERTIES.tpl',
             'adminzone/pages/modules/admin_menus.php',
             'adminzone/menu_management.php',
-            'themes/default/images/1x/menus/index.html',
-            'themes/default/images/1x/menus/menu.svg',
-            'themes/default/images/1x/menus/menu_bullet.svg',
-            'themes/default/images/1x/menus/menu_bullet_hover.svg',
-            'themes/default/images/1x/menus/menu_bullet_expand.svg',
-            'themes/default/images/1x/menus/menu_bullet_expand_hover.svg',
-            'themes/default/images/1x/menus/menu_bullet_current.svg',
+            'themes/default/images/icons/menus/index.html',
+            'themes/default/images/icons/menus/menu.svg',
+            'themes/default/images/icons/menus/menu_bullet.svg',
+            'themes/default/images/icons/menus/menu_bullet_hover.svg',
+            'themes/default/images/icons/menus/menu_bullet_expand.svg',
+            'themes/default/images/icons/menus/menu_bullet_expand_hover.svg',
+            'themes/default/images/icons/menus/menu_bullet_current.svg',
             'lang/EN/menus.ini',
             'sources/blocks/menu.php',
             'sources/hooks/systems/snippets/management_menu.php',

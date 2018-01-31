@@ -26,6 +26,6 @@
 		1_URL={$PAGE_LINK*,_SEARCH:admin_cns_groups:add}
 		1_TITLE={!ADD_GROUP}
 		1_REL=add
-		1_ICON=menu/_generic_admin/add_one
+		1_ICON=admin/add
 	{+END}
 {+END}

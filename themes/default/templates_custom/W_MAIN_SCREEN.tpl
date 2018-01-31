@@ -248,7 +248,7 @@
 		<div class="box box---w-main-screen" data-toggleable-tray="{}">
 			<h2 class="toggleable-tray-title js-tray-header">
 				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!W_ENVIRONMENT_ACTIONS}</a>
-				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}" title="{!EXPAND}" width="24" height="24" src="{$IMG*,1x/trays/expand2}" /></a>
+				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}" title="{!EXPAND}" width="24" height="24" src="{$IMG*,icons/trays/expand2}" /></a>
 			</h2>
 
 			<div class="toggleable-tray js-tray-content" style="{HIDE_ACTIONS*}"{+START,IF,{HIDE_ACTIONS}} aria-expanded="false"{+END}>
@@ -541,7 +541,7 @@
 			<div class="box box---w-main-screen" data-toggleable-tray="{}">
 				<h2 class="toggleable-tray-title js-tray-header">
 					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!W_ENVIRONMENT_ADDITIONS}</a>
-					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}" title="{!EXPAND}" width="24" height="24" src="{$IMG*,1x/trays/expand2}" /></a>
+					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}" title="{!EXPAND}" width="24" height="24" src="{$IMG*,icons/trays/expand2}" /></a>
 				</h2>
 
 				<div class="toggleable-tray js-tray-content" style="{HIDE_ADDITIONS*}"{+START,IF,{HIDE_ADDITIONS}} aria-expanded="false"{+END}>
@@ -571,7 +571,7 @@
 		<div class="box box---w-main-screen" data-toggleable-tray="{}">
 			<h2 class="toggleable-tray-title js-tray-header">
 				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!W_ENVIRONMENT_MODIFICATIONS}</a>
-				<a class="js-click-set-hidemod-cookie toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}" title="{!EXPAND}" width="24" height="24" src="{$IMG*,1x/trays/expand2}" /></a>
+				<a class="js-click-set-hidemod-cookie toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}" title="{!EXPAND}" width="24" height="24" src="{$IMG*,icons/trays/expand2}" /></a>
 			</h2>
 
 			<div class="toggleable-tray js-tray-content" style="{HIDE_MODIFICATIONS*}"{+START,IF,{HIDE_MODIFICATIONS}} aria-expanded="false"{+END}>
@@ -580,15 +580,15 @@
 						{$INSERT_SPAMMER_BLACKHOLE}
 
 						<label for="item">{!W_ITEMS}</label>: {ITEMS_OWNED} <input type="hidden" name="type" value="edititem" />
-						<input class="js-click-set-type-edititem button-screen-item buttons--edit" type="submit" value="{!W_EDIT_ITEM}" />
-						<input class="js-click-set-type-confirm button-screen-item menu---generic-admin--delete" type="submit" value="{!W_DELETE_ITEM}" />
+						<input class="js-click-set-type-edititem button-screen-item admin--edit" type="submit" value="{!W_EDIT_ITEM}" />
+						<input class="js-click-set-type-confirm button-screen-item admin--delete3" type="submit" value="{!W_DELETE_ITEM}" />
 					</div></form>
 
 					{+START,IF,{IS_STAFF}}
 						<form method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off"><div>
 							{$INSERT_SPAMMER_BLACKHOLE}
 
-							<label for="item">{!FROM}</label>: {ITEMS_OWNED} <label for="item2">{!TO}</label>: {ITEMS_OWNED_2} <input type="hidden" name="type" value="mergeitems" /> <input class="button-screen-item menu---generic-admin--merge" type="submit" value="{!W_MERGE_ITEMS}" />
+							<label for="item">{!FROM}</label>: {ITEMS_OWNED} <label for="item2">{!TO}</label>: {ITEMS_OWNED_2} <input type="hidden" name="type" value="mergeitems" /> <input class="button-screen-item admin--merge" type="submit" value="{!W_MERGE_ITEMS}" />
 						</div></form>
 					{+END}
 				{+END}

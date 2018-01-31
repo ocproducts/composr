@@ -130,7 +130,7 @@ Note that it is a requirement that your [tt]_google_search[/tt] page is in a zon
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/buttons/search.svg';
+        return 'themes/default/images/icons/buttons/search.svg';
     }
 
     /**

@@ -21,27 +21,27 @@
 }
 
 .menu-type--tree a {
-	background-size: 5px 6px;
+	background-size: 6px 6px;
 }
 
 .menu-type--tree .non-current a {
-	background: transparent url('{$IMG;,1x/menus/menu_bullet}') no-repeat 5px 6px;
+	background: transparent url('{$IMG;,icons/menus/menu_bullet}') no-repeat 5px 5px;
 }
 
 .menu-type--tree .non-current a:hover {
-	background: transparent url('{$IMG;,1x/menus/menu_bullet_hover}') no-repeat 5px 6px;
+	background: transparent url('{$IMG;,icons/menus/menu_bullet_hover}') no-repeat 5px 5px;
 }
 
 .menu-type--tree .current a {
-	background: transparent url('{$IMG;,1x/menus/menu_bullet_current}') no-repeat 5px 6px;
+	background: transparent url('{$IMG;,icons/menus/menu_bullet_current}') no-repeat 5px 5px;
 }
 
 .menu-type--tree .has-no-img>.drawer {
-	background: url('{$IMG;,1x/menus/menu_bullet_expand}') no-repeat 10px 5px !important;
+	background: url('{$IMG;,icons/menus/menu_bullet_expand}') no-repeat 10px 5px !important;
 }
 
 .menu-type--tree .has-no-img>.drawer:hover {
-	background: url('{$IMG;,1x/menus/menu_bullet_expand_hover}') no-repeat 10px 5px !important;
+	background: url('{$IMG;,icons/menus/menu_bullet_expand_hover}') no-repeat 10px 5px !important;
 }
 
 .menu-type--tree img {

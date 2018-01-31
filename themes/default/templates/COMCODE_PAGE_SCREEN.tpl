@@ -15,7 +15,7 @@
 
 		{+START,IF,{SHOW_AS_EDIT}}{+START,IF_NON_EMPTY,{EDIT_DATE_RAW}}
 			<div class="edited" role="note">
-				<img alt="" width="10" src="{$IMG*,1x/edited}" />
+				<img alt="" width="10" src="{$IMG*,edited}" />
 				{!EDITED}
 				<time datetime="{$FROM_TIMESTAMP*,Y-m-d\TH:i:s\Z,{EDIT_DATE_RAW}}" itemprop="datePublished">{$DATE*,,,,{EDIT_DATE_RAW}}</time>
 			</div>
@@ -36,14 +36,14 @@
 			{+START,IF,{$AND,{IS_PANEL},{$THEME_OPTION,enable_edit_page_panel_buttons}}}
 				{+START,IF,{$EQ,{NAME},panel_left,panel_right}}
 					<p class="quick-self-edit-link associated-link">
-						<a data-open-as-overlay="{}" class="link-exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="{!COMCODE_MESSAGE,Comcode}" width="16" height="16" src="{$IMG*,icons/32x32/editor/comcode}" /></a>
+						<a data-open-as-overlay="{}" class="link-exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="{!COMCODE_MESSAGE,Comcode}" width="16" height="16" src="{$IMG*,icons/editor/comcode}" /></a>
 						<a href="{EDIT_URL*}" title="{$?,{$HAS_ZONE_ACCESS,adminzone},{!EDIT_ZONE_EDITOR},{!EDIT_PAGE}}: {NAME*} ({!IN,&quot;{$?,{$IS_EMPTY,{$ZONE}},{!_WELCOME},{$ZONE*}}&quot;})"><span>{$?,{$HAS_ZONE_ACCESS,adminzone},{!EDIT_ZONE_EDITOR},{!EDIT_PAGE}}</span></a>
 					</p>
 				{+END}
 
 				{+START,IF,{$EQ,{NAME},panel_top,panel_bottom}}
 					<div>
-						<a class="edit-page-link-inline" href="{EDIT_URL*}"><img title="{!EDIT_PAGE}: {NAME*}" alt="{!EDIT_PAGE}: {NAME*}" width="16" height="16" src="{$IMG*,icons/32x32/editor/comcode}" /></a>
+						<a class="edit-page-link-inline" href="{EDIT_URL*}"><img title="{!EDIT_PAGE}: {NAME*}" alt="{!EDIT_PAGE}: {NAME*}" width="16" height="16" src="{$IMG*,icons/editor/comcode}" /></a>
 					</div>
 				{+END}
 			{+END}
@@ -55,11 +55,11 @@
 					1_NOREDIRECT=1
 					1_ACCESSKEY=q
 					1_REL=edit
-					1_ICON=menu/_generic_admin/edit_this
+					1_ICON=admin/edit_this
 					2_URL={$?,{$GET,has_comcode_page_children_block},{ADD_CHILD_URL*}}
 					2_TITLE={!ADD_CHILD_PAGE}
 					2_REL=add
-					2_ICON=menu/_generic_admin/add_one
+					2_ICON=admin/add
 					{+START,COMMENT}
 						{+START,IF,{$ADDON_INSTALLED,tickets}}
 							3_URL={$PAGE_LINK*,_SEARCH:report_content:content_type=comcode_page:content_id={NATIVE_ZONE}%3A{NAME}:redirect={$SELF_URL&}}

@@ -59,7 +59,7 @@ class Module_members
             'browse' => array('MEMBER_DIRECTORY', 'menu/social/members'),
         );
         if (!$check_perms || !is_guest($member_id)) {
-            $ret['view'] = array('MY_PROFILE', 'tabs/member_account/profile');
+            $ret['view'] = array('MY_PROFILE', 'menu/social/profile');
         }
         return $ret;
     }

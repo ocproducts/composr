@@ -148,7 +148,7 @@ class Hook_task_import_wordpress
                                     }
                                 }
                                 if ($cat_id === null) { // Could not find existing category, create new
-                                    $cat_id = add_news_category($category, 'newscats/community', $category);
+                                    $cat_id = add_news_category($category, 'icons/news/community', $category);
                                     require_code('permissions2');
                                     set_global_category_access('news', $cat_id);
                                     // Need to reload now

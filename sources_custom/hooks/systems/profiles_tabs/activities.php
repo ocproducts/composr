@@ -92,11 +92,11 @@ class Hook_profiles_tabs_activities
         }
 
         if ($leave_to_ajax_if_possible) {
-            return array($title, null, $order, 'tabs/member_account/activity');
+            return array($title, null, $order, 'spare/activity');
         }
 
         $content = do_template('CNS_MEMBER_PROFILE_ACTIVITIES', array('_GUID' => '9fe3b8bb9a4975fa19631c43472b4539', 'MEMBER_ID' => strval($member_id_of), 'SYNDICATIONS' => $syndications));
 
-        return array($title, $content, $order, 'tabs/member_account/activity');
+        return array($title, $content, $order, 'spare/activity');
     }
 }

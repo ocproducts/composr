@@ -87,7 +87,7 @@ class Hook_addon_registry_help_page
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/32x32/help.svg';
+        return 'themes/default/images/icons/help.svg';
     }
 
     /**

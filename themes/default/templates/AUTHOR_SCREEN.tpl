@@ -86,7 +86,7 @@
 	1_TITLE={!EDIT}
 	1_ACCESSKEY=q
 	1_REL=edit
-	1_ICON=menu/_generic_admin/edit_this
+	1_ICON=admin/edit_this
 	{+START,IF,{$ADDON_INSTALLED,tickets}}
 		2_URL={$PAGE_LINK*,_SEARCH:report_content:content_type=author:content_id={AUTHOR}:redirect={$SELF_URL&}}
 		2_TITLE={!report_content:REPORT_THIS}

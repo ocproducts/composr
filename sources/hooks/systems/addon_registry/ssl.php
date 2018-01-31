@@ -87,7 +87,7 @@ class Hook_addon_registry_ssl
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/security/ssl.svg';
+        return 'themes/default/images/icons/menu/adminzone/security/ssl.svg';
     }
 
     /**
@@ -98,7 +98,7 @@ class Hook_addon_registry_ssl
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/adminzone/security/ssl.svg',
+            'themes/default/images/icons/menu/adminzone/security/ssl.svg',
             'sources/hooks/systems/addon_registry/ssl.php',
             'themes/default/templates/SSL_CONFIGURATION_SCREEN.tpl',
             'adminzone/pages/modules/admin_ssl.php',

@@ -88,7 +88,7 @@ class Hook_addon_registry_core_feedback_features
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/feedback/comment.svg';
+        return 'themes/default/images/icons/feedback/comment.svg';
     }
 
     /**
@@ -99,10 +99,10 @@ class Hook_addon_registry_core_feedback_features
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/feedback/comment.svg',
-            'themes/default/images/icons/48x48/feedback/comments_topic.svg',
-            'themes/default/images/icons/48x48/feedback/rate.svg',
-            'themes/default/images/icons/48x48/menu/adminzone/audit/trackbacks.svg',
+            'themes/default/images/icons/feedback/comment.svg',
+            'themes/default/images/icons/feedback/comments_topic.svg',
+            'themes/default/images/icons/feedback/rate.svg',
+            'themes/default/images/icons/menu/adminzone/audit/trackbacks.svg',
             'sources/topics.php',
             'sources/hooks/systems/notifications/like.php',
             'sources/hooks/systems/notifications/comment_posted.php',
@@ -119,8 +119,8 @@ class Hook_addon_registry_core_feedback_features
             'sources/hooks/systems/snippets/rating.php',
             'sources/hooks/systems/snippets/comments.php',
             'sources/hooks/systems/preview/comments.php',
-            'themes/default/images/1x/like.svg',
-            'themes/default/images/1x/dislike.svg',
+            'themes/default/images/icons/feedback/like.svg',
+            'themes/default/images/icons/feedback/dislike.svg',
             'sources/hooks/systems/rss/comments.php',
             'themes/default/templates/COMMENTS_POSTING_FORM.tpl',
             'themes/default/templates/COMMENTS_POSTING_FORM_CAPTCHA.tpl',

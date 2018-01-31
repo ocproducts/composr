@@ -89,7 +89,7 @@ class Hook_addon_registry_core_configuration
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/setup/config/config.svg';
+        return 'themes/default/images/icons/menu/adminzone/setup/config/config.svg';
     }
 
     /**
@@ -100,8 +100,8 @@ class Hook_addon_registry_core_configuration
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/adminzone/setup/config/config.svg',
-            'themes/default/images/icons/48x48/menu/adminzone/setup/oauth.svg',
+            'themes/default/images/icons/menu/adminzone/setup/config/config.svg',
+            'themes/default/images/icons/menu/adminzone/setup/oauth.svg',
             'sources/hooks/systems/sitemap/config_category.php',
             'sources/hooks/systems/config/mobile_pages.php',
             'sources/hooks/systems/config/zone_editor_enabled.php',

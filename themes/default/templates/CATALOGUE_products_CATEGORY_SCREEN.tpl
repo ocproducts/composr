@@ -27,7 +27,7 @@
 
 {+START,IF,{$IN_STR,{ENTRIES},<img}}
 	<p class="vertical-alignment">
-		<img alt="{!HELP}" width="24" height="24" src="{$IMG*,icons/32x32/help}" />
+		<img alt="{!HELP}" width="24" height="24" src="{$IMG*,icons/help}" />
 		<span>{!HOVER_FOR_FULL}</span>
 	</p>
 {+END}
@@ -42,16 +42,16 @@
 	1_URL={ADD_ENTRY_URL*}
 	1_TITLE={!do_next:NEXT_ITEM_add_one}
 	1_REL=add
-	1_ICON=menu/_generic_admin/add_one
+	1_ICON=admin/add
 	2_URL={ADD_CAT_URL*}
 	2_TITLE={!do_next:NEXT_ITEM_add_one_category}
 	2_REL=add
-	2_ICON=menu/_generic_admin/add_one_category
+	2_ICON=admin/add_one_category
 	3_ACCESSKEY=q
 	3_URL={EDIT_CAT_URL*}
 	3_TITLE={!do_next:NEXT_ITEM_edit_this_category}
 	3_REL=edit
-	3_ICON=menu/_generic_admin/edit_this_category
+	3_ICON=admin/edit_this_category
 	4_URL={EDIT_CATALOGUE_URL*}
 	4_TITLE={!EDIT_CATALOGUE}
 	4_ICON=menu/cms/catalogues/edit_this_catalogue

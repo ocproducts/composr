@@ -122,7 +122,7 @@ class Hook_addon_registry_calendar_from_6am
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.svg';
+        return 'themes/default/images/icons/admin/component.svg';
     }
 
     /**

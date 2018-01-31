@@ -87,7 +87,7 @@ class Hook_addon_registry_cns_signatures
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/tabs/member_account/edit/signature.svg';
+        return 'themes/default/images/icons/tabs/member_account/edit/signature.svg';
     }
 
     /**
@@ -98,7 +98,7 @@ class Hook_addon_registry_cns_signatures
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/tabs/member_account/edit/signature.svg',
+            'themes/default/images/icons/tabs/member_account/edit/signature.svg',
             'sources/hooks/systems/addon_registry/cns_signatures.php',
             'themes/default/templates/CNS_EDIT_SIGNATURE_TAB.tpl',
             'sources/hooks/systems/attachments/cns_signature.php',

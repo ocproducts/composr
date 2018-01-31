@@ -115,6 +115,7 @@ The insulted member has to try and make the right reply, if they succeed then th
                 'Cron',
                 'Conversr',
                 'points',
+                'all_icons',
             ),
             'recommends' => array(),
             'conflicts_with' => array(),
@@ -128,7 +129,7 @@ The insulted member has to try and make the right reply, if they succeed then th
      */
     public function get_default_icon()
     {
-        return 'themes/default/images_custom/icons/48x48/menu/insults.svg';
+        return 'themes/default/images/icons/spare/heartbreak.svg';
     }
 
     /**
@@ -139,7 +140,6 @@ The insulted member has to try and make the right reply, if they succeed then th
     public function get_file_list()
     {
         return array(
-            'themes/default/images_custom/icons/48x48/menu/insults.svg',
             'sources_custom/hooks/systems/addon_registry/bantr.php',
             'adminzone/pages/comcode_custom/EN/insults.txt',
             'lang_custom/EN/insults.ini',

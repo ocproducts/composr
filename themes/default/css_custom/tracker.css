@@ -27,25 +27,25 @@
 }
 
 #t_1_Popular span {
-	background-image: url('{$IMG;,tracker/popular}');
+	background-image: url('{$IMG;,icons/spare/popular}');
 }
 #t_1_Easy span {
-	background-image: url('{$IMG;,tracker/easy}');
+	background-image: url('{$IMG;,icons/tracker/easy}');
 }
 #t_1_Hard span {
-	background-image: url('{$IMG;,tracker/hard}');
+	background-image: url('{$IMG;,icons/tracker/hard}');
 }
 #t_1_My_space_Votes span {
-	background-image: url('{$IMG;,tracker/my}');
+	background-image: url('{$IMG;,icons/menu/social/profile}');
 }
 #t_1_Recent span {
-	background-image: url('{$IMG;,tracker/recent}');
+	background-image: url('{$IMG;,icons/spare/recent}');
 }
 #t_1_Sponsored span {
-	background-image: url('{$IMG;,tracker/sponsored}');
+	background-image: url('{$IMG;,icons/spare/sponsored}');
 }
 #t_1_Tutorials span {
-	background-image: url('{$IMG;,tracker/tutorials}');
+	background-image: url('{$IMG;,icons/help}');
 }
 
 /* Block frame */

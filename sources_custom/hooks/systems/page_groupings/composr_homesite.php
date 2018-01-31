@@ -28,7 +28,7 @@ class Hook_page_groupings_composr_homesite
     public function run($member_id = null, $extensive_docs = false)
     {
         return array(
-            array('tools', 'menu/_generic_admin/tool', array('admin_cmsusers', array(), get_module_zone('admin_cmsusers')), make_string_tempcode('compo.sr: Table of Composr users')),
+            array('tools', 'admin/tool', array('admin_cmsusers', array(), get_module_zone('admin_cmsusers')), make_string_tempcode('compo.sr: Table of Composr users')),
         );
     }
 }

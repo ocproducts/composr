@@ -1033,7 +1033,7 @@ class Module_admin_version
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
         return array(
-            // Keep it off for now 'browse' => array('PROJECT_SPONSORS', 'menu/_generic_spare/6'),
+            // Keep it off for now 'browse' => array('PROJECT_SPONSORS', 'menu/adminzone/sponsors'),
         );
     }
 

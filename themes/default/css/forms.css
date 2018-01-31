@@ -87,7 +87,7 @@ div.comcode-supported {
 	display: block;
 	padding: 1em 1em 1em 35px;
 	border: 1px solid {$GET,light_error_border};
-	background: url('{$IMG;,icons/48x48/status/notice}') 0.6em 0.75em no-repeat {$GET,light_error_background};
+	background: url('{$IMG;,icons/status/notice}') 0.6em 0.75em no-repeat {$GET,light_error_background};
 	background-size: 24px 24px;
 	border-radius: 5px;
 	margin-top: 0.5em;
@@ -350,12 +350,12 @@ span.validated-checkbox, span.validated-checkbox+input[name="validated"].input-t
 }
 span.validated-checkbox {
 	content: "";
-	background: url('{$IMG;,1x/editor/off}') no-repeat;
+	background: url('{$IMG;,editor/off}') no-repeat;
 	background-size: 86px 32px;
 	position: absolute;
 }
 span.validated-checkbox.checked {
-	background-image: url('{$IMG;,1x/editor/on}') !important;
+	background-image: url('{$IMG;,editor/on}') !important;
 }
 span.validated-checkbox+input[name="validated"].input-tick {
 	padding-right: 0.5em;
@@ -904,7 +904,7 @@ comcode-{$REPLACE,\,,\,comcode-,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}\,
 	border: 1px dashed gray;
 	text-align: center;
 	color: {$GET,native_ui_foreground};
-	background: {$GET,native_ui_active_background} url('{$IMG;,icons/32x32/editor/comcode}') right 2px no-repeat;
+	background: {$GET,native_ui_active_background} url('{$IMG;,icons/editor/comcode}') right 2px no-repeat;
 	background-size: 16px 16px;
 	padding: 1px 25px 1px 2px;
 }

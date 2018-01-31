@@ -59,7 +59,7 @@ class Module_awards
 
         return array(
             'browse' => array('AWARDS', 'menu/adminzone/setup/awards'),
-            'overview' => array('AWARD_OVERVIEW', 'menu/_generic_admin/view_archive'),
+            'overview' => array('AWARD_OVERVIEW', 'admin/view_archive'),
         );
     }
 

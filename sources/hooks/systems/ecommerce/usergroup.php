@@ -33,7 +33,7 @@ class Hook_ecommerce_usergroup
         return array(
             'category_name' => do_lang('USERGROUP_SUBSCRIPTION'),
             'category_description' => do_lang_tempcode('USERGROUP_SUBSCRIPTION_DESCRIPTION'),
-            'category_image_url' => find_theme_image('icons/48x48/menu/adminzone/audit/ecommerce/subscriptions'),
+            'category_image_url' => find_theme_image('icons/menu/adminzone/audit/ecommerce/subscriptions'),
         );
     }
 
@@ -74,7 +74,7 @@ class Hook_ecommerce_usergroup
             }
 
             if ($image_url == '') {
-                $image_url = find_theme_image('icons/48x48/tiers/' . $images[$i % 4]);
+                $image_url = find_theme_image('icons/tiers/' . $images[$i % 4]);
             }
 
             $products['USERGROUP' . strval($sub['id'])] = array(

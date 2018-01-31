@@ -124,7 +124,7 @@ class Hook_addon_registry_testing_platform
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/_generic_admin/tool.svg';
+        return 'themes/default/images/icons/admin/tool.svg';
     }
 
     /**

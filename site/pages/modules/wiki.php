@@ -219,7 +219,7 @@ class Module_wiki
         );
         if (addon_installed('actionlog')) {
             require_lang('actionlog');
-            $ret['revisions'] = array('REVISIONS', 'buttons/revisions');
+            $ret['revisions'] = array('REVISIONS', 'admin/revisions');
         }
         return $ret;
     }
@@ -562,10 +562,10 @@ class Module_wiki
                     'URL' => $edit_url,
                     'FULL_TITLE' => do_lang_tempcode('EDIT'),
                     'TITLE' => do_lang_tempcode('EDIT'),
-                    'IMG' => 'buttons--edit',
+                    'IMG' => 'admin--edit',
                 ));
                 $move_url = build_url(array('page' => '_SELF', 'type' => 'move', 'id' => $chain, 'post_id' => $post_id), '_SELF');
-                $extra->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => 'b4325cd1bac924cc83771d4c3c41be8b', 'REL' => 'move', 'IMMEDIATE' => false, 'URL' => $move_url, 'FULL_TITLE' => do_lang_tempcode('MOVE'), 'TITLE' => do_lang_tempcode('MOVE'), 'IMG' => 'buttons--move')));
+                $extra->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => 'b4325cd1bac924cc83771d4c3c41be8b', 'REL' => 'move', 'IMMEDIATE' => false, 'URL' => $move_url, 'FULL_TITLE' => do_lang_tempcode('MOVE'), 'TITLE' => do_lang_tempcode('MOVE'), 'IMG' => 'admin--move')));
             } else {
                 $extra = new Tempcode();
             }
@@ -645,7 +645,7 @@ class Module_wiki
                 'REL' => 'revisions',
                 'URL' => $revisions_url,
                 'TITLE' => do_lang_tempcode('actionlog:REVISIONS'),
-                'IMG' => 'buttons--revisions',
+                'IMG' => 'admin--revisions',
             ));
         }
 
@@ -657,7 +657,7 @@ class Module_wiki
                 'IMMEDIATE' => false,
                 'URL' => $tree_url,
                 'TITLE' => do_lang_tempcode('__WIKI_EDIT_TREE'),
-                'IMG' => 'buttons--edit-tree',
+                'IMG' => 'admin--wiki-edit-tree',
             ));
         } else {
             $tree_button = new Tempcode();
@@ -671,7 +671,7 @@ class Module_wiki
                 'IMMEDIATE' => false,
                 'URL' => $edit_url,
                 'TITLE' => do_lang_tempcode('_WIKI_EDIT_PAGE'),
-                'IMG' => 'buttons--edit',
+                'IMG' => 'admin--edit',
             ));
         } else {
             $edit_button = new Tempcode();
@@ -832,7 +832,7 @@ class Module_wiki
 
         require_code('form_templates');
 
-        $posting_form = get_posting_form(do_lang('MERGE_WIKI_POSTS'), 'menu---generic-admin--merge', $merged, $merge_url, new Tempcode(), new Tempcode());
+        $posting_form = get_posting_form(do_lang('MERGE_WIKI_POSTS'), 'admin--merge', $merged, $merge_url, new Tempcode(), new Tempcode());
 
         return do_template('POSTING_SCREEN', array(
             '_GUID' => '4372327fb689ef70a9ac5d275dd454f1',
@@ -933,7 +933,7 @@ class Module_wiki
             'TEXT' => do_lang_tempcode('SELECT_TARGET_POST_DESTINATION'),
             'FIELDS' => $fields,
             'HIDDEN' => $hidden,
-            'SUBMIT_ICON' => 'buttons--move',
+            'SUBMIT_ICON' => 'admin--move',
             'SUBMIT_NAME' => do_lang_tempcode('MOVE'),
         ));
     }
@@ -1125,7 +1125,7 @@ class Module_wiki
 
         $js_function_calls = ((function_exists('captcha_ajax_check_function')) && (captcha_ajax_check_function() != '')) ? array(captcha_ajax_check_function()) : array();
 
-        $posting_form = get_posting_form($submit_name, ($mode == 'edit') ? 'menu---generic-admin--edit-this' : 'menu---generic-admin--add-one', $message, $post_url, $hidden_fields, new Tempcode(), null, '', $specialisation, $parsed, $js_function_calls);
+        $posting_form = get_posting_form($submit_name, ($mode == 'edit') ? 'admin--edit-this' : 'admin--add', $message, $post_url, $hidden_fields, new Tempcode(), null, '', $specialisation, $parsed, $js_function_calls);
 
         if ($mode == 'post') {
             url_default_parameters__disable();

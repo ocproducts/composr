@@ -66,16 +66,16 @@
 
 				<ul class="horizontal-links associated-links-block-group">
 					{+START,IF,{$ADDON_INSTALLED,recommend}}
-						<li><img width="24" height="24" src="{$IMG*,icons/32x32/filetypes/email_link}" alt="" /> <a href="{$PAGE_LINK*,:recommend:browse:subject={!ECARD_FOR_YOU_SUBJECT}:page_title={!SEND_AS_ECARD}:s_message={!ECARD_FOR_YOU,{$SELF_URL},{FULL_URL*},{$SITE_NAME}}}">{!SEND_AS_ECARD}</a></li>
+						<li><img width="24" height="24" src="{$IMG*,icons/file_types/email_link}" alt="" /> <a href="{$PAGE_LINK*,:recommend:browse:subject={!ECARD_FOR_YOU_SUBJECT}:page_title={!SEND_AS_ECARD}:s_message={!ECARD_FOR_YOU,{$SELF_URL},{FULL_URL*},{$SITE_NAME}}}">{!SEND_AS_ECARD}</a></li>
 					{+END}
-					<li><img width="24" height="24" src="{$IMG*,icons/48x48/feedback/comment}" alt="" /> <a href="{VIEW_URL*}">{$COMMENT_COUNT,images,{ID}}</a></li>
+					<li><img width="24" height="24" src="{$IMG*,icons/feedback/comment}" alt="" /> <a href="{VIEW_URL*}">{$COMMENT_COUNT,images,{ID}}</a></li>
 				</ul>
 
 				{$,Load up the staff actions template to display staff actions uniformly (we relay our parameters to it)...}
 				{+START,INCLUDE,STAFF_ACTIONS}
 					1_URL={EDIT_URL*}
 					1_TITLE={!EDIT_IMAGE}
-					1_ICON=menu/_generic_admin/edit_this
+					1_ICON=admin/edit_this
 				{+END}
 			</div></section>
 		</div>

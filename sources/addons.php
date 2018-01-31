@@ -243,7 +243,7 @@ function find_addon_icon($addon_name, $pick_default = true, $tar_path = null)
                         $file = $ob->get_default_icon();
                         $image_data = tar_get_file($tar_file, $file);
                         if ($image_data === null) {
-                            return $pick_default ? find_theme_image('icons/48x48/menu/_generic_admin/component') : null;
+                            return $pick_default ? find_theme_image('icons/admin/component') : null;
                         }
                         return 'data:' . get_mime_type(get_file_extension($file), true) . ';base64,' . base64_encode($image_data['data']);
                     }
@@ -253,7 +253,7 @@ function find_addon_icon($addon_name, $pick_default = true, $tar_path = null)
             // Search through for an icon
             foreach ($directory as $d) {
                 $file = $d['path'];
-                if (preg_match('#^themes/default/(images|images_custom)/icons/48x48/(.*)\.(png|jpg|jpeg|gif)$#', $file, $matches) != 0) {
+                if (preg_match('#^themes/default/(images|images_custom)/icons/(.*)\.(png|jpg|jpeg|gif)$#', $file, $matches) != 0) {
                     require_code('mime_types');
                     $data = tar_get_file($tar_file, $file);
                     return 'data:' . get_mime_type(get_file_extension($file), true) . ';base64,' . base64_encode($data['data']);
@@ -272,12 +272,12 @@ function find_addon_icon($addon_name, $pick_default = true, $tar_path = null)
         // Search through for an icon
         $addon_files = $addon_info['files'];
         foreach ($addon_files as $file) {
-            if (preg_match('#^themes/default/(images|images_custom)/icons/48x48/(.*)\.(png|jpg|jpeg|gif)$#', $file, $matches) != 0) {
+            if (preg_match('#^themes/default/(images|images_custom)/icons/(.*)\.(png|jpg|jpeg|gif)$#', $file, $matches) != 0) {
                 return get_base_url() . '/' . str_replace('%2F', '/', urlencode($file));
             }
         }
     }
 
     // Default, as not found
-    return $pick_default ? find_theme_image('icons/48x48/menu/_generic_admin/component') : null;
+    return $pick_default ? find_theme_image('icons/admin/component') : null;
 }

@@ -237,7 +237,7 @@
 
                 var previousButton = document.createElement('img');
                 previousButton.className = 'previous-button';
-                previousButton.src = $util.srl('{$IMG;,mediaset_previous}');
+                previousButton.src = $util.srl('{$IMG;,media_set_previous}');
                 previousButton.width = '74';
                 previousButton.height = '74';
                 previousButton.addEventListener('click', clickPreviousButton);
@@ -255,7 +255,7 @@
 
                 var nextButton = document.createElement('img');
                 nextButton.className = 'next-button';
-                nextButton.src = $util.srl('{$IMG;,mediaset_next}');
+                nextButton.src = $util.srl('{$IMG;,icons/media_set/next}');
                 nextButton.width = '74';
                 nextButton.height = '74';
                 nextButton.addEventListener('click', clickNextButton);
@@ -660,10 +660,10 @@
             switchTime = this.switchTime = params.switchTime;
 
         /* Precache images */
-        new Image().src = $util.srl('{$IMG;,big_tabs_controller_button}');
-        new Image().src = $util.srl('{$IMG;,big_tabs_controller_button_active}');
-        new Image().src = $util.srl('{$IMG;,big_tabs_controller_button_top_active}');
-        new Image().src = $util.srl('{$IMG;,big_tabs_controller_button_top}');
+        new Image().src = $util.srl('{$IMG;,big_tabs/controller_button}');
+        new Image().src = $util.srl('{$IMG;,big_tabs/controller_button_active}');
+        new Image().src = $util.srl('{$IMG;,big_tabs/controller_button_top_active}');
+        new Image().src = $util.srl('{$IMG;,big_tabs/controller_button_top}');
 
         if (switchTime !== undefined) {
             flipPage(0, id, sections, switchTime);

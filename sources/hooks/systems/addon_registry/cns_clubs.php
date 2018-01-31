@@ -87,7 +87,7 @@ class Hook_addon_registry_cns_clubs
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/cms/clubs.svg';
+        return 'themes/default/images/icons/menu/cms/clubs.svg';
     }
 
     /**
@@ -98,7 +98,7 @@ class Hook_addon_registry_cns_clubs
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/cms/clubs.svg',
+            'themes/default/images/icons/menu/cms/clubs.svg',
             'sources/hooks/systems/notifications/cns_club.php',
             'sources/hooks/systems/addon_registry/cns_clubs.php',
             'sources/hooks/modules/search/cns_clubs.php',

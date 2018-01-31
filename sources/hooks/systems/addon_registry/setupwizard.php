@@ -89,7 +89,7 @@ class Hook_addon_registry_setupwizard
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/setup/setupwizard.svg';
+        return 'themes/default/images/icons/menu/adminzone/setup/setupwizard.svg';
     }
 
     /**
@@ -100,7 +100,7 @@ class Hook_addon_registry_setupwizard
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/adminzone/setup/setupwizard.svg',
+            'themes/default/images/icons/menu/adminzone/setup/setupwizard.svg',
             'sources/hooks/modules/admin_setupwizard_installprofiles/.htaccess',
             'sources_custom/hooks/modules/admin_setupwizard_installprofiles/.htaccess',
             'sources/hooks/modules/admin_setupwizard_installprofiles/index.html',

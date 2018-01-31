@@ -42,7 +42,7 @@ class Module_warnings extends Standard_crud_module
      */
     public function get_wrapper_icon()
     {
-        return 'tabs/member_account/warnings';
+        return 'menu/social/warnings';
     }
 
     /**

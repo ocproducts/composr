@@ -54,9 +54,9 @@ class Module_admin_addons
     {
         return array(
             'browse' => array('ADDONS', 'menu/adminzone/structure/addons'),
-            'modules' => array('MODULE_MANAGEMENT', 'menu/_generic_admin/component'),
-            'addon_import' => array('IMPORT_ADDON', 'menu/_generic_admin/import'),
-            'addon_export' => array('EXPORT_ADDON', 'menu/_generic_admin/export'),
+            'modules' => array('MODULE_MANAGEMENT', 'admin/component'),
+            'addon_import' => array('IMPORT_ADDON', 'admin/import'),
+            'addon_export' => array('EXPORT_ADDON', 'admin/export'),
         );
     }
 
@@ -551,7 +551,7 @@ class Module_admin_addons
             'SKIP_WEBSTANDARDS' => true,
             'HIDDEN' => $hidden,
             'TITLE' => $this->title,
-            'SUBMIT_ICON' => 'menu---generic-admin--import',
+            'SUBMIT_ICON' => 'admin--import',
             'SUBMIT_NAME' => $submit_name,
             'FIELDS' => $fields,
             'TEXT' => $text,
@@ -1195,7 +1195,7 @@ class Module_admin_addons
             '_GUID' => 'dd8bea111b0dfc7df7ddc7e2246f0ef9',
             'HIDDEN' => $hidden,
             'TITLE' => $this->title,
-            'SUBMIT_ICON' => 'menu---generic-admin--export',
+            'SUBMIT_ICON' => 'admin--export',
             'SUBMIT_NAME' => $submit_name, 'FIELDS' => $fields,
             'TEXT' => '',
             'URL' => $post_url,

@@ -28,8 +28,8 @@ class Hook_page_groupings_classifieds
     public function run($member_id = null, $extensive_docs = false)
     {
         return array(
-            array('setup', 'menu/classifieds', array('admin_classifieds', array(), get_module_zone('admin_classifieds')), do_lang_tempcode('classifieds:CLASSIFIEDS_PRICING'), 'classifieds:DOC_CLASSIFIEDS_PRICING'),
-            array('social', 'menu/classifieds', array('classifieds', array(), get_module_zone('classifieds')), do_lang_tempcode('classifieds:CLASSIFIED_ADVERTS')),
+            array('setup', 'spare/classifieds', array('admin_classifieds', array(), get_module_zone('admin_classifieds')), do_lang_tempcode('classifieds:CLASSIFIEDS_PRICING'), 'classifieds:DOC_CLASSIFIEDS_PRICING'),
+            array('social', 'spare/classifieds', array('classifieds', array(), get_module_zone('classifieds')), do_lang_tempcode('classifieds:CLASSIFIED_ADVERTS')),
         );
     }
 }

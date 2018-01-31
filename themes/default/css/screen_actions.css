@@ -52,27 +52,27 @@
 }
 
 .screen-actions .print {
-	background-image: url('{$IMG_INLINE;,icons/48x48/links/print}');
+	background-image: url('{$IMG_INLINE;,icons/links/print}');
 }
 
 .screen-actions .recommend {
-	background-image: url('{$IMG_INLINE;,icons/48x48/menu/site_meta/recommend}');
+	background-image: url('{$IMG_INLINE;,icons/menu/site_meta/recommend}');
 }
 
 .screen-actions .facebook {
-	background-image: url('{$IMG_INLINE;,icons/48x48/links/facebook}');
+	background-image: url('{$IMG_INLINE;,icons/links/facebook}');
 }
 
 .screen-actions .twitter {
-	background-image: url('{$IMG_INLINE;,icons/48x48/links/twitter}');
+	background-image: url('{$IMG_INLINE;,icons/links/twitter}');
 }
 
 .screen-actions .stumbleupon {
-	background-image: url('{$IMG_INLINE;,icons/48x48/links/stumbleupon}');
+	background-image: url('{$IMG_INLINE;,icons/links/stumbleupon}');
 }
 
 .screen-actions .digg {
-	background-image: url('{$IMG_INLINE;,icons/48x48/links/digg}');
+	background-image: url('{$IMG_INLINE;,icons/links/digg}');
 }
 
 .screen-actions .google-plusone {

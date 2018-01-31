@@ -89,7 +89,7 @@ class Hook_addon_registry_tickets
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/site_meta/tickets.svg';
+        return 'themes/default/images/icons/menu/site_meta/tickets.svg';
     }
 
     /**
@@ -100,9 +100,9 @@ class Hook_addon_registry_tickets
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/site_meta/tickets.svg',
-            'themes/default/images/icons/48x48/buttons/add_ticket.svg',
-            'themes/default/images/icons/48x48/buttons/new_reply_staff_only.svg',
+            'themes/default/images/icons/menu/site_meta/tickets.svg',
+            'themes/default/images/icons/buttons/add_ticket.svg',
+            'themes/default/images/icons/buttons/new_reply_staff_only.svg',
             'sources/hooks/systems/resource_meta_aware/ticket_type.php',
             'sources/hooks/systems/commandr_fs/ticket_types.php',
             'sources/hooks/systems/addon_registry/tickets.php',
@@ -151,7 +151,7 @@ class Hook_addon_registry_tickets
             'themes/default/text/CNS_REPORTED_POST_FCOMCODE.txt',
             'themes/default/text/REPORTED_CONTENT_FCOMCODE.txt',
             'sources/hooks/systems/config/reported_times.php',
-            'themes/default/images/icons/48x48/menu/site_meta/contact_us.svg',
+            'themes/default/images/icons/menu/site_meta/contact_us.svg',
             'themes/default/templates/BLOCK_MAIN_CONTACT_US.tpl',
             'sources/blocks/main_contact_us.php',
             'themes/default/javascript/tickets.js',

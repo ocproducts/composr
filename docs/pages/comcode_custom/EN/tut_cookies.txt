@@ -43,7 +43,7 @@ Note that IP addresses could never be used instead of sessions because they are 
 
 [title="2"]JavaScript[/title]
 
-[media thumb="0" width="80" framed="0" description="" float="right"]themes/default/images_custom/tutorial_icons/javascript.svg[/media]
+[media thumb="0" width="80" framed="0" description="" float="right"]themes/default/images/icons/spare/javascript.svg[/media]
 JavaScript is built into web browsers directly. It is used to provide an interactive element to the user's experience in their web browser.
 
 Composr detects JavaScript by making the web browser write a cookie using JavaScript -- if such a cookie exists, Composr knows that JavaScript is enabled. Likewise, if the cookie does not get set, Composr knows JavaScript is probably not enabled.
@@ -63,7 +63,7 @@ If the problem is number 1, then you can adjust the browser settings to reenable
 
 [title="2"]Privacy[/title]
 
-[media thumb="0" width="80" framed="0" description="" float="right"]themes/default/images/icons/32x32/menu/adminzone/security.svg[/media]
+[media thumb="0" width="80" framed="0" description="" float="right"]themes/default/images/icons/menu/adminzone/security.svg[/media]
 Cookies can only be read by the site that created them, or a site 'underneath' the site that created them. This prevents other websites from stealing cookies.
 
 When cookies were fairly new, there was a lot of controversy about their ability to track users browsing 'all around the web'. This is not really the case, due to sites only being able to read their own cookies; however, for affiliated companies, such as advertising companies, it is true that cookies could be placed in banners such that any site showing a banner could aid the banner company in tracking every website the banner viewer visited on their network.
@@ -75,7 +75,7 @@ The developers recommend that users do have cookies enabled, but that they possi
 [title="2"]EU legislation[/title]
 
 [surround]
-[media thumb="0" width="80" framed="0" description="" float="right"]icons/48x48/menu/adminzone/setup/config/config.svg[/media]
+[media thumb="0" width="80" framed="0" description="" float="right"]icons/menu/adminzone/setup/config/config.svg[/media]
 The EU require tracking cookies be declared for organisations operating inside the EU.
 
 The Composr "Cookie notice" configuration option (Admin Zone > Setup > Configuration > Privacy options > General) implements this. It isn't on by default because Composr's cookies are heavily minimised to what we consider reasonable compliance without special notice. However, use of something like Adsense strictly requires you enable the cookie notice.

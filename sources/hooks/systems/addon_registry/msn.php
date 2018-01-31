@@ -87,7 +87,7 @@ class Hook_addon_registry_msn
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/structure/multi_site_network.svg';
+        return 'themes/default/images/icons/menu/adminzone/structure/multi_site_network.svg';
     }
 
     /**
@@ -98,7 +98,7 @@ class Hook_addon_registry_msn
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/adminzone/structure/multi_site_network.svg',
+            'themes/default/images/icons/menu/adminzone/structure/multi_site_network.svg',
             'sources/hooks/systems/config/network_links.php',
             'sources/hooks/systems/addon_registry/msn.php',
             'sources/hooks/blocks/main_notes/msn.php',

@@ -1,11 +1,8 @@
 (function ($cms, $util, $dom) {
     'use strict';
 
-    var $IMG_checklist_checklist1 = '{$IMG;,checklist/checklist1}',
-        $IMG_checklist_checklist0 = '{$IMG;,checklist/checklist0}',
-        $IMG_checklist_cross = '{$IMG;,checklist/cross}',
-        $IMG_checklist_cross2 = '{$IMG;,checklist/cross2}',
-        $IMG_checklist_toggleicon2 = '{$IMG;,checklist/toggleicon2}';
+    var $IMG_checklist_checklist1 = '{$IMG;,icons/checklist/checklist1}',
+        $IMG_checklist_checklist0 = '{$IMG;,icons/checklist/checklist0}';
 
     var $SCRIPT_comcode_convert = '{$FIND_SCRIPT_NOHTTP;,comcode_convert}';
 
@@ -17,7 +14,6 @@
     function BlockMainStaffChecklistCustomTask() {
         BlockMainStaffChecklistCustomTask.base(this, 'constructor', arguments);
 
-        this.imgChecklistCross = this.$('.js-img-checklist-cross');
         this.imgChecklistStatus = this.$('.js-img-checklist-status');
     }
 
@@ -31,14 +27,6 @@
                 'click .js-click-mark-task': 'markTask',
                 'keypress .js-keypress-mark-task': 'markTask'
             };
-        },
-
-        mouseover: function () {
-            this.imgChecklistCross.src = $IMG_checklist_cross2;
-        },
-
-        mouseout: function () {
-            this.imgChecklistCross.src = $IMG_checklist_cross;
         },
 
         markTask: function (e) {
@@ -234,10 +222,6 @@
         function setTaskHiding(hideEnable) {
             hideEnable = !!hideEnable;
 
-            // Precaching
-            new Image().src = $IMG_checklist_cross2;
-            new Image().src = $IMG_checklist_toggleicon2;
-
             var i, checklistRows = document.querySelectorAll('.checklist-row'), rowImgs, src;
 
             for (i = 0; i < checklistRows.length; i++) {
@@ -283,20 +267,6 @@
 
     $cms.templates.blockMainStaffTips = function (params) {
         $dom.internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.wrapperId), ['^staff_tips_dismiss$', '^rand$'/*cache breaker*/], {}, false, true, false);
-    };
-
-    $cms.templates.blockMainStaffChecklistItem = function blockMainStaffChecklistItem(params, container) {
-        var $IMG_checklist_toggleicon = $util.srl('{$IMG;,checklist/toggleicon}'),
-            $IMG_checklist_toggleicon2 = $util.srl('{$IMG;,checklist/toggleicon2}');
-
-        $dom.on(container, 'mouseover mouseout', function (e, target) {
-            var changeToggleIcon = $dom.closest(target, '.js-hover-change-img-toggle-icon', container.parentNode);
-
-            if (changeToggleIcon && (!e.relatedTarget || !changeToggleIcon.contains(e.relatedTarget))) {
-                var imgToggleIcon = $dom.$(container, '.js-img-toggle-icon');
-                imgToggleIcon.src = (e.type === 'mouseover') ? $IMG_checklist_toggleicon2 : $IMG_checklist_toggleicon;
-            }
-        });
     };
 
     function ajaxFormSubmitAdminHeadless(form, blockName, map) {

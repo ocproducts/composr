@@ -3,10 +3,10 @@
 		{+START,IF_IN_ARRAY,OPTIONS,tray_open,tray_closed}
 			<h3 class="toggleable-tray-title js-tray-header">
 				{+START,IF_IN_ARRAY,OPTIONS,tray_open}
-					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{TITLE}}" title="{!CONTRACT}" width="24" height="24" src="{$IMG*,1x/trays/contract2}" /></a>
+					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{TITLE}}" title="{!CONTRACT}" width="24" height="24" src="{$IMG*,icons/trays/contract2}" /></a>
 				{+END}
 				{+START,IF_IN_ARRAY,OPTIONS,tray_closed}
-					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{TITLE}}" title="{!EXPAND}" width="24" height="24" src="{$IMG*,1x/trays/expand2}" /></a>
+					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{TITLE}}" title="{!EXPAND}" width="24" height="24" src="{$IMG*,icons/trays/expand2}" /></a>
 				{+END}
 
 				{+START,IF_NON_EMPTY,{TOP_LINKS}}

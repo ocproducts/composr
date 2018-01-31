@@ -32,7 +32,7 @@
 							<form title="{!_ASSIGNED_TO}" action="{$PAGE_LINK*,_SEARCH:tickets:unassign:ticket_id={ID}:member_id={_loop_key}}" method="post" class="inline vertical-alignment" autocomplete="off">
 								{$INSERT_SPAMMER_BLACKHOLE}
 
-								<input class="button-micro menu---generic-admin--delete" type="submit" value="{!REMOVE}" />
+								<input class="button-micro admin--delete3" type="submit" value="{!REMOVE}" />
 							</form>
 						{+END}
 					</li>
@@ -188,7 +188,7 @@
 		{+START,IF_PASSED,TOGGLE_TICKET_CLOSED_URL}
 			{+START,INCLUDE,BUTTON_SCREEN}
 				TITLE={$?,{CLOSED},{!OPEN_TICKET},{!CLOSE_TICKET}}
-				IMG={$?,{CLOSED},buttons--closed,buttons--clear}
+				IMG={$?,{CLOSED},buttons--closed,buttons--undo}
 				IMMEDIATE=1
 				URL={TOGGLE_TICKET_CLOSED_URL}
 			{+END}

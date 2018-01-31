@@ -87,7 +87,7 @@ class Hook_addon_registry_core_abstract_interfaces
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.svg';
+        return 'themes/default/images/icons/admin/component.svg';
     }
 
     /**
@@ -98,9 +98,9 @@ class Hook_addon_registry_core_abstract_interfaces
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/status/inform.svg',
-            'themes/default/images/icons/48x48/status/notice.svg',
-            'themes/default/images/icons/48x48/status/warn.svg',
+            'themes/default/images/icons/status/inform.svg',
+            'themes/default/images/icons/status/notice.svg',
+            'themes/default/images/icons/status/warn.svg',
             'sources/hooks/systems/addon_registry/core_abstract_interfaces.php',
             'themes/default/templates/QUESTION_UI_BUTTONS.tpl',
             'themes/default/templates/PAGINATION_SCREEN.tpl',

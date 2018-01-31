@@ -124,7 +124,7 @@ class Hook_addon_registry_thumbnail_editor
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/buttons/thumbnail.svg';
+        return 'themes/default/images/icons/buttons/thumbnail.svg';
     }
 
     /**

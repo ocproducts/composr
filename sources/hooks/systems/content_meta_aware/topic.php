@@ -74,7 +74,7 @@ class Hook_content_meta_aware_topic
             'description_field_dereference' => false,
             'thumb_field' => 't_emoticon',
             'thumb_field_is_theme_image' => true,
-            'alternate_icon_theme_image' => 'icons/48x48/menu/social/forum/forums',
+            'alternate_icon_theme_image' => 'icons/menu/social/forum/forums',
 
             'view_page_link_pattern' => '_SEARCH:topicview:browse:_WILD',
             'edit_page_link_pattern' => '_SEARCH:topics:edit_topic:_WILD',

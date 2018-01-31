@@ -286,5 +286,5 @@
 */
 
 .buttons--slideshow {
-	background-image: url('{$IMG,icons/48x48/buttons/slideshow}') !important;
+	background-image: url('{$IMG,icons/buttons/slideshow}') !important;
 }

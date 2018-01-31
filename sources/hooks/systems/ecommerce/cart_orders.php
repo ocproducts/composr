@@ -71,7 +71,7 @@ class Hook_ecommerce_cart_orders
             $products['CART_ORDER_' . strval($order['id'])] = array(
                 'item_name' => do_lang('CART_ORDER', strval($order['id'])),
                 'item_description' => do_lang_tempcode('CART_ORDER_DESCRIPTION', escape_html(strval($order['id']))),
-                'item_image_url' => find_theme_image('icons/48x48/menu/rich_content/ecommerce/shopping_cart'),
+                'item_image_url' => find_theme_image('icons/menu/rich_content/ecommerce/shopping_cart'),
 
                 'type' => PRODUCT_ORDERS,
                 'type_special_details' => array(),

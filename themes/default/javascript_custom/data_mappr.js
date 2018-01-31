@@ -205,7 +205,7 @@
                  var categoryIcon = '{$BASE_URL;/}/themes/default/images_custom/icons/map/catalogue_category_'+data[i][3] + '.png';
                  marker_options.icon = categoryIcon;}*/
                 if (data[i][6] == 1) {
-                    var starIcon = $cms.getBaseUrl() + '/themes/default/images_custom/star_highlight.png';
+                    var starIcon = $cms.getBaseUrl() + '/themes/default/images_custom/maps/star_highlight.png';
                     markerOptions.icon = starIcon;
                 }
 

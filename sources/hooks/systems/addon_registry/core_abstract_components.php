@@ -87,7 +87,7 @@ class Hook_addon_registry_core_abstract_components
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.svg';
+        return 'themes/default/images/icons/admin/component.svg';
     }
 
     /**
@@ -182,7 +182,7 @@ class Hook_addon_registry_core_abstract_components
                 'URL' => placeholder_url(),
                 'TITLE' => lorem_word(),
                 'FULL_TITLE' => lorem_phrase(),
-                'IMG' => 'buttons--edit',
+                'IMG' => 'admin--edit',
             )), null, '', true)
         );
     }

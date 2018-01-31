@@ -42,7 +42,7 @@ class Hook_page_groupings_help_page
         }
 
         return array(
-            array('site_meta', 'menu/pages/help', array('help', array(), $zone), do_lang_tempcode('HELP')),
+            array('site_meta', 'help', array('help', array(), $zone), do_lang_tempcode('HELP')),
         );
     }
 }

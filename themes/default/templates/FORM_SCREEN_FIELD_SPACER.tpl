@@ -3,7 +3,7 @@
 	<th colspan="2" class="table-heading-cell vertical-alignment">
 		{+START,IF_PASSED,TITLE}
 			{+START,IF_NON_PASSED_OR_FALSE,FORCE_OPEN}
-				<a class="toggleable-tray-button js-click-toggle-subord-fields js-keypress-toggle-subord-fields" id="fes{TITLE|}" href="#!"><img class="vertical-alignment right" alt="{!CONTRACT}: {TITLE*}" title="{!CONTRACT}" width="20" height="20" src="{$IMG*,1x/trays/contract}" /></a>
+				<a class="toggleable-tray-button js-click-toggle-subord-fields js-keypress-toggle-subord-fields" id="fes{TITLE|}" href="#!"><img class="vertical-alignment right" alt="{!CONTRACT}: {TITLE*}" title="{!CONTRACT}" width="20" height="20" src="{$IMG*,icons/trays/contract}" /></a>
 			{+END}
 
 			<span class="faux-h2 {+START,IF_NON_PASSED_OR_FALSE,FORCE_OPEN} toggleable-tray-button js-click-toggle-subord-fields js-keypress-toggle-subord-fields{+END}">{TITLE*}</span>

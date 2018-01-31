@@ -628,7 +628,7 @@ class Module_tickets
                 'type' => 'Support ticket',
                 'title' => $ticket_posts[0]['title'],
                 'identifier' => '_SEARCH:tickets:ticket:' . $ticket_id,
-                'image' => find_theme_image('icons/48x48/menu/site_meta/tickets'),
+                'image' => find_theme_image('icons/menu/site_meta/tickets'),
             ));
         }
 

@@ -87,7 +87,7 @@ class Hook_addon_registry_newsletter
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/site_meta/newsletters.svg';
+        return 'themes/default/images/icons/menu/site_meta/newsletters.svg';
     }
 
     /**
@@ -98,12 +98,12 @@ class Hook_addon_registry_newsletter
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/adminzone/tools/newsletter/import_subscribers.svg',
-            'themes/default/images/icons/48x48/menu/adminzone/tools/newsletter/newsletter_email_bounce.svg',
-            'themes/default/images/icons/48x48/menu/adminzone/tools/newsletter/newsletter_from_changes.svg',
-            'themes/default/images/icons/48x48/menu/adminzone/tools/newsletter/subscribers.svg',
-            'themes/default/images/icons/48x48/menu/site_meta/newsletters.svg',
-            'themes/default/images/icons/48x48/menu/adminzone/tools/newsletter/index.html',
+            'themes/default/images/icons/menu/adminzone/tools/newsletter/import_subscribers.svg',
+            'themes/default/images/icons/menu/adminzone/tools/newsletter/newsletter_email_bounce.svg',
+            'themes/default/images/icons/menu/adminzone/tools/newsletter/newsletter_from_changes.svg',
+            'themes/default/images/icons/menu/adminzone/tools/newsletter/subscribers.svg',
+            'themes/default/images/icons/menu/site_meta/newsletters.svg',
+            'themes/default/images/icons/menu/adminzone/tools/newsletter/index.html',
             'sources/hooks/systems/block_ui_renderers/newsletters.php',
             'sources/hooks/modules/admin_setupwizard/newsletter.php',
             'sources/hooks/systems/tasks/import_newsletter_subscribers.php',

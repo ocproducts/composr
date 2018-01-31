@@ -123,7 +123,7 @@ This is a scheduler script that regularly censors anything looking like a passwo
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.svg';
+        return 'themes/default/images/icons/admin/component.svg';
     }
 
     /**

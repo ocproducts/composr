@@ -67,20 +67,20 @@ table.shipping-address {
 */
 
 .buttons--cart-add {
-	background-image: url('{$IMG,icons/48x48/buttons/cart_add}') !important;
+	background-image: url('{$IMG,icons/buttons/cart_add}') !important;
 }
 .buttons--cart-checkout {
-	background-image: url('{$IMG,icons/48x48/buttons/cart_checkout}') !important;
+	background-image: url('{$IMG,icons/buttons/cart_checkout}') !important;
 }
 .buttons--cart-empty {
-	background-image: url('{$IMG,icons/48x48/buttons/cart_empty}') !important;
+	background-image: url('{$IMG,icons/buttons/cart_empty}') !important;
 }
 .buttons--cart-update {
-	background-image: url('{$IMG,icons/48x48/buttons/cart_update}') !important;
+	background-image: url('{$IMG,icons/buttons/cart_update}') !important;
 }
 .buttons--cart-view {
-	background-image: url('{$IMG,icons/48x48/menu/rich_content/ecommerce/shopping_cart}') !important;
+	background-image: url('{$IMG,icons/menu/rich_content/ecommerce/shopping_cart}') !important;
 }
 .menu--rich-content--catalogues--products {
-	background-image: url('{$IMG,icons/48x48/menu/rich_content/catalogues/products}') !important;
+	background-image: url('{$IMG,icons/menu/rich_content/catalogues/products}') !important;
 }

@@ -64,7 +64,7 @@ class Hook_content_meta_aware_group
             //'thumb_field_is_theme_image' => true,
             'thumb_field' => null,
             'thumb_field_is_theme_image' => false,
-            'alternate_icon_theme_image' => 'icons/48x48/menu/social/groups',
+            'alternate_icon_theme_image' => 'icons/menu/social/groups',
 
             'view_page_link_pattern' => '_SEARCH:groups:view:_WILD',
             'edit_page_link_pattern' => 'adminzone:admin_cns_groups:_edit:_WILD',

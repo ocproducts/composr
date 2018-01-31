@@ -185,7 +185,7 @@ class Module_admin_wordfilter
                 'TEXT' => '',
                 'FIELDS' => $fields,
                 'URL' => $delete_url,
-                'SUBMIT_ICON' => 'menu---generic-admin--delete',
+                'SUBMIT_ICON' => 'admin--delete3',
                 'SUBMIT_NAME' => $submit_name,
             ));
         } else {
@@ -207,7 +207,7 @@ class Module_admin_wordfilter
             'HIDDEN' => '',
             'TEXT' => '',
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'menu---generic-admin--add-one',
+            'SUBMIT_ICON' => 'admin--add',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));

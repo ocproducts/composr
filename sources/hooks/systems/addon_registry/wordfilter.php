@@ -88,7 +88,7 @@ class Hook_addon_registry_wordfilter
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/security/wordfilter.svg';
+        return 'themes/default/images/icons/menu/adminzone/security/wordfilter.svg';
     }
 
     /**
@@ -99,7 +99,7 @@ class Hook_addon_registry_wordfilter
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/adminzone/security/wordfilter.svg',
+            'themes/default/images/icons/menu/adminzone/security/wordfilter.svg',
             'sources/hooks/systems/addon_registry/wordfilter.php',
             'sources/hooks/systems/page_groupings/wordfilter.php',
             'lang/EN/wordfilter.ini',

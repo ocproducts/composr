@@ -69,11 +69,11 @@ class images_test_set extends cms_test_case
 
     public function testImageSizing()
     {
-        $this->assertTrue(is_array(cms_getimagesize(get_custom_file_base() . '/themes/default/images/icons/48x48/status/warn.svg')));
-        $this->assertTrue(is_array(cms_getimagesize(get_custom_base_url() . '/themes/default/images/icons/48x48/status/warn.svg')));
+        $this->assertTrue(is_array(cms_getimagesize(get_custom_file_base() . '/themes/default/images/icons/status/warn.svg')));
+        $this->assertTrue(is_array(cms_getimagesize(get_custom_base_url() . '/themes/default/images/icons/status/warn.svg')));
         $this->assertTrue(!isset($GLOBALS['REQUIRED_CODE']['http'])); // Should have been able to do the above using the filesystem, via a URL->path conversion
         $this->assertTrue(is_array(cms_getimagesize('http://compo.sr/themes/composr_homesite/images_custom/composr_homesite/composr_full_logo.png')));
-        $this->assertTrue(cms_getimagesize(get_custom_file_base() . '/themes/default/images/icons/48x48/status/not_here.png') === false);
+        $this->assertTrue(cms_getimagesize(get_custom_file_base() . '/themes/default/images/icons/status/not_here.png') === false);
     }
 
     public function testBasicThumbnailing()
@@ -82,7 +82,7 @@ class images_test_set extends cms_test_case
 
         // Should not get larger
         $temp = $temp_bak;
-        $test = convert_image('themes/default/images/icons/48x48/status/warn.svg', $temp, /*$width*/100, /*$height*/150, /*$box_width*/null, false, null, /*$using_path*/false, /*$only_make_smaller*/true);
+        $test = convert_image('themes/default/images/icons/status/warn.svg', $temp, /*$width*/100, /*$height*/150, /*$box_width*/null, false, null, /*$using_path*/false, /*$only_make_smaller*/true);
         $this->assertTrue(cms_getimagesize($temp) == array(48, 48));
         if ($temp_bak != $temp) {
             @unlink($temp);
@@ -90,7 +90,7 @@ class images_test_set extends cms_test_case
 
         // Should get to exact size
         $temp = $temp_bak;
-        $test = convert_image('themes/default/images/icons/48x48/status/warn.svg', $temp, /*$width*/100, /*$height*/150, /*$box_width*/null, false, null, /*$using_path*/false, /*$only_make_smaller*/false);
+        $test = convert_image('themes/default/images/icons/status/warn.svg', $temp, /*$width*/100, /*$height*/150, /*$box_width*/null, false, null, /*$using_path*/false, /*$only_make_smaller*/false);
         $this->assertTrue(cms_getimagesize($temp) == array(100, 100)); // not 100x150 because we don't add padding in convert_image
         if ($temp_bak != $temp) {
             @unlink($temp);
@@ -98,7 +98,7 @@ class images_test_set extends cms_test_case
 
         // Should get to exact size
         $temp = $temp_bak;
-        $test = convert_image('themes/default/images/icons/48x48/status/warn.svg', $temp, /*$width*/null, /*$height*/null, /*$box_width*/120, false, null, /*$using_path*/false, /*$only_make_smaller*/false);
+        $test = convert_image('themes/default/images/icons/status/warn.svg', $temp, /*$width*/null, /*$height*/null, /*$box_width*/120, false, null, /*$using_path*/false, /*$only_make_smaller*/false);
         $this->assertTrue(cms_getimagesize($temp) == array(120, 120));
         if ($temp_bak != $temp) {
             @unlink($temp);
@@ -106,7 +106,7 @@ class images_test_set extends cms_test_case
 
         // With a path
         $temp = $temp_bak;
-        $test = convert_image(get_file_base() . '/themes/default/images/icons/48x48/status/warn.svg', $temp, /*$width*/null, /*$height*/null, /*$box_width*/120, false, null, /*$using_path*/true, /*$only_make_smaller*/false);
+        $test = convert_image(get_file_base() . '/themes/default/images/icons/status/warn.svg', $temp, /*$width*/null, /*$height*/null, /*$box_width*/120, false, null, /*$using_path*/true, /*$only_make_smaller*/false);
         $this->assertTrue(cms_getimagesize($temp) == array(120, 120));
         if ($temp_bak != $temp) {
             @unlink($temp);
@@ -114,7 +114,7 @@ class images_test_set extends cms_test_case
 
         // With an absolute URL
         $temp = $temp_bak;
-        $test = convert_image(get_base_url() . '/themes/default/images/icons/48x48/status/warn.svg', $temp, /*$width*/null, /*$height*/null, /*$box_width*/120, false, null, /*$using_path*/false, /*$only_make_smaller*/false);
+        $test = convert_image(get_base_url() . '/themes/default/images/icons/status/warn.svg', $temp, /*$width*/null, /*$height*/null, /*$box_width*/120, false, null, /*$using_path*/false, /*$only_make_smaller*/false);
         $this->assertTrue(cms_getimagesize($temp) == array(120, 120));
         if ($temp_bak != $temp) {
             @unlink($temp);

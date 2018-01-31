@@ -416,7 +416,7 @@ function find_tutorial_image($icon, $tags, $get_theme_image = false)
         }
     }
 
-    $theme_image = 'tutorial_icons/advice_and_guidance';
+    $theme_image = 'icons/spare/advice_and_guidance';
     $img = find_theme_image($theme_image);
     if ($get_theme_image) {
         return $theme_image;
@@ -433,46 +433,48 @@ function _find_tutorial_image_for_tag($tag)
 
     switch ($tag) {
         case 'addon':
-            return 'icons/48x48/menu/adminzone/structure/addons.svg';
+            return 'icons/menu/adminzone/structure/addons.svg';
         case 'banners':
-            return 'icons/48x48-images/icons/48x48/menu/cms/banners.svg';
+            return 'icons/menu/cms/banners.svg';
         case 'calendar':
-            return 'icons/48x48/menu/rich_content/calendar.svg';
+            return 'icons/menu/rich_content/calendar.svg';
         case 'catalogues':
-            return 'icons/48x48/menu/rich_content/catalogues/catalogues.svg';
+            return 'icons/menu/rich_content/catalogues/catalogues.svg';
         case 'chatrooms':
-            return 'icons/48x48/menu/social/chat/chat.svg';
+            return 'icons/menu/social/chat/chat.svg';
         case 'configuration':
-            return 'icons/48x48/menu/adminzone/setup/config/config.svg';
+            return 'icons/menu/adminzone/setup/config/config.svg';
         case 'design_and_themeing':
-            return 'icons/32x32/menu/adminzone/style.svg';
+            return 'icons/menu/adminzone/style.svg';
         case 'downloads':
-            return 'icons/48x48/menu/rich_content/downloads.svg';
+            return 'icons/menu/rich_content/downloads.svg';
         case 'ecommerce':
-            return 'icons/48x48/menu/adminzone/audit/ecommerce/ecommerce.svg';
+            return 'icons/menu/adminzone/audit/ecommerce/ecommerce.svg';
         case 'forum':
-            return 'icons/48x48/buttons/forum.svg';
+            return 'icons/buttons/forum.svg';
         case 'galleries':
-            return 'icons/48x48/menu/rich_content/galleries.svg';
+            return 'icons/menu/rich_content/galleries.svg';
         case 'members':
-            return 'icons/48x48/menu/social/members.svg';
+            return 'icons/menu/social/members.svg';
         case 'news':
-            return 'icons/48x48/menu/rich_content/news.svg';
+            return 'icons/menu/rich_content/news.svg';
         case 'newsletters':
-            return 'icons/48x48/menu/site_meta/newsletters.svg';
+            return 'icons/menu/site_meta/newsletters.svg';
         case 'pages':
-            return 'icons/48x48/menu/pages.svg';
+            return 'icons/menu/pages.svg';
         case 'security':
-            return 'icons/32x32/menu/adminzone/security.svg';
+            return 'icons/menu/adminzone/security.svg';
+        case 'support':
+            return 'icons/help.svg';
         case 'structure_and_navigation':
-            return 'icons/32x32/menu/adminzone/structure.svg';
+            return 'icons/menu/adminzone/structure.svg';
         case 'upgrading':
-            return 'icons/48x48/menu/adminzone/tools/upgrade.svg';
+            return 'icons/menu/adminzone/tools/upgrade.svg';
         case 'wiki':
-            return 'icons/48x48/menu/rich_content/wiki.svg';
+            return 'icons/menu/rich_content/wiki.svg';
     }
 
-    return 'tutorial_icons/' . $tag;
+    return 'icons/spare/' . $tag;
 }
 
 function remove_code_block_contents($code)

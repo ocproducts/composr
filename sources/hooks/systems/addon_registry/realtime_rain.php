@@ -89,7 +89,7 @@ class Hook_addon_registry_realtime_rain
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/audit/realtime_rain.svg';
+        return 'themes/default/images/icons/menu/adminzone/audit/realtime_rain.svg';
     }
 
     /**
@@ -100,9 +100,9 @@ class Hook_addon_registry_realtime_rain
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/adminzone/audit/realtime_rain.svg',
-            'themes/default/images/icons/48x48/tool_buttons/realtime_rain_off.svg',
-            'themes/default/images/icons/48x48/tool_buttons/realtime_rain_on.svg',
+            'themes/default/images/icons/menu/adminzone/audit/realtime_rain.svg',
+            'themes/default/images/icons/tool_buttons/realtime_rain_off.svg',
+            'themes/default/images/icons/tool_buttons/realtime_rain_on.svg',
 
             'adminzone/pages/modules/admin_realtime_rain.php',
             'sources/realtime_rain.php',
@@ -123,22 +123,20 @@ class Hook_addon_registry_realtime_rain
             'sources/hooks/systems/addon_registry/realtime_rain.php',
             'sources/hooks/systems/config/bottom_show_realtime_rain_button.php',
 
-            'themes/default/images/realtime_rain/email-icon.svg',
-            'themes/default/images/realtime_rain/news-icon.svg',
-            'themes/default/images/realtime_rain/phone-icon.svg',
-            'themes/default/images/realtime_rain/searchengine-icon.svg',
+            'themes/default/images/realtime_rain/icons/email_icon.svg',
+            'themes/default/images/realtime_rain/icons/news_icon.svg',
+            'themes/default/images/realtime_rain/icons/phone_icon.svg',
+            'themes/default/images/realtime_rain/icons/searchengine_icon.svg',
 
-            'themes/default/images/realtime_rain/news-bg.svg',
-            'themes/default/images/realtime_rain/news-bot.svg',
-            'themes/default/images/realtime_rain/news-header.svg',
-            'themes/default/images/realtime_rain/news-out.svg',
-            'themes/default/images/realtime_rain/news-top.svg',
-            'themes/default/images/realtime_rain/next.svg',
-            'themes/default/images/realtime_rain/pause-but.svg',
-            'themes/default/images/realtime_rain/pre.svg',
-            'themes/default/images/realtime_rain/realtime-bubble.svg',
-            'themes/default/images/realtime_rain/time-line.svg',
-            'themes/default/images/realtime_rain/timer-bg.svg',
+            'themes/default/images/realtime_rain/news_bg.svg',
+            'themes/default/images/realtime_rain/news_bot.svg',
+            'themes/default/images/realtime_rain/news_header.svg',
+            'themes/default/images/realtime_rain/icons/next_but.svg',
+            'themes/default/images/realtime_rain/icons/pause_but.svg',
+            'themes/default/images/realtime_rain/icons/previous_but.svg',
+            'themes/default/images/realtime_rain/realtime_indicator.svg',
+            'themes/default/images/realtime_rain/time_line.svg',
+            'themes/default/images/realtime_rain/timer_bg.svg',
 
             'themes/default/images/realtime_rain/actionlog-avatar.svg',
             'themes/default/images/realtime_rain/actionlog-bubble.svg',
@@ -171,10 +169,10 @@ class Hook_addon_registry_realtime_rain
             'themes/default/images/realtime_rain/stats-avatar.svg',
             'themes/default/images/realtime_rain/stats-bubble.svg',
 
-            'themes/default/images/realtime_rain/sun-effect.svg',
-            'themes/default/images/realtime_rain/halo-effect.svg',
-            'themes/default/images/realtime_rain/horns-effect.svg',
-            'themes/default/images/realtime_rain/shadow-effect.svg',
+            'themes/default/images/realtime_rain/sun_effect.svg',
+            'themes/default/images/realtime_rain/halo_effect.svg',
+            'themes/default/images/realtime_rain/horns_effect.svg',
+            'themes/default/images/realtime_rain/shadow_effect.svg',
 
             'themes/default/images/flags/AD.gif',
             'themes/default/images/flags/AE.gif',

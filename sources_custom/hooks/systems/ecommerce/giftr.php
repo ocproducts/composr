@@ -39,7 +39,7 @@ class Hook_ecommerce_giftr
         return array(
             'category_name' => do_lang('GIFTR_TITLE'),
             'category_description' => do_lang_tempcode('GIFTS_DESCRIPTION'),
-            'category_image_url' => find_theme_image('icons/48x48/menu/giftr'),
+            'category_image_url' => find_theme_image('icons/spare/gifts'),
         );
     }
 

@@ -115,6 +115,7 @@ class Hook_addon_registry_composr_homesite_support_credits
                 'ecommerce',
                 'points',
                 'mysql',
+                'all_icons',
             ),
             'recommends' => array(
                 'composr_homesite',
@@ -132,7 +133,7 @@ class Hook_addon_registry_composr_homesite_support_credits
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.svg';
+        return 'themes/default/images/icons/admin/component.svg';
     }
 
     /**
@@ -168,15 +169,11 @@ class Hook_addon_registry_composr_homesite_support_credits
             'sources_custom/tickets.php',
             'text_custom/EN/support_credits_terms.txt',
             'themes/default/css_custom/tracker.css',
-            'themes/default/images_custom/tracker/credit.svg',
             'themes/default/images_custom/tracker/easy.svg',
             'themes/default/images_custom/tracker/hard.svg',
             'themes/default/images_custom/tracker/minus.svg',
             'themes/default/images_custom/tracker/my.svg',
             'themes/default/images_custom/tracker/plus.svg',
-            'themes/default/images_custom/tracker/popular.svg',
-            'themes/default/images_custom/tracker/recent.svg',
-            'themes/default/images_custom/tracker/sponsored.svg',
             'themes/default/images_custom/tracker/tutorials.svg',
             'themes/default/templates_custom/BLOCK_CREDIT_EXPS_INNER.tpl',
             'themes/default/templates_custom/BLOCK_MAIN_MANTIS_TRACKER.tpl',

@@ -89,7 +89,7 @@ class Hook_addon_registry_core_rich_media
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.svg';
+        return 'themes/default/images/icons/admin/component.svg';
     }
 
     /**
@@ -100,11 +100,11 @@ class Hook_addon_registry_core_rich_media
     public function get_file_list()
     {
         return array(
-            'themes/default/images/EN/1x/editor/index.html',
-            'themes/default/images/icons/32x32/editor/insert_emoticons.svg',
-            'themes/default/images/icons/32x32/editor/wysiwyg_off.svg',
-            'themes/default/images/icons/32x32/editor/wysiwyg_on.svg',
-            'themes/default/images/icons/32x32/editor/index.html',
+            'themes/default/images/EN/editor/index.html',
+            'themes/default/images/icons/editor/insert_emoticons.svg',
+            'themes/default/images/icons/editor/wysiwyg_off.svg',
+            'themes/default/images/icons/editor/wysiwyg_on.svg',
+            'themes/default/images/icons/editor/index.html',
             'sources/hooks/systems/addon_registry/core_rich_media.php',
             'sources/hooks/systems/comcode_parsing/.htaccess',
             'sources/hooks/systems/comcode_parsing/index.html',
@@ -214,8 +214,9 @@ class Hook_addon_registry_core_rich_media
             'themes/default/templates/MEDIA__DOWNLOAD_LINK.tpl',
             'themes/default/css/big_tabs.css',
             'themes/default/css/comcode_mistakes.css',
-            'themes/default/images/icons/28x28/wiki_link.svg',
-            'themes/default/images/icons/28x28/wiki_link_hover.svg',
+            'themes/default/images/icons/wiki/link.svg',
+            'themes/default/images/icons/wiki/link_hover.svg',
+            'themes/default/images/icons/wiki/index.html',
             'themes/default/images/carousel/button_left_hover.svg',
             'themes/default/images/carousel/button_left.svg',
             'themes/default/images/carousel/button_right_hover.svg',
@@ -223,10 +224,11 @@ class Hook_addon_registry_core_rich_media
             'themes/default/images/carousel/fade_left.svg',
             'themes/default/images/carousel/fade_right.svg',
             'themes/default/images/carousel/index.html',
-            'themes/default/images/big_tabs_controller_button_active.svg',
-            'themes/default/images/big_tabs_controller_button_top_active.svg',
-            'themes/default/images/big_tabs_controller_button_top.svg',
-            'themes/default/images/big_tabs_controller_button.svg',
+            'themes/default/images/big_tabs/index.html',
+            'themes/default/images/big_tabs/controller_button_active.svg',
+            'themes/default/images/big_tabs/controller_button_top_active.svg',
+            'themes/default/images/big_tabs/controller_button_top.svg',
+            'themes/default/images/big_tabs/controller_button.svg',
             'data/jwplayer.flash.swf',
             'themes/default/javascript/jwplayer.js',
             'sources/hooks/systems/notifications/member_mention.php',
@@ -306,8 +308,9 @@ class Hook_addon_registry_core_rich_media
             'themes/default/templates/COMCODE_MEDIA_SET.tpl',
             'themes/default/javascript/jquery_autocomplete.js',
             'themes/default/css/autocomplete.css',
-            'themes/default/images/mediaset_next.svg',
-            'themes/default/images/mediaset_previous.svg',
+            'themes/default/images/icons/media_set/next.svg',
+            'themes/default/images/icons/media_set/previous.svg',
+            'themes/default/images/icons/media_set/index.html',
         );
     }
 

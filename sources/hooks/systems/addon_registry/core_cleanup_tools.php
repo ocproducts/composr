@@ -87,7 +87,7 @@ class Hook_addon_registry_core_cleanup_tools
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/tools/cleanup.svg';
+        return 'themes/default/images/icons/menu/adminzone/tools/cleanup.svg';
     }
 
     /**
@@ -98,8 +98,8 @@ class Hook_addon_registry_core_cleanup_tools
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/adminzone/tools/cleanup.svg',
-            'themes/default/images/icons/48x48/menu/adminzone/tools/broken_urls.svg',
+            'themes/default/images/icons/menu/adminzone/tools/cleanup.svg',
+            'themes/default/images/icons/menu/adminzone/tools/broken_urls.svg',
             'sources/hooks/systems/config/is_on_block_cache.php',
             'sources/hooks/systems/config/is_on_comcode_page_cache.php',
             'sources/hooks/systems/config/is_on_lang_cache.php',

@@ -61,7 +61,7 @@ class Module_cms_galleries extends Standard_crud_module
         );
 
         if (has_privilege(get_member(), 'mass_import', 'cms_galleries')) {
-            $ret['import'] = array('GALLERY_IMPORT', 'menu/_generic_admin/import');
+            $ret['import'] = array('GALLERY_IMPORT', 'admin/import');
         }
 
         $this->cat_crud_module = class_exists('Mx_cms_galleries_cat') ? new Mx_cms_galleries_cat() : new Module_cms_galleries_cat();
@@ -257,9 +257,9 @@ class Module_cms_galleries extends Standard_crud_module
             get_screen_title('MANAGE_GALLERIES'),
             comcode_lang_string('DOC_GALLERIES'),
             array_merge(array(
-                has_privilege(get_member(), 'submit_cat_midrange_content', 'cms_galleries') ? array('menu/_generic_admin/add_one_category', array('_SELF', array('type' => 'add_category'), '_SELF'), do_lang('ADD_GALLERY')) : null,
-                has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_galleries') ? array('menu/_generic_admin/edit_one_category', array('_SELF', array('type' => 'edit_category'), '_SELF'), do_lang('EDIT_GALLERY')) : null,
-                has_privilege(get_member(), 'mass_import', 'cms_galleries') ? array('menu/_generic_admin/import', array('_SELF', array('type' => 'import'), '_SELF'), do_lang('GALLERY_IMPORT'), 'DOC_GALLERY_IMPORT') : null,
+                has_privilege(get_member(), 'submit_cat_midrange_content', 'cms_galleries') ? array('admin/add_one_category', array('_SELF', array('type' => 'add_category'), '_SELF'), do_lang('ADD_GALLERY')) : null,
+                has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_galleries') ? array('admin/edit_one_category', array('_SELF', array('type' => 'edit_category'), '_SELF'), do_lang('EDIT_GALLERY')) : null,
+                has_privilege(get_member(), 'mass_import', 'cms_galleries') ? array('admin/import', array('_SELF', array('type' => 'import'), '_SELF'), do_lang('GALLERY_IMPORT'), 'DOC_GALLERY_IMPORT') : null,
                 (!$allow_images) ? null : has_privilege(get_member(), 'submit_midrange_content', 'cms_galleries') ? array('menu/cms/galleries/add_one_image', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_IMAGE')) : null,
                 (!$allow_images) ? null : has_privilege(get_member(), 'edit_own_midrange_content', 'cms_galleries') ? array('menu/cms/galleries/edit_one_image', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_IMAGE')) : null,
                 (!$allow_videos) ? null : has_privilege(get_member(), 'submit_midrange_content', 'cms_galleries') ? array('menu/cms/galleries/add_one_video', array('_SELF', array('type' => 'add_other'), '_SELF'), do_lang('ADD_VIDEO')) : null,
@@ -362,7 +362,7 @@ class Module_cms_galleries extends Standard_crud_module
             '_GUID' => '05de2bc134ed0b1ab703ac8bfbfabce4',
             'TABINDEX' => strval(get_form_field_tabindex()),
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'menu---generic-admin--import',
+            'SUBMIT_ICON' => 'admin--import',
             'SUBMIT_NAME' => do_lang_tempcode('BATCH_IMPORT_ARCHIVE_CONTENTS'),
             'URL' => $post_url,
             'TEXT' => $text,
@@ -430,7 +430,7 @@ class Module_cms_galleries extends Standard_crud_module
                     'SECONDARY_FORM' => true,
                     'TABINDEX' => strval(get_form_field_tabindex()),
                     'FIELDS' => $fields_2,
-                    'SUBMIT_ICON' => 'menu---generic-admin--import',
+                    'SUBMIT_ICON' => 'admin--import',
                     'SUBMIT_NAME' => do_lang_tempcode('PROCEED'),
                     'URL' => $add_url,
                     'TEXT' => '',
@@ -2394,7 +2394,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
                 array($video ? 'menu/cms/galleries/add_one_image' : 'menu/cms/galleries/add_one_video', array('_SELF', array('type' => $video ? 'add' : 'add_other', 'cat' => (($video && !$support_images) || (!$video && !$support_videos) || ($cat === null)) ? null : $cat), '_SELF'), do_lang($video ? 'ADD_IMAGE' : 'ADD_VIDEO')),
                 (has_privilege(get_member(), 'edit_own_midrange_content', 'cms_galleries') ? array($video ? 'menu/cms/galleries/edit_one_video' : 'menu/cms/galleries/edit_one_image', array('_SELF', array('type' => $video ? 'edit_other' : 'edit'), '_SELF'), do_lang($video ? 'EDIT_VIDEO' : 'EDIT_IMAGE')) : null), // Edit one
                 (has_privilege(get_member(), 'edit_own_midrange_content', 'cms_galleries') ? array($video ? 'menu/cms/galleries/edit_one_image' : 'menu/cms/galleries/edit_one_video', array('_SELF', array('type' => $video ? 'edit' : 'edit_other'), '_SELF'), do_lang($video ? 'EDIT_IMAGE' : 'EDIT_VIDEO')) : null), // Edit one
-                has_privilege(get_member(), 'mass_import', 'cms_galleries') ? array('menu/_generic_admin/import', array('_SELF', array('type' => '_import', 'name' => $cat), '_SELF'), do_lang('GALLERY_IMPORT')) : null,
+                has_privilege(get_member(), 'mass_import', 'cms_galleries') ? array('admin/import', array('_SELF', array('type' => '_import', 'name' => $cat), '_SELF'), do_lang('GALLERY_IMPORT')) : null,
             )),
             array(),
             array(),

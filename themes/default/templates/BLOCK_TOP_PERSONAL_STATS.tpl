@@ -26,5 +26,5 @@
 			{+END}
 		</div></div></div>
 	</div>
-	<a title="{$STRIP_TAGS,{!LOGGED_IN_AS,{USERNAME*}}} ({$IP_ADDRESS*}, #{MEMBER_ID*})" id="top-personal-stats-button" class="js-click-toggle-top-personal-stats" href="{$MEMBER_PROFILE_URL*,{MEMBER_ID}}"><img alt="" width="20" height="20" src="{$IMG*,icons/48x48/menu/_generic_admin/view_member}" /></a>
+	<a title="{$STRIP_TAGS,{!LOGGED_IN_AS,{USERNAME*}}} ({$IP_ADDRESS*}, #{MEMBER_ID*})" id="top-personal-stats-button" class="js-click-toggle-top-personal-stats" href="{$MEMBER_PROFILE_URL*,{MEMBER_ID}}"><img alt="" width="20" height="20" src="{$IMG*,icons/content_types/member}" /></a>
 </div>

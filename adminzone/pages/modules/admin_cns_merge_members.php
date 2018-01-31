@@ -154,7 +154,7 @@ class Module_admin_cns_merge_members
             'FIELDS' => $fields,
             'HIDDEN' => '',
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'menu---generic-admin--merge',
+            'SUBMIT_ICON' => 'admin--merge',
             'SUBMIT_NAME' => $submit_name,
         ));
     }

@@ -504,11 +504,11 @@ class Hook_ajax_tree_choose_theme_files
             case 'css':
             case 'js':
             case 'xml':
-                $img_url = find_theme_image('icons/32x32/filetypes/' . $ext);
+                $img_url = find_theme_image('icons/file_types/' . $ext);
                 break;
 
             case 'txt':
-                $img_url = find_theme_image('icons/32x32/filetypes/page_' . $ext);
+                $img_url = find_theme_image('icons/file_types/page_' . $ext);
                 break;
 
             default:

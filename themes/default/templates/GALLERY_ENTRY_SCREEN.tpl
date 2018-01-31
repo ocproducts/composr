@@ -80,7 +80,7 @@
 
 			{+START,IF,{$ADDON_INSTALLED,recommend}}{+START,IF,{$CONFIG_OPTION,enable_ecards}}
 				{+START,IF_NON_PASSED,VIDEO}
-					<p class="associated-link vertical-alignment"><img width="16" height="16" src="{$IMG*,icons/32x32/filetypes/email_link}" alt="" /> <a href="{$PAGE_LINK*,:recommend:browse:subject={!ECARD_FOR_YOU_SUBJECT}:page_title={!SEND_AS_ECARD}:s_message={!ECARD_FOR_YOU,{$SELF_URL},{URL*},{$SITE_NAME}}:ecard=1}">{!SEND_AS_ECARD}</a></p>
+					<p class="associated-link vertical-alignment"><img width="16" height="16" src="{$IMG*,icons/file_types/email_link}" alt="" /> <a href="{$PAGE_LINK*,:recommend:browse:subject={!ECARD_FOR_YOU_SUBJECT}:page_title={!SEND_AS_ECARD}:s_message={!ECARD_FOR_YOU,{$SELF_URL},{URL*},{$SITE_NAME}}:ecard=1}">{!SEND_AS_ECARD}</a></p>
 				{+END}
 			{+END}{+END}
 		</div>
@@ -165,7 +165,7 @@
 			1_URL={EDIT_URL*}
 			1_TITLE={!EDIT}
 			1_REL=edit
-			1_ICON=menu/_generic_admin/edit_this
+			1_ICON=admin/edit_this
 			{+START,IF,{$ADDON_INSTALLED,tickets}}
 				2_URL={$PAGE_LINK*,_SEARCH:report_content:content_type={MEDIA_TYPE}:content_id={ID}:redirect={$SELF_URL&}}
 				2_TITLE={!report_content:REPORT_THIS}

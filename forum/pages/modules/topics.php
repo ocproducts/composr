@@ -59,7 +59,7 @@ class Module_topics
         }
 
         return array(
-            'new_pt' => array('ADD_PRIVATE_TOPIC', 'buttons/new_topic'),
+            'new_pt' => array('ADD_PRIVATE_TOPIC', 'buttons/add_topic'),
         );
     }
 
@@ -530,7 +530,7 @@ class Module_topics
             'TITLE' => $title,
             'FIELDS' => $fields,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'buttons--move',
+            'SUBMIT_ICON' => 'admin--move',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));
@@ -584,7 +584,7 @@ class Module_topics
             'TITLE' => $title,
             'FIELDS' => $fields,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'buttons--move',
+            'SUBMIT_ICON' => 'admin--move',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));
@@ -1135,7 +1135,7 @@ class Module_topics
             'TITLE' => $title,
             'FIELDS' => $fields,
             'TEXT' => '',
-            'SUBMIT_ICON' => 'buttons--move',
+            'SUBMIT_ICON' => 'admin--move',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));
@@ -1783,7 +1783,7 @@ class Module_topics
         }
 
         // Render form
-        $posting_form = get_posting_form(do_lang($private_topic ? 'ADD_PRIVATE_TOPIC' : 'ADD_TOPIC'), 'buttons--new-topic', $post, $post_url, $hidden_fields, $specialisation, null, '', $specialisation2, null, $js_function_calls, null, true, true, false, true, is_mobile());
+        $posting_form = get_posting_form(do_lang($private_topic ? 'ADD_PRIVATE_TOPIC' : 'ADD_TOPIC'), 'buttons--add-topic', $post, $post_url, $hidden_fields, $specialisation, null, '', $specialisation2, null, $js_function_calls, null, true, true, false, true, is_mobile());
 
         url_default_parameters__disable();
 
@@ -2687,7 +2687,7 @@ END;
                 'TEXT' => $text,
                 'URL' => $post_url,
                 'FIELDS' => $fields,
-                'SUBMIT_ICON' => 'menu---generic-admin--delete',
+                'SUBMIT_ICON' => 'admin--delete3',
                 'SUBMIT_NAME' => $submit_name,
             ));
         }
@@ -2936,7 +2936,7 @@ END;
             'TITLE' => $title,
             'FIELDS' => $fields,
             'TEXT' => '',
-            'SUBMIT_ICON' => 'menu---generic-admin--add-to-category',
+            'SUBMIT_ICON' => 'admin--add-to-category',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
             'JS_FUNCTION_CALLS' => $js_function_calls,
@@ -3158,7 +3158,7 @@ END;
             $parsed = null;
         }
         $js_function_calls = $this->_post_javascript();
-        $posting_form = get_posting_form(do_lang('SAVE'), 'buttons--edit', $post, $post_url, $hidden_fields, $specialisation, null, '', $specialisation2, $parsed, $js_function_calls);
+        $posting_form = get_posting_form(do_lang('SAVE'), 'admin--edit', $post, $post_url, $hidden_fields, $specialisation, null, '', $specialisation2, $parsed, $js_function_calls);
 
         list($warning_details, $ping_url) = handle_conflict_resolution();
 
@@ -3411,7 +3411,7 @@ END;
             'TITLE' => $title,
             'FIELDS' => $fields,
             'TEXT' => do_lang_tempcode('EDITING_TOPIC_NOT_POST'),
-            'SUBMIT_ICON' => 'menu---generic-admin--edit-this',
+            'SUBMIT_ICON' => 'admin--edit-this',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));
@@ -3503,7 +3503,7 @@ END;
             'TITLE' => $title,
             'FIELDS' => $fields,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'menu---generic-admin--delete',
+            'SUBMIT_ICON' => 'admin--delete3',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));
@@ -3646,7 +3646,7 @@ END;
             'TITLE' => $title,
             'FIELDS' => $fields,
             'TEXT' => '',
-            'SUBMIT_ICON' => 'menu---generic-admin--edit-this',
+            'SUBMIT_ICON' => 'admin--edit-this',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));
@@ -3779,7 +3779,7 @@ END;
             'TITLE' => $title,
             'FIELDS' => $fields,
             'TEXT' => '',
-            'SUBMIT_ICON' => 'buttons--move',
+            'SUBMIT_ICON' => 'admin--move',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));

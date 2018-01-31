@@ -111,8 +111,8 @@ class Module_cms_cns_groups extends Standard_crud_module
             get_screen_title('MANAGE_CLUBS'),
             comcode_lang_string('DOC_CLUBS'),
             array(
-                array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_CLUB')),
-                array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_CLUB')),
+                array('admin/add', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_CLUB')),
+                array('admin/edit', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_CLUB')),
             ),
             do_lang('MANAGE_CLUBS')
         );

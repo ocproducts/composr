@@ -99,8 +99,8 @@ class Module_admin_aggregate_types extends Standard_crud_module
         );
         $ret += parent::get_entry_points();
         $ret += array(
-            'xml' => array('EDIT_AGGREGATE_TYPES', 'menu/_generic_admin/xml'),
-            'sync' => array('SYNCHRONISE_AGGREGATE_TYPES', 'menu/_generic_admin/sync'),
+            'xml' => array('EDIT_AGGREGATE_TYPES', 'admin/xml'),
+            'sync' => array('SYNCHRONISE_AGGREGATE_TYPES', 'admin/sync'),
         );
         return $ret;
     }
@@ -188,10 +188,10 @@ class Module_admin_aggregate_types extends Standard_crud_module
             get_screen_title('AGGREGATE_TYPES'),
             comcode_lang_string('DOC_AGGREGATE_TYPES'),
             array(
-                array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_AGGREGATE_TYPE_INSTANCE')),
-                array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_AGGREGATE_TYPE_INSTANCE')),
-                array('menu/_generic_admin/xml', array('_SELF', array('type' => 'xml'), '_SELF'), do_lang('EDIT_AGGREGATE_TYPES')),
-                array('menu/_generic_admin/sync', array('_SELF', array('type' => 'sync'), '_SELF'), do_lang('SYNCHRONISE_AGGREGATE_TYPES')),
+                array('admin/add', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_AGGREGATE_TYPE_INSTANCE')),
+                array('admin/edit', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_AGGREGATE_TYPE_INSTANCE')),
+                array('admin/xml', array('_SELF', array('type' => 'xml'), '_SELF'), do_lang('EDIT_AGGREGATE_TYPES')),
+                array('admin/sync', array('_SELF', array('type' => 'sync'), '_SELF'), do_lang('SYNCHRONISE_AGGREGATE_TYPES')),
             ),
             do_lang('AGGREGATE_TYPES')
         );
@@ -449,7 +449,7 @@ class Module_admin_aggregate_types extends Standard_crud_module
             'URL' => $url,
             'FIELDS' => $fields,
             'TEXT' => do_lang_tempcode('SELECT_AGGREGATE_TYPES_FOR_SYNC'),
-            'SUBMIT_ICON' => 'menu---generic-admin--sync',
+            'SUBMIT_ICON' => 'admin--sync',
             'SUBMIT_NAME' => $submit_name,
         ));
     }

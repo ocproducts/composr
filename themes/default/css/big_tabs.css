@@ -21,19 +21,19 @@
 }
 
 .big-tab-inactive a {
-	background: url('{$IMG_INLINE;,big_tabs_controller_button}') no-repeat !important;
+	background: url('{$IMG_INLINE;,big_tabs/controller_button}') no-repeat !important;
 }
 
 .big-tab-active a, .big-tab-inactive a:hover {
-	background: url('{$IMG_INLINE;,big_tabs_controller_button_active}') no-repeat !important;
+	background: url('{$IMG_INLINE;,big_tabs/controller_button_active}') no-repeat !important;
 }
 
 .big-tab-first.big-tab-inactive a {
-	background: url('{$IMG_INLINE;,big_tabs_controller_button_top}') no-repeat !important;
+	background: url('{$IMG_INLINE;,big_tabs/controller_button_top}') no-repeat !important;
 }
 
 .big-tab-first.big-tab-active a, .big-tab-first.big-tab-inactive a:hover {
-	background: url('{$IMG_INLINE;,big_tabs_controller_button_top_active}') no-repeat !important;
+	background: url('{$IMG_INLINE;,big_tabs/controller_button_top_active}') no-repeat !important;
 }
 
 .comcode-big-tab {

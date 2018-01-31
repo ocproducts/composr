@@ -136,7 +136,7 @@ Once configured then syndication will be an option when adding news posts or cal
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/links/twitter.svg';
+        return 'themes/default/images/icons/links/twitter.svg';
     }
 
     /**

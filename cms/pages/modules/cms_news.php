@@ -188,11 +188,11 @@ class Module_cms_news extends Standard_crud_module
             get_screen_title('MANAGE_NEWS'),
             comcode_lang_string('DOC_NEWS'),
             array_merge(array(
-                has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_news') ? array('menu/_generic_admin/add_one_category', array('_SELF', array('type' => 'add_category'), '_SELF'), do_lang('ADD_NEWS_CATEGORY')) : null,
-                has_privilege(get_member(), 'edit_own_cat_highrange_content', 'cms_news') ? array('menu/_generic_admin/edit_one_category', array('_SELF', array('type' => 'edit_category'), '_SELF'), do_lang('EDIT_NEWS_CATEGORY')) : null,
-                has_privilege(get_member(), 'submit_highrange_content', 'cms_news') ? array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_NEWS')) : null,
-                has_privilege(get_member(), 'edit_own_highrange_content', 'cms_news') ? array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_NEWS')) : null,
-                has_privilege(get_member(), 'mass_import', 'cms_news') ? array('menu/_generic_admin/import', array('_SELF', array('type' => 'import'), '_SELF'), do_lang('IMPORT_NEWS')) : null,
+                has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_news') ? array('admin/add_one_category', array('_SELF', array('type' => 'add_category'), '_SELF'), do_lang('ADD_NEWS_CATEGORY')) : null,
+                has_privilege(get_member(), 'edit_own_cat_highrange_content', 'cms_news') ? array('admin/edit_one_category', array('_SELF', array('type' => 'edit_category'), '_SELF'), do_lang('EDIT_NEWS_CATEGORY')) : null,
+                has_privilege(get_member(), 'submit_highrange_content', 'cms_news') ? array('admin/add', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_NEWS')) : null,
+                has_privilege(get_member(), 'edit_own_highrange_content', 'cms_news') ? array('admin/edit', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_NEWS')) : null,
+                has_privilege(get_member(), 'mass_import', 'cms_news') ? array('admin/import', array('_SELF', array('type' => 'import'), '_SELF'), do_lang('IMPORT_NEWS')) : null,
             ), manage_custom_fields_donext_link('news')),
             do_lang('MANAGE_NEWS')
         );
@@ -408,7 +408,7 @@ class Module_cms_news extends Standard_crud_module
         $hidden = new Tempcode();
 
         if (get_value('disable_news_repimages') !== '1') {
-            $fields2->attach(form_input_upload_multi_source(do_lang_tempcode('IMAGE'), do_lang_tempcode('DESCRIPTION_NEWS_IMAGE_OVERRIDE'), $hidden, 'image', 'newscats', false, $image));
+            $fields2->attach(form_input_upload_multi_source(do_lang_tempcode('IMAGE'), do_lang_tempcode('DESCRIPTION_NEWS_IMAGE_OVERRIDE'), $hidden, 'image', 'icons/news', false, $image));
         }
 
         if ((addon_installed('calendar')) && (has_privilege(get_member(), 'scheduled_publication_times'))) {
@@ -557,7 +557,7 @@ class Module_cms_news extends Standard_crud_module
         $notes = post_param_string('notes', '');
 
         require_code('themes2');
-        $image = resize_rep_image(post_param_image('image', 'uploads/repimages', 'newscats', false));
+        $image = resize_rep_image(post_param_image('image', 'uploads/repimages', 'icons/news', false));
 
         $schedule = post_param_date('schedule');
         if ((addon_installed('calendar')) && (has_privilege(get_member(), 'scheduled_publication_times')) && ($schedule !== null) && ($schedule > time())) {
@@ -666,7 +666,7 @@ class Module_cms_news extends Standard_crud_module
 
         if (!fractional_edit()) {
             require_code('themes2');
-            $image = resize_rep_image(post_param_image('image', 'uploads/repimages', 'newscats', false));
+            $image = resize_rep_image(post_param_image('image', 'uploads/repimages', 'icons/news', false));
         } else {
             $image = STRING_MAGIC_NULL;
         }
@@ -796,7 +796,7 @@ class Module_cms_news extends Standard_crud_module
             'TEXT' => do_lang_tempcode('IMPORT_NEWS_TEXT'),
             'HIDDEN' => $hidden,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'menu---generic-admin--import',
+            'SUBMIT_ICON' => 'admin--import',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));
@@ -951,7 +951,7 @@ class Module_cms_news_cat extends Standard_crud_module
         $fields->attach(form_input_line_comcode(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'title', $title, true));
 
         if (get_value('disable_news_repimages') !== '1') {
-            $fields->attach(form_input_upload_multi_source(do_lang_tempcode('IMAGE'), '', $hidden, 'image', 'newscats', false, $img));
+            $fields->attach(form_input_upload_multi_source(do_lang_tempcode('IMAGE'), '', $hidden, 'image', 'icons/news', false, $img));
         }
 
         if (get_option('enable_staff_notes') == '1') {
@@ -1004,7 +1004,7 @@ class Module_cms_news_cat extends Standard_crud_module
         $title = post_param_string('title');
 
         require_code('themes2');
-        $img = resize_rep_image(post_param_image('image', 'uploads/repimages', 'newscats', false));
+        $img = resize_rep_image(post_param_image('image', 'uploads/repimages', 'icons/news', false));
 
         $notes = post_param_string('notes', '');
 
@@ -1038,7 +1038,7 @@ class Module_cms_news_cat extends Standard_crud_module
 
         if (!fractional_edit()) {
             require_code('themes2');
-            $img = resize_rep_image(post_param_image('image', 'uploads/repimages', 'newscats', false, true));
+            $img = resize_rep_image(post_param_image('image', 'uploads/repimages', 'icons/news', false, true));
         } else {
             $img = STRING_MAGIC_NULL;
         }

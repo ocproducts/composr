@@ -3,7 +3,7 @@
 <tr data-require-javascript="cns_forum" data-tpl="cnsForumInGrouping" data-tpl-params="{+START,PARAMS_JSON,FORUM_RULES_URL,INTRO_QUESTION_URL}{_*}{+END}">
 	{+START,IF,{$DESKTOP}}
 		<td class="cns-forum-new-post-indicator cns-column1 cell-desktop">
-			<img title="{LANG_NEW_POST_OR_NOT*}" alt="{LANG_NEW_POST_OR_NOT*}" width="32" height="32" src="{$IMG*,cns_general/{NEW_POST_OR_NOT*}}" />
+			<img title="{LANG_NEW_POST_OR_NOT*}" alt="{LANG_NEW_POST_OR_NOT*}" width="32" height="32" src="{$IMG*,icons/cns_general/{NEW_POST_OR_NOT*}}" />
 		</td>
 	{+END}
 	<td class="cns-forum-in-category-forum cns-column2">

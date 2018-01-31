@@ -51,7 +51,7 @@ class Hook_profiles_tabs_warnings
         $order = 80;
 
         if ($leave_to_ajax_if_possible) {
-            return array($title, null, $order, 'tabs/member_account/warnings');
+            return array($title, null, $order, 'menu/social/warnings');
         }
 
         require_lang('cns');
@@ -77,6 +77,6 @@ class Hook_profiles_tabs_warnings
 
         $content = do_template('CNS_MEMBER_PROFILE_WARNINGS', array('_GUID' => 'fea98858f6bf89f1d9dc3ec995785a39', 'MEMBER_ID' => strval($member_id_of), 'WARNINGS' => $warnings));
 
-        return array($title, $content, $order, 'tabs/member_account/warnings');
+        return array($title, $content, $order, 'menu/social/warnings');
     }
 }

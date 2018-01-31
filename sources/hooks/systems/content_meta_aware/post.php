@@ -69,7 +69,7 @@ class Hook_content_meta_aware_post
             'description_field_dereference' => true,
             'thumb_field' => null,
             'thumb_field_is_theme_image' => false,
-            'alternate_icon_theme_image' => 'icons/48x48/menu/social/forum/forums',
+            'alternate_icon_theme_image' => 'icons/menu/social/forum/forums',
 
             'view_page_link_pattern' => '_SEARCH:topicview:findpost:_WILD',
             'edit_page_link_pattern' => '_SEARCH:topics:edit_post:_WILD',

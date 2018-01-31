@@ -131,7 +131,7 @@ class Module_admin_import
         }
 
         return array(
-            'browse' => array('IMPORT', 'menu/_generic_admin/import'),
+            'browse' => array('IMPORT', 'admin/import'),
         );
     }
 

@@ -40,7 +40,7 @@ class Hook_members_news
             require_lang('news');
             $modules = array();
             if (has_actual_page_access(get_member(), 'news', get_page_zone('news'))) {
-                $modules[] = array('content', do_lang_tempcode('BLOG_NEWS_ARCHIVE'), build_url(array('page' => 'news', 'type' => 'browse', 'id' => $nc_id, 'blog' => 1), get_module_zone('news')), 'tabs/member_account/blog');
+                $modules[] = array('content', do_lang_tempcode('BLOG_NEWS_ARCHIVE'), build_url(array('page' => 'news', 'type' => 'browse', 'id' => $nc_id, 'blog' => 1), get_module_zone('news')), 'menu/cms/blog');
             }
             return $modules;
         }

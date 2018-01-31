@@ -54,7 +54,7 @@ class Hook_profiles_tabs_friends
         $order = 70;
 
         if ($leave_to_ajax_if_possible) {
-            return array($title, null, $order, 'tabs/member_account/friends');
+            return array($title, null, $order, 'menu/social/friends');
         }
 
         $add_friend_url = new Tempcode();
@@ -75,6 +75,6 @@ class Hook_profiles_tabs_friends
                 'REMOVE_FRIEND_URL' => $remove_friend_url,
             ));
 
-        return array($title, $content, $order, 'tabs/member_account/friends');
+        return array($title, $content, $order, 'menu/social/friends');
     }
 }

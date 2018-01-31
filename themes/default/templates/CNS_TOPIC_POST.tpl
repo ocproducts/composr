@@ -130,11 +130,11 @@
 						{$,is on/offline}
 						{+START,IF,{$NOT,{$VALUE_OPTION,no_member_tracking}}}
 							{+START,IF_PASSED,POSTER_ONLINE}
-								<img title="{!ONLINE_NOW}: {$?,{POSTER_ONLINE},{!YES},{!NO}}" alt="{!ONLINE_NOW}: {$?,{POSTER_ONLINE},{!YES},{!NO}}" width="14" height="14" src="{$IMG*,1x/cns_general/{$?,{POSTER_ONLINE},ison,isoff}}" />
+								<img title="{!ONLINE_NOW}: {$?,{POSTER_ONLINE},{!YES},{!NO}}" alt="{!ONLINE_NOW}: {$?,{POSTER_ONLINE},{!YES},{!NO}}" width="14" height="14" src="{$IMG*,icons/cns_general/{$?,{POSTER_ONLINE},is_on,is_off}}" />
 							{+END}
 						{+END}
 
-						<a href="#!" rel="back_to_top"><img title="{!BACK_TO_TOP}" alt="{!BACK_TO_TOP}" width="24" height="24" src="{$IMG*,icons/48x48/tool_buttons/top}" /></a>
+						<a href="#!" rel="back_to_top"><img title="{!BACK_TO_TOP}" alt="{!BACK_TO_TOP}" width="24" height="24" src="{$IMG*,icons/tool_buttons/top}" /></a>
 					</div>
 				{+END}{+END}
 			{+END}

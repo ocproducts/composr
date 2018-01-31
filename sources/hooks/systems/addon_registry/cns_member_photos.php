@@ -87,7 +87,7 @@ class Hook_addon_registry_cns_member_photos
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/tabs/member_account/edit/photo.svg';
+        return 'themes/default/images/icons/tabs/member_account/edit/photo.svg';
     }
 
     /**
@@ -98,7 +98,7 @@ class Hook_addon_registry_cns_member_photos
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/tabs/member_account/edit/photo.svg',
+            'themes/default/images/icons/tabs/member_account/edit/photo.svg',
             'sources/hooks/systems/addon_registry/cns_member_photos.php',
             'uploads/cns_photos/index.html',
             'uploads/cns_photos_thumbs/index.html',

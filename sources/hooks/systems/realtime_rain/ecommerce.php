@@ -56,7 +56,7 @@ class Hook_realtime_rain_ecommerce
                         'FROM_MEMBER_ID' => null,
                         'TO_MEMBER_ID' => null,
                         'TITLE' => $title,
-                        'IMAGE' => find_theme_image('icons/48x48/menu/rich_content/ecommerce/purchase'),
+                        'IMAGE' => find_theme_image('icons/menu/rich_content/ecommerce/purchase'),
                         'TIMESTAMP' => strval($timestamp),
                         'RELATIVE_TIMESTAMP' => strval($timestamp - $from),
                         'TICKER_TEXT' => $ticker_text,

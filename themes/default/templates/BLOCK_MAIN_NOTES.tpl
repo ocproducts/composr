@@ -4,7 +4,7 @@
 <div class="form-ajax-target" data-view="BlockMainNotes" data-view-params="{+START,PARAMS_JSON,BLOCK_NAME,MAP}{_*}{+END}">
 	<section id="tray_{TITLE|}" data-toggleable-tray="{ save: true }" class="box box---block-main-notes">
 		<h3 class="toggleable-tray-title js-tray-header">
-			<a class="toggleable-tray-button" data-click-tray-toggle="#tray_{TITLE|}" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{TITLE}}" title="{!CONTRACT}" width="24" height="24" src="{$IMG*,1x/trays/contract2}" /></a>
+			<a class="toggleable-tray-button" data-click-tray-toggle="#tray_{TITLE|}" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{TITLE}}" title="{!CONTRACT}" width="24" height="24" src="{$IMG*,icons/trays/contract2}" /></a>
 
 			{+START,IF_NON_EMPTY,{TITLE}}
 				<a class="toggleable-tray-button" data-click-tray-toggle="#tray_{TITLE|}" href="#!">{TITLE*}</a>

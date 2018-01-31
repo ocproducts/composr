@@ -39,5 +39,5 @@
 	1_URL={+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,cms_quiz}}{$PAGE_LINK*,cms:cms_quiz:add}{+END}
 	1_TITLE={!ADD_QUIZ}
 	1_REL=add
-	1_ICON=menu/_generic_admin/add_one
+	1_ICON=admin/add
 {+END}

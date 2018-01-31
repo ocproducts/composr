@@ -88,7 +88,7 @@ class Hook_addon_registry_wiki
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/rich_content/wiki.svg';
+        return 'themes/default/images/icons/menu/rich_content/wiki.svg';
     }
 
     /**
@@ -99,10 +99,10 @@ class Hook_addon_registry_wiki
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/rich_content/wiki.svg',
-            'themes/default/images/icons/48x48/menu/rich_content/wiki/random_page.svg',
-            'themes/default/images/icons/48x48/buttons/edit_tree.svg',
-            'themes/default/images/icons/48x48/menu/rich_content/wiki/index.html',
+            'themes/default/images/icons/menu/rich_content/wiki.svg',
+            'themes/default/images/icons/menu/rich_content/wiki/random_page.svg',
+            'themes/default/images/icons/admin/wiki_edit_tree.svg',
+            'themes/default/images/icons/menu/rich_content/wiki/index.html',
             'sources/hooks/systems/sitemap/wiki_page.php',
             'sources/hooks/systems/content_meta_aware/wiki_page.php',
             'sources/hooks/systems/content_meta_aware/wiki_post.php',
@@ -229,7 +229,7 @@ class Hook_addon_registry_wiki
             'URL' => placeholder_url(),
             'TITLE' => do_lang_tempcode('EDIT'),
             'FULL_TITLE' => do_lang_tempcode('EDIT'),
-            'IMG' => 'buttons--edit',
+            'IMG' => 'admin--edit',
         ));
         $extra->attach(do_lorem_template('BUTTON_SCREEN_ITEM', array(
             'REL' => 'move',
@@ -237,7 +237,7 @@ class Hook_addon_registry_wiki
             'URL' => placeholder_url(),
             'TITLE' => do_lang_tempcode('MOVE'),
             'FULL_TITLE' => do_lang_tempcode('MOVE'),
-            'IMG' => 'buttons--move',
+            'IMG' => 'admin--move',
         )));
 
         $all_rating_criteria = array();
@@ -333,7 +333,7 @@ class Hook_addon_registry_wiki
             'EXTRA' => '',
             'POST_COMMENT' => lorem_phrase(),
             'EMOTICON_CHOOSER' => lorem_phrase(),
-            'SUBMIT_ICON' => 'menu---generic-admin--add-one',
+            'SUBMIT_ICON' => 'admin--add',
             'SUBMIT_NAME' => lorem_word(),
             'HIDDEN_FIELDS' => '',
             'URL' => placeholder_url(),

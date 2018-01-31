@@ -43,7 +43,7 @@
 
 			<div id="mini-form-hider" style="display: none" class="float-surrounder">
 				<div class="menu-editor-rh-side">
-					<img class="dock-button js-img-click-toggle-docked-field-editing" alt="" title="{!TOGGLE_DOCKED_FIELD_EDITING}" width="13" height="13" src="{$IMG*,1x/arrow_box_hover}" />
+					<img class="dock-button js-img-click-toggle-docked-field-editing" alt="" title="{!TOGGLE_DOCKED_FIELD_EDITING}" width="13" height="13" src="{$IMG*,icons/arrow_box/arrow_box_hover}" />
 
 					<h2>{!CHOOSE_ENTRY_POINT}</h2>
 
@@ -87,7 +87,7 @@
 
 		<div class="box box---menu-editor-screen" data-toggleable-tray="{}">
 			<h2 class="toggleable-tray-title">
-				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!DELETE_MENU}" title="{!EXPAND}" width="24" height="24" src="{$IMG*,1x/trays/expand2}" /></a>
+				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!DELETE_MENU}" title="{!EXPAND}" width="24" height="24" src="{$IMG*,icons/trays/expand2}" /></a>
 				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!DELETE_MENU}</a>
 			</h2>
 
@@ -101,7 +101,7 @@
 						<input type="hidden" name="confirm" value="1" />
 						<input type="hidden" name="delete_confirm" value="1" />
 
-						<input class="button-screen-item menu---generic-admin--delete" type="submit" value="{!DELETE}" data-cms-confirm-click="{!CONFIRM_DELETE*,{MENU_NAME}}" />
+						<input class="button-screen-item admin--delete3" type="submit" value="{!DELETE}" data-cms-confirm-click="{!CONFIRM_DELETE*,{MENU_NAME}}" />
 					</p>
 				</form>
 			</div>

@@ -203,7 +203,7 @@ class Hook_ecommerce_custom
             $just_row = db_map_restrict($row, array('id', 'c_description'));
             $description = get_translated_tempcode('ecom_prods_custom', $just_row, 'c_description');
             if (strpos($description->evaluate(), '<img') === false) {
-                $image_url = find_theme_image('icons/48x48/menu/_generic_spare/' . strval(($i % 8) + 1));
+                $image_url = find_theme_image('icons/spare/' . strval(($i % 8) + 1));
             } else {
                 $image_url = '';
             }

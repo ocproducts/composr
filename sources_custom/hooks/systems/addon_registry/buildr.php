@@ -123,6 +123,7 @@ Buildr is a full zone addon for Composr.';
                 'points',
                 'ecommerce',
                 'chat',
+                'all_icons',
             ),
             'recommends' => array(),
             'conflicts_with' => array(),
@@ -136,7 +137,7 @@ Buildr is a full zone addon for Composr.';
      */
     public function get_default_icon()
     {
-        return 'themes/default/images_custom/icons/48x48/menu/buildr.svg';
+        return 'themes/default/images/icons/spare/world.svg';
     }
 
     /**
@@ -147,7 +148,6 @@ Buildr is a full zone addon for Composr.';
     public function get_file_list()
     {
         return array(
-            'themes/default/images_custom/icons/48x48/menu/buildr.svg',
             'sources_custom/hooks/systems/addon_registry/buildr.php',
             'data_custom/modules/buildr/index.html',
             'sources_custom/hooks/modules/admin_themewizard/buildr.php',

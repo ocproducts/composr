@@ -46,7 +46,7 @@
 	</div>
 	<div class="trinav-mid block-desktop">
 		{+START,IF_NON_EMPTY,{ADD_URL}}
-			<a class="button-screen menu---generic-admin--add-one" rel="add" href="{ADD_URL*}"><span>{!ADD_CALENDAR_EVENT}</span></a>
+			<a class="button-screen admin--add" rel="add" href="{ADD_URL*}"><span>{!ADD_CALENDAR_EVENT}</span></a>
 		{+END}
 	</div>
 </div>
@@ -57,13 +57,13 @@
 
 {+START,IF_NON_EMPTY,{ADD_URL}}
 	<p class="buttons-group">
-		<a class="button-screen menu---generic-admin--add-one" rel="add" href="{ADD_URL*}"><span>{!ADD_CALENDAR_EVENT}</span></a>
+		<a class="button-screen admin--add" rel="add" href="{ADD_URL*}"><span>{!ADD_CALENDAR_EVENT}</span></a>
 	</p>
 {+END}
 
 <div class="box box---calendar-main-screen-interests" data-toggleable-tray="{}">
 	<h2 class="toggleable-tray-title js-tray-header">
-		<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!INTERESTS}" title="{!EXPAND}" width="24" height="24" src="{$IMG*,1x/trays/expand2}" /></a>
+		<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!INTERESTS}" title="{!EXPAND}" width="24" height="24" src="{$IMG*,icons/trays/expand2}" /></a>
 		<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!INTERESTS}</a>
 	</h2>
 
@@ -113,7 +113,7 @@
 {+START,IF,{$ADDON_INSTALLED,syndication_blocks}}
 	<div class="box box---calendar-main-screen-feeds-to-overlay" data-toggleable-tray="{}">
 		<h2 class="toggleable-tray-title js-tray-header">
-			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!FEEDS_TO_OVERLAY}" title="{!EXPAND}" width="24" height="24" src="{$IMG*,1x/trays/expand2}" /></a>
+			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!FEEDS_TO_OVERLAY}" title="{!EXPAND}" width="24" height="24" src="{$IMG*,icons/trays/expand2}" /></a>
 			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!FEEDS_TO_OVERLAY}</a>
 		</h2>
 

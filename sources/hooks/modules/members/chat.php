@@ -52,9 +52,9 @@ class Hook_members_chat
                     }
                 }
                 if (!member_befriended($member_id)) {
-                    $modules[] = array('contact', do_lang_tempcode('MAKE_FRIEND'), build_url(array('page' => 'chat', 'type' => 'friend_add', 'member_id' => $member_id, 'redirect' => protect_url_parameter(SELF_REDIRECT)), get_module_zone('chat')), 'tabs/member_account/friends');
+                    $modules[] = array('contact', do_lang_tempcode('MAKE_FRIEND'), build_url(array('page' => 'chat', 'type' => 'friend_add', 'member_id' => $member_id, 'redirect' => protect_url_parameter(SELF_REDIRECT)), get_module_zone('chat')), 'menu/social/friends');
                 } else {
-                    $modules[] = array('contact', do_lang_tempcode('DUMP_FRIEND'), build_url(array('page' => 'chat', 'type' => 'friend_remove', 'member_id' => $member_id, 'redirect' => protect_url_parameter(SELF_REDIRECT)), get_module_zone('chat')), 'tabs/member_account/friends');
+                    $modules[] = array('contact', do_lang_tempcode('DUMP_FRIEND'), build_url(array('page' => 'chat', 'type' => 'friend_remove', 'member_id' => $member_id, 'redirect' => protect_url_parameter(SELF_REDIRECT)), get_module_zone('chat')), 'menu/social/friends');
                 }
             }
         }

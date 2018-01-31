@@ -80,7 +80,7 @@
 	<form action="{BACK_URL*}" method="post" autocomplete="off">
 		<div>
 			{HIDDEN}
-			<input type="image" title="{!NEXT_ITEM_BACK}" alt="{!NEXT_ITEM_BACK}" width="48" height="48" src="{$IMG*,icons/48x48/menu/_generic_admin/back}" /></p>
+			<input type="image" title="{!NEXT_ITEM_BACK}" alt="{!NEXT_ITEM_BACK}" width="48" height="48" src="{$IMG*,icons/admin/back}" /></p>
 		</div>
 	</form>
 </div>

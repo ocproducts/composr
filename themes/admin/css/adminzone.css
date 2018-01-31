@@ -128,7 +128,7 @@ footer .global-minilinks {
 }
 
 /*{+START,CSS_MODE,mobile}*/
-	.adminzone-search .buttons--menu--pages--help {
+	.adminzone-search .help {
 		display: none !important;
 	}
 /*{+END}*/
@@ -167,8 +167,8 @@ footer .global-minilinks {
 */
 
 .menu-adminzone-tools-cleanup {
-	background-image: url('{$IMG,icons/48x48/menu/adminzone/tools/cleanup}') !important;
+	background-image: url('{$IMG,icons/menu/adminzone/tools/cleanup}') !important;
 }
 .menu-adminzone-tools-upgrade {
-	background-image: url('{$IMG,icons/48x48/menu/adminzone/tools/upgrade}') !important;
+	background-image: url('{$IMG,icons/menu/adminzone/tools/upgrade}') !important;
 }

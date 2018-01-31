@@ -53,7 +53,7 @@
 			<input class="button-screen buttons--cancel js-click-do-form-cancel" type="button" value="{!INPUTSYSTEM_CANCEL}" />
 		{+END}
 		{+START,IF_PASSED_AND_TRUE,PREVIEW}{+START,IF,{$CONFIG_OPTION,enable_previews}}
-			<input class="button-screen tabs--preview js-click-do-form-preview" id="preview_button" accesskey="p" tabindex="{+START,IF_PASSED,TABINDEX}{TABINDEX}{+END}{+START,IF_NON_PASSED,TABINDEX}250{+END}" type="button" value="{!PREVIEW}" />
+			<input class="button-screen buttons--preview js-click-do-form-preview" id="preview_button" accesskey="p" tabindex="{+START,IF_PASSED,TABINDEX}{TABINDEX}{+END}{+START,IF_NON_PASSED,TABINDEX}250{+END}" type="button" value="{!PREVIEW}" />
 		{+END}{+END}
 		<input class="{SUBMIT_ICON*} button-screen js-click-do-form-submit"{+START,IF_NON_PASSED_OR_FALSE,SECONDARY_FORM} id="submit-button" accesskey="u"{+END} tabindex="{+START,IF_PASSED,TABINDEX}{TABINDEX}{+END}{+START,IF_NON_PASSED,TABINDEX}250{+END}" type="button" value="{SUBMIT_NAME*}" />
 	</p>
@@ -69,7 +69,7 @@
 			1_URL={STAFF_HELP_URL}
 			1_TITLE={!HELP}
 			1_REL=help
-			1_ICON=menu/pages/help
+			1_ICON=help
 		{+END}
 	{+END}{+END}{+END}
 </div>

@@ -72,7 +72,7 @@
 	{+START,IF_PASSED,ID}
 		<div class="non-accessibility-redundancy">
 			<nav class="breadcrumbs" itemprop="breadcrumb">
-				<img class="breadcrumbs-img" width="20" height="20" src="{$IMG*,1x/breadcrumbs}" alt="&gt; " title="{!YOU_ARE_HERE}" />
+				<img class="breadcrumbs-img" width="20" height="20" src="{$IMG*,icons/breadcrumbs}" alt="&gt; " title="{!YOU_ARE_HERE}" />
 				{BREADCRUMBS}
 			</nav>
 		</div>
@@ -87,12 +87,12 @@
 				1_URL={$PAGE_LINK*,_SEARCH:admin_cns_forums:add:parent_forum={ID}}
 				1_TITLE={!ADD_FORUM}
 				1_REL=add
-				1_ICON=menu/_generic_admin/add_one_category
+				1_ICON=admin/add_one_category
 				2_URL={$PAGE_LINK*,_SEARCH:admin_cns_forums:_edit:{ID}}
 				2_TITLE={!EDIT_FORUM}
 				2_ACCESSKEY=q
 				2_REL=edit
-				2_ICON=menu/_generic_admin/edit_this_category
+				2_ICON=admin/edit_this_category
 			{+END}
 		{+END}
 	{+END}

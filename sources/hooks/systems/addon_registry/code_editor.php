@@ -87,7 +87,7 @@ class Hook_addon_registry_code_editor
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/tools/code_editor.svg';
+        return 'themes/default/images/icons/menu/adminzone/tools/code_editor.svg';
     }
 
     /**
@@ -98,7 +98,7 @@ class Hook_addon_registry_code_editor
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/adminzone/tools/code_editor.svg',
+            'themes/default/images/icons/menu/adminzone/tools/code_editor.svg',
             'sources/hooks/systems/addon_registry/code_editor.php',
             'code_editor.php',
             'exports/file_backups/index.html',

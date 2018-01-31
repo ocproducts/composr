@@ -422,7 +422,7 @@ And these files don't need translating but could be replaced with equivalents in
 
 If you look under the [tt]themes/default/images/[/tt] directory you will see there is an [tt]EN[/tt] directory that contains images with English text on. You can copy this to the ISO codename of your language pack (e.g. [tt]FR[/tt]), and then replace individual images with the translated ones.
 
-For example, we have [tt]themes/default/images/EN/chatcodeeditor/new_room.png[/tt]. It is stored under "EN" because it contains some English text within the image. You could also have [tt]themes/default/images/FR/chatcodeeditor/new_room.png[/tt] as the French version of this image.
+For example, we have [tt]themes/default/images/EN/chatcode_editor/new_room.png[/tt]. It is stored under "EN" because it contains some English text within the image. You could also have [tt]themes/default/images/FR/chatcode_editor/new_room.png[/tt] as the French version of this image.
 
 Make sure you clear your theme image cache (Admin Zone > Tools > Website cleanup tools) after doing the substitution.
 

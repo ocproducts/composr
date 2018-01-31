@@ -169,8 +169,8 @@ class Module_admin_ecommerce extends Standard_crud_module
             $this->title,
             comcode_lang_string('DOC_ECOMMERCE'),
             array(
-                ((get_forum_type() != 'cns') && (get_value('unofficial_ecommerce') !== '1')) ? null : array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_USERGROUP_SUBSCRIPTION')),
-                ((get_forum_type() != 'cns') && (get_value('unofficial_ecommerce') !== '1')) ? null : array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_USERGROUP_SUBSCRIPTION')),
+                ((get_forum_type() != 'cns') && (get_value('unofficial_ecommerce') !== '1')) ? null : array('admin/add', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_USERGROUP_SUBSCRIPTION')),
+                ((get_forum_type() != 'cns') && (get_value('unofficial_ecommerce') !== '1')) ? null : array('admin/edit', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_USERGROUP_SUBSCRIPTION')),
                 array('menu/adminzone/setup/ecommerce_products', array('_SELF', array('type' => 'prices'), '_SELF'), do_lang('ECOM_PRODUCTS_MANAGE_INVENTORY')),
             ),
             do_lang('CUSTOM_PRODUCT_USERGROUP')
@@ -536,7 +536,7 @@ class Module_admin_ecommerce extends Standard_crud_module
                             'TEXT' => $fg[3],
                             'FIELDS' => $fg[2],
                             'SUBMIT_BUTTON_CLASS' => 'proceed-button-left',
-                            'SUBMIT_ICON' => 'menu---generic-admin--add-one',
+                            'SUBMIT_ICON' => 'admin--add',
                             'SUBMIT_NAME' => $submit_name,
                             'URL' => $post_url,
                             'SUPPORT_AUTOSAVE' => true,

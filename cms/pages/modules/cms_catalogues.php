@@ -63,8 +63,8 @@ class Module_cms_catalogues extends Standard_crud_module
         $ret = array(
             'browse' => array('MANAGE_CATALOGUES', 'menu/rich_content/catalogues/catalogues'),
 
-            'add_category' => array('ADD_CATALOGUE_CATEGORY', 'menu/_generic_admin/add_one_category'),
-            'edit_category' => array('EDIT_CATALOGUE_CATEGORY', 'menu/_generic_admin/edit_one_category'),
+            'add_category' => array('ADD_CATALOGUE_CATEGORY', 'admin/add_one_category'),
+            'edit_category' => array('EDIT_CATALOGUE_CATEGORY', 'admin/edit_one_category'),
         );
 
         if (!$simplified) {
@@ -75,8 +75,8 @@ class Module_cms_catalogues extends Standard_crud_module
         }
 
         $ret += array(
-            'import' => array('IMPORT_CATALOGUE_ENTRIES', 'menu/_generic_admin/import_csv'),
-            'export' => array('CATALOGUE_EXPORT', 'menu/_generic_admin/export'),
+            'import' => array('IMPORT_CATALOGUE_ENTRIES', 'admin/import_csv'),
+            'export' => array('CATALOGUE_EXPORT', 'admin/export'),
         );
 
         $this->cat_crud_module = class_exists('Mx_cms_catalogues_cat') ? new Mx_cms_catalogues_cat() : new Module_cms_catalogues_cat();
@@ -270,12 +270,12 @@ class Module_cms_catalogues extends Standard_crud_module
             array_merge(array(
                 (has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_catalogues') && ($catalogue_name == '')) ? array('menu/cms/catalogues/add_one_catalogue', array('_SELF', array_merge($extra_map, array('type' => 'add_catalogue')), '_SELF'), do_lang('ADD_CATALOGUE')) : null,
                 has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_catalogues') ? array('menu/cms/catalogues/edit_one_catalogue', array('_SELF', array_merge($extra_map_2, array('type' => ($catalogue_name == '') ? 'edit_catalogue' : '_edit_catalogue')), '_SELF'), do_lang(($catalogue_name == '') ? 'EDIT_CATALOGUE' : 'NEXT_ITEM_edit_this_catalogue')) : null,
-                has_privilege(get_member(), 'submit_cat_midrange_content', 'cms_catalogues') ? array('menu/_generic_admin/add_one_category', array('_SELF', array_merge($extra_map, array('type' => 'add_category')), '_SELF'), ($catalogue_name != '') ? do_lang('NEXT_ITEM_add_one_category') : do_lang('ADD_CATALOGUE_CATEGORY')) : null,
-                has_privilege(get_member(), 'edit_cat_midrange_content', 'cms_catalogues') ? array('menu/_generic_admin/edit_one_category', array('_SELF', array_merge($extra_map, array('type' => 'edit_category')), '_SELF'), ($catalogue_name != '') ? do_lang('NEXT_ITEM_edit_one_category') : do_lang('EDIT_CATALOGUE_CATEGORY')) : null,
-                (!$has_categories) ? null : (has_privilege(get_member(), 'submit_midrange_content', 'cms_catalogues') ? array('menu/_generic_admin/add_one', array('_SELF', array_merge($extra_map, array('type' => 'add_entry')), '_SELF'), ($catalogue_name != '') ? do_lang('NEXT_ITEM_add_one') : do_lang('ADD_CATALOGUE_ENTRY')) : null),
-                (!$has_categories) ? null : (has_privilege(get_member(), 'edit_midrange_content', 'cms_catalogues') ? array('menu/_generic_admin/edit_one', array('_SELF', array_merge($extra_map, array('type' => 'edit_entry')), '_SELF'), ($catalogue_name != '') ? do_lang('NEXT_ITEM_edit_one') : do_lang('EDIT_CATALOGUE_ENTRY')) : null),
-                (!$has_categories) ? null : (has_privilege(get_member(), 'mass_import', 'cms_catalogues') ? array('menu/_generic_admin/import', array('_SELF', array_merge($extra_map, array('type' => 'import')), '_SELF'), do_lang('IMPORT_CATALOGUE_ENTRIES')) : null),
-                (!$has_categories) ? null : ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? array('menu/_generic_admin/export', array('_SELF', array_merge($extra_map, array('type' => 'export')), '_SELF'), do_lang('EXPORT_CATALOGUE_ENTRIES')) : null),
+                has_privilege(get_member(), 'submit_cat_midrange_content', 'cms_catalogues') ? array('admin/add_one_category', array('_SELF', array_merge($extra_map, array('type' => 'add_category')), '_SELF'), ($catalogue_name != '') ? do_lang('NEXT_ITEM_add_one_category') : do_lang('ADD_CATALOGUE_CATEGORY')) : null,
+                has_privilege(get_member(), 'edit_cat_midrange_content', 'cms_catalogues') ? array('admin/edit_one_category', array('_SELF', array_merge($extra_map, array('type' => 'edit_category')), '_SELF'), ($catalogue_name != '') ? do_lang('NEXT_ITEM_edit_one_category') : do_lang('EDIT_CATALOGUE_CATEGORY')) : null,
+                (!$has_categories) ? null : (has_privilege(get_member(), 'submit_midrange_content', 'cms_catalogues') ? array('admin/add', array('_SELF', array_merge($extra_map, array('type' => 'add_entry')), '_SELF'), ($catalogue_name != '') ? do_lang('NEXT_ITEM_add_one') : do_lang('ADD_CATALOGUE_ENTRY')) : null),
+                (!$has_categories) ? null : (has_privilege(get_member(), 'edit_midrange_content', 'cms_catalogues') ? array('admin/edit', array('_SELF', array_merge($extra_map, array('type' => 'edit_entry')), '_SELF'), ($catalogue_name != '') ? do_lang('NEXT_ITEM_edit_one') : do_lang('EDIT_CATALOGUE_ENTRY')) : null),
+                (!$has_categories) ? null : (has_privilege(get_member(), 'mass_import', 'cms_catalogues') ? array('admin/import', array('_SELF', array_merge($extra_map, array('type' => 'import')), '_SELF'), do_lang('IMPORT_CATALOGUE_ENTRIES')) : null),
+                (!$has_categories) ? null : ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? array('admin/export', array('_SELF', array_merge($extra_map, array('type' => 'export')), '_SELF'), do_lang('EXPORT_CATALOGUE_ENTRIES')) : null),
             ), manage_custom_fields_donext_link('catalogue'), manage_custom_fields_donext_link('catalogue_category')),
             ($catalogue_name != '') ? escape_html(get_translated_text($cat_title)) : do_lang('MANAGE_CATALOGUES')
         );
@@ -947,7 +947,7 @@ class Module_cms_catalogues extends Standard_crud_module
                 has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_catalogues') ? array('menu/cms/catalogues/add_one_catalogue', array('_SELF', array('type' => 'add_catalogue'), '_SELF')) : null,
                 has_privilege(get_member(), 'edit_own_cat_highrange_content', 'cms_catalogues') ? array('menu/cms/catalogues/edit_this_catalogue', array('_SELF', array('type' => '_edit_catalogue', 'id' => $c_name), '_SELF')) : null,
                 has_privilege(get_member(), 'edit_own_cat_highrange_content', 'cms_catalogues') ? array('menu/cms/catalogues/edit_one_catalogue', array('_SELF', array('type' => 'edit_catalogue'), '_SELF')) : null,
-                array('menu/_generic_admin/view_this', array('catalogues', array('type' => 'index', 'id' => $c_name, 'tree' => $is_tree), get_module_zone('catalogues')), do_lang('VIEW_CATALOGUE')),
+                array('admin/view_this', array('catalogues', array('type' => 'index', 'id' => $c_name, 'tree' => $is_tree), get_module_zone('catalogues')), do_lang('VIEW_CATALOGUE')),
             ),
             do_lang('MANAGE_CATALOGUES'),
             null,
@@ -1022,7 +1022,7 @@ class Module_cms_catalogues extends Standard_crud_module
             'TEXT' => do_lang_tempcode('CATALOGUE_IMPORT_TEXT'),
             'HIDDEN' => $hidden,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'menu---generic-admin--import',
+            'SUBMIT_ICON' => 'admin--import',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));
@@ -1515,7 +1515,7 @@ class Module_cms_catalogues_cat extends Standard_crud_module
                 has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_catalogues') ? array('menu/cms/catalogues/add_one_catalogue', array('_SELF', array('type' => 'add_catalogue'), '_SELF')) : null,
                 has_privilege(get_member(), 'edit_own_cat_highrange_content', 'cms_catalogues') ? array('menu/cms/catalogues/edit_this_catalogue', array('_SELF', array('type' => '_edit_catalogue', 'id' => $catalogue_name), '_SELF')) : null,
                 has_privilege(get_member(), 'edit_own_cat_highrange_content', 'cms_catalogues') ? array('menu/cms/catalogues/edit_one_catalogue', array('_SELF', array('type' => 'edit_catalogue'), '_SELF')) : null,
-                array('menu/_generic_admin/view_this', array('catalogues', array('type' => 'index', 'id' => $catalogue_name, 'tree' => $is_tree), get_module_zone('catalogues')), do_lang('INDEX')),
+                array('admin/view_this', array('catalogues', array('type' => 'index', 'id' => $catalogue_name, 'tree' => $is_tree), get_module_zone('catalogues')), do_lang('INDEX')),
             ),
             do_lang('MANAGE_CATALOGUES'),
             null,

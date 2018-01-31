@@ -89,7 +89,7 @@ class Hook_addon_registry_content_privacy
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/pages/privacy_policy.svg';
+        return 'themes/default/images/icons/menu/pages/privacy_policy.svg';
     }
 
     /**

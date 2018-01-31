@@ -117,7 +117,10 @@ Allows people to specify who referred them when they join your site or other con
     public function get_dependencies()
     {
         return array(
-            'requires' => array('cns'),
+            'requires' => array(
+                'cns',
+                'all_icons',
+            ),
             'recommends' => array(),
             'conflicts_with' => array(),
         );
@@ -130,7 +133,7 @@ Allows people to specify who referred them when they join your site or other con
      */
     public function get_default_icon()
     {
-        return 'themes/default/images_custom/icons/48x48/menu/referrals.svg';
+        return 'themes/default/images/icons/spare/referrals.svg';
     }
 
     /**
@@ -141,7 +144,6 @@ Allows people to specify who referred them when they join your site or other con
     public function get_file_list()
     {
         return array(
-            'themes/default/images_custom/icons/48x48/menu/referrals.svg',
             'sources_custom/hooks/systems/addon_registry/referrals.php',
             'sources_custom/hooks/systems/notifications/referral.php',
             'sources_custom/hooks/systems/notifications/referral_staff.php',

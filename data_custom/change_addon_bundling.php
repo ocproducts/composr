@@ -51,7 +51,7 @@ require($FILE_BASE . '/sources/global.php');
 
 $password = post_param_string('password', null, INPUT_FILTER_NONE);
 if ($password === null) {
-    @exit('<form action="#" method="post"><label>Master password <input type="password" name="password" value="" /></label><input class="menu---generic-admin--delete button-screen" type="submit" value="Delete programmed data" /></form>');
+    @exit('<form action="#" method="post"><label>Master password <input type="password" name="password" value="" /></label><input class="admin--delete3 button-screen" type="submit" value="Delete programmed data" /></form>');
 }
 require_code('crypt_master');
 if (!check_master_password($password)) {

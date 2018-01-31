@@ -140,7 +140,7 @@
 			1_URL={$TUTORIAL_URL*,tut_collaboration}
 			1_TITLE={!HELP}
 			1_REL=help
-			1_ICON=menu/pages/help
+			1_ICON=help
 
 			{+START,IF,{$IS_ADMIN}}
 				2_URL={$PAGE_LINK*,_SELF:_SELF:broken}

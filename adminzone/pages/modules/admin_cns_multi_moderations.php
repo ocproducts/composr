@@ -141,9 +141,9 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
             get_screen_title('MULTI_MODERATIONS'),
             comcode_lang_string('DOC_MULTI_MODERATIONS'),
             array(
-                array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_MULTI_MODERATION')),
-                array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_MULTI_MODERATION')),
-                array('menu/_generic_admin/import', array('_SELF', array('type' => 'import'), '_SELF'), do_lang('IMPORT_STOCK_RESPONSES')),
+                array('admin/add', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_MULTI_MODERATION')),
+                array('admin/edit', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_MULTI_MODERATION')),
+                array('admin/import', array('_SELF', array('type' => 'import'), '_SELF'), do_lang('IMPORT_STOCK_RESPONSES')),
             ),
             do_lang('MULTI_MODERATIONS')
         );
@@ -181,7 +181,7 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
             '_GUID' => 'bd30d8b0077567e3caf9239ed64204e5',
             'TITLE' => $this->title,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'menu---generic-admin--import',
+            'SUBMIT_ICON' => 'admin--import',
             'SUBMIT_NAME' => do_lang_tempcode('IMPORT_STOCK_RESPONSES'),
             'URL' => $post_url,
             'TEXT' => $text,

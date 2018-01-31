@@ -69,7 +69,7 @@ class Hook_content_meta_aware_forum
             'description_field_dereference' => true,
             'thumb_field' => null,
             'thumb_field_is_theme_image' => false,
-            'alternate_icon_theme_image' => 'icons/48x48/menu/social/forum/forums',
+            'alternate_icon_theme_image' => 'icons/menu/social/forum/forums',
 
             'view_page_link_pattern' => '_SEARCH:forumview:browse:_WILD',
             'edit_page_link_pattern' => '_SEARCH:admin_cns_forums:_edit_category:_WILD',

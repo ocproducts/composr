@@ -387,13 +387,13 @@ function sitemap_do_next_manager($title, $page, $zone, $completion_text)
 
     require_code('templates_donext');
     $special = array(
-        array('menu/_generic_admin/add_one', array('cms_comcode_pages', array('type' => 'browse'), get_module_zone('cms_comcode_pages')), do_lang('COMCODE_PAGE_ADD')),
+        array('admin/add', array('cms_comcode_pages', array('type' => 'browse'), get_module_zone('cms_comcode_pages')), do_lang('COMCODE_PAGE_ADD')),
         array('menu/cms/comcode_page_edit', array('cms_comcode_pages', array('type' => 'browse'), get_module_zone('cms_comcode_pages')), do_lang_tempcode('COMCODE_PAGE_EDIT')),
     );
     if ($page !== null) {
         $special = array_merge($special, array(
-            array('menu/_generic_admin/edit_this', array('_SELF', array('type' => '_edit', 'page_link' => $zone . ':' . $page), '_SELF'), do_lang('COMCODE_PAGE_EDIT_THIS')),
-            array('menu/_generic_admin/view_this', array($page, array(), $zone), do_lang('COMCODE_PAGE_VIEW_THIS')),
+            array('admin/edit_this', array('_SELF', array('type' => '_edit', 'page_link' => $zone . ':' . $page), '_SELF'), do_lang('COMCODE_PAGE_EDIT_THIS')),
+            array('admin/view_this', array($page, array(), $zone), do_lang('COMCODE_PAGE_VIEW_THIS')),
         ));
     }
     if (addon_installed('redirects_editor')) {

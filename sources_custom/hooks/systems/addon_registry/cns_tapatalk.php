@@ -266,7 +266,7 @@ For a demo, see this video tutorial: https://www.youtube.com/watch?v=SAGuj2mgkRo
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.svg';
+        return 'themes/default/images/icons/admin/component.svg';
     }
 
     /**

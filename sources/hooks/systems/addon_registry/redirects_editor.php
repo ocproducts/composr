@@ -88,7 +88,7 @@ class Hook_addon_registry_redirects_editor
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/structure/redirects.svg';
+        return 'themes/default/images/icons/menu/adminzone/structure/redirects.svg';
     }
 
     /**
@@ -99,7 +99,7 @@ class Hook_addon_registry_redirects_editor
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/adminzone/structure/redirects.svg',
+            'themes/default/images/icons/menu/adminzone/structure/redirects.svg',
             'sources/hooks/systems/addon_registry/redirects_editor.php',
             'sources/hooks/systems/commandr_fs_extended_config/redirects.php',
             'themes/default/templates/REDIRECTE_TABLE_SCREEN.tpl',

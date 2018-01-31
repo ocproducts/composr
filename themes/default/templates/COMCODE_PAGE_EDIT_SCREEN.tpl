@@ -8,7 +8,7 @@
 {TEXT}
 
 {+START,IF,{$NOT,{NEW}}}
-	{$SET,extra_buttons,<a class="button-screen menu---generic-admin--delete" href="{DELETE_URL*}"><span>{!DELETE}</span></a>}
+	{$SET,extra_buttons,<a class="button-screen admin--delete3" href="{DELETE_URL*}"><span>{!DELETE}</span></a>}
 {+END}
 
 {POSTING_FORM}

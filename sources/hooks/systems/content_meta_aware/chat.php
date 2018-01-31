@@ -58,7 +58,7 @@ class Hook_content_meta_aware_chat
             'description_field_dereference' => null,
             'thumb_field' => null,
             'thumb_field_is_theme_image' => false,
-            'alternate_icon_theme_image' => 'icons/48x48/menu/social/chat/chat',
+            'alternate_icon_theme_image' => 'icons/menu/social/chat/chat',
 
             'view_page_link_pattern' => '_SEARCH:chat:room:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_chat:room:_WILD',

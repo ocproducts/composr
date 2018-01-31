@@ -39,11 +39,11 @@
 		1_TITLE={$?,{BLOG},{!ADD_NEWS_BLOG},{!ADD_NEWS}}
 		1_REL=add
 		1_NOREDIRECT=1
-		1_ICON=menu/_generic_admin/add_one
+		1_ICON=admin/add
 		2_URL={EDIT_URL*}
 		2_ACCESSKEY=q
 		2_TITLE={!EDIT_LINK}
-		2_ICON=menu/_generic_admin/edit_this
+		2_ICON=admin/edit_this
 		2_REL=edit
 		3_URL={NEWSLETTER_URL*}
 		3_TITLE={+START,IF_NON_EMPTY,{NEWSLETTER_URL}}{!newsletter:NEWSLETTER_SEND}{+END}
@@ -96,7 +96,7 @@
 
 	{+START,IF_NON_EMPTY,{EDIT_DATE_RAW}}
 		<div class="edited" role="note">
-			<img alt="" width="10" src="{$IMG*,1x/edited}" />
+			<img alt="" width="10" src="{$IMG*,edited}" />
 			{!EDITED}
 			<time datetime="{$FROM_TIMESTAMP*,Y-m-d\TH:i:s\Z,{EDIT_DATE_RAW}}">{$DATE*,,,,{EDIT_DATE_RAW}}</time>
 		</div>

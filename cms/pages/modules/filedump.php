@@ -442,7 +442,7 @@ class Module_filedump
 
                     $is_image = false;
 
-                    $image_url = find_theme_image('icons/48x48/menu/_generic_admin/view_this_category');
+                    $image_url = find_theme_image('icons/admin/view_this_category');
 
                     $embed_url = null;
                 } else { // File
@@ -605,7 +605,7 @@ class Module_filedump
                 'TEXT' => $text,
                 'FIELDS' => $fields,
                 'SUBMIT_NAME' => $submit_name,
-                'SUBMIT_ICON' => 'menu---generic-admin--add-one',
+                'SUBMIT_ICON' => 'admin--add',
                 'URL' => $post_url,
             ));
         } else {
@@ -633,7 +633,7 @@ class Module_filedump
                 'TEXT' => '',
                 'FIELDS' => $fields,
                 'SUBMIT_NAME' => $submit_name,
-                'SUBMIT_ICON' => 'menu---generic-admin--add-one-category',
+                'SUBMIT_ICON' => 'admin--add-one-category',
                 'URL' => $post_url,
             ));
         } else {

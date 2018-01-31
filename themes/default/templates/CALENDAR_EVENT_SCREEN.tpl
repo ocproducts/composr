@@ -46,7 +46,7 @@
 					{+END}
 
 					<ul class="horizontal-links associated-links-block-group">
-						<li><img alt="" width="24" height="24" src="{$IMG*,icons/48x48/buttons/enable_notifications}" /> <a href="{SUBSCRIBE_URL*}">{!SUBSCRIBE_EVENT}</a></li>
+						<li><img alt="" width="24" height="24" src="{$IMG*,icons/buttons/enable_notifications}" /> <a href="{SUBSCRIBE_URL*}">{!SUBSCRIBE_EVENT}</a></li>
 					</ul>
 				</div></div>
 			</div>
@@ -170,7 +170,7 @@
 			1_TITLE={!EDIT}
 			1_ACCESSKEY=q
 			1_REL=edit
-			1_ICON=menu/_generic_admin/edit_this
+			1_ICON=admin/edit_this
 			{$,Do not auto-redirect back to here as recurrences may break so URL hints may no longer be valid}
 			1_NOREDIRECT=1
 
@@ -189,7 +189,7 @@
 
 	{+START,IF_NON_EMPTY,{EDIT_DATE_RAW}}
 		<div class="edited" role="note">
-			<img alt="" width="10" src="{$IMG*,1x/edited}" /> {!EDITED}
+			<img alt="" width="10" src="{$IMG*,edited}" /> {!EDITED}
 			<time datetime="{$FROM_TIMESTAMP*,Y-m-d\TH:i:s\Z,{EDIT_DATE_RAW}}">{$DATE*,,,,{EDIT_DATE_RAW}}</time>
 		</div>
 	{+END}

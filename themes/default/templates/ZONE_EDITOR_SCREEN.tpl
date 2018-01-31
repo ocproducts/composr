@@ -9,7 +9,7 @@
 	{+END}
 
 	<p class="vertical-alignment">
-		<img width="24" height="24" src="{$IMG*,icons/32x32/help}" alt="" /> <span>{!ZE_HOW_TO_SAVE}</span>
+		<img width="24" height="24" src="{$IMG*,icons/help}" alt="" /> <span>{!ZE_HOW_TO_SAVE}</span>
 	</p>
 
 	<div class="float-surrounder" id="ze-panels-wrap">
@@ -40,6 +40,6 @@
 	</form>
 
 	<p class="vertical-alignment">
-		<img width="24" height="24" src="{$IMG*,icons/32x32/help}" alt="" /> <span>{!MANY_PANEL_TYPES,{$PAGE_LINK*,cms:cms_comcode_pages:_edit:lang={LANG}:page_link={ID}%3Apanel_top},{$PAGE_LINK*,cms:cms_comcode_pages:_edit:lang={LANG}:page_link={ID}%3Apanel_bottom}}</span>
+		<img width="24" height="24" src="{$IMG*,icons/help}" alt="" /> <span>{!MANY_PANEL_TYPES,{$PAGE_LINK*,cms:cms_comcode_pages:_edit:lang={LANG}:page_link={ID}%3Apanel_top},{$PAGE_LINK*,cms:cms_comcode_pages:_edit:lang={LANG}:page_link={ID}%3Apanel_bottom}}</span>
 	</p>
 </div>

@@ -23,7 +23,7 @@
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<input type="hidden" name="confirm" value="1" />
-		<input class="button-screen menu---generic-admin--delete" type="submit" value="{!RESET_BANNER_STATS}" data-cms-confirm-click="{!WARNING_RESET_BANNER_STATS*}" />
+		<input class="button-screen admin--delete3" type="submit" value="{!RESET_BANNER_STATS}" data-cms-confirm-click="{!WARNING_RESET_BANNER_STATS*}" />
 	</form>
 {+END}
 
@@ -35,7 +35,7 @@
 	1_TITLE={!EDIT}
 	1_ACCESSKEY=q
 	1_REL=edit
-	1_ICON=menu/_generic_admin/edit_this
+	1_ICON=admin/edit_this
 	{+START,IF,{$ADDON_INSTALLED,tickets}}
 		2_URL={$PAGE_LINK*,_SEARCH:report_content:content_type=banner:content_id={NAME}:redirect={$SELF_URL&}}
 		2_TITLE={!report_content:REPORT_THIS}

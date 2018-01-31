@@ -58,7 +58,7 @@ class Hook_content_meta_aware_quiz
             'description_field_dereference' => true,
             'thumb_field' => null,
             'thumb_field_is_theme_image' => false,
-            'alternate_icon_theme_image' => 'icons/48x48/menu/rich_content/quiz',
+            'alternate_icon_theme_image' => 'icons/menu/rich_content/quiz',
 
             'view_page_link_pattern' => '_SEARCH:quiz:do:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_quiz:_edit:_WILD',

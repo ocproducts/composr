@@ -125,7 +125,7 @@ Includes the code for pulling translations from {$IS_MAINTAINED,transifex,Transi
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/_generic_admin/tool.svg';
+        return 'themes/default/images/icons/admin/tool.svg';
     }
 
     /**

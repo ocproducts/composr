@@ -31,7 +31,7 @@
 		</div>
 
 		<p>
-			<input data-disable-on-click="1" class="button-screen menu---generic-admin--export" type="submit" value="{!EXPORT_ADDON}" />
+			<input data-disable-on-click="1" class="button-screen admin--export" type="submit" value="{!EXPORT_ADDON}" />
 		</p>
 	</form>
 {+END}

@@ -58,7 +58,7 @@ class Hook_content_meta_aware_comcode_page
             'description_field_dereference' => null,
             'thumb_field' => null,
             'thumb_field_is_theme_image' => false,
-            'alternate_icon_theme_image' => 'icons/48x48/menu/_generic_spare/page',
+            'alternate_icon_theme_image' => 'icons/content_types/page',
 
             'view_page_link_pattern' => '_WILD:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_comcode_pages:_edit:page_link=_WILD',

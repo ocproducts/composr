@@ -113,9 +113,9 @@ a.progress-cancel {
 	display: block;
 	height: 14px;
 	width: 14px;
-	background-image: url('{$IMG;,uploader/cancelbutton}');
+	background-image: url('{$IMG;,icons/buttons/cancel2}');
 	background-size: 14px 14px;
-	opacity: 0.8;
+	opacity: 0.7;
 	background-repeat: no-repeat;
 	float: right;
 }

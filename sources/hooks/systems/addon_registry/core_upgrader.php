@@ -88,7 +88,7 @@ class Hook_addon_registry_core_upgrader
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/tools/upgrade.svg';
+        return 'themes/default/images/icons/menu/adminzone/tools/upgrade.svg';
     }
 
     /**
@@ -99,12 +99,13 @@ class Hook_addon_registry_core_upgrader
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/adminzone/tools/upgrade.svg',
+            'themes/default/images/icons/menu/adminzone/tools/upgrade.svg',
             'sources/hooks/systems/addon_registry/core_upgrader.php',
             'upgrader.php',
             'sources/upgrade.php',
             'lang/EN/upgrade.ini',
             'data/upgrader2.php',
+            'themes/default/images/icons/admin/upgrade.svg',
         );
     }
 }

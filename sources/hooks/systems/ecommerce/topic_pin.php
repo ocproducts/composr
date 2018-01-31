@@ -37,7 +37,7 @@ class Hook_ecommerce_topic_pin
         return array(
             'category_name' => do_lang('TOPIC_PINNING'),
             'category_description' => do_lang_tempcode('TOPIC_PINNING_DESCRIPTION'),
-            'category_image_url' => find_theme_image('icons/48x48/buttons/new_topic'),
+            'category_image_url' => find_theme_image('icons/buttons/add_topic'),
         );
     }
 

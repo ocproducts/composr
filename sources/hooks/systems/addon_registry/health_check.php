@@ -127,7 +127,7 @@ class Hook_addon_registry_health_check
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/tools/health_check.svg';
+        return 'themes/default/images/icons/menu/adminzone/tools/health_check.svg';
     }
 
     /**
@@ -166,7 +166,7 @@ class Hook_addon_registry_health_check
             'sources/hooks/systems/health_checks/stability.php',
             'sources/hooks/systems/health_checks/upkeep.php',
             'sources/hooks/systems/health_checks/upkeep_backups.php',
-            'themes/default/images/icons/48x48/menu/adminzone/tools/health_check.svg',
+            'themes/default/images/icons/menu/adminzone/tools/health_check.svg',
             'sources/health_check.php',
             'sources/hooks/systems/config/hc_admin_stale_threshold.php',
             'sources/hooks/systems/config/hc_compound_requests_per_second_threshold.php',

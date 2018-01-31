@@ -50,7 +50,7 @@ class Module_admin_chat extends Standard_crud_module
         );
         $ret += parent::get_entry_points();
         $ret += array(
-            'delete_all' => array('DELETE_ALL_CHATROOMS', 'menu/_generic_admin/delete'),
+            'delete_all' => array('DELETE_ALL_CHATROOMS', 'admin/delete3'),
         );
         return $ret;
     }
@@ -93,7 +93,7 @@ class Module_admin_chat extends Standard_crud_module
     public function run_start($type)
     {
         $this->extra_donext_entries = array(
-            array('menu/_generic_admin/delete', array('_SELF', array('type' => 'delete_all'), '_SELF'), do_lang('DELETE_ALL_CHATROOMS')),
+            array('admin/delete3', array('_SELF', array('type' => 'delete_all'), '_SELF'), do_lang('DELETE_ALL_CHATROOMS')),
         );
 
         require_code('chat');
@@ -128,9 +128,9 @@ class Module_admin_chat extends Standard_crud_module
             get_screen_title('MANAGE_CHATROOMS'),
             comcode_lang_string('DOC_CHAT'),
             array(
-                array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_CHATROOM')),
-                array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_CHATROOM')),
-                array('menu/_generic_admin/delete', array('_SELF', array('type' => 'delete_all'), '_SELF'), do_lang('DELETE_ALL_CHATROOMS')),
+                array('admin/add', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_CHATROOM')),
+                array('admin/edit', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_CHATROOM')),
+                array('admin/delete3', array('_SELF', array('type' => 'delete_all'), '_SELF'), do_lang('DELETE_ALL_CHATROOMS')),
             ),
             do_lang('MANAGE_CHATROOMS')
         );
@@ -303,7 +303,7 @@ class Module_admin_chat extends Standard_crud_module
             'HIDDEN' => '',
             'TITLE' => $this->title,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'menu---generic-admin--delete',
+            'SUBMIT_ICON' => 'admin--delete3',
             'SUBMIT_NAME' => $posting_name,
             'URL' => $posting_url,
             'TEXT' => $text,

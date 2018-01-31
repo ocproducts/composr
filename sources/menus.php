@@ -248,10 +248,10 @@ function _build_sitemap_menu($menu)
         }
 
         if ($icon !== null) {
-            if (find_theme_image('icons/48x48/' . $icon, true) == '' && find_theme_image('icons/32x32/' . $icon, true) != '') {
-                $node['extra_meta']['image'] = find_theme_image('icons/32x32/' . $icon);
+            if (find_theme_image('icons/' . $icon, true) == '' && find_theme_image('icons/' . $icon, true) != '') {
+                $node['extra_meta']['image'] = find_theme_image('icons/' . $icon);
             } else {
-                $node['extra_meta']['image'] = find_theme_image('icons/48x48/' . $icon);
+                $node['extra_meta']['image'] = find_theme_image('icons/' . $icon);
             }
         }
 

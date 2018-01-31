@@ -58,7 +58,7 @@ class Hook_content_meta_aware_banner_type
             'description_field_dereference' => null,
             'thumb_field' => null,
             'thumb_field_is_theme_image' => false,
-            'alternate_icon_theme_image' => 'icons/48x48/menu/cms/banners',
+            'alternate_icon_theme_image' => 'icons/menu/cms/banners',
 
             'view_page_link_pattern' => null,
             'edit_page_link_pattern' => null,

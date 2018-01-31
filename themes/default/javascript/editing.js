@@ -235,7 +235,7 @@
 
             function postWysiwygDisable(textarea) {
                 if (document.getElementById('toggle_wysiwyg_' + textarea.id)) {
-                    $dom.html('#toggle_wysiwyg_' + textarea.id, '<img width="16" height="16" src="{$IMG*;^,icons/32x32/editor/wysiwyg_on}" alt="{!comcode:ENABLE_WYSIWYG;^}" title="{!comcode:ENABLE_WYSIWYG;^}" class="vertical-alignment" />');
+                    $dom.html('#toggle_wysiwyg_' + textarea.id, '<img width="16" height="16" src="{$IMG*;^,icons/editor/wysiwyg_on}" alt="{!comcode:ENABLE_WYSIWYG;^}" title="{!comcode:ENABLE_WYSIWYG;^}" class="vertical-alignment" />');
                 }
 
                 try {  // Unload editor 
@@ -335,7 +335,7 @@
                 indicator.value = '1';
 
                 if (document.getElementById('toggle_wysiwyg_' + id)) {
-                    $dom.html(document.getElementById('toggle_wysiwyg_' + id), '<img width="16" height="16" src="{$IMG*;^,icons/32x32/editor/wysiwyg_off}" alt="{!comcode:DISABLE_WYSIWYG;^}" title="{!comcode:DISABLE_WYSIWYG;^}" class="vertical-alignment" />');
+                    $dom.html(document.getElementById('toggle_wysiwyg_' + id), '<img width="16" height="16" src="{$IMG*;^,icons/editor/wysiwyg_off}" alt="{!comcode:DISABLE_WYSIWYG;^}" title="{!comcode:DISABLE_WYSIWYG;^}" class="vertical-alignment" />');
                 }
 
                 window.wysiwygOriginalComcode[id] = textarea.value;

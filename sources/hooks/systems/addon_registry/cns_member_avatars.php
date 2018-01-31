@@ -87,7 +87,7 @@ class Hook_addon_registry_cns_member_avatars
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/tabs/member_account/edit/avatar.svg';
+        return 'themes/default/images/icons/tabs/member_account/edit/avatar.svg';
     }
 
     /**
@@ -98,7 +98,7 @@ class Hook_addon_registry_cns_member_avatars
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/tabs/member_account/edit/avatar.svg',
+            'themes/default/images/icons/tabs/member_account/edit/avatar.svg',
             'sources/hooks/systems/notifications/cns_choose_avatar.php',
             'sources/hooks/systems/addon_registry/cns_member_avatars.php',
             'themes/default/templates/CNS_EDIT_AVATAR_TAB.tpl',

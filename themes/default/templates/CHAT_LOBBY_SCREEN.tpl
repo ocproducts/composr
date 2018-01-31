@@ -86,11 +86,11 @@
 
 								<div class="friend-actions">
 									{+START,IF,{CAN_IM}}
-										<input class="button-screen-item menu---generic-admin--add-to-category js-click-btn-im-invite-ticked-people" disabled="disabled" id="invite_ongoing_im_button" type="button" value="{!INVITE_CURRENT_IM}" />
+										<input class="button-screen-item admin--add-to-category js-click-btn-im-invite-ticked-people" disabled="disabled" id="invite_ongoing_im_button" type="button" value="{!INVITE_CURRENT_IM}" />
 										<input class="button-screen-item menu--social--chat--chat js-click-btn-im-start-ticked-people" type="button" value="{!START_IM}" />
 									{+END}
 									{+START,IF_NON_EMPTY,{URL_REMOVE_FRIENDS}}
-										<input data-click-pd="1" class="button-screen-item menu---generic-admin--delete js-click-btn-dump-friends-confirm" type="submit" value="{!DUMP_FRIENDS}" />
+										<input data-click-pd="1" class="button-screen-item admin--delete3 js-click-btn-dump-friends-confirm" type="submit" value="{!DUMP_FRIENDS}" />
 									{+END}
 								</div>
 							</form>
@@ -104,7 +104,7 @@
 
 								<label class="accessibility-hidden" for="friend_username">{!USERNAME}: </label>
 								<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="18" maxlength="80" class="js-keyup-input-update-ajax-member-list" type="text" placeholder="{!USERNAME}" id="friend_username" name="friend_username" />
-								<input class="button-micro menu---generic-admin--add-one" type="submit" value="{!ADD}" />
+								<input class="button-micro admin--add" type="submit" value="{!ADD}" />
 							</form>
 						{+END}
 

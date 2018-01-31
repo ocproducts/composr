@@ -88,7 +88,7 @@ class Hook_addon_registry_unvalidated
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/audit/unvalidated.svg';
+        return 'themes/default/images/icons/menu/adminzone/audit/unvalidated.svg';
     }
 
     /**
@@ -99,7 +99,7 @@ class Hook_addon_registry_unvalidated
     public function get_file_list()
     {
         return array(
-            'images/icons/48x48/menu/adminzone/audit/unvalidated.svg',
+            'images/icons/menu/adminzone/audit/unvalidated.svg',
             'sources/hooks/systems/notifications/content_validated.php',
             'sources/hooks/systems/notifications/needs_validation.php',
             'sources/hooks/systems/addon_registry/unvalidated.php',

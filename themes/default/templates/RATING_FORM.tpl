@@ -15,12 +15,12 @@
 				<div class="rating-inner">
 					{$,Like/dislike}
 					{+START,IF,{LIKES}}
-						<img id="rating_bar_1__{$GET,identifier}" alt="" width="18" height="18" src="{$IMG*,1x/dislike}" /><img id="rating_bar_10__{$GET,identifier}" alt="" width="18" height="18" src="{$IMG*,1x/like}" />
+						<img id="rating_bar_1__{$GET,identifier}" alt="" width="18" height="18" src="{$IMG*,icons/feedback/dislike}" /><img id="rating_bar_10__{$GET,identifier}" alt="" width="18" height="18" src="{$IMG*,icons/feedback/like}" />
 					{+END}
 
 					{$,Star ratings}
 					{+START,IF,{$NOT,{LIKES}}}
-						<img id="rating_bar_2__{$GET,identifier}" alt="" width="14" height="14" src="{$IMG*,icons/28x28/rating}" /><img id="rating_bar_4__{$GET,identifier}" alt="" width="14" height="14" src="{$IMG*,icons/28x28/rating}" /><img id="rating_bar_6__{$GET,identifier}" alt="" width="14" height="14" src="{$IMG*,icons/28x28/rating}" /><img id="rating_bar_8__{$GET,identifier}" alt="" width="14" height="14" src="{$IMG*,icons/28x28/rating}" /><img id="rating_bar_10__{$GET,identifier}" alt="" width="14" height="14" src="{$IMG*,icons/28x28/rating}" />
+						<img id="rating_bar_2__{$GET,identifier}" alt="" width="14" height="14" src="{$IMG*,icons/feedback/rating}" /><img id="rating_bar_4__{$GET,identifier}" alt="" width="14" height="14" src="{$IMG*,icons/feedback/rating}" /><img id="rating_bar_6__{$GET,identifier}" alt="" width="14" height="14" src="{$IMG*,icons/feedback/rating}" /><img id="rating_bar_8__{$GET,identifier}" alt="" width="14" height="14" src="{$IMG*,icons/feedback/rating}" /><img id="rating_bar_10__{$GET,identifier}" alt="" width="14" height="14" src="{$IMG*,icons/feedback/rating}" />
 					{+END}
 				</div>
 			</div>

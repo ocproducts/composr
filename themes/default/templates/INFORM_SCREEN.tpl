@@ -16,7 +16,7 @@
 
 	<div>
 		{+START,IF_PASSED,FIELDS}{FIELDS}{+END}
-		<button class="button-icon" type="submit"><img title="{!NEXT_ITEM_BACK}" alt="{!NEXT_ITEM_BACK}" width="48" height="48" src="{$IMG*,icons/48x48/menu/_generic_admin/back}" /></button>
+		<button class="button-icon" type="submit"><img title="{!NEXT_ITEM_BACK}" alt="{!NEXT_ITEM_BACK}" width="48" height="48" src="{$IMG*,icons/admin/back}" /></button>
 	</div>
 </form>
 {+END}

@@ -115,6 +115,7 @@ To configure the diseases go to Admin Zone > Setup > Manage Diseases.';
                 'Cron',
                 'Conversr',
                 'points',
+                'all_icons',
             ),
             'recommends' => array(),
             'conflicts_with' => array(),
@@ -128,7 +129,7 @@ To configure the diseases go to Admin Zone > Setup > Manage Diseases.';
      */
     public function get_default_icon()
     {
-        return 'themes/default/images_custom/icons/48x48/menu/disastr_log.svg';
+        return 'themes/default/images/icons/spare/disaster.svg';
     }
 
     /**
@@ -139,7 +140,6 @@ To configure the diseases go to Admin Zone > Setup > Manage Diseases.';
     public function get_file_list()
     {
         return array(
-            'themes/default/images_custom/icons/48x48/menu/disastr_log.svg',
             'sources_custom/hooks/systems/addon_registry/disastr.php',
             'sources_custom/hooks/systems/notifications/got_disease.php',
             'adminzone/pages/modules_custom/admin_disastr.php',

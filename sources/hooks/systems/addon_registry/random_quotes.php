@@ -87,7 +87,7 @@ class Hook_addon_registry_random_quotes
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/style/quotes.svg';
+        return 'themes/default/images/icons/menu/adminzone/style/quotes.svg';
     }
 
     /**
@@ -98,7 +98,7 @@ class Hook_addon_registry_random_quotes
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/adminzone/style/quotes.svg',
+            'themes/default/images/icons/menu/adminzone/style/quotes.svg',
             'sources/hooks/blocks/main_notes/quotes.php',
             'sources/hooks/modules/admin_import_types/quotes.php',
             'sources/hooks/modules/admin_setupwizard/random_quotes.php',

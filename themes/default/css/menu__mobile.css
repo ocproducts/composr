@@ -54,7 +54,7 @@
 
 .menu-type--mobile li {
 	border-top: 1px solid {$GET,standard_border};
-	background: url('{$IMG;,icons/48x48/buttons/proceed}') transparent no-repeat top 1em right 1em;
+	background: url('{$IMG;,icons/buttons/proceed}') transparent no-repeat top 1em right 1em;
 	background-size: 24px 24px;
 	color: {$GET,BW};
 }

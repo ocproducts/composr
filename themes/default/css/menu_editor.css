@@ -148,7 +148,7 @@ Branch layout (inner)
 }
 
 .menu-editor-branch input[type="text"] {
-	background: url('{$IMG;,icons/28x28/action_small}') right center no-repeat white;
+	background: url('{$IMG;,icons/buttons/proceed2}') right center no-repeat white;
 	background-size: 20px 20px;
 	cursor: pointer;
 	width: 14em;
@@ -158,6 +158,6 @@ Branch layout (inner)
 	cursor: text !important;
 }
 
-.menu-editor-branch .menu---generic-admin--delete {
+.menu-editor-branch .admin--delete3 {
 	float: right;
 }

@@ -88,7 +88,7 @@ class Hook_addon_registry_themewizard
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/style/themes/themewizard.svg';
+        return 'themes/default/images/icons/menu/adminzone/style/themes/themewizard.svg';
     }
 
     /**
@@ -99,8 +99,8 @@ class Hook_addon_registry_themewizard
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/adminzone/style/themes/logowizard.svg',
-            'themes/default/images/icons/48x48/menu/adminzone/style/themes/themewizard.svg',
+            'themes/default/images/icons/menu/adminzone/style/themes/logowizard.svg',
+            'themes/default/images/icons/menu/adminzone/style/themes/themewizard.svg',
             'sources/hooks/systems/commandr_commands/themewizard_find_color.php',
             'sources/hooks/systems/commandr_commands/themewizard_compute_equation.php',
             'sources/hooks/modules/admin_themewizard/.htaccess',

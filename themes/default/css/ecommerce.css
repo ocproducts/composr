@@ -214,8 +214,8 @@
 */
 
 .menu--adminzone--audit--ecommerce--subscriptions {
-	background-image: url('{$IMG,icons/48x48/menu/adminzone/audit/ecommerce/subscriptions}') !important;
+	background-image: url('{$IMG,icons/menu/adminzone/audit/ecommerce/subscriptions}') !important;
 }
 .menu--rich-content--ecommerce--purchase {
-	background-image: url('{$IMG,icons/48x48/menu/rich_content/ecommerce/purchase}') !important;
+	background-image: url('{$IMG,icons/menu/rich_content/ecommerce/purchase}') !important;
 }

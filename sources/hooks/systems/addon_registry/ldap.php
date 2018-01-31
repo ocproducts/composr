@@ -87,7 +87,7 @@ class Hook_addon_registry_ldap
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/security/ldap.svg';
+        return 'themes/default/images/icons/menu/adminzone/security/ldap.svg';
     }
 
     /**
@@ -98,7 +98,7 @@ class Hook_addon_registry_ldap
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/adminzone/security/ldap.svg',
+            'themes/default/images/icons/menu/adminzone/security/ldap.svg',
             'sources/hooks/systems/config/ldap_allow_joining.php',
             'sources/hooks/systems/config/ldap_base_dn.php',
             'sources/hooks/systems/config/ldap_bind_password.php',

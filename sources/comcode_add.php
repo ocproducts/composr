@@ -697,7 +697,7 @@ function comcode_helper_script_step2()
         'FIELDS' => $fields,
         'URL' => $post_url,
         'TEXT' => $text,
-        'SUBMIT_ICON' => (get_param_string('save_to_id', '') != '') ? 'buttons--edit' : 'menu---generic-admin--add-one',
+        'SUBMIT_ICON' => (get_param_string('save_to_id', '') != '') ? 'admin--edit' : 'admin--add',
         'SUBMIT_NAME' => $submit_name,
         'HIDDEN' => $hidden,
         'PREVIEW' => $preview,

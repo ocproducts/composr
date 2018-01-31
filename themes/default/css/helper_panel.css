@@ -89,11 +89,11 @@
 		display: none;
 	}
 	.helper-panel-hidden #helper-panel-toggle {
-		background: url('{$IMG;,1x/trays/expand}') no-repeat;
+		background: url('{$IMG;,icons/trays/expand}') no-repeat;
 		background-size: 20px 20px;
 	}
 	.helper-panel-visible #helper-panel-toggle {
-		background: url('{$IMG;,1x/trays/contract}') no-repeat;
+		background: url('{$IMG;,icons/trays/contract}') no-repeat;
 		background-size: 20px 20px;
 	}
 /*{+END}*/

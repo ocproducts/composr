@@ -87,7 +87,7 @@ class Hook_addon_registry_calendar
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/rich_content/calendar.svg';
+        return 'themes/default/images/icons/menu/rich_content/calendar.svg';
     }
 
     /**
@@ -98,7 +98,7 @@ class Hook_addon_registry_calendar
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/rich_content/calendar.svg',
+            'themes/default/images/icons/menu/rich_content/calendar.svg',
             'sources/hooks/systems/snippets/calendar_recurrence_suggest.php',
             'sources/hooks/systems/notifications/calendar_reminder.php',
             'sources/hooks/systems/notifications/calendar_event.php',
@@ -167,25 +167,26 @@ class Hook_addon_registry_calendar
             'sources/hooks/systems/preview/calendar.php',
             'sources/hooks/systems/rss/calendar.php',
             'themes/default/css/calendar.css',
-            'themes/default/images/calendar/activity.svg',
-            'themes/default/images/calendar/anniversary.svg',
-            'themes/default/images/calendar/appointment.svg',
-            'themes/default/images/calendar/birthday.svg',
-            'themes/default/images/calendar/commitment.svg',
-            'themes/default/images/calendar/duty.svg',
-            'themes/default/images/calendar/festival.svg',
-            'themes/default/images/calendar/general.svg',
-            'themes/default/images/calendar/public_holiday.svg',
-            'themes/default/images/calendar/vacation.svg',
-            'themes/default/images/calendar/index.html',
+            'themes/default/images/icons/calendar/activity.svg',
+            'themes/default/images/icons/calendar/anniversary.svg',
+            'themes/default/images/icons/calendar/appointment.svg',
+            'themes/default/images/icons/calendar/birthday.svg',
+            'themes/default/images/icons/calendar/commitment.svg',
+            'themes/default/images/icons/calendar/duty.svg',
+            'themes/default/images/icons/calendar/festival.svg',
+            'themes/default/images/icons/calendar/general.svg',
+            'themes/default/images/icons/calendar/public_holiday.svg',
+            'themes/default/images/icons/calendar/vacation.svg',
+            'themes/default/images/icons/calendar/rss.svg',
+            'themes/default/images/icons/calendar/system_command.svg',
+            'themes/default/images/icons/calendar/index.html',
             'themes/default/images/calendar/priority_1.svg',
             'themes/default/images/calendar/priority_2.svg',
             'themes/default/images/calendar/priority_3.svg',
             'themes/default/images/calendar/priority_4.svg',
             'themes/default/images/calendar/priority_5.svg',
             'themes/default/images/calendar/priority_na.svg',
-            'themes/default/images/calendar/rss.svg',
-            'themes/default/images/calendar/system_command.svg',
+            'themes/default/images/calendar/index.html',
             'sources/hooks/systems/notifications/member_calendar_changes.php',
             'sources/hooks/systems/commandr_fs_extended_member/calendar_interests.php',
             'sources/hooks/systems/config/search_calendar.php',
@@ -377,7 +378,7 @@ class Hook_addon_registry_calendar
                         'T_TITLE' => lorem_word(),
                         'E_TITLE' => lorem_word(),
                         'VIEW_URL' => placeholder_url(),
-                        'ICON' => 'calendar/' . placeholder_img_code('calendar'),
+                        'ICON' => 'icons/calendar/' . placeholder_img_code('icons/calendar'),
                         'DESCRIPTION' => lorem_paragraph_html(),
 
                         'TIME_WRITTEN' => get_timezoned_date(123456789),
@@ -524,7 +525,7 @@ class Hook_addon_registry_calendar
                                 'TIME' => placeholder_date(),
                                 'TITLE' => lorem_word(),
                                 'E' => lorem_word(),
-                                'ICON' => 'calendar/' . placeholder_img_code('calendar'),
+                                'ICON' => 'icons/calendar/' . placeholder_img_code('icons/calendar'),
                                 'VALIDATED' => true,
                                 'RECURRING' => false,
                             ));
@@ -582,7 +583,7 @@ class Hook_addon_registry_calendar
                             'ID' => placeholder_id(),
                             'T_TITLE' => lorem_phrase(),
                             'PRIORITY' => lorem_word(),
-                            'ICON' => 'calendar/' . placeholder_img_code('calendar'),
+                            'ICON' => 'icons/calendar/' . placeholder_img_code('icons/calendar'),
                             'TIME' => placeholder_number(),
                             'TITLE' => lorem_word(),
                             'URL' => placeholder_url(),
@@ -797,7 +798,7 @@ class Hook_addon_registry_calendar
                 'ADD_DATE_RAW' => placeholder_date_raw(),
                 'EDIT_DATE_RAW' => placeholder_date_raw(),
                 'VIEWS' => lorem_phrase(),
-                'LOGO' => 'calendar/' . placeholder_img_code('calendar'),
+                'LOGO' => 'icons/calendar/' . placeholder_img_code('icons/calendar'),
                 'RECURRENCE' => placeholder_number(),
                 'IS_PUBLIC' => lorem_phrase(),
                 'PRIORITY' => lorem_phrase(),
@@ -854,7 +855,7 @@ class Hook_addon_registry_calendar
 
         $event_type_id = $GLOBALS['SITE_DB']->query_select_value_if_there('calendar_types', 'MAX(id)');
         if ($event_type_id !== db_get_first_id()) {
-            $event_type_id = add_event_type(lorem_phrase(), 'calendar/general');
+            $event_type_id = add_event_type(lorem_phrase(), 'icons/calendar/general');
             require_code('permissions2');
             set_global_category_access('calendar', $event_type_id);
         }

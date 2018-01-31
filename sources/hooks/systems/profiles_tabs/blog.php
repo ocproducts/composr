@@ -52,7 +52,7 @@ class Hook_profiles_tabs_blog
         $order = 50;
 
         if ($leave_to_ajax_if_possible) {
-            return array($title, null, $order, 'tabs/member_account/blog');
+            return array($title, null, $order, 'menu/cms/blog');
         }
 
         // Show recent blog posts
@@ -83,6 +83,6 @@ class Hook_profiles_tabs_blog
             'RECENT_BLOG_POSTS' => $recent_blog_posts,
         ));
 
-        return array($title, $content, $order, 'tabs/member_account/blog');
+        return array($title, $content, $order, 'menu/cms/blog');
     }
 }

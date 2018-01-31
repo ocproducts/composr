@@ -135,7 +135,7 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 }
 
 .modern-subtab-headers>div.tab-active, .modern-subtab-headers>div:hover {
-	background: url('{$IMG;,1x/tabs/modern_subtab_active}') no-repeat right center;
+	background: url('{$IMG;,tabs/modern_subtab_active}') no-repeat right center;
 	background-size: 8px 16px;
 }
 
@@ -150,7 +150,7 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 	border-bottom: 1px solid {$GET,standard_border};
 	display: block;
 	cursor: pointer;
-	background: url('{$IMG;,1x/tabs/modern_subtab_chevron}') no-repeat 10px center;
+	background: url('{$IMG;,tabs/modern_subtab_chevron}') no-repeat 10px center;
 	background-size: 9px 9px;
 }
 

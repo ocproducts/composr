@@ -98,7 +98,7 @@ class Module_recommend
         );
 
         if ($support_crosslinks) {
-            $ret[':recommend_help'] = array('HELP', 'menu/pages/help');
+            $ret[':recommend_help'] = array('HELP', 'help');
         }
 
         return $ret;

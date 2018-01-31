@@ -975,19 +975,19 @@
         }
         var iconImg = document.createElement('img');
         if (ext === 'tpl') {
-            iconImg.src = $util.srl('{$IMG;,icons/32x32/filetypes/tpl}');
+            iconImg.src = $util.srl('{$IMG;,icons/file_types/tpl}');
         }
         if (ext === 'css') {
-            iconImg.src = $util.srl('{$IMG;,icons/32x32/filetypes/css}');
+            iconImg.src = $util.srl('{$IMG;,icons/file_types/css}');
         }
         if (ext === 'js') {
-            iconImg.src = $util.srl('{$IMG;,icons/32x32/filetypes/js}');
+            iconImg.src = $util.srl('{$IMG;,icons/file_types/js}');
         }
         if (ext === 'xml') {
-            iconImg.src = $util.srl('{$IMG;,icons/32x32/filetypes/xml}');
+            iconImg.src = $util.srl('{$IMG;,icons/file_types/xml}');
         }
         if (ext === 'txt' || ext === '') {
-            iconImg.src = $util.srl('{$IMG;,icons/32x32/filetypes/page_txt}');
+            iconImg.src = $util.srl('{$IMG;,icons/file_types/page_txt}');
         }
         iconImg.width = '16';
         iconImg.height = '16';
@@ -997,7 +997,7 @@
         span.textContent = tabTitle;
         header.appendChild(span);
         var closeButton = document.createElement('img');
-        closeButton.src = $util.srl('{$IMG;,icons/32x32/close}');
+        closeButton.src = $util.srl('{$IMG;,icons/buttons/close}');
         closeButton.width = '32';
         closeButton.height = '32';
         closeButton.alt = '{!CLOSE;^}';

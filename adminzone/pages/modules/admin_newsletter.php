@@ -51,7 +51,7 @@ class Module_admin_newsletter extends Standard_crud_module
             'whatsnew' => array('WHATSNEW', 'menu/adminzone/tools/newsletter/newsletter_from_changes'),
             'subscribers' => array('VIEW_NEWSLETTER_SUBSCRIBERS', 'menu/adminzone/tools/newsletter/subscribers'),
             'import_subscribers' => array('IMPORT_NEWSLETTER_SUBSCRIBERS', 'menu/adminzone/tools/newsletter/import_subscribers'),
-            'archive' => array('NEWSLETTER_ARCHIVE', 'menu/_generic_admin/view_archive'),
+            'archive' => array('NEWSLETTER_ARCHIVE', 'admin/view_archive'),
         );
         if (!GOOGLE_APPENGINE) {
             $ret['bounce_filter_a'] = array('BOUNCE_FILTER', 'menu/adminzone/tools/newsletter/newsletter_email_bounce');
@@ -147,7 +147,7 @@ class Module_admin_newsletter extends Standard_crud_module
         $this->extra_donext_entries = array(
             array('menu/site_meta/newsletters', array('_SELF', array('type' => 'new'), '_SELF'), do_lang('NEWSLETTER_SEND')),
             array('menu/adminzone/tools/newsletter/newsletter_from_changes', array('_SELF', array('type' => 'whatsnew'), '_SELF'), do_lang('WHATSNEW'), 'DOC_WHATSNEW'),
-            array('menu/_generic_admin/view_archive', array('_SELF', array('type' => 'archive'), '_SELF'), do_lang('NEWSLETTER_ARCHIVE')),
+            array('admin/view_archive', array('_SELF', array('type' => 'archive'), '_SELF'), do_lang('NEWSLETTER_ARCHIVE')),
             array('menu/adminzone/tools/newsletter/subscribers', array('_SELF', array('type' => 'subscribers'), '_SELF'), do_lang('VIEW_SUBSCRIBERS')),
             array('menu/adminzone/tools/newsletter/import_subscribers', array('_SELF', array('type' => 'import_subscribers'), '_SELF'), do_lang('IMPORT_NEWSLETTER_SUBSCRIBERS')),
         );
@@ -257,8 +257,8 @@ class Module_admin_newsletter extends Standard_crud_module
             get_screen_title('MANAGE_NEWSLETTER'),
             $newsletter_intro,
             array_merge(array(
-                array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_NEWSLETTER')),
-                array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_NEWSLETTER')),
+                array('admin/add', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_NEWSLETTER')),
+                array('admin/edit', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_NEWSLETTER')),
             ), $this->extra_donext_entries),
             do_lang('MANAGE_NEWSLETTER')
         );
@@ -339,7 +339,7 @@ class Module_admin_newsletter extends Standard_crud_module
                 'TITLE' => $this->title,
                 'TEXT' => '',
                 'FIELDS' => $fields,
-                'SUBMIT_ICON' => 'menu---generic-admin--import',
+                'SUBMIT_ICON' => 'admin--import',
                 'SUBMIT_NAME' => $submit_name,
                 'URL' => $post_url,
             ));
@@ -1257,7 +1257,7 @@ class Module_admin_newsletter extends Standard_crud_module
             'TEXT' => (($periodic_action == 'make' || $periodic_action == 'replace') ? do_lang_tempcode('PERIODIC_NO_EDIT') : do_lang_tempcode('NEWSLETTER_SEND_TEXT')),
             'HIDDEN' => $hidden,
             'FIELDS' => $fields->evaluate()/*FUDGE*/,
-            'SUBMIT_ICON' => 'tabs--preview',
+            'SUBMIT_ICON' => 'buttons--preview',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
             'SUPPORT_AUTOSAVE' => true,
@@ -1536,7 +1536,7 @@ class Module_admin_newsletter extends Standard_crud_module
             'TITLE' => $this->title,
             'TEXT' => '',
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'menu---generic-admin--view-archive',
+            'SUBMIT_ICON' => 'admin--view-archive',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));
@@ -1610,7 +1610,7 @@ class Module_admin_newsletter extends Standard_crud_module
             $dequeue_url = build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $id), '_SELF');
             $hidden = new Tempcode();
             $hidden->attach(form_input_hidden('flush_queue', '1'));
-            $buttons->attach(do_template('BUTTON_SCREEN', array('IMMEDIATE' => true, 'URL' => $dequeue_url, 'TITLE' => do_lang_tempcode('EMPTY_QUEUE'), 'IMG' => 'menu---generic-admin--delete', 'HIDDEN' => $hidden)));
+            $buttons->attach(do_template('BUTTON_SCREEN', array('IMMEDIATE' => true, 'URL' => $dequeue_url, 'TITLE' => do_lang_tempcode('EMPTY_QUEUE'), 'IMG' => 'admin--delete3', 'HIDDEN' => $hidden)));
         }
 
         $copy_url = build_url(array('page' => '_SELF', 'type' => 'new'), '_SELF');

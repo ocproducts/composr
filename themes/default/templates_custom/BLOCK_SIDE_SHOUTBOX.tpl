@@ -19,7 +19,7 @@
 
 				<div class="float-surrounder">
 					<input class="button-screen-item buttons--send js-click-btn-send-message" style="margin: 0" type="submit" value="Send" />
-					<input class="button-screen-item menu---generic-spare--8 js-click-btn-shake-screen" style="margin: 0" type="submit" title="Shake the screen of all active website visitors" value="Shake" />
+					<input class="button-screen-item spare--8 js-click-btn-shake-screen" style="margin: 0" type="submit" title="Shake the screen of all active website visitors" value="Shake" />
 				</div>
 			</form>
 		</div>

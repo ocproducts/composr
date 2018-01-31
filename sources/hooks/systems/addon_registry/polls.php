@@ -87,7 +87,7 @@ class Hook_addon_registry_polls
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/social/polls.svg';
+        return 'themes/default/images/icons/menu/social/polls.svg';
     }
 
     /**
@@ -98,7 +98,7 @@ class Hook_addon_registry_polls
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/social/polls.svg',
+            'themes/default/images/icons/menu/social/polls.svg',
             'sources/polls2.php',
             'sources/hooks/systems/block_ui_renderers/polls.php',
             'sources/hooks/systems/notifications/poll_chosen.php',

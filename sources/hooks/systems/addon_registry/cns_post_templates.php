@@ -89,7 +89,7 @@ class Hook_addon_registry_cns_post_templates
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/structure/forum/post_templates.svg';
+        return 'themes/default/images/icons/menu/adminzone/structure/forum/post_templates.svg';
     }
 
     /**
@@ -100,7 +100,7 @@ class Hook_addon_registry_cns_post_templates
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/adminzone/structure/forum/post_templates.svg',
+            'themes/default/images/icons/menu/adminzone/structure/forum/post_templates.svg',
             'sources/hooks/systems/resource_meta_aware/post_template.php',
             'sources/hooks/systems/commandr_fs/post_templates.php',
             'sources/hooks/systems/addon_registry/cns_post_templates.php',

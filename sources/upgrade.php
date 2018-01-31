@@ -571,7 +571,7 @@ function upgrade_script()
                     echo '</p>';
                     echo '<form action="upgrader.php?type=_addon_remove" method="post">';
                     echo '<p><label for="addons">Addons to remove:</label><br /><textarea name="addons" id="addons" class="wide-field" rows="10"></textarea>';
-                    echo '<input class="menu---generic-admin--delete button-screen" type="submit" value="Remove addon files" />';
+                    echo '<input class="admin--delete3 button-screen" type="submit" value="Remove addon files" />';
                     echo post_fields_relay();
                     echo '</form>';
                     break;
@@ -797,7 +797,7 @@ function up_do_header()
 END;
     @print(file_get_contents(css_enforce('global', 'default')));
     echo <<<END
-            .screen-title { text-decoration: underline; display: block; background: url('themes/default/images/icons/48x48/menu/adminzone/tools/upgrade.svg') top left no-repeat; min-height: 42px; padding: 10px 0 0 60px; }
+            .screen-title { text-decoration: underline; display: block; background: url('themes/default/images/icons/menu/adminzone/tools/upgrade.svg') top left no-repeat; min-height: 42px; padding: 10px 0 0 60px; }
             a[target="_blank"], a[onclick$="window.open"] { padding-right: 0; }
         /*]]>*/</style>
 

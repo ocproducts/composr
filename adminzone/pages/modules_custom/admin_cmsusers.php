@@ -88,7 +88,7 @@ class Module_admin_cmsusers
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
         return array(
-            'browse' => array('CMS_SITES_INSTALLED', 'menu/_generic_admin/tool'),
+            'browse' => array('CMS_SITES_INSTALLED', 'admin/tool'),
         );
     }
 

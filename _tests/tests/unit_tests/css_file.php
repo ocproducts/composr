@@ -499,7 +499,6 @@ class css_file_test_set extends cms_test_case
             'standard-field-name',
             'status-green',
             'status-orange',
-            'tabs--member-account--warnings',
             'theme-image--background-theme-image',
             'theme-image--logo-theme-image',
             'theme-image-preview',

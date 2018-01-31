@@ -61,73 +61,73 @@ function find_addon_category_download_category($category_name, $parent_id = null
         $has_submit_access = false;
 
         if (substr($category_name, 0, 8) == 'Version ') {
-            $theme_image = 'tutorial_icons/installation';
+            $theme_image = 'icons/spare/installation';
         } else {
             switch ($category_name) {
                 case 'Composr Releases':
-                    $theme_image = 'tutorial_icons/installation';
+                    $theme_image = 'icons/spare/installation';
                     break;
 
                 // ---
 
                 case 'Addons':
-                    $theme_image = 'icons/48x48/menu/adminzone/structure/addons';
+                    $theme_image = 'icons/menu/adminzone/structure/addons';
                     break;
 
                 // ---
 
                 case 'Admin Utilities':
-                    $theme_image = 'tutorial_icons/administration';
+                    $theme_image = 'icons/spare/administration';
                     $has_submit_access = true;
                     break;
 
                 case 'Development':
-                    $theme_image = 'tutorial_icons/development';
+                    $theme_image = 'icons/spare/development';
                     $has_submit_access = true;
                     break;
 
                 case 'Fun and Games':
-                    $theme_image = 'tutorial_icons/fun_and_games';
+                    $theme_image = 'icons/spare/fun_and_games';
                     $has_submit_access = true;
                     break;
 
                 case 'Graphical':
-                    $theme_image = 'icons/48x48/menu/rich_content/galleries';
+                    $theme_image = 'icons/menu/rich_content/galleries';
                     $has_submit_access = true;
                     break;
 
                 case 'Information Display':
-                    $theme_image = 'icons/48x48/menu/adminzone/setup/config/config';
+                    $theme_image = 'icons/menu/adminzone/setup/config/config';
                     $has_submit_access = true;
                     break;
 
                 case 'New Features':
-                    $theme_image = 'icons/48x48/menu/adminzone/tools/upgrade';
+                    $theme_image = 'icons/menu/adminzone/tools/upgrade';
                     $has_submit_access = true;
                     break;
 
                 case 'Themes':
-                    $theme_image = 'icons/32x32/menu/adminzone/style';
+                    $theme_image = 'icons/menu/adminzone/style';
                     $has_submit_access = true;
                     break;
 
                 case 'Professional Themes':
-                    $theme_image = 'icons/48x48/menu/adminzone/audit/ecommerce/ecommerce';
+                    $theme_image = 'icons/menu/adminzone/audit/ecommerce/ecommerce';
                     $has_submit_access = true;
                     break;
 
                 case 'Third Party Integration':
-                    $theme_image = 'tutorial_icons/third_party_integration';
+                    $theme_image = 'icons/spare/third_party_integration';
                     $has_submit_access = true;
                     break;
 
                 case 'Translations':
-                    $theme_image = 'tutorial_icons/internationalisation';
+                    $theme_image = 'icons/spare/internationalisation';
                     $has_submit_access = true;
                     break;
 
                 case 'Uncategorised/Alpha':
-                    $theme_image = 'tutorial_icons/maintenance';
+                    $theme_image = 'icons/spare/maintenance';
                     $has_submit_access = true;
                     break;
 

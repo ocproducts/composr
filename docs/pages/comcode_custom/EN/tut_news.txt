@@ -178,7 +178,7 @@ Categories and Tags are both imported from the same set of terms. You may wish t
 [title="2"]Representative images[/title]
 
 News categories may have a representative image for the category. By default news in that category (by primary category) will use that image.
-News may also have a manual representative image uploaded, or have a manual selection from any theme image under the [tt]newscats[/tt] theme image directory. These options are under 'Advanced' on the news add/edit form.
+News may also have a manual representative image uploaded, or have a manual selection from any theme image under the [tt]icons/news[/tt] theme image directory. These options are under 'Advanced' on the news add/edit form.
 
 By default Composr will automatically size down uploaded images to the configured thumbnail size. This may be turned off via a hidden option, if an advanced themer is doing dynamic thumbnail generation and doesn't want things down-sized in advance. This hidden option is documented in the Code Book and named [tt]resize_rep_images[/tt].
 

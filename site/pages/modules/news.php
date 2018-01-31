@@ -111,7 +111,7 @@ class Module_news
             foreach ($default_categories as $category) {
                 $map = array(
                     'notes' => '',
-                    'nc_img' => 'newscats/' . $category,
+                    'nc_img' => 'icons/news/' . $category,
                     'nc_owner' => null,
                 );
                 $map += lang_code_to_default_content('nc_title', 'NC_' . $category);
@@ -175,8 +175,8 @@ class Module_news
             'browse' => array('NEWS_ARCHIVE', 'menu/rich_content/news'),
         );
         if ($has_blogs) {
-            $ret['cat_select'] = array('JUST_NEWS_CATEGORIES', 'menu/_generic_admin/view_archive');
-            $ret['blog_select'] = array('BLOGS', 'tabs/member_account/blog');
+            $ret['cat_select'] = array('JUST_NEWS_CATEGORIES', 'admin/view_archive');
+            $ret['blog_select'] = array('BLOGS', 'menu/cms/blog');
             $ret['select'] = array('NEWS_CATEGORIES', 'menu/rich_content/news');
         } else {
             $ret['cat_select'] = array('JUST_NEWS_CATEGORIES', 'menu/rich_content/news');

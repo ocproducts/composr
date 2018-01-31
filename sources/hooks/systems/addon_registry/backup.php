@@ -87,7 +87,7 @@ class Hook_addon_registry_backup
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/tools/bulk_content_actions/backups.svg';
+        return 'themes/default/images/icons/menu/adminzone/tools/bulk_content_actions/backups.svg';
     }
 
     /**
@@ -98,7 +98,7 @@ class Hook_addon_registry_backup
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/adminzone/tools/bulk_content_actions/backups.svg',
+            'themes/default/images/icons/menu/adminzone/tools/bulk_content_actions/backups.svg',
             'sources/hooks/systems/config/backup_overwrite.php',
             'sources/hooks/systems/config/backup_server_hostname.php',
             'sources/hooks/systems/config/backup_server_password.php',

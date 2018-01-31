@@ -4,7 +4,7 @@
 
 	{$SET,RAND,{$RAND}}
 
-	{$SET,img,{$?,{$AND,{$IS_EMPTY,{IMG}},{$LT,{THE_LEVEL},3}},{$IMG,icons/48x48/menu/_generic_spare/page},{IMG}}}
+	{$SET,img,{$?,{$AND,{$IS_EMPTY,{IMG}},{$LT,{THE_LEVEL},3}},{$IMG,icons/content_types/page},{IMG}}}
 
 	{+START,IF,{TOP_LEVEL}}
 		<li class="dropdown-menu-item {$?,{CURRENT},current,non-current}{$?,{$GET,HAS_CHILDREN}, has-children}{+START,IF,{$AND,{$NOT,{$GET,HAS_CHILDREN}},{LAST}}} last{+END}{+START,IF,{FIRST}} first{+END} toplevel {+START,IF,{$GET,HAS_CHILDREN}}js-mousemove-timer-pop-up-menu js-mouseout-clear-pop-up-timer{+END}" data-vw-rand="{$GET*,RAND}">

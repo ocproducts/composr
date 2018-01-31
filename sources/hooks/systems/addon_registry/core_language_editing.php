@@ -91,7 +91,7 @@ class Hook_addon_registry_core_language_editing
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/style/language/language.svg';
+        return 'themes/default/images/icons/menu/adminzone/style/language/language.svg';
     }
 
     /**
@@ -102,10 +102,10 @@ class Hook_addon_registry_core_language_editing
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/adminzone/style/language/language.svg',
-            'themes/default/images/icons/48x48/menu/adminzone/style/language/language_content.svg',
-            'themes/default/images/icons/48x48/menu/adminzone/style/language/criticise_language.svg',
-            'themes/default/images/icons/48x48/menu/adminzone/style/language/index.html',
+            'themes/default/images/icons/menu/adminzone/style/language/language.svg',
+            'themes/default/images/icons/menu/adminzone/style/language/language_content.svg',
+            'themes/default/images/icons/menu/adminzone/style/language/criticise_language.svg',
+            'themes/default/images/icons/menu/adminzone/style/language/index.html',
             'themes/default/css/translations_editor.css',
             'sources/hooks/systems/addon_registry/core_language_editing.php',
             'sources/hooks/blocks/main_staff_checklist/translations.php',
@@ -120,7 +120,7 @@ class Hook_addon_registry_core_language_editing
             'themes/default/templates/TRANSLATE_LANGUAGE_CRITICISM.tpl',
             'adminzone/pages/modules/admin_lang.php',
             'sources/hooks/systems/page_groupings/language.php',
-            'themes/default/images/icons/28x28/translate.svg',
+            'themes/default/images/icons/admin/translate.svg',
             'sources/hooks/systems/config/google_translate_api_key.php',
             'sources/database_multi_lang_conv.php',
             'themes/default/javascript/core_language_editing.js',

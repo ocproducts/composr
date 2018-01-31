@@ -87,7 +87,7 @@ class Hook_addon_registry_printer_friendly_block
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/links/print.svg';
+        return 'themes/default/images/icons/links/print.svg';
     }
 
     /**

@@ -11,6 +11,6 @@
 	</div>
 
 	<p>
-		<input class="button-screen menu---generic-admin--delete" type="submit" value="{!UNINSTALL}" />
+		<input class="button-screen admin--delete3" type="submit" value="{!UNINSTALL}" />
 	</p>
 </form>

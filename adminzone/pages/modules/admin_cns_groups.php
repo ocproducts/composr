@@ -137,8 +137,8 @@ class Module_admin_cns_groups extends Standard_crud_module
             get_screen_title('MANAGE_USERGROUPS'),
             comcode_lang_string('DOC_GROUPS'),
             array_merge(array(
-                array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_GROUP')),
-                array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_GROUP')),
+                array('admin/add', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_GROUP')),
+                array('admin/edit', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_GROUP')),
             ), manage_custom_fields_donext_link('group')),
             do_lang('MANAGE_USERGROUPS')
         );

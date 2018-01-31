@@ -82,7 +82,7 @@ In your HTML the Open Graph tags look similar to:
 
 The Favicon is the little icon used in bookmarks/favorites, and next to the browser tab. It is the [tt]favicon[/tt] theme image.
 
-There are many tools out there for creating favicons, but in the most basic form you can just uploads a 32x32 PNG file.
+There are many tools out there for creating favicons, but in the most basic form you can just upload a 32x32 PNG file.
 
 The Apple Web Clip image is similar to a Favicon, but larger. It is used primarily as the launch icon when a smartphone user saves a link onto their phone home screen. It is the [tt]webclipicon[/tt] theme image.
 

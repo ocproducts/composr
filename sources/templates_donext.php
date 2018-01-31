@@ -133,18 +133,18 @@ function do_next_manager($title, $text, $main = array(), $main_title = null, $ur
 
     // Entry stuff
     $entry_passed = array(
-        'menu/_generic_admin/add_one',
-        'menu/_generic_admin/edit_this',
-        'menu/_generic_admin/edit_one',
-        'menu/_generic_admin/view_this',
-        'menu/_generic_admin/view_archive',
+        'admin/add',
+        'admin/edit_this',
+        'admin/edit',
+        'admin/view_this',
+        'admin/view_archive',
     );
     $entry_passed_2 = array();
     foreach ($entry_passed as $option) {
         $x = null;
         $auto_add = null;
         switch ($option) {
-            case 'menu/_generic_admin/add_one':
+            case 'admin/add':
                 $x = $url_add_one;
                 if (($current_page_type == '_add') || ($current_page_type == '_add_entry')) {
                     if (get_param_integer('auto__add_one', 0) == 1) {
@@ -155,13 +155,13 @@ function do_next_manager($title, $text, $main = array(), $main_title = null, $ur
                     $auto_add = 'auto__add_one';
                 }
                 break;
-            case 'menu/_generic_admin/edit_this':
+            case 'admin/edit_this':
                 $x = $url_edit_this;
                 break;
-            case 'menu/_generic_admin/edit_one':
+            case 'admin/edit':
                 $x = $url_edit_one;
                 break;
-            case 'menu/_generic_admin/view_this':
+            case 'admin/view_this':
                 $x = $url_view_this;
                 if ($x !== null) {
                     if ($simplified) {
@@ -170,7 +170,7 @@ function do_next_manager($title, $text, $main = array(), $main_title = null, $ur
                     }
                 }
                 break;
-            case 'menu/_generic_admin/view_archive':
+            case 'admin/view_archive':
                 $x = $url_view_archive;
                 break;
         }
@@ -190,17 +190,17 @@ function do_next_manager($title, $text, $main = array(), $main_title = null, $ur
 
     // Category stuff
     $category_passed = array(
-        'menu/_generic_admin/add_one_category',
-        'menu/_generic_admin/edit_one_category',
-        'menu/_generic_admin/edit_this_category',
-        'menu/_generic_admin/view_this_category',
+        'admin/add_one_category',
+        'admin/edit_one_category',
+        'admin/edit_this_category',
+        'admin/view_this_category',
     );
     $category_passed_2 = array();
     foreach ($category_passed as $option) {
         $x = null;
         $auto_add = null;
         switch ($option) {
-            case 'menu/_generic_admin/add_one_category':
+            case 'admin/add_one_category':
                 $x = $url_add_one_category;
                 if (($current_page_type == '_add_category') || ($current_page_type == '_add_category')) {
                     if (get_param_integer('auto__add_one_category', 0) == 1) {
@@ -211,13 +211,13 @@ function do_next_manager($title, $text, $main = array(), $main_title = null, $ur
                     $auto_add = 'auto__add_one_category';
                 }
                 break;
-            case 'menu/_generic_admin/edit_one_category':
+            case 'admin/edit_one_category':
                 $x = $url_edit_one_category;
                 break;
-            case 'menu/_generic_admin/edit_this_category':
+            case 'admin/edit_this_category':
                 $x = $url_edit_this_category;
                 break;
-            case 'menu/_generic_admin/view_this_category':
+            case 'admin/view_this_category':
                 $x = $url_view_this_category;
                 break;
         }

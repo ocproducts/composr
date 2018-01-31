@@ -240,7 +240,7 @@ class Hook_ecommerce_email
         return array(
             'category_name' => do_lang('EMAIL_ACCOUNTS', integer_format(intval(get_option('initial_quota')))),
             'category_description' => do_lang_tempcode('EMAIL_TYPES_DESCRIPTION', escape_html(integer_format(intval(get_option('initial_quota'))))),
-            'category_image_url' => find_theme_image('icons/48x48/contact_methods/email'),
+            'category_image_url' => find_theme_image('icons/contact_methods/email'),
         );
     }
 
@@ -278,7 +278,7 @@ class Hook_ecommerce_email
                 $products['QUOTA_' . strval($amount)] = automatic_discount_calculation(array(
                     'item_name' => do_lang('PURCHASE_QUOTA', integer_format($amount), integer_format($current_amount), integer_format($current_amount + $amount)),
                     'item_description' => do_lang_tempcode('PURCHASE_QUOTA_DESCRIPTION', escape_html(integer_format($amount)), escape_html(integer_format($current_amount)), escape_html(integer_format($current_amount + $amount))),
-                    'item_image_url' => find_theme_image('icons/48x48/menu/_generic_admin/add_to_category'),
+                    'item_image_url' => find_theme_image('icons/admin/add_to_category'),
 
                     'type' => PRODUCT_PURCHASE,
                     'type_special_details' => array(),
@@ -307,11 +307,11 @@ class Hook_ecommerce_email
 
                 switch ($protocol) {
                     case 'forw':
-                        $image_url = find_theme_image('icons/48x48/buttons/redirect');
+                        $image_url = find_theme_image('icons/buttons/redirect');
                         break;
 
                     case 'pop3':
-                        $image_url = find_theme_image('icons/48x48/menu/_generic_admin/add_one');
+                        $image_url = find_theme_image('icons/admin/add');
                         break;
 
                     default:

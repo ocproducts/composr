@@ -180,8 +180,8 @@ In mobile mode:
 {$THEMEWIZARD_COLOR,#030a17,a.hover__dark,20% a.link + 80% BW}
 {$THEMEWIZARD_COLOR,#707377,special_borderer,76% seed + 24% BW}
 {$THEMEWIZARD_COLOR,#0a1e47,special_middle,45% (seed sat_to 85) + 65% BW}
-{$THEMEWIZARD_COLOR,#597bbf,cnspostindicator,65% (seed sat_to 100) + 35% WB}
-{$THEMEWIZARD_COLOR,#597bf7,cnsredirectindicator,65% (seed sat_to 100) + 35% WB + 000038 - 061600}
+{$THEMEWIZARD_COLOR,#597bbf,cns_post_indicator,65% (seed sat_to 100) + 35% WB}
+{$THEMEWIZARD_COLOR,#597bf7,cns_redirect_indicator,65% (seed sat_to 100) + 35% WB + 000038 - 061600}
 
 /* Range of bright varying colours */
 {$THEMEWIZARD_COLOR,#9c029a,gcol_1,100% #9C029A}
@@ -1206,7 +1206,7 @@ footer .global-minilinks .footer-links {
 		display: inline-block;
 		list-style-type: none;
 		padding: 0.25em 0 0.25em 18px;
-		background: url('{$IMG_INLINE;,icons/28x28/action_link}') 0 5px no-repeat;
+		background: url('{$IMG_INLINE;,icons/buttons/proceed2}') 0 5px no-repeat;
 		background-size: 14px 14px;
 	}
 /*{+END}*/
@@ -1277,7 +1277,7 @@ body .accessibility-hidden { /* Contents should be made visible (or interpreted)
 	padding-left: 15px !important;
 	margin: 1.5em;
 	margin-left: 10px !important;
-	background-image: url('{$IMG_INLINE;,1x/cannot_show}');
+	background-image: url('{$IMG_INLINE;,cannot_show}');
 	background-position: left 5px;
 	background-repeat: no-repeat;
 	background-size: 9px 6px;
@@ -1532,13 +1532,13 @@ div.red-alert, p.red-alert, .inline-wip-message {
 }
 div.red-alert, p.red-alert {
 	border: 1px solid {$GET,light_error_border};
-	background: url('{$IMG;,icons/48x48/status/notice}') 0.6em 0.75em no-repeat {$GET,light_error_background};
+	background: url('{$IMG;,icons/status/notice}') 0.6em 0.75em no-repeat {$GET,light_error_background};
 	background-size: 24px 24px;
 	overflow: hidden;
 }
 .inline-wip-message {
 	border: 1px solid {$GET,dark_border};
-	background: url('{$IMG;,icons/48x48/status/notice}') 0.6em 0.75em no-repeat {$GET,area_background};
+	background: url('{$IMG;,icons/status/notice}') 0.6em 0.75em no-repeat {$GET,area_background};
 	background-size: 24px 24px;
 	color: {$GET,slightly_seeded_text};
 }
@@ -1771,7 +1771,7 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 	margin: 0;
 }
 .boxless-space .box>.box-inner>h1, .boxless-space .box>.box-inner>h2, .boxless-space .box>.box-inner>h3, .boxless-space .box>.box-inner>h4, .boxless-space .box>.box-inner>h5, .boxless-space .box>.box-inner>h6, .boxless-space .box>.toggleable-tray-title {
-	background: url('{$IMG_INLINE;,1x/boxless_title_leadin_rightcomp}') no-repeat !important;
+	background: url('{$IMG_INLINE;,boxes/boxless_title_leadin_rightcomp}') no-repeat !important;
 	background-size: 18px 18px;
 	color: {$GET,slightly_seeded_right_complement_text} !important;
 	text-align: left;
@@ -1786,7 +1786,7 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 }
 .global-side-panel .boxless-space .box>.box-inner>h1, .global-side-panel .boxless-space .box>.box-inner>h2, .global-side-panel .boxless-space .box>.box-inner>h3, .global-side-panel .boxless-space .box>.box-inner>h4, .global-side-panel .boxless-space .box>.box-inner>h5, .global-side-panel .boxless-space .box>.box-inner>h6,
 .boxless-space .box .box>.box-inner>h1, .boxless-space .box .box>.box-inner>h2, .boxless-space .box .box>.box-inner>h3, .boxless-space .box .box>.box-inner>h4, .boxless-space .box .box>.box-inner>h5, .boxless-space .box .box>.box-inner>h6 {
-	background: url('{$IMG_INLINE;,1x/boxless_title_leadin_leftcomp}') no-repeat !important;
+	background: url('{$IMG_INLINE;,boxes/boxless_title_leadin_leftcomp}') no-repeat !important;
 	background-size: 18px 18px;
 	color: {$GET,slightly_seeded_left_complement_text} !important;
 }
@@ -2008,7 +2008,7 @@ h3 .toggleable-tray-button img {
 	margin-top: 4px; /* 2 +2px gap */
 }
 .box.box-arrow>span {
-	background: url('{$IMG;,1x/box_arrow}') no-repeat;
+	background: url('{$IMG;,boxes/arrow}') no-repeat;
 	background-size: 13px 7px;
 	margin-top: -7px;
 	display: inline-block;
@@ -2738,7 +2738,7 @@ div.zebra-0+div.zebra-1, div.zebra-1+div.zebra-0 {
 	font-weight: bold;
 	margin-bottom: 0.3em;
 	padding: 0 0 0 18px;
-	background: url('{$IMG_INLINE;,icons/28x28/action_link}') 0 3px no-repeat;
+	background: url('{$IMG_INLINE;,icons/buttons/proceed2}') 0 3px no-repeat;
 	background-size: 14px 14px;
 }
 .index-screen-fancier-entry-count {
@@ -3284,7 +3284,7 @@ ul.actions-list-compact>li, ul.actions-list-super-compact>li {
 	padding: 0 0 0 18px;
 }
 ul.actions-list>li, ul.actions-list-compact>li, ul.actions-list-super-compact>li {
-	background: url('{$IMG_INLINE;,icons/28x28/action_link}') left 4px no-repeat;
+	background: url('{$IMG_INLINE;,icons/buttons/proceed2}') left 4px no-repeat;
 	background-size: 14px 14px;
 }
 ul.actions-list>li, ul.actions-list-compact>li, ul.actions-list-super-compact>li {
@@ -3379,7 +3379,7 @@ dl.meta-details-list>dt, dl.meta-details-list>dd {
 	font-size: 0.95em;
 	opacity: 0.4;
 	transition: opacity 0.6s linear;
-	background: url('{$IMG_INLINE;,icons/48x48/tabs/settings}') right 4px no-repeat;
+	background: url('{$IMG_INLINE;,icons/buttons/settings}') right 4px no-repeat;
 	background-size: 24px 24px;
 	padding-right: 5px;
 	background-origin: content-box;
@@ -3910,12 +3910,11 @@ NB: Form buttons are wrapped in either:
 */
 
 
-.menu---generic-admin--delete, 
-.tabs--member-account--warnings, 
-.buttons-group .buttons--edit, 
-.buttons-group .buttons--edit-tree, 
-.buttons-group .menu---generic-admin--merge, 
-.buttons-group .buttons--move {
+.admin--delete3, 
+.buttons-group .admin--edit, 
+.buttons-group .admin--wiki-edit-tree, 
+.buttons-group .admin--merge, 
+.buttons-group .admin--move {
 	background-color: {$GET,red_highlight_background};
 	border-color: {$GET,red_highlight_text};
 }
@@ -3923,190 +3922,184 @@ NB: Form buttons are wrapped in either:
 /*
 Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 */
-.buttons--menu--pages--help {
-	background-image: url('{$IMG,icons/48x48/menu/pages/help}') !important;
+.help {
+	background-image: url('{$IMG,icons/help}') !important;
 }
 .buttons--back {
-	background-image: url('{$IMG,icons/48x48/buttons/back}') !important;
-}
-.buttons--gotopage {
-	background-image: url('{$IMG,icons/48x48/buttons/gotopage}') !important;
-}
-.buttons--perpage {
-	background-image: url('{$IMG,icons/48x48/buttons/perpage}') !important;
+	background-image: url('{$IMG,icons/buttons/back}') !important;
 }
 .buttons--filter {
-	background-image: url('{$IMG,icons/48x48/buttons/filter}') !important;
+	background-image: url('{$IMG,icons/buttons/filter}') !important;
 }
 .buttons--sort {
-	background-image: url('{$IMG,icons/48x48/buttons/sort}') !important;
+	background-image: url('{$IMG,icons/buttons/sort}') !important;
 }
 .buttons--all {
-	background-image: url('{$IMG,icons/48x48/buttons/all}') !important;
+	background-image: url('{$IMG,icons/buttons/all}') !important;
 }
 .buttons--all2 {
-	background-image: url('{$IMG,icons/48x48/buttons/all2}') !important;
+	background-image: url('{$IMG,icons/buttons/all2}') !important;
 }
 .buttons--convert {
-	background-image: url('{$IMG,icons/48x48/buttons/convert}') !important;
+	background-image: url('{$IMG,icons/buttons/convert}') !important;
 }
 .buttons--thumbnail {
-	background-image: url('{$IMG,icons/48x48/buttons/thumbnail}') !important;
+	background-image: url('{$IMG,icons/buttons/thumbnail}') !important;
 }
-.buttons--fullsize {
-	background-image: url('{$IMG,icons/48x48/buttons/fullsize}') !important;
+.buttons--full-size {
+	background-image: url('{$IMG,icons/buttons/full_size}') !important;
 }
 .buttons--calculate {
-	background-image: url('{$IMG,icons/48x48/buttons/calculate}') !important;
+	background-image: url('{$IMG,icons/buttons/calculate}') !important;
 }
 .buttons--choose {
-	background-image: url('{$IMG,icons/48x48/buttons/choose}') !important;
+	background-image: url('{$IMG,icons/buttons/choose}') !important;
 }
 .buttons--clear {
-	background-image: url('{$IMG,icons/48x48/buttons/clear}') !important;
+	background-image: url('{$IMG,icons/buttons/clear}') !important;
 }
 .buttons--ignore {
-	background-image: url('{$IMG,icons/48x48/buttons/ignore}') !important;
+	background-image: url('{$IMG,icons/buttons/ignore}') !important;
 }
 .buttons--closed {
-	background-image: url('{$IMG,icons/48x48/buttons/closed}') !important;
+	background-image: url('{$IMG,icons/buttons/closed}') !important;
 }
-.buttons--enable-notifications {
-	background-image: url('{$IMG,icons/48x48/buttons/enable_notifications}') !important;
+.buttons--notifications-enable {
+	background-image: url('{$IMG,icons/buttons/notifications_enable}') !important;
 }
-.buttons--disable-notifications {
-	background-image: url('{$IMG,icons/48x48/buttons/disable_notifications}') !important;
+.buttons--notifications-disable {
+	background-image: url('{$IMG,icons/buttons/notifications_disable}') !important;
 }
-.buttons--edit {
-	background-image: url('{$IMG,icons/48x48/buttons/edit}') !important;
+.admin--edit {
+	background-image: url('{$IMG,icons/admin/edit}') !important;
 }
 .buttons--more {
-	background-image: url('{$IMG,icons/48x48/buttons/more}') !important;
+	background-image: url('{$IMG,icons/buttons/more}') !important;
 }
-.buttons--move {
-	background-image: url('{$IMG,icons/48x48/buttons/move}') !important;
+.admin--move {
+	background-image: url('{$IMG,icons/admin/move}') !important;
 }
 .buttons--no {
-	background-image: url('{$IMG,icons/48x48/buttons/no}') !important;
+	background-image: url('{$IMG,icons/buttons/no}') !important;
 }
 .buttons--yes {
-	background-image: url('{$IMG,icons/48x48/buttons/yes}') !important;
+	background-image: url('{$IMG,icons/buttons/yes}') !important;
 }
 .buttons--proceed {
-	background-image: url('{$IMG,icons/48x48/buttons/proceed}') !important;
+	background-image: url('{$IMG,icons/buttons/proceed}') !important;
 }
 .menu-adminzone-tools-cleanup {
-	background-image: url('{$IMG,icons/48x48/menu/adminzone/tools/cleanup}') !important;
+	background-image: url('{$IMG,icons/menu/adminzone/tools/cleanup}') !important;
 }
 .buttons--copy {
-	background-image: url('{$IMG,icons/48x48/buttons/copy}') !important;
+	background-image: url('{$IMG,icons/buttons/copy}') !important;
 }
 .buttons--skip {
-	background-image: url('{$IMG,icons/48x48/buttons/skip}') !important;
+	background-image: url('{$IMG,icons/buttons/skip}') !important;
 }
 .buttons--cancel {
-	background-image: url('{$IMG,icons/48x48/buttons/cancel}') !important;
+	background-image: url('{$IMG,icons/buttons/cancel}') !important;
 }
 .buttons--previous {
-	background-image: url('{$IMG,icons/48x48/buttons/previous}') !important;
+	background-image: url('{$IMG,icons/buttons/previous}') !important;
 }
 .buttons--previous-none {
-	background-image: url('{$IMG,icons/48x48/buttons/previous_none}') !important;
+	background-image: url('{$IMG,icons/buttons/previous_none}') !important;
 }
 .buttons--next {
-	background-image: url('{$IMG,icons/48x48/buttons/next}') !important;
+	background-image: url('{$IMG,icons/buttons/next}') !important;
 }
 .buttons--next-none {
-	background-image: url('{$IMG,icons/48x48/buttons/next_none}') !important;
+	background-image: url('{$IMG,icons/buttons/next_none}') !important;
 }
 .buttons--new-comment {
-	background-image: url('{$IMG,icons/48x48/buttons/new_comment}') !important;
+	background-image: url('{$IMG,icons/buttons/new_comment}') !important;
 }
 .buttons--new-reply {
-	background-image: url('{$IMG,icons/48x48/buttons/new_reply}') !important;
+	background-image: url('{$IMG,icons/buttons/new_reply}') !important;
 }
 .buttons--redirect {
-	background-image: url('{$IMG,icons/48x48/buttons/redirect}') !important;
+	background-image: url('{$IMG,icons/buttons/redirect}') !important;
 }
 .buttons--report {
-	background-image: url('{$IMG,icons/48x48/buttons/report}') !important;
+	background-image: url('{$IMG,icons/buttons/report}') !important;
+}
+.buttons--undo {
+	background-image: url('{$IMG,icons/buttons/undo}') !important;
 }
 /*{+START,IF,{$ADDON_INSTALLED,actionlog}}*/
-	.buttons--undo {
-		background-image: url('{$IMG,icons/48x48/buttons/undo}') !important;
-	}
-	.buttons--revisions {
-		background-image: url('{$IMG,icons/48x48/buttons/revisions}') !important;
+	.admin--revisions {
+		background-image: url('{$IMG,icons/admin/revisions}') !important;
 	}
 /*{+END}*/
 .buttons--save {
-	background-image: url('{$IMG,icons/48x48/buttons/save}') !important;
+	background-image: url('{$IMG,icons/buttons/save}') !important;
 }
 .buttons--search {
-	background-image: url('{$IMG,icons/48x48/buttons/search}') !important;
+	background-image: url('{$IMG,icons/buttons/search}') !important;
 }
 .buttons--send {
-	background-image: url('{$IMG,icons/48x48/buttons/send}') !important;
+	background-image: url('{$IMG,icons/buttons/send}') !important;
 }
 .buttons--upload {
-	background-image: url('{$IMG,icons/48x48/buttons/upload}') !important;
+	background-image: url('{$IMG,icons/buttons/upload}') !important;
+}
+.buttons--preview {
+	background-image: url('{$IMG,icons/buttons/preview}') !important;
 }
 .menu--adminzone--audit--unvalidated {
-	background-image: url('{$IMG,icons/48x48/menu/adminzone/audit/unvalidated}') !important;
+	background-image: url('{$IMG,icons/menu/adminzone/audit/unvalidated}') !important;
 }
-.buttons--vote {
-	background-image: url('{$IMG,icons/48x48/menu/social/polls}') !important;
+.menu--social--polls-polls {
+	background-image: url('{$IMG,icons/menu/social/polls}') !important;
 }
 .feedback--rate {
-	background-image: url('{$IMG,icons/48x48/feedback/rate}') !important;
+	background-image: url('{$IMG,icons/feedback/rate}') !important;
 }
-.menu---generic-admin--add-one {
-	background-image: url('{$IMG,icons/48x48/menu/_generic_admin/add_one}') !important;
+.admin--add {
+	background-image: url('{$IMG,icons/admin/add}') !important;
 }
-.menu---generic-admin--add-one-category {
-	background-image: url('{$IMG,icons/48x48/menu/_generic_admin/add_one_category}') !important;
+.admin--add-one-category {
+	background-image: url('{$IMG,icons/admin/add_one_category}') !important;
 }
-.menu---generic-admin--add-to-category {
-	background-image: url('{$IMG,icons/48x48/menu/_generic_admin/add_to_category}') !important;
+.admin--add-to-category {
+	background-image: url('{$IMG,icons/admin/add_to_category}') !important;
 }
-.menu---generic-admin--delete {
-	background-image: url('{$IMG,icons/48x48/menu/_generic_admin/delete}') !important;
+.admin--delete33 {
+	background-image: url('{$IMG,icons/admin/delete3}') !important;
 }
-.menu---generic-admin--edit-one {
-	background-image: url('{$IMG,icons/48x48/menu/_generic_admin/edit_one}') !important;
+.admin--edit {
+	background-image: url('{$IMG,icons/admin/edit}') !important;
 }
-.menu---generic-admin--edit-one-category {
-	background-image: url('{$IMG,icons/48x48/menu/_generic_admin/edit_one_category}') !important;
+.admin--edit-one-category {
+	background-image: url('{$IMG,icons/admin/edit_one_category}') !important;
 }
-.menu---generic-admin--edit-this {
-	background-image: url('{$IMG,icons/48x48/menu/_generic_admin/edit_this}') !important;
+.admin--edit-this {
+	background-image: url('{$IMG,icons/admin/edit_this}') !important;
 }
-.menu---generic-admin--edit-this-category {
-	background-image: url('{$IMG,icons/48x48/menu/_generic_admin/edit_this_category}') !important;
+.admin--edit-this-category {
+	background-image: url('{$IMG,icons/admin/edit_this_category}') !important;
 }
-.menu---generic-admin--export {
-	background-image: url('{$IMG,icons/48x48/menu/_generic_admin/export}') !important;
+.admin--export {
+	background-image: url('{$IMG,icons/admin/export}') !important;
 }
-.menu---generic-admin--import {
-	background-image: url('{$IMG,icons/48x48/menu/_generic_admin/import}') !important;
+.admin--import {
+	background-image: url('{$IMG,icons/admin/import}') !important;
 }
-.menu---generic-admin--merge {
-	background-image: url('{$IMG,icons/48x48/menu/_generic_admin/merge}') !important;
+.admin--merge {
+	background-image: url('{$IMG,icons/admin/merge}') !important;
 }
-.menu---generic-admin--sync {
-	background-image: url('{$IMG,icons/48x48/menu/_generic_admin/sync}') !important;
+.admin--sync {
+	background-image: url('{$IMG,icons/admin/sync}') !important;
 }
-.menu---generic-admin--view-archive {
-	background-image: url('{$IMG,icons/48x48/menu/_generic_admin/view_archive}') !important;
+.admin--view-archive {
+	background-image: url('{$IMG,icons/admin/view_archive}') !important;
 }
 .menu--site-meta--user-actions--join {
-	background-image: url('{$IMG,icons/48x48/menu/site_meta/user_actions/join}') !important;
+	background-image: url('{$IMG,icons/menu/site_meta/user_actions/join}') !important;
 }
 .menu--site-meta--user-actions--login {
-	background-image: url('{$IMG,icons/48x48/menu/site_meta/user_actions/login}') !important;
-}
-.tabs--preview {
-	background-image: url('{$IMG,icons/48x48/tabs/preview}') !important;
+	background-image: url('{$IMG,icons/menu/site_meta/user_actions/login}') !important;
 }
 
 /*
@@ -4455,19 +4448,19 @@ pre .comcode-code-inner {
 }
 
 .comcode-concept a {
-	background-image: url('{$IMG;,1x/arrow_box}') !important;
+	background-image: url('{$IMG;,icons/arrow_box/arrow_box}') !important;
 	background-size: 12px 12px;
 }
 .comcode-concept a:hover {
-	background-image: url('{$IMG;,1x/arrow_box_hover}') !important;
+	background-image: url('{$IMG;,icons/arrow_box/arrow_box_hover}') !important;
 }
 
 .wiki-link a {
-	background-image: url('{$IMG;,icons/28x28/wiki_link}') !important;
+	background-image: url('{$IMG;,icons/wiki/link}') !important;
 	background-size: 14px 14px;
 }
 .wiki-link a:hover {
-	background-image: url('{$IMG;,icons/28x28/wiki_link_hover}') !important;
+	background-image: url('{$IMG;,icons/wiki/link_hover}') !important;
 }
 
 .comcode-concept a, .wiki-link a {
@@ -4494,7 +4487,7 @@ pre .comcode-code-inner {
 }
 
 .comcode-concepts-title {
-	background-image: url('{$IMG;,checklist/checklist1}');
+	background-image: url('{$IMG;,icons/checklist/checklist1}');
 	background-size: 12px 12px;
 	background-repeat: no-repeat;
 	background-position: 1px 0;
@@ -4797,90 +4790,90 @@ a[rel="lightbox"] {
 /*{+START,IF,{$THEME_OPTION,filetype_icons}}*/
 	/* Higher than media links for lower CSS precedence */
 	a[target="_blank"].user-link { /* Detected external links have styling */
-		background: url('{$IMG;,icons/32x32/filetypes/external_link}') no-repeat right top;
+		background: url('{$IMG;,icons/file_types/external_link}') no-repeat right top;
 		background-size: 7px 8px;
 		padding-right: 10px;
 	}
 	body div a.external-link { /* Explicitly marked external links must show the styling with precedence */
-		background: url('{$IMG;,icons/32x32/filetypes/external_link}') no-repeat right top !important;
+		background: url('{$IMG;,icons/file_types/external_link}') no-repeat right top !important;
 		background-size: 7px 8px;
 		padding-right: 10px !important;
 	}
 
 	a[href^="mailto:"] {
-		background: url('{$IMG;,icons/32x32/filetypes/email_link}') no-repeat right top !important; /* Important because the URL may contain arbitrary stuff, including ".php", due to embedded mail body */
+		background: url('{$IMG;,icons/file_types/email_link}') no-repeat right top !important; /* Important because the URL may contain arbitrary stuff, including ".php", due to embedded mail body */
 		background-size: 16px 16px;
 		padding: 0 22px 5px 0 !important;
 	}
 
 	a[href$=".pdf"].user-link, a[href$=".ps"].user-link, body div a.pdf-link {
-		background: url('{$IMG;,icons/32x32/filetypes/page_pdf}') no-repeat right top;
+		background: url('{$IMG;,icons/file_types/page_pdf}') no-repeat right top;
 		background-size: 16px 16px;
 		padding: 0 22px 5px 0;
 	}
 
 	a[href$=".doc"].user-link, a[href$=".docx"].user-link, a[href$=".rtf"].user-link, body div a.doc-link {
-		background: url('{$IMG;,icons/32x32/filetypes/page_doc}') no-repeat right top;
+		background: url('{$IMG;,icons/file_types/page_doc}') no-repeat right top;
 		background-size: 16px 16px;
 		padding: 0 22px 5px 0;
 	}
 
 	a[href$=".xls"].user-link, a[href$=".xlsx"].user-link, body div a.xls-link {
-		background: url('{$IMG;,icons/32x32/filetypes/page_xls}') no-repeat right top;
+		background: url('{$IMG;,icons/file_types/page_xls}') no-repeat right top;
 		background-size: 16px 16px;
 		padding: 0 22px 5px 0;
 	}
 
 	a[href$=".ppt"].user-link, a[href$=".pptx"].user-link, body div a.ppt-link {
-		background: url('{$IMG;,icons/32x32/filetypes/page_ppt}') no-repeat right top;
+		background: url('{$IMG;,icons/file_types/page_ppt}') no-repeat right top;
 		background-size: 16px 16px;
 		padding: 0 22px 5px 0;
 	}
 
 	a[href$=".log"].user-link, a[href$=".txt"].user-link, body div a.txt-link {
-		background: url('{$IMG;,icons/32x32/filetypes/page_txt}') no-repeat right top;
+		background: url('{$IMG;,icons/file_types/page_txt}') no-repeat right top;
 		background-size: 16px 16px;
 		padding: 0 22px 5px 0;
 	}
 
 	a[href$=".odt"].user-link, body div a.odt-link {
-		background: url('{$IMG;,icons/32x32/filetypes/page_odt}') no-repeat right top;
+		background: url('{$IMG;,icons/file_types/page_odt}') no-repeat right top;
 		background-size: 16px 16px;
 		padding: 0 22px 5px 0;
 	}
 
 	a[href$=".odp"].user-link, body div a.odp-link {
-		background: url('{$IMG;,icons/32x32/filetypes/page_odt}') no-repeat right top;
+		background: url('{$IMG;,icons/file_types/page_odt}') no-repeat right top;
 		background-size: 16px 16px;
 		padding: 0 22px 5px 0;
 	}
 
 	a[href$=".ods"].user-link, body div a.ods-link {
-		background: url('{$IMG;,icons/32x32/filetypes/page_ods}') no-repeat right top;
+		background: url('{$IMG;,icons/file_types/page_ods}') no-repeat right top;
 		background-size: 16px 16px;
 		padding: 0 22px 5px 0;
 	}
 
 	a[href$=".rss"].user-link, body div a.feed-link {
-		background: url('{$IMG;,icons/32x32/filetypes/feed}') no-repeat right top;
+		background: url('{$IMG;,icons/file_types/feed}') no-repeat right top;
 		background-size: 16px 16px;
 		padding: 0 22px 5px 0;
 	}
 
 	a[href$=".torrent"].user-link, body div a.torrent-link {
-		background: url('{$IMG;,icons/32x32/filetypes/page_torrent}') no-repeat right top;
+		background: url('{$IMG;,icons/file_types/page_torrent}') no-repeat right top;
 		background-size: 16px 16px;
 		padding: 0 22px 5px 0;
 	}
 
 	a[href$=".zip"].user-link, a[href$=".gz"].user-link, a[href$=".bz2"].user-link, a[href$=".tar"].user-link, a[href$=".rar"].user-link, body div a.archive-link {
-		background: url('{$IMG;,icons/32x32/filetypes/page_archive}') no-repeat right top;
+		background: url('{$IMG;,icons/file_types/page_archive}') no-repeat right top;
 		background-size: 16px 16px;
 		padding: 0 22px 5px 0;
 	}
 
 	a[href$=".asf"].user-link, a[href$=".ra"].user-link, a[href$=".wma"].user-link, a[href$=".wav"].user-link, a[href$=".mp3"].user-link, a[href$=".ogg"].user-link, a[href$=".mid"].user-link, a[href$=".mov"].user-link, a[href$=".qt"].user-link, a[href$=".wmv"].user-link, a[href$=".ram"].user-link, a[href$=".rm"].user-link, a[href$=".avi"].user-link, a[href$=".mpg"].user-link, a[href$=".mpe"].user-link, a[href$=".mpeg"].user-link, a[href$=".mp4"].user-link, a[href$=".webm"].user-link, body div a.media-link {
-		background: url('{$IMG;,icons/32x32/filetypes/page_media}') no-repeat right top;
+		background: url('{$IMG;,icons/file_types/page_media}') no-repeat right top;
 		background-size: 16px 16px;
 		padding: 0 22px 5px 0;
 	}
@@ -4897,7 +4890,7 @@ a[rel="lightbox"] {
 
 /*{+START,IF,{$ADDON_INSTALLED,recommend}}*/
 	.print-icon {
-		background: url('{$IMG;,icons/48x48/links/print}') no-repeat left top !important;
+		background: url('{$IMG;,icons/links/print}') no-repeat left top !important;
 		background-size: 24px 24px;
 		padding: 0 0 5px 32px !important;
 		display: inline-block;

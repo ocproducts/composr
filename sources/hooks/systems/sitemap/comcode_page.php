@@ -111,9 +111,9 @@ class Hook_sitemap_comcode_page extends Hook_sitemap_page
 
         $row = $this->_load_row_from_page_groupings($row, $zone, $page);
 
-        $test_icon = find_theme_image('icons/48x48/menu/pages/' . $page, true);
+        $test_icon = find_theme_image('icons/menu/pages/' . $page, true);
         if ($test_icon == '') {
-            $test_icon = find_theme_image('icons/48x48/menu/site_meta/' . $page, true);
+            $test_icon = find_theme_image('icons/menu/site_meta/' . $page, true);
             if ($test_icon == '') {
                 $test_icon = null;
             }

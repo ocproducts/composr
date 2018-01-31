@@ -40,7 +40,7 @@ class Hook_ecommerce_highlight_name
             'HIGHLIGHT_NAME' => automatic_discount_calculation(array(
                 'item_name' => do_lang('NAME_HIGHLIGHTING'),
                 'item_description' => do_lang_tempcode('NAME_HIGHLIGHTING_DESCRIPTION'),
-                'item_image_url' => find_theme_image('icons/48x48/menu/social/members'),
+                'item_image_url' => find_theme_image('icons/menu/social/members'),
 
                 'type' => PRODUCT_PURCHASE,
                 'type_special_details' => array(),

@@ -4,42 +4,42 @@
 {| wide
 
 !
-! [semihtml]<img alt="" class="vertical-alignment" width="24" height="24" src="{$IMG*,icons/48x48/tiers/bronze}" /> <span class="vertical-alignment">Bronze</span>[/semihtml]
-! [semihtml]<img alt="" class="vertical-alignment" width="24" height="24" src="{$IMG*,icons/48x48/tiers/silver}" /> <span class="vertical-alignment">Silver</span>[/semihtml]
-! [semihtml]<img alt="" class="vertical-alignment" width="24" height="24" src="{$IMG*,icons/48x48/tiers/gold}" /> <span class="vertical-alignment">Gold</span>[/semihtml]
-! [semihtml]<img alt="" class="vertical-alignment" width="24" height="24" src="{$IMG*,icons/48x48/tiers/platinum}" /> <span class="vertical-alignment">Platinum</span>[/semihtml]
+! [semihtml]<img alt="" class="vertical-alignment" width="24" height="24" src="{$IMG*,icons/tiers/bronze}" /> <span class="vertical-alignment">Bronze</span>[/semihtml]
+! [semihtml]<img alt="" class="vertical-alignment" width="24" height="24" src="{$IMG*,icons/tiers/silver}" /> <span class="vertical-alignment">Silver</span>[/semihtml]
+! [semihtml]<img alt="" class="vertical-alignment" width="24" height="24" src="{$IMG*,icons/tiers/gold}" /> <span class="vertical-alignment">Gold</span>[/semihtml]
+! [semihtml]<img alt="" class="vertical-alignment" width="24" height="24" src="{$IMG*,icons/tiers/platinum}" /> <span class="vertical-alignment">Platinum</span>[/semihtml]
 
 |-
 
 ! [tooltip="Achieve results using Feature X"]Feature X[/tooltip]
-| [img="Yes" width="24" height="24"]{$IMG,icons/48x48/buttons/yes}[/img]
-| [img="Yes" width="24" height="24"]{$IMG,icons/48x48/buttons/yes}[/img]
-| [img="Yes" width="24" height="24"]{$IMG,icons/48x48/buttons/yes}[/img]
-| [img="Yes" width="24" height="24"]{$IMG,icons/48x48/buttons/yes}[/img]
+| [img="Yes" width="24" height="24"]{$IMG,icons/buttons/yes}[/img]
+| [img="Yes" width="24" height="24"]{$IMG,icons/buttons/yes}[/img]
+| [img="Yes" width="24" height="24"]{$IMG,icons/buttons/yes}[/img]
+| [img="Yes" width="24" height="24"]{$IMG,icons/buttons/yes}[/img]
 
 |-
 
 ! [tooltip="Use the product without adverts"]Ad-free[/tooltip]
-| [img="No" width="24" height="24"]{$IMG,icons/48x48/buttons/no}[/img]
-| [img="Yes" width="24" height="24"]{$IMG,icons/48x48/buttons/yes}[/img]
-| [img="Yes" width="24" height="24"]{$IMG,icons/48x48/buttons/yes}[/img]
-| [img="Yes" width="24" height="24"]{$IMG,icons/48x48/buttons/yes}[/img]
+| [img="No" width="24" height="24"]{$IMG,icons/buttons/no}[/img]
+| [img="Yes" width="24" height="24"]{$IMG,icons/buttons/yes}[/img]
+| [img="Yes" width="24" height="24"]{$IMG,icons/buttons/yes}[/img]
+| [img="Yes" width="24" height="24"]{$IMG,icons/buttons/yes}[/img]
 
 |-
 
 ! [tooltip="Can you live without it?"]Super-power-feature[/tooltip]
-| [img="No" width="24" height="24"]{$IMG,icons/48x48/buttons/no}[/img]
-| [img="No" width="24" height="24"]{$IMG,icons/48x48/buttons/no}[/img]
-| [img="Yes" width="24" height="24"]{$IMG,icons/48x48/buttons/yes}[/img]
-| [img="Yes" width="24" height="24"]{$IMG,icons/48x48/buttons/yes}[/img]
+| [img="No" width="24" height="24"]{$IMG,icons/buttons/no}[/img]
+| [img="No" width="24" height="24"]{$IMG,icons/buttons/no}[/img]
+| [img="Yes" width="24" height="24"]{$IMG,icons/buttons/yes}[/img]
+| [img="Yes" width="24" height="24"]{$IMG,icons/buttons/yes}[/img]
 
 |-
 
 ! [tooltip="Generate the best results in your industry"]Feature of the Gods[/tooltip]
-| [img="No" width="24" height="24"]{$IMG,icons/48x48/buttons/no}[/img]
-| [img="No" width="24" height="24"]{$IMG,icons/48x48/buttons/no}[/img]
-| [img="No" width="24" height="24"]{$IMG,icons/48x48/buttons/no}[/img]
-| [img="Yes" width="24" height="24"]{$IMG,icons/48x48/buttons/yes}[/img]
+| [img="No" width="24" height="24"]{$IMG,icons/buttons/no}[/img]
+| [img="No" width="24" height="24"]{$IMG,icons/buttons/no}[/img]
+| [img="No" width="24" height="24"]{$IMG,icons/buttons/no}[/img]
+| [img="Yes" width="24" height="24"]{$IMG,icons/buttons/yes}[/img]
 
 |-
 

@@ -56,7 +56,7 @@ class Hook_members_referrals
                         'views',
                         do_lang_tempcode('MANUALLY_ADJUST_SCHEME_SETTINGS', escape_html($scheme_title)),
                         build_url(array('page' => 'admin_referrals', 'type' => 'adjust', 'scheme' => $scheme_name, 'member_id' => $member_id), get_module_zone('admin_referrals')),
-                        'menu/referrals'
+                        'spare/referrals'
                     );
                 }
 
@@ -68,7 +68,7 @@ class Hook_members_referrals
                     'audit',
                     make_string_tempcode(escape_html($scheme_title)),
                     find_script('referrer_report') . '?scheme=' . urlencode($scheme_name) . '&member_id=' . strval($member_id) . $keep->evaluate(),
-                    'menu/referrals'
+                    'spare/referrals'
                 );
             }
         }

@@ -58,7 +58,7 @@ class Hook_content_meta_aware_banner
             'description_field_dereference' => true,
             'thumb_field' => 'img_url',
             'thumb_field_is_theme_image' => false,
-            'alternate_icon_theme_image' => 'icons/48x48/menu/cms/banners',
+            'alternate_icon_theme_image' => 'icons/menu/cms/banners',
 
             'view_page_link_pattern' => '_SEARCH:banners:view:source=_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_banners:_edit:_WILD',

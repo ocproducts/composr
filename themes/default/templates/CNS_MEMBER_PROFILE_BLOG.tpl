@@ -19,5 +19,5 @@
 	1_URL={ADD_BLOG_POST_URL*}
 	1_TITLE={!ADD_NEWS_BLOG}
 	1_REDIRECT_HASH=blog
-	1_ICON=menu/_generic_admin/add_one
+	1_ICON=admin/add
 {+END}

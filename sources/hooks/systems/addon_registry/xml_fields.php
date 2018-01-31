@@ -87,7 +87,7 @@ class Hook_addon_registry_xml_fields
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/setup/xml_fields.svg';
+        return 'themes/default/images/icons/menu/adminzone/setup/xml_fields.svg';
     }
 
     /**
@@ -98,7 +98,7 @@ class Hook_addon_registry_xml_fields
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/adminzone/setup/xml_fields.svg',
+            'themes/default/images/icons/menu/adminzone/setup/xml_fields.svg',
             'data/xml_config/fields.xml',
             'sources/hooks/systems/addon_registry/xml_fields.php',
         );

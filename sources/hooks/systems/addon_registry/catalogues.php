@@ -89,7 +89,7 @@ class Hook_addon_registry_catalogues
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/rich_content/catalogues/catalogues.svg';
+        return 'themes/default/images/icons/menu/rich_content/catalogues/catalogues.svg';
     }
 
     /**
@@ -100,17 +100,17 @@ class Hook_addon_registry_catalogues
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/rich_content/catalogues/catalogues.svg',
-            'themes/default/images/icons/48x48/menu/cms/catalogues/add_one_catalogue.svg',
-            'themes/default/images/icons/48x48/menu/cms/catalogues/edit_one_catalogue.svg',
-            'themes/default/images/icons/48x48/menu/cms/catalogues/edit_this_catalogue.svg',
-            'themes/default/images/icons/48x48/menu/cms/catalogues/index.html',
-            'themes/default/images/icons/48x48/menu/rich_content/catalogues/contacts.svg',
-            'themes/default/images/icons/48x48/menu/rich_content/catalogues/faqs.svg',
-            'themes/default/images/icons/48x48/menu/rich_content/catalogues/index.html',
-            'themes/default/images/icons/48x48/menu/rich_content/catalogues/links.svg',
-            'themes/default/images/icons/48x48/menu/rich_content/catalogues/products.svg',
-            'themes/default/images/icons/48x48/menu/rich_content/catalogues/projects.svg',
+            'themes/default/images/icons/menu/rich_content/catalogues/catalogues.svg',
+            'themes/default/images/icons/menu/cms/catalogues/add_one_catalogue.svg',
+            'themes/default/images/icons/menu/cms/catalogues/edit_one_catalogue.svg',
+            'themes/default/images/icons/menu/cms/catalogues/edit_this_catalogue.svg',
+            'themes/default/images/icons/menu/cms/catalogues/index.html',
+            'themes/default/images/icons/menu/rich_content/catalogues/contacts.svg',
+            'themes/default/images/icons/menu/rich_content/catalogues/faqs.svg',
+            'themes/default/images/icons/menu/rich_content/catalogues/index.html',
+            'themes/default/images/icons/menu/rich_content/catalogues/links.svg',
+            'themes/default/images/icons/menu/rich_content/catalogues/products.svg',
+            'themes/default/images/icons/menu/rich_content/catalogues/projects.svg',
             'sources/hooks/systems/snippets/exists_catalogue.php',
             'sources/hooks/systems/module_permissions/catalogues_catalogue.php',
             'sources/hooks/systems/module_permissions/catalogues_category.php',
@@ -732,7 +732,7 @@ class Hook_addon_registry_catalogues
                 'URL' => placeholder_url(),
                 'FIELDS' => placeholder_fields(),
                 'FIELDS_NEW' => placeholder_form(),
-                'SUBMIT_ICON' => 'menu---generic-admin--add-one',
+                'SUBMIT_ICON' => 'admin--add',
                 'SUBMIT_NAME' => lorem_word(),
             )), null, '', true)
         );
@@ -758,7 +758,7 @@ class Hook_addon_registry_catalogues
                 'FIELDS' => placeholder_fields(),
                 'FIELDS_EXISTING' => placeholder_form(),
                 'FIELDS_NEW' => placeholder_form(),
-                'SUBMIT_ICON' => 'menu---generic-admin--edit-this',
+                'SUBMIT_ICON' => 'admin--edit-this',
                 'SUBMIT_NAME' => lorem_word(),
             )), null, '', true)
         );

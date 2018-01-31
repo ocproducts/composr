@@ -27,15 +27,15 @@
 			</div>
 
 			<div id="timer">
-				<div id="pause-but"><img class="js-click-toggle-window-pausing" width="30" height="30" src="{$IMG*,realtime_rain/pause-but}" alt="{!PAUSE}" title="{!PAUSE}" /></div>
+				<div id="pause-but"><img class="js-click-toggle-window-pausing" width="30" height="30" src="{$IMG*,icons/realtime_rain/pause_but}" alt="{!PAUSE}" title="{!PAUSE}" /></div>
 
-				<div id="pre-but"><img class="js-click-rain-slow-down" width="30" height="30" src="{$IMG*,realtime_rain/pre}" alt="{!SLOW_DOWN}" title="{!SLOW_DOWN}" /></div>
+				<div id="pre-but"><img class="js-click-rain-slow-down" width="30" height="30" src="{$IMG*,icons/realtime_rain/previous_but}" alt="{!SLOW_DOWN}" title="{!SLOW_DOWN}" /></div>
 
 				<div class="js-hover-toggle-real-time-indicator js-mouseover-set-time-line-position js-mousemove-timeline-click js-click-timeline-click" id="time-line">
-					<img id="time-line-image" width="802" height="5" src="{$IMG*,realtime_rain/time-line}" alt="" />
+					<img id="time-line-image" width="802" height="5" src="{$IMG*,realtime_rain/time_line}" alt="" />
 				</div>
 
-				<div id="next-but"><img class="js-click-rain-speed-up" width="30" height="30" src="{$IMG*,realtime_rain/next}" alt="{!SPEED_UP}" title="{!SPEED_UP}" /></div>
+				<div id="next-but"><img class="js-click-rain-speed-up" width="30" height="30" src="{$IMG*,icons/realtime_rain/next_but}" alt="{!SPEED_UP}" title="{!SPEED_UP}" /></div>
 			</div>
 		</div></div>
 	</div>

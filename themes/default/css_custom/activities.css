@@ -45,23 +45,24 @@ form.activities-remove {
 	width: 22px;
 }
 
-form.activities-remove .remove-cross {
+form.activities-remove .remove-button {
 	width: 14px;
 	height: 14px;
-	background: url('{$IMG;,stop12}') transparent no-repeat;
+	background: url('{$IMG;,icons/admin/delete}') transparent no-repeat;
 	background-size: 14px 14px;
+	opacity: 0.7;
 	font-size: 0;
 	border: none;
 	margin-top: 4px;
 	padding: 0;
 }
 
-form.activities-remove .remove-cross:hover {
-	background: url('{$IMG;,stop12_hover}') transparent no-repeat;
+form.activities-remove .remove-button:hover {
+	opacity: 1.0;
 	cursor: pointer;
 }
 
-form.activities-remove input.remove-cross::-moz-focus-inner {
+form.activities-remove input.button-cross::-moz-focus-inner {
 	border: 0;
 }
 
@@ -88,7 +89,7 @@ form.activities-remove input.remove-cross::-moz-focus-inner {
 .activities-line .activity-time {
 	float: right;
 	font-size: 0.80em;
-	opacity: 0.8;
+	opacity: 0.7;
 }
 
 .activities-line .activity-name, .activities-line .activity-time {

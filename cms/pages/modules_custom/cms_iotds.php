@@ -136,8 +136,8 @@ class Module_cms_iotds extends Standard_crud_module
             get_screen_title('MANAGE_IOTDS'),
             comcode_lang_string('DOC_IOTDS'),
             array(
-                has_privilege(get_member(), 'submit_midrange_content', 'cms_iotds') ? array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_IOTD')) : null,
-                has_privilege(get_member(), 'edit_own_midrange_content', 'cms_iotds') ? array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_OR_CHOOSE_IOTD')) : null,
+                has_privilege(get_member(), 'submit_midrange_content', 'cms_iotds') ? array('admin/add', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_IOTD')) : null,
+                has_privilege(get_member(), 'edit_own_midrange_content', 'cms_iotds') ? array('admin/edit', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_OR_CHOOSE_IOTD')) : null,
             ),
             do_lang('MANAGE_IOTDS')
         );

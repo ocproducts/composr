@@ -231,7 +231,7 @@ To upgrade follow the steps in your website's [tt]http://mybaseurl/upgrader.php[
 
 $news_category = $GLOBALS['SITE_DB']->query_select_value_if_there('news_categories', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('nc_title') => 'New releases'));
 if ($news_category === null) {
-    $news_category = add_news_category('New releases', 'newscats/general', '');
+    $news_category = add_news_category('New releases', 'icons/news/general', '');
     set_global_category_access('news', $news_category);
 }
 

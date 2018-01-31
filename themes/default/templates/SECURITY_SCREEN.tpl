@@ -20,7 +20,7 @@
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			<p class="proceed-button">
-				<input class="button-screen menu---generic-admin--delete js-click-btn-delete-add-form-marked-posts" type="submit" value="{!DELETE}" />
+				<input class="button-screen admin--delete3 js-click-btn-delete-add-form-marked-posts" type="submit" value="{!DELETE}" />
 			</p>
 		</form>
 	{+END}

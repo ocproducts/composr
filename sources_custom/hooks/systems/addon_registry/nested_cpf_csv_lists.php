@@ -124,7 +124,7 @@ Set Custom Profile Field list fields to have a default value like [tt]countries.
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.svg';
+        return 'themes/default/images/icons/admin/component.svg';
     }
 
     /**

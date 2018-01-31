@@ -63,7 +63,7 @@
 			<form title="{!MERGE_SUPPORT_TICKETS}" action="{$PAGE_LINK*,_SEARCH:tickets:merge:from={$GET,ticket_merge_into}:to={ID}}" method="post" autocomplete="off">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
-				<input class="button-screen-item menu---generic-admin--merge" type="submit" title="{!MERGE_SUPPORT_TICKETS}" value="{!_MERGE}" />
+				<input class="button-screen-item admin--merge" type="submit" title="{!MERGE_SUPPORT_TICKETS}" value="{!_MERGE}" />
 			</form>
 		</td>
 	{+END}{+END}

@@ -20,8 +20,8 @@
 /* Sorting */
 .sortable-table th.table-sortable span {
 	cursor: pointer;
-	background-image: url('{$IMG;,sortable_tables/sortable}');
-	background-size: 11px 16px;
+	background-image: url('{$IMG;,icons/sortable_tables/sortable}');
+	background-size: 16px 16px;
 	background-position: center left;
 	background-repeat: no-repeat;
 	min-height: 16px;
@@ -40,8 +40,8 @@
 	background-repeat: no-repeat;
 }
 .sortable-table th.table-filtered span {
-	background-image: url('{$IMG;,sortable_tables/filter}');
-	background-size: 14px 11px;
+	background-image: url('{$IMG;,icons/sortable_tables/filter}');
+	background-size: 16px 16px;
 	background-position: center left;
 	background-repeat: no-repeat;
 }

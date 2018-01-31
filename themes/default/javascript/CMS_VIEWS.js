@@ -640,7 +640,7 @@
                     button = $dom.create('img', {
                         'width': '38',
                         'height': '38',
-                        'src': $util.srl('{$IMG;,button_lightbox_close}'),
+                        'src': $util.srl('{$IMG;,icons/media_set/lightbox_close}'),
                         'alt': this.cancelButton,
                         'className': 'overlay-close-button ' + (this.cancel ? 'js-onclick-do-option-cancel' : 'js-onclick-do-option-finished')
                     });
@@ -1606,7 +1606,7 @@
                     $cms.setCookie('hide_helper_panel', '0', 100);
                 }
 
-                helperPanelToggle.firstElementChild.src = $util.srl('{$IMG;,icons/28x28/helper_panel_hide}');
+                helperPanelToggle.firstElementChild.src = $util.srl('{$IMG;,icons/helper_panel/hide}');
             } else {
                 if ($cms.readCookie('hide_helper_panel') === '') {
                     $cms.ui.confirm('{!CLOSING_HELP_PANEL_CONFIRM;^}', function (answer) {
@@ -1625,7 +1625,7 @@
                 helperPanelContents.setAttribute('aria-expanded', 'false');
                 helperPanelContents.style.display = 'none';
                 $cms.setCookie('hide_helper_panel', '1', 100);
-                helperPanelToggle.firstElementChild.src = $util.srl('{$IMG;,icons/28x28/helper_panel_show}');
+                helperPanelToggle.firstElementChild.src = $util.srl('{$IMG;,icons/helper_panel/show}');
             }
         }
     });

@@ -378,7 +378,7 @@ function ical_import($file_path)
         // Add missing event types
         if ($type_id === null) {
             require_code('calendar2');
-            $type_id = add_event_type(ucfirst($type), 'calendar/general');
+            $type_id = add_event_type(ucfirst($type), 'icons/calendar/general');
         }
 
         // Add event

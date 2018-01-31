@@ -87,7 +87,7 @@ class Hook_addon_registry_quizzes
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/rich_content/quiz.svg';
+        return 'themes/default/images/icons/menu/rich_content/quiz.svg';
     }
 
     /**
@@ -98,10 +98,10 @@ class Hook_addon_registry_quizzes
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/cms/quiz/find_winners.svg',
-            'themes/default/images/icons/48x48/menu/cms/quiz/quiz_results.svg',
-            'themes/default/images/icons/48x48/menu/rich_content/quiz.svg',
-            'themes/default/images/icons/48x48/menu/cms/quiz/index.html',
+            'themes/default/images/icons/menu/cms/quiz/find_winners.svg',
+            'themes/default/images/icons/menu/cms/quiz/quiz_results.svg',
+            'themes/default/images/icons/menu/rich_content/quiz.svg',
+            'themes/default/images/icons/menu/cms/quiz/index.html',
             'sources/hooks/systems/notifications/quiz_results.php',
             'sources/hooks/systems/config/points_ADD_QUIZ.php',
             'sources/hooks/systems/config/quiz_show_stats_count_total_open.php',

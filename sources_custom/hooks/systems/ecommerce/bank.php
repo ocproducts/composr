@@ -40,7 +40,7 @@ class Hook_ecommerce_bank
         return array(
             'category_name' => do_lang('BANKING', integer_format($bank_dividend)),
             'category_description' => do_lang_tempcode('BANK_DESCRIPTION', escape_html(integer_format($bank_dividend))),
-            'category_image_url' => find_theme_image('icons/48x48/menu/adminzone/audit/ecommerce/cash_flow'),
+            'category_image_url' => find_theme_image('icons/menu/adminzone/audit/ecommerce/cash_flow'),
         );
     }
 

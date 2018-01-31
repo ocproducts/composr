@@ -926,7 +926,7 @@ class CMS_Topic
                 $message_eval = $post['message']->evaluate();
 
                 // Also scan for <img> tag, in case it was put in manually
-                if ((!isset($GLOBALS['METADATA']['image'])) || ($GLOBALS['METADATA']['image'] == find_theme_image('icons/48x48/menu/social/forum/forums'))) {
+                if ((!isset($GLOBALS['METADATA']['image'])) || ($GLOBALS['METADATA']['image'] == find_theme_image('icons/menu/social/forum/forums'))) {
                     $matches = array();
                     if (preg_match('#<img\s[^<>]*src="([^"]*)"#', $message_eval, $matches) != 0) {
                         set_extra_request_metadata(array(

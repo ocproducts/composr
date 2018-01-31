@@ -46,16 +46,16 @@
 	1_URL={SUBMIT_URL*}
 	1_TITLE={!ADD_DOWNLOAD}
 	1_REL=add
-	1_ICON=menu/_generic_admin/add_one
+	1_ICON=admin/add
 	2_URL={ADD_CAT_URL*}
 	2_TITLE={!ADD_DOWNLOAD_CATEGORY}
 	2_REL=add
-	2_ICON=menu/_generic_admin/add_one_category
+	2_ICON=admin/add_one_category
 	3_ACCESSKEY=q
 	3_URL={EDIT_CAT_URL*}
 	3_TITLE={!EDIT_DOWNLOAD_CATEGORY}
 	3_REL=edit
-	3_ICON=menu/_generic_admin/edit_this_category
+	3_ICON=admin/edit_this_category
 {+END}
 
 {+START,IF,{$THEME_OPTION,show_screen_actions}}{$BLOCK,failsafe=1,block=main_screen_actions,title={$METADATA,title}}{+END}

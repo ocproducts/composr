@@ -85,11 +85,11 @@
             if (!menuEditorWrapEl.classList.contains('docked')) {
                 menuEditorWrapEl.classList.add('docked');
                 menuEditorWrapEl.classList.remove('docked');
-                img.src = '{$IMG;*,1x/arrow_box_hover}';
+                img.src = '{$IMG;*,icons/arrow_box/arrow_box_hover}';
             } else {
                 menuEditorWrapEl.classList.add('non-docked');
                 menuEditorWrapEl.classList.remove('docked');
-                img.src = '{$IMG;*,1x/arrow_box}';
+                img.src = '{$IMG;*,icons/arrow_box/arrow_box}';
             }
         }
     };
@@ -248,7 +248,7 @@
             var id = ob.id.substring(4, ob.id.length);
 
             if (((window.showModalDialog !== undefined) || $cms.configOption('js_overlays')) || (ob.form.elements['branch_type_' + id] !== 'page')) {
-                var choices = { 'buttons--cancel': '{!INPUTSYSTEM_CANCEL;^}', 'menu---generic-admin--delete': '{!DELETE;^}', 'buttons--move': '{!menus:MOVETO_MENU;^}' };
+                var choices = { 'buttons--cancel': '{!INPUTSYSTEM_CANCEL;^}', 'admin--delete3': '{!DELETE;^}', 'admin--move': '{!menus:MOVETO_MENU;^}' };
                 $cms.ui.generateQuestionUi(
                     '{!menus:CONFIRM_DELETE_LINK_NICE;^,xxxx}'.replace('xxxx', document.getElementById('caption_' + id).value),
                     choices,
@@ -445,10 +445,10 @@
                     var expandImg = $dom.create('img');
                     if (theLevel < 2) { // High-levels start expanded
                         expandImg.alt = '{!CONTRACT;^}';
-                        expandImg.src = $util.srl('{$IMG;^,1x/trays/contract}');
+                        expandImg.src = $util.srl('{$IMG;^,icons/trays/contract}');
                     } else {
                         expandImg.alt = '{!EXPAND;^}';
-                        expandImg.src = $util.srl('{$IMG;^,1x/trays/expand}');
+                        expandImg.src = $util.srl('{$IMG;^,icons/trays/expand}');
                         $dom.hide(ul);
                     }
                     expandImg.width = '20';

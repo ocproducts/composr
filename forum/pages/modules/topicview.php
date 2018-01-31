@@ -215,7 +215,7 @@ class Module_topicview
                     ));
 
                     // Also scan for <img> tag, in case it was put in manually
-                    if ((!isset($GLOBALS['METADATA']['image'])) || ($GLOBALS['METADATA']['image'] == find_theme_image('icons/48x48/menu/social/forum/forums'))) {
+                    if ((!isset($GLOBALS['METADATA']['image'])) || ($GLOBALS['METADATA']['image'] == find_theme_image('icons/menu/social/forum/forums'))) {
                         $matches = array();
                         if (preg_match('#<img\s[^<>]*src="([^"]*)"#', is_object($_postdetails['post']) ? $_postdetails['post']->evaluate() : $_postdetails['post'], $matches) != 0) {
                             set_extra_request_metadata(array(
@@ -630,19 +630,19 @@ class Module_topicview
                     $map['threaded'] = $test_threaded;
                 }
                 $new_post_url = build_url($map, get_module_zone('topics'));
-                $button_array[] = array('immediate' => false, 'rel' => 'edit', 'title' => do_lang_tempcode('LAST_POST'), 'url' => $new_post_url, 'img' => 'buttons--edit');
+                $button_array[] = array('immediate' => false, 'rel' => 'edit', 'title' => do_lang_tempcode('LAST_POST'), 'url' => $new_post_url, 'img' => 'admin--edit');
             }
 
             if ($topic_info['forum_id'] !== null) {
                 if (get_option('enable_add_topic_btn_in_topic') == '1') {
                     if (cns_may_post_topic($topic_info['forum_id'], get_member())) {
                         $new_topic_url = build_url(array('page' => 'topics', 'type' => 'new_topic', 'id' => $topic_info['forum_id']), get_module_zone('topics'));
-                        $button_array[] = array('immediate' => false, 'rel' => 'add', 'title' => do_lang_tempcode('ADD_TOPIC'), 'url' => $new_topic_url, 'img' => 'buttons--new-topic');
+                        $button_array[] = array('immediate' => false, 'rel' => 'add', 'title' => do_lang_tempcode('ADD_TOPIC'), 'url' => $new_topic_url, 'img' => 'buttons--add-topic');
                     }
                 }
             } else {
                 $invite_url = build_url(array('page' => 'topics', 'type' => 'invite_member', 'id' => $id), get_module_zone('topics'));
-                $button_array[] = array('immediate' => false, 'title' => do_lang_tempcode('_INVITE_MEMBER_TO_PT'), 'url' => $invite_url, 'img' => 'menu---generic-admin--add-to-category');
+                $button_array[] = array('immediate' => false, 'title' => do_lang_tempcode('_INVITE_MEMBER_TO_PT'), 'url' => $invite_url, 'img' => 'admin--add-to-category');
             }
         }
         $buttons = cns_button_screen_wrap($button_array);

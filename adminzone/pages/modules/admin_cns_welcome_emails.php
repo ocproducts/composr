@@ -188,8 +188,8 @@ class Module_admin_cns_welcome_emails extends Standard_crud_module
             get_screen_title('WELCOME_EMAILS'),
             comcode_lang_string('DOC_WELCOME_EMAILS'),
             array(
-                array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_WELCOME_EMAIL')),
-                array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_WELCOME_EMAIL')),
+                array('admin/add', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_WELCOME_EMAIL')),
+                array('admin/edit', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_WELCOME_EMAIL')),
             ),
             do_lang('WELCOME_EMAILS')
         );

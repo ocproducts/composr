@@ -68,10 +68,10 @@ class Module_cms_downloads extends Standard_crud_module
 
         if (has_privilege(get_member(), 'mass_import', 'cms_downloads')) {
             if (function_exists('ftp_connect')) {
-                $ret['import'] = array('FTP_DOWNLOADS', 'menu/_generic_admin/import');
+                $ret['import'] = array('FTP_DOWNLOADS', 'admin/import');
             }
 
-            $ret['import2'] = array('FILESYSTEM_DOWNLOADS', 'menu/_generic_admin/import');
+            $ret['import2'] = array('FILESYSTEM_DOWNLOADS', 'admin/import');
         }
 
         if ($support_crosslinks) {
@@ -192,14 +192,14 @@ class Module_cms_downloads extends Standard_crud_module
             get_screen_title('MANAGE_DOWNLOADS'),
             comcode_lang_string('DOC_DOWNLOADS'),
             array_merge(array(
-                has_privilege(get_member(), 'submit_cat_midrange_content', 'cms_downloads') ? array('menu/_generic_admin/add_one_category', array('_SELF', array('type' => 'add_category'), '_SELF'), do_lang('ADD_DOWNLOAD_CATEGORY')) : null,
-                has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_downloads') ? array('menu/_generic_admin/edit_one_category', array('_SELF', array('type' => 'edit_category'), '_SELF'), do_lang('EDIT_DOWNLOAD_CATEGORY')) : null,
+                has_privilege(get_member(), 'submit_cat_midrange_content', 'cms_downloads') ? array('admin/add_one_category', array('_SELF', array('type' => 'add_category'), '_SELF'), do_lang('ADD_DOWNLOAD_CATEGORY')) : null,
+                has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_downloads') ? array('admin/edit_one_category', array('_SELF', array('type' => 'edit_category'), '_SELF'), do_lang('EDIT_DOWNLOAD_CATEGORY')) : null,
                 has_privilege(get_member(), 'submit_cat_midrange_content', 'cms_downloads') ? array('menu/cms/downloads/add_one_licence', array('_SELF', array('type' => 'add_other'), '_SELF'), do_lang('ADD_DOWNLOAD_LICENCE')) : null,
                 has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_downloads') ? array('menu/cms/downloads/edit_one_licence', array('_SELF', array('type' => 'edit_other'), '_SELF'), do_lang('EDIT_DOWNLOAD_LICENCE')) : null,
-                has_privilege(get_member(), 'mass_import') ? array('menu/_generic_admin/import', array('_SELF', array('type' => 'import'), '_SELF'), do_lang('LOAD_FTP_FILES')) : null,
-                has_privilege(get_member(), 'mass_import') ? array('menu/_generic_admin/import', array('_SELF', array('type' => 'import2'), '_SELF'), do_lang('LOAD_FILESYSTEM_FILES')) : null,
-                has_privilege(get_member(), 'submit_midrange_content', 'cms_downloads') ? array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_DOWNLOAD')) : null,
-                has_privilege(get_member(), 'edit_own_midrange_content', 'cms_downloads') ? array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_DOWNLOAD')) : null,
+                has_privilege(get_member(), 'mass_import') ? array('admin/import', array('_SELF', array('type' => 'import'), '_SELF'), do_lang('LOAD_FTP_FILES')) : null,
+                has_privilege(get_member(), 'mass_import') ? array('admin/import', array('_SELF', array('type' => 'import2'), '_SELF'), do_lang('LOAD_FILESYSTEM_FILES')) : null,
+                has_privilege(get_member(), 'submit_midrange_content', 'cms_downloads') ? array('admin/add', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_DOWNLOAD')) : null,
+                has_privilege(get_member(), 'edit_own_midrange_content', 'cms_downloads') ? array('admin/edit', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_DOWNLOAD')) : null,
             ), manage_custom_fields_donext_link('download'), manage_custom_fields_donext_link('download_category')),
             do_lang('MANAGE_DOWNLOADS')
         );
@@ -231,7 +231,7 @@ class Module_cms_downloads extends Standard_crud_module
             'HIDDEN' => '',
             'TEXT' => paragraph(do_lang_tempcode('DESCRIPTION_LOAD_FTP_FILES')),
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'menu---generic-admin--import',
+            'SUBMIT_ICON' => 'admin--import',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));
@@ -279,7 +279,7 @@ class Module_cms_downloads extends Standard_crud_module
             'HIDDEN' => '',
             'TEXT' => paragraph(do_lang_tempcode('DESCRIPTION_LOAD_FILESYSTEM_FILES')),
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'menu---generic-admin--import',
+            'SUBMIT_ICON' => 'admin--import',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));
@@ -1103,7 +1103,7 @@ class Module_cms_downloads_cat extends Standard_crud_module
                 null, // View this category
                 /* SPECIALLY TYPED 'LINKS' */
                 array(
-                    has_privilege(get_member(), 'mass_import', 'cms_downloads') ? array('menu/_generic_admin/import', array('_SELF', array('type' => 'import'), '_SELF'), do_lang('LOAD_FTP_FILES')) : null,
+                    has_privilege(get_member(), 'mass_import', 'cms_downloads') ? array('admin/import', array('_SELF', array('type' => 'import'), '_SELF'), do_lang('LOAD_FTP_FILES')) : null,
                 ),
                 array(),
                 array(
@@ -1119,7 +1119,7 @@ class Module_cms_downloads_cat extends Standard_crud_module
             );
         }
 
-        $special_links = array(has_privilege(get_member(), 'mass_import', 'cms_downloads') ? array('menu/_generic_admin/import', array('_SELF', array('type' => 'import'), '_SELF'), do_lang('LOAD_FTP_FILES')) : null);
+        $special_links = array(has_privilege(get_member(), 'mass_import', 'cms_downloads') ? array('admin/import', array('_SELF', array('type' => 'import'), '_SELF'), do_lang('LOAD_FTP_FILES')) : null);
 
         if ((addon_installed('galleries')) && ($id !== null)) {
             require_lang('galleries');

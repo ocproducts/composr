@@ -290,7 +290,7 @@ class Module_buildr
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
         return array(
-            'browse' => array('BUILDR', 'menu/buildr'),
+            'browse' => array('BUILDR', 'spare/world'),
         );
     }
 

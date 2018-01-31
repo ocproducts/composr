@@ -35,7 +35,7 @@ class Hook_ecommerce_disastr
         return array(
             'category_name' => do_lang('DISEASES_CURES_IMMUNISATIONS_TITLE'),
             'category_description' => do_lang_tempcode('DISEASES_DESCRIPTION'),
-            'category_image_url' => find_theme_image('icons/48x48/menu/disastr_log'),
+            'category_image_url' => find_theme_image('icons/spare/disaster'),
         );
     }
 

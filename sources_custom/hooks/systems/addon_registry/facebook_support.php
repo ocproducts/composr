@@ -142,7 +142,7 @@ For a demo, see this video tutorial: https://www.youtube.com/watch?v=HUZ_O5io0F0
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/links/facebook.svg';
+        return 'themes/default/images/icons/links/facebook.svg';
     }
 
     /**

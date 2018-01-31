@@ -72,7 +72,7 @@ class Hook_profiles_tabs_edit
         $only_tab = get_param_string('only_subtab', null);
 
         if (($leave_to_ajax_if_possible) && ($_SERVER['REQUEST_METHOD'] != 'POST')) {
-            return array($title, null, $order, 'tabs/settings');
+            return array($title, null, $order, 'buttons/settings');
         }
 
         if (php_function_allowed('set_time_limit')) {
@@ -116,7 +116,7 @@ class Hook_profiles_tabs_edit
         }
 
         if ($leave_to_ajax_if_possible) {
-            return array($title, null, $order, 'tabs/settings');
+            return array($title, null, $order, 'buttons/settings');
         }
 
         sort_maps_by($tabs, 4);
@@ -188,6 +188,6 @@ class Hook_profiles_tabs_edit
             'TABS' => $_tabs,
         ));
 
-        return array($title, $content, $order, 'tabs/settings');
+        return array($title, $content, $order, 'buttons/settings');
     }
 }

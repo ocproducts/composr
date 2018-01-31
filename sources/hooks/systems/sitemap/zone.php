@@ -136,7 +136,7 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                 $icon = 'menu/social/forum/forums';
                 break;
             case 'docs':
-                $icon = 'menu/pages/help';
+                $icon = 'help';
                 break;
         }
 
@@ -150,7 +150,7 @@ class Hook_sitemap_zone extends Hook_sitemap_base
             'url' => null,
             'extra_meta' => array(
                 'description' => null,
-                'image' => ($icon === null) ? null : find_theme_image('icons/48x48/' . $icon),
+                'image' => ($icon === null) ? null : find_theme_image('icons/' . $icon),
                 'add_date' => (($meta_gather & SITEMAP_GATHER_TIMES) != 0 && file_exists($path)) ? filectime($path) : null,
                 'edit_date' => (($meta_gather & SITEMAP_GATHER_TIMES) != 0 && file_exists($path)) ? filemtime($path) : null,
                 'submitter' => null,

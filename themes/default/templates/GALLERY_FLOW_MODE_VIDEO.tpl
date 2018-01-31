@@ -60,14 +60,14 @@
 				</table>
 
 				<ul class="horizontal-links associated-links-block-group">
-					<li><img width="24" height="24" src="{$IMG*,icons/48x48/feedback/comment}" alt="" /> <a href="{VIEW_URL*}">{$COMMENT_COUNT,images,{ID}}</a></li>
+					<li><img width="24" height="24" src="{$IMG*,icons/feedback/comment}" alt="" /> <a href="{VIEW_URL*}">{$COMMENT_COUNT,images,{ID}}</a></li>
 				</ul>
 
 				{$,Load up the staff actions template to display staff actions uniformly (we relay our parameters to it)...}
 				{+START,INCLUDE,STAFF_ACTIONS}
 					1_URL={EDIT_URL*}
 					1_TITLE={!EDIT_VIDEO}
-					1_ICON=menu/_generic_admin/edit_this
+					1_ICON=admin/edit_this
 				{+END}
 			</div></section>
 		</div>

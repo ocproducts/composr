@@ -39,7 +39,7 @@
 		1_TITLE={!EDIT_LINK}
 		1_ACCESSKEY=q
 		1_REL=edit
-		1_ICON=menu/_generic_admin/edit_this
+		1_ICON=admin/edit_this
 		{+START,IF,{$ADDON_INSTALLED,tickets}}
 			2_URL={$PAGE_LINK*,_SEARCH:report_content:content_type=catalogue_entry:content_id={ID}:redirect={$SELF_URL&}}
 			2_TITLE={!report_content:REPORT_THIS}
@@ -54,7 +54,7 @@
 
 	{+START,IF_NON_EMPTY,{EDIT_DATE_RAW}}
 		<div class="edited" role="note">
-			<img alt="" width="10" src="{$IMG*,1x/edited}" />
+			<img alt="" width="10" src="{$IMG*,edited}" />
 			{!EDITED}
 			<time datetime="{$FROM_TIMESTAMP*,Y-m-d\TH:i:s\Z,{EDIT_DATE_RAW}}">{$DATE*,,,,{EDIT_DATE_RAW}}</time>
 		</div>

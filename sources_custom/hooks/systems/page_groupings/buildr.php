@@ -29,7 +29,7 @@ class Hook_page_groupings_buildr
         }
 
         return array(
-            array('rich_content', 'menu/buildr', array('buildr', array(), $zone), do_lang_tempcode('buildr:BUILDR')),
+            array('rich_content', 'spare/world', array('buildr', array(), $zone), do_lang_tempcode('buildr:BUILDR')),
         );
     }
 }

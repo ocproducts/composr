@@ -62,7 +62,7 @@ class Module_admin
             'setup' => array('SETUP', 'menu/adminzone/setup'),
             'tools' => array('TOOLS', 'menu/adminzone/tools'),
             'security' => array('SECURITY', 'menu/adminzone/security'),
-            'docs' => array('DOCS', 'menu/adminzone/help'),
+            'docs' => array('DOCS', 'help'),
         );
     }
 

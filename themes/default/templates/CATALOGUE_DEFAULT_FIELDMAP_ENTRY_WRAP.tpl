@@ -34,7 +34,7 @@
 		<div class="float-surrounder">
 			{+START,IF,{$NOT,{GIVE_CONTEXT}}}
 				<p class="left">
-					<a rel="back_to_top" target="_self" href="#!"><img class="back-to-top-by-buttons" title="{!BACK_TO_TOP}" alt="{!BACK_TO_TOP}" width="24" height="24" src="{$IMG*,icons/48x48/tool_buttons/top}" /></a>
+					<a rel="back_to_top" target="_self" href="#!"><img class="back-to-top-by-buttons" title="{!BACK_TO_TOP}" alt="{!BACK_TO_TOP}" width="24" height="24" src="{$IMG*,icons/tool_buttons/top}" /></a>
 				</p>
 			{+END}
 
@@ -45,7 +45,7 @@
 			{+END}
 			{+START,IF_EMPTY,{VIEW_URL}}{+START,IF_NON_EMPTY,{EDIT_URL}}
 				<p class="{$?,{GIVE_CONTEXT},shunted-button,right}">
-					<a class="button-screen-item buttons--edit" href="{EDIT_URL*}" title="{!EDIT}{+START,IF_PASSED,FIELD_0}: {$STRIP_TAGS*,{FIELD_0}}{+END}"><span>{!EDIT}</span></a>
+					<a class="button-screen-item admin--edit" href="{EDIT_URL*}" title="{!EDIT}{+START,IF_PASSED,FIELD_0}: {$STRIP_TAGS*,{FIELD_0}}{+END}"><span>{!EDIT}</span></a>
 				</p>
 			{+END}{+END}
 		</div>

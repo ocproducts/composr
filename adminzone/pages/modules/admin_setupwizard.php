@@ -53,8 +53,8 @@ class Module_admin_setupwizard
     {
         return array(
             'browse' => array('SETUPWIZARD', 'menu/adminzone/setup/setupwizard'),
-            'install_test_content' => array('INSTALL_TEST_CONTENT', 'menu/_generic_admin/add_one_category'),
-            'uninstall_test_content' => array('UNINSTALL_TEST_CONTENT', 'menu/_generic_admin/delete'),
+            'install_test_content' => array('INSTALL_TEST_CONTENT', 'admin/add_one_category'),
+            'uninstall_test_content' => array('UNINSTALL_TEST_CONTENT', 'admin/delete3'),
         );
     }
 
@@ -188,7 +188,7 @@ class Module_admin_setupwizard
         $addons_url = build_url(array('page' => 'admin_addons'), get_module_zone('admin_addons'));
         $text->attach(paragraph(do_lang_tempcode($done_once ? 'SETUPWIZARD_1_DESCRIBE_ALT' : 'SETUPWIZARD_1_DESCRIBE', escape_html($addons_url->evaluate()))));
         $rescue_url = build_url(array('page' => '', 'keep_safe_mode' => '1'), '');
-        $text->attach(paragraph(do_lang_tempcode('SETUPWIZARD_SAFE_MODE', escape_html($rescue_url->evaluate()), escape_html(find_theme_image('icons/48x48/tool_buttons/software_chat')))));
+        $text->attach(paragraph(do_lang_tempcode('SETUPWIZARD_SAFE_MODE', escape_html($rescue_url->evaluate()), escape_html(find_theme_image('icons/tool_buttons/software_chat')))));
         $submit_name = do_lang_tempcode('START');
 
         $fields = new Tempcode();

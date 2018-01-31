@@ -122,7 +122,7 @@ class Module_sites
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
         $ret = array(
-            'demonstratr' => array('CMS_ADD_SITE', 'menu/_generic_admin/add_one'),
+            'demonstratr' => array('CMS_ADD_SITE', 'admin/add'),
         );
 
         if (addon_installed('search')) {

@@ -102,7 +102,7 @@ class Module_classifieds
     {
         $ret = array();
         if (!$check_perms || !is_guest($member_id)) {
-            $ret['adverts'] = array('CLASSIFIED_ADVERTS', 'menu/classifieds');
+            $ret['adverts'] = array('CLASSIFIED_ADVERTS', 'spare/classifieds');
         }
         return $ret;
     }

@@ -127,7 +127,7 @@ Based off of GeSHI 1.0 (https://github.com/GeSHi/geshi-1.0). GeSHI 1.1 is still 
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.svg';
+        return 'themes/default/images/icons/admin/component.svg';
     }
 
     /**

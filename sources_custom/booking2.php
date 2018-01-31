@@ -31,14 +31,14 @@ function booking_do_next()
         get_screen_title('BOOKINGS'),
         comcode_lang_string('DOC_BOOKING'),
         array(
-            has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_booking') ? array('menu/bookable', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_BOOKABLE')) : null,
-            has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_booking') ? array('menu/bookable', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_BOOKABLE')) : null,
-            has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_booking') ? array('menu/supplement', array('_SELF', array('type' => 'add_other'), '_SELF'), do_lang('ADD_BOOKABLE_SUPPLEMENT')) : null,
-            has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_booking') ? array('menu/supplement', array('_SELF', array('type' => 'edit_other'), '_SELF'), do_lang('EDIT_BOOKABLE_SUPPLEMENT')) : null,
-            has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_booking') ? array('menu/blacked', array('_SELF', array('type' => 'add_category'), '_SELF'), do_lang('ADD_BOOKABLE_BLACKED')) : null,
-            has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_booking') ? array('menu/blacked', array('_SELF', array('type' => 'edit_category'), '_SELF'), do_lang('EDIT_BOOKABLE_BLACKED')) : null,
-            has_privilege(get_member(), 'submit_highrange_content', 'cms_booking') ? array('menu/booking', array('_SELF', array('type' => 'add_booking'), '_SELF'), do_lang('ADD_BOOKING')) : null,
-            has_privilege(get_member(), 'edit_highrange_content', 'cms_booking') ? array('menu/booking', array('_SELF', array('type' => 'edit_booking'), '_SELF'), do_lang('EDIT_BOOKING')) : null,
+            has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_booking') ? array('booking/bookable', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_BOOKABLE')) : null,
+            has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_booking') ? array('booking/bookable', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_BOOKABLE')) : null,
+            has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_booking') ? array('booking/supplement', array('_SELF', array('type' => 'add_other'), '_SELF'), do_lang('ADD_BOOKABLE_SUPPLEMENT')) : null,
+            has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_booking') ? array('booking/supplement', array('_SELF', array('type' => 'edit_other'), '_SELF'), do_lang('EDIT_BOOKABLE_SUPPLEMENT')) : null,
+            has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_booking') ? array('booking/blacked', array('_SELF', array('type' => 'add_category'), '_SELF'), do_lang('ADD_BOOKABLE_BLACKED')) : null,
+            has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_booking') ? array('booking/blacked', array('_SELF', array('type' => 'edit_category'), '_SELF'), do_lang('EDIT_BOOKABLE_BLACKED')) : null,
+            has_privilege(get_member(), 'submit_highrange_content', 'cms_booking') ? array('admin/add', array('_SELF', array('type' => 'add_booking'), '_SELF'), do_lang('ADD_BOOKING')) : null,
+            has_privilege(get_member(), 'edit_highrange_content', 'cms_booking') ? array('admin/edit', array('_SELF', array('type' => 'edit_booking'), '_SELF'), do_lang('EDIT_BOOKING')) : null,
             has_actual_page_access(get_member(), 'calendar') ? array('menu/rich_content/calendar', array('calendar', array('type' => 'browse', 'view' => 'month'), '_SEARCH'), do_lang('CALENDAR')) : null,
         ),
         do_lang('BOOKINGS')
@@ -389,7 +389,7 @@ function add_bookable($bookable_details, $codes, $blacked = array(), $supplement
     require_code('calendar2');
     require_code('crypt');
     $external_feed = find_script('bookings_ical') . '?id=' . strval($bookable_id) . '&pass=' . ratchet_hash($GLOBALS['SITE_INFO']['master_password'], get_site_salt());
-    $bookable_details['calendar_type'] = add_event_type($title, 'calendar/booking', $external_feed);
+    $bookable_details['calendar_type'] = add_event_type($title, 'icons/calendar/booking', $external_feed);
 
     $GLOBALS['SITE_DB']->query_update('bookable', array('calendar_type' => $bookable_details['calendar_type']), array('id' => $bookable_id), '', 1);
 
@@ -451,9 +451,9 @@ function edit_bookable($bookable_id, $bookable_details, $codes, $blacked = null,
     require_code('calendar2');
     $external_feed = find_script('bookings_ical') . '?id=' . strval($bookable_id) . '&pass=' . md5('booking_salt_' . $GLOBALS['SITE_INFO']['master_password']);
     if (($bookable_details['calendar_type'] === null) && ($GLOBALS['SITE_DB']->query_select_value_if_there('calendar_types', 'id', array('id' => $bookable_details['calendar_type'])) === null)) {
-        $bookable_details['calendar_type'] = add_event_type($title, 'calendar/booking', $external_feed);
+        $bookable_details['calendar_type'] = add_event_type($title, 'icons/calendar/booking', $external_feed);
     } else {
-        edit_event_type($bookable_details['calendar_type'], $title, 'calendar/booking', $external_feed);
+        edit_event_type($bookable_details['calendar_type'], $title, 'icons/calendar/booking', $external_feed);
     }
 
     $GLOBALS['SITE_DB']->query_update('bookable', $bookable_details, array('id' => $bookable_id), '', 1);

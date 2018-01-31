@@ -1262,7 +1262,7 @@
         links.className = 'actions-list';
 
         var imgClose = document.createElement('img');
-        imgClose.src = $util.srl('{$IMG;,icons/28x28/delete}');
+        imgClose.src = $util.srl('{$IMG;,icons/admin/delete}');
         imgClose.width = '14';
         imgClose.height = '14';
         imgClose.className = 'im-popup-close-button blend';

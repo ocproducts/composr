@@ -23,7 +23,7 @@
 			1_URL={ADD_GALLERY_URL*}
 			1_TITLE={!ADD_GALLERY}
 			1_REDIRECT_HASH=galleries
-			1_ICON=menu/_generic_admin/add_one_category
+			1_ICON=admin/add_one_category
 			2_URL={ADD_IMAGE_URL*}
 			2_TITLE={!ADD_IMAGE}
 			2_REDIRECT_HASH=galleries

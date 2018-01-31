@@ -120,7 +120,7 @@ class Module_admin_disastr extends Standard_crud_module
         }
 
         return array(
-            'browse' => array('MANAGE_DISEASES', 'menu/disastr_log'),
+            'browse' => array('MANAGE_DISEASES', 'spare/disaster'),
         ) + parent::get_entry_points();
     }
 
@@ -191,8 +191,8 @@ class Module_admin_disastr extends Standard_crud_module
             get_screen_title('DISASTR_TITLE'),
             comcode_lang_string('DOC_DISASTR'),
             array(
-                array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_DISEASE')),
-                array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_DISEASE')),
+                array('admin/add', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_DISEASE')),
+                array('admin/edit', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_DISEASE')),
             ),
             do_lang('DISASTR_TITLE')
         );

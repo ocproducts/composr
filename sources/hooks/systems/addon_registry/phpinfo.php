@@ -87,7 +87,7 @@ class Hook_addon_registry_phpinfo
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/tools/phpinfo.svg';
+        return 'themes/default/images/icons/menu/adminzone/tools/phpinfo.svg';
     }
 
     /**
@@ -98,7 +98,7 @@ class Hook_addon_registry_phpinfo
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/adminzone/tools/phpinfo.svg',
+            'themes/default/images/icons/menu/adminzone/tools/phpinfo.svg',
             'themes/default/css/phpinfo.css',
             'sources/hooks/systems/page_groupings/phpinfo.php',
             'sources/hooks/systems/addon_registry/phpinfo.php',

@@ -231,13 +231,13 @@
                         }
                         descriptionInUse = escapedTitle + ': {!TREE_LIST_SELECT*;^}' + description + ((node.getAttribute('serverid') == '') ? (' (' + $cms.filter.html(node.getAttribute('serverid')) + ')') : '');
                     }
-                    var imgUrl = $util.srl('{$IMG;,1x/treefield/category}');
+                    var imgUrl = $util.srl('{$IMG;,icons/tree_field/category}');
                     if (node.getAttribute('img_url')) {
                         imgUrl = node.getAttribute('img_url');
                     }
                     $dom.html(nodeSelf, /** @lang HTML */'' +
                         '<div>' +
-                        '    <input class="ajax-tree-expand-icon"' + (that.tabindex ? (' tabindex="' + that.tabindex + '"') : '') + ' type="image" alt="' + ((!initiallyExpanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + ': ' + escapedTitle + '" title="' + ((!initiallyExpanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + '" id="' + that.name + 'texp_c_' + node.getAttribute('id') + '" src="' + $util.srl(!initiallyExpanded ? '{$IMG*;,1x/treefield/expand}' : '{$IMG*;,1x/treefield/collapse}') + '" />' +
+                        '    <input class="ajax-tree-expand-icon"' + (that.tabindex ? (' tabindex="' + that.tabindex + '"') : '') + ' type="image" alt="' + ((!initiallyExpanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + ': ' + escapedTitle + '" title="' + ((!initiallyExpanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + '" id="' + that.name + 'texp_c_' + node.getAttribute('id') + '" src="' + $util.srl(!initiallyExpanded ? '{$IMG*;,icons/tree_field/expand}' : '{$IMG*;,icons/tree_field/collapse}') + '" />' +
                         '    <img class="ajax-tree-cat-icon" alt="{!CATEGORY;^}" width="14" height="14" src="' + $cms.filter.html(imgUrl) + '" />' +
                         '    <label id="' + that.name + 'tsel_c_' + node.getAttribute('id') + '" for="' + that.name + 'tsel_r_' + node.getAttribute('id') + '" data-mouseover-activate-tooltip="[\'' + (node.getAttribute('description_html') ? '' : $cms.filter.html(descriptionInUse)) + '\', \'auto\']" class="ajax-tree-magic-button ' + colour + '">\ <input ' + (that.tabindex ? ('tabindex="' + that.tabindex + '" ') : '') + 'id="' + that.name + 'tsel_r_' + node.getAttribute('id') + '" style="position: absolute; left: -10000px" type="radio" name="_' + that.name + '" value="1" title="' + descriptionInUse + '" />' + escapedTitle + '</label>' +
                         '    <span id="' + that.name + 'extra_' + node.getAttribute('id') + '">' + extra + '</span>' +
@@ -346,7 +346,7 @@
 
                     // Render self
                     initiallyExpanded = false;
-                    var imgUrl = $util.srl('{$IMG;,1x/treefield/entry}');
+                    var imgUrl = $util.srl('{$IMG;,icons/tree_field/entry}');
                     if (node.getAttribute('img_url')) {
                         imgUrl = node.getAttribute('img_url');
                     }
@@ -515,7 +515,7 @@
 
                 $dom.fadeIn(htmlNode);
 
-                expandBtn.src = $util.srl('{$IMG;,1x/treefield/collapse}');
+                expandBtn.src = $util.srl('{$IMG;,icons/tree_field/collapse}');
                 expandBtn.title = expandBtn.title.replace('{!EXPAND;^}', '{!CONTRACT;^}');
                 expandBtn.alt = expandBtn.alt.replace('{!EXPAND;^}', '{!CONTRACT;^}');
             } else {
@@ -523,7 +523,7 @@
                 xmlNode.setAttribute('expanded', 'false');
                 htmlNode.style.display = 'none';
 
-                expandBtn.src = $util.srl('{$IMG;,1x/treefield/expand}');
+                expandBtn.src = $util.srl('{$IMG;,icons/tree_field/expand}');
                 expandBtn.title = expandBtn.title.replace('{!CONTRACT;^}', '{!EXPAND;^}');
                 expandBtn.alt = expandBtn.alt.replace('{!CONTRACT;^}', '{!EXPAND;^}');
             }

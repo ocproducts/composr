@@ -53,14 +53,14 @@ function autoprobe_cdns()
     );
 
     $detected_cdns = '';
-    $expected = file_get_contents(get_file_base() . '/themes/default/images/icons/32x32/editor/comcode.svg');
+    $expected = file_get_contents(get_file_base() . '/themes/default/images/icons/editor/comcode.svg');
     foreach ($try as $t) {
         if ($t === null) {
             continue;
         }
 
         if (preg_match('#^' . preg_quote($t, '#') . '($|\.|/|:)#', $domain_name) == 0) { // Don't use it if it is in the base URL
-            $test_url = 'http://' . $t . $parsed['path'] . '/themes/default/images/icons/32x32/editor/comcode.svg';
+            $test_url = 'http://' . $t . $parsed['path'] . '/themes/default/images/icons/editor/comcode.svg';
 
             $test_result = http_get_contents($test_url, array('trigger_error' => false, 'timeout' => 0.25));
 

@@ -87,7 +87,7 @@ class Hook_addon_registry_core_notifications
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/tool_buttons/notifications2.svg';
+        return 'themes/default/images/icons/tool_buttons/notifications2.svg';
     }
 
     /**
@@ -98,11 +98,11 @@ class Hook_addon_registry_core_notifications
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/tool_buttons/notifications.svg',
-            'themes/default/images/icons/48x48/tool_buttons/notifications2.svg',
-            'themes/default/images/icons/48x48/menu/adminzone/setup/notifications.svg',
-            'themes/default/images/icons/48x48/buttons/disable_notifications.svg',
-            'themes/default/images/icons/48x48/buttons/enable_notifications.svg',
+            'themes/default/images/icons/tool_buttons/notifications.svg',
+            'themes/default/images/icons/tool_buttons/notifications2.svg',
+            'themes/default/images/icons/menu/adminzone/setup/notifications.svg',
+            'themes/default/images/icons/buttons/notifications_enable.svg',
+            'themes/default/images/icons/buttons/notifications_disable.svg',
             'sources/hooks/systems/addon_registry/core_notifications.php',
             'sources/hooks/systems/commandr_fs_extended_config/notification_lockdown.php',
             'sources/notifications.php',

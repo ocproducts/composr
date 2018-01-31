@@ -200,12 +200,12 @@ class Module_cms_calendar extends Standard_crud_module
             get_screen_title('MANAGE_CALENDARS'),
             comcode_lang_string('DOC_CALENDAR'),
             array_merge(array(
-                has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_calendar') ? array('menu/_generic_admin/add_one_category', array('_SELF', array('type' => 'add_category'), '_SELF'), do_lang('ADD_EVENT_TYPE')) : null,
-                has_privilege(get_member(), 'edit_own_cat_highrange_content', 'cms_calendar') ? array('menu/_generic_admin/edit_one_category', array('_SELF', array('type' => 'edit_category'), '_SELF'), do_lang('EDIT_EVENT_TYPE')) : null,
-                has_privilege(get_member(), 'submit_lowrange_content', 'cms_calendar') ? array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_CALENDAR_EVENT')) : null,
-                has_privilege(get_member(), 'edit_own_lowrange_content', 'cms_calendar') ? array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_CALENDAR_EVENT')) : null,
-                has_privilege(get_member(), 'mass_import', 'cms_calendar') ? array('menu/_generic_admin/import', array('_SELF', array('type' => 'import'), '_SELF'), do_lang('IMPORT_ICAL')) : null,
-                array('menu/_generic_admin/export', array('_SELF', array('type' => 'export'), '_SELF'), do_lang('EXPORT_ICAL')),
+                has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_calendar') ? array('admin/add_one_category', array('_SELF', array('type' => 'add_category'), '_SELF'), do_lang('ADD_EVENT_TYPE')) : null,
+                has_privilege(get_member(), 'edit_own_cat_highrange_content', 'cms_calendar') ? array('admin/edit_one_category', array('_SELF', array('type' => 'edit_category'), '_SELF'), do_lang('EDIT_EVENT_TYPE')) : null,
+                has_privilege(get_member(), 'submit_lowrange_content', 'cms_calendar') ? array('admin/add', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_CALENDAR_EVENT')) : null,
+                has_privilege(get_member(), 'edit_own_lowrange_content', 'cms_calendar') ? array('admin/edit', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_CALENDAR_EVENT')) : null,
+                has_privilege(get_member(), 'mass_import', 'cms_calendar') ? array('admin/import', array('_SELF', array('type' => 'import'), '_SELF'), do_lang('IMPORT_ICAL')) : null,
+                array('admin/export', array('_SELF', array('type' => 'export'), '_SELF'), do_lang('EXPORT_ICAL')),
             ), manage_custom_fields_donext_link('event')),
             do_lang('MANAGE_CALENDARS')
         );
@@ -1151,7 +1151,7 @@ class Module_cms_calendar extends Standard_crud_module
             'TEXT' => do_lang_tempcode('IMPORT_ICAL_TEXT'),
             'HIDDEN' => $hidden,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'menu---generic-admin--import',
+            'SUBMIT_ICON' => 'admin--import',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));
@@ -1209,7 +1209,7 @@ class Module_cms_calendar extends Standard_crud_module
             'TEXT' => do_lang_tempcode('EXPORT_ICAL_TEXT'),
             'HIDDEN' => '',
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'menu---generic-admin--export',
+            'SUBMIT_ICON' => 'admin--export',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
             'GET' => true,

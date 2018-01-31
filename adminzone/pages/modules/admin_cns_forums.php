@@ -62,8 +62,8 @@ class Module_admin_cns_forums extends Standard_crud_module
         ) + parent::get_entry_points();
 
         if ($support_crosslinks) {
-            $ret['_SEARCH:admin_cns_forum_groupings:add'] = array('ADD_FORUM_GROUPING', 'menu/_generic_admin/add_one_category');
-            $ret['_SEARCH:admin_cns_forum_groupings:edit'] = array(do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('EDIT_FORUM_GROUPING'), make_string_tempcode(escape_html(integer_format($GLOBALS['FORUM_DB']->query_select_value('f_forum_groupings', 'COUNT(*)', array(), '', true))))), 'menu/_generic_admin/edit_one_category');
+            $ret['_SEARCH:admin_cns_forum_groupings:add'] = array('ADD_FORUM_GROUPING', 'admin/add_one_category');
+            $ret['_SEARCH:admin_cns_forum_groupings:edit'] = array(do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('EDIT_FORUM_GROUPING'), make_string_tempcode(escape_html(integer_format($GLOBALS['FORUM_DB']->query_select_value('f_forum_groupings', 'COUNT(*)', array(), '', true))))), 'admin/edit_one_category');
             if (addon_installed('cns_post_templates')) {
                 require_lang('cns_post_templates');
                 $ret['_SEARCH:admin_cns_post_templates:browse'] = array(do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('POST_TEMPLATES'), make_string_tempcode(escape_html(integer_format($GLOBALS['FORUM_DB']->query_select_value('f_post_templates', 'COUNT(*)', array(), '', true))))), 'menu/adminzone/structure/forum/post_templates');
@@ -154,10 +154,10 @@ class Module_admin_cns_forums extends Standard_crud_module
     public function browse()
     {
         $menu_links = array(
-            array('menu/_generic_admin/add_one_category', array('admin_cns_forum_groupings', array('type' => 'add'), get_module_zone('admin_cns_forum_groupings')), do_lang('ADD_FORUM_GROUPING')),
-            array('menu/_generic_admin/edit_one_category', array('admin_cns_forum_groupings', array('type' => 'edit'), get_module_zone('admin_cns_forum_groupings')), do_lang('EDIT_FORUM_GROUPING')),
-            array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_FORUM')),
-            array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_FORUM')),
+            array('admin/add_one_category', array('admin_cns_forum_groupings', array('type' => 'add'), get_module_zone('admin_cns_forum_groupings')), do_lang('ADD_FORUM_GROUPING')),
+            array('admin/edit_one_category', array('admin_cns_forum_groupings', array('type' => 'edit'), get_module_zone('admin_cns_forum_groupings')), do_lang('EDIT_FORUM_GROUPING')),
+            array('admin/add', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_FORUM')),
+            array('admin/edit', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_FORUM')),
         );
 
         if (addon_installed('cns_post_templates')) {

@@ -20,7 +20,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
 
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/audit/actionlog.png" />Actionlog<br />(<kbd>actionlog</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/audit/actionlog.png" />Actionlog<br />(<kbd>actionlog</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -32,7 +32,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/structure/aggregate_types.png" />Aggregate Types<br />(<kbd>aggregate_types</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/structure/aggregate_types.png" />Aggregate Types<br />(<kbd>aggregate_types</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <kbd>commandr</kbd>, <kbd>import</kbd>
             </td>
@@ -44,7 +44,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Apache Config Files<br />(<kbd>apache_config_files</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/component.png" />Apache Config Files<br />(<kbd>apache_config_files</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -56,7 +56,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/rich_content/authors.png" />Authors<br />(<kbd>authors</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/rich_content/authors.png" />Authors<br />(<kbd>authors</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -68,7 +68,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/setup/awards.png" />Awards<br />(<kbd>awards</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/setup/awards.png" />Awards<br />(<kbd>awards</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -80,7 +80,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/tools/bulk_content_actions/backups.png" />Backup<br />(<kbd>backup</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/tools/bulk_content_actions/backups.png" />Backup<br />(<kbd>backup</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -92,7 +92,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/cms/banners.png" />Banners<br />(<kbd>banners</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/cms/banners.png" />Banners<br />(<kbd>banners</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -104,7 +104,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/site_meta/bookmarks.png" />Bookmarks<br />(<kbd>bookmarks</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/site_meta/bookmarks.png" />Bookmarks<br />(<kbd>bookmarks</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -116,7 +116,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/structure/breadcrumbs.png" />Breadcrumbs<br />(<kbd>breadcrumbs</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/structure/breadcrumbs.png" />Breadcrumbs<br />(<kbd>breadcrumbs</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -128,7 +128,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/rich_content/calendar.png" />Calendar<br />(<kbd>calendar</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/rich_content/calendar.png" />Calendar<br />(<kbd>calendar</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -140,7 +140,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />CAPTCHA<br />(<kbd>captcha</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/component.png" />CAPTCHA<br />(<kbd>captcha</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -152,7 +152,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/rich_content/catalogues/catalogues.png" />Catalogues<br />(<kbd>catalogues</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/rich_content/catalogues/catalogues.png" />Catalogues<br />(<kbd>catalogues</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -164,7 +164,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/social/chat/chat.png" />Chat<br />(<kbd>chat</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/social/chat/chat.png" />Chat<br />(<kbd>chat</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -176,7 +176,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Conversr Avatars<br />(<kbd>cns_avatars</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/component.png" />Conversr Avatars<br />(<kbd>cns_avatars</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <kbd>cns_member_avatars</kbd>
             </td>
@@ -188,7 +188,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Conversr Cartoon Avatars<br />(<kbd>cns_cartoon_avatars</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/component.png" />Conversr Cartoon Avatars<br />(<kbd>cns_cartoon_avatars</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <kbd>cns_member_avatars</kbd>
             </td>
@@ -200,7 +200,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/cms/clubs.png" />Conversr Clubs<br />(<kbd>cns_clubs</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/cms/clubs.png" />Conversr Clubs<br />(<kbd>cns_clubs</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -212,7 +212,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/links/contact_member.png" />Conversr Contact Member<br />(<kbd>cns_contact_member</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/links/contact_member.png" />Conversr Contact Member<br />(<kbd>cns_contact_member</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -224,7 +224,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/tools/users/custom_profile_fields.png" />Conversr Custom Profile Fields<br />(<kbd>cns_cpfs</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/tools/users/custom_profile_fields.png" />Conversr Custom Profile Fields<br />(<kbd>cns_cpfs</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -236,7 +236,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/social/forum/forums.png" />Conversr Forum<br />(<kbd>cns_forum</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/social/forum/forums.png" />Conversr Forum<br />(<kbd>cns_forum</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <kbd>polls</kbd>
             </td>
@@ -248,7 +248,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/tabs/member_account/edit/avatar.png" />Conversr Member Avatars<br />(<kbd>cns_member_avatars</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/tabs/member_account/edit/avatar.png" />Conversr Member Avatars<br />(<kbd>cns_member_avatars</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -260,7 +260,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/tabs/member_account/edit/photo.png" />Conversr Member Photos<br />(<kbd>cns_member_photos</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/tabs/member_account/edit/photo.png" />Conversr Member Photos<br />(<kbd>cns_member_photos</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -272,7 +272,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/tabs/member_account/edit/title.png" />Conversr Member Titles<br />(<kbd>cns_member_titles</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/tabs/member_account/edit/title.png" />Conversr Member Titles<br />(<kbd>cns_member_titles</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -284,7 +284,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/structure/forum/multi_moderations.png" />Conversr Multi Moderations<br />(<kbd>cns_multi_moderations</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/structure/forum/multi_moderations.png" />Conversr Multi Moderations<br />(<kbd>cns_multi_moderations</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <kbd>cns_forum</kbd>
             </td>
@@ -296,7 +296,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/structure/forum/post_templates.png" />Conversr Post Templates<br />(<kbd>cns_post_templates</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/structure/forum/post_templates.png" />Conversr Post Templates<br />(<kbd>cns_post_templates</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <kbd>cns_forum</kbd>
             </td>
@@ -308,7 +308,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/buttons/report.png" />Conversr Reported Posts<br />(<kbd>cns_reported_posts</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/buttons/report.png" />Conversr Reported Posts<br />(<kbd>cns_reported_posts</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <kbd>cns_forum</kbd>
             </td>
@@ -320,7 +320,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/tabs/member_account/edit/signature.png" />Conversr Signatures<br />(<kbd>cns_signatures</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/tabs/member_account/edit/signature.png" />Conversr Signatures<br />(<kbd>cns_signatures</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -332,7 +332,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Conversr Thematic Avatars<br />(<kbd>cns_thematic_avatars</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/component.png" />Conversr Thematic Avatars<br />(<kbd>cns_thematic_avatars</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <kbd>cns_member_avatars</kbd>
             </td>
@@ -344,7 +344,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/tabs/member_account/warnings.png" />Conversr Warnings<br />(<kbd>cns_warnings</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/tabs/member_account/warnings.png" />Conversr Warnings<br />(<kbd>cns_warnings</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -356,7 +356,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/tools/code_editor.png" />Code Editor<br />(<kbd>code_editor</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/tools/code_editor.png" />Code Editor<br />(<kbd>code_editor</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -368,7 +368,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/collaboration.png" />Collaboration Zone<br />(<kbd>collaboration_zone</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/collaboration.png" />Collaboration Zone<br />(<kbd>collaboration_zone</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -380,7 +380,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/tools/commandr.png" />Commandr<br />(<kbd>commandr</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/tools/commandr.png" />Commandr<br />(<kbd>commandr</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <kbd>import</kbd>
             </td>
@@ -392,7 +392,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/pages/privacy_policy.png" />Content Privacy<br />(<kbd>content_privacy</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/pages/privacy_policy.png" />Content Privacy<br />(<kbd>content_privacy</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <kbd>cns_cpfs</kbd>
             </td>
@@ -404,7 +404,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/tool.png" />Content Reviews<br />(<kbd>content_reviews</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/tool.png" />Content Reviews<br />(<kbd>content_reviews</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <kbd>unvalidated</kbd>, <kbd>commandr</kbd>
             </td>
@@ -416,7 +416,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Core<br />(<kbd>core</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/component.png" />Core<br />(<kbd>core</kbd>)<br /><br />
                 <strong>Core</strong>: Yes<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -428,7 +428,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Core Abstract Components<br />(<kbd>core_abstract_components</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/component.png" />Core Abstract Components<br />(<kbd>core_abstract_components</kbd>)<br /><br />
                 <strong>Core</strong>: Yes<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -440,7 +440,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Core Abstract Interfaces<br />(<kbd>core_abstract_interfaces</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/component.png" />Core Abstract Interfaces<br />(<kbd>core_abstract_interfaces</kbd>)<br /><br />
                 <strong>Core</strong>: Yes<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -452,7 +452,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/structure/addons.png" />Core Addon Management<br />(<kbd>core_addon_management</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/structure/addons.png" />Core Addon Management<br />(<kbd>core_addon_management</kbd>)<br /><br />
                 <strong>Core</strong>: Yes<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -464,7 +464,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Core Admin Zone Dashboard<br />(<kbd>core_adminzone_dashboard</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/component.png" />Core Admin Zone Dashboard<br />(<kbd>core_adminzone_dashboard</kbd>)<br /><br />
                 <strong>Core</strong>: Yes<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -476,7 +476,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/tools/cleanup.png" />Core Cleanup Tools<br />(<kbd>core_cleanup_tools</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/tools/cleanup.png" />Core Cleanup Tools<br />(<kbd>core_cleanup_tools</kbd>)<br /><br />
                 <strong>Core</strong>: Yes<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -488,7 +488,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/tabs/member_account/profile.png" />Core Conversr<br />(<kbd>core_cns</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/tabs/member_account/profile.png" />Core Conversr<br />(<kbd>core_cns</kbd>)<br /><br />
                 <strong>Core</strong>: Yes<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -500,7 +500,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/cms/comcode_page_edit.png" />Core Comcode Pages<br />(<kbd>core_comcode_pages</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/cms/comcode_page_edit.png" />Core Comcode Pages<br />(<kbd>core_comcode_pages</kbd>)<br /><br />
                 <strong>Core</strong>: Yes<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -512,7 +512,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/setup/config/config.png" />Core Configuration<br />(<kbd>core_configuration</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/setup/config/config.png" />Core Configuration<br />(<kbd>core_configuration</kbd>)<br /><br />
                 <strong>Core</strong>: Yes<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -524,7 +524,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Core Database Drivers<br />(<kbd>core_database_drivers</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/component.png" />Core Database Drivers<br />(<kbd>core_database_drivers</kbd>)<br /><br />
                 <strong>Core</strong>: Yes<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -536,7 +536,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/feedback/comment.png" />Core Feedback Features<br />(<kbd>core_feedback_features</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/feedback/comment.png" />Core Feedback Features<br />(<kbd>core_feedback_features</kbd>)<br /><br />
                 <strong>Core</strong>: Yes<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -548,7 +548,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Core Fields<br />(<kbd>core_fields</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/component.png" />Core Fields<br />(<kbd>core_fields</kbd>)<br /><br />
                 <strong>Core</strong>: Yes<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -560,7 +560,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Core Form Interfaces<br />(<kbd>core_form_interfaces</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/component.png" />Core Form Interfaces<br />(<kbd>core_form_interfaces</kbd>)<br /><br />
                 <strong>Core</strong>: Yes<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -572,7 +572,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Core Forum Drivers<br />(<kbd>core_forum_drivers</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/component.png" />Core Forum Drivers<br />(<kbd>core_forum_drivers</kbd>)<br /><br />
                 <strong>Core</strong>: Yes<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -584,7 +584,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Core Graphic Text<br />(<kbd>core_graphic_text</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/component.png" />Core Graphic Text<br />(<kbd>core_graphic_text</kbd>)<br /><br />
                 <strong>Core</strong>: Yes<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -596,7 +596,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Core HTML Abstractions<br />(<kbd>core_html_abstractions</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/component.png" />Core HTML Abstractions<br />(<kbd>core_html_abstractions</kbd>)<br /><br />
                 <strong>Core</strong>: Yes<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -608,7 +608,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/style/language/language.png" />Core Language Editing<br />(<kbd>core_language_editing</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/style/language/language.png" />Core Language Editing<br />(<kbd>core_language_editing</kbd>)<br /><br />
                 <strong>Core</strong>: Yes<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -620,7 +620,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/structure/menus.png" />Core Menus<br />(<kbd>core_menus</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/structure/menus.png" />Core Menus<br />(<kbd>core_menus</kbd>)<br /><br />
                 <strong>Core</strong>: Yes<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -632,7 +632,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/tool_buttons/notifications2.png" />Core Notifications<br />(<kbd>core_notifications</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/tool_buttons/notifications2.png" />Core Notifications<br />(<kbd>core_notifications</kbd>)<br /><br />
                 <strong>Core</strong>: Yes<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -644,7 +644,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/security/permissions/privileges.png" />Core Permission Management<br />(<kbd>core_permission_management</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/security/permissions/privileges.png" />Core Permission Management<br />(<kbd>core_permission_management</kbd>)<br /><br />
                 <strong>Core</strong>: Yes<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -656,7 +656,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Core Primary Layout<br />(<kbd>core_primary_layout</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/component.png" />Core Primary Layout<br />(<kbd>core_primary_layout</kbd>)<br /><br />
                 <strong>Core</strong>: Yes<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -668,7 +668,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Core Rich Media<br />(<kbd>core_rich_media</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/component.png" />Core Rich Media<br />(<kbd>core_rich_media</kbd>)<br /><br />
                 <strong>Core</strong>: Yes<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -680,7 +680,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/style/themes/themes.png" />Core Themeing<br />(<kbd>core_themeing</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/style/themes/themes.png" />Core Themeing<br />(<kbd>core_themeing</kbd>)<br /><br />
                 <strong>Core</strong>: Yes<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -692,7 +692,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/tools/upgrade.png" />Core Upgrader<br />(<kbd>core_upgrader</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/tools/upgrade.png" />Core Upgrader<br />(<kbd>core_upgrader</kbd>)<br /><br />
                 <strong>Core</strong>: Yes<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -704,7 +704,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Core Webstandards<br />(<kbd>core_webstandards</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/component.png" />Core Webstandards<br />(<kbd>core_webstandards</kbd>)<br /><br />
                 <strong>Core</strong>: Yes<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -716,7 +716,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/structure/zones/zone_editor.png" />Core Zone Editor<br />(<kbd>core_zone_editor</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/structure/zones/zone_editor.png" />Core Zone Editor<br />(<kbd>core_zone_editor</kbd>)<br /><br />
                 <strong>Core</strong>: Yes<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -728,7 +728,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Counting Blocks<br />(<kbd>counting_blocks</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/component.png" />Counting Blocks<br />(<kbd>counting_blocks</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -740,7 +740,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/setup/custom_comcode.png" />Custom Comcode<br />(<kbd>custom_comcode</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/setup/custom_comcode.png" />Custom Comcode<br />(<kbd>custom_comcode</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -752,7 +752,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/style/debrand.png" />Debrand<br />(<kbd>debrand</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/style/debrand.png" />Debrand<br />(<kbd>debrand</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -764,7 +764,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/rich_content/downloads.png" />Downloads<br />(<kbd>downloads</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/rich_content/downloads.png" />Downloads<br />(<kbd>downloads</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -776,7 +776,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/ecommerce.png" />eCommerce<br />(<kbd>ecommerce</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/audit/ecommerce/ecommerce.png" />eCommerce<br />(<kbd>ecommerce</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -788,7 +788,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/audit/errorlog.png" />Errorlog<br />(<kbd>errorlog</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/audit/errorlog.png" />Errorlog<br />(<kbd>errorlog</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -800,7 +800,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Failover<br />(<kbd>failover</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/component.png" />Failover<br />(<kbd>failover</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -812,7 +812,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/cms/filedump.png" />Filedump<br />(<kbd>filedump</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/cms/filedump.png" />Filedump<br />(<kbd>filedump</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -824,7 +824,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Forum Blocks<br />(<kbd>forum_blocks</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/component.png" />Forum Blocks<br />(<kbd>forum_blocks</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <kbd>news_shared</kbd>
             </td>
@@ -836,7 +836,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/rich_content/galleries.png" />Galleries<br />(<kbd>galleries</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/rich_content/galleries.png" />Galleries<br />(<kbd>galleries</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -848,7 +848,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Google Appengine<br />(<kbd>google_appengine</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/component.png" />Google Appengine<br />(<kbd>google_appengine</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -860,7 +860,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/pages/help.png" />Help Page<br />(<kbd>help_page</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/help.png" />Help Page<br />(<kbd>help_page</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -872,7 +872,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />HPHP Buildkit<br />(<kbd>hphp_buildkit</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/component.png" />HPHP Buildkit<br />(<kbd>hphp_buildkit</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -884,7 +884,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/import.png" />Import<br />(<kbd>import</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/import.png" />Import<br />(<kbd>import</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -896,7 +896,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Installer<br />(<kbd>installer</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/component.png" />Installer<br />(<kbd>installer</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -908,7 +908,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Language Block<br />(<kbd>language_block</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/component.png" />Language Block<br />(<kbd>language_block</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -920,7 +920,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/security/ldap.png" />LDAP<br />(<kbd>ldap</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/security/ldap.png" />LDAP<br />(<kbd>ldap</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -932,7 +932,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Linux Helper Scripts<br />(<kbd>linux_helper_scripts</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/component.png" />Linux Helper Scripts<br />(<kbd>linux_helper_scripts</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -944,7 +944,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/security/permissions/match_keys.png" />Match Key Permissions<br />(<kbd>match_key_permissions</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/security/permissions/match_keys.png" />Match Key Permissions<br />(<kbd>match_key_permissions</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -956,7 +956,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/structure/multi_site_network.png" />MSN<br />(<kbd>msn</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/structure/multi_site_network.png" />MSN<br />(<kbd>msn</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -968,7 +968,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/rich_content/news.png" />News<br />(<kbd>news</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/rich_content/news.png" />News<br />(<kbd>news</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <kbd>news_shared</kbd>
             </td>
@@ -980,7 +980,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />News Shared<br />(<kbd>news_shared</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/component.png" />News Shared<br />(<kbd>news_shared</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -992,7 +992,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/site_meta/newsletters.png" />Newsletter<br />(<kbd>newsletter</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/site_meta/newsletters.png" />Newsletter<br />(<kbd>newsletter</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -1004,7 +1004,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/structure/sitemap/sitemap_editor.png" />Page Management<br />(<kbd>page_management</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/structure/sitemap/sitemap_editor.png" />Page Management<br />(<kbd>page_management</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -1016,7 +1016,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/tools/phpinfo.png" />PHP-Info<br />(<kbd>phpinfo</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/tools/phpinfo.png" />PHP-Info<br />(<kbd>phpinfo</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -1028,7 +1028,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/social/points.png" />Points<br />(<kbd>points</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/social/points.png" />Points<br />(<kbd>points</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -1040,7 +1040,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/social/pointstore.png" />Pointstore<br />(<kbd>pointstore</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/social/pointstore.png" />Pointstore<br />(<kbd>pointstore</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <kbd>points</kbd>
             </td>
@@ -1052,7 +1052,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/social/polls.png" />Polls<br />(<kbd>polls</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/social/polls.png" />Polls<br />(<kbd>polls</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -1064,7 +1064,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/links/print.png" />Printer Friendly Block<br />(<kbd>printer_friendly_block</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/links/print.png" />Printer Friendly Block<br />(<kbd>printer_friendly_block</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -1076,7 +1076,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/rich_content/quiz.png" />Quizzes<br />(<kbd>quizzes</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/rich_content/quiz.png" />Quizzes<br />(<kbd>quizzes</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -1088,7 +1088,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/style/quotes.png" />Random Quotes<br />(<kbd>random_quotes</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/style/quotes.png" />Random Quotes<br />(<kbd>random_quotes</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -1100,7 +1100,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/audit/realtime_rain.png" />Realtime Rain<br />(<kbd>realtime_rain</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/audit/realtime_rain.png" />Realtime Rain<br />(<kbd>realtime_rain</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <kbd>stats</kbd>
             </td>
@@ -1112,7 +1112,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/site_meta/recommend.png" />Recommend<br />(<kbd>recommend</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/site_meta/recommend.png" />Recommend<br />(<kbd>recommend</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -1124,7 +1124,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/structure/redirects.png" />Redirects Editor<br />(<kbd>redirects_editor</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/structure/redirects.png" />Redirects Editor<br />(<kbd>redirects_editor</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -1136,7 +1136,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Rootkit Detector<br />(<kbd>rootkit_detector</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/component.png" />Rootkit Detector<br />(<kbd>rootkit_detector</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -1148,7 +1148,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/audit/statistics/search.png" />Search<br />(<kbd>search</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/audit/statistics/search.png" />Search<br />(<kbd>search</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -1160,7 +1160,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/audit/security_log.png" />Securitylogging<br />(<kbd>securitylogging</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/audit/security_log.png" />Securitylogging<br />(<kbd>securitylogging</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -1172,7 +1172,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/setup/setupwizard.png" />Setupwizard<br />(<kbd>setupwizard</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/setup/setupwizard.png" />Setupwizard<br />(<kbd>setupwizard</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -1184,7 +1184,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/rich_content/ecommerce/shopping_cart.png" />Shopping<br />(<kbd>shopping</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/rich_content/ecommerce/shopping_cart.png" />Shopping<br />(<kbd>shopping</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <kbd>ecommerce</kbd>, <kbd>catalogues</kbd>
             </td>
@@ -1196,7 +1196,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />SMS<br />(<kbd>sms</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/component.png" />SMS<br />(<kbd>sms</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -1208,7 +1208,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/security/ssl.png" />SSL<br />(<kbd>ssl</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/security/ssl.png" />SSL<br />(<kbd>ssl</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -1220,7 +1220,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/site_meta/staff.png" />Staff<br />(<kbd>staff</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/site_meta/staff.png" />Staff<br />(<kbd>staff</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -1232,7 +1232,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/audit/messaging.png" />Staff Messaging<br />(<kbd>staff_messaging</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/audit/messaging.png" />Staff Messaging<br />(<kbd>staff_messaging</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <kbd>cns_forum</kbd>
             </td>
@@ -1244,7 +1244,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/audit/statistics/statistics.png" />Stats<br />(<kbd>stats</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/audit/statistics/statistics.png" />Stats<br />(<kbd>stats</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -1256,7 +1256,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Stats Block<br />(<kbd>stats_block</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/component.png" />Stats Block<br />(<kbd>stats_block</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -1268,7 +1268,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/collaboration/supermembers.png" />Supermember Directory<br />(<kbd>supermember_directory</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/collaboration/supermembers.png" />Supermember Directory<br />(<kbd>supermember_directory</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <kbd>collaboration_zone</kbd>
             </td>
@@ -1280,7 +1280,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/links/rss.png" />Syndication<br />(<kbd>syndication</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/links/rss.png" />Syndication<br />(<kbd>syndication</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <kbd>syndication_blocks</kbd>
             </td>
@@ -1292,7 +1292,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/links/rss.png" />Syndication Blocks<br />(<kbd>syndication_blocks</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/links/rss.png" />Syndication Blocks<br />(<kbd>syndication_blocks</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <kbd>news</kbd>
             </td>
@@ -1304,7 +1304,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Textbased Persistent Caching<br />(<kbd>textbased_persistent_caching</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/component.png" />Textbased Persistent Caching<br />(<kbd>textbased_persistent_caching</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -1316,7 +1316,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/style/themes/themewizard.png" />Themewizard<br />(<kbd>themewizard</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/style/themes/themewizard.png" />Themewizard<br />(<kbd>themewizard</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -1328,7 +1328,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/site_meta/tickets.png" />Tickets<br />(<kbd>tickets</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/site_meta/tickets.png" />Tickets<br />(<kbd>tickets</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -1340,7 +1340,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Uninstaller<br />(<kbd>uninstaller</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/component.png" />Uninstaller<br />(<kbd>uninstaller</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -1352,7 +1352,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/audit/unvalidated.png" />Unvalidated<br />(<kbd>unvalidated</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/audit/unvalidated.png" />Unvalidated<br />(<kbd>unvalidated</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -1364,7 +1364,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/social/users_online.png" />Users Online Block<br />(<kbd>users_online_block</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/social/users_online.png" />Users Online Block<br />(<kbd>users_online_block</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -1376,7 +1376,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/setup/welcome_emails.png" />Welcome E-mails<br />(<kbd>welcome_emails</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/setup/welcome_emails.png" />Welcome E-mails<br />(<kbd>welcome_emails</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -1388,7 +1388,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/rich_content/wiki.png" />Wiki<br />(<kbd>wiki</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/rich_content/wiki.png" />Wiki<br />(<kbd>wiki</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -1400,7 +1400,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Windows Helper Scripts<br />(<kbd>windows_helper_scripts</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/component.png" />Windows Helper Scripts<br />(<kbd>windows_helper_scripts</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -1412,7 +1412,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/security/wordfilter.png" />Wordfilter<br />(<kbd>wordfilter</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/security/wordfilter.png" />Wordfilter<br />(<kbd>wordfilter</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -1424,7 +1424,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/setup/xml_fields.png" />XML Fields<br />(<kbd>xml_fields</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/menu/adminzone/setup/xml_fields.png" />XML Fields<br />(<kbd>xml_fields</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -1436,7 +1436,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Zone Logos<br />(<kbd>zone_logos</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/admin/component.png" />Zone Logos<br />(<kbd>zone_logos</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>

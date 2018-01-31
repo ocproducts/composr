@@ -101,7 +101,7 @@ class Module_admin_revisions
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
         return array(
-            'browse' => array('REVISIONS', 'buttons/revisions'),
+            'browse' => array('REVISIONS', 'admin/revisions'),
         );
     }
 
@@ -258,7 +258,7 @@ class Module_admin_revisions
                 'URL' => $delete_url,
                 'FULL_TITLE' => do_lang_tempcode('DELETE_REVISION'),
                 'TITLE' => do_lang_tempcode('DELETE'),
-                'IMG' => 'menu---generic-admin--delete',
+                'IMG' => 'admin--delete3',
             ));
             $_revision[] = $delete;
         }

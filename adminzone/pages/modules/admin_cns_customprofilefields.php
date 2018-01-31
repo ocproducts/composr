@@ -151,8 +151,8 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
             get_screen_title('CUSTOM_PROFILE_FIELDS'),
             comcode_lang_string('DOC_CUSTOM_PROFILE_FIELDS'),
             array(
-                array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_CUSTOM_PROFILE_FIELD')),
-                array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_CUSTOM_PROFILE_FIELD')),
+                array('admin/add', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_CUSTOM_PROFILE_FIELD')),
+                array('admin/edit', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_CUSTOM_PROFILE_FIELD')),
             ),
             do_lang('CUSTOM_PROFILE_FIELDS')
         );

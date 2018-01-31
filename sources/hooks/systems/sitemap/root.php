@@ -124,7 +124,7 @@ class Hook_sitemap_root extends Hook_sitemap_base
             $struct['page_link'] = ':';
             $struct['type'] = 'zone';
             if (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) {
-                $struct['extra_meta']['image'] = find_theme_image('icons/48x48/menu/welcome');
+                $struct['extra_meta']['image'] = find_theme_image('icons/menu/welcome');
             }
 
             if (($options & SITEMAP_GEN_LABEL_CONTENT_TYPES) != 0) {

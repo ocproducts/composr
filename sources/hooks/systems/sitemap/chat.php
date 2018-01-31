@@ -128,7 +128,7 @@ class Hook_sitemap_chat extends Hook_sitemap_content
             'edit_url' => build_url(array('page' => 'admin_chat', 'type' => '_edit', 'id' => $content_id), get_module_zone('admin_chat')),
         ) + $partial_struct;
 
-        $struct['extra_meta']['image'] = find_theme_image('icons/48x48/menu/social/chat/chat');
+        $struct['extra_meta']['image'] = find_theme_image('icons/menu/social/chat/chat');
 
         if (!$this->_check_node_permissions($struct)) {
             return null;

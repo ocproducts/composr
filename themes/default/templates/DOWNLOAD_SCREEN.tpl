@@ -19,7 +19,7 @@
 					</p>
 
 					<div class="toggleable-tray-title js-tray-header">
-						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!I_AGREE}" title="{!EXPAND}" width="24" height="24" src="{$IMG*,1x/trays/expand2}" /></a>
+						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!I_AGREE}" title="{!EXPAND}" width="24" height="24" src="{$IMG*,icons/trays/expand2}" /></a>
 						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!I_AGREE}</a>
 					</div>
 
@@ -176,11 +176,11 @@
 		1_TITLE={!EDIT}
 		1_ACCESSKEY=q
 		1_REL=edit
-		1_ICON=menu/_generic_admin/edit_this
+		1_ICON=admin/edit_this
 		{+START,IF,{$ADDON_INSTALLED,galleries}}
 			2_URL={ADD_IMG_URL*}
 			2_TITLE={!ADD_IMAGE}
-			2_ICON=menu/_generic_admin/add_one
+			2_ICON=admin/add
 		{+END}
 		{+START,IF,{$ADDON_INSTALLED,tickets}}
 			3_URL={$PAGE_LINK*,_SEARCH:report_content:content_type=download:content_id={ID}:redirect={$SELF_URL&}}

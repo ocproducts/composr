@@ -10,29 +10,29 @@
 |-
 
 ! Lorem
-| [img="Yes" width="24" height="24"]{$IMG,icons/48x48/buttons/yes}[/img]
-| [img="No" width="24" height="24"]{$IMG,icons/48x48/buttons/no}[/img]
-| [img="Yes" width="24" height="24"]{$IMG,icons/48x48/buttons/yes}[/img]
+| [img="Yes" width="24" height="24"]{$IMG,icons/buttons/yes}[/img]
+| [img="No" width="24" height="24"]{$IMG,icons/buttons/no}[/img]
+| [img="Yes" width="24" height="24"]{$IMG,icons/buttons/yes}[/img]
 
 |-
 
 ! Ipsum
-| [img="No" width="24" height="24"]{$IMG,icons/48x48/buttons/no}[/img]
-| [img="No" width="24" height="24"]{$IMG,icons/48x48/buttons/no}[/img]
-| [img="Yes" width="24" height="24"]{$IMG,icons/48x48/buttons/yes}[/img]
+| [img="No" width="24" height="24"]{$IMG,icons/buttons/no}[/img]
+| [img="No" width="24" height="24"]{$IMG,icons/buttons/no}[/img]
+| [img="Yes" width="24" height="24"]{$IMG,icons/buttons/yes}[/img]
 
 |-
 
 ! Ipso
-| [img="No" width="24" height="24"]{$IMG,icons/48x48/buttons/no}[/img]
-| [img="No" width="24" height="24"]{$IMG,icons/48x48/buttons/no}[/img]
-| [img="Yes" width="24" height="24"]{$IMG,icons/48x48/buttons/yes}[/img]
+| [img="No" width="24" height="24"]{$IMG,icons/buttons/no}[/img]
+| [img="No" width="24" height="24"]{$IMG,icons/buttons/no}[/img]
+| [img="Yes" width="24" height="24"]{$IMG,icons/buttons/yes}[/img]
 
 |-
 
 ! Facto
-| [img="No" width="24" height="24"]{$IMG,icons/48x48/buttons/no}[/img]
-| [img="No" width="24" height="24"]{$IMG,icons/48x48/buttons/no}[/img]
-| [img="Yes" width="24" height="24"]{$IMG,icons/48x48/buttons/yes}[/img]
+| [img="No" width="24" height="24"]{$IMG,icons/buttons/no}[/img]
+| [img="No" width="24" height="24"]{$IMG,icons/buttons/no}[/img]
+| [img="Yes" width="24" height="24"]{$IMG,icons/buttons/yes}[/img]
 
 |}

@@ -58,12 +58,12 @@ class Module_admin_cns_members
         $ret = array(
             'browse' => array('MEMBERS', 'menu/social/members'),
             'step1' => array('ADD_MEMBER', 'menu/adminzone/tools/users/member_add'),
-            'download_csv' => array('DOWNLOAD_MEMBER_CSV', 'menu/_generic_admin/download_csv'),
+            'download_csv' => array('DOWNLOAD_MEMBER_CSV', 'admin/download_csv'),
         );
 
         if (has_privilege(get_member(), 'mass_import')) {
             $ret['delurk'] = array('DELETE_LURKERS', 'menu/adminzone/tools/users/delete_lurkers');
-            $ret['import_csv'] = array('IMPORT_MEMBER_CSV', 'menu/_generic_admin/import_csv');
+            $ret['import_csv'] = array('IMPORT_MEMBER_CSV', 'admin/import_csv');
         }
 
         if ($support_crosslinks) {
@@ -85,7 +85,7 @@ class Module_admin_cns_members
             }
             $ret['_SEARCH:admin_cns_groups:browse'] = array('USERGROUPS', 'menu/social/groups');*/
             if (addon_installed('cns_warnings')) {
-                $ret['_SEARCH:warnings:edit'] = array('WARNINGS', 'tabs/member_account/warnings');
+                $ret['_SEARCH:warnings:edit'] = array('WARNINGS', 'menu/social/warnings');
             }
         }
 
@@ -252,12 +252,12 @@ class Module_admin_cns_members
                 (!has_privilege(get_member(), 'member_maintenance')) ? null : array('menu/adminzone/tools/users/member_edit', array('members', array('type' => 'browse'), get_module_zone('members'), do_lang_tempcode('SWITCH_ZONE_WARNING')), do_lang_tempcode('EDIT_MEMBER'), 'DOC_EDIT_MEMBER'),
                 array('menu/adminzone/tools/users/merge_members', array('admin_cns_merge_members', array('type' => 'browse'), get_module_zone('admin_cns_merge_members')), do_lang_tempcode('MERGE_MEMBERS'), 'DOC_MERGE_MEMBERS'),
                 (!has_privilege(get_member(), 'mass_import')) ? null : array('menu/adminzone/tools/users/delete_lurkers', array('admin_cns_members', array('type' => 'delurk'), get_module_zone('admin_cns_members')), do_lang_tempcode('DELETE_LURKERS'), 'DOC_DELETE_LURKERS'),
-                array('menu/_generic_admin/download_csv', array('admin_cns_members', array('type' => 'download_csv'), get_module_zone('admin_cns_members')), do_lang_tempcode('DOWNLOAD_MEMBER_CSV'), 'DOC_DOWNLOAD_MEMBER_CSV'),
-                (!has_privilege(get_member(), 'mass_import')) ? null : array('/menu/_generic_admin/import_csv', array('admin_cns_members', array('type' => 'import_csv'), get_module_zone('admin_cns_members')), do_lang_tempcode('IMPORT_MEMBER_CSV'), 'DOC_IMPORT_MEMBER_CSV'),
+                array('admin/download_csv', array('admin_cns_members', array('type' => 'download_csv'), get_module_zone('admin_cns_members')), do_lang_tempcode('DOWNLOAD_MEMBER_CSV'), 'DOC_DOWNLOAD_MEMBER_CSV'),
+                (!has_privilege(get_member(), 'mass_import')) ? null : array('/admin/import_csv', array('admin_cns_members', array('type' => 'import_csv'), get_module_zone('admin_cns_members')), do_lang_tempcode('IMPORT_MEMBER_CSV'), 'DOC_IMPORT_MEMBER_CSV'),
                 addon_installed('cns_cpfs') ? array('menu/adminzone/tools/users/custom_profile_fields', array('admin_cns_customprofilefields', array('type' => 'browse'), get_module_zone('admin_cns_customprofilefields')), do_lang_tempcode('CUSTOM_PROFILE_FIELDS'), 'DOC_CUSTOM_PROFILE_FIELDS') : null,
                 addon_installed('welcome_emails') ? array('menu/adminzone/setup/welcome_emails', array('admin_cns_welcome_emails', array('type' => 'browse'), get_module_zone('admin_cns_welcome_emails')), do_lang_tempcode('WELCOME_EMAILS'), 'DOC_WELCOME_EMAILS') : null,
                 addon_installed('securitylogging') ? array('menu/adminzone/tools/users/investigate_user', array('admin_lookup', array(), get_module_zone('admin_lookup')), do_lang_tempcode('INVESTIGATE_USER'), 'DOC_INVESTIGATE_USER') : null,
-                addon_installed('cns_warnings') ? array('tabs/member_account/warnings', array('warnings', array('type' => 'edit'), get_module_zone('warnings')), do_lang_tempcode('WARNINGS')) : null,
+                addon_installed('cns_warnings') ? array('menu/social/warnings', array('warnings', array('type' => 'edit'), get_module_zone('warnings')), do_lang_tempcode('WARNINGS')) : null,
                 array('menu/adminzone/security/usergroups_temp', array('admin_group_member_timeouts', array('type' => 'browse'), get_module_zone('admin_group_member_timeouts')), do_lang_tempcode('GROUP_MEMBER_TIMEOUTS'), 'DOC_GROUP_MEMBER_TIMEOUTS'),
                 addon_installed('ecommerce') ? array('menu/adminzone/audit/ecommerce/ecommerce', array('admin_ecommerce', array('type' => 'browse'), get_module_zone('admin_ecommerce')), do_lang_tempcode('CUSTOM_PRODUCT_USERGROUP'), 'DOC_ECOMMERCE') : null,
                 array('menu/social/groups', array('admin_cns_groups', array('type' => 'browse'), get_module_zone('admin_cns_groups'), do_lang_tempcode('SWITCH_SECTION_WARNING')), do_lang_tempcode('USERGROUPS'), 'DOC_GROUPS'),
@@ -714,7 +714,7 @@ class Module_admin_cns_members
             'FIELDS' => $fields,
             'URL' => $post_url,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'menu---generic-admin--export',
+            'SUBMIT_ICON' => 'admin--export',
             'SUBMIT_NAME' => $submit_name,
             'TARGET' => '_blank',
             'JS_FUNCTION_CALLS' => $js_function_calls,
@@ -767,7 +767,7 @@ class Module_admin_cns_members
             'FIELDS' => $fields,
             'URL' => $post_url,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'menu---generic-admin--import',
+            'SUBMIT_ICON' => 'admin--import',
             'SUBMIT_NAME' => $submit_name,
         ));
     }

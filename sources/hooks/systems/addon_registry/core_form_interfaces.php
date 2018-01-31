@@ -87,7 +87,7 @@ class Hook_addon_registry_core_form_interfaces
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.svg';
+        return 'themes/default/images/icons/admin/component.svg';
     }
 
     /**
@@ -98,13 +98,13 @@ class Hook_addon_registry_core_form_interfaces
     public function get_file_list()
     {
         return array(
-            'themes/default/images/EN/1x/editor/off.svg',
-            'themes/default/images/EN/1x/editor/on.svg',
-            'themes/default/images/1x/treefield/category.svg',
-            'themes/default/images/1x/treefield/entry.svg',
-            'themes/default/images/1x/treefield/collapse.svg',
-            'themes/default/images/1x/treefield/expand.svg',
-            'themes/default/images/1x/treefield/index.html',
+            'themes/default/images/EN/editor/off.svg',
+            'themes/default/images/EN/editor/on.svg',
+            'themes/default/images/icons/tree_field/category.svg',
+            'themes/default/images/icons/tree_field/entry.svg',
+            'themes/default/images/icons/tree_field/collapse.svg',
+            'themes/default/images/icons/tree_field/expand.svg',
+            'themes/default/images/icons/tree_field/index.html',
             'sources/hooks/systems/addon_registry/core_form_interfaces.php',
             'themes/default/templates/POSTING_FORM.tpl',
             'themes/default/templates/POSTING_SCREEN.tpl',
@@ -663,25 +663,25 @@ class Hook_addon_registry_core_form_interfaces
             'data_custom/spelling/index.html',
             'data_custom/spelling/personal_dicts/.htaccess',
             'data_custom/spelling/personal_dicts/index.html',
-            'themes/default/images/EN/comcodeeditor/apply_changes.svg',
-            'themes/default/images/EN/comcodeeditor/b.svg',
-            'themes/default/images/EN/comcodeeditor/quote.svg',
-            'themes/default/images/EN/comcodeeditor/block.svg',
-            'themes/default/images/EN/comcodeeditor/box.svg',
-            'themes/default/images/EN/comcodeeditor/code.svg',
-            'themes/default/images/EN/comcodeeditor/comcode.svg',
-            'themes/default/images/EN/comcodeeditor/email.svg',
-            'themes/default/images/EN/comcodeeditor/hide.svg',
-            'themes/default/images/EN/comcodeeditor/html.svg',
-            'themes/default/images/EN/comcodeeditor/i.svg',
-            'themes/default/images/EN/comcodeeditor/img.svg',
-            'themes/default/images/EN/comcodeeditor/index.html',
-            'themes/default/images/EN/comcodeeditor/list.svg',
-            'themes/default/images/EN/comcodeeditor/page.svg',
-            'themes/default/images/EN/comcodeeditor/s.svg',
-            'themes/default/images/EN/comcodeeditor/thumb.svg',
-            'themes/default/images/EN/comcodeeditor/u.svg',
-            'themes/default/images/EN/comcodeeditor/url.svg',
+            'themes/default/images/EN/comcode_editor/apply_changes.svg',
+            'themes/default/images/EN/comcode_editor/b.svg',
+            'themes/default/images/EN/comcode_editor/quote.svg',
+            'themes/default/images/EN/comcode_editor/block.svg',
+            'themes/default/images/EN/comcode_editor/box.svg',
+            'themes/default/images/EN/comcode_editor/code.svg',
+            'themes/default/images/EN/comcode_editor/comcode.svg',
+            'themes/default/images/EN/comcode_editor/email.svg',
+            'themes/default/images/EN/comcode_editor/hide.svg',
+            'themes/default/images/EN/comcode_editor/html.svg',
+            'themes/default/images/EN/comcode_editor/i.svg',
+            'themes/default/images/EN/comcode_editor/img.svg',
+            'themes/default/images/EN/comcode_editor/index.html',
+            'themes/default/images/EN/comcode_editor/list.svg',
+            'themes/default/images/EN/comcode_editor/page.svg',
+            'themes/default/images/EN/comcode_editor/s.svg',
+            'themes/default/images/EN/comcode_editor/thumb.svg',
+            'themes/default/images/EN/comcode_editor/u.svg',
+            'themes/default/images/EN/comcode_editor/url.svg',
             'sources/form_templates.php',
             'data/namelike.php',
             'data/username_exists.php',
@@ -2189,7 +2189,7 @@ class Hook_addon_registry_core_form_interfaces
         }
         return array(
             lorem_globalise(do_lorem_template('BLOCK_HELPER_BLOCK_GROUP', array(
-                'IMG' => 'themes/default/images/icons/48x48/menu/_generic_admin/add_one.svg',
+                'IMG' => 'themes/default/images/icons/admin/add.svg',
                 'TITLE' => lorem_phrase(),
                 'LINKS' => $links,
             )), null, '', true)

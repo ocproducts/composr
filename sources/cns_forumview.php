@@ -399,7 +399,7 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
                 $button_array[] = array('immediate' => false, 'rel' => 'add nofollow', 'title' => do_lang_tempcode('ADD_PRIVATE_TOPIC'), 'url' => $new_topic_url, 'img' => 'buttons--send');
             }
         } else {
-            $button_array[] = array('immediate' => false, 'rel' => 'add nofollow', 'title' => do_lang_tempcode('ADD_TOPIC'), 'url' => $new_topic_url, 'img' => 'buttons--new-topic');
+            $button_array[] = array('immediate' => false, 'rel' => 'add nofollow', 'title' => do_lang_tempcode('ADD_TOPIC'), 'url' => $new_topic_url, 'img' => 'buttons--add-topic');
         }
     }
     $buttons = cns_button_screen_wrap($button_array);

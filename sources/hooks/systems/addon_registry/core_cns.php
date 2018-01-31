@@ -91,7 +91,7 @@ class Hook_addon_registry_core_cns
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/tabs/member_account/profile.svg';
+        return 'themes/default/images/icons/menu/social/profile.svg';
     }
 
     /**
@@ -103,28 +103,28 @@ class Hook_addon_registry_core_cns
     {
         return array(
             'themes/default/images/cns_default_avatars/default.png',
-            'themes/default/images/icons/48x48/tool_buttons/inbox.svg',
-            'themes/default/images/icons/48x48/tool_buttons/inbox2.svg',
-            'themes/default/images/icons/48x48/menu/adminzone/tools/users/member_add.svg',
-            'themes/default/images/icons/48x48/menu/adminzone/security/usergroups_temp.svg',
-            'themes/default/images/icons/48x48/menu/adminzone/tools/users/delete_lurkers.svg',
-            'themes/default/images/icons/48x48/menu/adminzone/tools/users/member_edit.svg',
-            'themes/default/images/icons/48x48/menu/adminzone/tools/users/merge_members.svg',
-            'themes/default/images/icons/48x48/tabs/member_account/profile.svg',
-            'themes/default/images/icons/48x48/tabs/member_account/edit/profile.svg',
-            'themes/default/images/icons/48x48/tabs/member_account/edit/delete.svg',
-            'themes/default/images/icons/48x48/tabs/member_account/edit/settings.svg',
-            'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/demographics.svg',
-            'themes/default/images/icons/48x48/tabs/member_account/edit/index.html',
-            'themes/default/images/icons/48x48/tabs/member_account/index.html',
-            'themes/default/images/icons/28x28/birthday.svg',
-            'themes/default/images/icons/48x48/emoticons.svg',
-            'themes/default/images/icons/48x48/menu/social/groups.svg',
-            'themes/default/images/icons/48x48/buttons/ignore.svg',
-            'themes/default/images/icons/48x48/menu/site_meta/user_actions/lost_password.svg',
-            'themes/default/images/1x/cns_general/index.html',
-            'themes/default/images/1x/cns_general/isoff.svg',
-            'themes/default/images/1x/cns_general/ison.svg',
+            'themes/default/images/icons/tool_buttons/inbox.svg',
+            'themes/default/images/icons/tool_buttons/inbox2.svg',
+            'themes/default/images/icons/menu/adminzone/tools/users/member_add.svg',
+            'themes/default/images/icons/menu/adminzone/security/usergroups_temp.svg',
+            'themes/default/images/icons/menu/adminzone/tools/users/delete_lurkers.svg',
+            'themes/default/images/icons/menu/adminzone/tools/users/member_edit.svg',
+            'themes/default/images/icons/menu/adminzone/tools/users/merge_members.svg',
+            'themes/default/images/icons/menu/social/profile.svg',
+            'themes/default/images/icons/tabs/member_account/edit/profile.svg',
+            'themes/default/images/icons/tabs/member_account/edit/delete.svg',
+            'themes/default/images/icons/tabs/member_account/edit/settings.svg',
+            'themes/default/images/icons/menu/adminzone/audit/statistics/demographics.svg',
+            'themes/default/images/icons/tabs/member_account/edit/index.html',
+            'themes/default/images/icons/tabs/member_account/index.html',
+            'themes/default/images/icons/birthday.svg',
+            'themes/default/images/icons/menu/adminzone/style/emoticons.svg',
+            'themes/default/images/icons/menu/social/groups.svg',
+            'themes/default/images/icons/buttons/ignore.svg',
+            'themes/default/images/icons/menu/site_meta/user_actions/lost_password.svg',
+            'themes/default/images/icons/cns_general/index.html',
+            'themes/default/images/icons/cns_general/is_off.svg',
+            'themes/default/images/icons/cns_general/is_on.svg',
             'sources/cns_forum_driver_helper_auth.php',
             'sources/two_factor.php',
             'sources/hooks/systems/content_meta_aware/topic.php',
@@ -930,7 +930,7 @@ class Hook_addon_registry_core_cns
             $actions[$section_code] = do_lorem_template('CNS_MEMBER_ACTION', array(
                 'ID' => strval($i),
                 'URL' => placeholder_url(),
-                'ICON' => 'menu/_generic_spare/1',
+                'ICON' => 'links/facebook',
                 'LANG' => lorem_word(),
                 'REL' => '',
                 'NAME' => $section_title,
@@ -998,7 +998,7 @@ class Hook_addon_registry_core_cns
         $tabs[] = array(
             'TAB_CODE' => placeholder_id() . '0',
             'TAB_TITLE' => lorem_phrase(),
-            'TAB_ICON' => 'tabs/member_account/profile',
+            'TAB_ICON' => 'menu/social/profile',
             'TAB_CONTENT' => $tab_content,
             'TAB_FIRST' => true,
             'TAB_LAST' => false,
@@ -1024,7 +1024,7 @@ class Hook_addon_registry_core_cns
         )));
         $tabs2[] = array(
             'TAB_TITLE' => lorem_phrase(),
-            'TAB_ICON' => 'tabs/member_account/profile',
+            'TAB_ICON' => 'menu/social/profile',
             'TAB_FIELDS' => $fields,
             'TAB_TEXT' => lorem_paragraph(),
             'TAB_SINGLE_FIELD' => false,
@@ -1033,7 +1033,7 @@ class Hook_addon_registry_core_cns
         );
         $tab_content = do_lorem_template('CNS_MEMBER_PROFILE_EDIT', array(
             'URL' => placeholder_url(),
-            'SUBMIT_ICON' => 'buttons--edit',
+            'SUBMIT_ICON' => 'admin--edit',
             'SUBMIT_NAME' => lorem_phrase(),
             'SKIP_WEBSTANDARDS' => true,
             'TABS' => $tabs2,
@@ -1042,7 +1042,7 @@ class Hook_addon_registry_core_cns
         $tabs[] = array(
             'TAB_CODE' => placeholder_id() . '1',
             'TAB_TITLE' => lorem_phrase(),
-            'TAB_ICON' => 'tabs/member_account/profile',
+            'TAB_ICON' => 'menu/social/profile',
             'TAB_CONTENT' => $tab_content,
             'TAB_FIRST' => false,
             'TAB_LAST' => true,

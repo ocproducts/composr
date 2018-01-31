@@ -94,7 +94,7 @@ class Hook_addon_registry_core_themeing
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/style/themes/themes.svg';
+        return 'themes/default/images/icons/menu/adminzone/style/themes/themes.svg';
     }
 
     /**
@@ -105,9 +105,9 @@ class Hook_addon_registry_core_themeing
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/adminzone/style/themes/themes.svg',
-            'themes/default/images/icons/48x48/menu/adminzone/style/themes/templates.svg',
-            'themes/default/images/icons/48x48/menu/adminzone/style/themes/theme_images.svg',
+            'themes/default/images/icons/menu/adminzone/style/themes/themes.svg',
+            'themes/default/images/icons/menu/adminzone/style/themes/templates.svg',
+            'themes/default/images/icons/menu/adminzone/style/themes/theme_images.svg',
             'themes/default/css/themes_editor.css',
             'sources/hooks/systems/snippets/exists_theme.php',
             'adminzone/load_template.php',

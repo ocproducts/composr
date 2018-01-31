@@ -253,8 +253,8 @@
 */
 
 .buttons--simple {
-	background-image: url('{$IMG,icons/48x48/buttons/simple}') !important;
+	background-image: url('{$IMG,icons/buttons/simple}') !important;
 }
 .buttons--advanced {
-	background-image: url('{$IMG,icons/48x48/buttons/advanced}') !important;
+	background-image: url('{$IMG,icons/buttons/advanced}') !important;
 }

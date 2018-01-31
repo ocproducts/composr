@@ -64,11 +64,11 @@ body table.results-table tbody tr.unclosed-ticket td {
 */
 
 .buttons--add-ticket {
-	background-image: url('{$IMG,icons/48x48/buttons/add_ticket}') !important;
+	background-image: url('{$IMG,icons/buttons/add_ticket}') !important;
 }
 .buttons--new-reply-staff-only {
-	background-image: url('{$IMG,icons/48x48/buttons/new_reply_staff_only}') !important;
+	background-image: url('{$IMG,icons/buttons/new_reply_staff_only}') !important;
 }
 .menu--adminzone--security--permissions--privileges {
-	background-image: url('{$IMG,icons/48x48/menu/adminzone/security/permissions/privileges}') !important;
+	background-image: url('{$IMG,icons/menu/adminzone/security/permissions/privileges}') !important;
 }

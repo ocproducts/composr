@@ -91,7 +91,7 @@ class Hook_addon_registry_news
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/rich_content/news.svg';
+        return 'themes/default/images/icons/menu/rich_content/news.svg';
     }
 
     /**
@@ -102,8 +102,8 @@ class Hook_addon_registry_news
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/rich_content/news.svg',
-            'themes/default/images/icons/48x48/tabs/member_account/blog.svg',
+            'themes/default/images/icons/menu/rich_content/news.svg',
+            'themes/default/images/icons/menu/cms/blog.svg',
             'sources/hooks/systems/notifications/news_entry.php',
             'sources/hooks/modules/admin_setupwizard_installprofiles/blog.php',
             'sources/hooks/systems/realtime_rain/news.php',
@@ -133,14 +133,14 @@ class Hook_addon_registry_news
             'themes/default/templates/BLOCK_SIDE_NEWS_SUMMARY.tpl',
             'themes/default/templates/BLOCK_SIDE_NEWS_CATEGORIES.tpl',
             'themes/default/templates/NEWS_WORDPRESS_IMPORT_SCREEN.tpl',
-            'themes/default/images/newscats/index.html',
-            'themes/default/images/newscats/art.svg',
-            'themes/default/images/newscats/business.svg',
-            'themes/default/images/newscats/community.svg',
-            'themes/default/images/newscats/difficulties.svg',
-            'themes/default/images/newscats/entertainment.svg',
-            'themes/default/images/newscats/general.svg',
-            'themes/default/images/newscats/technology.svg',
+            'themes/default/images/icons/news/index.html',
+            'themes/default/images/icons/news/art.svg',
+            'themes/default/images/icons/news/business.svg',
+            'themes/default/images/icons/news/community.svg',
+            'themes/default/images/icons/news/difficulties.svg',
+            'themes/default/images/icons/news/entertainment.svg',
+            'themes/default/images/icons/news/general.svg',
+            'themes/default/images/icons/news/technology.svg',
             'sources/hooks/systems/config/separate_blogs.php',
             'cms/pages/modules/cms_news.php',
             'cms/pages/modules/cms_blogs.php',
@@ -631,7 +631,7 @@ class Hook_addon_registry_news
 
         $news_category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('news_categories', 'MIN(id)');
         if ($news_category_id === null) {
-            $news_category_id = add_news_category(lorem_phrase(), 'newscats/general', '');
+            $news_category_id = add_news_category(lorem_phrase(), 'icons/news/general', '');
             require_code('permissions2');
             set_global_category_access('news', $news_category_id);
         }

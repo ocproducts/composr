@@ -80,7 +80,7 @@
 
 .download-now {
 	padding-left: 24px;
-	background: url('{$IMG_INLINE;,icons/48x48/menu/rich_content/downloads}') no-repeat;
+	background: url('{$IMG_INLINE;,icons/menu/rich_content/downloads}') no-repeat;
 	background-size: 24px 24px;
 	text-align: center;
 	min-height: 50px;

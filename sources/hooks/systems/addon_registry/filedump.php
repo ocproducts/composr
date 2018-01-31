@@ -87,7 +87,7 @@ class Hook_addon_registry_filedump
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/cms/filedump.svg';
+        return 'themes/default/images/icons/menu/cms/filedump.svg';
     }
 
     /**
@@ -98,7 +98,7 @@ class Hook_addon_registry_filedump
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/cms/filedump.svg',
+            'themes/default/images/icons/menu/cms/filedump.svg',
             'sources/hooks/systems/notifications/filedump.php',
             'sources/hooks/systems/config/filedump_show_stats_count_total_files.php',
             'sources/hooks/systems/config/filedump_show_stats_count_total_space.php',

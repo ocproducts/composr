@@ -122,7 +122,7 @@ class Hook_addon_registry_member_comments
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/feedback/comment.svg';
+        return 'themes/default/images/icons/feedback/comment.svg';
     }
 
     /**

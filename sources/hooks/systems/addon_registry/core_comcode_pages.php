@@ -89,7 +89,7 @@ class Hook_addon_registry_core_comcode_pages
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/cms/comcode_page_edit.svg';
+        return 'themes/default/images/icons/menu/cms/comcode_page_edit.svg';
     }
 
     /**
@@ -100,7 +100,7 @@ class Hook_addon_registry_core_comcode_pages
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/cms/comcode_page_edit.svg',
+            'themes/default/images/icons/menu/cms/comcode_page_edit.svg',
             'sources/hooks/systems/config/points_COMCODE_PAGE_ADD.php',
             'sources/hooks/systems/addon_registry/core_comcode_pages.php',
             'themes/default/templates/COMCODE_PAGE_EDIT_ACTIONS.tpl',
@@ -142,21 +142,21 @@ class Hook_addon_registry_core_comcode_pages
             'data/modules/cms_comcode_pages/EN/rules_corporate.txt',
             'data/modules/cms_comcode_pages/EN/rules_liberal.txt',
             'themes/default/images/under_construction_animated.gif',
-            'themes/default/images/icons/48x48/menu/pages/guestbook.svg',
-            'themes/default/images/icons/48x48/menu/pages/donate.svg',
-            'themes/default/images/icons/48x48/menu/pages/advertise.svg',
-            'themes/default/images/icons/48x48/contact_methods/address.svg',
-            'themes/default/images/icons/48x48/contact_methods/email.svg',
-            'themes/default/images/icons/48x48/contact_methods/index.html',
-            'themes/default/images/icons/48x48/contact_methods/telephone.svg',
-            'themes/default/images/icons/48x48/links/google_plus.svg',
-            'themes/default/images/icons/48x48/links/skype.svg',
-            'themes/default/images/icons/48x48/links/xmpp.svg',
-            'themes/default/images/icons/48x48/tiers/bronze.svg',
-            'themes/default/images/icons/48x48/tiers/gold.svg',
-            'themes/default/images/icons/48x48/tiers/index.html',
-            'themes/default/images/icons/48x48/tiers/platinum.svg',
-            'themes/default/images/icons/48x48/tiers/silver.svg',
+            'themes/default/images/icons/menu/pages/guestbook.svg',
+            'themes/default/images/icons/menu/pages/donate.svg',
+            'themes/default/images/icons/menu/pages/advertise.svg',
+            'themes/default/images/icons/contact_methods/address.svg',
+            'themes/default/images/icons/contact_methods/email.svg',
+            'themes/default/images/icons/contact_methods/index.html',
+            'themes/default/images/icons/contact_methods/telephone.svg',
+            'themes/default/images/icons/links/google_plus.svg',
+            'themes/default/images/icons/links/skype.svg',
+            'themes/default/images/icons/links/xmpp.svg',
+            'themes/default/images/icons/tiers/bronze.svg',
+            'themes/default/images/icons/tiers/gold.svg',
+            'themes/default/images/icons/tiers/index.html',
+            'themes/default/images/icons/tiers/platinum.svg',
+            'themes/default/images/icons/tiers/silver.svg',
             'sources/hooks/systems/config/search_comcode_pages.php',
         );
     }

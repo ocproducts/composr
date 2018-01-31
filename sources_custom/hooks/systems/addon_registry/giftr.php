@@ -123,6 +123,7 @@ When creating new gifts please only use images which are free to use, we suggest
                 'Conversr',
                 'points',
                 'ecommerce',
+                'all_icons',
             ),
             'recommends' => array(),
             'conflicts_with' => array(),
@@ -136,7 +137,7 @@ When creating new gifts please only use images which are free to use, we suggest
      */
     public function get_default_icon()
     {
-        return 'themes/default/images_custom/icons/48x48/menu/giftr.svg';
+        return 'themes/default/images/icons/spare/gifts.svg';
     }
 
     /**
@@ -147,7 +148,6 @@ When creating new gifts please only use images which are free to use, we suggest
     public function get_file_list()
     {
         return array(
-            'themes/default/images_custom/icons/48x48/menu/giftr.svg',
             'sources_custom/hooks/systems/addon_registry/giftr.php',
             'sources_custom/hooks/systems/notifications/gift.php',
             'adminzone/pages/modules_custom/admin_giftr.php',

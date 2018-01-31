@@ -120,7 +120,7 @@ class Hook_addon_registry_theme_debug
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/_generic_admin/tool.svg';
+        return 'themes/default/images/icons/admin/tool.svg';
     }
 
     /**

@@ -5,7 +5,7 @@
 		<form id="feed_remove_{LIID*}" class="activities-remove js-submit-confirm-update-remove" action="{$PAGE_LINK*,:}" method="post" autocomplete="off">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
-			<input class="remove-cross" type="submit" value="{!REMOVE}" />
+			<input class="remove-button" type="submit" value="{!REMOVE}" />
 		</form>
 	{+END}
 
@@ -14,7 +14,7 @@
 			<img width="36" height="36" src="{$THUMBNAIL*,{ADDON_ICON},36x36,,,,pad,both,#FFFFFF00}" />
 		{+END}
 		{+START,IF_EMPTY,{ADDON_ICON}}
-			<img width="36" height="36" src="{$THUMBNAIL*,{$IMG,icons/48x48/menu/_generic_admin/{$?,{IS_PUBLIC},edit_this,edit_one}},36x36,,,,pad,both,#FFFFFF00}" />
+			<img width="36" height="36" src="{$THUMBNAIL*,{$IMG,icons/admin/{$?,{IS_PUBLIC},edit_this,edit_one}},36x36,,,,pad,both,#FFFFFF00}" />
 		{+END}
 
 		{+START,SET,commented_out}

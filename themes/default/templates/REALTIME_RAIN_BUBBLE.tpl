@@ -6,9 +6,9 @@
 	<div id="{$GET,RAND_ID}" class="bubble-wrap attitude-{$REPLACE%,_,-,{TYPE}}{$?,{IS_POSITIVE},-positive,}{$?,{IS_NEGATIVE},-negative,}">
 		<div id="{$GET,RAND_ID}_main" class="bubble bubble-{$LCASE%,{$REPLACE,_,-,{TYPE}}}">
 			<div class="float-surrounder">
-				<div class="email-icon">
+				<div class="special-icon">
 					{+START,IF_PASSED,SPECIAL_ICON}
-						<img width="36" height="36" src="{$IMG*,realtime_rain/{SPECIAL_ICON}}" alt="{SPECIAL_TOOLTIP*}" title="{SPECIAL_TOOLTIP*}" />
+						<img width="36" height="36" src="{$IMG*,icons/realtime_rain/{SPECIAL_ICON}}" alt="{SPECIAL_TOOLTIP*}" title="{SPECIAL_TOOLTIP*}" />
 					{+END}
 				</div>
 

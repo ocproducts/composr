@@ -114,6 +114,7 @@ Note that this addon only affects galleries at the moment, and it requires the "
             'requires' => array(
                 'unvalidated',
                 'galleries',
+                'all_icons',
             ),
             'recommends' => array(),
             'conflicts_with' => array(),
@@ -127,7 +128,7 @@ Note that this addon only affects galleries at the moment, and it requires the "
      */
     public function get_default_icon()
     {
-        return 'themes/default/images_custom/icons/48x48/menu/workflows.svg';
+        return 'themes/default/images/icons/spare/workflows.svg';
     }
 
     /**
@@ -138,7 +139,6 @@ Note that this addon only affects galleries at the moment, and it requires the "
     public function get_file_list()
     {
         return array(
-            'themes/default/images_custom/icons/48x48/menu/workflows.svg',
             'sources_custom/hooks/systems/addon_registry/workflows.php',
             'sources_custom/hooks/systems/notifications/workflow_step.php',
             'lang_custom/EN/workflows.ini',

@@ -90,7 +90,7 @@ class Hook_addon_registry_commandr
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/tools/commandr.svg';
+        return 'themes/default/images/icons/menu/adminzone/tools/commandr.svg';
     }
 
     /**
@@ -101,9 +101,9 @@ class Hook_addon_registry_commandr
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/adminzone/tools/commandr.svg',
-            'themes/default/images/icons/48x48/tool_buttons/commandr_off.svg',
-            'themes/default/images/icons/48x48/tool_buttons/commandr_on.svg',
+            'themes/default/images/icons/menu/adminzone/tools/commandr.svg',
+            'themes/default/images/icons/tool_buttons/commandr_off.svg',
+            'themes/default/images/icons/tool_buttons/commandr_on.svg',
             'sources/hooks/systems/commandr_commands/find_guid_via_id.php',
             'sources/hooks/systems/commandr_commands/find_id_via_guid.php',
             'sources/hooks/systems/commandr_commands/find_id_via_label.php',

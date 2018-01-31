@@ -104,7 +104,7 @@
                 $dom.show(commandrBox);
 
                 if (img) {
-                    img.src = $util.srl('{$IMG;,icons/48x48/tool_buttons/commandr_off}');
+                    img.src = $util.srl('{$IMG;,icons/tool_buttons/commandr_off}');
                     img.className = '';
                 }
 
@@ -125,7 +125,7 @@
                 document.getElementById('commandr-command').focus();
             } else { // Hiding Commandr
                 if (img) {
-                    img.src = $util.srl('{$IMG;,icons/48x48/tool_buttons/commandr_on}');
+                    img.src = $util.srl('{$IMG;,icons/tool_buttons/commandr_on}');
                     img.style.opacity = 1.0;
                 }
 

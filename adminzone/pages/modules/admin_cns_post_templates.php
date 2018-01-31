@@ -141,9 +141,9 @@ class Module_admin_cns_post_templates extends Standard_crud_module
             get_screen_title('POST_TEMPLATES'),
             comcode_lang_string('DOC_POST_TEMPLATES'),
             array(
-                array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_POST_TEMPLATE')),
-                array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_POST_TEMPLATE')),
-                array('menu/_generic_admin/import', array('_SELF', array('type' => 'import'), '_SELF'), do_lang('IMPORT_STOCK_RESPONSES_PT')),
+                array('admin/add', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_POST_TEMPLATE')),
+                array('admin/edit', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_POST_TEMPLATE')),
+                array('admin/import', array('_SELF', array('type' => 'import'), '_SELF'), do_lang('IMPORT_STOCK_RESPONSES_PT')),
             ),
             do_lang('POST_TEMPLATES')
         );
@@ -181,7 +181,7 @@ class Module_admin_cns_post_templates extends Standard_crud_module
             '_GUID' => '7089deefe20d3917020610768e0f7f24',
             'TITLE' => $this->title,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'menu---generic-admin--import',
+            'SUBMIT_ICON' => 'admin--import',
             'SUBMIT_NAME' => do_lang_tempcode('IMPORT_STOCK_RESPONSES_PT'),
             'URL' => $post_url,
             'TEXT' => $text,

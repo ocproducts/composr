@@ -91,7 +91,7 @@ class Module_cms_tutorials extends Standard_crud_module
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
         return array(
-            'browse' => array('tutorials:TUTORIALS', 'menu/pages/help'),
+            'browse' => array('tutorials:TUTORIALS', 'help'),
         ) + parent::get_entry_points();
     }
 
@@ -108,8 +108,8 @@ class Module_cms_tutorials extends Standard_crud_module
             get_screen_title('TUTORIALS'),
             new Tempcode(),
             array(
-                has_privilege(get_member(), 'submit_lowrange_content', 'cms_tutorials') ? array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_TUTORIAL')) : null,
-                has_privilege(get_member(), 'edit_own_lowrange_content', 'cms_tutorials') ? array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_TUTORIAL')) : null,
+                has_privilege(get_member(), 'submit_lowrange_content', 'cms_tutorials') ? array('admin/add', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_TUTORIAL')) : null,
+                has_privilege(get_member(), 'edit_own_lowrange_content', 'cms_tutorials') ? array('admin/edit', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_TUTORIAL')) : null,
             ),
             do_lang('TUTORIALS')
         );
@@ -171,7 +171,7 @@ class Module_cms_tutorials extends Standard_crud_module
         $fields->attach(form_input_text('Summary', 'A short paragraph describing the tutorial.', 'summary', $summary, true));
 
         require_code('themes2');
-        $ids = get_all_image_ids_type('tutorial_icons');
+        $ids = get_all_image_ids_type('icons');
         $fields->attach(form_input_theme_image('Icon', 'Icon for the tutorial.', 'icon', $ids, null, $icon));
 
         $content = new Tempcode();

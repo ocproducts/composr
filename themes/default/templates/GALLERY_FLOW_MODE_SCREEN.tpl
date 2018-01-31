@@ -43,7 +43,7 @@
 
 			<ul class="horizontal-links associated-links-block-group">
 				<li>{SORTING}</li>
-				<li><img width="24" height="24" src="{$IMG*,icons/48x48/buttons/proceed}" alt="" /> <a {+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!_SLIDESHOW} {!LINK_NEW_WINDOW}"{+END} href="{$PAGE_LINK*,_SELF:galleries:{FIRST_ENTRY_ID*}:slideshow=1:wide_high=1}">{!_SLIDESHOW}</a></li>
+				<li><img width="24" height="24" src="{$IMG*,icons/buttons/proceed}" alt="" /> <a {+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!_SLIDESHOW} {!LINK_NEW_WINDOW}"{+END} href="{$PAGE_LINK*,_SELF:galleries:{FIRST_ENTRY_ID*}:slideshow=1:wide_high=1}">{!_SLIDESHOW}</a></li>
 			</ul>
 
 			{+START,INCLUDE,MASS_SELECT_DELETE_FORM}
@@ -104,12 +104,12 @@
 		4_URL={ADD_GALLERY_URL*}
 		4_TITLE={!ADD_GALLERY}
 		4_REL=edit
-		4_ICON=menu/_generic_admin/add_one_category
+		4_ICON=admin/add_one_category
 		5_ACCESSKEY=q
 		5_URL={EDIT_URL*}
 		5_TITLE={!EDIT_GALLERY}
 		5_REL=edit
-		5_ICON=menu/_generic_admin/edit_this_category
+		5_ICON=admin/edit_this_category
 		{+START,IF,{$ADDON_INSTALLED,tickets}}
 			6_URL={$PAGE_LINK*,_SEARCH:report_content:content_type=gallery:content_id={CAT}:redirect={$SELF_URL&}}
 			6_TITLE={!report_content:REPORT_THIS}

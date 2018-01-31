@@ -51,7 +51,7 @@ class core_fields_test_set extends cms_test_case
                 $this->assertTrue(is_array($test), 'Failed get_field_value_row_bits for ' . $type);
 
                 if (substr($type, 0, 3) == 'th_') {
-                    $test = $ob->render_field_value($field, 'icons/48x48/status/warn', 0, null);
+                    $test = $ob->render_field_value($field, 'icons/status/warn', 0, null);
                 } else {
                     $test = $ob->render_field_value($field, 'test', 0, null);
                 }

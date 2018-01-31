@@ -9,6 +9,6 @@
 =========================
 */
 
-.menu---generic-spare--8 {
-	background-image: url('{$IMG,icons/48x48/menu/_generic_spare/8}') !important;
+.spare--8 {
+	background-image: url('{$IMG,icons/spare/8}') !important;
 }

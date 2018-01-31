@@ -69,7 +69,7 @@ function realtime_rain_script()
                     'TO_ID' => null,
                     'GROUP_ID' => 'example_' . strval(mt_rand(0, 4)),
                 );
-            $event['SPECIAL_ICON'] = 'email-icon';
+            $event['SPECIAL_ICON'] = 'email_icon';
             $event['MULTIPLICITY'] = '10';
             $events[] = $event;
         }
@@ -157,20 +157,20 @@ function rain_get_special_icons($ip_address, $timestamp, $user_agent = null, $ne
     $multiplicity = 1;
     $bot = get_bot_type($user_agent);
     if ($bot !== null) {
-        $icon = 'searchengine-icon';
+        $icon = 'searchengine_icon';
         $tooltip = do_lang('RTEV_BOT');
     } else {
         if (($user_agent !== null) && (is_mobile($user_agent))) {
-            $icon = 'phone-icon';
+            $icon = 'phone_icon';
             $tooltip = do_lang('RTEV_PHONE');
         } else {
             $mails_sent = $GLOBALS['SITE_DB']->query_select_value('logged_mail_messages', 'COUNT(*)', array('m_date_and_time' => $timestamp));
             if ($mails_sent > 0) {
                 $multiplicity = $mails_sent;
-                $icon = 'email-icon';
+                $icon = 'email_icon';
                 $tooltip = do_lang('RTEV_EMAILS', integer_format($multiplicity));
             } elseif ($news !== null) {
-                $icon = 'news-icon';
+                $icon = 'news_icon';
                 $tooltip = do_lang('RTEV_NEWS');
             }
         }

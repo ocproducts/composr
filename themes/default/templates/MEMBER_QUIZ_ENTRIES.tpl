@@ -1,7 +1,7 @@
 {+START,IF_NON_EMPTY,{CATEGORIES}}
 	<div data-toggleable-tray="{}">
 		<h2 class="js-tray-header">
-			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!TEST_RESULTS}" title="{!EXPAND}" width="20" height="20" src="{$IMG*,1x/trays/expand}" /></a>
+			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!TEST_RESULTS}" title="{!EXPAND}" width="20" height="20" src="{$IMG*,icons/trays/expand}" /></a>
 			<span class="js-tray-onclick-toggle-tray">{!TEST_RESULTS}</span>
 		</h2>
 
@@ -104,7 +104,7 @@
 								<td colspan="5"></td>
 
 								<td>
-									<input class="button-screen-item menu---generic-admin--delete" type="submit" value="{!DELETE}" />
+									<input class="button-screen-item admin--delete3" type="submit" value="{!DELETE}" />
 								</td>
 							</tr>
 						</tfoot>

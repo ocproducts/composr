@@ -2268,6 +2268,27 @@ Use comment encapsulation
 | Use SVG images in most cases, PNG images in rarer cases (e.g. avatars and emoticons), GIF when animation is needed (with a APNG versions too), or JPEG if there is zero chance of the image needing any transparency and never likely to be edited again (i.e. only use it at a post-development optimisation stage) and it compresses better as JPEG.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
+[color="red"]Specify image dimensions in markup/CSS[/color]
+| Performance, stability
+| Composr development +
+| Manually
+| You should not assume any image will be automatically placed by the web browser at some particular size. Explicitly set sizes using HTML [tt]width[/tt]/[tt]height[/tt] attributes or the CSS [tt]background-size[/tt] property. This both helps performance, and decouples the need for (auto-scalable) SVG files to be saved with a particular default size.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+[color="red"]Organise theme images neatly[/color]
+| Consistency
+| Product development only
+| Manually
+| Square theme images generally should be classified somewhere under the [tt]icons[/tt] theme image directory. All icons must be square. Generally try and keep a neat directory structure, rather than littering theme images at the top level.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+[color="red"]Icons are multi-purpose[/color]
+| Themeing
+| Product development only
+| Automated test ([tt]modularisation[/tt])
+| You will likely create new icons for very specific purposes. However, icons (especially SVG icons) are also an excellent resource for webmasters to use in their designs (regardless of what addons they've installed). For this reason every icon must be packaged both for the specific addon it is associated with, and the general purpose [tt]all_icons[/tt] addon.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
 Compress PNG images and strip gamma
 | Performance, compatibility
 | Composr development +

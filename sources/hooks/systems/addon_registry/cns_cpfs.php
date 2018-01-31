@@ -87,7 +87,7 @@ class Hook_addon_registry_cns_cpfs
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/tools/users/custom_profile_fields.svg';
+        return 'themes/default/images/icons/menu/adminzone/tools/users/custom_profile_fields.svg';
     }
 
     /**
@@ -98,7 +98,7 @@ class Hook_addon_registry_cns_cpfs
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/adminzone/tools/users/custom_profile_fields.svg',
+            'themes/default/images/icons/menu/adminzone/tools/users/custom_profile_fields.svg',
             'sources/hooks/systems/resource_meta_aware/cpf.php',
             'adminzone/pages/modules/admin_cns_customprofilefields.php',
             'themes/default/templates/CNS_CPF_STATS_SCREEN.tpl',

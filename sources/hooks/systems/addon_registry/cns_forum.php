@@ -92,7 +92,7 @@ class Hook_addon_registry_cns_forum
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/social/forum/forums.svg';
+        return 'themes/default/images/icons/menu/social/forum/forums.svg';
     }
 
     /**
@@ -103,25 +103,25 @@ class Hook_addon_registry_cns_forum
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/social/forum/inline_personal_posts.svg',
-            'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/posting_rates.svg',
-            'themes/default/images/icons/48x48/menu/social/forum/forums.svg',
-            'themes/default/images/icons/48x48/buttons/new_topic.svg',
-            'themes/default/images/icons/48x48/menu/social/forum/vforums/involved_topics.svg',
-            'themes/default/images/icons/48x48/menu/social/forum/vforums/posts_since_last_visit.svg',
-            'themes/default/images/icons/48x48/menu/social/forum/vforums/recently_read_topics.svg',
-            'themes/default/images/icons/48x48/menu/social/forum/vforums/unanswered_topics.svg',
-            'themes/default/images/icons/48x48/menu/social/forum/vforums/unread_topics.svg',
-            'themes/default/images/icons/48x48/buttons/mark_read.svg',
-            'themes/default/images/icons/48x48/buttons/mark_unread.svg',
-            'themes/default/images/icons/48x48/buttons/forum.svg',
-            'themes/default/images/icons/48x48/buttons/linear.svg',
-            'themes/default/images/icons/48x48/buttons/threaded.svg',
-            'themes/default/images/icons/48x48/buttons/whisper.svg',
-            'themes/default/images/icons/48x48/buttons/new_quote.svg',
-            'themes/default/images/icons/48x48/menu/adminzone/structure/forum/index.html',
-            'themes/default/images/icons/48x48/menu/social/forum/index.html',
-            'themes/default/images/icons/48x48/menu/social/forum/vforums/index.html',
+            'themes/default/images/icons/menu/social/forum/inline_personal_posts.svg',
+            'themes/default/images/icons/menu/adminzone/audit/statistics/posting_rates.svg',
+            'themes/default/images/icons/menu/social/forum/forums.svg',
+            'themes/default/images/icons/buttons/add_topic.svg',
+            'themes/default/images/icons/menu/social/forum/vforums/involved_topics.svg',
+            'themes/default/images/icons/menu/social/forum/vforums/posts_since_last_visit.svg',
+            'themes/default/images/icons/menu/social/forum/vforums/recently_read_topics.svg',
+            'themes/default/images/icons/menu/social/forum/vforums/unanswered_topics.svg',
+            'themes/default/images/icons/menu/social/forum/vforums/unread_topics.svg',
+            'themes/default/images/icons/buttons/mark_read.svg',
+            'themes/default/images/icons/buttons/mark_unread.svg',
+            'themes/default/images/icons/buttons/forum.svg',
+            'themes/default/images/icons/buttons/linear.svg',
+            'themes/default/images/icons/buttons/threaded.svg',
+            'themes/default/images/icons/buttons/whisper.svg',
+            'themes/default/images/icons/buttons/new_quote.svg',
+            'themes/default/images/icons/menu/adminzone/structure/forum/index.html',
+            'themes/default/images/icons/menu/social/forum/index.html',
+            'themes/default/images/icons/menu/social/forum/vforums/index.html',
             'sources/hooks/systems/cns_cpf_filter/notifications.php',
             'sources/hooks/systems/resource_meta_aware/forum_grouping.php',
             'sources/hooks/systems/commandr_fs/forum_groupings.php',
@@ -141,7 +141,7 @@ class Hook_addon_registry_cns_forum
             'themes/default/templates/BLOCK_MAIN_CNS_INVOLVED_TOPICS.tpl',
             'themes/default/templates/CNS_VFORUM_FILTERING.tpl',
             'forum/rules.php',
-            'themes/default/images/cns_general/redirect.svg',
+            'themes/default/images/icons/cns_general/redirect.svg',
             'sources/hooks/modules/search/cns_within_topic.php',
             'sources/hooks/systems/addon_registry/cns_forum.php',
             'sources/hooks/systems/page_groupings/cns_forum.php',
@@ -224,28 +224,29 @@ class Hook_addon_registry_cns_forum
             'forum/pages/modules_custom/index.html',
             'adminzone/pages/modules/admin_cns_forum_groupings.php',
             'adminzone/pages/modules/admin_cns_forums.php',
-            'themes/default/images/cns_general/index.html',
-            'themes/default/images/cns_general/new_posts.svg',
-            'themes/default/images/cns_general/new_posts_redirect.svg',
-            'themes/default/images/cns_general/no_new_posts.svg',
-            'themes/default/images/cns_general/no_new_posts_redirect.svg',
+            'themes/default/images/icons/cns_general/index.html',
+            'themes/default/images/icons/cns_general/new_posts.svg',
+            'themes/default/images/icons/cns_general/new_posts_redirect.svg',
+            'themes/default/images/icons/cns_general/no_new_posts.svg',
+            'themes/default/images/icons/cns_general/no_new_posts_redirect.svg',
             'themes/default/images/cns_rank_images/0.svg',
             'themes/default/images/cns_rank_images/1.svg',
             'themes/default/images/cns_rank_images/2.svg',
             'themes/default/images/cns_rank_images/3.svg',
             'themes/default/images/cns_rank_images/4.svg',
-            'themes/default/images/cns_rank_images/admin.svg',
             'themes/default/images/cns_rank_images/index.html',
-            'themes/default/images/cns_rank_images/mod.svg',
-            'themes/default/images/icons/28x28/cns_topic_modifiers/announcement.svg',
-            'themes/default/images/icons/28x28/cns_topic_modifiers/closed.svg',
-            'themes/default/images/icons/28x28/cns_topic_modifiers/hot.svg',
-            'themes/default/images/icons/28x28/cns_topic_modifiers/index.html',
-            'themes/default/images/icons/28x28/cns_topic_modifiers/involved.svg',
-            'themes/default/images/icons/28x28/cns_topic_modifiers/pinned.svg',
-            'themes/default/images/icons/28x28/cns_topic_modifiers/poll.svg',
-            'themes/default/images/icons/28x28/cns_topic_modifiers/unread.svg',
-            'themes/default/images/icons/28x28/cns_topic_modifiers/unvalidated.svg',
+            'themes/default/images/EN/cns_rank_images/admin.svg',
+            'themes/default/images/EN/cns_rank_images/mod.svg',
+            'themes/default/images/EN/cns_rank_images/index.html',
+            'themes/default/images/icons/cns_topic_modifiers/announcement.svg',
+            'themes/default/images/icons/cns_topic_modifiers/closed.svg',
+            'themes/default/images/icons/cns_topic_modifiers/hot.svg',
+            'themes/default/images/icons/cns_topic_modifiers/index.html',
+            'themes/default/images/icons/cns_topic_modifiers/involved.svg',
+            'themes/default/images/icons/cns_topic_modifiers/pinned.svg',
+            'themes/default/images/icons/cns_topic_modifiers/poll.svg',
+            'themes/default/images/icons/cns_topic_modifiers/unread.svg',
+            'themes/default/images/icons/cns_topic_modifiers/unvalidated.svg',
             'sources/blocks/side_cns_private_topics.php',
             'sources/hooks/systems/cleanup/cns_topics.php',
             'sources/hooks/modules/admin_newsletter/cns_forumview.php',
@@ -1007,13 +1008,13 @@ class Hook_addon_registry_cns_forum
             $topic_row_links = array();
             $topic_row_links[] = array(
                 'URL' => placeholder_url(),
-                'IMG' => placeholder_img_code('icons/28x28/cns_topic_modifiers'),
+                'IMG' => placeholder_img_code('icons/cns_topic_modifiers'),
                 'ALT' => lorem_phrase(),
             );
 
             $topic_row_modifiers = array();
             $topic_row_modifiers[] = array(
-                'IMG' => placeholder_img_code('icons/28x28/cns_topic_modifiers'),
+                'IMG' => placeholder_img_code('icons/cns_topic_modifiers'),
                 'ALT' => lorem_phrase(),
             );
 
@@ -1310,13 +1311,13 @@ class Hook_addon_registry_cns_forum
                 $topic_row_links = array();
                 $topic_row_links[] = array(
                     'URL' => placeholder_url(),
-                    'IMG' => placeholder_img_code('icons/28x28/cns_topic_modifiers'),
+                    'IMG' => placeholder_img_code('icons/cns_topic_modifiers'),
                     'ALT' => lorem_phrase(),
                 );
 
                 $topic_row_modifiers = array();
                 $topic_row_modifiers[] = array(
-                    'IMG' => placeholder_img_code('icons/28x28/cns_topic_modifiers'),
+                    'IMG' => placeholder_img_code('icons/cns_topic_modifiers'),
                     'ALT' => lorem_phrase(),
                 );
 

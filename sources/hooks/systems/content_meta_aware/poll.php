@@ -58,7 +58,7 @@ class Hook_content_meta_aware_poll
             'description_field_dereference' => null,
             'thumb_field' => null,
             'thumb_field_is_theme_image' => false,
-            'alternate_icon_theme_image' => 'icons/48x48/menu/social/polls',
+            'alternate_icon_theme_image' => 'icons/menu/social/polls',
 
             'view_page_link_pattern' => '_SEARCH:polls:view:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_polls:_edit:_WILD',

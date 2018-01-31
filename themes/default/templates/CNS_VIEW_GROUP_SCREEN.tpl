@@ -39,7 +39,7 @@
 					<div>
 						<label for="vga_username">{!USERNAME}: </label>
 						<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="80" class="js-input-add-member-username" alt="{!USERNAME}" type="text" id="vga_username" name="username" />
-						<input class="button-screen-item menu---generic-admin--add-one" type="submit" value="{!ADD}" />
+						<input class="button-screen-item admin--add" type="submit" value="{!ADD}" />
 					</div>
 				</form>
 			</div></div>
@@ -77,7 +77,7 @@
 		1_TITLE={!EDIT}
 		1_ACCESSKEY=q
 		1_REL=edit
-		1_ICON=menu/_generic_admin/edit_this
+		1_ICON=admin/edit_this
 		{+START,IF,{$ADDON_INSTALLED,tickets}}
 			2_URL={$PAGE_LINK*,_SEARCH:report_content:content_type=group:content_id={ID}:redirect={$SELF_URL&}}
 			2_TITLE={!report_content:REPORT_THIS}

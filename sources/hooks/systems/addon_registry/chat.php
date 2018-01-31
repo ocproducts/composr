@@ -87,7 +87,7 @@ class Hook_addon_registry_chat
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/social/chat/chat.svg';
+        return 'themes/default/images/icons/menu/social/chat/chat.svg';
     }
 
     /**
@@ -98,13 +98,13 @@ class Hook_addon_registry_chat
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/28x28/sound_effects.svg',
-            'themes/default/images/icons/48x48/menu/social/chat/chat.svg',
-            'themes/default/images/icons/48x48/menu/social/chat/chatroom_add.svg',
-            'themes/default/images/icons/48x48/menu/social/chat/member_blocking.svg',
-            'themes/default/images/icons/48x48/tabs/member_account/friends.svg',
-            'themes/default/images/icons/48x48/menu/social/chat/sound.svg',
-            'themes/default/images/icons/48x48/menu/social/chat/index.html',
+            'themes/default/images/icons/buttons/sound_effects.svg',
+            'themes/default/images/icons/menu/social/chat/chat.svg',
+            'themes/default/images/icons/menu/social/chat/chatroom_add.svg',
+            'themes/default/images/icons/menu/social/chat/member_blocking.svg',
+            'themes/default/images/icons/menu/social/friends.svg',
+            'themes/default/images/icons/menu/social/chat/sound.svg',
+            'themes/default/images/icons/menu/social/chat/index.html',
             'sources/chat_sounds.php',
             'sources/chat_lobby.php',
             'sources/chat_logs.php',
@@ -178,10 +178,10 @@ class Hook_addon_registry_chat
             'sources_custom/hooks/modules/chat_bots/.htaccess',
             'adminzone/pages/modules/admin_chat.php',
             'themes/default/css/chat.css',
-            'themes/default/images/EN/chatcodeeditor/index.html',
-            'themes/default/images/EN/chatcodeeditor/invite.svg',
-            'themes/default/images/EN/chatcodeeditor/new_room.svg',
-            'themes/default/images/EN/chatcodeeditor/private_message.svg',
+            'themes/default/images/EN/chatcode_editor/index.html',
+            'themes/default/images/EN/chatcode_editor/invite.svg',
+            'themes/default/images/EN/chatcode_editor/new_room.svg',
+            'themes/default/images/EN/chatcode_editor/private_message.svg',
             'cms/pages/modules/cms_chat.php',
             'data_custom/modules/chat/index.html',
             'data_custom/modules/chat/.htaccess',

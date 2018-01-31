@@ -108,8 +108,8 @@ class Module_admin_themes
     {
         $ret = array(
             'browse' => array('MANAGE_THEMES', 'menu/adminzone/style/themes/themes'),
-            'add_theme' => array('ADD_THEME', 'menu/_generic_admin/add_one'),
-            'tempcode_tester' => array('TEMPCODE_TESTER', 'menu/_generic_admin/tool'),
+            'add_theme' => array('ADD_THEME', 'admin/add'),
+            'tempcode_tester' => array('TEMPCODE_TESTER', 'admin/tool'),
         );
 
         if ($support_crosslinks) {
@@ -657,7 +657,7 @@ class Module_admin_themes
             'URL' => $post_url,
             'FIELDS' => $fields,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'menu---generic-admin--add-one',
+            'SUBMIT_ICON' => 'admin--add',
             'SUBMIT_NAME' => $submit_name,
             'SUPPORT_AUTOSAVE' => true,
         ));
@@ -721,7 +721,7 @@ class Module_admin_themes
             'TEXT' => do_lang_tempcode('DESCRIPTION_EDIT_THEME', $date),
             'URL' => $post_url,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'menu---generic-admin--edit-this',
+            'SUBMIT_ICON' => 'admin--edit-this',
             'SUBMIT_NAME' => $submit_name,
             'SUPPORT_AUTOSAVE' => true,
         ));
@@ -1064,7 +1064,7 @@ class Module_admin_themes
             'URL' => $post_url,
             'FIELDS' => $fields,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'menu---generic-admin--add-one',
+            'SUBMIT_ICON' => 'admin--add',
             'SUBMIT_NAME' => $submit_name,
         ));
     }
@@ -1191,7 +1191,7 @@ class Module_admin_themes
             'URL' => $post_url,
             'FIELDS' => $fields,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'menu---generic-admin--edit-this',
+            'SUBMIT_ICON' => 'admin--edit-this',
             'SUBMIT_NAME' => $submit_name,
         ));
     }
@@ -1470,8 +1470,8 @@ class Module_admin_themes
             array(),
             array(),
             array(
-                array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add_theme'), '_SELF'), do_lang_tempcode('ADD_THEME')), // Add one
-                ($theme === null) ? null : array('menu/_generic_admin/edit_this', array('_SELF', array('type' => 'edit_theme', 'theme' => $theme), '_SELF'), do_lang_tempcode('EDIT_THEME')),
+                array('admin/add', array('_SELF', array('type' => 'add_theme'), '_SELF'), do_lang_tempcode('ADD_THEME')), // Add one
+                ($theme === null) ? null : array('admin/edit_this', array('_SELF', array('type' => 'edit_theme', 'theme' => $theme), '_SELF'), do_lang_tempcode('EDIT_THEME')),
                 ($theme === null) ? null : array('menu/adminzone/style/themes/templates', array('_SELF', array('type' => 'edit_templates', 'theme' => $theme), '_SELF'), do_lang('EDIT_TEMPLATES')),
                 ($theme === null) ? null : array('menu/adminzone/style/themes/theme_images', array('_SELF', array('type' => 'manage_images', 'theme' => $theme, 'lang' => $lang), '_SELF'), do_lang('EDIT_THEME_IMAGES')),
                 array('menu/adminzone/style/themes/themes', array('_SELF', array('type' => 'browse'), '_SELF'), do_lang('MANAGE_THEMES')),

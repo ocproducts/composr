@@ -123,7 +123,7 @@ This is coded as a "mini block", and serves as a good example of how you can use
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.svg';
+        return 'themes/default/images/icons/admin/component.svg';
     }
 
     /**

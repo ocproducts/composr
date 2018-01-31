@@ -10,5 +10,5 @@
 */
 
 .menu--site-meta--recommend {
-	background-image: url('{$IMG,icons/48x48/menu/site_meta/recommend}') !important;
+	background-image: url('{$IMG,icons/menu/site_meta/recommend}') !important;
 }

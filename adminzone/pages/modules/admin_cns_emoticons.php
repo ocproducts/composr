@@ -53,7 +53,7 @@ class Module_admin_cns_emoticons extends Standard_crud_module
         }
 
         return array(
-            'browse' => array('EMOTICONS', 'emoticons'),
+            'browse' => array('EMOTICONS', 'menu/adminzone/style/emoticons'),
         ) + parent::get_entry_points();
     }
 
@@ -143,9 +143,9 @@ class Module_admin_cns_emoticons extends Standard_crud_module
             get_screen_title('EMOTICONS'),
             comcode_lang_string('DOC_EMOTICONS'),
             array(
-                array('menu/_generic_admin/import', array('_SELF', array('type' => 'import'), '_SELF'), do_lang('IMPORT_EMOTICONS')),
-                array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_EMOTICON')),
-                array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_EMOTICON')),
+                array('admin/import', array('_SELF', array('type' => 'import'), '_SELF'), do_lang('IMPORT_EMOTICONS')),
+                array('admin/add', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_EMOTICON')),
+                array('admin/edit', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_EMOTICON')),
             ),
             do_lang('EMOTICONS')
         );
@@ -183,7 +183,7 @@ class Module_admin_cns_emoticons extends Standard_crud_module
             '_GUID' => '1910e01ec183392f6b254671dc7050a3',
             'TITLE' => $this->title,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'menu---generic-admin--import',
+            'SUBMIT_ICON' => 'admin--import',
             'SUBMIT_NAME' => do_lang_tempcode('BATCH_IMPORT_ARCHIVE_CONTENTS'),
             'URL' => $post_url,
             'TEXT' => $text,

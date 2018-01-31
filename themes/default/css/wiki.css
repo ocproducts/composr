@@ -57,6 +57,6 @@
 =========================
 */
 
-.buttons--edit-tree {
-	background-image: url('{$IMG,icons/48x48/buttons/edit_tree}') !important;
+.admin--wiki-edit-tree {
+	background-image: url('{$IMG,icons/admin/wiki_edit_tree}') !important;
 }

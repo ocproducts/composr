@@ -694,7 +694,7 @@ class Module_cms_chat
             'TITLE' => $this->title,
             'URL' => $post_url,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'menu---generic-admin--delete',
+            'SUBMIT_ICON' => 'admin--delete3',
             'SUBMIT_NAME' => $submit_name,
             'TEXT' => $text,
         ));

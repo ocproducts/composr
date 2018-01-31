@@ -121,7 +121,7 @@ class Module_admin_workflow extends Standard_crud_module
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
         return array(
-            'browse' => array('MANAGE_WORKFLOWS', 'menu/workflows'),
+            'browse' => array('MANAGE_WORKFLOWS', 'spare/workflows'),
         ) + parent::get_entry_points();
     }
 
@@ -201,8 +201,8 @@ class Module_admin_workflow extends Standard_crud_module
             get_screen_title('MANAGE_WORKFLOWS'),
             comcode_to_tempcode(do_lang('DOC_WORKFLOWS'), null, true),
             array(
-                array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_WORKFLOW')),
-                array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_WORKFLOW')),
+                array('admin/add', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_WORKFLOW')),
+                array('admin/edit', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_WORKFLOW')),
             ),
             do_lang('MANAGE_WORKFLOWS')
         );

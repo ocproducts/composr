@@ -159,8 +159,8 @@ class Module_admin_custom_comcode extends Standard_crud_module
             get_screen_title('CUSTOM_COMCODE'),
             comcode_lang_string('DOC_CUSTOM_COMCODE'),
             array(
-                array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_CUSTOM_COMCODE_TAG')),
-                array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_CUSTOM_COMCODE_TAG')),
+                array('admin/add', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_CUSTOM_COMCODE_TAG')),
+                array('admin/edit', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_CUSTOM_COMCODE_TAG')),
             ),
             do_lang('CUSTOM_COMCODE')
         );

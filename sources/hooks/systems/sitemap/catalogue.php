@@ -174,9 +174,9 @@ class Hook_sitemap_catalogue extends Hook_sitemap_content
             $struct['extra_meta']['description'] = null;
 
             if (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) {
-                $test = find_theme_image('icons/48x48/menu/rich_content/catalogues/' . $content_id, true);
+                $test = find_theme_image('icons/menu/rich_content/catalogues/' . $content_id, true);
                 if ($test == '') {
-                    $test = find_theme_image('icons/48x48/menu/rich_content/catalogues/catalogues', true);
+                    $test = find_theme_image('icons/menu/rich_content/catalogues/catalogues', true);
                 }
                 if ($test != '') {
                     $struct['extra_meta']['image'] = $test;
@@ -211,7 +211,7 @@ class Hook_sitemap_catalogue extends Hook_sitemap_content
                             $child_node = $child_hook_ob->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $zone, $meta_gather, $child_row);
                             if ($child_node !== null) {
                                 if (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) {
-                                    $test = find_theme_image('icons/48x48/menu/_generic_admin/view_this_category', true);
+                                    $test = find_theme_image('icons/admin/view_this_category', true);
                                     if ($test != '') {
                                         $child_node['extra_meta']['image'] = $test;
                                     }
@@ -238,7 +238,7 @@ class Hook_sitemap_catalogue extends Hook_sitemap_content
             $struct['title'] = do_lang_tempcode('catalogues:ATOZ');
 
             if (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) {
-                $test = find_theme_image('icons/48x48/menu/rich_content/atoz', true);
+                $test = find_theme_image('icons/menu/rich_content/atoz', true);
                 if ($test != '') {
                     $struct['extra_meta']['image'] = $test;
                 }

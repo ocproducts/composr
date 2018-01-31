@@ -37,7 +37,7 @@ class Hook_ecommerce_banners
         return array(
             'category_name' => do_lang('BANNER_ADS', integer_format(intval(get_option('initial_banner_hits')))),
             'category_description' => do_lang_tempcode('BANNER_DESCRIPTION', escape_html(integer_format(intval(get_option('initial_banner_hits'))))),
-            'category_image_url' => find_theme_image('icons/48x48/menu/cms/banners'),
+            'category_image_url' => find_theme_image('icons/menu/cms/banners'),
         );
     }
 
@@ -63,7 +63,7 @@ class Hook_ecommerce_banners
         $products['BANNER_ACTIVATE'] = automatic_discount_calculation(array(
             'item_name' => do_lang('BANNER_ACTIVATE', integer_format(intval(get_option('initial_banner_hits')))),
             'item_description' => do_lang_tempcode('BANNER_ACTIVATE_DESCRIPTION', escape_html(integer_format(intval(get_option('initial_banner_hits'))))),
-            'item_image_url' => find_theme_image('icons/48x48/menu/_generic_admin/add_one'),
+            'item_image_url' => find_theme_image('icons/admin/add'),
 
             'type' => PRODUCT_PURCHASE,
             'type_special_details' => array(),
@@ -108,7 +108,7 @@ class Hook_ecommerce_banners
             $products['BANNER_UPGRADE_HITS_' . strval($hits)] = automatic_discount_calculation(array(
                 'item_name' => do_lang('BANNER_ADD_HITS', integer_format($hits), integer_format($current_hits)),
                 'item_description' => do_lang_tempcode('BANNER_ADD_HITS_DESCRIPTION', escape_html(integer_format($hits)), escape_html(integer_format($current_hits))),
-                'item_image_url' => find_theme_image('icons/48x48/menu/_generic_admin/add_to_category'),
+                'item_image_url' => find_theme_image('icons/admin/add_to_category'),
 
                 'type' => PRODUCT_PURCHASE,
                 'type_special_details' => array(),
@@ -136,7 +136,7 @@ class Hook_ecommerce_banners
             $products['BANNER_UPGRADE_IMPORTANCE_' . strval($importance)] = automatic_discount_calculation(array(
                 'item_name' => do_lang('BANNER_ADD_IMPORTANCE', integer_format($importance), strval($percentage)),
                 'item_description' => do_lang_tempcode('BANNER_ADD_IMPORTANCE_DESCRIPTION', escape_html(integer_format($importance)), escape_html($percentage)),
-                'item_image_url' => find_theme_image('icons/48x48/buttons/choose'),
+                'item_image_url' => find_theme_image('icons/buttons/choose'),
 
                 'type' => PRODUCT_PURCHASE,
                 'type_special_details' => array(),

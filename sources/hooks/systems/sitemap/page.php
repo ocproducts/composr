@@ -266,7 +266,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
                                 }
                                 if ($entry_points['!'][1] !== null) {
                                     if (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) {
-                                        $struct['extra_meta']['image'] = find_theme_image('icons/48x48/' . $entry_points['!'][1]);
+                                        $struct['extra_meta']['image'] = find_theme_image('icons/' . $entry_points['!'][1]);
                                     }
                                 }
                             }
@@ -290,7 +290,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
                                 }
                                 if ($entry_points[$move_down_entry_point][1] !== null) {
                                     if (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) {
-                                        $struct['extra_meta']['image'] = find_theme_image('icons/48x48/' . $entry_points[$move_down_entry_point][1]);
+                                        $struct['extra_meta']['image'] = find_theme_image('icons/' . $entry_points[$move_down_entry_point][1]);
                                     }
                                 }
                             }
@@ -304,7 +304,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
                             if ($functions[1] !== null) {
                                 if (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) {
                                     $icon = is_array($functions[1]) ? call_user_func_array($functions[1][0], $functions[1][1]) : eval($functions[1]);
-                                    $struct['extra_meta']['image'] = find_theme_image('icons/48x48/' . $icon);
+                                    $struct['extra_meta']['image'] = find_theme_image('icons/' . $icon);
                                 }
                             }
                         }

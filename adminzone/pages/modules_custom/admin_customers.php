@@ -676,7 +676,7 @@ class Module_admin_customers
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
         return array(
-            'browse' => array('CHARGE_CUSTOMER', 'menu/_generic_admin/tool'),
+            'browse' => array('CHARGE_CUSTOMER', 'admin/tool'),
         );
     }
 

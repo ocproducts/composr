@@ -88,7 +88,7 @@ class Hook_addon_registry_core_primary_layout
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.svg';
+        return 'themes/default/images/icons/admin/component.svg';
     }
 
     /**
@@ -184,7 +184,7 @@ class Hook_addon_registry_core_primary_layout
     {
         return array(
             lorem_globalise(do_lorem_template('MESSAGE', array(
-                'TYPE' => placeholder_img_code('icons/48x48/status'),
+                'TYPE' => placeholder_img_code('icons/status'),
                 'MESSAGE' => lorem_phrase(),
             )), null, '', true)
         );

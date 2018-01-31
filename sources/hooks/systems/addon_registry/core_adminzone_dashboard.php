@@ -87,7 +87,7 @@ class Hook_addon_registry_core_adminzone_dashboard
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.svg';
+        return 'themes/default/images/icons/admin/component.svg';
     }
 
     /**
@@ -112,12 +112,11 @@ class Hook_addon_registry_core_adminzone_dashboard
             'lang/EN/staff_checklist.ini',
             'sources/hooks/systems/cron/staff_checklist_notify.php',
             'sources/hooks/systems/notifications/staff_checklist.php',
-            'themes/default/images/checklist/checklist-.svg',
-            'themes/default/images/checklist/checklist0.svg',
-            'themes/default/images/checklist/checklist1.svg',
-            'themes/default/images/checklist/toggleicon.svg',
-            'themes/default/images/checklist/toggleicon2.svg',
-            'themes/default/images/checklist/index.html',
+            'themes/default/images/icons/checklist/checklist-.svg',
+            'themes/default/images/icons/checklist/checklist0.svg',
+            'themes/default/images/icons/checklist/checklist1.svg',
+            'themes/default/images/icons/checklist/toggle.svg',
+            'themes/default/images/icons/checklist/index.html',
             'lang/EN/tips.ini',
             'sources/hooks/systems/snippets/checklist_task_manage.php',
             'sources/hooks/blocks/main_staff_checklist/.htaccess',
@@ -137,8 +136,6 @@ class Hook_addon_registry_core_adminzone_dashboard
             'sources/blocks/main_staff_links.php',
             'themes/default/templates/BLOCK_MAIN_STAFF_LINKS.tpl',
             'themes/default/templates/BLOCK_MAIN_STAFF_WEBSITE_MONITORING.tpl',
-            'themes/default/images/checklist/cross.svg',
-            'themes/default/images/checklist/cross2.svg',
             'sources/hooks/systems/notifications/checklist_task.php',
             'themes/default/templates/BLOCK_MAIN_STAFF_ACTIONS.tpl',
             'sources/hooks/systems/commandr_fs_extended_config/checklist_tasks.php',

@@ -33,7 +33,7 @@
 					{DATE*}
 				</td>
 				<td>
-					<a title="{!DELETE}: #{ID}" href="{$PAGE_LINK*,_SELF:_SELF:delete:{ID}:from={FROM}}"><img width="14" height="14" src="{$IMG*,icons/28x28/delete}" title="{!DELETE_INVOICE}" alt="{!DELETE_INVOICE}" /></a>
+					<a title="{!DELETE}: #{ID}" href="{$PAGE_LINK*,_SELF:_SELF:delete:{ID}:from={FROM}}"><img width="14" height="14" src="{$IMG*,icons/admin/delete}" title="{!DELETE_INVOICE}" alt="{!DELETE_INVOICE}" /></a>
 					{+START,IF,{$EQ,{STATE},paid}}
 						<a title="{!MARK_AS_FULFILLED}: #{ID}" href="{$PAGE_LINK*,_SELF:_SELF:fulfill:{ID}}">{!MARK_AS_FULFILLED}</a>
 					{+END}

@@ -149,20 +149,20 @@ abstract class Standard_crud_module
         $entry_points = array();
         if (method_exists($this, 'add_actualisation')) {
             $entry_points += array(
-                'add' => array('ADD_' . $this->lang_type, 'menu/_generic_admin/add_one'),
-                'edit' => array('EDIT_' . $this->lang_type, 'menu/_generic_admin/edit_one'),
+                'add' => array('ADD_' . $this->lang_type, 'admin/add'),
+                'edit' => array('EDIT_' . $this->lang_type, 'admin/edit'),
             );
         }
         if ($this->cat_crud_module !== null) {
             $entry_points += array(
-                'add_category' => array('ADD_' . $this->cat_crud_module->lang_type, 'menu/_generic_admin/add_one_category'),
-                'edit_category' => array('EDIT_' . $this->cat_crud_module->lang_type, 'menu/_generic_admin/edit_one_category'),
+                'add_category' => array('ADD_' . $this->cat_crud_module->lang_type, 'admin/add_one_category'),
+                'edit_category' => array('EDIT_' . $this->cat_crud_module->lang_type, 'admin/edit_one_category'),
             );
         }
         if ($this->alt_crud_module !== null) {
             $entry_points += array(
-                'add_other' => array('ADD_' . $this->alt_crud_module->lang_type, 'menu/_generic_admin/add_one'),
-                'edit_other' => array('EDIT_' . $this->alt_crud_module->lang_type, 'menu/_generic_admin/edit_one'),
+                'add_other' => array('ADD_' . $this->alt_crud_module->lang_type, 'admin/add'),
+                'edit_other' => array('EDIT_' . $this->alt_crud_module->lang_type, 'admin/edit'),
             );
         }
         return $entry_points;
@@ -938,7 +938,7 @@ abstract class Standard_crud_module
 
         url_default_parameters__disable();
 
-        $submit_icon = ($this->type_code == 'category') ? 'menu---generic-admin--add-one-category' : 'menu---generic-admin--add-one';
+        $submit_icon = ($this->type_code == 'category') ? 'admin--add-one-category' : 'admin--add';
 
         $cancel_url = build_url(array('page' => '_SELF', 'clear_autosave' => 1), '_SELF');
         if (get_param_string('type', 'add') == 'add_catalogue') {
@@ -1317,7 +1317,7 @@ abstract class Standard_crud_module
             'TEXT' => $text,
             'URL' => $post_url,
             'FIELDS' => $fields->evaluate()/*FUDGE*/,
-            'SUBMIT_ICON' => 'menu---generic-admin--edit-this',
+            'SUBMIT_ICON' => 'admin--edit-this',
             'SUBMIT_NAME' => $submit_name,
             'SKIP_WEBSTANDARDS' => true,
             'EXTRA_BUTTONS' => $extra_buttons,
@@ -1554,7 +1554,7 @@ abstract class Standard_crud_module
 
         list($warning_details, $ping_url) = handle_conflict_resolution();
 
-        $submit_icon = ($this->type_code == 'category') ? 'menu---generic-admin--edit-one-category' : 'menu---generic-admin--edit-one';
+        $submit_icon = ($this->type_code == 'category') ? 'admin--edit-one-category' : 'admin--edit';
 
         $cancel_url = build_url(array('page' => '_SELF', 'clear_autosave' => 1), '_SELF');
         if ($this->posting_form_title !== null) {

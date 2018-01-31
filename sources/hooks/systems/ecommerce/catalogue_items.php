@@ -39,7 +39,7 @@ class Hook_ecommerce_catalogue_items
         return array(
             'category_name' => do_lang('CATALOGUE_ITEM'),
             'category_description' => do_lang_tempcode('CATALOGUE_ITEM_DESCRIPTION'),
-            'category_image_url' => find_theme_image('icons/48x48/menu/rich_content/catalogues/products'),
+            'category_image_url' => find_theme_image('icons/menu/rich_content/catalogues/products'),
         );
     }
 

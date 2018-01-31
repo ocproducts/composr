@@ -147,7 +147,7 @@ class Module_admin_giftr extends Standard_crud_module
         }
 
         return array(
-            'browse' => array('MANAGE_GIFTS', 'menu/giftr'),
+            'browse' => array('MANAGE_GIFTS', 'spare/gifts'),
         ) + parent::get_entry_points();
     }
 
@@ -218,8 +218,8 @@ class Module_admin_giftr extends Standard_crud_module
             get_screen_title('GIFTR_TITLE'),
             comcode_lang_string('DOC_GIFTR'),
             array(
-                array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_GIFT')),
-                array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_GIFT')),
+                array('admin/add', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_GIFT')),
+                array('admin/edit', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_GIFT')),
             ),
             do_lang('GIFTR_TITLE')
         );

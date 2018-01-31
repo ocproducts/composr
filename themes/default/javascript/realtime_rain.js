@@ -78,7 +78,7 @@
                 el.linesFor.push(params.groupId);
             }
 
-            if ((params.specialIcon !== undefined) && (params.specialIcon === 'email-icon')) {
+            if ((params.specialIcon !== undefined) && (params.specialIcon === 'special-icon')) {
                 el.iconMultiplicity = params.multiplicity;
             }
         };
@@ -105,12 +105,12 @@
                 e.parentNode.parentNode.removeChild(e.parentNode);
             }
 
-            img.src = $util.srl('{$IMG;,icons/48x48/tool_buttons/realtime_rain_on}');
+            img.src = $util.srl('{$IMG;,icons/tool_buttons/realtime_rain_on}');
 
             return false;
         }
 
-        img.src = $util.srl('{$IMG;,icons/48x48/tool_buttons/realtime_rain_off}');
+        img.src = $util.srl('{$IMG;,icons/tool_buttons/realtime_rain_off}');
 
         var tmpElement = document.getElementById('realtime_rain_img_loader');
         if (tmpElement) {
@@ -252,7 +252,7 @@
                     }
 
                     var num = clonedMessage.iconMultiplicity,
-                        mainIcon = clonedMessage.querySelector('.email-icon'),
+                        mainIcon = clonedMessage.querySelector('.special-icon'),
                         iconSpot = $dom.$('#real-time-surround');
 
                     if ($dom.findPosY(iconSpot, true) > 0) {
@@ -364,7 +364,7 @@
         $dom.html(bubblesGoHere, '');
         window.bubbleGroups = [];
         window.totalLines = 0;
-        var icons = document.getElementById('real-time-surround').parentNode.querySelectorAll('.email-icon');
+        var icons = document.getElementById('real-time-surround').parentNode.querySelectorAll('.special-icon');
         for (var i = 0; i < icons.length; i++) {
             if (icons[i].animationTimer) {
                 clearInterval(icons[i].animationTimer);

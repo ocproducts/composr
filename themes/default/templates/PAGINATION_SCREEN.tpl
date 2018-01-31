@@ -31,18 +31,18 @@
 		1_URL={ADD_URL*}
 		1_TITLE={!ADD}
 		1_REL=add
-		1_ICON=menu/_generic_admin/add_one
+		1_ICON=admin/add
 	{+END}
 	{+START,IF_PASSED,EDIT_URL}
 		2_URL={EDIT_URL*}
 		2_TITLE={+START,IF_PASSED,EDIT_LABEL}{EDIT_LABEL*}{+END}{+START,IF_NON_PASSED,EDIT_LABEL}{!EDIT}{+END}
 		2_REL=edit
-		2_ICON=menu/_generic_admin/edit_this
+		2_ICON=admin/edit_this
 	{+END}
 	{+START,IF_PASSED,ADD_CAT_URL}{+START,IF_PASSED,ADD_CAT_TITLE}
 		3_URL={ADD_CAT_URL*}
 		3_TITLE={ADD_CAT_TITLE*}
 		3_REL=add
-		3_ICON=menu/_generic_admin/add_one_category
+		3_ICON=admin/add_one_category
 	{+END}{+END}
 {+END}

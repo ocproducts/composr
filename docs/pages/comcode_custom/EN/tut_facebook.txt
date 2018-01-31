@@ -206,7 +206,7 @@ Note that Facebook does have minimum/maximum sizes and file-sizes for images. If
 
 [title="4"]Changing default content-type images (advanced)[/title]
 
-This example shows how to change the topic syndication to use a custom theme image, rather than the [tt]icons/48x48/menu/social/forum/forums[/tt] theme image.
+This example shows how to change the topic syndication to use a custom theme image, rather than the [tt]icons/menu/social/forum/forums[/tt] theme image.
 
 [list="1"]
 [*] Theme image...
@@ -225,7 +225,7 @@ Change:
 To:
 [code="HTML"]
 {+START,IF_NON_EMPTY,{$METADATA,image}}
-	{$SET,generic_forum_image,{$EQ,{$METADATA,image},{$IMG,icons/48x48/menu/social/forum/forums}}}
+	{$SET,generic_forum_image,{$EQ,{$METADATA,image},{$IMG,icons/menu/social/forum/forums}}}
 
 	{+START,IF,{$GET,generic_forum_image}}
 		<meta property="og:image" content="{$IMG*,opengraph_defaults/forums}" />
@@ -239,7 +239,7 @@ To:
 [/code]
 [/list]
 
-Our new code detects if the Open Graph image was set as [tt]icons/48x48/menu/social/forum/forums[/tt] and performs a substitution to our custom one.
+Our new code detects if the Open Graph image was set as [tt]icons/menu/social/forum/forums[/tt] and performs a substitution to our custom one.
 
 Our change won't reflect on Facebook for existing syndications until Facebook refreshes its caching. But eventually it will, i.e. it will work retroactively.
 

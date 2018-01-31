@@ -87,7 +87,7 @@ class Hook_addon_registry_cns_contact_member
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/links/contact_member.svg';
+        return 'themes/default/images/icons/links/contact_member.svg';
     }
 
     /**
@@ -98,7 +98,7 @@ class Hook_addon_registry_cns_contact_member
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/links/contact_member.svg',
+            'themes/default/images/icons/links/contact_member.svg',
             'site/pages/modules/contact_member.php',
             'sources/hooks/systems/addon_registry/cns_contact_member.php',
         );

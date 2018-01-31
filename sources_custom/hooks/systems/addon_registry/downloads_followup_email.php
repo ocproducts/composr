@@ -128,7 +128,7 @@ Admins can force the follow-up emails and/or private topics and prevent the memb
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.svg';
+        return 'themes/default/images/icons/admin/component.svg';
     }
 
     /**

@@ -7,7 +7,7 @@
 
 	<ul class="actions-list">
 		<li>
-			<a rel="add" href="#!" id="add_new_menu_linka_{I*}" class="js-click-add-new-menu-item"><img class="vertical-alignment" alt="" width="16" height="16" src="{$IMG*,1x/treefield/expand}" /></a>
+			<a rel="add" href="#!" id="add_new_menu_linka_{I*}" class="js-click-add-new-menu-item"><img class="vertical-alignment" alt="" width="16" height="16" src="{$IMG*,icons/tree_field/expand}" /></a>
 			<a class="vertical-alignment js-click-add-new-menu-item" rel="add" href="#!" id="add_new_menu_linkb_{I*}">{!ADD_BRANCH}</a>
 		</li>
 	</ul>

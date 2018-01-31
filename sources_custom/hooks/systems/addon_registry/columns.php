@@ -135,7 +135,7 @@ You may want to edit the column CSS, via editing the [tt]columns[/tt] CSS file. 
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.svg';
+        return 'themes/default/images/icons/admin/component.svg';
     }
 
     /**

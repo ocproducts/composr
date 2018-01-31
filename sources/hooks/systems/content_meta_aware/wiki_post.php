@@ -58,7 +58,7 @@ class Hook_content_meta_aware_wiki_post
             'description_field_dereference' => true,
             'thumb_field' => null,
             'thumb_field_is_theme_image' => false,
-            'alternate_icon_theme_image' => 'icons/48x48/menu/rich_content/wiki',
+            'alternate_icon_theme_image' => 'icons/menu/rich_content/wiki',
 
             'view_page_link_pattern' => '_SEARCH:wiki:find_post:_WILD',
             'edit_page_link_pattern' => '_SEARCH:wiki:post:post_id=_WILD',

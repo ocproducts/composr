@@ -112,6 +112,7 @@ You may wish to deny access to the usergroup and member directories when using t
             'requires' => array(
                 'calendar',
                 'ecommerce',
+                'all_icons',
             ),
             'recommends' => array(),
             'conflicts_with' => array(),
@@ -125,7 +126,7 @@ You may wish to deny access to the usergroup and member directories when using t
      */
     public function get_default_icon()
     {
-        return 'themes/default/images_custom/icons/48x48/menu/book.svg';
+        return 'themes/default/images_custom/icons/menu/book.svg';
     }
 
     /**
@@ -136,11 +137,6 @@ You may wish to deny access to the usergroup and member directories when using t
     public function get_file_list()
     {
         return array(
-            'themes/default/images_custom/icons/48x48/menu/book.svg',
-            'themes/default/images_custom/icons/48x48/menu/blacked.svg',
-            'themes/default/images_custom/icons/48x48/menu/bookable.svg',
-            'themes/default/images_custom/icons/48x48/menu/booking.svg',
-            'themes/default/images_custom/icons/48x48/menu/supplement.svg',
             'sources_custom/hooks/systems/addon_registry/booking.php',
             'sources_custom/hooks/systems/notifications/booking_customer.php',
             'sources_custom/hooks/systems/notifications/booking_inform_staff.php',
@@ -169,8 +165,8 @@ You may wish to deny access to the usergroup and member directories when using t
             'themes/default/templates_custom/BOOK_DATE_CHOOSE.tpl',
             'themes/default/templates_custom/BOOKABLE_NOTES.tpl',
             'sources_custom/hooks/systems/page_groupings/booking.php',
-            'themes/default/images_custom/calendar/booking.svg',
-            'themes/default/images_custom/calendar/index.html',
+            'themes/default/images_custom/icons/calendar/booking.svg',
+            'themes/default/images_custom/icons/calendar/index.html',
             'sources_custom/hooks/systems/config/bookings_max_ahead_months.php',
             'sources_custom/hooks/systems/config/bookings_show_warnings_for_months.php',
             'sources_custom/hooks/systems/config/member_booking_only.php',

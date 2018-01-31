@@ -87,7 +87,7 @@ class Hook_addon_registry_awards
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/setup/awards.svg';
+        return 'themes/default/images/icons/menu/adminzone/setup/awards.svg';
     }
 
     /**
@@ -98,7 +98,7 @@ class Hook_addon_registry_awards
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/48x48/menu/adminzone/setup/awards.svg',
+            'themes/default/images/icons/menu/adminzone/setup/awards.svg',
             'sources/hooks/systems/addon_registry/awards.php',
             'sources/hooks/systems/resource_meta_aware/award_type.php',
             'themes/default/templates/AWARDED_CONTENT.tpl',

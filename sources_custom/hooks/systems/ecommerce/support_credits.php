@@ -30,7 +30,7 @@ class Hook_ecommerce_support_credits
         return array(
             'category_name' => do_lang('CREDITS'),
             'category_description' => do_lang_tempcode('CUSTOMER_SUPPORT_CREDITS_DESCRIPTION'),
-            'category_image_url' => find_theme_image('icons/48x48/menu/pages/help'),
+            'category_image_url' => find_theme_image('icons/help'),
         );
     }
 

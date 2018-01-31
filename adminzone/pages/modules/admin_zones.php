@@ -53,8 +53,8 @@ class Module_admin_zones
     {
         $ret = array(
             'browse' => array('ZONES', 'menu/adminzone/structure/zones/zones'),
-            'add' => array('ADD_ZONE', 'menu/_generic_admin/add_one'),
-            'edit' => array('EDIT_ZONE', 'menu/_generic_admin/edit_one'),
+            'add' => array('ADD_ZONE', 'admin/add'),
+            'edit' => array('EDIT_ZONE', 'admin/edit'),
         );
 
         if (!$be_deferential) {
@@ -237,8 +237,8 @@ class Module_admin_zones
             get_screen_title('ZONES'),
             comcode_lang_string('DOC_ZONES'),
             array(
-                array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_ZONE')),
-                array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_ZONE')),
+                array('admin/add', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_ZONE')),
+                array('admin/edit', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_ZONE')),
             ),
             do_lang('ZONES')
         );
@@ -728,7 +728,7 @@ class Module_admin_zones
             '_GUID' => 'd8f08884cc370672c2e5604aefe78c6c',
              'JS_FUNCTION_CALLS' => $js_function_calls,
             'HIDDEN' => $hidden,
-            'SUBMIT_ICON' => 'menu---generic-admin--add-one',
+            'SUBMIT_ICON' => 'admin--add',
             'SUBMIT_NAME' => $submit_name,
             'TITLE' => $this->title,
             'FIELDS' => $fields,
@@ -847,7 +847,7 @@ class Module_admin_zones
             'TITLE' => $title,
             'TEXT' => $text,
             'TABLE' => $table,
-            'SUBMIT_ICON' => 'menu---generic-admin--edit-this',
+            'SUBMIT_ICON' => 'admin--edit-this',
             'SUBMIT_NAME' => null,
             'POST_URL' => get_self_url(),
         ));
@@ -911,7 +911,7 @@ class Module_admin_zones
             '_GUID' => '54a578646aed86da06f30c459c9586c2',
             'JS_FUNCTION_CALLS' => $js_function_calls,
             'HIDDEN' => $hidden,
-            'SUBMIT_ICON' => 'menu---generic-admin--edit-this',
+            'SUBMIT_ICON' => 'admin--edit-this',
             'SUBMIT_NAME' => $submit_name,
             'TITLE' => $this->title,
             'FIELDS' => $fields,

@@ -209,8 +209,8 @@ class Module_cms_wiki
             get_screen_title('MANAGE_WIKI'),
             comcode_lang_string('DOC_WIKI'),
             array_merge(array(
-                array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add_page'), '_SELF'), do_lang('WIKI_ADD_PAGE')),
-                array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'choose_page_to_edit'), '_SELF'), do_lang('WIKI_EDIT_PAGE')),
+                array('admin/add', array('_SELF', array('type' => 'add_page'), '_SELF'), do_lang('WIKI_ADD_PAGE')),
+                array('admin/edit', array('_SELF', array('type' => 'choose_page_to_edit'), '_SELF'), do_lang('WIKI_EDIT_PAGE')),
             ), manage_custom_fields_donext_link('wiki_post'), manage_custom_fields_donext_link('wiki_page')),
             do_lang('MANAGE_WIKI')
         );
@@ -306,7 +306,7 @@ class Module_cms_wiki
             $fields2->attach(get_award_fields('wiki_page'));
         }
 
-        $posting_form = get_posting_form(do_lang('WIKI_ADD_PAGE'), 'menu---generic-admin--add-one-category', '', $add_url, $hidden, $fields, null, '', $fields2);
+        $posting_form = get_posting_form(do_lang('WIKI_ADD_PAGE'), 'admin--add-one-category', '', $add_url, $hidden, $fields, null, '', $fields2);
 
         url_default_parameters__disable();
 
@@ -452,7 +452,7 @@ class Module_cms_wiki
             $revisions = new Tempcode();
         }
 
-        $posting_form = get_posting_form(do_lang('SAVE'), 'menu---generic-admin--edit-this-category', $description, $edit_url, new Tempcode(), $fields, do_lang_tempcode('PAGE_TEXT'), '', $fields2, $_description, array(), null, false);
+        $posting_form = get_posting_form(do_lang('SAVE'), 'admin--edit-this-category', $description, $edit_url, new Tempcode(), $fields, do_lang_tempcode('PAGE_TEXT'), '', $fields2, $_description, array(), null, false);
 
         list($warning_details, $ping_url) = handle_conflict_resolution();
 

@@ -115,7 +115,9 @@ The documentation is primarily maintained on our website, and this archive is on
     public function get_dependencies()
     {
         return array(
-            'requires' => array(),
+            'requires' => array(
+                'all_icons',
+            ),
             'recommends' => array(
                 'composr_homesite',
                 'composr_homesite_support_credits',
@@ -132,7 +134,7 @@ The documentation is primarily maintained on our website, and this archive is on
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/32x32/help.svg';
+        return 'themes/default/images/icons/help.svg';
     }
 
     /**
@@ -151,7 +153,6 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/modules/docs/index.html',
             'data_custom/modules/docs/documents-Jungle.zip',
             'data_custom/modules/docs/documents-Paradise.zip',
-            'themes/default/images_custom/tutorial_icons/index.html',
             'themes/default/templates_custom/BLOCK_MAIN_TUTORIALS_CAROUSEL.tpl',
             'themes/default/templates_custom/BLOCK_MAIN_TUTORIAL_RATING.tpl',
             'themes/default/templates_custom/TUTORIAL_INDEX_SCREEN.tpl',
@@ -1541,37 +1542,6 @@ The documentation is primarily maintained on our website, and this archive is on
             'docs/composr-api-template/js/menu.js',
             'docs/composr-api-template/js/sidebar.js',
             'docs/composr-api-template/js/SVGPan.js',
-
-            'themes/default/images_custom/tutorial_icons/administration.svg',
-            'themes/default/images_custom/tutorial_icons/advice_and_guidance.svg',
-            'themes/default/images_custom/tutorial_icons/analytics.svg',
-            'themes/default/images_custom/tutorial_icons/book.svg',
-            'themes/default/images_custom/tutorial_icons/business_development.svg',
-            'themes/default/images_custom/tutorial_icons/collaboration.svg',
-            'themes/default/images_custom/tutorial_icons/content.svg',
-            'themes/default/images_custom/tutorial_icons/contributing.svg',
-            'themes/default/images_custom/tutorial_icons/css.svg',
-            'themes/default/images_custom/tutorial_icons/development.svg',
-            'themes/default/images_custom/tutorial_icons/feedback_features.svg',
-            'themes/default/images_custom/tutorial_icons/fun_and_games.svg',
-            'themes/default/images_custom/tutorial_icons/installation.svg',
-            'themes/default/images_custom/tutorial_icons/internationalisation.svg',
-            'themes/default/images_custom/tutorial_icons/introduction.svg',
-            'themes/default/images_custom/tutorial_icons/javascript.svg',
-            'themes/default/images_custom/tutorial_icons/maintenance.svg',
-            'themes/default/images_custom/tutorial_icons/opinion.svg',
-            'themes/default/images_custom/tutorial_icons/performance.svg',
-            'themes/default/images_custom/tutorial_icons/php.svg',
-            'themes/default/images_custom/tutorial_icons/power_tools.svg',
-            'themes/default/images_custom/tutorial_icons/seo.svg',
-            'themes/default/images_custom/tutorial_icons/social.svg',
-            'themes/default/images_custom/tutorial_icons/support.svg',
-            'themes/default/images_custom/tutorial_icons/third_party_integration.svg',
-            'themes/default/images_custom/tutorial_icons/webhosting.svg',
-            'themes/default/images_custom/tutorial_icons/web_standards_and_accessibility.svg',
-            'themes/default/images_custom/tutorial_icons/internet_technology.svg',
-            'themes/default/images_custom/tutorial_icons/mobile.svg',
-            'themes/default/images_custom/tutorial_icons/video.svg',
 
             'docs/codebook_data_dictionary.docx',
             'docs/erd_rendered__by_addon.zip',
