@@ -79,12 +79,12 @@
 	#news-ticker h1 {
 		width: 100%;
 		box-sizing: border-box;
-		background-size: 100% 100%;
+		background-size: 100% 100% !important;
 	}
 /*{+END}*/
 #news-ticker .news-inside {
 	background: url('{$IMG;,realtime_rain/news_bg}') repeat-y center top;
-	background-size: 446px 1px;
+	background-size: 446px 1px !important;
 	overflow: hidden;
 	margin: 0 auto;
 	padding: 0;
@@ -99,7 +99,7 @@
 	#news-ticker .news-inside {
 		width: 100%;
 		background-position: left top;
-		background-size: 100% 100%;
+		background-size: 100% 100% !important;
 	}
 /*{+END}*/
 #news-ticker .news-content {
@@ -124,7 +124,7 @@
 }
 #news-ticker .news-footer {
 	background: url('{$IMG;,realtime_rain/news_bot}') no-repeat;
-	background-size: 446px 21px;
+	background-size: 446px 21px !important;
 	height: 21px;
 	float: left;
 }
@@ -136,7 +136,7 @@
 /*{+START,CSS_MODE,mobile}*/
 	#news-ticker .news-footer {
 		width: 100%;
-		background-size: 100% 100%;
+		background-size: 100% 100% !important;
 	}
 /*{+END}*/
 
@@ -164,7 +164,7 @@
 /*{+END}*/
 	#real-time-indicator {
 	background: url('{$IMG;,realtime_rain/realtime_indicator}') no-repeat 0 0;
-	background-size: 94px 51px;
+	background-size: 94px 51px !important;
 	overflow: hidden;
 	font-size: 0.75em;
 	width: 80px;
@@ -179,7 +179,7 @@
 #timer {
 	height: 38px;
 	background: url('{$IMG;,realtime_rain/timer_bg}') no-repeat;
-	background-size: 952px 46px;
+	background-size: 952px 46px !important;
 	margin-top: 5px;
 }
 /*{+START,CSS_MODE,desktop}*/
@@ -193,7 +193,7 @@
 		padding: 4px 0 0 10px;
 		box-sizing: border-box;
 		width: 100%;
-		background-size: 100% 100%;
+		background-size: 100% 100% !important;
 	}
 /*{+END}*/
 #pause-but {
@@ -236,7 +236,7 @@
 
 .attitude-ecommerce-positive {
 	background: url('{$IMG;,realtime_rain/sun_effect}') no-repeat 0 0;
-	background-size: 246px 246px;
+	background-size: 246px 246px !important;
 	width: 246px;
 	height: 246px;
 	padding: 22px;
@@ -244,7 +244,7 @@
 }
 .attitude-join-positive, .attitude-Lorem-positive {
 	background: url('{$IMG;,realtime_rain/halo_effect}') no-repeat 0 0;
-	background-size: 246px 246px;
+	background-size: 246px 246px !important;
 	width: 246px;
 	height: 246px;
 	padding: 20px;
@@ -252,7 +252,7 @@
 }
 .attitude-security-negative {
 	background: url('{$IMG;,realtime_rain/horns_effect}') no-repeat 0 0;
-	background-size: 246px 246px;
+	background-size: 246px 246px !important;
 	width: 246px;
 	height: 246px;
 	padding: 12px;
@@ -260,7 +260,7 @@
 }
 .attitude-point-charges-negative {
 	background: url('{$IMG;,realtime_rain/shadow_effect}') no-repeat 0 0;
-	background-size: 246px 246px;
+	background-size: 246px 246px !important;
 	width: 246px;
 	height: 246px;
 	padding: 17px;
@@ -277,12 +277,12 @@
 	padding: 20px 0 0 20px;
 	position: relative;
 	margin: 10px;
-	background-size: 181px 181px;
+	background-size: 181px 181px !important;
 }
 .bubble .avatar-icon {
 	width: 60px;
 	height: 60px;
-	background-size: 60px 60px;
+	background-size: 60px 60px !important;
 }
 .bubble .avatar-icon img {
 	padding: 19px 17px;
@@ -303,7 +303,7 @@
 	text-align: right;
 	padding: 14px 35px 0 0;
 	font-size: 0.75em;
-	background-size: 36px 36px;
+	background-size: 36px 36px !important;
 }
 .bubble .special-icon a {
 	color: {$GET,bubble_link_inverted};

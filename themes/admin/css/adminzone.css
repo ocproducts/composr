@@ -52,9 +52,6 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 	background-color: transparent;
 }
 
-.global-messages {
-	margin: 0;
-}
 /*{+START,CSS_MODE,mobile}*/
 	.global-messages {
 		padding-left: 2px;

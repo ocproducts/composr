@@ -82,42 +82,6 @@
 	margin-top: 1em;
 }
 
-.local-payment-merchant-details-wrap {
-	border: 1px dashed {$GET,point_of_interest_border};
-	background-color: {$GET,point_of_interest_background};
-}
-
-.local-payment-merchant-details {
-	display: table;
-	width: 100%;
-}
-
-.local-payment-merchant-details>div {
-	display: table-row;
-}
-
-.local-payment-transact-info, .payment-processor-links, .local-payment-verified-account-logo {
-	display: table-cell;
-	vertical-align: middle;
-	padding: 0.5em;
-}
-
-.local-payment-transact-info {
-}
-
-.payment-processor-links {
-	background: url('{$IMG;,ecommerce/checkmark}') no-repeat left center;
-	background-size: 20px 20px;
-	padding-left: 24px;
-}
-
-.local-payment-verified-account-logo {
-}
-
-.local-payment-merchant-details-wrap + .ecommerce-button, .local-payment-merchant-details + .ecommerce-button {
-	margin-top: 1em;
-}
-
 /*
 =========================
 =======Tax invoices======

@@ -62,7 +62,7 @@
 }
 
 .menu-type--popup a {
-	background-size: 6px 6px;
+	background-size: 6px 6px !important;
 }
 
 .menu-type--popup .current a {

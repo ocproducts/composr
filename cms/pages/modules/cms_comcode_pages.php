@@ -229,8 +229,14 @@ class Module_cms_comcode_pages
 
                 $located = _request_page($page, $zone, null, $lang);
                 if ($located !== false && $located[0] != 'REDIRECT') {
+                    $_full_path = $located[count($located) - 1];
+                    $full_path = get_custom_file_base() . '/' . $_full_path;
+                    if (!is_file($full_path)) {
+                        $full_path = get_file_base() . '/' . $_full_path;
+                    }
+
                     $out[$zone . ':' . $page] = array(
-                        $located[count($located) - 1], // page path
+                        $full_path, // page path
                         null, // row
                     );
                 }
@@ -446,7 +452,7 @@ class Module_cms_comcode_pages
                 if ($located !== false && $located[0] != 'REDIRECT') {
                     $_zone = $located[count($located) - 1];
                     $page_path = get_custom_file_base() . (($_zone == '') ? '' : '/') . $_zone;
-                    if (is_file($page_path)) {
+                    if (!is_file($page_path)) {
                         $page_path = get_file_base() . (($_zone == '') ? '' : '/') . $_zone;
                     }
 
@@ -1377,7 +1383,7 @@ class Module_cms_comcode_pages
                 $_zone = $located[count($located) - 1];
                 if ($located !== false && $located[0] != 'REDIRECT' && isset($located[4])) {
                     $page_path = get_custom_file_base() . (($_zone == '') ? '' : '/') . $_zone;
-                    if (is_file($page_path)) {
+                    if (!is_file($page_path)) {
                         $page_path = get_file_base() . (($_zone == '') ? '' : '/') . $_zone;
                     }
                     $page_contents = cms_file_get_contents_safe($page_path);

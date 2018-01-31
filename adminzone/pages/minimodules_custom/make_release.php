@@ -75,7 +75,7 @@ function phase_0()
     $on_disk_version_previous = implode('.', $on_disk_version_parts);
 
     $tracker_url = 'http://compo.sr/tracker/search.php?project_id=1';
-    if (($on_disk_version_parts[$last] >= 0) && (substr_count($on_disk_version, '.') == 2)) {
+    if ((intval($on_disk_version_parts[$last]) >= 0) && (substr_count($on_disk_version, '.') == 2)) {
         $tracker_url .= '&product_version=' . urlencode($on_disk_version_previous);
     }
 

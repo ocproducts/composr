@@ -174,30 +174,28 @@ function up2_do_header($refresh_url = '')
     $_refresh_url = htmlentities($refresh_url);
     echo <<<END
 <!DOCTYPE html>
-    <html lang="EN">
-    <head>
-        <title>Extracting files</title>
-        <link rel="icon" href="http://compo.sr/favicon.ico" type="image/x-icon" />
+<html lang="EN">
+<head>
+    <title>Extracting files</title>
+    <link rel="icon" href="http://compo.sr/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="data/sheet.php?sheet=global" />
 END;
     if ($refresh_url != '') {
         echo <<<END
-        <meta http-equiv="refresh" content="3;url={$_refresh_url}" />
+    <meta http-equiv="refresh" content="3;url={$_refresh_url}" />
 END;
     }
     echo <<<END
-        <style>/*<![CDATA[*/
+    <style>
 END;
     global $FILE_BASE;
-    @print(preg_replace('#/\*\s*\*/\s*#', '', str_replace('url(\'\')', 'none', str_replace('url("")', 'none', preg_replace('#\{\$[^\}]*\}#', '', preg_replace('#\{\$\?,\{\$MOBILE\},([^,]+),([^,]+)\}#', '$2', file_get_contents($GLOBALS['FILE_BASE'] . '/themes/default/css/global.css')))))));
     echo <<<END
-            .screen-title { text-decoration: underline; display: block; background: url('../themes/default/images/icons/admin/tool.svg') top left no-repeat; background-size: 48px 48px; min-height: 42px; padding: 10px 0 0 60px; }
-            .button-screen { padding: 0.5em 0.3em !important; }
-            a[target="_blank"], a[onclick$="window.open"] { padding-right: 0; }
-        /*]]>*/</style>
+        .screen-title { text-decoration: underline; display: block; background: url('../themes/default/images/icons/admin/tool.svg') top left no-repeat; background-size: 48px 48px; min-height: 42px; padding: 10px 0 0 60px; }
+    </style>
 
-        <meta name="robots" content="noindex, nofollow" />
-    </head>
-    <body class="website-body"><div class="global-middle">
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body class="website-body"><div class="global-middle">
 END;
 }
 

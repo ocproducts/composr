@@ -211,16 +211,17 @@ class Database_Static_mysqli extends Database_super_mysql
                     }
                 }
 
-                if (($type === 'int') || ($type === 'decimal') || ($type === 'real') || ($type === 1) || ($type === 3) || ($type === 8)) {
-                    if ((($v === null)) || ($v === '')) { // Roadsend returns empty string instead of null
+                if (($type === 'int') || ($type === 1) || ($type === 2) || ($type === 3) || ($type === 8) || ($type === 9)) {
+                    if ((($v === null)) || ($v === '')) {
                         $newrow[$name] = null;
                     } else {
-                        $_v = intval($v);
-                        if (strval($_v) !== $v) {
-                            $newrow[$name] = floatval($v);
-                        } else {
-                            $newrow[$name] = $_v;
-                        }
+                        $newrow[$name] = intval($v);
+                    }
+                } elseif (($type === 'decimal') || ($type === 'real') || ($type === 4) || ($type === 5) || ($type === 246)) {
+                    if ((($v === null)) || ($v === '')) {
+                        $newrow[$name] = null;
+                    } else {
+                        $newrow[$name] = floatval($v);
                     }
                 } elseif (($type === 16) || ($type === 'bit')) {
                     if ((strlen($v) === 1) && (ord($v[0]) <= 1)) {

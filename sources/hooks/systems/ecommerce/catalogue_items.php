@@ -309,7 +309,7 @@ class Hook_ecommerce_catalogue_items
                 } else {
                     $where['ordered_by'] = $member_id;
                 }
-                $cart_item_count = $GLOBALS['SITE_DB']->query_select_value('shopping_cart', 'SUM(quantity)', $where);
+                $cart_item_count = @intval($GLOBALS['SITE_DB']->query_select_value('shopping_cart', 'SUM(quantity)', $where));
             } else {
                 $cart_item_count = 0;
             }

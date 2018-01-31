@@ -198,7 +198,7 @@ function point_info($member_id)
  */
 function get_gift_points_used($member_id)
 {
-    $actual_used = intval($GLOBALS['SITE_DB']->query_select_value_if_there('gifts', 'SUM(amount)', array('gift_from' => $member_id))); // Most reliable way
+    $actual_used = @intval($GLOBALS['SITE_DB']->query_select_value_if_there('gifts', 'SUM(amount)', array('gift_from' => $member_id))); // Most reliable way
     $_used = point_info($member_id);
     if (!isset($_used['gift_points_used'])) { // Some kind of DB error
         return $actual_used;

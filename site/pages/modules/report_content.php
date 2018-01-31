@@ -103,11 +103,7 @@ class Module_report_content
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
-        $ret = array(
-            'browse' => array('REPORT_CONTENT', 'buttons/report'),
-        );
-
-        return $ret;
+        return array();
     }
 
     public $title;

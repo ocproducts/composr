@@ -6,7 +6,7 @@
 		</h3>
 
 		<div class="toggleable-tray js-tray-content" style="display: {DISPLAY*}"{+START,IF,{$EQ,{DISPLAY},none}} aria-expanded="false"{+END}>
-			<div class="float-surrounder">
+			<div class="float-surrounder radio-list-pictures">
 				{CATEGORY}
 			</div>
 		</div>
@@ -14,7 +14,7 @@
 {+END}
 
 {+START,IF_EMPTY,{CATEGORY_NAME}}
-	<div class="float-surrounder theme-image--{$REPLACE,_,-,{FIELD_NAME|*}}">
+	<div class="float-surrounder theme-image--{$REPLACE,_,-,{FIELD_NAME|*}} radio-list-pictures">
 		{CATEGORY}
 	</div>
 {+END}

@@ -2080,6 +2080,7 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
                 'URL' => $url,
                 'WIDTH' => ($width === null) ? '' : strval($width),
                 'HEIGHT' => ($height === null) ? '' : strval($height),
+                'VECTOR' => (substr($url, -4) == '.svg'),
             ));
             $_category->attach($temp);
 
@@ -2103,7 +2104,7 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
         'CODE' => ($selected_code === null) ? '' : $selected_code,
         'TABINDEX' => strval($tabindex),
         'CONTENT' => $content,
-        'IMAGES' => true,
+        'IMAGES' => false, // Class applied in FORM_SCREEN_INPUT_THEME_IMAGE_CATEGORY instead
         'LINEAR' => $linear,
     ));
 

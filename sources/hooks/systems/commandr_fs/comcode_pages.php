@@ -334,7 +334,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
             list(, , , $_lang, $_full_path) = $result;
             if ($lang == $_lang) {
                 $full_path = get_custom_file_base() . '/' . $_full_path;
-                if (is_file($full_path)) {
+                if (!is_file($full_path)) {
                     $full_path = get_file_base() . '/' . $_full_path;
                 }
                 $text[$lang] = cms_file_get_contents_safe($full_path);

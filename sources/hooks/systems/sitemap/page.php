@@ -227,7 +227,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
             if (($details[0] == 'MODULES' || $details[0] == 'MODULES_CUSTOM') && (!$require_permission_support)) {
                 $simplified = (strpos($extra, ':catalogue_name=') !== false);
 
-                $use_page_groupings = (($options & SITEMAP_GEN_USE_PAGE_GROUPINGS) != 0);
+                $use_page_groupings = (($options & SITEMAP_GEN_USE_PAGE_GROUPINGS) != 0) && (($options & SITEMAP_GEN_USE_PAGE_GROUPINGS_SUPPRESS) != 0);
 
                 $functions = extract_module_functions(get_file_base() . '/' . $path, array('get_entry_points', 'get_wrapper_icon'), array(
                     $check_perms, // $check_perms
@@ -330,7 +330,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
                                     if (($valid_node_types !== null) && (!in_array('comcode_page', $valid_node_types))) {
                                         continue;
                                     }
-                                    $child_node = $comcode_page_sitemap_ob->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $zone, $meta_gather);
+                                    $child_node = $comcode_page_sitemap_ob->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options & ~SITEMAP_GEN_USE_PAGE_GROUPINGS_SUPPRESS, $zone, $meta_gather);
                                 } else {
                                     if (($valid_node_types !== null) && (!in_array('page', $valid_node_types))) {
                                         continue;
@@ -340,9 +340,9 @@ class Hook_sitemap_page extends Hook_sitemap_base
                                         if (strpos($extra, ':catalogue_name=') !== false) {
                                             $child_page_link .= preg_replace('#^:\w+#', '', $extra);
                                         }
-                                        $child_node = $entry_point_sitemap_ob->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $zone, $meta_gather, $entry_point_details);
+                                        $child_node = $entry_point_sitemap_ob->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options & ~SITEMAP_GEN_USE_PAGE_GROUPINGS_SUPPRESS, $zone, $meta_gather, $entry_point_details);
                                     } else {
-                                        $child_node = $this->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $zone, $meta_gather);
+                                        $child_node = $this->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options & ~SITEMAP_GEN_USE_PAGE_GROUPINGS_SUPPRESS, $zone, $meta_gather);
                                     }
                                 }
                                 if ($child_node !== null) {

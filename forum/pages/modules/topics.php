@@ -1425,6 +1425,7 @@ class Module_topics
             'URL' => find_theme_image('cns_emoticons/none'),
             'CHECKED' => $selected_path == '',
             'NAME' => 'emoticon',
+            'VECTOR' => (substr(find_theme_image('cns_emoticons/none'), -4) == '.svg'),
         )));
 
         if (count($rows) == 0) {
@@ -1434,8 +1435,15 @@ class Module_topics
             $path = $row['e_theme_img_code'];
 
             $url = find_theme_image($path);
-            $content->attach(do_template('FORM_SCREEN_INPUT_THEME_IMAGE_ENTRY',
-                array('_GUID' => '22050272aebe90adf8cd4c89e4a7b06a', 'PRETTY' => '', 'CHECKED' => $path == $selected_path, 'NAME' => 'emoticon', 'CODE' => $path, 'URL' => $url)));
+            $content->attach(do_template('FORM_SCREEN_INPUT_THEME_IMAGE_ENTRY', array(
+                '_GUID' => '22050272aebe90adf8cd4c89e4a7b06a',
+                'PRETTY' => '',
+                'CHECKED' => $path == $selected_path,
+                'NAME' => 'emoticon',
+                'CODE' => $path,
+                'URL' => $url,
+                'VECTOR' => (substr($url, -4) == '.svg'),
+            )));
         }
 
         $input = do_template('FORM_SCREEN_INPUT_RADIO_LIST', array(

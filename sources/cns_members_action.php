@@ -175,10 +175,7 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
                         continue;
                     }
 
-                    $count = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'SUM(m_cache_num_posts)', array('m_avatar_url' => find_theme_image($code, false, true)));
-                    if ($count === null) {
-                        $count = 0;
-                    }
+                    $count = @intval($GLOBALS['FORUM_DB']->query_select_value('f_members', 'SUM(m_cache_num_posts)', array('m_avatar_url' => find_theme_image($code, false, true))));
                     $results[$code] = $count;
                 }
                 @asort($results); // @'d as type checker fails for some odd reason

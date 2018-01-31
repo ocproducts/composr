@@ -21,7 +21,7 @@
 }
 
 .menu-type--tree a {
-	background-size: 6px 6px;
+	background-size: 6px 6px !important;
 }
 
 .menu-type--tree .non-current a {

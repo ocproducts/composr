@@ -2953,10 +2953,10 @@ function titleify($boring)
     $ret = $boring;
 
     if (strpos($ret, '/') !== false || strpos($ret, '\\') !== false) {
-        $ret = preg_replace('#([/\\\\])#', '${1} ', $ret);
+        $ret = preg_replace('#([/\\\\])#', ' ${1} ', $ret);
     }
 
-    $ret = ucwords(trim(str_replace('_', ' ', $boring)));
+    $ret = ucwords(trim(str_replace('_', ' ', $ret)));
 
     $acronyms = array(
         'CMS',

@@ -548,34 +548,34 @@ ul.icon-links-block-group>li {
 }
 
 .icon-14-add {
-	background-image: url('{$IMG,icons/admin/add}') !important;
+	background-image: url('{$IMG,icons/admin/add}');
 	background-size: 14px 14px;
 }
 .icon-14-edit2 {
-	background-image: url('{$IMG,icons/admin/edit2}') !important;
+	background-image: url('{$IMG,icons/admin/edit2}');
 	background-size: 14px 14px;
 }
 .icon-14-export {
-	background-image: url('{$IMG,icons/admin/export}') !important;
+	background-image: url('{$IMG,icons/admin/export}');
 	background-size: 14px 14px;
 }
 .icon-14-proceed {
-	background-image: url('{$IMG,icons/buttons/proceed2}') !important;
+	background-image: url('{$IMG,icons/buttons/proceed2}');
 	background-size: 14px 14px;
 }
 .icon-14-remove-manage {
-	background-image: url('{$IMG,icons/admin/remove_manage}') !important;
+	background-image: url('{$IMG,icons/admin/remove_manage}');
 	background-size: 14px 14px;
 }
 .icon-14-remove {
-	background-image: url('{$IMG,icons/admin/remove}') !important;
+	background-image: url('{$IMG,icons/admin/remove}');
 	background-size: 14px 14px;
 }
 .icon-14-sound-effects {
-	background-image: url('{$IMG,icons/buttons/sound_effects}') !important;
+	background-image: url('{$IMG,icons/buttons/sound_effects}');
 	background-size: 14px 14px;
 }
 .icon-14-tools {
-	background-image: url('{$IMG,icons/admin/tools}') !important;
+	background-image: url('{$IMG,icons/admin/tools}');
 	background-size: 14px 14px;
 }

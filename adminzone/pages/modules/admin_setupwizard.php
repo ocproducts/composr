@@ -54,7 +54,7 @@ class Module_admin_setupwizard
         return array(
             'browse' => array('SETUPWIZARD', 'menu/adminzone/setup/setupwizard'),
             'install_test_content' => array('INSTALL_TEST_CONTENT', 'admin/add_one_category'),
-            'uninstall_test_content' => array('UNINSTALL_TEST_CONTENT', 'admin/delete3'),
+            'uninstall_test_content' => array('UNINSTALL_TEST_CONTENT', 'buttons/clear'),
         );
     }
 

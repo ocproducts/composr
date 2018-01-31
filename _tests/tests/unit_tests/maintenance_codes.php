@@ -18,6 +18,25 @@
  */
 class maintenance_codes_test_set extends cms_test_case
 {
+    public function testMaintenanceSheetStructure()
+    {
+        $myfile = fopen(get_custom_file_base() . '/data/maintenance_status.csv', 'rb');
+
+        $line = 1;
+        while (($row = fgetcsv($myfile)) !== false) {
+            $this->assertTrue(count($row) == 7, 'Wrong number of columns on line ' . integer_format($line) . ', got ' . integer_format(count($row)) . 'expected 7');
+
+            if ($line != 1) {
+                $this->assertTrue(preg_match('#^\w+$#', $row[0]) != 0, 'Invalid codename ' . $row[0]);
+                $this->assertTrue(preg_match('#^(Yes|No)$#', $row[5]) != 0, 'Invalid "Non-bundled addon" column, ' . $row[5]);
+            }
+
+            $line++;
+        }
+
+        fclose($myfile);
+    }
+
     public function testMaintenanceCodeReferences()
     {
         $myfile = fopen(get_custom_file_base() . '/data/maintenance_status.csv', 'rb');
@@ -30,6 +49,8 @@ class maintenance_codes_test_set extends cms_test_case
             $codename = $row[0];
             $codenames[$codename] = true;
         }
+
+        fclose($myfile);
 
         // Test PHP code
         require_code('files2');
@@ -94,5 +115,7 @@ class maintenance_codes_test_set extends cms_test_case
                 $this->assertTrue(is_file(get_file_base() . '/_tests/tests/unit_tests/' . $test . '.php'), 'Could not find referenced test, ' . $test);
             }
         }
+
+        fclose($myfile);
     }
 }

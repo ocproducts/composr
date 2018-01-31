@@ -21,6 +21,9 @@
 	text-align: justify;
 }
 
+.ssm-warn, .ssm-inform {
+	background-size: 200px 200px !important;
+}
 /*{+START,CSS_MODE,desktop}*/
 	.ssm-warn, .ssm-inform {
 		padding: 85px 220px 100px 30px;
@@ -34,7 +37,6 @@
 
 .ssm-warn {
 	background: url('{$IMG;,icons/status/warn}') right 20px no-repeat;
-	background-size: 24px 24px;
 }
 
 /*{+START,CSS_MODE,desktop}*/
@@ -50,7 +52,6 @@
 
 .ssm-inform {
 	background: url('{$IMG;,icons/status/inform}') right 20px no-repeat;
-	background-size: 24px 24px;
 }
 
 .page-running-contact .ssm-inform {

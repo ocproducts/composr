@@ -88,13 +88,6 @@ class Hook_profiles_tabs_edit_delete
         }
 
         if (addon_installed('ecommerce')) {
-            $subscriptions_count = $GLOBALS['SITE_DB']->query_select_value('subscriptions', 'COUNT(*)', array('s_member_id' => $member_id_of, 's_state' => 'active'));
-            if ($subscriptions_count > 0) {
-                $text->attach(paragraph(do_lang_tempcode('MEMBER_HAS_SUBSCRIPTIONS', escape_html($username))));
-            }
-        }
-
-        if (addon_installed('ecommerce')) {
             $subscriptions_count = $GLOBALS['SITE_DB']->query_select_value('ecom_subscriptions', 'COUNT(*)', array('s_member_id' => $member_id_of, 's_state' => 'active'));
             if ($subscriptions_count > 0) {
                 $text->attach(paragraph(do_lang_tempcode('MEMBER_HAS_SUBSCRIPTIONS', escape_html($username))));

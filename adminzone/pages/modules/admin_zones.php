@@ -305,10 +305,8 @@ class Module_admin_zones
             $is_comcode = false;
             $redirecting_to = null;
             $current_for = $for;
-            $pure = false;
             switch ($page_info[0]) {
                 case 'COMCODE_CUSTOM_PURE':
-                    $pure = true;
                 case 'COMCODE':
                 case 'COMCODE_CUSTOM':
                     $is_comcode = true;
@@ -335,7 +333,6 @@ class Module_admin_zones
                     if ($page_info !== false) {
                         switch ($page_info[0]) {
                             case 'COMCODE_CUSTOM_PURE':
-                                $pure = true;
                             case 'COMCODE':
                             case 'COMCODE_CUSTOM':
                                 $is_comcode = true;
@@ -352,9 +349,9 @@ class Module_admin_zones
             $current_zone = ($redirecting_to === null) ? $id : $redirecting_to;
             $default_parsed = null;
             if ($is_comcode) {
-                $full_path = zone_black_magic_filterer((($page_info[0] == 'comcode' || $pure) ? get_file_base() : get_custom_file_base()) . '/' . $current_zone . '/pages/' . strtolower($page_info[0]) . '/' . $lang . '/' . $current_for . '.txt');
+                $full_path = zone_black_magic_filterer(get_custom_file_base() . '/' . $current_zone . '/pages/' . strtolower($page_info[0]) . '/' . $page_info[3] . '/' . $current_for . '.txt');
                 if (!file_exists($full_path)) {
-                    $full_path = zone_black_magic_filterer((($page_info[0] == 'comcode' || $pure) ? get_file_base() : get_custom_file_base()) . '/' . $current_zone . '/pages/' . strtolower($page_info[0]) . '/' . get_site_default_lang() . '/' . $current_for . '.txt');
+                    $full_path = zone_black_magic_filterer(get_file_base() . '/' . $current_zone . '/pages/' . strtolower($page_info[0]) . '/' . $page_info[3] . '/' . $current_for . '.txt');
                 }
                 if (file_exists($full_path)) {
                     $comcode = cms_file_get_contents_safe($full_path);

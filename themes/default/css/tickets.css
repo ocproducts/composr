@@ -8,10 +8,12 @@
 	display: inline-block;
 }
 
-.ticket-filters .ticket-type-filter, .ticket-filters .open-ticket-filter, .ticket-filters .filter-button {
-	margin-left: 0;
-	display: block;
-}
+/*{+START,CSS_MODE,mobile}*/
+	.ticket-filters .ticket-type-filter, .ticket-filters .open-ticket-filter, .ticket-filters .filter-button {
+		margin-left: 0;
+		display: block;
+	}
+/*{+END}*/
 
 .support-tickets th {
 	text-align: left !important;

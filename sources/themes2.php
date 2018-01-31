@@ -570,8 +570,8 @@ function find_images_do_dir($theme, $subdir, $langs)
                 if (is_dir($full . $file)) {
                     $out = array_merge($out, find_images_do_dir($theme, $subdir . $file . '/', $langs));
                 } else {
-                    $ext = substr($file, -4);
-                    if (($ext == '.png') || ($ext == '.gif') || ($ext == '.jpg') || ($ext == 'jpeg')) {
+                    $ext = get_file_extension($file);
+                    if (($ext == '.png') || ($ext == '.gif') || ($ext == '.jpg') || ($ext == '.jpeg') || ($ext == '.svg')) {
                         $_file = explode('.', $file);
                         $_subdir = $subdir;
                         foreach (array_keys($langs) as $lang) {
@@ -739,14 +739,14 @@ function _get_all_image_ids_type(&$ids, $dir, $type, $recurse, $dirs_only, $skip
                 }
             } else {
                 if (!$dirs_only) {
-                    if ((preg_match('#^[' . URL_CONTENT_REGEXP . ']+\.(png|jpg|gif)$#', $file) != 0/*optimisation*/) || (!should_ignore_file($file, IGNORE_ACCESS_CONTROLLERS))) {
+                    if ((preg_match('#^[' . URL_CONTENT_REGEXP . ']+\.(png|jpg|jpeg|gif|svg)$#', $file) != 0/*optimisation*/) || (!should_ignore_file($file, IGNORE_ACCESS_CONTROLLERS))) {
                         $type_path = $type . (($type != '') ? '/' : '');
 
                         $dot_pos = strrpos($file, '.');
                         if ($dot_pos === false) {
                             $dot_pos = strlen($file);
                         }
-                        if (is_image($file, IMAGE_CRITERIA_NONE)) {
+                        if (is_image($file, IMAGE_CRITERIA_NONE, true)) {
                             $ids[] = $type_path . substr($file, 0, $dot_pos);
                         }
                     }
@@ -800,7 +800,7 @@ function get_image_paths($base_url, $base_path)
             if (!should_ignore_file($file, IGNORE_ACCESS_CONTROLLERS)) {
                 $this_path = $base_path . $file;
                 if (is_file($this_path)) {
-                    if (is_image($file, IMAGE_CRITERIA_NONE)) {
+                    if (is_image($file, IMAGE_CRITERIA_NONE, true)) {
                         $this_url = $base_url . rawurlencode($file);
                         $out[$this_path] = $this_url;
                     }
@@ -839,7 +839,7 @@ function get_all_image_codes($base_path, $search_under, $recurse = true)
             if (!should_ignore_file($file, IGNORE_ACCESS_CONTROLLERS)) {
                 $full_path = $base_path . '/' . $search_under . '/' . $file;
                 if (is_file($full_path)) {
-                    if (is_image($file, IMAGE_CRITERIA_NONE)) {
+                    if (is_image($file, IMAGE_CRITERIA_NONE, true)) {
                         $dot_pos = strrpos($file, '.');
                         if ($dot_pos === false) {
                             $dot_pos = strlen($file);

@@ -741,7 +741,7 @@ The 'keep' parameters available are:
  - [tt]keep_xss_detect[/tt] -- set this to '0' to disable developer XSS detection on ocProducts PHP (this has nothing to do with live security, it just aids debugging)
  - [tt]keep_ecommerce_local_test[/tt] -- set this to '1' to test local payment in dev-mode (without needing SSL)
  - [tt]keep_test_version[/tt] -- set to a dotted version number to test the version block in the Admin Zone dashboard as if you're running a different version. Likely needs combining with [tt]keep_cache_blocks=0[/tt]
- - [tt]keep_no_notifications[/tt] -- set this to '1' to suppress sending of notifications (only works if logged in as an administrator)
+ - [tt]keep_notifications[/tt] -- set this to '0' to suppress sending of notifications (only works if logged in as an administrator)
  - [tt]keep_quick_hybrid[/tt] -- set this to '1' in a quick installer to let the installer read code files from disk while installing if they are there; this allows hot-fixing/hot-debugging of installation bugs
 
 The following 'keep' parameters have interface triggers, but are also handy for manual activation:

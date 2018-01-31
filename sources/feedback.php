@@ -315,7 +315,7 @@ function get_rating_simple_array($content_url, $content_title, $content_type, $c
             $_num_ratings = $GLOBALS['SITE_DB']->query_select('rating', array('COUNT(*) AS cnt', 'SUM(rating) AS compound_rating'), array('rating_for_type' => $rating_for_type, 'rating_for_id' => $content_id), '', 1);
             $num_ratings = $_num_ratings[0]['cnt'];
             if ($num_ratings > 0) {
-                $rating = $_num_ratings[0]['compound_rating'];
+                $rating = @intval($_num_ratings[0]['compound_rating']);
                 $overall_num_ratings = max($overall_num_ratings, $num_ratings);
 
                 if (($num_ratings < MAX_LIKES_TO_SHOW) && ($likes)) { // Show likes

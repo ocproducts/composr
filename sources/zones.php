@@ -312,7 +312,7 @@ function zone_black_magic_filterer($path, $relative = false)
 }
 
 /**
- * Find the filebase-relative path of a Comcode page.
+ * Find the path of a Comcode page.
  *
  * @param  LANGUAGE_NAME $lang The language most preferable
  * @param  ID_TEXT $file The page name

@@ -116,6 +116,9 @@ function tar_get_directory(&$resource, $tolerate_errors = false)
             } else {
                 $end_of_string = strpos($header, $chr_0, 0);
                 if ($end_of_string === false) {
+                    if ($tolerate_errors) {
+                        return null;
+                    }
                     warn_exit(do_lang_tempcode('CORRUPT_TAR'), false, true);
                 }
                 $path = substr($header, 0, min(100, $end_of_string));

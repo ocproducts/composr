@@ -215,7 +215,7 @@ class Database_Static_mysql extends Database_super_mysql
 
                 switch ($type) {
                     case 'int':
-                        if (($v === null) || ($v === '')) { // Roadsend returns empty string instead of null
+                        if (($v === null) || ($v === '')) {
                             $newrow[$name] = null;
                         } else {
                             if ($v === "\0" || $v === "\1") {

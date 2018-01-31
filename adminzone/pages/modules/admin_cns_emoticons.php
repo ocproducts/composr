@@ -333,7 +333,15 @@ class Module_admin_cns_emoticons extends Standard_crud_module
                 continue;
             }
 
-            $entries->attach(do_template('FORM_SCREEN_INPUT_THEME_IMAGE_ENTRY', array('_GUID' => 'f7f64637d1c4984881f7acc68c2fe6c7', 'PRETTY' => $m['e_code'], 'CHECKED' => $first, 'NAME' => 'id', 'CODE' => $m['e_code'], 'URL' => $url)));
+            $entries->attach(do_template('FORM_SCREEN_INPUT_THEME_IMAGE_ENTRY', array(
+                '_GUID' => 'f7f64637d1c4984881f7acc68c2fe6c7',
+                'PRETTY' => $m['e_code'],
+                'CHECKED' => $first,
+                'NAME' => 'id',
+                'CODE' => $m['e_code'],
+                'URL' => $url,
+                'VECTOR' => (substr($url, -4) == '.svg'),
+            )));
             $first = false;
         }
 

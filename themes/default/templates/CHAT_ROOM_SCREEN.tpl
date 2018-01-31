@@ -40,7 +40,7 @@
 						<span class="inline-desktop">
 							{MICRO_BUTTONS}
 							{+START,IF,{$CNS}}
-								<a rel="nofollow" class="horiz-field-sep js-click-open-emoticon-chooser-window" tabindex="6" href="#!" title="{!EMOTICONS_POPUP}"><img alt="" width="16" height="16" src="{$IMG*,icons/editor/insert_emoticons}" /></a>
+								<a rel="nofollow" class="horiz-field-sep js-click-open-emoticon-chooser-window" tabindex="6" href="#!" title="{!EMOTICONS_POPUP}"><img alt="" width="24" height="24" src="{$IMG*,icons/editor/insert_emoticons}" /></a>
 							{+END}
 						</span>
 					{+END}

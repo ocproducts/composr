@@ -1847,6 +1847,7 @@ class Hook_addon_registry_core_form_interfaces
                     'NAME' => placeholder_random_id(),
                     'CODE' => $_v,
                     'URL' => placeholder_image_url(),
+                    'VECTOR' => false,
                 ));
                 $cells->attach($temp);
             }

@@ -275,24 +275,22 @@ function rd_do_header()
 {
     echo <<<END
 <!DOCTYPE html>
-    <html lang="EN">
-    <head>
-        <title>Composr rootkit detector</title>
-        <link rel="icon" href="http://compo.sr/favicon.ico" type="image/x-icon" />
-        <style>/*<![CDATA[*/
+<html lang="EN">
+<head>
+    <title>Composr rootkit detector</title>
+    <link rel="icon" href="http://compo.sr/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="data/sheet.php?sheet=global" />
+    <style>
 END;
-    @print(preg_replace('#/\*\s*\*/\s*#', '', str_replace('url(\'\')', 'none', str_replace('url("")', 'none', preg_replace('#\{\$[^\}]*\}#', '', preg_replace('#\{\$\?,\{\$MOBILE\},([^,]+),([^,]+)\}#', '$2', file_get_contents($GLOBALS['FILE_BASE'] . '/themes/default/css/global.css')))))));
     echo <<<END
-            .screen-title { text-decoration: underline; display: block; background: url('themes/default/images/icons/admin/tool.svg') top left no-repeat; background-size: 48px 48px; min-height: 42px; padding: 10px 0 0 60px; }
-            .button-screen { padding: 0.5em 0.3em !important; }
-            a[target="_blank"], a[onclick$="window.open"] { padding-right: 0; }
-        /*]]>*/</style>
+        .screen-title { text-decoration: underline; display: block; background: url('themes/default/images/icons/admin/tool.svg') top left no-repeat; background-size: 48px 48px; min-height: 42px; padding: 10px 0 0 60px; }
+    </style>
 
-        <meta name="robots" content="noindex, nofollow" />
-    </head>
-    <body class="website-body" style="margin: 1em"><div class="global-middle">
-        <h1 class="screen-title">Composr rootkit detector</h1>
-        <form title="Proceed" action="rootkit_detection.php?type=go" method="post">
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body class="website-body" style="margin: 1em"><div class="global-middle">
+    <h1 class="screen-title">Composr rootkit detector</h1>
+    <form title="Proceed" action="rootkit_detection.php?type=go" method="post">
 END;
 }
 

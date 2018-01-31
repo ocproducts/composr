@@ -11,7 +11,7 @@ a.top-left-toggle {
 	font-size: 0.8em;
 	float: left;
 	background: url('{$IMG;,icons/checklist/toggle}') no-repeat 10px 1px !important;
-	background-size: 14px 14px;
+	background-size: 14px 14px !important;
 	opacity: 0.7;
 }
 

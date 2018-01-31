@@ -637,10 +637,10 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
 
     // Automatic ban needed?...
 
-    $count = (float)$GLOBALS['SITE_DB']->query_select_value('hackattack', 'SUM(percentage_score)', array('ip' => $ip)) / 100.0;
+    $count = @floatval($GLOBALS['SITE_DB']->query_select_value('hackattack', 'SUM(percentage_score)', array('ip' => $ip))) / 100.0;
     $alt_ip = false;
     if ($ip2 !== null) {
-        $count2 = (float)$GLOBALS['SITE_DB']->query_select_value('hackattack', 'SUM(percentage_score)', array('ip' => $ip2)) / 100.0;
+        $count2 = @floatval($GLOBALS['SITE_DB']->query_select_value('hackattack', 'SUM(percentage_score)', array('ip' => $ip2))) / 100.0;
         if ($count2 > $count) {
             $count = $count2;
             $alt_ip = true;

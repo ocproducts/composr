@@ -120,10 +120,7 @@ class Hook_ecommerce_community_billboard
     {
         require_lang('community_billboard');
 
-        $queue = $GLOBALS['SITE_DB']->query_select_value('community_billboard', 'SUM(days) AS days', array('activation_time' => null));
-        if ($queue === null) {
-            $queue = 0;
-        }
+        $queue = @intval($GLOBALS['SITE_DB']->query_select_value('community_billboard', 'SUM(days) AS days', array('activation_time' => null)));
 
         $days = intval(preg_replace('#^COMMUNITY_BILLBOARD_#', '', $type_code));
 

@@ -1278,9 +1278,9 @@ body .accessibility-hidden { /* Contents should be made visible (or interpreted)
 	margin: 1.5em;
 	margin-left: 10px !important;
 	background-image: url('{$IMG_INLINE;,cannot_show}');
-	background-position: left 5px;
+	background-position: left 3px;
 	background-repeat: no-repeat;
-	background-size: 9px 6px;
+	background-size: 10px 10px;
 }
 
 /* Used for styling the 'last edited' information */
@@ -1682,6 +1682,7 @@ td>.comcode-quote:first-child, .fake-table-cell>.comcode-quote:first-child, .fak
 }
 .global-side-panel .box-inner>h1, .global-side-panel .box-inner>h2, .global-side-panel .box-inner>h3, .global-side-panel .box-inner>h4, .global-side-panel .box-inner>h5, .global-side-panel .box-inner>h6, .global-side-panel .box>.toggleable-tray-title {
 	background-image: none;
+	color: inherit;
 }
 
 .box>.box-inner, .box>.toggleable-tray {
@@ -1772,7 +1773,7 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 }
 .boxless-space .box>.box-inner>h1, .boxless-space .box>.box-inner>h2, .boxless-space .box>.box-inner>h3, .boxless-space .box>.box-inner>h4, .boxless-space .box>.box-inner>h5, .boxless-space .box>.box-inner>h6, .boxless-space .box>.toggleable-tray-title {
 	background: url('{$IMG_INLINE;,boxes/boxless_title_leadin_rightcomp}') no-repeat !important;
-	background-size: 18px 18px;
+	background-size: 18px 18px !important;
 	color: {$GET,slightly_seeded_right_complement_text} !important;
 	text-align: left;
 	font-size: 15px;
@@ -1787,7 +1788,7 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 .global-side-panel .boxless-space .box>.box-inner>h1, .global-side-panel .boxless-space .box>.box-inner>h2, .global-side-panel .boxless-space .box>.box-inner>h3, .global-side-panel .boxless-space .box>.box-inner>h4, .global-side-panel .boxless-space .box>.box-inner>h5, .global-side-panel .boxless-space .box>.box-inner>h6,
 .boxless-space .box .box>.box-inner>h1, .boxless-space .box .box>.box-inner>h2, .boxless-space .box .box>.box-inner>h3, .boxless-space .box .box>.box-inner>h4, .boxless-space .box .box>.box-inner>h5, .boxless-space .box .box>.box-inner>h6 {
 	background: url('{$IMG_INLINE;,boxes/boxless_title_leadin_leftcomp}') no-repeat !important;
-	background-size: 18px 18px;
+	background-size: 18px 18px !important;
 	color: {$GET,slightly_seeded_left_complement_text} !important;
 }
 .global-side-panel .boxless-space .box>.box-inner>h1, .global-side-panel .boxless-space .box>.box-inner>h2, .global-side-panel .boxless-space .box>.box-inner>h3, .global-side-panel .boxless-space .box>.box-inner>h4, .global-side-panel .boxless-space .box>.box-inner>h5, .global-side-panel .boxless-space .box>.box-inner>h6 {
@@ -3398,8 +3399,12 @@ dl.meta-details-list>dt, dl.meta-details-list>dd {
 .staff-actions ul.horizontal-links {
 	width: auto;
 	font-size: 1em;
-	display: block !important;
 }
+/*{+START,CSS_MODE,mobile}*/
+	.staff-actions ul.horizontal-links {
+		display: block !important;
+	}
+/*{+END}*/
 .global-middle .staff-actions li {
 	white-space: nowrap !important;
 }
@@ -3789,7 +3794,7 @@ div>.button-micro:first-child, div>.button-screen:first-child, div>.button-scree
 }
 
 .button-screen {
-	background-size: 24px 24px;
+	background-size: 24px 24px !important;
 	padding: 6px 39px 7px 7px;
 	border-width: 2px;
 	font-size: 13px;
@@ -3802,7 +3807,7 @@ div>.button-micro:first-child, div>.button-screen:first-child, div>.button-scree
 }
 .button-screen-item {
 	padding: 3px 30px 4px 5px;
-	background-size: 18px 18px;
+	background-size: 18px 18px !important;
 	font-size: 13px;
 }
 /*{+START,CSS_MODE,mobile}*/
@@ -4187,7 +4192,7 @@ a.tab, a.tab:visited, a.tab:hover {
 /*{+START,CSS_MODE,desktop}*/
 	.tab {
 		background-image: url('{$IMG;,tabs/tab}') !important;
-		background-size: 350px 26px;
+		background-size: 350px 26px !important;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
@@ -4449,7 +4454,7 @@ pre .comcode-code-inner {
 
 .comcode-concept a {
 	background-image: url('{$IMG;,icons/arrow_box/arrow_box}') !important;
-	background-size: 12px 12px;
+	background-size: 12px 12px !important;
 }
 .comcode-concept a:hover {
 	background-image: url('{$IMG;,icons/arrow_box/arrow_box_hover}') !important;
@@ -4457,7 +4462,7 @@ pre .comcode-code-inner {
 
 .wiki-link a {
 	background-image: url('{$IMG;,icons/wiki/link}') !important;
-	background-size: 14px 14px;
+	background-size: 14px 14px !important;
 }
 .wiki-link a:hover {
 	background-image: url('{$IMG;,icons/wiki/link_hover}') !important;
@@ -4796,85 +4801,85 @@ a[rel="lightbox"] {
 	}
 	body div a.external-link { /* Explicitly marked external links must show the styling with precedence */
 		background: url('{$IMG;,icons/file_types/external_link}') no-repeat right top !important;
-		background-size: 7px 8px;
+		background-size: 7px 8px !important;
 		padding-right: 10px !important;
 	}
 
 	a[href^="mailto:"] {
 		background: url('{$IMG;,icons/file_types/email_link}') no-repeat right top !important; /* Important because the URL may contain arbitrary stuff, including ".php", due to embedded mail body */
-		background-size: 16px 16px;
+		background-size: 16px 16px !important;
 		padding: 0 22px 5px 0 !important;
 	}
 
 	a[href$=".pdf"].user-link, a[href$=".ps"].user-link, body div a.pdf-link {
 		background: url('{$IMG;,icons/file_types/page_pdf}') no-repeat right top;
-		background-size: 16px 16px;
+		background-size: 16px 16px !important;
 		padding: 0 22px 5px 0;
 	}
 
 	a[href$=".doc"].user-link, a[href$=".docx"].user-link, a[href$=".rtf"].user-link, body div a.doc-link {
 		background: url('{$IMG;,icons/file_types/page_doc}') no-repeat right top;
-		background-size: 16px 16px;
+		background-size: 16px 16px !important;
 		padding: 0 22px 5px 0;
 	}
 
 	a[href$=".xls"].user-link, a[href$=".xlsx"].user-link, body div a.xls-link {
 		background: url('{$IMG;,icons/file_types/page_xls}') no-repeat right top;
-		background-size: 16px 16px;
+		background-size: 16px 16px !important;
 		padding: 0 22px 5px 0;
 	}
 
 	a[href$=".ppt"].user-link, a[href$=".pptx"].user-link, body div a.ppt-link {
 		background: url('{$IMG;,icons/file_types/page_ppt}') no-repeat right top;
-		background-size: 16px 16px;
+		background-size: 16px 16px !important;
 		padding: 0 22px 5px 0;
 	}
 
 	a[href$=".log"].user-link, a[href$=".txt"].user-link, body div a.txt-link {
 		background: url('{$IMG;,icons/file_types/page_txt}') no-repeat right top;
-		background-size: 16px 16px;
+		background-size: 16px 16px !important;
 		padding: 0 22px 5px 0;
 	}
 
 	a[href$=".odt"].user-link, body div a.odt-link {
 		background: url('{$IMG;,icons/file_types/page_odt}') no-repeat right top;
-		background-size: 16px 16px;
+		background-size: 16px 16px !important;
 		padding: 0 22px 5px 0;
 	}
 
 	a[href$=".odp"].user-link, body div a.odp-link {
 		background: url('{$IMG;,icons/file_types/page_odt}') no-repeat right top;
-		background-size: 16px 16px;
+		background-size: 16px 16px !important;
 		padding: 0 22px 5px 0;
 	}
 
 	a[href$=".ods"].user-link, body div a.ods-link {
 		background: url('{$IMG;,icons/file_types/page_ods}') no-repeat right top;
-		background-size: 16px 16px;
+		background-size: 16px 16px !important;
 		padding: 0 22px 5px 0;
 	}
 
 	a[href$=".rss"].user-link, body div a.feed-link {
 		background: url('{$IMG;,icons/file_types/feed}') no-repeat right top;
-		background-size: 16px 16px;
+		background-size: 16px 16px !important;
 		padding: 0 22px 5px 0;
 	}
 
 	a[href$=".torrent"].user-link, body div a.torrent-link {
 		background: url('{$IMG;,icons/file_types/page_torrent}') no-repeat right top;
-		background-size: 16px 16px;
+		background-size: 16px 16px !important;
 		padding: 0 22px 5px 0;
 	}
 
 	a[href$=".zip"].user-link, a[href$=".gz"].user-link, a[href$=".bz2"].user-link, a[href$=".tar"].user-link, a[href$=".rar"].user-link, body div a.archive-link {
 		background: url('{$IMG;,icons/file_types/page_archive}') no-repeat right top;
-		background-size: 16px 16px;
+		background-size: 16px 16px !important;
 		padding: 0 22px 5px 0;
 	}
 
 	a[href$=".asf"].user-link, a[href$=".ra"].user-link, a[href$=".wma"].user-link, a[href$=".wav"].user-link, a[href$=".mp3"].user-link, a[href$=".ogg"].user-link, a[href$=".mid"].user-link, a[href$=".mov"].user-link, a[href$=".qt"].user-link, a[href$=".wmv"].user-link, a[href$=".ram"].user-link, a[href$=".rm"].user-link, a[href$=".avi"].user-link, a[href$=".mpg"].user-link, a[href$=".mpe"].user-link, a[href$=".mpeg"].user-link, a[href$=".mp4"].user-link, a[href$=".webm"].user-link, body div a.media-link {
 		background: url('{$IMG;,icons/file_types/page_media}') no-repeat right top;
-		background-size: 16px 16px;
+		background-size: 16px 16px !important;
 		padding: 0 22px 5px 0;
 	}
 
@@ -4891,7 +4896,7 @@ a[rel="lightbox"] {
 /*{+START,IF,{$ADDON_INSTALLED,recommend}}*/
 	.print-icon {
 		background: url('{$IMG;,icons/links/print}') no-repeat left top !important;
-		background-size: 24px 24px;
+		background-size: 24px 24px !important;
 		padding: 0 0 5px 32px !important;
 		display: inline-block;
 	}

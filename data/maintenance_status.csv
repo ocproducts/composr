@@ -1,8 +1,8 @@
 Codename,Title,Bug-fix sponsor,Current active sponsor,Notes,Non-bundled addon,Testing automation
 multi_lang_content,Content translations,ocProducts,,Not regularly tested. Liable to break due to cross-cutting complexity.,No,Randomised mode at dev install.
 character_sets,Character sets,,,Not regularly tested.,No,
-db_connection_pooling_with_replication,Configuration of multiple database servers (with only one taking write queries),ocProducts,,Not regularly tested,No
-readonly_db,Stability when the database is read-only (if a webhost has locked out write access due to quota issues),ocProducts,,Not regularly tested,No
+db_connection_pooling_with_replication,Configuration of multiple database servers (with only one taking write queries),ocProducts,,Not regularly tested,No,
+readonly_db,Stability when the database is read-only (if a webhost has locked out write access due to quota issues),ocProducts,,Not regularly tested,No,
 forum_ipb,Invision Board forum driver,,,Not regularly tested. Already out-dated. Needs ongoing maintenance.,No,
 forum_mybb,MyBB forum driver,,,Not regularly tested. Already out-dated. Needs ongoing maintenance.,No,
 forum_none,No forums or members forum driver,,,Not regularly tested. Liable to break due to cross-cutting complexity.,No,
@@ -48,7 +48,7 @@ eu_cookies,Provide EU cookie warning,ocProducts,,"Not regularly tested, depends 
 ip_tools,Links to external IP address tools,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,Partly tested by special_links automated test.
 project_honeypot,Project Honeypot integration,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,
 rbl,Remote Block List integration,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,
-gateway_paypal,PayPal eCommerce driver,ocProducts,,Could potentially break due to third-party changes.,Partly tested by paypal automated test.
+gateway_paypal,PayPal eCommerce driver,ocProducts,,Could potentially break due to third-party changes.,No,Partly tested by paypal automated test.
 gateway_ccbill,CCBill eCommerce driver,,,Not regularly tested. Could potentially break due to third-party changes.,No,
 gateway_secpay,SecPay eCommerce driver,,,Not regularly tested. Could potentially break due to third-party changes.,No,
 gateway_worldpay,WorldPay eCommerce driver,,,Not regularly tested. Could potentially break due to third-party changes.,No,
@@ -92,7 +92,7 @@ extra_logging,Permission/eCommerce/profile logging features,ocProducts,ocProduct
 context,Magic click / context menu features,ocProducts,,Not regularly tested.,No,
 php,Maintain with new versions of PHP,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,
 mysql,Maintain with new versions of MySQL,ocProducts,,Could potentially break due to third-party changes.,No,
-mariadb,Maintain support for MariaDB,ocProducts,,"Could potentially break due to third-party changes, although they do claim MySQL-compatibility.",No.
+mariadb,Maintain support for MariaDB,ocProducts,,"Could potentially break due to third-party changes, although they do claim MySQL-compatibility.",No,
 options_hidden,Hidden options,ocProducts,,Not regularly tested.,No,
 options_dev,Development options in config_editor.php,ocProducts,,Not regularly tested.,No,
 facebook,Facebook login integration and syndication,ocProducts,ocProducts,Could potentially break due to third-party changes.,Yes,
@@ -103,8 +103,8 @@ webdav,WebDav access for The Repository,ocProducts,,Could potentially break due 
 currency_codes,ISO currencies (internal list),ocProducts,,Could potentially break due to political changes.,No,currency automated test.
 country_codes,ISO countries (internal list) and flag images,ocProducts,,Could potentially break due to political changes.,No,
 currency,Currency conversion,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,
-stop_forum_spam,Stop Forum Spam integration,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,No,antispam automated test.
-tornevall,Tornevall integration,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,No,antispam automated test.
+stop_forum_spam,Stop Forum Spam integration,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,antispam automated test.
+tornevall,Tornevall integration,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,antispam automated test.
 newsletter_spam_check,Postmark spam-check integration,ocProducts,,Could potentially break due to third-party changes.,No,newsletter automated test.
 geocoding_google,Google Geocoding,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,geocoding automated test.
 reverse_geocoding_google,Google Geocoding (reverse),ocProducts,ocProducts,Could potentially break due to third-party changes.,No,geocoding automated test.
@@ -124,4 +124,4 @@ google_search_console,The Google Search Console API.,ocProducts,,Not regularly T
 moz,Moz API.,ocProducts,,Not regularly Tested.,No,
 google_analytics,Google Analytics integration.,ocProducts,,Not regularly Tested.,No,
 cors,Cross-Origin Resource Sharing (CORS),ocProducts,,Not regularly Tested.,No,
-inline_editing,Inline Editing,ocProducts,,Not regularly Tested, and themes are not typically expected to support it out-of-the-box.,No,
+inline_editing,Inline Editing,ocProducts,,"Not regularly Tested, and themes are not typically expected to support it out-of-the-box.",No,

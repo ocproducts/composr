@@ -132,7 +132,7 @@ class Hook_ajax_tree_choose_filedump_file
 
             foreach ($tree as $f) {
                 if ((!isset($options['only_images'])) || (!$options['only_images']) || (is_image($f, IMAGE_CRITERIA_WEBSAFE, true))) {
-                    $rel = preg_replace('#^' . preg_quote($id, '#') . '/#', '', $f);
+                    $rel = ($id === null) ? '' : preg_replace('#^' . preg_quote($id, '#') . '/#', '', $f);
                     $out .= '<option value="' . escape_html('uploads/filedump/' . $f) . '"' . (($it === $f) ? ' selected="selected"' : '') . '>' . escape_html($rel) . '</option>' . "\n";
                 }
             }

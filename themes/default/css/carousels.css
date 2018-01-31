@@ -20,7 +20,7 @@
 .carousel .move-left, .carousel .move-right {
 	min-height: 16px;
 	width: 17px;
-	background-size: 16px 16px;
+	background-size: 16px 16px !important;
 }
 
 .carousel .move-left {

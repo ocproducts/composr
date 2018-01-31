@@ -36,7 +36,7 @@ class Hook_health_check_confluence extends Hook_Health_Check
             $confluence_subdomain = get_option('confluence_subdomain');
             $confluence_space = get_option('confluence_space');
             if (($confluence_subdomain == '') || ($confluence_space == '')) {
-                return;
+                return array($this->category_label, array());
             }
 
             $this->process_checks_section('testConfluenceConnection', 'API connection', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);

@@ -403,6 +403,11 @@ span.validated-checkbox+input[name="validated"].input-tick {
 	margin-bottom: 0;
 }
 
+.help-icon + div + .radio-list {
+	clear: right;
+	margin-top: 30px;
+}
+
 .radio-list-pictures {
 	{$BETA_CSS_PROPERTY,display: flex;}
 	{$BETA_CSS_PROPERTY,flex-wrap: wrap;}
@@ -414,7 +419,7 @@ span.validated-checkbox+input[name="validated"].input-tick {
 }
 
 .radio-list-picture {
-	margin: 0.5em 0 0 0.5em;
+	margin: calc(0.5em + 2px) 0 0 calc(0.5em + 2px);
 	font-size: 0.8em;
 	text-align: center;
 	cursor: pointer;

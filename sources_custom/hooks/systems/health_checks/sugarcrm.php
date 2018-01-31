@@ -37,7 +37,7 @@ class Hook_health_check_sugarcrm extends Hook_Health_Check
             $username = get_option('sugarcrm_username');
 
             if ((empty($base_url)) || (empty($username))) {
-                return;
+                return array($this->category_label, array());
             }
 
             $this->process_checks_section('testSugarCRMConnection', 'API connection', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
