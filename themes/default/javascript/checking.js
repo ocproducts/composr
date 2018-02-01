@@ -764,10 +764,10 @@
         var radioButton = $dom.$('#choose_' + fieldName);
 
         if (!radioButton) {
-            var requiredA = $dom.$('#form_table_field_name__' + fieldName),
-                requiredB = $dom.$('#required_readable_marker__' + fieldName),
-                requiredC = $dom.$('#required_posted__' + fieldName),
-                requiredD = $dom.$('#form_table_field_input__' + fieldName);
+            var requiredA = $dom.$('#form-table-field-name--' + fieldName),
+                requiredB = $dom.$('#required-readable-marker--' + fieldName),
+                requiredC = $dom.$('#required-posted--' + fieldName),
+                requiredD = $dom.$('#form-table-field-input--' + fieldName);
 
             if (requiredA) {
                 requiredA.className = 'form-table-field-name';

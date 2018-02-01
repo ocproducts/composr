@@ -29,7 +29,7 @@
             this.initReviewRatings();
         }
 
-        var captchaSpot = this.$('#captcha_spot');
+        var captchaSpot = this.$('#captcha-spot');
         if (captchaSpot) {
             $dom.html(captchaSpot, params.captcha);
         }
@@ -237,7 +237,7 @@
                         validValue = value;
                         $dom.submit(form);
                     } else {
-                        var image = document.getElementById('captcha_image');
+                        var image = document.getElementById('captcha-image');
                         if (!image) {
                             image = document.getElementById('captcha-frame');
                         }
@@ -280,9 +280,9 @@
 
     $cms.templates.commentAjaxHandler = function (params) {
         var urlStem = params.urlStem,
-            wrapper = $dom.$id('comments_wrapper');
+            wrapper = $dom.$('#comments-wrapper');
 
-        replaceCommentsFormWithAjax(params.options, params.hash, 'comments-form', 'comments_wrapper');
+        replaceCommentsFormWithAjax(params.options, params.hash, 'comments-form', 'comments-wrapper');
 
         if (wrapper) {
             $dom.internaliseAjaxBlockWrapperLinks(urlStem, wrapper, ['^start_comments$', '^max_comments$'], {});
@@ -315,7 +315,7 @@
             $cms.loadSnippet('comments&id=' + encodeURIComponent(id) + '&ids=' + encodeURIComponent(ids) + '&serialized_options=' + encodeURIComponent(window.commentsSerializedOptions) + '&hash=' + encodeURIComponent(window.commentsHash), null, true).then(function (html) {
                 var wrapper;
                 if (id !== '') {
-                    wrapper = $dom.$('#post_children_' + id);
+                    wrapper = $dom.$('#post-children-' + id);
                 } else {
                     wrapper = container.parentNode;
                 }

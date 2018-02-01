@@ -85,8 +85,8 @@
 						{$HIDDENS_FOR_GET_FORM,{ACTION_URL}}
 
 						<div class="inline">
-							<label for="tma_type">{!TOPIC_ACTIONS}:</label>
-							<select class="dropdown-actions" id="tma_type" name="type">
+							<label for="tma-type">{!TOPIC_ACTIONS}:</label>
+							<select class="dropdown-actions" id="tma-type" name="type">
 								<option value="browse">-</option>
 								{MODERATOR_ACTIONS}
 							</select><input class="button-micro buttons--proceed js-click-require-tma-type-selection" type="submit" value="{!PROCEED}" />
@@ -100,8 +100,8 @@
 							{$HIDDENS_FOR_GET_FORM,{ACTION_URL}}
 
 							<div class="inline">
-								<label for="mpa_type">{!_MARKED_POST_ACTIONS}:</label>
-								<select id="mpa_type" name="type">
+								<label for="mpa-type">{!_MARKED_POST_ACTIONS}:</label>
+								<select id="mpa-type" name="type">
 									{+START,IF,{$GT,{$SUBSTR_COUNT,{MARKED_POST_ACTIONS},<option},1}}
 										<option value="browse">-</option>
 									{+END}

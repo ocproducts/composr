@@ -27,7 +27,7 @@
 
 			{$SET,carousel_id,{$RAND}}
 
-			<div id="carousel_{$GET*,carousel_id}" class="carousel" data-view="Carousel" data-view-params="{+START,PARAMS_JSON,carousel_id}{_*}{+END}">
+			<div id="carousel-{$GET*,carousel_id}" class="carousel" data-view="Carousel" data-view-params="{+START,PARAMS_JSON,carousel_id}{_*}{+END}">
 				<div class="move-left js-btn-car-move" data-move-amount="-100"></div>
 				<div class="move-right js-btn-car-move" data-move-amount="+100"></div>
 
@@ -35,7 +35,7 @@
 				</div>
 			</div>
 
-			<div class="carousel-temp" id="carousel_ns_{$GET*,carousel_id}">
+			<div class="carousel-temp" id="carousel-ns-{$GET*,carousel_id}">
 				{ENTRIES}
 			</div>
 

@@ -9,14 +9,14 @@
 	<div class="float-surrounder">
 		<div class="ze-tabs tabs" role="tablist">
 			{+START,IF_PASSED,PREVIEW}
-				<a aria-controls="view-{$GET,IDH}" role="tab" title="{!PREVIEW}: {ID*}" href="#!" id="view_tab_{ID*}" class="tab tab-first tab_selected js-click-select-tab" data-js-tab="view"><img alt="" width="24" height="24" src="{$IMG*,icons/buttons/preview}" /> <span>{!PREVIEW}</span></a>
+				<a aria-controls="view-{$GET,IDH}" role="tab" title="{!PREVIEW}: {ID*}" href="#!" id="view-tab-{ID*}" class="tab tab-first tab_selected js-click-select-tab" data-js-tab="view"><img alt="" width="24" height="24" src="{$IMG*,icons/buttons/preview}" /> <span>{!PREVIEW}</span></a>
 			{+END}
 			{+START,IF_PASSED,COMCODE}
-				<a aria-controls="edit-{$GET,IDH}" role="tab" title="{!EDIT}: {ID*}" href="#!" id="edit_tab_{ID*}" class="tab{+START,IF_NON_PASSED,PREVIEW} tab-first{+END} js-click-select-tab" data-js-tab="edit"><img alt="" width="24" height="24" src="{$IMG*,icons/admin/edit}" /> <span>{!EDIT}</span></a>
+				<a aria-controls="edit-{$GET,IDH}" role="tab" title="{!EDIT}: {ID*}" href="#!" id="edit-tab-{ID*}" class="tab{+START,IF_NON_PASSED,PREVIEW} tab-first{+END} js-click-select-tab" data-js-tab="edit"><img alt="" width="24" height="24" src="{$IMG*,icons/admin/edit}" /> <span>{!EDIT}</span></a>
 			{+END}
-			<a aria-controls="info-{$GET,IDH}" role="tab" title="{!DETAILS}: {ID*}" href="#!" id="info_tab_{ID*}" class="tab{+START,IF_NON_PASSED,SETTINGS} tab-last{+END}{+START,IF_NON_PASSED,PREVIEW}{+START,IF_NON_PASSED,COMCODE} tab-first{+END}{+END} js-click-select-tab" data-js-tab="info"><img alt="" width="24" height="24" src="{$IMG*,icons/content_types/page}" /> <span>{!DETAILS}</span></a>
+			<a aria-controls="info-{$GET,IDH}" role="tab" title="{!DETAILS}: {ID*}" href="#!" id="info-tab-{ID*}" class="tab{+START,IF_NON_PASSED,SETTINGS} tab-last{+END}{+START,IF_NON_PASSED,PREVIEW}{+START,IF_NON_PASSED,COMCODE} tab-first{+END}{+END} js-click-select-tab" data-js-tab="info"><img alt="" width="24" height="24" src="{$IMG*,icons/content_types/page}" /> <span>{!DETAILS}</span></a>
 			{+START,IF_PASSED,SETTINGS}
-				<a aria-controls="settings-{$GET,IDH}" role="tab" title="{!SETTINGS}: {ID*}" href="#!" id="settings_tab_{ID*}" class="tab tab-last js-click-select-tab" data-js-tab="settings"><img alt="" width="24" height="24" src="{$IMG*,icons/buttons/settings}" /> <span>{!SETTINGS}</span></a>
+				<a aria-controls="settings-{$GET,IDH}" role="tab" title="{!SETTINGS}: {ID*}" href="#!" id="settings-tab-{ID*}" class="tab tab-last js-click-select-tab" data-js-tab="settings"><img alt="" width="24" height="24" src="{$IMG*,icons/buttons/settings}" /> <span>{!SETTINGS}</span></a>
 			{+END}
 		</div>
 	</div>
@@ -24,7 +24,7 @@
 	{$,Actual tab' contents follows}
 
 	{+START,IF_PASSED,PREVIEW}
-		<div id="view-{$GET,IDH}" style="display: block" aria-labeledby="view_tab_{ID*}" role="tabpanel">
+		<div id="view-{$GET,IDH}" style="display: block" aria-labeledby="view-tab-{ID*}" role="tabpanel">
 			{+START,IF_EMPTY,{PREVIEW}}
 				<p class="nothing-here">{!NONE}</p>
 			{+END}
@@ -35,14 +35,14 @@
 	{+END}
 
 	{+START,IF_PASSED,COMCODE}
-		<div id="edit-{$GET,IDH}" style="{+START,IF_NON_PASSED,PREVIEW}display: block{+END}{+START,IF_PASSED,PREVIEW}display: none{+END}" aria-labeledby="edit_tab_{ID*}" role="tabpanel">
+		<div id="edit-{$GET,IDH}" style="{+START,IF_NON_PASSED,PREVIEW}display: block{+END}{+START,IF_PASSED,PREVIEW}display: none{+END}" aria-labeledby="edit-tab-{ID*}" role="tabpanel">
 			<form title="{ID*}: {!COMCODE}" action="index.php" method="post" autocomplete="off" class="js-form-zone-editor-comcode">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				<p>
 					<label for="edit_{ID*}_textarea">{!COMCODE}:</label> <a data-open-as-overlay="{}" class="link-exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="{!COMCODE_MESSAGE,Comcode}" width="16" height="16" src="{$IMG*,icons/editor/comcode}" class="vertical-alignment" /></a>
 					{+START,IF,{$IN_STR,{CLASS},wysiwyg}}
-						<span class="horiz-field-sep associated-link"><a id="toggle_wysiwyg_edit_{ID*}_textarea" href="#!" class="js-a-toggle-wysiwyg"><abbr title="{!TOGGLE_WYSIWYG_2}"><img width="16" height="16" src="{$IMG*,icons/editor/wysiwyg_on}" alt="{!comcode:ENABLE_WYSIWYG}" title="{!comcode:ENABLE_WYSIWYG}" class="vertical-alignment" /></abbr></a></span>
+						<span class="horiz-field-sep associated-link"><a id="toggle-wysiwyg-edit-{ID*}-textarea" href="#!" class="js-a-toggle-wysiwyg"><abbr title="{!TOGGLE_WYSIWYG_2}"><img width="16" height="16" src="{$IMG*,icons/editor/wysiwyg_on}" alt="{!comcode:ENABLE_WYSIWYG}" title="{!comcode:ENABLE_WYSIWYG}" class="vertical-alignment" /></abbr></a></span>
 					{+END}
 				</p>
 				{+START,IF_NON_EMPTY,{COMCODE_EDITOR}}
@@ -65,7 +65,7 @@
 		</div>
 	{+END}
 
-	<div id="info-{$GET,IDH}" style="{+START,IF_NON_PASSED,PREVIEW}display: block{+END}{+START,IF_PASSED,PREVIEW}display: none{+END}" aria-labeledby="info_tab_{ID*}" role="tabpanel">
+	<div id="info-{$GET,IDH}" style="{+START,IF_NON_PASSED,PREVIEW}display: block{+END}{+START,IF_PASSED,PREVIEW}display: none{+END}" aria-labeledby="info-tab-{ID*}" role="tabpanel">
 		<p class="lonely-label">
 			<span class="field-name">{!PAGE_TYPE}:</span>
 		</p>
@@ -109,8 +109,8 @@
 	</div>
 
 	{+START,IF_PASSED,SETTINGS}
-		<div id="settings-{$GET,IDH}" style="display: none" aria-labeledby="settings_tab_{ID*}" role="tabpanel">
-			<form title="{ID*}: {!SETTINGS}" id="middle_fields" action="index.php" autocomplete="off">
+		<div id="settings-{$GET,IDH}" style="display: none" aria-labeledby="settings-tab-{ID*}" role="tabpanel">
+			<form title="{ID*}: {!SETTINGS}" id="middle-fields" action="index.php" autocomplete="off">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				<div class="wide-table-wrap"><table class="map-table form-table wide-table">

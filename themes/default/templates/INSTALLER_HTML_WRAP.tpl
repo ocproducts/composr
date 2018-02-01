@@ -27,7 +27,7 @@
 				<div class="box-inner">
 					<h1>{!INSTALLER,Composr}: {!INSTALLER_STEP,{STEP},10}</h1>
 	
-					<div id="extra_errors"></div>
+					<div id="extra-errors"></div>
 	
 					<div>
 						{CONTENT}

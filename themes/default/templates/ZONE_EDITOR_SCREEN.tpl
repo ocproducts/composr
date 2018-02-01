@@ -31,7 +31,7 @@
 	<form title="{!SAVE}" action="{URL*}" method="post" target="_self" autocomplete="off" class="js-form-ze-save zone-editor-form">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
-		<div id="edit_field_store" style="display: none">
+		<div id="edit-field-store" style="display: none">
 		</div>
 
 		<p class="proceed-button vertical-alignment">

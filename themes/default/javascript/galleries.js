@@ -210,7 +210,7 @@
         }
 
         $dom.on(container, 'click', '.js-click-carousel-prepare-load-more', function () {
-            var ob = document.getElementById('carousel_ns_' + carouselId);
+            var ob = document.getElementById('carousel-ns-' + carouselId);
 
             if ((ob.parentNode.scrollLeft + ob.offsetWidth * 2) < ob.scrollWidth) {
                 return; // Not close enough to need more results

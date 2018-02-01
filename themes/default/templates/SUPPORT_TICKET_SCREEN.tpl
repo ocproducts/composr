@@ -49,8 +49,8 @@
 					<form title="{!ASSIGN_TO}" action="{$PAGE_LINK*,_SEARCH:tickets:assign:ticket_id={ID}}" method="post" class="inline vertical-alignment" autocomplete="off">
 						{$INSERT_SPAMMER_BLACKHOLE}
 
-						<label for="assign_username" class="accessibility-hidden">{!USERNAME}</label>
-						<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" class="input-username js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" id="assign_username" name="username" value="{$USERNAME*}" />
+						<label for="assign-username" class="accessibility-hidden">{!USERNAME}</label>
+						<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" class="input-username js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" id="assign-username" name="username" value="{$USERNAME*}" />
 						<input class="button-micro buttons--proceed" type="submit" value="{!ASSIGN_TO}" />
 					</form>
 				</li>
@@ -72,7 +72,7 @@
 								<option value="{TICKET_TYPE_ID*}"{+START,IF,{SELECTED}} selected="selected"{+END}>{NAME*}</option>{$,You can also use {LEAD_TIME} to get the ticket type's lead time}
 							{+END}
 						</select>
-						<div id="error_ticket_type_id" style="display: none" class="input-error-here"></div>
+						<div id="error-ticket-type-id" style="display: none" class="input-error-here"></div>
 					</td>
 				</tr>
 			{+END}
@@ -89,7 +89,7 @@
 			{+END}
 		{+END}
 
-		<div id="comments_wrapper">
+		<div id="comments-wrapper">
 			{COMMENTS}
 		</div>
 

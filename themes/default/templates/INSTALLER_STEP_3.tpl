@@ -39,12 +39,12 @@
 			</tbody>
 		</table>
 
-		<p style="display: none" id="forum_database_info">
+		<p style="display: none" id="forum-database-info">
 			{!CAREFUL}
 		</p>
 
 		{+START,IF,{$NOT,{$GOOGLE_APPENGINE}}}
-			<div id="forum_path" style="display: none">
+			<div id="forum-path" style="display: none">
 				<p>{!FORUM_PATH_TEXT}</p>
 				<div class="wide-table-wrap"><table class="map-table form-table wide-table">
 					<colgroup>

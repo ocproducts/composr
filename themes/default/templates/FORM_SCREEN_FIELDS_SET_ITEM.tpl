@@ -20,6 +20,6 @@
 
 		<div id="error_{NAME*}" style="display: none" class="input-error-here"></div>
 
-		<input type="hidden" id="required_posted__{NAME*}" name="require__{NAME*}" value="{$?,{REQUIRED*},1,0}" />
+		<input type="hidden" id="required-posted--{NAME*}" name="require__{NAME*}" value="{$?,{REQUIRED*},1,0}" />
 	</div>
 </div>

@@ -20,7 +20,7 @@
 				<label class="accessibility-hidden" for="{NAME*}">{!TEXT}</label>
 			</span>
 
-			<span id="required_readable_marker__{$?,{$IS_EMPTY,{NAME*}},{$RAND},{NAME*}}" style="display: {$?,{REQUIRED*},inline,none}"><span class="required-star">*</span> <span class="accessibility-hidden">{!REQUIRED}</span></span>
+			<span id="required-readable-marker--{$?,{$IS_EMPTY,{NAME*}},{$RAND},{NAME*}}" style="display: {$?,{REQUIRED*},inline,none}"><span class="required-star">*</span> <span class="accessibility-hidden">{!REQUIRED}</span></span>
 		{+END}
 
 		{+START,INCLUDE,FORM_SCREEN_FIELD_DESCRIPTION}{+END}
@@ -42,7 +42,7 @@
 						<li><a rel="nofollow" class="link-exempt js-link-click-open-field-emoticon-chooser-window" title="{!EMOTICONS_POPUP} {!LINK_NEW_WINDOW}" target="_blank" href="{$FIND_SCRIPT*,emoticons}?field_name={NAME*}{$KEEP*,0,1}" data-click-pd="1"><img width="16" height="16" src="{$IMG*,icons/editor/insert_emoticons}" alt="{!EMOTICONS_POPUP}" class="vertical-alignment" /></a></li>
 					{+END}{+END}
 					{+START,IF,{$IN_STR,{CLASS},wysiwyg}}
-						<li><a id="toggle_wysiwyg_{NAME*}" href="#!" class="js-click-toggle-wysiwyg"><abbr title="{!TOGGLE_WYSIWYG_2}"><img width="16" height="16" src="{$IMG*,icons/editor/wysiwyg_on}" alt="{!comcode:ENABLE_WYSIWYG}" title="{!comcode:ENABLE_WYSIWYG}" /></abbr></a></li>
+						<li><a id="toggle-wysiwyg-{NAME*}" href="#!" class="js-click-toggle-wysiwyg"><abbr title="{!TOGGLE_WYSIWYG_2}"><img width="16" height="16" src="{$IMG*,icons/editor/wysiwyg_on}" alt="{!comcode:ENABLE_WYSIWYG}" title="{!comcode:ENABLE_WYSIWYG}" /></abbr></a></li>
 					{+END}
 				</ul>
 			</div>
@@ -62,20 +62,20 @@
 
 		<div class="float-surrounder">
 			<div role="toolbar" class="float-surrounder post-options-wrap">
-				<div id="post_special_options2" style="display: none">
+				<div id="post-special-options2" style="display: none">
 					{COMCODE_EDITOR_SMALL}
 				</div>
-				<div id="post_special_options">
+				<div id="post-special-options">
 					{COMCODE_EDITOR}
 				</div>
 			</div>
 
-			<div id="container_for_{NAME*}" class="container-for-wysiwyg">
+			<div id="container-for-{NAME*}" class="container-for-wysiwyg">
 				<textarea data-textarea-auto-height="" accesskey="x" class="{CLASS*}{+START,IF,{REQUIRED}} posting-required{+END} wide-field posting-field-textarea" tabindex="{TABINDEX_PF*}" id="{NAME*}" name="{NAME*}" cols="70" rows="17">{POST*}</textarea>
 
 				{+START,IF_PASSED,WORD_COUNTER}
 					{$SET,word_count_id,{$RAND}}
-					<div class="word-count" id="word_count_{$GET*,word_count_id}"></div>
+					<div class="word-count" id="word-count-{$GET*,word_count_id}"></div>
 				{+END}
 			</div>
 		</div>
@@ -125,7 +125,7 @@
 	{$SET,init_drag_drop,1}
 	<tr class="form-table-field-spacer" id="field-{$GET*,id}-attachments-ui">
 		<th colspan="2" class="table-heading-cell">
-			<a class="toggleable-tray-button js-click-pf-toggle-subord-fields" id="fes_attachments" href="#!"><img alt="{!EXPAND}: {!ATTACHMENTS}" title="{!EXPAND}" width="20" height="20" src="{$IMG*,icons/trays/expand}" /></a>
+			<a class="toggleable-tray-button js-click-pf-toggle-subord-fields" id="fes-attachments" href="#!"><img alt="{!EXPAND}: {!ATTACHMENTS}" title="{!EXPAND}" width="20" height="20" src="{$IMG*,icons/trays/expand}" /></a>
 
 			<span class="faux-h2 toggleable-tray-button js-click-pf-toggle-subord-fields">
 				{!ATTACHMENTS}
@@ -136,7 +136,7 @@
 			</span>
 
 			{+START,IF_PASSED,HELP}
-				<p style="display: none" id="fes_attachments_help">
+				<p style="display: none" id="fes-attachments-help">
 					{HELP*}
 				</p>
 			{+END}

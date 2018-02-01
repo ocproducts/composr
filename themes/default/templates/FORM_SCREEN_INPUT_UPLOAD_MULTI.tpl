@@ -31,6 +31,6 @@
 	</div>
 
 	{+START,IF_PASSED,SYNDICATION_JSON}
-		<div id="{NAME_STUB*}_syndication_options" class="syndication-options"></div>
+		<div id="{NAME_STUB*}-syndication-options" class="syndication-options"></div>
 	{+END}
 </div>

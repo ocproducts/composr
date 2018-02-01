@@ -1,11 +1,11 @@
 {$REQUIRE_JAVASCRIPT,activity_feed}
 
-<div id="status_updates" class="float-surrounder" data-view="BlockMainActivitiesState">
+<div id="status-updates" class="float-surrounder" data-view="BlockMainActivitiesState">
 	{+START,IF_NON_EMPTY,{TITLE}}
 		<h2 class="status-icon">{TITLE*}</h2>
 	{+END}
 
-	<form id="fp_status_form" class="js-form-status-updates" action="#!" method="post" autocomplete="off">
+	<form id="fp-status-form" class="js-form-status-updates" action="#!" method="post" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<input type="hidden" name="zone" value="{$?,{$ZONE},{$ZONE*},frontpage}" />
@@ -30,8 +30,8 @@
 		</div>
 
 		<div class="status-box-outer">
-			<label class="accessibility-hidden" for="activity_status">{!TYPE_HERE}</label>
-			<textarea class="status-box fade-input field-input-non-filled js-textarea-activity-status" name="status" id="activity_status" rows="2">{!TYPE_HERE}</textarea>
+			<label class="accessibility-hidden" for="activity-status">{!TYPE_HERE}</label>
+			<textarea class="status-box fade-input field-input-non-filled js-textarea-activity-status" name="status" id="activity-status" rows="2">{!TYPE_HERE}</textarea>
 		</div>
 	</form>
 </div>

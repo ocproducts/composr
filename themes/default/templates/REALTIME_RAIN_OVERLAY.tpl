@@ -8,14 +8,14 @@
 
 				<div class="news-inside">
 					<div class="news-content">
-						<p id="news_go_here"><em>{!NEWS_WILL_APPEAR_HERE}</em></p>
+						<p id="news-go-here"><em>{!NEWS_WILL_APPEAR_HERE}</em></p>
 					</div>
 				</div>
 
 				<div class="news-footer"></div>
 			</div>
 
-			<div id="bubbles_go_here">
+			<div id="bubbles-go-here">
 			</div>
 
 			<div id="loading-icon" class="ajax-loading"><img aria-busy="true" width="20" height="20" src="{$IMG*,loading}" alt="{!LOADING}" title="{!LOADING}" /></div>

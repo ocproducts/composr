@@ -19,8 +19,8 @@
     function NotificationButtons(params) {
         NotificationButtons.base(this, 'constructor', arguments);
 
-        this.disableFormEl = this.$('#ndisable_' + params.notificationId);
-        this.enableFormEl = this.$('#nenable_' + params.notificationId);
+        this.disableFormEl = this.$('#ndisable-' + params.notificationId);
+        this.enableFormEl = this.$('#nenable-' + params.notificationId);
     }
 
     $util.inherits(NotificationButtons, $cms.View, /**@lends NotificationButtons#*/{

@@ -955,7 +955,7 @@
         }
 
         // Create new tab header
-        var headers = document.getElementById('template_editor_tab_headers');
+        var headers = document.getElementById('template-editor-tab-headers');
 
         var header = document.createElement('a');
         header.setAttribute('aria-controls', 'g_' + fileId);
@@ -1022,7 +1022,7 @@
         headers.appendChild(header);
 
         // Create new tab body
-        var bodies = document.getElementById('template_editor_tab_bodies');
+        var bodies = document.getElementById('template-editor-tab-bodies');
         var body = document.createElement('div');
         body.setAttribute('aria-labeledby', 't_' + fileId);
         body.setAttribute('role', 'tabpanel');
@@ -1058,7 +1058,7 @@
 
             if (wasActive) {
                 // Select tab
-                var c = document.getElementById('template_editor_tab_headers').firstElementChild;
+                var c = document.getElementById('template-editor-tab-headers').firstElementChild;
                 if (c != null) {
                     var nextFileId = c.id.substr(2);
 
@@ -1106,8 +1106,8 @@
     }
 
     function templateEditorCleanTabs() {
-        var headers = document.getElementById('template_editor_tab_headers');
-        var bodies = document.getElementById('template_editor_tab_bodies');
+        var headers = document.getElementById('template-editor-tab-headers');
+        var bodies = document.getElementById('template-editor-tab-bodies');
         var numTabs = headers.childNodes.length;
 
         var header = document.getElementById('t_default');

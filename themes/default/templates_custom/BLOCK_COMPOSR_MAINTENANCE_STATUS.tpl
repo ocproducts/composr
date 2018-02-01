@@ -12,7 +12,7 @@
 				{+START,LOOP,DATA}
 					{+START,IF,{$EQ,{_loop_key},0}}
 						<th>
-							<a id="feature_{CODENAME*}"></a>
+							<a id="feature-{CODENAME*}"></a>
 
 							{_loop_var*}
 						</th>

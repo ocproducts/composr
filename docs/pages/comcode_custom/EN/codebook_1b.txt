@@ -667,7 +667,7 @@ The importer-file consists of an object that defines:
  - an [tt]info[/tt] function that provides importer details through a standard data structure. These details include:
   - the name and versions of the product(s) the importer supports
   - the default table prefix for the database of the product
-  - a list of all the available importable features in the importer, roughly ordered in the order they should be imported in (all of which have [tt]feature_<codename>[/tt] associated functions in the importer)
+  - a list of all the available importable features in the importer, roughly ordered in the order they should be imported in (all of which have [tt]feature-<codename>[/tt] associated functions in the importer)
   - a feature dependency map (to prevent users importing in the wrong order -- which they may do as they are allowed to skip features so long as there is no defined dependency by what they import next)
   - a message to display after the import has completed. In the case of most of the existing importers it's a standard message telling the user to go run our cleanup tools.
  - miscellaneous other advanced details

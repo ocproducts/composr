@@ -26,24 +26,24 @@
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			<p>
-				<label for="give_reason_pre">
+				<label for="give-reason-pre">
 					Their role
-					<select id="give_reason_pre" class="js-click-check-reason js-change-check-reason" name="reason_pre">
+					<select id="give-reason-pre" class="js-click-check-reason js-change-check-reason" name="reason_pre">
 						{$GET,roles}
 					</select>
 				</label>:
 
-				<label class="accessibility-hidden" for="give_reason">{!REASON}</label>
-				<input maxlength="255" size="26" id="give_reason" class="input-line-required" placeholder="{!REASON}" type="text" name="reason" />
+				<label class="accessibility-hidden" for="give-reason">{!REASON}</label>
+				<input maxlength="255" size="26" id="give-reason" class="input-line-required" placeholder="{!REASON}" type="text" name="reason" />
 			</p>
 
 			<p>
-				<label class="accessibility-hidden" for="give_amount">{!AMOUNT}</label>
-				<input maxlength="8" data-cms-invalid-pattern="[^\-\d{$BACKSLASH}{$DECIMAL_POINT*}]" size="7" id="give_amount" class="input-integer-required" placeholder="{!AMOUNT}" type="text" name="amount" />
+				<label class="accessibility-hidden" for="give-amount">{!AMOUNT}</label>
+				<input maxlength="8" data-cms-invalid-pattern="[^\-\d{$BACKSLASH}{$DECIMAL_POINT*}]" size="7" id="give-amount" class="input-integer-required" placeholder="{!AMOUNT}" type="text" name="amount" />
 
-				<label class="points-anon" for="give_anonymous">{!TICK_ANON}: <input type="checkbox" id="give_anonymous" name="anonymous" value="1" /></label>
+				<label class="points-anon" for="give-anonymous">{!TICK_ANON}: <input type="checkbox" id="give-anonymous" name="anonymous" value="1" /></label>
 
-				<input id="give_points_submit" class="button-screen-item buttons--points" type="submit" value="{!GIVE_POINTS}" />
+				<input id="give-points-submit" class="button-screen-item buttons--points" type="submit" value="{!GIVE_POINTS}" />
 			</p>
 		</form>
 	{+END}
@@ -65,36 +65,36 @@
 
 			<div>
 				<div class="points-give-shared-options" style="margin-top: 0">
-					<label for="give_reason_pre">
+					<label for="give-reason-pre">
 						Their role
-						<select id="give_reason_pre" class="js-click-check-reason js-change-check-reason" name="reason_pre">
+						<select id="give-reason-pre" class="js-click-check-reason js-change-check-reason" name="reason_pre">
 							{$GET,roles}
 						</select>
 					</label>:
 
 					<p>
-						<label class="accessibility-hidden" for="give_reason">{!REASON}</label>
-						<input maxlength="255" size="26" id="give_reason" class="input-line-required" placeholder="{!REASON}" type="text" name="reason" />
+						<label class="accessibility-hidden" for="give-reason">{!REASON}</label>
+						<input maxlength="255" size="26" id="give-reason" class="input-line-required" placeholder="{!REASON}" type="text" name="reason" />
 					</p>
 
 					<p>
-						<label class="accessibility-hidden" for="give_amount">{!AMOUNT}</label>
-						<input maxlength="8" data-cms-invalid-pattern="[^\-\d{$BACKSLASH}{$DECIMAL_POINT*}]" size="7" id="give_amount" class="input-integer-required" placeholder="{!AMOUNT}" type="text" name="amount" />
+						<label class="accessibility-hidden" for="give-amount">{!AMOUNT}</label>
+						<input maxlength="8" data-cms-invalid-pattern="[^\-\d{$BACKSLASH}{$DECIMAL_POINT*}]" size="7" id="give-amount" class="input-integer-required" placeholder="{!AMOUNT}" type="text" name="amount" />
 
-						<input id="give_points_submit" class="button-micro buttons--points" type="submit" value="{!PROCEED_SHORT}" />
+						<input id="give-points-submit" class="button-micro buttons--points" type="submit" value="{!PROCEED_SHORT}" />
 					</p>
 				</div>
 
 				<div class="points-give-choices">
 					<p class="points-give-choice-line first">
-						<label for="trans_type_gift"><strong>{!GIVE_POINTS}</strong> <input checked="checked" type="radio" id="trans_type_gift" name="trans_type" value="gift" /></label> <span class="arr">&rarr;</span>&nbsp;
-						<label class="sub-option points-anon" for="give_anonymous">{!TICK_ANON}: <input type="checkbox" id="give_anonymous" name="anonymous" value="1" /></label>
+						<label for="trans-type-gift"><strong>{!GIVE_POINTS}</strong> <input checked="checked" type="radio" id="trans-type-gift" name="trans_type" value="gift" /></label> <span class="arr">&rarr;</span>&nbsp;
+						<label class="sub-option points-anon" for="give-anonymous">{!TICK_ANON}: <input type="checkbox" id="give-anonymous" name="anonymous" value="1" /></label>
 					</p>
 
 					<p class="points-give-choice-line">
 						<strong>{!MODIFY_POINTS}</strong> <span class="arr">&rarr;</span>&nbsp;
-						<label class="sub-option" for="trans_type_charge">{!CHARGE} <input type="radio" id="trans_type_charge" name="trans_type" value="charge" /></label>
-						<label class="sub-option" for="trans_type_refund">{!REFUND} <input type="radio" id="trans_type_refund" name="trans_type" value="refund" /></label>
+						<label class="sub-option" for="trans-type-charge">{!CHARGE} <input type="radio" id="trans-type-charge" name="trans_type" value="charge" /></label>
+						<label class="sub-option" for="trans-type-refund">{!REFUND} <input type="radio" id="trans-type-refund" name="trans_type" value="refund" /></label>
 					</p>
 				</div>
 			</div>

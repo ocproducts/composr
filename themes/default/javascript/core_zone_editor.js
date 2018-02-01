@@ -35,8 +35,8 @@
             setEditedPanel('panel_bottom');
             setEditedPanel(params.defaultZonePageName);
 
-            var form = $dom.$id('middle_fields');
-            var editFieldStore = $dom.$id('edit_field_store');
+            var form = $dom.$id('middle-fields');
+            var editFieldStore = $dom.$id('edit-field-store');
             var i, store;
             for (i = 0; i < form.elements.length; i++) {
                 store = document.createElement('input');
@@ -175,7 +175,7 @@
 
         setEditedPanel: function (e, field) {
             var params = this.params,
-                editor = $dom.$id('edit_tab_' + params.id);
+                editor = $dom.$id('edit-tab-' + params.id);
 
             setEditedPanel(params.id);
 
@@ -243,7 +243,7 @@
                 store = document.createElement('textarea');
                 store.name = el.name;
                 store.id = 'store_' + id;
-                $dom.$('#edit_field_store').appendChild(store);
+                $dom.$('#edit-field-store').appendChild(store);
             }
             store.value = window.$editing.getTextbox(el);
         }
@@ -257,7 +257,7 @@
                 store = document.createElement('textarea');
                 store.id = 'wysiwyg_store_' + id;
                 store.name = el.name;
-                $dom.$id('edit_field_store').appendChild(store);
+                $dom.$id('edit-field-store').appendChild(store);
             }
             store.value = el.value;
         }
@@ -271,7 +271,7 @@
                 store = document.createElement('textarea');
                 store.name = el.name;
                 store.id = 'redirects_store_' + id;
-                $dom.$id('edit_field_store').appendChild(store);
+                $dom.$id('edit-field-store').appendChild(store);
             }
             store.value = el.options[el.selectedIndex].value;
         }

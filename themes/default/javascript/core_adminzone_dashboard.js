@@ -256,7 +256,7 @@
                 form.elements['recur_interval'].value = '';
                 form.elements['new_task'].value = '';
 
-                $dom.append('#custom_tasks_go_here', newTask);
+                $dom.append('#custom-tasks-go-here', newTask);
             });
         }
     };

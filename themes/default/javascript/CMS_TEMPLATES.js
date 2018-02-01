@@ -77,7 +77,7 @@
         }
 
         if ((defaultForm !== 'none') && (defaultForm !== 'cns')) {
-            var d = document.getElementById('forum_path');
+            var d = document.getElementById('forum-path');
             if (d) {
                 d.style.display = 'block';
             }
@@ -148,15 +148,15 @@
             var show = false;
             if ((el.id !== 'none') && (el.id !== 'cns')) {
                 show = true;
-                var label = $dom.$('#sep_forum');
+                var label = $dom.$('#sep-forum');
                 if (label) {
                     $dom.html(label, el.nextElementSibling.textContent);
                 }
             }
 
-            $dom.toggle('#forum_database_info', show);
-            if ($dom.$('#forum_path')) {
-                $dom.toggle('#forum_path', show);
+            $dom.toggle('#forum-database-info', show);
+            if ($dom.$('#forum-path')) {
+                $dom.toggle('#forum-path', show);
             }
         }
     };
@@ -448,7 +448,7 @@
                 ids = (id.value === '') ? [] : id.value.split(/,/);
 
             $dom.$('#submit-button').disabled = (ids.length !== 1);
-            $dom.$('#mass_select_button').disabled = (ids.length === 0);
+            $dom.$('#mass-select-button').disabled = (ids.length === 0);
         }
     };
 
@@ -940,7 +940,7 @@
     function prepareMassSelectMarker(set, type, id, checked) {
         var massDeleteForm = $dom.$id('mass_select_form__' + set);
         if (!massDeleteForm) {
-            massDeleteForm = $dom.$id('mass_select_button').form;
+            massDeleteForm = $dom.$id('mass-select-button').form;
         }
         var key = type + '_' + id;
         var hidden;

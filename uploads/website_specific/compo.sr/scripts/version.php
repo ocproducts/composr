@@ -188,10 +188,10 @@ function display_version_upgrade_path($higher_version)
         <!-- Version number -->
         <span class="version-number"> <?= escape_html($higher_version['version_pretty']) ?></span>
         <!-- Output upgrader link -->
-        <span class="version-button" id="link_pos_<?= strval($i) ?>"></span>
+        <span class="version-button" id="link-pos-<?= strval($i) ?>"></span>
         <script>
             (function() {
-                var span = document.getElementById('link_pos_<?= strval($i) ?>');
+                var span = document.getElementById('link-pos-<?= strval($i) ?>');
                 var upgraderLink = $util.url(<?= json_encode($upgrade_script) ?>);
                 var html = '<form style="display: inline" action="' + $cms.filter.html(upgraderLink) + '" target="_blank" method="post"><input class="menu-adminzone-tools-upgrade button-micro" type="submit" title="Upgrade to <?= escape_html($higher_version['version_pretty']) ?>" value="Launch upgrader" /></form>';
                 span.innerHTML = html;

@@ -164,7 +164,7 @@
                 return;
             }
 
-            if (document.getElementById('mpa_type').selectedIndex === -1) {
+            if (document.getElementById('mpa-type').selectedIndex === -1) {
                 e.preventDefault();
                 return;
             }
@@ -173,7 +173,7 @@
         });
 
         $dom.on(container, 'click', '.js-click-require-tma-type-selection', function (e, btn) {
-            if ($dom.$('#tma_type').selectedIndex !== -1) {
+            if ($dom.$('#tma-type').selectedIndex !== -1) {
                 $cms.ui.disableButton(btn);
             } else {
                 e.preventDefault();
@@ -206,7 +206,7 @@
                 return false;
             }
 
-            $cms.ui.disableButton(form.elements['poll_vote_button']);
+            $cms.ui.disableButton(form.elements['poll-vote-button']);
         }
     };
 
@@ -236,7 +236,7 @@
 
     $cms.templates.cnsTopicPost = function cnsTopicPost(params, container) {
         var id = strVal(params.id),
-            cell = $dom.$('#cell_mark_' + id);
+            cell = $dom.$('#cell-mark-' + id);
 
 
         $dom.on(container, 'click', '.js-click-checkbox-set-cell-mark-class', function (e, checkbox) {

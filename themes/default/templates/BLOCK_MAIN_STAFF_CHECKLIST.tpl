@@ -24,7 +24,7 @@
 
 		<h4 class="checklist-header">{!CUSTOM_TASKS}</h4>
 
-		<div id="custom_tasks_go_here">
+		<div id="custom-tasks-go-here">
 			{CUSTOM_TASKS}
 		</div>
 

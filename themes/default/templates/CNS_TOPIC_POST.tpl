@@ -71,8 +71,8 @@
 			<div class="float-surrounder">
 				{+START,IF,{$DESKTOP}}
 					{+START,IF_NON_EMPTY,{ID}}{+START,IF_NON_PASSED_OR_FALSE,PREVIEWING}
-						<div id="cell_mark_{ID*}" class="cns-off mass-select-marker block-desktop">
-							<form class="webstandards-checker-off" title="{!FORUM_POST} {!MARKER} #{ID*}" method="post" action="index.php" id="form_mark_{ID*}" autocomplete="off">
+						<div id="cell-mark-{ID*}" class="cns-off mass-select-marker block-desktop">
+							<form class="webstandards-checker-off" title="{!FORUM_POST} {!MARKER} #{ID*}" method="post" action="index.php" id="form-mark-{ID*}" autocomplete="off">
 								{$INSERT_SPAMMER_BLACKHOLE}
 
 								<div>

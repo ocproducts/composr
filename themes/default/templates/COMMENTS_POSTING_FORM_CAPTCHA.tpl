@@ -13,7 +13,7 @@
 						<iframe {$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} id="captcha-frame" class="captcha-frame" title="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" src="{$FIND_SCRIPT*,captcha}&amp;cache_break={$RAND}{$KEEP*,0,1}">{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}</iframe>
 					{+END}
 					{+START,IF,{$NOT,{$CONFIG_OPTION,css_captcha}}}
-						<img id="captcha_image" title="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" alt="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" src="{$FIND_SCRIPT*,captcha}&amp;cache_break={$RAND}{$KEEP*,0,1}" />
+						<img id="captcha-image" title="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" alt="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" src="{$FIND_SCRIPT*,captcha}&amp;cache_break={$RAND}{$KEEP*,0,1}" />
 					{+END}
 					<input maxlength="6" size="8" class="input-text-required" type="text" id="captcha" name="captcha" />
 				</div></div>
@@ -23,7 +23,7 @@
 
 	{+START,IF,{$CONFIG_OPTION,js_captcha}}
 		{+START,IF_NON_EMPTY,{$TRIM,{$GET,CAPTCHA}}}
-			<div id="captcha_spot"></div>
+			<div id="captcha-spot"></div>
 		{+END}
 	{+END}
 	{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}

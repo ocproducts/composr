@@ -18,12 +18,12 @@
             return;
         }
 
-        if (document.getElementById('realtime_rain_img_loader')) {
+        if (document.getElementById('realtime-rain-img-loader')) {
             setTimeout(loadRealtimeRain, 200);
             return;
         }
 
-        var img = document.getElementById('realtime_rain_img');
+        var img = document.getElementById('realtime-rain-img');
         img.className = 'footer-button-loading';
         var tmpEl = document.createElement('img');
         tmpEl.src = $util.srl('{$IMG;,loading}');
@@ -32,7 +32,7 @@
         tmpEl.style.position = 'absolute';
         tmpEl.style.left = ($dom.findPosX(img) + 2) + 'px';
         tmpEl.style.top = ($dom.findPosY(img) + 1) + 'px';
-        tmpEl.id = 'realtime_rain_img_loader';
+        tmpEl.id = 'realtime-rain-img-loader';
         img.parentNode.appendChild(tmpEl);
 
         $cms.requireCss('realtime_rain');

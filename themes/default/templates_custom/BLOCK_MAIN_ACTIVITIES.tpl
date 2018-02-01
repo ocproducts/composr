@@ -6,7 +6,7 @@
 	<div id="{$GET*,ajax_block_main_activities_wrapper}" data-require-javascript="['activities', 'activity_feed']" data-tpl="blockMainActivities" data-tpl-params="{+START,PARAMS_JSON,is_block_raw,MODE,MEMBER_IDS,START,GROW,MAX,REFRESH_TIME}{_*}{+END}">
 		<div class="float-surrounder">
 			<div id="activities-feed">
-				<div id="activities_general_notify"></div>
+				<div id="activities-general-notify"></div>
 				<ul class="float-surrounder activities-holder raw-ajax-grow-spot" id="activities-holder">
 					{+START,IF_EMPTY,{CONTENT}}
 						<li id="activity_-1"><p class="nothing-here">{!NO_ACTIVITIES}</p></li>

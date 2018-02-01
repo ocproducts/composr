@@ -10,7 +10,7 @@
 
 {$REQUIRE_JAVASCRIPT,core_form_interfaces}
 
-<div data-require-javascript="core_form_interfaces" data-view="FormStandardEnd" data-view-params="{+START,PARAMS_JSON,preview_url,force_previews,JS_FUNCTION_CALLS,JAVASCRIPT,SECONDARY_FORM,SUPPORT_AUTOSAVE,FORM_NAME,SEPARATE_PREVIEW,BACK_URL,CANCEL_URL,ANALYTIC_EVENT_CATEGORY}{_*}{+END}">
+<div data-view="FormStandardEnd" data-view-params="{+START,PARAMS_JSON,preview_url,force_previews,JS_FUNCTION_CALLS,JAVASCRIPT,SECONDARY_FORM,SUPPORT_AUTOSAVE,FORM_NAME,SEPARATE_PREVIEW,BACK_URL,CANCEL_URL,ANALYTIC_EVENT_CATEGORY}{_*}{+END}">
 	{+START,IF_PASSED_AND_TRUE,PREVIEW}{+START,IF,{$CONFIG_OPTION,enable_previews}}
 		{+START,IF_NON_PASSED_OR_FALSE,SKIP_WEBSTANDARDS}{+START,IF,{$OR,{$CONFIG_OPTION,enable_markup_webstandards},{$CONFIG_OPTION,enable_spell_check},{$AND,{$HAS_PRIVILEGE,perform_keyword_check},{$CONFIG_OPTION,enable_keyword_density_check}}}}
 			<div class="preview-checking-box">
@@ -53,7 +53,7 @@
 			<input class="button-screen buttons--cancel js-click-do-form-cancel" type="button" value="{!INPUTSYSTEM_CANCEL}" />
 		{+END}
 		{+START,IF_PASSED_AND_TRUE,PREVIEW}{+START,IF,{$CONFIG_OPTION,enable_previews}}
-			<input class="button-screen buttons--preview js-click-do-form-preview" id="preview_button" accesskey="p" tabindex="{+START,IF_PASSED,TABINDEX}{TABINDEX}{+END}{+START,IF_NON_PASSED,TABINDEX}250{+END}" type="button" value="{!PREVIEW}" />
+			<input class="button-screen buttons--preview js-click-do-form-preview" id="preview-button" accesskey="p" tabindex="{+START,IF_PASSED,TABINDEX}{TABINDEX}{+END}{+START,IF_NON_PASSED,TABINDEX}250{+END}" type="button" value="{!PREVIEW}" />
 		{+END}{+END}
 		<input class="{SUBMIT_ICON*} button-screen js-click-do-form-submit"{+START,IF_NON_PASSED_OR_FALSE,SECONDARY_FORM} id="submit-button" accesskey="u"{+END} tabindex="{+START,IF_PASSED,TABINDEX}{TABINDEX}{+END}{+START,IF_NON_PASSED,TABINDEX}250{+END}" type="button" value="{SUBMIT_NAME*}" />
 	</p>

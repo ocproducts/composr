@@ -62,8 +62,8 @@
 
 					{+START,IF,{$DESKTOP}}
 						{+START,IF_NON_EMPTY,{ID}}{+START,IF_NON_PASSED_OR_FALSE,PREVIEWING}{+START,IF,{$MATCH_KEY_MATCH,_SEARCH:topicview}}
-							<div id="cell_mark_{ID*}" class="cns-off post-action-link inline-block mobile-inline">
-								<form class="webstandards-checker-off" title="{!MARKER} #{ID*}" method="post" action="index.php" id="form_mark_{ID*}" autocomplete="off">
+							<div id="cell-mark-{ID*}" class="cns-off post-action-link inline-block mobile-inline">
+								<form class="webstandards-checker-off" title="{!MARKER} #{ID*}" method="post" action="index.php" id="form-mark-{ID*}" autocomplete="off">
 									{$INSERT_SPAMMER_BLACKHOLE}
 
 									<div>
@@ -90,7 +90,7 @@
 			{+END}
 
 			{+START,IF_PASSED,CHILDREN}
-				<div id="post_children_{ID*}" class="post-thread-children">
+				<div id="post-children-{ID*}" class="post-thread-children">
 					{CHILDREN}
 				</div>
 			{+END}

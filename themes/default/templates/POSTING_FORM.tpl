@@ -3,7 +3,7 @@
 		{+START,INCLUDE,FORM_SCREEN_ARE_REQUIRED}{+END}
 	{+END}
 
-	<form title="{!PRIMARY_PAGE_FORM}" id="posting_form" method="post" enctype="multipart/form-data" action="{URL*}" autocomplete="off" class="{+START,IF_PASSED_AND_TRUE,MODSECURITY_WORKAROUND}js-submit-modsec-workaround{+END}">
+	<form title="{!PRIMARY_PAGE_FORM}" id="posting-form" method="post" enctype="multipart/form-data" action="{URL*}" autocomplete="off" class="{+START,IF_PASSED_AND_TRUE,MODSECURITY_WORKAROUND}js-submit-modsec-workaround{+END}">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div>
@@ -36,7 +36,7 @@
 			</table></div>
 
 			{+START,INCLUDE,FORM_STANDARD_END}
-				FORM_NAME=posting_form
+				FORM_NAME=posting-form
 				SUPPORT_AUTOSAVE={SUPPORT_AUTOSAVE}
 				EXTRA_BUTTONS={$GET,extra_buttons}
 			{+END}

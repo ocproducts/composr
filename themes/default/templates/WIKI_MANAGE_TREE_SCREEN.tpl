@@ -33,14 +33,14 @@
 		<form title="{!PRIMARY_PAGE_FORM}" method="post" action="index.php" autocomplete="off">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
-			<p><label for="mtp_tree">{!BROWSE_ID_INSERT}</label></p>
+			<p><label for="mtp-tree">{!BROWSE_ID_INSERT}</label></p>
 
 			<div>
 				{$REQUIRE_JAVASCRIPT,tree_list}
 				{$REQUIRE_JAVASCRIPT,wiki}
 
-				<input style="display: none" type="text" id="mtp_tree" name="tree" class="js-change-input-tree-update-children-value" />
-				<div id="tree_list__root_mtp_tree">
+				<input style="display: none" type="text" id="mtp-tree" name="tree" class="js-change-input-tree-update-children-value" />
+				<div id="tree-list--root-mtp-tree">
 					<!-- List put in here -->
 				</div>
 			</div>

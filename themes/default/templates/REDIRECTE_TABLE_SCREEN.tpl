@@ -98,11 +98,11 @@
 		<h2>{!NOTES}</h2>
 
 		<p>
-			<label for="m_notes">{!NOTES_ABOUT_REDIRECTS}</label>
+			<label for="m-notes">{!NOTES_ABOUT_REDIRECTS}</label>
 		</p>
 
 		<div>
-			<textarea class="wide-field" id="m_notes" name="notes" cols="50" rows="10">{NOTES*}</textarea>
+			<textarea class="wide-field" id="m-notes" name="notes" cols="50" rows="10">{NOTES*}</textarea>
 		</div>
 	</div></div>
 </form>

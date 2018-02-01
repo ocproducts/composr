@@ -175,7 +175,7 @@ function captcha_script()
         <body style="margin: 0">
         ';
         if (get_option('js_captcha') === '1') {
-            echo '<div style="display: none" id="hidden_captcha">';
+            echo '<div style="display: none" id="hidden-captcha">';
         }
         echo '<div style="width: ' . strval($width) . 'px; font-size: 0; line-height: 0">';
         for ($j = 0; $j < $height; $j++) {
@@ -187,7 +187,7 @@ function captcha_script()
         echo '</div>';
         if (get_option('js_captcha') === '1') {
             echo '</div>';
-            echo '<script ' . csp_nonce_html() . '>document.getElementById(\'hidden_captcha\').style.display = \'block\';</script>';
+            echo '<script ' . csp_nonce_html() . '>document.getElementById(\'hidden-captcha\').style.display = \'block\';</script>';
         }
         echo '
         </body>

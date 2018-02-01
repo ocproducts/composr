@@ -153,7 +153,7 @@
         window.tickPos = window.tickPos || {};
 
         var newsTickerText = $cms.filter.nl(params.newsTickerText),
-            ticktickticker = $dom.$('#ticktickticker_news' + params.bottomNewsId),
+            ticktickticker = $dom.$('#ticktickticker-news' + params.bottomNewsId),
             myId = 'ticker-' - $util.random();
 
         window.tickPos[myId] = 400;
