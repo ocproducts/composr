@@ -147,7 +147,7 @@ class Module_admin_sitemap
     {
         require_css('sitemap_editor');
 
-        if (count($GLOBALS['SITE_DB']->query_select_value('zones', 'COUNT(*)')) >= 300) {
+        if ($GLOBALS['SITE_DB']->query_select_value('zones', 'COUNT(*)') >= 300) {
             attach_message(do_lang_tempcode('TOO_MUCH_CHOOSE__ALPHABETICAL', escape_html(integer_format(50))), 'warn');
         }
 
