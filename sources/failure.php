@@ -393,7 +393,7 @@ function _generic_exit($text, $template, $support_match_key_messages = false)
         exit((is_object($text) ? strip_html($text->evaluate()) : $text) . "\n");
     }
 
-    if ((get_param_integer('keep_fatalistic', 0) == 1) || (running_script('commandr'))) {
+    if (get_param_integer('keep_fatalistic', 0) == 1) {
         fatal_exit($text);
     }
 

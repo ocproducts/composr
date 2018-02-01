@@ -1499,7 +1499,7 @@ function check_url_exists($url, $test_freq_secs)
 {
     $test1 = $GLOBALS['SITE_DB']->query_select('urls_checked', array('url_check_time', 'url_exists'), array('url' => $url), 'ORDER BY url_check_time DESC', 1);
 
-    if (true||(!isset($test1[0])) || ($test1[0]['url_check_time'] < time() - $test_freq_secs)) {
+    if ((!isset($test1[0])) || ($test1[0]['url_check_time'] < time() - $test_freq_secs)) {
         $test2 = http_download_file($url, 0, false);
         if (($test2 === null) && (($GLOBALS['HTTP_MESSAGE'] == '403') || ($GLOBALS['HTTP_MESSAGE'] == '500') || ($GLOBALS['HTTP_MESSAGE'] == '405') || ($GLOBALS['HTTP_MESSAGE'] == '416'))) {
             $test2 = http_download_file($url, 1, false); // Try without HEAD, sometimes it's not liked
