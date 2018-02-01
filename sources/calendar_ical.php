@@ -227,7 +227,7 @@ function output_ical($headers_and_exit = true)
                     if ($parts[1][$i] != '0') {
                         echo "DTSTART;TZID=" . $event['e_timezone'] . ":" . date('Ymd', $time) . (($event['e_start_hour'] === null) ? "" : ("T" . date('His', $time))) . "\r\n";
                         if ($time2 !== null) {
-                            echo "DTEND:" . date('Ymd', $time2) . "T" . (($event['e_end_hour'] === null) ? "" : ("T" . date('His', $time2))) . "\r\n";
+                            echo "DTEND:" . date('Ymd', $time2) . (($event['e_end_hour'] === null) ? "" : ("T" . date('His', $time2))) . "\r\n";
                         }
                         $recurrence_code = 'FREQ=' . strtoupper($parts[0]); // MONTHLY etc
                         echo "RRULE:" . $recurrence_code;

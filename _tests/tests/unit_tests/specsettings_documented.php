@@ -92,7 +92,7 @@ class specsettings_documented_test_set extends cms_test_case
 
         $files = get_directory_contents(get_file_base());
         foreach ($files as $f) {
-            if ((substr($f, -4) == '.php') && (basename($f) != 'shared_installs.php') && (strpos($f, '_tests') === false) && (strpos($f, '_custom') === false) && (strpos($f, 'exports/') === false) && ($f != '_config.php') && (basename($f) != 'errorlog.php')) {
+            if ((substr($f, -4) == '.php') && (basename($f) != 'shared_installs.php') && (strpos($f, '_tests') === false) && (strpos($f, '_custom/') === false) && (strpos($f, 'exports/') === false) && ($f != '_config.php') && (basename($f) != 'errorlog.php')) {
                 $c = file_get_contents(get_file_base() . '/' . $f);
                 $all_code .= $c;
             }
@@ -113,6 +113,7 @@ class specsettings_documented_test_set extends cms_test_case
                 (/*Custom domains*/strpos($var, 'ZONE_MAPPING') === false) &&
                 (/*Legacy password name*/$var != 'admin_password') &&
                 (/*XML dev environment*/strpos($var, '_chain') === false) &&
+                (/*LEGACY*/$var != 'board_prefix') &&
                 (/*forum-driver-specific*/!in_array($var, array('aef_table_prefix', 'bb_forum_number', 'ipb_table_prefix', 'mybb_table_prefix', 'phpbb_table_prefix', 'smf_table_prefix', 'stronghold_cookies', 'vb_table_prefix', 'vb_unique_id', 'vb_version', 'wowbb_table_prefix')))
             ) {
                 $found[$var] = true;
@@ -151,7 +152,7 @@ class specsettings_documented_test_set extends cms_test_case
         $old_config = file_get_contents(get_file_base() . '/_config.php');
         $config .= $old_config;
         file_put_contents(get_file_base() . '/_config.php', $config);
-        $this->assertTrue(is_string(http_download_file(get_base_url() . '/index.php')));
+        $this->assertTrue(is_string(http_get_contents(get_base_url() . '/index.php')));
         file_put_contents(get_file_base() . '/_config.php', $old_config);
         fix_permissions(get_file_base() . '/_config.php');
     }
@@ -166,7 +167,7 @@ class specsettings_documented_test_set extends cms_test_case
 
         $files = get_directory_contents(get_file_base());
         foreach ($files as $f) {
-            if (((substr($f, -4) == '.php') || (substr($f, -4) == '.tpl') || (substr($f, -3) == '.js')) && (basename($f) != 'upgrade.php') && (basename($f) != 'shared_installs.php') && (strpos($f, '_tests') === false) && (strpos($f, '_custom') === false) && (strpos($f, 'exports/') === false) && (basename($f) != 'errorlog.php') && (basename($f) != 'phpstub.php')) {
+            if (((substr($f, -4) == '.php') || (substr($f, -4) == '.tpl') || (substr($f, -3) == '.js')) && (basename($f) != 'upgrade.php') && (basename($f) != 'shared_installs.php') && (strpos($f, '_tests') === false) && (strpos($f, '_custom/') === false) && (strpos($f, 'exports/') === false) && (basename($f) != 'errorlog.php') && (basename($f) != 'phpstub.php')) {
                 $c = file_get_contents(get_file_base() . '/' . $f);
                 $all_code .= $c;
             }
@@ -199,7 +200,7 @@ class specsettings_documented_test_set extends cms_test_case
                 continue;
             }
 
-            $have_found = (strpos($all_code, '\'' . $value_option . '\'') !== false) || (strpos($all_code, '{$VALUE_OPTION,' . $value_option) !== false);
+            $have_found = (strpos($all_code, '\'' . $value_option . '\'') !== false) || (preg_match('#\{\$VALUE_OPTION[;\*]?,' . preg_quote($value_option, '#') . '#', $all_code) != 0);
             $this->assertTrue($have_found, 'Documented value option not used (' . $value_option . ')');
         }
     }
@@ -214,7 +215,7 @@ class specsettings_documented_test_set extends cms_test_case
 
         $files = get_directory_contents(get_file_base());
         foreach ($files as $f) {
-            if (((substr($f, -4) == '.php') || (substr($f, -4) == '.tpl')) && (basename($f) != 'shared_installs.php') && (strpos($f, '_tests') === false) && (strpos($f, '_custom') === false) && (strpos($f, 'sources/forum/') === false) && (basename($f) != 'errorlog.php') && (basename($f) != 'phpstub.php')) {
+            if (((substr($f, -4) == '.php') || (substr($f, -4) == '.tpl')) && (basename($f) != 'shared_installs.php') && (strpos($f, '_tests') === false) && (strpos($f, '_custom/') === false) && (strpos($f, 'sources/forum/') === false) && (basename($f) != 'errorlog.php') && (basename($f) != 'phpstub.php')) {
                 $c = file_get_contents($f);
                 $all_code .= $c;
             }

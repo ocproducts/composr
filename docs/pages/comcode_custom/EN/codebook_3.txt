@@ -720,7 +720,6 @@ The 'keep' parameters available are:
  - [tt]keep_devtest[/tt] -- used during development mode to test URL building is working correctly, of no use manually
  - [tt]keep_debug_has_cookies[/tt] -- set this to '1' to tell Composr cookies are supported when JavaScript may be off
  - [tt]keep_memory_limit_test[/tt] -- set to a number of megabytes under 32 to reduce the memory limit to this value; useful for performance debugging
- - [tt]keep_chain[/tt] -- set this to '0' if when working with the XML forum driver you do not want to do reads from the configured chain database
  - [tt]keep_realtime_test[/tt] -- set this to '1' for testing the realtime feature's display (it injects random data)
  - [tt]keep_wide[/tt] -- set this to '1' to remove panels
  - [tt]keep_wide_high[/tt] -- set this to '1' to remove panels, as well as the header and footer
