@@ -34,7 +34,7 @@ $feature_tree = array(
                 array('Post about Composr', 'If you see other CMSs compared on other websites, {$COMCODE,[page="forum:topicview:browse:{$FIND_ID_VIA_LABEL,topic,Composr evangelism}"]let us know about it[/page]}!'),
                 array('Tell a friend about Composr', '[page=":recommend"]Recommend Composr[/page] if a friend or your company is looking to make a website.'),
                 array('Recommend ocProducts', 'Mention the ocProducts developers to help them bring in an income.'),
-                array('Show our ad', 'You can advertise Composr via the [url="banner ad"]{$BRAND_BASE_URL}/uploads/website_specific/compo.sr/ad-banner.swf.zip[/url] we have created.'),
+                array('Show our ad', 'You can advertise Composr via the [url="banner ad"]{$BRAND_BASE_URL}/uploads/website_specific/compo.sr/banners.zip[/url] we have created.'),
                 array('Self-initiatives', 'Find any opportunity to share Composr with someone. Write your own article and publish it. Talk about Composr at a conference. Be creative!'),
             ),
         ),

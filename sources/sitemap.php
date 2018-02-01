@@ -93,7 +93,7 @@ function init__sitemap()
         define('SITEMAP_GEN_KEEP_FULL_STRUCTURE', 64); // Avoid merging structure together to avoid page-link duplication.
         define('SITEMAP_GEN_COLLAPSE_ZONES', 128); // Simulate zone collapse in the Sitemap.
         define('SITEMAP_GEN_CHECK_PERMS', 256); // Check permissions when building up nodes.
-        define('SITEMAP_GEN_USE_PAGE_GROUPINGS_SUPPRESS', 512); // Unset SITEMAP_GEN_USE_PAGE_GROUPINGS for one recursion only
+        define('SITEMAP_GEN_USE_PAGE_GROUPINGS_SUPPRESS', 512); // Unset SITEMAP_GEN_USE_PAGE_GROUPINGS for one recursion only.
 
         // Defining how the content-selection list should be put together
         define('CSL_PERMISSION_VIEW', 0);

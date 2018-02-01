@@ -20,7 +20,7 @@ class maintenance_codes_test_set extends cms_test_case
 {
     public function testMaintenanceSheetStructure()
     {
-        $myfile = fopen(get_custom_file_base() . '/data/maintenance_status.csv', 'rb');
+        $myfile = fopen(get_file_base() . '/data/maintenance_status.csv', 'rb');
 
         $line = 1;
         while (($row = fgetcsv($myfile)) !== false) {
@@ -39,7 +39,7 @@ class maintenance_codes_test_set extends cms_test_case
 
     public function testMaintenanceCodeReferences()
     {
-        $myfile = fopen(get_custom_file_base() . '/data/maintenance_status.csv', 'rb');
+        $myfile = fopen(get_file_base() . '/data/maintenance_status.csv', 'rb');
 
         $header_row = fgetcsv($myfile); // Header row
         unset($header_row[0]);
@@ -101,7 +101,9 @@ class maintenance_codes_test_set extends cms_test_case
 
     public function testTestReferences()
     {
-        $myfile = fopen(get_custom_file_base() . '/data/maintenance_status.csv', 'rb');
+        // Test maintenance sheet...
+
+        $myfile = fopen(get_file_base() . '/data/maintenance_status.csv', 'rb');
 
         $header_row = fgetcsv($myfile); // Header row
         unset($header_row[0]);
@@ -117,5 +119,16 @@ class maintenance_codes_test_set extends cms_test_case
         }
 
         fclose($myfile);
+
+        // Test coding standards tutorial...
+
+        $contents = file_get_contents(get_file_base() . '/docs/pages/comcode_custom/EN/codebook_standards.txt');
+
+        $matches = array();
+        $num_matches = preg_match_all('#Automated test \(\[tt\](\w+)\[/tt\]\)#', $contents, $matches);
+        for ($i = 0; $i < $num_matches; $i++) {
+            $test = $matches[1][$i];
+            $this->assertTrue(is_file(get_file_base() . '/_tests/tests/unit_tests/' . $test . '.php'), 'Could not find referenced test, ' . $test);
+        }
     }
 }

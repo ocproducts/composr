@@ -92,7 +92,7 @@ class Block_main_staff_links
                 'Google Webmaster Tools (direct search data from Google)' => 'https://www.google.com/webmasters/tools',
                 'Moz (enhanced search analytics)' => 'https://moz.com',
                 'SharedCount (social sharing stats)' => 'http://www.sharedcount.com/',
-                'Facebook Insights (Facebook Analytics)' => 'https://developers.facebook.com/docs/insights/',
+                'Facebook Insights (Facebook Analytics)' => 'https://www.facebook.com/business/news/audience-insights',
                 'Paint.net (free graphics tool, Windows)' => 'http://www.getpaint.net/',
                 'PNGGauntlet (compress PNG files, Windows)' => 'http://benhollis.net/software/pnggauntlet/',
                 'ImageOptim (compress PNG files, Mac)' => 'http://imageoptim.pornel.net/',
@@ -100,7 +100,7 @@ class Block_main_staff_links
                 'FreeImages (free stock art)' => 'http://www.freeimages.com/',
                 'Kompozer (Web design tool)' => 'http://www.kompozer.net/',
                 'DiffMerge' => 'http://www.sourcegear.com/diffmerge/',
-                'Jing (record screencasts)' => 'http://www.jingproject.com/',
+                'Jing (record screencasts)' => 'https://www.techsmith.com/jing-tool.html',
                 'Smashing Magazine (web design articles)' => 'http://www.smashingmagazine.com/',
                 'w3schools (learn web technologies)' => 'http://www.w3schools.com/',
                 // NB: Not including a webhost, as the user will likely already have one
