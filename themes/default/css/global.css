@@ -4864,7 +4864,7 @@ a[rel="lightbox"] {
 	}
 
 	a[href$=".rss"].user-link, body div a.feed-link {
-		background: url('{$IMG;,icons/file_types/feed}') no-repeat right top;
+		background: url('{$IMG;,icons/file_types/page_feed}') no-repeat right top;
 		background-size: 16px 16px !important;
 		padding: 0 22px 5px 0;
 	}
@@ -4883,6 +4883,30 @@ a[rel="lightbox"] {
 
 	a[href$=".asf"].user-link, a[href$=".ra"].user-link, a[href$=".wma"].user-link, a[href$=".wav"].user-link, a[href$=".mp3"].user-link, a[href$=".ogg"].user-link, a[href$=".mid"].user-link, a[href$=".mov"].user-link, a[href$=".qt"].user-link, a[href$=".wmv"].user-link, a[href$=".ram"].user-link, a[href$=".rm"].user-link, a[href$=".avi"].user-link, a[href$=".mpg"].user-link, a[href$=".mpe"].user-link, a[href$=".mpeg"].user-link, a[href$=".mp4"].user-link, a[href$=".webm"].user-link, body div a.media-link {
 		background: url('{$IMG;,icons/file_types/page_media}') no-repeat right top;
+		background-size: 16px 16px !important;
+		padding: 0 22px 5px 0;
+	}
+
+	a[href$=".css"].user-link, body div a.css-link {
+		background: url('{$IMG;,icons/file_types/page_css}') no-repeat right top;
+		background-size: 16px 16px !important;
+		padding: 0 22px 5px 0;
+	}
+
+	a[href$=".js"].user-link, body div a.js-link {
+		background: url('{$IMG;,icons/file_types/page_js}') no-repeat right top;
+		background-size: 16px 16px !important;
+		padding: 0 22px 5px 0;
+	}
+
+	a[href$=".tpl"].user-link, body div a.tpl-link {
+		background: url('{$IMG;,icons/file_types/page_tpl}') no-repeat right top;
+		background-size: 16px 16px !important;
+		padding: 0 22px 5px 0;
+	}
+
+	a[href$=".xml"].user-link, body div a.xml-link {
+		background: url('{$IMG;,icons/file_types/page_xml}') no-repeat right top;
 		background-size: 16px 16px !important;
 		padding: 0 22px 5px 0;
 	}

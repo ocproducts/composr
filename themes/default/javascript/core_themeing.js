@@ -975,16 +975,16 @@
         }
         var iconImg = document.createElement('img');
         if (ext === 'tpl') {
-            iconImg.src = $util.srl('{$IMG;,icons/file_types/tpl}');
+            iconImg.src = $util.srl('{$IMG;,icons/file_types/page_tpl}');
         }
         if (ext === 'css') {
-            iconImg.src = $util.srl('{$IMG;,icons/file_types/css}');
+            iconImg.src = $util.srl('{$IMG;,icons/file_types/page_css}');
         }
         if (ext === 'js') {
-            iconImg.src = $util.srl('{$IMG;,icons/file_types/js}');
+            iconImg.src = $util.srl('{$IMG;,icons/file_types/page_js}');
         }
         if (ext === 'xml') {
-            iconImg.src = $util.srl('{$IMG;,icons/file_types/xml}');
+            iconImg.src = $util.srl('{$IMG;,icons/file_types/page_xml}');
         }
         if (ext === 'txt' || ext === '') {
             iconImg.src = $util.srl('{$IMG;,icons/file_types/page_txt}');

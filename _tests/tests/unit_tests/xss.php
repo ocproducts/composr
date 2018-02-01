@@ -77,6 +77,11 @@ class xss_test_set extends cms_test_case
 
     public function testInputFilter()
     {
+        global $MEMBER_CACHED;
+        $MEMBER_CACHED = 1;
+        global $PRIVILEGE_CACHE;
+        $PRIVILEGE_CACHE[get_member()]['unfiltered_input'][''][''][''] = false;
+
         $_POST['foo'] = '_config.php';
         $this->assertTrue(strpos(post_param_string('foo'), '_config.php') === false);
 

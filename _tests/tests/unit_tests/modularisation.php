@@ -38,12 +38,18 @@ class modularisation_test_set extends cms_test_case
         }
 
         $seen = array();
-        foreach ($addon_data as $d) {
+        foreach ($addon_data as $addon_name => $d) {
+            if ($addon_name == 'all_icons') {
+                continue;
+            }
+
             foreach ($d as $file) {
-                if ((array_key_exists($file, $seen)) && (strpos($file, '_custom') === false)) {
-                    $this->assertTrue(false, 'Double referenced: ' . $file);
+                $this->assertTrue(((!array_key_exists($file, $seen)) || (strpos($file, '_custom') !== false)), 'Double referenced: ' . $file);
+                $seen[$file] = true;
+
+                if (preg_match('#^themes/default/images/icons/#', $file) != 0) {
+                    $this->assertTrue(in_array($file, $addon_data['all_icons']), 'All icons must be in all_icons addon: ' . $file);
                 }
-                $seen[$file] = 1;
             }
         }
 
@@ -66,10 +72,10 @@ class modularisation_test_set extends cms_test_case
                             if ((strpos($data, 'ocProducts') !== false || !should_ignore_file($file, IGNORE_NONBUNDLED_SCATTERED)) && ($file != '_config.php') && ($file != 'data_custom/errorlog.php') && ($file != 'tracker/config_inc.php')) {
                                 $matches = array();
                                 $m_count = preg_match_all('#@package\s+(\w+)#', $data, $matches);
-                                if (($m_count != 0) && ($matches[1][0] != $addon_name) && (@$matches[1][1] != $addon_name/*FUDGE: should ideally do a loop, but we'll assume max of 2 packages for now*/)) {
-                                    $this->assertTrue(false, '@package wrong for <a href="txmt://open?url=file://' . htmlentities(get_file_base() . '/' . $file) . '">' . htmlentities($path) . '</a> (should be ' . $addon_name . ')');
-                                } elseif ($m_count == 0) {
-                                    $this->assertTrue(false, 'No @package for <a href="txmt://open?url=file://' . htmlentities(get_file_base() . '/' . $file) . '">' . htmlentities($path) . '</a> (should be ' . $addon_name . ')');
+                                $problem = ($m_count != 0) && ($matches[1][0] != $addon_name) && (@$matches[1][1] != $addon_name/*FUDGE: should ideally do a loop, but we'll assume max of 2 packages for now*/);
+                                $this->assertTrue(!$problem, '@package wrong for <a href="txmt://open?url=file://' . htmlentities(get_file_base() . '/' . $file) . '">' . htmlentities($path) . '</a> (should be ' . $addon_name . ')');
+                                if (!$problem) {
+                                    $this->assertTrue($m_count > 0, 'No @package for <a href="txmt://open?url=file://' . htmlentities(get_file_base() . '/' . $file) . '">' . htmlentities($path) . '</a> (should be ' . $addon_name . ')');
                                 }
                             }
                         }
@@ -88,9 +94,8 @@ class modularisation_test_set extends cms_test_case
                 $m_count = preg_match('#@package\s+(\w+)#', $data, $matches);
                 if ($m_count != 0) {
                     $unput_files[$matches[1]][] = $path;
-                } else {
-                    $this->assertTrue(false, 'Could not find the addon for... \'' . htmlentities($path) . '\',');
                 }
+                $this->assertTrue($m_count == 0, 'Could not find the addon for... \'' . htmlentities($path) . '\',');
             }
         }
 
@@ -102,13 +107,11 @@ class modularisation_test_set extends cms_test_case
             }
         }
         foreach ($addon_data as $addon_name => $addon_files) {
-            if (!file_exists(get_file_base() . '/sources/hooks/systems/addon_registry/' . $addon_name . '.php') && !file_exists(get_file_base() . '/sources_custom/hooks/systems/addon_registry/' . $addon_name . '.php')) {
-                $this->assertTrue(false, 'Addon registry files missing / referenced twice... \'sources/hooks/systems/addon_registry/' . $addon_name . '.php\',');
-            }
+            $ok = (file_exists(get_file_base() . '/sources/hooks/systems/addon_registry/' . $addon_name . '.php') || file_exists(get_file_base() . '/sources_custom/hooks/systems/addon_registry/' . $addon_name . '.php'));
+            $this->assertTrue($ok, 'Addon registry files missing / referenced twice... \'sources/hooks/systems/addon_registry/' . $addon_name . '.php\',');
             foreach ($addon_files as $file) {
-                if (($file != 'data_custom/execute_temp.php') && ($file != 'data_custom/firewall_rules.txt') && (!file_exists($file))) {
-                    $this->assertTrue(false, 'Addon files missing... \'' . htmlentities($file) . '\',');
-                }
+                $ok = ($file == 'data_custom/execute_temp.php') || ($file == 'data_custom/firewall_rules.txt') || (file_exists($file));
+                $this->assertTrue($ok, 'Addon files missing... \'' . htmlentities($file) . '\',');
             }
         }
     }

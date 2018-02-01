@@ -157,20 +157,20 @@ function rain_get_special_icons($ip_address, $timestamp, $user_agent = null, $ne
     $multiplicity = 1;
     $bot = get_bot_type($user_agent);
     if ($bot !== null) {
-        $icon = 'searchengine_icon';
+        $icon = 'searchengine';
         $tooltip = do_lang('RTEV_BOT');
     } else {
         if (($user_agent !== null) && (is_mobile($user_agent))) {
-            $icon = 'phone_icon';
+            $icon = 'phone';
             $tooltip = do_lang('RTEV_PHONE');
         } else {
             $mails_sent = $GLOBALS['SITE_DB']->query_select_value('logged_mail_messages', 'COUNT(*)', array('m_date_and_time' => $timestamp));
             if ($mails_sent > 0) {
                 $multiplicity = $mails_sent;
-                $icon = 'email_icon';
+                $icon = 'email';
                 $tooltip = do_lang('RTEV_EMAILS', integer_format($multiplicity));
             } elseif ($news !== null) {
-                $icon = 'news_icon';
+                $icon = 'news';
                 $tooltip = do_lang('RTEV_NEWS');
             }
         }

@@ -155,17 +155,17 @@ function has_privilege_group($group_id, $privilege, $page = null, $cats = null)
                     continue;
                 }
                 if (isset($GROUP_PRIVILEGE_CACHE[$group_id][$privilege][''][$cats[$i * 2 + 0]][$cats[$i * 2 + 1]])) {
-                    return $GROUP_PRIVILEGE_CACHE[$group_id][$privilege][''][$cats[$i * 2 + 0]][$cats[$i * 2 + 1]] == 1;
+                    return $GROUP_PRIVILEGE_CACHE[$group_id][$privilege][''][$cats[$i * 2 + 0]][$cats[$i * 2 + 1]];
                 }
             }
         }
         if ($page != '') {
             if (isset($GROUP_PRIVILEGE_CACHE[$group_id][$privilege][$page][''][''])) {
-                return $GROUP_PRIVILEGE_CACHE[$group_id][$privilege][$page][''][''] == 1;
+                return $GROUP_PRIVILEGE_CACHE[$group_id][$privilege][$page][''][''];
             }
         }
         if (isset($GROUP_PRIVILEGE_CACHE[$group_id][$privilege][''][''][''])) {
-            return $GROUP_PRIVILEGE_CACHE[$group_id][$privilege][''][''][''] == 1;
+            return $GROUP_PRIVILEGE_CACHE[$group_id][$privilege][''][''][''];
         }
         return false;
     }
@@ -176,8 +176,8 @@ function has_privilege_group($group_id, $privilege, $page = null, $cats = null)
     }
     $GROUP_PRIVILEGE_CACHE[$group_id] = array();
     foreach ($perhaps as $p) {
-        if (@$GROUP_PRIVILEGE_CACHE[$group_id][$p['privilege']][$p['the_page']][$p['module_the_name']][$p['category_name']] != 1) {
-            $GROUP_PRIVILEGE_CACHE[$group_id][$p['privilege']][$p['the_page']][$p['module_the_name']][$p['category_name']] = $p['the_value'];
+        if (!@$GROUP_PRIVILEGE_CACHE[$group_id][$p['privilege']][$p['the_page']][$p['module_the_name']][$p['category_name']]) {
+            $GROUP_PRIVILEGE_CACHE[$group_id][$p['privilege']][$p['the_page']][$p['module_the_name']][$p['category_name']] = ($p['the_value'] == 1);
         }
     }
 

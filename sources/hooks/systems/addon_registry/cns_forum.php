@@ -224,7 +224,6 @@ class Hook_addon_registry_cns_forum
             'forum/pages/modules_custom/index.html',
             'adminzone/pages/modules/admin_cns_forum_groupings.php',
             'adminzone/pages/modules/admin_cns_forums.php',
-            'themes/default/images/icons/cns_general/index.html',
             'themes/default/images/icons/cns_general/new_posts.svg',
             'themes/default/images/icons/cns_general/new_posts_redirect.svg',
             'themes/default/images/icons/cns_general/no_new_posts.svg',

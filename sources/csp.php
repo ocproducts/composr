@@ -174,7 +174,7 @@ function load_csp($options = null, $enable_more_open_html_for = null)
     if ($enable_more_open_html_for !== null) {
         global $PRIVILEGE_CACHE;
         has_privilege($enable_more_open_html_for, 'allow_html'); // Force loading, so we can amend the cached value cleanly
-        $PRIVILEGE_CACHE[$enable_more_open_html_for]['allow_html'][''][''][''] = 1;
+        $PRIVILEGE_CACHE[$enable_more_open_html_for]['allow_html'][''][''][''] = true;
     }
 
     // Check if the current page is excluded from CSP...

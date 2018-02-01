@@ -675,7 +675,7 @@ function has_some_cat_privilege($member_id, $privilege, $page, $module)
     global $PRIVILEGE_CACHE;
     if ((array_key_exists($member_id, $PRIVILEGE_CACHE)) && (array_key_exists($privilege, $PRIVILEGE_CACHE[$member_id])) && (array_key_exists('', $PRIVILEGE_CACHE[$member_id][$privilege])) && (array_key_exists($module, $PRIVILEGE_CACHE[$member_id][$privilege]['']))) {
         foreach ($PRIVILEGE_CACHE[$member_id][$privilege][''][$module] as $_privilege) {
-            if ($_privilege == 1) {
+            if ($_privilege) {
                 return true;
             }
         }
@@ -727,7 +727,7 @@ function has_privilege($member_id, $privilege, $page = null, $cats = null)
                         continue;
                     }
                     if (isset($PRIVILEGE_CACHE[$member_id][$privilege][''][$cats[$i * 2 + 0]][$cats[$i * 2 + 1]])) {
-                        $result = $PRIVILEGE_CACHE[$member_id][$privilege][''][$cats[$i * 2 + 0]][$cats[$i * 2 + 1]] == 1;
+                        $result = $PRIVILEGE_CACHE[$member_id][$privilege][''][$cats[$i * 2 + 0]][$cats[$i * 2 + 1]];
                         if (!$result) { // Negative overrides take precedence over positive ones; got to be careful of that!
                             handle_permission_check_logging($member_id, 'has_privilege', array_merge(array($privilege, $page), ($cats === null) ? array() : $cats), $result);
                             return $result;
@@ -753,13 +753,13 @@ function has_privilege($member_id, $privilege, $page = null, $cats = null)
         }
         if ($page != '') {
             if (isset($PRIVILEGE_CACHE[$member_id][$privilege][$page][''][''])) {
-                $result = $PRIVILEGE_CACHE[$member_id][$privilege][$page][''][''] == 1;
+                $result = $PRIVILEGE_CACHE[$member_id][$privilege][$page][''][''];
                 handle_permission_check_logging($member_id, 'has_privilege', array_merge(array($privilege, $page), ($cats === null) ? array() : (is_array($cats) ? $cats : array($cats))), $result);
                 return $result;
             }
         }
         if (isset($PRIVILEGE_CACHE[$member_id][$privilege][''][''][''])) {
-            $result = $PRIVILEGE_CACHE[$member_id][$privilege][''][''][''] == 1;
+            $result = $PRIVILEGE_CACHE[$member_id][$privilege][''][''][''];
             handle_permission_check_logging($member_id, 'has_privilege', array_merge(array($privilege, $page), ($cats === null) ? array() : (is_array($cats) ? $cats : array($cats))), $result);
             return $result;
         }
@@ -801,8 +801,8 @@ function has_privilege($member_id, $privilege, $page = null, $cats = null)
     }
     $PRIVILEGE_CACHE[$member_id] = array();
     foreach ($perhaps as $p) {
-        if (@$PRIVILEGE_CACHE[$member_id][$p['privilege']][$p['the_page']][$p['module_the_name']][$p['category_name']] != 1) {
-            $PRIVILEGE_CACHE[$member_id][$p['privilege']][$p['the_page']][$p['module_the_name']][$p['category_name']] = $p['the_value'];
+        if (!@$PRIVILEGE_CACHE[$member_id][$p['privilege']][$p['the_page']][$p['module_the_name']][$p['category_name']]) {
+            $PRIVILEGE_CACHE[$member_id][$p['privilege']][$p['the_page']][$p['module_the_name']][$p['category_name']] = ($p['the_value'] == 1);
         }
     }
 
@@ -812,7 +812,7 @@ function has_privilege($member_id, $privilege, $page = null, $cats = null)
             $privilege_needed = strval($privilege_needed);
         }
         if (!isset($PRIVILEGE_CACHE[$member_id][$privilege_needed][''][''][''])) {
-            $PRIVILEGE_CACHE[$member_id][$privilege_needed][''][''][''] = 0;
+            $PRIVILEGE_CACHE[$member_id][$privilege_needed][''][''][''] = false;
         }
     }
 
