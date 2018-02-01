@@ -56,26 +56,28 @@
 
 						<td class="manage-theme-export">
 							{+START,IF,{$NEQ,{NAME},default}}
-								<p><img alt="" width="48" height="48" src="{$IMG*,icons/admin/export}" /> <a data-cms-confirm-click="{!SWITCH_MODULE_WARNING*}" href="{$PAGE_LINK*,adminzone:admin_addons:_addon_export:exp=theme:theme={NAME}}">{!addons:EXPORT_THEME}</a></p>
+								<p><img alt="" width="24" height="24" src="{$IMG*,icons/admin/export}" /> <a data-cms-confirm-click="{!SWITCH_MODULE_WARNING*}" href="{$PAGE_LINK*,adminzone:admin_addons:_addon_export:exp=theme:theme={NAME}}">{!addons:EXPORT_THEME}</a></p>
 							{+END}
-							<p><img alt="" width="48" height="48" src="{$IMG*,icons/menu/home}" /> <a id="theme_preview__{NAME*}" target="_blank" title="{!PREVIEW_THEME} {!LINK_NEW_WINDOW}" href="{$PAGE_LINK*,::keep_theme={NAME}}">{!PREVIEW_THEME}</a></p>
-							<p><img alt="" width="48" height="48" src="{$IMG*,icons/buttons/preview}" /> <a href="{SCREEN_PREVIEW_URL*}">{!_SCREEN_PREVIEWS}</a></p>
+							<p><img alt="" width="24" height="24" src="{$IMG*,icons/menu/home}" /> <a id="theme_preview__{NAME*}" target="_blank" title="{!PREVIEW_THEME} {!LINK_NEW_WINDOW}" href="{$PAGE_LINK*,::keep_theme={NAME}}">{!PREVIEW_THEME}</a></p>
+							<p><img alt="" width="24" height="24" src="{$IMG*,icons/buttons/preview}" /> <a href="{SCREEN_PREVIEW_URL*}">{!_SCREEN_PREVIEWS}</a></p>
 						</td>
 
-						<td class="do-theme-items">
-							<div>
-								<div><a rel="edit" title="{!EDIT_THEME}: {NAME*}" href="{EDIT_URL*}"><img alt="" width="48" height="48" src="{$IMG*,icons/admin/edit_this}" /></a></div>
-								<div><a title="{!EDIT_THEME}: {NAME*}" href="{EDIT_URL*}">{$?,{$IS_EMPTY,{THEME_USAGE}},{!_EDIT_THEME},{!SETTINGS}}</a></div>
-							</div>
+						<td>
+							<div class="do-theme-items">
+								<div>
+									<div><a rel="edit" title="{!EDIT_THEME}: {NAME*}" href="{EDIT_URL*}"><img alt="" width="48" height="48" src="{$IMG*,icons/admin/edit_this}" /></a></div>
+									<div><a title="{!EDIT_THEME}: {NAME*}" href="{EDIT_URL*}">{$?,{$IS_EMPTY,{THEME_USAGE}},{!_EDIT_THEME},{!SETTINGS}}</a></div>
+								</div>
 
-							<div data-cms-href="{TEMPLATES_URL*}"{+START,IF,{$EQ,{NAME},default}} data-cms-confirm-click="{!EDIT_DEFAULT_THEME_WARNING*}"{+END}>
-								<div><a rel="edit" title="{!EDIT_TEMPLATES}: {NAME*}" href="{TEMPLATES_URL*}"{+START,IF,{$EQ,{NAME},default}} data-cms-confirm-click="{!EDIT_DEFAULT_THEME_WARNING*}"{+END}><img alt="" width="48" height="48" src="{$IMG*,icons/menu/adminzone/style/themes/templates}" /></a></div>
-								<div><a title="{!EDIT_TEMPLATES}: {NAME*}" href="{TEMPLATES_URL*}"{+START,IF,{$EQ,{NAME},default}} data-cms-confirm-click="{!EDIT_DEFAULT_THEME_WARNING*}"{+END}>{!EDIT_TEMPLATES}</a></div>
-							</div>
+								<div data-cms-href="{TEMPLATES_URL*}"{+START,IF,{$EQ,{NAME},default}} data-cms-confirm-click="{!EDIT_DEFAULT_THEME_WARNING*}"{+END}>
+									<div><a rel="edit" title="{!EDIT_TEMPLATES}: {NAME*}" href="{TEMPLATES_URL*}"{+START,IF,{$EQ,{NAME},default}} data-cms-confirm-click="{!EDIT_DEFAULT_THEME_WARNING*}"{+END}><img alt="" width="48" height="48" src="{$IMG*,icons/menu/adminzone/style/themes/templates}" /></a></div>
+									<div><a title="{!EDIT_TEMPLATES}: {NAME*}" href="{TEMPLATES_URL*}"{+START,IF,{$EQ,{NAME},default}} data-cms-confirm-click="{!EDIT_DEFAULT_THEME_WARNING*}"{+END}>{!EDIT_TEMPLATES}</a></div>
+								</div>
 
-							<div data-cms-href="{IMAGES_URL*}"{+START,IF,{$EQ,{NAME},default}} data-cms-confirm-click="{!EDIT_DEFAULT_THEME_WARNING*}"{+END}>
-								<div><a rel="edit" title="{!EDIT_THEME_IMAGES}: {NAME*}" href="{IMAGES_URL*}"{+START,IF,{$EQ,{NAME},default}} data-cms-confirm-click="{!EDIT_DEFAULT_THEME_WARNING*}"{+END}><img alt="" width="48" height="48" src="{$IMG*,icons/menu/adminzone/style/themes/theme_images}" /></a></div>
-								<div><a title="{!EDIT_THEME_IMAGES}: {NAME*}" href="{IMAGES_URL*}"{+START,IF,{$EQ,{NAME},default}} data-cms-confirm-click="{!EDIT_DEFAULT_THEME_WARNING*}"{+END}>{!EDIT_THEME_IMAGES}</a></div>
+								<div data-cms-href="{IMAGES_URL*}"{+START,IF,{$EQ,{NAME},default}} data-cms-confirm-click="{!EDIT_DEFAULT_THEME_WARNING*}"{+END}>
+									<div><a rel="edit" title="{!EDIT_THEME_IMAGES}: {NAME*}" href="{IMAGES_URL*}"{+START,IF,{$EQ,{NAME},default}} data-cms-confirm-click="{!EDIT_DEFAULT_THEME_WARNING*}"{+END}><img alt="" width="48" height="48" src="{$IMG*,icons/menu/adminzone/style/themes/theme_images}" /></a></div>
+									<div><a title="{!EDIT_THEME_IMAGES}: {NAME*}" href="{IMAGES_URL*}"{+START,IF,{$EQ,{NAME},default}} data-cms-confirm-click="{!EDIT_DEFAULT_THEME_WARNING*}"{+END}>{!EDIT_THEME_IMAGES}</a></div>
+								</div>
 							</div>
 						</td>
 					</tr>

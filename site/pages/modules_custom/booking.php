@@ -176,7 +176,7 @@ class Module_booking
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
         return array(
-            'browse' => array('CREATE_BOOKING', 'menu/book'),
+            'browse' => array('CREATE_BOOKING', 'booking/book'),
         );
     }
 

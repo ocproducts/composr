@@ -450,7 +450,7 @@ function create_selection_list_zones($sel = null, $no_go = array(), $reorder = n
         $_zones_a = array();
         $_zones_b = array();
         foreach ($zones as $_zone) {
-            list($zone, $title) = $_zone;
+            list($zone, ) = $_zone;
             if (in_array($zone, $reorder)) {
                 $_zones_a[] = $_zone;
             } else {

@@ -496,13 +496,13 @@ function ecv($lang, $escaped, $type, $name, $param)
                         $to = $matches[2];
                         $media_rule = '';
                         if ($from != '0') {
-                            $media_rule .= '(min-device-width: ' . $from . 'px)';
+                            $media_rule .= '(min-width: ' . $from . 'px)';
                         }
                         if ($to != 'infinity') {
                             if ($media_rule != '') {
                                 $media_rule .= ' and ';
                             }
-                            $media_rule .= '(max-device-width: ' . $to . 'px)';
+                            $media_rule .= '(max-width: ' . $to . 'px)';
                         }
                         $value = '@media ' . $media_rule . ' { ' . $param[1] . '}';
                     }

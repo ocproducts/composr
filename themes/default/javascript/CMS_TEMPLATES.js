@@ -496,7 +496,7 @@
             } catch (ignore) {}
         }
 
-        $dom.on(container, 'click', '.js-click-checkbox-remember-me-confirm', function (e, checkbox) {
+        $dom.on(container, 'click', '.js-click-confirm-remember-me', function (e, checkbox) {
             var checkboxWasFocused = (document.activeElement === checkbox);
 
             if (checkbox.checked) {

@@ -39,6 +39,10 @@ In mobile mode:
 {$CSS_MODE,mobile,0-982,mobileModeKeep}
 {$CSS_MODE,desktop,983-infinity,mobileModeDiscard}
 
+/* Ones considering overlays are smaller */
+{$CSS_MODE,mobile__overlay,0-780,mobileModeKeep}
+{$CSS_MODE,desktop__overlay,780-infinity,mobileModeDiscard}
+
 /* Extra ones; useful if you are providing better specificity for particular tested ranges (make sure the base-line of each range works for the rules you set; assuming we are using retina/hi-dpi properly rather than to cram more onto the screen) */
 {$CSS_MODE,smartphone_fixed_viewport,320-320,mobileModeMedia}/*This would only be used if you set a fixed (non-responsive) viewport of 320 (QVGA, portrait mode); not used by default*/
 {$CSS_MODE,smartphone_portrait,320-666,mobileModeMedia}/*Based on up to what iPhone6 can do; higher-res phones like phablets may fall under the smartphone_landscape range even in portrait mode which is fine*/
@@ -1711,7 +1715,7 @@ td>.comcode-quote:first-child, .fake-table-cell>.comcode-quote:first-child, .fak
 	/* .box-inner set us in the wrong position, so fiddle around a bit to move us back to be flush */
 	margin: -5px 0 5px -5px;
 	padding: 0.4em 0.8em 0.4em 0.3em;
-	width: 100%;
+	width: calc(100% - 4px);
 }
 .box-inner>h2>.right .button-screen {
 	vertical-align: top;

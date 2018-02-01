@@ -31,9 +31,12 @@
 	margin-top: 0;
 }
 
-.do-next-section {
+.do-next-section, .do-theme-items {
 	{$BETA_CSS_PROPERTY,display: flex;}
 	{$BETA_CSS_PROPERTY,flex-wrap: wrap;}
+}
+
+.do-next-section {
 	border-left: 1px dotted {$GET,standard_border};
 	border-top: 1px dotted {$GET,standard_border};
 }

@@ -1430,12 +1430,17 @@ function find_script($name, $append_keep = false, $base_url_code = 0)
         return $find_script_cache[$name][$append_keep][$base_url_code] . $append;
     }
 
-    $zones = array(get_zone_name());
+    $zones = array();
+    if (function_exists('get_zone_name')) {
+        $zones[] = get_zone_name();
+    }
     if (!in_safe_mode()) {
         $zones[] = 'data_custom';
     }
     $zones[] = 'data';
-    $zones = array_merge($zones, find_all_zones());
+    if (function_exists('find_all_zones')) {
+        $zones = array_merge($zones, find_all_zones());
+    }
     foreach ($zones as $zone) {
         if (is_file(get_file_base() . '/' . $zone . (($zone == '') ? '' : '/') . $name . '.php')) {
             $ret = get_base_url() . '/' . $zone . (($zone == '') ? '' : '/') . $name . '.php';

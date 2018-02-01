@@ -39,7 +39,7 @@
 						<div class="login-page-options">
 							<p>
 								<label for="remember">
-									<input id="remember" type="checkbox" value="1" name="remember"{+START,IF,{$OR,{$EQ,{$_POST,remember},1},{$CONFIG_OPTION,remember_me_by_default}}} checked="checked"{+END} class="{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}}js-click-checkbox-remember-me-confirm{+END}" />
+									<input id="remember" type="checkbox" value="1" name="remember"{+START,IF,{$OR,{$EQ,{$_POST,remember},1},{$CONFIG_OPTION,remember_me_by_default}}} checked="checked"{+END} class="{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}}js-click-confirm-remember-me{+END}" />
 									<span class="field-name">{!REMEMBER_ME}</span>
 								</label>
 								<span class="associated-details">{!REMEMBER_ME_TEXT}</span>

@@ -899,7 +899,7 @@ function find_all_zones($search = false, $get_titles = false, $force_all = false
         $ZONE_DEFAULT_PAGES_CACHE[$zone['zone_name']] = $zone['zone_default_page'];
     }
 
-    if ($using_default_params) {
+    if (($using_default_params) && (function_exists('get_translated_text'))) {
         $ALL_ZONES_TITLED_CACHE = $zones_titled;
         if (function_exists('persistent_cache_set')) {
             persistent_cache_set('ALL_ZONES_TITLED', $ALL_ZONES_TITLED_CACHE);

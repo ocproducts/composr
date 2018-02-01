@@ -7,7 +7,7 @@
 	background-image: linear-gradient(to top right, {$GET,main_background}, {$GET,main_2_background});
 }
 
-/*{+START,CSS_MODE,desktop}*/
+/*{+START,CSS_MODE,desktop__overlay}*/
 	.login-page {
 		background: url('{$IMG;,background_image}') no-repeat 20px 44px;
 		background-size: 216px 255px;
@@ -27,7 +27,7 @@
 	margin-top: 0;
 }
 
-/*{+START,CSS_MODE,mobile}*/
+/*{+START,CSS_MODE,mobile__overlay}*/
 	.login-page-form, .login-page-form>tbody, .login-page-form>thead, .login-page-form>tbody>tr, .login-page-form>thead>tr, .login-page-form>tr, .login-page-form>tbody>tr>th, .login-page-form>thead>tr>th, .login-page-form>tr>th, .login-page-form>tbody>tr>td, .login-page-form>thead>tr>td, .login-page-form>tr>td {
 		display: block;
 		width: auto;
@@ -47,7 +47,7 @@
 table.login-page-form {
 	margin-top: 1em;
 }
-/*{+START,CSS_MODE,desktop}*/
+/*{+START,CSS_MODE,desktop__overlay}*/
 	table.login-page-form {
 		width: 45%;
 		float: left;
@@ -71,7 +71,7 @@ table.login-page-form {
 	text-align: left;
 	margin-top: 0.5em;
 }
-/*{+START,CSS_MODE,desktop}*/
+/*{+START,CSS_MODE,desktop__overlay}*/
 	.login-page-options {
 		width: 278px; /* On Firefox Windows it needs more space than Chrome Windows which needs more space than Chrome Mac */
 		float: left;
@@ -85,7 +85,7 @@ table.login-page-form {
 .login-page-options .associated-details {
 	display: inline-block;
 }
-/*{+START,CSS_MODE,desktop}*/
+/*{+START,CSS_MODE,desktop__overlay}*/
 	.login-page-options .associated-details {
 		padding-left: 2em;
 	}
@@ -95,7 +95,7 @@ table.login-page-form {
 	font-size: 0.85em;
 	opacity: 0.9;
 }
-/*{+START,CSS_MODE,mobile}*/
+/*{+START,CSS_MODE,mobile__overlay}*/
 	.login-note a {
 		padding-right: 0.5em;
 	}
