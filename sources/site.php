@@ -858,9 +858,6 @@ function do_site()
      * @global ?array $KEEP_MARKERS
      */
     $KEEP_MARKERS = ($keep_markers == 1) || ($special_page_type == 'show_markers');
-    if (($KEEP_MARKERS) && (!headers_sent())) {
-        @header('Content-type: text/html; charset=' . get_charset()); // Not XHTML compatible, so must set HTML charset
-    }
     /** Whether we will be embedding edit links in the output.
      *
      * @sets_output_state

@@ -416,6 +416,7 @@ class Module_admin_newsletter extends Standard_crud_module
      */
     public function bounce_filter_b()
     {
+        require_code('mail');
         require_code('mail2');
 
         $username = post_param_string('username');
@@ -463,6 +464,7 @@ class Module_admin_newsletter extends Standard_crud_module
             modsecurity_workaround_enable();
         }
 
+        require_code('mail');
         require_code('mail2');
 
         $username = post_param_string('username');
@@ -1353,6 +1355,7 @@ class Module_admin_newsletter extends Standard_crud_module
 
         // Spam check, if possible
         if ($mail_dispatcher->mime_data !== null) {
+            require_code('mail');
             require_code('mail2');
             list($spam_report, $spam_score) = email_spam_check($mail_dispatcher->mime_data);
         }

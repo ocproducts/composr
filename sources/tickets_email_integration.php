@@ -127,6 +127,7 @@ function ticket_incoming_scan()
     require_lang('tickets');
     require_code('tickets');
     require_code('tickets2');
+    require_code('mail');
     require_code('mail2');
 
     $server = get_option('ticket_mail_server');

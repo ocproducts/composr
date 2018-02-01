@@ -626,16 +626,21 @@ function placeholder_img_code($type = '')
     }
     $dh = opendir($path);
     while (($f = readdir($dh)) !== false) {
-        if (substr($f, -4) == '.png') {
+        $ext = get_file_extension($f);
+
+        if ($ext == 'svg') {
+            return basename($f, '.svg');
+        }
+        if ($ext== 'png') {
             return basename($f, '.png');
         }
-        if (substr($f, -4) == '.jpg') {
+        if ($ext == 'jpg') {
             return basename($f, '.jpg');
         }
-        if (substr($f, -4) == '.jpeg') {
+        if ($ext == 'jpeg') {
             return basename($f, '.jpeg');
         }
-        if (substr($f, -4) == '.gif') {
+        if ($ext == 'gif') {
             return basename($f, '.gif');
         }
     }

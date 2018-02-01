@@ -44,7 +44,7 @@ class optimisations_fragile_test_set extends cms_test_case
             }
             catch (Exception $e) {
             }
-            $this->assertTrue(!function_exists('ecv2_MAKE_URL_ABSOLUTE'));
+            $this->assertTrue(!function_exists('ecv2_MAKE_URL_ABSOLUTE'), 'Loaded symbols2.php in module ' . $module);
         }
     }
 }

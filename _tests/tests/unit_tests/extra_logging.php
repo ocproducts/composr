@@ -121,7 +121,7 @@ class extra_logging_test_set extends cms_test_case
     {
         $url = build_url(array('page' => '', 'special_page_type' => 'templates'), '');
         $data = http_get_contents($url->evaluate(), array('cookies' => array(get_session_cookie() => get_session_id())));
-        $this->assertTrue(strpos($data, 'Templates') !== false);
+        $this->assertTrue(strpos($data, 'Edit templates') !== false);
     }
 
     public function testSpecialPageTypeTree()
@@ -133,9 +133,9 @@ class extra_logging_test_set extends cms_test_case
 
     public function testSpecialPageTypeShowMarkers()
     {
-        $url = build_url(array('page' => '', 'special_page_type' => 'show_markers'), '');
+        $url = build_url(array('page' => '', 'keep_markers' => 1), '');
         $data = http_get_contents($url->evaluate(), array('cookies' => array(get_session_cookie() => get_session_id())));
-        $this->assertTrue(strpos($data, '<!-- START-TEMPLATE=HTML_HEAD -->') !== false);
+        $this->assertTrue(strpos($data, '<!-- START-TEMPLATE=CSS_NEED -->') !== false);
     }
 
     public function testSpecialPageTypeShowEditLinks()

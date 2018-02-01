@@ -285,14 +285,17 @@ function find_template_tree_nice($metadata, &$collected_templates)
             $edit_url = build_url($edit_url_map, 'adminzone');
 
             // Render
+            static $template_tree_item_count = 0;
             $source = do_template('TEMPLATE_TREE_ITEM', array(
                 '_GUID' => 'be8eb00699631677d459b0f7c5ba60c8',
                 'FILE' => $file,
                 'EDIT_URL' => $edit_url,
                 'CODENAME' => $codename,
                 'GUID' => $guid,
+                'ID' => strval($template_tree_item_count),
             ));
             $out = $source->evaluate();
+            $template_tree_item_count++;
 
             break;
 

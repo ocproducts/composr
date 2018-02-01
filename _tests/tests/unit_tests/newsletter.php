@@ -61,6 +61,7 @@ this is the attachment text
 
 --XXXXboundary text--';
 
+        require_code('mail');
         require_code('mail2');
         list($spam_report, $spam_score) = email_spam_check($mime_email);
 

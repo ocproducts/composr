@@ -144,31 +144,31 @@ function ecv($lang, $escaped, $type, $name, $param)
 
         switch ($name) {
             case 'IF':
-                ecv2_IF($value, $lang, $escaped, $param);
+                ecv_IF($value, $lang, $escaped, $param);
                 break;
 
             case 'IF_EMPTY':
-                ecv2_IF_EMPTY($value, $lang, $escaped, $param);
+                ecv_IF_EMPTY($value, $lang, $escaped, $param);
                 break;
 
             case 'IF_NON_EMPTY':
-                ecv2_IF_NON_EMPTY($value, $lang, $escaped, $param);
+                ecv_IF_NON_EMPTY($value, $lang, $escaped, $param);
                 break;
 
             case 'IF_PASSED':
-                ecv2_IF_PASSED($value, $lang, $escaped, $param);
+                ecv_IF_PASSED($value, $lang, $escaped, $param);
                 break;
 
             case 'IF_NON_PASSED':
-                ecv2_IF_NON_PASSED($value, $lang, $escaped, $param);
+                ecv_IF_NON_PASSED($value, $lang, $escaped, $param);
                 break;
 
             case 'IF_PASSED_AND_TRUE':
-                ecv2_IF_PASSED_AND_TRUE($value, $lang, $escaped, $param);
+                ecv_IF_PASSED_AND_TRUE($value, $lang, $escaped, $param);
                 break;
 
             case 'IF_NON_PASSED_OR_FALSE':
-                ecv2_IF_NON_PASSED_OR_FALSE($value, $lang, $escaped, $param);
+                ecv_IF_NON_PASSED_OR_FALSE($value, $lang, $escaped, $param);
                 break;
 
             case 'WHILE':
@@ -177,7 +177,7 @@ function ecv($lang, $escaped, $type, $name, $param)
                 break;
 
             case 'LOOP':
-                ecv2_LOOP($value, $lang, $escaped, $param);
+                ecv_LOOP($value, $lang, $escaped, $param);
                 break;
 
             case 'PARAM_INFO':
@@ -5186,7 +5186,7 @@ function ecv_CHARSET($lang, $escaped, $param)
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  * @return string The result
  */
-function ecv2_LTR($lang, $escaped, $param)
+function ecv_LTR($lang, $escaped, $param)
 {
     $value = (do_lang('dir') == 'ltr') ? '1' : '0';
 
@@ -5206,7 +5206,7 @@ function ecv2_LTR($lang, $escaped, $param)
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  * @return string The result
  */
-function ecv2_RTL($lang, $escaped, $param)
+function ecv_RTL($lang, $escaped, $param)
 {
     $value = (do_lang('dir') == 'rtl') ? '1' : '0';
 
@@ -6065,6 +6065,47 @@ function _escape_url_pattern_for_js_regex($pattern)
 }
 
 /**
+ * Evaluate a particular Tempcode symbol.
+ *
+ * @ignore
+ *
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ * @return string The result
+ */
+function ecv_BACKSLASH($lang, $escaped, $param)
+{
+    $value = '\\';
+
+    if ($escaped !== array()) {
+        apply_tempcode_escaping($escaped, $value);
+    }
+    return $value;
+}
+
+/**
+ * Evaluate a particular Tempcode symbol.
+ *
+ * @ignore
+ *
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ * @return string The result
+ */
+function ecv_DECIMAL_POINT($lang, $escaped, $param)
+{
+    $locale = localeconv();
+    $value = $locale['decimal_point'];
+
+    if ($escaped !== array()) {
+        apply_tempcode_escaping($escaped, $value);
+    }
+    return $value;
+}
+
+/**
  * Evaluate a particular Tempcode directive.
  *
  * @ignore
@@ -6074,7 +6115,7 @@ function _escape_url_pattern_for_js_regex($pattern)
  * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  */
-function ecv2_IF(&$value, $lang, $escaped, $param)
+function ecv_IF(&$value, $lang, $escaped, $param)
 {
     if (isset($param[1])) {
         $_p = $param[0]->evaluate();
@@ -6094,7 +6135,7 @@ function ecv2_IF(&$value, $lang, $escaped, $param)
  * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  */
-function ecv2_IF_EMPTY(&$value, $lang, $escaped, $param)
+function ecv_IF_EMPTY(&$value, $lang, $escaped, $param)
 {
     if (isset($param[1])) {
         if ($param[0]->is_empty()) {
@@ -6113,7 +6154,7 @@ function ecv2_IF_EMPTY(&$value, $lang, $escaped, $param)
  * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  */
-function ecv2_IF_NON_EMPTY(&$value, $lang, $escaped, $param)
+function ecv_IF_NON_EMPTY(&$value, $lang, $escaped, $param)
 {
     if (isset($param[1])) {
         if (!$param[0]->is_empty()) {
@@ -6132,7 +6173,7 @@ function ecv2_IF_NON_EMPTY(&$value, $lang, $escaped, $param)
  * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  */
-function ecv2_IF_PASSED(&$value, $lang, $escaped, $param)
+function ecv_IF_PASSED(&$value, $lang, $escaped, $param)
 {
     if (isset($param[1])) {
         $t = $param[0]->evaluate();
@@ -6152,7 +6193,7 @@ function ecv2_IF_PASSED(&$value, $lang, $escaped, $param)
  * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  */
-function ecv2_IF_NON_PASSED(&$value, $lang, $escaped, $param)
+function ecv_IF_NON_PASSED(&$value, $lang, $escaped, $param)
 {
     if (isset($param[1])) {
         $t = $param[0]->evaluate();
@@ -6172,7 +6213,7 @@ function ecv2_IF_NON_PASSED(&$value, $lang, $escaped, $param)
  * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  */
-function ecv2_IF_PASSED_AND_TRUE(&$value, $lang, $escaped, $param)
+function ecv_IF_PASSED_AND_TRUE(&$value, $lang, $escaped, $param)
 {
     if (isset($param[1])) {
         $t = $param[0]->evaluate();
@@ -6192,7 +6233,7 @@ function ecv2_IF_PASSED_AND_TRUE(&$value, $lang, $escaped, $param)
  * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  */
-function ecv2_IF_NON_PASSED_OR_FALSE(&$value, $lang, $escaped, $param)
+function ecv_IF_NON_PASSED_OR_FALSE(&$value, $lang, $escaped, $param)
 {
     if (isset($param[1])) {
         $t = $param[0]->evaluate();
@@ -6212,7 +6253,7 @@ function ecv2_IF_NON_PASSED_OR_FALSE(&$value, $lang, $escaped, $param)
  * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  */
-function ecv2_LOOP(&$value, $lang, $escaped, $param)
+function ecv_LOOP(&$value, $lang, $escaped, $param)
 {
     // This code is mostly defunct, as the closure_loop function is normally used for performance reasons
     // (no need to keep re-binding, as closure_loop runs at a lower level)
