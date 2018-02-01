@@ -30,6 +30,10 @@ class rest_test_set extends cms_test_case
         $fs = new Commandr_fs();
         $fs->listing(array('var', 'news'));
 
+        require_code('commandr_fs');
+        $fs = new Commandr_fs();
+        $fs->listing(array('var', 'news'));
+
         parent::setUp();
     }
 

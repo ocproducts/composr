@@ -19,7 +19,7 @@ $ie_needed = array_key_exists('ie_needed', $map) ? floatval($map['ie_needed']) :
 $firefox_needed = array_key_exists('firefox_needed', $map) ? floatval($map['firefox_needed']) : 8.0;
 $safari_needed = array_key_exists('safari_needed', $map) ? floatval($map['safari_needed']) : 5.0;
 $chrome_needed = array_key_exists('chrome_needed', $map) ? floatval($map['chrome_needed']) : 15.0;
-$opera_needed = array_key_exists('firefox_needed', $map) ? floatval($map['firefox_needed']) : 11.0;
+$opera_needed = array_key_exists('opera_needed', $map) ? floatval($map['opera_needed']) : 11.0;
 
 $attach = (array_key_exists('attach', $map)) && ($map['attach'] == '1');
 
@@ -52,6 +52,15 @@ if (($browser->getBrowser() == Browser::BROWSER_CHROME) && (floatval($browser->g
 }
 if (($browser->getBrowser() == Browser::BROWSER_IE) && (floatval($browser->getVersion()) < $ie_needed)) {
     switch ($browser->getVersion()) {
+        case 11.0:
+            $year = '2013';
+            break;
+        case 10.0:
+            $year = '2012';
+            break;
+        case 9.0:
+            $year = '2010';
+            break;
         case 8.0:
             $year = '2009';
             break;

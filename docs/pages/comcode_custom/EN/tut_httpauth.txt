@@ -51,6 +51,6 @@ This takes some time to get-your-head-around, but makes sense when you do. If it
 
  - [page="_SEARCH:tut_ldap"]Integrating Composr into a corporate network via LDAP[/page]
  - [url="Apache manual section"]http://httpd.apache.org/docs/1.3/howto/auth.html[/url]
- - [url="Tutorial"]http://www.authenticationtutorial.com/tutorial/[/url]
+ - [url="Tutorial"]https://www.digitalocean.com/community/tutorials/how-to-set-up-password-authentication-with-apache-on-ubuntu-14-04[/url]
 
 {$SET,tutorial_tags,Third Party Integration,Security,Members,core_cns,expert}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Sometimes, for integration reasons, you want users to login in to Composr via HTTP authentication. We show you how.}[block]main_tutorial_rating[/block]
