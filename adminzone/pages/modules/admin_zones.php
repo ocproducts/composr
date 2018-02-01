@@ -352,9 +352,9 @@ class Module_admin_zones
             $current_zone = is_null($redirecting_to) ? $id : $redirecting_to;
             $default_parsed = null;
             if ($is_comcode) {
-                $full_path = zone_black_magic_filterer((($page_info[0] == 'comcode' || $pure) ? get_file_base() : get_custom_file_base()) . '/' . $current_zone . '/pages/' . strtolower($page_info[0]) . '/' . $lang . '/' . $current_for . '.txt');
+                $full_path = zone_black_magic_filterer(get_custom_file_base() . '/' . $current_zone . '/pages/' . strtolower($page_info[0]) . '/' . $page_info[3] . '/' . $current_for . '.txt');
                 if (!file_exists($full_path)) {
-                    $full_path = zone_black_magic_filterer((($page_info[0] == 'comcode' || $pure) ? get_file_base() : get_custom_file_base()) . '/' . $current_zone . '/pages/' . strtolower($page_info[0]) . '/' . get_site_default_lang() . '/' . $current_for . '.txt');
+                    $full_path = zone_black_magic_filterer(get_file_base() . '/' . $current_zone . '/pages/' . strtolower($page_info[0]) . '/' . $page_info[3] . '/' . $current_for . '.txt');
                 }
                 if (file_exists($full_path)) {
                     $comcode = cms_file_get_contents_safe($full_path);

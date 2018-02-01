@@ -85,7 +85,9 @@ function handle_failover_auto_switching($iteration = 0)
 {
     global $SITE_INFO;
 
-    @set_time_limit(1000);
+    if (function_exists('set_time_limit')) {
+        @set_time_limit(1000);
+    }
 
     // Check URLs
     if (!empty($SITE_INFO['failover_check_urls'])) {

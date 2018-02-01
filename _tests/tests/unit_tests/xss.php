@@ -75,6 +75,11 @@ class xss_test_set extends cms_test_case
         global $FORCE_INPUT_FILTER_FOR_ALL;
         $FORCE_INPUT_FILTER_FOR_ALL = true;
 
+        global $MEMBER_CACHED;
+        $MEMBER_CACHED = 1;
+        global $PRIVILEGE_CACHE;
+        $PRIVILEGE_CACHE[get_member()]['unfiltered_input'][''][''][''] = 0;
+
         $_GET['foo'] = '_config.php';
         $this->assertTrue(strpos(get_param_string('foo'), '_config.php') === false);
 

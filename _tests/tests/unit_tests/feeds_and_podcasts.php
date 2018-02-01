@@ -65,6 +65,8 @@ class feeds_and_podcasts_test_set extends cms_test_case
                 $url = find_script('backend') . '?type=' . $type . '&mode=' . $feed . '&days=30&max=100';
                 $data = http_download_file($url, null, true, false, 'Composr', null, array(get_session_cookie() => get_session_id()));
 
+                $data = str_replace(array('http://localhost/', 'https://localhost/'), array('http://example.com/', 'http://example.com/'), $data); // Workaround validator bug
+
                 $result = http_download_file('https://validator.w3.org/feed/check.cgi', null, true, false, 'Composr', array('rawdata' => $data));
 
                 $this->assertTrue(strpos($result, 'Congratulations!') !== false, 'Failed on ' . $url);

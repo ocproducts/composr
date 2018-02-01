@@ -136,10 +136,6 @@ Here are the top 100 buzzwords that will help you understand what web designers 
 			<td>A name that identifies a web server (or, in a cloud environment, a service in general). Domain names, such as ocportal.com, are easier for humans to work with than IP addresses, and are often dictated-by branding, or dictate branding.</td>
 		</tr>
 		<tr>
-			<td>Dublin Core</td>
-			<td>A metadata standard for identifying things such as the authorship of a particular web page. Dublin Core is a good way to provide additional data within web pages.</td>
-		</tr>
-		<tr>
 			<td>Facebook App</td>
 			<td>A web application designed to run on top of the Facebook website. It can interact with Facebook user accounts, but provide its own functionality. Many Facebook Apps are games (such as Farmville).</td>
 		</tr>
