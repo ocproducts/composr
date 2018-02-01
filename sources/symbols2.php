@@ -2487,36 +2487,6 @@ function ecv2_UCASE($lang, $escaped, $param)
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  * @return string The result
  */
-function ecv2_VIEWS($lang, $escaped, $param)
-{
-    $value = '';
-
-    if (isset($param[2])) {
-        $id_field = /*isset($param[4]) ? $param[4] : */'id'; // Not allowed on fields other than 'id', for security reasons
-        if (preg_match('#^\w*views\w*$#', $param[1]) != 0) {
-            $test = $GLOBALS['SITE_DB']->query_select_value_if_there($param[0], $param[1], array($id_field => $param[2]));
-            if ($test !== null) {
-                $value = integer_format($test);
-            }
-        }
-    }
-
-    if ($GLOBALS['XSS_DETECT']) {
-        ocp_mark_as_escaped($value);
-    }
-    return $value;
-}
-
-/**
- * Evaluate a particular Tempcode symbol.
- *
- * @ignore
- *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
- * @param  array $escaped Array of escaping operations
- * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result
- */
 function ecv2_WCASE($lang, $escaped, $param)
 {
     $value = '';
@@ -2534,6 +2504,36 @@ function ecv2_WCASE($lang, $escaped, $param)
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
+    }
+    return $value;
+}
+
+/**
+ * Evaluate a particular Tempcode symbol.
+ *
+ * @ignore
+ *
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ * @return string The result
+ */
+function ecv2_VIEWS($lang, $escaped, $param)
+{
+    $value = '';
+
+    if (isset($param[2])) {
+        $id_field = /*isset($param[4]) ? $param[4] : */'id'; // Not allowed on fields other than 'id', for security reasons
+        if (preg_match('#^\w*views\w*$#', $param[1]) != 0) {
+            $test = $GLOBALS['SITE_DB']->query_select_value_if_there($param[0], $param[1], array($id_field => $param[2]));
+            if ($test !== null) {
+                $value = integer_format($test);
+            }
+        }
+    }
+
+    if ($GLOBALS['XSS_DETECT']) {
+        ocp_mark_as_escaped($value);
     }
     return $value;
 }

@@ -295,32 +295,7 @@ class Module_admin_invoices
      */
     public function outstanding()
     {
-        $invoices = array();
-        $rows = $GLOBALS['SITE_DB']->query_select('ecom_invoices', array('*'), array('i_state' => 'new'), 'ORDER BY i_time');
-        foreach ($rows as $row) {
-            $invoice_title = do_lang('CUSTOM_PRODUCT_' . $row['i_type_code']);
-            $date = get_timezoned_date_time($row['i_time']);
-            $username = $GLOBALS['FORUM_DRIVER']->get_username($row['i_member_id']);
-            $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($row['i_member_id'], true);
-            $invoices[] = array(
-                'INVOICE_TITLE' => $invoice_title,
-                'PROFILE_URL' => $profile_url,
-                'USERNAME' => $username,
-                'ID' => strval($row['id']),
-                'STATE' => $row['i_state'],
-                'AMOUNT' => float_to_raw_string($row['i_amount']),
-                'TAX' => float_to_raw_string($row['i_tax']),
-                'CURRENCY' => $row['i_currency'],
-                'DATE' => $date,
-                'NOTE' => $row['i_note'],
-                'TYPE_CODE' => $row['i_type_code'],
-            );
-        }
-        if (count($invoices) == 0) {
-            inform_exit(do_lang_tempcode('NO_ENTRIES'));
-        }
-
-        return do_template('ECOM_OUTSTANDING_INVOICES_SCREEN', array('_GUID' => 'fab0fa7dbcd9d6484fa1861ce170717a', 'TITLE' => $this->title, 'FROM' => 'outstanding', 'INVOICES' => $invoices));
+        return $this->show_invoices('new', 'outstanding');
     }
 
     /**
@@ -330,8 +305,20 @@ class Module_admin_invoices
      */
     public function unfulfilled()
     {
+        return $this->show_invoices('paid', 'unfulfilled');
+    }
+
+    /**
+     * Show invoices.
+     *
+     * @param  ID_TEXT $db_value The filter for the i_state field
+     * @param  ID_TEXT $from_codename The screen type
+     * @return Tempcode The interface
+     */
+    protected function show_invoices($db_value, $from_codename)
+    {
         $invoices = array();
-        $rows = $GLOBALS['SITE_DB']->query_select('ecom_invoices', array('*'), array('i_state' => 'paid'), 'ORDER BY i_time');
+        $rows = $GLOBALS['SITE_DB']->query_select('ecom_invoices', array('*'), array('i_state' => $db_value), 'ORDER BY i_time');
         foreach ($rows as $row) {
             $invoice_title = do_lang('CUSTOM_PRODUCT_' . $row['i_type_code']);
             $date = get_timezoned_date_time($row['i_time']);
@@ -355,7 +342,12 @@ class Module_admin_invoices
             inform_exit(do_lang_tempcode('NO_ENTRIES'));
         }
 
-        return do_template('ECOM_OUTSTANDING_INVOICES_SCREEN', array('_GUID' => '672e41d8cbe06f046a47762ff75c8337', 'TITLE' => $this->title, 'FROM' => 'unfulfilled', 'INVOICES' => $invoices));
+        return do_template('ECOM_OUTSTANDING_INVOICES_SCREEN', array(
+            '_GUID' => 'fab0fa7dbcd9d6484fa1861ce170717a',
+            'TITLE' => $this->title,
+            'FROM' => $from_codename,
+            'INVOICES' => $invoices,
+        ));
     }
 
     /**

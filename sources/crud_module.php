@@ -243,22 +243,6 @@ abstract class Standard_crud_module
                 }
 
                 $doing = 'ADD_' . $this->lang_type;
-
-                if (($this->catalogue) && (get_param_string('catalogue_name', '') != '')) {
-                    $_catalogue_title = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_title', array('c_name' => get_param_string('catalogue_name')));
-                    if ($_catalogue_title !== null) {
-                        $catalogue_title = get_translated_text($_catalogue_title);
-                        if ($this->type_code == '') {
-                            $doing = do_lang('CATALOGUE_GENERIC_ADD', escape_html($catalogue_title));
-                        } elseif ($this->type_code == 'category') {
-                            $doing = do_lang('CATALOGUE_GENERIC_ADD_CATEGORY', escape_html($catalogue_title));
-                        }
-                    }
-                }
-
-                $this->title = get_screen_title($doing);
-
-                $this->doing = $doing;
             }
 
             if ($type == '_add' || $type == '_add_other' || $type == '_add_category' || $type == '_add_entry' || $type == '_add_category') {
@@ -271,7 +255,12 @@ abstract class Standard_crud_module
                 if (do_lang($success_message_str, null, null, null, null, false) === null) {
                     $success_message_str = 'SUCCESS';
                 }
+                $this->success_message_str = $success_message_str;
 
+                breadcrumb_set_parents(array_merge($GLOBALS['BREADCRUMB_SET_PARENTS'], array(array('_SELF:_SELF:' . $this->get_screen_type_for('add', $this->type_code), (strpos($doing, ' ') !== false) ? protect_from_escaping($doing) : do_lang_tempcode($doing)))));
+            }
+
+            if ($type == 'add' || $type == 'add_other' || $type == 'add_category' || $type == 'add_entry' || $type == 'add_category' || $type == '_add' || $type == '_add_other' || $type == '_add_category' || $type == '_add_entry' || $type == '_add_category') {
                 if (($this->catalogue) && (get_param_string('catalogue_name', '') != '')) {
                     $_catalogue_title = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_title', array('c_name' => get_param_string('catalogue_name')));
                     if ($_catalogue_title !== null) {
@@ -286,40 +275,19 @@ abstract class Standard_crud_module
 
                 $this->title = get_screen_title($doing);
 
-                breadcrumb_set_parents(array_merge($GLOBALS['BREADCRUMB_SET_PARENTS'], array(array('_SELF:_SELF:' . $this->get_screen_type_for('add', $this->type_code), (strpos($doing, ' ') !== false) ? protect_from_escaping($doing) : do_lang_tempcode($doing)))));
-
-                $this->doing = $doing;
-                $this->success_message_str = $success_message_str;
-            }
-
-            if ($type == 'edit' || $type == 'edit_other' || $type == 'edit_category' || $type == 'edit_entry' || $type == 'edit_category') {
-                $doing = 'EDIT_' . $this->lang_type;
-
-                if (($this->catalogue) && (get_param_string('catalogue_name', '') != '')) {
-                    $_catalogue_title = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_title', array('c_name' => get_param_string('catalogue_name')));
-                    if ($_catalogue_title !== null) {
-                        $catalogue_title = get_translated_text($_catalogue_title);
-                        if ($this->type_code == '') {
-                            $doing = do_lang('CATALOGUE_GENERIC_EDIT', escape_html($catalogue_title));
-                        } elseif ($this->type_code == 'category') {
-                            $doing = do_lang('CATALOGUE_GENERIC_EDIT_CATEGORY', escape_html($catalogue_title));
-                        }
-                    }
-                }
-
-                $this->title = get_screen_title($doing);
-
                 $this->doing = $doing;
             }
 
             if ($type == '_edit' || $type == '_edit_other' || $type == '_edit_category' || $type == '_edit_entry' || $type == '_edit_category') {
-                $doing = 'EDIT_' . $this->lang_type;
-
                 if ((multi_lang()) && (has_actual_page_access(get_member(), 'admin_lang')) && (user_lang() != get_site_default_lang())) {
                     require_code('lang2');
                     $switch_url = get_self_url(false, false, array('keep_lang' => get_site_default_lang()));
                     set_helper_panel_text(do_lang_tempcode('lang:EDITING_CONTENT_IN_LANGUAGE_STAFF', escape_html(lookup_language_full_name(user_lang())), escape_html(lookup_language_full_name(get_site_default_lang())), escape_html($switch_url->evaluate())));
                 }
+            }
+
+            if ($type == 'edit' || $type == 'edit_other' || $type == 'edit_category' || $type == 'edit_entry' || $type == 'edit_category' || $type == '_edit' || $type == '_edit_other' || $type == '_edit_category' || $type == '_edit_entry' || $type == '_edit_category') {
+                $doing = 'EDIT_' . $this->lang_type;
 
                 if (($this->catalogue) && (get_param_string('catalogue_name', '') != '')) {
                     $_catalogue_title = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_title', array('c_name' => get_param_string('catalogue_name')));
@@ -344,6 +312,7 @@ abstract class Standard_crud_module
                 $delete = post_param_integer('delete', 0);
                 if (($delete == 1) || ($delete == 2)) { //1=partial,2=full,...=unknown,thus handled as an edit
                     $doing = 'DELETE_' . $this->lang_type;
+
                     if (($this->catalogue) && (get_param_string('catalogue_name', '') != '')) {
                         $_catalogue_title = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_title', array('c_name' => get_param_string('catalogue_name')));
                         if ($_catalogue_title !== null) {
@@ -923,15 +892,13 @@ abstract class Standard_crud_module
                 $max = floatval(get_max_image_size()) / floatval(1024 * 1024);
                 if ($max < 3.0) {
                     require_code('files2');
-                    $config_url = get_upload_limit_config_url();
-                    $this->add_text->attach(paragraph(do_lang_tempcode(($config_url === null) ? 'MAXIMUM_UPLOAD' : 'MAXIMUM_UPLOAD_STAFF', escape_html(($max > 10.0) ? integer_format(intval($max)) : float_format($max)), escape_html(($config_url === null) ? '' : $config_url))));
+                    $this->add_text->attach(get_maximum_upload_message($max));
                 }
             } else {
                 require_code('files2');
                 $max = floatval(get_max_file_size()) / floatval(1024 * 1024);
                 if ($max < 30.0) {
-                    $config_url = get_upload_limit_config_url();
-                    $this->add_text->attach(paragraph(do_lang_tempcode(($config_url === null) ? 'MAXIMUM_UPLOAD' : 'MAXIMUM_UPLOAD_STAFF', escape_html(($max > 10.0) ? integer_format(intval($max)) : float_format($max)), escape_html(($config_url === null) ? '' : $config_url))));
+                    $this->add_text->attach(get_maximum_upload_message($max));
                 }
             }
         }
@@ -1477,15 +1444,13 @@ abstract class Standard_crud_module
                 $max = floatval(get_max_image_size()) / floatval(1024 * 1024);
                 if ($max < 3.0) {
                     require_code('files2');
-                    $config_url = get_upload_limit_config_url();
-                    $this->edit_text->attach(paragraph(do_lang_tempcode(($config_url === null) ? 'MAXIMUM_UPLOAD' : 'MAXIMUM_UPLOAD_STAFF', escape_html(($max > 10.0) ? integer_format(intval($max)) : float_format($max)), escape_html(($config_url === null) ? '' : $config_url))));
+                    $this->edit_text->attach(get_maximum_upload_message($max));
                 }
             } else {
                 require_code('files2');
                 $max = floatval(get_max_file_size()) / floatval(1024 * 1024);
                 if ($max < 30.0) {
-                    $config_url = get_upload_limit_config_url();
-                    $this->edit_text->attach(paragraph(do_lang_tempcode(($config_url === null) ? 'MAXIMUM_UPLOAD' : 'MAXIMUM_UPLOAD_STAFF', escape_html(($max > 10.0) ? integer_format(intval($max)) : float_format($max)), escape_html(($config_url === null) ? '' : $config_url))));
+                    $this->edit_text->attach(get_maximum_upload_message($max));
                 }
             }
         }

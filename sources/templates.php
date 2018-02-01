@@ -263,7 +263,7 @@ function warn_screen($title, $text, $provide_back = true, $support_match_key_mes
  * Get the Tempcode for a hidden form element.
  *
  * @param  ID_TEXT $name The name which this input field is for
- * @param  string $value The value for this input field
+ * @param  mixed $value The value for this input field (string or Tempcode)
  * @return Tempcode The input field
  */
 function form_input_hidden($name, $value)

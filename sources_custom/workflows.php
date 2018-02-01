@@ -14,6 +14,16 @@
  */
 
 /**
+ * Standard code module initialisation function.
+ *
+ * @ignore
+ */
+function init__workflows()
+{
+    require_lang('workflows');
+}
+
+/**
  * Returns whether the given user (default: current member) can choose the.
  * workflow to apply to some content they're submitting/editing.
  *
@@ -42,10 +52,6 @@ function can_choose_workflow($member_id = null)
  */
 function workflow_choose_ui($include_inherit = false, $include_current = false)
 {
-    // Grab the necessary code
-    require_code('workflows');
-    require_lang('workflows');
-
     // Find out which workflows are available
     $all_workflows = get_all_workflows();
 
@@ -174,7 +180,6 @@ function get_submitter_of_workflow_content($content_id)
 function get_workflow_form($workflow_content_id)
 {
     // Load our prerequisites
-    require_lang('workflows');
     require_code('form_templates');
     require_code('users');
 
@@ -469,8 +474,6 @@ function get_workflow_form($workflow_content_id)
  */
 function workflow_update_handler()
 {
-    require_lang('workflows');
-
     $success_message = do_lang('APPROVAL_UNCHANGED');
 
     /////////////////////////////////////////
@@ -871,4 +874,99 @@ function remove_content_from_workflows($type, $id)
     $content_id = get_workflow_content_id($type, $id);
     $GLOBALS['SITE_DB']->query_delete('workflow_content', array('id' => $content_id));
     $GLOBALS['SITE_DB']->query_delete('workflow_content_status', array('workflow_content_id' => $content_id));
+}
+
+/**
+ * Handle content position in a workflow and show via an attach_message. This is for new content.
+ *
+ * @param  integer $validated Whether the content is validated
+ * @param  string $content_type The type of the content, as defined in the workflow_content table
+ * @param  string $id The ID of the content, as defined in the workflow content table
+ * @param  ?ID_TEXT $category_content_type The type of the content's category, as defined in the workflow_content table (null: none)
+ * @param  ?ID_TEXT $category_id The ID of the content's category, as defined in the workflow_content table (null: none)
+ * @param  string $title The content title
+ */
+function handle_position_in_workflow_auto($validated, $content_type, $id, $category_content_type, $category_id, $title)
+{
+    if ($validated == 0) {
+        // See if we have a specific workflow to use
+        $workflow_id = intval(str_replace('wf_', '', either_param_string('workflow', 'wf_-1')));
+        // If we have been given a specific workflow, but we do not have access to choose workflows, fall back to the default
+        if (($workflow_id != -1) && (!can_choose_workflow())) {
+            $workflow_id = -1;
+        }
+
+        if ($workflow_id == -1) {
+            // Look for the workflow of the containing category
+            $workflow_id = ($category_content_type === null || $category_id === null) ? null : get_workflow_of_content($category_content_type, $category_id);
+            if ($workflow_id === null) {
+                // Use the default if it has none
+                $workflow_id = get_default_workflow();
+            } else {
+                // The parent has a workflow. Copy it for this.
+            }
+        } else {
+            // Use the specific ID provided
+        }
+
+        if ($workflow_id !== null) {
+            add_content_to_workflow($content_type, strval($id), $workflow_id);
+            attach_message(do_lang_tempcode('CONTENT_NOW_IN_WORKFLOW', escape_html(get_workflow_name($workflow_id))), 'inform');
+        }
+    }
+}
+
+/**
+ * Handle content position in a workflow and show via an attach_message. This is for new content.
+ *
+ * @param  integer $validated Whether the content is validated
+ * @param  string $content_type The type of the content, as defined in the workflow_content table
+ * @param  string $id The ID of the content, as defined in the workflow content table
+ * @param  ?ID_TEXT $category_content_type The type of the content's category, as defined in the workflow_content table (null: none)
+ * @param  ?ID_TEXT $category_id The ID of the content's category, as defined in the workflow_content table (null: none)
+ * @param  string $title The content title
+ */
+function handle_position_in_workflow_edit($validated, $content_type, $id, $category_content_type, $category_id, $title)
+{
+    if ($validated == 0) {
+        require_code('workflows');
+
+        // See if we have a specific workflow to use
+        $edit_workflow = array_key_exists('workflow', $_REQUEST) && (either_param_string('workflow') != 'wf_-2');
+        $current_workflow = get_workflow_of_content($content_type, strval($id));
+        if ($edit_workflow) {
+            $workflow_id = intval(str_replace('wf_', '', either_param_string('workflow', 'wf_-1')));
+            // If we have been given a specific workflow, but we do not have access to choose workflows, fail
+            if (($workflow_id != -1) && (!can_choose_workflow())) {
+                $edit_workflow = false;
+            }
+        }
+        if ($edit_workflow && ($workflow_id == -1)) {
+            // Look for the workflow of the containing category
+            $workflow_id = ($category_content_type === null || $category_id === null) ? null : get_workflow_of_content($category_content_type, $category_id);
+            if ($workflow_id === null)
+            {
+                // Use the default if it has none
+                $default_workflow_id = get_default_workflow();
+                if ($current_workflow != $default_workflow_id) {
+                    add_content_to_workflow($content_type, strval($id), $default_workflow_id, true);
+                    attach_message(do_lang_tempcode('CONTENT_NOW_IN_WORKFLOW', escape_html(get_workflow_name($default_workflow_id))), 'inform');
+                }
+            } else {
+                // The parent has a workflow. Copy it for this.
+                if ($workflow_id != $current_workflow) {
+                    add_content_to_workflow($content_type, strval($id), $workflow_id, true);
+                    attach_message(do_lang_tempcode('CONTENT_NOW_IN_WORKFLOW', escape_html(get_workflow_name($workflow_id))), 'inform');
+                }
+            }
+        }
+        elseif ($edit_workflow) {
+            // Use the specific ID provided
+            if ($workflow_id != $current_workflow)
+            {
+                add_content_to_workflow($content_type, strval($id), $workflow_id);
+                attach_message(do_lang_tempcode('CONTENT_NOW_IN_WORKFLOW', escape_html(get_workflow_name($workflow_id))), 'inform');
+            }
+        }
+    }
 }

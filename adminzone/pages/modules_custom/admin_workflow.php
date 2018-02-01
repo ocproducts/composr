@@ -141,7 +141,8 @@ class Module_admin_workflow extends Standard_crud_module
 
         $type = get_param_string('type', 'browse');
 
-        require_lang('workflows');
+        require_code('workflows');
+        require_code('workflows2');
 
         set_helper_panel_tutorial('sup_set_up_a_workflow_in_composr');
 
@@ -179,10 +180,6 @@ class Module_admin_workflow extends Standard_crud_module
      */
     public function run_start($type)
     {
-        require_lang('workflows');
-        require_code('workflows');
-        require_code('workflows2');
-
         if ($type == 'browse') {
             return $this->browse();
         }

@@ -32,7 +32,9 @@
 						{$GET,roles}
 					</select>
 				</label>:
+			</p>
 
+			<p>
 				<label class="accessibility-hidden" for="give_reason">{!REASON}</label>
 				<input maxlength="255" size="26" id="give_reason" class="input-line-required" placeholder="{!REASON}" type="text" name="reason" />
 			</p>
@@ -65,12 +67,14 @@
 
 			<div>
 				<div class="points-give-shared-options" style="margin-top: 0">
-					<label for="give_reason_pre">
-						Their role
-						<select id="give_reason_pre" class="js-click-check-reason js-change-check-reason" name="reason_pre">
-							{$GET,roles}
-						</select>
-					</label>:
+					<p>
+						<label for="give_reason_pre">
+							Their role
+							<select id="give_reason_pre" class="js-click-check-reason js-change-check-reason" name="reason_pre">
+								{$GET,roles}
+							</select>
+						</label>:
+					</p>
 
 					<p>
 						<label class="accessibility-hidden" for="give_reason">{!REASON}</label>

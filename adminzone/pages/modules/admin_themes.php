@@ -1049,12 +1049,10 @@ class Module_admin_themes
         $text->attach(paragraph(do_lang_tempcode('DESCRIPTION_ADDING_THEME_IMAGE')));
 
         require_code('images');
-
         $max = floatval(get_max_image_size()) / floatval(1024 * 1024);
         if ($max < 3.0) {
             require_code('files2');
-            $config_url = get_upload_limit_config_url();
-            $text->attach(paragraph(do_lang_tempcode(($config_url === null) ? 'MAXIMUM_UPLOAD' : 'MAXIMUM_UPLOAD_STAFF', escape_html(($max > 10.0) ? integer_format(intval($max)) : float_format($max)), escape_html(($config_url === null) ? '' : $config_url))));
+            $text->attach(get_maximum_upload_message($max));
         }
 
         return do_template('FORM_SCREEN', array(
@@ -1180,8 +1178,7 @@ class Module_admin_themes
         $max = floatval(get_max_image_size()) / floatval(1024 * 1024);
         if ($max < 3.0) {
             require_code('files2');
-            $config_url = get_upload_limit_config_url();
-            $text->attach(paragraph(do_lang_tempcode(($config_url === null) ? 'MAXIMUM_UPLOAD' : 'MAXIMUM_UPLOAD_STAFF', escape_html(($max > 10.0) ? integer_format(intval($max)) : float_format($max)), escape_html(($config_url === null) ? '' : $config_url))));
+            $text->attach(get_maximum_upload_message($max));
         }
 
         return do_template('FORM_SCREEN', array(

@@ -36,7 +36,6 @@ function init__cms__pages__modules_custom__cms_galleries($code)
         "
         <ditto>
         require_code('workflows');
-        require_lang('workflows');
         if (!isset(\$adding)) {
             \$adding = (\$url == '');
         }
@@ -74,7 +73,6 @@ function init__cms__pages__modules_custom__cms_galleries($code)
         "
         <ditto>
         require_code('workflows');
-        require_lang('workflows');
         if (can_choose_workflow()) {
             \$fields->attach(workflow_choose_ui(false, \$name != ''));
         } else {

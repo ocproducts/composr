@@ -3561,7 +3561,6 @@ class Database_Static_xml extends DatabaseDriver
             case 'INNER_JOIN':
                 foreach ($records as $r1) {
                     foreach ($records_b as $r2) {
-
                         $join_scope = $r1;
                         foreach ($r2 as $key => $val) {
                             if (array_key_exists($key, $join_scope)) { // Don't allow anything ambiguous
