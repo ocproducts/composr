@@ -842,7 +842,6 @@ class Hook_addon_registry_core
             'data_custom/images/index.html',
             'data_custom/images/.htaccess',
             'data/index.html',
-            'data/javascript.php',
             'data/modules/index.html',
             'data/page_link_redirect.php',
             'data/quash_referer.php',
