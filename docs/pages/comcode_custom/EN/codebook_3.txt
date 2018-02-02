@@ -682,7 +682,6 @@ The 'keep' parameters available are:
  - [tt]keep_hide_dev_mode_message[/tt] -- set to '1' if you don't want the "Dev-mode is on" message to show if dev-mode is on (maybe you're taking screenshots?)
  - [tt]keep_ext_check[/tt] -- set to '0' to force the webstandards checker to not check dependency files
  - [tt]keep_force_htaccess[/tt] -- set to '1' to force the Conversr login to go via htauth in precedence over other login methods (e.g. login cookies, sessions)
- - [tt]keep_textonly[/tt] -- set to '1' if the 'text only' stylesheet is to be used
  - [tt]keep_simplified_donext[/tt] -- set to '1' to temporarily act as if the simplified do-next option is turned on
  - [tt]keep_mobile[/tt] -- set to '1' to pretend you're using a PDA
  - [tt]keep_has_js[/tt] -- set to '1' to force Composr to think you have JavaScript (useful if the has-JS cookie isn't saving yet you need to use a JS-based interface)
