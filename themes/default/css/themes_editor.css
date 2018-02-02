@@ -55,7 +55,7 @@
 }
 
 .theme-details .seed {
-	background: white;
+	background-color: white;
 }
 .theme-details .seed strong {
 	white-space: nowrap !important;
@@ -236,7 +236,7 @@
 .template-edit-link span {
 	text-decoration: underline;
 	cursor: pointer;
-	background: rgba(255,255,255,0.8);
+	background-color: rgba(255,255,255,0.8);
 	display: inline-block;
 	border: 1px dotted black;
 	margin: 3px;

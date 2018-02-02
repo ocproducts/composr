@@ -107,7 +107,7 @@
 }
 
 .installer-warning, .installer-notice {
-	background: {$GET,external_tool_background};
+	background-color: {$GET,external_tool_background};
 	border: 1px solid {$GET,pale_border};
 	padding: 1em;
 	border-radius: 5px;

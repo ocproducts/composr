@@ -180,7 +180,7 @@ body.touch-enabled .cns-information-bar-outer body.touch-enabled .toggleable-tra
 	margin: 0.5em 1em 0 1em;
 	padding: 2em;
 	border: 1px solid {$GET,pale_border};
-	background: {$GET,area_background};
+	background-color: {$GET,area_background};
 }
 
 .cns-search-box {

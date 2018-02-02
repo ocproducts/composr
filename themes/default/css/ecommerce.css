@@ -137,7 +137,7 @@
 }
 
 .invoice-box table thead tr th {
-	background: {$GET,area_background};
+	background-color: {$GET,area_background};
 	border-bottom: 1px solid {$GET,area_2_background};
 	font-weight: bold;
 	color: {$GET,slightly_seeded_text};

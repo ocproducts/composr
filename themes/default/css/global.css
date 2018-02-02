@@ -349,7 +349,7 @@ thead>tr>th, .boxless-space .box>table>thead>tr>th, .pte-set-box .box>table>thea
 	background-color: {$GET,area_6_background};
 }
 .box>table>thead>tr>th {
-	background: {$GET,point_of_interest_background};
+	background-color: {$GET,point_of_interest_background};
 	color: {$GET,area_key_text};
 }
 .box thead>tr>th a {
@@ -515,10 +515,10 @@ iframe {
 
 /* Cool effect to change how text selection looks; not valid CSS, but is safe */
 .website-body ::selection {
-	background: {$GET,yellow_highlight_background};
+	background-color: {$GET,yellow_highlight_background};
 }
 comcode-{$REPLACE,\,,::selection \,comcode-,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}\,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_INLINE}}}, tempcode ::selection {
-	background: {$GET,green_highlight_text};
+	background-color: {$GET,green_highlight_text};
 }
 
 /* Stop Chrome breaking our datalist display with an arrow */
@@ -540,7 +540,7 @@ body.website-body {
 	background-color: {$GET,main_background};
 }
 body.website-body.frame {
-	background: transparent; /* Don't assume too much for a frame, it may be nested inside a box for example */
+	background-color: transparent; /* Don't assume too much for a frame, it may be nested inside a box for example */
 }
 
 /*{+START,IF,{$AND,{$THEME_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
@@ -550,7 +550,7 @@ body.website-body.frame {
 				Try this Google search to get image ideas http://www.google.co.uk/search?tbm=isch&q=tile+background
 				Find how to edit the referenced "outer_background" theme image by doing an Admin Zone search for "outer_background"
 			*/
-			background: url('{$IMG_INLINE;,outer_background}');
+			background-image: url('{$IMG_INLINE;,outer_background}');
 			background-size: 220px 220px;
 		}
 		#main-website #main-website-inner {
@@ -685,8 +685,7 @@ header h1 {
 .global-navigation {
 	border-top: 1px solid {$GET,standard_border};
 	border-bottom: 1px solid {$GET,standard_border};
-	background-color: {$GET,lgrad};
-	background-image: linear-gradient(to bottom, {$GET,lgrad}, {$GET,dgrad}) !important;
+	background-image: linear-gradient(to bottom, {$GET,lgrad}, {$GET,dgrad});
 	color: {$GET,WB};
 	min-height: 3.4em;
 }
@@ -1046,7 +1045,6 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 footer {
 	clear: both;
 	margin-top: 2em;
-	background-color: {$GET,footer_background};
 	background-image: linear-gradient(to bottom, {$GET,footer_background}, {$GET,footer_2_background});
 
 	color: {$GET,footer_text};
@@ -1652,10 +1650,7 @@ th.metadata-title {
 		Try this Google search to get image ideas http://www.google.co.uk/search?tbm=isch&q=tile+background
 		Find how to edit the referenced "block_background" theme image by doing an Admin Zone search for "block_background"
 	*/
-	background-image: url('{$IMG_INLINE;,block_background}');
-	background-color: {$GET,area_background};
-	/* If the browser supports gradients, we'll put a nice box-filling gradient in here instead */
-	background-image: linear-gradient(to bottom, {$GET,area_background}, {$GET,area_4_background});
+	background-image: url('{$IMG_INLINE;,block_background}') {$GET,area_background};
 	background-size: 5px 5px;
 
 	overflow: hidden;
@@ -1927,6 +1922,9 @@ h3 .toggleable-tray-button img {
 	.fp-col-block {
 		margin: 1em 0;
 		max-width: 100%;
+	}
+	.fp-col-block.left, .fp-col-block.right {
+		float: none;
 	}
 /*{+END}*/
 
@@ -2450,7 +2448,6 @@ div.zebra-0+div.zebra-1, div.zebra-1+div.zebra-0 {
 	color: {$GET,area_text} !important;
 }
 .tooltip-ownlayout, .tooltip-nolayout th.de-th, .tooltip-nolayout td {
-	background-color: {$GET,area_faded_background};
 	background-image: linear-gradient(to bottom, {$GET,area_faded_background}, {$GET,area_background});
 }
 .tooltip .box {
@@ -2778,7 +2775,7 @@ div.wysiwyg-toolbar-color-finder {
 	padding: 2em 6em;
 	margin-top: -2em;
 	margin-left: -6em;
-	background: rgba(255,255,255,0.5);
+	background-color: rgba(255,255,255,0.5);
 	border-radius: 5px;
 }
 
@@ -4407,7 +4404,6 @@ td>.comcode-code-wrap>.comcode-quote, td>.comcode-code-wrap>.comcode-code {
 	border: 1px solid {$GET,code_border};
 	padding: 4px;
 	margin: 0;
-	background-color: {$GET,code_title_background};
 	background-image: linear-gradient(to right, {$GET,comcode_quote_left}, {$GET,comcode_quote_right});
 }
 
@@ -4618,7 +4614,7 @@ body div.comcode-table-of-contents>div.box-inner>ol>li {
 	display: table;
 	border-collapse: separate;
 	max-width: 100%;
-	background: {$GET,WB};
+	background-color: {$GET,WB};
 }
 /*{+START,CSS_MODE,desktop}*/
 	.attachment {

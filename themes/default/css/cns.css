@@ -268,7 +268,6 @@ div.cns-table-footer>div>div {
 }
 
 .cns-topic .cns-forum-box-left, .cns-post-details {
-	background-color: {$GET,box_title_background} !important;
 	background-image: linear-gradient(to bottom, {$GET,lgrad}, {$GET,dgrad});
 	color: {$GET,box_title_text};
 }
@@ -716,7 +715,6 @@ hr.cns-sig-barrier {
 
 .cns-forum-topic-row-preview-button {
 	border: 1px solid {$GET,standard_border};
-	background-color: {$GET,area_2_background};
 	background-image: linear-gradient(to bottom, {$GET,area_background}, {$GET,area_4_background});
 	font-size: 0.85em;
 	padding: 0.5em !important;
