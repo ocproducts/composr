@@ -19,7 +19,7 @@
         el = $dom.elArg(el);
         animate = $cms.configOption('enable_animations') ? boolVal(animate, true) : false;
 
-        var iconImg = $dom.$(el.parentNode, '.toggleable-tray-button img') || $dom.$('img#e_' + el.id),
+        var iconImg = $dom.$(el.parentNode, '.toggleable-tray-button img') || $dom.$('img#e-' + el.id),
             isThemeWizard = Boolean(iconImg && iconImg.src && iconImg.src.includes('/themewizard.php')),
             expanding = $dom.notDisplayed(el);
 

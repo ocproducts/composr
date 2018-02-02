@@ -4,7 +4,7 @@
 <div data-tpl="blockMainGalleryEmbed" data-tpl-params="{+START,PARAMS_JSON,carousel_id,START,MAX,block_call_url}{_*}{+END}">
 	{+START,IF,{$NEQ,{$COMMA_LIST_GET,{BLOCK_PARAMS},raw},1}}
 		{+START,IF,{$NEQ,{_GUID},carousel}}
-			{$SET,ajax_block_main_gallery_embed_wrapper,ajax_block_main_gallery_embed_wrapper_{$RAND%}}
+			{$SET,ajax_block_main_gallery_embed_wrapper,ajax-block-main-gallery-embed-wrapper-{$RAND%}}
 			<div id="{$GET*,ajax_block_main_gallery_embed_wrapper}">
 				<div class="gallery-grid-cell-wrap raw-ajax-grow-spot">
 					{ENTRIES}

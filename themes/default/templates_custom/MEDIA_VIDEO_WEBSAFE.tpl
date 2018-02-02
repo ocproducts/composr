@@ -1,7 +1,7 @@
 {$REQUIRE_JAVASCRIPT,core_rich_media}
 
 {+START,SET,media}
-	{$SET,player_id,player_{$RAND}}
+	{$SET,player_id,player-{$RAND}}
 
 	{$REQUIRE_JAVASCRIPT,jquery}
 	{$REQUIRE_JAVASCRIPT,mediaelement-and-player}

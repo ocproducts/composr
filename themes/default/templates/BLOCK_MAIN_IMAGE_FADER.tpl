@@ -8,7 +8,7 @@
 			<h2>{!MEDIA}</h2>
 
 			<div class="img-thumb-wrap">
-				<a href="{GALLERY_URL*}"><img class="img-thumb" id="image_fader_{$GET%,RAND_FADER_IMAGE}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{FIRST_URL}}" alt="" /></a>
+				<a href="{GALLERY_URL*}"><img class="img-thumb" id="image-fader-{$GET%,RAND_FADER_IMAGE}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{FIRST_URL}}" alt="" /></a>
 			</div>
 		</div>
 	</div>
@@ -20,13 +20,13 @@
 			<div class="float-surrounder">
 				<div class="gallery-tease-pic-pic">
 					<div class="img-thumb-wrap">
-						<a href="{GALLERY_URL*}"><img class="img-thumb" id="image_fader_{$GET%,RAND_FADER_IMAGE}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{FIRST_URL}}" alt="" /></a>
+						<a href="{GALLERY_URL*}"><img class="img-thumb" id="image-fader-{$GET%,RAND_FADER_IMAGE}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{FIRST_URL}}" alt="" /></a>
 					</div>
 				</div>
 
-				<h2 id="image_fader_title_{$GET%,RAND_FADER_IMAGE}">{!MEDIA}</h2>
+				<h2 id="image-fader-title-{$GET%,RAND_FADER_IMAGE}">{!MEDIA}</h2>
 
-				<div class="gallery-tease-pic-teaser" id="image_fader_scrolling_text_{$GET%,RAND_FADER_IMAGE}">
+				<div class="gallery-tease-pic-teaser" id="image-fader-scrolling-text-{$GET%,RAND_FADER_IMAGE}">
 					<span aria-busy="true"><img alt="" width="20" height="20" src="{$IMG*,loading}" /></span>
 				</div>
 			</div>

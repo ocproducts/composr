@@ -1,5 +1,5 @@
 {$REQUIRE_JAVASCRIPT,jwplayer}
-{$SET,player_id,player_{$RAND}}
+{$SET,player_id,player-{$RAND}}
 
 {$SET,player_width,}
 {+START,IF_NON_EMPTY,{WIDTH}}

@@ -2,7 +2,7 @@
 {$SET,flashplayer,{$BASE_URL}/data/jwplayer.flash.swf{+START,IF,{$NOT,{$BROWSER_MATCHES,bot}}}?rand={$RAND}{+END}}
 {$SET,inline_stats,{$INLINE_STATS}}
 {+START,SET,media}
-	{$SET,player_id,player_{$RAND}}
+	{$SET,player_id,player-{$RAND}}
 
 	{$REQUIRE_JAVASCRIPT,jwplayer}
 

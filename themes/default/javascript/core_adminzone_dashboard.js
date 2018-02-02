@@ -82,8 +82,8 @@
         },
         staffBlockFlip: function () {
             var rand = this.params.randStaffLinks,
-                show = this.$('#staff_links_list_' + rand + '_form'),
-                hide = this.$('#staff_links_list_' + rand),
+                show = this.$('#staff-links-list-' + rand + '-form'),
+                hide = this.$('#staff-links-list-' + rand),
                 isHideDisplayed = $dom.isDisplayed(hide);
 
             $dom.toggleWithAria(show, isHideDisplayed);
@@ -114,7 +114,7 @@
 
         var rand = this.params.randWebsiteMonitoring;
 
-        this.tableEl = this.$('#website_monitoring_list_' + rand);
+        this.tableEl = this.$('#website-monitoring-list-' + rand);
         this.formEl = this.$('.js-form-site-watchlist');
     }
 
@@ -202,8 +202,8 @@
     $cms.views.BlockMainNotes = BlockMainNotes;
 
     $cms.templates.blockMainStaffChecklist = function (params, container) {
-        var showAllLink = document.getElementById('checklist_show_all_link'),
-            hideDoneLink = document.getElementById('checklist_hide_done_link');
+        var showAllLink = document.getElementById('checklist-show-all-link'),
+            hideDoneLink = document.getElementById('checklist-hide-done-link');
 
         setTaskHiding(true);
 

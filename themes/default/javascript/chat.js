@@ -133,7 +133,7 @@
             friend = friends[i];
 
             if (friend.onlineText !== '{!chat:ACTIVE;^}') {
-                $dom.$('#friend_img_' + friend.memberId).className = 'friend-inactive';
+                $dom.$('#friend-img-' + friend.memberId).className = 'friend-inactive';
             }
         }
 
@@ -819,13 +819,13 @@
                     case 'BECOME_ACTIVE':
                         if (window.TRANSITORY_ALERT_TIME != 0) {
                             flashableAlert = true;
-                            tmpElement = document.getElementById('online_' + memberId);
+                            tmpElement = document.getElementById('online-' + memberId);
                             if (tmpElement) {
                                 if ($dom.html(tmpElement).toLowerCase() === '{!chat:ACTIVE;^}'.toLowerCase()) {
                                     break;
                                 }
                                 $dom.html(tmpElement, '{!chat:ACTIVE;^}');
-                                var friendImg = document.getElementById('friend_img_' + memberId);
+                                var friendImg = document.getElementById('friend-img-' + memberId);
                                 if (friendImg) {
                                     friendImg.className = 'friend-active';
                                 }
@@ -833,12 +833,12 @@
                                 if (alertBoxWrap) {
                                     alertBoxWrap.style.display = 'block';
                                 }
-                                var alertBox = document.getElementById('alert_box');
+                                var alertBox = document.getElementById('alert-box');
                                 if (alertBox) {
                                     $dom.html(alertBox, '{!chat:NOW_ONLINE;^}'.replace('{' + '1}', username));
                                 }
                                 setTimeout(function () {
-                                    if (document.getElementById('alert_box')) { // If the alert box is still there, remove it
+                                    if (document.getElementById('alert-box')) { // If the alert box is still there, remove it
                                         alertBoxWrap.style.display = 'none';
                                     }
                                 }, window.TRANSITORY_ALERT_TIME);
@@ -864,7 +864,7 @@
                                 }
                                 doc = window.openedPopups['room_' + roomId].document;
                             }
-                            tmpElement = doc.getElementById('participant_online__' + roomId + '__' + memberId);
+                            tmpElement = doc.getElementById('participant-online--' + roomId + '--' + memberId);
                             if (tmpElement) {
                                 $dom.html(tmpElement, '{!chat:ACTIVE;^}');
                             }
@@ -873,13 +873,13 @@
 
                     case 'BECOME_INACTIVE':
                         var friendBeingTracked = false;
-                        tmpElement = document.getElementById('online_' + memberId);
+                        tmpElement = document.getElementById('online-' + memberId);
                         if (tmpElement) {
                             if ($dom.html(tmpElement).toLowerCase() === '{!chat:INACTIVE;^}'.toLowerCase()) {
                                 break;
                             }
                             $dom.html(tmpElement, '{!chat:INACTIVE;^}');
-                            document.getElementById('friend_img_' + memberId).className = 'friend_inactive';
+                            document.getElementById('friend-img-' + memberId).className = 'friend_inactive';
                             friendBeingTracked = true;
                         }
 
@@ -893,7 +893,7 @@
                                 }
                                 doc = window.openedPopups['room_' + roomId].document;
                             }
-                            tmpElement = doc.getElementById('participant_online__' + roomId + '__' + memberId);
+                            tmpElement = doc.getElementById('participant-online--' + roomId + '--' + memberId);
                             if (tmpElement) {
                                 $dom.html(tmpElement, '{!chat:INACTIVE;^}');
                             }
@@ -915,13 +915,13 @@
                             if (!window.openedPopups['room_' + roomId].document) break;
                             doc = window.openedPopups['room_' + roomId].document;
                         }
-                        tmpElement = doc.getElementById('participant_online__' + roomId + '__' + memberId);
+                        tmpElement = doc.getElementById('participant-online--' + roomId + '--' + memberId);
                         if (tmpElement) {
                             if ($dom.html(tmpElement).toLowerCase() === '{!chat:ACTIVE;^}'.toLowerCase()) {
                                 break;
                             }
                             $dom.html(tmpElement, '{!chat:ACTIVE;^}');
-                            document.getElementById('friend_img_' + memberId).className = 'friend-active';
+                            document.getElementById('friend-img-' + memberId).className = 'friend-active';
                         }
 
                         if (!skipIncomingSound) {
@@ -950,7 +950,7 @@
                              tmp_element = doc.getElementById('post_' + roomId);
                              if (tmp_element) tmp_element.forceInvite = member_id;
 
-                             tmp_element=doc.getElementById('participant_online__' + roomId + '__' + member_id);
+                             tmp_element=doc.getElementById('participant-online--' + roomId + '--' + member_id);
                              if (tmp_element)
                              {
                              if ($dom.html(tmp_element).toLowerCase() == '{!chat:INACTIVE;^}'.toLowerCase()) break;
@@ -1052,7 +1052,7 @@
                     doc = window.openedPopups['room_' + roomId].document;
                 }
                 if (away) {
-                    var tmpElement = doc.getElementById('online_' + memberId);
+                    var tmpElement = doc.getElementById('online-' + memberId);
                     if ((tmpElement) && ($dom.html(tmpElement).toLowerCase() === '{!chat:ACTIVE;^}'.toLowerCase())) {
                         away = false;
                     }
@@ -1079,7 +1079,7 @@
                         $dom.html(element, '');
                     }
                     element.appendChild(newParticipant);
-                    if (doc.getElementById('friend_img_' + memberId)) {
+                    if (doc.getElementById('friend-img-' + memberId)) {
                         doc.getElementById('friend__' + memberId).style.display = 'none';
                     }
                 }
@@ -1094,8 +1094,8 @@
             var lobby, count;
             if (tabs) {// Chat lobby
                 tabs.style.display = 'block';
-                if (document.getElementById('invite_ongoing_im_button')) {
-                    document.getElementById('invite_ongoing_im_button').disabled = false;
+                if (document.getElementById('invite-ongoing-im-button')) {
+                    document.getElementById('invite-ongoing-im-button').disabled = false;
                 }
                 count = countImConvos();
                 // First one?
@@ -1493,8 +1493,8 @@
                     $dom.html(tabs, '&nbsp;');
                     document.getElementById('chat-lobby-convos-tabs').style.display = 'none';
                     $dom.html('#chat-lobby-convos-areas', window.noImHtml);
-                    if (document.getElementById('invite_ongoing_im_button')) {
-                        document.getElementById('invite_ongoing_im_button').disabled = true;
+                    if (document.getElementById('invite-ongoing-im-button')) {
+                        document.getElementById('invite-ongoing-im-button').disabled = true;
                     }
                 } else {
                     chatSelectTab(document.getElementById('tab_' + findImConvoRoomIds().pop()));

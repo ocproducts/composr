@@ -1,4 +1,4 @@
-{$SET,player_id,player_{$RAND}}
+{$SET,player_id,player-{$RAND}}
 <div data-tpl="mediaRealmedia" data-tpl-params="{+START,PARAMS_JSON,player_id}{_*}{+END}">
 	{+START,IF_PASSED_AND_TRUE,FRAMED}
 	<figure>

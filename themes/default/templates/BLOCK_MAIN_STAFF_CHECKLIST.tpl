@@ -1,9 +1,9 @@
 {$REQUIRE_JAVASCRIPT,core_adminzone_dashboard}
 
-<section id="tray_{!CHECK_LIST|}" class="box box---block-main-staff-checklist" data-toggleable-tray="{ save: true }" data-tpl="blockMainStaffChecklist">
+<section id="tray-{!CHECK_LIST|}" class="box box---block-main-staff-checklist" data-toggleable-tray="{ save: true }" data-tpl="blockMainStaffChecklist">
 	<h3 class="toggleable-tray-title js-tray-header">
-		<a href="#!" id="checklist_show_all_link" class="top-left-toggle js-click-disable-task-hiding" title="{!SHOW_ALL}: {!CHECK_LIST}">{!SHOW_ALL}</a>
-		<a href="#!" id="checklist_hide_done_link" class="top-left-toggle js-click-enable-task-hiding">{!HIDE_DONE}</a>
+		<a href="#!" id="checklist-show-all-link" class="top-left-toggle js-click-disable-task-hiding" title="{!SHOW_ALL}: {!CHECK_LIST}">{!SHOW_ALL}</a>
+		<a href="#!" id="checklist-hide-done-link" class="top-left-toggle js-click-enable-task-hiding">{!HIDE_DONE}</a>
 
 		<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!CHECK_LIST}}" title="{!CONTRACT}" width="24" height="24" src="{$IMG*,icons/trays/contract2}" /></a>
 		<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!CHECK_LIST}</a>

@@ -1,4 +1,4 @@
-{$SET,player_id,player_{$RAND}}
+{$SET,player_id,player-{$RAND}}
 
 <div data-tpl="mediaQuicktime" data-tpl-params="{+START,PARAMS_JSON,player_id}{_*}{+END}">
 	{+START,IF_PASSED_AND_TRUE,FRAMED}
@@ -15,8 +15,8 @@
 		{+END}
 
 		<div class="webstandards-checker-off">
-			<object style="display: none" id="qt_event_source_{$GET*,player_id}" classid="clsid:CB927D12-4FF7-4a9e-A169-56E4B8A75598" codebase="http://www.apple.com/qtactivex/qtplugin.cab#version=7,2,1,0"></object>
-			<embed id="{$GET*,player_id}" style="behavior:url(#qt_event_source_{$GET*,player_id});" name="{$GET*,player_id}" type="video/quicktime"
+			<object style="display: none" id="qt-event-source-{$GET*,player_id}" classid="clsid:CB927D12-4FF7-4a9e-A169-56E4B8A75598" codebase="http://www.apple.com/qtactivex/qtplugin.cab#version=7,2,1,0"></object>
+			<embed id="{$GET*,player_id}" style="behavior:url(#qt-event-source-{$GET*,player_id});" name="{$GET*,player_id}" type="video/quicktime"
 				src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}"
 				autoplay="false"
 				enablejavascript="true"

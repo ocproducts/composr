@@ -2,7 +2,7 @@
 {$SET,RAND_WEBSITE_MONITORING,{$RAND}}
 
 <div class="form-ajax-target" data-view="BlockMainStaffWebsiteMonitoring" data-view-params="{+START,PARAMS_JSON,RAND_WEBSITE_MONITORING}{_*}{+END}">
-	<section id="tray_{!SITE_WATCHLIST|}" data-toggleable-tray="{ save: true }" class="box box---block-main-staff-website-monitoring">
+	<section id="tray-{!SITE_WATCHLIST|}" data-toggleable-tray="{ save: true }" class="box box---block-main-staff-website-monitoring">
 		<h3 class="toggleable-tray-title js-tray-header">
 			<a title="{!EDIT}: {!SITE_WATCHLIST}" class="top-left-toggle js-click-staff-block-flip" href="#!">{!EDIT}</a>
 
@@ -12,7 +12,7 @@
 		</h3>
 
 		<div class="toggleable-tray js-tray-content">
-			<div class="wide-table-wrap" id="website_monitoring_list_{$GET%,RAND_WEBSITE_MONITORING}"><table class="columned-table results-table wide-table autosized-table responsive-table">
+			<div class="wide-table-wrap" id="website-monitoring-list-{$GET%,RAND_WEBSITE_MONITORING}"><table class="columned-table results-table wide-table autosized-table responsive-table">
 				<thead>
 					<tr>
 						<th>{!config:SITE_NAME}</th>
@@ -35,7 +35,7 @@
 				</tbody>
 			</table></div>
 
-			<form title="{!SITE_WATCHLIST}: {!EDIT}" style="display: none" aria-hidden="true" action="{URL*}" method="post" id="website_monitoring_list_{$GET%,RAND_WEBSITE_MONITORING}_form" autocomplete="off" class="js-form-site-watchlist">
+			<form title="{!SITE_WATCHLIST}: {!EDIT}" style="display: none" aria-hidden="true" action="{URL*}" method="post" id="website-monitoring-list-{$GET%,RAND_WEBSITE_MONITORING}-form" autocomplete="off" class="js-form-site-watchlist">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				<div>

@@ -4,7 +4,7 @@
 {$SET,RAND_STAFF_LINKS,{$RAND}}
 
 <div class="form-ajax-target" data-view="BlockMainStaffLinks" data-view-params="{+START,PARAMS_JSON,RAND_STAFF_LINKS,BLOCK_NAME,MAP}{_*}{+END}">
-	<section id="tray_{!EXTERNAL_LINKS|}" data-toggleable-tray="{ save: true }" class="box box---block-main-staff-links">
+	<section id="tray-{!EXTERNAL_LINKS|}" data-toggleable-tray="{ save: true }" class="box box---block-main-staff-links">
 		<h3 class="toggleable-tray-title js-tray-header">
 			<a title="{!EDIT}: {!EXTERNAL_LINKS}" href="#!" class="top-left-toggle js-click-staff-block-flip">{!EDIT}</a>
 
@@ -14,13 +14,13 @@
 		</h3>
 
 		<div class="toggleable-tray js-tray-content">
-			<ol id="staff_links_list_{$GET%,RAND_STAFF_LINKS}" class="spaced-list">
+			<ol id="staff-links-list-{$GET%,RAND_STAFF_LINKS}" class="spaced-list">
 				{+START,LOOP,FORMATTED_LINKS}
 					<li><a target="_blank" title="{TITLE*} {!LINK_NEW_WINDOW}" href="{URL*}">{TITLE*}</a></li>
 				{+END}
 			</ol>
 
-			<form id="staff_links_list_{$GET%,RAND_STAFF_LINKS}_form" title="{!EDIT}: {!LINKS}" action="{URL*}" method="post" style="display: none" aria-hidden="true" autocomplete="off">
+			<form id="staff-links-list-{$GET%,RAND_STAFF_LINKS}_form" title="{!EDIT}: {!LINKS}" action="{URL*}" method="post" style="display: none" aria-hidden="true" autocomplete="off">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				<div><label for="staff_links_edit" class="accessibility-hidden">{!EDIT}</label><textarea cols="100" rows="30" id="staff_links_edit" name="staff_links_edit" class="wide-field">{+START,LOOP,UNFORMATTED_LINKS}{LINKS*}&#10;&#10;{+END}</textarea></div>

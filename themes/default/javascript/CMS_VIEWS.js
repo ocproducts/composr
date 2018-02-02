@@ -1360,11 +1360,11 @@
                 div.style.position = 'fixed';
                 div.style.zIndex = 10000;
                 div.style.textAlign = 'center';
-                $dom.html(div, '<div aria-busy="true" class="loading-box box"><h2>{!LOADING;^}</h2><img id="loading_image" alt="" width="20" height="20" src="{$IMG_INLINE*;,loading}" /></div>');
+                $dom.html(div, '<div aria-busy="true" class="loading-box box"><h2>{!LOADING;^}</h2><img id="loading-image" alt="" width="20" height="20" src="{$IMG_INLINE*;,loading}" /></div>');
                 setTimeout(function () {
                     // Stupid workaround for Google Chrome not loading an image on unload even if in cache
-                    if ($dom.$('#loading_image')) {
-                        $dom.$('#loading_image').src += '';
+                    if ($dom.$('#loading-image')) {
+                        $dom.$('#loading-image').src += '';
                     }
                 }, 100);
                 document.body.appendChild(div);

@@ -1,5 +1,5 @@
 {+START,IF,{$NEQ,{$COMMA_LIST_GET,{BLOCK_PARAMS},raw},1}}
-	{$SET,ajax_block_main_personal_galleries_list_wrapper,ajax_block_main_personal_galleries_list_wrapper_{$RAND%}}
+	{$SET,ajax_block_main_personal_galleries_list_wrapper,ajax-block-main-personal-galleries-list-wrapper-{$RAND%}}
 	<div id="{$GET*,ajax_block_main_personal_galleries_list_wrapper}">
 		{+START,IF_NON_EMPTY,{GALLERIES}}
 			<div class="box box---block-main-personal-galleries-list"><div class="box-inner compacted-subbox-stream">

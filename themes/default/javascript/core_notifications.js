@@ -251,7 +251,7 @@
 
         var spot, display, button, unread;
 
-        spot = document.getElementById('web_notifications_spot');
+        spot = document.getElementById('web-notifications-spot');
         if (spot) {
             display = responseXml.getElementsByTagName('display_web_notifications');
             button = document.getElementById('web-notifications-button');
@@ -263,7 +263,7 @@
             }
         }
 
-        spot = document.getElementById('pts_spot');
+        spot = document.getElementById('pts-spot');
         if (spot) {
             display = responseXml.getElementsByTagName('display_pts');
             button = document.getElementById('pts-button');
