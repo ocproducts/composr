@@ -19,9 +19,9 @@ Short URLs are enabled via the "URL Scheme" feature. In fact we have a number of
 Composr uses "page-links" for internal configuration instead of URLs because of how the URL Scheme changes how URLs are structured. The URL Scheme determines how a page-link is turned into a URL.
 
 The available URL Schemes are:
- - Use /pg/ to identify CMS pages (e.g. [tt]/pg/start[/tt])
- - Use .htm to identify CMS pages (e.g. [tt]/start.htm[/tt])
- - Very simple unadorned URLs (e.g. [tt]/start[/tt])
+ - Use /pg/ to identify CMS pages (e.g. [tt]/pg/home[/tt])
+ - Use .htm to identify CMS pages (e.g. [tt]/home.htm[/tt])
+ - Very simple unadorned URLs (e.g. [tt]/home[/tt])
 
 "Use /pg/ to identify CMS pages" is recommended for novice users because it is unambiguous and simple to set up.
 
