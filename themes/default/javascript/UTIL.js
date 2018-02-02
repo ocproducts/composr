@@ -940,6 +940,8 @@
     /**
      * Make a URL scheme-relative
      * 'http://example.com' -> '//example.com'
+     * This allows the URL to load safely on both HTTPS and HTTP
+     * We typically use this function for images pulled up using the $IMG symbol (as that provides an absolute URL, which we do not want)
      * @param url
      * @returns {string}
      */
