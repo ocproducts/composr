@@ -195,7 +195,7 @@ It is required to paste this script immediately after opening [tt]<head>[/tt] ta
 
 In either case we also need to surround it with some extra code:
 [code="Tempcode"]
-{+START,IF,{$AND,{$MATCH_KEY_MATCH,:start},{$EQ,{$_GET,version,1},1}}
+{+START,IF,{$AND,{$MATCH_KEY_MATCH,:home},{$EQ,{$_GET,version,1},1}}
 ... (original code goes here) ...
 {+END}
 [/code]
@@ -232,15 +232,15 @@ This extra code contextualises it to just the page we want it on, as we will be 
 
 We still need to serve users either the original or the variant somehow (our two "versions").
 
-Recall we used [tt]http://ocportal.com/start.htm[/tt] as original URL and [tt]http://ocportal.com/start.htm?version=2[/tt] as the variate URL.
+Recall we used [tt]http://ocportal.com/home.htm[/tt] as original URL and [tt]http://ocportal.com/home.htm?version=2[/tt] as the variate URL.
 
-In Composr, these two versions can be configured in a single Comcode page, [tt]start[/tt]. You can use Tempcode to create the two scenarios in the file.
+In Composr, these two versions can be configured in a single Comcode page, [tt]home[/tt]. You can use Tempcode to create the two scenarios in the file.
 
 Here is an example of a page:
 [code="Comcode"]
 [semihtml]
 {+START,IF,{$EQ,{$_GET,version,1},1}}
-	[staff_note]Shown for http://ocportal.com/start.htm or http://ocportal.com/start.htm?version=1[/staff_note]
+	[staff_note]Shown for http://ocportal.com/home.htm or http://ocportal.com/home.htm?version=1[/staff_note]
 
 	<p>We'd like you to make a donation:</p>
 	<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
@@ -257,7 +257,7 @@ Here is an example of a page:
 {+END}
 
 {+START,IF,{$EQ,{$_GET,version,1},2}}
-	[staff_note]Shown for http://ocportal.com/start.htm?version=2[/staff_note]
+	[staff_note]Shown for http://ocportal.com/home.htm?version=2[/staff_note]
 
 	<p>Donations help pay for our political campaign. Maybe you could help us out with a donation?</p>
 

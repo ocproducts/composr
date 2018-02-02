@@ -30,7 +30,7 @@ global3.php contains further support functions, which are shared between the ins
 function init__global3()
 {
     if (!defined('DEFAULT_ZONE_PAGE_NAME')) {
-        define('DEFAULT_ZONE_PAGE_NAME', 'home');
+        define('DEFAULT_ZONE_PAGE_NAME', 'home'); // We try and make this a constant. However it is in some .txt and .xml files
     }
 
     global $PAGE_NAME_CACHE;

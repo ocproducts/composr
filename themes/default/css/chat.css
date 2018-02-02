@@ -179,7 +179,6 @@
 .chat-message {
 	border: 1px solid {$GET,pale_border};
 	background-image: linear-gradient(to bottom, {$GET,area_background}, {$GET,area_2_background});
-	background-color: {$GET,area_background};
 	padding: 0.5em;
 	margin: 1em 0;
 	overflow: hidden;
@@ -310,8 +309,7 @@
 }
 
 .chat-lobby-convos-tab-uptodate, .chat-lobby-convos-tab-new-messages {
-	background: url('{$IMG;,tabs/tab}');
-	background-repeat: no-repeat;
+	background: url('{$IMG;,tabs/tab}') no-repeat;
 	float: left;
 	padding: 3px 5px 0 5px;
 	height: 20px;

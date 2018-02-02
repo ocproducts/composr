@@ -104,13 +104,13 @@
 .generate-page-sitemap-screen ul.page-structure>li,
 .generate-page-sitemap-screen ul.page-structure>li>ul.page-structure>li>ul.page-structure>li,
 .generate-page-sitemap-screen ul.page-structure>li>ul.page-structure>li>ul.page-structure>li>ul.page-structure>li>ul.page-structure>li {
-	background: {$GET,area_3_background};
+	background-color: {$GET,area_3_background};
 }
 
 .generate-page-sitemap-screen ul.page-structure>li>ul.page-structure>li,
 .generate-page-sitemap-screen ul.page-structure>li>ul.page-structure>li>ul.page-structure>li>ul.page-structure>li,
 .generate-page-sitemap-screen ul.page-structure>li>ul.page-structure>li>ul.page-structure>li>ul.page-structure>li>ul.page-structure>li>ul.page-structure>li {
-	background: {$GET,area_5_background};
+	background-color: {$GET,area_5_background};
 }
 
 .generate-page-sitemap-screen .page-structure .page-state span {
@@ -119,7 +119,7 @@
 	margin-left: 2em;
 	display: inline-block;
 	border: 1px solid {$GET,light_error_border};
-	background: {$GET,light_error_background};
+	background-color: {$GET,light_error_background};
 }
 
 .generate-page-sitemap-screen ul.page-structure ul.menu-links {

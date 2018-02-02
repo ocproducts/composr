@@ -10,7 +10,7 @@
 
 				<p class="vertical-alignment">{!PERMISSIONS_TREE_EDITOR_ABOUT_BARRIERS,<img width="6" height="6" src="{$IMG*,led/on}" alt="" />}</p>
 
-				<p class="vertical-alignment">{!PERMISSIONS_TREE_EDITOR_ABOUT_GROUP,<img width="30" src="{$IMG*,perm_levels/3}" alt="" />}</p>
+				<p class="vertical-alignment">{!PERMISSIONS_TREE_EDITOR_ABOUT_GROUP,<img width="29" height="17" src="{$IMG*,perm_levels/3}" alt="" />}</p>
 
 				<p class="pte-tips">{!PERMISSIONS_TREE_EDITOR_ABOUT_MULTI_SELECT}</p>
 
@@ -28,7 +28,7 @@
 					<div class="pte-icon-box">
 						<div class="box box---permissions-tree-editor-screen"><div class="box-inner">
 							<form title="{!CHOOSE} {!USERGROUP}" action="index.php" method="post" autocomplete="off">
-								<img alt="" width="20" src="{$IMG*,pte_view_help}" /><strong><label for="group">{!PERMISSIONS_TREE_EDITOR_ICON_LABEL}:</label></strong>
+								<img alt="" width="19" height="11" src="{$IMG*,pte_view_help}" /><strong><label for="group">{!PERMISSIONS_TREE_EDITOR_ICON_LABEL}:</label></strong>
 								<select id="group" name="group" class="js-click-update-group js-change-update-group">
 									{GROUPS}
 								</select>

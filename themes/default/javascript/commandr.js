@@ -118,7 +118,7 @@
         if ($cms.form.isModSecurityWorkaroundEnabled()) {
             post = $cms.form.modSecurityWorkaroundAjax(post);
         }
-        $cms.doAjaxRequest('{$FIND_SCRIPT;,commandr}' + $cms.keep(true, true), commandrCommandResponse, post);
+        $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,commandr}' + $cms.keep(true, true), commandrCommandResponse, post);
 
         window.disableTimeout = setTimeout(function () {
             document.getElementById('commandr-command').disabled = false;

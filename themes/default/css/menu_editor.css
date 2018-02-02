@@ -36,7 +36,7 @@
 		position: fixed;
 		left: 0;
 		bottom: 0;
-		background: {$GET,floating_section_background};
+		background-color: {$GET,floating_section_background};
 		font-size: 0.9em;
 		width: 100%;
 		padding: 0 0.5em;
@@ -108,7 +108,7 @@ Branch layout
  .menu-editor-branch {
 	border: 1px solid {$GET,standard_border};
 	margin-top: -1px;
-	background: {$GET,area_3_background};
+	background-color: {$GET,area_3_background};
 }
 
 .menu-editor-branch-inner {

@@ -577,8 +577,8 @@ class Module_filedump
             $max_filesize = floatval(get_max_file_size());
             $text = new Tempcode();
             if ($max_filesize < 30.0) {
-                $config_url = get_upload_limit_config_url();
-                $text->attach(do_lang_tempcode(($config_url === null) ? 'MAXIMUM_UPLOAD' : 'MAXIMUM_UPLOAD_STAFF', escape_html(($max_filesize > 10.0) ? integer_format(intval($max_filesize)) : float_format($max_filesize / 1024.0 / 1024.0)), escape_html(($config_url === null) ? '' : $config_url)));
+                require_code('files2');
+                $text->attach(get_maximum_upload_message($max));
             }
 
             $fields = new Tempcode();

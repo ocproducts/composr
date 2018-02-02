@@ -3,7 +3,7 @@
 [media width="150" description="Add new zone form" float="right"]data_custom/images/docs/sup_add_a_new_zone_in_composr/0b91c18c872c56132c4c3070cb4b08d6.png[/media]
 Zones are a key element to the structure of any Composr built website and are a great way of sectioning off your content into different areas. For example a games related website might have a zone for PC games, one for Xbox games, another for PS3, and so on. A business site may have sections dedicated to the different spheres of influence it deals with.
 
-A zone will traditionally have a URL similar to [tt]http://yourbaseurl/zone-name/start.htm[/tt] if you have set up the new style Short URLS. Adding a new zone is a fairly simple process which I will show below.
+A zone will traditionally have a URL similar to [tt]http://yourbaseurl/zone-name/home.htm[/tt] if you have set up the new style Short URLS. Adding a new zone is a fairly simple process which I will show below.
 
 [title="2"]Adding a new zone step by step process[/title]
 
@@ -32,7 +32,7 @@ The first section of the form is where you will fill in the main details of your
 
 [b]Title[/b] -- this is the title which will be used for the new zone
 
-[b]Default page[/b] -- This will be set as default to [tt]start[/tt] which means the starting page will be named [tt]start[/tt]. You can set this to whatever you want but I recommend sticking with [tt]start[/tt] or using [tt]index[/tt] but which ever you choose you should try to stick to the same system for all of your site zones unless you have good reason to do otherwise.
+[b]Default page[/b] -- This will be set as default to [tt]home[/tt] which means the starting page will be named [tt]home[/tt]. You can set this to whatever you want but I recommend sticking with [tt]home[/tt] or using [tt]index[/tt] but which ever you choose you should try to stick to the same system for all of your site zones unless you have good reason to do otherwise.
 
 [b]Header text[/b] -- this is some text which will be appended as a slogan to all new pages in the new zone.
 

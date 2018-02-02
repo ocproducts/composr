@@ -65,10 +65,6 @@ function require_javascript($javascript)
  */
 function javascript_enforce($j, $theme = null, $allow_defer = false)
 {
-    if (get_param_integer('keep_textonly', 0) == 1) {
-        return '';
-    }
-
     list($minify, $https, $mobile) = _get_web_resources_env();
 
     global $SITE_INFO;
@@ -77,24 +73,26 @@ function javascript_enforce($j, $theme = null, $allow_defer = false)
     if ($theme === null) {
         $theme = @method_exists($GLOBALS['FORUM_DRIVER'], 'get_theme') ? $GLOBALS['FORUM_DRIVER']->get_theme() : 'default';
     }
-    $dir = get_custom_file_base() . '/themes/' . $theme . '/templates_cached/' . filter_naughty(user_lang());
+    $js_cache_stem = get_custom_file_base() . '/themes/' . $theme . '/templates_cached/' . filter_naughty(user_lang());
     if ((!isset($SITE_INFO['no_disk_sanity_checks'])) || ($SITE_INFO['no_disk_sanity_checks'] != '1')) {
-        if (!is_dir($dir)) {
+        if (!is_dir($js_cache_stem)) {
             require_code('files2');
-            make_missing_directory($dir);
+            make_missing_directory($js_cache_stem);
         }
     }
-    $js_cache_path = $dir . '/' . filter_naughty($j);
+    $js_cache_stem .= '/';
+    $js_cache_stub = '';
     if (!$minify) {
-        $js_cache_path .= '_non_minified';
+        $js_cache_stub .= '_non_minified';
     }
     if ($https) {
-        $js_cache_path .= '_ssl';
+        $js_cache_stub .= '_ssl';
     }
     if ($mobile) {
-        $js_cache_path .= '_mobile';
+        $js_cache_stub .= '_mobile';
     }
-    $js_cache_path .= '.js';
+    $js_cache_stub .= '.js';
+    $js_cache_path = $js_cache_stem . filter_naughty($j) . $js_cache_stub;
 
     global $CACHE_TEMPLATES;
     $support_smart_decaching = support_smart_decaching();
@@ -115,6 +113,23 @@ function javascript_enforce($j, $theme = null, $allow_defer = false)
         $full_path = get_custom_file_base() . '/themes/' . $theme . $found[1] . $j . $found[2];
         if (!is_file($full_path)) {
             $full_path = get_file_base() . '/themes/' . $theme . $found[1] . $j . $found[2];
+        }
+
+        // Caching support for global.js (this is a FUDGE to hard-code this)
+        if ($j == 'global') {
+            $js_source_stem = get_file_base() . '/themes/default/javascript/';
+            $js_source_stub = '.js';
+            $deps = array(
+                $js_source_stem . 'UTIL' . $js_source_stub,
+                $js_source_stem . 'DOM' . $js_source_stub,
+                $js_source_stem . 'CMS' . $js_source_stub,
+                $js_source_stem . 'CMS_FORM' . $js_source_stub,
+                $js_source_stem . 'CMS_UI' . $js_source_stub,
+                $js_source_stem . 'CMS_TEMPLATES' . $js_source_stub,
+                $js_source_stem . 'CMS_VIEWS' . $js_source_stub,
+                $js_source_stem . 'CMS_BEHAVIORS' . $js_source_stub,
+            );
+            $SITE_INFO['dependency__' . $full_path] = implode(',', $deps);
         }
     }
 
@@ -273,11 +288,6 @@ function require_css($css)
  */
 function css_enforce($c, $theme = null, $allow_defer = false)
 {
-    $text_only = (get_param_integer('keep_textonly', 0) == 1);
-    if ($text_only) {
-        $c .= '_textonly';
-    }
-
     list($minify, $https, $mobile) = _get_web_resources_env();
 
     global $SITE_INFO;
@@ -316,7 +326,7 @@ function css_enforce($c, $theme = null, $allow_defer = false)
         gae_optimistic_cache(false);
     }
 
-    if (($support_smart_decaching) || (!$is_cached) || ($text_only)) {
+    if (($support_smart_decaching) || (!$is_cached)) {
         $found = find_template_place($c, '', $theme, '.css', 'css');
         if ($found === null) {
             return '';
@@ -325,9 +335,6 @@ function css_enforce($c, $theme = null, $allow_defer = false)
         $full_path = get_custom_file_base() . '/themes/' . $theme . $found[1] . $c . $found[2];
         if (!is_file($full_path)) {
             $full_path = get_file_base() . '/themes/' . $theme . $found[1] . $c . $found[2];
-        }
-        if (($text_only) && (!is_file($full_path))) {
-            return '';
         }
     }
 
@@ -394,7 +401,7 @@ function css_tempcode($inline = false, $only_global = false, $context = null, $t
             $c = strval($c);
         }
 
-        _css_tempcode($c, $css, $css_need_inline, $inline, $context, $theme, $seed, null, null, null, null, $do_enforce);
+        _css_tempcode($c, $css, $css_need_inline, $inline, $context, $theme, $seed, null, null, null, $do_enforce);
     }
     $css_need_inline->attach($css);
     return $css_need_inline;
@@ -410,7 +417,6 @@ function css_tempcode($inline = false, $only_global = false, $context = null, $t
  * @param  ?string $context HTML context for which we filter (minimise) any CSS we spit out as inline (null: none)
  * @param  ?ID_TEXT $theme The name of the theme (null: current theme) (null: from what is cached)
  * @param  ?ID_TEXT $_seed The seed colour (null: previous cached) (blank: none) (null: from what is cached)
- * @param  ?boolean $_text_only Whether operating in text-only mode (null: from what is cached)
  * @param  ?boolean $_minify Whether minifying (null: from what is cached)
  * @param  ?boolean $_https Whether doing HTTPS (null: from what is cached)
  * @param  ?boolean $_mobile Whether operating in mobile mode (null: from what is cached)
@@ -418,34 +424,25 @@ function css_tempcode($inline = false, $only_global = false, $context = null, $t
  *
  * @ignore
  */
-function _css_tempcode($c, &$css, &$css_need_inline, $inline = false, $context = null, $theme = null, $_seed = null, $_text_only = null, $_minify = null, $_https = null, $_mobile = null, $do_enforce = true)
+function _css_tempcode($c, &$css, &$css_need_inline, $inline = false, $context = null, $theme = null, $_seed = null, $_minify = null, $_https = null, $_mobile = null, $do_enforce = true)
 {
-    static $text_only = null;
-    if ($_text_only !== null) {
-        $text_only = $_text_only;
-    } elseif ($text_only === null) {
-        $text_only = (get_param_integer('keep_textonly', 0) == 1);
-    }
-
     list($minify, $https, $mobile, $seed) = _get_web_resources_env($_seed, $_minify, $_https, $_mobile);
 
     if ($seed != '') {
         $keep = symbol_tempcode('KEEP');
         $css->attach(do_template('CSS_NEED_FULL', array('_GUID' => 'f2d7f0303a08b9aa9e92f8b0208ee9a7', 'URL' => find_script('themewizard') . '?type=css&show=' . urlencode($c) . '.css' . $keep->evaluate()), user_lang(), false, null, '.tpl', 'templates', $theme));
     } elseif (($c == 'no_cache') || ($inline)) {
-        if (!$text_only) {
-            if ($context !== null) {
-                require_code('mail');
-                $__css = filter_css($c, $theme, $context);
-            } else {
-                $_css = do_template($c, null, user_lang(), false, null, '.css', 'css', $theme);
-                $__css = $_css->evaluate();
-                $__css = str_replace('} ', '}' . "\n", preg_replace('#\s+#', ' ', $__css));
-            }
+        if ($context !== null) {
+            require_code('mail');
+            $__css = filter_css($c, $theme, $context);
+        } else {
+            $_css = do_template($c, null, user_lang(), false, null, '.css', 'css', $theme);
+            $__css = $_css->evaluate();
+            $__css = str_replace('} ', '}' . "\n", preg_replace('#\s+#', ' ', $__css));
+        }
 
-            if (trim($__css) != '') {
-                $css_need_inline->attach(do_template('CSS_NEED_INLINE', array('_GUID' => 'f5b225e080c633ffa033ec5af5aec866', 'CODE' => $__css), user_lang(), false, null, '.tpl', 'templates', $theme));
-            }
+        if (trim($__css) != '') {
+            $css_need_inline->attach(do_template('CSS_NEED_INLINE', array('_GUID' => 'f5b225e080c633ffa033ec5af5aec866', 'CODE' => $__css), user_lang(), false, null, '.tpl', 'templates', $theme));
         }
     } else {
         $temp = $do_enforce ? css_enforce($c, $theme, (!running_script('sheet')) && ($context === null) && ($_minify === null) && ($_https === null) && ($_mobile === null)) : '';

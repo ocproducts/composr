@@ -561,6 +561,18 @@ function get_directory_size($path, $recurse = true)
 }
 
 /**
+ * Get a message for maximum uploads.
+ *
+ * @param  integer $max Maximum size in MB
+ * @return Tempcode The message
+ */
+function get_maximum_upload_message($max)
+{
+    $config_url = get_upload_limit_config_url();
+    return paragraph(do_lang_tempcode(($config_url === null) ? 'MAXIMUM_UPLOAD' : 'MAXIMUM_UPLOAD_STAFF', escape_html(($max > 10.0) ? integer_format(intval($max)) : float_format($max)), escape_html(($config_url === null) ? '' : $config_url)));
+}
+
+/**
  * Get the URL to the config option group for editing limits.
  *
  * @return ?URLPATH The URL to the config option group for editing limits (null: no access)

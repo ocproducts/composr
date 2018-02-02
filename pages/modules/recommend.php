@@ -130,24 +130,9 @@ class Module_recommend
             inform_non_canonical_parameter('from', false);
             inform_non_canonical_parameter('title', false);
             inform_non_canonical_parameter('cms', false);
-
-            $page_title = get_param_string('page_title', null, INPUT_FILTER_GET_COMPLEX);
-            if (get_param_string('from', null, INPUT_FILTER_URL_INTERNAL) !== null) {
-                if ($page_title === null) {
-                    $this->title = get_screen_title('RECOMMEND_LINK');
-                } else {
-                    $this->title = get_screen_title($page_title, false);
-                }
-            } else {
-                if ($page_title === null) {
-                    $this->title = get_screen_title('_RECOMMEND_SITE', true, array(escape_html(get_site_name())));
-                } else {
-                    $this->title = get_screen_title($page_title, false);
-                }
-            }
         }
 
-        if ($type == 'gui2') {
+        if (($type == 'browse') || ($type == 'gui2')) {
             $page_title = get_param_string('page_title', null, INPUT_FILTER_GET_COMPLEX);
             if (get_param_string('from', null, INPUT_FILTER_URL_INTERNAL) !== null) {
                 if ($page_title === null) {

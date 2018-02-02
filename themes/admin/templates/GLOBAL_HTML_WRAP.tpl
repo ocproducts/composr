@@ -30,7 +30,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 
 			<div class="admin-navigation">
 				{+START,IF,{$HAS_ZONE_ACCESS,adminzone}}
-					{$SET,admin_menu_string,adminzone:{$DEFAULT_ZONE_PAGE_NAME}\,include=node\,title={!menus:DASHBOARD}\,icon=menu/adminzone/home + adminzone:\,include=children\,max_recurse_depth=4\,use_page_groupings=1 + cms:\,include=node\,max_recurse_depth=3\,use_page_groupings=1,type={$?,{$MOBILE},mobile,dropdown}}
+					{$SET,admin_menu_string,adminzone:{$DEFAULT_ZONE_PAGE_NAME}\,include=node\,title={!menus:DASHBOARD}\,icon=menu/adminzone/{$DEFAULT_ZONE_PAGE_NAME} + adminzone:\,include=children\,max_recurse_depth=4\,use_page_groupings=1 + cms:\,include=node\,max_recurse_depth=3\,use_page_groupings=1,type={$?,{$MOBILE},mobile,dropdown}}
 				{+END}
 				{+START,IF,{$NOT,{$HAS_ZONE_ACCESS,adminzone}}}
 					{$SET,admin_menu_string,site:{$DEFAULT_ZONE_PAGE_NAME}\,include=node\,title={!HOME}\,icon=close + cms:\,include=node\,max_recurse_depth=3\,use_page_groupings=1,type={$?,{$MOBILE},mobile,dropdown}}

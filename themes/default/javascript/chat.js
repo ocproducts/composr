@@ -561,7 +561,7 @@
             }
 
             // Send it through XMLHttpRequest, and append the results.
-            var url = '{$FIND_SCRIPT;,messages}?action=post';
+            var url = '{$FIND_SCRIPT_NOHTTP;,messages}?action=post';
             element.disabled = true;
             window.topWindow.currentlySendingMessage = true;
             var fullUrl = $cms.maintainThemeInLink(url + window.topWindow.$cms.keep());
@@ -626,9 +626,9 @@
             var url;
             var _roomId = (window.loadFromRoomId == null) ? -1 : window.loadFromRoomId;
             if (backlog) {
-                url = '{$FIND_SCRIPT;,messages}?action=all&room_id=' + encodeURIComponent(_roomId);
+                url = '{$FIND_SCRIPT_NOHTTP;,messages}?action=all&room_id=' + encodeURIComponent(_roomId);
             } else {
-                url = '{$FIND_SCRIPT;,messages}?action=new&room_id=' + encodeURIComponent(_roomId) + '&message_id=' + encodeURIComponent(messageId ? messageId : '-1') + '&event_id=' + encodeURIComponent(eventId);
+                url = '{$FIND_SCRIPT_NOHTTP;,messages}?action=new&room_id=' + encodeURIComponent(_roomId) + '&message_id=' + encodeURIComponent(messageId ? messageId : '-1') + '&event_id=' + encodeURIComponent(eventId);
             }
             if ($cms.pageUrl().searchParams.get('no_reenter_message') === '1') {
                 url = url + '&no_reenter_message=1';
@@ -1363,7 +1363,7 @@
             div.className = 'loading-overlay';
             $dom.html(div, '{!LOADING;^}');
             document.body.appendChild(div);
-            $cms.doAjaxRequest($cms.maintainThemeInLink('{$FIND_SCRIPT;,messages}?action=start_im&message_id=' + encodeURIComponent((window.topWindow.lastMessageId === null) ? -1 : window.topWindow.lastMessageId) + '&mayRecycle=' + (mayRecycle ? '1' : '0') + '&event_id=' + encodeURIComponent(window.topWindow.lastEventId) + $cms.keep()), function (responseXml) {
+            $cms.doAjaxRequest($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,messages}?action=start_im&message_id=' + encodeURIComponent((window.topWindow.lastMessageId === null) ? -1 : window.topWindow.lastMessageId) + '&mayRecycle=' + (mayRecycle ? '1' : '0') + '&event_id=' + encodeURIComponent(window.topWindow.lastEventId) + $cms.keep()), function (responseXml) {
                 var result = responseXml.querySelector('result');
                 if (result) {
                     window.instantGo = true;
@@ -1381,7 +1381,7 @@
         if (!roomId) {
             $cms.ui.alert('{!chat:NO_IM_ACTIVE;^}');
         } else {
-            $cms.doAjaxRequest('{$FIND_SCRIPT;,messages}?action=invite_im' + $cms.keep(), null, 'room_id=' + encodeURIComponent(roomId) + '&people=' + people);
+            $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,messages}?action=invite_im' + $cms.keep(), null, 'room_id=' + encodeURIComponent(roomId) + '&people=' + people);
         }
     }
 
@@ -1427,7 +1427,7 @@
             function (logs) {
                 if (logs.toLowerCase() !== '{!INPUTSYSTEM_CANCEL*;^}'.toLowerCase()) {
                     if (logs.toLowerCase() === '{!YES*;^}'.toLowerCase()) {
-                        window.open('{$FIND_SCRIPT*;,download_chat_logs}?room=' + roomId + '{$KEEP*;^}');
+                        window.open('{$FIND_SCRIPT_NOHTTP;,download_chat_logs}?room=' + roomId + '{$KEEP*;^}');
                         deinvolveIm(roomId, true, isPopup);
                         return;
                     }
@@ -1471,7 +1471,7 @@
         }
 
         setTimeout(function ()  { // Give time for any logs to download (download does not need to have finished - but must have loaded into a request response on the server side)
-            window.topWindow.$cms.doAjaxRequest('{$FIND_SCRIPT;,messages}?action=deinvolve_im' + window.topWindow.$cms.keep(), null, 'room_id=' + encodeURIComponent(roomId)); // Has to be on topWindow or it will be lost if the window was explicitly closed (it is unloading mode and doesn't want to make a new request)
+            window.topWindow.$cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,messages}?action=deinvolve_im' + window.topWindow.$cms.keep(), null, 'room_id=' + encodeURIComponent(roomId)); // Has to be on topWindow or it will be lost if the window was explicitly closed (it is unloading mode and doesn't want to make a new request)
 
             if (participants) {
                 window.topWindow.allConversations[participants] = null;

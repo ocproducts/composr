@@ -215,7 +215,7 @@ The "Template names as HTML comments" HTML comments look something like this...
 <!-- START-TEMPLATE=MENU_BRANCH_popup -->
 <div class="non-current-page-2">
    <!-- START-TEMPLATE=HYPERLINK -->
-   <a href="http://example.com/start.htm">Welcome</a>
+   <a href="http://example.com/home.htm">Welcome</a>
    <!-- END-TEMPLATE=HYPERLINK -->
 <div style="display: none">, </div>
 

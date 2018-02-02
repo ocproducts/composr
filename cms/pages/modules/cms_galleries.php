@@ -351,8 +351,7 @@ class Module_cms_galleries extends Standard_crud_module
         require_code('files2');
         $max = floatval(get_max_file_size()) / floatval(1024 * 1024);
         if ($max < 30.0) {
-            $config_url = get_upload_limit_config_url();
-            $text = paragraph(do_lang_tempcode(($config_url === null) ? 'MAXIMUM_UPLOAD' : 'MAXIMUM_UPLOAD_STAFF', escape_html(($max > 10.0) ? integer_format(intval($max)) : float_format($max)), escape_html(($config_url === null) ? '' : $config_url)));
+            $text = get_maximum_upload_message($max);
         } else {
             $text = new Tempcode();
         }

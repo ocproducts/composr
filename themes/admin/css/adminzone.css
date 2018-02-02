@@ -23,8 +23,7 @@ header {
 	.admin-navigation {
 		border-top: 1px solid {$GET,standard_border};
 		border-bottom: 1px solid {$GET,standard_border};
-		background-color: {$GET,lgrad};
-		background-image: linear-gradient(to bottom\, {$GET,lgrad}\, {$GET,dgrad}) !important;
+		background-image: linear-gradient(to bottom\, {$GET,lgrad}\, {$GET,dgrad});
 		color: {$GET,WB};
 		min-height: 3.4em;
 		position: relative;

@@ -5,23 +5,23 @@
 ]>
 <svg version="1.1"
 	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
-	 x="0px" y="0px" width="38px" height="36px" viewBox="-5.003 -2.137 38 36" enable-background="new -5.003 -2.137 38 36"
-	 xml:space="preserve">
+	 x="0px" y="0px" width="36px" height="36px" viewBox="0 0 36 36" enable-background="new 0 0 36 36" xml:space="preserve">
 <defs>
 </defs>
-<path fill="#52CAF5" d="M12.679,31.945c-0.033,0.008-6.792,0-8.886,0C1.697,31.945,0,30.248,0,28.154v-8.126
-	c0-2.095,0.848-3.792,2.943-3.792h5.945c2.094,0,3.791,1.697,3.791,3.792V31.945z"/>
-<path fill="#C8691C" d="M3.805,31.937c2.095,0,4.065,0.042,3.793-3.76L7.583,0.003h-0.79l0.013,27.293
-	C6.954,30.994,3.805,31.937,3.805,31.937"/>
-<path fill="#F79523" d="M7.584,0v28.154c0,1.688-1.108,3.3-2.633,3.791h17.516c0,0,3.415,0.447,4.84-1.487
-	c1.382-1.876,1.274-4.246,1.274-4.246V0H7.584z"/>
-<rect x="9.434" y="2.475" fill="#FFFFFF" width="17.278" height="6.318"/>
-<rect x="9.741" y="11.763" fill="#FFFFFF" width="7.358" height="1.274"/>
-<rect x="9.741" y="15.16" fill="#FFFFFF" width="7.358" height="1.273"/>
-<rect x="9.741" y="18.556" fill="#FFFFFF" width="7.358" height="1.273"/>
-<rect x="9.741" y="21.954" fill="#FFFFFF" width="7.358" height="1.273"/>
-<rect x="19.081" y="11.763" fill="#FFFFFF" width="7.361" height="1.274"/>
-<rect x="19.081" y="15.16" fill="#FFFFFF" width="7.361" height="1.273"/>
-<rect x="19.081" y="18.556" fill="#FFFFFF" width="7.361" height="1.273"/>
-<rect x="19.081" y="21.954" fill="#FFFFFF" width="7.361" height="1.273"/>
+<rect opacity="0" fill="#FFFFFF" width="36" height="36"/>
+<path fill="#56CAF5" d="M15.747,34.258c-0.036,0.009-7.386,0-9.664,0c-2.279,0-4.125-1.846-4.125-4.123v-8.837
+	c0-2.277,0.922-4.124,3.2-4.124h6.465c2.277,0,4.123,1.846,4.123,4.124V34.258L15.747,34.258z"/>
+<path fill="#C86B28" d="M6.097,34.249c2.278,0,4.42,0.045,4.125-4.09L10.205,1.697H9.346L9.36,29.202
+	C9.521,33.224,6.097,34.249,6.097,34.249"/>
+<path fill="#F89624" d="M10.206,1.693v28.441c0,1.836-1.205,3.589-2.863,4.123h20.048c0,0,3.713,0.486,5.264-1.617
+	c1.504-2.04,1.385-4.618,1.385-4.618V1.693H10.206z"/>
+<rect x="12.218" y="3.297" fill="#FFFFFF" width="18.788" height="6.871"/>
+<rect x="12.552" y="12.311" fill="#FFFFFF" width="8.003" height="1.385"/>
+<rect x="12.552" y="16.004" fill="#FFFFFF" width="8.003" height="1.384"/>
+<rect x="12.552" y="19.698" fill="#FFFFFF" width="8.003" height="1.384"/>
+<rect x="12.552" y="23.393" fill="#FFFFFF" width="8.003" height="1.384"/>
+<rect x="22.708" y="12.311" fill="#FFFFFF" width="8.005" height="1.385"/>
+<rect x="22.708" y="16.004" fill="#FFFFFF" width="8.005" height="1.384"/>
+<rect x="22.708" y="19.698" fill="#FFFFFF" width="8.005" height="1.384"/>
+<rect x="22.708" y="23.393" fill="#FFFFFF" width="8.005" height="1.384"/>
 </svg>

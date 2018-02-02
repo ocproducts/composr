@@ -6,7 +6,7 @@
 .email-body {
 	font-size: 13px;
 
-	background: {$GET,area_5_background};
+	background-color: {$GET,area_5_background};
 	padding: 1em;
 	border: 1px solid {$GET,pale_border};
 }

@@ -406,7 +406,7 @@
 
         if (validIdRE.test(scriptNameOrSrc)) {
             scriptName = scriptNameOrSrc;
-            scriptSrc = $util.srl('{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + scriptName + $cms.keep());
+            scriptSrc = $util.srl('{$FIND_SCRIPT_NOHTTP;,script}?script=' + scriptName + $cms.keep());
         } else {
             scriptSrc = $util.srl(scriptNameOrSrc);
         }

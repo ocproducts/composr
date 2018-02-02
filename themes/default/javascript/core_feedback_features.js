@@ -230,7 +230,7 @@
                 }
 
                 submitBtn.disabled = true;
-                var url = '{$FIND_SCRIPT;,snippet}?snippet=captcha_wrong&name=' + encodeURIComponent(value);
+                var url = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=captcha_wrong&name=' + encodeURIComponent(value);
                 e.preventDefault();
                 $cms.form.doAjaxFieldTest(url).then(function (valid) {
                     if (valid) {
@@ -401,7 +401,7 @@
                 }
             }
             post += '&post=' + encodeURIComponent(postValue);
-            $cms.doAjaxRequest('{$FIND_SCRIPT;,post_comment}' + $cms.keep(true), null, post).then(function (xhr) {
+            $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,post_comment}' + $cms.keep(true), null, post).then(function (xhr) {
                 if ((xhr.responseText !== '') && (xhr.status !== 500)) {
                     // Display
                     var oldAction = commentsForm.action;

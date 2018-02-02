@@ -217,8 +217,7 @@
                     }, 1000);
 
                     temp = currentListForCopy.onblur;
-                    currentListForCopy.onblur = function () {
-                    };
+                    currentListForCopy.onblur = function () {};
                     list.focus();
                     currentListForCopy.onblur = temp;
                     if (!currentListForCopy.downOnce) {

@@ -11,12 +11,12 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 
 .modern-tabs {
 	border: 1px solid {$GET,dark_border};
-	background: {$GET,WB};
+	background-color: {$GET,WB};
 }
 
 .modern-tab-headers {
 	overflow: hidden;
-	background: {$GET,box_title_background};
+	background-color: {$GET,box_title_background};
 }
 
 .modern-tab-headers>div {
@@ -36,7 +36,7 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 }
 
 .modern-tab-headers>div.tab-active {
-	background: {$GET,WB};
+	background-color: {$GET,WB};
 	color: {$GET,seed};
 }
 
@@ -105,7 +105,7 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 
 .modern-tabs .modern-tabs .modern-tab-headers {
 	overflow: hidden;
-	background: {$GET,box_title_background_2};
+	background-color: {$GET,box_title_background_2};
 }
 
 .modern-tabs .modern-tabs .modern-tab-headers>div>a {
@@ -116,7 +116,7 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 
 .modern-subtabs {
 	border: 0;
-	background: {$GET,area_background} url('{$IMG;,tabs/modern_subtab_header_column}') repeat-y;
+	background-color: {$GET,area_background} url('{$IMG;,tabs/modern_subtab_header_column}') repeat-y;
 	background-size: 150px 1px;
 	overflow: hidden;
 }

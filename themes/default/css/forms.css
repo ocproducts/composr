@@ -180,7 +180,6 @@ th.form-table-field-name, /* Extra specificity to take precedence over th.de-th 
 	border: 1px solid {$GET,pale_border};
 	color: {$GET,slightly_seeded_text} !important;
 	padding: 0.5em 0.75em;
-	background-color: {$GET,area_background} !important; /* !important is so has priority over .de-th */
 	background-image: linear-gradient(to bottom, {$GET,area_background}, {$GET,area_2_background});
 }
 .form-table-field-input>div:first-child>p:first-child {
@@ -236,14 +235,12 @@ th.form-table-field-name a, /* Extra specificity to take precedence over th.de-t
 
 .form-table .required {
 	/*	Style rather extreme, but re-enable if you wish
-	background-color: {$GET,required_background} !important;
 	background-image: linear-gradient(to bottom, {$GET,required_2_background}, {$GET,required_background}) !important;
 	*/
 }
 
 .form-table .filledin .required {
 	/*	Style rather extreme, but re-enable if you wish
-	background-color: {$GET,area_background} !important;
 	background-image: linear-gradient(to bottom, {$GET,area_background}, {$GET,area_2_background}) !important;
 	*/
 }
@@ -720,7 +717,7 @@ span.validated-checkbox+input[name="validated"].input-tick {
 /*{+END}*/
 
 .fields-set-item {
-	background: {$GET,main_background};
+	background-color: {$GET,main_background};
 	padding: 0.75em 0.5em;
 	border-radius: 5px;
 	border: 1px solid {$GET,pale_border};
@@ -909,7 +906,7 @@ comcode-{$REPLACE,\,,\,comcode-,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}\,
 	border: 1px dashed gray;
 	text-align: center;
 	color: {$GET,native_ui_foreground};
-	background: {$GET,native_ui_active_background} url('{$IMG;,icons/editor/comcode}') right 2px no-repeat;
+	background: url('{$IMG;,icons/editor/comcode}') {$GET,native_ui_active_background} right 2px no-repeat;
 	background-size: 16px 16px;
 	padding: 1px 25px 1px 2px;
 }

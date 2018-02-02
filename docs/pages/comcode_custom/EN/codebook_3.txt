@@ -549,7 +549,7 @@ If you put a file called [tt]closed.html[/tt] then this will be shown to people 
 Values are like hidden configuration options. They are either hidden because they are managed by code (perhaps used for keeping track of something), or because they are obscure. To set a value, open up Commandr (Admin Zone > Tools > Commandr -- or clicking the symbol at the bottom-left of any page) and type [tt]:set_value('<name>','1');[/tt] (replace '1' if appropriate, but usually we do use '1' to enable). In normal PHP code, you can use the same [tt]set_value[/tt] function, and also the [tt]get_value[/tt] function. You can automatically add a new hidden value just by setting it for the first time.
 
 {$IS_MAINTAINED,options_hidden,We have the following} which are either unlikely to be useful, or potentially unstable or unpolished:
- - Integrations
+ - Integrations:
   - [tt]force_admin_auth[/tt] -- set this to '1' if you want any super-administrator to have to have some kind of authorisation-based login by redirecting them to [tt]http://yourbaseurl/admin_login/[/tt] which presumably you have configured to be a redirect-through that catches logins (Apache only)
   - [tt]no_password_hashing[/tt] -- set this to '1' if you want passwords to be stored as plain-text in the database (not recommended)
   - [tt]webdav_root[/tt] -- set this to the subdirectory the WebDAV addon should run from. On Windows it needs to run from the root, i.e. '/'. However, to do this you would need to map onto a separate domain name. If you change this setting, you'll need to change the redirect in your [tt].htaccess[/tt] file (or non-Apache equivalent)
@@ -557,9 +557,9 @@ Values are like hidden configuration options. They are either hidden because the
   - [tt]windows_auth_is_enabled[/tt] -- set to '1' to enable Integrated Windows Kerberos Authentication for automatic desktop client logins
   - [tt]postgres_fulltext_language[/tt] -- set to a PostgreSQL full-text configuration name for defining how to tokenise text (only set if you don't want 'english'). Existing indices would need hand-editing to the new value too.
   - [tt]skip_fulltext_sqlserver[/tt] -- set this to '1' if you are using Microsoft SQL Server and want to disable full-text search support. You may do this if you don't like the limitations of SQL Server full-text search (per-table searching, not per-field searching).
- - Unofficial functionality that may or may not work correctly
+ - Unofficial functionality that may or may not work correctly:
   - [tt]unofficial_ecommerce[/tt] -- set to '1' if your forum driver contains usergroup manipulation functions (we don't support this, but wanted to be able to allow those willing to extend forum drivers to use our full eCommerce framework)
- - Workarounds for difficult server configurations
+ - Workarounds for difficult server configurations:
   - [tt]disable_iconv[/tt] -- set this to '1' if your iconv extension causes PHP to crash
   - [tt]disable_mbstring[/tt] -- set this to '1' if your mbstring extension causes PHP to crash
   - [tt]prefer_curl[/tt] -- set this to '1' if the server requires you to not use network sockets directly from PHP and instead use the CuRL extension (although if you need this it is likely you actually need to just configure the proxy server options instead)
@@ -570,28 +570,28 @@ Values are like hidden configuration options. They are either hidden because the
   - [tt]disable_cookie_checks[/tt] -- set this to '1' if you are somehow proxying traffic into your web server with an incorrect hostname header, so cookie checks must be skipped
   - [tt]disable_sitemap[/tt] -- set this to '1' if you need to disable Sitemap menus for any reason (perhaps it is too slow to generate or there is some kind of infinite loop bug that is not yet fixed). Set this to '2' to greatly reduce the depth of the Sitemap (this is probably what you want, as you don't want your admin menus disappearing).
   - [tt]avoid_register_shutdown_function[/tt] -- set this to '1' if [tt]register_shutdown_function[/tt] is not reliable on this system (may appear to be unreliable on some Windows servers, for example)
- - Used internally by Composr
+ - Used internally by Composr:
   - [tt]cdn[/tt] -- this is used for storage of autodetected CDNs, prior to the config option for them being properly filled in
   - [tt]brand_base_url[/tt] -- the base URL to the brand site (by default this is {$BRAND_BASE_URL} but may be changed)
   - [tt]rebrand_name[/tt] -- if Composr is called something else as far as the site staff are concerned, set the name here
   - [tt]rebrand_base_url[/tt] -- to change where branding URLs go to (e.g. the stub that is used when linking to documentation), set it here
   - [tt]company_name[/tt] -- if Composr is being rebranded to be 'made' by another company, set the name here (this has no effect of copyright of course, but ocProducts allows this)
- - Developer testing
+ - Developer testing:
   - [tt]notification_safety_testing[/tt] -- set this to '1' to enable extra checks to ensure notifications or welcome e-mails don't get misdirected/over-sent
   - [tt]memory_tracking[/tt] -- set this to the number of megabytes peak memory usage after which you want the execution URL to be silently logged to the error log (useful for debugging memory usage on a live site). The value must be an integer, with no trailing 'M'. This does not impose a memory limit, which is 64MB by default in Composr, but may be turned off within certain carefully-chosen execution contexts (usually admin tasks which are necessarily memory consuming). Requires PHP 5.2+.
   - [tt]enable_profiler[/tt] -- set this to '1' if you want to {$IS_MAINTAINED,extra_logging,enable the Composr profiler}, which will write select performance information to [tt]data_custom/profiling.(ID).log[/tt]. For your security you should ensure these files are web-accessible (we will do this by default if we can via the [tt]data_custom/.htaccess[/tt], but you should take care). The web server needs permissions to save files into [tt]data_custom/[/tt] (this is possible by default on modern suEXEC environments). Set to '2' if you want to read Linux performance data, which will then be included in the logging (takes a bit more work by the profiler, assumes Linux and sufficient permissions).
   - [tt]monitor_slow_urls[/tt] -- set this to a number of seconds to log any requests taking at least that many seconds seconds to the error log
   - [tt]permission_log_success_too[/tt] -- set this to '1' if you want the permission log file ([tt]data_custom/permission_checks.log[/tt]) to show both successful and unsuccessful permission checks. Usually it only shows fails.
- - For system-integrators
+ - For system-integrators:
   - [tt]agency_email_address[/tt] -- set this to a secondary e-mail address where you would like all error e-mails to go (the primary one being the staff address). Only set this if you are an agency and want to receive error e-mails in addition/instead of your client
   - [tt]page_template_always_ask[/tt] -- set this to '1' if Composr should always ask for a page template, even when clicking inline links to add pages
   - [tt]page_template_default[/tt] -- set this to the codename of a page template that should be the default
   - [tt]page_template_restrict_to_custom[/tt] -- set this to '1' if only custom page templates will be shown for selection
- - For back-end developers
+ - For back-end developers:
   - [tt]textmate[/tt] -- set this to '1' if you are developing on a local machine and use the {$IS_MAINTAINED,textmate,Apple Mac TextMate editor}. It will cause TextMate editing links to come up in stack traces
   - [tt]allow_php_in_templates[/tt] -- set this to '1' to enable the undocumented Tempcode 'PHP' directive, and its short-hand syntax (written like normal PHP long-tags). This allows you to write PHP code inside templates, but please aware there are strong risks associated with this. It means that themes you install may contain PHP code, or people submitting Comcode content may put in PHP code which you could accidentally unwittingly activate when validating content (as it would be validated against your own security credentials). Note this option is not designed to work from Comcode, because Comcode will add HTML formatting around your PHP code, corrupting it (from a security point of view you need to be aware though, as that could be avoided with some care by a hacker)
   - [tt]git_autopull[/tt] -- set this to '1' if git changes should automatically be pulled every minute (less frequently if the Cron interval is longer). Assumes a suEXEC-like server and a git deployment and working [tt]shell_exec[/tt]
- - Low-level tuning
+ - Low-level tuning:
   - [tt]no_individual_gallery_view[/tt] -- set this to '1' if all images/videos in a flow-mode gallery must be viewed from the flow-mode view (never individually)
   - [tt]root_cat__images[/tt] -- you can set this to the codename of a gallery, which will be the root for gallery selection on the gallery addon's Add Image form (root is not shown as an option). Alternatively, it can be an Selectcode string.
   - [tt]root_cat__videos[/tt] -- you can set this to the codename of a gallery, which will be the root for gallery selection on the gallery addon's Add Video form (root is not shown as an option). Alternatively, it can be an Selectcode string.
@@ -630,7 +630,7 @@ Values are like hidden configuration options. They are either hidden because the
   - [tt]disable_bulkhelper[/tt] -- set this to '1' to disable the feature that asks you if you are bulk-adding records
   - [tt]disable_news_repimages[/tt] -- set this to '1' to disable rep-images for news categories
   - [tt]disable_virtual_roots[/tt] -- set this to '1' to disable virtual roots
- - Performance tuning (positive) [not official options as will break normal expectations of how the system will behave / complicate things]
+ - Performance tuning (positive) [not official options as will break normal expectations of how the system will behave / complicate things]:
   - [tt]lots_of_data_in_*[/tt] -- set this to '1', with '*' replaced with a database table name, if you want the Selectcode mechanism to work with recursive DB lookups rather than one huge flat lookup
   - [tt]disable_cat_cat_perms[/tt] -- set this to '1' if you want to disable catalogue category permissions
   - [tt]catalogue_limit_cat_field_load__<cataloguename>[/tt] -- set this to '1' if you want that catalogue to not have all fields loaded on category views, an optimisation that reduces templating flexibility
@@ -662,11 +662,11 @@ Values are like hidden configuration options. They are either hidden because the
   - [tt]slow_counts[/tt] -- set this to '1' if you have switched to InnoDB, as table row counts are slow and this switch enables an approximation instead in certain places. Do not use with other databases than MySQL or PostgreSQL or SQL Server.
   - [tt]innodb[/tt] -- set this to '1' if you have switched to MySQL's InnoDB
   - [tt]no_post_rating[/tt] -- set this to '1' if you don't want to allow post ratings, which saves one query per displayed post
- - Performance tuning (negative)
+ - Performance tuning (negative):
   - [tt]allow_admin_in_other_zones[/tt] -- set this to '1' if you want to allow admin and CMS modules to run in other zones (small performance cost)
- - Easter eggs
+ - Easter eggs:
   - [tt]stupidity_mode[/tt] -- set to [tt]leet[/tt] or [tt]bork[/tt], for a fun April Fools-style Comcode joke (clear the Comcode cache after you're done though)
- - Experimental functionality
+ - Experimental functionality:
   - [tt]list_unsubscribe_target[/tt] -- set to a URL for a [tt]List-Unsubscribe[/tt] header to be attached to e-mails with that URL, e.g. [tt]mailto:you@example.com?subject=Unsubscribe&body=Please%20unsubscribe%20me[/tt]
   - [tt]disable_modsecurity_workaround[/tt] -- set this to '1' if you want to disable the ModSecurity workaround 
   - [tt]disable_handle_conflict_resolution[/tt] -- set this to '1' if you want to disable conflict resolution checking
@@ -682,7 +682,6 @@ The 'keep' parameters available are:
  - [tt]keep_hide_dev_mode_message[/tt] -- set to '1' if you don't want the "Dev-mode is on" message to show if dev-mode is on (maybe you're taking screenshots?)
  - [tt]keep_ext_check[/tt] -- set to '0' to force the webstandards checker to not check dependency files
  - [tt]keep_force_htaccess[/tt] -- set to '1' to force the Conversr login to go via htauth in precedence over other login methods (e.g. login cookies, sessions)
- - [tt]keep_textonly[/tt] -- set to '1' if the 'text only' stylesheet is to be used
  - [tt]keep_simplified_donext[/tt] -- set to '1' to temporarily act as if the simplified do-next option is turned on
  - [tt]keep_mobile[/tt] -- set to '1' to pretend you're using a PDA
  - [tt]keep_has_js[/tt] -- set to '1' to force Composr to think you have JavaScript (useful if the has-JS cookie isn't saving yet you need to use a JS-based interface)
@@ -726,7 +725,7 @@ The 'keep' parameters available are:
  - [tt]keep_rating_test[/tt] -- set this to '1' if you are testing rating and don't want to be locked out for having already rated
  - [tt]keep_all_cpfs[/tt] -- set this to '1' if you want to edit bundled CPFs that aren't currently marked as editable
  - [tt]keep_oembed_cache[/tt] -- set this to '0' to disable the oembed URL cache temporarily, when debugging oembed endpoints
- - [tt]keep_urlmonikers[/tt] -- set to '0' to disable URL monikers
+ - [tt]keep_url_monikers[/tt] -- set to '0' to disable URL monikers
  - [tt]keep_url_scheme[/tt] -- set this to '0' to temporarily disable URL Schemes. This is useful for working out page-links/match-keys
  - [tt]keep_force_open[/tt] -- set this to '1' if you want to ignore a [tt]closed.html[/tt] file and get to the website
  - [tt]keep_frames[/tt] -- set this to '0' to disable optional iframes / AJAX frame-simulation

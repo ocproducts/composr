@@ -32,7 +32,8 @@ function init__site__pages__modules_custom__galleries($code)
         "
         <ditto>
         if (\$type == 'workflow') {
-            return \$this->workflow_handler();
+            require_code('workflows'); // Load workflow-related code
+            return workflow_update_handler();
         }
         ",
         $code
@@ -45,7 +46,6 @@ function init__site__pages__modules_custom__galleries($code)
         // Add the workflow form if this entry is unvalidated
         if (\$row['validated'] == 0) {
             require_code('workflows');
-            require_lang('workflows');
 
             \$wf = get_workflow_of_content('image', strval(\$row['id']));
             if (\$wf !== null) {
@@ -67,7 +67,6 @@ function init__site__pages__modules_custom__galleries($code)
         // Add the workflow form if this entry is unvalidated
         if (\$row['validated'] == 0) {
             require_code('workflows');
-            require_lang('workflows');
 
             \$wf = get_workflow_of_content('video', strval(\$row['id']));
             if (\$wf !== null) {
@@ -98,7 +97,6 @@ function init__site__pages__modules_custom__galleries($code)
 
         if (\$myrow['validated'] == 0) {
             require_code('workflows');
-            require_lang('workflows');
 
             \$workflow_content_id = get_workflow_content_id('image', strval(\$myrow['id']));
             if (\$workflow_content_id !== null) {
@@ -125,31 +123,10 @@ function init__site__pages__modules_custom__galleries($code)
 
         if (\$myrow['validated'] == 0) {
             require_code('workflows');
-            require_lang('workflows');
 
             \$workflow_content_id = get_workflow_content_id('video', strval(\$myrow['id']));
             if (\$workflow_content_id !== null) {
                 \$warning_details->attach(get_workflow_form(\$workflow_content_id));
-            }
-        }
-        ",
-        $code
-    );
-
-    // Add workflow handling to the end of the class definition
-    $code = override_str_replace_exactly(
-        "\n    }\n}\n",
-        "
-            }
-
-            /**
-             * Handler for workflow requests
-             */
-            function workflow_handler()
-            {
-                // Only act if workflows are installed
-                require_code('workflows'); // Load workflow-related code
-                return workflow_update_handler();
             }
         }
         ",

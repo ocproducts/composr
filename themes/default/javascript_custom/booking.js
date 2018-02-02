@@ -28,7 +28,7 @@
             }
             post += form.elements[i].name + '=' + encodeURIComponent(value) + '&';
         }
-        $cms.doAjaxRequest('{$FIND_SCRIPT;,booking_price_ajax}' + $cms.keep(true), null, post).then(function (xhr) {
+        $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,booking_price_ajax}' + $cms.keep(true), null, post).then(function (xhr) {
             $dom.html(document.getElementById('price'), $cms.filter.html(xhr.responseText));
         });
     }
