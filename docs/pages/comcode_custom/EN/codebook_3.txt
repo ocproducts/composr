@@ -725,7 +725,7 @@ The 'keep' parameters available are:
  - [tt]keep_rating_test[/tt] -- set this to '1' if you are testing rating and don't want to be locked out for having already rated
  - [tt]keep_all_cpfs[/tt] -- set this to '1' if you want to edit bundled CPFs that aren't currently marked as editable
  - [tt]keep_oembed_cache[/tt] -- set this to '0' to disable the oembed URL cache temporarily, when debugging oembed endpoints
- - [tt]keep_urlmonikers[/tt] -- set to '0' to disable URL monikers
+ - [tt]keep_url_monikers[/tt] -- set to '0' to disable URL monikers
  - [tt]keep_url_scheme[/tt] -- set this to '0' to temporarily disable URL Schemes. This is useful for working out page-links/match-keys
  - [tt]keep_force_open[/tt] -- set this to '1' if you want to ignore a [tt]closed.html[/tt] file and get to the website
  - [tt]keep_frames[/tt] -- set this to '0' to disable optional iframes / AJAX frame-simulation

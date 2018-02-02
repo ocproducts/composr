@@ -512,7 +512,7 @@ function url_monikers_enabled()
     if (!function_exists('get_option')) {
         return false;
     }
-    if (get_param_integer('keep_urlmonikers', null) === 0) {
+    if (get_param_integer('keep_url_monikers', null) === 0) {
         return false;
     }
     if (get_option('url_monikers_enabled') !== '1') {
