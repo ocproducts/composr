@@ -5,10 +5,9 @@
 ]>
 <svg version="1.1"
 	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
-	 x="0px" y="0px" width="13px" height="13px" viewBox="-3.917 -0.146 13 13" enable-background="new -3.917 -0.146 13 13"
-	 xml:space="preserve">
+	 x="0px" y="0px" width="9px" height="6px" viewBox="-2 -0.285 9 6" enable-background="new -2 -0.285 9 6" xml:space="preserve">
 <defs>
 </defs>
-<path fill="#F79523" d="M0,0v3.609c0.966,0.539,1.628,1.56,1.628,2.745C1.628,7.539,0.966,8.56,0,9.099v3.608l6.844-6.516L0,0z"/>
-<path fill="#C8691C" d="M1.628,6.354C1.628,7.539,0.966,8.56,0,9.099v3.608l6.844-6.516C6.844,6.191,1.614,6.367,1.628,6.354z"/>
+<polygon fill="#F26522" points="2.68,0 2.181,0.499 4.363,2.682 2.181,4.864 2.68,5.363 5.361,2.682 "/>
+<polygon fill="#F26522" points="0.499,0 0,0.499 2.183,2.682 0,4.864 0.499,5.363 3.181,2.682 "/>
 </svg>

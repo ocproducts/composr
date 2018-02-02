@@ -155,6 +155,7 @@ class Hook_addon_registry_all_icons
             'themes/default/images/icons/booking/supplement.svg',
             'themes/default/images/icons/booking/index.html',
 
+            'themes/default/images/icons/carousel/index.html',
             'themes/default/images/icons/admin/index.html',
             'themes/default/images/icons/arrow_box/index.html',
             'themes/default/images/icons/buttons/index.html',
@@ -222,6 +223,10 @@ class Hook_addon_registry_all_icons
             'themes/default/images/icons/tree_field/index.html',
             'themes/default/images/icons/wiki/index.html',
 
+            'themes/default/images/icons/carousel/button_left_hover.svg',
+            'themes/default/images/icons/carousel/button_left.svg',
+            'themes/default/images/icons/carousel/button_right_hover.svg',
+            'themes/default/images/icons/carousel/button_right.svg',
             'themes/default/images/icons/admin/add.svg',
             'themes/default/images/icons/admin/add_one_category.svg',
             'themes/default/images/icons/admin/add_to_category.svg',

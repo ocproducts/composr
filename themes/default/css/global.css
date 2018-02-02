@@ -1294,7 +1294,7 @@ body .accessibility-hidden { /* Contents should be made visible (or interpreted)
 }
 /*{+START,CSS_MODE,desktop}*/
 	.edited {
-		padding-left: 2em;
+		padding-left: 1em;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
