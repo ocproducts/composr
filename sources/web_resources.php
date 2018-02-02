@@ -77,24 +77,26 @@ function javascript_enforce($j, $theme = null, $allow_defer = false)
     if ($theme === null) {
         $theme = @method_exists($GLOBALS['FORUM_DRIVER'], 'get_theme') ? $GLOBALS['FORUM_DRIVER']->get_theme() : 'default';
     }
-    $dir = get_custom_file_base() . '/themes/' . $theme . '/templates_cached/' . filter_naughty(user_lang());
+    $js_cache_stem = get_custom_file_base() . '/themes/' . $theme . '/templates_cached/' . filter_naughty(user_lang());
     if ((!isset($SITE_INFO['no_disk_sanity_checks'])) || ($SITE_INFO['no_disk_sanity_checks'] != '1')) {
-        if (!is_dir($dir)) {
+        if (!is_dir($js_cache_stem)) {
             require_code('files2');
-            make_missing_directory($dir);
+            make_missing_directory($js_cache_stem);
         }
     }
-    $js_cache_path = $dir . '/' . filter_naughty($j);
+    $js_cache_stem .= '/';
+    $js_cache_stub = '';
     if (!$minify) {
-        $js_cache_path .= '_non_minified';
+        $js_cache_stub .= '_non_minified';
     }
     if ($https) {
-        $js_cache_path .= '_ssl';
+        $js_cache_stub .= '_ssl';
     }
     if ($mobile) {
-        $js_cache_path .= '_mobile';
+        $js_cache_stub .= '_mobile';
     }
-    $js_cache_path .= '.js';
+    $js_cache_stub .= '.js';
+    $js_cache_path = $js_cache_stem . filter_naughty($j) . $js_cache_stub;
 
     global $CACHE_TEMPLATES;
     $support_smart_decaching = support_smart_decaching();
@@ -115,6 +117,23 @@ function javascript_enforce($j, $theme = null, $allow_defer = false)
         $full_path = get_custom_file_base() . '/themes/' . $theme . $found[1] . $j . $found[2];
         if (!is_file($full_path)) {
             $full_path = get_file_base() . '/themes/' . $theme . $found[1] . $j . $found[2];
+        }
+
+        // Caching support for global.js (this is a FUDGE to hard-code this)
+        if ($j == 'global') {
+            $js_source_stem = get_file_base() . '/themes/default/javascript/';
+            $js_source_stub = '.js';
+            $deps = array(
+                $js_source_stem . 'UTIL' . $js_source_stub,
+                $js_source_stem . 'DOM' . $js_source_stub,
+                $js_source_stem . 'CMS' . $js_source_stub,
+                $js_source_stem . 'CMS_FORM' . $js_source_stub,
+                $js_source_stem . 'CMS_UI' . $js_source_stub,
+                $js_source_stem . 'CMS_TEMPLATES' . $js_source_stub,
+                $js_source_stem . 'CMS_VIEWS' . $js_source_stub,
+                $js_source_stem . 'CMS_BEHAVIORS' . $js_source_stub,
+            );
+            $SITE_INFO['dependency__' . $full_path] = implode(',', $deps);
         }
     }
 
