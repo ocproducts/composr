@@ -1464,7 +1464,7 @@
                     '{!cns_special_cpf:SPECIAL_CPF__cms_country;^}'
                 ];
 
-                var geocodeUrl = '{$FIND_SCRIPT;,geocode}';
+                var geocodeUrl = '{$FIND_SCRIPT_NOHTTP;,geocode}';
                 geocodeUrl += '?latitude=' + encodeURIComponent(position.coords.latitude) + '&longitude=' + encodeURIComponent(position.coords.longitude);
                 geocodeUrl += $cms.keep();
 

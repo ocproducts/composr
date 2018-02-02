@@ -824,8 +824,6 @@
         };
     };
 
-    // Inspired by https://github.com/RobLoach/jquery-once
-    // https://www.drupal.org/docs/7/api/javascript-api/managing-javascript-in-drupal-7#jquery-once
     var _onced = {};
     /**
      * @param objects
@@ -914,7 +912,7 @@
     };
 
     /**
-     * NB: Has a trailing slash when having the base url only
+     * NB: Has a trailing slash when having the base URL only
      * @param {string} url - An absolute or relative URL. If url is a relative URL, `base` will be used as the base URL. If url is an absolute URL, a given `base` will be ignored.
      * @param {string} [base] - The base URL to use in case url is a relative URL. If not specified, it defaults to $cms.getBaseUrl().
      * @return { URL }

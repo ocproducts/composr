@@ -551,12 +551,12 @@
                 request += encodeURIComponent(btn.form.elements[i].name) + '=' + encodeURIComponent(btn.form.elements[i].value) + '&';
             }
 
-            $cms.doAjaxRequest('{$FIND_SCRIPT;,tempcode_tester}' + $cms.keep(true), null, request).then(function (xhr) {
+            $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,tempcode_tester}' + $cms.keep(true), null, request).then(function (xhr) {
                 $dom.html('#preview_raw', $cms.filter.html(xhr.responseText));
                 $dom.html('#preview_html', xhr.responseText);
             });
 
-            $cms.doAjaxRequest('{$FIND_SCRIPT;,tempcode_tester}?comcode=1' + $cms.keep(), null, request).then(function (xhr) {
+            $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,tempcode_tester}?comcode=1' + $cms.keep(), null, request).then(function (xhr) {
                 $dom.html('#preview_comcode', xhr.responseText);
             });
         });

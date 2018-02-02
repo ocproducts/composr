@@ -365,7 +365,7 @@
     }
 
     function doInputBlock(fieldName) {
-        var url = '{$FIND_SCRIPT;,block_helper}?field_name=' + fieldName + $cms.keep();
+        var url = '{$FIND_SCRIPT_NOHTTP;,block_helper}?field_name=' + fieldName + $cms.keep();
         url += '&block_type=' + ((!fieldName.includes('edit_panel_') && !window.location.href.includes(':panel_')) ? 'main' : 'side');
 
         return $cms.ui.open($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
@@ -412,7 +412,7 @@
             }
         }
 
-        var url = '{$FIND_SCRIPT;,comcode_helper}?field_name=' + encodeURIComponent(fieldName);
+        var url = '{$FIND_SCRIPT_NOHTTP;,comcode_helper}?field_name=' + encodeURIComponent(fieldName);
         if (tag) {
             url += '&tag=' + encodeURIComponent(tag);
         }

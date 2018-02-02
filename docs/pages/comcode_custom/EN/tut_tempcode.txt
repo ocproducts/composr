@@ -969,7 +969,7 @@ These are advanced symbols, and mirror Composr's internal API. The parameters ar
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$FIND_SCRIPT_NOHTTP}</td>
-			<td>Find the URL to a named Composr entry script (e.g. <kbd>dload</kbd>), but as a relative URL to domain name root</td>
+			<td>Find the URL to a named Composr entry script (e.g. <kbd>dload</kbd>), but as a relative URL to domain name root. This is useful for JavaScript because it makes the JavaScript portable able to run across multiple domains from a single cache pool (when you have zones on different domains)</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$MAKE_URL_ABSOLUTE,someurl}</td>
@@ -1174,7 +1174,7 @@ where:
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$BASE_URL_NOHTTP} / {$CUSTOM_BASE_URL_NOHTTP}</td>
-			<td>The base URL to the installation, but just the path, no protocol or domain name. This is useful in JS files (which cache as strings, not Tempcode) because it doesn't cause JS security errors when HTTPS and HTTP variants of a site are both in action.</td>
+			<td>The base URL to the installation, but just the path, no protocol or domain name. This is useful in JS files (which cache as strings, not Tempcode) because it doesn't cause JS security errors when HTTPS and HTTP variants of a site are both in action (the same JS files may be served for both HTTPS and HTTP).</td>
 		</tr>
 		<tr style="background: #FFDDDD">
 			<td>{$SSW}</td>
