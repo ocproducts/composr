@@ -982,7 +982,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                                 require_code('xhtml');
                                                 if (!$html_errors && preg_replace('#\s#', '', xhtmlise_html($p_portion, true)) === preg_replace('#\s#', '', $p_portion)) {
                                                     $ret->attach('<tempcode params="' . escape_html($p_opener) . '">');
-                                                    $p_portion_comcode = comcode_to_tempcode($p_portion, $source_member, $as_admin, $pass_id, $db, $flags, $highlight_bits, $on_behalf_of_member);
+                                                    $p_portion_comcode = comcode_to_tempcode($p_portion, $source_member, $as_admin, $pass_id, $db, _incorporate_flags_state($flags, $in_semihtml, $in_code_tag), $highlight_bits, $on_behalf_of_member);
                                                     $ret->attach($p_portion_comcode);
                                                     $ret->attach('</tempcode>');
 
@@ -999,7 +999,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                                 if (substr($comcode, $pos - 1, strlen('{+START,CASES,')) === '{+START,CASES,') {
                                                     $p_portion_comcode = make_string_tempcode($p_portion);
                                                 } else {
-                                                    $p_portion_comcode = comcode_to_tempcode($p_portion, $source_member, $as_admin, $pass_id, $db, $flags, $highlight_bits, $on_behalf_of_member);
+                                                    $p_portion_comcode = comcode_to_tempcode($p_portion, $source_member, $as_admin, $pass_id, $db, _incorporate_flags_state($flags, $in_semihtml, $in_code_tag), $highlight_bits, $on_behalf_of_member);
                                                 }
                                                 $d_parameters = array('DIRECTIVE_EMBEDMENT' => $p_portion_comcode);
                                                 $ret = template_to_tempcode($p_opener . '{DIRECTIVE_EMBEDMENT}' . $p_closer, 0, false, '', null, null, false, $d_parameters);
@@ -1362,7 +1362,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                                         'PADDING_AMOUNT' => $padding_amount,
                                                     )));
                                                 }
-                                                $tag_output->attach(comcode_to_tempcode(isset($cells[$to_float]) ? trim($cells[$to_float]) : '', $source_member, $as_admin, $pass_id, $db, $flags, $highlight_bits, $on_behalf_of_member));
+                                                $tag_output->attach(comcode_to_tempcode(isset($cells[$to_float]) ? trim($cells[$to_float]) : '', $source_member, $as_admin, $pass_id, $db, _incorporate_flags_state($flags, $in_semihtml, $in_code_tag), $highlight_bits, $on_behalf_of_member));
                                                 $tag_output->attach(do_template('COMCODE_FAKE_TABLE_END_CELL'));
 
                                                 // Do non-floated ones
@@ -1400,7 +1400,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                                                 )));
                                                             }
 
-                                                            $tag_output->attach(comcode_to_tempcode(trim($cell), $source_member, $as_admin, $pass_id, $db, $flags, $highlight_bits, $on_behalf_of_member));
+                                                            $tag_output->attach(comcode_to_tempcode(trim($cell), $source_member, $as_admin, $pass_id, $db, _incorporate_flags_state($flags, $in_semihtml, $in_code_tag), $highlight_bits, $on_behalf_of_member));
 
                                                             $tag_output->attach(do_template('COMCODE_FAKE_TABLE_END_CELL'));
                                                         }
@@ -1469,7 +1469,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                                     if ($spec) {
                                                         $c_type = (strpos($cell, '!') !== false) ? 'th' : 'td';
                                                     } else {
-                                                        $_mid = comcode_to_tempcode(trim($cell), $source_member, $as_admin, $pass_id, $db, $flags, $highlight_bits, $on_behalf_of_member);
+                                                        $_mid = comcode_to_tempcode(trim($cell), $source_member, $as_admin, $pass_id, $db, _incorporate_flags_state($flags, $in_semihtml, $in_code_tag), $highlight_bits, $on_behalf_of_member);
 
                                                         $tag_output->attach(do_template('COMCODE_REAL_TABLE_CELL', array(
                                                             '_GUID' => '6640df8b503f65e3d36f595b0acf7600',
@@ -2112,6 +2112,21 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
     }
 
     return $tag_output;
+}
+
+/**
+ * Merge in current state to flags.
+ *
+ * @param  integer $flags Flags
+ * @param  boolean $in_semihtml If in semihtml
+ * @param  boolean $in_code_tag If in code tag
+ * @return integer Updated flags
+ */
+function _incorporate_flags_state($flags, $in_semihtml, $in_code_tag)
+{
+    $flags |= ($in_semihtml ? COMCODE_IS_ALL_SEMIHTML : 0);
+    $flags |= ($in_code_tag ? COMCODE_IN_CODE_TAG : 0);
+    return $flags;
 }
 
 /**
