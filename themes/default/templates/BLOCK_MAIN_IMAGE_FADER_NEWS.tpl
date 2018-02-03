@@ -9,7 +9,7 @@
 
 		<div class="image-fader-news-pic">
 			<div class="img-thumb-wrap">
-				<a id="image_fader_news_url_{$GET%,RAND_FADER_NEWS}" href="#!"><img id="image_fader_news_{$GET,RAND_FADER_NEWS}" src="{$IMG*,blank}" alt="" /></a>
+				<a id="image-fader-news-url-{$GET%,RAND_FADER_NEWS}" href="#!"><img id="image-fader-news-{$GET,RAND_FADER_NEWS}" src="{$IMG*,blank}" alt="" /></a>
 			</div>
 		</div>
 
@@ -54,7 +54,7 @@
 		<div class="pagination">
 			<nav class="float-surrounder">
 				<a href="#!" rel="prev" accesskey="j" title="&laquo;&nbsp;{!PREVIOUS}: {!NEWS}" class="light js-click-btn-prev-cycle">&laquo;&nbsp;{!PREVIOUS}</a>
-				<a href="#!" id="pause_button_{$GET,RAND_FADER_NEWS}" title="{!PAUSE}" class="light js-click-btn-pause-cycle">{!PAUSE}</a>
+				<a href="#!" id="pause-button-{$GET,RAND_FADER_NEWS}" title="{!PAUSE}" class="light js-click-btn-pause-cycle">{!PAUSE}</a>
 				<a href="#!" rel="next" accesskey="k" title="&laquo;&nbsp;{!NEXT}: {!NEWS}" class="light js-click-btn-next-cycle">{!NEXT}&nbsp;&raquo;</a>
 			</nav>
 		</div>

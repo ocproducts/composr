@@ -43,8 +43,8 @@
             milliseconds = Number(params.mill) || 0;
 
         // Variables we will need
-        var fpAnimationImg = $dom.$('#image_fader_news_' + rand),
-            fpAnimationUrl = $dom.$('#image_fader_news_url_' + rand),
+        var fpAnimationImg = $dom.$('#image-fader-news-' + rand),
+            fpAnimationUrl = $dom.$('#image-fader-news-url-' + rand),
             fpAnimationHtml = $dom.$('#image-fader-news-html-' + rand);
         // Create fader
         var fpAnimationNewsImg = document.createElement('img');
@@ -100,7 +100,7 @@
                 fpAnimationNewsImg.style.top = ((fpAnimationNewsImg.parentNode.offsetHeight - fpAnimationNewsImg.offsetHeight) / 2) + 'px';
             }, 0);
 
-            $dom.$('#pause_button_' + rand).classList.remove('button_depressed');
+            $dom.$('#pause-button-' + rand).classList.remove('button_depressed');
 
             // Set up timer for next time
             if (cycleTimerId) {
@@ -120,10 +120,10 @@
                 // Pause
                 clearTimeout(cycleTimerId);
                 cycleTimerId = null;
-                $dom.$('#pause_button_' + rand).classList.add('button_depressed');
+                $dom.$('#pause-button-' + rand).classList.add('button_depressed');
             } else {
                 // Unpause
-                $dom.$('#pause_button_' + rand).classList.remove('button_depressed');
+                $dom.$('#pause-button-' + rand).classList.remove('button_depressed');
 
                 if (milliseconds && (news.length > 1)) {
                     cycleTimerId = setTimeout(function () {
@@ -153,7 +153,7 @@
         window.tickPos = window.tickPos || {};
 
         var newsTickerText = $cms.filter.nl(params.newsTickerText),
-            ticktickticker = $dom.$('#ticktickticker_news' + params.bottomNewsId),
+            ticktickticker = $dom.$('#ticktickticker-news' + params.bottomNewsId),
             myId = 'ticker-' - $util.random();
 
         window.tickPos[myId] = 400;

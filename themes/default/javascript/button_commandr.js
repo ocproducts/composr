@@ -42,11 +42,11 @@
     };
 
     function loadCommandr() {
-        if (!document.getElementById('commandr_img_loader')) {
-            var img = document.getElementById('commandr_img');
+        if (!document.getElementById('commandr-img-loader')) {
+            var img = document.getElementById('commandr-img');
             img.className = 'footer-button-loading';
             var tmpEl = document.createElement('img');
-            tmpEl.id = 'commandr_img_loader';
+            tmpEl.id = 'commandr-img-loader';
             tmpEl.src = $util.srl('{$IMG;,loading}');
             tmpEl.width = '20';
             tmpEl.height = '20';
@@ -61,7 +61,7 @@
             return $cms.ui.confirmSession();
         }).then(function (sessionConfirmed) {
             // Remove "loading" indicator from button
-            var tmpEl = document.getElementById('commandr_img_loader');
+            var tmpEl = document.getElementById('commandr-img-loader');
             if (tmpEl) {
                 tmpEl.remove();
             }
@@ -71,10 +71,10 @@
             }
 
             // Set up Commandr window
-            var commandrBox = document.getElementById('commandr_box');
+            var commandrBox = document.getElementById('commandr-box');
             if (!commandrBox) {
                 commandrBox = $dom.create('div', {
-                    id: 'commandr_box',
+                    id: 'commandr-box',
                     css: {
                         position: 'absolute',
                         zIndex: 2000,
@@ -96,8 +96,8 @@
         });
 
         function doCommandrBox() {
-            var commandrBox = document.getElementById('commandr_box'),
-                img = document.getElementById('commandr_img'),
+            var commandrBox = document.getElementById('commandr-box'),
+                img = document.getElementById('commandr-img'),
                 bi, cmdLine;
 
             if ($dom.notDisplayed(commandrBox)) { // Showing Commandr again

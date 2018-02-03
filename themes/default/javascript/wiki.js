@@ -2,9 +2,9 @@
     'use strict';
 
     $cms.templates.wikiManageTreeScreen = function wikiManageTreeScreen(params, container) {
-        if ($dom.$('#tree_list__root_mtp_tree')) {
+        if ($dom.$('#tree-list--root-mtp-tree')) {
             $cms.requireJavascript('tree_list').then(function () {
-                $cms.ui.createTreeList('mtp_tree', 'data/ajax_tree.php?hook=choose_wiki_page' + $cms.keep(), '', '');
+                $cms.ui.createTreeList('mtp-tree', 'data/ajax_tree.php?hook=choose_wiki_page' + $cms.keep(), '', '');
             });
         }
 
@@ -19,13 +19,13 @@
         var id = strVal(params.id);
 
         $dom.on(container, 'click', '.js-click-checkbox-set-cell-mark-class', function (e, checkbox) {
-            var cell = $dom.$('#cell_mark_' + id);
+            var cell = $dom.$('#cell-mark-' + id);
             cell.classList.toggle('cns-on', checkbox.checked);
             cell.classList.toggle('cns-off', !checkbox.checked);
         });
 
         $dom.on(container, 'click', '.js-click-show-wiki-merge-button', function (e, checkbox) {
-            var wikiMergeButton = $dom.$('#wiki_merge_button');
+            var wikiMergeButton = $dom.$('#wiki-merge-button');
             wikiMergeButton.classList.remove('button-faded');
             $dom.show(wikiMergeButton);
         });

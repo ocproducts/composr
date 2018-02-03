@@ -1048,7 +1048,7 @@ class Module_admin
 
                 $_url = build_url(array('page' => 'admin_lang', 'type' => 'browse', 'lang' => user_lang(), 'lang_file' => $lang_file), get_module_zone('admin_lang'));
                 $url = $_url->evaluate();
-                $url .= '#jmp_' . $n;
+                $url .= '#jmp-' . $n;
                 $breadcrumbs = new Tempcode();
                 $breadcrumbs->attach(hyperlink(build_url(array('page' => 'admin', 'type' => 'style'), 'adminzone'), do_lang_tempcode('STYLE'), false, false));
                 $breadcrumbs->attach(do_template('BREADCRUMB_SEPARATOR'));

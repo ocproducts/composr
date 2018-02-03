@@ -14754,17 +14754,17 @@
             fileIdField.value = '-1';
 
             // HTML field to show selected file
-            document.getElementById('container_for_' + fieldName).appendChild(fileIdField);
+            document.getElementById('container-for-' + fieldName).appendChild(fileIdField);
             var fileNameField = document.createElement('input');
             fileNameField.type = 'hidden';
             fileNameField.name = 'txt_filename_file' + window.extraAttachmentBase;
             fileNameField.id = fileNameField.name;
             fileNameField.value = file.name.replace('C:\\fakepath\\', '');
             fileNameField.className = 'upload-response-field';
-            document.getElementById('container_for_' + fieldName).appendChild(fileNameField);
+            document.getElementById('container-for-' + fieldName).appendChild(fileNameField);
 
             // Progress bar
-            var progress = new FileProgress(fileUpload.file_progress, 'container_for_' + fieldName);
+            var progress = new FileProgress(fileUpload.file_progress, 'container-for-' + fieldName);
             progress.setProgress(0);
             progress.setStatus('{!javascript:PLUPLOAD_UPLOADING^;}');
 
@@ -14779,7 +14779,7 @@
         if (event.lengthComputable) {
             var percentage = Math.round((event.loaded * 100) / event.total);
             if (percentage < 100) {
-                var progress = new FileProgress(event.target.file_progress, 'container_for_' + fieldName);
+                var progress = new FileProgress(event.target.file_progress, 'container-for-' + fieldName);
                 progress.setProgress(percentage);
                 progress.setStatus('{!javascript:PLUPLOAD_UPLOADING^;}');
             }
@@ -14794,14 +14794,14 @@
                 case 4:
                     if (request.responseText == '') {
                         // We should have got an ID back
-                        var progress = new FileProgress(fileProgress, 'container_for_' + fieldName);
+                        var progress = new FileProgress(fileProgress, 'container-for-' + fieldName);
                         progress.setProgress(100);
                         progress.setStatus('{!javascript:PLUPLOAD_FAILED^;}');
                     } else {
                         var element = document.getElementById(fieldName);
 
                         window.$editing.insertTextbox(element, "[attachment_safe framed=\"0\" description=\"" + fileProgress.name.replace(/"/g, '\'') + "\"]new_" + attachmentBase + "[/attachment_safe]\n").then(function () {
-                            var progress = new FileProgress(fileProgress, 'container_for_' + fieldName);
+                            var progress = new FileProgress(fileProgress, 'container-for-' + fieldName);
                             progress.setProgress(100);
                             progress.setComplete();
                             progress.setStatus('{!javascript:PLUPLOAD_COMPLETE^;}');

@@ -3,7 +3,7 @@
 <div data-tpl="wikiPost" data-tpl-params="{+START,PARAMS_JSON,ID}{_*}{+END}">
 	<div>
 		<div class="cns-forum-box-left cns-forum-box-right cns-post-details" role="note">
-			<a id="post_{ID*}"></a>
+			<a id="post-{ID*}"></a>
 
 			<div class="wiki-topic-poster-name">
 				{+START,IF_NON_EMPTY,{POSTER_URL}}
@@ -26,7 +26,7 @@
 		</div>
 	</div>
 	<div>
-		<div class="cns-topic-post-area cns-post-main-column wiki-topic-post-area" id="pe_{ID*}">
+		<div class="cns-topic-post-area cns-post-main-column wiki-topic-post-area" id="pe-{ID*}">
 			{POST}
 
 			{$REVIEW_STATUS,wiki_post,{ID}}
@@ -52,8 +52,8 @@
 					{+END}
 
 					{+START,IF,{STAFF_ACCESS}}
-						<div id="cell_mark_{ID*}" class="cns-off mass-select-marker wiki-mass-select-marker">
-							<form class="webstandards-checker-off" title="{!MARKER}: {ID*}" method="post" action="index.php" id="form_mark_{ID*}" autocomplete="off">
+						<div id="cell-mark-{ID*}" class="cns-off mass-select-marker wiki-mass-select-marker">
+							<form class="webstandards-checker-off" title="{!MARKER}: {ID*}" method="post" action="index.php" id="form-mark-{ID*}" autocomplete="off">
 								<div>
 									{+START,IF,{$NOT,{$IS_GUEST}}}<label for="mark_{ID*}">{!MARKER}<span class="accessibility-hidden"> #{ID*}</span>:</label>{+END}{$,Guests don't see this so search engines don't; hopefully people with screen-readers are logged in}
 									<input class="js-click-checkbox-set-cell-mark-class js-click-show-wiki-merge-button"{+START,IF,{$NOT,{$IS_GUEST}}} title="{!MARKER} #{ID*}"{+END} value="1" type="checkbox" id="mark_{ID*}" name="mark_{ID*}" />

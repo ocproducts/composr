@@ -1,5 +1,5 @@
 <div data-tpl="blockTopPersonalStats">
-	<div class="global-button-ref-point" id="top_personal_stats_rel" style="display: none">
+	<div class="global-button-ref-point" id="top-personal-stats-rel" style="display: none">
 		<div class="box box-arrow box--block-top-personal-stats"><span></span><div class="box-inner"><div>
 			{+START,IF_NON_EMPTY,{AVATAR_URL}}
 				<div class="personal-stats-avatar"><img src="{$ENSURE_PROTOCOL_SUITABILITY*,{AVATAR_URL}}" title="{!AVATAR}" alt="{!AVATAR}" /></div>

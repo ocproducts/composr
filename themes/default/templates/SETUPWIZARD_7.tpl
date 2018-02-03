@@ -6,7 +6,7 @@
 		<div class="box-inner">
 			<h2>{!PREVIEW}</h2>
 
-			<div id="rules_set">
+			<div id="rules-set">
 				<div id="preview-box-balanced" style="display: block">
 					{BALANCED}
 				</div>

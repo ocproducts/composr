@@ -19,9 +19,9 @@
 		<div>
 			{HIDDEN}
 
-			<label for="order_filter">
+			<label for="order-filter">
 				<span class="invisible-ref-point"></span>
-				<input maxlength="255" type="text" id="order_filter" name="search" value="{SEARCH_VAL*}" /><input data-disable-on-click="1" class="button-micro buttons--search" type="submit" value="{!SEARCH}" /> ({!SEARCH_ORDERS})
+				<input maxlength="255" type="text" id="order-filter" name="search" value="{SEARCH_VAL*}" /><input data-disable-on-click="1" class="button-micro buttons--search" type="submit" value="{!SEARCH}" /> ({!SEARCH_ORDERS})
 			</label>
 		</div>
 	</form>

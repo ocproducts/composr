@@ -65,7 +65,7 @@
 						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" title="{!DISCUSSION}: {!EXPAND}/{!CONTRACT}" href="#!"><img alt="{!EXPAND}: {!DISCUSSION}" title="{!EXPAND}" width="20" height="20" src="{$IMG*,icons/trays/expand}" /></a>
 						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" title="{!DISCUSSION}: {!EXPAND}/{!CONTRACT}" href="#!">{!DISCUSSION}</a> ({!POST_PLU,{NUM_POSTS*}})
 					</p>
-					<div class="toggleable-tray js-tray-content" id="hidden_posts" style="display: {$JS_ON,none,block}" aria-expanded="false">
+					<div class="toggleable-tray js-tray-content" id="hidden-posts" style="display: {$JS_ON,none,block}" aria-expanded="false">
 			{+END}
 
 			{+START,IF_EMPTY,{POSTS}}
@@ -99,7 +99,7 @@
 						{$INSERT_SPAMMER_BLACKHOLE}
 
 						<div class="inline">
-							<input id="wiki_merge_button" style="display: none" class="admin--merge button-screen button-faded js-click-btn-add-form-marked-posts" type="submit" value="{!_MERGE_WIKI_POSTS}" />
+							<input id="wiki-merge-button" style="display: none" class="admin--merge button-screen button-faded js-click-btn-add-form-marked-posts" type="submit" value="{!_MERGE_WIKI_POSTS}" />
 						</div>
 					</form>
 				{+END}

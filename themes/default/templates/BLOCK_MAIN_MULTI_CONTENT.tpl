@@ -23,7 +23,7 @@
 		{$SET,carousel_id,{$RAND}}
 
 		{+START,IF_NON_EMPTY,{CONTENT}}
-			<div id="carousel_{$GET*,carousel_id}" class="carousel" style="display: none" data-view="Carousel" data-view-params="{+START,PARAMS_JSON,carousel_id}{_*}{+END}">
+			<div id="carousel-{$GET*,carousel_id}" class="carousel" style="display: none" data-view="Carousel" data-view-params="{+START,PARAMS_JSON,carousel_id}{_*}{+END}">
 				<div class="move-left js-btn-car-move" data-move-amount="-30"></div>
 				<div class="move-right js-btn-car-move" data-move-amount="+30"></div>
 
@@ -31,7 +31,7 @@
 				</div>
 			</div>
 
-			<div class="carousel-temp" id="carousel_ns_{$GET*,carousel_id}">
+			<div class="carousel-temp" id="carousel-ns-{$GET*,carousel_id}">
 				{+START,LOOP,CONTENT}
 					{_loop_var}
 				{+END}
@@ -52,7 +52,7 @@
 			<h2>{TITLE*}</h2>
 		{+END}
 
-		{$SET,ajax_block_main_multi_content_wrapper,ajax_block_main_multi_content_wrapper_{$RAND%}}
+		{$SET,ajax_block_main_multi_content_wrapper,ajax-block-main-multi-content-wrapper-{$RAND%}}
 		<div id="{$GET*,ajax_block_main_multi_content_wrapper}" class="box-wrapper">
 			<div class="float-surrounder cguid-{_GUID|*} raw-ajax-grow-spot">
 				{+START,IF_NON_EMPTY,{CONTENT}}

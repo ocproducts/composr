@@ -43,7 +43,7 @@
         Carousel.base(this, 'constructor', arguments);
 
         var carouselId = strVal(params.carouselId),
-            carouselNs = document.getElementById('carousel_ns_' + carouselId);
+            carouselNs = document.getElementById('carousel-ns-' + carouselId);
 
         this.mainEl = this.$('.main');
 
@@ -524,7 +524,7 @@
     };
 
     $cms.templates.comcodePulse = function (params) {
-        var id = 'pulse_wave_' + params.randIdPulse;
+        var id = 'pulse-wave-' + params.randIdPulse;
 
         window[id] = [0, params.maxColor, params.minColor, params.speed, []];
         setInterval(function () {

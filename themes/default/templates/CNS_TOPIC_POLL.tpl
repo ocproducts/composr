@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,cns_forum}
 
-<a id="poll_jump" rel="dovote"></a>
+<a id="poll-jump" rel="dovote"></a>
 <form class="cns-topic-poll-form" title="{!VOTE}" action="{VOTE_URL*}" method="post" data-tpl="cnsTopicPoll" data-tpl-params="{+START,PARAMS_JSON,MINIMUM_SELECTIONS,MAXIMUM_SELECTIONS}{_*}{+END}" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 

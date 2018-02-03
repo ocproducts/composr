@@ -22,10 +22,10 @@
             id = strVal(params.randFaderImage), 
             milliseconds = Number(params.mill), i;
 
-        this.fpAnimationEl = document.getElementById('image_fader_' + id);
+        this.fpAnimationEl = document.getElementById('image-fader-' + id);
         this.fpAnimationFaderEl = $dom.create('img', { className: 'img-thumb', src: $util.srl('{$IMG;,blank}'), css: { position: 'absolute' }});
-        this.teaseTitleEl = document.getElementById('image_fader_title_' + id);
-        this.teaseScrollingTextEl =  document.getElementById('image_fader_scrolling_text_' + id);
+        this.teaseTitleEl = document.getElementById('image-fader-title-' + id);
+        this.teaseScrollingTextEl =  document.getElementById('image-fader-scrolling-text-' + id);
 
         this.fpAnimationEl.parentNode.insertBefore(this.fpAnimationFaderEl, this.fpAnimationEl);
         this.fpAnimationEl.parentNode.style.position = 'relative';
@@ -210,7 +210,7 @@
         }
 
         $dom.on(container, 'click', '.js-click-carousel-prepare-load-more', function () {
-            var ob = document.getElementById('carousel_ns_' + carouselId);
+            var ob = document.getElementById('carousel-ns-' + carouselId);
 
             if ((ob.parentNode.scrollLeft + ob.offsetWidth * 2) < ob.scrollWidth) {
                 return; // Not close enough to need more results

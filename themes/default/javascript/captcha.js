@@ -63,7 +63,7 @@
             submitBtn = document.getElementById('submit-button');
 
         if (!form) {
-            form = document.getElementById('posting_form');
+            form = document.getElementById('posting-form');
         }
 
         if ($CONFIG_OPTION_recaptcha_site_key !== '') { // ReCAPTCHA Enabled

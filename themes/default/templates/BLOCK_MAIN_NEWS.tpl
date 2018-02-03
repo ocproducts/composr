@@ -1,5 +1,5 @@
 {+START,IF,{$NEQ,{$COMMA_LIST_GET,{BLOCK_PARAMS},raw},1}}
-	{$SET,ajax_block_main_news_wrapper,ajax_block_main_news_wrapper_{$RAND%}}
+	{$SET,ajax_block_main_news_wrapper,ajax-block-main-news-wrapper-{$RAND%}}
 	<div id="{$GET*,ajax_block_main_news_wrapper}" class="box-wrapper">
 		<section class="box box---block-main-news"><div class="box-inner compacted-subbox-stream{+START,IF,{$GET,large_news_posts}} less-compact{+END}">
 			{+START,IF,{$NOT,{BLOG}}}{+START,IF_NON_EMPTY,{TITLE}}

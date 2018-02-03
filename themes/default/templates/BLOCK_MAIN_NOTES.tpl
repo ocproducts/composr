@@ -2,12 +2,12 @@
 {$REQUIRE_JAVASCRIPT,core_adminzone_dashboard}
 
 <div class="form-ajax-target" data-view="BlockMainNotes" data-view-params="{+START,PARAMS_JSON,BLOCK_NAME,MAP}{_*}{+END}">
-	<section id="tray_{TITLE|}" data-toggleable-tray="{ save: true }" class="box box---block-main-notes">
+	<section id="tray-{TITLE|}" data-toggleable-tray="{ save: true }" class="box box---block-main-notes">
 		<h3 class="toggleable-tray-title js-tray-header">
-			<a class="toggleable-tray-button" data-click-tray-toggle="#tray_{TITLE|}" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{TITLE}}" title="{!CONTRACT}" width="24" height="24" src="{$IMG*,icons/trays/contract2}" /></a>
+			<a class="toggleable-tray-button" data-click-tray-toggle="#tray-{TITLE|}" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{TITLE}}" title="{!CONTRACT}" width="24" height="24" src="{$IMG*,icons/trays/contract2}" /></a>
 
 			{+START,IF_NON_EMPTY,{TITLE}}
-				<a class="toggleable-tray-button" data-click-tray-toggle="#tray_{TITLE|}" href="#!">{TITLE*}</a>
+				<a class="toggleable-tray-button" data-click-tray-toggle="#tray-{TITLE|}" href="#!">{TITLE*}</a>
 			{+END}
 		</h3>
 
@@ -15,9 +15,9 @@
 			<form title="{$STRIP_TAGS,{TITLE}}" method="post" action="{URL*}" autocomplete="off" class="js-form-block-main-notes">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
-				<div class="accessibility-hidden"><label for="n_block_{TITLE|}">{!NOTES}</label></div>
+				<div class="accessibility-hidden"><label for="n-block-{TITLE|}">{!NOTES}</label></div>
 				<div>
-					<textarea class="wide-field js-focus-textarea-expand js-blur-textarea-contract{+START,IF,{SCROLLS}} textarea-scroll{+END}" cols="80" id="n_block_{TITLE|}" rows="10" name="new">{CONTENTS*}</textarea>
+					<textarea class="wide-field js-focus-textarea-expand js-blur-textarea-contract{+START,IF,{SCROLLS}} textarea-scroll{+END}" cols="80" id="n-block-{TITLE|}" rows="10" name="new">{CONTENTS*}</textarea>
 				</div>
 
 				<div class="buttons-group">

@@ -37,7 +37,7 @@
         },
 
         toggleSubordFields: function (e, target) {
-            toggleSubordinateFields(target.parentNode.querySelector('img'), 'fes_attachments_help');
+            toggleSubordinateFields(target.parentNode.querySelector('img'), 'fes-attachments-help');
         }
     });
 
@@ -412,7 +412,7 @@
     };
 
     $cms.templates.formScreenField_input = function formScreenField_input(params) {
-        var el = $dom.$('#form_table_field_input__' + strVal(params.randomisedId));
+        var el = $dom.$('#form-table-field-input--' + strVal(params.randomisedId));
         if (el) {
             $cms.form.setUpChangeMonitor(el.parentElement);
         }
@@ -487,7 +487,7 @@
     $cms.templates.formScreenInputHugeComcode = function formScreenInputHugeComcode(params) {
         var required = strVal(params.required),
             textarea = $dom.$id(params.name),
-            input = $dom.$id('form_table_field_input__' + params.randomisedId);
+            input = $dom.$id('form-table-field-input--' + params.randomisedId);
 
         if (required.includes('wysiwyg') && window.$editing.wysiwygOn()) {
             textarea.readOnly = true;
@@ -585,7 +585,7 @@
     };
 
     $cms.templates.formScreenFieldsSetItem = function formScreenFieldsSetItem(params) {
-        var el = $dom.$('#form_table_field_input__' + params.name);
+        var el = $dom.$('#form-table-field-input--' + params.name);
 
         if (el) {
             $cms.form.setUpChangeMonitor(el.parentElement);
@@ -649,7 +649,7 @@
 
     $cms.templates.formScreenInputCaptcha = function formScreenInputCaptcha(params, container) {
         if ($cms.configOption('js_captcha')) {
-            $dom.html($dom.$('#captcha_spot'), params.captcha);
+            $dom.html($dom.$('#captcha-spot'), params.captcha);
         } else {
             window.addEventListener('pageshow', function () {
                 $dom.$('#captcha_readable').src += '&r=' + $util.random(); // Force it to reload latest captcha
@@ -759,7 +759,7 @@
 
     $cms.templates.formScreenInputHuge_input = function (params) {
         var textArea = document.getElementById(params.name),
-            el = $dom.$('#form_table_field_input__' + params.randomisedId);
+            el = $dom.$('#form-table-field-input--' + params.randomisedId);
 
         if (el) {
             $cms.form.setUpChangeMonitor(el.parentElement);
@@ -775,7 +775,7 @@
     };
 
     $cms.templates.formScreenInputHugeList_input = function (params) {
-        var el = $dom.$('#form_table_field_input__' + params.randomisedId);
+        var el = $dom.$('#form-table-field-input--' + params.randomisedId);
 
         if (!params.inlineList && el) {
             $cms.form.setUpChangeMonitor(el.parentElement);
@@ -803,7 +803,7 @@
                     window.parent.scrollTo(0, $dom.findPosY(window.parent.document.getElementById('preview_iframe')));
                 } catch (e) {}
                 window.parent.mobileVersionForPreview = Boolean(el.checked);
-                $dom.trigger(window.parent.document.getElementById('preview_button'), 'click');
+                $dom.trigger(window.parent.document.getElementById('preview-button'), 'click');
                 return;
             }
 
@@ -834,7 +834,7 @@
             }
 
             if (params.wordCounter !== undefined) {
-                setupWordCounter($dom.$('#post'), $dom.$('#word_count_' + params.wordCountId));
+                setupWordCounter($dom.$('#post'), $dom.$('#word-count-' + params.wordCountId));
             }
         }
 
@@ -848,7 +848,7 @@
 
         if (initDragDrop) {
             $cms.requireJavascript('plupload').then(function () {
-                window.$plupload.initialiseHtml5DragdropUpload('container_for_' + name, name);
+                window.$plupload.initialiseHtml5DragdropUpload('container-for-' + name, name);
             });
         }
 
@@ -934,7 +934,7 @@
             comcode = strVal(params.comcode),
             comcodeSemihtml = strVal(params.comcodeSemihtml),
             isWysiwyg = targetWin.$cms.form.isWysiwygField(element),
-            loadingSpace = document.getElementById('loading_space'),
+            loadingSpace = document.getElementById('loading-space'),
             attachedEventAction = false;
 
         window.returnValue = comcode;
@@ -1617,7 +1617,7 @@
         somethingRequired = Boolean(somethingRequired);
 
 
-        var form = $dom.closest('#set_wrapper_' + setName, 'form');
+        var form = $dom.closest('#set-wrapper-' + setName, 'form');
 
         var fields = form.elements[setName],
             fieldNames = [];

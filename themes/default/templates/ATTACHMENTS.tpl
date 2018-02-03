@@ -7,7 +7,7 @@
 			{$,plupload will attach upload code to here}
 		</div>
 
-		<div id="attachment_progress_bars">
+		<div id="attachment-progress-bars">
 			<div id="fsUploadProgress" class="progress-bars"></div>
 		</div>
 	{+END}

@@ -13,7 +13,7 @@
 		<h3>{$GET,content_box_title}</h3>
 	{+END}
 
-	<a id="poll_jump" rel="dovote"></a>
+	<a id="poll-jump" rel="dovote"></a>
 	<form title="{!VOTE}" target="_self" action="{VOTE_URL*}" method="post" class="poll-form" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 

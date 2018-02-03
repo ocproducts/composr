@@ -86,7 +86,7 @@
 
 								<div class="friend-actions">
 									{+START,IF,{CAN_IM}}
-										<input class="button-screen-item admin--add-to-category js-click-btn-im-invite-ticked-people" disabled="disabled" id="invite_ongoing_im_button" type="button" value="{!INVITE_CURRENT_IM}" />
+										<input class="button-screen-item admin--add-to-category js-click-btn-im-invite-ticked-people" disabled="disabled" id="invite-ongoing-im-button" type="button" value="{!INVITE_CURRENT_IM}" />
 										<input class="button-screen-item menu--social--chat--chat js-click-btn-im-start-ticked-people" type="button" value="{!START_IM}" />
 									{+END}
 									{+START,IF_NON_EMPTY,{URL_REMOVE_FRIENDS}}
@@ -124,7 +124,7 @@
 							<section class="box"><div class="box-inner">
 								<h3>{!ALERT}</h3>
 
-								<div id="alert_box"></div>
+								<div id="alert-box"></div>
 							</div></section>
 						</div>
 					</div>

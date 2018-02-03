@@ -1,5 +1,5 @@
 {+START,IF,{$NEQ,{$COMMA_LIST_GET,{BLOCK_PARAMS},raw},1}}
-	{$SET,ajax_catalogue_default_category_embed_wrapper,ajax_catalogue_default_category_embed_wrapper_{$RAND%}}
+	{$SET,ajax_catalogue_default_category_embed_wrapper,ajax-catalogue-default-category-embed-wrapper-{$RAND%}}
 	<div id="{$GET*,ajax_catalogue_default_category_embed_wrapper}" class="box-wrapper">
 		{+START,SET,sorting}
 			{$SET,show_sort_button,1}

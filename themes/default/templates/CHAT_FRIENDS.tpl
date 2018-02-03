@@ -47,7 +47,7 @@
 			{+START,LOOP,FRIENDS}
 				<tr>
 					<td>
-						<img {+START,IF,{SIMPLER}} title="{ONLINE_TEXT*}"{+END} id="friend_img_{MEMBER_ID*}" alt="" width="24" height="24" src="{$IMG*,icons/menu/social/members}" />
+						<img {+START,IF,{SIMPLER}} title="{ONLINE_TEXT*}"{+END} id="friend-img-{MEMBER_ID*}" alt="" width="24" height="24" src="{$IMG*,icons/menu/social/members}" />
 					</td>
 
 					<td>
@@ -64,7 +64,7 @@
 					</td>
 
 					{+START,IF,{$NOT,{SIMPLER}}}
-						<td id="online_{MEMBER_ID*}">
+						<td id="online-{MEMBER_ID*}">
 							{ONLINE_TEXT*}
 						</td>
 					{+END}

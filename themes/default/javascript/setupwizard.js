@@ -3,7 +3,7 @@
 
     $cms.templates.setupWizard7 = function setupWizard7(params, container) {
         $dom.on('#rules', 'click', function () {
-            $dom.smoothScroll($dom.findPosY('#rules_set'));
+            $dom.smoothScroll($dom.findPosY('#rules-set'));
         });
     };
 

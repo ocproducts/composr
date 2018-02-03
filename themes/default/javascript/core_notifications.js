@@ -19,8 +19,8 @@
     function NotificationButtons(params) {
         NotificationButtons.base(this, 'constructor', arguments);
 
-        this.disableFormEl = this.$('#ndisable_' + params.notificationId);
-        this.enableFormEl = this.$('#nenable_' + params.notificationId);
+        this.disableFormEl = this.$('#ndisable-' + params.notificationId);
+        this.enableFormEl = this.$('#nenable-' + params.notificationId);
     }
 
     $util.inherits(NotificationButtons, $cms.View, /**@lends NotificationButtons#*/{
@@ -251,7 +251,7 @@
 
         var spot, display, button, unread;
 
-        spot = document.getElementById('web_notifications_spot');
+        spot = document.getElementById('web-notifications-spot');
         if (spot) {
             display = responseXml.getElementsByTagName('display_web_notifications');
             button = document.getElementById('web-notifications-button');
@@ -263,7 +263,7 @@
             }
         }
 
-        spot = document.getElementById('pts_spot');
+        spot = document.getElementById('pts-spot');
         if (spot) {
             display = responseXml.getElementsByTagName('display_pts');
             button = document.getElementById('pts-button');

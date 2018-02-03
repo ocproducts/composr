@@ -291,18 +291,18 @@
                         }
                     }
 
-                    jQuery('#activities_general_notify').text('');
+                    jQuery('#activities-general-notify').text('');
                     jQuery('li[toFade="yes"]', '#activities-feed').hide().fadeIn(1200);
                     succeeded = true;
                 } else {
                     if (jQuery('success', data).text() === '2') {
-                        jQuery('#activities_general_notify').text('');
+                        jQuery('#activities-general-notify').text('');
                         succeeded = true;
                     }
                 }
             }
             if (!succeeded) {
-                jQuery('#activities_general_notify').text('{!INTERNAL_ERROR;^}');
+                jQuery('#activities-general-notify').text('{!INTERNAL_ERROR;^}');
             }
             window.sAjaxUpdateLocking = 0;
         }

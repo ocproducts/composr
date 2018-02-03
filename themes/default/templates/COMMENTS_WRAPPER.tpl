@@ -1,4 +1,4 @@
-<div id="comments_wrapper" class="comments-wrapper" role="complementary" data-tpl="commentsWrapper" data-tpl-params="{+START,PARAMS_JSON,SERIALIZED_OPTIONS,HASH}{_*}{+END}">
+<div id="comments-wrapper" class="comments-wrapper" role="complementary" data-tpl="commentsWrapper" data-tpl-params="{+START,PARAMS_JSON,SERIALIZED_OPTIONS,HASH}{_*}{+END}">
 	{+START,SET,REVIEWS_TITLE}
 		<span class="field-title">{!_REVIEWS,{$METADATA*,numcomments}}:</span>
 
@@ -88,7 +88,7 @@
 
 		{$,If has commenting permission}
 		{+START,IF_NON_EMPTY,{FORM}}
-			{+START,IF_PASSED,COMMENTS}<a id="last_comment" rel="docomment"></a>{+END}
+			{+START,IF_PASSED,COMMENTS}<a id="last-comment" rel="docomment"></a>{+END}
 
 			{FORM}
 		{+END}

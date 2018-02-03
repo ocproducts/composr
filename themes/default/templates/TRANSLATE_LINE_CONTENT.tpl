@@ -10,9 +10,9 @@
 		{NAME*}
 	</td>
 	<td class="translate-line-second">
-		<div class="accessibility-hidden"><label for="old__trans_{NAME*}">{!OLD} {NAME*}</label></div>
+		<div class="accessibility-hidden"><label for="old--trans-{NAME*}">{!OLD} {NAME*}</label></div>
 		<div>
-			<textarea readonly="readonly" class="translate-original-text wide-field" cols="60" rows="{$ADD*,{$DIV,{$LENGTH,{OLD}},80},1}" id="old__trans_{NAME*}" name="old__{NAME*}">{OLD*}</textarea>
+			<textarea readonly="readonly" class="translate-original-text wide-field" cols="60" rows="{$ADD*,{$DIV,{$LENGTH,{OLD}},80},1}" id="old--trans-{NAME*}" name="old__{NAME*}">{OLD*}</textarea>
 		</div>
 
 		<div class="arrow-ruler"><img alt="" width="36" height="36" src="{$IMG*,arrow_ruler}" /></div>
@@ -29,9 +29,9 @@
 	{+END}
 </tr>
 {+START,IF_NON_EMPTY,{ACTIONS}}
-	<tr id="rexp_trans_{ID*}" style="display: none">
+	<tr id="rexp-trans-{ID*}" style="display: none">
 		<td colspan="{$?,{$IS_EMPTY,{ACTIONS}},3,4}">
-			<div id="exp_trans_{ID*}"></div>
+			<div id="exp-trans-{ID*}"></div>
 		</td>
 	</tr>
 {+END}

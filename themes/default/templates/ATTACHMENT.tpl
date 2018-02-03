@@ -28,7 +28,7 @@
 							</span>
 
 							{+START,IF_PASSED,SYNDICATION_JSON}
-								<div id="file{I*}_syndication_options" class="syndication-options"></div>
+								<div id="file{I*}-syndication-options" class="syndication-options"></div>
 							{+END}
 						</div>
 					</td>

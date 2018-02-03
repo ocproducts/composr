@@ -787,13 +787,13 @@ What follows is an example XHTML document, utilising all of the above principles
 		<link href="http://example.com/" rel="home" title="Home" />
 	</head>
 	<body>
-		<div id="top_bar">
+		<div id="top-bar">
 			<h1>
 				<a href="http://example.com/" title="The example.com homepage">example.com</a>
 			</h1>
 		</div>
 
-		<div id="main_doc">
+		<div id="main-doc">
 			<h2>Example content</h2>
 			<p>This is example content.</p>
 			<ul>
@@ -802,13 +802,13 @@ What follows is an example XHTML document, utilising all of the above principles
 				<li>unordered list?</li>
 			</ul>
 
-			<div id="bottom_bar">
+			<div id="bottom-bar">
 				<a href="http://www.blogrankings.com"><img src="http://www.blogrankings.com/images/blogrankings.gif" alt="BlogRankings" /></a>
 				<a href="http://www.spreadfirefox.com/?q=user/register&amp;r=23557"><img src="http://example.com/firefox.png" alt="Get Firefox!" /></a>
 			</div>
 		</div>
 
-		<div id="right_doc">
+		<div id="right-doc">
 			<h3>Login status</h3>
 			<ul>
 				<li>
@@ -820,7 +820,7 @@ What follows is an example XHTML document, utilising all of the above principles
 			</ul>
 		</div>
 
-		<div id="left_doc">
+		<div id="left-doc">
 			<h3>Intro</h3>
 			<p>This is a well-written <abbr title="eXtensible HyperText Markup Language">XHTML</abbr> page.</p>
 			<p>Example paragraph.</p>
@@ -879,7 +879,7 @@ In that example, the [tt]<span>[/tt] tag has two CSS classes attached. However, 
 
 ID [i]selectors[/i] are another basic selector type, which apply properties to elements based upon their ID attribute (for more information on the ID attribute, see the JavaScript section below).
 [code="CSS"]
-#main_doc {
+#main-doc {
 	property: property-value;
 }
 [/code]
@@ -1082,13 +1082,13 @@ All these properties are no use without property values. Although most elements 
 
 Pixel measurements should generally be used for fixed-size objects, which are usually encountered when doing the basic layout of a page.
 [code="CSS"]
-#left_col {
+#left-col {
 	width: 200px;
 }
 [/code]
 Percentage measurements are much better to use, however, as they allow dynamic resizing of page layout if the browser window is resized.
 [code="CSS"]
-#left_col {
+#left-col {
 	width: 20%;
 }
 [/code]

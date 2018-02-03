@@ -1,5 +1,5 @@
 {+START,SET,media}
-	{$SET,player_id,player_{$RAND}}
+	{$SET,player_id,player-{$RAND}}
 
 	{$REQUIRE_JAVASCRIPT,mediaelement-and-player}
 	{$REQUIRE_JAVASCRIPT,core_rich_media}
@@ -14,7 +14,7 @@
 		{+END}
 	{+END}
 
-	<audio controls="controls" preload="none" id="{$GET%,player_id}" data-require-javascript="['mediaelement-and-player', 'core_rich_media']" data-tpl="mediaAudioWebsafe">
+	<audio controls="controls" preload="none" id="{$GET%,player_id}" data-tpl="mediaAudioWebsafe">
 		<source type="{MIME_TYPE*}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" />
 		<object width="{WIDTH*}" height="{HEIGHT*}" type="application/x-shockwave-flash" data="{$BASE_URL*}/data_custom/mediaelement/flashmediaelement.swf">
 			<param name="movie" value="{$BASE_URL*}/data_custom/mediaelement/flashmediaelement.swf" />

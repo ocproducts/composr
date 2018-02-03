@@ -67,7 +67,7 @@
         window.pendingEvalFunction = function (el) { // In webkit you can't get a node until it's been closed, so we need to set our code into a function and THEN run it
             if (params.tickerText !== undefined) {
                 setTimeout(function () {
-                    $dom.html(document.getElementById('news_go_here'), params.tickerText);
+                    $dom.html(document.getElementById('news-go-here'), params.tickerText);
                 }, params.relativeTimestamp * 1000);
             }
             // Set up extra attributes
@@ -86,7 +86,7 @@
 
     // Handle the realtime_rain button on the bottom bar
     $realtimeRain.load = function load() {
-        var img = $dom.$('#realtime_rain_img');
+        var img = $dom.$('#realtime-rain-img');
 
         var e = $dom.$('#real-time-surround');
         if (e) { // Clicked twice - so now we close it
@@ -112,7 +112,7 @@
 
         img.src = $util.srl('{$IMG;,icons/tool_buttons/realtime_rain_off}');
 
-        var tmpElement = document.getElementById('realtime_rain_img_loader');
+        var tmpElement = document.getElementById('realtime-rain-img-loader');
         if (tmpElement) {
             tmpElement.parentNode.removeChild(tmpElement);
         }
@@ -182,7 +182,7 @@
 
         document.getElementById('loading-icon').style.display = 'none';
 
-        var bubbles = document.getElementById('bubbles_go_here');
+        var bubbles = document.getElementById('bubbles-go-here');
 
         var maxHeight = bubbles.parentNode.offsetHeight;
         var totalVerticalSlots = maxHeight / 183;
@@ -308,7 +308,7 @@
 
         avoidRemove = !!avoidRemove;
 
-        var bubbles = document.getElementById('bubbles_go_here');
+        var bubbles = document.getElementById('bubbles-go-here');
         var maxHeight = bubbles.parentNode.offsetHeight;
         var jumpSpeed = 1;
         var newPos = (parseInt(el.style.top) || 0) + jumpSpeed;
@@ -350,7 +350,7 @@
     }
 
     function bubblesTidyUp() {
-        var bubblesGoHere = document.getElementById('bubbles_go_here');
+        var bubblesGoHere = document.getElementById('bubbles-go-here');
         if (!bubblesGoHere) {
             return;
         }

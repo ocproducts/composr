@@ -9,7 +9,7 @@
 
 <div data-view="CommentsPostingForm" data-view-params="{+START,PARAMS_JSON,MORE_URL,GET_EMAIL,GET_NAME,GET_TITLE,EMAIL_OPTIONAL,TITLE_OPTIONAL,WYSIWYG,CAPTCHA,ANALYTIC_EVENT_CATEGORY}{_*}{+END}">
 	{+START,IF_NON_EMPTY,{COMMENT_URL}}
-	<form role="form" title="{TITLE*}" class="comments-form js-form-comments" id="comments-form" action="{COMMENT_URL*}{+START,IF_NON_EMPTY,{$GET,current_anchor}}#{$GET,current_anchor}{+END}{+START,IF_EMPTY,{$GET,current_anchor}}{+START,IF_PASSED_AND_TRUE,COMMENTS}#last_comment{+END}{+END}" method="post" enctype="multipart/form-data" autocomplete="off">
+	<form role="form" title="{TITLE*}" class="comments-form js-form-comments" id="comments-form" action="{COMMENT_URL*}{+START,IF_NON_EMPTY,{$GET,current_anchor}}#{$GET,current_anchor}{+END}{+START,IF_EMPTY,{$GET,current_anchor}}{+START,IF_PASSED_AND_TRUE,COMMENTS}#last-comment{+END}{+END}" method="post" enctype="multipart/form-data" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 		<input type="hidden" name="_comment_form_post" value="1" />
 	{+END}
@@ -81,7 +81,7 @@
 											<input id="email" name="email" value="{$MEMBER_EMAIL*}" type="text" tabindex="2" maxlength="255" class="wide-field{+START,IF,{$NOT,{EMAIL_OPTIONAL}}} input-text-required{+END}" />
 										</div>
 
-										<div id="error_email" style="display: none" class="input-error-here"></div>
+										<div id="error-email" style="display: none" class="input-error-here"></div>
 									</td>
 								</tr>
 							{+END}
@@ -98,7 +98,7 @@
 											<input id="title" name="title" value="{DEFAULT_TITLE*}" type="text" tabindex="3" maxlength="255" class="wide-field" />
 										</div>
 
-										<div id="error_title" style="display: none" class="input-error-here"></div>
+										<div id="error-title" style="display: none" class="input-error-here"></div>
 									</td>
 								</tr>
 							{+END}
@@ -203,7 +203,7 @@
 						<div class="proceed-button buttons-group {$?,{$GET,has_preview_button},contains-preview-button,contains-no-preview-button}">
 							{+START,IF,{$DESKTOP}}
 								{+START,IF,{$GET,has_preview_button}}
-									<input id="preview_button" accesskey="p" tabindex="250" class="buttons--preview js-click-do-form-preview {$?,{$IS_EMPTY,{COMMENT_URL}},button-screen,button-screen-item} desktop-inline" type="button" value="{!PREVIEW}" />
+									<input id="preview-button" accesskey="p" tabindex="250" class="buttons--preview js-click-do-form-preview {$?,{$IS_EMPTY,{COMMENT_URL}},button-screen,button-screen-item} desktop-inline" type="button" value="{!PREVIEW}" />
 								{+END}
 							{+END}
 

@@ -79,8 +79,8 @@
         function _toggleWysiwyg(name) {
             var isWysiwygOn = $editing.wysiwygOn(),
                 forms = document.getElementsByTagName('form'),
-                so = document.getElementById('post_special_options'),
-                so2 = document.getElementById('post_special_options2');
+                so = document.getElementById('post-special-options'),
+                so2 = document.getElementById('post-special-options2');
 
             if (isWysiwygOn) {
                 // Find if the WYSIWYG has anything in it - if not, discard
@@ -234,8 +234,8 @@
             });
 
             function postWysiwygDisable(textarea) {
-                if (document.getElementById('toggle_wysiwyg_' + textarea.id)) {
-                    $dom.html('#toggle_wysiwyg_' + textarea.id, '<img width="16" height="16" src="{$IMG*;^,icons/editor/wysiwyg_on}" alt="{!comcode:ENABLE_WYSIWYG;^}" title="{!comcode:ENABLE_WYSIWYG;^}" class="vertical-alignment" />');
+                if (document.getElementById('toggle-wysiwyg-' + textarea.id)) {
+                    $dom.html('#toggle-wysiwyg-' + textarea.id, '<img width="16" height="16" src="{$IMG*;^,icons/editor/wysiwyg_on}" alt="{!comcode:ENABLE_WYSIWYG;^}" title="{!comcode:ENABLE_WYSIWYG;^}" class="vertical-alignment" />');
                 }
 
                 try {  // Unload editor 
@@ -296,8 +296,8 @@
             return Promise.resolve();
         }
 
-        var so = document.getElementById('post_special_options'),
-            so2 = document.getElementById('post_special_options2');
+        var so = document.getElementById('post-special-options'),
+            so2 = document.getElementById('post-special-options2');
 
         if (!postingForm.elements['post'] || postingForm.elements['post'].className.includes('wysiwyg')) {
             if (so) {
@@ -334,8 +334,8 @@
                 }
                 indicator.value = '1';
 
-                if (document.getElementById('toggle_wysiwyg_' + id)) {
-                    $dom.html(document.getElementById('toggle_wysiwyg_' + id), '<img width="16" height="16" src="{$IMG*;^,icons/editor/wysiwyg_off}" alt="{!comcode:DISABLE_WYSIWYG;^}" title="{!comcode:DISABLE_WYSIWYG;^}" class="vertical-alignment" />');
+                if (document.getElementById('toggle-wysiwyg-' + id)) {
+                    $dom.html(document.getElementById('toggle-wysiwyg-' + id), '<img width="16" height="16" src="{$IMG*;^,icons/editor/wysiwyg_off}" alt="{!comcode:DISABLE_WYSIWYG;^}" title="{!comcode:DISABLE_WYSIWYG;^}" class="vertical-alignment" />');
                 }
 
                 window.wysiwygOriginalComcode[id] = textarea.value;
@@ -1043,7 +1043,7 @@
         syndicationJson = strVal(syndicationJson);
         noQuota = !!noQuota;
 
-        var htmlSpot = document.getElementById(name + '_syndication_options'),
+        var htmlSpot = document.getElementById(name + '-syndication-options'),
             html = '',
             numChecked = 0,
             fileOb = document.getElementById(name),

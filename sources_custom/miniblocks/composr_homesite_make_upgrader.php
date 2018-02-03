@@ -26,7 +26,7 @@ if (!function_exists('mu_ui')) {
     <br />
     If you'd prefer though you can enter in your version number right here:
 </p>
-<form onsubmit="this.elements['make_upgrader_button'].disabled=true;" action="#!" method="post">
+<form onsubmit="document.getElementById('make-upgrader-button').disabled = true;" action="#!" method="post">
     {$spammer_blackhole}
 
     <p style="margin: 4px 0">
@@ -47,7 +47,7 @@ if (!function_exists('mu_ui')) {
     </p>
     <p>(example above is for upgrading from 10.0.0 beta1)</p>
     <p>
-        <input class="buttons--proceed button-screen-item" id="make_upgrader_button" type="submit" value="Generate" />
+        <input class="buttons--proceed button-screen-item" id="make-upgrader-button" type="submit" value="Generate" />
     </p>
 </form>
 END;
@@ -73,7 +73,7 @@ if (!function_exists('mu_result')) {
 
         require_code('files');
 
-        echo '<label for="upgrade_file">Upgrade file:</label> <input id="upgrade_file" class="notranslate" size="45" readonly="readonly" type="text" value="' . escape_html($url) . '" />, or <a href="' . escape_html($url) . '">download upgrade directly</a> (' . escape_html(clean_file_size(filesize($path))) . ').';
+        echo '<label for="upgrade-file">Upgrade file:</label> <input id="upgrade-file" class="notranslate" size="45" readonly="readonly" type="text" value="' . escape_html($url) . '" />, or <a href="' . escape_html($url) . '">download upgrade directly</a> (' . escape_html(clean_file_size(filesize($path))) . ').';
     }
 }
 

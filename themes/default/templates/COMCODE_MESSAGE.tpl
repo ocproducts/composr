@@ -10,7 +10,7 @@
 		<li><a rel="nofollow" class="link-exempt js-link-click-open-emoticon-chooser-window" data-click-pd="1" title="{!EMOTICONS_POPUP} {!LINK_NEW_WINDOW}" target="_blank" href="{$FIND_SCRIPT*,emoticons}?field_name={NAME*}{$KEEP*,0,1}"><img width="16" height="16" src="{$IMG*,icons/editor/insert_emoticons}" alt="{!EMOTICONS_POPUP}" class="vertical-alignment" /></a></li>
 
 		{+START,IF,{W}}
-			<li><a rel="nofollow" id="toggle_wysiwyg_{NAME*}" href="#!" class="js-click-toggle-wysiwyg"><abbr title="{!comcode:TOGGLE_WYSIWYG_2}"><img width="16" height="16" src="{$IMG*,icons/editor/wysiwyg_on}" alt="{!comcode:ENABLE_WYSIWYG}" title="{!comcode:ENABLE_WYSIWYG}" class="vertical-alignment" /></abbr></a></li>
+			<li><a rel="nofollow" id="toggle-wysiwyg-{NAME*}" href="#!" class="js-click-toggle-wysiwyg"><abbr title="{!comcode:TOGGLE_WYSIWYG_2}"><img width="16" height="16" src="{$IMG*,icons/editor/wysiwyg_on}" alt="{!comcode:ENABLE_WYSIWYG}" title="{!comcode:ENABLE_WYSIWYG}" class="vertical-alignment" /></abbr></a></li>
 		{+END}
 	</ul>
 </div>

@@ -4,7 +4,7 @@
 <div data-tpl="blockMainGalleryEmbed" data-tpl-params="{+START,PARAMS_JSON,carousel_id,START,MAX,block_call_url}{_*}{+END}">
 	{+START,IF,{$NEQ,{$COMMA_LIST_GET,{BLOCK_PARAMS},raw},1}}
 		{+START,IF,{$NEQ,{_GUID},carousel}}
-			{$SET,ajax_block_main_gallery_embed_wrapper,ajax_block_main_gallery_embed_wrapper_{$RAND%}}
+			{$SET,ajax_block_main_gallery_embed_wrapper,ajax-block-main-gallery-embed-wrapper-{$RAND%}}
 			<div id="{$GET*,ajax_block_main_gallery_embed_wrapper}">
 				<div class="gallery-grid-cell-wrap raw-ajax-grow-spot">
 					{ENTRIES}
@@ -27,14 +27,14 @@
 			{$SET,carousel_id,{$RAND}}
 			{$SET,block_call_url,{$FACILITATE_AJAX_BLOCK_CALL,{BLOCK_PARAMS},raw=.*\,cache=.*,{START_PARAM}=.*}&{START_PARAM}=current_loading_from_pos_{$GET,carousel_id}}
 
-			<div id="carousel_{$GET*,carousel_id}" class="carousel" style="display: none" data-view="Carousel" data-view-params="{+START,PARAMS_JSON,carousel_id}{_*}{+END}">
+			<div id="carousel-{$GET*,carousel_id}" class="carousel" style="display: none" data-view="Carousel" data-view-params="{+START,PARAMS_JSON,carousel_id}{_*}{+END}">
 				<div class="move-left js-btn-car-move " data-move-amount="-47"></div>
 				<div class="move-right js-btn-car-move js-click-carousel-prepare-load-more" data-move-amount="+47"></div>
 
-				<div class="main raw-ajax-grow-spot" id="carousel_{$GET*,carousel_id}_container"></div>
+				<div class="main raw-ajax-grow-spot" id="carousel-{$GET*,carousel_id}-container"></div>
 			</div>
 
-			<div class="carousel-temp" id="carousel_ns_{$GET*,carousel_id}">
+			<div class="carousel-temp" id="carousel-ns-{$GET*,carousel_id}">
 				{ENTRIES}
 			</div>
 		{+END}

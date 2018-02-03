@@ -223,13 +223,13 @@ echo <<<END
 <p>This script will push individual bug fixes to all the right places. Run it after you've developed a fix, and tell it how to link the fix in and what the fix is.</p>
 
 <style>
-#bugfix_form label {
+#bugfix-form label {
     float: left;
     width: 430px;
 }
 </style>
 
-<form action="{$post_url}" method="post" id="bugfix_form">
+<form action="{$post_url}" method="post" id="bugfix-form">
     {$spammer_blackhole}
 
     <fieldset>
