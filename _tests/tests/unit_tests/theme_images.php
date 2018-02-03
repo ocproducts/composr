@@ -27,10 +27,46 @@ class theme_images_test_set extends cms_test_case
         require_code('files2');
     }
 
+    public function testIconsSquare()
+    {
+        $themes = find_all_themes();
+        foreach (array_keys($themes) as $theme) {
+            if ($theme == '_unnamed_') {
+                continue;
+            }
+
+            $dirs = array(
+                get_file_base() . '/themes/' . $theme . '/images/icons',
+                get_file_base() . '/themes/' . $theme . '/images/' . fallback_lang() . '/icons',
+                get_file_base() . '/themes/' . $theme . '/images_custom/icons',
+                get_file_base() . '/themes/' . $theme . '/images_custom/' . fallback_lang() . '/icons',
+            );
+            $files = array();
+            foreach ($dirs as $dir) {
+                $files = array_merge($files, get_directory_contents($dir, $dir));
+            }
+
+            $files2 = array();
+            foreach ($files as $file) {
+                if (substr($file, -4) == '.svg') {
+                    $c = file_get_contents($file);
+                    $matches = array();
+                    preg_match('#width="(\d+)px" height="(\d+)px"#', $c, $matches);
+                    $width = intval($matches[1]);
+                    $height = intval($matches[2]);
+                } elseif (is_image($file, IMAGE_CRITERIA_GD_READ, true)) {
+                    list($width, $height) = cms_getimagesize($file);
+                }
+
+                $this->assertTrue($width == $height, 'Non-square icon, ' . $file);
+            }
+        }
+    }
+
     public function testDuplicateThemeImages()
     {
         $themes = find_all_themes();
-        foreach ($themes as $theme) {
+        foreach (array_keys($themes) as $theme) {
             if ($theme == '_unnamed_') {
                 continue;
             }

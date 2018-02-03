@@ -68,8 +68,6 @@ class Module_admin_themes
     {
         require_code('themes2');
 
-        $themes = find_all_themes(); // Find all images for all themes
-
         if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('theme_images', array(
                 'id' => '*SHORT_TEXT',

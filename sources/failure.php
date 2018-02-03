@@ -1274,6 +1274,13 @@ function get_html_trace()
  */
 function _look_for_match_key_message($natural_text, $only_if_zone = false, $only_text_match = false)
 {
+    // Protect against potentially fatal loops if there's an error with match_key_messages
+    static $done_once = false;
+    if ($done_once) {
+        return null;
+    }
+    $done_once = true;
+
     if (!isset($GLOBALS['SITE_DB'])) {
         return null;
     }

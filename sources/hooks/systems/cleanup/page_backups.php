@@ -66,7 +66,7 @@ class Hook_cleanup_page_backups
 
         // Themes: Templates (various kinds, including CSS files)
         require_code('themes2');
-        $themes = find_all_themes();
+        $themes = array_keys(find_all_themes());
         foreach ($themes as $theme) {
             $path = get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/templates_custom';
             $this->process($path);
