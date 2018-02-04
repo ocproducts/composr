@@ -10,6 +10,7 @@ Commandr, the Composr Command-Line Environment, is designed for experienced syst
 We designed Commandr to supplement the features of the Admin Zone, rather than to replace them. The interface allows you to enter commands in the form of:
  - PHP code
  - SQL database queries
+ - Shell commands
  - Commandr-code scripts
  - Commandr-code commands, which you can use to fully interact with the Composr Repository
 
@@ -81,6 +82,11 @@ Separating multiple queries using semicolons is [i]not[/i] supported.
 Even though Commandr commands are single-line, pasting multi-line commands in usually works. The only exception would be if the line breaks are a part of strings within the query, in which case they would end up replaced by spaces.
 
 You are allowed to do non-read queries, such as INSERTs and DELETEs, but you'll be told "Error: Your search yielded no results.". Ignore that, it's just a generic messages to tell you explicitly that no results were shown.
+
+[title="2"]Shell commands[/title]
+
+Shell commands can be executed by Commandr by prefixing the query to be executed with a 'hash' (or "pound") symbol ([tt]#[/tt]).
+The actual behaviour of these commands depends on your operating system.
 
 [title="2"]The filesystem[/title]
 

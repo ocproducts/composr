@@ -176,6 +176,7 @@ class Virtual_shell
             define('COMMAND_SCRIPT', 2); // A script
             define('COMMAND_PHP', 3); // A PHP command
             define('COMMAND_SQL', 4); // An SQL query
+            define('COMMAND_SHELL', 5); // A shell command
         }
 
         $this->current_input = $inputted_command;
@@ -366,6 +367,12 @@ class Virtual_shell
 
             $this->parse_runtime['parse_position'] = strlen($this->current_input);
             $this->parse_runtime['commandr_command'] = COMMAND_SQL;
+        } elseif ($this->current_input[$this->parse_runtime['parse_position']] == '#') {
+            // It's a shell command
+            $this->parsed_input[SECTION_COMMAND] = substr($this->current_input, $this->parse_runtime['parse_position'] + 1);
+
+            $this->parse_runtime['parse_position'] = strlen($this->current_input);
+            $this->parse_runtime['commandr_command'] = COMMAND_SHELL;
         } else {
             // It's a normal command or a script...just fetch up to the next space: a command *should not* have spaces
             $next_space = strpos($this->current_input, ' ', $this->parse_runtime['parse_position']);
@@ -982,6 +989,13 @@ class Virtual_shell
             } else {
                 $this->output[STREAM_STDHTML] = $this->_array_to_html($commandr_output);
             }
+        } elseif ($this->parse_runtime['commandr_command'] == COMMAND_SHELL) {
+            // Shell command
+
+            $this->output[STREAM_STDCOMMAND] = '';
+            $this->output[STREAM_STDHTML] = '';
+            $this->output[STREAM_STDOUT] = shell_exec($this->parsed_input[SECTION_COMMAND]);
+            $this->output[STREAM_STDERR] = '';
         }
 
         // Post-processing: follow any extras provided
