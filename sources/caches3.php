@@ -177,6 +177,10 @@ function erase_comcode_cache()
         foreach ($TABLE_LANG_FIELDS_CACHE as $table => $fields) {
             foreach ($fields as $field => $field_type) {
                 if (strpos($field_type, '__COMCODE') !== false) {
+                    if ((substr($table, 0, 2) == 'f_') && (get_forum_type() != 'cns') && (get_forum_type() != 'none')) {
+                        continue;
+                    }
+
                     $db = ((substr($table, 0, 2) == 'f_') && ($GLOBALS['FORUM_DB'] !== null)) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
                     $db->query('UPDATE ' . $db->get_table_prefix() . $table . ' SET ' . $field . '__text_parsed=\'\' WHERE ' . db_string_not_equal_to($field . '__text_parsed', '')/*this WHERE is so indexing helps*/);
                 }

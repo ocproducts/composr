@@ -2665,23 +2665,32 @@ function is_mobile($user_agent = null, $truth = false)
 /**
  * Get the name of a webcrawler bot, or null if no bot detected
  *
+ * @param ?string $agent User agent (null: read from environment)
  * @return ?string Webcrawling bot name (null: not a bot)
  */
-function get_bot_type()
+function get_bot_type($agent = null)
 {
-    global $BOT_TYPE_CACHE;
-    if ($BOT_TYPE_CACHE !== false) {
-        return $BOT_TYPE_CACHE;
+    $agent_given = ($agent !== null);
+
+    if (!$agent_given) {
+        global $BOT_TYPE_CACHE;
+        if ($BOT_TYPE_CACHE !== false) {
+            return $BOT_TYPE_CACHE;
+        }
+
+        $agent = cms_srv('HTTP_USER_AGENT');
     }
 
-    $agent = cms_srv('HTTP_USER_AGENT');
     if (strpos($agent, 'WebKit') !== false || strpos($agent, 'Trident') !== false || strpos($agent, 'MSIE') !== false || strpos($agent, 'Firefox') !== false || strpos($agent, 'Opera') !== false) {
         if (strpos($agent, 'bot') === false) {
             // Quick exit path
-            $BOT_TYPE_CACHE = null;
+            if (!$agent_given) {
+                $BOT_TYPE_CACHE = null;
+            }
             return null;
         }
     }
+
     $agent = strtolower($agent);
 
     global $BOT_MAP_CACHE, $SITE_INFO;
@@ -2718,10 +2727,14 @@ function get_bot_type()
             continue;
         }
         if (strpos($agent, $id) !== false) {
-            $BOT_TYPE_CACHE = $name;
+            if (!$agent_given) {
+                $BOT_TYPE_CACHE = $name;
+            }
+
             return $name;
         }
     }
+
     if ((strpos($agent, 'bot') !== false) || (strpos($agent, 'spider') !== false)) {
         $to_a = strpos($agent, ' ');
         if ($to_a === false) {
@@ -2731,10 +2744,20 @@ function get_bot_type()
         if ($to_b === false) {
             $to_b = strlen($agent);
         }
-        $BOT_TYPE_CACHE = substr($agent, 0, min($to_a, $to_b));
-        return $agent;
+
+        $name = substr($agent, 0, min($to_a, $to_b));
+
+        if (!$agent_given) {
+            $BOT_TYPE_CACHE = $name;
+        }
+
+        return $name;
     }
-    $BOT_TYPE_CACHE = null;
+
+    if (!$agent_given) {
+        $BOT_TYPE_CACHE = null;
+    }
+
     return null;
 }
 

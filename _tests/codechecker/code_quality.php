@@ -1324,6 +1324,11 @@ function check_call($c, $c_pos, $class = null, $function_guard = '')
                 if (($t === 'float') && ($function === 'strval')) {
                     log_warning('Floats should not be used with strval, use float_to_raw_string or float_format', $c_pos);
                 }
+                if (isset($GLOBALS['CHECKS'])) {
+                    if (($t === 'mixed') && ($function === 'count') && (strpos($c[2][0][1], 'rows') === false)) {
+                        log_warning('Make sure that count parameter is definitely counting an array', $c_pos);
+                    }
+                }
                 if ($passes) {
                     infer_expression_type_to_variable_type($param['type'], $c[2][$i]);
                 }

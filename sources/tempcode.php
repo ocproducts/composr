@@ -182,10 +182,11 @@ function otp($var, $origin = '')
             return $var->evaluate();
         case 'boolean':
             return $var ? '1' : '0';
+        case 'array':
+            $cnt = count($var);
+            return ($cnt === 0) ? '' : strval($cnt);
     }
-    // Assuming array
-    $cnt = count($var);
-    return ($cnt === 0) ? '' : strval($cnt);
+    return '';
 }
 
 /**

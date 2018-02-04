@@ -52,11 +52,6 @@ class _performance_test_set extends cms_test_case
 
         $this->establish_admin_session();
 
-        global $SITE_INFO;
-        if ((!isset($SITE_INFO['backdoor_ip'])) || ($SITE_INFO['backdoor_ip'] != '127.0.0.1')) {
-            warn_exit('backdoor_ip must be set to 127.0.0.1 temporarily');
-        }
-
         $this->log_file = fopen(get_file_base() . '/data_custom/performance.log', 'wb');
         flock($this->log_file, LOCK_EX);
         $this->log_warnings_file = fopen(get_file_base() . '/data_custom/performance_warnings.log', 'wb');
@@ -95,7 +90,7 @@ class _performance_test_set extends cms_test_case
         $times = array();
         for ($i = 0; $i < 3; $i++) { // We can do it multiple times so that caches are primed for final time
             $before = microtime(true);
-            $result = http_download_file($url, null, false/*we're not looking for errors - we may get some under normal conditions, e.g. for site:authors which is 404 until you add your profile*/, false, 'Composr', null, null, null, null, null, null, null, null, 60.0);
+            $result = http_download_file($url, null, false/*we're not looking for errors - we may get some under normal conditions, e.g. for site:authors which is 404 until you add your profile*/, false, 'Composr', null, array(get_session_cookie() => get_session_id()), null, null, null, null, null, null, 60.0);
             $after = microtime(true);
             $time = $after - $before;
             $times[] = $time;

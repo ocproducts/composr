@@ -77,6 +77,10 @@ class Hook_health_check_mistakes_user_ux extends Hook_Health_Check
         $domains = $this->get_domains(false);
 
         foreach ($domains as $zone => $domain) {
+            if ($domain == 'localhost') {
+                continue;
+            }
+
             $parts = explode('.', $domain);
 
             if ($parts[0] == 'www') {

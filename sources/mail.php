@@ -600,14 +600,16 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         return false;
     }
 
-    if ($priority != 1 && $to_email !== null) {
-        foreach ($to_email as $key => $email) {
-            if ($GLOBALS['FORUM_DRIVER']->is_banned($GLOBALS['FORUM_DRIVER']->get_member_from_email_address($email))) {
-                unset($to_email[$key]);
-            }
+    if (method_exists($GLOBALS['FORUM_DRIVER'], 'get_member_from_email_address')) {
+        if ($priority != 1 && $to_email !== null) {
+            foreach ($to_email as $key => $email) {
+                if ($GLOBALS['FORUM_DRIVER']->is_banned($GLOBALS['FORUM_DRIVER']->get_member_from_email_address($email))) {
+                    unset($to_email[$key]);
+                }
 
-            if (count($to_email) == 0) {
-                return true;
+                if (count($to_email) == 0) {
+                    return true;
+                }
             }
         }
     }

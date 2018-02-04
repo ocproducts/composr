@@ -174,6 +174,8 @@ function output_ical($headers_and_exit = true)
                         }
                         echo "COMMENT:" . ical_escape(strip_comcode(is_object($comment['message']) ? $comment['message'] : $comment['message']) . ' - ' . $GLOBALS['FORUM_DRIVER']->get_username($comment['member'], true) . ' (' . get_timezoned_date($comment['date']) . ')') . "\r\n";
                     }
+                } else {
+                    break;
                 }
                 $start += 1000;
             } while (count($_comments) == 1000);
