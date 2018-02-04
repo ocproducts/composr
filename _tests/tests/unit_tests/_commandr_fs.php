@@ -44,39 +44,41 @@ class _commandr_fs_test_set extends cms_test_case
                 $cnt++;
             }
         }
-        $this->assertTrue(count($var_files[0]) == $cnt);
+        $this->assertTrue(count($var_files[0]) == $cnt, 'Not all var filesystems showing up');
 
         // Check one of the repository-FS filesystems works
         $files = $ob->listing(array('var', 'banners'));
-        $this->assertTrue(count($files[0]) != 0);
+        $this->assertTrue(count($files[0]) != 0, 'Missing banner types in file system');
         $files = $ob->listing(array('var', 'banners', 'untitled'));
-        $this->assertTrue(count($files[0]) == 0);
-        $this->assertTrue(count($files[1]) != 0);
+        $this->assertTrue(count($files[0]) == 0, 'Unexpected subdirectory under banner type');
+        $this->assertTrue(count($files[1]) != 0, 'Missing default banners under banner type');
         $path = array('var', 'banners', 'untitled', 'advertise_here.' . RESOURCE_FS_DEFAULT_EXTENSION);
+        $GLOBALS['SITE_DB']->query_update('banners', array('edit_date' => null));
         $data1 = $ob->read_file($path);
         $ob->write_file($path, $data1);
+        $GLOBALS['SITE_DB']->query_update('banners', array('edit_date' => null));
         $data2 = $ob->read_file($path);
-        $this->assertTrue($data1 == $data2);
+        $this->assertTrue($data1 == $data2, 'Inconsistent banner read/write');
 
         // Check folder property editing works
         $path = array('var', 'banners', 'untitled', '_folder.' . RESOURCE_FS_DEFAULT_EXTENSION);
         $data1 = $ob->read_file($path);
         $ob->write_file($path, $data1);
         $data2 = $ob->read_file($path);
-        $this->assertTrue($data1 == $data2);
+        $this->assertTrue($data1 == $data2, 'Inconsist banner type read/write');
     }
 
     public function testVarPorting()
     {
         // Test exporting something
         $out = remap_resource_id_as_portable('group', '1');
-        $this->assertTrue($out['label'] == 'Guests');
-        $this->assertTrue($out['subpath'] == '');
-        $this->assertTrue($out['id'] == db_get_first_id());
+        $this->assertTrue($out['label'] == 'Guests', 'Failed reading guest usergroup label');
+        $this->assertTrue($out['subpath'] == '', 'Failed reading guest usergroup subpath');
+        $this->assertTrue($out['id'] == db_get_first_id(), 'Failed reading guest usergroup ID');
 
         // Test importing to something - binding to something that exists
         $in = remap_portable_as_resource_id('group', $out);
-        $this->assertTrue(intval($in) == db_get_first_id());
+        $this->assertTrue(intval($in) == db_get_first_id(), 'Portable ID remapping cycle broken');
 
         // Test importing to something - something that does not exist
         $ob = get_resource_commandr_fs_object('download');
@@ -88,9 +90,9 @@ class _commandr_fs_test_set extends cms_test_case
         $in = remap_portable_as_resource_id('download', $port);
         $guid = find_guid_via_id('download', $in);
         $filename = $ob->convert_id_to_filename('download', $in);
-        $this->assertTrue($guid == $port['guid']); // Tests it imported with the same GUID
+        $this->assertTrue($guid == $port['guid'], 'Download GUID not holding'); // Tests it imported with the same GUID
         $subpath = $ob->search('download', $in, true);
-        $this->assertTrue(strpos($subpath, '/') !== false); // Test it imported with a deep path
+        $this->assertTrue(strpos($subpath, '/') !== false, 'Download subpath lost'); // Test it imported with a deep path
 
         // Tidy up, delete it
         $ob->file_delete($filename, $subpath);
@@ -135,7 +137,7 @@ class _commandr_fs_test_set extends cms_test_case
                 $data1 = $ob->read_file($path);
                 $ob->write_file($path, $data1);
                 $data2 = $ob->read_file($path);
-                $this->assertTrue($data1 == $data2);
+                $this->assertTrue($data1 == $data2, 'Failed writing to /etc/' . $file[0]);
             }
         }
     }

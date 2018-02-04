@@ -57,7 +57,7 @@ function lookup_member_page($member, &$name, &$id, &$ip)
         if ($ip === null) {
             $ip = '127.0.0.1';
         }
-    } elseif (is_email_address($member)) {
+    } elseif ((is_email_address($member)) && (method_exists($GLOBALS['FORUM_DRIVER'], 'get_member_from_email_address'))) {
         // From e-mail address
         $id = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($member);
         $name = $GLOBALS['FORUM_DRIVER']->get_username($id, false, USERNAME_DEFAULT_NULL);

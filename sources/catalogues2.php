@@ -442,8 +442,8 @@ function actual_delete_catalogue($name)
     $GLOBALS['SITE_DB']->query_delete('group_privileges', array('module_the_name' => 'catalogues_catalogue', 'category_name' => $name));
 
     // Update field references
-    $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'at_catalogue_entry'), array('cf_type' => 'ck_' . $name));
-    $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'ax_catalogue_entry'), array('cf_type' => 'cx_' . $name));
+    $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'short_text'), array('cf_type' => 'ck_' . $name));
+    $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'short_text'), array('cf_type' => 'cx_' . $name));
 
     update_catalogue_content_ref('catalogue', $name, '');
 

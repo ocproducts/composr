@@ -107,7 +107,7 @@
 				1_ICON=feedback/comments_topic
 				{+START,IF_PASSED,TICKET_TYPE_ID}
 					{+START,IF,{$NEQ,{USERNAME},{$USERNAME}}}
-						2_URL={$PAGE_LINK*,_SEARCH:tickets:ticket:default={TICKET_TYPE_ID}:post={!TICKET_SPLIT_POST&,{USERNAME}}:post_as={USERNAME}}
+						2_URL={$PAGE_LINK*,_SEARCH:tickets:ticket:ticket_type_id={TICKET_TYPE_ID}:post={!TICKET_SPLIT_POST&,{USERNAME}}:post_as={USERNAME}}
 						2_TITLE={!STAFF_NEW_TICKET_AS,{USERNAME}}
 						2_ICON=buttons/add_ticket
 					{+END}

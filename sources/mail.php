@@ -1000,10 +1000,12 @@ abstract class Mail_dispatcher_base
         }
 
         // Filter our e-mails of banned members
-        if ($this->priority != 1 && $to_emails !== null) {
-            foreach ($to_emails as $key => $email) {
-                if ($GLOBALS['FORUM_DRIVER']->is_banned($GLOBALS['FORUM_DRIVER']->get_member_from_email_address($email))) {
-                    unset($to_emails[$key]);
+        if (method_exists($GLOBALS['FORUM_DRIVER'], 'get_member_from_email_address')) {
+            if ($this->priority != 1 && $to_emails !== null) {
+                foreach ($to_emails as $key => $email) {
+                    if ($GLOBALS['FORUM_DRIVER']->is_banned($GLOBALS['FORUM_DRIVER']->get_member_from_email_address($email))) {
+                        unset($to_emails[$key]);
+                    }
                 }
             }
         }

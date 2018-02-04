@@ -30,10 +30,20 @@ function unit_testing_run()
     require_code('_tests/cmstest/cms_test_case.php');
 
     $id = get_param_string('id', null);
+    if (($id === null) && (isset($_SERVER['argv'][1]))) {
+        $id = $_SERVER['argv'][1];
+        $cli = true;
+    } else {
+        $cli = false;
+    }
     if ($id !== null) {
-        testset_do_header('Running test set: ' . escape_html($id));
+        if (!$cli) {
+            testset_do_header('Running test set: ' . escape_html($id));
+        }
         run_testset($id);
-        testset_do_footer();
+        if (!$cli) {
+            testset_do_footer();
+        }
 
         return;
     }

@@ -13,6 +13,8 @@
  * @package    testing_platform
  */
 
+// This covers internal links. Also see _broken_links, which does scanning for external links.
+
 /**
  * Composr test case class (unit testing).
  */

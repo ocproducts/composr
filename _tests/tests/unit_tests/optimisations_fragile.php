@@ -32,7 +32,7 @@ class optimisations_fragile_test_set extends cms_test_case
         $out = load_module_page('forum/pages/modules/forumview.php', 'forumview');
         require_lang('cns');
         $this->assertTrue(strpos($out->evaluate(), do_lang('ROOT_FORUM')) !== false);
-        $this->assertTrue(!function_exists('ecv2_MAKE_URL_ABSOLUTE'));
+        $this->assertTrue(!function_exists('ecv2_MAKE_URL_ABSOLUTE'), 'symbols2.php used on forumview');
 
         require_code('failure');
         set_throw_errors(true);

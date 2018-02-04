@@ -107,7 +107,10 @@ class Hook_addon_registry_user_sync
     public function get_dependencies()
     {
         return array(
-            'requires' => array('commandr'),
+            'requires' => array(
+                'commandr',
+                'Conversr',
+            ),
             'recommends' => array(),
             'conflicts_with' => array(),
         );

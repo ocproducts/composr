@@ -887,7 +887,7 @@ function remap_portable_as_urlpath($portable_data, $ignore_conflicts = false)
     if ($ignore_conflicts) {
         // Hunt with sensible names until we don't get a conflict
         require_code('urls2');
-        list($path, $urlpath) = find_unique_path(dirname(urldecode($urlpath)), basename(urldecode($urlpath)));
+        list($path, $urlpath) = find_unique_path(dirname(urldecode($urlpath)), basename(urldecode($urlpath)), false, $binary);
     }
 
     require_code('files');
