@@ -4,6 +4,6 @@
 {$REQUIRE_JAVASCRIPT,pulse}
 
 <div class="shocker" data-tpl="comcodeShocker" data-tpl-params="{+START,PARAMS_JSON,RAND_ID_SHOCKER,PARTS,TIME,MAX_COLOR,MIN_COLOR}{_*}{+END}">
-	<div class="shocker-left" id="comcodeshocker{$GET,RAND_ID_SHOCKER}_left"></div>
-	<div class="shocker-right" id="comcodeshocker{$GET,RAND_ID_SHOCKER}_right"></div>
+	<div class="shocker-left" id="comcodeshocker{$GET,RAND_ID_SHOCKER}-left"></div>
+	<div class="shocker-right" id="comcodeshocker{$GET,RAND_ID_SHOCKER}-right"></div>
 </div>

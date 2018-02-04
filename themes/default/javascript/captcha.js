@@ -58,7 +58,7 @@
     };
 
     $cms.functions.captchaCaptchaAjaxCheck = function captchaCaptchaAjaxCheck() {
-        var form = document.getElementById('main_form'),
+        var form = document.getElementById('main-form'),
             captchaEl = form.elements['captcha'],
             submitBtn = document.getElementById('submit-button');
 

@@ -353,7 +353,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
     // Send 'validate this member' notification
     if ($staff_validation) {
         require_code('notifications');
-        $_validation_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $member_id), get_module_zone('members'), array(), false, false, true, 'tab__edit');
+        $_validation_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $member_id), get_module_zone('members'), array(), false, false, true, 'tab--edit');
         $validation_url = $_validation_url->evaluate();
         $message = do_notification_lang('VALIDATE_NEW_MEMBER_MAIL', comcode_escape($username), comcode_escape($validation_url), comcode_escape(strval($member_id)), get_site_default_lang());
         dispatch_notification('cns_member_needs_validation', null, do_lang('VALIDATE_NEW_MEMBER_SUBJECT', $username, null, null, get_site_default_lang()), $message, null, A_FROM_SYSTEM_PRIVILEGED);

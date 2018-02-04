@@ -13,7 +13,7 @@
 		<a class="non-link{+START,IF,{$GET,HAS_CHILDREN}} drawer js-click-unset-active-menu js-focus-pop-up-menu{+END}" href="#!">{CAPTION}</a>
 	{+END}
 	{+START,IF,{$GET,HAS_CHILDREN}}
-		<ul aria-haspopup="true" class="nlevel js-mouseout-unset-active-menu js-mouseover-set-active-menu" id="{MENU|*}_pexpand_{$GET*,RAND}" style="display: none">
+		<ul aria-haspopup="true" class="nlevel js-mouseout-unset-active-menu js-mouseover-set-active-menu" id="{MENU|*}-pexpand-{$GET*,RAND}" style="display: none">
 			{CHILDREN}
 		</ul>
 	{+END}

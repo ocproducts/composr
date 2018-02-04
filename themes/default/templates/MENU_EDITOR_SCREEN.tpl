@@ -8,13 +8,13 @@
 		{WARNING_DETAILS}
 	{+END}
 
-	<div class="menu-editor-page{+START,IF,{$GT,{TOTAL_ITEMS},10}} docked{+END} js-el-menu-editor-wrap" id="menu_editor_wrap">
+	<div class="menu-editor-page{+START,IF,{$GT,{TOTAL_ITEMS},10}} docked{+END} js-el-menu-editor-wrap" id="menu-editor-wrap">
 		<form title="" action="{URL*}" method="post" autocomplete="off">
 			<!-- In separate form due to mod_security -->
 			<textarea aria-hidden="true" cols="30" rows="3" style="display: none" name="template" id="template">{CHILD_BRANCH_TEMPLATE*}</textarea>
 		</form>
 
-		<form title="{!PRIMARY_PAGE_FORM}" id="edit_form" action="{URL*}" method="post" autocomplete="off" class="js-submit-modsecurity-workaround" data-submit-pd="1">
+		<form title="{!PRIMARY_PAGE_FORM}" id="edit-form" action="{URL*}" method="post" autocomplete="off" class="js-submit-modsecurity-workaround" data-submit-pd="1">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			<div class="float-surrounder menu-edit-main">

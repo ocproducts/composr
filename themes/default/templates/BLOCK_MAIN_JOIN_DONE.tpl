@@ -25,7 +25,7 @@
 				{+END}
 
 				{+START,IF_EMPTY,{EMAIL_ADDRESS}}
-					<p>{!WHITEPAPER_NOT_EMAILED,{$PAGE_LINK*,site:members:view:redirect={$SELF_URL&}#tab__edit}}</p>
+					<p>{!WHITEPAPER_NOT_EMAILED,{$PAGE_LINK*,site:members:view:redirect={$SELF_URL&}#tab--edit}}</p>
 				{+END}
 			{+END}
 

@@ -47,7 +47,7 @@
                         // Need to switch tab?
                         var p = errorMsgElement.parentElement;
                         while (p != null) {
-                            if ((errorMsg.substr(0, 5) !== '{!DISABLED_FORM_FIELD;^}'.substr(0, 5)) && (p.id.substr(0, 2) === 'g_') && (p.style.display === 'none')) {
+                            if ((errorMsg.substr(0, 5) !== '{!DISABLED_FORM_FIELD;^}'.substr(0, 5)) && (p.id.substr(0, 2) === 'g-') && (p.style.display === 'none')) {
                                 $cms.ui.selectTab('g', p.id.substr(2, p.id.length - 2), false, true);
                                 break;
                             }
@@ -76,10 +76,10 @@
         theElement.classList.toggle('input-erroneous', (errorMsg !== ''));
 
         function getErrorMsgElement(id) {
-            var errorMsgElement = document.getElementById('error_' + id);
+            var errorMsgElement = document.getElementById('error-' + id);
 
             if (!errorMsgElement) {
-                errorMsgElement = document.getElementById('error_' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));
+                errorMsgElement = document.getElementById('error-' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));
             }
             return errorMsgElement;
         }
@@ -250,7 +250,7 @@
         hasSeparatePreview = Boolean(hasSeparatePreview);
 
         return new Promise(function (resolvePreviewPromise) {
-            if (!$dom.$('#preview_iframe')) {
+            if (!$dom.$('#preview-iframe')) {
                 $cms.ui.alert('{!ADBLOCKER;^}');
                 return resolvePreviewPromise(false);
             }
@@ -284,7 +284,7 @@
                     form.oldTarget = oldTarget;
                 }
 
-                form.target = 'preview_iframe';
+                form.target = 'preview-iframe';
 
                 $cms.ui.disableSubmitAndPreviewButtons();
 
@@ -313,7 +313,7 @@
                 /* Do our loading-animation */
                 setInterval($dom.triggerResize, 500);
                 /* In case its running in an iframe itself */
-                $dom.illustrateFrameLoad('preview_iframe');
+                $dom.illustrateFrameLoad('preview-iframe');
 
                 // Turn main post editing back off
                 window.$editing.wysiwygSetReadonly('post', true);

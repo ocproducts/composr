@@ -11,15 +11,15 @@
 		<div class="modern-tabs">
 			<div class="modern-tab-headers" role="tablist">
 				{+START,LOOP,TABS}
-					<div id="t_{TAB_CODE*}"{+START,IF,{TAB_FIRST}} class="tab-active"{+END}>
-						<a aria-controls="g_{TAB_CODE*}" role="tab" href="#!" class="js-click-select-tab-g" data-vw-tab="{TAB_CODE*}">{+START,IF_NON_EMPTY,{TAB_ICON}}<img alt="" width="24" height="24" src="{$IMG*,icons/{TAB_ICON}}" /> {+END}<span>{TAB_TITLE*}</span></a>
+					<div id="t-{TAB_CODE*}"{+START,IF,{TAB_FIRST}} class="tab-active"{+END}>
+						<a aria-controls="g-{TAB_CODE*}" role="tab" href="#!" class="js-click-select-tab-g" data-vw-tab="{TAB_CODE*}">{+START,IF_NON_EMPTY,{TAB_ICON}}<img alt="" width="24" height="24" src="{$IMG*,icons/{TAB_ICON}}" /> {+END}<span>{TAB_TITLE*}</span></a>
 					</div>
 				{+END}
 			</div>
 			<div class="modern-tab-bodies">
 				{+START,LOOP,TABS}
-					<div aria-labeledby="t_{TAB_CODE*}" role="tabpanel" id="g_{TAB_CODE*}" style="display: {$?,{TAB_FIRST},block,none}">
-						<a id="tab__{TAB_CODE*}"></a>
+					<div aria-labeledby="t-{TAB_CODE*}" role="tabpanel" id="g-{TAB_CODE*}" style="display: {$?,{TAB_FIRST},block,none}">
+						<a id="tab--{TAB_CODE*}"></a>
 
 						{+START,IF_PASSED,TAB_CONTENT}
 							{TAB_CONTENT}

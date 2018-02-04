@@ -103,7 +103,7 @@
                 var fileId = fileToFileId(file);
                 var ob = document.getElementById('t_' + fileId);
                 ob.classList.remove('file-changed');
-                ob.classList.add('file_nonchanged');
+                ob.classList.add('file-nonchanged');
             }
         },
 
@@ -160,13 +160,13 @@
             e.preventDefault();
 
             url += '&theme=' + encodeURIComponent(params.theme);
-            url += '&css_equation=' + encodeURIComponent(document.getElementById('css_equation_' + params.fileId).value);
+            url += '&css_equation=' + encodeURIComponent(document.getElementById('css-equation-' + params.fileId).value);
 
             $cms.loadSnippet(url).then(function (result) {
                 if (!result || result.includes('<html')) {
                     $cms.ui.alert('{!ERROR_OCCURRED;^}');
                 } else {
-                    document.getElementById('css_result_' + params.fileId).value = result;
+                    document.getElementById('css-result-' + params.fileId).value = result;
                 }
             });
         }
@@ -209,11 +209,11 @@
     }
 
     function loadContextualCssEditor(file, fileId) {
-        var ui = document.getElementById('selectors_' + fileId);
+        var ui = document.getElementById('selectors-' + fileId);
         ui.style.display = 'block'; // Un-hide it
         var list = document.createElement('ul');
         list.id = 'selector_list_' + fileId;
-        document.getElementById('selectors_inner_' + fileId).appendChild(list);
+        document.getElementById('selectors-inner-' + fileId).appendChild(list);
 
         setUpParentPageHighlighting(file, fileId);
 
@@ -396,14 +396,14 @@
                 for (j = 0; j < elements.length; j++) {
                     element = elements[j];
 
-                    element.addEventListener('mouseover', function (a, element) {
+                    element.addEventListener('mouseover', (function (a, element) {
                         return function (event) {
                             if (window && !event.ctrlKey && !event.metaKey) {
                                 var target = event.target;
                                 var targetDistance = 0;
                                 var elementRecurse = element;
                                 do {
-                                    if (elementRecurse == target) {
+                                    if (elementRecurse === target) {
                                         break;
                                     }
                                     elementRecurse = elementRecurse.parentNode;
@@ -422,8 +422,8 @@
                                 }
                             }
                         };
-                    }(a, element));
-                    element.addEventListener('mouseout', function (a) {
+                    }(a, element)));
+                    element.addEventListener('mouseout', (function (a) {
                         return function (event) {
                             if ((window) && (!event.ctrlKey) && (!event.metaKey)) {
                                 a.style.outline = '';
@@ -431,7 +431,7 @@
                                 a.style.color = '';
                             }
                         };
-                    }(a));
+                    }(a)));
                 }
             }
 
@@ -445,8 +445,7 @@
                 } catch (e) {}
 
                 for (var i = 0; i < opener.frames.length; i++) {
-                    if (opener.frames[i]) // If test needed for some browsers, as window.frames can get out-of-date
-                    {
+                    if (opener.frames[i]) {// If test needed for some browsers, as window.frames can get out-of-date
                         result2 = findSelectorsFor(opener.frames[i], selector);
                         for (var j = 0; j < result2.length; j++) {
                             result.push(result2[j]);
@@ -518,7 +517,7 @@
                 codename.value = title.value.replace(/[^{$URL_CONTENT_REGEXP_JS}]/g, '');
             }
         });
-        var form = document.getElementById('main_form'),
+        var form = document.getElementById('main-form'),
             submitBtn = document.getElementById('submit-button'),
             validValue;
 
@@ -552,12 +551,12 @@
             }
 
             $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,tempcode_tester}' + $cms.keep(true), null, request).then(function (xhr) {
-                $dom.html('#preview_raw', $cms.filter.html(xhr.responseText));
-                $dom.html('#preview_html', xhr.responseText);
+                $dom.html('#preview-raw', $cms.filter.html(xhr.responseText));
+                $dom.html('#preview-html', xhr.responseText);
             });
 
             $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,tempcode_tester}?comcode=1' + $cms.keep(), null, request).then(function (xhr) {
-                $dom.html('#preview_comcode', xhr.responseText);
+                $dom.html('#preview-comcode', xhr.responseText);
             });
         });
     };
@@ -567,7 +566,7 @@
             stub = strVal(params.stub);
 
         $dom.on(container, 'click', '.js-click-template-insert-parameter', function () {
-            templateInsertParameter('b_' + fileId + '_' + stub, fileId);
+            templateInsertParameter('b-' + fileId + '_' + stub, fileId);
         });
 
         function templateInsertParameter(dropdownName, fileId) {
@@ -962,7 +961,7 @@
         header.setAttribute('role', 'tab');
         header.href = '#';
         header.id = 't_' + fileId;
-        header.className = 'tab file_nonchanged';
+        header.className = 'tab file-nonchanged';
         header.addEventListener('click', function (event) {
             $cms.ui.selectTab('g', fileId);
             templateEditorShowTab(fileId);
@@ -1110,24 +1109,24 @@
         var bodies = document.getElementById('template-editor-tab-bodies');
         var numTabs = headers.childNodes.length;
 
-        var header = document.getElementById('t_default');
-        var body = document.getElementById('g_default');
+        var header = document.getElementById('t-default');
+        var body = document.getElementById('g-default');
 
-        if (header && numTabs > 1) {
+        if (header && (numTabs > 1)) {
             header.parentNode.removeChild(header);
             body.parentNode.removeChild(body);
         }
 
         if (numTabs === 0) {
-            $dom.html(headers, '<a href="#!" id="t_default" class="tab"><span>&mdash;</span></a>');
-            $dom.html(bodies, '<div id="g_default"><p class="nothing-here">{!NA}</p></div>');
+            $dom.html(headers, '<a href="#!" id="t-default" class="tab"><span>&mdash;</span></a>');
+            $dom.html(bodies, '<div id="g-default"><p class="nothing-here">{!NA}</p></div>');
         }
     }
 
     function templateEditorTabLoadedContent(html, file) {
         var fileId = fileToFileId(file);
 
-        $dom.html('#g_' + fileId, html);
+        $dom.html('#g-' + fileId, html);
 
         setTimeout(function () {
             var textareaId = 'e_' + fileId;
@@ -1154,7 +1153,7 @@
 
             var fileId = fileToFileId(file);
             var ob = document.getElementById('t_' + fileId);
-            ob.classList.remove('file_nonchanged');
+            ob.classList.remove('file-nonchanged');
             ob.classList.add('file-changed');
         }
     }
@@ -1170,7 +1169,7 @@
                 highlightTemplate(window.opener, fileIdToFile(fileId));
             }
 
-            window.jQuery('#e_' + fileId.replace(/\./g, '\\.') + '_wrap').resizable({
+            window.jQuery('#e-' + fileId.replace(/\./g, '\\.') + '-wrap').resizable({
                 resize: function (event, ui) {
                     var editor = window.aceEditors['e_' + fileId];
                     if (editor !== undefined) {

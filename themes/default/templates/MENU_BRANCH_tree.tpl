@@ -17,7 +17,7 @@
 		{+END}
 	{+END}
 	{+START,IF,{$GET,HAS_CHILDREN}}
-		<ul aria-haspopup="true" id="{MENU|;*}_{$GET*,RAND}" style="display: {DISPLAY*}">
+		<ul aria-haspopup="true" id="{MENU|;*}-{$GET*,RAND}" style="display: {DISPLAY*}">
 			{CHILDREN}
 		</ul>
 	{+END}

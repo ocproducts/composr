@@ -38,7 +38,7 @@
         },
 
         updateGroupDisplayer: function (e, select) {
-            $dom.html(document.getElementById('group_name'), $cms.filter.html(window.usergroupTitles[select.options[select.selectedIndex].value]));
+            $dom.html('#group-name', $cms.filter.html(window.usergroupTitles[select.options[select.selectedIndex].value]));
             var tree = document.getElementById('tree-list--root-tree-list');
             $dom.empty(tree);
             window.sitemap.renderTree(window.sitemap.treeListData, tree);
@@ -90,9 +90,9 @@
         }
 
         if (!setting.value) {
-            document.getElementById('selection_form_fields').style.display = 'none';
-            document.getElementById('selection_button').disabled = true;
-            $dom.html(document.getElementById('selection_message'), '{!permissions:PERMISSIONS_TREE_EDITOR_NONE_SELECTED;^}');
+            document.getElementById('selection-form-fields').style.display = 'none';
+            document.getElementById('selection-button').disabled = true;
+            $dom.html('#selection-message', '{!permissions:PERMISSIONS_TREE_EDITOR_NONE_SELECTED;^}');
             return;
         }
 
@@ -101,7 +101,7 @@
         var id, name, value, i, node, j, group, element, privilege, privilegeTitle, 
             knownGroups = [], knownPrivileges = [], k, newOption, 
             numPrivilegeDefault, numPrivilege, ths, tds, cells, newCell, row;
-        var matrix = document.getElementById('enter_the_matrix').querySelector('table');
+        var matrix = document.getElementById('enter-the-matrix').querySelector('table');
         var numPrivilegeTotal = 0;
         var isCms = null;
         var rows = matrix.getElementsByTagName('tr');
@@ -125,10 +125,10 @@
                     element = document.getElementById('access_' + group);
                     element.checked = false;
                     element = document.getElementById('access_' + group + '_presets');
-                    if (element.options[0].id !== 'access_' + group + '_custom_option') {
+                    if (element.options[0].id !== 'access-' + group + '-custom-option') {
                         newOption = document.createElement('option');
                         $dom.html(newOption, '{!permissions:PINTERFACE_LEVEL_CUSTOM;^}');
-                        newOption.id = 'access_' + group + '_custom_option';
+                        newOption.id = 'access-' + group + '-custom-option';
                         newOption.value = '';
                         element.insertBefore(newOption, element.options[0]);
                     }
@@ -165,7 +165,7 @@
                     element = document.getElementById('access_' + group);
                 }
             }
-            var form = document.getElementById('permissions_form');
+            var form = document.getElementById('permissions-form');
             var noViewSettings = (node.getAttribute('serverid') === '_root') || (node.getAttribute('serverid').substr(0, 22) === 'cms:cms_comcode_pages:');
             for (j = 0; j < form.elements.length; j++) {
                 element = form.elements[j];
@@ -196,7 +196,7 @@
                             continue;
                         }
 
-                        group = rows[k].id.substring(7, rows[k].id.indexOf('_privilege_container'));
+                        group = rows[k].id.substring(7, rows[k].id.indexOf('-privilege-container'));
 
                         element = document.getElementById('access_' + group + '_privilege_' + privilege);
                         if ((!element) && (!document.getElementById('privilege_cell_' + group + '_' + privilege))) { // We haven't added it yet for one of the resources we're doing permissions for
@@ -215,7 +215,7 @@
                             }
 
                             // Manually build up cell
-                            row = document.getElementById('access_' + group + '_privilege_container');
+                            row = document.getElementById('access-' + group + '-privilege-container');
                             newCell = row.insertBefore(document.createElement('td'), row.cells[row.cells.length - 1]);
                             newCell.className = 'form-table-field-input privilege-cell';
                             newCell.id = 'privilege_cell_' + group + '_' + privilege;
@@ -283,7 +283,7 @@
                 $dom.html(matrix.querySelector('tr').cells[0], '{!USERGROUP;^}');
                 for (k = 0; k < knownGroups.length; k++) {
                     document.getElementById('access_' + knownGroups[k] + '_presets').style.display = 'none';
-                    button = document.getElementById('access_' + knownGroups[k] + '_privilege_container').querySelector('button');
+                    button = document.getElementById('access-' + knownGroups[k] + '-privilege-container').querySelector('button');
                     if (button) {
                         button.disabled = true;
                     }
@@ -292,7 +292,7 @@
                 $dom.html(matrix.querySelector('tr').cells[0], '<span class="heading-group">{!USERGROUP;^}</span> <span class="heading-presets">{!permissions:PINTERFACE_PRESETS;^}</span>');
                 for (k = 0; k < knownGroups.length; k++) {
                     document.getElementById('access_' + knownGroups[k] + '_presets').style.display = 'block';
-                    button = document.getElementById('access_' + knownGroups[k] + '_privilege_container').querySelector('button');
+                    button = document.getElementById('access-' + knownGroups[k] + '-privilege-container').querySelector('button');
                     if (button) {
                         button.disabled = false;
                     }
@@ -322,9 +322,9 @@
             }
         }
 
-        document.getElementById('selection_form_fields').style.display = 'block';
-        document.getElementById('selection_button').disabled = false;
-        $dom.html(document.getElementById('selection_message'), (values.length <= 1) ? '{!permissions:PERMISSIONS_TREE_EDITOR_ONE_SELECTED;^}' : '{!permissions:PERMISSIONS_TREE_EDITOR_MULTI_SELECTED;^}');
+        document.getElementById('selection-form-fields').style.display = 'block';
+        document.getElementById('selection-button').disabled = false;
+        $dom.html('#selection-message', (values.length <= 1) ? '{!permissions:PERMISSIONS_TREE_EDITOR_ONE_SELECTED;^}' : '{!permissions:PERMISSIONS_TREE_EDITOR_MULTI_SELECTED;^}');
     }
 
     // Saving
@@ -456,7 +456,7 @@
 
     function cleanupPermissionList(name) {
         // We always try and cleanup the 'custom' option if we're choosing something else (because it's confusing for it to stay there)
-        var customOption = document.getElementById(name + '_custom_option');
+        var customOption = document.getElementById(name + '-custom-option');
         if (customOption) {
             customOption.parentNode.removeChild(customOption);
         }
@@ -475,7 +475,7 @@
         var usualSuspects = ['bypass_validation_xrange_content', 'edit_xrange_content', 'edit_own_xrange_content', 'delete_xrange_content', 'delete_own_xrange_content', 'submit_xrange_content', 'edit_cat_xrange_content'];
         var access = [2, 3, 2, 3, 2, 1, 3]; // The minimum access level that turns on each of the above permissions   NB: Also defined in resource_fs.php, so keep that in-sync
 
-        var holder = document.getElementById(name + '_privilege_container');
+        var holder = document.getElementById(name + '-privilege-container');
         var elements = holder.getElementsByTagName('select');
         var i, j, test, stub = name + '_privilege_', name2, x;
 

@@ -326,7 +326,7 @@
                 setTimeout(function () {
                     var _ids = ids.split(',');
                     for (var i = 0; i < _ids.length; i++) {
-                        var element = document.getElementById('post_wrap_' + _ids[i]);
+                        var element = document.getElementById('post-wrap-' + _ids[i]);
                         if (element) {
                             $dom.fadeIn(element);
                         }
@@ -419,7 +419,7 @@
                     forceReloadOnBack();
 
                     // Collapse, so user can see what happening
-                    var outer = $dom.$id('comments_posting_form_outer');
+                    var outer = $dom.$('#comments-posting-form-outer');
                     if (outer && outer.classList.contains('toggleable-tray')) {
                         $cms.ui.toggleableTray(outer);
                     }
@@ -448,7 +448,7 @@
         visualOnly = !!visualOnly;
 
         [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].forEach(function (number) {
-            var bit = $dom.$id('rating_bar_' + number + '__' + contentType + '__' + type + '__' + id);
+            var bit = $dom.$id('rating-bar-' + number + '--' + contentType + '--' + type + '--' + id);
             if (!bit) {
                 return;
             }
@@ -554,7 +554,7 @@
 
         $dom.smoothScroll($dom.findPosY(form, true));
 
-        var outer = $dom.$('#comments_posting_form_outer');
+        var outer = $dom.$('#comments-posting-form-outer');
         if (outer && $dom.notDisplayed(outer)) {
             $cms.ui.toggleableTray(outer);
         }

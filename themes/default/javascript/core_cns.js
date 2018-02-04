@@ -94,7 +94,7 @@
 
     $cms.templates.cnsMemberProfileEdit = function cnsMemberProfileEdit(params, container) {
         $dom.on(container, 'click', '.js-click-select-edit-tab', function (e, clicked) {
-            var tabSet = 'edit__',
+            var tabSet = 'edit--',
                 tabCode = $cms.filter.id(clicked.dataset.tpTabCode).toLowerCase();
             $util.inform('Select tab', tabSet + tabCode);
             if (tabCode) {
@@ -156,7 +156,7 @@
     };
 
     $cms.functions.moduleAdminCnsGroupsRunStart = function moduleAdminCnsGroupsRunStart() {
-        var form = document.getElementById('main_form'),
+        var form = document.getElementById('main-form'),
             submitBtn = document.getElementById('submit-button'),
             validValue;
 
@@ -182,7 +182,7 @@
     };
 
     $cms.functions.moduleAdminCnsEmoticons = function moduleAdminCnsEmoticons() {
-        var form = document.getElementById('main_form'),
+        var form = document.getElementById('main-form'),
             submitBtn = document.getElementById('submit-button'),
             validValue;
 
@@ -236,7 +236,7 @@
         window['load_tab__edit__' + suffix] = function () {
             var submitButton = document.getElementById('submit-button'),
                 deleteCheckbox = document.getElementById('delete'),
-                tab = document.getElementById('t_edit__' + suffix);
+                tab = document.getElementById('t-edit--' + suffix);
 
             submitButton.disabled = !deleteCheckbox.checked;
 

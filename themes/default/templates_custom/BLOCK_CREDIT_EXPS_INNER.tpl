@@ -15,7 +15,7 @@
 	</div>
 
 	{+START,LOOP,CREDIT_KINDS}
-		<div class="creditsInfo" id="info_{NUM_CREDITS*}_CREDITS">
+		<div class="creditsInfo" id="info-{NUM_CREDITS*}-credits">
 			<p>{!BLOCK_CREDITS_EXP_INNER_MSG,{$NUMBER_FORMAT*,{NUM_CREDITS}},{$CURRENCY,{PRICE},{$?,{$CONFIG_OPTION,currency_auto},{$CURRENCY_USER},{$CURRENCY}}}}</p>
 
 			<table class="columned-table topTble">

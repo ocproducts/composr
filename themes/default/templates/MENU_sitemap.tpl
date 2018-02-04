@@ -12,7 +12,7 @@
 {+END}
 
 {+START,IF,{$GET,js_menu}}
-	{$SET,menu_sitemap_id,menu_sitemap_{$RAND}}
+	{$SET,menu_sitemap_id,menu-sitemap-{$RAND}}
 
 	<nav id="{$GET*,menu_sitemap_id}" class="menu-type--sitemap" data-tpl="menuSitemap" data-tpl-params="{+START,PARAMS_JSON,menu_sitemap_id}{_*}{+END}" data-tp-menu-content="{$TRIM*,{CONTENT}}">
 		<div aria-busy="true" class="spaced">

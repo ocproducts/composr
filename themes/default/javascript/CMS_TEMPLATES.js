@@ -902,7 +902,7 @@
 
     $cms.functions.decisionTreeRender = function decisionTreeRender(parameter, value, notice, noticeTitle) {
         value = strVal(value);
-        var els = document.getElementById('main_form').elements[parameter];
+        var els = document.getElementById('main-form').elements[parameter];
         if (els.length === undefined) {
             els = [els];
         }
@@ -938,7 +938,7 @@
     }
 
     function prepareMassSelectMarker(set, type, id, checked) {
-        var massDeleteForm = $dom.$id('mass_select_form__' + set);
+        var massDeleteForm = $dom.$id('mass-select-form--' + set);
         if (!massDeleteForm) {
             massDeleteForm = $dom.$id('mass-select-button').form;
         }

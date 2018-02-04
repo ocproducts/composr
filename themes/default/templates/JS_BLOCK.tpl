@@ -1,4 +1,4 @@
-{$SET,js_block_id,js_block_{$RAND%}}
+{$SET,js_block_id,js-block-{$RAND%}}
 {$SET,block_call_url,{$FACILITATE_AJAX_BLOCK_CALL,{BLOCK_PARAMS}}}
 <div data-tpl="jsBlock" data-tpl-params="{+START,PARAMS_JSON,js_block_id,block_call_url}{_*}{+END}">
 	<div id="{$GET%,js_block_id}">

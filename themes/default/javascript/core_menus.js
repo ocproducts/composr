@@ -22,7 +22,7 @@
         }
 
         $dom.on(container, 'click', '.js-click-menu-editor-add-new-page', function () {
-            var form = $dom.$id('edit_form');
+            var form = $dom.$('#edit-form');
 
             $cms.ui.prompt(
                 $cms.configOption('single_public_zone') ? '{!javascript:ENTER_ZONE_SPZ;^}' : '{!javascript:ENTER_ZONE;^}', '', null, '{!menus:SPECIFYING_NEW_PAGE;^}'
@@ -59,10 +59,10 @@
 
             el.value = input.value;
 
-            urlEl = $dom.$('#edit_form').elements['url'];
+            urlEl = $dom.$('#edit-form').elements['url'];
             urlEl.value = input.value;
 
-            captionEl = $dom.$('#edit_form').elements['caption_' + window.currentSelection];
+            captionEl = $dom.$('#edit-form').elements['caption_' + window.currentSelection];
             if ((captionEl.value === '') && input.selectedTitle) {
                 captionEl.value = input.selectedTitle.replace(/^.*:\s*/, '');
             }
@@ -109,7 +109,7 @@
         });
 
         $dom.on(container, 'dblclick', '.js-dblclick-scroll-to-heading', function (e) {
-            if (!document.getElementById('menu_editor_wrap').classList.contains('docked')) {
+            if (!document.getElementById('menu-editor-wrap').classList.contains('docked')) {
                 $dom.smoothScroll($dom.findPosY(document.getElementsByTagName('h2')[2]));
             }
         });
@@ -157,7 +157,7 @@
          * @param upwards
          */
         function handleOrdering(element, upwards) {
-            var form = $dom.$('#edit_form');
+            var form = $dom.$('#edit-form');
 
             // Find the num
             var index = element.id.substring(element.id.indexOf('_') + 1, element.id.length),
@@ -256,7 +256,7 @@
                     null
                 ).then(function (result) {
                     if (result.toLowerCase() === '{!DELETE;^}'.toLowerCase()) {
-                        deleteBranch('branch_wrap_' + ob.name.substr(4, ob.name.length));
+                        deleteBranch('branch-wrap-' + ob.name.substr(4, ob.name.length));
                     } else if (result.toLowerCase() === '{!menus:MOVETO_MENU;^}'.toLowerCase()) {
                         var choices = { 'buttons--cancel': '{!INPUTSYSTEM_CANCEL;^}' };
                         for (var i = 0; i < window.allMenus.length; i++) {
@@ -299,12 +299,12 @@
                     }
 
                     $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,menu_management}' + '?id=' + encodeURIComponent(id) + '&menu=' + encodeURIComponent(answer) + $cms.keep(), null, post);
-                    deleteBranch('branch_wrap_' + ob.name.substr(4, ob.name.length));
+                    deleteBranch('branch-wrap-' + ob.name.substr(4, ob.name.length));
                 });
             } else {
                 $cms.ui.confirm('{!menus:CONFIRM_DELETE_LINK;^,xxxx}'.replace('xxxx', document.getElementById('caption_' + id).value)).then(function (result) {
                     if (result) {
-                        deleteBranch('branch_wrap_' + ob.name.substr(4, ob.name.length));
+                        deleteBranch('branch-wrap-' + ob.name.substr(4, ob.name.length));
                     }
                 });
             }
@@ -316,7 +316,7 @@
             clickableSections = Boolean(params.clickableSections);
 
         $dom.on(container, 'click', '.js-click-add-new-menu-item', function () {
-            var insertBeforeId = 'branches_go_before_' + parentId,
+            var insertBeforeId = 'branches-go-before-' + parentId,
                 template = $dom.$id('template').value,
                 before = $dom.$id(insertBeforeId),
                 newId = 'm_' + Math.floor(Math.random() * 10000),
@@ -329,7 +329,7 @@
             template2 = template2.replace(/replace\_me\_with\_parent/gi, parentId);
 
             // Backup form branches
-            var form = $dom.$id('edit_form'),
+            var form = $dom.$id('edit-form'),
                 _elementsBak = form.elements, 
                 elementsBak = [], i;
 
@@ -337,7 +337,7 @@
                 elementsBak.push([_elementsBak[i].name, _elementsBak[i].value]);
             }
 
-            $dom.append(before, template2); // Technically we are actually putting after "branches_go_before_XXX", but it makes no difference. It only needs to act as a divider.
+            $dom.append(before, template2); // Technically we are actually putting after "branches-go-before-XXX", but it makes no difference. It only needs to act as a divider.
 
             // Restore form branches
             for (i = 0; i < elementsBak.length; i++) {
@@ -356,8 +356,8 @@
 
     function menuEditorBranchTypeChange(id) {
         var disabled = (document.getElementById('branch_type_' + id).value !== 'page'),
-            sub = $dom.$id('branch_' + id + '_follow_1'),
-            sub2 = $dom.$id('branch_' + id + '_follow_2');
+            sub = $dom.$id('branch-' + id + '-follow-1'),
+            sub2 = $dom.$id('branch-' + id + '-follow-2');
 
         if (sub) {
             $dom.toggle(sub, disabled);
@@ -503,7 +503,7 @@
 
     function copyFieldsIntoBottom(i, changed) {
         window.currentSelection = i;
-        var form = $dom.$id('edit_form');
+        var form = $dom.$id('edit-form');
 
         form.elements['caption_long'].value = $dom.$id('caption_long_' + i).value;
         form.elements['caption_long'].addEventListener('change', function () {
@@ -596,7 +596,7 @@
     }
 
     function checkMenu() {
-        var form = $dom.$('#edit_form');
+        var form = $dom.$('#edit-form');
         var i, id, name, theParent, ignore, caption, url, branchType;
         for (i = 0; i < form.elements.length; i++) {
             name = form.elements[i].name.substr(0, 'parent_'.length);

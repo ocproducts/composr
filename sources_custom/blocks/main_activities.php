@@ -156,7 +156,7 @@ class Block_main_activities
             $max_rows = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'activities WHERE ' . $whereville, false, true);
 
             require_code('templates_pagination');
-            $pagination = pagination(do_lang('ACTIVITY'), $start, $block_id . '_start', $max, $block_id . '_max', $max_rows, false, 5, null, 'tab__activities');
+            $pagination = pagination(do_lang('ACTIVITY'), $start, $block_id . '_start', $max, $block_id . '_max', $max_rows, false, 5, null, 'tab--activities');
 
             $activities = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'activities WHERE ' . $whereville . ' ORDER BY a_time DESC', $max, $start, false, true);
 

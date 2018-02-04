@@ -496,8 +496,8 @@
                         'frameBorder': '0',
                         'scrolling': 'no',
                         'title': '',
-                        'name': 'overlay_iframe',
-                        'id': 'overlay_iframe',
+                        'name': 'overlay-iframe',
+                        'id': 'overlay-iframe',
                         'className': 'js-modal-overlay-iframe',
                         'allowTransparency': 'true',
                         //'seamless': 'seamless',// Not supported, and therefore testable yet. Would be great for mobile browsing.
@@ -510,7 +510,7 @@
 
                     this.containerEl.appendChild(iframe);
 
-                    $dom.animateFrameLoad(iframe, 'overlay_iframe', 50, true);
+                    $dom.animateFrameLoad(iframe, 'overlay-iframe', 50, true);
 
                     setTimeout(function () {
                         if (self.el) {
@@ -534,7 +534,7 @@
 
                     // Fiddle it, to behave like a popup would
                     setTimeout(function () {
-                        $dom.illustrateFrameLoad('overlay_iframe');
+                        $dom.illustrateFrameLoad('overlay-iframe');
                         iframe.src = self.href;
                         self.makeFrameLikePopup(iframe);
 
@@ -996,7 +996,6 @@
             }
         }
     });
-
 
     /**
      * @memberof $cms.views
@@ -1721,7 +1720,7 @@
 
             if (!target.timer) {
                 target.timer = setTimeout(function () {
-                    popupMenu(menu + '-dexpand-' + rand, 'below', menu + '_d');
+                    popupMenu(menu + '-dexpand-' + rand, 'below', menu + '-d');
                 }, 200);
             }
         },
@@ -1737,14 +1736,14 @@
             var menu = $cms.filter.id(this.menu),
                 rand = strVal(target.dataset.vwRand);
 
-            popupMenu(menu + '-dexpand-' + rand, 'below', menu + '_d', true);
+            popupMenu(menu + '-dexpand-' + rand, 'below', menu + '-d', true);
         },
 
         popUpMenu: function (e, target) {
             var menu = $cms.filter.id(this.menu),
                 rand = strVal(target.dataset.vwRand);
 
-            popupMenu(menu + '-dexpand-' + rand, null, menu + '_d');
+            popupMenu(menu + '-dexpand-' + rand, null, menu + '-d');
         },
 
         setActiveMenu: function (e, target) {
@@ -1772,7 +1771,7 @@
             setMenuHoldTime(3000);
             if (!target.timer) {
                 target.timer = setTimeout(function () {
-                    popupMenu(menu + '-dexpand-' + rand, 'below', menu + '_d', true);
+                    popupMenu(menu + '-dexpand-' + rand, 'below', menu + '-d', true);
                     try {
                         document.getElementById('search-content').focus();
                     } catch (ignore) {}
@@ -1824,7 +1823,7 @@
 
         this.rand = this.params.rand;
         this.menu = $cms.filter.id(this.params.menu);
-        this.popup = this.menu + '_pexpand_' + this.rand;
+        this.popup = this.menu + '-pexpand-' + this.rand;
     }
 
     $util.inherits(PopupMenuBranch, $cms.View, /**@lends PopupMenuBranch#*/{
@@ -1836,11 +1835,11 @@
             };
         },
         popUpMenu: function () {
-            popupMenu(this.popup, null, this.menu + '_p');
+            popupMenu(this.popup, null, this.menu + '-p');
         },
         setActiveMenu: function () {
             if (getActiveMenu() == null) {
-                setActiveMenu(this.popup, this.menu + '_p');
+                setActiveMenu(this.popup, this.menu + '-p');
             }
         }
     });
@@ -2192,7 +2191,7 @@
     function cleanMenus() {
         cleanMenusTimeout = null;
 
-        var menuEl = $dom.$('#r_' + lastActiveMenu);
+        var menuEl = $dom.$('#r-' + lastActiveMenu);
         if (!menuEl) {
             return;
         }

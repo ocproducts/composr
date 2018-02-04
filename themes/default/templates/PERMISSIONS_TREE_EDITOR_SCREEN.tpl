@@ -33,7 +33,7 @@
 									{GROUPS}
 								</select>
 							</form>
-							<p>{!PERMISSIONS_TREE_EDITOR_ICON_SPECIFIC,<span id="group_name">{INITIAL_GROUP*}</span>}</p>
+							<p>{!PERMISSIONS_TREE_EDITOR_ICON_SPECIFIC,<span id="group-name">{INITIAL_GROUP*}</span>}</p>
 						</div></div>
 					</div>
 
@@ -57,19 +57,19 @@
 				{!PERMISSION_INHERITANCE_HOVER}
 			</p>
 
-			<form id="permissions_form" title="{!PRIMARY_PAGE_FORM}" method="post" action="index.php" autocomplete="off">
+			<form id="permissions-form" title="{!PRIMARY_PAGE_FORM}" method="post" action="index.php" autocomplete="off">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				<div class="float-surrounder">
-					<div style="display: none" id="selection_form_fields">
+					<div style="display: none" id="selection-form-fields">
 						{EDITOR}
 					</div>
 
-					<p class="right" id="selection_message">
+					<p class="right" id="selection-message">
 						<em>{!PERMISSIONS_TREE_EDITOR_NONE_SELECTED}</em>
 					</p>
 					<div>
-						<input type="button" class="button-screen-item buttons--save js-click-set-permissions" id="selection_button" disabled="disabled" value="{!SET}" />
+						<input type="button" class="button-screen-item buttons--save js-click-set-permissions" id="selection-button" disabled="disabled" value="{!SET}" />
 					</div>
 				</div>
 			</form>

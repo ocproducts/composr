@@ -12,7 +12,7 @@
     };
 
     $cms.templates.newsletterPreview = function (params) {
-        var frameId = 'preview_frame',
+        var frameId = 'preview-frame',
             html = strVal(params.htmlPreview);
 
         setTimeout(function () {

@@ -122,7 +122,7 @@
 
             window.addEventListener('keypress', toggleSlideshowTimer);
 
-            document.getElementById('gallery_nav').addEventListener('click', function (event) {
+            document.getElementById('gallery-nav').addEventListener('click', function (event) {
                 if (event.altKey || event.metaKey) {
                     var b = document.getElementById('gallery-entry-screen');
                     if (b.webkitRequestFullScreen !== undefined) {
@@ -177,7 +177,7 @@
     };
 
     $cms.functions.moduleCmsGalleriesRunStartAddCategory = function moduleCmsGalleriesRunStartAddCategory() {
-        var form = document.getElementById('main_form'),
+        var form = document.getElementById('main-form'),
             submitBtn = document.getElementById('submit-button'),
             validValue;
         form.addEventListener('submit', function submitCheck(e) {
@@ -260,7 +260,7 @@
     }
 
     function showCurrentSlideshowTime() {
-        var changer = document.getElementById('changer_wrap');
+        var changer = document.getElementById('changer-wrap');
         if (changer) {
             $dom.html(changer, $util.format('{!galleries:CHANGING_IN;^}', [Math.max(0, window.slideshowTime)]));
         }
@@ -290,7 +290,7 @@
         if (message === undefined) {
             message = '{!galleries:STOPPED;^}';
         }
-        var changer = document.getElementById('changer_wrap');
+        var changer = document.getElementById('changer-wrap');
         if (changer) {
             $dom.html(changer, message);
         }

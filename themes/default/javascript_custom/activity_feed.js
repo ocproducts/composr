@@ -222,7 +222,7 @@
                         // Now grab whatever updates are available
                         var url = $util.url('data_custom/activities_updater.php' + $cms.keep(true)).toString(),
                             listElements = jQuery('li', '#activities-feed'),
-                            lastId = ((listElements.attr('id') == null) ? '-1' : listElements.attr('id').replace(/^activity_/, '')),
+                            lastId = ((listElements.attr('id') == null) ? '-1' : listElements.attr('id').replace(/^activity-/, '')),
                             postVal = 'last_id=' + lastId + '&mode=' + window.activitiesMode;
 
                         if ((window.activitiesMemberIds != null) && (window.activitiesMemberIds !== '')) {

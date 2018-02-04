@@ -30,7 +30,7 @@
             var bounds = new google.maps.LatLngBounds(),
                 center = new google.maps.LatLng(((latitude !== '') ? latitude : 0), ((longitude !== '') ? longitude : 0));
 
-            map = new google.maps.Map(document.getElementById('map_position_' + name), {
+            map = new google.maps.Map(document.getElementById('map-position-' + name), {
                 zoom: (latitude !== '') ? 12 : 1,
                 center: center,
                 mapTypeId: google.maps.MapTypeId.ROADMAP,

@@ -3,7 +3,7 @@
 
     $cms.templates.authorPopup = function (params, container) {
         $dom.on(container, 'click', '.js-click-set-author-and-close', function (e, clicked) {
-            var form = $dom.$($cms.getMainCmsWindow().document, '#posting-form, #main_form'),
+            var form = $dom.$($cms.getMainCmsWindow().document, '#posting-form, #main-form'),
                 fieldName = clicked.dataset.tpFieldName,
                 fieldValue = clicked.dataset.tpAuthor,
                 author;

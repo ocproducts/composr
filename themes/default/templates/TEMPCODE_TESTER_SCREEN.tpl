@@ -36,7 +36,7 @@
 		<div class="comcode-code">
 			<h4>{!RAW_PREVIEW}</h4>
 
-			<div class="webstandards-checker-off"><div class="comcode-code-inner" id="preview_raw">
+			<div class="webstandards-checker-off"><div class="comcode-code-inner" id="preview-raw">
 				<p class="nothing-here">{!UNSET}</p>
 			</div></div>
 		</div>
@@ -46,7 +46,7 @@
 		<div class="comcode-code">
 			<h4>{!HTML_PREVIEW}</h4>
 
-			<div class="webstandards-checker-off"><div class="comcode-code-inner" id="preview_html">
+			<div class="webstandards-checker-off"><div class="comcode-code-inner" id="preview-html">
 				<p class="nothing-here">{!UNSET}</p>
 			</div></div>
 		</div>
@@ -56,7 +56,7 @@
 		<div class="comcode-code">
 			<h4>{!COMCODE_PREVIEW}</h4>
 
-			<div class="webstandards-checker-off"><div class="comcode-code-inner" id="preview_comcode">
+			<div class="webstandards-checker-off"><div class="comcode-code-inner" id="preview-comcode">
 				<p class="nothing-here">{!UNSET}</p>
 			</div></div>
 		</div>

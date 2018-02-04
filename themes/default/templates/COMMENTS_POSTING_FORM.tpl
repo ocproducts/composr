@@ -40,7 +40,7 @@
 					{+END}
 				</h3>
 			{+END}
-			<div class="comments-posting-form-outer {+START,IF_PASSED,EXPAND_TYPE} toggleable-tray js-tray-content{+END}"{+START,IF_PASSED,EXPAND_TYPE} aria-expanded="false"{+END} id="comments_posting_form_outer" style="display: {DISPLAY*}">
+			<div class="comments-posting-form-outer {+START,IF_PASSED,EXPAND_TYPE} toggleable-tray js-tray-content{+END}"{+START,IF_PASSED,EXPAND_TYPE} aria-expanded="false"{+END} id="comments-posting-form-outer" style="display: {DISPLAY*}">
 				<div class="comments-posting-form-inner">
 					<div class="wide-table-wrap"><table class="map-table wide-table">
 						{+START,IF,{$DESKTOP}}
@@ -111,12 +111,12 @@
 										</th>
 
 										<td>
-											<img id="review_bar_1__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="2" alt="" width="14" height="14" src="{$IMG*,icons/feedback/rating}" />
-											<img id="review_bar_2__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="4" alt="" width="14" height="14" src="{$IMG*,icons/feedback/rating}" />
-											<img id="review_bar_3__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="6" alt="" width="14" height="14" src="{$IMG*,icons/feedback/rating}" />
-											<img id="review_bar_4__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="8" alt="" width="14" height="14" src="{$IMG*,icons/feedback/rating}" />
-											<img id="review_bar_5__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="10" alt="" width="14" height="14" src="{$IMG*,icons/feedback/rating}" />
-											<input id="review_rating__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="js-inp-review-rating" type="hidden" name="review_rating__{REVIEW_TITLE|*}" value="" />
+											<img id="review-bar-1--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="2" alt="" width="14" height="14" src="{$IMG*,icons/feedback/rating}" />
+											<img id="review-bar-2--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="4" alt="" width="14" height="14" src="{$IMG*,icons/feedback/rating}" />
+											<img id="review-bar-3--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="6" alt="" width="14" height="14" src="{$IMG*,icons/feedback/rating}" />
+											<img id="review-bar-4--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="8" alt="" width="14" height="14" src="{$IMG*,icons/feedback/rating}" />
+											<img id="review-bar-5--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="10" alt="" width="14" height="14" src="{$IMG*,icons/feedback/rating}" />
+											<input id="review-rating--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}" class="js-inp-review-rating" type="hidden" name="review_rating__{REVIEW_TITLE|*}" value="" />
 										</td>
 									</tr>
 								{+END}
@@ -172,7 +172,7 @@
 										<input type="hidden" name="comcode__post" value="1" />
 									</div>
 
-									<div id="error_post" style="display: none" class="input-error-here"></div>
+									<div id="error-post" style="display: none" class="input-error-here"></div>
 
 									{+START,IF_PASSED,ATTACHMENTS}
 										<div class="attachments">
@@ -231,6 +231,6 @@
 	{+END}
 
 	{+START,IF,{$CONFIG_OPTION,enable_previews}}
-		<iframe {$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} title="{!PREVIEW}" name="preview_iframe" id="preview_iframe" src="{$BASE_URL*}/uploads/index.html" class="hidden-preview-frame">{!PREVIEW}</iframe>
+		<iframe {$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} title="{!PREVIEW}" name="preview-iframe" id="preview-iframe" src="{$BASE_URL*}/uploads/index.html" class="hidden-preview-frame">{!PREVIEW}</iframe>
 	{+END}
 </div>

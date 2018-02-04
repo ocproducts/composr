@@ -1,17 +1,17 @@
-<tr id="access_{GROUP_ID*}_privilege_container" class="{$CYCLE,permissions_zebra,zebra-0,zebra-1}">
+<tr id="access-{GROUP_ID*}-privilege-container" class="{$CYCLE,permissions_zebra,zebra-0,zebra-1}">
 	<th class="form-table-field-name">
 		<p class="form-field-name field-name">{GROUP_NAME*}</p>
 	</th>
 
 	<td class="form-table-field-input">
-		<div class="accessibility-hidden"><label for="access_{GROUP_ID*}">{PINTERFACE_VIEW*} ({GROUP_NAME*})</label></div>
-		<input id="access_{GROUP_ID*}" title="{PINTERFACE_VIEW*} ({!ADMIN})" name="_ignore" type="checkbox" checked="checked" disabled="disabled" class="no-tooltip" />
+		<div class="accessibility-hidden"><label for="access-{GROUP_ID*}">{PINTERFACE_VIEW*} ({GROUP_NAME*})</label></div>
+		<input id="access-{GROUP_ID*}" title="{PINTERFACE_VIEW*} ({!ADMIN})" name="_ignore" type="checkbox" checked="checked" disabled="disabled" class="no-tooltip" />
 	</td>
 
 	{+START,LOOP,OVERRIDES}
 		<td class="form-table-field-input">
-			<div class="accessibility-hidden"><label for="access_{GROUP_ID*}_{_loop_key*}">{!NA}</label></div>
-			<input name="_ignore" type="checkbox" id="access_{GROUP_ID*}_{_loop_key*}" checked="checked" disabled="disabled" />
+			<div class="accessibility-hidden"><label for="access-{GROUP_ID*}-{_loop_key*}">{!NA}</label></div>
+			<input name="_ignore" type="checkbox" id="access-{GROUP_ID*}-{_loop_key*}" checked="checked" disabled="disabled" />
 		</td>
 	{+END}
 

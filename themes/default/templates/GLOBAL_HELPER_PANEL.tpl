@@ -18,7 +18,7 @@
 			{+END}
 
 			{+START,IF_NON_EMPTY,{$GET,HELPER_PANEL_TUTORIAL}}
-				<div id="help_tutorial">
+				<div id="help-tutorial">
 					<div class="box box---global-helper-panel--tutorial"><div class="box-inner">
 						<div class="global-helper-panel-text">{!TUTORIAL_ON_THIS,{$TUTORIAL_URL*,{$GET,HELPER_PANEL_TUTORIAL}}}</div>
 					</div></div>

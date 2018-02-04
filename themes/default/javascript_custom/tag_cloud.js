@@ -2,7 +2,7 @@
     'use strict';
 
     $cms.templates.blockSideTagCloud = function blockSideTagCloud() {
-        loadTagCloud(document.getElementById('tag_sphere'));
+        loadTagCloud(document.getElementById('tag-sphere'));
     };
 }(window.$cms));
 

@@ -75,7 +75,7 @@
 	{+END}
 
 	<div class="box box---chat-screen-chatters"><p class="box-inner">
-		{!USERS_IN_CHATROOM} <span id="chat_members_update">{CHATTERS}</span>
+		{!USERS_IN_CHATROOM} <span id="chat-members-update">{CHATTERS}</span>
 	</p></div>
 
 	<form title="{$STRIP_TAGS,{!CHAT_OPTIONS_DESCRIPTION}}" class="below-main-chat-window js-form-submit-check-chat-options" method="post" action="{OPTIONS_URL*}" autocomplete="off">

@@ -407,7 +407,7 @@
             title = $cms.filter.id(params.title);
 
         $dom.on(container, 'click', function () {
-            $cms.ui.selectTab('g', tabSets + '_' + title);
+            $cms.ui.selectTab('g', tabSets + '-' + title);
         });
     };
 
@@ -969,14 +969,14 @@
         if (window.shockerPos[id] == window.shockerParts[id].length - 1) {
             window.shockerPos[id] = 0;
         }
-        var eLeft = document.getElementById('comcodeshocker' + id + '_left');
+        var eLeft = document.getElementById('comcodeshocker' + id + '-left');
         if (!eLeft) {
             return;
         }
         $dom.html(eLeft, window.shockerParts[id][window.shockerPos[id]][0]);
         $dom.fadeIn(eLeft);
 
-        var eRight = document.getElementById('comcodeshocker' + id + '_right');
+        var eRight = document.getElementById('comcodeshocker' + id + '-right');
         if (!eRight) {
             return;
         }
@@ -1004,7 +1004,7 @@
             to = Number(to);
 
             for (i = 0; i < sections.length; i++) {
-                section = document.getElementById(id + '_section_' + sections[i]);
+                section = document.getElementById(id + '-section-' + sections[i]);
                 if (section) {
                     if ((section.style.display === 'block') && (section.style.position !== 'absolute')) {
                         currentPos = i;
@@ -1025,44 +1025,44 @@
 
         // Previous/next updates
         var el;
-        el = document.getElementById(id + '_has_next_yes');
+        el = document.getElementById(id + '-has-next-yes');
         if (el) {
             el.style.display = (currentPos === (sections.length - 1)) ? 'none' : 'inline-block';
         }
-        el = document.getElementById(id + '_has_next_no');
+        el = document.getElementById(id + '-has-next-no');
         if (el) {
             el.style.display = (currentPos === (sections.length - 1)) ? 'inline-block' : 'none';
         }
-        el = document.getElementById(id + '_has_previous_yes');
+        el = document.getElementById(id + '-has-previous-yes');
         if (el) {
             el.style.display = (currentPos === 0) ? 'none' : 'inline-block';
         }
-        el = document.getElementById(id + '_has_previous_no');
+        el = document.getElementById(id + '-has-previous-no');
         if (el) {
             el.style.display = (currentPos === 0) ? 'inline-block' : 'none';
         }
 
         // We make our forthcoming one instantly visible to stop the browser possibly scrolling up if there is a tiny time interval when none are visible
-        el = document.getElementById(id + '_section_' + sections[i]);
+        el = document.getElementById(id + '-section-' + sections[i]);
         if (el) {
             el.style.display = 'block';
         }
 
         for (i = 0; i < sections.length; i++) {
-            el = document.getElementById(id + '_goto_' + sections[i]);
+            el = document.getElementById(id + '-goto-' + sections[i]);
             if (el) {
                 el.style.display = (i === currentPos) ? 'none' : 'inline-block';
             }
-            el = document.getElementById(id + '_btgoto_' + sections[i]);
+            el = document.getElementById(id + '-btgoto-' + sections[i]);
             if (el) {
                 el.classList.toggle('big-tab-active', (i === currentPos));
                 el.classList.toggle('big-tab-inactive', (i !== currentPos));
             }
-            el = document.getElementById(id + '_isat_' + sections[i]);
+            el = document.getElementById(id + '-isat-' + sections[i]);
             if (el) {
                 el.style.display = (i === currentPos) ? 'inline-block' : 'none';
             }
-            el = document.getElementById(id + '_section_' + sections[i]);
+            el = document.getElementById(id + '-section-' + sections[i]);
 
             if (el) {
                 if (el.classList.contains('comcode-big-tab')) {
@@ -1097,7 +1097,7 @@
                 var nextPage = 0, i, el;
 
                 for (i = 0; i < sections.length; i++) {
-                    el = document.getElementById(id + '_section_' + sections[i]);
+                    el = document.getElementById(id + '-section-' + sections[i]);
                     if ((el.style.display === 'block') && (el.style.position !== 'absolute')) {
                         nextPage = i + 1;
                     }

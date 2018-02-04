@@ -20,7 +20,7 @@
 				{+END}
 			</ol>
 
-			<form id="staff-links-list-{$GET%,RAND_STAFF_LINKS}_form" title="{!EDIT}: {!LINKS}" action="{URL*}" method="post" style="display: none" aria-hidden="true" autocomplete="off">
+			<form id="staff-links-list-{$GET%,RAND_STAFF_LINKS}-form" title="{!EDIT}: {!LINKS}" action="{URL*}" method="post" style="display: none" aria-hidden="true" autocomplete="off">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				<div><label for="staff_links_edit" class="accessibility-hidden">{!EDIT}</label><textarea cols="100" rows="30" id="staff_links_edit" name="staff_links_edit" class="wide-field">{+START,LOOP,UNFORMATTED_LINKS}{LINKS*}&#10;&#10;{+END}</textarea></div>

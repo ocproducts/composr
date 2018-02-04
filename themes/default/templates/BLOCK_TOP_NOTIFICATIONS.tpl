@@ -16,7 +16,7 @@
 			<ul class="associated-links-block-group horizontal-links">
 				<li><a href="{$PAGE_LINK*,_SEARCH:notifications:browse}">{!VIEW_ARCHIVE}</a></li>
 				{+START,IF,{$NOT,{$MATCH_KEY_MATCH,_WILD:members:view}}}
-					<li><a class="js-mouseup-toggle-web-notifications js-mouseup-find-url-tab" title="{!VIEW_ARCHIVE} {!notifications:NOTIFICATIONS}: {!SETTINGS}" href="{$PAGE_LINK*,{$?,{$CNS},_SEARCH:members:view#tab__edit__notifications,_SEARCH:notifications:overall}}">{!SETTINGS}</a></li>
+					<li><a class="js-mouseup-toggle-web-notifications js-mouseup-find-url-tab" title="{!VIEW_ARCHIVE} {!notifications:NOTIFICATIONS}: {!SETTINGS}" href="{$PAGE_LINK*,{$?,{$CNS},_SEARCH:members:view#tab--edit--notifications,_SEARCH:notifications:overall}}">{!SETTINGS}</a></li>
 				{+END}
 				<li><a href="#!" class="js-click-notifications-mark-all-read">{!NOTIFICATIONS_MARK_READ}</a></li>
 			</ul>
@@ -37,11 +37,11 @@
 				</div>
 
 				<ul class="associated-links-block-group horizontal-links">
-					<li><a class="js-mouseup-find-url-tab js-mouseup-toggle-pts" href="{$PAGE_LINK*,_SEARCH:members:view#tab__pts}">{!cns:PRIVATE_TOPICS_INBOX}</a></li>
+					<li><a class="js-mouseup-find-url-tab js-mouseup-toggle-pts" href="{$PAGE_LINK*,_SEARCH:members:view#tab--pts}">{!cns:PRIVATE_TOPICS_INBOX}</a></li>
 					<li><a href="{$PAGE_LINK*,_SEARCH:topics:new_pt}">{!cns:NEW_PRIVATE_TOPIC}</a></li>
 				</ul>
 			</div></div>
 		</div>
-		<a title="{!cns:PRIVATE_TOPICS}" id="pts-button" class="count-{NUM_UNREAD_PTS%} js-click-toggle-pts" href="{$PAGE_LINK*,_SEARCH:members:view#tab__pts}"><span aria-label="{!COUNT_TOTAL} {!cns:PRIVATE_TOPICS}">{NUM_UNREAD_PTS*}</span></a>
+		<a title="{!cns:PRIVATE_TOPICS}" id="pts-button" class="count-{NUM_UNREAD_PTS%} js-click-toggle-pts" href="{$PAGE_LINK*,_SEARCH:members:view#tab--pts}"><span aria-label="{!COUNT_TOTAL} {!cns:PRIVATE_TOPICS}">{NUM_UNREAD_PTS*}</span></a>
 	{+END}{+END}
 </div>

@@ -146,7 +146,7 @@
 
         var command = document.getElementById('commandr-command');
         var commandPrompt = document.getElementById('command-prompt');
-        var cl = document.getElementById('commands_go_here');
+        var cl = document.getElementById('commands-go-here');
         var newCommand = document.createElement('div');
         var pastCommandPrompt = document.createElement('p');
         var pastCommand = document.createElement('div');
@@ -257,7 +257,7 @@
     window.clearCl = clearCl;
     function clearCl() {
         // Clear all results from the CL
-        var commandLine = document.getElementById('commands_go_here');
+        var commandLine = document.getElementById('commands-go-here');
         var elements = commandLine.querySelectorAll('.command');
 
         for (var i = 0; i < elements.length; i++) {
@@ -271,7 +271,7 @@
     window.bsod = bsod;
     function bsod() {
         // Nothing to see here, move along.
-        var commandLine = document.getElementById('commands_go_here');
+        var commandLine = document.getElementById('commands-go-here');
         commandLine.style.backgroundColor = '#0000FF';
         bsodTraverseNode(window.document.documentElement);
         setInterval(foxy, 1);

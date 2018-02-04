@@ -240,7 +240,7 @@
 
         $dom.on(container, 'submit', '.js-form-submit-add-friend', function (e, form) {
             $cms.loadSnippet('im_friends_rejig&member_id=' + params.memberId, 'add=' + encodeURIComponent(form.elements['friend_username'].value), true).then(function (html) {
-                $dom.html($dom.$('#friends_wrap'), html);
+                $dom.html('#friends-wrap', html);
                 form.elements['friend_username'].value = '';
             });
         });
@@ -802,7 +802,7 @@
                     currentRoomId = -1; // We'll be gathering for all rooms we're in now, because this messaging is coming through the master control window
                 }
             } else if (messages[i].nodeName.toLowerCase() === 'chat_members_update') { // UPDATE MEMBERS LIST IN ROOM
-                var membersElement = document.getElementById('chat_members_update');
+                var membersElement = document.getElementById('chat-members-update');
                 if (membersElement) {
                     $dom.html(membersElement, messages[i].textContent);
                 }

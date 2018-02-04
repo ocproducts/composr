@@ -2,7 +2,7 @@
     'use strict';
 
     $cms.templates.blockMainImageSlider = function blockMainImageSlider(params) {
-        window.jQuery('#skitter_' + params.rand).skitter({
+        window.jQuery('#skitter-' + params.rand).skitter({
             auto_play: true,
             controls: true,
             dots: true,

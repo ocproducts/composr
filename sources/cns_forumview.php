@@ -189,7 +189,7 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
                         }
 
                         $topic_url = build_url(array('page' => 'topicview', 'type' => 'first_unread', 'id' => $subforum['last_topic_id']), get_module_zone('topicview'));
-                        $topic_url->attach('#first_unread');
+                        $topic_url->attach('#first-unread');
 
                         $latest = do_template('CNS_FORUM_LATEST', array(
                             '_GUID' => 'dlfsdfkoewfdlfsldfk',
@@ -414,7 +414,7 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
         }
 
         require_code('templates_pagination');
-        $pagination = pagination(make_string_tempcode(escape_html($forum_name)), $true_start, 'forum_start', $max, 'forum_max', $details['max_rows'], false, 5, null, ($type == 'pt' && get_page_name() == 'members') ? 'tab__pts' : '', $keyset_value);
+        $pagination = pagination(make_string_tempcode(escape_html($forum_name)), $true_start, 'forum_start', $max, 'forum_max', $details['max_rows'], false, 5, null, ($type == 'pt' && get_page_name() == 'members') ? 'tab--pts' : '', $keyset_value);
 
         $sort = array_key_exists('sort', $details) ? $details['sort'] : 'last_post';
         $topic_wrapper = do_template('CNS_FORUM_TOPIC_WRAPPER', array(
@@ -448,7 +448,7 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
 
             foreach ($filter_cats as $fi => $filter_cat) {
                 if ($filter_cat != '') {
-                    $filtered_url = build_url(array('page' => '_SELF', 'category' => $filter_cat), '_SELF', array(), true, false, false, 'tab__pts');
+                    $filtered_url = build_url(array('page' => '_SELF', 'category' => $filter_cat), '_SELF', array(), true, false, false, 'tab--pts');
                     $filter_active = $filter_cat == $current_filter_cat;
                     $filters_arr[] = array(
                         'URL' => $filter_active ? new Tempcode() : $filtered_url,
@@ -647,7 +647,7 @@ function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum =
     $modifiers = $topic['modifiers'];
     if (in_array('unread', $modifiers)) {
         $first_unread_url = build_url(array('page' => 'topicview', 'type' => 'first_unread', 'id' => $topic['id']), get_module_zone('topicview'));
-        $first_unread_url->attach('#first_unread');
+        $first_unread_url->attach('#first-unread');
         $topic_row_links[] = array('URL' => $first_unread_url, 'IMG' => 'unread', 'ALT' => do_lang_tempcode('JUMP_TO_FIRST_UNREAD'));
     }
     $topic_row_modifiers = array();

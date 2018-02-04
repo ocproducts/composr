@@ -24,7 +24,7 @@
                 allNodesSelectable: allNodesSelectable,
                 useServerId: useServerId
             },
-            el = $dom.$id('tree_list__root_' + name);
+            el = $dom.$id('tree-list--root-' + name);
 
         return new $cms.views.TreeList(options, {el: el});
     };
@@ -105,7 +105,7 @@
 
             var i, xml, tempNode, html;
             if (expandingId === '') { // Root
-                html = $dom.$('#tree_list__root_' + this.name);
+                html = $dom.$('#tree-list--root-' + this.name);
                 $dom.empty(html);
 
                 this.treeListData = ajaxResult.cloneNode(true);
@@ -381,7 +381,7 @@
                 }
 
                 if (node.getAttribute('draggable') && (node.getAttribute('draggable') !== 'false')) {
-                    masterHtml = $dom.$id('tree_list__root_' + that.name);
+                    masterHtml = $dom.$id('tree-list--root-' + that.name);
                     fixUpNodePosition(nodeSelf);
                     nodeSelf.cmsDraggable = node.getAttribute('draggable');
                     nodeSelf.draggable = true;
@@ -505,7 +505,7 @@
                         that.response(xhr, clickedId);
                     });
                     $dom.html(htmlNode, '<div aria-busy="true" class="vertical-alignment"><img width="20" height="20" src="' + $util.srl('{$IMG*;,loading}') + '" alt="" /> <span>{!LOADING;^}</span></div>');
-                    var container = $dom.$id('tree_list__root_' + that.name);
+                    var container = $dom.$id('tree-list--root-' + that.name);
                     if (automated && container && (container.style.overflowY === 'auto')) {
                         setTimeout(function () {
                             container.scrollTop = $dom.findPosY(htmlNode) - 20;
@@ -552,7 +552,7 @@
 
             if (!assumeCtrl && event.shiftKey && this.multiSelection) {
                 // We're holding down shift so we need to force selection of everything bounded between our last click spot and here
-                var allLabels = $dom.$id('tree_list__root_' + this.name).getElementsByTagName('label'),
+                var allLabels = $dom.$id('tree-list--root-' + this.name).getElementsByTagName('label'),
                     posLast = -1,
                     posUs = -1;
 
@@ -629,7 +629,7 @@
                 } else if (selectedAfter.indexOf(selectedId) === -1) {
                     selectedAfter.push(selectedId);
                     if (!this.multiSelection) { // This is a bit of a hack to make selection look nice, even though we aren't storing natural IDs of what is selected
-                        var anchors = $dom.$id('tree_list__root_' + this.name).getElementsByTagName('label');
+                        var anchors = $dom.$id('tree-list--root-' + this.name).getElementsByTagName('label');
                         for (i = 0; i < anchors.length; i++) {
                             this.makeElementLookSelected(anchors[i], false);
                         }
@@ -686,7 +686,7 @@
     }
 
     function fixupNodePositions(name) {
-        var html = $dom.$id('tree_list__root_' + name),
+        var html = $dom.$id('tree-list--root-' + name),
             toFix = html.getElementsByTagName('div'), i;
 
         for (i = 0; i < toFix.length; i++) {

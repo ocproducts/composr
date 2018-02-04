@@ -258,7 +258,7 @@ function _enforce_temporary_passwords($member_id)
             require_lang('cns');
             $force_change_message = do_lang_tempcode('YOU_HAVE_TEMPORARY_PASSWORD', escape_html($username));
             require_code('urls');
-            $redirect_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $member_id), get_module_zone('members'), array(), false, false, false, 'tab__edit__settings');
+            $redirect_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $member_id), get_module_zone('members'), array(), false, false, false, 'tab--edit--settings');
         } // Too old?
         elseif (intval(get_option('password_change_days')) > 0) {
             require_code('password_rules');
@@ -266,7 +266,7 @@ function _enforce_temporary_passwords($member_id)
                 require_lang('password_rules');
                 $force_change_message = do_lang_tempcode('PASSWORD_TOO_OLD', escape_html($username), escape_html(integer_format(intval(get_option('password_change_days')))));
                 require_code('urls');
-                $redirect_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $member_id), get_module_zone('members'), array(), false, false, false, 'tab__edit__settings');
+                $redirect_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $member_id), get_module_zone('members'), array(), false, false, false, 'tab--edit--settings');
             }
         }
 

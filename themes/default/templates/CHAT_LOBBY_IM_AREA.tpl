@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,chat}
 {$SET,emoticons_popup_url,{$FIND_SCRIPT,emoticons}?field_name=post_{CHATROOM_ID}{$KEEP,0,1}}
-<div id="room_{CHATROOM_ID*}" class="chat-lobby-convos-area" data-tpl="chatLobbyImArea" data-tpl-params="{+START,PARAMS_JSON,CHATROOM_ID,emoticons_popup_url}{_*}{+END}">
+<div id="room-{CHATROOM_ID*}" class="chat-lobby-convos-area" data-tpl="chatLobbyImArea" data-tpl-params="{+START,PARAMS_JSON,CHATROOM_ID,emoticons_popup_url}{_*}{+END}">
 	<form title="{!MESSAGE}" action="{MESSAGES_PHP*}?action=post" method="post" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
@@ -24,11 +24,11 @@
 		<div class="chat-lobby-convos-area-bar">
 			<h3>{!PARTICIPANTS}</h3>
 
-			<div class="chat-lobby-convos-area-participants" id="participants__{CHATROOM_ID*}">
+			<div class="chat-lobby-convos-area-participants" id="participants--{CHATROOM_ID*}">
 				<em class="loading">{!LOADING}</em>
 			</div>
 			<div class="im-close-button">
-				<input id="close_button_{CHATROOM_ID*}" class="button-micro buttons--close js-click-close-chat-conversation" type="button" value="{!END_CHAT}" />
+				<input id="close-button-{CHATROOM_ID*}" class="button-micro buttons--close js-click-close-chat-conversation" type="button" value="{!END_CHAT}" />
 			</div>
 		</div>
 

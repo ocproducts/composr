@@ -14,7 +14,7 @@
     $cms.templates.cnsSavedWarning = function cnsSavedWarning(params) {
         var id = $cms.filter.id(params.title);
 
-        document.getElementById('saved_use__' + id).addEventListener('submit', function () {
+        document.getElementById('saved-use--' + id).addEventListener('submit', function () {
             var win = $cms.getMainCmsWindow();
 
             var explanation = win.document.getElementById('explanation');
@@ -33,7 +33,7 @@
             return false;
         });
 
-        document.getElementById('saved_delete__' + id).getElementsByTagName('input')[1].addEventListener('click', function () {
+        document.getElementById('saved-delete--' + id).getElementsByTagName('input')[1].addEventListener('click', function () {
             var form = this.form;
 
             $cms.ui.confirm(params.question, function (answer) {

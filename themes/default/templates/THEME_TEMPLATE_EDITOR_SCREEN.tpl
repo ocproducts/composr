@@ -29,7 +29,7 @@
 			<div class="template-editor-file-selector">
 				<div class="inner">
 					<input type="hidden" id="theme_files" name="theme_files" value="{+START,IF_PASSED,DEFAULT_THEME_FILES_LOCATION}{DEFAULT_THEME_FILES_LOCATION*}{+END}" class="js-change-template-editor-add-tab-wrap" />
-					<div id="tree_list__root_theme_files">
+					<div id="tree-list--root-theme_files">
 						<!-- List put in here -->
 					</div>
 

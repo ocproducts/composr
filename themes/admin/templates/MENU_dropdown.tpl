@@ -3,7 +3,7 @@
 
 {+START,IF_NON_EMPTY,{CONTENT}}
 
-{$SET,menu_id,r_{MENU|}_d}
+{$SET,menu_id,r-{MENU|}-d}
 {$SET,RAND,{$RAND}}
 {$SET,HAS_CHILDREN,{$HAS_ACTUAL_PAGE_ACCESS,admin,adminzone}}
 

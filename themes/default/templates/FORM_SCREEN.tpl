@@ -18,13 +18,13 @@
 	{+END}
 
 	{+START,IF_NON_PASSED,IFRAME_URL}
-	<form title="{!PRIMARY_PAGE_FORM}" id="main_form"{+START,IF_NON_PASSED_OR_FALSE,GET} method="post" action="{URL*}"{+START,IF,{$IN_STR,{FIELDS},"file"}} enctype="multipart/form-data"{+END}{+END}{+START,IF_PASSED_AND_TRUE,GET} method="get" action="{$URL_FOR_GET_FORM*,{URL}}"{+END}{+START,IF_PASSED,TARGET} target="{TARGET*}"{+END}{+START,IF_NON_PASSED,TARGET} target="_top"{+END} autocomplete="off"{+START,IF_PASSED_AND_TRUE,MODSECURITY_WORKAROUND} data-submit-modsecurity-workaround="1"{+END}>
+	<form title="{!PRIMARY_PAGE_FORM}" id="main-form"{+START,IF_NON_PASSED_OR_FALSE,GET} method="post" action="{URL*}"{+START,IF,{$IN_STR,{FIELDS},"file"}} enctype="multipart/form-data"{+END}{+END}{+START,IF_PASSED_AND_TRUE,GET} method="get" action="{$URL_FOR_GET_FORM*,{URL}}"{+END}{+START,IF_PASSED,TARGET} target="{TARGET*}"{+END}{+START,IF_NON_PASSED,TARGET} target="_top"{+END} autocomplete="off"{+START,IF_PASSED_AND_TRUE,MODSECURITY_WORKAROUND} data-submit-modsecurity-workaround="1"{+END}>
 		{+START,IF_NON_PASSED_OR_FALSE,GET}{$INSERT_SPAMMER_BLACKHOLE}{+END}
 
 		{+START,IF_PASSED_AND_TRUE,GET}{$HIDDENS_FOR_GET_FORM,{URL}}{+END}
 	{+END}
 	{+START,IF_PASSED,IFRAME_URL}
-	<form title="{!PRIMARY_PAGE_FORM}" id="main_form"{+START,IF_NON_PASSED_OR_FALSE,GET} method="post" action="{IFRAME_URL*}"{+START,IF,{$IN_STR,{FIELDS},"file"}} enctype="multipart/form-data"{+END}{+END}{+START,IF_PASSED_AND_TRUE,GET} method="get" action="{$URL_FOR_GET_FORM*,{IFRAME_URL}}"{+END} target="iframe_under" autocomplete="off">
+	<form title="{!PRIMARY_PAGE_FORM}" id="main-form"{+START,IF_NON_PASSED_OR_FALSE,GET} method="post" action="{IFRAME_URL*}"{+START,IF,{$IN_STR,{FIELDS},"file"}} enctype="multipart/form-data"{+END}{+END}{+START,IF_PASSED_AND_TRUE,GET} method="get" action="{$URL_FOR_GET_FORM*,{IFRAME_URL}}"{+END} target="iframe-under" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		{+START,IF_PASSED_AND_TRUE,GET}{$HIDDENS_FOR_GET_FORM,{IFRAME_URL}}{+END}
@@ -57,12 +57,12 @@
 				</table></div>
 			{+END}
 
-			{+START,INCLUDE,FORM_STANDARD_END}FORM_NAME=main_form{+END}
+			{+START,INCLUDE,FORM_STANDARD_END}FORM_NAME=main-form{+END}
 		</div>
 	</form>
 
 	{+START,IF_PASSED,IFRAME_URL}
-		<a id="edit_space"></a>
+		<a id="edit-space"></a>
 
 		<div class="arrow-ruler">
 			<form action="#!" method="post" autocomplete="off">
@@ -75,6 +75,6 @@
 			<img alt="" width="45" height="45" src="{$IMG*,arrow_ruler}" />
 		</div>
 
-		<iframe {$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} class="form-screen-iframe" title="{!EDIT}" name="iframe_under" id="iframe_under" src="{$BASE_URL*}/uploads/index.html">{!EDIT}</iframe>
+		<iframe {$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} class="form-screen-iframe" title="{!EDIT}" name="iframe-under" id="iframe-under" src="{$BASE_URL*}/uploads/index.html">{!EDIT}</iframe>
 	{+END}
 </div>

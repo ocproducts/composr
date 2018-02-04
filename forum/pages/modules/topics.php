@@ -324,7 +324,7 @@ class Module_topics
 
         // Show it worked / Refresh
         if ($forum_id === null) {
-            $url = build_url(array('page' => 'members', 'type' => 'view', 'id' => get_member()), get_module_zone('members'), array(), false, false, false, 'tab__pts');
+            $url = build_url(array('page' => 'members', 'type' => 'view', 'id' => get_member()), get_module_zone('members'), array(), false, false, false, 'tab--pts');
         } else {
             $url = build_url(array('page' => 'forumview', 'id' => $forum_id), get_module_zone('forumview'));
         }
@@ -2430,7 +2430,7 @@ END;
                     }
                     $_url = build_url($map, get_module_zone('topicview'));
                     $url = $_url->evaluate();
-                    $url .= '#first_unread';
+                    $url .= '#first-unread';
                     $url = get_param_string('redirect', $url, INPUT_FILTER_URL_INTERNAL);
                     return redirect_screen($_title, $url, $text);
                 }

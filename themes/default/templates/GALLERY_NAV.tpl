@@ -14,7 +14,7 @@
 		<input type="hidden" id="previous_slide" name="previous_slide" value="{SLIDESHOW_PREVIOUS_URL*}" />
 	{+END}
 
-	<div class="trinav-wrap" id="gallery_nav">
+	<div class="trinav-wrap" id="gallery-nav">
 		<div class="trinav-left">
 			{$,Back}
 			{+START,IF_NON_EMPTY,{BACK_URL}}
@@ -50,7 +50,7 @@
 				<span class="must-show-together">{!VIEWING_SLIDE,{X*},{N*}}</span>
 
 				{+START,IF_NON_EMPTY,{SLIDESHOW_NEXT_URL}}
-					<span id="changer_wrap">{!CHANGING_IN,xxx}</span>
+					<span id="changer-wrap">{!CHANGING_IN,xxx}</span>
 				{+END}
 
 				{+START,IF_EMPTY,{NEXT_URL}}

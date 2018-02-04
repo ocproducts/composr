@@ -2,7 +2,7 @@
     'use strict';
 
     $cms.functions.adminThemeWizardStep1 = function () {
-        var form = document.getElementById('main_form'),
+        var form = document.getElementById('main-form'),
             submitBtn = document.getElementById('submit-button');
         form.elements['source_theme'].addEventListener('change', function () {
             var defaultTheme = (form.elements['source_theme'].value === 'default');

@@ -12,9 +12,9 @@
 					{+START,LOOP,CUSTOM_VALUE}
 						<div><div>
 							{+START,IF,{$EQ,{_loop_key},0}}
-								<label for="{CUSTOM_NAME*}_value_{_loop_key*}">{!OTHER}</label>&hellip;<br />
+								<label for="{CUSTOM_NAME*}-value-{_loop_key*}">{!OTHER}</label>&hellip;<br />
 							{+END}
-							<input id="{CUSTOM_NAME*}_value_{_loop_key*}" name="{CUSTOM_NAME*}_value[]" value="{_loop_var*}" size="15" type="text" class="js-keypress-input-ensure-next-field" />
+							<input id="{CUSTOM_NAME*}-value-{_loop_key*}" name="{CUSTOM_NAME*}_value[]" value="{_loop_var*}" size="15" type="text" class="js-keypress-input-ensure-next-field" />
 						</div></div>
 					{+END}
 				{+END}

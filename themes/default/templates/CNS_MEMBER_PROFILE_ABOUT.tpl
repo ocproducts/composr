@@ -125,7 +125,7 @@
 								{$SET,is_messenger_field,{$EQ,{NAME},{!cns_special_cpf:DEFAULT_CPF_im_skype_NAME},{!cns_special_cpf:DEFAULT_CPF_im_jabber_NAME},{!cns_special_cpf:DEFAULT_CPF_sn_twitter_NAME},{!cns_special_cpf:DEFAULT_CPF_sn_facebook_NAME},{!cns_special_cpf:DEFAULT_CPF_sn_google_NAME}}}
 
 								{+START,IF,{$NOR,{$GET,is_point_field},{$GET,is_messenger_field}}}
-									<tr id="cpf_{NAME|*}" class="cpf-{$REPLACE,_,-,{FIELD_ID|*}}">
+									<tr id="cpf-{NAME|*}" class="cpf-{$REPLACE,_,-,{FIELD_ID|*}}">
 										<th class="de-th">
 											{NAME*}:
 										</th>
@@ -184,7 +184,7 @@
 
 							<tbody>
 								{+START,LOOP,CUSTOM_FIELDS_SECTION}
-									<tr id="cpf_{NAME|*}">
+									<tr id="cpf-{NAME|*}">
 										<th class="de-th">
 											{NAME*}:
 										</th>

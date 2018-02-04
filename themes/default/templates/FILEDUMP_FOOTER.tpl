@@ -2,8 +2,8 @@
 
 <div class="float-surrounder">
 	<div class="left">
-		<label for="action_{I*}">{!ACTION}:</label>
-		<select id="action_{I*}" name="action">
+		<label for="action-{I*}">{!ACTION}:</label>
+		<select id="action-{I*}" name="action">
 			{+START,IF,{$EQ,{I},1}}
 				<option value="">---</option>
 			{+END}

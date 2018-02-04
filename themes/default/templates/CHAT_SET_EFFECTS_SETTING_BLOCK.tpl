@@ -8,7 +8,7 @@
 		</div>
 	{+END}{+END}
 
-	<div class="toggleable-tray js-tray-content"{+START,IF_PASSED,MEMBER_ID} id="user_{MEMBER_ID*}"{+END}{+START,IF,{$NOT,{HAS_SOME}}} style="display: none"{+END} aria-expanded="false">
+	<div class="toggleable-tray js-tray-content"{+START,IF_PASSED,MEMBER_ID} id="user-{MEMBER_ID*}"{+END}{+START,IF,{$NOT,{HAS_SOME}}} style="display: none"{+END} aria-expanded="false">
 		<div class="wide-table-wrap"><table class="map-table form-table wide-table scrollable-inside">
 			{+START,IF,{$DESKTOP}}
 				<colgroup>
@@ -26,11 +26,11 @@
 					</tr>
 
 					<tr class="field-input">
-						<th id="form-table-field-name--select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" class="form-table-field-name">
+						<th id="form-table-field-name--select-{KEY*}{+START,IF_PASSED,MEMBER_ID}-{MEMBER_ID*}{+END}" class="form-table-field-name">
 							<label for="select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}"><span class="form-field-name field-name">{!BROWSE}</span></label>
 						</th>
 
-						<td id="form-table-field-input--select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" class="form-table-field-input">
+						<td id="form-table-field-input--select-{KEY*}{+START,IF_PASSED,MEMBER_ID}-{MEMBER_ID*}{+END}" class="form-table-field-input">
 							<select name="select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" id="select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}">
 								{+START,IF_PASSED,USERNAME}
 									<option {+START,IF,{$EQ,-1,{VALUE}}} selected="selected"{+END} value="-1">{$STRIP_TAGS,{!_UNSET}}</option>
@@ -49,16 +49,16 @@
 					</tr>
 
 					<tr class="field-input">
-						<th id="form-table-field-name--upload_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" class="form-table-field-name">
+						<th id="form-table-field-name--upload-{KEY*}{+START,IF_PASSED,MEMBER_ID}-{MEMBER_ID*}{+END}" class="form-table-field-name">
 							<span class="form-field-name field-name">{!ALT_FIELD,{!UPLOAD}}</span>
 						</th>
 
-						<td id="form-table-field-input--upload_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" class="form-table-field-input">
+						<td id="form-table-field-input--upload-{KEY*}{+START,IF_PASSED,MEMBER_ID}-{MEMBER_ID*}{+END}" class="form-table-field-input">
 							<div class="upload-field">
 								<label class="accessibility-hidden" for="upload_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}">{!ALT_FIELD,{!UPLOAD}}</label>
 								<input name="upload_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" id="upload_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" type="file" />
 
-								<input type="hidden" name="clear_button_upload_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" id="clear_button_upload_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" />
+								<input type="hidden" name="clear-button-upload_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" id="clear-button-upload_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" />
 							</div>
 						</td>
 					</tr>

@@ -2,18 +2,18 @@
 {$SET,is_block_raw,{$EQ,{$COMMA_LIST_GET,{BLOCK_PARAMS},raw},1}}
 
 {+START,IF,{$NOT,{$GET,is_block_raw}}}
-	{$SET,ajax_block_main_activities_wrapper,ajax_block_main_activities_wrapper_{$RAND%}}
-	<div id="{$GET*,ajax_block_main_activities_wrapper}" data-require-javascript="['activities', 'activity_feed']" data-tpl="blockMainActivities" data-tpl-params="{+START,PARAMS_JSON,is_block_raw,MODE,MEMBER_IDS,START,GROW,MAX,REFRESH_TIME}{_*}{+END}">
+	{$SET,ajax_block_main_activities_wrapper,ajax-block-main-activities-wrapper-{$RAND%}}
+	<div id="{$GET*,ajax_block_main_activities_wrapper}" data-tpl="blockMainActivities" data-tpl-params="{+START,PARAMS_JSON,is_block_raw,MODE,MEMBER_IDS,START,GROW,MAX,REFRESH_TIME}{_*}{+END}">
 		<div class="float-surrounder">
 			<div id="activities-feed">
 				<div id="activities-general-notify"></div>
 				<ul class="float-surrounder activities-holder raw-ajax-grow-spot" id="activities-holder">
 					{+START,IF_EMPTY,{CONTENT}}
-						<li id="activity_-1"><p class="nothing-here">{!NO_ACTIVITIES}</p></li>
+						<li id="activity--1"><p class="nothing-here">{!NO_ACTIVITIES}</p></li>
 					{+END}
 
 					{+START,LOOP,CONTENT}
-						<li id="activity_{LIID*}" class="activities-box box">
+						<li id="activity-{LIID*}" class="activities-box box">
 							{+START,INCLUDE,ACTIVITY}{+END}
 						</li>
 					{+END}

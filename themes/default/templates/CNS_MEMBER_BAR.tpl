@@ -1,4 +1,4 @@
-<section id="tray_{!MEMBER|}" data-toggleable-tray="{ save: true }" class="box cns-information-bar-outer">
+<section id="tray-{!MEMBER|}" data-toggleable-tray="{ save: true }" class="box cns-information-bar-outer">
 	<h2 class="toggleable-tray-title js-tray-header">
 		<a class="toggleable-tray-button js-tray-onclick-toggle-tray inline-desktop" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!MEMBER}}" title="{!CONTRACT}" width="24" height="24" src="{$IMG*,icons/trays/contract2}" /></a>
 		<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!MEMBER_INFORMATION,{$USERNAME*,{$MEMBER},1}}{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,search}} / {!SEARCH}{+END}</a>

@@ -24,7 +24,7 @@ Use of the shopping cart may cause a non-logged-in-user's session to stick aroun
 {+END}{+START,IF,{$CNS}}{+START,IF,{$ADDON_INSTALLED,content_privacy}}
 [title="2"]Privacy settings[/title]
 
-Logged in members may [page="_SEARCH:members:view#tab__edit__privacy"]choose which fields display publicly[/page].
+Logged in members may [page="_SEARCH:members:view#tab--edit--privacy"]choose which fields display publicly[/page].
 {+END}{+END}{+START,IF,{$COPPA_ON}}
 [title="2"]Children's Online Privacy Protection Act[/title]
 

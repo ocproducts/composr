@@ -6,7 +6,7 @@
 	<nav>
 		<ul class="actions-list">
 			<li>
-				<form title="{!LOAD} {TITLE*}" action="#" method="post" class="inline" id="saved_use__{TITLE|}" autocomplete="off">
+				<form title="{!LOAD} {TITLE*}" action="#" method="post" class="inline" id="saved-use--{TITLE|}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<div class="inline">
@@ -14,7 +14,7 @@
 					</div>
 				</form>
 			</li>
-			<li id="saved_delete__{TITLE|}">{DELETE_LINK}</li>
+			<li id="saved-delete--{TITLE|}">{DELETE_LINK}</li>
 		</ul>
 	</nav>
 </div>

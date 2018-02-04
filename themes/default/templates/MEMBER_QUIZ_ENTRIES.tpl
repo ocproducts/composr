@@ -90,8 +90,8 @@
 
 								{+START,IF_NON_EMPTY,{DELETE_URL}}
 									<td>
-										<label for="delete_quiz_{ENTRY_ID*}">{!DELETE}: {QUIZ_NAME*}</label>
-										<input type="checkbox" id="delete_quiz_{ENTRY_ID*}" name="delete_{ENTRY_ID*}" value="1" />
+										<label for="delete-quiz-{ENTRY_ID*}">{!DELETE}: {QUIZ_NAME*}</label>
+										<input type="checkbox" id="delete-quiz-{ENTRY_ID*}" name="delete_{ENTRY_ID*}" value="1" />
 									</td>
 								{+END}
 							</tr>

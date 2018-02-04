@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,core_form_interfaces}
 
-<tr id="access_{GROUP_ID*}_privilege_container" class="{$CYCLE,permissions_zebra,zebra-0,zebra-1}" data-view="FormScreenInputPermission" data-view-params="{+START,PARAMS_JSON,ALL_GLOBAL,GROUP_ID}{_*}{+END}">
+<tr id="access-{GROUP_ID*}-privilege-container" class="{$CYCLE,permissions_zebra,zebra-0,zebra-1}" data-view="FormScreenInputPermission" data-view-params="{+START,PARAMS_JSON,ALL_GLOBAL,GROUP_ID}{_*}{+END}">
 	<th class="form-table-field-name">
 		<p class="form-field-name field-name">{GROUP_NAME*}</p>
 		{+START,IF,{$OR,{FORCE_PRESETS},{$IS_NON_EMPTY,{OVERRIDES}}}}
@@ -12,7 +12,7 @@
 						<option selected="selected" value="-1">{!PINTERFACE_LEVEL_GLOBAL}</option>
 					{+END}
 					{+START,IF,{$NOT,{ALL_GLOBAL}}}
-						<option id="access_{GROUP_ID*}_custom_option" selected="selected" value="">{!PINTERFACE_LEVEL_CUSTOM}</option>
+						<option id="access-{GROUP_ID*}-custom-option" selected="selected" value="">{!PINTERFACE_LEVEL_CUSTOM}</option>
 						<option value="-1">{!PINTERFACE_LEVEL_GLOBAL}</option>
 					{+END}
 					<optgroup label="{!PINTERFACE_PRESETS}">
@@ -36,7 +36,7 @@
 
 	{+START,IF,{$OR,{FORCE_PRESETS},{$IS_NON_EMPTY,{OVERRIDES}}}}
 		<td class="form-table-field-input">
-			<button class="buttons--copy button-screen-item button-micro-tall js-click-perm-repeating" type="button" id="copy_button_access_{GROUP_ID*}">{!REPEAT_PERMISSION}</button>
+			<button class="buttons--copy button-screen-item button-micro-tall js-click-perm-repeating" type="button" id="copy-button-access-{GROUP_ID*}">{!REPEAT_PERMISSION}</button>
 		</td>
 	{+END}
 </tr>

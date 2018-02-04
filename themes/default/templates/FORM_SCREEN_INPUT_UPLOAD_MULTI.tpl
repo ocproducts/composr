@@ -8,8 +8,8 @@
 		{+START,IF_NON_EMPTY,{EDIT}}
 			{$, If you want to let people remove all in one tick
 			<p class="upload-field-msg inline-block">
-				<input type="checkbox" id="i_{NAME*}_unlink" name="{NAME_STUB*}_unlink" value="1" />
-				<label for="i_{NAME_STUB*}_unlink">
+				<input type="checkbox" id="i-{NAME_STUB*}-unlink" name="{NAME_STUB*}_unlink" value="1" />
+				<label for="i-{NAME_STUB*}-unlink">
 					{!UNLINK_EXISTING_UPLOADS}
 				</label>
 			</p>
@@ -17,15 +17,15 @@
 
 			{+START,LOOP,EDIT}
 				<p class="upload-field-msg inline-block">
-					<input type="checkbox" id="i_{NAME_STUB*}_{$ADD*,{_loop_key},1}_unlink" name="{NAME_STUB*}_{$ADD*,{_loop_key},1}_unlink" value="1" />
-					<label for="i_{NAME_STUB*}_{$ADD*,{_loop_key},1}_unlink">
+					<input type="checkbox" id="i-{NAME_STUB*}-{$ADD*,{_loop_key},1}-unlink" name="{NAME_STUB*}_{$ADD*,{_loop_key},1}_unlink" value="1" />
+					<label for="i-{NAME_STUB*}-{$ADD*,{_loop_key},1}-unlink">
 						{!UNLINK_EXISTING_UPLOAD_SPECIFIC,<kbd>{$URLDECODE*,{$PREG_REPLACE,.*/,,{_loop_var}}}</kbd>}
 					</label>
 				</p>
 			{+END}
 		{+END}
 
-		<input class="button-micro buttons--clear js-click-clear-name-stub-input" type="button" id="clear_button_{NAME_STUB*}_{I*}" value="{!CLEAR}" />
+		<input class="button-micro buttons--clear js-click-clear-name-stub-input" type="button" id="clear-button-{NAME_STUB*}_{I*}" value="{!CLEAR}" />
 
 		<!--Additional uploaders will auto-append here-->
 	</div>

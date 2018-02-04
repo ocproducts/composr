@@ -4,7 +4,7 @@
 	{!CLASSIFIEDS_SET_PRICES}
 </p>
 
-<form id="main_form" action="{POST_URL*}" method="post" autocomplete="off">
+<form id="main-form" action="{POST_URL*}" method="post" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div>
@@ -48,7 +48,7 @@
 		</table></div>
 
 		{+START,INCLUDE,FORM_STANDARD_END}
-			FORM_NAME=main_form
+			FORM_NAME=main-form
 			SUPPORT_AUTOSAVE=1
 		{+END}
 	</div>

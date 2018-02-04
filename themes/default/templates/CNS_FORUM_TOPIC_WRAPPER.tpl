@@ -84,13 +84,13 @@
 		{+START,IF,{$DESKTOP}}
 			<div class="box cns-topic-actions block-desktop"><div class="box-inner">
 				<span class="field-name">
-					<label for="fma_type">{!TOPIC_ACTIONS}: </label>
+					<label for="fma-type">{!TOPIC_ACTIONS}: </label>
 				</span>
 				<form title="{!TOPIC_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get" class="inline" autocomplete="off">
 					{$HIDDENS_FOR_GET_FORM,{ACTION_URL}}
 
 					<div class="inline">
-						<select class="dropdown-actions" name="type" id="fma_type">
+						<select class="dropdown-actions" name="type" id="fma-type">
 							<option value="browse">-</option>
 							{MODERATOR_ACTIONS}
 						</select><input class="button-micro buttons--proceed js-click-btn-add-form-marked-posts" type="submit" value="{!PROCEED}" />
@@ -98,7 +98,7 @@
 				</form>
 
 				{+START,IF,{MAY_CHANGE_MAX}}
-					<form title="{!PER_PAGE}" class="inline" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}{+START,IF,{$EQ,{TYPE},pt}}#tab__pts{+END}" method="get" autocomplete="off">
+					<form title="{!PER_PAGE}" class="inline" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}{+START,IF,{$EQ,{TYPE},pt}}#tab--pts{+END}" method="get" autocomplete="off">
 						{$HIDDENS_FOR_GET_FORM,{$SELF_URL,0,1},forum_max}
 
 						<div class="inline">
@@ -114,7 +114,7 @@
 						</div>
 					</form>
 
-					<form title="{!PER_PAGE}" class="inline" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}{+START,IF,{$EQ,{TYPE},pt}}#tab__pts{+END}" method="get" autocomplete="off">
+					<form title="{!PER_PAGE}" class="inline" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}{+START,IF,{$EQ,{TYPE},pt}}#tab--pts{+END}" method="get" autocomplete="off">
 						{$HIDDENS_FOR_GET_FORM,{$SELF_URL,0,1},max}
 
 						<div class="inline">

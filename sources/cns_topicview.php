@@ -107,9 +107,9 @@ function find_first_unread_url($id)
     $_redirect = build_url($map, '_SELF', array(), true);
     $redirect = $_redirect->evaluate();
     if ($first_unread_id > 0) {
-        $redirect .= '#post_' . strval($first_unread_id);
+        $redirect .= '#post-' . strval($first_unread_id);
     } else {
-        $redirect .= '#first_unread';
+        $redirect .= '#first-unread';
     }
 
     return $redirect;

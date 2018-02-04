@@ -9,7 +9,7 @@
 {$REQUIRE_JAVASCRIPT,core_cns}
 {$REQUIRE_JAVASCRIPT,checking}
 
-<form data-tpl="cnsMemberProfileEdit" data-tpl-params="{+START,PARAMS_JSON,TABS}{_*}{+END}" class="form-table" title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}" enctype="multipart/form-data" id="main_form" autocomplete="off">
+<form data-tpl="cnsMemberProfileEdit" data-tpl-params="{+START,PARAMS_JSON,TABS}{_*}{+END}" class="form-table" title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}" enctype="multipart/form-data" id="main-form" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	{HIDDEN}
@@ -18,8 +18,8 @@
 		<div class="{$?,{$MOBILE},modern-tabs,modern-subtabs}">
 			<div class="{$?,{$MOBILE},modern-tab-headers,modern-subtab-headers}">
 				{+START,LOOP,TABS}
-					<div id="t_edit__{$LCASE,{TAB_CODE|*}}"{+START,IF,{TAB_FIRST}} class="tab-active tab-first{+END}{+START,IF,{TAB_LAST}} tab-last{+END}">
-						<a class="js-click-select-edit-tab" data-tp-tab-code="{TAB_CODE*}" aria-controls="g_edit__{$LCASE,{TAB_CODE|*}}" role="tab" href="#!">{+START,IF_NON_EMPTY,{TAB_ICON}}<img alt="" width="24" height="24" src="{$IMG*,icons/{TAB_ICON}}" /> {+END}<span>{TAB_TITLE*}</span></a>
+					<div id="t-edit--{$LCASE,{TAB_CODE|*}}"{+START,IF,{TAB_FIRST}} class="tab-active tab-first{+END}{+START,IF,{TAB_LAST}} tab-last{+END}">
+						<a class="js-click-select-edit-tab" data-tp-tab-code="{TAB_CODE*}" aria-controls="g-edit--{$LCASE,{TAB_CODE|*}}" role="tab" href="#!">{+START,IF_NON_EMPTY,{TAB_ICON}}<img alt="" width="24" height="24" src="{$IMG*,icons/{TAB_ICON}}" /> {+END}<span>{TAB_TITLE*}</span></a>
 					</div>
 				{+END}
 			</div>
@@ -27,8 +27,8 @@
 	{+END}
 				{+START,LOOP,TABS}
 					{+START,IF,{$GT,{TABS},1}}
-					<div aria-labeledby="t_edit__{$LCASE,{TAB_CODE|*}}" role="tabpanel" id="g_edit__{$LCASE*,{TAB_CODE|}}" style="display: {$?,{TAB_FIRST},block,none}">
-						<a id="tab__edit__{$LCASE,{TAB_CODE|*}}"></a>
+					<div aria-labeledby="t-edit--{$LCASE,{TAB_CODE|*}}" role="tabpanel" id="g-edit--{$LCASE*,{TAB_CODE|}}" style="display: {$?,{TAB_FIRST},block,none}">
+						<a id="tab--edit--{$LCASE,{TAB_CODE|*}}"></a>
 					{+END}
 
 						{+START,IF_NON_EMPTY,{TAB_TEXT}}
@@ -71,7 +71,7 @@
 
 	{+START,IF_NON_EMPTY,{SUBMIT_NAME}}
 		{+START,INCLUDE,FORM_STANDARD_END}
-			FORM_NAME=main_form
+			FORM_NAME=main-form
 			SUPPORT_AUTOSAVE=1
 			SECONDARY_FORM=1
 		{+END}

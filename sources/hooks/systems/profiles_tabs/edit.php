@@ -175,7 +175,7 @@ class Hook_profiles_tabs_edit
             $tab_first = false;
         }
 
-        $url = build_url(array('page' => '_SELF'), '_SELF', array(), true, false, false/*,'tab__edit'  confusing, esp if was not on settings edit tab initially*/);
+        $url = build_url(array('page' => '_SELF'), '_SELF', array(), true, false, false/*,'tab--edit'  confusing, esp if was not on settings edit tab initially*/);
 
         $content = do_template('CNS_MEMBER_PROFILE_EDIT', array(
             '_GUID' => '7a3e2cc210583fe4f3097af48b052351',

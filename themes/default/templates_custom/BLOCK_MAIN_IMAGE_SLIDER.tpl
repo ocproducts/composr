@@ -1,7 +1,7 @@
 {$REQUIRE_JAVASCRIPT,image_slider}
 {$SET,rand,{$RAND}}
 
-<div class="box_skitter" id="skitter_{$GET*,rand}" data-require-javascript="image_slider" data-tpl="blockMainImageSlider" data-tpl-params="{+START,PARAMS_JSON,rand,MILL}{_*}{+END}">
+<div class="box_skitter" id="skitter-{$GET*,rand}" data-tpl="blockMainImageSlider" data-tpl-params="{+START,PARAMS_JSON,rand,MILL}{_*}{+END}">
 	<ul>
 		{+START,LOOP,IMAGES}
 			<li>

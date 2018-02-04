@@ -1844,7 +1844,7 @@
 
         $dom.illustrateFrameLoad(frame);
 
-        var ifuob = window.top.$dom.$('#iframe_under'),
+        var ifuob = window.top.$dom.$('#iframe-under'),
             extra = ifuob ? ((window !== window.top) ? $dom.findPosY(ifuob) : 0) : 0;
 
         if (ifuob) {
@@ -2517,15 +2517,7 @@
         minHeight = Number(minHeight) || 0;
 
         var frameElement = $dom.$id(name),
-            frameWindow;
-
-        if (window.frames[name] !== undefined) {
-            frameWindow = window.frames[name];
-        } else if (window.parent && window.parent.frames[name]) {
-            frameWindow = window.parent.frames[name];
-        } else {
-            return;
-        }
+            frameWindow = frameElement ? frameElement.contentWindow : null;
 
         if (frameElement && frameWindow && frameWindow.document && frameWindow.document.body) {
             var h = $dom.getWindowScrollHeight(frameWindow);

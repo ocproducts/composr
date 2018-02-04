@@ -33,7 +33,7 @@
                 return;
             }
 
-            var target = document.getElementById('details_target');
+            var target = document.getElementById('details-target');
             if (!element.value) {
                 $dom.html(target, '{!zones:NO_ENTRY_POINT_SELECTED;^}');
                 return;

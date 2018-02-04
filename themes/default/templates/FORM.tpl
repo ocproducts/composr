@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,core_form_interfaces}
 {$REQUIRE_JAVASCRIPT,checking}
-{$SET,form_name,form_{$RAND}}
+{$SET,form_name,form-{$RAND}}
 
 <div data-tpl="form" data-tpl-params="{+START,PARAMS_JSON,JS_FUNCTION_CALLS,SKIPPABLE}{_*}{+END}">
 	{+START,IF_NON_EMPTY,{TEXT}}

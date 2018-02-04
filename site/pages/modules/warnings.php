@@ -232,7 +232,7 @@ class Module_warnings extends Standard_crud_module
 
         $add_warning_url = build_url(array('page' => '_SELF', 'type' => 'add', 'id' => $member_id, 'redirect' => protect_url_parameter(SELF_REDIRECT)), '_SELF');
         $view_profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true);
-        $edit_profile_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $member_id), get_module_zone('members'), array(), false, false, false, 'tab__edit');
+        $edit_profile_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $member_id), get_module_zone('members'), array(), false, false, false, 'tab--edit');
 
         $tpl = do_template('CNS_WARNING_HISTORY_SCREEN', array(
             '_GUID' => '4444beed9305f0460a6c00e6c87d4208',

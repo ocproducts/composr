@@ -37,8 +37,8 @@
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<div>
-						<label for="vga_username">{!USERNAME}: </label>
-						<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="80" class="js-input-add-member-username" alt="{!USERNAME}" type="text" id="vga_username" name="username" />
+						<label for="vga-username">{!USERNAME}: </label>
+						<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="80" class="js-input-add-member-username" alt="{!USERNAME}" type="text" id="vga-username" name="username" />
 						<input class="button-screen-item admin--add" type="submit" value="{!ADD}" />
 					</div>
 				</form>

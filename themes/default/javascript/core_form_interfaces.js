@@ -394,15 +394,15 @@
 
         if (params.iframeUrl) {
             setInterval(function () {
-                $dom.resizeFrame('iframe_under');
+                $dom.resizeFrame('iframe-under');
             }, 1500);
 
             $dom.on(container, 'click', '.js-checkbox-will-open-new', function (e, checkbox) {
-                var form = $dom.$(container, '#main_form');
+                var form = $dom.$(container, '#main-form');
 
                 form.action = checkbox.checked ? params.url : params.iframeUrl;
                 form.elements['opens_below'].value = checkbox.checked ? '0' : '1';
-                form.target = checkbox.checked ? '_blank' : 'iframe_under';
+                form.target = checkbox.checked ? '_blank' : 'iframe-under';
             });
         }
 
@@ -430,7 +430,7 @@
     $cms.templates.formScreenInputCombo = function formScreenInputCombo(params, container) {
         var name = strVal(params.name),
             comboInput = $dom.$('#' + name),
-            fallbackList = $dom.$('#' + name + '_fallback_list');
+            fallbackList = $dom.$('#' + name + '-fallback-list');
 
         if (window.HTMLDataListElement === undefined) {
             comboInput.classList.remove('input-line-required');
@@ -531,7 +531,7 @@
         });
 
         $dom.on(container, 'change', '.js-input-change-update-mirror', function (e, input) {
-            var mirror = document.getElementById(name + '_mirror');
+            var mirror = document.getElementById(name + '-mirror');
             if (mirror) {
                 $dom.toggle(mirror.parentElement, !!input.selectedTitle);
                 $dom.html(mirror, input.selectedTitle ? $cms.filter.html(input.selectedTitle) : '{!NA_EM;}');
@@ -577,7 +577,7 @@
                         input.selectedIndex = ((stateList != input.options.length - 1) ? (input.options.length - 1) : (input.options.length - 2));
                         input.disabled = false;
 
-                        permissionsOverridden(table.rows[i].id.replace(/_privilege_container$/, ''));
+                        permissionsOverridden(table.rows[i].id.replace(/-privilege-container$/, ''));
                     }
                 }
             }
@@ -652,7 +652,7 @@
             $dom.html($dom.$('#captcha-spot'), params.captcha);
         } else {
             window.addEventListener('pageshow', function () {
-                $dom.$('#captcha_readable').src += '&r=' + $util.random(); // Force it to reload latest captcha
+                $dom.$('#captcha-readable').src += '&r=' + $util.random(); // Force it to reload latest captcha
             });
         }
 
@@ -800,7 +800,7 @@
             el.form.action = el.form.action.replace(/keep_mobile=\d/g, 'keep_mobile=' + (el.checked ? '1' : '0'));
             if (window.parent) {
                 try {
-                    window.parent.scrollTo(0, $dom.findPosY(window.parent.document.getElementById('preview_iframe')));
+                    window.parent.scrollTo(0, $dom.findPosY(window.parent.document.getElementById('preview-iframe')));
                 } catch (e) {}
                 window.parent.mobileVersionForPreview = Boolean(el.checked);
                 $dom.trigger(window.parent.document.getElementById('preview-button'), 'click');
@@ -1174,7 +1174,7 @@
         });
 
         function toggleOtherCustomInput() {
-            $dom.$('#j_' + nameId + '_other_custom').disabled = !$dom.$('#j_' + nameId + '_other').checked;
+            $dom.$('#j-' + nameId + '-other-custom').disabled = !$dom.$('#j-' + nameId + '-other').checked;
         }
     };
 
@@ -1375,10 +1375,10 @@
 
     function permissionsOverridden(select) {
         var element = document.getElementById(select + '_presets');
-        if (element.options[0].id !== select + '_custom_option') {
+        if (element.options[0].id !== select + '-custom-option') {
             var newOption = document.createElement('option');
             $dom.html(newOption, '{!permissions:PINTERFACE_LEVEL_CUSTOM;^}');
-            newOption.id = select + '_custom_option';
+            newOption.id = select + '-custom-option';
             newOption.value = '';
             element.insertBefore(newOption, element.options[0]);
         }
@@ -1386,8 +1386,8 @@
     }
 
     function tryToSimplifyIframeForm() {
-        var iframe = document.getElementById('iframe_under'),
-            formCatSelector = document.getElementById('main_form'),
+        var iframe = document.getElementById('iframe-under'),
+            formCatSelector = document.getElementById('main-form'),
             elements, i, element,
             count = 0, found, foundButton;
 
@@ -1441,7 +1441,7 @@
         $cms.form.checkForm(formCatSelector, false).then(function (valid) {
             if (valid) {
                 if (iframe) {
-                    $dom.animateFrameLoad(iframe, 'iframe_under');
+                    $dom.animateFrameLoad(iframe, 'iframe-under');
                 }
                 $dom.submit(formCatSelector);
             }

@@ -309,7 +309,7 @@ class Module_login
                 if ($redirect_passon !== null) {
                     $post->attach(form_input_hidden('redirect', static_evaluate_tempcode(protect_url_parameter(enforce_sessioned_url($redirect_passon)))));
                 }
-                $refresh = do_template('JS_REFRESH', array('_GUID' => 'c7d2f9e7a2cc637f3cf9ac4d1cf97eca', 'FORM_NAME' => 'redir_form'));
+                $refresh = do_template('JS_REFRESH', array('_GUID' => 'c7d2f9e7a2cc637f3cf9ac4d1cf97eca', 'FORM_NAME' => 'redir-form'));
             }
             delete_cache_entry('side_users_online');
 

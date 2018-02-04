@@ -1,4 +1,4 @@
-{+START,IF_PASSED,ID}<a id="title__{ID*}"></a>{+END}
+{+START,IF_PASSED,ID}<a id="title--{ID*}"></a>{+END}
 <h{LEVEL%}>{TITLE}</h{LEVEL%}>
 {+START,IF_PASSED,SUB}
 	<div class="title-tagline">

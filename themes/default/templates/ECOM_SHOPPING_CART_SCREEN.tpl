@@ -12,7 +12,7 @@
 			<div class="buttons-group cart-update-buttons" itemprop="significantLinks">
 				{$,Put first, so it associates with the enter key}
 				{+START,IF_NON_EMPTY,{TYPE_CODES}}
-					<input id="cart_update_button" class="buttons--cart-update button-screen button-faded js-click-btn-cart-update" type="submit" name="update" title="{!UPDATE_CART}" value="{!_UPDATE_CART}" />
+					<input id="cart-update-button" class="buttons--cart-update button-screen button-faded js-click-btn-cart-update" type="submit" name="update" title="{!UPDATE_CART}" value="{!_UPDATE_CART}" />
 				{+END}
 
 				{+START,IF_NON_EMPTY,{EMPTY_CART_URL*}}

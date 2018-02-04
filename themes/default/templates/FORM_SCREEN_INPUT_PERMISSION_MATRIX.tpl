@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,core_form_interfaces}
 
-<div class="permissions-matrix-wrap" id="enter_the_matrix" data-tpl="formScreenInputPermissionMatrix" data-tpl-params="{+START,PARAMS_JSON,SERVER_ID}{_*}{+END}">
+<div class="permissions-matrix-wrap" id="enter-the-matrix" data-tpl="formScreenInputPermissionMatrix" data-tpl-params="{+START,PARAMS_JSON,SERVER_ID}{_*}{+END}">
 	<table class="columned-table autosized-table results-table responsive-table">
 		<thead>
 			<tr>

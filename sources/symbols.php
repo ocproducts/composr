@@ -4756,7 +4756,7 @@ function ecv_INSERT_SPAMMER_BLACKHOLE($lang, $escaped, $param)
         if (get_option('spam_blackhole_detection') == '1' && !$done_once && get_page_name() != 'members'/*in case of some weird autocomplete issue when changing your password*/) {
             $field_name = 'y' . md5(get_site_name() . ': antispam');
             $tag = ((isset($param[0])) && ($param[0] == '1')) ? 'span' : 'div';
-            $value .= '<' . $tag . ' id="' . escape_html($field_name) . '_wrap" style="display:none" ' . ($GLOBALS['SEMI_DEV_MODE'] ? '' : 'data-remove-if-js-enabled="1"') . '>' .
+            $value .= '<' . $tag . ' id="' . escape_html($field_name) . '-wrap" style="display:none" ' . ($GLOBALS['SEMI_DEV_MODE'] ? '' : 'data-remove-if-js-enabled="1"') . '>' .
                 '<label for="' . escape_html($field_name) . '">' . do_lang('DO_NOT_FILL_ME_SPAMMER_BLACKHOLE') . '</label><input autocomplete="off" id="' . escape_html($field_name) . '" name="' . escape_html($field_name) . '" value="" type="text" /></' . $tag . '>';
             $done_once = true;
         }

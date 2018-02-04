@@ -5,13 +5,13 @@
 	{+END}
 
 	<input style="display: none" type="text" class="input-line{REQUIRED*} hidden-but-needed js-input-change-update-mirror" id="{NAME*}" name="{NAME*}" value="{DEFAULT*}" />
-	<div class="ajax-tree-list" id="tree_list__root_{NAME*}" role="tree">
+	<div class="ajax-tree-list" id="tree-list--root-{NAME*}" role="tree">
 		<!-- List put in here -->
 	</div>
 
 	{+START,IF_NON_EMPTY,{DEFAULT}}
 		<p class="associated-details">
-			{!TREE_LIST_FEEDBACK,<span class="whitespace-visible" id="{NAME*}_mirror">{NICE_LABEL*}</span>}
+			{!TREE_LIST_FEEDBACK,<span class="whitespace-visible" id="{NAME*}-mirror">{NICE_LABEL*}</span>}
 		</p>
 	{+END}
 </div>

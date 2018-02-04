@@ -7,7 +7,7 @@
 		<div>
 			<div class="accessibility-hidden"><label for="{NAME*}">{!ENTRY}</label></div>
 			<input class="js-input-page-link-chooser" style="display: none" type="text" id="{NAME*}" name="{NAME*}" value="{VALUE*}" />
-			<div id="tree_list__root_{NAME*}">
+			<div id="tree-list--root-{NAME*}">
 				<!-- List put in here -->
 			</div>
 			<p class="associated-details">

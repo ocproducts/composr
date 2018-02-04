@@ -12,8 +12,8 @@
 
 {+START,IF,{$NOT,{IS_SPACER_POST}}}
 	<div class="box box---post{+START,IF,{$OR,{IS_UNREAD},{HIGHLIGHT}}} highlighted-post{+END}"><div class="box-inner">
-		<div id="post_wrap_{ID*}" class="post time-{TIME_RAW*}" itemprop="reviews" itemscope="itemscope" itemtype="http://schema.org/Review">
-			{+START,IF_NON_EMPTY,{ID}}<a id="post_{ID*}"></a>{+END}
+		<div id="post-wrap-{ID*}" class="post time-{TIME_RAW*}" itemprop="reviews" itemscope="itemscope" itemtype="http://schema.org/Review">
+			{+START,IF_NON_EMPTY,{ID}}<a id="post-{ID*}"></a>{+END}
 
 			<div class="float-surrounder">
 				{+START,IF_NON_EMPTY,{TITLE}}{+START,IF,{$NEQ,{TITLE},{$GET,topic_title}}}<h3 class="post-title" itemprop="name">{TITLE*}</h3>{+END}{+END}

@@ -911,7 +911,7 @@ function gallery_breadcrumbs($gallery, $root = 'root', $no_link_for_me_sir = tru
                     do_lang_tempcode('MEMBERS'),
                 ),
                 array(
-                    '_SEARCH:members:view:' . strval($owner) . '#tab__galleries',
+                    '_SEARCH:members:view:' . strval($owner) . '#tab--galleries',
                     do_lang_tempcode('cns:MEMBER_ACCOUNT', escape_html($GLOBALS['FORUM_DRIVER']->get_username($owner, true))),
                 ),
             );

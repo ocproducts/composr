@@ -179,7 +179,7 @@ class DecisionTree
 
             if (count($_POST) > 0) {
                 $post = build_keep_post_fields(array(), true);
-                $refresh = do_template('JS_REFRESH', array('_GUID' => '63cb29a82471b7ba7fd594eb92cc02c1', 'FORM_NAME' => 'redir_form'));
+                $refresh = do_template('JS_REFRESH', array('_GUID' => '63cb29a82471b7ba7fd594eb92cc02c1', 'FORM_NAME' => 'redir-form'));
 
                 return do_template('REDIRECT_POST_METHOD_SCREEN', array(
                     '_GUID' => 'f9f374626d7acdb0699399f970b2196a',

@@ -14,7 +14,7 @@
 		{TEXT}
 
 		{+START,IF_NON_EMPTY,{PHOTO}}
-			<form title="{$WCASE,{!DELETE_PHOTO}}" action="{$SELF_URL*}#tab__edit__photo" method="post" class="inline" autocomplete="off">
+			<form title="{$WCASE,{!DELETE_PHOTO}}" action="{$SELF_URL*}#tab--edit--photo" method="post" class="inline" autocomplete="off">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				<p>

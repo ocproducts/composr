@@ -34,7 +34,7 @@
 			</h2>
 		{+END}
 
-		<div id="search_form" class="toggleable-tray js-tray-content"{+START,IF_PASSED,RESULTS}{+START,IF_NON_EMPTY,{RESULTS}} style="display: none"{+END}{+END} aria-expanded="false">
+		<div id="search-form" class="toggleable-tray js-tray-content"{+START,IF_PASSED,RESULTS}{+START,IF_NON_EMPTY,{RESULTS}} style="display: none"{+END}{+END} aria-expanded="false">
 			<p>
 				{!SEARCH_HELP}
 			</p>
@@ -102,10 +102,10 @@
 						<tr>
 							<th class="form-table-field-name">{USER_LABEL*}</th>
 							<td class="form-table-field-input" colspan="2">
-								<div class="accessibility-hidden"><label for="search_author">{USER_LABEL*}</label></div>
+								<div class="accessibility-hidden"><label for="search-author">{USER_LABEL*}</label></div>
 								<div>
 									<span class="invisible-ref-point"></span>
-									<input autocomplete="off" maxlength="80" class="wide-field js-keyup-update-author-list" type="text" value="{AUTHOR*}" id="search_author" name="author"{+START,IF,{$MOBILE}} autocorrect="off"{+END} />
+									<input autocomplete="off" maxlength="80" class="wide-field js-keyup-update-author-list" type="text" value="{AUTHOR*}" id="search-author" name="author"{+START,IF,{$MOBILE}} autocorrect="off"{+END} />
 								</div>
 							</td>
 						</tr>
@@ -113,8 +113,8 @@
 							<tr>
 								<th class="form-table-field-name">{DAYS_LABEL*}</th>
 								<td class="form-table-field-input" colspan="2">
-									<div class="accessibility-hidden"><label for="search_days">{DAYS_LABEL*}</label></div>
-									<select id="search_days" name="days">
+									<div class="accessibility-hidden"><label for="search-days">{DAYS_LABEL*}</label></div>
+									<select id="search-days" name="days">
 										<option selected="selected" value="-1">{!NA}</option>
 										<option {+START,IF,{$EQ,{DAYS},2}} selected="selected"{+END} value="2">{!SUBMIT_AGE_DAYS,2}</option>
 										<option {+START,IF,{$EQ,{DAYS},5}} selected="selected"{+END} value="5">{!SUBMIT_AGE_DAYS,5}</option>

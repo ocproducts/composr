@@ -12,7 +12,7 @@
 			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{!CSS_EDITING_TOOLS}}" title="{!EXPAND}" width="20" height="20" src="{$IMG*,icons/trays/expand}" /></a>
 			<a class="non-link js-tray-onclick-toggle-tray" href="#!">{!CSS_EDITING_TOOLS}</a>
 		</h3>
-		<div class="toggleable-tray js-tray-content" style="display: none" id="c_{FILE_ID*}" aria-expanded="false">
+		<div class="toggleable-tray js-tray-content" style="display: none" id="c-{FILE_ID*}" aria-expanded="false">
 			<div class="css-editor-rhs-column"><section class="box"><div class="box-inner">
 				<h3>{!COMMON_CSS_PROPERTIES}:</h3>
 
@@ -395,8 +395,8 @@
 			</div></section></div>
 
 			<div class="css-editor-lhs-column">
-				<div class="css-editor-selectors" id="selectors_{FILE_ID*}" style="display: none"{$,Only becomes visible if it has an anchor page}>
-					<div id="selectors_inner_{FILE_ID*}">
+				<div class="css-editor-selectors" id="selectors-{FILE_ID*}" style="display: none"{$,Only becomes visible if it has an anchor page}>
+					<div id="selectors-inner-{FILE_ID*}">
 						<p class="lonely-label">{!SELECTORS_PARENT_PAGE}:</p>
 					</div>
 
@@ -444,7 +444,7 @@
 			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{!SYMBOLS_AND_DIRECTIVES}}" title="{!EXPAND}" width="20" height="20" src="{$IMG*,icons/trays/expand}" /></a>
 			<a class="non-link js-tray-onclick-toggle-tray" href="#!">{!SYMBOLS_AND_DIRECTIVES}</a>
 		</h3>
-		<div class="toggleable-tray js-tray-content" style="display: none" id="b_{FILE_ID*}" aria-expanded="false">
+		<div class="toggleable-tray js-tray-content" style="display: none" id="b-{FILE_ID*}" aria-expanded="false">
 			{PARAMETERS}
 			{DIRECTIVES}
 			{MISC_SYMBOLS}
@@ -457,7 +457,7 @@
 	</div>
 {+END}
 
-<div id="e_{FILE_ID*}_wrap" class="main-editor">
+<div id="e-{FILE_ID*}-wrap" class="main-editor">
 	{$,Main editor}
 
 	<label class="accessibility-hidden" for="e_{FILE_ID*}">{!TEMPLATE}</label>
@@ -563,15 +563,15 @@
 		<p>{!DESCRIP_CSS_EQUATION_HELPER}</p>
 
 		<p class="vertical-alignment">
-			<label for="css_equation">{!CSS_EQUATION_HELPER}</label>
-			<input name="css_equation" id="css_equation_{FILE_ID*}" type="text" value="100% seed" />
+			<label for="css-equation-{FILE_ID*}">{!CSS_EQUATION_HELPER}</label>
+			<input name="css_equation" id="css-equation-{FILE_ID*}" type="text" value="100% seed" />
 
 			<input class="button-screen-item buttons--calculate js-btn-equation-helper" type="submit" value="{!CALCULATE}" />
 
 			&rarr;
 
-			<label class="accessibility-hidden" for="css_result">{!RESULT}</label>
-			<output><input readonly="readonly" name="css_result" id="css_result_{FILE_ID*}" type="text" value="({!RESULT})" /></output>
+			<label class="accessibility-hidden" for="css-result-{FILE_ID*}">{!RESULT}</label>
+			<output><input readonly="readonly" name="css_result" id="css-result-{FILE_ID*}" type="text" value="({!RESULT})" /></output>
 		</p>
 	</div></section>
 {+END}

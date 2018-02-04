@@ -17,7 +17,7 @@
 			<div class="box box---sitemap-editor-screen"><div class="box-inner">
 				<h2>{!SELECTION_DETAILS}</h2>
 
-				<div id="details_target">
+				<div id="details-target">
 					{!NO_ENTRY_POINT_SELECTED}
 				</div>
 			</div></div>

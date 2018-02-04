@@ -160,32 +160,32 @@
         automated = !!automated;
 
         if (!fromUrl) {
-            var tabMarker = $dom.$id('tab__' + tab.toLowerCase());
+            var tabMarker = $dom.$id('tab--' + tab.toLowerCase());
             if (tabMarker) {
                 // For URL purposes, we will change URL to point to tab
                 // HOWEVER, we do not want to cause a scroll so we will be careful
                 tabMarker.id = '';
-                window.location.hash = '#tab__' + tab.toLowerCase();
-                tabMarker.id = 'tab__' + tab.toLowerCase();
+                window.location.hash = '#tab--' + tab.toLowerCase();
+                tabMarker.id = 'tab--' + tab.toLowerCase();
             }
         }
 
         var tabs = [], i, element;
 
-        element = $dom.$id('t_' + tab);
+        element = $dom.$id('t-' + tab);
 
         if (!element) {
-            $util.fatal('$cms.ui.selectTab(): "#t_' + tab + '" element not found');
+            $util.fatal('$cms.ui.selectTab(): "#t-' + tab + '" element not found');
         }
 
         for (i = 0; i < element.parentElement.children.length; i++) {
-            if (element.parentElement.children[i].id && (element.parentElement.children[i].id.substr(0, 2) === 't_')) {
+            if (element.parentElement.children[i].id && (element.parentElement.children[i].id.substr(0, 2) === 't-')) {
                 tabs.push(element.parentElement.children[i].id.substr(2));
             }
         }
 
         for (i = 0; i < tabs.length; i++) {
-            element = $dom.$id(id + '_' + tabs[i]);
+            element = $dom.$id(id + '-' + tabs[i]);
             if (element) {
                 $dom.toggle(element, (tabs[i] === tab));
 
@@ -196,15 +196,15 @@
                 }
             }
 
-            element = $dom.$id('t_' + tabs[i]);
+            element = $dom.$id('t-' + tabs[i]);
             if (element) {
-                element.classList.toggle('tab-active', tabs[i] === tab);
+                element.classList.toggle('tab-active', (tabs[i] === tab));
             }
         }
 
         if (window['load_tab__' + tab] !== undefined) {
             // Usually an AJAX loader
-            window['load_tab__' + tab](automated, $dom.$id(id + '_' + tab));
+            window['load_tab__' + tab](automated, $dom.$id(id + '-' + tab));
         }
     };
 
@@ -217,13 +217,13 @@
         hash = strVal(hash) || window.location.hash;
 
         if (hash.replace(/^#!?/, '') !== '') {
-            var tab = hash.replace(/^#/, '').replace(/^tab__/, '');
+            var tab = hash.replace(/^#/, '').replace(/^tab--/, '');
 
             if ($dom.$id('g_' + tab)) {
                 $cms.ui.selectTab('g', tab);
-            } else if ((tab.indexOf('__') !== -1) && ($dom.$id('g_' + tab.substr(0, tab.indexOf('__'))))) {
+            } else if ((tab.indexOf('--') !== -1) && ($dom.$id('g-' + tab.substr(0, tab.indexOf('--'))))) {
                 var old = hash;
-                $cms.ui.selectTab('g', tab.substr(0, tab.indexOf('__')));
+                $cms.ui.selectTab('g', tab.substr(0, tab.indexOf('--')));
                 window.location.hash = old;
             }
         }
@@ -327,7 +327,7 @@
             tooltipEl.style.display = 'none';
             var rtPos = tooltip.indexOf('results-table');
             tooltipEl.className = 'tooltip ' + ((rtPos === -1 || rtPos > 100) ? 'tooltip-ownlayout' : 'tooltip-nolayout') + ' boxless-space' + (haveLinks ? ' have-links' : '');
-            if (el.className.substr(0, 3) === 'tt_') {
+            if (el.className.startsWith('tt-')) {
                 tooltipEl.className += ' ' + el.className;
             }
             if (tooltip.length < 50) {  // Only break words on long tooltips. Otherwise it messes with alignment.
@@ -898,9 +898,9 @@
         if (!permanent) {
             timeout = setTimeout(enableDisabledButton, 5000);
 
-            if (btn.form.target === 'preview_iframe') {
+            if (btn.form.target === 'preview-iframe') {
                 interval = window.setInterval(function () {
-                    if (window.frames['preview_iframe'].document && window.frames['preview_iframe'].document.body) {
+                    if (window.frames['preview-iframe'].document && window.frames['preview-iframe'].document.body) {
                         if (interval != null) {
                             window.clearInterval(interval);
                             interval = null;

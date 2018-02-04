@@ -10,7 +10,7 @@
 
 			{EMPHASIS*}
 
-			{+START,IF_NON_EMPTY,{ID}}<a id="post_{ID*}"></a>{+END}
+			{+START,IF_NON_EMPTY,{ID}}<a id="post-{ID*}"></a>{+END}
 
 			{FIRST_UNREAD}
 		</div>

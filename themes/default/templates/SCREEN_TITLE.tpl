@@ -1,5 +1,5 @@
 {+START,IF_PASSED,ID}
-	<a id="title__{ID*}"></a>
+	<a id="title--{ID*}"></a>
 {+END}
 
 <h1 class="screen-title"{+START,IF,{$NOT,{$GET,name_set_elsewhere}}} itemprop="name"{+END}>

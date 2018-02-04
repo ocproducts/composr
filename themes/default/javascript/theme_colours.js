@@ -25,9 +25,9 @@
         window.namesToNumbers[name] = window.namesToNumbers.length;
         window.namesToNumbers.length++;
 
-        var p = document.getElementById('colours_go_here_' + name);
+        var p = document.getElementById('colours-go-here-' + name);
         if (!p) {
-            p = document.getElementById('colours_go_here');
+            p = document.getElementById('colours-go-here');
         }
 
         if ((color !== '') && (color.substr(0, 1) !== '#') && (color.substr(0, 3) !== 'rgb')) {
@@ -47,16 +47,16 @@
         t = t + '       <input ' + className + 'alt="{!COLOUR;^}" type="color" value="' + _color + '" id="' + name + '" name="' + name + '" size="6" class="js-change-update-chooser" />';
         t = t + '	</div>';
         t = t + '	<div class="css-colour-chooser-fixed">';
-        t = t + '	<div class="css-colour-chooser-from" style="background-color: ' + ((color === '') ? '#000' : color) + '" id="cc_source_' + name + '">';
+        t = t + '	<div class="css-colour-chooser-from" style="background-color: ' + ((color === '') ? '#000' : color) + '" id="cc-source-' + name + '">';
         t = t + "		{!themes:FROM_COLOUR^#}";
         t = t + '	</div>';
-        t = t + '	<div class="css-colour-chooser-to" style="background-color: ' + ((color === '') ? '#000' : color) + '" id="cc_target_' + name + '">';
+        t = t + '	<div class="css-colour-chooser-to" style="background-color: ' + ((color === '') ? '#000' : color) + '" id="cc-target-' + name + '">';
         t = t + "		{!themes:TO_COLOUR^#}";
         t = t + '	</div>';
         t = t + '	<div class="css-colour-chooser-colour">';
-        t = t + '		<div id="cc_0_' + name + '"></div>';
-        t = t + '		<div id="cc_1_' + name + '"></div>';
-        t = t + '		<div id="cc_2_' + name + '"></div>';
+        t = t + '		<div id="cc-0-' + name + '"></div>';
+        t = t + '		<div id="cc-1-' + name + '"></div>';
+        t = t + '		<div id="cc-2-' + name + '"></div>';
         t = t + '	</div>';
         t = t + '	</div>';
         t = t + '</div>';
@@ -65,7 +65,7 @@
             t = t + '<div class="css-colour-chooser-context">' + context + '</div>';
         }
 
-        if (p.id === 'colours_go_here') {
+        if (p.id === 'colours-go-here') {
             $dom.append(p, t);
         } else {
             $dom.html(p, t);
@@ -90,7 +90,7 @@
         var elements = document.getElementsByTagName('div');
         var ce, a = 0, myElements = [];
         for (ce = 0; ce < elements.length; ce++) {
-            if (elements[ce].id.substring(0, 10) === 'cc_target_') {
+            if (elements[ce].id.startsWith('cc-target-')) {
                 myElements[a] = elements[ce];
                 a++;
             }
@@ -101,7 +101,7 @@
 
         function doColorChooserElement(element) {
             var id = element.id.substring(10),
-                source = document.getElementById('cc_source_' + id),
+                source = document.getElementById('cc-source-' + id),
                 bgColor = source.style.backgroundColor;
 
             if ((bgColor.substr(0, 1) !== '#') && (bgColor.substr(0, 3) !== 'rgb')) {
@@ -132,9 +132,9 @@
             source.style.color = element.style.color;
 
             var c = [];
-            c[0] = document.getElementById('cc_0_' + id);
-            c[1] = document.getElementById('cc_1_' + id);
-            c[2] = document.getElementById('cc_2_' + id);
+            c[0] = document.getElementById('cc-0-' + id);
+            c[1] = document.getElementById('cc-1-' + id);
+            c[2] = document.getElementById('cc-2-' + id);
 
             var d, i, _rgb = [], bg, innert, tid, selected, style;
             for (d = 0; d <= 2; d++) {
@@ -213,7 +213,7 @@
             targ.style.outline = '3px solid gray';
             targ.style.position = 'relative';
 
-            var element = document.getElementById('cc_target_' + _id);
+            var element = document.getElementById('cc-target-' + _id);
             var bgColor = element.style.backgroundColor;
             if (bgColor.substr(0, 1) === '#') {
                 bgColor = 'rgb(' + $util.hexToDec(bgColor.substr(1, 2)) + ',' + $util.hexToDec(bgColor.substr(3, 2)) + ',' + $util.hexToDec(bgColor.substr(5, 2)) + ')';
@@ -259,7 +259,7 @@
             tempLastCc.style.position = 'static';
             window.lastCcI[d + window.namesToNumbers[id] * 3] = i;
 
-            var element = document.getElementById('cc_target_' + id);
+            var element = document.getElementById('cc-target-' + id);
             var bgColor = element.style.backgroundColor;
             if (bgColor.substr(0, 1) === '#') {
                 bgColor = 'rgb(' + $util.hexToDec(bgColor.substr(1, 2)) + ',' + $util.hexToDec(bgColor.substr(3, 2)) + ',' + $util.hexToDec(bgColor.substr(5, 2)) + ')';

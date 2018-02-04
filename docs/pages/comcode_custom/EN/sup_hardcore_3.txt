@@ -186,7 +186,7 @@ function cns_wrapper($title, $content, $show_personal_bar = true, $show_stats = 
             // Any unread PT-PPs?
             $pt_extra = ($num_unread_pps == 0) ? '' : do_lang('NUM_UNREAD', number_format($num_unread_pps));
 
-            $private_topic_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => get_member()), get_module_zone('members'), null, true, false, false, 'tab__pts')
+            $private_topic_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => get_member()), get_module_zone('members'), null, true, false, false, 'tab--pts')
 
             $head = do_template('CNS_MEMBER_BAR', array(
                 '_GUID' => 's3kdsadf0p3wsjlcfksdj',

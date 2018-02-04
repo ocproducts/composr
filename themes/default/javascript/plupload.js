@@ -14520,7 +14520,7 @@
         $dom.data(placeholderField).pluploadObject = plObj;
 
         // Rearrange clear buttons
-        var clearButton = document.getElementById('clear_button_' + name);
+        var clearButton = document.getElementById('clear-button-' + name);
         if (clearButton) {
             clearButton.style.display = 'none';
         }

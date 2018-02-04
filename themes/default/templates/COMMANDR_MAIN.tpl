@@ -2,13 +2,13 @@
 {$REQUIRE_JAVASCRIPT,commandr}
 
 <div id="command-line" data-tpl="commandrMain">
-	<div id="commands_go_here">
+	<div id="commands-go-here">
 		<p>{!WELCOME_TO_COMMANDR}</p>
 		<hr />
 		{+START,IF_NON_EMPTY,{COMMANDS}}{COMMANDS}{+END}
 	</div>
 	<div class="webstandards-checker-off">
-		<form title="{!PRIMARY_PAGE_FORM}" autocomplete="off" action="{SUBMIT_URL*}" method="post" id="commandr_form" data-submit-pd="1" class="js-submit-commandr-form-submission" autocomplete="off">
+		<form title="{!PRIMARY_PAGE_FORM}" autocomplete="off" action="{SUBMIT_URL*}" method="post" id="commandr-form" data-submit-pd="1" class="js-submit-commandr-form-submission" autocomplete="off">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			<div id="command-prompt">

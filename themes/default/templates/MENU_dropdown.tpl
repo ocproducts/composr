@@ -2,7 +2,7 @@
 {$REQUIRE_JAVASCRIPT,core_menus}
 
 {+START,IF_NON_EMPTY,{CONTENT}}
-	{$SET,menu_id,r_{MENU|}_d}
+	{$SET,menu_id,r-{MENU|}-d}
 
 	<div class="dropdown-menu" data-view="DropdownMenu" data-view-params="{+START,PARAMS_JSON,MENU,JAVASCRIPT_HIGHLIGHTING,menu_id}{_*}{+END}">
 		<a href="{$PAGE_LINK*,:sitemap}" class="dropdown-menu-toggle-btn js-click-toggle-menu-content"><img width="24" height="24" src="{$IMG*,icons/menus/mobile_menu}" alt="{!MENU}" /> <span>{!MENU}</span></a>

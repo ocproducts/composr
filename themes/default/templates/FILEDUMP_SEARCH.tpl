@@ -1,16 +1,16 @@
 <div class="float-surrounder">
 	{+START,IF,{$ADDON_INSTALLED,search}}
 		{$SET,search_url,{$SELF_URL}}
-		<form class="filedump-filter" role="search" title="{!SEARCH}" data-disable-buttons-on-submit="{}" action="{$URL_FOR_GET_FORM*,{$GET,search_url},search,type_filter,sort,place,recurse,file}#tab__{TAB%}" method="get" autocomplete="off">
+		<form class="filedump-filter" role="search" title="{!SEARCH}" data-disable-buttons-on-submit="{}" action="{$URL_FOR_GET_FORM*,{$GET,search_url},search,type_filter,sort,place,recurse,file}#tab--{TAB%}" method="get" autocomplete="off">
 			{$HIDDENS_FOR_GET_FORM,{$GET,search_url},search,type_filter,sort,place,recurse,file}
 
 			<p class="left">
-				<label class="accessibility-hidden" for="search_filedump_{I*}">{!SEARCH}</label>
-				<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" size="22" type="search" id="search_filedump_{I*}" name="search" placeholder="{!SEARCH*}" />
+				<label class="accessibility-hidden" for="search-filedump-{I*}">{!SEARCH}</label>
+				<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" size="22" type="search" id="search-filedump-{I*}" name="search" placeholder="{!SEARCH*}" />
 
-				<label class="recurse horiz-field-sep" for="recurse_filedump_{I*}">
+				<label class="recurse horiz-field-sep" for="recurse-filedump-{I*}">
 					{!INCLUDE_SUBFOLDERS}
-					<input {+START,IF,{$NEQ,{$_GET,recurse},0}} checked="checked"{+END} type="checkbox" name="recurse" id="recurse_filedump_{I*}" value="1" />
+					<input {+START,IF,{$NEQ,{$_GET,recurse},0}} checked="checked"{+END} type="checkbox" name="recurse" id="recurse-filedump-{I*}" value="1" />
 				</label>
 
 				<br class="block-mobile" />

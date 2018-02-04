@@ -8,7 +8,7 @@
 {$SET,block_call_url,{$FACILITATE_AJAX_BLOCK_CALL,{BLOCK_PARAMS}}}
 <div data-tpl="blockMainFriendsList" data-tpl-params="{+START,PARAMS_JSON,ajax_block_main_friends_list_wrapper,block_call_url}{_*}{+END}">
 	<div id="{$GET*,ajax_block_main_friends_list_wrapper}">
-		<form target="_self" class="right" role="search" title="{!FRIENDS}, {!SEARCH}" action="{$URL_FOR_GET_FORM*,{$SELF_URL}}#tab__friends" method="get" autocomplete="off">
+		<form target="_self" class="right" role="search" title="{!FRIENDS}, {!SEARCH}" action="{$URL_FOR_GET_FORM*,{$SELF_URL}}#tab--friends" method="get" autocomplete="off">
 			{$HIDDENS_FOR_GET_FORM,{$SELF_URL}}
 
 			<label class="accessibility-hidden" for="friends_search">{!SEARCH}</label>

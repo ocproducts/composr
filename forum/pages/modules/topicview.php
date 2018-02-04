@@ -182,7 +182,7 @@ class Module_topicview
                 $of_member = get_member();
             }
             $of_username = $GLOBALS['FORUM_DRIVER']->get_username($of_member, true);
-            $private_topic_page_link = build_page_link(array('page' => 'members', 'type' => 'view', 'id' => $of_member), get_module_zone('members'), array(), 'tab__pts');
+            $private_topic_page_link = build_page_link(array('page' => 'members', 'type' => 'view', 'id' => $of_member), get_module_zone('members'), array(), 'tab--pts');
             $breadcrumbs[] = array($private_topic_page_link, do_lang_tempcode('MEMBER_ACCOUNT', escape_html($of_username)));
         }
 

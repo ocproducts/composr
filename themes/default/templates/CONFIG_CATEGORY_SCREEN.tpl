@@ -25,7 +25,7 @@
 
 		<div>
 			{+START,LOOP,GROUPS}
-				<a id="group_{GROUP_NAME*}"></a>
+				<a id="group-{GROUP_NAME*}"></a>
 
 				<h3>{GROUP_TITLE*}</h3>
 

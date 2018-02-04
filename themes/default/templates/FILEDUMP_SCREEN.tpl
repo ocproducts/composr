@@ -10,21 +10,21 @@
 
 	<div class="filedump-screen">
 		<div class="float-surrounder"><div class="tabs" role="tablist">
-			<a aria-controls="g_thumbnails" role="tab" href="#!" id="t_thumbnails" class="tab tab-active tab-first js-click-select-tab-g" data-tp-tab="thumbnails"><span>{!VIEW_THUMBNAILS}</span></a>
+			<a aria-controls="g-thumbnails" role="tab" href="#!" id="t-thumbnails" class="tab tab-active tab-first js-click-select-tab-g" data-tp-tab="thumbnails"><span>{!VIEW_THUMBNAILS}</span></a>
 
-			<a aria-controls="g_listing" role="tab" href="#!" id="t_listing" class="tab{+START,IF_EMPTY,{CREATE_FOLDER_FORM}{UPLOAD_FORM}} tab-last{+END} js-click-select-tab-g" data-tp-tab="listing"><span>{!VIEW_LISTING}</span></a>
+			<a aria-controls="g-listing" role="tab" href="#!" id="t-listing" class="tab{+START,IF_EMPTY,{CREATE_FOLDER_FORM}{UPLOAD_FORM}} tab-last{+END} js-click-select-tab-g" data-tp-tab="listing"><span>{!VIEW_LISTING}</span></a>
 
 			{+START,IF_NON_EMPTY,{CREATE_FOLDER_FORM}}
-				<a aria-controls="g_create_folder" role="tab" href="#!" id="t_create_folder" class="tab{+START,IF_EMPTY,{UPLOAD_FORM}} tab-last{+END} js-click-select-tab-g" data-tp-tab="create_folder"><span>{!FILEDUMP_CREATE_FOLDER}</span></a>
+				<a aria-controls="g-create-folder" role="tab" href="#!" id="t-create-folder" class="tab{+START,IF_EMPTY,{UPLOAD_FORM}} tab-last{+END} js-click-select-tab-g" data-tp-tab="create-folder"><span>{!FILEDUMP_CREATE_FOLDER}</span></a>
 			{+END}
 
 			{+START,IF_NON_EMPTY,{UPLOAD_FORM}}
-				<a aria-controls="g_upload" role="tab" href="#!" id="t_upload" class="tab tab-last js-click-select-tab-g" data-tp-tab="upload"><span>{!UPLOAD}</span></a>
+				<a aria-controls="g-upload" role="tab" href="#!" id="t-upload" class="tab tab-last js-click-select-tab-g" data-tp-tab="upload"><span>{!UPLOAD}</span></a>
 			{+END}
 		</div></div>
 		<div class="tab-surround">
-			<div aria-labeledby="t_thumbnails" role="tabpanel" id="g_thumbnails" style="display: block">
-				<a id="tab__thumbnails"></a>
+			<div aria-labeledby="t-thumbnails" role="tabpanel" id="g-thumbnails" style="display: block">
+				<a id="tab--thumbnails"></a>
 
 				{+START,INCLUDE,FILEDUMP_SEARCH}
 					I=1
@@ -43,7 +43,7 @@
 									{+END}
 
 									{+START,IF_PASSED,EMBED_URL}
-										<p class="filedump-embed"><a id="embed_link_{FILENAME|*}" href="{EMBED_URL*}" data-open-as-overlay='{"width": 950, "height": 680}' class="link-exempt">{!_FILEDUMP_EMBED}</a></p>
+										<p class="filedump-embed"><a id="embed-link-{FILENAME|*}" href="{EMBED_URL*}" data-open-as-overlay='{"width": 950, "height": 680}' class="link-exempt">{!_FILEDUMP_EMBED}</a></p>
 									{+END}
 
 									<p><a {+START,IF,{IS_IMAGE}} rel="lightbox"{+END} href="{URL*}">{THUMBNAIL}</a></p>
@@ -76,8 +76,8 @@
 				{+END}
 			</div>
 
-			<div aria-labeledby="t_listing" role="tabpanel" id="g_listing" style="display: none">
-				<a id="tab__listing"></a>
+			<div aria-labeledby="t-listing" role="tabpanel" id="g-listing" style="display: none">
+				<a id="tab--listing"></a>
 
 				{+START,INCLUDE,FILEDUMP_SEARCH}
 					I=2
@@ -111,8 +111,8 @@
 			</div>
 
 			{+START,IF_NON_EMPTY,{CREATE_FOLDER_FORM}}
-				<div aria-labeledby="t_create_folder" role="tabpanel" id="g_create_folder" style="display: none">
-					<a id="tab__create_folder"></a>
+				<div aria-labeledby="t-create-folder" role="tabpanel" id="g-create-folder" style="display: none">
+					<a id="tab--create-folder"></a>
 
 					{+START,INCLUDE,FORM_SCREEN_ARE_REQUIRED}{+END}
 
@@ -121,8 +121,8 @@
 			{+END}
 
 			{+START,IF_NON_EMPTY,{UPLOAD_FORM}}
-				<div aria-labeledby="t_upload" role="tabpanel" id="g_upload" style="display: none">
-					<a id="tab__upload"></a>
+				<div aria-labeledby="t-upload" role="tabpanel" id="g-upload" style="display: none">
+					<a id="tab--upload"></a>
 
 					{+START,INCLUDE,FORM_SCREEN_ARE_REQUIRED}{+END}
 
