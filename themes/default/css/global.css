@@ -1650,7 +1650,7 @@ th.metadata-title {
 		Try this Google search to get image ideas http://www.google.co.uk/search?tbm=isch&q=tile+background
 		Find how to edit the referenced "block_background" theme image by doing an Admin Zone search for "block_background"
 	*/
-	background-image: url('{$IMG_INLINE;,block_background}') {$GET,area_background};
+	background: url('{$IMG_INLINE;,block_background}') {$GET,area_background};
 	background-size: 5px 5px;
 
 	overflow: hidden;
