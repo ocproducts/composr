@@ -44,7 +44,7 @@ class Hook_snippet_block
             return new Tempcode();
         }
 
-        $pass = true;
+        $pass = false;
 
         $_whitelisted_blocks = get_value('whitelisted_blocks');
         if (!empty($_whitelisted_blocks)) {
