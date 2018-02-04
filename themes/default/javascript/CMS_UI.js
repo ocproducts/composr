@@ -219,7 +219,7 @@
         if (hash.replace(/^#!?/, '') !== '') {
             var tab = hash.replace(/^#/, '').replace(/^tab--/, '');
 
-            if ($dom.$id('g_' + tab)) {
+            if ($dom.$id('g-' + tab)) {
                 $cms.ui.selectTab('g', tab);
             } else if ((tab.indexOf('--') !== -1) && ($dom.$id('g-' + tab.substr(0, tab.indexOf('--'))))) {
                 var old = hash;

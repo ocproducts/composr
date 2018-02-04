@@ -710,10 +710,10 @@
     $cms.templates.formScreenInputThemeImageEntry = function (params) {
         var name = $cms.filter.id(params.name),
             code = $cms.filter.id(params.code),
-            stem = name + '_' + code,
-            el = document.getElementById('w_' + stem),
+            stem = name + '-' + code,
+            el = document.getElementById('w-' + stem),
             img = el.querySelector('img'),
-            input = document.getElementById('j_' + stem),
+            input = document.getElementById('j-' + stem),
             label = el.querySelector('label'),
             form = input.form;
 

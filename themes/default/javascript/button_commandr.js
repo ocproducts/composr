@@ -1,4 +1,4 @@
-(function ($cms) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     $cms.templates.miniblockMainCalculator = function miniblockMainCalculator(params, container) {
@@ -26,10 +26,7 @@
             return Math.round(ret);
         }
     };
-}(window.$cms));
-(function ($cms, $util, $dom) {
-    'use strict';
-
+    
     $cms.behaviors.btnLoadCommandr = {
         attach: function (context) {
             $util.once($dom.$$$(context, '[data-btn-load-commandr]'), 'behavior.btnLoadCommandr').forEach(function (btn) {
