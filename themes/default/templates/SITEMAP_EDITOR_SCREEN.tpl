@@ -27,11 +27,11 @@
 			<div class="box box---sitemap-editor-screen"><div class="box-inner">
 				<h2>{!SITEMAP}</h2>
 
-				<div class="accessibility-hidden"><label for="tree_list">{!ENTRY}</label></div>
+				<div class="accessibility-hidden"><label for="tree-list">{!ENTRY}</label></div>
 				<form title="{!PRIMARY_PAGE_FORM}" action="index.php" method="post" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<input style="display: none" type="text" id="tree_list" name="tree_list" value="{$_GET*,id}" class="js-change-update-details-box" />
+					<input style="display: none" type="text" id="tree-list" name="tree_list" value="{$_GET*,id}" class="js-change-update-details-box" />
 					<div id="tree-list--root-tree-list" class="sitemap-editor">
 						<!-- List put in here -->
 					</div>

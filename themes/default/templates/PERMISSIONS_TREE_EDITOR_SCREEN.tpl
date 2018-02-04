@@ -38,8 +38,8 @@
 					</div>
 
 					<form title="{!PRIMARY_PAGE_FORM}" action="index.php" method="post" autocomplete="off">
-						<div class="accessibility-hidden"><label for="tree_list">{!ENTRY}</label></div>
-						<input class="js-change-update-perm-box" style="display: none" type="text" id="tree_list" name="tree_list" value="{$_GET*,id}" />
+						<div class="accessibility-hidden"><label for="tree-list">{!ENTRY}</label></div>
+						<input class="js-change-update-perm-box" style="display: none" type="text" id="tree-list" name="tree_list" value="{$_GET*,id}" />
 					</form>
 					<div id="tree-list--root-tree-list" class="tree-list--root-tree-list pt-editor">
 						<!-- List put in here -->

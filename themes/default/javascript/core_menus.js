@@ -12,7 +12,7 @@
 
         window.currentSelection = '';
         $cms.requireJavascript('tree_list').then(function () {
-            window.sitemap = $cms.ui.createTreeList('tree_list', 'data/sitemap.php?get_perms=0' + $cms.keep() + '&start_links=1', null, '', false, null, false, true);
+            window.sitemap = $cms.ui.createTreeList('tree-list', 'data/sitemap.php?get_perms=0' + $cms.keep() + '&start_links=1', null, '', false, null, false, true);
         });
 
         function doubleClick() {

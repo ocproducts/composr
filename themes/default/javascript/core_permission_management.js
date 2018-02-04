@@ -23,7 +23,7 @@
         window.usergroupTitles = params.usergroups;
 
         $cms.requireJavascript('tree_list').then(function () {
-            window.sitemap = $cms.ui.createTreeList('tree_list', 'data/sitemap.php?start_links=1&get_perms=1&label_content_types=1&keep_full_structure=1' + $cms.keep(), null, '', true);
+            window.sitemap = $cms.ui.createTreeList('tree-list', 'data/sitemap.php?start_links=1&get_perms=1&label_content_types=1&keep_full_structure=1' + $cms.keep(), null, '', true);
         });
     }
 
@@ -45,7 +45,7 @@
         },
 
         setPermissions: function () {
-            setPermissions(document.getElementById('tree_list'));
+            setPermissions(document.getElementById('tree-list'));
         },
 
         updatePermissionBox: function (e, target) {
@@ -428,7 +428,7 @@
             var serverid;
 
             if (window.sitemap != null) {
-                var value = document.getElementById('tree_list').value;
+                var value = document.getElementById('tree-list').value;
 
                 if (value.indexOf(',') !== -1) { // Can't find any single value, as multiple resources are selected
                     return;
@@ -481,7 +481,7 @@
 
         var node = null;
         if (window.sitemap != null) {
-            node = window.sitemap.getElementByIdHack(document.getElementById('tree_list').value.split(',')[0]);
+            node = window.sitemap.getElementByIdHack(document.getElementById('tree-list').value.split(',')[0]);
         }
 
         if (value !== '-1') {

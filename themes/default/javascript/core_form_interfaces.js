@@ -724,7 +724,7 @@
         };
 
         function clickFunc(event) {
-            choosePicture('j_' + stem, img, name, event);
+            choosePicture('j-' + stem, img, name, event);
 
             if (window.mainFormVerySimple !== undefined) {
                 $dom.submit(form);
@@ -1554,7 +1554,7 @@
         }
 
         if (helpId === undefined) {
-            helpId = pic.parentNode.id + '_help';
+            helpId = pic.parentNode.id + '-help';
         }
 
         var help = document.getElementById(helpId);
@@ -1577,7 +1577,7 @@
         }
 
         if (!imgOb) {
-            imgOb = document.getElementById('w_' + jId.substring(2, jId.length)).querySelector('img');
+            imgOb = document.getElementById('w-' + jId.substring(2, jId.length)).querySelector('img');
             if (!imgOb) {
                 return;
             }
