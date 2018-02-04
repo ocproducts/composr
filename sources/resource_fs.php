@@ -898,6 +898,10 @@ function remap_portable_as_urlpath($portable_data, $ignore_conflicts = false)
         // Hunt with sensible names until we don't get a conflict
         $i = 2;
         while (file_exists($place)) {
+            if (file_get_contents($place) == $binary) {
+                break;
+            }
+
             $filename = strval($i) . preg_replace('#\..*\.#', '.', basename(urldecode($urlpath)));
             $place = get_custom_file_base() . '/' . dirname(urldecode($urlpath)) . '/' . $filename;
             $urlpath = dirname($urlpath) . '/' . urlencode($filename);

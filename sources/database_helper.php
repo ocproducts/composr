@@ -622,7 +622,9 @@ function _helper_add_table_field($this_ref, $table_name, $name, $_type, $default
             $sub_name = $name . '__' . $_sub_name;
             $query = 'ALTER TABLE ' . $this_ref->table_prefix . $table_name . ' ADD ' . $sub_name . ' ' . $type_remap[$sub_type];
             if ($_sub_name == 'text_parsed') {
-                //$query .= ' DEFAULT \'\''; Gives "BLOB, TEXT, GEOMETRY or JSON column 'xxx__text_parsed' can't have a default value"
+                if (strpos(get_db_type(), 'mysql') === false) {
+                    $query .= ' DEFAULT \'\'';
+                }
             } elseif ($_sub_name == 'source_user') {
                 $query .= ' DEFAULT ' . strval(db_get_first_id());
             }
