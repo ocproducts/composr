@@ -659,6 +659,10 @@ function do_lang_tempcode($lang_string, $token1 = null, $token2 = null, $token3 
  */
 function kid_gloves_html_escaping(&$parameters)
 {
+    if (get_value('kid_gloves_html') === '0') {
+        return;
+    }
+
     global $KNOWN_TRUE_HTML;
 
     $param = mixed();
@@ -682,6 +686,10 @@ function kid_gloves_html_escaping(&$parameters)
  */
 function kid_gloves_html_escaping_singular(&$param)
 {
+    if (get_value('kid_gloves_html') === '0') {
+        return;
+    }
+
     global $KNOWN_TRUE_HTML;
 
     if ((strpos($param, "'") !== false) || (strpos($param, '"') !== false) || (strpos($param, '<') !== false) || (strpos($param, '>') !== false)) {
