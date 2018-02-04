@@ -147,12 +147,22 @@ class Database_super_mysql
         }
 
         if (!$boolean) {
+            // These just cause muddling during full-text natural search
             $content = str_replace('"', '', $content);
+            $content = str_replace('?', '', $content);
+            db_escape_string($content); // Hack to so SQL injection detector doesn't get confused
+
             if ((strtoupper($content) == $content) && (!is_numeric($content))) {
                 return 'MATCH (?) AGAINST (_latin1\'' . $this->db_escape_string($content) . '\' COLLATE latin1_general_cs)';
             }
             return 'MATCH (?) AGAINST (\'' . $this->db_escape_string($content) . '\')';
         }
+
+        // These risk parse errors during full-text natural search and aren't supported for Composr searching
+        $content = str_replace(array('>', '<', '(', ')', '~', '?'), array('', '', '', '', '', ''), $content); // Risks parse error and not supported
+        $content = preg_replace('#[\-\+]($|\s)#', '$1', $content); // Parse error if on end
+        $content = preg_replace('#(^|\s)[\*]#', '$1', $content); // Parse error if on start
+        db_escape_string($content); // Hack to so SQL injection detector doesn't get confused
 
         return 'MATCH (?) AGAINST (\'' . $this->db_escape_string($content) . '\' IN BOOLEAN MODE)';
     }
