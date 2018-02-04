@@ -402,6 +402,7 @@ class Hook_addon_registry_cns_forum
             'FORUM_GROUPINGS' => '',
             'ID' => placeholder_id(),
             'DESCRIPTION' => lorem_phrase(),
+            'PARENT_FORUM' => '',
         ));
 
         $screen = do_lorem_template('CNS_FORUM_SCREEN', array(
@@ -1146,6 +1147,7 @@ class Hook_addon_registry_cns_forum
             'FORUM_GROUPINGS' => $forum_groupings,
             'ID' => placeholder_id(),
             'DESCRIPTION' => lorem_phrase(),
+            'PARENT_FORUM' => '',
         ));
 
         $members_viewing = new Tempcode();

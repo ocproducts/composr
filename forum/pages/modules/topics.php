@@ -2728,8 +2728,7 @@ END;
             $ip = $post_rows[0]['p_ip_address'];
             $time = $post_rows[0]['p_time'];
             $topic_id = $post_rows[0]['p_topic_id'];
-            $posts = $GLOBALS['FORUM_DB']->query('SELECT id,p_topic_id,p_title FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_time>' . strval($time - 60 * 60 * 24) . ' AND p_time<' . strval($time + 60 * 60 * 24) . ' AND ' . db_string_equal_to('p_ip_address',
-                    $ip));
+            $posts = $GLOBALS['FORUM_DB']->query('SELECT id,p_topic_id,p_title FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_time>' . strval($time - 60 * 60 * 24) . ' AND p_time<' . strval($time + 60 * 60 * 24) . ' AND ' . db_string_equal_to('p_ip_address', $ip));
 
             $post_id = post_param_integer('id', null);
             if ($post_id === null) {
