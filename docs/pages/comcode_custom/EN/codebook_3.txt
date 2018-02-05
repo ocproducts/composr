@@ -108,7 +108,7 @@ Anything not marked with a specific bypass optimisation (in brackets) will still
 
 Note that while we have a lot of user-specific and security features in the above list, but these can be bypassed when not needed via the static cache.
 
-Various hidden optimisation flags are described later in the Code Book, and also in the [page="_SEARCH:tut_optimisation"]Optimising Performance[/page].
+Various hidden optimisation flags are described later in the Code Book, and also in the [page="_SEARCH:tut_performance"]Optimising Performance[/page].
 
 [title="2"]Philosophy[/title]
 

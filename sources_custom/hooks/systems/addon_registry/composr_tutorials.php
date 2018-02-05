@@ -1348,7 +1348,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'docs/pages/comcode_custom/EN/tut_newsletter.txt',
             'docs/pages/comcode_custom/EN/tut_notifications.txt',
             'docs/pages/comcode_custom/EN/tut_nuances.txt',
-            'docs/pages/comcode_custom/EN/tut_optimisation.txt',
+            'docs/pages/comcode_custom/EN/tut_performance.txt',
             'docs/pages/comcode_custom/EN/tut_permissions.txt',
             'docs/pages/comcode_custom/EN/tut_points.txt',
             'docs/pages/comcode_custom/EN/tut_programming.txt',

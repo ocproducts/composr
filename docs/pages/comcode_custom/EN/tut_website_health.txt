@@ -216,7 +216,7 @@ We have the following kinds of broken URL checking across composr:
 
  - [page="_SEARCH:tut_webhosting"]Webhosting for Composr[/page] (including Composr minimum requirements)
  - [page="_SEARCH:tut_adv_install"]Advanced installation[/page]
- - [page="_SEARCH:tut_optimisation"]Optimising Performance[/page]
+ - [page="_SEARCH:tut_performance"]Optimising Performance[/page]
  - [page="_SEARCH:tut_security"]Security[/page]
  - [page="_SEARCH:tut_markup"]Guide to web technologies (including HTML, CSS, and JavaScript)[/page]
  - [page="_SEARCH:tut_disaster"]Disaster recovery[/page]
