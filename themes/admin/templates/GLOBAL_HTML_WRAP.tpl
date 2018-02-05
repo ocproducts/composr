@@ -213,6 +213,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 							{+END}
 							<li class="accessibility-hidden"><a accesskey="1" href="{$PAGE_LINK*,:}">{$SITE_NAME*}</a></li>
 							<li class="accessibility-hidden"><a accesskey="0" href="{$PAGE_LINK*,:keymap}">{!KEYBOARD_MAP}</a></li>
+							<li>{!POWERED_BY,<a target="_blank" title="{$BRAND_NAME*} {!LINK_NEW_WINDOW}" href="{$BRAND_BASE_URL*}">{$BRAND_NAME*}}</a></li>
 						</ul>
 					</nav>
 				</div>

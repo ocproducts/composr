@@ -60,7 +60,6 @@ class Hook_checklist_blog
         $date = $GLOBALS['SITE_DB']->query_value_if_there($query);
 
         $limit_hours = intval(get_option('blog_update_time'));
-
         $seconds_ago = null;
         if ($date !== null) {
             $status = ($seconds_ago > $limit_hours * 60 * 60) ? 0 : 1;

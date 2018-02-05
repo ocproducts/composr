@@ -30,10 +30,15 @@ class Hook_checklist_default_content
      */
     public function run()
     {
+        $status = ($GLOBALS['SITE_DB']->query_select_value_if_there('zones', 'zone_name', array('zone_name' => 'lorem')) === null) ? 1 : 0;
+
+        if ($status == 0) {
+            return array(); // Don't bloat things up
+        }
+
         $url = build_url(array('page' => 'admin_setupwizard', 'type' => 'uninstall_test_content'), get_module_zone('admin_setupwizard'));
         $task = do_lang_tempcode('config:NAG_UNINSTALL_TEST_CONTENT', escape_html_tempcode($url));
 
-        $status = ($GLOBALS['SITE_DB']->query_select_value_if_there('zones', 'zone_name', array('zone_name' => 'lorem')) === null) ? 1 : 0;
         $_status = ($status == 0) ? do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_0') : do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_1');
 
         $tpl = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array('URL' => '', 'STATUS' => $_status, 'TASK' => $task));

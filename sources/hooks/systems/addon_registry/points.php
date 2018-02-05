@@ -137,7 +137,6 @@ class Hook_addon_registry_points
             'themes/default/css/points.css',
             'lang/EN/points.ini',
             'site/pages/modules/points.php',
-            'sources/hooks/blocks/main_staff_checklist/points.php',
             'sources/hooks/systems/page_groupings/points.php',
             'sources/hooks/systems/cns_cpf_filter/points.php',
             'sources/hooks/systems/rss/points.php',

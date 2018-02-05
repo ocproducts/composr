@@ -43,7 +43,6 @@ class Hook_checklist_news
         $date = $GLOBALS['SITE_DB']->query_select_value_if_there('news n JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'news_categories c ON n.news_category=c.id', 'MAX(date_and_time)', array('validated' => 1, 'nc_owner' => null));
 
         $limit_hours = intval(get_option('news_update_time'));
-
         $seconds_ago = null;
         if ($date !== null) {
             $seconds_ago = time() - $date;

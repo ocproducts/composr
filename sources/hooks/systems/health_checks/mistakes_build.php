@@ -43,6 +43,7 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
         $this->process_checks_section('testIncompleteContent', 'Incomplete content', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testLocalLinking', 'Local linking', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testBrokenWebPostForms', 'Broken web POST forms', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testForgottenIcons', 'Default icons', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
 
         return array($this->category_label, $this->results);
     }
@@ -314,5 +315,26 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
                 }
             }
         }
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     */
+    public function testForgottenIcons($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+
+        $test = find_theme_image('favicon', false, true, $GLOBALS['FORUM_DRIVER']->get_theme(''));
+        $this->assertTrue($test != 'themes/default/images/favicon.ico', 'Still using default favicon (the favicon theme image needs editing)');
+
+        $test = find_theme_image('webclipicon', false, true, $GLOBALS['FORUM_DRIVER']->get_theme(''));
+        $this->assertTrue($test != 'themes/default/images/webclipicon.ico', 'Still using default webclipicon (the webclipicon theme image needs editing)');
     }
 }

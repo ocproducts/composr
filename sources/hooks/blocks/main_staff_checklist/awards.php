@@ -51,6 +51,16 @@ class Hook_checklist_awards
             if ($details !== null) {
                 $date = $GLOBALS['SITE_DB']->query_select_value_if_there('award_archive', 'date_and_time', array('a_type_id' => $award['id']), 'ORDER BY date_and_time DESC');
 
+                if ($date === null) {
+                    $count = $details['db']->query_select_value($details['table'], 'COUNT(*)', array(), '', true);
+                    if ($count === null) {
+                        continue;
+                    }
+                    if ($count == 0) {
+                        continue;
+                    }
+                }
+
                 $seconds_ago = null;
                 $limit_hours = $award['a_update_time_hours'];
                 if ($date !== null) {
@@ -76,7 +86,10 @@ class Hook_checklist_awards
 
                 if (($date !== null) && ($details['date_field'] !== null)) {
                     $where = filter_naughty_harsh($details['date_field']) . '>' . strval($date);
-                    $num_queue = $details['db']->query_value_if_there('SELECT COUNT(*) FROM ' . $details['db']->get_table_prefix() . str_replace('1=1', $where, $details['table']) . ' r WHERE ' . $where);
+                    $num_queue = $details['db']->query_value_if_there('SELECT COUNT(*) FROM ' . $details['db']->get_table_prefix() . str_replace('1=1', $where, $details['table']) . ' r WHERE ' . $where, true);
+                    if ($num_queue === null) {
+                        continue;
+                    }
                     $_num_queue = integer_format($num_queue);
                     $num_new_since = do_lang_tempcode('NUM_NEW_SINCE', escape_html($_num_queue));
                 } else {

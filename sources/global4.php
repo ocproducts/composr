@@ -592,3 +592,18 @@ function find_normative_performance()
     $percentage = 100.0 * (0.055 / (microtime(true) - $t));
     return $percentage;
 }
+
+/**
+ * Get time when the site was started.
+ *
+ * @return TIME The time
+ */
+function get_site_start_time()
+{
+    $time_a = $GLOBALS['SITE_DB']->query_select_value_if_there('actionlogs', 'MIN(date_and_time)');
+    if ($time_a === null) {
+        $time_a = time();
+    }
+    $time_b = filectime(get_file_base() . '/_config.php');
+    return min($time_a, $time_b);
+}

@@ -641,7 +641,8 @@ class Forum_driver_none extends Forum_driver_base
      */
     public function get_member_join_timestamp($member)
     {
-        return filectime(get_file_base() . '/_config.php');
+        require_code('global4');
+        return get_site_start_time();
     }
 
     /**

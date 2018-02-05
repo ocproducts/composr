@@ -211,5 +211,12 @@ If you are going to go down the SEO route, make sure that you have someone who w
  - [url="moz.com"]https://moz.com/[/url]
  - [url="SEMrush"]https://www.semrush.com/[/url]
  - [url="Ahref"]https://ahrefs.com/[/url]
+ - [url="The Hoth"]https://www.thehoth.com/[/url]
+ - [url="SERPs"]https://serps.com/tools/[/url]
+ - [url="Social sharing stats"]http://www.sharedcount.com/[/url]
+ - [url="Facebook Insights"]https://www.facebook.com/business/news/audience-insights[/url]
+ - [url="SEO Site Checkup"]https://seositecheckup.com/[/url]
+ - [url="WooRank"]https://www.woorank.com/[/url]
+ - [url="Website Grader"]https://website.grader.com/[/url]
 
 {$SET,tutorial_tags,SEO,core,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,For most websites, it is important to draw in visitors. We discuss the process of Search Engine Optimisation (SEO).}[block]main_tutorial_rating[/block]

@@ -41,15 +41,15 @@ class Hook_checklist_newsletter
 
         require_lang('newsletter');
 
-        $date = get_value('newsletter_send_time');
-
+        $_date = get_value('newsletter_send_time');
+        $date = ($_date === null) ? null : intval($_date);
         $seconds_ago = null;
-        if ($date !== null) {
-            $seconds_ago = time() - intval($date);
-            $status = ($seconds_ago > $limit_hours * 60 * 60) ? 0 : 1;
-        } else {
-            $status = 0;
+        if ($date === null) {
+            require_code('global4');
+            $date = get_site_start_time();
         }
+        $seconds_ago = time() - $date;
+        $status = ($seconds_ago > $limit_hours * 60 * 60) ? 0 : 1;
 
         $_status = ($status == 0) ? do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_0') : do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_1');
 

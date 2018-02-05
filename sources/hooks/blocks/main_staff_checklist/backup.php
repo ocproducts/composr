@@ -41,15 +41,15 @@ class Hook_checklist_backup
 
         require_lang('backups');
 
-        $date = intval(get_value('last_backup'));
-
+        $_date = get_value('last_backup');
+        $date = ($_date === null) ? null : intval($_date);
         $seconds_ago = null;
-        if ($date != 0) {
-            $seconds_ago = time() - $date;
-            $status = (intval($seconds_ago) > $limit_hours * 60 * 60) ? 0 : 1;
-        } else {
-            $status = 0;
+        if ($date === null) {
+            require_code('global4');
+            $date = get_site_start_time();
         }
+        $seconds_ago = time() - $date;
+        $status = ($seconds_ago > $limit_hours * 60 * 60) ? 0 : 1;
 
         $_status = ($status == 0) ? do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_0') : do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_1');
 

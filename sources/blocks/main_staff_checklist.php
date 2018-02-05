@@ -84,19 +84,13 @@ class Block_main_staff_checklist
 
             require_lang('staff_checklist');
             $tasks = array(
-                do_lang('CHECKLIST_INITIAL_TASK_STRUCTURE'),
-                do_lang('CHECKLIST_INITIAL_TASK_THEME'),
-                '[page="adminzone:admin_themes:edit_image:favicon"]' . do_lang('CHECKLIST_INITIAL_TASK_FAVICON') . '[/page]',
-                '[page="adminzone:admin_themes:edit_image:webclipicon"]' . do_lang('CHECKLIST_INITIAL_TASK_WEBCLIP') . '[/page]',
                 do_lang('CHECKLIST_INITIAL_TASK_CONTENT'),
-                '[page="adminzone:admin_themes:edit_image:logo/standalone_logo:theme=default"]' . do_lang('CHECKLIST_INITIAL_TASK_MAIL_LOGO') . '[/page]',
-                '[page="adminzone:admin_themes:edit_templates:theme=default:f0file=templates/MAIL.tpl"]' . do_lang('CHECKLIST_INITIAL_TASK_MAIL') . '[/page]',
-                '[page="adminzone:admin_themes:_edit_templates:theme=default:f0file=templates/MAIL.tpl"]' . do_lang('CHECKLIST_INITIAL_TASK_MAIL') . '[/page]',
-                '[url="' . do_lang('CHECKLIST_INITIAL_TASK_GOOGLE_WEBMASTER_TOOLS') . '"]https://www.google.com/webmasters/tools/[/url]',
+                '[page="adminzone:admin_health_check"]' . do_lang('CHECKLIST_HEALTH_CHECK') . '[/page]',
                 '[url="' . do_lang('CHECKLIST_INITIAL_TASK_UPTIME_MONITOR') . '"]https://uptimerobot.com/[/url]',
-                // NB: Google and Bing submission is automatic, via Sitemaps feature
+                '[url="' . do_lang('CHECKLIST_INITIAL_TASK_GOOGLE_WEBMASTER_TOOLS') . '"]https://www.google.com/webmasters/tools/[/url]',
                 '[html]<p style="margin: 0">Facebook user? Like Composr on Facebook:</p><iframe src="https://compo.sr/uploads/website_specific/compo.sr/facebook.html" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:330px; height:20px;" allowTransparency="true"></iframe>[/html]',
                 '[url="Consider helping out with the Composr project"]' . get_brand_page_url(array('page' => 'contributions'), 'site') . '[/url]',
+                // NB: Google and Bing submission is automatic, via Sitemaps feature
             );
             foreach ($tasks as $task) {
                 $GLOBALS['SITE_DB']->query_insert('staff_checklist_cus_tasks', array(

@@ -82,29 +82,6 @@ class Block_main_staff_links
             $default_links = array(
                 'compo.sr' => 'http://compo.sr/',
                 'compo.sr (topics with unread posts)' => get_brand_page_url(array('page' => 'vforums', 'type' => 'unread'), 'forum'),
-                'ocProducts (web development services)' => 'http://ocproducts.com/',
-                'Transifex (Composr language translations)' => 'https://www.transifex.com/organization/ocproducts/dashboard',
-                'Google Chrome (web browser)' => 'http://www.google.com/chrome',
-                'Google Chrome addons' => 'https://chrome.google.com/extensions/featured/web_dev',
-                'Google Alerts' => 'http://www.google.com/alerts',
-                'Google Apps (gmail for domains, etc)' => 'http://www.google.com/apps/intl/en/group/index.html',
-                'Google Analytics' => 'http://www.google.com/analytics/',
-                'Google Webmaster Tools (direct search data from Google)' => 'https://www.google.com/webmasters/tools',
-                'Moz (enhanced search analytics)' => 'https://moz.com',
-                'SharedCount (social sharing stats)' => 'http://www.sharedcount.com/',
-                'Facebook Insights (Facebook Analytics)' => 'https://www.facebook.com/business/news/audience-insights',
-                'Paint.net (free graphics tool, Windows)' => 'http://www.getpaint.net/',
-                'PNGGauntlet (compress PNG files, Windows)' => 'http://benhollis.net/software/pnggauntlet/',
-                'ImageOptim (compress PNG files, Mac)' => 'http://imageoptim.pornel.net/',
-                'Find Icons (free icons)' => 'http://findicons.com/',
-                'FreeImages (free stock art)' => 'http://www.freeimages.com/',
-                'Kompozer (Web design tool)' => 'http://www.kompozer.net/',
-                'DiffMerge' => 'http://www.sourcegear.com/diffmerge/',
-                'Jing (record screencasts)' => 'https://www.techsmith.com/jing-tool.html',
-                'Smashing Magazine (web design articles)' => 'http://www.smashingmagazine.com/',
-                'w3schools (learn web technologies)' => 'http://www.w3schools.com/',
-                // NB: Not including a webhost, as the user will likely already have one
-                //'GoDaddy (Domains and SSL certificates)' => 'http://www.godaddy.com/', // A bit overly-specific, plus similar to the above
             );
             foreach ($default_links as $link_title => $url) {
                 $GLOBALS['SITE_DB']->query_insert('staff_links', array(

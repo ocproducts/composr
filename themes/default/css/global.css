@@ -4796,13 +4796,13 @@ a[rel="lightbox"] {
 	/* Higher than media links for lower CSS precedence */
 	a[target="_blank"].user-link { /* Detected external links have styling */
 		background: url('{$IMG;,icons/file_types/external_link}') no-repeat right top;
-		background-size: 7px 8px;
-		padding-right: 10px;
+		background-size: 10px 12px;
+		padding-right: 11px;
 	}
 	body div a.external-link { /* Explicitly marked external links must show the styling with precedence */
 		background: url('{$IMG;,icons/file_types/external_link}') no-repeat right top !important;
-		background-size: 7px 8px !important;
-		padding-right: 10px !important;
+		background-size: 10px 12px !important;
+		padding-right: 11px !important;
 	}
 
 	a[href^="mailto:"] {
