@@ -18,6 +18,10 @@
  * @package    commandr
  */
 
+// For opposite command see 'fs_search'.
+
+// Does not use a task because that just makes things complex and this is meant to be quick and easy. If a more sophisticated system is needed, use something like SSH or cPanel.
+
 /**
  * Hook class.
  */

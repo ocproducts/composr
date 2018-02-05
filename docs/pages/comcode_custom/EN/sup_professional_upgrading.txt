@@ -2,9 +2,7 @@
 
 This tutorial provides a professional process for updating customer website(s). Steps here may also be useful for professional website "tune ups".
 
-[staff_note]Remove LEGACY parts about ocPortal[/staff_note]It is only intended for programmers who are experienced in the use of Composr.
-
-The tutorial is currently written for updating ocPortal sites to Composr v10 sites.
+It is only intended for programmers who are experienced in the use of Composr.
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -100,8 +98,8 @@ phpinfo();
 Additionally you can upload and run the first two steps of Composr's installer and see if it complains about anything.
 |-
 ! {$INC,step_num}{$GET,step_num}
-| Confirm the remote site is running a version of ocPortal/Composr that you can upgrade from
-| If not you'll need to circle back and inform them of the cost of jumping through other intermediate ocPortal/Composr version(s).
+| Confirm the remote site is running a version of Composr that you can upgrade from
+| If not you'll need to circle back and inform them of the cost of jumping through other intermediate Composr version(s).
 |-
 ! &dagger; {$INC,step_num}{$GET,step_num}
 | Create [tt]<webroot>/<codename>/_temp[/tt] and put a [tt].htaccess[/tt] file in it
@@ -176,37 +174,14 @@ sudo chmod -R 777 .
 [/code]
 |-
 ! &dagger; {$INC,step_num}{$GET,step_num}
-| Search and replace the old table prefix in the SQL dump if you're upgrading an ocPortal site
-| Usually ocPortal sites used [tt]ocp_[/tt] or [tt]ocf_[/tt], and we want to use [tt]cms_[/tt] so that ocPortal legacy doesn't need to be remembered in the future.
-|-
-! &dagger; {$INC,step_num}{$GET,step_num}
-| If you're updating from ocPortal then replace [tt]DEFAULT CHARSET=latin1[/tt] with [tt]DEFAULT CHARSET=utf8mb4[/tt] in the SQL dump
-| If you are having to fudge a server running an old version of MySQL, use [tt]utf8[/tt] instead and be ready to tell the website owner they cannot use emojis or install any new addons (as that will try and use [tt]utf8mb4[/tt] for new tables).
-|-
-! &dagger; {$INC,step_num}{$GET,step_num}
 | (Following directly from the above) Change [tt]utf8mb4[/tt] to [tt]utf8[/tt] for just the following tables: [tt]cms_addons[/tt], [tt]cms_f_saved_warnings[/tt], [tt]cms_gsp[/tt], [tt]cms_wordfilter[/tt], [tt]cms_import_parts_done[/tt], [tt]cms_msp[/tt], [tt]cms_newsletter_subscribe[/tt], [tt]cms_theme_images[/tt], and [tt]cms_tickets[/tt]
 | If you are having to fudge a server running an old version of MySQL, use [tt]utf8[/tt] instead and be ready to tell the website owner they cannot use emojis.
-|-
-! {$INC,step_num}{$GET,step_num}
-| If you're updating from ocPortal then find all non-default files containing this regexp [tt][^\x00-\x7F][/tt] and re-save them as utf-8
-| The regexp finds non-ASCII files, so you don't have to re-save every single file
-|-
-! {$INC,step_num}{$GET,step_num}
-| If you're updating from ocPortal then do this regexp replace in the the [tt].sql[/tt] file: [tt]\[attachment([^\[\]]*)\]url_([^\[\]]*)\[/attachment[^\[\]]*\][/tt] --> [tt][media$1]$2[/media][/tt]
-| The regexp changes old URL attachments (which are now 100% non-supported in Composr) to new media tags
 |-
 ! &dagger; {$INC,step_num}{$GET,step_num}
 | Import the SQL dump into your local MySQL installation, in a database named [tt]client_<codename>[/tt], using the command line [tt]mysql[/tt] client
 | [code="Bash"]
 cd <webroot>/<codename>
 mysql client_<codename> < _temp/initial.sql
-[/code]
-|-
-! {$INC,step_num}{$GET,step_num}
-| If you're updating from ocPortal then add some settings to [tt]_config.php[/tt]/[tt]info.php[/tt]:
-| [code="PHP"]
-$SITE_INFO['self_learning_cache'] = '1';
-$SITE_INFO['session_cookie'] = 'cms_session__<something_random>';
 [/code]
 |-
 ! {$INC,step_num}{$GET,step_num}
@@ -271,8 +246,8 @@ git commit -a -m "Initial commit"
 |
 |-
 ! {$INC,step_num}{$GET,step_num}
-| Do the file transfer using the omni-upgrader package if upgrading from ocPortal, or a custom upgrader build otherwise
-| https://compo.sr/news/view/announcements/upgrading-from-ocportal.htm
+| Do the file transfer via a custom upgrader build
+|
 |-
 ! {$INC,step_num}{$GET,step_num}
 | Do the integrity checker scan and delete files from the prior version
@@ -280,10 +255,6 @@ git commit -a -m "Initial commit"
 |-
 ! &dagger; {$INC,step_num}{$GET,step_num}
 | Do the database upgrade
-|
-|-
-! {$INC,step_num}{$GET,step_num}
-| If upgrading from ocPortal delete the [tt]info.php[/tt] file
 |
 |-
 !
@@ -304,14 +275,6 @@ mysqldump client_<codename> > _temp/stage2.sql
 ! {$INC,step_num}{$GET,step_num}
 | Temporarily move any custom code and themes into a parallel directory structure under [tt]_old_code[/tt]
 |
-|-
-! &dagger; {$INC,step_num}{$GET,step_num}
-| If upgrading from ocPortal switch to non-multi-lang-content using Commandr (unless the user really does want multi-lang-content)
-| [code="Commandr"]
-:
-require_code('database_multi_lang_conv');
-disable_content_translation();
-[/code]
 |-
 ! &dagger; {$INC,step_num}{$GET,step_num}
 | If jumping across versions run through the "Correct MySQL schema issues (advanced)" cleanup tool (Admin Zone > Tools > Website cleanup tools) to find and resolve any unexpected issues that might have developed
@@ -360,7 +323,7 @@ There is a [tt]themechanges.sh[/tt] script which may be useful, but realisticall
 |-
 ! {$INC,step_num}{$GET,step_num}
 | Fix for specific known theme changes.
-| Buttons and CSS classes have changed significantly since old versions of ocPortal, these may need reworking if the icons are directly used anywhere.
+|
 |-
 ! {$INC,step_num}{$GET,step_num}
 | Use a diff tool to find all the changes made in code files you put in [tt]_old_code[/tt].
@@ -371,12 +334,8 @@ There is a [tt]themechanges.sh[/tt] script which may be useful, but realisticall
 | Run the Code Quality Checker on any custom code. Do this by copying [tt]data_custom/functions.dat[/tt] from a Composr github pull, and then run the CQC out of that github pull while reconfiguring the scan folder to the [tt]<webroot>/<codename>[/tt] directory.
 |-
 ! {$INC,step_num}{$GET,step_num}
-| Users may be used to some different configuration if upgrading from ocPortal, maybe set [tt]simplified_attachments_ui[/tt] to [tt]0[/tt]. US users may also like [tt]yeehaw[/tt] to be set to [tt]1[/tt].
-|
-|-
-! {$INC,step_num}{$GET,step_num}
-| Do final local testing, particular some embedded links may need reconfiguring if upgrading from ocPortal, as the Composr display defaults are different
-| Go through testing page by page, and also at least get a feel for content (such as news articles) working well
+| Do final local testing.
+| Go through testing page by page, and also at least get a feel for content (such as news articles) working well.
 |-
 ! {$INC,step_num}{$GET,step_num}
 | Review [tt]errorlog.php[/tt] then clear it out

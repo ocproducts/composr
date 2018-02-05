@@ -18,6 +18,10 @@
  * @package    commandr
  */
 
+// Also see fs_search.
+
+// We do not support direct replacing because mindless search & replace seems too dangerous.
+
 /**
  * Hook class.
  */
@@ -39,44 +43,75 @@ class Hook_commandr_command_db_search
             if (!array_key_exists(0, $parameters)) {
                 return array('', '', '', do_lang('MISSING_PARAM', '1', 'db_search'));
             }
-            if (!array_key_exists(1, $parameters)) {
-                return array('', '', '', do_lang('MISSING_PARAM', '2', 'db_search'));
-            }
 
-            $value = $parameters[0];
+            $search = $parameters[0];
 
-            $out = '';
+            // Discern $fields and $replace...
+
+            $fields = array();
+            $replace = null;
 
             $i = 1;
-            $fields = array();
             while (array_key_exists($i, $parameters)) {
-                $type = $parameters[$i];
-                $fields = array_merge(
-                    $fields,
-                    $GLOBALS['SITE_DB']->query_select('db_meta', array('m_name', 'm_table'), array('m_type' => $type)),
-                    $GLOBALS['SITE_DB']->query_select('db_meta', array('m_name', 'm_table'), array('m_type' => '?' . $type)),
-                    $GLOBALS['SITE_DB']->query_select('db_meta', array('m_name', 'm_table'), array('m_type' => '*' . $type))
-                );
+                $more_fields = $this->find_fields_of($parameters[$i]);
+                if (count($more_fields) > 0) {
+                    $fields = array_merge(
+                        $fields,
+                        $more_fields
+                    );
+                } else {
+                    $replace = $parameters[$i];
+                }
+
                 $i++;
             }
+
+            // Could not find any fields, revert to default types...
+
             if (count($fields) == 0) {
-                $fields = $GLOBALS['SITE_DB']->query_select('db_meta', array('m_name', 'm_table'));
+                $field_types = array(
+                    'LONG_TRANS',
+                    'SHORT_TRANS',
+                    'LONG_TRANS__COMCODE',
+                    'SHORT_TRANS__COMCODE',
+                    'SHORT_TEXT',
+                    'LONG_TEXT',
+                    'ID_TEXT',
+                    'MINIID_TEXT',
+                    'IP',
+                    'LANGUAGE_NAME',
+                    'URLPATH' ,
+                );
+                foreach ($field_types as $field_type) {
+                    $fields = array_merge($fields, $this->find_fields_of($field_type));
+                }
             }
+
+            // Do search...
+
+            $sql_for = array();
+            $out = '';
+
             foreach ($fields as $field) {
                 $db = ((substr($field['m_table'], 0, 2) == 'f_') && ($GLOBALS['FORUM_DB'] !== null)) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
-                $ofs = $db->query_select($field['m_table'], array('*'), array($field['m_name'] => $value));
-                foreach ($ofs as $of) {
-                    $out .= '<h2>' . escape_html($field['m_table']) . '</h2>';
+                $ofs = $db->query_select($field['m_table'], array('*'), array($field['m_name'] => $search));
 
-                    $out .= '<table class="results-table">';
-                    $val = null;
-                    foreach ($of as $key => $val) {
-                        if (!is_string($val)) {
-                            $val = strval($val);
+                if (count($ofs) > 0) {
+                    $out .= '<h2>' . escape_html($field['m_table']) . ':' . escape_html($field['m_name']) . '</h2>';
+
+                    foreach ($ofs as $of) {
+                        $out .= '<table class="results-table">';
+                        $val = null;
+                        foreach ($of as $key => $val) {
+                            if (!is_string($val)) {
+                                $val = strval($val);
+                            }
+                            $out .= '<tr><td>' . escape_html($key) . '</td><td>' . escape_html($val) . '</td></tr>';
                         }
-                        $out .= '<tr><td>' . escape_html($key) . '</td><td>' . escape_html($val) . '</td></tr>';
+                        $out .= '</table>';
                     }
-                    $out .= '</table>';
+
+                    $sql_for[] = array($db->get_table_prefix() . $field['m_table'], $field['m_name']);
                 }
             }
 
@@ -84,7 +119,39 @@ class Hook_commandr_command_db_search
                 $out = do_lang('NONE');
             }
 
+            // Generate replacement SQL...
+
+            if (($replace !== null) && (count($sql_for) > 0)) {
+                $_out = '';
+                foreach ($sql_for as $table_bits) {
+                    $_out .= escape_html('UPDATE ' . $table_bits[0] . ' SET ' . $table_bits[1] . '=' . db_function('REPLACE', array($table_bits[1], "'" . db_escape_string($search) . "'", "'" . db_escape_string($replace) . "'")) . ';') . '<br />';
+                }
+                $out .= '<br /><br />' . do_lang('DATABASE_UPDATE_QUERY', $_out);
+            }
+
+            // ---
+
             return array('', $out, '', '');
         }
+    }
+
+    /**
+     * Find fields of a particular field type.
+     *
+     * @param  string $field_type Field type
+     * @return array List of fields
+     */
+    protected function find_fields_of($field_type)
+    {
+        if (preg_match('#^[A-Z_]+$#', $field_type) != 0) {
+            $more_fields = array_merge(
+                $GLOBALS['SITE_DB']->query_select('db_meta', array('m_name', 'm_table'), array('m_type' => $field_type)),
+                $GLOBALS['SITE_DB']->query_select('db_meta', array('m_name', 'm_table'), array('m_type' => '?' . $field_type)),
+                $GLOBALS['SITE_DB']->query_select('db_meta', array('m_name', 'm_table'), array('m_type' => '*' . $field_type))
+            );
+        } else {
+            $more_fields = array();
+        }
+        return $more_fields;
     }
 }

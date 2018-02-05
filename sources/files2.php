@@ -483,13 +483,18 @@ function find_php_path($cgi = false)
  *
  * @param  PATH $path The path to search
  * @param  PATH $rel_path The path we prepend to everything we find (intended to be used inside the recursion)
- * @param  integer $bitmask Bitmask of extra stuff to ignore (see IGNORE_* constants)
+ * @param  ?integer $bitmask Bitmask of extra stuff to ignore (see IGNORE_* constants) (null: do not use)
  * @param  boolean $recurse Whether to recurse (if not, will return directories as files)
- * @param  boolean $files_wanted Whether to get files (if not, will return directories as files)
+ * @param  boolean $files_wanted Whether to get files (if not, will return directories instead of files)
+ * @param  ?array $file_extensions File extensions to limit to (no dots), if $files_wanted set (null: no limit)
  * @return array The contents of the directory
  */
-function get_directory_contents($path, $rel_path = '', $bitmask = IGNORE_ACCESS_CONTROLLERS, $recurse = true, $files_wanted = true)
+function get_directory_contents($path, $rel_path = '', $bitmask = IGNORE_ACCESS_CONTROLLERS, $recurse = true, $files_wanted = true, $file_extensions = null)
 {
+    if (($files_wanted) && ($file_extensions === array())) {
+        return array(); // Optimisation
+    }
+
     $out = array();
 
     require_code('files');
@@ -503,7 +508,7 @@ function get_directory_contents($path, $rel_path = '', $bitmask = IGNORE_ACCESS_
             continue;
         }
 
-        if ($bitmask != 0) {
+        if ($bitmask !== null) {
             if (should_ignore_file($rel_path . (($rel_path == '') ? '' : '/') . $file, $bitmask)) {
                 continue;
             }
@@ -511,16 +516,17 @@ function get_directory_contents($path, $rel_path = '', $bitmask = IGNORE_ACCESS_
             continue;
         }
 
-        $is_file = is_file($path . '/' . $file);
-        if (($is_file) || (!$recurse)) {
-            if (($files_wanted) || (!$is_file)) {
+        if (is_file($path . '/' . $file)) {
+            if (($files_wanted) && (($file_extensions === null) || (in_array(get_file_extension($file), $file_extensions)))) {
                 $out[] = $rel_path . (($rel_path == '') ? '' : '/') . $file;
             }
         } elseif (is_dir($path . '/' . $file)) {
             if (!$files_wanted) {
                 $out[] = $rel_path . (($rel_path == '') ? '' : '/') . $file;
             }
-            $out = array_merge($out, get_directory_contents($path . '/' . $file, $rel_path . (($rel_path == '') ? '' : '/') . $file, $bitmask, $recurse, $files_wanted));
+            if ($recurse) {
+                $out = array_merge($out, get_directory_contents($path . '/' . $file, $rel_path . (($rel_path == '') ? '' : '/') . $file, $bitmask, $recurse, $files_wanted, $file_extensions));
+            }
         }
     }
     closedir($d);

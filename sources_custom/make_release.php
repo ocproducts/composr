@@ -721,7 +721,7 @@ function make_database_manifest() // Builds db_meta.dat, which is used for datab
     $privilege_addons = array();
 
     require_code('files2');
-    $files = get_directory_contents(get_file_base(), '', 0);
+    $files = get_directory_contents(get_file_base(), '', null);
     $files[] = 'install.php';
     foreach ($files as $file) {
         if (substr($file, -4) != '.php' && substr($file, -strlen('_custom')) != '_custom') {

@@ -65,6 +65,10 @@
 	background-color: {$GET,main_background};
 }
 
+.past-command a {
+	color: inherit !important;
+}
+
 .commandr-dir {
 	color: {$GET,commandr_directory_listing};
 	font-weight: bold;

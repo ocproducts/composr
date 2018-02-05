@@ -110,7 +110,6 @@ class Hook_addon_registry_backup
             'data_custom/modules/admin_backup/.htaccess',
             'sources/hooks/systems/addon_registry/backup.php',
             'themes/default/templates/RESTORE_HTML_WRAP.tpl',
-            'exports/backups/index.html',
             'themes/default/templates/BACKUP_LAUNCH_SCREEN.tpl',
             'adminzone/pages/modules/admin_backup.php',
             'data/modules/admin_backup/index.html',

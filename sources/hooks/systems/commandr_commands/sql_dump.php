@@ -18,6 +18,8 @@
  * @package    commandr
  */
 
+// Opposite would be executing SQL with a '@' prefix.
+
 /**
  * Hook class.
  */
@@ -53,7 +55,7 @@ class Hook_commandr_command_sql_dump
             } else {
                 $out_filename = 'dump_' . uniqid('', true) . '.sql';
             }
-            $out_file_path = get_custom_file_base() . '/temp/' . $out_filename;
+            $out_file_path = get_custom_file_base() . '/exports/backups/' . $out_filename;
 
             // Generate dump
             require_code('database_relations');
@@ -61,8 +63,10 @@ class Hook_commandr_command_sql_dump
             fwrite($out_file, chr(hexdec('EF')) . chr(hexdec('BB')) . chr(hexdec('BF')));
             get_sql_dump($out_file, true, false, array(), $only, null, $intended_db_type);
             fclose($out_file);
+            sync_file($out_file_path);
+            fix_permissions($out_file_path);
 
-            $out = do_lang('SQL_DUMP_SAVED_TO', escape_html('temp/' . $out_filename));
+            $out = do_lang('SQL_DUMP_SAVED_TO', escape_html('exports/backups/' . $out_filename), escape_html(get_custom_base_url() . '/exports/backups/' . rawurlencode($out_filename)));
 
             return array('', $out, '', '');
         }
