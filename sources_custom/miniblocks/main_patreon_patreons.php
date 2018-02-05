@@ -13,17 +13,17 @@
  * @package    composr_homesite
  */
 
-require_code('patreons');
+require_code('patreon');
 $level = isset($map['level']) ? intval($map['level']) : 30;
-$patreons = get_patreons_on_minimum_level($level);
-$_patreons = array();
-foreach ($patreons as $patron) {
-    $_patreons[] = array(
+$patreon_patrons = get_patreon_patrons_on_minimum_level($level);
+$_patreon_patrons = array();
+foreach ($patreon_patrons as $patron) {
+    $_patreon_patrons[] = array(
         'NAME' => $patron['name'],
         'USERNAME' => $patron['username'],
         'MONTHLY' => strval($patron['monthly']),
     );
 }
 
-$tpl = do_template('BLOCK_MAIN_PATREON_SPONSORS', array('_GUID' => '8b7ed8319aa6ec0e6bc0e8b5e1fede4d', 'PATREONS' => $_patreons));
+$tpl = do_template('BLOCK_MAIN_PATREON_PATRONS', array('_GUID' => '8b7ed8319aa6ec0e6bc0e8b5e1fede4d', 'PATREON_PATRONS' => $_patreon_patrons));
 $tpl->evaluate_echo();

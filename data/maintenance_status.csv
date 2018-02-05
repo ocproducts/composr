@@ -80,15 +80,15 @@ ssl,Per-page SSL support,ocProducts,,Needs to be separately tested. Liable to br
 detect_bot,Bot detection,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,Partly tested by ua_detection automated test.
 detect_mobile,Mobile user agent detection,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,Partly tested by ua_detection automated test.
 standard_opengraph,OpenGraph,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,
-browser_firefox,Firefox support,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,
-browser_safari,Safari support,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,
+browser_firefox,Firefox support,ocProducts,,Could potentially break due to third-party changes.,No,
+browser_safari,Safari support,ocProducts,,Could potentially break due to third-party changes.,No,
 browser_android_legacy,Android Browser support (pre-Chrome),ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,
 browser_ios,Mobile Safari (iOS) support,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,
 browser_android_chrome,Mobile Chrome (Android & iOS) support,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,
 browser_microsoft,IE/Microsoft Edge support,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,
 browser_blink,Chrome/Opera/Blink support,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,
 social_links,Basic social media / instant messenger linkage,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No,
-extra_logging,Permission/eCommerce/profile logging features,ocProducts,ocProducts,Not fully manually tested.,No,Partly tested by extra_logging automated test.
+extra_logging,Permission/eCommerce/profile logging features,ocProducts,,Not fully manually tested.,No,Partly tested by extra_logging automated test.
 context,Magic click / context menu features,ocProducts,,Not regularly tested.,No,
 php,Maintain with new versions of PHP,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,
 mysql,Maintain with new versions of MySQL,ocProducts,,Could potentially break due to third-party changes.,No,
@@ -102,9 +102,9 @@ twitter,Twitter syndication,ocProducts,,Could potentially break due to third-par
 webdav,WebDav access for The Repository,ocProducts,,Could potentially break due to third-party changes.,Yes,
 currency_codes,ISO currencies (internal list),ocProducts,,Could potentially break due to political changes.,No,currency automated test.
 country_codes,ISO countries (internal list) and flag images,ocProducts,,Could potentially break due to political changes.,No,
-currency,Currency conversion,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,
+currency,Currency conversion,ocProducts,,Could potentially break due to third-party changes.,No,
 stop_forum_spam,Stop Forum Spam integration,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,antispam automated test.
-tornevall,Tornevall integration,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,antispam automated test.
+tornevall,Tornevall integration,ocProducts,,Could potentially break due to third-party changes.,No,antispam automated test.
 newsletter_spam_check,Postmark spam-check integration,ocProducts,,Could potentially break due to third-party changes.,No,newsletter automated test.
 geocoding_google,Google Geocoding,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,geocoding automated test.
 reverse_geocoding_google,Google Geocoding (reverse),ocProducts,ocProducts,Could potentially break due to third-party changes.,No,geocoding automated test.

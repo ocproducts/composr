@@ -58,12 +58,12 @@ if ($credits_per_hour == 0) {
 
 // Patreons...
 
-require_code('patreons');
-$patreons = get_patreons_on_minimum_level(3);
-if (count($patreons) > 0) {
+require_code('patreon');
+$patreon_patrons = get_patreon_patrons_on_minimum_level(3);
+if (count($patreon_patrons) > 0) {
     $patreon_bonuses_a = '(';
     $patreon_bonuses_a .= 'SELECT COUNT(*)*3 FROM mantis_bug_monitor_table yy WHERE yy.bug_id=a.id AND yy.user_id IN ('; // 4-1=3
-    foreach ($patreons as $i => $patron) {
+    foreach ($patreon_patrons as $i => $patron) {
         if ($i != 0) {
             $patreon_bonuses_a .= ',';
         }
@@ -74,11 +74,11 @@ if (count($patreons) > 0) {
 } else {
     $patreon_bonuses_a = '0';
 }
-$patreons = get_patreons_on_minimum_level(10);
-if (count($patreons) > 0) {
+$patreon_patrons = get_patreon_patrons_on_minimum_level(10);
+if (count($patreon_patrons) > 0) {
     $patreon_bonuses_b = '(';
     $patreon_bonuses_b .= 'SELECT COUNT(*)*11 FROM mantis_bug_monitor_table yy WHERE yy.bug_id=a.id AND yy.user_id IN ('; // 15-4-1=11
-    foreach ($patreons as $i => $patron) {
+    foreach ($patreon_patrons as $i => $patron) {
         if ($i != 0) {
             $patreon_bonuses_b .= ',';
         }

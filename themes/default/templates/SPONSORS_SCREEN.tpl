@@ -1,13 +1,24 @@
 {TITLE}
 
-<p {+START,IF_NON_EMPTY,{PATREONS}} class="lonely-label"{+END}>{!PROJECT_SPONSORS_LABEL}</p>
-{+START,IF_NON_EMPTY,{PATREONS}}
+<p class="lonely-label">{!SPONSORS_LABEL}</p>
+<ul>
+	{+START,LOOP,SPONSORS}
+		<li>
+			{_loop_key*}:
+			<ul>
+				{+START,LOOP,AREAS}
+					<li>{_loop_var*}</li>
+				{+END}
+			</ul>
+		</li>
+	{+END}
+</ul>
+
+{+START,IF_NON_EMPTY,{PATREON_PATRONS}}
+	<p class="lonely-label">{!PATREON_PATRONS_LABEL}</p>
 	<ul>
-		{+START,LOOP,PATREONS}
+		{+START,LOOP,PATREON_PATRONS}
 			<li>{NAME*}</li>
 		{+END}
 	</ul>
-{+END}
-{+START,IF_EMPTY,{PATREONS}}
-	<p class="nothing-here">{!NO_ENTRIES}</p>
 {+END}

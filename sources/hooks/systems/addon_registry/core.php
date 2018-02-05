@@ -2079,11 +2079,16 @@ class Hook_addon_registry_core
         return array(
             lorem_globalise(do_lorem_template('SPONSORS_SCREEN', array(
                 'TITLE' => lorem_title(),
-                'PATREONS' => array(
+                'PATREON_PATRONS' => array(
                     array(
                         'USERNAME' => lorem_word(),
                         'NAME' => lorem_word(),
                         'MONTHLY' => placeholder_number(),
+                    ),
+                ),
+                'SPONSORS' => array(
+                    array(
+                        'NAME' => lorem_word(),
                     ),
                 ),
             )), null, '', true)
