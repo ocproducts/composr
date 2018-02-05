@@ -33,7 +33,7 @@
 }
 /*{+START,CSS_MODE,desktop}*/
 	.helper-panel-visible {
-		width: 265px;
+		min-width: 265px;
 	}
 	.helper-panel-hidden {
 		width: 30px !important;
