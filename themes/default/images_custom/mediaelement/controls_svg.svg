@@ -1,10 +1,8 @@
 <?xml version="1.0" standalone="no"?>
-<!-- Generator: Adobe Fireworks CS6, Export SVG Extension by Aaron Beall (http://fireworks.abeall.com) . Version: 0.6.1  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg id="controls.fw-Page%201" viewBox="0 0 144 32" style="background-color:#ffffff00" version="1.1"
-	xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve"
-	x="0px" y="0px" width="144px" height="32px"
->
+	xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+	x="0px" y="0px" width="144px" height="32px">
 	<defs>
 		<radialGradient id="gradient1" cx="50%" cy="50%" r="50%">
 			<stop stop-color="#ffffff" stop-opacity="1" offset="0%"/>
