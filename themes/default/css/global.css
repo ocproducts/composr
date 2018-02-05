@@ -640,12 +640,12 @@ header h1 {
 .global-banner {
 	text-align: center;
 	background: url('{$IMG;,banner_frame}') center top no-repeat;
-	background-size: 760px 102px;
+	background-size: 766px 100px;
 	position: relative;
 	/*{+START,IF,{$AND,{$THEME_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
 		top: -16px;
 	/*{+END}*/
-	padding-top: 6px;
+	padding-top: 5px;
 	padding-bottom: 3px;
 }
 

@@ -27,6 +27,19 @@ class theme_images_test_set extends cms_test_case
         require_code('files2');
     }
 
+    public function testNoHiddenSVGRaster()
+    {
+        require_code('files2');
+        $contents = get_directory_contents(get_file_base() . '/themes/default/', get_file_base() . '/themes/default/');
+
+        foreach ($contents as $file) {
+            if (substr($file, -4) == '.svg') {
+                $c = file_get_contents($file);
+                $this->assertTrue(strpos($c, '<image') === false);
+            }
+        }
+    }
+
     public function testIconsSquare()
     {
         $themes = find_all_themes();
