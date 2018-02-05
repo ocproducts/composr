@@ -124,7 +124,7 @@
                     tempNode = ajaxResult.childNodes[i];
                     xml.appendChild(tempNode.cloneNode(true));
                 }
-                html = $dom.$id(this.name + 'tree_list_c_' + expandingId);
+                html = $dom.$id(this.name + 'tree-list-c-' + expandingId);
             }
 
             attributesFullFixup(xml);
@@ -155,9 +155,9 @@
 
                 // Special handling of 'expand' nodes, which say to pre-expand some categories as soon as the page loads
                 if (node.localName === 'expand') {
-                    el = $dom.$id(that.name + 'texp_c_' + $dom.html(node));
+                    el = $dom.$id(that.name + 'texp-c-' + $dom.html(node));
                     if (el) {
-                        htmlNode = $dom.$id(that.name + 'tree_list_c_' + $dom.html(node));
+                        htmlNode = $dom.$id(that.name + 'tree-list-c-' + $dom.html(node));
                         expanding = (htmlNode.style.display !== 'block');
                         if (expanding) {
                             if ($dom.$('#choose_' + that.name)) {
@@ -170,9 +170,9 @@
                         // Now try against serverid
                         var xmlNode = that.getElementByIdHack($dom.html(node), 'c', null, true);
                         if (xmlNode) {
-                            el = $dom.$id(that.name + 'texp_c_' + xmlNode.getAttribute('id'));
+                            el = $dom.$id(that.name + 'texp-c-' + xmlNode.getAttribute('id'));
                             if (el) {
-                                htmlNode = $dom.$id(that.name + 'tree_list_c_' + xmlNode.getAttribute('id'));
+                                htmlNode = $dom.$id(that.name + 'tree-list-c-' + xmlNode.getAttribute('id'));
                                 expanding = (htmlNode.style.display !== 'block');
                                 if (expanding) {
                                     if ($dom.$('#choose_' + that.name)) {
@@ -237,7 +237,7 @@
                     }
                     $dom.html(nodeSelf, /** @lang HTML */'' +
                         '<div>' +
-                        '    <input class="ajax-tree-expand-icon"' + (that.tabindex ? (' tabindex="' + that.tabindex + '"') : '') + ' type="image" alt="' + ((!initiallyExpanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + ': ' + escapedTitle + '" title="' + ((!initiallyExpanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + '" id="' + that.name + 'texp_c_' + node.getAttribute('id') + '" src="' + $util.srl(!initiallyExpanded ? '{$IMG*;,icons/tree_field/expand}' : '{$IMG*;,icons/tree_field/collapse}') + '" />' +
+                        '    <input class="ajax-tree-expand-icon"' + (that.tabindex ? (' tabindex="' + that.tabindex + '"') : '') + ' type="image" alt="' + ((!initiallyExpanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + ': ' + escapedTitle + '" title="' + ((!initiallyExpanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + '" id="' + that.name + 'texp-c-' + node.getAttribute('id') + '" src="' + $util.srl(!initiallyExpanded ? '{$IMG*;,icons/tree_field/expand}' : '{$IMG*;,icons/tree_field/collapse}') + '" />' +
                         '    <img class="ajax-tree-cat-icon" alt="{!CATEGORY;^}" width="14" height="14" src="' + $cms.filter.html(imgUrl) + '" />' +
                         '    <label id="' + that.name + 'tsel_c_' + node.getAttribute('id') + '" for="' + that.name + 'tsel_r_' + node.getAttribute('id') + '" data-mouseover-activate-tooltip="[\'' + (node.getAttribute('description_html') ? '' : $cms.filter.html(descriptionInUse)) + '\', \'auto\']" class="ajax-tree-magic-button ' + colour + '">\ <input ' + (that.tabindex ? ('tabindex="' + that.tabindex + '" ') : '') + 'id="' + that.name + 'tsel_r_' + node.getAttribute('id') + '" style="position: absolute; left: -10000px" type="radio" name="_' + that.name + '" value="1" title="' + descriptionInUse + '" />' + escapedTitle + '</label>' +
                         '    <span id="' + that.name + 'extra_' + node.getAttribute('id') + '">' + extra + '</span>' +
@@ -290,7 +290,7 @@
                     // Do any children
                     newHtml = document.createElement('div');
                     newHtml.role = 'treeitem';
-                    newHtml.id = that.name + 'tree_list_c_' + node.getAttribute('id');
+                    newHtml.id = that.name + 'tree-list-c-' + node.getAttribute('id');
                     newHtml.style.display = ((!initiallyExpanded) || (node.getAttribute('has_children') !== 'true')) ? 'none' : 'block';
                     newHtml.style.paddingLeft = '15px';
                     var selected = ((that.useServerId ? node.getAttribute('serverid') : node.getAttribute('id')) === element.value && element.value !== '') || node.getAttribute('selected') === 'yes';
@@ -484,8 +484,8 @@
             this.busy = true;
 
             var clickedId = target.getAttribute('id').substr(7 + this.name.length);
-            var htmlNode = $dom.$id(this.name + 'tree_list_c_' + clickedId);
-            var expandBtn = $dom.$id(this.name + 'texp_c_' + clickedId);
+            var htmlNode = $dom.$id(this.name + 'tree-list-c-' + clickedId);
+            var expandBtn = $dom.$id(this.name + 'texp-c-' + clickedId);
 
             var expanding = $dom.notDisplayed(htmlNode);
 

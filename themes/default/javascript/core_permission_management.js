@@ -360,9 +360,9 @@
                 // Set view access
                 element = document.getElementById('access_' + group);
                 newValue = element.checked ? 'true' : 'false';
-                if (newValue != node.getAttribute('g_view_' + group)) {
+                if (newValue !== node.getAttribute('g_view_' + group)) {
                     node.setAttribute('g_view_' + group, newValue);
-                    setRequestB = setRequestB + '&' + i + 'g_view_' + group + '=' + ((newValue == 'true') ? 1 : 0);
+                    setRequestB = setRequestB + '&' + i + 'g_view_' + group + '=' + ((newValue === 'true') ? 1 : 0);
                 }
             }
 
