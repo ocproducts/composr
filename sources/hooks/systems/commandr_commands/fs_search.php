@@ -18,7 +18,7 @@
  * @package    commandr
  */
 
-// Also see fs_search.
+// Also see fs_search and find and grep.
 
 // This can be used for replacing in conjunction with the untar command. You download the files matching, alter them locally, then reupload, then untar.
 // We do not support direct replacing because mindless search & replace seems too dangerous.

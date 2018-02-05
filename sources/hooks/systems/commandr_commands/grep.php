@@ -20,6 +20,8 @@
 
 /*EXTRA FUNCTIONS: preg_grep*/
 
+// Also see fs_search and db_search and find.
+
 /**
  * Hook class.
  */

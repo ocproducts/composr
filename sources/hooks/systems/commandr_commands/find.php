@@ -18,6 +18,8 @@
  * @package    commandr
  */
 
+// Also see fs_search and db_search and grep.
+
 /**
  * Hook class.
  */
