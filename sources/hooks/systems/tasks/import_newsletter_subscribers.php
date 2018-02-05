@@ -121,6 +121,8 @@ class Hook_task_import_newsletter_subscribers
                     continue;
                 }
 
+                task_log($this, 'Processing record', $j);
+
                 $j++;
 
                 if ((count($csv_line) >= 1) && ($csv_line[$email_index] !== null) && (strpos($csv_line[$email_index], '@') !== false)) {

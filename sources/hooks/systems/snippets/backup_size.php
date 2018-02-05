@@ -50,13 +50,7 @@ class Hook_snippet_backup_size
                 continue;
             }
 
-            // Also see code in tar.php
-            if ($GLOBALS['DEV_MODE']) {
-                if (($first_dir == 'exports') && (preg_match('#^exports/(builds|addons)/#', $file) != 0)) {
-                    continue;
-                }
-            }
-            if (($first_dir == 'uploads') && (preg_match('#^uploads/(auto_thumbs|incoming)/#', $file) != 0)) {
+            if (should_ignore_file($file, IGNORE_REBUILDABLE_OR_TEMP_FILES_FOR_BACKUP)) {
                 continue;
             }
 

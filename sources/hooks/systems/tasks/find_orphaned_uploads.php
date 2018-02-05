@@ -36,12 +36,14 @@ class Hook_task_find_orphaned_uploads
 
         // Find known paths
         $known_urls = array();
-        $urlpaths = $GLOBALS['SITE_DB']->query_select('db_meta', array('m_name', 'm_table'), array('m_type' => 'URLPATH'));
+        $url_paths = $GLOBALS['SITE_DB']->query_select('db_meta', array('m_name', 'm_table'), array('m_type' => 'URLPATH'));
         $base_url = get_custom_base_url();
-        foreach ($urlpaths as $urlpath) {
-            $ofs = $GLOBALS['SITE_DB']->query_select($urlpath['m_table'], array($urlpath['m_name']));
+        foreach ($url_paths as $iteration => $url_path) {
+            task_log($this, 'Processing table for referenced URLs, ' . $url_path['m_table'], $iteration, count($url_paths));
+
+            $ofs = $GLOBALS['SITE_DB']->query_select($url_path['m_table'], array($url_path['m_name']));
             foreach ($ofs as $of) {
-                $url = $of[$urlpath['m_name']];
+                $url = $of[$url_path['m_name']];
                 if (url_is_local($url)) {
                     $known_urls[rawurldecode($url)] = true;
                 } else {
@@ -81,6 +83,8 @@ class Hook_task_find_orphaned_uploads
      */
     private function do_dir($dir)
     {
+        task_log($this, 'Processing ' . $dir . ' directory for uploads');
+
         $out = array();
         $_dir = ($dir == '') ? get_custom_file_base() : (get_custom_file_base() . '/' . $dir);
         $dh = @opendir($_dir);

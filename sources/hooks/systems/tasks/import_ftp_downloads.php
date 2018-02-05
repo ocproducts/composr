@@ -109,13 +109,15 @@ class Hook_task_import_ftp_downloads
      */
     public function ftp_recursive_downloads_scan($conn_id, $url, $directory, $dest_cat, $make_subfolders)
     {
+        task_log($this, 'Processing ' . $directory . ' directory for files');
+
         $num_added = 0;
 
         $contents = @ftp_nlist($conn_id, $directory);
         if ($contents === false) {
             return 0;
         }
-        foreach ($contents as $entry) {
+        foreach ($contents as $i => $entry) {
             $full_entry = $entry;
             $parts = explode('/', $entry);
             $entry = $parts[count($parts) - 1];

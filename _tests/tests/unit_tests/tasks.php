@@ -23,6 +23,7 @@ class tasks_test_set extends cms_test_case
         parent::setUp();
 
         require_code('files');
+        require_code('tasks');
     }
 
     public function testNewsletterCSV()

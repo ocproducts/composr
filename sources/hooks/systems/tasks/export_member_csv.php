@@ -150,7 +150,9 @@ class Hook_task_export_member_csv
         do {
             $members = $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_member_custom_fields ON id=mf_member_id WHERE ' . $group_filter_2 . ' ORDER BY id', $limit, $start);
 
-            foreach ($members as $m) {
+            foreach ($members as $iteration => $m) {
+                task_log($this, 'Exporting member row', $iteration + $start, $member_count);
+
                 if (is_guest($m['id'])) {
                     continue;
                 }

@@ -64,7 +64,9 @@ class Hook_task_import_wordpress
             require_code('import');
         }
 
-        foreach ($data as $values) {
+        foreach ($data as $iteration => $values) {
+            task_log($this, 'Importing wordpress entity', $iteration, count($data));
+
             // Lookup/import member
             if ($to_own_account == 1) {
                 // If post should go to own account

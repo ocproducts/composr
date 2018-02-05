@@ -33,16 +33,20 @@ class Hook_task_notify_topics_moved
     public function run($or_list, $forum_name)
     {
         require_code('notifications');
+        require_code('urls2');
         require_lang('cns');
+
+        $num_topics = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics WHERE ' . $or_list);
 
         $start = 0;
         do {
             $topics2 = $GLOBALS['FORUM_DB']->query('SELECT id,t_cache_first_title,t_cache_last_time FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics WHERE ' . $or_list, 100, $start, false, true);
-            require_code('urls2');
-            foreach ($topics2 as $_topic) {
+            foreach ($topics2 as $i => $_topic) {
                 if ($_topic['t_cache_last_time'] < time() - 60 * 60 * 24 * 14) {
                     continue;
                 }
+
+                task_log($this, 'Informing members topic has been moved', $start + $i, $num_topics);
 
                 $topic_id = $_topic['id'];
                 $topic_title = $_topic['t_cache_first_title'];

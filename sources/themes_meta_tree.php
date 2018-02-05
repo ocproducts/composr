@@ -423,13 +423,14 @@ class Meta_tree_builder
      *
      * @param  ?string $filter_level_a The first level of filter (null: no filter, full rebuild)
      * @param  ?string $filter_level_b The second level of filter (null: no filter)
+     * @param  ?mixed $callback Callback to run on each iteration (null: none)
      */
-    public function refresh($filter_level_a = null, $filter_level_b = null)
+    public function refresh($filter_level_a = null, $filter_level_b = null, $callback = null)
     {
         require_code('themes2');
         $themes = array_keys(find_all_themes());
         foreach ($themes as $theme) {
-            $this->refresh_for_theme($theme, $filter_level_a, $filter_level_b);
+            $this->refresh_for_theme($theme, $filter_level_a, $filter_level_b, $callback);
         }
     }
 
@@ -439,8 +440,9 @@ class Meta_tree_builder
      * @param  ID_TEXT $theme The theme
      * @param  ?string $filter_level_a The first level of filter (null: no filter, full rebuild)
      * @param  ?string $filter_level_b The second level of filter (null: no filter)
+     * @param  ?mixed $callback Callback to run on each iteration (null: none)
      */
-    public function refresh_for_theme($theme, $filter_level_a = null, $filter_level_b = null)
+    public function refresh_for_theme($theme, $filter_level_a = null, $filter_level_b = null, $callback = null)
     {
         $full_rebuild = ($filter_level_a === null);
 
@@ -486,7 +488,11 @@ class Meta_tree_builder
                 $filter_level_a,
             );
         }
-        foreach ($meta_dirs_to_build as $meta_dir_to_build) {
+        foreach ($meta_dirs_to_build as $i => $meta_dir_to_build) {
+            if ($callback !== null) {
+                call_user_func_array($callback, array('Creating meta directory ' . $meta_dir_to_build, $i, count($meta_dirs_to_build)));
+            }
+
             $_path = $meta_dir . '/' . $meta_dir_to_build;
             if (!is_dir($_path)) {
                 mkdir($_path, 0777);
@@ -495,7 +501,7 @@ class Meta_tree_builder
 
             switch ($meta_dir_to_build) {
                 case 'screens':
-                    $this->put_in_screens($_path, $theme, $filter_level_b);
+                    $this->put_in_screens($_path, $theme, $filter_level_b, $callback);
                     break;
 
                 case 'templates':
@@ -503,7 +509,7 @@ class Meta_tree_builder
                 case 'javascript':
                 case 'xml':
                 case 'text':
-                    $this->put_in_addon_tree($_path, $meta_dir_to_build, $theme, $filter_level_b);
+                    $this->put_in_addon_tree($_path, $meta_dir_to_build, $theme, $filter_level_b, false, $callback);
                     break;
 
                 case 'templates-related':
@@ -511,7 +517,7 @@ class Meta_tree_builder
                 case 'javascript-related':
                 case 'xml-related':
                 case 'text-related':
-                    $this->put_in_addon_tree($_path, preg_replace('#-related$#', '', $meta_dir_to_build), $theme, $filter_level_b, true);
+                    $this->put_in_addon_tree($_path, preg_replace('#-related$#', '', $meta_dir_to_build), $theme, $filter_level_b, true, $callback);
                     break;
             }
         }
@@ -523,8 +529,9 @@ class Meta_tree_builder
      * @param  PATH $path The path
      * @param  ID_TEXT $theme The theme
      * @param  ?string $filter_level_b The second level of filter (null: no filter)
+     * @param  ?mixed $callback Callback to run on each iteration (null: none)
      */
-    private function put_in_screens($path, $theme, $filter_level_b = null)
+    private function put_in_screens($path, $theme, $filter_level_b = null, $callback = null)
     {
         if ($filter_level_b === null) {
             $where = array();
@@ -533,10 +540,14 @@ class Meta_tree_builder
         }
 
         $screens = $GLOBALS['SITE_DB']->query_select('theme_screen_tree', array('page_link', 'json_tree'), $where);
-        foreach ($screens as $screen) {
+        foreach ($screens as $iteration => $screen) {
             $page_link = $screen['page_link'];
             $page_link_parts = explode(':', $page_link);
             $tree = json_decode($screen['json_tree'], true);
+
+            if ($callback !== null) {
+                call_user_func_array($callback, array(' Processing screen ' . $page_link, $iteration, count($screens)));
+            }
 
             $zone = $page_link_parts[0];
             if (!is_dir(get_custom_file_base() . '/' . $zone) && !is_dir(get_file_base() . '/' . $zone)) {
@@ -653,8 +664,9 @@ class Meta_tree_builder
      * @param  ID_TEXT $theme The theme
      * @param  ?string $filter_level_b The second level of filter (null: no filter)
      * @param  boolean $relationships_mode Whether we have an extra level, the relationships mode
+     * @param  ?mixed $callback Callback to run on each iteration (null: none)
      */
-    private function put_in_addon_tree($path, $subdir, $theme, $filter_level_b = null, $relationships_mode = false)
+    private function put_in_addon_tree($path, $subdir, $theme, $filter_level_b = null, $relationships_mode = false, $callback = null)
     {
         $_all_path = $path . '/_all';
         if (is_dir($_all_path)) {
@@ -667,7 +679,11 @@ class Meta_tree_builder
         }
 
         $addons = $this->addons;
-        foreach ($addons as $addon) {
+        foreach ($addons as $iteration => $addon) {
+            if ($callback !== null) {
+                call_user_func_array($callback, array(' Processing addon ' . $addon, $iteration, count($addons)));
+            }
+
             $files = $this->find_theme_files_from_addon($addon, $subdir, $theme);
 
             if ($filter_level_b !== null) {

@@ -85,6 +85,8 @@ class Hook_task_import_member_csv
             $csv_header = fgetcsv($myfile, 102400, $del);
         }
         while (($csv_line = fgetcsv($myfile, 102400, $del)) !== false) {
+            task_log($this, 'Importing member row', $done);
+
             $line = array();
             foreach ($csv_header as $i => $h) {
                 $extracted_value = trim(unixify_line_format(array_key_exists($i, $csv_line) ? $csv_line[$i] : ''));

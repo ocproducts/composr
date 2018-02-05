@@ -65,7 +65,9 @@ class Hook_task_export_ecom_transactions
         }
         $tax_categories = array_keys($tax_categories);
 
-        foreach ($rows as $_transaction) {
+        foreach ($rows as $i => $_transaction) {
+            task_log($this, 'Processing transaction row', $i, count($rows));
+
             list($details, $product_object) = find_product_details($_transaction['t_type_code']);
             if ($details !== null) {
                 $item_name = $details['item_name'];

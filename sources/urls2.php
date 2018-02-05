@@ -967,8 +967,8 @@ function find_id_via_url_moniker($content_type, $url_moniker)
  *
  * @param  string $subdir Subdirectory relative to base directory
  * @param  ?string $filename Filename (null: random)
- * @param  boolean $lock_in Whether to write out an empty string to the file so that some other code (e.g. from another request) doesn't try and use the same path.
- * @param  ?string $conflict_okay_if_matching Can use a duplicated file path if it matches this data (null: no check).
+ * @param  boolean $lock_in Whether to write out an empty string to the file so that some other code (e.g. from another request) doesn't try and use the same path
+ * @param  ?string $conflict_okay_if_matching Can use a duplicated file path if it matches this data (null: no check)
  * @return array A tuple: path, relative URL for path, filename used
  */
 function find_unique_path($subdir, $filename = null, $lock_in = false, $conflict_okay_if_matching = null)

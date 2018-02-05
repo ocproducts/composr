@@ -90,6 +90,8 @@ class Hook_task_send_newsletter
 
             // Send to all
             foreach ($addresses as $i => $email_address) {
+                task_log($this, 'Processing recipient newsletter into queue', $i + $start);
+
                 if (isset($blocked[$email_address])) {
                     continue;
                 }

@@ -35,7 +35,22 @@ class Hook_task_make_backup
     public function run($file, $b_type, $max_size)
     {
         require_code('backup');
+        $backup_result = make_backup($file, $b_type, $max_size, array($this, 'log'));
 
-        return array('text/html', make_backup($file, $b_type, $max_size));
+        return array('text/html', $backup_result);
+    }
+
+    /**
+     * Do logging.
+     *
+     * @param  string $message Message to log
+     */
+    public function log($message)
+    {
+        static $i = 0;
+
+        task_log($this, $message);
+
+        $i++;
     }
 }

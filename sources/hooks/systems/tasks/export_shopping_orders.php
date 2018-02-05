@@ -53,7 +53,9 @@ class Hook_task_export_shopping_orders
         $rows = $GLOBALS['SITE_DB']->query($query);
         remove_duplicate_rows($rows);
 
-        foreach ($rows as $_order) {
+        foreach ($rows as $i => $_order) {
+            task_log($this, 'Processing shopping order row', $i);
+
             $order = array();
 
             $order[do_lang('ORDER_NUMBER')] = strval($_order['o_id']);

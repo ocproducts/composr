@@ -32,8 +32,24 @@ class Hook_task_meta_tree_rebuild
     {
         require_code('themes_meta_tree');
         $meta_tree_builder = new Meta_tree_builder();
-        $meta_tree_builder->refresh();
+        $meta_tree_builder->refresh(null, null, array($this, 'log'));
 
         return null;
+    }
+
+    /**
+     * Do logging.
+     *
+     * @param  string $message Message to log
+     * @param  integer $i Iterator position
+     * @param  integer $total Total iterating through
+     */
+    public function log($message, $i, $total)
+    {
+        static $i = 0;
+
+        task_log($this, $message, $i, $total);
+
+        $i++;
     }
 }

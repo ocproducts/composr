@@ -66,11 +66,15 @@ class Hook_task_export_catalogue
         }
         fwrite($outfile, "\n");
 
+        $num_rows = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'COUNT(*)', array('c_name' => $catalogue_name));
+
         $start = 0;
         do {
             $entry_rows = $GLOBALS['SITE_DB']->query_select('catalogue_entries', array('*'), array('c_name' => $catalogue_name), 'ORDER BY ce_add_date ASC', 4000, $start);
 
-            foreach ($entry_rows as $entry_row) {
+            foreach ($entry_rows as $iteration => $entry_row) {
+                task_log($this, 'Exporting catalogue row', $iteration, $num_rows);
+
                 if ($entry_row === null) {
                     $entry_row = array();
                 }

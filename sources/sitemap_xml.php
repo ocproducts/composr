@@ -39,8 +39,10 @@ function init__sitemap_xml()
 
 /**
  * Top level function to (re)generate a Sitemap (xml file, Google-style).
+ *
+ * @param  ?mixed $callback Callback to run on each iteration (null: none)
  */
-function sitemap_xml_build()
+function sitemap_xml_build($callback = null)
 {
     $last_time = intval(get_value('last_sitemap_time_calc_inner', null, true));
     $time = time();
@@ -49,7 +51,7 @@ function sitemap_xml_build()
     $set_numbers = $GLOBALS['SITE_DB']->query('SELECT DISTINCT set_number FROM ' . get_table_prefix() . 'sitemap_cache WHERE last_updated>=' . strval($last_time));
     if (count($set_numbers) > 0) {
         foreach ($set_numbers as $set_number) {
-            rebuild_sitemap_set($set_number['set_number'], $last_time);
+            rebuild_sitemap_set($set_number['set_number'], $last_time, $callback);
         }
 
         // Delete any nodes marked for deletion now they've been reflected in the XML
@@ -72,8 +74,9 @@ function sitemap_xml_build()
  *
  * @param  integer $set_number Set number
  * @param  TIME $last_time Last sitemap generation time
+ * @param  ?mixed $callback Callback to run on each iteration (null: none)
  */
-function rebuild_sitemap_set($set_number, $last_time)
+function rebuild_sitemap_set($set_number, $last_time, $callback = null)
 {
     // Open
     $sitemaps_out_temppath = cms_tempnam(); // We write to temporary path first to minimise the time our target file is invalid (during generation)
@@ -89,6 +92,10 @@ function rebuild_sitemap_set($set_number, $last_time)
     foreach ($nodes as $node) {
         $page_link = $node['page_link'];
         list($zone, $attributes, $hash) = page_link_decode($page_link);
+
+        if ($callback !== null) {
+            call_user_func($callback);
+        }
 
         if (!has_actual_page_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), $attributes['page'], $zone)) {
             continue;

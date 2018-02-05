@@ -2607,7 +2607,7 @@ function is_mobile($user_agent = null, $truth = false)
 /**
  * Get the name of a webcrawler bot, or null if no bot detected.
  *
- * @param ?string $agent User agent (null: read from environment)
+ * @param  ?string $agent User agent (null: read from environment)
  * @return ?string Webcrawling bot name (null: not a bot)
  */
 function get_bot_type($agent = null)

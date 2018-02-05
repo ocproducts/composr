@@ -49,7 +49,9 @@ class Hook_task_export_points_log
 
         $members = $GLOBALS['FORUM_DRIVER']->get_matching_members('', 10000/*reasonable limit -- works via returning 'most active' first*/);
         $all_usergroups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list();
-        foreach ($members as $member) {
+        foreach ($members as $iteration => $member) {
+            task_log($this, 'Exporting points log row', $iteration, count($members));
+
             $member_id = $GLOBALS['FORUM_DRIVER']->mrow_id($member);
             $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
             $email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id);

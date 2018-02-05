@@ -44,6 +44,7 @@ function init__files()
         define('IGNORE_CUSTOM_DIR_GROWN_CONTENTS', 32768);
         define('IGNORE_NONBUNDLED_VERY_SCATTERED', 65536);
         define('IGNORE_NONBUNDLED_EXTREMELY_SCATTERED', 131072);
+        define('IGNORE_REBUILDABLE_OR_TEMP_FILES_FOR_BACKUP', 262144);
 
         define('FILE_WRITE_FAILURE_SILENT', 1);
         define('FILE_WRITE_FAILURE_SOFT', 2);
@@ -713,6 +714,15 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
     if (($bitmask & IGNORE_NON_EN_SCATTERED_LANGS) != 0) {
         // Wrong lang packs
         if (((strlen($filename) == 2) && (strtoupper($filename) == $filename) && ($filename_lower != $filename) && ($filename != 'EN')) || ($filename == 'EN_us') || ($filename == 'ZH-TW') || ($filename == 'ZH-CN')) {
+            return true;
+        }
+    }
+
+    if (($bitmask & IGNORE_REBUILDABLE_OR_TEMP_FILES_FOR_BACKUP) != 0) {
+        if (preg_match('#^exports/(builds|backups|addons)(/|$)#', strtolower($filepath)) != 0) {
+            return true;
+        }
+        if (preg_match('#^uploads/(auto_thumbs)(/|$)#', strtolower($filepath)) != 0) {
             return true;
         }
     }

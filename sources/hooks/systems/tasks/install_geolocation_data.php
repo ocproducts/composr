@@ -44,12 +44,15 @@ class Hook_task_install_geolocation_data
         if ($file === false) {
             warn_exit(do_lang_tempcode('READ_ERROR', escape_html($path)), false, true);
         }
+        $i = 0;
         $to_insert = array('begin_num' => array(), 'end_num' => array(), 'country' => array());
         while (!feof($file)) {
             $data = fgets($file);
             if ($data === false) {
                 continue;
             }
+
+            task_log($this, 'Preprocessing geolocation data row', $i);
 
             $_data = explode(',', $data);
             if (count($_data) == 3) {
@@ -62,6 +65,8 @@ class Hook_task_install_geolocation_data
                     $to_insert = array('begin_num' => array(), 'end_num' => array(), 'country' => array());
                 }
             }
+
+            $i++;
         }
         fclose($file);
 

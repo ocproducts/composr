@@ -123,7 +123,7 @@ if (get_param_integer('save__uploads', 1) == 1) {
                 }
             }
         } else {
-            tar_add_folder($STATIC_EXPORT_TAR, null, get_file_base(), null, $subpath, array(), null, false, false);
+            tar_add_folder($STATIC_EXPORT_TAR, null, get_file_base(), null, $subpath);
         }
     }
 }

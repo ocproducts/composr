@@ -120,16 +120,21 @@ class Hook_task_import_catalogue
 
         // Import, line by line
         $matched_ids = array();
+        $iteration = 0;
         while (($data = fgetcsv($handle, 100000, $del)) !== false) {
+            task_log($this, 'Importing catalogue row', $iteration);
+
             if ($data === array(null)) {
                 continue; // blank line
             }
-            $test = $this->import_csv_lines($catalogue_name, $data, $root_cat, $fields, $categories, $csv_field_titles, $key_field, $new_handling, $delete_handling, $update_handling, $matched_ids, $notes_field, $meta_keywords_field, $meta_description_field, $allow_rating, $allow_comments, $allow_trackbacks);
+            $test = $this->import_csv_line($catalogue_name, $data, $root_cat, $fields, $categories, $csv_field_titles, $key_field, $new_handling, $delete_handling, $update_handling, $matched_ids, $notes_field, $meta_keywords_field, $meta_description_field, $allow_rating, $allow_comments, $allow_trackbacks);
             if ($test !== null) {
                 fclose($handle);
                 @unlink($csv_path);
                 return $test;
             }
+
+            $iteration++;
         }
 
         // Handle non-matched existing ones
@@ -151,7 +156,7 @@ class Hook_task_import_catalogue
     }
 
     /**
-     * Create an entry-id=>value map of uploaded csv data and it's importing.
+     * Create an entry-id=>value map of uploaded CSV data and it's importing.
      *
      * @param  ID_TEXT $catalogue_name The name of the catalogue that was used
      * @param  array $csv_data Data array of CSV imported file's lines
@@ -172,7 +177,7 @@ class Hook_task_import_catalogue
      * @param  boolean $allow_trackbacks Whether trackbacks are allowed for this resource
      * @return ?array Return to propagate [immediate exit] (null: nothing to propagate)
      */
-    public function import_csv_lines($catalogue_name, $csv_data, $catalog_root, $fields, &$categories, $csv_field_titles, $key_field, $new_handling, $delete_handling, $update_handling, &$matched_ids, $notes_field, $meta_keywords_field, $meta_description_field, $allow_rating, $allow_comments, $allow_trackbacks)
+    public function import_csv_line($catalogue_name, $csv_data, $catalog_root, $fields, &$categories, $csv_field_titles, $key_field, $new_handling, $delete_handling, $update_handling, &$matched_ids, $notes_field, $meta_keywords_field, $meta_description_field, $allow_rating, $allow_comments, $allow_trackbacks)
     {
         $notes = '';
         $meta_keywords = '';

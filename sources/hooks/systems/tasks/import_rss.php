@@ -57,6 +57,8 @@ class Hook_task_import_rss
         $NEWS_CATS = $GLOBALS['SITE_DB']->query_select('news_categories', array('*'), array('nc_owner' => null));
         $NEWS_CATS = list_to_map('id', $NEWS_CATS);
         foreach ($rss->gleamed_items as $i => $item) {
+            task_log($this, 'Importing news row from RSS', $i, count($rss->gleamed_items));
+
             // What is it, being imported?
             $is_page = false;
             $is_news = true;

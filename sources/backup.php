@@ -23,12 +23,13 @@
 /**
  * Write PHP code for the restoration of database data into file.
  *
- * @param  resource $log_file The logfile to write to
+ * @param  resource $log_file The log file to write to
  * @param  ID_TEXT $db_meta The meta tablename
  * @param  ID_TEXT $db_meta_indices The index-meta tablename
  * @param  resource $install_php_file File to write in to
+ * @param  ?mixed $callback Callback to run on each iteration (null: none)
  */
-function get_table_backup($log_file, $db_meta, $db_meta_indices, &$install_php_file)
+function get_table_backup($log_file, $db_meta, $db_meta_indices, &$install_php_file, $callback = null)
 {
     push_db_scope_check(false);
 
@@ -38,6 +39,10 @@ function get_table_backup($log_file, $db_meta, $db_meta_indices, &$install_php_f
     // For each table, build up a Composr table creation command
     foreach ($tables as $_table) {
         $table = $_table['m_table'];
+
+        if ($callback !== null) {
+            call_user_func_array($callback, array('Backing up table ' . $table));
+        }
 
         $fields = $GLOBALS['SITE_DB']->query_select($db_meta, array('*'), array('m_table' => $table));
 
@@ -123,9 +128,10 @@ function get_table_backup($log_file, $db_meta, $db_meta_indices, &$install_php_f
  * @param  string $b_type The type of backup to do
  * @set    full incremental
  * @param  integer $max_size The maximum size of a file to include in the backup
+ * @param  ?mixed $callback Callback to run on each iteration (null: none)
  * @return Tempcode Success message
  */
-function make_backup($file, $b_type = 'full', $max_size = 100) // This is called as a shutdown function and thus cannot script-timeout
+function make_backup($file, $b_type = 'full', $max_size = 100, $callback = null) // This is called as a shutdown function and thus cannot script-timeout
 {
     if (php_function_allowed('set_time_limit')) {
         @set_time_limit(0);
@@ -214,7 +220,7 @@ function make_backup($file, $b_type = 'full', $max_size = 100) // This is called
 //        'i_fields' => '*ID_TEXT',
 //    ));
 ");
-    get_table_backup($log_file, 'db_meta', 'db_meta_indices', $install_data_php_file);
+    get_table_backup($log_file, 'db_meta', 'db_meta_indices', $install_data_php_file, $callback);
 
     fclose($install_data_php_file);
 
@@ -228,12 +234,12 @@ function make_backup($file, $b_type = 'full', $max_size = 100) // This is called
         set_value('last_backup', strval(time()));
         $original_files = (get_param_integer('keep_backup_alien', 0) == 1) ? unserialize(file_get_contents(get_file_base() . '/data/files.dat')) : array();
         $root_only_dirs = directories_to_backup();
-        tar_add_folder($backup_file, $log_file, get_custom_file_base(), $max_size, '', $original_files, $root_only_dirs, !running_script('cron_bridge'));
+        tar_add_folder($backup_file, $log_file, get_custom_file_base(), $max_size, '', $original_files, $root_only_dirs, !running_script('cron_bridge'), IGNORE_REBUILDABLE_OR_TEMP_FILES_FOR_BACKUP, $callback);
     } elseif ($b_type == 'incremental') {
         $threshold = intval(get_value('last_backup'));
 
         set_value('last_backup', strval(time()));
-        $directory = tar_add_folder_incremental($backup_file, $log_file, get_custom_file_base(), $threshold, $max_size);
+        $directory = tar_add_folder_incremental($backup_file, $log_file, get_custom_file_base(), $threshold, $max_size, '', IGNORE_REBUILDABLE_OR_TEMP_FILES_FOR_BACKUP, $callback);
         $_directory = '';
         foreach ($directory as $d) {
             $a = '';

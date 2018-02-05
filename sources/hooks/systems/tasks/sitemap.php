@@ -33,10 +33,22 @@ class Hook_task_sitemap
         set_value('sitemap_building_in_progress', '1', true);
 
         require_code('sitemap_xml');
-        sitemap_xml_build();
+        sitemap_xml_build(array($this, 'log'));
 
         set_value('sitemap_building_in_progress', '0', true);
 
         return null;
+    }
+
+    /**
+     * Do logging.
+     */
+    public function log()
+    {
+        static $i = 0;
+
+        task_log($this, 'Processing row into XML Sitemap', $i);
+
+        $i++;
     }
 }

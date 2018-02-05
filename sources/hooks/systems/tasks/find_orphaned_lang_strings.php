@@ -65,7 +65,9 @@ class Hook_task_find_orphaned_lang_strings
                 $langidfields[] = array('m_name' => $f['m_name'], 'm_table' => $f['m_table']);
             }
         }
-        foreach ($langidfields as $langidfield) {
+        foreach ($langidfields as $iteration => $langidfield) {
+            task_log($this, 'Processing table ' . $langidfield['m_table'], $iteration, count($langidfields));
+
             $select = array($langidfield['m_name']);
             foreach ($all_fields as $f) {
                 if ((substr($f['m_type'], 0, 1) == '*') && ($f['m_table'] == $langidfield['m_table'])) {

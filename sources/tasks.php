@@ -19,6 +19,17 @@
  */
 
 /**
+ * Standard code module initialisation function.
+ *
+ * @ignore
+ */
+function init__tasks()
+{
+    global $TASK_LOG_FILE;
+    $TASK_LOG_FILE = null;
+}
+
+/**
  * Script to execute a described task.
  */
 function tasks_script()
@@ -81,7 +92,11 @@ function execute_task_background($task_row)
     }
     require_code('hooks/systems/tasks/' . filter_naughty_harsh($hook));
     $ob = object_factory('Hook_task_' . filter_naughty_harsh($hook));
+    task_log_open();
+    task_log(null, 'Starting task ' . $hook);
     $result = call_user_func_array(array($ob, 'run'), $args);
+    task_log(null, 'Finished task ' . $hook);
+    task_log_close();
 
     if ($task_row['t_send_notification'] == 1) {
         $attachments = array();
@@ -188,7 +203,11 @@ function call_user_func_array__long_task($plain_title, $title, $hook, $args = ar
         // Run task
         require_code('hooks/systems/tasks/' . filter_naughty_harsh($hook));
         $ob = object_factory('Hook_task_' . filter_naughty_harsh($hook));
+        task_log_open();
+        task_log(null, 'Starting task ' . $hook);
         $result = call_user_func_array(array($ob, 'run'), $args);
+        task_log(null, 'Finished task ' . $hook);
+        task_log_close();
         if ($result === null) {
             if ($title === null) {
                 return new Tempcode();
@@ -287,4 +306,74 @@ function call_user_func_array__long_task($plain_title, $title, $hook, $args = ar
         return do_lang_tempcode('NEW_TASK_RUNNING');
     }
     return inform_screen($title, do_lang_tempcode('NEW_TASK_RUNNING'));
+}
+
+/**
+ * Open task log.
+ */
+function task_log_open()
+{
+    global $TASK_LOG_FILE;
+    $log_path = get_custom_file_base() . '/data_custom/tasks.log';
+    if (!is_file($log_path)) {
+        return;
+    }
+    $TASK_LOG_FILE = fopen($log_path, 'ab');
+    flock($TASK_LOG_FILE, LOCK_EX);
+    fseek($TASK_LOG_FILE, 0, SEEK_END);
+}
+
+/**
+ * Do task logging.
+ *
+ * @param  ?object $object Task object that the logging comes from (null: N/A)
+ * @param  string $message Message to log
+ * @param  ?integer $i Iterator position, must be passed for any high frequency calls to this function (null: N/A)
+ * @param  ?integer $total Total iterating through (null: N/A)
+ */
+function task_log($object, $message, $i = null, $total = null)
+{
+    global $TASK_LOG_FILE;
+    if ($TASK_LOG_FILE === null) {
+        return;
+    }
+
+    static $last_call = null;
+    if ($i !== null) {
+        if (($last_call !== null) && ($last_call > time() - 5)) {
+            return; // We don't want to log more than every 5 seconds for these high frequency calls
+        }
+        $last_call = time();
+    }
+
+    $line = '';
+    $line .= date('Y-m-d H:i:s');
+    if ($object !== null) {
+        $line .= ' [' . get_class($object) . ']';
+    }
+    $line .= ': ' . $message;
+    if ($i !== null) {
+        $line .= ' (';
+        $line .= integer_format($i);
+        if ($total !== null) {
+            $line .= '/';
+            $line .= integer_format($total);
+        }
+        $line .= ')';
+    }
+    $line .= "\n";
+
+    fwrite($TASK_LOG_FILE, $line);
+}
+
+/**
+ * Close task log.
+ */
+function task_log_close()
+{
+    global $TASK_LOG_FILE;
+    if ($TASK_LOG_FILE === null) {
+        return;
+    }
+    fclose($TASK_LOG_FILE);
 }

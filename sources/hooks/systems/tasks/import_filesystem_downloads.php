@@ -80,6 +80,8 @@ class Hook_task_import_filesystem_downloads
 
         require_code('files');
 
+        task_log($this, 'Processing ' . $server_path . ' directory for files');
+
         $dh = @opendir($server_path);
         if ($dh !== false) {
             while (($entry = readdir($dh)) !== false) {

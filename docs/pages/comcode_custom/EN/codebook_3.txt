@@ -480,6 +480,7 @@ Useful Composr logs include:
  - The {$IS_MAINTAINED,extra_logging,eCommerce log}, if enabled (enable it via creating an empty writable [tt]data_custom/ecommerce.log[/tt] file)
  - The Cron log, if enabled (enable it via creating an empty writable [tt]data_custom/cron.log[/tt] file)
  - The Health Check log, if enabled (enable it via creating an empty writable [tt]data_custom/health_check.log[/tt] file)
+ - The Tasks log, if enabled (enable it via creating an empty writable [tt]data_custom/tasks.log[/tt] file)
  - Permission checks, if enabled (useful for debugging why accessing is failing) (enable it via creating an empty writable [tt]data_custom/permission_checks.log[/tt] file; can view from Admin Zone > Audit > Error log)
  - Queries running (debugging), if enabled (enable it via creating an empty writable [tt]data_custom/queries.log[/tt] file)
  - Slow queries running (debugging performance), if enabled (enable it via creating an empty writable [tt]data_custom/big_query_screens.log[/tt] file)

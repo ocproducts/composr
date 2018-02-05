@@ -185,27 +185,34 @@ function file_size_to_tar_block_size($size)
  * Add a folder to the TAR archive, however only store files modifed after a threshold time. It is incremental (incremental backup), by comparing against a threshold before adding a file (threshold being time of last backup).
  *
  * @param  array $resource The TAR file handle
- * @param  ?resource $logfile The logfile to write to (null: no logging)
+ * @param  ?resource $log_file The logfile to write to (null: no logging)
  * @param  PATH $path The full path to the folder to add
  * @param  TIME $threshold The threshold time
  * @param  ?integer $max_size The maximum file size to add (null: no limit)
  * @param  PATH $subpath The subpath relative to the path (should be left as the default '', as this is used for the recursion to distinguish the adding base path from where it's currently looking)
- * @param  boolean $all_files Whether to not skip "special files" (ones not normally archive)
+ * @param  ?integer $ignore_bitmask Bitmask of extra stuff to ignore (see IGNORE_* constants) (null: don't ignore anything)
+ * @param  ?mixed $callback Callback to run on each iteration (null: none)
  * @return array A list of maps that stores 'path', 'mode' and 'size', for each newly added file in the archive
  */
-function tar_add_folder_incremental(&$resource, $logfile, $path, $threshold, $max_size, $subpath = '', $all_files = false)
+function tar_add_folder_incremental(&$resource, $log_file, $path, $threshold, $max_size, $subpath = '', $ignore_bitmask = 0, $callback = null)
 {
     require_code('files');
 
     $_full = ($path == '') ? $subpath : ($path . '/' . $subpath);
+
     if ($_full == '') {
         $_full = '.';
     }
+
+    if ($callback !== null) {
+        call_user_func_array($callback, array('TARing files from ' . $_full));
+    }
+
     $info = array();
-    if ($logfile !== null) {
+    if ($log_file !== null) {
         $dh = @opendir($_full);
         if ($dh === false) {
-            if (fwrite($logfile, 'Could not access ' . $_full . "\n") == 0) {
+            if (fwrite($log_file, 'Could not access ' . $_full . "\n") == 0) {
                 warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html('?')), false, true);
             }
         }
@@ -220,26 +227,16 @@ function tar_add_folder_incremental(&$resource, $logfile, $path, $threshold, $ma
 
             $_subpath = ($subpath == '') ? $entry : ($subpath . '/' . $entry);
 
-            // Also see code in backup_size.php, and repeated in this file
-            if ($GLOBALS['DEV_MODE']) {
-                if ($_subpath == 'exports/builds' || $_subpath == 'exports/addons') {
-                    continue;
-                }
-            }
-            if ($_subpath == 'uploads/incoming' || $_subpath == 'uploads/auto_thumbs') {
-                continue;
-            }
-
-            if (($all_files) || (!should_ignore_file($_subpath))) {
+            if (($ignore_bitmask === null) || (!should_ignore_file($_subpath, $ignore_bitmask))) {
                 $full = ($path == '') ? $_subpath : ($path . '/' . $_subpath);
                 if (!is_readable($full)) {
-                    if (fwrite($logfile, 'Could not access ' . $full . "\n") == 0) {
+                    if (fwrite($log_file, 'Could not access ' . $full . "\n") == 0) {
                         warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html('?')), false, true);
                     }
                     continue;
                 }
                 if (is_dir($full)) {
-                    $info2 = tar_add_folder_incremental($resource, $logfile, $path, $threshold, $max_size, $_subpath, $all_files);
+                    $info2 = tar_add_folder_incremental($resource, $log_file, $path, $threshold, $max_size, $_subpath, $ignore_bitmask, $callback);
                     $info = array_merge($info, $info2);
                 } else {
                     if (($full != $resource['full']) && ($full != 'DIRECTORY')) {
@@ -247,7 +244,7 @@ function tar_add_folder_incremental(&$resource, $logfile, $path, $threshold, $ma
                         $mtime = filemtime($full);
                         if ((($mtime > $threshold || $ctime > $threshold)) && (($max_size === null) || (filesize($full) < $max_size * 1024 * 1024))) {
                             tar_add_file($resource, $_subpath, $full, fileperms($full), filemtime($full), true, true);
-                            if ($logfile !== null && fwrite($logfile, 'Backed up file ' . $_subpath . ' (' . clean_file_size(filesize($full)) . ')' . "\n") == 0) {
+                            if ($log_file !== null && fwrite($log_file, 'Backed up file ' . $_subpath . ' (' . clean_file_size(filesize($full)) . ')' . "\n") == 0) {
                                 warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html('?')), false, true);
                             }
                         }
@@ -284,27 +281,34 @@ function tar_add_folder_incremental(&$resource, $logfile, $path, $threshold, $ma
  * Add a folder to the TAR archive.
  *
  * @param  array $resource The TAR file handle
- * @param  ?resource $logfile The logfile to write to (null: no logging)
+ * @param  ?resource $log_file The logfile to write to (null: no logging)
  * @param  PATH $path The full path to the folder to add
  * @param  ?integer $max_size The maximum file size to add (null: no limit)
  * @param  PATH $subpath The subpath relative to the path (should be left as the default '', as this is used for the recursion to distinguish the adding base path from where it's currently looking)
  * @param  array $avoid_backing_up A map (filename=>true) of files to not back up
  * @param  ?array $root_only_dirs A list of directories ONLY to back up from the root (null: no restriction)
  * @param  boolean $tick Whether to output spaces as we go to keep the connection alive
- * @param  boolean $all_files Whether to not skip "special files" (ones not normally archive)
+ * @param  ?integer $ignore_bitmask Bitmask of extra stuff to ignore (see IGNORE_* constants) (null: don't ignore anything)
+ * @param  ?mixed $callback Callback to run on each iteration (null: none)
  */
-function tar_add_folder(&$resource, $logfile, $path, $max_size = null, $subpath = '', $avoid_backing_up = array(), $root_only_dirs = null, $tick = false, $all_files = false) // Note we cannot modify $resource unless we pass it by reference
+function tar_add_folder(&$resource, $log_file, $path, $max_size = null, $subpath = '', $avoid_backing_up = array(), $root_only_dirs = null, $tick = false, $ignore_bitmask = 0, $callback = null) // Note we cannot modify $resource unless we pass it by reference
 {
     require_code('files');
 
     $_full = ($path == '') ? $subpath : ($path . '/' . $subpath);
+
     if ($_full == '') {
         $_full = '.';
     }
-    if ($logfile !== null) {
+
+    if ($callback !== null) {
+        call_user_func_array($callback, array('TARing files from ' . $_full));
+    }
+
+    if ($log_file !== null) {
         $dh = @opendir($_full);
         if ($dh === false) {
-            if (fwrite($logfile, 'Could not access ' . $_full . ' [case 2]' . "\n") == 0) {
+            if (fwrite($log_file, 'Could not access ' . $_full . ' [case 2]' . "\n") == 0) {
                 warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html('?')), false, true);
             }
         }
@@ -333,10 +337,10 @@ function tar_add_folder(&$resource, $logfile, $path, $max_size = null, $subpath 
                 continue;
             }
 
-            if (($all_files) || (!should_ignore_file($_subpath))) {
+            if (($ignore_bitmask === null) || (!should_ignore_file($_subpath, $ignore_bitmask))) {
                 $full = ($path == '') ? $_subpath : ($path . '/' . $_subpath);
                 if (!is_readable($full)) {
-                    if (fwrite($logfile, 'Could not access ' . $full . "\n") == 0) {
+                    if (fwrite($log_file, 'Could not access ' . $full . "\n") == 0) {
                         warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html('?')), false, true);
                     }
                     continue;
@@ -344,12 +348,12 @@ function tar_add_folder(&$resource, $logfile, $path, $max_size = null, $subpath 
 
                 if (is_dir($full)) {
                     if (($root_only_dirs === null) || (in_array($entry, $root_only_dirs))) {
-                        tar_add_folder($resource, $logfile, $path, $max_size, $_subpath, $avoid_backing_up, null, $tick, $all_files);
+                        tar_add_folder($resource, $log_file, $path, $max_size, $_subpath, $avoid_backing_up, null, $tick, $ignore_bitmask, $callback);
                     }
                 } else {
                     if ((($full != $resource['full']) && (($max_size === null) || (filesize($full) < $max_size * 1024 * 1024))) && (!array_key_exists($_subpath, $avoid_backing_up))) {
                         tar_add_file($resource, $_subpath, $full, fileperms($full), filemtime($full), true, true);
-                        if ($logfile !== null && fwrite($logfile, 'Backed up file ' . $_subpath . ' (' . clean_file_size(filesize($full)) . ')' . "\n") == 0) {
+                        if ($log_file !== null && fwrite($log_file, 'Backed up file ' . $_subpath . ' (' . clean_file_size(filesize($full)) . ')' . "\n") == 0) {
                             warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html('?')), false, true);
                         }
                     }
