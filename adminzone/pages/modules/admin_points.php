@@ -247,7 +247,7 @@ class Module_admin_points
     }
 
     /**
-     * The actualiser to reverse a point gift transaction.
+     * The UI/actualiser to reverse a point gift transaction.
      *
      * @return Tempcode The UI
      */

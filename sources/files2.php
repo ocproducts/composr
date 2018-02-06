@@ -569,7 +569,7 @@ function get_directory_size($path, $recurse = true)
 /**
  * Get a message for maximum uploads.
  *
- * @param  integer $max Maximum size in MB
+ * @param  float $max Maximum size in MB
  * @return Tempcode The message
  */
 function get_maximum_upload_message($max)
