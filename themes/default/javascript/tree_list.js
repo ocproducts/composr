@@ -49,7 +49,7 @@
         $dom.html(this.el, '<div class="ajax-loading vertical-alignment"><img width="20" height="20" src="' + $util.srl('{$IMG*;^,loading}') + '" alt="" /> <span>{!LOADING;^}</span></div>');
 
         // Initial rendering
-        var url = $util.url(this.ajaxUrl), 
+        var url = this.ajaxUrl, 
             that = this;
         if (params.rootId) {
             url += '&id=' + encodeURIComponent(params.rootId);

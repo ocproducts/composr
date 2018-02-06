@@ -2906,7 +2906,7 @@
             $cms.ui.clearOutTooltips();
 
             // Make AJAX block call
-            $cms.callBlock(blockCallUrl.toString(), '', blockElement, append, false, postParams).then(function () {
+            $cms.callBlock($util.rel(blockCallUrl), '', blockElement, append, false, postParams).then(function () {
                 if (scrollToTop) {
                     window.scrollTo(0, blockPosY);
                 }

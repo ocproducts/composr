@@ -646,7 +646,7 @@
             els.forEach(function (el) {
                 $dom.on(el, 'click', function () {
                     var args = arrVal($dom.data(el, 'clickUiOpen'));
-                    $cms.ui.open($cms.maintainThemeInLink(args[0]), args[1], args[2], args[3], args[4]);
+                    $cms.ui.open($util.rel($cms.maintainThemeInLink(args[0])), args[1], args[2], args[3], args[4]);
                 });
             });
         }

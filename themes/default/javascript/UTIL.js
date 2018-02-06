@@ -952,6 +952,17 @@
     };
 
     /**
+     * Returns a root-relative URL
+     * @param url
+     * @return {string}
+     */
+    $util.rel = function rel(url) {
+        url = (url instanceof URL) ? url : $util.url(url);
+
+        return url.pathname + url.search + url.hash;
+    };
+
+    /**
      * Force a link to be clicked without user clicking it directly (useful if there's a confirmation dialog inbetween their click)
      * @param url
      * @param target

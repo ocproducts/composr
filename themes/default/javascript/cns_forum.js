@@ -141,11 +141,11 @@
             introQuestionUrl = params.introQuestionUrl;
 
         $dom.on(container, 'click', '.js-click-open-forum-rules-popup', function () {
-            $cms.ui.open($cms.maintainThemeInLink(forumRulesUrl), '', 'width=600,height=auto,status=yes,resizable=yes,scrollbars=yes');
+            $cms.ui.open($util.rel($cms.maintainThemeInLink(forumRulesUrl)), '', 'width=600,height=auto,status=yes,resizable=yes,scrollbars=yes');
         });
 
         $dom.on(container, 'click', '.js-click-open-intro-question-popup', function () {
-            $cms.ui.open($cms.maintainThemeInLink(introQuestionUrl), '', 'width=600,height=auto,status=yes,resizable=yes,scrollbars=yes');
+            $cms.ui.open($util.rel($cms.maintainThemeInLink(introQuestionUrl)), '', 'width=600,height=auto,status=yes,resizable=yes,scrollbars=yes');
         });
     };
 

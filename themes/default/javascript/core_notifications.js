@@ -294,14 +294,14 @@
             var notificationCode = notification.getAttribute('notification_code');
             if (sound === 'on' && notificationCode !== 'ticket_reply' && notificationCode !== 'ticket_reply_staff') {
                 var goFunc = function goFunc() {
-                    var soundObject = window.soundManager.createSound({url: $util.url('data/sounds/message_received.mp3').toString() });
+                    var soundObject = window.soundManager.createSound({url: $util.rel('data/sounds/message_received.mp3') });
                     if (soundObject && document.hasFocus()/*don't want multiple tabs all pinging*/) {
                         soundObject.play();
                     }
                 };
 
                 if (!window.soundManager.setupOptions.url) {
-                    window.soundManager.setup({onready: goFunc, url: $util.url('data/soundmanager').toString(), debugMode: false});
+                    window.soundManager.setup({onready: goFunc, url: $util.rel('data/soundmanager'), debugMode: false});
                 } else {
                     goFunc();
                 }
@@ -511,7 +511,7 @@
         } else if (window.external && window.external.msIsSiteMode()) { /* IE9+ */
             //Clear any previous notifications
             window.external.msSiteModeClearIconOverlay();
-            window.external.msSiteModeSetIconOverlay('{$IMG;,notifications/notifications}', title);
+            window.external.msSiteModeSetIconOverlay($util.srl('{$IMG;,notifications/notifications}'), title);
             window.external.msSiteModeActivate();
             notification = {
                 "ieVerification": ++ieVerification

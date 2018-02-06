@@ -1391,7 +1391,7 @@
                     if (link.renderedTooltip === undefined) {
                         link.isOver = true;
 
-                        $cms.doAjaxRequest($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&raw_output=1&box_title={!PREVIEW;&}' + $cms.keep()), null, 'data=' + encodeURIComponent(comcode)).then(function (xhr) {
+                        $cms.doAjaxRequest($util.rel($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&raw_output=1&box_title={!PREVIEW;&}' + $cms.keep())), null, 'data=' + encodeURIComponent(comcode)).then(function (xhr) {
                             if (xhr && xhr.responseText) {
                                 link.renderedTooltip = xhr.responseText;
                             }

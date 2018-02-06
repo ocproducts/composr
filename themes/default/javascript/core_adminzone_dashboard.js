@@ -1,11 +1,5 @@
 (function ($cms, $util, $dom) {
     'use strict';
-
-    var $IMG_checklist_checklist_done = '{$IMG;,icons/checklist/checklist_done}',
-        $IMG_checklist_checklist_todo = '{$IMG;,icons/checklist/checklist_todo}';
-
-    var $SCRIPT_comcode_convert = '{$FIND_SCRIPT_NOHTTP;,comcode_convert}';
-
     /**
      * @memberof $cms.views
      * @class BlockMainStaffChecklistCustomTask
@@ -40,11 +34,11 @@
 
             if (data.vwTaskDone === 'checklist_todo') {
                 $cms.loadSnippet('checklist_task_manage', 'type=mark_done&id=' + id);
-                this.imgChecklistStatus.src = $IMG_checklist_checklist_done;
+                this.imgChecklistStatus.src = $util.srl('{$IMG;,icons/checklist/checklist_done}');
                 data.vwTaskDone = 'checklist_done';
             } else {
                 $cms.loadSnippet('checklist_task_manage', 'type=mark_undone&id=' + id);
-                this.imgChecklistStatus.src = $IMG_checklist_checklist_todo;
+                this.imgChecklistStatus.src = $util.srl('{$IMG;,icons/checklist/checklist_todo}');
                 data.vwTaskDone = 'checklist_todo';
             }
         },
@@ -287,7 +281,7 @@
         }
 
         return new Promise(function (resolve) {
-            $cms.doAjaxRequest($cms.maintainThemeInLink($SCRIPT_comcode_convert + $cms.keep(true)), null, post).then(function (xhr) {
+            $cms.doAjaxRequest($util.rel($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}' + $cms.keep(true))), null, post).then(function (xhr) {
                 if (xhr.responseText && (xhr.responseText !== 'false')) {
                     var result = xhr.responseXML && xhr.responseXML.querySelector('result');
 

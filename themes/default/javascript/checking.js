@@ -276,7 +276,7 @@
                     previewUrl.searchParams.set('uploading', '1');
                 }
 
-                form.action = previewUrl;
+                form.action = $util.srl(previewUrl);
 
                 var oldTarget = form.target || '_top'; // not _self due to edit screen being a frame itself
 
@@ -304,7 +304,7 @@
                 if (hasSeparatePreview) {
                     var action = $util.url(form.oldAction);
                     action.searchParams.set('preview', 1);
-                    form.action = action;
+                    form.action = $util.srl(action);
                     resolvePreviewPromise(true);
                     form.submit();
                     return;

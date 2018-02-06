@@ -42,7 +42,7 @@
     $cms.templates.facebookFooter = function facebookFooter(params) {
         var facebookAppid = strVal(params.facebookAppid);
         if (facebookAppid !== '') {
-            facebookInit(facebookAppid, $util.url('facebook_connect.php').toString(), (params.fbConnectFinishingProfile || params.fbConnectLoggedOut), (params.fbConnectUid === '' ? null : params.fbConnectUid), '{$PAGE_LINK;,:}', '{$PAGE_LINK;,:login:logout}');
+            facebookInit(facebookAppid, $util.rel('facebook_connect.php'), (params.fbConnectFinishingProfile || params.fbConnectLoggedOut), (params.fbConnectUid === '' ? null : params.fbConnectUid), '{$PAGE_LINK;,:}', '{$PAGE_LINK;,:login:logout}');
         }
     };
 

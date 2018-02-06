@@ -21,13 +21,13 @@
 			<th></th>
 			{+START,IF_PASSED_AND_TRUE,SHOW_PRIVILEGES}
 				<th>
-					{$SET,url,{$BASE_URL}/data/gd_text.php?trans_color={COLOR}&text={$ESCAPE,{!NOTIFICATION_PRIVILEGED},UL_ESCAPED}{$KEEP}}
+					{$SET,url,{$FIND_SCRIPT_NOHTTP,gd_text}?trans_color={COLOR}&text={$ESCAPE,{!NOTIFICATION_PRIVILEGED},UL_ESCAPED}{$KEEP}}
 					<img class="gd-text" data-gd-text="{}" src="{$GET*,url}" title="{!NOTIFICATION_PRIVILEGED}" alt="{!NOTIFICATION_PRIVILEGED}" />
 				</th>
 			{+END}
 			{+START,LOOP,NOTIFICATION_TYPES_TITLES}
 				<th>
-					{$SET,url,{$BASE_URL}/data/gd_text.php?trans_color={COLOR}&text={$ESCAPE,{LABEL},UL_ESCAPED}{$KEEP}}
+					{$SET,url,{$FIND_SCRIPT_NOHTTP,gd_text}?trans_color={COLOR}&text={$ESCAPE,{LABEL},UL_ESCAPED}{$KEEP}}
 					<img class="gd-text" data-gd-text="{}" src="{$GET*,url}" title="" alt="{LABEL*}" />
 				</th>
 			{+END}

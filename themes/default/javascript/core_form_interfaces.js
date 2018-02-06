@@ -527,7 +527,7 @@
             multiSelect = !!params.multiSelect && (params.multiSelect !== '0');
 
         $cms.requireJavascript('tree_list').then(function () {
-            $cms.ui.createTreeList(params.name, 'data/ajax_tree.php?hook=' + hook + $cms.keep(), rootId, opts, multiSelect, params.tabIndex, false, !!params.useServerId);
+            $cms.ui.createTreeList(params.name, '{$FIND_SCRIPT_NOHTTP;,ajax_tree}?hook=' + hook + $cms.keep(), rootId, opts, multiSelect, params.tabIndex, false, !!params.useServerId);
         });
 
         $dom.on(container, 'change', '.js-input-change-update-mirror', function (e, input) {
@@ -857,12 +857,12 @@
         });
 
         $dom.on(labelRow, 'click', '.js-link-click-open-field-emoticon-chooser-window', function (e, link) {
-            var url = $cms.maintainThemeInLink(link.href);
+            var url = $util.rel($cms.maintainThemeInLink(link.href));
             $cms.ui.open(url, 'field_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
         });
 
         $dom.on(inputRow, 'click', '.js-link-click-open-site-emoticon-chooser-window', function (e, link) {
-            var url = $cms.maintainThemeInLink(link.href);
+            var url = $util.rel($cms.maintainThemeInLink(link.href));
             $cms.ui.open(url, 'site_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
         });
     };

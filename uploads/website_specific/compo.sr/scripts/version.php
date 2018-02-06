@@ -192,7 +192,7 @@ function display_version_upgrade_path($higher_version)
         <script>
             (function() {
                 var span = document.getElementById('link-pos-<?= strval($i) ?>');
-                var upgraderLink = $util.url(<?= json_encode($upgrade_script) ?>);
+                var upgraderLink = $util.rel(<?= json_encode($upgrade_script) ?>);
                 var html = '<form style="display: inline" action="' + $cms.filter.html(upgraderLink) + '" target="_blank" method="post"><input class="menu-adminzone-tools-upgrade button-micro" type="submit" title="Upgrade to <?= escape_html($higher_version['version_pretty']) ?>" value="Launch upgrader" /></form>';
                 span.innerHTML = html;
             }());

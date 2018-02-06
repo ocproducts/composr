@@ -12,7 +12,7 @@
 
         window.currentSelection = '';
         $cms.requireJavascript('tree_list').then(function () {
-            window.sitemap = $cms.ui.createTreeList('tree-list', 'data/sitemap.php?get_perms=0' + $cms.keep() + '&start_links=1', null, '', false, null, false, true);
+            window.sitemap = $cms.ui.createTreeList('tree-list', '{$FIND_SCRIPT_NOHTTP;,sitemap}?get_perms=0' + $cms.keep() + '&start_links=1', null, '', false, null, false, true);
         });
 
         function doubleClick() {
@@ -85,11 +85,11 @@
             if (!menuEditorWrapEl.classList.contains('docked')) {
                 menuEditorWrapEl.classList.add('docked');
                 menuEditorWrapEl.classList.remove('docked');
-                img.src = '{$IMG;*,icons/arrow_box/arrow_box_hover}';
+                img.src = $util.srl('{$IMG;*,icons/arrow_box/arrow_box_hover}');
             } else {
                 menuEditorWrapEl.classList.add('non-docked');
                 menuEditorWrapEl.classList.remove('docked');
-                img.src = '{$IMG;*,icons/arrow_box/arrow_box}';
+                img.src = $util.srl('{$IMG;*,icons/arrow_box/arrow_box}');
             }
         }
     };
@@ -466,7 +466,7 @@
     };
 
     $cms.templates.pageLinkChooser = function pageLinkChooser(params, container) {
-        var ajaxUrl = 'data/sitemap.php?get_perms=0' + $cms.keep() + '&start_links=1';
+        var ajaxUrl = '{$FIND_SCRIPT_NOHTTP;,sitemap}?get_perms=0' + $cms.keep() + '&start_links=1';
 
         if (params.pageType != null) {
             ajaxUrl += '&page_type=' + params.pageType;

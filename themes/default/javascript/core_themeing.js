@@ -246,7 +246,7 @@
                         return;
                     } 
 
-                    var url = $util.url('data/snippet.php?snippet=css_compile__text' + $cms.keep()),
+                    var url = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=css_compile__text' + $cms.keep(),
                         post = 'css=' + encodeURIComponent(newCss);
                     if ($cms.form.isModSecurityWorkaroundEnabled()) {
                         post = $cms.form.modSecurityWorkaroundAjax(post);
@@ -587,7 +587,7 @@
             if ((value === 'BLOCK') && (($cms.ui.showModalDialog !== undefined) || $cms.configOption('js_overlays'))) {
                 var url = '{$FIND_SCRIPT_NOHTTP;,block_helper}?field_name=' + textbox.name + '&block_type=template' + $cms.keep();
                 $cms.ui.showModalDialog(
-                    $cms.maintainThemeInLink(url),
+                    $util.rel($cms.maintainThemeInLink(url)),
                     null,
                     'dialogWidth=750;dialogHeight=600;status=no;resizable=yes;scrollbars=yes;unadorned=yes',
                     function () {
@@ -729,7 +729,7 @@
         templateEditorCleanTabs();
 
         $cms.requireJavascript('tree_list').then(function () {
-            window.sitemap = $cms.ui.createTreeList('theme_files', 'data/ajax_tree.php?hook=choose_theme_files&theme=' + params.theme + $cms.keep(), null, '', false, null, false, true);
+            window.sitemap = $cms.ui.createTreeList('theme_files', '{$FIND_SCRIPT_NOHTTP;,ajax_tree}?hook=choose_theme_files&theme=' + params.theme + $cms.keep(), null, '', false, null, false, true);
         });
 
         setTimeout(function () {

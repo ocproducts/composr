@@ -23,7 +23,7 @@
         window.usergroupTitles = params.usergroups;
 
         $cms.requireJavascript('tree_list').then(function () {
-            window.sitemap = $cms.ui.createTreeList('tree-list', 'data/sitemap.php?start_links=1&get_perms=1&label_content_types=1&keep_full_structure=1' + $cms.keep(), null, '', true);
+            window.sitemap = $cms.ui.createTreeList('tree-list', '{$FIND_SCRIPT_NOHTTP;,sitemap}?start_links=1&get_perms=1&label_content_types=1&keep_full_structure=1' + $cms.keep(), null, '', true);
         });
     }
 
@@ -205,7 +205,7 @@
                                 newCell = row.insertBefore(document.createElement('th'), row.cells[row.cells.length]);
                                 newCell.className = 'privilege-header';
                                 newCell.id = 'privilege_header_' + privilege;
-                                $dom.html(newCell, '<img class="gd-text" data-gd-text="1" src="' + $cms.filter.html($util.url('data/gd_text.php?color=' + window.columnColor + '&text=' + encodeURIComponent(privilegeTitle) + $cms.keep())) + '" title="' + $cms.filter.html(privilegeTitle) + '" alt="' + $cms.filter.html(privilegeTitle) + '" />');
+                                $dom.html(newCell, '<img class="gd-text" data-gd-text="1" src="' + $cms.filter.html('{$FIND_SCRIPT_NOHTTP;,gd_text}?color=' + window.columnColor + '&text=' + encodeURIComponent(privilegeTitle) + $cms.keep()) + '" title="' + $cms.filter.html(privilegeTitle) + '" alt="' + $cms.filter.html(privilegeTitle) + '" />');
 
                                 rows[rows.length - 1].appendChild(document.createElement('td')).className = 'form-table-field-input privilege_footer'; // Footer cell
 
@@ -406,7 +406,7 @@
 
         // Send AJAX request
         if (setRequest !== '') {
-            $cms.doAjaxRequest('data/sitemap.php?set_perms=1' + $cms.keep(), null, setRequest).then(function () {
+            $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,sitemap}?set_perms=1' + $cms.keep(), null, setRequest).then(function () {
                 $cms.ui.alert('{!permissions:PERMISSIONS_TREE_EDITOR_SAVED;^}');
             });
             return;

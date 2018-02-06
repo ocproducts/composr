@@ -14609,10 +14609,10 @@
             filters: name.includes('file_anytype') ? [{title: '*.*', extensions: '*'}] : [{title: '{!javascript:ALLOWED_FILES^#}', extensions: filter}],
 
             // Flash settings
-            flash_swf_url: $util.url('data/plupload/plupload.flash.swf').toString(),
+            flash_swf_url: $util.rel('data/plupload/plupload.flash.swf'),
 
             // Silverlight settings
-            silverlight_xap_url: $util.url('data/plupload/plupload.silverlight.xap').toString(),
+            silverlight_xap_url: $util.rel('data/plupload/plupload.silverlight.xap'),
 
             /*== Custom Composr settings ==*/
             required: false,

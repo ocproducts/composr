@@ -4,7 +4,7 @@
     $cms.templates.wikiManageTreeScreen = function wikiManageTreeScreen(params, container) {
         if ($dom.$('#tree-list--root-mtp-tree')) {
             $cms.requireJavascript('tree_list').then(function () {
-                $cms.ui.createTreeList('mtp-tree', 'data/ajax_tree.php?hook=choose_wiki_page' + $cms.keep(), '', '');
+                $cms.ui.createTreeList('mtp-tree', '{$FIND_SCRIPT_NOHTTP;,ajax_tree}?hook=choose_wiki_page' + $cms.keep(), '', '');
             });
         }
 

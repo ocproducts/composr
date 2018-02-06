@@ -173,7 +173,7 @@
         from = Math.round(from);
         to = Math.round(to);
 
-        var url = $util.url('data/realtime_rain.php?from=' + encodeURIComponent(from) + '&to=' + encodeURIComponent(to) + $cms.keep());
+        var url = '{$FIND_SCRIPT_NOHTTP;,realtime_rain}?from=' + encodeURIComponent(from) + '&to=' + encodeURIComponent(to) + $cms.keep();
         $cms.doAjaxRequest(url, receivedEvents);
     }
 

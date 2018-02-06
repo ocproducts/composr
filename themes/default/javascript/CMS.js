@@ -407,8 +407,6 @@
         if (validIdRE.test(scriptNameOrSrc)) {
             scriptName = scriptNameOrSrc;
             scriptSrc = $util.srl('{$FIND_SCRIPT_NOHTTP;,script}?script=' + scriptName + $cms.keep());
-        } else {
-            scriptSrc = $util.srl(scriptNameOrSrc);
         }
 
         if (scriptName != null) {
@@ -815,14 +813,14 @@
             url2 = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=' + snippetHook + '&url=' + encodeURIComponent($cms.protectURLParameter(url)) + '&title=' + encodeURIComponent(title) + $cms.keep();
 
         return new Promise(function (resolve) {
-            $cms.doAjaxRequest($cms.maintainThemeInLink(url2), null, post).then(function (xhr) {
+            $cms.doAjaxRequest($util.rel($cms.maintainThemeInLink(url2)), null, post).then(function (xhr) {
                 resolve(xhr.responseText);
             });
         });
     };
 
     /**
-     * Update a URL to maintain the current theme into it
+     * Update a URL to maintain the current theme into it, always returns an absolute URL
      * @memberof $cms
      * @param url
      * @returns {string}
@@ -923,7 +921,7 @@
     $cms.playSelfAudioLink = function playSelfAudioLink(ob) {
         $cms.requireJavascript('sound').then(function () {
             window.soundManager.setup({
-                url: $util.url('data').toString(),
+                url: $util.rel('data'),
                 debugMode: false,
                 onready: function () {
                     var soundObject = window.soundManager.createSound({url: ob.href});
@@ -1154,7 +1152,7 @@
      * @returns { Promise }
      */
     $cms.doAjaxRequest = function doAjaxRequest(url, callback, post) {
-        url = $util.url(url).toString();
+        url = strVal(url);
 
         return new Promise(function (resolvePromise) {
             var xhr = new XMLHttpRequest();

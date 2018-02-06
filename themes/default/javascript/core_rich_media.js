@@ -183,7 +183,7 @@
                     }
 
                     imgs.push([$dom.html(as[i]), title, true]);
-                    imgsThumbs.push(as[i].poster || '{$IMG^;,video_thumb}');
+                    imgsThumbs.push(as[i].poster || $util.srl('{$IMG^;,video_thumb}'));
 
                     containsVideo = true;
 
@@ -393,7 +393,7 @@
         var name = strVal(params.name);
 
         $dom.on(container, 'click', '.js-link-click-open-emoticon-chooser-window', function (e, link) {
-            var url = $cms.maintainThemeInLink(link.href);
+            var url = $util.rel($cms.maintainThemeInLink(link.href));
             $cms.ui.open(url, 'field_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
         });
 
@@ -432,7 +432,7 @@
         } else {
             $dom.on(container, 'click', '.js-click-open-attachment-popup', function (e, link) {
                 e.preventDefault();
-                $cms.ui.open($cms.maintainThemeInLink(link.href), 'site_attachment_chooser', 'width=550,height=600,status=no,resizable=yes,scrollbars=yes');
+                $cms.ui.open($util.rel($cms.maintainThemeInLink(link.href)), 'site_attachment_chooser', 'width=550,height=600,status=no,resizable=yes,scrollbars=yes');
             });
         }
 

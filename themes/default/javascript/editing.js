@@ -209,7 +209,7 @@
                     return resolvePromise();
                 }
 
-                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?from_html=1' + $cms.keep());
+                var url = $util.rel($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?from_html=1' + $cms.keep()));
                 if ($cms.getPageName() === 'topics') {
                     url += '&forum_db=1';
                 }
@@ -235,7 +235,7 @@
 
             function postWysiwygDisable(textarea) {
                 if (document.getElementById('toggle-wysiwyg-' + textarea.id)) {
-                    $dom.html('#toggle-wysiwyg-' + textarea.id, '<img width="16" height="16" src="{$IMG*;^,icons/editor/wysiwyg_on}" alt="{!comcode:ENABLE_WYSIWYG;^}" title="{!comcode:ENABLE_WYSIWYG;^}" class="vertical-alignment" />');
+                    $dom.html('#toggle-wysiwyg-' + textarea.id, '<img width="16" height="16" src="' + $util.srl('{$IMG*;^,icons/editor/wysiwyg_on}') + '" alt="{!comcode:ENABLE_WYSIWYG;^}" title="{!comcode:ENABLE_WYSIWYG;^}" class="vertical-alignment" />');
                 }
 
                 try {  // Unload editor 
@@ -335,7 +335,7 @@
                 indicator.value = '1';
 
                 if (document.getElementById('toggle-wysiwyg-' + id)) {
-                    $dom.html(document.getElementById('toggle-wysiwyg-' + id), '<img width="16" height="16" src="{$IMG*;^,icons/editor/wysiwyg_off}" alt="{!comcode:DISABLE_WYSIWYG;^}" title="{!comcode:DISABLE_WYSIWYG;^}" class="vertical-alignment" />');
+                    $dom.html(document.getElementById('toggle-wysiwyg-' + id), '<img width="16" height="16" src="' + $util.srl('{$IMG*;^,icons/editor/wysiwyg_off}') + '" alt="{!comcode:DISABLE_WYSIWYG;^}" title="{!comcode:DISABLE_WYSIWYG;^}" class="vertical-alignment" />');
                 }
 
                 window.wysiwygOriginalComcode[id] = textarea.value;
@@ -350,7 +350,7 @@
                     return resolvePromise();
                 }
 
-                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&from_html=0' + $cms.keep());
+                var url = $util.rel($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&from_html=0' + $cms.keep()));
                 if ($cms.getPageName() === 'topics') {
                     url += '&forum_db=1';
                 }
@@ -601,10 +601,10 @@
                         var blockName = (this.origTitle ? this.origTitle : this.title).replace(/\[\/block\]$/, '').replace(/^(.|\s)*\]/, '');
                         url = '{$FIND_SCRIPT_NOHTTP;,block_helper}?type=step2&block=' + encodeURIComponent(blockName) + '&field_name=' + fieldName + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + $cms.keep();
                         url = url + '&block_type=' + (((fieldName.indexOf('edit_panel_') === -1) && (window.location.href.indexOf(':panel_') === -1)) ? 'main' : 'side');
-                        $cms.ui.open($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
+                        $cms.ui.open($util.rel($cms.maintainThemeInLink(url)), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
                     } else {
                         url = '{$FIND_SCRIPT_NOHTTP;,comcode_helper}?type=step2&tag=' + encodeURIComponent(tagType) + '&field_name=' + fieldName + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + $cms.keep();
-                        $cms.ui.open($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
+                        $cms.ui.open($util.rel($cms.maintainThemeInLink(url)), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
                     }
                 };
             }
@@ -643,7 +643,7 @@
                         selfOb.tagText = tagText;
                         selfOb.isOver = true;
 
-                        var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&box_title={!PREVIEW&;^}' + $cms.keep());
+                        var url = $util.rel($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&box_title={!PREVIEW&;^}' + $cms.keep()));
                         if ($cms.getPageName() === 'topics') {
                             url += '&forum_db=1';
                         }
@@ -827,7 +827,7 @@
                     return resolvePromise();
                 } 
 
-                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&lax_comcode=1' + $cms.keep());
+                var url = $util.rel($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&lax_comcode=1' + $cms.keep()));
                 if ($cms.getPageName() === 'topics') {
                     url += '&forum_db=1';
                 }
@@ -996,7 +996,7 @@
                 }
 
                 var newHtml = '',
-                    url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&lax_comcode=1' + $cms.keep());
+                    url = $util.rel($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&lax_comcode=1' + $cms.keep()));
 
                 if ($cms.getPageName() === 'topics') {
                     url += '&forum_db=1';

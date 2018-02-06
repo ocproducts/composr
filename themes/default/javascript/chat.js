@@ -103,7 +103,7 @@
         },
 
         openEmoticonChooserWindow: function () {
-            $cms.ui.open($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,emoticons}?field_name=post' + $cms.keep()), 'emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
+            $cms.ui.open($util.rel($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,emoticons}?field_name=post' + $cms.keep())), 'emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
         }
     });
 
@@ -114,7 +114,7 @@
         window.preparedChatSounds = true;
 
         window.soundManager.setup({
-            url: $util.url('data').toString(),
+            url: $util.rel('data'),
             debugMode: false,
             onready: function () {
                 var soundEffects = params.soundEffects, i;
@@ -164,7 +164,7 @@
             var openFunc = (window.opener ? window.open : $cms.ui.open),
                 popupUrl = strVal(params.emoticonsPopupUrl);
 
-            openFunc($cms.maintainThemeInLink(popupUrl), 'emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
+            openFunc($util.rel($cms.maintainThemeInLink(popupUrl)), 'emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
         });
 
         $dom.on(container, 'click', '.js-click-close-chat-conversation', function () {
@@ -564,7 +564,7 @@
             var url = '{$FIND_SCRIPT_NOHTTP;,messages}?action=post';
             element.disabled = true;
             window.topWindow.currentlySendingMessage = true;
-            var fullUrl = $cms.maintainThemeInLink(url + window.topWindow.$cms.keep());
+            var fullUrl = $util.rel($cms.maintainThemeInLink(url + window.topWindow.$cms.keep()));
             var postData = 'room_id=' + encodeURIComponent(currentRoomId) + '&message=' + encodeURIComponent(messageText) + '&font=' + encodeURIComponent(fontName) + '&colour=' + encodeURIComponent(fontColour) + '&message_id=' + encodeURIComponent((window.topWindow.lastMessageId === null) ? -1 : window.topWindow.lastMessageId) + '&event_id=' + encodeURIComponent(window.topWindow.lastEventId);
             $cms.doAjaxRequest(fullUrl, function (responseXML, xhr) {
                 if (responseXML != null) {
@@ -633,7 +633,7 @@
             if ($cms.pageUrl().searchParams.get('no_reenter_message') === '1') {
                 url = url + '&no_reenter_message=1';
             }
-            var fullUrl = $cms.maintainThemeInLink(url + $cms.keep());
+            var fullUrl = $util.rel($cms.maintainThemeInLink(url + $cms.keep()));
             $cms.doAjaxRequest(fullUrl, function (responseXML, xhr) {
                 if (responseXML != null) {
                     chatCheckResponse(responseXML, xhr, /*skipIncomingSound*/backlog);
@@ -1143,7 +1143,7 @@
             } else {
                 // Open popup
                 var imPopupWindowOptions = 'width=370,height=460,menubar=no,toolbar=no,location=no,resizable=no,scrollbars=yes,top=' + ((screen.height - 520) / 2) + ',left=' + ((screen.width - 440) / 2);
-                var newWindow = window.open($util.url('data/empty.html?instant_messaging'), 'room_' + roomId, imPopupWindowOptions); // The "?instant_messaging" is just to make the location bar less surprising to the user ;-) [modern browsers always show the location bar for security, even if we try and disable it]
+                var newWindow = window.open($util.rel('data/empty.html?instant_messaging'), 'room_' + roomId, imPopupWindowOptions); // The "?instant_messaging" is just to make the location bar less surprising to the user ;-) [modern browsers always show the location bar for security, even if we try and disable it]
                 if (!newWindow || (newWindow.window === undefined /*BetterPopupBlocker for Chrome returns a fake new window but won't have this defined in it*/)) {
                     $cms.ui.alert('{!chat:_FAILED_TO_OPEN_POPUP;,{$PAGE_LINK*,_SEARCH:popup_blockers:failure=1,0,1}}', '{!chat:FAILED_TO_OPEN_POPUP;^}', true);
                 }
@@ -1363,7 +1363,7 @@
             div.className = 'loading-overlay';
             $dom.html(div, '{!LOADING;^}');
             document.body.appendChild(div);
-            $cms.doAjaxRequest($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,messages}?action=start_im&message_id=' + encodeURIComponent((window.topWindow.lastMessageId === null) ? -1 : window.topWindow.lastMessageId) + '&mayRecycle=' + (mayRecycle ? '1' : '0') + '&event_id=' + encodeURIComponent(window.topWindow.lastEventId) + $cms.keep()), function (responseXml) {
+            $cms.doAjaxRequest($util.rel($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,messages}?action=start_im&message_id=' + encodeURIComponent((window.topWindow.lastMessageId === null) ? -1 : window.topWindow.lastMessageId) + '&mayRecycle=' + (mayRecycle ? '1' : '0') + '&event_id=' + encodeURIComponent(window.topWindow.lastEventId) + $cms.keep())), function (responseXml) {
                 var result = responseXml.querySelector('result');
                 if (result) {
                     window.instantGo = true;
