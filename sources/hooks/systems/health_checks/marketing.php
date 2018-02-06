@@ -63,6 +63,8 @@ class Hook_health_check_marketing extends Hook_Health_Check
         }
 
         $this->stateCheckManual('Check the social media channels are being regularly updated');
+        $this->stateCheckManual('Check [url="Social sharing stats"]http://www.sharedcount.com/[/url]');
+        $this->stateCheckManual('Check [url="Facebook Insights"]https://www.facebook.com/business/news/audience-insights[/url] (Facebook Analytics)');
     }
 
     /**

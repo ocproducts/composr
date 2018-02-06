@@ -34,6 +34,11 @@ class Hook_checklist_newsletter_paused
         $task = do_lang_tempcode('newsletter:NAG_UNPAUSE_NEWSLETTER', escape_html_tempcode($url));
 
         $status = (get_option('newsletter_paused') == '1' && $GLOBALS['SITE_DB']->query_select_value('newsletter_drip_send', 'COUNT(*)') > 0) ? 0 : 1;
+
+        if ($status == 0) {
+            return array(); // Don't bloat things up
+        }
+
         $_status = ($status == 0) ? do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_0') : do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_1');
 
         $tpl = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array('URL' => '', 'STATUS' => $_status, 'TASK' => $task));

@@ -56,6 +56,12 @@ class Hook_checklist_iotds
         require_code('config2');
         $config_url = config_option_url('iotd_update_time');
 
+        if (($date === null) && ($GLOBALS['SITE_DB']->query_select_value('iotd', 'COUNT(*)')) == 0) {
+            $task_label = do_lang_tempcode('ADD_IOTD');
+        } else {
+            $task_label = do_lang_tempcode('PRIVILEGE_choose_iotd');
+        }
+
         $url = build_url(array('page' => 'cms_iotds', 'type' => 'edit'), get_module_zone('cms_iotds'));
         $num_queue = $this->get_num_iotd_queue();
         list($info, $seconds_due_in) = staff_checklist_time_ago_and_due($seconds_ago, $limit_hours);
@@ -65,7 +71,7 @@ class Hook_checklist_iotds
             'CONFIG_URL' => $config_url,
             'URL' => $url,
             'STATUS' => $_status,
-            'TASK' => do_lang_tempcode('PRIVILEGE_choose_iotd'),
+            'TASK' => $task_label,
             'INFO' => $info,
         ));
         return array(array($tpl, $seconds_due_in, null, 'iotd_update_time'));

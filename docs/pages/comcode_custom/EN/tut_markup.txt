@@ -1281,6 +1281,8 @@ Some cool effects:
 
  - http://uitest.com/
  - https://dev.twitter.com/cards/getting-started (you may want to implement this yourself if you use Twitter)
+ - https://search.google.com/structured-data/testing-tool/
+ - https://developers.facebook.com/tools/debug/sharing/
 
 [concepts
  1_key="XML"                  1_value="eXtensible Markup Language: a format for structuring other languages that fit well into a tree structure"

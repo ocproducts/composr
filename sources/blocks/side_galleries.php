@@ -37,7 +37,7 @@ class Block_side_galleries
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('param', 'depth', 'zone', 'show_empty');
+        $info['parameters'] = array('param', 'depth', 'zone', 'show_empty', 'check');
         return $info;
     }
 
@@ -49,7 +49,7 @@ class Block_side_galleries
     public function caching_environment()
     {
         $info = array();
-        $info['cache_on'] = 'array(array_key_exists(\'depth\',$map)?intval($map[\'depth\']):0,array_key_exists(\'param\',$map)?$map[\'param\']:\'root\',array_key_exists(\'zone\',$map)?$map[\'zone\']:\'\',array_key_exists(\'show_empty\',$map)?($map[\'show_empty\']==\'1\'):false)';
+        $info['cache_on'] = 'array(array_key_exists(\'depth\',$map)?intval($map[\'depth\']):0,array_key_exists(\'param\',$map)?$map[\'param\']:\'root\',array_key_exists(\'zone\',$map)?$map[\'zone\']:\'\',array_key_exists(\'show_empty\',$map)?($map[\'show_empty\']==\'1\'):false,array_key_exists(\'check\',$map)?($map[\'check\']==\'1\'):true)';
         $info['special_cache_flags'] = CACHE_AGAINST_DEFAULT | CACHE_AGAINST_PERMISSIVE_GROUPS;
         $info['ttl'] = (get_value('no_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 60 * 2;
         return $info;
@@ -69,6 +69,8 @@ class Block_side_galleries
 
         $block_id = get_block_id($map);
 
+        $check_perms = array_key_exists('check', $map) ? ($map['check'] == '1') : true;
+
         $parent_id = empty($map['param']) ? 'root' : $map['param'];
 
         $zone = array_key_exists('zone', $map) ? $map['zone'] : get_module_zone('galleries');
@@ -77,8 +79,17 @@ class Block_side_galleries
 
         $depth = array_key_exists('depth', $map) ? intval($map['depth']) : 0; // If depth is 1 then we go down 1 level. Only 0 or 1 is supported.
 
+        $extra_join_sql = '';
+        $where_sup = '';
+        if ((!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) && ($check_perms)) {
+            $extra_join_sql .= get_permission_join_clause('gallery', 'cat');
+            $where_sup .= get_permission_where_clause(get_member(), get_permission_where_clause_groups(get_member()));
+        }
+
         // For all galleries off the root gallery
-        $query = 'SELECT name,fullname FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'galleries WHERE ' . db_string_equal_to('parent_id', $parent_id) . ' AND name NOT LIKE \'' . db_encode_like('download\_%') . '\' ORDER BY add_date';
+        $query = 'SELECT name,fullname FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'galleries' . $extra_join_sql;
+        $query .= ' WHERE ' . db_string_equal_to('parent_id', $parent_id) . ' AND name NOT LIKE \'' . db_encode_like('download\_%') . '\'' . $where_sup;
+        $query .= ' ORDER BY add_date';
         $galleries = $GLOBALS['SITE_DB']->query($query, 300 /*reasonable limit*/);
         if ($depth == 0) {
             $content = $this->inside($zone, $galleries, 'BLOCK_SIDE_GALLERIES_LINE', $show_empty);

@@ -1061,18 +1061,48 @@ class Module_admin_version
     {
         $level = get_param_integer('level', 50);
 
-        $data = cms_http_request('http://compo.sr/data_custom/patreons.php?level=' . strval($level));
-        $patreons = json_decode($data->data);
+        $data = cms_http_request('http://compo.sr/data_custom/patreon_patrons.php?level=' . strval($level));
+        $_patreon_patrons = json_decode($data->data);
 
-        $_patreons = array();
-        foreach ($patreons as $patron) {
-            $_patreons[] = array(
+        $patreon_patrons = array();
+        foreach ($_patreon_patrons as $patron) {
+            $patreon_patrons[] = array(
                 'NAME' => $patron['name'],
                 'USERNAME' => $patron['username'],
                 'MONTHLY' => strval($patron['monthly']),
             );
         }
 
-        return do_template('SPONSORS_SCREEN', array('_GUID' => '504a3975e168ac7d32ed78f3fadf2cbe', 'TITLE' => $this->title, 'PATREONS' => $_patreons));
+        $sponsors = array(
+            'ocProducts' => array('AREAS' => array('Primary sponsor')),
+        );
+        $myfile = fopen(get_file_base() . '/data/maintenance_status.csv', 'rb');
+        fgetcsv($myfile);
+        while (($row = fgetcsv($myfile)) !== false) {
+            /*if (!empty($row[2])) { Don't actually want to list bug-fix sponsors
+                if (!isset($sponsors[$row[2]])) {
+                    $sponsors[$row[2]] = array('AREAS' => array());
+                }
+                $sponsors[$row[2]]['AREAS'][] = $row[1];
+            }*/
+            if (!empty($row[3])) {
+                if (!isset($sponsors[$row[3]])) {
+                    $sponsors[$row[2]] = array('AREAS' => array());
+                }
+                $sponsors[$row[3]]['AREAS'][] = $row[1];
+            }
+        }
+        foreach ($sponsors as $sponsor => &$areas) {
+            $areas['AREAS'] = array_unique($areas['AREAS']);
+            //sort($areas['AREAS'], SORT_NATURAL); Actually order is meaningful
+        }
+        fclose($myfile);
+
+        return do_template('SPONSORS_SCREEN', array(
+            '_GUID' => '504a3975e168ac7d32ed78f3fadf2cbe',
+            'TITLE' => $this->title,
+            'PATREON_PATRONS' => $patreon_patrons,
+            'SPONSORS' => $sponsors,
+        ));
     }
 }

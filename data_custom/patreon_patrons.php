@@ -47,6 +47,6 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
-require_code('patreons');
+require_code('patreon');
 $level = get_param_integer('level', 0);
-echo json_encode(get_patreons_on_minimum_level($level));
+echo json_encode(get_patreon_patrons_on_minimum_level($level));

@@ -448,7 +448,7 @@ abstract class Hook_sitemap_base
             $page = $matches[2];
             $type = $matches[3];
 
-            $groups = _get_where_clause_groups(get_member(), false);
+            $groups = get_permission_where_clause_groups(get_member(), false);
             if ($groups !== null) {
                 list(, $params) = page_link_decode($page_link);
 

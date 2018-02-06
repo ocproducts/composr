@@ -6,9 +6,9 @@
 
 			<a class="js-click-confirm-delete" href="#!"><img width="12" height="12" src="{$IMG*,icons/admin/delete2}" title="{!DELETE}" alt="{!DELETE}: {$STRIP_TAGS,{TASK_TITLE}}" class="checklist-delete" /></a>
 		</p>
-		<p class="checklist-task">
+		<div class="checklist-task">
 			<img width="12" height="12" src="{$IMG*,icons/checklist/{TASK_DONE}}" title="{!MARK_TASK_DONE}" alt="" class="js-img-checklist-status" />
 			<span>{TASK_TITLE}</span>
-		</p>
+		</div>
 	</div>
 </div>

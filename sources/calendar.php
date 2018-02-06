@@ -650,9 +650,10 @@ function date_range($from, $to, $do_time = true, $force_absolute = false, $timez
  * @param  ?array $filter The type filter, as used by the calendar module internally (null: no filter)
  * @param  boolean $do_rss Whether to include RSS/iCal events in the results
  * @param  ?BINARY $private Whether to show private events (1) or public events (0) (null: both public and private)
+ * @param  boolean $check_perms Whether to check permissions
  * @return array A list of events happening, with time details
  */
-function calendar_matches($auth_member_id, $member_id, $restrict, $period_start, $period_end, $filter = null, $do_rss = true, $private = null)
+function calendar_matches($auth_member_id, $member_id, $restrict, $period_start, $period_end, $filter = null, $do_rss = true, $private = null, $check_perms = true)
 {
     if ($period_start === null) {
         $period_start = utctime_to_usertime(time());
@@ -717,7 +718,7 @@ function calendar_matches($auth_member_id, $member_id, $restrict, $period_start,
         }
         $_event_types = list_to_map('id', $GLOBALS['SITE_DB']->query_select('calendar_types', array('id', 't_title', 't_logo', 't_external_feed')));
         foreach ($_event_types as $j => $_event_type) {
-            if (($_event_type['t_external_feed'] != '') && (($filter === null) || (!array_key_exists($_event_type['id'], $filter)) || ($filter[$_event_type['id']] == 1)) && (has_category_access(get_member(), 'calendar', strval($_event_type['id'])))) {
+            if (($_event_type['t_external_feed'] != '') && (($filter === null) || (!array_key_exists($_event_type['id'], $filter)) || ($filter[$_event_type['id']] == 1)) && ((!$check_perms) || (has_category_access(get_member(), 'calendar', strval($_event_type['id']))))) {
                 $feed_urls_todo[$_event_type['t_external_feed']] = $_event_type['id'];
             }
 
@@ -855,7 +856,7 @@ function calendar_matches($auth_member_id, $member_id, $restrict, $period_start,
     }
     $events = $GLOBALS['SITE_DB']->query('SELECT *,e.id AS e_id FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'calendar_events e' . $privacy_join . ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'calendar_types t ON e.e_type=t.id' . $where);
     foreach ($events as $event) {
-        if (!has_category_access(get_member(), 'calendar', strval($event['e_type']))) {
+        if (($check_perms) && (!has_category_access(get_member(), 'calendar', strval($event['e_type'])))) {
             continue;
         }
 

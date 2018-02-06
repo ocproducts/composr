@@ -1512,7 +1512,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                             // Filter out what we don't have permission for
                                             if (get_option('use_banner_permissions', true) === '1') {
                                                 require_code('permissions');
-                                                $groups = _get_where_clause_groups($source_member);
+                                                $groups = get_permission_where_clause_groups($source_member);
                                                 if ($groups !== null) {
                                                     $perhaps = collapse_1d_complexity('category_name', $GLOBALS['SITE_DB']->query('SELECT DISTINCT category_name FROM ' . get_table_prefix() . 'group_category_access WHERE ' . db_string_equal_to('module_the_name', 'banners') . ' AND (' . $groups . ')', null, 0, false, true));
                                                     $new_rows = array();

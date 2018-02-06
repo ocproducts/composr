@@ -84,7 +84,7 @@ class Block_main_members
             array_key_exists(\'per_row\',$map)?intval($map[\'per_row\']):0,
             array_key_exists(\'guid\',$map)?$map[\'guid\']:\'\',
         )';
-        $info['special_cache_flags'] = CACHE_AGAINST_DEFAULT | CACHE_AGAINST_PERMISSIVE_GROUPS;
+        $info['special_cache_flags'] = CACHE_AGAINST_DEFAULT | CACHE_AGAINST_PERMISSIVE_GROUPS; // Due to CPF permissions
         $info['ttl'] = 60;
         return $info;
     }

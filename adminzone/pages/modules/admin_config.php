@@ -55,7 +55,7 @@ class Module_admin_config
             'browse' => array('CONFIGURATION', 'menu/adminzone/setup/config/config'),
         );
 
-        $ret['base'] = array('BASE_CONFIGURATION', $support_crosslinks && $be_deferential/*The virtual nodes for categories don't have an icon so match that*/ ? null : 'menu/adminzone/setup/config/base_config');
+        $ret['base'] = array('BASE_CONFIGURATION', 'menu/adminzone/setup/config/base_config');
 
         if (!$be_deferential) {
             if (addon_installed('xml_fields')) {

@@ -640,12 +640,12 @@ header h1 {
 .global-banner {
 	text-align: center;
 	background: url('{$IMG;,banner_frame}') center top no-repeat;
-	background-size: 760px 102px;
+	background-size: 766px 100px;
 	position: relative;
 	/*{+START,IF,{$AND,{$THEME_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
 		top: -16px;
 	/*{+END}*/
-	padding-top: 6px;
+	padding-top: 5px;
 	padding-bottom: 3px;
 }
 
@@ -1855,8 +1855,8 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 	font-size: 1.1em;
 	font-weight: bold;
 	vertical-align: middle;
-	margin: 0; /* Outside .box-inner so remove the margin added above */
-	padding: 0.3em 0; /* Centered so needs no horizontal padding, which would also mess with our 100% width */
+	padding-top: 0.7em;
+	padding-bottom: 0.5em;
 }
 
 .toggleable-tray-button {
@@ -1874,9 +1874,6 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 }
 .box .toggleable-tray-button img {
 	margin-right: 0.5em;
-}
-.toggleable-tray-title .toggleable-tray-button img {
-	margin: -2px 0.4em 0 0.4em !important;
 }
 .toggleable-tray-button img, .box .toggleable-tray-title .toggleable-tray-button img {
 	width: 20px;
@@ -4796,13 +4793,13 @@ a[rel="lightbox"] {
 	/* Higher than media links for lower CSS precedence */
 	a[target="_blank"].user-link { /* Detected external links have styling */
 		background: url('{$IMG;,icons/file_types/external_link}') no-repeat right top;
-		background-size: 7px 8px;
-		padding-right: 10px;
+		background-size: 10px 12px;
+		padding-right: 11px;
 	}
 	body div a.external-link { /* Explicitly marked external links must show the styling with precedence */
 		background: url('{$IMG;,icons/file_types/external_link}') no-repeat right top !important;
-		background-size: 7px 8px !important;
-		padding-right: 10px !important;
+		background-size: 10px 12px !important;
+		padding-right: 11px !important;
 	}
 
 	a[href^="mailto:"] {

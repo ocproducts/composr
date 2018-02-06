@@ -50,7 +50,7 @@ class Block_main_newsletter_signup
     {
         $info = array();
         $info['cache_on'] = '(count($_POST)==0)?$map:null';
-        $info['special_cache_flags'] = CACHE_AGAINST_DEFAULT | CACHE_AGAINST_PERMISSIVE_GROUPS;
+        $info['special_cache_flags'] = CACHE_AGAINST_DEFAULT;
         $info['ttl'] = (get_value('no_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 60 * 24;
         return $info;
     }

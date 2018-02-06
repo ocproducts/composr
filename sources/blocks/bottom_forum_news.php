@@ -37,7 +37,7 @@ class Block_bottom_forum_news
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('date_key', 'param', 'forum');
+        $info['parameters'] = array('date_key', 'param', 'forum', 'check');
         return $info;
     }
 
@@ -49,7 +49,8 @@ class Block_bottom_forum_news
     public function caching_environment()
     {
         $info = array();
-        $info['cache_on'] = 'array(array_key_exists(\'param\',$map)?$map[\'param\']:6,array_key_exists(\'forum\',$map)?$map[\'forum\']:\'Announcements\',array_key_exists(\'date_key\',$map)?$map[\'date_key\']:\'firsttime\')';
+        $info['cache_on'] = 'array(array_key_exists(\'param\',$map)?$map[\'param\']:6,array_key_exists(\'forum\',$map)?$map[\'forum\']:\'Announcements\',array_key_exists(\'date_key\',$map)?$map[\'date_key\']:\'firsttime\',array_key_exists(\'check\',$map)?($map[\'check\']==\'1\'):true)';
+        $info['special_cache_flags'] = CACHE_AGAINST_DEFAULT | CACHE_AGAINST_PERMISSIVE_GROUPS;
         $info['ttl'] = (get_value('no_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 15;
         return $info;
     }
@@ -67,6 +68,8 @@ class Block_bottom_forum_news
         }
 
         $block_id = get_block_id($map);
+
+        $check_perms = array_key_exists('check', $map) ? ($map['check'] == '1') : true;
 
         $limit = empty($map['param']) ? 6 : intval($map['param']);
         $forum_name = empty($map['forum']) ? do_lang('NEWS') : $map['forum'];
@@ -93,7 +96,14 @@ class Block_bottom_forum_news
             } else {
                 $forum_id = is_numeric($forum_name) ? intval($forum_name) : $GLOBALS['FORUM_DRIVER']->forum_id_from_name($forum_name);
             }
+
             if ($forum_id !== null) {
+                if ((get_forum_type() == 'cns') && ($check_perms)) {
+                    if (!has_category_access(get_member(), 'forums', strval($forum_id))) {
+                        continue;
+                    }
+                }
+
                 $forum_ids[$forum_id] = $forum_name;
             }
         }

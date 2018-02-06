@@ -143,7 +143,8 @@ class Module_admin_points
     public function _get_between($title)
     {
         $fields = new Tempcode();
-        $time_start = filectime(get_file_base() . '/_config.php') - 60 * 60 * 24 * 365 * 5; // 5 years before site start time, so that the default is "beginning"
+        require_code('global4');
+        $time_start = get_site_start_time() - 60 * 60 * 24 * 365 * 5; // 5 years before site start time, so that the default is "beginning"
 
         $fields->attach(form_input_date(do_lang_tempcode('FROM'), '', 'from', true, false, false, $time_start, 10, intval(date('Y')) - 9));
         $fields->attach(form_input_date(do_lang_tempcode('TO'), '', 'to', true, false, false, time(), 10, intval(date('Y')) - 9));

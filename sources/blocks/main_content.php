@@ -37,7 +37,7 @@ class Block_main_content
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('param', 'efficient', 'id', 'select', 'select_b', 'title', 'zone', 'no_links', 'give_context', 'include_breadcrumbs', 'render_if_empty', 'guid', 'as_guest');
+        $info['parameters'] = array('param', 'id', 'select', 'select_b', 'title', 'zone', 'no_links', 'give_context', 'include_breadcrumbs', 'render_if_empty', 'guid', 'as_guest', 'check');
         return $info;
     }
 
@@ -49,7 +49,7 @@ class Block_main_content
     public function caching_environment()
     {
         $info = array();
-        $info['cache_on'] = 'array(array_key_exists(\'as_guest\',$map)?($map[\'as_guest\']==\'1\'):false,array_key_exists(\'render_if_empty\',$map)?$map[\'render_if_empty\']:\'1\',array_key_exists(\'guid\',$map)?$map[\'guid\']:\'\',(array_key_exists(\'give_context\',$map)?$map[\'give_context\']:\'0\')==\'1\',(array_key_exists(\'include_breadcrumbs\',$map)?$map[\'include_breadcrumbs\']:\'0\')==\'1\',array_key_exists(\'no_links\',$map)?$map[\'no_links\']:0,array_key_exists(\'title\',$map)?$map[\'title\']:null,array_key_exists(\'param\',$map)?$map[\'param\']:\'download\',array_key_exists(\'id\',$map)?$map[\'id\']:\'\',array_key_exists(\'efficient\',$map)?$map[\'efficient\']:\'_SEARCH\',array_key_exists(\'select\',$map)?$map[\'select\']:\'\',array_key_exists(\'select_b\',$map)?$map[\'select_b\']:\'\',array_key_exists(\'zone\',$map)?$map[\'zone\']:\'_SEARCH\')';
+        $info['cache_on'] = 'array(array_key_exists(\'as_guest\',$map)?($map[\'as_guest\']==\'1\'):false,array_key_exists(\'render_if_empty\',$map)?$map[\'render_if_empty\']:\'1\',array_key_exists(\'guid\',$map)?$map[\'guid\']:\'\',(array_key_exists(\'give_context\',$map)?$map[\'give_context\']:\'0\')==\'1\',(array_key_exists(\'include_breadcrumbs\',$map)?$map[\'include_breadcrumbs\']:\'0\')==\'1\',array_key_exists(\'no_links\',$map)?$map[\'no_links\']:0,array_key_exists(\'title\',$map)?$map[\'title\']:null,array_key_exists(\'param\',$map)?$map[\'param\']:\'download\',array_key_exists(\'id\',$map)?$map[\'id\']:\'\',array_key_exists(\'select\',$map)?$map[\'select\']:\'\',array_key_exists(\'select_b\',$map)?$map[\'select_b\']:\'\',array_key_exists(\'zone\',$map)?$map[\'zone\']:\'_SEARCH\',array_key_exists(\'check\',$map)?($map[\'check\']==\'1\'):true)';
         $info['special_cache_flags'] = CACHE_AGAINST_DEFAULT | CACHE_AGAINST_PERMISSIVE_GROUPS;
         if (addon_installed('content_privacy')) {
             $info['special_cache_flags'] |= CACHE_AGAINST_MEMBER;
@@ -68,6 +68,8 @@ class Block_main_content
     {
         $block_id = get_block_id($map);
 
+        $check_perms = array_key_exists('check', $map) ? ($map['check'] == '1') : true;
+
         $guid = isset($map['guid']) ? $map['guid'] : '';
         if (isset($map['param'])) {
             $content_type = $map['param'];
@@ -85,7 +87,6 @@ class Block_main_content
         }
         $randomise = ($content_id === null);
         $zone = isset($map['zone']) ? $map['zone'] : '_SEARCH';
-        $efficient = (isset($map['efficient']) ? $map['efficient'] : '1') == '1';
         $select = isset($map['select']) ? $map['select'] : '';
         $select_b = isset($map['select_b']) ? $map['select_b'] : '';
         $title = isset($map['title']) ? $map['title'] : null;
@@ -136,6 +137,8 @@ class Block_main_content
 
         // Randomisation mode
         if ($randomise) {
+            $category_type_access = null;
+            $category_type_select = null;
             if (is_array($info['category_field'])) {
                 $category_field_access = $info['category_field'][0];
                 $category_field_select = $info['category_field'][1];
@@ -151,14 +154,12 @@ class Block_main_content
                     $category_type_access = $info['category_type'];
                     $category_type_select = $info['category_type'];
                 }
-            } else {
-                $category_type_access = null;
-                $category_type_select = null;
             }
 
             $where = '1=1';
             $query = 'FROM ' . get_table_prefix() . $info['table'] . ' r';
-            if ((!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) && (!$efficient)) {
+
+            if ((!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) && ($check_perms)) {
                 if (addon_installed('content_privacy')) {
                     require_code('content_privacy');
                     $as_guest = array_key_exists('as_guest', $map) ? ($map['as_guest'] == '1') : false;
@@ -168,14 +169,8 @@ class Block_main_content
                     $where .= $privacy_where;
                 }
 
-                $_groups = $GLOBALS['FORUM_DRIVER']->get_members_groups(get_member(), false, true);
-                $groups = '';
-                foreach ($_groups as $group) {
-                    if ($groups != '') {
-                        $groups .= ' OR ';
-                    }
-                    $groups .= 'a.group_id=' . strval($group);
-                }
+                $groups = get_permission_where_clause_groups(get_member(), true, 'a.');
+                $groups2 = get_permission_where_clause_groups(get_member(), true, 'a2.');
 
                 if ($category_field_access !== null) {
                     if ($category_type_access === '<zone>') {
@@ -186,27 +181,25 @@ class Block_main_content
                         $query .= ' LEFT JOIN ' . get_table_prefix() . 'group_zone_access a2 ON (r.' . $category_field_access . '=a2.zone_name)';
                         $query .= ' LEFT JOIN ' . get_table_prefix() . 'group_zone_access ma2 ON (r.' . $category_field_access . '=ma2.zone_name)';
                     } else {
-                        $query .= ' LEFT JOIN ' . get_table_prefix() . 'group_category_access a ON (' . db_string_equal_to('a.module_the_name', $category_type_access) . ' AND r.' . $category_field_access . '=a.category_name)';
-                        $query .= ' LEFT JOIN ' . get_table_prefix() . 'member_category_access ma ON (' . db_string_equal_to('ma.module_the_name', $category_type_access) . ' AND r.' . $category_field_access . '=ma.category_name)';
+                        $query .= get_permission_join_clause($category_type_select, $category_field_select, 'a', 'ma');
                     }
                 }
                 if (($category_field_select !== null) && ($category_field_select != $category_field_access) && ($info['category_type'] !== '<page>') && ($info['category_type'] !== '<zone>')) {
-                    $query .= ' LEFT JOIN ' . get_table_prefix() . 'group_category_access a2 ON (' . db_string_equal_to('a.module_the_name', $category_type_select) . ' AND r.' . $category_field_select . '=a2.category_name)';
-                    $query .= ' LEFT JOIN ' . get_table_prefix() . 'member_category_access ma2 ON (' . db_string_equal_to('ma2.module_the_name', $category_type_access) . ' AND r.' . $category_field_access . '=ma2.category_name)';
+                    $query .= get_permission_join_clause($category_type_select, $category_field_select, 'a2', 'ma2');
                 }
+
                 if ($category_field_access !== null) {
-                    $where .= ' AND ';
                     if ($info['category_type'] === '<page>') {
-                        $where .= '(a.group_id IS NULL) AND (' . str_replace('a.', 'a2.', $groups) . ') AND (a2.group_id IS NOT NULL)';
+                        $where .= ' AND (a.group_id IS NULL) AND (' . $groups2 . ') AND (a2.group_id IS NOT NULL)';
                         // NB: too complex to handle member-specific page permissions in this
                     } else {
-                        $where .= '((' . $groups . ') AND (a.group_id IS NOT NULL) OR ((ma.active_until IS NULL OR ma.active_until>' . strval(time()) . ') AND ma.member_id=' . strval(get_member()) . '))';
+                        $where .= get_permission_where_clause(get_member(), $groups, 'a', 'ma');
                     }
                 }
                 if (($category_field_select !== null) && ($category_field_select != $category_field_access) && ($info['category_type'] !== '<page>')) {
-                    $where .= ' AND ';
-                    $where .= '((' . str_replace('a.group_id', 'a2.group_id', $groups) . ') AND (a2.group_id IS NOT NULL) OR ((ma2.active_until IS NULL OR ma2.active_until>' . strval(time()) . ') AND ma2.member_id=' . strval(get_member()) . '))';
+                    $where .= get_permission_where_clause(get_member(), $groups2, 'a2', 'ma2');
                 }
+
                 if (array_key_exists('where', $info)) {
                     $where .= ' AND ';
                     $where .= $info['where'];

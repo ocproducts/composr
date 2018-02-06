@@ -13,11 +13,11 @@
  * @package    composr_homesite
  */
 
-function get_patreons_on_minimum_level($level)
+function get_patreon_patrons_on_minimum_level($level)
 {
-    $patreons = array();
+    $patreon_patrons = array();
 
-    $myfile = fopen(get_custom_file_base() . '/data_custom/patreons.csv', 'rb');
+    $myfile = fopen(get_custom_file_base() . '/data_custom/patreon_patrons.csv', 'rb');
     fgetcsv($myfile); // Skip header
     while (($row = fgetcsv($myfile)) !== false) {
         if (!isset($row[2])) {
@@ -28,7 +28,7 @@ function get_patreons_on_minimum_level($level)
             continue;
         }
 
-        $patreons[] = array(
+        $patreon_patrons[] = array(
             'name' => $row[0],
             'username' => $row[1],
             'monthly' => intval($row[2]),
@@ -36,7 +36,7 @@ function get_patreons_on_minimum_level($level)
     }
     fclose($myfile);
 
-    sort_maps_by($patreons, 'name');
+    sort_maps_by($patreon_patrons, 'name');
 
-    return $patreons;
+    return $patreon_patrons;
 }

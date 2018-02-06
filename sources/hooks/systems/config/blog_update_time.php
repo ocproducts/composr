@@ -53,6 +53,6 @@ class Hook_config_blog_update_time
      */
     public function get_default()
     {
-        return '168';
+        return '0';
     }
 }

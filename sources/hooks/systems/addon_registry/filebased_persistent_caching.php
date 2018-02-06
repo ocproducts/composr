@@ -62,7 +62,7 @@ class Hook_addon_registry_filebased_persistent_caching
     public function get_applicable_tutorials()
     {
         return array(
-            'tut_optimisation',
+            'tut_performance',
         );
     }
 

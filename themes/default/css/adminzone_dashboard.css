@@ -14,7 +14,6 @@ a.top-left-toggle {
 	background-size: 14px 14px !important;
 	opacity: 0.7;
 }
-
 a.top-left-toggle:hover {
 	opacity: 1.0;
 }
@@ -41,21 +40,13 @@ a.top-left-toggle:hover {
 	border-top-width: 1px !important;
 }
 
-.checklist-other-maintenance .checklist-row {
-	float: left;
-	width: 50%;
-	box-sizing: border-box;
-	min-height: 3.8em;
-}
-
 .checklist-task {
 	margin: 0.3em 0 0.5em 0.5em;
-	float: left;
 }
 
 .checklist-task>span {
 	display: inline-block;
-	max-width: 350px;
+	width: calc(100% - 18em);
 }
 
 .checklist-task>* {
@@ -83,7 +74,9 @@ a.top-left-toggle:hover {
 	margin-top: 0.5em;
 	border: 1px solid {$GET,pale_border};
 	padding-top: 0.2em;
+	padding-bottom: 0.2em;
 	font-size: 0.9em;
+	overflow: hidden;
 }
 
 #recur-interval {
@@ -98,6 +91,10 @@ a.top-left-toggle:hover {
 }
 
 /* New version indicator */
+
+.staff-new-versions p {
+	margin: 0.5em 0;
+}
 
 .staff-new-versions .notes-about {
 	display: none;
@@ -136,7 +133,10 @@ a.top-left-toggle:hover {
 }
 
 .staff-new-versions .img-wrap {
-	text-align: center;
+}
+.staff-new-versions .img-wrap img {
+	width: auto;
+	height: 90px;
 }
 /*{+START,CSS_MODE,mobile}*/
 	.staff-new-versions .img-wrap {

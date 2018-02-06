@@ -62,7 +62,7 @@ class Hook_addon_registry_failover
      */
     public function get_applicable_tutorials()
     {
-        return array('tut_optimisation');
+        return array('tut_performance');
     }
 
     /**

@@ -154,7 +154,7 @@ function has_zone_access($member_id, $zone)
 
     // Not loaded yet, load, then re-call ourself...
 
-    $groups = _get_where_clause_groups($member_id);
+    $groups = get_permission_where_clause_groups($member_id);
     if ($groups === null) {
         return true;
     }
@@ -307,7 +307,7 @@ function has_page_access($member_id, $page, $zone, $at_now = false)
 
     // Not loaded yet, load, then re-call ourself...
 
-    $groups = _get_where_clause_groups($member_id);
+    $groups = get_permission_where_clause_groups($member_id);
     if ($groups === null) {
         return true;
     }
@@ -416,7 +416,7 @@ function has_page_access($member_id, $page, $zone, $at_now = false)
  */
 function load_up_all_module_category_permissions($member_id, $module = null)
 {
-    $groups = _get_where_clause_groups($member_id);
+    $groups = get_permission_where_clause_groups($member_id);
     if ($groups === null) {
         return;
     }
@@ -478,7 +478,7 @@ function has_category_access($member_id, $module, $category)
 
     // Not loaded yet, load, then re-call ourself...
 
-    $groups = _get_where_clause_groups($member_id);
+    $groups = get_permission_where_clause_groups($member_id);
     if ($groups === null) {
         return true;
     }
@@ -534,14 +534,15 @@ function has_category_access($member_id, $module, $category)
 }
 
 /**
- * Get the SQL WHERE clause to select for any the given member is in (gets combined with some condition, to check against every).
+ * Get the SQL WHERE clause to select for any usergroups the given member is in (gets combined with some condition(s), to check against every usergroup).
  *
  * @param  MEMBER $member_id The member who's usergroups will be OR'd
  * @param  boolean $consider_clubs Whether to consider clubs (pass this false if considering page permissions, which work via explicit-denys across all groups, which could not happen for clubs as those denys could not have been set in the UI)
+ * @param  string $field_prefix Prefix (based on table aliasing) for field name
  * @return ?string The SQL query fragment (null: admin, so permission regardless)
  * @ignore
  */
-function _get_where_clause_groups($member_id, $consider_clubs = true)
+function get_permission_where_clause_groups($member_id, $consider_clubs = true, $field_prefix = '')
 {
     if (!isset($GLOBALS['FORUM_DRIVER'])) {
         return '1=0';
@@ -564,16 +565,48 @@ function _get_where_clause_groups($member_id, $consider_clubs = true)
         if ($out != '') {
             $out .= ' OR ';
         }
-        $out .= 'group_id=' . strval($id);
+        $out .= $field_prefix . 'group_id=' . strval($id);
     }
     if ($out == '') {
         if ((!$consider_clubs) && (get_forum_type() == 'cns')) {
-            return 'group_id=' . strval(db_get_first_id()); // Hmm, user was just put in a club! :S
+            return $field_prefix . 'group_id=' . strval(db_get_first_id()); // Hmm, user was just put in a club! :S
         }
         fatal_exit(do_lang_tempcode('MEMBER_NO_GROUP')); // Shouldn't happen
     }
 
     return $out;
+}
+
+/**
+ * Get a more complete SQL WHERE clause to select for any usergroups the given member is in OR temporary permissions.
+ *
+ * @param  MEMBER $member_id The member who's usergroups will be OR'd
+ * @param  string $groups SQL from get_permission_where_clause_groups
+ * @param  ID_TEXT $group_category_alias The alias for the group_category_access table
+ * @param  ID_TEXT $member_category_alias The alias for the member_category_access table
+ * @return string SQL
+ */
+function get_permission_where_clause($member_id, $groups, $group_category_alias = 'a', $member_category_alias = 'ma')
+{
+    return ' AND ((' . $groups . ') AND (' . $group_category_alias . '.group_id IS NOT NULL) OR ((' . $member_category_alias . '.active_until IS NULL OR ' . $member_category_alias . '.active_until>' . strval(time()) . ') AND ' . $member_category_alias . '.member_id=' . strval($member_id) . '))';
+}
+
+/**
+ * Get the SQL JOIN clause to join for any usergroups the given member is in / temporary permissions.
+ *
+ * @param  ID_TEXT $module The ID code for the permission module being checked for
+ * @param  ID_TEXT $category_field The field in the main query row that holds the category
+ * @param  ID_TEXT $group_category_alias The alias for the group_category_access table
+ * @param  ID_TEXT $member_category_alias The alias for the member_category_access table
+ * @param  ID_TEXT $row_alias The alias for the main query row
+ * @return string SQL
+ */
+function get_permission_join_clause($module, $category_field, $group_category_alias = 'a', $member_category_alias = 'ma', $row_alias = 'r')
+{
+    $query = '';
+    $query .= ' LEFT JOIN ' . get_table_prefix() . 'group_category_access ' . $group_category_alias . ' ON (' . db_string_equal_to($group_category_alias . '.module_the_name', $module) . ' AND ' . $row_alias . '.' . $category_field . '=' . $group_category_alias . '.category_name)';
+    $query .= ' LEFT JOIN ' . get_table_prefix() . 'member_category_access ' . $member_category_alias . ' ON (' . db_string_equal_to($member_category_alias . '.module_the_name', $module) . ' AND ' . $row_alias . '.' . $category_field . '=' . $member_category_alias . '.category_name)';
+    return $query;
 }
 
 /**
@@ -711,7 +744,7 @@ function has_privilege($member_id, $privilege, $page = null, $cats = null)
         return false;
     }
 
-    $groups = _get_where_clause_groups($member_id);
+    $groups = get_permission_where_clause_groups($member_id);
     if ($groups === null) {
         return true;
     }

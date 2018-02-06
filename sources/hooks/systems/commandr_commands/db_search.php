@@ -18,7 +18,7 @@
  * @package    commandr
  */
 
-// Also see fs_search.
+// Also see fs_search and find and grep.
 
 // We do not support direct replacing because mindless search & replace seems too dangerous.
 

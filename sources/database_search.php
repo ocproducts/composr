@@ -965,7 +965,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
     }
 
     if (($permissions_module !== null) && (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()))) {
-        $g_or = _get_where_clause_groups(get_member());
+        $g_or = get_permission_where_clause_groups(get_member());
 
         // this destroys mysqls query optimiser by forcing complexed OR's into the join, so we'll do this in PHP code
         /*$table .= ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'group_category_access z ON (' . db_string_equal_to('z.module_the_name', $permissions_module) . ' AND z.category_name=' . $permissions_field . (($g_or != '') ? (' AND ' . str_replace('group_id', 'z.group_id', $g_or)) : '') . ')';

@@ -34,6 +34,11 @@ class Hook_checklist_ecommerce_sales
             return array();
         }
 
+        $num_products = $GLOBALS['SITE_DB']->query_select_value('ecom_prods_custom', 'COUNT(*)', array('c_enabled' => 1));
+        if ($num_products == 0) {
+            return array();
+        }
+
         require_lang('ecommerce');
 
         $status = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_NA');
