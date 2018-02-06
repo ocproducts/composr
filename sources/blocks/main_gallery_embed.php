@@ -37,7 +37,7 @@ class Block_main_gallery_embed
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('param', 'filter', 'video_filter', 'select', 'video_select', 'zone', 'title', 'sort', 'days', 'render_if_empty', 'max', 'start', 'pagination', 'root', 'guid', 'as_guest');
+        $info['parameters'] = array('param', 'filter', 'video_filter', 'select', 'video_select', 'zone', 'title', 'sort', 'days', 'render_if_empty', 'max', 'start', 'pagination', 'root', 'guid', 'as_guest', 'check');
         return $info;
     }
 
@@ -49,7 +49,7 @@ class Block_main_gallery_embed
     public function caching_environment()
     {
         $info = array();
-        $info['cache_on'] = '(preg_match(\'#<\w+>#\',(array_key_exists(\'filter\',$map)?$map[\'filter\']:\'\').(array_key_exists(\'video_filter\',$map)?$map[\'video_filter\']:\'\'))!=0)?null:array(array_key_exists(\'as_guest\',$map)?($map[\'as_guest\']==\'1\'):false,array_key_exists(\'guid\',$map)?$map[\'guid\']:\'\',get_param_integer($block_id.\'_max\',array_key_exists(\'max\',$map)?intval($map[\'max\']):null),get_param_integer($block_id.\'_start\',array_key_exists(\'start\',$map)?intval($map[\'start\']):0),((array_key_exists(\'pagination\',$map)?$map[\'pagination\']:\'0\')==\'1\'),((array_key_exists(\'root\',$map)) && ($map[\'root\']!=\'\'))?$map[\'root\']:get_param_string(\'keep_gallery_root\',null),array_key_exists(\'filter\',$map)?$map[\'filter\']:\'\',array_key_exists(\'video_filter\',$map)?$map[\'video_filter\']:\'\',array_key_exists(\'render_if_empty\',$map)?$map[\'render_if_empty\']:\'0\',array_key_exists(\'days\',$map)?$map[\'days\']:\'\',array_key_exists(\'sort\',$map)?$map[\'sort\']:\'add_date DESC\',get_param_integer(\'mge_start\',0),array_key_exists(\'param\',$map)?$map[\'param\']:db_get_first_id(),array_key_exists(\'zone\',$map)?$map[\'zone\']:\'\',(($map === null) || (!array_key_exists(\'select\',$map)))?\'*\':$map[\'select\'],(($map === null) || (!array_key_exists(\'video_select\',$map)))?\'*\':$map[\'video_select\'],array_key_exists(\'title\',$map)?$map[\'title\']:\'\')';
+        $info['cache_on'] = '(preg_match(\'#<\w+>#\',(array_key_exists(\'filter\',$map)?$map[\'filter\']:\'\').(array_key_exists(\'video_filter\',$map)?$map[\'video_filter\']:\'\'))!=0)?null:array(array_key_exists(\'as_guest\',$map)?($map[\'as_guest\']==\'1\'):false,array_key_exists(\'guid\',$map)?$map[\'guid\']:\'\',get_param_integer($block_id.\'_max\',array_key_exists(\'max\',$map)?intval($map[\'max\']):null),get_param_integer($block_id.\'_start\',array_key_exists(\'start\',$map)?intval($map[\'start\']):0),((array_key_exists(\'pagination\',$map)?$map[\'pagination\']:\'0\')==\'1\'),((array_key_exists(\'root\',$map)) && ($map[\'root\']!=\'\'))?$map[\'root\']:get_param_string(\'keep_gallery_root\',null),array_key_exists(\'filter\',$map)?$map[\'filter\']:\'\',array_key_exists(\'video_filter\',$map)?$map[\'video_filter\']:\'\',array_key_exists(\'render_if_empty\',$map)?$map[\'render_if_empty\']:\'0\',array_key_exists(\'days\',$map)?$map[\'days\']:\'\',array_key_exists(\'sort\',$map)?$map[\'sort\']:\'add_date DESC\',get_param_integer(\'mge_start\',0),array_key_exists(\'param\',$map)?$map[\'param\']:db_get_first_id(),array_key_exists(\'zone\',$map)?$map[\'zone\']:\'\',(($map === null) || (!array_key_exists(\'select\',$map)))?\'*\':$map[\'select\'],(($map === null) || (!array_key_exists(\'video_select\',$map)))?\'*\':$map[\'video_select\'],array_key_exists(\'title\',$map)?$map[\'title\']:\'\',array_key_exists(\'check\',$map)?($map[\'check\']==\'1\'):true)';
         $info['special_cache_flags'] = CACHE_AGAINST_DEFAULT | CACHE_AGAINST_PERMISSIVE_GROUPS;
         if (addon_installed('content_privacy')) {
             $info['special_cache_flags'] |= CACHE_AGAINST_MEMBER;
@@ -74,6 +74,8 @@ class Block_main_gallery_embed
         require_javascript('galleries');
 
         $block_id = get_block_id($map);
+
+        $check_perms = array_key_exists('check', $map) ? ($map['check'] == '1') : true;
 
         $max = get_param_integer($block_id . '_max', array_key_exists('max', $map) ? intval($map['max']) : get_default_gallery_max());
         $start = get_param_integer($block_id . '_start', array_key_exists('start', $map) ? intval($map['start']) : 0);
@@ -181,6 +183,11 @@ class Block_main_gallery_embed
             require_code('locations');
             $extra_where_image .= sql_region_filter('image', 'r.id');
             $extra_where_video .= sql_region_filter('video', 'r.id');
+        }
+
+        if ((!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) && ($check_perms)) {
+            $extra_join_sql .= get_permission_join_clause('gallery', 'cat');
+            $where_sup .= get_permission_where_clause(get_member(), get_permission_where_clause_groups(get_member()));
         }
 
         // Get rows

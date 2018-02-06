@@ -41,7 +41,7 @@ class Block_main_cns_involved_topics
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('member_id', 'max', 'start');
+        $info['parameters'] = array('member_id', 'max', 'start', 'check');
         return $info;
     }
 
@@ -54,6 +54,8 @@ class Block_main_cns_involved_topics
     public function run($map)
     {
         $block_id = get_block_id($map);
+
+        $check_perms = array_key_exists('check', $map) ? ($map['check'] == '1') : true;
 
         $member_id_of = array_key_exists('member_id', $map) ? intval($map['member_id']) : get_member();
         $max = get_param_integer($block_id . '_max', array_key_exists('max', $map) ? intval($map['max']) : 10);
@@ -97,6 +99,13 @@ class Block_main_cns_involved_topics
                 $moderator_actions .= '<option value="delete_topics_and_posts">' . do_lang('DELETE_TOPICS_AND_POSTS') . '</option>';
             }
 
+            $extra_join_sql = '';
+            $where_sup = '';
+            if ((!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) && ($check_perms)) {
+                $extra_join_sql .= get_permission_join_clause('forum', 't_forum_id');
+                $where_sup .= get_permission_where_clause(get_member(), get_permission_where_clause_groups(get_member()));
+            }
+
             $where = '';
             foreach ($rows as $row) {
                 if ($where != '') {
@@ -114,7 +123,8 @@ class Block_main_cns_involved_topics
             if (!multi_lang_content()) {
                 $query .= ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p2 ON p2.id=t.t_cache_first_post_id';
             }
-            $query .= ' WHERE ' . $where;
+            $query .= $extra_join_sql;
+            $query .= ' WHERE ' . $where . $where_sup;
             if (multi_lang_content()) {
                 $topic_rows = $GLOBALS['FORUM_DB']->query($query, null, 0, false, true, array('t_cache_first_post' => 'LONG_TRANS__COMCODE'));
             } else {
@@ -122,9 +132,7 @@ class Block_main_cns_involved_topics
             }
             $topic_rows_map = array();
             foreach ($topic_rows as $topic_row) {
-                if (has_category_access(get_member(), 'forums', strval($topic_row['t_forum_id']))) {
-                    $topic_rows_map[$topic_row['id']] = $topic_row;
-                }
+                $topic_rows_map[$topic_row['id']] = $topic_row;
             }
             $hot_topic_definition = intval(get_option('hot_topic_definition'));
             foreach ($rows as $row) {

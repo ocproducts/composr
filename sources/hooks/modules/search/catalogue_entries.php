@@ -209,7 +209,7 @@ class Hook_search_catalogue_entries extends FieldsSearchHook
             $where_clause .= 'ce_validated=1';
         }
 
-        $g_or = _get_where_clause_groups(get_member());
+        $g_or = get_permission_where_clause_groups(get_member());
 
         $privacy_join = '';
         if (addon_installed('content_privacy')) {

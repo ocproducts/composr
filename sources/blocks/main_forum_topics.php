@@ -37,7 +37,7 @@ class Block_main_forum_topics
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('param', 'limit', 'hot', 'date_key', 'username_key', 'title', 'check');
+        $info['parameters'] = array('param', 'limit', 'hot', 'date_key', 'username_key', 'title', 'check', 'check');
         return $info;
     }
 
@@ -49,7 +49,8 @@ class Block_main_forum_topics
     public function caching_environment()
     {
         $info = array();
-        $info['cache_on'] = 'array(array_key_exists(\'check\',$map)?$map[\'check\']:\'0\',array_key_exists(\'title\',$map)?$map[\'title\']:\'\',array_key_exists(\'hot\',$map)?$map[\'hot\']:\'0\',array_key_exists(\'param\',$map)?$map[\'param\']:do_lang(\'DEFAULT_FORUM_TITLE\'),array_key_exists(\'limit\',$map)?$map[\'limit\']:6,array_key_exists(\'date_key\',$map)?$map[\'date_key\']:\'lasttime\',array_key_exists(\'username_key\',$map)?$map[\'username_key\']:\'firstusername\')';
+        $info['cache_on'] = 'array(array_key_exists(\'title\',$map)?$map[\'title\']:\'\',array_key_exists(\'hot\',$map)?$map[\'hot\']:\'0\',array_key_exists(\'param\',$map)?$map[\'param\']:do_lang(\'DEFAULT_FORUM_TITLE\'),array_key_exists(\'limit\',$map)?$map[\'limit\']:6,array_key_exists(\'date_key\',$map)?$map[\'date_key\']:\'lasttime\',array_key_exists(\'username_key\',$map)?$map[\'username_key\']:\'firstusername\',array_key_exists(\'check\',$map)?($map[\'check\']==\'1\'):true)';
+        $info['special_cache_flags'] = CACHE_AGAINST_DEFAULT | CACHE_AGAINST_PERMISSIVE_GROUPS;
         $info['ttl'] = (get_value('no_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 10;
         return $info;
     }
@@ -69,6 +70,8 @@ class Block_main_forum_topics
         require_css('news');
 
         $block_id = get_block_id($map);
+
+        $check_perms = array_key_exists('check', $map) ? ($map['check'] == '1') : true;
 
         // Read in variables
         $forum_name = empty($map['param']) ? do_lang('DEFAULT_FORUM_TITLE') : $map['param'];
@@ -106,13 +109,13 @@ class Block_main_forum_topics
                 $forum_id = is_numeric($forum_name) ? intval($forum_name) : $GLOBALS['FORUM_DRIVER']->forum_id_from_name($forum_name);
             }
 
-            if ((get_forum_type() == 'cns') && (array_key_exists('check', $map)) && ($map['check'] == '1')) {
-                if (!has_category_access(get_member(), 'forums', strval($forum_id))) {
-                    continue;
-                }
-            }
-
             if ($forum_id !== null) {
+                if ((get_forum_type() == 'cns') && ($check_perms)) {
+                    if (!has_category_access(get_member(), 'forums', strval($forum_id))) {
+                        continue;
+                    }
+                }
+
                 $forum_ids[$forum_id] = $forum_name;
             }
         }

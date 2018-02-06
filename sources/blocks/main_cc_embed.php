@@ -37,7 +37,7 @@ class Block_main_cc_embed
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('select', 'param', 'filter', 'template_set', 'display_type', 'sorting', 'sort', 'max', 'start', 'pagination', 'root', 'as_guest');
+        $info['parameters'] = array('select', 'param', 'filter', 'template_set', 'display_type', 'sorting', 'sort', 'max', 'start', 'pagination', 'root', 'as_guest', 'check');
         return $info;
     }
 
@@ -49,7 +49,7 @@ class Block_main_cc_embed
     public function caching_environment()
     {
         $info = array();
-        $info['cache_on'] = '(preg_match(\'#<\w+>#\',(array_key_exists(\'filter\',$map)?$map[\'filter\']:\'\'))!=0)?null:array(array_key_exists(\'as_guest\',$map)?($map[\'as_guest\']==\'1\'):false,get_param_integer($block_id.\'_max\',array_key_exists(\'max\',$map)?intval($map[\'max\']):30),get_param_integer($block_id.\'_start\',array_key_exists(\'start\',$map)?intval($map[\'start\']):0),((array_key_exists(\'pagination\',$map)?$map[\'pagination\']:\'0\')==\'1\'),((array_key_exists(\'root\',$map)) && ($map[\'root\']!=\'\'))?intval($map[\'root\']):null,((array_key_exists(\'sorting\',$map)?$map[\'sorting\']:\'0\')==\'1\'),array_key_exists(\'select\',$map)?$map[\'select\']:\'\',get_param_string($block_id.\'_order\',array_key_exists(\'sort\',$map)?$map[\'sort\']:\'\'),array_key_exists(\'display_type\',$map)?$map[\'display_type\']:get_param_string(\'keep_cat_display_type\',\'\'),array_key_exists(\'template_set\',$map)?$map[\'template_set\']:\'\',array_key_exists(\'filter\',$map)?$map[\'filter\']:\'\',array_key_exists(\'param\',$map)?$map[\'param\']:db_get_first_id())';
+        $info['cache_on'] = '(preg_match(\'#<\w+>#\',(array_key_exists(\'filter\',$map)?$map[\'filter\']:\'\'))!=0)?null:array(array_key_exists(\'as_guest\',$map)?($map[\'as_guest\']==\'1\'):false,get_param_integer($block_id.\'_max\',array_key_exists(\'max\',$map)?intval($map[\'max\']):30),get_param_integer($block_id.\'_start\',array_key_exists(\'start\',$map)?intval($map[\'start\']):0),((array_key_exists(\'pagination\',$map)?$map[\'pagination\']:\'0\')==\'1\'),((array_key_exists(\'root\',$map)) && ($map[\'root\']!=\'\'))?intval($map[\'root\']):null,((array_key_exists(\'sorting\',$map)?$map[\'sorting\']:\'0\')==\'1\'),array_key_exists(\'select\',$map)?$map[\'select\']:\'\',get_param_string($block_id.\'_order\',array_key_exists(\'sort\',$map)?$map[\'sort\']:\'\'),array_key_exists(\'display_type\',$map)?$map[\'display_type\']:get_param_string(\'keep_cat_display_type\',\'\'),array_key_exists(\'template_set\',$map)?$map[\'template_set\']:\'\',array_key_exists(\'filter\',$map)?$map[\'filter\']:\'\',array_key_exists(\'param\',$map)?$map[\'param\']:db_get_first_id(),array_key_exists(\'check\',$map)?($map[\'check\']==\'1\'):true)';
         $info['special_cache_flags'] = CACHE_AGAINST_DEFAULT | CACHE_AGAINST_PERMISSIVE_GROUPS;
         if (addon_installed('content_privacy')) {
             $info['special_cache_flags'] |= CACHE_AGAINST_MEMBER;
@@ -66,6 +66,10 @@ class Block_main_cc_embed
      */
     public function run($map)
     {
+        $block_id = get_block_id($map);
+
+        $check_perms = array_key_exists('check', $map) ? ($map['check'] == '1') : true;
+
         if (empty($map['param'])) {
             $category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'cc_id', array(), 'GROUP BY cc_id ORDER BY COUNT(*) DESC');
             if ($category_id === null) {
@@ -99,8 +103,6 @@ class Block_main_cc_embed
         // Pick up details about catalogue
         $catalogue_name = $category['c_name'];
         $catalogue = load_catalogue_row($catalogue_name);
-
-        $block_id = get_block_id($map);
 
         $sort = get_param_string($block_id . '_order', array_key_exists('sort', $map) ? $map['sort'] : '');
         if ($sort == '') {
@@ -141,7 +143,7 @@ class Block_main_cc_embed
         // Get entries
         $as_guest = array_key_exists('as_guest', $map) ? ($map['as_guest'] == '1') : false;
         $viewing_member_id = $as_guest ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : null;
-        list($entry_buildup, $sorting, , $max_rows) = render_catalogue_category_entry_buildup(($select === null) ? $category_id : null, $catalogue_name, $catalogue, 'CATEGORY', $tpl_set, $max, $start, $select, $root, $display_type, true, null, $filter, $sort, $block_id . '_order', $viewing_member_id);
+        list($entry_buildup, $sorting, , $max_rows) = render_catalogue_category_entry_buildup(($select === null) ? $category_id : null, $catalogue_name, $catalogue, 'CATEGORY', $tpl_set, $max, $start, $select, $root, $display_type, true, null, $filter, $sort, $block_id . '_order', $viewing_member_id, $check_perms);
 
         // Sorting and pagination
         if (!$do_sorting) {

@@ -37,7 +37,7 @@ class Block_side_calendar
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('param', 'zone', 'days', 'title', 'filter', 'private', 'as_guest');
+        $info['parameters'] = array('param', 'zone', 'days', 'title', 'filter', 'private', 'as_guest', 'check');
         return $info;
     }
 
@@ -49,7 +49,7 @@ class Block_side_calendar
     public function caching_environment()
     {
         $info = array();
-        $info['cache_on'] = 'array(((array_key_exists(\'private\',$map)) && ($map[\'private\']!=\'\'))?intval($map[\'private\']):null,array_key_exists(\'as_guest\',$map)?($map[\'as_guest\']==\'1\'):false,array_key_exists(\'title\',$map)?$map[\'title\']:null,array_key_exists(\'filter\',$map)?explode(",",$map[\'filter\']):null,array_key_exists(\'zone\',$map)?$map[\'zone\']:get_module_zone(\'calendar\'),date(\'d\',utctime_to_usertime()),array_key_exists(\'days\',$map)?$map[\'days\']:\'30\',array_key_exists(\'param\',$map)?$map[\'param\']:\'year\',date(\'Y-m\',utctime_to_usertime()))';
+        $info['cache_on'] = 'array(((array_key_exists(\'private\',$map)) && ($map[\'private\']!=\'\'))?intval($map[\'private\']):null,array_key_exists(\'as_guest\',$map)?($map[\'as_guest\']==\'1\'):false,array_key_exists(\'title\',$map)?$map[\'title\']:null,array_key_exists(\'filter\',$map)?explode(",",$map[\'filter\']):null,array_key_exists(\'zone\',$map)?$map[\'zone\']:get_module_zone(\'calendar\'),date(\'d\',utctime_to_usertime()),array_key_exists(\'days\',$map)?$map[\'days\']:\'30\',array_key_exists(\'param\',$map)?$map[\'param\']:\'year\',date(\'Y-m\',utctime_to_usertime()),array_key_exists(\'check\',$map)?($map[\'check\']==\'1\'):true)';
         $info['special_cache_flags'] = CACHE_AGAINST_DEFAULT | CACHE_AGAINST_PERMISSIVE_GROUPS;
         if (addon_installed('content_privacy')) {
             $info['special_cache_flags'] |= CACHE_AGAINST_MEMBER;
@@ -72,6 +72,8 @@ class Block_side_calendar
         require_css('calendar');
 
         $block_id = get_block_id($map);
+
+        $check_perms = array_key_exists('check', $map) ? ($map['check'] == '1') : true;
 
         $year = intval(date('Y', utctime_to_usertime()));
         $month = intval(date('m', utctime_to_usertime()));
@@ -98,7 +100,7 @@ class Block_side_calendar
             $period_start = mktime(0, 0, 0, $month, 1, $year);
             $period_end = mktime(23, 59, 0, $month + 1, 0, $year);
 
-            $happenings = calendar_matches($member_id, $member_id, !has_privilege(get_member(), 'assume_any_member'), $period_start, $period_end, $filter, true, $private);
+            $happenings = calendar_matches($member_id, $member_id, !has_privilege(get_member(), 'assume_any_member'), $period_start, $period_end, $filter, true, $private, $check_perms);
 
             $entries = array();
             $priorities = array();
@@ -222,7 +224,7 @@ class Block_side_calendar
         $num_days = array_key_exists('days', $map) ? intval($map['days']) : 30;
         $period_end = $period_start + 60 * 60 * 24 * $num_days;
 
-        $happenings = calendar_matches($member_id, $member_id, !has_privilege(get_member(), 'assume_any_member'), $period_start - 100 * 60 * 60 * 24, $period_end, $filter, true, $private);
+        $happenings = calendar_matches($member_id, $member_id, !has_privilege(get_member(), 'assume_any_member'), $period_start - 100 * 60 * 60 * 24, $period_end, $filter, true, $private, $check_perms);
 
         $days = array();
         for ($hap_i = 0; $hap_i < count($happenings); $hap_i++) {

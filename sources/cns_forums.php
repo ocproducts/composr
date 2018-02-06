@@ -88,7 +88,7 @@ function render_forum_box($row, $zone = '_SEARCH', $give_context = true, $includ
  */
 function get_forum_access_sql($field)
 {
-    $groups = _get_where_clause_groups(get_member());
+    $groups = get_permission_where_clause_groups(get_member());
 
     if ($groups === null) {
         return '1=1';

@@ -37,7 +37,7 @@ class Block_side_news_categories
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('select');
+        $info['parameters'] = array('select', 'check');
         return $info;
     }
 
@@ -49,7 +49,7 @@ class Block_side_news_categories
     public function caching_environment()
     {
         $info = array();
-        $info['cache_on'] = 'array(array_key_exists(\'select\', $map) ? $map[\'select\'] : \'\')';
+        $info['cache_on'] = 'array(array_key_exists(\'select\',$map)?$map[\'select\']:\'\',array_key_exists(\'check\',$map)?($map[\'check\']==\'1\'):true)';
         $info['special_cache_flags'] = CACHE_AGAINST_DEFAULT | CACHE_AGAINST_PERMISSIVE_GROUPS;
         $info['ttl'] = (get_value('no_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 60 * 24;
         return $info;
@@ -66,6 +66,8 @@ class Block_side_news_categories
         require_lang('news');
 
         $block_id = get_block_id($map);
+
+        $check_perms = array_key_exists('check', $map) ? ($map['check'] == '1') : true;
 
         $select = array_key_exists('select', $map) ? $map['select'] : '';
         if ($select == '') {
@@ -84,7 +86,7 @@ class Block_side_news_categories
 
         $categories2 = array();
         foreach ($categories as $category) {
-            if (has_category_access(get_member(), 'news', strval($category['id']))) {
+            if ((!$check_perms) || (has_category_access(get_member(), 'news', strval($category['id'])))) {
                 $join = ' LEFT JOIN ' . get_table_prefix() . 'news_category_entries d ON d.news_entry=p.id';
                 $count = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'news p' . $join . ' WHERE validated=1 AND (news_entry_category=' . strval($category['id']) . ' OR news_category=' . strval($category['id']) . ')');
                 if ($count > 0) {
@@ -95,7 +97,7 @@ class Block_side_news_categories
         }
         if (count($categories2) == 0) {
             foreach ($categories as $category) {
-                if (has_category_access(get_member(), 'news', strval($category['id']))) {
+                if ((!$check_perms) || (has_category_access(get_member(), 'news', strval($category['id'])))) {
                     $category['_nc_title'] = get_translated_text($category['nc_title']);
                     $categories2[] = $category;
                 }

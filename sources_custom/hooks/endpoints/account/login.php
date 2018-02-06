@@ -55,7 +55,7 @@ class Hook_endpoint_account_login
         unset($data['groups']);
 
         require_code('permissions');
-        $where_groups = _get_where_clause_groups($member_id);
+        $where_groups = get_permission_where_clause_groups($member_id);
         if ($where_groups === null) {
             $privileges_perhaps = $GLOBALS['SITE_DB']->query_select('privilege_list', array('the_name AS privilege'));
             $pages_blacklist = array();

@@ -37,7 +37,7 @@ class Block_main_forum_news
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('param', 'forum', 'member_based', 'date_key', 'title', 'optimise');
+        $info['parameters'] = array('param', 'forum', 'member_based', 'date_key', 'title', 'optimise', 'check');
         return $info;
     }
 
@@ -49,7 +49,7 @@ class Block_main_forum_news
     public function caching_environment()
     {
         $info = array();
-        $info['cache_on'] = 'array(array_key_exists(\'optimise\',$map)?$map[\'optimise\']:\'0\',array_key_exists(\'title\',$map)?$map[\'title\']:\'\',array_key_exists(\'member_based\',$map)?$map[\'member_based\']:\'0\',array_key_exists(\'forum\',$map)?$map[\'forum\']:\'Announcements\',array_key_exists(\'param\',$map)?intval($map[\'param\']):14,array_key_exists(\'date_key\',$map)?$map[\'date_key\']:\'firsttime\')';
+        $info['cache_on'] = 'array(array_key_exists(\'optimise\',$map)?$map[\'optimise\']:\'0\',array_key_exists(\'title\',$map)?$map[\'title\']:\'\',array_key_exists(\'member_based\',$map)?$map[\'member_based\']:\'0\',array_key_exists(\'forum\',$map)?$map[\'forum\']:\'Announcements\',array_key_exists(\'param\',$map)?intval($map[\'param\']):14,array_key_exists(\'date_key\',$map)?$map[\'date_key\']:\'firsttime\',array_key_exists(\'check\',$map)?($map[\'check\']==\'1\'):true)';
         $info['special_cache_flags'] = CACHE_AGAINST_DEFAULT | CACHE_AGAINST_PERMISSIVE_GROUPS;
         $info['ttl'] = (get_value('no_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 60;
         return $info;
@@ -72,6 +72,8 @@ class Block_main_forum_news
         require_code('xhtml');
 
         $block_id = get_block_id($map);
+
+        $check_perms = array_key_exists('check', $map) ? ($map['check'] == '1') : true;
 
         $num_topics = empty($map['param']) ? 14 : intval($map['param']);
         $forum_name = array_key_exists('forum', $map) ? $map['forum'] : do_lang('NEWS');
@@ -104,6 +106,12 @@ class Block_main_forum_news
             }
 
             if ($forum_id !== null) {
+                if ((get_forum_type() == 'cns') && ($check_perms)) {
+                    if (!has_category_access(get_member(), 'forums', strval($forum_id))) {
+                        continue;
+                    }
+                }
+
                 $forum_ids[$forum_id] = $forum_name;
                 if ($archive_url === null) {
                     $archive_url = $GLOBALS['FORUM_DRIVER']->forum_url($forum_id, true); // First forum will count as archive

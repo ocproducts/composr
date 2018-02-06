@@ -288,9 +288,10 @@ function count_catalogue_category_children($category_id)
  * @param  ?ID_TEXT $order_by_high_level Orderer (null: read from environment)
  * @param  ID_TEXT $ordering_param Environment param used for ordering. You should pass in $order_by_high_level if it is set.
  * @param  ?MEMBER $viewing_member_id Viewing member ID (null: current user)
+ * @param  boolean $check_perms Whether to check permissions (we normally leave false as we have pre-checked permissions for $category_id)
  * @return array An array containing our built up entries (renderable Tempcode), our sorting interface, and our entries (entry records from database, with an additional 'map' field), and the max rows
  */
-function render_catalogue_category_entry_buildup($category_id, $catalogue_name, $catalogue, $view_type, $tpl_set, $max, $start, $select, $root, $display_type = null, $do_sorting = true, $entries = null, $filter = '', $order_by_high_level = null, $ordering_param = 'sort', $viewing_member_id = null)
+function render_catalogue_category_entry_buildup($category_id, $catalogue_name, $catalogue, $view_type, $tpl_set, $max, $start, $select, $root, $display_type = null, $do_sorting = true, $entries = null, $filter = '', $order_by_high_level = null, $ordering_param = 'sort', $viewing_member_id = null, $check_perms = false)
 {
     if ($filter != '') {
         require_code('filtercode');
@@ -349,7 +350,7 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
         $select = null;
     }
     if ($entries === null) {
-        list($in_db_sorting, $num_entries, $entries) = get_catalogue_entries($catalogue_name, $category_id, $max, $start, $select, $do_sorting, $filtercode, $order_by, $direction);
+        list($in_db_sorting, $num_entries, $entries) = get_catalogue_entries($catalogue_name, $category_id, $max, $start, $select, $do_sorting, $filtercode, $order_by, $direction, '', null, $check_perms);
     } else { // Oh, we already have $entries
         $num_entries = count($entries);
         $in_db_sorting = false;
@@ -636,9 +637,10 @@ function _catalogues_filtercode($db, $info, $catalogue_name, &$extra_join, &$ext
  * @param  ID_TEXT $direction Order direction
  * @param  string $extra_where Additional WHERE SQL to add on to query
  * @param  ?MEMBER $viewing_member_id Viewing member ID (null: current user)
+ * @param  boolean $check_perms Whether to check permissions (we normally leave false as we have pre-checked permissions for $category_id)
  * @return array A tuple: whether sorting was done, number of entries returned, list of entries
  */
-function get_catalogue_entries($catalogue_name, $category_id, $max, $start, $select, $do_sorting, $filtercode, $order_by, $direction, $extra_where = '', $viewing_member_id = null)
+function get_catalogue_entries($catalogue_name, $category_id, $max, $start, $select, $do_sorting, $filtercode, $order_by, $direction, $extra_where = '', $viewing_member_id = null, $check_perms = false)
 {
     $where_clause = '1=1' . $extra_where;
     if ($category_id !== null) {
@@ -663,6 +665,11 @@ function get_catalogue_entries($catalogue_name, $category_id, $max, $start, $sel
     }
     $extra_join[] = $privacy_join;
     $where_clause .= $privacy_where;
+
+    if ((!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) && ($check_perms)) {
+        $extra_join[] = get_permission_join_clause('catalogue_category', 'cc_id');
+        $where_clause .= get_permission_where_clause(get_member(), get_permission_where_clause_groups(get_member()));
+    }
 
     // If we're listing what IDs to look at, work out SQL for this
     if (($category_id === null) && ($select !== null)) {

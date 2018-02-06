@@ -130,7 +130,7 @@ class Hook_search_comcode_pages extends FieldsSearchHook
         }
 
         require_lang('zones');
-        $g_or = _get_where_clause_groups(get_member(), false);
+        $g_or = get_permission_where_clause_groups(get_member(), false);
 
         $table = 'cached_comcode_pages r LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'comcode_pages q ON (q.the_zone=r.the_zone AND q.the_page=r.the_page)';
         $trans_fields = array('r.cc_page_title' => 'SHORT_TRANS', 'r.string_index' => 'LONG_TRANS__COMCODE');

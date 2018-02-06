@@ -37,7 +37,7 @@ class Block_bottom_news
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('param', 'select', 'select_and', 'zone', 'blogs', 'as_guest');
+        $info['parameters'] = array('param', 'select', 'select_and', 'zone', 'blogs', 'as_guest', 'check');
         return $info;
     }
 
@@ -49,7 +49,7 @@ class Block_bottom_news
     public function caching_environment()
     {
         $info = array();
-        $info['cache_on'] = 'array(array_key_exists(\'as_guest\',$map)?($map[\'as_guest\']==\'1\'):false,array_key_exists(\'zone\',$map)?$map[\'zone\']:get_module_zone(\'news\'),array_key_exists(\'select\',$map)?$map[\'select\']:\'\',array_key_exists(\'param\',$map)?intval($map[\'param\']):5,array_key_exists(\'blogs\',$map)?$map[\'blogs\']:\'-1\',array_key_exists(\'select_and\',$map)?$map[\'select_and\']:\'\')';
+        $info['cache_on'] = 'array(array_key_exists(\'as_guest\',$map)?($map[\'as_guest\']==\'1\'):false,array_key_exists(\'zone\',$map)?$map[\'zone\']:get_module_zone(\'news\'),array_key_exists(\'select\',$map)?$map[\'select\']:\'\',array_key_exists(\'param\',$map)?intval($map[\'param\']):5,array_key_exists(\'blogs\',$map)?$map[\'blogs\']:\'-1\',array_key_exists(\'select_and\',$map)?$map[\'select_and\']:\'\',array_key_exists(\'check\',$map)?($map[\'check\']==\'1\'):true)';
         $info['special_cache_flags'] = CACHE_AGAINST_DEFAULT | CACHE_AGAINST_PERMISSIVE_GROUPS;
         if (addon_installed('content_privacy')) {
             $info['special_cache_flags'] |= CACHE_AGAINST_MEMBER;
@@ -67,6 +67,8 @@ class Block_bottom_news
     public function run($map)
     {
         $block_id = get_block_id($map);
+
+        $check_perms = array_key_exists('check', $map) ? ($map['check'] == '1') : true;
 
         $max = empty($map['param']) ? 5 : intval($map['param']);
         $zone = array_key_exists('zone', $map) ? $map['zone'] : get_module_zone('news');
@@ -124,30 +126,33 @@ class Block_bottom_news
             $q_filter .= sql_region_filter('news', 'p.id');
         }
 
+        if ((!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) && ($check_perms)) {
+            $join .= get_permission_join_clause('news', 'news_category');
+            $q_filter .= get_permission_where_clause(get_member(), get_permission_where_clause_groups(get_member()));
+        }
+
         $news = $GLOBALS['SITE_DB']->query('SELECT p.* FROM ' . get_table_prefix() . 'news p LEFT JOIN ' . get_table_prefix() . 'news_category_entries d ON d.news_entry=p.id' . $join . ' WHERE ' . $q_filter . ' AND validated=1 ORDER BY date_and_time DESC', $max, 0, false, true);
 
         $_postdetailss = array();
 
         foreach ($news as $item) {
-            if (has_category_access(get_member(), 'news', strval($item['news_category']))) {
-                $url_map = array('page' => 'news', 'type' => 'view', 'id' => $item['id']);
-                if ($select != '*') {
-                    $url_map['select'] = $select;
-                }
-                if (($select_and != '*') && ($select_and != '')) {
-                    $url_map['select_and'] = $select_and;
-                }
-                if ($blogs === 1) {
-                    $url_map['blog'] = 1;
-                }
-                $full_url = build_url($url_map, $zone);
-
-                $just_news_row = db_map_restrict($item, array('id', 'title', 'news', 'news_article'));
-                $_title = get_translated_tempcode('news', $just_news_row, 'title');
-                $date = get_timezoned_date_tempcode($item['date_and_time']);
-
-                $_postdetailss[] = array('DATE' => $date, 'FULL_URL' => $full_url, 'NEWS_TITLE' => $_title);
+            $url_map = array('page' => 'news', 'type' => 'view', 'id' => $item['id']);
+            if ($select != '*') {
+                $url_map['select'] = $select;
             }
+            if (($select_and != '*') && ($select_and != '')) {
+                $url_map['select_and'] = $select_and;
+            }
+            if ($blogs === 1) {
+                $url_map['blog'] = 1;
+            }
+            $full_url = build_url($url_map, $zone);
+
+            $just_news_row = db_map_restrict($item, array('id', 'title', 'news', 'news_article'));
+            $_title = get_translated_tempcode('news', $just_news_row, 'title');
+            $date = get_timezoned_date_tempcode($item['date_and_time']);
+
+            $_postdetailss[] = array('DATE' => $date, 'FULL_URL' => $full_url, 'NEWS_TITLE' => $_title);
         }
 
         return do_template('BLOCK_BOTTOM_NEWS', array(

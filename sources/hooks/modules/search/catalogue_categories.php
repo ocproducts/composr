@@ -121,7 +121,7 @@ class Hook_search_catalogue_categories extends FieldsSearchHook
             $where_clause .= 'p.category_name IS NOT NULL';
         }
 
-        $g_or = _get_where_clause_groups(get_member());
+        $g_or = get_permission_where_clause_groups(get_member());
 
         // Calculate and perform query
         if ($g_or == '') {
