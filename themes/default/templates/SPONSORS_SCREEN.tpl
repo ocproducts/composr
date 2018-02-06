@@ -22,3 +22,7 @@
 		{+END}
 	</ul>
 {+END}
+
+<h2>{!CONTRIBUTE_HEADING}</h2>
+
+<p>{!CONTRIBUTE_PARAGRAPH,{$BRAND_BASE_URL*}/contributions.htm}</p>

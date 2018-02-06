@@ -72,6 +72,7 @@ class Module_admin_debrand
         $type = get_param_string('type', 'browse');
 
         require_lang('debrand');
+        require_lang('menus');
 
         set_helper_panel_text(comcode_lang_string('DOC_SUPERDEBRAND'));
 

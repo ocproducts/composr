@@ -1,18 +1,41 @@
+[semihtml]
+
 [title sub="You are in the Admin Zone"]Admin Dashboard[/title]
-[surround="block-desktop"][title="2"]Tasks[/title][/surround]
+
 {| 60%:37% wide floats
-| [block]main_staff_checklist[/block]
-| [block]main_staff_new_version[/block]{+START,IF,{$CNS}}[block="Staff" title="Staff forum" limit="3" failsafe="1"]main_forum_topics[/block]{+END}[block]main_staff_tips[/block]{+START,IF,{$ADDON_INSTALLED,syndication_blocks}}{$BLOCK,block=side_rss,param={$BRAND_BASE_URL}/backend.php?mode=news&type=rss&select=1-10&days=100,title=Composr news,cache=1,defer=1}{+END}
+|
+	{+START,IF,{$CONFIG_OPTION,dashboard_checklist}}
+		[block]main_staff_checklist[/block]<br />
+	{+END}
+	{+START,IF,{$CONFIG_OPTION,dashboard_actions}}
+		[block]main_staff_actions[/block]<br />
+	{+END}
+	{+START,IF,{$CONFIG_OPTION,dashboard_staff_website_monitoring}}
+		[block defer="1"]main_staff_website_monitoring[/block]
+	{+END}
+|
+	{+START,IF,{$CONFIG_OPTION,dashboard_new_version}}
+		[block defer="1"]main_staff_new_version[/block]<br />
+	{+END}
+	{+START,IF,{$CONFIG_OPTION,dashboard_forum_topics}}
+		{+START,IF,{$CNS}}
+			[block="Staff" title="Staff forum" limit="3" failsafe="1"]main_forum_topics[/block]<br />
+		{+END}
+	{+END}
+	{+START,IF,{$CONFIG_OPTION,dashboard_tips}}
+		[block]main_staff_tips[/block]<br />
+	{+END}
+	{+START,IF,{$CONFIG_OPTION,dashboard_composr_news}}
+		{+START,IF,{$ADDON_INSTALLED,syndication_blocks}}
+			{$BLOCK,block=side_rss,param={$BRAND_BASE_URL}/backend.php?mode=news&type=rss&select=1-10&days=100,title=Composr news,cache=1,defer=1}<br />
+		{+END}
+	{+END}
+	{+START,IF,{$CONFIG_OPTION,dashboard_db_notes}}
+		[block]main_db_notes[/block]<br />
+	{+END}
+	{+START,IF,{$CONFIG_OPTION,dashboard_staff_links}}
+		[block]main_staff_links[/block]
+	{+END}
 |}
-[surround="block-desktop"][title="2"]Latest activity [size="0.8"]([page="adminzone:admin_actionlog"]more[/page])[/size][/title][/surround]
-{| 60%:37% wide floats
-| [block]main_staff_actions[/block]
-| [block]main_db_notes[/block]
-|}
-[surround="block-desktop"][title="2"]Other Websites[/title][/surround]
-{| 60%:37% wide floats
-| [block]main_staff_website_monitoring[/block]
-| [block]main_staff_links[/block]
-|}
-[title="2"]Recommend Composr[/title]Know someone who needs a website? [page=":recommend:browse:cms=1"]Recommend Composr[/page] and they'll be sent a link to your own site too.
-[title="3"]Sponsors[/title][surround="vertical-alignment"]Check out our [page="adminzone:admin_version"]sponsors[/page]. We love them :wub:.[/surround]
+
+[/semihtml]

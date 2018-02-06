@@ -18,6 +18,8 @@
 			<div class="img-wrap">
 				<img width="400" height="140" src="{$IMG*,product_logo}" alt="" />
 			</div>
+
+			<p>{!SPONSORS_NEEDED,{$PAGE_LINK*,adminzone:admin_version}}</p>
 		</div>
 	</div>
 </section>

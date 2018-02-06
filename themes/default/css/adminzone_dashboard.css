@@ -92,6 +92,10 @@ a.top-left-toggle:hover {
 
 /* New version indicator */
 
+.staff-new-versions p {
+	margin: 0.5em 0;
+}
+
 .staff-new-versions .notes-about {
 	display: none;
 }
@@ -129,7 +133,10 @@ a.top-left-toggle:hover {
 }
 
 .staff-new-versions .img-wrap {
-	text-align: center;
+}
+.staff-new-versions .img-wrap img {
+	width: auto;
+	height: 90px;
 }
 /*{+START,CSS_MODE,mobile}*/
 	.staff-new-versions .img-wrap {

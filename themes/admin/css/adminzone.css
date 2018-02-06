@@ -87,24 +87,12 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 	margin-right: 0;
 }
 
-#panel-right ~ .global-middle {
-	padding-right: 2em;
-}
-
 .page-running-login #main-website-inner {
 	background-image: none !important;
 }
 
 footer .global-minilinks {
 	padding-top: 0.6em;
-}
-
-.toggleable-tray-title {
-	padding: 0.5em 0;
-}
-
-.toggleable-tray-title .toggleable-tray-button img {
-	margin-left: 0.25em;
 }
 
 /* Admin Zone styles */

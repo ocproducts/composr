@@ -21,7 +21,7 @@
 			</div>
 		{+END}{+END}
 
-		{+START,IF,{$NOR,{IS_PANEL},{$EQ,{NAME},rules,start},{$WIDE_HIGH},{IS_PANEL},{BEING_INCLUDED},{$GET,already_loaded_screen_actions}}}
+		{+START,IF,{$NOR,{IS_PANEL},{$EQ,{NAME},rules,{$DEFAULT_ZONE_PAGE_NAME}},{$WIDE_HIGH},{IS_PANEL},{BEING_INCLUDED},{$GET,already_loaded_screen_actions}}}
 			{+START,IF,{$THEME_OPTION,show_screen_actions}}
 				{$REQUIRE_CSS,{$?,{$THEME_OPTION,show_screen_actions},screen_actions}}
 				{$BLOCK-,failsafe=1,block=main_screen_actions}
