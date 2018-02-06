@@ -274,6 +274,11 @@ class LangFilter_EN extends LangFilter
             $remapping = $this->the_sun_never_sets_on_the_british_empire;
         }
 
+        // Strip out Conversr notes
+        if ((get_forum_type() == 'cns') && (get_domain() != 'compo.sr')) {
+            $value = str_replace(array(' (Conversr only)', ' Note that most checks only work if running Conversr.'), array('', ''), $value);
+        }
+
         // Better labelling for eCommerce config
         if ((addon_installed('ecommerce')) && (function_exists('get_option')) && (($key === null) || (strpos($key, 'ECOM_CAT') === false/*gets saved into database*/))) {
             $remapping['the configured weight units'] = 'the configured weight units (currently ' . get_option('shipping_weight_units') . ')';
@@ -282,6 +287,7 @@ class LangFilter_EN extends LangFilter
             $remapping['your configured currency'] = 'your configured currency (currently ' . get_option('currency') . ')';
         }
 
+        // Process remappings
         $lc_value = strtolower($value);
         foreach ($remapping as $authentic => $perverted) {
             if (strpos($lc_value, $authentic) !== false) {
