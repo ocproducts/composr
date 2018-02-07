@@ -711,9 +711,20 @@
                     if ((e.type === 'mouseover') && options.haveLinks) {
                         return;
                     }
+                    
+                    if (options.haveLinks) {
+                        if ((e.type === 'mouseover')) {
+                            return;
+                        }
 
-                    //arguments: el, event, tooltip, width, pic, height, bottom, no_delay, lights_off, force_width, win, haveLinks
-                    var args = [el, e, el.ttitle, 'auto', null, null, false, true, false, false, window, true/*!!el.haveLinks*/];
+                        if (el.tooltipId && $dom.$id(el.tooltipId) && $dom.isDisplayed($dom.$id(el.tooltipId))) {
+                            $cms.ui.deactivateTooltip(el);
+                            return;
+                        }
+                    }
+
+                    //arguments: el, event, tooltip, width, pic, height, bottom, noDelay, lightsOff, forceWidth, win, haveLinks
+                    var args = [el, e, el.ttitle, 'auto', null, null, false, true, false, false, window, true];
 
                     try {
                         $cms.ui.activateTooltip.apply(undefined, args);

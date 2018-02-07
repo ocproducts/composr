@@ -418,9 +418,6 @@
         }
     };
 
-    $cms.templates.formScreenFieldDescription = function formScreenFieldDescription(params, img) {
-    };
-
     $cms.templates.formScreenInputLine = function formScreenInputLine(params) {
         $cms.requireJavascript(['jquery', 'jquery_autocomplete']).then(function () {
             window.$jqueryAutocomplete.setUpComcodeAutocomplete(params.name, !!params.wysiwyg);

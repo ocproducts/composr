@@ -251,12 +251,12 @@
         width = strVal(width) || 'auto';
         pic = strVal(pic);
         height = strVal(height) || 'auto';
-        bottom = !!bottom;
-        noDelay = !!noDelay;
-        lightsOff = !!lightsOff;
-        forceWidth = !!forceWidth;
+        bottom = Boolean(bottom);
+        noDelay = Boolean(noDelay);
+        lightsOff = Boolean(lightsOff);
+        forceWidth = Boolean(forceWidth);
         win || (win = window);
-        haveLinks = !!haveLinks;
+        haveLinks = Boolean(haveLinks);
 
         if (el.deactivatedAt && (Date.now() - el.deactivatedAt < 200)) {
             return;
@@ -352,7 +352,7 @@
                 tooltipEl.style.overflow = 'auto';
             }
             tooltipEl.style.position = 'absolute';
-            tooltipEl.id = 't_' + $util.random();
+            tooltipEl.id = 't-' + $util.random();
             el.tooltipId = tooltipEl.id;
             $cms.ui.repositionTooltip(el, event, bottom, true, tooltipEl, forceWidth);
             document.body.appendChild(tooltipEl);
