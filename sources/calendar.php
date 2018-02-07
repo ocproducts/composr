@@ -246,7 +246,7 @@ function find_periods_recurrence($timezone, $do_timezone_conv, $start_year, $sta
                 }
 
                 _compensate_for_dst_change($start_hour, $start_minute, $start_day_of_month, $start_month, $start_year, $timezone, $do_timezone_conv, $zoom, 0, 0);
-                if ($end_hour !== null) {
+                if ($end_day !== null) {
                     _compensate_for_dst_change($end_hour, $end_minute, $end_day_of_month, $end_month, $end_year, $timezone, $do_timezone_conv, $zoom, 0, 0);
                 }
             }
@@ -261,7 +261,7 @@ function find_periods_recurrence($timezone, $do_timezone_conv, $start_year, $sta
                 }
 
                 _compensate_for_dst_change($start_hour, $start_minute, $start_day_of_month, $start_month, $start_year, $timezone, $do_timezone_conv, $zoom, 0, 0);
-                if ($end_hour !== null) {
+                if ($end_day !== null) {
                     _compensate_for_dst_change($end_hour, $end_minute, $end_day_of_month, $end_month, $end_year, $timezone, $do_timezone_conv, $zoom, 0, 0);
                 }
             }
@@ -277,7 +277,7 @@ function find_periods_recurrence($timezone, $do_timezone_conv, $start_year, $sta
                 $start_day_of_month = find_concrete_day_of_month($start_year, $start_month, $start_day, $start_monthly_spec_type, ($start_hour === null) ? find_timezone_start_hour_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_hour, ($start_minute === null) ? find_timezone_start_minute_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_minute, $timezone, $do_timezone_conv == 1);
 
                 _compensate_for_dst_change($start_hour, $start_minute, $start_day_of_month, $start_month, $start_year, $timezone, $do_timezone_conv, 0, $zoom, 0);
-                if ($end_hour !== null) {
+                if ($end_day !== null) {
                     _compensate_for_dst_change($end_hour, $end_minute, $end_day_of_month, $end_month, $end_year, $timezone, $do_timezone_conv, 0, $zoom, 0);
                 }
             }
@@ -292,7 +292,7 @@ function find_periods_recurrence($timezone, $do_timezone_conv, $start_year, $sta
                 }
 
                 _compensate_for_dst_change($start_hour, $start_minute, $start_day_of_month, $start_month, $start_year, $timezone, $do_timezone_conv, 0, 0, $zoom);
-                if ($end_hour !== null) {
+                if ($end_day !== null) {
                     _compensate_for_dst_change($end_hour, $end_minute, $end_day_of_month, $end_month, $end_year, $timezone, $do_timezone_conv, 0, 0, $zoom);
                 }
             }
@@ -397,7 +397,7 @@ function find_periods_recurrence($timezone, $do_timezone_conv, $start_year, $sta
         if ($start_hour !== null) {
             _compensate_for_dst_change($start_hour, $start_minute, $start_day, $start_month, $start_year, $timezone, $do_timezone_conv, $dif_day, $dif_month, $dif_year);
         }
-        if ($end_hour !== null) {
+        if ($end_day !== null) {
             _compensate_for_dst_change($end_hour, $end_minute, $end_day, $end_month, $end_year, $timezone, $do_timezone_conv, $dif_day, $dif_month, $dif_year);
         }
 

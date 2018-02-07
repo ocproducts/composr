@@ -795,11 +795,13 @@ class Module_cms_calendar extends Standard_crud_module
                         unset($rem_groups[db_get_first_id()]);
                     }
                 }
-                foreach (explode(',', substr($multi_code, 1)) as $m) {
-                    if (substr($multi_code, 0, 1) == '-') {
-                        unset($rem_groups[intval($m)]);
-                    } elseif (substr($multi_code, 0, 1) == '+') {
-                        $rem_groups[intval($m)] = $all_groups[intval($m)];
+                if ($multi_code != '') {
+                    foreach (explode(',', substr($multi_code, 1)) as $m) {
+                        if (substr($multi_code, 0, 1) == '-') {
+                            unset($rem_groups[intval($m)]);
+                        } elseif (substr($multi_code, 0, 1) == '+') {
+                            $rem_groups[intval($m)] = $all_groups[intval($m)];
+                        }
                     }
                 }
                 $rem_groups = array_keys($rem_groups);
