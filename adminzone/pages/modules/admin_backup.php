@@ -258,7 +258,8 @@ class Module_admin_backup
                 $delete_url = build_url(array('page' => '_SELF', 'type' => 'confirm_delete', 'file' => $entry['file']), '_SELF');
                 $url = get_custom_base_url() . '/exports/backups/' . $entry['file'];
 
-                $actions = do_template('COLUMNED_TABLE_ACTION_DELETE_ENTRY', array('_GUID' => '23a8b5d5d345d8fdecc74b01fe5a9042', 'NAME' => $entry['file'], 'URL' => $delete_url));
+                $actions = new Tempcode();
+                $actions->attach(do_template('COLUMNED_TABLE_ACTION_DELETE_ENTRY', array('_GUID' => '23a8b5d5d345d8fdecc74b01fe5a9042', 'GET' => true, 'NAME' => $entry['file'], 'URL' => $delete_url)));
 
                 $type = do_lang_tempcode('UNKNOWN');
                 switch (get_file_extension($entry['file'])) {

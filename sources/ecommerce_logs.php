@@ -105,7 +105,7 @@ function build_sales_table($filter_member_id, $show_username = false, $show_dele
 
         if ($show_delete) {
             $url = build_url(array('page' => 'admin_ecommerce_logs', 'type' => 'delete_sales_log_entry', 'id' => $row['s_id']), get_module_zone('admin_ecommerce_logs'));
-            $actions = do_template('COLUMNED_TABLE_ACTION_DELETE_ENTRY', array('_GUID' => '12e3ea365f1a1ed2e7800293f3203283', 'NAME' => '#' . strval($row['s_id']), 'URL' => $url));
+            $actions = do_template('COLUMNED_TABLE_ACTION_DELETE_ENTRY', array('_GUID' => '12e3ea365f1a1ed2e7800293f3203283', 'CONFIRM' => true, 'NAME' => '#' . strval($row['s_id']), 'URL' => $url));
         }
 
         $sales_row = array();

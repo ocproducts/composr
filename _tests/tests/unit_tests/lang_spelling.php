@@ -287,6 +287,7 @@ class lang_spelling_test_set extends cms_test_case
         if (strpos($string, 'RECAPTCHA') !== false) {
             $this->assertTrue(false, 'The phrase \'RECAPTCHA\' was used in ' . $file . '. This should be changed to \'reCAPTCHA\'.');
         }
+        // page-link, but we can't test for that because "page link" is a valid phrase too
 
         // Our canonical way of writing "Open Source"
         if (strpos($string, 'open source') !== false) {

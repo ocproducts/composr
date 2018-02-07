@@ -133,6 +133,7 @@ class Hook_addon_registry_core_abstract_interfaces
             'themes/default/templates/COLUMNED_TABLE_ROW_CELL_SELECT.tpl',
             'themes/default/templates/COLUMNED_TABLE_ACTION_DELETE_CATEGORY.tpl',
             'themes/default/templates/COLUMNED_TABLE_ACTION_DELETE_ENTRY.tpl',
+            'themes/default/templates/COLUMNED_TABLE_ACTION_UNINSTALL_ENTRY.tpl',
             'themes/default/templates/COLUMNED_TABLE_ACTION_INSTALL_ENTRY.tpl',
             'themes/default/templates/COLUMNED_TABLE_ACTION_REINSTALL_ENTRY.tpl',
             'themes/default/templates/COLUMNED_TABLE_ACTION_TRANSLATE.tpl',
@@ -201,6 +202,7 @@ class Hook_addon_registry_core_abstract_interfaces
             'templates/CONFIRM_SCREEN.tpl' => 'confirm_screen',
             'templates/RESULTS_TABLE_SCREEN.tpl' => 'result_table_screen',
             'templates/COLUMNED_TABLE_ACTION_DELETE_ENTRY.tpl' => 'full_table_screen',
+            'templates/COLUMNED_TABLE_ACTION_UNINSTALL_ENTRY.tpl' => 'full_table_screen',
             'templates/COLUMNED_TABLE.tpl' => 'full_table_screen',
             'templates/INDEX_SCREEN_ENTRY.tpl' => 'index_screen',
             'templates/INDEX_SCREEN.tpl' => 'index_screen',
@@ -795,6 +797,12 @@ class Hook_addon_registry_core_abstract_interfaces
         $table_rows = new Tempcode();
         foreach (placeholder_array() as $row) {
             $actions = do_lorem_template('COLUMNED_TABLE_ACTION_DELETE_ENTRY', array(
+                'GET' => true,
+                'HIDDEN' => '',
+                'NAME' => lorem_phrase(),
+                'URL' => placeholder_url(),
+            ));
+            $actions = do_lorem_template('COLUMNED_TABLE_ACTION_UNINSTALL_ENTRY', array(
                 'GET' => true,
                 'HIDDEN' => '',
                 'NAME' => lorem_phrase(),
