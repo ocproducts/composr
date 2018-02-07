@@ -66,6 +66,7 @@ abstract class Standard_crud_module
     public $posting_form_description = '';
     public $posting_form_text_parsed = null;
     public $posting_form_tabindex = null;
+    public $support_wysiwyg = true;
     public $javascript = null;
     public $js_function_calls = array();
     public $functions = null;
@@ -941,7 +942,7 @@ abstract class Standard_crud_module
                 'JS_FUNCTION_CALLS' => $this->js_function_calls,
             ) + $extra_tpl_params);
         } elseif ($this->posting_form_title !== null) {
-            $posting_form = get_posting_form($submit_name, $submit_icon, $this->posting_form_text, $post_url, $hidden, $fields, $this->posting_form_title, '', $fields2, $this->posting_form_text_parsed, $this->js_function_calls, $posting_form_tabindex, $this->posting_field_required, /*$has_preview = */true, /*$avoid_wysiwyg = */false, /*$support_autosave = */true, /*$specialisation2_hidden = */false, $this->posting_form_description, $cancel_url);
+            $posting_form = get_posting_form($submit_name, $submit_icon, $this->posting_form_text, $post_url, $hidden, $fields, $this->posting_form_title, '', $fields2, $this->posting_form_text_parsed, $this->js_function_calls, $posting_form_tabindex, $this->posting_field_required, $this->do_preview, $this->support_wysiwyg, /*$support_autosave = */true, /*$specialisation2_hidden = */false, $this->posting_form_description, $cancel_url);
             return do_template('POSTING_SCREEN', array(
                 '_GUID' => '15930ba8cc02634ed3a225c9714c3eac' . get_class($this),
                 'TITLE' => $this->title,
@@ -1523,7 +1524,7 @@ abstract class Standard_crud_module
 
         $cancel_url = build_url(array('page' => '_SELF', 'clear_autosave' => 1), '_SELF');
         if ($this->posting_form_title !== null) {
-            $posting_form = get_posting_form($submit_name, $submit_icon, $this->posting_form_text, $post_url, $hidden, $fields, $this->posting_form_title, '', $fields2, $this->posting_form_text_parsed, $this->js_function_calls, $this->posting_form_tabindex, $this->posting_field_required, /*$has_preview = */true, /*$avoid_wysiwyg = */false, /*$support_autosave = */true, /*$specialisation2_hidden = */false, $this->posting_form_description, $cancel_url);
+            $posting_form = get_posting_form($submit_name, $submit_icon, $this->posting_form_text, $post_url, $hidden, $fields, $this->posting_form_title, '', $fields2, $this->posting_form_text_parsed, $this->js_function_calls, $this->posting_form_tabindex, $this->posting_field_required, $this->do_preview, $this->support_wysiwyg, /*$support_autosave = */true, /*$specialisation2_hidden = */false, $this->posting_form_description, $cancel_url);
             return do_template('POSTING_SCREEN', array(
                 '_GUID' => '841b9af3aa80bcab86b907e4b942786a' . get_class($this),
                 'PREVIEW' => $this->do_preview,

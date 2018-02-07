@@ -408,6 +408,9 @@ class Module_cms_calendar extends Standard_crud_module
         $fields->attach(form_input_date(do_lang_tempcode('END_DATE_TIME'), do_lang_tempcode('DESCRIPTION_END_DATE_TIME'), 'end', false, ($end_year === null), true, array(($end_minute === null) ? find_timezone_end_minute_in_utc($timezone, $end_year, $end_month, $end_day, $end_monthly_spec_type) : $end_minute, ($end_hour === null) ? find_timezone_end_hour_in_utc($timezone, $end_year, $end_month, $end_day, $end_monthly_spec_type) : $end_hour, $end_month, $end_day_of_month, $end_year), 120, intval(date('Y')) - 100, null, true, $timezone));
 
         // Type
+        if ($type == db_get_first_id()) {
+            $this->support_wysiwyg = false;
+        }
         $type_list = create_selection_list_event_types($type);
         $fields->attach(form_input_list(do_lang_tempcode('TYPE'), do_lang_tempcode('DESCRIPTION_EVENT_TYPE'), 'type', $type_list));
 

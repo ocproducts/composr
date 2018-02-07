@@ -984,7 +984,7 @@ class Module_cms_comcode_pages
         $hidden_fields->attach(form_input_hidden('redirect', static_evaluate_tempcode(protect_url_parameter(get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL)))));
 
         $cancel_url = build_url(array('page' => '_SELF', 'clear_autosave' => 1), '_SELF');
-        $posting_form = get_posting_form(do_lang(($file == '') ? 'COMCODE_PAGE_ADD' : 'SAVE'), ($file == '') ? 'admin--add' : 'admin--edit-this', $contents, $post_url, $hidden_fields, $fields, do_lang_tempcode('COMCODE_PAGE'), '', $fields2, $parsed, array(), null, false, true, false, true, false, '', $cancel_url);
+        $posting_form = get_posting_form(do_lang(($file == '') ? 'COMCODE_PAGE_ADD' : 'SAVE'), ($file == '') ? 'admin--add' : 'admin--edit-this', $contents, $post_url, $hidden_fields, $fields, do_lang_tempcode('COMCODE_PAGE'), '', $fields2, $parsed, array(), null, false, true, true, true, false, '', $cancel_url);
 
         if ($file == '') {
             url_default_parameters__disable();

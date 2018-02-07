@@ -283,7 +283,7 @@ class Module_cms_authors
 
         url_default_parameters__disable();
 
-        $posting_form = get_posting_form($submit_name, 'buttons--save', $description, $post_url, $hidden, $fields, do_lang_tempcode('DESCRIPTION'), '', $specialisation2, null, array(), null, false, true, false, true, false, do_lang_tempcode('DESCRIPTION_MEMBER_DESCRIPTION'));
+        $posting_form = get_posting_form($submit_name, 'buttons--save', $description, $post_url, $hidden, $fields, do_lang_tempcode('DESCRIPTION'), '', $specialisation2, null, array(), null, false, true, true, true, false, do_lang_tempcode('DESCRIPTION_MEMBER_DESCRIPTION'));
 
         return do_template('POSTING_SCREEN', array('_GUID' => '1d71c934e3e23fe394f5611191089630', 'TITLE' => $this->title, 'POSTING_FORM' => $posting_form));
     }

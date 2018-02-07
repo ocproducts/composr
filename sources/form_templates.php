@@ -328,14 +328,14 @@ function get_attachments($posting_field_name, $true_attachment_ui = true)
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
  * @param  boolean $required Whether this is a required input field
  * @param  boolean $has_preview Whether the form supports previewing
- * @param  boolean $avoid_wysiwyg Whether to avoid WYSIWYG mode
+ * @param  boolean $support_wysiwyg Whether to support WYSIWYG mode
  * @param  boolean $support_autosave Whether to support auto-save
  * @param  boolean $specialisation2_hidden Whether to hide trailing extra fields
  * @param  mixed $description A description for this input field
  * @param  ?Tempcode $cancel_url Cancel URL for cancelling auto-save (null: no cancel button)
  * @return Tempcode The posting form
  */
-function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_fields, $specialisation, $post_comment = null, $extra = '', $specialisation2 = null, $default_parsed = null, $js_function_calls = array(), $tabindex = null, $required = true, $has_preview = true, $avoid_wysiwyg = false, $support_autosave = true, $specialisation2_hidden = false, $description = '', $cancel_url = null)
+function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_fields, $specialisation, $post_comment = null, $extra = '', $specialisation2 = null, $default_parsed = null, $js_function_calls = array(), $tabindex = null, $required = true, $has_preview = true, $support_wysiwyg = true, $support_autosave = true, $specialisation2_hidden = false, $description = '', $cancel_url = null)
 {
     require_javascript('posting');
     require_javascript('plupload');
@@ -371,7 +371,7 @@ function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_
     $comcode_editor = get_comcode_editor('post', false, true);
     $comcode_editor_small = get_comcode_editor('post', true, true);
 
-    $w = (!$avoid_wysiwyg) && (browser_matches('wysiwyg', $post) && (strpos($post, '{$,page hint: no_wysiwyg}') === false));
+    $w = ($support_wysiwyg) && (browser_matches('wysiwyg', $post) && (strpos($post, '{$,page hint: no_wysiwyg}') === false));
 
     $class = '';
     attach_wysiwyg();
