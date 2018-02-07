@@ -844,10 +844,12 @@ class CMS_Topic
                     }
                 }
 
+                $is_banned = ($GLOBALS['CNS_DRIVER']->get_member_row_field($post['member'], 'm_is_perm_banned') == 1);
+
                 // Signature
                 require_code('cns_posts');
                 $sig = new Tempcode();
-                if ((($GLOBALS['CNS_DRIVER']->get_member_row_field(get_member(), 'm_views_signatures') == 1) || (get_option('enable_views_sigs_option', true) === '0')) && (!isset($post['skip_sig'])) && ($post['skip_sig'] == 0) && (addon_installed('cns_signatures'))) {
+                if ((($GLOBALS['CNS_DRIVER']->get_member_row_field(get_member(), 'm_views_signatures') == 1) || (get_option('enable_views_sigs_option', true) === '0')) && (!isset($post['skip_sig'])) && ($post['skip_sig'] == 0) && (addon_installed('cns_signatures')) && (!$is_banned)) {
                     global $SIGNATURES_CACHE;
 
                     if (array_key_exists($post['member'], $SIGNATURES_CACHE)) {
