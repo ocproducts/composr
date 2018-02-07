@@ -29,7 +29,7 @@ Limiting factors could be:
 
 Speed can be approximately doubled if an "[b]opcode cache[/b]" is installed as a PHP extension. These caches cache compiled PHP code so that PHP does not need to re-compile scripts on every page view. The main solutions for this are:
  - Zend OpCache (this is bundled by default in PHP 5.6 and higher, recommended)
- - APC (free) (or APCU compiled with APC compatibility)
+ - APC (free) or APCu (free)
  - wincache (free, Windows only)
  - xcache (free)
 
@@ -110,7 +110,7 @@ Of course you may want to make changes to [tt]galleries.css[/tt] too. In which c
 The [b]persistent cache[/b] is a cache that aims to store regularly-accessed data in-memory between requests, so that it does not actually need to be loaded from the database or re-calculated on each page load. This cache removes about 30% of the page load time, but most importantly, takes load away from the database, allowing the database to become less of a limiting factor in high throughput situations.
 
 The cache is implemented to work with any one of:
- - [b]{$IS_MAINTAINED,caches_apc,APC}[/b], which provides in-memory storage features as well as an opcode cache and is associated with core PHP development (hence why we recommend it as the opcode cache to use)
+ - [b]{$IS_MAINTAINED,caches_apc,APC/APCu}[/b], which provides in-memory storage features as well as an opcode cache and is associated with core PHP development (hence why we recommend it as the opcode cache to use)
  - [b]{$IS_MAINTAINED,caches_memcache,memcache}[/b] ('memcache' is the PHP extension for the 'memcached' server), which provides a heavyweight solution to memory sharing -- it is not recommended that this be used for typical websites, as memcached requires additional configuration
   - or [b]{$IS_MAINTAINED,caches_memcached,memcached}[/b], which works via the other PHP memcached server extension
  - [b]{$IS_MAINTAINED,caches_wincache,Wincache}[/b] -- a PHP accelerator developed by Microsoft, optimised for Windows

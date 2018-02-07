@@ -63,6 +63,9 @@ function init__caches()
         } elseif ((function_exists('apc_fetch')) && (($SITE_INFO['use_persistent_cache'] == 'apc') || ($SITE_INFO['use_persistent_cache'] == '1'))) {
             require_code('persistent_caching/apc');
             $PERSISTENT_CACHE = new Persistent_caching_apccache();
+        } elseif ((function_exists('apcu_fetch')) && (($SITE_INFO['use_persistent_cache'] == 'apcu') || ($SITE_INFO['use_persistent_cache'] == '1'))) {
+            require_code('persistent_caching/apcu');
+            $PERSISTENT_CACHE = new Persistent_caching_apcucache();
         } elseif ((function_exists('xcache_get')) && (($SITE_INFO['use_persistent_cache'] == 'xcache') || ($SITE_INFO['use_persistent_cache'] == '1'))) {
             require_code('persistent_caching/xcache');
             $PERSISTENT_CACHE = new Persistent_caching_xcache();

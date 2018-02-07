@@ -984,6 +984,7 @@ class Hook_addon_registry_core
             'sources/persistent_caching/index.html',
             'sources/persistent_caching/filesystem.php',
             'sources/persistent_caching/apc.php',
+            'sources/persistent_caching/apcu.php',
             'sources/persistent_caching/xcache.php',
             'sources/persistent_caching/wincache.php',
             'sources/persistent_caching/memcache.php',

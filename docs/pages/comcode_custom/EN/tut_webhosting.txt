@@ -98,7 +98,7 @@ Composr recommends:
   - FreeType (with the build-option for GD). FreeType allows us to draw text onto graphics using TrueType fonts.
   - Zip
   - cURL
-  - An opcode cache: Zend OpCache (bundled by default), APC (available for PHP 5.6 or lower only), XCache, Nusphere PhpExpress, or Wincache
+  - An opcode cache: Zend OpCache (bundled by default), APC (available for PHP 5.6 or lower only), APCu, XCache, Nusphere PhpExpress, or Wincache
  - A PHP environment with [tt]open_basedir[/tt] enabled
  - A suEXEC/IIS server (explained further down)
  - At least 100MB of disk space

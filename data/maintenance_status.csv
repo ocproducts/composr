@@ -53,7 +53,7 @@ gateway_ccbill,CCBill eCommerce driver,,,Not regularly tested. Could potentially
 gateway_secpay,SecPay eCommerce driver,,,Not regularly tested. Could potentially break due to third-party changes.,No,
 gateway_worldpay,WorldPay eCommerce driver,,,Not regularly tested. Could potentially break due to third-party changes.,No,
 gateway_authorize,Authorize.net eCommerce driver,,,Not regularly tested. Could potentially break due to third-party changes.,No,
-caches_apc,APC persistent cache,ocProducts,,Not regularly tested due to needing a testing platform.,No,
+caches_apc,APC/APCu persistent cache,ocProducts,,Not regularly tested due to needing a testing platform.,No,
 caches_memcache,Memcache persistent cache,,,Not regularly tested due to needing a testing platform.,No,
 caches_memcached,Memchanged persistent cache,,,Not regularly tested due to needing a testing platform.,No,
 caches_wincache,WinCache persistent cache,ocProducts,,Not regularly tested due to needing a testing platform.,No,
