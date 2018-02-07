@@ -414,8 +414,19 @@ class Module_admin_lang
             $query = 'FROM ' . get_table_prefix() . 'translate WHERE ' . db_string_not_equal_to('language', $lang) . ' ' . $and_clause . ' AND ' . db_string_not_equal_to('text_original', '') . ' ORDER BY importance_level,id DESC';
             $to_translate = $GLOBALS['SITE_DB']->query('SELECT * ' . $query, $max/*reasonable limit*/);
         } else {
+            switch (get_param_string('keep_translate_sort', 'priority')) {
+                case 'recent':
+                    $order_by = 'a.id DESC';
+                    break;
+
+                case 'priority':
+                default:
+                    $order_by = 'a.importance_level,a.id DESC';
+                    break;
+            }
+
             $query = 'FROM ' . get_table_prefix() . 'translate a LEFT JOIN ' . get_table_prefix() . 'translate b ON a.id=b.id AND b.broken=0 AND ' . db_string_equal_to('b.language', $lang) . ' WHERE b.id IS NULL AND ' . db_string_not_equal_to('a.language', $lang) . ' AND ' . db_string_not_equal_to('a.text_original', '');
-            $to_translate = $GLOBALS['SITE_DB']->query('SELECT a.* ' . $query . (can_arbitrary_groupby() ? ' GROUP BY a.id' : '') . ' ORDER BY a.importance_level,a.id DESC', $max/*reasonable limit*/, $start);
+            $to_translate = $GLOBALS['SITE_DB']->query('SELECT a.* ' . $query . (can_arbitrary_groupby() ? ' GROUP BY a.id' : '') . ' ORDER BY ' . $order_by, $max/*reasonable limit*/, $start);
         }
         $total = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) ' . $query);
         if (count($to_translate) == 0) {
