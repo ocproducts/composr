@@ -578,8 +578,8 @@
 
         function toggleTopPersonalStats(event) {
             window.$coreNotifications.toggleMessagingBox(event, 'pts', true);
-            window.$coreNotifications.toggleMessagingBox(event, 'web_notifications', true);
-            return window.$coreNotifications.toggleMessagingBox(event, 'top_personal_stats');
+            window.$coreNotifications.toggleMessagingBox(event, 'web-notifications', true);
+            return window.$coreNotifications.toggleMessagingBox(event, 'top-personal-stats');
         }
     };
 

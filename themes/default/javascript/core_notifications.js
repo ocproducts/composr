@@ -104,19 +104,19 @@
             url += '&forced_update=1';
             url += $cms.keep();
             $cms.doAjaxRequest(url, _pollForNotifications);
-            $coreNotifications.toggleMessagingBox(event, 'web_notifications', true);
+            $coreNotifications.toggleMessagingBox(event, 'web-notifications', true);
             return false;
         }
 
         function toggleWebNotifications(event) {
-            $coreNotifications.toggleMessagingBox(event, 'top_personal_stats', true);
+            $coreNotifications.toggleMessagingBox(event, 'top-personal-stats', true);
             $coreNotifications.toggleMessagingBox(event, 'pts', true);
-            return $coreNotifications.toggleMessagingBox(event, 'web_notifications');
+            return $coreNotifications.toggleMessagingBox(event, 'web-notifications');
         }
 
         function togglePts(event) {
-            $coreNotifications.toggleMessagingBox(event, 'top_personal_stats', true);
-            $coreNotifications.toggleMessagingBox(event, 'web_notifications', true);
+            $coreNotifications.toggleMessagingBox(event, 'top-personal-stats', true);
+            $coreNotifications.toggleMessagingBox(event, 'web-notifications', true);
             return $coreNotifications.toggleMessagingBox(event, 'pts');
         }
     };
@@ -340,7 +340,7 @@
     $coreNotifications.toggleMessagingBox = function toggleMessagingBox(event, name, hide) {
         hide = Boolean(hide);
 
-        var el = document.getElementById(name + '_rel');
+        var el = document.getElementById(name + '-rel');
 
         if (!el) {
             return;
@@ -359,13 +359,13 @@
                 if (event.withinMessageBox !== undefined) {
                     return;
                 }
-                $coreNotifications.toggleMessagingBox(event, 'top_personal_stats', true);
-                $coreNotifications.toggleMessagingBox(event, 'web_notifications', true);
+                $coreNotifications.toggleMessagingBox(event, 'top-personal-stats', true);
+                $coreNotifications.toggleMessagingBox(event, 'web-notifications', true);
                 $coreNotifications.toggleMessagingBox(event, 'pts', true);
             });
         }
 
-        var button = document.getElementById(name + '_button');
+        var button = document.getElementById(name + '-button');
         button.title = '';
         var setPosition = function () {
             var buttonX = $dom.findPosX(button, true);
