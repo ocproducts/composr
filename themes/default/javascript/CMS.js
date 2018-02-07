@@ -950,6 +950,7 @@
         var bi = $dom.$id('main-website-inner');
         if (bi) {
             bi.classList.remove('site-unloading');
+            $dom.fadeTo(bi, null, 1.0);
         }
     };
 
