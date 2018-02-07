@@ -127,11 +127,17 @@ $g_source_control_regex = '/\b(?:bug|issue|feature|request)\s*[#]{0,1}(\d+)\b/i'
 
 $g_show_user_email_threshold = ADMINISTRATOR;
 
-$g_cookie_time_length	= 60*60*24*30;
+$g_cookie_time_length = 60*60*24*30;
 
+# --- Simplify by removing unneeded filter complexity ---
 
 $g_default_bug_severity = FEATURE;
 $g_default_bug_reproducibility = 100;
+
+$g_bug_reopen_status = NEW_;
+$g_bug_feedback_status = NEW_;
+
+$g_status_enum_string = '10:new,50:assigned,80:resolved,90:closed';
 
 // Lets make it so only website-visitors can post. Otherwise spam happens.
 $g_add_bugnote_threshold = isset($_COOKIE[$SITE_INFO['session_cookie']]) ? ANYBODY : REPORTER;
