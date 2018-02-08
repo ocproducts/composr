@@ -259,6 +259,7 @@ All the following file extensions are recognised, in precedence order:
  - [tt]jpeg[/tt]
  - [tt]gif[/tt]
  - [tt]ico[/tt]
+ - [tt]cur[/tt]
  - [tt]svg[/tt]
 Don't have multiple files with the same base name but different file extensions as only the highest-precedence one will ever be used.
 

@@ -350,32 +350,8 @@ function show_banner($name, $title_text, $caption, $direct_code, $img_url, $sour
 {
     // If this is an image, we <img> it, else we <iframe> it
     require_code('images');
-    if ($img_url != '') { // Flash/Image/Iframe
-        if (substr($img_url, -4) == '.swf') { // Flash
-            if (url_is_local($img_url)) {
-                $img_url = get_custom_base_url() . '/' . $img_url;
-            }
-            $_banner_type_row = $GLOBALS['SITE_DB']->query_select('banner_types', array('t_image_width', 't_image_height'), array('id' => $b_type), '', 1);
-            if ($width === null) {
-                if (array_key_exists(0, $_banner_type_row)) {
-                    $banner_type_row = $_banner_type_row[0];
-                } else {
-                    $banner_type_row = array('t_image_width' => 728, 't_image_height' => 90);
-                }
-            } else {
-                $banner_type_row = array('t_image_width' => $width, 't_image_height' => $height);
-            }
-            $content = do_template('BANNER_FLASH', array(
-                '_GUID' => '25525a3722715e79a83af4cec53fe072',
-                'B_TYPE' => $b_type,
-                'WIDTH' => strval($banner_type_row['t_image_width']),
-                'HEIGHT' => strval($banner_type_row['t_image_height']),
-                'SOURCE' => $source,
-                'DEST' => $name,
-                'CAPTION' => $caption,
-                'IMG' => $img_url,
-            ));
-        } elseif (($url != '') || (is_image($img_url, IMAGE_CRITERIA_WEBSAFE, has_privilege($submitter, 'comcode_dangerous')))) { // Image; Can't rely on image check, because often they have script-generated URLs
+    if ($img_url != '') { // Image/Iframe
+        if (($url != '') || (is_image($img_url, IMAGE_CRITERIA_WEBSAFE, has_privilege($submitter, 'comcode_dangerous')))) { // Image; Can't rely on image check, because often they have script-generated URLs
             if (url_is_local($img_url)) {
                 if (substr($img_url, 0, 12) == 'data/images/') {
                     $img_url = cdn_filter(get_base_url() . '/' . $img_url);

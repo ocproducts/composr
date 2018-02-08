@@ -42,30 +42,18 @@ function get_video_details($file_path, $filename, $delay_errors = false)
 
     switch ($extension) {
         case 'wmv':
-            $info = _get_wmv_details($file);
-            break;
         case 'asf':
             $info = _get_wmv_details($file);
             break;
         case 'avi':
             $info = _get_avi_details($file);
             break;
-        case 'rm':
-            $info = _get_ram_details($file);
-            break;
-        case 'ram':
-            $info = _get_ram_details($file);
-            break;
         case 'qt':
-            $info = _get_mov_details($file);
-            break;
         case 'mov':
-            $info = _get_mov_details($file);
-            break;
         case 'f4v':
         case 'mp4':
         case 'm4v':
-            $info = _get_mov_details($file);
+            $info = _get_mp4_details($file);
             break;
         default:
             if ((file_exists(get_file_base() . '/sources_custom/getid3/getid3.php')) && (!in_safe_mode())) {
@@ -260,49 +248,16 @@ function _get_avi_details($file)
 }
 
 /**
- * Get width,height,length of a .rm/.ram video file.
+ * Get width,height,length of a .mp4 video file.
  *
  * @param  resource $file The file handle
  * @return ?array The triplet (possibly containing nulls for when we can't detect properties) (null: error)
  * @ignore
  */
-function _get_ram_details($file) // + rm
-{
-    $length = null;
-    $width = null;
-    $height = null;
-
-    // Read in chunks
-    while ((!feof($file)) && (($length === null) || ($width === null) || ($height === null))) {
-        $type = fread($file, 4);
-        $size = read_network_endian_int(fread($file, 4));
-        if ($size <= 8) {
-            return null;
-        }
-
-        if ($type == 'PROP') {
-            fseek($file, 22, SEEK_CUR);
-            $length = intval(round(read_network_endian_int(fread($file, 4)) / 1000));
-            return array($width, $height, $length);
-        } else {
-            fseek($file, $size - 8, SEEK_CUR);
-        }
-    }
-
-    return array($width, $height, $length);
-}
-
-/**
- * Get width,height,length of a .mov/.qt video file.
- *
- * @param  resource $file The file handle
- * @return ?array The triplet (possibly containing nulls for when we can't detect properties) (null: error)
- * @ignore
- */
-function _get_mov_details($file)
+function _get_mp4_details($file)
 {
     // Read in atoms
-    $info = _get_mov_details_do_atom_list($file);
+    $info = _get_mp4_details_do_atom_list($file);
     if ($info === null) {
         return null;
     }
@@ -311,14 +266,14 @@ function _get_mov_details($file)
 }
 
 /**
- * Get chunk-bytes-read,width,height,length of a atom list of a .mov/.qt video file.
+ * Get chunk-bytes-read,width,height,length of a atom list of a .mp4 video file.
  *
  * @param  resource $file The file handle
  * @param  ?integer $atom_size The length of the current atom list (null: covers full file)
  * @return array The quartet (possibly containing nulls for when we can't detect properties)
  * @ignore
  */
-function _get_mov_details_do_atom_list($file, $atom_size = null)
+function _get_mp4_details_do_atom_list($file, $atom_size = null)
 {
     $length = null;
     $width = null;
@@ -365,7 +320,7 @@ function _get_mov_details_do_atom_list($file, $atom_size = null)
                 $height = $_height;
             }
         } elseif ($type == 'moov') { // moov contains more atoms, and the one we need for length
-            $info = _get_mov_details_do_atom_list($file, $size - $count);
+            $info = _get_mp4_details_do_atom_list($file, $size - $count);
             $count += $info[0];
             if ($info[1] !== null) {
                 $width = $info[1];
@@ -377,7 +332,7 @@ function _get_mov_details_do_atom_list($file, $atom_size = null)
                 $length = $info[3];
             }
         } elseif ($type == 'trak') { // trak contains more atoms, and the one we need for width and height
-            $info = _get_mov_details_do_atom_list($file, $size - $count);
+            $info = _get_mp4_details_do_atom_list($file, $size - $count);
             $count += $info[0];
             if ($info[1] !== null) {
                 $width = $info[1];

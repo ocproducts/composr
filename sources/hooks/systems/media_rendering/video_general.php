@@ -68,6 +68,9 @@ class Hook_media_rendering_video_general extends Media_renderer_with_fallback
         if ($mime_type == 'video/x-msvideo') {
             return MEDIA_RECOG_PRECEDENCE_MEDIUM;
         }
+        if ($mime_type == 'video/quicktime') {
+            return MEDIA_RECOG_PRECEDENCE_MEDIUM;
+        }
 
         // Plugins may be able to play these formats, although they are preferrably handled in video_websafe
         if ($mime_type == 'video/mp4') {

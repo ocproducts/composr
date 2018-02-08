@@ -196,11 +196,8 @@ class Hook_addon_registry_core_rich_media
             'themes/default/templates/COMCODE_BIG_TABS_CONTROLLER.tpl',
             'themes/default/templates/COMCODE_BIG_TABS_TAB.tpl',
             'themes/default/templates/MEDIA_AUDIO_WEBSAFE.tpl',
-            'themes/default/templates/MEDIA_FLASH.tpl',
             'themes/default/templates/MEDIA_IMAGE_WEBSAFE.tpl',
             'themes/default/templates/MEDIA_PDF.tpl',
-            'themes/default/templates/MEDIA_QUICKTIME.tpl',
-            'themes/default/templates/MEDIA_REALMEDIA.tpl',
             'themes/default/templates/MEDIA_SVG.tpl',
             'themes/default/templates/MEDIA_VIDEO_FACEBOOK.tpl',
             'themes/default/templates/MEDIA_VIDEO_GENERAL.tpl',
@@ -275,7 +272,6 @@ class Hook_addon_registry_core_rich_media
             'sources/hooks/systems/media_rendering/audio_microsoft.php',
             'sources/hooks/systems/media_rendering/audio_websafe.php',
             'sources/hooks/systems/media_rendering/code.php',
-            'sources/hooks/systems/media_rendering/flash.php',
             'sources/hooks/systems/media_rendering/hyperlink.php',
             'sources/hooks/systems/media_rendering/image_websafe.php',
             'sources/hooks/systems/media_rendering/index.html',
@@ -288,9 +284,6 @@ class Hook_addon_registry_core_rich_media
             'sources/hooks/systems/media_rendering/email.php',
             'sources/hooks/systems/media_rendering/oembed.php',
             'sources/hooks/systems/media_rendering/pdf.php',
-            'sources/hooks/systems/media_rendering/quicktime.php',
-            'sources/hooks/systems/media_rendering/realaudio.php',
-            'sources/hooks/systems/media_rendering/realmedia.php',
             'sources/hooks/systems/media_rendering/svg.php',
             'sources/hooks/systems/media_rendering/video_facebook.php',
             'sources/hooks/systems/media_rendering/video_general.php',
@@ -404,11 +397,8 @@ class Hook_addon_registry_core_rich_media
             'templates/COMCODE_CODE.tpl' => 'comcode_code',
             'templates/COMCODE_CODE_SCROLL.tpl' => 'comcode_code_scroll',
             'templates/MEDIA_AUDIO_WEBSAFE.tpl' => 'media_audio_websafe',
-            'templates/MEDIA_FLASH.tpl' => 'media_flash',
             'templates/MEDIA_IMAGE_WEBSAFE.tpl' => 'media_image_websafe',
             'templates/MEDIA_PDF.tpl' => 'media_pdf',
-            'templates/MEDIA_QUICKTIME.tpl' => 'media_quicktime',
-            'templates/MEDIA_REALMEDIA.tpl' => 'media_realmedia',
             'templates/MEDIA_SVG.tpl' => 'media_svg',
             'templates/MEDIA_VIDEO_FACEBOOK.tpl' => 'media_video_facebook',
             'templates/MEDIA_VIDEO_GENERAL.tpl' => 'media_video_general',
@@ -1881,18 +1871,6 @@ class Hook_addon_registry_core_rich_media
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__media_flash()
-    {
-        return $this->do_media_preview('MEDIA_FLASH');
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
     public function tpl_preview__media_image_websafe()
     {
         return $this->do_media_preview('MEDIA_IMAGE_WEBSAFE');
@@ -1908,30 +1886,6 @@ class Hook_addon_registry_core_rich_media
     public function tpl_preview__media_pdf()
     {
         return $this->do_media_preview('MEDIA_PDF');
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__media_quicktime()
-    {
-        return $this->do_media_preview('MEDIA_QUICKTIME');
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__media_realmedia()
-    {
-        return $this->do_media_preview('MEDIA_REALMEDIA');
     }
 
     /**

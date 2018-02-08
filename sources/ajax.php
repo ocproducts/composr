@@ -51,34 +51,6 @@ function cor_prepare()
 }
 
 /**
- * Script to generate a Flash crossdomain file.
- *
- * @ignore
- */
-function crossdomain_script()
-{
-    prepare_for_known_ajax_response();
-
-    require_code('xml');
-
-    header('Content-Type: text/xml');
-
-    echo '<' . '?xml version="1.0"?' . '>
-<!DOCTYPE cross-domain-policy SYSTEM "http://www.macromedia.com/xml/dtds/cross-domain-policy.dtd">
-<cross-domain-policy>';
-    require_code('input_filter');
-    $trusted_sites = get_trusted_sites(1);
-    foreach ($trusted_sites as $post_submitter) {
-        $post_submitter = trim($post_submitter);
-        if ($post_submitter != '') {
-            echo '<allow-access-from domain="' . xmlentities($post_submitter) . '" />';
-        }
-    }
-    echo '
-</cross-domain-policy>';
-}
-
-/**
  * AJAX script for checking if a new username is valid.
  *
  * @ignore

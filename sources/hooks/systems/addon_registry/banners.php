@@ -51,7 +51,7 @@ class Hook_addon_registry_banners
      */
     public function get_description()
     {
-        return 'An advanced banner system, with support for multiple banner rotations, commercial banner campaigns, and webring-style systems. Support for graphical, text, and flash banners. Hotword activation support.';
+        return 'An advanced banner system, with support for multiple banner rotations, commercial banner campaigns, and webring-style systems. Support for graphical, text, and HTML banners. Hotword activation support.';
     }
 
     /**
@@ -115,7 +115,6 @@ class Hook_addon_registry_banners
             'sources/hooks/systems/preview/banner.php',
             'sources/hooks/modules/admin_import_types/banners.php',
             'sources/hooks/systems/addon_registry/banners.php',
-            'themes/default/templates/BANNER_FLASH.tpl',
             'themes/default/templates/BANNER_TEXT.tpl',
             'themes/default/templates/BANNER_VIEW_SCREEN.tpl',
             'themes/default/templates/BANNER_IFRAME.tpl',
@@ -165,7 +164,6 @@ class Hook_addon_registry_banners
             'templates/BLOCK_MAIN_BANNER_WAVE_BWRAP.tpl' => 'block_main_banner_wave',
             'templates/BLOCK_MAIN_BANNER_WAVE.tpl' => 'block_main_banner_wave',
             'templates/BANNERS_NONE.tpl' => 'banners_none',
-            'templates/BANNER_FLASH.tpl' => 'banner_flash',
             'templates/BANNER_IMAGE.tpl' => 'banner_image',
             'templates/BANNER_IFRAME.tpl' => 'banner_iframe',
             'templates/BANNER_TEXT.tpl' => 'banner_text',
@@ -261,15 +259,6 @@ class Hook_addon_registry_banners
     public function tpl_preview__block_main_banner_wave()
     {
         $banners = new Tempcode();
-        $banners->attach(do_lorem_template('BANNER_FLASH', array(
-            'B_TYPE' => lorem_phrase(),
-            'WIDTH' => placeholder_number(),
-            'HEIGHT' => placeholder_number(),
-            'SOURCE' => lorem_phrase(),
-            'DEST' => lorem_phrase(),
-            'CAPTION' => lorem_phrase(),
-            'IMG' => placeholder_image_url(),
-        )));
         $banners->attach(do_lorem_template('BANNER_IMAGE', array(
             'URL' => placeholder_url(),
             'B_TYPE' => lorem_phrase(),
@@ -318,28 +307,6 @@ class Hook_addon_registry_banners
         return array(
             lorem_globalise(do_lorem_template('BANNERS_NONE', array(
                 'ADD_BANNER_URL' => placeholder_url(),
-            )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__banner_flash()
-    {
-        return array(
-            lorem_globalise(do_lorem_template('BANNER_FLASH', array(
-                'B_TYPE' => lorem_phrase(),
-                'WIDTH' => placeholder_number(),
-                'HEIGHT' => placeholder_number(),
-                'SOURCE' => lorem_phrase(),
-                'DEST' => lorem_phrase(),
-                'CAPTION' => lorem_phrase(),
-                'IMG' => placeholder_image_url(),
             )), null, '', true)
         );
     }

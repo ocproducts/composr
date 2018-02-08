@@ -103,12 +103,6 @@ function _strip_comcode($in, $for_extract = false, $tags_to_preserve = array())
             $text = preg_replace_callback("#\[page=\"([^\"]*)\"[^\[\]]*\](.*)\[/page\]#Usi", '_page_callback', $text);
         }
     }
-    if (stripos($text, '[flash') !== false) {
-        if (!in_array('flash', $tags_to_preserve)) {
-            $text = preg_replace("#\[flash=\"([^\"]*)\"[^\[\]]*\](.*)\[/flash\]#Usi", '[url="\2"]\1[/url]', $text);
-            $text = preg_replace("#\[flash[^\[\]]*\](.*)\[/flash\]#Usi", '[url="\1"]' . do_lang('VIEW') . '[/url]', $text);
-        }
-    }
     if (stripos($text, '[attachment') !== false) {
         if (!in_array('attachment', $tags_to_preserve)) {
             $text = preg_replace("#\[attachment[^\[\]]* description=\"([^\"]*)\"[^\[\]]*\](\d*)\[/attachment[^\[\]]*\]#Usi", '[url="' . find_script('attachment') . '?id=\2"]\1[/url]', $text);

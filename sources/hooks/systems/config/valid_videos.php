@@ -53,6 +53,6 @@ class Hook_config_valid_videos
      */
     public function get_default()
     {
-        return '3gp,3g2,3gp2,3gpp,3p,asf,avi,flv,f4v,mov,mpa,mp4,mpe,mpeg,mpg,m2v,mpv2,mp2,m4v,qt,ram,rm,wmv,ogg,ogv,webm,pdf';
+        return '3gp,3g2,3gp2,3gpp,3p,asf,avi,f4v,mov,mp4,mpe,mpeg,mpg,m2v,mpv2,mp2,m4v,qt,wmv,ogg,ogv,webm,pdf'; // Web-safe(ish) 'video' only
     }
 }

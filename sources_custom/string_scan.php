@@ -2348,10 +2348,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         COMCODE_TAG_email_PARAM_subject_TITLE
         COMCODE_TAG_email_PARAM_title
         COMCODE_TAG_email_PARAM_title_TITLE
-        COMCODE_TAG_flash_DESCRIPTION
-        COMCODE_TAG_flash_EMBED
-        COMCODE_TAG_flash_PARAM_param
-        COMCODE_TAG_flash_PARAM_param_TITLE
         COMCODE_TAG_font_DESCRIPTION
         COMCODE_TAG_font_EMBED
         COMCODE_TAG_font_PARAM_color
@@ -7819,7 +7815,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ALT_FIELD
         RECAPTCHA_ERROR_timeout_or_duplicate
         AMOUNT
-        ANIMATION
         ANON
         ANSWER
         ANY_PROBLEMS_CAN
@@ -8880,14 +8875,10 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MEDIA_TYPE_audio_websafe
         MEDIA_TYPE_code
         MEDIA_TYPE_email
-        MEDIA_TYPE_flash
         MEDIA_TYPE_hyperlink
         MEDIA_TYPE_image_websafe
         MEDIA_TYPE_oembed
         MEDIA_TYPE_pdf
-        MEDIA_TYPE_quicktime
-        MEDIA_TYPE_realaudio
-        MEDIA_TYPE_realmedia
         MEDIA_TYPE_svg
         MEDIA_TYPE_video_facebook
         MEDIA_TYPE_video_general

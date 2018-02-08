@@ -47,58 +47,58 @@ This is a fork of Mantis, security fixes have been applied.
 require(dirname(__FILE__).'/../_config.php');
 
 # --- Database Configuration ---
-$g_hostname      = $SITE_INFO['db_site_host'];
-$g_db_username   = $SITE_INFO['db_site_user'];
-$g_db_password   = $SITE_INFO['db_site_password'];
+$g_hostname = $SITE_INFO['db_site_host'];
+$g_db_username = $SITE_INFO['db_site_user'];
+$g_db_password = $SITE_INFO['db_site_password'];
 $g_database_name = $SITE_INFO['db_site'];
-$g_db_type       = $SITE_INFO['db_type'];
+$g_db_type = $SITE_INFO['db_type'];
 $cms_sc_db_prefix = $SITE_INFO['table_prefix'];
 $cms_sc_session_cookie_name = $SITE_INFO['session_cookie'];
 $cms_sc_multi_lang_content = (!isset($SITE_INFO['multi_lang_content'])) || ($SITE_INFO['multi_lang_content'] == '1');
 
 # --- Anonymous Access / Signup ---
-$g_allow_signup				= ON;
-$g_allow_anonymous_login	= ON;
-$g_anonymous_account		= 'Guest';
+$g_allow_signup = ON;
+$g_allow_anonymous_login = ON;
+$g_anonymous_account = 'Guest';
 $g_lost_password_feature = OFF;
 
 # --- Attachments / File Uploads ---
-$g_allow_file_upload	= ON;
-$g_file_upload_method	= DISK; # or DISK
+$g_allow_file_upload = ON;
+$g_file_upload_method = DISK; # or DISK
 $g_absolute_path_default_upload_folder = dirname(__FILE__).DIRECTORY_SEPARATOR.'uploads'.DIRECTORY_SEPARATOR ; # used with DISK, must contain trailing \ or /.
-$g_max_file_size		= 25000000;	# in bytes
+$g_max_file_size = 25000000; # in bytes
 $g_preview_attachments_inline_max_size = 256 * 1024;
-$g_allowed_files		= 'pages,numbers,patch,diff,swf,sql,odg,odp,odt,ods,ps,pdf,doc,ppt,csv,xls,docx,docb,docm,pptx,xlsx,xlsb,xlsm,pub,txt,psd,tga,tif,gif,png,bmp,jpg,jpeg,flv,avi,mov,mpg,mpeg,mp4,asf,wmv,ram,ra,rm,qt,zip,tar,rar,gz,wav,mp3,ogg,torrent,php,css,tpl,ini,eml';		# extensions comma separated, e.g. 'php,html,java,exe,pl'
-$g_disallowed_files		= '';		# extensions comma separated
+$g_allowed_files = '1st,3g2,3gp,3gp2,3gpp,3p,7z,aac,ai,aif,aifc,aiff,asf,avi,bmp,bz2,csv,cur,dat,diff,doc,docx,dot,dotx,eml,f4v,gif,gz,ico,ics,ini,iso,jpe,jpeg,jpg,keynote,log,m2v,m4v,mdb,mid,mov,mp2,mp3,mp4,mpa,mpe,mpeg,mpg,mpv2,numbers,odb,odc,odg,odi,odp,ods,odt,ogg,ogv,otf,pages,patch,pdf,png,ppt,pptx,ps,psd,pub,qt,ra,ram,rar,rm,rtf,sql,tar,tga,tgz,tif,tiff,torrent,tpl,ttf,txt,vsd,wav,weba,webm,webp,wma,wmv,xls,xlsx,zip';
+$g_disallowed_files = ''; # extensions comma separated
 
 
 # --- Email Configuration ---
-$g_phpMailer_method		= PHPMAILER_METHOD_MAIL; # or PHPMAILER_METHOD_SMTP, PHPMAILER_METHOD_SENDMAIL
-$g_smtp_host			= 'localhost';			# used with PHPMAILER_METHOD_SMTP
-$g_smtp_username		= '';					# used with PHPMAILER_METHOD_SMTP
-$g_smtp_password		= '';					# used with PHPMAILER_METHOD_SMTP
-$g_administrator_email  = 'info@compo.sr'; // TODO: Customise
-$g_webmaster_email      = $g_administrator_email;
-$g_from_name			= 'Composr CMS feature tracker'; // TODO: Customise
-$g_from_email           = $g_administrator_email;	# the "From: " field in emails
-$g_return_path_email    = $g_administrator_email;	# the return address for bounced mail
-$g_email_receive_own	= OFF;
+$g_phpMailer_method = PHPMAILER_METHOD_MAIL; # or PHPMAILER_METHOD_SMTP, PHPMAILER_METHOD_SENDMAIL
+$g_smtp_host = 'localhost'; # used with PHPMAILER_METHOD_SMTP
+$g_smtp_username = ''; # used with PHPMAILER_METHOD_SMTP
+$g_smtp_password = ''; # used with PHPMAILER_METHOD_SMTP
+$g_administrator_email = 'info@compo.sr'; // TODO: Customise
+$g_webmaster_email = $g_administrator_email;
+$g_from_name = 'Composr CMS feature tracker'; // TODO: Customise
+$g_from_email = $g_administrator_email; # the "From: " field in emails
+$g_return_path_email = $g_administrator_email; # the return address for bounced mail
+$g_email_receive_own = OFF;
 $g_email_send_using_cronjob = OFF;
 
 # --- Real names ---
 $g_show_realname = OFF;
-$g_show_user_realname_threshold = NOBODY;	# Set to access level (e.g. VIEWER, REPORTER, DEVELOPER, MANAGER, etc)
+$g_show_user_realname_threshold = NOBODY; # Set to access level (e.g. VIEWER, REPORTER, DEVELOPER, MANAGER, etc)
 
 # --- Others (Composr-specific) ---
 $cms_sc_site_url = $SITE_INFO['base_url'];
 $cms_sc_site_name = 'compo.sr';
-$g_default_home_page = 'my_view_page.php';	# Set to name of page to go to after login
+$g_default_home_page = 'my_view_page.php'; # Set to name of page to go to after login
 $g_logo_url = $cms_sc_site_url.'/';
 $cms_sc_profile_url = $cms_sc_site_url.'/members/view.htm';
 $cms_sc_commercial_support_url = $cms_sc_site_url.'/professional-support.htm';
 $cms_sc_report_guidance_url = $cms_sc_site_url.'/docs/tut-software-feedback.htm';
 $cms_sc_join_url = $cms_sc_site_url.'/join.htm';
-$cms_sc_member_view_url = $cms_sc_site_url.'/members/view/%1$d.htm';  # Set the user id as variable in the url ie %1$d
+$cms_sc_member_view_url = $cms_sc_site_url.'/members/view/%1$d.htm'; # Set the user id as variable in the url ie %1$d
 $cms_sc_sourcecode_link = '<a href="https://github.com/ocproducts/composr">Github</a>';
 $cms_sc_product_name = 'Composr';
 $cms_sc_business_name = 'ocProducts';
@@ -127,7 +127,7 @@ $g_source_control_regex = '/\b(?:bug|issue|feature|request)\s*[#]{0,1}(\d+)\b/i'
 
 $g_show_user_email_threshold = ADMINISTRATOR;
 
-$g_cookie_time_length	= 60*60*24*30;
+$g_cookie_time_length = 60*60*24*30;
 
 
 $g_default_bug_severity = FEATURE;
@@ -137,12 +137,12 @@ $g_default_bug_reproducibility = 100;
 $g_add_bugnote_threshold = isset($_COOKIE[$SITE_INFO['session_cookie']]) ? ANYBODY : REPORTER;
 $g_report_bug_threshold = isset($_COOKIE[$SITE_INFO['session_cookie']]) ? ANYBODY : REPORTER;
 
-$g_html_valid_tags		= 'p, li, ul, ol, br, pre, i, b, u, em';
+$g_html_valid_tags = 'p, li, ul, ol, br, pre, i, b, u, em';
 
 # --- Branding ---
-$g_window_title			= 'Composr CMS feature tracker'; // TODO: Customise
-$g_logo_image			= '../themes/default/images/EN/logo/standalone_logo.png'; // TODO: Customise
-$g_favicon_image		= $cms_sc_site_url.'/themes/default/images/favicon.ico';
+$g_window_title = 'Composr CMS feature tracker'; // TODO: Customise
+$g_logo_image = '../themes/default/images/EN/logo/standalone_logo.png'; // TODO: Customise
+$g_favicon_image = $cms_sc_site_url.'/themes/default/images/favicon.ico';
 
 
 $g_database_version = 182;

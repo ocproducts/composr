@@ -3005,7 +3005,7 @@ END;
 
     $base = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
     $clauses[] = <<<END
-<FilesMatch !"\.(jpg|jpeg|gif|png|ico)$">
+<FilesMatch !"\.(jpg|jpeg|gif|png|ico|cur)$">
 ErrorDocument 404 {$base}/index.php?page=404
 </FilesMatch>
 END;

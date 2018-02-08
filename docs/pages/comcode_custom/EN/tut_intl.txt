@@ -426,7 +426,7 @@ For example, we have [tt]themes/default/images/EN/chatcode_editor/new_room.png[/
 
 Make sure you clear your theme image cache (Admin Zone > Tools > Website cleanup tools) after doing the substitution.
 
-We have the PSD files (requires Adobe Photoshop or compatible software) for many of the images in our [page="site:downloads"]downloads database[/page].
+As these are SVG files they may be edited directly in a tool such as Adobe Illustrator.
 
 You may want to just skip translating images. The toolbar buttons that use images have translated tooltips anyway.
 

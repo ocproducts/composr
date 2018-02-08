@@ -43,8 +43,6 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 @chdir($FILE_BASE);
 
-$_COOKIE = array(); // Needed because Flash can have out-dated cookies, presumably due to them being picked up when the .swf first loads, and then going stale. We pass a session in via keep_session which must take precedence.
-
 global $FORCE_INVISIBLE_GUEST;
 $FORCE_INVISIBLE_GUEST = false;
 global $EXTERNAL_CALL;

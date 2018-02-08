@@ -135,7 +135,7 @@ class Hook_fields_video
             'width' => strval($width),
             'height' => strval($height),
             'length' => ($length == 0) ? '' : strval($length),
-            'mime_type' => get_mime_type(get_file_extension($download_url), $as_admin), // will not render as dangerous stuff (swf's etc), unless admin
+            'mime_type' => get_mime_type(get_file_extension($download_url), $as_admin), // will not render as dangerous stuff (svg's etc), unless admin
             'context' => 'field_hook',
             'filename' => basename($basic_url),
         );

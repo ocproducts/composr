@@ -83,12 +83,6 @@ function get_upload_syndication_json($file_handling_types)
             }
             $syndicatable_filetypes .= get_allowed_audio_file_types();
         }
-        if (($all_hook_file_handling_types & CMS_UPLOAD_SWF) != 0) {
-            if ($syndicatable_filetypes != '') {
-                $syndicatable_filetypes .= ',';
-            }
-            $syndicatable_filetypes .= 'swf';
-        }
     }
 
     if (count($struct) > 0) {

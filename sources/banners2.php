@@ -221,7 +221,7 @@ function get_banner_form_fields($simplified = false, $name = '', $image_url = ''
     $set_title = do_lang_tempcode('MEDIA');
     $field_set = alternate_fields_set__start($set_name);
 
-    $field_set->attach(form_input_upload(do_lang_tempcode('UPLOAD'), do_lang_tempcode('DESCRIPTION_UPLOAD'), 'file', false, null, null, true, get_allowed_image_file_types() . ',swf'));
+    $field_set->attach(form_input_upload(do_lang_tempcode('UPLOAD'), do_lang_tempcode('DESCRIPTION_UPLOAD'), 'file', false, null, null, true, get_allowed_image_file_types()));
 
     $field_set->attach(form_input_line(do_lang_tempcode('IMAGE_URL'), do_lang_tempcode('DESCRIPTION_URL_BANNER'), 'image_url', $image_url, false));
 
@@ -312,7 +312,7 @@ function check_banner($title_text = '', $direct_code = '', $b_type = '', $b_type
     // Check according to banner type
     if ($banner_type_row['t_is_textual'] == 0) {
         if ($direct_code == '') {
-            $urls = get_url($url_param_name, $file_param_name, 'uploads/banners', 0, $is_upload ? (CMS_UPLOAD_IMAGE | CMS_UPLOAD_SWF) : CMS_UPLOAD_ANYTHING);
+            $urls = get_url($url_param_name, $file_param_name, 'uploads/banners', 0, $is_upload ? CMS_UPLOAD_IMAGE : CMS_UPLOAD_ANYTHING);
             $url = fixup_protocolless_urls($urls[0]);
             if ($url == '') {
                 warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN_UPLOAD_BANNERS'));
@@ -333,7 +333,7 @@ function check_banner($title_text = '', $direct_code = '', $b_type = '', $b_type
                 }
                 warn_exit(do_lang_tempcode('BANNER_TOO_LARGE', escape_html(integer_format(intval(ceil(strlen($data) / 1024)))), escape_html(integer_format($banner_type_row['t_max_file_size']))));
             }
-            if ((function_exists('imagetypes')) && (substr($test_url, -4) != '.swf')) {
+            if (function_exists('imagetypes')) {
                 require_code('images');
                 if (is_image($test_url, IMAGE_CRITERIA_GD_READ)) {
                     $test = cms_getimagesize($test_url);

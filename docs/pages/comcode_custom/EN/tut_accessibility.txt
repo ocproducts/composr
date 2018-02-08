@@ -992,12 +992,6 @@ This section will detail Composr compliance with the guidelines, with any releva
 
 [title="2"]Example accessibility problems[/title]
 
-[title="3"]Flash[/title]
-
-Macromedia Flash is inherently inaccessible to those with certain kinds of disabilities, because it assumes that the web browsing is a visual, mouse-orientated experience. While Flash does not deserve harsh criticism for this (almost all of traditional desktop interfaces make the same assumption), it is inferior to well written (X)HTML from the accessibility perspective. HTML's document model of interfaces provides the 'semantic' structure that allows web pages to be accessible.
-
-Therefore, to make an accessible website, Flash should be avoided for anything other than auxiliary usage that XHTML could not reasonably achieve.
-
 [title="3"]Abused markup[/title]
 
 Web designers often abuse HTML tags in order to achieve visual side-effects that those tags come with.

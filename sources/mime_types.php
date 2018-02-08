@@ -27,53 +27,64 @@
 function get_mime_types($as_admin)
 {
     $mime_types = array(
-        // Plain text
-        '1st' => 'text/plain',
-        'txt' => 'text/plain',
-        '' => 'text/plain', // No file type implies a plain text file, e.g. README
-
-        // Documents
-        'pdf' => 'application/pdf',
-        'rtf' => 'text/rtf',
-        'ps' => 'application/postscript',
-        'html' => $as_admin ? 'text/html' : 'application/octet-stream',
-        'htm' => $as_admin ? 'text/html' : 'application/octet-stream',
-
         // Open office
         'odt' => 'application/vnd.oasis.opendocument.text',
         'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
         'odp' => 'application/vnd.oasis.opendocument.presentation',
+        'odg' => 'application/vnd.oasis.opendocument.graphics',
+        'odi' => 'application/vnd.oasis.opendocument.image',
+        'odb' => 'application/vnd.oasis.opendocument.database',
+        'odc' => 'application/vnd.oasis.opendocument.chart',
 
         // Microsoft office
         'doc' => 'application/msword',
-        'mdb' => 'application/x-msaccess',
-        'xls' => 'application/vnd.ms-excel',
         'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        'docb' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        'docm' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'dot' => 'application/msword',
+        'dotx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.template',
+        'xls' => 'application/vnd.ms-excel',
         'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        'xlsb' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        'xlsm' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'ppt' => 'application/powerpoint',
+        'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+        'mdb' => 'application/x-msaccess',
+        'pub' => 'application/x-mspublisher',
+        'vsd' => 'application/vnd.visio',
 
         // iWork
         'pages' => 'application/x-iwork-pages-sffpages',
         'numbers' => 'application/x-iwork-pages-sffnumbers',
         'keynote' => 'application/x-iwork-pages-sffkey',
 
-        // XML
+        // Simplified document formats
+        '1st' => 'text/plain',
+        'txt' => 'text/plain',
+        'log' => 'text/plain',
+        '' => 'text/plain', // No file type implies a plain text file, e.g. README
+        'csv' => 'text/csv',
+
+        // Text formats to show as plain text
+        'ini' => 'text/plain',
+        'diff' => 'text/plain',
+        'patch' => 'text/plain',
+        'tpl' => 'text/plain',
+        'sql' => 'text/plain',
+        'eml' => 'text/plain',
+
+        // Documents
+        'pdf' => 'application/pdf',
+        'rtf' => 'text/rtf',
+        'ps' => 'application/postscript',
+
+        // Web documents
+        'html' => $as_admin ? 'text/html' : 'application/octet-stream',
+        'htm' => $as_admin ? 'text/html' : 'application/octet-stream',
+        'js' => $as_admin ? 'application/javascript' : 'application/octet-stream',
+        'json' => $as_admin ? 'application/json' : 'application/octet-stream',
+        'css' => $as_admin ? 'text/css' : 'application/octet-stream',
+        'xsd' => $as_admin ? 'text/xml' : 'application/octet-stream',
+        'xsl' => $as_admin ? 'text/xsl' : 'application/octet-stream',
         'xml' => $as_admin ? 'text/xml' : 'application/octet-stream',
         'rss' => $as_admin ? 'application/rss+xml' : 'application/octet-stream',
         'atom' => $as_admin ? 'application/atom+xml' : 'application/octet-stream',
-
-        // Presentations/Animations/3D
-        'ppt' => 'application/powerpoint',
-        'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-        'pptb' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-        'pptm' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-        'svg' => $as_admin ? 'image/svg+xml' : 'application/octet-stream',
-        'wrl' => 'model/vrml',
-        'vrml' => 'model/vrml',
-        'swf' => $as_admin ? 'application/x-shockwave-flash' : 'application/octet-stream',
 
         // Images
         'png' => 'image/png',
@@ -82,7 +93,9 @@ function get_mime_types($as_admin)
         'jpe' => 'image/jpeg',
         'jpeg' => 'image/jpeg',
         'psd' => 'image/x-photoshop',
+        // 'ai' has no known mime type
         'webp' => 'image/webp',
+        'svg' => $as_admin ? 'image/svg+xml' : 'application/octet-stream',
 
         // Non/badly compressed images
         'bmp' => 'image/x-MS-bmp',
@@ -90,6 +103,7 @@ function get_mime_types($as_admin)
         'tif' => 'image/tiff',
         'tiff' => 'image/tiff',
         'ico' => 'image/vnd.microsoft.icon',
+        'cur' => 'image/x-win-bitmap',
 
         // Movies
         'avi' => 'video/mpeg', //'video/x-ms-asf' works with the plugin on Windows Firefox but nothing else, //'video/x-msvideo' is correct but does not get recognised by Microsoft Firefox WMV plugin and confuses RealMedia Player if it sees data transferred under that mime type,
@@ -107,38 +121,56 @@ function get_mime_types($as_admin)
         'f4v' => 'video/mp4',
         'mp4' => 'video/mp4',
         'm4v' => 'video/mp4',
+        'mov' => 'video/mp4',
+        'qt' => 'video/mp4',
         'mpeg' => 'video/mpeg',
         'ogv' => 'video/ogg',
         'webm' => 'video/webm',
-
         // Proprietary movie formats
-        'mov' => 'video/mp4', // in the past may have been 'video/quicktime',
-        'qt' => 'video/quicktime',
         'wmv' => 'video/x-ms-wmv',
         'ram' => 'audio/x-pn-realaudio',
         'rm' => 'audio/x-pn-realaudio',
         'asf' => 'video/x-ms-asf',
 
         // Audio
-        'ra' => 'audio/x-pn-realaudio-plugin',
-        'wma' => 'audio/x-ms-wma',
-        'wav' => 'audio/x-wav',
         'mp3' => 'audio/mpeg',
-        'ogg' => 'audio/ogg',
+        'aac' => 'audio/mpeg',
+        'wav' => 'audio/x-wav',
         'mid' => 'audio/midi',
         'aif' => 'audio/x-aiff',
         'aifc' => 'audio/x-aiff',
         'aiff' => 'audio/x-aiff',
+        'ogg' => 'audio/ogg',
+        'weba' => 'audio/webm',
+        // Proprietary audio formats
+        'wma' => 'audio/x-ms-wma',
+        'ra' => 'audio/x-pn-realaudio-plugin',
 
-        // File sharing
+        // Fonts
+        'ttf' => 'font/ttf',
+        'woff' => 'font/woff',
+        'otf' => 'font/otf',
+
+        // Archives / Compression
+        'rar' => 'application/x-rar-compressed',
+        'tar' => 'application/x-tar',
+        'zip' => 'application/zip',
+        'gz' => 'application/gzip',
+        'tgz' => 'application/gzip',
+        'bz2' => 'application/x-bzip2',
+        '7z' => 'application/x-7z-compressed',
+
+        // Misc
         'torrent' => 'application/x-bittorrent',
+        'ics' => 'text/calendar',
 
         // Misc data
         'dat' => 'application/octet-stream',
+        'dmg' => 'application/octet-stream',
+        'exe' => 'application/octet-stream',
+        'iso' => 'application/octet-stream',
+        'php' => 'application/octet-stream',
     );
-    if (file_exists(get_file_base() . '/data/jwplayer.flash.swf')) {
-        $mime_types['flv'] = 'video/x-flv';
-    }
 
     return $mime_types;
 }

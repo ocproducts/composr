@@ -88,7 +88,6 @@ function _get_details_comcode_tags()
         'hide' => array('param'),
         'tooltip' => array('param'),
         'if_in_group' => array('param', 'type'),
-        'flash' => array('param'),
         'media' => array('description', 'thumb_url', 'width', 'height', 'framed', 'wysiwyg_editable', 'type', 'thumb', 'length', 'filename', 'mime_type', 'filesize', 'click_url', 'float'),
         'img' => array('align', 'float', 'param', 'title', 'rollover', 'refresh_time', 'width', 'height'),
         'thumb' => array('align', 'param', 'caption', 'float'),
@@ -188,7 +187,7 @@ function _get_group_tags($group = null)
     $group_tags = array(
         'structure' => array('title', 'contents', 'include', 'concepts', 'concept', 'staff_note', 'menu', 'surround'),
 
-        'media' => array('img', 'thumb', 'flash', 'media', 'media_set'),
+        'media' => array('img', 'thumb', 'media', 'media_set'),
 
         'linking' => array('url', 'email', 'reference', 'page', 'snapback', 'post', 'topic'),
 
@@ -274,7 +273,6 @@ function _get_non_wysiwyg_tags()
         'tooltip',
         'currency',
         'if_in_group',
-        'flash',
         'media',
         'thumb',
         'reference',

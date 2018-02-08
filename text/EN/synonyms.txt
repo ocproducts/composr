@@ -108,7 +108,6 @@ post	message	body
 documentation	help	guide	manual
 sef	short	friendly
 survey	quiz	competition	test	questionnaire
-swf	flash
 friend	buddy	follower
 like	love	rate
 subscribe	subscription	recurring	service

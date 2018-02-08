@@ -53,6 +53,6 @@ class Hook_config_valid_audios
      */
     public function get_default()
     {
-        return 'ra,mid,mp3,wav,wma,aif,aifc,aiff';
+        return 'mid,mp3,mpa,wav,wma,aif,aifc,aiff,weba,aac'; // Web-safe(ish) audio only
     }
 }

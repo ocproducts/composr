@@ -62,11 +62,6 @@ class Hook_media_rendering_video_websafe extends Media_renderer_with_fallback
             return MEDIA_RECOG_PRECEDENCE_HIGH;
         }
 
-        // We support Flash fallback in here too, for legacy reasons (there is overlap of supported media in Flash and browsers, and we use a hybrid player that supports both)
-        if ($mime_type == 'video/x-flv') {
-            return MEDIA_RECOG_PRECEDENCE_HIGH;
-        }
-
         return MEDIA_RECOG_PRECEDENCE_NONE;
     }
 

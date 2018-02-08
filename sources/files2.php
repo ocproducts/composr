@@ -668,12 +668,18 @@ function check_extension($name, $skip_server_side_security_check = false, $file_
         if (!has_privilege(get_member(), 'use_very_dangerous_comcode')) {
             $dangerous_markup_types = array(
                 'js',
-                'swf',
+                'json',
                 'html',
                 'htm',
                 'shtml',
                 'svg',
                 'xml',
+                'rss',
+                'atom',
+                'xsd',
+                'xsl',
+                'css',
+                'woff',
             );
             foreach ($dangerous_markup_types as $type) {
                 unset($types[$type]);

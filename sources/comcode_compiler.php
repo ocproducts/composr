@@ -49,7 +49,7 @@ function init__comcode_compiler()
         'page' => true, 'thumb' => true, 'attachment_safe' => true,
     );
     // The following could conceivably not need to be reversed, as they're pure HTML. However, it's better not to let the WYSIWYG'd HTML get too complex.
-    // 'tooltip' => true, 'section' => true, 'section_controller' => true, 'big_tab' => true, 'big_tab_controller' => true, 'tabs' => true, 'tab' => true, 'carousel' => true, 'flash' => true, 'media' => true, 'hide' => true, 'quote' => true, 'ticker' => true, 'jumping' => true
+    // 'tooltip' => true, 'section' => true, 'section_controller' => true, 'big_tab' => true, 'big_tab_controller' => true, 'tabs' => true, 'tab' => true, 'carousel' => true, 'media' => true, 'hide' => true, 'quote' => true, 'ticker' => true, 'jumping' => true
 
     // The contents of these tags is human readable text. It may be altered for reasons of bork, or textcode; they have hard white space
     global $TEXTUAL_TAGS, $TEXTUAL_TAGS_WYSIWYG;
@@ -66,10 +66,10 @@ function init__comcode_compiler()
 
     // These tags have contents that are not interpreted as Comcode (so no HTML tags either), but are formatted for white-space
     global $CODE_TAGS;
-    $CODE_TAGS = array(/*'img' => true - no, can be a symbol,*/'flash' => true, 'media' => true, 'thumb' => true, 'menu' => true, 'no_parse' => true, 'code' => true, 'tt' => true, 'samp' => true, 'codebox' => true, 'staff_note' => true, 'section_controller' => true, 'big_tab_controller' => true);
+    $CODE_TAGS = array(/*'img' => true - no, can be a symbol,*/'media' => true, 'thumb' => true, 'menu' => true, 'no_parse' => true, 'code' => true, 'tt' => true, 'samp' => true, 'codebox' => true, 'staff_note' => true, 'section_controller' => true, 'big_tab_controller' => true);
 
     global $BUTTON_EDITED_TAGS;
-    $BUTTON_EDITED_TAGS = array('attachment' => true, 'attachment_safe' => true, 'section_controller' => true, 'big_tab_controller' => true, 'currency' => true, 'block' => true, 'contents' => true, 'concepts' => true, 'media' => true, 'flash' => true, 'menu' => true, 'email' => true, 'reference' => true, 'page' => true, 'thumb' => true, 'snapback' => true, 'post' => true, 'topic' => true, 'include' => true, 'random' => true, 'jumping' => true, 'shocker' => true,);
+    $BUTTON_EDITED_TAGS = array('attachment' => true, 'attachment_safe' => true, 'section_controller' => true, 'big_tab_controller' => true, 'currency' => true, 'block' => true, 'contents' => true, 'concepts' => true, 'media' => true, 'menu' => true, 'email' => true, 'reference' => true, 'page' => true, 'thumb' => true, 'snapback' => true, 'post' => true, 'topic' => true, 'include' => true, 'random' => true, 'jumping' => true, 'shocker' => true,);
 
     // ALSO:
     // See _get_details_comcode_tags function in comcode_add.php
@@ -124,7 +124,7 @@ function wysiwyg_comcode_markup_style($tag, $attributes = null, $embed = null, $
         }
     }
 
-    if ($tag == 'media' || $tag == 'flash' || $tag == 'attachment' || $tag == 'attachment_safe' || $tag == 'title') {
+    if ($tag == 'media' || $tag == 'attachment' || $tag == 'attachment_safe' || $tag == 'title') {
         if (($attributes !== null) && ((!array_key_exists('wysiwyg_editable', $attributes)) || ($attributes['wysiwyg_editable'] == '0'))) {
             $_button_edited_tags[$tag] = true;
         } else {
@@ -947,7 +947,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                             if ((!$in_code_tag) && (($next === '{') && (isset($comcode[$pos])) && (($comcode[$pos] === '$') || ($comcode[$pos] === '+') || ($comcode[$pos] === '!')))) {
                                 $is_basic_symbol = (substr($comcode, $pos, 4) == '$IMG') || (substr($comcode, $pos, 9) == '$BASE_URL'); // Anyone may use, and must parse even in semi-parse mode
                                 if ($comcode_dangerous || $is_basic_symbol) {
-                                    if ((!$in_code_tag) && ((!$semiparse_mode) || ($is_basic_symbol) || ((!$html_errors) && ($comcode[$pos] === '+')) || (in_tag_stack($tag_stack, array('url', 'img', 'flash', 'media'))))) {
+                                    if ((!$in_code_tag) && ((!$semiparse_mode) || ($is_basic_symbol) || ((!$html_errors) && ($comcode[$pos] === '+')) || (in_tag_stack($tag_stack, array('url', 'img', 'media'))))) {
                                         if ($GLOBALS['XSS_DETECT']) {
                                             ocp_mark_as_escaped($continuation);
                                         }

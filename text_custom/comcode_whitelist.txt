@@ -16,6 +16,5 @@
 </param>
 <param name="allowFullScreen" value="true">
 <param name="allowscriptaccess" value="always">
-/<embed src="(http:\/\/)?www\.(youtube-nocookie|youtube)\.com\/v\/[^"]*" type="application\/x-shockwave-flash"( allowscriptaccess="always")?( allowfullscreen="true")? width="\d+" height="\d+"( allowscriptaccess="always")?( allowfullscreen="true")?>/
 </embed>
 </object>

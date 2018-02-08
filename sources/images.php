@@ -348,7 +348,7 @@ function is_image($name, $criteria, $as_admin = false, $mime_too = false)
 
     // Web-safe check
     if (($criteria & IMAGE_CRITERIA_WEBSAFE) != 0) {
-        if (!in_array($ext, array('jpeg', 'jpe', 'jpg', 'gif', 'png', 'bmp', 'svg', 'ico'))) {
+        if (!in_array($ext, array('jpeg', 'jpe', 'jpg', 'gif', 'png', 'bmp', 'svg', 'ico', 'cur'))) {
             return false;
         }
     }
@@ -410,9 +410,6 @@ function is_video($name, $as_admin, $must_be_true_video = false)
     if ($must_be_true_video) {
         require_code('mime_types');
         $ext = get_file_extension($name);
-        if (($ext == 'rm') || ($ext == 'ram')) {
-            return true; // These have audio mime types, but may be videos
-        }
         $mime_type = get_mime_type($ext, $as_admin);
         return ((substr($mime_type, 0, 6) == 'video/') || (($allow_audio) && (substr($mime_type, 0, 6) == 'audio/')));
     }
@@ -475,9 +472,6 @@ function get_allowed_video_file_types()
         $supported .= ',' . get_allowed_audio_file_types();
     }
     $supported .= ',pdf';
-    if (has_privilege(get_member(), 'use_very_dangerous_comcode')) {
-        $supported .= ',swf';
-    }
     return $supported;
 }
 

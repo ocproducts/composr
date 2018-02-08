@@ -99,7 +99,7 @@ function init_valid_comcode_tags()
         'section' => true, 'section_controller' => true,
         'big_tab' => true, 'big_tab_controller' => true, 'tabs' => true, 'tab' => true,
         'carousel' => true, 'cite' => true, 'ins' => true, 'del' => true, 'dfn' => true, 'address' => true, 'acronym' => true, 'abbr' => true, 'contents' => true, 'concepts' => true, 'list' => true,
-        'flash' => true, 'media_set' => true, 'media' => true, 'indent' => true, 'staff_note' => true, 'menu' => true, 'b' => true, 'i' => true, 'u' => true, 's' => true, 'sup' => true, 'sub' => true,
+        'media_set' => true, 'media' => true, 'indent' => true, 'staff_note' => true, 'menu' => true, 'b' => true, 'i' => true, 'u' => true, 's' => true, 'sup' => true, 'sub' => true,
         'if_in_group' => true, 'title' => true, 'size' => true, 'color' => true, 'highlight' => true, 'font' => true, 'tt' => true, 'box' => true, 'img' => true,
         'url' => true, 'email' => true, 'reference' => true, 'page' => true, 'codebox' => true, 'no_parse' => true, 'code' => true, 'hide' => true,
         'quote' => true, 'block' => true, 'semihtml' => true, 'html' => true, 'concept' => true, 'thumb' => true,

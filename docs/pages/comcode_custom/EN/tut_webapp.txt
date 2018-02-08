@@ -37,7 +37,6 @@ You know what a website is from an experience point-of-view: a site consists of 
 So, from a technical point of view, a website is a bunch of files put on a computer that you access by giving a URL through a web-browser. Well done for reading so far -- there are just a lot of facts and terms, but it's not all that complex once they've sinked-in. Just like when you go to a restaurant for a meal and go through a standard ordering procedure, web browsers and web servers also have a standard operating procedure.
 
 [media float="right" framed="0" thumb="0"]data_custom/images/docs/dont.png[/media]
-&dagger; Some websites are also written in Adobe Flash, which is a proprietary alternative to the normal HTML/CSS/JavaScript combination. Flash works via a web browser plugin which is installed on most people's computers. The advantage to Flash is that it allows richer animations and effects, but it comes at the cost that Flash sites are less accessible, don't run on all web browsers (e.g. iPhones), you are required to buy Adobe Flash to make the animation, and there is a high reliance on Adobe's business. Often sites will mix Flash and HTML, using Flash for specific regions of the site that require sophisticated animations, or for playing videos. Composr is HTML/CSS/JavaScript, but has features to insert Flash very easily if required.
 
 [title="2"]Types of website[/title]
 

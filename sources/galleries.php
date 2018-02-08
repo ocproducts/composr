@@ -1086,7 +1086,7 @@ function show_gallery_video_media($url, $thumb_url, $width, $height, $length, $s
         'width' => strval($width),
         'height' => strval($height),
         'length' => strval($length),
-        'mime_type' => get_mime_type(get_file_extension($url), $as_admin), // will not render as dangerous stuff (swf's etc), unless admin
+        'mime_type' => get_mime_type(get_file_extension($url), $as_admin), // will not render as dangerous stuff (svg's etc), unless admin
         'context' => 'gallery_video',
     );
 

@@ -62,7 +62,7 @@ The following image formats can be used:
 
 [title="2"]Videos[/title]
 
-Galleries have powerful video support. Composr will analyse the file types of uploaded videos and use carefully crafted templates that use browser plug-ins that are most appropriate to that file type. For example, QuickTime files will be displayed with HTML to use the QuickTime plugin.
+Galleries have powerful video support. Composr will analyse the file types of uploaded videos and use carefully crafted templates that use the best way to display that file type. For example, h.264 files will be displayed with a HTML5 video player.
 
 Composr can usually auto-detect video widths, heights and lengths, from the actual video files.
 
@@ -72,19 +72,18 @@ Composr supports most video formats, but video on the web is fraught with comple
 
 The following formats are best to use:
  - [tt].mp4[/tt] (with h.264 aac encoding)
+
+The following are somewhat usable:
+ - [tt].mov[/tt] (with h.264 aac encoding -- this modern QuickTime format is identical to mp4)
  - [tt].webm[/tt] (the Google-sponsored format, supported natively in all web browsers except Internet Explorer/Microsoft Edge and Safari, but available in those via normal system codec plugins)
 
-The following are almost as good:
- - [tt].mov[/tt] (with h.264 aac encoding -- this modern QuickTime format is identical to mp4)
- - [tt].flv[/tt] (works as long as Flash is installed -- won't work on iOS devices)
-
-The following common formats are not safe:
+The following common formats are not usable anymore:
  - [tt].avi[/tt] (could be many different codecs, no consistent support even for the MPEG-compatible encodings like DivX or XVid or MS-Video, plus your browser might not load the correct plugin)
  - [tt].wmv[/tt]/[tt].asf[/tt] (requires Windows Media Player plugin, only properly supported on Windows)
  - [tt].ogv[/tt] (Ogg video, essentially replaced by WebM)
  - [tt].mpeg[/tt]/[tt].mpg[/tt] (old MPEG formats, no consistent plugin support, plus your browser might not load the correct plugin)
  - [tt].rm[/tt]/[tt].ram[/tt] (requires RealPlayer plugin, not available on Linux)
- - [tt].qt[/tt] (Old quicktime format)
+ - [tt].qt[/tt] (Old quicktime format, Windows QuickTime plugin no longer maintained and insecure)
 
 Further documentation is provided in the [page="_SEARCH:tut_fringe"]Supplementary web technologies (media, social networking, etc)[/page] tutorial.
 

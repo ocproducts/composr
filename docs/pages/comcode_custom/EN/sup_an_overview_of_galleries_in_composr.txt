@@ -3,7 +3,7 @@
 [media width="150" description="Viewing a gallery image in Composr" float="right"]data_custom/images/docs/sup_an_overview_of_galleries_in_composr/97351cdb4a76efab304ccf68af4b7c32.png[/media]
 Like many other key elements of popular websites, Composr Galleries are included as a core feature of the CMS. The Gallery in Composr supports both Images and Videos.
 
-The Gallery system supports most popular image formats. As well as the popular image formats, Composr also has support for a range of video formats too including ram, wmv, avi, mov & mp4.
+The Gallery system supports most popular image formats. As well as the popular image formats, Composr also has support for HTML5 video.
 
 As well as uploading videos directly to your Composr website you can also link to a YouTube video to help you save on bandwidth, also save on duplication of videos online, and get better cross-device media compatibility.
 

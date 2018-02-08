@@ -312,13 +312,13 @@ CSRF-token protection and referrer checking also exists.
 | Trusted partner sites (level 1), Trusted partner sites (level 2)
 |-
 | Inbound
-| [b]Send calls to your website via in-browser requests [AJAX or Adobe Flash][/b]
+| [b]Send calls to your website via in-browser requests [AJAX][/b]
 
 As above, but extended risk due to automation to both read and write any number of sequential pages with requests being potentially logged in as the user due to cookies.
 | [color="red"]High[/color]
 
 Allows invisible remote controlling of a logged in user.
-| CrossDomain configuration
+| CORS configuration
 | Trusted partner sites (level 1)
 |-
 | Inbound
@@ -513,7 +513,7 @@ In the security configuration, Composr defines a list of file types that may be 
 
 It is important to understand that there are two sides to the security of file uploads:
 1) on the server-side, it must be impossible for a file to be uploaded that might execute on the server, instead of download (such as a php file). You may have noticed that php is an allowed file extension in the list: this is because php uploads are explicitly blocked internally, but only in the situation where the file would be stored on disk with its original extension (which the attachment system does not do)
-2) on the client-side, it must be impossible for a file to be uploaded that might get downloaded and automatically execute a malicious action on a client computer. One example of such a file type is, to the surprise of most, 'html'. [tt].html[/tt] files can contain JavaScript, which could be used, if the file was downloaded from the main website domain, to transmit the user's login cookies to any arbitrary hacker. Therefore it is crucial that html files, and other files (swf,fla,svg,xml are suspected to be dangerous at this time) are not added to the list
+2) on the client-side, it must be impossible for a file to be uploaded that might get downloaded and automatically execute a malicious action on a client computer. One example of such a file type is, to the surprise of most, 'html'. [tt].html[/tt] files can contain JavaScript, which could be used, if the file was downloaded from the main website domain, to transmit the user's login cookies to any arbitrary hacker. Therefore it is crucial that HTML files, and other files (svg, xml are suspected to be dangerous at this time) are not added to the list
 
 [title="2"]Protect your domain name[/title]
 

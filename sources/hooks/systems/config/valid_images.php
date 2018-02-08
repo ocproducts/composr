@@ -53,6 +53,6 @@ class Hook_config_valid_images
      */
     public function get_default()
     {
-        return 'jpg,jpe,jpeg,gif,png,ico,svg,webp';
+        return 'jpg,jpe,jpeg,gif,png,ico,cur,svg,webp'; // Web-safe images only
     }
 }

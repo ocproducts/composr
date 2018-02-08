@@ -108,7 +108,7 @@ $feature_tree = array(
             array(
                 array('Multiple campaigns', 'Each one can specify it\'s own width-by-height (e.g. skyscraper)'),
                 array('Smart banners', 'Integrate text-banners into your content via keyword detection'),
-                array('Broad media compatibility', 'Image banners, flash banners, external banner rotations, and text banners'),
+                array('Broad media compatibility', 'Image banners, HTML banners, external banner rotations, and text banners'),
                 null, // divider
                 array('Determine which banners display most often'),
                 array('Run a cross-site banner network'),

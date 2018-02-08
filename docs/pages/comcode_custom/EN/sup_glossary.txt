@@ -157,7 +157,7 @@ Here are the top 100 buzzwords that will help you understand what web designers 
 		</tr>
 		<tr>
 			<td>Flash</td>
-			<td>An Adobe technology for providing 'flashy' content on a web page. It works via a plugin and is not a W3C web standard. It is less commonly used now as HTML5 technologies provide many of the features that used to require Flash, and Flash doesn't work on the iPhone or iPad.</td>
+			<td>An Adobe technology for providing 'flashy' content on a web page. It works via a plugin and is not a W3C web standard. It is less commonly used now as HTML5 technologies provide many of the features that used to require Flash, and Flash doesn't work on the iPhone or iPad. Composr removed explicit support for Flash in version 11.</td>
 		</tr>
 		<tr>
 			<td>Front-end</td>

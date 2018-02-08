@@ -29,7 +29,6 @@ function init__uploads()
         define('CMS_UPLOAD_IMAGE', 1);
         define('CMS_UPLOAD_VIDEO', 2);
         define('CMS_UPLOAD_AUDIO', 4);
-        define('CMS_UPLOAD_SWF', 8); // Banners
         define('CMS_UPLOAD_ANYTHING', 15);
     }
 
@@ -607,7 +606,7 @@ function _get_specify_url($member_id, $specify_name, $upload_folder, $enforce_ty
             (
                 (substr($url[0], 0, strlen($upload_folder) + 1) != $upload_folder . '/') &&
                 (substr($url[0], 0, strlen('data/images/') + 1) != 'data/images/') &&
-                (preg_match('#^[^\?\.]*\.(m4v|mp4|flv|f4v|mpeg|mpg|webm|ogv|png|gif|jpg|jpeg|jpe)$#', $url[0]) == 0)/*Streaming/compression plugins can mess up our script detection so whitelist some formats*/
+                (preg_match('#^[^\?\.]*\.(m4v|mp4|f4v|mpeg|mpg|webm|ogv|png|gif|jpg|jpeg|jpe)$#', $url[0]) == 0)/*Streaming/compression plugins can mess up our script detection so whitelist some formats*/
             ) ||
             (strpos($url[0], '..') !== false)
         ) {
@@ -633,7 +632,7 @@ function _get_specify_url($member_id, $specify_name, $upload_folder, $enforce_ty
 
     if ($url[0] != '') {
         // oEmbed etc
-        if (($enforce_type != CMS_UPLOAD_ANYTHING) && (($enforce_type & CMS_UPLOAD_IMAGE) != 0) && (!is_image($url[0], IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'))) && ((($enforce_type & CMS_UPLOAD_SWF) == 0) || (get_file_extension($url[0]) != 'swf'))) {
+        if (($enforce_type != CMS_UPLOAD_ANYTHING) && (($enforce_type & CMS_UPLOAD_IMAGE) != 0) && (!is_image($url[0], IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous')))) {
             require_code('media_renderer');
             require_code('http');
             $meta_details = get_webpage_meta_details($url[0]);
@@ -684,20 +683,6 @@ function _check_enforcement_of_type($member_id, $file, $enforce_type, $accept_er
 
     require_code('images');
     $ok = false;
-    if (($enforce_type & CMS_UPLOAD_SWF) != 0) {
-        if (get_file_extension($file) != 'swf') {
-            if ($enforce_type == CMS_UPLOAD_SWF) {
-                if ($accept_errors) {
-                    attach_message(do_lang_tempcode('NOT_IMAGE'), 'warn');
-                } else {
-                    warn_exit(do_lang_tempcode('NOT_IMAGE'));
-                }
-                return false;
-            }
-        } else {
-            $ok = true;
-        }
-    }
     if (($enforce_type & CMS_UPLOAD_IMAGE) != 0) {
         if (!is_image($file, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'), true)) {
             if ($enforce_type == CMS_UPLOAD_IMAGE) {

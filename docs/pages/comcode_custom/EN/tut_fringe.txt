@@ -95,17 +95,9 @@ There are two exceptional cases though:
 
 Sound and video formats are an area of extreme complexity unfortunately, as is their use on the web.
 
-Unlike for most file types, video files cannot be identified fully be file extension. The file extensions identifies the 'container format' (such as MPEG or AVI) but not the 'codec' used for the video data and which codec was used for the sound data. Codecs are often proprietary, and tied to Windows, and they often aren't installed on user's computers. Some codecs and container formats require specific software, as vendors such as Microsoft, Apple and Real tend to lock each others formats out, as they battle for supremacy.
+Unlike for most file types, video files cannot be identified fully be file extension. The file extensions identifies the 'container format' (such as MPEG or AVI) but not the 'codec' used for the video data and which codec was used for the sound data. Codecs are often proprietary, e.g. tied to Windows, and they often aren't installed on user's computers. Some codecs and container formats require specific software, as vendors such as Microsoft, Apple and Real tend to lock each others formats out, as they battle for supremacy.
 
-You have a choice between six options:
-1) Use an old badly compressed format -- this is likely very in-feasible, due to high file size
-2) Use an alternative format, such as MIDI -- this is likely very in-feasible, as content is rarely made to it now, and users are more discerning than they once were
-3) Use HTML5 / Macromedia flash to distribute videos and music in h264 format: HTML5 natively supports h264 video and Flash contains its own code to decompress this data (for old browsers). [b]Recommended[/b] (Composr includes an integrated HTML5/Flash file player)
-4) Put up with media only working where Windows Media Player / RealPlayer / Quicktime is installed (noting that the best support for this is on Microsoft Edge/Internet Explorer on Windows, and getting it to work elsewhere can be tricky or impossible)
-5) Use standard MPEG technology other than h264 -- the drawback to this is that such MPEG standardisation is weak, with MPEG4 being more of a 'class of formats' that includes formats such as DivX and many others
-6) Use an open alternative such as those sponsored by the BBC, or Ogg, or Google (WebM) -- using them is technical difficult, and users generally need to install special software
-
-Our practical advice is to always use h264/mp3, which has worked on all major browsers for a number of years.
+Our practical advice is to always use h.264/mp3, which has worked on all major browsers for a number of years. HTML5 natively supports h.264 video. Use an mp4 container format for video. Composr includes an integrated HTML5 player.
 
 [title="4"]MPEG[/title]
 
@@ -116,13 +108,13 @@ There is a great deal of confusion around the MPEG formats, because the abbrevia
  - [b]aac[/b] is MPEG-2 Part 7 (audio format).
  - [b]mp4[/b] is actually MPEG-4 Part 14 (container format).
  - [b]MPEG-4 video[/b] is actually MPEG-4 Part 2 (video format).
- - [b]h264[/b] is MPEG-4 Part 10 (video format).
+ - [b]h.264[/b] is MPEG-4 Part 10 (video format).
 
 The clear points of confusion are:
 1) mp3 is an audio codec, not "MPEG-3". The '3' comes from 'part 3', not the overall MPEG number. [i]MPEG-3[/i] doesn't exist to avoid confusion.
-2) mp4 is the MPEG-4 container format, but that doesn't mean you should put what is typically referred to as MPEG-4 video in it (because that's not web-safe, only h264 is).
+2) mp4 is the MPEG-4 container format, but that doesn't mean you should put what is typically referred to as MPEG-4 video in it (because that's not web-safe, only h.264 is).
 
-For web-safe videos you need to use either the aac or mp3 audio codec, the h264 video codec, and the mp4 container format.
+For web-safe videos you need to use either the aac or mp3 audio codec, the h.264 video codec, and the mp4 container format.
 
 [title="2"]The custom graphics block (advanced)[/title]
 

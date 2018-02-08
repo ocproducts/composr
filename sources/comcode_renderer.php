@@ -2008,32 +2008,6 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
             break;
 
-        case 'flash':
-            $given_url = $embed->evaluate();
-            $url_full = absoluteise_and_test_comcode_url($given_url, $source_member, $as_admin, $tag);
-
-            if (strpos($attributes['param'], 'x') !== false) {
-                list($width, $height) = explode('x', $attributes['param'], 2);
-                $attributes['width'] = $width;
-                $attributes['height'] = $height;
-            }
-
-            if (!$as_admin && !has_privilege($source_member, 'comcode_dangerous')) {
-                unset($attributes['mime_type']);
-            }
-
-            require_code('media_renderer');
-            $temp_tpl = render_media_url(
-                $url_full,
-                $url_full,
-                $attributes + array('context' => 'comcode_flash'),
-                $as_admin,
-                $source_member,
-                MEDIA_TYPE_OTHER | MEDIA_TYPE_VIDEO | MEDIA_TYPE_AUDIO,
-                (strtolower(substr($given_url, -4)) == '.swf') ? 'flash' : null // LEGACY: Really we should only allow Flash (because we have a 'media' tag), but we always used to support any media via this tag
-            );
-            break;
-
         case 'media_set':
             $width = array_key_exists('width', $attributes) ? $attributes['width'] : '';
             $height = array_key_exists('height', $attributes) ? $attributes['height'] : '';

@@ -53,6 +53,6 @@ class Hook_config_valid_types
      */
     public function get_default()
     {
-        return 'swf,sql,odg,odp,odt,ods,pdf,pgp,dot,doc,ppt,csv,xls,docx,pptx,xlsx,pub,pages,numbers,keynote,txt,log,psd,tif,gif,png,ico,bmp,jpg,jpeg,svg,flv,avi,mov,3gp,mpg,mpeg,mp4,m4v,webm,asf,wmv,zip,tar,rar,gz,wav,mp3,ogg,ogv,torrent,php,css,tpl,ini,eml,patch,diff,iso,dmg';
+        return '1st,3g2,3gp,3gp2,3gpp,3p,7z,aac,ai,aif,aifc,aiff,asf,atom,avi,bmp,bz2,css,csv,cur,dat,diff,doc,docx,dot,dotx,eml,f4v,gif,gz,htm,html,ico,ics,ini,iso,jpe,jpeg,jpg,js,json,keynote,log,m2v,m4v,mdb,mid,mov,mp2,mp3,mp4,mpa,mpe,mpeg,mpg,mpv2,numbers,odb,odc,odg,odi,odp,ods,odt,ogg,ogv,otf,pages,patch,pdf,php,png,ppt,pptx,ps,psd,pub,qt,ra,ram,rar,rm,rss,rtf,sql,svg,tar,tga,tgz,tif,tiff,torrent,tpl,ttf,txt,vsd,wav,weba,webm,webp,woff,wma,wmv,xls,xlsx,xml,xsd,xsl,zip';
     }
 }

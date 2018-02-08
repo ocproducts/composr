@@ -221,7 +221,7 @@ You can add a video chat box to your site without any special API integration, j
 [*] After the title or the text where you want to box to appear paste the code you have copied in between [tt][html][/tt] and [tt][/html][/tt] tags which will look something like this:
 [code="Comcode"]
 [html]
-<object type="application/x-shockwave-flash" data="http://www.tokbox.com/vc/zy57q6aodg1k7lvw" width="800" height="600" pid="4b9a2b80beb18ab2"> <param name="movie" value="http://www.tokbox.com/vc/zy57q6aodg1k7lvw"/> <param name="flashvars" value="guestList=true&textChat=true&showExpandButton=true"/></object><br /><a href="http://www.tokbox.com/">TokBox - Free Video Chat and Video Messaging</a>
+<iframe src="https://tokbox.com/embed/embed/ot-embed.js?embedId=[YOUR EMBED ID]&iframe=true&room=DEFAULT"></iframe>
 [/html]
 [/code]
 [*] Fill in the rest of the page data and save the page

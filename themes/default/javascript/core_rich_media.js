@@ -772,42 +772,6 @@
     };
 
     // LEGACY
-    $cms.templates.mediaRealmedia = function (params) {
-        // Tie into callback event to see when finished, for our slideshows
-        // API: http://service.real.com/help/library/guides/realone/ScriptingGuide/PDF/ScriptingGuide.pdf
-        $dom.load.then(function () {
-            if (document.getElementById('next_slide')) {
-                window.$galleries.stopSlideshowTimer();
-                setTimeout(function () {
-                    document.getElementById(params.playerId).addEventListener('stateChange', function (newState) {
-                        if (newState == 0) {
-                            window.$galleries.playerStopped();
-                        }
-                    });
-                    document.getElementById(params.playerId).DoPlay();
-                }, 1000);
-            }
-        });
-    };
-
-    // LEGACY
-    $cms.templates.mediaQuicktime = function (params) {
-        // Tie into callback event to see when finished, for our slideshows
-        // API: http://developer.apple.com/library/safari/#documentation/QuickTime/Conceptual/QTScripting_JavaScript/bQTScripting_JavaScri_Document/QuickTimeandJavaScri.html
-        $dom.load.then(function () {
-            if (document.getElementById('next_slide')) {
-                window.$galleries.stopSlideshowTimer();
-                setTimeout(function () {
-                    document.getElementById(params.playerId).addEventListener('qt_ended', function () {
-                        window.$galleries.playerStopped();
-                    });
-                    document.getElementById(params.playerId).Play();
-                }, 1000);
-            }
-        });
-    };
-
-    // LEGACY
     $cms.templates.mediaVideoGeneral = function (params) {
         // Tie into callback event to see when finished, for our slideshows
         // API: http://developer.apple.com/library/safari/#documentation/QuickTime/Conceptual/QTScripting_JavaScript/bQTScripting_JavaScri_Document/QuickTimeandJavaScri.html

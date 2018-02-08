@@ -958,7 +958,7 @@
                     setInterval(function () {
                         if (progress !== '') {
                             $dom.html(loadingSpace, progress);
-                            loadingSpace.className = 'spaced flash';
+                            loadingSpace.className = 'spaced';
                         }
                     }, 100);
 
