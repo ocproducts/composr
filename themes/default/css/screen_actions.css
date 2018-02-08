@@ -17,7 +17,7 @@
 }
 
 /* We normally hide stuff with overflow:hidden, but some share buttons use absolute positioned layers that need to escape our box */
-.screen-actions::after {
+.screen-actions:after {
 	content: "";
 	display: table;
 	clear: both;

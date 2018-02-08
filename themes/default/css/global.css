@@ -1269,7 +1269,7 @@ body .accessibility-hidden { /* Contents should be made visible (or interpreted)
 	content: " ";
 	display: table;
 }
-.clearfix::after {
+.clearfix:after {
 	clear: both;
 }
 
@@ -2374,7 +2374,7 @@ div.zebra-0+div.zebra-1, div.zebra-1+div.zebra-0 {
 		border-bottom: 1px solid {$GET,standard_border};
 		margin-bottom: 1em;
 	}
-	.responsive-table>tbody>tr>th[data-th]::before, .responsive-table>tbody>tr>td[data-th]::before, .responsive-table>tfoot>tr>th[data-th]::before, .responsive-table>tfoot>tr>td[data-th]::before, .responsive-table>tr>th[data-th]::before, .responsive-table>tr>td[data-th]::before {
+	.responsive-table>tbody>tr>th[data-th]:before, .responsive-table>tbody>tr>td[data-th]:before, .responsive-table>tfoot>tr>th[data-th]:before, .responsive-table>tfoot>tr>td[data-th]:before, .responsive-table>tr>th[data-th]:before, .responsive-table>tr>td[data-th]:before {
 		content: attr(data-th) ":";
 		font-weight: bold;
 		width: 7em;
@@ -2408,11 +2408,11 @@ div.zebra-0+div.zebra-1, div.zebra-1+div.zebra-0 {
 	.responsive-table-bolded-first-column>tbody>tr>th:first-child, .responsive-table-bolded-first-column>tbody>tr>td:first-child, .responsive-table-bolded-first-column>tfoot>tr>th:first-child, .responsive-table-bolded-first-column>tfoot>tr>td:first-child, .responsive-table-bolded-first-column>tr>th:first-child, .responsive-table-bolded-first-column>tr>td:first-child {
 		font-weight: bold;
 	}
-	.responsive-table-bolded-first-column>tbody>tr>th[data-th]::before, .responsive-table-bolded-first-column>tbody>tr>td[data-th]::before, .responsive-table-bolded-first-column>tfoot>tr>th[data-th]::before, .responsive-table-bolded-first-column>tfoot>tr>td[data-th]::before, .responsive-table-bolded-first-column>tr>th[data-th]::before, .responsive-table-bolded-first-column>tr>td[data-th]::before {
+	.responsive-table-bolded-first-column>tbody>tr>th[data-th]:before, .responsive-table-bolded-first-column>tbody>tr>td[data-th]:before, .responsive-table-bolded-first-column>tfoot>tr>th[data-th]:before, .responsive-table-bolded-first-column>tfoot>tr>td[data-th]:before, .responsive-table-bolded-first-column>tr>th[data-th]:before, .responsive-table-bolded-first-column>tr>td[data-th]:before {
 		font-weight: normal; /* Overridden from above */
 	}
 
-	.responsive-table-separate-lines>tbody>tr>th[data-th]::before, .responsive-table-separate-lines>tbody>tr>td[data-th]::before, .responsive-table-separate-lines>tfoot>tr>th[data-th]::before, .responsive-table-separate-lines>tfoot>tr>td[data-th]::before, .responsive-table-separate-lines>tr>th[data-th]::before, .responsive-table-separate-lines>tr>td[data-th]::before {
+	.responsive-table-separate-lines>tbody>tr>th[data-th]:before, .responsive-table-separate-lines>tbody>tr>td[data-th]:before, .responsive-table-separate-lines>tfoot>tr>th[data-th]:before, .responsive-table-separate-lines>tfoot>tr>td[data-th]:before, .responsive-table-separate-lines>tr>th[data-th]:before, .responsive-table-separate-lines>tr>td[data-th]:before {
 		width: auto;
 		display: block;
 		margin-bottom: 0.5em;

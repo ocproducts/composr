@@ -1035,9 +1035,36 @@ function _webstandards_css_sheet($data)
                     $cnt = substr_count($class_name, ':');
                     if ($cnt > 0) {
                         $matches = array();
-                        $num_matches = preg_match_all('#:([\w\-]+)(\([^()]*\))?#', $class_name, $matches);
+                        $num_matches = preg_match_all('#:(:?[\w\-]+)(\([^()]*\))?#', $class_name, $matches);
                         for ($j = 0; $j < $num_matches; $j++) {
                             $pseudo = $matches[1][$j];
+                        }
+
+                        if (!in_array($pseudo, array(
+                            ':first-line',
+                            ':first-letter',
+                            ':before',
+                            ':after',
+                            ':selection',
+                            'active',
+                            'checked',
+                            'disabled',
+                            'empty',
+                            'enabled',
+                            'first-child',
+                            'focus',
+                            'hover',
+                            'indeterminate',
+                            'last-child',
+                            'link',
+                            'not',
+                            'nth-child',
+                            'nth-last-child',
+                            'only-child',
+                            'required',
+                            'visited',
+                        ))) {
+                            $errors[] = array(0 => 'CSS_UNKNOWN_PSEUDO', 1 => $pseudo, 2 => integer_format($line), 'pos' => $i);
                         }
                     }
 
