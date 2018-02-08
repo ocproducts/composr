@@ -131,6 +131,8 @@ $g_cookie_time_length = 60*60*24*30;
 
 # --- Simplify by removing unneeded filter complexity ---
 
+$g_default_refresh_delay = 30;
+
 $g_default_bug_severity = FEATURE;
 $g_default_bug_reproducibility = 100;
 
