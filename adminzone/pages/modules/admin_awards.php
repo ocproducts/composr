@@ -106,7 +106,7 @@ class Module_admin_awards extends Standard_crud_module
             $GLOBALS['SITE_DB']->query_insert('award_types', $map);
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 5)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 5)) { // LEGACY
             $GLOBALS['SITE_DB']->alter_table_field('award_types', 'a_hide_awardee', 'BINARY', 'a_show_awardee');
             $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'award_types SET a_show_awardee=1-a_show_awardee');
         }

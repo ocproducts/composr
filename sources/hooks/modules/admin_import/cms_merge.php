@@ -27,8 +27,6 @@ cms_merge is intended to merge disparate sites in a more complete way.
 There is overlap, but intentionally each approach is optimised in a different way.
 */
 
-// LEGACY: There's a lot of stuff to clean up here. We only want to support 2 versions back, max. Officially 0. Plus importing from ocPortal won't usually work due to the multi-lang-content mode (you'll get lots of numbers instead of content).
-
 /**
  * Hook class.
  */
@@ -257,7 +255,7 @@ class Hook_import_cms_merge
      * Fetch and clean up a language string.
      *
      * @param  object $db The database connector to import from
-     * @param  integer $id The string ID
+     * @param  mixed $id The string ID
      * @return string The cleaned-up string
      */
     public function get_lang_string($db, $id)
@@ -310,7 +308,7 @@ class Hook_import_cms_merge
                 continue;
             }
 
-            cns_make_welcome_email($row['w_name'], $this->get_lang_string($db, $row['w_subject']), $this->get_lang_string($db, $row['w_text']), $row['w_send_time'], array_key_exists('w_newsletter', $row) ? $row['w_newsletter'] : null, array_key_exists('w_usergroup', $row) ? $row['w_usergroup'] : null, array_key_exists('w_usergroup_type', $row) ? $row['w_usergroup_type'] : '');
+            cns_make_welcome_email($row['w_name'], $this->get_lang_string($db, $row['w_subject']), $this->get_lang_string($db, $row['w_text']), $row['w_send_time'], $row['w_newsletter'], $row['w_usergroup'], $row['w_usergroup_type']);
 
             import_id_remap_put('welcome_email', $row['w_name'], 0);
         }
@@ -342,22 +340,9 @@ class Hook_import_cms_merge
             unset($row['q_end_text_fail__text_parsed']);
             unset($row['q_end_text_fail__source_user']);
 
-            if (!array_key_exists('q_add_date', $row)) {
-                $row['q_add_date'] = time();
-            }
-            if (!array_key_exists('q_validated', $row)) {
-                $row['q_validated'] = 1;
-            }
-            if (!array_key_exists('q_submitter', $row)) {
-                $row['q_submitter'] = get_member();
-            }
-
-            $start_text = is_integer($row['q_start_text']) ? $this->get_lang_string($db, $row['q_start_text']) : $row['q_start_text'];
-            $end_text = is_integer($row['q_end_text']) ? $this->get_lang_string($db, $row['q_end_text']) : $row['q_end_text'];
-            if (!isset($row['q_end_text_fail'])) {
-                $row['q_end_text_fail'] = '';
-            }
-            $end_text_fail = is_integer($row['q_end_text_fail']) ? $this->get_lang_string($db, $row['q_end_text_fail']) : $row['q_end_text_fail'];
+            $start_text = $this->get_lang_string($db, $row['q_start_text']);
+            $end_text = $this->get_lang_string($db, $row['q_end_text']);
+            $end_text_fail = $this->get_lang_string($db, $row['q_end_text_fail']);
 
             $map = array(
                 'q_timeout' => $row['q_timeout'],
@@ -367,14 +352,14 @@ class Hook_import_cms_merge
                 'q_close_time' => $row['q_close_time'],
                 'q_num_winners' => $row['q_num_winners'],
                 'q_redo_time' => $row['q_redo_time'],
-                'q_type' => array_key_exists('q_type', $row) ? $row['q_type'] : 'MULTIPLECHOICE',
+                'q_type' => $row['q_type'],
                 'q_validated' => $row['q_validated'],
                 'q_submitter' => $row['q_submitter'],
                 'q_add_date' => $row['q_add_date'],
-                'q_points_for_passing' => array_key_exists('q_points_for_passing', $row) ? $row['q_points_for_passing'] : 0,
-                'q_reveal_answers' => array_key_exists('q_reveal_answers', $row) ? $row['q_reveal_answers'] : 0,
-                'q_shuffle_questions' => array_key_exists('q_shuffle_questions', $row) ? $row['q_shuffle_questions'] : 0,
-                'q_shuffle_answers' => array_key_exists('q_shuffle_answers', $row) ? $row['q_shuffle_answers'] : 0,
+                'q_points_for_passing' => $row['q_points_for_passing'],
+                'q_reveal_answers' => $row['q_reveal_answers'],
+                'q_shuffle_questions' => $row['q_shuffle_questions'],
+                'q_shuffle_answers' => $row['q_shuffle_answers'],
             );
             $map += insert_lang('q_name', $this->get_lang_string($db, $row['q_name']), 2);
             $map += insert_lang_comcode('q_start_text', $start_text, 2);
@@ -405,25 +390,15 @@ class Hook_import_cms_merge
             unset($row['q_question_extra_text__text_parsed']);
             unset($row['q_question_extra_text__source_user']);
 
-            if (!isset($row['q_type'])) {
-                $row['q_type'] = 'MULTIPLECHOICE';
-            }
-            if ((isset($row['q_long_input_field'])) && ($row['q_long_input_field'] == 1)) {
-                $row['q_type'] = 'LONG';
-            }
-            if ((isset($row['q_num_choosable_answers'])) && ($row['q_num_choosable_answers'] > 0)) {
-                $row['q_type'] = 'MULTIMULTIPLE';
-            }
-
             $map = array(
-                'q_order' => array_key_exists('q_order', $row) ? $row['q_order'] : $i,
+                'q_order' => $row['q_order'],
                 'q_type' => $row['q_type'],
                 'q_quiz' => $quiz,
-                'q_required' => array_key_exists('q_required', $row) ? $row['q_required'] : 0,
-                'q_marked' => array_key_exists('q_marked', $row) ? $row['q_marked'] : 1,
+                'q_required' => $row['q_required'],
+                'q_marked' => $row['q_marked'],
             );
             $map += insert_lang_comcode('q_question_text', $this->get_lang_string($db, $row['q_question_text']), 2);
-            $map += insert_lang_comcode('q_question_extra_text', $this->get_lang_string($db, array_key_exists('q_question_extra_text', $row) ? $row['q_question_extra_text'] : ''), 2);
+            $map += insert_lang_comcode('q_question_extra_text', $this->get_lang_string($db, $row['q_question_extra_text']), 2);
             $id_new = $GLOBALS['SITE_DB']->query_insert('quiz_questions', $map, true);
 
             import_id_remap_put('quiz_question', strval($row['id']), $id_new);
@@ -441,12 +416,12 @@ class Hook_import_cms_merge
             unset($row['q_answer_text__source_user']);
 
             $map = array(
-                'q_order' => array_key_exists('q_order', $row) ? $row['q_order'] : $i,
+                'q_order' => $row['q_order'],
                 'q_question' => $question,
                 'q_is_correct' => $row['q_is_correct'],
             );
-            $map += insert_lang_comcode('q_answer_text', array_key_exists('q_answer_text', $row) ? $this->get_lang_string($db, $row['q_answer_text']) : '', 2);
-            $map += insert_lang('q_explanation', array_key_exists('q_explanation', $row) ? $this->get_lang_string($db, $row['q_explanation']) : '', 2);
+            $map += insert_lang_comcode('q_answer_text', $this->get_lang_string($db, $row['q_answer_text']), 2);
+            $map += insert_lang('q_explanation', $this->get_lang_string($db, $row['q_explanation']), 2);
             $GLOBALS['SITE_DB']->query_insert('quiz_question_answers', $map);
         }
 
@@ -526,40 +501,6 @@ class Hook_import_cms_merge
                 continue;
             }
 
-            if (!array_key_exists('t_invoicing_breakdown', $row)) {
-                $row['t_invoicing_breakdown'] = '';
-            }
-            if (!array_key_exists('t_session_id', $row)) {
-                $row['t_session_id'] = '';
-            }
-            if (!array_key_exists('t_member_id', $row)) {
-                $row['t_member_id'] = $GLOBALS['FORUM_DRIVER']->get_guest_id();
-            }
-
-            if (!array_key_exists('t_tax_derivation', $row)) {
-                $row['t_tax_derivation'] = '';
-            }
-            if (!array_key_exists('t_tax', $row)) {
-                $row['t_tax'] = 0.00;
-            }
-            if (!array_key_exists('t_tax_tracking', $row)) {
-                $row['t_tax_tracking'] = '';
-            }
-
-            if (is_string($row['t_amount'])) {
-                $row['t_amount'] = floatval($row['t_amount']);
-            }
-            if (is_string($row['t_tax'])) {
-                $row['t_tax'] = floatval($row['t_tax']);
-            }
-
-            foreach (array('purchase_id' => 't_purchase_id', 'status' => 't_status', 'reason' => 't_reason', 'amount' => 't_amount', 'linked' => 't_parent_txn_id', 'item' => 't_type_code', 'pending_reason' => 't_pending_reason') as $old => $new) {
-                if ((!array_key_exists($new, $row)) && (array_key_exists($old, $row))) {
-                    $row[$new] = $row[$old];
-                    unset($row[$old]);
-                }
-            }
-
             $id_new = $GLOBALS['SITE_DB']->query_insert('ecom_transactions', $row, true);
 
             import_id_remap_put('transactions', strval($row['id']), $id_new);
@@ -572,27 +513,6 @@ class Hook_import_cms_merge
             $row['i_member_id'] = $on_same_msn ? $row['i_member_id'] : import_id_remap_get('member', strval($row['i_member_id']), true);
             if ($row['i_member_id'] === null) {
                 continue; // Uh oh - someones deleted and they had invoices - lets hope they paid them ;)
-            }
-
-            if (is_string($row['i_amount'])) {
-                $row['i_amount'] = floatval($row['i_amount']);
-            }
-
-            if (!array_key_exists('i_tax_code', $row)) {
-                $row['i_tax_code'] = '0%';
-            }
-            if (!array_key_exists('i_tax_derivation', $row)) {
-                $row['i_tax_derivation'] = '';
-            }
-            if (!array_key_exists('i_tax', $row)) {
-                $row['i_tax'] = 0.00;
-            }
-            if (!array_key_exists('i_tax_tracking', $row)) {
-                $row['i_tax_tracking'] = '';
-            }
-
-            if (!array_key_exists('i_currency', $row)) {
-                $row['i_currency'] = get_option('currency');
             }
 
             if (get_param_integer('keep_preserve_ids', 0) == 0) {
@@ -615,16 +535,12 @@ class Hook_import_cms_merge
                     continue;
                 }
 
-                if (!array_key_exists('s_tax_code', $row)) {
-                    $row['s_tax_code'] = '0%';
-                }
-
                 $map = array(
                     's_price' => $row['s_price'],
                     's_tax_code' => $row['s_tax_code'],
                     's_length' => $row['s_length'],
                     's_length_units' => $row['s_length_units'],
-                    's_auto_recur' => array_key_exists('s_auto_recur', $row) ? $row['s_auto_recur'] : 1,
+                    's_auto_recur' => $row['s_auto_recur'],
                     's_group_id' => $group_id,
                     's_enabled' => $row['s_enabled'],
                 );
@@ -660,27 +576,6 @@ class Hook_import_cms_merge
                 continue; // Uh oh - someones deleted and they had invoices - lets hope they paid them ;)
             }
 
-            if (is_string($row['s_amount'])) {
-                $row['s_amount'] = floatval($row['s_amount']);
-            }
-
-            if (!array_key_exists('s_tax_code', $row)) {
-                $row['s_tax_code'] = '0%';
-            }
-            if (!array_key_exists('s_tax_derivation', $row)) {
-                $row['s_tax_derivation'] = '';
-            }
-            if (!array_key_exists('s_tax', $row)) {
-                $row['s_tax'] = 0.00;
-            }
-            if (!array_key_exists('s_tax_tracking', $row)) {
-                $row['s_tax_tracking'] = '';
-            }
-
-            if (!array_key_exists('s_currency', $row)) {
-                $row['s_currency'] = get_option('currency');
-            }
-
             if (substr($row['s_type_code'], 0, 9) == 'USERGROUP') {
                 $remap_id = import_id_remap_get('usergroup_sub', substr($row['s_type_code'], 9), true);
                 if ($remap_id === null) {
@@ -702,17 +597,6 @@ class Hook_import_cms_merge
         }
         $this->_fix_comcode_ownership($rows);
         foreach ($rows as $row) {
-            if (!array_key_exists('price_points', $row)) {
-                $row['price_points'] = $row['price'];
-                unset($row['price']);
-            }
-            if (!array_key_exists('price', $row)) {
-                $row['price'] = null;
-            }
-            if (!array_key_exists('tax_code', $row)) {
-                $row['tax_code'] = '0%';
-            }
-
             $GLOBALS['SITE_DB']->query_delete('ecom_prods_prices', array('name' => $row['name']), '', 1);
             $GLOBALS['SITE_DB']->query_insert('ecom_prods_prices', $row);
         }
@@ -728,14 +612,6 @@ class Hook_import_cms_merge
                 }
 
                 unset($row['id']);
-
-                if (!array_key_exists('member_id', $row)) {
-                    $row['member_id'] = $row['memberid'];
-                }
-
-                if (!array_key_exists('txn_id', $row)) {
-                    $row['txn_id'] = '';
-                }
 
                 $txn_id = import_id_remap_get('transactions', $row['txn_id']);
 
@@ -764,21 +640,7 @@ class Hook_import_cms_merge
         foreach ($rows as $row) {
             unset($row['id']);
 
-            if (!array_key_exists('c_price_points', $row)) {
-                $row['c_price_points'] = $row['c_cost'];
-                unset($row['c_cost']);
-            }
-            if (!array_key_exists('c_price', $row)) {
-                $row['c_price'] = null;
-            }
-            if (!array_key_exists('c_tax_code', $row)) {
-                $row['c_tax_code'] = '0%';
-            }
-            if (!array_key_exists('c_shipping_cost', $row)) {
-                $row['c_shipping_cost'] = 0.00;
-            }
-
-             $row['c_description'] = $this->get_lang_string($db, $row['c_description']);
+            $row['c_description'] = $this->get_lang_string($db, $row['c_description']);
 
             $GLOBALS['SITE_DB']->query_insert('ecom_prods_custom', $row);
         }
@@ -799,22 +661,6 @@ class Hook_import_cms_merge
         $this->_fix_comcode_ownership($rows);
         foreach ($rows as $row) {
             unset($row['id']);
-
-            if (!array_key_exists('p_price_points', $row)) {
-                $row['p_price_points'] = $row['p_cost'];
-                unset($row['p_cost']);
-            }
-            if (!array_key_exists('p_price', $row)) {
-                $row['p_price'] = null;
-            }
-            if (!array_key_exists('p_tax_code', $row)) {
-                $row['p_tax_code'] = '0%';
-            }
-
-            if (!array_key_exists('p_privilege', $row)) {
-                $row['p_privilege'] = $row['p_specific_permission'];
-                unset($row['p_specific_permission']);
-            }
 
             $row['p_description'] = $this->get_lang_string($db, $row['p_description']);
 
@@ -845,9 +691,6 @@ class Hook_import_cms_merge
                 $row_copy = $row;
                 if (get_param_integer('keep_preserve_ids', 0) == 0) {
                     unset($row_copy['id']);
-                }
-                if (!array_key_exists('a_description', $row_copy)) {
-                    $row_copy['a_description'] = '';
                 }
                 $id_new = $GLOBALS['SITE_DB']->query_insert('attachments', $row_copy, true);
 
@@ -965,18 +808,6 @@ class Hook_import_cms_merge
                 }
             }
 
-            if (isset($row['meta_keywords'])) {
-                $keywords = explode(',', $this->get_lang_string($db, $row['meta_keywords']));
-
-                unset($row['meta_keywords']);
-
-                foreach ($keywords as $keyword) {
-                    $meta_row = array('meta_for_type' => $row['meta_for_type'], 'meta_for_id' => $row['meta_for_id']);
-                    $meta_row = insert_lang('meta_keyword', $keyword, 2) + $meta_row;
-                    $GLOBALS['SITE_DB']->query_insert('seo_meta_keywords', $meta_row);
-                }
-            }
-
             $row = insert_lang('meta_description', $this->get_lang_string($db, $row['meta_description']), 2) + $row;
             $GLOBALS['SITE_DB']->query_insert('seo_meta', $row);
         }
@@ -1024,7 +855,7 @@ class Hook_import_cms_merge
         foreach ($rows as $row) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('authors', 'author', array('author' => $row['author']));
             if ($test === null) {
-                add_author($row['author'], $row['url'], array_key_exists('member_id', $row) ? $row['member_id'] : $row['forum_handle'], $this->get_lang_string($db, $row['description']), $this->get_lang_string($db, $row['skills']));
+                add_author($row['author'], $row['url'], $row['member_id'], $this->get_lang_string($db, $row['description']), $this->get_lang_string($db, $row['skills']));
             }
         }
         $this->_import_catalogue_entry_linkage($db, $table_prefix, 'author', null);
@@ -1070,11 +901,11 @@ class Hook_import_cms_merge
                 add_banner(
                     $row['name'],
                     $row['img_url'],
-                    array_key_exists('b_title_text', $row) ? $row['b_title_text'] : '',
+                    $row['b_title_text'],
                     $this->get_lang_string($db, $row['caption']),
-                    array_key_exists('direct_code', $row) ? $row['direct_code'] : '',
+                    $row['direct_code'],
                     $row['campaign_remaining'],
-                    array_key_exists('site_url', $row) ? $row['site_url'] : $row['siteurl'],
+                    $row['site_url'],
                     $row['importance_modulus'],
                     $row['notes'],
                     $row['the_type'],
@@ -1136,10 +967,6 @@ class Hook_import_cms_merge
         $this->_fix_comcode_ownership($rows);
         $on_same_msn = ($this->on_same_msn($file_base));
         foreach ($rows as $row) {
-            if (!array_key_exists('member_id', $row)) {
-                $row['member_id'] = $row['user_id'];
-            }
-
             $member_id = $on_same_msn ? $row['member_id'] : import_id_remap_get('member', strval($row['member_id']), true);
             if ($member_id === null) {
                 $member_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
@@ -1229,15 +1056,15 @@ class Hook_import_cms_merge
         $rows = $db->query_select('config', array('*'));
         $this->_fix_comcode_ownership($rows);
         foreach ($rows as $row) {
-            $name = isset($row['c_name']) ? $row['c_name'] : $row['the_name'];
+            $name = $row['c_name'];
             if (isset($remap[$name])) {
                 $name = $remap[$name];
             }
 
-            $value = isset($row['c_value']) ? $row['c_value'] : $row['config_value'];
+            $value = $row['c_value'];
 
             if (($value !== null) && ($row['c_set'] == 1)) {
-                if ((isset($row['c_needs_dereference'])) && ($row['c_needs_dereference'] == 1)) {
+                if ($row['c_needs_dereference'] == 1) {
                     $value = $this->get_lang_string($db, $row['c_value_trans']);
                 }
 
@@ -1281,11 +1108,11 @@ class Hook_import_cms_merge
                 $this->get_lang_string($db, $row['option3']),
                 $this->get_lang_string($db, $row['option4']),
                 $this->get_lang_string($db, $row['option5']),
-                array_key_exists('option6', $row) ? $this->get_lang_string($db, $row['option6']) : '',
-                array_key_exists('option7', $row) ? $this->get_lang_string($db, $row['option7']) : '',
-                array_key_exists('option8', $row) ? $this->get_lang_string($db, $row['option8']) : '',
-                array_key_exists('option9', $row) ? $this->get_lang_string($db, $row['option9']) : '',
-                array_key_exists('option10', $row) ? $this->get_lang_string($db, $row['option10']) : '',
+                $this->get_lang_string($db, $row['option6']),
+                $this->get_lang_string($db, $row['option7']),
+                $this->get_lang_string($db, $row['option8']),
+                $this->get_lang_string($db, $row['option9']),
+                $this->get_lang_string($db, $row['option10']),
                 $row['num_options'],
                 $row['is_current'],
                 $row['allow_rating'],
@@ -1300,11 +1127,11 @@ class Hook_import_cms_merge
                 $row['votes3'],
                 $row['votes4'],
                 $row['votes5'],
-                array_key_exists('votes6', $row) ? $row['votes6'] : 0,
-                array_key_exists('votes7', $row) ? $row['votes7'] : 0,
-                array_key_exists('votes8', $row) ? $row['votes8'] : 0,
-                array_key_exists('votes9', $row) ? $row['votes9'] : 0,
-                array_key_exists('votes10', $row) ? $row['votes10'] : 0,
+                $row['votes6'],
+                $row['votes7'],
+                $row['votes8'],
+                $row['votes9'],
+                $row['votes10'],
                 $row['poll_views'],
                 $row['edit_date']);
 
@@ -1398,7 +1225,7 @@ class Hook_import_cms_merge
 
             $regions = $db->table_exists('content_regions') ? collapse_1d_complexity('region', $db->query_select('content_regions', array('region'), array('content_type' => 'news', 'content_id' => strval($row['id'])))) : array();
 
-            $id_new = add_news($this->get_lang_string($db, $row['title']), $this->get_lang_string($db, $row['news']), $row['author'], $row['validated'], $row['allow_rating'], $row['allow_comments'], $row['allow_trackbacks'], $row['notes'], $this->get_lang_string($db, $row['news_article']), $main_news_category, $news_category, $row['date_and_time'], $submitter, $row['news_views'], $row['edit_date'], $id, (isset($row['news_image'])) ? $row['news_image'] : $row['news_image'], '', '', $regions);
+            $id_new = add_news($this->get_lang_string($db, $row['title']), $this->get_lang_string($db, $row['news']), $row['author'], $row['validated'], $row['allow_rating'], $row['allow_comments'], $row['allow_trackbacks'], $row['notes'], $this->get_lang_string($db, $row['news_article']), $main_news_category, $news_category, $row['date_and_time'], $submitter, $row['news_views'], $row['edit_date'], $id, $row['news_image'], '', '', $regions);
 
             $this->_import_content_privacy($db, 'news', strval($row['id']), strval($id_new));
 
@@ -1456,16 +1283,7 @@ class Hook_import_cms_merge
         $rows = array();
         foreach ($rowsn as $row) {
             $GLOBALS['SITE_DB']->query_delete('newsletter_subscribers', array('email' => $row['email'], 'language' => $row['language']), '', 1);
-            if (!array_key_exists('join_time', $row)) {
-                $row['join_time'] = time() - (60 * 60 * 24 * 325);
-            }
-            if (!array_key_exists('n_forename', $row)) {
-                $row['n_forename'] = '';
-            }
-            if (!array_key_exists('n_surname', $row)) {
-                $row['n_surname'] = '';
-            }
-            $GLOBALS['SITE_DB']->query_insert('newsletter_subscribers', array('n_forename' => $row['n_forename'], 'n_surname' => $row['n_surname'], 'join_time' => $row['join_time'], 'email' => $row['email'], 'code_confirm' => $row['code_confirm'], 'pass_salt' => array_key_exists('pass_salt', $row) ? $row['pass_salt'] : '', 'the_password' => $row['the_password'], 'language' => $row['language']));
+            $GLOBALS['SITE_DB']->query_insert('newsletter_subscribers', array('n_forename' => $row['n_forename'], 'n_surname' => $row['n_surname'], 'join_time' => $row['join_time'], 'email' => $row['email'], 'code_confirm' => $row['code_confirm'], 'pass_salt' => $row['pass_salt'], 'the_password' => $row['the_password'], 'language' => $row['language']));
             if ($old_format) {
                 $rows[] = array('newsletter_id' => db_get_first_id(), 'email' => $row['email'], 'the_level' => $row['the_level']);
             }
@@ -1554,7 +1372,7 @@ class Hook_import_cms_merge
                 $category_id = db_get_first_id();
             }
             $id = (get_param_integer('keep_preserve_ids', 0) == 0) ? null : $row['id'];
-            $id_new = add_download($category_id, $this->get_lang_string($db, $row['name']), $row['url'], $this->get_lang_string($db, $row['description']), $row['author'], $this->get_lang_string($db, array_key_exists('additional_details', $row) ? $row['additional_details'] : $row['comments']), null, $row['validated'], $row['allow_rating'], $row['allow_comments'], $row['allow_trackbacks'], $row['notes'], $row['original_filename'], $row['file_size'], $row['download_cost'], $row['download_submitter_gets_points'], array_key_exists('download_licence', $row) ? $row['download_licence'] : null, $row['add_date'], $row['num_downloads'], $row['download_views'], $submitter, $row['edit_date'], $id, '', '', $row['default_pic'], array_key_exists('url_redirect', $row) ? $row['url_redirect'] : '');
+            $id_new = add_download($category_id, $this->get_lang_string($db, $row['name']), $row['url'], $this->get_lang_string($db, $row['description']), $row['author'], $this->get_lang_string($db, $row['additional_details']), null, $row['validated'], $row['allow_rating'], $row['allow_comments'], $row['allow_trackbacks'], $row['notes'], $row['original_filename'], $row['file_size'], $row['download_cost'], $row['download_submitter_gets_points'], $row['download_licence'], $row['add_date'], $row['num_downloads'], $row['download_views'], $submitter, $row['edit_date'], $id, '', '', $row['default_pic'], $row['url_redirect']);
 
             $this->_import_content_privacy($db, 'download', strval($row['id']), strval($id_new));
 
@@ -1631,11 +1449,8 @@ class Hook_import_cms_merge
 
             $regions = $db->table_exists('content_regions') ? collapse_1d_complexity('region', $db->query_select('content_regions', array('region'), array('content_type' => 'image', 'content_id' => strval($row['id'])))) : array();
 
-            $title = array_key_exists('title', $row) ? $row['title'] : '';
-            if (is_integer($title)) {
-                $title = $this->get_lang_string($db, $title);
-            }
-            $id_new = add_image($title, $row['cat'], $this->get_lang_string($db, array_key_exists('description', $row) ? $row['description'] : $row['comments']), $row['url'], $row['thumb_url'], $row['validated'], $row['allow_rating'], $row['allow_comments'], $row['allow_trackbacks'], $row['notes'], $submitter, $row['add_date'], $row['edit_date'], $row['image_views'], $id, '', '', $regions);
+            $title = $this->get_lang_string($db, $row['title']);
+            $id_new = add_image($title, $row['cat'], $this->get_lang_string($db, $row['description']), $row['url'], $row['thumb_url'], $row['validated'], $row['allow_rating'], $row['allow_comments'], $row['allow_trackbacks'], $row['notes'], $submitter, $row['add_date'], $row['edit_date'], $row['image_views'], $id, '', '', $regions);
 
             $this->_import_content_privacy($db, 'image', strval($row['id']), strval($id_new));
 
@@ -1660,11 +1475,8 @@ class Hook_import_cms_merge
 
             $regions = $db->table_exists('content_regions') ? collapse_1d_complexity('region', $db->query_select('content_regions', array('region'), array('content_type' => 'video', 'content_id' => strval($row['id'])))) : array();
 
-            $title = array_key_exists('title', $row) ? $row['title'] : '';
-            if (is_integer($title)) {
-                $title = $this->get_lang_string($db, $title);
-            }
-            $id_new = add_video($title, $row['cat'], $this->get_lang_string($db, array_key_exists('description', $row) ? $row['description'] : $row['comments']), $row['url'], $row['thumb_url'], $row['validated'], $row['allow_rating'], $row['allow_comments'], $row['allow_trackbacks'], $row['notes'], $row['video_length'], $row['video_width'], $row['video_height'], $submitter, $row['add_date'], $row['edit_date'], $row['video_views'], $id, '', '', $regions);
+            $title = $this->get_lang_string($db, $row['title']);
+            $id_new = add_video($title, $row['cat'], $this->get_lang_string($db, $row['description']), $row['url'], $row['thumb_url'], $row['validated'], $row['allow_rating'], $row['allow_comments'], $row['allow_trackbacks'], $row['notes'], $row['video_length'], $row['video_width'], $row['video_height'], $submitter, $row['add_date'], $row['edit_date'], $row['video_views'], $id, '', '', $regions);
 
             $this->_import_content_privacy($db, 'video', strval($row['id']), strval($id_new));
 
@@ -1711,10 +1523,10 @@ class Hook_import_cms_merge
 
             $titlemap[$id] = $title;
             $map = array(
-                'edit_date' => array_key_exists('edit_date', $row) ? $row['edit_date'] : null,
+                'edit_date' => $row['edit_date'],
                 'submitter' => $submitter,
-                'hide_posts' => array_key_exists('hide_posts', $row) ? $row['hide_posts'] : 0,
-                'wiki_views' => array_key_exists('wiki_views', $row) ? $row['wiki_views'] : $row['seedy_views'],
+                'hide_posts' => $row['hide_posts'],
+                'wiki_views' => $row['wiki_views'],
                 'notes' => $row['notes'],
                 'add_date' => $row['add_date'],
             );
@@ -1745,17 +1557,14 @@ class Hook_import_cms_merge
                 $page_id = db_get_first_id();
             }
 
-            if (!array_key_exists('member_id', $row)) {
-                $row['member_id'] = $row['the_user'];
-            }
             $member_id = $on_same_msn ? $row['member_id'] : import_id_remap_get('member', strval($row['member_id']), true);
             if ($member_id === null) {
                 $member_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
             }
 
             $map = array(
-                'wiki_views' => array_key_exists('wiki_views', $row) ? $row['wiki_views'] : $row['seedy_views'],
-                'validated' => array_key_exists('validated', $row) ? $row['validated'] : 1,
+                'wiki_views' => $row['wiki_views'],
+                'validated' => $row['validated'],
                 'member_id' => $member_id,
                 'date_and_time' => $row['date_and_time'],
                 'page_id' => $page_id,
@@ -1906,7 +1715,7 @@ class Hook_import_cms_merge
                 'p_add_date' => $row['p_add_date'],
                 'p_submitter' => $p_submitter,
                 'p_show_as_edit' => $row['p_show_as_edit'],
-                'p_order' => array_key_exists('p_order', $row) ? $row['p_order'] : 0,
+                'p_order' => $row['p_order'],
             ));
         }
         $this->_import_catalogue_entry_linkage($db, $table_prefix, 'comcode_page', null);
@@ -1929,11 +1738,11 @@ class Hook_import_cms_merge
         $this->_fix_comcode_ownership($rows);
         foreach ($rows as $row) {
             $GLOBALS['SITE_DB']->query_insert('staff_checklist_cus_tasks', array(
-                'task_title' => array_key_exists('task_title', $row) ? $row['task_title'] : $row['tasktitle'],
-                'add_date' => array_key_exists('add_date', $row) ? $row['add_date'] : $row['datetimeadded'],
-                'recur_interval' => array_key_exists('recur_interval', $row) ? $row['recur_interval'] : $row['recurinterval'],
-                'recur_every' => array_key_exists('recur_every', $row) ? $row['recur_every'] : $row['recurevery'],
-                'task_is_done' => array_key_exists('task_is_done', $row) ? $row['task_is_done'] : $row['taskisdone'],
+                'task_title' => $row['task_title'],
+                'add_date' => $row['add_date'],
+                'recur_interval' => $row['recur_interval'],
+                'recur_every' => $row['recur_every'],
+                'task_is_done' => $row['task_is_done'],
             ));
         }
     }
@@ -1955,7 +1764,7 @@ class Hook_import_cms_merge
         }
         $this->_fix_comcode_ownership($rows);
         foreach ($rows as $row) {
-            add_wordfilter_word($row['word'], array_key_exists('w_replacement', $row) ? $row['w_replacement'] : '', array_key_exists('w_substr', $row) ? $row['w_substr'] : 0);
+            add_wordfilter_word($row['word'], $row['w_replacement'], $row['w_substr']);
         }
     }
 
@@ -1985,7 +1794,7 @@ class Hook_import_cms_merge
                 continue;
             }
 
-            $id_new = add_event_type($this->get_lang_string($db, $row['t_title']), $row['t_logo'], array_key_exists('t_external_feed', $row) ? $row['t_external_feed'] : '');
+            $id_new = add_event_type($this->get_lang_string($db, $row['t_title']), $row['t_logo'], $row['t_external_feed']);
 
             import_id_remap_put('event_type', strval($row['id']), $id_new);
         }
@@ -2019,13 +1828,9 @@ class Hook_import_cms_merge
                 $submitter = $GLOBALS['FORUM_DRIVER']->get_guest_id();
             }
 
-            if (isset($row['e_member_calendar'])) {
-                $member_calendar = $on_same_msn ? $row['e_member_calendar'] : import_id_remap_get('member', strval($row['e_member_calendar']), true);
-                if ($member_calendar === null) {
-                    $member_calendar = $GLOBALS['FORUM_DRIVER']->get_guest_id();
-                }
-            } else {
-                $member_calendar = null;
+            $member_calendar = $on_same_msn ? $row['e_member_calendar'] : import_id_remap_get('member', strval($row['e_member_calendar']), true);
+            if ($member_calendar === null) {
+                $member_calendar = $GLOBALS['FORUM_DRIVER']->get_guest_id();
             }
 
             $type = import_id_remap_get('event_type', strval($row['e_type']), true);
@@ -2033,36 +1838,11 @@ class Hook_import_cms_merge
                 continue;
             }
 
-            if (!array_key_exists('validated', $row)) {
-                $row['validated'] = 1;
-            }
-            if (!array_key_exists('notes', $row)) {
-                $row['notes'] = '';
-            }
-            if (!array_key_exists('allow_rating', $row)) {
-                $row['allow_rating'] = 1;
-            }
-            if (!array_key_exists('allow_comments', $row)) {
-                $row['allow_comments'] = 1;
-            }
-            if (!array_key_exists('allow_trackbacks', $row)) {
-                $row['allow_trackbacks'] = 1;
-            }
             $id = (get_param_integer('keep_preserve_ids', 0) == 0) ? null : $row['id'];
 
             $regions = $db->table_exists('content_regions') ? collapse_1d_complexity('region', $db->query_select('content_regions', array('region'), array('content_type' => 'event', 'content_id' => strval($row['id'])))) : array();
 
-            $id_new = add_calendar_event($type, $row['e_recurrence'], $row['e_recurrences'], array_key_exists('e_seg_recurrences', $row) ? $row['e_seg_recurrences'] : 0, $this->get_lang_string($db, $row['e_title']), $this->get_lang_string($db, $row['e_content']), $row['e_priority'], $row['e_start_year'], $row['e_start_month'], $row['e_start_day'], array_key_exists('e_start_monthly_spec_type', $row) ? $row['e_start_monthly_spec_type'] : 'day_of_month', $row['e_start_hour'], $row['e_start_minute'], $row['e_end_year'], $row['e_end_month'], $row['e_end_day'], array_key_exists('e_end_monthly_spec_type', $row) ? $row['e_end_monthly_spec_type'] : 'day_of_month', $row['e_end_hour'], $row['e_end_minute'], array_key_exists('e_timezone', $row) ? $row['e_timezone'] : null, array_key_exists('e_do_timezone_conv', $row) ? $row['e_do_timezone_conv'] : 1, $member_calendar, $row['validated'], $row['allow_rating'], $row['allow_comments'], $row['allow_trackbacks'], $row['notes'], $submitter, $row['e_views'], $row['e_add_date'], $row['e_edit_date'], $id, '', '', $regions);
-
-            if ((array_key_exists('e_is_public', $row)) && ($row['e_is_public'] == 0)) {
-                $GLOBALS['SITE_DB']->query_insert('content_privacy', array(
-                    'content_type' => 'event',
-                    'content_id' => strval($id_new),
-                    'guest_view' => 0,
-                    'member_view' => 0,
-                    'friend_view' => 0,
-                ));
-            }
+            $id_new = add_calendar_event($type, $row['e_recurrence'], $row['e_recurrences'], $row['e_seg_recurrences'], $this->get_lang_string($db, $row['e_title']), $this->get_lang_string($db, $row['e_content']), $row['e_priority'], $row['e_start_year'], $row['e_start_month'], $row['e_start_day'], $row['e_start_monthly_spec_type'], $row['e_start_hour'], $row['e_start_minute'], $row['e_end_year'], $row['e_end_month'], $row['e_end_day'], $row['e_end_monthly_spec_type'], $row['e_end_hour'], $row['e_end_minute'], $row['e_timezone'], $row['e_do_timezone_conv'], $member_calendar, $row['validated'], $row['allow_rating'], $row['allow_comments'], $row['allow_trackbacks'], $row['notes'], $submitter, $row['e_views'], $row['e_add_date'], $row['e_edit_date'], $id, '', '', $regions);
 
             $this->_import_content_privacy($db, 'event', strval($row['id']), strval($id_new));
 
@@ -2145,17 +1925,17 @@ class Hook_import_cms_merge
         }
         $this->_fix_comcode_ownership($rows);
         foreach ($rows as $row) {
-            if (import_check_if_imported('ticket_type', strval(isset($row['id']) ? $row['id'] : $row['ticket_type']))) {
+            if (import_check_if_imported('ticket_type', strval($row['id']))) {
                 continue;
             }
 
             $map = array(
-                'search_faq' => array_key_exists('search_faq', $row) ? $row['search_faq'] : 0,
-                'guest_emails_mandatory' => array_key_exists('guest_emails_mandatory', $row) ? $row['guest_emails_mandatory'] : 0,
+                'search_faq' => $row['search_faq'],
+                'guest_emails_mandatory' => $row['guest_emails_mandatory'],
             );
-            $map += insert_lang('ticket_type_name', $this->get_lang_string($db, isset($row['ticket_type_name']) ? $row['ticket_type_name'] : $row['ticket_type']), 1);
+            $map += insert_lang('ticket_type_name', $this->get_lang_string($db, $row['ticket_type_name']), 1);
             $ticket_type_id = $GLOBALS['SITE_DB']->query_insert('ticket_types', $map, true);
-            import_id_remap_put('ticket_type', strval(isset($row['id']) ? $row['id'] : $row['ticket_type']), $ticket_type_id);
+            import_id_remap_put('ticket_type', strval($row['id']), $ticket_type_id);
         }
 
         $rows = $db->query_select('tickets', array('*'), array(), '', null, 0, true);
@@ -2261,7 +2041,7 @@ class Hook_import_cms_merge
         $rows = $db->query_select($db->table_exists('banned_ip') ? 'banned_ip' : 'usersubmitban_ip', array('*'));
         $this->_fix_comcode_ownership($rows);
         foreach ($rows as $row) {
-            add_ip_ban($row['ip'], array_key_exists('i_descrip', $row) ? $row['i_descrip'] : '', array_key_exists('i_ban_until', $row) ? $row['i_ban_until'] : null, array_key_exists('i_ban_positive', $row) ? ($row['i_ban_positive'] == 1) : 1);
+            add_ip_ban($row['ip'], $row['i_descrip'], $row['i_ban_until'], $row['i_ban_positive'] == 1);
         }
 
         if ($db->table_exists('unbannable_ip')) {
@@ -2297,15 +2077,10 @@ class Hook_import_cms_merge
         $this->_fix_comcode_ownership($rows);
         foreach ($rows as $row) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('zones', 'zone_name', array('zone_name' => $row['zone_name']));
-            if (($test === null) && ($test != 'personalzone')/*LEGACY*/ && ($test != 'collaboration')/*LEGACY*/) {
+            if ($test === null) {
                 $old_title = $this->get_lang_string($db, $row['zone_title']);
-                $row = insert_lang('zone_title', array_key_exists('zone_title', $row) ? $old_title : $row['zone_name'], 1) + $row;
+                $row = insert_lang('zone_title', $old_title, 1) + $row;
                 $row = insert_lang('zone_header_text', $this->get_lang_string($db, $row['zone_header_text']), 1) + $row;
-
-                // Just to support old-version compatibility a little
-                unset($row['access_denied_counter']);
-                unset($row['zone_wide']);
-                unset($row['zone_displayed_in_menu']);
 
                 $GLOBALS['SITE_DB']->query_insert('zones', $row);
             }
@@ -2345,20 +2120,6 @@ class Hook_import_cms_merge
             if ($test === null) {
                 $row = insert_lang('c_title', $this->get_lang_string($db, $row['c_title']), 2) + $row;
                 $row = insert_lang_comcode('c_description', $this->get_lang_string($db, $row['c_description']), 2) + $row;
-                if (!array_key_exists('c_display_type', $row)) {
-                    $row['c_display_type'] = $row['c_own_pages'];
-                    unset($row['c_own_pages']);
-                }
-                if (!array_key_exists('c_ecommerce', $row)) {
-                    $row['c_ecommerce'] = 0;
-                }
-                if (!array_key_exists('c_send_view_reports', $row)) {
-                    $row['c_send_view_reports'] = 0;
-                }
-                if (!array_key_exists('c_default_review_freq', $row)) {
-                    $row['c_default_review_freq'] = null;
-                }
-                unset($row['c_own_template']);
                 $GLOBALS['SITE_DB']->query_insert('catalogues', array('c_name' => $name) + $row);
                 import_id_remap_put('catalogue', $row['c_name'], 1);
 
@@ -2404,15 +2165,6 @@ class Hook_import_cms_merge
 
                     $row2 = insert_lang('cf_name', $this->get_lang_string($db, $row2['cf_name']), 2) + $row2;
                     $row2 = insert_lang('cf_description', $this->get_lang_string($db, $row2['cf_description']), 2) + $row2;
-                    if (!array_key_exists('cf_put_in_category', $row2)) {
-                        $row2['cf_put_in_category'] = 1;
-                    }
-                    if (!array_key_exists('cf_put_in_search', $row2)) {
-                        $row2['cf_put_in_search'] = 1;
-                    }
-                    if (!array_key_exists('cf_options', $row2)) {
-                        $row2['cf_options'] = '';
-                    }
 
                     $old_id = $row2['id'];
                     unset($row2['id']);
@@ -2451,13 +2203,13 @@ class Hook_import_cms_merge
 
             $id = (get_param_integer('keep_preserve_ids', 0) == 0) ? null : $row['id'];
 
-            $rep_image = array_key_exists('cc_rep_image', $row) ? $row['cc_rep_image'] : '';
+            $rep_image = $row['cc_rep_image'];
 
             if ($row['c_name'] == '_seedy_post') {
                 $row['c_name'] = '_wiki_post';
             }
 
-            $id_new = actual_add_catalogue_category($row['c_name'], $this->get_lang_string($db, $row['cc_title']), $this->get_lang_string($db, $row['cc_description']), $row['cc_notes'], ($row['cc_parent_id'] === null) ? null : -$row['cc_parent_id'], $rep_image, array_key_exists('cc_move_days_lower', $row) ? $row['cc_move_days_lower'] : 30, array_key_exists('cc_move_days_higher', $row) ? $row['cc_move_days_higher'] : 60, array_key_exists('cc_move_target', $row) ? $row['cc_move_target'] : null, isset($row['cc_order']) ? $row['cc_order'] : null, $row['cc_add_date'], $id);
+            $id_new = actual_add_catalogue_category($row['c_name'], $this->get_lang_string($db, $row['cc_title']), $this->get_lang_string($db, $row['cc_description']), $row['cc_notes'], ($row['cc_parent_id'] === null) ? null : -$row['cc_parent_id'], $rep_image, $row['cc_move_days_lower'], $row['cc_move_days_higher'], $row['cc_move_target'], $row['cc_order'], $row['cc_add_date'], $id);
 
             import_id_remap_put('catalogue_category', strval($row['id']), $id_new);
         }
@@ -2704,9 +2456,7 @@ class Hook_import_cms_merge
             if ($row['member_id'] === null) {
                 $row['member_id'] = $GLOBALS['FORUM_DRIVER']->get_guest_id();
             }
-            if (!is_string($row['content_id'])) {
-                $row['content_id'] = import_id_remap_get($content_types[$row['a_type_id']], $row['content_id'], true);
-            }
+            $row['content_id'] = import_id_remap_get($content_types[$row['a_type_id']], $row['content_id'], true);
             if ($row['content_id'] === null) {
                 continue;
             }
@@ -2772,28 +2522,14 @@ class Hook_import_cms_merge
                 continue;
             }
 
-            if (!array_key_exists('privilege', $row)) {
-                $row['privilege'] = $row['specific_permission'];
-                unset($row['specific_permission']);
-            }
             if (isset($remap[$row['privilege']])) {
                 $row['privilege'] = $remap[$row['privilege']];
             }
 
             $row_temp = $row;
-            unset($row_temp['the_value']);
 
             $GLOBALS['SITE_DB']->query_delete('group_privileges', $row_temp, '', 1);
 
-            if (!array_key_exists('the_page', $row)) {
-                $row['the_page'] = '';
-            }
-            if (!array_key_exists('module_the_name', $row)) {
-                $row['module_the_name'] = '';
-            }
-            if (!array_key_exists('category_name', $row)) {
-                $row['category_name'] = '';
-            }
             if ($row['category_name'] != '') {
                 if ($row['module_the_name'] == 'seedy_page') {
                     $row['module_the_name'] = 'wiki_page';
@@ -2845,9 +2581,6 @@ class Hook_import_cms_merge
                     }
                     $row['category_name'] = strval($id_new);
                 }
-            }
-            if (!array_key_exists('the_value', $row)) {
-                $row['the_value'] = '1';
             }
             $GLOBALS['SITE_DB']->query_insert('group_privileges', $row);
         }
@@ -3147,13 +2880,9 @@ class Hook_import_cms_merge
             if ($id_new === null) {
                 $title = $this->get_lang_string($db, $row['g_title']);
 
-                if (!array_key_exists('g_is_presented_at_install', $row)) {
-                    $row['g_is_presented_at_install'] = 0;
-                }
-
                 $row['g_rank_image'] = str_replace('ocf_', 'cns_', $row['g_rank_image']);
 
-                $id_new = cns_make_group($name, array_key_exists('g_is_default', $row) ? $row['g_is_default'] : 0, $row['g_is_super_admin'], $row['g_is_super_moderator'], $title, '', $row['g_promotion_target'], $row['g_promotion_threshold'], -$row['g_group_leader'], $row['g_flood_control_submit_secs'], $row['g_flood_control_access_secs'], $row['g_max_daily_upload_mb'], $row['g_max_attachments_per_post'], $row['g_max_avatar_width'], $row['g_max_avatar_height'], $row['g_max_post_length_comcode'], $row['g_max_sig_length_comcode'], $row['g_gift_points_base'], $row['g_gift_points_per_day'], $row['g_enquire_on_new_ips'], $row['g_is_presented_at_install'], array_key_exists('g_hidden', $row) ? $row['g_hidden'] : 0, array_key_exists('g_order', $row) ? $row['g_order'] : null, array_key_exists('g_rank_image_pri_only', $row) ? $row['g_rank_image_pri_only'] : 0, array_key_exists('g_open_membership', $row) ? $row['g_open_membership'] : 0, array_key_exists('g_is_private_club', $row) ? $row['g_is_private_club'] : 0);
+                $id_new = cns_make_group($name, $row['g_is_default'], $row['g_is_super_admin'], $row['g_is_super_moderator'], $title, '', $row['g_promotion_target'], $row['g_promotion_threshold'], -$row['g_group_leader'], $row['g_flood_control_submit_secs'], $row['g_flood_control_access_secs'], $row['g_max_daily_upload_mb'], $row['g_max_attachments_per_post'], $row['g_max_avatar_width'], $row['g_max_avatar_height'], $row['g_max_post_length_comcode'], $row['g_max_sig_length_comcode'], $row['g_gift_points_base'], $row['g_gift_points_per_day'], $row['g_enquire_on_new_ips'], $row['g_is_presented_at_install'], $row['g_hidden'], $row['g_order'], $row['g_rank_image_pri_only'], $row['g_open_membership'], $row['g_is_private_club']);
             }
 
             import_id_remap_put('group', strval($row['id']), $id_new);
@@ -3206,16 +2935,10 @@ class Hook_import_cms_merge
                     $id = (get_param_integer('keep_preserve_ids', 0) == 0) ? null : $row['id'];
 
                     $timezone = $row['m_timezone_offset'];
-                    if (is_integer($timezone)) {
-                        $timezone = strval($timezone);
-                    }
 
-                    if (!isset($row['m_auto_monitor_contrib_content'])) {
-                        $row['m_auto_monitor_contrib_content'] = $row['m_track_contributed_topics'];
-                    }
                     $row['m_avatar_url'] = str_replace('ocf_', 'cns_', $row['m_avatar_url']);
 
-                    $id_new = cns_make_member($row['m_username'], $row['m_pass_hash_salted'], $row['m_email_address'], null, $row['m_dob_day'], $row['m_dob_month'], $row['m_dob_year'], $custom_fields, $timezone, $primary_group, $row['m_validated'], $row['m_join_time'], $row['m_last_visit_time'], $row['m_theme'], $row['m_avatar_url'], $this->get_lang_string($db, $row['m_signature']), $row['m_is_perm_banned'], $row['m_preview_posts'], $row['m_reveal_age'], $row['m_title'], $row['m_photo_url'], $row['m_photo_thumb_url'], $row['m_views_signatures'], $row['m_auto_monitor_contrib_content'], $row['m_language'], $row['m_allow_emails'], array_key_exists('m_allow_emails_from_staff', $row) ? $row['m_allow_emails_from_staff'] : $row['m_allow_emails'], $row['m_ip_address'], $row['m_validated_email_confirm_code'], false, array_key_exists('m_password_compat_scheme', $row) ? $row['m_password_compat_scheme'] : $row['m_password_compatibility_scheme'], $row['m_pass_salt'], $row['m_last_submit_time'], $id, array_key_exists('m_highlighted_name', $row) ? $row['m_highlighted_name'] : 0, array_key_exists('m_pt_allow', $row) ? $row['m_pt_allow'] : '*', array_key_exists('m_pt_rules_text', $row) ? $this->get_lang_string($db, $row['m_pt_rules_text']) : '', $row['m_on_probation_until'], isset($row['m_auto_mark_read']) ? $row['m_auto_mark_read'] : 1, isset($row['m_profile_views']) ? $row['m_profile_views'] : 0, isset($row['m_total_sessions']) ? $row['m_total_sessions'] : 0);
+                    $id_new = cns_make_member($row['m_username'], $row['m_pass_hash_salted'], $row['m_email_address'], null, $row['m_dob_day'], $row['m_dob_month'], $row['m_dob_year'], $custom_fields, $timezone, $primary_group, $row['m_validated'], $row['m_join_time'], $row['m_last_visit_time'], $row['m_theme'], $row['m_avatar_url'], $this->get_lang_string($db, $row['m_signature']), $row['m_is_perm_banned'], $row['m_preview_posts'], $row['m_reveal_age'], $row['m_title'], $row['m_photo_url'], $row['m_photo_thumb_url'], $row['m_views_signatures'], $row['m_auto_monitor_contrib_content'], $row['m_language'], $row['m_allow_emails'], $row['m_allow_emails_from_staff'], $row['m_ip_address'], $row['m_validated_email_confirm_code'], false, $row['m_password_compat_scheme'], $row['m_pass_salt'], $row['m_last_submit_time'], $id, $row['m_highlighted_name'], $row['m_pt_allow'], $this->get_lang_string($db, $row['m_pt_rules_text']), $row['m_on_probation_until'], $row['m_auto_mark_read'], $row['m_profile_views'], $row['m_total_sessions']);
                     $rows2 = $db->query_select('f_member_custom_fields', array('*'), array('mf_member_id' => $row['id']), '', 1);
                     $this->_fix_comcode_ownership($rows2);
                     if (array_key_exists(0, $rows2)) {
@@ -3341,40 +3064,6 @@ class Hook_import_cms_merge
 
             $existing = $GLOBALS['FORUM_DB']->query_select('f_custom_fields', array('id', 'cf_type'), array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $name), '', 1);
             if ((!array_key_exists(0, $existing)) || ($existing[0]['cf_type'] != $row['cf_type']) && (substr($name, 0, 4) != 'cms_')) {
-                if ($row['cf_type'] == 'user') {
-                    $row['cf_type'] = 'member';
-                }
-                if ($row['cf_type'] == 'user_multi') {
-                    $row['cf_type'] = 'member_multi';
-                }
-                if ($row['cf_type'] == 'random') {
-                    $row['cf_type'] = 'codename';
-                    $row['cf_default'] = 'RANDOM';
-                }
-                if ($row['cf_type'] == 'combo_multi') {
-                    $row['cf_type'] = 'list_multi';
-                    $row['cf_options'] = 'widget=vertical_checkboxes,custom_values=yes';
-                }
-                if ($row['cf_type'] == 'multilist') {
-                    $row['cf_type'] = 'list_multi';
-                }
-                if ($row['cf_type'] == 'tick_multi') {
-                    $row['cf_type'] = 'list_multi';
-                    $row['cf_options'] = 'widget=horizontal_checkboxes';
-                }
-                if ($row['cf_type'] == 'combo') {
-                    $row['cf_type'] = 'list';
-                    $row['cf_options'] = 'widget=radio,custom_values=yes';
-                }
-                if ($row['cf_type'] == 'radiolist') {
-                    $row['cf_type'] = 'list';
-                    $row['cf_options'] = 'widget=radio';
-                }
-                if ($row['cf_type'] == 'auto_increment') {
-                    $row['cf_type'] = 'integer';
-                    $row['cf_default'] = 'AUTO_INCREMENT';
-                }
-
                 $only_group = $row['cf_only_group'];
                 if ($only_group != '') {
                     $only_group2 = '';
@@ -3390,7 +3079,7 @@ class Hook_import_cms_merge
                     }
                     $only_group2 = $only_group;
                 }
-                $id_new = cns_make_custom_field($name, $row['cf_locked'], $this->get_lang_string($db, $row['cf_description']), $row['cf_default'], $row['cf_public_view'], $row['cf_owner_view'], $row['cf_owner_set'], array_key_exists('cf_encrypted', $row) ? $row['cf_encrypted'] : 0, $row['cf_type'], $row['cf_required'], $row['cf_show_in_posts'], $row['cf_show_in_post_previews'], $row['cf_order'], (!is_string($only_group)) ? (($only_group === null) ? '' : strval($only_group)) : $only_group, $row['cf_show_on_join_form'], array_key_exists('cf_options', $row) ? $row['cf_options'] : '');
+                $id_new = cns_make_custom_field($name, $row['cf_locked'], $this->get_lang_string($db, $row['cf_description']), $row['cf_default'], $row['cf_public_view'], $row['cf_owner_view'], $row['cf_owner_set'], $row['cf_encrypted'], $row['cf_type'], $row['cf_required'], $row['cf_show_in_posts'], $row['cf_show_in_post_previews'], $row['cf_order'], $only_group, $row['cf_show_on_join_form'], $row['cf_options']);
             } else {
                 $id_new = $existing[0]['id'];
             }
@@ -3504,9 +3193,9 @@ class Hook_import_cms_merge
                 continue;
             }
 
-            $forum_groupings_id = import_id_remap_get('forum_groupings', strval(isset($row['f_forum_groupings_id']) ? $row['f_forum_groupings_id'] : $row['f_category_id']), true);
+            $forum_groupings_id = import_id_remap_get('forum_groupings', strval($row['f_forum_groupings_id']), true);
 
-            $id_new = cns_make_forum($row['f_name'], $this->get_lang_string($db, $row['f_description']), $forum_groupings_id, array(), db_get_first_id(), $row['f_position'], $row['f_post_count_increment'], $row['f_order_sub_alpha'], $this->get_lang_string($db, $row['f_intro_question']), $row['f_intro_answer'], $row['f_redirection'], array_key_exists('f_order', $row) ? $row['f_order'] : 'last_post', array_key_exists('f_is_threaded', $row) ? $row['f_is_threaded'] : 0, array_key_exists('f_allows_anonymous_posts', $row) ? $row['f_allows_anonymous_posts'] : 0);
+            $id_new = cns_make_forum($row['f_name'], $this->get_lang_string($db, $row['f_description']), $forum_groupings_id, array(), db_get_first_id(), $row['f_position'], $row['f_post_count_increment'], $row['f_order_sub_alpha'], $this->get_lang_string($db, $row['f_intro_question']), $row['f_intro_answer'], $row['f_redirection'], $row['f_order'], $row['f_is_threaded'], $row['f_allows_anonymous_posts']);
             import_id_remap_put('forum', strval($row['id']), $id_new);
         }
 
@@ -3782,7 +3471,7 @@ class Hook_import_cms_merge
                 if ($row2['pv_member_id'] === null) {
                     continue;
                 }
-                $GLOBALS['FORUM_DB']->query_insert('f_poll_votes', array('pv_poll_id' => $id_new, 'pv_member_id' => $row2['pv_member_id'], 'pv_answer_id' => $answer, 'pv_ip' => array_key_exists('pv_ip', $row2) ? $row2['pv_ip'] : ''));
+                $GLOBALS['FORUM_DB']->query_insert('f_poll_votes', array('pv_poll_id' => $id_new, 'pv_member_id' => $row2['pv_member_id'], 'pv_answer_id' => $answer, 'pv_ip' => $row2['pv_ip']));
             }
 
             import_id_remap_put('f_poll', strval($row['id']), $id_new);
@@ -3879,7 +3568,7 @@ class Hook_import_cms_merge
             if ($test === null) {
                 $move_to = ($row['mm_move_to'] === null) ? null : import_id_remap_get('forum', strval($row['mm_move_to']), true);
                 $multi_code = $this->convert_multi_code($row['mm_forum_multi_code']);
-                cns_make_multi_moderation($name, $row['mm_post_text'], $move_to, $row['mm_pin_state'], $row['mm_open_state'], $multi_code, array_key_exists('mm_title_suffix', $row) ? $row['mm_title_suffix'] : '');
+                cns_make_multi_moderation($name, $row['mm_post_text'], $move_to, $row['mm_pin_state'], $row['mm_open_state'], $multi_code, $row['mm_title_suffix']);
             }
         }
     }
@@ -3930,22 +3619,22 @@ class Hook_import_cms_merge
                 $by = $GLOBALS['FORUM_DRIVER']->get_guest_id();
             }
 
-            $silence_from_topic = array_key_exists('w_silence_from_topic', $row) ? import_id_remap_get('topic', strval($row['w_silence_from_topic']), true) : null;
+            $silence_from_topic = import_id_remap_get('topic', strval($row['w_silence_from_topic']), true);
             if ($silence_from_topic === null) {
                 $silence_from_topic = null;
             }
 
-            $silence_from_forum = array_key_exists('w_silence_from_forum', $row) ? import_id_remap_get('forum', strval($row['w_silence_from_forum']), true) : null;
+            $silence_from_forum = import_id_remap_get('forum', strval($row['w_silence_from_forum']), true);
             if ($silence_from_forum === null) {
                 $silence_from_forum = null;
             }
 
-            $changed_usergroup_from = array_key_exists('w_changed_usergroup_from', $row) ? import_id_remap_get('group', strval($row['w_changed_usergroup_from']), true) : null;
+            $changed_usergroup_from = import_id_remap_get('group', strval($row['w_changed_usergroup_from']), true);
             if ($changed_usergroup_from === null) {
                 $changed_usergroup_from = null;
             }
 
-            cns_make_warning($member_id, $row['w_explanation'], $by, $row['w_time'], array_key_exists('w_is_warning', $row) ? $row['w_is_warning'] : 1, $silence_from_topic, $silence_from_forum, array_key_exists('w_probation', $row) ? $row['w_probation'] : 0, array_key_exists('w_banned_ip', $row) ? $row['w_banned_ip'] : '', array_key_exists('w_charged_points', $row) ? $row['w_charged_points'] : 0, array_key_exists('w_banned_member', $row) ? $row['w_banned_member'] : 0, $changed_usergroup_from);
+            cns_make_warning($member_id, $row['w_explanation'], $by, $row['w_time'], $row['w_is_warning'], $silence_from_topic, $silence_from_forum, $row['w_probation'], $row['w_banned_ip'], $row['w_charged_points'], $row['w_banned_member'], $changed_usergroup_from);
         }
     }
 
@@ -4094,14 +3783,6 @@ class Hook_import_cms_merge
             $row = insert_lang_comcode('i_caption', $this->get_lang_string($db, $row['i_caption']), 1) + $row;
             $row = insert_lang_comcode('i_caption_long', $this->get_lang_string($db, $row['i_caption_long']), 1) + $row;
 
-            if (!array_key_exists('i_theme_img_code', $row)) {
-                $row['i_theme_img_code'] = '';
-            }
-
-            if (!array_key_exists('i_include_sitemap', $row)) {
-                $row['i_include_sitemap'] = 0;
-            }
-
             $id_new = $GLOBALS['SITE_DB']->query_insert('menu_items', $row, true);
             import_id_remap_put('menu_item', $id_old, 1);
         }
@@ -4129,11 +3810,6 @@ class Hook_import_cms_merge
         $this->_fix_comcode_ownership($rows);
         foreach ($rows as $row) {
             unset($row['id']);
-
-            if (!isset($row['site_url'])) {
-                $row['site_url'] = $row['siteurl'];
-                unset($row['siteurl']);
-            }
 
             $GLOBALS['SITE_DB']->query_insert('staff_website_monitoring', $row);
         }

@@ -136,7 +136,7 @@ DKIM is an e-mail digital signature system which reduces the chance of people fa
 
 There are 2 ways you can implement DKIM:
 1) At the server-level. This is recommended, but may not be available on some shared webhosts. It is recommended because this way all e-mails from your domain may be signed, not just ones sent from Composr.
-2) Within Composr (there's a config option to enter the DKIM private key). [version 10.0.5+][staff_note]LEGACY[/staff_note]
+2) Within Composr (there's a config option to enter the DKIM private key).
 
 There are a few caveats with Composr's implementation:
 a) The PHP [tt]openssl[/tt] extension is required.

@@ -126,20 +126,11 @@ $db_site_user = 'TODO';
 $db_site_password = 'TODO';
 
 if ($db_site == 'TODO') {
-    if (is_file('info.php')) { // LEGACY
-        require('info.php');
-        $db_site = $SITE_INFO['db_site'];
-        $db_site_host = $SITE_INFO['db_site_host'];
-        $db_site_user = $SITE_INFO['db_site_user'];
-        $db_site_password = $SITE_INFO['db_site_password'];
-    }
-    if (is_file('_config.php')) {
-        require('_config.php');
-        $db_site = $SITE_INFO['db_site'];
-        $db_site_host = $SITE_INFO['db_site_host'];
-        $db_site_user = $SITE_INFO['db_site_user'];
-        $db_site_password = $SITE_INFO['db_site_password'];
-    }
+    require('_config.php');
+    $db_site = $SITE_INFO['db_site'];
+    $db_site_host = $SITE_INFO['db_site_host'];
+    $db_site_user = $SITE_INFO['db_site_user'];
+    $db_site_password = $SITE_INFO['db_site_password'];
 }
 
 $sql_cmd = 'mysqldump';

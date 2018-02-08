@@ -38,9 +38,6 @@ class Hook_ecommerce_permission
             $fields = new Tempcode();
             $hidden = new Tempcode();
             $hours = $row['p_hours'];
-            if ($hours == 400000) {
-                $hours = null; // LEGACY: Around 100 years, but meaning unlimited
-            }
             $fields->attach($this->_get_fields('_' . strval($i), get_translated_text($row['p_title']), get_translated_text($row['p_description']), $row['p_enabled'], $row['p_price'], $row['p_tax_code'], $row['p_price_points'], $hours, $row['p_type'], $row['p_privilege'], $row['p_zone'], $row['p_page'], $row['p_module'], $row['p_category'], get_translated_text($row['p_mail_subject']), get_translated_text($row['p_mail_body'])));
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '4055cbfc1c94723f4ad72a80ede0b554', 'TITLE' => do_lang_tempcode('ACTIONS'))));
             $fields->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), 'delete_permission_' . strval($i), false));
