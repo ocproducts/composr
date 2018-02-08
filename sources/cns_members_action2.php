@@ -543,17 +543,16 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
     // Language choice, if we have multiple languages on site
     if ($doing_langs) {
         $lang_list = new Tempcode();
-        $no_lang_set = ($language === null) || ($language == '');
-        $allow_no_lang_set = (get_value('allow_no_lang_selection') === '1');
-        if ($allow_no_lang_set) {
-            $lang_list->attach(form_input_list_entry('', $no_lang_set, do_lang_tempcode('UNSET')));
+        $require_lang_set = (get_value('require_lang_selection') !== '0');
+        if (!$require_lang_set) {
+            $lang_list->attach(form_input_list_entry('', empty($language), do_lang_tempcode('UNSET')));
         } else {
-            if ($no_lang_set) {
+            if (empty($language)) {
                 $language = user_lang();
             }
         }
         $lang_list->attach(create_selection_list_langs($language));
-        $fields->attach(form_input_list(do_lang_tempcode('LANGUAGE'), '', 'language', $lang_list, null, false, !$allow_no_lang_set));
+        $fields->attach(form_input_list(do_lang_tempcode('LANGUAGE'), '', 'language', $lang_list, null, false, $require_lang_set));
     }
 
     if (!$mini_mode) {
