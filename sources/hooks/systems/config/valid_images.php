@@ -53,6 +53,9 @@ class Hook_config_valid_images
      */
     public function get_default()
     {
-        return 'jpg,jpe,jpeg,gif,png,ico,cur,svg,webp'; // Web-safe images only
+        return 'jpg,jpe,jpeg,gif,png,ico,cur,svg'; // Web-safe images only
+        // webp is not really websafe.
+        // bmp may be websafe but we do not want to encourage it (due to no real compression, and no GD support)!
+        // This encodes what we may *upload*. See the is_image function for explicitly hard-coded checks of what constitutes valid images in different situations.
     }
 }

@@ -143,6 +143,8 @@ class file_whitelisting_test_set extends cms_test_case
 
     public function testOtherValidTypes()
     {
+        require_code('images');
+
         foreach (array('valid_images', 'valid_videos', 'valid_audios') as $f) {
             $path = get_file_base() . '/sources/hooks/systems/config/' . $f . '.php';
             $c = file_get_contents($path);
@@ -154,6 +156,10 @@ class file_whitelisting_test_set extends cms_test_case
 
             foreach ($file_types as $file_type) {
                 $this->assertTrue(in_array($file_type, $this->file_types));
+
+                if ($f == 'valid_images') {
+                    $this->assertTrue(is_image('example.' . $file_type, IMAGE_CRITERIA_WEBSAFE, true), $file_type . ' not websafe?');
+                }
             }
         }
     }
