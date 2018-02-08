@@ -813,12 +813,12 @@ function log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_b
  *
  * @param  string $a The sentence to check
  * @param  ?ID_TEXT $name The name of the parameter this is coming from. Certain parameters are not checked, for reasons of efficiency (avoiding loading whole word check list if not needed) (null: don't know param, do not check to avoid)
- * @param  boolean $no_die Whether to avoid dying on fully blocked words (useful if importing, for instance)
+ * @param  boolean $exit Whether to die on fully blocked words (useful if importing, for instance)
  * @param  boolean $try_patterns Whether to try pattern matching (this takes more resources)
  * @param  boolean $perm_check Whether to allow permission-based skipping, and length-based skipping
  * @return string "Fixed" version
  */
-function check_wordfilter($a, $name = null, $no_die = false, $try_patterns = false, $perm_check = true)
+function check_wordfilter($a, $name = null, $exit = true, $try_patterns = false, $perm_check = true)
 {
     return $a;
 }

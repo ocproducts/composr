@@ -469,7 +469,7 @@ function filter_form_field_default($name, $val, $live = false)
                                 $temp_remember = $WORDS_TO_FILTER_CACHE;
                                 $WORDS_TO_FILTER_CACHE = array($attributes['embed'] => array('word' => $attributes['embed'], 'w_replacement' => '', 'w_substr' => 0));
                                 require_code('wordfilter');
-                                check_wordfilter($val, $name, false, true, false);
+                                check_wordfilter($val, $name, true, true, false);
                                 $WORDS_TO_FILTER_CACHE = $temp_remember;
                             } else {
                                 if ($live && strpos($val, $attributes['embed']) !== false) {

@@ -35,12 +35,12 @@ function init__wordfilter()
  *
  * @param  string $a The sentence to check
  * @param  ?ID_TEXT $name The name of the parameter this is coming from. Certain parameters are not checked, for reasons of efficiency (avoiding loading whole word check list if not needed) (null: don't know param, do not check to avoid)
- * @param  boolean $no_die Whether to avoid dying on fully blocked words (useful if importing, for instance)
+ * @param  boolean $exit Whether to die on fully blocked words (useful if importing, for instance)
  * @param  boolean $try_patterns Whether to try pattern matching (this takes more resources)
  * @param  boolean $perm_check Whether to allow permission-based skipping, and length-based skipping
  * @return string "Fixed" version
  */
-function check_wordfilter($a, $name = null, $no_die = false, $try_patterns = false, $perm_check = true)
+function check_wordfilter($a, $name = null, $exit = true, $try_patterns = false, $perm_check = true)
 {
     global $WORDFILTERING_ALREADY;
     if ($WORDFILTERING_ALREADY) {
@@ -82,7 +82,7 @@ function check_wordfilter($a, $name = null, $no_die = false, $try_patterns = fal
     foreach ($words as $pos => $word) {
         if ((array_key_exists(strtolower($word), $WORDS_TO_FILTER_CACHE)) && ($WORDS_TO_FILTER_CACHE[strtolower($word)]['w_substr'] == 0)) {
             $w = $WORDS_TO_FILTER_CACHE[strtolower($word)];
-            if (($w['w_replacement'] == '') && (!$no_die)) {
+            if (($w['w_replacement'] == '') && ($exit)) {
                 warn_exit_wordfilter($name, do_lang_tempcode('WORDFILTER_YOU', escape_html($word))); // In soviet Russia, words filter you
             } else {
                 $changes[] = array($pos, $word, $w['w_replacement']);
@@ -93,7 +93,7 @@ function check_wordfilter($a, $name = null, $no_die = false, $try_patterns = fal
             // Now try patterns
             foreach ($WORDS_TO_FILTER_CACHE as $word2 => $w) {
                 if (($w['w_substr'] == 0) && (simulated_wildcard_match($word, $word2, true))) {
-                    if (($w['w_replacement'] == '') && (!$no_die)) {
+                    if (($w['w_replacement'] == '') && ($exit)) {
                         warn_exit_wordfilter($name, do_lang_tempcode('WORDFILTER_YOU', escape_html($word))); // In soviet Russia, words filter you
                     } else {
                         $changes[] = array($pos, $word, $w['w_replacement']);
@@ -114,7 +114,7 @@ function check_wordfilter($a, $name = null, $no_die = false, $try_patterns = fal
     // Apply filter for disallowed substrings
     foreach ($WORDS_TO_FILTER_CACHE as $word => $w) {
         if (($w['w_substr'] == 1) && (strpos($a, $word) !== false)) {
-            if (($w['w_replacement'] == '') && (!$no_die)) {
+            if (($w['w_replacement'] == '') && ($exit)) {
                 warn_exit_wordfilter($name, do_lang_tempcode('WORDFILTER_YOU', escape_html($word)));
             } else {
                 $a = preg_replace('#' . preg_quote($word) . '#i', $w['w_replacement'], $a);
