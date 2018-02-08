@@ -209,7 +209,7 @@ class Module_awards
                 if ($award_content_row !== null) {
                     $rendered_content = $ob->run($award_content_row, '_SEARCH', false, true);
 
-                    if (($award_type_row['a_hide_awardee'] == 1) || (is_guest($myrow['member_id']))) {
+                    if (($award_type_row['a_show_awardee'] == 0) || (is_guest($myrow['member_id']))) {
                         $awardee = '';
                         $awardee_username = '';
                         $awardee_profile_url = '';
@@ -272,7 +272,7 @@ class Module_awards
             if ($award_content_row !== null) {
                 $rendered_content = $ob->run($award_content_row, '_SEARCH', false, true);
 
-                if (($award_type_row['a_hide_awardee'] == 1) || (is_guest($myrow['member_id']))) {
+                if (($award_type_row['a_show_awardee'] == 0) || (is_guest($myrow['member_id']))) {
                     $awardee = '';
                     $awardee_username = '';
                     $awardee_profile_url = '';

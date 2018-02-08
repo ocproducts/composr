@@ -3863,7 +3863,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DESCRIPTION_HAVE_DEFAULT_RANK_SET
         DESCRIPTION_HAVE_DEFAULT_WORDFILTER
         DESCRIPTION_HEADER_TEXT
-        DESCRIPTION_HIDE_AWARDEE
+        DESCRIPTION_SHOW_AWARDEE
         DESCRIPTION_HIDE_POSTS
         DESCRIPTION_HITS_ALLOCATED
         DESCRIPTION_HOURLY_BREAKDOWNS
@@ -5022,7 +5022,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         HELP_ADD_WORDFILTER
         HELP_IMPORTING_ADDON
         HIDDEN_USERGROUP
-        HIDE_AWARDEE
+        SHOW_AWARDEE
         HIDE_DONE
         HIDE_POSTS
         HIT

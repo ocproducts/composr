@@ -50,7 +50,7 @@ class Module_admin_awards extends Standard_crud_module
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['update_require_upgrade'] = true;
-        $info['version'] = 4;
+        $info['version'] = 5;
         $info['locked'] = true;
         return $info;
     }
@@ -90,7 +90,7 @@ class Module_admin_awards extends Standard_crud_module
                 'a_description' => 'LONG_TRANS__COMCODE',
                 'a_points' => 'INTEGER',
                 'a_content_type' => 'ID_TEXT', // uses same naming convention as cms_merge importer
-                'a_hide_awardee' => 'BINARY',
+                'a_show_awardee' => 'BINARY',
                 'a_update_time_hours' => 'INTEGER',
             ));
 
@@ -98,12 +98,17 @@ class Module_admin_awards extends Standard_crud_module
             $map = array(
                 'a_points' => 0,
                 'a_content_type' => 'download',
-                'a_hide_awardee' => 1,
+                'a_show_awardee' => 0,
                 'a_update_time_hours' => 168,
             );
             $map += lang_code_to_default_content('a_title', 'DOTW');
             $map += lang_code_to_default_content('a_description', 'DESCRIPTION_DOTW', true);
             $GLOBALS['SITE_DB']->query_insert('award_types', $map);
+        }
+
+        if (($upgrade_from !== null) && ($upgrade_from < 5)) {
+            $GLOBALS['SITE_DB']->alter_table_field('award_types', 'a_hide_awardee', 'BINARY', 'a_show_awardee');
+            $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'award_types SET a_show_awardee=1-a_show_awardee');
         }
     }
 
@@ -266,15 +271,15 @@ class Module_admin_awards extends Standard_crud_module
      * @param  LONG_TEXT $description The description
      * @param  integer $points How many points are given to the awardee
      * @param  ID_TEXT $content_type The content type the award type is for
-     * @param  ?BINARY $hide_awardee Whether to not show the awardee when displaying this award (null: statistical default)
+     * @param  ?BINARY $show_awardee Whether to show the awardee when displaying this award (null: statistical default)
      * @param  integer $update_time_hours The approximate time in hours between awards (e.g. 168 for a week)
      * @return array A pair: The input fields, Hidden fields
      */
-    public function get_form_fields($id = null, $title = '', $description = '', $points = 0, $content_type = 'download', $hide_awardee = null, $update_time_hours = 168)
+    public function get_form_fields($id = null, $title = '', $description = '', $points = 0, $content_type = 'download', $show_awardee = null, $update_time_hours = 168)
     {
-        if ($hide_awardee === null) {
-            $val = $GLOBALS['SITE_DB']->query_select_value('award_types', 'AVG(a_hide_awardee)');
-            $hide_awardee = ($val === null) ? 1 : @intval(round($val));
+        if ($show_awardee === null) {
+            $val = $GLOBALS['SITE_DB']->query_select_value('award_types', 'AVG(a_show_awardee)');
+            $show_awardee = ($val === null) ? 1 : @intval(round($val));
         }
 
         $fields = new Tempcode();
@@ -305,7 +310,7 @@ class Module_admin_awards extends Standard_crud_module
             inform_exit(do_lang_tempcode('NO_CATEGORIES'));
         }
         $fields->attach(form_input_list(do_lang_tempcode('CONTENT_TYPE'), do_lang_tempcode('DESCRIPTION_CONTENT_TYPE'), 'content_type', $list));
-        $fields->attach(form_input_tick(do_lang_tempcode('HIDE_AWARDEE'), do_lang_tempcode('DESCRIPTION_HIDE_AWARDEE'), 'hide_awardee', $hide_awardee == 1));
+        $fields->attach(form_input_tick(do_lang_tempcode('SHOW_AWARDEE'), do_lang_tempcode('DESCRIPTION_SHOW_AWARDEE'), 'show_awardee', $show_awardee == 1));
         $fields->attach(form_input_integer(do_lang_tempcode('AWARD_UPDATE_TIME_HOURS'), do_lang_tempcode('DESCRIPTION_AWARD_UPDATE_TIME_HOURS'), 'update_time_hours', $update_time_hours, true));
 
         // Permissions
@@ -344,7 +349,7 @@ class Module_admin_awards extends Standard_crud_module
         }
         $r = $m[0];
 
-        $fields = $this->get_form_fields(intval($id), get_translated_text($r['a_title']), get_translated_text($r['a_description']), $r['a_points'], $r['a_content_type'], $r['a_hide_awardee'], $r['a_update_time_hours']);
+        $fields = $this->get_form_fields(intval($id), get_translated_text($r['a_title']), get_translated_text($r['a_description']), $r['a_points'], $r['a_content_type'], $r['a_show_awardee'], $r['a_update_time_hours']);
 
         return $fields;
     }
@@ -356,7 +361,7 @@ class Module_admin_awards extends Standard_crud_module
      */
     public function add_actualisation()
     {
-        $id = add_award_type(post_param_string('title'), post_param_string('description'), post_param_integer('points', 0), post_param_string('content_type'), post_param_integer('hide_awardee', 0), post_param_integer('update_time_hours'));
+        $id = add_award_type(post_param_string('title'), post_param_string('description'), post_param_integer('points', 0), post_param_string('content_type'), post_param_integer('show_awardee', 0), post_param_integer('update_time_hours'));
 
         $this->set_permissions(strval($id));
 
@@ -370,7 +375,7 @@ class Module_admin_awards extends Standard_crud_module
      */
     public function edit_actualisation($id)
     {
-        edit_award_type(intval($id), post_param_string('title'), post_param_string('description'), post_param_integer('points', 0), post_param_string('content_type'), post_param_integer('hide_awardee', 0), post_param_integer('update_time_hours'));
+        edit_award_type(intval($id), post_param_string('title'), post_param_string('description'), post_param_integer('points', 0), post_param_string('content_type'), post_param_integer('show_awardee', 0), post_param_integer('update_time_hours'));
 
         $this->set_permissions($id);
     }

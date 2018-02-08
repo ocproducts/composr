@@ -138,7 +138,7 @@ class Block_main_awards
 
         $rendered_content = $object->run($award_content_row, $zone, $give_context, $include_breadcrumbs, null, false, $guid);
 
-        if (($award_type_row['a_hide_awardee'] == 1) || (is_guest($myrow['member_id']))) {
+        if (($award_type_row['a_show_awardee'] == 0) || (is_guest($myrow['member_id']))) {
             $awardee = '';
             $awardee_username = '';
             $awardee_profile_url = '';

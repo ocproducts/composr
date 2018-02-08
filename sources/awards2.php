@@ -25,11 +25,11 @@
  * @param  LONG_TEXT $description The description
  * @param  integer $points How many points are given to the awardee
  * @param  ID_TEXT $content_type The content type the award type is for
- * @param  BINARY $hide_awardee Whether to not show the awardee when displaying this award
+ * @param  BINARY $show_awardee Whether to show the awardee when displaying this award
  * @param  integer $update_time_hours The approximate time in hours between awards (e.g. 168 for a week)
  * @return AUTO_LINK The ID
  */
-function add_award_type($title, $description, $points, $content_type, $hide_awardee, $update_time_hours)
+function add_award_type($title, $description, $points, $content_type, $show_awardee, $update_time_hours)
 {
     require_code('global4');
     prevent_double_submit('ADD_AWARD_TYPE', null, $title);
@@ -37,7 +37,7 @@ function add_award_type($title, $description, $points, $content_type, $hide_awar
     $map = array(
         'a_points' => $points,
         'a_content_type' => filter_naughty_harsh($content_type),
-        'a_hide_awardee' => $hide_awardee,
+        'a_show_awardee' => $show_awardee,
         'a_update_time_hours' => $update_time_hours,
     );
     $map += insert_lang('a_title', $title, 2);
@@ -62,10 +62,10 @@ function add_award_type($title, $description, $points, $content_type, $hide_awar
  * @param  LONG_TEXT $description The description
  * @param  integer $points How many points are given to the awardee
  * @param  ID_TEXT $content_type The content type the award type is for
- * @param  BINARY $hide_awardee Whether to not show the awardee when displaying this award
+ * @param  BINARY $show_awardee Whether to show the awardee when displaying this award
  * @param  integer $update_time_hours The approximate time in hours between awards (e.g. 168 for a week)
  */
-function edit_award_type($id, $title, $description, $points, $content_type, $hide_awardee, $update_time_hours)
+function edit_award_type($id, $title, $description, $points, $content_type, $show_awardee, $update_time_hours)
 {
     $_title = $GLOBALS['SITE_DB']->query_select_value_if_there('award_types', 'a_title', array('id' => $id));
     if ($_title === null) {
@@ -75,7 +75,7 @@ function edit_award_type($id, $title, $description, $points, $content_type, $hid
     $map = array(
         'a_points' => $points,
         'a_content_type' => filter_naughty_harsh($content_type),
-        'a_hide_awardee' => $hide_awardee,
+        'a_show_awardee' => $show_awardee,
         'a_update_time_hours' => $update_time_hours,
     );
     $map += lang_remap('a_title', $_title, $title);
