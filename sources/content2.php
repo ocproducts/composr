@@ -177,12 +177,12 @@ function post_param_order_field($order_field = 'order')
  *
  * @param  ID_TEXT $content_type The type of resource (e.g. download)
  * @param  ?ID_TEXT $content_id The ID of the resource (null: adding)
- * @param  boolean $allow_no_owner Whether to allow owner to be left blank (meaning no owner)
+ * @param  boolean $require_owner Whether to require owner to be filled in
  * @param  array $fields_to_skip List of fields to NOT take in
  * @param  integer $show_header Whether to show a header (a METADATA_HEADER_* constant)
  * @return Tempcode Form page Tempcode fragment
  */
-function metadata_get_fields($content_type, $content_id, $allow_no_owner = false, $fields_to_skip = array(), $show_header = 1)
+function metadata_get_fields($content_type, $content_id, $require_owner = true, $fields_to_skip = array(), $show_header = 1)
 {
     require_lang('metadata');
 
@@ -212,7 +212,7 @@ function metadata_get_fields($content_type, $content_id, $allow_no_owner = false
             if ($username === null) {
                 $username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
             }
-            $fields->attach(form_input_username(do_lang_tempcode('OWNER'), do_lang_tempcode('DESCRIPTION_OWNER'), 'meta_submitter', $username, !$allow_no_owner));
+            $fields->attach(form_input_username(do_lang_tempcode('OWNER'), do_lang_tempcode('DESCRIPTION_OWNER'), 'meta_submitter', $username, $require_owner));
         }
 
         $add_time_field = in_array('add_time', $fields_to_skip) ? null : $info['add_time_field'];

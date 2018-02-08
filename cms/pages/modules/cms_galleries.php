@@ -2081,7 +2081,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
             $hidden->attach(form_input_hidden('allow_comments', strval($allow_comments)));
             $feedback_fields = new Tempcode();
         }
-        $fields->attach(metadata_get_fields('gallery', ($name == '') ? null : $name, true, array(), ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
+        $fields->attach(metadata_get_fields('gallery', ($name == '') ? null : $name, false, array(), ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
         $fields->attach($seo_fields);
         $fields->attach($feedback_fields);
 

@@ -959,7 +959,7 @@ class Module_cms_news_cat extends Standard_crud_module
             $fields->attach(form_input_text(do_lang_tempcode('NOTES'), do_lang_tempcode('DESCRIPTION_NOTES'), 'notes', $notes, false));
         }
 
-        $fields->attach(metadata_get_fields('news_category', ($id === null) ? null : strval($id)), true);
+        $fields->attach(metadata_get_fields('news_category', ($id === null) ? null : strval($id)), false);
 
         if (addon_installed('content_reviews')) {
             $fields->attach(content_review_get_fields('news_category', ($id === null) ? null : strval($id)));
