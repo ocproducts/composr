@@ -358,7 +358,7 @@ function remove_wysiwyg_comcode_markup(&$semihtml)
     }
 
     // Our Comcode tag start/end markers
-    $array_html_preg_replace[] = array('#^<kbd class="(cms_keep|cms_keep_block)"[^>]*>(.*)</kbd>$#siU', "\${2}");
+    $array_html_preg_replace[] = array('#^<kbd [^>]*class="(cms_keep|cms_keep_block)"[^>]*>(.*)</kbd>$#siU', "\${2}");
     $semihtml = array_html_preg_replace('kbd', $array_html_preg_replace, $semihtml);
 
     // Our wrapper tags

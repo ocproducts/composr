@@ -213,7 +213,7 @@ If you wanted it on the news archive screen, you'd edit the [tt]NEWS_ARCHIVE_SCR
 Filtercode has support for a number of hard-coded special field names...
  - [tt]average_rating[/tt] -- rating
  - [tt]compound_rating[/tt] -- total likes
- - [tt]fixed_random[/tt] -- a psuedo-random number for the entry that changes daily
+ - [tt]fixed_random[/tt] -- a pseudo-random number for the entry that changes daily
  - [tt]meta_description[/tt] -- meta description
  - [tt]meta_keywords[/tt] -- meta keywords
 Some of these may also appear as sorting options in various blocks.

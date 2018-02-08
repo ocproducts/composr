@@ -1182,7 +1182,7 @@ class Hook_cms_merge
 
             $regions = $db->table_exists('content_regions') ? collapse_1d_complexity('region', $db->query_select('content_regions', array('region'), array('content_type' => 'news', 'content_id' => strval($row['id'])))) : array();
 
-            $id_new = add_news($this->get_lang_string($db, $row['title']), $this->get_lang_string($db, $row['news']), $row['author'], $row['validated'], $row['allow_rating'], $row['allow_comments'], $row['allow_trackbacks'], $row['notes'], $this->get_lang_string($db, $row['news_article']), $main_news_category, $news_category, $row['date_and_time'], $submitter, $row['news_views'], $row['edit_date'], $id, (isset($row['news_image'])) ? $row['news_image'] : $row['news_image'], '', '', $regions);
+            $id_new = add_news($this->get_lang_string($db, $row['title']), $this->get_lang_string($db, $row['news']), $row['author'], $row['validated'], $row['allow_rating'], $row['allow_comments'], $row['allow_trackbacks'], $row['notes'], $this->get_lang_string($db, $row['news_article']), $main_news_category, $news_category, $row['date_and_time'], $submitter, $row['news_views'], $row['edit_date'], $id, (isset($row['news_image'])) ? $row['news_image'] : '', '', '', $regions);
 
             $this->_import_content_privacy($db, 'news', strval($row['id']), strval($id_new));
 

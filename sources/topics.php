@@ -905,13 +905,14 @@ class CMS_Topic
                             'POSTER_USERNAME' => $post['poster_username'],
                         ));
                     } else {
-                        $ip_link = ((array_key_exists('ip_address', $post)) && (has_actual_page_access(get_member(), 'admin_lookup'))) ? build_url(array('page' => 'admin_lookup', 'param' => $post['ip_address']), get_module_zone('admin_lookup')) : new Tempcode();
+                        $lookup_ip_url = ((array_key_exists('ip_address', $post)) && (has_actual_page_access(get_member(), 'admin_lookup'))) ? build_url(array('page' => 'admin_lookup', 'param' => $post['ip_address']), get_module_zone('admin_lookup')) : new Tempcode();
                         $poster = do_template('CNS_POSTER_GUEST', array(
                             '_GUID' => '93107543c6a0138f379e7124b72b24ff',
-                            'LOOKUP_IP_URL' => $ip_link,
+                            'LOOKUP_IP_URL' => $lookup_ip_url,
                             'POSTER_DETAILS' => $poster_details,
                             'POSTER_USERNAME' => $post['poster_username'],
                         ));
+                        $poster_url = $lookup_ip_url;
                     }
                 } else {
                     $poster = make_string_tempcode(escape_html($post['poster_username']));
