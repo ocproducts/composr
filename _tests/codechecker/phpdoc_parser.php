@@ -40,12 +40,12 @@ if (isset($_SERVER['argv'])) {
 
 require_code('php');
 
-$no_custom = true;
+$enable_custom = false;
 if ((isset($_GET['allow_custom'])) && ($_GET['allow_custom'] == '1')) {
-    $no_custom = false;
+    $enable_custom = true;
 }
-$files = do_dir($COMPOSR_PATH, $no_custom, true);
-if ($no_custom) {
+$files = do_dir($COMPOSR_PATH, $enable_custom, true);
+if (!$enable_custom) {
     $files[] = $COMPOSR_PATH . '/sources_custom/phpstub.php';
 }
 

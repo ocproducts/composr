@@ -619,7 +619,7 @@ if (isset($_GET['test'])) {
     if (isset($_GET['avoid'])) {
         $avoid = explode(',', $_GET['avoid']);
     }
-    $files = do_dir($COMPOSR_PATH . (isset($_GET['subdir']) ? ('/' . $_GET['subdir']) : ''), true, true, $avoid);
+    $files = do_dir($COMPOSR_PATH . (isset($_GET['subdir']) ? ('/' . $_GET['subdir']) : ''), false, true, $avoid);
     $start = isset($_GET['start']) ? intval($_GET['start']) : 0;
     foreach ($files as $i => $to_use) {
         if ($i < $start) {

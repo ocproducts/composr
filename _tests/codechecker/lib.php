@@ -151,7 +151,7 @@ function get_charset()
     return 'utf-8';
 }
 
-function do_dir($dir, $no_custom = false, $orig_priority = false, $avoid = array())
+function do_dir($dir, $enable_custom = true, $orig_priority = false, $avoid = array())
 {
     global $COMPOSR_PATH;
     require_once($COMPOSR_PATH . '/sources/files.php');
@@ -167,7 +167,7 @@ function do_dir($dir, $no_custom = false, $orig_priority = false, $avoid = array
             }
 
             $bitmask = IGNORE_CUSTOM_THEMES | IGNORE_NON_EN_SCATTERED_LANGS | IGNORE_BUNDLED_UNSHIPPED_VOLATILE | IGNORE_BUNDLED_VOLATILE;
-            if ($no_custom) {
+            if (!$enable_custom) {
                 $bitmask = $bitmask | IGNORE_CUSTOM_ZONES | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_NONBUNDLED_SCATTERED;
             }
             $stripped_path = preg_replace('#^' . preg_quote($COMPOSR_PATH . '/', '#') . '#', '', $dir . '/') . $file;
@@ -192,7 +192,7 @@ function do_dir($dir, $no_custom = false, $orig_priority = false, $avoid = array
                         }
                     }
                 } elseif (is_dir($_dir . '/' . $file)) {
-                    $out = array_merge($out, do_dir($dir . (($dir != '') ? '/' : '') . $file, $no_custom, $orig_priority, $avoid));
+                    $out = array_merge($out, do_dir($dir . (($dir != '') ? '/' : '') . $file, $enable_custom, $orig_priority, $avoid));
                 }
             }
         }
