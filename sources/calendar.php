@@ -122,7 +122,7 @@ function get_week_number_for($timestamp, $within_year = false)
 {
     $ssw = (get_option('ssw') == '1');
 
-    $format = $no_year ? 'W' : 'o-W';
+    $format = $within_year ? 'W' : 'o-W';
     if (!$ssw) {
         $ret = date($format, $timestamp);
     } else { // For SSW: week starts one day earlier (inconsistent with other PHP date stuff!), so we actually push 6 days of the week back onto the previous one (where the Sunday is)
