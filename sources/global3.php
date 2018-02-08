@@ -1190,10 +1190,10 @@ function float_format($val, $decs_wanted = 2, $only_needed_decs = false)
  * Take the given formatted float number and convert it to a native float. The inverse of float_format.
  *
  * @param  string $str The formatted float number using the locale
- * @param  boolean $no_thousands_sep Whether we do *not* expect a thousands separator, which means we can be a bit smarter
+ * @param  boolean $include_thousands_sep Whether we expect a thousands separator, knowing this means we can be a bit smarter
  * @return float Native float
  */
-function float_unformat($str, $no_thousands_sep = false)
+function float_unformat($str, $includes_thousands_sep = true)
 {
     $locale = localeconv();
 
@@ -1202,7 +1202,7 @@ function float_unformat($str, $no_thousands_sep = false)
         return floatval($str);
     }
 
-    if ($no_thousands_sep) {
+    if ($includes_thousands_sep) {
         // We can assume a "." is a decimal point then?
         if (preg_match('#^\d+\.\d+$#', $str) != 0) { // E.g. "123.456"
             return floatval($str);
