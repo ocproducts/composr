@@ -1474,7 +1474,7 @@ Reinstalls must be handled correctly
 | Usability
 | Composr development +
 | Manually
-| Capitalisation is for proper nouns (e.g. Charlie or Microsoft, but not box), for new sentences, or sometimes for sentence-like standalone phrases.
+| Capitalisation is for proper nouns (e.g. Charlie or Microsoft, but not box), for new sentences, or sometimes for sentence-like standalone phrases. We do not generally capitalise things for effect, e.g. "Add News".
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"][i]Wrong to miss out words[/i][/color]
@@ -1617,6 +1617,13 @@ Define administrative split
 | Product development only
 | Automated test ([tt]lang_administrative_split.php[/tt])
 | The [tt]sources_custom/string_scan.php[/tt] lists which language strings are and are not administrative. This is done so that translation can be focused on the non-administrative strings only.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Don't define binary options in negative terms
+| Usabiility
+| Composr development +
+| Manually
+| Do not create an option such as "Disable widgets". It is unnecessarily confusing because you can just make an option "Enable widgets" that defaults to on. This coding standard applies universally across the product, including configuration options, form fields, and code.
 |}
 
 Respect the Queen of England ;)...
