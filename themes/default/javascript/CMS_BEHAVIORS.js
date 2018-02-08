@@ -566,14 +566,14 @@
     };
 
     var _invalidPatternCache = {};
-    // Implementation for [data-cms-invalid-pattern="<REGEX FOR DISALLOWED CHARACTERS>"]
+    // Implementation for [data-prevent-input="<REGEX FOR DISALLOWED CHARACTERS>"]
     // Prevents input of matching characters
-    $cms.behaviors.cmsInvalidPattern = {
+    $cms.behaviors.preventInput = {
         attach: function (context) {
-            var inputs = $util.once($dom.$$$(context, '[data-cms-invalid-pattern]'), 'behavior.cmsInvalidPattern');
+            var inputs = $util.once($dom.$$$(context, 'data-prevent-input'), 'behavior.preventInput');
 
             inputs.forEach(function (input) {
-                var pattern = input.dataset.cmsInvalidPattern, regex;
+                var pattern = input.dataset.preventInput, regex;
 
                 regex = _invalidPatternCache[pattern] || (_invalidPatternCache[pattern] = new RegExp(pattern, 'g'));
 

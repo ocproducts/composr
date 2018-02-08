@@ -16,7 +16,7 @@
 
 			<div>
 				<label class="accessibility-hidden" for="give-amount">{!AMOUNT}</label>
-				<input maxlength="8" data-cms-invalid-pattern="[^\-\d{$BACKSLASH}{$DECIMAL_POINT*}]" size="7" id="give-amount" class="input-integer-required" placeholder="{!AMOUNT}" type="text" name="amount" />
+				<input maxlength="8" data-prevent-input="[^\-\d{$BACKSLASH}{$DECIMAL_POINT*}]" size="7" id="give-amount" class="input-integer-required" placeholder="{!AMOUNT}" type="text" name="amount" />
 
 				<label class="accessibility-hidden" for="give-reason">{!REASON}</label>
 				<input maxlength="255" size="26" id="give-reason" class="input-line-required" placeholder="{!REASON}" type="text" name="reason" />
@@ -46,7 +46,7 @@
 			<div>
 				<div class="points-give-shared-options">
 					<label class="accessibility-hidden" for="give-amount">{!AMOUNT}</label>
-					<input maxlength="10" data-cms-invalid-pattern="[^\-\d{$BACKSLASH}{$DECIMAL_POINT*}]" size="7" id="give-amount" class="input-integer-required" placeholder="{!AMOUNT}" type="text" name="amount" />
+					<input maxlength="10" data-prevent-input="[^\-\d{$BACKSLASH}{$DECIMAL_POINT*}]" size="7" id="give-amount" class="input-integer-required" placeholder="{!AMOUNT}" type="text" name="amount" />
 
 					<label class="accessibility-hidden" for="give-reason">{!REASON}</label>
 					<input maxlength="255" size="18" id="give-reason" class="input-line-required" placeholder="{!REASON}" type="text" name="reason" />

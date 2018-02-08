@@ -41,7 +41,7 @@
 
 			<p>
 				<label class="accessibility-hidden" for="give-amount">{!AMOUNT}</label>
-				<input maxlength="8" data-cms-invalid-pattern="[^\-\d{$BACKSLASH}{$DECIMAL_POINT*}]" size="7" id="give-amount" class="input-integer-required" placeholder="{!AMOUNT}" type="text" name="amount" />
+				<input maxlength="8" data-prevent-input="[^\-\d{$BACKSLASH}{$DECIMAL_POINT*}]" size="7" id="give-amount" class="input-integer-required" placeholder="{!AMOUNT}" type="text" name="amount" />
 
 				<label class="points-anon" for="give-anonymous">{!TICK_ANON}: <input type="checkbox" id="give-anonymous" name="anonymous" value="1" /></label>
 
@@ -83,7 +83,7 @@
 
 					<p>
 						<label class="accessibility-hidden" for="give-amount">{!AMOUNT}</label>
-						<input maxlength="8" data-cms-invalid-pattern="[^\-\d{$BACKSLASH}{$DECIMAL_POINT*}]" size="7" id="give-amount" class="input-integer-required" placeholder="{!AMOUNT}" type="text" name="amount" />
+						<input maxlength="8" data-prevent-input="[^\-\d{$BACKSLASH}{$DECIMAL_POINT*}]" size="7" id="give-amount" class="input-integer-required" placeholder="{!AMOUNT}" type="text" name="amount" />
 
 						<input id="give-points-submit" class="button-micro buttons--points" type="submit" value="{!PROCEED_SHORT}" />
 					</p>
