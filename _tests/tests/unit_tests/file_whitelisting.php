@@ -140,4 +140,21 @@ class file_whitelisting_test_set extends cms_test_case
 
         $this->assertTrue($file_types == $file_types_expected);
     }
+
+    public function testOtherValidTypes()
+    {
+        foreach (array('valid_images', 'valid_videos', 'valid_audios') as $f) {
+            $path = get_file_base() . '/sources/hooks/systems/config/' . $f . '.php';
+            $c = file_get_contents($path);
+
+            $file_types = array();
+            $matches = array();
+            preg_match('#return \'([^\']+)\';#', $c, $matches);
+            $file_types = explode(',', $matches[1]);
+
+            foreach ($file_types as $file_type) {
+                $this->assertTrue(in_array($file_type, $this->file_types));
+            }
+        }
+    }
 }
