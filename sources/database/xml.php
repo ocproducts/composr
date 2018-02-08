@@ -428,11 +428,9 @@ class Database_Static_xml extends DatabaseDriver
      * @param  integer $start The start row to affect
      * @param  boolean $fail_ok Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)
      * @param  boolean $get_insert_id Whether to get the autoincrement ID created for an insert query
-     * @param  boolean $no_syndicate Whether to force the query to execute on the XML database driver (won't optimise by using MySQL). Useful for calls happening for multi-part queries from within this DB driver
-     * @param  boolean $save_as_volatile Whether we are saving as a 'volatile' file extension
      * @return ?mixed The results (null: no results), or the insert ID
      */
-    public function query($query, $db, $max = null, $start = 0, $fail_ok = false, $get_insert_id = false, $no_syndicate = false, $save_as_volatile = false)
+    public function query($query, $db, $max = null, $start = 0, $fail_ok = false, $get_insert_id = false, $save_as_volatile = false)
     {
         global $DELIMITERS_FLIPPED, $DELIMITERS, $SYMBOL_DELIMITER;
 
@@ -1261,7 +1259,7 @@ class Database_Static_xml extends DatabaseDriver
             }
         }
 
-        $test_results = $this->query('SELECT * FROM ' . $table_name . ' WHERE ' . $where, $db, 2, 0, $fail_ok, false, true);
+        $test_results = $this->query('SELECT * FROM ' . $table_name . ' WHERE ' . $where, $db, 2, 0, $fail_ok);
         if (count($test_results) == 0) {
             return false;
         }

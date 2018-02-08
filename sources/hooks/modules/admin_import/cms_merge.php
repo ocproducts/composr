@@ -2235,21 +2235,19 @@ class Hook_import_cms_merge
 
             // Tedious...
             foreach (array('long', 'short', 'float', 'integer') as $table) {
-                $rows2 = $db->query('catalogue_efv_' . $table, array('*'), array('ce_id' => $row['id']), '', null, 0, true);
-                if ($rows2 !== null) { // Older versions of Composr don't have float and integer
-                    foreach ($rows2 as $row2) {
-                        $remapped = import_id_remap_get('catalogue_field', strval($row2['cf_id']), true);
-                        if ($remapped === null) {
-                            continue;
-                        }
-                        $value = $row2['cv_value'];
-                        if (is_integer($value)) {
-                            $value = strval($value);
-                        } elseif (is_float($value)) {
-                            $value = float_to_raw_string($value);
-                        }
-                        $map[$remapped] = $value;
+                $rows2 = $db->query_select('catalogue_efv_' . $table, array('*'), array('ce_id' => $row['id']), '', null, 0, true);
+                foreach ($rows2 as $row2) {
+                    $remapped = import_id_remap_get('catalogue_field', strval($row2['cf_id']), true);
+                    if ($remapped === null) {
+                        continue;
                     }
+                    $value = $row2['cv_value'];
+                    if (is_integer($value)) {
+                        $value = strval($value);
+                    } elseif (is_float($value)) {
+                        $value = float_to_raw_string($value);
+                    }
+                    $map[$remapped] = $value;
                 }
             }
             $rows2 = $db->query_select('catalogue_efv_long_trans', array('*'), array('ce_id' => $row['id']));
