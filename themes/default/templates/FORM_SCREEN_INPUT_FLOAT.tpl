@@ -1,1 +1,1 @@
-<input maxlength="255" tabindex="{TABINDEX*}" data-cms-invalid-pattern="[^\-\d{$BACKSLASH}{$DECIMAL_POINT*}]" class="input-float{REQUIRED*}" step="any" type="number" id="{NAME*}" name="{NAME*}" value="{DEFAULT*}" />
+<input maxlength="255" tabindex="{TABINDEX*}" data-prevent-input="[^\-\d{$BACKSLASH}{$DECIMAL_POINT*}]" class="input-float{REQUIRED*}" step="any" type="number" id="{NAME*}" name="{NAME*}" value="{DEFAULT*}" />
