@@ -1693,9 +1693,9 @@ class Tempcode
      * Attach the specified Tempcode to the right of the current Tempcode object.
      *
      * @param  mixed $attach The Tempcode/string to attach
-     * @param  boolean $avoid_child_merge If we've already merged the children from what we're attaching into the child tree (at bind stage)
+     * @param  boolean $enable_child_merge If we've already merged the children from what we're attaching into the child tree (at bind stage) then pass as false
      */
-    public function attach($attach, $avoid_child_merge = false)
+    public function attach($attach, $enable_child_merge = true)
     {
         if ($attach === '') {
             return;
@@ -1729,7 +1729,7 @@ class Tempcode
                 }
             }
 
-            if ((!$avoid_child_merge) && ($GLOBALS['RECORD_TEMPLATES_USED']) && (isset($attach->metadata))) {
+            if (($enable_child_merge) && ($GLOBALS['RECORD_TEMPLATES_USED']) && (isset($attach->metadata))) {
                 if (!isset($this->metadata)) {
                     require_code('themes_meta_tree');
                     $this->metadata = create_template_tree_metadata();
