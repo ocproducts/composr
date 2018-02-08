@@ -3145,8 +3145,11 @@ function make_fractionable_editable($content_type, $id, $title)
 
     $parameters = array(
         is_object($title) ? $title->evaluate() : $title,
-        array_key_exists('edit_page_link_field', $info) ? $info['edit_page_link_field'] : preg_replace('#^\w\w?_#', '', array_key_exists('title_field_post', $info) ? $info['title_field_post'] : $info['title_field']),
-        array_key_exists('edit_page_link_pattern_post', $info) ? str_replace('_WILD', is_integer($id) ? strval($id) : $id, $info['edit_page_link_pattern_post']) : preg_replace('#:_(.*)#', ':__${1}', str_replace('_WILD', is_integer($id) ? strval($id) : $id, $info['edit_page_link_pattern'])),
+        array_key_exists('edit_page_link_field', $info) ? $info['edit_page_link_field'] : preg_replace('#^\w\w?_#', '',
+        array_key_exists('title_field_post', $info) ? $info['title_field_post'] : $info['title_field']),
+        array_key_exists('edit_page_link_pattern_post', $info) ? str_replace('_WILD', is_integer($id) ? strval($id) : $id,
+        $info['edit_page_link_pattern_post']) : preg_replace('#:_(.*)#', ':__${1}', str_replace('_WILD',
+        is_integer($id) ? strval($id) : $id, $info['edit_page_link_pattern'])),
         (array_key_exists('title_field_supports_comcode', $info) && $info['title_field_supports_comcode']) ? '1' : '0',
     );
     return directive_tempcode('FRACTIONAL_EDITABLE', is_object($title) ? $title : escape_html($title), $parameters);
