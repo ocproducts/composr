@@ -115,10 +115,10 @@ function render_calendar_type_box($row, $zone = '_SEARCH', $give_context = true,
  * Get the week number for a time.
  *
  * @param  TIME $timestamp The week timestamp
- * @param  boolean $no_year Whether to do it contextually to the year, rather than including the year
+ * @param  boolean $within_year Whether to do it contextually to the year, rather than including the year
  * @return string The week number
  */
-function get_week_number_for($timestamp, $no_year = false)
+function get_week_number_for($timestamp, $within_year = false)
 {
     $ssw = (get_option('ssw') == '1');
 
