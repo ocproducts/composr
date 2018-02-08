@@ -153,7 +153,7 @@ function embed_feedback_systems($page_name, $content_id, $allow_rating, $allow_c
 
     actualise_rating($allow_rating == 1, $page_name, $content_id, $content_url, $content_title);
     if ((post_param_string('title', null) !== null) || ($validated == 1)) {
-        actualise_post_comment($allow_comments >= 1, $page_name, $content_id, $content_url, $content_title, $forum, false, null, false, false, false, null, null, $time);
+        actualise_post_comment($allow_comments >= 1, $page_name, $content_id, $content_url, $content_title, $forum, true, null, false, false, false, null, null, $time);
     }
     $rating_details = get_rating_box($content_url, $content_title, $page_name, $content_id, $allow_rating == 1, $submitter);
     $comment_details = get_comments($page_name, $allow_comments == 1, $content_id, false, $forum, null, null, false, null, $submitter, $allow_comments == 2);
@@ -203,7 +203,7 @@ function post_comment_script()
     }
 
     // Post comment
-    actualise_post_comment($allow_comments >= 1, $page_name, $content_id, $content_url, $content_title, $forum, false, null, false, false, false, null, null, $time);
+    actualise_post_comment($allow_comments >= 1, $page_name, $content_id, $content_url, $content_title, $forum, true, null, false, false, false, null, null, $time);
 
     // Get new comments state
     $comment_details = get_comments($page_name, $allow_comments == 1, $content_id, false, $forum, null, null, false, null, $submitter, $allow_comments == 2);
@@ -685,7 +685,7 @@ function extract_topic_identifier($full_text)
  * @param  mixed $content_url The URL to where the commenting will pass back to (to put into the comment topic header) (URLPATH or Tempcode)
  * @param  ?string $content_title The title to where the commenting will pass back to (to put into the comment topic header) (null: don't know, but not first post so not important)
  * @param  ?string $forum The name of the forum to use (null: default comment forum)
- * @param  boolean $avoid_captcha Whether to not require a captcha
+ * @param  boolean $do_captcha Whether to require a captcha
  * @param  ?BINARY $validated Whether the post is validated (null: unknown, find whether it needs to be marked unvalidated initially). This only works with the Conversr driver (hence is the last parameter).
  * @param  boolean $explicit_allow Whether to force allowance
  * @param  boolean $no_success_message Whether to skip a success message
@@ -695,7 +695,7 @@ function extract_topic_identifier($full_text)
  * @param  ?TIME $time Time of comment topic (null: now)
  * @return boolean Whether a hidden post has been made
  */
-function actualise_post_comment($allow_comments, $content_type, $content_id, $content_url, $content_title, $forum = null, $avoid_captcha = false, $validated = null, $explicit_allow = false, $no_success_message = false, $private = false, $post_title = null, $post = null, $time = null)
+function actualise_post_comment($allow_comments, $content_type, $content_id, $content_url, $content_title, $forum = null, $do_captcha = true, $validated = null, $explicit_allow = false, $no_success_message = false, $private = false, $post_title = null, $post = null, $time = null)
 {
     if (!$explicit_allow) {
         if ((get_option('is_on_comments') == '0') || (!$allow_comments)) {
@@ -714,7 +714,7 @@ function actualise_post_comment($allow_comments, $content_type, $content_id, $co
     $forum_tie = (get_option('is_on_strong_forum_tie') == '1');
 
     if (addon_installed('captcha')) {
-        if (((array_key_exists('post', $_POST)) && ($_POST['post'] != '')) && (!$avoid_captcha)) {
+        if (((array_key_exists('post', $_POST)) && ($_POST['post'] != '')) && ($do_captcha)) {
             require_code('captcha');
             enforce_captcha();
         }
