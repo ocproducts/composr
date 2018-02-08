@@ -1410,11 +1410,6 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             break;
 
         case 'title':
-            if (($semiparse_mode) && (strpos($comcode, '[contents') !== false)) {
-                $temp_tpl = make_string_tempcode(add_wysiwyg_comcode_markup($tag, $attributes, $embed, ($in_semihtml) || ($is_all_semihtml), WYSIWYG_COMCODE__STANDOUT_BLOCK, $html_errors));
-                break;
-            }
-
             $level = ($attributes['param'] != '') ? intval($attributes['param']) : 1;
             if ($level == 0) {
                 $level = 1; // Stop crazy Comcode causing stack errors with the toc

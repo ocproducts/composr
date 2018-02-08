@@ -87,6 +87,26 @@ class comcode_test_set extends cms_test_case
         $this->assertTrue(strpos($_actual, '>Foo</a>') !== false);
         $this->assertTrue(strpos($_actual, '>Bar</a>') !== false);
         $this->assertTrue(strpos($_actual, '>Test</a>') !== false);
+
+        // From semihtml coming direct from WYSIWYG...
+
+        set_option('eager_wysiwyg', '0');
+
+        $comcode = '
+<input class="cms_keep_ui_controlled" readonly="readonly" size="45" style="cursor: pointer;" title="[contents][/contents]" type="button" value="contents Comcode tag (dbl-click to edit/delete)" />
+
+<h2 id="xxx">Foo</h2>
+
+<h3 id="xxx">Bar</h3>
+
+<h2 id="xxx">Test</h2>
+';
+        $actual = comcode_to_tempcode(semihtml_to_comcode('[semihtml]' . $comcode . '[/semihtml]'));
+        $_actual = $actual->evaluate();
+
+        $this->assertTrue(strpos($_actual, '>Foo</a>') !== false);
+        $this->assertTrue(strpos($_actual, '>Bar</a>') !== false);
+        $this->assertTrue(strpos($_actual, '>Test</a>') !== false);
     }
 
     public function testEmoticons()

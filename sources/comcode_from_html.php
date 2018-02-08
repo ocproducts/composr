@@ -382,9 +382,10 @@ function remove_wysiwyg_comcode_markup(&$semihtml)
  * Convert HTML headers to Comcode titles
  *
  * @param  string $semihtml Semi-HTML
+ * @param  boolean $forceful Whether to force conversion on all header tags, even if they don't match Comcode-style/simple headers exactly
  * @return string Semi-HTML, with headers converted to titles
  */
-function convert_html_headers_to_titles($semihtml)
+function convert_html_headers_to_titles($semihtml, $forceful)
 {
     if (stripos($semihtml, '<h') !== false) {
         $array_html_preg_replace = array();
@@ -395,12 +396,18 @@ function convert_html_headers_to_titles($semihtml)
         $array_html_preg_replace[] = array('#^\s*<h1 class="screen_title"[^<>]*>(.*)</h1>\s*$#siU', '[title="1"]${1}[/title]' . "\n");
         $array_html_preg_replace[] = array('#^\s*<h1 id="screen_title" class="screen_title"[^<>]*>(.*)</h1>\s*$#siU', '[title="1"]${1}[/title]' . "\n");
         $array_html_preg_replace[] = array('#^\s*<h1>(.*)</h1>\s*$#siU', '[title="1"]${1}[/title]' . "\n");
+        if ($forceful) {
+            $array_html_preg_replace[] = array('#^\s*<h1[^<>]*>(.*)</h1>\s*$#siU', '[title="1"]${1}[/title]' . "\n");
+        }
         $semihtml = array_html_preg_replace('h1', $array_html_preg_replace, $semihtml);
         $semihtml = preg_replace('#^\s*<h1[^>]+>(.*)</h1>\s*#siU', '[title="1"]${1}[/title]' . "\n", $semihtml);
         for ($i = 2; $i <= 4; $i++) {
             $array_html_preg_replace = array();
             $array_html_preg_replace[] = array('#^\s*<h' . strval($i) . '><span class="inner">(.*)</span></h' . strval($i) . '>\s*$#siU', '[title="' . strval($i) . '"]${1}[/title]' . "\n");
             $array_html_preg_replace[] = array('#^\s*<h' . strval($i) . '>(.*)</h' . strval($i) . '>\s*$#siU', '[title="' . strval($i) . '"]${1}[/title]' . "\n");
+            if ($forceful) {
+                $array_html_preg_replace[] = array('#^\s*<h' . strval($i) . '[^<>]*>(.*)</h' . strval($i) . '>\s*$#siU', '[title="' . strval($i) . '"]${1}[/title]' . "\n");
+            }
             $semihtml = array_html_preg_replace('h' . strval($i) . '', $array_html_preg_replace, $semihtml);
         }
     }
@@ -525,7 +532,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
         $semihtml = array_html_preg_replace('kbd', $array_html_preg_replace, $semihtml);
 
         if (strpos($semihtml, '[contents') !== false) { // Contents tag needs proper Comcode titles
-            $semihtml = convert_html_headers_to_titles($semihtml);
+            $semihtml = convert_html_headers_to_titles($semihtml, true);
         }
 
         // Is it really simple? It is if $count is zero (i.e. nothing fancy)...
@@ -698,7 +705,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
     } while ($semihtml != $old_semihtml);
 
     // Perform lots of conversions. We can't convert everything. Sometimes we reverse-convert what Comcode forward-converts; sometimes we match generic HTML; sometimes we match Microsoft Word or Open Office; sometimes we do lossy match
-    $semihtml = convert_html_headers_to_titles($semihtml);
+    $semihtml = convert_html_headers_to_titles($semihtml, strpos($semihtml, '[contents') !== false);
     $array_html_preg_replace = array();
     $array_html_preg_replace[] = array('#^<span>(.*)</span>$#siU', '${1}');
     $array_html_preg_replace[] = array('#^<span( charset="[^"]*")?( content="[^"]*")?( name="[^"]*")?' . '>(.*)</span>$#siU', '${4}');
