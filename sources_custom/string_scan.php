@@ -705,7 +705,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         TREE_LIST_SELECT
         GREETING
         BREADCRUMB_OVERRIDES
-        IMPORTANCE_MODULUS
+        DISPLAY_LIKELIHOOD
         MASS_PERMISSION_SETTING
         IDEAL_DENSITY
         BANNER_INFORMATION
@@ -3873,7 +3873,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DESCRIPTION_IMAGE_THUMBNAILS
         DESCRIPTION_IMMEDIATE_USE
         DESCRIPTION_IMMEDIATE_USE_ADD
-        DESCRIPTION_IMPORTANCE_MODULUS
+        DESCRIPTION_DISPLAY_LIKELIHOOD
         DESCRIPTION_IMPORTER
         DESCRIPTION_IMPORT_BASE_URL
         DESCRIPTION_IMPORT_BLOG_COMMENTS
@@ -10113,7 +10113,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         _FEEDS
         _GALLERY
         _HOME
-        _IMPORTANCE_MODULUS
+        _DISPLAY_LIKELIHOOD
         _INSTANT_MESSAGING
         _INVALID_EMAIL_ADDRESS
         _INVITE_MEMBER_TO_PT

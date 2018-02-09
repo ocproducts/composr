@@ -79,7 +79,7 @@ class Block_main_top_sites
         foreach ($_banners as $banner) {
             $description = get_translated_tempcode('banners', $banner, 'caption');
 
-            $bd = show_banner($banner['name'], $banner['b_title_text'], $description, $banner['b_direct_code'], $banner['img_url'], '', $banner['site_url'], $banner['b_type'], $banner['submitter']);
+            $bd = show_banner($banner['name'], $banner['title_text'], $description, $banner['direct_code'], $banner['img_url'], '', $banner['site_url'], $banner['b_type'], $banner['submitter']);
 
             $banners[] = array(
                 'BANNER' => $bd,

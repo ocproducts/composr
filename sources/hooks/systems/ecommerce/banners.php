@@ -85,7 +85,7 @@ class Hook_ecommerce_banners
 
         // It's slightly naughty for us to use get_member(), but it's only for something going into item_description so safe
         $banner_name = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_sales s JOIN ' . get_table_prefix() . 'ecom_transactions t ON t.id=s.txn_id', 'details2', array('details' => do_lang('BANNER', null, null, null, get_site_default_lang()), 'member_id' => get_member(), 't_type_code' => 'BANNER_ACTIVATE'));
-        $sql = 'SELECT SUM(importance_modulus) FROM ' . get_table_prefix() . 'banners WHERE ' . db_string_equal_to('b_type', '');
+        $sql = 'SELECT SUM(display_likelihood) FROM ' . get_table_prefix() . 'banners WHERE ' . db_string_equal_to('b_type', '');
         if ($banner_name !== null) {
             $sql .= ' AND ' . db_string_not_equal_to('name', $banner_name);
         }
@@ -98,7 +98,7 @@ class Hook_ecommerce_banners
         if ($banner_name !== null) {
             $banner_rows = $GLOBALS['SITE_DB']->query_select('banners', array('*'), array('name' => $banner_name), '', 1);
             if (array_key_exists(0, $banner_rows)) {
-                $current_importance = $banner_rows[0]['importance_modulus'];
+                $current_importance = $banner_rows[0]['display_likelihood'];
                 $current_hits = $banner_rows[0]['campaign_remaining'];
             }
         }
@@ -392,12 +392,12 @@ class Hook_ecommerce_banners
                 $extraimp = intval(preg_replace('#^BANNER_UPGRADE_IMPORTANCE_#', '', $type_code));
                 $member_id = intval($purchase_id);
                 $banner_name = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_sales s JOIN ' . get_table_prefix() . 'ecom_transactions t ON t.id=s.txn_id', 'details2', array('details' => do_lang('BANNER', null, null, null, get_site_default_lang()), 'member_id' => $member_id, 't_type_code' => 'BANNER_ACTIVATE'));
-                $curimp = $GLOBALS['SITE_DB']->query_select_value_if_there('banners', 'importance_modulus', array('name' => $banner_name));
+                $curimp = $GLOBALS['SITE_DB']->query_select_value_if_there('banners', 'display_likelihood', array('name' => $banner_name));
                 if ($curimp === null) {
                     warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
                 }
                 $aftimp = $curimp + $extraimp;
-                $GLOBALS['SITE_DB']->query_update('banners', array('importance_modulus' => $aftimp), array('name' => $banner_name), '', 1);
+                $GLOBALS['SITE_DB']->query_update('banners', array('display_likelihood' => $aftimp), array('name' => $banner_name), '', 1);
 
                 $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => $details['item_name'], 'details2' => strval($extraimp), 'txn_id' => $details['TXN_ID']));
 

@@ -906,7 +906,7 @@ class Hook_import_cms_merge
                     $row['direct_code'],
                     $row['campaign_remaining'],
                     $row['site_url'],
-                    $row['importance_modulus'],
+                    $row['display_likelihood'],
                     $row['notes'],
                     $row['the_type'],
                     $row['expiry_date'],

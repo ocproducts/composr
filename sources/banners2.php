@@ -82,7 +82,7 @@ function render_banner_box($row, $zone = '_SEARCH', $give_context = true, $guid 
     $_title = $row['name'];
     $title = $give_context ? do_lang('CONTENT_IS_OF_TYPE', do_lang('BANNER'), $_title) : $_title;
 
-    $summary = show_banner($row['name'], $row['b_title_text'], get_translated_tempcode('banners', $just_banner_row, 'caption'), $row['b_direct_code'], $row['img_url'], '', $row['site_url'], $row['b_type'], $row['submitter']);
+    $summary = show_banner($row['name'], $row['title_text'], get_translated_tempcode('banners', $just_banner_row, 'caption'), $row['direct_code'], $row['img_url'], '', $row['site_url'], $row['b_type'], $row['submitter']);
 
     return do_template('SIMPLE_PREVIEW_BOX', array(
         '_GUID' => ($guid != '') ? $guid : 'aaea5f7f64297ab46aa3b3182fb57c37',
@@ -157,11 +157,11 @@ function create_selection_list_banners($it = null, $only_owned = null)
  * @param  SHORT_TEXT $caption The caption of the banner
  * @param  LONG_TEXT $direct_code Complete HTML/PHP for the banner
  * @param  LONG_TEXT $notes Any notes associated with the banner
- * @param  integer $importancemodulus The banners "importance modulus"
+ * @param  integer $display_likelihood The banner's "Display likelihood"
  * @range  1 max
- * @param  ?integer $campaignremaining The number of hits the banner may have (null: not applicable for this banner type)
+ * @param  ?integer $campaign_remaining The number of hits the banner may have (null: not applicable for this banner type)
  * @range  0 max
- * @param  SHORT_INTEGER $the_type The type of banner (0=permanent, 1=campaign, 2=fallback)
+ * @param  SHORT_INTEGER $deployment_agreement The type of banner (0=permanent, 1=campaign, 2=fallback)
  * @set    0 1 2
  * @param  ?TIME $expiry_date The banner expiry date (null: never expires)
  * @param  ?MEMBER $submitter The banners submitter (null: current member)
@@ -172,7 +172,7 @@ function create_selection_list_banners($it = null, $only_owned = null)
  * @param  SHORT_TEXT $title_text The title text for the banner (only used for text banners, and functions as the 'trigger text' if the banner type is shown inline)
  * @return array A pair: The input field Tempcode, JavaScript code
  */
-function get_banner_form_fields($simplified = false, $name = '', $image_url = '', $site_url = '', $caption = '', $direct_code = '', $notes = '', $importancemodulus = 3, $campaignremaining = 50, $the_type = 1, $expiry_date = null, $submitter = null, $validated = 1, $b_type = '', $b_types = array(), $regions = array(), $title_text = '')
+function get_banner_form_fields($simplified = false, $name = '', $image_url = '', $site_url = '', $caption = '', $direct_code = '', $notes = '', $display_likelihood = 3, $campaign_remaining = 50, $deployment_agreement = 1, $expiry_date = null, $submitter = null, $validated = 1, $b_type = '', $b_types = array(), $regions = array(), $title_text = '')
 {
     require_code('images');
 
@@ -242,16 +242,16 @@ function get_banner_form_fields($simplified = false, $name = '', $image_url = ''
 
         if (has_privilege(get_member(), 'full_banner_setup')) {
             $radios = new Tempcode();
-            $radios->attach(form_input_radio_entry('the_type', strval(BANNER_PERMANENT), ($the_type == BANNER_PERMANENT), do_lang_tempcode('BANNER_PERMANENT')));
-            $radios->attach(form_input_radio_entry('the_type', strval(BANNER_CAMPAIGN), ($the_type == BANNER_CAMPAIGN), do_lang_tempcode('BANNER_CAMPAIGN')));
-            $radios->attach(form_input_radio_entry('the_type', strval(BANNER_FALLBACK), ($the_type == BANNER_FALLBACK), do_lang_tempcode('BANNER_FALLBACK')));
-            $fields->attach(form_input_radio(do_lang_tempcode('DEPLOYMENT_AGREEMENT'), do_lang_tempcode('DESCRIPTION_BANNER_TYPE'), 'the_type', $radios));
-            $fields->attach(form_input_integer(do_lang_tempcode('HITS_ALLOCATED'), do_lang_tempcode('DESCRIPTION_HITS_ALLOCATED'), 'campaignremaining', $campaignremaining, false));
-            $total_importance = $GLOBALS['SITE_DB']->query_value_if_there('SELECT SUM(importance_modulus) FROM ' . get_table_prefix() . 'banners WHERE ' . db_string_not_equal_to('name', $name));
+            $radios->attach(form_input_radio_entry('deployment_agreement', strval(BANNER_PERMANENT), ($deployment_agreement == BANNER_PERMANENT), do_lang_tempcode('BANNER_PERMANENT')));
+            $radios->attach(form_input_radio_entry('deployment_agreement', strval(BANNER_CAMPAIGN), ($deployment_agreement == BANNER_CAMPAIGN), do_lang_tempcode('BANNER_CAMPAIGN')));
+            $radios->attach(form_input_radio_entry('deployment_agreement', strval(BANNER_FALLBACK), ($deployment_agreement == BANNER_FALLBACK), do_lang_tempcode('BANNER_FALLBACK')));
+            $fields->attach(form_input_radio(do_lang_tempcode('DEPLOYMENT_AGREEMENT'), do_lang_tempcode('DESCRIPTION_BANNER_TYPE'), 'deployment_agreement', $radios));
+            $fields->attach(form_input_integer(do_lang_tempcode('HITS_ALLOCATED'), do_lang_tempcode('DESCRIPTION_HITS_ALLOCATED'), 'campaign_remaining', $campaign_remaining, false));
+            $total_importance = $GLOBALS['SITE_DB']->query_value_if_there('SELECT SUM(display_likelihood) FROM ' . get_table_prefix() . 'banners WHERE ' . db_string_not_equal_to('name', $name));
             if ($total_importance === null) {
                 $total_importance = 0;
             }
-            $fields->attach(form_input_integer(do_lang_tempcode('IMPORTANCE_MODULUS'), do_lang_tempcode('DESCRIPTION_IMPORTANCE_MODULUS', strval($total_importance), strval($importancemodulus)), 'importancemodulus', $importancemodulus, true));
+            $fields->attach(form_input_integer(do_lang_tempcode('DISPLAY_LIKELIHOOD'), do_lang_tempcode('DESCRIPTION_DISPLAY_LIKELIHOOD', strval($total_importance), strval($display_likelihood)), 'display_likelihood', $display_likelihood, true));
         }
 
         $fields->attach(form_input_date(do_lang_tempcode('EXPIRY_DATE'), do_lang_tempcode('DESCRIPTION_EXPIRY_DATE'), 'expiry_date', false, ($expiry_date === null), true, $expiry_date, 2));
@@ -387,13 +387,13 @@ function check_banner($title_text = '', $direct_code = '', $b_type = '', $b_type
  * @param  SHORT_TEXT $title_text The title text for the banner (only used for text banners, and functions as the 'trigger text' if the banner type is shown inline)
  * @param  SHORT_TEXT $caption The caption of the banner
  * @param  LONG_TEXT $direct_code Complete HTML/PHP for the banner
- * @param  ?integer $campaignremaining The number of hits the banner may have (null: not applicable for this banner type)
+ * @param  ?integer $campaign_remaining The number of hits the banner may have (null: not applicable for this banner type)
  * @range  0 max
  * @param  URLPATH $site_url The URL to the site the banner leads to
- * @param  integer $importancemodulus The banners "importance modulus"
+ * @param  integer $display_likelihood The banner's "Display likelihood"
  * @range  1 max
  * @param  LONG_TEXT $notes Any notes associated with the banner
- * @param  SHORT_INTEGER $the_type The type of banner (a BANNER_* constant)
+ * @param  SHORT_INTEGER $deployment_agreement The type of banner (a BANNER_* constant)
  * @set    0 1 2
  * @param  ?TIME $expiry_date The banner expiry date (null: never)
  * @param  ?MEMBER $submitter The banners submitter (null: current member)
@@ -410,10 +410,10 @@ function check_banner($title_text = '', $direct_code = '', $b_type = '', $b_type
  * @param  boolean $uniqify Whether to force the name as unique, if there's a conflict
  * @return ID_TEXT The name
  */
-function add_banner($name, $imgurl, $title_text, $caption, $direct_code, $campaignremaining, $site_url, $importancemodulus, $notes, $the_type, $expiry_date, $submitter, $validated = 0, $b_type = '', $b_types = array(), $regions = array(), $time = null, $hits_from = 0, $hits_to = 0, $views_from = 0, $views_to = 0, $edit_date = null, $uniqify = false)
+function add_banner($name, $imgurl, $title_text, $caption, $direct_code, $campaign_remaining, $site_url, $display_likelihood, $notes, $deployment_agreement, $expiry_date, $submitter, $validated = 0, $b_type = '', $b_types = array(), $regions = array(), $time = null, $hits_from = 0, $hits_to = 0, $views_from = 0, $views_to = 0, $edit_date = null, $uniqify = false)
 {
-    if ($campaignremaining === null) {
-        $campaignremaining = 0;
+    if ($campaign_remaining === null) {
+        $campaign_remaining = 0;
     }
 
     if ($time === null) {
@@ -436,19 +436,19 @@ function add_banner($name, $imgurl, $title_text, $caption, $direct_code, $campai
         $validated = 1;
     }
     $map = array(
-        'b_title_text' => $title_text,
-        'b_direct_code' => $direct_code,
+        'title_text' => $title_text,
+        'direct_code' => $direct_code,
         'b_type' => $b_type,
         'edit_date' => $edit_date,
         'add_date' => $time,
         'expiry_date' => $expiry_date,
-        'the_type' => $the_type,
+        'deployment_agreement' => $deployment_agreement,
         'submitter' => $submitter,
         'name' => $name,
         'img_url' => $imgurl,
-        'campaign_remaining' => $campaignremaining,
+        'campaign_remaining' => $campaign_remaining,
         'site_url' => $site_url,
-        'importance_modulus' => $importancemodulus,
+        'display_likelihood' => $display_likelihood,
         'notes' => $notes,
         'validated' => $validated,
         'hits_from' => $hits_from,
@@ -492,13 +492,13 @@ function add_banner($name, $imgurl, $title_text, $caption, $direct_code, $campai
  * @param  SHORT_TEXT $title_text The title text for the banner (only used for text banners, and functions as the 'trigger text' if the banner type is shown inline)
  * @param  SHORT_TEXT $caption The caption of the banner
  * @param  LONG_TEXT $direct_code Complete HTML/PHP for the banner
- * @param  ?integer $campaignremaining The number of hits the banner may have (null: not applicable for this banner type)
+ * @param  ?integer $campaign_remaining The number of hits the banner may have (null: not applicable for this banner type)
  * @range  0 max
  * @param  URLPATH $site_url The URL to the site the banner leads to
- * @param  integer $importancemodulus The banners "importance modulus"
+ * @param  integer $display_likelihood The banner's "Display likelihood"
  * @range  1 max
  * @param  LONG_TEXT $notes Any notes associated with the banner
- * @param  SHORT_INTEGER $the_type The type of banner (a BANNER_* constant)
+ * @param  SHORT_INTEGER $deployment_agreement The type of banner (a BANNER_* constant)
  * @set    0 1 2
  * @param  ?TIME $expiry_date The banner expiry date (null: never)
  * @param  ?MEMBER $submitter The banners submitter (null: leave unchanged)
@@ -512,7 +512,7 @@ function add_banner($name, $imgurl, $title_text, $caption, $direct_code, $campai
  * @param  boolean $uniqify Whether to force the name as unique, if there's a conflict
  * @return ID_TEXT The name
  */
-function edit_banner($old_name, $name, $imgurl, $title_text, $caption, $direct_code, $campaignremaining, $site_url, $importancemodulus, $notes, $the_type, $expiry_date, $submitter, $validated, $b_type, $b_types = array(), $regions = array(), $edit_time = null, $add_time = null, $null_is_literal = false, $uniqify = false)
+function edit_banner($old_name, $name, $imgurl, $title_text, $caption, $direct_code, $campaign_remaining, $site_url, $display_likelihood, $notes, $deployment_agreement, $expiry_date, $submitter, $validated, $b_type, $b_types = array(), $regions = array(), $edit_time = null, $add_time = null, $null_is_literal = false, $uniqify = false)
 {
     if ($old_name != $name) {
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('banners', 'name', array('name' => $name));
@@ -558,15 +558,15 @@ function edit_banner($old_name, $name, $imgurl, $title_text, $caption, $direct_c
     }
 
     $update_map = array(
-        'b_title_text' => $title_text,
-        'b_direct_code' => $direct_code,
+        'title_text' => $title_text,
+        'direct_code' => $direct_code,
         'expiry_date' => $expiry_date,
-        'the_type' => $the_type,
+        'deployment_agreement' => $deployment_agreement,
         'name' => $name,
         'img_url' => $imgurl,
-        'campaign_remaining' => $campaignremaining,
+        'campaign_remaining' => $campaign_remaining,
         'site_url' => $site_url,
-        'importance_modulus' => $importancemodulus,
+        'display_likelihood' => $display_likelihood,
         'notes' => $notes,
         'validated' => $validated,
         'b_type' => $b_type,

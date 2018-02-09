@@ -83,17 +83,17 @@ class Module_banners
                 'expiry_date' => '?TIME',
                 'submitter' => 'MEMBER',
                 'img_url' => 'URLPATH',
-                'the_type' => 'SHORT_INTEGER', // a BANNER_* constant
-                'b_title_text' => 'SHORT_TEXT',
+                'deployment_agreement' => 'SHORT_INTEGER', // a BANNER_* constant
+                'title_text' => 'SHORT_TEXT',
                 'caption' => 'SHORT_TRANS__COMCODE',
-                'b_direct_code' => 'LONG_TEXT',
+                'direct_code' => 'LONG_TEXT',
                 'campaign_remaining' => 'INTEGER',
                 'site_url' => 'URLPATH',
                 'hits_from' => 'INTEGER',
                 'views_from' => 'INTEGER',
                 'hits_to' => 'INTEGER',
                 'views_to' => 'INTEGER',
-                'importance_modulus' => 'INTEGER',
+                'display_likelihood' => 'INTEGER',
                 'notes' => 'LONG_TEXT',
                 'validated' => 'BINARY',
                 'add_date' => 'TIME',
@@ -102,7 +102,7 @@ class Module_banners
             ));
 
             $GLOBALS['SITE_DB']->create_index('banners', 'banner_child_find', array('b_type'));
-            $GLOBALS['SITE_DB']->create_index('banners', 'the_type', array('the_type'));
+            $GLOBALS['SITE_DB']->create_index('banners', 'deployment_agreement', array('deployment_agreement'));
             $GLOBALS['SITE_DB']->create_index('banners', 'expiry_date', array('expiry_date'));
             $GLOBALS['SITE_DB']->create_index('banners', 'badd_date', array('add_date'));
             $GLOBALS['SITE_DB']->create_index('banners', 'topsites', array('hits_from', 'hits_to'));
@@ -111,9 +111,9 @@ class Module_banners
 
             $map = array(
                 'name' => 'advertise_here',
-                'b_title_text' => '',
-                'b_direct_code' => '',
-                'the_type' => BANNER_FALLBACK,
+                'title_text' => '',
+                'direct_code' => '',
+                'deployment_agreement' => BANNER_FALLBACK,
                 'img_url' => 'data/images/advertise_here.png',
                 'campaign_remaining' => 0,
                 'site_url' => get_base_url() . '/index.php?page=advertise',
@@ -121,7 +121,7 @@ class Module_banners
                 'views_from' => 0,
                 'hits_to' => 0,
                 'views_to' => 0,
-                'importance_modulus' => 10,
+                'display_likelihood' => 10,
                 'notes' => 'Provided as a default. This is a fallback banner (it shows when others are not available).',
                 'validated' => 1,
                 'add_date' => time(),
@@ -136,9 +136,9 @@ class Module_banners
 
             $map = array(
                 'name' => 'donate',
-                'b_title_text' => '',
-                'b_direct_code' => '',
-                'the_type' => BANNER_PERMANENT,
+                'title_text' => '',
+                'direct_code' => '',
+                'deployment_agreement' => BANNER_PERMANENT,
                 'img_url' => 'data/images/donate.png',
                 'campaign_remaining' => 0,
                 'site_url' => get_base_url() . '/index.php?page=donate',
@@ -146,7 +146,7 @@ class Module_banners
                 'views_from' => 0,
                 'hits_to' => 0,
                 'views_to' => 0,
-                'importance_modulus' => 30,
+                'display_likelihood' => 30,
                 'notes' => 'Provided as a default.',
                 'validated' => 1,
                 'add_date' => time(),
@@ -200,7 +200,7 @@ class Module_banners
         }
 
         if (($upgrade_from !== null) && ($upgrade_from < 6)) { // LEGACY
-            $GLOBALS['SITE_DB']->add_table_field('banners', 'b_direct_code', 'LONG_TEXT');
+            $GLOBALS['SITE_DB']->add_table_field('banners', 'direct_code', 'LONG_TEXT');
             delete_config_option('money_ad_code');
             delete_config_option('advert_chance');
             delete_config_option('is_on_banners');
@@ -222,6 +222,13 @@ class Module_banners
 
         if (($upgrade_from === null) || ($upgrade_from < 8)) {
             $GLOBALS['SITE_DB']->create_index('banner_clicks', 'member_id', array('c_member_id'));
+        }
+
+        if (($upgrade_from !== null) && ($upgrade_from < 8)) { // LEGACY
+            $GLOBALS['SITE_DB']->alter_table_field('banners', 'importance_modulus', 'INTEGER', 'display_likelihood');
+            $GLOBALS['SITE_DB']->alter_table_field('banners', 'the_type', 'SHORT_INTEGER', 'deployment_agreement');
+            $GLOBALS['SITE_DB']->alter_table_field('banners', 'b_title_text', 'SHORT_TEXT', 'title_text');
+            $GLOBALS['SITE_DB']->alter_table_field('banners', 'b_direct_code', 'LONG_TEXT', 'direct_code');
         }
     }
 
@@ -351,9 +358,9 @@ class Module_banners
         $sortables = array(
             'name' => do_lang_tempcode('CODENAME'),
             'b_type' => do_lang_tempcode('BANNER_TYPE'),
-            'the_type' => do_lang_tempcode('DEPLOYMENT_AGREEMENT'),
+            'deployment_agreement' => do_lang_tempcode('DEPLOYMENT_AGREEMENT'),
             //'campaign_remaining' => do_lang_tempcode('HITS_ALLOCATED'),
-            'importance_modulus' => do_lang_tempcode('IMPORTANCE_MODULUS'),
+            'display_likelihood' => do_lang_tempcode('DISPLAY_LIKELIHOOD'),
             'expiry_date' => do_lang_tempcode('EXPIRY_DATE'),
             'add_date' => do_lang_tempcode('ADDED'),
         );
@@ -369,7 +376,7 @@ class Module_banners
             do_lang_tempcode('BANNER_TYPE'),
             //do_lang_tempcode('DEPLOYMENT_AGREEMENT'),
             //do_lang_tempcode('HITS_ALLOCATED'),
-            do_lang_tempcode('_IMPORTANCE_MODULUS'),
+            do_lang_tempcode('_DISPLAY_LIKELIHOOD'),
             do_lang_tempcode('EXPIRY_DATE'),
             do_lang_tempcode('ADDED'),
         );
@@ -396,7 +403,7 @@ class Module_banners
             $view_url = build_url($url_map + array('source' => $row['name']), '_SELF');
 
             $deployment_agreement = new Tempcode();
-            switch ($row['the_type']) {
+            switch ($row['deployment_agreement']) {
                 case BANNER_PERMANENT:
                     $deployment_agreement = do_lang_tempcode('BANNER_PERMANENT');
                     break;
@@ -413,7 +420,7 @@ class Module_banners
                 ($row['b_type'] == '') ? do_lang('_DEFAULT') : $row['b_type'],
                 //$deployment_agreement,  Too much detail
                 //integer_format($row['campaign_remaining']),  Too much detail
-                strval($row['importance_modulus']),
+                strval($row['display_likelihood']),
                 ($row['expiry_date'] === null) ? protect_from_escaping(do_lang_tempcode('NA_EM')) : make_string_tempcode(get_timezoned_date_time($row['expiry_date'])),
                 get_timezoned_date($row['add_date']),
             );
@@ -460,7 +467,7 @@ class Module_banners
 
         // Banner details table...
 
-        switch ($myrow['the_type']) {
+        switch ($myrow['deployment_agreement']) {
             case BANNER_PERMANENT:
                 $type = do_lang_tempcode('BANNER_PERMANENT');
                 break;
@@ -517,7 +524,7 @@ class Module_banners
 
         $map_table = do_template('MAP_TABLE', array('_GUID' => 'eb97a46d8e9813da7081991d5beed270', 'WIDTH' => '300', 'FIELDS' => $fields));
 
-        $banner = show_banner($myrow['name'], $myrow['b_title_text'], get_translated_tempcode('banners', $myrow, 'caption'), $myrow['b_direct_code'], $myrow['img_url'], $source, $myrow['site_url'], $myrow['b_type'], $myrow['submitter']);
+        $banner = show_banner($myrow['name'], $myrow['title_text'], get_translated_tempcode('banners', $myrow, 'caption'), $myrow['direct_code'], $myrow['img_url'], $source, $myrow['site_url'], $myrow['b_type'], $myrow['submitter']);
 
         $edit_url = new Tempcode();
         if ((has_actual_page_access(null, 'cms_banners', null, null)) && (has_edit_permission('mid', get_member(), $myrow['submitter'], 'cms_banners'))) {

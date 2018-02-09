@@ -126,7 +126,7 @@ class Module_admin_banners
         if ($has_banner_network) {
             $field_titles_arr = array_merge($field_titles_arr, array(do_lang_tempcode('BANNER_HITS_FROM'), do_lang_tempcode('BANNER_VIEWS_FROM')));
         }
-        $field_titles_arr = array_merge($field_titles_arr, array(do_lang_tempcode('BANNER_HITS_TO'), do_lang_tempcode('BANNER_VIEWS_TO'), do_lang_tempcode('BANNER_CLICKTHROUGH'), do_lang_tempcode('IMPORTANCE_MODULUS'), do_lang_tempcode('SUBMITTER'), do_lang_tempcode('ADDED')));
+        $field_titles_arr = array_merge($field_titles_arr, array(do_lang_tempcode('BANNER_HITS_TO'), do_lang_tempcode('BANNER_VIEWS_TO'), do_lang_tempcode('BANNER_CLICKTHROUGH'), do_lang_tempcode('DISPLAY_LIKELIHOOD'), do_lang_tempcode('SUBMITTER'), do_lang_tempcode('ADDED')));
         if (addon_installed('unvalidated')) {
             $field_titles_arr[] = protect_from_escaping(do_template('COMCODE_ABBR', array('_GUID' => '7a2ed997384b823b25dc3c70d4ff82d6', 'TITLE' => do_lang_tempcode('VALIDATED'), 'CONTENT' => do_lang_tempcode('VALIDATED_SHORT'))));
         }
@@ -138,7 +138,7 @@ class Module_admin_banners
         foreach ($rows as $myrow) {
             $name = hyperlink(build_url(array('page' => 'banners', 'type' => 'view', 'source' => $myrow['name']), get_module_zone('banners')), $myrow['name'], false, true);
 
-            switch ($myrow['the_type']) {
+            switch ($myrow['deployment_agreement']) {
                 case BANNER_PERMANENT:
                     $type = do_lang_tempcode('BANNER_PERMANENT');
                     break;
@@ -170,7 +170,7 @@ class Module_admin_banners
 
             $username = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($myrow['submitter']);
 
-            $importance_modulus = $myrow['importance_modulus'];
+            $display_likelihood = $myrow['display_likelihood'];
 
             $validated = ($myrow['validated'] == 1) ? do_lang('YES') : do_lang('NO');
             if (($myrow['expiry_date'] !== null) && ($myrow['expiry_date'] < time())) {
@@ -181,7 +181,7 @@ class Module_admin_banners
             if ($has_banner_network) {
                 $result = array_merge($result, array(escape_html($hits_from), escape_html($views_from)));
             }
-            $result = array_merge($result, array(escape_html($hits_to), escape_html($views_to), escape_html($click_through), escape_html(strval($importance_modulus)), $username, escape_html($date)));
+            $result = array_merge($result, array(escape_html($hits_to), escape_html($views_to), escape_html($click_through), escape_html(strval($display_likelihood)), $username, escape_html($date)));
             if (addon_installed('unvalidated')) {
                 $result[] = escape_html($validated);
             }

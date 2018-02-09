@@ -23,10 +23,10 @@
  * @param  ?integer $campaign_remaining The number of hits the banner may have (null: not applicable for this banner type)
  * @range  0 max
  * @param  URLPATH $site_url The URL to the site the banner leads to
- * @param  integer $importance_modulus The banners "importance modulus"
+ * @param  integer $display_likelihood The banner's "Display likelihood"
  * @range  1 max
  * @param  LONG_TEXT $notes Any notes associated with the banner
- * @param  SHORT_INTEGER $the_type The type of banner (0=permanent, 1=campaign, 2=fallback)
+ * @param  SHORT_INTEGER $deployment_agreement The type of banner (0=permanent, 1=campaign, 2=fallback)
  * @set    0 1 2
  * @param  ?TIME $expiry_date The banner expiry date (null: never)
  * @param  ?MEMBER $submitter The banners submitter (null: current member)
@@ -39,10 +39,10 @@
  * @param  integer $views_to The number of banner views to this banners site
  * @param  ?TIME $edit_date The banner edit date (null: never)
  */
-function add_banner_quiet($name, $imgurl, $title_text, $caption, $campaign_remaining, $site_url, $importance_modulus, $notes, $the_type, $expiry_date, $submitter, $validated = 0, $b_type = '', $time = null, $hits_from = 0, $hits_to = 0, $views_from = 0, $views_to = 0, $edit_date = null)
+function add_banner_quiet($name, $imgurl, $title_text, $caption, $campaign_remaining, $site_url, $display_likelihood, $notes, $deployment_agreement, $expiry_date, $submitter, $validated = 0, $b_type = '', $time = null, $hits_from = 0, $hits_to = 0, $views_from = 0, $views_to = 0, $edit_date = null)
 {
-    if (!is_numeric($importance_modulus)) {
-        $importance_modulus = 3;
+    if (!is_numeric($display_likelihood)) {
+        $display_likelihood = 3;
     }
     if (!is_numeric($campaign_remaining)) {
         $campaign_remaining = null;
@@ -60,19 +60,19 @@ function add_banner_quiet($name, $imgurl, $title_text, $caption, $campaign_remai
             $validated = 1;
         }
         $map = array(
-            'b_title_text' => $title_text,
-            'b_direct_code' => '',
+            'title_text' => $title_text,
+            'direct_code' => '',
             'b_type' => $b_type,
             'edit_date' => $edit_date,
             'add_date' => $time,
             'expiry_date' => $expiry_date,
-            'the_type' => $the_type,
+            'deployment_agreement' => $deployment_agreement,
             'submitter' => $submitter,
             'name' => $name,
             'img_url' => $imgurl,
             'campaign_remaining' => $campaign_remaining,
             'site_url' => $site_url,
-            'importance_modulus' => $importance_modulus,
+            'display_likelihood' => $display_likelihood,
             'notes' => '',
             'validated' => $validated,
             'hits_from' => $hits_from,

@@ -50,7 +50,7 @@ function banner_select_sql($b_type = null, $do_type_join = false, $banner_to_avo
     }
     $sql .= ' WHERE ';
 
-    $sql .= '(the_type<>' . strval(BANNER_CAMPAIGN) . ' OR ((campaign_remaining>0) AND ((expiry_date IS NULL) OR (expiry_date>' . strval(time()) . '))))';
+    $sql .= '(deployment_agreement<>' . strval(BANNER_CAMPAIGN) . ' OR ((campaign_remaining>0) AND ((expiry_date IS NULL) OR (expiry_date>' . strval(time()) . '))))';
 
     if ($b_type !== null) {
         $sql .= ' AND (' . db_string_equal_to('b_type', $b_type) . ' OR EXISTS(SELECT * FROM ' . get_table_prefix() . 'banners_types bt WHERE b.name=bt.name AND ' . db_string_equal_to('bt.b_type', $b_type) . '))';
@@ -141,8 +141,8 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
                     $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'banners SET hits_to=(hits_to+1) WHERE ' . db_string_equal_to('name', $dest), 1);
                 }
             }
-            $campaignremaining = $myrow['campaign_remaining'];
-            if ($campaignremaining !== null) {
+            $campaign_remaining = $myrow['campaign_remaining'];
+            if ($campaign_remaining !== null) {
                 if (get_db_type() != 'xml') {
                     if (!$GLOBALS['SITE_DB']->table_is_locked('banners')) {
                         $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'banners SET campaign_remaining=(campaign_remaining-1) WHERE ' . db_string_equal_to('name', $dest), 1);
@@ -161,8 +161,8 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
             if (get_db_type() != 'xml') {
                 $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'banners SET hits_from=(hits_from+1) WHERE ' . db_string_equal_to('name', $source), 1);
             }
-            $campaignremaining = $myrow['campaign_remaining'];
-            if ($campaignremaining !== null) {
+            $campaign_remaining = $myrow['campaign_remaining'];
+            if ($campaign_remaining !== null) {
                 if (get_db_type() != 'xml') {
                     if (!$GLOBALS['SITE_DB']->table_is_locked('banners')) {
                         $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'banners SET campaign_remaining=(campaign_remaining+1) WHERE ' . db_string_equal_to('name', $source), 1);
@@ -234,7 +234,7 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
         $show_fallbacks = true;
         if (count($rows) > 1) {
             foreach ($rows as $counter => $myrow) {
-                if ($myrow['the_type'] == BANNER_CAMPAIGN) {
+                if ($myrow['deployment_agreement'] == BANNER_CAMPAIGN) {
                     $show_fallbacks = false;
                 }
             }
@@ -256,7 +256,7 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
             }
         }
 
-        // Count the total of all importance_modulus entries
+        // Count the total of all display_likelihood entries
         $tally = 0;
         $counter = 0;
         $bound = array();
@@ -264,10 +264,10 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
         while (array_key_exists($counter, $rows)) {
             $myrow = $rows[$counter];
 
-            if (($myrow['the_type'] == 2) && (!$show_fallbacks)) {
-                $myrow['importance_modulus'] = 0;
+            if (($myrow['deployment_agreement'] == 2) && (!$show_fallbacks)) {
+                $myrow['display_likelihood'] = 0;
             }
-            $tally += max(0, $myrow['importance_modulus']);
+            $tally += max(0, $myrow['display_likelihood']);
             $bound[$counter] = $tally;
             $counter++;
         }
@@ -319,7 +319,7 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
         // Display!
         $img = $rows[$i]['img_url'];
         $caption = get_translated_tempcode('banners', $rows[$i], 'caption');
-        $content = show_banner($name, $rows[$i]['b_title_text'], $caption, array_key_exists('b_direct_code', $rows[$i]) ? $rows[$i]['b_direct_code'] : '', $img, $source, $rows[$i]['site_url'], $rows[$i]['b_type'], $rows[$i]['submitter'], $width, $height);
+        $content = show_banner($name, $rows[$i]['title_text'], $caption, array_key_exists('direct_code', $rows[$i]) ? $rows[$i]['direct_code'] : '', $img, $source, $rows[$i]['site_url'], $rows[$i]['b_type'], $rows[$i]['submitter'], $width, $height);
         if ($ret) {
             return $content;
         }

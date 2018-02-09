@@ -1506,7 +1506,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
 
                                         require_code('banners');
                                         $banner_sql = banner_select_sql(null, true);
-                                        $banner_sql .= ' AND t_comcode_inline=1 AND ' . db_string_not_equal_to('b_title_text', '');
+                                        $banner_sql .= ' AND t_comcode_inline=1 AND ' . db_string_not_equal_to('title_text', '');
                                         $rows = $GLOBALS['SITE_DB']->query($banner_sql, null, 0, true);
                                         if ($rows !== null) {
                                             // Filter out what we don't have permission for
@@ -1526,7 +1526,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                             }
 
                                             foreach ($rows as $row) {
-                                                $trigger_text = $row['b_title_text'];
+                                                $trigger_text = $row['title_text'];
                                                 foreach (explode(',', $trigger_text) as $t) {
                                                     if (trim($t) != '') {
                                                         $ADVERTISING_BANNERS_CACHE[trim($t)] = $row;
@@ -1549,7 +1549,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                                     $tag_output->attach($continuation);
                                                     $continuation = '';
                                                     $differented = true;
-                                                    $ad_text = show_banner($ad_bits['name'], $ad_bits['b_title_text'], get_translated_tempcode('banners', $just_banner_row, 'caption'), $ad_bits['b_direct_code'], $ad_bits['img_url'], '', $ad_bits['site_url'], $ad_bits['b_type'], $ad_bits['submitter']);
+                                                    $ad_text = show_banner($ad_bits['name'], $ad_bits['title_text'], get_translated_tempcode('banners', $just_banner_row, 'caption'), $ad_bits['direct_code'], $ad_bits['img_url'], '', $ad_bits['site_url'], $ad_bits['b_type'], $ad_bits['submitter']);
                                                     $embed_output = do_template('COMCODE_TOOLTIP', array('_GUID' => 'a9f4793dc0c1a92cd7d08ae1b87c2308', 'URL' => (url_is_local($ad_bits['site_url']) && ($ad_bits['site_url'] != '')) ? (get_custom_base_url() . '/' . $ad_bits['site_url']) : $ad_bits['site_url'], 'TOOLTIP' => $ad_text, 'CONTENT' => substr($comcode, $pos - 1, strlen($ad_trigger))));
                                                     $pos += strlen($ad_trigger) - 1;
                                                     $tag_output->attach($embed_output);

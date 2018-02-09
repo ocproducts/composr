@@ -75,7 +75,7 @@ class Hook_commandr_fs_banners extends Resource_fs_base
      */
     protected function _get_folder_edit_date($row)
     {
-        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('param_a', $row['id']) . ' AND  (' . db_string_equal_to('the_type', 'ADD_BANNER_TYPE') . ' OR ' . db_string_equal_to('the_type', 'EDIT_BANNER_TYPE') . ')';
+        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('param_a', $row['id']) . ' AND  (' . db_string_equal_to('deployment_agreement', 'ADD_BANNER_TYPE') . ' OR ' . db_string_equal_to('deployment_agreement', 'EDIT_BANNER_TYPE') . ')';
         return $GLOBALS['SITE_DB']->query_value_if_there($query);
     }
 
@@ -213,7 +213,7 @@ class Hook_commandr_fs_banners extends Resource_fs_base
      */
     protected function _get_file_edit_date($row)
     {
-        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('param_a', $row['name']) . ' AND  (' . db_string_equal_to('the_type', 'ADD_BANNER') . ' OR ' . db_string_equal_to('the_type', 'EDIT_BANNER') . ')';
+        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('param_a', $row['name']) . ' AND  (' . db_string_equal_to('deployment_agreement', 'ADD_BANNER') . ' OR ' . db_string_equal_to('deployment_agreement', 'EDIT_BANNER') . ')';
         return $GLOBALS['SITE_DB']->query_value_if_there($query);
     }
 
@@ -240,11 +240,11 @@ class Hook_commandr_fs_banners extends Resource_fs_base
         $img_url = $this->_default_property_urlpath($properties, 'img_url');
         $title_text = $this->_default_property_str($properties, 'title_text');
         $direct_code = $this->_default_property_str($properties, 'direct_code');
-        $campaignremaining = $this->_default_property_int($properties, 'campaignremaining');
+        $campaign_remaining = $this->_default_property_int($properties, 'campaign_remaining');
         $site_url = $this->_default_property_str($properties, 'site_url');
-        $importancemodulus = $this->_default_property_int($properties, 'importancemodulus');
+        $display_likelihood = $this->_default_property_int($properties, 'display_likelihood');
         $notes = $this->_default_property_str($properties, 'notes');
-        $the_type = $this->_default_property_int($properties, 'the_type');
+        $deployment_agreement = $this->_default_property_int($properties, 'deployment_agreement');
         $expiry_date = $this->_default_property_time_null($properties, 'expiry_date');
         $submitter = $this->_default_property_member($properties, 'submitter');
         $validated = $this->_default_property_int_null($properties, 'validated');
@@ -262,7 +262,7 @@ class Hook_commandr_fs_banners extends Resource_fs_base
         $views_to = $this->_default_property_int($properties, 'views_to');
         $edit_date = $this->_default_property_time_null($properties, 'edit_date');
 
-        $name = add_banner($name, $img_url, $title_text, $label, $direct_code, $campaignremaining, $site_url, $importancemodulus, $notes, $the_type, $expiry_date, $submitter, $validated, $b_type, $b_types, $regions, $time, $hits_from, $hits_to, $views_from, $views_to, $edit_date, true);
+        $name = add_banner($name, $img_url, $title_text, $label, $direct_code, $campaign_remaining, $site_url, $display_likelihood, $notes, $deployment_agreement, $expiry_date, $submitter, $validated, $b_type, $b_types, $regions, $time, $hits_from, $hits_to, $views_from, $views_to, $edit_date, true);
 
         $this->_resource_save_extend($this->file_resource_type, $name, $filename, $label, $properties);
 
@@ -289,13 +289,13 @@ class Hook_commandr_fs_banners extends Resource_fs_base
         $properties = array(
             'label' => $row['name'],
             'img_url' => remap_urlpath_as_portable($row['img_url']),
-            'title_text' => $row['b_title_text'],
-            'direct_code' => $row['b_direct_code'],
-            'campaignremaining' => $row['campaign_remaining'],
+            'title_text' => $row['title_text'],
+            'direct_code' => $row['direct_code'],
+            'campaign_remaining' => $row['campaign_remaining'],
             'site_url' => $row['site_url'],
-            'importancemodulus' => $row['importance_modulus'],
+            'display_likelihood' => $row['display_likelihood'],
             'notes' => $row['notes'],
-            'the_type' => $row['the_type'],
+            'deployment_agreement' => $row['deployment_agreement'],
             'expiry_date' => remap_time_as_portable($row['expiry_date']),
             'validated' => $row['validated'],
             'b_types' => collapse_1d_complexity('b_type', $GLOBALS['SITE_DB']->query_select('banners_types', array('b_type'), array('name' => $row['name']))),
@@ -337,11 +337,11 @@ class Hook_commandr_fs_banners extends Resource_fs_base
         $img_url = $this->_default_property_urlpath($properties, 'img_url', true);
         $title_text = $this->_default_property_str($properties, 'title_text');
         $direct_code = $this->_default_property_str($properties, 'direct_code');
-        $campaignremaining = $this->_default_property_int($properties, 'campaignremaining');
+        $campaign_remaining = $this->_default_property_int($properties, 'campaign_remaining');
         $site_url = $this->_default_property_str($properties, 'site_url');
-        $importancemodulus = $this->_default_property_int($properties, 'importancemodulus');
+        $display_likelihood = $this->_default_property_int($properties, 'display_likelihood');
         $notes = $this->_default_property_str($properties, 'notes');
-        $the_type = $this->_default_property_int($properties, 'the_type');
+        $deployment_agreement = $this->_default_property_int($properties, 'deployment_agreement');
         $expiry_date = $this->_default_property_time_null($properties, 'expiry_date');
         $submitter = $this->_default_property_member($properties, 'submitter');
         $validated = $this->_default_property_int_null($properties, 'validated');
@@ -358,7 +358,7 @@ class Hook_commandr_fs_banners extends Resource_fs_base
         $views_to = $this->_default_property_int($properties, 'views_to');
         $edit_date = $this->_default_property_time($properties, 'edit_date');
 
-        $name = edit_banner($resource_id, $name, $img_url, $title_text, $label, $direct_code, $campaignremaining, $site_url, $importancemodulus, $notes, $the_type, $expiry_date, $submitter, $validated, $b_type, $b_types, $regions, $edit_date, $add_time, true, true);
+        $name = edit_banner($resource_id, $name, $img_url, $title_text, $label, $direct_code, $campaign_remaining, $site_url, $display_likelihood, $notes, $deployment_agreement, $expiry_date, $submitter, $validated, $b_type, $b_types, $regions, $edit_date, $add_time, true, true);
 
         $this->_resource_save_extend($this->file_resource_type, $name, $filename, $label, $properties);
 

@@ -15,7 +15,7 @@ There are many options to allow a rich and flexible rotation system. These inclu
  - The deployment agreement. A permanent banner can always be shown. A campaign banner is given a finite number of 'clicks', and will not be shown when the clicks have run out. Default banners can always be shown, but are generally set to only appear when there are no permanent or campaign banners.
  - You may specify a banner type. Types are set up to enforce certain restrictions (image dimensions, and file size) on the banners within that type. It is possible to call up the Composr [tt]banner.php[/tt] with [tt]?b_type=<type[/tt] on the URL, which will force only banners of that type to be shown. Likewise, the 'BANNER' symbols first parameter can be set to <type> (e.g. [tt]{$BANNER,skyscraper}[/tt]). This is useful for a number of things, but perhaps the most significant is that is allows you to distinguish between banners of different sizes, storing each in an effectively separate rotation. You can then edit your templates to reference these different rotations, by pasting in the appropriate HTML (see [tt]BANNER.tpl[/tt] for an unfiltered example -- this is the HTML used for the banner that appears in the top-right by default).
  - Banners may be given an expiration date; this is useful in many situations, such as if a banner becomes inappropriate after an advertised event finishes, or if a client has only paid until a certain date.
- - The 'importance modulus' allows you to balance the likelihoods of different banners being shown. The higher the number, the more likely the banner will be shown. This is explained in more detail in a section below.
+ - The 'Display likelihood' allows you to balance the likelihoods of different banners being shown. The higher the number, the more likely the banner will be shown. This is explained in more detail in a section below.
 
 You can delete a banner from the bottom of its edit form.
 [/surround]
@@ -59,9 +59,9 @@ Linking to non-image URLs instead of images is handy in a number of situations, 
 
 In order to use banners from a third-party banner network, you often are asked to incorporate a chunk of HTML into your site. Composr makes this easy for you, as you can add banners consisting of raw HTML (or even PHP code).
 
-[title="3"]Importance modulus (advanced)[/title]
+[title="3"]Display likelihood (advanced)[/title]
 
-All banners are balanced against each other by the 'importance modulus', which is defined for every banner. It is not a percentage or fraction, but the banner with the highest importance level is the one most likely to get shown.
+All banners are balanced against each other by the 'Display likelihood', which is defined for every banner. It is not a percentage or fraction, but the banner with the highest importance level is the one most likely to get shown.
 
 Mathematically, the chance of a banner [tt]X[/tt] in a set [tt]Q[/tt] being shown is:
 [code="Maths"]
@@ -246,10 +246,10 @@ Adding the new square banner using a rotation:
 [concepts
  1_key="Default banner"       1_value="A banner that is displayable at any time (i.e. both when campaign and permanent banners would be chosen for viewing), but is intended to have a low importance level such that it is shown when the system is low on banners"
  2_key="Campaign banner"      2_value="A banner that has a limited number of hits, but with support for hit balancing should the banner be tied to a site that is generating banner network clicks"
- 3_key="Importance modulus"   3_value="A number representing the how likely a banner is to be shown, relative to the other importance moduli (in essence, they are ratios to each other of how likely the banner will be shown)"
+ 3_key="Display likelihood"   3_value="A number representing the how likely a banner is to be shown, relative to the other importance moduli (in essence, they are ratios to each other of how likely the banner will be shown)"
  4_key="Hit balancing"        4_value="A feature that allows a banner network to be created such that banners get as many hits out of the system as their sites put clicks into the system"
  5_key="Banner"               5_value="An advertising banner"
- 6_key="Rotation"             6_value="Randomised display of banners within a set (although guided by various settings, such as importance modulus)"
+ 6_key="Rotation"             6_value="Randomised display of banners within a set (although guided by various settings, such as Display likelihood)"
 ]Concepts[/concepts]
 
 [title="2"]Suggested advertisers[/title]

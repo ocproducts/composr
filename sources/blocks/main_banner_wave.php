@@ -93,7 +93,7 @@ class Block_main_banner_wave
 
         $assemble = new Tempcode();
         foreach ($banners as $i => $banner) {
-            $banner = show_banner($banner['name'], $banner['b_title_text'], get_translated_tempcode('banners', $banner, 'caption'), $banner['b_direct_code'], $banner['img_url'], '', $banner['site_url'], $banner['b_type'], $banner['submitter']);
+            $banner = show_banner($banner['name'], $banner['title_text'], get_translated_tempcode('banners', $banner, 'caption'), $banner['direct_code'], $banner['img_url'], '', $banner['site_url'], $banner['b_type'], $banner['submitter']);
             $assemble->attach(do_template('BLOCK_MAIN_BANNER_WAVE_BWRAP', array('_GUID' => 'bbb0851f015305da014f0a55006770f5', 'TYPE' => $b_type, 'BANNER' => $banner, 'MAX' => strval($max), 'REGION' => $region)));
         }
 

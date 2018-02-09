@@ -2,24 +2,24 @@
     'use strict';
 
     $cms.functions.getBannerFormFields = function getBannerFormFields() {
-        if (document.getElementById('campaignremaining')) {
-            var form = document.getElementById('campaignremaining').form;
+        if (document.getElementById('campaign_remaining')) {
+            var form = document.getElementById('campaign_remaining').form;
             var crf = function () {
-                form.elements['campaignremaining'].disabled = (!form.elements['the_type'][1].checked);
+                form.elements['campaign_remaining'].disabled = (!form.elements['deployment_agreement'][1].checked);
             };
             crf();
-            form.elements['the_type'][0].addEventListener('click', crf);
-            form.elements['the_type'][1].addEventListener('click', crf);
-            form.elements['the_type'][2].addEventListener('click', crf);
+            form.elements['deployment_agreement'][0].addEventListener('click', crf);
+            form.elements['deployment_agreement'][1].addEventListener('click', crf);
+            form.elements['deployment_agreement'][2].addEventListener('click', crf);
         }
     };
 
     $cms.functions.moduleCmsBannersRunStart = function moduleCmsBannersRunStart() {
-        document.getElementById("importancemodulus").onkeyup = function () {
+        document.getElementById('display_likelihood').onkeyup = function () {
             var _imHere = document.getElementById("im-here");
             if (_imHere) {
                 var _imTotal = document.getElementById("im-total"),
-                    imHere = parseInt(document.getElementById("importancemodulus").value),
+                    imHere = parseInt(document.getElementById("display_likelihood").value),
                     imTotal = parseInt(_imTotal.className.replace("im-", "")) + imHere;
 
                 $dom.html(_imHere, imHere);

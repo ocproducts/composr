@@ -184,9 +184,9 @@ class Module_cms_banners extends Standard_crud_module
         $sortables = array(
             'name' => do_lang_tempcode('CODENAME'),
             'b_type' => do_lang_tempcode('BANNER_TYPE'),
-            'the_type' => do_lang_tempcode('DEPLOYMENT_AGREEMENT'),
+            'deployment_agreement' => do_lang_tempcode('DEPLOYMENT_AGREEMENT'),
             //'campaign_remaining' => do_lang_tempcode('HITS_ALLOCATED'),
-            'importance_modulus' => do_lang_tempcode('IMPORTANCE_MODULUS'),
+            'display_likelihood' => do_lang_tempcode('DISPLAY_LIKELIHOOD'),
             'expiry_date' => do_lang_tempcode('EXPIRY_DATE'),
             'add_date' => do_lang_tempcode('ADDED'),
         );
@@ -212,7 +212,7 @@ class Module_cms_banners extends Standard_crud_module
             do_lang_tempcode('TYPE'),
             do_lang_tempcode('DEPLOYMENT_AGREEMENT'),
             //do_lang_tempcode('HITS_ALLOCATED'),     Save space by not putting in
-            do_lang_tempcode('_IMPORTANCE_MODULUS'),
+            do_lang_tempcode('_DISPLAY_LIKELIHOOD'),
         );
         if ($has_expiry_dates) {
             $hr[] = do_lang_tempcode('EXPIRY_DATE');
@@ -230,7 +230,7 @@ class Module_cms_banners extends Standard_crud_module
             $edit_url = build_url($url_map + array('id' => $row['name']), '_SELF');
 
             $deployment_agreement = new Tempcode();
-            switch ($row['the_type']) {
+            switch ($row['deployment_agreement']) {
                 case BANNER_PERMANENT:
                     $deployment_agreement = do_lang_tempcode('BANNER_PERMANENT');
                     break;
@@ -247,7 +247,7 @@ class Module_cms_banners extends Standard_crud_module
                 ($row['b_type'] == '') ? do_lang('_DEFAULT') : $row['b_type'],
                 $deployment_agreement,
                 //integer_format($row['campaign_remaining']),
-                strval($row['importance_modulus']),
+                strval($row['display_likelihood']),
             );
             if ($has_expiry_dates) {
                 $fr[] = ($row['expiry_date'] === null) ? protect_from_escaping(do_lang_tempcode('NA_EM')) : make_string_tempcode(get_timezoned_date_time($row['expiry_date']));
@@ -284,11 +284,11 @@ class Module_cms_banners extends Standard_crud_module
      * @param  SHORT_TEXT $caption The caption of the banner
      * @param  LONG_TEXT $direct_code Complete HTML/PHP for the banner
      * @param  LONG_TEXT $notes Any notes associated with the banner
-     * @param  integer $importancemodulus The banners "importance modulus"
+     * @param  integer $display_likelihood The banner's "Display likelihood"
      * @range  1 max
-     * @param  ?integer $campaignremaining The number of hits the banner may have (null: not applicable for this banner type)
+     * @param  ?integer $campaign_remaining The number of hits the banner may have (null: not applicable for this banner type)
      * @range  0 max
-     * @param  SHORT_INTEGER $the_type The type of banner (a BANNER_* constant)
+     * @param  SHORT_INTEGER $deployment_agreement The type of banner (a BANNER_* constant)
      * @set    0 1 2
      * @param  ?TIME $expiry_date The banner expiry date (null: never expires)
      * @param  ?MEMBER $submitter The banners submitter (null: current member)
@@ -299,13 +299,13 @@ class Module_cms_banners extends Standard_crud_module
      * @param  SHORT_TEXT $title_text The title text for the banner (only used for text banners, and functions as the 'trigger text' if the banner type is shown inline)
      * @return array Bits
      */
-    public function get_form_fields($name = '', $image_url = '', $site_url = '', $caption = '', $direct_code = '', $notes = '', $importancemodulus = 3, $campaignremaining = 50, $the_type = 0, $expiry_date = null, $submitter = null, $validated = 1, $b_type = '', $b_types = array(), $regions = array(), $title_text = '')
+    public function get_form_fields($name = '', $image_url = '', $site_url = '', $caption = '', $direct_code = '', $notes = '', $display_likelihood = 3, $campaign_remaining = 50, $deployment_agreement = 0, $expiry_date = null, $submitter = null, $validated = 1, $b_type = '', $b_types = array(), $regions = array(), $title_text = '')
     {
         if ($b_type == '') {
             $b_type = get_param_string('b_type', '');
         }
 
-        list($fields, $js_function_calls) = get_banner_form_fields(false, $name, $image_url, $site_url, $caption, $direct_code, $notes, $importancemodulus, $campaignremaining, $the_type, $expiry_date, $submitter, $validated, $b_type, $b_types, $regions, $title_text);
+        list($fields, $js_function_calls) = get_banner_form_fields(false, $name, $image_url, $site_url, $caption, $direct_code, $notes, $display_likelihood, $campaign_remaining, $deployment_agreement, $expiry_date, $submitter, $validated, $b_type, $b_types, $regions, $title_text);
 
         if (is_array($js_function_calls) && (count($js_function_calls) > 0)) {
             $this->js_function_calls = array_merge($this->js_function_calls, $js_function_calls);
@@ -363,7 +363,7 @@ class Module_cms_banners extends Standard_crud_module
 
         $regions = collapse_1d_complexity('region', $GLOBALS['SITE_DB']->query_select('content_regions', array('region'), array('content_type' => 'banner', 'content_id' => $id)));
 
-        return $this->get_form_fields($id, $myrow['img_url'], $myrow['site_url'], get_translated_text($myrow['caption']), $myrow['b_direct_code'], $myrow['notes'], $myrow['importance_modulus'], $myrow['campaign_remaining'], $myrow['the_type'], $myrow['expiry_date'], $myrow['submitter'], $myrow['validated'], $myrow['b_type'], $b_types, $regions, $myrow['b_title_text']);
+        return $this->get_form_fields($id, $myrow['img_url'], $myrow['site_url'], get_translated_text($myrow['caption']), $myrow['direct_code'], $myrow['notes'], $myrow['display_likelihood'], $myrow['campaign_remaining'], $myrow['deployment_agreement'], $myrow['expiry_date'], $myrow['submitter'], $myrow['validated'], $myrow['b_type'], $b_types, $regions, $myrow['title_text']);
     }
 
     /**
@@ -376,11 +376,11 @@ class Module_cms_banners extends Standard_crud_module
         $name = post_param_string('name');
         $caption = post_param_string('caption');
         $direct_code = post_param_string('direct_code', '');
-        $campaignremaining = post_param_integer('campaignremaining', 0);
+        $campaign_remaining = post_param_integer('campaign_remaining', 0);
         $site_url = fixup_protocolless_urls(post_param_string('site_url', '', INPUT_FILTER_URL_GENERAL));
-        $importancemodulus = post_param_integer('importancemodulus', 3);
+        $display_likelihood = post_param_integer('display_likelihood', 3);
         $notes = post_param_string('notes', '');
-        $the_type = post_param_integer('the_type', 1);
+        $deployment_agreement = post_param_integer('deployment_agreement', 1);
         $expiry_date = post_param_date('expiry_date');
         $validated = post_param_integer('validated', 0);
         $b_type = post_param_string('b_type');
@@ -394,7 +394,7 @@ class Module_cms_banners extends Standard_crud_module
 
         $metadata = actual_metadata_get_fields('banner', null);
 
-        add_banner($name, $url, $title_text, $caption, $direct_code, $campaignremaining, $site_url, $importancemodulus, $notes, $the_type, $expiry_date, $metadata['submitter'], $validated, $b_type, $b_types, $regions, $metadata['add_time'], 0, 0, 0, 0, $metadata['edit_time']);
+        add_banner($name, $url, $title_text, $caption, $direct_code, $campaign_remaining, $site_url, $display_likelihood, $notes, $deployment_agreement, $expiry_date, $metadata['submitter'], $validated, $b_type, $b_types, $regions, $metadata['add_time'], 0, 0, 0, 0, $metadata['edit_time']);
 
         $_banner_type_row = $GLOBALS['SITE_DB']->query_select('banner_types', array('t_image_width', 't_image_height'), array('id' => $b_type), '', 1);
         if (array_key_exists(0, $_banner_type_row)) {
@@ -450,7 +450,7 @@ class Module_cms_banners extends Standard_crud_module
 
         $metadata = actual_metadata_get_fields('banner', $id, array(), $new_id);
 
-        edit_banner($id, $new_id, $url, $title_text, post_param_string('caption'), $direct_code, post_param_integer('campaignremaining', 0), fixup_protocolless_urls(post_param_string('site_url', false, INPUT_FILTER_URL_GENERAL)), post_param_integer('importancemodulus'), post_param_string('notes', ''), post_param_integer('the_type', 1), post_param_date('expiry_date'), $metadata['submitter'], $validated, $b_type, $b_types, $regions, $metadata['edit_time'], $metadata['add_time'], true);
+        edit_banner($id, $new_id, $url, $title_text, post_param_string('caption'), $direct_code, post_param_integer('campaign_remaining', 0), fixup_protocolless_urls(post_param_string('site_url', false, INPUT_FILTER_URL_GENERAL)), post_param_integer('display_likelihood'), post_param_string('notes', ''), post_param_integer('deployment_agreement', 1), post_param_date('expiry_date'), $metadata['submitter'], $validated, $b_type, $b_types, $regions, $metadata['edit_time'], $metadata['add_time'], true);
 
         if ($id != $new_id) {
             unset($_GET['redirect']);
@@ -511,13 +511,13 @@ class Module_cms_banners extends Standard_crud_module
         $has_caption = false;
         $has_deployment_agreement = false;
         foreach ($rows as $row) {
-            if ($row['b_title_text'] != '') {
+            if ($row['title_text'] != '') {
                 $has_title_text = true;
             }
             if (get_translated_text($row['caption']) != '') {
                 $has_caption = true;
             }
-            if ($row['the_type'] != BANNER_PERMANENT) {
+            if ($row['deployment_agreement'] != BANNER_PERMANENT) {
                 $has_deployment_agreement = true;
             }
         }
@@ -535,7 +535,7 @@ class Module_cms_banners extends Standard_crud_module
             $csv_row[do_lang('SECONDARY_CATEGORIES')] = $banner_types;
 
             if ($has_title_text) {
-                $csv_row[do_lang('BANNER_TITLE_TEXT')] = $row['b_title_text'];
+                $csv_row[do_lang('BANNER_TITLE_TEXT')] = $row['title_text'];
             }
 
             if ($has_caption) {
@@ -567,7 +567,7 @@ class Module_cms_banners extends Standard_crud_module
             if ($has_deployment_agreement) {
                 $deployment_agreement = '';
                 $campaign_remaining = '';
-                switch ($row['the_type']) {
+                switch ($row['deployment_agreement']) {
                     case BANNER_PERMANENT:
                         $deployment_agreement = do_lang('BANNER_PERMANENT');
                         $campaign_remaining = integer_format($row['campaign_remaining']);
@@ -584,7 +584,7 @@ class Module_cms_banners extends Standard_crud_module
                 $csv_row[do_lang('HITS_ALLOCATED')] = $campaign_remaining;
             }
 
-            $csv_row[do_lang('IMPORTANCE_MODULUS')] = strval($row['importance_modulus']);
+            $csv_row[do_lang('DISPLAY_LIKELIHOOD')] = strval($row['display_likelihood']);
 
             if (addon_installed('stats')) {
                 $banners_regions = implode(', ', collapse_1d_complexity('region', $GLOBALS['SITE_DB']->query_select('content_regions', array('region'), array('content_type' => 'banner', 'content_id' => $row['name']))));
