@@ -83,7 +83,7 @@ function chat_logs_script()
     // Send header
     $room_name = get_chatroom_name($messages[0]['room_id']);
     $filename = 'chatlog-' . str_replace(' ', '', $room_name) . '-' . str_replace(':', '-', $start_date) . '-' . str_replace(':', '-', $finish_date) . '.html';
-    header('Content-Type: application/octet-stream' . '; authoritative=true;');
+    header('Content-Type: application/octet-stream');
     if ((strpos($room_name, "\n") !== false) || (strpos($room_name, "\r") !== false)) {
         log_hack_attack_and_exit('HEADER_SPLIT_HACK');
     }

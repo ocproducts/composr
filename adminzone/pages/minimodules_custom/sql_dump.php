@@ -44,7 +44,7 @@ if (!$done) {
 // Headers
 if (!isset($_GET['testing'])) {
     $filename = 'composr-' . get_site_name() . '.' . date('Y-m-d') . '.sql';
-    header('Content-Type: application/octet-stream' . '; authoritative=true;');
+    header('Content-Type: application/octet-stream');
     header('Content-Disposition: attachment; filename="' . escape_header($filename, true) . '"');
 } else {
     header('Content-type: text/plain; charset=' . get_charset());

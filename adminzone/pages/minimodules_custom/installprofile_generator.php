@@ -249,7 +249,7 @@ licence="(Unstated)"
 END;
 
 $filename = 'mycustomprofile.tar';
-header('Content-Type: application/octet-stream' . '; authoritative=true;');
+header('Content-Type: application/octet-stream');
 header('Content-Disposition: attachment; filename="' . escape_header($filename, true) . '"');
 
 require_code('tar');

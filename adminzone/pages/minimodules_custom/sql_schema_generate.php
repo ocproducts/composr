@@ -23,8 +23,10 @@ i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_
 
 $filename = 'composr-erd.sql';
 
+safe_ini_set('ocproducts.xss_detect', '0');
+
 if (!isset($_GET['testing'])) {
-    header('Content-Type: application/octet-stream' . '; authoritative=true;');
+    header('Content-Type: application/octet-stream');
     header('Content-Disposition: attachment; filename="' . escape_header($filename, true) . '"');
 } else {
     header('Content-type: text/plain; charset=' . get_charset());

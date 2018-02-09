@@ -461,6 +461,8 @@ function sheet_script()
 {
     prepare_for_known_ajax_response();
 
+    safe_ini_set('ocproducts.xss_detect', '0');
+
     header('Content-Type: text/css');
     $sheet = get_param_string('sheet');
     if ($sheet != '') {
@@ -478,6 +480,8 @@ function sheet_script()
  */
 function script_script()
 {
+    safe_ini_set('ocproducts.xss_detect', '0');
+
     @header('Content-Type: application/javascript');
     prepare_for_known_ajax_response();
 
@@ -506,6 +510,8 @@ function snippet_script()
         $RELATIVE_PATH = $test;
         $ZONE = null;
     }
+
+    safe_ini_set('ocproducts.xss_detect', '0');
 
     header('Content-Type: text/plain; charset=' . get_charset());
     $hook = filter_naughty_harsh(get_param_string('snippet'));

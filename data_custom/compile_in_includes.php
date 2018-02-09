@@ -33,7 +33,7 @@ NB: There is a requirement that overrides that do code re-writing, must not call
 
 $cli = ((php_sapi_name() == 'cli') && (empty($_SERVER['REMOTE_ADDR'])) && (empty($_ENV['REMOTE_ADDR'])));
 if (!$cli) {
-    header('Content-type: text/plain');
+    header('Content-type: text/plain; charset=utf-8');
     exit('Must run this script on command line, for security reasons');
 }
 
@@ -41,7 +41,7 @@ $undo = (isset($_SERVER['argv'][1]) && $_SERVER['argv'][1] == 'undo');
 $do = (isset($_SERVER['argv'][1]) && $_SERVER['argv'][1] == 'do');
 
 if ((!$undo) && (!$do)) {
-    header('Content-type: text/plain');
+    header('Content-type: text/plain; charset=utf-8');
     exit('Must give do or undo parameter');
 }
 

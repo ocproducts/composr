@@ -161,12 +161,14 @@ function dload_script()
     require_code('mime_types');
     $mime_type = get_mime_type(get_file_extension($myrow['original_filename']), false);
     if (get_option('immediate_downloads') == '1' && $mime_type != 'application/octet-stream') {
-        header('Content-Type: ' . $mime_type . '; authoritative=true;');
+        header('Content-Type: ' . $mime_type);
         header('Content-Disposition: inline; filename="' . escape_header($myrow['original_filename'], true) . '"');
     } else {
-        header('Content-Type: application/octet-stream' . '; authoritative=true;');
+        header('Content-Type: application/octet-stream');
         header('Content-Disposition: attachment; filename="' . escape_header($myrow['original_filename'], true) . '"');
     }
+
+    safe_ini_set('ocproducts.xss_detect', '0');
 
     // Is it non-local? If so, redirect
     if ((!url_is_local($full)) || (!file_exists(get_file_base() . '/' . rawurldecode(filter_naughty($full))))) {

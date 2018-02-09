@@ -23,11 +23,11 @@ Also see chmod_consistency.php for the equivalent for chmodding rules, and make_
 
 $cli = ((php_sapi_name() == 'cli') && (empty($_SERVER['REMOTE_ADDR'])) && (empty($_ENV['REMOTE_ADDR'])));
 if (!$cli) {
-    header('Content-type: text/plain');
+    header('Content-type: text/plain; charset=utf-8');
     exit('Must run this script on command line, for security reasons');
 }
 
-header('Content-type: text/plain');
+header('Content-type: text/plain; charset=utf-8');
 
 $zones = array('', 'site', 'forum', 'adminzone', 'cms');
 

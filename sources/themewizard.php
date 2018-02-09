@@ -583,7 +583,7 @@ function themewizard_script()
             $tpl->evaluate();
         }
         $css = themewizard_colours_to_sheet($show, $landscape, $source_theme, $algorithm, $seed);
-        header('Content-type: text/css');
+        header('Content-type: text/css; charset=' . get_charset());
         if ($type == 'css') {
             $tpl = template_to_tempcode($css);
             $tpl->evaluate_echo();

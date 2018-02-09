@@ -561,7 +561,9 @@ function thumb_script()
 
     require_code('mime_types');
     $mime_type = get_mime_type($url_thumb, false);
-    header('Content-Type: ' . $mime_type . '; authoritative=true;');
+    header('Content-Type: ' . $mime_type);
+
+    safe_ini_set('ocproducts.xss_detect', '0');
 
     if ((strpos($url_thumb, "\n") !== false) || (strpos($url_thumb, "\r") !== false)) {
         log_hack_attack_and_exit('HEADER_SPLIT_HACK');
@@ -576,9 +578,6 @@ function thumb_script()
  */
 function question_ui_script()
 {
-    safe_ini_set('ocproducts.xss_detect', '0');
-    $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
-
     $title = get_param_string('window_title', false, INPUT_FILTER_GET_COMPLEX);
     $_message = nl2br(escape_html(get_param_string('message', false, INPUT_FILTER_GET_COMPLEX)));
     if (function_exists('ocp_mark_as_escaped')) {

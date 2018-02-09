@@ -42,7 +42,7 @@ class Hook_task_download_gallery
         $gallery_row = $gallery_rows[0];
 
         $headers = array();
-        $headers['Content-Type'] = 'application/octet-stream; authoritative=true;';
+        $headers['Content-Type'] = 'application/octet-stream';
         $filename = 'gallery-' . $cat . '.zip';
         $headers['Content-Disposition'] = 'attachment; filename="' . escape_header($filename) . '"';
 

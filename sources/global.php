@@ -20,7 +20,7 @@
 
 $script_name = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : (isset($_ENV['SCRIPT_NAME']) ? $_ENV['SCRIPT_NAME'] : '');
 if ((strpos($script_name, '/sources/') !== false) || (strpos($script_name, '/sources_custom/') !== false)) {
-    header('Content-type: text/plain');
+    header('Content-type: text/plain; charset=utf-8');
     exit('May not be included directly');
 }
 

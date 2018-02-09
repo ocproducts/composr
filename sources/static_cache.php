@@ -230,9 +230,9 @@ function static_cache($mode)
     // Is cached
     if (is_file($fast_cache_path)) {
         if ($file_extension == '.htm') {
-            header('Content-type: text/html');
+            header('Content-type: text/html; charset=utf-8');
         } else {
-            header('Content-type: text/xml');
+            header('Content-type: text/xml; charset=utf-8');
         }
 
         $expires = intval(60.0 * 60.0 * floatval($SITE_INFO['fast_spider_cache']));
@@ -278,7 +278,7 @@ function static_cache($mode)
 
     if (($mode & STATIC_CACHE__FAILOVER_MODE) != 0) {
         // Error message saying nothing cached
-        header('Content-type: text/plain');
+        header('Content-type: text/plain; charset=utf-8');
         if (!isset($SITE_INFO['failover_cache_miss_message'])) {
             $SITE_INFO['failover_cache_miss_message'] = 'Cannot find cache file.';
         }

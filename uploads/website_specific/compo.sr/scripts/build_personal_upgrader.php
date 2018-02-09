@@ -91,7 +91,7 @@ if ($tar_path === null) {
     warn_exit(protect_from_escaping($err));
 }
 
-header('Content-Type: application/octet-stream; authoritative=true;');
+header('Content-Type: application/octet-stream');
 header('Content-Disposition: inline; filename="' . escape_header(basename($tar_path), true) . '.tar"');
 
 cms_ob_end_clean();

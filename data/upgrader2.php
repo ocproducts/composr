@@ -55,7 +55,7 @@ if (!upgrader2_check_master_password($hashed_password)) {
 // Open TAR file
 $tmp_path = $_GET['tmp_path'];
 if (!file_exists($tmp_path)) {
-    header('Content-type: text/plain');
+    header('Content-type: text/plain; charset=utf-8');
     exit('Temp file has disappeared (' . $tmp_path . ')');
 }
 $tmp_path = dirname(__DIR__) . '/data_custom/upgrader.cms.tmp'; // Actually for security, we will not allow it to be configurable (in case someone managed to steal the hash we can't let them extract arbitrary archives)
@@ -72,7 +72,7 @@ $file_offset = intval($_GET['file_offset']);
 
 $tmp_data_path = $_GET['tmp_data_path'];
 if (!file_exists($tmp_data_path)) {
-    header('Content-type: text/plain');
+    header('Content-type: text/plain; charset=utf-8');
     exit('2nd temp file has disappeared (' . $tmp_data_path . ')');
 }
 $data = unserialize(file_get_contents($tmp_data_path));
@@ -107,7 +107,7 @@ foreach ($todo as $i => $_target_file) {
     fseek($myfile, $offset);
     $myfile2 = @fopen($FILE_BASE . '/' . $target_file, 'wb');
     if ($myfile2 === false) {
-        header('Content-type: text/plain');
+        header('Content-type: text/plain; charset=utf-8');
         exit('Filesystem permission error when trying to extract ' . $target_file . '. Maybe you needed to give FTP details when logging in?');
     }
     flock($myfile2, LOCK_EX);

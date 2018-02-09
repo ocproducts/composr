@@ -92,7 +92,7 @@ function trackback_script()
 
     require_lang('trackbacks');
 
-    header('Content-type: text/xml');
+    header('Content-type: text/xml; charset=' . get_charset());
 
     $page = get_page_name();
     $id = get_param_integer('id');

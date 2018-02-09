@@ -45,7 +45,7 @@ class MobiquoServerPOST extends MobiquoServer
             return $_GET['method_name'];
         }
 
-        header('Content-type: text/plain');
+        header('Content-type: text/plain; charset=utf-8');
         exit('No method is provided');
     }
 
@@ -57,7 +57,7 @@ class MobiquoServerPOST extends MobiquoServer
         $this->output_server = $this->get_output_server();
 
         if (is_null($this->output_server)) {
-            header('Content-type: text/plain');
+            header('Content-type: text/plain; charset=utf-8');
         }
 
         convert_data_encodings(true);

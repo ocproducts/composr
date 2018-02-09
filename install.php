@@ -18,13 +18,13 @@
 $functions = array('fopen');
 foreach ($functions as $function) {
     if (preg_match('#[^,\s]' . $function . '[$,\s]#', ini_get('disable_functions')) != 0) {
-        header('Content-type: text/plain');
+        header('Content-type: text/plain; charset=utf-8');
         exit('The ' . $function . ' function appears to have been manually disabled in your PHP installation. This is a basic and necessary function, required for Composr.');
     }
 }
 
 if ((!array_key_exists('type', $_GET)) && (file_exists('install_locked'))) {
-    header('Content-type: text/plain');
+    header('Content-type: text/plain; charset=utf-8');
     exit('Installer is locked for security reasons (delete the \'install_locked\' file to return to the installer)');
 }
 
@@ -72,7 +72,7 @@ define('URL_CONTENT_REGEXP_JS', '\w\-\u0080-\uFFFF'); // JavaScript is done usin
 
 if (!array_key_exists('type', $_GET)) {
     if (count($_GET) == 0) {
-        header('Content-type: text/html');
+        header('Content-type: text/html; charset=utf-8');
     }
 
     echo '<!DOCTYPE html>' . "\n";

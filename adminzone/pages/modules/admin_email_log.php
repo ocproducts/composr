@@ -378,14 +378,17 @@ class Module_admin_email_log
             warn_exit(do_lang_tempcode('DELETED'));
         }
 
+        safe_ini_set('ocproducts.xss_detect', '0');
+
         require_code('mime_types');
         $mime_type = get_mime_type(get_file_extension($filename), false);
 
-        header('Content-Type: ' . $mime_type . '; authoritative=true;');
+        header('Content-Type: ' . $mime_type);
         header('Content-Disposition: inline; filename="' . escape_header($filename) . '"');
 
         echo file_get_contents($path);
 
+        $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
         exit();
 
         return new Tempcode();

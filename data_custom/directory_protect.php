@@ -94,11 +94,13 @@ if (!$okay) {
 }
 
 // Send header
-header('Content-Type: application/octet-stream' . '; authoritative=true;');
+header('Content-Type: application/octet-stream');
 require_code('mime_types');
-header('Content-Type: ' . get_mime_type(get_file_extension($filename), false) . '; authoritative=true;');
+header('Content-Type: ' . get_mime_type(get_file_extension($filename), false));
 header('Content-Disposition: inline; filename="' . escape_header($filename, true) . '"');
 header('Accept-Ranges: bytes');
+
+safe_ini_set('ocproducts.xss_detect', '0');
 
 // Caching
 $time = filemtime($_full);

@@ -145,7 +145,7 @@ function transifex_push_script()
     $cli = is_cli();
     if (!$cli) {
         if (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) {
-            header('Content-type: text/plain');
+            header('Content-type: text/plain; charset=utf-8');
             exit('Must run this script on command line, for security reasons -- or be logged in as an administrator');
         }
     }
@@ -467,12 +467,12 @@ function transifex_pull_script()
     if (!$cli) {
         if (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) {
             if (!$output) {
-                header('Content-type: text/plain');
+                header('Content-type: text/plain; charset=utf-8');
                 exit('You must be logged in as an administrator (or run this script from the command line) if not using output=0');
             }
 
             if ($lang === null) {
-                header('Content-type: text/plain');
+                header('Content-type: text/plain; charset=utf-8');
                 exit('You must be logged in as an administrator (or run this script from the command line) if not setting an output language');
             }
         }
@@ -498,7 +498,6 @@ function transifex_pull_script()
     pull_from_transifex($version, $tar_file, $lang, $core_only);
 
     if ($output) {
-        $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
         tar_close($tar_file);
         exit();
     } else {

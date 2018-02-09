@@ -1200,10 +1200,14 @@ class Module_filedump
         }
 
         if ($action == 'zip') {
-            header('Content-Type: application/octet-stream' . '; authoritative=true;');
+            safe_ini_set('ocproducts.xss_detect', '0');
+
+            header('Content-Type: application/octet-stream');
             header('Content-Disposition: attachment; filename="filedump-selection.zip"');
 
             create_zip_file($file_array, true);
+
+            $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
             exit();
         }
 

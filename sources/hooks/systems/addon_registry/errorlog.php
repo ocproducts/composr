@@ -132,8 +132,16 @@ class Hook_addon_registry_errorlog
         return array(
             lorem_globalise(do_lorem_template('ERRORLOG_SCREEN', array(
                 'TITLE' => lorem_title(),
-                'ERROR' => lorem_phrase(),
-                'PERMISSION' => lorem_phrase(),
+                'ERRORS' => lorem_chunk_html(),
+                'CLEAR_URL' => placeholder_url(),
+                'LOGS' => array(
+                    lorem_phrase() => array(
+                        'LOG' => lorem_chunk(),
+                        'DOWNLOAD_URL' => placeholder_url(),
+                        'CLEAR_URL' => placeholder_url(),
+                        'DELETE_URL' => placeholder_url(),
+                    ),
+                ),
             )), null, '', true)
         );
     }

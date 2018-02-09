@@ -79,8 +79,10 @@ get_option('staff_address');
 // Save SQL dump...
 
 $filename = 'template.sql';
-header('Content-Type: application/octet-stream' . '; authoritative=true;');
+header('Content-Type: application/octet-stream');
 header('Content-Disposition: attachment; filename="' . escape_header($filename) . '"');
+
+safe_ini_set('ocproducts.xss_detect', '0');
 
 require_code('database_relations');
 

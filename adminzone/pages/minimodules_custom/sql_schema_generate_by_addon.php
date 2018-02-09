@@ -21,6 +21,8 @@ First run this, then run SQLEditor on the files created in uploads/website_speci
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+safe_ini_set('ocproducts.xss_detect', '0');
+
 require_code('database_relations');
 
 $all_tables_detailed = get_all_innodb_tables();
@@ -47,7 +49,7 @@ foreach ($tables_by_addon as $addon => $tables_in_addon) {
 }
 
 $filename = 'erd_sql__by_addon.zip';
-header('Content-Type: application/octet-stream' . '; authoritative=true;');
+header('Content-Type: application/octet-stream');
 header('Content-Disposition: attachment; filename="' . escape_header($filename, true) . '"');
 
 require_code('zip');

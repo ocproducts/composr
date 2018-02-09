@@ -220,7 +220,7 @@ if (!function_exists('critical_error')) {
 
         $headers_sent = headers_sent();
         if (!$headers_sent) {
-            @header('Content-type: text/html');
+            @header('Content-type: text/html; charset=utf-8');
             echo '<' . '!DOCTYPE html>';
             echo <<<END
 <html lang="EN">

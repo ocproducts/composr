@@ -3,9 +3,9 @@
  Copyright (c) ocProducts, 2004-2018
 */
 
-.permissions-failed {
+.raw-log {
 	overflow: scroll;
 	font-family: Courier, monospace;
-	height: 400px;
+	max-height: 400px;
 	white-space: pre;
 }

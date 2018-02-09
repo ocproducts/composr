@@ -69,12 +69,26 @@ class Module_admin_errorlog
 
         require_lang('errorlog');
 
-        set_helper_panel_tutorial('tut_disaster');
+        if ($type == 'browse') {
+            set_helper_panel_tutorial('tut_disaster');
 
-        $this->title = get_screen_title('ERROR_LOG');
+            $this->title = get_screen_title('ERROR_LOG');
 
-        if (!php_function_allowed('ini_set')) {
-            attach_message(do_lang_tempcode('ERROR_LOGGING_PROBABLY_BROKEN'), 'warn');
+            if (!php_function_allowed('ini_set')) {
+                attach_message(do_lang_tempcode('ERROR_LOGGING_PROBABLY_BROKEN'), 'warn');
+            }
+        }
+
+        if ($type == 'delete_log') {
+            $this->title = get_screen_title('DELETE_LOG');
+        }
+
+        if ($type == 'clear_log') {
+            $this->title = get_screen_title('CLEAR_LOG');
+        }
+
+        if ($type == 'download_log') {
+            $this->title = get_screen_title('DOWNLOAD_LOG');
         }
 
         return null;
@@ -86,6 +100,34 @@ class Module_admin_errorlog
      * @return Tempcode The result of execution
      */
     public function run()
+    {
+        $type = get_param_string('type', 'browse');
+
+        if ($type == 'browse') {
+            return $this->show_logs();
+        }
+
+        if ($type == 'delete_log') {
+            return $this->delete_log();
+        }
+
+        if ($type == 'clear_log') {
+            return $this->clear_log();
+        }
+
+        if ($type == 'download_log') {
+            return $this->download_log();
+        }
+
+        return new Tempcode(); // Should not get here
+    }
+
+    /**
+     * Show the main UI.
+     *
+     * @return Tempcode The result of execution
+     */
+    public function show_logs()
     {
         require_css('errorlog');
 
@@ -186,52 +228,143 @@ class Module_admin_errorlog
                 $message,
             ), true));
         }
-        $error = results_table(do_lang_tempcode('ERROR_LOG'), $start, 'start', $max, 'max', $i, $fields_title, $fields, $sortables, $sortable, $sort_order, 'sort', new Tempcode());
+        $errors = results_table(do_lang_tempcode('ERROR_LOG'), $start, 'start', $max, 'max', $i, $fields_title, $fields, $sortables, $sortable, $sort_order, 'sort', new Tempcode());
 
-        // Read in end of permissions file
+        // Read in end of any other log files we find
         require_all_lang();
-        if (is_readable(get_custom_file_base() . '/data_custom/permission_checks.log')) {
-            $myfile = @fopen(get_custom_file_base() . '/data_custom/permission_checks.log', 'rb');
-            if ($myfile !== false) {
-                flock($myfile, LOCK_SH);
-                fseek($myfile, -40000, SEEK_END);
-                $data = '';
-                while (!feof($myfile)) {
-                    $data .= fread($myfile, 8192);
-                }
-                flock($myfile, LOCK_UN);
-                fclose($myfile);
-                $lines = explode("\n", $data);
-                if (count($lines) != 0) {
-                    if (strpos($lines[0], '<' . '?php') !== false) {
-                        array_shift($lines);
-                    } else {
+        $logs = array();
+        $dh = opendir(get_custom_file_base() . '/data_custom');
+        while (($filename = readdir($dh)) !== false) {
+            if (substr($filename, -4) == '.log') {
+                $myfile = @fopen(get_custom_file_base() . '/data_custom/' . $filename, 'rb');
+                if ($myfile !== false) {
+                    // Get last 40000 bytes of log
+                    flock($myfile, LOCK_SH);
+                    fseek($myfile, -40000, SEEK_END);
+                    $data = '';
+                    while (!feof($myfile)) {
+                        $data .= fread($myfile, 8192);
+                    }
+                    flock($myfile, LOCK_UN);
+                    fclose($myfile);
+
+                    // Split into lines
+                    $lines = explode("\n", $data);
+
+                    // Mark if we have truncated the start
+                    if (count($lines) != 0) {
                         if (strlen($data) == 40000) {
                             $lines[0] = '...';
                         }
                     }
-                }
-                foreach ($lines as $i => $line) {
-                    $matches = array();
-                    if (preg_match('#^\s+has_privilege: (\w+)#', $line, $matches) != 0) {
-                        $looked_up = do_lang('PRIVILEGE_' . $matches[1], null, null, null, null, false);
-                        if ($looked_up !== null) {
-                            $line = str_replace($matches[1], $looked_up, $line);
-                            $lines[$i] = $line;
+
+                    // Any special support for reformatting particular logs
+                    foreach ($lines as $i => $line) {
+                        // Special support for permission log
+                        $matches = array();
+                        if (preg_match('#^\s+has_privilege: (\w+)#', $line, $matches) != 0) {
+                            $looked_up = do_lang('PRIVILEGE_' . $matches[1], null, null, null, null, false);
+                            if ($looked_up !== null) {
+                                $line = str_replace($matches[1], $looked_up, $line);
+                                $lines[$i] = $line;
+                            }
                         }
                     }
                 }
-            }
 
-            // Put permssions into table
-            $permission = implode("\n", $lines);
-        } else {
-            $permission = '';
+                // Put lines back together
+                $download_url = build_url(array('page' => '_SELF', 'type' => 'download_log', 'id' => basename($filename, '.log')), '_SELF');
+                $clear_url = build_url(array('page' => '_SELF', 'type' => 'clear_log', 'id' => basename($filename, '.log')), '_SELF');
+                $delete_url = build_url(array('page' => '_SELF', 'type' => 'delete_log', 'id' => basename($filename, '.log')), '_SELF');
+                $logs[$filename] = array(
+                    'LOG' => implode("\n", $lines),
+                    'DOWNLOAD_URL' => $download_url,
+                    'CLEAR_URL' => $clear_url,
+                    'DELETE_URL' => $delete_url,
+                );
+            }
         }
 
-        $tpl = do_template('ERRORLOG_SCREEN', array('_GUID' => '9186c7beb6b722a52f39e2cbe16aded6', 'TITLE' => $this->title, 'ERROR' => $error, 'PERMISSION' => $permission));
+        // Put it all together...
+
+        $clear_url = build_url(array('page' => '_SELF', 'type' => 'clear_log', 'id' => 'errorlog'), '_SELF');
+
+        $tpl = do_template('ERRORLOG_SCREEN', array(
+            '_GUID' => '9186c7beb6b722a52f39e2cbe16aded6',
+            'TITLE' => $this->title,
+            'ERRORS' => $errors,
+            'LOGS' => $logs,
+            'CLEAR_URL' => $clear_url,
+        ));
 
         require_code('templates_internalise_screen');
         return internalise_own_screen($tpl);
+    }
+
+    /**
+     * Delete log actualiser.
+     *
+     * @return Tempcode The result of execution
+     */
+    public function delete_log()
+    {
+        $log_file = filter_naughty(get_param_string('id'));
+        if ($log_file == 'errorlog') {
+            $log_file .= '.php';
+        } else {
+            $log_file .= '.log';
+        }
+
+        unlink(get_custom_file_base() . '/data_custom/' . $log_file);
+
+        $url = build_url(array('page' => '_SELF'), '_SELF');
+        return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
+    }
+
+    /**
+     * Clear log actualiser.
+     *
+     * @return Tempcode The result of execution
+     */
+    public function clear_log()
+    {
+        $log_file = filter_naughty(get_param_string('id'));
+        if ($log_file == 'errorlog') {
+            $log_file .= '.php';
+        } else {
+            $log_file .= '.log';
+        }
+
+        require_code('files');
+        cms_file_put_contents_safe(get_custom_file_base() . '/data_custom/' . $log_file, '');
+
+        $url = build_url(array('page' => '_SELF'), '_SELF');
+        return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
+    }
+
+    /**
+     * Download log actualiser.
+     *
+     * @return Tempcode The result of execution
+     */
+    public function download_log()
+    {
+        $log_file = filter_naughty(get_param_string('id'));
+        if ($log_file == 'errorlog') {
+            $log_file .= '.php';
+        } else {
+            $log_file .= '.log';
+        }
+
+        safe_ini_set('ocproducts.xss_detect', '0');
+
+        header('Content-Type: text/plain');
+
+        echo file_get_contents(get_custom_file_base() . '/data_custom/' . $log_file);
+
+        $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
+        exit();
+
+        return new Tempcode();
     }
 }
