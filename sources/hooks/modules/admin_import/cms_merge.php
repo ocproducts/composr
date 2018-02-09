@@ -901,7 +901,7 @@ class Hook_import_cms_merge
                 add_banner(
                     $row['name'],
                     $row['img_url'],
-                    $row['b_title_text'],
+                    $row['title_text'],
                     $this->get_lang_string($db, $row['caption']),
                     $row['direct_code'],
                     $row['campaign_remaining'],
