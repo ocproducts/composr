@@ -248,6 +248,10 @@ class Module_members
 
         $GLOBALS['FORUM_DB']->query_update('f_members', array('m_allow_emails_from_staff' => 0), array('id' => $id), '', 1);
 
+        if (addon_installed('newsletter')) {
+            $GLOBALS['SITE_DB']->query_delete('newsletter_subscribe', array('email' => $_subscriber['m_email_address']));
+        }
+
         return inform_screen($this->title, do_lang_tempcode('newsletter:MEMBER_NEWSLETTER_UNSUBSCRIBED', escape_html(get_site_name())));
     }
 }
