@@ -55,7 +55,7 @@
         });
 
         function continueFunc() {
-            button.value = "{!PROCEED} ({!AUTO_IN} " + button.countdown + ")";
+            button.value = '{!PROCEED;} ({!AUTO_IN;} ' + button.countdown + ')';
             if (button.countdown === 0) {
                 if (timer) {
                     window.clearInterval(timer);

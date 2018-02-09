@@ -76,15 +76,15 @@
     };
 
     $cms.functions.moduleTopicsPostJavascriptForceGuestNames = function moduleTopicsPostJavascriptForceGuestNames() {
-        var posterNameIfGuest = document.getElementById("poster_name_if_guest");
+        var posterNameIfGuest = document.getElementById('poster_name_if_guest');
         if (posterNameIfGuest) {
             var crf = function () {
-                if (posterNameIfGuest.value === "{!GUEST;}") {
-                    posterNameIfGuest.value = "";
+                if (posterNameIfGuest.value === '{!GUEST;}') {
+                    posterNameIfGuest.value = '';
                 }
             };
             crf();
-            posterNameIfGuest.addEventListener("blur", crf);
+            posterNameIfGuest.addEventListener('blur', crf);
         }
     };
 
