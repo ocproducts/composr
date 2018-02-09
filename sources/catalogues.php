@@ -1791,11 +1791,9 @@ function is_ecommerce_catalogue_entry($entry_id)
  * Display a catalogue entry.
  *
  * @param  AUTO_LINK $id Entry ID
- * @param  boolean $no_title Whether to skip rendering a title
- * @param  boolean $attach_to_url_filter Whether to copy through any filter parameters in the URL, under the basis that they are associated with what this box is browsing
  * @return Tempcode Tempcode interface to display an entry
  */
-function render_catalogue_entry_screen($id, $no_title = false, $attach_to_url_filter = true)
+function render_catalogue_entry_screen($id)
 {
     if (addon_installed('content_privacy')) {
         require_code('content_privacy');
@@ -1896,17 +1894,13 @@ function render_catalogue_entry_screen($id, $no_title = false, $attach_to_url_fi
             $title_to_use_2 = do_lang('DEFAULT__CATALOGUE_ENTRY', $map['FIELD_0_PLAIN']);
         }
     }
-    if ($no_title) {
-        $map['TITLE'] = new Tempcode();
+    if ((get_value('no_awards_in_titles') !== '1') && (addon_installed('awards'))) {
+        require_code('awards');
+        $awards = find_awards_for('catalogue_entry', strval($id));
     } else {
-        if ((get_value('no_awards_in_titles') !== '1') && (addon_installed('awards'))) {
-            require_code('awards');
-            $awards = find_awards_for('catalogue_entry', strval($id));
-        } else {
-            $awards = array();
-        }
-        $map['TITLE'] = get_screen_title($title_to_use, false, array(), null, $awards);
+        $awards = array();
     }
+    $map['TITLE'] = get_screen_title($title_to_use, false, array(), null, $awards);
     $map['SUBMITTER'] = strval($entry['ce_submitter']);
 
     require_code('content2');
