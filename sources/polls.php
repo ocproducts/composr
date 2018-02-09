@@ -46,12 +46,9 @@ function render_poll_box($results, $myrow, $zone = '_SEARCH', $include_manage_li
 
     // Count our total votes
     $num_options = $myrow['num_options'];
-    $totalvotes = 0;
+    $total_votes = 0;
     for ($i = 1; $i <= $num_options; $i++) {
-        if (!array_key_exists('votes' . strval($i), $myrow)) {
-            $myrow['votes' . strval($i)] = 0;
-        }
-        $totalvotes += $myrow['votes' . strval($i)];
+        $total_votes += $myrow['votes' . strval($i)];
     }
 
     // Sort by results
@@ -63,6 +60,7 @@ function render_poll_box($results, $myrow, $zone = '_SEARCH', $include_manage_li
         asort($orderings);
     }
 
+    // Links
     $poll_results = 'show_poll_results_' . strval($myrow['id']);
     $vote_url = get_self_url(false, true, array('poll_id' => $myrow['id'], $poll_results => 1));
     $result_url = $results ? new Tempcode() : get_self_url(false, true, array($poll_results => 1));
@@ -73,21 +71,38 @@ function render_poll_box($results, $myrow, $zone = '_SEARCH', $include_manage_li
         $answer = get_translated_tempcode('poll', $just_poll_row, 'option' . strval($i));
         $answer_plain = get_translated_text($myrow['option' . strval($i)]);
         if (!$results) {
-            $tpl->attach(do_template('POLL_ANSWER', array('_GUID' => ($guid != '') ? $guid : 'bc9c2e818f2e7031075d8d7b01d79cd5', 'PID' => strval($myrow['id']), 'I' => strval($i), 'CAST' => strval($i), 'VOTE_URL' => $vote_url, 'ANSWER' => $answer, 'ANSWER_PLAIN' => $answer_plain)));
+            $tpl->attach(do_template('POLL_ANSWER', array(
+                '_GUID' => ($guid != '') ? $guid : 'bc9c2e818f2e7031075d8d7b01d79cd5',
+                'PID' => strval($myrow['id']),
+                'I' => strval($i),
+                'CAST' => strval($i),
+                'VOTE_URL' => $vote_url,
+                'ANSWER' => $answer,
+                'ANSWER_PLAIN' => $answer_plain,
+            )));
         } else {
             $votes = $myrow['votes' . strval($i)];
-            if (!is_numeric($votes)) {
-                $votes = 0;
-            }
-            if ($totalvotes != 0) {
-                $width = intval(round(70.0 * floatval($votes) / floatval($totalvotes)));
+            if ($total_votes != 0) {
+                $width = intval(round(70.0 * floatval($votes) / floatval($total_votes)));
             } else {
                 $width = 0;
             }
-            $tpl->attach(do_template('POLL_ANSWER_RESULT', array('_GUID' => ($guid != '') ? $guid : '887ea0ed090c48305eb84500865e5178', 'PID' => strval($myrow['id']), 'I' => strval($i), 'VOTE_URL' => $vote_url, 'ANSWER' => $answer, 'ANSWER_PLAIN' => $answer_plain, 'WIDTH' => strval($width), 'VOTES' => integer_format($votes))));
+            $tpl->attach(do_template('POLL_ANSWER_RESULT', array(
+                '_GUID' => ($guid != '') ? $guid : '887ea0ed090c48305eb84500865e5178',
+                'PID' => strval($myrow['id']),
+                'I' => strval($i),
+                'VOTE_URL' => $vote_url,
+                'ANSWER' => $answer,
+                'ANSWER_PLAIN' => $answer_plain,
+                'WIDTH' => strval($width),
+                'VOTES' => integer_format($votes),
+                '_VOTES' => strval($votes),
+                'TOTAL_VOTES' => strval($total_votes),
+            )));
         }
     }
 
+    // Management links
     if ($include_manage_links) {
         if ((has_actual_page_access(null, 'cms_polls', null, null)) && (has_submit_permission('mid', get_member(), get_ip_address(), 'cms_polls'))) {
             $submit_url = build_url(array('page' => 'cms_polls', 'type' => 'add', 'redirect' => protect_url_parameter(SELF_REDIRECT_RIP)), get_module_zone('cms_polls'));
@@ -121,6 +136,7 @@ function render_poll_box($results, $myrow, $zone = '_SEARCH', $include_manage_li
         'ARCHIVE_URL' => $archive_url,
         'RESULT_URL' => $result_url,
         'GIVE_CONTEXT' => $give_context,
+        'TOTAL_VOTES' => strval($total_votes),
     );
     if ((get_option('is_on_comments') == '1') && (!has_no_forum()) && ($myrow['allow_comments'] >= 1)) {
         $map['COMMENT_COUNT'] = '1';

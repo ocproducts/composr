@@ -293,6 +293,8 @@ class Hook_addon_registry_polls
                         'ANSWER_PLAIN' => lorem_phrase(),
                         'WIDTH' => strval($k),
                         'VOTES' => placeholder_number(),
+                        '_VOTES' => placeholder_number(),
+                        'TOTAL_VOTES' => placeholder_number(),
                     )));
                 }
         }
@@ -311,6 +313,7 @@ class Hook_addon_registry_polls
             'QUESTION' => lorem_phrase(),
             'CONTENT' => $tpl,
             'FULL_URL' => placeholder_url(),
+            'TOTAL_VOTES' => placeholder_number(),
         ));
 
         return array(

@@ -685,10 +685,10 @@ class Module_topicview
             } else {
                 $button = do_lang_tempcode('TOPIC_POLL_CLOSED');
             }
+            $total_votes = $_poll['total_votes'];
             foreach ($_poll['answers'] as $answer) {
                 if (($poll_results) && (($_poll['requires_reply'] == 0) || ($replied))) {
                     $num_votes = $answer['num_votes'];
-                    $total_votes = $_poll['total_votes'];
                     if ($total_votes != 0) {
                         $width = intval(round(70.0 * floatval($num_votes) / floatval($total_votes)));
                     } else {
@@ -740,6 +740,7 @@ class Module_topicview
                 'VOTE_URL' => $vote_url,
                 'MINIMUM_SELECTIONS' => integer_format($_poll['minimum_selections']),
                 'MAXIMUM_SELECTIONS' => integer_format($_poll['maximum_selections']),
+                'TOTAL_VOTES' => strval($total_votes),
             ));
         } else {
             $poll = new Tempcode();

@@ -1541,6 +1541,7 @@ class Hook_addon_registry_cns_forum
                     'VOTE_URL' => placeholder_url(),
                     'MINIMUM_SELECTIONS' => placeholder_number(),
                     'MAXIMUM_SELECTIONS' => placeholder_number(),
+                    'TOTAL_VOTES' => placeholder_number(),
                 )));
             } else {
                 $answers = new Tempcode();
