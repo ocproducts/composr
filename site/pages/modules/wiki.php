@@ -94,7 +94,7 @@ class Module_wiki
                 'add_date' => 'TIME',
                 'edit_date' => '?TIME',
                 'wiki_views' => 'INTEGER',
-                'hide_posts' => 'BINARY',
+                'show_posts' => 'BINARY',
                 'submitter' => 'MEMBER',
             ));
 
@@ -104,7 +104,7 @@ class Module_wiki
             $map = array(
                 'submitter' => $GLOBALS['FORUM_DRIVER']->get_guest_id() + 1,
                 'edit_date' => null,
-                'hide_posts' => 0,
+                'show_posts' => 1,
                 'wiki_views' => 0,
                 'add_date' => time(),
                 'notes' => '',
@@ -199,6 +199,11 @@ class Module_wiki
 
         if (($upgrade_from === null) || ($upgrade_from < 10)) {
             $GLOBALS['SITE_DB']->create_index('wiki_posts', 'member_id', array('member_id'));
+        }
+
+        if (($upgrade_from !== null) && ($upgrade_from < 10)) { // LEGACY
+            $GLOBALS['SITE_DB']->alter_table_field('wiki_pages', 'hide_posts', 'BINARY', 'show_posts');
+            $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'wiki_pages SET show_posts=1-show_posts');
         }
     }
 
@@ -468,7 +473,7 @@ class Module_wiki
         require_lang('cns');
 
         if (get_option('wiki_enable_content_posts') == '0') {
-            $page['hide_posts'] = 1;
+            $page['show_posts'] = 0;
         }
 
         // Views
@@ -487,7 +492,7 @@ class Module_wiki
         $num_children = 0;
         $children = array();
         if (get_option('wiki_enable_children') == '1') {
-            $children_rows = $GLOBALS['SITE_DB']->query_select('wiki_children c LEFT JOIN ' . get_table_prefix() . 'wiki_pages p ON c.child_id=p.id', array('child_id', 'c.title', 'hide_posts', 'description'), array('c.parent_id' => $id), 'ORDER BY c.the_order');
+            $children_rows = $GLOBALS['SITE_DB']->query_select('wiki_children c LEFT JOIN ' . get_table_prefix() . 'wiki_pages p ON c.child_id=p.id', array('child_id', 'c.title', 'show_posts', 'description'), array('c.parent_id' => $id), 'ORDER BY c.the_order');
             foreach ($children_rows as $myrow) {
                 $child_id = $myrow['child_id'];
 
@@ -496,7 +501,7 @@ class Module_wiki
                 }
 
                 if (get_option('wiki_enable_content_posts') == '0') {
-                    $myrow['hide_posts'] = 1;
+                    $myrow['show_posts'] = 0;
                 }
 
                 $child_title = $myrow['title'];
@@ -514,7 +519,7 @@ class Module_wiki
                     'MY_CHILD_POSTS' => integer_format($my_child_posts),
                     'MY_CHILD_CHILDREN' => integer_format($my_child_children),
                     'BODY_CONTENT' => (trim($child_description) != '') ? strval(strlen($child_description)) : '0',
-                    'HIDE_POSTS' => $myrow['hide_posts'] == 1,
+                    'SHOW_POSTS' => $myrow['show_posts'] == 1,
                 );
 
                 $num_children++;
@@ -597,7 +602,7 @@ class Module_wiki
         return do_template('WIKI_PAGE_SCREEN', array(
             '_GUID' => '1840d6934be3344c4f93a159fc737a45',
             'TAGS' => get_loaded_tags('wiki_pages'),
-            'HIDE_POSTS' => $page['hide_posts'] == 1,
+            'SHOW_POSTS' => $page['show_posts'] == 1,
             'ID' => strval($id),
             'CHAIN' => $chain,
             'VIEWS' => integer_format($page['wiki_views']),

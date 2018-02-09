@@ -3864,7 +3864,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DESCRIPTION_HAVE_DEFAULT_WORDFILTER
         DESCRIPTION_HEADER_TEXT
         DESCRIPTION_SHOW_AWARDEE
-        DESCRIPTION_HIDE_POSTS
+        DESCRIPTION_SHOW_POSTS
         DESCRIPTION_HITS_ALLOCATED
         DESCRIPTION_HOURLY_BREAKDOWNS
         DESCRIPTION_HTML_ONLY
@@ -5024,7 +5024,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         HIDDEN_USERGROUP
         SHOW_AWARDEE
         HIDE_DONE
-        HIDE_POSTS
+        SHOW_POSTS
         HIT
         HITS_ALLOCATED
         HOLD_ORDER

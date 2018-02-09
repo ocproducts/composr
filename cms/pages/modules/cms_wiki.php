@@ -222,11 +222,11 @@ class Module_cms_wiki
      * @param  ?AUTO_LINK $id The page ID (null: new)
      * @param  SHORT_TEXT $title The page title
      * @param  LONG_TEXT $notes Hidden notes pertaining to the page
-     * @param  BINARY $hide_posts Whether to hide the posts on the page by default
+     * @param  BINARY $show_posts Whether to show the posts on the page by default
      * @param  ?AUTO_LINK $page_id The ID of the page (null: we're adding)
      * @return array The fields, the extra fields, the hidden fields
      */
-    public function get_page_fields($id = null, $title = '', $notes = '', $hide_posts = 0, $page_id = null)
+    public function get_page_fields($id = null, $title = '', $notes = '', $show_posts = 1, $page_id = null)
     {
         $fields = new Tempcode();
         $fields2 = new Tempcode();
@@ -235,7 +235,7 @@ class Module_cms_wiki
         require_code('form_templates');
         $fields->attach(form_input_line(do_lang_tempcode('SCREEN_TITLE'), do_lang_tempcode('SCREEN_TITLE_DESC'), 'title', $title, true));
         if (get_option('wiki_enable_content_posts') == '1') {
-            $fields2->attach(form_input_tick(do_lang_tempcode('HIDE_POSTS'), do_lang_tempcode('DESCRIPTION_HIDE_POSTS'), 'hide_posts', $hide_posts == 1));
+            $fields2->attach(form_input_tick(do_lang_tempcode('SHOW_POSTS'), do_lang_tempcode('DESCRIPTION_SHOW_POSTS'), 'show_posts', $show_posts == 1));
         }
 
         require_lang('notifications');
@@ -331,7 +331,7 @@ class Module_cms_wiki
         require_code('content2');
         $metadata = actual_metadata_get_fields('wiki_page', null);
 
-        $id = wiki_add_page(post_param_string('title'), post_param_string('post'), post_param_string('notes', ''), (get_option('wiki_enable_content_posts') == '1') ? post_param_integer('hide_posts', 0) : 1, $metadata['submitter'], $metadata['add_time'], $metadata['views'], post_param_string('meta_keywords', ''), post_param_string('meta_description', ''), null, false);
+        $id = wiki_add_page(post_param_string('title'), post_param_string('post'), post_param_string('notes', ''), (get_option('wiki_enable_content_posts') == '1') ? post_param_integer('show_posts', 0) : 1, $metadata['submitter'], $metadata['add_time'], $metadata['views'], post_param_string('meta_keywords', ''), post_param_string('meta_description', ''), null, false);
 
         set_url_moniker('wiki_page', strval($id));
 
@@ -428,7 +428,7 @@ class Module_cms_wiki
         }
         $edit_url = build_url(array('page' => '_SELF', 'redirect' => protect_url_parameter($redir_url), 'type' => '_edit_page', 'id' => get_param_string('id', false, INPUT_FILTER_GET_COMPLEX)), '_SELF');
 
-        list($fields, $fields2, $hidden) = $this->get_page_fields($id, $page_title, $page['notes'], $page['hide_posts'], $id);
+        list($fields, $fields2, $hidden) = $this->get_page_fields($id, $page_title, $page['notes'], $page['show_posts'], $id);
         require_code('content2');
         $fields2->attach(seo_get_fields('wiki_page', strval($id)));
 
@@ -502,7 +502,7 @@ class Module_cms_wiki
 
             require_code('permissions2');
             set_category_permissions_from_environment('wiki_page', strval($id), 'cms_wiki');
-            wiki_edit_page($id, post_param_string('title'), post_param_string('post'), post_param_string('notes', ''), (get_option('wiki_enable_content_posts') == '1') ? post_param_integer('hide_posts', 0) : 1, post_param_string('meta_keywords', ''), post_param_string('meta_description', ''), $metadata['submitter'], $metadata['add_time'], $metadata['views']);
+            wiki_edit_page($id, post_param_string('title'), post_param_string('post'), post_param_string('notes', ''), (get_option('wiki_enable_content_posts') == '1') ? post_param_integer('show_posts', 0) : 1, post_param_string('meta_keywords', ''), post_param_string('meta_description', ''), $metadata['submitter'], $metadata['add_time'], $metadata['views']);
 
             require_code('fields');
             if (has_tied_catalogue('wiki_page')) {
@@ -618,10 +618,10 @@ class Module_cms_wiki
 
         check_privilege('wiki_manage_tree', array('wiki_page', $id));
 
-        $hide_posts = $GLOBALS['SITE_DB']->query_select_value('wiki_pages', 'hide_posts', array('id' => $id));
+        $show_posts = $GLOBALS['SITE_DB']->query_select_value('wiki_pages', 'show_posts', array('id' => $id));
         $page_title = $GLOBALS['SITE_DB']->query_select_value('wiki_pages', 'title', array('id' => $id));
         if (get_option('wiki_enable_content_posts') == '0') {
-            $hide_posts = 1;
+            $show_posts = 0;
         }
 
         if ((substr($child_links, -1, 1) != "\n") && (strlen($child_links) > 0)) {
@@ -665,7 +665,7 @@ class Module_cms_wiki
                     }
                 } else { // New
                     $title = substr($new_link, 0, 255);
-                    $child_id = wiki_add_page($title, '', '', $hide_posts, null, null, 0, '', '', null, false);
+                    $child_id = wiki_add_page($title, '', '', $show_posts, null, null, 0, '', '', null, false);
 
                     require_code('permissions2');
                     set_global_category_access('wiki_page', $child_id);

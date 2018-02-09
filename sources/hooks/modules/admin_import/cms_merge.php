@@ -1525,7 +1525,7 @@ class Hook_import_cms_merge
             $map = array(
                 'edit_date' => $row['edit_date'],
                 'submitter' => $submitter,
-                'hide_posts' => $row['hide_posts'],
+                'show_posts' => $row['show_posts'],
                 'wiki_views' => $row['wiki_views'],
                 'notes' => $row['notes'],
                 'add_date' => $row['add_date'],

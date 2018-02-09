@@ -365,7 +365,7 @@ function wiki_delete_post($post_id, $member_id = null)
  * @param  SHORT_TEXT $title The page title
  * @param  LONG_TEXT $description The page description
  * @param  LONG_TEXT $notes Hidden notes pertaining to the page
- * @param  BINARY $hide_posts Whether to hide the posts on the page by default
+ * @param  BINARY $show_posts Whether to show the posts on the page by default
  * @param  ?MEMBER $member_id The member doing the action (null: current member)
  * @param  ?TIME $add_time The add time (null: now)
  * @param  integer $views The number of views so far
@@ -375,7 +375,7 @@ function wiki_delete_post($post_id, $member_id = null)
  * @param  boolean $send_notification Whether to send a notification
  * @return AUTO_LINK The page ID
  */
-function wiki_add_page($title, $description, $notes, $hide_posts, $member_id = null, $add_time = null, $views = 0, $meta_keywords = '', $meta_description = '', $edit_date = null, $send_notification = true)
+function wiki_add_page($title, $description, $notes, $show_posts, $member_id = null, $add_time = null, $views = 0, $meta_keywords = '', $meta_description = '', $edit_date = null, $send_notification = true)
 {
     if ($member_id === null) {
         $member_id = get_member();
@@ -396,7 +396,7 @@ function wiki_add_page($title, $description, $notes, $hide_posts, $member_id = n
     }
 
     $map = array(
-        'hide_posts' => $hide_posts,
+        'show_posts' => $show_posts,
         'notes' => $notes,
         'submitter' => $member_id,
         'wiki_views' => $views,
@@ -456,7 +456,7 @@ function wiki_add_page($title, $description, $notes, $hide_posts, $member_id = n
  * @param  SHORT_TEXT $title The page title
  * @param  LONG_TEXT $description The page description
  * @param  LONG_TEXT $notes Hidden notes pertaining to the page
- * @param  BINARY $hide_posts Whether to hide the posts on the page by default
+ * @param  BINARY $show_posts Whether to show the posts on the page by default
  * @param  SHORT_TEXT $meta_keywords Meta keywords
  * @param  LONG_TEXT $meta_description Meta description
  * @param  ?MEMBER $member_id The member doing the action (null: current member)
@@ -465,7 +465,7 @@ function wiki_add_page($title, $description, $notes, $hide_posts, $member_id = n
  * @param  ?integer $views Views (null: do not change)
  * @param  boolean $null_is_literal Determines whether some nulls passed mean 'use a default' or literally mean 'set to null'
  */
-function wiki_edit_page($page_id, $title, $description, $notes, $hide_posts, $meta_keywords, $meta_description, $member_id = null, $edit_time = null, $add_time = null, $views = null, $null_is_literal = false)
+function wiki_edit_page($page_id, $title, $description, $notes, $show_posts, $meta_keywords, $meta_description, $member_id = null, $edit_time = null, $add_time = null, $views = null, $null_is_literal = false)
 {
     if ($edit_time === null) {
         $edit_time = $null_is_literal ? null : time();
@@ -496,7 +496,7 @@ function wiki_edit_page($page_id, $title, $description, $notes, $hide_posts, $me
     }
 
     $update_map = array(
-        'hide_posts' => $hide_posts,
+        'show_posts' => $show_posts,
         'notes' => $notes,
     );
 

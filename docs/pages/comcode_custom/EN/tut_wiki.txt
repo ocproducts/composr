@@ -13,7 +13,7 @@ This tutorial will describe the Wiki+ system, which is Composr's equivalent to a
 
 [surround]
 [media width="150" description="Editing the Wiki+ tree" float="right"]data_custom/images/docs/tut_wiki/wiki_tree_edit.png[/media]
-Wiki+ consists of a pages which may include a page description and any number of posts. If there are no posts, or if the page has been configured to hide them (the per-page "Hide posts" option), then the pages appear much like those on a wiki; otherwise it functions more like a forum where users are contributing snippets of information to your pages.
+Wiki+ consists of a pages which may include a page description and any number of posts. If there are no posts, or if the page has been configured to not show them (by disabling the per-page "Show posts" option), then the pages appear much like those on a wiki; otherwise it functions more like a forum where users are contributing snippets of information to your pages.
 
 When Wiki+ is installed for the first time, there will be a predefined page called Wiki+ Home.
 
@@ -39,7 +39,7 @@ This simplicity is key to the flexibility of the system -- it is a system of con
 The above may be a little confusing to you, especially if you are used to regular wikis.
 
 Composr provides all the normal functionality of a wiki, with the addition of:
-1) Optional prominent post contributions on pages (if you haven't enabled 'Hide posts' then posts will show under the main page text, and thus can be considered a way for users to contribute snippets of extra content without formally editing the page itself)
+1) Optional prominent post contributions on pages (if you have 'Show posts' enabled then posts will show under the main page text, and thus can be considered a way for users to contribute snippets of extra content without formally editing the page itself)
 2) Optional tree structure (a regular wiki just uses cross-linking, Composr can do both)
 
 [title="2"]Setting up the structure[/title]

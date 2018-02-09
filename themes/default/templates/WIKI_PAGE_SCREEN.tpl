@@ -9,7 +9,7 @@
 
 	<div class="wiki-screen">
 		{+START,IF_NON_EMPTY,{DESCRIPTION}}
-			{+START,IF,{$NOT,{HIDE_POSTS}}}
+			{+START,IF,{SHOW_POSTS}}
 				<div class="pe-wiki-page-description" itemprop="description">
 					<div class="box box---wiki-page-screen"><div class="box-inner">
 						<div>{$,To disassociated headers}
@@ -20,7 +20,7 @@
 					{+START,IF_NON_EMPTY,{$GET,bound_catalogue_entry}}{$CATALOGUE_ENTRY_ALL_FIELD_VALUES,{$GET,bound_catalogue_entry}}{+END}
 				</div>
 			{+END}
-			{+START,IF,{HIDE_POSTS}}
+			{+START,IF,{$NOT,{SHOW_POSTS}}}
 				<div class="pe-wiki-page-description">
 					{DESCRIPTION}
 				</div>
@@ -48,7 +48,7 @@
 								{!CHILD_PLU,{MY_CHILD_CHILDREN*}}
 							{+END}
 							{+START,IF,{$NOR,{$GT,{MY_CHILD_POSTS},0},{$GT,{MY_CHILD_CHILDREN},0},{$IS_NON_EMPTY,{BODY_CONTENT}}}}
-								{+START,IF,{HIDE_POSTS}}
+								{+START,IF,{$NOT,{SHOW_POSTS}}}
 									{!EMPTY}
 								{+END}
 							{+END}
@@ -58,8 +58,8 @@
 			</div>
 		{+END}
 
-		{+START,IF,{$OR,{$IS_NON_EMPTY,{POSTS}},{$NOT,{HIDE_POSTS}}}}
-			{+START,IF,{HIDE_POSTS}}
+		{+START,IF,{$OR,{$IS_NON_EMPTY,{POSTS}},{SHOW_POSTS}}}
+			{+START,IF,{$NOT,{SHOW_POSTS}}}
 				<div data-toggleable-tray="{}">
 					<p class="toggleable-tray-title js-tray-header">
 						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" title="{!DISCUSSION}: {!EXPAND}/{!CONTRACT}" href="#!"><img alt="{!EXPAND}: {!DISCUSSION}" title="{!EXPAND}" width="20" height="20" src="{$IMG*,icons/trays/expand}" /></a>
@@ -79,7 +79,7 @@
 				</div></div>
 			{+END}
 
-			{+START,IF,{HIDE_POSTS}}
+			{+START,IF,{$NOT,{SHOW_POSTS}}}
 					</div>
 				</div>
 			{+END}

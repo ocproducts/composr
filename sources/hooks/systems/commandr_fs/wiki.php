@@ -97,14 +97,14 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
         $parent_id = $this->_integer_category($category);
         $description = $this->_default_property_str($properties, 'description');
         $notes = $this->_default_property_str($properties, 'notes');
-        $hide_posts = $this->_default_property_int($properties, 'hide_posts');
+        $show_posts = $this->_default_property_int($properties, 'show_posts');
         $member_id = $this->_default_property_member($properties, 'submitter');
         $add_time = $this->_default_property_time($properties, 'add_date');
         $edit_date = $this->_default_property_time_null($properties, 'edit_date');
         $views = $this->_default_property_int($properties, 'views');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
-        $id = wiki_add_page($label, $description, $notes, $hide_posts, $member_id, $add_time, $views, $meta_keywords, $meta_description, $edit_date);
+        $id = wiki_add_page($label, $description, $notes, $show_posts, $member_id, $add_time, $views, $meta_keywords, $meta_description, $edit_date);
 
         $the_order = $GLOBALS['SITE_DB']->query_select_value('wiki_children', 'MAX(the_order)', array('parent_id' => $parent_id));
         if ($the_order === null) {
@@ -143,7 +143,7 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
             'label' => get_translated_text($row['title']),
             'description' => get_translated_text($row['description']),
             'notes' => $row['notes'],
-            'hide_posts' => $row['hide_posts'],
+            'show_posts' => $row['show_posts'],
             'submitter' => remap_resource_id_as_portable('member', $row['submitter']),
             'views' => $row['wiki_views'],
             'meta_keywords' => $meta_keywords,
@@ -176,7 +176,7 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
         $label = $this->_default_property_str($properties, 'label');
         $description = $this->_default_property_str($properties, 'description');
         $notes = $this->_default_property_str($properties, 'notes');
-        $hide_posts = $this->_default_property_int($properties, 'hide_posts');
+        $show_posts = $this->_default_property_int($properties, 'show_posts');
         $submitter = $this->_default_property_member($properties, 'submitter');
         $add_time = $this->_default_property_time($properties, 'add_date');
         $edit_date = $this->_default_property_time($properties, 'edit_date');
@@ -185,7 +185,7 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
         $meta_description = $this->_default_property_str($properties, 'meta_description');
 
         $id = intval($resource_id);
-        wiki_edit_page($id, $label, $description, $notes, $hide_posts, $meta_keywords, $meta_description, $submitter, $edit_date, $add_time, $views, true);
+        wiki_edit_page($id, $label, $description, $notes, $show_posts, $meta_keywords, $meta_description, $submitter, $edit_date, $add_time, $views, true);
 
         // Move
         $old_path = $this->search($resource_type, $resource_id, false);

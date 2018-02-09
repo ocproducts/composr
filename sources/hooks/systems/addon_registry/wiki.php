@@ -293,7 +293,7 @@ class Hook_addon_registry_wiki
         return array(
             lorem_globalise(do_lorem_template('WIKI_PAGE_SCREEN', array(
                 'TAGS' => lorem_word_html(),
-                'HIDE_POSTS' => placeholder_id(),
+                'SHOW_POSTS' => placeholder_id(),
                 'ID' => placeholder_id(),
                 'CHAIN' => placeholder_id(),
                 'VIEWS' => placeholder_number(),
