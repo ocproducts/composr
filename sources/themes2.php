@@ -560,6 +560,8 @@ function resize_rep_image($rep_image)
  */
 function find_images_do_dir($theme, $subdir, $langs)
 {
+    require_code('imabes');
+
     $full = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/' . filter_naughty($subdir);
     $out = array();
 
@@ -569,17 +571,14 @@ function find_images_do_dir($theme, $subdir, $langs)
             if ($file[0] != '.') {
                 if (is_dir($full . $file)) {
                     $out = array_merge($out, find_images_do_dir($theme, $subdir . $file . '/', $langs));
-                } else {
-                    $ext = get_file_extension($file);
-                    if (($ext == '.png') || ($ext == '.gif') || ($ext == '.jpg') || ($ext == '.jpeg') || ($ext == '.svg')) {
-                        $_file = explode('.', $file);
-                        $_subdir = $subdir;
-                        foreach (array_keys($langs) as $lang) {
-                            $_subdir = str_replace('/' . $lang . '/', '/', $_subdir);
-                        }
-                        $_subdir = preg_replace('#(^|/)images(_custom)?/#', '', $_subdir);
-                        $out[$_subdir . $_file[0]] = 'themes/' . rawurlencode($theme) . '/' . $subdir . rawurlencode($file);
+                } elseif (is_image($file, IMAGE_CRITERIA_WEBSAFE, true)) {
+                    $_file = explode('.', $file);
+                    $_subdir = $subdir;
+                    foreach (array_keys($langs) as $lang) {
+                        $_subdir = str_replace('/' . $lang . '/', '/', $_subdir);
                     }
+                    $_subdir = preg_replace('#(^|/)images(_custom)?/#', '', $_subdir);
+                    $out[$_subdir . $_file[0]] = 'themes/' . rawurlencode($theme) . '/' . $subdir . rawurlencode($file);
                 }
             }
         }
