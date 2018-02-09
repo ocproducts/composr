@@ -500,10 +500,6 @@ function create_data_mash($url, $data = null, $extension = null, $direct_path = 
         return '';
     }
 
-    if (ini_get('memory_usage') === '8M') {
-        return ''; // Some cowardice... don't want to tempt fate
-    }
-
     if ($extension === null) {
         $extension = get_file_extension($url);
     }
