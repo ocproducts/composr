@@ -665,7 +665,7 @@ Use the [tt]build_url[/tt] function and [tt]PAGE_LINK[/tt] symbol
 | Portability, URL schemes
 | All development
 | Composr development mode
-| Do not hard-code URLs -- use [tt]build_url()[/tt] correctly. This function will convert to whatever URL scheme is in place, as well as propagate [tt]keep_[/tt] fields. Never use relative URLs.
+| Do not hard-code URLs -- use [tt]build_url()[/tt] correctly. This function will convert to whatever URL scheme is in place, as well as propagate [tt]keep_[/tt] fields. Never use relative URLs as a [tt]<base>[/tt] tag can break them, and we also want all URLs to easily be downloadable server-side in utility functions and when debugging.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Use [tt]build_url[/tt]'s [tt]$skip_keep[/tt] parameter for e-mailed Comcode[/color]
@@ -2140,7 +2140,7 @@ Don't use any deprecated methods (so no [tt]escape[/tt])
 | Future proofing
 | Composr development +
 | Manually
-| We want to align to future versions of JavaScript. If we want to benefit from future functionality then we typically will add a polyfill for that (loaded up in [tt]HTML_HEAD[/tt]) rather than adding a compatibility layer in the framework or implementing an alternative. This allows us to easily remove the polyfill later when we can, and also let's us get better performance.
+| We want to align to future versions of JavaScript. If we want to benefit from future functionality then we typically will add a polyfill for that (loaded up in [tt]global.js[/tt]) rather than adding a compatibility layer in the framework or implementing an alternative. This allows us to easily remove the polyfill later when we can, and also let's us get better performance.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 Do not use inline JavaScript
@@ -2160,7 +2160,7 @@ Do not use synchronous XmlHttpRequest
 Fix any strict warnings
 | Standards compliance, future proofing
 | Product development only
-| JavaScript files should have [tt]use strict;[/tt] in, automated test to ensure this ([tt]js_strict_mode.php[/tt])
+| JavaScript files should have [tt]use strict;[/tt] in, automated test ([tt]js_strict_mode.php[/tt])
 | In the past Firefox's strict mode (prior to the standardised strict mode) would complain about ever referencing undefined variables/properties, but that's not an issue now. Ideally don't check things are defined just using a raw [tt]if[/tt] because it's not very clear. However, it is acceptable to do an [tt]if[/tt] that considers [tt]undefined[/tt]/[tt]null[/tt]/[tt]false[/tt] [i]values[/i] to be the same thing (a missing function parameter will be an [tt]undefined[/tt] [i]value[/i] on an actual variable). For referencing variables that don't just hold an [tt]undefined[/tt] value but really are undefined, do check them like [tt]object.foo == undefined[/tt] or [tt]object.foo === undefined[/tt] (if null shouldn't count). It is important to include the object (which may be [tt]window[/tt]), otherwise the strict mode will complain.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
@@ -2178,18 +2178,11 @@ Fix any strict warnings
 | Popup blockers may remove this functionality, setting them to null. You must catch exceptions over the calls.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
-[color="red"]It's written JavaScript not Javascript[/color]
+[color="red"]It's written JavaScript not Javascript or ECMAScript[/color]
 | Standards compliance
 | Product development only
 | Manually
-| A minor point, but if we capitalise our technology names incorrectly we look less professional.
-|-
-| [size="0.8"]{$INC,cs_count,1})[/size]
-[color="red"]It's JavaScript not ECMAScript[/color]
-| Consistency
-| Product development only
-| Manually
-| While JavaScript is standardised as ECMAScript, we all still call it JavaScript in practice
+| A minor point, but if we capitalise our technology names incorrectly we look less professional. While JavaScript is standardised as ECMAScript, we all still call it JavaScript in practice.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Name DOM nodes variables as [tt]el[/tt] as appropriate[/color]
@@ -2232,6 +2225,34 @@ Do not omit semicolons
 | Product development only
 | Manually
 | This is a special value used by Composr to indicate "prevent default" that you can make use of. There's a global listener for all clicks which finds such links and calls [tt]e.preventDefault()[/tt] so to not make the screen jump. [tt]href="#!"[/tt] is used because [tt]href="#"[/tt] could have valid uses like "jump to top".
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+[color="red"]Make images relative[/color]
+| Stability
+| Product development only
+| Automated test ([tt]js_standards.php[/tt])
+| Calls to [tt]{$IMG}[/tt] must be wrapped with [tt]$util.srl()[/tt]. This is because they need to be turned from absolute URLs to relative URLs, just in case a JavaScript file is cached under HTTP but used under HTTPS (it would generate a security error).
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+[color="red"]Use relative base URLs[/color]
+| Stability
+| Product development only
+| Automated test ([tt]js_standards.php[/tt])
+| Use the relative version of the base URL ([tt]$cms.getBaseUrlNohttp[/tt]), just in case a JavaScript file is cached under HTTP but used under HTTPS (it would generate a security error) -- or if the JavaScript is working across multiple domains (another potential security error). When Composr runs on multiple domains all URLs will work on all domains, with the exception of page URLs.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+[color="red"]Use relative script URLs[/color]
+| Stability
+| Product development only
+| Manually
+| Use [tt]{$FIND_SCRIPT_NOHTTP}[/tt] not [tt]{$FIND_SCRIPT}[/tt], just in case a JavaScript file is cached under HTTP but used under HTTPS (it would generate a security error) -- or if the JavaScript is working across multiple domains (another potential security error). When Composr runs on multiple domains all URLs will work on all domains, with the exception of page URLs.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+[color="red"]Do not encode page-links directly in JavaScripts[/color]
+| Stability
+| Product development only
+| Automated test ([tt]js_standards.php[/tt])
+| Use of [tt]{$PAGE_LINK}[/tt] will encode [tt]keep_[/tt] parameters, including potential session IDs. It must therefore be passed into JavaScript via an HTML [tt]data-[/tt] attribute, or you must generate with the [tt]{$PAGE_LINK}[/tt] parameter to avoid [tt]keep_[/tt] parameters and manually attach them using [tt]$cms.keep()[/tt] (being very careful on whether the existing URL does or doesn't have a [tt]?[/tt] in already, which may vary by URL scheme).
 |}
 
 [title="4"]CSS and JavaScript[/title]

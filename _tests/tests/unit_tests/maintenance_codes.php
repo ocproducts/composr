@@ -125,7 +125,7 @@ class maintenance_codes_test_set extends cms_test_case
         $contents = file_get_contents(get_file_base() . '/docs/pages/comcode_custom/EN/codebook_standards.txt');
 
         $matches = array();
-        $num_matches = preg_match_all('#Automated test \(\[tt\](\w+)\[/tt\]\)#', $contents, $matches);
+        $num_matches = preg_match_all('#Automated test \(\[tt\](\w+)\[/tt\]\)#i', $contents, $matches);
         for ($i = 0; $i < $num_matches; $i++) {
             $test = $matches[1][$i];
             $this->assertTrue(is_file(get_file_base() . '/_tests/tests/unit_tests/' . $test . '.php'), 'Could not find referenced test, ' . $test);
