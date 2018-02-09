@@ -171,7 +171,7 @@ class Module_vforums
 
         $extra_tpl_map = array('FILTERING' => do_template('CNS_VFORUM_FILTERING', array()));
 
-        return $this->_vforum($title, $condition, 'last_post', true, $extra_tpl_map);
+        return $this->_vforum($title, $condition, 'last_post', false, $extra_tpl_map);
     }
 
     /**
@@ -190,7 +190,7 @@ class Module_vforums
 
         $initial_table = $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t';
 
-        return $this->_vforum($title, $condition, 'last_post', true, null, $initial_table);
+        return $this->_vforum($title, $condition, 'last_post', false, null, $initial_table);
     }
 
     /**
@@ -223,7 +223,7 @@ class Module_vforums
             $order = 'post_time';
         }
 
-        return $this->_vforum($title, $condition, $order, true, null, $initial_table, $extra_select);
+        return $this->_vforum($title, $condition, $order, false, null, $initial_table, $extra_select);
     }
 
     /**
@@ -240,7 +240,7 @@ class Module_vforums
         $title = do_lang_tempcode('TOPICS_UNREAD');
         $condition = array('l_time IS NOT NULL AND l_time<t_cache_last_time', 'l_time IS NULL AND t_cache_last_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'))));
 
-        return $this->_vforum($title, $condition, 'last_post', true);
+        return $this->_vforum($title, $condition, 'last_post', false);
     }
 
     /**
@@ -257,7 +257,7 @@ class Module_vforums
         $title = do_lang_tempcode('RECENTLY_READ');
         $condition = 'l_time>' . strval(time() - 60 * 60 * 24 * 2);
 
-        return $this->_vforum($title, $condition, 'read_time', true);
+        return $this->_vforum($title, $condition, 'read_time', false);
     }
 
     /**
@@ -266,13 +266,13 @@ class Module_vforums
      * @param  Tempcode $title The title to show for the v-forum
      * @param  mixed $condition The condition (a fragment of an SQL query that gets embedded in the context of a topic selection query). May be string, or array of strings (separate queries to run and merge; done for performance reasons relating to DB indexing)
      * @param  string $order The ordering of the results
-     * @param  boolean $no_pin Whether to not show pinning in a separate section
+     * @param  boolean $separate_pins Whether to show pinning in a separate section
      * @param  array $extra_tpl_map Extra template parameters to pass through
      * @param  ?string $initial_table The table to query (null: topic table)
      * @param  string $extra_select Extra SQL for select clause
      * @return Tempcode The UI
      */
-    public function _vforum($title, $condition, $order, $no_pin = false, $extra_tpl_map = array(), $initial_table = null, $extra_select = '')
+    public function _vforum($title, $condition, $order, $separate_pins = true, $extra_tpl_map = array(), $initial_table = null, $extra_select = '')
     {
         require_code('templates_pagination');
         list($max, $start, , $sql_sup, $sql_sup_order_by, $true_start, , $keyset_field_stripped) = get_keyset_pagination_settings('forum_max', intval(get_option('forum_topics_per_page')), 'forum_start', null, null, $order, 'get_forum_sort_order_simplified');
@@ -363,7 +363,7 @@ class Module_vforums
         $topic_wrapper = new Tempcode();
         $forum_name_map = collapse_2d_complexity('id', 'f_name', $GLOBALS['FORUM_DB']->query('SELECT id,f_name FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE f_cache_num_posts>0'));
         foreach ($topics_array as $topic) {
-            if ((!$no_pin) && ($pinned) && (!in_array('pinned', $topic['modifiers']))) {
+            if (($separate_pins) && ($pinned) && (!in_array('pinned', $topic['modifiers']))) {
                 $topics->attach(do_template('CNS_PINNED_DIVIDER'));
             }
             $pinned = in_array('pinned', $topic['modifiers']);
