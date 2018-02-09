@@ -247,13 +247,15 @@ class Module_admin_quiz
 
     /**
      * Actualiser to export quiz CSV.
+     *
+     * @return Tempcode The result of execution
      */
     public function _export_quiz()
     {
-        require_code('files2');
         $quiz_id = post_param_integer('quiz_id');
-        $data = get_quiz_data_for_csv($quiz_id);
-        make_csv($data, 'quiz.csv');
+
+        require_code('tasks');
+        return call_user_func_array__long_task(do_lang('EXPORT_QUIZ'), $this->title, 'export_quiz', array($quiz_id));
     }
 
     /**

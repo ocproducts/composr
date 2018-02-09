@@ -104,6 +104,7 @@ class Hook_addon_registry_quizzes
             'themes/default/images/icons/menu/cms/quiz/index.html',
             'sources/hooks/systems/notifications/quiz_results.php',
             'sources/hooks/systems/config/points_ADD_QUIZ.php',
+            'sources/hooks/systems/tasks/export_quiz.php',
             'sources/hooks/systems/config/quiz_show_stats_count_total_open.php',
             'sources/hooks/systems/meta/quiz.php',
             'sources/hooks/blocks/side_stats/quiz.php',
