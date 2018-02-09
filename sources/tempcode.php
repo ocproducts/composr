@@ -821,7 +821,7 @@ function fill_template_preview_op_cache()
  * Get a Tempcoded version of a Composr template. It is perhaps the most common Composr function to load up templates using do_template, and then attach them together either as parameters to each other, or via the Tempcode attach method.
  *
  * @param  ID_TEXT $codename The codename of the template being loaded
- * @param  ?array $parameters A map of parameters for the template (key to value); you can have any number of parameters of any name, there is no set standard; having a _GUID parameter of random value is a convention (null: no parameters)
+ * @param  array $parameters A map of parameters for the template (key to value); you can have any number of parameters of any name, there is no set standard; having a _GUID parameter of random value is a convention
  * @param  ?LANGUAGE_NAME $lang The language to load the template in (templates can embed language references) (null: users own language)
  * @param  boolean $light_error Whether to not produce a stack dump if the template is missing
  * @param  ?ID_TEXT $fallback Alternate template to use if the primary one does not exist (null: none)
@@ -833,7 +833,7 @@ function fill_template_preview_op_cache()
  * @param  boolean $non_custom_only Whether to only search in the default templates
  * @return Tempcode The Tempcode for this template
  */
-function do_template($codename, $parameters = null, $lang = null, $light_error = false, $fallback = null, $suffix = '.tpl', $directory = 'templates', $theme = null, $non_custom_only = false)
+function do_template($codename, $parameters = array(), $lang = null, $light_error = false, $fallback = null, $suffix = '.tpl', $directory = 'templates', $theme = null, $non_custom_only = false)
 {
     if (empty($lang)) {
         global $USER_LANG_CACHED;
@@ -852,7 +852,7 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
         }
     }
 
-    if (($parameters !== null) && (function_exists('has_solemnly_declared')) && (!has_solemnly_declared(I_UNDERSTAND_XSS))) {
+    if ((function_exists('has_solemnly_declared')) && (!has_solemnly_declared(I_UNDERSTAND_XSS))) {
         kid_gloves_html_escaping($parameters);
     }
 
@@ -892,7 +892,6 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
     $found = null;
     $may_use_template_cache =
         ($CACHE_TEMPLATES) &&
-        //(/*the following relates to ensuring a full recompile for INCLUDEs except for CSS and JS*/($parameters === null) || (!$RECORD_TEMPLATES_USED)) && Actually, unnecessary slowness, we don't care that much, and &cache_templates=0 can be set if we do
         (!$IS_TEMPLATE_PREVIEW_OP_CACHE) &&
         ((!$POSSIBLY_IN_SAFE_MODE_CACHE) || (isset($GLOBALS['SITE_INFO']['safe_mode'])) || (!in_safe_mode())) &&
         (!$RECORD_LANG_STRINGS/*Tempcode compilation embeds lang strings*/) &&
@@ -979,7 +978,7 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
     }
 
     // Optimisation
-    if (!isset($parameters) && !$GLOBALS['INJECT_HIDDEN_TEMPLATE_NAMES']) { // Streamlined if no parameters involved
+    if (empty($parameters) && !$GLOBALS['INJECT_HIDDEN_TEMPLATE_NAMES']) { // Streamlined if no parameters involved
         $out = new Tempcode();
 
         $out->codename = $codename;
@@ -1215,7 +1214,7 @@ function handle_symbol_preprocessing($seq_part, &$children)
 
                 record_template_used($tpl_path_descrip);
 
-                $temp = @do_template($template_file, null, null, true, null, $ex, $td, $theme, $force_original == '1');
+                $temp = @do_template($template_file, array(), null, true, null, $ex, $td, $theme, $force_original == '1');
 
                 require_code('themes_meta_tree');
                 $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__INCLUDE, $tpl_path_descrip, $temp);

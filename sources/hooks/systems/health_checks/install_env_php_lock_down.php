@@ -40,7 +40,7 @@ class Hook_health_check_install_env_php_lock_down extends Hook_Health_Check
         $this->process_checks_section('testMemoryLimits', 'Memory limit', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testMbstringOverload', 'mbstring overload', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testMaxInputVars', 'max_input_vars', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testSuhosinEval', 'Suhosin Eval', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testSuhosin', 'Suhosin', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testMaxExecutionTime', 'max_ececution_time', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testNeededFunctions', 'Needed functions', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testFileUploads', 'File uploads', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
@@ -109,9 +109,41 @@ class Hook_health_check_install_env_php_lock_down extends Hook_Health_Check
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
      */
-    public function testSuhosinEval($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function testSuhosin($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
         $this->assertTrue(ini_get('suhosin.executor.disable_eval') !== '1', do_lang('DISABLED_FUNCTION', 'eval'));
+
+        $setting_minimums = array(
+            'suhosin.cookie.max_vars' => 100,
+            'suhosin.post.max_value_length' => 100000000,
+            'suhosin.get.max_value_length' => 512,
+            'suhosin.request.max_value_length' => 100000000,
+            'suhosin.cookie.max_value_length' => 10000,
+            'suhosin.post.max_name_length' => 64,
+            'suhosin.get.max_name_length' => 64,
+            'suhosin.request.max_name_length' => 64,
+            'suhosin.cookie.max_name_length' => 64,
+            'suhosin.post.max_totalname_length' => 256,
+            'suhosin.get.max_totalname_length' => 256,
+            'suhosin.request.max_totalname_length' => 256,
+            'suhosin.cookie.max_totalname_length' => 256,
+        );
+        foreach ($setting_minimums as $key => $min) {
+            $val = ini_get($key);
+            $this->assertTrue((empty($val)) || (intval($val) < $min), 'The ' . $key . ' Suhosin PHP setting should be raised (see [tt]recommended.htaccess[/tt])');
+        }
+
+        $settings_off = array(
+            'suhosin.cookie.encrypt',
+            'suhosin.sql.union',
+            'suhosin.sql.comment',
+            'suhosin.sql.multiselect',
+            'suhosin.upload.remove_binary',
+        );
+        foreach ($settings_off as $key) {
+            $val = ini_get($key);
+            $this->assertTrue(empty($val), 'The ' . $key . ' Suhosin PHP setting should be off (see [tt]recommended.htaccess[/tt])');
+        }
 
         if (!is_maintained('platform_suhosin')) {
             if (php_function_allowed('extension_loaded')) {

@@ -47,6 +47,7 @@ class special_links_test_set extends cms_test_case
             'https://website.grader.com/' => true,
             'https://developers.google.com/speed/pagespeed/insights/' => true,
             'https://www.ssllabs.com/ssltest/' => true,
+            'https://glockapps.com/spam-testing/' => true,
         );
         foreach ($urls as $url => $test_no_redirecting) {
             $result = cms_http_request($url, array('trigger_error' => false));

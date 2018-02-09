@@ -583,6 +583,7 @@ Values are like hidden configuration options. They are either hidden because the
   - [tt]enable_profiler[/tt] -- set this to '1' if you want to {$IS_MAINTAINED,extra_logging,enable the Composr profiler}, which will write select performance information to [tt]data_custom/profiling.(ID).log[/tt]. For your security you should ensure these files are web-accessible (we will do this by default if we can via the [tt]data_custom/.htaccess[/tt], but you should take care). The web server needs permissions to save files into [tt]data_custom/[/tt] (this is possible by default on modern suEXEC environments). Set to '2' if you want to read Linux performance data, which will then be included in the logging (takes a bit more work by the profiler, assumes Linux and sufficient permissions).
   - [tt]monitor_slow_urls[/tt] -- set this to a number of seconds to log any requests taking at least that many seconds seconds to the error log
   - [tt]permission_log_success_too[/tt] -- set this to '1' if you want the permission log file ([tt]data_custom/permission_checks.log[/tt]) to show both successful and unsuccessful permission checks. Usually it only shows fails.
+  - [tt]disable_modsecurity_workaround[/tt] -- set this to '1' if you want to disable the ModSecurity workaround 
  - For system-integrators:
   - [tt]agency_email_address[/tt] -- set this to a secondary e-mail address where you would like all error e-mails to go (the primary one being the staff address). Only set this if you are an agency and want to receive error e-mails in addition/instead of your client
   - [tt]page_template_always_ask[/tt] -- set this to '1' if Composr should always ask for a page template, even when clicking inline links to add pages
@@ -637,6 +638,8 @@ Values are like hidden configuration options. They are either hidden because the
   - [tt]search_days__<search-hook>[/tt] -- set the default day search period for a search hook (e.g. 60, or blank for no limit). This may be set for reasons of user experience, or for performance -- searching without a day constraint is actually faster.
   - [tt]disable_cannot_access_url_messages[/tt] -- set this to '1' to turn off attached messages about broken URLs that Composr tries to process
   - [tt]force_spell_checker[/tt] -- set to 'pspell' or 'enchant' to force that particular spell-checker, rather than auto-detecting
+  - [tt]disable_handle_conflict_resolution[/tt] -- set this to '1' if you want to disable conflict resolution checking
+  - [tt]disable_form_auto_saving[/tt] -- set this to '1' if you want to disable form auto saving
  - Performance tuning (positive) [not official options as will break normal expectations of how the system will behave / complicate things]:
   - [tt]lots_of_data_in_*[/tt] -- set this to '1', with '*' replaced with a database table name, if you want the Selectcode mechanism to work with recursive DB lookups rather than one huge flat lookup
   - [tt]disable_cat_cat_perms[/tt] -- set this to '1' if you want to disable catalogue category permissions
@@ -673,11 +676,6 @@ Values are like hidden configuration options. They are either hidden because the
   - [tt]allow_admin_in_other_zones[/tt] -- set this to '1' if you want to allow admin and CMS modules to run in other zones (small performance cost)
  - Easter eggs:
   - [tt]stupidity_mode[/tt] -- set to [tt]leet[/tt] or [tt]bork[/tt], for a fun April Fools-style Comcode joke (clear the Comcode cache after you're done though)
- - Experimental functionality:
-  - [tt]list_unsubscribe_target[/tt] -- set to a URL for a [tt]List-Unsubscribe[/tt] header to be attached to e-mails with that URL, e.g. [tt]mailto:you@example.com?subject=Unsubscribe&body=Please%20unsubscribe%20me[/tt]
-  - [tt]disable_modsecurity_workaround[/tt] -- set this to '1' if you want to disable the ModSecurity workaround 
-  - [tt]disable_handle_conflict_resolution[/tt] -- set this to '1' if you want to disable conflict resolution checking
-  - [tt]disable_form_auto_saving[/tt] -- set this to '1' if you want to disable form auto saving
 
 [title="4"]Hidden 'keep' parameters[/title]
 

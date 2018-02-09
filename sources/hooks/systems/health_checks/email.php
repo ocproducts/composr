@@ -41,9 +41,15 @@ class Hook_health_check_email extends Hook_Health_Check
     {
         $this->process_checks_section('testEmailQueue', 'E-mail queue', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testEmailConfiguration', 'E-mail configuration', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testEmailPHPConfiguration', 'E-mail configuration in PHP', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testDKIMConfiguration', 'DKIM configuration', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testDMARCConfiguration', 'DMARC configuration', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testSPF', 'SPF', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testEmailOperation', 'E-mail operation (slow)', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testSMTPBlacklisting', 'SMTP blacklisting', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testEmailTemplates', 'E-mail templates', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testSpamStatus', 'Spam status', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testListUnsubscribe', 'List-Unsubscribe header', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
 
         return array($this->category_label, $this->results);
     }
@@ -80,6 +86,89 @@ class Hook_health_check_email extends Hook_Health_Check
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
      */
+    public function testEmailPHPConfiguration($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+
+        $this->assertTrue(ini_get('mail.add_x_header') !== '1', 'The PHP mail.add_x_header setting may get your e-mail flagged as spam');
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     */
+    public function testDKIMConfiguration($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+
+        $dkim_configured = (get_option('dkim_private_key') != '');
+        $this->assertTrue($dkim_configured, 'DKIM is not configured');
+        if ($dkim_configured) {
+            $domains = $this->get_mail_domains(true);
+            foreach ($domains as $domain => $email) {
+                if (function_exists('dns_get_record')) {
+                    $found_record = false;
+                    $records = dns_get_record($domain, DNS_ANY);
+                    foreach ($records as $record) {
+                        if ($record['type'] == 'TXT') {
+                            if (strpos($record['host'], 'v=DKIM') !== false) {
+                                $found_record = true;
+                            }
+                        }
+                    }
+                    $this->assertTrue($found_record, 'Could not find a DKIM DNS record even though DKIM is configured');
+                }
+            }
+        }
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     */
+    public function testDMARCConfiguration($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+
+        $domains = $this->get_mail_domains(true);
+        foreach ($domains as $domain => $email) {
+            if (function_exists('dns_get_record')) {
+                $found_record = false;
+                $records = dns_get_record($domain, DNS_ANY);
+                foreach ($records as $record) {
+                    if ($record['type'] == 'TXT') {
+                        if (strpos($record['host'], 'v=DMARC') !== false) {
+                            $found_record = true;
+                        }
+                    }
+                }
+                $this->assertTrue($found_record, 'Could not find a DMARC DNS record');
+            }
+        }
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     */
     public function testEmailConfiguration($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
         if ($check_context == CHECK_CONTEXT__INSTALL) {
@@ -87,7 +176,7 @@ class Hook_health_check_email extends Hook_Health_Check
         }
 
         if ((php_function_allowed('getmxrr')) && (php_function_allowed('checkdnsrr'))) {
-            $domains = $this->get_mail_domains();
+            $domains = $this->get_mail_domains(true);
 
             foreach ($domains as $domain => $email) {
                 $mail_hosts = array();
@@ -95,7 +184,22 @@ class Hook_health_check_email extends Hook_Health_Check
                 $this->assertTrue($result, 'Could not look up MX records for our [tt]' . $email . '[/tt] e-mail address');
 
                 foreach (array_unique($mail_hosts) as $host) {
-                    $this->assertTrue(@checkdnsrr($host, 'A'), 'Mail server MX DNS does not seem to be set up properly for our [tt]' . $email . '[/tt] e-mail address (host=[tt]' . $host . '[/tt])');
+                    $has_dns = @checkdnsrr($host, 'A');
+                    $this->assertTrue($has_dns, 'Mail server MX DNS does not seem to be set up properly for our [tt]' . $email . '[/tt] e-mail address (host=[tt]' . $host . '[/tt])');
+
+                    if (!$has_dns) {
+                        continue;
+                    }
+
+                    $reverse_dns_host = null;
+                    $ip_address = gethostbyname($host);
+                    if ($ip_address != $host) {
+                        $_reverse_dns_host = @gethostbyaddr($ip_address);
+                        if ($_reverse_dns_host != $ip_address) {
+                            $reverse_dns_host = $_reverse_dns_host;
+                        }
+                    }
+                    $this->assertTrue($reverse_dns_host !== null, 'Missing reverse-DNS for [tt]' . $email . '[/tt] address (host=[tt]' . $host . '[/tt])');
 
                     if ((php_function_allowed('fsockopen')) && (php_function_allowed('gethostbyname'))/* && (php_function_allowed('gethostbyaddr'))*/) {
                         // See if SMTP running
@@ -116,11 +220,9 @@ class Hook_health_check_email extends Hook_Health_Check
                             if ($has_helo) {
                                 $reported_host = $matches[1];
 
-                                /*
-                                $reverse_dns_host = @gethostbyaddr(gethostbyname($host));  Fails way too much
-
-                                $this->assertTrue($reported_host == $reverse_dns_host, 'HELO response from SMTP server (' . $reported_host . ') not matching reverse DNS (' . $reverse_dns_host . ') for ' . $email . ' address');
-                                */
+                                if (($reverse_dns_host !== null) && ($reported_host != $reverse_dns_host)) {
+                                    $this->stateCheckManual('HELO response from SMTP server (' . $reported_host . ') not matching reverse DNS (' . $reverse_dns_host . ') for ' . $email . ' address; not ideal but we won\'t flag as unhealthy due to how common it is');
+                                }
                             }
                         }
                     } else {
@@ -166,7 +268,7 @@ class Hook_health_check_email extends Hook_Health_Check
                 foreach ($domains as $self_domain) {
                     $self_ip = @gethostbyname($self_domain);
 
-                    $mail_domains = $this->get_mail_domains();
+                    $mail_domains = $this->get_mail_domains(true);
 
                     foreach ($mail_domains as $domain => $email) {
                         $passed = $this->do_spf_check($domain, $self_domain, $self_ip);
@@ -427,7 +529,7 @@ class Hook_health_check_email extends Hook_Health_Check
         require_code('antispam');
 
         if ((php_function_allowed('getmxrr')) && (php_function_allowed('gethostbyname'))) {
-            $domains = $this->get_mail_domains();
+            $domains = $this->get_mail_domains(true);
 
             foreach ($domains as $domain => $email) {
                 $mail_hosts = array();
@@ -454,5 +556,65 @@ class Hook_health_check_email extends Hook_Health_Check
         } else {
             $this->stateCheckSkipped('PHP getmxrr/gethostbyname function(s) not available');
         }
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     */
+    public function testEmailTemplates($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    {
+        $tpl = do_template('MAIL', array(
+            'CSS' => '',
+            'LOGOURL' => '',
+            'LANG' => get_site_default_lang(),
+            'TITLE' => '',
+            'CONTENT' => '',
+        ), get_site_default_lang(), false, 'MAIL', '.tpl', 'templates', $GLOBALS['FORUM_DRIVER']->get_theme(''));
+        $html_version = $tpl->evaluate();
+        $html_version_stripped = html_entity_decode(strip_tags($html_version), ENT_QUOTES);
+        $html_version_stripped = trim(preg_replace('#[\s-]+#', ' ', $html_version_stripped));
+
+        $tpl = do_template('MAIL', array(
+            'CSS' => '',
+            'LOGOURL' => '',
+            'LANG' => get_site_default_lang(),
+            'TITLE' => '',
+            'CONTENT' => '',
+        ), get_site_default_lang(), false, 'MAIL', '.txt', 'text', $GLOBALS['FORUM_DRIVER']->get_theme(''));
+        $text_version = $tpl->evaluate();
+        $text_version_stripped = trim(preg_replace('#[\s-]+#', ' ', $text_version));
+
+        $this->assertTrue($html_version_stripped == $text_version_stripped, 'The HTML and text mail templates are not consistent, which can score you spam points');
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     */
+    public function testSpamStatus($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    {
+        $this->stateCheckManual('Run a [url="spam check"]https://glockapps.com/spam-testing/[/url] on a test e-mail');
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     */
+    public function testListUnsubscribe($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    {
+        $this->assertTrue(get_option('list_unsubscribe_target') != '', 'You do not have a List-Unsubscribe target configuration option set, which may increase your spam score.');
     }
 }

@@ -436,7 +436,7 @@ function _css_tempcode($c, &$css, &$css_need_inline, $inline = false, $context =
             require_code('mail');
             $__css = filter_css($c, $theme, $context);
         } else {
-            $_css = do_template($c, null, user_lang(), false, null, '.css', 'css', $theme);
+            $_css = do_template($c, array(), user_lang(), false, null, '.css', 'css', $theme);
             $__css = $_css->evaluate();
             $__css = str_replace('} ', '}' . "\n", preg_replace('#\s+#', ' ', $__css));
         }

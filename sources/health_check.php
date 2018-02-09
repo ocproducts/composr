@@ -459,15 +459,18 @@ abstract class Hook_Health_Check
     /**
      * Get a list of e-mail domains the site uses.
      *
+     * @return boolean $include_all Include all e-mail domains, as opposed to just the main outgoing one
      * @return array List of e-mail domains
      */
-    protected function get_mail_domains()
+    protected function get_mail_domains($include_all = true)
     {
         $domains = array();
-        $domains[preg_replace('#^.*@#', '', get_option('staff_address'))] = get_option('staff_address');
         $domains[preg_replace('#^.*@#', '', get_option('website_email'))] = get_option('website_email');
-        if (addon_installed('tickets')) {
-            $domains[preg_replace('#^.*@#', '', get_option('ticket_email_from'))] = get_option('ticket_email_from');
+        if ($include_all) {
+            $domains[preg_replace('#^.*@#', '', get_option('staff_address'))] = get_option('staff_address');
+            if (addon_installed('tickets')) {
+                $domains[preg_replace('#^.*@#', '', get_option('ticket_email_from'))] = get_option('ticket_email_from');
+            }
         }
 
         foreach ($domains as $domain => $email) {

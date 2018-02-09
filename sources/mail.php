@@ -791,7 +791,7 @@ abstract class Mail_dispatcher_base
             $brand_name = 'Composr';
         }
         $headers .= 'X-Mailer: ' . $brand_name . $this->line_term;
-        $list_unsubscribe_target = get_value('list_unsubscribe_target');
+        $list_unsubscribe_target = get_option('list_unsubscribe_target');
         if (!empty($list_unsubscribe_target)) {
             $headers .= 'List-Unsubscribe: <' . $list_unsubscribe_target . '>' . $this->line_term;
         }
@@ -1312,7 +1312,7 @@ function filter_css($c, $theme, $context)
         return $cache[$simple_sig];
     }
 
-    $_css = do_template($c, null, user_lang(), true/*can't fail on this error because it could be an email from queue, with different addon state*/, null, '.css', 'css', $theme);
+    $_css = do_template($c, array(), user_lang(), true/*can't fail on this error because it could be an email from queue, with different addon state*/, null, '.css', 'css', $theme);
     $css = $_css->evaluate();
 
     // Find out all our IDs

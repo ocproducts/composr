@@ -433,7 +433,7 @@ function fatal_exit($text)
             'ERROR' => true,
         ));
     } else {
-        $global_js = do_template('global', null, null, false, null, '.js', 'javascript');
+        $global_js = do_template('global', array(), null, false, null, '.js', 'javascript');
         $out_final = do_template('INSTALLER_HTML_WRAP', array(
             '_GUID' => '990e78523cee0b6782e1e09d73a700a7',
             'CSS_NOCACHE' => $css_nocache,

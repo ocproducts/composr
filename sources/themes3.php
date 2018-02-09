@@ -74,7 +74,7 @@ function compile_all_templates()
                     $tcp_path = $base_path . '/' . $theme . '/templates_cached/' . $lang . '/' . $codename . '.' . $suffix . '.tcp';
 
                     if (!is_file($tcp_path)) {
-                        do_template($codename, null, $lang, true, null, '.' . $suffix, $directory, $theme);
+                        do_template($codename, array(), $lang, true, null, '.' . $suffix, $directory, $theme);
 
                         switch ($directory) {
                             case 'javascript':
