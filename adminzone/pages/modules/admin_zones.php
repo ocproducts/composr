@@ -596,7 +596,7 @@ class Module_admin_zones
 
         // Theme
         require_code('themes2');
-        $entries = create_selection_list_themes($theme, false, true);
+        $entries = create_selection_list_themes($theme, true, true);
         $theme_field = form_input_list(do_lang_tempcode('THEME'), do_lang_tempcode((get_forum_type() == 'cns') ? '_DESCRIPTION_THEME_CNS' : '_DESCRIPTION_THEME', get_default_theme_name()), 'theme', $entries);
         $is_normal_zone = ($zone !== 'adminzone') && ($zone !== 'cms');
         if ($is_normal_zone) {

@@ -189,7 +189,7 @@ class Module_admin_themewizard
         if (count(find_all_themes()) == 1) {
             $hidden->attach(form_input_hidden('source_theme', $source_theme));
         } else {
-            $themes = create_selection_list_themes($source_theme, true);
+            $themes = create_selection_list_themes($source_theme, false);
         }
 
         $fields = new Tempcode();
@@ -473,7 +473,7 @@ class Module_admin_themewizard
         }
         require_code('themes2');
 
-        $fields->attach(form_input_list(do_lang_tempcode('THEME'), do_lang_tempcode('DESCRIPTION_LOGOWIZARD_THEME'), 'theme', create_selection_list_themes($theme, true)));
+        $fields->attach(form_input_list(do_lang_tempcode('THEME'), do_lang_tempcode('DESCRIPTION_LOGOWIZARD_THEME'), 'theme', create_selection_list_themes($theme, false)));
 
         return do_template('FORM_SCREEN', array(
             '_GUID' => '08449c0ae8edf5c0b3510611c9ac9618',

@@ -134,14 +134,14 @@ function find_all_themes()
  * Get a UI list for choosing a theme.
  *
  * @param  ?ID_TEXT $theme The theme to select by default (null: no specific default)
- * @param  boolean $no_rely Whether to skip the 'rely on forums' entry
+ * @param  boolean $include_rely Whether to include the 'rely on forums' entry
  * @param  boolean $show_everything Whether to forget about permissions for this list, and also show additional detail
  * @param  ID_TEXT $default_message_string The language string to use for the default answer
  * @return Tempcode The list
  */
-function create_selection_list_themes($theme = null, $no_rely = false, $show_everything = false, $default_message_string = 'RELY_FORUMS')
+function create_selection_list_themes($theme = null, $include_rely = true, $show_everything = false, $default_message_string = 'RELY_FORUMS')
 {
-    if (!$no_rely) {
+    if ($include_rely) {
         $entries = form_input_list_entry('-1', false, do_lang_tempcode($default_message_string));
     } else {
         $entries = new Tempcode();

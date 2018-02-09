@@ -558,7 +558,7 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
     if (!$mini_mode) {
         // Theme, if we have any zones giving a choice
         require_code('themes2');
-        $entries = create_selection_list_themes($theme, false, false, 'RELY_SITE_DEFAULT');
+        $entries = create_selection_list_themes($theme, true, false, 'RELY_SITE_DEFAULT');
         require_lang('themes');
         if ($doing_theme_option) {
             $fields->attach(form_input_list(do_lang_tempcode('THEME'), do_lang_tempcode('DESCRIPTION_THEME'), 'theme', $entries));
