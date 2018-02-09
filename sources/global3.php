@@ -1190,7 +1190,7 @@ function float_format($val, $decs_wanted = 2, $only_needed_decs = false)
  * Take the given formatted float number and convert it to a native float. The inverse of float_format.
  *
  * @param  string $str The formatted float number using the locale
- * @param  boolean $include_thousands_sep Whether we expect a thousands separator, knowing this means we can be a bit smarter
+ * @param  boolean $includes_thousands_sep Whether we expect a thousands separator, knowing this means we can be a bit smarter
  * @return float Native float
  */
 function float_unformat($str, $includes_thousands_sep = true)

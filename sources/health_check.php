@@ -459,7 +459,7 @@ abstract class Hook_Health_Check
     /**
      * Get a list of e-mail domains the site uses.
      *
-     * @return boolean $include_all Include all e-mail domains, as opposed to just the main outgoing one
+     * @param  boolean $include_all Include all e-mail domains, as opposed to just the main outgoing one
      * @return array List of e-mail domains
      */
     protected function get_mail_domains($include_all = true)
