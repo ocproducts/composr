@@ -1466,9 +1466,9 @@ function form_input_upload_multi_source($set_title, $set_description, &$hidden, 
         return $upload_widget;
     }
 
-    $upload_widget = form_input_upload(do_lang_tempcode('UPLOAD'), do_lang_tempcode('DESCRIPTION_UPLOAD'), $field_file, $required, $default, null, true, $filter, $syndication_json);
-
     $field_set = alternate_fields_set__start($set_name);
+
+    $upload_widget = form_input_upload(do_lang_tempcode('UPLOAD'), do_lang_tempcode('DESCRIPTION_UPLOAD'), $field_file, $required, $default, null, true, $filter, $syndication_json);
 
     $field_set->attach($upload_widget);
 
