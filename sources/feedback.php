@@ -153,7 +153,7 @@ function embed_feedback_systems($page_name, $content_id, $allow_rating, $allow_c
 
     actualise_rating($allow_rating == 1, $page_name, $content_id, $content_url, $content_title);
     if ((post_param_string('title', null) !== null) || ($validated == 1)) {
-        actualise_post_comment($allow_comments >= 1, $page_name, $content_id, $content_url, $content_title, $forum, true, null, false, false, false, null, null, $time);
+        actualise_post_comment($allow_comments >= 1, $page_name, $content_id, $content_url, $content_title, $forum, true, null, false, true, false, null, null, $time);
     }
     $rating_details = get_rating_box($content_url, $content_title, $page_name, $content_id, $allow_rating == 1, $submitter);
     $comment_details = get_comments($page_name, $allow_comments == 1, $content_id, false, $forum, null, null, false, null, $submitter, $allow_comments == 2);
@@ -203,7 +203,7 @@ function post_comment_script()
     }
 
     // Post comment
-    actualise_post_comment($allow_comments >= 1, $page_name, $content_id, $content_url, $content_title, $forum, true, null, false, false, false, null, null, $time);
+    actualise_post_comment($allow_comments >= 1, $page_name, $content_id, $content_url, $content_title, $forum, true, null, false, true, false, null, null, $time);
 
     // Get new comments state
     $comment_details = get_comments($page_name, $allow_comments == 1, $content_id, false, $forum, null, null, false, null, $submitter, $allow_comments == 2);
@@ -688,14 +688,14 @@ function extract_topic_identifier($full_text)
  * @param  boolean $do_captcha Whether to require a captcha
  * @param  ?BINARY $validated Whether the post is validated (null: unknown, find whether it needs to be marked unvalidated initially). This only works with the Conversr driver (hence is the last parameter).
  * @param  boolean $explicit_allow Whether to force allowance
- * @param  boolean $no_success_message Whether to skip a success message
+ * @param  boolean $show_success_message Whether to show a success message
  * @param  boolean $private Whether posts made should not be shared
  * @param  ?string $post_title Title of the post (null: lookup from POST environment)
  * @param  ?string $post Body of the post (null: lookup from POST environment)
  * @param  ?TIME $time Time of comment topic (null: now)
  * @return boolean Whether a hidden post has been made
  */
-function actualise_post_comment($allow_comments, $content_type, $content_id, $content_url, $content_title, $forum = null, $do_captcha = true, $validated = null, $explicit_allow = false, $no_success_message = false, $private = false, $post_title = null, $post = null, $time = null)
+function actualise_post_comment($allow_comments, $content_type, $content_id, $content_url, $content_title, $forum = null, $do_captcha = true, $validated = null, $explicit_allow = false, $show_success_message = true, $private = false, $post_title = null, $post = null, $time = null)
 {
     if (!$explicit_allow) {
         if ((get_option('is_on_comments') == '0') || (!$allow_comments)) {
@@ -916,12 +916,12 @@ function actualise_post_comment($allow_comments, $content_type, $content_id, $co
         }
     }
 
-    if (($post != '') && ($forum_tie) && (!$no_success_message)) {
+    if (($post != '') && ($forum_tie) && ($show_success_message)) {
         require_code('site2');
         assign_refresh($GLOBALS['FORUM_DRIVER']->topic_url($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum, $content_type . '_' . $content_id, do_lang('COMMENT')), $forum, true), 0.0);
     }
 
-    if (($post != '') && (!$no_success_message)) {
+    if (($post != '') && ($show_success_message)) {
         attach_message(do_lang_tempcode('COMMENT_POSTED'));
     }
 
