@@ -187,6 +187,7 @@ class Hook_addon_registry_catalogues
             'sources/hooks/systems/tasks/import_catalogue.php',
             'sources/hooks/systems/config/search_catalogue_categories.php',
             'sources/hooks/systems/config/search_catalogue_entries.php',
+            'sources/hooks/systems/cleanup/catalogues.php',
         );
     }
 
