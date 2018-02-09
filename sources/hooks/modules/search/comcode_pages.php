@@ -245,7 +245,7 @@ class Hook_search_comcode_pages extends FieldsSearchHook
 
                             // Let it cache for next time
                             if (get_option('is_on_comcode_page_cache') == '1') {
-                                request_page($page, false, $zone, $dir, false, true);
+                                request_page($page, false, $zone, $dir, false, false);
                             }
                         }
                     }

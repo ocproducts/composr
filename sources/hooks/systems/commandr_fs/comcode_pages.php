@@ -291,7 +291,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
 
-        $test = _request_page($page, $zone, null, null, true);
+        $test = _request_page($page, $zone, null, null, false);
         if ($test !== false) {
             $page .= '_' . uniqid('', false); // Uniqify
         }
@@ -330,7 +330,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
         $text = array();
         require_code('site');
         foreach (array_keys(find_all_langs()) as $lang) {
-            $result = _request_page($row['the_page'], $row['the_zone'], 'comcode_custom', $lang, true);
+            $result = _request_page($row['the_page'], $row['the_zone'], 'comcode_custom', $lang, false);
             list(, , , $_lang, $_full_path) = $result;
             if ($lang == $_lang) {
                 $full_path = get_custom_file_base() . '/' . $_full_path;
@@ -407,7 +407,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
         $meta_description = $this->_default_property_str($properties, 'meta_description');
 
         if ($page != $old_page) {
-            $test = _request_page($page, $zone, null, null, true);
+            $test = _request_page($page, $zone, null, null, false);
             if ($test !== false) {
                 $page .= '_' . uniqid('', false); // Uniqify
             }

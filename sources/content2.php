@@ -486,7 +486,7 @@ function set_url_moniker($content_type, $content_id, $fields_to_skip = array(), 
                 if (($test !== null) && ($test !== $_content_id)) {
                     $test_page = $GLOBALS['SITE_DB']->query_select_value_if_there('url_id_monikers', 'm_resource_page', $conflict_test_map);
                     if ($content_type == 'comcode_page') {
-                        if (_request_page($test_page, $test, null, get_site_default_lang(), true) !== false) {
+                        if (_request_page($test_page, $test, null, get_site_default_lang(), false) !== false) {
                             $ok = false;
                         } else { // Deleted, so clean up
                             $GLOBALS['SITE_DB']->query_delete('url_id_monikers', $conflict_test_map);

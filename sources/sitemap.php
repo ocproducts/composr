@@ -226,7 +226,7 @@ abstract class Hook_sitemap_base
                     return false;
                 }
 
-                $details = _request_page($details[1]['r_to_page'], $details[1]['r_to_zone'], null, null, true);
+                $details = _request_page($details[1]['r_to_page'], $details[1]['r_to_zone'], null, null, false);
             }
         }
         return $details;

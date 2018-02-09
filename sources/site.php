@@ -967,7 +967,7 @@ function do_site()
     $out = globalise(null, null, '', true);
 
     // Load up our frames into strings. Note that the header and the footer are fixed already.
-    $middle = request_page(get_page_name(), true, null, null, false, false, $out);
+    $middle = request_page(get_page_name(), true, null, null, false, true, $out);
     if (($middle === null) || ($middle->is_empty_shell())) {
         set_http_status_code(404);
 
@@ -1191,11 +1191,11 @@ function write_static_cache_file($fast_cache_path, $out_evaluated, $support_gzip
  * @param  ?ID_TEXT $zone The zone the page is being loaded in (null: as shown by access URL)
  * @param  ?ID_TEXT $page_type The type of page - for if you know it (null: don't know it)
  * @param  boolean $being_included Whether the page is being included from another
- * @param  boolean $no_redirect_check Whether to not check for redirects (normally you would)
+ * @param  boolean $redirect_check Whether to check for redirects (normally you would)
  * @param  ?object $out Semi-filled output template (null: definitely not doing output streaming)
  * @return ?Tempcode The page (null: no page)
  */
-function request_page($codename, $required, $zone = null, $page_type = null, $being_included = false, $no_redirect_check = false, &$out = null)
+function request_page($codename, $required, $zone = null, $page_type = null, $being_included = false, $redirect_check = true, &$out = null)
 {
     global $SITE_INFO;
 
@@ -1207,7 +1207,7 @@ function request_page($codename, $required, $zone = null, $page_type = null, $be
         $zone = ''; // Might have been explicitly said in Tempcode, for example
     }
 
-    $details = _request_page($codename, $zone, $page_type, null, $no_redirect_check);
+    $details = _request_page($codename, $zone, $page_type, null, $redirect_check);
 
     global $REQUEST_PAGE_NEST_LEVEL;
     $REQUEST_PAGE_NEST_LEVEL++;
@@ -1226,7 +1226,7 @@ function request_page($codename, $required, $zone = null, $page_type = null, $be
     if ($details === false) {
         if ($required) {
             if (get_option('url_scheme') == 'SIMPLE') {
-                $details = _request_page('404', '', null, null, false);
+                $details = _request_page('404', '', null, null, true);
             }
         }
 
@@ -1326,7 +1326,7 @@ function request_page($codename, $required, $zone = null, $page_type = null, $be
                     }
                 }
                 if (($redirect['r_to_page'] != $codename) || ($redirect['r_to_zone'] != $zone)) {
-                    $ret = request_page($redirect['r_to_page'], $required, $redirect['r_to_zone'], null, $being_included, true/*Don't want redirect loops*/, $out);
+                    $ret = request_page($redirect['r_to_page'], $required, $redirect['r_to_zone'], null, $being_included, false/*Don't want redirect loops*/, $out);
                     $REQUEST_PAGE_NEST_LEVEL--;
                     return $ret;
                 }
@@ -1351,15 +1351,15 @@ function request_page($codename, $required, $zone = null, $page_type = null, $be
  * @param  ID_TEXT $zone The zone the page is being loaded in
  * @param  ?ID_TEXT $page_type The type of page - for if you know it (null: don't know it)
  * @param  ?LANGUAGE_NAME $lang Language name (null: users language)
- * @param  boolean $no_redirect_check Whether to not check for redirects (normally you would)
+ * @param  boolean $redirect_check Whether to check for redirects (normally you would)
  * @return ~array A list of details (false: page not found)
  */
-function _request_page($codename, $zone, $page_type = null, $lang = null, $no_redirect_check = false)
+function _request_page($codename, $zone, $page_type = null, $lang = null, $redirect_check = true)
 {
-    $details = persistent_cache_get(array('PAGE_INFO', $codename, $zone, $page_type, $lang, $no_redirect_check));
+    $details = persistent_cache_get(array('PAGE_INFO', $codename, $zone, $page_type, $lang, $redirect_check));
     if ($details === null || $details === false/*caching negativity breaks things if the page subsequently appears - even adding a page does a pre-check so would net a cached false*/) {
-        $details = __request_page($codename, $zone, $page_type, null, $no_redirect_check);
-        persistent_cache_set(array('PAGE_INFO', $codename, $zone, $page_type, $lang, $no_redirect_check), $details);
+        $details = __request_page($codename, $zone, $page_type, null, $redirect_check);
+        persistent_cache_set(array('PAGE_INFO', $codename, $zone, $page_type, $lang, $redirect_check), $details);
     }
     return $details;
 }
@@ -1371,11 +1371,11 @@ function _request_page($codename, $zone, $page_type = null, $lang = null, $no_re
  * @param  ID_TEXT $zone The zone the page is being loaded in
  * @param  ?ID_TEXT $page_type The type of page - for if you know it (null: don't know it)
  * @param  ?LANGUAGE_NAME $lang Language name (null: users language)
- * @param  boolean $no_redirect_check Whether to not check for redirects (normally you would)
+ * @param  boolean $redirect_check Whether to check for redirects (normally you would)
  * @return ~array A list of details (false: page not found)
  * @ignore
  */
-function __request_page($codename, $zone, $page_type = null, $lang = null, $no_redirect_check = false)
+function __request_page($codename, $zone, $page_type = null, $lang = null, $redirect_check = true)
 {
     if ($lang === null) {
         require_code('lang');
@@ -1395,7 +1395,7 @@ function __request_page($codename, $zone, $page_type = null, $lang = null, $no_r
     }
 
     // Redirect
-    if ((!$no_redirect_check) && (get_value('no_priority_redirects') !== '1') && (addon_installed('redirects_editor'))) {
+    if (($redirect_check) && (get_value('no_priority_redirects') !== '1') && (addon_installed('redirects_editor'))) {
         $test = _request_page__redirects($codename, $zone);
         if ($test !== false) {
             return $test;
@@ -1576,7 +1576,7 @@ function __request_page($codename, $zone, $page_type = null, $lang = null, $no_r
     }
 
     // Redirect
-    if ((!$no_redirect_check) && (addon_installed('redirects_editor'))) {
+    if (($redirect_check) && (addon_installed('redirects_editor'))) {
         $test = _request_page__redirects($codename, $zone, true/*include wildcards as this is lowest priority*/);
         if ($test !== false) {
             return $test;

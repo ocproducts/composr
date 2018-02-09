@@ -171,7 +171,7 @@ class Module_admin_sitemap
         foreach ($_REQUEST as $key => $val) {
             if ((substr($key, 0, 6) == 'page__') && ($val === '1')) {
                 $page = substr($key, 6);
-                $page_details = _request_page($page, $zone, null, null, true);
+                $page_details = _request_page($page, $zone, null, null, false);
                 if ($page_details === false) {
                     warn_exit(do_lang_tempcode('MISSING_RESOURCE', do_lang_tempcode('PAGE')));
                 }
@@ -296,7 +296,7 @@ class Module_admin_sitemap
         foreach ($_POST as $key => $val) {
             if ((substr($key, 0, 6) == 'page__') && ($val === '1')) {
                 $page = substr($key, 6);
-                $page_details = _request_page($page, $zone, null, null, true);
+                $page_details = _request_page($page, $zone, null, null, false);
                 if ($page_details === false) {
                     warn_exit(do_lang_tempcode('MISSING_RESOURCE', do_lang_tempcode('PAGE')));
                 }

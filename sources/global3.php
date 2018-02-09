@@ -1750,7 +1750,7 @@ function fix_page_name_dashing($zone, $page)
     // Fix page-name dashes if needed
     if (strpos($page, '-') !== false) {
         require_code('site');
-        $test = _request_page($page, $zone, null, null, true);
+        $test = _request_page($page, $zone, null, null, false);
         if ($test === false) {
             $_page = str_replace('-', '_', $page);
             $test = _request_page($_page, $zone);
