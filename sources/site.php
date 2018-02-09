@@ -1916,7 +1916,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
         global $PT_PAIR_CACHE_CP;
         $PT_PAIR_CACHE_CP[$codename]['cc_page_title'] = ($title_to_use === null) ? do_lang_tempcode('NA_EM') : protect_from_escaping(escape_html($title_to_use));
         $PT_PAIR_CACHE_CP[$codename]['p_parent_page'] = $comcode_page_row['p_parent_page'];
-        $comcode_breadcrumbs = comcode_breadcrumbs($codename, $zone, get_param_string('keep_page_root', ''), ($comcode_page_row['p_parent_page'] == '') || (!has_privilege(get_member(), 'open_virtual_roots')) || (get_value('disable_virtual_roots') === '1'));
+        $comcode_breadcrumbs = comcode_breadcrumbs($codename, $zone, get_param_string('keep_page_root', ''), ($comcode_page_row['p_parent_page'] != '') && (has_privilege(get_member(), 'open_virtual_roots')) && (get_value('disable_virtual_roots') !== '1'));
         breadcrumb_set_parents($comcode_breadcrumbs);
 
         set_extra_request_metadata(array(
@@ -1960,11 +1960,11 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
  * @param  ID_TEXT $the_page The Comcode page name
  * @param  ID_TEXT $the_zone The Comcode page zone
  * @param  ID_TEXT $root The virtual root
- * @param  boolean $no_link_for_me_sir Whether not to put a link at this point in the navigation tree (usually, because the viewer is already at it)
+ * @param  boolean $include_link Whether not to put a link at this point in the navigation tree (usually, because the viewer is already at it)
  * @param  integer $jumps The number of jumps we have gone through so far (cuts out after 10 as a failsafe)
  * @return array The breadcrumbs
  */
-function comcode_breadcrumbs($the_page, $the_zone, $root = '', $no_link_for_me_sir = true, $jumps = 0)
+function comcode_breadcrumbs($the_page, $the_zone, $root = '', $include_link = false, $jumps = 0)
 {
     // Cut off broken recursion
     if ($jumps == 10) {
@@ -2022,7 +2022,7 @@ function comcode_breadcrumbs($the_page, $the_zone, $root = '', $no_link_for_me_s
 
     // End of recursion
     if ($the_page == $root) {
-        if ($no_link_for_me_sir) {
+        if (!$include_link) {
             return array();
         }
         return array(array($page_link, is_object($title) ? $title : protect_from_escaping(escape_html($title))));
@@ -2035,7 +2035,7 @@ function comcode_breadcrumbs($the_page, $the_zone, $root = '', $no_link_for_me_s
 
     // Our point in the chain
     $segments = array();
-    if (!$no_link_for_me_sir) {
+    if ($include_link) {
         $segments[] = array($page_link, is_object($title) ? $title : protect_from_escaping(escape_html($title)), ($jumps == 0) ? do_lang('VIRTUAL_ROOT') : '');
     } else {
         if (!(((is_string($title)) && ($title == '')) || ((is_object($title)) && ($title->is_empty())))) {
@@ -2044,7 +2044,7 @@ function comcode_breadcrumbs($the_page, $the_zone, $root = '', $no_link_for_me_s
     }
 
     // Further recursion
-    $below = comcode_breadcrumbs($PT_PAIR_CACHE_CP[$the_page]['p_parent_page'], $the_zone, $root, false, $jumps + 1);
+    $below = comcode_breadcrumbs($PT_PAIR_CACHE_CP[$the_page]['p_parent_page'], $the_zone, $root, true, $jumps + 1);
     return array_merge($below, $segments);
 }
 

@@ -271,7 +271,7 @@ class Module_downloads
             $this->title = get_screen_title('_DOWNLOAD_CATEGORY', true, array(make_fractionable_editable('download_category', $category_id, $title_to_use)), null, $awards);
 
             // Breadcrumbs
-            $breadcrumbs = download_breadcrumbs($category_id, $root, true, get_zone_name(), true);
+            $breadcrumbs = download_breadcrumbs($category_id, $root, false, get_zone_name(), true);
             if ((has_privilege(get_member(), 'open_virtual_roots')) && (get_value('disable_virtual_roots') !== '1') && ($category_id != $root)) {
                 $page_link = build_page_link(array('page' => '_SELF', 'type' => 'browse', 'id' => $category_id, 'keep_download_root' => $category_id), '_SELF');
                 $breadcrumbs[] = array($page_link, $title_to_use, do_lang_tempcode('VIRTUAL_ROOT'));
@@ -331,7 +331,7 @@ class Module_downloads
             seo_meta_load_for('downloads_download', strval($id), $title_to_use);
 
             // Breadcrumbs
-            $breadcrumbs = download_breadcrumbs($myrow['category_id'], $root, false, get_zone_name());
+            $breadcrumbs = download_breadcrumbs($myrow['category_id'], $root, true, get_zone_name());
             $breadcrumbs[] = array('', $title_to_use);
             breadcrumb_set_parents($breadcrumbs);
 

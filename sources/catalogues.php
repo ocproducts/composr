@@ -98,7 +98,7 @@ function render_catalogue_entry_box($row, $zone = '_SEARCH', $give_context = tru
 
     $breadcrumbs = null;
     if ($include_breadcrumbs) {
-        $_breadcrumbs = catalogue_category_breadcrumbs($row['cc_id'], ($root === null) ? get_param_integer('keep_catalogue_' . $catalogue['c_name'] . '_root', null) : $root, false);
+        $_breadcrumbs = catalogue_category_breadcrumbs($row['cc_id'], ($root === null) ? get_param_integer('keep_catalogue_' . $catalogue['c_name'] . '_root', null) : $root, true);
         $breadcrumbs = breadcrumb_segments_to_tempcode($_breadcrumbs);
     }
 
@@ -152,7 +152,7 @@ function render_catalogue_category_box($row, $zone = '_SEARCH', $give_context = 
     // Breadcrumbs
     $breadcrumbs = null;
     if ($include_breadcrumbs) {
-        $breadcrumbs = breadcrumb_segments_to_tempcode(catalogue_category_breadcrumbs($row['id'], ($root === null) ? get_param_integer('keep_catalogue_' . $row['c_name'] . '_root', null) : $root, $attach_to_url_filter));
+        $breadcrumbs = breadcrumb_segments_to_tempcode(catalogue_category_breadcrumbs($row['id'], ($root === null) ? get_param_integer('keep_catalogue_' . $row['c_name'] . '_root', null) : $root, !$attach_to_url_filter));
     }
 
     // Image
@@ -1072,7 +1072,7 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
     if ($breadcrumbs_details) {
         $map['BREADCRUMBS'] = '';
         if ($only_fields === null) {
-            $_breadcrumbs = catalogue_category_breadcrumbs($entry['cc_id'], $root, false);
+            $_breadcrumbs = catalogue_category_breadcrumbs($entry['cc_id'], $root, true);
             $breadcrumbs = breadcrumb_segments_to_tempcode($_breadcrumbs);
             $map['BREADCRUMBS'] = $breadcrumbs;
         }
@@ -1700,11 +1700,11 @@ function get_catalogue_entries_tree($catalogue_name, $submitter = null, $categor
  *
  * @param  AUTO_LINK $category_id The category we are finding for
  * @param  ?AUTO_LINK $root The root of the tree (null: the true root)
- * @param  boolean $no_link_for_me_sir Whether to include category links at this level (the recursed levels will always contain links - the top level is optional, hence this parameter)
+ * @param  boolean $include_link Whether to include category links at this level (the recursed levels will always contain links - the top level is optional, hence this parameter)
  * @param  boolean $attach_to_url_filter Whether to copy through any filter parameters in the URL, under the basis that they are associated with what this box is browsing
  * @return array The breadcrumbs
  */
-function catalogue_category_breadcrumbs($category_id, $root = null, $no_link_for_me_sir = true, $attach_to_url_filter = false)
+function catalogue_category_breadcrumbs($category_id, $root = null, $include_link = false, $attach_to_url_filter = false)
 {
     if ($category_id === null) {
         return array();
@@ -1716,7 +1716,7 @@ function catalogue_category_breadcrumbs($category_id, $root = null, $no_link_for
     }
     $page_link = build_page_link($map, get_module_zone('catalogues'));
 
-    if (($category_id != $root) || (!$no_link_for_me_sir)) {
+    if (($category_id != $root) || ($include_link)) {
         static $pt_pair_cache = array();
         if (!array_key_exists($category_id, $pt_pair_cache)) {
             $category_rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('cc_parent_id', 'cc_title'), array('id' => $category_id), '', 1);
@@ -1735,12 +1735,12 @@ function catalogue_category_breadcrumbs($category_id, $root = null, $no_link_for
     if ($category_id == $root) {
         $below = array();
     } else {
-        $below = catalogue_category_breadcrumbs($pt_pair_cache[$category_id]['cc_parent_id'], $root, false, $attach_to_url_filter);
+        $below = catalogue_category_breadcrumbs($pt_pair_cache[$category_id]['cc_parent_id'], $root, false, !$attach_to_url_filter);
     }
 
     $segments = array();
 
-    if (!$no_link_for_me_sir) {
+    if ($include_link) {
         $title = get_translated_text($pt_pair_cache[$category_id]['cc_title']);
         $segments[] = array($page_link, $title);
     }

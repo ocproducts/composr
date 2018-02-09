@@ -61,7 +61,7 @@ function render_image_box($row, $zone = '_SEARCH', $give_context = true, $includ
     // Breadcrumbs
     $breadcrumbs = new Tempcode();
     if ($include_breadcrumbs) {
-        $breadcrumbs = breadcrumb_segments_to_tempcode(gallery_breadcrumbs($row['cat'], ($root === null) ? get_param_string('keep_gallery_root', 'root') : $root, false, $zone));
+        $breadcrumbs = breadcrumb_segments_to_tempcode(gallery_breadcrumbs($row['cat'], ($root === null) ? get_param_string('keep_gallery_root', 'root') : $root, true, $zone));
     }
 
     // Title
@@ -136,7 +136,7 @@ function render_video_box($row, $zone = '_SEARCH', $give_context = true, $includ
     // Breadcrumbs
     $breadcrumbs = new Tempcode();
     if ($include_breadcrumbs) {
-        $breadcrumbs = breadcrumb_segments_to_tempcode(gallery_breadcrumbs($row['cat'], ($root === null) ? get_param_string('keep_gallery_root', 'root') : $root, false, $zone));
+        $breadcrumbs = breadcrumb_segments_to_tempcode(gallery_breadcrumbs($row['cat'], ($root === null) ? get_param_string('keep_gallery_root', 'root') : $root, true, $zone));
     }
 
     // Title
@@ -299,7 +299,7 @@ function render_gallery_box($myrow, $root = 'root', $show_member_stats_if_approp
     // Breadcrumbs
     $breadcrumbs = null;
     if ($include_breadcrumbs) {
-        $breadcrumbs = breadcrumb_segments_to_tempcode(gallery_breadcrumbs($myrow['name'], ($root === null) ? get_param_string('keep_gallery_root', 'root') : $root, $attach_to_url_filter));
+        $breadcrumbs = breadcrumb_segments_to_tempcode(gallery_breadcrumbs($myrow['name'], ($root === null) ? get_param_string('keep_gallery_root', 'root') : $root, !$attach_to_url_filter));
     }
 
     // Render
@@ -851,12 +851,12 @@ function can_submit_to_gallery($name, $gallery_info = null)
  *
  * @param  ID_TEXT $gallery The gallery name
  * @param  ?ID_TEXT $root The virtual root (null: none)
- * @param  boolean $no_link_for_me_sir Whether not to put a link at this point in the breadcrumbs (usually, because the viewer is already at it)
+ * @param  boolean $include_link Whether to put a link at this point in the breadcrumbs (usually, because the viewer is already at it)
  * @param  ID_TEXT $zone The zone that the linked to gallery module is in
  * @param  boolean $attach_to_url_filter Whether to copy through any filter parameters in the URL, under the basis that they are associated with what this box is browsing
  * @return array The navigation element
  */
-function gallery_breadcrumbs($gallery, $root = 'root', $no_link_for_me_sir = true, $zone = '', $attach_to_url_filter = false)
+function gallery_breadcrumbs($gallery, $root = 'root', $include_link = false, $zone = '', $attach_to_url_filter = false)
 {
     if ($root === null) {
         $root = 'root';
@@ -873,7 +873,7 @@ function gallery_breadcrumbs($gallery, $root = 'root', $no_link_for_me_sir = tru
     $page_link = build_page_link($url_map, $zone);
 
     if (($gallery == $root) || ($gallery == 'root')) {
-        if ($no_link_for_me_sir) {
+        if (!$include_link) {
             return array();
         }
         $title = get_translated_text($GLOBALS['SITE_DB']->query_select_value('galleries', 'fullname', array('name' => $gallery)));
@@ -892,7 +892,7 @@ function gallery_breadcrumbs($gallery, $root = 'root', $no_link_for_me_sir = tru
     $segments = array();
 
     $title = get_translated_text($pt_pair_cache_g[$gallery]['fullname']);
-    if (!$no_link_for_me_sir) {
+    if ($include_link) {
         $segments[] = array($page_link, $title);
     }
 
@@ -928,7 +928,7 @@ function gallery_breadcrumbs($gallery, $root = 'root', $no_link_for_me_sir = tru
         }
     }
 
-    $below = gallery_breadcrumbs($pt_pair_cache_g[$gallery]['parent_id'], $root, false, $zone, $attach_to_url_filter);
+    $below = gallery_breadcrumbs($pt_pair_cache_g[$gallery]['parent_id'], $root, true, $zone, $attach_to_url_filter);
 
     return array_merge($below, $segments);
 }
