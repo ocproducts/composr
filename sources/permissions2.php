@@ -291,7 +291,7 @@ function get_category_permissions_for_environment($module, $category, $page = nu
     }
 
     // Render actual permissions matrix
-    $out->attach(get_permissions_matrix($server_id, $access, $overridables, $privileges, $default_access, false, $pinterface_view));
+    $out->attach(get_permissions_matrix($server_id, $access, $overridables, $privileges, $default_access, true, $pinterface_view));
 
     return $out;
 }
@@ -304,11 +304,11 @@ function get_category_permissions_for_environment($module, $category, $page = nu
  * @param  array $overridables List of overridable privilege codes for what we're setting permissions for
  * @param  array $privileges List of privilege settings relating to what we're setting permissions for, from the database
  * @param  array $default_access Multi-dimensional array showing what the inherited defaults for this permission would be
- * @param  boolean $no_outer Whether to not include the stuff to make it fit alongside other form fields in a normal form table
+ * @param  boolean $include_outer Whether to include the stuff to make it fit alongside other form fields in a normal form table
  * @param  ?Tempcode $pinterface_view Label for view permissions (null: default)
  * @return Tempcode The form field matrix
  */
-function get_permissions_matrix($server_id, $access, $overridables, $privileges, $default_access, $no_outer = false, $pinterface_view = null)
+function get_permissions_matrix($server_id, $access, $overridables, $privileges, $default_access, $include_outer = true, $pinterface_view = null)
 {
     require_lang('permissions');
     require_javascript('core_permission_management');
@@ -356,7 +356,7 @@ function get_permissions_matrix($server_id, $access, $overridables, $privileges,
 
                 $overrides->attach(do_template('FORM_SCREEN_INPUT_PERMISSION_OVERRIDE', array(
                     '_GUID' => '115fbf91873be9016c5e192f5a5e090b',
-                    'FORCE_PRESETS' => $no_outer,
+                    'FORCE_PRESETS' => !$include_outer,
                     'GROUP_NAME' => $group_name,
                     'VIEW_ACCESS' => $view_access,
                     'TABINDEX' => strval($tabindex),
@@ -372,7 +372,7 @@ function get_permissions_matrix($server_id, $access, $overridables, $privileges,
             }
             $permission_rows->attach(do_template('FORM_SCREEN_INPUT_PERMISSION', array(
                 '_GUID' => 'e2c4459ae995d33376c07e498f1d973a',
-                'FORCE_PRESETS' => $no_outer,
+                'FORCE_PRESETS' => !$include_outer,
                 'GROUP_NAME' => $group_name,
                 'OVERRIDES' => $overrides->evaluate()/*FUDGE*/,
                 'ALL_GLOBAL' => $all_global,
@@ -395,7 +395,7 @@ function get_permissions_matrix($server_id, $access, $overridables, $privileges,
             }
             $permission_rows->attach(do_template('FORM_SCREEN_INPUT_PERMISSION_ADMIN', array(
                 '_GUID' => '59fafa2fa66ec6eb0fe2432b1d747636',
-                'FORCE_PRESETS' => $no_outer,
+                'FORCE_PRESETS' => !$include_outer,
                 'OVERRIDES' => $overridables_filtered,
                 'GROUP_NAME' => $group_name,
                 'GROUP_ID' => strval($id),
@@ -403,7 +403,7 @@ function get_permissions_matrix($server_id, $access, $overridables, $privileges,
             )));
         }
     }
-    if ((count($overridables) == 0) && (!$no_outer)) {
+    if ((count($overridables) == 0) && ($include_outer)) {
         return $permission_rows;
     }
 
@@ -444,7 +444,7 @@ function get_permissions_matrix($server_id, $access, $overridables, $privileges,
         'PERMISSION_ROWS' => $permission_rows,
     ));
 
-    if ($no_outer) {
+    if (!$include_outer) {
         return make_string_tempcode(static_evaluate_tempcode($inner));
     }
     return make_string_tempcode(static_evaluate_tempcode(do_template('FORM_SCREEN_INPUT_PERMISSION_MATRIX_OUTER', array('_GUID' => '2a2f9f78f3639185300c92cab50767c5', 'INNER' => $inner))));

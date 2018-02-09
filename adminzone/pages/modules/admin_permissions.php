@@ -442,7 +442,7 @@ class Module_admin_permissions
         // Standard editing matrix
         // NB: For permissions tree editor, default access is shown as -1 in editor for clarity (because the parent permissions are easily findable which implies the default access would mean something else which would confuse [+ this would be hard to do due to the dynamicness of the interface])
         require_code('permissions2');
-        $editor = get_permissions_matrix('', array(), array(), array(), array(), true);
+        $editor = get_permissions_matrix('', array(), array(), array(), array(), false);
 
         return do_template('PERMISSIONS_TREE_EDITOR_SCREEN', array(
             '_GUID' => '08bb679a7cfab45c0c29b5393666dd57',
