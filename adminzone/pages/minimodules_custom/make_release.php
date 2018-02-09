@@ -150,9 +150,8 @@ function phase_1_pre()
             <li>Copy <kbd>data/files.dat</kbd> from the most recent past release to <kbd>data/files_previous.dat</kbd> in the new release (the hosted upgrade generator does this for upgrade TARs dynamically, but we want our main release to have the correct metadata also)</li>
             <li>Make sure any ocProducts themes are up-to-date (CSS changes, template changes, theme image changes).</li>
         </ul></li>
-        <li>Consider updating the <kbd>$discontinued</kbd> array in <kbd>sources_custom/composr_homesite.php</kbd>.</li>
+        <li>Look for <a target="_blank" title="LEGACY comments (this link will open in a new window)" href="https://compo.sr/tracker/view.php?id=1305">LEGACY comments</a> in the code and remove/update stuff as appropriate.</li>
         <li>Consider moving Composr to a fresh repository, so you can have a clean history and a clean set of branches; update the <kbd>COMPOSR_REPOS_URL</kbd> constant if you do this</li>
-        <li>Consider updating the <kbd>$discontinued</kbd> array in <kbd>sources_custom/composr_homesite.php</kbd>.</li>
         <li>Go through <a href="https://compo.sr/tracker/view.php?id=3383">advanced testing</a>.</li>
     </ul>
     ';
