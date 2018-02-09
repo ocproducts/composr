@@ -426,6 +426,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/forum_grouping.php',
             '_tests/tests/unit_tests/images.php',
             '_tests/tests/unit_tests/theme_images.php',
+            '_tests/tests/unit_tests/seo.php',
             '_tests/tests/unit_tests/glossary.php',
             '_tests/tests/unit_tests/http_obscure_cases.php',
             '_tests/tests/unit_tests/galleries.php',

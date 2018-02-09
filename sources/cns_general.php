@@ -121,6 +121,7 @@ function cns_read_in_member_profile($member_id, $need = null, $include_encrypted
 
     // Low-cost details
     $last_visit_time = (($member_id == get_member()) && (array_key_exists('last_visit', $_COOKIE))) ? intval($_COOKIE['last_visit']) : $row['m_last_visit_time'];
+    $is_banned = $GLOBALS['FORUM_DRIVER']->is_banned($member_id);
     $join_time = $row['m_join_time'];
     $member_info = array(
         'username' => $row['m_username'],
@@ -131,7 +132,7 @@ function cns_read_in_member_profile($member_id, $need = null, $include_encrypted
         'topics' => $GLOBALS['FORUM_DRIVER']->get_topic_count($member_id),
         'join_time' => $join_time,
         'join_date' => get_timezoned_date_time($join_time),
-        'banned' => $GLOBALS['FORUM_DRIVER']->is_banned($member_id),
+        'banned' => $is_banned,
         'is_staff' => $GLOBALS['FORUM_DRIVER']->is_staff($member_id),
         'is_super_admin' => $GLOBALS['FORUM_DRIVER']->is_super_admin($member_id),
         'validated' => ($row['m_validated'] == 1),
@@ -181,6 +182,11 @@ function cns_read_in_member_profile($member_id, $need = null, $include_encrypted
             } else {
                 $just_member_row = db_map_restrict($row, array('id', 'm_signature'));
                 $member_info['signature'] = get_translated_tempcode('f_members', $just_member_row, 'm_signature', $GLOBALS['FORUM_DB']);
+
+                if (($is_banned) && (!$GLOBALS['FORUM_DRIVER']->is_super_admin($member_id_viewing))) {
+                    $member_info['signature'] = new Tempcode(); // Spammers may use signatures as a way to justify even accounts that will get banned
+                }
+
                 $SIGNATURES_CACHE[$member_id] = $member_info['signature'];
             }
         }

@@ -26,6 +26,89 @@ class comcode_test_set extends cms_test_case
         require_code('comcode_from_html');
     }
 
+    public function testContentsTag()
+    {
+        // From Comcode...
+
+        $comcode = '
+[contents][/contents]
+
+[title="2"]Foo[/title]
+
+[title="3"]Bar[/title]
+
+[title="2"]Test[/title]
+';
+        $actual = comcode_to_tempcode($comcode);
+        $_actual = $actual->evaluate();
+
+        $this->assertTrue(strpos($_actual, '>Foo</a>') !== false);
+        $this->assertTrue(strpos($_actual, '>Bar</a>') !== false);
+        $this->assertTrue(strpos($_actual, '>Test</a>') !== false);
+
+        // From semihtml with eager_wysiwyg...
+
+        set_option('eager_wysiwyg', '1');
+
+        $comcode = '[semihtml]
+[contents][/contents]
+
+<h2>Foo</h2>
+
+<h3>Bar</h3>
+
+<h2>Test</h2>
+[/semihtml]
+';
+        $actual = comcode_to_tempcode(semihtml_to_comcode($comcode));
+        $_actual = $actual->evaluate();
+
+        $this->assertTrue(strpos($_actual, '>Foo</a>') !== false);
+        $this->assertTrue(strpos($_actual, '>Bar</a>') !== false);
+        $this->assertTrue(strpos($_actual, '>Test</a>') !== false);
+
+        // From semihtml without eager_wysiwyg...
+
+        set_option('eager_wysiwyg', '0');
+
+        $comcode = '[semihtml]
+[contents][/contents]
+
+<h2>Foo</h2>
+
+<h3>Bar</h3>
+
+<h2>Test</h2>
+[/semihtml]
+';
+        $actual = comcode_to_tempcode(semihtml_to_comcode($comcode));
+        $_actual = $actual->evaluate();
+
+        $this->assertTrue(strpos($_actual, '>Foo</a>') !== false);
+        $this->assertTrue(strpos($_actual, '>Bar</a>') !== false);
+        $this->assertTrue(strpos($_actual, '>Test</a>') !== false);
+
+        // From semihtml coming direct from WYSIWYG...
+
+        set_option('eager_wysiwyg', '0');
+
+        $comcode = '
+<input class="cms_keep_ui_controlled" readonly="readonly" size="45" style="cursor: pointer;" title="[contents][/contents]" type="button" value="contents Comcode tag (dbl-click to edit/delete)" />
+
+<h2 id="xxx">Foo</h2>
+
+<h3 id="xxx">Bar</h3>
+
+<h2 id="xxx">Test</h2>
+';
+        $actual = comcode_to_tempcode(semihtml_to_comcode('[semihtml]' . $comcode . '[/semihtml]'));
+        $_actual = $actual->evaluate();
+
+        $this->assertTrue(strpos($_actual, '>Foo</a>') !== false);
+        $this->assertTrue(strpos($_actual, '>Bar</a>') !== false);
+        $this->assertTrue(strpos($_actual, '>Test</a>') !== false);
+    }
+
     public function testEmoticons()
     {
         $actual = comcode_to_tempcode(':)');

@@ -498,6 +498,7 @@ function _helper_get_forum_topic_posts($this_ref, $topic_id, &$count, $max, $sta
                 $temp['date'] = $myrow['p_time'];
                 $temp['staff_only'] = ($myrow['p_intended_solely_for'] !== null);
                 $temp['skip_sig'] = $myrow['p_skip_sig'];
+                $temp['ip_address'] = $myrow['p_ip_address'];
             }
 
             $out[] = $temp;

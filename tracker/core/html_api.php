@@ -755,14 +755,14 @@ function print_menu() {
 		}
 
 		# Changelog Page
-		if( access_has_project_level( config_get( 'view_changelog_threshold' ) ) ) {
+		/*if( access_has_project_level( config_get( 'view_changelog_threshold' ) ) ) {
 			$t_menu_options_analysis[] = '<a href="' . helper_mantis_url( 'changelog_page.php">' ) . lang_get( 'changelog_link' ) . '</a>';
-		}
+		}*/
 
 		# Roadmap Page
-		if( access_has_project_level( config_get( 'roadmap_view_threshold' ) ) ) {
+		/*if( access_has_project_level( config_get( 'roadmap_view_threshold' ) ) ) {
 			$t_menu_options_analysis[] = '<a href="' . helper_mantis_url( 'roadmap_page.php">' ) . lang_get( 'roadmap_link' ) . '</a>';
-		}
+		}*/
 
 		# Summary Page
 		if( access_has_project_level( config_get( 'view_summary_threshold' ) ) ) {
@@ -827,7 +827,7 @@ function print_menu() {
 
 		# Account Page (only show accounts that are NOT protected)
 		if( OFF == $t_protected ) {
-			//$t_menu_options_account[] = '<a href="' . helper_mantis_url( 'account_page.php">' ) . lang_get( 'account_link' ) . '</a>';
+			$t_menu_options_account[] = '<a href="' . helper_mantis_url( 'account_prefs_page.php">' ) . lang_get( 'account_link' ) . '</a>';
 		}
 
 		# Add custom options

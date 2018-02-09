@@ -768,11 +768,17 @@ function _seo_meta_find_data($keyword_sources, $description = '')
     require_code('textfiles');
     $word_chars = explode("\n", read_text_file('word_characters', '')); // We use this, as we have no easy multi-language way of detecting if something is a word character in non-latin alphabets (as they don't usually have upper/lower case which would be our detection technique)
     foreach ($word_chars as $i => $word_char) {
-        $word_chars[$i] = trim($word_char);
+        $_word_char = trim($word_char);
+        if ($_word_char != '') {
+            $word_chars[$i] = $_word_char;
+        }
     }
     $common_words = explode("\n", read_text_file('too_common_words', ''));
     foreach ($common_words as $i => $common_word) {
-        $common_words[$i] = trim(cms_mb_strtolower($common_word));
+        $_common_word = trim(cms_mb_strtolower($common_word));
+        if ($_common_word != '') {
+            $common_words[$i] = $_common_word;
+        }
     }
 
     $word_chars_flip = array_flip($word_chars);
@@ -780,24 +786,26 @@ function _seo_meta_find_data($keyword_sources, $description = '')
 
     $min_word_length = 3;
 
-    $keywords = array(); // This will be filled
+    $keywords_might_use = array(); // This will be filled
     $keywords_must_use = array(); // ...and/or this
 
     $this_word = '';
 
     $source = null;
     foreach ($keyword_sources as $source) { // Look in all our sources
+        // Some sources are marked 'must use', i.e. to put as higher priority
         $must_use = false;
         if (is_array($source)) {
             list($source, $must_use) = $source;
         }
 
+        // Clean up word pre-processing
         $source = strip_comcode($source);
         if (cms_mb_strtoupper($source) == $source) {
             $source = cms_mb_strtolower($source); // Don't leave in all caps, as is ugly, and also would break our Proper Noun detection
         }
 
-        $i = 0;
+        // Do we need to be Unicode-aware? (slower)
         $len_a = strlen($source);
         $len_b = cms_mb_strlen($source);
         $len = $len_a;
@@ -806,76 +814,106 @@ function _seo_meta_find_data($keyword_sources, $description = '')
             $len = $len_b;
             $unicode = true;
         }
-        $from = 0;
-        $in_word = false;
-        $word_is_caps = false;
+
+        // Loop through finding words
+        $i = 0;
+        $word_start = 0;
+        $is_in_word = false;
+        $word_starts_caps = false;
         while ($i < $len) {
             if ($unicode) { // Slower :(
-                $at = cms_mb_substr($source, $i, 1);
-                $is_word_char = array_key_exists($at, $word_chars_flip) || cms_mb_strtolower($at) != cms_mb_strtoupper($at);
+                $current_char = cms_mb_substr($source, $i, 1);
+                $is_word_char = isset($word_chars_flip[$current_char]) || cms_mb_strtolower($current_char) != cms_mb_strtoupper($current_char);
 
-                if ($in_word) {
-                    // Exiting word
-                    if (($i == $len - 1) || ((!$is_word_char) && ((!$word_is_caps) || ($at != ' ') || (/*continuation of Proper Noun*/cms_mb_strtolower(cms_mb_substr($source, $i + 1, 1)) == cms_mb_substr($source, $i + 1, 1))))) {
+                if ($is_in_word) {
+                    // Exiting word?
+                    $is_exiting_word = false;
+                    if ($i == $len - 1) { // End of string
+                        $is_exiting_word = true;
+                        $i++; // This is the last character, so we need to move the cursor past it
+                    } elseif ((!$is_word_char) && (/*Not space-separated*/($current_char != ' ') || (/*Current word not starting with Caps*/!$word_starts_caps) || (/*Next word not starting with Caps*/cms_mb_strtolower(cms_mb_substr($source, $i + 1, 1)) == cms_mb_substr($source, $i + 1, 1)))) { // End of apparent word and not a space-separated Proper Noun
+                        $is_exiting_word = true;
+                    }
+                    if ($is_exiting_word) {
+                        $this_word = cms_mb_substr($source, $word_start, $i - $word_start);
+
+                        // Strip off any special characters we may have allowed to be inside words from the end of the word
                         while ((cms_mb_strlen($this_word) != 0) && (cms_mb_substr($this_word, -1) == '\'' || cms_mb_substr($this_word, -1) == '-' || cms_mb_substr($this_word, -1) == '.')) {
                             $this_word = cms_mb_substr($this_word, 0, cms_mb_strlen($this_word) - 1);
                         }
-                        if (($i - $from) >= $min_word_length) {
-                            if (!array_key_exists(cms_mb_strtolower($this_word), $common_words_flip)) {
-                                if (!array_key_exists($this_word, $keywords)) {
-                                    $keywords[$this_word] = 0;
+
+                        // If word is long enough, we might use it
+                        if (($i - $word_start) >= $min_word_length) {
+                            // If word is not a stop word, we might use it
+                            if (!isset($common_words_flip[cms_mb_strtolower($this_word)])) {
+                                // We store the word, either as one we might use, or one we must use, and we store how many occurrences it had
+                                if (!isset($keywords_might_use[$this_word])) {
+                                    $keywords_might_use[$this_word] = 0;
                                 }
                                 if ($must_use) {
                                     $keywords_must_use[$this_word]++;
                                 } else {
-                                    $keywords[$this_word]++;
+                                    $keywords_might_use[$this_word]++;
                                 }
                             }
                         }
-                        $in_word = false;
+                        $is_in_word = false;
                     } else {
-                        $this_word .= $at;
+                        $this_word .= $current_char;
                     }
                 } else {
-                    // Entering word
-                    if (($is_word_char) && ($at != '\'') && ($at != '-') && ($at != '.')/*Special latin cases, cannot start a word with a symbol*/) {
-                        $word_is_caps = (cms_mb_strtolower($at) != $at);
-                        $from = $i;
-                        $in_word = true;
-                        $this_word = $at;
+                    // Entering word?
+                    if (($is_word_char) && ($current_char != '\'') && ($current_char != '-') && ($current_char != '.')/*Special latin cases, cannot start a word with a symbol*/) {
+                        $word_starts_caps = (cms_mb_strtolower($current_char) != $current_char);
+                        $word_start = $i;
+                        $is_in_word = true;
+                        $this_word = $current_char;
                     }
                 }
             } else {
-                $at = $source[$i];
-                $is_word_char = array_key_exists($at, $word_chars_flip);
+                $current_char = $source[$i];
+                $is_word_char = isset($word_chars_flip[$current_char]);
 
-                if ($in_word) {
-                    // Exiting word
-                    if (($i == $len - 1) || ((!$is_word_char) && ((!$word_is_caps) || ($at != ' ') || (/*continuation of Proper Noun*/strtolower(substr($source, $i + 1, 1)) == substr($source, $i + 1, 1))))) {
-                        $this_word = substr($source, $from, $i - $from);
+                if ($is_in_word) {
+                    // Exiting word?
+                    $is_exiting_word = false;
+                    if ($i == $len - 1) { // End of string
+                        $is_exiting_word = true;
+                        $i++; // This is the last character, so we need to move the cursor past it
+                    } elseif ((!$is_word_char) && (/*Not space-separated*/($current_char != ' ') || (/*Current word not starting with Caps*/!$word_starts_caps) || (/*Next word not starting with Caps*/strtolower(substr($source, $i + 1, 1)) == substr($source, $i + 1, 1)))) { // End of apparent word and not a space-separated Proper Noun
+                        $is_exiting_word = true;
+                    }
+                    if ($is_exiting_word) {
+                        $this_word = substr($source, $word_start, $i - $word_start);
+
+                        // Strip off any special characters we may have allowed to be inside words from the end of the word
                         while ((strlen($this_word) != 0) && (substr($this_word, -1) == '\'' || substr($this_word, -1) == '-' || substr($this_word, -1) == '.')) {
                             $this_word = substr($this_word, 0, strlen($this_word) - 1);
                         }
-                        if (($i - $from) >= $min_word_length) {
-                            if (!array_key_exists($this_word, $common_words_flip)) {
-                                if (!array_key_exists($this_word, $keywords)) {
-                                    $keywords[$this_word] = 0;
+
+                        // If word is long enough, we might use it
+                        if (($i - $word_start) >= $min_word_length) {
+                            // If word is not a stop word, we might use it
+                            if (!isset($common_words_flip[strtolower($this_word)])) {
+                                // We store the word, either as one we might use, or one we must use, and we store how many occurrences it had
+                                if (!isset($keywords_might_use[$this_word])) {
+                                    $keywords_might_use[$this_word] = 0;
                                 }
                                 if ($must_use) {
                                     $keywords_must_use[$this_word]++;
                                 } else {
-                                    $keywords[$this_word]++;
+                                    $keywords_might_use[$this_word]++;
                                 }
                             }
                         }
-                        $in_word = false;
+                        $is_in_word = false;
                     }
                 } else {
-                    // Entering word
+                    // Entering word?
                     if ($is_word_char) {
-                        $word_is_caps = (strtolower($at) != $at);
-                        $from = $i;
-                        $in_word = true;
+                        $word_starts_caps = (strtolower($current_char) != $current_char);
+                        $word_start = $i;
+                        $is_in_word = true;
                     }
                 }
             }
@@ -883,24 +921,44 @@ function _seo_meta_find_data($keyword_sources, $description = '')
         }
     }
 
-    arsort($keywords, SORT_NATURAL | SORT_FLAG_CASE);
+    // Put most common ones first
+    arsort($keywords_must_use, SORT_NATURAL | SORT_FLAG_CASE);
+    arsort($keywords_might_use, SORT_NATURAL | SORT_FLAG_CASE);
 
-    $imp = '';
+    // Put together keywords (in priority and frequency order, not alphabetical)
+    $i = 0;
+    $_keywords = array();
     foreach (array_keys($keywords_must_use) as $keyword) {
-        if ($imp != '') {
-            $imp .= ',';
-        }
-        $imp .= $keyword;
+        $_keywords[] = $keyword;
+        $i++;
     }
-    foreach (array_keys($keywords) as $i => $keyword) {
-        if ($imp != '') {
-            $imp .= ',';
-        }
-        $imp .= $keyword;
+    foreach (array_keys($keywords_might_use) as $keyword) {
+        // Too many keywords already
         if ($i == 10) {
             break;
         }
+
+        $keyword_lower = cms_mb_strtolower($keyword);
+        if (!isset($_keywords[$keyword_lower])) {
+            $_keywords[$keyword_lower] = array();
+        }
+        $_keywords[$keyword_lower][] = $keyword;
+
+        $i++;
     }
+    $keywords = '';
+    foreach ($_keywords as $keyword_lower => $variants) {
+        if ($keywords != '') {
+            $keywords .= ',';
+        }
+        if (count($variants) == 1) {
+            $keywords .= $variants[0];
+        } else {
+            $keywords .= $keyword_lower; // Different cases, so take lower case
+        }
+    }
+
+    // Tidy up descriptions...
 
     require_code('xhtml');
     $description = strip_comcode($description, true);
@@ -918,7 +976,9 @@ function _seo_meta_find_data($keyword_sources, $description = '')
         }
     }
 
-    return array($imp, $description);
+    // ---
+
+    return array($keywords, $description);
 }
 
 /**

@@ -377,8 +377,6 @@ class Module_calendar
             $back_url = build_url($back_map, '_SELF');
             breadcrumb_set_parents(array(array(build_page_link($back_map, '_SELF'), do_lang_tempcode('CALENDAR'))));
 
-            seo_meta_load_for('event', strval($id), $title_to_use_2);
-
             $this->id = $id;
             $this->event = $event;
             $this->title_to_use = $title_to_use;

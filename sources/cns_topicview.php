@@ -167,12 +167,14 @@ function cns_get_details_to_show_post($_postdetails, $topic_info, $only_post = f
         $post['last_edit_by_username'] = $GLOBALS['CNS_DRIVER']->get_username($_postdetails['p_last_edit_by']);
     }
 
+    $is_banned = ($GLOBALS['CNS_DRIVER']->get_member_row_field($_postdetails['p_poster'], 'm_is_perm_banned') == 1);
+
     // Find title
     $title = addon_installed('cns_member_titles') ? $GLOBALS['CNS_DRIVER']->get_member_row_field($_postdetails['p_poster'], 'm_title') : '';
     if ($title == '') {
         $title = get_translated_text(cns_get_group_property($primary_group, 'title'), $GLOBALS['FORUM_DB']);
     }
-    if ($GLOBALS['CNS_DRIVER']->get_member_row_field($_postdetails['p_poster'], 'm_is_perm_banned') == 1) {
+    if ($is_banned) {
         $title = do_lang('BANNED');
     }
     $post['poster_title'] = $title;
