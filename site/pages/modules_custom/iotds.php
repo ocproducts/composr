@@ -235,7 +235,7 @@ class Module_iotds
         $edit_date_raw = ($myrow['edit_date'] === null) ? '' : strval($myrow['edit_date']);
 
         // Views
-        if ((get_db_type() != 'xml') && (get_value('no_view_counts') !== '1') && (get_bot_type() === null)) {
+        if ((get_db_type() != 'xml') && (get_value('disable_view_counts') !== '1') && (get_bot_type() === null)) {
             $myrow['iotd_views']++;
             if (!$GLOBALS['SITE_DB']->table_is_locked('iotd')) {
                 $GLOBALS['SITE_DB']->query_update('iotd', array('iotd_views' => $myrow['iotd_views']), array('id' => $id), '', 1, 0, false, true);

@@ -1847,7 +1847,7 @@ function render_catalogue_entry_screen($id)
     $breadcrumbs = array();
     $map = get_catalogue_entry_map($entry, $catalogue, 'PAGE', $tpl_set, $root, null, null, true, true, null, $breadcrumbs);
 
-    if ((get_db_type() != 'xml') && (get_value('no_view_counts') !== '1') && (get_bot_type() === null)) {
+    if ((get_db_type() != 'xml') && (get_value('disable_view_counts') !== '1') && (get_bot_type() === null)) {
         $entry['ce_views']++;
         if (!$GLOBALS['SITE_DB']->table_is_locked('catalogue_entries')) {
             $GLOBALS['SITE_DB']->query_update('catalogue_entries', array('ce_views' => $entry['ce_views']), array('id' => $id), '', 1, 0, false, true);
@@ -1894,7 +1894,7 @@ function render_catalogue_entry_screen($id)
             $title_to_use_2 = do_lang('DEFAULT__CATALOGUE_ENTRY', $map['FIELD_0_PLAIN']);
         }
     }
-    if ((get_value('no_awards_in_titles') !== '1') && (addon_installed('awards'))) {
+    if ((get_value('disable_awards_in_titles') !== '1') && (addon_installed('awards'))) {
         require_code('awards');
         $awards = find_awards_for('catalogue_entry', strval($id));
     } else {

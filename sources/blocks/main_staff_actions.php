@@ -50,7 +50,7 @@ class Block_main_staff_actions
     {
         $info = array();
         $info['cache_on'] = 'array(get_param_integer(\'sa_start\',0),array_key_exists(\'max\',$map)?intval($map[\'max\']):get_param_integer(\'sa_max\',10),get_param_string(\'sa_sort\',\'date_and_time\'),get_param_string(\'sort_order\',\'DESC\'))';
-        $info['ttl'] = (get_value('no_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 60 * 5;
+        $info['ttl'] = (get_value('disable_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 60 * 5;
         return $info;
     }
 

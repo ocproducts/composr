@@ -166,7 +166,7 @@ sqlcmd -S <server> -d <databasename> -i <filepath>
 
 [title="2"]Full-text search (advanced)[/title]
 
-While full-text search is supported, indexing can be a bit spotty. The index builds in the background and has been seen to lag or not build at all during some testing (at least on SQL Server Express). You may disable full-text search via the hidden [tt]skip_fulltext_sqlserver[/tt] option if you want to just use boolean search instead.
+While full-text search is supported, indexing can be a bit spotty. The index builds in the background and has been seen to lag or not build at all during some testing (at least on SQL Server Express). You may disable full-text search via the hidden [tt]disable_fulltext_sqlserver[/tt] option if you want to just use boolean search instead.
 
 Ideally (not importantly) Composr would know the correct stop-word list for SQL Server so it knows whether to direct searches only for a stopword to a non-full-text search. This is controlled in the [url="SQL Server configuration"]https://docs.microsoft.com/en-us/sql/relational-databases/search/configure-and-manage-stopwords-and-stoplists-for-full-text-search[/url] (unlike MySQL, where it's hard-coded, and hence we were able to hard-code in our code also). To provide Composr an accurate full-text search word list you need to override the [tt]get_stopwords_list()[/tt] function.
 

@@ -134,7 +134,7 @@ class Module_authors
             warn_exit(do_lang_tempcode('INTERNAL_ERROR')); // Really don't want to have to search on this
         }
 
-        if ((get_value('no_awards_in_titles') !== '1') && (addon_installed('awards'))) {
+        if ((get_value('disable_awards_in_titles') !== '1') && (addon_installed('awards'))) {
             require_code('awards');
             $awards = find_awards_for('author', $author);
         } else {

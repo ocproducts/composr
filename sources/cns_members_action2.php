@@ -543,7 +543,7 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
     // Language choice, if we have multiple languages on site
     if ($doing_langs) {
         $lang_list = new Tempcode();
-        $require_lang_set = (get_value('require_lang_selection') !== '0');
+        $require_lang_set = (get_value('disable_required_lang_selection') !== '1');
         if (!$require_lang_set) {
             $lang_list->attach(form_input_list_entry('', empty($language), do_lang_tempcode('UNSET')));
         } else {
@@ -866,7 +866,7 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
     }
 
     if ($password !== null) { // Password change
-        if (($password_compatibility_scheme === null) && (get_value('no_password_hashing') === '1')) {
+        if (($password_compatibility_scheme === null) && (get_value('disable_password_hashing') === '1')) {
             $password_compatibility_scheme = 'plain';
             $update['m_password_change_code'] = '';
             $salt = '';
@@ -1830,9 +1830,11 @@ function cns_member_choose_avatar($avatar_url, $member_id = null)
  *
  * @param  ID_TEXT $param_name The identifier for the name of the posted URL field
  * @param  ID_TEXT $upload_name The identifier for the name of the posted upload
+ * @param  ID_TEXT $thumb_name The identifier for the name of the posted thumbnail field
+ * @param  ID_TEXT $thumb_upload_name The identifier for the name of the thumbnail upload
  * @param  ?MEMBER $member_id The member (null: the current member)
  */
-function cns_member_choose_photo($param_name, $upload_name, $member_id = null)
+function cns_member_choose_photo($param_name, $upload_name, $thumb_name, $thumb_upload_name, $member_id = null)
 {
     if ($member_id === null) {
         $member_id = get_member();
@@ -1856,7 +1858,7 @@ function cns_member_choose_photo($param_name, $upload_name, $member_id = null)
     }
 
     // Find photo URL
-    $urls = get_url($param_name, $upload_name, file_exists(get_custom_file_base() . '/uploads/photos') ? 'uploads/photos' : 'uploads/cns_photos', 0, CMS_UPLOAD_IMAGE, true, 'thumb_' . $param_name, $upload_name . '2', false, true);
+    $urls = get_url($param_name, $upload_name, file_exists(get_custom_file_base() . '/uploads/photos') ? 'uploads/photos' : 'uploads/cns_photos', 0, CMS_UPLOAD_IMAGE, true, $thumb_name, $thumb_upload_name, false, true);
     if (!(strlen($urls[0]) > 1)) {
         $urls[1] = '';
     }
@@ -1870,8 +1872,8 @@ function cns_member_choose_photo($param_name, $upload_name, $member_id = null)
     // At this point in the code, we know a photo was uploaded or changed to blank.
     //  If we don't have GD, we need them to have uploaded a thumbnail too.
     if (!function_exists('imagetypes')) {
-        if (((!array_key_exists($upload_name . '2', $_FILES)) || (!is_plupload()) && (!is_uploaded_file($_FILES[$upload_name . '2']['tmp_name'])))) {
-            $field = post_param_string('thumb_' . $param_name, '');
+        if (((!array_key_exists($thumb_upload_name, $_FILES)) || (!is_plupload()) && (!is_uploaded_file($_FILES[$thumb_upload_name]['tmp_name'])))) {
+            $field = post_param_string($thumb_name, '');
             if (($field == '') && ($urls[0] != '')) {
                 warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN_UPLOAD'));
             }

@@ -70,7 +70,7 @@ function member_is_online($member_id)
  */
 function get_users_online($longer_time, $filter, &$count)
 {
-    if (get_value('no_member_tracking') === '1') {
+    if (get_value('disable_member_tracking') === '1') {
         return array();
     }
 
@@ -237,7 +237,7 @@ function get_members_viewing_wrap($page = null, $type = null, $id = null, $forum
  */
 function get_members_viewing($page = null, $type = null, $id = null, $forum_layer = false)
 {
-    if (get_value('no_member_tracking') === '1') {
+    if (get_value('disable_member_tracking') === '1') {
         return null;
     }
 

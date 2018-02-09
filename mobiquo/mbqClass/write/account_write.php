@@ -439,7 +439,7 @@ class CMSAccountWrite
         $salt = '';
         $password_compatibility_scheme = '';
 
-        if ((get_value('no_password_hashing') === '1')) {
+        if ((get_value('disable_password_hashing') === '1')) {
             $password_compatibility_scheme = 'plain';
             $salt = '';
         }

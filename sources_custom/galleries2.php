@@ -50,7 +50,7 @@ function init__galleries2($code)
         "log_it('ADD_GALLERY', \$name, \$fullname);",
         "
         require_code('workflows');
-        handle_position_in_workflow_auto(\$validated, 'gallery', \$name, 'gallery', \$parent_id, \$fullname);
+        handle_position_in_workflow_auto(1, 'gallery', \$name, 'gallery', \$parent_id, \$fullname);
 
         <ditto>
         ",
@@ -88,7 +88,7 @@ function init__galleries2($code)
         "log_it('EDIT_GALLERY', \$name, \$fullname);",
         "
         require_code('workflows');
-        handle_position_in_workflow_edit(\$validated, 'gallery', \$name, 'gallery', \$parent_id, \$fullname);
+        handle_position_in_workflow_edit(1, 'gallery', \$name, 'gallery', \$parent_id, \$fullname);
         ",
         $code
     );

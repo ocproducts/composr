@@ -62,7 +62,7 @@ class Hook_commandr_command_passwd
                 return array('', '', '', do_lang('_MEMBER_NO_EXIST', array_key_exists('username', $options) ? $options['username'] : $options['u']));
             }
 
-            if (get_value('no_password_hashing') === '1') {
+            if (get_value('disable_password_hashing') === '1') {
                 $update['m_password_compat_scheme'] = 'plain';
                 $update['m_pass_salt'] = '';
                 $update['m_pass_hash_salted'] = $parameters[0];

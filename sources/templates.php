@@ -122,7 +122,7 @@ function get_screen_title($title, $dereference_lang = true, $params = array(), $
     }
 
     if (function_exists('get_session_id')) {
-        if (get_value('no_member_tracking') !== '1') {
+        if (get_value('disable_member_tracking') !== '1') {
             if (!$GLOBALS['SITE_DB']->table_is_locked('sessions')) {
                 $change_map = array(
                     'last_activity' => time(),

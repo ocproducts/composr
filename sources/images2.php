@@ -314,7 +314,7 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
             warn_exit(do_lang_tempcode('CANNOT_ACCESS_URL', escape_html($from)), false, true);
         }
         require_code('site');
-        if (get_value('no_cannot_access_url_messages') !== '1') {
+        if (get_value('disable_cannot_access_url_messages') !== '1') {
             attach_message(do_lang_tempcode('CANNOT_ACCESS_URL', escape_html($from)), 'warn', false, true);
         }
         return $from;

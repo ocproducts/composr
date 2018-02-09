@@ -395,7 +395,7 @@ class Database_super_sqlserver extends DatabaseDriver
      */
     public function has_full_text($connection)
     {
-        return ((!function_exists('get_value')) || (get_value('skip_fulltext_sqlserver') !== '1'));
+        return ((!function_exists('get_value')) || (get_value('disable_fulltext_sqlserver') !== '1'));
     }
 
     /**

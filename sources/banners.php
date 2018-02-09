@@ -303,7 +303,7 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
         $shown_already[$name] = true;
 
         // Update the counts (ones done per-view)
-        if ((get_db_type() != 'xml') && (get_value('no_banner_count_updates') !== '1')) {
+        if ((get_db_type() != 'xml') && (get_value('disable_banner_count_updates') !== '1')) {
             if (!$GLOBALS['SITE_DB']->table_is_locked('banners')) {
                 $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'banners SET views_to=(views_to+1) WHERE ' . db_string_equal_to('name', $name), 1, 0, false, true);
             }

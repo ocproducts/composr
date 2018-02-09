@@ -116,7 +116,7 @@ class Module_forumview
                 'identifier' => '_SEARCH:forumview:browse:' . strval($id),
             ), $forum_info, 'forum', strval($id));
 
-            if ((get_value('no_awards_in_titles') !== '1') && (addon_installed('awards'))) {
+            if ((get_value('disable_awards_in_titles') !== '1') && (addon_installed('awards'))) {
                 require_code('awards');
                 $awards = ($id === null) ? array() : find_awards_for('forum', strval($id));
             } else {

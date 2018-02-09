@@ -60,7 +60,7 @@ class Hook_profiles_tabs_edit_photo
         elseif (post_param_integer('submitting_photo_tab', 0) == 1) {
             require_code('cns_members_action');
             require_code('cns_members_action2');
-            cns_member_choose_photo('photo_url', 'photo_file', $member_id_of);
+            cns_member_choose_photo('photo_url', 'photo_file', 'photo_thumb_url', 'photo_thumb_file', $member_id_of);
 
             attach_message(do_lang_tempcode('SUCCESS_SAVE'), 'inform');
         }
@@ -74,19 +74,27 @@ class Hook_profiles_tabs_edit_photo
 
         // UI fields
         $fields = new Tempcode();
+        $hidden = new Tempcode();
         require_code('form_templates');
         require_code('images');
 
         $set_name = 'photo';
         $required = false;
         $set_title = do_lang_tempcode('PHOTO');
-        $field_set = alternate_fields_set__start($set_name);
 
-        $field_set->attach(form_input_upload(do_lang_tempcode('UPLOAD'), '', 'photo_file', false, null, null, true, get_allowed_image_file_types()));
+        if (get_value('disable_multi_homed_upload__cns_photo') === '1') {
+            $fields->attach(form_input_upload(do_lang_tempcode('UPLOAD'), '', 'photo_file', false, null, null, true, get_allowed_image_file_types()));
 
-        $field_set->attach(form_input_url(do_lang_tempcode('URL'), '', 'photo_url', $photo_url, false));
+            $hidden->attach(form_input_hidden('photo_url', $photo_url));
+        } else {
+            $field_set = alternate_fields_set__start($set_name);
 
-        $fields->attach(alternate_fields_set__end($set_name, $set_title, '', $field_set, $required, null, function_exists('imagetypes')));
+            $field_set->attach(form_input_upload(do_lang_tempcode('UPLOAD'), '', 'photo_file', false, null, null, true, get_allowed_image_file_types()));
+
+            $field_set->attach(form_input_url(do_lang_tempcode('URL'), '', 'photo_url', $photo_url, false));
+
+            $fields->attach(alternate_fields_set__end($set_name, $set_title, '', $field_set, $required, null, function_exists('imagetypes')));
+        }
 
         if (!function_exists('imagetypes')) {
             $thumb_width = get_option('thumb_width');
@@ -94,16 +102,22 @@ class Hook_profiles_tabs_edit_photo
             $set_name = 'thumbnail';
             $required = false;
             $set_title = do_lang_tempcode('THUMBNAIL');
-            $field_set = alternate_fields_set__start($set_name);
 
-            $field_set->attach(form_input_upload(do_lang_tempcode('THUMBNAIL'), '', 'photo_file2', false, null, null, true, get_allowed_image_file_types()));
+            if (get_value('disable_multi_homed_upload__cns_photo') === '1') {
+                $fields->attach(form_input_upload(do_lang_tempcode('THUMBNAIL'), '', 'photo_thumb_file', false, null, null, true, get_allowed_image_file_types()));
 
-            $field_set->attach(form_input_url(do_lang_tempcode('URL'), '', 'photo_thumb_url', $thumb_url, false));
+                $hidden->attach(form_input_hidden('photo_thumb_url', $thumb_url));
+            } else {
+                $field_set = alternate_fields_set__start($set_name);
 
-            $fields->attach(alternate_fields_set__end($set_name, $set_title, do_lang_tempcode('DESCRIPTION_THUMBNAIL', escape_html($thumb_width)), $field_set, $required));
+                $field_set->attach(form_input_upload(do_lang_tempcode('THUMBNAIL'), '', 'photo_thumb_file', false, null, null, true, get_allowed_image_file_types()));
+
+                $field_set->attach(form_input_url(do_lang_tempcode('URL'), '', 'photo_thumb_url', $thumb_url, false));
+
+                $fields->attach(alternate_fields_set__end($set_name, $set_title, do_lang_tempcode('DESCRIPTION_THUMBNAIL', escape_html($thumb_width)), $field_set, $required));
+            }
         }
 
-        $hidden = new Tempcode();
         handle_max_file_size($hidden, 'image');
         $hidden->attach(form_input_hidden('submitting_photo_tab', '1'));
 

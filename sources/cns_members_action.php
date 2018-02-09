@@ -129,7 +129,7 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
     }
 
     if ($password_compatibility_scheme === null) {
-        if (get_value('no_password_hashing') === '1' || $password == ''/*Makes debugging easier or allows basic testing to work on PHP installs with broken OpenSSL*/) {
+        if (get_value('disable_password_hashing') === '1' || $password == ''/*Makes debugging easier or allows basic testing to work on PHP installs with broken OpenSSL*/) {
             $password_compatibility_scheme = 'plain';
         } else {
             $password_compatibility_scheme = '';
@@ -239,7 +239,7 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
         $ip_address = get_ip_address();
     }
 
-    if ((($password_compatibility_scheme == '') || ($password_compatibility_scheme == 'temporary')) && (get_value('no_password_hashing') === '1')) {
+    if ((($password_compatibility_scheme == '') || ($password_compatibility_scheme == 'temporary')) && (get_value('disable_password_hashing') === '1')) {
         $password_compatibility_scheme = 'plain';
         $salt = '';
     }

@@ -274,7 +274,7 @@ class Module_wiki
             $current_title = get_translated_text($page['title']);
             $title_to_use = do_lang_tempcode('WIKI_PAGE', escape_html($current_title));
             $title_to_use_2 = do_lang('WIKI_PAGE', $current_title);
-            if ((get_value('no_awards_in_titles') !== '1') && (addon_installed('awards'))) {
+            if ((get_value('disable_awards_in_titles') !== '1') && (addon_installed('awards'))) {
                 require_code('awards');
                 $awards = find_awards_for('wiki_page', strval($page['id']));
             } else {
@@ -472,7 +472,7 @@ class Module_wiki
         }
 
         // Views
-        if ((get_db_type() != 'xml') && (get_value('no_view_counts') !== '1') && (get_bot_type() === null)) {
+        if ((get_db_type() != 'xml') && (get_value('disable_view_counts') !== '1') && (get_bot_type() === null)) {
             $page['wiki_views']++;
             if (!$GLOBALS['SITE_DB']->table_is_locked('wiki_pages')) {
                 $GLOBALS['SITE_DB']->query_update('wiki_pages', array('wiki_views' => $page['wiki_views']), array('id' => $id), '', 1, 0, false, true);

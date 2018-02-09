@@ -128,7 +128,7 @@
 				{+START,IF_EMPTY,{EMPHASIS}}{+START,IF_NON_EMPTY,{ID}}
 					<div class="cns-post-back-to-top">
 						{$,is on/offline}
-						{+START,IF,{$NOT,{$VALUE_OPTION,no_member_tracking}}}
+						{+START,IF,{$NOT,{$VALUE_OPTION,disable_member_tracking}}}
 							{+START,IF_PASSED,POSTER_ONLINE}
 								<img title="{!ONLINE_NOW}: {$?,{POSTER_ONLINE},{!YES},{!NO}}" alt="{!ONLINE_NOW}: {$?,{POSTER_ONLINE},{!YES},{!NO}}" width="14" height="14" src="{$IMG*,icons/cns_general/{$?,{POSTER_ONLINE},is_on,is_off}}" />
 							{+END}

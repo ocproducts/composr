@@ -1418,8 +1418,6 @@ function form_input_various_ticks($options, $description, $_tabindex = null, $_p
  */
 function form_input_upload_multi_source($set_title, $set_description, &$hidden, $set_name = 'image', $theme_image_type = null, $required = true, $default = null, $support_syndication = false, $filter = null, $images_only = true)
 {
-    $field_set = alternate_fields_set__start($set_name);
-
     require_code('images');
 
     // Remap theme image to URL if needed
@@ -1455,7 +1453,24 @@ function form_input_upload_multi_source($set_title, $set_description, &$hidden, 
         }
     }
 
-    $field_set->attach(form_input_upload(do_lang_tempcode('UPLOAD'), do_lang_tempcode('DESCRIPTION_UPLOAD'), $field_file, $required, $default, null, true, $filter, $syndication_json));
+    if (get_value('disable_multi_homed_upload__' . get_page_name()) === '1') {
+        if ($default != '') {
+            $required = false; // As we already have it. But we pass $default as '' so it does not offer deletion. The current URL is passed through the URL setting.
+        }
+
+        $upload_widget = form_input_upload(do_lang_tempcode('UPLOAD'), do_lang_tempcode('DESCRIPTION_UPLOAD'), $field_file, $required, null, null, true, $filter, $syndication_json);
+
+        $hidden_url_widget = form_input_hidden($set_name . '__url', $default);
+        $hidden->attach($hidden_url_widget);
+
+        return $upload_widget;
+    }
+
+    $upload_widget = form_input_upload(do_lang_tempcode('UPLOAD'), do_lang_tempcode('DESCRIPTION_UPLOAD'), $field_file, $required, $default, null, true, $filter, $syndication_json);
+
+    $field_set = alternate_fields_set__start($set_name);
+
+    $field_set->attach($upload_widget);
 
     if ($images_only) {
         handle_max_file_size($hidden, 'image');
@@ -1466,7 +1481,9 @@ function form_input_upload_multi_source($set_title, $set_description, &$hidden, 
 
     $field_url = $set_name . '__url';
 
-    $field_set->attach(form_input_url(do_lang_tempcode('URL'), do_lang_tempcode('DESCRIPTION_ALTERNATE_URL'), $field_url, $default, $required));
+    $url_widget = form_input_url(do_lang_tempcode('URL'), do_lang_tempcode('DESCRIPTION_ALTERNATE_URL'), $field_url, $default, $required);
+
+    $field_set->attach($url_widget);
 
     // Filedump
     // --------
@@ -1495,7 +1512,8 @@ function form_input_upload_multi_source($set_title, $set_description, &$hidden, 
             }
             $filedump_default = (preg_match('#^uploads/filedump/#', $default) != 0) ? $default : '';
             $filedump_field_description = do_lang_tempcode('DESCRIPTION_ALTERNATE_URL_FILEDUMP', escape_html($filedump_url->evaluate()));
-            $field_set->attach(form_input_tree_list(do_lang_tempcode('FILEDUMP'), $filedump_field_description, $field_filedump, '', 'choose_filedump_file', $filedump_options, $required, $filedump_default, false));
+            $filedump_widget = form_input_tree_list(do_lang_tempcode('FILEDUMP'), $filedump_field_description, $field_filedump, '', 'choose_filedump_file', $filedump_options, $required, $filedump_default, false);
+            $field_set->attach($filedump_widget);
         }
     }
 
@@ -1507,7 +1525,9 @@ function form_input_upload_multi_source($set_title, $set_description, &$hidden, 
             if (count($ids) > 0) {
                 $field_choose = $set_name . '__theme_image';
 
-                $field_set->attach(form_input_theme_image(do_lang_tempcode('STOCK'), '', $field_choose, $ids, $default, null, null, $required));
+                $theme_image_widget = form_input_theme_image(do_lang_tempcode('STOCK'), '', $field_choose, $ids, $default, null, null, $required);
+
+                $field_set->attach($theme_image_widget);
             }
         }
     }

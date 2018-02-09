@@ -116,7 +116,7 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 
 .modern-subtabs {
 	border: 0;
-	background-color: {$GET,area_background} url('{$IMG;,tabs/modern_subtab_header_column}') repeat-y;
+	background: {$GET,area_background} url('{$IMG;,tabs/modern_subtab_header_column}') repeat-y;
 	background-size: 150px 1px;
 	overflow: hidden;
 }

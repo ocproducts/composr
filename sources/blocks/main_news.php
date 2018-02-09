@@ -54,7 +54,7 @@ class Block_main_news
         if (addon_installed('content_privacy')) {
             $info['special_cache_flags'] |= CACHE_AGAINST_MEMBER;
         }
-        $info['ttl'] = (get_value('no_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 60;
+        $info['ttl'] = (get_value('disable_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 60;
         return $info;
     }
 
@@ -324,7 +324,7 @@ class Block_main_news
             }
 
             // SEO
-            $seo_bits = (get_value('no_tags') === '1') ? array('', '') : seo_meta_get_for('news', strval($id));
+            $seo_bits = (get_value('disable_tags') === '1') ? array('', '') : seo_meta_get_for('news', strval($id));
 
             // Render
             $map2 = array(
@@ -368,7 +368,7 @@ class Block_main_news
             $title_plain = get_translated_text($myrow['title']);
 
             // Render
-            $seo_bits = (get_value('no_tags') === '1') ? array('', '') : seo_meta_get_for('news', strval($myrow['p_id']));
+            $seo_bits = (get_value('disable_tags') === '1') ? array('', '') : seo_meta_get_for('news', strval($myrow['p_id']));
             $map2 = array('_GUID' => 'd81bda3a0912a1e708af6bb1f503b296', 'TAGS' => get_loaded_tags('news', explode(',', $seo_bits[0])), 'BLOG' => $blogs === 1, 'ID' => strval($myrow['p_id']), 'SUBMITTER' => strval($myrow['submitter']), 'DATE' => $date, 'DATE_RAW' => strval($myrow['date_and_time']), 'FULL_URL' => $url, 'NEWS_TITLE_PLAIN' => $title_plain, 'NEWS_TITLE' => $title);
             if (($allow_comments_shared) && ($myrow['allow_comments'] >= 1)) {
                 $map2['COMMENT_COUNT'] = '1';

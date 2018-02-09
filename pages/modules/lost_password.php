@@ -298,7 +298,7 @@ class Module_lost_password
             dispatch_mail(do_lang('LOST_PASSWORD_FINAL'), $message, array($email), $GLOBALS['FORUM_DRIVER']->get_username($member_id, true), '', '', array('require_recipient_valid_since' => $join_time));
         }
 
-        if ((get_value('no_password_hashing') === '1') && (!$temporary_passwords)) {
+        if ((get_value('disable_password_hashing') === '1') && (!$temporary_passwords)) {
             $password_compatibility_scheme = 'plain';
             $new = $new_password;
         } else {

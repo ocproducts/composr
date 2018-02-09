@@ -344,7 +344,7 @@ class Module_calendar
             }
 
             // Title and metadata
-            if ((get_value('no_awards_in_titles') !== '1') && (addon_installed('awards'))) {
+            if ((get_value('disable_awards_in_titles') !== '1') && (addon_installed('awards'))) {
                 require_code('awards');
                 $awards = find_awards_for('event', strval($id));
             } else {
@@ -1589,7 +1589,7 @@ class Module_calendar
         }
 
         // Views
-        if ((get_db_type() != 'xml') && (get_value('no_view_counts') !== '1') && (get_bot_type() === null)) {
+        if ((get_db_type() != 'xml') && (get_value('disable_view_counts') !== '1') && (get_bot_type() === null)) {
             $event['e_views']++;
             if (!$GLOBALS['SITE_DB']->table_is_locked('calendar_events')) {
                 $GLOBALS['SITE_DB']->query_update('calendar_events', array('e_views' => $event['e_views']), array('id' => $id), '', 1, 0, false, true);

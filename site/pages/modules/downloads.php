@@ -262,7 +262,7 @@ class Module_downloads
 
             // Title
             $title_to_use = get_translated_text($category['category']);
-            if ((get_value('no_awards_in_titles') !== '1') && (addon_installed('awards'))) {
+            if ((get_value('disable_awards_in_titles') !== '1') && (addon_installed('awards'))) {
                 require_code('awards');
                 $awards = find_awards_for('download_category', strval($category_id));
             } else {
@@ -319,7 +319,7 @@ class Module_downloads
             // Title
             $title_to_use_tempcode = do_lang_tempcode('DOWNLOAD_TITLE', make_fractionable_editable('download', $id, $name));
             $title_to_use = do_lang('DOWNLOAD_TITLE', $name);
-            if ((get_value('no_awards_in_titles') !== '1') && (addon_installed('awards'))) {
+            if ((get_value('disable_awards_in_titles') !== '1') && (addon_installed('awards'))) {
                 require_code('awards');
                 $awards = find_awards_for('download', strval($id));
             } else {
@@ -694,7 +694,7 @@ class Module_downloads
         );
 
         // Views
-        if ((get_db_type() != 'xml') && (get_value('no_view_counts') !== '1') && (get_bot_type() === null)) {
+        if ((get_db_type() != 'xml') && (get_value('disable_view_counts') !== '1') && (get_bot_type() === null)) {
             $myrow['download_views']++;
             if (!$GLOBALS['SITE_DB']->table_is_locked('download_downloads')) {
                 $GLOBALS['SITE_DB']->query_update('download_downloads', array('download_views' => $myrow['download_views']), array('id' => $id), '', 1, 0, false, true);

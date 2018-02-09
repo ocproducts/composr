@@ -2260,7 +2260,7 @@ function remove_duplicate_rows($rows, $id_field = 'id')
  */
 function member_tracking_update($page, $type, $id)
 {
-    if (get_value('no_member_tracking') === '1') {
+    if (get_value('disable_member_tracking') === '1') {
         return;
     }
 
@@ -2873,7 +2873,7 @@ function seo_meta_load_for($type, $id, $title = null)
  */
 function get_loaded_tags($limit_to = null, $the_tags = null)
 {
-    if (get_value('no_tags') === '1') {
+    if (get_value('disable_tags') === '1') {
         return new Tempcode();
     }
     if (!addon_installed('search')) {

@@ -532,7 +532,7 @@ class Module_catalogues
             if ($title_to_use_2 === null) {
                 $title_to_use = do_lang_tempcode('DEFAULT__CATALOGUE_INDEX', escape_html(get_translated_text($catalogue['c_title'])));
             }
-            if ((get_value('no_awards_in_titles') !== '1') && (addon_installed('awards'))) {
+            if ((get_value('disable_awards_in_titles') !== '1') && (addon_installed('awards'))) {
                 require_code('awards');
                 $awards = find_awards_for('catalogue', $catalogue_name);
             } else {
@@ -601,7 +601,7 @@ class Module_catalogues
                 $title_to_use_2 = do_lang('DEFAULT__CATALOGUE_CATEGORY', $_title);
             }
             $awards = array();
-            if ((get_value('no_awards_in_titles') !== '1') && (addon_installed('awards'))) {
+            if ((get_value('disable_awards_in_titles') !== '1') && (addon_installed('awards'))) {
                 require_code('awards');
                 $awards = array_merge($awards, find_awards_for('catalogue', $catalogue_name));
                 $awards = array_merge($awards, find_awards_for('catalogue_category', strval($id)));

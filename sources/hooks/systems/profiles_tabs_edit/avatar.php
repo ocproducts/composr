@@ -102,9 +102,11 @@ class Hook_profiles_tabs_edit_avatar
         $avatar_url = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_avatar_url');
 
         $fields = new Tempcode();
+        $hidden = new Tempcode();
         require_code('form_templates');
         require_code('themes2');
         require_code('images');
+
         $ids = get_all_image_ids_type('cns_default_avatars', true);
 
         $found_it = false;
@@ -124,7 +126,11 @@ class Hook_profiles_tabs_edit_avatar
 
             $field_set->attach(form_input_upload(do_lang_tempcode('UPLOAD'), '', 'avatar_file', false, null, null, true, get_allowed_image_file_types()));
 
-            $field_set->attach(form_input_url(do_lang_tempcode('URL'), '', 'avatar_alt_url', $found_it ? '' : $avatar_url, false));
+            if (get_value('disable_multi_homed_upload__cns_avatar') === '1') {
+                $hidden->attach(form_input_hidden('avatar_alt_url', $found_it ? '' : $avatar_url));
+            } else {
+                $field_set->attach(form_input_url(do_lang_tempcode('URL'), '', 'avatar_alt_url', $found_it ? '' : $avatar_url, false));
+            }
 
             $field_set->attach(form_input_theme_image(do_lang_tempcode('STOCK'), '', 'avatar_stock', $ids, $avatar_url, null, null, false));
 
@@ -160,7 +166,6 @@ class Hook_profiles_tabs_edit_avatar
             'HEIGHT' => integer_format($height),
         ));
 
-        $hidden = new Tempcode();
         $hidden->attach(form_input_hidden('submitting_avatar_tab', '1'));
 
         return array($title, $fields, $text, '', $order, $hidden, 'tabs/member_account/edit/avatar', true);

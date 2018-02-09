@@ -1623,7 +1623,7 @@ Don't define binary options in negative terms
 | Usabiility
 | Composr development +
 | Manually
-| Do not create an option such as "Disable widgets". It is unnecessarily confusing because you can just make an option "Enable widgets" that defaults to on. This coding standard applies universally across the product, including configuration options, form fields, and code.
+| Do not create an option such as "Disable widgets". It is unnecessarily confusing because you can just make an option "Enable widgets" that defaults to on. This coding standard applies universally across the product, including configuration options, form fields, and code. The only exception is hidden configuration options, which are often set to '1' to disable something.
 |}
 
 Respect the Queen of England ;)...

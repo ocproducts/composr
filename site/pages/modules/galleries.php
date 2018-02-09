@@ -341,7 +341,7 @@ class Module_galleries
             breadcrumb_set_parents($breadcrumbs);
 
             // Page title
-            if ((get_value('no_awards_in_titles') !== '1') && (addon_installed('awards'))) {
+            if ((get_value('disable_awards_in_titles') !== '1') && (addon_installed('awards'))) {
                 require_code('awards');
                 $awards = find_awards_for('gallery', $cat);
             } else {
@@ -375,7 +375,7 @@ class Module_galleries
                 check_privacy($type, strval($id));
             }
 
-            if ((get_value('no_awards_in_titles') !== '1') && (addon_installed('awards'))) {
+            if ((get_value('disable_awards_in_titles') !== '1') && (addon_installed('awards'))) {
                 require_code('awards');
                 $awards = find_awards_for($type, strval($id));
             } else {
@@ -571,7 +571,7 @@ class Module_galleries
         }
 
         // Views
-        if ((get_db_type() != 'xml') && (get_value('no_view_counts') !== '1') && (get_bot_type() === null)) {
+        if ((get_db_type() != 'xml') && (get_value('disable_view_counts') !== '1') && (get_bot_type() === null)) {
             $myrow['gallery_views']++;
             if (!$GLOBALS['SITE_DB']->table_is_locked('galleries')) {
                 $GLOBALS['SITE_DB']->query_update('galleries', array('gallery_views' => $myrow['gallery_views']), array('name' => $cat), '', 1, 0, false, true);
@@ -1108,7 +1108,7 @@ class Module_galleries
         }
 
         // Views
-        if ((get_db_type() != 'xml') && (get_value('no_view_counts') !== '1') && (get_bot_type() === null)) {
+        if ((get_db_type() != 'xml') && (get_value('disable_view_counts') !== '1') && (get_bot_type() === null)) {
             $myrow['image_views']++;
             if (!$GLOBALS['SITE_DB']->table_is_locked('images')) {
                 $GLOBALS['SITE_DB']->query_update('images', array('image_views' => $myrow['image_views']), array('id' => $id), '', 1, 0, false, true);
@@ -1226,7 +1226,7 @@ class Module_galleries
         }
 
         // Views
-        if ((get_db_type() != 'xml') && (get_value('no_view_counts') !== '1') && (get_bot_type() === null)) {
+        if ((get_db_type() != 'xml') && (get_value('disable_view_counts') !== '1') && (get_bot_type() === null)) {
             $myrow['video_views']++;
             if (!$GLOBALS['SITE_DB']->table_is_locked('videos')) {
                 $GLOBALS['SITE_DB']->query_update('videos', array('video_views' => $myrow['video_views']), array('id' => $id), '', 1, 0, false, true);

@@ -147,7 +147,7 @@ class Module_members
 
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse' . propagate_filtercode_page_link(), do_lang_tempcode('MEMBERS'))));
 
-            if ((get_value('no_awards_in_titles') !== '1') && (addon_installed('awards'))) {
+            if ((get_value('disable_awards_in_titles') !== '1') && (addon_installed('awards'))) {
                 require_code('awards');
                 $awards = find_awards_for('member', strval($member_id_of));
             } else {

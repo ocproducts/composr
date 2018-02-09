@@ -169,7 +169,7 @@ function is_plupload($fake_prepopulation = false)
                 if (file_exists(get_custom_file_base() . '/' . $path)) {
                     $plupload = true;
                     if ($fake_prepopulation) {
-                        $_FILES[substr($key, 10)] = array(
+                        $_FILES[substr($key, strlen('hid_file_id_'))] = array(
                             'type' => 'plupload',
                             'name' => $filename,
                             'tmp_name' => get_custom_file_base() . '/' . $path,
@@ -191,7 +191,7 @@ function is_plupload($fake_prepopulation = false)
                                     if (preg_match('#^hid_file_id_(.*)(\d+)$#', $key, $matches) != 0) {
                                         $new_key = $matches[1] . strval(intval($matches[2]) + $rolling_offset);
                                     } else {
-                                        $new_key = substr($key, 10);
+                                        $new_key = substr($key, strlen('hid_file_id_'));
                                     }
                                     $_FILES[$new_key] = array(
                                         'type' => 'plupload',

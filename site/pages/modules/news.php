@@ -339,7 +339,7 @@ class Module_news
             }
 
             // Title
-            if ((get_value('no_awards_in_titles') !== '1') && (addon_installed('awards'))) {
+            if ((get_value('disable_awards_in_titles') !== '1') && (addon_installed('awards'))) {
                 require_code('awards');
                 $awards = find_awards_for('news', strval($id));
             } else {
@@ -648,7 +648,7 @@ class Module_news
         }
 
         // Views
-        if ((get_db_type() != 'xml') && (get_value('no_view_counts') !== '1') && (get_bot_type() === null)) {
+        if ((get_db_type() != 'xml') && (get_value('disable_view_counts') !== '1') && (get_bot_type() === null)) {
             $myrow['news_views']++;
             if (!$GLOBALS['SITE_DB']->table_is_locked('news')) {
                 $GLOBALS['SITE_DB']->query_update('news', array('news_views' => $myrow['news_views']), array('id' => $id), '', 1, 0, false, true);

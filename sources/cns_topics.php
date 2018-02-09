@@ -312,7 +312,7 @@ function cns_has_read_topic($topic_id, $topic_last_time = null, $member_id = nul
 
     $post_read_history_days_ago = time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'));
 
-    if ((get_option('post_read_history_days') != '0') && (get_value('avoid_normal_topic_read_history') !== '1')) {
+    if ((get_option('post_read_history_days') != '0') && (get_value('disable_normal_topic_read_history') !== '1')) {
         // Occasionally we need to delete old entries
         if (mt_rand(0, 100) == 1) {
             if (!$GLOBALS['SITE_DB']->table_is_locked('f_read_logs')) {

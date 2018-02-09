@@ -159,7 +159,7 @@ class Module_topicview
             if ($topic_info['forum_id'] === null) {
                 $title = get_screen_title(do_lang_tempcode('NAMED_PRIVATE_TOPIC', escape_html($topic_info['title'])), false, array(), do_lang_tempcode('READING_PRIVATE_TOPIC'));
             } else {
-                if ((get_value('no_awards_in_titles') !== '1') && (addon_installed('awards'))) {
+                if ((get_value('disable_awards_in_titles') !== '1') && (addon_installed('awards'))) {
                     require_code('awards');
                     $awards = find_awards_for('topic', strval($id));
                 } else {
@@ -460,7 +460,7 @@ class Module_topicview
                 $emphasis = cns_get_post_emphasis($_postdetails);
 
                 require_code('feedback');
-                if (!array_key_exists('intended_solely_for', $_postdetails) && get_value('no_post_rating', '0', true) !== '1') {
+                if (!array_key_exists('intended_solely_for', $_postdetails) && get_value('disable_post_rating', '0', true) !== '1') {
                     actualise_rating(true, 'post', strval($_postdetails['id']), get_self_url(), $_postdetails['title']);
                     $rating = display_rating(get_self_url(), $_postdetails['title'], 'post', strval($_postdetails['id']), 'RATING_INLINE_DYNAMIC', $_postdetails['poster']);
                 } else {
@@ -1021,7 +1021,7 @@ class Module_topicview
     public function _update_read_status()
     {
         if (!is_guest()) {
-            if ((get_option('post_read_history_days') != '0') && ((get_value('avoid_normal_topic_read_history') !== '1') || ($this->forum_id === null))) {
+            if ((get_option('post_read_history_days') != '0') && ((get_value('disable_normal_topic_read_history') !== '1') || ($this->forum_id === null))) {
                 cns_ping_topic_read($this->id);
                 if ($GLOBALS['IS_ACTUALLY'] !== null) { // If posting with SU, mark the SUing user as read too, otherwise it is annoying
                     cns_ping_topic_read($this->id, $GLOBALS['IS_ACTUALLY']);

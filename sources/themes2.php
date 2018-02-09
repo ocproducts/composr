@@ -537,7 +537,7 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
  */
 function resize_rep_image($rep_image)
 {
-    if (($rep_image != '') && (get_value('resize_rep_images') !== '0')) {
+    if (($rep_image != '') && (get_value('disable_resize_rep_images') !== '1')) {
         require_code('images');
         $_rep_image = $rep_image;
         if (url_is_local($rep_image)) {
