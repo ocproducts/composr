@@ -501,22 +501,17 @@
             }
         });
     };
-
-    /**
-     * @class { DomData }
-     */
-    function DomData() {}
-
+    
     var domDataMap = new window.WeakMap();
     /**
      * @param el
-     * @return { DomData }
+     * @return { object }
      */
     function dataCache(el) {
         // Check if the el object already has a cache
         var value = domDataMap.get(el), key;
         if (!value) { // If not, create one with the dataset
-            value = new DomData();
+            value = {};
             domDataMap.set(el, value);
             for (key in el.dataset) {
                 dataAttr(el, key);
@@ -2134,9 +2129,7 @@
                     if (((stylesheetEl.type === '') || (stylesheetEl.type === 'text/css')) && stylesheetEl.id.startsWith('css-')) {
                         // Matches if it's a stylesheet we can load using $cms.requireCss() and avoid duplicate loads
                         var cssName = stylesheetEl.id.match(/^css-(.*?)(?:_non_minified)?(?:_ssl)?(?:_mobile)?$/);
-                        if (cssName != null) {
-                            cssName = cssName[1];
-                            $cms.requireCss(cssName);
+                        if (cssName && cssName[1] && $cms.hasCssLoaded(cssName[1])) {
                             stylesheetEl.remove();
                         }
                     }
@@ -2147,9 +2140,7 @@
                         if (scriptEl.id.startsWith('javascript-')) {
                             // Matches if it's a script we can load using $cms.requireJavascript() and avoid duplicate loads
                             var javascriptName = scriptEl.id.match(/^javascript-(.*?)(?:_non_minified)?(?:_ssl)?(?:_mobile)?$/);
-                            if (javascriptName != null) {
-                                javascriptName = javascriptName[1];
-                                $cms.requireJavascript(javascriptName);
+                            if (javascriptName && javascriptName[1] && $cms.hasJavascriptLoaded(javascriptName[1])) {
                                 scriptEl.remove();
                             }
                         } else {

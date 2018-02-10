@@ -324,9 +324,10 @@
      * @param sheetNameOrHref
      */
     function _requireCss(sheetNameOrHref) {
-        var sheetName, sheetHref, sheetEl;
+        var byName, sheetName, sheetHref, sheetEl;
 
         if (validIdRE.test(sheetNameOrHref)) {
+            byName = true;
             sheetName = sheetNameOrHref;
             sheetHref = $util.srl('{$FIND_SCRIPT_NOHTTP;,sheet}?sheet=' + sheetName + $cms.keep());
         } else {
@@ -343,7 +344,9 @@
 
         if (sheetEl == null) {
             sheetEl = document.createElement('link');
-            sheetEl.id = 'css-' + ((sheetName != null) ? sheetName : $util.random());
+            if (byName) {
+                sheetEl.id = 'css-' + sheetName;
+            }
             sheetEl.rel = 'stylesheet';
             sheetEl.nonce = $cms.getCspNonce();
             sheetEl.href = sheetHref;
@@ -393,6 +396,10 @@
 
         return Promise.all(sheetNames.map(_requireCss));
     };
+    
+    $cms.hasCssLoaded = function hasCssLoaded(sheetNameOrHref) {
+        return (validIdRE.test(sheetNameOrHref) ? _findCssByName(sheetNameOrHref) : _findCssByHref(sheetNameOrHref)) != null;
+    };
 
     /**
      * @private
@@ -402,9 +409,10 @@
     function _requireJavascript(scriptNameOrSrc) {
         scriptNameOrSrc = strVal(scriptNameOrSrc);
 
-        var scriptName, scriptSrc, scriptEl;
+        var byName, scriptName, scriptSrc, scriptEl;
 
         if (validIdRE.test(scriptNameOrSrc)) {
+            byName =  true;
             scriptName = scriptNameOrSrc;
             scriptSrc = $util.srl('{$FIND_SCRIPT_NOHTTP;,script}?script=' + scriptName + $cms.keep());
         }
@@ -420,7 +428,9 @@
         if (scriptEl == null) {
             scriptEl = document.createElement('script');
             scriptEl.defer = true;
-            scriptEl.id = 'javascript-' + ((scriptName != null) ? scriptName : $util.random());
+            if (byName) {
+                scriptEl.id = 'javascript-' + scriptName;
+            }
             scriptEl.nonce = $cms.getCspNonce();
             scriptEl.src = scriptSrc;
             document.body.appendChild(scriptEl);
@@ -478,6 +488,10 @@
         return $util.promiseSequence(calls);
     };
 
+    $cms.hasJavascriptLoaded = function hasJavascriptLoaded(scriptNameOrSrc) {
+        return (validIdRE.test(scriptNameOrSrc) ? _findScriptByName(scriptNameOrSrc) : _findScriptBySrc(scriptNameOrSrc)) != null;
+    };
+    
     /**
      * @memberof $cms
      * @param flag
