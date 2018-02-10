@@ -52,7 +52,7 @@ class Module_admin_errorlog
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
         return array(
-            '!' => array('ERROR_LOG', 'menu/adminzone/audit/errorlog'),
+            '!' => array('ERRORLOG', 'menu/adminzone/audit/errorlog'),
         );
     }
 
@@ -71,8 +71,9 @@ class Module_admin_errorlog
 
         if ($type == 'browse') {
             set_helper_panel_tutorial('tut_disaster');
+            set_helper_panel_text(comcode_lang_string('DOC_ERRORLOG'));
 
-            $this->title = get_screen_title('ERROR_LOG');
+            $this->title = get_screen_title('ERRORLOG');
 
             if (!php_function_allowed('ini_set')) {
                 attach_message(do_lang_tempcode('ERROR_LOGGING_PROBABLY_BROKEN'), 'warn');
@@ -89,6 +90,10 @@ class Module_admin_errorlog
 
         if ($type == 'download_log') {
             $this->title = get_screen_title('DOWNLOAD_LOG');
+        }
+
+        if ($type == 'init_log') {
+            $this->title = get_screen_title('INIT_LOG');
         }
 
         return null;
@@ -111,7 +116,7 @@ class Module_admin_errorlog
             return $this->delete_log();
         }
 
-        if ($type == 'clear_log') {
+        if ($type == 'clear_log' || $type == 'init_log') {
             return $this->clear_log();
         }
 
@@ -228,7 +233,7 @@ class Module_admin_errorlog
                 $message,
             ), true));
         }
-        $errors = results_table(do_lang_tempcode('ERROR_LOG'), $start, 'start', $max, 'max', $i, $fields_title, $fields, $sortables, $sortable, $sort_order, 'sort', new Tempcode());
+        $errors = results_table(do_lang_tempcode('ERRORLOG'), $start, 'start', $max, 'max', $i, $fields_title, $fields, $sortables, $sortable, $sort_order, 'sort', new Tempcode());
 
         // Read in end of any other log files we find
         require_all_lang();
@@ -273,17 +278,52 @@ class Module_admin_errorlog
                 }
 
                 // Put lines back together
-                $download_url = build_url(array('page' => '_SELF', 'type' => 'download_log', 'id' => basename($filename, '.log')), '_SELF');
-                $clear_url = build_url(array('page' => '_SELF', 'type' => 'clear_log', 'id' => basename($filename, '.log')), '_SELF');
+                $log = implode("\n", $lines);
+                $download_url = new Tempcode();
+                $clear_url = new Tempcode();
+                $add_url = new Tempcode();
+                if ($log != '') {
+                    $download_url = build_url(array('page' => '_SELF', 'type' => 'download_log', 'id' => basename($filename, '.log')), '_SELF');
+                }
+                if ($log != '') {
+                    $clear_url = build_url(array('page' => '_SELF', 'type' => 'clear_log', 'id' => basename($filename, '.log')), '_SELF');
+                }
                 $delete_url = build_url(array('page' => '_SELF', 'type' => 'delete_log', 'id' => basename($filename, '.log')), '_SELF');
                 $logs[$filename] = array(
-                    'LOG' => implode("\n", $lines),
+                    'LOG' => $log,
                     'DOWNLOAD_URL' => $download_url,
                     'CLEAR_URL' => $clear_url,
                     'DELETE_URL' => $delete_url,
+                    'ADD_URL' => $add_url,
                 );
             }
         }
+
+        // Other logs that may be create-able...
+        $logs_available = array( // FUDGE Ideally we'd use hooks, but it is so trivial (and non-bundled addons can document how to create their log, no problem)
+            'cron.log' => null,
+            'health_check.log' => 'health_check',
+            'tasks.log' => null,
+            'permission_checks.log' => null,
+            'queries.log' => null,
+            'big_query_screens.log' => null,
+            'resource_fs.log' => 'commandr',
+        );
+        foreach ($logs_available as $filename => $addon_needed) {
+            if ((!isset($logs[$filename])) && (($addon_needed === null) || (addon_installed($addon_needed)))) {
+                $add_url = build_url(array('page' => '_SELF', 'type' => 'init_log', 'id' => basename($filename, '.log')), '_SELF');
+
+                $logs[$filename] = array(
+                    'LOG' => null,
+                    'DOWNLOAD_URL' => new Tempcode(),
+                    'CLEAR_URL' => new Tempcode(),
+                    'DELETE_URL' => new Tempcode(),
+                    'ADD_URL' => $add_url,
+                );
+            }
+        }
+
+        ksort($logs);
 
         // Put it all together...
 
@@ -322,7 +362,7 @@ class Module_admin_errorlog
     }
 
     /**
-     * Clear log actualiser.
+     * Clear/init log actualiser.
      *
      * @return Tempcode The result of execution
      */

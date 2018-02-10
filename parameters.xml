@@ -524,6 +524,11 @@
   </parameter> 
 
   <parameter
+    name="SetAclParameter33" description="Sets the ACL on the right file" defaultValue="{Application Path}/data_custom" tags="Hidden">
+    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/data_custom" />
+  </parameter> 
+
+  <parameter
     name="SetAclParameter32" description="Sets the ACL on the right file" defaultValue="{Application Path}/data_custom/firewall_rules.txt" tags="Hidden">
     <parameterEntry type="ProviderPath" scope="setAcl" match="composr/data_custom/firewall_rules.txt" />
   </parameter> 

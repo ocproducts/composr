@@ -475,17 +475,17 @@ Having full reporting of all PHP notices, and display of them on screen, helps g
 Composr keeps a number of logs, which can be very helpful for debugging low-level back-end activities. Try and build up a model of what happened via careful analysis of logs, like Sherlock Holmes.
 
 Useful Composr logs include:
- - Run-time error logging (using the PHP error logging system) ([tt]data_custom/errorlog.php[/tt]; can view from Admin Zone > Audit > Error log)
+ - Run-time error logging (using the PHP error logging system) ([tt]data_custom/errorlog.php[/tt]; can view from Admin Zone > Audit > Low-level logging)
  - The logged page activity, available via 'Investigate user' on an IP address / member ID / username (useful also for finding all a member's recent IP addresses)
- - The {$IS_MAINTAINED,extra_logging,eCommerce log}, if enabled (enable it via creating an empty writable [tt]data_custom/ecommerce.log[/tt] file)
- - The Cron log, if enabled (enable it via creating an empty writable [tt]data_custom/cron.log[/tt] file)
- - The Health Check log, if enabled (enable it via creating an empty writable [tt]data_custom/health_check.log[/tt] file)
- - The Tasks log, if enabled (enable it via creating an empty writable [tt]data_custom/tasks.log[/tt] file)
- - Permission checks, if enabled (useful for debugging why accessing is failing) (enable it via creating an empty writable [tt]data_custom/permission_checks.log[/tt] file; can view from Admin Zone > Audit > Error log)
- - Queries running (debugging), if enabled (enable it via creating an empty writable [tt]data_custom/queries.log[/tt] file)
- - Slow queries running (debugging performance), if enabled (enable it via creating an empty writable [tt]data_custom/big_query_screens.log[/tt] file)
- - Profiling (debugging performance), if enabled (enable it via creating an empty writable [tt]data_custom/profiling*.log[/tt] file)
- - Resource-fs operations (debugging and audit), if enabled (enable it via creating an empty writable [tt]data_custom/resource_fs.log[/tt] file)
+ - The {$IS_MAINTAINED,extra_logging,eCommerce log}, if enabled (enable it via creating an empty writable [tt]data_custom/ecommerce.log[/tt] file; can view from Admin Zone > Audit > Low-level logging)
+ - The Cron log, if enabled (enable it via creating an empty writable [tt]data_custom/cron.log[/tt] file; can view from Admin Zone > Audit > Low-level logging)
+ - The Health Check log, if enabled (enable it via creating an empty writable [tt]data_custom/health_check.log[/tt] file; can view from Admin Zone > Audit > Low-level logging)
+ - The Tasks log, if enabled (enable it via creating an empty writable [tt]data_custom/tasks.log[/tt] file; can view from Admin Zone > Audit > Low-level logging)
+ - Permission checks, if enabled (useful for debugging why accessing is failing) (enable it via creating an empty writable [tt]data_custom/permission_checks.log[/tt] file; can view from Admin Zone > Audit > Low-level logging)
+ - Queries running (debugging), if enabled (enable it via creating an empty writable [tt]data_custom/queries.log[/tt] file; can view from Admin Zone > Audit > Low-level logging)
+ - Slow queries running (debugging performance), if enabled (enable it via creating an empty writable [tt]data_custom/big_query_screens.log[/tt] file; can view from Admin Zone > Audit > Low-level logging)
+ - Profiling (debugging performance), if enabled (enable it via creating an empty writable [tt]data_custom/profiling*.log[/tt] file; can view from Admin Zone > Audit > Low-level logging)
+ - Resource-fs operations (debugging and audit), if enabled (enable it via creating an empty writable [tt]data_custom/resource_fs.log[/tt] file; can view from Admin Zone > Audit > Low-level logging)
  - The mail log (view from Admin Zone > Audit > E-mail queue/log)
 Other very useful logs:
  - The web server's own access log; look carefully in it and you are likely to see things like HTTP response codes (e.g. 500 means Internal Server Error)

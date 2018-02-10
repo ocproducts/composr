@@ -70,6 +70,7 @@
   <setAcl path="composr/data_custom/sitemaps" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/data_custom/spelling/personal_dicts" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/data_custom/xml_config" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
+  <setAcl path="composr/data_custom" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/exports/addons" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/exports/backups" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/exports/file_backups" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />

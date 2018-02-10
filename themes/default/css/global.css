@@ -1419,7 +1419,7 @@ body input.button-hyperlink, body input.button-hyperlink:hover {
 		margin-left: 0.5em;
 	}
 /*{+END}*/
-/*{+START,CSS_MODE,mobile}*/
+/*{+START,CSS_MODE,mobile__overlay}*/
 	.help-icon {
 		display: block;
 		margin-top: 0.5em;

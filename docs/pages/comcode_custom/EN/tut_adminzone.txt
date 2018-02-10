@@ -76,11 +76,13 @@ This section shows recent administrative/content actions on your website.
 
 This part of the tutorial details some miscellaneous administrative features that are not covered in other tutorials.
 
-[title="3"]Error log[/title]
+[title="3"]Low-level logging[/title]
 
-The Error log (located at Admin Zone > Audit > Error log) shows any errors that have occurred within Composr. It does not include errors relating to the normal running of your website (for example, incorrectly filled forms, or issues with non-configured features).
+The Low-level logging (located at Admin Zone > Audit > Low-level logging) shows any errors that have occurred within Composr. It does not include errors relating to the normal running of your website (for example, incorrectly filled forms, or issues with non-configured features).
 
 Usually these errors will be automatically e-mailed to the developers (although this is configurable), but if you find anything you are not aware of, you may consider reporting as a possible bug.
+
+Low-level logging also includes other logs that need to be manually enabled. You probably shouldn't leave the other logs enabled outside of debugging a problem, as they may eat up disk space quickly.
 
 [title="3"]Content reviews[/title]
 

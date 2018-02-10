@@ -31,7 +31,7 @@ class Hook_config_hc_error_log_day_flood_threshold
     public function get_details()
     {
         return array(
-            'human_name' => 'HC_ERROR_LOG_DAY_FLOOD_THRESHOLD',
+            'human_name' => 'HC_ERRORLOG_DAY_FLOOD_THRESHOLD',
             'type' => 'integer',
             'category' => 'HEALTH_CHECK',
             'group' => 'ERRORS',

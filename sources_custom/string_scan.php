@@ -1789,7 +1789,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_hc_scan_page_links
         HC_DISK_SPACE_THRESHOLD
         CONFIG_OPTION_hc_disk_space_threshold
-        HC_ERROR_LOG_DAY_FLOOD_THRESHOLD
+        HC_ERRORLOG_DAY_FLOOD_THRESHOLD
         CONFIG_OPTION_hc_error_log_day_flood_threshold
         HC_PAGE_SIZE_THRESHOLD
         CONFIG_OPTION_hc_page_size_threshold
@@ -4238,7 +4238,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DOC_EDIT_MEMBER
         DOC_EMAIL_LOG
         DOC_EMOTICONS
-        DOC_ERROR_LOG
+        DOC_ERRORLOG
         DOC_EXPORT_POINTS
         DOC_FIELD_FILTERS
         DOC_FILEDUMP
@@ -4552,12 +4552,12 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ENTRY_POINT
         ENTRY_POINTS_DESCRIPTION
         ENVELOPER_OVERRIDE
-        ERRORS_IN_ERROR_LOG
+        ERRORS_IN_ERRORLOG
         ERRORS_IN_PERMISSIONS_LOG
         ERROR_FRACTIONAL_EDIT
         ERROR_HANDLING_RSS_FEED
         ERROR_INACCESSIBLE_DIR
-        ERROR_LOG
+        ERRORLOG
         ERROR_LOGGING_PROBABLY_BROKEN
         ERROR_MAIL
         ERROR_NON_TERMINAL

@@ -22,15 +22,15 @@ If you are a commercial entity, or if you hold sensitive personal data, you are 
 
 There is a default [tt]privacy[/tt] page (to hold a [concept]privacy policy[/concept]), which should be edited to correctly detail all the personal data that is collected into your systems, either by request, or by automated means. The page should say every use for this data, especially when the data is available to people outside your organisation, or used actively within your organisation in a non-administrative sense (for marketing, for instance).
 
-Composr holds the following data:
- - member profiles, including custom profile fields. Profiles are likely visible to any visitor to the site (depending on your zone access configuration), and you can define whether custom profile fields are visible
- - the 'online status' of all members. This is publicly visible
- - access statistics that allow you to see where-ever users have been on your site. This is not publicly visible
- - logs of user interactivity with the site. This is mostly not publicly visible, except for submitted and edited content
- - point transactions. The point 'giver' may define whether they are anonymous from the public, but they will not be from the staff
- - security logs for suspected hack-attempts. This is not publicly visible
- - Private Topics. These are only visible between sender and receiver, and staff (when intentionally viewed)
- - personal posts. These are only visible between sender and receiver, and staff (may be viewed unintentionally)
+Composr (out of the box) can hold the following personal data:
+ - Member profiles, including custom profile fields. Profiles are likely visible to any visitor to the site (depending on your zone access configuration), and you can define whether custom profile fields are visible.
+ - The 'online status' of all members. This is publicly visible.
+ - Access statistics that allow you to see where-ever users have been on your site. This is not publicly visible.
+ - Logs of user interactivity with the site. This is mostly not publicly visible, except for submitted and edited content.
+ - Point transactions. The point 'giver' may define whether they are anonymous from the public, but they will not be from the staff.
+ - Security logs for suspected hack-attempts. This is not publicly visible.
+ - Private Topics. These are only visible between sender and receiver, and staff (when intentionally viewed).
+ - Personal posts. These are only visible between sender and receiver, and staff (may be viewed unintentionally).
 
 It is not necessary to state that submitted-for-publication content will be visible as the user will know this is not personal data at the point of submitting it.
 

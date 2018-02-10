@@ -210,7 +210,7 @@
             url += $cms.keep();
 
             setTimeout(function () {
-                $cms.ui.showModalDialog($util.rel($cms.maintainThemeInLink(url)), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes,unadorned=yes').then(function (comcodeAdded) {
+                $cms.ui.showModalDialog($util.rel($cms.maintainThemeInLink(url)), '', 'width=800,height=auto,status=no,resizable=yes,scrollbars=yes,unadorned=yes').then(function (comcodeAdded) {
                     if (!comcodeAdded) {  // Cancelled
                         var clearButton = document.getElementById('fsClear_file' + number);
                         if (clearButton) {
@@ -368,7 +368,7 @@
         var url = '{$FIND_SCRIPT_NOHTTP;,block_helper}?field_name=' + fieldName + $cms.keep();
         url += '&block_type=' + ((!fieldName.includes('edit_panel_') && !window.location.href.includes(':panel_')) ? 'main' : 'side');
 
-        return $cms.ui.open($util.rel($cms.maintainThemeInLink(url)), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
+        return $cms.ui.open($util.rel($cms.maintainThemeInLink(url)), '', 'width=800,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
     }
 
     function doInputComcode(fieldName, tag) {
@@ -440,7 +440,7 @@
         }
         url += $cms.keep();
 
-        $cms.ui.open($util.rel($cms.maintainThemeInLink(url)), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
+        $cms.ui.open($util.rel($cms.maintainThemeInLink(url)), '', 'width=800,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
     }
 
     function doInputList(fieldName, add) {

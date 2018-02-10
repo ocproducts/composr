@@ -140,6 +140,7 @@ class Hook_addon_registry_errorlog
                         'DOWNLOAD_URL' => placeholder_url(),
                         'CLEAR_URL' => placeholder_url(),
                         'DELETE_URL' => placeholder_url(),
+                        'ADD_URL' => placeholder_url(),
                     ),
                 ),
             )), null, '', true)

@@ -126,6 +126,7 @@ function get_chmod_array($lang, $runtime = false)
             'data_custom/sitemaps',
             'data_custom/spelling/personal_dicts',
             'data_custom/xml_config',
+            'data_custom',
             'exports/addons',
             'exports/backups',
             'exports/file_backups',
