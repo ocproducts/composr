@@ -2119,17 +2119,52 @@
 
             container = containers[name];
             container.innerHTML = strVal(html);
-            dom = $util.toArray(container.childNodes);
             $util.forEach(container.childNodes, function(child){
-                container.removeChild(child)
+                if (!$util.isEl(child)) {
+                    return;
+                }
+                
+                // Code below looks for stylesheet and script elements that we can need to load using $cms.requireCss/requireJavascript() to avoid duplicate loads.
+                // It also ensures any other script elements are actually loaded by cloning them.
+                
+                var stylesheetEls = $dom.$$$(child, 'link[rel="stylesheet"]'),
+                    scriptEls = $dom.$$$(child, 'script[src]');
+
+                stylesheetEls.forEach(function (stylesheetEl) {
+                    if (((stylesheetEl.type === '') || (stylesheetEl.type === 'text/css')) && stylesheetEl.id.startsWith('css-')) {
+                        // Matches if it's a stylesheet we can load using $cms.requireCss() and avoid duplicate loads
+                        var cssName = stylesheetEl.id.match(/^css-(.*?)(?:_non_minified)?(?:_ssl)?(?:_mobile)?$/);
+                        if (cssName != null) {
+                            cssName = cssName[1];
+                            $cms.requireCss(cssName);
+                            stylesheetEl.remove();
+                        }
+                    }
+                });
+                
+                scriptEls.forEach(function (scriptEl) {
+                    if (jsTypeRE.test(scriptEl.type) && scriptEl.src) {
+                        if (scriptEl.id.startsWith('javascript-')) {
+                            // Matches if it's a script we can load using $cms.requireJavascript() and avoid duplicate loads
+                            var javascriptName = scriptEl.id.match(/^javascript-(.*?)(?:_non_minified)?(?:_ssl)?(?:_mobile)?$/);
+                            if (javascriptName != null) {
+                                javascriptName = javascriptName[1];
+                                $cms.requireJavascript(javascriptName);
+                                scriptEl.remove();
+                            }
+                        } else {
+                            // Cloning script[src] elements inserted using innerHTML is required for them to actually work
+                            scriptEl.parentNode.replaceChild(cloneScriptEl(scriptEl), scriptEl);
+                        }
+                    }
+                });
             });
 
-            for (i = 0; i < dom.length; i++) {
-                // Cloning script[src] elements inserted using innerHTML is required for them to actually work
-                if ((dom[i].localName === 'script') && jsTypeRE.test(dom[i].type) && dom[i].src) {
-                    dom[i] = cloneScriptEl(dom[i]);
-                }
-            }
+            dom = $util.toArray(container.childNodes);
+
+            dom.forEach(function (child) {
+                container.removeChild(child);
+            });
         }
 
         if ($util.isPlainObj(properties)) {
@@ -2265,7 +2300,7 @@
         var clone = document.createElement('script');
 
         if (scriptEl.id) {
-            clone.id = scriptEl.id
+            clone.id = scriptEl.id;
         }
 
         if (scriptEl.className) {
