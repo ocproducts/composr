@@ -324,14 +324,13 @@
      * @param sheetNameOrHref
      */
     function _requireCss(sheetNameOrHref) {
-        var byName, sheetName, sheetHref, sheetEl;
+        var sheetName, sheetHref, sheetEl;
 
         if (validIdRE.test(sheetNameOrHref)) {
-            byName = true;
             sheetName = sheetNameOrHref;
             sheetHref = $util.srl('{$FIND_SCRIPT_NOHTTP;,sheet}?sheet=' + sheetName + $cms.keep());
         } else {
-            sheetHref = $util.srl(sheetNameOrHref);
+            sheetHref = sheetNameOrHref;
         }
 
         if (sheetName != null) {
@@ -344,7 +343,7 @@
 
         if (sheetEl == null) {
             sheetEl = document.createElement('link');
-            if (byName) {
+            if (sheetName != null) {
                 sheetEl.id = 'css-' + sheetName;
             }
             sheetEl.rel = 'stylesheet';
@@ -397,7 +396,7 @@
         return Promise.all(sheetNames.map(_requireCss));
     };
     
-    $cms.hasCssLoaded = function hasCssLoaded(sheetNameOrHref) {
+    $cms.hasCss = function hasCss(sheetNameOrHref) {
         return (validIdRE.test(sheetNameOrHref) ? _findCssByName(sheetNameOrHref) : _findCssByHref(sheetNameOrHref)) != null;
     };
 
@@ -408,13 +407,14 @@
      */
     function _requireJavascript(scriptNameOrSrc) {
         scriptNameOrSrc = strVal(scriptNameOrSrc);
-
-        var byName, scriptName, scriptSrc, scriptEl;
+        
+        var scriptName, scriptSrc, scriptEl;
 
         if (validIdRE.test(scriptNameOrSrc)) {
-            byName =  true;
             scriptName = scriptNameOrSrc;
             scriptSrc = $util.srl('{$FIND_SCRIPT_NOHTTP;,script}?script=' + scriptName + $cms.keep());
+        } else {
+            scriptSrc = scriptNameOrSrc;
         }
 
         if (scriptName != null) {
@@ -428,7 +428,7 @@
         if (scriptEl == null) {
             scriptEl = document.createElement('script');
             scriptEl.defer = true;
-            if (byName) {
+            if (scriptName != null) {
                 scriptEl.id = 'javascript-' + scriptName;
             }
             scriptEl.nonce = $cms.getCspNonce();
@@ -478,7 +478,7 @@
         var calls = [];
 
         scripts = arrVal(scripts);
-
+        
         scripts.forEach(function (script) {
             calls.push(function () {
                 return _requireJavascript(script);
@@ -488,7 +488,7 @@
         return $util.promiseSequence(calls);
     };
 
-    $cms.hasJavascriptLoaded = function hasJavascriptLoaded(scriptNameOrSrc) {
+    $cms.hasJavascript = function hasJavascriptLoaded(scriptNameOrSrc) {
         return (validIdRE.test(scriptNameOrSrc) ? _findScriptByName(scriptNameOrSrc) : _findScriptBySrc(scriptNameOrSrc)) != null;
     };
     

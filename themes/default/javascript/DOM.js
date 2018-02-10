@@ -449,6 +449,7 @@
             }
 
             if ($dom.hasElementLoaded(el)) {
+                //$util.inform('$dom.waitForResources() Resource already loaded', el);
                 return;
             }
 
@@ -2095,7 +2096,7 @@
     // This function can be overridden in plugins for example to make
     // it compatible with browsers that don't support the DOM fully.
     $dom.fragment = function(html, name, properties) {
-        var container, dom;
+        var container, dom, i;
 
         html = strVal(html);
 
@@ -2114,48 +2115,46 @@
 
             container = containers[name];
             container.innerHTML = strVal(html);
-            $util.forEach(container.childNodes, function(child){
+            $util.toArray(container.childNodes).forEach(function(child){
                 if (!$util.isEl(child)) {
                     return;
                 }
-                
-                // Code below looks for stylesheet and script elements that are theme resources and need to be loaded using $cms.requireCss/requireJavascript() to avoid duplicate loads.
+
+                // Code below looks for stylesheet and script elements that are theme resources and removes them if already loaded, to avoid duplicate loads.
                 // It also ensures any other script elements are actually loaded by cloning them.
-                
+
                 var stylesheetEls = $dom.$$$(child, 'link[rel="stylesheet"]'),
                     scriptEls = $dom.$$$(child, 'script[src]');
 
                 stylesheetEls.forEach(function (stylesheetEl) {
                     if (((stylesheetEl.type === '') || (stylesheetEl.type === 'text/css')) && stylesheetEl.id.startsWith('css-')) {
-                        // Matches if it's a stylesheet we can load using $cms.requireCss() and avoid duplicate loads
                         var cssName = stylesheetEl.id.match(/^css-(.*?)(?:_non_minified)?(?:_ssl)?(?:_mobile)?$/);
-                        if (cssName && cssName[1] && $cms.hasCssLoaded(cssName[1])) {
+                        if (cssName && cssName[1] && $cms.hasCss(cssName[1])) {
                             stylesheetEl.remove();
                         }
                     }
                 });
-                
+
                 scriptEls.forEach(function (scriptEl) {
-                    if (jsTypeRE.test(scriptEl.type) && scriptEl.src) {
-                        if (scriptEl.id.startsWith('javascript-')) {
-                            // Matches if it's a script we can load using $cms.requireJavascript() and avoid duplicate loads
-                            var javascriptName = scriptEl.id.match(/^javascript-(.*?)(?:_non_minified)?(?:_ssl)?(?:_mobile)?$/);
-                            if (javascriptName && javascriptName[1] && $cms.hasJavascriptLoaded(javascriptName[1])) {
-                                scriptEl.remove();
-                            }
-                        } else {
-                            // Cloning script[src] elements inserted using innerHTML is required for them to actually work
-                            scriptEl.parentNode.replaceChild(cloneScriptEl(scriptEl), scriptEl);
+                    if (jsTypeRE.test(scriptEl.type) && scriptEl.src && scriptEl.id.startsWith('javascript-')) {
+                        var javascriptName = scriptEl.id.match(/^javascript-(.*?)(?:_non_minified)?(?:_ssl)?(?:_mobile)?$/);
+                        if (javascriptName && javascriptName[1] && $cms.hasJavascript(javascriptName[1])) {
+                            scriptEl.remove();
                         }
                     }
                 });
             });
 
             dom = $util.toArray(container.childNodes);
+            
+            for (i = 0; i < dom.length; i++) {
+                dom[i].remove();
 
-            dom.forEach(function (child) {
-                container.removeChild(child);
-            });
+                // Cloning script[src] elements inserted using innerHTML is required for them to actually work
+                if ((dom[i].localName === 'script') && jsTypeRE.test(dom[i].type) && dom[i].src) {
+                    dom[i] = cloneScriptEl(dom[i]);
+                }
+            }
         }
 
         if ($util.isPlainObj(properties)) {
@@ -2259,7 +2258,7 @@
                                 }).call(win); // Set `this` context for eval
                             }
                         });
-
+                        
                         nodes.forEach(function (node) {
                             if ($util.isEl(node)) {
                                 $cms.attachBehaviors(node);
