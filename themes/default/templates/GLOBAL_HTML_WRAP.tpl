@@ -143,11 +143,11 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 							<li><a rel="back_to_top" accesskey="g" href="#!"><img title="{!BACK_TO_TOP}" alt="{!BACK_TO_TOP}" width="24" height="24" src="{$IMG*,icons/tool_buttons/top}" /></a></li>
 						{+END}
 						{+START,IF,{$ADDON_INSTALLED,realtime_rain}}{+START,IF,{$CONFIG_OPTION,bottom_show_realtime_rain_button,1}}{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,admin_realtime_rain}}{+START,IF,{$NEQ,{$ZONE}:{$PAGE},adminzone:admin_realtime_rain}}
-							<li><a id="realtime-rain-button" class="js-global-click-load-realtime-rain" data-click-pd="1" href="{$PAGE_LINK*,adminzone:admin_realtime_rain}"><img id="realtime-rain-img" title="{!realtime_rain:REALTIME_RAIN}" alt="{!realtime_rain:REALTIME_RAIN}" width="24" height="24" src="{$IMG*,icons/tool_buttons/realtime_rain_on}" /></a></li>
+							<li><a id="realtime-rain-button" data-btn-load-realtime-rain="{}" href="{$PAGE_LINK*,adminzone:admin_realtime_rain}"><img id="realtime-rain-img" title="{!realtime_rain:REALTIME_RAIN}" alt="{!realtime_rain:REALTIME_RAIN}" width="24" height="24" src="{$IMG*,icons/tool_buttons/realtime_rain_on}" /></a></li>
 						{+END}{+END}{+END}{+END}
 						{+START,IF,{$HAS_ZONE_ACCESS,adminzone}}
 							{+START,IF,{$ADDON_INSTALLED,commandr}}{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,admin_commandr}}{+START,IF,{$CONFIG_OPTION,bottom_show_commandr_button,1}}{+START,IF,{$NEQ,{$ZONE}:{$PAGE},adminzone:admin_commandr}}
-								<li><a id="commandr-button" accesskey="o"{+START,IF,{$DESKTOP}} class="js-global-click-load-commandr" data-click-pd="1"{+END} href="{$PAGE_LINK*,adminzone:admin_commandr}"><img id="commandr-img" title="{!commandr:COMMANDR_DESCRIPTIVE_TITLE}" alt="{!commandr:COMMANDR_DESCRIPTIVE_TITLE}" width="24" height="24" src="{$IMG*,icons/tool_buttons/commandr_on}" /></a></li>
+								<li><a id="commandr-button" accesskey="o"{+START,IF,{$DESKTOP}} data-btn-load-commandr="{}" {+END} href="{$PAGE_LINK*,adminzone:admin_commandr}"><img id="commandr-img" title="{!commandr:COMMANDR_DESCRIPTIVE_TITLE}" alt="{!commandr:COMMANDR_DESCRIPTIVE_TITLE}" width="24" height="24" src="{$IMG*,icons/tool_buttons/commandr_on}" /></a></li>
 							{+END}{+END}{+END}{+END}
 							<li><a href="{$PAGE_LINK*,adminzone:,,,,keep_theme}"><img title="{!ADMIN_ZONE}" alt="{!ADMIN_ZONE}" width="24" height="24" src="{$IMG*,icons/menu/adminzone/adminzone}" /></a></li>
 							{+START,IF,{$DESKTOP}}{+START,IF,{$EQ,{$BRAND_NAME},Composr}}

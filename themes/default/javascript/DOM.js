@@ -2100,7 +2100,7 @@
     // This function can be overridden in plugins for example to make
     // it compatible with browsers that don't support the DOM fully.
     $dom.fragment = function(html, name, properties) {
-        var container, dom, i;
+        var container, dom;
 
         html = strVal(html);
 
@@ -2124,7 +2124,7 @@
                     return;
                 }
                 
-                // Code below looks for stylesheet and script elements that we can need to load using $cms.requireCss/requireJavascript() to avoid duplicate loads.
+                // Code below looks for stylesheet and script elements that are theme resources and need to be loaded using $cms.requireCss/requireJavascript() to avoid duplicate loads.
                 // It also ensures any other script elements are actually loaded by cloning them.
                 
                 var stylesheetEls = $dom.$$$(child, 'link[rel="stylesheet"]'),
