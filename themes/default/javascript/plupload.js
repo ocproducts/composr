@@ -14221,7 +14221,7 @@
 
     var plLoadedHandled = {};
     function onPluploadLoaded(plObj) {
-        console.log('onPluploadLoaded()', 'plObj:', plObj);
+        //console.log('onPluploadLoaded()', 'plObj:', plObj);
 
         if (plLoadedHandled[$util.uid(plObj)]) { // Called when Flash redisplayed after being obscured, so we need to return to avoid a recursion error
             return;
@@ -14240,7 +14240,7 @@
      * @param numFiles
      */
     function dispatchForPageType(pageType, name, fileName, postingFieldName, numFiles) {
-        console.log('dispatchForPageType()', 'pageType:', pageType, 'name:', name, 'fileName:', fileName, 'postingFieldName:', postingFieldName, 'numFiles:', numFiles);
+        //console.log('dispatchForPageType()', 'pageType:', pageType, 'name:', name, 'fileName:', fileName, 'postingFieldName:', postingFieldName, 'numFiles:', numFiles);
 
         pageType = strVal(pageType);
         name = strVal(name);
@@ -14269,7 +14269,7 @@
 
     // Listener to the 'FilesAdded' Plupload event
     function onUploadDialogCompleted(plObj, files) {
-        console.log('onUploadDialogCompleted()', 'plObj:', plObj, 'files:', files);
+        //console.log('onUploadDialogCompleted()', 'plObj:', plObj, 'files:', files);
 
         var name = plObj.settings.txtName,
             fileNameField = document.getElementById(plObj.settings.txtFileName),
@@ -14311,7 +14311,7 @@
      * @param value - '1' will start upload if it hasn't already and files are selected, '' clears the placeholder field value
      */
     function fireFakeUploadFieldChange(name, value) {
-        console.log('fireFakeUploadFieldChange()', 'name:', name, 'value:', value);
+        //console.log('fireFakeUploadFieldChange()', 'name:', name, 'value:', value);
         value = strVal(value);
 
         var placeholderField = document.getElementById(name),
@@ -14345,7 +14345,7 @@
 
     // Listener to the 'UploadProgress' event
     function onUploadUpdateProgress(plObj, file) {
-        console.log('onUploadUpdateProgress()', 'plObj:', plObj, 'file:', file);
+        //console.log('onUploadUpdateProgress()', 'plObj:', plObj, 'file:', file);
 
         var percent = Number(plObj.total.percent);
         if (percent === 100) {
@@ -14361,7 +14361,7 @@
 
     // Listener to the 'FileUploaded' event
     function onUploadFinished(plObj, file, data) {
-        console.log('onUploadFinished()', 'plObj:', plObj, 'file:', file, 'data:', data);
+        //console.log('onUploadFinished()', 'plObj:', plObj, 'file:', file, 'data:', data);
 
         var progress = new FileProgress(file, plObj.settings.progress_target);
         progress.setComplete();
@@ -14405,7 +14405,7 @@
 
     // Listens to the 'Error' event
     function onUploadError(plObj, error) {
-        console.log('onUploadError()', 'plObj:', plObj, 'error:', error);
+        //console.log('onUploadError()', 'plObj:', plObj, 'error:', error);
 
         var file = error.file ? error.file : plObj.files[plObj.files.length - 1];
 
@@ -14466,7 +14466,7 @@
      * @param filter
      */
     function preinitFileInput(pageType, name, postingFieldName, filter) {
-        console.log('$plupload.preinitFileInput()', 'pageType:', pageType, 'name:', name, 'postingFieldName:', postingFieldName, 'filter:', filter);
+        //console.log('$plupload.preinitFileInput()', 'pageType:', pageType, 'name:', name, 'postingFieldName:', postingFieldName, 'filter:', filter);
 
         pageType = strVal(pageType);
         name = strVal(name);
@@ -14547,7 +14547,7 @@
      * @param attachmentBrowseButton - ID of file browse button, required by Plupload
      */
     function prepareSimplifiedFileInput(pageType, name, postingFieldName, filter, attachmentBrowseButton) {
-        console.log('$plupload.prepareSimplifiedFileInput()', 'pageType:', pageType, 'name:', name, 'postingFieldName:', postingFieldName, 'filter:', filter, 'attachmentBrowseButton:', attachmentBrowseButton);
+        //console.log('$plupload.prepareSimplifiedFileInput()', 'pageType:', pageType, 'name:', name, 'postingFieldName:', postingFieldName, 'filter:', filter, 'attachmentBrowseButton:', attachmentBrowseButton);
 
         name = strVal(name);
         filter = strVal(filter) || '{$CONFIG_OPTION;^,valid_types}';
@@ -14657,7 +14657,7 @@
     /* HTML5 UPLOAD */
 
     function initialiseHtml5DragdropUpload(id, id2) {
-        console.log('$plupload.initialiseHtml5DragdropUpload()', 'id:', id, 'id2:', id2);
+        //console.log('$plupload.initialiseHtml5DragdropUpload()', 'id:', id, 'id2:', id2);
 
         var el = document.getElementById(id);
 
@@ -14671,7 +14671,7 @@
     }
 
     function html5UploadEventDragOver(event) {
-        console.log('$plupload.html5UploadEventDragOver()', 'event:', event);
+        //console.log('$plupload.html5UploadEventDragOver()', 'event:', event);
         if ((event.dataTransfer != null) && (event.dataTransfer.types != null) && !event.dataTransfer.types[0].includes('text')) {
             event.preventDefault();
         }
@@ -14679,7 +14679,7 @@
     }
 
     function html5UploadEventDrop(event, ob, key2) {
-        console.log('$plupload.html5UploadEventDragOver()', 'event:', event, 'ob:', ob, 'key2:', key2);
+        //console.log('$plupload.html5UploadEventDragOver()', 'event:', event, 'ob:', ob, 'key2:', key2);
         html5Upload(event, key2);
     }
 

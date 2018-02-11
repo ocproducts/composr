@@ -449,6 +449,7 @@
             }
 
             if ($dom.hasElementLoaded(el)) {
+                //$util.inform('$dom.waitForResources() Resource already loaded', el);
                 return;
             }
 
@@ -501,22 +502,17 @@
             }
         });
     };
-
-    /**
-     * @class { DomData }
-     */
-    function DomData() {}
-
+    
     var domDataMap = new window.WeakMap();
     /**
      * @param el
-     * @return { DomData }
+     * @return { object }
      */
     function dataCache(el) {
         // Check if the el object already has a cache
         var value = domDataMap.get(el), key;
         if (!value) { // If not, create one with the dataset
-            value = new DomData();
+            value = {};
             domDataMap.set(el, value);
             for (key in el.dataset) {
                 dataAttr(el, key);
@@ -2119,12 +2115,41 @@
 
             container = containers[name];
             container.innerHTML = strVal(html);
-            dom = $util.toArray(container.childNodes);
-            $util.forEach(container.childNodes, function(child){
-                container.removeChild(child)
+            $util.toArray(container.childNodes).forEach(function(child){
+                if (!$util.isEl(child)) {
+                    return;
+                }
+
+                // Code below looks for stylesheet and script elements that are theme resources and removes them if already loaded, to avoid duplicate loads.
+                // It also ensures any other script elements are actually loaded by cloning them.
+
+                var stylesheetEls = $dom.$$$(child, 'link[rel="stylesheet"]'),
+                    scriptEls = $dom.$$$(child, 'script[src]');
+
+                stylesheetEls.forEach(function (stylesheetEl) {
+                    if (((stylesheetEl.type === '') || (stylesheetEl.type === 'text/css')) && stylesheetEl.id.startsWith('css-')) {
+                        var cssName = stylesheetEl.id.match(/^css-(.*?)(?:_non_minified)?(?:_ssl)?(?:_mobile)?$/);
+                        if (cssName && cssName[1] && $cms.hasCss(cssName[1])) {
+                            stylesheetEl.remove();
+                        }
+                    }
+                });
+
+                scriptEls.forEach(function (scriptEl) {
+                    if (jsTypeRE.test(scriptEl.type) && scriptEl.src && scriptEl.id.startsWith('javascript-')) {
+                        var javascriptName = scriptEl.id.match(/^javascript-(.*?)(?:_non_minified)?(?:_ssl)?(?:_mobile)?$/);
+                        if (javascriptName && javascriptName[1] && $cms.hasJavascript(javascriptName[1])) {
+                            scriptEl.remove();
+                        }
+                    }
+                });
             });
 
+            dom = $util.toArray(container.childNodes);
+            
             for (i = 0; i < dom.length; i++) {
+                dom[i].remove();
+
                 // Cloning script[src] elements inserted using innerHTML is required for them to actually work
                 if ((dom[i].localName === 'script') && jsTypeRE.test(dom[i].type) && dom[i].src) {
                     dom[i] = cloneScriptEl(dom[i]);
@@ -2233,7 +2258,7 @@
                                 }).call(win); // Set `this` context for eval
                             }
                         });
-
+                        
                         nodes.forEach(function (node) {
                             if ($util.isEl(node)) {
                                 $cms.attachBehaviors(node);
@@ -2265,7 +2290,7 @@
         var clone = document.createElement('script');
 
         if (scriptEl.id) {
-            clone.id = scriptEl.id
+            clone.id = scriptEl.id;
         }
 
         if (scriptEl.className) {

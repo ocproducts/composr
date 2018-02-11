@@ -330,7 +330,7 @@
             sheetName = sheetNameOrHref;
             sheetHref = $util.srl('{$FIND_SCRIPT_NOHTTP;,sheet}?sheet=' + sheetName + $cms.keep());
         } else {
-            sheetHref = $util.srl(sheetNameOrHref);
+            sheetHref = sheetNameOrHref;
         }
 
         if (sheetName != null) {
@@ -343,7 +343,9 @@
 
         if (sheetEl == null) {
             sheetEl = document.createElement('link');
-            sheetEl.id = 'css-' + ((sheetName != null) ? sheetName : $util.random());
+            if (sheetName != null) {
+                sheetEl.id = 'css-' + sheetName;
+            }
             sheetEl.rel = 'stylesheet';
             sheetEl.nonce = $cms.getCspNonce();
             sheetEl.href = sheetHref;
@@ -393,6 +395,10 @@
 
         return Promise.all(sheetNames.map(_requireCss));
     };
+    
+    $cms.hasCss = function hasCss(sheetNameOrHref) {
+        return (validIdRE.test(sheetNameOrHref) ? _findCssByName(sheetNameOrHref) : _findCssByHref(sheetNameOrHref)) != null;
+    };
 
     /**
      * @private
@@ -401,12 +407,14 @@
      */
     function _requireJavascript(scriptNameOrSrc) {
         scriptNameOrSrc = strVal(scriptNameOrSrc);
-
+        
         var scriptName, scriptSrc, scriptEl;
 
         if (validIdRE.test(scriptNameOrSrc)) {
             scriptName = scriptNameOrSrc;
             scriptSrc = $util.srl('{$FIND_SCRIPT_NOHTTP;,script}?script=' + scriptName + $cms.keep());
+        } else {
+            scriptSrc = scriptNameOrSrc;
         }
 
         if (scriptName != null) {
@@ -420,7 +428,9 @@
         if (scriptEl == null) {
             scriptEl = document.createElement('script');
             scriptEl.defer = true;
-            scriptEl.id = 'javascript-' + ((scriptName != null) ? scriptName : $util.random());
+            if (scriptName != null) {
+                scriptEl.id = 'javascript-' + scriptName;
+            }
             scriptEl.nonce = $cms.getCspNonce();
             scriptEl.src = scriptSrc;
             document.body.appendChild(scriptEl);
@@ -468,7 +478,7 @@
         var calls = [];
 
         scripts = arrVal(scripts);
-
+        
         scripts.forEach(function (script) {
             calls.push(function () {
                 return _requireJavascript(script);
@@ -478,6 +488,10 @@
         return $util.promiseSequence(calls);
     };
 
+    $cms.hasJavascript = function hasJavascriptLoaded(scriptNameOrSrc) {
+        return (validIdRE.test(scriptNameOrSrc) ? _findScriptByName(scriptNameOrSrc) : _findScriptBySrc(scriptNameOrSrc)) != null;
+    };
+    
     /**
      * @memberof $cms
      * @param flag
