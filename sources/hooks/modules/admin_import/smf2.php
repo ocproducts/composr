@@ -286,7 +286,6 @@ class Hook_import_smf2
                 $id_new = cns_make_group($group_name, 0, $is_super_admin, $is_super_moderator, '', '', null, null, $leader, null, null, null, $max_attachments_upload, $avatar_max_width, $avatar_max_height, null);
             }
 
-            // privileges
             set_privilege($id_new, 'allow_html', true);
 
             if (!import_check_if_imported('group', strval($row['id_group']))) {
@@ -1451,7 +1450,7 @@ class Hook_import_smf2
      */
     public function static_perm_arr($gid, $pid, $v, $r = false)
     {
-        // create the static array
+        // Create the static array
         static $st = array();
         // Are we returning this run or not?
         if ($r) {
@@ -1464,9 +1463,9 @@ class Hook_import_smf2
         }
         // Lets see if we've added the group to map yet?
         if (array_key_exists($gid, $st)) {
-            // yes we have so lets check if the Forum ID for this group?
+            // Yes we have so lets check if the Forum ID for this group?
             if (array_key_exists($pid, $st[$gid])) {
-                // yes we have now let's check if its current value is less than the on sent
+                // Yes we have now let's check if its current value is less than the on sent
                 if ($st[$gid][$pid] < $v) {
                     // Yes it is so let's update it to the new higher value
                     $st[$gid][$pid] = $v;

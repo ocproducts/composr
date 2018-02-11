@@ -37,8 +37,7 @@ function can_choose_workflow($member_id = null)
         $member_id = get_member();
     }
 
-    // We currently use access to the workflow management page as the defining
-    // criterion
+    // We currently use access to the workflow management page as the defining criterion
     return has_actual_page_access($member_id, 'admin_workflow', get_module_zone('admin_workflow'));
 }
 
@@ -55,8 +54,7 @@ function workflow_choose_ui($include_inherit = false, $include_current = false)
     // Find out which workflows are available
     $all_workflows = get_all_workflows();
 
-    // Only give an option to select a workflow if there is more
-    // than one available
+    // Only give an option to select a workflow if there is more than one available
     if (count($all_workflows) > 1) {
         // Grab the default workflow
         $def = get_default_workflow();
@@ -118,8 +116,7 @@ function get_default_workflow()
     if (count($workflows) > 1) {
         // Look for those which are set as default
         $defaults = $GLOBALS['SITE_DB']->query_select('workflows', array('id'), array('is_default' => 1));
-        // If there aren't any then we can't presume to know which should
-        // be returned, so return an empty array
+        // If there aren't any then we can't presume to know which should be returned, so return an empty array
         if ($defaults == array()) {
             return null;
         }
@@ -494,8 +491,7 @@ function workflow_update_handler()
     // Get member details //
     ////////////////////////
 
-    // Find out which groups/members to inform, starting with the
-    // original submitter
+    // Find out which groups/members to inform, starting with the original submitter
     $send_to_members = array();
     if (post_param_integer('send_author', 0) == 1) {
         $submitter = get_submitter_of_workflow_content($content_id);

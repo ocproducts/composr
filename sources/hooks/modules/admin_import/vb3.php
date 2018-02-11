@@ -272,7 +272,7 @@ class Hook_import_vb3
                 }
             }
 
-            // privileges
+            // Privileges
             set_privilege($id_new, 'comcode_dangerous', $PROBED_FORUM_CONFIG['allowhtml'] == 1);
             set_privilege($id_new, 'bypass_wordfilter', $PROBED_FORUM_CONFIG['censorwords'] == 0);
             set_privilege($id_new, 'use_quick_reply', $PROBED_FORUM_CONFIG['quickreply'] == 1);

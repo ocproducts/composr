@@ -76,8 +76,7 @@ function get_activity_querying_sql($viewer_member, $mode, $member_ids)
                 }
                 $_where_clause .= ')';
 
-                // If the chat addon is installed then there may be 'friends-only'
-                // posts, which we may need to filter out. Otherwise we don't need to care.
+                // If the chat addon is installed then there may be 'friends-only' posts, which we may need to filter out. Otherwise we don't need to care.
                 if (($member_id != $viewer_member) && (addon_installed('chat'))) {
                     if (!$is_guest) {
                         $friends_check_where = 'member_likes=' . strval($member_id) . ' AND member_liked=' . strval($viewer_member);

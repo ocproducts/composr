@@ -291,7 +291,6 @@ class Hook_import_mybb
                 $id_new = cns_make_group($row['title'], 0, $is_super_admin, $is_super_moderator, '', '', null, null, null, null, null, null, null, $avatar_max_width, $avatar_max_height, null);
             }
 
-            // privileges
             set_privilege($id_new, 'allow_html', true);
 
             if (!import_check_if_imported('group', strval($row['gid']))) {

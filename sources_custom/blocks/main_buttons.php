@@ -57,7 +57,7 @@ class Block_main_buttons
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        // first ensure there is 'buttons' banners category, and if it doesn't exist create it
+        // First ensure there is 'buttons' banners category, and if it doesn't exist create it
         $id = 'buttons';
         $is_textual = 0;
         $image_width = 120;

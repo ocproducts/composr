@@ -3085,7 +3085,7 @@ class Hook_import_cms_merge
             import_id_remap_put('cpf', strval($row['id']), $id_new);
         }
 
-        // import member cpf_perms
+        // Import member cpf_perms
         $this->_import_f_member_cpf_perms($db, $table_prefix);
     }
 

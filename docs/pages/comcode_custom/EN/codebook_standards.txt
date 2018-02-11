@@ -166,6 +166,13 @@ Comment your code, but not too much
 | Write comments for non-obvious code. Don't comment obvious things ("this is a loop", "this runs if $foo equals $bar"). Write comments that explain your algorithms, and comments that give a high-level overview of what chunks of code do. Very roughly one of two comments per 7 lines, but don't feel bound to match that.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
+Write comments in the standard way
+| Consistency
+| Product development only
+| Manually
+| Comments typically look like [tt]// This is an example[/tt]. Notice the [tt]//[/tt] commenting method is used, followed by a space, followed by a capital letter. There are many special cases for why you would not do it like this, but generally speaking you should follow this format. This will make the code look neat and tidy, rather than comments looking like rough notes.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Use constants instead of "magic numbers"[/color]
 | Technical debt
 | Composr development +

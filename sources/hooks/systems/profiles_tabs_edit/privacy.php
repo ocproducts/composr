@@ -85,11 +85,11 @@ class Hook_profiles_tabs_edit_privacy
 
                 $cpf_permissions = $GLOBALS['FORUM_DB']->query_select('f_member_cpf_perms', array('*'), array('member_id' => $member_id_of, 'field_id' => $field_id), '', 1);
 
-                // if there are permissions saved already
+                // If there are permissions saved already
                 if (array_key_exists(0, $cpf_permissions) && $cpf_permissions[0]['field_id'] == $field_id) {
                     $GLOBALS['FORUM_DB']->query_update('f_member_cpf_perms', array('guest_view' => $guests_view, 'member_view' => $members_view, 'friend_view' => $friends_view, 'group_view' => $groups_view), array('member_id' => $member_id_of, 'field_id' => $field_id), '', 1);
                 } else {
-                    // insert the custom permissions the user chose
+                    // Insert the custom permissions the user chose
                     $GLOBALS['FORUM_DB']->query_insert('f_member_cpf_perms', array('guest_view' => $guests_view, 'member_view' => $members_view, 'friend_view' => $friends_view, 'group_view' => $groups_view, 'member_id' => $member_id_of, 'field_id' => $field_id));
                 }
             }
