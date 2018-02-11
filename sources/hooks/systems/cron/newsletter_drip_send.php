@@ -48,6 +48,13 @@ class Hook_cron_newsletter_drip_send
     {
         $mails_per_send = intval(get_option('mails_per_send'));
 
+        $time = time();
+        $last_time = intval(get_value('last_newsletter_drip_send', null, true));
+        if (($last_time > time() - $minutes_between_sends * 60) && (!/*we do allow an admin to force it by CRON URL*/$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()))) {
+            return;
+        }
+        set_value('last_newsletter_drip_send', strval($time), true);
+
         require_lang('newsletter');
 
         $to_send = $GLOBALS['SITE_DB']->query_select('newsletter_drip_send', array('*'), array(), 'ORDER BY id DESC', $mails_per_send); // From disk-end, for maximum performance (truncating files to mark done is quicker?)
