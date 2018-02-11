@@ -19,23 +19,40 @@
 class Hook_cron_classifieds
 {
     /**
-     * Run function for Cron hooks. Searches for tasks to perform.
+     * Get info from this hook.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     * @param  boolean $calculate_num_queued Calculate the number of items queued, if possible
+     * @return ?array Return a map of info about the hook (null: disabled)
      */
-    public function run()
+    public function info($last_run, $calculate_num_queued)
     {
         if (!addon_installed('catalogues')) {
-            return;
+            return null;
         }
 
-        if (!$GLOBALS['SITE_DB']->table_exists('ecom_classifieds_prices')) {
-            return;
+        if ($calculate_num_queued) {
+            $table = 'catalogue_entries e JOIN ' . get_table_prefix() . 'ecom_classifieds_prices p ON p.c_catalogue_name=e.c_name';
+            $num_queued = $GLOBALS['SITE_DB']->query_select_value($table, 'COUNT(*)', array('ce_validated' => 1), ' AND ce_last_moved<' . strval(time()));
+        } else {
+            $num_queued = null;
         }
 
-        $last = get_value('last_classified_refresh');
-        $time = time();
-        if (($last !== null) && (intval($last) > $time - 60 * 60)) {
-            return; // Don't do more than once per hour
-        }
+        return array(
+            'label' => 'Classified listings expiry',
+            'num_queued' => $num_queued,
+            'minutes_between_runs' => 60,
+        );
+    }
+
+    /**
+     * Run function for system scheduler scripts. Searches for things to do. ->info(..., true) must be called before this method.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     */
+    public function run($last_run)
+    {
+        $time_now = time();
 
         if (php_function_allowed('set_time_limit')) {
             @set_time_limit(0);
@@ -43,7 +60,8 @@ class Hook_cron_classifieds
 
         $start = 0;
         do {
-            $entries = $GLOBALS['SITE_DB']->query_select('catalogue_entries e JOIN ' . get_table_prefix() . 'ecom_classifieds_prices p ON p.c_catalogue_name=e.c_name', array('e.*'), array('ce_validated' => 1), '', 1000, $start);
+            $table = 'catalogue_entries e JOIN ' . get_table_prefix() . 'ecom_classifieds_prices p ON p.c_catalogue_name=e.c_name';
+            $entries = $GLOBALS['SITE_DB']->query_select($table, array('e.*'), array('ce_validated' => 1), ' AND ce_last_moved<' . strval(time() + 60 * 60 * 24), 1000, $start);
             foreach ($entries as $entry) {
                 if ($entry['ce_last_moved'] == $entry['ce_add_date']) {
                     require_code('classifieds');
@@ -51,13 +69,13 @@ class Hook_cron_classifieds
                 }
 
                 // Expiring
-                if ($entry['ce_last_moved'] < $time) { // We have stolen use of the standard Composr "ce_last_moved" property as a "next move" property
+                if ($entry['ce_last_moved'] < $time_now) { // We have stolen use of the standard Composr "ce_last_moved" property as a "next move" property
                     $GLOBALS['SITE_DB']->query_update('catalogue_entries', array('ce_validated' => 0), array('id' => $entry['id']), '', 1);
                     delete_cache_entry('main_cc_embed');
                     delete_cache_entry('main_recent_cc_entries');
                     require_code('catalogues2');
                     calculate_category_child_count_cache($entry['cc_id']);
-                } elseif (($entry['ce_last_moved'] < $time + 60 * 60 * 24) && ($entry['ce_last_moved'] > $time + 60 * 60 * 23)) { /* one hour time window; assumes Cron runs at least once per hour */
+                } elseif (($entry['ce_last_moved'] < $time_now + 60 * 60 * 24) && ($entry['ce_last_moved'] > $time_now + 60 * 60 * 23)) { /* one hour time window; assumes the system scheduler runs at least once per hour */
                     // Expiring in 24 hours
                     require_code('notifications');
                     require_lang('classifieds');
@@ -80,7 +98,5 @@ class Hook_cron_classifieds
                 }
             }
         } while (count($entries) == 1000);
-
-        set_value('last_classified_refresh', strval($time));
     }
 }

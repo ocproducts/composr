@@ -403,7 +403,7 @@ function notify_sitemap_node_edit($page_link, $guest_access)
 /**
  * Mark a row from our sitemap cache as for deletion.
  * It won't be immediately deleted, as we use this as a signal that the XML sitemap will need updating too.
- * Updates are done in batch, via Cron.
+ * Updates are done in batch, via the system scheduler.
  * This may be called on page-links that may not actually be in the sitemap cache.
  *
  * @param  SHORT_TEXT $page_link The page-link

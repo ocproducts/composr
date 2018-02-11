@@ -809,7 +809,7 @@ class Module_admin_zones
         list($sortable, $sort_order) = explode(' ', $current_ordering, 2);
         $sortables = array();
 
-        $header_row = results_field_title(array(
+        $header_row = results_header_row(array(
             do_lang_tempcode('NAME'),
             do_lang_tempcode('TITLE'),
             do_lang_tempcode('DEFAULT_PAGE'),
@@ -818,7 +818,7 @@ class Module_admin_zones
             do_lang_tempcode('ACTIONS'),
         ), $sortables, 'sort', $sortable . ' ' . $sort_order);
 
-        $fields = new Tempcode();
+        $result_entries = new Tempcode();
 
         $max_rows = $GLOBALS['SITE_DB']->query_select_value('zones', 'COUNT(*)');
         foreach ($_zones as $_zone_details) {
@@ -826,7 +826,7 @@ class Module_admin_zones
 
             $edit_url = build_url($url_map + array('id' => $zone_name), '_SELF');
 
-            $fields->attach(results_entry(array(
+            $result_entries->attach(results_entry(array(
                 hyperlink(build_url(array('page' => ''), $zone_name), ($zone_name == '') ? do_lang_tempcode('NA_EM') : make_string_tempcode(escape_html($zone_name)), false, false),
                 $zone_title,
                 $zone_default_page,
@@ -836,7 +836,7 @@ class Module_admin_zones
             ), true));
         }
 
-        $table = results_table(do_lang('ZONES'), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $fields, $sortables, $sortable, $sort_order);
+        $table = results_table(do_lang('ZONES'), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $result_entries, $sortables, $sortable, $sort_order);
 
         $text = do_lang_tempcode('CHOOSE_EDIT_LIST');
         $tpl = do_template('COLUMNED_TABLE_SCREEN', array(

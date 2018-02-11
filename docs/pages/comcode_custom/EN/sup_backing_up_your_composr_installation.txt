@@ -24,7 +24,7 @@ The maximum file size is the largest file you want to allow the system to backup
 
 [title="2"]Scheduled time[/title]
 
-You can set a scheduled time when you want the backup to take place. This will only work if you have Cron running but it gives you the option of running the backup at a quieter traffic time fort your site.
+You can set a scheduled time when you want the backup to take place. This will only work if you have the system scheduler running but it gives you the option of running the backup at a quieter traffic time fort your site.
 
 [title="2"]Days between backups[/title]
 

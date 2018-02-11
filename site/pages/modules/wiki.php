@@ -720,7 +720,7 @@ class Module_wiki
             list($id,) = get_param_wiki_chain('id');
         }
 
-        $_fields_titles = array(
+        $_header_rows = array(
             do_lang_tempcode('PAGE'),
             do_lang_tempcode('MEMBER'),
             do_lang_tempcode('DATE'),
@@ -731,7 +731,7 @@ class Module_wiki
         $revision_engine = new RevisionEngineDatabase();
         return $revision_engine->ui_browse_revisions(
             $this->title,
-            $_fields_titles,
+            $_header_rows,
             array('wiki_page', 'wiki_post'),
             array($this, '_render_revision'),
             null,

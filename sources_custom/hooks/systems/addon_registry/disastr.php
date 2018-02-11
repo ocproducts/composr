@@ -112,7 +112,7 @@ To configure the diseases go to Admin Zone > Setup > Manage Diseases.';
     {
         return array(
             'requires' => array(
-                'Cron',
+                'System scheduler',
                 'Conversr',
                 'points',
                 'all_icons',

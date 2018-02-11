@@ -204,9 +204,9 @@ class Module_admin_points
         if (count($rows) == 0) {
             return inform_screen($this->title, do_lang_tempcode('NO_ENTRIES'));
         }
-        $fields = new Tempcode();
+        $result_entries = new Tempcode();
         require_code('templates_results_table');
-        $fields_title = results_field_title(array(do_lang_tempcode('DATE_TIME'), do_lang_tempcode('AMOUNT'), do_lang_tempcode('FROM'), do_lang_tempcode('TO'), do_lang_tempcode('REASON'), do_lang_tempcode('REVERSE')), $sortables, 'sort', $sortable . ' ' . $sort_order);
+        $header_row = results_header_row(array(do_lang_tempcode('DATE_TIME'), do_lang_tempcode('AMOUNT'), do_lang_tempcode('FROM'), do_lang_tempcode('TO'), do_lang_tempcode('REASON'), do_lang_tempcode('REVERSE')), $sortables, 'sort', $sortable . ' ' . $sort_order);
         foreach ($rows as $myrow) {
             $date = get_timezoned_date_time($myrow['date_and_time']);
 
@@ -228,17 +228,20 @@ class Module_admin_points
             }
 
             $delete_url = build_url(array('page' => '_SELF', 'type' => 'reverse', 'redirect' => protect_url_parameter(SELF_REDIRECT)), '_SELF');
-            $delete = do_template('COLUMNED_TABLE_ACTION_DELETE_ENTRY', array(
+            $delete = do_template('COLUMNED_TABLE_ACTION', array(
                 '_GUID' => '3585ec7f35a1027e8584d62ffeb41e56',
                 'NAME' => do_lang_tempcode('REVERSE'),
                 'URL' => $delete_url,
                 'HIDDEN' => form_input_hidden('id', strval($myrow['id'])),
+                'ACTION_TITLE' => do_lang_tempcode('DELETE'),
+                'ICON' => 'admin/delete',
+                'GET' => true,
             ));
 
-            $fields->attach(results_entry(array($date, integer_format($myrow['amount']), $from, $to, $reason, $delete), true));
+            $result_entries->attach(results_entry(array($date, integer_format($myrow['amount']), $from, $to, $reason, $delete), true));
         }
 
-        $results_table = results_table(do_lang_tempcode('GIFT_TRANSACTIONS'), $start, 'start', $max, 'max', $max_rows, $fields_title, $fields, $sortables, $sortable, $sort_order, 'sort', paragraph(do_lang_tempcode('GIFT_POINTS_LOG')));
+        $results_table = results_table(do_lang_tempcode('GIFT_TRANSACTIONS'), $start, 'start', $max, 'max', $max_rows, $header_row, $result_entries, $sortables, $sortable, $sort_order, 'sort', paragraph(do_lang_tempcode('GIFT_POINTS_LOG')));
 
         $tpl = do_template('RESULTS_TABLE_SCREEN', array('_GUID' => '12ce8cf5c2f669948b14e68bd6c00fe9', 'TITLE' => $this->title, 'RESULTS_TABLE' => $results_table));
 

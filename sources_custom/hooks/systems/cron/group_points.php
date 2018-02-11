@@ -19,17 +19,29 @@
 class Hook_cron_group_points
 {
     /**
-     * Run function for Cron hooks. Searches for tasks to perform.
+     * Get info from this hook.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     * @param  boolean $calculate_num_queued Calculate the number of items queued, if possible
+     * @return ?array Return a map of info about the hook (null: disabled)
      */
-    public function run()
+    public function info($last_run, $calculate_num_queued)
+    {
+        return array(
+            'label' => 'Assign points for usergroup membership',
+            'num_queued' => null,
+            'minutes_between_runs' => 60 * 24 * 27, // Only once within a month
+        );
+    }
+
+    /**
+     * Run function for system scheduler scripts. Searches for things to do. ->info(..., true) must be called before this method.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     */
+    public function run($last_run)
     {
         require_code('points');
-
-        $time = time();
-        $last_time = intval(get_value('last_group_points'));
-        if ($last_time > time() - 24 * 60 * 60 * 27) {
-            return; // Only once within a month
-        }
 
         if (date('j') != '1') {
             return; // Only on first day
@@ -59,7 +71,5 @@ class Hook_cron_group_points
                 }
             }
         }
-
-        set_value('last_group_points', strval($time));
     }
 }

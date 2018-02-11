@@ -232,7 +232,7 @@ class Hook_health_check_marketing_seo extends Hook_Health_Check
         }
 
         if (!cron_installed()) {
-            $this->stateCheckSkipped('Cron not running');
+            $this->stateCheckSkipped('System scheduler not running');
             return;
         }
 

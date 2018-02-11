@@ -34,11 +34,11 @@ class Hook_config_message_received_emails
             'human_name' => 'MESSAGE_RECEIVED_EMAILS',
             'type' => 'tick',
             'category' => 'MESSAGES',
-            'group' => '_EMAIL',
+            'group' => 'EMAIL_GENERAL',
             'explanation' => 'CONFIG_OPTION_message_received_emails',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 11,
+            'order_in_category_group' => 1,
 
             'required' => true,
             'public' => false,

@@ -61,7 +61,7 @@ class tutorial_nav_paths_test_set extends cms_test_case
                     $option = trim($matches[1][$i], '\\');
                     if (isset($config_options[$option])) {
                         $config_path = $matches[2][$i];
-                        $this->assertTrue($config_options[$option] == $config_path, 'Wrong config option path for ' . $option . ' in ' . $f . '; got  ' .$config_path . ' expected ' . $config_options[$option]);
+                        $this->assertTrue($config_options[$option] == $config_path, 'Wrong config option path for ' . $option . ' in ' . $f . '; got  ' . $config_path . ' expected ' . $config_options[$option]);
                     }
                 }
             }
@@ -118,7 +118,7 @@ class tutorial_nav_paths_test_set extends cms_test_case
                 }
             }
 
-            $this->assertTrue($ok, 'Could not find ' . $total. '; category="' . $category . '"; group="' . $group . '"');
+            $this->assertTrue($ok, 'Could not find ' . $total . '; category="' . $category . '"; group="' . $group . '"');
         }
     }
 }

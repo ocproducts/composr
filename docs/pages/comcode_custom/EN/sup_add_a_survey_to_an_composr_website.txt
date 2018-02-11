@@ -34,7 +34,7 @@ Even better than sliced bread
 
 There shouldn't be any line spaces between the answers and the question. To add another question simply leave a line space. To add a question with a large space for answers write the question and leave a space on the same line and add the code [LONG] which will look like:
 [code="Text"]
-Arvixe Webhosting is awesome because? [LONG]
+Composr is awesome because? [LONG]
 [/code]
 
 The final type is a standard question which will have a single line text box for an answer which will just be the question written on a line on its own, i.e.:

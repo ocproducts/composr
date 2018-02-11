@@ -23,7 +23,7 @@
  */
 class Hook_health_check_cron extends Hook_Health_Check
 {
-    protected $category_label = 'Cron';
+    protected $category_label = 'System scheduler';
 
     /**
      * Standard hook run function to run this category of health checks.
@@ -37,8 +37,8 @@ class Hook_health_check_cron extends Hook_Health_Check
      */
     public function run($sections_to_run, $check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
-        $this->process_checks_section('testCronSetUp', 'Cron set up', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testCronSlow', 'Slow Cron', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testCronSetUp', 'System scheduler set up', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testCronSlow', 'Slow system scheduler', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
 
         return array($this->category_label, $this->results);
     }
@@ -57,7 +57,7 @@ class Hook_health_check_cron extends Hook_Health_Check
             return;
         }
 
-        $this->assertTrue(cron_installed(), 'Cron not running, it is needed for various features to work');
+        $this->assertTrue(cron_installed(), 'The system scheduler not running, it is needed for various features to work');
     }
 
     /**
@@ -81,11 +81,11 @@ class Hook_health_check_cron extends Hook_Health_Check
 
         if (($last_cron_started !== null) && ($last_cron_finished !== null)) {
             $time = intval($last_cron_finished) - intval($last_cron_started);
-            $this->assertTrue($time < $threshold, 'Cron is running slow @ ' . display_time_period($time) . ' to run');
+            $this->assertTrue($time < $threshold, 'The system scheduler is running slow @ ' . display_time_period($time) . ' to run');
         } elseif (($last_cron_started !== null) && (intval($last_cron_started) < time() - 60 * $threshold) && ($last_cron_finished === null)) {
-            $this->assertTrue($time < $threshold, 'Cron has taken ' . display_time_period($time) . ' and not finished -- it is either running very slow, or it failed');
+            $this->assertTrue($time < $threshold, 'The system scheduler has taken ' . display_time_period($time) . ' and not finished -- it is either running very slow, or it failed');
         } else {
-            $this->stateCheckSkipped('Cron never ran');
+            $this->stateCheckSkipped('The system scheduler never ran');
         }
     }
 }

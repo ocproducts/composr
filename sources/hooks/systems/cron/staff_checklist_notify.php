@@ -23,56 +23,74 @@
  */
 class Hook_cron_staff_checklist_notify
 {
+    protected $outstanding;
+
     /**
-     * Run function for Cron hooks. Searches for tasks to perform.
+     * Get info from this hook.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     * @param  boolean $calculate_num_queued Calculate the number of items queued, if possible
+     * @return ?array Return a map of info about the hook (null: disabled)
      */
-    public function run()
+    public function info($last_run, $calculate_num_queued)
     {
-        require_lang('staff_checklist');
+        if ($calculate_num_queued) {
+            require_lang('staff_checklist');
+            require_code('blocks/main_staff_checklist');
 
-        $time = time();
-        $last_time = intval(get_value('last_staff_checklist_notify', null, true));
-        if ($last_time > time() - 24 * 60 * 60 * 7) {
-            return;
-        }
-        set_value('last_staff_checklist_notify', strval($time), true);
-
-        require_code('blocks/main_staff_checklist');
-
-        // Find if anything needs doing
-        $outstanding = 0;
-        $rows = $GLOBALS['SITE_DB']->query_select('staff_checklist_cus_tasks', array('*'));
-        foreach ($rows as $r) {
-            $task_done = (($r['task_is_done'] !== null) && (($r['recur_interval'] == 0) || (($r['recur_every'] != 'mins') || (time() < $r['task_is_done'] + 60 * $r['recur_interval'])) && (($r['recur_every'] != 'hours') || (time() < $r['task_is_done'] + 60 * 60 * $r['recur_interval'])) && (($r['recur_every'] != 'days') || (time() < $r['task_is_done'] + 24 * 60 * 60 * $r['recur_interval'])) && (($r['recur_every'] != 'months') || (time() < $r['task_is_done'] + 31 * 24 * 60 * 60 * $r['recur_interval']))));
-            if (!$task_done) {
-                $outstanding++;
+            // Find if anything needs doing
+            $this->outstanding = 0;
+            $rows = $GLOBALS['SITE_DB']->query_select('staff_checklist_cus_tasks', array('*'));
+            foreach ($rows as $r) {
+                $task_done = (($r['task_is_done'] !== null) && (($r['recur_interval'] == 0) || (($r['recur_every'] != 'mins') || (time() < $r['task_is_done'] + 60 * $r['recur_interval'])) && (($r['recur_every'] != 'hours') || (time() < $r['task_is_done'] + 60 * 60 * $r['recur_interval'])) && (($r['recur_every'] != 'days') || (time() < $r['task_is_done'] + 24 * 60 * 60 * $r['recur_interval'])) && (($r['recur_every'] != 'months') || (time() < $r['task_is_done'] + 31 * 24 * 60 * 60 * $r['recur_interval']))));
+                if (!$task_done) {
+                    $this->outstanding++;
+                }
             }
-        }
-        $_hooks = find_all_hook_obs('blocks', 'main_staff_checklist', 'Hook_checklist_');
-        foreach ($_hooks as $object) {
-            $ret = $object->run();
-            if (($ret !== null) && (count($ret) != 0)) {
-                foreach ($ret as $r) {
-                    if ($r[2] !== null) {
-                        if ($r[2] > 0) {
-                            $outstanding++; // A tally of undone stuff
-                        }
-                    } elseif ($r[1] !== null) {
-                        if ($r[1] < 0) { // Needed doing in the past
-                            $outstanding++;
+            $_hooks = find_all_hook_obs('blocks', 'main_staff_checklist', 'Hook_checklist_');
+            foreach ($_hooks as $object) {
+                $ret = $object->run();
+                if (($ret !== null) && (count($ret) != 0)) {
+                    foreach ($ret as $r) {
+                        if ($r[2] !== null) {
+                            if ($r[2] > 0) {
+                                $this->outstanding++; // A tally of undone stuff
+                            }
+                        } elseif ($r[1] !== null) {
+                            if ($r[1] < 0) { // Needed doing in the past
+                                $this->outstanding++;
+                            }
                         }
                     }
                 }
             }
+
+            $num_queued = ($this->outstanding > 0) ? 1 : 0;
+        } else {
+            $num_queued = null;
         }
 
-        if ($outstanding > 0) {
+        return array(
+            'label' => 'Send staff checklist notifications',
+            'num_queued' => $num_queued,
+            'minutes_between_runs' => 24 * 60 * 7, // Don't nag more than once a week
+        );
+    }
+
+    /**
+     * Run function for system scheduler scripts. Searches for things to do. ->info(..., true) must be called before this method.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     */
+    public function run($last_run)
+    {
+        if ($this->outstanding > 0) {
             require_lang('staff_checklist');
 
             require_code('notifications');
-            $subject = do_lang('STAFF_CHECKLIST_MAIL_SUBJECT', integer_format($outstanding), get_site_name(), null, get_site_default_lang());
+            $subject = do_lang('STAFF_CHECKLIST_MAIL_SUBJECT', integer_format($this->outstanding), get_site_name(), null, get_site_default_lang());
             $adminzone_url = build_url(array('page' => ''), 'adminzone', array(), false, false, true);
-            $message = do_notification_lang('STAFF_CHECKLIST_MAIL_BODY', integer_format($outstanding), get_site_name(), static_evaluate_tempcode($adminzone_url), get_site_default_lang());
+            $message = do_notification_lang('STAFF_CHECKLIST_MAIL_BODY', integer_format($this->outstanding), get_site_name(), static_evaluate_tempcode($adminzone_url), get_site_default_lang());
             dispatch_notification('staff_checklist', null, $subject, $message, null, A_FROM_SYSTEM_PRIVILEGED);
         }
     }

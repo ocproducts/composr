@@ -289,7 +289,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         //$fh[]=do_lang_tempcode('SHOW_IN_POST_PREVIEWS');
         $fh[] = do_lang_tempcode('ORDER');
         $fh[] = do_lang_tempcode('ACTIONS');
-        $header_row = results_field_title($fh, $sortables, 'sort', $sortable . ' ' . $sort_order);
+        $header_row = results_header_row($fh, $sortables, 'sort', $sortable . ' ' . $sort_order);
 
         // Load up filters
         $hooks = find_all_hook_obs('systems', 'cns_cpf_filter', 'Hook_cns_cpf_filter_');
@@ -330,7 +330,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         }
 
         // Render selection table
-        $fields = new Tempcode();
+        $result_entries = new Tempcode();
         foreach ($rows as $row) {
             $name = get_translated_text($row['cf_name'], $GLOBALS['FORUM_DB']);
 
@@ -385,11 +385,11 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
             }
             $fr[] = protect_from_escaping($edit_link);
 
-            $fields->attach(results_entry($fr, true));
+            $result_entries->attach(results_entry($fr, true));
         }
         require_javascript('cns_cpfs');
         $this->js_function_calls_for_choose[] = array('moduleAdminCnsCustomProfileFields_createSelectionListChooseTable', $this->form_id);
-        return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $fields, $sortables, $sortable, $sort_order, 'sort', null, array(), null, 8, 'gdfg43tfdgdfgdrfgd', true), true);
+        return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $result_entries, $sortables, $sortable, $sort_order, 'sort', null, array(), null, 8, 'gdfg43tfdgdfgdrfgd', true), true);
     }
 
     /**

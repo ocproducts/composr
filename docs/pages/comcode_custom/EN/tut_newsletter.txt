@@ -78,11 +78,11 @@ You need to choose where to send it to. Usergroups/newsletters with no members (
 
 Before your newsletter is sent, you have an opportunity to preview it, so you can ensure it is correct. Look at your preview carefully, as it is easy to make minor typographical or layout mistakes that would affect the professionalism portrayed in these bulk e-mails. You will also be e-mailed the newsletter during the preview stage so that you can perform the ultimate check.
 
-If you have [page="_SEARCH:tut_configuration"]the Cron bridge scheduler enabled[/page], once you proceed to send the e-mails to individual members will be put in 'drip' queue, and mails will be sent out on a cycle. This works around server limits and avoids overloading the server.
+If you have [page="_SEARCH:tut_configuration"]the system scheduler configured[/page], once you proceed to send the e-mails to individual members will be put in 'drip' queue, and mails will be sent out on a cycle. This works around server limits and avoids overloading the server.
 
 [title="3"]Scheduling[/title]
 
-When composing your newsletter you will be given a choice to send it out at a scheduled time (if you have [page="_SEARCH:tut_configuration"]the Cron bridge scheduler enabled[/page]). This is particularly useful for companies that need to coordinate a marketing plan.
+When composing your newsletter you will be given a choice to send it out at a scheduled time (if you have [page="_SEARCH:tut_configuration"]the system scheduler configured[/page]). This is particularly useful for companies that need to coordinate a marketing plan.
 [/surround]
 
 [title="3"]Dual format e-mails (advanced)[/title]
@@ -119,7 +119,7 @@ If you want new template options here you must manually create new templates wit
 [*] Access this functionality from:
 Admin Zone > Tools > Newsletter > Manage automatic issues
 You will find you can add (and edit/delete) automatic issues from here.
-[*] This will take you to a new screen to define some basic parameters. You can choose whether this will be a periodic automatic issue or just a one-off automatic issue. Configure as appropriate. Periodic automatic issues require the [page="_SEARCH:tut_configuration"]Cron bridge scheduler[/page] to be configured. Click "Next" when done.
+[*] This will take you to a new screen to define some basic parameters. You can choose whether this will be a periodic automatic issue or just a one-off automatic issue. Configure as appropriate. Periodic automatic issues require the [page="_SEARCH:tut_configuration"]system scheduler[/page] to be configured. Click "Next" when done.
 [*] You will be taken to a form that lets you pick what content to include. This consists of a number of lines referencing content and categories, and you must re-arrange/delete lines as appropriate. For each content type supported, it shows only if there are less than 300 items that would be covered (configurable via the "What's New cut-off point" configuration option). If there are 300 or more, then it considers the content type too common to include and no items are shown. Click "Next" when done.
 [*] If you are sending a one-off then in the next step you get the opportunity to edit the newsletter before it is sent, to add additional information or otherwise customise existing information to make your newsletter is appropriate. For periodic automatic issues you can't do this, for obvious reasons. From now on the process is like sending a normal new issue -- you get to choose who to target to, see a preview, and confirm.
 [/list]

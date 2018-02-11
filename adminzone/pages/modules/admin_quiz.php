@@ -512,17 +512,17 @@ class Module_admin_quiz
         if (count($rows) == 0) {
             return inform_screen($this->title, do_lang_tempcode('NO_ENTRIES'));
         }
-        $fields = new Tempcode();
-        $_fields_title = array();
-        $_fields_title[] = do_lang_tempcode('DATE');
+        $result_entries = new Tempcode();
+        $_header_row = array();
+        $_header_row[] = do_lang_tempcode('DATE');
         if ($id === null) {
-            $_fields_title[] = do_lang_tempcode('NAME');
-            $_fields_title[] = do_lang_tempcode('TYPE');
+            $_header_row[] = do_lang_tempcode('NAME');
+            $_header_row[] = do_lang_tempcode('TYPE');
         } else {
-            $_fields_title[] = do_lang_tempcode('USERNAME');
+            $_header_row[] = do_lang_tempcode('USERNAME');
         }
-        $_fields_title[] = do_lang_tempcode('MARKS');
-        $fields_title = results_field_title($_fields_title, $sortables, 'sort', $sortable . ' ' . $sort_order);
+        $_header_row[] = do_lang_tempcode('MARKS');
+        $header_row = results_header_row($_header_row, $sortables, 'sort', $sortable . ' ' . $sort_order);
         foreach ($rows as $myrow) {
             $results_entry = array();
 
@@ -538,12 +538,12 @@ class Module_admin_quiz
             }
             $results_entry[] = ($myrow['q_type'] == 'SURVEY') ? '' : integer_format($myrow['q_results']);
 
-            $fields->attach(results_entry($results_entry, true));
+            $result_entries->attach(results_entry($results_entry, true));
         }
-        if ($fields->is_empty()) {
+        if ($result_entries->is_empty()) {
             inform_exit(do_lang_tempcode('NO_ENTRIES'));
         }
-        $results = results_table(do_lang_tempcode('QUIZ_RESULTS'), $start, 'start', $max, 'max', $max_rows, $fields_title, $fields, $sortables, $sortable, $sort_order, 'sort');
+        $results = results_table(do_lang_tempcode('QUIZ_RESULTS'), $start, 'start', $max, 'max', $max_rows, $header_row, $result_entries, $sortables, $sortable, $sort_order, 'sort');
 
         $tpl = do_template('QUIZ_RESULTS_SCREEN', array(
             '_GUID' => '3f38ac1b94fb4de8219b8f7108c7b0a3',

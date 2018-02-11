@@ -784,12 +784,22 @@ function do_backup_script()
 }
 
 /**
+ * Find which sites have expired.
+ *
+ * @return array List of expired sites
+ */
+function find_expired_sites()
+{
+    return $GLOBALS['SITE_DB']->query('SELECT s_codename,s_server FROM ' . get_table_prefix() . 'sites WHERE s_add_time<' . strval(time() - 60 * 60 * 24 * DEMONSTRATR_DEMO_LAST_DAYS) . ' AND ' . db_string_not_equal_to('s_codename', 'shareddemo'));
+}
+
+/**
  * Delete demo sites over DEMONSTRATR_DEMO_LAST_DAYS days old.
  */
 function demonstratr_delete_old_sites()
 {
     // Expire sites
-    $sites = $GLOBALS['SITE_DB']->query('SELECT s_codename,s_server FROM ' . get_table_prefix() . 'sites WHERE s_add_time<' . strval(time() - 60 * 60 * 24 * DEMONSTRATR_DEMO_LAST_DAYS) . ' AND ' . db_string_not_equal_to('s_codename', 'shareddemo'));
+    $sites = find_expired_sites();
     foreach ($sites as $site) {
         demonstratr_delete_site($site['s_server'], $site['s_codename'], true);
     }

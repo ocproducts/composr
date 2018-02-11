@@ -19,25 +19,34 @@
 class Hook_cron_user_sync
 {
     /**
-     * Run function for Cron hooks. Searches for tasks to perform.
+     * Get info from this hook.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     * @param  boolean $calculate_num_queued Calculate the number of items queued, if possible
+     * @return ?array Return a map of info about the hook (null: disabled)
      */
-    public function run()
+    public function info($last_run, $calculate_num_queued)
     {
-        if (get_value('user_sync_enabled') === '1') {
-            $_last_time = get_value('last_cron_user_sync', null, true);
-            $last_time = ($_last_time === null) ? null : intval($_last_time);
-            if ($last_time !== null) {
-                if ((time() - $last_time) < 60 * 60 * 24) {
-                    return;
-                }
-            }
-
-            $time = time();
-            set_value('last_cron_user_sync', strval($time), true);
-
-            require_code('user_sync');
-
-            user_sync__inbound($last_time);
+        if (get_value('user_sync_enabled') !== '1') {
+            return null;
         }
+
+        return array(
+            'label' => 'User synchronisation',
+            'num_queued' => null,
+            'minutes_between_runs' => 60 * 24,
+        );
+    }
+
+    /**
+     * Run function for system scheduler scripts. Searches for things to do. ->info(..., true) must be called before this method.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     */
+    public function run($last_run)
+    {
+        require_code('user_sync');
+
+        user_sync__inbound($last_time);
     }
 }

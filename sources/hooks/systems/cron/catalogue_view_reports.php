@@ -23,54 +23,76 @@
  */
 class Hook_cron_catalogue_view_reports
 {
+    protected $doing;
+
     /**
-     * Run function for Cron hooks. Searches for tasks to perform.
+     * Get info from this hook.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     * @param  boolean $calculate_num_queued Calculate the number of items queued, if possible
+     * @return ?array Return a map of info about the hook (null: disabled)
      */
-    public function run()
+    public function info($last_run, $calculate_num_queued)
     {
-        if (!addon_installed('catalogues')) {
-            return;
-        }
+        if ($calculate_num_queued) {
+            $time_now = time();
 
-        $time = time();
+            $done_reports = array('daily' => false, 'weekly' => false, 'monthly' => false, 'quarterly' => false);
 
-        $done_reports = array('daily' => false, 'weekly' => false, 'monthly' => false, 'quarterly' => false);
+            $catalogues = $GLOBALS['SITE_DB']->query('SELECT c_title,c_name,c_send_view_reports FROM ' . get_table_prefix() . 'catalogues WHERE ' . db_string_not_equal_to('c_send_view_reports', '') . ' AND ' . db_string_not_equal_to('c_send_view_reports', 'never'));
+            $this->doing = array();
+            foreach ($catalogues as $catalogue) {
+                switch ($catalogue['c_send_view_reports']) {
+                    case 'daily':
+                        $amount = 60 * 60 * 24;
+                        break;
+                    case 'weekly':
+                        $amount = 60 * 60 * 24 * 7;
+                        break;
+                    case 'monthly':
+                        $amount = 60 * 60 * 24 * 31;
+                        break;
+                    case 'quarterly':
+                        $amount = 60 * 60 * 24 * 93;
+                        break;
+                    default:
+                        $amount = null;
+                }
 
-        $catalogues = $GLOBALS['SITE_DB']->query('SELECT c_title,c_name,c_send_view_reports FROM ' . get_table_prefix() . 'catalogues WHERE ' . db_string_not_equal_to('c_send_view_reports', '') . ' AND ' . db_string_not_equal_to('c_send_view_reports', 'never'));
-        $doing = array();
-        foreach ($catalogues as $catalogue) {
-            switch ($catalogue['c_send_view_reports']) {
-                case 'daily':
-                    $amount = 60 * 60 * 24;
-                    break;
-                case 'weekly':
-                    $amount = 60 * 60 * 24 * 7;
-                    break;
-                case 'monthly':
-                    $amount = 60 * 60 * 24 * 31;
-                    break;
-                case 'quarterly':
-                    $amount = 60 * 60 * 24 * 93;
-                    break;
-                default:
-                    $amount = null;
-            }
+                if ($amount !== null) {
+                    $last_time = intval(get_value('last_catalogue_reports_' . $catalogue['c_send_view_reports'], null, true));
+                    if ($last_time <= ($time_now - $amount)) {
+                        // Mark done
+                        if (!$done_reports[$catalogue['c_send_view_reports']]) {
+                            set_value('last_catalogue_reports_' . $catalogue['c_send_view_reports'], strval($time_now), true);
+                            $done_reports[$catalogue['c_send_view_reports']] = true;
+                        }
 
-            if ($amount !== null) {
-                $last_time = intval(get_value('last_catalogue_reports_' . $catalogue['c_send_view_reports'], null, true));
-                if ($last_time <= ($time - $amount)) {
-                    // Mark done
-                    if (!$done_reports[$catalogue['c_send_view_reports']]) {
-                        set_value('last_catalogue_reports_' . $catalogue['c_send_view_reports'], strval($time), true);
-                        $done_reports[$catalogue['c_send_view_reports']] = true;
+                        $this->doing[] = $catalogue; // Mark as doing, rather than do immediately - so to avoid race conditions
                     }
-
-                    $doing[] = $catalogue; // Mark as doing, rather than do immediately - so to avoid race conditions
                 }
             }
+
+            $num_queued = count($this->doing);
+        } else {
+            $num_queued = null;
         }
 
-        if (count($doing) != 0) {
+        return array(
+            'label' => 'Send catalogue entry view-reports',
+            'num_queued' => $num_queued,
+            'minutes_between_runs' => 60 * 12,
+        );
+    }
+
+    /**
+     * Run function for system scheduler scripts. Searches for things to do. ->info(..., true) must be called before this method.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     */
+    public function run($last_run)
+    {
+        if (count($this->doing) != 0) {
             require_code('notifications');
             require_code('catalogues');
             require_lang('catalogues');
@@ -81,7 +103,7 @@ class Hook_cron_catalogue_view_reports
         }
 
         // Now for the intensive part
-        foreach ($doing as $catalogue) {
+        foreach ($this->doing as $catalogue) {
             $start = 0;
             do {
                 // So, we find all the entries in their catalogue, and group them by submitters

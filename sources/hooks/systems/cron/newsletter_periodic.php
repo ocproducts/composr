@@ -24,9 +24,41 @@
 class Hook_cron_newsletter_periodic
 {
     /**
-     * Run function for Cron hooks. Searches for tasks to perform.
+     * Get info from this hook.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     * @param  boolean $calculate_num_queued Calculate the number of items queued, if possible
+     * @return ?array Return a map of info about the hook (null: disabled)
      */
-    public function run()
+    public function info($last_run, $calculate_num_queued)
+    {
+        if ($calculate_num_queued) {
+            $num_queued = 0;
+
+            $periodic_rows = $GLOBALS['SITE_DB']->query_select('newsletter_periodic', array('*'));
+            foreach ($periodic_rows as $periodic_row) {
+                $last_sent = $this->newsletter_periodic_handle($periodic_row, true);
+                if ($last_sent !== null) {
+                    $num_queued++;
+                }
+            }
+        } else {
+            $num_queued = null;
+        }
+
+        return array(
+            'label' => 'Send periodic newsletters',
+            'num_queued' => $num_queued,
+            'minutes_between_runs' => 0,
+        );
+    }
+
+    /**
+     * Run function for system scheduler scripts. Searches for things to do. ->info(..., true) must be called before this method.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     */
+    public function run($last_run)
     {
         // This hook looks for a 'periodic newsletter', which is a 'new content'
         // newsletter that should be sent out automatically.
@@ -46,9 +78,10 @@ class Hook_cron_newsletter_periodic
      * Send a periodic newsletter.
      *
      * @param  array $periodic_row Details of periodic newsletter
+     * @param  boolean $test_run See if this needs to run
      * @return ?TIME Time was sent (null: not sent)
      */
-    public function newsletter_periodic_handle($periodic_row)
+    public function newsletter_periodic_handle($periodic_row, $test_run = false)
     {
         require_code('newsletter');
 
@@ -109,13 +142,15 @@ class Hook_cron_newsletter_periodic
             return null;
         }
 
-        $subject = $periodic_row['np_subject'] . '-' . get_timezoned_date_time(time(), false, false, $GLOBALS['FORUM_DRIVER']->get_guest_id());
+        $time_now = time();
 
-        $time = time();
+        if (!$test_run) {
+            $subject = $periodic_row['np_subject'] . '-' . get_timezoned_date_time(time(), false, false, $GLOBALS['FORUM_DRIVER']->get_guest_id());
 
-        require_code('newsletter');
-        send_newsletter($message, $subject, $lang, unserialize($periodic_row['np_send_details']), $periodic_row['np_html_only'], $periodic_row['np_from_email'], $periodic_row['np_from_name'], $periodic_row['np_priority'], $periodic_row['np_csv_data'], $periodic_row['np_template']);
+            require_code('newsletter');
+            send_newsletter($message, $subject, $lang, unserialize($periodic_row['np_send_details']), $periodic_row['np_html_only'], $periodic_row['np_from_email'], $periodic_row['np_from_name'], $periodic_row['np_priority'], $periodic_row['np_csv_data'], $periodic_row['np_template']);
+        }
 
-        return $time;
+        return $time_now;
     }
 }

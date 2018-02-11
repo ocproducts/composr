@@ -164,8 +164,8 @@ class Module_admin_email_log
             log_hack_attack_and_exit('ORDERBY_HACK');
         }
         require_code('templates_results_table');
-        $fields_title = results_field_title(array(do_lang_tempcode('DATE_TIME'), do_lang_tempcode('FROM'), do_lang_tempcode('TO'), do_lang_tempcode('SUBJECT')), $sortables, 'sort', $sortable . ' ' . $sort_order);
-        $fields = new Tempcode();
+        $header_row = results_header_row(array(do_lang_tempcode('DATE_TIME'), do_lang_tempcode('FROM'), do_lang_tempcode('TO'), do_lang_tempcode('SUBJECT')), $sortables, 'sort', $sortable . ' ' . $sort_order);
+        $result_entries = new Tempcode();
         $rows = $GLOBALS['SITE_DB']->query_select('logged_mail_messages', array('*'), array(), 'ORDER BY  ' . $sortable . ' ' . $sort_order, $max, $start);
         foreach ($rows as $row) {
             $queued = $row['m_queued'] == 1;
@@ -211,7 +211,7 @@ class Module_admin_email_log
                 $to_name[0] = get_site_name();
             }
 
-            $fields->attach(results_entry(array(
+            $result_entries->attach(results_entry(array(
                 $date_time_link,
                 hyperlink($from_url, $from_name, false, true),
                 hyperlink($to_url, $to_name[0], false, true),
@@ -219,7 +219,7 @@ class Module_admin_email_log
             ), false));
         }
         $max_rows = $GLOBALS['SITE_DB']->query_select_value('logged_mail_messages', 'COUNT(*)');
-        $results_table = results_table(do_lang_tempcode('EMAIL_LOG'), $start, 'start', $max, 'max', $max_rows, $fields_title, $fields, $sortables, $sortable, $sort_order, 'sort', new Tempcode());
+        $results_table = results_table(do_lang_tempcode('EMAIL_LOG'), $start, 'start', $max, 'max', $max_rows, $header_row, $result_entries, $sortables, $sortable, $sort_order, 'sort', new Tempcode());
 
         $mass_delete_url = build_url(array('page' => '_SELF', 'type' => 'mass_delete'), '_SELF');
         $mass_send_url = build_url(array('page' => '_SELF', 'type' => 'mass_send'), '_SELF');

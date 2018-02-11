@@ -24,14 +24,35 @@
 class Hook_cron_calendar
 {
     /**
-     * Run function for Cron hooks. Searches for tasks to perform.
+     * Get info from this hook.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     * @param  boolean $calculate_num_queued Calculate the number of items queued, if possible
+     * @return ?array Return a map of info about the hook (null: disabled)
      */
-    public function run()
+    public function info($last_run, $calculate_num_queued)
     {
-        if (!addon_installed('calendar')) {
-            return;
+        if ($calculate_num_queued) {
+            $sql = 'SELECT COUNT(*) FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'calendar_jobs j LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'calendar_events e ON e.id=j.j_event_id LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'calendar_reminders n ON n.id=j.j_reminder_id WHERE validated=1 AND j_time<' . strval(time());
+            $num_queued = $GLOBALS['SITE_DB']->query_value_if_there($sql);
+        } else {
+            $num_queued = null;
         }
 
+        return array(
+            'label' => 'Send calendar reminders',
+            'num_queued' => $num_queued,
+            'minutes_between_runs' => 0,
+        );
+    }
+
+    /**
+     * Run function for system scheduler scripts. Searches for things to do. ->info(..., true) must be called before this method.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     */
+    public function run($last_run)
+    {
         require_code('calendar');
         require_lang('calendar');
         require_code('notifications');

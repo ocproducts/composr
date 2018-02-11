@@ -24,67 +24,87 @@
 class Hook_cron_mail_queue
 {
     /**
-     * Run function for Cron hooks. Searches for tasks to perform.
+     * Get info from this hook.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     * @param  boolean $calculate_num_queued Calculate the number of items queued, if possible
+     * @return ?array Return a map of info about the hook (null: disabled)
      */
-    public function run()
+    public function info($last_run, $calculate_num_queued)
     {
-        if (get_option('mail_queue_debug') == '0') {
-            $mails = $GLOBALS['SITE_DB']->query_select(
-                'logged_mail_messages',
-                array('*'),
-                array('m_queued' => 1),
-                '',
-                100
-            );
+        if (get_option('mail_queue_debug') == '1') {
+            return null;
+        }
 
-            if (count($mails) != 0) {
-                require_code('mail');
+        return array(
+            'label' => 'Send queued e-mails',
+            'num_queued' => $calculate_num_queued ? $GLOBALS['SITE_DB']->query_select_value('logged_mail_messages', 'COUNT(*)', array('m_queued' => 1)) : null,
+            'minutes_between_runs' => 0,
+        );
+    }
 
-                foreach ($mails as $row) {
-                    $subject = $row['m_subject'];
-                    $message = $row['m_message'];
-                    $to_email = @unserialize($row['m_to_email']);
-                    $extra_cc_addresses = ($row['m_extra_cc_addresses'] == '') ? array() : @unserialize($row['m_extra_cc_addresses']);
-                    $extra_bcc_addresses = ($row['m_extra_bcc_addresses'] == '') ? array() : @unserialize($row['m_extra_bcc_addresses']);
-                    $to_name = @unserialize($row['m_to_name']);
-                    $from_email = $row['m_from_email'];
-                    $from_name = $row['m_from_name'];
-                    $join_time = $row['m_join_time'];
+    /**
+     * Run function for system scheduler scripts. Searches for things to do. ->info(..., true) must be called before this method.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     */
+    public function run($last_run)
+    {
+        $mails = $GLOBALS['SITE_DB']->query_select(
+            'logged_mail_messages',
+            array('*'),
+            array('m_queued' => 1),
+            '',
+            intval(get_option('max_queued_mails_per_cron_cycle'))
+        );
 
-                    if ((!is_array($to_email)) && ($to_email !== null)) {
-                        continue;
-                    }
+        if (count($mails) != 0) {
+            require_code('mail');
 
-                    $result_ob = dispatch_mail(
-                        $subject,
-                        $message,
-                        $to_email,
-                        $to_name,
-                        $from_email,
-                        $from_name,
-                        array(
-                            'priority' => $row['m_priority'],
-                            'attachments' => unserialize($row['m_attachments']),
-                            'no_cc' => ($row['m_no_cc'] == 1),
-                            'as' => $row['m_as'],
-                            'as_admin' => ($row['m_as_admin'] == 1),
-                            'in_html' => ($row['m_in_html'] == 1),
-                            'coming_out_of_queue' => true,
-                            'mail_template' => $row['m_template'],
-                            'extra_cc_addresses' => $extra_cc_addresses,
-                            'extra_bcc_addresses' => $extra_bcc_addresses,
-                            'require_recipient_valid_since' => $join_time,
-                        )
-                    );
-                    $success = $result_ob->worked;
+            foreach ($mails as $row) {
+                $subject = $row['m_subject'];
+                $message = $row['m_message'];
+                $to_email = @unserialize($row['m_to_email']);
+                $extra_cc_addresses = ($row['m_extra_cc_addresses'] == '') ? array() : @unserialize($row['m_extra_cc_addresses']);
+                $extra_bcc_addresses = ($row['m_extra_bcc_addresses'] == '') ? array() : @unserialize($row['m_extra_bcc_addresses']);
+                $to_name = @unserialize($row['m_to_name']);
+                $from_email = $row['m_from_email'];
+                $from_name = $row['m_from_name'];
+                $join_time = $row['m_join_time'];
 
-                    if ($success) {
-                        $GLOBALS['SITE_DB']->query_update('logged_mail_messages', array('m_queued' => 0), array('id' => $row['id']), '', 1);
-                    }
+                if ((!is_array($to_email)) && ($to_email !== null)) {
+                    continue;
                 }
 
-                delete_cache_entry('main_staff_checklist');
+                $result_ob = dispatch_mail(
+                    $subject,
+                    $message,
+                    $to_email,
+                    $to_name,
+                    $from_email,
+                    $from_name,
+                    array(
+                        'priority' => $row['m_priority'],
+                        'attachments' => unserialize($row['m_attachments']),
+                        'no_cc' => ($row['m_no_cc'] == 1),
+                        'as' => $row['m_as'],
+                        'as_admin' => ($row['m_as_admin'] == 1),
+                        'in_html' => ($row['m_in_html'] == 1),
+                        'coming_out_of_queue' => true,
+                        'mail_template' => $row['m_template'],
+                        'extra_cc_addresses' => $extra_cc_addresses,
+                        'extra_bcc_addresses' => $extra_bcc_addresses,
+                        'require_recipient_valid_since' => $join_time,
+                    )
+                );
+                $success = $result_ob->worked;
+
+                if ($success) {
+                    $GLOBALS['SITE_DB']->query_update('logged_mail_messages', array('m_queued' => 0), array('id' => $row['id']), '', 1);
+                }
             }
+
+            delete_cache_entry('main_staff_checklist');
         }
     }
 }

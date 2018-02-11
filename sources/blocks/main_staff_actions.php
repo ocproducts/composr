@@ -120,7 +120,7 @@ class Block_main_staff_actions
         inform_non_canonical_parameter('sa_sort');
 
         require_code('templates_results_table');
-        $fields_title = results_field_title(array(
+        $header_row = results_header_row(array(
             do_lang_tempcode('USERNAME'),
             /* do_lang_tempcode('IP_ADDRESS'),*/
             do_lang_tempcode('DATE_TIME'),
@@ -131,7 +131,7 @@ class Block_main_staff_actions
 
         $max_rows = $max; // Don't want to encourage pagination (there's a better module they can go to) $GLOBALS['SITE_DB']->query_select_value('actionlogs','COUNT(*)');
         $rows = $GLOBALS['SITE_DB']->query_select('actionlogs', array('the_type', 'param_a', 'param_b', 'member_id', 'ip', 'date_and_time'), array(), 'ORDER BY ' . $sortable . ' ' . $sort_order, $max, $start);
-        $fields = new Tempcode();
+        $result_entries = new Tempcode();
         foreach ($rows as $myrow) {
             $username = $GLOBALS['FORUM_DRIVER']->get_username($myrow['member_id']);
 
@@ -164,10 +164,10 @@ class Block_main_staff_actions
 
             $ip = tpl_crop_text_mouse_over($myrow['ip'], 12);
 
-            $fields->attach(results_entry(array(escape_html($username)/*Not enough space ,$ip*/, escape_html($date), $type_str, $_a, $_b), false));
+            $result_entries->attach(results_entry(array(escape_html($username)/*Not enough space ,$ip*/, escape_html($date), $type_str, $_a, $_b), false));
         }
 
-        $content = results_table(do_lang_tempcode('ACTIONS'), $start, 'sa_start', $max, 'sa_max', $max_rows, $fields_title, $fields, $sortables, $sortable, $sort_order, 'sa_sort', new Tempcode(), array(), null, 5);
+        $content = results_table(do_lang_tempcode('ACTIONS'), $start, 'sa_start', $max, 'sa_max', $max_rows, $header_row, $result_entries, $sortables, $sortable, $sort_order, 'sa_sort', new Tempcode(), array(), null, 5);
 
         // Render block wrapper template around actions table
         return do_template('BLOCK_MAIN_STAFF_ACTIONS', array(

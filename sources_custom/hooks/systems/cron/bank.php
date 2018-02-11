@@ -18,23 +18,45 @@
  */
 class Hook_cron_bank
 {
+    protected $to_be_restored;
+
     /**
-     * Run function for Cron hooks. Searches for tasks to perform.
+     * Get info from this hook.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     * @param  boolean $calculate_num_queued Calculate the number of items queued, if possible
+     * @return ?array Return a map of info about the hook (null: disabled)
      */
-    public function run()
+    public function info($last_run, $calculate_num_queued)
     {
         if (!$GLOBALS['SITE_DB']->table_exists('bank')) {
-            return;
+            return null;
         }
 
-        $to_be_restored = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'bank WHERE add_time<' . strval(time() - (30 * 24 * 60 * 60)), null, 0, true);
-        if ($to_be_restored === null) {
-            return;
+        if ($calculate_num_queued) {
+            $this->to_be_restored = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'bank WHERE add_time<' . strval(time() - (30 * 24 * 60 * 60)));
+            $num_queued = count($this->to_be_restored);
+        } else {
+            $num_queued = null;
         }
 
+        return array(
+            'label' => 'Bankr',
+            'num_queued' => $num_queued,
+            'minutes_between_runs' => 60,
+        );
+    }
+
+    /**
+     * Run function for system scheduler scripts. Searches for things to do. ->info(..., true) must be called before this method.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     */
+    public function run($last_run)
+    {
         $bank_dividend = intval(get_option('bank_dividend'));
 
-        foreach ($to_be_restored as $deposit) {
+        foreach ($this->to_be_restored as $deposit) {
             if ($deposit['amount'] > 0) {
                 require_code('points2');
                 require_lang('bank');

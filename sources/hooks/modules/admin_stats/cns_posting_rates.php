@@ -155,12 +155,12 @@ class Hook_admin_stats_cns_posting_rates
         $sortables = array();
 
         require_code('templates_results_table');
-        $fields_title = results_field_title(array(do_lang_tempcode('DATE'), do_lang_tempcode('COUNT_TOTAL')), $sortables);
-        $fields = new Tempcode();
+        $header_row = results_header_row(array(do_lang_tempcode('DATE'), do_lang_tempcode('COUNT_TOTAL')), $sortables);
+        $result_entries = new Tempcode();
         $real_data = array();
         $i = 0;
         foreach ($posting_rates as $date => $value) {
-            $fields->attach(results_entry(array($date, integer_format($value)), true));
+            $result_entries->attach(results_entry(array($date, integer_format($value)), true));
 
             $real_data[] = array(
                 'Date/Time' => $date,
@@ -169,7 +169,7 @@ class Hook_admin_stats_cns_posting_rates
 
             $i++;
         }
-        $list = results_table(do_lang_tempcode('POSTING_RATES'), $start, 'start', $max, 'max', count($posting_rates), $fields_title, $fields, $sortables, '', '', 'sort', new Tempcode());
+        $list = results_table(do_lang_tempcode('POSTING_RATES'), $start, 'start', $max, 'max', count($posting_rates), $header_row, $result_entries, $sortables, '', '', 'sort', new Tempcode());
         if ($csv) {
             make_csv($real_data, 'posting_rates.csv');
         }

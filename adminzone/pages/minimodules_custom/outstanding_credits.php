@@ -73,7 +73,7 @@ if ($field_id !== null) {
     }
 
     require_code('templates_results_table');
-    $fields_title = results_field_title(array($uname, $ucredits, $ujoin, $ulast), $sortables, 'sort', $sortable . ' ' . $sort_order);
+    $header_row = results_header_row(array($uname, $ucredits, $ujoin, $ulast), $sortables, 'sort', $sortable . ' ' . $sort_order);
     $fields_values = new Tempcode();
 
     $sql = 'SELECT a.m_username AS m_username, a.m_join_time AS m_join_time, a.m_last_visit_time AS m_last_visit_time, b.mf_member_id AS mf_member_id, field_' . $field_id . ' FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_member_custom_fields b JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members a ON a.id=b.mf_member_id WHERE field_' . strval($field_id) . '>0 ORDER BY ' . $orderby . ' ' . $sort_order;
@@ -115,7 +115,7 @@ if ($field_id !== null) {
         make_csv($csv_data, 'unspent_credits.csv');
     }
     $msg = do_lang_tempcode('TOTAL_UNSPENT_SUPPORT_CREDITS', strval($total));
-    $list = results_table(do_lang_tempcode('UNSPENT_SUPPORT_CREDITS'), $start, 'start', $max, 'max', $i, $fields_title, $fields_values, $sortables, $sortable, $sort_order, 'sort', $msg);
+    $list = results_table(do_lang_tempcode('UNSPENT_SUPPORT_CREDITS'), $start, 'start', $max, 'max', $i, $header_row, $fields_values, $sortables, $sortable, $sort_order, 'sort', $msg);
 
     $tpl = do_template('SUPPORT_CREDITS_OUTSTANDING_SCREEN', array('_GUID' => '71dadee5485e17a56907d45fa2c53f23', 'TITLE' => $title, 'DATA' => $list));
     $tpl->evaluate_echo();

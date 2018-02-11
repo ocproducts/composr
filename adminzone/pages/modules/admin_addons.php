@@ -400,11 +400,13 @@ class Module_admin_addons
                 }
 
                 $actions = new Tempcode();
-                $actions->attach(do_template('COLUMNED_TABLE_ACTION_UNINSTALL_ENTRY', array(
+                $actions->attach(do_template('COLUMNED_TABLE_ACTION', array(
                     '_GUID' => '5a65c9aa87291ecfe46f75e9b2949246',
-                    'GET' => true,
                     'NAME' => $name,
                     'URL' => build_url(array('page' => '_SELF', 'type' => 'addon_uninstall', 'name' => $name), '_SELF'),
+                    'ACTION_TITLE' => do_lang_tempcode('UNINSTALL'),
+                    'ICON' => 'admin/delete2',
+                    'GET' => true,
                 )));
                 $updated = array_key_exists($name, $updated_addons_arr);
                 $status = do_lang_tempcode($updated ? 'STATUS_OUTOFDATE' : 'STATUS_INSTALLED');
@@ -460,18 +462,20 @@ class Module_admin_addons
 
                 if ($addon_tpl === null) {
                     $actions = new Tempcode();
-                    $actions->attach(do_template('COLUMNED_TABLE_ACTION_INSTALL_ENTRY', array(
+                    $actions->attach(do_template('COLUMNED_TABLE_ACTION', array(
                         '_GUID' => 'e6e2bdac62c0d3afcd5251b3d525a1c9',
-                        'GET' => true,
                         'NAME' => $addon['name'],
-                        'HIDDEN' => '',
                         'URL' => build_url(array('page' => '_SELF', 'type' => 'addon_install', 'file' => $filename), '_SELF'),
-                    )));
-                    $actions->attach(do_template('COLUMNED_TABLE_ACTION_DELETE_ENTRY', array(
+                        'ACTION_TITLE' => do_lang_tempcode('INSTALL'),
+                        'ICON' => 'admin/install',
                         'GET' => true,
+                    )));
+                    $actions->attach(do_template('COLUMNED_TABLE_ACTION', array(
                         'NAME' => $addon['name'],
-                        'HIDDEN' => '',
                         'URL' => build_url(array('page' => '_SELF', 'type' => 'addon_tar_delete', 'file' => $filename), '_SELF'),
+                        'ACTION_TITLE' => do_lang_tempcode('DELETE'),
+                        'ICON' => 'admin/delete',
+                        'GET' => true,
                     )));
                     $status = do_lang_tempcode('STATUS_NOT_INSTALLED');
                     $description = $addon['description'];
@@ -1424,20 +1428,44 @@ class Module_admin_addons
                     $hidden = new Tempcode();
                     $hidden->attach(form_input_hidden('zone', $zone));
                     $hidden->attach(form_input_hidden('module', $module));
-                    $actions->attach(do_template('COLUMNED_TABLE_ACTION_UNINSTALL_ENTRY', array('_GUID' => '331afd26f5e62a6a4cdc4e2c520a4114', 'HIDDEN' => $hidden, 'NAME' => $module, 'URL' => build_url(array('page' => '_SELF', 'type' => 'uninstall'), '_SELF'))));
+                    $actions->attach(do_template('COLUMNED_TABLE_ACTION', array(
+                        '_GUID' => '331afd26f5e62a6a4cdc4e2c520a4114',
+                        'HIDDEN' => $hidden,
+                        'NAME' => $module,
+                        'URL' => build_url(array('page' => '_SELF', 'type' => 'uninstall'), '_SELF'),
+                        'ACTION_TITLE' => do_lang_tempcode('UNINSTALL'),
+                        'ICON' => 'admin/delete2',
+                        'GET' => false,
+                    )));
                 }
                 if ($row[$prefix . '_version'] < $version) {
                     $status = do_lang_tempcode('STATUS_TO_UPGRADE');
                     $hidden = new Tempcode();
                     $hidden->attach(form_input_hidden('zone', $zone));
                     $hidden->attach(form_input_hidden('module', $module));
-                    $actions->attach(do_template('COLUMNED_TABLE_ACTION_UPGRADE_ENTRY', array('_GUID' => 'e5d012cb8c839e0e869f1edfa008dacd', 'HIDDEN' => $hidden, 'NAME' => $module, 'URL' => build_url(array('page' => '_SELF', 'type' => 'upgrade'), '_SELF'))));
+                    $actions->attach(do_template('COLUMNED_TABLE_ACTION', array(
+                        '_GUID' => 'e5d012cb8c839e0e869f1edfa008dacd',
+                        'HIDDEN' => $hidden,
+                        'NAME' => $module,
+                        'URL' => build_url(array('page' => '_SELF', 'type' => 'upgrade'), '_SELF'),
+                        'ACTION_TITLE' => do_lang_tempcode('UPGRADE'),
+                        'ICON' => 'admin/upgrade',
+                        'GET' => false,
+                    )));
                 } elseif (($hack_version !== null) && ($row[$prefix . '_hack_version'] < $hack_version)) {
                     $status = do_lang_tempcode('STATUS_TO_HACK');
                     $hidden = new Tempcode();
                     $hidden->attach(form_input_hidden('zone', $zone));
                     $hidden->attach(form_input_hidden('module', $module));
-                    $actions->attach(do_template('COLUMNED_TABLE_ACTION_UPGRADE_ENTRY', array('_GUID' => '42c4473bf31dfd329e921e443ccc2ec3', 'HIDDEN' => $hidden, 'NAME' => $module, 'URL' => build_url(array('page' => '_SELF', 'type' => 'upgrade'), '_SELF'))));
+                    $actions->attach(do_template('COLUMNED_TABLE_ACTION', array(
+                        '_GUID' => '42c4473bf31dfd329e921e443ccc2ec3',
+                        'HIDDEN' => $hidden,
+                        'NAME' => $module,
+                        'URL' => build_url(array('page' => '_SELF', 'type' => 'upgrade'), '_SELF'),
+                        'ACTION_TITLE' => do_lang_tempcode('UPGRADE'),
+                        'ICON' => 'admin/upgrade',
+                        'GET' => false,
+                    )));
                 } else {
                     $status = do_lang_tempcode('STATUS_CURRENT');
                 }
@@ -1445,13 +1473,29 @@ class Module_admin_addons
                     $hidden = new Tempcode();
                     $hidden->attach(form_input_hidden('zone', $zone));
                     $hidden->attach(form_input_hidden('module', $module));
-                    $actions->attach(do_template('COLUMNED_TABLE_ACTION_REINSTALL_ENTRY', array('_GUID' => 'c2d820af4b9a2f8633f6f5a4e3de76bc', 'HIDDEN' => $hidden, 'NAME' => $module, 'URL' => build_url(array('page' => '_SELF', 'type' => 'reinstall'), '_SELF'))));
+                    $actions->attach(do_template('COLUMNED_TABLE_ACTION', array(
+                        '_GUID' => 'c2d820af4b9a2f8633f6f5a4e3de76bc',
+                        'HIDDEN' => $hidden,
+                        'NAME' => $module,
+                        'URL' => build_url(array('page' => '_SELF', 'type' => 'reinstall'), '_SELF'),
+                        'ACTION_TITLE' => do_lang_tempcode('REINSTALL'),
+                        'ICON' => 'admin/reinstall',
+                        'GET' => false,
+                    )));
                 }
             } else {
                 $hidden = new Tempcode();
                 $hidden->attach(form_input_hidden('zone', $zone));
                 $hidden->attach(form_input_hidden('module', $module));
-                $actions->attach(do_template('COLUMNED_TABLE_ACTION_INSTALL_ENTRY', array('_GUID' => '6b438e07cfe154afc21439479fd76978', 'HIDDEN' => $hidden, 'NAME' => $module, 'URL' => build_url(array('page' => '_SELF', 'type' => 'reinstall'), '_SELF'))));
+                $actions->attach(do_template('COLUMNED_TABLE_ACTION', array(
+                    '_GUID' => '6b438e07cfe154afc21439479fd76978',
+                    'HIDDEN' => $hidden,
+                    'NAME' => $module,
+                    'URL' => build_url(array('page' => '_SELF', 'type' => 'reinstall'), '_SELF'),
+                    'ACTION_TITLE' => do_lang_tempcode('INSTALL'),
+                    'ICON' => 'admin/install',
+                    'GET' => false,
+                )));
             }
 
             if ($hacked_by === null) {

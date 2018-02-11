@@ -203,7 +203,7 @@ class Module_admin_security
 
         require_code('templates_results_table');
 
-        $fields_title = results_field_title(array(do_lang_tempcode('USERNAME'), do_lang_tempcode('DATE_TIME'), do_lang_tempcode('RISK'), do_lang_tempcode('IP_ADDRESS')), $sortables, 'failed_sort', $_sortable . ' ' . $sort_order);
+        $header_row = results_header_row(array(do_lang_tempcode('USERNAME'), do_lang_tempcode('DATE_TIME'), do_lang_tempcode('RISK'), do_lang_tempcode('IP_ADDRESS')), $sortables, 'failed_sort', $_sortable . ' ' . $sort_order);
 
         $member_id = post_param_integer('member_id', null);
         $map = ($member_id !== null) ? array('failed_account' => $GLOBALS['FORUM_DRIVER']->get_username($member_id, false, USERNAME_DEFAULT_NULL)) : null;
@@ -212,14 +212,14 @@ class Module_admin_security
 
         $rows = $GLOBALS['SITE_DB']->query_select('failedlogins', array('*'), $map, 'ORDER BY ' . $_sortable . ' ' . $sort_order, $max, $start);
 
-        $fields = new Tempcode();
+        $result_entries = new Tempcode();
         foreach ($rows as $row) {
             $date = get_timezoned_date_time($row['date_and_time']);
             $lookup_url = build_url(array('page' => 'admin_lookup', 'param' => $row['ip']), '_SELF');
-            $fields->attach(results_entry(array($row['failed_account'], $date, hyperlink($lookup_url, $row['ip'], false, true)), true));
+            $result_entries->attach(results_entry(array($row['failed_account'], $date, hyperlink($lookup_url, $row['ip'], false, true)), true));
         }
 
-        $failed_logins = results_table(do_lang_tempcode('FAILED_LOGINS'), $start, 'failed_start', $max, 'failed_max', $max_rows, $fields_title, $fields, $sortables, $_sortable, $sort_order, 'failed_sort', new Tempcode());
+        $failed_logins = results_table(do_lang_tempcode('FAILED_LOGINS'), $start, 'failed_start', $max, 'failed_max', $max_rows, $header_row, $result_entries, $sortables, $_sortable, $sort_order, 'failed_sort', new Tempcode());
 
         // Hack-attacks...
 

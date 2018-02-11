@@ -227,11 +227,11 @@ class Module_admin_actionlog
         }
 
         require_code('templates_results_table');
-        $field_titles = array(do_lang_tempcode('USERNAME'), do_lang_tempcode('DATE_TIME'), do_lang_tempcode('ACTION'), do_lang_tempcode('PARAMETER_A'), do_lang_tempcode('PARAMETER_B'));
+        $_header_row = array(do_lang_tempcode('USERNAME'), do_lang_tempcode('DATE_TIME'), do_lang_tempcode('ACTION'), do_lang_tempcode('PARAMETER_A'), do_lang_tempcode('PARAMETER_B'));
         if (addon_installed('securitylogging')) {
-            $field_titles[] = do_lang_tempcode('BANNED');
+            $_header_row[] = do_lang_tempcode('BANNED');
         }
-        $fields_title = results_field_title($field_titles, $sortables, 'sort', $sortable . ' ' . $sort_order);
+        $header_row = results_header_row($_header_row, $sortables, 'sort', $sortable . ' ' . $sort_order);
 
         $filter_to_type = get_param_string('to_type', '');
         $filter_param_a = get_param_string('param_a', '', INPUT_FILTER_GET_COMPLEX);
@@ -314,7 +314,7 @@ class Module_admin_actionlog
 
         require_code('actionlog');
 
-        $fields = new Tempcode();
+        $result_entries = new Tempcode();
         $pos = 0;
         while ((count($rows) != 0) && (($pos - $start) < $max)) {
             $best = 0; // Initialise type to integer
@@ -382,13 +382,13 @@ class Module_admin_actionlog
                     $result_entry[] = $banned;
                 }
 
-                $fields->attach(results_entry($result_entry, true));
+                $result_entries->attach(results_entry($result_entry, true));
             }
 
             unset($rows[$best]);
             $pos++;
         }
-        $table = results_table(do_lang_tempcode('ACTIONS'), $start, 'start', $max, 'max', $max_rows, $fields_title, $fields, $sortables, $sortable, $sort_order, 'sort');
+        $table = results_table(do_lang_tempcode('ACTIONS'), $start, 'start', $max, 'max', $max_rows, $header_row, $result_entries, $sortables, $sortable, $sort_order, 'sort');
 
         $tpl = do_template('ACTIONLOGS_SCREEN', array('_GUID' => 'd75c813e372c3ca8d1204609e54c9d65', 'TABLE' => $table, 'TITLE' => $this->title));
 

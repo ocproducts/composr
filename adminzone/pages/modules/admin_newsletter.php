@@ -1074,7 +1074,7 @@ class Module_admin_newsletter extends Standard_crud_module
 
         // Some general details of how to send
         if ((addon_installed('calendar')) && ($periodic_action == 'none') && (cron_installed())) {
-            $fields->attach(form_input_date__scheduler(do_lang_tempcode('DEFER_TIME'), do_lang_tempcode('DESCRIPTION_DEFER_TIME'), 'schedule', false, true, true));
+            $fields->attach(form_input_date__cron(do_lang_tempcode('DEFER_TIME'), do_lang_tempcode('DESCRIPTION_DEFER_TIME'), 'schedule', false, true, true));
         }
         $from_email = post_param_string('from_email', get_option('staff_address'));
         if ($defaults !== null) {
@@ -1670,13 +1670,13 @@ class Module_admin_newsletter extends Standard_crud_module
             log_hack_attack_and_exit('ORDERBY_HACK');
         }
 
-        $header_row = results_field_title(array(
+        $header_row = results_header_row(array(
             do_lang_tempcode('TITLE'),
             do_lang_tempcode('COUNT_MEMBERS'),
             do_lang_tempcode('ACTIONS'),
         ), $sortables, 'sort', $sortable . ' ' . $sort_order);
 
-        $fields = new Tempcode();
+        $result_entries = new Tempcode();
 
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering);
         foreach ($rows as $row) {
@@ -1684,10 +1684,10 @@ class Module_admin_newsletter extends Standard_crud_module
 
             $num_readers = $GLOBALS['SITE_DB']->query_select_value('newsletter_subscribers n JOIN ' . get_table_prefix() . 'newsletter_subscribe s ON n.id=s.newsletter_id', 'COUNT(*)', array('code_confirm' => 0));
 
-            $fields->attach(results_entry(array(get_translated_text($row['title']), integer_format($num_readers), protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, false, do_lang('EDIT') . ' #' . strval($row['id'])))), true));
+            $result_entries->attach(results_entry(array(get_translated_text($row['title']), integer_format($num_readers), protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, false, do_lang('EDIT') . ' #' . strval($row['id'])))), true));
         }
 
-        return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $fields, $sortables, $sortable, $sort_order), false);
+        return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $result_entries, $sortables, $sortable, $sort_order), false);
     }
 
     /**

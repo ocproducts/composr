@@ -127,18 +127,18 @@ class Hook_admin_stats_cns_demographics
         $sortables = array();
 
         require_code('templates_results_table');
-        $fields_title = results_field_title(array(do_lang_tempcode('AGE'), do_lang_tempcode('COUNT_TOTAL')), $sortables);
-        $fields = new Tempcode();
+        $header_row = results_header_row(array(do_lang_tempcode('AGE'), do_lang_tempcode('COUNT_TOTAL')), $sortables);
+        $result_entries = new Tempcode();
         $i = 0;
         foreach ($demographics as $_age => $value) {
             if (is_integer($_age)) {
                 $_age = strval($_age);
             }
             $percent = round(100.0 * floatval($value) / floatval(count($rows)), 2);
-            $fields->attach(results_entry(array($_age, integer_format($value) . ' (' . float_format($percent) . '%)'), true));
+            $result_entries->attach(results_entry(array($_age, integer_format($value) . ' (' . float_format($percent) . '%)'), true));
             $i++;
         }
-        $list = results_table(do_lang_tempcode('DEMOGRAPHICS'), $start, 'start', $max, 'max', count($demographics), $fields_title, $fields, $sortables, '', '', 'sort', new Tempcode());
+        $list = results_table(do_lang_tempcode('DEMOGRAPHICS'), $start, 'start', $max, 'max', count($demographics), $header_row, $result_entries, $sortables, '', '', 'sort', new Tempcode());
 
         $output = create_bar_chart($demographics, do_lang('AGE'), do_lang('COUNT_TOTAL'), '', '');
         $ob->save_graph('Global-Demographics', $output);

@@ -71,7 +71,7 @@ class Hook_ecommerce_community_billboard
 
                 'price' => (get_option('community_billboard_price') == '') ? null : (floatval(get_option('community_billboard_price')) * $days),
                 'currency' => get_option('currency'),
-                'price_points' => empty($price_points) ? null : (intval($price_points) * $days),
+                'price_points' => ($price_points == '') ? null : (intval($price_points) * $days),
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 

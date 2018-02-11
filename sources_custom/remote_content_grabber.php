@@ -22,7 +22,9 @@ function grab_photobucket_content()
             '^' . preg_quote('http://', '#') . '.*' . preg_quote('photobucket.com/', '#') . '.*$',
             '^' . preg_quote(find_script('external_url_proxy') . '?url=', '#') . preg_quote(urlencode('http://'), '#') . '.*' . preg_quote(urlencode('photobucket.com/'), '#') . '.*$',
         ),
-        'url_modifier' => function($url) { return $url . '~original'; },
+        'url_modifier' => function($url) {
+            return $url . '~original';
+        },
         'filename_extractor' => function($url) {
             if (strpos($url, find_script('external_url_proxy')) !== false) {
                 return preg_replace('#\?.*$#', '', basename(urldecode(preg_replace('#^.*\?url=$#', '', $url))));
@@ -65,8 +67,12 @@ class RemoteContentGrabber
             'url_patterns' => array(
                 '^' . preg_quote('http://example.com/', '#') . '.*$',
             ),
-            'url_modifier' => function($url) { return $url; },
-            'filename_extractor' => function($url) { return preg_replace('#\?.*$#', '', basename($url)); },
+            'url_modifier' => function($url) {
+                return $url;
+            },
+            'filename_extractor' => function($url) {
+                return preg_replace('#\?.*$#', '', basename($url));
+            },
 
             'db' => $GLOBALS['FORUM_DB'],
             'table' => 'f_posts',
@@ -171,7 +177,7 @@ class RemoteContentGrabber
             if ($opts['filename_extractor'] === null) {
                 // No extractor function, so we need to do a HEAD request...
 
-                $test = cms_http_request($download_url, 0, false);
+                $test = cms_http_request($download_url, array('trigger_error' => false, 'byte_limit' => 0));
                 if ($test === null) {
                     $this->log('Could not touch URL ' . $referenced_url . ' (while processing ' . $_id . ')');
                     continue;
@@ -200,7 +206,7 @@ class RemoteContentGrabber
             if (is_file($file_path)) {
                 $this->log('Already downloaded URL ' . $referenced_url . ' as ' . $filename . ' (while processing ' . $_id . ')');
             } else {
-                $data = http_get_contents($download_url, null, false);
+                $data = http_get_contents($download_url, array('trigger_error' => false));
                 if (empty($data)) {
                     $this->log('Could not download URL ' . $referenced_url . ' (while processing ' . $_id . ')');
                     continue;

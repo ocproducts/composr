@@ -50,7 +50,7 @@ class Hook_endpoint_account_contact_us
         $email_from = trim(post_param_string('email', $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member())));
         if ($email_from != '' && get_option('message_received_emails') == '1') {
             require_code('mail');
-            dispatch_mail(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $title), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $post), array($email_from), empty($from_name) ? null : $from_name, '', '', array('as' => get_member()));
+            dispatch_mail(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $title), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $post), array($email_from), ($from_name == '') ? null : $from_name, '', '', array('as' => get_member()));
         }
 
         // Return

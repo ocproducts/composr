@@ -1,9 +1,9 @@
-{+START,IF_EMPTY,{FIELDS}}
+{+START,IF_EMPTY,{RESULT_ENTRIES}}
 	<p class="nothing-here">
 		{!NO_ENTRIES}
 	</p>
 {+END}
-{+START,IF_NON_EMPTY,{FIELDS}}
+{+START,IF_NON_EMPTY,{RESULT_ENTRIES}}
 	{MESSAGE}
 	<div class="wide-table-wrap"><table class="columned-table results-table wide-table responsive-table">
 		{+START,IF,{$DESKTOP}}{+START,IF,{$EQ,{$LANG},EN}}{+START,IF_NON_EMPTY,{WIDTHS}}
@@ -16,11 +16,11 @@
 
 		<thead>
 			<tr>
-				{FIELDS_TITLE}
+				{HEADER_ROW}
 			</tr>
 		</thead>
 		<tbody>
-			{FIELDS}
+			{RESULT_ENTRIES}
 		</tbody>
 	</table></div>
 {+END}

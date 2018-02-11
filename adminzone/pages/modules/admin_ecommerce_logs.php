@@ -639,9 +639,9 @@ class Module_admin_ecommerce_logs
         if (count($rows) == 0) {
             return inform_screen($this->title, do_lang_tempcode('NO_ENTRIES'));
         }
-        $fields = new Tempcode();
+        $result_entries = new Tempcode();
         require_code('templates_results_table');
-        $fields_title = results_field_title(array(
+        $header_row = results_header_row(array(
             do_lang('TRANSACTION'),
             do_lang('PURCHASE_ID'),
             do_lang('DATE'),
@@ -689,7 +689,7 @@ class Module_admin_ecommerce_logs
             $tax_invoice_url = build_url(array('page' => '_SELF', 'type' => 'tax_invoice', 'id' => $transaction_row['id'], 'wide_high' => 1), '_SELF');
             $tax_linker = hyperlink($tax_invoice_url, $tax, false, false, '', null, null, null, '_top');
 
-            $fields->attach(results_entry(array(
+            $result_entries->attach(results_entry(array(
                 escape_html($transaction_row['id']) . (($transaction_row['t_parent_txn_id'] == '') ? '' : (' &rarr; ' . escape_html($transaction_row['t_parent_txn_id']))),
                 escape_html($transaction_row['t_purchase_id']),
                 escape_html($date),
@@ -703,7 +703,7 @@ class Module_admin_ecommerce_logs
             ), false));
         }
 
-        $results_table = results_table(do_lang('TRANSACTIONS'), $start, 'start', $max, 'max', $max_rows, $fields_title, $fields, $sortables, $sortable, $sort_order, 'sort');
+        $results_table = results_table(do_lang('TRANSACTIONS'), $start, 'start', $max, 'max', $max_rows, $header_row, $result_entries, $sortables, $sortable, $sort_order, 'sort');
 
         $post_url = build_url(array('page' => '_SELF', 'type' => 'logs'/*, 'start' => $start, 'max' => $max*/, 'sort' => $sortable . ' ' . $sort_order), '_SELF');
 

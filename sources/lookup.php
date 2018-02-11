@@ -146,7 +146,7 @@ function get_stats_track($member, $ip, $start = 0, $max = 50, $sortable = 'date_
 
     $out = new Tempcode();
     require_code('templates_results_table');
-    $fields_title = results_field_title(array(do_lang_tempcode('PAGE'), do_lang_tempcode('DATE'), do_lang_tempcode('PARAMETERS'), do_lang_tempcode('USER_AGENT'), do_lang_tempcode('USER_OS')), $sortables, 'sort', $sortable . ' ' . $sort_order);
+    $header_row = results_header_row(array(do_lang_tempcode('PAGE'), do_lang_tempcode('DATE'), do_lang_tempcode('PARAMETERS'), do_lang_tempcode('USER_AGENT'), do_lang_tempcode('USER_OS')), $sortables, 'sort', $sortable . ' ' . $sort_order);
     foreach ($rows as $myrow) {
         $date = get_timezoned_date_time($myrow['date_and_time']);
         $page = $myrow['the_page'];
@@ -170,7 +170,7 @@ function get_stats_track($member, $ip, $start = 0, $max = 50, $sortable = 'date_
 
         $out->attach(results_entry(array(escape_html($page_converted), escape_html($date), $parameters, escape_html($myrow['browser']), escape_html($myrow['operating_system'])), false));
     }
-    return results_table(do_lang_tempcode('RESULTS'), $start, 'start', $max, 'max', $max_rows, $fields_title, $out, $sortables, $sortable, $sort_order, 'sort');
+    return results_table(do_lang_tempcode('RESULTS'), $start, 'start', $max, 'max', $max_rows, $header_row, $out, $sortables, $sortable, $sort_order, 'sort');
 }
 
 /**
@@ -197,13 +197,13 @@ function find_security_alerts($where = array())
     }
 
     $_fields = array(do_lang_tempcode('FROM'), do_lang_tempcode('DATE_TIME'), do_lang_tempcode('RISK'), do_lang_tempcode('IP_ADDRESS'), do_lang_tempcode('REASON'), new Tempcode());
-    $fields_title = results_field_title($_fields, $sortables, 'alert_sort', $sortable . ' ' . $sort_order);
+    $header_row = results_header_row($_fields, $sortables, 'alert_sort', $sortable . ' ' . $sort_order);
 
     $max_rows = $GLOBALS['SITE_DB']->query_select_value('hackattack', 'COUNT(*)', $where);
 
     $rows = $GLOBALS['SITE_DB']->query_select('hackattack', array('*'), $where, 'AND percentage_score>=80 ORDER BY ' . $sortable . ' ' . $sort_order, $max, $start);
 
-    $fields = new Tempcode();
+    $result_entries = new Tempcode();
     foreach ($rows as $row) {
         $date = get_timezoned_date_time($row['date_and_time']);
 
@@ -232,10 +232,10 @@ function find_security_alerts($where = array())
         $deletion_tick = do_template('RESULTS_TABLE_TICK', array('_GUID' => '9d310a90afa8bd1817452e476385bc57', 'ID' => strval($row['id'])));
         $_row[] = $deletion_tick;
 
-        $fields->attach(results_entry($_row, false));
+        $result_entries->attach(results_entry($_row, false));
     }
 
-    return array(results_table(do_lang_tempcode('SECURITY_ALERTS'), $start, 'alert_start', $max, 'alert_max', $max_rows, $fields_title, $fields, $sortables, $sortable, $sort_order, 'alert_sort'), count($rows));
+    return array(results_table(do_lang_tempcode('SECURITY_ALERTS'), $start, 'alert_start', $max, 'alert_max', $max_rows, $header_row, $result_entries, $sortables, $sortable, $sort_order, 'alert_sort'), count($rows));
 }
 
 /**

@@ -24,26 +24,37 @@
 class Hook_cron_manual_subscription_notification
 {
     /**
-     * Run function for Cron hooks. Searches for tasks to perform.
+     * Get info from this hook.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     * @param  boolean $calculate_num_queued Calculate the number of items queued, if possible
+     * @return ?array Return a map of info about the hook (null: disabled)
      */
-    public function run()
+    public function info($last_run, $calculate_num_queued)
+    {
+        if (get_option('manual_subscription_expiry_notice') == '') {
+            return null;
+        }
+
+        return array(
+            'label' => 'Send subscription expiry notifications (for manual subscriptions)',
+            'num_queued' => null, // Too time-consuming to calculate
+            'minutes_between_runs' => 60 * 24,
+        );
+    }
+
+    /**
+     * Run function for system scheduler scripts. Searches for things to do. ->info(..., true) must be called before this method.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     */
+    public function run($last_run)
     {
         /*
         Send staff notifications for expiring manual notifications.
         This might be used by the staff in order to get someone to send in a cheque, for example.
         */
 
-        $_last_time = get_value('last_cron_manual_subscription_notification', null, true);
-        $last_time = ($_last_time === null) ? null : intval($_last_time);
-        if ($last_time !== null) {
-            if ($last_time < 60 * 60 * 24) {
-                return; // Only do once per day
-            }
-        }
-
-        if (get_option('manual_subscription_expiry_notice') == '') {
-            return;
-        }
         $manual_subscription_expiry_notice = intval(get_option('manual_subscription_expiry_notice'));
 
         require_lang('ecommerce');
@@ -60,8 +71,8 @@ class Hook_cron_manual_subscription_notification
                 foreach ($subscriptions as $subscription) {
                     $expiry_time = $subscription['expiry_time'];
                     if (($expiry_time !== null) && (($expiry_time - time()) < ($manual_subscription_expiry_notice * 24 * 60 * 60)) && ($expiry_time >= time())) {
-                        if ($last_time !== null) {
-                            if (($expiry_time - $last_time) < ($manual_subscription_expiry_notice * 24 * 60 * 60)) {
+                        if ($last_run !== null) {
+                            if (($expiry_time - $last_run) < ($manual_subscription_expiry_notice * 24 * 60 * 60)) {
                                 continue; // Notification already sent!
                             }
                         }
@@ -88,7 +99,5 @@ class Hook_cron_manual_subscription_notification
 
             $start += $max;
         } while (count($subscribers) == $max);
-
-        set_value('last_cron_manual_subscription_notification', strval(time()), true);
     }
 }

@@ -34,11 +34,11 @@ class Hook_config_allow_ext_images
             'human_name' => 'ALLOW_EXT_IMAGES',
             'type' => 'tick',
             'category' => 'MESSAGES',
-            'group' => '_EMAIL',
+            'group' => 'ADVANCED_EMAIL_SEND_SETTINGS',
             'explanation' => 'CONFIG_OPTION_allow_ext_images',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 5,
+            'order_in_category_group' => 1,
 
             'required' => true,
             'public' => false,

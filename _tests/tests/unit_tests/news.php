@@ -26,7 +26,7 @@ class news_test_set extends cms_test_case
 
         require_code('news2');
 
-        $this->news_id = add_news('Today', 'hiiiiiiiiiii', 'rolly', 1, 1, 1, 1, '', 'test article', 2, null, 1262671781, null, 0, null, null, '');
+        $this->news_id = add_news('Today', 'hiiiiiiiiiii', 'rolly', 1, 1, 1, 1, '', 'test article', 2, array(), 1262671781, null, 0, null, null, '');
         $this->assertTrue('Today' == get_translated_text($GLOBALS['SITE_DB']->query_select_value('news', 'title', array('id' => $this->news_id))));
     }
 

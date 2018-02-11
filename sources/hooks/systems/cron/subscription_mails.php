@@ -24,20 +24,32 @@
 class Hook_cron_subscription_mails
 {
     /**
-     * Run function for Cron hooks. Searches for tasks to perform.
+     * Get info from this hook.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     * @param  boolean $calculate_num_queued Calculate the number of items queued, if possible
+     * @return ?array Return a map of info about the hook (null: disabled)
      */
-    public function run()
+    public function info($last_run, $calculate_num_queued)
     {
         if (get_forum_type() != 'cns') {
-            return;
+            return null;
         }
 
-        $time = time();
-        $last_time = intval(get_value('last_subscription_mail_send', null, true));
-        if ($last_time > $time - 30 * 60) {
-            return; // Every 30 minutes
-        }
+        return array(
+            'label' => 'Send subscription e-mails',
+            'num_queued' => null, // Too time-consuming to calculate
+            'minutes_between_runs' => 30,
+        );
+    }
 
+    /**
+     * Run function for system scheduler scripts. Searches for things to do. ->info(..., true) must be called before this method.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     */
+    public function run($last_run)
+    {
         require_code('ecommerce_subscriptions');
         $_subscribers_1 = collapse_1d_complexity('s_member_id', $GLOBALS['SITE_DB']->query_select('ecom_subscriptions', array('DISTINCT s_member_id')));
         $_subscribers_2 = collapse_1d_complexity('member_id', $GLOBALS['FORUM_DB']->query_select('f_group_member_timeouts', array('DISTINCT member_id')));
@@ -59,17 +71,17 @@ class Hook_cron_subscription_mails
                     $sub = $subs['USERGROUP' . strval($mail['m_usergroup_sub_id'])];
                     switch ($mail['m_ref_point']) {
                         case 'start':
-                            $send = ((time() - $sub['start_time'] >= $offset) && ($last_time - $sub['start_time'] < $offset));
+                            $send = ((time() - $sub['start_time'] >= $offset) && ($last_run - $sub['start_time'] < $offset));
                             break;
                         case 'term_start':
-                            $send = ((time() - $sub['term_start_time'] >= $offset) && ($last_time - $sub['term_start_time'] < $offset));
+                            $send = ((time() - $sub['term_start_time'] >= $offset) && ($last_run - $sub['term_start_time'] < $offset));
                             break;
                         case 'term_end':
-                            $send = (($sub['term_end_time'] - time() <= $offset) && ($sub['term_end_time'] - $last_time > $offset));
+                            $send = (($sub['term_end_time'] - time() <= $offset) && ($sub['term_end_time'] - $last_run > $offset));
                             break;
                         case 'expiry':
                             if ($sub['expiry_time'] !== null) {
-                                $send = (($sub['expiry_time'] - time() <= $offset) && ($sub['expiry_time'] - $last_time > $offset));
+                                $send = (($sub['expiry_time'] - time() <= $offset) && ($sub['expiry_time'] - $last_run > $offset));
                             }
                             break;
                     }
@@ -84,7 +96,5 @@ class Hook_cron_subscription_mails
         }
 
         pop_db_scope_check();
-
-        set_value('last_subscription_mail_send', strval($time), true);
     }
 }

@@ -34,11 +34,11 @@ class Hook_config_mail_queue
             'human_name' => 'MAIL_QUEUE',
             'type' => 'tick',
             'category' => 'MESSAGES',
-            'group' => '_EMAIL',
+            'group' => 'MAIL_QUEUE',
             'explanation' => 'CONFIG_OPTION_mail_queue',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 7,
+            'order_in_category_group' => 1,
 
             'required' => true,
             'public' => false,

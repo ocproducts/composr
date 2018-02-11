@@ -320,9 +320,9 @@ class Module_cms_catalogues extends Standard_crud_module
             $fh[] = protect_from_escaping(do_template('COMCODE_ABBR', array('_GUID' => '4341bfe5e713c94c8fd14ce1cb2e21aa', 'TITLE' => do_lang_tempcode('VALIDATED'), 'CONTENT' => do_lang_tempcode('VALIDATED_SHORT'))));
         }
         $fh[] = do_lang_tempcode('ACTIONS');
-        $header_row = results_field_title($fh, $sortables, 'sort', $sortable . ' ' . $sort_order);
+        $header_row = results_header_row($fh, $sortables, 'sort', $sortable . ' ' . $sort_order);
 
-        $fields = new Tempcode();
+        $result_entries = new Tempcode();
 
         $only_owned = has_privilege(get_member(), 'edit_midrange_content', 'cms_catalogues') ? null : get_member();
         $catalogue_name = get_param_string('catalogue_name');
@@ -366,7 +366,7 @@ class Module_cms_catalogues extends Standard_crud_module
             }
         }
         foreach ($_fields as $_fr) {
-            $fields->attach(results_entry($_fr['row'], true));
+            $result_entries->attach(results_entry($_fr['row'], true));
         }
 
         $is_tree = $GLOBALS['SITE_DB']->query_select_value('catalogues', 'c_is_tree', array('c_name' => $catalogue_name));
@@ -374,7 +374,7 @@ class Module_cms_catalogues extends Standard_crud_module
         $search_url = build_url(array('page' => 'search', 'id' => 'catalogue_entries', 'catalogue_name' => $catalogue_name), get_module_zone('search'));
         $archive_url = build_url(array('page' => 'catalogues', 'type' => 'index', 'id' => $catalogue_name, 'tree' => $is_tree), get_module_zone('catalogues'));
 
-        return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $fields, $sortables, $sortable, $sort_order), false, $search_url, $archive_url);
+        return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $result_entries, $sortables, $sortable, $sort_order), false, $search_url, $archive_url);
     }
 
     /**
@@ -1165,7 +1165,7 @@ class Module_cms_catalogues_cat extends Standard_crud_module
 
         $fh = array(do_lang_tempcode('TITLE'), do_lang_tempcode('ADDED'), do_lang_tempcode('ORDER'));
         $fh[] = do_lang_tempcode('ACTIONS');
-        $header_row = results_field_title($fh, $sortables, 'sort', $sortable . ' ' . $sort_order);
+        $header_row = results_header_row($fh, $sortables, 'sort', $sortable . ' ' . $sort_order);
 
         $fields = new Tempcode();
 
@@ -1421,8 +1421,8 @@ class Module_cms_catalogues_cat extends Standard_crud_module
         $notes = post_param_string('notes', STRING_MAGIC_NULL);
         $parent_id = post_param_integer('parent_id', fractional_edit() ? INTEGER_MAGIC_NULL : null/*may be non-tree catalogue or root node*/);
 
-        $move_days_lower = post_param_integer('move_days_lower', fractional_edit() ? INTEGER_MAGIC_NULL : 30/*may be Cron disabled*/);
-        $move_days_higher = post_param_integer('move_days_higher', fractional_edit() ? INTEGER_MAGIC_NULL : 60/*may be Cron disabled*/);
+        $move_days_lower = post_param_integer('move_days_lower', fractional_edit() ? INTEGER_MAGIC_NULL : 30/*may be the system scheduler is disabled*/);
+        $move_days_higher = post_param_integer('move_days_higher', fractional_edit() ? INTEGER_MAGIC_NULL : 60/*may be the system scheduler is disabled*/);
         $move_target = post_param_integer('move_target', fractional_edit() ? INTEGER_MAGIC_NULL : null);
         if (($move_target !== null) && ($move_target != INTEGER_MAGIC_NULL)) {
             if (!has_submit_permission('mid', get_member(), get_ip_address(), 'cms_catalogues', array('catalogues_catalogue', $catalogue_name) + ((get_value('disable_cat_cat_perms') !== '1') ? array('catalogues_category', $move_target) : array()))) {

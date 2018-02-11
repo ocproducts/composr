@@ -195,9 +195,9 @@ class Module_cms_blogs extends Standard_crud_module
             $fh[] = protect_from_escaping(do_template('COMCODE_ABBR', array('_GUID' => '204d1050402b48e5c2c9539763a3fe50', 'TITLE' => do_lang_tempcode('VALIDATED'), 'CONTENT' => do_lang_tempcode('VALIDATED_SHORT'))));
         }
         $fh[] = do_lang_tempcode('ACTIONS');
-        $header_row = results_field_title($fh, $sortables, 'sort', $sortable . ' ' . $sort_order);
+        $header_row = results_header_row($fh, $sortables, 'sort', $sortable . ' ' . $sort_order);
 
-        $fields = new Tempcode();
+        $result_entries = new Tempcode();
 
         $only_owned = has_privilege(get_member(), 'edit_midrange_content', 'cms_news') ? null : get_member();
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering, ($only_owned === null) ? null : array('submitter' => $only_owned), false, ' JOIN ' . get_table_prefix() . 'news_categories c ON c.id=r.news_category AND nc_owner IS NOT NULL');
@@ -216,13 +216,13 @@ class Module_cms_blogs extends Standard_crud_module
             }
             $fr[] = protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id'])));
 
-            $fields->attach(results_entry($fr, true));
+            $result_entries->attach(results_entry($fr, true));
         }
 
         $search_url = build_url(array('page' => 'search', 'id' => 'news'), get_module_zone('search'));
         $archive_url = build_url(array('page' => 'news'), get_module_zone('news'));
 
-        return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $fields, $sortables, $sortable, $sort_order), false, $search_url, $archive_url);
+        return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $result_entries, $sortables, $sortable, $sort_order), false, $search_url, $archive_url);
     }
 
     /**
@@ -321,7 +321,7 @@ class Module_cms_blogs extends Standard_crud_module
         }
 
         if ((addon_installed('calendar')) && (has_privilege(get_member(), 'scheduled_publication_times'))) {
-            $fields2->attach(form_input_date__scheduler(do_lang_tempcode('PUBLICATION_TIME'), do_lang_tempcode('DESCRIPTION_PUBLICATION_TIME'), 'schedule', false, true, true, $scheduled, intval(date('Y')) - 1970 + 2, 1970));
+            $fields2->attach(form_input_date__cron(do_lang_tempcode('PUBLICATION_TIME'), do_lang_tempcode('DESCRIPTION_PUBLICATION_TIME'), 'schedule', false, true, true, $scheduled, intval(date('Y')) - 1970 + 2, 1970));
         }
 
         require_code('feedback2');

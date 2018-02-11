@@ -295,11 +295,11 @@ $rows = $GLOBALS['SITE_DB']->query_select('table', array('*'));
 (actually it'll be a bit more complex, when we support pagination)
 
 These are the three main functions for the UI:
-1) [tt]results_field_title[/tt] (defines field header templating)
+1) [tt]results_header_row[/tt] (defines field header templating)
 2) [tt]results_entry[/tt] (defines individual result row templating)
 3) [tt]results_table[/tt] (defines the surrounding interface)
 
-You compose some [tt]results_field_title[/tt] call results together using PHP arrays, to form the combined header.
+You compose some [tt]results_header_row[/tt] call results together using PHP arrays, to form the combined header.
 
 You compose some [tt]results_entry[/tt] call results together using Tempcode attach, to put the rows together.
 
@@ -333,7 +333,7 @@ $hr = array(
     do_lang_tempcode('CODENAME'),
     do_lang_tempcode('ADDED'),
 );
-$header_row = results_field_title($hr, $sortables, 'sort', $sortable . ' ' . $sort_order);
+$header_row = results_header_row($hr, $sortables, 'sort', $sortable . ' ' . $sort_order);
 
 // Query, with pagination
 $max_rows = $GLOBALS['SITE_DB']->query_select_value('example', 'COUNT(*)');
@@ -351,11 +351,11 @@ foreach ($rows as $row) {
         get_timezoned_date_time($row['add_date']),
     );
 
-    $fields->attach(results_entry($fr), true);
+    $result_entries->attach(results_entry($fr), true);
 }
 
 // Render table
-$table = results_table('Example', $start, 'example_start', $max, 'example_max', $max_rows, $header_row, $fields, $sortables, $sortable, $sort_order);
+$table = results_table('Example', $start, 'example_start', $max, 'example_max', $max_rows, $header_row, $result_entries, $sortables, $sortable, $sort_order);
 
 // Render screen
 return do_template('RESULTS_TABLE_SCREEN', array(
@@ -527,9 +527,9 @@ To do this write a [tt]systems/page_groupings[/tt] hook. Look at existing hooks 
 
 To add a new symbol you'll need to write a [tt]systems/symbols[/tt] hook. This is a very useful technique for extending the Tempcode system.
 
-[title="3"]Running scheduled scripts[/title]
+[title="3"]Running system scheduler scripts[/title]
 
-To run a scheduled script you'll need to do it via writing a [tt]systems/cron[/tt] hook. For it to work, Cron must be set up on the server and tied into Composr (described in the Composr documentation). Look at existing hooks as examples. Alternatively, if you do not want to bother setting up Cron, or want to see the script output (e.g. errors) when debugging, just call up [tt]http://yourbaseurl/data/cron_bridge.php[/tt] manually in the browser.
+To run a system scheduler script you'll need to do it via writing a [tt]systems/cron[/tt] hook. For it to work, the system scheduler must be set up on the server and tied into Composr (described in the Composr documentation). Look at existing hooks as examples. Alternatively, if you do not want to bother setting up the system scheduler, or want to see the script output (e.g. errors) when debugging, just call up [tt]http://yourbaseurl/data/cron_bridge.php[/tt] manually in the browser.
 
 [title="3"]Running temporary code[/title]
 

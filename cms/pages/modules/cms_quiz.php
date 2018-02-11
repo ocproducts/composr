@@ -186,9 +186,9 @@ class Module_cms_quiz extends Standard_crud_module
             $_header_row[] = do_lang_tempcode('POINTS');
         }
         $_header_row[] = do_lang_tempcode('ACTIONS');
-        $header_row = results_field_title($_header_row, $sortables, 'sort', $sortable . ' ' . $sort_order);
+        $header_row = results_header_row($_header_row, $sortables, 'sort', $sortable . ' ' . $sort_order);
 
-        $fields = new Tempcode();
+        $result_entries = new Tempcode();
 
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering);
         foreach ($rows as $row) {
@@ -206,13 +206,13 @@ class Module_cms_quiz extends Standard_crud_module
             }
             $results_entry[] = protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id'])));
 
-            $fields->attach(results_entry($results_entry, true));
+            $result_entries->attach(results_entry($results_entry, true));
         }
 
         $search_url = build_url(array('page' => 'search', 'id' => 'quiz'), get_module_zone('search'));
         $archive_url = build_url(array('page' => 'quiz'), get_module_zone('quiz'));
 
-        return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $fields, $sortables, $sortable, $sort_order), false, $search_url, $archive_url);
+        return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $result_entries, $sortables, $sortable, $sort_order), false, $search_url, $archive_url);
     }
 
     /**

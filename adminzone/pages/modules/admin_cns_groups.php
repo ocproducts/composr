@@ -383,9 +383,9 @@ class Module_admin_cns_groups extends Standard_crud_module
             do_lang_tempcode('ORDER'),
             do_lang_tempcode('ACTIONS'),
         ));
-        $header_row = results_field_title($_header_row, $sortables, 'sort', $sortable . ' ' . $sort_order);
+        $header_row = results_header_row($_header_row, $sortables, 'sort', $sortable . ' ' . $sort_order);
 
-        $fields = new Tempcode();
+        $result_entries = new Tempcode();
 
         $group_count = $GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)');
 
@@ -444,13 +444,13 @@ class Module_admin_cns_groups extends Standard_crud_module
 
             $fr[] = protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, false, do_lang('EDIT') . ' #' . strval($row['id'])));
 
-            $fields->attach(results_entry($fr, true));
+            $result_entries->attach(results_entry($fr, true));
         }
 
         $search_url = null; //build_url(array('page' => 'search', 'id' => 'cns_clubs'), get_module_zone('search'));
         $archive_url = build_url(array('page' => 'groups'), get_module_zone('groups'));
 
-        return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $fields, $sortables, $sortable, $sort_order, 'sort', null, array(), null, 8, 'gdfg43tfdgdfgdrfgd', true), true, $search_url, $archive_url);
+        return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $result_entries, $sortables, $sortable, $sort_order, 'sort', null, array(), null, 8, 'gdfg43tfdgdfgdrfgd', true), true, $search_url, $archive_url);
     }
 
     /**

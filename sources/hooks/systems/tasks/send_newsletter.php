@@ -111,7 +111,7 @@ class Hook_task_send_newsletter
 
                         $already_queued[$email_address] = 1;
                     }
-                } else { // Unlikely to use this code path, but we should support operation without Cron in those rare cases. Code path not optimised
+                } else { // Unlikely to use this code path, but we should support operation without the system scheduler in those rare cases. Code path not optimised
                     $newsletter_message_substituted = newsletter_variable_substitution($message, $subject, $forenames[$i], $surnames[$i], $usernames[$i], $email_address, $ids[$i], $hashes[$i]);
                     if (stripos(trim($message), '<') === 0) { // HTML
                         require_code('tempcode_compiler');

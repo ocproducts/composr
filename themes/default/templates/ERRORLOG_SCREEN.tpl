@@ -22,16 +22,22 @@
 
 	<ul class="actions-list">
 		{+START,IF_NON_EMPTY,{DOWNLOAD_URL}}
-			<li><a href="{DOWNLOAD_URL*}">{!DOWNLOAD}</a></li>
+			<li><a href="{DOWNLOAD_URL*}">{!DOWNLOAD_LOG}</a></li>
 		{+END}
 		{+START,IF_NON_EMPTY,{DOWNLOAD_URL}}
-			<li><a href="{CLEAR_URL*}">{!CLEAR}</a></li>
+			<li><a href="{CLEAR_URL*}">{!CLEAR_LOG}</a></li>
 		{+END}
 		{+START,IF_NON_EMPTY,{ADD_URL}}
-			<li><a href="{ADD_URL*}">{!ADD}</a></li>
+			<li><a href="{ADD_URL*}">{!INIT_LOG}</a></li>
 		{+END}
 		{+START,IF_NON_EMPTY,{DELETE_URL}}
-			<li><a href="{DELETE_URL*}">{!DELETE}</a></li>
+			<li><a href="{DELETE_URL*}">{!DELETE_LOG}</a></li>
 		{+END}
 	</ul>
+
+	{+START,IF_NON_EMPTY,{ADDITIONAL}}
+		<h3>{!ADDITIONAL_INFO}</h3>
+
+		{ADDITIONAL}
+	{+END}
 {+END}

@@ -132,7 +132,7 @@ To schedule a command for execution, add an event with the event type of 'System
 [/list]
 [b]Make sure the WYSIWYG editor is off[/b] when using this event type.
 
-For scheduled commands to be executed you need to have the Composr scheduling system configured as specified in the [page="_SEARCH:tut_configuration"]basic configuration[/page] tutorial.
+For scheduled commands to be executed you need to have the system scheduler configured as specified in the [page="_SEARCH:tut_configuration"]basic configuration[/page] tutorial.
 
 [title="2"]Feeds[/title]
 

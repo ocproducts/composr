@@ -26,19 +26,32 @@
 class Hook_cron_git_autopull
 {
     /**
-     * Run function for Cron hooks. Searches for tasks to perform.
+     * Get info from this hook.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     * @param  boolean $calculate_num_queued Calculate the number of items queued, if possible
+     * @return ?array Return a map of info about the hook (null: disabled)
      */
-    public function run()
+    public function info($last_run, $calculate_num_queued)
     {
         if (get_value('git_autopull') !== '1') {
-            return;
+            return null;
         }
 
-        $last_time = intval(get_value('git_autopull_time', null, true));
-        if (time() >= $last_time + 60) {
-            shell_exec('git pull');
+        return array(
+            'label' => 'Git autopulling',
+            'num_queued' => null,
+            'minutes_between_runs' => 1,
+        );
+    }
 
-            set_value('git_autopull_time', strval(time()), true);
-        }
+    /**
+     * Run function for system scheduler scripts. Searches for things to do. ->info(..., true) must be called before this method.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     */
+    public function run($last_run)
+    {
+        shell_exec('git pull');
     }
 }

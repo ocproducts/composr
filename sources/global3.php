@@ -2002,10 +2002,10 @@ function get_os_string()
 }
 
 /**
- * Find if Cron is installed.
+ * Find if the system scheduler is installed.
  *
- * @param  boolean $absolutely_sure Whether Cron really needs to be installed (if set to false it will be assumed installed on dev-mode)
- * @return boolean Whether Cron is installed
+ * @param  boolean $absolutely_sure Whether the system scheduler really needs to be installed (if set to false it will be assumed installed on dev-mode)
+ * @return boolean Whether The system scheduler is installed
  */
 function cron_installed($absolutely_sure = false)
 {

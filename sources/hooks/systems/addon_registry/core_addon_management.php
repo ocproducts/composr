@@ -168,12 +168,14 @@ class Hook_addon_registry_core_addon_management
         $add_ons = new Tempcode();
 
         foreach (placeholder_array() as $value) {
-            $actions = do_lorem_template('COLUMNED_TABLE_ACTION_INSTALL_ENTRY', array(
+            $actions = do_lorem_template('COLUMNED_TABLE_ACTION', array(
                 'GET' => true,
                 'NAME' => lorem_phrase(),
                 'HIDDEN' => '',
                 'URL' => placeholder_url(),
+                'CONFIRM' => false,
             ));
+
             $status = do_lang_tempcode('STATUS_NOT_INSTALLED');
 
             $pretty_name = do_lorem_template('ADDON_NAME', array('IMAGE_URL' => placeholder_image_url(), 'NAME' => lorem_word()));
@@ -401,22 +403,18 @@ class Hook_addon_registry_core_addon_management
         );
         $tpl_modules = array();
         foreach ($modules as $module) {
-            $actions = new Tempcode();
-            $status = do_lang_tempcode('STATUS_TO_UPGRADE');
+            $actions = do_lorem_template('COLUMNED_TABLE_ACTION', array(
+                'GET' => true,
+                'NAME' => lorem_phrase(),
+                'HIDDEN' => '',
+                'URL' => placeholder_url(),
+                'CONFIRM' => false,
+            ));
 
             if ($module == 'downloads') {
-                $actions->attach(do_lorem_template('COLUMNED_TABLE_ACTION_REINSTALL_ENTRY', array(
-                    'HIDDEN' => '',
-                    'NAME' => lorem_phrase(),
-                    'URL' => placeholder_url(),
-                )));
                 $status = do_lang_tempcode('STATUS_CURRENT');
             } else {
-                $actions->attach(do_lorem_template('COLUMNED_TABLE_ACTION_UPGRADE_ENTRY', array(
-                    'HIDDEN' => '',
-                    'NAME' => lorem_phrase(),
-                    'URL' => placeholder_url(),
-                )));
+                $status = do_lang_tempcode('STATUS_TO_UPGRADE');
             }
 
             $tpl_modules[] = array(

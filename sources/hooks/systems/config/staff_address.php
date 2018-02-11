@@ -34,7 +34,7 @@ class Hook_config_staff_address
             'human_name' => 'EMAIL_ADDRESS',
             'type' => 'line',
             'category' => 'MESSAGES',
-            'group' => '_EMAIL',
+            'group' => 'STAFF_EMAIL_ADDRESSES',
             'explanation' => 'CONFIG_OPTION_staff_address',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

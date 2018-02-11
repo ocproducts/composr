@@ -1,12 +1,12 @@
 {+START,IF_PASSED,TEXT_ID}{$SET,TEXT_ID,{TEXT_ID}}{+END}
 
-{+START,IF_EMPTY,{FIELDS}}
+{+START,IF_EMPTY,{RESULT_ENTRIES}}
 	<p class="nothing-here">
 		{!NO_ENTRIES}
 	</p>
 {+END}
 
-{+START,IF_NON_EMPTY,{FIELDS}}
+{+START,IF_NON_EMPTY,{RESULT_ENTRIES}}
 	{$PARAGRAPH,{MESSAGE}}
 
 	<div class="wide-table-wrap"><table class="columned-table results-table wide-table{+START,IF_EMPTY,{WIDTHS}} autosized-table{+END} responsive-table" itemprop="significantLinks">
@@ -20,11 +20,11 @@
 
 		<thead>
 			<tr>
-				{FIELDS_TITLE}
+				{HEADER_ROW}
 			</tr>
 		</thead>
 		<tbody>
-			{FIELDS}
+			{RESULT_ENTRIES}
 		</tbody>
 	</table></div>
 

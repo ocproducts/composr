@@ -105,7 +105,15 @@ function build_sales_table($filter_member_id, $show_username = false, $show_dele
 
         if ($show_delete) {
             $url = build_url(array('page' => 'admin_ecommerce_logs', 'type' => 'delete_sales_log_entry', 'id' => $row['s_id']), get_module_zone('admin_ecommerce_logs'));
-            $actions = do_template('COLUMNED_TABLE_ACTION_DELETE_ENTRY', array('_GUID' => '12e3ea365f1a1ed2e7800293f3203283', 'CONFIRM' => true, 'NAME' => '#' . strval($row['s_id']), 'URL' => $url));
+            $actions = do_template('COLUMNED_TABLE_ACTION', array(
+                '_GUID' => '12e3ea365f1a1ed2e7800293f3203283',
+                'NAME' => '#' . strval($row['s_id']),
+                'URL' => $url,
+                'CONFIRM' => true,
+                'ACTION_TITLE' => do_lang_tempcode('DELETE'),
+                'ICON' => 'admin/delete',
+                'GET' => false,
+            ));
         }
 
         $sales_row = array();
@@ -228,7 +236,7 @@ function build_order_details($title, $id, $text, $show_order_actions = false)
 
     require_code('templates_results_table');
 
-    $fields_title = results_field_title(array(
+    $header_row = results_header_row(array(
         do_lang_tempcode('SKU'),
         do_lang_tempcode('PRODUCT_NAME'),
         do_lang_tempcode('PURCHASE_ID'),
@@ -255,7 +263,7 @@ function build_order_details($title, $id, $text, $show_order_actions = false)
             do_lang($product_row['p_dispatch_status']),
         ), false, null));
     }
-    $results_table = results_table(do_lang_tempcode('catalogues:DEFAULT_CATALOGUE_PRODUCTS_TITLE'), 0, 'start', count($product_rows), 'max', count($product_rows), $fields_title, $product_entries);
+    $results_table = results_table(do_lang_tempcode('catalogues:DEFAULT_CATALOGUE_PRODUCTS_TITLE'), 0, 'start', count($product_rows), 'max', count($product_rows), $header_row, $product_entries);
 
     // Show screen...
 

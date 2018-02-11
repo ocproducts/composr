@@ -34,7 +34,7 @@ class Hook_config_cc_address
             'human_name' => 'CC_ADDRESS',
             'type' => 'line',
             'category' => 'MESSAGES',
-            'group' => '_EMAIL',
+            'group' => 'STAFF_EMAIL_ADDRESSES',
             'explanation' => 'CONFIG_OPTION_cc_address',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

@@ -24,15 +24,28 @@
 class Hook_cron_newsletter_drip_send
 {
     /**
-     * Run function for Cron hooks. Searches for tasks to perform.
+     * Get info from this hook.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     * @param  boolean $calculate_num_queued Calculate the number of items queued, if possible
+     * @return ?array Return a map of info about the hook (null: disabled)
      */
-    public function run()
+    public function info($last_run, $calculate_num_queued)
     {
-        if (!addon_installed('newsletter')) {
-            return;
-        }
+        return array(
+            'label' => 'Send queued newsletters',
+            'num_queued' => $calculate_num_queued ? $GLOBALS['SITE_DB']->query_select_value('newsletter_drip_send', 'COUNT(*)') : null,
+            'minutes_between_runs' => intval(get_option('minutes_between_sends')),
+        );
+    }
 
-        $minutes_between_sends = intval(get_option('minutes_between_sends'));
+    /**
+     * Run function for system scheduler scripts. Searches for things to do. ->info(..., true) must be called before this method.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     */
+    public function run($last_run)
+    {
         $mails_per_send = intval(get_option('mails_per_send'));
 
         require_lang('newsletter');

@@ -24,21 +24,28 @@
 class Hook_cron_ticket_type_lead_times
 {
     /**
-     * Run function for Cron hooks. Searches for tasks to perform.
+     * Get info from this hook.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     * @param  boolean $calculate_num_queued Calculate the number of items queued, if possible
+     * @return ?array Return a map of info about the hook (null: disabled)
      */
-    public function run()
+    public function info($last_run, $calculate_num_queued)
     {
-        if (!addon_installed('tickets')) {
-            return;
-        }
+        return array(
+            'label' => 'Support lead time calculation',
+            'num_queued' => null,
+            'minutes_between_runs' => 24 * 60,
+        );
+    }
 
-        $time = time();
-        $last_time = intval(get_value('last_ticket_lead_time_calc', null, true));
-        if ($last_time > time() - 24 * 60 * 60) {
-            return;
-        }
-        set_value('last_ticket_lead_time_calc', strval($time), true);
-
+    /**
+     * Run function for system scheduler scripts. Searches for things to do. ->info(..., true) must be called before this method.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     */
+    public function run($last_run)
+    {
         require_lang('tickets');
         require_code('tickets');
         require_code('tickets2');

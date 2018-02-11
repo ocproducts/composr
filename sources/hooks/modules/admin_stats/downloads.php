@@ -123,8 +123,8 @@ class Hook_admin_stats_downloads
         }
 
         require_code('templates_results_table');
-        $fields_title = results_field_title(array(do_lang_tempcode('TITLE'), do_lang_tempcode('COUNT_DOWNLOADS')), $sortables, 'sort', $sortable . ' ' . $sort_order);
-        $fields = new Tempcode();
+        $header_row = results_header_row(array(do_lang_tempcode('TITLE'), do_lang_tempcode('COUNT_DOWNLOADS')), $sortables, 'sort', $sortable . ' ' . $sort_order);
+        $result_entries = new Tempcode();
         $real_data = array();
         $i = 0;
         foreach ($downloads as $download_name => $value) {
@@ -134,7 +134,7 @@ class Hook_admin_stats_downloads
             } elseif ($i >= $start + $max) {
                 break;
             }
-            $fields->attach(results_entry(array($download_name, integer_format($value)), true));
+            $result_entries->attach(results_entry(array($download_name, integer_format($value)), true));
 
             $real_data[] = array(
                 'Download name' => $download_name,
@@ -143,7 +143,7 @@ class Hook_admin_stats_downloads
 
             $i++;
         }
-        $list = results_table(do_lang_tempcode('SECTION_DOWNLOADS'), $start, 'start', $max, 'max', count($downloads), $fields_title, $fields, $sortables, $sortable, $sort_order, 'sort', new Tempcode());
+        $list = results_table(do_lang_tempcode('SECTION_DOWNLOADS'), $start, 'start', $max, 'max', count($downloads), $header_row, $result_entries, $sortables, $sortable, $sort_order, 'sort', new Tempcode());
         if ($csv) {
             make_csv($real_data, 'download_stats.csv');
         }

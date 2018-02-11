@@ -1136,15 +1136,15 @@ class Hook_addon_registry_core_cns
             $primary_members->attach($entries);
         }
 
-        $fields_title = do_lorem_template('RESULTS_TABLE_FIELD_TITLE', array(
+        $header_row = do_lorem_template('RESULTS_TABLE_FIELD_TITLE', array(
             'VALUE' => lorem_word(),
         ));
 
         $primary_members = do_lorem_template('RESULTS_TABLE', array(
             'WIDTHS' => array(),
             'TEXT_ID' => placeholder_random_id(),
-            'FIELDS_TITLE' => $fields_title,
-            'FIELDS' => $primary_members,
+            'HEADER_ROW' => $header_row,
+            'RESULT_ENTRIES' => $primary_members,
             'MESSAGE' => '',
             'SORT' => '',
             'PAGINATION' => '',
@@ -1167,15 +1167,15 @@ class Hook_addon_registry_core_cns
 
             $_secondary_members->attach($entries);
         }
-        $fields_title = do_lorem_template('RESULTS_TABLE_FIELD_TITLE', array(
+        $header_row = do_lorem_template('RESULTS_TABLE_FIELD_TITLE', array(
             'VALUE' => lorem_word(),
         ));
 
         $secondary_members = do_lorem_template('RESULTS_TABLE', array(
             'WIDTHS' => array(),
             'TEXT_ID' => placeholder_random_id(),
-            'FIELDS_TITLE' => $fields_title,
-            'FIELDS' => $_secondary_members,
+            'HEADER_ROW' => $header_row,
+            'RESULT_ENTRIES' => $_secondary_members,
             'MESSAGE' => '',
             'SORT' => '',
             'PAGINATION' => '',
@@ -1198,15 +1198,15 @@ class Hook_addon_registry_core_cns
 
             $_prospective_members->attach($entries);
         }
-        $fields_title = do_lorem_template('RESULTS_TABLE_FIELD_TITLE', array(
+        $header_row = do_lorem_template('RESULTS_TABLE_FIELD_TITLE', array(
             'VALUE' => lorem_word(),
         ));
 
         $prospective_members = do_lorem_template('RESULTS_TABLE', array(
             'WIDTHS' => array(),
             'TEXT_ID' => placeholder_random_id(),
-            'FIELDS_TITLE' => $fields_title,
-            'FIELDS' => $_prospective_members,
+            'HEADER_ROW' => $header_row,
+            'RESULT_ENTRIES' => $_prospective_members,
             'MESSAGE' => '',
             'SORT' => '',
             'PAGINATION' => '',

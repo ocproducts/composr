@@ -36,7 +36,7 @@ class Hook_health_check_sugarcrm extends Hook_Health_Check
             $base_url = get_option('sugarcrm_base_url');
             $username = get_option('sugarcrm_username');
 
-            if ((empty($base_url)) || (empty($username))) {
+            if (($base_url == '') || ($username == '')) {
                 return array($this->category_label, array());
             }
 

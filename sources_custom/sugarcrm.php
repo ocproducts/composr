@@ -58,7 +58,7 @@ function sugarcrm_failed($message)
         error_log('SugarCRM issue: ' . $message, 0);
     }
     require_code('failure');
-    relay_error_notification(false, $message);
+    relay_error_notification($message, false);
 }
 
 function get_or_create_sugarcrm_account($company, $timestamp = null)

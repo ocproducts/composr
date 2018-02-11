@@ -24,39 +24,54 @@
 class Hook_cron_implicit_usergroup_sync
 {
     /**
-     * Run function for Cron hooks. Searches for tasks to perform.
+     * Get info from this hook.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     * @param  boolean $calculate_num_queued Calculate the number of items queued, if possible
+     * @return ?array Return a map of info about the hook (null: disabled)
      */
-    public function run()
+    public function info($last_run, $calculate_num_queued)
     {
-        if (get_value('implicit_usergroup_sync') === '1') {
-            $last = get_value('last_implicit_sync', null, true);
-            if (($last === null) || (intval($last) < time() - 60 * 60)) {
-                $hooks = find_all_hook_obs('systems', 'cns_implicit_usergroups', 'Hook_implicit_usergroups_');
-                foreach ($hooks as $ob) {
-                    $group_ids = $ob->get_bound_group_ids();
-                    foreach ($group_ids as $group_id) {
-                        $GLOBALS['FORUM_DB']->query_delete('f_group_members', array('gm_group_id' => $group_id));
-                        $list = $ob->get_member_list($group_id);
-                        if ($list !== null) {
-                            foreach ($list as $member_row) {
-                                $GLOBALS['FORUM_DB']->query_insert('f_group_members', array('gm_group_id' => $group_id, 'gm_member_id' => $member_row['id'], 'gm_validated' => 1));
-                            }
-                        } else {
-                            $start = 0;
-                            do {
-                                $members = collapse_1d_complexity('id', $GLOBALS['FORUM_DB']->query_select('f_members', array('id'), array(), '', 400, $start));
-                                foreach ($members as $member_id) {
-                                    if ($ob->is_member_within($member_id, $group_id)) {
-                                        $GLOBALS['FORUM_DB']->query_insert('f_group_members', array('gm_group_id' => $group_id, 'gm_member_id' => $member_id, 'gm_validated' => 1));
-                                    }
-                                }
-                                $start += 400;
-                            } while (count($members) == 400);
-                        }
-                    }
-                }
+        if (get_value('implicit_usergroup_sync') !== '1') {
+            return null;
+        }
 
-                set_value('last_implicit_sync', strval(time()), true);
+        return array(
+            'label' => 'Sync implicit usergroups',
+            'num_queued' => null,
+            'minutes_between_runs' => 60,
+        );
+    }
+
+    /**
+     * Run function for system scheduler scripts. Searches for things to do. ->info(..., true) must be called before this method.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     */
+    public function run($last_run)
+    {
+        $hooks = find_all_hook_obs('systems', 'cns_implicit_usergroups', 'Hook_implicit_usergroups_');
+        foreach ($hooks as $ob) {
+            $group_ids = $ob->get_bound_group_ids();
+            foreach ($group_ids as $group_id) {
+                $GLOBALS['FORUM_DB']->query_delete('f_group_members', array('gm_group_id' => $group_id));
+                $list = $ob->get_member_list($group_id);
+                if ($list !== null) {
+                    foreach ($list as $member_row) {
+                        $GLOBALS['FORUM_DB']->query_insert('f_group_members', array('gm_group_id' => $group_id, 'gm_member_id' => $member_row['id'], 'gm_validated' => 1));
+                    }
+                } else {
+                    $start = 0;
+                    do {
+                        $members = collapse_1d_complexity('id', $GLOBALS['FORUM_DB']->query_select('f_members', array('id'), array(), '', 400, $start));
+                        foreach ($members as $member_id) {
+                            if ($ob->is_member_within($member_id, $group_id)) {
+                                $GLOBALS['FORUM_DB']->query_insert('f_group_members', array('gm_group_id' => $group_id, 'gm_member_id' => $member_id, 'gm_validated' => 1));
+                            }
+                        }
+                        $start += 400;
+                    } while (count($members) == 400);
+                }
             }
         }
     }

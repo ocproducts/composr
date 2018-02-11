@@ -358,7 +358,7 @@ class RevisionEngineFiles
 
         $do_actionlog = has_actual_page_access(get_member(), 'admin_actionlog');
 
-        $_fields_titles = array(
+        $_header_row = array(
             do_lang_tempcode('DATE_TIME'),
             do_lang_tempcode('MEMBER'),
             do_lang_tempcode('SIZE_CHANGE'),
@@ -366,7 +366,7 @@ class RevisionEngineFiles
             do_lang_tempcode('UNDO'),
         );
         if ($do_actionlog) {
-            $_fields_titles[] = do_lang_tempcode('LOG');
+            $_header_row[] = do_lang_tempcode('LOG');
         }
 
         $more_recent_text = $text;
@@ -423,7 +423,7 @@ class RevisionEngineFiles
             return new Tempcode();
         }
 
-        $fields_titles = results_field_title($_fields_titles, $sortables, 'revisions_sort', $sortable . ' ' . $sort_order);
+        $header_row = results_header_row($_header_row, $sortables, 'revisions_sort', $sortable . ' ' . $sort_order);
         $results = results_table(
             do_lang_tempcode('REVISIONS'),
             $start,
@@ -431,7 +431,7 @@ class RevisionEngineFiles
             $max,
             'revisions_max',
             $max_rows,
-            $fields_titles,
+            $header_row,
             $field_rows,
             $sortables,
             $sortable,

@@ -23,29 +23,52 @@
  */
 class Hook_cron_topic_pin
 {
+    protected $topics;
+
     /**
-     * Run function for Cron hooks. Searches for tasks to perform.
+     * Get info from this hook.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     * @param  boolean $calculate_num_queued Calculate the number of items queued, if possible
+     * @return ?array Return a map of info about the hook (null: disabled)
      */
-    public function run()
+    public function info($last_run, $calculate_num_queued)
     {
-        $_last_run = get_value('last_time_cron_topic_pin', null, true);
-        $last_run = ($_last_run === null) ? 0 : intval($_last_run);
-        if ($last_run < time() - 60 * 60 * 6) {
-            $time = time();
-            $sql = 'SELECT details FROM ' . get_table_prefix() . 'ecom_sales s JOIN ' . get_table_prefix() . 'ecom_transactions t ON t.id=s.txn_id WHERE ' . db_string_equal_to('t_type_code', 'topic_pin') . ' AND ' . db_string_not_equal_to('details2', '') . ' AND date_and_time<' . strval($time) . '-details2*24*60*60' . ' AND date_and_time>' . strval($last_run) . '-details2*24*60*60';
+        if ($calculate_num_queued) {
+            if ($last_run === null) {
+                $last_run = 0;
+            }
+
+            $time_now = time();
+            $sql = 'SELECT details FROM ' . get_table_prefix() . 'ecom_sales s JOIN ' . get_table_prefix() . 'ecom_transactions t ON t.id=s.txn_id WHERE ' . db_string_equal_to('t_type_code', 'topic_pin') . ' AND ' . db_string_not_equal_to('details2', '') . ' AND date_and_time<' . strval($time_now) . '-details2*24*60*60' . ' AND date_and_time>' . strval($last_run) . '-details2*24*60*60';
             $rows = $GLOBALS['SITE_DB']->query($sql);
-            $done = array();
+            $this->topics = array();
             foreach ($rows as $row) {
                 $topic_id = intval($row['details']);
-
-                if (isset($done[$topic_id])) {
-                    continue;
-                }
-                $done[$topic_id] = true;
-
-                $GLOBALS['FORUM_DRIVER']->pin_topic($topic_id, false);
+                $this->topics[$topic_id] = true;
             }
-            set_value('last_time_cron_topic_pin', strval($time), true);
+
+            $num_queued = count($this->topics);
+        } else {
+            $num_queued = null;
+        }
+
+        return array(
+            'label' => 'Topic unpinning',
+            'num_queued' => $num_queued,
+            'minutes_between_runs' => 60 * 6,
+        );
+    }
+
+    /**
+     * Run function for system scheduler scripts. Searches for things to do. ->info(..., true) must be called before this method.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     */
+    public function run($last_run)
+    {
+        foreach (array_keys($this->topics) as $topic_id) {
+            $GLOBALS['FORUM_DRIVER']->pin_topic($topic_id, false);
         }
     }
 }

@@ -191,9 +191,9 @@ class Module_cms_booking extends Standard_crud_module
         $fh[] = do_lang_tempcode('BOOKABLE_ACTIVE_TO');
         $fh[] = do_lang_tempcode('ENABLED');
         $fh[] = do_lang_tempcode('ACTIONS');
-        $header_row = results_field_title($fh, $sortables, 'sort', $sortable . ' ' . $sort_order);
+        $header_row = results_header_row($fh, $sortables, 'sort', $sortable . ' ' . $sort_order);
 
-        $fields = new Tempcode();
+        $result_entries = new Tempcode();
 
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering);
         foreach ($rows as $row) {
@@ -210,10 +210,10 @@ class Module_cms_booking extends Standard_crud_module
             $fr[] = ($row['enabled'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO');
             $fr[] = protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true));
 
-            $fields->attach(results_entry($fr, true));
+            $result_entries->attach(results_entry($fr, true));
         }
 
-        return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $fields, $sortables, $sortable, $sort_order), false);
+        return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $result_entries, $sortables, $sortable, $sort_order), false);
     }
 
     /**
@@ -435,7 +435,7 @@ class Module_cms_booking_supplements extends Standard_crud_module
         $fh[] = do_lang_tempcode('TITLE');
         $fh[] = do_lang_tempcode('PRICE');
         $fh[] = do_lang_tempcode('ACTIONS');
-        $header_row = results_field_title($fh, $sortables, 'sort', $sortable . ' ' . $sort_order);
+        $header_row = results_header_row($fh, $sortables, 'sort', $sortable . ' ' . $sort_order);
 
         $fields = new Tempcode();
 
@@ -629,7 +629,7 @@ class Module_cms_booking_blacks extends Standard_crud_module
         $fh[] = do_lang_tempcode('TO');
         $fh[] = do_lang_tempcode('BLACKED_EXPLANATION');
         $fh[] = do_lang_tempcode('ACTIONS');
-        $header_row = results_field_title($fh, $sortables, 'sort', $sortable . ' ' . $sort_order);
+        $header_row = results_header_row($fh, $sortables, 'sort', $sortable . ' ' . $sort_order);
 
         $fields = new Tempcode();
 
@@ -901,7 +901,7 @@ class Module_cms_booking_bookings extends Standard_crud_module
         $fh[] = do_lang_tempcode('BOOKING_DATE');
         $fh[] = do_lang_tempcode('ACTIONS');
         // FUTURE: Show paid at, transaction IDs, and codes, and allow sorting of those
-        $header_row = results_field_title($fh, $sortables, 'sort', $sortable . ' ' . $sort_order);
+        $header_row = results_header_row($fh, $sortables, 'sort', $sortable . ' ' . $sort_order);
 
         $fields = new Tempcode();
 

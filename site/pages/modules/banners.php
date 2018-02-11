@@ -384,9 +384,9 @@ class Module_banners
             $hr[] = protect_from_escaping(do_template('COMCODE_ABBR', array('_GUID' => '77d1bbbfc8e6847ecdce12489913a96a', 'TITLE' => do_lang_tempcode('VALIDATED'), 'CONTENT' => do_lang_tempcode('VALIDATED_SHORT'))));
         }
         $hr[] = do_lang_tempcode('ACTIONS');
-        $header_row = results_field_title($hr, $sortables, 'sort', $sortable . ' ' . $sort_order);
+        $header_row = results_header_row($hr, $sortables, 'sort', $sortable . ' ' . $sort_order);
 
-        $fields = new Tempcode();
+        $result_entries = new Tempcode();
 
         $url_map = array('page' => '_SELF', 'type' => 'view');
 
@@ -429,10 +429,10 @@ class Module_banners
             }
             $fr[] = protect_from_escaping(hyperlink($view_url, do_lang_tempcode('VIEW'), false, true, $row['name']));
 
-            $fields->attach(results_entry($fr, true));
+            $result_entries->attach(results_entry($fr, true));
         }
 
-        $table = results_table(do_lang('BANNERS'), $start, 'banner_start', $max, 'banner_max', $max_rows, $header_row, $fields, $sortables, $sortable, $sort_order);
+        $table = results_table(do_lang('BANNERS'), $start, 'banner_start', $max, 'banner_max', $max_rows, $header_row, $result_entries, $sortables, $sortable, $sort_order);
 
         $text = do_lang_tempcode('CHOOSE_VIEW_LIST');
 
@@ -555,7 +555,7 @@ class Module_banners
                 do_lang_tempcode('DATE'),
                 do_lang_tempcode('BANNER_HITS_TO'),
             );
-            $header_row = results_field_title($hr, $sortables, 'sort', $sortable . ' ' . $sort_order);
+            $header_row = results_header_row($hr, $sortables, 'sort', $sortable . ' ' . $sort_order);
 
             $max = get_param_integer('max', 50);
             $start = get_param_integer('start', 0);

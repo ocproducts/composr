@@ -181,7 +181,7 @@ class filter_xml_test_set extends cms_test_case
 
         $result = http_get_contents($url->evaluate(), array('post_params' => $post, 'cookies' => array(get_session_cookie() => get_session_id())));
 
-        $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), null, 'ORDER BY id DESC', 1);
+        $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), array(), 'ORDER BY id DESC', 1);
         $row = $rows[0];
         $this->assertTrue(get_translated_text($row['title']) == 'Example' . $rnd);
     }
@@ -214,7 +214,7 @@ class filter_xml_test_set extends cms_test_case
 
         $result = http_get_contents($url->evaluate(), array('post_params' => $post, 'cookies' => array(get_session_cookie() => get_session_id())));
 
-        $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), null, 'ORDER BY id DESC', 1);
+        $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), array(), 'ORDER BY id DESC', 1);
         $row = $rows[0];
         $this->assertTrue(get_translated_text($row['title']) == 'This is a test');
     }
@@ -247,7 +247,7 @@ class filter_xml_test_set extends cms_test_case
 
         $result = http_get_contents($url->evaluate(), array('post_params' => $post, 'cookies' => array(get_session_cookie() => get_session_id())));
 
-        $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), null, 'ORDER BY id DESC', 1);
+        $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), array(), 'ORDER BY id DESC', 1);
         $row = $rows[0];
         $this->assertTrue(get_translated_text($row['title']) == 'This Is A Test');
     }
@@ -281,7 +281,7 @@ class filter_xml_test_set extends cms_test_case
 
         $result = http_get_contents($url->evaluate(), array('post_params' => $post, 'cookies' => array(get_session_cookie() => get_session_id())));
 
-        $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), null, 'ORDER BY id DESC', 1);
+        $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), array(), 'ORDER BY id DESC', 1);
         $row = $rows[0];
         $this->assertTrue(get_translated_text($row['title']) == 'foobarEXAMPLEfoobar');
     }
@@ -314,7 +314,7 @@ class filter_xml_test_set extends cms_test_case
 
         $result = http_get_contents($url->evaluate(), array('post_params' => $post, 'cookies' => array(get_session_cookie() => get_session_id())));
 
-        $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), null, 'ORDER BY id DESC', 1);
+        $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), array(), 'ORDER BY id DESC', 1);
         $row = $rows[0];
         $this->assertTrue(get_translated_text($row['title']) == 'foobar');
     }
@@ -347,7 +347,7 @@ class filter_xml_test_set extends cms_test_case
 
         $result = http_get_contents($url->evaluate(), array('post_params' => $post, 'cookies' => array(get_session_cookie() => get_session_id())));
 
-        $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), null, 'ORDER BY id DESC', 1);
+        $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), array(), 'ORDER BY id DESC', 1);
         $row = $rows[0];
         $this->assertTrue(get_translated_text($row['title']) == 'blah');
     }

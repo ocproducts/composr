@@ -24,18 +24,29 @@
 class Hook_cron__health_check
 {
     /**
-     * Run function for Cron hooks. Searches for tasks to perform.
+     * Get info from this hook.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     * @param  boolean $calculate_num_queued Calculate the number of items queued, if possible
+     * @return ?array Return a map of info about the hook (null: disabled)
      */
-    public function run()
+    public function info($last_run, $calculate_num_queued)
     {
-        // Note that we have a leading "_" on the hook name so that it runs first (we run Cron hooks in sorted order)
+        return array(
+            'label' => 'Health Check',
+            'num_queued' => null,
+            'minutes_between_runs' => intval(get_option('hc_cron_regularity')),
+        );
+    }
 
-        $last = get_value('last_health_check', null, true);
-        $time = time();
-        if (($last !== null) && (intval($last) > $time - intval(get_option('hc_cron_regularity')) * 60)) {
-            return;
-        }
-        set_value('last_health_check', strval($time), true);
+    /**
+     * Run function for system scheduler scripts. Searches for things to do. ->info(..., true) must be called before this method.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     */
+    public function run($last_run)
+    {
+        // Note that we have a leading "_" on the hook name so that it runs first (we run the system scheduler scripts in sorted order)
 
         require_code('health_check');
 

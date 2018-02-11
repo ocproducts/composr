@@ -88,6 +88,7 @@ class Module_admin_version
         $GLOBALS['SITE_DB']->drop_table_if_exists('urls_checked');
         $GLOBALS['SITE_DB']->drop_table_if_exists('content_regions');
         $GLOBALS['SITE_DB']->drop_table_if_exists('post_tokens');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('cron');
 
         /* We don't want to get rid of on-disk data when reinstalling
         $zones = find_all_zones(true);
@@ -995,6 +996,24 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->create_index('post_tokens', 'generation_time', array('generation_time'));
         }
 
+        if (($upgrade_from === null) || ($upgrade_from < 18)) {
+            $GLOBALS['SITE_DB']->create_index('digestives_tin', 'from_member_id', array('d_from_member_id'));
+            $GLOBALS['SITE_DB']->create_index('cache', 'the_member', array('the_member'));
+            $GLOBALS['SITE_DB']->create_index('link_tracker', 'member_id', array('c_member_id'));
+            $GLOBALS['SITE_DB']->create_index('logged_mail_messages', 'm_as', array('m_as'));
+            $GLOBALS['SITE_DB']->create_index('rating', 'rating_member', array('rating_member'));
+            $GLOBALS['SITE_DB']->create_index('attachment_refs', 'attachmentreferences', array('r_referer_type', 'r_referer_id'));
+            $GLOBALS['SITE_DB']->create_index('notifications_enabled', 'who_has', array('l_notification_code', 'l_code_category(10)', 'l_setting')); // l_code_category is not enough as may be searched as ''
+
+            $GLOBALS['SITE_DB']->create_table('cron_progression', array(
+                'c_hook' => '*ID_TEXT',
+                'c_last_run' => '?TIME',
+                'c_last_execution_secs' => '?INTEGER',
+                'c_last_error' => 'LONG_TEXT',
+                'c_enabled' => 'BINARY',
+            ));
+        }
+
         if (($upgrade_from !== null) && ($upgrade_from < 18)) { // LEGACY
             $GLOBALS['SITE_DB']->drop_table_if_exists('bookmarks');
 
@@ -1008,16 +1027,58 @@ class Module_admin_version
             rename_config_option('allow_email_from_staff_disable', 'staff_email_receipt_configurability');
             rename_config_option('collapse_user_zones', 'single_public_zone');
             $GLOBALS['SITE_DB']->query_update('config', array('c_value' => '2'), array('c_value' => '1', 'c_name' => 'dobs'));
-        }
 
-        if (($upgrade_from === null) || ($upgrade_from < 18)) {
-            $GLOBALS['SITE_DB']->create_index('digestives_tin', 'from_member_id', array('d_from_member_id'));
-            $GLOBALS['SITE_DB']->create_index('cache', 'the_member', array('the_member'));
-            $GLOBALS['SITE_DB']->create_index('link_tracker', 'member_id', array('c_member_id'));
-            $GLOBALS['SITE_DB']->create_index('logged_mail_messages', 'm_as', array('m_as'));
-            $GLOBALS['SITE_DB']->create_index('rating', 'rating_member', array('rating_member'));
-            $GLOBALS['SITE_DB']->create_index('attachment_refs', 'attachmentreferences', array('r_referer_type', 'r_referer_id'));
-            $GLOBALS['SITE_DB']->create_index('notifications_enabled', 'who_has', array('l_notification_code', 'l_code_category(10)', 'l_setting')); // l_code_category is not enough as may be searched as ''
+            $elective_values_remap = array(
+                'last_health_check' => '_health_check',
+                'last_catalogue_entry_timeouts_calc' => 'catalogue_entry_timeouts',
+                'last_confirm_reminder_time' => 'cns_confirm_reminder',
+                'last_welcome_mail_time' => 'cns_welcome_emails',
+                'credit_card_cleanup_time' => 'credit_card_cleanup',
+                'dynamic_firewall_time' => 'dynamic_firewall',
+                'git_autopull_time' => 'git_autopull',
+                'last_implicit_sync' => 'implicit_usergroup_sync',
+                'mail_log_last_run_time' => 'ip_address_sharing',
+                'last_cron_manual_subscription_notification' => 'manual_subscription_notification',
+                'oracle_index_cleanup_last_time' => 'oracle',
+                'last_sitemap_time_calc' => 'sitemap',
+                'last_staff_checklist_notify' => 'staff_checklist_notify',
+                'last_subscription_mail_send' => 'subscription_mails',
+                'last_ticket_lead_time_calc' => 'ticket_type_lead_times',
+                'last_time_cron_topic_pin' => 'topic_pin',
+                'last_cron_user_sync' => 'user_sync',
+            );
+            foreach ($elective_values_remap as $value => $cron_hook) {
+                $GLOBALS['SITE_DB']->query_insert('cron_progression', array(
+                    'c_hook' => $cron_hook,
+                    'c_last_run' => get_value($value, null, true),
+                    'c_last_execution_secs' => null,
+                    'c_last_error' => '',
+                    'c_enabled' => 1,
+                ));
+            }
+
+            $values_remap = array(
+                'last_classified_refresh' => 'classifieds',
+                'last_disastr_time' => 'disastr',
+                'last_downloads_followup_email_send' => 'downloads_followup_email',
+                'last_gallery_syndication' => 'gallery_syndication',
+                'last_group_points' => 'group_points',
+                'last_insult_time' => 'insults',
+                'last_password_censor_time' => 'password_censor',
+                'last_demo_set_time' => 'site_cleanup',
+                'last_thieving_time' => 'stealr',
+                'last_user_export' => 'user_export',
+                'last_user_import' => 'user_import',
+            );
+            foreach ($values_remap as $value => $cron_hook) {
+                $GLOBALS['SITE_DB']->query_insert('cron_progression', array(
+                    'c_hook' => $cron_hook,
+                    'c_last_run' => get_value($value, null),
+                    'c_last_execution_secs' => null,
+                    'c_last_error' => '',
+                    'c_enabled' => 1,
+                ));
+            }
         }
     }
 
@@ -1094,7 +1155,7 @@ class Module_admin_version
         }
         foreach ($sponsors as $sponsor => &$areas) {
             $areas['AREAS'] = array_unique($areas['AREAS']);
-            //sort($areas['AREAS'], SORT_NATURAL); Actually order is meaningful
+            //sort($areas['AREAS'], SORT_NATURAL | SORT_FLAG_CASE); Actually order is meaningful
         }
         fclose($myfile);
 

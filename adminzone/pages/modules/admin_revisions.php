@@ -193,7 +193,7 @@ class Module_admin_revisions
         }
 
         $row_renderer = array($this, '_render_revision');
-        $_fields_titles = array(
+        $_header_row = array(
             do_lang_tempcode('VIEW'),
             do_lang_tempcode('MEMBER'),
             do_lang_tempcode('DATE'),
@@ -202,12 +202,12 @@ class Module_admin_revisions
             do_lang_tempcode('ACTION'),
         );
         if (has_privilege(get_member(), 'delete_revisions')) {
-            $_fields_titles[] = do_lang_tempcode('DELETE');
+            $_header_row[] = do_lang_tempcode('DELETE');
         }
 
         require_code('revisions_engine_database');
         $revision_engine = new RevisionEngineDatabase();
-        return $revision_engine->ui_browse_revisions($this->title, $_fields_titles, ($resource_types === null) ? null : explode(',', $resource_types), $row_renderer, $resource_id, $category_id, $member_id, null, true);
+        return $revision_engine->ui_browse_revisions($this->title, $_header_row, ($resource_types === null) ? null : explode(',', $resource_types), $row_renderer, $resource_id, $category_id, $member_id, null, true);
     }
 
     /**

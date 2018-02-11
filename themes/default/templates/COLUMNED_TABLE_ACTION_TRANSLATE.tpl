@@ -1,1 +1,0 @@
-<form title="{!AUTO_TRANSLATE}: {NAME*}" data-disable-buttons-on-submit="{}" class="inline top-vertical-alignment" action="{URL*}" method="post" autocomplete="off"><input type="image" width="14" height="14" src="{$IMG*,icons/admin/translate}" title="{!AUTO_TRANSLATE}: {NAME*}" alt="{!AUTO_TRANSLATE}: {NAME*}" /></form>

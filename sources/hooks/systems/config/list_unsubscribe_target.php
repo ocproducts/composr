@@ -34,11 +34,11 @@ class Hook_config_list_unsubscribe_target
             'human_name' => 'LIST_UNSUBSCRIBE_TARGET',
             'type' => 'tick',
             'category' => 'MESSAGES',
-            'group' => '_EMAIL',
+            'group' => 'EMAIL_GENERAL',
             'explanation' => 'CONFIG_OPTION_list_unsubscribe_target',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 15,
+            'order_in_category_group' => 3,
             'required' => false,
 
             'public' => false,

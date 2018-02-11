@@ -34,11 +34,11 @@ class Hook_config_dkim_selector
             'human_name' => 'DKIM_SELECTOR',
             'type' => 'line',
             'category' => 'MESSAGES',
-            'group' => '_EMAIL',
+            'group' => 'ADVANCED_EMAIL_SEND_SETTINGS',
             'explanation' => 'CONFIG_OPTION_dkim_selector',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 13,
+            'order_in_category_group' => 5,
             'required' => true,
 
             'public' => false,

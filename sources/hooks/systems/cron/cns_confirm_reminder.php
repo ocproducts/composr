@@ -23,43 +23,71 @@
  */
 class Hook_cron_cns_confirm_reminder
 {
+    protected $rows;
+
+    const SECS_REMIND_AFTER = 24 * 60 * 60 * 2;
+
     /**
-     * Run function for Cron hooks. Searches for tasks to perform.
+     * Get info from this hook.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     * @param  boolean $calculate_num_queued Calculate the number of items queued, if possible
+     * @return ?array Return a map of info about the hook (null: disabled)
      */
-    public function run()
+    public function info($last_run, $calculate_num_queued)
     {
         if (get_forum_type() != 'cns') {
-            return;
+            return null;
         }
 
-        $time = time();
-        $last_time = intval(get_value('last_confirm_reminder_time', null, true));
-        if ($last_time == 0) {
-            $last_time = time();
-        }
-        if ($last_time > time() - 24 * 60 * 60 * 2) {
-            return;
-        }
-        set_value('last_confirm_reminder_time', strval($time), true);
+        if ($calculate_num_queued) {
+            if ($last_run === null) {
+                $last_run = time() - self::SECS_REMIND_AFTER;
+            }
 
+            push_db_scope_check(false);
+            $query = 'SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'f_members WHERE ' . db_string_not_equal_to('m_validated_email_confirm_code', '') . ' AND m_join_time>' . strval($last_run - self::SECS_REMIND_AFTER) . ' AND m_join_time<=' . strval($last_run);
+            $this->rows = $GLOBALS['SITE_DB']->query($query);
+            pop_db_scope_check();
+
+            foreach ($this->rows as $i => $row) {
+                $coppa = (get_option('is_on_coppa') == '1') && (utctime_to_usertime(time() - mktime(0, 0, 0, $row['m_dob_month'], $row['m_dob_day'], $row['m_dob_year'])) / 31536000.0 < 13.0);
+                if (!$coppa) {
+                    unset($this->rows[$i]);
+                }
+            }
+
+            $num_queued = count($this->rows);
+        } else {
+            $num_queued = null;
+        }
+
+        return array(
+            'label' => 'Send account confirmation reminders',
+            'num_queued' => $num_queued,
+            'minutes_between_runs' => 24 * 60 * 2,
+        );
+    }
+
+    /**
+     * Run function for system scheduler scripts. Searches for things to do. ->info(..., true) must be called before this method.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     */
+    public function run($last_run)
+    {
         require_code('mail');
         require_lang('cns');
 
-        push_db_scope_check(false);
-        $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'f_members WHERE ' . db_string_not_equal_to('m_validated_email_confirm_code', '') . ' AND m_join_time>' . strval($last_time - 24 * 60 * 60 * 2) . ' AND m_join_time<=' . strval($last_time));
-        pop_db_scope_check();
-        foreach ($rows as $row) {
-            $coppa = (get_option('is_on_coppa') == '1') && (utctime_to_usertime(time() - mktime(0, 0, 0, $row['m_dob_month'], $row['m_dob_day'], $row['m_dob_year'])) / 31536000.0 < 13.0);
-            if (!$coppa) {
-                $zone = get_module_zone('join');
-                if ($zone != '') {
-                    $zone .= '/';
-                }
-                $url = get_base_url() . '/' . $zone . 'index.php?page=join&type=step4&email=' . rawurlencode($row['m_email_address']) . '&code=' . urlencode($row['m_validated_email_confirm_code']);
-                $url_simple = get_base_url() . '/' . $zone . 'index.php?page=join&type=step4';
-                $message = do_lang('CNS_SIGNUP_TEXT', comcode_escape(get_site_name()), comcode_escape($url), array($url_simple, $row['m_email_address'], strval($row['m_validated_email_confirm_code'])), $row['m_language']);
-                dispatch_mail(do_lang('CONFIRM_EMAIL_SUBJECT', get_site_name(), null, null, $row['m_language']), $message, array($row['m_email_address']), $row['m_username']);
+        foreach ($this->rows as $row) {
+            $zone = get_module_zone('join');
+            if ($zone != '') {
+                $zone .= '/';
             }
+            $url = get_base_url() . '/' . $zone . 'index.php?page=join&type=step4&email=' . rawurlencode($row['m_email_address']) . '&code=' . urlencode($row['m_validated_email_confirm_code']);
+            $url_simple = get_base_url() . '/' . $zone . 'index.php?page=join&type=step4';
+            $message = do_lang('CNS_SIGNUP_TEXT', comcode_escape(get_site_name()), comcode_escape($url), array($url_simple, $row['m_email_address'], strval($row['m_validated_email_confirm_code'])), $row['m_language']);
+            dispatch_mail(do_lang('CONFIRM_EMAIL_SUBJECT', get_site_name(), null, null, $row['m_language']), $message, array($row['m_email_address']), $row['m_username']);
         }
     }
 }

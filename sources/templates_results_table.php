@@ -27,23 +27,23 @@
  * @param  integer $max The total number of results to show per-page
  * @param  ID_TEXT $max_name The parameter name used to store the total number of results to show per-page (usually, 'max')
  * @param  integer $max_rows The maximum number of rows in the entire dataset
- * @param  Tempcode $fields_title The titles of the fields we are showing in our table, presented in preprepared Tempcode
- * @param  Tempcode $fields The values of the fields we are showing in our table
+ * @param  Tempcode $header_row The titles of the fields we are showing in our table, presented in preprepared Tempcode
+ * @param  Tempcode $result_entries The entry rows we are showing in our table
  * @param  array $sortables A map of sortable code (usually, db field names), to strings giving the human name for the sort order
  * @param  ?ID_TEXT $sortable The current sortable (null: none)
  * @param  ?ID_TEXT $sort_order The order we are sorting in (null: none)
  * @set    ASC DESC
  * @param  ?ID_TEXT $sort_name The parameter name used to store our sortable (usually 'sort') (null: none)
  * @param  ?Tempcode $message Message to show (null: auto)
- * @param  array $widths Widths to specify to the table
- * @param  ?string $tplset The template set to use (null: default)
+ * @param  array $widths Widths to specify to the table (strings, ending 'px')
+ * @param  ?string $tpl_set The template set to use (null: default)
  * @param  integer $max_page_links The maximum number of quick-jump page-links to show
  * @param  string $guid GUID to pass to template
  * @param  boolean $skip_sortables_form Whether to skip showing a sort form (useful if there is another form wrapped around this)
  * @param  ?ID_TEXT $hash URL hash component (null: none)
  * @return Tempcode The results table
  */
-function results_table($text_id, $start, $start_name, $max, $max_name, $max_rows, $fields_title, $fields, $sortables = array(), $sortable = null, $sort_order = null, $sort_name = 'sort', $message = null, $widths = array(), $tplset = null, $max_page_links = 8, $guid = '1c8645bc2a3ff5bec2e003142185561f', $skip_sortables_form = false, $hash = null)
+function results_table($text_id, $start, $start_name, $max, $max_name, $max_rows, $header_row, $result_entries, $sortables = array(), $sortable = null, $sort_order = null, $sort_name = 'sort', $message = null, $widths = array(), $tpl_set = null, $max_page_links = 8, $guid = '1c8645bc2a3ff5bec2e003142185561f', $skip_sortables_form = false, $hash = null)
 {
     require_code('templates_pagination');
 
@@ -57,7 +57,7 @@ function results_table($text_id, $start, $start_name, $max, $max_name, $max_rows
             if (is_object($text)) {
                 $text = $text->evaluate();
             }
-            if ($text == do_lang('DATE_TIME') && strpos($fields->evaluate(), '<a ') !== false) {
+            if ($text == do_lang('DATE_TIME') && strpos($result_entries->evaluate(), '<a ') !== false) {
                 $message = paragraph(do_lang_tempcode('CLICK_DATE_FOR_MORE'));
             }
         }
@@ -74,12 +74,12 @@ function results_table($text_id, $start, $start_name, $max, $max_name, $max_rows
     $pagination = pagination(is_object($text_id) ? $text_id : make_string_tempcode($text_id), $start, $start_name, $max, $max_name, $max_rows, true, $max_page_links, null, ($hash === null) ? '' : $hash);
 
     return do_template(
-        ($tplset === null) ? 'RESULTS_TABLE' : ('RESULTS_' . $tplset . '_TABLE'),
+        ($tpl_set === null) ? 'RESULTS_TABLE' : ('RESULTS_' . $tpl_set . '_TABLE'),
         array(
             '_GUID' => $guid,
             'TEXT_ID' => $text_id,
-            'FIELDS_TITLE' => $fields_title,
-            'FIELDS' => $fields,
+            'HEADER_ROW' => $header_row,
+            'RESULT_ENTRIES' => $result_entries,
             'MESSAGE' => $message,
             'SORT' => $skip_sortables_form ? new Tempcode() : $sort,
             'PAGINATION' => $pagination,
@@ -89,6 +89,64 @@ function results_table($text_id, $start, $start_name, $max, $max_name, $max_rows
         false,
         'RESULTS_TABLE'
     );
+}
+
+/**
+ * Get the Tempcode for a results table header row. You would take the output of this, and feed it in as $header_row, in a results_table function call.
+ *
+ * @param  array $values The array of field titles that header the entries in the results table
+ * @param  array $sortables A map of sortable code (usually, db field names), to strings giving the human name for the sort order
+ * @param  ID_TEXT $order_param The parameter name used to store our sortable
+ * @param  ID_TEXT $current_ordering The current ordering ("$sortable $sort_order")
+ * @param  string $guid GUID to pass to template
+ * @return Tempcode The generated header row
+ */
+function results_header_row($values, $sortables = array(), $order_param = 'sort', $current_ordering = '', $guid = 'fbcaf8b021e3939bfce1dce9ff8ed63a')
+{
+    $cells = new Tempcode();
+    foreach ($values as $value) {
+        $found = null;
+        foreach ($sortables as $key => $sortable) {
+            $_value = is_object($value) ? $value->evaluate() : $value;
+            if (((is_string($sortable)) && ($sortable == $_value)) || ((is_object($sortable)) && ($sortable->evaluate() == $_value))) {
+                $found = $key;
+                break;
+            }
+        }
+        if ($found !== null) {
+            $sort_url_asc = get_self_url(false, false, array($order_param => $found . ' ASC'), true);
+            $sort_url_desc = get_self_url(false, false, array($order_param => $found . ' DESC'), true);
+            $sort_asc_selected = ($current_ordering == $found . ' ASC');
+            $sort_desc_selected = ($current_ordering == $found . ' DESC');
+            $cells->attach(do_template('RESULTS_TABLE_FIELD_TITLE_SORTABLE', array('_GUID' => 'e71df89abff7c7d51907867924dbfa7e', 'VALUE' => $value, 'SORT_ASC_SELECTED' => $sort_asc_selected, 'SORT_DESC_SELECTED' => $sort_desc_selected, 'SORT_URL_DESC' => $sort_url_desc, 'SORT_URL_ASC' => $sort_url_asc)));
+        } else {
+            $cells->attach(do_template('RESULTS_TABLE_FIELD_TITLE', array('_GUID' => '80e9de91bb9e479766bc8568a790735c', 'VALUE' => $value)));
+        }
+    }
+
+    return $cells;
+}
+
+/**
+ * Get the Tempcode for a results entry (a row). You would gather together the outputs of several of these functions, then put them in as the $fields in a results_table function call.
+ *
+ * @param  array $values The array of values that make up this entry (of Tempcode or string, or mixture)
+ * @param  boolean $auto_escape Whether to automatically escape each entry so that it cannot contain HTML
+ * @param  ?string $tpl_set The template set to use (null: default)
+ * @param  string $guid GUID to pass to template
+ * @return Tempcode The generated entry
+ */
+function results_entry($values, $auto_escape, $tpl_set = null, $guid = '9e340dd14173c7320b57243d607718ab')
+{
+    $cells = new Tempcode();
+    foreach ($values as $class => $value) {
+        if (($auto_escape) && (!is_object($value))) {
+            $value = escape_html($value);
+        }
+        $cells->attach(do_template(($tpl_set === null) ? 'RESULTS_TABLE_FIELD' : ('RESULTS_TABLE_' . $tpl_set . '_FIELD'), array('_GUID' => $guid, 'VALUE' => $value, 'CLASS' => (is_string($class)) ? $class : ''), null, false, 'RESULTS_TABLE_FIELD'));
+    }
+
+    return do_template(($tpl_set === null) ? 'RESULTS_TABLE_ENTRY' : ('RESULTS_TABLE_' . $tpl_set . '_ENTRY'), array('_GUID' => $guid, 'VALUES' => $cells), null, false, 'RESULTS_TABLE_ENTRY');
 }
 
 /**
@@ -133,62 +191,4 @@ function results_sorter($sortables, $sortable = null, $sort_order = null, $sort_
     }
     $GLOBALS['INCREMENTAL_ID_GENERATOR']++;
     return $sort;
-}
-
-/**
- * Get the Tempcode for a results entry. You would gather together the outputs of several of these functions, then put them in as the $fields in a results_table function call.
- *
- * @param  array $values The array of values that make up this entry (of Tempcode or string, or mixture)
- * @param  boolean $auto_escape Whether to automatically escape each entry so that it cannot contain HTML
- * @param  ?string $tplset The template set to use (null: default)
- * @param  string $guid GUID to pass to template
- * @return Tempcode The generated entry
- */
-function results_entry($values, $auto_escape, $tplset = null, $guid = '9e340dd14173c7320b57243d607718ab')
-{
-    $cells = new Tempcode();
-    foreach ($values as $class => $value) {
-        if (($auto_escape) && (!is_object($value))) {
-            $value = escape_html($value);
-        }
-        $cells->attach(do_template(($tplset === null) ? 'RESULTS_TABLE_FIELD' : ('RESULTS_TABLE_' . $tplset . '_FIELD'), array('_GUID' => $guid, 'VALUE' => $value, 'CLASS' => (is_string($class)) ? $class : ''), null, false, 'RESULTS_TABLE_FIELD'));
-    }
-
-    return do_template(($tplset === null) ? 'RESULTS_TABLE_ENTRY' : ('RESULTS_TABLE_' . $tplset . '_ENTRY'), array('_GUID' => $guid, 'VALUES' => $cells), null, false, 'RESULTS_TABLE_ENTRY');
-}
-
-/**
- * Get the Tempcode for a results table title row. You would take the output of this, and feed it in as $fields_title, in a results_table function call.
- *
- * @param  array $values The array of field titles that define the entries in the results table
- * @param  array $sortables A map of sortable code (usually, db field names), to strings giving the human name for the sort order
- * @param  ID_TEXT $order_param The parameter name used to store our sortable
- * @param  ID_TEXT $current_ordering The current ordering ("$sortable $sort_order")
- * @param  string $guid GUID to pass to template
- * @return Tempcode The generated title
- */
-function results_field_title($values, $sortables = array(), $order_param = 'sort', $current_ordering = '', $guid = 'fbcaf8b021e3939bfce1dce9ff8ed63a')
-{
-    $cells = new Tempcode();
-    foreach ($values as $value) {
-        $found = null;
-        foreach ($sortables as $key => $sortable) {
-            $_value = is_object($value) ? $value->evaluate() : $value;
-            if (((is_string($sortable)) && ($sortable == $_value)) || ((is_object($sortable)) && ($sortable->evaluate() == $_value))) {
-                $found = $key;
-                break;
-            }
-        }
-        if ($found !== null) {
-            $sort_url_asc = get_self_url(false, false, array($order_param => $found . ' ASC'), true);
-            $sort_url_desc = get_self_url(false, false, array($order_param => $found . ' DESC'), true);
-            $sort_asc_selected = ($current_ordering == $found . ' ASC');
-            $sort_desc_selected = ($current_ordering == $found . ' DESC');
-            $cells->attach(do_template('RESULTS_TABLE_FIELD_TITLE_SORTABLE', array('_GUID' => 'e71df89abff7c7d51907867924dbfa7e', 'VALUE' => $value, 'SORT_ASC_SELECTED' => $sort_asc_selected, 'SORT_DESC_SELECTED' => $sort_desc_selected, 'SORT_URL_DESC' => $sort_url_desc, 'SORT_URL_ASC' => $sort_url_asc)));
-        } else {
-            $cells->attach(do_template('RESULTS_TABLE_FIELD_TITLE', array('_GUID' => '80e9de91bb9e479766bc8568a790735c', 'VALUE' => $value)));
-        }
-    }
-
-    return $cells;
 }

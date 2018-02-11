@@ -1711,7 +1711,7 @@ class Module_topics
                 $moderation_options[] = array(do_lang_tempcode('CASCADING'), 'cascading', false, do_lang_tempcode('DESCRIPTION_CASCADING'));
             }
             if (addon_installed('calendar')) {
-                $specialisation2->attach(form_input_date__scheduler(do_lang_tempcode('CNS_PUBLICATION_TIME'), do_lang_tempcode('CNS_DESCRIPTION_PUBLICATION_TIME'), 'schedule', false, true, true));
+                $specialisation2->attach(form_input_date__cron(do_lang_tempcode('CNS_PUBLICATION_TIME'), do_lang_tempcode('CNS_DESCRIPTION_PUBLICATION_TIME'), 'schedule', false, true, true));
             }
         } else {
             $hidden_fields->attach(form_input_hidden('open', '1'));
@@ -2099,7 +2099,7 @@ class Module_topics
             }
             $specialisation2->attach(form_input_various_ticks($options, ''));
             if (addon_installed('calendar')) {
-                $specialisation2->attach(form_input_date__scheduler(do_lang_tempcode('CNS_PUBLICATION_TIME'), do_lang_tempcode('CNS_DESCRIPTION_PUBLICATION_TIME'), 'schedule', false, true, true));
+                $specialisation2->attach(form_input_date__cron(do_lang_tempcode('CNS_PUBLICATION_TIME'), do_lang_tempcode('CNS_DESCRIPTION_PUBLICATION_TIME'), 'schedule', false, true, true));
             }
         }
 

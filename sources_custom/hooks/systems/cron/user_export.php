@@ -19,21 +19,34 @@
 class Hook_cron_user_export
 {
     /**
-     * Run function for Cron hooks. Searches for tasks to perform.
+     * Get info from this hook.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     * @param  boolean $calculate_num_queued Calculate the number of items queued, if possible
+     * @return ?array Return a map of info about the hook (null: disabled)
      */
-    public function run()
+    public function info($last_run, $calculate_num_queued)
     {
         require_code('user_export');
 
         if (!USER_EXPORT_ENABLED) {
-            return;
+            return null;
         }
 
-        $last = get_value('last_user_export');
-        if (($last === null) || (intval($last) < time() - 60 * USER_EXPORT_MINUTES)) {
-            set_value('last_user_export', strval(time()));
+        return array(
+            'label' => 'User export',
+            'num_queued' => null,
+            'minutes_between_runs' => USER_EXPORT_MINUTES,
+        );
+    }
 
-            do_user_export();
-        }
+    /**
+     * Run function for system scheduler scripts. Searches for things to do. ->info(..., true) must be called before this method.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     */
+    public function run($last_run)
+    {
+        do_user_export();
     }
 }

@@ -284,7 +284,7 @@ class Module_admin_shopping
             log_hack_attack_and_exit('ORDERBY_HACK');
         }
 
-        $fields_title = results_field_title(array(
+        $header_row = results_header_row(array(
             do_lang_tempcode('ECOM_ORDER'),
             do_lang_tempcode('PRICE'),
             do_lang_tempcode(get_option('tax_system')),
@@ -351,7 +351,7 @@ class Module_admin_shopping
         $max_rows = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'shopping_orders WHERE ' . $where);
         $pagination = pagination(do_lang_tempcode('ORDERS'), $start, 'start', $max, 'max', $max_rows, true);
 
-        $results_table = results_table(do_lang_tempcode('ORDERS'), 0, 'start', $max_rows, 'max', $max_rows, $fields_title, $order_entries, $sortables, $sortable, $sort_order, 'sort');
+        $results_table = results_table(do_lang_tempcode('ORDERS'), 0, 'start', $max_rows, 'max', $max_rows, $header_row, $order_entries, $sortables, $sortable, $sort_order, 'sort');
 
         $hidden = build_keep_form_fields('_SELF', true, array('filter'));
 

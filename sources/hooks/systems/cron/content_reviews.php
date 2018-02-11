@@ -23,18 +23,40 @@
  */
 class Hook_cron_content_reviews
 {
+    protected $pending_content_reviews;
+
     /**
-     * Run function for Cron hooks. Searches for tasks to perform.
+     * Get info from this hook.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     * @param  boolean $calculate_num_queued Calculate the number of items queued, if possible
+     * @return ?array Return a map of info about the hook (null: disabled)
      */
-    public function run()
+    public function info($last_run, $calculate_num_queued)
     {
-        if (!addon_installed('content_reviews')) {
-            return;
+        if ($calculate_num_queued) {
+            $query = 'SELECT * FROM ' . get_table_prefix() . 'content_reviews WHERE review_notification_happened=0 AND next_review_time<=' . strval(time());
+            $this->pending_content_reviews = $GLOBALS['SITE_DB']->query($query);
+            $num_queued = count($this->pending_content_reviews);
+        } else {
+            $num_queued = null;
         }
 
-        $query = 'SELECT * FROM ' . get_table_prefix() . 'content_reviews WHERE review_notification_happened=0 AND next_review_time<=' . strval(time());
-        $pending_content_reviews = $GLOBALS['SITE_DB']->query($query);
-        foreach ($pending_content_reviews as $pending_content_review) {
+        return array(
+            'label' => 'Send content review notifications',
+            'num_queued' => $num_queued,
+            'minutes_between_runs' => 60 * 24,
+        );
+    }
+
+    /**
+     * Run function for system scheduler scripts. Searches for things to do. ->info(..., true) must be called before this method.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     */
+    public function run($last_run)
+    {
+        foreach ($this->pending_content_reviews as $pending_content_review) {
             $content_type = $pending_content_review['content_type'];
             $content_id = $pending_content_review['content_id'];
 

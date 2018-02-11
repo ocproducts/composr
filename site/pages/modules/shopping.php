@@ -364,7 +364,7 @@ class Module_shopping
         if ($max_rows > 0) {
             $shopping_cart = new Tempcode();
 
-            $fields_title = results_field_title(array(
+            $header_row = results_header_row(array(
                 '',
                 do_lang_tempcode('PRODUCT'),
                 do_lang_tempcode('UNIT_PRICE'),
@@ -390,7 +390,7 @@ class Module_shopping
                 $this->show_cart_entry($shopping_cart, $details, $item, isset($shopping_cart_rows_taxes[$i]) ? $shopping_cart_rows_taxes[$i] : null);
             }
 
-            $results_table = results_table(do_lang_tempcode('SHOPPING'), 0, 'cart_start', $max_rows, 'cart_max', $max_rows, $fields_title, $shopping_cart, array(), null, null, 'sort', null, array(), 'cart');
+            $results_table = results_table(do_lang_tempcode('SHOPPING'), 0, 'cart_start', $max_rows, 'cart_max', $max_rows, $header_row, $shopping_cart, array(), null, null, 'sort', null, array(), 'cart');
 
             $update_cart_url = build_url(array('page' => '_SELF', 'type' => 'update_cart'), '_SELF');
             $empty_cart_url = build_url(array('page' => '_SELF', 'type' => 'empty_cart'), '_SELF');

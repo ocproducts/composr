@@ -96,6 +96,14 @@ class Module_admin_errorlog
             $this->title = get_screen_title('INIT_LOG');
         }
 
+        if ($type == 'enable_cron_hook') {
+            $this->title = get_screen_title('ENABLE_CRON_HOOK');
+        }
+
+        if ($type == 'disable_cron_hook') {
+            $this->title = get_screen_title('DISABLE_CRON_HOOK');
+        }
+
         return null;
     }
 
@@ -122,6 +130,14 @@ class Module_admin_errorlog
 
         if ($type == 'download_log') {
             return $this->download_log();
+        }
+
+        if ($type == 'enable_cron_hook') {
+            return $this->enable_cron_hook();
+        }
+
+        if ($type == 'disable_cron_hook') {
+            return $this->disable_cron_hook();
         }
 
         return new Tempcode(); // Should not get here
@@ -218,8 +234,8 @@ class Module_admin_errorlog
             $stuff = array_reverse($stuff);
         }
         require_code('templates_results_table');
-        $fields_title = results_field_title(array(do_lang_tempcode('DATE_TIME'), do_lang_tempcode('TYPE'), do_lang_tempcode('MESSAGE')), $sortables, 'sort', $sortable . ' ' . $sort_order);
-        $fields = new Tempcode();
+        $header_row = results_header_row(array(do_lang_tempcode('DATE_TIME'), do_lang_tempcode('TYPE'), do_lang_tempcode('MESSAGE')), $sortables, 'sort', $sortable . ' ' . $sort_order);
+        $result_entries = new Tempcode();
         for ($i = $start; $i < $start + $max; $i++) {
             if (!array_key_exists($i, $stuff)) {
                 break;
@@ -227,13 +243,13 @@ class Module_admin_errorlog
 
             $message = str_replace(get_file_base(), '', $stuff[$i][4]);
 
-            $fields->attach(results_entry(array(
+            $result_entries->attach(results_entry(array(
                 $stuff[$i][1] . ' ' . $stuff[$i][2],
                 $stuff[$i][3],
                 $message,
             ), true));
         }
-        $errors = results_table(do_lang_tempcode('ERRORLOG'), $start, 'start', $max, 'max', $i, $fields_title, $fields, $sortables, $sortable, $sort_order, 'sort', new Tempcode());
+        $errors = results_table(do_lang_tempcode('ERRORLOG'), $start, 'start', $max, 'max', $i, $header_row, $result_entries, $sortables, $sortable, $sort_order, 'sort', new Tempcode(), array('180px', '110px'));
 
         // Read in end of any other log files we find
         require_all_lang();
@@ -279,6 +295,8 @@ class Module_admin_errorlog
 
                 // Put lines back together
                 $log = implode("\n", $lines);
+
+                // Action URLs
                 $download_url = new Tempcode();
                 $clear_url = new Tempcode();
                 $add_url = new Tempcode();
@@ -289,12 +307,22 @@ class Module_admin_errorlog
                     $clear_url = build_url(array('page' => '_SELF', 'type' => 'clear_log', 'id' => basename($filename, '.log')), '_SELF');
                 }
                 $delete_url = build_url(array('page' => '_SELF', 'type' => 'delete_log', 'id' => basename($filename, '.log')), '_SELF');
+
+                // Prepare any additional details
+                if ($filename == 'cron.log') {
+                    $additional = $this->generate_cron_progression_table();
+                } else {
+                    $additional = new Tempcode();
+                }
+
+                // Template-ready
                 $logs[$filename] = array(
                     'LOG' => $log,
                     'DOWNLOAD_URL' => $download_url,
                     'CLEAR_URL' => $clear_url,
                     'DELETE_URL' => $delete_url,
                     'ADD_URL' => $add_url,
+                    'ADDITIONAL' => $additional,
                 );
             }
         }
@@ -311,14 +339,24 @@ class Module_admin_errorlog
         );
         foreach ($logs_available as $filename => $addon_needed) {
             if ((!isset($logs[$filename])) && (($addon_needed === null) || (addon_installed($addon_needed)))) {
+                // Action URLs
                 $add_url = build_url(array('page' => '_SELF', 'type' => 'init_log', 'id' => basename($filename, '.log')), '_SELF');
 
+                // Prepare any additional details
+                if ($filename == 'cron.log') {
+                    $additional = $this->generate_cron_progression_table();
+                } else {
+                    $additional = new Tempcode();
+                }
+
+                // Template-ready
                 $logs[$filename] = array(
                     'LOG' => null,
                     'DOWNLOAD_URL' => new Tempcode(),
                     'CLEAR_URL' => new Tempcode(),
                     'DELETE_URL' => new Tempcode(),
                     'ADD_URL' => $add_url,
+                    'ADDITIONAL' => $additional,
                 );
             }
         }
@@ -339,6 +377,164 @@ class Module_admin_errorlog
 
         require_code('templates_internalise_screen');
         return internalise_own_screen($tpl);
+    }
+
+    /**
+     * Generate system scheduler progression table.
+     *
+     * @return Tempcode The progression table
+     */
+    protected function generate_cron_progression_table()
+    {
+        require_code('templates_results_table');
+        $_header_row = array(
+            do_lang_tempcode('LABEL'),
+            do_lang_tempcode('QUEUED_ITEMS'),
+            do_lang_tempcode('TIME_BETWEEN_RUNS'),
+            do_lang_tempcode('LAST_RUN'),
+            do_lang_tempcode('TIME'),
+            do_lang_tempcode('ERRORS'),
+            do_lang_tempcode('ENABLED'),
+            do_lang_tempcode('ACTIONS'),
+        );
+        $header_row = results_header_row($_header_row);
+
+        $_result_entries = array();
+        $cron_progression = list_to_map('c_hook', $GLOBALS['SITE_DB']->query_select('cron_progression', array('*')));
+        $cron_hooks = find_all_hook_obs('systems', 'cron', 'Hook_cron_');
+        foreach ($cron_hooks as $hook => $object) {
+            $label = $hook;
+            $num_queued = null;
+            $minutes_between_runs = 0;
+            $available = true;
+            $last_run = null;
+            $last_execution_secs = null;
+            $last_error = '';
+            $enabled = true;
+
+            $info = $object->info($last_run, true);
+            if ($info !== null) {
+                $label = $info['label'];
+                $num_queued = $info['num_queued'];
+                $minutes_between_runs = $info['minutes_between_runs'];
+            } else {
+                $available = false;
+            }
+
+            if (isset($cron_progression[$hook])) {
+                $last_run = $cron_progression[$hook]['c_last_run'];
+                $last_execution_secs = $cron_progression[$hook]['c_last_execution_secs'];
+                $last_error = $cron_progression[$hook]['c_last_error'];
+                $enabled = ($cron_progression[$hook]['c_enabled'] == 1);
+            }
+
+            $actions = new Tempcode();
+            if ($enabled) {
+                $actions->attach(do_template('COLUMNED_TABLE_ACTION', array(
+                    'URL' => build_url(array('page' => '_SELF', 'type' => 'disable_cron_hook', 'id' => $hook), '_SELF'),
+                    'NAME' => $label,
+                    'ACTION_TITLE' => do_lang_tempcode('DISABLE_CRON_HOOK'),
+                    'ICON' => 'admin/delete2',
+                    'GET' => false,
+                )));
+            } else {
+                $actions->attach(do_template('COLUMNED_TABLE_ACTION', array(
+                    'URL' => build_url(array('page' => '_SELF', 'type' => 'enable_cron_hook', 'id' => $hook), '_SELF'),
+                    'NAME' => $label,
+                    'ACTION_TITLE' => do_lang_tempcode('ENABLE_CRON_HOOK'),
+                    'ICON' => 'admin/add',
+                    'GET' => false,
+                )));
+            }
+            if ($available) {
+                $keep = symbol_tempcode('KEEP');
+                $actions->attach(do_template('COLUMNED_TABLE_ACTION', array(
+                    'URL' => find_script('cron_bridge') . '?limit_hook=' . urlencode($hook) . '&manual_run=1' . $keep->evaluate(),
+                    'NAME' => $label,
+                    'ACTION_TITLE' => do_lang_tempcode('EXECUTE_SCRIPT'),
+                    'ICON' => 'admin/sync',
+                    'GET' => true,
+                    'NEW_WINDOW' => true,
+                )));
+            }
+
+            $_label = make_string_tempcode(escape_html($label));
+            if (!$available) {
+                $_label->attach(' (' . do_lang('UNAVAILABLE') . ')');
+            }
+
+            $_result_entries[$label] = results_entry(array(
+                $_label,
+                ($num_queued === null) ? do_lang_tempcode('UNKNOWN_EM') : make_string_tempcode(escape_html(integer_format($num_queued))),
+                ($minutes_between_runs == 0) ? make_string_tempcode('<em>(0)</em>') : display_time_period($minutes_between_runs * 60),
+                ($last_run === null) ? do_lang_tempcode('NA_EM') : make_string_tempcode(escape_html(get_timezoned_date_time($last_run))),
+                ($last_execution_secs === null) ? do_lang_tempcode('NA_EM') : make_string_tempcode(escape_html(display_time_period($last_execution_secs))),
+                ($last_error == '') ? do_lang_tempcode('NONE_EM') : make_string_tempcode(escape_html($last_error)),
+                do_lang_tempcode($enabled ? 'YES' : 'NO'),
+                $actions,
+            ), true);
+        }
+
+        asort($_result_entries, SORT_NATURAL | SORT_FLAG_CASE);
+
+        $result_entries = new Tempcode();
+        foreach ($_result_entries as $results_entry) {
+            $result_entries->attach($results_entry);
+        }
+
+        return results_table(do_lang_tempcode('CRON_SCRIPTS'), 0, 'start', 1000, 'max', 1000, $header_row, $result_entries);
+    }
+
+    /**
+     * Enable a Cron hook.
+     *
+     * @return Tempcode The result of execution
+     */
+    protected function enable_cron_hook()
+    {
+        $hook = get_param_string('id');
+        return $this->configure_cron_hook($hook, 1);
+    }
+
+    /**
+     * Disable a Cron hook.
+     *
+     * @return Tempcode The result of execution
+     */
+    protected function disable_cron_hook()
+    {
+        $hook = get_param_string('id');
+        return $this->configure_cron_hook($hook, 0);
+    }
+
+    /**
+     * Configure a Cron hook.
+     *
+     * @param  ID_TEXT $hook The hook
+     * @param  BINARY $enabled Whether the hook is enabled
+     * @return Tempcode The result of execution
+     */
+    protected function configure_cron_hook($hook, $enabled)
+    {
+        // Update cron_progression table
+        if ($GLOBALS['SITE_DB']->query_select_value_if_there('cron_progression', 'c_hook', array('c_hook' => $hook)) !== null) {
+            $GLOBALS['SITE_DB']->query_update('cron_progression', array(
+                'c_enabled' => $enabled,
+            ), array(
+                'c_hook' => $hook,
+            ), '', 1);
+        } else {
+            $GLOBALS['SITE_DB']->query_insert('cron_progression', array(
+                'c_hook' => $hook,
+                'c_last_run' => null,
+                'c_last_execution_secs' => null,
+                'c_last_error' => '',
+                'c_enabled' => $enabled,
+            ));
+        }
+
+        $url = build_url(array('page' => '_SELF'), '_SELF');
+        return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
     }
 
     /**

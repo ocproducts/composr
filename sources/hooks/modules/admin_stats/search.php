@@ -98,8 +98,8 @@ class Hook_admin_stats_search
         }
 
         require_code('templates_results_table');
-        $fields_title = results_field_title(array(do_lang_tempcode('KEYWORD'), do_lang_tempcode('COUNT_VIEWS')), $sortables, 'sort', $sortable . ' ' . $sort_order);
-        $fields = new Tempcode();
+        $header_row = results_header_row(array(do_lang_tempcode('KEYWORD'), do_lang_tempcode('COUNT_VIEWS')), $sortables, 'sort', $sortable . ' ' . $sort_order);
+        $result_entries = new Tempcode();
         $degrees = 360 / $total;
         $done_total = 0;
         $data = array();
@@ -117,7 +117,7 @@ class Hook_admin_stats_search
             } else {
                 $link = protect_from_escaping(escape_html($keyword));
             }
-            $fields->attach(results_entry(array($link, integer_format($views)), true));
+            $result_entries->attach(results_entry(array($link, integer_format($views)), true));
 
             $data[$keyword] = $keywords[$keyword] * $degrees;
             $done_total += $data[$keyword];
@@ -125,9 +125,9 @@ class Hook_admin_stats_search
         }
         if ((360 - $done_total) > 0) {
             $data[do_lang('OTHER')] = 360 - $done_total;
-            $fields->attach(results_entry(array(do_lang('OTHER'), integer_format((int)((360 - $done_total) / $degrees))), true));
+            $result_entries->attach(results_entry(array(do_lang('OTHER'), integer_format((int)((360 - $done_total) / $degrees))), true));
         }
-        $list = results_table(do_lang_tempcode('SEARCH_STATISTICS'), $start, 'start', $max, 'max', count($keywords), $fields_title, $fields, $sortables, $sortable, $sort_order, 'sort', new Tempcode());
+        $list = results_table(do_lang_tempcode('SEARCH_STATISTICS'), $start, 'start', $max, 'max', count($keywords), $header_row, $result_entries, $sortables, $sortable, $sort_order, 'sort', new Tempcode());
 
         $output = create_pie_chart($data);
         $ob->save_graph('Global-Search', $output);

@@ -328,7 +328,7 @@ class RevisionEngineDatabase
      * More details are shown in the actionlog, which is linked from here.
      *
      * @param  ?Tempcode $title Screen title (null: default)
-     * @param  array $_fields_titles List of field titles (i.e. columns).
+     * @param  array $_header_row List of field titles (i.e. columns).
      * @param  ?array $resource_types List of resource types (null: no filter)
      * @param  mixed $row_renderer Callback for rendering out rows
      * @param  ?string $resource_id Resource ID (null: no filter)
@@ -338,7 +338,7 @@ class RevisionEngineDatabase
      * @param  boolean $include_filter_form Include a form for filtering revisions
      * @return Tempcode Revision UI
      */
-    public function ui_browse_revisions($title, $_fields_titles, $resource_types, $row_renderer, $resource_id = null, $category_id = null, $member_id = null, $category_permission_type = null, $include_filter_form = false)
+    public function ui_browse_revisions($title, $_header_row, $resource_types, $row_renderer, $resource_id = null, $category_id = null, $member_id = null, $category_permission_type = null, $include_filter_form = false)
     {
         if (!$this->enabled(false)) {
             return new Tempcode();
@@ -380,7 +380,7 @@ class RevisionEngineDatabase
             }
         }
 
-        $fields_titles = results_field_title($_fields_titles, $sortables, 'revisions_sort', $sortable . ' ' . $sort_order);
+        $header_row = results_header_row($_header_row, $sortables, 'revisions_sort', $sortable . ' ' . $sort_order);
         $results = results_table(
             do_lang_tempcode('REVISIONS'),
             $start,
@@ -388,7 +388,7 @@ class RevisionEngineDatabase
             $max,
             'revisions_max',
             $max_rows,
-            $fields_titles,
+            $header_row,
             $field_rows,
             $sortables,
             $sortable,
@@ -468,7 +468,7 @@ class RevisionEngineDatabase
 
         $do_actionlog = has_actual_page_access(get_member(), 'admin_actionlog');
 
-        $_fields_titles = array(
+        $_header_row = array(
             do_lang_tempcode('DATE_TIME'),
             do_lang_tempcode('MEMBER'),
             do_lang_tempcode('SIZE_CHANGE'),
@@ -476,7 +476,7 @@ class RevisionEngineDatabase
             do_lang_tempcode('UNDO'),
         );
         if ($do_actionlog) {
-            $_fields_titles[] = do_lang_tempcode('LOG');
+            $_header_row[] = do_lang_tempcode('LOG');
         }
 
         $more_recent_text = $text;
@@ -526,7 +526,7 @@ class RevisionEngineDatabase
             return new Tempcode();
         }
 
-        $fields_titles = results_field_title($_fields_titles, $sortables, 'revisions_sort', $sortable . ' ' . $sort_order);
+        $header_row = results_header_row($_header_row, $sortables, 'revisions_sort', $sortable . ' ' . $sort_order);
         $results = results_table(
             do_lang_tempcode('REVISIONS'),
             $start,
@@ -534,7 +534,7 @@ class RevisionEngineDatabase
             $max,
             'revisions_max',
             $max_rows,
-            $fields_titles,
+            $header_row,
             $field_rows,
             $sortables,
             $sortable,

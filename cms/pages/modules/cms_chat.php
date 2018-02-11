@@ -242,7 +242,7 @@ class Module_cms_chat
             log_hack_attack_and_exit('ORDERBY_HACK');
         }
         require_code('templates_results_table');
-        $fields_title = results_field_title(array(do_lang_tempcode('CHATROOM_NAME'), do_lang_tempcode('CHATROOM_OWNER'), do_lang_tempcode('CHATROOM_LANG'), do_lang_tempcode('MESSAGES')), $sortables, 'sort', $sortable . ' ' . $sort_order);
+        $header_row = results_header_row(array(do_lang_tempcode('CHATROOM_NAME'), do_lang_tempcode('CHATROOM_OWNER'), do_lang_tempcode('CHATROOM_LANG'), do_lang_tempcode('MESSAGES')), $sortables, 'sort', $sortable . ' ' . $sort_order);
 
         $max_rows = $GLOBALS['SITE_DB']->query_select_value('chat_rooms', 'COUNT(*)', array('is_im' => 0));
         $sort_clause = ($sortable == 'room_name') ? ('ORDER BY room_name ' . $sort_order) : '';
@@ -256,7 +256,7 @@ class Module_cms_chat
 
         require_code('chat_lobby');
 
-        $fields = new Tempcode();
+        $result_entries = new Tempcode();
         foreach ($rows as $row) {
             $has_mod_access = ((has_privilege(get_member(), 'edit_lowrange_content', 'cms_chat', array('chat', $row['id']))) || ($row['room_owner'] == get_member()) && (has_privilege(get_member(), 'moderate_my_private_rooms')));
             if ((!handle_chatroom_pruning($row)) && ($has_mod_access)) {
@@ -268,14 +268,14 @@ class Module_cms_chat
                 } else {
                     $username = make_string_tempcode($_username);
                 }
-                $fields->attach(results_entry(array(hyperlink($url, $row['room_name'], false, true), $username, $row['room_language'], integer_format($messages)), true));
+                $result_entries->attach(results_entry(array(hyperlink($url, $row['room_name'], false, true), $username, $row['room_language'], integer_format($messages)), true));
             }
         }
-        if ($fields->is_empty()) {
+        if ($result_entries->is_empty()) {
             inform_exit(do_lang_tempcode('NO_CATEGORIES', 'chat'));
         }
 
-        $results_table = results_table(do_lang_tempcode('CHATROOMS'), $start, 'start', $max, 'max', $max_rows, $fields_title, $fields, $sortables, $sortable, $sort_order, 'sort');
+        $results_table = results_table(do_lang_tempcode('CHATROOMS'), $start, 'start', $max, 'max', $max_rows, $header_row, $result_entries, $sortables, $sortable, $sort_order, 'sort');
 
         $tpl = do_template('CHAT_MODERATE_SCREEN', array('_GUID' => 'c59cb6c8409d0e678b05628d92e423db', 'TITLE' => $this->title, 'INTRODUCTION' => $introtext, 'CONTENT' => $results_table, 'LINKS' => array()));
 
@@ -338,7 +338,7 @@ class Module_cms_chat
         $fields = new Tempcode();
         require_code('templates_results_table');
         $array = array(do_lang_tempcode('MEMBER'), do_lang_tempcode('DATE_TIME'), do_lang_tempcode('MESSAGE'), do_lang_tempcode('DELETE'));
-        $fields_title = results_field_title($array, $sortables, 'sort', $sortable . ' ' . $sort_order);
+        $header_row = results_header_row($array, $sortables, 'sort', $sortable . ' ' . $sort_order);
         foreach ($rows as $myrow) {
             $url = build_url(array('page' => '_SELF', 'type' => 'edit', 'room_id' => $room_id, 'id' => $myrow['id']), '_SELF');
 
@@ -363,7 +363,7 @@ class Module_cms_chat
             inform_exit(do_lang_tempcode('NO_ENTRIES'));
         }
 
-        $content = results_table(do_lang_tempcode('MESSAGES'), $start, 'start', $max, 'max', $max_rows, $fields_title, $fields, $sortables, $sortable, $sort_order, 'sort');
+        $content = results_table(do_lang_tempcode('MESSAGES'), $start, 'start', $max, 'max', $max_rows, $header_row, $fields, $sortables, $sortable, $sort_order, 'sort');
 
         $mod_link = hyperlink(build_url(array('page' => '_SELF', 'type' => 'delete', 'stage' => 0, 'id' => $room_id), '_SELF'), do_lang_tempcode('DELETE_ALL_MESSAGES'), false, false);
         $view_link = hyperlink(build_url(array('page' => 'chat', 'type' => 'room', 'id' => $room_id), get_module_zone('chat')), do_lang_tempcode('VIEW'), false, false);

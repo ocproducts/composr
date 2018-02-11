@@ -101,7 +101,7 @@ function confluence_current_page_id()
 
 function confluence_current_page()
 {
-    $current_url_path = cms_srv('REQUEST_URI');
+    $current_url_path = $_SERVER['REQUEST_URI'];
     $current_url_path = _strip_url_path($current_url_path);
 
     $root_url_path = parse_url(get_local_confluence_url(), PHP_URL_PATH);
@@ -245,7 +245,7 @@ function confluence_clean_page($html)
         'body' => false,
     );
     foreach ($tags_to_remove as $tag_to_remove => $strip_contents) {
-        $html = preg_replace('#<' . $tag_to_remove . '(\s[^<>]*)?'.'>(.*)</' . $tag_to_remove . '>#Us', $strip_contents ? '' : '$2', $html);
+        $html = preg_replace('#<' . $tag_to_remove . '(\s[^<>]*)?' . '>(.*)</' . $tag_to_remove . '>#Us', $strip_contents ? '' : '$2', $html);
         $html = preg_replace('#<' . $tag_to_remove . '(\s[^<>]*)?/>#Us', '', $html);
     }
 

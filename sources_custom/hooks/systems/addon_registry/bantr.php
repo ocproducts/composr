@@ -112,7 +112,7 @@ The insulted member has to try and make the right reply, if they succeed then th
     {
         return array(
             'requires' => array(
-                'Cron',
+                'System scheduler',
                 'Conversr',
                 'points',
                 'all_icons',

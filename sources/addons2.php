@@ -595,7 +595,7 @@ function has_feature($dependency)
     if (($dependency == 'mysql') && (strpos(get_db_type(), 'mysql') !== false)) {
         return true;
     }
-    if (($dependency == 'cron') && (cron_installed())) {
+    if (($dependency == 'system scheduler') && (cron_installed())) {
         return true;
     }
     if ((($dependency == 'cns') || ($dependency == 'conversr')) && (get_forum_type() == 'cns')) {

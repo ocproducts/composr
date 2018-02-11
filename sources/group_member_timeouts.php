@@ -111,9 +111,9 @@ function cleanup_member_timeouts()
 
     $db = (get_forum_type() == 'cns') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
     $start = 0;
-    $time = time();
+    $time_now = time();
     do {
-        $timeouts = $db->query('SELECT member_id,group_id FROM ' . $db->get_table_prefix() . 'f_group_member_timeouts WHERE timeout<' . strval($time), 100, $start);
+        $timeouts = $db->query('SELECT member_id,group_id FROM ' . $db->get_table_prefix() . 'f_group_member_timeouts WHERE timeout<' . strval($time_now), 100, $start);
         foreach ($timeouts as $timeout) {
             $member_id = $timeout['member_id'];
             $group_id = $timeout['group_id'];
@@ -139,6 +139,6 @@ function cleanup_member_timeouts()
     } while (count($timeouts) == 100);
 
     if (!$GLOBALS['SITE_DB']->table_is_locked('f_group_member_timeouts')) {
-        $timeouts = $db->query('DELETE FROM ' . $db->get_table_prefix() . 'f_group_member_timeouts WHERE timeout<' . strval($time));
+        $timeouts = $db->query('DELETE FROM ' . $db->get_table_prefix() . 'f_group_member_timeouts WHERE timeout<' . strval($time_now));
     }
 }

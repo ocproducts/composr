@@ -108,7 +108,7 @@ class Hook_addon_registry_bankr
     {
         return array(
             'requires' => array(
-                'Cron',
+                'System scheduler',
                 'points',
                 'ecommerce',
                 'points',

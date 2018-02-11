@@ -133,7 +133,7 @@ function find_addon_category_download_category($category_name, $parent_id = null
 
                 default:
                     require_code('tutorials');
-                    $theme_image = _find_tutorial_image_for_tag($category_name));
+                    $theme_image = _find_tutorial_image_for_tag($category_name);
                     $has_submit_access = true;
                     break;
             }

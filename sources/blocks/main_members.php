@@ -381,22 +381,22 @@ class Block_main_members
         if (($display_mode == 'listing') && (count($rows) > 0)) {
             $results_entries = new Tempcode();
 
-            $_fields_title = array();
-            $_fields_title[] = (get_option('display_name_generator') == '') ? do_lang_tempcode('USERNAME') : do_lang_tempcode('NAME');
-            $_fields_title[] = do_lang_tempcode('PRIMARY_GROUP');
+            $_header_row = array();
+            $_header_row[] = (get_option('display_name_generator') == '') ? do_lang_tempcode('USERNAME') : do_lang_tempcode('NAME');
+            $_header_row[] = do_lang_tempcode('PRIMARY_GROUP');
             if (addon_installed('points')) {
-                $_fields_title[] = do_lang_tempcode('POINTS');
+                $_header_row[] = do_lang_tempcode('POINTS');
             }
             if (addon_installed('cns_forum')) {
-                $_fields_title[] = do_lang_tempcode('COUNT_POSTS');
+                $_header_row[] = do_lang_tempcode('COUNT_POSTS');
             }
             if (get_option('use_lastondate') == '1') {
-                $_fields_title[] = do_lang_tempcode('LAST_VISIT_TIME');
+                $_header_row[] = do_lang_tempcode('LAST_VISIT_TIME');
             }
             if (get_option('use_joindate') == '1') {
-                $_fields_title[] = do_lang_tempcode('JOIN_DATE');
+                $_header_row[] = do_lang_tempcode('JOIN_DATE');
             }
-            $fields_title = results_field_title($_fields_title, $sortables, $block_id . '_sort', $sortable . ' ' . $sort_order);
+            $header_row = results_header_row($_header_row, $sortables, $block_id . '_sort', $sortable . ' ' . $sort_order);
             require_code('cns_members2');
             foreach ($rows as $row) {
                 $_entry = array();
@@ -436,7 +436,7 @@ class Block_main_members
 
                 $results_entries->attach(results_entry($_entry, false));
             }
-            $results_table = results_table(do_lang_tempcode('MEMBERS'), $start, $block_id . '_start', $max, $block_id . '_max', $max_rows, $fields_title, $results_entries, $sortables, $sortable, $sort_order, $block_id . '_sort');
+            $results_table = results_table(do_lang_tempcode('MEMBERS'), $start, $block_id . '_start', $max, $block_id . '_max', $max_rows, $header_row, $results_entries, $sortables, $sortable, $sort_order, $block_id . '_sort');
 
             $sorting = new Tempcode();
         } else {

@@ -120,7 +120,7 @@ To configure Stealr go to Admin Zone > Setup > Configuration > eCommerce options
     {
         return array(
             'requires' => array(
-                'Cron',
+                'System scheduler',
                 'Conversr',
                 'points',
                 'ecommerce',

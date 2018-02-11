@@ -131,14 +131,7 @@ class Hook_addon_registry_core_abstract_interfaces
             'themes/default/templates/COLUMNED_TABLE_ROW_CELL_TICK.tpl',
             'themes/default/templates/COLUMNED_TABLE_ROW_CELL_LINE.tpl',
             'themes/default/templates/COLUMNED_TABLE_ROW_CELL_SELECT.tpl',
-            'themes/default/templates/COLUMNED_TABLE_ACTION_DELETE_CATEGORY.tpl',
-            'themes/default/templates/COLUMNED_TABLE_ACTION_DELETE_ENTRY.tpl',
-            'themes/default/templates/COLUMNED_TABLE_ACTION_UNINSTALL_ENTRY.tpl',
-            'themes/default/templates/COLUMNED_TABLE_ACTION_INSTALL_ENTRY.tpl',
-            'themes/default/templates/COLUMNED_TABLE_ACTION_REINSTALL_ENTRY.tpl',
-            'themes/default/templates/COLUMNED_TABLE_ACTION_TRANSLATE.tpl',
-            'themes/default/templates/COLUMNED_TABLE_ACTION_UPGRADE_ENTRY.tpl',
-            'themes/default/templates/COLUMNED_TABLE_ACTION_DOWNLOAD.tpl',
+            'themes/default/templates/COLUMNED_TABLE_ACTION.tpl',
             'themes/default/templates/COLUMNED_TABLE_HEADER_ROW.tpl',
             'themes/default/templates/COLUMNED_TABLE_HEADER_ROW_CELL.tpl',
             'themes/default/templates/COLUMNED_TABLE_ROW.tpl',
@@ -201,19 +194,14 @@ class Hook_addon_registry_core_abstract_interfaces
             'templates/REDIRECT_SCREEN.tpl' => 'redirect_screen',
             'templates/CONFIRM_SCREEN.tpl' => 'confirm_screen',
             'templates/RESULTS_TABLE_SCREEN.tpl' => 'result_table_screen',
-            'templates/COLUMNED_TABLE_ACTION_DELETE_ENTRY.tpl' => 'full_table_screen',
-            'templates/COLUMNED_TABLE_ACTION_UNINSTALL_ENTRY.tpl' => 'full_table_screen',
+            'templates/COLUMNED_TABLE_ACTION.tpl' => 'full_table_screen',
             'templates/COLUMNED_TABLE.tpl' => 'full_table_screen',
             'templates/INDEX_SCREEN_ENTRY.tpl' => 'index_screen',
             'templates/INDEX_SCREEN.tpl' => 'index_screen',
             'templates/INDEX_SCREEN_FANCIER_ENTRY.tpl' => 'index_screen_fancier_screen',
             'templates/INDEX_SCREEN_FANCIER_SCREEN.tpl' => 'index_screen_fancier_screen',
-            'templates/COLUMNED_TABLE_ACTION_INSTALL_ENTRY.tpl' => 'full_table_screen',
-            'templates/COLUMNED_TABLE_ACTION_UPGRADE_ENTRY.tpl' => 'full_table_screen',
-            'templates/COLUMNED_TABLE_ACTION_REINSTALL_ENTRY.tpl' => 'full_table_screen',
             'templates/MAP_TABLE.tpl' => 'map_table',
             'templates/MAP_TABLE_SCREEN.tpl' => 'map_table_screen',
-            'templates/COLUMNED_TABLE_ACTION_DELETE_CATEGORY.tpl' => 'columned_table_action_delete_category',
             'templates/WARNING_BOX.tpl' => 'warning_box',
             'templates/PAGINATION_SORTER.tpl' => 'result_table_screen',
             'templates/PAGINATION_SORT.tpl' => 'result_table_screen',
@@ -258,8 +246,6 @@ class Hook_addon_registry_core_abstract_interfaces
             'templates/FULL_MESSAGE_SCREEN.tpl' => 'full_message_screen',
             'templates/RESULTS_TABLE.tpl' => 'result_table_screen',
             'templates/MEMBER_TOOLTIP.tpl' => 'member_tooltip',
-            'templates/COLUMNED_TABLE_ACTION_DOWNLOAD.tpl' => 'columned_table_action_download',
-            'templates/COLUMNED_TABLE_ACTION_TRANSLATE.tpl' => 'administrative__columned_table_action_translate',
             'templates/COLUMNED_TABLE_ROW_CELL_SELECT.tpl' => 'full_table_screen',
             'templates/COLUMNED_TABLE_ROW_CELL_TICK.tpl' => 'full_table_screen',
             'templates/COLUMNED_TABLE_ROW_CELL_LINE.tpl' => 'full_table_screen',
@@ -281,41 +267,6 @@ class Hook_addon_registry_core_abstract_interfaces
                 'BLOCK_PARAMS' => '',
                 'ALLOW_INFINITE_SCROLL' => '1',
             ))
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__administrative__columned_table_action_translate()
-    {
-        require_lang('lang');
-        return array(
-            lorem_globalise(do_lorem_template('COLUMNED_TABLE_ACTION_TRANSLATE', array(
-                'URL' => placeholder_url(),
-                'NAME' => lorem_phrase(),
-            )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__columned_table_action_download()
-    {
-        return array(
-            lorem_globalise(do_lorem_template('COLUMNED_TABLE_ACTION_DOWNLOAD', array(
-                'URL' => placeholder_url(),
-                'NAME' => lorem_phrase(),
-            )), null, '', true)
         );
     }
 
@@ -459,23 +410,6 @@ class Hook_addon_registry_core_abstract_interfaces
             lorem_globalise(do_lorem_template('MAP_TABLE_SCREEN', array(
                 'TITLE' => lorem_title(),
                 'FIELDS' => $fields,
-            )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__columned_table_action_delete_category()
-    {
-        return array(
-            lorem_globalise(do_lorem_template('COLUMNED_TABLE_ACTION_DELETE_CATEGORY', array(
-                'URL' => placeholder_url(),
-                'NAME' => lorem_phrase(),
             )), null, '', true)
         );
     }
@@ -796,36 +730,13 @@ class Hook_addon_registry_core_abstract_interfaces
     {
         $table_rows = new Tempcode();
         foreach (placeholder_array() as $row) {
-            $actions = do_lorem_template('COLUMNED_TABLE_ACTION_DELETE_ENTRY', array(
+            $actions = do_lorem_template('COLUMNED_TABLE_ACTION', array(
                 'GET' => true,
                 'HIDDEN' => '',
                 'NAME' => lorem_phrase(),
                 'URL' => placeholder_url(),
+                'CONFIRM' => false,
             ));
-            $actions = do_lorem_template('COLUMNED_TABLE_ACTION_UNINSTALL_ENTRY', array(
-                'GET' => true,
-                'HIDDEN' => '',
-                'NAME' => lorem_phrase(),
-                'URL' => placeholder_url(),
-            ));
-            $actions->attach(do_lorem_template('COLUMNED_TABLE_ACTION_INSTALL_ENTRY', array(
-                'GET' => true,
-                'HIDDEN' => '',
-                'NAME' => lorem_phrase(),
-                'URL' => placeholder_url(),
-            )));
-            $actions->attach(do_lorem_template('COLUMNED_TABLE_ACTION_UPGRADE_ENTRY', array(
-                'GET' => true,
-                'HIDDEN' => '',
-                'NAME' => lorem_phrase(),
-                'URL' => placeholder_url(),
-            )));
-            $actions->attach(do_lorem_template('COLUMNED_TABLE_ACTION_REINSTALL_ENTRY', array(
-                'GET' => true,
-                'HIDDEN' => '',
-                'NAME' => lorem_phrase(),
-                'URL' => placeholder_url(),
-            )));
 
             $line = do_lorem_template('COLUMNED_TABLE_ROW_CELL_LINE', array(
                 'LABEL' => lorem_phrase(),
@@ -933,7 +844,7 @@ class Hook_addon_registry_core_abstract_interfaces
                 )));
             }
         }
-        $fields_title = $cells;
+        $header_row = $cells;
 
         $order_entries = new Tempcode();
         foreach ($array as $k1 => $v) {
@@ -970,8 +881,8 @@ class Hook_addon_registry_core_abstract_interfaces
         $results_table = do_lorem_template('RESULTS_TABLE', array(
             'WIDTHS' => array(),
             'TEXT_ID' => placeholder_random_id(),
-            'FIELDS_TITLE' => $fields_title,
-            'FIELDS' => $order_entries,
+            'HEADER_ROW' => $header_row,
+            'RESULT_ENTRIES' => $order_entries,
             'MESSAGE' => '',
             'SORT' => $sort,
             'PAGINATION' => placeholder_pagination(),
@@ -1013,7 +924,7 @@ class Hook_addon_registry_core_abstract_interfaces
                 )));
             }
         }
-        $fields_title = $cells;
+        $header_row = $cells;
 
         $order_entries = new Tempcode();
         foreach ($array as $k1 => $v) {
@@ -1050,8 +961,8 @@ class Hook_addon_registry_core_abstract_interfaces
         $results_table = do_lorem_template('RESULTS_TABLE', array(
             'WIDTHS' => array(),
             'TEXT_ID' => placeholder_random_id(),
-            'FIELDS_TITLE' => $fields_title,
-            'FIELDS' => $order_entries,
+            'HEADER_ROW' => $header_row,
+            'RESULT_ENTRIES' => $order_entries,
             'MESSAGE' => '',
             'SORT' => $sort,
             'PAGINATION' => placeholder_pagination(),

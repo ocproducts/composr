@@ -2132,7 +2132,7 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
 }
 
 /**
- * Get the Tempcode for a date input, or if Cron is not on, return blank.
+ * Get the Tempcode for a date input, or if the system scheduler is not running return blank.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
@@ -2146,7 +2146,7 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
  * @return Tempcode The input field
  */
-function form_input_date__scheduler($pretty_name, $description, $name, $required, $null_default, $do_time, $default_time = null, $total_years_to_show = 10, $year_start = null, $tabindex = null)
+function form_input_date__cron($pretty_name, $description, $name, $required, $null_default, $do_time, $default_time = null, $total_years_to_show = 10, $year_start = null, $tabindex = null)
 {
     if (cron_installed()) {
         return form_input_date($pretty_name, $description, $name, $required, $null_default, $do_time, $default_time, $total_years_to_show, $year_start, $tabindex);

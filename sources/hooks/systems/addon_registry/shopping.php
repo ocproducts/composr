@@ -413,7 +413,7 @@ class Hook_addon_registry_shopping
                 )));
             }
         }
-        $fields_title = $cells;
+        $header_row = $cells;
 
         $order_entries = new Tempcode();
         foreach ($array as $k1 => $_v) {
@@ -450,8 +450,8 @@ class Hook_addon_registry_shopping
         return array(
             lorem_globalise(do_lorem_template('RESULTS_products_TABLE', array(
                 'TEXT_ID' => placeholder_random_id(),
-                'FIELDS_TITLE' => $fields_title,
-                'FIELDS' => $order_entries,
+                'HEADER_ROW' => $header_row,
+                'RESULT_ENTRIES' => $order_entries,
                 'SORT' => $sort,
                 'PAGINATION' => placeholder_pagination(),
                 'MESSAGE' => lorem_phrase(),
@@ -465,14 +465,14 @@ class Hook_addon_registry_shopping
     /**
      * Function to display custom result tables.
      *
-     * @param  ID_TEXT $tplset Tpl set name
+     * @param  ID_TEXT $tpl_set Tpl set name
      * @return Tempcode Tempcode
      */
-    public function show_custom_tables($tplset)
+    public function show_custom_tables($tpl_set)
     {
-        $fields_title = new Tempcode();
+        $header_row = new Tempcode();
         foreach (array(lorem_word(), lorem_word_2(), lorem_word(), lorem_word_2()) as $k => $v) {
-            $fields_title->attach(do_lorem_template('RESULTS_TABLE_FIELD_TITLE', array(
+            $header_row->attach(do_lorem_template('RESULTS_TABLE_FIELD_TITLE', array(
                 'VALUE' => $v,
             )));
         }
@@ -488,11 +488,11 @@ class Hook_addon_registry_shopping
             );
 
             foreach ($entry_data as $_k => $_v) {
-                $cells->attach(do_lorem_template('RESULTS_TABLE_' . $tplset . 'FIELD', array(
+                $cells->attach(do_lorem_template('RESULTS_TABLE_' . $tpl_set . 'FIELD', array(
                     'VALUE' => $_v,
                 )));
             }
-            $entries->attach(do_lorem_template('RESULTS_TABLE_' . $tplset . 'ENTRY', array(
+            $entries->attach(do_lorem_template('RESULTS_TABLE_' . $tpl_set . 'ENTRY', array(
                 'VALUES' => $cells,
             )));
         }
@@ -513,9 +513,9 @@ class Hook_addon_registry_shopping
             'SELECTORS' => $selectors,
         ));
 
-        return do_lorem_template('RESULTS_' . $tplset . 'TABLE', array(
-            'FIELDS_TITLE' => $fields_title,
-            'FIELDS' => $entries,
+        return do_lorem_template('RESULTS_' . $tpl_set . 'TABLE', array(
+            'HEADER_ROW' => $header_row,
+            'RESULT_ENTRIES' => $entries,
             'MESSAGE' => new Tempcode(),
             'SORT' => $sort,
             'PAGINATION' => placeholder_pagination(),
@@ -579,7 +579,7 @@ class Hook_addon_registry_shopping
                     'VALUE' => $_v,
                 )));
             }
-            $fields_title = $cells;
+            $header_row = $cells;
 
             $product_image = placeholder_image();
             $product_link = placeholder_link();
@@ -631,8 +631,8 @@ class Hook_addon_registry_shopping
 
         $results_table = do_lorem_template('RESULTS_cart_TABLE', array(
             'WIDTHS' => array(),
-            'FIELDS_TITLE' => $fields_title,
-            'FIELDS' => $shopping_cart,
+            'HEADER_ROW' => $header_row,
+            'RESULT_ENTRIES' => $shopping_cart,
             'MESSAGE' => new Tempcode(),
             'SORT' => $sort,
             'PAGINATION' => lorem_word(),

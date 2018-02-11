@@ -607,11 +607,11 @@ function referrer_report_script($ret = false)
     } else {
         require_code('templates_results_table');
 
-        $fields_title = new Tempcode();
-        $fields = new Tempcode();
+        $header_row = new Tempcode();
+        $result_entries = new Tempcode();
         foreach ($data as $i => $data_row) {
             if ($i == 0) {
-                $fields_title->attach(results_field_title(array_keys($data_row)));
+                $header_row->attach(results_header_row(array_keys($data_row)));
             }
             foreach ($data_row as $key => $val) {
                 if (($key == do_lang('REFEREE')) || ($key == do_lang('TYPE_REFERRER'))) {
@@ -623,10 +623,10 @@ function referrer_report_script($ret = false)
                 }
                 $data_row[$key] = escape_html($val);
             }
-            $fields->attach(results_entry($data_row, false));
+            $result_entries->attach(results_entry($data_row, false));
         }
 
-        $results_table = results_table(do_lang('REFERRALS'), $start, 'start', $max, 'max', $max_rows, $fields_title, $fields);
+        $results_table = results_table(do_lang('REFERRALS'), $start, 'start', $max, 'max', $max_rows, $header_row, $result_entries);
 
         if ($ret) {
             return $results_table;

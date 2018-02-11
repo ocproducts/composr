@@ -34,11 +34,11 @@ class Hook_config_mail_queue_debug
             'human_name' => 'MAIL_QUEUE_DEBUG',
             'type' => 'tick',
             'category' => 'MESSAGES',
-            'group' => '_EMAIL',
+            'group' => 'MAIL_QUEUE',
             'explanation' => 'CONFIG_OPTION_mail_queue_debug',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 8,
+            'order_in_category_group' => 2,
 
             'required' => true,
             'public' => false,

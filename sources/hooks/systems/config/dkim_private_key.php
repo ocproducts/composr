@@ -34,11 +34,11 @@ class Hook_config_dkim_private_key
             'human_name' => 'DKIM_PRIVATE_KEY',
             'type' => 'text',
             'category' => 'MESSAGES',
-            'group' => '_EMAIL',
+            'group' => 'ADVANCED_EMAIL_SEND_SETTINGS',
             'explanation' => 'CONFIG_OPTION_dkim_private_key',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 12,
+            'order_in_category_group' => 4,
             'required' => false,
 
             'public' => false,

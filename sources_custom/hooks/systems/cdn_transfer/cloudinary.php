@@ -12,13 +12,13 @@ class Hook_cdn_transfer_cloudinary
         $cloud_name = get_option('cloudinary_cloud_name');
         $api_key = get_option('cloudinary_api_key');
         $api_secret = get_option('cloudinary_api_secret');
-        if (empty($cloud_name)) {
+        if ($cloud_name == '') {
             return false;
         }
-        if (empty($api_key)) {
+        if ($api_key == '') {
             return false;
         }
-        if (empty($api_secret)) {
+        if ($api_secret == '') {
             return false;
         }
 

@@ -34,11 +34,11 @@ class Hook_config_email_log_days
             'human_name' => 'EMAIL_LOG_DAYS',
             'type' => 'integer',
             'category' => 'MESSAGES',
-            'group' => '_EMAIL',
+            'group' => 'EMAIL_GENERAL',
             'explanation' => 'CONFIG_OPTION_email_log_days',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 14,
+            'order_in_category_group' => 2,
             'required' => true,
 
             'public' => false,

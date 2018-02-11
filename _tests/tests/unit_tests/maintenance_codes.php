@@ -86,10 +86,10 @@ class maintenance_codes_test_set extends cms_test_case
             }
 
             if (substr($f, -4) == '.txt') {
-                $contents = file_get_contents($path . '/' . $f);
+                $c = file_get_contents($path . '/' . $f);
 
                 $matches = array();
-                $num_matches = preg_match_all('#\{\$IS_MAINTAINED,(\w+),#', $contents, $matches);
+                $num_matches = preg_match_all('#\{\$IS_MAINTAINED,(\w+),#', $c, $matches);
                 for ($i = 0; $i < $num_matches; $i++) {
                     $codename = $matches[1][$i];
                     $this->assertTrue(isset($codenames[$codename]), 'Broken maintenance code reference in tutorial, ' . $codename);

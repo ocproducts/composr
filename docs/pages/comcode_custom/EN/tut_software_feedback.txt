@@ -326,7 +326,7 @@ This said, things don't always get planned smoothly:
  - Feature sponsorships necessarily take precedence over internal strategy by the developers
  - Plans often change due to unforeseen changes in the web landscape
  - Users making us aware of a major problem we were not previously aware of
- - 'eureka' features that are so good it's worth changing plans to include
+ - 'Eureka' features that are so good it's worth changing plans to include
 
 [title="4"]Risk management[/title]
 

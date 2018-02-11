@@ -686,7 +686,6 @@ class Module_buildr
                     'PAGE_TYPE' => 'additemcopy',
                     'NOT_INFINITE' => '1',
                     'ITEMS' => $items,
-                    'PRICE' => '',
                 ));
                 return $tpl;
             }

@@ -333,6 +333,17 @@ function _parse_command_actual($no_term_needed = false)
         pparse__parser_next();
         $next = pparse__parser_peek(true);
     }
+
+    if ($next[0] == 'STATIC') {
+        global $I;
+        $I++;
+        $next_2 = pparse__parser_peek();
+        $I--;
+        if ($next_2 == 'SCOPE') {
+            $next = array('IDENTIFIER', 'static' , $next[2]); // Like static::FOO, a way to avoid writing in class name. But it conflicts with static variable declaration syntax so we need to adjust it.
+        }
+    }
+
     switch ($next[0]) {
         case 'CLASS':
             $command = array('INNER_CLASS', _parse_class_def(), $GLOBALS['I']);
@@ -429,7 +440,7 @@ function _parse_command_actual($no_term_needed = false)
             break;
 
         case 'IDENTIFIER': // Direct function call, or jump label
-            pparse__parser_next();
+            $next = pparse__parser_next(true);
             $identifier = $next[1];
             $next_2 = pparse__parser_peek();
             if ($next_2 == 'COLON') {
@@ -1247,6 +1258,17 @@ function _parse_expression_inner()
         pparse__parser_next();
         $next = pparse__parser_peek();
     }
+
+    if ($next == 'STATIC') {
+        global $I;
+        $I++;
+        $next_2 = pparse__parser_peek();
+        $I--;
+        if ($next_2 == 'SCOPE') {
+            $next = '_STATIC'; // Like static::FOO, a way to avoid writing in class name. But it conflicts with function definition syntax so we will give it a different label
+        }
+    }
+
     switch ($next) {
         case 'STATIC':
             pparse__parser_next();
@@ -1280,8 +1302,13 @@ function _parse_expression_inner()
             $expression = array('LITERAL', $literal, $GLOBALS['I']);
             break;
 
+        case '_STATIC':
         case 'IDENTIFIER':
-            $next = pparse__parser_peek(true);
+            if ($next == '_STATIC') {
+                $next = array('IDENTIFIER', 'static', $GLOBALS['I']);
+            } else {
+                $next = pparse__parser_peek(true);
+            }
             pparse__parser_next();
             $next_2 = pparse__parser_peek();
             if ($next_2 == 'SCOPE') {
@@ -1289,8 +1316,8 @@ function _parse_expression_inner()
                 $expression = _parse_expression_inner();
                 if ($expression[0] == 'CALL_DIRECT') {
                     $expression[0] = 'CALL_METHOD';
-                    $expression[1] = array('VARIABLE', 'this', array('DEREFERENCE', array('VARIABLE', $expression[1], array(), $expression[4]), array(), $expression[4]), $expression[4]);
                 }
+                $expression = array(array('CONSTANT', $next[1], $GLOBALS['I']), array('DEREFERENCE', $expression, array()), $GLOBALS['I']);
             } elseif ($next_2 == 'BRACKET_OPEN') { // Is it an inline direct function call
                 pparse__parser_next();
                 $parameters = _parse_function_call();

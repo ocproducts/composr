@@ -34,7 +34,7 @@ class Hook_config_bcc
             'human_name' => 'BCC',
             'type' => 'tick',
             'category' => 'MESSAGES',
-            'group' => '_EMAIL',
+            'group' => 'STAFF_EMAIL_ADDRESSES',
             'explanation' => 'CONFIG_OPTION_bcc',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

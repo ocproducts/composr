@@ -1,9 +1,9 @@
-{+START,IF_EMPTY,{FIELDS}}
+{+START,IF_EMPTY,{RESULT_ENTRIES}}
 	<p class="nothing-here">
 		{!NO_ENTRIES}
 	</p>
 {+END}
-{+START,IF_NON_EMPTY,{FIELDS}}
+{+START,IF_NON_EMPTY,{RESULT_ENTRIES}}
 	{MESSAGE}
 	<div class="wide-table-wrap">
 		<table class="columned-table cart-table results-table responsive-table">
@@ -17,11 +17,11 @@
 
 			<thead>
 				<tr>
-					{FIELDS_TITLE}
+					{HEADER_ROW}
 				</tr>
 			</thead>
 			<tbody>
-				{FIELDS}
+				{RESULT_ENTRIES}
 			</tbody>
 		</table>
 	</div>

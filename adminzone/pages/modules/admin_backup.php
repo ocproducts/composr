@@ -195,7 +195,7 @@ class Module_admin_backup
         $fields = form_input_radio(do_lang_tempcode('TYPE'), do_lang_tempcode('BACKUP_TYPE'), 'b_type', $content);
         $fields->attach(form_input_integer(do_lang_tempcode('MAXIMUM_SIZE_INCLUSION'), do_lang_tempcode('MAX_FILE_SIZE'), 'max_size', $max_size, false));
         if (addon_installed('calendar')) {
-            $fields->attach(form_input_date__scheduler(do_lang_tempcode('SCHEDULE_TIME'), do_lang_tempcode('DESCRIPTION_SCHEDULE_TIME'), 'schedule', false, true, true));
+            $fields->attach(form_input_date__cron(do_lang_tempcode('SCHEDULE_TIME'), do_lang_tempcode('DESCRIPTION_SCHEDULE_TIME'), 'schedule', false, true, true));
             $_recurrence_days = get_value('backup_recurrance_days');
             $recurrance_days = ($_recurrence_days === null) ? null : intval($_recurrence_days);
             if (cron_installed()) {
@@ -259,7 +259,14 @@ class Module_admin_backup
                 $url = get_custom_base_url() . '/exports/backups/' . $entry['file'];
 
                 $actions = new Tempcode();
-                $actions->attach(do_template('COLUMNED_TABLE_ACTION_DELETE_ENTRY', array('_GUID' => '23a8b5d5d345d8fdecc74b01fe5a9042', 'GET' => true, 'NAME' => $entry['file'], 'URL' => $delete_url)));
+                $actions->attach(do_template('COLUMNED_TABLE_ACTION', array(
+                    '_GUID' => '23a8b5d5d345d8fdecc74b01fe5a9042',
+                    'NAME' => $entry['file'],
+                    'URL' => $delete_url,
+                    'ACTION_TITLE' => do_lang_tempcode('DELETE'),
+                    'ICON' => 'admin/delete',
+                    'GET' => true,
+                )));
 
                 $type = do_lang_tempcode('UNKNOWN');
                 switch (get_file_extension($entry['file'])) {

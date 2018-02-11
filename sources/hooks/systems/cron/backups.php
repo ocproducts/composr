@@ -24,51 +24,75 @@
 class Hook_cron_backups
 {
     /**
-     * Run function for Cron hooks. Searches for tasks to perform.
+     * Get info from this hook.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     * @param  boolean $calculate_num_queued Calculate the number of items queued, if possible
+     * @return ?array Return a map of info about the hook (null: disabled)
      */
-    public function run()
+    public function info($last_run, $calculate_num_queued)
     {
-        if (!addon_installed('backup')) {
-            return;
-        }
-
         $backup_schedule_time = intval(get_value('backup_schedule_time'));
 
-        if ($backup_schedule_time != 0) {
-            $backup_recurrance_days = intval(get_value('backup_recurrance_days'));
+        if ($backup_schedule_time == 0) {
+            return null;
+        }
 
-            $time = time();
-            $last_time = intval(get_value('last_backup'));
-            if ($time >= $backup_schedule_time) {
-                delete_cache_entry('main_staff_checklist');
+        if ($calculate_num_queued) {
+            $num_queued = (time() >= $backup_schedule_time) ? 1 : 0;
+        } else {
+            $num_queued = null;
+        }
 
-                require_lang('backups');
-                require_code('backup');
+        return array(
+            'label' => 'Backups',
+            'num_queued' => $num_queued,
+            'minutes_between_runs' => 0,
+        );
+    }
 
-                $max_size = intval(get_value('backup_max_size'));
-                $b_type = get_value('backup_b_type');
-                global $MB2_FILE, $MB2_B_TYPE, $MB2_MAX_SIZE;
-                require_code('crypt');
-                $end = ((get_option('backup_overwrite') != '1') || ($b_type == 'incremental')) ? get_secure_random_string() : 'scheduled';
-                if ($b_type == 'full') {
-                    $file = 'restore_' . $end;
-                } elseif ($b_type == 'incremental') {
-                    $file = 'dif_' . $end;
-                } elseif ($b_type == 'sql') {
-                    $file = 'database_' . $end;
-                }
+    /**
+     * Run function for system scheduler scripts. Searches for things to do. ->info(..., true) must be called before this method.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     */
+    public function run($last_run)
+    {
+        $backup_schedule_time = intval(get_value('backup_schedule_time'));
 
-                if (get_value('avoid_register_shutdown_function') === '1') {
-                    make_backup($file, $b_type, $max_size);
-                } else {
-                    register_shutdown_function('make_backup', $file, $b_type, $max_size);
-                }
+        $backup_recurrance_days = intval(get_value('backup_recurrance_days'));
 
-                if ($backup_recurrance_days == 0) {
-                    delete_value('backup_schedule_time');
-                } else {
-                    set_value('backup_schedule_time', strval($backup_schedule_time + $backup_recurrance_days * 60 * 60 * 24));
-                }
+        $time_now = time();
+        $last_time = intval(get_value('last_backup'));
+        if ($time_now >= $backup_schedule_time) {
+            delete_cache_entry('main_staff_checklist');
+
+            require_lang('backups');
+            require_code('backup');
+
+            $max_size = intval(get_value('backup_max_size'));
+            $b_type = get_value('backup_b_type');
+            global $MB2_FILE, $MB2_B_TYPE, $MB2_MAX_SIZE;
+            require_code('crypt');
+            $end = ((get_option('backup_overwrite') != '1') || ($b_type == 'incremental')) ? get_secure_random_string() : 'scheduled';
+            if ($b_type == 'full') {
+                $file = 'restore_' . $end;
+            } elseif ($b_type == 'incremental') {
+                $file = 'dif_' . $end;
+            } elseif ($b_type == 'sql') {
+                $file = 'database_' . $end;
+            }
+
+            if (get_value('avoid_register_shutdown_function') === '1') {
+                make_backup($file, $b_type, $max_size);
+            } else {
+                register_shutdown_function('make_backup', $file, $b_type, $max_size);
+            }
+
+            if ($backup_recurrance_days == 0) {
+                delete_value('backup_schedule_time');
+            } else {
+                set_value('backup_schedule_time', strval($backup_schedule_time + $backup_recurrance_days * 60 * 60 * 24));
             }
         }
     }

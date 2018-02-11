@@ -222,9 +222,9 @@ class Module_cms_banners extends Standard_crud_module
             $hr[] = protect_from_escaping(do_template('COMCODE_ABBR', array('_GUID' => 'b8f1372bcdfb90f5c2fa8bf3329caf5f', 'TITLE' => do_lang_tempcode('VALIDATED'), 'CONTENT' => do_lang_tempcode('VALIDATED_SHORT'))));
         }
         $hr[] = do_lang_tempcode('ACTIONS');
-        $header_row = results_field_title($hr, $sortables, 'sort', $sortable . ' ' . $sort_order);
+        $header_row = results_header_row($hr, $sortables, 'sort', $sortable . ' ' . $sort_order);
 
-        $fields = new Tempcode();
+        $result_entries = new Tempcode();
 
         foreach ($rows as $row) {
             $edit_url = build_url($url_map + array('id' => $row['name']), '_SELF');
@@ -258,10 +258,10 @@ class Module_cms_banners extends Standard_crud_module
             }
             $fr[] = protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true, $row['name']));
 
-            $fields->attach(results_entry($fr, true));
+            $result_entries->attach(results_entry($fr, true));
         }
 
-        return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $fields, $sortables, $sortable, $sort_order), false);
+        return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $result_entries, $sortables, $sortable, $sort_order), false);
     }
 
     /**
@@ -659,7 +659,7 @@ class Module_cms_banners_cat extends Standard_crud_module
             log_hack_attack_and_exit('ORDERBY_HACK');
         }
 
-        $header_row = results_field_title(array(
+        $header_row = results_header_row(array(
             do_lang_tempcode('CODENAME'),
             do_lang_tempcode('BANNER_IS_TEXTUAL'),
             do_lang_tempcode('WIDTH'),

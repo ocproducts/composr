@@ -175,7 +175,7 @@ class Module_cms_polls extends Standard_crud_module
             log_hack_attack_and_exit('ORDERBY_HACK');
         }
 
-        $header_row = results_field_title(array(
+        $header_row = results_header_row(array(
             do_lang_tempcode('QUESTION'),
             do_lang_tempcode('ADDED'),
             do_lang_tempcode('CURRENT'),
@@ -186,7 +186,7 @@ class Module_cms_polls extends Standard_crud_module
             do_lang_tempcode('ACTIONS'),
         ), $sortables, 'sort', $sortable . ' ' . $sort_order);
 
-        $fields = new Tempcode();
+        $result_entries = new Tempcode();
 
         $only_owned = has_privilege(get_member(), 'edit_midrange_content', 'cms_polls') ? null : get_member();
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering, (($only_owned === null) ? array() : array('submitter' => $only_owned)));
@@ -199,7 +199,7 @@ class Module_cms_polls extends Standard_crud_module
             $used = ($total_votes != 0);
             $current = ($row['is_current'] == 1);
 
-            $fields->attach(results_entry(array(
+            $result_entries->attach(results_entry(array(
                 protect_from_escaping(hyperlink(build_url(array('page' => 'polls', 'type' => 'view', 'id' => $row['id']), get_module_zone('polls')), get_translated_text($row['question']), false, true)),
                 get_timezoned_date_time($row['add_time']),
                 $current ? do_lang_tempcode('YES') : do_lang_tempcode('NO'),
@@ -214,7 +214,7 @@ class Module_cms_polls extends Standard_crud_module
         $search_url = build_url(array('page' => 'search', 'id' => 'polls'), get_module_zone('search'));
         $archive_url = build_url(array('page' => 'polls'), get_module_zone('polls'));
 
-        return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $fields, $sortables, $sortable, $sort_order), false, $search_url, $archive_url);
+        return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $result_entries, $sortables, $sortable, $sort_order), false, $search_url, $archive_url);
     }
 
     /**

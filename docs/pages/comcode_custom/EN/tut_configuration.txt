@@ -113,11 +113,11 @@ You may wish to remove some of the links from the default menus on your installa
 The menu editor is covered in the [page="_SEARCH:tut_menus"]Customising what's on the menus[/page] tutorial.
 [/surround]
 
-[title="2"]Scheduling[/title]
+[title="2"]The system scheduler[/title]
 
-In order for aspects of Composr that support scheduling to work it is necessary to set up a system level scheduling task to run the [tt]data/cron_bridge.php[/tt] file on an every-minute basis. By doing this, you tie in the Cron bridge scheduler with the server's scheduler.
+In order for aspects of Composr that support scheduling to work it is necessary to set up a system level scheduling task to run the [tt]data/cron_bridge.php[/tt] file on an every-minute basis. By doing this, you tie in Composr's system scheduler with the server's scheduler.
 
-Examples of scheduling tasks:
+Examples of scheduling scripts:
  - Sending out calendar event notifications
  - Sending out regular notification digest e-mails
  - Sending out birthday notifications
@@ -128,7 +128,7 @@ Examples of scheduling tasks:
  - Sending out automatic newsletters
  - Sending newsletters (dripping out e-mails over a period of time, to stop resource spiking)
 
-The [tt]data/cron_bridge.php[/tt] file can either be run by passing the PHP file through the PHP interpreter (common), or by calling the URL (see "Help -- my webhost does not support Cron!"). More details are in the following sections. Don't call up the URL by hand then never finish configuring it, because if you do then Composr will start assuming the Cron bridge scheduler is working from then on which can make testing it a bit harder (once it is called once it is marked 'working' by the system -- applicable features will become available, and the todo item will be removed from the checklist on the front page of the Admin Zone).
+The [tt]data/cron_bridge.php[/tt] file can either be run by passing the PHP file through the PHP interpreter (common), or by calling the URL (see "Help -- my webhost does not support Cron!"). More details are in the following sections. Don't call up the URL by hand then never finish configuring it, because if you do then Composr will start assuming the system scheduler is working from then on which can make testing it a bit harder (once it is called once it is marked 'working' by the system -- applicable features will become available, and the todo item will be removed from the checklist on the front page of the Admin Zone).
 
 [title="3"]Specific advice for Linux[/title]
 
@@ -148,7 +148,7 @@ You should schedule Composr's [tt]cron_bridge.php[/tt] script to be loaded at le
 */10 * * * * <command>
 [/code]
 
-[title="4"]Sandboxes Cron[/title]
+[title="4"]Sandboxed Cron[/title]
 
 Some webhosts only allow you to execute Cron commands directly under your home directory. This means you cannot call up the PHP command directory like above.
 A workaround is to make a [tt]data/cron_bridge.sh[/tt] file (with execute permissions) containing:
@@ -166,7 +166,7 @@ c:\php\php.exe c:\sites\examplesite\www\data\cron_bridge.php
 [/code]
 On Windows, either the hosting control panel will provide a similar scheduler to Cron, or you can use the Windows' 'Scheduled Tasks' feature as described below (assuming you have access).
 
-The following is a Windows Vista scheduler step by step process for scheduling the running of [tt]cron_bridge.php[/tt] every 5 minutes to enable the scheduler:
+The following is a Windows Vista scheduler step by step process for scheduling the running of [tt]cron_bridge.php[/tt] every 5 minutes to enable the system scheduler:
 1) Open up Windows Task scheduler
 2) Click 'Create Basic Task'
 3) Give it a name and a description
@@ -194,11 +194,11 @@ In the event your hosting platform does not allow you access to Cron, there are 
  - Other free options are http://www.mywebcron.com/ (up to every 5 minutes), http://www.setcronjob.com/ (up to every 5 minutes but the schedule needs to be re-set every week) and http://www.onlinecronjobs.com/ (up to 5 jobs twice a day).
 
 Simply sign up and  add the URL i.e. [tt]http://yourbaseurl/data/cron_bridge.php[/tt] to the scheduler and set how often you want it to run.
-[staff_note]We have since optimised things so this is commented out
-[title="3"]Caveats[/title]
 
-If you enable the mail queue (recommended for performance), then e-mail will be sent in the background via the scheduler. However, if the scheduler stops running for a period, e-mails could queue up. We have had a report of this happening to a user and then the webhost deciding to block the scheduler from running, compounding the problem. If such an event happens it is best to discuss it with the webhost, then perhaps deciding to ease Cron back in on a lower execution interval (e.g. once per hour, then back to normal after the queue is emptied).
-[/staff_note]
+[title="3"]Debugging the system scheduler[/title]
+
+A system scheduler management interface is provided at Admin Zone > Audit > Low-level logging.
+
 [title="2"]Closed site, and opening[/title]
 
 [surround]
@@ -213,7 +213,7 @@ It's not advertised in the interface, but it is possible for a user to join a cl
  1_key=".htaccess"                         1_value="A file used by the Apache web server to set configuration options that apply to the directory (and sub-directories thereof-) that the file is contained in"
  2_key="Main Admin Zone Configuration"     2_value="The 'Configuration' module of the Admin Zone"
  3_key="Installation Options"              3_value="The Installation Options for low-level settings such as database settings, available from config_editor.php"
- 4_key="Cron bridge scheduler"             4_value="Composr's scheduler system, tying Cron to Composr's scheduled tasks so that they may be launched"
+ 4_key="System scheduler"                  4_value="Composr's scheduler system, tying Cron to Composr's scheduler scripts so that they may be launched"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

@@ -297,7 +297,7 @@ class Module_groups
             }
         }
         list($col_widths, $titles) = $this->_find_table_headings($has_images, false);
-        $fields_title = results_field_title($titles, $sortables);
+        $header_row = results_header_row($titles, $sortables);
         $staff = new Tempcode();
         $i = 0;
         foreach ($_staff as $row) {
@@ -332,7 +332,7 @@ class Module_groups
             $staff->attach(results_entry($entry, false));
             $i++;
         }
-        $staff = results_table(do_lang_tempcode('STAFF'), $start, 'staff_start', $max, 'staff_max', $max_rows, $fields_title, $staff, $sortables, $sortable, $sort_order, 'staff_sort', null, $col_widths);
+        $staff = results_table(do_lang_tempcode('STAFF'), $start, 'staff_start', $max, 'staff_max', $max_rows, $header_row, $staff, $sortables, $sortable, $sort_order, 'staff_sort', null, $col_widths);
 
         //-Ranks
         $ranks = array();
@@ -347,7 +347,7 @@ class Module_groups
                 }
             }
             list($col_widths, $titles) = $this->_find_table_headings($has_images, true);
-            $fields_title = results_field_title($titles, $sortables);
+            $header_row = results_header_row($titles, $sortables);
             $rank = new Tempcode();
             $i = 0;
             foreach ($_rank as $row) {
@@ -388,7 +388,7 @@ class Module_groups
 
                 $rank->attach(results_entry($entry, false));
             }
-            $rank = results_table(do_lang_tempcode('RANK_SETS'), $start, 'rank_start_' . strval($g_id), $max, 'rank_max_' . strval($g_id), $max_rows, $fields_title, $rank, $sortables, $sortable, $sort_order, 'rank_sort_' . strval($g_id), null, $col_widths);
+            $rank = results_table(do_lang_tempcode('RANK_SETS'), $start, 'rank_start_' . strval($g_id), $max, 'rank_max_' . strval($g_id), $max_rows, $header_row, $rank, $sortables, $sortable, $sort_order, 'rank_sort_' . strval($g_id), null, $col_widths);
             $ranks[] = $rank;
         }
 
@@ -415,7 +415,7 @@ class Module_groups
             }
         }
         list($col_widths, $titles) = $this->_find_table_headings($has_images, false);
-        $fields_title = results_field_title($titles, $sortables);
+        $header_row = results_header_row($titles, $sortables);
         $others = new Tempcode();
         foreach ($_others as $row) {
             $group_name = get_translated_text($row['g_name'], $GLOBALS['FORUM_DB']);
@@ -441,7 +441,7 @@ class Module_groups
             $others->attach(results_entry($entry, false));
         }
         if (!$others->is_empty()) {
-            $others = results_table(do_lang_tempcode('OTHER_USERGROUPS'), $start, 'others_start', $max, 'others_max', $max_rows, $fields_title, $others, $sortables, $sortable, $sort_order, 'others_sort', null, $col_widths);
+            $others = results_table(do_lang_tempcode('OTHER_USERGROUPS'), $start, 'others_start', $max, 'others_max', $max_rows, $header_row, $others, $sortables, $sortable, $sort_order, 'others_sort', null, $col_widths);
         }
 
         $tpl = do_template('CNS_GROUP_DIRECTORY_SCREEN', array('_GUID' => '39aebd8fcb618c2ae45e867d0c96a4cf', 'TITLE' => $this->title, 'STAFF' => $staff, 'OTHERS' => $others, 'RANKS' => $ranks));
@@ -576,8 +576,8 @@ class Module_groups
                 ));
                 $primary_members->attach(results_entry(array($temp), false));
             }
-            $fields_title = results_field_title(array(do_lang_tempcode('PRIMARY_MEMBERS')), $sortables, 'p_sort', $sortable . ' ' . $sort_order);
-            $primary_members = results_table(do_lang_tempcode('PRIMARY_MEMBERS'), $start, 'p_start', $max, 'p_max', $max_rows, $fields_title, $primary_members, $sortables, $sortable, $sort_order, 'p_sort', null, array(), null, 6);
+            $header_row = results_header_row(array(do_lang_tempcode('PRIMARY_MEMBERS')), $sortables, 'p_sort', $sortable . ' ' . $sort_order);
+            $primary_members = results_table(do_lang_tempcode('PRIMARY_MEMBERS'), $start, 'p_start', $max, 'p_max', $max_rows, $header_row, $primary_members, $sortables, $sortable, $sort_order, 'p_sort', null, array(), null, 6);
         } else {
             $primary_members = new Tempcode();
         }
@@ -624,12 +624,12 @@ class Module_groups
             }
         }
         if (!$secondary_members->is_empty()) {
-            $fields_title = results_field_title(array(do_lang_tempcode('SECONDARY_MEMBERS')), $sortables, 'p_sort', $sortable . ' ' . $sort_order);
-            $secondary_members = results_table(do_lang_tempcode('SECONDARY_MEMBERS'), $s_start, 's_start', $s_max, 's_max', $s_max_rows, $fields_title, $secondary_members, $sortables, $sortable, $sort_order, 's_sort', null, array(), null, 6);
+            $header_row = results_header_row(array(do_lang_tempcode('SECONDARY_MEMBERS')), $sortables, 'p_sort', $sortable . ' ' . $sort_order);
+            $secondary_members = results_table(do_lang_tempcode('SECONDARY_MEMBERS'), $s_start, 's_start', $s_max, 's_max', $s_max_rows, $header_row, $secondary_members, $sortables, $sortable, $sort_order, 's_sort', null, array(), null, 6);
         }
         if (!$prospective_members->is_empty()) {
-            $fields_title = results_field_title(array(do_lang_tempcode('PROSPECTIVE_MEMBERS')), $sortables, 'p_sort', $sortable . ' ' . $sort_order);
-            $prospective_members = results_table(do_lang_tempcode('PROSPECTIVE_MEMBERS'), $s_start, 's_start', $s_max, 's_max', $d_max_rows, $fields_title, $prospective_members, $sortables, $sortable, $sort_order, 'd_sort', null, array(), null, 6);
+            $header_row = results_header_row(array(do_lang_tempcode('PROSPECTIVE_MEMBERS')), $sortables, 'p_sort', $sortable . ' ' . $sort_order);
+            $prospective_members = results_table(do_lang_tempcode('PROSPECTIVE_MEMBERS'), $s_start, 's_start', $s_max, 's_max', $d_max_rows, $header_row, $prospective_members, $sortables, $sortable, $sort_order, 'd_sort', null, array(), null, 6);
         } elseif (has_actual_page_access(get_member(), 'cms_cns_groups', get_module_zone('cms_cns_groups'))) {
             $is_super_admin = $group['g_is_super_admin'];
             if ((!has_privilege(get_member(), 'control_usergroups')) || ($is_super_admin == 1)) {

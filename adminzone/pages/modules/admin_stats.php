@@ -483,8 +483,8 @@ class Module_admin_stats
         }
 
         require_code('templates_results_table');
-        $fields_title = results_field_title(array(do_lang_tempcode('DATE_TIME'), do_lang_tempcode('PEAK')), $sortables, 'sort', $sortable . ' ' . $sort_order);
-        $fields = new Tempcode();
+        $header_row = results_header_row(array(do_lang_tempcode('DATE_TIME'), do_lang_tempcode('PEAK')), $sortables, 'sort', $sortable . ' ' . $sort_order);
+        $result_entries = new Tempcode();
         $real_data = array();
         for ($i = 0; $i < $max; $i++) {
             if (!array_key_exists($i, $data)) {
@@ -496,12 +496,12 @@ class Module_admin_stats
                 do_lang('COUNT_TOTAL') => $data[$i]['value'],
             );
 
-            $fields->attach(results_entry(array(get_timezoned_date($data[$i]['t'] + $base, false), integer_format($data[$i]['value'])), true));
+            $result_entries->attach(results_entry(array(get_timezoned_date($data[$i]['t'] + $base, false), integer_format($data[$i]['value'])), true));
         }
         if ($csv) {
             make_csv($real_data, 'users_online.csv');
         }
-        $list = results_table(do_lang_tempcode('USERS_ONLINE_STATISTICS'), $start, 'start', $max, 'max', $i, $fields_title, $fields, $sortables, $sortable, $sort_order, 'sort', new Tempcode());
+        $list = results_table(do_lang_tempcode('USERS_ONLINE_STATISTICS'), $start, 'start', $max, 'max', $i, $header_row, $result_entries, $sortables, $sortable, $sort_order, 'sort', new Tempcode());
 
         $output = create_scatter_graph($data, do_lang('DATE'), do_lang('USERS_ONLINE'), '', '');
         $this->save_graph('Global-Users-online', $output);
@@ -569,7 +569,7 @@ class Module_admin_stats
         }
 
         require_code('templates_results_table');
-        $fields_title = results_field_title(array(do_lang_tempcode('DATE_TIME'), do_lang_tempcode('PEAK')), $sortables, 'sort', $sortable . ' ' . $sort_order);
+        $header_row = results_header_row(array(do_lang_tempcode('DATE_TIME'), do_lang_tempcode('PEAK')), $sortables, 'sort', $sortable . ' ' . $sort_order);
         $fields = new Tempcode();
         $real_data = array();
         for ($i = 0; $i < $max; $i++) {
@@ -584,7 +584,7 @@ class Module_admin_stats
 
             $fields->attach(results_entry(array($data[$i]['key'], integer_format($data[$i]['value'])), true));
         }
-        $list = results_table(do_lang_tempcode('SUBMISSION_STATISTICS'), $start, 'start', $max, 'max', $i, $fields_title, $fields, $sortables, $sortable, $sort_order, 'sort', new Tempcode());
+        $list = results_table(do_lang_tempcode('SUBMISSION_STATISTICS'), $start, 'start', $max, 'max', $i, $header_row, $fields, $sortables, $sortable, $sort_order, 'sort', new Tempcode());
         if ($csv) {
             make_csv($real_data, 'submission_rates.csv');
         }
@@ -682,7 +682,7 @@ class Module_admin_stats
         }
 
         require_code('templates_results_table');
-        $fields_title = results_field_title(array(do_lang_tempcode('URL'), do_lang_tempcode('LOAD_TIME')), $sortables, 'sort', $sortable . ' ' . $sort_order);
+        $header_row = results_header_row(array(do_lang_tempcode('URL'), do_lang_tempcode('LOAD_TIME')), $sortables, 'sort', $sortable . ' ' . $sort_order);
         $fields = new Tempcode();
         $real_data = array();
         $i = 0;
@@ -704,7 +704,7 @@ class Module_admin_stats
 
             $i++;
         }
-        $list = results_table(do_lang_tempcode('LOAD_TIMES'), $start, 'start', $max, 'max', count($data), $fields_title, $fields, $sortables, $sortable, $sort_order, 'sort', new Tempcode());
+        $list = results_table(do_lang_tempcode('LOAD_TIMES'), $start, 'start', $max, 'max', count($data), $header_row, $fields, $sortables, $sortable, $sort_order, 'sort', new Tempcode());
         if ($csv) {
             make_csv($real_data, 'load_times.csv');
         }
@@ -804,7 +804,7 @@ class Module_admin_stats
         }
 
         require_code('templates_results_table');
-        $fields_title = results_field_title(array(do_lang_tempcode('URL'), do_lang_tempcode('COUNT_VIEWS')), $sortables, 'sort', $sortable . ' ' . $sort_order);
+        $header_row = results_header_row(array(do_lang_tempcode('URL'), do_lang_tempcode('COUNT_VIEWS')), $sortables, 'sort', $sortable . ' ' . $sort_order);
         $fields = new Tempcode();
         $i = 0;
         $degrees = 360.0 / $total;
@@ -844,7 +844,7 @@ class Module_admin_stats
             $fields->attach(results_entry(array(do_lang('OTHER'), float_format((360 - $done_total) / $degrees)), true));
         }
 
-        $list = results_table(do_lang_tempcode('TOP_REFERRERS'), $start, 'start', $max, 'max', count($referrers), $fields_title, $fields, $sortables, $sortable, $sort_order, 'sort', new Tempcode());
+        $list = results_table(do_lang_tempcode('TOP_REFERRERS'), $start, 'start', $max, 'max', count($referrers), $header_row, $fields, $sortables, $sortable, $sort_order, 'sort', new Tempcode());
 
         $output = create_pie_chart($data);
         $this->save_graph('Global-Referrers', $output);
@@ -953,7 +953,7 @@ class Module_admin_stats
         }
 
         require_code('templates_results_table');
-        $fields_title = results_field_title(array(do_lang_tempcode('KEYWORD'), do_lang_tempcode('COUNT_VIEWS')), $sortables, 'sort', $sortable . ' ' . $sort_order);
+        $header_row = results_header_row(array(do_lang_tempcode('KEYWORD'), do_lang_tempcode('COUNT_VIEWS')), $sortables, 'sort', $sortable . ' ' . $sort_order);
         $fields = new Tempcode();
         $degrees = ($total == 0) ? 360.0 : (360 / $total);
         $done_total = 0;
@@ -988,7 +988,7 @@ class Module_admin_stats
             $data[do_lang('OTHER')] = 360 - $done_total;
             $fields->attach(results_entry(array(do_lang('OTHER'), float_format((360 - $done_total) / $degrees)), true));
         }
-        $list = results_table(do_lang_tempcode('TOP_SEARCH_KEYWORDS'), $start, 'start', $max, 'max', count($keywords), $fields_title, $fields, $sortables, $sortable, $sort_order, 'sort', new Tempcode());
+        $list = results_table(do_lang_tempcode('TOP_SEARCH_KEYWORDS'), $start, 'start', $max, 'max', count($keywords), $header_row, $fields, $sortables, $sortable, $sort_order, 'sort', new Tempcode());
         if ($csv) {
             make_csv($real_data, 'search_keywords.csv');
         }
@@ -1108,7 +1108,7 @@ class Module_admin_stats
         }
 
         require_code('templates_results_table');
-        $fields_title = results_field_title(array(do_lang_tempcode('URL'), do_lang_tempcode('COUNT_VIEWS')), $sortables, 'sort', $sortable . ' ' . $sort_order);
+        $header_row = results_header_row(array(do_lang_tempcode('URL'), do_lang_tempcode('COUNT_VIEWS')), $sortables, 'sort', $sortable . ' ' . $sort_order);
         $fields = new Tempcode();
         $i = 0;
         $real_data = array();
@@ -1131,7 +1131,7 @@ class Module_admin_stats
             $i++;
         }
         unset($views['(' . do_lang('ALL') . ')']);
-        $list = results_table(do_lang_tempcode('PAGES_STATISTICS'), $start, 'start', $max, 'max', count($views), $fields_title, $fields, $sortables, $sortable, $sort_order, 'sort', new Tempcode());
+        $list = results_table(do_lang_tempcode('PAGES_STATISTICS'), $start, 'start', $max, 'max', count($views), $header_row, $fields, $sortables, $sortable, $sort_order, 'sort', new Tempcode());
         if ($csv) {
             make_csv($real_data, 'page_stats.csv');
         }
@@ -1189,7 +1189,7 @@ class Module_admin_stats
             $list_views = new Tempcode();
         } else {
             require_code('templates_results_table');
-            $fields_title = results_field_title(array(do_lang_tempcode('DATE_TIME'), do_lang_tempcode('COUNT_VIEWS')), $sortables, 'sort', $sortable . ' ' . $sort_order);
+            $header_row = results_header_row(array(do_lang_tempcode('DATE_TIME'), do_lang_tempcode('COUNT_VIEWS')), $sortables, 'sort', $sortable . ' ' . $sort_order);
             $fields = new Tempcode();
             $i = 0;
             while (array_key_exists($i, $rows)) {
@@ -1215,7 +1215,7 @@ class Module_admin_stats
                     break;
                 }
             }
-            $list_views = results_table(do_lang_tempcode('PAGES_STATISTICS', escape_html($page)), $start, 'start_views', $max, 'max_views', $i, $fields_title, $fields, $sortables, $sortable, $sort_order, 'sort_views');
+            $list_views = results_table(do_lang_tempcode('PAGES_STATISTICS', escape_html($page)), $start, 'start_views', $max, 'max_views', $i, $header_row, $fields, $sortables, $sortable, $sort_order, 'sort_views');
         }
 
         $tpl = do_template('STATS_OVERVIEW_SCREEN', array(
@@ -1316,7 +1316,7 @@ class Module_admin_stats
                 $degrees = 360 / $num_keywords;
 
                 require_code('templates_results_table');
-                $fields_title = results_field_title(array(do_lang_tempcode('KEYWORD'), do_lang_tempcode('PEAK')), $sortables, 'sort', $sortable . ' ' . $sort_order);
+                $header_row = results_header_row(array(do_lang_tempcode('KEYWORD'), do_lang_tempcode('PEAK')), $sortables, 'sort', $sortable . ' ' . $sort_order);
                 $fields = new Tempcode();
                 $done_total = 0;
                 $data = array();
@@ -1344,7 +1344,7 @@ class Module_admin_stats
                     $data[do_lang('OTHER')] = 360 - $done_total;
                     $fields->attach(results_entry(array(do_lang('OTHER'), integer_format((int)((360 - $done_total) / $degrees))), true));
                 }
-                $list_keywords = results_table(do_lang_tempcode('TOP_SEARCH_KEYWORDS'), $start, 'start_keywords', $max, 'max_keywords', $i, $fields_title, $fields, $sortables, $sortable, $sort_order, 'sort_keywords');
+                $list_keywords = results_table(do_lang_tempcode('TOP_SEARCH_KEYWORDS'), $start, 'start_keywords', $max, 'max_keywords', $i, $header_row, $fields, $sortables, $sortable, $sort_order, 'sort_keywords');
 
                 $output = create_pie_chart($data);
                 $this->save_graph(strval($rows[0]['id']) . '-Keywords', $output);
@@ -1399,7 +1399,7 @@ class Module_admin_stats
                 }
 
                 require_code('templates_results_table');
-                $fields_title = results_field_title(array(do_lang_tempcode('REGIONALITY'), do_lang_tempcode('COUNT_VIEWS')), $sortables, 'sort', $sortable . ' ' . $sort_order);
+                $header_row = results_header_row(array(do_lang_tempcode('REGIONALITY'), do_lang_tempcode('COUNT_VIEWS')), $sortables, 'sort', $sortable . ' ' . $sort_order);
                 $fields = new Tempcode();
                 $done_total = 0;
                 $i = 0;
@@ -1425,7 +1425,7 @@ class Module_admin_stats
                     $data[do_lang('OTHER')] = 360 - $done_total;
                     $fields->attach(results_entry(array(do_lang('OTHER'), integer_format((int)((360 - $done_total) / $degrees))), true));
                 }
-                $list_regionality = results_table(do_lang_tempcode('PAGES_STATISTICS', escape_html($page)), $start, 'start_views', $max, 'max_views', $i, $fields_title, $fields, $sortables, $sortable, $sort_order, 'sort_views');
+                $list_regionality = results_table(do_lang_tempcode('PAGES_STATISTICS', escape_html($page)), $start, 'start_views', $max, 'max_views', $i, $header_row, $fields, $sortables, $sortable, $sort_order, 'sort_views');
 
                 $output = create_pie_chart($data);
                 $this->save_graph('Regionality', $output);
@@ -1470,7 +1470,7 @@ class Module_admin_stats
             $list_views = new Tempcode();
         } else {
             require_code('templates_results_table');
-            $fields_title = results_field_title(array(do_lang_tempcode('DATE_TIME'), do_lang_tempcode('COUNT_VIEWS')), $sortables, 'sort', $sortable . ' ' . $sort_order);
+            $header_row = results_header_row(array(do_lang_tempcode('DATE_TIME'), do_lang_tempcode('COUNT_VIEWS')), $sortables, 'sort', $sortable . ' ' . $sort_order);
             $fields = new Tempcode();
             $i = 0;
             while (array_key_exists($i, $rows)) {
@@ -1496,7 +1496,7 @@ class Module_admin_stats
                     break;
                 }
             }
-            $list_views = results_table(do_lang_tempcode('PAGES_STATISTICS', escape_html($page)), $start, 'start_views', $max, 'max_views', $i, $fields_title, $fields, $sortables, $sortable, $sort_order, 'sort_views');
+            $list_views = results_table(do_lang_tempcode('PAGES_STATISTICS', escape_html($page)), $start, 'start_views', $max, 'max_views', $i, $header_row, $fields, $sortables, $sortable, $sort_order, 'sort_views');
         }
 
         $tpl = do_template('STATS_SCREEN_ISCREEN', array(
@@ -1643,7 +1643,7 @@ class Module_admin_stats
         }
 
         require_code('templates_results_table');
-        $fields_title = results_field_title(array(do_lang_tempcode('DATE_TIME'), do_lang_tempcode('COUNT_VIEWS')), $sortables, 'sort', $sortable . ' ' . $sort_order);
+        $header_row = results_header_row(array(do_lang_tempcode('DATE_TIME'), do_lang_tempcode('COUNT_VIEWS')), $sortables, 'sort', $sortable . ' ' . $sort_order);
         $fields = new Tempcode();
         $data = array();
         $round = 60 * 60 * $hours;
@@ -1677,7 +1677,7 @@ class Module_admin_stats
             $i++;
             $fields->attach(results_entry(array($date . ' - ' . $to_date, integer_format($data[$date])), true));
         }
-        $list = results_table(do_lang_tempcode('PAGES_STATISTICS', escape_html($page)), $start, 'start_' . $type, $max, 'max_' . $type, $i, $fields_title, $fields, $sortables, $sortable, $sort_order, 'sort_' . $type);
+        $list = results_table(do_lang_tempcode('PAGES_STATISTICS', escape_html($page)), $start, 'start_' . $type, $max, 'max_' . $type, $i, $header_row, $fields, $sortables, $sortable, $sort_order, 'sort_' . $type);
 
         $output = create_bar_chart($data, do_lang('DATE_TIME'), do_lang('COUNT_VIEWS'), '', '');
         $this->save_graph(strval($rows[0]['id']) . '-Views-' . strval($hours) . '_' . strval($start_date_and_time), $output);
@@ -1754,7 +1754,7 @@ class Module_admin_stats
         }
 
         require_code('templates_results_table');
-        $fields_title = results_field_title(array(do_lang_tempcode($list_title), do_lang_tempcode('COUNT_VIEWS')), $sortables, 'sort', $sortable . ' ' . $sort_order);
+        $header_row = results_header_row(array(do_lang_tempcode($list_title), do_lang_tempcode('COUNT_VIEWS')), $sortables, 'sort', $sortable . ' ' . $sort_order);
         $fields = new Tempcode();
         $data = array();
         $done_total = 0;
@@ -1782,7 +1782,7 @@ class Module_admin_stats
             $data[do_lang('OTHER')] = 360.0 - $done_total * $degrees;
             $fields->attach(results_entry(array(do_lang('OTHER'), integer_format(count($rows) - $done_total)), true));
         }
-        $list = results_table(do_lang_tempcode('PAGES_STATISTICS', escape_html($page)), $start, 'start_' . $type, $max, 'max_' . $type, $i, $fields_title, $fields, $sortables, $sortable, $sort_order, 'sort_' . $type);
+        $list = results_table(do_lang_tempcode('PAGES_STATISTICS', escape_html($page)), $start, 'start_' . $type, $max, 'max_' . $type, $i, $header_row, $fields, $sortables, $sortable, $sort_order, 'sort_' . $type);
 
         $output = create_pie_chart($data);
         $this->save_graph(strval($rows[0]['id']) . '-' . $type, $output);

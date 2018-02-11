@@ -122,19 +122,19 @@ class Module_admin_banners
         $has_banner_network = ($_sum != 0);
 
         require_code('templates_results_table');
-        $field_titles_arr = array(do_lang_tempcode('NAME'), do_lang_tempcode('TYPE'), do_lang_tempcode('BANNER_TYPE'));
+        $_header_row = array(do_lang_tempcode('NAME'), do_lang_tempcode('TYPE'), do_lang_tempcode('BANNER_TYPE'));
         if ($has_banner_network) {
-            $field_titles_arr = array_merge($field_titles_arr, array(do_lang_tempcode('BANNER_HITS_FROM'), do_lang_tempcode('BANNER_VIEWS_FROM')));
+            $_header_row = array_merge($_header_row, array(do_lang_tempcode('BANNER_HITS_FROM'), do_lang_tempcode('BANNER_VIEWS_FROM')));
         }
-        $field_titles_arr = array_merge($field_titles_arr, array(do_lang_tempcode('BANNER_HITS_TO'), do_lang_tempcode('BANNER_VIEWS_TO'), do_lang_tempcode('BANNER_CLICKTHROUGH'), do_lang_tempcode('DISPLAY_LIKELIHOOD'), do_lang_tempcode('SUBMITTER'), do_lang_tempcode('ADDED')));
+        $_header_row = array_merge($_header_row, array(do_lang_tempcode('BANNER_HITS_TO'), do_lang_tempcode('BANNER_VIEWS_TO'), do_lang_tempcode('BANNER_CLICKTHROUGH'), do_lang_tempcode('DISPLAY_LIKELIHOOD'), do_lang_tempcode('SUBMITTER'), do_lang_tempcode('ADDED')));
         if (addon_installed('unvalidated')) {
-            $field_titles_arr[] = protect_from_escaping(do_template('COMCODE_ABBR', array('_GUID' => '7a2ed997384b823b25dc3c70d4ff82d6', 'TITLE' => do_lang_tempcode('VALIDATED'), 'CONTENT' => do_lang_tempcode('VALIDATED_SHORT'))));
+            $_header_row[] = protect_from_escaping(do_template('COMCODE_ABBR', array('_GUID' => '7a2ed997384b823b25dc3c70d4ff82d6', 'TITLE' => do_lang_tempcode('VALIDATED'), 'CONTENT' => do_lang_tempcode('VALIDATED_SHORT'))));
         }
-        $fields_title = results_field_title($field_titles_arr, $sortables, 'sort', $sortable . ' ' . $sort_order);
+        $header_row = results_header_row($_header_row, $sortables, 'sort', $sortable . ' ' . $sort_order);
 
         $rows = $GLOBALS['SITE_DB']->query_select('banners', array('*'), array(), '', $max, $start);
         $max_rows = $GLOBALS['SITE_DB']->query_select_value('banners', 'COUNT(*)');
-        $fields = new Tempcode();
+        $result_entries = new Tempcode();
         foreach ($rows as $myrow) {
             $name = hyperlink(build_url(array('page' => 'banners', 'type' => 'view', 'source' => $myrow['name']), get_module_zone('banners')), $myrow['name'], false, true);
 
@@ -186,10 +186,10 @@ class Module_admin_banners
                 $result[] = escape_html($validated);
             }
 
-            $fields->attach(results_entry($result, true));
+            $result_entries->attach(results_entry($result, true));
         }
 
-        $table = results_table(do_lang_tempcode('BANNERS'), $start, 'start', $max, 'max', $max_rows, $fields_title, $fields, $sortables, $sortable, $sort_order, 'sort');
+        $table = results_table(do_lang_tempcode('BANNERS'), $start, 'start', $max, 'max', $max_rows, $header_row, $result_entries, $sortables, $sortable, $sort_order, 'sort');
 
         $tpl = do_template('RESULTS_TABLE_SCREEN', array('_GUID' => 'c9270fd515e76918a37edf3f573c6da2', 'RESULTS_TABLE' => $table, 'TITLE' => $this->title));
 

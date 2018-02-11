@@ -24,9 +24,27 @@
 class Hook_cron_notification_digests
 {
     /**
-     * Run function for Cron hooks. Searches for tasks to perform.
+     * Get info from this hook.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     * @param  boolean $calculate_num_queued Calculate the number of items queued, if possible
+     * @return ?array Return a map of info about the hook (null: disabled)
      */
-    public function run()
+    public function info($last_run, $calculate_num_queued)
+    {
+        return array(
+            'label' => 'Send notification digests',
+            'num_queued' => $calculate_num_queued ? $GLOBALS['SITE_DB']->query_select_value('digestives_tin', 'COUNT(*)') : null, // Not quite accurate, as not everything ready to send, but an indication
+            'minutes_between_runs' => 60 * 12,
+        );
+    }
+
+    /**
+     * Run function for system scheduler scripts. Searches for things to do. ->info(..., true) must be called before this method.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     */
+    public function run($last_run)
     {
         if (!defined('MAXIMUM_DIGEST_LENGTH')) {
             define('MAXIMUM_DIGEST_LENGTH', 1024 * 100); // 100KB
@@ -34,14 +52,14 @@ class Hook_cron_notification_digests
 
         require_code('notifications');
         foreach (array(
-                     A_DAILY_EMAIL_DIGEST => 60 * 60 * 24,
-                     A_WEEKLY_EMAIL_DIGEST => 60 * 60 * 24 * 7,
-                     A_MONTHLY_EMAIL_DIGEST => 60 * 60 * 24 * 31,
-                 ) as $frequency => $timespan) {
+                A_DAILY_EMAIL_DIGEST => 60 * 60 * 24,
+                A_WEEKLY_EMAIL_DIGEST => 60 * 60 * 24 * 7,
+                A_MONTHLY_EMAIL_DIGEST => 60 * 60 * 24 * 31,
+            ) as $frequency => $time_span) {
             $start = 0;
             do {
                 // Find where not tint-in-tin
-                $members = $GLOBALS['SITE_DB']->query('SELECT DISTINCT d_to_member_id FROM ' . get_table_prefix() . 'digestives_consumed c JOIN ' . get_table_prefix() . 'digestives_tin t ON c.c_member_id=t.d_to_member_id AND c.c_frequency=t.d_frequency WHERE c_time<' . strval(time() - $timespan) . ' AND c_frequency=' . strval($frequency), 100, $start);
+                $members = $GLOBALS['SITE_DB']->query('SELECT DISTINCT d_to_member_id FROM ' . get_table_prefix() . 'digestives_consumed c JOIN ' . get_table_prefix() . 'digestives_tin t ON c.c_member_id=t.d_to_member_id AND c.c_frequency=t.d_frequency WHERE c_time<' . strval(time() - $time_span) . ' AND c_frequency=' . strval($frequency), 100, $start);
 
                 foreach ($members as $member) {
                     require_lang('notifications');

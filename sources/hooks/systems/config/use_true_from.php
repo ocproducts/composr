@@ -34,11 +34,11 @@ class Hook_config_use_true_from
             'human_name' => 'USE_TRUE_FROM',
             'type' => 'list',
             'category' => 'MESSAGES',
-            'group' => '_EMAIL',
+            'group' => 'ADVANCED_EMAIL_SEND_SETTINGS',
             'explanation' => 'CONFIG_OPTION_use_true_from',
             'shared_hosting_restricted' => '0',
             'list_options' => '1|2|0',
-            'order_in_category_group' => 9,
+            'order_in_category_group' => 3,
             'required' => true,
 
             'public' => false,

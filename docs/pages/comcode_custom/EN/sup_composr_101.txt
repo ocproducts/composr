@@ -2,7 +2,7 @@
 
 Composr is a very comprehensive Content management system &ldquo;CMS&rdquo; That can be set up and used by just about anyone.
 
-(This tutorial was written when Composr was still called ocPortal. It has since been partially updated.)
+(This tutorial was written when Composr was still called ocPortal, and when Arvixe had an auto-installer for it. It has since been partially updated but the specifics about Arvixe no longer apply.)
 
 [title="2"]Is Composr right for you?[/title]
 

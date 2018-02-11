@@ -34,11 +34,11 @@ class Hook_config_enveloper_override
             'human_name' => 'ENVELOPER_OVERRIDE',
             'type' => 'tick',
             'category' => 'MESSAGES',
-            'group' => '_EMAIL',
+            'group' => 'ADVANCED_EMAIL_SEND_SETTINGS',
             'explanation' => 'CONFIG_OPTION_enveloper_override',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
-            'order_in_category_group' => 6,
+            'order_in_category_group' => 2,
 
             'required' => true,
             'public' => false,

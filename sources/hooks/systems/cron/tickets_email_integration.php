@@ -24,14 +24,28 @@
 class Hook_cron_tickets_email_integration
 {
     /**
-     * Run function for Cron hooks. Searches for tasks to perform.
+     * Get info from this hook.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     * @param  boolean $calculate_num_queued Calculate the number of items queued, if possible
+     * @return ?array Return a map of info about the hook (null: disabled)
      */
-    public function run()
+    public function info($last_run, $calculate_num_queued)
     {
-        if (!addon_installed('tickets')) {
-            return;
-        }
+        return array(
+            'label' => 'Process e-mailed support tickets',
+            'num_queued' => null, // Too time-consuming to calculate
+            'minutes_between_runs' => 0,
+        );
+    }
 
+    /**
+     * Run function for system scheduler scripts. Searches for things to do. ->info(..., true) must be called before this method.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     */
+    public function run($last_run)
+    {
         require_code('tickets_email_integration');
         ticket_incoming_scan();
     }

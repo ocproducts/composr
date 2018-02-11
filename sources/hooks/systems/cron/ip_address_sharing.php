@@ -24,116 +24,129 @@
 class Hook_cron_ip_address_sharing
 {
     /**
-     * Run function for Cron hooks. Searches for tasks to perform.
+     * Get info from this hook.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     * @param  boolean $calculate_num_queued Calculate the number of items queued, if possible
+     * @return ?array Return a map of info about the hook (null: disabled)
      */
-    public function run()
+    public function info($last_run, $calculate_num_queued)
     {
-        $limit = get_option('max_ip_addresses_per_subscriber');
-        if ($limit == '') {
-            return;
-        }
-
         if (get_forum_type() != 'cns') {
-            return;
+            return null;
         }
         if (!addon_installed('stats')) {
-            return;
+            return null;
+        }
+        $limit = get_option('max_ip_addresses_per_subscriber');
+        if ($limit == '') {
+            return null;
         }
         if (is_cns_satellite_site()) {
-            return;
+            return null;
         }
+
+        return array(
+            'label' => 'Detect IP address sharing',
+            'num_queued' => null,
+            'minutes_between_runs' => 7 * 24 * 60,
+        );
+    }
+
+    /**
+     * Run function for system scheduler scripts. Searches for things to do. ->info(..., true) must be called before this method.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     */
+    public function run($last_run)
+    {
+        $limit = get_option('max_ip_addresses_per_subscriber');
 
         require_lang('ecommerce');
 
-        $time = time();
+        $time_now = time();
 
-        $days = 7;
-        $last_time = intval(get_value('mail_log_last_run_time', null, true));
-        if ($last_time > $time + ($days * 24 * 60 * 60)) {
-            set_value('mail_log_last_run_time', strval($time), true);
+        $results = array();
 
-            $results = array();
-
-            $table = 'f_usergroup_subs s JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups g ON g.id=s.s_group_id';
-            $groups = collapse_1d_complexity('id', $GLOBALS['FORUM_DB']->query_select($table, array('g.id')));
-            if (count($groups) > 0) {
-                $group_or_list_1 = '';
-                $group_or_list_2 = '';
-                foreach ($groups as $group) {
-                    if ($group_or_list_1 != '') {
-                        $group_or_list_1 .= ' OR ';
-                    }
-                    $group_or_list_1 .= 'm_primary_group=' . strval($group);
-
-                    if ($group_or_list_2 != '') {
-                        $group_or_list_2 .= ' OR ';
-                    }
-                    $group_or_list_2 .= 'gm_group_id=' . strval($group);
+        $table = 'f_usergroup_subs s JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups g ON g.id=s.s_group_id';
+        $groups = collapse_1d_complexity('id', $GLOBALS['FORUM_DB']->query_select($table, array('g.id')));
+        if (count($groups) > 0) {
+            $group_or_list_1 = '';
+            $group_or_list_2 = '';
+            foreach ($groups as $group) {
+                if ($group_or_list_1 != '') {
+                    $group_or_list_1 .= ' OR ';
                 }
+                $group_or_list_1 .= 'm_primary_group=' . strval($group);
 
-                $sql = 'SELECT DISTINCT id,m_username FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members m';
-                $sql .= ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_group_members g ON m.id=g.gm_member_id AND (' . $group_or_list_2 . ')';
-                $sql .= ' WHERE';
-                $sql .= ' (' . $group_or_list_1 . ' OR gm_validated=1)';
-                $sql .= ' AND (SELECT COUNT(DISTINCT ip) FROM ' . get_table_prefix() . 'stats s WHERE s.member_id=m.id AND date_and_time>' . strval($time - 60 * 60 * 24) . ')>' . strval($limit);
-                $members = $GLOBALS['FORUM_DB']->query($sql);
+                if ($group_or_list_2 != '') {
+                    $group_or_list_2 .= ' OR ';
+                }
+                $group_or_list_2 .= 'gm_group_id=' . strval($group);
+            }
 
-                foreach ($members as $member) {
-                    $_ips = $GLOBALS['SITE_DB']->query_select('stats', array('ip', 'COUNT(*) AS cnt'), array('member_id' => $member['id']), ' AND date_and_time>' . strval($time - 60 * 60 * 24) . ' GROUP BY ip');
-                    $ips = array();
-                    foreach ($_ips as $ip) {
-                        $ips[] = array(
-                            $ip['ip'],
-                            $ip['cnt'],
-                            gethostbyaddr($ip['ip']),
-                        );
-                    }
+            $sql = 'SELECT DISTINCT id,m_username FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members m';
+            $sql .= ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_group_members g ON m.id=g.gm_member_id AND (' . $group_or_list_2 . ')';
+            $sql .= ' WHERE';
+            $sql .= ' (' . $group_or_list_1 . ' OR gm_validated=1)';
+            $sql .= ' AND (SELECT COUNT(DISTINCT ip) FROM ' . get_table_prefix() . 'stats s WHERE s.member_id=m.id AND date_and_time>' . strval($time_now - 60 * 60 * 24) . ')>' . strval($limit);
+            $members = $GLOBALS['FORUM_DB']->query($sql);
 
-                    $results[] = array(
-                        $member['id'],
-                        $member['m_username'],
-                        array_intersect($GLOBALS['FORUM_DRIVER']->get_members_groups($member['id']), $groups),
-                        $ips,
+            foreach ($members as $member) {
+                $_ips = $GLOBALS['SITE_DB']->query_select('stats', array('ip', 'COUNT(*) AS cnt'), array('member_id' => $member['id']), ' AND date_and_time>' . strval($time_now - 60 * 60 * 24) . ' GROUP BY ip');
+                $ips = array();
+                foreach ($_ips as $ip) {
+                    $ips[] = array(
+                        $ip['ip'],
+                        $ip['cnt'],
+                        gethostbyaddr($ip['ip']),
                     );
                 }
+
+                $results[] = array(
+                    $member['id'],
+                    $member['m_username'],
+                    array_intersect($GLOBALS['FORUM_DRIVER']->get_members_groups($member['id']), $groups),
+                    $ips,
+                );
             }
+        }
 
-            if (count($results) > 0) {
-                require_code('cns_groups');
+        if (count($results) > 0) {
+            require_code('cns_groups');
 
-                $table = "{|\n";
-                $table .= "! " . do_lang('USERNAME') . "\n";
-                $table .= "! " . do_lang('USERGROUPS') . "\n";
-                $table .= "! " . do_lang('IP_ADDRESSES') . "\n";
-                foreach ($results as $result) {
-                    $table .= "|-\n";
-                    $table .= "| {{" . $result[1] . "}}\n";
-                    $table .= "| ";
-                    foreach ($result[2] as $i => $group_id) {
-                        if ($i != 0) {
-                            $table .= ', ';
-                        }
-                        $table .= cns_get_group_name($group_id, false);
+            $table = "{|\n";
+            $table .= "! " . do_lang('USERNAME') . "\n";
+            $table .= "! " . do_lang('USERGROUPS') . "\n";
+            $table .= "! " . do_lang('IP_ADDRESSES') . "\n";
+            foreach ($results as $result) {
+                $table .= "|-\n";
+                $table .= "| {{" . $result[1] . "}}\n";
+                $table .= "| ";
+                foreach ($result[2] as $i => $group_id) {
+                    if ($i != 0) {
+                        $table .= ', ';
                     }
-                    $table .= "\n";
-                    $table .= "| ";
-                    foreach ($result[3] as $i => $ip_address) {
-                        if ($i != 0) {
-                            $table .= "\n";
-                        }
-                        $table .= $ip_address[0] . '&times;' . strval($ip_address[1]) . ' (' . $ip_address[2] . ')';
-                    }
-                    $table .= "\n";
+                    $table .= cns_get_group_name($group_id, false);
                 }
-                $table .= "|}";
-
-                require_code('notifications');
-
-                $subject = do_lang('MAIL_IP_ADDRESS_REPORT_SUBJECT', integer_format(intval($limit)));
-                $message = do_notification_lang('MAIL_IP_ADDRESS_REPORT_BODY', integer_format(intval($limit)), $table);
-
-                dispatch_notification('ip_address_sharing', null, $subject, $message);
+                $table .= "\n";
+                $table .= "| ";
+                foreach ($result[3] as $i => $ip_address) {
+                    if ($i != 0) {
+                        $table .= "\n";
+                    }
+                    $table .= $ip_address[0] . '&times;' . strval($ip_address[1]) . ' (' . $ip_address[2] . ')';
+                }
+                $table .= "\n";
             }
+            $table .= "|}";
+
+            require_code('notifications');
+
+            $subject = do_lang('MAIL_IP_ADDRESS_REPORT_SUBJECT', integer_format(intval($limit)));
+            $message = do_notification_lang('MAIL_IP_ADDRESS_REPORT_BODY', integer_format(intval($limit)), $table);
+
+            dispatch_notification('ip_address_sharing', null, $subject, $message);
         }
     }
 }

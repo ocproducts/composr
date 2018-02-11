@@ -34,7 +34,7 @@ class Hook_config_website_email
             'human_name' => 'WEBSITE_EMAIL',
             'type' => 'line',
             'category' => 'MESSAGES',
-            'group' => '_EMAIL',
+            'group' => 'STAFF_EMAIL_ADDRESSES',
             'explanation' => 'CONFIG_OPTION_website_email',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

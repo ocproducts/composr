@@ -24,30 +24,38 @@
 class Hook_cron_sitemap
 {
     /**
-     * Run function for Cron hooks. Searches for tasks to perform.
+     * Get info from this hook.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     * @param  boolean $calculate_num_queued Calculate the number of items queued, if possible
+     * @return ?array Return a map of info about the hook (null: disabled)
      */
-    public function run()
+    public function info($last_run, $calculate_num_queued)
     {
-        if (!is_guest()) {
-            return; // Bad idea
+        if ($calculate_num_queued) {
+            $last_time = intval(get_value('last_sitemap_time_calc_inner', null, true));
+            $num_queued = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(DISTINCT set_number) FROM ' . get_table_prefix() . 'sitemap_cache WHERE last_updated>=' . strval($last_time));
+        } else {
+            $num_queued = null;
         }
 
-        $time = time();
-        $last_time = intval(get_value('last_sitemap_time_calc', null, true));
+        return array(
+            'label' => 'Update XML sitemap',
+            'num_queued' => $num_queued,
+            'minutes_between_runs' => 60 * 24, // Every day. Contrast to the news sitemap which is built and pinged instantly, so content needing instant promotion should go via news
+        );
+    }
 
-        if (get_value('sitemap_building_in_progress', null, true) == '1' && intval(get_value('last_sitemap_time_calc', null, true)) > time() - 60 * 60 * 24 * 3/*in case it stalled a few days back - force a re-try*/) {
-            return;
-        }
-
-        if ($last_time > time() - 60 * 60 * 24) {
-            return; // Every day. Contrast to the news sitemap which is built and pinged instantly, so content needing instant promotion should go via news
-        }
-
-        set_value('last_sitemap_time_calc', strval($time), true);
-
-        require_lang('menus');
+    /**
+     * Run function for system scheduler scripts. Searches for things to do. ->info(..., true) must be called before this method.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     */
+    public function run($last_run)
+    {
+        require_lang('menus'); // Contains GENERATE_SITEMAP string
 
         require_code('tasks');
-        call_user_func_array__long_task(do_lang('GENERATE_SITEMAP'), get_screen_title('GENERATE_SITEMAP'), 'sitemap', array(), false, false, false);
+        call_user_func_array__long_task(do_lang('GENERATE_SITEMAP'), get_screen_title('GENERATE_SITEMAP'), 'sitemap', array(), false, true, false);
     }
 }

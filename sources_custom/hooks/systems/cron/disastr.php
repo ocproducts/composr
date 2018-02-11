@@ -19,36 +19,40 @@
 class Hook_cron_disastr
 {
     /**
-     * Run function for Cron hooks. Searches for tasks to perform.
+     * Get info from this hook.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     * @param  boolean $calculate_num_queued Calculate the number of items queued, if possible
+     * @return ?array Return a map of info about the hook (null: disabled)
      */
-    public function run()
+    public function info($last_run, $calculate_num_queued)
     {
         if (!$GLOBALS['SITE_DB']->table_exists('diseases')) {
-            return;
+            return null;
         }
 
-        // ensure it is done once per week
-        $time = time();
-        $last_time = intval(get_value('last_disastr_time'));
-        if ($last_time > time() - 24 * 60 * 60) {
-            return; // run it once a day
-        }
-        set_value('last_disastr_time', strval($time));
+        return array(
+            'label' => 'Disastr',
+            'num_queued' => null,
+            'minutes_between_runs' => 24 * 60,
+        );
+    }
 
+    /**
+     * Run function for system scheduler scripts. Searches for things to do. ->info(..., true) must be called before this method.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     */
+    public function run($last_run)
+    {
         require_lang('disastr');
 
-        // get just disease that should spead and are enabled
-        $diseases_to_spread = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'diseases WHERE (last_spread_time<(' . strval(time()) . '-(spread_rate*60*60)) OR last_spread_time=0) AND enabled=1', null, 0, true);
-        if ($diseases_to_spread === null) {
-            return; // Missing table
-        }
+        // Get just disease that should spead and are enabled
+        $diseases_to_spread = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'diseases WHERE (last_spread_time<(' . strval(time()) . '-(spread_rate*60*60)) OR last_spread_time=0) AND enabled=1');
 
         foreach ($diseases_to_spread as $disease) {
-            // select infected by the disease members
-            $sick_by_disease_members = $GLOBALS['SITE_DB']->query_select('members_diseases', array('member_id'), array('sick' => 1, 'disease_id' => $disease['id']), '', null, 0, true);
-            if ($sick_by_disease_members === null) {
-                return; // Missing table
-            }
+            // Select infected by the disease members
+            $sick_by_disease_members = $GLOBALS['SITE_DB']->query_select('members_diseases', array('member_id'), array('sick' => 1, 'disease_id' => $disease['id']));
 
             $sick_members = array();
             foreach ($sick_by_disease_members as $sick_member) {
@@ -60,15 +64,15 @@ class Hook_cron_disastr
                 require_code('points2');
                 require_lang('disastr');
 
-                // charge disease points
+                // Charge disease points
                 charge_member($sick_member['member_id'], $disease['points_per_spread'], do_lang('DISEASE_GET') . ' "' . $disease['name'] . '"');
 
-                // pick a random friend to infect
+                // Pick a random friend to infect
                 $friends_a = array();
                 if (addon_installed('chat')) {
                     $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'chat_friends WHERE member_likes=' . strval($sick_member['member_id']) . ' OR member_liked=' . strval($sick_member['member_id']) . ' ORDER BY date_and_time');
 
-                    // get friends
+                    // Get friends
                     foreach ($rows as $i => $row) {
                         if ($row['member_likes'] != $sick_member['member_id']) {
                             $friends_a[$row['member_likes']] = $row['member_likes'];
@@ -94,7 +98,7 @@ class Hook_cron_disastr
                     $insert = true;
                     $has_immunization = false;
                     if (isset($members_disease_rows[0])) {
-                        // there is already a db member disease record
+                        // There is already a DB member disease record
                         $insert = false;
                         if ($members_disease_rows[0]['immunisation'] == 1) {
                             $has_immunization = true;
@@ -102,14 +106,14 @@ class Hook_cron_disastr
                     }
 
                     if (!$has_immunization) {
-                        $_cure_url = build_url(array('page' => 'purchase', 'type' => 'pay', 'id' => 'CURE_' . strval($disease['id'])), get_module_zone('purchase'), null, false, false, true);
+                        $_cure_url = build_url(array('page' => 'purchase', 'type' => 'pay', 'id' => 'CURE_' . strval($disease['id'])), get_module_zone('purchase'), array(), false, false, true);
                         $cure_url = $_cure_url->evaluate();
 
                         if ($insert) {
-                            // infect the member for the first time
+                            // Infect the member for the first time
                             $GLOBALS['SITE_DB']->query_insert('members_diseases', array('member_id' => $friends_healthy[$to_infect], 'disease_id' => $disease['id'], 'sick' => 1, 'cure' => 0, 'immunisation' => 0));
                         } else {
-                            // infect the member again
+                            // Infect the member again
                             $GLOBALS['SITE_DB']->query_update('members_diseases', array('member_id' => $friends_healthy[$to_infect], 'disease_id' => $disease['id'], 'sick' => 1, 'cure' => 0, 'immunisation' => 0), array('member_id' => $friends_healthy[$to_infect], 'disease_id' => $disease['id']), '', 1);
                         }
 
@@ -121,10 +125,10 @@ class Hook_cron_disastr
                 }
             }
 
-            // proceed with infecting a random but not immunised member (disease initiation)
+            // Proceed with infecting a random but not immunised member (disease initiation)
             // =============================================================================
 
-            // get immunised members first
+            // Get immunised members first
             $immunised_members_rows = $GLOBALS['SITE_DB']->query_select('members_diseases', array('*'), array('disease_id' => $disease['id'], 'immunisation' => 1));
             $immunised_members = array();
             foreach ($immunised_members_rows as $im_member) {
@@ -134,12 +138,12 @@ class Hook_cron_disastr
             $sick_and_immunised_members = array();
             $sick_and_immunised_members = array_merge($sick_members, $immunised_members);
 
-            // create a csv list of members to be avoided - sick and immunised members should be avoided !!!
-            $avoid_members = implode(',', $sick_and_immunised_members);
+            // Create a CSV list of members to be avoided - sick and immunised members should be avoided!!!
+            $avoid_members = implode(',', @array_map('strval', $sick_and_immunised_members));
 
             $avoid_members = (strlen($avoid_members) == 0) ? '0' : $avoid_members;
 
-            // if there is a randomly selected members that can be infected, otherwise all of the members are already infected or immunised
+            // If there is a randomly selected members that can be infected, otherwise all of the members are already infected or immunised
             $sql = 'SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE id<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()) . ' AND id NOT IN (' . $avoid_members . ') AND ' . db_string_equal_to('m_validated_email_confirm_code', '');
             if (addon_installed('unvalidated')) {
                 $sql .= ' AND m_validated=1';
@@ -151,20 +155,20 @@ class Hook_cron_disastr
 
                 $insert = true;
                 if (isset($members_disease_rows[0])) {
-                    // there is already a db member disease record
+                    // There is already a db member disease record
                     $insert = false;
                 }
 
                 require_code('notifications');
 
-                $_cure_url = build_url(array('page' => 'purchase', 'type' => 'pay', 'type_code' => 'CURE_' . strval($disease['id'])), get_module_zone('purchase'), null, false, false, true);
+                $_cure_url = build_url(array('page' => 'purchase', 'type' => 'pay', 'type_code' => 'CURE_' . strval($disease['id'])), get_module_zone('purchase'), array(), false, false, true);
                 $cure_url = $_cure_url->evaluate();
 
                 if ($insert) {
-                    // infect the member for the first time
+                    // Infect the member for the first time
                     $GLOBALS['SITE_DB']->query_insert('members_diseases', array('member_id' => strval($random_member[0]['id']), 'disease_id' => $disease['id'], 'sick' => 1, 'cure' => 0, 'immunisation' => 0));
                 } else {
-                    // infect the member again
+                    // Infect the member again
                     $GLOBALS['SITE_DB']->query_update('members_diseases', array('member_id' => strval($random_member[0]['id']), 'disease_id' => $disease['id'], 'sick' => 1, 'cure' => 0, 'immunisation' => 0), array('member_id' => strval($random_member[0]['id']), 'disease_id' => strval($disease['id'])), '', 1);
                 }
 
@@ -172,7 +176,7 @@ class Hook_cron_disastr
                 dispatch_notification('got_disease', null, do_lang('DISEASES_MAIL_SUBJECT', get_site_name(), $disease['name'], null, get_lang($random_member[0]['id'])), $message, array($random_member[0]['id']), A_FROM_SYSTEM_PRIVILEGED);
             }
 
-            // record disease spreading
+            // Record disease spreading
             $GLOBALS['SITE_DB']->query_update('diseases', array('last_spread_time' => strval(time())), array('id' => strval($disease['id'])), '', 1);
         }
     }

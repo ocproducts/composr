@@ -19,39 +19,47 @@
 class Hook_cron_stealr
 {
     /**
-     * Run function for Cron hooks. Searches for tasks to perform.
+     * Get info from this hook.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     * @param  boolean $calculate_num_queued Calculate the number of items queued, if possible
+     * @return ?array Return a map of info about the hook (null: disabled)
      */
-    public function run()
+    public function info($last_run, $calculate_num_queued)
     {
-        //if (!addon_installed('stealr')) return;
+        $stealr_group = get_option('stealr_group');
+        if ($stealr_group == '') {
+            return null;
+        }
 
+        return array(
+            'label' => 'Stealr',
+            'num_queued' => null,
+            'minutes_between_runs' => 60 * 7 * 24,
+        );
+    }
+
+    /**
+     * Run function for system scheduler scripts. Searches for things to do. ->info(..., true) must be called before this method.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     */
+    public function run($last_run)
+    {
         require_code('cns_topics_action2');
-
         require_code('points');
-
         require_lang('stealr');
 
-        // ensure it is done once per week
-        $time = time();
-        $last_time = intval(get_value('last_thieving_time'));
-        if ($last_time > time() - 24 * 60 * 60 * 7) {
-            return;
+        $stealr_type = get_option('stealr_type');
+        if ($stealr_type == '') {
+            $stealr_type = 'Members that are inactive, but has lots points';
         }
-        set_value('last_thieving_time', strval($time));
-
-        $stealr_type = get_option('stealr_type', true);
-        $stealr_type = (isset($stealr_type) && strlen($stealr_type) > 0) ? $stealr_type : 'Members that are inactive, but has lots points';
 
         $stealr_number = intval(get_option('stealr_number'));
-
         $stealr_points = intval(get_option('stealr_points'));
-
         $stealr_group = get_option('stealr_group');
-        if (empty($stealr_group)) {
-            return;
-        }
 
-        // start determining the various cases
+        // Start determining the various cases
         if ($stealr_type == 'Members that are inactive, but has lots points') {
             $all_members = $GLOBALS['FORUM_DRIVER']->get_top_posters(1000);
             $points = array();
@@ -63,8 +71,6 @@ class Hook_cron_stealr
 
             ksort($points);
 
-            //print_r($points);
-
             $stealr_number = (count($points) > $stealr_number) ? $stealr_number : count($points);
             $theft_count = 0;
 
@@ -75,7 +81,7 @@ class Hook_cron_stealr
                     break;
                 }
 
-                // start stealing
+                // Start stealing
                 require_code('points2');
                 require_lang('stealr');
 
@@ -91,7 +97,7 @@ class Hook_cron_stealr
 
                 $give_to_member = (isset($give_to_member[0]['id']) && $give_to_member[0]['id'] > 0) ? $give_to_member[0]['id'] : 0;
 
-                // get THIEF points
+                // Get THIEF points
                 charge_member($member['id'], $stealr_points, do_lang('STEALR_GET') . ' ' . strval($stealr_points) . ' point(-s) from you.');
 
                 if ($give_to_member > 0) {
@@ -134,7 +140,7 @@ class Hook_cron_stealr
                     break;
                 }
 
-                // start stealing
+                // Start stealing
                 require_code('points2');
                 require_lang('stealr');
 
@@ -150,7 +156,7 @@ class Hook_cron_stealr
 
                 $give_to_member = (isset($give_to_member[0]['id']) && $give_to_member[0]['id'] > 0) ? $give_to_member[0]['id'] : 0;
 
-                // get THIEF points
+                // Get THIEF points
                 charge_member($member_id, $stealr_points, do_lang('STEALR_GET') . ' ' . strval($stealr_points) . ' point(-s) from you.');
 
                 if ($give_to_member > 0) {
@@ -179,7 +185,7 @@ class Hook_cron_stealr
             $stealr_number = (count($random_members) > $stealr_number) ? $stealr_number : count($random_members);
 
             foreach ($random_members as $member) {
-                // start stealing
+                // Start stealing
                 require_code('points2');
                 require_lang('stealr');
 
@@ -195,7 +201,7 @@ class Hook_cron_stealr
 
                 $give_to_member = (isset($give_to_member[0]['id']) && $give_to_member[0]['id'] > 0) ? $give_to_member[0]['id'] : 0;
 
-                // get THIEF points
+                // Get THIEF points
                 charge_member($member['id'], $stealr_points, do_lang('STEALR_GET') . ' ' . strval($stealr_points) . ' point(-s) from you.');
 
                 if ($give_to_member != 0) {
@@ -235,11 +241,10 @@ class Hook_cron_stealr
             }
 
             foreach ($members_to_steal_ids as $member_rand_key) {
-                // start stealing
+                // Start stealing
                 require_code('points2');
                 require_lang('stealr');
 
-                //echo $members[$member_rand_key];
                 $total_points = available_points($members[$member_rand_key]);
                 $stealr_points = ($stealr_points < $total_points) ? $stealr_points : $total_points;
 
@@ -252,7 +257,7 @@ class Hook_cron_stealr
 
                 $give_to_member = (isset($give_to_member[0]['id']) && $give_to_member[0]['id'] > 0) ? $give_to_member[0]['id'] : 0;
 
-                // get THIEF points
+                // Get THIEF points
                 charge_member($members[$member_rand_key], $stealr_points, do_lang('STEALR_GET') . ' ' . strval($stealr_points) . ' point(-s) from you.');
 
                 if ($give_to_member != 0) {

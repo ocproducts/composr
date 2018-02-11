@@ -190,7 +190,7 @@ class Module_admin_custom_comcode extends Standard_crud_module
             'tag_enabled' => do_lang_tempcode('ENABLED'),
         );
 
-        $header_row = results_field_title(array(
+        $header_row = results_header_row(array(
             do_lang_tempcode('COMCODE_TAG'),
             do_lang_tempcode('TITLE'),
             do_lang_tempcode('DANGEROUS_TAG'),
@@ -203,16 +203,16 @@ class Module_admin_custom_comcode extends Standard_crud_module
             log_hack_attack_and_exit('ORDERBY_HACK');
         }
 
-        $fields = new Tempcode();
+        $result_entries = new Tempcode();
 
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering);
         foreach ($rows as $row) {
             $edit_url = build_url($url_map + array('id' => $row['tag_tag']), '_SELF');
 
-            $fields->attach(results_entry(array($row['tag_tag'], get_translated_text($row['tag_title']), ($row['tag_dangerous_tag'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'), ($row['tag_block_tag'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'), ($row['tag_textual_tag'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'), ($row['tag_enabled'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'), protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, false, '#' . $row['tag_tag']))), true));
+            $result_entries->attach(results_entry(array($row['tag_tag'], get_translated_text($row['tag_title']), ($row['tag_dangerous_tag'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'), ($row['tag_block_tag'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'), ($row['tag_textual_tag'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'), ($row['tag_enabled'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'), protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, false, '#' . $row['tag_tag']))), true));
         }
 
-        return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $fields, $sortables, $sortable, $sort_order), false);
+        return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $result_entries, $sortables, $sortable, $sort_order), false);
     }
 
     /**
