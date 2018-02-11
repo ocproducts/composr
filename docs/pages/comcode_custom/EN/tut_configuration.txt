@@ -145,7 +145,7 @@ A good test is to try running the command you end up choosing manually in a comm
 
 You should schedule Composr's [tt]cron_bridge.php[/tt] script to be loaded at least every 10 minutes.
 
-[title="4"]Sandboxes CRON[/title]
+[title="4"]Sandboxed CRON[/title]
 
 Some webhosts only allow you to execute CRON commands directly under your home directory. This means you cannot call up the PHP command directory like above.
 A workaround is to make a [tt]data/cron_bridge.sh[/tt] file (with execute permissions) containing:

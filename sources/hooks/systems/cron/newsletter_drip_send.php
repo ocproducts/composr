@@ -35,6 +35,13 @@ class Hook_cron_newsletter_drip_send
         $minutes_between_sends = intval(get_option('minutes_between_sends'));
         $mails_per_send = intval(get_option('mails_per_send'));
 
+        $time = time();
+        $last_time = intval(get_value('last_newsletter_drip_send', null, true));
+        if ($last_time > time() - $minutes_between_sends * 60) {
+            return;
+        }
+        set_value('last_newsletter_drip_send', strval($time), true);
+
         require_lang('newsletter');
 
         $to_send = $GLOBALS['SITE_DB']->query_select('newsletter_drip_send', array('*'), null, 'ORDER BY d_inject_time DESC', $mails_per_send);
