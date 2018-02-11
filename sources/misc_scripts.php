@@ -261,7 +261,7 @@ function cron_bridge_script($caller)
 
     // Upgrade pending?
     $version_files = float_to_raw_string(cms_version_number(), 10, true);
-    if ((get_value('version') != $version_files) || (get_value('version') != $version_files)) {
+    if ((get_value('version') != $version_files) || (get_value('cns_version') != $version_files)) {
         return;
     }
 
