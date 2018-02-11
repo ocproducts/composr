@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="{$LCASE*,{$LANG}}" dir="{!dir}" data-view="Global" class="in-minikernel-version">
+
+{$SET,page_link_privacy,{$PAGE_LINK,:privacy}}
+
+<html lang="{$LCASE*,{$LANG}}" dir="{!dir}" data-view="Global" data-view-params="{+START,PARAMS_JSON,page_link_privacy}{_*}{+END}" class="in-minikernel-version">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset={$CHARSET*}" />
 		<meta name="GENERATOR" content="Composr" />
