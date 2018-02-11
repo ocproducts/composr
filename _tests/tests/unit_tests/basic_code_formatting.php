@@ -179,6 +179,7 @@ class basic_code_formatting_test_set extends cms_test_case
                     'themes/default/templates/CURRENCY.tpl',
                     'themes/default/templates/CROP_TEXT_MOUSE_OVER_INLINE.tpl',
                     'themes/default/templates/CROP_TEXT_MOUSE_OVER.tpl',
+                    'themes/default/templates/CNS_USER_MEMBER.tpl',
                 ))) {
                     $expected_breaks = 0;
                 }

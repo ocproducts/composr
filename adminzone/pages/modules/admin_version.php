@@ -1046,6 +1046,7 @@ class Module_admin_version
                 'last_ticket_lead_time_calc' => 'ticket_type_lead_times',
                 'last_time_cron_topic_pin' => 'topic_pin',
                 'last_cron_user_sync' => 'user_sync',
+                'last_newsletter_drip_send' => 'newsletter_drip_send',
             );
             foreach ($elective_values_remap as $value => $cron_hook) {
                 $GLOBALS['SITE_DB']->query_insert('cron_progression', array(
