@@ -34,16 +34,16 @@
 				</td>
 
 				<td class="quiz_result_question">
-					{$COMCODE,{QUESTION}}
+					{QUESTION}
 				</td>
 
 				<td class="quiz_result_given_answer">
-					{$COMCODE,{GIVEN_ANSWER},1}
+					{$COMCODE,{GIVEN_ANSWER},0}
 				</td>
 
 				<td class="quiz_result_answer">
 					{+START,IF_NON_EMPTY,{CORRECT_ANSWER}}
-						{$COMCODE,{CORRECT_ANSWER}}
+						{$COMCODE,{CORRECT_ANSWER},0}
 					{+END}
 
 					{+START,IF_EMPTY,{CORRECT_ANSWER}}
@@ -55,7 +55,7 @@
 			{+START,IF_PASSED,CORRECT_EXPLANATION}{+START,IF_NON_EMPTY,{CORRECT_EXPLANATION}}
 				<tr class="{$GET,cycle}">
 					<td colspan="4">
-						<span class="field_name">{!EXPLANATION}:</span> {$COMCODE,{CORRECT_EXPLANATION}}
+						<span class="field_name">{!EXPLANATION}:</span> {$COMCODE,{CORRECT_EXPLANATION},0}
 					</td>
 				</tr>
 			{+END}{+END}

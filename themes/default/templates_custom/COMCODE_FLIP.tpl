@@ -6,7 +6,7 @@
 {$SET,RAND_FLIP,{$RAND}}
 
 <div class="flipbox" id="flipbox_{$GET%,RAND_FLIP}">
-	{$COMCODE,{PARAM}}
+	{$COMCODE,{PARAM},0}
 </div>
 
 <script>// <![CDATA[
