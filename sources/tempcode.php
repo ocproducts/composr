@@ -649,9 +649,9 @@ function apply_tempcode_escaping($escaped, &$value)
         } elseif ($escape === FORCIBLY_ENTITY_ESCAPED) {
             $value = @htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, $charset);
         } elseif ($escape === SQ_ESCAPED) {
-            $value = str_replace('&#039;', '\&#039;', str_replace('\'', '\\\'', str_replace('\\', '\\\\', $value)));
+            $value = str_replace('\'', '\\\'', str_replace('\\', '\\\\', $value));
         } elseif ($escape === DQ_ESCAPED) {
-            $value = str_replace('&quot;', '\&quot;', str_replace('"', '\\"', str_replace('\\', '\\\\', $value)));
+            $value = str_replace('"', '\\"', str_replace('\\', '\\\\', $value));
         } elseif ($escape === NL_ESCAPED) {
             $value = str_replace(array("\r", "\n"), array('', ''), $value);
         } elseif ($escape === NL2_ESCAPED) {
@@ -702,9 +702,9 @@ function apply_tempcode_escaping_inline($escaped, $value)
         } elseif ($escape === FORCIBLY_ENTITY_ESCAPED) {
             $value = @htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, $charset);
         } elseif ($escape === SQ_ESCAPED) {
-            $value = str_replace('&#039;', '\&#039;', str_replace('\'', '\\\'', str_replace('\\', '\\\\', $value)));
+            $value = str_replace('\'', '\\\'', str_replace('\\', '\\\\', $value));
         } elseif ($escape === DQ_ESCAPED) {
-            $value = str_replace('&quot;', '\&quot;', str_replace('"', '\\"', str_replace('\\', '\\\\', $value)));
+            $value = str_replace('"', '\\"', str_replace('\\', '\\\\', $value));
         } elseif ($escape === NL_ESCAPED) {
             $value = str_replace(array("\r", "\n"), array('', ''), $value);
         } elseif ($escape === NL2_ESCAPED) {

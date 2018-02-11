@@ -999,7 +999,7 @@
     function convertTooltip(el) {
         var title = el.title;
 
-        if (!title || $cms.browserMatches('touch_enabled') || el.classList.contains('leave-native-tooltip')) {
+        if (!title || $cms.browserMatches('touch_enabled') || el.classList.contains('leave-native-tooltip') || el.dataset['mouseoverActivateTooltip']) {
             return;
         }
 
