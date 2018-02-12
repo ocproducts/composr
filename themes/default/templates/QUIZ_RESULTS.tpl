@@ -1,3 +1,5 @@
+{$,This is shown to the quiz member if reveal answers is on. Otherwise it is just shown to staff and the member just sees an explanation list instead.}
+
 <div class="wide_table_wrap"><table class="columned_table results_table wide_table autosized_table">
 	<colgroup>
 		<col class="quiz_done_results_col_was_correct" />
