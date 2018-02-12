@@ -1,1 +1,1 @@
-<iframe title="{!SECTION_FORUMS}" name="forumframe" id="forumframe" src="{FORUMS*}" class="dynamic-iframe" data-tpl="forumsEmbed" {$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"}>{!SECTION_FORUMS}</iframe>
+<iframe title="{!SECTION_FORUMS}" name="forumframe" id="forumframe" src="{FORUMS*}" class="dynamic-iframe" data-tpl="forumsEmbed"{$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"}>{!SECTION_FORUMS}</iframe>
