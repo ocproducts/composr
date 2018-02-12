@@ -142,6 +142,7 @@ class Hook_addon_registry_core
             'themes/default/images/icons/content_types/post.svg',
             'themes/default/images/icons/content_types/topic.svg',
             'themes/default/images/icons/content_types/video.svg',
+            'themes/default/images/icons/content_types/multimedia.svg',
             'themes/default/images/icons/content_types/index.html',
             'themes/default/images/icons/links/discord.svg',
             'themes/default/images/icons/links/dropbox.svg',

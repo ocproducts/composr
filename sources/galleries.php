@@ -1090,7 +1090,7 @@ function show_gallery_video_media($url, $thumb_url, $width, $height, $length, $s
         'context' => 'gallery_video',
     );
 
-    if (get_option('allow_audio_videos') == '1') {
+    if (get_option('allow_audio_videos') != '0') {
         $media_type = MEDIA_TYPE_VIDEO | MEDIA_TYPE_OTHER | MEDIA_TYPE_AUDIO;
     } else {
         $media_type = MEDIA_TYPE_VIDEO;

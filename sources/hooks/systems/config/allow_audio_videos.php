@@ -32,12 +32,12 @@ class Hook_config_allow_audio_videos
     {
         return array(
             'human_name' => 'ALLOW_AUDIO_VIDEOS',
-            'type' => 'tick',
+            'type' => 'list',
             'category' => 'FEATURE',
             'group' => 'MEDIA',
             'explanation' => 'CONFIG_OPTION_allow_audio_videos',
             'shared_hosting_restricted' => '0',
-            'list_options' => '',
+            'list_options' => '0|1|2',
             'order_in_category_group' => 2,
 
             'required' => true,

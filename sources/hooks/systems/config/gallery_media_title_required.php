@@ -33,8 +33,8 @@ class Hook_config_gallery_media_title_required
         return array(
             'human_name' => 'GALLERY_MEDIA_TITLE_REQUIRED',
             'type' => 'tick',
-            'category' => 'FEATURE',
-            'group' => 'GALLERIES',
+            'category' => 'GALLERY',
+            'group' => 'MEDIA_FEATURES',
             'explanation' => 'CONFIG_OPTION_gallery_media_title_required',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

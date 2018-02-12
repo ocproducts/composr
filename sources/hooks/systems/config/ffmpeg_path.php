@@ -34,7 +34,7 @@ class Hook_config_ffmpeg_path
             'human_name' => 'FFMPEG_PATH',
             'type' => 'line',
             'category' => 'GALLERY',
-            'group' => 'GALLERY_FEATURES',
+            'group' => 'VIDEOS',
             'explanation' => 'CONFIG_OPTION_ffmpeg_path',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

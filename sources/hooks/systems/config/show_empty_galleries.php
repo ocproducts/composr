@@ -34,7 +34,7 @@ class Hook_config_show_empty_galleries
             'human_name' => 'SHOW_EMPTY_GALLERIES',
             'type' => 'tick',
             'category' => 'GALLERY',
-            'group' => 'BROWSING_GALLERIES',
+            'group' => 'VIDEOS',
             'explanation' => 'CONFIG_OPTION_show_empty_galleries',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
