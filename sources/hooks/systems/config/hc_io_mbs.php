@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_hc_processes_to_monitor
+class Hook_config_hc_io_mbs
 {
     /**
      * Gets the details relating to the config option.
@@ -31,15 +31,15 @@ class Hook_config_hc_processes_to_monitor
     public function get_details()
     {
         return array(
-            'human_name' => 'HC_PROCESSES_TO_MONITOR',
-            'type' => 'line',
+            'human_name' => 'HC_IO_MBS',
+            'type' => 'float',
             'category' => 'HEALTH_CHECK',
             'group' => 'PERFORMANCE',
-            'explanation' => 'CONFIG_OPTION_hc_processes_to_monitor',
+            'explanation' => 'CONFIG_OPTION_hc_io_mbs',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 10,
-            'required' => false,
+            'order_in_category_group' => 8,
+            'required' => true,
 
             'public' => false,
 
@@ -54,11 +54,6 @@ class Hook_config_hc_processes_to_monitor
      */
     public function get_default()
     {
-        $processes = array(
-            'php\d*(\.dSYM)?',
-            //'php\d*-cgi(\.dSYM)?',    Might be FastCGI
-            'php\d*-fpm(\.dSYM)?',
-        );
-        return implode('|', $processes);
+        return '10.0';
     }
 }

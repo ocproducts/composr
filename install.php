@@ -78,8 +78,8 @@ if (!array_key_exists('type', $_GET)) {
     echo '<!DOCTYPE html>' . "\n";
     if (count($_GET) == 0) { // Special code to skip checks if need-be. The XHTML here is invalid but unfortunately it does need to be.
         echo '<script>
-            window.setTimeout(function () { if (!document.getElementsByTagName("div")[0]) window.location+="?skip_disk_checks=1"; }, 30000);
-            window.setInterval(function () { if ((!document.getElementsByTagName("div")[0]) && (document.body) && (document.body.innerHTML) && (document.body.innerHTML.indexOf("Maximum execution time")!=-1)) window.location+="?skip_disk_checks=1"; }, 500);
+            window.setTimeout(function () { if (!document.getElementsByTagName("div")[0]) window.location+="?skip_slow_checks=1"; }, 30000);
+            window.setInterval(function () { if ((!document.getElementsByTagName("div")[0]) && (document.body) && (document.body.innerHTML) && (document.body.innerHTML.indexOf("Maximum execution time")!=-1)) window.location+="?skip_slow_checks=1"; }, 500);
         </script>';
     }
 }
@@ -320,7 +320,7 @@ function step_1()
     $warnings = new Tempcode();
     global $DATADOTCMS_FILE;
     if (!@is_resource($DATADOTCMS_FILE)) { // Do an integrity check - missing corrupt files
-        if ((array_key_exists('skip_disk_checks', $_GET)) || (file_exists(get_file_base() . '/.git'))) {
+        if ((array_key_exists('skip_slow_checks', $_GET)) || (file_exists(get_file_base() . '/.git'))) {
             if (!file_exists(get_file_base() . '/.git')) {
                 $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => do_lang_tempcode('INSTALL_SLOW_SERVER'))));
             }
@@ -1677,6 +1677,9 @@ function installer_health_checks($sections_to_run = null)
             foreach ($sections as $results) {
                 foreach ($results as $_result) {
                     if ($_result[0] == HEALTH_CHECK__FAIL) {
+                        if ((substr(trim($_result[1]), -1) != '.') && (substr(trim($_result[1]), -8) != '.[/html]')) {
+                            $_result[1] .= '.';
+                        }
                         $_warning = comcode_to_tempcode($_result[1]);
                         $_warnings[] = $_warning;
                     }
