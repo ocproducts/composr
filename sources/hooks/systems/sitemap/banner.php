@@ -50,7 +50,7 @@ class Hook_sitemap_banner extends Hook_sitemap_content
      * @param  ?array $valid_node_types List of node types we will return/recurse-through (null: no limit)
      * @param  ?integer $child_cutoff Maximum number of children before we cut off all children (null: no limit)
      * @param  ?integer $max_recurse_depth How deep to go from the sitemap root (null: no limit)
-     * @param  integer $recurse_level Our recursion depth (used to limit recursion, or to calculate importance of page-link, used for instance by Google sitemap [deeper is typically less important])
+     * @param  integer $recurse_level Our recursion depth (used to limit recursion, or to calculate importance of page-link, used for instance by XML Sitemap [deeper is typically less important])
      * @param  integer $options A bitmask of SITEMAP_GEN_* options
      * @param  ID_TEXT $zone The zone we will consider ourselves to be operating in (needed due to transparent redirects feature)
      * @param  integer $meta_gather A bitmask of SITEMAP_GATHER_* constants, of extra data to include
