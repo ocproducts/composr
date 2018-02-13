@@ -66,7 +66,7 @@
         this.id = params.id;
 
         if (params.preview !== undefined) {
-            $cms.form.disablePreviewScripts($dom.$('#view_' + params.id));
+            $cms.form.disablePreviewScripts($dom.$('#view-' + params.id));
         }
 
         if (params.comcode && params.class.includes('wysiwyg')) {
@@ -101,10 +101,9 @@
                 var i, element, elementh;
 
                 for (i = 0; i < tabs.length; i++) {
-                    element = $dom.$id(tabs[i] + '_' + id);
-                    elementh = $dom.$id(tabs[i] + '_tab_' + id);
+                    element = $dom.$id(tabs[i] + '-' + id);
+                    elementh = $dom.$id(tabs[i] + '-tab-' + id);
                     if (element) {
-                        element.style.display = (tabs[i] === tab) ? 'block' : 'none';
                         if ((tabs[i] === tab) && (tab === 'edit')) {
                             if ($cms.form.isWysiwygField($dom.$id('edit_' + id + '_textarea'))) {
                                 // LEGACY Fix for Firefox
@@ -116,11 +115,12 @@
                                 }
                             }
                         }
+                        
                         if (tabs[i] === tab) {
                             $dom.fadeIn(element);
-
                             elementh.classList.add('tab-active');
                         } else {
+                            $dom.hide(element);
                             elementh.classList.remove('tab-active');
                         }
                     }
@@ -128,7 +128,7 @@
             }
 
             function reloadPreview(id) {
-                var element = $dom.$id('view_' + id);
+                var element = $dom.$('#view-' + id);
 
                 var editElement = $dom.$id('edit_' + id + '_textarea');
                 if (!editElement) {
@@ -151,11 +151,11 @@
                 function reloadedPreview(responseXml) {
                     var ajaxResult = responseXml && responseXml.querySelector('result');
 
-                    if (!loadingPreviewOf) {
+                    if (!ajaxResult || !loadingPreviewOf) {
                         return;
                     }
 
-                    var element = $dom.$id('view_' + loadingPreviewOf);
+                    var element = $dom.$('#view-' + loadingPreviewOf);
                     $dom.html(element, ajaxResult.textContent.replace(/^((\s)|(\<br\s*\>)|(&nbsp;))*/, '').replace(/((\s)|(\<br\s*\>)|(&nbsp;))*$/, ''));
                     $cms.form.disablePreviewScripts(element);
                 }
@@ -181,9 +181,9 @@
 
             if (editor) {
                 if (field.localName === 'select') {
-                    editor.style.display = (params.currentZone === field.options[field.selectedIndex].value) ? 'block' : 'none';
+                    $dom.toggle(editor, (params.currentZone === field.options[field.selectedIndex].value));
                 } else if (field.localName === 'input') {
-                    editor.style.display = (params.currentZone === field.value) ? 'block' : 'none';
+                    $dom.toggle(editor, (params.currentZone === field.value));
                 }
             }
         }

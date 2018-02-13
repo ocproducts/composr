@@ -13,11 +13,11 @@
 	</p>
 
 	<div class="float-surrounder" id="ze-panels-wrap">
-		<div id="p-panel-left" class="ze-panel" data-mouseover-class="{ ze-panel-expanded: 1 }" data-mouseout-class="{ ze-panel-expanded: 0 }">
+		<div id="p-panel-left" class="ze-panel" data-mouseover-class="{ 'ze-panel-expanded': 1 }" data-mouseout-class="{ 'ze-panel-expanded': 0 }">
 			{LEFT_EDITOR}
 		</div>
 
-		<div id="p-panel-right" class="ze-panel" data-mouseover-class="{ ze-panel-expanded: 1 }" data-mouseout-class="{ ze-panel-expanded: 0 }">
+		<div id="p-panel-right" class="ze-panel" data-mouseover-class="{ 'ze-panel-expanded': 1 }" data-mouseout-class="{ 'ze-panel-expanded': 0 }">
 			{RIGHT_EDITOR}
 		</div>
 

@@ -257,8 +257,8 @@
         forceWidth = Boolean(forceWidth);
         win || (win = window);
         haveLinks = Boolean(haveLinks);
-
-        if (el.deactivatedAt && (Date.now() - el.deactivatedAt < 200)) {
+        
+        if (el.deactivatedAt && ((Date.now() - el.deactivatedAt) < 200)) {
             return;
         }
 

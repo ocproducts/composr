@@ -1002,8 +1002,10 @@
      * @class $cms.views.Global
      * @extends $cms.View
      * */
-    $cms.views.Global = function Global() {
+    $cms.views.Global = function Global(params) {
         Global.base(this, 'constructor', arguments);
+        
+        var pageLinkPrivacy = strVal(params.pageLinkPrivacy);
 
         /*START JS from HTML_HEAD.tpl*/
         // Google Analytics account, if one set up
@@ -1049,7 +1051,7 @@
                 message: $util.format('{!COOKIE_NOTICE;}', [$cms.getSiteName()]),
                 dismiss: '{!INPUTSYSTEM_OK;}',
                 learnMore: '{!READ_MORE;}',
-                link: '{$PAGE_LINK;,:privacy}',
+                link: pageLinkPrivacy,
                 theme: 'dark-top'
             };
             $cms.requireJavascript('https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js');

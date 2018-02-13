@@ -712,15 +712,9 @@
                         return;
                     }
                     
-                    if (options.haveLinks) {
-                        if ((e.type === 'mouseover')) {
-                            return;
-                        }
-
-                        if (el.tooltipId && $dom.$id(el.tooltipId) && $dom.isDisplayed($dom.$id(el.tooltipId))) {
-                            $cms.ui.deactivateTooltip(el);
-                            return;
-                        }
+                    if (options.haveLinks && el.tooltipId && $dom.$id(el.tooltipId) && $dom.isDisplayed($dom.$id(el.tooltipId))) {
+                        $cms.ui.deactivateTooltip(el);
+                        return;
                     }
 
                     //arguments: el, event, tooltip, width, pic, height, bottom, noDelay, lightsOff, forceWidth, win, haveLinks
@@ -757,6 +751,10 @@
 
             els.forEach(function (el) {
                 $dom.on(el, 'mouseover', function (e) {
+                    if (!Array.isArray($dom.data(el, 'mouseoverActivateTooltip'))) {
+                        return;
+                    }
+                    
                     var args = arrVal($dom.data(el, 'mouseoverActivateTooltip'));
 
                     args.unshift(el, e);
@@ -779,6 +777,10 @@
 
             els.forEach(function (el) {
                 $dom.on(el, 'focus', function (e) {
+                    if (!Array.isArray($dom.data(el, 'focusActivateTooltip'))) {
+                        return;
+                    }
+                    
                     var args = arrVal($dom.data(el, 'focusActivateTooltip'));
 
                     args.unshift(el, e);
@@ -1031,14 +1033,6 @@
 
         $dom.on(el, 'mouseover.convertTooltip', function (event) {
             global.$cms.ui.activateTooltip(el, event, el.cmsTooltipTitle, 'auto', '', null, false, false, false, false, global);
-        });
-
-        $dom.on(el, 'mousemove.convertTooltip', function (event) {
-            global.$cms.ui.repositionTooltip(el, event, false, false, null, false, global);
-        });
-
-        $dom.on(el, 'mouseout.convertTooltip', function () {
-            global.$cms.ui.deactivateTooltip(el);
         });
     }
 }(window.$cms, window.$util, window.$dom));

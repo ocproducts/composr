@@ -1021,7 +1021,7 @@
             } else {
                 if (window.focus !== undefined) {
                     try {
-                        focus();
+                        window.focus();
                     } catch (e) {}
                 }
                 var post2 = document.getElementById('post');

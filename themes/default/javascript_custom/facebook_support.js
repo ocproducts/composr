@@ -40,9 +40,12 @@
     };
 
     $cms.templates.facebookFooter = function facebookFooter(params) {
-        var facebookAppid = strVal(params.facebookAppid);
+        var facebookAppid = strVal(params.facebookAppid),
+            pageLinkHome = strVal(params.pageLinkHome),
+            pageLinkLogout = strVal(params.pageLinkLogout);
+            
         if (facebookAppid !== '') {
-            facebookInit(facebookAppid, $util.rel('facebook_connect.php'), (params.fbConnectFinishingProfile || params.fbConnectLoggedOut), (params.fbConnectUid === '' ? null : params.fbConnectUid), '{$PAGE_LINK;,:}', '{$PAGE_LINK;,:login:logout}');
+            facebookInit(facebookAppid, $util.rel('facebook_connect.php'), (params.fbConnectFinishingProfile || params.fbConnectLoggedOut), (params.fbConnectUid === '' ? null : params.fbConnectUid), pageLinkHome, pageLinkLogout);
         }
     };
 
