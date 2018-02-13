@@ -302,6 +302,9 @@ function clean_file_size($bytes)
     return strval($bytes) . ' Bytes';
 }
 
+// TODO: #3467 Rename to cms_parse_ini_file_safe
+// TODO: #3467 add boolean parameters as per cms_file_get_contents, possibly using that as a front-end
+// TODO: #3467 change calls to parse_ini_file() to use this using boolean parameters as appropriate, as appropriate
 /**
  * Parse the specified INI file, and get an array of what it found.
  *

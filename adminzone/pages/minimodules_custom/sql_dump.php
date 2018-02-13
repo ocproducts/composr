@@ -37,6 +37,7 @@ if (!$done) {
     require_code('database_relations');
 
     $out_file = fopen($out_file_path, 'wb');
+    // TODO: #3467
     get_sql_dump($out_file, true, false, array(), null, null, $intended_db_type);
     fclose($out_file);
 }

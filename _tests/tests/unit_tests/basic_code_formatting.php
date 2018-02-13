@@ -26,6 +26,27 @@ class basic_code_formatting_test_set extends cms_test_case
         $this->contents = get_directory_contents(get_file_base());
     }
 
+    // TODO: #3467 Make sure no core text files contain non-ASCII characters; with some exceptions like maintenance_status.csv
+
+    public function testNoBomMarkers()
+    {
+        $boms = array(
+            'utf-32' => chr(hexdec('FF')) . chr(hexdec('FE')) . chr(hexdec('00')) . chr(hexdec('00')),
+            'utf-16' => chr(hexdec('FF')) . chr(hexdec('FE')),
+            'utf-8' => chr(hexdec('EF')) . chr(hexdec('BB')) . chr(hexdec('BF')) ,
+            'GB-18030' => chr(hexdec('84')) . chr(hexdec('31')) . chr(hexdec('95')) . chr(hexdec('33')),
+        );
+
+        foreach ($this->contents as $path) {
+            $myfile = fopen($path, 'rb');
+            $magic_data = fread($myfile, 4);
+
+            foreach ($boms as $charset => $bom) {
+                $this->assertTrue(substr($magic_data, strlen($bom)) != $bom, $charset . ' byte-order mark found in ' . $path . ': we do not want them');
+            }
+        }
+    }
+
     public function testTabbing()
     {
         $file_types_spaces = array(

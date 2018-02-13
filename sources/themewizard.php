@@ -92,6 +92,7 @@ function load_themewizard_params_from_theme($theme, $guess_images_if_needed = fa
 
         if ($theme != 'default') {
             $myfile = fopen(get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/theme.ini', 'ab');
+            // TODO: #3467
             flock($myfile, LOCK_EX);
             fseek($myfile, 0, SEEK_END);
             fwrite($myfile, 'themewizard_images=' . $themewizard_images . "\n");

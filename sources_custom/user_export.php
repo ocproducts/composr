@@ -48,6 +48,7 @@ function do_user_export($to_file = true)
         fix_permissions($outdir);
         $tmp_path = $outdir . '/_temp.csv';
         $outfile = fopen($tmp_path, GOOGLE_APPENGINE ? 'wb' : 'ab');
+        // TODO: #3467
         flock($outfile, LOCK_EX);
         if (!GOOGLE_APPENGINE) {
             ftruncate($outfile, 0);

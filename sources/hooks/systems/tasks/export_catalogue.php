@@ -54,6 +54,7 @@ class Hook_task_export_catalogue
 
         $outfile_path = cms_tempnam();
         $outfile = fopen($outfile_path, 'wb');
+        // TODO: #3032
 
         $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
         global $CAT_FIELDS_CACHE;

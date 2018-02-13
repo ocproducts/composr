@@ -290,6 +290,7 @@ function make_csv($data, $filename = 'data.csv', $headers = true, $output_and_ex
     $outfile = null;
     if ($outfile_path !== null) {
         $outfile = fopen($outfile_path, 'w+b');
+        // TODO: #3032
         flock($outfile, LOCK_EX);
     }
 
@@ -372,6 +373,7 @@ function delete_csv_column($in_path, $column_name)
 
     // Find which field index this named column is
     $in_file = fopen($in_path, 'rb');
+    // TODO: #3032
     flock($in_file, LOCK_SH);
     $header_row = fgetcsv($in_file);
     $column_i = null;
@@ -859,3 +861,27 @@ function check_shared_space_usage($extra)
         }
     }
 }
+
+/*
+TODO #3032
+Define: clean_csv_file();
+
+We should ideally be able to handle any of these scenarios, using a clean API:
+1) User accidentally uploads CSV with tab delimiter (TSV) not proper CSV
+2) User accidentally uploads CSV with semicolon delimiter not proper CSV
+3) User uploads a spreadsheet with no header row in a situation where we don't strictly need one (newsletter raw email list import comes to mind)
+4) User uploads a CSV with old-Mac-style line endings (this should not happen in 2016 but some ageing codebases export bizarre stuff; the PHP enable auto_detect_line_endings setting may help)
+5) User uploads a spreadsheet with a different character set, esp UTF-16 or ANSI (to solve this we'll probably need to have a character-set selector box and also support BOM markers)
+
+Define some unit tests
+*/
+
+/*
+TODO: #3467
+Document assumptions in unit test / documentation
+ Composr is all using ASCII
+ User content may be in any character set, and must be dealt with; although cms_file_get_contents_safe will always do conversions automatically if given a parameter to
+ If user content has no BOM then it will be assumed to be in the site's default character set. User's should save with BOMs to make it clear!
+ Content saved back into Composr from Composr will not need BOM markers as it's going to default to read with what it was saved as
+ Exported content needs to be converted to utf-8 with BOM
+*/

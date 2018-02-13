@@ -227,22 +227,166 @@ function fix_permissions($path, $perms = null)
     }
 }
 
+// TODO: #3467 Look at all calls to here and set the boolean parameters as required, and trim out manual unixify_line_format calls
+// TODO: #3467 remap some file_get_contents calls to this, to make use of the boolean parameters also
+// TODO: #3467 then look to see if we have removed almost all the unixify_line_format calls
 /**
  * Get the contents of a file, with locking support.
  *
  * @param  PATH $path File path
+ * @param  boolean $locking Handle locking
+ * @param  boolean $handle_file_bom Do character set conversions indicated by a BOM
+ * @param  boolean $unixify_line_format Convert line endings to Unix-style
  * @return string File contents
  */
-function cms_file_get_contents_safe($path)
+function cms_file_get_contents_safe($path, $locking = true, $handle_file_bom = false, $unixify_line_format = false)
 {
     $tmp = fopen($path, 'rb');
-    flock($tmp, LOCK_SH);
+    if ($locking) {
+        flock($tmp, LOCK_SH);
+    }
     $contents = file_get_contents($path);
-    flock($tmp, LOCK_UN);
+    if ($locking) {
+        flock($tmp, LOCK_UN);
+    }
     fclose($tmp);
+
+    if ($handle_file_bom) {
+        $contents = handle_string_bom($contents);
+    }
+    if ($unixify_line_format) {
+        $contents = unixify_line_format($contents);
+    }
+
     return $contents;
 }
 
+// TODO: #3467 Define cms_file_safe() as a front-end to cms_file_get_contents_safe, and change some file() calls to it, using boolean parameters as appropriate.
+
+/**
+ * Detect a BOM (Unicode byte-order-mark) from a string, and strip it. Return the altered string.
+ *
+ * @param  string $contents Input string
+ * @return string Altered string
+ */
+function handle_string_bom($contents)
+{
+    $file_charset = null;
+    $bom_found = null;
+
+    $boms = array(
+        'utf-32' => chr(hexdec('FF')) . chr(hexdec('FE')) . chr(hexdec('00')) . chr(hexdec('00')),
+        'utf-16' => chr(hexdec('FF')) . chr(hexdec('FE')),
+        'utf-8' => chr(hexdec('EF')) . chr(hexdec('BB')) . chr(hexdec('BF')) ,
+        'GB-18030' => chr(hexdec('84')) . chr(hexdec('31')) . chr(hexdec('95')) . chr(hexdec('33')),
+    );
+
+    $magic_data = substr($orig_file, 0, 4);
+
+    foreach ($boms as $charset => $bom) {
+        if (substr($magic_data, strlen($bom)) == $bom) {
+            $file_charset = $charset;
+            $bom_found = $bom;
+            break;
+        }
+    }
+
+    if ($file_charset === null) {
+        return $contents;
+    }
+
+    $contents = substr($contents, strlen($bom));
+
+    require_code('character_sets');
+    $contents = convert_to_internal_encoding($contents, $file_charset);
+
+    return $contents;
+}
+
+/**
+ * Detect a BOM (Unicode byte-order-mark) from a file, and strip it. Return the character set found (defaults to the site character set).
+ *
+ * @param  PATH $path File path
+ * @param  boolean $handle_charset_conversion_automatically Handle character set conversion automatically when re-saving the file
+ * @return ID_TEXT Character set found
+ */
+function handle_file_bom($path, $handle_charset_conversion_automatically = true)
+{
+    $file_charset = null;
+    $bom_found = null;
+
+    $boms = array(
+        'utf-32' => chr(hexdec('FF')) . chr(hexdec('FE')) . chr(hexdec('00')) . chr(hexdec('00')),
+        'utf-16' => chr(hexdec('FF')) . chr(hexdec('FE')),
+        'utf-8' => chr(hexdec('EF')) . chr(hexdec('BB')) . chr(hexdec('BF')) ,
+        'GB-18030' => chr(hexdec('84')) . chr(hexdec('31')) . chr(hexdec('95')) . chr(hexdec('33')),
+    );
+
+    $orig_file = fopen($path, 'rb');
+    flock($orig_file, LOCK_SH);
+
+    $magic_data = fread($orig_file, 4);
+
+    foreach ($boms as $charset => $bom) {
+        if (substr($magic_data, strlen($bom)) == $bom) {
+            $file_charset = $charset;
+            $bom_found = $bom;
+            break;
+        }
+    }
+
+    if ($file_charset === null) {
+        flock($orig_file, LOCK_UN);
+        fclose($orig_file);
+
+        return get_charset();
+    }
+
+    if ($handle_charset_conversion_automatically) {
+        // Automatic conversion, we simply read in the file, strip the BOM, convert, and re-save...
+
+        $contents = file_get_contents($path);
+        $contents = substr($contents, strlen($bom));
+        require_code('character_sets');
+        $contents = convert_to_internal_encoding($contents, $file_charset);
+
+        flock($orig_file, LOCK_UN);
+        fclose($orig_file);
+
+        cms_file_put_contents_safe($path, $contents);
+
+        return $file_charset;
+    }
+
+    // We need to do a chunked copy to avoid reading it all into memory...
+
+    $temp_path = cms_tempnam();
+    $new_file = fopen($temp_path, 'wb');
+    fseek($orig_file, strlen($bom_found));
+    while (!feof($orig_file)) {
+        fwrite($new_file, fread($orig_file, 1024 * 50));
+    }
+    fclose($new_file);
+
+    flock($orig_file, LOCK_UN);
+    fclose($orig_file);
+
+    // Flip the files around...
+
+    $success = @unlink($path);
+    if (!$success) {
+        unlink($temp_path);
+        intelligent_write_error($path);
+    }
+
+    rename($temp_path, $path);
+
+    return $file_charset;
+
+    // TODO: #3032 define some unit tests
+}
+
+// TODO: #3467 Assess calls and apply BOM and unixify_line_format cleanup as required
 /**
  * Return the file in the URL by downloading it over HTTP. If a byte limit is given, it will only download that many bytes. It outputs warnings, returning null, on error.
  *
@@ -259,6 +403,7 @@ function http_get_contents($url, $options = array())
     return $ret;
 }
 
+// TODO: #3467 Assess calls and apply BOM and unixify_line_format cleanup as required
 /**
  * Return the file in the URL by downloading it over HTTP. If a byte limit is given, it will only download that many bytes. It outputs warnings, returning null, on error.
  *
@@ -3701,6 +3846,7 @@ function is_maintained($code)
     static $cache = array();
     if ($cache === array()) {
         $myfile = fopen(get_custom_file_base() . '/data/maintenance_status.csv', 'rb');
+        // TODO: #3032 (must default charset to utf-8 if no BOM though)
         fgetcsv($myfile); // Skip header row
         while (($row = fgetcsv($myfile)) !== false) {
             $cache[$row[0]] = !empty($row[3]);
