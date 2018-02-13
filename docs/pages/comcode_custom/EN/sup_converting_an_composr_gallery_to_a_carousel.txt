@@ -14,6 +14,7 @@ If you are using the Block construction assistant you will need to fill in the f
 [*] [b]Title[/b] -- The Title of the block
 [*] [b]Sort[/b] -- Which order do you want the pictures to display. This could be things like date ascending, highest rating first, random etc
 [*] [b]Days[/b] -- If you have a gallery which has new items added you may choose to only display photo's added in the last X number of days
+[*] [b]Show if empty[/b] -- Tick this
 [/list]
 
 Then you need to expand the advanced block parameters, and set the GUID value. It has to be exactly [tt]carousel[/tt].
