@@ -114,7 +114,7 @@ class Hook_health_check_email extends Hook_Health_Check
         if ($dkim_configured) {
             $domains = $this->get_mail_domains(true);
             foreach ($domains as $domain => $email) {
-                if (function_exists('dns_get_record')) {
+                if (php_function_allowed('dns_get_record')) {
                     $found_record = false;
                     $records = dns_get_record($domain, DNS_ANY);
                     foreach ($records as $record) {
@@ -125,6 +125,8 @@ class Hook_health_check_email extends Hook_Health_Check
                         }
                     }
                     $this->assertTrue($found_record, 'Could not find a DKIM DNS record even though DKIM is configured');
+                } else {
+                    $this->stateCheckSkipped('PHP dns_get_record function not available');
                 }
             }
         }
@@ -146,7 +148,7 @@ class Hook_health_check_email extends Hook_Health_Check
 
         $domains = $this->get_mail_domains(true);
         foreach ($domains as $domain => $email) {
-            if (function_exists('dns_get_record')) {
+            if (php_function_allowed('dns_get_record')) {
                 $found_record = false;
                 $records = dns_get_record($domain, DNS_ANY);
                 foreach ($records as $record) {
@@ -157,6 +159,8 @@ class Hook_health_check_email extends Hook_Health_Check
                     }
                 }
                 $this->assertTrue($found_record, 'Could not find a DMARC DNS record');
+            } else {
+                $this->stateCheckSkipped('PHP dns_get_record function not available');
             }
         }
     }
@@ -568,6 +572,10 @@ class Hook_health_check_email extends Hook_Health_Check
      */
     public function testEmailTemplates($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+
         $tpl = do_template('MAIL', array(
             'CSS' => '',
             'LOGOURL' => '',
@@ -602,6 +610,10 @@ class Hook_health_check_email extends Hook_Health_Check
      */
     public function testSpamStatus($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+
         $this->stateCheckManual('Run a [url="spam check"]https://glockapps.com/spam-testing/[/url] on a test e-mail');
     }
 
@@ -615,6 +627,10 @@ class Hook_health_check_email extends Hook_Health_Check
      */
     public function testListUnsubscribe($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+
         $this->assertTrue(get_option('list_unsubscribe_target') != '', 'You do not have a List-Unsubscribe target configuration option set, which may increase your spam score.');
     }
 }

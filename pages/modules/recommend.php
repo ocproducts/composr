@@ -395,8 +395,9 @@ class Module_recommend
                     require_code('files');
                     cms_file_put_contents_safe($_FILES['upload']['tmp_name'], $fixed_contents, FILE_WRITE_FAILURE_SILENT);
 
-                    safe_ini_set('auto_detect_line_endings', '1');
+                    safe_ini_set('auto_detect_line_endings', '1'); // TODO: Remove with #3032
                     $myfile = fopen($_FILES['upload']['tmp_name'], 'rb');
+                    // TODO: #3032 (must default charset to utf-8 if no BOM though)
 
                     $del = ',';
 

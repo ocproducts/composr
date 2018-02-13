@@ -21,6 +21,7 @@ class maintenance_codes_test_set extends cms_test_case
     public function testMaintenanceSheetStructure()
     {
         $myfile = fopen(get_file_base() . '/data/maintenance_status.csv', 'rb');
+        // TODO: #3032 (must default charset to utf-8 if no BOM though)
 
         $line = 1;
         while (($row = fgetcsv($myfile)) !== false) {
@@ -40,6 +41,7 @@ class maintenance_codes_test_set extends cms_test_case
     public function testMaintenanceCodeReferences()
     {
         $myfile = fopen(get_file_base() . '/data/maintenance_status.csv', 'rb');
+        // TODO: #3032 (must default charset to utf-8 if no BOM though)
 
         $header_row = fgetcsv($myfile); // Header row
         unset($header_row[0]);
@@ -104,6 +106,7 @@ class maintenance_codes_test_set extends cms_test_case
         // Test maintenance sheet...
 
         $myfile = fopen(get_file_base() . '/data/maintenance_status.csv', 'rb');
+        // TODO: #3032 (must default charset to utf-8 if no BOM though)
 
         $header_row = fgetcsv($myfile); // Header row
         unset($header_row[0]);

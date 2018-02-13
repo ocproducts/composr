@@ -33,6 +33,7 @@ function install_location_data()
 
     // Open WorldGazetteer.csv
     $myfile = fopen(get_file_base() . '/data_custom/locations/WorldGazetteer.csv', 'rb');
+    // TODO: #3032 (must default charset to utf-8 if no BOM though)
     $header = fgetcsv($myfile, 4096);
     $locations = array();
     while (($line = fgetcsv($myfile, 4096)) !== false) {
@@ -61,6 +62,7 @@ function install_location_data()
     // Load US locations using CivicSpace-zipcodes.csv
     require_code('locations/us');
     $myfile = fopen(get_file_base() . '/data_custom/locations/CivicSpace-zipcodes.csv', 'rb');
+    // TODO: #3032 (must default charset to utf-8 if no BOM though)
     $header = fgetcsv($myfile, 4096);
     $us_locations = array();
     while (($line = fgetcsv($myfile, 4096)) !== false) {
@@ -76,6 +78,7 @@ function install_location_data()
     // Load World locations using World_Cities_Location_table.csv
     require_code('locations/us');
     $myfile = fopen(get_file_base() . '/data_custom/locations/World_Cities_Location_table.csv', 'rb');
+    // TODO: #3032 (must default charset to utf-8 if no BOM though)
     $header = fgetcsv($myfile, 4096);
     $world_locations = array();
     while (($line = fgetcsv($myfile, 4096)) !== false) {
@@ -259,6 +262,7 @@ function _worldcities_remaining_locations()
 
     // Load US locations using worldcitiespop.csv
     $myfile = fopen(get_file_base() . '/data_custom/locations/worldcitiespop.csv', 'rb');
+    // TODO: #3032 (must default charset to utf-8 if no BOM though)
     $header = fgetcsv($myfile, 4096);
     $many_locations = array();
     while (($line = fgetcsv($myfile, 4096)) !== false) {

@@ -168,8 +168,9 @@ class Block_main_sortable_table
 
             // Load data
             $i = 0;
-            safe_ini_set('auto_detect_line_endings', '1');
+            safe_ini_set('auto_detect_line_endings', '1'); // TODO: Remove with #3032
             $myfile = fopen($path, 'rt');
+            // TODO: #3032
             $full_header_row = null;
             while (($row = fgetcsv($myfile, 8192)) !== false) {
                 // Fix any bad unicode

@@ -56,8 +56,8 @@ class Module_cms_galleries extends Standard_crud_module
             'browse' => array('MANAGE_GALLERIES', 'menu/rich_content/galleries'),
             'add' => array('ADD_IMAGE', 'menu/cms/galleries/add_one_image'),
             'edit' => array('EDIT_IMAGE', 'menu/cms/galleries/edit_one_image'),
-            'add_other' => array('ADD_VIDEO', 'menu/cms/galleries/add_one_video'),
-            'edit_other' => array('EDIT_VIDEO', 'menu/cms/galleries/edit_one_video'),
+            'add_other' => array('ADD_VIDEO', (get_option('allow_audio_videos') == '2') ? 'menu/cms/galleries/add_one_multimedia' : 'menu/cms/galleries/add_one_video'),
+            'edit_other' => array('EDIT_VIDEO', (get_option('allow_audio_videos') == '2') ? 'menu/cms/galleries/edit_one_multimedia' : 'menu/cms/galleries/edit_one_video'),
         );
 
         if (has_privilege(get_member(), 'mass_import', 'cms_galleries')) {
@@ -262,8 +262,8 @@ class Module_cms_galleries extends Standard_crud_module
                 has_privilege(get_member(), 'mass_import', 'cms_galleries') ? array('admin/import', array('_SELF', array('type' => 'import'), '_SELF'), do_lang('GALLERY_IMPORT'), 'DOC_GALLERY_IMPORT') : null,
                 (!$allow_images) ? null : has_privilege(get_member(), 'submit_midrange_content', 'cms_galleries') ? array('menu/cms/galleries/add_one_image', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_IMAGE')) : null,
                 (!$allow_images) ? null : has_privilege(get_member(), 'edit_own_midrange_content', 'cms_galleries') ? array('menu/cms/galleries/edit_one_image', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_IMAGE')) : null,
-                (!$allow_videos) ? null : has_privilege(get_member(), 'submit_midrange_content', 'cms_galleries') ? array('menu/cms/galleries/add_one_video', array('_SELF', array('type' => 'add_other'), '_SELF'), do_lang('ADD_VIDEO')) : null,
-                (!$allow_videos) ? null : has_privilege(get_member(), 'edit_own_midrange_content', 'cms_galleries') ? array('menu/cms/galleries/edit_one_video', array('_SELF', array('type' => 'edit_other'), '_SELF'), do_lang('EDIT_VIDEO')) : null,
+                (!$allow_videos) ? null : has_privilege(get_member(), 'submit_midrange_content', 'cms_galleries') ? array((get_option('allow_audio_videos') == '2') ? 'menu/cms/galleries/add_one_multimedia' : 'menu/cms/galleries/add_one_video', array('_SELF', array('type' => 'add_other'), '_SELF'), do_lang('ADD_VIDEO')) : null,
+                (!$allow_videos) ? null : has_privilege(get_member(), 'edit_own_midrange_content', 'cms_galleries') ? array((get_option('allow_audio_videos') == '2') ? 'menu/cms/galleries/edit_one_multimedia' : 'menu/cms/galleries/edit_one_video', array('_SELF', array('type' => 'edit_other'), '_SELF'), do_lang('EDIT_VIDEO')) : null,
             ), manage_custom_fields_donext_link('image'), manage_custom_fields_donext_link('video'), manage_custom_fields_donext_link('gallery')),
             do_lang('MANAGE_GALLERIES')
         );
@@ -2345,7 +2345,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
                     array('menu/cms/galleries/add_one_image', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_IMAGE')),
                     array('menu/cms/galleries/add_one_video', array('_SELF', array('type' => 'add_other'), '_SELF'), do_lang('ADD_VIDEO')),
                     has_privilege(get_member(), 'edit_own_midrange_content', 'cms_galleries') ? array('menu/cms/galleries/edit_one_image', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_IMAGE')) : null,
-                    has_privilege(get_member(), 'edit_own_midrange_content', 'cms_galleries') ? array('menu/cms/galleries/edit_one_video', array('_SELF', array('type' => 'edit_other'), '_SELF'), do_lang('EDIT_VIDEO')) : null,
+                    has_privilege(get_member(), 'edit_own_midrange_content', 'cms_galleries') ? array((get_option('allow_audio_videos') == '2') ? 'menu/cms/galleries/edit_one_multimedia' : 'menu/cms/galleries/edit_one_video', array('_SELF', array('type' => 'edit_other'), '_SELF'), do_lang('EDIT_VIDEO')) : null,
                 )),
                 array(),
                 array(),
@@ -2391,8 +2391,8 @@ class Module_cms_galleries_cat extends Standard_crud_module
             array_merge($extra, array(
                 array($video ? 'menu/cms/galleries/add_one_video' : 'menu/cms/galleries/add_one_image', array('_SELF', array('type' => $video ? 'add_other' : 'add', 'cat' => ((!$video && !$support_images) || ($video && !$support_videos) || ($cat === null)) ? null : $cat), '_SELF'), do_lang($video ? 'ADD_VIDEO' : 'ADD_IMAGE')),
                 array($video ? 'menu/cms/galleries/add_one_image' : 'menu/cms/galleries/add_one_video', array('_SELF', array('type' => $video ? 'add' : 'add_other', 'cat' => (($video && !$support_images) || (!$video && !$support_videos) || ($cat === null)) ? null : $cat), '_SELF'), do_lang($video ? 'ADD_IMAGE' : 'ADD_VIDEO')),
-                (has_privilege(get_member(), 'edit_own_midrange_content', 'cms_galleries') ? array($video ? 'menu/cms/galleries/edit_one_video' : 'menu/cms/galleries/edit_one_image', array('_SELF', array('type' => $video ? 'edit_other' : 'edit'), '_SELF'), do_lang($video ? 'EDIT_VIDEO' : 'EDIT_IMAGE')) : null), // Edit one
-                (has_privilege(get_member(), 'edit_own_midrange_content', 'cms_galleries') ? array($video ? 'menu/cms/galleries/edit_one_image' : 'menu/cms/galleries/edit_one_video', array('_SELF', array('type' => $video ? 'edit' : 'edit_other'), '_SELF'), do_lang($video ? 'EDIT_IMAGE' : 'EDIT_VIDEO')) : null), // Edit one
+                (has_privilege(get_member(), 'edit_own_midrange_content', 'cms_galleries') ? array($video ? ((get_option('allow_audio_videos') == '2') ? 'menu/cms/galleries/edit_one_multimedia' : 'menu/cms/galleries/edit_one_video') : 'menu/cms/galleries/edit_one_image', array('_SELF', array('type' => $video ? 'edit_other' : 'edit'), '_SELF'), do_lang($video ? 'EDIT_VIDEO' : 'EDIT_IMAGE')) : null), // Edit one
+                (has_privilege(get_member(), 'edit_own_midrange_content', 'cms_galleries') ? array($video ? 'menu/cms/galleries/edit_one_image' : ((get_option('allow_audio_videos') == '2') ? 'menu/cms/galleries/edit_one_multimedia' : 'menu/cms/galleries/edit_one_video'), array('_SELF', array('type' => $video ? 'edit' : 'edit_other'), '_SELF'), do_lang($video ? 'EDIT_IMAGE' : 'EDIT_VIDEO')) : null), // Edit one
                 has_privilege(get_member(), 'mass_import', 'cms_galleries') ? array('admin/import', array('_SELF', array('type' => '_import', 'name' => $cat), '_SELF'), do_lang('GALLERY_IMPORT')) : null,
             )),
             array(),

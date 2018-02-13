@@ -1359,6 +1359,8 @@ function check_call($c, $c_pos, $class = null, $function_guard = '')
                 if (($function == 'fopen') && (in_array(@$params[1][0][1][1][0], array('w', 'a')))) {
                     log_warning('Call to \'' . $function . '\' that may create a file/folder. Check that the code chmods it so that FTP can delete it.', $c_pos);
                 }
+
+                // TODO: #3467 check for 't' on fopen, and disallow
             }
         }
     }

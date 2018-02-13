@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+]>
+<svg version="1.1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="48px" height="48px" viewBox="0 0 48 48">
+<defs>
+</defs>
+<rect opacity="0" fill="#FFFFFF" width="48" height="48"/>
+<rect x="1.791" y="1.851" fill="#52CAF5" width="44.417" height="44.299"/>
+<path fill="#419FC1" d="M1.791,4.539v41.397h26.91c0.26-1.772,0.397-3.586,0.397-5.429C29.099,23.361,17.539,8.923,1.791,4.539z"/>
+<rect x="1.791" y="8.333" fill="#3588A6" width="44.417" height="31.255"/>
+<rect x="3.288" y="40.923" fill="#FFFFFF" width="3.257" height="3.256"/>
+<rect x="8.059" y="40.923" fill="#FFFFFF" width="3.256" height="3.256"/>
+<rect x="12.83" y="40.923" fill="#FFFFFF" width="3.257" height="3.256"/>
+<rect x="17.6" y="40.923" fill="#FFFFFF" width="3.257" height="3.256"/>
+<rect x="22.371" y="40.923" fill="#FFFFFF" width="3.258" height="3.256"/>
+<rect x="27.141" y="40.923" fill="#FFFFFF" width="3.258" height="3.256"/>
+<rect x="31.913" y="40.923" fill="#FFFFFF" width="3.257" height="3.256"/>
+<rect x="36.683" y="40.923" fill="#FFFFFF" width="3.257" height="3.256"/>
+<rect x="41.454" y="40.923" fill="#FFFFFF" width="3.257" height="3.256"/>
+<path fill="#276F88" d="M1.791,39.589h27.292C28.854,26.346,21.738,14.78,11.154,8.333H1.791V39.589z"/>
+<rect x="3.288" y="4.073" fill="#FFFFFF" width="3.257" height="3.256"/>
+<rect x="8.059" y="4.073" fill="#FFFFFF" width="3.256" height="3.256"/>
+<rect x="12.83" y="4.073" fill="#FFFFFF" width="3.257" height="3.256"/>
+<rect x="17.6" y="4.073" fill="#FFFFFF" width="3.257" height="3.256"/>
+<rect x="22.371" y="4.073" fill="#FFFFFF" width="3.258" height="3.256"/>
+<rect x="27.141" y="4.073" fill="#FFFFFF" width="3.258" height="3.256"/>
+<rect x="31.913" y="4.073" fill="#FFFFFF" width="3.257" height="3.256"/>
+<rect x="36.683" y="4.073" fill="#FFFFFF" width="3.257" height="3.256"/>
+<rect x="41.454" y="4.073" fill="#FFFFFF" width="3.257" height="3.256"/>
+<circle fill="#F79523" cx="23.905" cy="23.55" r="10.364"/>
+<path fill="#FCB51E" d="M23.904,13.186c-1.854,0-3.589,0.492-5.094,1.345c4.759,5.007,8.138,11.33,9.543,18.371c3.496-1.667,5.917-5.221,5.917-9.352C34.27,17.827,29.629,13.186,23.904,13.186z"/>
+<polygon fill="#E6E7E8" points="28.943,23.55 21.499,29.68 21.499,17.421 "/>
+<path fill="#FFFFFF" d="M26.191,25.815l2.752-2.266l-7.445-6.128v0.256C23.387,20.164,24.968,22.896,26.191,25.815z"/>
+</svg>

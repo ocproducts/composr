@@ -37,9 +37,15 @@ class Hook_health_check_performance_server extends Hook_Health_Check
      */
     public function run($sections_to_run, $check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            $this->process_checks_section('testPersistentCacheAvailability', 'Persistent cache availability', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        }
         $this->process_checks_section('testDiskSpace', 'Disk space', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testCPUType', 'CPU type', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testCPUSpeed', 'CPU speed (slow)', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testCPULoad', 'CPU load', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testServerUptime', 'Server uptime', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testIOSpeed', 'I/O speed (slow)', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testIOLoad', 'I/O load', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testHangingProcesses', 'Hanging processes', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testRAM', 'RAM', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
@@ -55,10 +61,37 @@ class Hook_health_check_performance_server extends Hook_Health_Check
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
      */
+    public function testPersistentCacheAvailability($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    {
+        if ($check_context != CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+
+        $has_persistent_cache = false;
+        if ((class_exists('Memcached')) || (function_exists('apc_fetch')) || (function_exists('apcu_fetch')) || (function_exists('xcache_get')) || (function_exists('wincache_ucache_get'))) {
+            $has_persistent_cache = true;
+        }
+
+        $suggested_cache = 'APCu';
+        if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
+            $suggested_cache = 'WinCache';
+        }
+
+        $this->assertTrue($has_persistent_cache, 'Persistent caching is not available on this server, consider installing the PHP [tt]' . $suggested_cache . '[/tt] extension');
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     */
     public function testDiskSpace($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
         if ($check_context == CHECK_CONTEXT__INSTALL) {
-            return;
+            return; // We have a separate check for disk space at installation
         }
 
         if (php_function_allowed('disk_free_space')) {
@@ -71,6 +104,51 @@ class Hook_health_check_performance_server extends Hook_Health_Check
         } else {
             $this->stateCheckSkipped('PHP disk_free_space function not available');
         }
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     */
+    public function testCPUType($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    {
+        $cpu_info = @file_get_contents('/proc/cpuinfo');
+
+        if (!empty($cpu_info)) {
+            $this->assertTrue(strpos($cpu_info, 'AArch64') === false, 'Using a server with an ARM processor may have severely degraded performance: these processors are designed for simple workloads at scale, not powering complex applications');
+            $this->assertTrue(strpos($cpu_info, 'Intel(R) Atom') === false, 'Using a server with an Intel Atom processor may have severely degraded performance: these processors are designed for simple workloads at scale, not powering complex applications');
+        } else {
+            $this->stateCheckSkipped('Cannot access CPU info');
+        }
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     */
+    public function testCPUSpeed($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    {
+        if (($check_context == CHECK_CONTEXT__INSTALL) && (get_param_integer('skip_slow_checks', 0) == 1)) {
+            return;
+        }
+
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            $threshold = 10;
+        } else {
+            $threshold = intval(get_option('hc_cpu_normative_threshold'));
+        }
+
+        require_code('global4');
+        $performance = find_normative_performance();
+        $this->assertTrue($performance > $threshold, 'Server\'s normative performance score seems low, at ' . integer_format($performance) . ' (at least ' . integer_format($threshold) . ' expected); 1.0 was set at the level of a 2014 iMac');
     }
 
     /**
@@ -208,6 +286,61 @@ class Hook_health_check_performance_server extends Hook_Health_Check
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
      */
+    public function testIOSpeed($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    {
+        if (($check_context == CHECK_CONTEXT__INSTALL) && (get_param_integer('skip_slow_checks', 0) == 1)) {
+            return;
+        }
+
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            $threshold = 10.0;
+        } else {
+            $threshold = floatval(get_option('hc_io_mbs'));
+        }
+
+        // Write file
+        if (!php_function_allowed('tempnam')) {
+            $this->stateCheckSkipped('PHP tempnam function disabled');
+            return;
+        }
+        $temp = @tempnam(sys_get_temp_dir(), 'hc_');
+        if ($temp === false) {
+            $this->stateCheckSkipped('Could not create temporary file');
+            return;
+        }
+        $myfile = fopen($temp, 'wb');
+        $mb_to_write = 20; // By default (10 MB/s) it has to finish in 2 seconds, which seems pretty reasonable to get past any seek time and looping time
+        $write_string = str_repeat('~0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ~', 16); // 64 bytes repeated 16 times
+        $size = 1024 * $mb_to_write;
+        for ($i = 0; $i < $size; $i++) {
+            fwrite($myfile, $write_string);
+        }
+        fclose($myfile);
+
+        // Read file
+        $time_start = microtime(true);
+        $myfile = fopen($temp, 'rb');
+        while (!feof($myfile)) {
+            fread($myfile, 1024 * 128); // Load in 128KB chunks
+        }
+        fclose($myfile);
+        $time_end = microtime(true);
+
+        unlink($temp);
+
+        $performance = $mb_to_write / ($time_end - $time_start);
+
+        $this->assertTrue($performance > $threshold, 'Server\'s I/O read speed seems low, at ' . float_format($performance) . ' MB/s (at least ' . float_format($threshold) . ' MB/s expected)');
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     */
     public function testIOLoad($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
         if ($check_context == CHECK_CONTEXT__INSTALL) {
@@ -282,6 +415,7 @@ class Hook_health_check_performance_server extends Hook_Health_Check
             }
             $threshold_minutes = intval(get_option('hc_process_hang_threshold'));
 
+            $ok = true;
             $done = false;
             $ps_cmd = 'ps -ocomm,etime';
             if ($use_test_data_for_pass !== null) {
@@ -319,8 +453,13 @@ class Hook_health_check_performance_server extends Hook_Health_Check
 
                     $cmd = $matches[1];
 
-                    $this->assertTrue($seconds < 60 * $threshold_minutes, 'Process [tt]' . $cmd . '[/tt] has been running a long time @ ' . display_time_period($seconds));
+                    $ok = $ok && ($seconds < 60 * $threshold_minutes);
+                    $this->assertTrue($ok, 'Process [tt]' . $cmd . '[/tt] has been running a long time @ ' . display_time_period($seconds));
                 }
+            }
+
+            if ($ok) {
+                $this->assertTrue(true, 'Hanging processes');
             }
 
             if (empty($_result)) {
@@ -341,10 +480,6 @@ class Hook_health_check_performance_server extends Hook_Health_Check
      */
     public function testRAM($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
-        if ($check_context == CHECK_CONTEXT__INSTALL) {
-            return;
-        }
-
         if (php_function_allowed('shell_exec')) {
             require_code('files');
 
@@ -376,7 +511,11 @@ class Hook_health_check_performance_server extends Hook_Health_Check
             }
 
             if ($bytes_free !== null) {
-                $mb_threshold = intval(get_option('hc_ram_threshold'));
+                if ($check_context == CHECK_CONTEXT__INSTALL) {
+                    $mb_threshold = 200;
+                } else {
+                    $mb_threshold = intval(get_option('hc_ram_threshold'));
+                }
                 $this->assertTrue($bytes_free > $mb_threshold * 1024 * 1024, 'Server is low on RAM @ ' . clean_file_size($bytes_free));
             } else {
                 $this->stateCheckSkipped('Failed to detect free RAM');

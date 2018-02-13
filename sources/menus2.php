@@ -54,6 +54,7 @@ function export_menu_csv($file_path = null)
     require_code('files');
     require_code('files2');
     $csv = make_csv($data, 'data.csv', false, false);
+    // TODO: #3032
     cms_file_put_contents_safe($file_path, $csv, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 }
 
@@ -77,6 +78,7 @@ function import_menu_csv($file_path = null)
         $file_path = get_custom_file_base() . '/uploads/website_specific/cms_menu_items.csv';
     }
     $myfile = fopen($file_path, 'rb');
+    // TODO: #3032
     while (($record = fgetcsv($myfile, 8192)) !== false) {
         if (!isset($record[12])) {
             continue;

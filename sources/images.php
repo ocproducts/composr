@@ -401,7 +401,7 @@ What follows are other media types, not images. However, we define them here to 
  */
 function is_video($name, $as_admin, $must_be_true_video = false)
 {
-    $allow_audio = (get_option('allow_audio_videos') == '1');
+    $allow_audio = (get_option('allow_audio_videos') != '0');
 
     if (is_image($name, IMAGE_CRITERIA_WEBSAFE, true)) {
         return false;
@@ -468,7 +468,7 @@ function get_allowed_image_file_types()
 function get_allowed_video_file_types()
 {
     $supported = str_replace(' ', '', get_option('valid_videos'));
-    if (get_option('allow_audio_videos') == '1') {
+    if (get_option('allow_audio_videos') != '0') {
         $supported .= ',' . get_allowed_audio_file_types();
     }
     $supported .= ',pdf';

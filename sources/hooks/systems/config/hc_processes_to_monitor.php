@@ -38,7 +38,7 @@ class Hook_config_hc_processes_to_monitor
             'explanation' => 'CONFIG_OPTION_hc_processes_to_monitor',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 8,
+            'order_in_category_group' => 10,
             'required' => false,
 
             'public' => false,

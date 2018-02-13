@@ -86,6 +86,10 @@ class Hook_health_check_network extends Hook_Health_Check
      */
     public function testPacketLoss($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+
         if (php_function_allowed('shell_exec')) {
             if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
                 $cmd = 'ping -n 10 8.8.8.8';

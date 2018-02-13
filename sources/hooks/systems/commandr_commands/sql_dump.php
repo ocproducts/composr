@@ -60,7 +60,8 @@ class Hook_commandr_command_sql_dump
             // Generate dump
             require_code('database_relations');
             $out_file = fopen($out_file_path, 'wb');
-            fwrite($out_file, chr(hexdec('EF')) . chr(hexdec('BB')) . chr(hexdec('BF')));
+            // TODO: #3467
+            fwrite($out_file, chr(hexdec('EF')) . chr(hexdec('BB')) . chr(hexdec('BF'))); // TODO: Can remove after #3467
             get_sql_dump($out_file, true, false, array(), $only, null, $intended_db_type);
             fclose($out_file);
             sync_file($out_file_path);

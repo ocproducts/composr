@@ -34,8 +34,8 @@ class Hook_content_meta_aware_video
         return array(
             'support_custom_fields' => true,
 
-            'content_type_label' => 'global:VIDEO',
-            'content_type_universal_label' => 'Video',
+            'content_type_label' => ((function_exists('get_option')) && (get_option('allow_audio_videos') == '2')) ? 'galleries:MULTIMEDIA_FILE' : 'global:VIDEO',
+            'content_type_universal_label' => ((function_exists('get_option')) && (get_option('allow_audio_videos') == '2')) ? 'Multimedia file' : 'Video',
 
             'db' => $GLOBALS['SITE_DB'],
             'where' => 'cat NOT LIKE \'' . db_encode_like('download\_%') . '\'',

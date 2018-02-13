@@ -38,7 +38,7 @@ class Hook_config_hc_ram_threshold
             'explanation' => 'CONFIG_OPTION_hc_ram_threshold',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 7,
+            'order_in_category_group' => 9,
             'required' => true,
 
             'public' => false,

@@ -84,6 +84,7 @@ foreach ($categories_default as $category) {
 // Import news
 $done = 0;
 $csvfile = fopen(get_custom_file_base() . '/data_custom/free_article_import__articles.csv', 'rb');
+// TODO: #3032
 fgetcsv($csvfile, 1024000); // Skip header row
 while (($r = fgetcsv($csvfile, 1024000)) !== false) {
     $url = $r[1];

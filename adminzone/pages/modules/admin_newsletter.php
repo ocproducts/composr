@@ -1297,8 +1297,9 @@ class Module_admin_newsletter extends Standard_crud_module
         } else {
             if (((is_plupload(true)) && (array_key_exists('file', $_FILES))) || ((array_key_exists('file', $_FILES)) && (is_uploaded_file($_FILES['file']['tmp_name'])))) {
                 $__csv_data = array();
-                safe_ini_set('auto_detect_line_endings', '1');
+                safe_ini_set('auto_detect_line_endings', '1'); // TODO: Remove with #3032
                 $myfile = fopen($_FILES['file']['tmp_name'], 'rb');
+                // TODO: #3032
                 $del = ',';
                 $csv_test_line = fgetcsv($myfile, 4096, $del);
                 if ((count($csv_test_line) == 1) && (strpos($csv_test_line[0], ';') !== false)) {

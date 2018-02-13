@@ -12,7 +12,7 @@
 	<td class="cns-forum-topic-row-preview cns-column2">
 		{+START,IF,{$DESKTOP}}
 			<div class="block-desktop">
-				<a class="cns-forum-topic-row-preview-button" data-focus-activate-tooltip="['{$TRUNCATE_LEFT*~;^,{POST},1000,0,1}','30%',null,null,null,true]" data-mouseover-activate-tooltip="['{$TRUNCATE_LEFT*~;^,{POST},1000,0,1}','30%',null,null,null,true]" data-blur-deactivate-tooltip="" href="{URL*}">{!PREVIEW} <span style="display: none">{ID*}</span></a>
+				<a class="cns-forum-topic-row-preview-button" data-focus-activate-tooltip="['{$TRUNCATE_LEFT;^*,{POST},1000,0,1}','30%',null,null,null,true]" data-mouseover-activate-tooltip="['{$TRUNCATE_LEFT;^*,{POST},1000,0,1}','30%',null,null,null,true]" data-blur-deactivate-tooltip="" href="{URL*}">{!PREVIEW} <span style="display: none">{ID*}</span></a>
 
 				<div class="cns-forum-topic-title-bits">
 					<span class="cns-forum-topic-title-bits-left">
@@ -25,7 +25,7 @@
 						{+END}
 					</span>
 
-					<a class="vertical-alignment {+START,IF_NON_EMPTY,{TOPIC_ROW_MODIFIERS}{TOPIC_ROW_LINKS}} cns-forum-topic-indent{+END}" href="{URL*}" title="{$ALTERNATOR_TRUNCATED,{TITLE},60,{!TOPIC_STARTED_DATE_TIME,{HOVER;~}},,1}">{+START,IF,{UNREAD}}<span class="cns-unread-topic-title">{+END}{$TRUNCATE_LEFT,{TITLE},46,1}{+START,IF,{UNREAD}}</span>{+END}</a>
+					<a class="vertical-alignment {+START,IF_NON_EMPTY,{TOPIC_ROW_MODIFIERS}{TOPIC_ROW_LINKS}} cns-forum-topic-indent{+END}" href="{URL*}" title="{$ALTERNATOR_TRUNCATED,{TITLE},60,{!TOPIC_STARTED_DATE_TIME,{HOVER;^}},,1}">{+START,IF,{UNREAD}}<span class="cns-unread-topic-title">{+END}{$TRUNCATE_LEFT,{TITLE},46,1}{+START,IF,{UNREAD}}</span>{+END}</a>
 
 					{PAGES}
 
@@ -41,7 +41,7 @@
 
 		<div class="cell-mobile">
 			<div class="cns-forum-topic-title-bits">
-				<a class="vertical-alignment {+START,IF_NON_EMPTY,{TOPIC_ROW_MODIFIERS}{TOPIC_ROW_LINKS}} cns-forum-topic-indent{+END}" href="{URL*}" title="{$ALTERNATOR_TRUNCATED,{TITLE},60,{!TOPIC_STARTED_DATE_TIME,{HOVER;~}},,1}">{+START,IF,{UNREAD}}<span class="cns-unread-topic-title">{+END}{$TRUNCATE_LEFT,{TITLE},46,1}{+START,IF,{UNREAD}}</span>{+END}</a>
+				<a class="vertical-alignment {+START,IF_NON_EMPTY,{TOPIC_ROW_MODIFIERS}{TOPIC_ROW_LINKS}} cns-forum-topic-indent{+END}" href="{URL*}" title="{$ALTERNATOR_TRUNCATED,{TITLE},60,{!TOPIC_STARTED_DATE_TIME,{HOVER}},,1}">{+START,IF,{UNREAD}}<span class="cns-unread-topic-title">{+END}{$TRUNCATE_LEFT,{TITLE},46,1}{+START,IF,{UNREAD}}</span>{+END}</a>
 
 				{PAGES}
 

@@ -161,9 +161,6 @@ class Module_admin_phpinfo
             $out .= '<p><strong>PHP configured as</strong>: ' . escape_html(php_sapi_name()) . '</p>';
         }
 
-        require_code('global4');
-        $out .= '<p><strong>Normative performance</strong>: ' . float_format(find_normative_performance(), 0) . '%</p>';
-
         if (function_exists('mysqli_get_server_version') && get_db_type() == 'mysqli') {
             $__mysql_version = @mysqli_get_server_version($GLOBALS['SITE_DB']->connection_read[0]);
             if ($__mysql_version !== false) {

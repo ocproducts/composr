@@ -1,7 +1,7 @@
 {$REQUIRE_JAVASCRIPT,core_form_interfaces}
 
 {+START,IF,{$AND,{IS_IMAGE},{$IS_NON_EMPTY,{EXISTING_URL}}}}
-	<img class="upload-field-image-preview" src="{$ENSURE_PROTOCOL_SUITABILITY*,{EXISTING_URL}}" title="" alt="{!EXISTING;^}" />
+	<img class="upload-field-image-preview" src="{$ENSURE_PROTOCOL_SUITABILITY*,{EXISTING_URL}}" title="" alt="{!EXISTING}" />
 {+END}
 
 <div class="upload-field inline-block" data-view="FromScreenInputUpload" data-view-params="{+START,PARAMS_JSON,NAME,PLUPLOAD,FILTER,SYNDICATION_JSON}{_*}{+END}">

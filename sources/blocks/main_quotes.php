@@ -105,6 +105,7 @@ class Block_main_quotes
     public function get_random_line($filename)
     {
         $myfile = @fopen(filter_naughty($filename, true), 'rb');
+        // TODO: #3467
         if ($myfile === false) {
             return '';
         }

@@ -168,6 +168,8 @@ class Hook_addon_registry_health_check
             'sources/hooks/systems/health_checks/upkeep_backups.php',
             'themes/default/images/icons/menu/adminzone/tools/health_check.svg',
             'sources/health_check.php',
+            'sources/hooks/systems/config/hc_cpu_normative_threshold.php',
+            'sources/hooks/systems/config/hc_io_mbs.php',
             'sources/hooks/systems/config/hc_admin_stale_threshold.php',
             'sources/hooks/systems/config/hc_compound_requests_per_second_threshold.php',
             'sources/hooks/systems/config/hc_compound_requests_window_size.php',

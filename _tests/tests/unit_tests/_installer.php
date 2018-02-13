@@ -62,7 +62,7 @@ class _installer_test_set extends cms_test_case
             return;
         }
 
-        $http_result = cms_http_request(get_base_url() . '/install.php?skip_disk_checks=1', array('trigger_error' => false, 'timeout' => 60));
+        $http_result = cms_http_request(get_base_url() . '/install.php?skip_slow_checks=1', array('trigger_error' => false, 'timeout' => 60));
 
         $this->assertTrue($http_result->message == '200', 'Wrong HTTP status code ' . $http_result->message);
 

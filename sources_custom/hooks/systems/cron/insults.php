@@ -62,6 +62,7 @@ class Hook_cron_insults
             $get_insult = '';
             if (is_file(get_file_base() . '/text_custom/' . user_lang() . '/insults.txt')) {
                 $insults = file(get_file_base() . '/text_custom/' . user_lang() . '/insults.txt');
+                // TODO: #3467
                 $insults_array = array();
                 foreach ($insults as $insult) {
                     $x = explode('=', $insult);

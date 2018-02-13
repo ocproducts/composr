@@ -3,6 +3,7 @@
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
 $myfile = fopen(get_file_base() . '/data/maintenance_status.csv', 'rb');
+// TODO: #3032 (must default charset to utf-8 if no BOM though)
 
 $header_row = fgetcsv($myfile); // Header row
 unset($header_row[0]);

@@ -550,8 +550,10 @@ class Module_admin_config
                     case 'list':
                         $_default = make_string_tempcode(escape_html($default));
                         $list = '';
-                        $list .= static_evaluate_tempcode(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));
                         $_value = get_option($name);
+                        if ($_value == '' || !$required) {
+                            $list .= static_evaluate_tempcode(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));
+                        }
                         $values = explode('|', $option['list_options']);
                         foreach ($values as $value) {
                             $__value = str_replace(' ', '__', $value);
@@ -770,7 +772,7 @@ class Module_admin_config
                 }
             } elseif ($option['type'] == 'float') {
                 $_value = post_param_string($name, '');
-                $value = ($_value == '') ? '' : float_unformat($_value);
+                $value = ($_value == '') ? '' : float_to_raw_string(float_unformat($_value));
             } elseif ($option['type'] == 'tick') {
                 $value = strval(post_param_integer($name, 0));
             } elseif (($option['type'] == 'date') || ($option['type'] == 'datetime')) {

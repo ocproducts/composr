@@ -731,6 +731,7 @@ function calendar_matches($auth_member_id, $member_id, $restrict, $period_start,
             $temp_file_path = cms_tempnam();
             require_code('files');
             $write_to_file = fopen($temp_file_path, 'wb');
+            // TODO: #3467 (must default charset to utf-8 though due to web standards)
             $http_response = cms_http_request($feed_url, array('byte_limit' => 1024 * 512, 'trigger_error' => false, 'write_to_file' => $write_to_file));
 
             if (($http_response->download_mime_type == 'text/calendar') || ($http_response->download_mime_type == 'application/octet-stream')) {

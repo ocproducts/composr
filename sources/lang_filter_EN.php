@@ -229,6 +229,23 @@ class LangFilter_EN extends LangFilter
             $remapping['on Yesterday'] = 'Yesterday';
             $remapping['on Today'] = 'Today';
 
+            // Gallery video vs multimedia
+            if (function_exists('get_option')) {
+                if (addon_installed('galleries')) {
+                    if (get_option('allow_audio_videos') != '2') {
+                        $remapping['video/multimedia file'] = 'video';
+                        $remapping['videos/multimedia files'] = 'videos';
+                        $remapping['video/multimedia'] = 'video';
+                        $remapping['videos/multimedia'] = 'videos';
+                    } else {
+                        $remapping['video/multimedia file'] = 'multimedia file';
+                        $remapping['videos/multimedia files'] = 'multimedia files';
+                        $remapping['video/multimedia'] = 'multimedia';
+                        $remapping['videos/multimedia'] = 'multimedia';
+                    }
+                }
+            }
+
             $this->the_sun_never_sets_on_the_british_empire += $remapping;
             $this->make_uncle_sam_happy += $remapping;
         }
