@@ -240,6 +240,8 @@ function score_quiz($entry_id, $quiz_id = null, $quiz = null, $questions = null,
             continue; // Don't count non-marked questions
         }
 
+        $has_an_answer = false;
+
         $question_text = get_translated_tempcode('quiz_questions', $question, 'q_question_text');
 
         if ($question['q_type'] == 'SHORT' || $question['q_type'] == 'SHORT_STRICT' || $question['q_type'] == 'LONG') { // Text box ("free question"). May be an actual answer, or may not be
@@ -255,6 +257,7 @@ function score_quiz($entry_id, $quiz_id = null, $quiz = null, $questions = null,
                 $was_correct = false;
                 foreach ($question['answers'] as $a) {
                     if ($a['q_is_correct'] == 1) {
+                        $has_an_answer = true;
                         $correct_answer = make_string_tempcode(get_translated_text($a['q_answer_text']));
                     }
                     if (get_translated_text($a['q_answer_text']) == $given_answer) {
@@ -286,6 +289,7 @@ function score_quiz($entry_id, $quiz_id = null, $quiz = null, $questions = null,
                 'CORRECT_ANSWER' => $correct_answer,
                 'CORRECT_EXPLANATION' => $correct_explanation,
             );
+
         } elseif ($question['q_type'] == 'MULTIMULTIPLE') { // Check boxes
             // Vector distance
             $wrongness = 0.0;
@@ -301,6 +305,7 @@ function score_quiz($entry_id, $quiz_id = null, $quiz = null, $questions = null,
                 }
 
                 if ($should_be_this) {
+                    $has_an_answer = true;
                     if (!$correct_answer->is_empty()) {
                         $correct_answer->attach(do_lang_tempcode('LIST_SEP'));
                     }
@@ -340,6 +345,7 @@ function score_quiz($entry_id, $quiz_id = null, $quiz = null, $questions = null,
                 'CORRECT_ANSWER' => $correct_answer,
                 'CORRECT_EXPLANATION' => $correct_explanation,
             );
+
         } elseif ($question['q_type'] == 'MULTIPLECHOICE') { // Radio buttons
             $was_correct = false;
             $correct_answer = new Tempcode();
@@ -347,6 +353,7 @@ function score_quiz($entry_id, $quiz_id = null, $quiz = null, $questions = null,
             $given_answer = '';
             foreach ($question['answers'] as $a) {
                 if ($a['q_is_correct'] == 1) {
+                    $has_an_answer = true;
                     $correct_answer = make_string_tempcode(get_translated_text($a['q_answer_text']));
                 }
 
@@ -386,7 +393,9 @@ function score_quiz($entry_id, $quiz_id = null, $quiz = null, $questions = null,
             );
         }
 
-        $out_of++;
+        if ($has_an_answer) {
+            $out_of++;
+        }
     }
     if ($out_of == 0) {
         $out_of = 1;
