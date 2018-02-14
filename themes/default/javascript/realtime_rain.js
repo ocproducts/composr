@@ -179,6 +179,10 @@
 
     function receivedEvents(responseXml) {
         var ajaxResult = responseXml && responseXml.querySelector('result');
+        
+        if (!ajaxResult) {
+             return;
+        }
 
         document.getElementById('loading-icon').style.display = 'none';
 
@@ -190,7 +194,7 @@
         var frameDelay = (1000 / heightPerSecond) / 1.1; // 1.1 is a fudge factor to reduce chance of overlap (creates slight inaccuracy in spacing though)
 
         var windowWidth = $dom.getWindowWidth(),
-            elements = ajaxResult.children,
+            elements = Array.from(ajaxResult.children),
             leftPos = 25;
 
         elements.some(function (element) {

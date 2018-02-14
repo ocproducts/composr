@@ -2374,7 +2374,7 @@
         if (html === undefined) {
             return el.innerHTML;
         }
-
+        
         $dom.empty(el);
         return $dom.append(el, html);
     };
