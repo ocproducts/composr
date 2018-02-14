@@ -129,6 +129,13 @@ function init__site()
             }
         }
 
+        // Detect bad access protocol
+        if ((get_value('access_protocol_redirect') === '1') && ((substr(get_base_url(), 0, 8) == 'https://') && (!tacit_https()) || (substr(get_base_url(), 0, 7) == 'http://') && (tacit_https()))) {
+            set_http_status_code('301');
+            header('Location: ' . escape_header(get_self_url(true, false)));
+            exit();
+        }
+
         if (get_value('disable_cookie_checks') !== '1') {
             // Detect bad cookie domain (reasonable approximation)
             $cookie_domain = @ltrim(get_cookie_domain(), '.');
@@ -1118,10 +1125,9 @@ function save_static_caching($out, $mime_type = 'text/html')
 function write_static_cache_file($fast_cache_path, $out_evaluated, $support_gzip)
 {
     require_code('files');
+    cms_file_put_contents_safe($fast_cache_path, $out_evaluated, FILE_WRITE_FIX_PERMISSIONS);
     if ((function_exists('gzencode')) && (php_function_allowed('ini_set')) && ($support_gzip)) {
-        cms_file_put_contents_safe($fast_cache_path, gzencode($out_evaluated, 9), FILE_WRITE_FIX_PERMISSIONS);
-    } else {
-        cms_file_put_contents_safe($fast_cache_path, $out_evaluated, FILE_WRITE_FIX_PERMISSIONS);
+        cms_file_put_contents_safe($fast_cache_path . '.gz', gzencode($out_evaluated, 9), FILE_WRITE_FIX_PERMISSIONS);
     }
 }
 

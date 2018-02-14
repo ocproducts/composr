@@ -202,7 +202,7 @@ If there is something about your server configuration that prevents PHP scripts 
 
 [title="3"]How do I get more than <just a few megabytes> of upload support?[/title]
 
-PHP defines its own upload limits, which Composr can not exceed. Try renaming the bundled 'recommended.htaccess' file to '.htaccess'. If this fails read the answer to "Why does [tt]recommended.htaccess[/tt] not work?". If you still have problems you will need to persuade the server administrator to increase the limits defined in the PHP [tt]post_max_size[/tt] and [tt]upload_max_filesize[/tt] options.
+PHP defines its own upload limits, which Composr can not exceed. Try renaming the bundled [tt]recommended.htaccess[/tt] file to [tt].htaccess[/tt]. If this fails read the answer to "Why does [tt]recommended.htaccess[/tt] not work?". If you still have problems you will need to persuade the server administrator to increase the limits defined in the PHP [tt]post_max_size[/tt] and [tt]upload_max_filesize[/tt] options.
 
 By the way, make sure you define MB units like '50M', not '50MB'. 'MB' is not a recognised unit by PHP.
 
@@ -278,7 +278,7 @@ If you are getting "Internal Server Error" errors or '500' errors first read the
 If you're not getting actual errors but things just aren't applying, it's probably because either:
 [list="a"]
 [*] [tt].htaccess[/tt] has been disabled on the server (you'll need to consult your webhost)
-[*] The PHP options you're trying to override with php_value or php_flag have been locked down in the main Apache configuration (via php_admin_value or php_admin_flag)
+[*] The PHP options you're trying to override with [tt]php_value[/tt] or [tt]php_flag[/tt] have been locked down in the main Apache configuration (via [tt]php_admin_value[/tt] or [tt]php_admin_flag[/tt])
 [*] or, you're using Windows IIS which does not have this feature. You'll need to:[list]
 [*] change settings through the IIS Administrative Tools or your webhosting control panel)
 [*] or, if the settings you want to change are for PHP, and PHP is configured as CGI, see "How do I set PHP settings on a CGI server?").[/list]
