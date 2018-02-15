@@ -158,8 +158,6 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
 
     global $COMPILABLE_SYMBOLS, $STUCK_ABORT_SIGNAL;
 
-    $escaping_symbols_from = '`%*=;#-~^|\'!&./@+';
-
     $sas_bak = $STUCK_ABORT_SIGNAL;
     require_code('lang');
     require_code('urls');
@@ -325,7 +323,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                     $_opener_params .= implode('.', $oparam);
                 }
 
-                $first_param = rtrim($_first_param, $escaping_symbols_from);
+                $first_param = preg_replace('#[`%*=;\#\-~\^|\'!&./@+]+(")?$#', '$1', $_first_param);
                 switch ($past_level_mode) {
                     case PARSE_SYMBOL:
                         $no_preprocess = in_array('-', $_escaped);

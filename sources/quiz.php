@@ -242,7 +242,8 @@ function score_quiz($entry_id, $quiz_id = null, $quiz = null, $questions = null,
 
         $has_an_answer = false;
 
-        $question_text = get_translated_tempcode('quiz_questions', $question, 'q_question_text');
+        $just_question_row = db_map_restrict($question, array('id', 'q_question_text'));
+        $question_text = get_translated_tempcode('quiz_questions', $just_question_row, 'q_question_text');
 
         if ($question['q_type'] == 'SHORT' || $question['q_type'] == 'SHORT_STRICT' || $question['q_type'] == 'LONG') { // Text box ("free question"). May be an actual answer, or may not be
             $given_answer = $_given_answers[$question['id']][0];
