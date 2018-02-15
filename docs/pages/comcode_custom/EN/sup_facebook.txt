@@ -1,6 +1,6 @@
-[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Facebook Support[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Supplementary: Facebook Support[/title]
 
-[media thumb="0" framed="0" float="right"]data_custom/images/docs/tut_facebook/fb_composr.jpg[/media]
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/sup_facebook/fb_composr.jpg[/media]
 This tutorial describes {$IS_MAINTAINED,facebook,Composr Facebook integration}. It mostly describes functionality supplied by the non-bundled Facebook Support addon.
 
 You may want to get a developer to help configure things. We're helping people getting Composr integrated, even when you're not a developer, but bear in mind that it can be tricky sometimes. Facebook is in flux, and Composr has to play catch-up quite a lot. All the standards involved in the integration are also in flux. Things are a lot better than they were, but still not always ideal. Any screenshots we show for Facebook could be out-dated by the time you read this.
@@ -13,7 +13,7 @@ Before you can use any of the Facebook Support addon features you need to config
 
 [title="3"]Step 1) Configuration on Facebook[/title]
 
-[media thumb="0" framed="0" float="right"]data_custom/images/docs/tut_facebook/facebook.png[/media]
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/sup_facebook/facebook.png[/media]
 Integration is done via configuring an app on Facebook; no actual app code needs writing, but this is how you get an API key.
 
 [list="1"]
@@ -74,8 +74,8 @@ Note there is no need to use a real domain name, it can be completely made up.
 [title="3"]Step 2) Install the Composr Facebook Support addon[/title]
 
 [surround]
-[media width="150" description="Choosing the addon" float="right"]data_custom/images/docs/tut_facebook/facebook_addon_b.png[/media]
-[media width="150" description="Going to import a non-bundled addon" float="right"]data_custom/images/docs/tut_facebook/facebook_addon_a.png[/media]
+[media width="150" description="Choosing the addon" float="right"]data_custom/images/docs/sup_facebook/facebook_addon_b.png[/media]
+[media width="150" description="Going to import a non-bundled addon" float="right"]data_custom/images/docs/sup_facebook/facebook_addon_a.png[/media]
 To install...
 
 1) Go to Admin Zone > Structure > Addons.
@@ -98,7 +98,7 @@ Installing the addon to Composr will override some key templates to [tt]themes/d
 [title="3"]Step 3) Configuration[/title]
 
 [surround]
-[media width="150" description="Configuration options" float="right"]data_custom/images/docs/tut_facebook/facebook_config.png[/media]
+[media width="150" description="Configuration options" float="right"]data_custom/images/docs/sup_facebook/facebook_config.png[/media]
 1) Go to Admin Zone > Setup > Configuration > Composr API options > Facebook syndication / login.
 2) Configure the "Facebook app ID" configuration option and "Facebook app secret" configuration option. You noted down the values earlier.
 3) Also configure the "Facebook page ID" configuration option. This is a useful helper tool: http://findmyfbid.com/.
@@ -294,7 +294,7 @@ Be aware that logging in with Facebook is putting a dependency on Facebook's sys
 
 [title="3"]Debugging[/title]
 
-[media width="150" description="Where to find Response Headers in Google Chrome" float="right"]data_custom/images/docs/tut_facebook/facebook_headers.png[/media]
+[media width="150" description="Where to find Response Headers in Google Chrome" float="right"]data_custom/images/docs/sup_facebook/facebook_headers.png[/media]
 It is hard to debug Facebook login. Every few months Facebook change something, often invalidating the steps in this tutorial or changing API compatibility. For someone to debug it properly they need to be granted access to the Facebook app and write access to the website, then likely spend half a day stepping through it all, so you likely won't be able to get a lot of free support tracking an issue down. If it's not some easily identifiable basic error you'd probably need to pay a developer to step through it all properly as it's not really possible for the addon developer to tell upfront what is user-error, what is a very specific Facebook bug, or when there is a need to update the addon.
 
 If it's a basic error (clicking the Facebook log in button doesn't appear to do anything) then Facebook is probably returning an error message which we relay in the network request's response headers, giving you a little insight into what is happening under-the-hood. Look for the [tt]Facebook-Error[/tt] header.
@@ -302,8 +302,8 @@ If it's a basic error (clicking the Facebook log in button doesn't appear to do 
 [title="3"]Logging out[/title]
 
 [surround]
-[media width="150" description="Removing login permission on Facebook (2)" float="right"]data_custom/images/docs/tut_facebook/facebook_logout_b.png[/media]
-[media width="150" description="Removing login permission on Facebook (1)" float="right"]data_custom/images/docs/tut_facebook/facebook_logout_a.png[/media]
+[media width="150" description="Removing login permission on Facebook (2)" float="right"]data_custom/images/docs/sup_facebook/facebook_logout_b.png[/media]
+[media width="150" description="Removing login permission on Facebook (1)" float="right"]data_custom/images/docs/sup_facebook/facebook_logout_a.png[/media]
 Facebook is particularly aggressive at maintaining its logins: you can't directly log out from individual sites as such. We can't workaround that within Composr's code. Facebook actually has rules saying that sites must enforce automatic logins, so contractually log out is not allowed even if there was a way we could do it.
 
 A user who wishes to de-link Facebook to your site has two choices:
@@ -346,7 +346,7 @@ The Facebook login process does [b]not[/b] populate this field. You may delete t
 
 [title="2"]Activity syndication[/title]
 
-[media thumb="0" framed="0" float="right"]data_custom/images/docs/tut_facebook/twitter.png[/media]
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/sup_facebook/twitter.png[/media]
 [i]Most of this advice applies to the Composr non-bundled Twitter Support addon too[/i]
 
 You can (in theory) have content automatically syndicate to Facebook in 2 ways:

@@ -198,7 +198,7 @@ Composr is not just built for MySQL. It is designed to work with any kind of dat
 It is advisable for you to:
  - write SQL conservatively: avoid SQL syntax/functionality that Composr does not already use somewhere because that syntax/functionality probably is vendor-specific
  - avoid being sloppy and getting MySQL to perform automatic type conversions and to automatically guess missing values during insert queries.
-See the [page="_SEARCH:sup_postgresql"]Using PostgreSQL with Composr[/page] tutorial for a practical discussion for PostgreSQL as a specific example.
+See the [page="_SEARCH:tut_postgresql"]Using PostgreSQL with Composr[/page] tutorial for a practical discussion for PostgreSQL as a specific example.
 
 [title="3"]Blank pages[/title]
 

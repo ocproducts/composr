@@ -20,7 +20,7 @@
  * @package    core_database_drivers
  */
 
-// See sup_postgresql tutorial for documentation on using PostgreSQL.
+// See tut_postgresql tutorial for documentation on using PostgreSQL.
 
 /**
  * Database Driver.

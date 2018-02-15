@@ -22,7 +22,7 @@
 
 require_code('database/shared/sqlserver');
 
-// See sup_sqlserver tutorial for documentation on using SQL Server.
+// See tut_sqlserver tutorial for documentation on using SQL Server.
 
 /**
  * Database Driver.

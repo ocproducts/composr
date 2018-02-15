@@ -323,7 +323,7 @@ We don't use the Sitemap for the breadcrumb generation because it is generated b
 URLs form another kind of website structure.
 
 URLs are not primarily discussed in this tutorial, but are covered in these tutorials:
- - [page="_SEARCH:tut_how_internet_works"]How the Internet actually works[/page] (web technology in general)
+ - [page="_SEARCH:sup_how_internet_works"]How the Internet actually works[/page] (web technology in general)
  - [page="_SEARCH:tut_seo"]Improving your search engine ranking[/page] (monikers)
  - [page="_SEARCH:tut_url_schemes"]URL Schemes in Composr[/page] (short URLs)
 

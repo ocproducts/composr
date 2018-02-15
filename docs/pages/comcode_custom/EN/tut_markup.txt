@@ -182,7 +182,7 @@ Composr is built on top of standard web/Internet protocols, languages and [abbr=
 		<tr>
 			<td>[url="http://developers.facebook.com/docs/opengraph/"]{$IS_MAINTAINED,standard_opengraph,Open Graph}[/url]</td>
 			<td>Facebook-originated metadata standard, with data being embedded into normal web pages.</td>
-			<td>This is automatically included in Composr's templates. Further documentation is in the [page="_SEARCH:tut_facebook"]Facebook Support[/page] tutorial.</td>
+			<td>This is automatically included in Composr's templates. Further documentation is in the [page="_SEARCH:sup_facebook"]Facebook Support[/page] tutorial.</td>
 		</tr>
 		<tr>
 			<td>[url="http://schema.org/"]{$IS_MAINTAINED,standard_schema_org,schema.org}[/url]</td>
@@ -1312,7 +1312,7 @@ Some cool effects:
  - [page="_SEARCH:tut_tempcode"]Tempcode programming[/page]
  - [page="_SEARCH:tut_accessibility"]Helping improve site accessibility for disabled users[/page]
  - [page="_SEARCH:tut_browsers"]Browser version requirements[/page]
- - [page="_SEARCH:tut_how_internet_works"]How the Internet actually works[/page]
+ - [page="_SEARCH:sup_how_internet_works"]How the Internet actually works[/page]
  - [page="_SEARCH:tut_structure"]Composr site structure[/page]
  - [page="_SEARCH:sup_chrome_tools"]Using Chrome development tools to help with themeing[/page]
 

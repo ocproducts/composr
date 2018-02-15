@@ -638,7 +638,7 @@ Although types are very useful for finding programming mistakes, like most of PH
  - [page="_SEARCH:sup_hardcore_1"]Making an addon (part 1)[/page]
  - [page="_SEARCH:tut_programming"]Introduction to programming[/page]
  - [page="_SEARCH:codebook"]Code Book, contents and introduction[/page]
- - [page="_SEARCH:tut_hardcore_minimodules"]Writing mini-modules[/page]
+ - [page="_SEARCH:sup_hardcore_minimodules"]Writing mini-modules[/page]
  - [url="PHP website"]http://www.php.net[/url]
 
 {$SET,tutorial_tags,Development,PHP,regular}{$SET,tutorial_add_date,May 2015}{$SET,tutorial_summary,A worked guide to writing new PHP code for Composr.}[block]main_tutorial_rating[/block]

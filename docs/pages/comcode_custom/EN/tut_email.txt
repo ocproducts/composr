@@ -202,9 +202,9 @@ mail('you@example.com','Test','Test');
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_how_internet_works"]How the Internet actually works[/page]
+ - [page="_SEARCH:sup_how_internet_works"]How the Internet actually works[/page]
  - [page="_SEARCH:tut_cookies"]Introduction to Cookies and sessions (and JavaScript)[/page]
- - [page="_SEARCH:tut_domain_names"]How domain names work[/page]
+ - [page="_SEARCH:sup_domain_names"]How domain names work[/page]
  - [page="_SEARCH:tut_notifications"]Notifications[/page]
  - [page="_SEARCH:tut_newsletter"]Running a newsletter[/page]
  - [page="_SEARCH:tut_website_health"]Website Health[/page]

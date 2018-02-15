@@ -103,6 +103,6 @@ Composr ([concept]Conversr[/concept]) does also support many other types of bann
  - [page="_SEARCH:tut_members"]Composr member system[/page]
  - [page="_SEARCH:tut_legal"]Legal and social responsibilities[/page]
  - [page="_SEARCH:tut_antispam"]Anti-spam settings[/page]
- - [page="_SEARCH:tut_how_internet_works"]How the Internet actually works[/page]
+ - [page="_SEARCH:sup_how_internet_works"]How the Internet actually works[/page]
 
 {$SET,tutorial_tags,Security,securitylogging,Administration,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,If you find a hacker, you may want to try and trace them back to a real world source. We introduce you to your toolkit.}[block]main_tutorial_rating[/block]

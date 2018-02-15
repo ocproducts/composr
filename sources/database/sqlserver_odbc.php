@@ -20,7 +20,7 @@
 
 /*EXTRA FUNCTIONS: odbc\_.+*/
 
-// See sup_sqlserver tutorial for documentation on using SQL Server.
+// See tut_sqlserver tutorial for documentation on using SQL Server.
 
 require_code('database/shared/sqlserver');
 

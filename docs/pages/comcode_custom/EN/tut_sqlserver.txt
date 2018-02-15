@@ -1,8 +1,8 @@
-[title sub="Written by Chris Graham (ocProducts)"]Composr Supplementary: Using SQL Server with Composr[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Using SQL Server with Composr[/title]
 
-[media float="right" framed="0"]data_custom/images/docs/sup_sqlserver/sqlserver_logo.png[/media]This tutorial provides some advice targeted towards Microsoft SQL Server (including SQL Server Express).
+[media float="right" framed="0"]data_custom/images/docs/tut_sqlserver/sqlserver_logo.png[/media]This tutorial provides some advice targeted towards Microsoft SQL Server (including SQL Server Express).
 
-General details of Composr's database driver functionality are included in the [page="_SEARCH:sup_postgresql"]Using PostgreSQL with Composr[/page] tutorial. You may wish to read this first, as we are not repeating the same information here -- this will be a much shorter tutorial only covering the specifics of the SQL Server support.
+General details of Composr's database driver functionality are included in the [page="_SEARCH:tut_postgresql"]Using PostgreSQL with Composr[/page] tutorial. You may wish to read this first, as we are not repeating the same information here -- this will be a much shorter tutorial only covering the specifics of the SQL Server support.
 
 SQL Server has been tested for Composr v10.0.x under a commercial relationship (starting with 10.0.10). We tested on SQL Server Express 2017 across our whole test set and all screens and blocks, with both multi-lang-content on and off. We expect in practice SQL Server 2005+ is supported (we use [tt]VARCHAR(MAX)[/tt]).
 
@@ -10,7 +10,7 @@ SQL Server is a very high quality database backend developed over decades by Mic
 
 [title="2"]What is and is not supported[/title]
 
-The same functionality is supported as is supported on [page="_SEARCH:sup_postgresql"]Postgres[/page].
+The same functionality is supported as is supported on [page="_SEARCH:tut_postgresql"]Postgres[/page].
 
 [title="2"]Installing SQL Server[/title]
 
@@ -175,7 +175,7 @@ You may also want to configure the [url="text language"]https://docs.microsoft.c
 [title="2"]Technical information for developers (advanced)[/title]
 
 The main complexities of SQL Server support, for MySQL developers are:
-1) Points 1, 2, 3, 5, 7, & 8 from the [page="_SEARCH:sup_postgresql"]Postgres[/page] tutorial
+1) Points 1, 2, 3, 5, 7, & 8 from the [page="_SEARCH:tut_postgresql"]Postgres[/page] tutorial
 2) The MySQL [tt]LIMIT max,start[/tt] syntax is not supported. You can do [tt]TOP (max+start)[/tt] though. The Composr [tt]query*[/tt] methods abstract this for 99.9% of cases you may have.
 3) You need to use SQL Server string escaping, not MySQL string escaping. This is very different, it uses doubling of apostrophes rather than backslash escaping.
 4) Unicode strings are put in quotes (as normal in SQL) but then prefixed with [tt]N[/tt]. This is abstracted in the driver's own query interface, so you should not need to worry about it when writing normal code.
@@ -189,6 +189,6 @@ The main complexities of SQL Server support, for MySQL developers are:
  - http://www.unixodbc.org/
  - http://www.freetds.org/
  - [page="_SEARCH:tut_sql"]Manually editing your database with phpMyAdmin[/page]
- - [page="_SEARCH:sup_postgresql"]Using PostgreSQL with Composr[/page]
+ - [page="_SEARCH:tut_postgresql"]Using PostgreSQL with Composr[/page]
 
 {$SET,tutorial_tags,core_database_drivers,Installation,expert}{$SET,tutorial_add_date,Nov 2017}{$SET,tutorial_summary,A guide on using SQL Server with Composr.}[block]main_tutorial_rating[/block]

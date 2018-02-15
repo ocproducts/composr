@@ -1,4 +1,4 @@
-[title sub="Written by Rajesh Kumar (ocProducts)"]Composr Tutorial: Analytics and split testing -- using Google Analytics[/title]
+[title sub="Written by Rajesh Kumar (ocProducts)"]Composr Supplementary: Analytics and split testing -- using Google Analytics[/title]
 
 The objective of this tutorial is to provide brief information about [i]Google Analytics[/i] and guidance on configuring [i]Google Analytics[/i] through Composr. We provide basic setup instructions, as well as some scenarios and guidance touching on advanced usage. We only really scratch the surface, but our aim is to provide you introductory information as directly applied to Composr -- a foundation for applying all standard Google Analytics techniques described in third-party guides.
 
@@ -92,23 +92,23 @@ Let us create our two [i]goal[/i]. Here's how:
 
 [*] Under the menu you can find "Goals", click that:
 
-[img]data_custom/images/docs/tut_google_analytics/goal_step1.jpg[/img][/*]
+[img]data_custom/images/docs/sup_google_analytics/goal_step1.jpg[/img][/*]
 
 [*] Click on the "NEW GOAL" button
 
-[img]data_custom/images/docs/tut_google_analytics/goal_step2.jpg[/img][/*]
+[img]data_custom/images/docs/sup_google_analytics/goal_step2.jpg[/img][/*]
 
 [*] We will choose a "Custom" goal, then click "Continue"
 
-[img]data_custom/images/docs/tut_google_analytics/goal_step3.jpg[/img][/*]
+[img]data_custom/images/docs/sup_google_analytics/goal_step3.jpg[/img][/*]
 
 [*] Under the "Goal description" section you will be prompted to provide a name for the [i]goal[/i] and [i]goal type[/i]. We'll be doing for a "Destination", which we'll type in later
 
-[img]data_custom/images/docs/tut_google_analytics/goal_step4.jpg[/img][/*]
+[img]data_custom/images/docs/sup_google_analytics/goal_step4.jpg[/img][/*]
 
 [*] Click "Continue", which leads to "Goal details"
 
-[img]data_custom/images/docs/tut_google_analytics/goal_step5.jpg[/img][/*]
+[img]data_custom/images/docs/sup_google_analytics/goal_step5.jpg[/img][/*]
 
 [*] At the "Goal details" section you can provide the URL to where the [i]goal[/i] is considered reached. In our case we will make it a page, [tt]thankyou[/tt]. We'll put in [tt]thankyou.htm[/tt], which is assuming we have the "Use .htm to identify CMS pages" URL scheme configured in Composr[/*]
 
@@ -116,7 +116,7 @@ Let us create our two [i]goal[/i]. Here's how:
 
 [*] Click the "Save" button, taking you to a page listing your new goal
 
-[img]data_custom/images/docs/tut_google_analytics/goal_step6.jpg[/img]
+[img]data_custom/images/docs/sup_google_analytics/goal_step6.jpg[/img]
 [/*]
 [/list]
 
@@ -135,7 +135,7 @@ We will make a [i]content experiment[/i] that sees how different page versions a
 
 [*] Click "Behavior" to expand sub-menus, where you can find "Experiments"
 
-[img]data_custom/images/docs/tut_google_analytics/experiment_step1.jpg[/img][/*]
+[img]data_custom/images/docs/sup_google_analytics/experiment_step1.jpg[/img][/*]
 
 [*] Click "Experiments" to get a new page in the main panel[/*]
 
@@ -145,7 +145,7 @@ We will make a [i]content experiment[/i] that sees how different page versions a
 
 [*] Fill up the options and. Smart tips are there if you need help to understand particular fields. We will be associating with the goal we created earlier.
 
-[img]data_custom/images/docs/tut_google_analytics/experiment_step2.jpg[/img][/*]
+[img]data_custom/images/docs/sup_google_analytics/experiment_step2.jpg[/img][/*]
 
 [*] Click on "Next Step"
 
@@ -155,7 +155,7 @@ Next, to configure your variate, provide the URL of the variate page along with 
 
 We will differentiate between these different versions using a 'version' URL parameter, as indicated in the screenshot. If no version is specified, we will consider this the same as 'version=1', which will let us omit it from the original URL (we don't want to change/pollute our original URL anyway).
 
-[img]data_custom/images/docs/tut_google_analytics/experiment_step3.jpg[/img]
+[img]data_custom/images/docs/sup_google_analytics/experiment_step3.jpg[/img]
 
 Google will use the URLs of the original and variate page to perform the split testing.[/*]
 
@@ -163,7 +163,7 @@ Google will use the URLs of the original and variate page to perform the split t
 
 Grab the [i]experiments[/i] code and save it in a temporary file somewhere.
 
-[img]data_custom/images/docs/tut_google_analytics/experiment_step4.jpg[/img]
+[img]data_custom/images/docs/sup_google_analytics/experiment_step4.jpg[/img]
 
 Later we will put this code for the [i]original[/i] version of the page for which we're doing the split testing -- this will be covered under the "Configuring Google Analytics split testing within Composr" section.[/*]
 [/list]
@@ -341,17 +341,17 @@ Go back to the [i]Google Analytics[/i] administration.
 
 [i]Google Analytics[/i] will need to verify the existence of the generated code through the given URL of the original version.
 
-[img]data_custom/images/docs/tut_google_analytics/experiment_step5.jpg[/img]
+[img]data_custom/images/docs/sup_google_analytics/experiment_step5.jpg[/img]
 
 After successful verification, [i]Google Analytics[/i] will start running once the "Start Experiment" button is clicked.
 
 The experiment status will be shown in the "All Experiments" section.
 
-[img]data_custom/images/docs/tut_google_analytics/experiment_step6.jpg[/img]
+[img]data_custom/images/docs/sup_google_analytics/experiment_step6.jpg[/img]
 
 To view the reports about the defined [i]experiments[/i], click on any of the listed experiments. The reports will show the relative performance between the original version and variate version -- i.e. many users were able to reach the thank you page by making a PayPal payment, by version.
 
-[img]data_custom/images/docs/tut_google_analytics/experiment_step7.jpg[/img]
+[img]data_custom/images/docs/sup_google_analytics/experiment_step7.jpg[/img]
 
 [title="2"]Suggestions for split tests[/title]
 

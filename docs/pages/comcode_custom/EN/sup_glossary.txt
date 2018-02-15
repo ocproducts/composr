@@ -421,9 +421,9 @@ Here are the top 100 buzzwords that will help you understand what web designers 
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_how_internet_works"]How the Internet actually works[/page]
+ - [page="_SEARCH:sup_how_internet_works"]How the Internet actually works[/page]
  - [page="_SEARCH:tut_cookies"]Introduction to Cookies and sessions (and JavaScript)[/page]
  - [page="_SEARCH:tut_email"]Understanding and configuring e-mail[/page]
- - [page="_SEARCH:tut_domain_names"]How domain names work[/page]
+ - [page="_SEARCH:sup_domain_names"]How domain names work[/page]
 
 {$SET,tutorial_tags,Introduction,Internet Technology,novice}{$SET,tutorial_add_date,Dec 2015}{$SET,tutorial_summary,Here are the top 100 buzzwords that will help you understand what web designers are talking about.}[block]main_tutorial_rating[/block]

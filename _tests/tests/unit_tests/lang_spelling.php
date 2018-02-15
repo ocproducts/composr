@@ -141,7 +141,7 @@ class lang_spelling_test_set extends cms_test_case
         }
 
         // Hyphen wanted (we want our canonical way)
-        if ((preg_match('#([^\[\]\|"\'/_])email#', $string, $matches) != 0) && (($key === null) || (stripos($string, '/') === false) && (stripos($string, 'codename') === false)) && (stripos($string, 'Automatic code inserts after this') === false) && (basename($file) != 'tut_facebook.txt')) {
+        if ((preg_match('#([^\[\]\|"\'/_])email#', $string, $matches) != 0) && (($key === null) || (stripos($string, '/') === false) && (stripos($string, 'codename') === false)) && (stripos($string, 'Automatic code inserts after this') === false) && (basename($file) != 'sup_facebook.txt')) {
             $prefix = $matches[1];
             $this->assertTrue(false, 'The term \'email\' was used in ' . $file . '. (prefix is ' . $prefix . ') This should be changed to \'e-mail\'.');
         }

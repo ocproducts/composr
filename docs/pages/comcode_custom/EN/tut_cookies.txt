@@ -47,6 +47,7 @@ Note that IP addresses could never be used instead of sessions because they are 
 JavaScript is built into web browsers directly. It is used to provide an interactive element to the user's experience in their web browser.
 
 Composr detects JavaScript by making the web browser write a cookie using JavaScript -- if such a cookie exists, Composr knows that JavaScript is enabled. Likewise, if the cookie does not get set, Composr knows JavaScript is probably not enabled.
+[i]Nowadays we have this detection disabled by default and assume JavaScript is available.[/tt]
 
 While this is indirect, and requires one page view before detection is accurate, it is the best way to detect JavaScript because web browsers do not announce its presence to web servers directly.
 
@@ -116,9 +117,9 @@ The Composr "Cookie notice" configuration option (Admin Zone > Setup > Configura
  - [page="_SEARCH:tut_nuances"]Nuances of forum integration[/page]
  - [page="_SEARCH:tut_security"]Security[/page]
  - [page="_SEARCH:tut_markup"]Guide to web technologies (including HTML, CSS, and JavaScript)[/page]
- - [page="_SEARCH:tut_how_internet_works"]How the Internet actually works[/page]
+ - [page="_SEARCH:sup_how_internet_works"]How the Internet actually works[/page]
  - [page="_SEARCH:tut_email"]Understanding and configuring e-mail[/page]
- - [page="_SEARCH:tut_domain_names"]How domain names work[/page]
+ - [page="_SEARCH:sup_domain_names"]How domain names work[/page]
  - [page="_SEARCH:tut_website_health"]Website Health[/page]
 
 {$SET,tutorial_tags,Internet Technology,Development,expert}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Want to know everything there is to know about cookies and sessions? You probably don't, but if you do, read this!}[block]main_tutorial_rating[/block]
