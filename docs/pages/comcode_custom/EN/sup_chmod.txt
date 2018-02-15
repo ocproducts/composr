@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Linux file permissions[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Supplementary: Linux file permissions[/title]
 
 Most Composr sites are hosted on Linux web servers. Linux uses the traditional file permission scheme from Unix, which is actually a very simple scheme in terms of what can be done, but technically complex to understand. Composr requires special file permissions for any uploaded file or directory that it needs to write to.
 
@@ -56,8 +56,8 @@ File permissions that Composr requires are listed in the install guide.
 [title="2"]How to set Linux file permissions using FTP[/title]
 
 [surround]
-[media width="150" description="Changing permissions of a directory using FTP" float="right"]data_custom/images/docs/tut_chmod/chmod_1.png[/media]
-[media width="150" description="Changing permissions of a file using FTP" float="right"]data_custom/images/docs/tut_chmod/chmod_2.png[/media]
+[media width="150" description="Changing permissions of a directory using FTP" float="right"]data_custom/images/docs/sup_chmod/chmod_1.png[/media]
+[media width="150" description="Changing permissions of a file using FTP" float="right"]data_custom/images/docs/sup_chmod/chmod_2.png[/media]
 There is a extension to the FTP protocol that allows setting of file permissions. The extension is so wide-spread that most people do not know that it actually is one. Most FTP tools have file permission support, and SmartFTP has particularly user friendly support, where file permissions can be changed with tick-boxes.
 
 The screen-shots show how to set file permissions for:

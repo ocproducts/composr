@@ -736,7 +736,7 @@ If you have sensitive material that might be in a URL moniker, you should either
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_permissions"]Access control and privileges[/page]
- - [page="_SEARCH:tut_chmod"]Linux file permissions[/page]
+ - [page="_SEARCH:sup_chmod"]Linux file permissions[/page]
  - [page="_SEARCH:tut_webhosting"]Webhosting for Composr[/page]
  - [page="_SEARCH:tut_httpauth"]Integrating Composr into a network via HTTP authentication[/page]
  - [page="_SEARCH:tut_ldap"]Integrating Composr into a corporate network via LDAP[/page]
