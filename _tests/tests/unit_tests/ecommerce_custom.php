@@ -31,9 +31,9 @@ class ecommerce_custom_test_set extends cms_test_case
         // Add custom product
         $map = array(
             'c_enabled' => 1,
-            'c_price' => '10.00',
+            'c_price' => 10.00,
             'c_tax_code' => '0.00',
-            'c_shipping_cost' => '0.00',
+            'c_shipping_cost' => 0.00,
             'c_price_points' => 0,
             'c_one_per_member' => 0,
         );

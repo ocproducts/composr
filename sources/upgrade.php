@@ -1320,7 +1320,15 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
         }
 
         $addon_files = collapse_2d_complexity('filename', 'addon_name', $GLOBALS['SITE_DB']->query_select('addons_files', array('filename', 'addon_name')));
-        list($alien, $addon) = check_alien($addon_files, file_exists(get_file_base() . '/data/files_previous.dat') ? unserialize(file_get_contents(get_file_base() . '/data/files_previous.dat')) : array(), $master_data, get_file_base() . '/');
+        if (file_exists(get_file_base() . '/data/files_previous.dat')) {
+            $previous_manifest = @unserialize(file_get_contents(get_file_base() . '/data/files_previous.dat'));
+            if ($previous_manifest === false) {
+                $previous_manifest = array();
+            }
+        } else {
+            $previous_manifest = array();
+        }
+        list($alien, $addon) = check_alien($addon_files, $previous_manifest, $master_data, get_file_base() . '/');
         if (($moved != '') || ($alien != '')) {
             $ret_str .= '<div>';
             if ($alien != '') {

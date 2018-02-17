@@ -90,7 +90,7 @@ class shopping_test_set extends cms_test_case
                     break;
 
                 case 'sku':
-                    $_POST['field_' . strval($id)] = lorem_phrase();
+                    $_POST['field_' . strval($id)] = placeholder_id();
                     break;
 
                 case 'price':

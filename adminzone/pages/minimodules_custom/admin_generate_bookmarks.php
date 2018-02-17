@@ -25,6 +25,13 @@ Folders can't themselves be links, so a node may have both a link and a separate
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+if (post_param_integer('confirm', 0) == 0) {
+    $preview = 'Generate bookmarks';
+    $title = get_screen_title($preview, array(), false);
+    $url = get_self_url(false, false);
+    return do_template('CONFIRM_SCREEN', array('TITLE' => $title, 'PREVIEW' => $preview, 'FIELDS' => form_input_hidden('confirm', '1'), 'URL' => $url));
+}
+
 if (get_param_integer('debug', 0) != 1) {
     header('Content-type: text/html; charset=' . get_charset());
     header('Content-Disposition: attachment; filename="bookmarks.html"');

@@ -30,6 +30,10 @@ class filter_xml_test_set extends cms_test_case
 
     public function testNonFilter()
     {
+        if (get_db_type() == 'xml') {
+            return; // Too slow
+        }
+
         $test_xml = '
             <fieldRestrictions>
                 <filter members="100">
@@ -62,6 +66,10 @@ class filter_xml_test_set extends cms_test_case
 
     public function testFilter()
     {
+        if (get_db_type() == 'xml') {
+            return; // Too slow
+        }
+
         $test_xml = '
             <fieldRestrictions>
                 <filter members="2">
@@ -94,6 +102,10 @@ class filter_xml_test_set extends cms_test_case
 
     public function testNonQualify()
     {
+        if (get_db_type() == 'xml') {
+            return; // Too slow
+        }
+
         $test_xml = '
             <fieldRestrictions>
                 <qualify pages="cms_x" types="add,_add,_edit,__edit" fields="title">
@@ -124,6 +136,10 @@ class filter_xml_test_set extends cms_test_case
 
     public function testQualify()
     {
+        if (get_db_type() == 'xml') {
+            return; // Too slow
+        }
+
         $test_xml = '
             <fieldRestrictions>
                 <qualify pages="cms_news" types="add,_add,_edit,__edit" fields="title">
@@ -154,6 +170,10 @@ class filter_xml_test_set extends cms_test_case
 
     public function testRemoveShout()
     {
+        if (get_db_type() == 'xml') {
+            return; // Too slow
+        }
+
         $test_xml = '
             <fieldRestrictions>
                 <qualify pages="cms_news" types="add,_add,_edit,__edit" fields="title">
@@ -188,6 +208,10 @@ class filter_xml_test_set extends cms_test_case
 
     public function testSentenceCase()
     {
+        if (get_db_type() == 'xml') {
+            return; // Too slow
+        }
+
         $test_xml = '
             <fieldRestrictions>
                 <qualify pages="cms_news" types="add,_add,_edit,__edit" fields="title">
@@ -221,6 +245,10 @@ class filter_xml_test_set extends cms_test_case
 
     public function testTitleCase()
     {
+        if (get_db_type() == 'xml') {
+            return; // Too slow
+        }
+
         $test_xml = '
             <fieldRestrictions>
                 <qualify pages="cms_news" types="add,_add,_edit,__edit" fields="title">
@@ -254,6 +282,10 @@ class filter_xml_test_set extends cms_test_case
 
     public function testAppend()
     {
+        if (get_db_type() == 'xml') {
+            return; // Too slow
+        }
+
         $test_xml = '
             <fieldRestrictions>
                 <qualify pages="cms_news" types="add,_add,_edit,__edit" fields="title">
@@ -288,6 +320,10 @@ class filter_xml_test_set extends cms_test_case
 
     public function testReplace()
     {
+        if (get_db_type() == 'xml') {
+            return; // Too slow
+        }
+
         $test_xml = '
             <fieldRestrictions>
                 <qualify pages="cms_news" types="add,_add,_edit,__edit" fields="title">
@@ -321,6 +357,10 @@ class filter_xml_test_set extends cms_test_case
 
     public function testDeepClean()
     {
+        if (get_db_type() == 'xml') {
+            return; // Too slow
+        }
+
         $test_xml = '
             <fieldRestrictions>
                 <qualify pages="cms_news" types="add,_add,_edit,__edit" fields="title">
@@ -354,6 +394,10 @@ class filter_xml_test_set extends cms_test_case
 
     public function testDefaultFields()
     {
+        if (get_db_type() == 'xml') {
+            return; // Too slow
+        }
+
         $test_xml = '
             <fieldRestrictions>
                 <qualify pages="cms_news" types="add" fields="title">
@@ -385,6 +429,10 @@ class filter_xml_test_set extends cms_test_case
 
     public function testMinLength()
     {
+        if (get_db_type() == 'xml') {
+            return; // Too slow
+        }
+
         $test_xml = '
             <fieldRestrictions>
                 <qualify pages="cms_news" types="add,_add,_edit,__edit" fields="title">
@@ -427,6 +475,10 @@ class filter_xml_test_set extends cms_test_case
 
     public function testPossibilitySet()
     {
+        if (get_db_type() == 'xml') {
+            return; // Too slow
+        }
+
         $test_xml = '
             <fieldRestrictions>
                 <qualify pages="cms_news" types="add,_add,_edit,__edit" fields="title">
@@ -466,6 +518,10 @@ class filter_xml_test_set extends cms_test_case
 
     public function testDisallowedWord()
     {
+        if (get_db_type() == 'xml') {
+            return; // Too slow
+        }
+
         $test_xml = '
             <fieldRestrictions>
                 <qualify pages="cms_news" types="add,_add,_edit,__edit" fields="title">
@@ -505,6 +561,10 @@ class filter_xml_test_set extends cms_test_case
 
     public function testDisallowedSubstring()
     {
+        if (get_db_type() == 'xml') {
+            return; // Too slow
+        }
+
         $test_xml = '
             <fieldRestrictions>
                 <qualify pages="cms_news" types="add,_add,_edit,__edit" fields="title">
@@ -545,6 +605,10 @@ class filter_xml_test_set extends cms_test_case
 
     public function testShun()
     {
+        if (get_db_type() == 'xml') {
+            return; // Too slow
+        }
+
         $test_xml = '
             <fieldRestrictions>
                 <qualify pages="cms_news" types="add,_add,_edit,__edit" fields="title">
@@ -584,6 +648,10 @@ class filter_xml_test_set extends cms_test_case
 
     public function testPattern()
     {
+        if (get_db_type() == 'xml') {
+            return; // Too slow
+        }
+
         $test_xml = '
             <fieldRestrictions>
                 <qualify pages="cms_news" types="add,_add,_edit,__edit" fields="title">

@@ -22,6 +22,13 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+if (post_param_integer('confirm', 0) == 0) {
+    $preview = 'Plug in missing GUIDs';
+    $title = get_screen_title($preview, array(), false);
+    $url = get_self_url(false, false);
+    return do_template('CONFIRM_SCREEN', array('TITLE' => $title, 'PREVIEW' => $preview, 'FIELDS' => form_input_hidden('confirm', '1'), 'URL' => $url));
+}
+
 $title = get_screen_title('Plug in missing GUIDs', false);
 $title->evaluate_echo();
 

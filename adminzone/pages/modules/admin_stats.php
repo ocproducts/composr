@@ -1601,6 +1601,12 @@ class Module_admin_stats
      */
     public function install_geolocation_data()
     {
+        if (post_param_integer('confirm', 0) == 0) {
+            $preview = do_lang_tempcode('INSTALL_GEOLOCATION_DATA');
+            $url = get_self_url(false, false);
+            return do_template('CONFIRM_SCREEN', array('TITLE' => $this->title, 'PREVIEW' => $preview, 'FIELDS' => form_input_hidden('confirm', '1'), 'URL' => $url));
+        }
+
         require_code('tasks');
         return call_user_func_array__long_task(do_lang('INSTALL_GEOLOCATION_DATA'), $this->title, 'install_geolocation_data');
     }

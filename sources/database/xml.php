@@ -30,6 +30,7 @@
         We ARE type strict, unlike MySQL (even MySQL strict mode won't complain if a type conversion is always lossless, such as integer to string)
         Data Control Language (DCL) is not supported
         Information schemas are not supported
+        We are case sensitive
         Semi-colons to split queries are not supported at the driver level
         Temporary tables are not supported
         Views are not supported
@@ -41,7 +42,6 @@
         JOIN's are not supported in DELETE or UPDATE queries
         Character set support is just whatever Composr is set to; there is no special supported
         SELECT INTO is not supported
-        LIMIT's on UPDATE queries not supported
         Default values for fields are not supported
         Field naming for things like COUNT(*) will not be consistent with MySQL
         You must specify the field names in INSERT queries
@@ -2263,7 +2263,7 @@ class Database_Static_xml extends DatabaseDriver
             case 'X_GROUP_CONCAT':
             case 'AVG':
                 if ($full_set === null) {
-                    return $this->_bad_query($query, $fail_ok, 'Cannot use aggregate function outside SELECT/HAVING scope');
+                    return $this->_bad_query($query, $fail_ok, 'Cannot use aggregate function (' . $expr[0] . ') outside SELECT/HAVING scope');
                 }
 
                 $temp = $this->_function_set_scoping($full_set, $expr, $bindings, $query, $db, $fail_ok);
@@ -3731,8 +3731,8 @@ class Database_Static_xml extends DatabaseDriver
     protected function _parsing_expects(&$at, $tokens, $token, $query, $fail_ok = false)
     {
         $next = $this->_parsing_read($at, $tokens, $query, $fail_ok);
-        if ($next != $token) {
-            $this->_bad_query($query, $fail_ok, 'Expected ' . $token . ' but got ' . $next . ' at token ' . strval($at));
+        if ($next !== $token) {
+            $this->_bad_query($query, $fail_ok, 'Expected ' . $token . ' but got ' . (($next === null) ? '(no token)' : $next) . ' at token ' . strval($at));
             return false;
         }
         return true;

@@ -15,6 +15,13 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+if (post_param_integer('confirm', 0) == 0) {
+    $preview = 'Make addon tutorial index';
+    $title = get_screen_title($preview, array(), false);
+    $url = get_self_url(false, false);
+    return do_template('CONFIRM_SCREEN', array('TITLE' => $title, 'PREVIEW' => $preview, 'FIELDS' => form_input_hidden('confirm', '1'), 'URL' => $url));
+}
+
 // Prepare for synonyms
 require_code('lang_stemmer_' . user_lang());
 $stemmer = object_factory('Stemmer_' . user_lang());
